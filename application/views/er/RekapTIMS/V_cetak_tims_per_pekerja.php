@@ -1,4 +1,4 @@
-<?php 
+<?php
 $prd1 = $periode['0']['0'];
 $prd2 = "";
 foreach ($periode as $per) {
@@ -29,7 +29,7 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 			<th rowspan="2" style="width: 13%;text-align: center;color: white">MASA KERJA</th>
 			<?php if (isset($detail) and !empty($detail)) {
 						$loop = 1;
-						foreach ($periode as $prd) { 
+						foreach ($periode as $prd) {
 							if($banyak1 < (3*($i+1)) and $loop > $simpan1){ ?>
 			<th colspan="8" style="text-align: center;color: white"><?php echo $prd['1']; ?></th>
 			<?php 				$banyak1++;
@@ -40,9 +40,9 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 					} ?>
 		</tr>
 		<tr style="background-color: #00b0ff;">
-			<?php if (isset($detail) and !empty($detail)) { 
+			<?php if (isset($detail) and !empty($detail)) {
 						$loop = 1;
-						foreach ($periode as $prd) { 
+						foreach ($periode as $prd) {
 							if($banyak2 < (3*($i+1)) and $loop > $simpan2){?>
 			<th style="text-align: center;color: white">T</th>
 			<th style="text-align: center;color: white">I</th>
@@ -61,7 +61,7 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 		</tr>
 	</thead>
 	<tbody>
-		<?php 
+		<?php
 		if (isset($rekap_all) and !empty($rekap_all)) {
 			$nomor = 1;
 			foreach ($rekap_all as $all) { ?>
@@ -71,15 +71,15 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 					<td><?php echo $all['nama'] ?></td>
 					<td style="text-align: center"><?php echo $all['masa_kerja'] ?></td>
 					<!-- detail -->
-					<?php 
+					<?php
 					if (isset($detail) and !empty($detail)) {
 						$loop = 1;
 						if ($all['noind'] !== $simpanNoind) {
 							$banyak3 = 3*($i);
 							$simpan3 = $banyak3;
 						}
-						
-						foreach ($periode as $prd) { 
+
+						foreach ($periode as $prd) {
 							if($banyak3 < (3*($i+1)) and $loop > $simpan3){
 								foreach ($detail['rekap_'.$prd['2']] as $dtl) {
 									if ($all['noind'] == $dtl['noind']) {
@@ -142,7 +142,7 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 						} ?>
 					</td>
 					<?php
-									}	
+									}
 								}
 							$banyak3++;
 							$simpan3 = $loop;
@@ -150,7 +150,7 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 						 	$loop++;
 						 	$simpanNoind = $all['noind'];
 						}
-					} 
+					}
 					?>
 					<!-- detail -->
 				</tr>
@@ -160,7 +160,7 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 		?>
 	</tbody>
 </table>
-<?php } 
+<?php }
 } ?>
 <table style="border-collapse: collapse;width: 100%;font-size: 8pt">
 	<thead>
@@ -174,7 +174,7 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 			<th colspan="8" style="text-align: center;color: white;width: 28%">PRESENTASE</th>
 			<th rowspan="2" style="text-align: center;color: white;width: 5%">TOTAL</th>
 		</tr>
-		<tr style="background-color: #00b0ff;"> 
+		<tr style="background-color: #00b0ff;">
 			<th style="text-align: center;color: white;width: 2%">T</th>
 			<th style="text-align: center;color: white;width: 2%">I</th>
 			<th style="text-align: center;color: white;width: 2%">M</th>
@@ -194,7 +194,7 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 		</tr>
 	</thead>
 	<tbody>
-		<?php 
+		<?php
 		if (isset($rekap_all) and !empty($rekap_all)) {
 			$nomor = 1;
 			foreach ($rekap_all as $all) { ?>
@@ -274,9 +274,9 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 					<!-- presentase -->
 					<!-- total -->
 					<td style="text-align: center">
-						<?php 
+						<?php
 							$totalRekap = (
-								(	
+								(
 									($all['totalhk']+$all['totalhks']) -
 									(
 										($all['freki']+$all['frekis']) +
@@ -284,12 +284,15 @@ for ($i=0; $i < $jml/3; $i++) { ?>
 										($all['freksk']+$all['freksks']) +
 										($all['frekpsp']+$all['frekpsps']) +
 										($all['frekip']+$all['frekips']) +
-										($all['frekct']+$all['frekcts'])
+										($all['frekct']+$all['frekcts']) +
+										($all['frekmnon']+$all['frekmsnon'])
+
 									)
-								) / 
+								) /
 								(
 									($all['totalhk']+$all['totalhks']) -
-									($all['frekct']+$all['frekcts'])
+									($all['frekct']+$all['frekcts']) -
+									($all['frekmnon']+$all['frekmsnon'])
 								) * 100
 							);
 							echo number_format($totalRekap,2).'%';

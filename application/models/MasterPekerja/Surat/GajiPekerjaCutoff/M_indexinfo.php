@@ -14,7 +14,7 @@ class M_indexinfo extends CI_Model
 
   public function getDataAll()
   {
-    return $this->personalia->query("SELECT * FROM \"Surat\".t_memo_cutoff ORDER BY periode DESC")->result_array();
+    return $this->personalia->query("SELECT * FROM \"Surat\".t_memo_cutoff ORDER BY update_date DESC")->result_array();
   }
 
   public function getDataPrint($id)
@@ -37,11 +37,6 @@ class M_indexinfo extends CI_Model
   public function getAlasan()
   {
     return $this->personalia->query("SELECT isi_surat FROM \"Surat\".tisi_surat Where id_isi = '26' and jenis_surat = 'A CUT OFF' AND staf =  '1' LIMIT 1")->row()->isi_surat;
-  }
-
-  public function getAlasanNStaf()
-  {
-    return $this->personalia->query("SELECT isi_surat FROM \"Surat\".tisi_surat Where id_isi = '25' and jenis_surat = 'A CUT OFF NSTAF' AND staf = '0' LIMIT 1")->row()->isi_surat;
   }
 
   public function getDetailTambahanPrev($param, $noind)
@@ -70,7 +65,6 @@ class M_indexinfo extends CI_Model
             FROM hrd_khs.tseksi ts
             WHERE left(ts.kodesie, 7) $newkodesie
             ORDER BY kodesie";
-            // print_r($sql);die;
     return $this->personalia->query($sql)->result_array();
   }
 
@@ -150,7 +144,7 @@ class M_indexinfo extends CI_Model
     }else {
       $noindNew = "= '$noind'";
     }
-    $sql = "SELECT tp.noind, trim(tp.nama) as nama, trim(ts.seksi) as seksi , tp.kd_jabatan, left(tp.kodesie, 7) as kodesie
+    $sql = "SELECT tp.noind, trim(tp.nama) as nama, trim(ts.seksi) as seksi , tp.kd_jabatan, left(tp.kodesie, 7) as kodesie, (select ket from \"Presensi\".tcutoff_custom where noind = tp.noind) as ket
             FROM hrd_khs.tpribadi tp
             LEFT JOIN hrd_khs.tseksi ts ON tp.kodesie = ts.kodesie
             WHERE tp.noind $noindNew AND tp.keluar = '0'
@@ -222,7 +216,6 @@ class M_indexinfo extends CI_Model
              tp.kd_jabatan
             ORDER BY
              2";
-          // echo "<pre>";print_r($sql);die;
     return $this->personalia->query($sql)->result_array();
   }
 

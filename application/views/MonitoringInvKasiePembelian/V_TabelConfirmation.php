@@ -5,24 +5,6 @@
 			<div class="col-lg-12">
 				<div class="row">
 					<div class="col-lg-12">
-						<!-- <table>
-							<tr>
-								<td style="padding-right: 10px">
-									<span><label>Invoice ID</label></span>
-								</td>
-								<td style="padding-bottom:10px">
-									<input type="text" class="form-control" value="<?php echo $invoice ?>" disabled>
-								</td>
-							</tr>
-							<tr>
-								<td style="padding-right:10px">
-									<span><label>Feedback Purchasing</label></span>
-								</td>
-								<td>
-									<textarea id="txaFbPurc" class="form-control" style="width:300px; margin-bottom:10px"><?php echo $feedback[0]['FEEDBACK_PURCHASING']?></textarea>
-								</td>
-							</tr>
-						</table> -->
 						<br/>
 					  		<div id="tableHolder">
 						<div class="box box-primary">
@@ -47,8 +29,13 @@
 											<td><?php echo $k['DOCUMENT_NAME']?><input type="hidden" id="nama_dokumen" value="<?php echo $k['DOCUMENT_NAME']?>"></td>
 											<td style="display: none"><input type="hidden" id="dokumen_id" value="<?php echo $k['DOCUMENT_ID']?>"></td>
 											<td>
+												<?php if ($k['RESTATUS_BERKAS_PURC'] !== null){ ?>
+												<button disabled type="button" class="btn btn-success btn-sm" onclick="btnApproveBerkas(this)" id="btnApproved" style="margin-right: 5px"><i class="fa fa-check"></i></button>
+												<button disabled type="button" onclick="btnRejectBerkas(this)" class="btn btn-danger btn-sm" id="btnApproved"><i class="fa fa-times"></i></button>
+												<?php }else if($k['RESTATUS_BERKAS_PURC'] == null){ ?>
 												<button type="button" class="btn btn-success btn-sm" onclick="btnApproveBerkas(this)" id="btnApproved" style="margin-right: 5px"><i class="fa fa-check"></i></button>
 												<button type="button" onclick="btnRejectBerkas(this)" class="btn btn-danger btn-sm" id="btnApproved"><i class="fa fa-times"></i></button>
+												<?php } ?>
 											</td>
 											<?php if ($k['STATUS_DOCUMENT_PURC'] == 'Y') { ?>
 											<td><input type="hidden" value="Y" id="pembelian_id">

@@ -11,6 +11,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -78,7 +79,7 @@ class C_Index extends CI_Controller
 		$data['DaftarKdJabatan'] = $this->M_promosi->DetailKdJabatan();
 		$data['DaftarTempatMakan1'] = $this->M_promosi->DetailTempatMakan1();
 		$data['DaftarTempatMakan2'] = $this->M_promosi->DetailTempatMakan2();
-	
+
 		// print_r($data['DaftarKdJabatan']);
 		// echo "</pre>";
 		// exit();
@@ -456,7 +457,7 @@ class C_Index extends CI_Controller
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		
+
 		if($status_baru != null or $status_baru != "" ){
 			$status_baru 			= 	explode(' - ', $status_baru);
 		}else{
@@ -544,7 +545,11 @@ class C_Index extends CI_Controller
 			'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
 			'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
 			'kd_status_lama'		=> 	$kd_status_lama,
-			'kd_status_baru' 		=>	$kd_status_baru
+			'kd_status_baru' 		=>	$kd_status_baru,
+			'created_by'			=>  $this->session->user ,
+			'created_date'			=> 	date('Y-m-d H:i:s'),
+			'last_update_by'		=> NULL,
+			'last_update_date'		=> NULL
 			);
 		$this->M_promosi->inputSuratPromosi($inputSuratPromosi);
 
@@ -561,6 +566,11 @@ class C_Index extends CI_Controller
 			'jenis_surat'			=>	'PROMOSI',
 			);
 		$this->M_Promosi->inputNomorSurat($inputNomorSurat);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Create Surat Promosi Nomor Surat='.$nomor_surat.'/'.$kodeSurat.'/'.$bulan_surat.'/'.$tahun_surat;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/SuratPromosi');
 	}
 
@@ -568,7 +578,11 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Cetak PDF Surat Promosi Nomor Surat='.$no_surat_decode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$data['isiSuratPromosi']		=	$this->M_promosi->ambilIsiSuratPromosi($no_surat_decode);
 
 		$this->load->library('pdf');
@@ -658,13 +672,13 @@ class C_Index extends CI_Controller
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		
+
 		if($status_baru != null or $status_baru != "" ){
 			$status_baru 			= 	explode(' - ', $status_baru);
 		}else{
 			$status_baru 			= 	explode(' - ', $status_lama);
 		}
-		
+
 		$status_lama 				= 	explode(' - ', $status_lama);
 		$kd_status_lama				= 	$status_lama[0];
 		$nama_status_lama			= 	$status_lama[1];
@@ -746,9 +760,16 @@ class C_Index extends CI_Controller
 			'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
 			'kd_status_lama'		=> 	$kd_status_lama,
 			'kd_status_baru' 		=>	$kd_status_baru,
-			'status_update'			=> '0'
+			'status_update'			=> '0',
+			'last_update_by'			=>  $this->session->user ,
+			'last_update_date'			=> 	date('Y-m-d H:i:s'),
 			);
 		$this->M_promosi->updateSuratPromosi($updateSuratPromosi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Surat Promosi Nomor Surat='.$no_surat_decode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/SuratPromosi');
 	}
 
@@ -766,6 +787,11 @@ class C_Index extends CI_Controller
 		$bulan_surat			=	$no_surat_decode[3];
 
 		$this->M_promosi->deleteArsipSuratPromosi($bulan_surat, $tahun, $kode_surat, $no_surat);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete Arsip & Surat Promosi Nomor Surat='.$no_surat.'/'.$kode_surat.'/'.$bulan_surat.'/'.$tahun;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('MasterPekerja/Surat/SuratPromosi');
 

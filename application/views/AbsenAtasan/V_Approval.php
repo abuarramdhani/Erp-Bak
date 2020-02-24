@@ -135,9 +135,11 @@
 				<div class="col-md-2">
 					
 				</div>
+				<?php if(!strpos(base_url(),"erp.quick.com")): ?>
 			 	<div class="col-md-2">
 			 		<button data-toggle="modal" data-target="#locationModal" class="btn btn-success" href="#"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</button>
-			 	</div>			 
+			 	</div>
+			 	<?php endif; ?>	 
 			 </div>
 
 
@@ -208,8 +210,12 @@
 					  frameborder="1" 
 					  scrolling="yes" 
 					  marginheight="0" 
-					  marginwidth="0" 
+					  marginwidth="0"
+					  <?php if(!strpos(base_url(),"erp.quick.com")): ?>
 					  src="https://maps.google.com/maps?q=<?php echo $dataEmployee[0]['latitude'];?>,<?php echo $dataEmployee[0]	['longitude']; ?>&hl=es;z=14&amp;output=embed"
+					<?php else: ?>
+						src=""
+					<?php endif; ?>
 					 >
 					 </iframe>
 					 </center>

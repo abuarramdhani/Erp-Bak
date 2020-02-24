@@ -10,6 +10,7 @@ class C_BusinessProcess extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('upload');
@@ -113,13 +114,13 @@ class C_BusinessProcess extends CI_Controller
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa2', 'Pekerja Pemeriksa 2', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
-		
+
 		if ($this->form_validation->run() === FALSE) {
 
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/BusinessProcess/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaBusinessProcess 	= 	strtoupper($this->input->post('txtBpNameHeader'));
 			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoKontrolHeader'));
@@ -175,6 +176,11 @@ class C_BusinessProcess extends CI_Controller
 
 			$this->M_businessprocess->setBusinessProcess($data, $user);
 			$header_id = $this->db->insert_id();
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Set document BP id=$header_id";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			$this->M_general->inputNotifications('BP', $header_id, $user_now, $data, 'CREATE');
 
@@ -219,14 +225,14 @@ class C_BusinessProcess extends CI_Controller
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
-		if ($this->form_validation->run() === FALSE) 
+		if ($this->form_validation->run() === FALSE)
 		{
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/BusinessProcess/V_update', $data);
-			$this->load->view('V_Footer',$data);	
-		} 
-		else 
+			$this->load->view('V_Footer',$data);
+		}
+		else
 		{
 			$namaBusinessProcess 	= 	strtoupper($this->input->post('txtBpNameHeader', TRUE));
 			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoKontrolHeader', TRUE));
@@ -242,7 +248,7 @@ class C_BusinessProcess extends CI_Controller
 			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
 			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');
 			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaBusinessProcess);
-			
+
 			// Salin dari sini
 			$revisiBaru 			= 	$this->input->post('checkboxRevisi');
 
@@ -343,16 +349,16 @@ class C_BusinessProcess extends CI_Controller
 			if(!is_null($fileDokumen))
 			{
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
-			
+
 			}
 			else
-			{	
+			{
 				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
 				{
 					$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
-				}					
+				}
 			}
-			
+
 			if($revisiBaru==0)
 			{
 				$data = array(
@@ -388,9 +394,14 @@ class C_BusinessProcess extends CI_Controller
 					'update_revisi' 	=> $this->general->ambilWaktuEksekusi(),
 					'tgl_upload' 			=> $tanggalUpload,
 	    		);
-				$this->M_businessprocess->updateBusinessProcess($data, $plaintext_string);	    		
+				$this->M_businessprocess->updateBusinessProcess($data, $plaintext_string);
 	    	}
 
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Update document BP id=$plaintext_string";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			redirect(site_url('DocumentStandarization/BP'));
 		}
 	}
@@ -433,6 +444,11 @@ class C_BusinessProcess extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_businessprocess->deleteBusinessProcess($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'DOC STANDARIZATION';
+		$detail = "Delete document BP id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('DocumentStandarization/BP'));
     }

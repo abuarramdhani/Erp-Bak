@@ -107,7 +107,7 @@ thead.toscahead tr th {
 																	<span><label>Lampiran</label></span>
 																</td>
 																<td>
-																		<input data-step="2" data-intro="Upload file hanya yang berformat .pdf dan .jpg (bukan .JPG)" style="display: none;" type="file" name="txfPdf" id="file-1" class="inputfile inputfile-1" required accept="application/pdf,application/jpg" />
+																		<input data-step="2" data-intro="Upload file hanya yang berformat .pdf dan .jpg (bukan .JPG)" style="display: none;" type="file" name="txfPdf" id="file-1" class="inputfile inputfile-1" required />
 																		<!-- data-multiple-caption="{count} files selected" -->
 																		<label for="file-1" name="test" class="zoom">
 																			<span><i class="fa fa-cloud-upload"></i> Choose a file&hellip;</span>

@@ -31,7 +31,7 @@ class M_tracking extends CI_Model {
                 to_char(mulai_packing, 'HH24:MI:SS') as jam_mulai_packing, 
                 to_char(selesai_packing, 'DD/MM/YYYY') as tgl_selesai_packing,
                 to_char(selesai_packing, 'HH24:MI:SS') as jam_selesai_packing,
-                urgent, pic_pelayan, pic_pengeluaran, pic_packing
+                urgent, pic_pelayan, pic_pengeluaran, pic_packing, bon
                 from khs_tampung_spb
                 where selesai_packing is null
                 and cancel is null
@@ -39,6 +39,20 @@ class M_tracking extends CI_Model {
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
+    }
+
+    public function savePending($jenis, $nospb){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "update khs_tampung_spb set BON = 'PENDING' where no_dokumen = '$nospb' and jenis_dokumen = '$jenis'";
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+    }
+
+    public function deletePending($jenis, $nospb){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "update khs_tampung_spb set BON = '' where no_dokumen = '$nospb' and jenis_dokumen = '$jenis'";
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
     }
 
 }

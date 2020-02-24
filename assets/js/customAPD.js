@@ -1094,4 +1094,18 @@ $(document).ready(function(){
   });
 
   $('.p2k3_tbl_datamasuk').DataTable();
+
+  $('.p2k3_tanggal_periode').change(function(){
+    var d = new Date();
+    var n = d.getFullYear();
+    var m = d.getMonth();
+    var v = $(this).val().split(' - ');
+    if(v[1] < n){
+      $(this).val(null);
+      alert('Periode tidak boleh lebih kecil !');
+    }else if(Number(v[0]) < m+1){
+      $(this).val(null);
+      alert('Periode tidak boleh lebih kecil !');
+    }
+  });
 });

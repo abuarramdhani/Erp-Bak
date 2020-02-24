@@ -1,6 +1,6 @@
 <div class="col-md-12 text-center">
 	<h3>Rekap Data</h3>
-	<h4 id="duka_pr_rekap"><?= $awal.' s.d '.$akhir; ?></h4>
+	<h4 id="duka_pr_rekap"><?= $awal.' sd '.$akhir; ?></h4>
 </div>
 <table class="table table-bordered table-striped duka_tbl_rekap">
 	<thead>

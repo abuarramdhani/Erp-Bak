@@ -11,6 +11,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -59,7 +60,7 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 	public function create($noind)
-	{	
+	{
 		// echo "<pre>"; print_r($noind); exit();
 		$user_id = $this->session->userid;
 
@@ -87,7 +88,7 @@ class C_Index extends CI_Controller
 	}
 
 	public function update($noind)
-	{	
+	{
 		// echo "<pre>"; print_r($noind); exit();
 		$user_id = $this->session->userid;
 
@@ -162,7 +163,7 @@ class C_Index extends CI_Controller
 		}
 		$namaatasan1			=	strtolower($queryatasan1[0]['nama']);
 		$jabatanatasan1			=	strtolower($queryatasan1[0]['jbtn']);
-		
+
 		$seksiatasan2			=	strtolower($queryatasan2[0]['departemen']);
 		$seksiatasan2			=	'Departemen'.' '.ucwords($seksiatasan2);
 		$namaatasan2			=	strtolower($queryatasan2[0]['nama']);
@@ -200,7 +201,7 @@ class C_Index extends CI_Controller
 											$nomor_surat,
 											$kode_surat,
 											date('m', strtotime($tanggal_cetak)),
-											date('y', strtotime($tanggal_cetak)),											
+											date('y', strtotime($tanggal_cetak)),
 											$nomor_induk,
 											$nama_pekerja,
 											ucwords($seksi),
@@ -268,6 +269,11 @@ class C_Index extends CI_Controller
 											'jenis_surat'			=>	'USIALANJUT',
 										);
 		$this->M_usialanjut->inputNomorSurat($inputNomorSurat);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Create Surat Usia Lanjut Noind='.$nomor_induk;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/SuratUsiaLanjut');
 	}
 
@@ -310,7 +316,11 @@ class C_Index extends CI_Controller
 											'noind' 				=>	$nomor_induk
 										);
 		$this->M_usialanjut->UpdateNomorSurat($UpdateNomorSurat, $nomor_induk);
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Surat Usia Lanjut Noind='.$nomor_induk;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/SuratUsiaLanjut');
 	}
 
@@ -318,6 +328,11 @@ class C_Index extends CI_Controller
 	{
 		$data['isiSuratUsiaLanjut']		=	$this->M_usialanjut->ambilIsiSuratUsiaLanjut($noind);
 		// echo "<pre>"; print_r($data['isiSuratUsiaLanjut']); exit();
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Cetak PDF Surat Usia Lanjut Noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
@@ -343,7 +358,11 @@ class C_Index extends CI_Controller
 		$bulan_surat 			= 	date('n', strtotime($data['isiSuratUsiaLanjut'][0]['tanggal_cetak']));
 
 		$this->M_usialanjut->deleteArsipSuratUsiaLanjut($bulan_surat, $kode_surat, $no_surat);
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete Arsip & Surat Usia Lanjut Noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/SuratUsiaLanjut');
 
 	}

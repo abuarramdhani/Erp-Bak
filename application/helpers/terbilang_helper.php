@@ -5,6 +5,11 @@ if ( ! function_exists('number_to_words'))
 {
 	function number_to_words($number)
 	{
+		$pattern = '/[^0-9,]/';
+		$replace = '';
+
+		$number =  preg_replace($pattern, $replace, $number);
+
 		$before_comma = trim(to_word($number));
 		$after_comma = trim(comma($number));
 		if(empty($after_comma)){
@@ -12,7 +17,7 @@ if ( ! function_exists('number_to_words'))
 		}else{
 			$koma="koma";
 		}
-		return ucwords($results = $before_comma.''.$koma.''.$after_comma);
+		return ucwords($results = $before_comma.' '.$koma.' '.$after_comma);
 	}
 
 	function to_word($number)

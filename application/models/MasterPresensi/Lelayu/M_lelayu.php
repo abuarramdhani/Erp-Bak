@@ -28,7 +28,13 @@ class M_lelayu extends CI_Model
   }
 
   public function getCutoffBulanIni(){
-    $sql = "select tanggal_awal::date from \"Presensi\".tcutoff where to_char(tanggal_akhir,'yyyy-mm') = to_char(current_date,'yyyy-mm') limit 1";
+    $sql = "select
+              tanggal_awal::date
+            from
+              \"Presensi\".tcutoff
+            where
+              current_date between tanggal_awal and tanggal_akhir
+              limit 1";
     if(isset($this->personalia->query($sql)->row()->tanggal_awal)){
       return  $this->personalia->query($sql)->row()->tanggal_awal;
     }else{
@@ -54,7 +60,7 @@ class M_lelayu extends CI_Model
       }
     }
     if(!isset($alert)){
-      $sql1 = "SELECT count(noind) as noind FROM (
+      $sql1 = "SELECT count(distinct(noind)) as noind FROM (
                 select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
                 b.dept, b.bidang, b.unit
                 from hrd_khs.tpribadi a
@@ -113,7 +119,7 @@ class M_lelayu extends CI_Model
       }
     }
     if(!isset($alert)){
-    $sql1 = "SELECT count(noind) as noind FROM (
+    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
@@ -171,7 +177,7 @@ class M_lelayu extends CI_Model
       }
     }
     if(!isset($alert)){
-    $sql1 = "SELECT count(noind) as noind FROM (
+    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
@@ -229,7 +235,7 @@ class M_lelayu extends CI_Model
       }
     }
     if(!isset($alert)){
-    $sql1 = "SELECT count(noind) as noind FROM (
+    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
@@ -298,26 +304,27 @@ class M_lelayu extends CI_Model
               left join hrd_khs.torganisasi c on
                 tref.kd_jabatan = c.kd_jabatan
               left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
-              where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+              where keluar = '0'--(( and masukkerja <= cast($trigerbulan as date)))
                 and a.kode_status_kerja <> 'C'
                 and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
-              union
-              select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
-              b.dept, b.bidang, b.unit
-              from hrd_khs.tpribadi a
-              left join hrd_khs.tseksi b on a.kodesie = b.kodesie
-              left join hrd_khs.trefjabatan tref on tref.noind = a.noind and tref.kodesie = a.kodesie
-              left join hrd_khs.torganisasi c on tref.kd_jabatan = c.kd_jabatan
-              left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
-              where ((masukkerja <= cast($trigerbulan as date))
-                and (tglkeluar >= cast($trigerbulan as date)
-                and keluar = '1'))
-                and (masukkerja >= '1945-01-01')
-                and a.kode_status_kerja <> 'C'
-                and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
-              order by 5
+              -- union
+              -- select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              -- b.dept, b.bidang, b.unit
+              -- from hrd_khs.tpribadi a
+              -- left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+              -- left join hrd_khs.trefjabatan tref on tref.noind = a.noind and tref.kodesie = a.kodesie
+              -- left join hrd_khs.torganisasi c on tref.kd_jabatan = c.kd_jabatan
+              -- left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
+              -- where ((masukkerja <= cast($trigerbulan as date))
+              --   and (tglkeluar >= cast($trigerbulan as date)
+              --   and keluar = '1'))
+              --   and (masukkerja >= '1945-01-01')
+              --   and a.kode_status_kerja <> 'C'
+              --   and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
+              -- order by 5
             ) as tabel
 						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '01' AND '09') order by noind";
+            // echo $sql.'<br>';
     return $this->personalia->query($sql)->result_array();
     }
   }
@@ -351,26 +358,27 @@ class M_lelayu extends CI_Model
               left join hrd_khs.torganisasi c on
                 tref.kd_jabatan = c.kd_jabatan
               left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
-              where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+              where keluar = '0' --(( and masukkerja <= cast($trigerbulan as date)))
                 and a.kode_status_kerja <> 'C'
                 and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
-              union
-              select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
-              b.dept, b.bidang, b.unit
-              from hrd_khs.tpribadi a
-              left join hrd_khs.tseksi b on a.kodesie = b.kodesie
-              left join hrd_khs.trefjabatan tref on tref.noind = a.noind and tref.kodesie = a.kodesie
-              left join hrd_khs.torganisasi c on tref.kd_jabatan = c.kd_jabatan
-              left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
-              where ((masukkerja <= cast($trigerbulan as date))
-                and (tglkeluar >= cast($trigerbulan as date)
-                and keluar = '1'))
-                and (masukkerja >= '1945-01-01')
-                and a.kode_status_kerja <> 'C'
-                and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
-              order by 5
+              -- union
+              -- select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              -- b.dept, b.bidang, b.unit
+              -- from hrd_khs.tpribadi a
+              -- left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+              -- left join hrd_khs.trefjabatan tref on tref.noind = a.noind and tref.kodesie = a.kodesie
+              -- left join hrd_khs.torganisasi c on tref.kd_jabatan = c.kd_jabatan
+              -- left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
+              -- where ((masukkerja <= cast($trigerbulan as date))
+              --   and (tglkeluar >= cast($trigerbulan as date)
+              --   and keluar = '1'))
+              --   and (masukkerja >= '1945-01-01')
+              --   and a.kode_status_kerja <> 'C'
+              --   and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
+              -- order by 5
             ) as tabel
 						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '10' AND '11') order by noind";
+            // echo $sql.'<br>';
     return $this->personalia->query($sql)->result_array();
     }
   }
@@ -404,26 +412,27 @@ class M_lelayu extends CI_Model
               left join hrd_khs.torganisasi c on
                 tref.kd_jabatan = c.kd_jabatan
               left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
-              where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+              where keluar = '0' --(( and masukkerja <= cast($trigerbulan as date)))
                 and a.kode_status_kerja <> 'C'
                 and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
-              union
-              select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
-              b.dept, b.bidang, b.unit
-              from hrd_khs.tpribadi a
-              left join hrd_khs.tseksi b on a.kodesie = b.kodesie
-              left join hrd_khs.trefjabatan tref on tref.noind = a.noind and tref.kodesie = a.kodesie
-              left join hrd_khs.torganisasi c on tref.kd_jabatan = c.kd_jabatan
-              left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
-              where ((masukkerja <= cast($trigerbulan as date))
-                and (tglkeluar >= cast($trigerbulan as date)
-                and keluar = '1'))
-                and (masukkerja >= '1945-01-01')
-                and a.kode_status_kerja <> 'C'
-                and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
-              order by 5
+              -- union
+              -- select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              -- b.dept, b.bidang, b.unit
+              -- from hrd_khs.tpribadi a
+              -- left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+              -- left join hrd_khs.trefjabatan tref on tref.noind = a.noind and tref.kodesie = a.kodesie
+              -- left join hrd_khs.torganisasi c on tref.kd_jabatan = c.kd_jabatan
+              -- left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
+              -- where ((masukkerja <= cast($trigerbulan as date))
+              --   and (tglkeluar >= cast($trigerbulan as date)
+              --   and keluar = '1'))
+              --   and (masukkerja >= '1945-01-01')
+              --   and a.kode_status_kerja <> 'C'
+              --   and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
+              -- order by 5
             ) as tabel
 						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '12' AND '13') order by noind";
+            // echo $sql.'<br>';
     return $this->personalia->query($sql)->result_array();
     }
   }
@@ -457,26 +466,27 @@ class M_lelayu extends CI_Model
               left join hrd_khs.torganisasi c on
                 tref.kd_jabatan = c.kd_jabatan
               left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
-              where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+              where keluar = '0'--(( and masukkerja <= cast($trigerbulan as date)))
                 and a.kode_status_kerja <> 'C'
                 and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
-              union
-              select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
-              b.dept, b.bidang, b.unit
-              from hrd_khs.tpribadi a
-              left join hrd_khs.tseksi b on a.kodesie = b.kodesie
-              left join hrd_khs.trefjabatan tref on tref.noind = a.noind and tref.kodesie = a.kodesie
-              left join hrd_khs.torganisasi c on tref.kd_jabatan = c.kd_jabatan
-              left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
-              where ((masukkerja <= cast($trigerbulan as date))
-                and (tglkeluar >= cast($trigerbulan as date)
-                and keluar = '1'))
-                and (masukkerja >= '1945-01-01')
-                and a.kode_status_kerja <> 'C'
-                and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
-              order by 5
+              -- union
+              -- select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              -- b.dept, b.bidang, b.unit
+              -- from hrd_khs.tpribadi a
+              -- left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+              -- left join hrd_khs.trefjabatan tref on tref.noind = a.noind and tref.kodesie = a.kodesie
+              -- left join hrd_khs.torganisasi c on tref.kd_jabatan = c.kd_jabatan
+              -- left join \"Surat\".tsurat_pengangkatan d on a.noind = d.nomor_induk_baru
+              -- where ((masukkerja <= cast($trigerbulan as date))
+              --   and (tglkeluar >= cast($trigerbulan as date)
+              --   and keluar = '1'))
+              --   and (masukkerja >= '1945-01-01')
+              --   and a.kode_status_kerja <> 'C'
+              --   and left(a.noind, 1) not in('L', 'Z', 'M') and (d.tanggal_cetak::date not between '$selectcutoff' and '$cutoff_akhir' or d.tanggal_cetak::date is null)
+              -- order by 5
             ) as tabel
 						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '14' AND '15') order by noind";
+            // echo $sql.'<br>';
     return $this->personalia->query($sql)->result_array();
     }
   }
@@ -687,7 +697,7 @@ class M_lelayu extends CI_Model
               select
                 *
               from
-                dblink('host=$hosP user=$usrP password=$pasP dbname=$dbP',
+                er.dblink('host=$hosP user=$usrP password=$pasP dbname=$dbP',
                 'select tp.noind, tp.nama, tor.jabatan from hrd_khs.tpribadi tp
             left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan') as tb2(noind text,
                 nama text, jabatan text) ) hrd on
@@ -701,7 +711,8 @@ class M_lelayu extends CI_Model
               hrd.jabatan
             order by hpd.noind;";
               // echo $sql;exit();
-    return  $this->db->query($sql)->result_array();
+      $query = $this->db->query($sql);
+      return  $query->result_array();
   }
 
   public function getKsYogya()
@@ -709,6 +720,111 @@ class M_lelayu extends CI_Model
     $sql = "select section_code from er.er_section where section_name like '%YOGYAKARTA%' 
             or (unit_name like '%YOGYAKARTA%' and section_name='-');";
     return  $this->db->query($sql)->result_array();
+  }
+
+  public function getRekapDataVer2($id, $branch)
+  {
+    if ($branch == 'AA') {
+      $lokasi = 'Pusat';
+      $sql1 = "(ee.location_code not in ('04',
+              '02')
+              and ee.section_code not in (
+              select
+                section_code
+              from
+                er.er_section
+              where
+                section_name like '%YOGYAKARTA%'
+                or (unit_name like '%YOGYAKARTA%'
+                and section_name = '-') )
+              or ee.location_code is null)) staff";
+      $sql2 = "( substring(ee.employee_code, 1, 1) not in ('B',
+              'J',
+              'D')
+              and ee.location_code not in ('04',
+              '02')
+              and ee.section_code not in (
+              select
+                section_code
+              from
+                er.er_section
+              where
+                section_name like '%YOGYAKARTA%'
+                or (unit_name like '%YOGYAKARTA%'
+                and section_name = '-') )
+              or ee.location_code is null)) non_staff";
+    }elseif ($branch == 'AB') {
+      $lokasi = 'Yogyakarta';
+      $sql1 = "(ee.location_code in ('04')
+                or ee.section_code in (
+                select
+                  section_code
+                from
+                  er.er_section
+                where
+                  section_name like '%YOGYAKARTA%'
+                  or (unit_name like '%YOGYAKARTA%'
+                  and section_name = '-') ))) staff";
+      $sql2 = "substring(ee.employee_code, 1, 1) not in ('B',
+              'J',
+              'D')
+              and (ee.location_code in ('04')
+                or ee.section_code in (
+                select
+                  section_code
+                from
+                  er.er_section
+                where
+                  section_name like '%YOGYAKARTA%'
+                  or (unit_name like '%YOGYAKARTA%'
+                  and section_name = '-') ))) non_staff";
+    }else{
+      $lokasi = 'Tuksono';
+      $sql1 = "ee.location_code in ('02')) staff";
+      $sql2 = "substring(ee.employee_code, 1, 1) not in ('B',
+              'J',
+              'D') and ee.location_code in ('02')) non_staff";
+    }
+    $sql = "select
+            '$lokasi' lokasi,
+            '$branch' branch,
+            (
+            select
+              sum(nominal)
+            from
+              hr.hr_pekerja_dipotong hp
+            left join er.er_employee_all ee on
+              ee.employee_code = hp.noind
+            where
+              hp.lelayu_id in ($id)
+              and substring(ee.employee_code, 1, 1) in ('B',
+              'J',
+              'D')
+              and $sql1,
+            (
+            select
+              sum(nominal)
+            from
+              hr.hr_pekerja_dipotong hp
+            left join er.er_employee_all ee on
+              ee.employee_code = hp.noind
+            where
+              hp.lelayu_id in ($id)
+              and $sql2;";
+              // echo $sql;exit();
+    return  $this->db->query($sql)->result_array();
+  }
+
+  public function getIdLelayuRange($awal, $akhir)
+  {
+    $sql = "select string_agg(lelayu_id::text, ', ') id from hr.hr_lelayu where tgl_lelayu between '$awal' and '$akhir'";
+    return  $this->db->query($sql)->row()->id;
+  }
+
+  public function getPkjPribadi($noind)
+  {
+    $this->personalia->where('noind',$noind);
+    return $this->personalia->get('hrd_khs.tpribadi');
   }
 
 }

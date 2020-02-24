@@ -6,6 +6,7 @@ class C_PotonganDanaPensiun extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/Report/PotonganDanaPensiun/M_potongandanapensiun');
@@ -20,7 +21,7 @@ class C_PotonganDanaPensiun extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Potongan Pensiun';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_PotonganDanaPensiun extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        			
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Potongan Pensiun';
         $data['SubMenuTwo'] = '';
@@ -66,14 +67,14 @@ class C_PotonganDanaPensiun extends CI_Controller
         $this->load->view('V_Footer',$data);
     }
 
-	public function generatePDF() 
+	public function generatePDF()
     {
         $this->checkSession();
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', 'A4', 9, '', 5, 5, 15, 15, 0, 0, 'P');
-        
+
         $filename = 'Potongan Dana Pensiun.pdf';
         $pdf->setFooter('{PAGENO}');
 
@@ -84,6 +85,11 @@ class C_PotonganDanaPensiun extends CI_Controller
         $data['total'] = $this->M_potongandanapensiun->get_sum($year, $month);
         $data['year'] = $year;
 	    $data['month'] = $month;
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Export PDF Laporan Potongan Pensiun bulan=".$data['month']." tahun=".$data['year'];
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $stylesheet = file_get_contents(base_url('assets/css/custom.css'));
         $html = $this->load->view('PayrollManagement/Report/PotonganDanaPensiun/V_report', $data, true);
@@ -95,7 +101,7 @@ class C_PotonganDanaPensiun extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

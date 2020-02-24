@@ -22,6 +22,8 @@ class M_monitoring extends CI_Model
 				        ,msib.MINIMUM_ORDER_QUANTITY
 				        ,msib.FIXED_LOT_MULTIPLIER
 				        ,msib.attribute18
+				        ,msib.RECEIVE_CLOSE_TOLERANCE
+						,msib.QTY_RCV_TOLERANCE
 				        from mtl_system_items_b msib
 						,per_people_f ppf
 				        where msib.BUYER_ID = ppf.PERSON_ID
@@ -44,6 +46,8 @@ class M_monitoring extends CI_Model
 				        ,msib.MINIMUM_ORDER_QUANTITY
 				        ,msib.FIXED_LOT_MULTIPLIER
 				        ,msib.attribute18
+				        ,msib.RECEIVE_CLOSE_TOLERANCE
+						,msib.QTY_RCV_TOLERANCE
 				        from mtl_system_items_b msib
 						,per_people_f ppf
 				        where msib.BUYER_ID = ppf.PERSON_ID
@@ -82,6 +86,8 @@ class M_monitoring extends CI_Model
 					,msib.PREPROCESSING_LEAD_TIME+msib.FULL_LEAD_TIME+msib.POSTPROCESSING_LEAD_TIME total_leadtime
 					,msib.MINIMUM_ORDER_QUANTITY
 					,msib.FIXED_LOT_MULTIPLIER
+					,msib.RECEIVE_CLOSE_TOLERANCE
+					,msib.QTY_RCV_TOLERANCE
 					,msib.attribute18
 					from mtl_system_items_b msib
 					,per_people_f ppf

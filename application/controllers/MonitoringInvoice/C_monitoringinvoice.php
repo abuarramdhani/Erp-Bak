@@ -266,6 +266,14 @@ class C_monitoringinvoice extends CI_Controller{
 
 		echo json_encode($invoice_id);
 		}
+
+		public function deleteInvoiceManual($invoice_id){
+
+		$data['invoice'] = $this->M_monitoringinvoice->deleteInvoice2($invoice_id);
+		$returnView = $this->load->view('MonitoringInvoice/V_invoice',$data,TRUE);
+		redirect('AccountPayables/MonitoringInvoice/Invoice');
+		
+		}
 		
 	public function editListInv($id){
 		$this->checkSession();

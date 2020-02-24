@@ -6,6 +6,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetTarifPekerjaSakit/M_settarifpekerjasakit');
@@ -20,7 +21,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Tarif Pekerja Sakit';
         $data['SubMenuTwo'] = '';
@@ -46,7 +47,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_settarifpekerjasakit->get_by_id($id);
         if ($row) {
             $data = array(
@@ -56,7 +57,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'kd_tarif' => $row->kd_tarif,
 				'tingkatan' => $row->tingkatan,
 				'bulan_awal' => $row->bulan_awal,
@@ -93,7 +94,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/SetTarifPekerjaSakit/save'),
-			
+
 			'kd_tarif' => set_value(''),
 			'tingkatan' => set_value(''),
 			'bulan_awal' => set_value(''),
@@ -109,12 +110,12 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 
     public function save(){
         $this->formValidation();
-		
+
 		//MASTER DELETE CURRENT
 		$md_where = array(
 			'tingkatan' 	=> $this->input->post('txtTingkatan',TRUE),
 		);
-		
+
 		//MASTER INSERT NEW
         $data = array(
 			'kd_tarif' 		=> date('YmdHis'),
@@ -123,7 +124,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 			'bulan_akhir' 	=> $this->input->post('txtBulanAkhir',TRUE),
 			'persentase' 	=> $this->input->post('txtPersentase',TRUE),
 		);
-		
+
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
 			'tingkatan' 	    => $this->input->post('txtTingkatan',TRUE),
@@ -132,7 +133,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 		$ru_data = array(
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 		);
-		
+
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
 			'kd_tarif' 		=> date('YmdHis'),
@@ -146,11 +147,17 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 			'tgl_rec' 		=> date('Y-m-d H:i:s'),
 		);
 
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create set Tarif pekerja sakit kode=".date('YmdHis')." tingkatan=".$this->input->post('txtTingkatan');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
+
 		$this->M_settarifpekerjasakit->master_delete($md_where);
 		$this->M_settarifpekerjasakit->insert($data);
 		$this->M_settarifpekerjasakit->riwayat_update($ru_where,$ru_data);
 		$this->M_settarifpekerjasakit->riwayat_insert($ri_data);
-		
+
         $this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
 					 "success_insert" => 1
@@ -176,7 +183,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/SetTarifPekerjaSakit/saveUpdate'),
-				
+
 				'kd_tarif' => $row->kd_tarif,
 				'tingkatan' => $row->tingkatan,
 				'bulan_awal' => $row->bulan_awal,
@@ -205,7 +212,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 			'bulan_akhir' => $this->input->post('txtBulanAkhir',TRUE),
 			'persentase' => $this->input->post('txtPersentase',TRUE),
 		);
-		
+
 		$ru_where = array(
 			'tingkatan' 	    => $this->input->post('txtTingkatan',TRUE),
 			'tgl_tberlaku' 	=> '9999-12-31',
@@ -217,8 +224,14 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 			'persentase' => $this->input->post('txtPersentase',TRUE),
 			'kd_petugas' 	=> $this->session->userdata('userid'),
 			'tgl_rec' 		=> date('Y-m-d H:i:s'),
-			
+
 		);
+
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update set Tarif pekerja sakit tingakatan=".$this->input->post('txtPersentase');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
 		$this->M_settarifpekerjasakit->update($this->input->post('txtTingkatan',TRUE), $data);
 		$this->M_settarifpekerjasakit->riwayat_update($ru_where,$ru_data);
@@ -236,6 +249,11 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 
         if ($row) {
             $this->M_settarifpekerjasakit->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set Tarif pekerja sakit ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -254,7 +272,7 @@ class C_SetTarifPekerjaSakit extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

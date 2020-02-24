@@ -16,6 +16,7 @@ class C_Tahunan extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -164,6 +165,7 @@ class C_Tahunan extends CI_Controller
 		$this->M_permohonancuti->insertCuti($pengajuan);
 		$pengajuan_id = $this->db->insert_id();
 
+
 			//lm_pengajuan_cuti_tgl_ambil//
 		for ($i=0; $i < count($tglambilcuti) ; $i++) {
 			$tglambil = array(
@@ -213,6 +215,12 @@ class C_Tahunan extends CI_Controller
 			'waktu' => date('Y-m-d H:i:s')
 		);
 		$this->M_permohonancuti->insertThread($thread);
+
+		//insert to sys.log_activity
+		$aksi = 'Permohonan Cuti';
+		$detail = "Insert Cuti Tahunan id=$pengajuan_id";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('PermohonanCuti/DraftCuti');
 	}

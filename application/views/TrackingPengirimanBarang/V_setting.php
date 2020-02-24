@@ -17,7 +17,7 @@
 </style>
     <section class="content-header">
       <h1>
-        Settings
+        Setting Kurir dan Kendaraan
       </h1>
     </section>
     <!-- Main content -->
@@ -86,7 +86,7 @@
                     </td>
                     </td>
                     <td>
-                      <button id="btnSaveSetupTPB" onclick="saveSetupSettingTPB($(this))" type="button" class="btn buttoncute" style="margin-left: 150px; margin-top: 8px; color: white;" > <i class="fa fa-check"></i> Save</button>
+                      <button id="btnSaveSetupTPB" onclick="saveSetupSettingTPB($(this))" type="button" class="btn buttoncute" style="margin-left: 100px; margin-top: 8px; color: white;" > <i class="fa fa-check"></i> Save</button>
                     </td>
                      
             </tr>

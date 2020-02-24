@@ -21,10 +21,11 @@ class C_Approval extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
+		$this->load->library('Log_Activity');
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
@@ -32,7 +33,7 @@ class C_Approval extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('UpahHlCm/M_upahphl');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -41,32 +42,32 @@ class C_Approval extends CI_Controller {
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
-	
+
 	//HALAMAN INDEX
 	public function index(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Master Data';
 		$data['SubMenuOne'] = 'Approval';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['data'] = $this->M_upahphl->dataApproval();
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/MasterData/V_Approval',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
@@ -76,28 +77,23 @@ class C_Approval extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		// echo $id;
-		// exit();
 		$data['Menu'] = 'Master Data';
 		$data['SubMenuOne'] = 'Approval';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['data'] = $this->M_upahphl->ambilDataApproval($id);
-		// echo "<pre>";
-		// print_r($data['data']);
-		// exit();
 		$data['id'] = $id;
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/MasterData/V_EditApproval',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	
+
 	public function batalkan()
 	{
 		redirect('HitungHlcm/Approval');
@@ -122,8 +118,8 @@ class C_Approval extends CI_Controller {
 		}
 
 		echo json_encode($array);
-	
 	}
+
 	public function simpanEdit()
 	{
 		$id = $this->input->post('id_appproval');
@@ -141,7 +137,7 @@ class C_Approval extends CI_Controller {
 							'lokasi_kerja' => $loker,
 							'jabatan' => $jabatan,
 						);
-			
+
 		}else {
 			$array = array(
 							'id_status' => $posisi,
@@ -149,7 +145,12 @@ class C_Approval extends CI_Controller {
 						);
 		}
 		$this->M_upahphl->simpanApproval($id,$array);
+		//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'UPDATE HLCM ID='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('HitungHlcm/Approval');
 	}
-	
+
 }

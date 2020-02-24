@@ -9,6 +9,7 @@ class C_Potongan extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -74,7 +75,7 @@ class C_Potongan extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Potongan/V_create', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function Import()
@@ -98,7 +99,7 @@ class C_Potongan extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Potongan/V_import', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doCreate(){
@@ -121,8 +122,13 @@ class C_Potongan extends CI_Controller
 		);
 		$this->M_potongan->setPotongan($data);
 		$header_id = $this->db->insert_id();
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Create Potongan noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
-		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Potongan'));		
+		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Potongan'));
 	}
 
 	public function doImport(){
@@ -140,6 +146,11 @@ class C_Potongan extends CI_Controller
 
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Import Potongan filename=$fileName";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/PayrollNonStaff/Potongan/'.$uploadData['file_name'];
 			$inputFileType = $uploadData['file_type'];
@@ -163,9 +174,9 @@ class C_Potongan extends CI_Controller
 
 			$db_record = array();
 
-			for ($row=0; $row <= $highestRow - 2 ; $row++) { 
+			for ($row=0; $row <= $highestRow - 2 ; $row++) {
 				$a = array();
-				for ($column=0; $column <= $columnCount - 1; $column++) { 
+				for ($column=0; $column <= $columnCount - 1; $column++) {
 					$headTitle = explode(',', $sheetHead[0][$column]);
 					$a[$headTitle[0]] = $sheetData[$row][$column];
 				}
@@ -240,7 +251,7 @@ class C_Potongan extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Potongan/V_update', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doUpdate($id){
@@ -253,7 +264,7 @@ class C_Potongan extends CI_Controller
 		$explode = explode(' - ', $noind_kodesie);
 		$noind = $explode[0];
 		$kodesie = $explode[1];
-		
+
 		$data = array(
 			'noind' => $noind,
 			'bulan_gaji' => $this->input->post('txtBulanGajiHeader',TRUE),
@@ -267,6 +278,11 @@ class C_Potongan extends CI_Controller
 			'pot_tkp' => $this->input->post('txtPotThpHeader',TRUE),
 			);
 		$this->M_potongan->updatePotongan($data, $plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Update Potongan id=$plaintext_string Noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Potongan'));
 	}
@@ -308,6 +324,11 @@ class C_Potongan extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_potongan->deletePotongan($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Delete Potongan id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Potongan'));
     }
@@ -317,7 +338,7 @@ class C_Potongan extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(   
+		$columns = array(
 			0 => 'noind',
 			1 => 'noind',
 			2 => 'noind',
@@ -349,7 +370,7 @@ class C_Potongan extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -381,9 +402,14 @@ class C_Potongan extends CI_Controller
 	public function downloadExcel()
     {
 		$filter = $this->input->get('filter');
-		$column_table = array('', 'noind', 'employee_name', 'bulan_gaji', 'tahun_gaji', 'pot_lebih_bayar', 'pot_gp', 'pot_dl', 
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Export Excel Potongan filter=$filter";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+		$column_table = array('', 'noind', 'employee_name', 'bulan_gaji', 'tahun_gaji', 'pot_lebih_bayar', 'pot_gp', 'pot_dl',
 			'pot_duka', 'pot_koperasi', 'pot_hutang_lain', 'pot_tkp');
-		$column_view = array('No', 'Noind', 'Nama', 'Bulan Gaji', 'Tahun Gaji', 'Pot Lebih Bayar', 'Pot Gp', 'Pot Dl', 
+		$column_view = array('No', 'Noind', 'Nama', 'Bulan Gaji', 'Tahun Gaji', 'Pot Lebih Bayar', 'Pot Gp', 'Pot Dl',
 			'Pot Duka', 'Pot Koperasi', 'Pot Hutang Lain', 'Pot Thp');
 		$data_table = $this->M_potongan->getPotonganSearch($filter)->result_array();
 
@@ -410,10 +436,10 @@ class C_Potongan extends CI_Controller
 			}
 			$excel_row++;
 		}
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);

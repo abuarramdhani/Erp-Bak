@@ -70,6 +70,8 @@ class C_Monitoring extends CI_Controller
 		$attr18 = $this->input->post('attr18');
 		$stat = $this->input->post('stat');
 		$keterangan = $this->input->post('keterangan');
+		$receive_close_tolerance = $this->input->post('receive_close_tolerance');
+		$qty_rcv_tolerance = $this->input->post('qty_rcv_tolerance');
 		$email = $this->input->post('EmailPE[]');
 		$cetak = '0';
 
@@ -97,6 +99,8 @@ class C_Monitoring extends CI_Controller
 				'ATTRIBUTE18'	=> $attr18[$i],
 				'STATUS' => $stat[$i],
 				'KETERANGAN' => $keterangan[$i],
+				'RECEIVE_CLOSE_TOLERANCE' => $receive_close_tolerance[$i],
+				'QTY_RCV_TOLERANCE' => $qty_rcv_tolerance[$i],
 				'CETAK' => $cetak 
 			); 
 			$semua[] = $data;	
@@ -169,6 +173,8 @@ class C_Monitoring extends CI_Controller
 		$attr18 = $this->input->post('attr18');
 		$stat = $this->input->post('stat');
 		$keterangan = $this->input->post('keterangan');
+		$receive_close_tolerance = $this->input->post('receive_close_tolerance');
+		$qty_rcv_tolerance = $this->input->post('qty_rcv_tolerance');
 		$email = $this->input->post('EmailPE[]');
 		$cetak = '0';
 
@@ -197,6 +203,8 @@ class C_Monitoring extends CI_Controller
 				'ATTRIBUTE18'	=> $attr18[$i],
 				'STATUS' => $stat[$i],
 				'KETERANGAN' => $keterangan[$i],
+				'RECEIVE_CLOSE_TOLERANCE' => $receive_close_tolerance[$i],
+				'QTY_RCV_TOLERANCE' => $qty_rcv_tolerance[$i],
 				'CETAK' => $cetak
 			); 
 			$semua[] = $data;	
@@ -359,7 +367,7 @@ class C_Monitoring extends CI_Controller
 	 $usersData = $this->M_monitoring->getDataCsv();
 	 // file creation 
 	 $file = fopen('php://output', 'w');
-	 $header = array("ITEM CODE","ITEM DESCRIPTION","UOM1","UOM2","BUYER","PRE-PROCESSING LEAD TIME","PREPARATION PO","DELIVERY","POST-PROCESSING LEAD TIME","MOQ","FLM","NAMA APPROVER PO","KETERANGAN"); 
+	 $header = array("ITEM CODE","ITEM DESCRIPTION","UOM1","UOM2","BUYER","PRE-PROCESSING LEAD TIME","PREPARATION PO","DELIVERY","POST-PROCESSING LEAD TIME","MOQ","FLM","NAMA APPROVER PO","RECEIVE CLOSE TOLERANCE","TOLERANCE","KETERANGAN"); 
 	 fputcsv($file, $header);
 	 foreach ($usersData as $key=>$line){ 
 	   fputcsv($file,$line); 
@@ -400,6 +408,8 @@ class C_Monitoring extends CI_Controller
 		          			'MINIMUM_ORDER_QUANTITY'   => $row["MOQ"],
 		          			'FIXED_LOT_MULTIPLIER'   => $row["FLM"],
 		          			'ATTRIBUTE18'   => $row["NAMA APPROVER PO"],
+		          			'RECEIVE_CLOSE_TOLERANCE'   => $row["RECEIVE CLOSE TOLERANCE"],
+		          			'QTY_RCV_TOLERANCE'   => $row["TOLERANCE"],
 		          			'KETERANGAN' => $row["KETERANGAN"]
 		   		);
 	  	}

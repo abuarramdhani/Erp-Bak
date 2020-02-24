@@ -142,19 +142,19 @@
 								<td style="text-align: center;"><?php echo $key['jml_um'];?></td>
 								<td style="text-align: center;"><?php echo $key['jml_ump'];?></td>
 								<td style="text-align: center;"><?php echo $key['jml_lbr'];?></td>
-								<td style="text-align: center;"><?php echo $key['gp'];?></td>
-								<td style="text-align: center;"><?php echo $key['um'];?></td>
-								<td style="text-align: center;"><?php echo $key['ump'];?></td>
-								<td style="text-align: center;"><?php echo $key['lmbr'];?></td>
+								<td style="text-align: center;"><?php echo number_format($key['gp'],0,',','.');?></td>
+								<td style="text-align: center;"><?php echo number_format($key['um'],0,',','.');?></td>
+								<td style="text-align: center;"><?php echo number_format($key['ump'],0,',','.');?></td>
+								<td style="text-align: center;"><?php echo number_format($key['lmbr'],0,',','.');?></td>
 								<?php 
 								if (!empty($key['tambahan'])) {
 									?>
 									<td style="text-align: center;"><?php echo $key['tambahan']->gp ?></td>
 									<td style="text-align: center;"><?php echo $key['tambahan']->um ?></td>
 									<td style="text-align: center;"><?php echo $key['tambahan']->lembur ?></td>
-									<td style="text-align: center;"><?php echo $key['tambahan']->nominal_gp ?></td>
-									<td style="text-align: center;"><?php echo $key['tambahan']->nominal_um ?></td>
-									<td style="text-align: center;"><?php echo $key['tambahan']->nominal_lembur ?></td>
+									<td style="text-align: center;"><?php echo number_format($key['tambahan']->nominal_gp,0,',','.') ?></td>
+									<td style="text-align: center;"><?php echo number_format($key['tambahan']->nominal_um,0,',','.') ?></td>
+									<td style="text-align: center;"><?php echo number_format($key['tambahan']->nominal_lembur,0,',','.') ?></td>
 									<?php
 									$key['total_bayar'] += ($key['tambahan']->nominal_gp + $key['tambahan']->nominal_um + $key['tambahan']->nominal_lembur);
 								}else{
@@ -173,9 +173,9 @@
 									<td style="text-align: center;"><?php echo $key['potongan']->gp ?></td>
 									<td style="text-align: center;"><?php echo $key['potongan']->um ?></td>
 									<td style="text-align: center;"><?php echo $key['potongan']->lembur ?></td>
-									<td style="text-align: center;"><?php echo $key['potongan']->nominal_gp ?></td>
-									<td style="text-align: center;"><?php echo $key['potongan']->nominal_um ?></td>
-									<td style="text-align: center;"><?php echo $key['potongan']->nominal_lembur ?></td>
+									<td style="text-align: center;"><?php echo number_format($key['potongan']->nominal_gp,0,',','.') ?></td>
+									<td style="text-align: center;"><?php echo number_format($key['potongan']->nominal_um,0,',','.') ?></td>
+									<td style="text-align: center;"><?php echo number_format($key['potongan']->nominal_lembur,0,',','.') ?></td>
 									<?php
 									$key['total_bayar'] -= ($key['potongan']->nominal_gp + $key['potongan']->nominal_um + $key['potongan']->nominal_lembur);
 								}else{
@@ -188,7 +188,7 @@
 									<td style="text-align: center;">0</td>
 									<?php
 								} ?>
-								<td style="text-align: center;"><?php echo $key['total_bayar'];?></td>
+								<td style="text-align: center;"><?php echo number_format($key['total_bayar'],0,',','.');?></td>
 							</tr>
 							<?php
 							$no++;

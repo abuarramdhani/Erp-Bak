@@ -6,19 +6,20 @@ class C_RekapBobot extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
-          //load the login model
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
+          //load the login model
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('er/RekapTIMS/M_rekapmssql');
 		$this->load->model('er/RekapTIMS/M_rekaptims');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -27,43 +28,43 @@ class C_RekapBobot extends CI_Controller {
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect();
 		}
 	}
-	
+
 	//------------------------show the dashboard-----------------------------
 	public function index()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('er/RekapTIMS/RekapBobot/V_filter_rekap_bobot',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
 
 	public function tampilkanData()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] = 'Filter TIMS';
 		$data['Menu'] = 'Rekap TIMS Per Area Kerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -73,21 +74,21 @@ class C_RekapBobot extends CI_Controller {
 		$l 			= $this->input->post('slcNoInduk[]');
 		$noind 		= "";
 		$jml = count($l);
-		
+
 		for($k=0;$k<$jml;$k++){
 			$split_id = $l[$k];
-			
+
 			if ($noind=="") {
 				$noind = "'".$split_id."'";
 			}else{
 				$noind = $noind.",'".$split_id."'";
 			}
-			
+
 		}
 		$keluar 	= $this->input->post('slcStatus');
 
 		$detail 	= $this->input->post('detail');
-		
+
 		if($detail!=1)
 		{
 			$detail 	= 	0;
@@ -144,12 +145,16 @@ class C_RekapBobot extends CI_Controller {
 	}
 	public function ExportRekapDetail(){
 		$detail = $this->input->post("txtDetail");
-		// echo $detail;
-		// exit();
 		$periode1 = $this->input->post("txtPeriode1_export");
 		$periode2 = $this->input->post("txtPeriode2_export");
 		$NoInduk = $this->input->post("txtNoInduk_export");
 		$status = $this->input->post("txtStatus");
+
+		//insert to sys.log_activity
+		$aksi = 'REKAP TIMS';
+		$detail = "Export Rekap Bobot noind= $NoInduk periode=$periode1 - $periode2";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -306,7 +311,7 @@ class C_RekapBobot extends CI_Controller {
 		$worksheet->setCellValue($T.'7', 'T');
 		$worksheet->setCellValue($I.'7', 'I');
 		$worksheet->setCellValue($M.'7', 'M');
-		
+
 
 
 		$no = 1;
@@ -347,7 +352,7 @@ class C_RekapBobot extends CI_Controller {
 			// 				if ($Mangkir == '0' or $Mangkir == '') {
 			// 					$Mangkir = '-';
 			// 				}
-						
+
 
 			// 			}
 			// 		}
@@ -367,7 +372,7 @@ class C_RekapBobot extends CI_Controller {
 			$T = PHPExcel_Cell::stringFromColumnIndex($col);
 			$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 			$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
-		
+
 			$worksheet->setCellValue($T.$highestRow, $rekap_data['pointtt'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($I.$highestRow, $rekap_data['pointtik'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($M.$highestRow, $rekap_data['pointtm'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -426,6 +431,12 @@ class C_RekapBobot extends CI_Controller {
 		$periode2 = $this->input->post("txtPeriode2_export");
 		$NoInduk = $this->input->post("txtNoInduk_export");
 		$status = $this->input->post("txtStatus");
+
+		//insert to sys.log_activity
+		$aksi = 'REKAP TIMS';
+		$detail = "Export rekap detail Excel noind=$NoInduk periode=$periode1 - $periode2";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -548,11 +559,11 @@ class C_RekapBobot extends CI_Controller {
 				$T = PHPExcel_Cell::stringFromColumnIndex($col);
 				$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 				$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
-				
+
 				$worksheet->getColumnDimension($T)->setWidth(5);
 				$worksheet->getColumnDimension($I)->setWidth(5);
 				$worksheet->getColumnDimension($M)->setWidth(5);
-				
+
 				$head_merge = $col+2;
 				$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 				$worksheet->mergeCells($T.'6:'.$headCol.'6');
@@ -561,7 +572,7 @@ class C_RekapBobot extends CI_Controller {
 				$worksheet->setCellValue($T.'7', 'T');
 				$worksheet->setCellValue($I.'7', 'I');
 				$worksheet->setCellValue($M.'7', 'M');
-				
+
 				$col=$col+3;
 			}
 		}
@@ -569,14 +580,14 @@ class C_RekapBobot extends CI_Controller {
 		$T = PHPExcel_Cell::stringFromColumnIndex($col);
 		$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 		$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
-		
-		
+
+
 		$worksheet->getColumnDimension($T)->setWidth(5);
 		$worksheet->getColumnDimension($I)->setWidth(5);
 		$worksheet->getColumnDimension($M)->setWidth(5);
-		
-		
-		
+
+
+
 		$head_merge = $col+2;
 		$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 		$worksheet->mergeCells($T.'6:'.$headCol.'6');
@@ -584,9 +595,9 @@ class C_RekapBobot extends CI_Controller {
 		$worksheet->setCellValue($T.'7', 'T');
 		$worksheet->setCellValue($I.'7', 'I');
 		$worksheet->setCellValue($M.'7', 'M');
-		
-		
-		
+
+
+
 
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
@@ -626,19 +637,19 @@ class C_RekapBobot extends CI_Controller {
 							if ($Mangkir == '0' or $Mangkir == '') {
 								$Mangkir = '-';
 							}
-						
+
 
 						}
 					}
 					$T = PHPExcel_Cell::stringFromColumnIndex($col);
 					$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 					$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
-					
+
 
 					$worksheet->setCellValue($T.$highestRow, $Terlambat, PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					$worksheet->setCellValue($I.$highestRow, $IjinPribadi, PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					$worksheet->setCellValue($M.$highestRow, $Mangkir, PHPExcel_Cell_DataType::TYPE_NUMERIC);
-					
+
 					$col=$col+3;
 				}
 			}
@@ -646,15 +657,15 @@ class C_RekapBobot extends CI_Controller {
 			$T = PHPExcel_Cell::stringFromColumnIndex($col);
 			$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
 			$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
-			
-			
+
+
 
 			$worksheet->setCellValue($T.$highestRow, $rekap_data['pointtt'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($I.$highestRow, $rekap_data['pointtik'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue($M.$highestRow, $rekap_data['pointtm'], PHPExcel_Cell_DataType::TYPE_STRING);
-			
-			
-			
+
+
+
 
 			$highestRow++;
 		}
@@ -687,7 +698,7 @@ class C_RekapBobot extends CI_Controller {
 
 
 		$fileName = 'Rekap_bobot_TIM';
-		
+
 
 		$worksheet->setTitle('Rekap TIMS');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
@@ -700,6 +711,6 @@ class C_RekapBobot extends CI_Controller {
 		$objWriter->save("php://output");
 	}
 
-	
+
 
 }

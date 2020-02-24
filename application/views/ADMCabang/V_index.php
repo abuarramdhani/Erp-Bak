@@ -6,7 +6,7 @@
 					<div class="row">
 						<div class="col-lg-4">
 							<br />
-							<h1><?=$Title ?></h1>
+							<h1><?="Presensi" ?></h1>
 						</div>
 					</div>
 			</section>

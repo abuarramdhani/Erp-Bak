@@ -85,7 +85,10 @@ class C_Packing extends CI_Controller
 		$nospb 	= $this->input->post('no_spb');
 		$pic 	= $this->input->post('pic');
 		
-		$this->M_packing->SavePacking($date, $jenis, $nospb, $pic);
+		$cek = $this->M_packing->cekMulai($nospb, $jenis);
+		if ($cek[0]['WAKTU_PACKING'] == '') {
+			$this->M_packing->SavePacking($date, $jenis, $nospb, $pic);
+		}
 	}
 
 	public function updateSelesai(){
@@ -95,19 +98,88 @@ class C_Packing extends CI_Controller
 		$mulai 	= $this->input->post('mulai');
 		$selesai = $this->input->post('wkt');
 		$pic 	= $this->input->post('pic');
+		$jml_colly 		= $this->input->post('jml_colly');
+		$kardus_kecil 	= $this->input->post('kardus_kecil');
+		$kardus_sdg 	= $this->input->post('kardus_sdg');
+		$kardus_bsr 	= $this->input->post('kardus_bsr');
+		$karung 		= $this->input->post('karung');
+		// echo "<pre>";print_r($karung);exit();
 
-		$waktu1 = strtotime($mulai);
-		$waktu2 = strtotime($selesai);
-		$selisih = ($waktu2 - $waktu1);
-		$jam = floor($selisih/(60*60));
-		$menit = $selisih - $jam * (60 * 60);
-		$htgmenit = floor($menit/60) * 60;
-		$detik = $menit - $htgmenit;
-		$slsh = $jam.':'.floor($menit/60).':'.$detik;
-		// $query = "set waktu_packing = '$slsh'"; 
-		// $saveselisih = $this->M_packing->saveWaktu($jenis, $nospb, $query);
+		$cek = $this->M_packing->cekMulai($nospb, $jenis);
+		if ($cek[0]['WAKTU_PACKING'] == '') {
+			$waktu1 	= strtotime($mulai);
+			$waktu2 	= strtotime($selesai);
+			$selisih 	= ($waktu2 - $waktu1);
+			$jam 		= floor($selisih/(60*60));
+			$menit 		= $selisih - $jam * (60 * 60);
+			$htgmenit 	= floor($menit/60) * 60;
+			$detik 		= $menit - $htgmenit;
+			$slsh 		= $jam.':'.floor($menit/60).':'.$detik;	
+		}else {
+			$a = explode(':', $cek[0]['WAKTU_PACKING']);
+			$jamA 	= $a[0] * 3600;
+			$menitA = $a[1] * 60;
+			$waktuA = $jamA + $menitA + $a[2];
+
+			$waktu1 = strtotime($mulai);
+			$waktu2 = strtotime($selesai);
+			$waktuB = $waktu2 - $waktu1;
+			$jumlah = $waktuA + $waktuB;
+			$jam 	= floor($jumlah/(60*60));
+			$menit 	= $jumlah - $jam * (60 * 60);
+			$htgmenit = floor($menit/60) * 60;
+			$detik 	= $menit - $htgmenit;
+			$slsh 	= $jam.':'.floor($menit/60).':'.$detik;
+		}
 		
 		$this->M_packing->SelesaiPacking($date, $jenis, $nospb, $slsh, $pic);
+		// $this->M_packing->insertColly($nospb, $jml_colly, $kardus_kecil, $kardus_sdg, $kardus_bsr, $karung);
+	}
+
+	public function pauseSPB(){
+		$nospb = $this->input->post('no_spb');
+		$jenis = $this->input->post('jenis');
+		$mulai = $this->input->post('mulai');
+		$selesai = $this->input->post('wkt');
+
+		$waktu1		= strtotime($mulai);
+		$waktu2 	= strtotime($selesai);
+		$selisih 	= $waktu2 - $waktu1;
+		$jam 		= floor($selesai/(60*60));
+		$menit 		= $selesai - $jam * (60*60);
+		$htgmenit 	= floor($menit/60) * 60;
+		$detik 		= $menit - $htgmenit;
+		$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+
+		$this->M_packing->waktuPacking($nospb, $jenis, $slsh);
+	}
+
+	public function modalColly(){
+		$date 	= $this->input->post('date');
+		$jenis	= $this->input->post('jenis');
+		$nospb 	= $this->input->post('no_spb');
+		$mulai 	= $this->input->post('mulai');
+		$selesai = $this->input->post('wkt');
+		$pic 	= $this->input->post('pic');
+		$no 	= $this->input->post('no');
+
+		$tbl = '<input type="hidden" id="date" value="'.$date.'">
+		<input type="hidden" id="jenis" value="'.$jenis.'">
+		<input type="hidden" id="no_spb" value="'.$nospb.'">
+		<input type="hidden" id="mulai" value="'.$mulai.'">
+		<input type="hidden" id="selesai" value="'.$selesai.'">
+		<input type="hidden" id="pic" value="'.$pic.'">
+		<input type="hidden" id="no" value="'.$no.'">';
+
+		echo $tbl;
+	}
+
+	public function saveberatPacking(){
+		$no_spb = $this->input->post('no_spb');
+		$jenis = $this->input->post('jenis_kemasan');
+		$berat = $this->input->post('berat');
+		$save = $this->M_packing->insertBerat($no_spb, $jenis, $berat);
+		// echo "<pre>";print_r($save);exit();
 	}
 
 	

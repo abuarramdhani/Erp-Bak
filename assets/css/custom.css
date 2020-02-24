@@ -578,3 +578,11 @@ outline:none;
     width: auto;
     overflow: auto;
 }
+
+.bg-warning-important {
+    background-color: #fcf8e3 !important;
+}
+
+.swal-font-small {
+    font-size: 1.5rem !important;
+}

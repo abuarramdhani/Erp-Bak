@@ -285,8 +285,8 @@ class C_List extends CI_Controller {
 				GSF 					: $gsf<br><br>
 
 				Anda dapat melakukan pengecekan melalui :<br> 
-				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki aplikasinya dapat download <a href='https://quick.co.id/download'>Disini</a><br>
-				2. jaringan lokal : http://erp.quick.com (http://quick.co.id/dinas_luar) atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
+				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
 
 				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
 				Apabila anda mengalami kendala dapat menghubungi ICT Support Center (08112545922) </small>");
@@ -343,8 +343,8 @@ class C_List extends CI_Controller {
 				Status : $status oleh $approver<br><br>
 
 				Anda dapat melakukan pengecekan melalui :<br> 
-				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki aplikasinya dapat download <a href='https://quick.co.id/download'>Disini</a><br>
-				2. jaringan lokal : http://erp.quick.com (http://quick.co.id/dinas_luar) atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
+				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
 
 				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
 				Apabila anda mengalami kendala dapat menghubungi ICT Support Center (08112545922) </small>");

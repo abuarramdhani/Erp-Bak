@@ -1,22 +1,43 @@
 //--------------------- surat perintah lembur ----------------//
 $(function() {
-    // Initialize Elements
-    /////////////////////////////////////////////////////////////////////////////////
-    $(".spl-table").DataTable({
+    $(".spl-table.kasie, .spl-table.aska").DataTable({
         "scrollX": true,
-        "dom": 'Bfrtip',
+        "dom": '<"top"Bfpi>rt<"bottom"ip>',
         "buttons": [{
                 extend: 'excel',
                 className: 'btn btn-success'
             },
-            // {
-            //   text: 'Proses',
-            //   className: 'btn btn-primary disabled',
-            //   action: function(e, dt, node, config){
-            //     $('#btn-ProsesSPL').click();
-            //   }
-            // }
+            {
+                text: 'Proses',
+                className: 'btn btn-proses btn-primary disabled',
+                action: (e, dt, node, config) => {
+                    $('#spl_tex_proses').val('')
+                    $('#btn-ProsesSPL').click();
+                }
+            }
         ],
+        "ordering": false,
+        "retrieve": true,
+        "initComplete": () => {
+            if ($('#btn-ProsesSPL').attr('id') == undefined) {
+                $('#example11_wrapper').find('a.dt-button:last').hide();
+                $('#example11_wrapper').find('button.dt-button:last').hide();
+            };
+
+            $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
+            $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
+            $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
+            $('#example11_wrapper').find('button.btn').css("margin-right", "10px");
+        }
+    });
+
+    $(".spl-table").DataTable({
+        "scrollX": true,
+        "dom": 'Bfrtip',
+        "buttons": [{
+            extend: 'excel',
+            className: 'btn btn-success'
+        }],
         "ordering": false,
         "retrieve": true,
         "initComplete": function() {
@@ -24,6 +45,7 @@ $(function() {
                 $('#example11_wrapper').find('a.dt-button:last').hide();
                 $('#example11_wrapper').find('button.dt-button:last').hide();
             };
+
             $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
@@ -238,15 +260,34 @@ $(function() {
     });
 
     $('#example11').on('click', '.spl-pkj-del', function() {
+        let totalRow = $('.multiinput').length
+
+        let thisrow = $(this).closest('tr')
+        let nextrow = thisrow.next('.multiinput.parent')
+        thisrow.nextUntil(nextrow, 'tr.spl-jobs').remove()
         $(this).closest('tr').remove();
+
+        let existError = false;
+        $('.spl-new-error').each(function() {
+            existError = true;
+        })
+
+        if (existError) {
+            $("button#submit_spl").attr("type", "button").attr("class", "btn btn-default");
+        } else {
+            $("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
+        }
+
+        if (totalRow == 2) {
+            $('.multiinput').find('.spl-pkj-del').prop('disabled', true)
+        }
     });
 
     $('#submit_spl').on('click', function(e) {
-        let waktu1 = $('input[name=tanggal_0_simpan]') + ' ' + $('input[name=waktu_0_simpan]').val()
-        let waktu2 = $('input[name=tanggal_1_simpan]') + ' ' + $('input[name=waktu_1_simpan]').val()
-        let kd_lembur = $('input[name=kd_lembur]').val()
+        let waktu1 = $('input[name=tanggal_0_simpan]').val() + ' ' + $('input[name=waktu_0_simpan]').val()
+        let waktu2 = $('input[name=tanggal_1_simpan]').val() + ' ' + $('input[name=waktu_1_simpan]').val()
 
-        if (waktu1 == waktu2) {
+        if (waktu1 == waktu2 && waktu1 != '' && waktu2 != '') {
             swal.fire('Waktu lembur yang diambil tidak boleh sama !!!', '', 'error')
             e.preventDefault()
             return
@@ -255,13 +296,63 @@ $(function() {
 
     $("#spl_pkj_add").click(function(e) {
         e.preventDefault();
-        $('.multiinput select[name*=noind]').last().select2("destroy");
-        $('.multiinput').last().clone().appendTo('#example11 tbody');
-        $(".multiinput:last .form-control").val("").change();
-        $(".multiinput:last td:first").html("<button type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>");
-        $(".multiinput:last select").val("").change();
-        $(".multiinput:last .spl-new-error").remove();
-        $(".multiinput:last select").closest("td").css("background", "#ffffff");
+
+        let row = $('.multiinput.parent')
+        row = (row.length == 0) ? row.length : (row.last().data('row') + 1)
+        let TrHTML = `
+        <tr class="multiinput parent" data-row="${row}">
+            <td>
+                <button type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>
+            </td>
+            <td>
+                <select class="spl-new-pkj-select2 spl-cek" name="noind[]" style="width: 100%" required>
+                    <!-- select2 -->
+                </select>
+            </td>
+            <td>
+                <input type="text" class="form-control" name="lbrawal[]" disabled>
+                <input type="hidden" class="form-control" name="lembur_awal[]" >
+            </td>
+            <td>
+                <input type="text" class="form-control" name="lbrakhir[]" disabled>
+                <input type="hidden" class="form-control" name="lembur_akhir[]" >
+            </td>
+            <td>
+                <input type="text" class="form-control" name="overtime" disabled>
+            </td>
+            <td>
+                <input type="number" class="form-control" name="target[${row}][]" required>
+            </td>
+            <td>
+                <select class="form-control target-satuan" name="target_satuan[${row}][]" required>
+                    <option value=""></option>
+                    <option value="Pcs">Pcs</option>
+                    <option value="%">%</option>
+                    <option value="Box">Box</option>
+                    <option value="Kg">Kg</option>
+                    <option value="Unit">Unit</option>
+                    <option value="Ton">Ton</option>
+                    <option value="Flask">Flask</option>
+                </select>
+            </td>
+            <td>
+                <input type="number" class="form-control" name="realisasi[${row}][]" required>
+            </td>
+            <td>
+                <input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[${row}][]" readonly>
+            </td>
+            <td colspan="2">
+                <textarea style="resize: vertical; min-height: 30px;" class="form-control pekerjaan" rows="1" name="pekerjaan[${row}][]" required></textarea>
+            </td>
+            <td>
+                <button type="button" onclick="add_jobs_spl($(this))" class="btn btn-sm btn-default hidden"><i class="fa fa-plus"></i></button>
+            </td>
+        </tr>
+        `
+        $('.multiinput').first().find('.spl-pkj-del').prop('disabled', false)
+        $('#example11 tbody').append(TrHTML)
+
+        // make new select2 ajax on new dom select pekerja 
         $('.multiinput select[name*=noind]').select2({
             ajax: {
                 url: baseurl + "SPLSeksi/Pusat/C_splseksi/show_pekerja3",
@@ -306,7 +397,7 @@ $(function() {
         lembur = $('select[name*=kd_lembur]').val();
         istirahat = $('input[name*=istirahat]:checked').val();
         break0 = $('input[name*=break]:checked').val();
-        pekerjaan = $('textarea[name*=pekerjaan]').val();
+        alasan = $('textarea[name*=alasan]').val();
 
         $('input[name*=tanggal_0_simpan]').val(tanggal0);
         $('input[name*=tanggal_1_simpan]').val(tanggal1);
@@ -315,7 +406,7 @@ $(function() {
         $('input[name*=kd_lembur_simpan]').val(lembur);
         $('input[name*=istirahat_simpan]').val(istirahat);
         $('input[name*=break_simpan]').val(break0);
-        $('input[name*=pekerjaan_simpan]').val(pekerjaan);
+        $('input[name*=alasan_simpan]').val(alasan);
 
         var noindSPL = $(this).val();
         var parentSelect = $(this).closest('td');
@@ -332,7 +423,7 @@ $(function() {
             $('input[name=istirahat]').attr("disabled", "disabled");
             $('input[name=break]').attr("disabled", "disabled");
             $('select[name=kd_lembur]').attr("disabled", "disabled");
-            $('textarea[name=pekerjaan]').attr("disabled", "disabled");
+            $('textarea[name=alasan]').attr("disabled", "disabled");
         } else {
             ajaxlink = baseurl + "SPLSeksi/Pusat/C_splseksi/cek_anonymous2";
         }
@@ -348,7 +439,6 @@ $(function() {
                     lembur: lembur,
                     istirahat: istirahat,
                     break0: break0,
-                    pekerjaan: pekerjaan,
                     noind: noindSPL
                 },
                 async: false,
@@ -357,7 +447,7 @@ $(function() {
                     // console.log(obj);
                     if (obj['error'] == '1') {
                         parentSelect.css("background", "#ffe6e6");
-                        $("button[type*=submit]").attr("type", "button").attr("class", "btn btn-grey");
+                        $("button#submit_spl").attr("type", "button").attr("class", "btn btn-grey");
                         parentSelect.find(".spl-new-error").remove();
                         parentSelect.append("<p class='spl-new-error' style='color: red'><br><i style='color:#ed2b1f' class='fa fa-lg fa-info-circle spl-error'></i>  Peringatan : " + obj['text'] + "</p>");
                         parentTr.find('input[name*=lbrawal]').val("");
@@ -366,11 +456,11 @@ $(function() {
                         parentTr.find('input[name*=lembur_akhir]').val("");
                         parentTr.find('input[name*=target]').prop('disabled', true);
                         parentTr.find('input[name*=realisasi]').prop('disabled', true);
-                        parentTr.find('textarea[name*=alasan]').prop('disabled', true);
+                        parentTr.find('textarea[name*=pekerjaan]').prop('disabled', true);
                     } else {
                         parentTr.find('input[name*=target]').prop('disabled', false);
                         parentTr.find('input[name*=realisasi]').prop('disabled', false);
-                        parentTr.find('textarea[name*=alasan]').prop('disabled', false);
+                        parentTr.find('textarea[name*=pekerjaan]').prop('disabled', false);
                         parentTr.find('input[name*=lbrawal]').val(obj['awal']);
                         parentTr.find('input[name*=lembur_awal]').val(obj['awal']);
                         parentTr.find('input[name*=lbrakhir]').val(obj['akhir']);
@@ -388,8 +478,7 @@ $(function() {
                             chk = "1";
                         });
                         if (chk == "0") {
-                            //$("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
-                            // what is this ?
+                            $("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
                         }
 
 
@@ -454,6 +543,7 @@ $(function() {
     for (x = 0; x < 2; x++) {
         $('#spl-approval-' + x).on('click', { id: x }, function(e) {
             e.preventDefault();
+            $('.btn-proses').addClass('disabled')
             var id = e.data.id;
             var table = $('.spl-table').DataTable();;
 
@@ -475,9 +565,9 @@ $(function() {
                     noind: $('#noind').val(),
                     kodesie: $('#kodesie').val()
                 },
-                success: function(data) {
-                    if (data != "[]") {
-                        var send = $.parseJSON(data);
+                success: data => {
+                    if (data.length) {
+                        let send = JSON.parse(data);
                         table.rows.add(send);
                         table.draw();
                     } else {
@@ -508,14 +598,14 @@ $(function() {
         $('.spl-chk-data').each(function() {
             if (this.checked) { chk += '.' + $(this).val(); }
         });
-        console.log(chk);
+
         if (chk == "") {
             $('#example11_wrapper').find('a.btn-primary').addClass("disabled");
             $('#example11_wrapper').find('button.btn-primary').addClass("disabled");
             console.log("tidak ada");
         } else {
-            $('#example11_wrapper').find('a.btn-primary').removeClass("disabled");
-            $('#example11_wrapper').find('button.btn-primary').removeClass("disabled");
+            $('#example11_wrapper').find('a.btn-primary').removeClass("disabled btn-default");
+            $('#example11_wrapper').find('button.btn-primary').removeClass("disabled btn-default");
             console.log("ada");
         };
 
@@ -535,6 +625,80 @@ $(function() {
     $(document).on('input', '#spl_tex_proses', function(e) {
         spl_load_data();
     });
+
+    $('#approveSPL, #rejectSPL').on('click', e => {
+        const button = e.target.id
+        let reason = $('#spl_tex_proses')
+
+        reason.on('change', () => {
+            reason.css({
+                "border": "1px solid #ccc"
+            })
+        })
+
+        if (!reason.val() && button == 'rejectSPL') {
+            reason.css({
+                "border": "1px solid red"
+            })
+            Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            }).fire({
+                customClass: 'swal-font-small',
+                type: 'error',
+                title: 'Masukkan alasan terlebih dahulu!'
+            });
+            return
+        } else {
+            reason.css({
+                "border": "1px solid #ccc"
+            })
+        }
+
+        if (button == 'approveSPL') {
+            $('#FingerDialogApprove').modal('show')
+        } else {
+            $('#FingerDialogReject').modal('show')
+        }
+    })
+
+    function waitingFingerPrint(params) {
+        localStorage.setItem('resultApproveSPL', false)
+
+        const resultStorage = () => {
+            window.removeEventListener('storage', resultStorage)
+            let isSuccess = localStorage.getItem('resultApproveSPL')
+
+            if (isSuccess === true) {
+                $('#ProsesDialog').modal('hide')
+                $('#FingerDialogApprove').modal('hide')
+                $('#FingerDialogReject').modal('hide')
+
+                swal.fire({
+                    title: `Sukses ${params} lembur pekerja`,
+                    text: '',
+                    type: 'success'
+                }).then(() => {
+                    $('#spl-approval-1').click()
+                    $('#spl-approval-0').click()
+                })
+                localStorage.removeItem('resultApproveSPL')
+            } else if (isSuccess === 3) { // error
+                swal.fire({
+                    title: `Gagal, error code 500`,
+                    text: '',
+                    type: 'error'
+                }).then(() => {
+                    $('#spl-approval-1').click()
+                    $('#spl-approval-0').click()
+                })
+            }
+        }
+
+        window.addEventListener('storage', resultStorage)
+    }
 
     $(document).on('click', '#FingerDialogReject .spl_finger_proses', function(e) {
         finger = $(this).attr('data');
@@ -567,7 +731,10 @@ $(function() {
             $('#spl_proses_approve').attr('href', tmp + btoa('&stat=25&data=' + chk + '&ket=' + ket));
         }
 
-        window.location.href = $('#spl_proses_reject').attr('href');
+        let apiProcess = $('#spl_proses_reject').attr('href');
+        window.location.href = apiProcess
+
+        waitingFingerPrint('Reject')
     });
 
     $(document).on('click', '#FingerDialogApprove .spl_finger_proses', function(e) {
@@ -601,9 +768,11 @@ $(function() {
             $('#spl_proses_approve').attr('href', tmp + btoa('&stat=25&data=' + chk + '&ket=' + ket));
         }
 
-        window.location.href = $('#spl_proses_approve').attr('href');
-    });
+        let apiProcess = $('#spl_proses_approve').attr('href')
+        window.location.href = apiProcess
 
+        waitingFingerPrint('Approve')
+    });
 });
 
 $(document).ready(function() {
@@ -641,6 +810,7 @@ $(document).ready(function() {
         }
         $(this).val(value);
     });
+
     $('.spl-time-mask').on('focusout', function(e) {
         value = $(this).val();
         if (value.length > 0) {
@@ -1037,6 +1207,18 @@ $(document).ready(function() {
         summon_count_overtime(noind)
     })
 
+    //-------INPUT PAGE--------------------------------------
+    $('#example11').on('change', '.target-satuan', function() {
+        let unit = $(this).val()
+        $(this).closest('tr').find('.realisasi-satuan').val(unit)
+    })
+
+    $('#example11').on('input', '.pekerjaan', function(e) {
+        $(this).css('height', this.scrollHeight + 'px')
+    })
+
+    //-------END INPUT PAGE----------------------------------
+
     //-------PERSONALIA PAGE---------------------------------
 
     $('.lembur-personalia-pekerja').select2({
@@ -1101,6 +1283,14 @@ $(document).ready(function() {
 
     //listener button delete row on table access section
     btnDelRowListener()
+
+    //page input data & edit data
+    $('.pekerjaan, textarea[name=alasan]').keypress(function(e) {
+        var txt = String.fromCharCode(e.which);
+        if (!txt.match(/[A-Za-z0-9 +#.%&-]/)) {
+            return false;
+        }
+    })
 
     //-----END PERSONALIA PAGE-----------------------------------
 })
@@ -1291,6 +1481,7 @@ const deleteLembur = (e) => {
             //do deleting with ajax
             $.ajax({
                 method: 'GET',
+                async: false,
                 url: baseurl + 'SPL/Pusat/HapusLembur/' + id_spl,
                 success: () => {
                     swal.fire('Sukses menghapus SPL', '', 'success')
@@ -1307,7 +1498,7 @@ const configStorageAlert = () => {
         let count = json.count + 1
 
         let now = d.getHours() + ':' + d.getMinutes()
-        let today = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()
+        let today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
 
         data = {
             count,
@@ -1325,7 +1516,7 @@ const sendReminder = () => {
     const d = new Date()
 
     let now = d.getHours() + ':' + d.getMinutes()
-    let today = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()
+    let today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
 
     if (json.count == 1) {
         let lastTime = new Date(today + ' ' + json.lastTime)
@@ -1373,4 +1564,94 @@ const sendReminder = () => {
             })
         }
     })
+}
+
+const add_jobs_spl = (e) => {
+
+    let tr = e.closest('tr')
+
+    let nextrow = tr.next('.multiinput.parent')
+    let jobsrow = tr.nextUntil(nextrow, 'tr.spl-jobs')
+
+    let row = tr.data('row')
+    let jobsHTML = `
+    <tr class="spl-jobs">
+        <td colspan="5"></td>
+        <td>
+            <input type="number" class="form-control" name="target[${row}][]" required>
+        </td>
+        <td>
+            <select class="form-control target-satuan" name="target_satuan[${row}][]" required>
+                <option value=""></option>
+                <option value="Pcs">Pcs</option>
+                <option value="%">%</option>
+                <option value="Box">Box</option>
+                <option value="Kg">Kg</option>
+                <option value="Unit">Unit</option>
+                <option value="Ton">Ton</option>
+                <option value="Flask">Flask</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control" name="realisasi[${row}][]" required>
+        </td>
+        <td>
+            <input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[${row}][]" readonly>
+        </td>
+        <td>
+            <textarea style="resize: vertical; min-height: 30px;" class="form-control pekerjaan" rows="1" name="pekerjaan[${row}][]"></textarea>
+        </td>
+        <td colspan='2'>
+            <button type="button" onclick="del_jobs_spl($(this), ${row})" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></button>
+        </td>
+    </tr>
+    `
+
+    if (jobsrow.length == 0) {
+        tr.after(jobsHTML)
+    } else {
+        jobsrow.last().after(jobsHTML)
+    }
+
+}
+
+const add_jobs_spl_edit = e => {
+    let tr = e.closest('tbody')
+    let jobsHTML = `
+    <tr>
+        <td colspan="2"></td>
+        <td>
+            <input type="number" class="form-control" name="target[]" required>
+        </td>
+        <td>
+            <select class="form-control target-satuan" name="target_satuan[]" required>
+                <option value=""></option>
+                <option value="Pcs">Pcs</option>
+                <option value="%">%</option>
+                <option value="Box">Box</option>
+                <option value="Kg">Kg</option>
+                <option value="Unit">Unit</option>
+                <option value="Ton">Ton</option>
+                <option value="Flask">Flask</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control" name="realisasi[]" required>
+        </td>
+        <td>
+            <input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[]" readonly>
+        </td>
+        <td>
+            <textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical pekerjaan" rows="1" name="pekerjaan[]"></textarea>
+        </td>
+        <td>
+            <button class="btn btn-sm" onclick="del_jobs_spl($(this))" type="button"><i class="fa fa-minus"></i></button>
+        </td>
+    </tr>
+    `
+    tr.append(jobsHTML)
+}
+
+const del_jobs_spl = (e) => {
+    e.closest('tr').remove()
 }

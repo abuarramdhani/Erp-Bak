@@ -269,10 +269,10 @@ $db['dpostgre'] = array(
 
 $db['tpb_sql'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.168.159',
-	'username' => 'quick_tpb',
-	'password' => '123456',
-	'database' => 'tracking_pengiriman',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
+	'database' => 'quickc01_trackingpengirimanbarang',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -289,6 +289,7 @@ $db['tpb_sql'] = array(
 	'save_queries' => TRUE,
 	// 'port' => 5432
 );
+
 
 $db['dinas_luar'] = array(
 	'dsn'	=> '',
@@ -400,6 +401,29 @@ $db['lantuma'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE,
 	'port' => 3306
+);
+
+$db['khs_packing'] = array(
+	'dsn'	=> '',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
+	'database' => 'khs_packing',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
+	// 'port' => 5432
 );
 
 $efg="";
@@ -670,4 +694,25 @@ $efg="";
 			'failover' 			=> array(),
 			'save_queries'		=> TRUE,
 			'port' 				=> 3306
+		);
+		$db['sweeping'] = array(
+			'dsn'	=> '',
+        		'hostname' => 'database.quick.com',
+                	'username' => 'sweep',
+                	'password' => 'qu1ck1953',
+                	'database' => 'sweeping_hw',
+			'dbdriver' => 'mysqli',
+			'dbprefix' => '',
+			'pconnect' => FALSE,
+			'db_debug' => FALSE,
+			'cache_on' => FALSE,
+			'cachedir' => '',
+			'char_set' => 'utf8',
+			'dbcollat' => 'utf8_general_ci',
+			'swap_pre' => '',
+			'encrypt' => FALSE,
+			'compress' => FALSE,
+			'stricton' => FALSE,
+			'failover' => array(),
+			'save_queries' => TRUE,
 		);

@@ -83,7 +83,7 @@ $(document).ready(function(){ //js untuk import polas shift
     $('.ips_get_atasan').select2({
         allowClear: false,
         placeholder: "Pilih Atasan",
-        minimumInputLength: -1,
+        minimumResultsForSearch: -1,
         ajax: {
             url: baseurl + 'PolaShiftSeksi/ImportPolaShift/daftar_atasan',
             dataType: 'json',

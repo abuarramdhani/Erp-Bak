@@ -10,6 +10,7 @@ class C_FleetServiceKendaraan extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -18,7 +19,7 @@ class C_FleetServiceKendaraan extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetservicekendaraan');
 		$this->load->model('GeneralAffair/MainMenu/M_location');
-		
+
     	$this->load->helper('download');
 		date_default_timezone_set('Asia/Jakarta');
 
@@ -57,17 +58,17 @@ class C_FleetServiceKendaraan extends CI_Controller
 		if ($lokasi == '01') {
 			foreach ($datamenu1 as $key) {
 				$data['UserSubMenuOne'][$i] = array(
-					'user_id' => $key['user_id'], 
-					'user_group_menu_name' => $key['user_group_menu_name'], 
-					'user_group_menu_id' => $key['user_group_menu_id'], 
-					'group_menu_list_id' => $key['group_menu_list_id'], 
-					'menu_sequence' => $key['menu_sequence'], 
-					'menu_id' => $key['menu_id'], 
-					'root_id' => $key['root_id'], 
-					'menu_title' => $key['menu_title'], 
-					'menu' => $key['menu'], 
-					'menu_link' => $key['menu_link'], 
-					'org_id' => $key['org_id'], 
+					'user_id' => $key['user_id'],
+					'user_group_menu_name' => $key['user_group_menu_name'],
+					'user_group_menu_id' => $key['user_group_menu_id'],
+					'group_menu_list_id' => $key['group_menu_list_id'],
+					'menu_sequence' => $key['menu_sequence'],
+					'menu_id' => $key['menu_id'],
+					'root_id' => $key['root_id'],
+					'menu_title' => $key['menu_title'],
+					'menu' => $key['menu'],
+					'menu_link' => $key['menu_link'],
+					'org_id' => $key['org_id'],
 				);
 				$i++;
 			}
@@ -75,37 +76,37 @@ class C_FleetServiceKendaraan extends CI_Controller
 			foreach ($datamenu1 as $key) {
 				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
-						'user_id' => $key['user_id'], 
-						'user_group_menu_name' => $key['user_group_menu_name'], 
-						'user_group_menu_id' => $key['user_group_menu_id'], 
-						'group_menu_list_id' => $key['group_menu_list_id'], 
-						'menu_sequence' => $key['menu_sequence'], 
-						'menu_id' => $key['menu_id'], 
-						'root_id' => $key['root_id'], 
-						'menu_title' => $key['menu_title'], 
-						'menu' => $key['menu'], 
-						'menu_link' => $key['menu_link'], 
-						'org_id' => $key['org_id'], 
+						'user_id' => $key['user_id'],
+						'user_group_menu_name' => $key['user_group_menu_name'],
+						'user_group_menu_id' => $key['user_group_menu_id'],
+						'group_menu_list_id' => $key['group_menu_list_id'],
+						'menu_sequence' => $key['menu_sequence'],
+						'menu_id' => $key['menu_id'],
+						'root_id' => $key['root_id'],
+						'menu_title' => $key['menu_title'],
+						'menu' => $key['menu'],
+						'menu_link' => $key['menu_link'],
+						'org_id' => $key['org_id'],
 					);
 					$i++;
 				}
-			}	
+			}
 		}
-		
+
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['kodesie'] = $this->session->kodesie;		
+		$data['kodesie'] = $this->session->kodesie;
 
 		// echo $lokasi;
 		// exit();
 
 		$data['FleetService'] 		= $this->M_fleetservicekendaraan->getFleetService();
-		
-		
+
+
 		$data['FleetServiceDeleted']	= $this->M_fleetservicekendaraan->getFleetServiceKendaraanDeleted();
-		
+
 		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);	
+		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('GeneralAffair/FleetServiceKendaraan/V_index', $data);
 		$this->load->view('V_Footer',$data);
 	}
@@ -147,17 +148,17 @@ class C_FleetServiceKendaraan extends CI_Controller
 		if ($lokasi == '01') {
 			foreach ($datamenu1 as $key) {
 				$data['UserSubMenuOne'][$i] = array(
-					'user_id' => $key['user_id'], 
-					'user_group_menu_name' => $key['user_group_menu_name'], 
-					'user_group_menu_id' => $key['user_group_menu_id'], 
-					'group_menu_list_id' => $key['group_menu_list_id'], 
-					'menu_sequence' => $key['menu_sequence'], 
-					'menu_id' => $key['menu_id'], 
-					'root_id' => $key['root_id'], 
-					'menu_title' => $key['menu_title'], 
-					'menu' => $key['menu'], 
-					'menu_link' => $key['menu_link'], 
-					'org_id' => $key['org_id'], 
+					'user_id' => $key['user_id'],
+					'user_group_menu_name' => $key['user_group_menu_name'],
+					'user_group_menu_id' => $key['user_group_menu_id'],
+					'group_menu_list_id' => $key['group_menu_list_id'],
+					'menu_sequence' => $key['menu_sequence'],
+					'menu_id' => $key['menu_id'],
+					'root_id' => $key['root_id'],
+					'menu_title' => $key['menu_title'],
+					'menu' => $key['menu'],
+					'menu_link' => $key['menu_link'],
+					'org_id' => $key['org_id'],
 				);
 				$i++;
 			}
@@ -165,26 +166,26 @@ class C_FleetServiceKendaraan extends CI_Controller
 			foreach ($datamenu1 as $key) {
 				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
-						'user_id' => $key['user_id'], 
-						'user_group_menu_name' => $key['user_group_menu_name'], 
-						'user_group_menu_id' => $key['user_group_menu_id'], 
-						'group_menu_list_id' => $key['group_menu_list_id'], 
-						'menu_sequence' => $key['menu_sequence'], 
-						'menu_id' => $key['menu_id'], 
-						'root_id' => $key['root_id'], 
-						'menu_title' => $key['menu_title'], 
-						'menu' => $key['menu'], 
-						'menu_link' => $key['menu_link'], 
-						'org_id' => $key['org_id'], 
+						'user_id' => $key['user_id'],
+						'user_group_menu_name' => $key['user_group_menu_name'],
+						'user_group_menu_id' => $key['user_group_menu_id'],
+						'group_menu_list_id' => $key['group_menu_list_id'],
+						'menu_sequence' => $key['menu_sequence'],
+						'menu_id' => $key['menu_id'],
+						'root_id' => $key['root_id'],
+						'menu_title' => $key['menu_title'],
+						'menu' => $key['menu'],
+						'menu_link' => $key['menu_link'],
+						'org_id' => $key['org_id'],
 					);
 					$i++;
 				}
-			}	
+			}
 		}
-		
+
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['kodesie'] = $this->session->kodesie;		
+		$data['kodesie'] = $this->session->kodesie;
 
 		// echo $lokasi;
 		// exit();
@@ -215,9 +216,9 @@ class C_FleetServiceKendaraan extends CI_Controller
 							'kelipatan_waktu'	=> $kelipatan_waktu,
 							'batas' 			=> $batas,
 						);
-		
+
 		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);	
+		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('GeneralAffair/FleetServiceKendaraan/V_b_create', $data);
 		$this->load->view('V_Footer',$data);
 	}
@@ -242,17 +243,17 @@ class C_FleetServiceKendaraan extends CI_Controller
 		if ($lokasi == '01') {
 			foreach ($datamenu1 as $key) {
 				$data['UserSubMenuOne'][$i] = array(
-					'user_id' => $key['user_id'], 
-					'user_group_menu_name' => $key['user_group_menu_name'], 
-					'user_group_menu_id' => $key['user_group_menu_id'], 
-					'group_menu_list_id' => $key['group_menu_list_id'], 
-					'menu_sequence' => $key['menu_sequence'], 
-					'menu_id' => $key['menu_id'], 
-					'root_id' => $key['root_id'], 
-					'menu_title' => $key['menu_title'], 
-					'menu' => $key['menu'], 
-					'menu_link' => $key['menu_link'], 
-					'org_id' => $key['org_id'], 
+					'user_id' => $key['user_id'],
+					'user_group_menu_name' => $key['user_group_menu_name'],
+					'user_group_menu_id' => $key['user_group_menu_id'],
+					'group_menu_list_id' => $key['group_menu_list_id'],
+					'menu_sequence' => $key['menu_sequence'],
+					'menu_id' => $key['menu_id'],
+					'root_id' => $key['root_id'],
+					'menu_title' => $key['menu_title'],
+					'menu' => $key['menu'],
+					'menu_link' => $key['menu_link'],
+					'org_id' => $key['org_id'],
 				);
 				$i++;
 			}
@@ -260,21 +261,21 @@ class C_FleetServiceKendaraan extends CI_Controller
 			foreach ($datamenu1 as $key) {
 				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
-						'user_id' => $key['user_id'], 
-						'user_group_menu_name' => $key['user_group_menu_name'], 
-						'user_group_menu_id' => $key['user_group_menu_id'], 
-						'group_menu_list_id' => $key['group_menu_list_id'], 
-						'menu_sequence' => $key['menu_sequence'], 
-						'menu_id' => $key['menu_id'], 
-						'root_id' => $key['root_id'], 
-						'menu_title' => $key['menu_title'], 
-						'menu' => $key['menu'], 
-						'menu_link' => $key['menu_link'], 
-						'org_id' => $key['org_id'], 
+						'user_id' => $key['user_id'],
+						'user_group_menu_name' => $key['user_group_menu_name'],
+						'user_group_menu_id' => $key['user_group_menu_id'],
+						'group_menu_list_id' => $key['group_menu_list_id'],
+						'menu_sequence' => $key['menu_sequence'],
+						'menu_id' => $key['menu_id'],
+						'root_id' => $key['root_id'],
+						'menu_title' => $key['menu_title'],
+						'menu' => $key['menu'],
+						'menu_link' => $key['menu_link'],
+						'org_id' => $key['org_id'],
 					);
 					$i++;
 				}
-			}	
+			}
 		}
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
@@ -284,10 +285,7 @@ class C_FleetServiceKendaraan extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('GeneralAffair/FleetServiceKendaraan/V_create', $data);
-			$this->load->view('V_Footer',$data);	
-	
-
-			
+			$this->load->view('V_Footer',$data);
 		}
 
 	public function saveDataService(){
@@ -311,7 +309,7 @@ class C_FleetServiceKendaraan extends CI_Controller
 
 		$jml 		= count($jarak);
 
-		for ($i=0; $i < $jml; $i++) { 
+		for ($i=0; $i < $jml; $i++) {
 			$ru_where = array(
 							'merk_kendaraan_id' => $id_merk,
 							'jenis_service_id' => $id_jenis,
@@ -343,14 +341,18 @@ class C_FleetServiceKendaraan extends CI_Controller
 				$this->M_fleetservicekendaraan->updateFleetServiceWhenInsert($ru_where,$ru_data);
 				$this->M_fleetservicekendaraan->setFleetServiceKendaraan($data_simpan);
 			}
-			
-		}
 
+		}
+		//insert to t_log
+		$aksi = 'MANAGEMENT KENDARAAN';
+		$detail = 'Create Service Kendaraan MerkID='.$id_merk.' Jenis Servise ID='.$id_jenis;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('GeneralAffair/FleetServiceKendaraan'));
 	}
 
-	
- 
+
+
 }
 
 /* End of file C_FleetKendaraan.php */

@@ -6,6 +6,7 @@ class C_SetGajiUMP extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetGajiUMP/M_setgajiump');
@@ -20,7 +21,7 @@ class C_SetGajiUMP extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Gaji UMP';
         $data['SubMenuTwo'] = '';
@@ -46,7 +47,7 @@ class C_SetGajiUMP extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_setgajiump->get_by_id($id);
         if ($row) {
             $data = array(
@@ -56,7 +57,7 @@ class C_SetGajiUMP extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'kode_ump' => $row->kode_ump,
 				'ump' => $row->ump,
 			);
@@ -109,7 +110,7 @@ class C_SetGajiUMP extends CI_Controller
 			'ump' => str_replace(',','',$this->input->post('txtUMP',TRUE)),
 			'id_lokasi_kerja'	=>	$this->input->post('txtLokasiKerja',TRUE),
 		);
-		
+
 		$data_riwayat = array(
 			'id_riw_gaji_ump'	=>	date('YmdHis'),
 			'id_kantor_asal'	=>	$this->input->post('txtLokasiKerja',TRUE),
@@ -120,11 +121,18 @@ class C_SetGajiUMP extends CI_Controller
 			'kd_petugas'	=> $this->session->userdata('userid'),
 			'tgl_rec'	=> date('Y-m-d H:i:s'),
 		);
+
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create set UMP ID=".date('YmdHis');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
+
 		//MASTER DELETE
 		$dl_where = array(
 			'id_lokasi_kerja'	=>	$this->input->post('txtLokasiKerja',TRUE),
 		);
-		
+
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
 			'tgl_tberlaku' => '9999-12-31',
@@ -133,7 +141,7 @@ class C_SetGajiUMP extends CI_Controller
 		$ru_data = array(
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 		);
-		
+
         $this->M_setgajiump->master_delete($dl_where);
         $this->M_setgajiump->insert($data);
 		$this->M_setgajiump->riwayat_update($ru_where,$ru_data);
@@ -199,6 +207,12 @@ class C_SetGajiUMP extends CI_Controller
 			'tgl_rec'	=> date('Y-m-d H:i:s'),
 		);
 
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update set UMP Kode_UMP=".$this->input->post('txtKodeUMP');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
+
             $this->M_setgajiump->update($this->input->post('txtKodeUMP', TRUE), $data);
 			$this->M_setgajiump->riwayat_update($ru_where,$ru_data);
             $this->session->set_flashdata('message', 'Update Record Success');
@@ -215,6 +229,11 @@ class C_SetGajiUMP extends CI_Controller
 
         if ($row) {
             $this->M_setgajiump->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set UMP ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -233,7 +252,7 @@ class C_SetGajiUMP extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

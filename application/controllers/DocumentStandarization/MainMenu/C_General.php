@@ -10,6 +10,7 @@ class C_General extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 
@@ -99,12 +100,17 @@ class C_General extends CI_Controller
 
 	        	$this->upload->initialize($config);
 
-	    		if ($this->upload->do_upload($inputfile)) 
+	    		if ($this->upload->do_upload($inputfile))
 	    		{
             		$this->upload->data();
 	        		$fileDokumen 	= 	$config['file_name'];
-        		} 
-        		else 
+					//insert to sys.log_activity
+					$aksi = 'DOC STANDARIZATION';
+					$detail = "Upload Document filename=$fileDokumen";
+					$this->log_activity->activity_log($aksi, $detail);
+					//
+        		}
+        		else
         		{
 
         			$errorinfo = $this->upload->display_errors();
@@ -126,7 +132,7 @@ class C_General extends CI_Controller
 	{
 
 		$keywordPekerjaPembuat		= 	strtoupper($this->input->get('term'));
-		
+
 		$resultPekerjaPembuat 		= 	$this->M_general->ambilPekerjaPembuat($keywordPekerjaPembuat);
 		echo json_encode($resultPekerjaPembuat);
 	}
@@ -135,7 +141,7 @@ class C_General extends CI_Controller
 	{
 
 		$keywordPekerjaPemeriksa1		= 	strtoupper($this->input->get('term'));
-		
+
 		$resultPekerjaPemeriksa1 		= 	$this->M_general->ambilPekerjaPemeriksa1($keywordPekerjaPemeriksa1);
 		echo json_encode($resultPekerjaPemeriksa1);
 	}
@@ -144,7 +150,7 @@ class C_General extends CI_Controller
 	{
 
 		$keywordPekerjaPemeriksa2		= 	strtoupper($this->input->get('term'));
-		
+
 		$resultPekerjaPemeriksa2 		= 	$this->M_general->ambilPekerjaPemeriksa2($keywordPekerjaPemeriksa2);
 		echo json_encode($resultPekerjaPemeriksa2);
 	}
@@ -153,7 +159,7 @@ class C_General extends CI_Controller
 	{
 
 		$keywordPekerjaPemberiKeputusan		= 	strtoupper($this->input->get('term'));
-		
+
 		$resultPekerjaPemberiKeputusan 		= 	$this->M_general->ambilPekerjaPemberiKeputusan($keywordPekerjaPemberiKeputusan);
 		echo json_encode($resultPekerjaPemberiKeputusan);
 	}
@@ -208,7 +214,7 @@ class C_General extends CI_Controller
 	{
 
 		$keywordJobDescription		= 	strtoupper($this->input->get('term'));
-		
+
 		$resultJobDescription 		= 	$this->M_general->ambilJobDescription($keywordJobDescription);
 		echo json_encode($resultJobDescription);
 	}

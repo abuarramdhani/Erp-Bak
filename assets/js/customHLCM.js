@@ -253,7 +253,8 @@ $(document).ready(function () {
 
    $('#table_prosesgaji').dataTable({
           "paging": true,
-          "lengthChange": false,
+          "lengthChange": true,
+          "iDisplayLength" : -1,
           "searching": true,
           "ordering": true,
 		  "info": true,

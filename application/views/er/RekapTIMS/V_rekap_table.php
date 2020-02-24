@@ -14,7 +14,7 @@ foreach ($rekap as $rekap_data) {}
 </section>
 <section class="content">
 	<div class="row">
-		<div class="col-lg-12">	
+		<div class="col-lg-12">
 			<div class="box box-primary">
 						<div class="box-body with-border">-->
 							<form target="_blank" id="export_detail_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapTIMS/export-rekap-detail") ?>">
@@ -96,13 +96,13 @@ foreach ($rekap as $rekap_data) {}
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
 											<td style="text-align: center;">
 													<?php
-														if (($rekap_data['totalhk']+$rekap_data['totalhks'])==0) 
+														if (($rekap_data['totalhk']+$rekap_data['totalhks'])==0)
 														{
 															echo '-';
 														}
 														else
 														{
-															echo 
+															echo
 																round(
 																	(
 																		(float)
@@ -122,10 +122,12 @@ foreach ($rekap as $rekap_data) {}
 																					($rekap_data['frekip']+$rekap_data['frekips'])
 																					+
 																					($rekap_data['frekct']+$rekap_data['frekcts'])
+																					+
+																					($rekap_data['frekmnon']+$rekap_data['frekmsnon'])
 																				)
 																			)
 																			/
-																			(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']))
+																			(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']) - ($rekap_data['frekmnon']+$rekap_data['frekmsnon']))
 																		)
 																		*100
 																	),

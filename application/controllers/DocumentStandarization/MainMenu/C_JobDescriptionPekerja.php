@@ -10,6 +10,7 @@ class C_JobDescriptionPekerja extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 
@@ -83,7 +84,7 @@ class C_JobDescriptionPekerja extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/JobDescriptionPekerja/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 
 
@@ -96,6 +97,11 @@ class C_JobDescriptionPekerja extends CI_Controller
     					);
 			$this->M_jobdescriptionpekerja->setJobdeskEmployee($data);
 			$header_id = $this->db->insert_id();
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Set Jobdesk Pekerja id=$header_id";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/JobDescriptionPekerja'));
 		}
@@ -134,13 +140,18 @@ class C_JobDescriptionPekerja extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/JobDescriptionPekerja/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$data = array(
 				'jd_id' => $this->input->post('txtJdIdHeader',TRUE),
 				'employee_id' => $this->input->post('txtEmployeeIdHeader',TRUE),
     			);
 			$this->M_jobdescriptionpekerja->updateJobdeskEmployee($data, $plaintext_string);
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Update Jobdesk Pekerja id=$plaintext_string";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/JobDescriptionPekerja'));
 		}
@@ -185,6 +196,11 @@ class C_JobDescriptionPekerja extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_jobdescriptionpekerja->deleteJobdeskEmployee($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'DOC STANDARIZATION';
+		$detail = "Delete Jobdesk Pekerja id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('DocumentStandarization/JobDescriptionPekerja'));
     }
