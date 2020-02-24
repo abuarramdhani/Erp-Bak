@@ -432,7 +432,7 @@ class C_Index extends CI_Controller
 				$mail->Username = 'no-reply@quick.com';
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
-				$mail->addAddress('alfansyah_nori_p@quick.com', 'Absensi Online Pekerja');
+				$mail->addAddress($internalMailAtasan, 'Absensi Online Pekerja');
 				$mail->Subject = 'Absensi Online';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
