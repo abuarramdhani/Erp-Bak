@@ -123,6 +123,9 @@
 				<div class="col-md-12">
 				<div class="col-md-1"></div>
 					<div class="col-md-1">
+						<center><a type="button" class="btn btn-danger" onclick="window.history.back()"><b>Back</b></a></center>
+					</div>
+					<div class="col-md-1">
 						<button type="button" class="btn btn-info btn-preview"><i class="fa fa-file-pdf-o">&nbsp;&nbsp;</i><b> Preview</b></button>
 					</div>
 
