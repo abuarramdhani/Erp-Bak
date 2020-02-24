@@ -255,5 +255,3 @@ class C_LimbahKelola extends CI_Controller
 		}
 	}
 }
-
-?>

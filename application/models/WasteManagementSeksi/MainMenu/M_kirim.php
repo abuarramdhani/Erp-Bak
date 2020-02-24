@@ -290,4 +290,3 @@ class M_kirim extends Ci_Model
     }
 }
 
-?>

@@ -23,10 +23,7 @@ class C_ApprovalLimbah extends CI_Controller {
         //check this one, is atasan or not
         $isAtasan = $this->M_kirim->checkAtasanApprove($user, $kodesie);
 
-        $periode = '';
-        if(isset($_GET['periode'])) {
-            $periode = $_GET['periode'];
-        }
+        $periode = isset($_GET['periode']) ? $_GET['periode'] : '';
 
         if(!$isAtasan) {
             redirect('WasteManagementSeksi');
@@ -48,7 +45,6 @@ class C_ApprovalLimbah extends CI_Controller {
         $this->load->view('WasteManagementSeksi/ApprovalLimbah/V_Index', $data);
         $this->load->view('V_Footer');
     }
-
 
     // GET
     // @params id encyrpt
@@ -174,7 +170,7 @@ class C_ApprovalLimbah extends CI_Controller {
         $mail->Password = '123456';
         $mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'Email Sistem');
-		// TODO
+		// TODO wst@quick.com
     	$mail->addAddress('dicka_ismaji@quick.com','Seksi Waste Management');
         $mail->Subject = 'Waste Management';
 		$mail->msgHTML($message);
