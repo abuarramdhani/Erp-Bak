@@ -38,7 +38,7 @@ if (isset($res) and !empty($res)) {
 				<p>:</p>
 			</td>
 			<td>
-				<label><?php echo $key['nama'] ?></label>
+				<label><?php echo substr($key['nama'],0,25) ?> / <?php echo $key['noind'] ?></label>
 			</td>
 		</tr>
 		<tr>
@@ -651,7 +651,7 @@ if (isset($res) and !empty($res)) {
 </html>
 <div style="<?php 
 $co = count($res);
-if ($co > '1' && $datake!=$co) {
+if ($co > '1' && $datake!=($co-1)) {
 	echo "page-break-before: always;";
 }?>">
 	
