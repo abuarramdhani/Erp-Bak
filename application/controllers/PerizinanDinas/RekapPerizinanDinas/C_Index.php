@@ -87,8 +87,10 @@ class C_Index extends CI_Controller
 		//
 		if (!empty($perioderekap)) {
 			$explode = explode(' - ', $perioderekap);
-			$periode1 = str_replace('/', '-', date('Y-m-d', strtotime($explode[0])));
-			$periode2 = str_replace('/', '-', date('Y-m-d', strtotime($explode[1])));
+			$wkt_satu = str_replace('/', '-', $explode[0]);
+			$wkt_dua = str_replace('/', '-', $explode[1]);
+			$periode1 = date('Y-m-d', strtotime($wkt_satu));
+			$periode2 = date('Y-m-d', strtotime($wkt_dua));
 
 			if ($periode1 == $periode2) {
 				$periode = "WHERE cast(ti.created_date as date) = '$periode1'";
@@ -128,7 +130,6 @@ class C_Index extends CI_Controller
 			$a = $this->M_index->getTujuanA($periode);
 			$b = array();
 			$output = array();
-			$data['izin'] = array();
 			foreach ($a as $key) {
 				$b[$key['izin_id']][] = $key['pekerja'];
 			}
@@ -162,6 +163,7 @@ class C_Index extends CI_Controller
 				}
 			}
 			//menggabungkan data dengan pekerja
+			$data['IzinApprove'] = array();
 			foreach ($c as $key) {
 				foreach ($output as $value) {
 					if ($key['izin_id'] == $value['izin_id']) {
