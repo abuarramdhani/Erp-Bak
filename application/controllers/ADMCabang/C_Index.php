@@ -19,6 +19,7 @@ class C_Index extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('ADMCabang/M_monitoringpresensi');
 
 		$this->checkSession();
 	}
@@ -43,7 +44,7 @@ class C_Index extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if($this->session->user != "J1338"){
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			unset($data['UserMenu'][2]);
 			unset($data['UserMenu'][3]);
 		}

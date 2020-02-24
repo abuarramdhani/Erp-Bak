@@ -19,6 +19,7 @@ class C_Rekap extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('ADMCabang/M_monitoringpresensi');
 
 		$this->checkSession();
 	}
@@ -33,7 +34,7 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function index(){
-		if($this->session->user != "J1338"){
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			echo "Prohibited";exit();
 		}
 		$user_id = $this->session->userid;
@@ -54,10 +55,11 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function pekerja(){
-		if($this->session->user != "J1338"){
+		// echo "<pre>";print_r($this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user));exit();
+
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			echo "Prohibited";exit();
 		}
-		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Rekap Per Pekerja';
@@ -78,7 +80,6 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function getData(){
-		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$tanggalAwal = $this->input->post('tanggalAwal');
 		$tanggalAkhir = $this->input->post('tanggalAkhir');
 		$kodesie = $this->session->kodesie;

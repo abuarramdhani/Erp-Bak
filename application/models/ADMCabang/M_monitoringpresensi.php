@@ -13,6 +13,25 @@ class M_monitoringpresensi extends Ci_Model
 		$this->personalia = $this->load->database('personalia',true);
 	}
 
+	public function getAksesAtasanProduksi($noinduk){
+		$sql = "
+		select a.noind,a.nama,a.kodesie,a.kd_jabatan,b.dept,b.pekerjaan
+		from 
+		hrd_khs.tpribadi a inner join hrd_khs.tseksi b on a.kodesie = b.kodesie
+		where
+		a.keluar = false and left(a.kodesie,1) = '3' and a.kd_jabatan != '-' and (a.kd_jabatan < 13::varchar or a.kd_jabatan = '19')
+		";
+		$query = $this->personalia->query($sql)->result_array();
+		$arrnoind = array();
+		foreach ($query as $key => $value) {
+			$arrnoind[] = $value['noind'];
+		}
+		if(!in_array($noinduk, $arrnoind)){
+			return false;
+		}
+		return true;
+	}
+
 	public function statusKerja()
 	{
 		$sql = "SELECT * FROM hrd_khs.tnoind ORDER BY fs_noind";
