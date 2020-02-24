@@ -21,6 +21,7 @@ class C_PresensiBulanan extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('ADMCabang/M_presensibulanan');
+		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$this->checkSession();
 	}
 
@@ -48,7 +49,7 @@ class C_PresensiBulanan extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensibulanan->getSeksiByKodesie($kodesie);
 
-		if($this->session->user != "J1338"){
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			unset($data['UserMenu'][2]);
 			unset($data['UserMenu'][3]);
 		}

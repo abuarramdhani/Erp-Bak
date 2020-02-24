@@ -58,8 +58,7 @@ class C_Monitoring extends CI_Controller
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 
-
-		if($this->session->user != "J1338"){
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			echo "Prohibited";exit();
 		}
 
@@ -126,7 +125,7 @@ class C_Monitoring extends CI_Controller
 	public function MonBulanan(){
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
-		if($this->session->user != "J1338"){
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			echo "Prohibited";exit();
 		}
 
@@ -278,7 +277,7 @@ class C_Monitoring extends CI_Controller
 	public function MonHarian(){
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
-		if($this->session->user != "J1338"){
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			echo "Prohibited";exit();
 		}
 
