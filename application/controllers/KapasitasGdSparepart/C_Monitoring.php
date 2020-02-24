@@ -51,7 +51,7 @@ class C_Monitoring extends CI_Controller
 		$pelayanan 	= $this->M_monitoring->getDataSPB($query2);
 		$data['pelayanan'] 	= $pelayanan;
 		$data['jml_pelayanan'] = count($pelayanan);
-		$kurang = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pelayanan) > '$tgl' or selesai_pelayanan is null";
+		$kurang = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pelayanan) > '$tgl' or selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
 		$data['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_pelayanan'] = count($data['krgpelayanan']);
 
@@ -59,7 +59,7 @@ class C_Monitoring extends CI_Controller
 		$pengeluaran = $this->M_monitoring->getDataSPB($query3);
 		$data['pengeluaran'] = $pengeluaran;
 		$data['jml_pengeluaran'] = count($pengeluaran);
-		$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
+		$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon = 'LANGSUNG' or bon is null)";
 		$data['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_pengeluaran'] = count($data['krgpengeluaran']);
 
@@ -93,23 +93,37 @@ class C_Monitoring extends CI_Controller
 		$data['jml_selesai'] = array_sum($jumlah);
 		$data['krg_selesai'] = $total - $data['jml_selesai'];
 
-		$data['jml_colly'] = 0;
-		$data['dus_kecil'] = 0;
-		$data['dus_bsr'] = 0;
-		$data['dus_sdg'] = 0;
-		$data['karung'] = 0;
+		$jml_colly = array();
+		$dus_kecil = array();
+		$dus_sdg = array();
+		$dus_pjg = array();
+		$karung = array();
 		for ($i=0; $i < count($nopck); $i++) { 
 			$cari = $this->M_monitoring->getDataColly($nopck[$i]);
 			if (!empty($cari)) {
-				$data['jml_colly'] += $cari[0]['JML_COLLY'];
-				$data['dus_kecil'] += $cari[0]['KARDUS_KECIL'];
-				$data['dus_sdg'] += $cari[0]['KARDUS_SEDANG'];
-				$data['dus_bsr'] += $cari[0]['KARDUS_BESAR'];
-				$data['karung'] += $cari[0]['KARUNG'];
+				foreach ($cari as $val) {
+					// echo "<pre>"; print_r($val['nomor_do']); exit();
+					array_push($jml_colly, $val['nomor_do']);
+					if ($val['kode_packing'] == 1) {
+						array_push($dus_kecil, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 2) {
+						array_push($dus_sdg, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 3) {
+						array_push($dus_pjg, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 4) {
+						array_push($karung, $val['nomor_do']);
+					}
+				}
 			}
 		}
+
+		$data['jml_colly'] = count($jml_colly);
+		$data['dus_kecil'] = count($dus_kecil);
+		$data['dus_sdg'] = count($dus_sdg);
+		$data['dus_pjg'] = count($dus_pjg);
+		$data['karung'] = count($karung);
 		
-		// echo "<pre>"; print_r($data['jml_colly']); exit();
+		// echo "<pre>"; print_r($dus_kecil); exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -150,9 +164,9 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['pelayanan'] = $pelayanan;
 			$hasil[$a]['jml_pelayanan'] = count($pelayanan);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is null";
+				$kurang = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
 			}else {
-				$kurang = "where trunc(jam_input) < '$tgl[$a]' and trunc(selesai_pelayanan) > '$tgl[$a]'";
+				$kurang = "where (bon != 'PENDING' or bon is null) and trunc(jam_input) < '$tgl[$a]' and trunc(selesai_pelayanan) > '$tgl[$a]'";
 			}
 			$hasil[$a]['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pelayanan'] = count($hasil[$a]['krgpelayanan']);
@@ -162,9 +176,9 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['pengeluaran'] = $pengeluaran;
 			$hasil[$a]['jml_pengeluaran'] = count($pengeluaran);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
+				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon = 'LANGSUNG' or bon is null)";
 			}else {
-				$kurang = "where (bon != 'LANGSUNG' or bon is null) and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pengeluaran) > '$tgl[$a]'";
+				$kurang = "where (bon = 'LANGSUNG' or bon is null) and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pengeluaran) > '$tgl[$a]'";
 			}
 			$hasil[$a]['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pengeluaran'] = count($hasil[$a]['krgpengeluaran']);
@@ -203,21 +217,6 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['jml_selesai'] = array_sum($jumlah);
 			$hasil[$a]['krg_selesai'] = $total - $hasil[$a]['jml_selesai'];
 
-			$hasil[$a]['jml_colly'] = 0;
-			$hasil[$a]['dus_kecil'] = 0;
-			$hasil[$a]['dus_bsr'] = 0;
-			$hasil[$a]['dus_sdg'] = 0;
-			$hasil[$a]['karung'] = 0;
-			for ($i=0; $i < count($nopck); $i++) { 
-				$cari = $this->M_monitoring->getDataColly($nopck[$i]);
-				if (!empty($cari)) {
-					$hasil[$a]['jml_colly'] += $cari[0]['JML_COLLY'];
-					$hasil[$a]['dus_kecil'] += $cari[0]['KARDUS_KECIL'];
-					$hasil[$a]['dus_sdg'] += $cari[0]['KARDUS_SEDANG'];
-					$hasil[$a]['dus_bsr'] += $cari[0]['KARDUS_BESAR'];
-					$hasil[$a]['karung'] += $cari[0]['KARUNG'];
-				}
-			}
 		}
 		$data['hasil'] = $hasil;
 		// echo "<pre>";print_r($hasil);exit();
@@ -584,6 +583,18 @@ class C_Monitoring extends CI_Controller
 			$style2 = array(
 				'alignment' => array(
 					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+					'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+					'wrap'		 => true
+				),
+				'borders' => array(
+					'top' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+					'right' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+					'bottom' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+					'left' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+				)
+			);
+			$style3 = array(
+				'alignment' => array(
 					'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
 					'wrap'		 => true
 				),
@@ -1220,11 +1231,11 @@ class C_Monitoring extends CI_Controller
 				$excel->getActiveSheet()->getStyle('D'.$numrow3)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('E'.$numrow3)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('F'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('G'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('H'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('J'.$numrow3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('G'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('H'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('J'.$numrow3)->applyFromArray($style3);
 				$excel->getActiveSheet()->getStyle('K'.$numrow3)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('L'.$numrow3)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('M'.$numrow3)->applyFromArray($style2);
@@ -1277,12 +1288,12 @@ class C_Monitoring extends CI_Controller
 				$excel->getActiveSheet()->getStyle('D'.$numrow3)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('E'.$numrow3)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('F'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('G'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('H'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('J'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('K'.$numrow3)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('L'.$numrow3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('G'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('H'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('J'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('K'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('L'.$numrow3)->applyFromArray($style3);
 				$excel->getActiveSheet()->getStyle('M'.$numrow3)->applyFromArray($style2);
 			$numrow3++;
 			$no3++; 

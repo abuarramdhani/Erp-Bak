@@ -193,6 +193,7 @@ class M_monitoring extends CI_Model {
                 --     AND kts.mulai_pelayanan IS NULL
                     AND kts.selesai_pelayanan IS NULL
                     AND mtrl.line_status <> 6
+                    AND (kts.bon != 'PENDING' or kts.bon is null)
                     AND (TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR') or selesai_packing is null)
                 GROUP BY kts.tgl_dibuat,
                         kts.jenis_dokumen,
@@ -258,7 +259,7 @@ class M_monitoring extends CI_Model {
                 --     AND kts.mulai_pengeluaran IS NULL
                     AND kts.selesai_pengeluaran IS NULL
                     AND mtrl.line_status <> 6
-                    AND (kts.bon IS NULL OR kts.bon = 'BON')
+                    AND (kts.bon IS NULL OR kts.bon = 'LANGSUNG')
                     AND (TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR') or selesai_packing is null)
                 GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, kts.urgent, kts.bon, 
                         kts.pic_pelayan, kts.jam_input
@@ -463,8 +464,8 @@ class M_monitoring extends CI_Model {
     }
 
     public function getDataColly($no){
-        $oracle = $this->load->database('oracle', true);
-        $sql ="select * from khs_sp_packaging where no_dokumen = '$no'";
+        $oracle = $this->load->database('khs_packing', true);
+        $sql ="select * from sp_packing_trx where nomor_do = '$no'";
         $query = $oracle->query($sql);
         return $query->result_array();
     }

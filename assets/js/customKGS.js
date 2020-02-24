@@ -647,6 +647,10 @@ function savePacking(th) {
     var berat        = $('#berat').val();   
     var no           = $('#no').val();   
     
+    if (berat == '' || jenis_kemasan == '') {
+        $('#peringatan').html('Mohon Isi Konfirmasi Packing!!');
+    }else{
+        // $('#peringatan').html('Sudah save');
         $.ajax ({
             url : baseurl + "KapasitasGdSparepart/Packing/saveberatPacking",
             data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat},
@@ -656,11 +660,13 @@ function savePacking(th) {
                 $("#mdlcolly").modal("hide");
                 $('#berat').val('');
                 $('#jenis_kemasan').select2("val", "");
+                $('#peringatan').html('');
                 // $('#btnPacking'+no).attr("disabled", "disabled"); 
                 // $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
                 // $('#timer'+no).css('display','none');
             }
-            });  
+        });  
+    }
 }
 
 function btnRestartPacking(no) {
