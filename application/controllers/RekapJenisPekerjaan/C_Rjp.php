@@ -79,11 +79,11 @@ class C_Rjp extends CI_Controller
 
 		//nentuin kodesie
 		if (!empty($seksi)) {
-			$kodesie = str_replace('00', '', $seksi);
+			$kodesie = $this->cekKodesie($seksi);
 		}elseif (!empty($unit)) {
-			$kodesie = str_replace('00', '', $unit);
+			$kodesie = $this->cekKodesie($unit);
 		}elseif (!empty($bidang)) {
-			$kodesie = str_replace('00', '', $bidang);
+			$kodesie = $this->cekKodesie($bidang);
 		}else{
 			$kodesie = '';
 		}
@@ -97,5 +97,14 @@ class C_Rjp extends CI_Controller
 		$data['tgl'] = date('d-M-Y', strtotime($tglRekap));
 		$html = $this->load->view('RekapJenisPekerjaan/Rekap/V_Table',$data);
 		echo json_encode($html);
+	}
+
+	function cekKodesie($ks)
+	{
+		$nks = substr($ks, strlen($ks)-2);
+		if ($nks == '00') {
+			$ks = substr($ks, 0, strlen($ks)-2);
+		}
+		return $ks;
 	}
 }
