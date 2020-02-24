@@ -170,8 +170,8 @@ class C_ApprovalLimbah extends CI_Controller {
         $mail->Password = '123456';
         $mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'Email Sistem');
-		// TODO wst@quick.com
-    	$mail->addAddress('dicka_ismaji@quick.com','Seksi Waste Management');
+
+    	$mail->addAddress('wst@quick.com','Seksi Waste Management');
         $mail->Subject = 'Waste Management';
 		$mail->msgHTML($message);
 
