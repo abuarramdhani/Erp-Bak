@@ -274,11 +274,7 @@ class M_kirim extends Ci_Model
       $sql = "SELECT kd_jabatan from hrd_khs.tpribadi where noind = '$user' and keluar='0'";
       $result = $personalia->query($sql)->result_array();
 
-      if(count($result) && $result['0']['kd_jabatan'] < 13) {
-        return true;
-      } else {
-        return false;
-      }
+      return (count($result) && $result['0']['kd_jabatan'] < 13);
     }
 
     function atasanApprove($id) {

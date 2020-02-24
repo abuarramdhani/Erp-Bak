@@ -34,7 +34,7 @@ class C_Monitoring extends CI_Controller {
     function apiGetDataLimbah() {
         $start = $_GET['start'];
         $end = $_GET['end'];
-        $limbah = $_GET['jenis'];
+        $limbah = isset($_GET['jenis']) ? $_GET['jenis'] : [];
 
         $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah);
 
@@ -51,7 +51,7 @@ class C_Monitoring extends CI_Controller {
 
         $start = $_GET['start'];
         $end = $_GET['end'];
-        $limbah = $_GET['jenis'];
+        $limbah = isset($_GET['jenis']) ? $_GET['jenis'] : [];
         $detailed = $_GET['detailed'];
 
         $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah);
@@ -229,8 +229,8 @@ class C_Monitoring extends CI_Controller {
             $worksheet->getStyle("A{$i}:D{$i}")->applyFromArray($alignment);
             $worksheet->getStyle("A{$i}:D{$i}")->applyFromArray($border);
 
-            $worksheet->setCellValue("A{$i}", "Jumlah Total Berat");
-            $worksheet->setCellValue("E{$i}", $totalBerat);
+            $worksheet->setCellValue("A{$i}", "Total Berat Limbah");
+            $worksheet->setCellValue("E{$i}", number_format((float)$totalBerat, 3, '.', ''));
             $worksheet->getStyle("E{$i}")->applyFromArray($border);
         } else {
             $worksheet->getStyle('A1:C1')->applyFromArray($bold);
@@ -294,14 +294,14 @@ class C_Monitoring extends CI_Controller {
             $worksheet->getStyle("A{$i}:B{$i}")->applyFromArray($alignment);
             $worksheet->getStyle("A{$i}:B{$i}")->applyFromArray($border);
 
-            $worksheet->setCellValue("A{$i}", "Jumlah Total Berat");
-            $worksheet->setCellValue("C{$i}", $totalBerat);
+            $worksheet->setCellValue("A{$i}", "Total Berat Limbah");
+            $worksheet->setCellValue("C{$i}", number_format((float)$totalBerat, 3, '.', ''));
             $worksheet->getStyle("C{$i}")->applyFromArray($border);
         }
 
-        $now = date('Y-m-d_H:i:s');
+        $title = date('d-m-Y', strtotime($start))." - ".date('d-m-Y', strtotime($end));
 		header("Content-type: application/vnd-ms-excel");
-		header("Content-Disposition: attachment; filename=MonitoringLimbah_{$now}.xls");
+		header("Content-Disposition: attachment; filename=MonitoringLimbah_{$title}.xls");
 		header('Cache-Control: max-age=0');
 		header('Cache-Control: max-age=1');
 

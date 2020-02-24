@@ -30,13 +30,13 @@
                                                     </div>
                                                     <span class="col-lg-1" style="padding: 5px;">s/d</span>
                                                     <div class="col-lg-4">
-                                                        <input type="text " name=" " id="periodeLimbah2" class="date form-control " required autocomplete="off " placeholder="Periode akhir ">
+                                                        <input type="text " name=" " id="periodeLimbah2" class="date form-control " required autocomplete="off" placeholder="Periode akhir ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-12">
                                                     <label class="control-label col-lg-2 "> Jenis Limbah</label>
                                                     <div class="col-lg-9">
-                                                        <select class="form-control select2" required multiple name="jenisLimbah" id="jenisLimbah">
+                                                        <select class="form-control select2" multiple name="jenisLimbah" id="jenisLimbah">
 															<?php foreach($jenisLimbah as $limbah): ?>
 															<option value="<?= $limbah['id_jenis_limbah'] ?>"><?= $limbah['kode_limbah'].' - '.$limbah['jenis_limbah'] ?></option>
 															<?php endforeach; ?>
@@ -77,7 +77,7 @@
                                                 <td>Jenis Limbah</td>
                                                 <td v-if="detailed">Tanggal Masuk</td>
                                                 <td v-if="detailed">Seksi Pengirim</td>
-                                                <td width="10%">Berat(Kg)</td>
+                                                <td width="7%">Berat(Kg)</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -203,7 +203,7 @@
                 for (item of this.$data.dataLimbah) {
                     beratTotal += parseFloat(item.berat_kirim)
                 }
-                return beratTotal
+                return beratTotal.toFixed(3)
             },
             urlExport() {
                 const vm = this

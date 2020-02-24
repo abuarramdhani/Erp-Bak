@@ -137,7 +137,6 @@ class M_limbahkelola extends CI_Model
         $limbah = implode(',', $limbah);
         $filterLimbah = "and limkir.id_jenis_limbah in ($limbah)";
       }
-      
 
       $sql = "SELECT
                 limjen.jenis_limbah,
