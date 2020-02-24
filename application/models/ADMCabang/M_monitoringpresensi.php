@@ -19,7 +19,7 @@ class M_monitoringpresensi extends Ci_Model
 		from 
 		hrd_khs.tpribadi a inner join hrd_khs.tseksi b on a.kodesie = b.kodesie
 		where
-		a.keluar = false and left(a.kodesie,1) = '3' and a.kd_jabatan != '-' and (a.kd_jabatan < 13::varchar or a.kd_jabatan = '19')
+		a.keluar = false and left(a.kodesie,1) = '3' and a.kd_jabatan != '-' and (a.kd_jabatan <= 13::varchar or a.kd_jabatan = '19')
 		";
 		$query = $this->personalia->query($sql)->result_array();
 		$arrnoind = array();
