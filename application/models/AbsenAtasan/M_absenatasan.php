@@ -72,8 +72,8 @@ class M_absenatasan extends CI_Model
 		return $query->result_array();
 	}
 
-	public function getEmployeeEmailByNama($nama){
-		$sql = "SELECT * FROM er.er_employee_all WHERE employee_name LIKE '%$nama%' and resign=0";
+	public function getEmployeeEmailByNama($noinduk,$nama){
+		$sql = "SELECT * FROM er.er_employee_all WHERE (employee_code='$noinduk' OR employee_name LIKE '%$nama%') and resign=0";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

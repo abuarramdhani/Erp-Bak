@@ -400,20 +400,19 @@ class C_Index extends CI_Controller
 			}
 
 			public function kirimEmailAtasanAndroid(){
-
 				$namaPekerja 		= $this->input->post('namaPekerja');
-				$atasan 			= $this->input->post('atasan');
+				$atasan 			= ltrim($this->input->post('atasan')," ");
 				$noindukPekerja		= $this->input->post('noindukPekerja');
 				$jenisAbsen 		= $this->input->post('jenisAbsen');
 				$waktu 				= $this->input->post('waktu');
 				$lokasi 			= $this->input->post('lokasi');
 				$latitude			= $this->input->post('latitude');
 				$longitude			= $this->input->post('longitude');
-				$dataAtasan 		= $this->M_absenatasan->getEmployeeEmailByNama($atasan);
-				// print_r($dataAtasan);exit();
+				$noindukAtasan 		= explode(" - ", $atasan)[0];
+				$namaAtasan 		= explode(" - ", $atasan)[1];
+				$dataAtasan 		= $this->M_absenatasan->getEmployeeEmailByNama($noindukAtasan,$namaAtasan);
 				$internalMailAtasan = $dataAtasan[0]['internal_mail'];
 				$externalMailAtasan = $dataAtasan[0]['external_mail'];
-
 
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
@@ -433,10 +432,7 @@ class C_Index extends CI_Controller
 				$mail->Username = 'no-reply@quick.com';
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
-				$mail->addAddress($internalMailAtasan, 'Absensi Online Pekerja');
-				if(!$eksternalMail==null){
-					$mail->addAddress($externalMailAtasan, 'Absensi Online Pekerja');
-				}
+				$mail->addAddress('alfansyah_nori_p@quick.com', 'Absensi Online Pekerja');
 				$mail->Subject = 'Absensi Online';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -460,7 +456,7 @@ class C_Index extends CI_Controller
 				if (!$mail->send()) {
 					echo "Mailer Error: " . $mail->ErrorInfo;
 				} else {
-					//echo "Message sent!";
+					echo "Message sent!";
 				}
 
 			}
