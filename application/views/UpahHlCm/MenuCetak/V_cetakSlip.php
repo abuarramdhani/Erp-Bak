@@ -8,21 +8,17 @@ if (isset($res) and !empty($res)) {
 <html>
 <head>
 </head>
-</style>
 <body>
 <?php 
 		set_time_limit(0);
 		ini_set("memory_limit", "2048M");
 							
 	?>
-<div style="margin: 10px;">
-	<table style="width:100%; padding: 0px; font-size: 11px">
+<div style="margin: 10px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 2px;">
+	<table style="width:100%; padding: 0px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 		<tr>
-			<td style="width: 10%" rowspan="5">
-				<img style="height: 80px; width: 70px" src="<?php echo base_url('/assets/img/logo.png') ?>" />
-			</td>
+			<td style="width: 10%" rowspan="5"></td>
 			<td style="width: 46%;">
-				<p>CV. KARYA HIDUP SENTOSA</p>
 			</td>
 			<td style="width: 10%">
 				<p>Tanggal</p>
@@ -32,9 +28,7 @@ if (isset($res) and !empty($res)) {
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<p>Pabrik Mesin Alat Pertanian, Pengecoran Logam,</p>
-			</td>
+			<td></td>
 			<td>
 				<p>Nama</p>
 			</td>
@@ -46,9 +40,7 @@ if (isset($res) and !empty($res)) {
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<p>Dealer Utama Diesel Kubota</p>
-			</td>
+			<td></td>
 			<td>
 				<p>Jabatan</p>
 			</td>
@@ -60,22 +52,12 @@ if (isset($res) and !empty($res)) {
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<p>Telp:(0274)512095,563217, Fax (0274 ) 563523</p>
-			</td>
+			<td></td>
 		</tr>
 	</table>
 </div>
-<div style="width: 100%;">
-	<div style="width: 100%; height: 3px; background-color: black;"></div>
-	<div style="width: 100%; height: 3px; background-color: grey; margin-top: 1px"></div>
-</div>
-<div style="text-align: center">
-	<p style="font-size: 17px; color: black"><b>SLIP GAJI</b></p>
-</div>
-
 <div>
-	<table style="width: 100%; font-size: 10px;border-collapse:separate; border-spacing:0 5px;">
+	<table style="width: 100%; font-size: 10px;border-collapse:separate; border-spacing:0 5px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<tr >
 				<th style="width: 50px;">No</th>
 				<th colspan="7" style="text-align: left; padding-left: 10px;">Keterangan</th>
@@ -637,39 +619,27 @@ if (isset($res) and !empty($res)) {
 		if($key['tambahan'] == 1 or $key['potongan'] == 1){
 			if ($key['tambahan'] == 0 or $key['potongan'] == 0) {
 				?>
-		<div style="margin-top: 10px;margin-left: 440px;font-size: 14px;">
-			<label>Yogyakarta, <?php echo date('d F Y');?></label>
-		</div>
-		<div style="margin-top: 20px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-left: 230px; font-size: 14px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 				<?php 
 			}else{
 				?>
-		<div style="margin-top: 5px;margin-left: 440px;font-size: 14px;">
-			<label>Yogyakarta, <?php echo date('d F Y');?></label>
-		</div>
-		<div style="margin-top: 5px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-left: 230px; font-size: 14px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 				<?php 
 			}
 		}else{
 			?>
-		<div style="margin-top: 12px;margin-left: 440px;font-size: 14px;">
-			<label>Yogyakarta, <?php echo date('d F Y');?></label>
-		</div>
-		<div style="margin-top: 40px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-left: 230px; font-size: 14px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 			<?php 
 		}
 		?>
 	<?php }else{ ?>
-		<div style="margin-top: 10px;margin-left: 440px;font-size: 14px;">
-			<label>Yogyakarta, <?php echo date('d F Y');?></label>
-		</div>
-		<div style="margin-top: 20px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-left: 230px; font-size: 14px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 	<?php } ?>
