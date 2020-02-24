@@ -1,8 +1,10 @@
 <?php
 if (isset($res) and !empty($res)) {
+	$datake=-1;
 	foreach ($res as $key) {
 		$lain = "";
 		$nomlain = "";
+	$datake++;
 ?>
 
 <html>
@@ -649,7 +651,7 @@ if (isset($res) and !empty($res)) {
 </html>
 <div style="<?php 
 $co = count($res);
-if ($co > '1') {
+if ($co > '1' && $datake!=$co) {
 	echo "page-break-before: always;";
 }?>">
 	

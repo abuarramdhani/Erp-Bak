@@ -14,7 +14,7 @@
 		</tr>
 		<tr>
 			<td style="width: 30%;">PERIODE BULAN TAHUN :</td>
-			<td><?php $period=explode(" - ", $periode);echo date('d F Y',strtotime($period[0]));echo " - ";echo date('d F Y',strtotime($period[1]));;?></td>
+			<td style="text-align: left;"><?php $period=explode(" - ", $periode);echo date('d F Y',strtotime($period[0]));echo " - ";echo date('d F Y',strtotime($period[1]));;?></td>
 		</tr>
 	</table>
 	<div style="width: 100%;height: 10px; border-left: 1px solid black; border-right: 1px solid black">
@@ -25,6 +25,7 @@
 			<td style="border-top: 1px solid black;border-bottom: 1px solid black; text-align: center; width: 4%; height: 25px;">NO</td>
 			<td style="border: 1px solid black; text-align: center; width: 10%">TGL TERIMA</td>
 			<td style="border: 1px solid black; text-align: center; width: 16%">NO REKENING</td>
+			<td style="border: 1px solid black; text-align: center; width: 5%">NOIND</td>
 			<td style="border: 1px solid black; text-align: center; width: 15%">NAMA</td>
 			<td style="border: 1px solid black; text-align: center; width: 13%;">TERIMA</td>
 			<td style="border: 1px solid black; text-align: center; width: 15%">NAMA PENERIMA REKENING</td>
@@ -32,7 +33,7 @@
 			<td style="border-top: 1px solid black;border-bottom: 1px solid black; text-align: center;">KETERANGAN</td>
 		</tr>
 		<tr>
-			<td style="text-align: center;background-color: #ccffcc;" colspan="8">TUKSONO</td>
+			<td style="text-align: center;background-color: #ccffcc;" colspan="9">TUKSONO</td>
 		</tr>
 		<?php 
 		$no = 1;
@@ -42,8 +43,9 @@
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $tglterima; ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
+					<td style="border: 1px solid black;padding-left: 2px;text-align: center;"><?php echo $key['noind'] ?></td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
-					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
+					<td style="border: 1px solid black;padding-left: 3px;text-align: right;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
@@ -57,6 +59,7 @@
 			<td style="border-top: 1px solid black;border-bottom: 1px solid black; text-align: center; width: 4%; height: 25px;">NO</td>
 			<td style="border: 1px solid black; text-align: center; width: 10%">TGL TERIMA</td>
 			<td style="border: 1px solid black; text-align: center; width: 16%">NO REKENING</td>
+			<td style="border: 1px solid black; text-align: center; width: 5%">NOIND</td>
 			<td style="border: 1px solid black; text-align: center; width: 15%">NAMA</td>
 			<td style="border: 1px solid black; text-align: center; width: 13%;">TERIMA</td>
 			<td style="border: 1px solid black; text-align: center; width: 15%">NAMA PENERIMA REKENING</td>
@@ -73,8 +76,9 @@
 							<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
 							<td style="border: 1px solid black; text-align: center;"><?php echo $tglterima; ?></td>
 							<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
+							<td style="border: 1px solid black;padding-left: 2px;text-align: center;"><?php echo $key['noind'] ?></td>
 							<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
-							<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
+							<td style="border: 1px solid black;padding-left: 3px;text-align: right;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
 							<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
 							<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
 							<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
@@ -83,7 +87,7 @@
 			}
 		}	?>
 		<tr>
-			<td style="text-align: center;background-color: #ccffcc;" colspan="8">PUSAT</td>
+			<td style="text-align: center;background-color: #ccffcc;" colspan="9">PUSAT</td>
 		</tr>
 		<?php 
 		foreach ($res as $key) {
@@ -92,8 +96,9 @@
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $tglterima; ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
+					<td style="border: 1px solid black;padding-left: 2px;text-align: center;"><?php echo $key['noind'] ?></td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
-					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
+					<td style="border: 1px solid black;padding-left: 3px;text-align: right;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
@@ -107,7 +112,7 @@
 		<tr>
 			<td colspan="3"></td>
 			<td style="border: 1px solid black;"><b>TOTAL</b></td>
-			<td style="border: 1px solid black;text-align: center;"><?php echo number_format($total_semua,0,'','.');?></td>
+			<td style="border: 1px solid black;text-align: right;"><?php echo number_format($total_semua,0,'','.');?></td>
 			<td colspan="3" style="text-align: center;">Yogyakarta, <?php 
 				echo date('d');
 				$month=date('m');
@@ -143,7 +148,7 @@
 			<td height="20px"></td>
 		</tr>
 	</table>
-	<table style="width: 100%;border-collapse: collapse;font-size: 12px;page-break-after: always;border: 1px solid black;border-top-width: 0px">
+	<table style="width: 100%;border-collapse: collapse;font-size: 12px;border: 1px solid black;border-top-width: 0px">
 		<tr>
 			<td style="text-align: center">Mengetahui,</td>
 			<td style="text-align: center">Menyetujui,</td>
