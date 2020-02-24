@@ -229,7 +229,9 @@ class C_SlipGaji extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data['res']);exit();
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8', 'A5-L', 8, '', 5, 5, 5, 15, 10, 20);
+		//$pdf = new mPDF('utf-8', 'A5-L', 8, '', 5, 5, 5, 15, 10, 20);
+		$pdf = new mPDF('utf-8' , array(215,91),8,'', 7, 7, 0, 0, 0,0,'P');
+				
 		$filename = 'Slip_gaji-'.$tgl.'.pdf';
 		// $this->load->view('UpahHlCm/MenuCetak/V_cetakSlip', $data);
 		$html = $this->load->view('UpahHlCm/MenuCetak/V_cetakSlip', $data, true);
