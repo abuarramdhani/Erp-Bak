@@ -279,7 +279,7 @@ class M_presensipekerja extends CI_Model {
 	}
 
 	public function getRekapPresensi($awal,$akhir){
-		$sql = "select 	a.noind, a.jml_gp as gp_gaji,a.lokasi_kerja as lokasi, a.jml_um as um_gaji, a.jml_lbr as lembur_gaji,  a.ump as ump_gaji,
+		$sql = "select 	a.noind, a.jml_gp as gp_gaji,a.lokasi_kerja as lokasi, el.location_name, a.jml_um as um_gaji, a.jml_lbr as lembur_gaji,  a.ump as ump_gaji,
 						coalesce(b.gp,0) as gp_tambahan, coalesce(b.um,0) as um_tambahan, coalesce(b.lembur,0) as lembur_tambahan, 
 						coalesce(c.gp,0) as gp_potongan, coalesce(c.um,0) as um_potongan, coalesce(c.lembur,0) as lembur_potongan,
 						d.pekerjaan,
@@ -306,6 +306,8 @@ class M_presensipekerja extends CI_Model {
 					and a.lokasi_kerja = d.lokasi_kerja
 				left join hlcm.hlcm_datapekerja e 
 					on a.noind = e.noind
+				left join er.er_location el 
+					on el.er_location_id=a.lokasi_kerja::int
 				where a.tgl_awal_periode = '$awal'
 					and a.tgl_akhir_periode = '$akhir'
 				order by a.noind";

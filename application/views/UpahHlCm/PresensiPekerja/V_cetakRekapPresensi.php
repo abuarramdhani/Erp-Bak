@@ -33,6 +33,7 @@
 					<th rowspan="2">Noind</th>
 					<th rowspan="2">Nama</th>
 					<th rowspan="2">Status</th>
+					<th rowspan="2">Lokasi</th>
 					<th colspan="4">Gaji</th>
 					<th colspan="3">Tambahan</th>
 					<th colspan="3">Potongan</th>
@@ -64,6 +65,7 @@
 							<td style="text-align: center"><?php echo $key['noind'] ?></td>
 							<td><?php echo $key['nama'] ?></td>
 							<td><?php echo $key['pekerjaan'] ?></td>
+							<td><?php echo $key['location_name'] ?></td>
 							<td style="text-align: center"><?php echo number_format($key['gp_gaji'],'2','.','') ?></td>
 							<td style="text-align: center"><?php echo number_format($key['lembur_gaji'],'2','.','') ?></td>
 							<td style="text-align: center"><?php echo number_format($key['um_gaji'],'2','.','') ?></td>
