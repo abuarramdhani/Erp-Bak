@@ -41,6 +41,7 @@
 															<option value="<?= $limbah['id_jenis_limbah'] ?>"><?= $limbah['kode_limbah'].' - '.$limbah['jenis_limbah'] ?></option>
 															<?php endforeach; ?>
 														</select>
+                                                        <small style="color: red; float: left;">*Kosongkan bila pilih semua jenis</small>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-12">

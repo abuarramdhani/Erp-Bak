@@ -51,7 +51,7 @@ class M_kirim extends Ci_Model
       }
 
       // khusus untuk atasan seksi Waste Management akan muncul semua seksi
-      $kodesieKasieWM = '101030100';
+      $kodesieKasieWM = '406010100';
       $filterSeksi = "limkir.kodesie_kirim = left('$seksi',7) and";
       if($seksi == $kodesieKasieWM) {
         $filterSeksi = '';

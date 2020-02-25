@@ -98,11 +98,11 @@
 													<?php elseif ($key['status_kirim'] == '2'): ?>
 														<span class='label label-danger'>Rejected by Waste Management</span>
 													<?php elseif ($key['status_kirim'] == '3'): ?>
-														<span class='label label-warning'>Waiting</span>
+														<span class='label label-warning'>Pending</span>
 													<?php elseif ($key['status_kirim'] == '4'): ?>
-														<span class='label label-info'>Approve by Kasie</span>
+														<span class='label label-info'>Approved by Atasan</span>
 													<?php elseif ($key['status_kirim'] == '5'): ?>
-														<span class='label label-danger'>Rejected by Kasie</span>
+														<span class='label label-danger'>Rejected by Atasan</span>
 													<?php endif ?>
 												</td>
 												<td>

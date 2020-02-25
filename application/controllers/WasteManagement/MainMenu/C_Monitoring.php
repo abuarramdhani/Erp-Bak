@@ -161,23 +161,25 @@ class C_Monitoring extends CI_Controller {
             //Value
             $sheet->setTitle('Sheet1');
             $sheet->setCellValue('A1','Monitoring Limbah');
-
-            // HERE IS HELL
             $worksheet->mergeCells('A1:E1');
-            $worksheet->getStyle('A1:E1')->applyFromArray($alignment);
-            $worksheet->getStyle('A2')->applyFromArray($border)->applyFromArray($thead);
-            $worksheet->getStyle('B2')->applyFromArray($border)->applyFromArray($thead);
-            $worksheet->getStyle('C2')->applyFromArray($border)->applyFromArray($thead);
-            $worksheet->getStyle('D2')->applyFromArray($border)->applyFromArray($thead);
-            $worksheet->getStyle('E2')->applyFromArray($border)->applyFromArray($thead);
 
-            $sheet->setCellValue('A2','No ');
-            $sheet->setCellValue('B2','Jenis Limbah');
-            $sheet->setCellValue('C2','Tanggal Masuk');
-            $sheet->setCellValue('D2','Seksi Pengirim');
-            $sheet->setCellValue('E2','Berat(Kg)');
+            $sheet->setCellValue('A2','Periode : '.$start." s/d ".$end);
+            $worksheet->mergeCells('A2:E2');
+            // HERE IS HELL
+            $worksheet->getStyle('A1:E1')->applyFromArray($alignment);
+            $worksheet->getStyle('A2:E2')->applyFromArray($alignment);
+            $worksheet->getStyle('A3')->applyFromArray($border)->applyFromArray($thead);
+            $worksheet->getStyle('B3')->applyFromArray($border)->applyFromArray($thead);
+            $worksheet->getStyle('C3')->applyFromArray($border)->applyFromArray($thead);
+            $worksheet->getStyle('D3')->applyFromArray($border)->applyFromArray($thead);
+            $worksheet->getStyle('E3')->applyFromArray($border)->applyFromArray($thead);
+            $sheet->setCellValue('A3','No ');
+            $sheet->setCellValue('B3','Jenis Limbah');
+            $sheet->setCellValue('C3','Tanggal Masuk');
+            $sheet->setCellValue('D3','Seksi Pengirim');
+            $sheet->setCellValue('E3','Berat(Kg)');
     
-            $i = 2;
+            $i = 3;
             $nomor = 0;
             foreach ($data as $key) {
                 $i++;
@@ -243,19 +245,22 @@ class C_Monitoring extends CI_Controller {
             //Value
             $sheet->setTitle('Sheet1');
             $sheet->setCellValue('A1','Monitoring Limbah');
-
-            // HERE IS HELL
             $worksheet->mergeCells('A1:C1');
-            $worksheet->getStyle('A1:C1')->applyFromArray($alignment);
-            $worksheet->getStyle('A2')->applyFromArray($border)->applyFromArray($thead);
-            $worksheet->getStyle('B2')->applyFromArray($border)->applyFromArray($thead);
-            $worksheet->getStyle('C2')->applyFromArray($border)->applyFromArray($thead);
 
-            $sheet->setCellValue('A2','No ');
-            $sheet->setCellValue('B2','Jenis Limbah');
-            $sheet->setCellValue('C2','Berat(Kg)');
+            $sheet->setCellValue('A2','Periode : '.$start." s/d ".$end);
+            $worksheet->mergeCells('A2:C2');
+            $worksheet->getStyle('A2:C2')->applyFromArray($alignment);
+
+            $worksheet->getStyle('A3:C1')->applyFromArray($alignment);
+            $worksheet->getStyle('A3')->applyFromArray($border)->applyFromArray($thead);
+            $worksheet->getStyle('B3')->applyFromArray($border)->applyFromArray($thead);
+            $worksheet->getStyle('C3')->applyFromArray($border)->applyFromArray($thead);
+
+            $sheet->setCellValue('A3','No');
+            $sheet->setCellValue('B3','Jenis Limbah');
+            $sheet->setCellValue('C3','Berat(Kg)');
     
-            $i = 2;
+            $i = 3;
             $nomor = 0;
             foreach ($data as $key) {
                 $i++;
