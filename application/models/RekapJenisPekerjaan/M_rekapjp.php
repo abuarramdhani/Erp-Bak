@@ -124,7 +124,7 @@ class M_rekapjp extends CI_Model
 						tp.noind = tpos.noind
 						and tpos.tgl_berlaku >= '$tglRekap'
 					where
-						tp.tglkeluar > '$tglRekap'
+						(tp.tglkeluar > '$tglRekap' or (tp.tglkeluar < '$tglRekap' and tp.keluar = '0'))
 						and $kode
 						and tp.masukkerja <= '$tglRekap'
 					order by
