@@ -59,6 +59,7 @@
 					<table style="border-collapse: collapse;" border="1">
 					<thead>
 						<tr>
+							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 10px'>No</th>
 							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 50px'>No. Induk</th>
 							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 150px;'>Nama</th>
 							<?php  
@@ -106,8 +107,12 @@
 					</thead>
 					<tbody>
 						<?php 
-							foreach ($absen as $abs) { ?>
+							$nomor=0;
+							foreach ($absen as $abs) { 
+								$nomor++;
+								?>
 								<tr>
+									<td style="text-align: center;vertical-align: center"><?php echo $nomor;?></td>
 									<td style="text-align: center;vertical-align: center">
 										<?php echo $abs['noind'] ?>
 									</td>

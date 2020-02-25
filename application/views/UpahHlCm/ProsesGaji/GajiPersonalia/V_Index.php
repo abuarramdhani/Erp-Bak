@@ -74,7 +74,6 @@
 						<button type="submit" class="btn btn-primary">Proses</button>
 						<?php if (isset($valLink)): ?>
 							<a target="_blank" href="<?php echo site_url('HitungHlcm/GajiPersonalia/printProses/xls/'.$valLink); ?>" class="btn btn-success">Excel</a>
-							<a target="_blank" href="<?php echo site_url('HitungHlcm/GajiPersonalia/printProses/pdf/'.$valLink); ?>" class="btn btn-danger">PDF</a>
 						<?php endif ?>
 					</div>
 				</div>

@@ -38,6 +38,7 @@
 									<thead style="bg-primary">
 										<tr>
 											<th rowspan="2">No</th>
+											<th rowspan="2">Noind</th>
 											<th rowspan="2">Nama</th>
 											<th rowspan="2">Status</th>
 											<th colspan="4">Gaji</th>
@@ -64,6 +65,7 @@
 												?>
 												<tr>
 													<td><?php echo $nomor; ?></td>
+													<td><?php echo $key['noind'] ?></td>
 													<td><?php echo $key['nama'] ?></td>
 													<td><?php echo $key['pekerjaan'] ?></td>
 													<td style="text-align: center"><?php echo number_format($key['gp_gaji'],'2','.','') ?></td>

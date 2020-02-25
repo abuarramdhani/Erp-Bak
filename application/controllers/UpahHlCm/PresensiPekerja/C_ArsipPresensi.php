@@ -95,7 +95,7 @@ class C_ArsipPresensi extends CI_Controller
 				$data['akhir'] = $data_array->tgl_akhir_periode;
 
 				$pdf = $this->pdf->load();
-				$pdf = new mPDF('utf-8', 'A4', 8, '', 12, 15, 15, 15, 10, 20);
+				$pdf = new mPDF('utf-8', 'A4', 8, '', 12, 15, 15, 15, 10, 5);
 				$filename = 'Arsip-RekapPresensi-'.$data_array->awal.'-'.$data_array->akhir.'.pdf';
 				// $this->load->view('UpahHlCm/PresensiPekerja/V_cetakRekapPresensi', $data);
 				$html = $this->load->view('UpahHlCm/PresensiPekerja/V_cetakRekapPresensi', $data, true);
