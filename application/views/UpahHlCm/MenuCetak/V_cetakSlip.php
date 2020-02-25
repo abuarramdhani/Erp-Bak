@@ -17,7 +17,7 @@ if (isset($res) and !empty($res)) {
 							
 	?>
 <div style="margin: 10px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 2px;">
-	<table style="width:100%; padding: 0px; font-size: 10px; font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
+	<table style="width:100%; padding: 0px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 		<tr>
 			<td style="width: 10%" rowspan="5"></td>
 			<td style="width: 46%;">
@@ -59,7 +59,7 @@ if (isset($res) and !empty($res)) {
 	</table>
 </div>
 <div>
-	<table style="width: 90%; font-size: 10px;border-collapse:separate; border-spacing:0 5px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px; margin-left: 5%;margin-right: 7%;">
+	<table style="width: 90%; font-size: 11px;border-collapse:separate; border-spacing:0 5px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px; margin-left: 5%;margin-right: 7%;margin-top: 10px;margin-bottom: 10px;">
 			<tr >
 				<th style="width: 50px;">No</th>
 				<th colspan="7" style="text-align: left; padding-left: 10px;">Keterangan</th>
