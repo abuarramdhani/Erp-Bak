@@ -62,6 +62,7 @@ class C_MoveOrder extends CI_Controller
 	public function search(){
 		$date = $this->input->post('date');
 		$dept = $this->input->post('dept');
+		$shift1 = $this->input->post('shift');
 		if ($dept == 'SUBKT') {
 			$shift = '';
 			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
@@ -137,6 +138,9 @@ class C_MoveOrder extends CI_Controller
 
 
 		$data['requirement'] = $array_terkelompok;
+		$data['date'] = $date;
+		$data['dept'] = $dept;
+		$data['shift'] = $shift1;
 		// echo "<pre>";
 		// print_r($data['requirement']);
 		// exit();
@@ -607,6 +611,61 @@ class C_MoveOrder extends CI_Controller
 		}else{
 			exit('Terjadi Kesalahan :(');
 		}
+	}
+
+	public function pdfPending(){
+		$data['date'] = $this->input->post('date');
+		$dept 	= $this->input->post('dept');
+		$shift 	= $this->input->post('shift');
+		$no_job = $this->input->post('no_job');
+		$assy 	= $this->input->post('assy');
+
+		$shift 	= $this->M_MoveOrder->getShift2($shift);
+		$desc 	= $this->M_MoveOrder->getDescDept($dept);
+		$data['shift'] 	= $shift[0]['DESCRIPTION'];
+		$data['dept'] 	= $dept.' - '.$desc[0]['DESCRIPTION'];
+		// echo "<pre>";print_r($desc);exit();
+
+		$tampung = array();
+		for ($i=0; $i < count($no_job) ; $i++) { 
+			$no_job2	= explode('<>', $no_job[$i]);
+			$assy2		= explode('<>', $assy[$i]);
+
+			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";
+			$cari = $this->M_MoveOrder->getKurang($no_job2[0],$atr);
+			foreach ($cari as $kQty => $vQty) {
+				if ($vQty['REQ'] > $vQty['ATR']){
+					$cek = $this->M_MoveOrder->checkPicklist($no_job2[0]);
+					if (empty($cek)) {
+						$array = array(
+							'no_job' => $no_job2[0],
+							'kode_assy' => $assy2[0],
+							'item' => $vQty['ITEM_CODE'],
+							'desc' => $vQty['ITEM_DESC'],
+							'subinv' => $vQty['GUDANG_ASAL'],
+							'req' => $vQty['REQ'],
+							'stok' => $vQty['ATR'],
+						);
+					array_push($tampung, $array);
+					}
+				}
+			}
+		}
+		// echo "<pre>";print_r($tampung);exit();
+		$data['data'] = $tampung;
+
+		$this->load->library('Pdf');
+		$pdf 		= $this->pdf->load();
+		$pdf		= new mPDF('utf-8','a4', 0, '', 1, 1, 3, 1);
+		$filename 	= 'report-pendingan-job.pdf';
+
+		$html 	= $this->load->view('Inventory/MainMenu/MoveOrder/V_PdfKurang', $data, true);	
+
+		ob_end_clean();
+		$pdf->WriteHTML($html);											
+		// $pdf->debug = true; 
+		$pdf->Output($filename, 'I');
+
 	}
 	
 }
