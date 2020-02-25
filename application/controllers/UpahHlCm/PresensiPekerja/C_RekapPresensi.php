@@ -96,11 +96,11 @@ class C_RekapPresensi extends CI_Controller {
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 			$pdf = $this->pdf->load();
-			$pdf = new mPDF('utf-8', 'A4', 8, '', 12, 15, 15, 15, 10, 20);
+			$pdf = new mPDF('utf-8', 'A4-L', 8, '', 10, 10, 10, 10, 10, 5);
 			$filename = 'Rekap-'.$tgl.'.pdf';
 			// $this->load->view('UpahHlCm/PresensiPekerja/V_cetakRekapPresensi', $data);
 			$html = $this->load->view('UpahHlCm/PresensiPekerja/V_cetakRekapPresensi', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." ".$this->session->employee." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
 			$pdf->Output($filename, 'I');
 		}elseif($submit == 'Simpan Data'){

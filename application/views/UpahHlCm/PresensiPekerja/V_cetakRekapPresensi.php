@@ -3,7 +3,7 @@
 <html>
 <body>
 	<div>
-		<h2 style="text-align: center">Rekap Presensi</h2>
+		<h3 style="text-align: left">Rekap Presensi</h3>
 		<?php if (isset($periode) and !empty($periode)) {
 			$bulan = array (
 				1 =>   'Januari',
@@ -25,7 +25,6 @@
 			echo "Periode : ".$prd['0']['2'].'/'.$prd['0']['1'].'/'.$prd['0']['0'].' - '.$prd['1']['2'].'/'.$prd['1']['1'].'/'.$prd['1']['0'];
 		} ?>
 	</div>
-	<br>
 	<div>
 		<table style="width: 100%;border-collapse: collapse;" border="1">
 			<thead>
@@ -37,12 +36,16 @@
 					<th colspan="4">Gaji</th>
 					<th colspan="3">Tambahan</th>
 					<th colspan="3">Potongan</th>
+					<th colspan="3">Jumlah</th>
 				</tr>
 				<tr>
 					<th>Gaji Pokok</th>
 					<th>Lembur</th>
 					<th>Uang Makan</th>
 					<th>Uang Makan Puasa</th>
+					<th>Gaji Pokok</th>
+					<th>Lembur</th>
+					<th>Uang Makan</th>
 					<th>Gaji Pokok</th>
 					<th>Lembur</th>
 					<th>Uang Makan</th>
@@ -71,6 +74,15 @@
 							<td style="text-align: center"><?php echo number_format($key['gp_potongan'],'2','.','') ?></td>
 							<td style="text-align: center"><?php echo number_format($key['lembur_potongan'],'2','.','') ?></td>
 							<td style="text-align: center"><?php echo number_format($key['um_potongan'],'2','.','') ?></td>
+							<td style="text-align: center"><?php 
+							$jmlgp=$key['gp_gaji']+$key['gp_tambahan']-$key['gp_potongan'];
+							echo number_format($jmlgp,'2','.','') ?></td>
+							<td style="text-align: center"><?php 
+							$jmllembur =$key['lembur_gaji']+$key['lembur_tambahan']-$key['lembur_potongan'];
+							echo number_format($jmllembur,'2','.','') ?></td>
+							<td style="text-align: center"><?php 
+							$jmlum = $key['um_gaji']+$key['um_tambahan']-$key['um_potongan'];
+							echo number_format($jmlum,'2','.','') ?></td>
 						</tr>
 						<?php
 						$nomor++;
