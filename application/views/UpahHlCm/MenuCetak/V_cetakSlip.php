@@ -16,7 +16,7 @@ if (isset($res) and !empty($res)) {
 		ini_set("memory_limit", "2048M");
 							
 	?>
-<div style="margin: 10px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 2px;">
+<div style="margin: 10px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 2px;padding-top: 10mm">
 	<table style="width:100%; padding: 0px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 		<tr>
 			<td style="width: 10%" rowspan="5"></td>
@@ -59,7 +59,7 @@ if (isset($res) and !empty($res)) {
 	</table>
 </div>
 <div>
-	<table style="width: 90%; font-size: 11px;border-collapse:separate; border-spacing:0 5px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px; margin-left: 5%;margin-right: 7%;margin-top: 10px;margin-bottom: 10px;">
+	<table style="width: 90%; font-size: 11px;border-collapse:separate; border-spacing:0 5px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px; margin-left: 5%;margin-right: 7%;margin-top: 20mm;margin-bottom: 10px;">
 			<tr >
 				<th style="width: 50px;">No</th>
 				<th colspan="7" style="text-align: left; padding-left: 10px;">Keterangan</th>
