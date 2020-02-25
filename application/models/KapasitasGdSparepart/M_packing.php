@@ -101,4 +101,11 @@ class M_packing extends CI_Model
         $query = $mysqli->query($sql);
         // echo $sql;
     }
+
+    public function cekPacking($nospb){
+        $oracle = $this->load->database('khs_packing', true);
+        $sql = "select * from sp_packing_trx where nomor_do = '$nospb'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
 }

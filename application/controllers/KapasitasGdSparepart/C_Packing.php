@@ -52,14 +52,14 @@ class C_Packing extends CI_Controller
 		// 	}else{
 			// $jenis = $packing[$i]['JENIS_DOKUMEN'];
 			// $nospb = $packing[$i]['NO_DOKUMEN'];
-			// $waktu1 = strtotime($packing[$i]['JAM_MULAI']);
-			// $waktu2 = strtotime($packing[$i]['JAM_SELESAI']);
-			// $selisih = ($waktu2 - $waktu1);
+			// $waktu1 = strtotime('2020-02-13 06:23:06');
+			// $waktu2 = strtotime('2020-02-12 10:19:10');
+			// $selisih = ($waktu1 - $waktu2);
 			// $jam = floor($selisih/(60*60));
 			// $menit = $selisih - $jam * (60 * 60);
 			// $htgmenit = floor($menit/60) * 60;
 			// $detik = $menit - $htgmenit;
-			// $data['selisih'][$i] = $jam.':'.floor($menit/60).':'.$detik;
+			// $data['selisih'] = $jam.':'.floor($menit/60).':'.$detik;
 			// $slsh = $data['selisih'][$i];
 			// $query = "set waktu_packing = '$slsh'"; 
 			// $saveselisih = $this->M_packing->saveWaktu($jenis, $nospb, $query);
@@ -70,7 +70,7 @@ class C_Packing extends CI_Controller
 		// echo "<br>"; 
 		// print_r($waktu2);
 		// echo "<br>"; 
-		// print_r($selisih);
+		// print_r($data['selisih']);
 		// exit();
 
 		$this->load->view('V_Header',$data);
@@ -163,7 +163,15 @@ class C_Packing extends CI_Controller
 		$pic 	= $this->input->post('pic');
 		$no 	= $this->input->post('no');
 
-		$tbl = '<input type="hidden" id="date" value="'.$date.'">
+		$cek = $this->M_packing->cekPacking($nospb);
+		if (empty($cek)) {
+			$tbl = '<h3 style="text-align:center">Konfirmasi Packing Ke-1</h3>';
+		}else {
+			$jml = count($cek) + 1;
+			$tbl = '<h3 style="text-align:center">Konfirmasi Packing Ke-'.$jml.'</h3>';
+		}
+
+		$tbl .= '<input type="hidden" id="date" value="'.$date.'">
 		<input type="hidden" id="jenis" value="'.$jenis.'">
 		<input type="hidden" id="no_spb" value="'.$nospb.'">
 		<input type="hidden" id="mulai" value="'.$mulai.'">
