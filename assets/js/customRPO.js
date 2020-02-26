@@ -123,3 +123,88 @@ function CetakKartu(no) {
 			});
 	}
 }
+
+// -------------------------------------------------------------------------- DELIVER -------------------------------------------------------------------- //
+
+function getPO(th) {
+	$(document).ready(function(){
+		var lppbno = $('input[name="lppbno"]').val();
+		
+		var request = $.ajax({
+			url: baseurl+'ReceivePO/Deliver/getPO/',
+			data: {
+			    lppbno : lppbno
+			},
+			type: "POST",
+			datatype: 'html'
+		});
+		
+		
+			$('#has').html('');
+			$('#has').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+			
+
+		request.done(function(result){
+			// console.log("sukses2");
+			$('#has').html(result);
+			});
+		});		
+}
+function getdataInsert(th) {
+	$(document).ready(function(){
+
+		var itemdelive			= [];
+		$('input[name="itemdelive[]"]').each(function(){ itemdelive.push($(this).val())});
+		var descdelive			= [];
+		$('input[name="descdelive[]"]').each(function(){ descdelive.push($(this).val())});
+		var qtydelive				= [];
+		$('input[name="qtydelive[]"]').each(function(){ qtydelive.push($(this).val())});
+		var commentsdelive	= [];
+		$('input[name="commentsdelive[]"]').each(function(){ commentsdelive.push($(this).val())});
+		var podelive				= [];
+		$('input[name="podelive[]"]').each(function(){ podelive.push($(this).val())});
+		var sujadelive			= [];
+		$('input[name="sujadelive[]"]').each(function(){ sujadelive.push($(this).val())});
+		var serialstatus			= [];
+		$('input[name="serialstatus[]"]').each(function(){ serialstatus.push($(this).val())});
+		var lppbnumber		= [];
+		$('input[name="lppbnumber[]"]').each(function(){ lppbnumber.push($(this).val())});
+		var iddelive				= [];
+		$('input[name="iddelive[]"]').each(function(){ iddelive.push($(this).val())});
+		var pilihloc				= [];
+		$('input[name="pilihloc[]"]').each(function(){ pilihloc.push($(this).val())});
+		
+		var request = $.ajax({
+			url: baseurl+'ReceivePO/Deliver/Insertketable/',
+			data: {
+			    itemdelive 			: itemdelive,
+			    descdelive 			: descdelive,
+			    qtydelive 				: qtydelive,
+				commentsdelive 	: commentsdelive,
+				podelive 				: podelive,
+				sujadelive 				: sujadelive,
+				serialstatus 			: serialstatus,
+				lppbnumber 			: lppbnumber,
+				iddelive 				: iddelive,
+				pilihloc 					: pilihloc
+
+			},
+			type: "POST",
+			datatype: 'html'
+		});
+		
+		
+			// $('#has').html('');
+			// $('#has').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+			
+
+		request.done(function(result){
+			console.log("sukses2");
+			 Swal.fire(
+			      'Delivered!',
+			      'Proses Deliver Selesai',
+			      'success'
+			    )
+			});
+		});		
+}
