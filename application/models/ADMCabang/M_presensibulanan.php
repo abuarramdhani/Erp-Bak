@@ -152,7 +152,7 @@ class M_presensibulanan extends Ci_Model
 		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
 	    	 $param = "left(pri.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
-	    	 $param = "left(pri.kodesie,7) in ('3070103','3070104')";
+	    	 $param = "left(pri.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
 	    	 $param = "left(pri.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
