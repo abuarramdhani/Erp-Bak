@@ -654,6 +654,7 @@ $(function() {
     });
     //	}
     //  select3
+
     $('.MasterPekerja-PerhitunganPesangon-DaftarPekerja').select2({
         allowClear: false,
         placeholder: "Pilih Pekerja",
@@ -677,6 +678,45 @@ $(function() {
         }
     });
 
+    $('#txtProses').datepicker({
+        "showDropdowns": true,
+        "autoApply": true,
+        "autoclose": true,
+        "format": "dd MM yyyy"
+    }).on('change', function () {
+        let wkt = moment($(this).val()).format('dd');
+        $('#txtHariPrs').removeClass('ahad')
+
+        $('#txtHariPrs').val(function () {
+            if (wkt == 'Su') {
+                var styles = {
+                    color : "red",
+                    fontWeight: "bold"
+                };
+                $(this).css(styles)
+                return 'Minggu'
+            }else if (wkt == 'Mo') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Senin'
+            }else if (wkt == 'Tu') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Selasa'
+            }else if (wkt == 'We') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Rabu'
+            }else if (wkt == 'Th') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Kamis'
+            }else if (wkt == 'Fr') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Jumat'
+            }else if (wkt == 'Sa') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Sabtu'
+            }
+        });
+    })
+
     $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').change(function() {
         var noind = $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').val();
         if (noind) {
@@ -696,7 +736,6 @@ $(function() {
                     $('#txtLahir').val(res[0]['tempat']);
                     $('#txtMasaKerja').val(res[0]['masakerja']);
                     $('#txtSisaCuti').val(res[0]['sisacuti']);
-                    $('#txtProses').val(res[0]['metu']);
                     $('#txtStatus').val(res[0]['alasan']);
                     $('#txtUangPesangon').val(res[0]['pengali']);
                     $('#txtUangUMPK').val(res[0]['upmk']);
@@ -710,10 +749,31 @@ $(function() {
                     $('#txtUPMK').val(res[0]['up']);
                     $('#txtCuti').val(res[0]['cuti']);
                     $('#txtRugi').val(res[0]['rugi']);
-                    $('#txtAkhir').val(res[0]['akhir']);
+                    $('#txtAkhir').val(res[0]['metu']);
                     $('#txtNPWP').val(res[0]['npwp']);
                     $('#txtNIK').val(res[0]['nik']);
-
+                    $('#txtHariLmt').val(function () {
+                        if (res['hari_terakhir'] == 'Sun') {
+                            var styles = {
+                                color : "red",
+                                fontWeight: "bold"
+                            };
+                            $(this).css(styles)
+                            return 'Minggu'
+                        }else if (res['hari_terakhir'] == 'Mon') {
+                            return 'Senin'
+                        }else if (res['hari_terakhir'] == 'Tue') {
+                            return 'Selasa'
+                        }else if (res['hari_terakhir'] == 'Wed') {
+                            return 'Rabu'
+                        }else if (res['hari_terakhir'] == 'Thu') {
+                            return 'Kamis'
+                        }else if (res['hari_terakhir'] == 'Fri') {
+                            return 'Jumat'
+                        }else if (res['hari_terakhir'] == 'Sat') {
+                            return 'Sabtu'
+                        }
+                    });
                 }
             });
         }
@@ -2085,7 +2145,6 @@ $('.prevSangu').click(function() {
         dataType: 'json',
         url: baseurl + 'MasterPekerja/PerhitunganPesangon/getDataPreview/'+a,
         success: function (result) {
-            console.log(result.dataPreview[0].pengirim);
             $('#Psg_approver1').val(result.dataPreview[0].pengirim).trigger('change')
             $('#id_prev_sangu').val(result.dataPreview[0].id).trigger('change')
             $('#psg_tglCetak').val(result.dataPreview[0].tgl_cetak_prev).trigger('change')
