@@ -21,7 +21,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" method="POST" action="">
+										<form class="form-horizontal" method="POST" action="" autocomplete="off">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tanggal</label>
 												<div class="col-lg-3">
