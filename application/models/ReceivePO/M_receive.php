@@ -14,11 +14,11 @@ class M_receive extends CI_Model
                kpr.PO_NUMBER
               ,kpr.SHIPMENT_NUMBER
               ,kpr.LPPB_NUMBER
-             -- ,kpr.INPUT_DATE
+              ,kpr.INPUT_DATE
         from khs_po_receive kpr
         where (kpr.FLAG = 'D' OR kpr.FLAG = 'O')
          and  kpr.input_date between TO_DATE('$datefrom"." 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and TO_DATE('$dateto"." 23:59:59', 'DD/MM/YYYY HH24:MI:SS')
-      ORDER BY PO_NUMBER ASC";
+      ORDER BY INPUT_DATE ASC";
 
 
 
