@@ -78,9 +78,10 @@ for ($i=0; $i < 2; $i++) {
 		</p>
 	</div>
 	<div style="width: 100%;height:auto;border-left: 1px solid black; border-right: 1px solid black;padding-top: 10px;">
-		<table style="width: 70%;font-size: 11px;">
+		<table style="width: 70%;font-size: 11px;width: 100%">
 			<tr>
 				<td style="width: 10%; text-align: center; height: 20px">NO</td>
+				<td style="width: 10%; text-align: center; height: 20px">NO INDUK</td>
 				<td style="width: 37%;">NAMA PEKERJA</td>
 				<td style="width: 90px;text-align: center;" colspan="2">PARAF</td>
 			</tr>
@@ -92,13 +93,21 @@ for ($i=0; $i < 2; $i++) {
 						?>
 						<tr>
 							<td style="text-align: center;"><?php echo $no;?></td>
+							<td style="text-align: center;"><?php echo $key['noind'];?></td>
 							<td><?php echo $key['nama'];?></td>
-							<td colspan="2" style="
 							<?php
 							if ($no%2 == '0') {
-								echo "text-align: right;";
+								?>
+									<td></td>
+									<td><?php echo $no;?>....................................</td>
+								<?php
+							}else{
+								?>
+									<td><?php echo $no;?>....................................</td>
+									<td></td>
+								<?php
 							}
-							?>"><?php echo $no;?>....................................</td>
+							?>
 						</tr>
 						<?php
 						$no++;
@@ -108,13 +117,21 @@ for ($i=0; $i < 2; $i++) {
 							?>
 							<tr>
 								<td style="text-align: center;"><?php echo $no;?></td>
+								<td style="text-align: center;"><?php echo $key['noind'];?></td>
 								<td><?php echo $key['nama'];?></td>
-								<td colspan="2" style="
 								<?php
 								if ($no%2 == '0') {
-									echo "text-align: right;";
+									?>
+										<td></td>
+										<td><?php echo $no;?>....................................</td>
+									<?php
+								}else{
+									?>
+										<td><?php echo $no;?>....................................</td>
+										<td></td>
+									<?php
 								}
-								?>"><?php echo $no;?>....................................</td>
+								?>
 							</tr>
 							<?php
 							$no++;
