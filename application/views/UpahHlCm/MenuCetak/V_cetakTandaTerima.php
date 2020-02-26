@@ -175,7 +175,7 @@ for ($i=0; $i < 2; $i++) {
 		</div>
 		<table style="width: 100%;font-size: 13px;">
 			<tr>
-				<td style="width: 30%;text-align: center;">Menyetujui</td>
+				<td style="width: 30%;text-align: center;"><!-- Menyetujui --></td>
 				<td style="width: 35%;text-align: center;">Mengetahui</td>
 				<td style="text-align: center;">Penanggung Jawab</td>
 			</tr>
@@ -183,7 +183,7 @@ for ($i=0; $i < 2; $i++) {
 		<table style="margin-top: 50px;font-size: 13px; text-align: center; width: 100%; text-transform: lowercase;">
 			<tr>
 				<td style="width: 30%;text-align: center;">
-					<?php
+					<!-- <?php
 					foreach ($pj as $key) {
 						if ($i == '0') {
 							if ($key['id_status'] == '3' and $key['lokasi_kerja'] == '01') {
@@ -197,7 +197,7 @@ for ($i=0; $i < 2; $i++) {
 							}
 						} 
 					}
-					?>
+					?> -->
 				</td>
 				<td style="width: 35%;text-align: center;">
 					<?php
@@ -238,7 +238,7 @@ for ($i=0; $i < 2; $i++) {
 		<table style="font-size: 13px; text-align: center; width: 100%;border-bottom: 1px solid black;">
 			<tr>
 				<td style="width: 30%;text-align: center;">
-					<?php
+					<!-- <?php
 					foreach ($pj as $key) {
 						if ($i == '0') {
 							if ($key['id_status'] == '3' and $key['lokasi_kerja'] == '01') {
@@ -252,7 +252,7 @@ for ($i=0; $i < 2; $i++) {
 							}
 						} 
 					}
-					?>
+					?> -->
 				</td>
 				<td style="width: 35%;text-align: center;">
 					<?php
