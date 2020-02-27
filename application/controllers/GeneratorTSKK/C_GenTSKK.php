@@ -1158,58 +1158,20 @@ public function AngkaToChar($sisa){
       return $kolom;
 }
 
-public function Kolom($jumlah){
+public function Kolom($c){
     //KONVERSI ANGKA KE NAMA KOLOM
-    $digitpertama = NULL;
-    $digitkedua = NULL;
-    $digitketiga = NULL;
-    $jumlahdigit2 = NULL;
-    $huruf1 = NULL;
-    $huruf2 = NULL;
-    $huruf3 = NULL;
-    $jumlahdigit = floor($jumlah / 26);
-    $digitketiga = $jumlah % 26;
-    if($jumlahdigit > 26 && $jumlah != 702){ //3 DIGIT
-       $jumlahdigit2 = $jumlahdigit / 26;
-        if ($digitketiga != 0){
-            $digitkedua = $jumlahdigit % 26;
-            $digitpertama = floor($jumlahdigit2);
-        } else {
-            $digitkedua = ($jumlahdigit % 26)-1;
-            if(floor($jumlahdigit2) == 1){
-                $digitpertama = floor($jumlahdigit2);
-            } else {
-                $digitpertama = floor($jumlahdigit2)-1;
-            }
-            $digitketiga = 26;
-        }
-        if($digitkedua == 0){
-            $digitkedua = 26;
-        }
-        $huruf1 = $this->AngkaToChar($digitpertama);
-        $huruf2 = $this->AngkaToChar($digitkedua);
-        $huruf3 = $this->AngkaToChar($digitketiga);
-        return $huruf1.$huruf2.$huruf3;
-    } else { //2 DIGIT
-        if($digitketiga != 0){
-            if ($jumlahdigit != 0){
-                $digitpertama = $jumlahdigit;
-            } else {
-                $digitpertama = NULL;
-            }
-            $digitkedua = $digitketiga;
-        } else {
-            $digitpertama = $jumlahdigit-1;
-            $digitkedua = 26;
-            $digitketiga = 26;
-        }
-        if($digitkedua == 0){
-            $digitkedua = 26;
-        }   
-        $huruf1 = $this->AngkaToChar($digitpertama);
-        $huruf2 = $this->AngkaToChar($digitkedua);
-        return $huruf1.$huruf2;
+    $c = intval($c);
+    if ($c <= 0) return '';
+
+    $letter = '';
+             
+    while($c != 0){
+       $p = ($c - 1) % 26;
+       $c = intval(($c - $p) / 26);
+       $letter = chr(65 + $p) . $letter;
     }
+    
+    return $letter;
 }
 
 public function deleteFile($id){
@@ -1472,19 +1434,10 @@ public function exportExcel(){
     // echo $hasil_irregular;die;
 
     //checking the length based on cycle time too
-    if ($hasil_irregular == NULL) {
-        $cycle_time = $last_finish + $takt_time;
-        $cycleTimeText = $cycle_time + 3;
-        // echo"<pre>"; echo "KOSONG";
-
-        // echo"<pre>"; echo $cycle_time;
-        // echo"<pre>"; echo $cycleTimeText;
-    }else {
         $cycle_time = $last_finish + $jumlah_hasil_irregular + $takt_time;
         $cycleTimeText = $cycle_time + 3;
         // echo"<pre>"; echo $cycle_time;
         // echo"<pre>"; echo "KAGA";
-    }
 
     if ($cycle_time < 370) {
         $end = 370;

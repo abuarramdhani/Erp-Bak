@@ -13,10 +13,10 @@ class C_Observation extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('Excel');
           //load the login model
-		$this->load->library('session');
-		$this->load->helper(array('url','download'));
-		$this->load->model('M_Index');
-		$this->load->model('SystemAdministration/MainMenu/M_user');
+        $this->load->library('session');
+        $this->load->helper(array('url','download'));
+        $this->load->model('M_Index');
+        $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('GeneratorTSKK/M_gentskk');
         
         date_default_timezone_set('Asia/Jakarta');
@@ -171,10 +171,18 @@ public function Kolom($jumlah){
 
 public function exportObservation($id){
     
-   $this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));       
-   $newID = $this->M_gentskk->getAllObservation($id); 
-      //  echo "<pre>";print_r($newID);
-      //  exit();
+  $this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));       
+  $newID = $this->M_gentskk->getAllObservation($id); 
+  // echo "<pre>";print_r($newID);
+    //  exit();
+
+  //creator
+  $noind = $this->session->user;
+  // echo"<pre>";echo $noind;
+  $name = $this->M_gentskk->selectNamaPekerja($noind);
+  $nama_pekerja = $name[0]['nama'];
+  $sang_pembuat = $noind." - ".$nama_pekerja;
+  // echo $sang_pembuat;die;
 
    //HEADER//
    $judul             = $newID[0]['judul_tskk'];
@@ -330,6 +338,7 @@ $objPHPExcel->getActiveSheet()->mergeCells('U4:W4'); //OPERATOR
 $objPHPExcel->getActiveSheet()->mergeCells('U5:W5'); //ISI OPERATOR
 $objPHPExcel->getActiveSheet()->mergeCells('X1:Y1'); //DIBUAT OLEH
 $objPHPExcel->getActiveSheet()->mergeCells('X2:Y3'); //ISI DIBUAT OLEH
+$objget->getStyle('X2:Y3')->getAlignment()->setWrapText(true);
 $objPHPExcel->getActiveSheet()->mergeCells('X4:Y4'); //TANGGAL
 $objPHPExcel->getActiveSheet()->mergeCells('X5:Y5'); //ISI TANGGAL
  
@@ -393,6 +402,7 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('U4', 'Operator:')
         ->setCellValue('U5', $operator)
         ->setCellValue('X1', 'Dibuat Oleh:')
+        ->setCellValue('X2', $sang_pembuat)
         ->setCellValue('X4', 'Tanggal:')
         ->setCellValue('X5', $tanggal)
 

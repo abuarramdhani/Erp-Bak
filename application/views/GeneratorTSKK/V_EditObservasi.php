@@ -577,21 +577,21 @@ input[type="search"] {
 										<div class="row">
 													<label for="norm" class="control-label col-lg-6">Forecast (Unit) : </label>
 													<div class="col-lg-6">
-														<input type="number" placeholder="Forecast" value="<?php echo $forecast;?>" name="txtForecast" id="txtForecast" class="form-control forecast"/>
+														<input type="number" placeholder="Forecast" value="<?php echo $forecast;?>" name="txtForecast" id="txtForecast" class="form-control forecast" onchange="countRencanaProduksi(this)"/>
 													</div>
 											</div>
 										<br> 
 											<div class="row">
 													<label for="norm" class="control-label col-lg-6">Qty / Unit: </label>
 													<div class="col-lg-6">
-														<input type="number" placeholder="Qty / Unit" value="<?php echo $qty_unit;?>" name="txtQtyUnit" id="txtQtyUnit" class="form-control qtyUnit"/>
+														<input type="number" placeholder="Qty / Unit" value="<?php echo $qty_unit;?>" name="txtQtyUnit" id="txtQtyUnit" class="form-control qtyUnit" onchange="countRencanaProduksi(this)"/>
 													</div>
 											</div>
 										<br> 
 										<div class="row">
 												<label for="norm" class="control-label col-lg-6">Rencana Produksi/Forecast (Pcs) : </label>
 												<div class="col-lg-6">
-													<input type="number" value="<?php echo $rencana_produksi;?>" placeholder="Input Rencana Produksi" name="txtForecast" id="txtForecast" class="form-control forecast"/>
+													<input type="number" value="<?php echo $rencana_produksi;?>" placeholder="Input Rencana Produksi" name="txtForecast" id="txtForecast" class="form-control rencanaKerja"/>
 												</div>
 										</div>
 
