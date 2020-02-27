@@ -193,7 +193,7 @@ input[type="search"] {
 											<div class="col-lg-8">
 											<!-- <select style="height: 35px;" class="form-control select2" id="typeProduct" name="txtType" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true">
 											</select> -->
-											<input type="text" placeholder="Input Product Type" name="txtTypeT" value="" id="typeProductH" class="form-control type"/>
+											<input type="text" placeholder="Input Product Type" name="txtTypeT" id="typeProductH" class="form-control type"/>
 											</div>
 									</div>
 									<br>
@@ -375,25 +375,25 @@ input[type="search"] {
 									<br>
 												<label for="norm" class="control-label col-lg-2">Proses :</label>
 												<div id="divPassCheck" class="col-lg-10">
-													<input type="text" style="height: 35px;" placeholder="Input Proses" name="txtProses" value="" id="txtProses" class="form-control proses" required/>
+													<input type="text" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required/>
 												</div>
 										</div>
 										<br>
 										<div class="row">
 												<label for="norm" class="control-label col-lg-2">Kode Proses :</label>
 												<div id="divPassCheck" class="col-lg-10">
-													<input type="text" style="height: 35px;" placeholder="Input Kode Proses" name="txtKodeProses" value="" id="txtKodeProses" class="form-control kodeproses" required/>
+													<input type="text" style="height: 35px;" placeholder="Input Kode Proses" name="txtKodeProses" id="txtKodeProses" class="form-control kodeproses" required/>
 												</div>
 										</div>
 										<br>
 										<div class="row">
 										<label for="norm" class="control-label col-lg-2">Proses ke :</label>
 										<div class="col-lg-4">
-										<input type="text" placeholder="Input Proses ke" name="txtProsesKe" value="" id="txtProsesKe" class="form-control proses_ke" required/>
+										<input type="text" placeholder="Input Proses ke" name="txtProsesKe" id="txtProsesKe" class="form-control proses_ke" required/>
 										</div>
 										<label class="control-label col-lg-2 text-left">Dari :</label>
 										<div class="col-lg-4">
-											<input type="text" placeholder="Input" name="txtDariProses" value="" id="txtDariProses" class="form-control txtDariProses" />
+											<input type="text" placeholder="Input" name="txtDariProses" id="txtDariProses" class="form-control txtDariProses" />
 										</div>
 										</div>
 										<br>
@@ -401,7 +401,7 @@ input[type="search"] {
 										<div class="row">
 											<label for="norm" class="control-label col-lg-2">Qty/Proses :</label>
 												<div class="col-lg-10">
-													<input type="text" placeholder="Input Qty/Proses" value="" id="qtyProses" name="txtQtyProses" class="form-control qty_proses" />
+													<input type="text" placeholder="Input Qty/Proses" id="qtyProses" name="txtQtyProses" class="form-control qty_proses" />
 												</div>
 										</div>
 									</div>

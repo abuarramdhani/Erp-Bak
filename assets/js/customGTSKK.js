@@ -2085,7 +2085,7 @@ const onClickDeleteEditPage = (th) => {
 		var dari_operator    	= $('.txtDari').val();
 		var seksi            	= $('.pilihseksi').val();
 		//PROCESS
-		var proses           	= $('.proses').val();
+		var proses           	= $('.process').val(); //asw
 		var kode_proses      	= $('.kodeproses').val();
 		var proses_ke        	= $('.proses_ke').val(); 
 		var dari             	= $('.txtDariProses').val(); 
