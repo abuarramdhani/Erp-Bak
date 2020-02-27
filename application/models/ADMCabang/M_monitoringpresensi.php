@@ -49,7 +49,7 @@ class M_monitoringpresensi extends Ci_Model
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -85,7 +85,7 @@ class M_monitoringpresensi extends Ci_Model
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -119,7 +119,7 @@ class M_monitoringpresensi extends Ci_Model
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -175,7 +175,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -221,7 +221,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -289,7 +289,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -328,7 +328,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -384,7 +384,7 @@ $q_seksi)";
 			$sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
 				SELECT a.noind,a.tanggal,a.kd_ket 
 				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,7) in ('3070103','3070104') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false  ) as data";
+				WHERE left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false  ) as data";
 	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
 	    	$sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
 				SELECT a.noind,a.tanggal,a.kd_ket 
@@ -443,7 +443,7 @@ $q_seksi)";
 			$sql1 = "select COUNT(*) as jumlah_kerja FROM (
 				SELECT a.noind,a.tanggal,a.kd_ket 
 				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,7) in ('3070103','3070104') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false  AND a.kd_ket NOT LIKE '%C%') as data";
+				WHERE left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false  AND a.kd_ket NOT LIKE '%C%') as data";
 	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
 	    	$sql1 = "select COUNT(*) as jumlah_kerja FROM (
 				SELECT a.noind,a.tanggal,a.kd_ket 
@@ -489,7 +489,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -534,7 +534,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
