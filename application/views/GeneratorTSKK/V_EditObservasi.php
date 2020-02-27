@@ -281,7 +281,7 @@ input[type="search"] {
 										<br>
 											<label for="norm" class="control-label col-lg-4">Type Product:</label>
 											<div class="col-lg-8">
-												<input type="text" placeholder="Input Product Type" value="<?php if ($jenisInputPart == "TidakTerdaftar") { echo $type; } ?>"name="txtTypeT" value="" id="typeiNPUT" class="form-control type"/>
+												<input type="text" placeholder="Input Product Type" value="<?php if ($jenisInputPart == "TidakTerdaftar") { echo $type; } ?>"name="txtTypeT" id="typeiNPUT" class="form-control type"/>
 											</div>
 									</div>
 									<br>
@@ -336,7 +336,7 @@ input[type="search"] {
 												}
 												?>
 												</select>
-												<!-- <input type="text" value="<?= $no_mesin; ?>" placeholder="Input Nomor Mesin" name="txtNoMesin" value="" id="txtNoMesinTSKK" class="form-control noMesin" required/> -->
+												<!-- <input type="text" value="<?= $no_mesin; ?>" placeholder="Input Nomor Mesin" name="txtNoMesin" id="txtNoMesinTSKK" class="form-control noMesin" required/> -->
 												</div>
 										</div>
 										<br>
@@ -344,8 +344,8 @@ input[type="search"] {
 										<div class="row">
 												<label for="norm" class="control-label col-lg-4">Jenis Mesin :</label>
 												<div class="col-lg-8">
-													<textarea type="text" value="<?= $jm; ?>" style="height: 35px;" placeholder="Input Jenis Mesin" name="txtJenisMesin[]" value="" id="jenisMesin" class="form-control jenisMesin"><?= $jm;?></textarea>
-													<!-- <input type="text" value="<?= $jenis_mesin; ?>" placeholder="Input Jenis Mesin" value="" id="jenisMesin" name="txtJenisMesin" class="form-control jenisMesin" readonly/> -->
+													<textarea type="text" value="<?= $jm; ?>" style="height: 35px;" placeholder="Input Jenis Mesin" name="txtJenisMesin[]" id="jenisMesin" class="form-control jenisMesin"><?= $jm;?></textarea>
+													<!-- <input type="text" value="<?= $jenis_mesin; ?>" placeholder="Input Jenis Mesin" id="jenisMesin" name="txtJenisMesin" class="form-control jenisMesin" readonly/> -->
 												</div>
 										</div>
 										<br>
@@ -487,31 +487,31 @@ input[type="search"] {
 									<br>
 												<label for="norm" class="control-label col-lg-2">Proses :</label>
 												<div id="divPassCheck" class="col-lg-10">
-													<input type="text" value="<?= $proses; ?>" style="height: 35px;" placeholder="Input Proses" name="txtProses" value="" id="txtProses" class="form-control proses" required/>
+													<input type="text" value="<?= $proses; ?>" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required/>
 												</div>
 										</div>
 										<br>
 										<div class="row">
 												<label for="norm" class="control-label col-lg-2">Kode Proses :</label>
 												<div id="divPassCheck" class="col-lg-10">
-													<input type="text" value="<?= $kode_proses; ?>" style="height: 35px;" placeholder="Input Kode Proses" name="txtKodeProses" value="" id="txtKodeProses" class="form-control kodeproses" required/>
+													<input type="text" value="<?= $kode_proses; ?>" style="height: 35px;" placeholder="Input Kode Proses" name="txtKodeProses" id="txtKodeProses" class="form-control kodeproses" required/>
 												</div>
 										</div>
 										<br>
 										<!-- <div class="row">
 												<label for="norm" class="control-label col-lg-2">Proses ke :</label>
 												<div class="col-lg-10">
-												<input type="text" placeholder="Input Proses ke" name="txtProsesKe" value="" id="txtProsesKe" class="form-control proses_ke" required/>
+												<input type="text" placeholder="Input Proses ke" name="txtProsesKe" id="txtProsesKe" class="form-control proses_ke" required/>
 												</div>
 										</div> -->
 										<div class="row">
 										<label for="norm" class="control-label col-lg-2">Proses ke :</label>
 										<div class="col-lg-4">
-										<input type="text" placeholder="Input Proses ke"  value="<?= $proses_ke; ?>" name="txtProsesKe" value="" id="txtProsesKe" class="form-control proses_ke" required/>
+										<input type="text" placeholder="Input Proses ke"  value="<?= $proses_ke; ?>" name="txtProsesKe" id="txtProsesKe" class="form-control proses_ke" required/>
 										</div>
 										<label class="control-label col-lg-2 text-left">Dari :</label>
 										<div class="col-lg-4">
-											<input type="text" placeholder="Input"  value="<?= $dari; ?>" name="txtDariProses" value="" id="txtDariProses" class="form-control txtDariProses"/>
+											<input type="text" placeholder="Input"  value="<?= $dari; ?>" name="txtDariProses" id="txtDariProses" class="form-control txtDariProses"/>
 										</div>
 										</div>
 										<br>
@@ -519,7 +519,7 @@ input[type="search"] {
 										<div class="row">
 												<label for="norm" class="control-label col-lg-2">Qty/Proses :</label>
 												<div class="col-lg-10">
-													<input type="text"  value="<?= $qty; ?>" placeholder="Input Qty/Proses" value="" id="qtyProses" name="txtQtyProses" class="form-control qty_proses"/>
+													<input type="text"  value="<?= $qty; ?>" placeholder="Input Qty/Proses" id="qtyProses" name="txtQtyProses" class="form-control qty_proses"/>
 												</div>
 										</div>
 									</div>
