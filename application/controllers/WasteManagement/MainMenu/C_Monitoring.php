@@ -51,7 +51,7 @@ class C_Monitoring extends CI_Controller {
 
         $start = $_GET['start'];
         $end = $_GET['end'];
-        $limbah = isset($_GET['jenis']) ? $_GET['jenis'] : [];
+        $limbah = (isset($_GET['jenis']) && !empty($_GET['jenis'])) ? $_GET['jenis'] : [];
         $detailed = $_GET['detailed'];
 
         $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah);

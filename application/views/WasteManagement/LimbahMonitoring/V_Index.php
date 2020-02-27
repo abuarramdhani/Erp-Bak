@@ -187,14 +187,15 @@
                     if (res.data.data.length == 0) {
                         vm.isDataLimbahEmpty = true
                     }
-                }).catch(e => {
-                    alert(e)
-                }).finally(() => {
+
                     vm.isLoading = false
 
                     if (vm.dataLimbah.length > 0) {
                         window.scrollTo(0, 350)
                     }
+
+                }).catch(e => {
+                    alert(e)
                 })
             }
         },

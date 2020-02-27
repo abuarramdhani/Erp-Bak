@@ -163,7 +163,7 @@ class C_inputkirim extends CI_Controller
 		}else{
 			$data['LimbahSatuan'] = $this->M_kirim->getSatlimbyID($data['KirimLimbah']['0']['id_satuan']);
 		}
-		// print_r($data['LimbahSatuan']);exit;
+
 		$data['Lokasi'] = $this->M_kirim->getLokasi();
 
 		if (empty($_POST)) {
