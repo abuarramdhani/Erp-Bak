@@ -106,15 +106,17 @@
 <!-- only noob die in redzone -->
 <script>
     baseurl = '<?= base_url() ?>'
+
     const accData = (id, lv) => {
+        let checked = $('.check').parent().filter(".checked")
+
         swal.fire({
-            title: 'Yakin untuk mengapprove ?',
+            title: `Yakin untuk mengapprove &nbsp;<span style="color: red;">${checked.length ? checked.length : 1}</span>&nbsp; data ?`,
             text: 'cek kevalid-an data',
             type: 'question',
             showCancelButton: true
         }).then(res => {
             if (res.value) {
-                let checked = $('.check').parent().filter(".checked")
                 let allid = []
                 if (checked.length > 0) {
                     checked.each(function() {
@@ -150,15 +152,16 @@
     }
 
     const rejData = (id, lv) => {
+        let checked = $('.check').parent().filter(".checked")
+
         swal.fire({
-            title: 'Yakin untuk reject ?',
+            title: `Yakin untuk reject &nbsp<span style="color: red;">${checked.length ? checked.length : 1}</span>&nbsp data ?`,
             text: 'masukkan alasan',
             input: 'textarea',
             type: 'question',
             showCancelButton: true
         }).then(res => {
             if (res.value) {
-                let checked = $('.check').parent().filter(".checked")
                 let allid = []
                 if (checked.length > 0) {
                     checked.each(function() {
