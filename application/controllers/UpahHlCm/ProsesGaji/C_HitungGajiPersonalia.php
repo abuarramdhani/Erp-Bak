@@ -439,6 +439,10 @@ class C_HitungGajiPersonalia extends CI_Controller {
 			$nomor = 1;
 
 			if (isset($data['data']) and !empty($data['data'])) {
+
+				$valdt = array();
+				$valdt = array_column($data['data'],'noind');
+				array_multisort($valdt, SORT_ASC, $data['data']);
 				$nomor = 1;
 				foreach ($data['data'] as $key) {
 					$worksheet->setCellValue('A'.($nomor + 4),$nomor);
