@@ -81,7 +81,7 @@ class C_inputkirim extends CI_Controller
 
 	public function Create(){
 		$this->getSession();
-
+		
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 
@@ -123,16 +123,14 @@ class C_inputkirim extends CI_Controller
 				'keterangan' => $this->input->post('txtKeterangan'),
 				'id_satuan' => $this->input->post('txtSatuan')
 			);
+
 			$this->M_kirim->insertKirimLimbah($datapost);
 
 			$encrypted_string = $this->encrypt->encode($id['0']['id']);
 			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-			// kirim email jika sudah diapprove atasan
-			// $this->SendMail('Create', $encrypted_string);
+
 			redirect(site_url('WasteManagementSeksi/InputKirimLimbah'));
 		}
-
-
 	}
 
 	public function EditKirim($id){
@@ -212,10 +210,7 @@ class C_inputkirim extends CI_Controller
 		$this->M_kirim->delLimKirim($plaintext_string);
 		$data['LimbahKirim'] = $this->M_kirim->getLimbahKirim();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('WasteManagementSeksi/InputKirimLimbah/V_index',$data);
-		$this->load->view('V_Footer',$data);
+		redirect(base_url('WasteManagementSeksi/InputKirimLimbah'));
 	}
 
 

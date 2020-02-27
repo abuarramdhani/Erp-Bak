@@ -1,12 +1,12 @@
 <section class="content">
 	<div class="inner">
 		<div class="row">
-			<form class="form-horizontal" method="post" action="<?php site_url('WasteManagementSeksi/InputKirimLimbah/Insert')?>" id="wms-inputlimbah">
+			<form class="form-horizontal" method="POST" action="">
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="col-lg-11">
-								<h1 class="text-right"><b><?=$Title ?></b></h1>
+								<h1 class="text-right"><b><?= $Title ?></b></h1>
 							</div>
 							<div class="col-lg-1">
 								<div class="text-right hidden-md hidden-sm hidden-xs">
@@ -89,9 +89,9 @@
 													<div class="col-lg-12">
 														<select class="select select2" id="txtSeksiPengirim" data-placeholder="Seksi Pengirim" style="width: 100%">
 															<option></option>
-															<?php foreach ($Seksi2 as $key) { ?>
+															<?php foreach ($Seksi2 as $key): ?>
 																<option value="<?php echo $key['section_code'] ?>"><?php echo $key['section_code']." - ".$key['section_name']  ?></option>
-															<?php } ?>
+															<?php endforeach ?>
 														</select>
 													</div>
 												</div>
@@ -136,12 +136,8 @@
 														<input type="number" autocomplete="off" class="form-control" name="txtJumlah" id="txtJumlah" placeholder="Jumlah" required>
 													</div>
 													<div class="col-lg-5">
-														<!-- <input type="text" class="form-control" name="txtSatuan" id="txtSatuan" placeholder="Satuan" disabled=""> -->
-														<select style="width: 100%;" class="select select2" name="txtSatuan" id="txtSatuan" data-placeholder="Satuan">
+														<select style="width: 100%;" class="select select2" name="txtSatuan" id="txtSatuan" data-placeholder="Satuan" required>
 															<option></option>
-															<!-- <?php foreach ($SatuanLimbah as $key) { ?>
-																<option value="<?=$key['id_satuan_all']?>"><?=$key['satuan']?></option>
-															<?php } ?> -->
 														</select>
 													</div>
 												</div>
@@ -161,9 +157,6 @@
 										<a href="javascript:history.back(1);" class="btn btn-warning">Back</a>
 									</div>
 								</div>
-								<div class="box-footer">
-
-								</div>
 							</div>
 						</div>
 					</div>
@@ -172,4 +165,3 @@
 		</div>
 	</div>
 </section>
-<input type="hidden" id="wmslinkindex" value="<?php echo site_url('WasteManagementSeksi/InputKirimLimbah/'); ?>">

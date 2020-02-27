@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="inner">
 		<div class="row">
-			<form target="_blank"  class="form-horizontal" method="POST" action="<?php site_url('WasteManagementSeksi/InputKirimLimbah/EditKirim')?>" id="wms-inputlimbah-edit">
+			<form class="form-horizontal" method="POST" action="">
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-12">
@@ -103,8 +103,6 @@
 														<input type="number" class="form-control" name="txtJumlah" id="txtJumlah" placeholder="Jumlah" value="<?php echo $KirimLimbah['0']['jumlah_kirim'];  ?>">
 													</div>
 													<div class="col-lg-5">
-														<!-- <input type="text" class="form-control" name="txtSatuan" id="txtSatuan" placeholder="Satuan" disabled="" value="<?php echo $KirimLimbah['0']['limbah_satuan']; ?>" style="padding-right: 0px;"> -->
-
 														<select style="width: 100%;" class="select select2" name="txtSatuan" id="txtSatuan" data-placeholder="Satuan">
 															<option></option>
 															<?php foreach ($SatuanLimbah as $key) { ?>
@@ -129,9 +127,6 @@
 										<a href="javascript:history.back(1);" class="btn btn-warning" >Back</a>
 									</div>
 								</div>
-								<div class="box-footer">
-
-								</div>
 							</div>
 						</div>
 					</div>
@@ -140,4 +135,3 @@
 		</div>
 	</div>
 </section>
-<input type="hidden" id="wmslinkindex" value="<?php echo site_url('WasteManagementSeksi/InputKirimLimbah/'); ?>">

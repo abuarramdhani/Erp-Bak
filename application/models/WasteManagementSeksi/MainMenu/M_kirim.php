@@ -47,7 +47,9 @@ class M_kirim extends Ci_Model
         // periode dalam bulan sekarang
         $firstDate = date('Y-m-01');
         $lastDate = date('Y-m-t');
-        $periode = "and limkir.tanggal_kirim between '{$firstDate}' and '{$lastDate}'";
+        // TODO : 
+        // $periode = "and limkir.tanggal_kirim between '{$firstDate}' and '{$lastDate}'";
+        $periode = "";
       }
 
       // khusus untuk atasan seksi Waste Management akan muncul semua seksi
