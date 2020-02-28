@@ -51,6 +51,18 @@
         .unsupportedBrowserPlaceholder {
             display: none;
         }
+
+        @media (max-width: 800px) {
+            .login-box {
+                max-width: 90% !important;
+            }
+
+            .is-mobile-full {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+
     </style>
     <noscript>
         .main {
@@ -107,7 +119,7 @@
                         <div class="clearfix"></div>
 
                         
-                        <p class="center col-md-5">
+                        <p class="center col-md-5 col-sm-12 is-mobile-full">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </p>
                     </fieldset>
