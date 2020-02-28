@@ -101,7 +101,31 @@ class C_Index extends CI_Controller {
 					array(
 						'name' => 'LDP PUSAT-TUKSONO',
 						'ip' => '172.18.22.1',
-					)
+					),
+					array(
+                    	'name' => 'TUKSONO PNP',
+                    	'ip' => '192.168.38.25',
+                    ),
+                    array(
+                    	'name' => 'TUKSONO SHEET METAL',
+                    	'ip' => '192.168.38.11',
+                    ),
+                    array(
+                    	'name' => 'TUKSONO MACH TIMUR',
+                    	'ip' => '192.168.38.22',
+                    ),
+                    array(
+                    	'name' => 'TUKSONO MACH BARAT',
+                    	'ip' => '192.168.38.203',
+                    ),
+                    array(
+                    	'name' => 'TUKSONO FOUNDRY',
+                    	'ip' => '192.168.38.14',
+                    ),
+                    array(
+                    	'name' => 'TUKSONO HTM',
+                    	'ip' => '192.168.38.24',
+                    ),
 		);
 		
 		foreach ($ipName as $key => $ip) {
