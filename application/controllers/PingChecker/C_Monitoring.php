@@ -80,7 +80,19 @@ class C_Monitoring extends CI_Controller {
             $link = 'IconPlus PUSAT-TUKSONO';
         }else if($ip == '172.18.22.1') {
             $link = 'LDP PUSAT-TUKSONO';
-		}
+		}else if($ip == '192.168.38.25') {
+            $link = 'TUKSONO PNP';
+        }else if($ip == '192.168.38.11') {
+            $link = 'TUKSONO SHEET METAL';
+        }else if($ip == '192.168.38.22') {
+            $link = 'TUKSONO MACH TIMUR';
+        }else if($ip == '192.168.38.203') {
+            $link = 'TUKSONO MACH BARAT';
+        }else if($ip == '192.168.38.14') {
+            $link = 'TUKSONO FOUNDRY';
+        }else if($ip == '192.168.38.24') {
+            $link = 'TUKSONO HTM';
+        }
 		
 		$status = $this->M_index->checkStatusAction($ip);
 		$sts = $status[0]['status'];
