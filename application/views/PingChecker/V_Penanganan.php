@@ -27,6 +27,12 @@
                                         <option value="172.16.100.9" title="IconPlus PUSAT-SURABAYA">172.16.100.9 - IconPlus PUSAT-SURABAYA</option>
                                         <option value="172.16.100.5" title="IconPlus PUSAT-TUKSONO">172.16.100.5 - IconPlus PUSAT-TUKSONO</option>
                                         <option value="172.18.22.1" title="LDP PUSAT-TUKSONO">172.18.22.1 - LDP PUSAT-TUKSONO</option>
+                                        <option value="192.168.38.25" title="TUKSONO PNP">192.168.38.25 - TUKSONO PNP</option>
+                                        <option value="192.168.38.11" title="TUKSONO SHEET METAL">192.168.38.11 - TUKSONO SHEET METAL</option>
+                                        <option value="192.168.38.22" title="TUKSONO MACH TIMUR">192.168.38.22 - TUKSONO MACH TIMUR</option>
+                                        <option value="192.168.38.203" title="TUKSONO MACH BARAT">192.168.38.203 - TUKSONO MACH BARAT</option>
+                                        <option value="192.168.38.14" title="TUKSONO FOUNDRY">192.168.38.14 - TUKSONO FOUNDRY</option>
+                                        <option value="192.168.38.24" title="TUKSONO HTM">192.168.38.24 - TUKSONO HTM</option>
                                     </select>
                                     <input type="hidden" class="form-control ipnameIPM" name="ipNameIPM">
                                 </td>
