@@ -6733,7 +6733,7 @@ class M_pekerjakeluar extends CI_Model
 				from hr.hr_lelayu hl 
 				inner join hr.hr_pekerja_dipotong hpd 
 				on hl.lelayu_id = hpd.lelayu_id
-				where hl.tgl_lelayu between '$tgl_awal' and '$tgl_akhir'
+				where hl.tgl_lelayu >= '$tgl_awal'
 				and hpd.noind = '$noind'
 				group by hpd.noind";
 				// echo $sql;exit();
@@ -6745,20 +6745,12 @@ class M_pekerjakeluar extends CI_Model
 		}
 	}
 
-	public function nominal_duka($noind,$tgl_awal,$tgl_akhir){
-		$sql = "selct select distinct tanggal_akhir::date 
-				from \"Presensi\".tcutoff t 
-				where '$tgl_akhir'::date between tanggal_awal and tanggal_akhir ";
-		$res_cutoff = $this->db->query($sql)->row();
-		if (!empty($res_cutoff)) {
-			$tgl_akhir = $res_cutoff->tanggal_akhir;
-		}
-		
+	public function nominal_duka($noind,$tgl_awal,$tgl_akhir){		
 		$sql = "select hpd.noind,sum(hpd.nominal) as total
 				from hr.hr_lelayu hl 
 				inner join hr.hr_pekerja_dipotong hpd 
 				on hl.lelayu_id = hpd.lelayu_id
-				where hl.tgl_lelayu between '$tgl_awal' and '$tgl_akhir'
+				where hl.tgl_lelayu => '$tgl_awal'
 				and hpd.noind = '$noind'
 				group by hpd.noind";
 		$result = $this->db->query($sql)->row();

@@ -73,7 +73,7 @@
 									<div class="row">
 										<div class="col-lg-12">
 											<h3 style="color: #ffc107;text-align: center">Perhatian !!</h3>
-											<h4 style="color: #ffc107;text-align: center">Terdapat Pekerja Mengajukan Resign di periode cutoff bulan ini</h4>
+											<h4 style="color: #ffc107;text-align: center">Terdapat Pekerja dengan Tanggal keluar kurang dari sama dengan hari ini / Pekerja Mengajukan Resign di periode cutoff bulan ini</h4>
 										</div>
 									</div>
 									<div class="row">
@@ -85,7 +85,7 @@
 														<th>No. Induk</th>
 														<th>Nama</th>
 														<th>Seksi</th>
-														<th>Tanggal Pengajuan Resign</th>
+														<th>Tanggal Keluar</th>
 														<th>Status Keluar</th>
 													</tr>
 												</thead>
@@ -99,7 +99,7 @@
 																	<td style="text-align: center"><?php echo $pr['noind'] ?></td>
 																	<td><?php echo $pr['nama'] ?></td>
 																	<td><?php echo $pr['seksi'] ?></td>
-																	<td style="text-align: center"><?php echo date("d-M-Y",strtotime($pr['tgl_resign'])) ?></td>
+																	<td style="text-align: center"><?php echo date("d-M-Y",strtotime($pr['tglkeluar'])) ?></td>
 																	<?php if ($pr['status_keluar'] == "Masih Aktif") { ?>
 																		<td style="text-align: center"><?php echo $pr['status_keluar'] ?></td>
 																	<?php }else{ ?>
