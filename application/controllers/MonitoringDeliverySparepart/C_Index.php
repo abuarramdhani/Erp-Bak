@@ -15,7 +15,7 @@ class C_Index extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('MonitoringDeliverySparepart/M_monitoringMng');
+		$this->load->model('MonitoringDeliverySparepart/M_monmng');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -42,7 +42,7 @@ class C_Index extends CI_Controller {
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['Title'] = 'Monitoring Delivery Sparepart';
-		$cek = $this->M_monitoringMng->cekHak($user);
+		$cek = $this->M_monmng->cekHak($user);
 		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		if ($cek[0]['hak_akses'] == 'Seksi') {
 			$data['UserMenu'][] = $UserMenu[2];
