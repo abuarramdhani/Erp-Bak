@@ -153,7 +153,7 @@ class C_Monitoring extends CI_Controller
 		$hasil= array();
 		for ($a=0; $a < count($tanggal) ; $a++) { 
 			$date = $tanggal[$a];
-			$query1 = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date'";
+			$query1 = "where (BON != 'PENDING' OR BON IS NULL) AND TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date'";
 			$dataMon = $this->M_monitoring->getDataSPB($query1);
 			$hasil[$a]['tanggal'] = $tgl[$a];
 			$hasil[$a]['dosp'] = $dataMon;
@@ -217,6 +217,33 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['jml_selesai'] = array_sum($jumlah);
 			$hasil[$a]['krg_selesai'] = $total - $hasil[$a]['jml_selesai'];
 
+			$jml_colly 	= array();
+			$dus_kecil 	= array();
+			$dus_sdg 	= array();
+			$dus_pjg 	= array();
+			$karung 	= array();
+			for ($i=0; $i < count($nopck) ; $i++) { 
+				$cari = $this->M_monitoring->getDataColly($nopck[$i]);
+				if (!empty($cari)) {
+					foreach ($cari as $val) {
+						array_push($jml_colly, $val['nomor_do']);
+						if ($val['kode_packing'] == 1) {
+							array_push($dus_kecil, $val['nomor_do']);
+						}elseif ($val['kode_packing'] == 2) {
+							array_push($dus_sdg, $val['nomor_do']);
+						}elseif ($val['kode_packing'] == 3) {
+							array_push($dus_pjg, $val['nomor_do']);
+						}elseif ($val['kode_packing'] == 4) {
+							array_push($karung, $val['nomor_do']);
+						}
+					}
+				}
+			}
+			$hasil[$a]['jml_colly'] = count($jml_colly);
+			$hasil[$a]['dus_kecil'] = count($dus_kecil);
+			$hasil[$a]['dus_sdg'] 	= count($dus_sdg);
+			$hasil[$a]['dus_pjg'] 	= count($dus_pjg);
+			$hasil[$a]['karung'] 	= count($karung);
 		}
 		$data['hasil'] = $hasil;
 		// echo "<pre>";print_r($hasil);exit();
@@ -452,6 +479,8 @@ class C_Monitoring extends CI_Controller
 		}
 		$dicancel = array();
 		$itemkurang = array();
+		$data_colly = array();
+		$no_colly = array();
 		for ($i=0; $i < count($no_pck) ; $i++) { 
 			$kurang = $this->M_monitoring->diCancel($no_pck[$i]);
 			if (!empty($kurang)) {
@@ -473,6 +502,35 @@ class C_Monitoring extends CI_Controller
 					}
 				}
 			}
+			$dus_kecil 	= array();
+			$dus_sdg 	= array();
+			$dus_pjg 	= array();
+			$karung 	= array();
+			$cekcolly = $this->M_monitoring->getDataColly($no_pck[$i]);
+			if (!empty($cekcolly)) {
+				foreach ($cekcolly as $val) {
+					if ($val['kode_packing'] == 1) {
+						array_push($dus_kecil, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 2) {
+						array_push($dus_sdg, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 3) {
+						array_push($dus_pjg, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 4) {
+						array_push($karung, $val['nomor_do']);
+					}
+				}
+				$array = array(
+					'nospb' => $no_pck[$i],
+					'dus_kecil' => count($dus_kecil),
+					'dus_sdg' => count($dus_sdg),
+					'dus_pjg' => count($dus_pjg),
+					'karung' => count($karung),
+				);
+				array_push($data_colly, $array);
+			}
+			if (!in_array($no_pck[$i], $no_colly)) {
+				array_push($no_colly, $no_pck[$i]);
+			}
 		}
 		
 		$dataCancel = array();
@@ -483,19 +541,90 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 		}
-		// echo "<pre>";print_r($dataCancel);exit();
+		// echo "<pre>";print_r($data_colly);exit();
 		$dataKurang = $this->M_monitoring->dataKurangselesai($tglAwal[0], $tglAkhir[0]);
+		// echo "<pre>";print_r($dataKurang);exit();
 
 		$jml_cancel 	= $this->M_monitoring->jml_cancel($tglAwal[0], $tglAkhir[0]);
-		$jml_pending 	= $this->M_monitoring->jml_pending($tglAwal[0], $tglAkhir[0]);
+		$jml_pending 	= $this->M_monitoring->jml_pending();
 		$jml_bon 		= $this->M_monitoring->jml_bon($tglAwal[0], $tglAkhir[0]);
 		$jml_langsung 	= $this->M_monitoring->jml_langsung($tglAwal[0], $tglAkhir[0]);
 		$jml_urgent 	= $this->M_monitoring->jml_urgent($tglAwal[0], $tglAkhir[0]);
-		$jml_tdkurgent 	= $this->M_monitoring->jml_tdkurgent($tglAwal[0], $tglAkhir[0]);
+		$ket 			= $this->M_monitoring->dataKeterangan($tglAwal[0], $tglAkhir[0]);
+
+		$tampung = array();
+		$initgl = array();
+		$tdk_urg = array();
+		$urg = array();
+		$bon = array();
+		$langsung = array();
+		$cancel = array();
+		for ($i=0; $i < count($ket) ; $i++) { 
+			if (!in_array($ket[$i]['JAM_INPUT'], $initgl)) {
+				if ($i != 0) {
+					$array = array(
+						'tgl' => $ket[$i-1]['JAM_INPUT'],
+						'tdk_urg' => count($tdk_urg),
+						'urg' => count($urg),
+						'bon' => count($bon),
+						'langsung' => count($langsung),
+						'cancel' => count($langsung),
+						'total' => count($tdk_urg) + count($urg) + count($bon),
+					);
+					array_push($tampung, $array);
+					// echo "<pre>";print_r($urg);exit();
+
+					$tdk_urg = array();
+					$urg = array();
+					$bon = array();
+					$langsung = array();
+				}
+				array_push($initgl, $ket[$i]['JAM_INPUT']);
+				if ($ket[$i]['URGENT'] != '') {
+					array_push($urg, $ket[$i]['NO_DOKUMEN']);
+				}elseif ($ket[$i]['URGENT'] == '' && $ket[$i]['BON'] == '') {
+					array_push($tdk_urg, $ket[$i]['NO_DOKUMEN']);
+				}
+				if ($ket[$i]['BON'] == 'BON') {
+					array_push($bon, $ket[$i]['NO_DOKUMEN']);
+				}elseif ($ket[$i]['BON'] == 'LANGSUNG') {
+					array_push($langsung, $ket[$i]['NO_DOKUMEN']);
+				}
+				if ($ket[$i]['CANCEL'] != '') {
+					array_push($cancel, $ket[$i]['NO_DOKUMEN']);
+				}
+			}else{
+				if ($ket[$i]['URGENT'] != '') {
+					array_push($urg, $ket[$i]['NO_DOKUMEN']);
+				}elseif ($ket[$i]['URGENT'] == '' && $ket[$i]['BON'] == '') {
+					array_push($tdk_urg, $ket[$i]['NO_DOKUMEN']);
+				}
+				if ($ket[$i]['BON'] == 'BON') {
+					array_push($bon, $ket[$i]['NO_DOKUMEN']);
+				}elseif ($ket[$i]['BON'] == 'LANGSUNG') {
+					array_push($langsung, $ket[$i]['NO_DOKUMEN']);
+				}
+				if ($ket[$i]['CANCEL'] != '') {
+					array_push($cancel, $ket[$i]['NO_DOKUMEN']);
+				}
+			}
+			if ($i == count($ket) - 1) {
+				$array = array(
+					'tgl' => $ket[$i-1]['JAM_INPUT'],
+					'tdk_urg' => count($tdk_urg),
+					'urg' => count($urg),
+					'bon' => count($bon),
+					'langsung' => count($langsung),
+					'cancel' => count($cancel),
+					'total' => count($tdk_urg) + count($urg) + count($bon),
+				);
+				array_push($tampung, $array);
+			}
+		}
+		// echo "<pre>";print_r($dataDOSPB);exit();
 
 
 		// $dataCancel = $this->M_monitoring->dataCancel($tglAwal[0], $tglAkhir[0]);
-		// echo "<pre>";print_r($dataket);exit();
 		
 		// echo "<pre>"; print_r($dataKurang); exit();
 
@@ -990,6 +1119,10 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue("K$noPck", "WAKTU");
 			$excel->setActiveSheetIndex(0)->setCellValue("L$noPck", "PIC");
 			$excel->setActiveSheetIndex(0)->setCellValue("M$noPck", "KET");
+			$excel->setActiveSheetIndex(0)->setCellValue("N$noPck", "KARDUS KECIL");
+			$excel->setActiveSheetIndex(0)->setCellValue("O$noPck", "KARDUS SEDANG");
+			$excel->setActiveSheetIndex(0)->setCellValue("P$noPck", "KARDUS PANJANG");
+			$excel->setActiveSheetIndex(0)->setCellValue("Q$noPck", "KARUNG");
 			$excel->getActiveSheet()->getStyle("A$pck")->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle("A$noPck")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("B$noPck")->applyFromArray($style_col);
@@ -1004,11 +1137,15 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->getStyle("K$noPck")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("L$noPck")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("M$noPck")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("N$noPck")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("O$noPck")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("P$noPck")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("Q$noPck")->applyFromArray($style_col);
 
 			if (count($dataPck) == 0){
 				$numrow = $noPck + 1;
 				$excel->setActiveSheetIndex(0)->setCellValue("A$numrow", "No data available in table"); 
-				$excel->getActiveSheet()->mergeCells("A$numrow:M$numrow");
+				$excel->getActiveSheet()->mergeCells("A$numrow:Q$numrow");
 				$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style_title);
 			}else {
 				$no=1;
@@ -1027,6 +1164,16 @@ class C_Monitoring extends CI_Controller
 						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['WAKTU_PACKING']);
 						$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $val['PIC_PACKING']);
 						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $val['KETERANGAN'].' '.$val['BON']);
+						if (in_array($val['NO_DOKUMEN'], $no_colly)) {
+							foreach ($data_colly as $dc) {
+								if ($dc['nospb'] == $val['NO_DOKUMEN']) {
+									$excel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $dc['dus_kecil']);
+									$excel->setActiveSheetIndex(0)->setCellValue('O'.$numrow, $dc['dus_sdg']);
+									$excel->setActiveSheetIndex(0)->setCellValue('P'.$numrow, $dc['dus_pjg']);
+									$excel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, $dc['karung']);
+								}
+							}
+						}
 
 						$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
 						$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
@@ -1041,6 +1188,10 @@ class C_Monitoring extends CI_Controller
 						$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style2);
 						$excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style2);
 						$excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style2);
+						$excel->getActiveSheet()->getStyle('N'.$numrow)->applyFromArray($style2);
+						$excel->getActiveSheet()->getStyle('O'.$numrow)->applyFromArray($style2);
+						$excel->getActiveSheet()->getStyle('P'.$numrow)->applyFromArray($style2);
+						$excel->getActiveSheet()->getStyle('Q'.$numrow)->applyFromArray($style2);
 					$numrow++;
 					$no++; 
 					}
@@ -1214,6 +1365,11 @@ class C_Monitoring extends CI_Controller
 			$no3=1;
 			$numrow3 = $krgselesai + 1;
 			foreach ($dataKurang as $val) {
+				if ($val['KURANG'] == '') {
+					$kurang = $val['QUANTITY'];
+				}else {
+					$kurang = $val['KURANG'];
+				}
 				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow3, $no3);
 				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow3, $val['TGL_DIBUAT']);
 				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow3, $val['JENIS_DOKUMEN']);
@@ -1222,7 +1378,7 @@ class C_Monitoring extends CI_Controller
 				$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow3, $val['DESCRIPTION']);
 				$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow3, $val['QUANTITY']);
 				$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow3, $val['QUANTITY_DELIVERED']);
-				$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow3, $val['KURANG']);
+				$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow3, $kurang);
 				$excel->getActiveSheet()->mergeCells("E$numrow3:F$numrow3"); 
 				$excel->getActiveSheet()->mergeCells("G$numrow3:J$numrow3"); 
 				$excel->getActiveSheet()->getStyle('A'.$numrow3)->applyFromArray($style2);
@@ -1352,18 +1508,15 @@ class C_Monitoring extends CI_Controller
 			$jumlah2 = $jumlah + count($dataket) + 5;
 			// Tabel data jumlah cancel, pending, bon,langsung
 			$excel->setActiveSheetIndex(0)->setCellValue("A$jml2", "6.1 KETERANGAN DATA");
-			$excel->setActiveSheetIndex(0)->setCellValue("A$jumlah2", "CANCEL");
-			$excel->setActiveSheetIndex(0)->setCellValue("C$jumlah2", "PENDING");
+			$excel->setActiveSheetIndex(0)->setCellValue("A$jumlah2", "NO");
+			$excel->setActiveSheetIndex(0)->setCellValue("B$jumlah2", "TANGGAL");
+			$excel->setActiveSheetIndex(0)->setCellValue("C$jumlah2", "TIDAK URGENT");
+			$excel->setActiveSheetIndex(0)->setCellValue("D$jumlah2", "URGENT");
 			$excel->setActiveSheetIndex(0)->setCellValue("E$jumlah2", "BON");
-			$excel->setActiveSheetIndex(0)->setCellValue("G$jumlah2", "LANGSUNG");
-			$excel->setActiveSheetIndex(0)->setCellValue("I$jumlah2", "URGENT");
-			$excel->setActiveSheetIndex(0)->setCellValue("K$jumlah2", "TIDAK URGENT");
-			$excel->getActiveSheet()->mergeCells("A$jumlah2:B$jumlah2"); 
-			$excel->getActiveSheet()->mergeCells("C$jumlah2:D$jumlah2"); 
-			$excel->getActiveSheet()->mergeCells("E$jumlah2:F$jumlah2"); 
-			$excel->getActiveSheet()->mergeCells("G$jumlah2:H$jumlah2"); 
-			$excel->getActiveSheet()->mergeCells("I$jumlah2:J$jumlah2"); 
-			$excel->getActiveSheet()->mergeCells("K$jumlah2:L$jumlah2"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("F$jumlah2", "LANGSUNG");
+			$excel->setActiveSheetIndex(0)->setCellValue("G$jumlah2", "CANCEL");
+			$excel->setActiveSheetIndex(0)->setCellValue("H$jumlah2", "JUMLAH INPUT");
+			$excel->setActiveSheetIndex(0)->setCellValue("I$jumlah2", "TOTAL PENDING");
 			$excel->getActiveSheet()->getStyle("A$jml2")->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle("A$jumlah2")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("B$jumlah2")->applyFromArray($style_col);
@@ -1374,22 +1527,21 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->getStyle("G$jumlah2")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("H$jumlah2")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("I$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("J$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("K$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("L$jumlah2")->applyFromArray($style_col);
+			$no = 1;
 			$numrow4 = $jumlah2 + 1;
-				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow4, $jml_cancel[0]['CANCEL']);
-				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow4, $jml_pending[0]['PENDING']);
-				$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow4, $jml_bon[0]['BON']);
-				$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow4, $jml_langsung[0]['LANGSUNG']);
-				$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow4, $jml_urgent[0]['URGENT']);
-				$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow4, $jml_tdkurgent[0]['TDK_URGENT']);
-				$excel->getActiveSheet()->mergeCells("A$numrow4:B$numrow4"); 
-				$excel->getActiveSheet()->mergeCells("C$numrow4:D$numrow4"); 
-				$excel->getActiveSheet()->mergeCells("E$numrow4:F$numrow4"); 
-				$excel->getActiveSheet()->mergeCells("G$numrow4:H$numrow4"); 
-				$excel->getActiveSheet()->mergeCells("I$numrow4:J$numrow4"); 
-				$excel->getActiveSheet()->mergeCells("K$numrow4:L$numrow4"); 
+			$mrg = $jumlah2 + 1;
+			foreach ($tampung as $val) {
+				// echo "<pre>";print_r($tampung);exit();
+				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow4, $no);
+				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow4, $val['tgl']);
+				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow4, $val['tdk_urg']);
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow4, $val['urg']);
+				$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow4, $val['bon']);
+				$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow4, $val['langsung']);
+				$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow4, $val['cancel']);
+				$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow4, $val['total']);
+				$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow4, $jml_pending[0]['PENDING']);
+				$excel->getActiveSheet()->mergeCells("I$mrg:I$numrow4"); 
 				$excel->getActiveSheet()->getStyle('A'.$numrow4)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('B'.$numrow4)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('C'.$numrow4)->applyFromArray($style2);
@@ -1399,10 +1551,9 @@ class C_Monitoring extends CI_Controller
 				$excel->getActiveSheet()->getStyle('G'.$numrow4)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('H'.$numrow4)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('I'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('J'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('K'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('L'.$numrow4)->applyFromArray($style2);
-			
+				$no++;
+				$numrow4++;
+			}			
 
 			$excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); 
 			$excel->getActiveSheet()->getColumnDimension('B')->setWidth(13); 
@@ -1417,6 +1568,10 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->getColumnDimension('K')->setWidth(13);
 			$excel->getActiveSheet()->getColumnDimension('L')->setWidth(13);
 			$excel->getActiveSheet()->getColumnDimension('M')->setWidth(15);
+			$excel->getActiveSheet()->getColumnDimension('N')->setWidth(13);
+			$excel->getActiveSheet()->getColumnDimension('O')->setWidth(13);
+			$excel->getActiveSheet()->getColumnDimension('P')->setWidth(13);
+			$excel->getActiveSheet()->getColumnDimension('Q')->setWidth(13);
 
 			// Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
 			$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);

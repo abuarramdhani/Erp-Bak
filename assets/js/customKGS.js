@@ -348,6 +348,7 @@ function btnPausePelayanan(no) {
         if (result.value) {  
             $('#timer'+no).css('display','none');  
             $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+            $('#btnPelayanan'+no).attr("disabled", "disabled"); 
             $.ajax ({
                 url : baseurl + "KapasitasGdSparepart/Pelayanan/pauseSPB",
                 data: {jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
@@ -510,7 +511,8 @@ function btnPausePengeluaran(no) {
     }).then(result => {
         if (result.value) {  
             $('#timer'+no).css('display','none'); 
-            $('#btnPengeluaran'+no).attr("disabled", "disabled");  
+            $('#btnPengeluaran'+no).attr("disabled", "disabled"); 
+            $('#btnrestartSPB'+no).attr("disabled", "disabled");  
             $.ajax ({
                 url : baseurl + "KapasitasGdSparepart/Pengeluaran/pauseSPB",
                 data: {jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
@@ -713,7 +715,8 @@ function btnPausePacking(no) {
         allowOutsideClick: false
     }).then(result => {
         if (result.value) {  
-            $('#btnPacking'+no).attr("disabled", "disabled"); 
+            $('#btnPacking'+no).attr("disabled", "disabled");  
+            $('#btnrestartSPB'+no).attr("disabled", "disabled");
             $('#timer'+no).css('display','none');  
             $.ajax ({
                 url : baseurl + "KapasitasGdSparepart/Packing/pauseSPB",
