@@ -1,6 +1,10 @@
 <?php
 require_once("koneksi.php");
 
+if($_SERVER['REQUEST_METHOD'] != "POST"){
+	echo "POST Only!";exit();
+}
+
 $noinduk 		= $_POST['noinduk'];
 $longitude 		= $_POST['longitude'];
 $latitude	    = $_POST['latitude'];
