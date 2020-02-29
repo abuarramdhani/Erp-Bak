@@ -134,7 +134,6 @@
 		<script src="<?= base_url('assets/js/customUM.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customHLCM.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
-		<script src="<?= base_url('assets/js/customIMO.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMO.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customERC.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customBI.js') ?>"></script>
@@ -205,6 +204,8 @@
 		<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customRPO.js');?>"></script>
 		<script src="<?= base_url('assets/js/customSMT.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customMDS.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customIMO.js') ?>"></script>
 		
 
 
