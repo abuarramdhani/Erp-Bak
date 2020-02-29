@@ -14,7 +14,7 @@ class C_MonitoringMng extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('MonitoringDeliverySparepart/M_monitoringMng');
+		$this->load->model('MonitoringDeliverySparepart/M_monmng');
 
 		$this->checkSession();
 	}
@@ -43,13 +43,13 @@ class C_MonitoringMng extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['data'] = $this->M_monitoringMng->dataMonMng();
+		$data['data'] = $this->M_monmng->dataMonMng();
 		// echo "<pre>"; print_r($data['data']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 
-		$cek = $this->M_monitoringMng->cekHak($user);
+		$cek = $this->M_monmng->cekHak($user);
 		// if ($cek[0]['hak_akses'] == 'Koordinator') {
 			$this->load->view('MonitoringDeliverySparepart/V_MonitoringMng', $data);
 		// }else {
@@ -61,33 +61,33 @@ class C_MonitoringMng extends CI_Controller
 	function getCompCode(){
 		$term = $this->input->get('term',TRUE);
 		$term = strtoupper($term);
-		$data = $this->M_monitoringMng->getCompCode($term);
+		$data = $this->M_monmng->getCompCode($term);
 		echo json_encode($data);
 	}
 
 	function getDescCode()
 	{
 		$par  = $this->input->post('par');
-		$data = $this->M_monitoringMng->getDescCode($par);
+		$data = $this->M_monmng->getDescCode($par);
     	echo json_encode($data[0]['DESCRIPTION']);
 	}
 
 	function getBomVersion(){
 		$term = $this->input->get('par');
 		$term = strtoupper($term);
-		$data = $this->M_monitoringMng->getBomVersion($term);
+		$data = $this->M_monmng->getBomVersion($term);
 		// echo "<pre>";print_r($par);exit();
 		echo json_encode($data);
 	}
 
     
     function saveMonMng(){
-		$cek			= $this->M_monitoringMng->cekHeader();
+		$cek			= $this->M_monmng->cekHeader();
 		$id				= $cek[0]['jumlah'] + 1;
 		$component_code = $this->input->post('compCode');
 		$component_desc = $this->input->post('comDesc');
 		$bom_version 	= $this->input->post('bomVer');
-		$cari			= $this->M_monitoringMng->getDataBom($component_code, $bom_version);
+		$cari			= $this->M_monmng->getDataBom($component_code, $bom_version);
 		$periode 		= $this->input->post('periodeMon');
 		$tglTarget 		= $this->input->post('tglTarget');
 		$qty 			= $this->input->post('qty');
@@ -98,23 +98,23 @@ class C_MonitoringMng extends CI_Controller
 			$tgl2 = $tgl1[0];
 			$tgl  = sprintf("%02d", $tgl2);
 
-			$cekMon = $this->M_monitoringMng->cekData($component_code, $bom_version, $periode);
+			$cekMon = $this->M_monmng->cekData($component_code, $bom_version, $periode);
 			if (empty($cekMon)) {
-				$saveHeader = $this->M_monitoringMng->saveheaderMon($component_code, $component_desc, $bom_version, $periode, $id);
-				$saveTarget = $this->M_monitoringMng->saveTarget($id, $tgl, $qty[$x], $component_code);
+				$saveHeader = $this->M_monmng->saveheaderMon($component_code, $component_desc, $bom_version, $periode, $id);
+				$saveTarget = $this->M_monmng->saveTarget($id, $tgl, $qty[$x], $component_code);
 			}else {
-				$saveTarget = $this->M_monitoringMng->saveTarget($cekMon[0]['id'], $tgl, $qty[$x], $component_code);
+				$saveTarget = $this->M_monmng->saveTarget($cekMon[0]['id'], $tgl, $qty[$x], $component_code);
 			}
 		}
-		// $cekMon = $this->M_monitoringMng->cekData($component_code, $bom_version, $periode);
-		$cekInput = $this->M_monitoringMng->cekBom($component_code, $bom_version);
+		// $cekMon = $this->M_monmng->cekData($component_code, $bom_version, $periode);
+		$cekInput = $this->M_monmng->cekBom($component_code, $bom_version);
 		// echo "<pre>"; print_r($bom_version);exit();
 		if (!empty($cekInput)) {
 			for ($i=0; $i < count($cari) ; $i++) { 
 				if ($cari[$i]['assembly_num'] == $component_code) {
-					$save = $this->M_monitoringMng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $periode, $id);
+					$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $periode, $id);
 				}else {
-					$save = $this->M_monitoringMng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $periode, $id);
+					$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $periode, $id);
 				}
 			}
 		}
@@ -124,14 +124,14 @@ class C_MonitoringMng extends CI_Controller
 
 	function detailMonitoringMng($root, $period){
 		$user = $this->session->user;
-		$hak = $this->M_monitoringMng->cekHak($user);
+		$hak = $this->M_monmng->cekHak($user);
 
 		$pecah1	= explode("%20", $period);
 		$period = implode(" ",$pecah1);
-		$datanya = $this->M_monitoringMng->getDetail($root, $period);
-		$depth = intval($this->M_monitoringMng->getDept2($root));
+		$datanya = $this->M_monmng->getDetail($root, $period);
+		$depth = intval($this->M_monmng->getDept2($root));
 		$data['root'] = $root;
-		$desc = $this->M_monitoringMng->desc($root);
+		$desc = $this->M_monmng->desc($root);
 		$data['desc'] = $desc[0]['component_desc'];
 
 		$data['Depth'] = $depth;
@@ -195,7 +195,7 @@ class C_MonitoringMng extends CI_Controller
 	// 	$bulan 	= $bulan2[0];
 	// 	$tahun	= $bulan2[1];
 
-	// 	$header = $this->M_monitoringMng->getHeader($bulan1);
+	// 	$header = $this->M_monmng->getHeader($bulan1);
 		
 	// }
 
@@ -214,7 +214,7 @@ class C_MonitoringMng extends CI_Controller
 		
 		$output = '';
 		foreach ($array as $key => $subArray) {
-			$dept = $this->M_monitoringMng->getseksi($subArray['component_num']);
+			$dept = $this->M_monmng->getseksi($subArray['component_num']);
 			if (empty($dept)) {
 				$seksi = '';
 			}else {
@@ -273,10 +273,10 @@ class C_MonitoringMng extends CI_Controller
 	}
 	
 	function deleteData($component_code, $id){
-		$deleteMonitoring = $this->M_monitoringMng->deleteMonitoring($component_code, $id);
-		$deleteHeader = $this->M_monitoringMng->deleteHeader($component_code, $id);
-		$deleteTarget = $this->M_monitoringMng->deleteTarget($component_code, $id);
-		$deleteAktual = $this->M_monitoringMng->deleteAktual($component_code, $id);
+		$deleteMonitoring = $this->M_monmng->deleteMonitoring($component_code, $id);
+		$deleteHeader = $this->M_monmng->deleteHeader($component_code, $id);
+		$deleteTarget = $this->M_monmng->deleteTarget($component_code, $id);
+		$deleteAktual = $this->M_monmng->deleteAktual($component_code, $id);
 		
 		redirect(base_url('MonitoringDeliverySparepart/MonitoringManagement'));
 	}
@@ -285,7 +285,7 @@ class C_MonitoringMng extends CI_Controller
 		$bulan2 = explode(" ", $periode);
 		$bulan 	= $bulan2[0];
 		$tahun 	= $bulan2[1];
-		$datanya = $this->M_monitoringMng->getDetail2($root, $periode, $compnum);
+		$datanya = $this->M_monmng->getDetail2($root, $periode, $compnum);
 		// echo "<pre>"; print_r($datanya);exit();
 		$bln = '';
 		foreach ($datanya as $key) {
@@ -294,7 +294,7 @@ class C_MonitoringMng extends CI_Controller
 					$no = sprintf("%02d", $i);
 					$target = $no + $key['bom_level'];
 					$target = sprintf("%02d", $target);
-					$cek2 = $this->M_monitoringMng->getqtyTarget($key['root_assembly'], $key['id'], $target);
+					$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
 					// echo "<pre>";print_r($cek2);exit();
 					if (!empty($cek2) && $key['bom_level'] == 1) {
 						$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
@@ -302,7 +302,7 @@ class C_MonitoringMng extends CI_Controller
 						$jumlah = array();
 						$pisah = explode(' <-- ', $key['assembly_path']);
 						for ($q=1; $q < $key['bom_level']; $q++) { 
-							$cari = $this->M_monitoringMng->cariqtySebelumnya($pisah[$q], $key['id']);
+							$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
 								array_push($jumlah, $cari[0]['qty']);
 						}
 						$kali = 1;
@@ -320,14 +320,14 @@ class C_MonitoringMng extends CI_Controller
 					$no = sprintf("%02d", $i);
 					$target = $no + $key['bom_level'];
 					$target = sprintf("%02d", $target);
-					$cek2 = $this->M_monitoringMng->getqtyTarget($key['root_assembly'], $key['id'], $target);
+					$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
 					if (!empty($cek2) && $key['bom_level'] == 1) {
 						$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
 					}elseif(!empty($cek2) && $key['bom_level'] != 1){
 						$jumlah = array();
 						$pisah = explode(' <-- ', $key['assembly_path']);
 						for ($q=1; $q < $key['bom_level']; $q++) { 
-							$cari = $this->M_monitoringMng->cariqtySebelumnya($pisah[$q], $key['id']);
+							$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
 								array_push($jumlah, $cari[0]['qty']);
 						}
 						$kali = 1;
@@ -346,14 +346,14 @@ class C_MonitoringMng extends CI_Controller
 						$no = sprintf("%02d", $i);
 						$target = $no + $key['bom_level'];
 						$target = sprintf("%02d", $target);
-						$cek2 = $this->M_monitoringMng->getqtyTarget($key['root_assembly'], $key['id'], $target);
+						$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
 						if (!empty($cek2) && $key['bom_level'] == 1) {
 							$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
 						}elseif(!empty($cek2) && $key['bom_level'] != 1){
 							$jumlah = array();
 							$pisah = explode(' <-- ', $key['assembly_path']);
 							for ($q=1; $q < $key['bom_level']; $q++) { 
-								$cari = $this->M_monitoringMng->cariqtySebelumnya($pisah[$q], $key['id']);
+								$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
 									array_push($jumlah, $cari[0]['qty']);
 							}
 							$kali = 1;
@@ -371,14 +371,14 @@ class C_MonitoringMng extends CI_Controller
 						$no = sprintf("%02d", $i);
 						$target = $no + $key['bom_level'];
 						$target = sprintf("%02d", $target);
-						$cek2 = $this->M_monitoringMng->getqtyTarget($key['root_assembly'], $key['id'], $target);
+						$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
 						if (!empty($cek2) && $key['bom_level'] == 1) {
 							$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
 						}elseif(!empty($cek2) && $key['bom_level'] != 1){
 							$jumlah = array();
 							$pisah = explode(' <-- ', $key['assembly_path']);
 							for ($q=1; $q < $key['bom_level']; $q++) { 
-								$cari = $this->M_monitoringMng->cariqtySebelumnya($pisah[$q], $key['id']);
+								$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
 									array_push($jumlah, $cari[0]['qty']);
 							}
 							$kali = 1;
@@ -428,29 +428,29 @@ class C_MonitoringMng extends CI_Controller
 	// 	$root 			= $this->input->post('root');
 	// 	$id 			= $this->input->post('idBom');
 	// 	$bom_version 	= $this->input->post('version');
-	// 	$cari			= $this->M_monitoringMng->getDataBom($root, $bom_version);
+	// 	$cari			= $this->M_monmng->getDataBom($root, $bom_version);
 		
 	// 	// echo "<pre>"; print_r($id);exit();
 	// 	// if (!empty($cek2)) {
 	// 	// 	if (empty($cek)) {
-	// 	// 		$saveHeader = $this->M_monitoringMng->saveheaderMon($component_code, $component_desc, $bom_version, $periode, $id);
-	// 	// 		$saveTarget = $this->M_monitoringMng->saveTarget($id, $tglTarget, $qty, $component_code);
+	// 	// 		$saveHeader = $this->M_monmng->saveheaderMon($component_code, $component_desc, $bom_version, $periode, $id);
+	// 	// 		$saveTarget = $this->M_monmng->saveTarget($id, $tglTarget, $qty, $component_code);
 	// 	// 	}else {
 	// 		$tglTarget = $tgl2.' '.$bom_version;
 	// 		// echo "<pre>"; print_r($tglTarget);exit();
-	// 			$saveTarget = $this->M_monitoringMng->saveTarget($id, $tglTarget, $qty, $root);
+	// 			$saveTarget = $this->M_monmng->saveTarget($id, $tglTarget, $qty, $root);
 	// 	// 	}
 
 	// 		$coba = $qty;
 	// 		for ($i=0; $i < count($cari) ; $i++) { 
-	// 			// $cek = $this->M_monitoringMng->cekData($component_code, $bom_version);
+	// 			// $cek = $this->M_monmng->cekData($component_code, $bom_version);
 	// 			// if (!empty($cek)) {
 	// 				if ($cari[$i]['assembly_num'] == $root) {
 	// 					$qty1 = $qty * $cari[$i]['qty'];
 	// 					$coba = $qty1;
 	// 					$tgl3 = $tgl2 - $cari[$i]['bom_level'];
 	// 					$tgl = sprintf("%02d", $tgl3);
-	// 					$update = $this->M_monitoringMng->updateMonitoring($cari[$i]['root_assembly'], $cari[$i]['component_num'], $cari[$i]['bom_level'], $cari[$i]['identitas_bom'], $qty1, $tgl, $id);
+	// 					$update = $this->M_monmng->updateMonitoring($cari[$i]['root_assembly'], $cari[$i]['component_num'], $cari[$i]['bom_level'], $cari[$i]['identitas_bom'], $qty1, $tgl, $id);
 	// 				}else {
 	// 					if ($cari[$i]['bom_level'] == 2) {
 	// 						$qty1= $coba * $cari[$i]['qty'] ;
@@ -460,13 +460,13 @@ class C_MonitoringMng extends CI_Controller
 	// 					}
 	// 					$tgl3 = $tgl2 - $cari[$i]['bom_level'];
 	// 					$tgl = sprintf("%02d", $tgl3);
-	// 					$update = $this->M_monitoringMng->updateMonitoring($cari[$i]['root_assembly'], $cari[$i]['component_num'], $cari[$i]['bom_level'], $cari[$i]['identitas_bom'], $qty1, $tgl, $id);
+	// 					$update = $this->M_monmng->updateMonitoring($cari[$i]['root_assembly'], $cari[$i]['component_num'], $cari[$i]['bom_level'], $cari[$i]['identitas_bom'], $qty1, $tgl, $id);
 	// 				}
 	// 		// 	}else {
 	// 		// 		if ($cari[$i]['assembly_num'] == $component_code) {
 	// 		// 			$qty1 = $qty * $cari[$i]['qty'];
 	// 		// 			$coba = $qty1;
-	// 		// 			$save = $this->M_monitoringMng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $qty1, $tgl2, $periode, $id);
+	// 		// 			$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $qty1, $tgl2, $periode, $id);
 	// 		// 		}else {
 	// 		// 			if ($cari[$i]['bom_level'] == 2) {
 	// 		// 				$qty1= $coba * $cari[$i]['qty'] ;
@@ -477,7 +477,7 @@ class C_MonitoringMng extends CI_Controller
 	// 		// 			$slsh = $cari[$i]['bom_level'] - 1;
 	// 		// 			$tgl3 = $tgl2 - $slsh;
 	// 		// 			$tgl = sprintf("%02d", $tgl3);
-	// 		// 			$save = $this->M_monitoringMng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $qty1, $tgl, $periode, $id);
+	// 		// 			$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $qty1, $tgl, $periode, $id);
 	// 		// 		}
 	// 		// 	}
 				
