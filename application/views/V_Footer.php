@@ -204,6 +204,7 @@
 		<script src="<?= base_url('assets/js/customCKB.js');?>"></script>
 		<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customRPO.js');?>"></script>
+		<script src="<?= base_url('assets/js/customSMT.js') ?>"></script>
 		
 
 

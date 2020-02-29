@@ -204,6 +204,7 @@ $route['SalesMonitoring/salesomset/Filter/Download/pdf'] 	= 'SalesMonitoring/C_s
 
 //SALES TARGET
 $route['SalesMonitoring/salestarget']						= 'SalesMonitoring/C_salestarget/index';
+$route['SalesMonitoring/salestarget/(:any)']				= 'SalesMonitoring/C_salestarget/$1';
 $route['SalesMonitoring/salestarget/Create'] 				= 'SalesMonitoring/C_salestarget/createSalestarget';
 $route['SalesMonitoring/salestarget/Created'] 				= 'SalesMonitoring/C_salestarget/create';
 $route['SalesMonitoring/salestarget/delete/(:any)'] 		= 'SalesMonitoring/C_salestarget/delete/$1';
@@ -214,6 +215,12 @@ $route['SalesMonitoring/salestarget/Download/xml'] 			= 'SalesMonitoring/C_sales
 $route['SalesMonitoring/salestarget/Download/pdf'] 			= 'SalesMonitoring/C_salestarget/downloadpdf';
 $route['SalesMonitoring/salestarget/Filter'] 				= 'SalesMonitoring/C_salestarget/profilter';
 $route['SalesMonitoring/salestarget/Filter/Download/pdf'] 	= 'SalesMonitoring/C_salestarget/downloadpdffilter';
+
+//SETTING SALES MONITORING
+$route['SalesMonitoring/setting_org']						= 'SalesMonitoring/C_salestarget/SettingOrg';
+$route['SalesMonitoring/setting_org/(:any)']				= 'SalesMonitoring/C_salestarget/$1';
+$route['SalesMonitoring/setting_order']						= 'SalesMonitoring/C_salestarget/SettingOrder';
+$route['SalesMonitoring/setting_order/(:any)']				= 'SalesMonitoring/C_salestarget/$1';
 
 //-------------------------------------Morning Greeting----------------------------------------------------
 //DASHBOARD
