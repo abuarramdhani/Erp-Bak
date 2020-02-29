@@ -130,7 +130,8 @@ class M_monitoring extends CI_Model {
                 FROM khs_tampung_spb kts, mtl_txn_request_headers mtrh
                 WHERE kts.CANCEL IS NULL
                     AND kts.no_dokumen = mtrh.request_number
-                    AND TO_CHAR(kts.jam_input,'DD/MM/YYYY') BETWEEN '$date1' AND '$date2'
+                    AND (BON != 'PENDING' OR BON IS NULL)
+                    AND TRUNC(kts.jam_input) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                     order by kts.urgent, kts.jam_input";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -156,7 +157,7 @@ class M_monitoring extends CI_Model {
                     AND mtrl.line_status <> 6
                     AND kts.mulai_pelayanan IS NOT NULL
                     AND kts.selesai_pelayanan IS NOT NULL
-                    AND TO_CHAR(kts.selesai_pelayanan,'DD/MM/YYYY') BETWEEN '$date1' AND '$date2'
+                    AND TRUNC(kts.selesai_pelayanan) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 GROUP BY kts.tgl_dibuat,
                         kts.jenis_dokumen,
                         kts.no_dokumen,
@@ -227,7 +228,7 @@ class M_monitoring extends CI_Model {
                     AND kts.mulai_pengeluaran IS NOT NULL
                     AND kts.selesai_pengeluaran IS NOT NULL
                     AND (kts.bon IS NULL OR kts.bon = 'BON')
-                    AND TO_CHAR(kts.selesai_pengeluaran,'DD/MM/YYYY') BETWEEN '$date1' AND '$date2'
+                    AND TRUNC(kts.selesai_pengeluaran) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen,
                         TO_CHAR (kts.mulai_pengeluaran, 'DD/MM/YYYY'),
                         TO_CHAR (kts.mulai_pengeluaran, 'HH24:MI:SS'),
@@ -289,7 +290,7 @@ class M_monitoring extends CI_Model {
                 --     AND kts.mulai_packing IS NOT NULL
                     AND kts.selesai_packing IS NOT NULL
                     AND kts.bon IS NULL
-                    AND TO_CHAR(kts.selesai_packing,'DD/MM/YYYY') BETWEEN '$date1' AND '$date2'
+                    AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen,
                         TO_CHAR (kts.mulai_packing, 'DD/MM/YYYY'),
                         TO_CHAR (kts.mulai_packing, 'HH24:MI:SS'),
@@ -344,7 +345,7 @@ class M_monitoring extends CI_Model {
                     AND kts.selesai_packing IS NOT NULL
                     AND kts.no_dokumen = mtrh.request_number
                     AND mtrh.header_id = mtrl.header_id
-                    AND TO_CHAR(kts.selesai_packing,'DD/MM/YYYY') BETWEEN '$date1' AND '$date2'
+                    AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 GROUP BY kts.tgl_dibuat,
                         kts.selesai_packing,
                         kts.jenis_dokumen,
@@ -378,7 +379,8 @@ class M_monitoring extends CI_Model {
                     AND mtrl.quantity <> 0
                     AND mtrl.line_status <> 6
                     AND kts.selesai_packing IS NOT NULL
-                    AND TO_CHAR(kts.selesai_packing,'DD/MM/YYYY') BETWEEN '$date1' AND '$date2'";
+                    AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
+                    order by msib.segment1";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -401,7 +403,7 @@ class M_monitoring extends CI_Model {
                     AND mtrl.quantity <> mtrl.quantity_delivered
                     AND kts.selesai_packing IS NOT NULL
                     AND mtrl.line_status = 6
-                    AND TO_CHAR(kts.jam_input,'DD/MM/YYYY') BETWEEN '$date1' AND '$date2'";
+                    AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -439,9 +441,9 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function jml_pending($date1, $date2) {
+    public function jml_pending() {
         $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) pending FROM KHS_TAMPUNG_SPB where bon = 'PENDING' AND trunc(jam_input) BETWEEN to_date('$date1','DD/MM/RR') AND to_date('$date2','DD/MM/RR')";
+        $sql ="SELECT count(*) pending FROM KHS_TAMPUNG_SPB where bon = 'PENDING'";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -478,9 +480,12 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function jml_tdkurgent($date1, $date2) {
+    public function dataKeterangan($date1, $date2) {
         $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) tdk_urgent FROM KHS_TAMPUNG_SPB where urgent is null AND trunc(jam_input) BETWEEN to_date('$date1','DD/MM/RR') AND to_date('$date2','DD/MM/RR')";
+        $sql ="SELECT   *
+                FROM khs_tampung_spb
+                WHERE TRUNC(jam_input) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
+                ORDER BY jam_input";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;

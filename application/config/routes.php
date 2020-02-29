@@ -3704,6 +3704,14 @@ $route['KapasitasGdSparepart/Tracking']					= 'KapasitasGdSparepart/C_Tracking';
 $route['KapasitasGdSparepart/Tracking/(:any)']			= 'KapasitasGdSparepart/C_Tracking/$1';
 $route['KapasitasGdSparepart/Tracking/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Tracking/$1/$2';
 
+$route['KapasitasGdSparepart/Penyerahan']					= 'KapasitasGdSparepart/C_Penyerahan';
+$route['KapasitasGdSparepart/Penyerahan/(:any)']			= 'KapasitasGdSparepart/C_Penyerahan/$1';
+$route['KapasitasGdSparepart/Penyerahan/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Penyerahan/$1/$2';
+
+$route['KapasitasGdSparepart/Arsip']					= 'KapasitasGdSparepart/C_Arsip';
+$route['KapasitasGdSparepart/Arsip/(:any)']			= 'KapasitasGdSparepart/C_Arsip/$1';
+$route['KapasitasGdSparepart/Arsip/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Arsip/$1/$2';
+
 //--------------------------------------Rekap jenis Pekerjaan ---------------------------------------//
 $route['RekapJenisPekerjaan'] 							= 'RekapJenisPekerjaan/C_Rjp';
 $route['RekapJenisPekerjaan/Rekap'] 					= 'RekapJenisPekerjaan/C_Rjp/Rekap';
