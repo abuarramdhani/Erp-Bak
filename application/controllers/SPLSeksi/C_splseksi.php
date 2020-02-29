@@ -593,6 +593,7 @@ class C_splseksi extends CI_Controller {
 		$noind = $this->input->post("noind[0]");
 		$target_arr = $this->input->post("target");
 		$target_satuan_arr = $this->input->post("target_satuan");
+		$noind_baru = $this->M_splseksi->getNoindBaru($noind);
 
 		//menyatukan target
 		$i=0;
@@ -648,7 +649,7 @@ class C_splseksi extends CI_Controller {
 			"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 			"Tgl_Lembur" => $tanggal,
 			"Noind" => $noind,
-			"Noind_Baru" => "0000000",
+			"Noind_Baru" => $noind_baru,
 			"Kd_Lembur" => $lembur,
 			"Jam_Mulai_Lembur" => $mulai,
 			"Jam_Akhir_Lembur" => $selesai,
@@ -669,7 +670,7 @@ class C_splseksi extends CI_Controller {
 			"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 			"Tgl_Lembur" => $tanggal,
 			"Noind" => $noind,
-			"Noind_Baru" => "0000000",
+			"Noind_Baru" => $noind_baru,
 			"Kd_Lembur" => $lembur,
 			"Jam_Mulai_Lembur" => $mulai,
 			"Jam_Akhir_Lembur" => $selesai,
@@ -1018,6 +1019,7 @@ class C_splseksi extends CI_Controller {
 			$pekerjaan = $this->input->post("alasan[$x]");
 			$mulai = $this->input->post("lembur_awal[$x]");
 			$selesai = $this->input->post("lembur_akhir[$x]");
+			$noind_baru = $this->M_splseksi->getNoindBaru($noind);
 
 			// Generate ID SPL
 			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl", "ID_SPL");
@@ -1058,7 +1060,7 @@ class C_splseksi extends CI_Controller {
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $tanggal,
 				"Noind" => $noind,
-				"Noind_Baru" => "0000000",
+				"Noind_Baru" => $noind_baru,
 				"Kd_Lembur" => $lembur,
 				"Jam_Mulai_Lembur" => $mulai,
 				"Jam_Akhir_Lembur" => $selesai,
@@ -1079,7 +1081,7 @@ class C_splseksi extends CI_Controller {
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $tanggal,
 				"Noind" => $noind,
-				"Noind_Baru" => "0000000",
+				"Noind_Baru" => $noind_baru,
 				"Kd_Lembur" => $lembur,
 				"Jam_Mulai_Lembur" => $mulai,
 				"Jam_Akhir_Lembur" => $selesai,

@@ -335,6 +335,8 @@ class C_splkasie extends CI_Controller {
 				"noind" => $user);
 			$to_log = $this->M_splseksi->save_log($data_log);
 
+			$noind_baru = $this->M_splseksi->getNoindBaru($ds['Noind']);
+
 			$data_spl = array(
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Status" => $stat,
@@ -348,7 +350,7 @@ class C_splkasie extends CI_Controller {
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $ds['Tgl_Lembur'],
 				"Noind" => $ds['Noind'],
-				"Noind_Baru" => "0000000",
+				"Noind_Baru" => $noind_baru,
 				"Kd_Lembur" => $ds['Kd_Lembur'],
 				"Jam_Mulai_Lembur" => $ds['Jam_Mulai_Lembur'],
 				"Jam_Akhir_Lembur" => $ds['Jam_Akhir_Lembur'],
