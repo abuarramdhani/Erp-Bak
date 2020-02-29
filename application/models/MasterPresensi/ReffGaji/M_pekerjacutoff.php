@@ -395,18 +395,11 @@ class M_pekerjacutoff extends CI_Model
 				left join hrd_khs.tseksi ts
 				on tp.kodesie = ts.kodesie
 				where tp.keluar = '0' or  (
-					(
-						tp.tglkeluar < (
-											select tanggal_akhir + interval '1 day' 
-											from \"Presensi\".tcutoff 
-											where periode = '$periode' limit 1
-										) 
-						or tp.tglkeluar >= concat(
+					tp.tglkeluar >= concat(
 												left('$periode',4),
 												'-',
 												right('$periode',2),'-01'
 											)::date + interval '1 month'
-					)  
 					and tp.keluar = '1'
 				)
 				order by tbl.noind";
