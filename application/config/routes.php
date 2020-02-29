@@ -3881,3 +3881,41 @@ $route['CetakKartuBody'] 							= 'CetakKartuBody/C_Index';
 $route['CetakKartuBody/Cetak'] 						= 'CetakKartuBody/C_Cetak';
 $route['CetakKartuBody/Cetak/(:any)'] 				= 'CetakKartuBody/C_Cetak/$1';
 $route['CetakKartuBody/Cetak/(:any)/(:any)'] 		= 'CetakKartuBody/C_Cetak/$1/$2';
+
+//-------------------------------------------Stock Gudang Sparepart--------------------------------------------------//
+$route['StockGdSparepart'] 							= 'StockGdSparepart/C_Index';
+
+$route['StockGdSparepart/LihatStock']					= 'StockGdSparepart/C_LihatStock';
+$route['StockGdSparepart/LihatStock/(:any)']			= 'StockGdSparepart/C_LihatStock/$1';
+$route['StockGdSparepart/LihatStock/(:any)/(:any)']		= 'StockGdSparepart/C_LihatStock/$1/$2';
+
+$route['StockGdSparepart/LihatTransact']				= 'StockGdSparepart/C_LihatTransact';
+$route['StockGdSparepart/LihatTransact/(:any)']			= 'StockGdSparepart/C_LihatTransact/$1';
+$route['StockGdSparepart/LihatTransact/(:any)/(:any)']	= 'StockGdSparepart/C_LihatTransact/$1/$2';
+
+//---------------------------------------Monitoring Delivery Sparepart ---------------------------------------------------
+$route['MonitoringDeliverySparepart'] 							= 'MonitoringDeliverySparepart/C_Index';
+
+$route['MonitoringDeliverySparepart/BomManagement']					= 'MonitoringDeliverySparepart/C_Bom';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)']			= 'MonitoringDeliverySparepart/C_Bom/$1';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Bom/$1/$2';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Bom/$1/$2/$3';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Bom/$1/$2/$4/$5';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Bom/$1/$2/$4/$5/$6';
+
+$route['MonitoringDeliverySparepart/MonitoringManagement']					= 'MonitoringDeliverySparepart/C_MonitoringMng';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)']			= 'MonitoringDeliverySparepart/C_MonitoringMng/$1';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_MonitoringMng/$1/$2';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_MonitoringMng/$1/$2/$3';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_MonitoringMng/$1/$2/$4/$5';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_MonitoringMng/$1/$2/$4/$5/$6';
+
+$route['MonitoringDeliverySparepart/Monitoring']					= 'MonitoringDeliverySparepart/C_Monitoring';
+$route['MonitoringDeliverySparepart/Monitoring/(:any)']			= 'MonitoringDeliverySparepart/C_Monitoring/$1';
+$route['MonitoringDeliverySparepart/Monitoring/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Monitoring/$1/$2';
+
+$route['MonitoringDeliverySparepart/UserManagement']					= 'MonitoringDeliverySparepart/C_User';
+$route['MonitoringDeliverySparepart/UserManagement/(:any)']			= 'MonitoringDeliverySparepart/C_User/$1';
+$route['MonitoringDeliverySparepart/UserManagement/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_User/$1/$2';
+$route['MonitoringDeliverySparepart/UserManagement/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_User/$1/$2/$3';
+$route['MonitoringDeliverySparepart/UserManagement/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_User/$1/$2/$4';
