@@ -177,13 +177,14 @@ class C_MonitoringPengPesananLuar extends CI_Controller{
 		}
 
 		$config['upload_path']          = './assets/upload/MonitoringPengirimanPesananLuar';
-		$config['allowed_types']        = 'pdf|jpg';
+		$config['allowed_types']        = 'pdf|jpg|png|jpeg|JPG|PNG|JPEG';
+
 		
 		$this->load->library('upload', $config);
  
 		if ( ! $this->upload->do_upload('txfPdf')){
 			$error = array('error' => $this->upload->display_errors());
-			echo "File yang diupload harus berformat Pdf atau Jpg!";
+			echo "File yang diupload harus berformat Pdf, jpg, jpeg, atau png!";
 		}else{
 			$data = array('upload_data' => $this->upload->data());
 			redirect('MonitoringPengirimanPesananLuar/RekapPurchaseOrder');
@@ -380,7 +381,7 @@ class C_MonitoringPengPesananLuar extends CI_Controller{
 		}
 
 		$config['upload_path']          = './assets/upload/MonitoringPengirimanPesananLuar';
-		$config['allowed_types']        = 'pdf|jpg';
+		$config['allowed_types']        = 'pdf|jpg|png|jpeg|JPG|PNG|JPEG';
 		
 		$this->load->library('upload', $config);
  

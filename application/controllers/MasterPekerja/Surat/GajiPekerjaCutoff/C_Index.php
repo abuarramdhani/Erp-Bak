@@ -10,6 +10,7 @@ class C_Index extends CI_Controller
   function __construct()
   {
     parent::__construct();
+    $this->load->library('Log_Activity');
     $this->load->library('General');
     $this->load->library('pdf');
     $this->load->library('session');
@@ -78,7 +79,7 @@ class C_Index extends CI_Controller
     $data['akhir']   = date('d', strtotime($getPeriode[0]['tanggal_akhir'])).' '.$akhirIndex.' '.date('Y', strtotime($getPeriode[0]['tanggal_akhir']));
     $data['staf']    = $this->M_indexinfo->getPekerjaStafSP3();
     $data['nonstaf'] = $this->M_indexinfo->getPekerjaNonStafSP3();
-    $data['hubker']         = $this->M_indexinfo->getHubker();
+    $data['hubker']  = $this->M_indexinfo->getHubker();
 
     $view = $this->load->view('MasterPekerja/Surat/GajiPekerjaCutoff/V_Periodik',$data);
 
@@ -88,9 +89,7 @@ class C_Index extends CI_Controller
   public function getAlasan()
   {
     $jenis = $this->input->post('jenis');
-    if ($jenis == 'nonstaf') {
-      $data = $this->M_indexinfo->getAlasanNStaf();
-    }elseif ($jenis == 'staf') {
+    if (!empty($jenis)) {
       $data = $this->M_indexinfo->getAlasan();
     }else {
       $data = '';
@@ -134,6 +133,7 @@ class C_Index extends CI_Controller
     $explodeYear    = explode(' ', $periodeLayar);
     $thisMonth      = $explodeYear[0];
     $bulanAsli      = $this->konversibulan->KonversiKeBulanIndonesia($thisMonth);
+    $bulanNow      = $this->konversibulan->KonversiKeBulanIndonesia(date('F'));
 
     if ($thisMonth == 'January') {
       $bulane = 'Februari';
@@ -167,6 +167,10 @@ class C_Index extends CI_Controller
     }else {
       $bulanDepan = $bulane.' '.$explodeYear[1];
     }
+
+    $getPeriode    = $this->M_indexinfo->getPeriode(date('Ym', strtotime($periodeLayar)));
+    $akhir_periode = date('d', strtotime($getPeriode[0]['tanggal_akhir']));
+    $akhir_periode_plus = date('d', strtotime($getPeriode[0]['tanggal_akhir']. "+1 days"));
 
     if ($jenis == 'staf') {
         if ($staf > 1) {
@@ -204,7 +208,9 @@ class C_Index extends CI_Controller
             '[last_date]',
             '[today]',
             '[approval]',
-            '[jbtn_approval]'
+            '[jbtn_approval]',
+            '[akhir_periode]',
+            '[akhir_periode+1]'
           );
           $parameter_replace[$i] = array
           (
@@ -214,9 +220,11 @@ class C_Index extends CI_Controller
             $waktuBerjalan,
             $bulanDepan,
             date('t', strtotime($thisMonth)),
-            date('d').' '.$bulanAsli.' '.date('Y'),
+            date('d').' '.$bulanNow.' '.date('Y'),
             ucwords(mb_strtolower($tertanda[0]['nama'])),
-            ucwords(mb_strtolower($tertanda[0]['jabatan']))
+            ucwords(mb_strtolower($tertanda[0]['jabatan'])),
+            $akhir_periode,
+            $akhir_periode_plus
           );
           $cetakTemplate[$i] = str_replace($parameter_diubah[$i], $parameter_replace[$i], $template[$i]);
         }
@@ -300,15 +308,20 @@ class C_Index extends CI_Controller
                                   Nama
                                   </strong>
                                   </td>
-                                  <td style="text-align: center; width: 40%; border: 1px solid black; background-color: grey;">
+                                  <td style="text-align: center; width: 25%; border: 1px solid black; background-color: grey;">
                                   <strong>
                                   Seksi
+                                  </strong>
+                                  </td>
+                                  <td style="text-align: center; width: 25%; border: 1px solid black; background-color: grey;">
+                                  <strong>
+                                  Keterangan
                                   </strong>
                                   </td>
                                   </tr>';
               $unik = 1;
               foreach ($keya as $key) {
-                $tabelPeserta[$k] .= "<tr><td style='text-align: center; border: 1px solid black;'>{$unik}</td><td style='text-align: center; border: 1px solid black;'>{$key['noind']}</td><td style='text-align: center; border: 1px solid black;'>{$key['nama']}</td><td style='text-align: center; border: 1px solid black;'>{$key['seksi']}</td></tr>";
+                $tabelPeserta[$k] .= "<tr><td style='text-align: center; border: 1px solid black;'>{$unik}</td><td style='text-align: center; border: 1px solid black;'>{$key['noind']}</td><td style='text-align: center; border: 1px solid black;'>{$key['nama']}</td><td style='text-align: center; border: 1px solid black;'>{$key['seksi']}</td><td style='text-align: center; border: 1px solid black;'>{$key['ket']}</td></tr>";
                 $unik++;
               }
               $tabelPeserta[$k] .= "</tbody></table>";
@@ -333,7 +346,9 @@ class C_Index extends CI_Controller
                             '[last_date]',
                             '[today]',
                             '[approval]',
-                            '[jbtn_approval]'
+                            '[jbtn_approval]',
+                            '[akhir_periode]',
+                            '[akhir_periode+1]'
                           );
               $par_ganti[$k] = array
                             (
@@ -344,9 +359,11 @@ class C_Index extends CI_Controller
                               $waktuBerjalan,
                               $bulanDepan,
                               date('t', strtotime($thisMonth)),
-                              date('d').' '.$bulanAsli.' '.date('Y'),
+                              date('d').' '.$bulanNow.' '.date('Y'),
                               ucwords(mb_strtolower($tertanda[0]['nama'])),
-                              ucwords(mb_strtolower($tertanda[0]['jabatan']))
+                              ucwords(mb_strtolower($tertanda[0]['jabatan'])),
+                              $akhir_periode,
+                              $akhir_periode_plus
                             );
               $cetakTemplateNonStaf[$k] = str_replace($par_ubah[$k], $par_ganti[$k], $templateNonStaf[$k]);
               $k++;
@@ -370,6 +387,11 @@ class C_Index extends CI_Controller
     $isi      = $this->input->post('MPK_txtaIsi');
     $alasan   = $this->input->post('txtaAlasan');
     $tertanda = $this->input->post('cmbtertandaCutoff');
+    //insert to t_log
+    $aksi = 'MASTER PEKERJA';
+    $detail = 'Create Memo Gaji Pekerja Cutoff Periode= '.$periode;
+    $this->log_activity->activity_log($aksi, $detail);
+    //
     if ($jenis == 'staf') {
       if (!empty($isi)) {
         $saveMemo = array
@@ -401,6 +423,11 @@ class C_Index extends CI_Controller
 
   public function exportPDF($id)
   {
+      //insert to t_log
+      $aksi = 'MASTER PEKERJA';
+      $detail = 'Export PDF Memo Gaji Pekerja Cutoff ID='.$id;
+      $this->log_activity->activity_log($aksi, $detail);
+      //
     $date = date('Y-m-d');
 
     $this->load->library('pdf');
@@ -421,7 +448,6 @@ class C_Index extends CI_Controller
 
     $data['getData'] = $this->M_indexinfo->getDataPrint($id);
     $data['hubker'] = $this->M_indexinfo->getHubker();
-    // print_r($data['getData']);die;
     $data['tahun'] = str_split($data['getData'][0]['periode'], 4);
     $bulan = $data['tahun'][1];
     $data['bulan'] = $this->konversibulan->KonversiAngkaKeBulan($bulan);
@@ -440,6 +466,11 @@ class C_Index extends CI_Controller
   public function deleteMemo($id)
   {
     $this->M_indexinfo->deleteMemo($id);
+    //insert to t_log
+    $aksi = 'MASTER PEKERJA';
+    $detail = 'Delete Memo Gaji Pekerja Cutoff ID='.$id;
+    $this->log_activity->activity_log($aksi, $detail);
+    //
     redirect('MasterPekerja/Surat/gajipekerjacutoff');
   }
 

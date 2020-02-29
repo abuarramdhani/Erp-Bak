@@ -75,11 +75,15 @@
 											<span><label>Kategori</label></span>
 										</td>
 										<td >
-											<select name="slcKategori" id="slcKategori" class="form-control select2 select2-hidden-accessible" multiple style="width:320px;">
+											<select onchange="kategoriBermasalah(this)" name="slcKategori" id="slcKategori" class="form-control select2 select2-hidden-accessible" multiple style="width:320px;">
 												<option value="Beda Harga">Beda Harga</option>
 												<option value="Dokumen Tidak Lengkap">Dokumen Tidak Lengkap</option>
 												<option value="Identitas Tidak Jelas">Identitas Tidak Jelas</option>
+												<option value="LainLain">Lain Lain</option>
 											 </select>
+										</td>
+										<td>
+											<input type="text" style="width: 320px;" name="txtLainLain" id="inputLain">
 										</td>
 									</tr>
 									<tr>

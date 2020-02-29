@@ -6,6 +6,7 @@ class C_PotonganSPSI extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/Report/PotonganSPSI/M_potonganspsi');
@@ -20,7 +21,7 @@ class C_PotonganSPSI extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Potongan SPSI';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_PotonganSPSI extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        			
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Potongan SPSI';
         $data['SubMenuTwo'] = '';
@@ -72,12 +73,17 @@ class C_PotonganSPSI extends CI_Controller
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', 'A4', 9, '', 5, 5, 15, 15, 0, 0, 'P');
-        
+
         $filename = 'Potongan SPSI.pdf';
         $pdf->setFooter('{PAGENO}');
 
         $year	 = $this->input->get('year');
 		$month	 = $this->input->get('month');
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Export PDF Laporan Potongan SPSI bulan=$month tahun=$year";
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $data['potongan_spsi'] = $this->M_potonganspsi->get_all($year, $month);
         $data['total'] = $this->M_potonganspsi->get_sum($year, $month);
@@ -94,7 +100,7 @@ class C_PotonganSPSI extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

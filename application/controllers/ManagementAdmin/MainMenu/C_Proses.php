@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
- * 
+ *
  */
 class C_Proses extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +14,7 @@ class C_Proses extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -42,11 +43,11 @@ class C_Proses extends CI_Controller
 		}elseif ($res_id == '2579') {
 			$this->session->management_admin_res_id = $res_id;
 		}
-		
+
 		$ma_res_id = $this->session->management_admin_res_id;
 		// print_r($_SESSION);exit();
 
-		
+
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -69,7 +70,7 @@ class C_Proses extends CI_Controller
 			$data['SubMenuTwo'] 	= '';
 			$data['delete']			= '1';
 		}
-		
+
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -87,6 +88,11 @@ class C_Proses extends CI_Controller
 		);
 
 		$this->M_proses->insertPelaksanaan($arrData);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Proses_Create Data ID_PKJ='.$this->input->post('selectPekerjaProses');
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('ManagementAdmin/Proses'));
 	}
 
@@ -118,6 +124,11 @@ class C_Proses extends CI_Controller
 		$decrypted_String = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$decrypted_String = $this->encrypt->decode($decrypted_String);
 		$this->M_proses->deleteData($decrypted_String);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Proses_Delete Data ID='.$decrypted_String;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('ManagementAdmin/Proses'));
 	}
 }

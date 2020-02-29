@@ -10,6 +10,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('ciqrcode');
@@ -101,7 +102,7 @@ class C_Index extends CI_Controller
 			$ks = '';
 		}
 
-		
+
 			// $data['listtobon'] = $this->M_dtmasuk->listtobon2($ks, $pr);
 			$data['listtobon'] = $this->M_dtmasuk->listtobonHitung2($ks, $pr);
 		$jml = '';
@@ -117,8 +118,8 @@ class C_Index extends CI_Controller
 		// 	print_r($a);
 		// 	$b = explode(',', $b);
 		// 	$hit = count($a);
-		// 	for ($i=0; $i < $hit; $i++) { 
-		// 		$jml += ($a[$i]*$b[$i]); 
+		// 	for ($i=0; $i < $hit; $i++) {
+		// 		$jml += ($a[$i]*$b[$i]);
 		// 	}
 		// 	$jml = $jml+$c+($d*$e);
 		// 	$push = array("total"=> $jml);
@@ -290,8 +291,8 @@ class C_Index extends CI_Controller
 			$a = explode(',', $a);
 			$b = explode(',', $b);
 			$hit = count($a);
-			for ($i=0; $i < $hit; $i++) { 
-				$jml += ($a[$i]*$b[$i]); 
+			for ($i=0; $i < $hit; $i++) {
+				$jml += ($a[$i]*$b[$i]);
 			}
 			$push = array("total"=> $jml);
 			array_splice($key,4,1,$push);
@@ -356,7 +357,7 @@ class C_Index extends CI_Controller
 		$jml_k = $this->input->post('p2k3_jmlKebutuhan');
 		$sisa_saldo = $this->input->post('p2k3_sisaSaldo');
 
-		for ($i=0; $i < count($apd); $i++) { 
+		for ($i=0; $i < count($apd); $i++) {
 			$data = array(
 				'periode'	=>	$pr,
 				'kodesie'	=>	$ks,
@@ -368,6 +369,11 @@ class C_Index extends CI_Controller
 				'sisa_saldo'	=>	$sisa_saldo[$i],
 				);
 			$input = $this->M_dtmasuk->insertBon($data);
+			//insert to sys.t_log_activity
+			$aksi = 'P2K3 V2';
+			$detail = "Submit Bon Periode=$pr item=".$apd[$i];
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 		redirect('p2k3adm_V2/Admin/inputBon');
 	}
@@ -424,8 +430,8 @@ class C_Index extends CI_Controller
 					$a = explode(',', $a);
 					$b = explode(',', $b);
 					$hit = count($a);
-					for ($i=0; $i < $hit; $i++) { 
-						$jml += ($a[$i]*$b[$i]); 
+					for ($i=0; $i < $hit; $i++) {
+						$jml += ($a[$i]*$b[$i]);
 					}
 					// echo "<br>";
 					// echo $row['kode_item'].'=';
@@ -571,7 +577,7 @@ class C_Index extends CI_Controller
 		$a = 0;
 		for ($i=0; $i < count($item); $i++) {
 			$getbulan = $this->M_dtmasuk->getBulan($item[$i]);
-			for ($x=$a; $x < (count($daftar_pekerjaan)*($i+1)); $x++) { 
+			for ($x=$a; $x < (count($daftar_pekerjaan)*($i+1)); $x++) {
 				$jml[$i][] = (round($jumlah[$x]/$getbulan,2));
 			}
 
@@ -592,12 +598,13 @@ class C_Index extends CI_Controller
 				'jml_kebutuhan_staff'	=>	$itemStaf,
 				);
 			$a += count($daftar_pekerjaan);
-			// echo "<pre>";
-			// print_r($data);
-			// echo "<br>";exit();
+			//insert to sys.t_log_activity
+		    $aksi = 'P2K3 V2';
+		    $detail = "Input Standar Kode_item= ".$item[$i]." Status=3";
+		    $this->log_activity->activity_log($aksi, $detail);
+		    //
 			$input = $this->M_order->save_standar($data);
 		}
-		// exit();
 		redirect('p2k3adm_V2/Admin/inputStandarTIM');
 	}
 
@@ -633,9 +640,12 @@ class C_Index extends CI_Controller
       		'tgl_approve'	=>	date('Y-m-d H:i:s'),
       		'approve_by'	=>	$noind,
       		);
-      	// echo "<pre>";
-      	// print_r($data);exit();
       	$inputPkj = $this->M_order->inputPkj($data);
+		//insert to sys.t_log_activity
+		$aksi = 'P2K3 V2';
+		$detail = "Save Input order kd_pkj=$kd_pkj kodesie=$ks";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
       	redirect('p2k3adm_V2/Admin/inputOrderTIM');
 	}
 
@@ -670,7 +680,7 @@ class C_Index extends CI_Controller
 	}
 	else {
 		echo '<center><ul class="list-group"><li class="list-group-item">'.'Data Kosong'.'</li></ul></center>';
-	}	
+	}
 }
 
 public function MonitoringBon()
@@ -719,10 +729,10 @@ public function MonitoringBon()
 	$data['monitorbon'] = $this->M_dtmasuk->monitorbonOracle($ks, $pr);
 	$count = count($data['monitorbon']);
 	$a = array();
-	for ($i=0; $i < $count; $i++) { 
+	for ($i=0; $i < $count; $i++) {
 		$a[] = array_change_key_case($data['monitorbon'][$i],CASE_LOWER);
 	}
-	$data['monitorbon'] = $a; 
+	$data['monitorbon'] = $a;
 	// print_r($data['monitorbon']);exit();
 
 	$this->load->view('V_Header',$data);
@@ -830,6 +840,11 @@ public function SaveEditRiwayatKebutuhan()
 
 	$update = $this->M_dtmasuk->updateRiwayat($id, $jmlUmum, $staffJumlah,$pkj);
 	if ($update) {
+		//insert to sys.t_log_activity
+	    $aksi = 'P2K3 V2';
+	    $detail = "Update riwayat ID= ".$id;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 		redirect('p2k3adm_V2/Admin/RiwayatKebutuhan/'.$ks);
 	}
 }
@@ -839,6 +854,11 @@ public function hapusRiwayatKebutuhan($id, $ks)
 	// echo $id;
 	$delRiwayatKeb = $this->M_order->delRiwayatKeb($id);
 	if ($delRiwayatKeb) {
+		//insert to sys.t_log_activity
+	    $aksi = 'P2K3 V2';
+	    $detail = "Hapus riwayat kebutuhan ID= ".$id;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 		redirect('p2k3adm_V2/Admin/RiwayatKebutuhan/'.$ks);
 	}
 }
@@ -848,6 +868,11 @@ public function hapusRiwayatOrder($id, $ks)
 	// echo $id;
 	$delRiwayatOr = $this->M_order->delRiwayatOr($id);
 	if ($delRiwayatOr) {
+		//insert to sys.t_log_activity
+	    $aksi = 'P2K3 V2';
+	    $detail = "Hapus riwayat Order ID= ".$id;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 		redirect('p2k3adm_V2/Admin/Riwayatorder/'.$ks);
 	}
 }
@@ -983,11 +1008,11 @@ public function EditMasterItem()
 
 		$this->upload->initialize($config);
 
-		if ($this->upload->do_upload('et_file_item')) 
+		if ($this->upload->do_upload('et_file_item'))
 		{
 			$this->upload->data();
-		} 
-		else 
+		}
+		else
 		{
 			$errorinfo = $this->upload->display_errors();
 			echo $errorinfo;exit();
@@ -1003,6 +1028,11 @@ public function EditMasterItem()
 			);
 	}
 	$updete = $this->M_dtmasuk->updete($data, $kode_item);
+	//insert to sys.t_log_activity
+	$aksi = 'P2K3 V2';
+	$detail = "Update kode item= ".$kode_item;
+	$this->log_activity->activity_log($aksi, $detail);
+	//
 
 	redirect('p2k3adm_V2/Admin/MasterItem');
 }
@@ -1013,6 +1043,11 @@ public function HapusMasterItem()
 	$id = $this->input->post('hapus_id');
 
 	$delete = $this->M_dtmasuk->delItem($id);
+	//insert to sys.t_log_activity
+	$aksi = 'P2K3 V2';
+	$detail = "Hapus master item ID= ".$id;
+	$this->log_activity->activity_log($aksi, $detail);
+	//
 	redirect('p2k3adm_V2/Admin/MasterItem');
 }
 
@@ -1048,11 +1083,11 @@ public function AddMasterItem()
 
 		$this->upload->initialize($config);
 
-		if ($this->upload->do_upload('et_file_item')) 
+		if ($this->upload->do_upload('et_file_item'))
 		{
 			$this->upload->data();
-		} 
-		else 
+		}
+		else
 		{
 			$errorinfo = $this->upload->display_errors();
 			echo $errorinfo;exit();
@@ -1076,6 +1111,11 @@ public function AddMasterItem()
 	}
 
 	$insert = $this->M_dtmasuk->insertItem($data);
+	//insert to sys.t_log_activity
+	$aksi = 'P2K3 V2';
+	$detail = "Menambah master item kode= ".$kode_item;
+	$this->log_activity->activity_log($aksi, $detail);
+	//
 
 	redirect('p2k3adm_V2/Admin/MasterItem');
 }
@@ -1154,7 +1194,7 @@ public function CetakBongagal($id)
   					'kode' => '',
   					'nama' => '',
   					'satuan' => '',
-  					'diminta' => '', 
+  					'diminta' => '',
   					'ket' => '',
   					'account' => '',
   					'produk' => '',
@@ -1162,7 +1202,7 @@ public function CetakBongagal($id)
   					'lokasi_simpanku' => ''
   					);
   			}
-			// echo $x; 
+			// echo $x;
   		}
 		// print_r($data_array_2);
 		// exit();

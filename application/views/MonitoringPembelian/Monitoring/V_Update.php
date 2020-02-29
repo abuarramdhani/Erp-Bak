@@ -56,6 +56,8 @@
 												<th width="%"><center>MOQ</center></th>
 												<th width="%"><center>FLM</center></th>
 												<th width="%"><center>NAMA APPROVER PO</center></th>
+												<th width="%"><center>RECEIVE CLOSE TOLERANCE</center></th>
+												<th width="%"><center>TOLERANCE</center></th>
 												<th width="%"><center>KETERANGAN</center></th>
 												<!-- <th width="%"><center>STATUS</center></th> -->
 											</tr>
@@ -82,6 +84,8 @@
 														<td><input type="hidden" name="moq[]" id="moq" value="<?php echo $row['MINIMUM_ORDER_QUANTITY']?>"><?php echo $row['MINIMUM_ORDER_QUANTITY']?></td>
 														<td><input type="hidden" name="flm[]" id="flm" value="<?php echo $row['FIXED_LOT_MULTIPLIER']?>"><?php echo $row['FIXED_LOT_MULTIPLIER']?></td>
 														<td><input type="hidden" name="attr18[]" id="attr18" value="<?php echo $row['ATTRIBUTE18']?>"><?php echo $row['ATTRIBUTE18']?></td>
+														<td><input type="hidden" name="receive_close_tolerance[]" id="receive_close_tolerance" value="<?php echo $row['RECEIVE_CLOSE_TOLERANCE']?>"><?php echo $row['RECEIVE_CLOSE_TOLERANCE']?></td>
+														<td><input type="hidden" name="qty_rcv_tolerance[]" id="qty_rcv_tolerance" value="<?php echo $row['QTY_RCV_TOLERANCE']?>"><?php echo $row['QTY_RCV_TOLERANCE']?></td>
 														<td><input type="hidden" name="keterangan[]" id="keterangan" value="<?php echo $row['KETERANGAN'] ?>"><?php echo $row['KETERANGAN'] ?></td>
 														<input type="hidden" name="stat[]" id="stat" value="UNAPPROVED">
 													</tr>

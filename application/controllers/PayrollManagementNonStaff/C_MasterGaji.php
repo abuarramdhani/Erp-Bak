@@ -9,6 +9,7 @@ class C_MasterGaji extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -75,7 +76,7 @@ class C_MasterGaji extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/MasterGaji/V_create', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doCreate(){
@@ -105,6 +106,11 @@ class C_MasterGaji extends CI_Controller
 		);
 		$this->M_mastergaji->setMasterGaji($data);
 		$header_id = $this->db->insert_id();
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Set Master Data Gaji noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/MasterData/DataGaji'));
 
@@ -141,7 +147,7 @@ class C_MasterGaji extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/MasterGaji/V_update', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doUpdate($id){
@@ -175,6 +181,11 @@ class C_MasterGaji extends CI_Controller
 			'kpph' => $this->input->post('txtKpphHeader',TRUE),
 			);
 		$this->M_mastergaji->updateMasterGaji($data, $plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Update Master Data Gaji id=$plaintext_string noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/MasterData/DataGaji'));
 
@@ -291,6 +302,11 @@ class C_MasterGaji extends CI_Controller
 
 
 				$this->M_mastergaji->setMasterGaji($data);
+				//insert to sys.log_activity
+				$aksi = 'Payroll Management NStaf';
+				$detail = "Import Master Data Gaji filename=$fileName noind=".utf8_encode(trim($db_record['NOIND']));
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 
 				$ImportProgress = ($i/$db_rows)*100;
 				$this->session->set_userdata('ImportProgress', $ImportProgress);
@@ -317,7 +333,7 @@ class C_MasterGaji extends CI_Controller
 		$db_empty = dbase_pack($db);
 
 		foreach($data['MasterGaji'] as $mg){
-			
+
 			$data = array(
 					$mg['noind'],
 					$mg['kodesie'],
@@ -350,7 +366,7 @@ class C_MasterGaji extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(  
+		$columns = array(
 			0=> 'noind',
 			1=> 'noind',
 			2=> 'noind',
@@ -384,7 +400,7 @@ class C_MasterGaji extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -414,9 +430,14 @@ class C_MasterGaji extends CI_Controller
 	public function downloadExcel()
     {
 		$filter = $this->input->get('filter');
-		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'kelas', 'gaji_pokok', 'insentif_prestasi', 
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Export Excel Master Data Gaji filter=$filter";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'kelas', 'gaji_pokok', 'insentif_prestasi',
 			'insentif_masuk_sore', 'insentif_masuk_malam', 'ubt', 'upamk', 'bank_code');
-		$column_view = array('No', 'Noind', 'Nama', 'Kodesie', 'Unit Name', 'Kelas', 'Gaji Pokok', 'Insentif Prestasi', 
+		$column_view = array('No', 'Noind', 'Nama', 'Kodesie', 'Unit Name', 'Kelas', 'Gaji Pokok', 'Insentif Prestasi',
 			'Insentif Masuk Sore', 'Insentif Masuk Malam', 'Ubt', 'Upamk', 'Bank Code');
 		$data_table = $this->M_mastergaji->getMasterGajiSearch($filter)->result_array();
 
@@ -443,10 +464,10 @@ class C_MasterGaji extends CI_Controller
 			}
 			$excel_row++;
 		}
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);

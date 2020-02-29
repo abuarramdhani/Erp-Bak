@@ -6,6 +6,7 @@ class C_MasterSeksi extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterSeksi/M_masterseksi');
@@ -21,7 +22,7 @@ class C_MasterSeksi extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Data';
         $data['SubMenuOne'] = 'Master Seksi';
         $data['SubMenuTwo'] = '';
@@ -47,7 +48,7 @@ class C_MasterSeksi extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterseksi->get_by_id($id);
         if ($row) {
             $data = array(
@@ -57,7 +58,7 @@ class C_MasterSeksi extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'kodesie' => $row->kodesie,
 				'dept' => $row->dept,
 				'bidang' => $row->bidang,
@@ -120,6 +121,11 @@ class C_MasterSeksi extends CI_Controller
 		);
 
             $this->M_masterseksi->insert($data);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Add Master Seksi kd_sie=".strtoupper($this->input->post('txtKodesieNew',TRUE));
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
 					 "success_insert" => 1
@@ -177,6 +183,11 @@ class C_MasterSeksi extends CI_Controller
 			'pekerjaan' => strtoupper($this->input->post('txtPekerjaan',TRUE)),
 			'golkerja' => strtoupper($this->input->post('txtGolkerja',TRUE)),
 			);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update Master Seksi kd_sie=".strtoupper($this->input->post('txtKodesie',TRUE))." menjadi=".strtoupper($this->input->post('txtKodesieNew', TRUE));
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 
             $this->M_masterseksi->update(strtoupper($this->input->post('txtKodesie', TRUE)), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
@@ -193,6 +204,11 @@ class C_MasterSeksi extends CI_Controller
 
         if ($row) {
             $this->M_masterseksi->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete master Seksi ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -214,19 +230,19 @@ class C_MasterSeksi extends CI_Controller
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
                 $file_path  = 'assets/upload/importPR/masterseksi/'.$file_data['file_name'];
-                
+
             if ($this->csvimport->get_array($file_path)) {
-                
+
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
 					$check = $this->M_masterseksi->get_by_id($row['KODESIE']);
-                    if($check){ 
+                    if($check){
                         $data = array(
                             'dept'      => $row['DEPT'],
                             'bidang'    => $row['BIDANG'],
@@ -265,7 +281,7 @@ class C_MasterSeksi extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

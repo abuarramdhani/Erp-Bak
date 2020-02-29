@@ -164,7 +164,7 @@ class M_splkasie extends CI_Model{
 	}
 
 	public function getName($noind){
-		return $this->prs->query("SELECT nama FROM hrd_khs.tpribadi WHERE noind='$noind' and keluar='0'")->row()->nama;
+		return $this->prs->query("SELECT nama FROM hrd_khs.tpribadi WHERE noind='$noind' limit 1")->row()->nama;
 	}
 
 }

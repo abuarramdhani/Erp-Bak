@@ -105,7 +105,23 @@
 													$var = '2';
 												}
 												?>
-										<?php if ($var =='1'): ?>
+										<?php $output= array();exec("ping -c 1 ".$device['device_ip']." && exit",$output,$returnval);
+										if($returnval != 0){
+											$label = "<label class='label label-danger'>Disconnected</label>";
+											$dc = '1';
+										}
+										else{ 
+											if(count(preg_grep("/Destination host unreachable/i", $output)) == 0){
+												$label = "<label class='label label-success'>Connected</label>";
+												$dc = '0';
+												}
+												else{ 
+													$label = "<label class='label label-danger'>Disconnected</label>";
+													$dc = '1';
+													}
+													} ?>
+
+										<?php if ($var =='1' or $dc == '1'): ?>
 											<td class="text-center">
 												<a type="button" class="btn btn-info btn-sm disabled " href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="User List" >
 													<i class="fa fa-users"></i>
@@ -121,7 +137,7 @@
 				                                </a> -->
 											</td>
 										<?php endif ?>
-										<?php if ($var =='2'): ?>
+										<?php if ($var =='2' and $dc == '0'): ?>
 											<td class="text-center">
 												<a type="button" class="btn btn-info btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="User List" >
 													<i class="fa fa-users"></i>
@@ -144,7 +160,8 @@
 											<td><?php echo $device['device_name'];?></td>
 											<td><?php echo $device['lokasi_kerja'];?></td>
 											<td><?php echo $device['voip'];?></td>
-											<td><?php $output= array();exec("ping -c 1 ".$device['device_ip']." && exit",$output,$returnval);if($returnval != 0){echo "<label class='label label-danger'>Disconnected</label>";}else{ if(count(preg_grep("/Destination host unreachable/i", $output)) == 0){echo "<label class='label label-success'>Connected</label>";}else{ echo "<label class='label label-danger'>Disconnected</label>";}} ?>
+											<td>
+											<?= $label; ?>
 											</td>
 											<td><?php echo $device['frontpresensi'] ?></td>
 											<td><?php echo $device['catering'] ?></td>

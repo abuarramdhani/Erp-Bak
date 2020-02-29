@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
- * 
+ *
  */
 class C_Cetak extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +14,7 @@ class C_Cetak extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -55,8 +56,13 @@ class C_Cetak extends CI_Controller
 		$semua = $this->input->post('txtSemuaPekerjaCetak');
 		$pekerja = $this->input->post('txtPekerjaCetak');
 		$periode = $this->input->post('txtPeriodeCetak');
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Cetak Excel Periode='.$periode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		if (isset($semua) and !empty($semua) and $semua == '1') {
-			$data = $this->M_cetak->getCetakSemua($periode); 
+			$data = $this->M_cetak->getCetakSemua($periode);
 		}else{
 			$pkj = "";
 			foreach ($pekerja as $key) {
@@ -94,7 +100,7 @@ class C_Cetak extends CI_Controller
 			$coorCellAkhir6 = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,$row);
 			$row++;
 		}
-		
+
 		$coorCellSimpanAkhir1 = $coorCellAkhir1->getCoordinate();
 		$coorCellSimpanAkhir2 = $coorCellAkhir2->getCoordinate();
 		$coorCellSimpanAkhir3 = $coorCellAkhir3->getCoordinate();
@@ -150,7 +156,7 @@ class C_Cetak extends CI_Controller
 					)
 				),'B3:'.$coorCellSimpanAkhir6
 		);
-		
+
 		$filename ='Daftar Pending '.$periode.'.xls';
 		header('Content-Type: aplication/vnd.ms-excel');
 		header('Content-Disposition:attachment;filename="'.$filename.'"');

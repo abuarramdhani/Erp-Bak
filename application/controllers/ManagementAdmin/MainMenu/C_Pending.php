@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
- * 
+ *
  */
 class C_Pending extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +14,7 @@ class C_Pending extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -57,6 +58,11 @@ class C_Pending extends CI_Controller
 		$alasan = $this->input->post('txtAlasan');
 		$id = $this->input->post('txtId');
 		$this->M_pending->insertAlasan($alasan,$id);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Pending_Submit Alasan ID='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('ManagementAdmin/Pending'));
 	}

@@ -6,6 +6,7 @@ class C_MasterBankInduk extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterBankInduk/M_masterbankinduk');
@@ -19,7 +20,7 @@ class C_MasterBankInduk extends CI_Controller
 	public function index(){
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Data';
         $data['SubMenuOne'] = 'Master Bank Induk';
         $data['SubMenuTwo'] = '';
@@ -40,12 +41,12 @@ class C_MasterBankInduk extends CI_Controller
 		$this->session->unset_userdata('success_insert');
 		$this->session->unset_userdata('not_found');
     }
-	
+
 	//LOAD READ PAGE
 	public function read($id){
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterbankinduk->get_by_id($id);
         if ($row) {
             $data = array(
@@ -55,7 +56,7 @@ class C_MasterBankInduk extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'kd_bank_induk' => $row->kd_bank_induk,
 				'bank_induk' => $row->bank_induk,
 			);
@@ -74,7 +75,7 @@ class C_MasterBankInduk extends CI_Controller
             redirect(site_url('PayrollManagement/MasterBankInduk'));
         }
     }
-	
+
 	//LOAD CREATE PAGE
     public function create(){
         $this->checkSession();
@@ -100,18 +101,18 @@ class C_MasterBankInduk extends CI_Controller
 
     public function save(){
 		$this->formValidation();
-		
+
 		//MASTER DELETE CURRENT
 		$md_where = array(
 			'kd_bank_induk' => strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
 		);
-		
+
 		//MASTER INSERT NEW
 		$data = array(
 			'kd_bank_induk' => strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
 			'bank_induk' => strtoupper($this->input->post('txtBankInduk',TRUE)),
 		);
-		
+
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
 			'kd_bank_induk' => strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
@@ -120,7 +121,7 @@ class C_MasterBankInduk extends CI_Controller
 		$ru_data = array(
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 		);
-		
+
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
 			'kd_bank_induk' 		=> strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
@@ -130,12 +131,17 @@ class C_MasterBankInduk extends CI_Controller
 			'kode_petugas' 			=> '0001225',
 			'tgl_record' 			=> date('Y-m-d H:i:s'),
 		);
-		
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Add Mater Bank Induk kd_bank=".strtoupper($this->input->post('txtKdBankIndukNew'));
+        $this->log_activity->activity_log($aksi, $detail);
+        //
+
 		$this->M_masterbankinduk->master_delete($md_where);
 		$this->M_masterbankinduk->insert($data);
 		$this->M_masterbankinduk->riwayat_update($ru_where,$ru_data);
 		$this->M_masterbankinduk->riwayat_insert($ri_data);
-		
+
         $this->session->set_flashdata('message', 'Create Record Success');
 		$ses=array(
 				 "success_insert" => 1
@@ -143,7 +149,7 @@ class C_MasterBankInduk extends CI_Controller
 		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterBankInduk'));
     }
-	
+
 
     public function update($id){
 		$this->checkSession();
@@ -184,7 +190,11 @@ class C_MasterBankInduk extends CI_Controller
 			'bank_induk' => strtoupper($this->input->post('txtBankInduk',TRUE)),
 			'kd_bank_induk' => strtoupper($this->input->post('txtKdBankIndukNew',TRUE)),
 		);
-
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update Mater Bank Induk kd_bank=".strtoupper($this->input->post('txtKdBankIndukNew'));
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->M_masterbankinduk->update(strtoupper($this->input->post('txtKdBankInduk', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
 		$ses=array(
@@ -199,6 +209,11 @@ class C_MasterBankInduk extends CI_Controller
 
         if ($row) {
             $this->M_masterbankinduk->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete master bank induk ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -217,7 +232,7 @@ class C_MasterBankInduk extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

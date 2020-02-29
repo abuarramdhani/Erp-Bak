@@ -6,6 +6,7 @@ class C_MasterJabatan extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterJabatan/M_masterjabatan');
@@ -21,7 +22,7 @@ class C_MasterJabatan extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Data';
         $data['SubMenuOne'] = 'Master Jabatan';
         $data['SubMenuTwo'] = '';
@@ -47,7 +48,7 @@ class C_MasterJabatan extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterjabatan->get_by_id($id);
         if ($row) {
             $data = array(
@@ -57,7 +58,7 @@ class C_MasterJabatan extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'kd_jabatan' => $row->kd_jabatan,
 				'jabatan' => $row->jabatan,
 			);
@@ -106,6 +107,11 @@ class C_MasterJabatan extends CI_Controller
 		);
 
         $this->M_masterjabatan->insert($data);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Add kd_jabatan=".strtoupper($this->input->post('txtKdJabatanNew',TRUE))." jabatan =".strtoupper($this->input->post('txtJabatan',TRUE));
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->session->set_flashdata('message', 'Create Record Success');
 		$ses=array(
 					 "success_insert" => 1
@@ -155,6 +161,11 @@ class C_MasterJabatan extends CI_Controller
 		);
 
         $qwer = $this->M_masterjabatan->update(strtoupper($this->input->post('txtKdJabatan', TRUE)), $data);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update kd_jabatan=".strtoupper($this->input->post('txtKdJabatanNew',TRUE))." jabatan =".strtoupper($this->input->post('txtJabatan',TRUE));
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 		$this->session->set_flashdata('message', 'Update Record Success');
 		$ses=array(
 					 "success_update" => 1
@@ -168,6 +179,11 @@ class C_MasterJabatan extends CI_Controller
         $row = $this->M_masterjabatan->get_by_id($id);
 
         if ($row) {
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete master jabatan ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_masterjabatan->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
@@ -186,24 +202,24 @@ class C_MasterJabatan extends CI_Controller
     }
 
     public function import() {
-       
+
         $config['upload_path'] = 'assets/upload/importPR/masterjabatan/';
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
                 $file_path  = 'assets/upload/importPR/masterjabatan/'.$file_data['file_name'];
-                
+
             if ($this->csvimport->get_array($file_path)) {
-                
+
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
 					$check = $this->M_masterjabatan->get_by_id($row['KODE_JABAT']);
-                    if($check){ 
+                    if($check){
                         $data = array(
                             'jabatan' => $row['NAMA_JABAT'],
                         );
@@ -236,7 +252,7 @@ class C_MasterJabatan extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

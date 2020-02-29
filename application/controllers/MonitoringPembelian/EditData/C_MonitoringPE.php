@@ -66,11 +66,13 @@ class C_MonitoringPE extends CI_Controller
 		$status = $this->input->post('stat');
 		$email = $this->input->post('EmailPembelian[]');
 		$fullname = $this->input->post('fullname');
-		
+		$receive_close_tolerance = $this->input->post('receive_close_tolerance');
+		$qty_rcv_tolerance = $this->input->post('qty_rcv_tolerance');
 		$semua  = array();
 		for ($i=0; $i < sizeof($itemCode) ; $i++) {
-			
+			$inv_id = $this->M_monitoringpe->getInvItemId($itemCode[$i]);
 			$data = array(
+					'INVENTORY_ITEM_ID' => $inv_id[0]['INVENTORY_ITEM_ID'],
 					'BUYER_ID' 	=> $fullname[$i],
 					'UPDATE_ID' 	=> $id[$i],
 					'SEGMENT1' 	=> $itemCode[$i],
@@ -83,6 +85,8 @@ class C_MonitoringPE extends CI_Controller
 					'MINIMUM_ORDER_QUANTITY' 	=> $moq[$i],
 					'FIXED_LOT_MULTIPLIER' 	=> $flm[$i],
 					'ATTRIBUTE18' 	=> $attr18[$i],
+					'RECEIVE_CLOSE_TOLERANCE' => $receive_close_tolerance[$i],
+					'QTY_RCV_TOLERANCE' => $qty_rcv_tolerance[$i],
 					'STATUS'	=> $status[$i]
 				);
 		$semua[] = $data;

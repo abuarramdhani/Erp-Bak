@@ -49,6 +49,7 @@
 			$tanggal = $data['tanggal'];
 			$absen = $data['absen'];
 		}
+			$jenis = $_GET['kom_1'];
 			$tgl_aw = explode("-", $awal_cutoff);
 			$tgl_ak = explode("-", $akhir_cutoff);
 			echo "Data Pegawai Periode ".$tgl_aw['2']."/".$tgl_aw['1']."/".$tgl_aw['0']." - ".$tgl_ak['2']."/".$tgl_ak['1']."/".$tgl_ak['0'];
@@ -59,6 +60,7 @@
 					<table style="border-collapse: collapse;" border="1">
 					<thead>
 						<tr>
+							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 10px'>No</th>
 							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 50px'>No. Induk</th>
 							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 150px;'>Nama</th>
 							<?php  
@@ -90,6 +92,12 @@
 								}
 								echo "<th colspan='".$hitung_colspan."' style='text-align: center'>".$bulan[$simpan_bulan]." ".$simpan_tahun."</th>";
 								$tanggal_terakhir = $dt_bulan['tanggal'];
+								if ("Lembur"==$jenis)
+								{
+									?>
+									<th rowspan="2" style='text-align: right;vertical-align: middle;'>Total</th>
+									<?php
+								}
 							?>
 						</tr>
 						<tr>
@@ -106,8 +114,12 @@
 					</thead>
 					<tbody>
 						<?php 
-							foreach ($absen as $abs) { ?>
+							$nomor=0;
+							foreach ($absen as $abs) { 
+								$nomor++;
+								?>
 								<tr>
+									<td style="text-align: center;vertical-align: center"><?php echo $nomor;?></td>
 									<td style="text-align: center;vertical-align: center">
 										<?php echo $abs['noind'] ?>
 									</td>
@@ -119,16 +131,22 @@
 										} ?>	
 									</td>
 									<?php 
+										$total=0;
 										$repeat_3 = 0;
 										foreach ($tanggal as $dt_tanggal) {
 											if ($repeat_3 >= (($i*$pembagi) - $pembagi) && $repeat_3 < ($i*$pembagi)) {
 												$keterangan = "-";
 												if (isset($abs['data'][$dt_tanggal['index_tanggal']]) and !empty($abs['data'][$dt_tanggal['index_tanggal']])) {
 													$keterangan = $abs['data'][$dt_tanggal['index_tanggal']];
+													$total=$total+$keterangan;
 												}
 												echo "<td style='text-align: center;vertical-align: middle'>$keterangan</td>";
 											}
 											$repeat_3++;
+										}
+										if("Lembur"==$jenis)
+										{
+											echo "<td style='text-align: right;vertical-align: middle'>$total</td>";
 										}
 									?>
 								</tr> 
@@ -144,6 +162,7 @@
 				<table style="border-collapse: collapse;" border="1">
 					<thead>
 						<tr>
+							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 10px'>No</th>
 							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 80px'>No. Induk</th>
 							<th rowspan="2" style='text-align: center;vertical-align: middle;width: 200px;'>Nama</th>
 							<?php  
@@ -184,6 +203,12 @@
 								}
 								echo "<th colspan='".$hitung_colspan."' style='text-align: center'>".$bulan[$simpan_bulan]." ".$simpan_tahun."</th>";
 								$tanggal_terakhir = $dt_bulan['tanggal'];
+								if ("Lembur"==$jenis)
+								{
+									?>
+									<th rowspan="2" style='text-align: right;vertical-align: middle;'>Total</th>
+									<?php
+								}
 							?>
 						</tr>
 						<tr>
@@ -196,8 +221,14 @@
 					</thead>
 					<tbody>
 						<?php 
-							foreach ($absen as $abs) { ?>
+							$nomor=0;
+							foreach ($absen as $abs) { 
+								$nomor++;
+								?>
 								<tr>
+									<td style="text-align: center;vertical-align: center">
+										<?php echo $nomor; ?>
+									</td>
 									<td style="text-align: center;vertical-align: center">
 										<?php echo $abs['noind'] ?>
 									</td>
@@ -209,12 +240,18 @@
 										} ?>	
 									</td>
 									<?php 
+										$total=0;
 										foreach ($tanggal as $dt_tanggal) {
 											$keterangan = "-";
 											if (isset($abs['data'][$dt_tanggal['index_tanggal']]) and !empty($abs['data'][$dt_tanggal['index_tanggal']])) {
 												$keterangan = $abs['data'][$dt_tanggal['index_tanggal']];
+												$total=$total+$keterangan;
 											}
 											echo "<td style='text-align: center;vertical-align: middle'>$keterangan</td>";
+										}
+										if("Lembur"==$jenis)
+										{
+											echo "<td style='text-align: right;vertical-align: middle'>$total</td>";
 										}
 									?>
 								</tr> 

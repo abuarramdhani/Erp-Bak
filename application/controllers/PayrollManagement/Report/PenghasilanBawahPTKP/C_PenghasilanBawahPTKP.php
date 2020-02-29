@@ -1,11 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-	
+
 	class C_PenghasilanBawahPTKP extends CI_Controller {
 
 		function __construct()
 	    {
 	        parent::__construct();
 	        $this->load->library('session');
+			$this->load->library('Log_Activity');
 	        $this->load->helper('url');
 	        $this->load->model('SystemAdministration/MainMenu/M_user');
 	        $this->load->model('PayrollManagement/Report/PenghasilanBawahPTKP/M_penghasilanbawahptkp');
@@ -21,7 +22,7 @@
     	{
 	        $this->checkSession();
 	        $user_id = $this->session->userid;
-	        
+
 	        $data['Menu'] = 'Laporan Penggajian';
 	        $data['SubMenuOne'] = 'Lap. Gaji Bawah PTKP';
 	        $data['SubMenuTwo'] = '';
@@ -43,7 +44,7 @@
 	    {
 	        $this->checkSession();
 	        $user_id = $this->session->userid;
-	        
+
 			$year = $this->input->post('txtPeriodeTahun',TRUE);
 
 	        $data['Menu'] = 'Laporan Penggajian';
@@ -76,6 +77,11 @@
 	        $this->checkSession();
 
 			$year = $this->input->get('year');
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management';
+			$detail = "Export PDF Laporan Penghasilan dibawah PTKP tahun=$year";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			$data['year'] = $year;
 
@@ -93,7 +99,7 @@
 	    {
 	        if ($this->session->is_logged)
 	        {
-	            
+
 	        } else {
 	            redirect(site_url());
 	        }

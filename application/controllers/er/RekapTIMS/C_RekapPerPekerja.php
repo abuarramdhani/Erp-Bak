@@ -6,20 +6,21 @@ class C_RekapPerPekerja extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
-          //load the login model
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
+          //load the login model
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		
+
 		$this->load->model('er/RekapTIMS/M_rekap_per_pekerja');
 		$this->load->model('er/RekapTIMS/M_rekaptims');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -28,29 +29,29 @@ class C_RekapPerPekerja extends CI_Controller {
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect();
 		}
 	}
-	
+
 	//------------------------show the dashboard-----------------------------
 	public function index()
 	{
-		
+
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] = 'Rekap TIMS Per Pekerja';
 		$data['Menu'] = 'Rekap TIMS Per Pekerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('er/RekapTIMS/V_filter_per_pekerja',$data);
@@ -76,13 +77,13 @@ class C_RekapPerPekerja extends CI_Controller {
 
 	public function show_data_per_pekerja()
 	{
-		
+
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] = 'Filter TIMS';
 		$data['Menu'] = 'Rekap TIMS Per Pekerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -93,7 +94,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		// print_r($noinduk);exit();
 		$status     = $this->input->post('slcStatus');
 		$detail 	= $this->input->post('detail');
-		
+
 		if($detail!=1)
 		{
 			$detail 	= 	0;
@@ -116,6 +117,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		if ($detail==0) {
 			$data['periode1']	= $periode1;
 			$data['periode2']	= $periode2;
+			$data['detail']	= $detail;
 			$data['status']	= $status;
 			/*$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk, $status);
 			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk, $status);*/
@@ -163,6 +165,7 @@ class C_RekapPerPekerja extends CI_Controller {
 			$data['periode2']	= $period2;
 
 			$data['status']	= $status;
+			$data['detail']	= $detail;
 			/*$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk,$status);
 			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk,$status);*/
 
@@ -178,6 +181,11 @@ class C_RekapPerPekerja extends CI_Controller {
 		$periode2 = $this->input->post("txtPeriode2_export");
 		$NoInduk = $this->input->post("txtNoInduk_export");
 		$status = $this->input->post("txtStatus");
+		//insert to sys.log_activity
+		$aksi = 'REKAP TIMS';
+		$detail_log = "Export Excel perpekerja tanggal=".$periode1." - ".$periode2;
+		$this->log_activity->activity_log($aksi, $detail_log);
+		//
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -504,7 +512,7 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->setCellValue($P_CT.$highestRow, ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))), PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue
 						(
-							$P_Tot.$highestRow, 
+							$P_Tot.$highestRow,
 							round(
 									(
 										(
@@ -523,14 +531,16 @@ class C_RekapPerPekerja extends CI_Controller {
 													($rekap_data['frekip']+$rekap_data['frekips'])
 													+
 													($rekap_data['frekct']+$rekap_data['frekcts'])
+													+
+													($rekap_data['frekmnon']+$rekap_data['frekmsnon'])
 												)
 											)
 											/
-											(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']))
+											(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']) - ($rekap_data['frekmnon']+$rekap_data['frekmsnon']))
 										)
 										*100
 									),
-								2).'%', 
+								2).'%',
 							PHPExcel_Cell_DataType::TYPE_STRING
 						);
 
@@ -660,16 +670,17 @@ class C_RekapPerPekerja extends CI_Controller {
 				$angka++;
 			}
 		}
-		// echo "<pre>";print_r($data['detail']);
-		// exit();
-		// $this->load->view('er/RekapTims/V_cetak_tims_per_pekerja', $data);
-		// exit();
+		//insert to sys.log_activity
+		$aksi = 'REKAP TIMS';
+		$detail_log = "Export PDF per pekerja noind=$NoInduk tanggal=".$periode1." - ".$periode2;
+		$this->log_activity->activity_log($aksi, $detail_log);
+		//
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('','A4-L',0,'',10,10,10,10,10,10);
 		$filename = 'rekapTims.pdf';
-		
+
 
 		$html = $this->load->view('er/RekapTIMS/V_cetak_tims_per_pekerja', $data, true);
 
@@ -686,14 +697,14 @@ class C_RekapPerPekerja extends CI_Controller {
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] = 'Filter TIMS';
 		$data['Menu'] = 'Rekap TIMS Per Pekerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$periode1 = date('Y-m-01 00:00:00', strtotime($month));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($month));
 		$begin = new DateTime($periode1);
@@ -797,7 +808,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$worksheet->setCellValue('D6', 'MASA KERJA');
 
 		$col = '4';
-		
+
 			foreach ($p as $d) {
 				$T = PHPExcel_Cell::stringFromColumnIndex($col);
 				$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -827,7 +838,7 @@ class C_RekapPerPekerja extends CI_Controller {
 				$worksheet->setCellValue($SP.'7', 'SP');
 				$col=$col+7;
 			}
-		
+
 
 		$T = PHPExcel_Cell::stringFromColumnIndex($col);
 		$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -858,13 +869,13 @@ class C_RekapPerPekerja extends CI_Controller {
 		$no = 1;
 		$highestRow = $worksheet->getHighestRow()+1;
 		foreach ($rekap_all as $rekap_data) {
-			
+
 			$masukkerja_s = '';
 			${'masa_kerja'.$rekap_data['nama']} = array();
 			$index_masakerja = 0;
 			foreach ($rekap_masakerja as $row) {
 				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
-					
+
 					if ($row['masukkerja'] != $masukkerja_s) {
 						$masukkerja = new DateTime($row['masukkerja']);
 						$tglkeluar = new DateTime($row['tglkeluar']);
@@ -893,7 +904,7 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->setCellValue('D'.$highestRow, $total_masa_kerja);
 
 			$col = 4;
-			
+
 				foreach ($p as $d) {
 					$dateName = $d->format('d_M_y');
 					foreach (${'rekap_'.$dateName} as ${'rek'.$dateName}) {
@@ -947,7 +958,7 @@ class C_RekapPerPekerja extends CI_Controller {
 
 					$col=$col+7;
 				}
-			
+
 
 			$T = PHPExcel_Cell::stringFromColumnIndex($col);
 			$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -970,7 +981,7 @@ class C_RekapPerPekerja extends CI_Controller {
 
 		$highestColumn = $worksheet->getHighestColumn();
 		$highestRow = $worksheet->getHighestRow();
-		
+
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->applyFromArray($styleArray);
 			$worksheet	->getStyle('A6:'.$highestColumn.'7')
 						->getFill()
@@ -979,14 +990,14 @@ class C_RekapPerPekerja extends CI_Controller {
 						->setARGB('0099ff');
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-		
+
 		$worksheet->freezePaneByColumnAndRow(4, 8);
 
 		$worksheet->getStyle('D8:'.$highestColumn.$highestRow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-		
+
 			$fileName = 'Rekap_Monthly';
-		
+
 
 		$worksheet->setTitle('Rekap TIMS');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
@@ -1003,10 +1014,10 @@ class C_RekapPerPekerja extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] = 'Filter TIMS';
 		$data['Menu'] = 'Rekap TIMS Per Pekerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -1022,7 +1033,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$data['CutiTahunan'] 		= $this->M_rekap_per_pekerja->rekapPersonSIP($data['periode1'],$data['periode2'],$nik,$keterangan = 'CT');
 		$data['SuratPeringatan'] 	= $this->M_rekap_per_pekerja->rekapPersonSP($data['periode1'],$data['periode2'],$nik);
 		$data['Sakit'] 				= $this->M_rekap_per_pekerja->rekapPersonSakit($data['periode1'], $data['periode2'], $nik);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('er/RekapTIMS/V_personal',$data);
@@ -1050,7 +1061,7 @@ class C_RekapPerPekerja extends CI_Controller {
 				'color' => array('rgb' => 'FFFFFF'),
 			)
 		);
-		
+
 		$worksheet->getColumnDimension('A')->setWidth(5);
 		$worksheet->getColumnDimension('B')->setWidth(15);
 		$worksheet->getColumnDimension('C')->setWidth(10);
@@ -1096,7 +1107,7 @@ class C_RekapPerPekerja extends CI_Controller {
 					->getStartColor()
 					->setARGB('c0c0c0');
 		$worksheet->getStyle('A9:F9')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-		
+
 
 		$worksheet->setCellValue('A1', 'INFORMASI PEKERJA');
 		$worksheet->setCellValue('A2', 'NIK');
@@ -1152,7 +1163,7 @@ class C_RekapPerPekerja extends CI_Controller {
 			$worksheet->setCellValue('I'.$row, $mkr['keluar'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$row++;
 		}
-		
+
 		$highestRow = $worksheet->getHighestRow();
 
 		$worksheet->getStyle('A'.($highestRow+3).':F'.($highestRow+3))->applyFromArray($styleArray);

@@ -13,6 +13,7 @@ class C_BPJSTambahan extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -63,6 +64,11 @@ class C_BPJSTambahan extends CI_Controller
 		$noind = $this->input->post('noind');
 		$nama = $this->input->post('nama');
 		$this->M_bpjstambahan->tambah($noind,$nama);
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Menambah Tanggungan Noind='.$noind.' Nama='.$nama;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		echo "selesai";
 	}
 
@@ -70,6 +76,11 @@ class C_BPJSTambahan extends CI_Controller
 		$noind = $this->input->post('noind');
 		$nama = $this->input->post('nama');
 		$this->M_bpjstambahan->hapus($noind,$nama);
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Mengurangi Tanggungan Noind='.$noind.' Nama='.$nama;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		echo "selesai";
 	}
 

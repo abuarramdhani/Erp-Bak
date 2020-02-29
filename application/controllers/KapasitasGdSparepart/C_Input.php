@@ -42,33 +42,10 @@ class C_Input extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$noSPB1 = $this->input->post('noSpb1');
-		$noSPB2 = $this->input->post('noSpb2');
-		$noSPB3 = $this->input->post('noSpb3');
-		$noSPB4 = $this->input->post('noSpb4');
-		$noSPB5 = $this->input->post('noSpb5');
-		$noSPB6 = $this->input->post('noSpb6');
-		$noSPB7 = $this->input->post('noSpb7');
-		$noSPB8 = $this->input->post('noSpb8');
-		$noSPB9 = $this->input->post('noSpb9');
-		$noSPB10 = $this->input->post('noSpb10');
-		$btn1 	= $this->input->post('btn1');
-		$btn2 	= $this->input->post('btn2');
-		$btn3 	= $this->input->post('btn3');
-		$btn4 	= $this->input->post('btn4');
-		$btn5 	= $this->input->post('btn5');
-		$btn6 	= $this->input->post('btn6');
-		$btn7 	= $this->input->post('btn7');
-		$btn8 	= $this->input->post('btn8');
-		$btn9 	= $this->input->post('btn9');
-		$btn10 	= $this->input->post('btn10');
-		// $pic 	= $this->input->post('pic');
-		$noSPB 	= array(
-				'0' => $noSPB1, '1' => $noSPB2, '2' => $noSPB3,	'3' => $noSPB4,	'4' => $noSPB5,
-				'5' => $noSPB6,	'6' => $noSPB7,	'7' => $noSPB8,	'8' => $noSPB9,	'9' => $noSPB10);
-		$valBtn = array(
-				'0' => $btn1, '1' => $btn2, '2' => $btn3, '3' => $btn4,	'4' => $btn5,
-				'5' => $btn6, '6' => $btn7, '7' => $btn8, '8' => $btn9,	'9' => $btn10);
+		$noSPB = $this->input->post('no_spb');
+		$valBtn = $this->input->post('btn_urgent');
+		$btnBon = $this->input->post('btn_bon');
+		$btnlangsung = $this->input->post('btn_langsung');
 		// echo "<pre>"; print_r($valBtn);exit();
 		for ($i=0; $i < count($noSPB); $i++) { 
 			if ($noSPB[$i] == '') {
@@ -85,13 +62,20 @@ class C_Input extends CI_Controller
 				}elseif ($valBtn[$i] == 'Batal') {
 					$urgent = 'URGENT';
 				}
+				if ($btnBon[$i] == 'Bon' && $btnlangsung[$i] == 'Batal') {
+					$bon = 'LANGSUNG';
+				}elseif ($btnBon[$i] == 'Batal' && $btnlangsung[$i] == 'Langsung') {
+					$bon = 'BON';
+				}else {
+					$bon = '';
+				}
 				$jml_pcs 	= 0;
 				for ($a=0; $a < count($dataSPB); $a++) { 
 					$jml_pcs += $dataSPB[$a]['QUANTITY'];
 				}
 				$cek = $this->M_input->cekData($noSPB[$i]);
 				if (empty($cek)) {
-					$save= $this->M_input->saveDataSPB($jam, $jenis, $nodoc, $jml_item, $jml_pcs, $urgent, $tgl_dibuat);	
+					$save= $this->M_input->saveDataSPB($jam, $jenis, $nodoc, $jml_item, $jml_pcs, $urgent, $tgl_dibuat, $bon);	
 				}else{
 					
 				}

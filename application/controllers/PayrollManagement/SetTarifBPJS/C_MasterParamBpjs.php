@@ -6,6 +6,7 @@ class C_MasterParamBpjs extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetTarifBPJS/M_masterparambpjs');
@@ -20,7 +21,7 @@ class C_MasterParamBpjs extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Tarif BPJS';
         $data['SubMenuTwo'] = '';
@@ -46,7 +47,7 @@ class C_MasterParamBpjs extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterparambpjs->get_by_id($id);
         if ($row) {
             $data = array(
@@ -56,7 +57,7 @@ class C_MasterParamBpjs extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_setting' => $row->id_setting,
 				'batas_max_jkn' => $row->batas_max_jkn,
 				'jkn_tg_kary' => $row->jkn_tg_kary,
@@ -112,7 +113,7 @@ class C_MasterParamBpjs extends CI_Controller
 
     public function save(){
         $this->formValidation();
-		
+
 		//MASTER INSERT NEW
 		$data = array(
 			'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
@@ -122,7 +123,13 @@ class C_MasterParamBpjs extends CI_Controller
 			'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
 			'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
 		);
-		
+
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create set JKN batas_max_jkn=".str_replace(',','', $this->input->post('txtBatasMaxJkn'));
+        $this->log_activity->activity_log($aksi, $detail);
+        //
+
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
 			'tgl_tberlaku' => '9999-12-31',
@@ -130,7 +137,7 @@ class C_MasterParamBpjs extends CI_Controller
 		$ru_data = array(
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 		);
-		
+
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
 			'tgl_berlaku' 	=> date('Y-m-d'),
@@ -149,7 +156,7 @@ class C_MasterParamBpjs extends CI_Controller
 		$this->M_masterparambpjs->insert($data);
 		$this->M_masterparambpjs->riwayat_update($ru_where,$ru_data);
 		$this->M_masterparambpjs->riwayat_insert($ri_data);
-		
+
         $this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
 					 "success_insert" => 1
@@ -227,8 +234,13 @@ class C_MasterParamBpjs extends CI_Controller
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 			'kode_petugas' 	=> $this->session->userdata('userid'),
 		);
-		
+
             $this->M_masterparambpjs->update($this->input->post('txtIdSetting', TRUE), $data);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update set JKN ID=".$this->input->post('txtIdSetting');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 			$this->M_masterparambpjs->riwayat_update($ru_where,$ru_data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
@@ -245,6 +257,11 @@ class C_MasterParamBpjs extends CI_Controller
 
         if ($row) {
             $this->M_masterparambpjs->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set JKN ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -263,7 +280,7 @@ class C_MasterParamBpjs extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

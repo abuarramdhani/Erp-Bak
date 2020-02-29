@@ -1,28 +1,26 @@
 <?php
 if (isset($res) and !empty($res)) {
+	$datake=-1;
 	foreach ($res as $key) {
 		$lain = "";
 		$nomlain = "";
+	$datake++;
 ?>
 
 <html>
 <head>
 </head>
-</style>
 <body>
 <?php 
 		set_time_limit(0);
 		ini_set("memory_limit", "2048M");
 							
 	?>
-<div style="margin: 10px;">
-	<table style="width:100%; padding: 0px; font-size: 11px">
+<div style="margin: 10px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 2px;padding-top: 10mm">
+	<table style="width:100%; padding: 0px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 		<tr>
-			<td style="width: 10%" rowspan="5">
-				<img style="height: 80px; width: 70px" src="<?php echo base_url('/assets/img/logo.png') ?>" />
-			</td>
+			<td style="width: 10%" rowspan="5"></td>
 			<td style="width: 46%;">
-				<p>CV. KARYA HIDUP SENTOSA</p>
 			</td>
 			<td style="width: 10%">
 				<p>Tanggal</p>
@@ -32,9 +30,7 @@ if (isset($res) and !empty($res)) {
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<p>Pabrik Mesin Alat Pertanian, Pengecoran Logam,</p>
-			</td>
+			<td></td>
 			<td>
 				<p>Nama</p>
 			</td>
@@ -42,13 +38,11 @@ if (isset($res) and !empty($res)) {
 				<p>:</p>
 			</td>
 			<td>
-				<label><?php echo $key['nama'] ?></label>
+				<label><?php echo substr($key['nama'],0,25) ?> / <?php echo $key['noind'] ?></label>
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<p>Dealer Utama Diesel Kubota</p>
-			</td>
+			<td></td>
 			<td>
 				<p>Jabatan</p>
 			</td>
@@ -60,22 +54,12 @@ if (isset($res) and !empty($res)) {
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<p>Telp:(0274)512095,563217, Fax (0274 ) 563523</p>
-			</td>
+			<td></td>
 		</tr>
 	</table>
 </div>
-<div style="width: 100%;">
-	<div style="width: 100%; height: 3px; background-color: black;"></div>
-	<div style="width: 100%; height: 3px; background-color: grey; margin-top: 1px"></div>
-</div>
-<div style="text-align: center">
-	<p style="font-size: 17px; color: black"><b>SLIP GAJI</b></p>
-</div>
-
 <div>
-	<table style="width: 100%; font-size: 10px;border-collapse:separate; border-spacing:0 5px;">
+	<table style="width: 90%; font-size: 11px;border-collapse:separate; border-spacing:0 5px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px; margin-left: 5%;margin-right: 7%;margin-top: 20mm;margin-bottom: 10px;">
 			<tr >
 				<th style="width: 50px;">No</th>
 				<th colspan="7" style="text-align: left; padding-left: 10px;">Keterangan</th>
@@ -85,7 +69,7 @@ if (isset($res) and !empty($res)) {
 				<tr>
 					<td style="width: 10px;text-align: center;">1</td>
 					<td style="width: 200px;">Gaji Pokok</td>
-					<td style="width: 70px;">
+					<td style="width: 70px;text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['gp'] != null) {
 							echo $key['gp'];						
@@ -97,7 +81,7 @@ if (isset($res) and !empty($res)) {
 					<td style="width: 60px;">hari</td>
 					<td style="width: 40px;">x</td>
 					<td style="width:30px;">Rp</td>
-					<td style="width: 140px;">
+					<td style="width: 140px;text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomgp'] != null) {
 							echo number_format($key['nomgp'],'0',',','.');						
@@ -107,7 +91,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td style="width: 30px;">Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['gp'] != null and $key['nomgp'] != null) {
 							echo number_format($key['gp']*$key['nomgp'],'0',',','.');						
@@ -120,7 +104,7 @@ if (isset($res) and !empty($res)) {
 				<tr>
 					<td style="text-align: center;">2</td>
 					<td>Lembur</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['lmbr'] != null) {
 							echo $key['lmbr'];						
@@ -132,7 +116,7 @@ if (isset($res) and !empty($res)) {
 					<td>jam</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomlmbr'] != null) {
 							echo number_format($key['nomlmbr'],'0',',','.');						
@@ -142,7 +126,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['lmbr'] != null and $key['nomlmbr'] != null) {
 							echo number_format($key['lmbr']*($key['nomlmbr']),'0',',','.');						
@@ -155,7 +139,7 @@ if (isset($res) and !empty($res)) {
 				<tr>
 					<td style="text-align: center;">3</td>
 					<td>Uang Makan Hari Biasa</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['um'] != null) {
 							echo $key['um'];						
@@ -167,7 +151,7 @@ if (isset($res) and !empty($res)) {
 					<td>hari</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomum'] != null) {
 							echo number_format($key['nomum'],'0',',','.');						
@@ -177,7 +161,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['um'] != null and $key['nomum'] != null) {
 							echo number_format($key['um']*$key['nomum'],'0',',','.');						
@@ -190,7 +174,7 @@ if (isset($res) and !empty($res)) {
 				<tr>
 					<td style="text-align: center;">4</td>
 					<td>Uang Makan Puasa</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['ump'] != null) {
 							echo $key['ump'];						
@@ -202,7 +186,7 @@ if (isset($res) and !empty($res)) {
 					<td>hari</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomump'] != null) {
 							echo number_format($key['nomump'],'0',',','.');						
@@ -212,7 +196,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['ump'] != null and $key['nomump'] != null) {
 							echo number_format($key['ump']*$key['nomump'],'0',',','.');						
@@ -226,7 +210,7 @@ if (isset($res) and !empty($res)) {
 				<tr>
 					<td style="width: 10px;text-align: center;">1</td>
 					<td style="width: 200px;">Gaji Pokok</td>
-					<td style="width: 70px;">
+					<td style="width: 70px;text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['gp1'] != null) {
 							echo $key['gp1'];						
@@ -238,7 +222,7 @@ if (isset($res) and !empty($res)) {
 					<td style="width: 60px;">hari</td>
 					<td style="width: 40px;">x</td>
 					<td style="width:30px;">Rp</td>
-					<td style="width: 140px;">
+					<td style="width: 140px;text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomgp1'] != null) {
 							echo number_format($key['nomgp1'],'0',',','.');						
@@ -248,7 +232,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td style="width: 30px;">Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['gp1'] != null and $key['nomgp1'] != null) {
 							echo number_format($key['gp1']*$key['nomgp1'],'0',',','.');						
@@ -259,9 +243,9 @@ if (isset($res) and !empty($res)) {
 					</td>
 				</tr>
 				<tr>
-					<td style="width: 10px;text-align: center;"></td>
+					<td style="width: 10px;text-align: right;"></td>
 					<td style="width: 200px;">Gaji Pokok</td>
-					<td style="width: 70px;">
+					<td style="width: 70px;text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['gp2'] != null) {
 							echo $key['gp2'];						
@@ -273,7 +257,7 @@ if (isset($res) and !empty($res)) {
 					<td style="width: 60px;">hari</td>
 					<td style="width: 40px;">x</td>
 					<td style="width:30px;">Rp</td>
-					<td style="width: 140px;">
+					<td style="width: 140px;text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomgp2'] != null) {
 							echo number_format($key['nomgp2'],'0',',','.');						
@@ -283,7 +267,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td style="width: 30px;">Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;text-align: right;">
 						<?php 
 						if ($key['gp2'] != null and $key['nomgp2'] != null) {
 							echo number_format($key['gp2']*$key['nomgp2'],'0',',','.');						
@@ -296,7 +280,7 @@ if (isset($res) and !empty($res)) {
 				<tr>
 					<td style="text-align: center;">2</td>
 					<td>Lembur</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['lmbr1'] != null) {
 							echo $key['lmbr1'];						
@@ -308,7 +292,7 @@ if (isset($res) and !empty($res)) {
 					<td>jam</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomlmbr1'] != null) {
 							echo number_format($key['nomlmbr1'],'0',',','.');						
@@ -318,7 +302,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['lmbr1'] != null and $key['nomlmbr1'] != null) {
 							echo number_format($key['lmbr1']*($key['nomlmbr1']),'0',',','.');						
@@ -329,9 +313,9 @@ if (isset($res) and !empty($res)) {
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: center;"></td>
+					<td style="text-align: right;"></td>
 					<td>Lembur</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['lmbr2'] != null) {
 							echo $key['lmbr2'];						
@@ -343,7 +327,7 @@ if (isset($res) and !empty($res)) {
 					<td>jam</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomlmbr2'] != null) {
 							echo number_format($key['nomlmbr2'],'0',',','.');						
@@ -353,7 +337,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['lmbr2'] != null and $key['nomlmbr2'] != null) {
 							echo number_format($key['lmbr2']*($key['nomlmbr2']),'0',',','.');						
@@ -366,7 +350,7 @@ if (isset($res) and !empty($res)) {
 				<tr>
 					<td style="text-align: center;">3</td>
 					<td>Uang Makan Hari Biasa</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['um1'] != null) {
 							echo $key['um1'];						
@@ -378,7 +362,7 @@ if (isset($res) and !empty($res)) {
 					<td>hari</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomum1'] != null) {
 							echo number_format($key['nomum1'],'0',',','.');						
@@ -388,7 +372,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['um1'] != null and $key['nomum1'] != null) {
 							echo number_format($key['um1']*$key['nomum1'],'0',',','.');						
@@ -399,9 +383,9 @@ if (isset($res) and !empty($res)) {
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: center;"></td>
+					<td style="text-align: right;"></td>
 					<td>Uang Makan Hari Biasa</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['um2'] != null) {
 							echo $key['um2'];						
@@ -413,7 +397,7 @@ if (isset($res) and !empty($res)) {
 					<td>hari</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomum2'] != null) {
 							echo number_format($key['nomum2'],'0',',','.');						
@@ -423,7 +407,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['um2'] != null and $key['nomum2'] != null) {
 							echo number_format($key['um2']*$key['nomum2'],'0',',','.');						
@@ -436,7 +420,7 @@ if (isset($res) and !empty($res)) {
 				<tr>
 					<td style="text-align: center;">4</td>
 					<td>Uang Makan Puasa</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['ump1'] != null) {
 							echo $key['ump1'];						
@@ -448,7 +432,7 @@ if (isset($res) and !empty($res)) {
 					<td>hari</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomump1'] != null) {
 							echo number_format($key['nomump1'],'0',',','.');						
@@ -458,7 +442,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['ump1'] != null and $key['nomump1'] != null) {
 							echo number_format($key['ump1']*$key['nomump1'],'0',',','.');						
@@ -469,9 +453,9 @@ if (isset($res) and !empty($res)) {
 					</td>
 				</tr>
 				<tr>
-					<td style="text-align: center;"></td>
+					<td style="text-align: right;"></td>
 					<td>Uang Makan Puasa</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['ump2'] != null) {
 							echo $key['ump2'];						
@@ -483,7 +467,7 @@ if (isset($res) and !empty($res)) {
 					<td>hari</td>
 					<td>x</td>
 					<td>Rp</td>
-					<td>
+					<td style="text-align: right;padding-right: 10%">
 						<?php 
 						if ($key['nomump2'] != null) {
 							echo number_format($key['nomump2'],'0',',','.');						
@@ -493,7 +477,7 @@ if (isset($res) and !empty($res)) {
 						?>
 					</td>
 					<td>Rp</td>
-					<td style="text-align: center;">
+					<td style="text-align: right;">
 						<?php 
 						if ($key['ump2'] != null and $key['nomump2'] != null) {
 							echo number_format($key['ump2']*$key['nomump2'],'0',',','.');						
@@ -513,35 +497,35 @@ if (isset($res) and !empty($res)) {
 			<tr>
 				<td style="text-align: center;"><?php echo $nomor ?></td>
 				<td>Tambahan Gaji Pokok</td>
-				<td><?php echo number_format($key['tambahan_gp'],'2','.','') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['tambahan_gp'],'2','.','') ?></td>
 				<td>hari</td>
 				<td>x</td>
 				<td>Rp</td>
-				<td><?php echo number_format($key['tambahan_gp_per_a'],'0',',','.') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['tambahan_gp_per_a'],'0',',','.') ?></td>
 				<td>Rp</td>
-				<td style="text-align: center;"><?php echo number_format($key['tambahan_gp_total'],'0',',','.') ?></td>
+				<td style="text-align: right;"><?php echo number_format($key['tambahan_gp_total'],'0',',','.') ?></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;"></td>
+				<td style="text-align: right;"></td>
 				<td>Tambahan Lembur</td>
-				<td><?php echo number_format($key['tambahan_lembur'],'2','.','') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['tambahan_lembur'],'2','.','') ?></td>
 				<td>Jam</td>
 				<td>x</td>
 				<td>Rp</td>
-				<td><?php echo number_format($key['tambahan_lembur_per_a'],'0',',','.') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['tambahan_lembur_per_a'],'0',',','.') ?></td>
 				<td>Rp</td>
-				<td style="text-align: center;"><?php echo number_format($key['tambahan_lembur_total'],'0',',','.') ?></td>
+				<td style="text-align: right;"><?php echo number_format($key['tambahan_lembur_total'],'0',',','.') ?></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;"></td>
+				<td style="text-align: right;"></td>
 				<td>Tambahan Uang Makan</td>
-				<td><?php echo number_format($key['tambahan_um'],'2','.','') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['tambahan_um'],'2','.','') ?></td>
 				<td>hari</td>
 				<td>x</td>
 				<td>Rp</td>
-				<td><?php echo number_format($key['tambahan_um_per_a'],'0',',','.') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['tambahan_um_per_a'],'0',',','.') ?></td>
 				<td>Rp</td>
-				<td style="text-align: center;"><?php echo number_format($key['tambahan_um_total'],'0',',','.') ?></td>
+				<td style="text-align: right;"><?php echo number_format($key['tambahan_um_total'],'0',',','.') ?></td>
 			</tr>
 					<?php
 					$nomor++;
@@ -552,35 +536,35 @@ if (isset($res) and !empty($res)) {
 			<tr>
 				<td style="text-align: center;"><?php echo $nomor ?></td>
 				<td>Potongan Gaji Pokok</td>
-				<td><?php echo number_format($key['potongan_gp'],'2','.','') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['potongan_gp'],'2','.','') ?></td>
 				<td>hari</td>
 				<td>x</td>
 				<td>Rp</td>
-				<td><?php echo number_format($key['potongan_gp_per_a'],'0',',','.') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['potongan_gp_per_a'],'0',',','.') ?></td>
 				<td>Rp</td>
-				<td style="text-align: center;"><?php echo number_format($key['potongan_gp_total'],'0',',','.') ?></td>
+				<td style="text-align: right;"><?php echo number_format($key['potongan_gp_total'],'0',',','.') ?></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;"></td>
+				<td style="text-align: right;"></td>
 				<td>Potongan Lembur</td>
-				<td><?php echo number_format($key['potongan_lembur'],'2','.','') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['potongan_lembur'],'2','.','') ?></td>
 				<td>Jam</td>
 				<td>x</td>
 				<td>Rp</td>
-				<td><?php echo number_format($key['potongan_lembur_per_a'],'0',',','.') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['potongan_lembur_per_a'],'0',',','.') ?></td>
 				<td>Rp</td>
-				<td style="text-align: center;"><?php echo number_format($key['potongan_lembur_total'],'0',',','.') ?></td>
+				<td style="text-align: right;"><?php echo number_format($key['potongan_lembur_total'],'0',',','.') ?></td>
 			</tr>
 			<tr>
-				<td style="text-align: center;"></td>
+				<td style="text-align: right;"></td>
 				<td>Potongan Uang Makan</td>
-				<td><?php echo number_format($key['potongan_um'],'2','.','') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['potongan_um'],'2','.','') ?></td>
 				<td>hari</td>
 				<td>x</td>
 				<td>Rp</td>
-				<td><?php echo number_format($key['potongan_um_per_a'],'0',',','.') ?></td>
+				<td style="text-align: right;padding-right: 10%"><?php echo number_format($key['potongan_um_per_a'],'0',',','.') ?></td>
 				<td>Rp</td>
-				<td style="text-align: center;"><?php echo number_format($key['potongan_um_total'],'0',',','.') ?></td>
+				<td style="text-align: right;"><?php echo number_format($key['potongan_um_total'],'0',',','.') ?></td>
 			</tr>
 					<?php
 					$nomor++;
@@ -594,7 +578,7 @@ if (isset($res) and !empty($res)) {
 					?>
 				</td>
 				<td>Lain-lain</td>
-				<td>
+				<td style="text-align: right;padding-right: 10%">
 					<?php 
 					if ($lain != "") {
 						echo $lain;						
@@ -606,7 +590,7 @@ if (isset($res) and !empty($res)) {
 				<td>hari</td>
 				<td>x</td>
 				<td>Rp</td>
-				<td>
+				<td style="text-align: right;padding-right: 10%">
 					<?php 
 					if ($nomlain != "") {
 						echo number_format($nomlain,'0',',','.');						
@@ -616,7 +600,7 @@ if (isset($res) and !empty($res)) {
 					?>
 				</td>
 				<td>Rp</td>
-				<td style="text-align: center;">
+				<td style="text-align: right;">
 					<?php 
 					if ($lain != null and $nomlain != null) {
 						echo number_format($lain*$nomlain,'0',',','.');						
@@ -630,46 +614,34 @@ if (isset($res) and !empty($res)) {
 				<td colspan="6"></td>
 				<td>Total Diterima</td>
 				<td style="border-top: 1px black solid;">Rp</td>
-				<td style="text-align: center;"><?php echo number_format($key['total_terima'],'0',',','.')?></td>
+				<td style="text-align: right;"><?php echo number_format($key['total_terima'],'0',',','.')?></td>
 			</tr>
 	</table>
 	<?php if (isset($key['gp'])) { 
 		if($key['tambahan'] == 1 or $key['potongan'] == 1){
 			if ($key['tambahan'] == 0 or $key['potongan'] == 0) {
 				?>
-		<div style="margin-top: 10px;margin-left: 440px;font-size: 14px;">
-			<label>Yogyakarta, <?php echo date('d F Y');?></label>
-		</div>
-		<div style="margin-top: 20px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-left: 230px; font-size: 11px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 				<?php 
 			}else{
 				?>
-		<div style="margin-top: 5px;margin-left: 440px;font-size: 14px;">
-			<label>Yogyakarta, <?php echo date('d F Y');?></label>
-		</div>
-		<div style="margin-top: 5px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-left: 230px; font-size: 11px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 				<?php 
 			}
 		}else{
 			?>
-		<div style="margin-top: 12px;margin-left: 440px;font-size: 14px;">
-			<label>Yogyakarta, <?php echo date('d F Y');?></label>
-		</div>
-		<div style="margin-top: 40px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-left: 230px; font-size: 11px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 			<?php 
 		}
 		?>
 	<?php }else{ ?>
-		<div style="margin-top: 10px;margin-left: 440px;font-size: 14px;">
-			<label>Yogyakarta, <?php echo date('d F Y');?></label>
-		</div>
-		<div style="margin-top: 20px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-left: 230px; font-size: 11px;font-family: Arial, Helvetica, sans-serif; letter-spacing: 1px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 	<?php } ?>
@@ -679,7 +651,7 @@ if (isset($res) and !empty($res)) {
 </html>
 <div style="<?php 
 $co = count($res);
-if ($co > '1') {
+if ($co > '1' && $datake!=($co-1)) {
 	echo "page-break-before: always;";
 }?>">
 	

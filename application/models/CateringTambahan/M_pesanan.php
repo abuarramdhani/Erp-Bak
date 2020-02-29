@@ -68,7 +68,7 @@ class M_pesanan extends CI_Model
     {
       $sql = "SELECT concat(tp.noind,' - ', tp.nama) nama
               FROM hrd_khs.tpribadi tp
-              WHERE tp.keluar = '0' AND tp.kodesie in ('401010200') AND kd_jabatan IN ('11') AND noind = 'J1256' LIMIT 1";
+              WHERE tp.keluar = '0' AND noind = 'J1350' LIMIT 1";
       return $this->personalia->query($sql)->row()->nama;
     }
 
@@ -97,6 +97,12 @@ class M_pesanan extends CI_Model
                 INNER JOIN hrd_khs.tpribadi tp on tp.kodesie = ts.kodesie
               WHERE tp.noind= '$noind' AND tp.keluar = '0'";
       return $this->personalia->query($sql)->row()->seksi;
+    }
+
+    public function getInMail($user)
+    {
+        $sql = "SELECT trim(email_internal) as email_internal FROM hrd_khs.tpribadi where noind = 'J1350' limit 1";
+        return $this->personalia->query($sql)->row()->email_internal;
     }
 
     //-----Model Utama untuk List data---------//

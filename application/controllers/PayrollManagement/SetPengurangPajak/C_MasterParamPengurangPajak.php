@@ -6,6 +6,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetPengurangPajak/M_masterparampengurangpajak');
@@ -20,7 +21,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Pengurang Pajak';
         $data['SubMenuTwo'] = '';
@@ -46,7 +47,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterparampengurangpajak->get_by_id($id);
         if ($row) {
             $data = array(
@@ -110,7 +111,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
     public function save()
     {
         $this->formValidation();
-		
+
 		//MASTER INSERT NEW
 		$data = array(
 			'periode_pengurang_pajak' => $this->input->post('txtPeriodePengurangPajak',TRUE),
@@ -119,7 +120,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
 			'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 			'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
 		);
-		
+
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
 			'tgl_tberlaku' => '9999-12-31',
@@ -127,7 +128,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
 		$ru_data = array(
 			'tgl_tberlaku' 	=> $this->input->post('txtPeriodePengurangPajak',TRUE),
 		);
-		
+
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
 			'tgl_berlaku' 				=> $this->input->post('txtPeriodePengurangPajak',TRUE),
@@ -144,7 +145,13 @@ class C_MasterParamPengurangPajak extends CI_Controller
 		$this->M_masterparampengurangpajak->insert($data);
 		$this->M_masterparampengurangpajak->riwayat_update($ru_where,$ru_data);
 		$this->M_masterparampengurangpajak->riwayat_insert($ri_data);
-		
+
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Add set Pengurang pajak periode=".$this->input->post('txtPeriodePengurangPajak');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
+
         $this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
 					 "success_insert" => 1
@@ -202,7 +209,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
 				'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 				'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
 			);
-			
+
 			$data_riwayat = array(
 				'tgl_berlaku' => $this->input->post('txtPeriodePengurangPajak',TRUE),
 				'max_jab' => str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
@@ -212,10 +219,15 @@ class C_MasterParamPengurangPajak extends CI_Controller
 				'kode_petugas' 				=> $this->session->userdata('userid'),
 				'tgl_record' 				=> date('Y-m-d H:i:s'),
 			);
-			
+
 			$ru_where = array(
 				'tgl_tberlaku' => '9999-12-31',
 			);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update set Pengurang pajak ID=".$this->input->post('txtIdSetting');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_masterparampengurangpajak->update($this->input->post('txtIdSetting', TRUE), $data);
             $this->M_masterparampengurangpajak->riwayat_update($ru_where, $data_riwayat);
             $this->session->set_flashdata('message', 'Update Record Success');
@@ -224,7 +236,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
-        
+
     }
 
     public function delete($id)
@@ -233,6 +245,11 @@ class C_MasterParamPengurangPajak extends CI_Controller
 
         if ($row) {
             $this->M_masterparampengurangpajak->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set Pengurang pajak ID=".$id;
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -251,7 +268,7 @@ class C_MasterParamPengurangPajak extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

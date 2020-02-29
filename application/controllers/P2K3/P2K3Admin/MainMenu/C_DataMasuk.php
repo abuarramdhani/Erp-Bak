@@ -10,6 +10,7 @@ class C_DataMasuk extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('ciqrcode');
@@ -83,20 +84,25 @@ class C_DataMasuk extends CI_Controller
 	}
 
 	public function export()
-    {   
+    {
 		$this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
         // echo "<pre>";
         $tanggalex = $this->input->post('txtTanggalex');
+		//insert to sys.t_log_activity
+	  	  $aksi = 'P2K3';
+	  	  $detail = "Export data periode= ".$tanggalex;
+	  	  $this->log_activity->activity_log($aksi, $detail);
+	  	  //
         $tanggalex = explode(' - ', $tanggalex);
         $tgl = $tanggalex[0];
         $tahun = $tanggalex[1];
         $daftar_seksi = $this->M_dtmasuk->daftar_seksi($tgl, $tahun);
         $daftar_apd = $this->M_dtmasuk->daftar_apd($daftar_seksi, $tgl, $tahun);
-        	
+
         // print_r($daftar_apd); exit();
         // print_r($tanggalex); exit();
         // echo $tgl; exit();
-		
+
 		$objPHPExcel = new PHPExcel();
 
              $objPHPExcel->getProperties()->setCreator('KHS ERP')
@@ -123,7 +129,7 @@ class C_DataMasuk extends CI_Controller
             'type' => PHPExcel_Style_Fill::FILL_SOLID,
             'color' => array('rgb' => 'bababa')
           )
-        );  
+        );
 
         $style_col1 = array(
           'font' => array('bold' => true), // Set font nya jadi bold
@@ -276,7 +282,7 @@ class C_DataMasuk extends CI_Controller
         	// $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
         	$no_naker++;
         }
- 
+
         $a = count($daftar_seksi);
         $horizontal = 4 + $a;
         $kolom_new = PHPExcel_Cell::stringFromColumnIndex($horizontal);
@@ -298,7 +304,7 @@ class C_DataMasuk extends CI_Controller
         $a = count($daftar_seksi);
         $c = 1;
         $horizontal = 5;
-        for ($i=0; $i < $a; $i++) { 
+        for ($i=0; $i < $a; $i++) {
         $vertical = 6;
         	foreach ($daftar_apd as $daftarh) {
         	$kolom_new = PHPExcel_Cell::stringFromColumnIndex($horizontal);
@@ -325,7 +331,7 @@ class C_DataMasuk extends CI_Controller
         foreach ($daftar_seksi as $otherSheet) {
          $phpExcelSheet = $objPHPExcel->createSheet();
 
-         
+
 
          //content
 
@@ -389,7 +395,7 @@ class C_DataMasuk extends CI_Controller
             $phpExcelSheet->getStyle($kolom_new.'5')->getFont()->setBold(false)->setSize(9); // Set bold kolom A1
             $no_naker++;
           }
-   
+
           $a = count($pekerjaan);
           $horizontal = 5 + $a;
           $kolom_new = PHPExcel_Cell::stringFromColumnIndex($horizontal);
@@ -441,7 +447,7 @@ class C_DataMasuk extends CI_Controller
               $titleSheetx['1'] = "";
               $panjang = 27;
             }
-           
+
             $titleSheet = substr($otherSheet['seksi'],0,$panjang)."...".$titleSheetx['1'];
            }else{
             $titleSheet = $otherSheet['seksi'];
@@ -452,16 +458,16 @@ class C_DataMasuk extends CI_Controller
         }
 
 
-        
 
-        $objPHPExcel->setActiveSheetIndex(0);  
+
+        $objPHPExcel->setActiveSheetIndex(0);
         $filename = urlencode("Daftar Kebutuhan P2K3".date("Y-m-d").".xls");
-           
+
           header('Content-Type: application/vnd.ms-excel'); //mime type
           header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
           header('Cache-Control: max-age=0'); //no cache
 
-        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
         // redirect('p2k3adm/datamasuk/');
 

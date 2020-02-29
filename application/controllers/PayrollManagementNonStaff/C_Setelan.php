@@ -9,6 +9,7 @@ class C_Setelan extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -87,13 +88,18 @@ class C_Setelan extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('PayrollManagementNonStaff/Setelan/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$data = array(
 				'setelan_value' => $this->input->post('txtSetelanValueHeader',TRUE),
 				'setelan_info' => $this->input->post('txtSetelanInfoHeader',TRUE),
     			);
 			$this->M_setelan->updateSetelan($data, $plaintext_string);
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Update setelan value=".$this->input->post('txtSetelanValueHeader')." Info=".$this->input->post('txtSetelanInfoHeader');
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('PayrollManagementNonStaff/Setelan'));
 		}

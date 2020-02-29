@@ -78,6 +78,8 @@
 														<th><center>FLM</center></th>
 														<th><center>NAMA APPROVER PO</center></th>
 														<th><center>KETERANGAN</center></th>
+														<th><center>RECEIVE CLOSE TOLERANCE</center></th>
+														<th><center>TOLERANCE</center></th>
 														<th><center>ACTION</center></th>
 													</tr>
 												</thead>

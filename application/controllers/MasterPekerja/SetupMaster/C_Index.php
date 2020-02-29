@@ -11,6 +11,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -89,6 +90,11 @@ class C_Index extends CI_Controller
 			);
 
 			$this->M_masterlokasi->insertMasterLokasi($arrdata);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Create Lokasi Kerja '.$this->input->post('txtMasterLokasi');
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$updatelog = $this->M_masterlokasi->insertLog($user,$kodeLokasi,$masterLokasi);
 			redirect(site_url('MasterPekerja/SetupLokasi'));
 		}
@@ -136,6 +142,11 @@ class C_Index extends CI_Controller
 			);
 
 			$this->M_masterlokasi->updateMasterLokasi($arrdata,$arr);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Update Lokasi Kerja Baru ID='.$plain_text;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$updatelog = $this->M_masterlokasi->insertLoga($user,$kodeLokasi,$kodeLokasi1,$masterLokasi,$masterLokasi1);
 			redirect(site_url('MasterPekerja/SetupLokasi'));
 		}

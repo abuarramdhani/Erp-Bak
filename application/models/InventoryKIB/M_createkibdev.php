@@ -800,6 +800,145 @@ class M_createkibdev extends CI_Model
 		$query = $oracle->query($sql);
 	}
 
+	function updateFlagPrint3($nomorset){
+		// print_r($nomorset);
+		$oracle = $this->load->database('oracle_dev',TRUE);
+		$sql = "UPDATE KHS_KIB_KANBAN SET PRINT_FLAG = 'Y' WHERE KIBCODE = '$nomorset' ";
+		$query = $oracle->query($sql);
+	}
+
+	function getKode($no) {
+		$oracle = $this->load->database('oracle_dev',TRUE);
+		$sql = "SELECT
+						DISTINCT kkk.ORGANIZATION_ID,
+						kkk.FROM_SUBINVENTORY_CODE,
+						kkk.TO_ORG_ID,
+						kkk.TO_SUBINVENTORY_CODE,
+						msib.segment1,
+						kkk.qty_kib,
+						kkk.kibcode
+						FROM
+						MTL_SYSTEM_ITEMS_B msib ,
+						khs_kib_kanban kkk
+						WHERE
+						kkk.kibcode = '$no'
+						AND msib.INVENTORY_ITEM_ID = kkk.PRIMARY_ITEM_ID";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+		// return $sql;
+
+	}
+
+	function insertMTI($val)
+	{
+		$oracle = $this->load->database('oracle_dev',TRUE);
+		$sql = "Insert INTO 
+						MTL_TRANSACTIONS_INTERFACE (ORGANIZATION_ID, 
+						SUBINVENTORY_CODE, 
+						TRANSFER_ORGANIZATION,
+						TRANSFER_SUBINVENTORY, 
+						SHIPMENT_NUMBER, 
+						ITEM_SEGMENT1, 
+						TRANSACTION_QUANTITY,
+						TRANSACTION_UOM, 
+						TRANSACTION_DATE, 
+						TRANSACTION_SOURCE_NAME, 
+						ATTRIBUTE1, 
+						TRANSACTION_SOURCE_TYPE_ID,
+						TRANSACTION_ACTION_ID, 
+						TRANSACTION_TYPE_ID, 
+						SOURCE_CODE, 
+						TRANSACTION_MODE, 
+						LOCK_FLAG, 
+						SOURCE_HEADER_ID, 
+						SOURCE_LINE_ID, 
+						PROCESS_FLAG, 
+						LAST_UPDATE_DATE, 
+						LAST_UPDATED_BY, 
+						CREATION_DATE, 
+						CREATED_BY, 
+						TRANSACTION_REFERENCE, 
+						LOCATOR_ID, 
+						TRANSFER_LOCATOR, 
+						TRANSFER_PRICE)
+						VALUES( '".$val['ORGANIZATION_ID']."', 
+						'".$val['FROM_SUBINVENTORY_CODE']."', 
+						'".$val['TO_ORG_ID']."', 
+						'".$val['TO_SUBINVENTORY_CODE']."', 
+						'',
+						'".$val['SEGMENT1']."', 
+						'".$val['QTY_KIB']."', 
+						'PCS', 
+						SYSDATE, 
+						'".$val['KIBCODE']."', 
+						'', 
+						4, 
+						'3', 
+						'3',
+						'KIB QUICKDROID', 
+						3, 
+						2, 
+						-1,
+						-1, 
+						1, 
+						SYSDATE, 
+						-1, 
+						SYSDATE, 
+						-1, 
+						'', 
+						'', 
+						1049, 
+						DECODE('OPM', 'ODM', '', '1800.59'))";
+						$oracle->trans_start();
+						$oracle->query($sql);
+						$oracle->trans_complete();
+			
+		// $query = $oracle->query($sql);     
+		$query2 = $oracle->query('commit');  
+		// echo "<pre>";print_r($sql);
+	}
+
+	function updateKKFlag($nomorset){
+		// print_r($nomorset);
+		$oracle = $this->load->database('oracle_dev',TRUE);
+		$sql = "UPDATE KHS_KIB_KANBAN SET INVENTORY_TRANS_FLAG = 'Y' WHERE KIBCODE = '$nomorset' ";
+		$query = $oracle->query($sql);
+		$query2 = $oracle->query('commit');
+	}
+
+	public function runApi(){
+		$userid = 5324;
+		$conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+			if (!$conn) {
+	   			 $e = oci_error();
+	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+			}
+		  
+		$sql =  "BEGIN APPS.KHS_RUN_FND(:P_PARAM1);END;";
+
+		$stmt2 = oci_parse($conn, 'commit');    
+		$stmt = oci_parse($conn,$sql);    
+		oci_bind_by_name($stmt,':P_PARAM1',$userid);
+		
+		// But BEFORE statement, Create your cursor
+		$cursor = oci_new_cursor($conn);
+		
+		// Execute the statement as in your first try
+		 oci_execute($stmt);
+		 oci_execute($stmt2);
+		
+		// and now, execute the cursor
+		oci_execute($cursor);
+	}
+
+	public function cekKIB($no){
+		$oracle = $this->load->database('oracle_dev',TRUE);
+		$sql = "select * from khs_kib_kanban kkk where kkk.kibcode = '$no' and kkk.INVENTORY_TRANS_FLAG = 'N' and kkk.TO_SUBINVENTORY_CODE = 'INT-WELD'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+
+	}
 
 }
+
 

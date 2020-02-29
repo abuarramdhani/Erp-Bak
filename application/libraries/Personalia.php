@@ -52,18 +52,29 @@ class personalia
 		return $tembusan;
 	}
 
-	public function tembusanDuaPihak($kd_jabatan_1, $kodesie_1, $lokasi_kerja_1, $kd_jabatan_2, $kodesie_2, $lokasi_kerja_2)
+	public function tembusanDuaPihak($kd_jabatan_1, $kodesie_1, $lokasi_kerja_1, $kd_jabatan_2, $kodesie_2, $lokasi_kerja_2, $noind = false)
 	{
+		// cari staff
+		$tembusan_ict = false;
+		if($noind) {
+			$induk = substr($noind, 0, 1);
+			if(in_array($induk, ['B','D','J'])) { // kode induk staff
+				$tembusan_ict = true;
+			} 
+		}
+
+		// sebelum
 		$kd_jabatan_1 	=	$kd_jabatan_1;
 		$kodesie_1 		=	$kodesie_1;
 		$lokasi_kerja_1	=	$lokasi_kerja_1;
 
+		// mutasi ke: 
 		$kd_jabatan_2 	=	$kd_jabatan_2;
 		$kodesie_2 		=	$kodesie_2;
 		$lokasi_kerja_2	=	$lokasi_kerja_2;
 		// echo $kd_jabatan_1.'/'.$kodesie_1.'/'.$lokasi_kerja_1.'+++';
 		// echo $kd_jabatan_2.'/'.$kodesie_2.'/'.$lokasi_kerja_2.'+++<br/>';
-
+		// die;
 
 		$jumlahTembus 	=	0;
 		$jumlahTembus2 	=	0;
@@ -86,7 +97,7 @@ class personalia
 				$kodeTingkatan_1 	.= 	'0';
 				$kodeTingkatan_2 	.= 	'0';
 			}
-
+			// result -> 100000000, 102000000, 10201000000 dst
 
 
 			$kd_jabatan_i_2 = 1;
@@ -98,6 +109,7 @@ class personalia
 				// print_r($ambilTembusan1);
 				// echo '1='.$kodeTingkatan_1.'<|='.$kd_jabatan_1.'<br>';
 				// echo '2='.$kodeTingkatan_2.'<|='.$kd_jabatan_2;
+				// die;
 				for ($i = 0; $i < 14; $i++) 
 				{ 
 					if(isset($ambilTembusan1[$i]))
@@ -116,14 +128,18 @@ class personalia
 						$jumlahTembus++;
 					}
 				}
-
 				$kd_jabatan_i_2++;
 			}
 			$tingkat++;
 		}
-		// echo "<pre>";
-		// print_r($tembusan);
+
+		// ##Ticket -> 13 Feb 2020 -> "Sehubungan dengan permintaan data pekerja yg dimutasi dari ICT (terkait fasilitas HP) ,Mohon untuk ditambahkan default tembusan pada surat mutasi Khusus untuk staff (B,D,J)"
+		if($tembusan_ict) {
+			$tembusan[] = strtoupper('Kepala Seksi Madya Information & Communication Technology');
+		}
+
 		$tembusan = array_unique($tembusan);
+
 		$key = array_search('KEPALA SEKSI MADYA GENERAL AFFAIR ', $tembusan);
 		// echo 'key = '.$key;
 		if ($key) {
@@ -132,6 +148,7 @@ class personalia
 			}else{
 				// echo "salahwoi";
 			}
+
 		return $tembusan;
 	}
 

@@ -69,20 +69,20 @@
                                                 <td style="text-align: center;"><?= $value['noinduk_pekerja']; ?></td>
                                                 <td><?= $value['nama_pekerja']; ?></td>
                                                 <td><?= $value['seksi_pekerja']; ?></td>
-                                                <td><?= $value['nama_petugas']; ?></td>
+                                                <td><?= $value['petugas']; ?></td>
                                             </tr>
                                             <?php endforeach; ?>
-                                        </tbody>                                      
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
     </div>
-</section> 
+</section>
 
 <!-- Modal -->
 <div id="excelModal" class="modal fade" role="dialog">
@@ -109,7 +109,7 @@
     </div>
 
   </div>
-</div> 
+</div>
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -126,7 +126,7 @@ $(document).ready(function(){
         Swal.fire({
           icon: 'success',
           title: 'Sukses',
-          text: 'Berhasil Menghapus Data!',          
+          text: 'Berhasil Menghapus Data!',
           confirmButtonColor: '#3085d6',
           confirmButtonText: 'Ok'
         }).then((result) => {
@@ -137,10 +137,10 @@ $(document).ready(function(){
       }
     })
     }
-    
+
 
   })
 
 }) //end-script
 
-</script>           
+</script>

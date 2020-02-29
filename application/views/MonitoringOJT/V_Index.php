@@ -18,7 +18,7 @@
                         <h4><small>You are logged in as : <?php echo $this->session->user;?></small></h4>
 					</div> -->
 					<center>
-						<img  src="<?php echo base_url('assets/img/cs.png');?>" style="max-width:27%;" />
+						<img  src="<?php echo base_url('assets/img/logo.png');?>" style="max-width:27%;" />
 					</center>
 				</div>
 			</div>

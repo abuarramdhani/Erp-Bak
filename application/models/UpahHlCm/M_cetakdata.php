@@ -18,7 +18,7 @@ class M_cetakdata extends CI_Model {
 	}
 	public function ambilKepalaTukang()
 	{
-		$query = "select tp.noind,tp.nama,tp.lokasi_kerja,(select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) as pekerjaan from hrd_khs.tpribadi tp where tp.noind like 'R%' and tp.keluar='0' group by tp.noind,tp,nama,tp.lokasi_kerja,pekerjaan order by pekerjaan";
+		$query = "select tp.noind,tp.nama,tp.lokasi_kerja,(select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) as pekerjaan from hrd_khs.tpribadi tp where tp.noind like 'R%' and tp.keluar='0' group by tp.noind,tp,nama,tp.lokasi_kerja,pekerjaan order by tp.noind";
 		$data = $this->personalia->query($query);
 		return $data->result_array();
 	}

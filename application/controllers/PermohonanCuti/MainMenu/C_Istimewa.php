@@ -16,6 +16,7 @@ class C_Istimewa extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -253,6 +254,11 @@ class C_Istimewa extends CI_Controller
 			'waktu' => date('Y-m-d H:i:s')
 		);
 		$this->M_permohonancuti->insertThread($thread);
+		//insert to sys.log_activity
+		$aksi = 'Permohonan Cuti';
+		$detail = "Insert Cuti Istimewa id=$pengajuan_id";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('PermohonanCuti/DraftCuti');
 			// --------------------------------------------------------------------//

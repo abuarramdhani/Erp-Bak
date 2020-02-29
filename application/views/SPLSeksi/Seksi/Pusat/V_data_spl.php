@@ -1,3 +1,12 @@
+<style>
+	.select2 {
+		width: 100% !important;
+	}
+	.select2-container {
+		width: 100% !important;
+		padding: 0;
+	}
+</style>
 	<section class="content">
 		<div class="row">
 			<div class="col-lg-12">
@@ -50,8 +59,8 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Status</label>
 										<div class="col-sm-10">
-											<select class="form-control select2"  name="status" id="status">
-												<option value="">-- silahkan pilih --</option>
+											<select class="form-control select2"  name="status" id="status" data-placeholder="Silahkan pilih">
+												<option value=""></option>
 												<option value="01">SPL Baru</option>
 												<option value="11">SPL Sudah diproses</option>
 												<option value="21">Approved by Kasie</option>
@@ -59,6 +68,7 @@
 												<option value="31">Canceled by Kasie</option>
 												<option value="35">Canceled by AssKa</option>
 											</select>
+											<small style="color: red">* kosongi untuk memilih semua</small>
 										</div>
 									</div>
 
@@ -78,6 +88,7 @@
 										<label class="col-sm-2 control-label">Pekerja</label>
 										<div class="col-sm-10">
 											<select class="form-control spl-pkj-select2" name="noind" id="noind"></select>
+											<small style="color: red">* kosongi untuk memilih semua</small>
 										</div>
 									</div>
 
@@ -117,11 +128,11 @@
 								<th width="20%" style="vertical-align: middle;text-align: center">Selesai</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Break</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Istirahat</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Estimasi</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Target/Pcs/%</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Realisasi/Pcs/%</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Alasan Lembur</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Tanggal Proses</th>
-								<th width="20%" style="vertical-align: middle;text-align: center">Estimasi</th>
 								</tr>
 							</thead>
 							<?php if (isset($data) and !empty($data)) { ?>
@@ -176,6 +187,7 @@
 		}
 
 		document.addEventListener("DOMContentLoaded",function(e){
+			// $('#spl-pencarian').click()
 			setupTimers();
 		});
 
@@ -183,7 +195,7 @@
 		let exist = window.localStorage.getItem('alert-SPL')
 		const d = new Date()
 
-		let today = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()
+		let today = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
 
 		let json = JSON.parse(exist)
 

@@ -270,6 +270,7 @@
 						</tr>
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];
+							$allAssy[$no][] =  $value['header']['ITEM_CODE'];
 							$allInvID[$no][] =  $vulue['INVENTORY_ITEM_ID'];
 							$allQty[$no][] =  $vulue['REQUIRED_QUANTITY'];
 							$allUom[$no][] =  $vulue['PRIMARY_UOM_CODE'];
@@ -313,6 +314,7 @@
 								<input type="hidden" name="piklis" value="2">
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];
+							$allAssy[$no][] =  $value['header']['ITEM_CODE'];
 							$allInvID[$no][] =  $vulue['INVENTORY_ITEM_ID'];
 							$allQty[$no][] =  $vulue['REQUIRED_QUANTITY'];
 							$allUom[$no][] =  $vulue['PRIMARY_UOM_CODE'];
@@ -384,6 +386,17 @@
 		<input type="hidden" name="piklis" value="2">
 		<?php } ?>
 	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
+	</form>
+
+	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/Monitoring/exportPending'); ?>">
+		<?php foreach ($allInvID as $key => $value) { ?>
+		<input type="hidden" name="dept" value="<?= $dept?>">
+		<input type="hidden" name="date" value="<?= $date?>">
+		<input type="hidden" name="shift" value="<?= $shift?>">
+		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
+		<input type="hidden" name="assy[]" value="<?= implode('<>', $allAssy[$key]) ?>">
+		<?php } ?>
+		<button type="submit" class="btn btn-danger" id="btnpdfMerah"><b> Export Kekurangan </b></button>
 	</form>
 	<?php } ?>
 </div>

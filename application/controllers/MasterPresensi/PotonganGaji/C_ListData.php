@@ -5,6 +5,7 @@ class C_ListData extends CI_Controller {
 	function __construct() {
 		parent::__construct();
         if(!$this->session->is_logged){ redirect('index'); }
+		$this->load->library('Log_Activity');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/PotonganGaji/M_listdata');
     }
@@ -23,6 +24,11 @@ class C_ListData extends CI_Controller {
 	}
 
 	public function deleteData() {
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Delete Potongan Gaji ID='.$this->input->post('id');
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		echo json_encode($this->M_listdata->deleteData($this->input->post('id')));
 	}
 }

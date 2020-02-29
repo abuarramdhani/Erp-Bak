@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
- * 
+ *
  */
 class C_Pekerja extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +14,7 @@ class C_Pekerja extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -73,6 +74,11 @@ class C_Pekerja extends CI_Controller
 			'created_by' => $this->session->user
 		);
 		$this->M_pekerja->insertPekerja($arrData);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Menambah Data Pekerja ID='.$this->input->post('id');
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		echo "sukses";
 	}
 
@@ -81,6 +87,11 @@ class C_Pekerja extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_pekerja->deletePekerja($plaintext_string);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Menghapus Data Pekerja ID='.$plaintext_string;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('ManagementAdmin/Pekerja'));
 	}
 }

@@ -1094,4 +1094,38 @@ $(document).ready(function(){
   });
 
   $('.p2k3_tbl_datamasuk').DataTable();
+
+  $('.p2k3_tanggal_periode').change(function(){
+    var d = new Date();
+    var n = d.getFullYear();
+    var m = d.getMonth()+01;
+    var v = $(this).val().split(' - ');
+    if (v[1] < n) {
+      alert('Periode tidak boleh lebih kecil dari bulan sekarangasdad');
+      $(this).val(pad(m)+' - '+n);
+    }else if(v[1] > n){
+      //oke
+    }else if (v[0] < m) {
+      alert('Periode tidak boleh lebih kecil dari bulan sekarang');
+      $(this).val(pad(m)+' - '+n);
+    }
+  });
 });
+
+function erp_checkPopUp()
+{
+    setTimeout(function() {
+        var newWin = window.open(url);
+        if(!newWin || newWin.closed || typeof newWin.closed=='undefined') 
+        { 
+            alert('Popup Tidak Aktif (Blocked)!\nMohon Aktifkan Pop up Untuk melanjutkan, lalu refresh/reload Halaman ini!');
+            $('#p2k3_popup').modal({backdrop: 'static', keyboard: false});
+        }else{
+            newWin.close();
+        }
+    }, 500);
+}
+
+function pad(d) {
+    return (d < 10) ? '0' + d.toString() : d.toString();
+}

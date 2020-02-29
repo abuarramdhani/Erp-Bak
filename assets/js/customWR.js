@@ -1,6 +1,16 @@
 /* Work Relationship JS */
 $(document).ready(function() {
 
+	$('#txtTanggalKeluarWR').daterangepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        locale: {
+            cancelLabel: 'Clear',
+            "format": "YYYY-MM-DD",
+            "separator": " - ",
+        }
+    });
+
 	$("#slcWrEmployeeAll").select2({
 		ajax: {
 			url: baseurl+'WorkRelationship/RekapBon/getEmployeeAll',

@@ -899,6 +899,32 @@ function checkPass(){
 	
 }
 
+function checkSave(){
+	$('.error-save').removeClass('error-save bg-warning-important')
+	$('#tbodyUserResponsibility').find('select').each( function () {
+		if (($(this).val() === null || $(this).val() === '') && ! $(this).parents('tr').hasClass('error-save')) {
+			$(this).parents('tr').addClass('error-save bg-warning-important');
+		}
+	})
+	if ($('.error-save').length) {
+		$([document.documentElement, document.body]).animate({
+			scrollTop: $('.error-save').offset().top - 100
+		}, 500);
+		Swal.mixin({
+				toast             : true,
+				position          : 'top-end',
+				showConfirmButton : false,
+				timer             : 3000
+			}).fire({
+				customClass : 'swal-font-small',
+				type        : 'error',
+				title       : 'Silahkan melengkapi atau menghapus baris data yang masih kosong!'
+			});
+	} else {
+		$('#btnUser').attr({'type': 'submit', 'onclick': ''}).click();
+	}
+}
+
 $(document).ready(function() {
 	//PASANGANNYA linemask
 	if($( "#txtType" ).val() === 'HANDPHONE'){

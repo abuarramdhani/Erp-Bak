@@ -16,6 +16,7 @@ class C_Approval extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+        $this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -334,6 +335,12 @@ class C_Approval extends CI_Controller
       'waktu'  => $time
     );
 
+        //insert to sys.log_activity
+        $aksi = 'Permohonan Cuti';
+        $detail = "Approve Cuti id=$id_cuti ketentuan=$ketentuan";
+        $this->log_activity->activity_log($aksi, $detail);
+        //
+
 		$this->M_approval->updateApprove( //execution approval acc/reject, thread, and presense(if approval end)
         $id_cuti,
         $level,
@@ -347,6 +354,7 @@ class C_Approval extends CI_Controller
         $kdjabatanLv1,
         $dataCuti['0']['noind']
       );
+
 
 		$detailCuti = $this->M_permohonancuti->getDetailPengajuan($id_cuti);
 
@@ -498,6 +506,11 @@ class C_Approval extends CI_Controller
 		$dec = str_replace(array('+', '/', '='), array('-', '_', '~'), $enc);
 
 		$this->M_approval->cancelCuti($noind, $id_cuti, $tipe, $alasan);
+        //insert to sys.log_activity
+        $aksi = 'Permohonan Cuti';
+        $detail = "Approval Cancel Cuti id=$id_cuti";
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 		echo $dec; //this is ecryption to link (ajax - js)
 	}
 }

@@ -135,11 +135,11 @@ class C_Rekap extends CI_Controller {
 			$data['total_semua'] = $total_semua;
 
 			$pdf = $this->pdf->load();
-			$pdf = new mPDF('utf-8', 'F4', 8, '', 12, 15, 15, 15, 10, 20);
+			$pdf = new mPDF('utf-8', 'F4-L', 8, '', 12, 15, 15, 15, 10, 3);
 			$filename = 'Rekap-'.$tgl.'.pdf';
 			// $this->load->view('UpahHlCm/MenuCetak/V_cetakRekap', $data);
 			$html = $this->load->view('UpahHlCm/MenuCetak/V_cetakRekap', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM oleh ".$this->session->user." - ".ucwords(strtolower($this->session->employee))." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
 			$pdf->Output($filename, 'I');
 		}else{
@@ -157,47 +157,49 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue('A3','NO');
 			$worksheet->setCellValue('B3','TGL TERIMA');
 			$worksheet->setCellValue('C3','NO REKENING');
-			$worksheet->setCellValue('D3','NAMA');
-			$worksheet->setCellValue('E3','TERIMA');
-			$worksheet->setCellValue('F3','NAMA PENERIMA REKENING');
-			$worksheet->setCellValue('G3','BANK');
-			$worksheet->setCellValue('H3','KETERANGAN');
+			$worksheet->setCellValue('D3','NOIND');
+			$worksheet->setCellValue('E3','NAMA');
+			$worksheet->setCellValue('F3','TERIMA');
+			$worksheet->setCellValue('G3','NAMA PENERIMA REKENING');
+			$worksheet->setCellValue('H3','BANK');
+			$worksheet->setCellValue('I3','KET');
 
 			$worksheet->setCellValue('A4','TUKSONO');
-			$worksheet->mergeCells('A4:H4');
+			$worksheet->mergeCells('A4:I4');
 			$row = 5;
 			$total_semua = 0;
 			$no = 1;
 			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(0,$row);
 			$coorCellSave1 =$coorCell->getCoordinate();
-			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,$row);
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(8,$row);
 			$coorCellSave2 =$coorCell->getCoordinate();
 			foreach ($kom as $key) {
 				if ($key['lokasi_kerja'] == '02') {
 					$total_semua += $key['total_bayar'];
 					$worksheet->setCellValueByColumnAndRow(0,$row,$no);
 					$worksheet->setCellValueByColumnAndRow(1,$row,$tglterima);
-					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
-					$this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0');
+					$worksheet->setCellValueByColumnAndRow(3,$row,$key['noind']);
+					$worksheet->setCellValueByColumnAndRow(4,$row,$key['nama']);
+					$this->excel->getActiveSheet()->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0');
 					foreach ($data['potongan_tambahan'] as $pot_tam) {
 						if($key['noind'] == $pot_tam['noind']){
 							$key['total_bayar'] += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
 							$total_semua += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
 						}
 					}
-					$this->excel->getActiveSheet()->setCellValueExplicit('E'.$row,$key['total_bayar'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+					$this->excel->getActiveSheet()->setCellValueExplicit('F'.$row,$key['total_bayar'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					foreach ($rekap as $val) {
 						if ($key['noind'] == $val['noind']) {
 							$this->excel->getActiveSheet()->setCellValueExplicit('C'.$row,$val['no_rekening'],PHPExcel_Cell_DataType::TYPE_STRING);
-							$worksheet->setCellValueByColumnAndRow(5,$row,$val['atas_nama']);
-							$worksheet->setCellValueByColumnAndRow(6,$row,$val['bank']);
+							$worksheet->setCellValueByColumnAndRow(6,$row,$val['atas_nama']);
+							$worksheet->setCellValueByColumnAndRow(7,$row,$val['bank']);
 						}
 					}
 					$row++;
 					$no++;
 					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(0,$row);
 					$coorCellSave1 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,$row);
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(8,$row);
 					$coorCellSave2 =$coorCell->getCoordinate();
 				}
 			}
@@ -214,25 +216,25 @@ class C_Rekap extends CI_Controller {
 			),$coorCellSave1.':'.$coorCellSave2);
 			$row++;
 
-			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,$row);
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(8,$row);
 			$coorCellSave2 =$coorCell->getCoordinate();
 			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,$row);
 			$coorCellSave9 =$coorCell->getCoordinate();
-			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(5,$row);
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,$row);
 			$coorCellSave10 =$coorCell->getCoordinate();
 			$row++;
 			$no++;
 			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+1));
 			$coorCellSave3 =$coorCell->getCoordinate();
-			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(4,($row+1));
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(5,($row+1));
 			$coorCellSave4 =$coorCell->getCoordinate();
-			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+1));
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+1));
 			$coorCellSave5 =$coorCell->getCoordinate();
-			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+5));
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+5));
 			$coorCellSave6 =$coorCell->getCoordinate();
-			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+6));
-			$coorCellSave7 =$coorCell->getCoordinate();
 			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+6));
+			$coorCellSave7 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(8,($row+6));
 			$coorCellSave8 =$coorCell->getCoordinate();
 			
 			foreach ($kom as $key) {
@@ -240,8 +242,9 @@ class C_Rekap extends CI_Controller {
 					$total_semua += $key['total_bayar'];
 					$worksheet->setCellValueByColumnAndRow(0,$row,$no);
 					$worksheet->setCellValueByColumnAndRow(1,$row,$tglterima);
-					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
-					$this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0');
+					$worksheet->setCellValueByColumnAndRow(3,$row,$key['noind']);
+					$worksheet->setCellValueByColumnAndRow(4,$row,$key['nama']);
+					$this->excel->getActiveSheet()->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0');
 					if (!empty($data['potongan_tambahan'])) {
 						
 						foreach ($data['potongan_tambahan'] as $pot_tam) {
@@ -252,48 +255,48 @@ class C_Rekap extends CI_Controller {
 						}
 						
 					}
-					$this->excel->getActiveSheet()->setCellValueExplicit('E'.$row,$key['total_bayar'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+					$this->excel->getActiveSheet()->setCellValueExplicit('F'.$row,$key['total_bayar'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					foreach ($rekap as $val) {
 						if ($key['noind'] == $val['noind']) {
 							$this->excel->getActiveSheet()->setCellValueExplicit('C'.$row,$val['no_rekening'],PHPExcel_Cell_DataType::TYPE_STRING);
-							$worksheet->setCellValueByColumnAndRow(5,$row,$val['atas_nama']);
-							$worksheet->setCellValueByColumnAndRow(6,$row,$val['bank']);
+							$worksheet->setCellValueByColumnAndRow(6,$row,$val['atas_nama']);
+							$worksheet->setCellValueByColumnAndRow(7,$row,$val['bank']);
 						}
 					}
 
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,$row);
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(8,$row);
 					$coorCellSave2 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,$row);
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(4,$row);
 					$coorCellSave9 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(5,$row);
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,$row);
 					$coorCellSave10 =$coorCell->getCoordinate();
 					$row++;
 					$no++;
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+1));
-					$coorCellSave3 =$coorCell->getCoordinate();
 					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(4,($row+1));
+					$coorCellSave3 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(5,($row+1));
 					$coorCellSave4 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+1));
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+1));
 					$coorCellSave5 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+5));
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+5));
 					$coorCellSave6 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+6));
-					$coorCellSave7 =$coorCell->getCoordinate();
 					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+6));
+					$coorCellSave7 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(8,($row+6));
 					$coorCellSave8 =$coorCell->getCoordinate();
 					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(1,($row+5));
 					$coorCellSave9 =$coorCell->getCoordinate();
 					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(1,($row+6));
 					$coorCellSave10 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+5));
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(4,($row+5));
 					$coorCellSave11 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+6));
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(4,($row+6));
 					$coorCellSave12 =$coorCell->getCoordinate();
 					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(1,($row+2));
 					$coorCellSave13 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+2));
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(4,($row+2));
 					$coorCellSave14 =$coorCell->getCoordinate();
-					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+2));
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+2));
 					$coorCellSave15 =$coorCell->getCoordinate();
 				}
 			}
@@ -359,11 +362,12 @@ class C_Rekap extends CI_Controller {
 			$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth('5');
 			$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth('20');
 			$this->excel->getActiveSheet()->getColumnDimension('C')->setWidth('20');
-			$this->excel->getActiveSheet()->getColumnDimension('D')->setWidth('30');
-			$this->excel->getActiveSheet()->getColumnDimension('E')->setWidth('20');
-			$this->excel->getActiveSheet()->getColumnDimension('F')->setWidth('20');
-			$this->excel->getActiveSheet()->getColumnDimension('G')->setWidth('20');
-			$this->excel->getActiveSheet()->getColumnDimension('H')->setWidth('20');
+			$this->excel->getActiveSheet()->getColumnDimension('D')->setWidth('10');
+			$this->excel->getActiveSheet()->getColumnDimension('E')->setWidth('30');
+			$this->excel->getActiveSheet()->getColumnDimension('F')->setWidth('13');
+			$this->excel->getActiveSheet()->getColumnDimension('G')->setWidth('30');
+			$this->excel->getActiveSheet()->getColumnDimension('H')->setWidth('15');
+			$this->excel->getActiveSheet()->getColumnDimension('I')->setWidth('10');
 
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(
@@ -372,7 +376,7 @@ class C_Rekap extends CI_Controller {
 					'startcolor' => array(
 						'argb' => '00ccffcc')
 				)
-			),'A3:H4');
+			),'A3:I4');
 
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(
@@ -388,7 +392,16 @@ class C_Rekap extends CI_Controller {
 					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
 					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
 				)
-			),'D5:'.$coorCellSave9);
+			),'E5:'.$coorCellSave3);
+
+
+			$this->excel->getActiveSheet()->duplicateStyleArray(
+						array(
+							'alignment' => array(
+								'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+								'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+							)
+						),'F5:'.$coorCellSave4);
 
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(
@@ -396,15 +409,7 @@ class C_Rekap extends CI_Controller {
 					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
 					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
 				)
-			),'F5:'.$coorCellSave10);
-
-			$this->excel->getActiveSheet()->duplicateStyleArray(
-			array(
-				'alignment' => array(
-					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
-				)
-			),'H5:'.$coorCellSave2);
+			),'G5:'.$coorCellSave5);
 
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(
@@ -422,7 +427,21 @@ class C_Rekap extends CI_Controller {
 				)
 			),$coorCellSave3.':'.$coorCellSave4);
 
-			
+			/*echo 'coorCellSave2 : '.$coorCellSave2."<br>";
+			echo 'coorCellSave3 : '.$coorCellSave3."<br>";
+			echo 'coorCellSave4 : '.$coorCellSave4."<br>";
+			echo 'coorCellSave5 : '.$coorCellSave5."<br>";
+			echo 'coorCellSave6 : '.$coorCellSave6."<br>";
+			echo 'coorCellSave7 : '.$coorCellSave7."<br>";
+			echo 'coorCellSave8 : '.$coorCellSave8."<br>";
+			echo 'coorCellSave9 : '.$coorCellSave9."<br>";
+			echo 'coorCellSave10 : '.$coorCellSave10."<br>";
+			echo 'coorCellSave11 : '.$coorCellSave11."<br>";
+			echo 'coorCellSave12 : '.$coorCellSave12."<br>";
+			echo 'coorCellSave13 : '.$coorCellSave13."<br>";
+			echo 'coorCellSave14 : '.$coorCellSave14."<br>";
+			//exit();*/
+
 
 			$this->excel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_WorkSheet_PageSetup::PAPERSIZE_A4);
 			$this->excel->getActiveSheet()->getPageSetup()->setFitToWidth(1);

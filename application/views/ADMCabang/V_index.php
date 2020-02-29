@@ -6,7 +6,7 @@
 					<div class="row">
 						<div class="col-lg-4">
 							<br />
-							<h1><?=$Title ?></h1>
+							<h1><?="Presensi" ?></h1>
 						</div>
 					</div>
 			</section>
@@ -19,7 +19,7 @@
 						
 						<center> 
 							
-							<img  src="<?php echo base_url("assets/img/cs.png");?>" style="max-width:27%;" />
+							<img  src="<?php echo base_url("assets/img/logo.png");?>" style="max-width:27%;" />
 						
 						</center>
 						<br /><br />

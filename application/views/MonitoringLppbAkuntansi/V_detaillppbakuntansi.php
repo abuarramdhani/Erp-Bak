@@ -32,15 +32,15 @@
 											<table id="tblLPPBwew" style="width: 100%;" class="table table-bordered text-center">
 												<thead> 
 													<tr class="bg-primary">
-														<td class="text-center">No</td>
-														<td class="text-center">IO</td>
-														<td class="text-center">Nomor LPPB</td>
-														<td class="text-center" style="width:10%;">Vendor name</td>
-														<td class="text-center">Tanggal LPPB</td>
-														<td class="text-center">Nomor PO</td>
-														<td class="text-center" style="width:20%;">Action</td>
+														<td class="text-center" style="width:5%;">No</td>
+														<td class="text-center" style="width:10%;">IO</td>
+														<td class="text-center" style="width:5%;">Nomor LPPB</td>
+														<td class="text-center" style="width:20%;">Vendor name</td>
+														<td class="text-center" style="width:5%;">Tanggal LPPB</td>
+														<td class="text-center" style="width:10%;">Nomor PO</td>
+														<td class="text-center" style="width:25%;">Action</td>
 														<td class="text-center" style="width:10%;">Tanggal Diterima/Ditolak</td>
-														<td class="text-center" style="width:30%;">Alasan</td>
+														<td class="text-center" style="width:10%;">Alasan</td>
 													</tr>
 												</thead>
 												<tbody>
@@ -95,7 +95,7 @@
 	$(document).ready(function(){
 	$('#tblLPPBwew').DataTable({
 		"paging":   false,
-        "ordering": false,
+        "ordering": true,
         "info":     false
 	})
 })
