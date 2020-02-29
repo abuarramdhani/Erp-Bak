@@ -65,6 +65,7 @@ class C_Lelayu extends CI_Controller
     $data['nominal2'] = $this->M_lelayu->getNominal2();
     $data['spsi3'] = $this->M_lelayu->getSPSI3($bulancutoff, $tanggalcutoff, $bulanlalu);
     $data['nominal3'] = $this->M_lelayu->getNominal3();
+    $data['pekerjaResign'] = $this->M_lelayu->getPekerjaMengajukanResign($bulancutoff);
 
     $this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
