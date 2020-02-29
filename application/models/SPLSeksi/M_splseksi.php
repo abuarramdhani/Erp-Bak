@@ -696,4 +696,9 @@ class M_splseksi extends CI_Model{
 
 		return $endResult;
 	}
+
+	function getNoindBaru($noind) {
+		$sql = "SELECT distinct noind_baru from hrd_khs.tpribadi where noind = '$noind'";
+		return $this->prs ->query($sql)->row()->noind_baru;
+	}
 }

@@ -513,6 +513,7 @@ class C_splseksi extends CI_Controller {
 		$alasan = $this->input->post("alasan[0]");
 		$spl_id = $this->input->post('id_spl');
 		$old_spl = $this->M_splseksi->show_current_spl('', '', '', $spl_id);
+		$noind_baru = $this->M_splseksi->getNoindBaru($noind);
 
 		// Generate ID Riwayat
 		$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
@@ -546,7 +547,7 @@ class C_splseksi extends CI_Controller {
 			"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 			"Tgl_Lembur" => $tanggal,
 			"Noind" => $noind,
-			"Noind_Baru" => "0000000",
+			"Noind_Baru" => $noind_baru,
 			"Kd_Lembur" => $lembur,
 			"Jam_Mulai_Lembur" => $mulai,
 			"Jam_Akhir_Lembur" => $selesai,
@@ -567,7 +568,7 @@ class C_splseksi extends CI_Controller {
 			"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 			"Tgl_Lembur" => $tanggal,
 			"Noind" => $noind,
-			"Noind_Baru" => "0000000",
+			"Noind_Baru" => $noind_baru,
 			"Kd_Lembur" => $lembur,
 			"Jam_Mulai_Lembur" => $mulai,
 			"Jam_Akhir_Lembur" => $selesai,
@@ -1200,12 +1201,14 @@ class C_splseksi extends CI_Controller {
 				"noind" => $user_id);
 			$to_log = $this->M_splseksi->save_log($data_log);
 
+			$noind_baru = $this->M_splseksi->getNoindBaru($noind);
+			
 			$data_spl = array(
 				"ID_SPL" => $spl_id,
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $tanggal,
 				"Noind" => $noind,
-				"Noind_Baru" => "0000000",
+				"Noind_Baru" => $noind_baru,
 				"Kd_Lembur" => $lembur,
 				"Jam_Mulai_Lembur" => $mulai,
 				"Jam_Akhir_Lembur" => $selesai,
@@ -1226,7 +1229,7 @@ class C_splseksi extends CI_Controller {
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $tanggal,
 				"Noind" => $noind,
-				"Noind_Baru" => "0000000",
+				"Noind_Baru" => $noind_baru,
 				"Kd_Lembur" => $lembur,
 				"Jam_Mulai_Lembur" => $mulai,
 				"Jam_Akhir_Lembur" => $selesai,
