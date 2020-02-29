@@ -67,7 +67,56 @@
 											</div>
 										</div>
 									</div>
-									<br><hr><br>
+									<hr>
+									<?php 
+													if (isset($pekerjaResign) and !empty($pekerjaResign)) { ?>
+									<div class="row">
+										<div class="col-lg-12">
+											<h3 style="color: #ffc107;text-align: center">Perhatian !!</h3>
+											<h4 style="color: #ffc107;text-align: center">Terdapat Pekerja Mengajukan Resign di periode cutoff bulan ini</h4>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-10 col-lg-offset-1">
+											<table class="table table-striped table-bordered table-hover" style="font-size: 9pt !important;">
+												<thead style="background-color: #ffc107">
+													<tr>
+														<th>No.</th>
+														<th>No. Induk</th>
+														<th>Nama</th>
+														<th>Seksi</th>
+														<th>Tanggal Pengajuan Resign</th>
+														<th>Status Keluar</th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php
+														$nomor = 1;
+														foreach ($pekerjaResign as $pr) {
+															?>
+																<tr>
+																	<td style="text-align: center"><?php echo $nomor ?></td>
+																	<td style="text-align: center"><?php echo $pr['noind'] ?></td>
+																	<td><?php echo $pr['nama'] ?></td>
+																	<td><?php echo $pr['seksi'] ?></td>
+																	<td style="text-align: center"><?php echo date("d-M-Y",strtotime($pr['tgl_resign'])) ?></td>
+																	<?php if ($pr['status_keluar'] == "Masih Aktif") { ?>
+																		<td style="text-align: center"><?php echo $pr['status_keluar'] ?></td>
+																	<?php }else{ ?>
+																		<td style="text-align: center"><?php echo $pr['status_keluar']." tgl. ".date("d-M-Y",strtotime($pr['tglkeluar'])) ?></td>
+																	<?php } ?>
+																</tr>
+															<?php 
+															$nomor++;
+														}
+													?>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<hr>
+									<?php
+													} ?>
 									<div class="row" style="padding-left: 100px; padding-right: 100px;">
 										<div class="col-lg-12">
 											<div class="row">

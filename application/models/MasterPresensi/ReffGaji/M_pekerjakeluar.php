@@ -6746,6 +6746,14 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function nominal_duka($noind,$tgl_awal,$tgl_akhir){
+		$sql = "selct select distinct tanggal_akhir::date 
+				from \"Presensi\".tcutoff t 
+				where '$tgl_akhir'::date between tanggal_awal and tanggal_akhir ";
+		$res_cutoff = $this->db->query($sql)->row();
+		if (!empty($res_cutoff)) {
+			$tgl_akhir = $res_cutoff->tanggal_akhir;
+		}
+		
 		$sql = "select hpd.noind,sum(hpd.nominal) as total
 				from hr.hr_lelayu hl 
 				inner join hr.hr_pekerja_dipotong hpd 
