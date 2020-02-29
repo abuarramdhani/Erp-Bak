@@ -19,9 +19,9 @@ class M_absenatasan extends CI_Model
 	}
 
 	
-	public function getList($approver){
+	public function getList($noind,$approver){
 		// print_r($approver);exit();	
-		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE approval.approver='$approver' AND approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id ORDER BY approval.status desc";
+		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE (left(approval.approver,5) = '$noind' OR approval.approver LIKE '%$approver%' ) AND approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id ORDER BY approval.status desc";
 		$query = $this->db->query($sql);
 		// print_r($sql);exit();
 		return $query->result_array();

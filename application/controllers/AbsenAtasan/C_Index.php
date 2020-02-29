@@ -63,38 +63,9 @@ class C_Index extends CI_Controller
 
 		$employee = $this->session->employee;
 		$nama = trim($employee);
-		// print_r($approver);exit();
-		$data['listData'] = $this->M_absenatasan->getList($nama);
-
-		// $data['jenisAbsen'] = $this->M_absenatasan->getJenisAbsen();
-
-		// echo "<pre>";
-		// print_r($data['listData']);exit();
-
-		// $data['listData'] = $this->M_absenatasan->getList();
-
-		// $info = array();
-		// foreach ($listData as $key => $data) {
-		// $noinduk = $data['noind'];
-		// $employeeInfo = $this->M_absenatasan->getEmployeeInfo($noinduk);
-		// $section_code = $employeeInfo['section_code'];
-		// $unitInfo = $this->M_absenatasan->getFieldUnitInfo($section_code);
-		// array_push($employeeInfo, $unitInfo);
-		// array_push($info, $employeeInfo);
-		// }
-
-		// $noinduk = $data['listData'][0]['noind'];
-
-		// echo "<pre>";
-		// print_r($noinduk);exit();
-
-		// $data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
-		// echo "<pre>";
-		// print_r($data['employeeInfo']);exit();
-
-		// $section_code = $data['employeeInfo'][0]['section_code'];
-		// $data['bidangUnit'] = $this->M_absenatasan->getFieldUnitInfo($section_code);
-
+		$noind = trim($this->session->user);
+		$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_List',$data);
