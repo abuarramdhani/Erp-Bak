@@ -195,6 +195,7 @@
                     <option value="2">KARDUS SEDANG</option>
                     <option value="3">KARDUS PANJANG</option>
                     <option value="4">KARUNG</option>
+                    <option value="5">PETI</option>
                     </select>
                 </div>
             </div>
