@@ -158,6 +158,12 @@ $route['SystemAdministration'] = 'SystemAdministration/C_SystemAdministration/in
 $route['SystemAdministration/User'] = 'SystemAdministration/MainMenu/C_User/index';
 $route['SystemAdministration/User/(:any)'] = 'SystemAdministration/MainMenu/C_User/$1';
 $route['SystemAdministration/User/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_User/$1/$2';
+
+$route['SystemAdministration/Batch'] = 'SystemAdministration/MainMenu/C_Batch/index';
+$route['SystemAdministration/Batch/api/preview_person'] = 'SystemAdministration/MainMenu/C_Batch/preview_person';
+$route['SystemAdministration/Batch/api/getResponsbility'] = 'SystemAdministration/MainMenu/C_Batch/getResponsbility';
+$route['SystemAdministration/Batch/api/input'] = 'SystemAdministration/MainMenu/C_Batch/addResponsibility';
+
 $route['SystemAdministration/Menu'] = 'SystemAdministration/MainMenu/C_Menu/index';
 $route['SystemAdministration/Menu/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1';
 $route['SystemAdministration/Menu/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1/$2';
