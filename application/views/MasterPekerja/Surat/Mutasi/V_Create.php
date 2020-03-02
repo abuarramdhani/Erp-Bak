@@ -115,12 +115,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <div class="form-group">
+                                                    <div class="form-group" id="rowmutasi">
                                                         <label for="txtKodesieBaru" class="col-lg-4 control-label">Mutasi Ke</label>
                                                         <div class="col-lg-8">
                                                             <select required name="txtKodesieBaru" class="mpk-kdbaru select2" id="MasterPekerja-DaftarSeksi" style="width: 100%">
                                                                 <option value=""></option>
                                                             </select>
+                                                            <small id="validMutasi" style="color: red;font-style: italic;display: none">*Harap Diisi</small>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -142,7 +143,7 @@
                                                      <div class="form-group">
                                                         <label for="txtKdJabatanBaru" class="col-lg-4 control-label">Kd Jabatan Baru</label>
                                                         <div class="col-lg-8">
-                                                            <select required name="txtKdJabatanBaru" class="form-control select2 jabatan" id="MasterPekerja-DaftarKodeJabatan">
+                                                            <select name="txtKdJabatanBaru" class="form-control select2 jabatan" id="MasterPekerja-DaftarKodeJabatan">
                                                                 <option value=""></option>
                                                             </select>
                                                         </div>
@@ -231,10 +232,11 @@
                                                         <input type="text" class="form-control" name="txtFingerAwal" id="MasterPekerja-Surat-FingerAwal" readonly="">
                                                         </div>
                                                          <p for="txtFingerKe" class="col-lg-2 control-label">Ke</p>
-                                                        <div class="col-lg-4">
+                                                        <div class="col-lg-4" id="rowfinger">
                                                            <select class="select2" name="txtFingerGanti" id="MasterPekerja-Surat-FingerGanti" style="width: 100%">
                                                                 <option></option>
                                                             </select>
+                                                            <small id="validFinger" style="color: red;font-style: italic;display: none;">*Harap Diisi</small>
                                                         </div>
                                                     </div>
                                                 </div>

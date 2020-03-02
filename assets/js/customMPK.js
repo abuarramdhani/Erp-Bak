@@ -862,6 +862,9 @@ $(function() {
         var kode_seksi = $(this).val();
         var kode_seksi = kode_seksi.substr(0, 7);
 
+        $("#rowmutasi .select2-selection").css('background-color','');
+        $("#validMutasi").hide()
+
         $('#MasterPekerja-DaftarPekerjaan').select2({
             allowClear: false,
             placeholder: "Pilih Pekerjaan",
@@ -1375,11 +1378,22 @@ $('.MasterPekerja-Surat-DaftarPekerja').change(function() {
 $('#MasterPekerja-Surat-btnPreview').click(function() {
     // alert($('#MasterPekerja-txtLokasiKerjaLama').val());
     let fingerakhir = $("select[name='txtFingerGanti']").val();
+    let tujuanmutasi = $("select[name='txtKodesieBaru']").val();
+
+    if(!tujuanmutasi){
+       Swal.fire('Oops!','Mohon lengkapi form!','warning')
+       $("#MasterPekerja-DaftarSeksi").focus();
+       $("#rowmutasi .select2-selection").css('background-color','rgba(255, 0, 0, 0.4)');
+       $("#validMutasi").show()
+       return;
+    }
 
     const pindah = $('#fingerYa').iCheck('update')[0].checked;
 
     if(pindah && !fingerakhir){
       Swal.fire('Oops!','Mohon lengkapi form!','warning')
+      $("#rowfinger .select2-selection").css('background-color','rgba(255, 0, 0, 0.4)');
+      $("#validFinger").show();
       return;
     }
 

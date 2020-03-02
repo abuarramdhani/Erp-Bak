@@ -267,13 +267,18 @@ class C_Mutasi extends CI_Controller
 			$parameterTahun 	=	date('Y', strtotime($tanggal_cetak));
 			$parameterBulan 	=	date('m', strtotime($tanggal_cetak));
 
-			
+
 
 			if(empty($nomor_induk)){
 				$data['status'] = false;
 				echo json_encode($data);exit();
 			}else{
 				$data['status'] = true;
+			}
+
+			if($kd_jabatan_baru == null){
+				$kd_jabatan_baru = explode(' - ', $kd_jabatan_lama)[0];
+				$jabatan_baru = $jabatan_lama;
 			}
 
 
@@ -508,6 +513,11 @@ class C_Mutasi extends CI_Controller
 				$status_baru 			= 	explode(' - ', $status_baru);
 			}else{
 				$status_baru 			= 	explode(' - ', $status_lama);
+			}
+
+			if(empty($kd_jabatan_baru)){
+				$kd_jabatan_baru = explode(' - ', $kd_jabatan_lama)[0];
+				$jabatan_baru = $jabatan_lama;
 			}
 
 			$status_lama 				= 	explode(' - ', $status_lama);

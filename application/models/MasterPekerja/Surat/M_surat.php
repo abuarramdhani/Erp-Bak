@@ -199,7 +199,7 @@ class M_surat extends CI_Model
 		pri.kd_jabatan as kode_jabatan,
 		rtrim(torganisasi.jabatan) as jenis_jabatan,
 		pri.kd_pkj as kode_pekerjaan,
-		tpekerjaan.pekerjaan as nama_pekerjaan,
+		coalesce(tpekerjaan.pekerjaan,'') as nama_pekerjaan,
 		tlokasi_kerja.id_ as kode_lokasi_kerja,
 		tlokasi_kerja.lokasi_kerja as nama_lokasi_kerja,
 		pri.tempat_makan1,
