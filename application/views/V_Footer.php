@@ -206,6 +206,8 @@
 		<script src="<?= base_url('assets/js/customSMT.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMDS.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customIMO.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customRKH.js') ?>"></script>
+
 		
 
 
