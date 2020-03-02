@@ -14,7 +14,7 @@ class C_Bom extends CI_Controller
 		$this->load->library('encrypt');
 	
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('RKHKasie/M_rkhkasie');
+		$this->load->model('RKHkasie/M_rkhkasie');
 		$this->checkSession();
 	}
 
