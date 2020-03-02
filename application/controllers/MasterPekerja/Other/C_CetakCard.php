@@ -61,10 +61,12 @@ class C_CetakCard extends CI_Controller
 		$noind = $this->input->post('noind');
 		// $nama = $this->input->post('name');
 		$nick = $this->input->post('nick');
+		$checked = ($_POST['noind_baru'] == 1) ? true : false;
+
 		$count = count($nick);
 		$data['worker'] = array();
 		for($i=0;$i<$count;$i++){
-			$Card = $this->M_cetakcard->getWorker($noind[$i],$nick[$i]);
+			$Card = $this->M_cetakcard->getWorker($noind[$i],$nick[$i], $checked);
 			array_push($data['worker'], $Card);
 			//insert to t_log
 			$aksi = 'MASTER PEKERJA';
