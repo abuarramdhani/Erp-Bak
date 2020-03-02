@@ -40,7 +40,7 @@
              </div>
            </center>
          </td>
-         <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detail('<?php echo $g['DO/SPB'] ?>', <?php echo $g['HEADER_ID'] ?>, <?php echo $no ?>, <?php echo $g['NO_SO'] ?>, '<?php echo $g['PLAT_NUMBER'] ?>')" data-toggle="modal" data-target="#MyModal2">
+         <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detail('<?php echo $g['DO/SPB'] ?>', <?php echo $g['HEADER_ID'] ?>, <?php echo $no ?>, '<?php echo $g['NO_SO'] ?>', '<?php echo $g['PLAT_NUMBER'] ?>')" data-toggle="modal" data-target="#MyModal2">
            <i class="fa fa-eye"></i></button> </center></td>
        </tr>
 
