@@ -210,6 +210,7 @@ $route['SalesMonitoring/salesomset/Filter/Download/pdf'] 	= 'SalesMonitoring/C_s
 
 //SALES TARGET
 $route['SalesMonitoring/salestarget']						= 'SalesMonitoring/C_salestarget/index';
+$route['SalesMonitoring/salestarget/(:any)']				= 'SalesMonitoring/C_salestarget/$1';
 $route['SalesMonitoring/salestarget/Create'] 				= 'SalesMonitoring/C_salestarget/createSalestarget';
 $route['SalesMonitoring/salestarget/Created'] 				= 'SalesMonitoring/C_salestarget/create';
 $route['SalesMonitoring/salestarget/delete/(:any)'] 		= 'SalesMonitoring/C_salestarget/delete/$1';
@@ -220,6 +221,12 @@ $route['SalesMonitoring/salestarget/Download/xml'] 			= 'SalesMonitoring/C_sales
 $route['SalesMonitoring/salestarget/Download/pdf'] 			= 'SalesMonitoring/C_salestarget/downloadpdf';
 $route['SalesMonitoring/salestarget/Filter'] 				= 'SalesMonitoring/C_salestarget/profilter';
 $route['SalesMonitoring/salestarget/Filter/Download/pdf'] 	= 'SalesMonitoring/C_salestarget/downloadpdffilter';
+
+//SETTING SALES MONITORING
+$route['SalesMonitoring/setting_org']						= 'SalesMonitoring/C_salestarget/SettingOrg';
+$route['SalesMonitoring/setting_org/(:any)']				= 'SalesMonitoring/C_salestarget/$1';
+$route['SalesMonitoring/setting_order']						= 'SalesMonitoring/C_salestarget/SettingOrder';
+$route['SalesMonitoring/setting_order/(:any)']				= 'SalesMonitoring/C_salestarget/$1';
 
 //-------------------------------------Morning Greeting----------------------------------------------------
 //DASHBOARD
@@ -2739,6 +2746,10 @@ $route['MasterPekerja/SetupPekerjaan'] 		= 'MasterPekerja/SetupPekerjaan/C_Index
 $route['MasterPekerja/SetupPekerjaan/(:any)'] = 'MasterPekerja/SetupPekerjaan/C_Index/$1';
 $route['MasterPekerja/SetupPekerjaan/(:any)/(:any)'] = 'MasterPekerja/SetupPekerjaan/C_Index/$1/$2';
 
+//---------------------------------------------- Setting Seksi ---------------------------------------//
+$route['MasterPekerja/Setting/(:any)'] = 'MasterPekerja/Setting/C_MP_Setting/$1';	
+$route['MasterPekerja/Setting/(:any)/(:any)'] = 'MasterPekerja/Setting/C_MP_Setting/$1/$2';	
+
 //----------------MonitoringPembelian------------------
  $route['MonitoringPembelian'] = 'MonitoringPembelian/C_Index/index';
  $route['MonitoringPembelian/EditData'] = 'MonitoringPembelian/EditData/C_Monitoring/index';
@@ -2753,7 +2764,7 @@ $route['MasterPekerja/SetupPekerjaan/(:any)/(:any)'] = 'MasterPekerja/SetupPeker
  $route['MonitoringPembelian/MonitoringPE/(:any)/(:any)'] = 'MonitoringPembelian/EditData/C_MonitoringPE/$1/$2';
 
  $route['MonitoringPembelian/HistoryRequest'] = 'MonitoringPembelian/Input/C_History/index';
-
+ $route['MonitoringPembelian/HistoryRequest/(:any)'] = 'MonitoringPembelian/Input/C_History/$1';
  //----------------Resource Opname------------------
  $route['OpnameResource']			= 'OpnameResource/MainMenu/C_TarikData';
  $route['OpnameResource/TarikData']  = 'OpnameResource/MainMenu/C_TarikData/TarikData';
@@ -3348,11 +3359,17 @@ $route['BarangDatang/search'] 									= 'BarangDatang/C_Monitoring/search';
 //------------------------------------Pola Shift Seksi---------------------------------------
 $route['PolaShiftSeksi']					= 'PolaShiftSeksi/C_Index';
 
+$route['PolaShiftSeksi/createPolaShift']							= 'PolaShiftSeksi/ImportPolaShift/C_Index/createPolaShift';
+$route['PolaShiftSeksi/createPolaShift/(:any)']						= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1';
+$route['PolaShiftSeksi/createPolaShift/(:any)/(:any)']				= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2';
+$route['PolaShiftSeksi/createPolaShift/(:any)/(:any)/(:any)']		= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2/$3';
+$route['PolaShiftSeksi/createPolaShift/(:any)/(:any)/(:any)/(:any)']= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2/$3/$4';
+
 $route['PolaShiftSeksi/ImportPolaShift']							= 'PolaShiftSeksi/ImportPolaShift/C_Index';
 $route['PolaShiftSeksi/ImportPolaShift/(:any)']						= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1';
 $route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)']				= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2';
 $route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)/(:any)']		= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2/$3';
-$route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)/(:any)/(:any)']		= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2/$3/$4';
+$route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)/(:any)/(:any)']= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2/$3/$4';
 
 $route['PolaShiftSeksi/TukarShift']							= 'PolaShiftSeksi/TukarShift/C_Tukar';
 $route['PolaShiftSeksi/TukarShift/(:any)']					= 'PolaShiftSeksi/TukarShift/C_Tukar/$1';
@@ -3651,6 +3668,7 @@ $route['PengirimanDokumen/ajax/listMaster']				= 'PengirimanDokumen/Menu/C_Input
 $route['PengirimanDokumen/ajax/addData']['post']		= 'PengirimanDokumen/Menu/C_InputData/ajaxInputData';
 $route['PengirimanDokumen/ajax/showData']               = 'PengirimanDokumen/Menu/C_InputData/ajaxShowData';
 $route['PengirimanDokumen/ajax/updateData']             = 'PengirimanDokumen/Menu/C_InputData/ajaxUpdateData';
+$route['PengirimanDokumen/ajax/deleteData']			    = 'PengirimanDokumen/Menu/C_InputData/ajaxDeleteData';
 
 $route['PengirimanDokumen/ajax/showMaster']				= 'PengirimanDokumen/Menu/C_MasterData/ajaxShowMaster';
 $route['PengirimanDokumen/ajax/seksi']					= 'PengirimanDokumen/Menu/C_MasterData/ajaxSeksi';
@@ -3704,6 +3722,14 @@ $route['KapasitasGdSparepart/Packing/(:any)/(:any)']	= 'KapasitasGdSparepart/C_P
 $route['KapasitasGdSparepart/Tracking']					= 'KapasitasGdSparepart/C_Tracking';
 $route['KapasitasGdSparepart/Tracking/(:any)']			= 'KapasitasGdSparepart/C_Tracking/$1';
 $route['KapasitasGdSparepart/Tracking/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Tracking/$1/$2';
+
+$route['KapasitasGdSparepart/Penyerahan']					= 'KapasitasGdSparepart/C_Penyerahan';
+$route['KapasitasGdSparepart/Penyerahan/(:any)']			= 'KapasitasGdSparepart/C_Penyerahan/$1';
+$route['KapasitasGdSparepart/Penyerahan/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Penyerahan/$1/$2';
+
+$route['KapasitasGdSparepart/Arsip']					= 'KapasitasGdSparepart/C_Arsip';
+$route['KapasitasGdSparepart/Arsip/(:any)']			= 'KapasitasGdSparepart/C_Arsip/$1';
+$route['KapasitasGdSparepart/Arsip/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Arsip/$1/$2';
 
 //--------------------------------------Rekap jenis Pekerjaan ---------------------------------------//
 $route['RekapJenisPekerjaan'] 							= 'RekapJenisPekerjaan/C_Rjp';
@@ -3785,10 +3811,15 @@ $route['Koperasi/api/previewDBF'] = 'Koperasi/C_Index/previewDBF';
 $route['Koperasi/api/uploadData'] = 'Koperasi/C_Index/uploadFile';
 $route['Koperasi/api/saveData'] = 'Koperasi/C_Index/saveToDatabase';
 // ------------------------------------------------ Receive PO ------------------------------------------------------//
-$route['ReceivePO'] = 'ReceivePO/C_Index';
-$route['ReceivePO/History'] = 'ReceivePO/C_History';
-$route['ReceivePO/History/(:any)'] = 'ReceivePO/C_History/$1';
-$route['ReceivePO/History/(:any)/(:any)/(:any)'] = 'ReceivePO/C_History/$1/$2/$3';
+$route['ReceivePO'] 												= 'ReceivePO/C_Index';
+
+$route['ReceivePO/History'] 									= 'ReceivePO/C_History';
+$route['ReceivePO/History/(:any)'] 						= 'ReceivePO/C_History/$1';
+$route['ReceivePO/History/(:any)/(:any)/(:any)'] 		= 'ReceivePO/C_History/$1/$2/$3';
+
+$route['ReceivePO/Deliver'] 									= 'ReceivePO/C_Deliver';
+$route['ReceivePO/Deliver/(:any)'] 						= 'ReceivePO/C_Deliver/$1';
+$route['ReceivePO/Deliver/(:any)/(:any)/(:any)'] 		= 'ReceivePO/C_Deliver/$1/$2/$3';
 
 // ----------------------------------------------- Hardware ----------------------------------------------- //
 $route['hardware'] = 'Hardware/Sweeping/C_Sweep/index';
@@ -3809,3 +3840,102 @@ $route['MasterCC/ListCC/(:any)/(:any)'] = 'MasterCostCenter/C_Index/$1/$2';
  $route['RencanaLembur/ListRencanaLembur'] = 'RencanaLembur/C_ListRencanaLembur';
  $route['RencanaLembur/ListRencanaLembur/(:any)'] = 'RencanaLembur/C_ListRencanaLembur/$1';
  $route['RencanaLembur/ListRencanaLembur/(:any)/(:any)'] = 'RencanaLembur/C_ListRencanaLembur/$1/$2';
+
+ //-----------------------------------------------------Generator TSKK------------------------------------------------------------//
+$route['GeneratorTSKK'] = 'GeneratorTSKK/C_GenTSKK/index';
+$route['GeneratorTSKK/ReCreateTSKK/(:any)'] = 'GeneratorTSKK/C_EditTSKK/ReCreateTSKK/$1';
+$route['GeneratorTSKK/Generate'] = 'GeneratorTSKK/C_GenTSKK/Display';
+$route['GeneratorTSKK/Generate/(:any)/'] = 'GeneratorTSKK/C_GenTSKK/$1';
+$route['GeneratorTSKK/Generate/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2';
+$route['GeneratorTSKK/Generate/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3';
+$route['GeneratorTSKK/Generate/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
+$route['GeneratorTSKK/Generate/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4/$5';
+
+$route['GeneratorTSKK/saveObservation'] = 'GeneratorTSKK/C_GenTSKK/saveObservation';
+$route['GeneratorTSKK/resaveObservation'] = 'GeneratorTSKK/C_GenTSKK/resaveObservation';
+$route['GeneratorTSKK/Generate/CreateTSKK'] = 'GeneratorTSKK/C_GenTSKK/CreateTSKK';
+$route['GeneratorTSKK/resaveEditObservation/(:any)'] = 'GeneratorTSKK/C_EditTSKK/resaveEditObservation/$1';
+$route['GeneratorTSKK/Generate/ReCreateTSKK'] = 'GeneratorTSKK/C_EditTSKK/ReCreateTSKK';
+
+$route['GeneratorTSKK/exportExcel'] = 'GeneratorTSKK/C_GenTSKK/exportExcel';
+$route['GeneratorTSKK/exportAgain/(:any)'] = 'GeneratorTSKK/C_Regenerate/exportAgain/$1';
+$route['GeneratorTSKK/exportEdit/(:any)'] = 'GeneratorTSKK/C_GenTSKK/exportEdit/$1';
+$route['GeneratorTSKK/exportObservation/(:any)'] = 'GeneratorTSKK/C_Observation/exportObservation/$1';
+
+$route['GeneratorTSKK/InputStandarElemen'] = 'GeneratorTSKK/C_GenTSKK/Input';
+$route['GeneratorTSKK/InputStandarElemen/(:any)/'] = 'GeneratorTSKK/C_GenTSKK/$1';
+$route['GeneratorTSKK/InputStandarElemen/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2';
+$route['GeneratorTSKK/InputStandarElemen/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3';
+$route['GeneratorTSKK/InputStandarElemen/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
+
+$route['GeneratorTSKK/InputLembarObservasi'] = 'GeneratorTSKK/C_Observation/DisplayLO';
+$route['GeneratorTSKK/InputLembarObservasi/(:any)/'] = 'GeneratorTSKK/C_Observation/$1';
+$route['GeneratorTSKK/InputLembarObservasi/(:any)/(:any)'] = 'GeneratorTSKK/C_Observation/$1/$2';
+$route['GeneratorTSKK/InputLembarObservasi/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_Observation/$1/$2/$3';
+$route['GeneratorTSKK/InputLembarObservasi/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_Observation/$1/$2/$3/$4';
+
+$route['GeneratorTSKK/ViewEdit'] = 'GeneratorTSKK/C_GenTSKK/ViewEdit';
+$route['GeneratorTSKK/ViewEdit/(:any)/'] = 'GeneratorTSKK/C_GenTSKK/$1';
+$route['GeneratorTSKK/ViewEdit/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2';
+$route['GeneratorTSKK/ViewEdit/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3';
+$route['GeneratorTSKK/ViewEdit/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
+
+$route['GeneratorTSKK/EditTSKK'] = 'GeneratorTSKK/C_GenTSKK/EditTSKK';
+$route['GeneratorTSKK/EditTSKK/(:any)/'] = 'GeneratorTSKK/C_GenTSKK/$1';
+$route['GeneratorTSKK/EditTSKK/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2';
+$route['GeneratorTSKK/EditTSKK/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3';
+$route['GeneratorTSKK/EditTSKK/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
+
+$route['GeneratorTSKK/EditTSKK'] = 'GeneratorTSKK/C_GenTSKK/EditTSKK';
+
+//------------------------------------------------Cetak Kartu Body--------------------------------------------------------//
+$route['CetakKartuBody'] 							= 'CetakKartuBody/C_Index';
+$route['CetakKartuBody/Cetak'] 						= 'CetakKartuBody/C_Cetak';
+$route['CetakKartuBody/Cetak/(:any)'] 				= 'CetakKartuBody/C_Cetak/$1';
+$route['CetakKartuBody/Cetak/(:any)/(:any)'] 		= 'CetakKartuBody/C_Cetak/$1/$2';
+
+//-------------------------------------------Stock Gudang Sparepart--------------------------------------------------//
+$route['StockGdSparepart'] 							= 'StockGdSparepart/C_Index';
+
+$route['StockGdSparepart/LihatStock']					= 'StockGdSparepart/C_LihatStock';
+$route['StockGdSparepart/LihatStock/(:any)']			= 'StockGdSparepart/C_LihatStock/$1';
+$route['StockGdSparepart/LihatStock/(:any)/(:any)']		= 'StockGdSparepart/C_LihatStock/$1/$2';
+
+$route['StockGdSparepart/LihatTransact']				= 'StockGdSparepart/C_LihatTransact';
+$route['StockGdSparepart/LihatTransact/(:any)']			= 'StockGdSparepart/C_LihatTransact/$1';
+$route['StockGdSparepart/LihatTransact/(:any)/(:any)']	= 'StockGdSparepart/C_LihatTransact/$1/$2';
+
+//---------------------------------------Monitoring Delivery Sparepart ---------------------------------------------------
+$route['MonitoringDeliverySparepart'] 							= 'MonitoringDeliverySparepart/C_Index';
+
+$route['MonitoringDeliverySparepart/BomManagement']					= 'MonitoringDeliverySparepart/C_Bom';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)']			= 'MonitoringDeliverySparepart/C_Bom/$1';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Bom/$1/$2';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Bom/$1/$2/$3';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Bom/$1/$2/$4/$5';
+$route['MonitoringDeliverySparepart/BomManagement/(:any)/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Bom/$1/$2/$4/$5/$6';
+
+$route['MonitoringDeliverySparepart/MonitoringManagement']					= 'MonitoringDeliverySparepart/C_MonitoringMng';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)']			= 'MonitoringDeliverySparepart/C_MonitoringMng/$1';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_MonitoringMng/$1/$2';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_MonitoringMng/$1/$2/$3';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_MonitoringMng/$1/$2/$4/$5';
+$route['MonitoringDeliverySparepart/MonitoringManagement/(:any)/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_MonitoringMng/$1/$2/$4/$5/$6';
+
+$route['MonitoringDeliverySparepart/Monitoring']					= 'MonitoringDeliverySparepart/C_Monitoring';
+$route['MonitoringDeliverySparepart/Monitoring/(:any)']			= 'MonitoringDeliverySparepart/C_Monitoring/$1';
+$route['MonitoringDeliverySparepart/Monitoring/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_Monitoring/$1/$2';
+
+$route['MonitoringDeliverySparepart/UserManagement']					= 'MonitoringDeliverySparepart/C_User';
+$route['MonitoringDeliverySparepart/UserManagement/(:any)']			= 'MonitoringDeliverySparepart/C_User/$1';
+$route['MonitoringDeliverySparepart/UserManagement/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_User/$1/$2';
+$route['MonitoringDeliverySparepart/UserManagement/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_User/$1/$2/$3';
+$route['MonitoringDeliverySparepart/UserManagement/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_User/$1/$2/$4';
+
+// ------------------------------------------------ RKH Kasie ------------------------------------------------------//
+$route['RKHKasie'] = 'RKHKasie/C_Index';
+$route['RKHKasie/Job'] = 'RKHKasie/C_Job';
+$route['RKHKasie/EditJob'] = 'RKHKasie/C_Editjob';
+$route['RKHKasie/Rekapharian'] = 'RKHKasie/C_Rekapjob';
+$route['RKHKasie/Bom'] = 'RKHKasie/C_Bom';
+$route['RKHKasie/Bom/(:any)'] = 'RKHKasie/C_Bom/$1';
