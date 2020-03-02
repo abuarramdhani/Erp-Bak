@@ -33,7 +33,7 @@ class C_Index extends CI_Controller
 	}
 
 	/* LIST DATA */
-	public function index()
+	public function createPolaShift()
 	{
 		$user = $this->session->username;
 		$this->checkSession();
@@ -56,10 +56,9 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PolaShiftSeksi/ImportPolaShift/V_Table_List', $data);
 		$this->load->view('V_Footer',$data);
-
 	}
 
-	public function addImShift()
+	public function index()
 	{
 		$user = $this->session->username;
 		$this->checkSession();
@@ -70,8 +69,8 @@ class C_Index extends CI_Controller
 		// print_r($user_id);exit();
 
 		$data['Title'] = 'Import Pola Shift';
-		$data['Menu'] = 'Catering Management ';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Import Pola Shift';
+		$data['SubMenuOne'] = 'Insert Shift';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -82,7 +81,6 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PolaShiftSeksi/ImportPolaShift/V_Index', $data);
 		$this->load->view('V_Footer',$data);
-
 	}
 
 	public function daftar_seksi()
@@ -174,8 +172,8 @@ class C_Index extends CI_Controller
 		$no_induk = $this->session->user;
 
 		$data['Title'] = 'Import Pola Shift';
-		$data['Menu'] = 'Catering Management ';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Import Pola Shift';
+		$data['SubMenuOne'] = 'Upload Shift';
 		$data['SubMenuTwo'] = '';
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -484,7 +482,7 @@ class C_Index extends CI_Controller
 		}
 	}
 
-	public function createPolaShift()
+	public function addImShift()
 	{
 		$user = $this->session->username;
 		$this->checkSession();
