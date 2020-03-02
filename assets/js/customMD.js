@@ -237,7 +237,7 @@ function dodo2() {
   if(ajax2 != null) ajax2.abort()
   if(ajax1 != null) ajax1.abort()
   if(ajax4 != null) ajax4.abort()
-  if(ajax5 != null) ajax5.abort()()
+  if(ajax5 != null) ajax5.abort()
 ajax3 =  $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetAllocate',
     type: 'POST',
