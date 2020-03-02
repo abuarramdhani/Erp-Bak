@@ -1379,6 +1379,7 @@ $('#MasterPekerja-Surat-btnPreview').click(function() {
     // alert($('#MasterPekerja-txtLokasiKerjaLama').val());
     let fingerakhir = $("select[name='txtFingerGanti']").val();
     let tujuanmutasi = $("select[name='txtKodesieBaru']").val();
+    let golkerja = $("select[name='txtGolonganPekerjaanBaru']").val();
 
     if(!tujuanmutasi){
        Swal.fire('Oops!','Mohon lengkapi form!','warning')
