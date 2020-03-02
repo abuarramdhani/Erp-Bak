@@ -3927,9 +3927,9 @@ $route['MonitoringDeliverySparepart/UserManagement/(:any)/(:any)/(:any)']		= 'Mo
 $route['MonitoringDeliverySparepart/UserManagement/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringDeliverySparepart/C_User/$1/$2/$4';
 
 // ------------------------------------------------ RKH Kasie ------------------------------------------------------//
-$route['RKHKasie'] = 'RKHKasie/C_Index';
-$route['RKHKasie/Job'] = 'RKHKasie/C_Job';
-$route['RKHKasie/EditJob'] = 'RKHKasie/C_Editjob';
-$route['RKHKasie/Rekapharian'] = 'RKHKasie/C_Rekapjob';
-$route['RKHKasie/Bom'] = 'RKHKasie/C_Bom';
-$route['RKHKasie/Bom/(:any)'] = 'RKHKasie/C_Bom/$1';
+$route['RKHKasie'] = 'RKHkasie/C_Index';
+$route['RKHKasie/Job'] = 'RKHkasie/C_Job';
+$route['RKHKasie/EditJob'] = 'RKHkasie/C_Editjob';
+$route['RKHKasie/Rekapharian'] = 'RKHkasie/C_Rekapjob';
+$route['RKHKasie/Bom'] = 'RKHkasie/C_Bom';
+$route['RKHKasie/Bom/(:any)'] = 'RKHkasie/C_Bom/$1';
