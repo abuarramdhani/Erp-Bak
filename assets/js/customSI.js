@@ -121,6 +121,70 @@ $(function() {
         checkFillRealisasi()
     })
 
+    $(document).on('ifUnchecked','input#checkRealisasiStandarisasiKai', function() {
+        var name = $(this).attr('data-class')
+        $(this).closest("input").removeAttr('checked')
+        $(this).parent().parent().parent().find(".must").attr("disabled", "disabled")
+        $(this).parent().parent().parent().find(".must").removeAttr('required')
+        $(this).closest("input.must").val(null).trigger('change')
+        $('.' + name).redactor({
+            imageUpload: baseurl + 'SystemIntegration/KaizenGenerator/Submit/upload',
+            imageUploadErrorCallback: function(json) {
+                alert(json.error)
+            }
+        })
+        $('.' + name).redactor('destroy')
+        $('.' + name).val('')
+        $('.' + name).attr('disabled', 'disabled')
+        checkFillRealisasi()
+    })
+
+    $(document).on('ifChecked','input#checkRealisasiStandarisasiKai', function() {
+        var name = $(this).attr('data-class')
+        $(this).closest("input").attr('checked', 'checked')
+        $(this).parent().parent().parent().find(".must").removeAttr('disabled')
+        $(this).parent().parent().parent().find(".must").attr('required', 'required')
+        $('.' + name).redactor({
+            imageUpload: baseurl + 'SystemIntegration/KaizenGenerator/Submit/upload',
+            imageUploadErrorCallback: function(json) {
+                alert(json.error)
+            }
+        })
+        checkFillRealisasi()
+    })
+
+    $(document).on('ifChecked','input#checkRealisasiSosialisasiKai', function() {
+        var name = $(this).attr('data-class')
+        $(this).closest("input").attr('checked', 'checked')
+        $(this).parent().parent().parent().find(".must").removeAttr('disabled')
+        $(this).parent().parent().parent().find(".must").attr('required', 'required')
+        $('.' + name).redactor({
+            imageUpload: baseurl + 'SystemIntegration/KaizenGenerator/Submit/upload',
+            imageUploadErrorCallback: function(json) {
+                alert(json.error)
+            }
+        })
+        checkFillRealisasi()
+    })
+
+    $(document).on('ifUnchecked','input#checkRealisasiSosialisasiKai', function() {
+        var name = $(this).attr('data-class')
+        $(this).closest("input").removeAttr('checked')
+        $(this).parent().parent().parent().find(".must").attr("disabled", "disabled")
+        $(this).parent().parent().parent().find(".must").removeAttr('required')
+        $(this).closest("input.must").val(null).trigger('change')
+        $('.' + name).redactor({
+            imageUpload: baseurl + 'SystemIntegration/KaizenGenerator/Submit/upload',
+            imageUploadErrorCallback: function(json) {
+                alert(json.error)
+            }
+        })
+        $('.' + name).redactor('destroy')
+        $('.' + name).val('')
+        $('.' + name).attr('disabled', 'disabled')
+        checkFillRealisasi()
+    })
+
     $('.select2si').select2({
         allowClear: true,
         tabindex: true
