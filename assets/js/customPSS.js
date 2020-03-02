@@ -217,7 +217,7 @@ function ips_swetAlert(){
         focusCancel: true
     }).then(function(result) {
         if (result.value) {
-            window.location.replace(baseurl+"PolaShiftSeksi/ImportPolaShift");
+            window.location.replace(baseurl+"PolaShiftSeksi/createPolaShift");
         }
     });
 }
