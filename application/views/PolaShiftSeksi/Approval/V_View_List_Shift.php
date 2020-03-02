@@ -11,6 +11,7 @@
 									<td width="5%">No</td>
 									<td>Seksi</td>
 									<td>Periode</td>
+									<td>Tanggal Import</td>
 									<td>Action</td>
 								</tr>
 							</thead>
@@ -20,6 +21,7 @@
 										<td><?php echo $no; ?></td>
 										<td><?php echo $key['seksi'] ?></td>
 										<td><?php echo $key['periode'] ?></td>
+										<td><?php echo $key['tgl_import'] ?></td>
 										<td>
 											<a href="<?php echo base_url('PolaShiftSeksi/Approval/detail_shift/'.$key['kodesie'].'/'.$key['periode'].'/'.str_replace(' ', '_', $key['tgl_import'])); ?>" title="Detail" class="btn btn-success">
 												<i class="fa fa-file-text-o"></i>

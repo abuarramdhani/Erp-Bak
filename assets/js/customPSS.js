@@ -4,9 +4,47 @@ $(document).ready(function(){ //js untuk import polas shift
         "scrollX"			: true,
         "scrollCollapse"	: true,
         "fixedColumns":   {
-        "leftColumns": 3,
+            "leftColumns": 3,
         },
     });
+
+    $('.pss_getAllnoind').select2({
+        placeholder: 'Pilih Noind',
+        minimumInputLength: 2,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'PolaShiftSeksi/TukarShift/getNoind',
+            dataType: 'json',
+            delay: 500,
+            type: "POST",
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind+ ' - ' + obj.nama };//
+                    })
+                };
+            }
+        }
+    });
+    $('.pss_getAllnoindName').select2({
+        placeholder: 'Pilih Noind',
+        minimumInputLength: 2,
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'PolaShiftSeksi/TukarShift/getNoind',
+            dataType: 'json',
+            delay: 500,
+            type: "POST",
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind+ ' - ' + obj.nama, text: obj.noind+ ' - ' + obj.nama };//
+                    })
+                };
+            }
+        }
+    });
+
     $('#ImportPola-DaftarSeksi').select2({
         allowClear: false,
         placeholder: "Pilih Seksi",
@@ -76,7 +114,7 @@ $(document).ready(function(){ //js untuk import polas shift
                 $(this).val('');
             }
 
-    });
+        });
     pss_init();
     pss_init_approve();
 
@@ -100,10 +138,74 @@ $(document).ready(function(){ //js untuk import polas shift
     });
 
     $('.ips_get_atasan').change(function(){
-         $('.btn_ips_save').attr('disabled', false);
-    });
+        $('#btn_ips_save').attr('disabled', false);
+       $('.btn_ips_save').attr('disabled', false);
+   });
 
     $('.tbl_tlis').DataTable();
+
+    $('#ipscekdate').change(function(){
+        $('#pssbtnhpsbrs').show();
+        if ($.fn.DataTable.isDataTable( '#psstblsh' )) $('#psstblsh').DataTable().destroy();
+
+        var v = $(this).val();
+        $.ajax({
+            url: baseurl + 'PolaShiftSeksi/createPolaShift/getMingguList',
+            type: "post",
+            data: {pr: v},
+            success: function (response) {
+                $('#ips_weekshift').html(response);
+                init_sh();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+             console.log(textStatus, errorThrown);
+         }
+     });
+
+        var pr = v.split(' - ');
+        var t = new Date(Number(pr[1]), Number(pr[0]), 0);
+        var tml = '<tr><th>NO.IND</th><th style="width: 100px;">NAMA</th>';
+        for(let i = 1; i <= t.getDate(); i++){
+            tml += '<th>'+i+'</th>';
+        }
+        tml += '</tr>';
+        $('#psstblsh thead').html(tml);
+        if ( ! $.fn.DataTable.isDataTable( '#psstblsh' ) ) {
+            var pss_tbl = $('#psstblsh').DataTable( {
+                dom: 'Brti',
+                "scrollX": true,
+                buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: ''
+                }
+                ]
+            });
+
+            $('#psstblsh tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    pss_tbl.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
+            $( pss_tbl.table().header() ).addClass( 'highlight' );
+        }
+    });
+
+    $( table.table().header() )
+    .addClass( 'highlight' );
+
+    $('.pss_coba_document').on('click', '#pssbtnhpsbrs', function(){
+     $('#psstblsh').DataTable().row('.selected').remove().draw( false );
+ });
+
+    $('.pss_coba_document').on('click','#pssbtnsmpcr',function(){
+        simpan_to_table();
+    });
 });
 
 function ips_swetAlert(){
@@ -135,6 +237,7 @@ function pss_init_approve()
             var m = per[1];
             var y = per[0];
             var nowPer = d.getFullYear()+'-'+(Number(d.getMonth())+1);
+            console.log(periode, nowPer);
             for (var i of arrayJs) {
                 var noindErp = $('.Erp'+i);
                 var noindPers = $('.Pers'+i);
@@ -143,12 +246,12 @@ function pss_init_approve()
                     noindErp.each(function(){
                         var thisText = $(this).text();
                         var tgl = $(this).attr('data-tgl');
-                        if (periode == nowPer) {
+                        // if (periode == nowPer) { di komen karena lupa mbandingin periode buat afa?
                             if (tgl <= d.getDate()) {
                                 x++;
                                 return true;
                             }
-                        }
+                        // }
                         var str = i+'|'+thisText+'|'+tgl;
                         var txtErp = thisText;
                         var txtPers = $('.Pers'+i).eq(x).text();
@@ -247,9 +350,9 @@ function update_shift(arry,tgl_imp, ks, pr, alasan, status)
             show_success(status);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-           console.log(textStatus, errorThrown);
-       }
-   });
+         console.log(textStatus, errorThrown);
+     }
+ });
 }
 
 function show_success(stat)
@@ -364,7 +467,7 @@ function init_select_tukar()
     $('.pss_noind_to_all').change(function(){
         var noind = $(this).val();
         if (noind.length < 2) { return false }//cegah loop
-        $('#surat-loading').attr('hidden', false);
+            $('#surat-loading').attr('hidden', false);
         var tgl = $('.ts_datePick').val();
         var ini = $(this);
         $.ajax({
@@ -387,7 +490,7 @@ function init_select_tukar()
     $('.pss_noind').change(function(){
         var noind = $(this).val();
         if (noind.length < 2) { return false }//cegah loop
-        $('#surat-loading').attr('hidden', false);
+            $('#surat-loading').attr('hidden', false);
         //cek apa sama
         cekNoindnya();
         var tgl = $('.ts_datePick').val();
@@ -466,15 +569,15 @@ function init_select_tukar()
 function isi_select(noind)
 {
     $.ajax({
-            url: baseurl + 'PolaShiftSeksi/TukarShift/iniSelect',
-            type: "post",
-            data: {noind: noind},
-            success: function (response) {
-                $('.pss_selc2').html(response);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus, errorThrown);
-            }
+        url: baseurl + 'PolaShiftSeksi/TukarShift/iniSelect',
+        type: "post",
+        data: {noind: noind},
+        success: function (response) {
+            $('.pss_selc2').html(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+        }
     });
 }
 
@@ -536,9 +639,9 @@ $(document).ready(function(){
 function alert_no_shift(ini)
 {
     Swal.fire({
-            title: 'Data Shift Kosong',
-            text: 'Pekerja tidak memiliki shift pada tanggal tersebut!',
-            type: 'error',
+        title: 'Data Shift Kosong',
+        text: 'Pekerja tidak memiliki shift pada tanggal tersebut!',
+        type: 'error',
     });
     ini.each(function() { //added a each loop here
         $(this).select2('destroy').val("").select2();
@@ -658,4 +761,118 @@ function alertNoShift(res, ini)
         type: 'error',
     });
     ini.val(null).trigger("change");
+}
+
+function init_sh()
+{
+    $('.pss_gs').select2({
+        placeholder: 'Pilih Shift',
+        minimumInputLength: -1,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'PolaShiftSeksi/createPolaShift/getLsh',
+            dataType: 'json',
+            delay: 1000,
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            type: "POST",
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.inisial, text: obj.inisial+ ' - ' + obj['shift'] };//
+                    })
+                };
+            }
+        }
+    });
+}
+
+function simpan_to_table()
+{
+    var noin = $('.pss_getAllnoindName').val();
+    var oke = 1;
+    if (noin == null || noin.length < 1) { alert('Harap Isi Noind!'); return false; }
+    $('.pss_gs').each(function(){
+        if ($(this).val().length < 1) { oke = 0; alert('Harap Isi Semua Shift !'); return false; }
+    });
+    if (oke == 0) { return false; };
+
+    $('#ipscekdate').attr('disabled', true);
+    $('#pssdivsavehid').removeAttr('hidden');
+    init_btn_save_sh();
+
+    var lisnoind = [];
+    $('#psstblsh tbody tr').each(function(){
+        lisnoind.push($(this).find('td').eq(0).text());
+    });
+    console.log(lisnoind);
+    //mulai append
+    for(var N of noin){
+        if (N.length == 0) { continue; }
+        var tr = [];
+        var sN = N.split(' - ');
+        if (lisnoind.indexOf(sN[0]) != -1) { continue; }
+        tr.push(sN[0]);// noind dan nama
+        tr.push(sN[1]);// noind dan nama
+        
+        var x = 1;
+        for(let i = 0; i < $('.pss_gs').length; i++){
+            var sh = $('.pss_gs').eq(i).val();
+            var num = $('.pss_pr_js').eq(i).find('label').text().split(' - ');
+
+            var a = num[0], b = (num.length>1) ? num[1]:num[0];
+            for(let j = 0; j <= b-a; j++){
+                if (list_hari_libur.indexOf(x) == -1) {
+                    tr.push(sh);
+                }else{
+                    tr.push('');
+                }
+                x++;
+            }
+        }
+        console.log(tr);
+        $('#psstblsh').DataTable().row.add(tr).draw( false );
+    }
+
+    function init_btn_save_sh()
+    {
+        //beberapa variable berasal dari V_List_minggu.php
+        $('#btn_ips_save').off('click');
+        $('#btn_ips_save').click(function(){
+            var noind = [];
+            var sh = [];
+            var ips_tgl = arr_total_hari;
+            $('#psstblsh tbody tr').each(function(){
+                noind.push($(this).find('td').eq(0).text());
+                var x = 0;
+                var arr = [];
+                for(let i = 0; i <= ips_tgl.length+1; i++){
+                    if (x < 2) { x++; continue; }
+                    arr.push($(this).find('td').eq(i).text())
+                    x++;
+                }
+                sh.push(arr);
+            });
+            console.log('tgl',ips_tgl);
+            console.log('noind', noind);
+            console.log('sh', sh);
+            var atasan = $('.ips_get_atasan').val();
+            $('#surat-loading').attr('hidden', false);
+            $.ajax({
+                url: baseurl + 'PolaShiftSeksi/ImportPolaShift/save_ods',
+                type: "post",
+                data: {tgl: ips_tgl, noind: noind, shift: sh, pri: createShiftPr, atasan: atasan},
+                success: function (response) {
+                    $('#surat-loading').attr('hidden', true);
+                    ips_swetAlert();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                   console.log(textStatus, errorThrown);
+                }
+            });
+        });
+    }
 }
