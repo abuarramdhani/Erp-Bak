@@ -75,7 +75,7 @@
 											</table>
 										</div>
 										<div class="col-md-12">
-											<h3 style="font-weight: bold;">Data ERP</h3>
+											<h3 style="font-weight: bold;">Data Shift Yang Di Ajukan</h3>
 											<table class="table table-bordered tabel_polashiftInit">
 												<thead>
 													<tr>
@@ -117,7 +117,7 @@
 											</table>
 										</div>
 										<div class="col-md-12">
-											<h3 style="font-weight: bold;">Data Personalia</h3>
+											<h3 style="font-weight: bold;">Data Shift Saat Ini</h3>
 											<table class="table table-bordered tabel_polashiftInit">
 												<thead>
 													<tr>

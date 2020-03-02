@@ -11,7 +11,7 @@ class M_tukar extends CI_Model
     
     public function getDaftar($term)
     {
-    	$sql = "Select noind, nama from hrd_khs.tpribadi where keluar = '0'
+    	$sql = "Select noind, rtrim(nama) nama from hrd_khs.tpribadi where keluar = '0'
     			and (noind like '%$term%' or nama like '%$term%')";
     	$query = $this->personalia->query($sql);
     	return $query->result_array();
