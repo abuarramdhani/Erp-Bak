@@ -34,7 +34,7 @@
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Organization</label>
 								<div class="col-lg-5">
-									<select class="form-control select4" name="txt_organization" class="form-control">
+									<select id="slcOrgSM" class="form-control select4" onchange="org_selection(this)" name="txt_organization" class="form-control">
 										<option value=""></option>
 										<?php $no = 0; foreach($source as $src) { $no++ ?>
 										<?php echo '<option value="'.$src['org_id'].'">'.$src['org_name'].'</option>' ?>
@@ -107,4 +107,7 @@
 document.getElementsByName('txt_order_type_list').item(0).onchange = function(){
      document.getElementsByName('txt_order_type').item(0).value = document.getElementsByName('txt_order_type_list').item(0).value;
 }
+
+// tambahan 
+
 </script>
