@@ -269,6 +269,7 @@ class C_List extends CI_Controller {
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'ERP Mobile');
 				$mail->addAddress($emailICT['internal_mail'], 'Seksi ICT');
+				$mail->AddCC('it.sec1@quick.co.id');
 				if(!$emailICT['external_mail']==null || !$emailICT['external_mail']==""){
 					$mail->addAddress($emailICT['external_mail'], 'Seksi ICT');
 				}
@@ -325,6 +326,7 @@ class C_List extends CI_Controller {
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'ERP Mobile');
 				$mail->addAddress($internalMail, 'ERP Mobile User');
+				$mail->AddCC('it.sec1@quick.co.id');
 				if(!$eksternalMail==null){
 					$mail->addAddress($eksternalMail, 'Status Registrasi Android ERP Mobile');
 				}

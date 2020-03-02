@@ -1,10 +1,6 @@
 <?php
 require_once("koneksi.php");
 
-if($_SERVER['REQUEST_METHOD'] != "POST"){
-	echo "POST Only!";exit();
-}
-
 $noinduk 		= $_POST['noinduk'];
 $longitude 		= $_POST['longitude'];
 $latitude	    = $_POST['latitude'];
@@ -64,9 +60,9 @@ function getWaktu($lat,$long){
 	$curl = curl_init();
 	set_time_limit(0);
 	curl_setopt($curl, CURLOPT_URL,$url);
-	curl_setopt($cURL, CURLOPT_HTTPGET, true);
+	curl_setopt($curl, CURLOPT_HTTPGET, true);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($cURL, CURLOPT_HTTPHEADER, array(
+	curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
             'Accept: application/json'
         ));

@@ -287,6 +287,7 @@ class C_Index extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
 				$mail->addAddress($internalMail, 'Absensi Online Pekerja');
+				$mail->AddCC('it.sec1@quick.co.id');
 				$mail->Subject = 'Status Absensi Online Anda';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -333,6 +334,7 @@ class C_Index extends CI_Controller
 				$mail->IsHTML(true);
 				$mail->AltBody = 'This is a plain-text message body';
 				$mail->addAddress($eksternalMail, $namaPekerja);
+				$mail->AddCC('it.sec1@quick.co.id');
 				$mail->Subject = 'Status Absensi Online Anda';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -387,6 +389,7 @@ class C_Index extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
 				$mail->addAddress($internalMailPersonalia, 'Absensi Online Pekerja');
+				$mail->AddCC('it.sec1@quick.co.id');
 				$mail->Subject = 'Absensi Online';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -433,6 +436,7 @@ class C_Index extends CI_Controller
 				$mail->IsHTML(true);
 				$mail->AltBody = 'This is a plain-text message body';
 				$mail->addAddress($externalMailPersonalia, $namaPekerjaPersonalia);
+				$mail->AddCC('it.sec1@quick.co.id');
 				$mail->Subject = 'Absensi Online';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -499,6 +503,7 @@ class C_Index extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
 				$mail->addAddress($internalMailAtasan, 'Absensi Online Pekerja');
+				$mail->AddCC('it.sec1@quick.co.id');
 				$mail->Subject = 'Absensi Online';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -541,6 +546,7 @@ class C_Index extends CI_Controller
 				$mail->IsHTML(true);
 				$mail->AltBody = 'This is a plain-text message body';
 				$mail->addAddress($externalMailAtasan, $atasan);
+				$mail->AddCC('it.sec1@quick.co.id');
 				$mail->Subject = 'Absensi Online';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
