@@ -44,19 +44,27 @@ class C_Index extends CI_Controller {
 		$data['Title'] = 'Monitoring Delivery Sparepart';
 		$cek = $this->M_monmng->cekHak($user);
 		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		if ($cek[0]['hak_akses'] == 'Seksi') {
-			$data['UserMenu'][] = $UserMenu[2];
-		}else {
-			$data['UserMenu'] = $UserMenu;
-		}
 		// echo "<pre>"; print_r($data['UserMenu']);exit();
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringDeliverySparepart/V_Index', $data);
-		$this->load->view('V_Footer',$data);
+		if (empty($cek)) {
+			$hak = '';
+			$this->load->view('MonitoringDeliverySparepart/V_Salah', $data);
+		}else {
+			$hak = $cek[0]['hak_akses'];
+			if ($hak == 'Seksi') {
+				$data['UserMenu'][] = $UserMenu[2];
+			}else {
+				$data['UserMenu'] = $UserMenu;
+			}
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('MonitoringDeliverySparepart/V_Index', $data);
+			$this->load->view('V_Footer',$data);
+		}
+
+		
 	}
 
 	

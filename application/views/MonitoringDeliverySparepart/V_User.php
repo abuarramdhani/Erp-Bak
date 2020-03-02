@@ -48,7 +48,7 @@
                                             <label class="control-label">Hak Akses</label>
                                         </div>
                                         <div class="col-md-4">
-                                            <select id="hak_akses" name="hak_akses" class="form-control pull-right select2" data-placeholder="hak akses" required>
+                                            <select id="hak_akses" name="hak_akses" class="form-control pull-right select2" style="width:100%" data-placeholder="hak akses" required>
                                                 <option></option>
                                                 <option value="Koordinator">Koordinator</option>
                                                 <option value="Seksi">Seksi</option>
@@ -79,7 +79,7 @@
                                             <label class="control-label">Department</label>
                                         </div>
                                         <div class="col-md-4">
-                                            <select id="deptclassUser" name="deptclassUser" class="form-control select2 deptclassUser">
+                                            <select id="deptclassUser" name="department" class="form-control select2 deptclassUser" style="width:100%" >
                                                 <option></option>
                                             </select>
                                         </div>
