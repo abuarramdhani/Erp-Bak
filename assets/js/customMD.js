@@ -1,3 +1,9 @@
+var ajax1  = null;
+var ajax2  = null;
+var ajax3  = null;
+var ajax4  = null;
+var ajax5  = null;
+
 $(document).ready(function() {
   var checkDO = $('#punyaeDO').val();
   if (checkDO == 'trueDO') {
@@ -17,23 +23,6 @@ $(document).ready(function() {
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.error();
       }
-    }).then(function () {
-      // $.ajax({
-      //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
-      //   type: 'POST',
-      //   dataType: 'json',
-      //   success: function(result) {
-      //     $('#jumlah0').html('(' + result[0] + ')');
-      //     $('#jumlah1').html('(' + result[1] + ')');
-      //     $('#jumlah2').html('(' + result[2] + ')');
-      //     $('#jumlah3').html('(' + result[3] + ')');
-      //     $('#jumlah4').html('(' + result[4] + ')');
-      //
-      //   },
-      //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-      //     console.error();
-      //   }
-      // })
     })
 
   }
@@ -44,50 +33,6 @@ $('#tblMonitoringDOCetak').DataTable();
 $('.uppercaseDO').keyup(function() {
   this.value = this.value.toUpperCase();
 });
-
-function updateFlag(rm, hi, rowID) {
-  var plat = $('tr[row-id="' + rowID + '"] input[name="inputAsiap"]').val();
-  if (plat == '') {
-    Swal.fire({
-      position: 'middle',
-      type: 'warning',
-      title: 'input plat nomer can not be null.',
-      showConfirmButton: false,
-      timer: 1500
-    })
-  }else if (plat != '') {
-    $.ajax({
-      url: baseurl + 'MonitoringDO/SettingDO/insertplatnumber',
-      type: 'POST',
-      data: {
-        plat_nomer: plat,
-        rm: rm,
-        hi: hi,
-      },
-      beforeSend: function () {
-        Swal.showLoading()
-      },
-      success: function(result) {
-        console.log(result);
-        if (result != '') {
-          Swal.fire({
-            position: 'middle',
-            type: 'success',
-            title: 'Success inserting data',
-            showConfirmButton: false,
-            timer: 1500
-          })
-          $('tr[row-id="' + rowID + '"] button[name="buttonAsiap"]').attr('disabled', true);
-          $('tr[row-id="' + rowID + '"] input[name="inputAsiap"]').attr('disabled', true);
-        }
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        console.error();
-      }
-    })
-  }
-  console.log(plat);
-}
 
 function approveMD() {
   var personid = $('#user_mdo').val();
@@ -151,6 +96,8 @@ function approveMD() {
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                   console.error();
                 }
+              }).then(function() {
+ 
               })
             })
           }
@@ -218,6 +165,7 @@ function approveMD() {
                 console.error();
               }
             })
+  
           })
         } else {
           Swal.fire({
@@ -235,10 +183,13 @@ function approveMD() {
   }
 }
 
-
 function dodo1() {
   // dodo01.abort();
-  $.ajax({
+  if(ajax4 != null) ajax4.abort()
+  if(ajax1 != null) ajax1.abort()
+  if(ajax3 != null) ajax3.abort()
+  if(ajax5 != null) ajax5.abort()
+ajax2 =  $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetAssign',
     type: 'POST',
     beforeSend: function() {
@@ -255,21 +206,7 @@ function dodo1() {
       console.error();
     }
   })
-  // $.ajax({
-  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
-  //   type: 'POST',
-  //   dataType: 'json',
-  //   success: function(result) {
-  //     $('#jumlah0').html('(' + result[0] + ')');
-  //     $('#jumlah1').html('(' + result[1] + ')');
-  //     $('#jumlah2').html('(' + result[2] + ')');
-  //     $('#jumlah3').html('(' + result[3] + ')');
-  //     $('#jumlah4').html('(' + result[4] + ')');
-  //   },
-  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-  //     console.error();
-  //   }
-  // })
+
 }
 
 function detailAssign(rm, rowID) {
@@ -297,7 +234,11 @@ function detailAssign(rm, rowID) {
 
 
 function dodo2() {
-  $.ajax({
+  if(ajax2 != null) ajax2.abort()
+  if(ajax1 != null) ajax1.abort()
+  if(ajax4 != null) ajax4.abort()
+  if(ajax5 != null) ajax5.abort()()
+ajax3 =  $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetAllocate',
     type: 'POST',
     beforeSend: function() {
@@ -319,21 +260,7 @@ function dodo2() {
       console.error();
     }
   })
-  // $.ajax({
-  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
-  //   type: 'POST',
-  //   dataType: 'json',
-  //   success: function(result) {
-  //     $('#jumlah0').html('(' + result[0] + ')');
-  //     $('#jumlah1').html('(' + result[1] + ')');
-  //     $('#jumlah2').html('(' + result[2] + ')');
-  //     $('#jumlah3').html('(' + result[3] + ')');
-  //     $('#jumlah4').html('(' + result[4] + ')');
-  //   },
-  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-  //     console.error();
-  //   }
-  // })
+
 }
 
 function detailAllocate(rm, rowID) {
@@ -360,7 +287,12 @@ function detailAllocate(rm, rowID) {
 }
 
 function dodo3() {
-  $.ajax({
+  if(ajax2 != null) ajax2.abort()
+  if(ajax1 != null) ajax1.abort()
+  if(ajax3 != null) ajax3.abort()
+  if(ajax5 != null) ajax5.abort()
+
+  ajax4 = $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetTransact',
     type: 'POST',
     beforeSend: function() {
@@ -378,21 +310,7 @@ function dodo3() {
       console.error();
     }
   })
-  // $.ajax({
-  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
-  //   type: 'POST',
-  //   dataType: 'json',
-  //   success: function(result) {
-  //     $('#jumlah0').html('(' + result[0] + ')');
-  //     $('#jumlah1').html('(' + result[1] + ')');
-  //     $('#jumlah2').html('(' + result[2] + ')');
-  //     $('#jumlah3').html('(' + result[3] + ')');
-  //     $('#jumlah4').html('(' + result[4] + ')');
-  //   },
-  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-  //     console.error();
-  //   }
-  // })
+
 }
 
 function detailTransact(rm, rowID) {
@@ -443,8 +361,11 @@ function GetSudahCetakDetail(rm, rowID) {
 
 
 function dodo4() {
-  // dodo0().ajaxStop(function())
-  $.ajax({
+  if(ajax2 != null) ajax2.abort()
+  if(ajax1 != null) ajax1.abort()
+  if(ajax3 != null) ajax3.abort()
+  if(ajax4 != null) ajax4.abort()
+ajax5 = $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetSudahCetak',
     type: 'POST',
     beforeSend: function() {
@@ -462,26 +383,15 @@ function dodo4() {
       console.error();
     }
   })
-  // $.ajax({
-  //     url: baseurl + 'MonitoringDO/SettingDO/countDO',
-  //     type: 'POST',
-  //     dataType: 'json',
-  //     success: function(result) {
-  //       $('#jumlah0').html('(' + result[0] + ')');
-  //       $('#jumlah1').html('(' + result[1] + ')');
-  //       $('#jumlah2').html('(' + result[2] + ')');
-  //       $('#jumlah3').html('(' + result[3] + ')');
-  //       $('#jumlah4').html('(' + result[4] + ')');
-  //     },
-  //     error: function(XMLHttpRequest, textStatus, errorThrown) {
-  //       console.error();
-  //     }
-  //   })
 }
 
 
 function dodo0() {
-   $.ajax({
+  if(ajax2 != null) ajax2.abort()
+  if(ajax4 != null) ajax4.abort()
+  if(ajax3 != null) ajax3.abort()
+  if(ajax5 != null) ajax5.abort()
+ajax1 = $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
     type: 'POST',
     beforeSend: function() {
@@ -496,23 +406,8 @@ function dodo0() {
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
-    }
+     }
   })
-  // $.ajax({
-  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
-  //   type: 'POST',
-  //   dataType: 'json',
-  //   success: function(result) {
-  //     $('#jumlah0').html('(' + result[0] + ')');
-  //     $('#jumlah1').html('(' + result[1] + ')');
-  //     $('#jumlah2').html('(' + result[2] + ')');
-  //     $('#jumlah3').html('(' + result[3] + ')');
-  //     $('#jumlah4').html('(' + result[4] + ')');
-  //   },
-  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-  //     console.error();
-  //   }
-  // })
 }
 
 //punya dodo0
@@ -547,7 +442,6 @@ function detail(rm, id_header, rowID, order_number, plat_number) {
     }
   })
 }
-
 
 function insertManual() {
   var rm = $('#nomorDO').val();
