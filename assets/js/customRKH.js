@@ -63,126 +63,126 @@ function getBom(th) {
 
 
 // ------------------------- GET TIME ------------------------------//
-$(document).ready(function() {
-    var d    = new Date();
-    // var buka_aplikasi  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+// $(document).ready(function() {
+//     var d    = new Date();
+//     // var buka_aplikasi  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
-    // console.log(buka_aplikasi);
+//     // console.log(buka_aplikasi);
 
-    var button   = document.getElementById("btnstart"+no);
-    var button2   = document.getElementById("btnlanjut"+no);
-    var hoursLabel   = document.getElementById("hours"+no);
-    var minutesLabel = document.getElementById("minutes"+no);
-    var secondsLabel = document.getElementById("seconds"+no);
-    var startButton = document.getElementById('btnstart'+no);
-    var stopButton = document.getElementById('btnstop'+no); 
-    var restartButton = document.getElementById('btnrestart'+no); 
-    var lanjutButton = document.getElementById('btnlanjut'+no); 
-
-
-    var totalSeconds = 0;
-    var timer = null;
-
-    button.onclick = function() {
-        var value = $('#btnstart'+no).val();
-
-        if (value == 'Mulai') {
-
-             if (!timer) {
-                  timer = setInterval(setTime, 1000);
-                }
-        var d    = new Date();
-        var mulai  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-
-        console.log (mulai);
-
-        $('#btnstart'+no).val('Selesai');
-        $('#btnlanjut'+no).removeAttr("disabled");
-        $('#btnrestart'+no).removeAttr("disabled");
+//     var button   = document.getElementById("btnstart"+no);
+//     var button2   = document.getElementById("btnlanjut"+no);
+//     var hoursLabel   = document.getElementById("hours"+no);
+//     var minutesLabel = document.getElementById("minutes"+no);
+//     var secondsLabel = document.getElementById("seconds"+no);
+//     var startButton = document.getElementById('btnstart'+no);
+//     var stopButton = document.getElementById('btnstop'+no); 
+//     var restartButton = document.getElementById('btnrestart'+no); 
+//     var lanjutButton = document.getElementById('btnlanjut'+no); 
 
 
-        } else if (value == 'Selesai') {
+//     var totalSeconds = 0;
+//     var timer = null;
 
-             if (timer) {
-                  clearInterval(timer);
-                  timer = null;
-                }
-        $('#btnlanjut'+no).attr("disabled", "disabled");
-        $('#btnrestart'+no).attr("disabled", "disabled");  
-        var d    = new Date();
-        var selesai  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+//     button.onclick = function() {
+//         var value = $('#btnstart'+no).val();
 
-        console.log (selesai);
+//         if (value == 'Mulai') {
 
-        }
-    };
-       button2.onclick = function() {
-        var value = $('#btnlanjut'+no).val();
+//              if (!timer) {
+//                   timer = setInterval(setTime, 1000);
+//                 }
+//         var d    = new Date();
+//         var mulai  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
-        if (value == 'Jeda') {
+//         console.log (mulai);
 
-            if (timer) {
-                  clearInterval(timer);
-                  timer = null;
-                }
-         var d    = new Date();
-        var jeda  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-
-        console.log (jeda);
-
-        $('#btnlanjut'+no).val('Lanjut');
-        $('#btnrestart'+no).attr("disabled","disabled");
-        // $('#btnrestart'+no).removeAttr("disabled");
+//         $('#btnstart'+no).val('Selesai');
+//         $('#btnlanjut'+no).removeAttr("disabled");
+//         $('#btnrestart'+no).removeAttr("disabled");
 
 
-        } else if (value == 'Lanjut') {
+//         } else if (value == 'Selesai') {
 
-             if (!timer) {
-                 timer = setInterval(setTime, 1000);
-             }
-         var d    = new Date();
-        var lanjut  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+//              if (timer) {
+//                   clearInterval(timer);
+//                   timer = null;
+//                 }
+//         $('#btnlanjut'+no).attr("disabled", "disabled");
+//         $('#btnrestart'+no).attr("disabled", "disabled");  
+//         var d    = new Date();
+//         var selesai  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
-        console.log (lanjut);
+//         console.log (selesai);
 
-        $('#btnlanjut'+no).val('Jeda');
-        $('#btnrestart'+no).removeAttr("disabled");
-        // $('#btnrestart'+no).attr("disabled","disabled");
+//         }
+//     };
+//        button2.onclick = function() {
+//         var value = $('#btnlanjut'+no).val();
+
+//         if (value == 'Jeda') {
+
+//             if (timer) {
+//                   clearInterval(timer);
+//                   timer = null;
+//                 }
+//          var d    = new Date();
+//         var jeda  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+
+//         console.log (jeda);
+
+//         $('#btnlanjut'+no).val('Lanjut');
+//         $('#btnrestart'+no).attr("disabled","disabled");
+//         // $('#btnrestart'+no).removeAttr("disabled");
 
 
-        }
-    };
-      restartButton.onclick = function() {
-        if (timer) {
-          clearInterval(timer);
-          timer = setInterval(setTime, 1000);
-          totalSeconds = 0;
-        }
-         var d    = new Date();
-        var mulai_lagi  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+//         } else if (value == 'Lanjut') {
 
-        console.log (mulai_lagi);
-        $('#btnlanjut'+no).val('Jeda');
+//              if (!timer) {
+//                  timer = setInterval(setTime, 1000);
+//              }
+//          var d    = new Date();
+//         var lanjut  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
-    };
+//         console.log (lanjut);
 
-    function setTime() {
-        totalSeconds++;
-        secondsLabel.innerHTML = pad(totalSeconds % 60);
-        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
-        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600));
+//         $('#btnlanjut'+no).val('Jeda');
+//         $('#btnrestart'+no).removeAttr("disabled");
+//         // $('#btnrestart'+no).attr("disabled","disabled");
+
+
+//         }
+//     };
+//       restartButton.onclick = function() {
+//         if (timer) {
+//           clearInterval(timer);
+//           timer = setInterval(setTime, 1000);
+//           totalSeconds = 0;
+//         }
+//          var d    = new Date();
+//         var mulai_lagi  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+
+//         console.log (mulai_lagi);
+//         $('#btnlanjut'+no).val('Jeda');
+
+//     };
+
+//     function setTime() {
+//         totalSeconds++;
+//         secondsLabel.innerHTML = pad(totalSeconds % 60);
+//         minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+//         hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600));
         
-    }
+//     }
     
-    function pad(val) {
-        var valString = val + "";
-        if (valString.length < 2) {
-        return "0" + valString;
-        } else {
-        return valString;
-        }
-    }
-});
+//     function pad(val) {
+//         var valString = val + "";
+//         if (valString.length < 2) {
+//         return "0" + valString;
+//         } else {
+//         return valString;
+//         }
+//     }
+// });
 // ------------------------ APPEND INPUT ------------------------//
 var i = 2;
 function nambahteros() {
