@@ -704,7 +704,7 @@ class C_splseksi extends CI_Controller {
 		$lembur = $this->input->post("lembur");
 		$noind = $this->input->post("noind");
 
-		//untuk tgl lembur kemarin (saat diinput)
+		//untuk tgl lembur kemarin
 		if(strtotime($tanggal) < strtotime(date('Y-m-d'))){
 			$tim = $this->M_splseksi->getTim($noind,$tanggal);
 			if (!empty($tim) && count($tim) > 0) {
@@ -758,9 +758,16 @@ class C_splseksi extends CI_Controller {
 								$errortext = "Jam Awal Lembur Tidak Sesuai";
 							}
 						}elseif ($lembur == '002') { // lembur pulang
-							// FIXME : // let's see this code work or not
+							// TODO
 							if ($keluar_shift <= $awal_lembur && $awal_lembur <= $keluar_absen) {
-								$aktual_awal = $awal_lembur;
+								// awal lembur
+								if ($masuk_absen > $awal_lembur) {
+									$aktual_awal = $masuk_absen;
+								} else {
+									$aktual_awal = $awal_lembur;
+								}
+
+								// akhir lembur
 								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
 									$aktual_akhir = $akhir_lembur;
 								}elseif($akhir_lembur > $keluar_absen){
@@ -771,6 +778,7 @@ class C_splseksi extends CI_Controller {
 								}
 							}elseif($awal_lembur < $keluar_shift){
 								$aktual_awal = $keluar_shift;
+								
 								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
 									$aktual_akhir = $akhir_lembur;
 								}elseif($akhir_lembur > $keluar_absen){
@@ -858,11 +866,6 @@ class C_splseksi extends CI_Controller {
 							} elseif ($absensi->num_rows() == 0) {
 								$error = "1";
 								$errortext = "Tidak ada absen pada tanggal ".date('d-m-Y', strtotime($tanggal));
-								
-							// diilangi karena kalau aktual absen masuk > awal lembur masiih bisa input, dan masuk kondisi dibawah
-							// } else if( (strtotime($awal_lembur) < strtotime(date('Y-m-d', strtotime($absen[0]['tanggal']))." ".$absen[0]['waktu'])) ) {
-							// 	$error = "1";
-							// 	$errortext = "Jam lembur tidak sesuai, jam absen ({$absen[0]['waktu']} - {$absen[1]['waktu']})";
 							} else {	
 								$absenMasuk = date('Y-m-d', strtotime($absen[0]['tanggal']))." ".$absen[0]['waktu'];
 								$absenPulang = date('Y-m-d', strtotime($absen[1]['tanggal']))." ".$absen[1]['waktu'];
