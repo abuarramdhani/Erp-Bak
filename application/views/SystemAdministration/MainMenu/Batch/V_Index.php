@@ -180,6 +180,7 @@
             showHasil() {
                 this.disabled.textarea = this.showHasil
                 this.disabled.process = !this.showHasil
+                this.disabled.preview = this.showHasil
             },
             previewPerson() {
                 this.disabled.process = !this.previewPerson.length
@@ -274,7 +275,7 @@
                     method: 'POST',
                     success: res => {
                         if (res.success) {
-                            swal.fire(res.message, '', 'success').then(() => {
+                            swal.fire(res.message, 'silahkan melakukan pengecekan manual', 'success').then(() => {
                                 vm.reset()
                             })
                         } else {
