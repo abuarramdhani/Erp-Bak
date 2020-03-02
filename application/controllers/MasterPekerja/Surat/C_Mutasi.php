@@ -264,21 +264,32 @@ class C_Mutasi extends CI_Controller
 			$staf					 	=   $this->input->post('txtStatusStaf');
 			$edit					 	=   $this->input->post('txtStatusEdit');
 
-
 			$parameterTahun 	=	date('Y', strtotime($tanggal_cetak));
 			$parameterBulan 	=	date('m', strtotime($tanggal_cetak));
 
+			
+
+			if(empty($nomor_induk)){
+				$data['status'] = false;
+				echo json_encode($data);exit();
+			}else{
+				$data['status'] = true;
+			}
+
 
 			// print_r($lokasi_kerja_lama);exit();
+			if(!empty($lokasi_kerja_lama)):
 			$lokasi_kerja_lama 			=	explode(' - ', $lokasi_kerja_lama);
 			$lokasi_lama 				=	$lokasi_kerja_lama[1];
 			$kd_lokasi_lama 			=	$lokasi_kerja_lama[0];
+			endif;
 
+			if(!empty($lokasi_kerja_baru)):
 			$lokasi_kerja_baru 			=	explode(' - ', $lokasi_kerja_baru);
 			// print_r($lokasi_kerja_baru);
 			$lokasi_baru				=	$lokasi_kerja_baru[1];
 			$kd_lokasi_baru 			=	$lokasi_kerja_baru[0];
-
+			endif;
 			$nama_pekerjaan_lama 		=	'';
 			$nama_pekerjaan_baru 		=	'';
 
