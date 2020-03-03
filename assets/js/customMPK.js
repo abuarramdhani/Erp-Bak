@@ -1,6 +1,7 @@
 $(document).on('ifChecked', '#fingerYa', function(){
     // alert('oke');
   $('#fingerpindah').prop('hidden', false);
+  $("select[name='txtFingerGanti']").attr('required', 'required');
 });
 
 $(document).on('ifChecked', '#fingerTidak', function(){
@@ -921,6 +922,9 @@ $(function() {
         var kode_seksi = $(this).val();
         var kode_seksi = kode_seksi.substr(0, 7);
 
+        $("#rowmutasi .select2-selection").css('background-color','');
+        $("#validMutasi").hide()
+
         $('#MasterPekerja-DaftarPekerjaan').select2({
             allowClear: false,
             placeholder: "Pilih Pekerjaan",
@@ -1335,7 +1339,6 @@ $('#MasterPekerja-Surat-DaftarPekerja').change(function() {
             url: baseurl + "MasterPekerja/Surat/detail_pekerja",
             success: function(result) {
                 var result = JSON.parse(result);
-                console.log(result);
                 $('#MasterPekerja-txtKodesieLama').val(result['kodesie'] + ' - ' + result['posisi']);
                 $('#MasterPekerja-txtPekerjaanLama').val(result['kode_pekerjaan'] + ' - ' + result['nama_pekerjaan']);
                 $('#MasterPekerja-txtGolonganKerjaLama').val(result['golongan_pekerjaan']);
@@ -1434,6 +1437,27 @@ $('.MasterPekerja-Surat-DaftarPekerja').change(function() {
 
 $('#MasterPekerja-Surat-btnPreview').click(function() {
     // alert($('#MasterPekerja-txtLokasiKerjaLama').val());
+    let fingerakhir = $("select[name='txtFingerGanti']").val();
+    let tujuanmutasi = $("select[name='txtKodesieBaru']").val();
+    let golkerja = $("select[name='txtGolonganPekerjaanBaru']").val();
+
+    if(!tujuanmutasi){
+       Swal.fire('Oops!','Mohon lengkapi form!','warning')
+       $("#MasterPekerja-DaftarSeksi").focus();
+       $("#rowmutasi .select2-selection").css('background-color','rgba(255, 0, 0, 0.4)');
+       $("#validMutasi").show()
+       return;
+    }
+
+    const pindah = $('#fingerYa').iCheck('update')[0].checked;
+
+    if(pindah && !fingerakhir){
+      Swal.fire('Oops!','Mohon lengkapi form!','warning')
+      $("#rowfinger .select2-selection").css('background-color','rgba(255, 0, 0, 0.4)');
+      $("#validFinger").show();
+      return;
+    }
+
     $('#surat-loading').attr('hidden', false);
     $(document).ajaxStop(function() {
         $('#surat-loading').attr('hidden', true);
@@ -1442,18 +1466,25 @@ $('#MasterPekerja-Surat-btnPreview').click(function() {
         type: 'POST',
         data: $('#MasterPekerja-FormCreate').serialize(),
         url: baseurl + "MasterPekerja/Surat/SuratMutasi/prosesPreviewMutasi",
-        success: function(result) {
-            var result = JSON.parse(result);
-            console.log(result);
-
-            /*CKEDITOR.instances['MasterPekerja-Surat-txaPreview'].setData(result['preview']);*/
-            $('.MasterPekerja-Surat-txaPreview').redactor('set', result['preview']);
-            $('#MasterPekerja-Surat-txtNomorSurat').val(result['nomor_surat']);
-            $('#MasterPekerja-Surat-txtHalSurat').val(result['hal_surat']);
-            $('#MasterPekerja-Surat-txtKodeSurat').val(result['kode_surat']);
+        dataType: 'json',
+        success: function(result) {          
+            console.log("result :"+ result);
+            if(result['status']){              
+              /*CKEDITOR.instances['MasterPekerja-Surat-txaPreview'].setData(result['preview']);*/
+              $('.MasterPekerja-Surat-txaPreview').redactor('set', result['preview']);
+              $('#MasterPekerja-Surat-txtNomorSurat').val(result['nomor_surat']);
+              $('#MasterPekerja-Surat-txtHalSurat').val(result['hal_surat']);
+              $('#MasterPekerja-Surat-txtKodeSurat').val(result['kode_surat']);
+            }else{
+              $('#surat-loading').attr('hidden', true);
+              Swal.fire('Oops','Error!','error')              
+            }
+        },
+        error: (res) =>{
+          $('#surat-loading').attr('hidden', true);
+          Swal.fire('Oops','Error!','error')
         }
     });
-
 });
 
 $('#MasterPekerja-SuratDemosi-btnPreview').click(function() {

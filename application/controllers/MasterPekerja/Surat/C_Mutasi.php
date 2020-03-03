@@ -264,21 +264,49 @@ class C_Mutasi extends CI_Controller
 			$staf					 	=   $this->input->post('txtStatusStaf');
 			$edit					 	=   $this->input->post('txtStatusEdit');
 
-
 			$parameterTahun 	=	date('Y', strtotime($tanggal_cetak));
 			$parameterBulan 	=	date('m', strtotime($tanggal_cetak));
 
+			if($golongan_pekerjaan_baru == null){
+				$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
+			}
+
+			if(empty($pekerjaan_baru)){
+				$pekerjaan_baru = explode(' - ', $pekerjaan_lama)[0];
+			}
+
+			// var_dump($pekerjaan_baru);exit();
+
+			if(empty($nomor_induk)){
+				$data['status'] = false;
+				echo json_encode($data);exit();
+			}else{
+				$data['status'] = true;
+			}
+
+			if($kd_jabatan_baru == null){
+				$kd_jabatan_baru = explode(' - ', $kd_jabatan_lama)[0];
+				$jabatan_baru = $jabatan_lama;
+			}
+
 
 			// print_r($lokasi_kerja_lama);exit();
+			if(!empty($lokasi_kerja_lama)):
 			$lokasi_kerja_lama 			=	explode(' - ', $lokasi_kerja_lama);
 			$lokasi_lama 				=	$lokasi_kerja_lama[1];
 			$kd_lokasi_lama 			=	$lokasi_kerja_lama[0];
+			endif;
 
+			if(!empty($lokasi_kerja_baru)):
 			$lokasi_kerja_baru 			=	explode(' - ', $lokasi_kerja_baru);
 			// print_r($lokasi_kerja_baru);
 			$lokasi_baru				=	$lokasi_kerja_baru[1];
 			$kd_lokasi_baru 			=	$lokasi_kerja_baru[0];
+			else:
+			$lokasi_baru				=	$lokasi_lama;
+			$kd_lokasi_baru 			=	$kd_lokasi_lama;
 
+			endif;
 			$nama_pekerjaan_lama 		=	'';
 			$nama_pekerjaan_baru 		=	'';
 
@@ -485,8 +513,13 @@ class C_Mutasi extends CI_Controller
 			$tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 			$tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 			$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
-			if($pekerjaan_baru == null){
-				$pekerjaan_baru = $pekerjaan_lama;
+
+			if(empty($pekerjaan_baru)){
+				$pekerjaan_baru = explode(' - ', $pekerjaan_lama)[0];
+				$kd_pkj_baru	= explode(' - ', $pekerjaan_lama)[0];
+			}else{			
+				$pekerjaan_baru			   	=	explode(' - ', $pekerjaan_baru);
+				$kd_pkj_baru		      	=	$pekerjaan_baru[0];
 			}
 
 			$status_lama				= 	$this->input->post('txtStatusJabatanlama');
@@ -497,6 +530,11 @@ class C_Mutasi extends CI_Controller
 				$status_baru 			= 	explode(' - ', $status_baru);
 			}else{
 				$status_baru 			= 	explode(' - ', $status_lama);
+			}
+
+			if(empty($kd_jabatan_baru)){
+				$kd_jabatan_baru = explode(' - ', $kd_jabatan_lama)[0];
+				$jabatan_baru = $jabatan_lama;
 			}
 
 			$status_lama 				= 	explode(' - ', $status_lama);
@@ -527,18 +565,18 @@ class C_Mutasi extends CI_Controller
 			$nama 						=	$getNamaNoindBaru[0]['nama'];
 			$noind_baru 				=	$getNamaNoindBaru[0]['noind_baru'];
 
-			$lokasi_kerja_lama 			=	explode(' - ', $lokasi_kerja_lama);
-			$lokasi_kerja_baru 			=	explode(' - ', $lokasi_kerja_baru);
-
+			$lokasi_kerja_lama 			=	explode(' - ', $lokasi_kerja_lama);			
 			$lokasi_lama 				=	$lokasi_kerja_lama[0];
-			$lokasi_baru 				=	$lokasi_kerja_baru[0];
 
+			if(!empty($lokasi_kerja_baru)):
+			$lokasi_kerja_baru 			=	explode(' - ', $lokasi_kerja_baru);
+			$lokasi_baru 				=	$lokasi_kerja_baru[0];
+			else:
+			$lokasi_baru 				=	$lokasi_lama;
+			endif;
 
 			$pekerjaan_lama 			=	explode(' - ', $pekerjaan_lama);
 			$kd_pkj_lama		      	=	$pekerjaan_lama[0];
-
-			$pekerjaan_baru			   =	explode(' - ', $pekerjaan_baru);
-			$kd_pkj_baru		      	=	$pekerjaan_baru[0];
 
 			$inputSuratMutasi			= 	array
 			(
