@@ -3967,7 +3967,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function cek_cutoff_custom($noind,$tgl_keluar){
-		$sql = "select *
+		$sql = "select noind
 				from \"Presensi\".tcutoff_custom_terproses tcs
 				inner join \"Presensi\".tcutoff tc 
 				 	on to_char(tc.tanggal_awal,'yyyymm') = to_char(tcs.tanggal_proses,'yyyymm')
@@ -3975,7 +3975,16 @@ class M_pekerjakeluar extends CI_Model
 				 	and tc.os = '0'
 				where tcs.noind = '$noind'
 				and tcs.terakhir = '1'
-				and '$tgl_keluar'  between tc.tanggal_awal and tc.tanggal_akhir	";
+				and '$tgl_keluar'  between tc.tanggal_awal and tc.tanggal_akhir	
+				union				
+				select noind 
+				from \"Presensi\".tcutoff_custom_susulan tcs2 
+				inner join \"Presensi\".tcutoff tc2 
+				on to_char(tc2.tanggal_awal,'yyyymm') = to_char(tcs2.created_timestamp,'yyyymm')
+				 	and to_char(tc2.tanggal_akhir,'yyyymm') = tc2.periode
+				 	and tc2.os = '0'
+				where tcs2.noind ='$noind'
+				and '$tgl_keluar' between tc2.tanggal_awal and tc2.tanggal_akhir	";
 		return $this->personalia->query($sql)->num_rows();
 	}
 
