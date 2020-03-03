@@ -3846,7 +3846,7 @@ class M_pekerjakeluar extends CI_Model
 						case when (select t.tanggal_akhir from \"Presensi\".tcutoff t where to_char(a.tglkeluar,'yyyymm') = t.periode and os ='0') >= a.masukkerja then 
 							(
 								30 + 
-								(30 - extract (day from a.tglkeluar) - 1) +
+								(30 - extract(day from a.tglkeluar::date - interval '1 day')) +
 								(
 									select count(tanggal) as jml from
 									(
