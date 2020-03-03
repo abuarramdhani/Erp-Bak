@@ -23,7 +23,7 @@
 			</div>
 			<br />
 			<div class="row">
-			<form class="form-horizontal" method="post" action="<?php echo base_url('SalesMonitoring/salestarget/Updated')?>">
+			<form class="form-horizontal" method="post" action="<?php echo base_url('SalesMonitoring/salestarget/updated')?>">
 			<?php foreach($selected as $selected_item){ ?>
 				<input type="hidden" name="txt_sales_target_id" value="<?php echo $selected_item['sales_target_id'] ?>"></input>
 				<input type="hidden" name="txt_last_update_by" value="<?php echo $this->session->userid; ?>"></input>
