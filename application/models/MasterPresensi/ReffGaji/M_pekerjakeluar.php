@@ -446,8 +446,8 @@ class M_pekerjakeluar extends CI_Model
 								from \"Presensi\".tdatapresensi b
 								where b.noind = a.noind
 								and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
-							) 
+								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID' )
+							)
 						else
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then
@@ -457,7 +457,7 @@ class M_pekerjakeluar extends CI_Model
 											from \"Presensi\".tdatapresensi b
 											where b.noind = a.noind
 											and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-											and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+											and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID')
 										) -
 										(
 											select count(*)
@@ -466,18 +466,6 @@ class M_pekerjakeluar extends CI_Model
 											on tl.tanggal = dt.dt
 											where tl.tanggal is null 
 											and extract(isodow from dt.dt) != 7
-										) -
-										(
-											sELECT count(*) from \"Presensi\".TDataPresensi c
-											WHERE c.noind = a.noind
-											AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-											AND (
-													c.kd_ket = 'PSK' 
-													or c.kd_ket = 'PRM'
-													or c.kd_ket = 'PIP'
-													or left(c.kd_ket,1) = 'C'
-													or c.kd_ket = 'PCZ'
-												)
 										)
 									else
 	 									(
@@ -485,7 +473,7 @@ class M_pekerjakeluar extends CI_Model
 	 										from \"Presensi\".tdatapresensi b
 	 										where b.noind = a.noind
 	 										and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-	 										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+	 										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID')
 	 									)
 	 								end
 								else
@@ -494,20 +482,8 @@ class M_pekerjakeluar extends CI_Model
 										from \"Presensi\".tdatapresensi b
 										where b.noind = a.noind
 										and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
-									)  -
-									(
-										sELECT count(*) from \"Presensi\".TDataPresensi c
-										WHERE c.noind = a.noind
-										AND c.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date AND a.tglkeluar
-										AND (
-												c.kd_ket = 'PSK' 
-												or c.kd_ket = 'PRM'
-												or c.kd_ket = 'PIP'
-												or left(c.kd_ket,1) = 'C'
-												or c.kd_ket = 'PCZ'
-											)
-									)
+										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID' )
+									) 
 								end
 							else
 								(
@@ -515,25 +491,14 @@ class M_pekerjakeluar extends CI_Model
 									from \"Presensi\".tdatapresensi b
 									where b.noind = a.noind
 									and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID')
 								)  -
 								(select count(tanggal) as jml from
 								(
-									SELECT b.tanggal FROM \"Presensi\".TDataTIM b
-									WHERE b.noind = a.noind
-									AND b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-									AND (b.kd_ket = 'TM')
-									UNION
 									SELECT c.tanggal from \"Presensi\".TDataPresensi c
 									WHERE c.noind = a.noind
 									AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-									AND (
-											c.kd_ket = 'PSK' 
-											or c.kd_ket = 'PRM'
-											or c.kd_ket = 'PIP'
-											or left(c.kd_ket,1) = 'C'
-											or c.kd_ket = 'PCZ'
-										)
+									AND c.kd_ket in ('PKJ','PDL','PDB','PLB','PID' )
 									) as DERIVEDTBL
 								)
 							end
@@ -947,7 +912,7 @@ class M_pekerjakeluar extends CI_Model
 								from \"Presensi\".tdatapresensi b
 								where b.noind = a.noind
 								and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID')
 							) 
 						else
 							case when '$chk_khusus' = 'khusus' then
@@ -958,7 +923,7 @@ class M_pekerjakeluar extends CI_Model
 											from \"Presensi\".tdatapresensi b
 											where b.noind = a.noind
 											and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-											and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+											and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID' )
 										) -
 										(
 											select count(*)
@@ -967,18 +932,6 @@ class M_pekerjakeluar extends CI_Model
 											on tl.tanggal = dt.dt
 											where tl.tanggal is null 
 											and extract(isodow from dt.dt) != 7
-										) -
-										(
-											sELECT count(*) from \"Presensi\".TDataPresensi c
-											WHERE c.noind = a.noind
-											AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-											AND (
-													c.kd_ket = 'PSK' 
-													or c.kd_ket = 'PRM'
-													or c.kd_ket = 'PIP'
-													or left(c.kd_ket,1) = 'C'
-													or c.kd_ket = 'PCZ'
-												)
 										)
 									else
 	 									(
@@ -986,7 +939,7 @@ class M_pekerjakeluar extends CI_Model
 	 										from \"Presensi\".tdatapresensi b
 	 										where b.noind = a.noind
 	 										and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-	 										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+	 										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID' )
 	 									)
 	 								end
 								else
@@ -995,19 +948,7 @@ class M_pekerjakeluar extends CI_Model
 										from \"Presensi\".tdatapresensi b
 										where b.noind = a.noind
 										and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
-									)  -
-									(
-										sELECT count(*) from \"Presensi\".TDataPresensi c
-										WHERE c.noind = a.noind
-										AND c.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-										AND (
-												c.kd_ket = 'PSK' 
-												or c.kd_ket = 'PRM'
-												or c.kd_ket = 'PIP'
-												or left(c.kd_ket,1) = 'C'
-												or c.kd_ket = 'PCZ'
-											)
+										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID' )
 									)
 								end
 							else
@@ -1016,25 +957,14 @@ class M_pekerjakeluar extends CI_Model
 									from \"Presensi\".tdatapresensi b
 									where b.noind = a.noind
 									and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID' )
 								)  -
 								(select count(tanggal) as jml from
 									(
-										SELECT b.tanggal FROM \"Presensi\".TDataTIM b
-										WHERE b.noind = a.noind
-										AND b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-										AND (b.kd_ket = 'TM')
-										UNION
 										SELECT c.tanggal from \"Presensi\".TDataPresensi c
 										WHERE c.noind = a.noind
 										AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-										AND (
-												c.kd_ket = 'PSK' 
-												or c.kd_ket = 'PRM'
-												or c.kd_ket = 'PIP'
-												or left(c.kd_ket,1) = 'C'
-												or c.kd_ket = 'PCZ'
-											)
+										AND c.kd_ket in ('PKJ','PDL','PDB','PLB','PID' )
 									) as DERIVEDTBL
 								)
 							end
@@ -1309,7 +1239,7 @@ class M_pekerjakeluar extends CI_Model
 									from \"Presensi\".tdatapresensi b
 									where b.noind = a.noind
 									and b.tanggal between '$awal'::date and a.tglkeluar
-									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID')
 								) -
 								(
 									select count(*)
@@ -1338,7 +1268,7 @@ class M_pekerjakeluar extends CI_Model
 									from \"Presensi\".tdatapresensi b
 									where b.noind = a.noind
 									and b.tanggal between '$awal'::date and a.tglkeluar
-									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID')
 								)
 							end 
 						else
@@ -1347,7 +1277,7 @@ class M_pekerjakeluar extends CI_Model
 								from \"Presensi\".tdatapresensi b
 								where b.noind = a.noind
 								and b.tanggal between '$awal'::date and a.tglkeluar
-								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID' )
 							) -
 							(
 								select count(*)
