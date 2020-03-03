@@ -2410,7 +2410,15 @@ class M_pekerjakeluar extends CI_Model
 
 	public function get_sisa_cuti($noind,$akhir){
 		$nilai = 0;
-		$sql = "select sisa_cuti as jml from \"Presensi\".tdatacuti
+		$sql = "select (
+						t.jml_cuti - 
+						(select count(*)
+						from \"Presensi\".tdatapresensi t2 
+						where t2.noind = t.noind 
+						and t2.tanggal between t.tgl_boleh_ambil and '$akhir'
+						and trim(t2.kd_ket) in ('CT','CB'))
+					) as jml 
+				from \"Presensi\".tdatacuti t
 				where periode = extract(year from '$akhir'::date)::varchar
 				and noind = '$noind' and tgl_boleh_ambil <= '$akhir'::timestamp";
 		$result2 = $this->personalia->query($sql)->result_array();
