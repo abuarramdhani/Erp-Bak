@@ -3602,7 +3602,7 @@ class M_pekerjakeluar extends CI_Model
 		}else{
 			$sql = "select noind,
 					case when to_char(a.masukkerja ,'yyyy-mm') = to_char(a.tglkeluar ,'yyyy-mm') then
-						case when (select t.tanggal_akhir from \"Presensi\".tcutoff t where to_char(a.tglkeluar,'yyyymm') = t.periode and os ='0') > a.masukkerja then 
+						case when (select t.tanggal_akhir from \"Presensi\".tcutoff t where to_char(a.tglkeluar,'yyyymm') = t.periode and os ='0') >= a.masukkerja then 
 							(
 								30 - 
 								(
@@ -3843,7 +3843,7 @@ class M_pekerjakeluar extends CI_Model
 		}else{
 			$sql = "select noind,
 					case when to_char(a.masukkerja ,'yyyy-mm') = to_char(a.tglkeluar ,'yyyy-mm') then
-						case when (select t.tanggal_akhir from \"Presensi\".tcutoff t where to_char(a.tglkeluar,'yyyymm') = t.periode and os ='0') > a.masukkerja then 
+						case when (select t.tanggal_akhir from \"Presensi\".tcutoff t where to_char(a.tglkeluar,'yyyymm') = t.periode and os ='0') >= a.masukkerja then 
 							(
 								30 + 
 								(30 - extract (day from a.tglkeluar) - 1) +
