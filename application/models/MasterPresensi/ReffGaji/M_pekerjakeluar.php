@@ -770,7 +770,7 @@ class M_pekerjakeluar extends CI_Model
 								from \"Presensi\".tdatapresensi b
 								where b.noind = a.noind
 								and b.tanggal between '$awal'::date and a.tglkeluar
-								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID')
 							) as total
 					from hrd_khs.tpribadi a
 					where a.noind = '$noind'";
