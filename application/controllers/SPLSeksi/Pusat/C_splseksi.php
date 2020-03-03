@@ -1087,20 +1087,20 @@ class C_splseksi extends CI_Controller {
 
 			$allShift = $this->M_splseksi->selectAllShift($tanggal);
 
-			//cek kevalidan istirahat & break
+			// cek kevalidan istirahat & break
 			if(!empty($allShift)){
-				if ($istirahat == '1') { //jika pekerja memilih istirahat
+				if ($istirahat == '1') { // jika pekerja memilih istirahat
 					$distinct_start = [];
 
 					foreach($allShift as $shift){
-						$rest_start = strtotime($shift['ist_mulai']);
-						$rest_end   = strtotime($shift['ist_selesai']);
+						$rest_start = (strtotime($shift['ist_mulai']) < strtotime($mulai)) ? strtotime("+1 day", strtotime($shift['ist_mulai'])) : strtotime($shift['ist_mulai']);
+						$rest_end   = (strtotime($shift['ist_selesai']) < strtotime($selesai)) ? strtotime("+1 day", strtotime($shift['ist_selesai'])) : strtotime($shift['ist_selesai']);
 
 						if($rest_start == $rest_end){
 							continue;
 						}
 
-						//biar jam break tidak terdouble
+						// biar jam break tidak terdouble
 						if(in_array($rest_start, $distinct_start)){
 							continue;
 						}else{
@@ -1108,31 +1108,32 @@ class C_splseksi extends CI_Controller {
 						}
 
 						$overtime_start = strtotime($mulai);
-						$overtime_end   = strtotime($selesai);
+						$overtime_end   = (strtotime($selesai) < strtotime($mulai)) ? strtotime("+1 day", strtotime($selesai)) : strtotime($selesai);
 
 						if ($rest_start >= $overtime_start && $rest_end < $overtime_end) { // jika jam istirahat masuk range lembur
-							//jika ditemukan istirahat,
+							// jika ditemukan istirahat,
 							$istirahat = '1';
 							break;
 						}else{
-							$istirahat = '2'; //jika tidak ditemukan istirahat
+							// jika tidak ditemukan istirahat
+							$istirahat = '2'; 
 						}
 					}
 				}
-				
-				if ($break == '1') { //jika pekerja memilih istirahat
+
+				if ($break == '1') { // jika pekerja memilih istirahat
 					$distinct_start = [];
 
 					foreach($allShift as $shift){
-						$break_start = strtotime($shift['break_mulai']);
-						$break_end   = strtotime($shift['break_selesai']);
+						$break_start = (strtotime($shift['break_mulai']) < strtotime($mulai)) ? strtotime("+1 day ".$shift['break_mulai']) : strtotime($shift['break_mulai']);
+						$break_end   = (strtotime($shift['break_selesai']) < strtotime($selesai)) ? strtotime("+1 day ".$shift['break_selesai']) : strtotime($shift['break_selesai']);
 
-						//jika tidak ada istirahat, lewati
+						// jika tidak ada istirahat, lewati
 						if($break_start == $break_end){
 							continue;
 						}
 
-						//biar jam break tidak terdouble
+						// biar jam break tidak terdouble
 						if(in_array($break_start, $distinct_start)){
 							continue;
 						}else{
@@ -1140,14 +1141,15 @@ class C_splseksi extends CI_Controller {
 						}
 
 						$overtime_start = strtotime($mulai);
-						$overtime_end   = strtotime($selesai);
-					
+						$overtime_end   = (strtotime($selesai) < strtotime($mulai)) ? strtotime("+1 day", strtotime($selesai)) : strtotime($selesai);
+
 						if ($break_start >= $overtime_start && $break_end < $overtime_end) { // jika jam istirahat masuk range lembur
 							// jika ditemukan break, do nothing
 							$break = '1';
 							break;
 						}else{
-							$break = '2'; //jika tdk ditemukan break
+							// jika tdk ditemukan break
+							$break = '2'; 
 						}
 					}
 				}
