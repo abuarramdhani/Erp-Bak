@@ -6750,7 +6750,7 @@ class M_pekerjakeluar extends CI_Model
 				from hr.hr_lelayu hl 
 				inner join hr.hr_pekerja_dipotong hpd 
 				on hl.lelayu_id = hpd.lelayu_id
-				where hl.tgl_lelayu => '$tgl_awal'
+				where hl.tgl_lelayu >= '$tgl_awal'
 				and hpd.noind = '$noind'
 				group by hpd.noind";
 		$result = $this->db->query($sql)->row();
