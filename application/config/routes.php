@@ -1531,6 +1531,10 @@ $route['GeneralAffair/FleetServiceKendaraan/(:any)/(:any)'] = 'GeneralAffair/Mai
 $route['GeneralAffair/FleetMonitoringServiceKendaraan'] = 'GeneralAffair/MainMenu/C_FleetMonitoringServiceKendaraan';
 $route['GeneralAffair/FleetMonitoringServiceKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMonitoringServiceKendaraan/$1';
 $route['GeneralAffair/FleetMonitoringServiceKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMonitoringServiceKendaraan/$1/$2';
+
+$route['GeneralAffair/PemesananShutle'] = 'GeneralAffair/MainMenu/C_PesanShutleDinas';
+$route['GeneralAffair/PemesananShutle/(:any)'] = 'GeneralAffair/MainMenu/C_PesanShutleDinas/$1';
+$route['GeneralAffair/PemesananShutle/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_PesanShutleDinas/$1/$2';
 //------------------------------------ Aplikasi Toolroom ----------------------------
 $route['Toolroom'] = 'Toolroom/C_Index';
 $route['Toolroom/MasterItem'] = 'Toolroom/MainMenu/C_MasterItem';
@@ -2747,8 +2751,8 @@ $route['MasterPekerja/SetupPekerjaan/(:any)'] = 'MasterPekerja/SetupPekerjaan/C_
 $route['MasterPekerja/SetupPekerjaan/(:any)/(:any)'] = 'MasterPekerja/SetupPekerjaan/C_Index/$1/$2';
 
 //---------------------------------------------- Setting Seksi ---------------------------------------//
-$route['MasterPekerja/Setting/(:any)'] = 'MasterPekerja/Setting/C_MP_Setting/$1';	
-$route['MasterPekerja/Setting/(:any)/(:any)'] = 'MasterPekerja/Setting/C_MP_Setting/$1/$2';	
+$route['MasterPekerja/Setting/(:any)'] = 'MasterPekerja/Setting/C_MP_Setting/$1';
+$route['MasterPekerja/Setting/(:any)/(:any)'] = 'MasterPekerja/Setting/C_MP_Setting/$1/$2';
 
 //----------------MonitoringPembelian------------------
  $route['MonitoringPembelian'] = 'MonitoringPembelian/C_Index/index';
