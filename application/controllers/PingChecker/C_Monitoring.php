@@ -54,33 +54,33 @@ class C_Monitoring extends CI_Controller {
         $ticket = $this->input->post('ticketIPM');
         $noind = $this->session->user;
         
-        if($ip == '172.16.100.93') {
+		if($ip == '172.16.100.94') {
             $link = 'IconPlus PUSAT-BANJARMASIN';
-        }else if($ip == '172.16.100.25') {
+        }else if($ip == '172.16.100.26') {
             $link = 'IconPlus PUSAT-JAKARTA';
-        }else if($ip == '172.16.100.13') {
+        }else if($ip == '172.16.100.14') {
             $link = 'IconPlus PUSAT-LAMPUNG';
-        }else if($ip == '172.16.100.61') {
+        }else if($ip == '172.16.100.62') {
             $link = 'IconPlus PUSAT-LANGKAPURA';
-        }else if($ip == '172.16.100.29') {
+        }else if($ip == '172.16.100.30') {
             $link = 'IconPlus PUSAT-MAKASSAR';
-        }else if($ip == '172.16.100.17') {
+        }else if($ip == '172.16.100.18') {
             $link = 'IconPlus PUSAT-MEDAN';
-        }else if($ip == '172.16.100.21') {
+        }else if($ip == '172.16.100.22') {
             $link = 'IconPlus PUSAT-MLATI';
-        }else if($ip == '172.16.100.101') {
+        }else if($ip == '172.16.100.102') {
             $link = 'IconPlus PUSAT-PALU';
-        }else if($ip == '172.16.100.89') {
+        }else if($ip == '172.16.100.90') {
             $link = 'IconPlus PUSAT-PEKANBARU';
-        }else if($ip == '172.16.100.49') {
+        }else if($ip == '172.16.100.50') {
             $link = 'IconPlus PUSAT-PONTIANAK';
-        }else if($ip == '172.16.100.9') {
+        }else if($ip == '172.16.100.10') {
             $link = 'IconPlus PUSAT-SURABAYA';
-        }else if($ip == '172.16.100.5') {
+        }else if($ip == '172.16.100.6') {
             $link = 'IconPlus PUSAT-TUKSONO';
-        }else if($ip == '172.18.22.1') {
+		}else if($ip == '172.18.22.2') {
             $link = 'LDP PUSAT-TUKSONO';
-		}else if($ip == '192.168.38.25') {
+        }else if($ip == '192.168.38.25') {
             $link = 'TUKSONO PNP';
         }else if($ip == '192.168.38.11') {
             $link = 'TUKSONO SHEET METAL';
