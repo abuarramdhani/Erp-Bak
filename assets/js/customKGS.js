@@ -576,7 +576,7 @@ function btnPackingSPB(no) {
             $('#mulai'+no).val(wkt); 
             $(this).removeClass('btn-success').addClass('btn-danger');
             $('#pic'+no).prop("disabled", true); 
-            $('#btnPack'+no).css('display', '');
+            // $('#btnPack'+no).css('display', '');
 
             if (!timer) {
                 timer = setInterval(setTime, 1000);
@@ -590,85 +590,119 @@ function btnPackingSPB(no) {
             });
         
     }else if(valBtn == 'Selesai'){
-            $('#btnPacking'+no).attr("disabled", "disabled"); 
-            $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
-            var mulai  = $('#mulai'+no).val();
-            $('#timer'+no).css('display','none');     
-            $('#btnPack'+no).attr("disabled", "disabled"); 
+            // $('#btnPacking'+no).attr("disabled", "disabled"); 
+            // $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+            // var mulai  = $('#mulai'+no).val();
+            // $('#timer'+no).css('display','none');     
+            // $('#btnPack'+no).attr("disabled", "disabled"); 
                    
-            $.ajax ({
-            url : baseurl + "KapasitasGdSparepart/Packing/updateSelesai",
-            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+            // $.ajax ({
+            // url : baseurl + "KapasitasGdSparepart/Packing/updateSelesai",
+            // data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+            // type : "POST",
+            // dataType: "html"
+            // });
+
+            var mulai  = $('#mulai'+no).val();   
+                   
+            var request = $.ajax ({
+            url : baseurl + "KapasitasGdSparepart/Packing/modalColly2",
+            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, no : no},
             type : "POST",
             dataType: "html"
             });
-
-        //     var mulai  = $('#mulai'+no).val();   
-                   
-        //     var request = $.ajax ({
-        //     url : baseurl + "KapasitasGdSparepart/Packing/modalColly",
-        //     data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, no : no},
-        //     type : "POST",
-        //     dataType: "html"
-        //     });
-        //     request.done(function(result){
-        //         $('#datahidden').html(result);
-        //         $('#mdlcolly').modal({
-        //             backdrop: 'static',
-        //             keyboard: true, 
-        //             show: true
-        //     }); 
-        // });
+            request.done(function(result){
+                // console.log(result);
+                $('#datacolly').html(result);
+                $('#mdlcolly2').modal('show'); 
+        });
     }
 }
 
-function modalPacking(no) {
-    var jenis  = $('#jenis'+no).val();
-    var no_spb = $('#nodoc'+no).val();
-    var pic = $('#pic'+no).val();
-    var d    = new Date();
-    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var mulai  = $('#mulai'+no).val();  
+// function modalPacking(no) {
+//     var jenis  = $('#jenis'+no).val();
+//     var no_spb = $('#nodoc'+no).val();
+//     var pic = $('#pic'+no).val();
+//     var d    = new Date();
+//     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+//     var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+//     var mulai  = $('#mulai'+no).val();  
     
-    var request = $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Packing/modalColly",
-        data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, no : no},
+//     var request = $.ajax ({
+//         url : baseurl + "KapasitasGdSparepart/Packing/modalColly",
+//         data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, no : no},
+//         type : "POST",
+//         dataType: "html"
+//         });
+//         request.done(function(result){
+//             $('#datahidden').html(result);
+//             $('#mdlcolly').modal('show');
+//     });
+// }
+
+// function savePacking(th) {
+//     var no_spb       = $('#no_spb').val();
+//     var jenis_kemasan    = $('#jenis_kemasan').val();   
+//     var berat        = $('#berat').val();   
+//     var no           = $('#no').val();   
+    
+//     if (berat == '' || jenis_kemasan == '') {
+//         $('#peringatan').html('Mohon Isi Konfirmasi Packing!!');
+//     }else{
+//         // $('#peringatan').html('Sudah save');
+//         $.ajax ({
+//             url : baseurl + "KapasitasGdSparepart/Packing/saveberatPacking",
+//             data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat},
+//             type : "POST",
+//             dataType: "html",
+//             success: function(data){
+//                 $("#mdlcolly").modal("hide");
+//                 $('#berat').val('');
+//                 $('#jenis_kemasan').select2("val", "");
+//                 $('#peringatan').html('');
+//                 // $('#btnPacking'+no).attr("disabled", "disabled"); 
+//                 // $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+//                 // $('#timer'+no).css('display','none');
+//             }
+//         });  
+//     }
+// }
+
+function saveBeratPack(no) {
+    var no_spb       = $('#no_spb'+no).val();
+    var jenis_kemasan  = $('#jenis_kemasan'+no).val();   
+    var berat        = $('#berat'+no).val();   
+    console.log(no_spb);
+    $.ajax ({
+        url : baseurl + "KapasitasGdSparepart/Packing/saveberatPacking",
+        data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat},
         type : "POST",
         dataType: "html"
-        });
-        request.done(function(result){
-            $('#datahidden').html(result);
-            $('#mdlcolly').modal('show');
     });
 }
 
-function savePacking(th) {
-    var no_spb       = $('#no_spb').val();
-    var jenis_kemasan    = $('#jenis_kemasan').val();   
-    var berat        = $('#berat').val();   
-    var no           = $('#no').val();   
+function selesaipacking(th) {
+    var jenis  = $('#jenis').val();
+    var no_spb = $('#no_spb').val();
+    var pic = $('#pic').val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var mulai  = $('#mulai').val();  
+    var no  = $('#no').val();  
     
-    if (berat == '' || jenis_kemasan == '') {
-        $('#peringatan').html('Mohon Isi Konfirmasi Packing!!');
-    }else{
-        // $('#peringatan').html('Sudah save');
-        $.ajax ({
-            url : baseurl + "KapasitasGdSparepart/Packing/saveberatPacking",
-            data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat},
-            type : "POST",
-            dataType: "html",
-            success: function(data){
-                $("#mdlcolly").modal("hide");
-                $('#berat').val('');
-                $('#jenis_kemasan').select2("val", "");
-                $('#peringatan').html('');
-                // $('#btnPacking'+no).attr("disabled", "disabled"); 
-                // $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
-                // $('#timer'+no).css('display','none');
-            }
-        });  
-    }
+    $.ajax ({
+        url : baseurl + "KapasitasGdSparepart/Packing/updateSelesai",
+        data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, no : no},
+        type : "POST",
+        dataType: "html",
+        success: function(data){
+            $('#btnPacking'+no).attr("disabled", "disabled"); 
+            $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+            $('#timer'+no).css('display','none');  
+            $('#mdlcolly2').modal('hide'); 
+        }
+        });
 }
 
 function btnRestartPacking(no) {

@@ -104,11 +104,11 @@
                                                             <?php if (!empty($val['MULAI_PACKING']) && empty($val['WAKTU_PACKING'])) { ?>
                                                                 <p id="timer<?= $no?>" style="">Mulai <?= $val['MULAI_PACKING']?></p>
                                                                 <input type="button" class="btn btn-md btn-danger" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Selesai"><br>
-                                                                <button type="button" id="btnPack<?= $no?>" class="btn btn-warning" onclick="modalPacking(<?= $no?>)" style="margin-top:7px">Pack</button>
+                                                                <!-- <button type="button" id="btnPack<?= $no?>" class="btn btn-warning" onclick="modalPacking(<?= $no?>)" style="margin-top:7px">Pack</button> -->
                                                             <?php }else{?>
                                                                 <p id="timer<?= $no?>" style=""><label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label></p>
                                                                 <input type="button" class="btn btn-md btn-success" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Mulai"><br>
-                                                                <button type="button" id="btnPack<?= $no?>" class="btn btn-warning" style="display:none;margin-top:7px" onclick="modalPacking(<?= $no?>)">Pack</button>
+                                                                <!-- <button type="button" id="btnPack<?= $no?>" class="btn btn-warning" style="display:none;margin-top:7px" onclick="modalPacking(<?= $no?>)">Pack</button> -->
                                                             <?php }?><br>
                                                             <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPacking(<?= $no?>)" style="margin-top:7px"><i class="fa fa-refresh"></i></button>
                                                             <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePacking(<?= $no?>)" style="margin-top:7px"><i class="fa fa-pause"></i></button>
@@ -176,7 +176,30 @@
 </section>
 
 
-<div class="modal fade" id="mdlcolly" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
+<div class="modal fade" id="mdlcolly2" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 style="text-align:center">Konfirmasi Packing</h3>
+            <!-- <div id="datahidden"></div> -->
+			</div>
+			<div class="modal-body">
+            <div id="datacolly"></div>
+            <span>*Save jika packing susah benar-benar selesai.</span>
+            <div class="panel-body">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-danger" onclick="selesaipacking(this)">SAVE</button>
+                </div>
+            </div>
+		    </div>
+            <div class="modal-footer">
+		</div>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="modal fade" id="mdlcolly" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -220,4 +243,4 @@
 		</div>
 		</div>
 	</div>
-</div>
+</div> -->
