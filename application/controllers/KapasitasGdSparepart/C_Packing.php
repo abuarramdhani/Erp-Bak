@@ -219,9 +219,6 @@ class C_Packing extends CI_Controller
 						</tr>';
 						$no++;
 			}
-			if (count($cek) < 10) {
-				$jml = 10 - count($cek);
-				for ($i=0; $i < $jml ; $i++) { 
 					$tr .= '<tr>
 								<td>'.$no.'</td>
 								<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
@@ -237,11 +234,8 @@ class C_Packing extends CI_Controller
 								<input type="hidden" id="no_spb'.$no.'" value="'.$nospb.'"></td>
 							</tr>';
 				$no++;
-				}
-			}
 		}else {
 			$no = 1;
-			for ($i=0; $i < 10; $i++) { 
 				$tr .= '<tr>
 							<td>'.$no.'</td>
 							<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
@@ -257,7 +251,6 @@ class C_Packing extends CI_Controller
 							<input type="hidden" id="no_spb'.$no.'" value="'.$nospb.'"></td>
 						</tr>';
 			$no++;
-			}
 		}
 		$tbl = '<div class="table-responsive">
 			<table class="table table-stripped table-hovered text-center" style="width:100%">
@@ -268,7 +261,7 @@ class C_Packing extends CI_Controller
 						<td>Berat (KG)</td>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="tambahbrt">
 					'.$tr.'
 				</tbody>
 			</table>

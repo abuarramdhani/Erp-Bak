@@ -672,12 +672,18 @@ function saveBeratPack(no) {
     var no_spb       = $('#no_spb'+no).val();
     var jenis_kemasan  = $('#jenis_kemasan'+no).val();   
     var berat        = $('#berat'+no).val();   
-    console.log(no_spb);
+    var nomor = no + 1;
+    // console.log(no_spb);
     $.ajax ({
         url : baseurl + "KapasitasGdSparepart/Packing/saveberatPacking",
         data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat},
         type : "POST",
-        dataType: "html"
+        dataType: "html",
+        success: function(data){
+            $('#tambahbrt').append('<tr><td>'+nomor+'</td><td><select class="form-control select2" id="jenis_kemasan'+nomor+'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan"><option></option><option value="1">KARDUS KECIL</option><option value="2">KARDUS SEDANG</option><option value="3">KARDUS PANJANG</option><option value="4">KARUNG</option><option value="5">PETI</option></select></td><td><input type="text" class="form-control" id="berat'+nomor+'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('+nomor+')"><input type="hidden" id="no_spb'+nomor+'" value="'+no_spb+'"></td></tr>');
+            $('#jenis_kemasan'+no).attr("disabled", "disabled"); 
+            $('#berat'+no).attr("disabled", "disabled"); 
+        }
     });
 }
 
