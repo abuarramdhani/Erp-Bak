@@ -506,6 +506,7 @@ class C_Monitoring extends CI_Controller
 			$dus_sdg 	= array();
 			$dus_pjg 	= array();
 			$karung 	= array();
+			$peti	 	= array();
 			$cekcolly = $this->M_monitoring->getDataColly($no_pck[$i]);
 			if (!empty($cekcolly)) {
 				foreach ($cekcolly as $val) {
@@ -517,6 +518,8 @@ class C_Monitoring extends CI_Controller
 						array_push($dus_pjg, $val['nomor_do']);
 					}elseif ($val['kode_packing'] == 4) {
 						array_push($karung, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 5) {
+						array_push($peti, $val['nomor_do']);
 					}
 				}
 				$array = array(
@@ -525,6 +528,7 @@ class C_Monitoring extends CI_Controller
 					'dus_sdg' => count($dus_sdg),
 					'dus_pjg' => count($dus_pjg),
 					'karung' => count($karung),
+					'peti' => count($peti),
 				);
 				array_push($data_colly, $array);
 			}
@@ -1123,6 +1127,7 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue("O$noPck", "KARDUS SEDANG");
 			$excel->setActiveSheetIndex(0)->setCellValue("P$noPck", "KARDUS PANJANG");
 			$excel->setActiveSheetIndex(0)->setCellValue("Q$noPck", "KARUNG");
+			$excel->setActiveSheetIndex(0)->setCellValue("R$noPck", "PETI");
 			$excel->getActiveSheet()->getStyle("A$pck")->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle("A$noPck")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("B$noPck")->applyFromArray($style_col);
@@ -1141,6 +1146,7 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->getStyle("O$noPck")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("P$noPck")->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle("Q$noPck")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("R$noPck")->applyFromArray($style_col);
 
 			if (count($dataPck) == 0){
 				$numrow = $noPck + 1;
@@ -1171,6 +1177,7 @@ class C_Monitoring extends CI_Controller
 									$excel->setActiveSheetIndex(0)->setCellValue('O'.$numrow, $dc['dus_sdg']);
 									$excel->setActiveSheetIndex(0)->setCellValue('P'.$numrow, $dc['dus_pjg']);
 									$excel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, $dc['karung']);
+									$excel->setActiveSheetIndex(0)->setCellValue('R'.$numrow, $dc['peti']);
 								}
 							}
 						}
@@ -1192,6 +1199,7 @@ class C_Monitoring extends CI_Controller
 						$excel->getActiveSheet()->getStyle('O'.$numrow)->applyFromArray($style2);
 						$excel->getActiveSheet()->getStyle('P'.$numrow)->applyFromArray($style2);
 						$excel->getActiveSheet()->getStyle('Q'.$numrow)->applyFromArray($style2);
+						$excel->getActiveSheet()->getStyle('R'.$numrow)->applyFromArray($style2);
 					$numrow++;
 					$no++; 
 					}
@@ -1572,6 +1580,7 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->getColumnDimension('O')->setWidth(13);
 			$excel->getActiveSheet()->getColumnDimension('P')->setWidth(13);
 			$excel->getActiveSheet()->getColumnDimension('Q')->setWidth(13);
+			$excel->getActiveSheet()->getColumnDimension('R')->setWidth(13);
 
 			// Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
 			$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);

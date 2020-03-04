@@ -154,30 +154,132 @@ class C_Packing extends CI_Controller
 		$this->M_packing->waktuPacking($nospb, $jenis, $slsh);
 	}
 
-	public function modalColly(){
+	// public function modalColly(){
+	// 	$date 	= $this->input->post('date');
+	// 	$jenis	= $this->input->post('jenis');
+	// 	$nospb 	= $this->input->post('no_spb');
+	// 	$mulai 	= $this->input->post('mulai');
+	// 	$selesai = $this->input->post('wkt');
+	// 	$pic 	= $this->input->post('pic');
+	// 	$no 	= $this->input->post('no');
+
+	// 	$cek = $this->M_packing->cekPacking($nospb);
+	// 	if (empty($cek)) {
+	// 		$tbl = '<h3 style="text-align:center">Konfirmasi Packing Ke-1</h3>';
+	// 	}else {
+	// 		$jml = count($cek) + 1;
+	// 		$tbl = '<h3 style="text-align:center">Konfirmasi Packing Ke-'.$jml.'</h3>';
+	// 	}
+
+	// 	$tbl .= '<input type="hidden" id="date" value="'.$date.'">
+	// 	<input type="hidden" id="jenis" value="'.$jenis.'">
+	// 	<input type="hidden" id="no_spb" value="'.$nospb.'">
+	// 	<input type="hidden" id="mulai" value="'.$mulai.'">
+	// 	<input type="hidden" id="selesai" value="'.$selesai.'">
+	// 	<input type="hidden" id="pic" value="'.$pic.'">
+	// 	<input type="hidden" id="no" value="'.$no.'">';
+
+	// 	echo $tbl;
+	// }
+
+	public function modalColly2(){
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');
 		$nospb 	= $this->input->post('no_spb');
 		$mulai 	= $this->input->post('mulai');
 		$selesai = $this->input->post('wkt');
 		$pic 	= $this->input->post('pic');
-		$no 	= $this->input->post('no');
+		$nomor 	= $this->input->post('no');
 
 		$cek = $this->M_packing->cekPacking($nospb);
-		if (empty($cek)) {
-			$tbl = '<h3 style="text-align:center">Konfirmasi Packing Ke-1</h3>';
+		// echo "<pre>";print_r($cek);exit();
+		$tr = '';
+		
+		if (!empty($cek)) {
+			$no = 1;
+			foreach ($cek as $val) {
+				if ($val['kode_packing'] == 1) {
+					$kemasan = 'KARDUS KECIL';
+				}elseif ($val['kode_packing'] == 2) {
+					$kemasan = 'KARDUS SEDANG';
+				}elseif ($val['kode_packing'] == 3) {
+					$kemasan = 'KARDUS PANJANG';
+				}elseif ($val['kode_packing'] == 4) {
+					$kemasan = 'KARUNG';
+				}elseif ($val['kode_packing'] == 5) {
+					$kemasan = 'PETI';
+				}
+				$tr .= '<tr>
+							<td>'.$no.'</td>
+							<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan" readonly>
+								<option>'.$kemasan.'</option>
+								</select>
+							</td>
+							<td><input type="text" class="form-control" id="berat'.$no.'" name="berat" value="'.$val['berat'].'" readonly></td>
+						</tr>';
+						$no++;
+			}
+			if (count($cek) < 10) {
+				$jml = 10 - count($cek);
+				for ($i=0; $i < $jml ; $i++) { 
+					$tr .= '<tr>
+								<td>'.$no.'</td>
+								<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
+									<option></option>
+									<option value="1">KARDUS KECIL</option>
+									<option value="2">KARDUS SEDANG</option>
+									<option value="3">KARDUS PANJANG</option>
+									<option value="4">KARUNG</option>
+									<option value="5">PETI</option>
+									</select>
+								</td>
+								<td><input type="text" class="form-control" id="berat'.$no.'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('.$no.')">
+								<input type="hidden" id="no_spb'.$no.'" value="'.$nospb.'"></td>
+							</tr>';
+				$no++;
+				}
+			}
 		}else {
-			$jml = count($cek) + 1;
-			$tbl = '<h3 style="text-align:center">Konfirmasi Packing Ke-'.$jml.'</h3>';
+			$no = 1;
+			for ($i=0; $i < 10; $i++) { 
+				$tr .= '<tr>
+							<td>'.$no.'</td>
+							<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
+								<option></option>
+								<option value="1">KARDUS KECIL</option>
+								<option value="2">KARDUS SEDANG</option>
+								<option value="3">KARDUS PANJANG</option>
+								<option value="4">KARUNG</option>
+								<option value="5">PETI</option>
+								</select>
+							</td>
+							<td><input type="text" class="form-control" id="berat'.$no.'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('.$no.')">
+							<input type="hidden" id="no_spb'.$no.'" value="'.$nospb.'"></td>
+						</tr>';
+			$no++;
+			}
 		}
-
-		$tbl .= '<input type="hidden" id="date" value="'.$date.'">
+		$tbl = '<div class="table-responsive">
+			<table class="table table-stripped table-hovered text-center" style="width:100%">
+				<thead>
+					<tr>
+						<td>No</td>
+						<td>Jenis Kemasan</td>
+						<td>Berat (KG)</td>
+					</tr>
+				</thead>
+				<tbody>
+					'.$tr.'
+				</tbody>
+			</table>
+		</div>
+		<input type="hidden" id="date" value="'.$date.'">
 		<input type="hidden" id="jenis" value="'.$jenis.'">
 		<input type="hidden" id="no_spb" value="'.$nospb.'">
 		<input type="hidden" id="mulai" value="'.$mulai.'">
 		<input type="hidden" id="selesai" value="'.$selesai.'">
 		<input type="hidden" id="pic" value="'.$pic.'">
-		<input type="hidden" id="no" value="'.$no.'">';
+		<input type="hidden" id="no" value="'.$nomor.'">';
 
 		echo $tbl;
 	}
