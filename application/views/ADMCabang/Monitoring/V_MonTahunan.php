@@ -281,7 +281,6 @@
 		$('.datepicker').datepicker({
 		    autoclose: true,
             format: " yyyy",
-            viewMode: "years",
             minViewMode: "years"
            });
 
@@ -409,12 +408,12 @@
 				$("input#daterangepicker").focus()
 				Swal.fire('Oops!','Periode Wajib diisi!','warning')
 			}else{
-				$('#cover-spin').fadeIn();
 				getDataTahunan(periodeAwal,statusKerja,unitKerja,seksiKerja)
 			}	
 		})
 
 		function getDataTahunan(periodeAwal,statusKerja,unitKerja,seksiKerja){
+			$('#cover-spin').fadeIn();
 			$.ajax({
 					url: '<?php echo base_url(''); ?>AdmCabang/Monitoring/getMonTahunan',
 					type: 'POST',
@@ -423,6 +422,9 @@
 					success: function(res){
 						console.log(res);
 						setTimeout(function(){
+						$(".panelTabel").fadeIn();
+						$(".panelGrafik").fadeIn();
+						$('#cover-spin').fadeOut();
 						chartShow(res,periodeAwal)
 						},2000)
 						
@@ -438,10 +440,6 @@
 		}
 
 		function chartShow(res,periodeAwal){
-						$(".panelTabel").fadeIn();
-						$(".panelGrafik").fadeIn();
-						$('#cover-spin').fadeOut();
-
 						var isiTabel = "";
 						var no = 0;
 						var persentase = 0;
@@ -489,7 +487,7 @@
 						$("th#tahunProses").text("Tahun " + periodeAwal);
 						$("#tbodyTahunan").html(isiTabel);
 
-					document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
+						document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
 						document.getElementById("wadah-grafik").innerHTML = '<canvas id="grafik"></canvas>';
 						var ctx = document.getElementById('grafik').getContext('2d');
 						var myChart = new Chart(ctx, {
