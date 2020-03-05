@@ -207,6 +207,18 @@ class M_salestarget extends CI_Model {
 			$query = $this->db->query($sql);
 		}
 
+		public function getFiltered($org_id,$month,$year,$order_type)
+		{
+			$sql = "select * from 
+					sf.sales_target 
+					where org_id = '$org_id' and 
+					month = '$month' and 
+					year = '$year' and
+					order_type LIKE '%$order_type%'";
+			$query = $this->db->query($sql);
+			return $query->num_rows();
+		}
+
 		public function deleteOrg($org_id)
 		{
 			$sql = "delete from sys.sys_organization where org_id = '$org_id'";
