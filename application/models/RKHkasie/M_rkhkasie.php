@@ -9,7 +9,7 @@ class M_rkhkasie extends CI_Model
   }
 
   public function getKodbar($term) {
-    $oracle = $this->load->database('oracle_dev', true);
+    $oracle = $this->load->database('oracle', true);
     $sql = " SELECT   mp.organization_code, msi.secondary_inventory_name subinv,
                  msib.inventory_item_id, msib.segment1 kode_barang,
                  msib.description,
@@ -30,8 +30,8 @@ class M_rkhkasie extends CI_Model
          // return $sql;
   }
     public function getResultBom($kodeitem) {
-    $oracle = $this->load->database('oracle_dev', true);
-    $sql = " SELECT   mp.organization_code, msi.secondary_inventory_name subinv,
+    $oracle = $this->load->database('oracle', true);
+    $sql = " SELECT distinct mp.organization_code, msi.secondary_inventory_name subinv,
                  msib.inventory_item_id, msib.segment1 kode_barang,
                  msib.description,
                  --khs_inv_qty_oh (225, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) on_hand,
@@ -44,14 +44,14 @@ class M_rkhkasie extends CI_Model
              AND msi.secondary_inventory_name = 'SP-YSP'
              AND mp.organization_id = msi.organization_id
              AND msib.organization_id = msi.organization_id
-             AND msib.SEGMENT1 = '$kodeitem' ";
+             AND msib.SEGMENT1 LIKE '$kodeitem%' ";
 
     $query = $oracle->query($sql);
     return $query->result_array();
          // return $sql;
   }
  public function getDetailBom($kodebarang) {
-    $oracle = $this->load->database('oracle_dev', true);
+    $oracle = $this->load->database('oracle', true);
     $sql = " SELECT 
        rownum line_id
        ,CONNECT_BY_ROOT q_bom.assembly_num                                      root_assembly
@@ -106,5 +106,18 @@ class M_rkhkasie extends CI_Model
     return $query->result_array();
          // return $sql;
   }
+   public function getdesckomp($komp) {
+    $oracle = $this->load->database('oracle', true);
+    $sql = "SELECT msib.segment1, msib.description 
+FROM mtl_system_items_b msib 
+WHERE msib.INVENTORY_ITEM_STATUS_CODE = 'Active'  
+AND msib.organization_id = 81
+AND msib.segment1 = '$komp'";
+
+   $query = $oracle->query($sql);
+    return $query->result_array();
+         // return $sql;
+  }
+
 
 }
