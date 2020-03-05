@@ -98,13 +98,16 @@ class M_trackingpengirimanbarang extends CI_Model {
         $sql = "
           SELECT distinct
                 mtrh.REQUEST_NUMBER NO_SPB
-                ,mtrh.ATTRIBUTE7 SO
-                ,party.PARTY_NAME CUST
-                ,ship_loc.address1 ALAMAT
-                ,msib.SEGMENT1 KODE_ITEM
-                ,msib.DESCRIPTION NAMA_ITEM
-                ,mtrl.quantity QTY
-                ,msib.PRIMARY_UOM_CODE UOM
+                ,mtrh.ATTRIBUTE7 SO 
+                ,party.PARTY_NAME CUST 
+                ,case when ship_loc.address1 is null
+                 then mtrh.TO_SUBINVENTORY_CODE ||' ('|| mtrh.ATTRIBUTE4
+                 else ship_loc.address1
+                 end ALAMAT 
+                ,msib.SEGMENT1 KODE_ITEM 
+                ,msib.DESCRIPTION NAMA_ITEM 
+                ,mtrl.quantity QTY 
+                ,msib.PRIMARY_UOM_CODE UOM 
               FROM mtl_txn_request_headers mtrh
                    ,mtl_txn_request_lines mtrl
                    ,MTL_SYSTEM_ITEMS_B msib
@@ -117,7 +120,7 @@ class M_trackingpengirimanbarang extends CI_Model {
                    ,hz_party_sites ship_ps
                         where mtrh.HEADER_ID(+) = mtrl.header_id
                         and mtrl.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                        and mtrh.ATTRIBUTE7 = ooha.ORDER_NUMBER
+                        and mtrh.ATTRIBUTE7 = ooha.ORDER_NUMBER(+)
                         AND ooha.sold_to_org_id = cust_acct.cust_account_id(+)
                         AND cust_acct.party_id = party.party_id(+)
                         and ooha.ship_to_org_id = ship_su.site_use_id(+)
