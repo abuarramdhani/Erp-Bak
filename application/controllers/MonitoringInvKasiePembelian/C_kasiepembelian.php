@@ -86,9 +86,9 @@ class C_kasiepembelian extends CI_Controller{
 	public function ambilAlert()
 	{
 		$getStatusSatu = $this->M_kasiepembelian->getStatusSatu();
-		$status = $getStatusSatu[0]['SATU'];
+		// echo $getStatusSatu; exit();
 
-		echo json_encode($status);
+		echo json_encode($getStatusSatu);
 	}
 
 	public function ambilAlert2()
@@ -968,14 +968,33 @@ class C_kasiepembelian extends CI_Controller{
 	public function showReturnedfromAkuntansi()
 	{
 		$invoice_id = $this->input->post('invoice_id');
-		return $this->load->view('MonitoringInvKasiePembelian/V_returnedForm');
+		$show = $this->M_kasiepembelian->showInv($invoice_id);
+		$data['show'] = $show;
+		return $this->load->view('MonitoringInvKasiePembelian/V_returnedForm', $data);
+	}
+
+		public function showModalReturnBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$show = $this->M_kasiepembelian->showInvBuyer($invoice_id);
+		$data['show'] = $show;
+		return $this->load->view('MonitoringInvKasiePembelian/V_returnedFormBuyer', $data);
 	}
 
 	public function returnToAkuntansi()
 	{
 		$invoice_id = $this->input->post('invoice_id');
+		$note = $this->input->post('note_return_purchasing');
 		$action_date = date('d-m-Y H:i:s');
-		$this->M_kasiepembelian->returnToAkuntansi($invoice_id, $action_date);
+		$this->M_kasiepembelian->returnToAkuntansi($invoice_id, $action_date, $note);
+	}
+
+	public function returnToAkuntansiBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$note = $this->input->post('note_return_buyer');
+		$action_date = date('d-m-Y H:i:s');
+		$this->M_kasiepembelian->returnToAkuntansiBuyer($invoice_id, $action_date, $note);
 	}
 
 

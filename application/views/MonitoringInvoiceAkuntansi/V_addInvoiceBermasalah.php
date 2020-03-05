@@ -156,7 +156,7 @@
 											<span><label>Kelengkapan Dokumen</label></span>
 										</td>
 										<td>
-											<select onchange="kelengkapanDokumen(this)" name="slcKelengkapanDokumen[]" id="slcKelengkapanDokumen" multiple class="form-control select2 select2-hidden-accessible" style="width:100%;">
+											<select onchange="kelengkapanDokumen(this)" name="slcKelengkapanDokumen[]" id="slcKelengkapanDokumen" multiple class="form-control select2 select2-hidden-accessible slckelengkapandokumenakuntansi" style="width:100%;">
 												<option value="Invoice">Invoice</option>
 												<option value="FP">FP</option>
 												<option value="LPPB">LPPB</option>
@@ -188,7 +188,7 @@
 						</div>
 						<div class="col-md-3" style="margin-top: 30px;margin-bottom: 20px">
 							<!-- <a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>"> -->
-							<button style="width: 100px;margin-right:10px" type="reset" id="btnMICancel" class="btn btn-danger pull-left" >Clear</button>
+							<button style="width: 100px;margin-right:10px" type="reset" id="btnClearMI" class="btn btn-danger pull-left" >Clear</button>
 							<button style="width: 100px;" id="btnMISave" class="btn btn-success pull-left" style="margin-top: 10px;margin-left: 5px;" >Save</button>
 						</div>
 			</div>
