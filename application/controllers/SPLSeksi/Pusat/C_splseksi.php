@@ -494,7 +494,7 @@ class C_splseksi extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function edit_spl_submit(){ // not work
+	public function edit_spl_submit(){ // not work, this is muda muda
 		$this->checkSession();
 		$user_id = $this->session->user;
 		$tanggal = $this->input->post('tanggal_0');
@@ -1087,14 +1087,24 @@ class C_splseksi extends CI_Controller {
 
 			$allShift = $this->M_splseksi->selectAllShift($tanggal);
 
+			$allShift = array_map(function($waktu) use($tanggal) {
+				return array(
+					'break_mulai' => $tanggal." ".$waktu['break_mulai'], 
+					'break_selesai' => $tanggal." ".$waktu['break_selesai'],
+					'ist_mulai' => $tanggal." ".$waktu['ist_mulai'],
+					'ist_selesai' => $tanggal." ".$waktu['ist_selesai']
+				);
+			}, $allShift);
+
 			// cek kevalidan istirahat & break
 			if(!empty($allShift)){
 				if ($istirahat == '1') { // jika pekerja memilih istirahat
 					$distinct_start = [];
 
 					foreach($allShift as $shift){
-						$rest_start = (strtotime($shift['ist_mulai']) < strtotime($mulai)) ? strtotime("+1 day", strtotime($shift['ist_mulai'])) : strtotime($shift['ist_mulai']);
-						$rest_end   = (strtotime($shift['ist_selesai']) < strtotime($selesai)) ? strtotime("+1 day", strtotime($shift['ist_selesai'])) : strtotime($shift['ist_selesai']);
+						// TODO
+						$rest_start = (strtotime($shift['ist_mulai']) < strtotime($tanggal." ".$mulai)) ? strtotime("+1 day", strtotime($shift['ist_mulai'])) : strtotime($shift['ist_mulai']);
+						$rest_end   = (strtotime($shift['ist_selesai']) < strtotime($tanggal." ".$mulai)) ? strtotime("+1 day", strtotime($shift['ist_selesai'])) : strtotime($shift['ist_selesai']);
 
 						if($rest_start == $rest_end){
 							continue;
@@ -1107,8 +1117,8 @@ class C_splseksi extends CI_Controller {
 							$distinct_start[] = $rest_start;
 						}
 
-						$overtime_start = strtotime($mulai);
-						$overtime_end   = (strtotime($selesai) < strtotime($mulai)) ? strtotime("+1 day", strtotime($selesai)) : strtotime($selesai);
+						$overtime_start = strtotime($tanggal." ".$mulai);
+						$overtime_end   = (strtotime($selesai) < strtotime($mulai)) ? strtotime("+1 day", strtotime($tanggal." ".$selesai)) : strtotime($tanggal." ".$selesai);
 
 						if ($rest_start >= $overtime_start && $rest_end < $overtime_end) { // jika jam istirahat masuk range lembur
 							// jika ditemukan istirahat,
@@ -1125,8 +1135,8 @@ class C_splseksi extends CI_Controller {
 					$distinct_start = [];
 
 					foreach($allShift as $shift){
-						$break_start = (strtotime($shift['break_mulai']) < strtotime($mulai)) ? strtotime("+1 day ".$shift['break_mulai']) : strtotime($shift['break_mulai']);
-						$break_end   = (strtotime($shift['break_selesai']) < strtotime($selesai)) ? strtotime("+1 day ".$shift['break_selesai']) : strtotime($shift['break_selesai']);
+						$break_start = (strtotime($shift['break_mulai']) < strtotime($tanggal." ".$mulai)) ? strtotime("+1 day ".$shift['break_mulai']) : strtotime($shift['break_mulai']);
+						$break_end   = (strtotime($shift['break_selesai']) < strtotime($tanggal." ".$mulai)) ? strtotime("+1 day ".$shift['break_selesai']) : strtotime($shift['break_selesai']);
 
 						// jika tidak ada istirahat, lewati
 						if($break_start == $break_end){
@@ -1140,8 +1150,8 @@ class C_splseksi extends CI_Controller {
 							$distinct_start[] = $break_start;
 						}
 
-						$overtime_start = strtotime($mulai);
-						$overtime_end   = (strtotime($selesai) < strtotime($mulai)) ? strtotime("+1 day", strtotime($selesai)) : strtotime($selesai);
+						$overtime_start = strtotime($tanggal." ".$mulai);
+						$overtime_end   = (strtotime($selesai) < strtotime($mulai)) ? strtotime("+1 day", strtotime($tanggal." ".$selesai)) : strtotime($tanggal." ".$selesai);
 
 						if ($break_start >= $overtime_start && $break_end < $overtime_end) { // jika jam istirahat masuk range lembur
 							// jika ditemukan break, do nothing
