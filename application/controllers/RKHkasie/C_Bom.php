@@ -61,9 +61,25 @@ class C_Bom extends CI_Controller
 		echo json_encode($data);
 		
 	}
+	function getDescCode()
+	{
+		$kodeitem  = $this->input->post('kodeitem');
+		$desc = $this->M_rkhkasie->getdesckomp($kodeitem);
+		// echo "<pre>";print_r($desc);exit();
+		if ($desc== null) {
+
+		echo json_encode('-');
+		
+		} else if ($desc!=null) {
+
+    	echo json_encode($desc[0]['DESCRIPTION']);
+			
+		}
+	}
 	public function getBom()
 	{
-		$kodeitem = $this->input->post('kodeitem');
+		$kodeitemm = $this->input->post('kodeitem');
+		$kodeitem= strtoupper($kodeitemm);
 
 		$result_bom =  $this->M_rkhkasie->getResultBom($kodeitem);
 

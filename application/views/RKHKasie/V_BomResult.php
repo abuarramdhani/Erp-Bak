@@ -21,14 +21,14 @@
 								<td class="text-center">-</td>
 							<?php } else if ($bom['DETAIL_BOM'] != null) {  ?>
 
-							<td class="text-center" ><button class="btn bg-teal btn-sm" onclick="lihatbom(this, 1)">Lihat</button></td>
-							<td class="text-center"><button class="btn bg-yellow btn-sm" onclick="editbom(this, 1)">Edit</button></td>
+							<td class="text-center" ><button class="btn bg-teal btn-sm" onclick="lihatbom(this, <?=$nomor?>)">Lihat</button></td>
+							<td class="text-center"><button class="btn bg-yellow btn-sm" onclick="editbom(this, <?=$nomor?>)">Edit</button></td>
 						<?php } ?>
 					</tr>
 					<tr>
 						<td></td>
 						<td colspan="4">
-							<div id="lihatbom1" style="display: none;" >
+							<div id="lihatbom<?=$nomor?>" style="display: none;" >
 								<table class="table table-bordered">
 									<thead class="bg-teal">
 										<th class="text-center" style="width: 100px">Pack</th>
@@ -45,37 +45,46 @@
 											<td class="text-center">Pack <?=$urut?></td>
 											<td class="text-center"><input type="hidden" name="kodebom[]" value="<?=$detbom['KODE']?>"><?=$detbom['KODE']?></td>
 											<td class="text-center"><input type="hidden" name="namabom[]" value="<?=$detbom['NAMA']?>"><?=$detbom['NAMA']?></td>
-											<td class="text-center"><input type="hidden" name="qtybom[]" value="<?=$detbom['QTY']?>"><?=$detbom['QTY']?></td>
+											<td class="text-center"><input   type="hidden" name="qtybom[]" value="<?=$detbom['QTY']?>"><?=$detbom['QTY']?></td>
 										</tr>
 										<?php $urut++; } ?>
 									</tbody>
 								</table>
 							</div>
-							<div id="editbom1" style="display: none;" >
+							<div id="editbom<?=$nomor?>" style="display: none;" >
 								<table class="table table-bordered">
 									<thead class="bg-yellow">
-										<th class="text-center" style="width: 50px">Pack</th>
+										<!-- <th class="text-center" style="width: 50px">Pack</th> -->
 										<th class="text-center" style="width: 50px">Kode</th>
 										<th class="text-center" style="width: 200px">Nama</th>
 										<th class="text-center" style="width: 50px">Qty</th>
-										<!-- <th class="text-center" style="width: 20px">Action</th> -->
+										<th class="text-center" style="width: 20px">Action</th>
 									</thead>
-									<tbody>
+									<tbody id="tambahpack<?=$nomor?>">
 
 										<?php 
 											$urut=1;
 											foreach ($bom['DETAIL_BOM'] as $detbom) { ?>
-											<tr>
-												<td class="text-center"><input type="text" class="form-control" value="Pack <?=$urut?>" readonly="readonly"></td>
-												<td class="text-center"><input type="text" class="form-control" value="<?=$detbom['KODE']?>" name="kodebomedit[]"></td>
-												<td class="text-center"><input type="text" class="form-control" name="namabomedit[]" value="<?=$detbom['NAMA']?>"></td>
-												<td class="text-center"><input type="text" class="form-control" name="qtybomedit[]" value="<?=$detbom['QTY']?>"> </td>
-												<!-- <td class="text-center"><button class="btn btn-sm btn-default"><i class="fa fa-plus"></i></button> </td> -->
+											<tr class="trlama">
+												<input type="hidden" value="<?=$urut?>" name="urutan<?=$nomor?>[]">
+
+												<!-- <td class="text-center"><input type="text" id="pack<?=$nomor?><?=$urut?>" class="form-control" value="Pack <?=$urut?>" readonly="readonly"></td> -->
+
+												<td class="text-center"><input type="text" class="form-control" value="<?=$detbom['KODE']?>" id="kodebomedit<?=$nomor?><?=$urut?>" onkeyup="getdesckomp(<?=$nomor?>,<?=$urut?>)"></td>
+
+												<td class="text-center"><input type="text" class="form-control" id="namabomedit<?=$nomor?><?=$urut?>" name="namabomedit[]" value="<?=$detbom['NAMA']?>" readonly="readonly"></td>
+
+												<td class="text-center"><input onkeypress="return angkasaja(event, false)" type="text" class="form-control"  id="qtybom<?=$nomor?><?=$urut?>"  value="<?=$detbom['QTY']?>"> </td>
+												<td class="text-center"><button class="btn btn-sm btn-danger hpspack<?=$nomor?><?=$urut?>" onclick="hapuspack(<?=$nomor?>,<?=$urut?>)"><i class="fa fa-minus"></i></button> </td>
 											</tr>
 										<?php $urut++; } ?>
 									</tbody>
 								</table>
-								<div style="text-align: right;"><button class="btn btn-success btn-sm">Usulkan</button></div>
+								<div style="text-align: right;">
+									<button class="btn btn-info btn-sm" onclick="tambahpack(<?=$nomor?>,<?=$urut?>)">Tambah Pack</button>
+									<button class="btn btn-success btn-sm">Usulkan</button>
+
+								</div>
 							</div>
 						</td>
 				</tr>

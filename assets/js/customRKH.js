@@ -30,7 +30,7 @@ $(document).ready(function () {
 // ---------------------------GET DATA ------------------------//
 
 function getBom(th) {
-    var kodeitem = $('select[name="kodeitem"]').val();
+    var kodeitem = $('input[name="kodeitem"]').val();
 
     console.log(kodeitem)
 
@@ -51,13 +51,36 @@ function getBom(th) {
       // console.log("sukses2");
       $('#bom_result').html(result);
         $('#result_bom').DataTable({
-          scrollX: false,
+          scrollX: true,
           scrollY:  400,
           scrollCollapse: true,
-          paging:false,
+          paging:true,
                     info:false,
                     searching : false,
         });
+      });
+}
+function getdesckomp(no,u) {
+    var kodeitem = $('#kodebomedit'+no+u).val();
+    var namabom = $('#namabomedit'+no+u).val();
+
+
+    console.log(kodeitem)
+
+    var request = $.ajax({
+      url: baseurl+'RKHKasie/Bom/getDescCode',
+      data: {
+          kodeitem : kodeitem
+      },
+      type: "POST",
+      datatype: 'json'
+    });
+      // $('#namabomedit'+no+u).val('<center><img style="width:10px; height:auto" src="'+baseurl+'assets/img/gif/loading99.gif"></center>' );
+    
+    request.done(function(result){
+        var str = result
+        $('#namabomedit'+no+u). val(str.replace(/"/g, ""));
+   
       });
 }
 
@@ -195,6 +218,22 @@ function nambahteros() {
     i++; 
 }
 
+function tambahpack(no,p) {
+    var par = $('input[name="urutan'+no+'[]"]').map(function(){return $(this).val();}).get();
+    var p = par.length;
+    // console.log(jml);
+    p++;
+
+  $('#tambahpack'+no).append('<tr class="trbaru"><input type="hidden" value="'+p+'"name="urutan'+no+'[]"><td class="text-center"><input type="text" class="form-control"  id="kodebomedit'+no+''+p+'" onkeyup="getdesckomp('+no+','+p+')"></td><td class="text-center"><input type="text" class="form-control"  id="namabomedit'+no+''+p+'" readonly="readonly"></td><td class="text-center"><input onkeypress="return angkasaja(event, false)" type="text" class="form-control"  id="qtybom'+no+''+p+'"> </td><td class="text-center"><button class="btn btn-sm btn-danger hpspack'+p+'"><i class="fa fa-minus"></i></button> </td></tr>');
+  console.log('tambahpackoke')
+
+    $(document).on('click', '.hpspack'+p,  function() {
+        $(this).parents('.trbaru').remove()
+    });
+
+    // p++; 
+}
+
 // ---------------------------- HAPUS  JOB -------------------//
 function hapusdata(no) {
 
@@ -245,4 +284,28 @@ function editbom(th, no)
     $('#lihatbom'+no).css("display","none"); 
 
 }
-
+function hapuspack(no,urut) {
+   $(document).on('click', '.hpspack'+no+urut,  function() {
+        $(this).parents('.trlama').remove()
+    });
+}
+function angkasaja(e, decimal) {
+  var key;
+  var keychar;
+  if (window.event) {
+    key = window.event.keyCode;
+  } else
+  if (e) {
+    key = e.which;
+  } else return true;
+  keychar = String.fromCharCode(key);
+  if ((key==null) || (key==0) || (key==8) ||  (key==9) || (key==13) || (key==27) ) {
+    return true;
+  } else
+  if ((("0123456789.").indexOf(keychar) > -1)) {
+    return true;
+  } else
+  if (decimal && (keychar == ".")) {
+    return true;
+  } else return false;
+}

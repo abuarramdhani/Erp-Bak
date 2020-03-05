@@ -36,7 +36,8 @@
 										<label>Masukan Kode Barang</label>
 									</div>
 									<div class="col-md-3" style="text-align: left;">
-										<select class="form-control select2" data-placeholder="Kode Barang" name="kodeitem" id="kodeitem"></select>
+										<!-- <select class="form-control select2" data-placeholder="Kode Barang" name="kodeitem" id="kodeitem"></select> -->
+										<input type="text" class="form-control" name="kodeitem">
 									</div>
 									<div class="col-md-4" style="text-align: left;">
 										<button class="btn btn-default" onclick="getBom(this)"><i class="fa fa-search"></i></button>
