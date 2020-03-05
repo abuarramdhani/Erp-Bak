@@ -27,12 +27,25 @@
 
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-					<div class="panel panel-primary">
-					  <div class="panel-heading"><?= $Title ?></div>
+					<div class="panel panel-primary panelPrimer">
+					  <div class="panel-heading">
+					  <div class="panel-title">
+					  	<b class="pull-left"><?= $Title ?></b>
+					  	<button class="pull-right btn btn-info btn-intro">
+					  		<i class="fa fa-info-circle"></i>
+					  		&nbsp;Panduan
+					  	</button>
+					  	<button style="margin-right: 5px;" class="pull-right btn btn-warning btn-video" onclick="window.open('<?=base_url('') ?>assets/video/presensi_harian/monharian.webm')">
+					  		<i class="fa fa-video-camera"></i>
+					  		&nbsp;Video Panduan
+					  	</button>
+					  </div>
+					  <div class="clearfix"></div>
+					  </div>
 					 <div class="panel-body">
 
 						<form>
-						  <div class="row">
+						  <div class="row" id="rowPeriode">
 								  	 <div class="form-group col-sm-2">
 								  		<label>Periode</label>
 								  		</div>
@@ -43,7 +56,7 @@
 	                                        </div>
 	                                  </div>
 	                           </div>
-	                           <div class="row">
+	                           <div class="row" id="rowCheckBox">
 		                           <div class="form-group col-sm-2">
 							  		<label class="form-check-label" for="defaultCheck1">
 										All
@@ -57,7 +70,7 @@
 	                                  </div>
 	                           </div>
 
-	                           <div class="row">
+	                           <div class="row" id="rowStatusHubker">
 		                           <div class="form-group col-sm-2">								  		
 	                                    <label class="control-label" >Status Hubungan Kerja</label>
 								  		</div>
@@ -78,7 +91,7 @@
 	                                  </div>
 	                           </div>
 
-	                            <div class="row">
+	                            <div class="row" id="rowUnit">
 		                            <div class="form-group col-sm-2">								  		
 		                                    <label class="control-label" >Unit</label>
 									  	</div>
@@ -97,7 +110,7 @@
 	                                  </div>
 	                           </div>
 
-	                           <div class="row">
+	                           <div class="row" id="rowSeksi">
 	                           <div class="form-group col-sm-2">								  		
 		                                    <label class="control-label">Seksi</label>
 									  	</div>
@@ -112,12 +125,10 @@
 	                           </div>
 
 	                           <div class="row">
-	                           <div class="form-group col-sm-2">						
-									  	</div>
-	                           	<div class="form-group col-sm-8">
-	                           	<div class="col-sm-2 pull-right">
-	                                    <button class="btn btn-success btn-submit btn-block"><i class="fa fa-send"></i>&nbsp;&nbsp;Proses</button></div>
-	                             </div>
+	                           <div class="form-group col-sm-2"></div>
+	                                  <div class="form-group col-sm-8">
+	                                     <button class="btn btn-success btn-submit"><i class="fa fa-send"></i>&nbsp;&nbsp;Proses</button>
+	                                  </div>
 	                           </div>
 
 
@@ -178,6 +189,58 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		var introguide = introJs();
+
+		introguide.setOptions({
+		    steps: [
+		        {
+		          element: '.panelPrimer',
+		          intro: 'Monitoring Presensi Harian merupakan sebuah aplikasi yang digunakan untuk melakukan monitoring data presensi pekerja per range tanggal / hari.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowPeriode',
+		          intro: 'Pertama, Anda Wajib Memilih Periode Hari ! ',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowCheckBox',
+		          intro: '(Opsional) Jika Ingin Memfilter Data Berdasarkan Status Hubungan Kerja, Unit, dan Seksi Anda Bisa Meng-uncheck Checkbox ini.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowStatusHubker',
+		          intro: '(Opsional) Pilih Status Hubungan Kerja yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowUnit',
+		          intro: '(Opsional) Pilih Unit Kerja yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowSeksi',
+		          intro: '(Opsional) Pilih Seksi yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '.btn-submit',
+		          intro: 'Tekan Button Proses untuk Mulai Memproses Data.',
+		          position: 'bottom'
+		        }
+		    ],
+		    skipLabel: 'Lewati',
+		    nextLabel: 'Berikutnya',
+		    prevLabel: 'Kembali',
+		    doneLabel: 'Selesai',
+		    hideNext: true
+		});
+
+		$(".btn-intro").on('click',function(e){
+			introguide.start();
+		})
+
 		$('input[name="periode"]').daterangepicker({
 		      autoUpdateInput: false,
 		      locale: {
@@ -195,7 +258,10 @@
 			$('.i-checks').iCheck('check')
 			$('.customInput').prop('disabled',true)
 			$("#vm-status").select2('val','')
+			$("#vm-unit	").select2().val('').trigger('change')
+			$("#vm-seksi").select2().val('').trigger('change')
 			$("#vm-unit").val('')
+			$("#vm-seksi").val('')
 			$("#vm-seksi").prop('disabled',true)
 		});
 		$(document).on('ifUnchecked', '.i-checks' ,function(event){
@@ -285,14 +351,7 @@
 							 	fill: false,
 					            data: data[key],
 					            backgroundColor: [
-					                'rgba(255, 99, 132, 0.2)',
-					                'rgba(54, 162, 235, 0.2)',
-					                'rgba(255, 206, 86, 0.2)',
-					                'rgba(75, 192, 192, 0.2)',
-					                'rgba(153, 102, 255, 0.2)',
-					                'rgba(255, 159, 64, 0.2)',
-					                'rgba(255, 99, 132, 0.2)',
-					                'rgba(54, 162, 235, 0.2)'
+					                'rgba(255, 99, 132, 0.2)'
 					            ],
 					            borderColor: [
 					                'RGBA(0,0,0,1)'
@@ -304,7 +363,8 @@
 					            pointBorderColor: [
 					                'RGBA(0,0,0,1)'
 					            ],
-					            pointBorderWidth: 3
+					            pointBorderWidth: 3,
+					            pointRadius: 5
 
 						})
 			})
@@ -330,7 +390,8 @@
 			let seksiKerja = $('#vm-seksi').val()
 
 			if(!periode){
-				alert('Empty!');
+				Swal.fire('Oops!','Periode Wajib diisi!','warning')
+				$("input#daterangepicker").focus()
 			}else{
 				$('#cover-spin').fadeIn();
 				$.ajax({
@@ -450,85 +511,85 @@
 						    }
 						    
 						});	//end chart
-						console.log(myChart.data.datasets)
+						console.log(myChart)
 						myChart.data.datasets.map((data,index)=>{
 							if(index == 0){ 
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(255, 99, 132, 0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(255, 99, 132, 0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(255, 99, 132, 0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(255, 99, 132, 0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(255, 99, 132, 0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(255, 99, 132, 0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(255, 99, 132, 0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(255, 99, 132, 0.7)';
 								}
 							}else if(index == 1){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(54, 162, 235, 0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(54, 162, 235, 0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(54, 162, 235, 0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(54, 162, 235, 0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(54, 162, 235, 0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(54, 162, 235, 0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(54, 162, 235, 0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(54, 162, 235, 0.7)';
 								}
 							}else if(index == 2){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(168, 50, 98, 0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(168, 50, 98, 0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(168, 50, 98, 0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(168, 50, 98, 0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(168, 50, 98, 0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(168, 50, 98, 0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(168, 50, 98, 0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(168, 50, 98, 0.7)';
 								}
 							}else if(index == 3){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(75, 192, 192, 0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(75, 192, 192, 0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(75, 192, 192, 0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(75, 192, 192, 0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(75, 192, 192, 0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(75, 192, 192, 0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(75, 192, 192, 0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(75, 192, 192, 0.7)';
 								}
 							}else if(index == 4){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(153, 102, 255, 0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(153, 102, 255, 0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(153, 102, 255, 0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(153, 102, 255, 0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(153, 102, 255, 0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(153, 102, 255, 0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(153, 102, 255, 0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(153, 102, 255, 0.7)';
 								}
 							}else if(index == 5){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(255, 159, 64, 0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(255, 159, 64, 0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(255, 159, 64, 0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(255, 159, 64, 0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(255, 159, 64, 0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(255, 159, 64, 0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(255, 159, 64, 0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(255, 159, 64, 0.7)';
 								}
 							}else if(index == 6){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(101,101,80,0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(101,101,80,0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(101,101,80,0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(101,101,80,0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(101,101,80,0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(101,101,80,0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(101,101,80,0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(101,101,80,0.7)';
 								}
 							}else if(index == 7){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(101,196,0,0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(101,196,0,0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(101,196,0,0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(101,196,0,0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(101,196,0,0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(101,196,0,0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(101,196,0,0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(101,196,0,0.7)';
 								}
 							}else if(index == 8){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(231,196,0,0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(231,196,0,0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(231,196,0,0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(231,196,0,0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(231,196,0,0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(231,196,0,0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(231,196,0,0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(231,196,0,0.7)';
 								}
 							}else if(index == 9){
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(101,101,148,0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(101,101,148,0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(101,101,148,0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(101,101,148,0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(101,101,148,0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(101,101,148,0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(101,101,148,0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(101,101,148,0.7)';
 								}
 							}
 							else{
-								for(var j = 0;j < myChart.data.datasets[index].backgroundColor.length;j++){
-									myChart.data.datasets[index].backgroundColor[j] = 'rgba(101,101,0,0.7)';
-									myChart.data.datasets[index].borderColor[j] = 'rgba(101,101,0,0.7)';
-									myChart.data.datasets[index].pointBackgroundColor[j] = 'rgba(101,101,0,0.7)';
-									myChart.data.datasets[index].pointBorderColor[j] = 'rgba(101,101,0,0.7)';
+								for(var j = 0;j < myChart.data.datasets.length;j++){
+									myChart.data.datasets[index].backgroundColor = 'rgba(101,101,0,0.7)';
+									myChart.data.datasets[index].borderColor = 'rgba(101,101,0,0.7)';
+									myChart.data.datasets[index].pointBackgroundColor = 'rgba(101,101,0,0.7)';
+									myChart.data.datasets[index].pointBorderColor = 'rgba(101,101,0,0.7)';
 								}
 							}
 

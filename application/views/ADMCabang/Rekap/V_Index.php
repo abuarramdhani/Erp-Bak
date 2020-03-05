@@ -27,12 +27,25 @@
 
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-					<div class="panel panel-primary">
-					  <div class="panel-heading"><?= $Title ?></div>
+					<div class="panel panel-primary panelPrimer">
+					  <div class="panel-heading">
+					   <div class="panel-title">
+					  	<b class="pull-left"><?= $Title ?></b>
+					  	<button class="pull-right btn btn-info btn-intro">
+					  		<i class="fa fa-info-circle"></i>
+					  		&nbsp;Panduan
+					  	</button>
+					  	<button style="margin-right: 5px;" class="pull-right btn btn-warning btn-video" onclick="window.open('<?=base_url('') ?>assets/video/presensi_harian/rekappekerja.webm')">
+					  		<i class="fa fa-video-camera"></i>
+					  		&nbsp;Video Panduan
+					  	</button>
+					  </div>
+					  <div class="clearfix"></div>
+					  </div>
 					 <div class="panel-body">
 
 						<form>
-						  <div class="row">
+						  <div class="row" id="rowPeriode">
 						  <div class="form-group col-sm-2">
 						   <label>Periode</label>
 						  </div>
@@ -44,7 +57,7 @@
 	                                  </div>
 	                           </div>
 
-	                            <div class="row">
+	                            <div class="row" id="rowCheckBox">
 		                           <div class="form-group col-sm-2">
 							  		<label class="form-check-label" for="defaultCheck1">
 										All
@@ -58,7 +71,7 @@
 	                                  </div>
 	                           </div>
 
-	                           <div class="row">
+	                           <div class="row" id="rowStatusHubker">
 		                           <div class="form-group col-sm-2">								  		
 	                                    <label class="control-label" >Status Hubungan Kerja</label>
 								  		</div>
@@ -79,7 +92,7 @@
 	                                  </div>
 	                           </div>
 
-	                            <div class="row">
+	                            <div class="row" id="rowUnit">
 		                            <div class="form-group col-sm-2">								  		
 		                                    <label class="control-label" >Unit</label>
 									  	</div>
@@ -98,7 +111,7 @@
 	                                  </div>
 	                           </div>
 
-	                           <div class="row">
+	                           <div class="row" id="rowSeksi">
 	                           <div class="form-group col-sm-2">								  		
 		                                    <label class="control-label">Seksi</label>
 									  	</div>
@@ -235,6 +248,59 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		var introguide = introJs();
+
+		introguide.setOptions({
+		    steps: [
+		        {
+		          element: '.panelPrimer',
+		          intro: 'Rekap per pekerja merupakan sebuah aplikasi yang berguna untuk memonitoring data presensi pekerja berdasarkan range tanggal / periode.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowPeriode',
+		          intro: 'Pertama, Anda Wajib Memilih Range Tanggal ! ',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowCheckBox',
+		          intro: '(Opsional) Jika Ingin Memfilter Data Berdasarkan Status Hubungan Kerja, Unit, dan Seksi Anda Bisa Meng-uncheck Checkbox ini.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowStatusHubker',
+		          intro: '(Opsional) Pilih Status Hubungan Kerja yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowUnit',
+		          intro: '(Opsional) Pilih Unit Kerja yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowSeksi',
+		          intro: '(Opsional) Pilih Seksi yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '.btn-submit',
+		          intro: 'Tekan Button Proses untuk Mulai Memproses Data.',
+		          position: 'bottom'
+		        }
+		    ],
+		    skipLabel: 'Lewati',
+		    nextLabel: 'Berikutnya',
+		    prevLabel: 'Kembali',
+		    doneLabel: 'Selesai',
+		    hideNext: true
+		});
+
+		$(".btn-intro").on('click',function(e){
+			introguide.start();
+		})
+
+
 		$('input[name="periode"]').daterangepicker({
 		      autoUpdateInput: false,
 		      locale: {
@@ -256,7 +322,10 @@
 			$('.i-checks').iCheck('check')
 			$('.customInput').prop('disabled',true)
 			$("#vm-status").select2('val','')
+			$("#vm-unit	").select2().val('').trigger('change')
+			$("#vm-seksi").select2().val('').trigger('change')
 			$("#vm-unit").val('')
+			$("#vm-seksi").val('')
 			$("#vm-seksi").prop('disabled',true)
 		});
 		$(document).on('ifUnchecked', '.i-checks' ,function(event){
@@ -345,8 +414,8 @@
 				selisihHari += 1
 			console.log(selisihHari)
 			if(!periode){
-				alert('Empty!');
-
+				Swal.fire('Oops!','Periode Wajib diisi!','warning')
+				$("input#daterangepicker").focus()
 			}else{
 				$('#cover-spin').fadeIn();
 				$.ajax({

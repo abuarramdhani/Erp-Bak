@@ -359,120 +359,129 @@ $q_seksi)";
 		return $result->result_array();			
 	}
 
-
-	function getDataAbsensiTahunanPerPeriode($periode,$kd){
-		//jumlah semua keterangan absensi (kecuali cuti, ijin, mangkir, sakit, IP)
+	function getDataPerTahun($periode,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
-		if ($noind == 'B0380') { // ada di ticket
-			$sql2 = "select COUNT(*) as jumlah_kerja_per_periode 
-					FROM (
-					SELECT a.noind,a.tanggal,a.kd_ket 
-					FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-					WHERE (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001')) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false 
-						) as data";	
-		}elseif ($noind == 'B0370') { //ada di ticket
-			$sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE (left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426')) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false) as data";
-		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
-			$sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,5) = left('$kd',5) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false ) as data";
-		}elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
-			$sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,7) in ('3070103','3070104') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false  ) as data";
-	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
-	    	$sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,5) in ('10101','10102') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false ) as data";
-	    }elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
-	    	$sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,3) in ('302','324','325') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false) as data";
+		if ($noind == 'B0380') {
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+		}elseif ($noind == 'B0370') { 
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
+		}elseif ($noind == 'H7726') { 
+			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
+		}elseif ($noind == 'B0717') { 
+			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+	    }elseif ($noind == 'J1378') {
+	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+	    }elseif ($noind == 'J1338') {
+	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
 	    }else{
 			    if('306030'==substr($kd,0,6)) //ada diticket
 			    {
-			    $sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
-					SELECT a.noind,a.tanggal,a.kd_ket 
-					FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-					WHERE left(a.kodesie,6) = left('$kd',6) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false ) as data";
-			    
+			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";			    
 			    }
 			    else
 			    {
-			    $sql2 = "select COUNT(*) as jumlah_kerja_per_periode FROM (
-					SELECT a.noind,a.tanggal,a.kd_ket 
-					FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-					WHERE left(a.kodesie,7) = left('$kd',7) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) ='$periode' AND a.kd_ket='PKJ' AND b.keluar=false ) as data";
+			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
 			    }
 		}
+
+		$sql1 = "select left(kodesie,7) as kodesie,seksi,sum(jumlah_bekerja) as total_bekerja,(sum(jumlah) + sum(jumlah2)) as total_absen
+			from (
+			SELECT a.kodesie,c.seksi,
+			(select count(*) from \"Presensi\".tdatapresensi b WHERE substr(TO_CHAR(b.tanggal,'yyyy-MM'),1,4) ='$periode' AND b.kd_ket='PKJ' AND b.kodesie = a.kodesie) as jumlah_bekerja,
+			(select count(*) from \"Presensi\".tdatapresensi b WHERE substr(TO_CHAR(b.tanggal,'yyyy-MM'),1,4) ='$periode' AND b.kd_ket NOT LIKE '%C%' AND b.kodesie = a.kodesie) as jumlah,
+			(select count(*) from \"Presensi\".tdatatim b WHERE substr(TO_CHAR(b.tanggal,'yyyy-MM'),1,4) ='$periode' AND (b.kd_ket LIKE '%TIK%' OR b.kd_ket LIKE '%TM%') AND b.kd_ket != '' AND b.kodesie = a.kodesie) as jumlah2
+			FROM hrd_khs.tpribadi a 
+			INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
+			 WHERE $whrKodesie $q_status $q_unit $q_seksi
+			AND a.keluar=false GROUP BY a.kodesie ,c.seksi
+			) as tbl 
+			group by left(kodesie,7),seksi order by seksi";
+
+		$result = $this->personalia->query($sql1);
+		return $result->result_array();
+	}
+
+
+	function getDataAbsensiTahunanPerPeriode($periode,$kd,$q_status,$q_unit,$q_seksi){
+		//jumlah semua keterangan absensi (kecuali cuti, ijin, mangkir, sakit, IP)
+		$noind = $this->session->user;
+		if ($noind == 'B0380') {
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+		}elseif ($noind == 'B0370') { 
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
+		}elseif ($noind == 'H7726') { 
+			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
+		}elseif ($noind == 'B0717') { 
+			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+	    }elseif ($noind == 'J1378') {
+	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+	    }elseif ($noind == 'J1338') {
+	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+	    }else{
+			    if('306030'==substr($kd,0,6)) //ada diticket
+			    {
+			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";			    
+			    }
+			    else
+			    {
+			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			    }
+		}
+
+		$sql2 = "select left(kodesie,7) as kodesie,seksi,sum(jumlah)
+			from (
+			SELECT a.kodesie,c.seksi,(select count(*) from \"Presensi\".tdatapresensi b WHERE substr(TO_CHAR(b.tanggal,'yyyy-MM'),1,7) ='$periode' AND b.kd_ket='PKJ' AND b.kodesie = a.kodesie) as jumlah
+			FROM hrd_khs.tpribadi a 
+			INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
+			 WHERE $whrKodesie $q_status $q_unit $q_seksi 	AND a.keluar=false GROUP BY a.kodesie ,c.seksi
+			) as tbl 
+			group by left(kodesie,7),seksi order by seksi";
 
 		$query = $this->personalia->query($sql2);
 		return $query->result_array();
 	}
 
 
-	function getDataAbsensiTahunan($periode,$kd){
-		$noind = $this->session->user;
+	function getDataAbsensiTahunan($periode,$kd,$q_status,$q_unit,$q_seksi){
 
-		//sq1 = jumlah semua keterangan absensi (kecuali cuti)
-		if ($noind == 'B0380') { // ada di ticket
-			$sql1 = "select COUNT(*) as jumlah_kerja 
-					FROM (
-					SELECT a.noind,a.tanggal,a.kd_ket 
-					FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-					WHERE (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001')) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false AND a.kd_ket NOT LIKE '%C%'
-						) as data";	
-		}elseif ($noind == 'B0370') { //ada di ticket
-			$sql1 = "select COUNT(*) as jumlah_kerja FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE (left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426')) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false AND a.kd_ket NOT LIKE '%C%') as data";
-		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
-			$sql1 = "select COUNT(*) as jumlah_kerja FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,5) = left('$kd',5) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false AND a.kd_ket NOT LIKE '%C%') as data";
-		}elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
-			$sql1 = "select COUNT(*) as jumlah_kerja FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,7) in ('3070103','3070104') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false  AND a.kd_ket NOT LIKE '%C%') as data";
-	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
-	    	$sql1 = "select COUNT(*) as jumlah_kerja FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,5) in ('10101','10102') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false AND a.kd_ket NOT LIKE '%C%') as data";
-	    }elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
-	    	$sql1 = "select COUNT(*) as jumlah_kerja FROM (
-				SELECT a.noind,a.tanggal,a.kd_ket 
-				FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-				WHERE left(a.kodesie,3) in ('302','324','325') AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false AND a.kd_ket NOT LIKE '%C%') as data";
+		$noind = $this->session->user;
+		if ($noind == 'B0380') {
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+		}elseif ($noind == 'B0370') { 
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
+		}elseif ($noind == 'H7726') { 
+			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
+		}elseif ($noind == 'B0717') { 
+			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+	    }elseif ($noind == 'J1378') {
+	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+	    }elseif ($noind == 'J1338') {
+	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
 	    }else{
 			    if('306030'==substr($kd,0,6)) //ada diticket
 			    {
-			    $sql1 = "select COUNT(*) as jumlah_kerja FROM (
-					SELECT a.noind,a.tanggal,a.kd_ket 
-					FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-					WHERE left(a.kodesie,6) = left('$kd',6) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false AND a.kd_ket NOT LIKE '%C%') as data";
-			    
+			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";			    
 			    }
 			    else
 			    {
-			    $sql1 = "select COUNT(*) as jumlah_kerja FROM (
-					SELECT a.noind,a.tanggal,a.kd_ket 
-					FROM \"Presensi\".tdatapresensi a INNER JOIN hrd_khs.tpribadi b ON a.noind = b.noind 
-					WHERE left(a.kodesie,7) = left('$kd',7) AND left(TO_CHAR(a.tanggal,'yyyy-MM'),4) in $periode AND b.keluar=false AND a.kd_ket NOT LIKE '%C%') as data";
+			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
 			    }
 		}
-		
-		
+
+		//sq1 = jumlah semua keterangan absensi (kecuali cuti)
+
+		$sql1 = "select left(kodesie,7) as kodesie,seksi,(sum(jumlah) + sum(jumlah2)) as sum
+			from (
+			SELECT a.kodesie,c.seksi,(select count(*) from \"Presensi\".tdatapresensi b WHERE substr(TO_CHAR(b.tanggal,'yyyy-MM'),1,7) ='$periode' AND b.kd_ket NOT LIKE '%C%' AND b.kodesie = a.kodesie) as jumlah,
+			(select count(*) from \"Presensi\".tdatatim b WHERE substr(TO_CHAR(b.tanggal,'yyyy-MM'),1,7) ='$periode' AND (b.kd_ket LIKE '%TIK%' OR b.kd_ket LIKE '%TM%') AND b.kd_ket != '' AND b.kodesie = a.kodesie) as jumlah2
+			FROM hrd_khs.tpribadi a 
+			INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
+			 WHERE $whrKodesie $q_status $q_unit $q_seksi
+			AND a.keluar=false GROUP BY a.kodesie ,c.seksi
+			) as tbl 
+			group by left(kodesie,7),seksi order by seksi";
+
+
 
 		$result = $this->personalia->query($sql1);
 		return $result->result_array();			
