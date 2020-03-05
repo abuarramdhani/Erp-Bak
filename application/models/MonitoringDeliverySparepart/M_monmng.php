@@ -24,11 +24,12 @@ class M_monmng extends CI_Model
       return $query->result_array();
     }
 
-    function getDetail2($root, $period, $compnum){
+    function getDetail2($root, $period, $compnum, $id){
       $sql = "select * from mds.mds_monitoring_management 
               where periode_monitoring = '$period' 
               and root_assembly = '$root' 
               and component_num = '$compnum' 
+              and idunix = '$id'
               and bom_level != '0'";
       $query = $this->db->query($sql);
       return $query->result_array();
@@ -69,7 +70,7 @@ class M_monmng extends CI_Model
     }
 
     public function cekHeader(){
-      $sql = "select count(*) as jumlah from mds.mds_header_monitoring";
+      $sql = "select distinct id from mds.mds_header_monitoring order by id desc";
       $query = $this->db->query($sql);
       return $query->result_array();
     }
@@ -262,7 +263,17 @@ public function cekHak($user){
   }
 
 public function getHeader($bln){
-  $sql = "select * from mds.mds_header_monitoring where periode_monitoring = '$identitas'";
+  $sql = "select * from mds.mds_header_monitoring where periode_monitoring = '$bln'";
+  $query = $this->db->query($sql);
+  return $query->result_array();
+}
+
+public function cekAktual($root, $compnum, $periode, $tgl){
+  $sql = "select * from mds.mds_simpan_aktual
+        where root_assembly = '$root'
+        and component_num = '$compnum'
+        and identitas_bom = '$periode'
+        and tanggal_aktual = '$tgl'";
   $query = $this->db->query($sql);
   return $query->result_array();
 }

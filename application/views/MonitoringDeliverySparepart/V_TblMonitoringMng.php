@@ -45,7 +45,9 @@
                                             <th><i class="fa fa-plus" aria-hidden="true"></i></th>
                                             <th>Bom Level</th>
                                             <th>Component Code</th>
+                                            <th></th><th></th>
                                             <th>Description</th>
+                                            <th></th><th></th>
                                             <th>QTY/Unit</th>
                                             <th>Seksi</th>
                                             <?php 

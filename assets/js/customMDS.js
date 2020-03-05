@@ -182,7 +182,7 @@ function getCompCode(th){
 
 var i = 2;
 function addTargetMon() {
-	$('#tambahTarget').append('<div class="tambahtarget" ><br><br><div class="col-md-2" align="right"></div><div class="col-md-3" > <input id="tglTarget'+i+'" name="tglTarget[]" class="form-control pull-right dateMonMng" placeholder="dd/mm/yyyy" onchange="cekTarget('+i+')" autocomplete="off" required><span id="alert'+i+'" style="font-size:11px; color:red"></span></div><div class="col-md-3" align="right"></div><div class="col-md-3" ><input id="qty" name="qty[]" class="form-control pull-right" placeholder="qty" autocomplete="off" required></div><div class="col-md-1"><button class = "btn btn-default tombolhapus'+i+'" type="button"><i class = "fa fa-minus" ></i></button></div></div></div>');
+	$('#tambahTarget').append('<div class="tambahtarget" ><br><br><div class="col-md-2" align="right"></div><div class="col-md-3" > <input id="tglTarget'+i+'" name="tglTarget[]" class="form-control pull-right dateMonMng" placeholder="dd/mm/yyyy" onchange="cekTarget('+i+')" autocomplete="off" required><span id="alert'+i+'" style="font-size:11px; color:red"></span></div><div class="col-md-3" align="right"></div><div class="col-md-3" ><input id="qty" name="qty[]" class="form-control pull-right" placeholder="qty" autocomplete="off" required></div><div class="col-md-1"><button class = "btn btn-default tombolhapus'+i+'" type="button"><i class = "fa fa-minus" ></i></button></div><br></div></div>');
 	$(document).on('click', '.tombolhapus'+i,  function() {
 		$(this).parents('.tambahtarget').remove()
 	});
