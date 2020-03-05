@@ -172,6 +172,7 @@
 											<th class="text-center">No</th>
 											<th>Seksi</th>
 											<th class="text-center" id="tahunProses"></th>
+											<th>Grafik</th>
 										</tr>
 									</thead>
 									<tbody id="tbodyTahunan">
@@ -371,13 +372,53 @@
 		    $('#tblDtl').dataTable().fnDestroy();		
 		});
 
+		$('#tblTahunan').on('click','.btn-grafik',function(e){
+			e.preventDefault();
+			if($('.panelGrafik').css('display') != 'none'){
+				$('.panelGrafik').fadeOut()
+				$(".panelTabel").fadeOut()
+				$('#tblTahunan').dataTable().fnDestroy();	
+			}	
+			let kodesie = $(this).attr('data-id');
+			let periode = $('input[name="periode"]').val();
+			let statusKerja = $('#vm-status').val()
+			let unitKerja = $('#vm-unit').val()
+			let seksiKerja = $('#vm-seksi').val()
+
+			console.log(kodesie + ' - '+periode);
+
+			$('#cover-spin').fadeIn();
+				$.ajax({
+					url: '<?php echo base_url(''); ?>AdmCabang/Monitoring/getMonTahunan',
+					type: 'POST',
+					data: {periode: periode,statusKerja: '',unitKerja: '',seksiKerja:kodesie},
+					dataType: 'json',
+					success: function(res){
+						console.log(res);
+						setTimeout(function(){
+						chartShow(res,periode)
+						},2000)
+						
+					},
+					error: function(res){
+						$('#cover-spin').hide();
+						Swal.fire({
+							type: 'error',
+							title: 'Request Error'
+						})
+					}
+				})
+
+		})
+
 		$('.btn-submit').on('click',function(e){
 			e.preventDefault();
 			if($('.panelGrafik').css('display') != 'none'){
 				$('.panelGrafik').fadeOut()
 				$(".panelTabel").fadeOut()
 				$('#tblTahunan').dataTable().fnDestroy();	
-			}			
+			}
+
 			let periodeAwal = $('input[name="periode"]').val();
 			// let periodeAkhir = $('input[name="periodeAkhir"]').val();
 			let statusKerja = $('#vm-status').val()
@@ -396,6 +437,22 @@
 					success: function(res){
 						console.log(res);
 						setTimeout(function(){
+						chartShow(res,periodeAwal)
+						},2000)
+						
+					},
+					error: function(res){
+						$('#cover-spin').hide();
+						Swal.fire({
+							type: 'error',
+							title: 'Request Error'
+						})
+					}
+				})
+			}	
+		})
+
+		function chartShow(res,periodeAwal){
 						$(".panelTabel").fadeIn();
 						$(".panelGrafik").fadeIn();
 						$('#cover-spin').fadeOut();
@@ -439,6 +496,7 @@
 										"<td class='text-center' style='background-color:"+bgcolor+"'>"+ no +"</td>" +
 										"<td>"+ res.dataTabelPerTahun[j].seksi +"</td>" +
 										"<td class='text-center'>"+ persentase + " %" +"</td>" +
+										"<td class='text-center'><button data-id='"+res.dataTabelPerTahun[j].kodesie+"' class='btn btn-info btn-grafik'><i class='fa fa-line-chart'></i>&nbsp;Grafik</button></td>" +
 										"</tr>";
 
 						}
@@ -446,7 +504,7 @@
 						$("th#tahunProses").text("Tahun " + periodeAwal);
 						$("#tbodyTahunan").html(isiTabel);
 
-						document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
+					document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
 						document.getElementById("wadah-grafik").innerHTML = '<canvas id="grafik"></canvas>';
 						var ctx = document.getElementById('grafik').getContext('2d');
 						var myChart = new Chart(ctx, {
@@ -511,8 +569,6 @@
            							var index = element[0]['_index'];
            							var dtSetIndex = element[0]['_datasetIndex'];
 								    var dtClick = element[0]['_chart'].config.data;
-								   
-								    // console.log(dtClick.labels[index])
 
 								    var periode = dtClick.labels[index];
 								    var kodesie = res.kodesieArr[index][dtSetIndex];
@@ -640,19 +696,6 @@
 
 						})
 						myChart.update();
-
-						},2000)
-						
-					},
-					error: function(res){
-						$('#cover-spin').hide();
-						Swal.fire({
-							type: 'error',
-							title: 'Request Error'
-						})
-					}
-				})
-			}	
-		})
+		}
 	})
 </script>
