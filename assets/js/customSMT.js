@@ -21,6 +21,8 @@ function org_selection(th) {
 				order.val(response[0].NAME);
 				order.trigger('change')
 
+				checkingOT()
+
 			}
 		})
 }
@@ -374,4 +376,140 @@ function editOrderSM(th) {
 		})
 
 }
+
+function checkingOT(th) {
+
+	var org = $('#slcOrgSM').val();
+	var month = $('#slcMonthSMT').val();
+	var year = $('#txt_year_smt').val();
+	var target = $('#txt_target_smt').val();
+	var order_type = $('#slcOrderTypeSmt').val();
+	var input = $('#txtOTID').val(order_type);
+
+	$.ajax({
+			type: "post",
+			url: baseurl+"SalesMonitoring/salestarget/filtering",
+			dataType: 'JSON',
+			data:{
+				org:org,
+				month:month,
+				year:year,
+				target:target,
+				order_type:order_type,
+			},
+			success: function(response){
+
+				if (response == '0') {
+					Swal.fire({
+								  type: 'success',
+								  title: 'OK! '+order_type+' belum pernah diinput',
+								  showConfirmButton: false,
+								  timer: 1000
+							})
+					$('#btnSaveSM').prop('disabled', false);
+				}else if (response == '1'){
+					Swal.fire({
+								  type: 'error',
+								  title: 'Oops! '+order_type+' sudah pernah diinputkan',
+								  showConfirmButton: false,
+								  timer: 1000
+							})
+
+					$('#btnSaveSM').prop('disabled', true);
+				}
+
+			}
+		})
+
+}
+
+function checkingOTMonth(th) {
+	var org = $('#slcOrgSM').val();
+	var month = $('#slcMonthSMT').val();
+	var year = $('#txt_year_smt').val();
+	var target = $('#txt_target_smt').val();
+	var order_type = $('#slcOrderTypeSmt').val();
+	var input = $('#txtOTID').val(order_type);
+
+	$.ajax({
+			type: "post",
+			url: baseurl+"SalesMonitoring/salestarget/filtering",
+			dataType: 'JSON',
+			data:{
+				org:org,
+				month:month,
+				year:year,
+				target:target,
+				order_type:order_type,
+			},
+			success: function(response){
+
+				if (response == '0') {
+					Swal.fire({
+								  type: 'success',
+								  title: 'OK! '+order_type+' belum pernah diinput',
+								  showConfirmButton: false,
+								  timer: 1000
+							})
+					$('#btnSaveSM').prop('disabled', false);
+				}else if (response == '1'){
+					Swal.fire({
+								  type: 'error',
+								  title: 'Oops! '+order_type+' sudah pernah diinputkan',
+								  showConfirmButton: false,
+								  timer: 1000
+							})
+
+					$('#btnSaveSM').prop('disabled', true);
+				}
+
+			}
+		})
+}
+
+function checkingOTYear(th) {
+	var org = $('#slcOrgSM').val();
+	var month = $('#slcMonthSMT').val();
+	var year = $('#txt_year_smt').val();
+	var target = $('#txt_target_smt').val();
+	var order_type = $('#slcOrderTypeSmt').val();
+	var input = $('#txtOTID').val(order_type);
+
+	$.ajax({
+			type: "post",
+			url: baseurl+"SalesMonitoring/salestarget/filtering",
+			dataType: 'JSON',
+			data:{
+				org:org,
+				month:month,
+				year:year,
+				target:target,
+				order_type:order_type,
+			},
+			success: function(response){
+
+				if (response == '0') {
+					Swal.fire({
+								  type: 'success',
+								  title: 'OK! '+order_type+' belum pernah diinput',
+								  showConfirmButton: false,
+								  timer: 1000
+							})
+					$('#btnSaveSM').prop('disabled', false);
+				}else if (response == '1'){
+					Swal.fire({
+								  type: 'error',
+								  title: 'Oops! '+order_type+' sudah pernah diinputkan',
+								  showConfirmButton: false,
+								  timer: 1000
+							})
+
+					$('#btnSaveSM').prop('disabled', true);
+				}
+
+			}
+		})
+}
+
+
 	

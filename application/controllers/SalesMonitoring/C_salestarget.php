@@ -113,7 +113,7 @@ class C_salestarget extends CI_Controller {
 		$data['sourceOrderType'] = $this->M_salestarget->viewOrderType();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/salestarget/V_create',$data);
+		$this->load->view('SalesMonitoring/setting/SalesTarget/V_create',$data);
 		$this->load->view('V_Footer',$data);
 	}
 //ajax selection
@@ -346,6 +346,19 @@ class C_salestarget extends CI_Controller {
 		$create = $this->M_salestarget->insertSalestarget($ordertype,$month,$year,$target,$orgid,$startdate,$enddate,$lastupdated,$lastupdateby,$creationdate,$createdby);
 		redirect('SalesMonitoring/salestarget');
 	}
+
+	public function filtering()
+	{
+		$org_id = $this->input->post('org');
+		$month = $this->input->post('month');
+		$year = $this->input->post('year');
+		$target = $this->input->post('target');
+		$order_type = $this->input->post('order_type');
+
+		$filtering = $this->M_salestarget->getFiltered($org_id,$month,$year,$order_type);
+
+		echo json_encode($filtering);
+	}
 	
 	//menghapus data
 	public function delete($id)
@@ -393,7 +406,7 @@ class C_salestarget extends CI_Controller {
 		$data['page_title'] = 'Salestarget Filtered';
 
 		ini_set('memory_limit','300M');
-		$html = $this->load->view('SalesMonitoring/setting/SalesTarget/V_pdf', $data, true);
+		$html = $this->load->view('SalesMonitoring/setting/salestarget/V_pdf', $data, true);
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->SetFooter('Quick Sales Management |{PAGENO}| Sales Target');
@@ -409,7 +422,7 @@ class C_salestarget extends CI_Controller {
 		$filename= 'salestarget'.time().'.pdf';
 		$data['page_title'] = 'Salestarget';
 		ini_set('memory_limit','300M');
-		$html = $this->load->view('SalesMonitoring/setting/SalesTarget/V_pdf', $data, true);
+		$html = $this->load->view('SalesMonitoring/setting/salestarget/V_pdf', $data, true);
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->SetFooter('Quick Sales Management |{PAGENO}| Sales Target');
