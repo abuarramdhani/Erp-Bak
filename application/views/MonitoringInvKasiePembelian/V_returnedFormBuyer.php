@@ -15,7 +15,7 @@
 									<span><label>Feedback Returned Invoice</label></span>
 								</td>
 								<td>
-									<textarea id="txaReturnPurc" class="form-control" style="width:300px; margin-bottom:10px"><?php echo $show[0]['NOTE_RETURN_PURC']?></textarea>
+									<textarea id="txaReturnBuyer" class="form-control" style="width:300px; margin-bottom:10px"><?php echo $show[0]['NOTE_RETURN_BUYER']?></textarea>
 								</td>
 							</tr>
 						</table>

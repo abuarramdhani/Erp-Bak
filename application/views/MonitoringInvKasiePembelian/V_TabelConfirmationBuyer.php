@@ -48,7 +48,13 @@
 											<td style="display: none"><input type="hidden" id="dokumen_id" value="<?php echo $k['DOCUMENT_ID']?>"></td>
 											<td>
 												<button type="button" class="btn btn-success btn-sm" onclick="btnApproveBuyer(this)" id="btnApproved" style="margin-right: 5px"><i class="fa fa-check"></i></button>
-												<button type="button" onclick="btnRejectBuyer(this)" class="btn btn-danger btn-sm" id="btnApproved"><i class="fa fa-times"></i></button>
+												<?php if ($k['STATUS_DOCUMENT_BUYER'] == 'Y') { ?>
+												<button disabled type="button" onclick="btnRejectBuyer(this)" class="btn btn-danger btn-sm" id="btnRejected"><i class="fa fa-times"></i></button>
+												<?php }else if ($k['STATUS_DOCUMENT_BUYER'] == 'N') { ?>
+												<button type="button" onclick="btnRejectBuyer(this)" class="btn btn-danger btn-sm" id="btnRejected"><i class="fa fa-times"></i></button>
+												<?php } else { ?> 
+												<button type="button" onclick="btnRejectBuyer(this)" class="btn btn-danger btn-sm" id="btnRejected"><i class="fa fa-times"></i></button>
+												<?php }?>
 											</td>
 											<?php if ($k['STATUS_DOCUMENT_PURC'] == 'Y') { ?>
 											<td><input type="hidden" value="Y" id="pembelian_id">

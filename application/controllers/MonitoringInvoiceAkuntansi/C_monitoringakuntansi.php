@@ -73,9 +73,9 @@ class C_monitoringakuntansi extends CI_Controller{
 	public function ambilAlert()
 	{
 		$getStatusSatu = $this->M_monitoringakuntansi->getStatusSatu();
-		$status = $getStatusSatu[0]['SATU'];
+		// $status = $getStatusSatu[0]['SATU'];
 
-		echo json_encode($status);
+		echo json_encode($getStatusSatu);
 	}
 
 	public function EndStatus()
@@ -1169,16 +1169,30 @@ class C_monitoringakuntansi extends CI_Controller{
 	public function ambilAlertEnam()
 	{
 		$getStatusSatu = $this->M_monitoringakuntansi->getStatusEnam();
-		$status = $getStatusSatu[0]['ENAM'];
+		// $status = $getStatusSatu[0]['ENAM'];
 
-		echo json_encode($status);
+		echo json_encode($getStatusSatu);
 	}
 
 	public function Returning()
 	{
 		$invoice_id = $this->input->post('invoice_id');
 		$action_date = date('d-m-Y H:i:s');
-		$this->M_monitoringakuntansi->returning($invoice_id,$action_date);
+		$note = $this->input->post('note_purchasing');
+		$dokumen = $this->input->post('dokumen_returned');
+		$dokumen_baru = $dokumen[0];
+		$imp_dokumen = implode(', ', $dokumen_baru);
+		// echo "<pre>";echo $imp_dokumen;exit();
+
+		$this->M_monitoringakuntansi->returning($invoice_id,$action_date,$note,$imp_dokumen);
+	}
+
+	public function openModalReturned()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$returned = $this->M_monitoringakuntansi->getReturnedData($invoice_id);
+		$data['returned'] = $returned;
+		$this->load->view('MonitoringInvoiceAkuntansi/V_mdlReturnedInvoice',$data);
 	}
 
 

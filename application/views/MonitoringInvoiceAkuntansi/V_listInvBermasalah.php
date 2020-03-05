@@ -21,7 +21,7 @@ $alert = $status[0]['SATU'];
 					success: function(response) {
 						console.log(response)
 					Swal.fire({
-  									type: 'error',
+  									type: 'info',
   									title: 'Please Re-Check!',
  									text: 'Outstanding Check : Sejumlah '+response+' Invoice perlu direkonfirmasi dan diselesaikan!',
 									}) 
@@ -64,7 +64,7 @@ $alert = $status[0]['SATU'];
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div style="overflow: auto;">
-								<table id="unprocessTabel" style="min-width:110%" class="table table-striped table-bordered table-hover text-center tblMI">
+								<table id="unprocessTabel" style="min-width:130%" class="table table-striped table-bordered table-hover  tblMI">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -77,8 +77,8 @@ $alert = $status[0]['SATU'];
 											<th class="text-center">PPN</th>
 											<th class="text-center">PO Number</th>
 											<th class="text-center">Creation Date </th>
-											<th class="text-left" style="width: 30%">Masalah </th>
-											<th class="text-left" style="width: 30%">Feedback Purchasing</th>
+											<th class="text-center" style="width: 30%">Masalah </th>
+											<th class="text-center" style="width: 30%">Feedback Purchasing</th>
 											<th class="text-center">Purchasing Date</th>
 											<th class="text-center">Tracking</th>
 											<th class="text-center">PIC</th>
@@ -91,10 +91,10 @@ $alert = $status[0]['SATU'];
 											<?php }else { ?>
 										<tr>
 											<?php }?>
-											<td><?php echo $no ?></td>
-											<td style="display: none"><input type="hidden" id="hdnRestatus" value="<?php echo $u['RESTATUS_BERKAS_AKT'] ?>"></td>
-											<td><b><?php echo $u['INVOICE_ID'] ?></b></td>
-											<td data-id="<?= $u['INVOICE_ID'] ?>" batch_number="<?= $u['BATCH_NUMBER'] ?>" class="ganti_<?= $u['INVOICE_ID'] ?>">
+											<td class="text-center"><?php echo $no ?></td>
+											<td class="text-center" style="display: none"><input type="hidden" id="hdnRestatus" value="<?php echo $u['RESTATUS_BERKAS_AKT'] ?>"></td>
+											<td class="text-center"><b><?php echo $u['INVOICE_ID'] ?></b></td>
+											<td class="text-center" data-id="<?= $u['INVOICE_ID'] ?>" batch_number="<?= $u['BATCH_NUMBER'] ?>" class="ganti_<?= $u['INVOICE_ID'] ?>">
 
 												<!-- DETAIL INVOICE -->
 												<a title="Detail..." style="width:100px;margin-bottom: 5px" target="_blank" href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailInvBermasalah/'.$u['INVOICE_ID']);?>" class="btn btn-info btn-sm"><i class="fa fa-file-text-o"></i> Detail
@@ -129,13 +129,13 @@ $alert = $status[0]['SATU'];
 														<a disabled title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
 														</a>
 
-														<a data-target="MdlAkuntansi" data-toggle="modal" disabled title="Kembalikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="returnedInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Kembalikan
+														<a data-target="MdlAkuntansi" data-toggle="modal" disabled title="Kembalikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="openReturnedInv(<?php echo $u['INVOICE_ID']?>)" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Kembalikan
 													</a>
 													<?php } else {?>
 														<a title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
 														</a>
 
-														<a data-target="MdlAkuntansi" data-toggle="modal" title="Kembalikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="returnedInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Kembalikan
+														<a data-target="MdlAkuntansi" data-toggle="modal" title="Kembalikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="openReturnedInv(<?php echo $u['INVOICE_ID']?>)" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Kembalikan
 													</a>
 													<?php } ?>
 
@@ -144,34 +144,34 @@ $alert = $status[0]['SATU'];
 												<?php } ?>
 											</td>
 
-											<td><?php echo $u['VENDOR_NAME']?></td>
-											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
-											<td data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
-											<td><?php echo $u['PPN'] ?></td>
-											<td><?php echo $u['PO_NUMBER']?></td>
-											<td data-order="<?php echo date('Y-m-d', strtotime($u['AKT_DATE']))?>"><b><?php echo $u['AKT_DATE']?></b></td>
-											<td><b>KATEGORI : </b><?php echo $u['KATEGORI_INV_BERMASALAH']?> <br>
+											<td class="text-center"><?php echo $u['VENDOR_NAME']?></td>
+											<td class="text-center"><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
+											<td class="text-center" data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
+											<td class="text-center"><?php echo $u['PPN'] ?></td>
+											<td class="text-center"><?php echo $u['PO_NUMBER']?></td>
+											<td class="text-center" data-order="<?php echo date('Y-m-d', strtotime($u['AKT_DATE']))?>"><b><?php echo $u['AKT_DATE']?></b></td>
+											<td class="text-left"><b>KATEGORI : </b><?php echo $u['KATEGORI_INV_BERMASALAH']?> <br>
 												<b>KELENGKAPAN DOKUMEN : </b><?php echo $u['KELENGKAPAN_DOC_INV_BERMASALAH']?> <br>
-												<b>KETERANGAN : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?>	
+												<b>KETERANGAN : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?> 
 											</td>
 
 											<?php if ($u['FEEDBACK_PURCHASING'] !== NULL) { ?>
-											<td><b>Purchasing</b> : <?php echo $u['FEEDBACK_PURCHASING']?></td>
+											<td class="text-left"><b>Purchasing</b> : <?php echo $u['FEEDBACK_PURCHASING']?></td>
 											<?php }else { ?>
-											<td><i>Not Yet Confirmed</i></td>
+											<td class="text-center"><i>Not Yet Confirmed</i></td>
 											<?php } ?>
 
 											<?php if ($u['PURC_DATE'] == NULL) { ?>
-											<td><i>Not Yet Confirmed</i></b></td>
+											<td class="text-center" ><i>Not Yet Confirmed</i></b></td>
 											<?php }else{ ?>
-											<td data-order="<?php echo date('Y-m-d', strtotime($u['PURC_DATE']))?>"><b><?php echo $u['PURC_DATE']?></b></td>
+											<td class="text-center" data-order="<?php echo date('Y-m-d', strtotime($u['PURC_DATE']))?>"><b><?php echo $u['PURC_DATE']?></b></td>
 											<?php } ?>
 
 											<!-- STATUS INVOICE BERMASALAG 1, 2, 3, 4, 5, 6 -->
 											<?php if ($u['STATUS_INV_BERMASALAH'] == 1) { ?>
-											<td><span class="label label-default"><i class="fa fa-paper-plane"></i> Send to Purchasing &nbsp;</span></td>
+											<td class="text-center"><span class="label label-default"><i class="fa fa-paper-plane"></i> Send to Purchasing &nbsp;</span></td>
 											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 2  ) { ?>
-											<td><span class="label label-primary" style="padding-bottom: 5px;"><i class="fa fa-check"></i> Checked by Purchasing &nbsp;</span>
+											<td class="text-center"><span class="label label-primary" style="padding-bottom: 5px;"><i class="fa fa-check"></i> Checked by Purchasing &nbsp;</span>
 												<?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
 												<?php } ?>
@@ -181,7 +181,7 @@ $alert = $status[0]['SATU'];
 											</td>
 
 											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 3) {?> 
-											<td><span class="label label-warning"><i class="fa fa-paper-plane"></i> Purchasing Send to Buyer &nbsp;</span>
+											<td class="text-center"><span class="label label-warning"><i class="fa fa-paper-plane"></i> Purchasing Send to Buyer &nbsp;</span>
 												
 												 <?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
@@ -192,7 +192,7 @@ $alert = $status[0]['SATU'];
 											</td>
 
 											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 4) {?>
-											<td><span class="label label-primary"><i class="fa fa-check"></i> Checked by Purchasing &nbsp;</span>
+											<td class="text-center"><span class="label label-primary"><i class="fa fa-check"></i> Checked by Purchasing &nbsp;</span>
 												 
 												 <?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
@@ -204,7 +204,7 @@ $alert = $status[0]['SATU'];
 											</td>
 
 											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 5) {?>
-											<td><span class="label label-success"><i class="fa fa-check"></i> Approved by Akuntansi &nbsp;</span>
+											<td class="text-center"><span class="label label-success"><i class="fa fa-check"></i> Approved by Akuntansi &nbsp;</span>
 												
 												<?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
@@ -215,7 +215,7 @@ $alert = $status[0]['SATU'];
 
 											</td>
 											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 6){ ?>
-												<td><span class="label label-success"><i class="fa fa-check"></i> Returned to Purchasing &nbsp;</span>
+												<td class="text-center"><span class="label label-success"><i class="fa fa-check"></i> Returned to Purchasing &nbsp;</span>
 												
 												<?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
@@ -229,9 +229,9 @@ $alert = $status[0]['SATU'];
 
 
 											<?php if ($u['SOURCE_BERMASALAH'] !== 'BUYER') { ?>  
-											<td><?php echo $u['SOURCE_BERMASALAH']?></td>
+											<td class="text-center"><?php echo $u['SOURCE_BERMASALAH']?></td>
 											<?php }else { ?>
-											<td>PURCHASING</td>
+											<td class="text-center">PURCHASING</td>
 											<?php } ?>
 
 
@@ -267,6 +267,7 @@ $alert = $status[0]['SATU'];
 		  </div>
 		  <div class="modal-footer">
 		  	<h5 class="modal-title-footer pull-left"></h5>
+		  	<div class="pull-right btnDiv"></div>
 		  </div>
 		</div>
  	</div>
