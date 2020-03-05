@@ -388,26 +388,7 @@
 			console.log(kodesie + ' - '+periode);
 
 			$('#cover-spin').fadeIn();
-				$.ajax({
-					url: '<?php echo base_url(''); ?>AdmCabang/Monitoring/getMonTahunan',
-					type: 'POST',
-					data: {periode: periode,statusKerja: '',unitKerja: '',seksiKerja:kodesie},
-					dataType: 'json',
-					success: function(res){
-						console.log(res);
-						setTimeout(function(){
-						chartShow(res,periode)
-						},2000)
-						
-					},
-					error: function(res){
-						$('#cover-spin').hide();
-						Swal.fire({
-							type: 'error',
-							title: 'Request Error'
-						})
-					}
-				})
+				getDataTahunan(periode,'','',kodesie)
 
 		})
 
@@ -429,7 +410,12 @@
 				Swal.fire('Oops!','Periode Wajib diisi!','warning')
 			}else{
 				$('#cover-spin').fadeIn();
-				$.ajax({
+				getDataTahunan(periodeAwal,statusKerja,unitKerja,seksiKerja)
+			}	
+		})
+
+		function getDataTahunan(periodeAwal,statusKerja,unitKerja,seksiKerja){
+			$.ajax({
 					url: '<?php echo base_url(''); ?>AdmCabang/Monitoring/getMonTahunan',
 					type: 'POST',
 					data: {periode: periodeAwal,statusKerja: statusKerja,unitKerja: unitKerja,seksiKerja:seksiKerja},
@@ -449,8 +435,7 @@
 						})
 					}
 				})
-			}	
-		})
+		}
 
 		function chartShow(res,periodeAwal){
 						$(".panelTabel").fadeIn();
