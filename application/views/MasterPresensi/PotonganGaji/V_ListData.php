@@ -202,15 +202,15 @@
     })
 
     const pgListData = {
-        triggerFormDetail: async id => {
+        triggerFormDetail: id => {
             const form = document.getElementById(`formDetail${id}`)
             if(form) form.submit();
         },
-        triggerFormEdit: async id => {
+        triggerFormEdit: id => {
             const form = document.getElementById(`formEdit${id}`)
             if(form) form.submit();
         },
-        deleteData: async (id, row, employeeName) => {
+        deleteData: (id, row, employeeName) => {
             element(`#buttonDelete${row}`).animate.showLoading()
             const formData = new FormData()
             formData.append('id', id)
@@ -236,7 +236,7 @@
                 element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
             })
         },
-        openDeleteModal: async (id, row, employeeName) => {
+        openDeleteModal: (id, row, employeeName) => {
             if(confirm(`Anda yakin ingin menghapus data potongan ${employeeName} ?`)) pgListData.deleteData(id, row, employeeName)
         }
     }
@@ -325,19 +325,20 @@
         }
     }
 
-    String.prototype.isEmpty = function() { return this.toString() == '' }
+    // note, if u not know what is this, learn es6 syntax js
+    String.prototype.isEmpty = () => this.toString() == '' 
 
-    String.prototype.isNotEmpty = function() { return this.toString() != '' }
+    String.prototype.isNotEmpty = () => this.toString() != ''
 
-    String.prototype.isNull = function() { return this.toString() == null }
+    String.prototype.isNull = () => this.toString() == null
 
-    String.prototype.isNotNull = function() { return this.toString() != null }
+    String.prototype.isNotNull = () => this.toString() != null
 
-    String.prototype.isNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
+    String.prototype.isNullAndEmpty = () => this.toString() == null && this.toString() == ''
 
-    String.prototype.isNullOrEmpty = function() { return this.toString() == null || this.toString() == '' }
+    String.prototype.isNullOrEmpty = () => this.toString() == null || this.toString() == ''
 
-    String.prototype.isNotNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
+    String.prototype.isNotNullAndEmpty = () => this.toString() == null && this.toString() == ''
 
-    String.prototype.isNotNullOrEmpty = function() { return this.toString() != null || this.toString() != '' }
+    String.prototype.isNotNullOrEmpty = () => this.toString() != null || this.toString() != ''
 </script>
