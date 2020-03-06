@@ -378,14 +378,12 @@ class C_Rekap extends CI_Controller
 
 		$dt = $this->M_monitoringpresensi->getGrafikPiePerPekerja($noinduk,$tanggalAwal,$tanggalAkhir,$kodesie);
 
-		// echo "<pre>";print_r($dt);exit();
-
 		$label = array();
 		$presensi = array();
 		$tanggalPresensi = array();
 		$dt[0]['bekerja'] -= $dt[0]['izin_pribadi'];
 		foreach ($dt[0] as $key => $value) {
-			if($key != "noind" and $key != "nama" and $key != "seksi" and $key != "masukkerja" and $key != "tgl_izin_pribadi" and $key != "tgl_mangkir" and $key != "tgl_sakit" and $key != "tgl_izin_pamit" and $key != "tgl_izin_perusahaan" and $key != "tgl_terlambat"){
+			if($key != "noind" and $key != "nama" and $key != "seksi" and $key != "masukkerja" and $key != "tgl_izin_pribadi" and $key != "tgl_mangkir" and $key != "tgl_sakit" and $key != "tgl_izin_pamit" and $key != "tgl_izin_perusahaan" and $key != "tgl_terlambat" and $key != "tgl_bekerja"){
 				if($key == "terlambat")
 					$key = "Terlambat";
 				if($key == "izin_pribadi")
@@ -404,11 +402,23 @@ class C_Rekap extends CI_Controller
 
 				$presensi[] = $value;
 			}
-			if($key == "tgl_terlambat" or $key == "tgl_izin_pribadi" or $key == "tgl_mangkir" or $key == "tgl_sakit" or $key == "tgl_izin_pamit" or $key == "tgl_izin_perusahaan"){
 				$tanggalPresensi[$key] = $value;
+
+				
+		}
+		$tglBekerja = explode(' , ', $tanggalPresensi['tgl_bekerja']);
+		$tglIzinPribadi = explode(' , ', $tanggalPresensi['tgl_izin_pribadi']);
+		foreach ($tglBekerja as $key => $bkj) {
+			foreach ($tglIzinPribadi as $key => $izinPribadi) {
+				if($bkj == $izinPribadi){
+					unset($tglBekerja[array_search($bkj, $tglBekerja)]);
+				}
 			}
 		}
-		// echo "<pre>";print_r($tanggalPresensi);exit();
+		$tglBekerja = array_values($tglBekerja);
+		$tglBekerja = implode(' , ', $tglBekerja);
+
+		$tanggalPresensi['tgl_bekerja'] = $tglBekerja;
 		$data['inf'] = $dt[0];
 		$data['label'] = $label;
 		$data['data'] = $presensi;

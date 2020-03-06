@@ -498,7 +498,6 @@
 			let tanggalAkhir = tanggal[1];
 
 			const today = moment();
-			console.log(today)
 			$("#cover-spin").fadeIn();
 			$.ajax({
 				url: '<?php echo base_url(''); ?>AdmCabang/Rekap/getGrafik',
@@ -538,75 +537,103 @@
 					                enabled: true,
 					                mode: 'nearest',
 					                callbacks: {
+					                	title: function(tooltipItems, data){
+					                		var multistringText = [tooltipItems[0].yLabel];
+					                		switch(tooltipItems[0].index){
+					                       	case 0:
+					                       	multistringText[0] = "Terlambat : "+ res.data[0];
+					                       	multistringText.push("Terlambat pada tanggal :");
+					                       	break;
+					                       	case 1:
+					                       	multistringText[0] = "Izin Pribadi : "+res.data[1];		
+					                       	multistringText.push("Izin Pribadi pada tanggal : ")		                       	
+					                       	break;
+					                       	case 2:
+					                       	multistringText[0] = "Mangkir : " + res.data[2];
+					                     	multistringText.push("Mangkir pada tanggal : ")
+					                       	break;
+					                       	case 3:
+					                       	multistringText[0] = "Sakit : " +res.data[3];
+					                       	multistringText.push("Sakit pada tanggal : ")
+					                       	break;
+					                       	case 4:
+					                       	multistringText[0] = "Izin Pamit : "+res.data[4];
+					                       	multistringText.push("Izin Pamit pada tanggal : ")
+					                       	break;
+					                       	case 5:
+					                       	multistringText[0] = "Izin Perusahaan : " + res.data[5];
+					                       	multistringText.push("Izin Perusahaan pada tanggal : ")					                       	
+					                       	break;
+					                       	case 6:
+					                       	multistringText[0] = "Bekerja : " + res.data[6];
+					                       	multistringText.push("Bekerja pada tanggal : ")					                       	
+					                       	break;
+					                       }
+					                        return multistringText;
+					                	}
+					                	,
 					                    label: function(tooltipItems, data) {
-					                    	console.log(tooltipItems)	
 					                       var multistringText = [tooltipItems.yLabel];
 					                       switch(tooltipItems.index){
 					                       	case 0:
-					                       	multistringText[0] = "Terlambat : "+ res.data[0];
 					                       	if(res.tanggalPresensi['tgl_terlambat'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_terlambat'].split(' , ');
-					                       		multistringText.push("Terlambat pada tanggal :");
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       		
 					                       	}
 					                       	break;
 					                       	case 1:
-					                       	multistringText[0] = "Izin Pribadi : "+res.data[1];
 					                       	if(res.tanggalPresensi['tgl_izin_pribadi'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_izin_pribadi'].split(' , ');
-					                       		multistringText.push("Izin Pribadi pada tanggal : ")
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       	}					                       	
 					                       	break;
 					                       	case 2:
-					                       	multistringText[0] = "Mangkir : " + res.data[2];
 					                       	if(res.tanggalPresensi['tgl_mangkir'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_mangkir'].split(' , ');
-					                     	  	multistringText.push("Mangkir pada tanggal : ")
 					                     	  	for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}                     		
 					                       	}
 					                       	break;
 					                       	case 3:
-					                       	multistringText[0] = "Sakit : " +res.data[3];
 					                       	if(res.tanggalPresensi['tgl_sakit'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_sakit'].split(' , ');
-					                       		multistringText.push("Sakit pada tanggal : ")
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       	}
 					                       	break;
 					                       	case 4:
-					                       	multistringText[0] = "Izin Pamit : "+res.data[4];
 					                       	if(res.tanggalPresensi['tgl_izin_pamit'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_izin_pamit'].split(' , ');
-					                       		multistringText.push("Izin Pamit pada tanggal : ")
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       	}
 					                       	break;
 					                       	case 5:
-					                       	multistringText[0] = "Izin Perusahaan : " + res.data[5];
 					                       	if(res.tanggalPresensi['tgl_izin_perusahaan'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_izin_perusahaan'].split(' , ');
-					                       		multistringText.push("Izin Perusahaan pada tanggal : ")
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       	}					                       	
 					                       	break;
 					                       	case 6:
-					                       	multistringText[0] = "Bekerja : "+res.data[6];
+					                       	if(res.tanggalPresensi['tgl_bekerja'] != "-"){
+					                       		let tanggal = res.tanggalPresensi['tgl_bekerja'].split(' , ');
+					                       		for(var i = 0;i < tanggal.length ; i ++){
+					                       			multistringText[i] = tanggal[i]
+					                       		}
+					                       	}
 					                       	break;
-					                       }
+					                       }					                       
+					                    	console.log(tooltipItems)	
 					                        return multistringText;
 					                    }
 					                }
