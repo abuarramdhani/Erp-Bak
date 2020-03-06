@@ -5,9 +5,9 @@ $( _ => {
     */
     const datePSPT = new Date()
 
-    const datePSPTDay = String(datePSPT.getDate()).padStart(2, '0')
+    const datePSPTDay = String(datePSPT.getDate()).length < 2 ? '0'+ String(datePSPT.getDate()) :  String(datePSPT.getDate())
 
-    const datePSPTMonth = String(datePSPT.getMonth() + 1).padStart(2, '0')
+    const datePSPTMonth = String(datePSPT.getMonth()).length < 2 ? '0'+ String(datePSPT.getMonth()) :  String(datePSPT.getMonth())
 
     const datePSPTYear = datePSPT.getFullYear()
 
