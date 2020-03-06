@@ -231,7 +231,7 @@
     let formData = null
     const potonganId = '<?= $potonganId ?>'
 
-    document.addEventListener('DOMContentLoaded', async _ => {
+    document.addEventListener('DOMContentLoaded',  _ => {
         pgEditData.initSelect()
         pgEditData.initInput()
         pgEditData.initButton()
@@ -241,7 +241,7 @@
     })
 
     const pgEditData = {
-        async initializeData() {
+        initializeData() {
             const pekerja = $('#pg_selectPekerja').select2('data')[0].id
             const jenisPotongan = $('#pg_selectJenisPotongan').select2('data')[0].id
             const nominalTotal = document.getElementById('pg_inputNominalTotal').value
@@ -270,7 +270,7 @@
                 formData.append('statusSimulasi', JSON.stringify(statusSimulasi))
             }
         },
-        async initSelect() {
+        initSelect() {
             $('#pg_selectPekerja').select2({
                 placeholder: 'Pilih Pekerja',
                 allowClear: true,
@@ -326,17 +326,17 @@
                 }
             })
         },
-        async initInput() {
+        initInput() {
             $('#pg_inputPeriode').datepicker({
                 format: 'M-yyyy',
                 viewMode: 'months', 
                 minViewMode: 'months'
             })
         },
-        async initForm() {
+        initForm() {
             document.getElementById('pg_formPotongan').addEventListener('submit', pgEditData.simulateData.bind(event))
         },
-        async initButton() {
+        initButton() {
             element('#pg_buttonCloseSimulasi').onClick( _ => {
                 element('#pg_divTabelSimulasi').animate.css('fadeOut', _ => {
                     element('#pg_divTabelSimulasi').hide()
@@ -374,14 +374,14 @@
                 })
             })
         },
-        async initDataTable() {
+        initDataTable() {
             tabelSimulasi = $('#pg_tabelSimulasi').DataTable({
                 columnDefs: [
                     { className: 'text-center', targets: [0, 1, 2, 3, 4, 5] }
                 ]
             })
         },
-        async simulateData(event) {
+        simulateData(event) {
             event.preventDefault()
             element('#pg_buttonSimulasi').animate.showLoading()
             const pekerja = $('#pg_selectPekerja').select2('data')[0].id
@@ -550,19 +550,20 @@
         }
     }
 
-    String.prototype.isEmpty = function() { return this.toString() == '' }
+    // note, if u not know what is this, learn es6 syntax js
+    String.prototype.isEmpty = () => this.toString() == '' 
 
-    String.prototype.isNotEmpty = function() { return this.toString() != '' }
+    String.prototype.isNotEmpty = () => this.toString() != ''
 
-    String.prototype.isNull = function() { return this.toString() == null }
+    String.prototype.isNull = () => this.toString() == null
 
-    String.prototype.isNotNull = function() { return this.toString() != null }
+    String.prototype.isNotNull = () => this.toString() != null
 
-    String.prototype.isNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
+    String.prototype.isNullAndEmpty = () => this.toString() == null && this.toString() == ''
 
-    String.prototype.isNullOrEmpty = function() { return this.toString() == null || this.toString() == '' }
+    String.prototype.isNullOrEmpty = () => this.toString() == null || this.toString() == ''
 
-    String.prototype.isNotNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
+    String.prototype.isNotNullAndEmpty = () => this.toString() == null && this.toString() == ''
 
-    String.prototype.isNotNullOrEmpty = function() { return this.toString() != null || this.toString() != '' }
+    String.prototype.isNotNullOrEmpty = () => this.toString() != null || this.toString() != ''
 </script>

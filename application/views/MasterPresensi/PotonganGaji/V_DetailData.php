@@ -197,12 +197,12 @@
     </div>
 </section>
 <script>
-    document.addEventListener('DOMContentLoaded', async _ => {
+    document.addEventListener('DOMContentLoaded', () => {
         pgDetailData.initDataTable()
     })
 
     const pgDetailData = {
-        initDataTable: async _ => {
+        initDataTable: () => {
             $('#pg_tabelSimulasi').DataTable({
                 columnDefs: [
                     { className: 'text-center', targets: [0, 1, 2, 3, 4,5] }
