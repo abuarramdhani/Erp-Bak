@@ -395,8 +395,6 @@
 			let statusKerja = $('#vm-status').val()
 			let unitKerja = $('#vm-unit').val()
 			let seksiKerja = $('#vm-seksi').val()
-
-			console.log(statusKerja)
 			if(!periodeAwal || !periodeAkhir){
 				alert('Empty!');
 			}else if(periodeAwal > periodeAkhir){

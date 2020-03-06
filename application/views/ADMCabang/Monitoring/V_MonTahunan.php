@@ -384,8 +384,6 @@
 			let unitKerja = $('#vm-unit').val()
 			let seksiKerja = $('#vm-seksi').val()
 
-			console.log(kodesie + ' - '+periode);
-
 			$('#cover-spin').fadeIn();
 				getDataTahunan(periode,'','',kodesie)
 
@@ -420,7 +418,6 @@
 					data: {periode: periodeAwal,statusKerja: statusKerja,unitKerja: unitKerja,seksiKerja:seksiKerja},
 					dataType: 'json',
 					success: function(res){
-						console.log(res);
 						setTimeout(function(){
 						$(".panelTabel").fadeIn();
 						$(".panelGrafik").fadeIn();
@@ -555,7 +552,6 @@
 
 								    var periode = dtClick.labels[index];
 								    var kodesie = res.kodesieArr[index][dtSetIndex];
-								    console.log(periode+ ' - '+kodesie);
 
 								    $('#cover-spin').fadeIn();
 								    $.ajax({

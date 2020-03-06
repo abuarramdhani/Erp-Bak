@@ -318,7 +318,6 @@
 		}
 
 		async function getDataPekerja(url,periode){
-			console.log(url + ' - '+periode)
 			const settings = {
 				method: 'POST',
 				headers: {
@@ -330,10 +329,8 @@
 			try{
 				const response = await fetch(url);
 				const data = await response.json();
-				console.log(data)
 				return data;
 			}catch(e){
-				console.log(e)
 				return e;
 			}
 		}
@@ -400,7 +397,6 @@
 					data: {periode: periode,arrTanggal: arrTanggal,statusKerja: statusKerja,unitKerja: unitKerja,seksiKerja:seksiKerja},
 					dataType: 'json',
 					success: function(res){
-						console.log(res)
 						setTimeout(function(){
 						$(".panelGrafik").show();
 						$('#cover-spin').fadeOut();
@@ -529,7 +525,6 @@
 						    }
 						    
 						});	//end chart
-						console.log(myChart)
 						myChart.data.datasets.map((data,index)=>{
 							if(index == 0){ 
 								for(var j = 0;j < myChart.data.datasets.length;j++){
