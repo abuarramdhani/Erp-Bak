@@ -404,7 +404,27 @@
 						setTimeout(function(){
 						$(".panelGrafik").show();
 						$('#cover-spin').fadeOut();
-						document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
+						chartShow(arrTanggal,res,statusKerja,unitKerja,seksiKerja)
+
+						},2000)
+
+					}
+					,
+					error: function(res){
+						$('#cover-spin').hide();
+						Swal.fire({
+							type: 'error',
+							title: 'Request Error'
+						})
+					}
+				})
+
+			}	
+		})
+
+
+		function chartShow(arrTanggal,res,statusKerja,unitKerja,seksiKerja){
+			document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
 						document.getElementById("wadah-grafik").innerHTML = '<canvas id="grafik"></canvas>';
 						var ctx = document.getElementById('grafik').getContext('2d');
 						var myChart = new Chart(ctx, {
@@ -469,8 +489,6 @@
            							var index = element[0]['_index'];
            							var dtSetIndex = element[0]['_datasetIndex'];
 								    var dtClick = element[0]['_chart'].config.data;
-								   
-								    console.log(unitKerja)
 								    var periode = dtClick.labels[index];
 								    var kodesie = res.kodesieArr[index][dtSetIndex];
 
@@ -596,21 +614,6 @@
 
 						})
 						myChart.update();
-
-						},2000)
-
-					}
-					,
-					error: function(res){
-						$('#cover-spin').hide();
-						Swal.fire({
-							type: 'error',
-							title: 'Request Error'
-						})
-					}
-				})
-
-			}	
-		})
+		}
 	})
 </script>

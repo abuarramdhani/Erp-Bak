@@ -414,7 +414,24 @@
 						setTimeout(function(){
 						$(".panelGrafik").show();
 						$('#cover-spin').fadeOut();
-						document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
+						chartShow(res,arrBulan)
+						},2000)
+
+					}
+					,
+					error: function(res){
+						$('#cover-spin').hide();
+						Swal.fire({
+							type: 'error',
+							title: 'Request Error'
+						})
+					}
+				})
+			}	
+		})
+
+		function chartShow(res,arrBulan){
+			document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
 						document.getElementById("wadah-grafik").innerHTML = '<canvas id="grafik"></canvas>';
 						var ctx = document.getElementById('grafik').getContext('2d');
 						var myChart = new Chart(ctx, {
@@ -478,13 +495,9 @@
            							var element = this.getElementAtEvent(c);
            							var index = element[0]['_index'];
            							var dtSetIndex = element[0]['_datasetIndex'];
-								    var dtClick = element[0]['_chart'].config.data;
-								   
-
+								    var dtClick = element[0]['_chart'].config.data;								  
 								    var periode = dtClick.labels[index];
 								    var kodesie = res.kodesieArr[index][dtSetIndex];
-								    console.log(periode+ ' - '+kodesie);
-
 								    $('#cover-spin').fadeIn();
 								    $.ajax({
 								    	url: '<?php echo base_url(''); ?>AdmCabang/Monitoring/getDetailPekerjaBulanan',
@@ -495,14 +508,16 @@
 								    		setTimeout(() => {
 								    			$('#cover-spin').fadeOut();
 								    			$('#detailGrafikModal').modal('show');
-
 								    			var i;
 							                    var no = 0;
 							                    var html = "";
 							                    for(i=0;i < res.length ; i++){
+							                    	var chgTanggal = new Date(res[i].tanggal)
+							                    	var month = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+"Juli", "Agustus", "September", "Oktober", "November", "Desember"][chgTanggal.getMonth()];
 							                        no++;
 							                        html = html + '<tr>'
-							                        			+ '<td>' + res[i].tanggal  + '</td>'
+							                        			+ '<td>' + chgTanggal.getDate() + " " + month + " " + chgTanggal.getFullYear()  + '</td>'
 							                                    + '<td>' + res[i].noind  + '</td>'
 							                                    + '<td>' + res[i].nama  + '</td>'
 							                                    + '<td>' + res[i].seksi  + '</td>'
@@ -606,22 +621,6 @@
 
 						})
 						myChart.update();
-
-						console.log(myChart)
-
-						},2000)
-
-					}
-					,
-					error: function(res){
-						$('#cover-spin').hide();
-						Swal.fire({
-							type: 'error',
-							title: 'Request Error'
-						})
-					}
-				})
-			}	
-		})
+		}
 	})
 </script>
