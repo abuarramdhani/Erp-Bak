@@ -49,12 +49,7 @@ class C_MonitoringMng extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 
-		$cek = $this->M_monmng->cekHak($user);
-		// if ($cek[0]['hak_akses'] == 'Koordinator') {
-			$this->load->view('MonitoringDeliverySparepart/V_MonitoringMng', $data);
-		// }else {
-		// 	$this->load->view('MonitoringDeliverySparepart/V_Salah', $data);
-		// }
+		$this->load->view('MonitoringDeliverySparepart/V_MonitoringMng', $data);
 		$this->load->view('V_Footer',$data);
 		}
 		
@@ -83,7 +78,7 @@ class C_MonitoringMng extends CI_Controller
     
     function saveMonMng(){
 		$cek			= $this->M_monmng->cekHeader();
-		$id				= $cek[0]['jumlah'] + 1;
+		$id				= $cek[0]['id'] + 1;
 		$component_code = $this->input->post('compCode');
 		$component_desc = $this->input->post('comDesc');
 		$bom_version 	= $this->input->post('bomVer');
@@ -93,28 +88,22 @@ class C_MonitoringMng extends CI_Controller
 		$qty 			= $this->input->post('qty');
 		
 		// echo "<pre>"; print_r($cari);exit();
-		for ($x=0; $x < count($qty) ; $x++) { 
-			$tgl1 = explode(' ', $tglTarget[$x]);
-			$tgl2 = $tgl1[0];
-			$tgl  = sprintf("%02d", $tgl2);
-
-			$cekMon = $this->M_monmng->cekData($component_code, $bom_version, $periode);
-			if (empty($cekMon)) {
-				$saveHeader = $this->M_monmng->saveheaderMon($component_code, $component_desc, $bom_version, $periode, $id);
-				$saveTarget = $this->M_monmng->saveTarget($id, $tgl, $qty[$x], $component_code);
-			}else {
-				$saveTarget = $this->M_monmng->saveTarget($cekMon[0]['id'], $tgl, $qty[$x], $component_code);
-			}
-		}
-		// $cekMon = $this->M_monmng->cekData($component_code, $bom_version, $periode);
 		$cekInput = $this->M_monmng->cekBom($component_code, $bom_version);
-		// echo "<pre>"; print_r($bom_version);exit();
 		if (!empty($cekInput)) {
-			for ($i=0; $i < count($cari) ; $i++) { 
-				if ($cari[$i]['assembly_num'] == $component_code) {
-					$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $periode, $id);
+			for ($x=0; $x < count($qty) ; $x++) { 
+				$tgl1 = explode(' ', $tglTarget[$x]);
+				$tgl2 = $tgl1[0];
+				$tgl  = sprintf("%02d", $tgl2);
+
+				$cekMon = $this->M_monmng->cekData($component_code, $bom_version, $periode);
+				if (empty($cekMon)) {
+					$saveHeader = $this->M_monmng->saveheaderMon($component_code, $component_desc, $bom_version, $periode, $id);
+					$saveTarget = $this->M_monmng->saveTarget($id, $tgl, $qty[$x], $component_code);
+					for ($i=0; $i < count($cari) ; $i++) { 
+						$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $periode, $id);
+					}
 				}else {
-					$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $periode, $id);
+					$saveTarget = $this->M_monmng->saveTarget($cekMon[0]['id'], $tgl, $qty[$x], $component_code);
 				}
 			}
 		}
@@ -142,8 +131,8 @@ class C_MonitoringMng extends CI_Controller
 		}
 
 		$data['Tree'] = $this->buildTree($data['BOM'], $root);
-		// $data['htmllist'] = $this->makeHeader($datanya,$depth,$depth, $period, $data['BOM'], $hak);
-		$data['htmllist'] = $this->MakeTable($data['Tree'],$depth,$depth);
+		$data['htmllist'] = $this->makeHeader($datanya,$depth,$depth, $period, $data['BOM']);
+		// $data['htmllist'] = $this->MakeTable($data['Tree'],$depth,$depth);
 		$bulan1 = $datanya[0]['periode_monitoring'];
 		$bulan2 = explode(" ", $bulan1);
 		$bulan = $bulan2[0];
@@ -188,19 +177,75 @@ class C_MonitoringMng extends CI_Controller
 	    return $branch;
 	}	
 
-	// public function makeHeader($array, $depth, $depthasli, $period, $bom, $hak){
-	// 	// echo "<pre>";print_r($hak);exit();
-	// 	$bulan1 = $array[0]['periode_monitoring'];
-	// 	$bulan2 = explode(" ", $bulan1);
-	// 	$bulan 	= $bulan2[0];
-	// 	$tahun	= $bulan2[1];
-
-	// 	$header = $this->M_monmng->getHeader($bulan1);
-		
-	// }
-
-	public function MakeTable($array, $depth, $depthasli){
+	public function makeHeader($array, $depth, $depthasli, $period, $bom){
 		$bulan1 = $array[0]['periode_monitoring'];
+		$bulan2 = explode(" ", $bulan1);
+		$bulan 	= $bulan2[0];
+		$tahun	= $bulan2[1];
+		$kedalaman = $depthasli-$depth;
+
+		$header = $this->M_monmng->getHeader($bulan1);
+		
+		foreach ($header as $val) {
+			$dept = $this->M_monmng->getseksi($val['component_code']);
+			if (empty($dept)) {
+				$seksi = '';
+			}else {
+				$seksi = $dept[0]['DEPARTMENT_CLASS_CODE'];
+			}
+
+			$bln2 = '';
+			if ($bulan == 'Jan' || $bulan == 'Mar' || $bulan == 'May' || $bulan == 'Jul' || $bulan == 'Ags' || $bulan == 'Oct' || $bulan == 'Dec') {
+				$x = 32;
+			}elseif ($bulan == 'Apr' || $bulan == 'Jun' || $bulan == 'Sep' || $bulan == 'Nov') {
+				$x = 31;
+			}elseif ($bulan == 'Feb') {
+				if ($tahun%4 == 0) {
+					$x = 30;
+				}else {
+					$x = 29;
+				}
+			}
+
+			for ($i=1; $i < $x; $i++) {
+				$no2 = sprintf("%02d", $i);
+				$cek = $this->M_monmng->getqtyTarget($val['component_code'], $val['id'], $no2);
+				if (!empty($cek)) {
+					// echo "<pre>";print_r($cek);exit();
+					$qtyTarget = $cek[0]['qty_target'];
+				}else{
+					$qtyTarget = '';
+				}
+				$bln2 .= "<td><input type='text' style='width:30px;background-color:#82e4ff;' class='text-center' id='qty".$i.$val['id']."'  value='".$qtyTarget."' onchange='saveQtyTarget2(".$i.",".$val['id'].")'></td>";
+			}
+
+			$tree 	= $this->buildTree($bom, $val['component_code']);
+			$output = $this->MakeTable($tree, $depth, $depthasli, $period);
+			// echo "<pre>";print_r($output);exit();
+
+			$header2 = '<tbody>
+							<tr data-toggle="collapse" data-target=".'.$val['component_code'].'" aria-expanded="false" aria-controls="'.$val['component_code'].'"  onclick="ganti('.$val['id'].')">
+								<td style="padding-left: '.(20*$kedalaman).'px;"><i id="icon'.$val['id'].'" class="fa fa-minus" aria-hidden="true"></i></td>
+								<td style="padding-left: '.(20*$kedalaman).'px;"><b>Root Assembly</b></td>
+								<td style="padding-left: '.(20*$kedalaman).'px;"><input type="hidden" id="compnum'.$val['id'].'" value="'.$val['component_code'].'">'.$val['component_code'].'</td>  
+								<td colspan="5"><input type="hidden" id="desc'.$val['id'].'" value="'.$val['component_desc'].'">'.$val['component_desc'].'</td>
+								<td></td>
+								<td>'.$seksi.'</td>
+								<input type="hidden" id="root'.$val['id'].'" value="'.$val['component_code'].'">
+								<input type="hidden" id="idbom'.$val['id'].'" value="'.$val['id'].'">
+								<input type="hidden" id="version'.$val['id'].'" value="'.$val['identitas_bom'].'">
+								<input type="hidden" id="tanda'.$val['id'].'" value="minus">
+								'.$bln2.'
+							</tr>
+							'.$output.'
+						</tbody>';
+		}
+		return $header2;
+		
+	}
+
+	public function MakeTable($array, $depth, $depthasli, $period){
+		$bulan1 = $period;
 		$bulan2 = explode(" ", $bulan1);
 		$bulan  = $bulan2[0];
 		$tahun  = $bulan2[1];
@@ -220,53 +265,42 @@ class C_MonitoringMng extends CI_Controller
 			}else {
 				$seksi = $dept[0]['DEPARTMENT_CLASS_CODE'];
 			}
+
+			$pisah = explode(" <-- ", $subArray['assembly_path']);
+			$col = '';
+			for ($p=0; $p < count($pisah) ; $p++) { 
+				$col .= $pisah[$p].' ';
+			}
 			// echo "<pre>"; print_r($bln);exit();
 			if (array_key_exists('CHILDREN', $subArray)) {
-				$bln = $this->targetQTY($subArray['component_num'], $bulan1, $subArray['root_assembly']);
-				// echo "<pre>";print_r($bln);exit();
-				if($subArray['bom_level'] != 1) {
-					$headini = 'class="'.$subArray['assembly_num'].' collapse"';
-				} else {
-					$headini = '';
-				}
-				
-				$output .= '<tbody '.$headini.'>
-						        <tr class="clickable" data-toggle="collapse" data-target=".'.$subArray['component_num'].'" aria-expanded="false" aria-controls="'.$subArray['component_num'].'">
-						            <td style="padding-left: '.(20*$kedalaman).'px;"><i class="fa fa-plus" aria-hidden="true"></i></td>
-						            <td style="padding-left: '.(20*$kedalaman).'px;">'.$subArray['bom_level'].'</td>
-						          	<td style="padding-left: '.(20*$kedalaman).'px;"><input type="hidden" id="compnum'.$subArray['idunix'].'" value="'.$subArray['component_num'].'">'.$subArray['component_num'].'</td>  
-									<td>'.$subArray['item_type'].'</td>
-									<td>'.$subArray['qty'].'</td>
-									<td>'.$seksi.'</td>
-									<input type="hidden" id="root'.$subArray['idunix'].'" value="'.$subArray['root_assembly'].'">
-									<input type="hidden" id="idbom'.$subArray['idunix'].'" value="'.$subArray['id'].'">
-									<input type="hidden" id="version'.$subArray['idunix'].'" value="'.$subArray['identitas_bom'].'">
-									'.$bln.'
-						        </tr>
-						    </tbody>'.$this->MakeTable($subArray['CHILDREN'], $depth-1, $depthasli);
+				$bln = $this->targetQTY($subArray['component_num'], $bulan1, $subArray['root_assembly'], $subArray['idunix']);				
+				$output .= '<tr class="'.$col.' collapse in" data-toggle="collapse" data-target=".'.$subArray['component_num'].'" aria-expanded="false" aria-controls="'.$subArray['component_num'].'" onclick="ganti('.$subArray['idunix'].')">
+								<td style="padding-left: '.(15*$kedalaman).'px;"><i id="icon'.$subArray['idunix'].'" name="icon" class="fa fa-minus '.$col.'"></i></td>
+								<td style="padding-left: '.(20*$kedalaman).'px;">'.$subArray['bom_level'].'</td>
+								<td style="padding-left: '.(20*$kedalaman).'px;"><input type="hidden" id="compnum'.$subArray['idunix'].'" value="'.$subArray['component_num'].'">'.$subArray['component_num'].'</td>  
+								<td colspan="5">'.$subArray['item_type'].'</td>
+								<td>'.$subArray['qty'].'</td>
+								<td>'.$seksi.'</td>
+								<input type="hidden" id="root'.$subArray['idunix'].'" value="'.$subArray['root_assembly'].'">
+								<input type="hidden" id="idbom'.$subArray['idunix'].'" value="'.$subArray['id'].'">
+								<input type="hidden" id="version'.$subArray['idunix'].'" value="'.$subArray['identitas_bom'].'">
+								<input type="hidden" id="tanda'.$subArray['idunix'].'" name="tanda" class="'.$col.'" value="minus">
+								'.$bln.'
+							</tr>'.$this->MakeTable($subArray['CHILDREN'], $depth-1, $depthasli, $period);
 			} else {
-				$bln = $this->targetQTY($subArray['component_num'], $bulan1, $subArray['root_assembly']);
-				// echo "<pre>"; print_r($bln);exit();
-				if ($depth == $subArray['bom_level']) {
-					$anak = 'collapse in';
-				} else {
-					$anak = 'collapse';
-				}
-				$output .= '<tbody class="'.$subArray['assembly_num'].' '.$anak.'">
-						        <tr >
-						            <td style="padding-left: '.(20*$kedalaman).'px;">-</td>
-						            <td style="padding-left: '.(20*$kedalaman).'px;">'.$subArray['bom_level'].'</td>
-						          	<td style="padding-left: '.(20*$kedalaman).'px;"><input type="hidden" id="compnum'.$subArray['idunix'].'" value="'.$subArray['component_num'].'">'.$subArray['component_num'].'</td>
-									<td>'.$subArray['item_type'].'</td>
-									<td>'.$subArray['qty'].'</td>
-									<td>'.$seksi.'</td>
-									<input type="hidden" id="root'.$subArray['idunix'].'" value="'.$subArray['root_assembly'].'">
-									<input type="hidden" id="idbom'.$subArray['idunix'].'" value="'.$subArray['id'].'">
-									<input type="hidden" id="version'.$subArray['idunix'].'" value="'.$subArray['identitas_bom'].'">
-									'.$bln.'
-						        </tr>
-						    </tbody>
-				';
+				$bln = $this->targetQTY($subArray['component_num'], $bulan1, $subArray['root_assembly'], $subArray['idunix']);
+				$output .= '<tr class="'.$col.' collapse in">
+								<td style="padding-left: '.(20*$kedalaman).'px;"></td>
+								<td style="padding-left: '.(20*$kedalaman).'px;">'.$subArray['bom_level'].'</td>
+								<td style="padding-left: '.(20*$kedalaman).'px;"><input type="hidden" id="compnum'.$subArray['idunix'].'" value="'.$subArray['component_num'].'">'.$subArray['component_num'].'</td>
+								<td colspan="5">'.$subArray['item_type'].'</td>
+								<td>'.$subArray['qty'].'</td>
+								<td>'.$seksi.'</td>
+								<input type="hidden" id="root'.$subArray['idunix'].'" value="'.$subArray['root_assembly'].'">
+								<input type="hidden" id="idbom'.$subArray['idunix'].'" value="'.$subArray['id'].'">
+								<input type="hidden" id="version'.$subArray['idunix'].'" value="'.$subArray['identitas_bom'].'">
+								'.$bln.'
+							</tr>';
 			}
 		}	
 		return $output;
@@ -281,117 +315,49 @@ class C_MonitoringMng extends CI_Controller
 		redirect(base_url('MonitoringDeliverySparepart/MonitoringManagement'));
 	}
 		
-	function targetQTY($compnum, $periode, $root){
+	function targetQTY($compnum, $periode, $root, $idunix){
 		$bulan2 = explode(" ", $periode);
 		$bulan 	= $bulan2[0];
 		$tahun 	= $bulan2[1];
-		$datanya = $this->M_monmng->getDetail2($root, $periode, $compnum);
+		$datanya = $this->M_monmng->getDetail2($root, $periode, $compnum, $idunix);
 		// echo "<pre>"; print_r($datanya);exit();
 		$bln = '';
 		foreach ($datanya as $key) {
 			if ($bulan == 'Jan' || $bulan == 'Mar' || $bulan == 'May' || $bulan == 'Jul' || $bulan == 'Ags' || $bulan == 'Oct' || $bulan == 'Dec') {
-				for ($i=1; $i < 32; $i++) { 
-					$no = sprintf("%02d", $i);
-					$target = $no + $key['bom_level'];
-					$target = sprintf("%02d", $target);
-					$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
-					// echo "<pre>";print_r($cek2);exit();
-					if (!empty($cek2) && $key['bom_level'] == 1) {
-						$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
-					}elseif(!empty($cek2) && $key['bom_level'] != 1){
-						$jumlah = array();
-						$pisah = explode(' <-- ', $key['assembly_path']);
-						for ($q=1; $q < $key['bom_level']; $q++) { 
-							$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
-								array_push($jumlah, $cari[0]['qty']);
-						}
-						$kali = 1;
-						for ($k=0; $k < count($jumlah); $k++) { 
-							$kali *= $jumlah[$k];
-						}
-						$qtyTarget = $cek2[0]['qty_target'] * $kali * $key['qty'];
-					}else{
-						$qtyTarget = '';
-					}
-					$bln .= "<td><input type='text' style='width:30px' id='qty".$i.$key['idunix']."' value='".$qtyTarget."' ></td>";
-				}
+				$x = 32;
 			}elseif ($bulan == 'Apr' || $bulan == 'Jun' || $bulan == 'Sep' || $bulan == 'Nov') {
-				for ($i=1; $i < 31; $i++) { 
-					$no = sprintf("%02d", $i);
-					$target = $no + $key['bom_level'];
-					$target = sprintf("%02d", $target);
-					$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
-					if (!empty($cek2) && $key['bom_level'] == 1) {
-						$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
-					}elseif(!empty($cek2) && $key['bom_level'] != 1){
-						$jumlah = array();
-						$pisah = explode(' <-- ', $key['assembly_path']);
-						for ($q=1; $q < $key['bom_level']; $q++) { 
-							$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
-								array_push($jumlah, $cari[0]['qty']);
-						}
-						$kali = 1;
-						for ($k=0; $k < count($jumlah); $k++) { 
-							$kali *= $jumlah[$k];
-						}
-						$qtyTarget = $cek2[0]['qty_target'] * $kali * $key['qty'];
-					}else{
-						$qtyTarget = '';
-					}
-					$bln .= "<td><input type='text' style='width:30px' id='qty".$i.$key['idunix']."' value='".$qtyTarget."' ></td>";
-				}
+				$x = 31;
 			}elseif ($bulan == 'Feb') {
 				if ($tahun%4 == 0) {
-					for ($i=1; $i < 30; $i++) { 
-						$no = sprintf("%02d", $i);
-						$target = $no + $key['bom_level'];
-						$target = sprintf("%02d", $target);
-						$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
-						if (!empty($cek2) && $key['bom_level'] == 1) {
-							$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
-						}elseif(!empty($cek2) && $key['bom_level'] != 1){
-							$jumlah = array();
-							$pisah = explode(' <-- ', $key['assembly_path']);
-							for ($q=1; $q < $key['bom_level']; $q++) { 
-								$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
-									array_push($jumlah, $cari[0]['qty']);
-							}
-							$kali = 1;
-							for ($k=0; $k < count($jumlah); $k++) { 
-								$kali *= $jumlah[$k];
-							}
-							$qtyTarget = $cek2[0]['qty_target'] * $kali * $key['qty'];
-						}else{
-							$qtyTarget = '';
-						}
-						$bln .= "<td><input type='text' style='width:30px' id='qty".$i.$key['idunix']."' value='".$qtyTarget."' ></td>";
-					}
+					$x = 30;
 				}else {
-					for ($i=1; $i < 29; $i++) { 
-						$no = sprintf("%02d", $i);
-						$target = $no + $key['bom_level'];
-						$target = sprintf("%02d", $target);
-						$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
-						if (!empty($cek2) && $key['bom_level'] == 1) {
-							$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
-						}elseif(!empty($cek2) && $key['bom_level'] != 1){
-							$jumlah = array();
-							$pisah = explode(' <-- ', $key['assembly_path']);
-							for ($q=1; $q < $key['bom_level']; $q++) { 
-								$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
-									array_push($jumlah, $cari[0]['qty']);
-							}
-							$kali = 1;
-							for ($k=0; $k < count($jumlah); $k++) { 
-								$kali *= $jumlah[$k];
-							}
-							$qtyTarget = $cek2[0]['qty_target'] * $kali * $key['qty'];
-						}else{
-							$qtyTarget = '';
-						}
-						$bln .= "<td><input type='text' style='width:30px' id='qty".$i.$key['idunix']."' value='".$qtyTarget."' ></td>";
-					}
+					$x = 29;
 				}
+			}
+
+			for ($i=1; $i < $x; $i++) { 
+				$no = sprintf("%02d", $i);
+				$target = $no + $key['bom_level'];
+				$target = sprintf("%02d", $target);
+				$cek2 = $this->M_monmng->getqtyTarget($key['root_assembly'], $key['id'], $target);
+				if (!empty($cek2) && $key['bom_level'] == 1) {
+					$qtyTarget = $cek2[0]['qty_target'] * $key['qty'] ;
+				}elseif(!empty($cek2) && $key['bom_level'] != 1){
+					$jumlah = array();
+					$pisah = explode(' <-- ', $key['assembly_path']);
+					for ($q=1; $q < $key['bom_level']; $q++) { 
+						$cari = $this->M_monmng->cariqtySebelumnya($pisah[$q], $key['id']);
+							array_push($jumlah, $cari[0]['qty']);
+					}
+					$kali = 1;
+					for ($k=0; $k < count($jumlah); $k++) { 
+						$kali *= $jumlah[$k];
+					}
+					$qtyTarget = $cek2[0]['qty_target'] * $kali * $key['qty'];
+				}else{
+					$qtyTarget = '';
+				}
+				$bln .= "<td><input type='text' class='text-center' style='width:30px;background-color:#82e4ff' id='qty".$i.$key['idunix']."' value='".$qtyTarget."' ></td>";
 			}
 		}
 		return $bln;
@@ -418,73 +384,5 @@ class C_MonitoringMng extends CI_Controller
 		}
 		print_r($alert);
 	}
-
-
-	// function saveQtyTarget(){
-	// 	$i 				= $this->input->post('no');
-	// 	$tgl2 			= sprintf("%02d", $i);
-	// 	$qty 			= $this->input->post('qty');
-	// 	$compnum 		= $this->input->post('compnum');
-	// 	$root 			= $this->input->post('root');
-	// 	$id 			= $this->input->post('idBom');
-	// 	$bom_version 	= $this->input->post('version');
-	// 	$cari			= $this->M_monmng->getDataBom($root, $bom_version);
-		
-	// 	// echo "<pre>"; print_r($id);exit();
-	// 	// if (!empty($cek2)) {
-	// 	// 	if (empty($cek)) {
-	// 	// 		$saveHeader = $this->M_monmng->saveheaderMon($component_code, $component_desc, $bom_version, $periode, $id);
-	// 	// 		$saveTarget = $this->M_monmng->saveTarget($id, $tglTarget, $qty, $component_code);
-	// 	// 	}else {
-	// 		$tglTarget = $tgl2.' '.$bom_version;
-	// 		// echo "<pre>"; print_r($tglTarget);exit();
-	// 			$saveTarget = $this->M_monmng->saveTarget($id, $tglTarget, $qty, $root);
-	// 	// 	}
-
-	// 		$coba = $qty;
-	// 		for ($i=0; $i < count($cari) ; $i++) { 
-	// 			// $cek = $this->M_monmng->cekData($component_code, $bom_version);
-	// 			// if (!empty($cek)) {
-	// 				if ($cari[$i]['assembly_num'] == $root) {
-	// 					$qty1 = $qty * $cari[$i]['qty'];
-	// 					$coba = $qty1;
-	// 					$tgl3 = $tgl2 - $cari[$i]['bom_level'];
-	// 					$tgl = sprintf("%02d", $tgl3);
-	// 					$update = $this->M_monmng->updateMonitoring($cari[$i]['root_assembly'], $cari[$i]['component_num'], $cari[$i]['bom_level'], $cari[$i]['identitas_bom'], $qty1, $tgl, $id);
-	// 				}else {
-	// 					if ($cari[$i]['bom_level'] == 2) {
-	// 						$qty1= $coba * $cari[$i]['qty'] ;
-	// 						$coba2 = $qty1;
-	// 					}else {
-	// 						$qty1 = $coba2 * $cari[$i]['qty'];
-	// 					}
-	// 					$tgl3 = $tgl2 - $cari[$i]['bom_level'];
-	// 					$tgl = sprintf("%02d", $tgl3);
-	// 					$update = $this->M_monmng->updateMonitoring($cari[$i]['root_assembly'], $cari[$i]['component_num'], $cari[$i]['bom_level'], $cari[$i]['identitas_bom'], $qty1, $tgl, $id);
-	// 				}
-	// 		// 	}else {
-	// 		// 		if ($cari[$i]['assembly_num'] == $component_code) {
-	// 		// 			$qty1 = $qty * $cari[$i]['qty'];
-	// 		// 			$coba = $qty1;
-	// 		// 			$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $qty1, $tgl2, $periode, $id);
-	// 		// 		}else {
-	// 		// 			if ($cari[$i]['bom_level'] == 2) {
-	// 		// 				$qty1= $coba * $cari[$i]['qty'] ;
-	// 		// 				$coba2 = $qty1;
-	// 		// 			}else {
-	// 		// 				$qty1 = $coba2 * $cari[$i]['qty'];
-	// 		// 			}
-	// 		// 			$slsh = $cari[$i]['bom_level'] - 1;
-	// 		// 			$tgl3 = $tgl2 - $slsh;
-	// 		// 			$tgl = sprintf("%02d", $tgl3);
-	// 		// 			$save = $this->M_monmng->saveMonitoring($cari[$i]['root_assembly'], $cari[$i]['assembly_num'], $cari[$i]['component_num'], $cari[$i]['item_type'], $cari[$i]['qty'], $cari[$i]['assembly_path'], $cari[$i]['bom_level'], $cari[$i]['is_cycle'], $cari[$i]['identitas_bom'], $qty1, $tgl, $periode, $id);
-	// 		// 		}
-	// 		// 	}
-				
-	// 		// }
-	// 	// }else {
-	// 	}
-	// 	redirect(base_url('MonitoringDeliverySparepart/MonitoringManagement'));
-	// }
 
 }

@@ -90,7 +90,7 @@
                                     </div>
                                 </div>
                             <div>
-                                    <!-- <br><br> -->
+                                
                             <div class="box-footer box box-primary">
                                 <div class="panel-body">
                                     <div class="col-md-12" id="tambahTarget">
@@ -110,15 +110,14 @@
                                         <div class="col-md-1">
                                             <a href="javascript:void(0);" id="addQtyTarget" onclick="addTargetMon()" class="btn btn-default"><i class="fa fa-plus"></i></a>
                                         </div>
+                                        <br>
                                     </div>
                                     <br><br>
-                                <!-- </div> -->
-                                <!-- <div class="panel-body"> -->
+                                
                                     <div class="col-md-12 text-center">
                                         <button type="button" onclick="saveMonMng(this)" class="btn btn-primary">SAVE</button>    
                                     </div>
                                 </div>
-                                <!-- </form> -->
                                 <br>
                                 <div class="panel-body">
                                 <div class="table-responsive" >
