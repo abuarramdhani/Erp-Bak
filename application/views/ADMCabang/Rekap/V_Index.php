@@ -166,7 +166,8 @@
 				             Data
 				       </div>
 				        <div class="panel-title pull-right">
-				        	<button class="btn btn-success btn-excel"><i class="fa fa-file-excel-o"></i> &nbsp;Excel</button>
+				        	<button class="btn btn-success btn-excel btn-lg"><i class="fa fa-file-excel-o"></i> &nbsp;Excel</button>
+				        	<button class="btn btn-danger btn-pdf btn-lg"><i class="fa fa-file-pdf-o"></i> &nbsp;PDF</button>
 				        </div>
 				        <div class="clearfix"></div>
 					  </div>
@@ -336,6 +337,7 @@
 		$("#vm-unit").on('change',function(e){
 			let val = $(this).val();
 			let keyKodesie = val.split(' - ')[0];
+			$("#vm-seksi").select2().val('').trigger('change')
 			if(val != ""){
 				$("#vm-seksi").prop('disabled',false)
 			}else{
@@ -366,6 +368,27 @@
 			}
 		})
 
+		})
+
+		$('.btn-pdf').on('click',function(e){
+			e.preventDefault();
+			let tanggalAwal = $('#tanggalAwal').val();
+			let tanggalAkhir = $('#tanggalAkhir').val();
+			let status = $("#vm-status").val();
+			let unit = $("#vm-unit").val();
+			let seksi = $("#vm-seksi").val();
+			if(status==null){
+				status='empty';
+			}
+			if(unit==null){
+				unit='empty';
+			}
+			if(seksi == null){
+				seksi ='empty';
+			}
+
+			let url = '<?php echo base_url(''); ?>AdmCabang/Rekap/cetakPDF?tanggalAwal='+tanggalAwal+'&tanggalAkhir='+tanggalAkhir+'&statusKerja='+status+'&unitKerja='+unit+'&seksiKerja='+seksi+' ';
+			window.open(url,'_blank')
 		})
 
 

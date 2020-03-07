@@ -116,6 +116,71 @@ class C_Rekap extends CI_Controller
 		// print_r($data);
 	}
 
+	function cetakPDF(){
+		ini_set('memory_limit', '256M');
+		ini_set('max_execution_time', 300);
+		$this->load->model('ADMCabang/M_monitoringpresensi');
+		$this->load->library('pdf');
+		$tanggalAwal = $this->input->get('tanggalAwal');
+		$tanggalAkhir = $this->input->get('tanggalAkhir');
+
+		$diff = abs(strtotime($tanggalAkhir) - strtotime($tanggalAwal));
+		$years = floor($diff / (365*60*60*24));
+		$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+		$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24)) + 1;
+
+		$statusKerja = $this->input->get('statusKerja');
+		$unitKerja = $this->input->get('unitKerja');
+		$seksiKerja = $this->input->get('seksiKerja');
+		if($statusKerja != "empty"){
+			$statusKerja = explode(',', $statusKerja);
+			$statusKerja = array_map(function($val){
+				return "'$val'";
+			}, $statusKerja);
+			$statusKerja = implode(",", $statusKerja);
+
+			$q_status = "AND left(a.noind,1) IN ($statusKerja) ";
+		}else{
+			$q_status = "";
+		}
+
+		if(!empty($unitKerja) and $unitKerja != ""){
+			$q_unit = "AND left(a.kodesie,5) = '$unitKerja'";
+		}else{
+			$q_unit = "";
+		}
+
+		if(!empty($seksiKerja) and $seksiKerja != ""){
+			$seksiKerja = explode(' - ', $seksiKerja)[0];
+			$q_seksi = "AND left(a.kodesie,7) = '$seksiKerja' ";
+		}else{
+			$q_seksi = "";
+		}
+
+
+		$kodesie = $this->session->kodesie;
+
+		$data['data'] = $this->M_monitoringpresensi->rekapPekerja($tanggalAwal,$tanggalAkhir,$kodesie,$q_status,$q_unit,$q_seksi);
+		$data['days'] = $days;
+
+		$formatTglAwal = date('d_F_Y',strtotime($tanggalAwal));
+    	$formatTglAkhir = date('d_F_Y',strtotime($tanggalAkhir));
+
+		// echo "<pre>";
+		// print_r($data);exit();
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('', 'A4-L', 0, '', 10, 10, 10, 10, 5, 5);
+		$html 	= $this->load->view('ADMCabang/Rekap/V_RekapPDF',$data,true);
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->AddPage();
+		
+		$pdf->WriteHTML($html,2);
+		$pdf->Output('rekapPekerja_'.$formatTglAwal.'-'.$formatTglAkhir.'.pdf','I');
+		$pdf->set_time_limit(0);
+
+	}
+
 	function cetakExcel(){
 		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$this->load->library('Excel');
@@ -130,7 +195,6 @@ class C_Rekap extends CI_Controller
 		$statusKerja = $this->input->get('statusKerja');
 		$unitKerja = $this->input->get('unitKerja');
 		$seksiKerja = $this->input->get('seksiKerja');
-		// echo "<pre>";var_dump($statusKerja);exit();
 		if($statusKerja != "empty"){
 			$statusKerja = explode(',', $statusKerja);
 			$statusKerja = array_map(function($val){
@@ -241,8 +305,8 @@ class C_Rekap extends CI_Controller
 			   )
 			);
 
-		$worksheet->getStyle('A3:I3')->applyFromArray($thead);
-		$worksheet->getStyle('A3:I3')->applyFromArray($borderleft);
+		$worksheet->getStyle('A3:L3')->applyFromArray($thead);
+		$worksheet->getStyle('A3:L3')->applyFromArray($borderleft);
 		$worksheet->getStyle('A3')->applyFromArray($borderright);
 		$worksheet->getStyle('B3')->applyFromArray($borderright);
 		$worksheet->getStyle('C3')->applyFromArray($borderright);
@@ -252,35 +316,41 @@ class C_Rekap extends CI_Controller
 		$worksheet->getStyle('G3')->applyFromArray($borderright);
 		$worksheet->getStyle('H3')->applyFromArray($borderright);
 		$worksheet->getStyle('I3')->applyFromArray($borderright);
-		$worksheet->getStyle('A3:I3')->applyFromArray($bordertop);
-		$worksheet->getStyle('A3:I3')->applyFromArray($borderbottom);
+		$worksheet->getStyle('J3')->applyFromArray($borderright);
+		$worksheet->getStyle('K3')->applyFromArray($borderright);
+		$worksheet->getStyle('L3')->applyFromArray($borderright);
+		$worksheet->getStyle('A3:L3')->applyFromArray($bordertop);
+		$worksheet->getStyle('A3:L3')->applyFromArray($borderbottom);
 
 
 
 		//Width
 		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(18);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(18);
 
 		$sheet->setTitle('Sheet1');
 		$sheet->setCellValue('A3','No');
 		$sheet->setCellValue('B3','Nomor Induk');
 		$sheet->setCellValue('C3','Nama');
 		$sheet->setCellValue('D3','Seksi');
-		$sheet->setCellValue('E3','Jumlah Izin Pribadi');
-		$sheet->setCellValue('F3','Jumlah Mangkir');
-		$sheet->setCellValue('G3','Jumlah Sakit');
-		$sheet->setCellValue('H3','Jumlah Izin Pamit');
-		$sheet->setCellValue('I3','Presentase Kehadiran');
-
-
-
+		$sheet->setCellValue('E3','Jumlah Terlambat');
+		$sheet->setCellValue('F3','Jumlah Izin Pribadi');
+		$sheet->setCellValue('G3','Jumlah Mangkir');
+		$sheet->setCellValue('H3','Jumlah Sakit');
+		$sheet->setCellValue('I3','Jumlah Izin Pamit (Cuti)');
+		$sheet->setCellValue('J3','Jumlah Izin Perusahaan');
+		$sheet->setCellValue('K3','Jumlah Kehadiran');
+		$sheet->setCellValue('L3','Persentase Kehadiran');
 
 		$i = 3;
 		$nomor = 0;
@@ -298,23 +368,30 @@ class C_Rekap extends CI_Controller
 			$kolomG='G'.$i;
 			$kolomH='H'.$i;
 			$kolomI='I'.$i;
+			$kolomJ='J'.$i;
+			$kolomK='K'.$i;
+			$kolomL='L'.$i;
 
-			$persentaseKehadiran = round(($value['bekerja'] / $days * 100),2);
+			$persentaseKehadiran = round(((intval($value['bekerja']) - intval($value['izin_pribadi']) ) / $days * 100),2);
+			// $persentaseKehadiran = round(($value['bekerja'] / $days * 100),2);
 
 			$sheet  ->setCellValueExplicit($kolomA, $nomor, PHPExcel_Cell_DataType::TYPE_NUMERIC)
 					->setCellValueExplicit($kolomB, $value['noind'], PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomC, rtrim($value['nama']), PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomD, $value['seksi'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomE, $value['izin_pribadi'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomF, $value['mangkir'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomG, $value['sakit'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomH, $value['izin_pamit'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomI, $persentaseKehadiran.' % ' , PHPExcel_Cell_DataType::TYPE_STRING);
+					->setCellValueExplicit($kolomE, $value['terlambat'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomF, $value['izin_pribadi'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomG, $value['mangkir'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomH, $value['sakit'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomI, $value['izin_pamit'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomJ, $value['izin_perusahaan'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomK, $value['bekerja'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomL, $persentaseKehadiran.' % ' , PHPExcel_Cell_DataType::TYPE_STRING);
 
 		$worksheet->getStyle($kolomA)->applyFromArray($alignment);
 		$worksheet->getStyle($kolomB)->applyFromArray($alignment);
 		$worksheet->getStyle($kolomD)->applyFromArray($alignment);
-		$worksheet->getStyle($kolomA.':'.$kolomI)->applyFromArray($tdata);
+		$worksheet->getStyle($kolomA.':'.$kolomL)->applyFromArray($tdata);
 		
 
 		$worksheet->getStyle($kolomA)->applyFromArray($borderleft);$worksheet->getStyle($kolomA)->applyFromArray($borderright);
@@ -326,6 +403,9 @@ class C_Rekap extends CI_Controller
 		$worksheet->getStyle($kolomG)->applyFromArray($borderleft);$worksheet->getStyle($kolomG)->applyFromArray($borderright);
 		$worksheet->getStyle($kolomH)->applyFromArray($borderleft);$worksheet->getStyle($kolomH)->applyFromArray($borderright);
 		$worksheet->getStyle($kolomI)->applyFromArray($borderleft);$worksheet->getStyle($kolomI)->applyFromArray($borderright);
+		$worksheet->getStyle($kolomJ)->applyFromArray($borderleft);$worksheet->getStyle($kolomJ)->applyFromArray($borderright);
+		$worksheet->getStyle($kolomK)->applyFromArray($borderleft);$worksheet->getStyle($kolomK)->applyFromArray($borderright);
+		$worksheet->getStyle($kolomL)->applyFromArray($borderleft);$worksheet->getStyle($kolomL)->applyFromArray($borderright);
 
 		$worksheet->getStyle($kolomA)->applyFromArray($borderbottom);$worksheet->getStyle($kolomA)->applyFromArray($bordertop);
 		$worksheet->getStyle($kolomB)->applyFromArray($borderbottom);$worksheet->getStyle($kolomB)->applyFromArray($bordertop);
@@ -336,6 +416,9 @@ class C_Rekap extends CI_Controller
 		$worksheet->getStyle($kolomG)->applyFromArray($borderbottom);$worksheet->getStyle($kolomG)->applyFromArray($bordertop);
 		$worksheet->getStyle($kolomH)->applyFromArray($borderbottom);$worksheet->getStyle($kolomH)->applyFromArray($bordertop);
 		$worksheet->getStyle($kolomI)->applyFromArray($borderbottom);$worksheet->getStyle($kolomI)->applyFromArray($bordertop);
+		$worksheet->getStyle($kolomJ)->applyFromArray($borderbottom);$worksheet->getStyle($kolomJ)->applyFromArray($bordertop);
+		$worksheet->getStyle($kolomK)->applyFromArray($borderbottom);$worksheet->getStyle($kolomK)->applyFromArray($bordertop);
+		$worksheet->getStyle($kolomL)->applyFromArray($borderbottom);$worksheet->getStyle($kolomL)->applyFromArray($bordertop);
 		}
 		// $worksheet->getStyle('E4:'.$kolomI)->getAlignment()
   //   										->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
