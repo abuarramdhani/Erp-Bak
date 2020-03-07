@@ -163,7 +163,12 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 			$index++;
+
+			$persentasePerPeriode['TARGET'][] = 95;
 		}
+		$lastKey = key(array_slice($kabehData, -1, 1, true));
+		$kabehData[$lastKey+1] = 95;
+		
 		$data['dataTabelPerTahun'] = $dataTabelPerTahun;
 		$data['kabehData'] = $kabehData;
 		$data['kodesieArr'] = $kodesieArr;

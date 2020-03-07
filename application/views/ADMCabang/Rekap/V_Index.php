@@ -480,7 +480,7 @@
 	                    $('#bodyRekap').html(html);
 	                    $('#tblRekap').DataTable();
 
-	                    var keterangan = "<p id='note' style='font-style: italic;font-weight:bold'>Persentase Kehadiran = Jumlah Kehadiran / Jumlah Hari * 100</p>";
+	                    var keterangan = "<p id='note' style='font-style: italic;font-weight:bold'>Persentase Kehadiran = ( Jumlah Kehadiran - Jumlah Izin Pribadi) / Jumlah Hari * 100</p>";
 	                    $("#tblRekap_wrapper").after(keterangan)
 						
 					},

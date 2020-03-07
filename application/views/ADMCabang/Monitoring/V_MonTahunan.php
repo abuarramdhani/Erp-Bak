@@ -509,10 +509,15 @@
 					                mode: 'nearest',
 					                callbacks: {
 					                    label: function(tooltipItems, data) {
+					                       var label = data.datasets[tooltipItems.datasetIndex].label || '';
 					                       var multistringText = [tooltipItems.yLabel];
+					                       if(label != "TARGET"){					                       
 					                       	   multistringText[0] = multistringText[0].toFixed(2) + '%';
 					                       	   multistringText.push('Seksi '+ res.seksiPerTanggal[tooltipItems.index][tooltipItems.datasetIndex])
 					                       	   multistringText.push(res.dataTotalPerTahun[tooltipItems.index][tooltipItems.datasetIndex].sum + ' Bekerja / dari Total '+res.dataTotalTahunan[tooltipItems.index][tooltipItems.datasetIndex].sum + ' Presensi')
+					                       }else{
+					                       	multistringText[0] = "Target : "+multistringText[0].toFixed(2) + '%';
+					                       }
 
 					                        return multistringText;
 					                    }
