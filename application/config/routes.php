@@ -3943,3 +3943,69 @@ $route['RKHKasie/EditJob'] = 'RKHkasie/C_Editjob';
 $route['RKHKasie/Rekapharian'] = 'RKHkasie/C_Rekapjob';
 $route['RKHKasie/Bom'] = 'RKHkasie/C_Bom';
 $route['RKHKasie/Bom/(:any)'] = 'RKHkasie/C_Bom/$1';
+//---------------------------------------------------Asset Cabang Cabang------------------------------------------------------//
+$route['AssetCabang'] 											= 'AssetCabangCbg/C_AssetCabangCbg/index';
+$route['AssetCabang/(:any)'] 									= 'AssetCabangCbg/C_AssetCabangCbg/$1';
+$route['AssetCabang/deleteDraft'] 								= 'AssetCabangCbg/C_AssetCabangCbg/deleteDraft';
+$route['AssetCabang/generatePdf'] 								= 'AssetCabangCbg/C_AssetCabangCbg/generatePdf';
+$route['AssetCabang/generatePdfEdit'] 							= 'AssetCabangCbg/C_AssetCabangCbg/generatePdfEdit';
+$route['AssetCabang/generatePdfEdit/(:any)'] 					= 'AssetCabangCbg/C_AssetCabangCbg/generatePdfEdit/$id';
+$route['AssetCabang/NewProposal'] 								= 'AssetCabangCbg/C_AssetCabangCbg/NewProposal';
+$route['AssetCabang/NewProposal/(:any)'] 						= 'AssetCabangCbg/C_AssetCabangCbg/$1'; // ini contohnya
+$route['AssetCabang/NewProposal/(:any)/(:any)'] 				= 'AssetCabangCbg/C_AssetCabangCbg/$1/$2'; 
+$route['AssetCabang/LaporanDataAssetOracle'] 					= 'AssetCabangCbg/C_AssetCabangCbg/laporanAssetDataOracle';
+$route['AssetCabang/Draft'] 									= 'AssetCabangCbg/C_AssetCabangCbg/draft';
+$route['AssetCabang/CheckedbyKacab'] 							= 'AssetCabangCbg/C_AssetCabangCbg/checkbyKacab';
+$route['AssetCabang/CheckedbyKacab/Edit'] 						= 'AssetCabangCbg/C_AssetCabangCbg/editForward';
+$route['AssetCabang/CheckedbyKacab/Edit/(:any)'] 				= 'AssetCabangCbg/C_AssetCabangCbg/editForward/$1';
+$route['AssetCabang/CheckedbyKacab/(:any)'] 					= 'AssetCabangCbg/C_AssetCabangCbg/$1';
+$route['AssetCabang/Approved'] 									= 'AssetCabangCbg/C_AssetCabangCbg/approved';
+$route['AssetCabang/Rejected'] 									= 'AssetCabangCbg/C_AssetCabangCbg/rejected';
+$route['AssetCabang/Finish'] 									= 'AssetCabangCbg/C_AssetCabangCbg/finish';
+//---------------------------------------------------Asset Cabang Marketing---------------------------------------------------//
+
+$route['AssetCabang/SuperUser'] 								= 'AssetCabangMkt/C_AssetCabangMkt/superuser';
+$route['AssetCabang/SuperUser/KepalaCabang'] 					= 'AssetCabangMkt/C_AssetCabangMkt/setupKacab';
+$route['AssetCabang/SuperUser/(:any)'] 							= 'AssetCabangMkt/C_AssetCabangMkt/$1';
+$route['AssetCabang/Setup'] 									= 'AssetCabangMkt/C_AssetCabangMkt/setup';
+$route['AssetCabang/Setup/(:any)'] 								= 'AssetCabangMkt/C_AssetCabangMkt/$1';
+$route['AssetCabang/(:any)/(:any)'] 							= 'AssetCabangCbg/C_AssetCabangCbg/$1/$2';
+
+$route['AssetCabangMarketing'] 						    		= 'AssetCabangMkt/C_AssetCabangMkt/index';
+$route['AssetCabangMarketing/(:any)'] 							= 'AssetCabangMkt/C_AssetCabangMkt/$1';
+
+$route['AssetCabangMarketing/ApproveReject'] 					= 'AssetCabangMkt/C_AssetCabangMkt/ApproveReject';
+$route['AssetCabangMarketing/ApproveReject/(:any)'] 			= 'AssetCabangMkt/C_AssetCabangMkt/ApproveReject/$1';
+
+$route['AssetCabangMarketing/LaporanDataAssetOracle'] 			= 'AssetCabangMkt/C_AssetCabangMkt/laporanAssetDataOracle';
+$route['AssetCabangMarketing/LaporanDataAssetOracle/(:any)'] 	= 'AssetCabangMkt/C_AssetCabangMkt/$1';
+$route['AssetCabangMarketing/Draft'] 							= 'AssetCabangMkt/C_AssetCabangMkt/draft';
+$route['AssetCabangMarketing/Approved'] 						= 'AssetCabangMkt/C_AssetCabangMkt/approved';
+$route['AssetCabangMarketing/Rejected'] 						= 'AssetCabangMkt/C_AssetCabangMkt/rejected';
+$route['AssetCabangMarketing/Finished'] 						= 'AssetCabangMkt/C_AssetCabangMkt/finish';
+$route['AssetCabangMarketing/(:any)/(:any)'] 					= 'AssetCabangMkt/C_AssetCabangMkt/$1/$2';
+//--------------------------------------------------Asset Cabang Kepala Cabang -----------------------------------------------//
+$route['AssetCabangKacab'] 										= 'AssetCabangKcb/C_AssetCabangKcb/index';
+$route['AssetCabangKacab/(:any)'] 								= 'AssetCabangKcb/C_AssetCabangKcb/$1';
+$route['AssetCabangKacab/deleteDraft'] 							= 'AssetCabangKcb/C_AssetCabangKcb/deleteDraft';
+$route['AssetCabangKacab/generatePdf'] 							= 'AssetCabangKcb/C_AssetCabangKcb/generatePdf';
+$route['AssetCabangKacab/NewProposal'] 							= 'AssetCabangKcb/C_AssetCabangKcb/NewProposal';
+$route['AssetCabangKacab/NewProposal/(:any)'] 					= 'AssetCabangKcb/C_AssetCabangKcb/$1'; // ini contohnya
+$route['AssetCabangKacab/LaporanDataAssetOracle'] 				= 'AssetCabangKcb/C_AssetCabangKcb/laporanAssetDataOracle';
+$route['AssetCabangKacab/Draft'] 								= 'AssetCabangKcb/C_AssetCabangKcb/draft';
+$route['AssetCabangKacab/Draft/(:any)'] 						= 'AssetCabangKcb/C_AssetCabangKcb/$1';
+$route['AssetCabangKacab/Approved'] 							= 'AssetCabangKcb/C_AssetCabangKcb/approved';
+$route['AssetCabangKacab/Rejected'] 							= 'AssetCabangKcb/C_AssetCabangKcb/rejected';
+$route['AssetCabangKacab/Finished'] 							= 'AssetCabangKcb/C_AssetCabangKcb/finish';
+$route['AssetCabangKacab/Draft/(:any)'] 						= 'AssetCabangKcb/C_AssetCabangKcb/$1';
+$route['AssetCabangKacab/(:any)/(:any)'] 						= 'AssetCabangKcb/C_AssetCabangKcb/$1/$2';
+//----------------------------------------------------Asset Cabang Akuntansi-------------------------------------------------//
+$route['AssetCabangAkuntansi'] 						    		= 'AssetCabangAkt/C_AssetCabangAkt/index';
+$route['AssetCabangAkuntansi/(:any)'] 							= 'AssetCabangAkt/C_AssetCabangAkt/$1';
+$route['AssetCabangAkuntansi/(:any)/(:any)'] 					= 'AssetCabangAkt/C_AssetCabangAkt/$1/$2';
+$route['AssetCabangAkuntansi/updateAkt'] 						= 'AssetCabangAkt/C_AssetCabangAkt/updateAkt';
+$route['AssetCabangAkuntansi/LaporanDataAssetOracle'] 			= 'AssetCabangAkt/C_AssetCabangAkt/laporanAssetDataOracle';
+$route['AssetCabangAkuntansi/LaporanDataAssetOracle/getFilter'] = 'AssetCabangAkt/C_AssetCabangAkt/getFilter';
+$route['AssetCabangAkuntansi/Draft'] 							= 'AssetCabangAkt/C_AssetCabangAkt/draft';
+$route['AssetCabangAkuntansi/Received'] 						= 'AssetCabangAkt/C_AssetCabangAkt/received';
+$route['AssetCabangAkuntansi/Done'] 							= 'AssetCabangAkt/C_AssetCabangAkt/done';
