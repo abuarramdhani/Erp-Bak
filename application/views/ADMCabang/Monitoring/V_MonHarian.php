@@ -272,6 +272,7 @@
 		$("#vm-unit").on('change',function(e){
 			let val = $(this).val();
 			let keyKodesie = val.split(' - ')[0];
+			$("#vm-seksi").select2().val('').trigger('change')
 			if(val != ""){
 				$("#vm-seksi").prop('disabled',false)
 			}else{

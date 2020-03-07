@@ -305,6 +305,7 @@
 		$("#vm-unit").on('change',function(e){
 			let val = $(this).val();
 			let keyKodesie = val.split(' - ')[0];
+			$("#vm-seksi").select2().val('').trigger('change')
 			if(val != ""){
 				$("#vm-seksi").prop('disabled',false)
 			}else{
@@ -568,9 +569,12 @@
 							                    var no = 0;
 							                    var html = "";
 							                    for(i=0;i < res.length ; i++){
+							                    	var chgTanggal = new Date(res[i].tanggal)
+							                    	var month = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+"Juli", "Agustus", "September", "Oktober", "November", "Desember"][chgTanggal.getMonth()];
 							                        no++;
 							                        html = html + '<tr>'
-							                        			+ '<td>' + res[i].tanggal  + '</td>'
+							                        			+ '<td>' + chgTanggal.getDate() + " " + month + " " + chgTanggal.getFullYear()  + '</td>'
 							                                    + '<td>' + res[i].noind  + '</td>'
 							                                    + '<td>' + res[i].nama  + '</td>'
 							                                    + '<td>' + res[i].seksi  + '</td>'
