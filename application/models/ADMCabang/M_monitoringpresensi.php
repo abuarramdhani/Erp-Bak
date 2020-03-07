@@ -49,7 +49,7 @@ class M_monitoringpresensi extends Ci_Model
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -85,7 +85,7 @@ class M_monitoringpresensi extends Ci_Model
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -119,7 +119,7 @@ class M_monitoringpresensi extends Ci_Model
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -175,7 +175,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -221,7 +221,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -289,7 +289,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -328,7 +328,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -368,7 +368,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -412,7 +412,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -452,7 +452,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -498,7 +498,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
@@ -543,7 +543,7 @@ $q_seksi)";
 		}elseif ($noind == 'H7726') { 
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
 		}elseif ($noind == 'B0717') { 
-			$whrKodesie = "left(a.kodesie,5) =left(a.kodesie,7) in ('3070103','3070104')";
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') {
 	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
 	    }elseif ($noind == 'J1338') {
