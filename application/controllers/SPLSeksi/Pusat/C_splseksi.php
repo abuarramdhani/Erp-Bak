@@ -718,7 +718,7 @@ class C_splseksi extends CI_Controller {
 					}
 				}
 			}else{
-				$shift = $this->M_splseksi->show_current_shift($noind, date('Y-m-d', strtotime('-1 days '.$tanggal)));
+				$shift = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime('-1 days '.$tanggal)), $noind);
 				
 				// untuk shift 3
 				if ($shift['0']['kd_shift'] == '3') {
