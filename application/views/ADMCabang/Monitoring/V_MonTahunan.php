@@ -22,6 +22,31 @@
 #grafik:hover{
 	cursor: pointer;
 }	
+
+canvas{
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+		#chartjs-tooltip {
+			opacity: 1;
+			position: absolute;
+			background: rgba(0, 0, 0, .7);
+			color: white;
+			border-radius: 3px;
+			-webkit-transition: all .1s ease;
+			transition: all .1s ease;
+			pointer-events: none;
+			-webkit-transform: translate(-50%, 0);
+			transform: translate(-50%, 0);
+		}
+
+		.chartjs-tooltip-key {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			margin-right: 10px;
+		}
 </style>
 <div id="cover-spin">
 </div>
@@ -437,6 +462,7 @@
 				})
 		}
 
+		
 		function chartShow(res,periodeAwal){
 						var isiTabel = "";
 						var no = 0;
@@ -487,6 +513,8 @@
 
 						document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
 						document.getElementById("wadah-grafik").innerHTML = '<canvas id="grafik"></canvas>';
+						// $("#grafik").after('<div id="chartjs-tooltip" class="center"></div>');
+						// $("#chartjs-tooltip").html("<table></table>");
 						var ctx = document.getElementById('grafik').getContext('2d');
 						var myChart = new Chart(ctx, {
 						    type: 'line',
@@ -507,11 +535,12 @@
 						    	 tooltips: {
 					                enabled: true,
 					                mode: 'nearest',
+					                // custom: customTooltips
 					                callbacks: {
 					                    label: function(tooltipItems, data) {
 					                       var label = data.datasets[tooltipItems.datasetIndex].label || '';
 					                       var multistringText = [tooltipItems.yLabel];
-					                       if(label != "TARGET"){					                       
+					                       if(label != "TARGET"){                       
 					                       	   multistringText[0] = multistringText[0].toFixed(2) + '%';
 					                       	   multistringText.push('Seksi '+ res.seksiPerTanggal[tooltipItems.index][tooltipItems.datasetIndex])
 					                       	   multistringText.push(res.dataTotalPerTahun[tooltipItems.index][tooltipItems.datasetIndex].sum + ' Bekerja / dari Total '+res.dataTotalTahunan[tooltipItems.index][tooltipItems.datasetIndex].sum + ' Presensi')

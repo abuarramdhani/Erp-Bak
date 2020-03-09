@@ -145,6 +145,29 @@
 					 </div>
 					</div>
 
+					<div class="panel panel-primary panelTabel" style="display: none;">
+						<div class="panel-heading">
+							<div class="panel-title">Tabel Grafik</div>
+						</div>
+						<div class="panel-body">
+							<div class="table-responsive" align="center">
+								<table style="width: 60%;" class="table table-bordered table-hovered table-striped" id="tblHarian">
+									<thead>
+										<tr id="rowT">
+											<th class="text-center">No</th>
+											<th>Seksi</th>
+											<th class="text-center" id="hariProses"></th>
+											<th>Grafik</th>
+										</tr>
+									</thead>
+									<tbody id="tbodyTahunan">
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
 
 			</section>
 			<hr />
@@ -370,6 +393,31 @@
 			return arr;
 		}
 
+		$('#tblHarian').on('click','.btn-grafik',function(e){
+			e.preventDefault();
+			let periode = $('input[name="periode"]').val();
+
+			let tanggal = periode.split(' - ');
+			let tanggalAwal = tanggal[0];
+			let tanggalAkhir = tanggal[1];
+
+			let arrTanggal = getDates(tanggalAwal,tanggalAkhir);
+
+			if($('.panelGrafik').css('display') != 'none'){
+				$('.panelGrafik').fadeOut()
+				$(".panelTabel").fadeOut()
+				$('#tblHarian').dataTable().fnDestroy();	
+			}	
+			let kodesie = $(this).attr('data-id');
+			let statusKerja = $('#vm-status').val()
+			let unitKerja = $('#vm-unit').val()
+			let seksiKerja = $('#vm-seksi').val()
+
+			$('#cover-spin').fadeIn();
+				getDataHarian(periode,arrTanggal,'','',kodesie)
+
+		})
+
 		$('.btn-submit').on('click',function(e){
 			e.preventDefault();
 			let periode = $('input[name="periode"]').val();
@@ -381,6 +429,8 @@
 			let arrTanggal = getDates(tanggalAwal,tanggalAkhir);
 			if($('.panelGrafik').css('display') != 'none'){
 				$('.panelGrafik').fadeOut()
+				$(".panelTabel").fadeOut()
+				$('#tblHarian').dataTable().fnDestroy();
 			}
 
 			let statusKerja = $('#vm-status').val()
@@ -392,7 +442,13 @@
 				$("input#daterangepicker").focus()
 			}else{
 				$('#cover-spin').fadeIn();
-				$.ajax({
+				getDataHarian(periode,arrTanggal,statusKerja,unitKerja,seksiKerja)
+
+			}	
+		})
+
+		function getDataHarian(periode,arrTanggal,statusKerja,unitKerja,seksiKerja){
+			$.ajax({
 					url: '<?php echo base_url(''); ?>AdmCabang/Monitoring/getMonHarian',
 					type: 'POST',
 					data: {periode: periode,arrTanggal: arrTanggal,statusKerja: statusKerja,unitKerja: unitKerja,seksiKerja:seksiKerja},
@@ -401,8 +457,8 @@
 						setTimeout(function(){
 						$(".panelGrafik").show();
 						$('#cover-spin').fadeOut();
+						$(".panelTabel").fadeIn()
 						chartShow(arrTanggal,res,statusKerja,unitKerja,seksiKerja)
-
 						},2000)
 
 					}
@@ -415,13 +471,63 @@
 						})
 					}
 				})
-
-			}	
-		})
+		}
 
 
 		function chartShow(arrTanggal,res,statusKerja,unitKerja,seksiKerja){
-			document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
+			let periode = $('input[name="periode"]').val();
+
+			let tanggal = periode.split(' - ');
+			let tanggalAwal = tanggal[0];
+			let tanggalAkhir = tanggal[1];
+						var isiTabel = "";
+						var no = 0;
+						var persentase = 0;
+						var bgcolor = "";
+						for(var j = 0;j < res.dataTabelPerHarian.length;j++){
+							no++;
+							if(res.dataTabelPerHarian[j].total_absen != "0"){
+								persentase = ((res.dataTabelPerHarian[j].total_bekerja / res.dataTabelPerHarian[j].total_absen) * 100 ).toFixed(2);
+							}else{
+								persentase = "0";
+							}
+
+							if( j == 0){
+								bgcolor = "rgba(255, 99, 132, 0.7)";
+							}else if (j == 1) {
+								bgcolor = "rgba(54, 162, 235, 0.7)";
+							}else if (j == 2) {
+								bgcolor = "rgba(168, 50, 98, 0.7)";
+							}else if (j == 3) {
+								bgcolor = "rgba(75, 192, 192, 0.7)";
+							}else if (j == 4) {
+								bgcolor = "rgba(153, 102, 255, 0.7)";
+							}else if (j == 5) {
+								bgcolor = "rgba(255, 159, 64, 0.7)";
+							}else if (j == 6) {
+								bgcolor = "rgba(101,101,80,0.7)";
+							}else if (j == 7) {
+								bgcolor = "rgba(101,196,0,0.7)";
+							}else if (j == 8) {
+								bgcolor = "rgba(231,196,0,0.7)";
+							}else if (j == 9) {
+								bgcolor = "rgba(101,101,148,0.7)";
+							}else{
+								bgcolor = "rgba(101,101,0,0.7)";
+							}
+							isiTabel += "<tr>" +
+										"<td class='text-center' style='background-color:"+bgcolor+"'>"+ no +"</td>" +
+										"<td>"+ res.dataTabelPerHarian[j].seksi +"</td>" +
+										"<td class='text-center'>"+ persentase + " %" +"</td>" +
+										"<td class='text-center'><button data-id='"+res.dataTabelPerHarian[j].kodesie+"' class='btn btn-info btn-grafik'><i class='fa fa-line-chart'></i>&nbsp;Grafik</button></td>" +
+										"</tr>";
+
+						}
+
+						$("th#hariProses").text("Tanggal " + tanggalAwal + " s.d " + tanggalAkhir);
+						$("#tbodyTahunan").html(isiTabel);
+
+						document.getElementById("wadah-grafik").innerHTML = '&nbsp;';
 						document.getElementById("wadah-grafik").innerHTML = '<canvas id="grafik"></canvas>';
 						var ctx = document.getElementById('grafik').getContext('2d');
 						var myChart = new Chart(ctx, {
