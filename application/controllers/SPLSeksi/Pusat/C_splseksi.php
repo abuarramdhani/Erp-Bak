@@ -718,6 +718,13 @@ class C_splseksi extends CI_Controller {
 					}
 				}
 			}else{
+				$shift = $this->M_splseksi->show_current_shift($noind, date('Y-m-d', strtotime('-1 days '.$tanggal)));
+				
+				// untuk shift 3
+				if ($shift['0']['kd_shift'] == '3') {
+					$tanggal = date('Y-m-d', strtotime('-1 days '.$tanggal));
+				}
+
 				$presensi = $this->M_splseksi->getPresensi($noind,$tanggal);
 				if (!empty($presensi) && count($presensi) > 0) {
 					foreach ($presensi as $datapres) {
@@ -759,14 +766,6 @@ class C_splseksi extends CI_Controller {
 								$errortext = "Jam Awal Lembur Tidak Sesuai";
 							}
 						}elseif ($lembur == '002') { // lembur pulang
-							// cek shift apakah shift 3 atau 2 pada hari itu, kalau iya maka cek shift sebelumnya
-							if($shift == '3') {
-								$shift = $this->M_splseksi->show_current_shift($noind, date('Y-m-d', strtotime('-1 days '.$tanggal)));
-								foreach($shift as $jam) {
-									$keluar_shift = $jam['jam_plg'];
-								}
-							}
-
 							if ($keluar_shift <= $awal_lembur && $awal_lembur <= $keluar_absen) {
 								// awal lembur
 								if ($masuk_absen > $awal_lembur) {
