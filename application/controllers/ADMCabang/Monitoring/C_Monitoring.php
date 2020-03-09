@@ -168,6 +168,9 @@ class C_Monitoring extends CI_Controller
 		}
 		$lastKey = key(array_slice($kabehData, -1, 1, true));
 		$kabehData[$lastKey+1] = 95;
+
+
+		$data['labelColor'][] = ['rgba(255, 99, 132, 0.7)','rgba(54, 162, 235, 0.7)','rgba(168, 50, 98, 0.7)','rgba(75, 192, 192, 0.7)','rgba(153, 102, 255, 0.7)','rgba(255, 159, 64, 0.7)','rgba(101,101,80,0.7)','rgba(101,196,0,0.7)','rgba(231,196,0,0.7)','rgba(101,101,148,0.7)','rgba(101,101,0,0.7)'];
 		
 		$data['dataTabelPerTahun'] = $dataTabelPerTahun;
 		$data['kabehData'] = $kabehData;
@@ -252,8 +255,12 @@ class C_Monitoring extends CI_Controller
 		$bulanAkhir 			= trim($this->input->post('periodeAkhir'));
 		$arrBulan				= $this->input->post('arrBulan');
 
-		$bulanAwal 				= date('Y-m-d',strtotime($bulanAwal));
-		$bulanAkhir 			= date('Y-m-d',strtotime($bulanAkhir));
+		
+
+		$lastKey = key(array_slice($arrBulan, -1, 1, true));
+		$bulanAwal 				= $arrBulan[0];
+		$bulanAkhir 			= $arrBulan[$lastKey];
+		// print_r($bulanAkhir);exit();
 
 		$periodeBulan = array();
 
@@ -306,9 +313,12 @@ class C_Monitoring extends CI_Controller
 			}
 			$index++;
 		}
-		// echo "<pre>";
-		// print_r($seksiPerTanggal);exit();
 
+		$dataTabelPerBulanan = $this->M_monitoringpresensi->getDataPerBulanan($bulanAwal,$bulanAkhir,$kodesie,$q_status,$q_unit,$q_seksi);
+		// echo "<pre>";
+		// print_r($dataTabelPerBulanan);exit();
+
+		$data['dataTabelPerBulanan'] = $dataTabelPerBulanan;
 		$data['kabehData'] = $kabehData;
 		$data['kodesieArr'] = $kodesieArr;
 		$data['seksiPerTanggal'] = $seksiPerTanggal;
@@ -444,11 +454,13 @@ class C_Monitoring extends CI_Controller
 		}
 		$i = 0;
 
+		$dataTabelPerHarian = $this->M_monitoringpresensi->getDataPerHarian($tanggalAwal,$tanggalAkhir,$kodesie,$q_status,$q_unit,$q_seksi);
+
 
 
 		// echo "<pre>";
-		// print_r($persentasePerPeriode);exit();
-
+		// print_r($dataTabelPerHarian);exit();
+		$data['dataTabelPerHarian'] = $dataTabelPerHarian;
 		$data['kodesieArr'] = $kodesieArr;
 		$data['seksiPerTanggal'] = $seksiPerTanggal;
 		$data['kabehData'] = $kabehData;

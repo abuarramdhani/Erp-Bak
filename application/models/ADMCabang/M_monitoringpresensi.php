@@ -401,6 +401,91 @@ $q_seksi)";
 		return $result->result_array();
 	}
 
+	function getDataPerBulanan($bulanAwal,$bulanAkhir,$kd,$q_status,$q_unit,$q_seksi){
+		$noind = $this->session->user;
+		if ($noind == 'B0380') {
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+		}elseif ($noind == 'B0370') { 
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
+		}elseif ($noind == 'H7726') { 
+			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
+		}elseif ($noind == 'B0717') { 
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
+	    }elseif ($noind == 'J1378') {
+	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+	    }elseif ($noind == 'J1338') {
+	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+	    }else{
+			    if('306030'==substr($kd,0,6)) //ada diticket
+			    {
+			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";			    
+			    }
+			    else
+			    {
+			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			    }
+		}
+
+		$sql1 = "
+		select left(kodesie,7) as kodesie,seksi,sum(jumlah_bekerja) as total_bekerja,(sum(jumlah) + sum(jumlah2)) as total_absen
+			from (
+			SELECT a.kodesie,c.seksi,
+			(select count(*) from \"Presensi\".tdatapresensi b WHERE b.tanggal >=  date('$bulanAwal') AND b.tanggal <  date('$bulanAkhir') + INTERVAL '1 MONTH' AND b.kd_ket='PKJ' AND b.kodesie = a.kodesie) as jumlah_bekerja,
+			(select count(*) from \"Presensi\".tdatapresensi b WHERE b.tanggal >=  date('$bulanAwal') AND b.tanggal < date('$bulanAkhir') + INTERVAL '1 MONTH'  AND b.kd_ket NOT LIKE '%C%' AND b.kodesie = a.kodesie) as jumlah,
+			(select count(*) from \"Presensi\".tdatatim b WHERE b.tanggal >=  date('$bulanAwal') AND b.tanggal < date('$bulanAkhir') + INTERVAL '1 MONTH'  AND (b.kd_ket LIKE '%TIK%' OR b.kd_ket LIKE '%TM%') AND b.kd_ket != '' AND b.kodesie = a.kodesie) as jumlah2
+			FROM hrd_khs.tpribadi a 
+			INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
+			 WHERE $whrKodesie $q_status $q_unit $q_seksi
+			AND a.keluar=false GROUP BY a.kodesie ,c.seksi
+			) as tbl 
+			group by left(kodesie,7),seksi order by seksi";
+
+		$result = $this->personalia->query($sql1)->result_array();
+		return $result;
+	}
+
+	function getDataPerHarian($periode,$periodeAkhir,$kd,$q_status,$q_unit,$q_seksi){
+		$noind = $this->session->user;
+		if ($noind == 'B0380') {
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+		}elseif ($noind == 'B0370') { 
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
+		}elseif ($noind == 'H7726') { 
+			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
+		}elseif ($noind == 'B0717') { 
+			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104')";
+	    }elseif ($noind == 'J1378') {
+	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+	    }elseif ($noind == 'J1338') {
+	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+	    }else{
+			    if('306030'==substr($kd,0,6)) //ada diticket
+			    {
+			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";			    
+			    }
+			    else
+			    {
+			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			    }
+		}
+
+		$sql1 = "select left(kodesie,7) as kodesie,seksi,sum(jumlah_bekerja) as total_bekerja,(sum(jumlah) + sum(jumlah2)) as total_absen
+			from (
+			SELECT a.kodesie,c.seksi,
+			(select count(*) from \"Presensi\".tdatapresensi b WHERE b.tanggal BETWEEN '$periode' AND '$periodeAkhir' AND b.kd_ket='PKJ' AND b.kodesie = a.kodesie) as jumlah_bekerja,
+			(select count(*) from \"Presensi\".tdatapresensi b WHERE b.tanggal BETWEEN '$periode' AND '$periodeAkhir' AND b.kd_ket NOT LIKE '%C%' AND b.kodesie = a.kodesie) as jumlah,
+			(select count(*) from \"Presensi\".tdatatim b WHERE b.tanggal BETWEEN '$periode' AND '$periodeAkhir' AND (b.kd_ket LIKE '%TIK%' OR b.kd_ket LIKE '%TM%') AND b.kd_ket != '' AND b.kodesie = a.kodesie) as jumlah2
+			FROM hrd_khs.tpribadi a 
+			INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
+			 WHERE $whrKodesie $q_status $q_unit $q_seksi
+			AND a.keluar=false GROUP BY a.kodesie ,c.seksi
+			) as tbl 
+			group by left(kodesie,7),seksi order by seksi";
+
+		$result = $this->personalia->query($sql1)->result_array();
+		return $result;
+	}
+
 
 	function getDataAbsensiTahunanPerPeriode($periode,$kd,$q_status,$q_unit,$q_seksi){
 		//jumlah semua keterangan absensi (kecuali cuti, ijin, mangkir, sakit, IP)
