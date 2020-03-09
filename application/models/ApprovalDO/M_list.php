@@ -57,7 +57,7 @@ class M_list extends CI_Model
                 from mtl_txn_request_headers mtrh
                     ,mtl_txn_request_lines mtrl
                 where mtrh.HEADER_ID = mtrl.HEADER_ID
-                    and mtrl.TRANSACTION_TYPE_ID = 327     
+                    and mtrl.TRANSACTION_TYPE_ID IN (327, 64)
                     and mtrl.LINE_STATUS in (3,7)
                     and mtrh.HEADER_STATUS in (3,7)
                     and nvl(mtrl.QUANTITY_DETAILED,0) = 0
