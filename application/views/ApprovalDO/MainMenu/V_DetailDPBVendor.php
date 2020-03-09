@@ -31,7 +31,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-car"></i></span>
-                                    <input class="form-control txtADOVehicleCategory" <?= $UserAccess['jenis_kendaraan'] ?> value="<?php if (isset($DPBDetail[0]['JENIS_KENDARAAN'])) echo $DPBDetail[0]['JENIS_KENDARAAN'] ?>">
+                                    <input class="form-control txtADOVehicleCategory" <?= $UserAccess['jenis_kendaraan'] ?> value="<?php if (isset($DPBVendorDetail[0]['JENIS_KENDARAAN'])) echo $DPBVendorDetail[0]['JENIS_KENDARAAN'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-list-ol"></i></span>
-                                    <input class="form-control txtADOVehicleIdentity" <?= $UserAccess['no_kendaraan'] ?> value="<?php if (isset($DPBDetail[0]['NO_KENDARAAN'])) echo $DPBDetail[0]['NO_KENDARAAN'] ?>">
+                                    <input class="form-control txtADOVehicleIdentity" <?= $UserAccess['no_kendaraan'] ?> value="<?php if (isset($DPBVendorDetail[0]['NO_KENDARAAN'])) echo $DPBVendorDetail[0]['NO_KENDARAAN'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-user"></i></span>
-                                    <input class="form-control txtADODriverName" <?= $UserAccess['nama_supir'] ?> value="<?php if (isset($DPBDetail[0]['NAMA_SUPIR'])) echo $DPBDetail[0]['NAMA_SUPIR'] ?>">
+                                    <input class="form-control txtADODriverName" <?= $UserAccess['nama_supir'] ?> value="<?php if (isset($DPBVendorDetail[0]['NAMA_SUPIR'])) echo $DPBVendorDetail[0]['NAMA_SUPIR'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-truck"></i></span>
-                                    <input class="form-control txtADOExpeditionVendor" <?= $UserAccess['vendor_ekspedisi'] ?> value="<?php if (isset($DPBDetail[0]['VENDOR_EKSPEDISI'])) echo $DPBDetail[0]['VENDOR_EKSPEDISI'] ?>">
+                                    <input class="form-control txtADOExpeditionVendor" <?= $UserAccess['vendor_ekspedisi'] ?> value="<?php if (isset($DPBVendorDetail[0]['VENDOR_EKSPEDISI'])) echo $DPBVendorDetail[0]['VENDOR_EKSPEDISI'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-plus"></i></span>
-                                    <input class="form-control txtADOAdditionalInformation" <?= $UserAccess['lain_lain'] ?> value="<?php if (isset($DPBDetail[0]['LAIN'])) echo $DPBDetail[0]['LAIN'] ?>">
+                                    <input class="form-control txtADOAdditionalInformation" <?= $UserAccess['lain_lain'] ?> value="<?php if (isset($DPBVendorDetail[0]['LAIN'])) echo $DPBVendorDetail[0]['LAIN'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -93,20 +93,20 @@
                                             <th class="text-center text-nowrap">No</th>
                                             <th class="text-center text-nowrap">Kode DO</th>
                                             <th class="text-center text-nowrap">Nama Barang</th>
-                                            <th class="text-center text-nowrap">UOM</th>
                                             <th class="text-center text-nowrap">Qty</th>
+                                            <th class="text-center text-nowrap">UOM</th>
                                             <th class="text-center text-nowrap">Nama Toko</th>
                                             <th class="text-center text-nowrap">Kota</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($DPBDetail as $key => $val) : ?>
+                                        <?php foreach ($DPBVendorDetail as $key => $val) : ?>
                                         <tr>
                                             <td class="text-right"><?= $key+1 ?></td>
                                             <td class="text-right"><?= $val['NO.DO'] ?></td>
                                             <td class="text-left"><?= $val['ITEM'] ?></td>
-                                            <td class="text-left"><?= $val['UOM'] ?></td>
                                             <td class="text-right"><?= $val['QTY'] ?></td>
+                                            <td class="text-left"><?= $val['UOM'] ?></td>
                                             <td class="text-left"><?= $val['RELATION'] ?></td>
                                             <td class="text-left"><?= $val['CITY'] ?></td>
                                         </tr>

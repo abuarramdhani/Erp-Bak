@@ -1,4 +1,4 @@
-$(document).ready( _ => {
+$( () => {
 
     const dataTableADOList = $('.tblADOList').DataTable({
         columnDefs    : [{
@@ -8,12 +8,12 @@ $(document).ready( _ => {
 		scrollY 	  : '350px'
     })
 
-    const dataTableADODetailList = $('.tblADODetailList').DataTable({
+    dataTableADODetailList = $('.tblADODetailList').DataTable({
         columnDefs    : [{
             orderable   : false,
             targets     : 'no-orderable'
         }],
-        drawCallback  : function () {
+        drawCallback  : () => {
             $('.chkADOPickedRelease, .chkADOPickedReleaseAll').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_flat-blue'
@@ -79,10 +79,14 @@ $(document).ready( _ => {
         })
     }
 
-    $('.divADOLoadingTable').fadeOut('slow').promise().done( _ => {
-        $('.tblADOList, .tblADODetailList').fadeIn( _ => {
+    $('.divADOLoadingTable').fadeOut('slow').promise().done( () => {
+        $('.tblADOList, .tblADODetailList').fadeIn( () => {
             $($.fn.dataTable.tables(true)).DataTable().draw()
         })
+    })
+
+    $('a[disabled=""]').on('click', function (e) {
+        e.preventDefault()
     })
 
     $('.slcADOAssignerList').select2({
@@ -217,7 +221,7 @@ $(document).ready( _ => {
 
     $('.btnADOLaunchRelease').on('click', function () {
         let data     = {
-            deliveryId : ( _ => {
+            deliveryId : ( () => {
                 let checkedVal = []
                 $(dataTableADODetailAllPageList).find('.chkADOPickedRelease:checked').each( function () {
                     checkedVal.push($(this).parents('tr').find('.spnADODeliveryID').html())
@@ -243,15 +247,195 @@ $(document).ready( _ => {
             driverPhone           : $('.txtADOExpeditionVendor').val(),
             additionalInformation : $('.txtADOAdditionalInformation').val()
         }
-        let url      = `${baseurl}ApprovalDO/DPB/saveDetail`
+        let url      = `${baseurl}ApprovalDO/DPBVendor/saveDetail`
         let question = 'Simpan Data Ini?'
         let success  = 'Berhasil Menyimpan Data'
         let fail     = 'Gagal Menyimpan Data'
         swalADOQuestionAjax(question, success, fail, url, data)
     })
 
+    $('.btnADOAddNewRow').on('click', function () {
+        let rownum = dataTableADODetailList.rows().count() + 1
+        dataTableADODetailList.row.add([
+            rownum,
+            '<input type="number" class="form-control-auto form-control txtADODONumber">',
+            '<input type="text" class="form-control-auto form-control txtADOItemName">',
+            '<input type="number" class="form-control-auto form-control txtADOQty">',
+            '<input type="text" class="form-control-auto form-control txtADOUOM">',
+            '<input type="text" class="form-control-auto form-control txtADOShopName">',
+            '<input type="text" class="form-control-auto form-control txtADOCity">',
+            '<button title="Hapus Baris" class="btn btn-danger btnADODeleteRow"><i class="fa fa-trash"></i></button>'
+        ])
+        $(dataTableADODetailList.row(':last').nodes())
+            .attr('data-type', 'new')
+            .children(':first').addClass('text-right').css('width', '5%')
+            .parent().children(':last').addClass('text-center').css('width', '5%')
+        dataTableADODetailList.draw()
+    })
+
+    $('.btnADODPBSaveNew').on('click', function () {
+        let data = {
+            header : {
+                vehicleCategory       : $('.txtADOVehicleCategory').val(),
+                vehicleId             : $('.txtADOVehicleIdentity').val(),
+                driverName            : $('.txtADODriverName').val(),
+                driverPhone           : $('.txtADOExpeditionVendor').val(),
+                additionalInformation : $('.txtADOAdditionalInformation').val()
+            },
+            line : ( () => {
+                let data = []
+                $(dataTableADODetailList.rows('[data-type="new"]').nodes()).each( function (key) { 
+                    data.push({
+                        line     : key + 1,
+                        doNumber : $(this).find('.txtADODONumber').val(),
+                        itemName : $(this).find('.txtADOItemName').val(),
+                        qty      : $(this).find('.txtADOQty').val(),
+                        uom      : $(this).find('.txtADOUOM').val(),
+                        shopName : $(this).find('.txtADOShopName').val(),
+                        city     : $(this).find('.txtADOCity').val()
+                    })
+                })
+                return data
+            }) ()
+        }
+        let url      = `${baseurl}ApprovalDO/DPBKHS/saveNew`
+        let question = 'Simpan Data Ini?'
+        let success  = 'Berhasil Menyimpan Data'
+        let fail     = 'Gagal Menyimpan Data'
+        swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
+            if ( resp !== 'Cancelled' && resp !== 'Fail' ) {
+                Swal.fire({
+                    customClass : 'swal-font-small',
+                    type        : 'success',
+                    title       : 'Berhasil!',
+                    text        : `Sukses menambahkan data dengan Nomor PR ${resp} !`,
+                    footer      : `<form action="${baseurl}ApprovalDO/DPBKHS/Detail" method="post">
+                                        <input type="hidden" name="data-pr" value="${resp}">
+                                        <button class="btn-link">Untuk memperbarui data ini silahkan klik disini.</button>
+                                   </form>`
+                })
+            }
+        })
+    })
+
+    $('.tblADODetailList').on('click', '.btnADODeleteRow', function () {
+        let dataType = $(this).parents('tr').attr('data-type')
+        if (dataType !== 'new') {
+            $(this).parents('tr').addClass('bg-danger-important').attr({
+                'data-store' : dataType,
+                'data-type'  : 'delete'
+            })
+            $(this).parent().html(
+                '<button title="Batalkan Hapus" class="btn btn-success btnADOUndeleteRow"><i class="fa fa-repeat"></i></button>'
+            )
+        } else {
+            dataTableADODetailList.rows($(this).parents('tr')).remove().draw()   
+        }
+    })
+    
+    $('.tblADODetailList').on('click', '.btnADOUndeleteRow', function () {
+        let dataType = $(this).parents('tr').attr('data-store')
+        $(this).parents('tr').removeClass('bg-danger-important').attr({
+            'data-type'  : dataType
+        })
+        $(this).parent().html(
+            '<button title="Hapus Baris" class="btn btn-danger btnADODeleteRow"><i class="fa fa-trash"></i></button>'
+        )
+    })
+
+    $('.btnADOSaveUpdate').on('click', function () {
+        let data = {
+            header : {
+                prNumber              : $('.spnADOPRNumber').html(),
+                vehicleCategory       : $('.txtADOVehicleCategory').val(),
+                vehicleId             : $('.txtADOVehicleIdentity').val(),
+                driverName            : $('.txtADODriverName').val(),
+                driverPhone           : $('.txtADOExpeditionVendor').val(),
+                additionalInformation : $('.txtADOAdditionalInformation').val()
+            },
+            newLine : ( () => {
+                let data = []
+                let line = []
+                $(dataTableADODetailList.rows('[data-type="update"]').nodes()).each( function () { 
+                    line.push($(this).attr('data-line'))
+                })
+                let max = Math.max(...line) + 1
+                $(dataTableADODetailList.rows('[data-type="new"]').nodes()).each( function (key) { 
+                    data.push({
+                        lineNumber : key + max,
+                        doNumber   : $(this).find('.txtADODONumber').val(),
+                        itemName   : $(this).find('.txtADOItemName').val(),
+                        qty        : $(this).find('.txtADOQty').val(),
+                        uom        : $(this).find('.txtADOUOM').val(),
+                        shopName   : $(this).find('.txtADOShopName').val(),
+                        city       : $(this).find('.txtADOCity').val()
+                    })
+                })
+                return data
+            }) (),
+            updateLine : ( () => {
+                let data = []
+                $(dataTableADODetailList.rows('[data-type="update"]').nodes()).each( function () { 
+                    data.push({
+                        lineNumber : $(this).attr('data-line'),
+                        doNumber   : $(this).find('.txtADODONumber').val(),
+                        itemName   : $(this).find('.txtADOItemName').val(),
+                        qty        : $(this).find('.txtADOQty').val(),
+                        uom        : $(this).find('.txtADOUOM').val(),
+                        shopName   : $(this).find('.txtADOShopName').val(),
+                        city       : $(this).find('.txtADOCity').val()
+                    })
+                })
+                return data
+            }) (),
+            deleteLine : ( () => {
+                let data = []
+                $(dataTableADODetailList.rows('[data-type="delete"]').nodes()).each( function () { 
+                    data.push({
+                        lineNumber : $(this).attr('data-line')
+                    })
+                })
+                return data
+            }) ()
+        }
+        let url      = `${baseurl}ApprovalDO/DPBKHS/saveUpdate`
+        let question = 'Simpan Data Ini?'
+        let success  = 'Berhasil Menyimpan Data'
+        let fail     = 'Gagal Menyimpan Data'
+        swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
+            if ( resp !== 'Cancelled' && resp !== 'Fail' ) {
+                dataTableADODetailList.rows('[data-type="delete"]').remove().draw()
+                dataTableADODetailList.rows('[data-type="new"]').attr('data-type', 'update')
+            }
+        })
+    })
+
+    $(document).on('click', '.btnADODeleteDPBKHS', function () {
+        let data     = {
+            prNumber : $(this).parents('tr').find('td:eq(1)').html()
+        }
+        let url      = `${baseurl}ApprovalDO/DPBKHS/delete`
+        let question = `Hapus DO ini?`
+        let success  = 'Berhasil Menghapus DO'
+        let fail     = 'Gagal Menghapus DO'
+        swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
+            if ( resp != 'Cancelled' && resp != 'Fail' ) {
+                dataTableADOList.rows($(this).parents('tr')).remove().draw()
+            }
+        })
+    })
+
+    $('#txtADOSearchByCreationDate').datepicker({
+        autoclose : true,
+        format    : 'dd-M-yy'
+    })
+
+    $('#txtADOSearchByCreationDate').on('change', function () {
+        dataTableADOList.columns(2).search($(this).val()).draw()
+    })
+
     if ( window.location.href.indexOf('ApprovalDO/ListDO') > -1 ) {
-        setTimeout( _ => {
+        setTimeout( () => {
             window.location.reload(1)
         }, 300000)
     }

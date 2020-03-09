@@ -12,7 +12,7 @@ class M_dpb extends CI_Model
         $this->oracle = $this->load->database('oracle', TRUE);
     }
 
-    public function getDPBList()
+    public function getDPBVendorList()
     {
         $sql = "SELECT distinct
                         prha.SEGMENT1               no_pr
@@ -41,7 +41,7 @@ class M_dpb extends CI_Model
         return $query->result_array();
     }
 
-    public function getDPBDetail($id)
+    public function getDPBVendorDetail($id)
     {
         $sql = "((select distinct poh.SEGMENT1 \"NO.PR\"
                     ,trunc(poh.CREATION_DATE) \"tgl pr\" 
@@ -477,6 +477,62 @@ class M_dpb extends CI_Model
         return $query->result_array();
     }
 
+    public function getDPBKHSList()
+    {
+        $sql = "SELECT
+                    DISTINCT dpb.NO_PR,
+                    dpb.TGL_KIRIM,
+                    dpb.JENIS_KENDARAAN,
+                    dpb.NO_KENDARAAN,
+                    dpb.NAMA_SUPIR,
+                    dpb.VENDOR_EKSPEDISI
+                FROM
+                    KHS_DPB_KENDARAAN dpb
+                WHERE
+                    dpb.NO_PR LIKE 'KHS%'
+                ORDER BY
+                    dpb.TGL_KIRIM DESC";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function getDPBKHSDetail($id)
+    {
+        $sql = "SELECT
+                    DISTINCT dpb.NO_PR,
+                    dpb.JENIS_KENDARAAN,
+                    dpb.NO_KENDARAAN,
+                    dpb.NAMA_SUPIR,
+                    dpb.VENDOR_EKSPEDISI,
+                    dpb.LAIN,
+                    dpb.LINE_NUM,
+                    dpb.DO_NUM,
+                    dpb.ITEM_NAME,
+                    dpb.UOM,
+                    dpb.QTY,
+                    dpb.NAMA_TOKO,
+                    dpb.KOTA
+                FROM
+                    KHS_DPB_KENDARAAN dpb
+                WHERE
+                    dpb.NO_PR = '$id'";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function checkPRNumber($pr_number)
+    {
+        return $this->oracle
+            ->select('NO_PR')
+            ->from('KHS_DPB_KENDARAAN')
+            ->like('NO_PR', $pr_number, 'after')
+            ->order_by('NO_PR', 'DESC')
+            ->get()
+            ->row_array();
+    }
+
     public function checkIsExist($pr_number)
     {
         return $this->oracle
@@ -487,15 +543,46 @@ class M_dpb extends CI_Model
             ->result_array();
     }
 
+    public function deleteDPBKHS($id)
+    {
+        $this->oracle
+            ->where('NO_PR', $id)
+            ->delete('KHS_DPB_KENDARAAN');        
+    }
+
+    public function deleteDetail($pr_number, $line_number)
+    {
+        $this->oracle
+            ->where('NO_PR', $pr_number)
+            ->where('LINE_NUM', $line_number)
+            ->delete('KHS_DPB_KENDARAAN');
+    }
+
     public function insertNewDetail($data)
     {
         $this->oracle->insert('KHS_DPB_KENDARAAN', $data);
+    }
+
+    public function insertNewDetailKHS($data)
+    {
+        $this->oracle
+            ->set('TGL_KIRIM', "TO_DATE('".date('Y-m-d h:i:s')."' ,'yyyy-mm-dd hh24:mi:ss')", FALSE)
+            ->insert('KHS_DPB_KENDARAAN', $data);
     }
 
     public function updateDetail($id, $data)
     {
         $this->oracle
             ->where('NO_PR', $id)
+            ->update('KHS_DPB_KENDARAAN', $data);
+    }
+
+    public function updateDetailKHS($pr_number, $line_number, $data)
+    {
+        $this->oracle
+            ->where('NO_PR', $pr_number)
+            ->where('LINE_NUM', $line_number)
+            ->set('TGL_KIRIM', "TO_DATE('".date('Y-m-d h:i:s')."' ,'yyyy-mm-dd hh24:mi:ss')", FALSE)
             ->update('KHS_DPB_KENDARAAN', $data);
     }
 
