@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="inner">
 		<div class="row">
-			<form target="_blank"  class="form-horizontal" method="POST" action="<?php site_url('WasteManagementSeksi/InputKirimLimbah/EditKirim')?>" id="wms-inputlimbah-edit">
+			<form class="form-horizontal" method="POST" action="">
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-12">
@@ -60,10 +60,11 @@
 												<div class="col-lg-4">
 													<div class="col-lg-12">
 														<select class="select select2" id="txtLokasi" name="txtLokasi" style="width: 100%" required>
-															<option value="<?php echo $KirimLimbah['0']['lokasi_kerja'] ?>"><?php echo $KirimLimbah['0']['noind_location'] ?></option>
 															<option></option>
 															<?php foreach ($Lokasi as $key) { ?>
-																<option value="<?php echo $key['location_code'] ?>"><?php echo $key['location_code']." - ".$key['location_name']  ?></option>
+																<option value="<?php echo $key['location_code'] ?>" <?= $KirimLimbah['0']['lokasi_kerja'] == $key['location_code'] ? 'selected' : '' ?>>
+																	<?php echo $key['location_code']." - ".$key['location_name']  ?>
+																</option>
 															<?php } ?>
 														</select>
 													</div>
@@ -89,9 +90,9 @@
 												<label for="txtKondisi" class="control-label col-lg-4">Kondisi</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">
-														<select class="select select2" name="txtKondisi" id="txtKondisi" value='.$bocor.' style="width:100%;">
-															<option value="1">Bocor</option>
-															<option value="0">Tidak Bocor</option>
+														<select class="select select2" name="txtKondisi" id="txtKondisi" value="" style="width:100%;">
+															<option value="1" <?= $KirimLimbah['0']['bocor'] == 1 ? 'selected':'' ?>>Bocor</option>
+															<option value="0" <?= $KirimLimbah['0']['bocor'] == 0 ? 'selected':'' ?>>Tidak Bocor</option>
 														</select>
 													</div>
 												</div>
@@ -103,8 +104,6 @@
 														<input type="number" class="form-control" name="txtJumlah" id="txtJumlah" placeholder="Jumlah" value="<?php echo $KirimLimbah['0']['jumlah_kirim'];  ?>">
 													</div>
 													<div class="col-lg-5">
-														<!-- <input type="text" class="form-control" name="txtSatuan" id="txtSatuan" placeholder="Satuan" disabled="" value="<?php echo $KirimLimbah['0']['limbah_satuan']; ?>" style="padding-right: 0px;"> -->
-
 														<select style="width: 100%;" class="select select2" name="txtSatuan" id="txtSatuan" data-placeholder="Satuan">
 															<option></option>
 															<?php foreach ($SatuanLimbah as $key) { ?>
@@ -129,9 +128,6 @@
 										<a href="javascript:history.back(1);" class="btn btn-warning" >Back</a>
 									</div>
 								</div>
-								<div class="box-footer">
-
-								</div>
 							</div>
 						</div>
 					</div>
@@ -140,4 +136,3 @@
 		</div>
 	</div>
 </section>
-<input type="hidden" id="wmslinkindex" value="<?php echo site_url('WasteManagementSeksi/InputKirimLimbah/'); ?>">

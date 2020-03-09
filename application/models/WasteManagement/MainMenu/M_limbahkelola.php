@@ -14,6 +14,8 @@ class M_limbahkelola extends CI_Model
 	}
 
 	public function getLimbahKirim(){
+    $approveByWasteManagement = 1;
+    $approveByKasie = 4;
 		$query = 	"select limkir.id_kirim,
                         cast(limkir.tanggal_kirim as date) tanggal,
                         cast(limkir.tanggal_kirim as time) waktu,
@@ -35,8 +37,10 @@ class M_limbahkelola extends CI_Model
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
+
                     order by limkir.tanggal_kirim desc";
         $result = $this->db->query($query);
+        //                    where limkir.status_kirim in ('$approveByWasteManagement','$approveByKasie')
         return $result->result_array();
 	}
 
@@ -119,6 +123,44 @@ class M_limbahkelola extends CI_Model
                     where id_kirim = '$id';";
         $result = $this->db->query($query);
         return $result->result_array();
+    }
+
+    function getDataLimbah($start, $end, $limbah, $detailed) {
+        $start = date('Y-m-d', strtotime($start));
+        $end = date('Y-m-d', strtotime($end));
+
+        $filterLimbah = '';
+        if(count($limbah)) {
+            $limbah = array_map(function($item){
+            return "'$item'";
+            }, $limbah);
+            $limbah = implode(',', $limbah);
+            $filterLimbah = "and limkir.id_jenis_limbah in ($limbah)";
+        }
+
+        // not detailed
+        if($detailed == 'false') {
+            $sql = "SELECT 
+                    distinct limkir.id_jenis_limbah,
+                    limjen.jenis_limbah,
+                    (select trunc(sum(berat_kirim)::numeric, 3) from ga.ga_limbah_kirim where id_jenis_limbah = limkir.id_jenis_limbah and tanggal_kirim between '$start' and '$end') as berat_kirim
+                FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
+                    on limkir.id_jenis_limbah = limjen.id_jenis_limbah
+                WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim between '$start' and '$end' $filterLimbah
+                ORDER BY jenis_limbah";
+        } else {
+            // detailed
+            $sql = "SELECT
+                        limjen.jenis_limbah,
+                        to_char(limkir.tanggal_kirim, 'YYYY-MM-DD') as tanggal_kirim,
+                        (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') section_name,
+                        trunc(limkir.berat_kirim::numeric, 3) as berat_kirim
+                    FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
+                            on limkir.id_jenis_limbah = limjen.id_jenis_limbah
+                    WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim between '$start' and '$end' $filterLimbah
+                    ORDER BY limkir.tanggal_kirim"; // 1 adalah yg sudah diapprove oleh waste management
+        }
+        return $this->db->query($sql)->result_array();
     }
 }
 
