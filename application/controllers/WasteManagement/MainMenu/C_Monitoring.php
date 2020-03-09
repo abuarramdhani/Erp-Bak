@@ -35,8 +35,9 @@ class C_Monitoring extends CI_Controller {
         $start = $_GET['start'];
         $end = $_GET['end'];
         $limbah = isset($_GET['jenis']) ? $_GET['jenis'] : [];
+        $detailed = $_GET['detailed'];
 
-        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah);
+        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $detailed);
 
         $result = array(
             'success'=> $data ? true : false,
@@ -54,7 +55,7 @@ class C_Monitoring extends CI_Controller {
         $limbah = (isset($_GET['jenis']) && !empty($_GET['jenis'])) ? $_GET['jenis'] : [];
         $detailed = $_GET['detailed'];
 
-        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah);
+        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $_GET['detailed'] ? 'true' : 'false');
 
 		$objPHPExcel 	= new PHPExcel();
 		$worksheet 		= $objPHPExcel->getActiveSheet();
@@ -304,7 +305,8 @@ class C_Monitoring extends CI_Controller {
             $worksheet->getStyle("C{$i}")->applyFromArray($border);
         }
 
-        $title = date('d-m-Y', strtotime($start))." - ".date('d-m-Y', strtotime($end));
+        $title_detailed = $detailed ? "_detailed" : '';
+        $title = date('d-m-Y', strtotime($start))." - ".date('d-m-Y', strtotime($end)).$detailed;
 		header("Content-type: application/vnd-ms-excel");
 		header("Content-Disposition: attachment; filename=MonitoringLimbah_{$title}.xls");
 		header('Cache-Control: max-age=0');

@@ -76,8 +76,8 @@
                                             <tr>
                                                 <td width="5%">No</td>
                                                 <td>Jenis Limbah</td>
-                                                <td v-if="detailed">Tanggal Masuk</td>
-                                                <td v-if="detailed">Seksi Pengirim</td>
+                                                <td v-if="tableDetailed">Tanggal Masuk</td>
+                                                <td v-if="tableDetailed">Seksi Pengirim</td>
                                                 <td width="7%">Berat(Kg)</td>
                                             </tr>
                                         </thead>
@@ -85,12 +85,12 @@
                                             <tr v-for="(item, index) of dataLimbah">
                                                 <td>{{ index+1 }}</td>
                                                 <td>{{ item.jenis_limbah }}</td>
-                                                <td v-if="detailed">{{ item.tanggal_kirim }}</td>
-                                                <td v-if="detailed">{{ item.section_name }}</td>
+                                                <td v-if="tableDetailed">{{ item.tanggal_kirim }}</td>
+                                                <td v-if="tableDetailed">{{ item.section_name }}</td>
                                                 <td>{{ item.berat_kirim }}</td>
                                             </tr>
                                             <tr>
-                                                <td :colspan="detailed ? 4 : 2">Total Berat Limbah</td>
+                                                <td :colspan="tableDetailed ? 4 : 2">Total Berat Limbah</td>
                                                 <td>{{ beratTotal }}</td>
                                             </tr>
                                         </tbody>
@@ -158,6 +158,7 @@
                 dataLimbah: [],
                 isDataLimbahEmpty: false,
                 detailed: false,
+                tableDetailed: false,
                 isLoading: false
             }
         },
@@ -178,6 +179,7 @@
                         detailed: vm.detailed
                     }
                 }).then(res => {
+                    vm.tableDetailed = vm.detailed
                     if (res.data.success) {
                         vm.dataLimbah = res.data.data
                     } else {
@@ -191,11 +193,14 @@
                     vm.isLoading = false
 
                     if (vm.dataLimbah.length > 0) {
-                        window.scrollTo(0, 350)
+                        setTimeout(() => {
+                            window.scrollTo(0, 350)
+                        }, 1000)
                     }
 
                 }).catch(e => {
                     alert(e)
+                    vm.isLoading = false
                 })
             }
         },
