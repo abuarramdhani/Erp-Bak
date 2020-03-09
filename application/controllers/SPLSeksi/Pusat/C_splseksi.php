@@ -721,6 +721,7 @@ class C_splseksi extends CI_Controller {
 				$presensi = $this->M_splseksi->getPresensi($noind,$tanggal);
 				if (!empty($presensi) && count($presensi) > 0) {
 					foreach ($presensi as $datapres) {
+						$shift = $datapres['kd_shift'];
 						$masuk_shift = date_format(date_create($datapres['jam_msk']), 'Y-m-d H:i:s');
 						$keluar_shift = date_format(date_create($datapres['jam_plg']), 'Y-m-d H:i:s');
 						$masuk_absen = date_format(date_create($datapres['masuk']), 'Y-m-d H:i:s');
@@ -758,7 +759,14 @@ class C_splseksi extends CI_Controller {
 								$errortext = "Jam Awal Lembur Tidak Sesuai";
 							}
 						}elseif ($lembur == '002') { // lembur pulang
-							// TODO
+							// cek shift apakah shift 3 atau 2 pada hari itu, kalau iya maka cek shift sebelumnya
+							if($shift == '3') {
+								$shift = $this->M_splseksi->show_current_shift($noind, date('Y-m-d', strtotime('-1 days '.$tanggal)));
+								foreach($shift as $jam) {
+									$keluar_shift = $jam['jam_plg'];
+								}
+							}
+
 							if ($keluar_shift <= $awal_lembur && $awal_lembur <= $keluar_absen) {
 								// awal lembur
 								if ($masuk_absen > $awal_lembur) {
@@ -766,7 +774,6 @@ class C_splseksi extends CI_Controller {
 								} else {
 									$aktual_awal = $awal_lembur;
 								}
-
 								// akhir lembur
 								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
 									$aktual_akhir = $akhir_lembur;
