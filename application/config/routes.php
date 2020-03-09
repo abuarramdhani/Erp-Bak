@@ -1435,6 +1435,10 @@ $route['WasteManagement/Simple'] = 'WasteManagement/MainMenu/C_Simple';
 $route['WasteManagement/Simple/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1';
 $route['WasteManagement/Simple/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1/$2';
 $route['WasteManagement/Simple/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1/$2/$3';
+$route['WasteManagement/MonitoringLimbah'] = 'WasteManagement/MainMenu/C_Monitoring';
+$route['WasteManagement/MonitoringLimbah/Process'] = 'WasteManagement/MainMenu/C_Monitoring/Process';
+$route['WasteManagement/MonitoringLimbah/api/getDataLimbah'] = 'WasteManagement/MainMenu/C_Monitoring/apiGetDataLimbah';
+$route['WasteManagement/MonitoringLimbah/CetakExcel'] = 'WasteManagement/MainMenu/C_Monitoring/cetakExcel';
 
 //-----------------------------------------Waste Management - Rekap Limbah ---------------------------------//
 
