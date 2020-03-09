@@ -418,7 +418,18 @@ class C_TransferPolaReffGaji extends CI_Controller
 
 		$table->close();
 
-		echo '<a href="'.site_url("MasterPresensi/ReffGaji/TransferPolaReffGaji/download?file=lv_info_pola&time=".$waktu).'" class="btn btn-info">lv_info_pola.dbf</a>';
+		$data['datajadi'] = $datajadi;
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
+		// $this->load->view('MasterPresensi/ReffGaji/TransferPolaReffGaji/V_cetak', $data);
+		$html = $this->load->view('MasterPresensi/ReffGaji/TransferPolaReffGaji/V_cetak', $data, true);
+		$waktu_cetak = strftime('%d/%h/%Y %H:%M:%S');
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_cetak.". Halaman {PAGENO} dari {nb}</i>");
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output(FCPATH."assets/upload/TransferReffGaji/lv_info_pola".$waktu.".pdf", 'F');
+		// $pdf->Output($filename, 'I');
+		echo '<a href="'.site_url("MasterPresensi/ReffGaji/TransferPolaReffGaji/download?file=lv_info_pola&type=dbf&time=".$waktu).'" class="btn btn-info">lv_info_pola.dbf</a>
+		<a href="'.site_url("MasterPresensi/ReffGaji/TransferPolaReffGaji/download?file=lv_info_pola&type=pdf&time=".$waktu).'" class="btn btn-danger">lv_info_pola.pdf</a>';
 	}
 
 	public function cekProgress(){
@@ -442,11 +453,12 @@ class C_TransferPolaReffGaji extends CI_Controller
 	public function download(){
 		$file = $this->input->get('file');
 		$waktu = $this->input->get('time');
+		$type = $this->input->get('type');
 		// print_r($_GET);exit();
 		// echo site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".dbf");exit();
-		$data = file_get_contents(site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".dbf"));
+		$data = file_get_contents(site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".".$type));
 		// echo $data;
-		header('Content-disposition: attachment; filename='.$file.'.dbf');
+		header('Content-disposition: attachment; filename='.$file.".".$type);
 		// header("Content-type: application/octet-stream");
 		echo $data;
 	}
