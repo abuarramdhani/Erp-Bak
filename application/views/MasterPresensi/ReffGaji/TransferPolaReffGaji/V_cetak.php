@@ -21,14 +21,13 @@
 				$nomor =1;
 				$noind = array_column($datajadi, 'noind');
 				array_multisort($noind,SORT_ASC,$datajadi);
-				
 				foreach ($datajadi as $key) {
 					?>
 					<tr>
 						<td style="text-align: center;"><?php echo $nomor; ?></td>
 						<td style="text-align: center"><?php echo $key['noind']; ?></td>
 						<td><?php echo $key['namaopr']; ?></td>
-						<td style="text-align: right"><?php echo $key['hmp'] + $key['hms'] + $key['hmm'] + $key['hmu']; ?></td>
+						<td style="text-align: right;padding-right: 10px;"><?php echo $key['hmp'] + $key['hms'] + $key['hmm'] + $key['hmu']; ?></td>
 					</tr>
 					<?php 
 					$nomor++;
@@ -36,6 +35,33 @@
 			}
 			?>
 		</tbody>
+	</table>
+	<table>
+		<tr>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 40%;text-align: center">Dicetak Oleh,</td>
+		</tr>
+		<tr>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 40%">&nbsp;</td>
+		</tr>
+		<tr>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 40%">&nbsp;</td>
+		</tr>
+		<tr>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 40%">&nbsp;</td>
+		</tr>
+		<tr>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 30%">&nbsp;</td>
+			<td style="width: 40%;text-align: center"><?php echo $this->session->employee ?></td>
+		</tr>
 	</table>
 </body>
 </html>

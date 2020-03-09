@@ -245,16 +245,16 @@ class C_TransferPolaReffGaji extends CI_Controller
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "S1";
 					$datajadi[$angka]['hmp'] += 1;
 				}elseif ($dt['kd_ket'] == "TT") {
-					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = strtoupper($dt['inisial']);
-					if (strtolower($dt['inisial']) == "s1") {
-						$datajadi[$angka]['hmp'] += 1;
-					}elseif (strtolower($dt['inisial']) == "s2") {
-						$datajadi[$angka]['hms'] += 1;
-					}elseif (strtolower($dt['inisial']) == "s3") {
-						$datajadi[$angka]['hmm'] += 1;
-					}elseif (strtolower($dt['inisial']) == "su") {
-						$datajadi[$angka]['hmu'] += 1;
-					}
+					// $datajadi[$angka][$bulan_str.$arraytanggal['2']] = strtoupper($dt['inisial']);
+					// if (strtolower($dt['inisial']) == "s1") {
+					// 	$datajadi[$angka]['hmp'] += 1;
+					// }elseif (strtolower($dt['inisial']) == "s2") {
+					// 	$datajadi[$angka]['hms'] += 1;
+					// }elseif (strtolower($dt['inisial']) == "s3") {
+					// 	$datajadi[$angka]['hmm'] += 1;
+					// }elseif (strtolower($dt['inisial']) == "su") {
+					// 	$datajadi[$angka]['hmu'] += 1;
+					// }
 				}
 			}elseif ($dt['kd_ket'] !== "HL") {
 				if (strtolower($dt['inisial']) !== "s1" and strtolower($dt['inisial']) !== "s2" and strtolower($dt['inisial']) !== "s3" and strtolower($dt['inisial']) !== "su" ) {
