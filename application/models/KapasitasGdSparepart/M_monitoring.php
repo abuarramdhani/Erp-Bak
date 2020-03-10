@@ -443,7 +443,7 @@ class M_monitoring extends CI_Model {
 
     public function jml_pending() {
         $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) pending FROM KHS_TAMPUNG_SPB where bon = 'PENDING'";
+        $sql ="SELECT count(*) pending FROM KHS_TAMPUNG_SPB where bon = 'PENDING' and cancel is null";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;

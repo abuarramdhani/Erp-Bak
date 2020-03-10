@@ -98,6 +98,7 @@ class C_Monitoring extends CI_Controller
 		$dus_sdg = array();
 		$dus_pjg = array();
 		$karung = array();
+		$peti = array();
 		for ($i=0; $i < count($nopck); $i++) { 
 			$cari = $this->M_monitoring->getDataColly($nopck[$i]);
 			if (!empty($cari)) {
@@ -112,6 +113,8 @@ class C_Monitoring extends CI_Controller
 						array_push($dus_pjg, $val['nomor_do']);
 					}elseif ($val['kode_packing'] == 4) {
 						array_push($karung, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 5) {
+						array_push($peti, $val['nomor_do']);
 					}
 				}
 			}
@@ -122,6 +125,7 @@ class C_Monitoring extends CI_Controller
 		$data['dus_sdg'] = count($dus_sdg);
 		$data['dus_pjg'] = count($dus_pjg);
 		$data['karung'] = count($karung);
+		$data['peti'] = count($peti);
 		
 		// echo "<pre>"; print_r($dus_kecil); exit();
 
@@ -222,6 +226,7 @@ class C_Monitoring extends CI_Controller
 			$dus_sdg 	= array();
 			$dus_pjg 	= array();
 			$karung 	= array();
+			$peti 		= array();
 			for ($i=0; $i < count($nopck) ; $i++) { 
 				$cari = $this->M_monitoring->getDataColly($nopck[$i]);
 				if (!empty($cari)) {
@@ -235,6 +240,8 @@ class C_Monitoring extends CI_Controller
 							array_push($dus_pjg, $val['nomor_do']);
 						}elseif ($val['kode_packing'] == 4) {
 							array_push($karung, $val['nomor_do']);
+						}elseif ($val['kode_packing'] == 5) {
+							array_push($peti, $val['nomor_do']);
 						}
 					}
 				}
@@ -244,6 +251,7 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['dus_sdg'] 	= count($dus_sdg);
 			$hasil[$a]['dus_pjg'] 	= count($dus_pjg);
 			$hasil[$a]['karung'] 	= count($karung);
+			$hasil[$a]['peti']		= count($peti);
 		}
 		$data['hasil'] = $hasil;
 		// echo "<pre>";print_r($hasil);exit();
