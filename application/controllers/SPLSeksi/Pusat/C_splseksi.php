@@ -1185,6 +1185,13 @@ class C_splseksi extends CI_Controller {
 			$mulai = $this->input->post("lembur_awal[$x]");
 			$selesai = $this->input->post("lembur_akhir[$x]");
 
+			// cek shift, khusus shift 3, tanggal  dikurangi 1
+			$shift = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime('-1 days '.$tanggal)), $noind);
+
+			if(!empty($shift) && trim($shift['0']['kd_shift']) == '3') {
+				$tanggal = date('Y-m-d', strtotime('-1 days '.$tanggal));
+			}
+
 			// Generate ID SPL
 			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl", "ID_SPL");
 			if(empty($maxid)){
