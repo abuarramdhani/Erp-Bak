@@ -2200,6 +2200,10 @@ $route['WasteManagementSeksi/InfoKirimLimbah'] = 'WasteManagementSeksi/MainMenu/
 $route['WasteManagementSeksi/InfoKirimLimbah/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1';
 $route['WasteManagementSeksi/InfoKirimLimbah/(:any)/(:any)'] = 'WasteManagementSeksi/MainMenu/C_infokirim/$1/$2';
 
+$route['WasteManagementSeksi/ApprovalLimbah'] = 'WasteManagementSeksi/MainMenu/C_ApprovalLimbah';
+$route['WasteManagementSeksi/ApprovalLimbah/Approve/(:any)'] = 'WasteManagementSeksi/MainMenu/C_ApprovalLimbah/approve/$1';
+$route['WasteManagementSeksi/ApprovalLimbah/Reject/(:any)'] = 'WasteManagementSeksi/MainMenu/C_ApprovalLimbah/reject/$1';
+
 //------------------------------------ System Integration ----------------------------------------//
 $route['SystemIntegration'] = 'SystemIntegration/C_Index/index';
 $route['SystemIntegrationKaizenGenerator/Submit/getItem'] = 'SystemIntegration/MainMenu/Submit/C_Submit/getItem';
