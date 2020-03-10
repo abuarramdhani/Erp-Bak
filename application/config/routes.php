@@ -4021,3 +4021,18 @@ $route['AssetCabangAkuntansi/LaporanDataAssetOracle/getFilter'] = 'AssetCabangAk
 $route['AssetCabangAkuntansi/Draft'] 							= 'AssetCabangAkt/C_AssetCabangAkt/draft';
 $route['AssetCabangAkuntansi/Received'] 						= 'AssetCabangAkt/C_AssetCabangAkt/received';
 $route['AssetCabangAkuntansi/Done'] 							= 'AssetCabangAkt/C_AssetCabangAkt/done';
+
+//-------------------------------------------Stock Gudang Sparepart--------------------------------------------------//
+$route['StockGdSparepart'] 							= 'StockGdSparepart/C_Index';
+
+$route['StockGdSparepart/LihatStock']					= 'StockGdSparepart/C_LihatStock';
+$route['StockGdSparepart/LihatStock/(:any)']			= 'StockGdSparepart/C_LihatStock/$1';
+$route['StockGdSparepart/LihatStock/(:any)/(:any)']		= 'StockGdSparepart/C_LihatStock/$1/$2';
+
+$route['StockGdSparepart/LihatTransact']				= 'StockGdSparepart/C_LihatTransact';
+$route['StockGdSparepart/LihatTransact/(:any)']			= 'StockGdSparepart/C_LihatTransact/$1';
+$route['StockGdSparepart/LihatTransact/(:any)/(:any)']	= 'StockGdSparepart/C_LihatTransact/$1/$2';
+
+$route['StockGdSparepart/MinMaxStock']					= 'StockGdSparepart/C_MinMax';
+$route['StockGdSparepart/MinMaxStock/(:any)']			= 'StockGdSparepart/C_MinMax/$1';
+$route['StockGdSparepart/MinMaxStock/(:any)/(:any)']	= 'StockGdSparepart/C_MinMax/$1/$2';
