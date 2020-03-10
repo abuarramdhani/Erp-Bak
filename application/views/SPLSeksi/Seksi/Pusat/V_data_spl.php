@@ -187,7 +187,7 @@
 		}
 
 		document.addEventListener("DOMContentLoaded",function(e){
-			// $('#spl-pencarian').click()
+			$('#spl-pencarian').click()
 			setupTimers();
 		});
 
