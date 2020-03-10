@@ -14,9 +14,7 @@
 				<div class="panel-body">
 					<div class="col-md-6 text-right">
 						<button type="button" class="btn btn-success" id="exportminmaxstock"><i class="fa fa-download"></i> Export</button>
-                        <form method="post" action="<?php echo base_url('StockGdSparepart/MinMaxStock/exportminmaxstock'); ?>">
-                        <button type="submit" class="btn btn-success" id="export2" style="display:none"><i class="fa fa-download"></i> Export</button>
-                        <form> 
+                        <a href="<?php echo base_url('StockGdSparepart/MinMaxStock/exportminmaxstock'); ?>" type="button" class="btn btn-success" id="export2" style="display:none"><i class="fa fa-download"></i> Export</a>
 					</div>
 					<div class="col-md-6 text-left">
 						<button type="button" class="btn btn-info" id="importminmax" data-toggle="modal" data-target="#mdlminmax"><i class="fa fa-upload"></i> Import</button>
