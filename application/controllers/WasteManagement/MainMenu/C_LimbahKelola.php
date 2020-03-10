@@ -53,7 +53,7 @@ class C_LimbahKelola extends CI_Controller
 		$kiriman = $this->M_limbahkelola->getLimbahKirim();
 
 		$kiriman = array_filter($kiriman, function($item) {
-			if(strtotime($item['tanggal']) > strtotime('2020-02-20')) {
+			if(strtotime($item['tanggal']) > strtotime('2020-03-10')) {
 				return ($item['status_kirim'] == 4 || $item['status_kirim'] == 1);
 			} else {
 				return true;
