@@ -171,8 +171,8 @@ function saveminmax(th) {
 		datatype: 'html',
 		success: function(data) {
             $("#mdlloading").modal("hide"); 
-			// swal.fire("Berhasil!", "", "success");
-			window.location = "";
+			swal.fire("Berhasil!", "", "success");
+			// window.location = "";
 		}
 
 	});
