@@ -721,7 +721,7 @@ class C_splseksi extends CI_Controller {
 				$shift = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime('-1 days '.$tanggal)), $noind);
 
 				// untuk shift 3, select tgl sebelumnya
-				$presensi = $this->M_splseksi->getPresensi($noind, trim($shift['0']['kd_shift']) == '3' ? date('Y-m-d', strtotime('-1 days '.$tanggal)) : $tanggal);
+				$presensi = $this->M_splseksi->getPresensi($noind, (!empty($shift) && trim($shift['0']['kd_shift']) == '3') ? date('Y-m-d', strtotime('-1 days '.$tanggal)) : $tanggal);
 
 				if (!empty($presensi) && count($presensi) > 0) {
 					foreach ($presensi as $datapres) {
