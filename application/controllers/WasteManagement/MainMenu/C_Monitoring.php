@@ -196,7 +196,7 @@ class C_Monitoring extends CI_Controller {
                         ->setCellValueExplicit($kolomB, $key['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
                         ->setCellValueExplicit($kolomC, $key['tanggal_kirim'], PHPExcel_Cell_DataType::TYPE_STRING)
                         ->setCellValueExplicit($kolomD, $key['section_name'], PHPExcel_Cell_DataType::TYPE_STRING)
-                        ->setCellValueExplicit($kolomE, $key['berat_kirim'], PHPExcel_Cell_DataType::TYPE_STRING)
+                        ->setCellValueExplicit($kolomE, floatval($key['berat_kirim']), PHPExcel_Cell_DataType::TYPE_STRING)
                         ;
                 $worksheet->getStyle($kolomA)->applyFromArray($alignment);
                 $worksheet->getStyle($kolomB)->applyFromArray($alignment);
@@ -273,7 +273,7 @@ class C_Monitoring extends CI_Controller {
     
                 $sheet  ->setCellValueExplicit($kolomA, $nomor, PHPExcel_Cell_DataType::TYPE_NUMERIC)
                         ->setCellValueExplicit($kolomB, $key['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
-                        ->setCellValueExplicit($kolomC, $key['berat_kirim'], PHPExcel_Cell_DataType::TYPE_STRING)
+                        ->setCellValueExplicit($kolomC, floatval($key['berat_kirim']), PHPExcel_Cell_DataType::TYPE_STRING)
                         ;
                 $worksheet->getStyle($kolomA)->applyFromArray($alignment);
                 $worksheet->getStyle($kolomB)->applyFromArray($alignment);
