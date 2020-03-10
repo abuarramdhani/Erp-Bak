@@ -6,6 +6,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetPenerimaAsuransi/M_riwayatsetasuransi');
@@ -20,7 +21,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Tarif Asuransi';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_riwayatsetasuransi->get_by_id($id);
         if ($row) {
             $data = array(
@@ -51,7 +52,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_set_asuransi' => $row->id_set_asuransi,
 				'tgl_berlaku' => $row->tgl_berlaku,
 				'tgl_tberlaku' => $row->tgl_tberlaku,
@@ -135,11 +136,15 @@ class C_RiwayatSetAsuransi extends CI_Controller
 				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
 				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
-
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Add set penerima asuransi kd_status_kerja=".$this->input->post('cmbKdStatusKerja');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_riwayatsetasuransi->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
-        
+
     }
 
     public function update($id)
@@ -188,7 +193,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
     public function saveUpdate()
     {
         $this->formValidation();
-        
+
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
@@ -204,11 +209,15 @@ class C_RiwayatSetAsuransi extends CI_Controller
 				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
 				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
 			);
-
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update set penerima asuransi ID=".$this->input->post('txtIdSetAsuransi');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_riwayatsetasuransi->update($this->input->post('txtIdSetAsuransi', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
-        
+
     }
 
     public function delete($id)
@@ -217,6 +226,11 @@ class C_RiwayatSetAsuransi extends CI_Controller
 
         if ($row) {
             $this->M_riwayatsetasuransi->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set penerima asuransi ID=".$id;
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
         } else {
@@ -227,7 +241,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

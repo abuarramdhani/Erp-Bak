@@ -59,7 +59,7 @@
 						<tr>
 							<td style="width: 33%;padding: 5px;">Lokasi</td>
 							<td style="width: 3%;text-align: center;">:</td>
-							<td style="width: 64%;padding: 5px;"><?= $dataEmployee[0]['lokasi'] ?></td>
+							<td style="width: 64%;padding: 5px;"><?= $dataEmployee[0]['lokasi'] ?> <br>(<?= $dataEmployee[0]['longitude'] ?>, <?= $dataEmployee[0]['latitude'] ?>)</td>
 						</tr>
 						<tr>
 							<td style="width: 33%;padding: 5px;">Jenis Absen</td>

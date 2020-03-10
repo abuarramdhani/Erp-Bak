@@ -49,7 +49,7 @@
  									<span>Jumlah Data  : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span><br>
  									<span>Batch Number : <b><?php echo $detailLppb[0]['BATCH_NUMBER']?></b></span>
  									<div>
- 											<table class="table table-bordered table-hover text-center dtTableMl">
+ 											<table id="tblLPPBReject" class="table table-bordered table-hover text-center">
  												<thead style="vertical-align: middle;"> 
  													<tr class="bg-primary">
  														<td class="text-center">No</td>
@@ -103,4 +103,11 @@
  </section>
  <script type="text/javascript">
 	var id_gd;
+	$('#tblLPPBReject').DataTable({
+		"paging": true,
+		"info":     true,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
 </script>

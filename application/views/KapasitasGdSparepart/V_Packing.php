@@ -57,7 +57,7 @@
                                     <div class="panel-body">
                                         <div class="table-responsive" >
                                         <table class="datatable table table-bordered table-hover table-striped text-center tblpacking" style="width: 100%;table-layout:fixed">
-                                            <thead class="btn-warning" style="color:black">
+                                            <thead style="background-color:#ffbd73;color:black">
                                                 <tr>
                                                     <th width="20px">No</th>
                                                     <th>Tanggal</th>
@@ -78,15 +78,15 @@
                                                         $td = '';
                                                     }
                                                     ?>
-                                                    <tr>
+                                                    <tr id="baris<?= $no?>">
                                                         <td width="20px" class="<?= $td?>"><?= $no; ?>
                                                         <?php if (!empty($val['MULAI_PACKING'])) { ?>
                                                             <input type="hidden" id="mulai<?= $no?>" value="<?= $val['MULAI_PACKING']?>">
                                                         <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
                                                         </td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                         <td class="<?= $td?>">
@@ -95,24 +95,23 @@
                                                             <option><?= $val['PIC_PACKING']?></option>
                                                         </select></td>
                                                         <?php }else{?>
-                                                        <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                                        <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible picSPB" style="width:100%;" required>
                                                             <option></option>
-                                                            <option value="MUJIMAN">MUJIMAN</option>
-                                                            <option value="JOKO">JOKO</option>
-                                                            <option value="FENDI">FENDI</option>
-                                                            <option value="MUSLIH">MUSLIH</option>
-                                                            <option value="UDIN">UDIN</option>
                                                         </select><?php }?>
                                                         </td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT']?></td>
+                                                        <td class="<?= $td?>"><?= $val['URGENT']?>  <?= $val['BON'] ?></td>
                                                         <td class="<?= $td?>">
-                                                            <?php if (!empty($val['MULAI_PACKING'])) { ?>
+                                                            <?php if (!empty($val['MULAI_PACKING']) && empty($val['WAKTU_PACKING'])) { ?>
                                                                 <p id="timer<?= $no?>" style="">Mulai <?= $val['MULAI_PACKING']?></p>
-                                                                <input type="button" class="btn btn-md btn-danger" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Selesai">
+                                                                <input type="button" class="btn btn-md btn-danger" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Selesai"><br>
+                                                                <!-- <button type="button" id="btnPack<?= $no?>" class="btn btn-warning" onclick="modalPacking(<?= $no?>)" style="margin-top:7px">Pack</button> -->
                                                             <?php }else{?>
                                                                 <p id="timer<?= $no?>" style=""><label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label></p>
-                                                                <input type="button" class="btn btn-md btn-success" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Mulai">
-                                                            <?php }?>
+                                                                <input type="button" class="btn btn-md btn-success" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Mulai"><br>
+                                                                <!-- <button type="button" id="btnPack<?= $no?>" class="btn btn-warning" style="display:none;margin-top:7px" onclick="modalPacking(<?= $no?>)">Pack</button> -->
+                                                            <?php }?><br>
+                                                            <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPacking(<?= $no?>)" style="margin-top:7px"><i class="fa fa-refresh"></i></button>
+                                                            <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePacking(<?= $no?>)" style="margin-top:7px"><i class="fa fa-pause"></i></button>
                                                         </td>
                                                     </tr>
                                                 <?php $no++; }?>
@@ -126,7 +125,7 @@
                                 <div class="panel-body">
                                     <div class="table-responsive" >
                                     <table class="datatable table table-bordered table-hover table-striped text-center tblpacking2" style="width: 100%;table-layout:fixed">
-                                            <thead class="btn-warning" style="color:black">
+                                            <thead style="background-color:#ffbd73;color:black">
                                                 <tr>
                                                     <th width="20px">No</th>
                                                     <th>Tanggal</th>
@@ -160,7 +159,7 @@
                                                         <td class="<?= $td?>"><input type="hidden" id="selesai_packing<?= $no?>" value="<?= $val['SELESAI_PACKING']?>"><?= $val['SELESAI_PACKING']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="waktu_packing<?= $no?>" value="<?= $val['WAKTU_PACKING'] ?>"><?= $val['WAKTU_PACKING'] ?></td>
                                                         <td class="<?= $td?>"><?= $val['PIC_PACKING']?></td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT']?></td>
+                                                        <td class="<?= $td?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                     </tr>
                                                 <?php $no++; $i++; }?>
                                             </tbody>
@@ -175,3 +174,73 @@
         </div>
     </div>
 </section>
+
+
+<div class="modal fade" id="mdlcolly2" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 style="text-align:center">Konfirmasi Packing</h3>
+            <!-- <div id="datahidden"></div> -->
+			</div>
+			<div class="modal-body">
+            <div id="datacolly"></div>
+            <span>*Save jika packing susah benar-benar selesai.</span>
+            <div class="panel-body">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-danger" onclick="selesaipacking(this)">SAVE</button>
+                </div>
+            </div>
+		    </div>
+            <div class="modal-footer">
+		</div>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="modal fade" id="mdlcolly" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div id="datahidden"></div>
+			</div>
+			<div class="modal-body">
+            <div class="panel-body">
+                <div class="col-md-4 text-right">
+                    <label>Pilih Kemasan</label>
+                </div>
+                <div class="col-md-5">
+                    <select class="form-control select2" id="jenis_kemasan" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
+                    <option></option>
+                    <option value="1">KARDUS KECIL</option>
+                    <option value="2">KARDUS SEDANG</option>
+                    <option value="3">KARDUS PANJANG</option>
+                    <option value="4">KARUNG</option>
+                    <option value="5">PETI</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="panel-body">
+                <div class="col-md-4 text-right">
+                    <label>Berat</label>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" id="berat" name="berat" placeholder="masukkan berat (KG)">
+                    <span style="text-align:center;font-size:12px">*Gunakan titik (.) bukan koma (,) jika dibutuhkan saat menulis berat.</span>
+                </div>
+            </div>
+            <center><span id="peringatan" style="color:red;"></span></center>
+            <div class="panel-body">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-danger" onclick="savePacking(this)">SAVE</button>
+                </div>
+            </div>
+		    </div>
+            <div class="modal-footer">
+		</div>
+		</div>
+	</div>
+</div> -->

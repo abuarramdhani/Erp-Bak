@@ -213,7 +213,7 @@
                                                          <label for="txtStatusjabatanBaru" class="col-lg-4 control-label">Status Jabatan Baru</label>
                                                          <div class="col-lg-8">
                                                              <select name="txtStatusjabatanBaru" class="form-control select2" id="MasterPekerja-txtStatusjabatanBaru">
-                                                                 <option value="<?php echo $edit['nama_status_baru'];?>" selected><?php echo $edit['nama_status_baru'];?></option>
+                                                                 <option value="<?php echo $edit['kd_status_baru'].' - '.$edit['nama_status_baru'];?>" selected><?php echo $edit['kd_status_baru'].' - '.$edit['nama_status_baru'];?></option>
                                                              </select>
                                                          </div>
                                                      </div>
@@ -237,7 +237,7 @@
                                                             </select>
                                                         </div>
                                                     </div> -->
-                                                    <<!-- div class="form-group">
+                                                    <!-- div class="form-group">
                                                         <label for="txtTempatMakan2Baru" class="col-lg-4 control-label">Tempat Makan 2</label>
                                                         <div class="col-lg-8">
                                                             <select name="txtTempatMakan2Baru" class="form-control select2 MasterPekerja-DaftarTempatMakan" >

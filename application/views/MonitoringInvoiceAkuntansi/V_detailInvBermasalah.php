@@ -7,7 +7,7 @@
 </style>
 
 <section class="content">
-	<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/saveInvBermasalah/'.$detail[0]['INVOICE_ID']); ?>">
+	<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/EditInvBermasalah/'.$detail[0]['INVOICE_ID']); ?>">
 	<div class="inner" >
 		<div class="row">
 			<div class="col-lg-12">
@@ -164,10 +164,18 @@
 						<div class="col-md-4 pull-left">
 							<label>Po Amount: <span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';?></span></label>
 						</div>
+						<div class="col-md-2 pull-right">
+					<?php if ($detail[0]['STATUS_IB'] == '1' && $detail[0]['SOURCE'] == 'AKUNTANSI') { ?>
+					<button type="submit" id="btnEditInv" class="btn btn-success btn-m pull-right" style="margin-top: 10px;margin-left: 5px;"><i class="fa fa-pencil"></i> Edit</button>
+					<?php }else { ?>
+
+					<?php }?>
+				</form>
+					<button type="button" id="btnBack" onclick="window.location.replace(baseurl+'AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt')" class="btn btn-primary btn-m pull-right" style="margin-top: 10px;" ><i class="fa fa-home"></i> Back</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</form>
 </section>

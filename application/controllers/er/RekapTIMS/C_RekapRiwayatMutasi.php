@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_RekapRiwayatMutasi extends CI_Controller 
+class C_RekapRiwayatMutasi extends CI_Controller
 {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
@@ -17,8 +17,8 @@ class C_RekapRiwayatMutasi extends CI_Controller
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('er/RekapTIMS/M_rekapriwayatmutasi');
-		  
-		if($this->session->userdata('logged_in')!=TRUE) 
+
+		if($this->session->userdata('logged_in')!=TRUE)
 		{
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -27,7 +27,7 @@ class C_RekapRiwayatMutasi extends CI_Controller
 
 		$this->checkSession();
     }
-	
+
 	public function checkSession()
 	{
 		if($this->session->is_logged)
@@ -42,17 +42,16 @@ class C_RekapRiwayatMutasi extends CI_Controller
 	public function index()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] 		= 'Rekap Riwayat Mutasi Pekerja';
 		$data['Menu'] 		= 'Riwayat Mutasi Pekerja';
 		$data['SubMenuOne'] = 'Riwayat Mutasi Pekerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$this->form_validation->set_rules('radioJenisPencarian', 'Jenis Pencarian', 'required');
-		// echo "string";
 
 		if($this->form_validation->run() === FALSE)
 		{
@@ -60,161 +59,196 @@ class C_RekapRiwayatMutasi extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('er/RekapTIMS/RekapRiwayatMutasi/V_index',$data);
-			$this->load->view('V_Footer',$data);
+			$this->load->view('er/RekapTIMS/RekapRiwayatMutasi/V_Footer',$data);
 		}
-		else
-		{
-			$jenisPencarian 		=	$this->input->post('radioJenisPencarian', TRUE);
-			$parameterCari 			=	"where ";
 
-			/*
-			*	noind 		=>	Pencarian dengan nomor induk
-			*	seksi		=>	Pencarian dengan seksi
-			*	lokasikerja	=>	Pencarian dengan lokasi kerja
-			*/
-			if($jenisPencarian=='noind')
+	}
+
+	public function getNewData()
+	{
+
+		$nomorInduk			=	$this->input->post('cmbNoind');
+
+		$departemenLama 	=	$this->input->post('cmbDepartemenLama');
+		$bidangLama 		=	$this->input->post('cmbBidangLama');
+		$unitLama 			=	$this->input->post('cmbUnitLama');
+		$seksiLama 			=	$this->input->post('cmbSeksiLama');
+
+		$departemenBaru 	=	$this->input->post('cmbDepartemenBaru');
+		$bidangBaru 		=	$this->input->post('cmbBidangBaru');
+		$unitBaru 			=	$this->input->post('cmbUnitBaru');
+		$seksiBaru 			=	$this->input->post('cmbSeksiBaru');
+
+		$lokasiKerjaLama 	=	$this->input->post('cmbLokasiKerjaLama');
+		$lokasiKerjaBaru	=	$this->input->post('cmbLokasiKerjaBaru');
+
+		$periode1	= $this->input->post('rekapBegin');
+		$periode2	= $this->input->post('rekapEnd');
+		$parameterCari	= 'Where ';
+		$parameterCari1	= '';
+		$parameterCari2	= '';
+		$parameterCari3	= '';
+		$parameterCari4	= '';
+
+
+		if (!empty($nomorInduk)) {
+			$riwayatNomorInduk	=	$this->M_rekapriwayatmutasi->ambilRiwayatPekerja($nomorInduk);
+
+			$parameterNomorInduk	=	"(";
+
+			for($i = 0; $i < count($riwayatNomorInduk); $i++)
 			{
-
-				$nomorInduk			=	$this->input->post('cmbNoind', TRUE);
-
-				$riwayatNomorInduk	=	$this->M_rekapriwayatmutasi->ambilRiwayatPekerja($nomorInduk);
-
-				$parameterNomorInduk	=	"(";
-
-				for($i = 0; $i < count($riwayatNomorInduk); $i++)
+				$parameterNomorInduk	.=	"'".$riwayatNomorInduk[$i]['noind']."'";
+				if($i < (count($riwayatNomorInduk)-1))
 				{
-					$parameterNomorInduk	.=	"'".$riwayatNomorInduk[$i]['noind']."'";
-					if($i < (count($riwayatNomorInduk)-1))
-					{
-						$parameterNomorInduk	.=	", ";
-					}
-				}
-
-				$parameterNomorInduk 	.=	")";
-
-				$parameterCari 		.=	"trim(tmutasi.noind) in $parameterNomorInduk";
-			}
-			elseif($jenisPencarian=='seksi')
-			{
-				$departemenLama 	=	$this->input->post('cmbDepartemenLama', TRUE);
-				$departemenBaru 	=	$this->input->post('cmbDepartemenBaru', TRUE);
-
-				$bidangLama 		=	$this->input->post('cmbBidangLama', TRUE);
-				$unitLama 			=	$this->input->post('cmbUnitLama', TRUE);
-				$seksiLama 			=	$this->input->post('cmbSeksiLama', TRUE);
-
-				$bidangLama 		=	substr($bidangLama, -2);
-				$unitLama 			=	substr($unitLama, -2);
-				$seksiLama 			=	substr($seksiLama, -2);
-
-				if($bidangLama == '00')
-				{
-					$bidangLama 	=	'';
-				}
-
-				if($unitLama == '00')
-				{
-					$unitLama 		=	'';
-				}
-
-				if($seksiLama == '00')
-				{
-					$seksiLama 		=	'';
-				}
-
-				$kodesieLama 		=	$departemenLama.$bidangLama.$unitLama.$seksiLama;
-
-				$bidangBaru 		=	$this->input->post('cmbBidangBaru', TRUE);
-				$unitBaru 			=	$this->input->post('cmbUnitBaru', TRUE);
-				$seksiBaru 			=	$this->input->post('cmbSeksiBaru', TRUE);
-
-				$bidangBaru 		=	substr($bidangBaru, -2);
-				$unitBaru 			=	substr($unitBaru, -2);
-				$seksiBaru 			=	substr($seksiBaru, -2);
-
-				if($bidangBaru == '00')
-				{
-					$bidangBaru 	=	'';
-				}
-
-				if($unitBaru == '00')
-				{
-					$unitBaru 		=	'';
-				}
-
-				if($seksiBaru == '00')
-				{
-					$seksiBaru 		=	'';
-				}
-
-				$kodesieBaru 		=	$departemenBaru.$bidangBaru.$unitBaru.$seksiBaru;
-
-				if(!(empty($departemenLama)) AND empty($departemenBaru))
-				{
-					$parameterCari 	.=	"trim(tmutasi.kodesielm) like '$kodesieLama%'";
-				}
-				elseif((empty($departemenLama)) AND !(empty($departemenBaru)))
-				{
-					$parameterCari 	.=	"trim(tmutasi.kodesiebr) like '$kodesieBaru%'";
-				}
-				elseif(!(empty($departemenLama)) AND !(empty($departemenBaru)))
-				{
-					$parameterCari 	.=	"	trim(tmutasi.kodesielm) like '$kodesieLama%' 
-											and 	trim(tmutasi.kodesiebr) like '$kodesieBaru%'";
+					$parameterNomorInduk	.=	", ";
 				}
 			}
-			elseif($jenisPencarian=='lokasikerja')
+
+			$parameterNomorInduk 	.=	")";
+
+			$parameterCari1 		.=	"trim(tmutasi.noind) in $parameterNomorInduk";
+		}
+
+		if (!(empty($departemenLama)) || !(empty($departemenBaru))) {
+			$bidangLama 		=	substr($bidangLama, -2);
+			$unitLama 			=	substr($unitLama, -2);
+			$seksiLama 			=	substr($seksiLama, -2);
+
+			if($bidangLama == '00')
 			{
-				$lokasiKerjaLama 	=	$this->input->post('cmbLokasiKerjaLama', TRUE);
-				$lokasiKerjaBaru	=	$this->input->post('cmbLokasiKerjaBaru', TRUE);
-
-				if(!(empty($lokasiKerjaLama)) AND empty($lokasiKerjaBaru))
-				{
-					$parameterCari 	.=	"trim(tmutasi.lokasilm)='$lokasiKerjaLama'";
-				}
-				elseif((empty($lokasiKerjaLama)) AND !(empty($lokasiKerjaBaru)))
-				{
-					$parameterCari 	.=	"trim(tmutasi.lokasibr)='$lokasiKerjaBaru'";
-				}
-				elseif(!(empty($lokasiKerjaLama)) AND !(empty($lokasiKerjaBaru)))
-				{
-					$parameterCari 	.=	"	trim(tmutasi.lokasilm)='$lokasiKerjaLama'
-											and 	trim(tmutasi.lokasibr)='$lokasiKerjaBaru'";
-				}
-			
-		}elseif($jenisPencarian=='periode')
-			{
-				$periode1	= $this->input->post('rekapBegin');
-                $periode2	= $this->input->post('rekapEnd');
-
-               // $periode1 = date('Y-m-d 00:00:00', strtotime($periode1));
-			    //$periode2= date('Y-m-d 23:59:59', strtotime($periode2));
-
-				
-					$parameterCari 	.=	"	tmutasi.tglberlaku between '$periode1'
-											and '$periode2'";
-					// echo $parameterCari;exit();
-				
+				$bidangLama 	=	'';
 			}
 
+			if($unitLama == '00')
+			{
+				$unitLama 		=	'';
+			}
+
+			if($seksiLama == '00')
+			{
+				$seksiLama 		=	'';
+			}
+
+			$kodesieLama 		=	$departemenLama.$bidangLama.$unitLama.$seksiLama;
+
+			$bidangBaru 		=	substr($bidangBaru, -2);
+			$unitBaru 			=	substr($unitBaru, -2);
+			$seksiBaru 			=	substr($seksiBaru, -2);
+
+			if($bidangBaru == '00')
+			{
+				$bidangBaru 	=	'';
+			}
+
+			if($unitBaru == '00')
+			{
+				$unitBaru 		=	'';
+			}
+
+			if($seksiBaru == '00')
+			{
+				$seksiBaru 		=	'';
+			}
+
+			$kodesieBaru 		=	$departemenBaru.$bidangBaru.$unitBaru.$seksiBaru;
+
+			if(!empty($departemenLama) AND empty($departemenBaru))
+			{
+				$parameterCari2 	.=	"trim(tmutasi.kodesielm) like '$kodesieLama%'";
+			}
+			elseif((empty($departemenLama)) AND !(empty($departemenBaru)))
+			{
+				$parameterCari2 	.=	"trim(tmutasi.kodesiebr) like '$kodesieBaru%'";
+			}
+			elseif(!(empty($departemenLama)) AND !(empty($departemenBaru)))
+			{
+				$parameterCari2 	.=	"	trim(tmutasi.kodesielm) like '$kodesieLama%'
+										and 	trim(tmutasi.kodesiebr) like '$kodesieBaru%'";
+			}
+		}
+		if (!empty($lokasiKerjaBaru)) {
+			if(!(empty($lokasiKerjaLama)) AND empty($lokasiKerjaBaru))
+			{
+				$parameterCari3 	.=	"trim(tmutasi.lokasilm)='$lokasiKerjaLama'";
+			}
+			elseif((empty($lokasiKerjaLama)) AND !(empty($lokasiKerjaBaru)))
+			{
+				$parameterCari3 	.=	"trim(tmutasi.lokasibr)='$lokasiKerjaBaru'";
+			}
+			elseif(!(empty($lokasiKerjaLama)) AND !(empty($lokasiKerjaBaru)))
+			{
+				$parameterCari3 	.=	"	trim(tmutasi.lokasilm)='$lokasiKerjaLama'
+										and 	trim(tmutasi.lokasibr)='$lokasiKerjaBaru'";
+			}
+		}
+		if (!empty($periode1) || !empty($periode2)) {
+			if (empty($periode2)) {
+				$parameterCari4 	.=	"	tmutasi.tglberlaku = '$periode1'";
+			}else {
+				$parameterCari4 	.=	"	tmutasi.tglberlaku between '$periode1'
+				and '$periode2'";
+			}
+		}
+
+		if (!empty($parameterCari1) && !empty($parameterCari2) && empty($parameterCari3) && empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari1.' and '.$parameterCari2;
+		}
+		if (!empty($parameterCari1) && empty($parameterCari2) && !empty($parameterCari3) && empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari1.' and '.$parameterCari3;
+		}
+		if (!empty($parameterCari1) && empty($parameterCari2) && empty($parameterCari3) && !empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari1.' and '.$parameterCari4;
+		}
+		if (!empty($parameterCari1) && !empty($parameterCari2) && !empty($parameterCari3) && empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari1.' and '.$parameterCari2.' and '.$parameterCari3;
+		}
+		if (!empty($parameterCari1) && empty($parameterCari2) && !empty($parameterCari3) && !empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari1.' and '.$parameterCari3.' and '.$parameterCari4;
+		}
+		if (!empty($parameterCari1) && !empty($parameterCari2) && !empty($parameterCari3) && !empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari1.' and '.$parameterCari2.' and '.$parameterCari3.' and '.$parameterCari4;
+		}
+		if (!empty($parameterCari1) && empty($parameterCari2) && empty($parameterCari3) && empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari1;
+		}
+
+		if (empty($parameterCari1) && !empty($parameterCari2) && !empty($parameterCari3) && empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari2.' and '.$parameterCari3;
+		}
+		if (empty($parameterCari1) && !empty($parameterCari2) && !empty($parameterCari3) && !empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari2.' and '.$parameterCari3.' and '.$parameterCari4;
+		}
+		if (empty($parameterCari1) && !empty($parameterCari2) && empty($parameterCari3) && !empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari2.' and '.$parameterCari4;
+		}
+		if (empty($parameterCari1) && !empty($parameterCari2) && empty($parameterCari3) && empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari2;
+		}
+
+		if (empty($parameterCari1) && empty($parameterCari2) && !empty($parameterCari3) && !empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari3.' and '.$parameterCari4;
+		}elseif (empty($parameterCari1) && empty($parameterCari2) && !empty($parameterCari3) && empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari3;
+		}
+
+		if (empty($parameterCari1) && empty($parameterCari2) && empty($parameterCari3) && !empty($parameterCari4)) {
+			$parameterCari	.= $parameterCari4;
+		}
+
+		if ($parameterCari != 'Where ') {
 			$rekapRiwayatMutasi 			=	$this->M_rekapriwayatmutasi->ambilRiwayatMutasi($parameterCari);
-			// print_r($rekapRiwayatMutasi); exit();
 
-			$data['Header']					=	"Rekap Riwayat Mutasi Pekerja - Quick ERP";
-			$data['rekapRiwayatMutasi']		=	$rekapRiwayatMutasi;
-
-			// echo $parameterCari;
-			 //echo '<pre>';
-			// print_r($rekapRiwayatMutasi);
-			// echo '</pre>';
-			 //exit();
-
-			$this->load->view('V_Header', $data);
-			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('er/RekapTIMS/RekapRiwayatMutasi/V_index',$data);
-			$this->load->view('V_Footer',$data);
+			if (!empty($rekapRiwayatMutasi)) {
+				$data['rekapRiwayatMutasi']		=	$rekapRiwayatMutasi;
+				$redirect = $this->load->view('er/RekapTIMS/RekapRiwayatMutasi/V_Result',$data);
+			}else {
+				$redirect = 'Empty';
+			}
+		}else {
+			$redirect = 'Error';
 		}
-		
+		echo json_encode($redirect);
 	}
 
 	//	Javascript Functions
@@ -226,7 +260,7 @@ class C_RekapRiwayatMutasi extends CI_Controller
 				$daftarPekerja 	=	$this->M_rekapriwayatmutasi->ambilDaftarPekerja($keyword);
 				echo json_encode($daftarPekerja);
 			}
-			
+
 			public function daftarLokasiKerja()
 			{
 				$keyword 	=	strtoupper($this->input->get('term'));
@@ -263,6 +297,6 @@ class C_RekapRiwayatMutasi extends CI_Controller
 
 				$resultSeksi	=	$this->M_rekapriwayatmutasi->ambilSeksi($unit);
 				echo json_encode($resultSeksi);
-			}			
+			}
 	//	}
 }

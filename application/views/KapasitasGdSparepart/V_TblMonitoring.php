@@ -8,13 +8,16 @@
     <div class="panel-body">
         <div class="col-md-12">
             <label class="text-right">Tanggal : <?php echo $val['tanggal'] ?></label>
+            <input type="hidden" name="tanggalnya[]" value="<?= $val['tanggal']?>">
+            <input type="hidden" name="tglAwal[]" value="<?= $tglAwal?>">
+            <input type="hidden" name="tglAkhir[]" value="<?= $tglAkhir?>">
         </div>
         <!-- <div class="col-md-12"> -->
         <div class="col-md-6">
-            <label class="text-right">DO / SPB masuk : <?= $val['jml_spb'] ?> lembar</label>
+            <label class="text-right">DOSP / SPB masuk : <?= $val['jml_spb'] ?> lembar</label>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-xs btn-info" style="margin-left:160px" onclick="addDoSpb2(this, <?= $num?>)">Rincian</button></td>
+            <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb2(this, <?= $num?>)">Rincian</button></td>
         </div>
         <!-- </div> -->
         <div class="col-md-12">
@@ -40,7 +43,7 @@
                                 <td><input type="hidden" name="no_dospb[]" value="<?= $do['NO_DOKUMEN']?>"><?= $do['NO_DOKUMEN']?></td>
                                 <td><input type="hidden" name="jml_item_dospb[]" value="<?= $do['JUMLAH_ITEM']?>"><?= $do['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_dospb[]" value="<?= $do['JUMLAH_PCS']?>"><?= $do['JUMLAH_PCS']?></td>
-                                <td><input type="hidden" name="urgent_dospb[]" value="<?= $do['URGENT']?>"><?= $do['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_dospb[]" value="<?= $do['URGENT']?> <?= $do['BON'] ?>"><?= $do['URGENT']?> <?= $do['BON'] ?></td>
                             </tr>
                         <?php $no++; $a++;}?>
                     </tbody>
@@ -51,16 +54,14 @@
         <div class="col-md-12">
             <label class="text-right">Pelayanan</label>
         </div>
-        <div class="col-md-12">
-        <div class="col-md-4">
+        <div class="col-md-3">
             Terselesaikan : <?= $val['jml_pelayanan'] ?> lembar
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Tanggungan : <?= $val['krg_pelayanan'] ?> lembar
         </div>
         <div class="col-md-4">
             <button type="button" class="btn btn-xs btn-info" onclick="addRinPelayanan2(this, <?= $num?>)">Rincian</button>
-        </div>
         </div>
         <div class="col-md-12">
             <div id="RinPelayanan1<?= $num?>" style="display:none">
@@ -100,7 +101,7 @@
                                 </td>
                                 <td><input type="hidden" name="waktu_pelayanan[]" value="<?= $plyn['WAKTU_PELAYANAN']?>"><?= $plyn['WAKTU_PELAYANAN']?></td>
                                 <td><input type="hidden" name="pic_plyn[]" value="<?= $plyn['PIC_PELAYAN']?>"><?= $plyn['PIC_PELAYAN']?></td>
-                                <td><input type="hidden" name="urgent_plyn[]" value="<?= $plyn['URGENT']?>"><?= $plyn['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_plyn[]" value="<?= $plyn['URGENT']?> <?= $plyn['BON'] ?>"><?= $plyn['URGENT']?> <?= $plyn['BON'] ?></td>
                             </tr>
                         <?php $no++;}?>
                     </tbody>
@@ -129,7 +130,7 @@
                                 <td><input type="hidden" name="no_krgplyn[]" value="<?= $kplyn['NO_DOKUMEN']?>"><?= $kplyn['NO_DOKUMEN']?></td>
                                 <td><input type="hidden" name="jml_item_krgplyn[]" value="<?= $kplyn['JUMLAH_ITEM']?>"><?= $kplyn['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_krgplyn[]" value="<?= $kplyn['JUMLAH_PCS']?>"><?= $kplyn['JUMLAH_PCS']?></td>
-                                <td><input type="hidden" name="urgent_krgplyn[]" value="<?= $kplyn['URGENT']?>"><?= $kplyn['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_krgplyn[]" value="<?= $kplyn['URGENT']?> <?= $kplyn['BON'] ?>"><?= $kplyn['URGENT']?> <?= $kplyn['BON'] ?></td>
                             </tr>
                         <?php $no++; }?>
                     </tbody>
@@ -140,16 +141,14 @@
         <div class="col-md-12">
             <label class="text-right">Pengeluaran</label>
         </div>
-        <div class="col-md-12">
-        <div class="col-md-4">
+        <div class="col-md-3">
             Terselesaikan : <?= $val['jml_pengeluaran'] ?> lembar
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Tanggungan : <?= $val['krg_pengeluaran'] ?> lembar
         </div>
         <div class="col-md-4">
             <button type="button" class="btn btn-xs btn-info" onclick="addRinPengeluaran2(this, <?= $num?>)">Rincian</button></td>
-        </div>
         </div>
         <div class="col-md-12">
             <div id="RinPengeluaran1<?= $num?>" style="display:none">
@@ -189,7 +188,7 @@
                                 </td>
                                 <td><input type="hidden" name="waktu_pengeluaran[]" value="<?= $pglr['WAKTU_PENGELUARAN']?>"><?= $pglr['WAKTU_PENGELUARAN']?></td>
                                 <td><input type="hidden" name="pic_pglr[]" value="<?= $pglr['PIC_PENGELUARAN']?>"><?= $pglr['PIC_PENGELUARAN']?></td>
-                                <td><input type="hidden" name="urgent_pglr[]" value="<?= $pglr['URGENT']?>"><?= $pglr['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_pglr[]" value="<?= $pglr['URGENT']?> <?= $pglr['BON'] ?>"><?= $pglr['URGENT']?> <?= $pglr['BON'] ?></td>
                             </tr>
                         <?php $no++;} ?>
                         
@@ -221,7 +220,7 @@
                                 <td><input type="hidden" name="jml_item_krgpglr[]" value="<?= $kpglr['JUMLAH_ITEM']?>"><?= $kpglr['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_krgpglr[]" value="<?= $kpglr['JUMLAH_PCS']?>"><?= $kpglr['JUMLAH_PCS']?></td>
                                 <td><input type="hidden" name="pic_krgpglr[]" value="<?= $kpglr['PIC_PELAYAN']?>"><?= $kpglr['PIC_PELAYAN']?></td>
-                                <td><input type="hidden" name="urgent_krgpglr[]" value="<?= $kpglr['URGENT']?>"><?= $kpglr['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_krgpglr[]" value="<?= $kpglr['URGENT']?> <?= $kpglr['BON'] ?>"><?= $kpglr['URGENT']?> <?= $kpglr['BON'] ?></td>
                             </tr>
                         <?php $no++; } ?>
                     </tbody>
@@ -232,16 +231,14 @@
         <div class="col-md-12">
             <label class="text-right">Packing</label>
         </div>
-        <div class="col-md-12">
-        <div class="col-md-4">
+        <div class="col-md-3">
             Terselesaikan : <?= $val['jml_packing'] ?> lembar
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Tanggungan : <?= $val['krg_packing'] ?> lembar
         </div>
         <div class="col-md-4">
             <button type="button" class="btn btn-xs btn-info" onclick="addRinPacking2(this, <?= $num?>)">Rincian</button></td>
-        </div>
         </div>
         <div class="col-md-12">
             <div id="RinPacking1<?= $num?>" style="display:none">
@@ -281,7 +278,7 @@
                                 </td>
                                 <td><input type="hidden" name="waktu_packing[]" value="<?= $pck['WAKTU_PACKING']?>"><?= $pck['WAKTU_PACKING']?></td>
                                 <td><input type="hidden" name="pic_pck[]" value="<?= $pck['PIC_PACKING']?>"><?= $pck['PIC_PACKING']?></td>
-                                <td><input type="hidden" name="urgent_pck[]" value="<?= $pck['URGENT']?>"><?= $pck['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_pck[]" value="<?= $pck['URGENT']?> <?= $pck['BON'] ?>"><?= $pck['URGENT']?> <?= $pck['BON'] ?></td>
                             </tr>
                         <?php $no++;} ?>
                     </tbody>
@@ -312,7 +309,7 @@
                                 <td><input type="hidden" name="jml_item_krgpck[]" value="<?= $kpck['JUMLAH_ITEM']?>"><?= $kpck['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_krgpck[]" value="<?= $kpck['JUMLAH_PCS']?>"><?= $kpck['JUMLAH_PCS']?></td>
                                 <td><input type="hidden" name="pic_krgpck[]" value="<?= $kpck['PIC_PENGELUARAN']?>"><?= $kpck['PIC_PENGELUARAN']?></td>
-                                <td><input type="hidden" name="urgent_krgpck[]" value="<?= $kpck['URGENT']?>"><?= $kpck['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_krgpck[]" value="<?= $kpck['URGENT']?> <?= $kpck['BON'] ?>"><?= $kpck['URGENT']?> <?= $kpck['BON'] ?></td>
                             </tr>
                         <?php $no++; } ?>
                     </tbody>
@@ -320,8 +317,27 @@
             </div>
         </div>
 
-        <div class="col-md-12">
-            <label class="text-right">Penerimaan Menyelesaikan : <?= $val['jml_gd'] ?> lembar</label>
+        <div>
+            <table style="width: 50%;table-layout:fixed">
+                <tbody>
+                    <tr>
+                        <th width="53.5%" style="padding-left:15px">Jumlah DOSP/SPB selesai</th>
+                        <th><input type="hidden" name="jml_selesai[]" value="<?= $val['jml_selesai']?>">: <?= $val['jml_selesai'] ?> pcs</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">Kekurangan DOSP/SPB selesai</th>
+                        <th><input type="hidden" name="krg_selesai[]" value="<?= $val['krg_selesai']?>">: <?= $val['krg_selesai'] ?> pcs</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">DOSP / SPB cancel hari ini</th>
+                        <th>: <?= $val['cancel'] ?> lembar</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">Penerimaan menyelesaikan</th>
+                        <th>: <?= $val['jml_gd'] ?> lembar</th>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div> 
 </div> 

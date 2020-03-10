@@ -81,6 +81,7 @@ class C_Memo extends CI_Controller {
 		$data['nmr_memo'] = $this->input->post('nmr_memo');
 
 		$data['periode'] = $this->input->post('periode');
+		$data['tujuan'] = $this->input->post('tujuan_surat');
 		$periodew = explode(' - ', $data['periode']);
 		$tanggalawal = date('Y-m-d',strtotime($periodew[0]));
 		$tanggalakhir = date('Y-m-d',strtotime($periodew[1]));
@@ -194,7 +195,7 @@ class C_Memo extends CI_Controller {
 			$worksheet->mergeCells('B7:G7');
 
 			$worksheet->setCellValue('A9','Kepada Yth:');
-			$worksheet->setCellValue('A10','Bp. Agus Wahyudi ( Keuangan )');
+			$worksheet->setCellValue('A10',$data['tujuan']);
 			$worksheet->setCellValue('A11','Ditempat');
 			$worksheet->mergeCells('A9:G9');
 			$worksheet->mergeCells('A10:G10');

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_Index extends CI_Controller 
+class C_Index extends CI_Controller
 {
 
 	function __construct()
@@ -11,6 +11,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -36,17 +37,17 @@ class C_Index extends CI_Controller
 	public function index()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Layout Surat';
 		$data['Menu'] 			= 	'Setup Master';
 		$data['SubMenuOne'] 	= 	'Layout Surat';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$data['tabelLayoutSurat']		=	$this->M_layoutsurat->ambilLayoutSurat();
 
 		$this->load->view('V_Header',$data);
@@ -58,29 +59,29 @@ class C_Index extends CI_Controller
 	public function create()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Layout Surat';
 		$data['Menu'] 			= 	'Setup Master';
 		$data['SubMenuOne'] 	= 	'Layout Surat';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Surat/LayoutSurat/V_Create',$data);
-		$this->load->view('V_Footer',$data);		
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function add()
 	{
 		$jenisSurat 	=	$this->input->post('txtJenisSurat', TRUE);
-		
+
 		$ceksuratStaf 	=	$this->input->post('chk1', TRUE);
-		if ($ceksuratStaf==TRUE) 
+		if ($ceksuratStaf==TRUE)
 		{
 			$suratStaf	= '1';
 		}
@@ -99,6 +100,11 @@ class C_Index extends CI_Controller
 								'isi_surat'		=>	$formatSurat,
 							);
 		$this->M_layoutsurat->inputFormatSurat($inputFormat);
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Create Layout Surat Jenis='.$jenisSurat.' Staf='.$suratStaf;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 		redirect('MasterPekerja/Surat/SuratLayout');
 	}
 
@@ -110,22 +116,22 @@ class C_Index extends CI_Controller
 		$data['layoutSurat'] 	=	$this->M_layoutsurat->ambilLayoutSuratDetail($id_isi_decode);
 
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Master Pekerja';
 		$data['Menu'] 			= 	'Setup Master';
 		$data['SubMenuOne'] 	= 	'Layout Surat';
 		$data['SubMenuTwo'] 	= 	'';
 		$data['id']				=	$id_isi;
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Surat/LayoutSurat/V_Read',$data);
-		$this->load->view('V_Footer',$data);		
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function update($id_isi)
@@ -136,18 +142,18 @@ class C_Index extends CI_Controller
 		$data['layoutSurat'] 	=	$this->M_layoutsurat->ambilLayoutSuratDetail($id_isi_decode);
 
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Master Pekerja';
 		$data['Menu'] 			= 	'Setup Master';
 		$data['SubMenuOne'] 	= 	'Layout Surat';
 		$data['SubMenuTwo'] 	= 	'';
 		$data['id']				=	$id_isi;
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Surat/LayoutSurat/V_Update',$data);
@@ -155,14 +161,19 @@ class C_Index extends CI_Controller
 	}
 
 	public function edit($id_isi)
-	{	
+	{
 		$id_isi_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $id_isi);
 		$id_isi_decode 	=	$this->encrypt->decode($id_isi_decode);
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Update Layout Surat ID='.$id_isi_decode;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 
 		$jenisSurat 	=	$this->input->post('txtJenisSurat', TRUE);
-		
+
 		$ceksuratStaf 	=	$this->input->post('chk1', TRUE);
-		if ($ceksuratStaf==TRUE) 
+		if ($ceksuratStaf==TRUE)
 		{
 			$suratStaf	= '1';
 		}
@@ -188,6 +199,11 @@ class C_Index extends CI_Controller
 		$id_isi_decode 	=	$this->encrypt->decode($id_isi_decode);
 
 		$this->M_layoutsurat->deleteLayoutSurat($id_isi_decode);
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Delete Layout Surat ID='.$id_isi_decode;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 		redirect('MasterPekerja/Surat/SuratLayout');
 
 	}

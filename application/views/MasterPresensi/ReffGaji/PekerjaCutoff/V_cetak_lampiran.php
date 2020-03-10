@@ -6,7 +6,6 @@
 <body style="font-family: times-new-roman">
     <h2>Lampiran</h2>
     <h2>Gaji <?php echo ucwords(strtolower($jenis)) ?> yang di-cut off pada penggajian bulan <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?> dan Pekerja Keluar <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?></h2>
-    <small><span style="color: red">*</span> Pekerja yang dibayar cut off.</small>
 	<table style="width:100%" style="border-collapse: collapse;border: 1px solid black">
         <thead>
             <tr>
@@ -76,14 +75,14 @@
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['nama'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['seksi'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php 
-                            if ('*'==$key['remark_cutoff'])
-                            {
-                                echo "-";
-                            }
-                            else
-                            {
-                                $t = strtotime($key['tanggal']); echo date('d/m/Y',$t); 
-                            }
+                            
+                                if(isset($key['tanggal']) and !empty($key['tanggal']) and $key['tanggal'] !== '-'){
+                                    $t = strtotime($key['tanggal']); 
+                                    echo date('d/m/Y',$t); 
+                                }else{
+                                    echo "-";
+                                }
+                            
                             ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 10pt"><?=$key['ika'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 10pt"><?=$key['ipe'] ?></td>
@@ -111,7 +110,16 @@
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['noind'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['nama'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['seksi'] ?></td>
-                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php $t = strtotime($key['tanggal']); echo date('d/m/Y',$t); ?></td>
+                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php 
+                            
+                                if(isset($key['tanggal']) and !empty($key['tanggal']) and $key['tanggal'] !== '-'){
+                                    $t = strtotime($key['tanggal']); 
+                                    echo date('d/m/Y',$t); 
+                                }else{
+                                    echo "-";
+                                }
+                            
+                            ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 10pt"><?=$key['ika'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 10pt"><?=$key['ipe'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 10pt"><?=$key['ief'] ?></td>

@@ -21,14 +21,26 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" method="POST" action="">
+										<form class="form-horizontal" method="POST" action="" autocomplete="off">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tanggal</label>
 												<div class="col-lg-3">
-													<input type="text" placeholder="Tanggal Tarik" name="txtTanggalTarikFinger" class="date form-control" id="tanggalTarikFinger" required>
+													<input type="text" value="<?php echo isset($tgl) ? $tgl : ''  ?>" placeholder="Tanggal Tarik" name="txtTanggalTarikFinger" class="date form-control" id="tanggalTarikFinger" required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">Letak Fingerspot</label>
+												<div class="col-lg-3">
+													<select class="select2 form-control" name="txtFingerspot" data-placeholder="Device Fingerspot">
+														<option value=""></option>
+														<?php foreach($listFingerspot as $item): ?>
+															<option value="<?= $item->device_sn ?>" <?php echo (isset($sn_device) && $item->device_sn == $sn_device) ? "selected" : ''  ?> ><?= $item->device_name ?></option>
+														<?php endforeach; ?>
+													</select>
+													<small style="color: red">* kosongi untuk menarik semua fingerspot</small>
 												</div>
 												<div class="col-lg-2">
-													<button type="submit" class="btn btn-primary">Cari</button>
+													<button type="submit" class="btn btn-primary">Cari <i class="fa fa-search"></i></button>
 												</div>
 											</div>
 										</form>

@@ -19,6 +19,7 @@ class C_TransferPolaReffGaji extends CI_Controller
 		require_once APPPATH . 'third_party/phpxbase/Table.php';
 		require_once APPPATH . 'third_party/phpxbase/WritableTable.php';
 
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -80,6 +81,11 @@ class C_TransferPolaReffGaji extends CI_Controller
 		$this->M_transferpolareffgaji->insertProgres($user,$jumlah + $jumlahPekerja);
 		$progres = 0;
 		$this->M_transferpolareffgaji->updateProgres($user,$progres);
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Update \"Presensi\".progress_transfer_reffgaji where user_='.$user.' set progres='.$progres;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		session_write_close();
 		flush();
 		$datajadi = array();
@@ -274,6 +280,11 @@ class C_TransferPolaReffGaji extends CI_Controller
 
 			$progres +=1;
 			$this->M_transferpolareffgaji->updateProgres($user,$progres);
+			//insert to t_log
+			$aksi = 'MASTER PRESENSI';
+			$detail = 'Update \"Presensi\".progress_transfer_reffgaji where user_='.$user.' set progres='.$progres;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			session_write_close();
 			flush();
 		}
@@ -396,6 +407,11 @@ class C_TransferPolaReffGaji extends CI_Controller
 
 			$progres +=1;
 			$this->M_transferpolareffgaji->updateProgres($user,$progres);
+			//insert to t_log
+			$aksi = 'MASTER PRESENSI';
+			$detail = 'Update \"Presensi\".progress_transfer_reffgaji where user_='.$user.' set progres='.$progres;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			session_write_close();
 			flush();
 		}
@@ -411,6 +427,11 @@ class C_TransferPolaReffGaji extends CI_Controller
 		if (!empty($data)) {
 			if ($data->progress == $data->total) {
 				$this->M_transferpolareffgaji->deleteProgres($user);
+				//insert to t_log
+				$aksi = 'MASTER PRESENSI';
+				$detail = 'Delete \"Presensi\".progress_transfer_reffgaji where user_='.$user;
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 			}
 			echo round(($data->progress/$data->total)*100);
 		}else{

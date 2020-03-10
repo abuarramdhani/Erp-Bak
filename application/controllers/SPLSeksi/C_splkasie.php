@@ -57,61 +57,36 @@ class C_splkasie extends CI_Controller {
 		$data = $this->menu('', '', '');
 		$data['lokasi'] = $this->M_splseksi->show_lokasi();
 		$data['jari'] = $this->M_splseksi->getJari($this->session->userid);
-		if ($this->input->get('stat')) {
-			$status = $this->input->get('stat');
-			$data_spl = array();
-			if ($status == 'Baru') {
-				$show_list_spl = $this->M_splseksi->show_spl2('0%',$this->session->user,'7');
-			}elseif ($status == 'Tolak') {
-				$show_list_spl = $this->M_splseksi->show_spl2('2%',$this->session->user,'7');
-			}else{
-				$show_list_spl = $this->M_splseksi->show_spl2('%',$this->session->user,'7');
-			}
-			foreach($show_list_spl as $sls){
-				$index = array();
-				if($sls['Status'] == "01"){
-				$index[] = '<input type="checkbox" name="splid[]" class="spl-chk-data"
-					value="'.$sls['ID_SPL'].'" style="width:20px; height:20px; vertical-align:bottom;">';
-				}else{
-					$index[] = "";
-				}
+		
+		$status = $this->input->get('stat');
+		
+		$data['parameter'] = $status;
 
-				$index[] = $sls['Tgl_Lembur'];
-				$index[] = $sls['Noind'];
-				$index[] = $sls['nama'];
-				$index[] = $sls['kodesie'];
-				$index[] = $sls['seksi'];
-				$index[] = $sls['Pekerjaan'];
-				$index[] = $sls['nama_lembur'];
-				$index[] = $sls['Jam_Mulai_Lembur'];
-				$index[] = $sls['Jam_Akhir_Lembur'];
-				$index[] = $sls['Break'];
-				$index[] = $sls['Istirahat'];
-				$index[] = $sls['target'];
-				$index[] = $sls['realisasi'];
-				$index[] = $sls['alasan_lembur'];
-				$index[] = $sls['Deskripsi']." ".$sls['User_']." - ".$this->M_splkasie->getName($sls['User_']);
-				$index[] = $sls['Tgl_Berlaku'];
-				$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
-
-				$data_spl[] = $index;
-			}
-			$data['data'] = $data_spl;
-		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('SPLSeksi/Kasie/V_data_spl',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){
+	function convertUnOrderedlist($data){
+		//separator ; (semicolon)
+		$item = explode(';', $data);
+		$html = "<ul>";
+			foreach($item as $key){
+				$html .= "<li>$key</li>";
+			}
+		$html .= "</ul>";
+		return $html;
+	}
+
+	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){ //latest
 		$day   = date('w', strtotime($tgl));
 
 		$hari_indo = "Minggu Senin Selasa Rabu Kamis Jumat Sabtu";
 		$array_hari = explode(' ', $hari_indo);
 		//--------------------core variable
 		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
-		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl);
+		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind);
 		$HARI 		= $array_hari[$day];
 		//-----------------------
 		$treffjamlembur = $this->M_splseksi->treffjamlembur($KET, $JENIS_HARI, $HARI);
@@ -119,6 +94,14 @@ class C_splkasie extends CI_Controller {
 		//----cari berapa menit lemburnya
 		$first = explode(':', $mulai);
 		$second = explode(':', $selesai);
+
+		if(count($first) == 1){
+			$first[1] = 00;
+		}
+
+		if(count($second) == 1){
+			$second[1] = 00;
+		}
 
 		$a = $first[0]*60+$first[1];
 		$b = $second[0]*60+$second[1];
@@ -131,9 +114,9 @@ class C_splkasie extends CI_Controller {
 			$lama_lembur = $b-$a;
 		}
 
+		$shift = $this->M_splseksi->selectShift($noind, $tgl);
 		if($kode_lembur == '005'){
-			$shift = $this->M_splseksi->selectShift($noind, $tgl);
-			$shift = (strtotime('15:30:00') - strtotime('07:20:00'));
+			$shift = (strtotime($shift->jam_plg) - strtotime($shift->jam_msk));
 			$shift = $shift/60;
 		 	$result = $lama_lembur-$shift;
 		}else{
@@ -143,23 +126,91 @@ class C_splkasie extends CI_Controller {
 
 		//-----------------------core variable
 		$MENIT_LEMBUR = $result;
+		//buat jaga jaga error
 		$BREAK = $break == 'Y' ? 15 : 0;
 		$ISTIRAHAT = $istirahat == 'Y' ? 45 : 0;
-		//----------------------
 
+		$allShift = $this->M_splseksi->selectAllShift($tgl);
+
+		if(!empty($allShift)){
+			if ($istirahat == 'Y') { //jika pekerja memilih istirahat
+				$ISTIRAHAT = 0;
+				$distinct_start = [];
+
+				foreach($allShift as $shift){
+					$rest_start = strtotime($shift['ist_mulai']);
+					$rest_end   = strtotime($shift['ist_selesai']);
+
+					if($rest_start == $rest_end){
+						continue;
+					}
+
+					//biar jam break tidak terdouble
+					if(in_array($rest_start, $distinct_start)){
+						continue;
+					}else{
+						$distinct_start[] = $rest_start;
+					}
+
+					$overtime_start = strtotime($mulai);
+					$overtime_end   = strtotime($selesai);
+
+					if (($rest_start > $overtime_start && $rest_end < $overtime_end)) { // jika jam istirahat masuk range lembur
+						$ISTIRAHAT = $ISTIRAHAT + 45;
+					}else if($rest_start > $overtime_start && $rest_end > $overtime_end && $rest_start < $overtime_end){
+						$ISTIRAHAT = $ISTIRAHAT + (45 + ($overtime_end - $rest_end)/60);
+					}
+				}
+			}
+			
+			if ($break == 'Y') { //jika pekerja memilih istirahat
+				$BREAK = 0;
+				$distinct_start = [];
+
+				foreach($allShift as $shift){
+					$break_start = strtotime($shift['break_mulai']);
+					$break_end   = strtotime($shift['break_selesai']);
+
+					//jika tidak ada istirahat, lewati
+					if($break_start == $break_end){
+						continue;
+					}
+
+					//biar jam break tidak terdouble
+					if(in_array($break_start, $distinct_start)){
+						continue;
+					}else{
+						$distinct_start[] = $break_start;
+					}
+
+					$overtime_start = strtotime($mulai);
+					$overtime_end   = strtotime($selesai);
+				
+					if ($break_start > $overtime_start && $break_end < $overtime_end) { // jika jam istirahat masuk range lembur
+						$BREAK = $BREAK + 15;
+					}else if($break_start > $overtime_start && $break_end > $overtime_end && $break_start < $overtime_end){
+						$BREAK = $BREAK + (15 + ($overtime_end - $break_end)/60);
+					}
+				}
+			}
+		}
+
+		//----------------------
+		$estimasi = 0;
 		if(!empty($treffjamlembur)):
 			$total_lembur = $MENIT_LEMBUR-($BREAK+$ISTIRAHAT);
 
-			$estimasi = 0;
 			$i = 0;
 			while($total_lembur > 0){
 				$jml_jam = $treffjamlembur[$i]['jml_jam'] * 60;
 				$pengali = $treffjamlembur[$i]['pengali'];
 
 				if($total_lembur > $jml_jam){
+
 					$estimasi = $estimasi + $jml_jam * $pengali/60;
 					$total_lembur = $total_lembur - $jml_jam;
 				}else{
+
 					$estimasi = $estimasi + ($total_lembur * $pengali/60);
 					$estimasi = number_format($estimasi,2);
 					$total_lembur = 0;
@@ -228,18 +279,18 @@ class C_splkasie extends CI_Controller {
 			$index[] = $sls['nama'];
 			$index[] = $sls['kodesie'];
 			$index[] = $sls['seksi'];
-			$index[] = $sls['Pekerjaan'];
+			$index[] = $this->convertUnOrderedlist($sls['Pekerjaan']);
 			$index[] = $sls['nama_lembur'];
 			$index[] = $sls['Jam_Mulai_Lembur'];
 			$index[] = $sls['Jam_Akhir_Lembur'];
 			$index[] = $sls['Break'];
 			$index[] = $sls['Istirahat'];
-			$index[] = $sls['target'];
-			$index[] = $sls['realisasi'];
+			$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
+			$index[] = $this->convertUnOrderedlist($sls['target']);
+			$index[] = $this->convertUnOrderedlist($sls['realisasi']);
 			$index[] = $sls['alasan_lembur'];
 			$index[] = $sls['Deskripsi']." ".$sls['User_'];
 			$index[] = $sls['Tgl_Berlaku'];
-			$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
 
 			$data_spl[] = $index;
 		}
@@ -284,6 +335,8 @@ class C_splkasie extends CI_Controller {
 				"noind" => $user);
 			$to_log = $this->M_splseksi->save_log($data_log);
 
+			$noind_baru = $this->M_splseksi->getNoindBaru($ds['Noind']);
+
 			$data_spl = array(
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Status" => $stat,
@@ -297,7 +350,7 @@ class C_splkasie extends CI_Controller {
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $ds['Tgl_Lembur'],
 				"Noind" => $ds['Noind'],
-				"Noind_Baru" => "0000000",
+				"Noind_Baru" => $noind_baru,
 				"Kd_Lembur" => $ds['Kd_Lembur'],
 				"Jam_Mulai_Lembur" => $ds['Jam_Mulai_Lembur'],
 				"Jam_Akhir_Lembur" => $ds['Jam_Akhir_Lembur'],
@@ -450,7 +503,7 @@ class C_splkasie extends CI_Controller {
 
 			Kami informasikan bahwa anda telah menerima permintaan<br>
 			approval untuk keperluan lembur pekerja.<br>
-			Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
+			Berikut ini daftar yang telah di Approve oleh : <b>$user - {$this->session->employee}</b><br>
 			dengan keterangan : <b>$ket</b><br><br>
 			$isiPesan
 			<br>
@@ -553,7 +606,7 @@ class C_splkasie extends CI_Controller {
 
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Approve</b> oleh Kasie.<br>
-							Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
+							Berikut ini daftar yang telah di Approve oleh : <b>$user - {$this->session->employee}</b><br>
 							dengan keterangan : <b>$ket</b><br><br>
 							".$dt['isiPesan']."
 							<br>
@@ -597,7 +650,7 @@ class C_splkasie extends CI_Controller {
 
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Reject</b> oleh Kasie.<br>
-							Berikut ini daftar yang telah di Reject oleh : <b>$user</b><br>
+							Berikut ini daftar yang telah di Reject oleh : <b>$user - {$this->session->employee}</b><br>
 							dengan keterangan : <b>$ket</b><br><br>
 							".$dt['isiPesan']."
 							<br>
@@ -659,29 +712,29 @@ class C_splkasie extends CI_Controller {
 	}
 
 	function fp_verification(){
-		$data = explode(";",$_POST['VerPas']);
-		$user_id = $data[0];
-		$vStamp = $data[1];
-		$time = $data[2];
-		$sn = $data[3];
+        $data = explode(";", $_POST['VerPas']);
+        $user_id = $data[0];
+        $vStamp = $data[1];
+        $time = $data[2];
+        $sn = $data[3];
 
-		$filter 	= array("SN" => $sn);
-		$kd_finger = $this->input->get('finger_id');
-		$fingerData = $this->M_splkasie->show_finger_user(array('user_id' => $user_id, 'kd_finger' => $kd_finger));
-		$device 	= $this->M_splkasie->show_finger_activation($filter);
+        $filter 	= array("SN" => $sn);
+        $kd_finger = $this->input->get('finger_id');
+        $fingerData = $this->M_splkasie->show_finger_user(array('user_id' => $user_id, 'kd_finger' => $kd_finger));
+        $device 	= $this->M_splkasie->show_finger_activation($filter);
 
-		$salt = md5($sn.$fingerData->finger_data.$device->Verification_Code.$time.$user_id.$device->VKEY);
+        $salt = md5($sn.$fingerData->finger_data.$device->Verification_Code.$time.$user_id.$device->VKEY);
 
-		if (strtoupper($vStamp) == strtoupper($salt)) {
-			$status = $_GET['status'];
-			$spl_id = $_GET['spl_id'];
-			$ket = $_GET['ket'];
+        if (strtoupper($vStamp) == strtoupper($salt)) {
+            $status = $_GET['status'];
+            $spl_id = $_GET['spl_id'];
+            $ket = $_GET['ket'];
 
-			echo site_url("ALK/Approve/fp_succes?status=$status&spl_id=$spl_id&ket=$ket");
-		}else{
-			echo "Parameter invalid..";
-		}
-	}
+            echo site_url("ALK/Approve/fp_succes?status=$status&spl_id=$spl_id&ket=$ket");
+        } else {
+            echo "Parameter invalid..";
+        }
+    }
 
 	function fp_succes(){
 		$status = $_GET['status'];
@@ -700,8 +753,8 @@ class C_splkasie extends CI_Controller {
 
 		$this->session->spl_validasi_waktu_kasie = time();
 
-		echo "Memproses data lembur<br>";
-		echo "<script>window.close();</script>";
+		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
+
 	}
 
 	//validasi user kasie & asska

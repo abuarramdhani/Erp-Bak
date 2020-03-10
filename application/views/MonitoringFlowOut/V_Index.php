@@ -19,7 +19,7 @@
 
                 <center>
 
-                    <img src="<?php echo base_url('assets/img/cs.png'); ?>" style="max-width:27%;" />
+                    <img src="<?php echo base_url('assets/img/logo.png'); ?>" style="max-width:27%;" />
 
                 </center>
                 <br /><br />

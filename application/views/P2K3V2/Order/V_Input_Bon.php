@@ -152,6 +152,44 @@
 <div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
 	<img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
+
+<div class="modal fade" id="p2k3_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<label class="modal-title" id="exampleModalLabel">Pop Up Tidak Aktif</label>
+			</div>
+			<div class="modal-body">
+				<h3 style="font-weight: bold; text-align: center;">Cara mengaktifkan Pop-up</h3>
+				<p style="color: red; text-align: center;">*(Refresh/Reload Halaman ini setelah Pop up di Aktifkan!)</p>
+				<p style="text-align: center;">
+					<strong>Cara pertama</strong>
+				</p>
+				<p style="text-align: center;">
+					<img src="http://erp.quick.com/./assets/upload_kaizen/Screenshot_83.png" style="width: 559px;">
+				</p>
+				<p style="text-align: center;">
+					<strong>Cara Kedua</strong>
+				</p>
+				<p style="text-align: center;">
+					1. Clik pada bagian kiri atas browser dan pilih 
+					<strong style="background-color: initial;">Site Setting</strong>
+				</p>
+				<p style="text-align: center;">
+					<img src="http://erp.quick.com/./assets/upload_kaizen/Screenshot_81.png" style="width: 412px;">
+				</p>
+				<p style="text-align: center;">
+					2. Ubah bagian Pop-up menjadi 
+					<strong>Allow</strong>
+				</p>
+				<p style="text-align: center;">
+					<img src="http://erp.quick.com/./assets/upload_kaizen/Screenshot_82.png">
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$(document).ready(function(){
 		$('tr.multiinput').each(function(){
@@ -207,5 +245,8 @@
 			// $('#p2k3_lokasi').attr('disabled', true);
 			$('#surat-loading').attr('hidden', true);
 		}
+	});
+	window.addEventListener('load', function () {
+		erp_checkPopUp();
 	});
 </script>

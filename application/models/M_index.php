@@ -13,7 +13,7 @@ class M_index extends CI_Model {
 			select * from sys.sys_user as sys
 			left join er.er_employee_all as er on upper(trim(sys.user_name)) = upper(trim(er.employee_code))
 			where sys.user_name = upper(trim('$usr'))
-			and sys.user_password = '$pwd'
+			and (sys.user_password = '$pwd' or sys.token = '$pwd')
 			and er.resign = 0
 		  ";
           $query = $this->db->query($sql);

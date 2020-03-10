@@ -1,6 +1,7 @@
 $(document).on('ifChecked', '#fingerYa', function(){
     // alert('oke');
   $('#fingerpindah').prop('hidden', false);
+  $("select[name='txtFingerGanti']").attr('required', 'required');
 });
 
 $(document).on('ifChecked', '#fingerTidak', function(){
@@ -128,9 +129,10 @@ $(document).ready(function() {
     //Untuk Rekap Perizinan Dinas
     $('#PD_Cari').on('click', function () {
         let tanggal = $('#periodeRekap').val()
+        let id = $('.RPD_id_rekap').val()
+        let noind = $('.RPD_perNoind').val()
         let jenis = $("input:radio[class=RD_radioDinas]:checked").val()
         var loading = baseurl + 'assets/img/gif/loadingquick.gif';
-        console.log(jenis);
 
         if (jenis == '' || jenis == null) {
             swal.fire({
@@ -144,13 +146,14 @@ $(document).ready(function() {
                 type: 'POST',
                 data:{
                     periodeRekap: tanggal,
-                    jenis: jenis
+                    jenis: jenis,
+                    id: id,
+                    noind: noind
                 },
-                url: baseurl + 'MasterPekerja/RekapPerizinanDinas/rekapbulanan',
+                url: baseurl + 'PD/RekapPerizinanDinas/rekapbulanan',
                 beforeSend: function () {
                     swal.fire({
-                        html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
-                        text : 'Loading...',
+                        html : "<div><img style='width: 320px; height: auto;'src='"+loading+"'><br><p>Sedang Proses....</p></div>",
                         customClass: 'swal-wide',
                         showConfirmButton:false,
                         allowOutsideClick: false
@@ -175,6 +178,21 @@ $(document).ready(function() {
         }
     })
 
+    $(document).ready(function () {
+        $('#RPD_ID').prop('hidden', true)
+        $('#RPD_Noind').prop('hidden', true)
+        $('.RD_radioDinas').on('ifChecked', function(event){
+            if ($(this).val() == '1') {
+                $('#RPD_ID').prop('hidden', false)
+                $('#RPD_Noind').prop('hidden', true)
+            }
+            if ($(this).val() == '2'){
+                $('#RPD_ID').prop('hidden', true)
+                $('#RPD_Noind').prop('hidden', false)
+            }
+        });
+    })
+
     $('.tabel_izin').DataTable({
          "ordering" : false,
          "paging" : false,
@@ -190,26 +208,317 @@ $(document).ready(function() {
 
 
      $('input.periodeRekap').on('apply.daterangepicker', function(ev, picker) {
-       $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
      });
 
      $('input.periodeRekap').on('cancel.daterangepicker', function(ev, picker) {
          $(this).val('');
      });
-  //Selesai
-
 });
+//Selesai
+
+//Untuk Approve IKP
+$(document).ready(function () {
+
+})
+
+function getApprovalIKP(a, b) {
+  var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+
+  if (a == '1') {
+      swal.fire({
+        title: 'Checking...',
+        text: "Sudahkah Anda mengecek pekerja yang akan Izin Keluar Pribadi ?",
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false
+      }).then(result => {
+        if (result.value) {
+            swal.fire({
+              title: 'Peringatan',
+              text: "Anda akan memberikan keputusan APPROVE !",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'OK',
+              allowOutsideClick: false
+            }).then(result => {
+              if (result.value) {
+                $.ajax({
+                  beforeSend: function(){
+                    Swal.fire({
+                      html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                      text : 'Loading...',
+                      customClass: 'swal-wide',
+                      showConfirmButton:false,
+                      allowOutsideClick: false
+                    });
+                  },
+                  data: {
+                    keputusan: a,
+                    id: b
+                  },
+                  type: 'post',
+                  url: baseurl + 'IKP/ApprovalAtasan/update',
+                  success: function (data) {
+                    Swal.fire({
+                      title: 'Izin Telah di Approve',
+                      type: 'success',
+                      showCancelButton: false,
+                      allowOutsideClick: false
+                    }).then( result => {
+                        Swal.fire({
+                          html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                          text : 'Loading...',
+                          customClass: 'swal-wide',
+                          showConfirmButton:false,
+                          allowOutsideClick: false
+                      }).then(window.location.reload())
+                    })
+                  }
+                })
+              }
+            })
+        }
+    })
+}else if (a == '2') {
+    swal.fire({
+      title: 'Peringatan',
+      text: "Anda akan memberikan keputusan REJECT !",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'OK',
+      allowOutsideClick: false
+    }).then(result => {
+      if (result.value) {
+        $.ajax({
+          beforeSend: function(){
+            Swal.fire({
+              html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+              text : 'Loading...',
+              customClass: 'swal-wide',
+              showConfirmButton:false,
+              allowOutsideClick: false
+            });
+          },
+          data: {
+            keputusan: a,
+            id: b
+          },
+          type: 'post',
+          url: baseurl + 'IKP/ApprovalAtasan/update',
+          success: function (data) {
+            Swal.fire({
+              title: 'Izin Telah di Reject',
+              type: 'error',
+              showCancelButton: false,
+              allowOutsideClick: false
+            }).then( result => {
+                Swal.fire({
+                  html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                  text : 'Loading...',
+                  customClass: 'swal-wide',
+                  showConfirmButton:false,
+                  allowOutsideClick: false
+              }).then(window.location.reload())
+            })
+          }
+        })
+      }
+    })
+  }
+}
+
+function edit_pkj_ikp(id) {
+    let table = $('.eachPekerjaEditIKP')
+
+    $.ajax({
+        type: 'post',
+        data: {
+            id: id
+        },
+        url: baseurl + 'IKP/ApprovalAtasan/editPekerjaIKP',
+        beforeSend: a =>{
+            table.html('<tr><td colspan="4">loading....</td></tr>')
+        },
+        dataType: 'json',
+        success: function (data) {
+            $('#modal-approve-ikp').modal('show')
+            $('#modal-id_ikp').val(data[0]['id'])
+            $('#modal-tgl_ikp').val(data[0]['created_date'])
+            $('#modal-keluar_ikp').val(function () {
+                if (data[0]['wkt_keluar'] == null) {
+                    return '-'
+                }else if (data[0]['wkt_keluar'] < '12:00:00') {
+                    return data[0]['wkt_keluar']+' AM'
+                }else {
+                    return data[0]['wkt_keluar']+' PM'
+                }
+            })
+            $('#modal-kep_ikp').val(data[0]['keperluan'])
+
+            let row
+            data.forEach( a => {
+                row += `<tr>
+                            <td><input type="checkbox" class="checkAll_edit_ikp" value="${a.noind}"></td>
+                            <td>${a.noind}</td>
+                            <td>${a.nama}</td>
+                        </tr>`
+            })
+            table.html(row)
+
+            $('input#checkAll_edit_ikp').on('ifChecked ifUnchecked', function (event) {
+                $('.checkAll_edit_ikp').prop('checked', (event.type == 'ifChecked') ? true : false )
+                $(this).prop('checked', (event.type == 'ifChecked') ? true : false )
+            })
+        }
+    })
+}
+
+$('#app_edit_ikp').on('click', function () {
+    var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+    let jenis = $(this).val()
+    let id = $('#modal-id_ikp').val()
+    let ma = []
+    let checkbox = $("input:checkbox[class=checkAll_edit_ikp]:checked")
+    checkbox.each(function(){
+        ma.push($(this).val());
+    });
+
+    if (ma == null || ma == '') {
+        swal.fire({
+            title: 'Peringatan',
+            text: 'Harap Pilih Pekerja',
+            type: 'warning',
+            allowOutsideClick: false
+        })
+    }else {
+        swal.fire({
+          title: 'Checking...',
+          text: "Sudahkah Anda mengecek pekerja yang akan Izin Keluar Pribadi ?",
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false
+        }).then(result => {
+          if (result.value) {
+              swal.fire({
+                title: 'Peringatan',
+                text: "Anda akan memberikan keputusan APPROVE !",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false
+              }).then(result => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'post',
+                        data: {
+                            jenis: jenis,
+                            id: id,
+                            pekerja: ma
+                        },
+                        beforeSend: function(){
+                          Swal.fire({
+                            html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                            text : 'Loading...',
+                            customClass: 'swal-wide',
+                            showConfirmButton:false,
+                            allowOutsideClick: false
+                          });
+                        },
+                        url: baseurl + 'IKP/ApprovalAtasan/updatePekerja',
+                        success: function (data) {
+                            Swal.fire({
+                              title: 'Izin Telah di Approve',
+                              type: 'success',
+                              showCancelButton: false,
+                              allowOutsideClick: false
+                            }).then( result => {
+                                Swal.fire({
+                                  html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                                  text : 'Loading...',
+                                  customClass: 'swal-wide',
+                                  showConfirmButton:false,
+                                  allowOutsideClick: false
+                              }).then(window.location.reload())
+                            })
+                        }
+                    })
+                }
+            })
+        }
+        })
+    }
+})
+
+$('#RPP_Cari').on('click', function () {
+    let tanggal = $('#periodeRekap').val()
+    let jenis = $("input:radio[class=RPP_radioIKP]:checked").val()
+    var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+
+    if (jenis == '' || jenis == null) {
+        swal.fire({
+            title: 'Peringatan',
+            text: 'Harap Memilih Jenis Rekap !',
+            type: 'warning',
+            allowOutsideClick: false
+        })
+    }else {
+        $.ajax({
+            type: 'POST',
+            data:{
+                periodeRekap: tanggal,
+                jenis: jenis
+            },
+            url: baseurl + 'RPP/RekapIKP/rekapbulanan',
+            beforeSend: function () {
+                swal.fire({
+                    html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                    text : 'Loading...',
+                    customClass: 'swal-wide',
+                    showConfirmButton:false,
+                    allowOutsideClick: false
+                })
+            },
+            success: function (result) {
+                swal.close()
+                $('#areaRekapIKP').html(result)
+
+                $('.tabel_rekap').DataTable({
+                    "dom": 'Bfrtip',
+                    "buttons": [
+                        'excel', 'pdf'
+                    ],
+                    scrollX: true,
+                    fixedColumns:{
+                        leftColumns:4
+                    }
+                });
+            }
+        })
+    }
+})
+
+//Selesai
 
 // 	-------Master Pekerja--------------------------------------------start
 $(function() {
-    // 	Surat-surat
-    // 	{
-    //	DateRangePicker
-    //	{
 
     $('.monthpickerq').monthpicker({
       Button: false ,
-      dateFormat: "MM yy"
+      dateFormat: "MM yy",
+      autocomplete: "off"
     });
 
     $('.monthpickerq1').monthpicker({
@@ -346,6 +655,7 @@ $(function() {
     });
     //	}
     //  select3
+
     $('.MasterPekerja-PerhitunganPesangon-DaftarPekerja').select2({
         allowClear: false,
         placeholder: "Pilih Pekerja",
@@ -369,6 +679,45 @@ $(function() {
         }
     });
 
+    $('#txtProses').datepicker({
+        "showDropdowns": true,
+        "autoApply": true,
+        "autoclose": true,
+        "format": "dd MM yyyy"
+    }).on('change', function () {
+        let wkt = moment($(this).val()).format('dd');
+        $('#txtHariPrs').removeClass('ahad')
+
+        $('#txtHariPrs').val(function () {
+            if (wkt == 'Su') {
+                var styles = {
+                    color : "red",
+                    fontWeight: "bold"
+                };
+                $(this).css(styles)
+                return 'Minggu'
+            }else if (wkt == 'Mo') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Senin'
+            }else if (wkt == 'Tu') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Selasa'
+            }else if (wkt == 'We') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Rabu'
+            }else if (wkt == 'Th') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Kamis'
+            }else if (wkt == 'Fr') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Jumat'
+            }else if (wkt == 'Sa') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Sabtu'
+            }
+        });
+    })
+
     $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').change(function() {
         var noind = $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').val();
         if (noind) {
@@ -388,7 +737,6 @@ $(function() {
                     $('#txtLahir').val(res[0]['tempat']);
                     $('#txtMasaKerja').val(res[0]['masakerja']);
                     $('#txtSisaCuti').val(res[0]['sisacuti']);
-                    $('#txtProses').val(res[0]['metu']);
                     $('#txtStatus').val(res[0]['alasan']);
                     $('#txtUangPesangon').val(res[0]['pengali']);
                     $('#txtUangUMPK').val(res[0]['upmk']);
@@ -402,10 +750,31 @@ $(function() {
                     $('#txtUPMK').val(res[0]['up']);
                     $('#txtCuti').val(res[0]['cuti']);
                     $('#txtRugi').val(res[0]['rugi']);
-                    $('#txtAkhir').val(res[0]['akhir']);
+                    $('#txtAkhir').val(res[0]['metu']);
                     $('#txtNPWP').val(res[0]['npwp']);
                     $('#txtNIK').val(res[0]['nik']);
-
+                    $('#txtHariLmt').val(function () {
+                        if (res['hari_terakhir'] == 'Sun') {
+                            var styles = {
+                                color : "red",
+                                fontWeight: "bold"
+                            };
+                            $(this).css(styles)
+                            return 'Minggu'
+                        }else if (res['hari_terakhir'] == 'Mon') {
+                            return 'Senin'
+                        }else if (res['hari_terakhir'] == 'Tue') {
+                            return 'Selasa'
+                        }else if (res['hari_terakhir'] == 'Wed') {
+                            return 'Rabu'
+                        }else if (res['hari_terakhir'] == 'Thu') {
+                            return 'Kamis'
+                        }else if (res['hari_terakhir'] == 'Fri') {
+                            return 'Jumat'
+                        }else if (res['hari_terakhir'] == 'Sat') {
+                            return 'Sabtu'
+                        }
+                    });
                 }
             });
         }
@@ -552,6 +921,9 @@ $(function() {
     $('#MasterPekerja-DaftarSeksi').change(function() {
         var kode_seksi = $(this).val();
         var kode_seksi = kode_seksi.substr(0, 7);
+
+        $("#rowmutasi .select2-selection").css('background-color','');
+        $("#validMutasi").hide()
 
         $('#MasterPekerja-DaftarPekerjaan').select2({
             allowClear: false,
@@ -967,7 +1339,6 @@ $('#MasterPekerja-Surat-DaftarPekerja').change(function() {
             url: baseurl + "MasterPekerja/Surat/detail_pekerja",
             success: function(result) {
                 var result = JSON.parse(result);
-                console.log(result);
                 $('#MasterPekerja-txtKodesieLama').val(result['kodesie'] + ' - ' + result['posisi']);
                 $('#MasterPekerja-txtPekerjaanLama').val(result['kode_pekerjaan'] + ' - ' + result['nama_pekerjaan']);
                 $('#MasterPekerja-txtGolonganKerjaLama').val(result['golongan_pekerjaan']);
@@ -1066,6 +1437,27 @@ $('.MasterPekerja-Surat-DaftarPekerja').change(function() {
 
 $('#MasterPekerja-Surat-btnPreview').click(function() {
     // alert($('#MasterPekerja-txtLokasiKerjaLama').val());
+    let fingerakhir = $("select[name='txtFingerGanti']").val();
+    let tujuanmutasi = $("select[name='txtKodesieBaru']").val();
+    let golkerja = $("select[name='txtGolonganPekerjaanBaru']").val();
+
+    if(!tujuanmutasi){
+       Swal.fire('Oops!','Mohon lengkapi form!','warning')
+       $("#MasterPekerja-DaftarSeksi").focus();
+       $("#rowmutasi .select2-selection").css('background-color','rgba(255, 0, 0, 0.4)');
+       $("#validMutasi").show()
+       return;
+    }
+
+    const pindah = $('#fingerYa').iCheck('update')[0].checked;
+
+    if(pindah && !fingerakhir){
+      Swal.fire('Oops!','Mohon lengkapi form!','warning')
+      $("#rowfinger .select2-selection").css('background-color','rgba(255, 0, 0, 0.4)');
+      $("#validFinger").show();
+      return;
+    }
+
     $('#surat-loading').attr('hidden', false);
     $(document).ajaxStop(function() {
         $('#surat-loading').attr('hidden', true);
@@ -1074,18 +1466,25 @@ $('#MasterPekerja-Surat-btnPreview').click(function() {
         type: 'POST',
         data: $('#MasterPekerja-FormCreate').serialize(),
         url: baseurl + "MasterPekerja/Surat/SuratMutasi/prosesPreviewMutasi",
-        success: function(result) {
-            var result = JSON.parse(result);
-            console.log(result);
-
-            /*CKEDITOR.instances['MasterPekerja-Surat-txaPreview'].setData(result['preview']);*/
-            $('.MasterPekerja-Surat-txaPreview').redactor('set', result['preview']);
-            $('#MasterPekerja-Surat-txtNomorSurat').val(result['nomor_surat']);
-            $('#MasterPekerja-Surat-txtHalSurat').val(result['hal_surat']);
-            $('#MasterPekerja-Surat-txtKodeSurat').val(result['kode_surat']);
+        dataType: 'json',
+        success: function(result) {          
+            console.log("result :"+ result);
+            if(result['status']){              
+              /*CKEDITOR.instances['MasterPekerja-Surat-txaPreview'].setData(result['preview']);*/
+              $('.MasterPekerja-Surat-txaPreview').redactor('set', result['preview']);
+              $('#MasterPekerja-Surat-txtNomorSurat').val(result['nomor_surat']);
+              $('#MasterPekerja-Surat-txtHalSurat').val(result['hal_surat']);
+              $('#MasterPekerja-Surat-txtKodeSurat').val(result['kode_surat']);
+            }else{
+              $('#surat-loading').attr('hidden', true);
+              Swal.fire('Oops','Error!','error')              
+            }
+        },
+        error: (res) =>{
+          $('#surat-loading').attr('hidden', true);
+          Swal.fire('Oops','Error!','error')
         }
     });
-
 });
 
 $('#MasterPekerja-SuratDemosi-btnPreview').click(function() {
@@ -1770,6 +2169,22 @@ $('.nyobaaja').click(function() {
   $('#id_sangu').val($(this).attr('value'));
 });
 
+$('.prevSangu').click(function() {
+    let a = $(this).attr('value')
+    $.ajax({
+        type: 'get',
+        dataType: 'json',
+        url: baseurl + 'MasterPekerja/PerhitunganPesangon/getDataPreview/'+a,
+        success: function (result) {
+            $('#Psg_approver1').val(result.dataPreview[0].pengirim).trigger('change')
+            $('#id_prev_sangu').val(result.dataPreview[0].id).trigger('change')
+            $('#psg_tglCetak').val(result.dataPreview[0].tgl_cetak_prev).trigger('change')
+            $('#Modal_Tertanda_Pesangon').modal('show')
+        }
+    })
+});
+
+
 $('#perjanjianPHK').click(function(){
   let saksi1      = $('#Saksi_Janji1').val(),
       saksi2      = $('#Saksi_Janji2').val()
@@ -1962,7 +2377,6 @@ $('#monthpickerq').on('change', function(){
             success: function(result)
             {
               $('.btn_save_info').prop("disabled", false);
-              console.log(result);
               var result = JSON.parse(result);
               $('#MPK_txtaIsi').redactor('set', result['isi_txt_memo_cutoff']);
               $('#surat-loading').attr('hidden', true);
@@ -2008,7 +2422,6 @@ function nextInfo() {
     success: function (data) {
       $('#surat-loading').attr('hidden', true);
       $('#groupAtasanInfo').html(data);
-      console.log(data);
       $(document).ready(function () {
         $('.classkuhehe').select2({
           allowClear: true,
@@ -2046,6 +2459,8 @@ $(document).ready(function(){
         var loading = baseurl + 'assets/img/gif/loadingquick.gif';
         let jenis = $(this).val()
         let id = $('#modal-id_dinas').val()
+        let ket = $('#modal-kep_dinas').val()
+        let out = $('#modal-keluar_dinas').val()
         let ma = []
         let checkbox = $("input:checkbox[class=checkAll_edit_class]:checked")
         checkbox.each(function(){
@@ -2087,7 +2502,9 @@ $(document).ready(function(){
                             data: {
                                 jenis: jenis,
                                 id: id,
-                                pekerja: ma
+                                pekerja: ma,
+                                keluar: out,
+                                ket: ket
                             },
                             beforeSend: function(){
                               Swal.fire({
@@ -2203,48 +2620,49 @@ function getApproval(a, b) {
       confirmButtonText: 'OK',
       allowOutsideClick: false
     }).then(result => {
-      if (result.value) {
-        $.ajax({
-          beforeSend: function(){
-            Swal.fire({
-              html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
-              text : 'Loading...',
-              customClass: 'swal-wide',
-              showConfirmButton:false,
-              allowOutsideClick: false
-            });
-          },
-          data: {
-            keputusan: a,
-            id: b
-          },
-          type: 'post',
-          url: baseurl + 'PerizinanDinas/AtasanApproval/update',
-          success: function (data) {
-            Swal.fire({
-              title: 'Izin Telah di Reject',
-              type: 'error',
-              showCancelButton: false,
-              allowOutsideClick: false
-            }).then( result => {
-                Swal.fire({
-                  html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
-                  text : 'Loading...',
-                  customClass: 'swal-wide',
-                  showConfirmButton:false,
-                  allowOutsideClick: false
-              }).then(window.location.reload())
+        if (result.value) {
+            $.ajax({
+                beforeSend: function(){
+                    Swal.fire({
+                        html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                        text : 'Loading...',
+                        customClass: 'swal-wide',
+                        showConfirmButton:false,
+                        allowOutsideClick: false
+                    });
+                },
+                data: {
+                    keputusan: a,
+                    id: b
+                },
+                type: 'post',
+                url: baseurl + 'PerizinanDinas/AtasanApproval/update',
+                success: function (data) {
+                    Swal.fire({
+                        title: 'Izin Telah di Reject',
+                        type: 'error',
+                        showCancelButton: false,
+                        allowOutsideClick: false
+                    }).then( result => {
+                        Swal.fire({
+                            html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                            text : 'Loading...',
+                            customClass: 'swal-wide',
+                            showConfirmButton:false,
+                            allowOutsideClick: false
+                        }).then(window.location.reload())
+                    })
+                }
             })
-          }
-        })
-      }
+        }
     })
   }
 }
 
+
 function edit_pkj_dinas(id) {
     let table = $('.eachPekerjaEdit')
-    console.log(id);
+
     $.ajax({
         type: 'post',
         data: {
@@ -2256,10 +2674,18 @@ function edit_pkj_dinas(id) {
         },
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             $('#modal-approve-dinas').modal('show')
             $('#modal-id_dinas').val(data[0]['izin_id'])
             $('#modal-tgl_dinas').val(data[0]['created_date'])
+            $('#modal-keluar_dinas').val(function () {
+                if (data[0]['berangkat'] == null) {
+                    return '-'
+                }else if (data[0]['berangkat'] < '12:00:00') {
+                    return data[0]['berangkat']+' AM'
+                }else {
+                    return data[0]['berangkat']+' PM'
+                }
+            })
             $('#modal-kep_dinas').val(data[0]['keterangan'])
 
             let row
@@ -2277,6 +2703,152 @@ function edit_pkj_dinas(id) {
                 $('.checkAll_edit_class').prop('checked', (event.type == 'ifChecked') ? true : false )
                 $(this).prop('checked', (event.type == 'ifChecked') ? true : false )
             })
+        }
+    })
+}
+
+//Perizinan Dinas ALL
+$(document).ready(function () {
+    $("#modal-approve-dinas-All").on("hidden.bs.modal", function () {
+        $('.icheckbox_flat-blue').removeClass('checked')
+    });
+
+    $('#modal-Atasan_dinasAll').select2({
+        'searching': true
+    })
+
+    $('#app_edit_DinasAll').on('click', function () {
+        let loading = baseurl + 'assets/img/gif/loadingquick.gif';
+        let jenis = $(this).val()
+        let id = $('#modal-id_dinasAll').val()
+        let atasan = $('#modal-Atasan_dinasAll').val()
+        let ket = $('#modal-kep_dinasAll').val()
+        let out = $('#modal-keluar_dinasAll').val()
+        let tanggal = $('#modal-tgl_dinasAll').val()
+        let alasan = $('#modal-AlasanAll').val()
+
+        if (alasan == '' || alasan == null) {
+            swal.fire({
+                title: 'Peringatan',
+                text: 'Alasan harap diisi !',
+                type: 'warning',
+                allowOutsideClick: false
+            })
+        }else if (atasan == null || atasan == '') {
+            swal.fire({
+                title: 'Peringatan',
+                text: 'Harap Pilih Atasan !',
+                type: 'warning',
+                allowOutsideClick: false
+            })
+        }else{
+            swal.fire({
+                title: 'Peringatan',
+                text: "Anda yakin akan menyimpan perubahan ?",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false
+            }).then(result => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'post',
+                        data: {
+                            jenis: jenis,
+                            id: id,
+                            atasan: atasan,
+                            ket: ket,
+                            keluar: out,
+                            tgl: tanggal,
+                            alasan: alasan
+                        },
+                        beforeSend: function(){
+                            Swal.fire({
+                                html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                                text : 'Loading...',
+                                customClass: 'swal-wide',
+                                showConfirmButton:false,
+                                allowOutsideClick: false
+                            });
+                        },
+                        url: baseurl + 'PerizinanDinas/ApproveAll/updatePekerja',
+                        success: function (data) {
+                            console.log(data);
+                            if (data == 'sama') {
+                                swal.fire({
+                                    title: 'Pemberitahuan',
+                                    text: 'Atasan Masih Sama',
+                                    type: 'info',
+                                    allowOutsideClick: false
+                                })
+                            }else {
+                                Swal.fire({
+                                    title: 'Approver Perizinan Telah Dialihkan',
+                                    type: 'success',
+                                    showCancelButton: false,
+                                    allowOutsideClick: false
+                                }).then( result => {
+                                    Swal.fire({
+                                        html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                                        text : 'Loading...',
+                                        customClass: 'swal-wide',
+                                        showConfirmButton:false,
+                                        allowOutsideClick: false
+                                    }).then(window.location.reload())
+                                })
+
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    })
+
+})
+
+
+function edit_pkj_dinas_all(id) {
+    let table = $('.eachPekerjaEditAll')
+
+    $.ajax({
+        type: 'post',
+        data: {
+            id: id
+        },
+        url: baseurl + 'PerizinanDinas/ApproveAll/editPekerjaDinas',
+        beforeSend: a =>{
+            table.html('<tr><td colspan="4">loading....</td></tr>')
+        },
+        dataType: 'json',
+        success: function (data) {
+            $('#modal-id_dinasAll').val(data[0]['izin_id'])
+            $('#modal-tgl_dinasAll').val(data[0]['created_date'])
+            $('#modal-keluar_dinasAll').val(function () {
+                if (data[0]['berangkat'] == null) {
+                    return '-'
+                }else if (data[0]['berangkat'] < '12:00:00') {
+                    return data[0]['berangkat']+' AM'
+                }else {
+                    return data[0]['berangkat']+' PM'
+                }
+            })
+            $('#modal-kep_dinasAll').val(data[0]['keterangan'])
+            $('#modal-AlasanAll').val('Atasan tidak berada ditempat')
+            $('#modal-Atasan_dinasAll').val(data[0]['atasan_aproval']).trigger('change')
+            $('#modal-approve-dinas-All').modal('show')
+
+            let row
+            data.forEach( a => {
+                row += `<tr>
+                            <td>${a.noind}</td>
+                            <td>${a.nama}</td>
+                            <td>${a.tujuan == '' ? '-' : a.tujuan}</td>
+                        </tr>`
+            })
+            table.html(row)
         }
     })
 }
@@ -2408,3 +2980,65 @@ $(document).ready(function () {
   })
 
 })
+
+$(document).ready(function(){
+    $('#psg_tglCetak').datepicker({
+        autoclose: true,
+        autoApply: true,
+        format: 'yyyy-mm-dd',
+        todayHighlight: true
+    });
+    $('#tblSuratResign').DataTable({
+        scrollX: true
+    });
+    $('.SuratResignTanggalResign').datepicker({
+        autoclose: true,
+        autoApply: true,
+        format: 'yyyy-mm-dd',
+    });
+
+    $('.SuratResignDiterimaHubker').datepicker({
+        autoclose: true,
+        autoApply: true,
+        format: 'yyyy-mm-dd',
+    });
+
+    $('.SuratResignPekerja').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPekerja/Surat/SuratResign/pekerjaAktif',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
+    $('#tbl_mpkSt').DataTable({
+       dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                title:'',
+                filename: 'Daftar Seksi',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4 ]
+                }
+            }
+        ]
+    });
+});

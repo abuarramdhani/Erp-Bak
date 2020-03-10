@@ -1,4 +1,4 @@
-<?php 
+<?php
 	if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 	class M_rekaptims extends CI_Model
@@ -13,7 +13,7 @@
 	    public function rekapBobotTIM($period1,$period2,$noind,$keluar)
 	    {
 	    	$query = "select pri.noind,pri.nama, ts.dept,ts.bidang,ts.unit,ts.seksi,
-	    					(select sum(case 
+	    					(select sum(case
 	    									when tdtim.kd_ket='TT'
 	    									then tdtim.point
 	    									else 0
@@ -160,7 +160,7 @@
 				{
 					$count = count($kode_status_kerja);
 					// echo $count;exit();
-					
+
 					foreach ($kode_status_kerja as $noind) {
 						$count--;
 						if ($count !== 0) {
@@ -233,7 +233,7 @@
 				}
 	    	}
 
-	    	
+
 
 	    	$rekapTIMS		= "	select 		pri.noind,
 											pri.noind_baru,
@@ -407,6 +407,58 @@
 																					and 	pri2.noind!=pri.noind
 																	)
 											) as bobotms".$year_month.",
+											/*Mangkir Tidak berpoint- Status Pekerja Aktif*/
+											(
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TM'
+															and 	tim.point=0
+															and 	trim(tim.noind)=pri.noind
+											) as frekmnon".$year_month.",
+											(
+												select 		sum(round(coalesce(tim.point::numeric, 0), 1)) as total_bobot
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TM'
+															and 	tim.point=0
+															and 	trim(tim.noind)=pri.noind
+											) as bobotmnon".$year_month.",
+											/*Mangkir Tidak berpoint- Status Pekerja Nonaktif*/
+											(
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TM'
+															and 	tim.point=0
+															and 	trim(tim.noind)
+																	in
+																	(
+																		select 		pri2.noind
+																		from 		hrd_khs.v_hrd_khs_tpribadi as pri2
+																		where 		pri2.keluar=true
+																					and 	pri2.nik=pri.nik
+																					and 	pri2.tgllahir=pri.tgllahir
+																					and 	pri2.noind!=pri.noind
+																	)
+											) as frekmsnon".$year_month.",
+											(
+												select 		sum(round(coalesce(tim.point::numeric, 0), 1)) as total_bobot
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TM'
+															and 	tim.point=0
+															and 	trim(tim.noind)
+																	in
+																	(
+																		select 		pri2.noind
+																		from 		hrd_khs.v_hrd_khs_tpribadi as pri2
+																		where 		pri2.keluar=true
+																					and 	pri2.nik=pri.nik
+																					and 	pri2.tgllahir=pri.tgllahir
+																					and 	pri2.noind!=pri.noind
+																	)
+											) as bobotmsnon".$year_month.",
 											/*Sakit Keterangan Dokter - Status Pekerja Aktif*/
 											(
 												select 		coalesce(count(datapres.tanggal)) as total_frekuensi
@@ -519,7 +571,7 @@
 																									from 		\"Surat\".v_surat_tsp_rekap as sp
 																									where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
 																												and 	sp.tanggal_awal_berlaku < param.tgl2
-																								)>0	
+																								)>0
 																								then 	(
 																											case	when 	(
 																																select 		count(*)
@@ -553,7 +605,7 @@
 																									from 		\"Surat\".v_surat_tsp_rekap as sp
 																									where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
 																												and 	sp.tanggal_awal_berlaku < param.tgl2
-																								)>0	
+																								)>0
 																								then 	(
 																											case	when 	(
 																																select 		count(*)

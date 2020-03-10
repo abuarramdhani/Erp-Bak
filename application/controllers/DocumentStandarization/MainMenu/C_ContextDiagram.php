@@ -11,6 +11,7 @@ class C_ContextDiagram extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('General');
@@ -87,14 +88,14 @@ class C_ContextDiagram extends CI_Controller
 		// $this->form_validation->set_rules('cmbPekerjaDiperiksa1', 'Pekerja Pemeriksa 1', 'required');
 		$this->form_validation->set_rules('cmbPekerjaDiputuskan', 'Pekerja Pemberi Keputusan', 'required');
 
-		if ($this->form_validation->run() === FALSE) 
+		if ($this->form_validation->run() === FALSE)
 		{
 			$data['daftarBusinessProcess'] 	= 	$this->M_general->ambilDaftarBusinessProcess();
 
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/ContextDiagram/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaContextDiagram		= 	strtoupper($this->input->post('txtCdNameHeader'));
 			$BusinessProcess 		= 	$this->input->post('cmbBusinessProcess');
@@ -126,7 +127,7 @@ class C_ContextDiagram extends CI_Controller
 			if(is_null($fileDokumen)==FALSE)
 			{
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
-			}					
+			}
 			$data = array(
 				'cd_name' 			=> $namaContextDiagram,
 				'cd_file' 			=> $fileDokumen,
@@ -145,6 +146,11 @@ class C_ContextDiagram extends CI_Controller
     		);
 			$this->M_contextdiagram->setContextDiagram($data);
 			$header_id = $this->db->insert_id();
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Set Context Diagram id=$header_id";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/CD'));
 		}
@@ -190,11 +196,11 @@ class C_ContextDiagram extends CI_Controller
 
 		if ($this->form_validation->run() === FALSE) {
 			$data['daftarBusinessProcess'] 	= 	$this->M_general->ambilDaftarBusinessProcess();
-			
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/ContextDiagram/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 
 			$namaContextDiagram		= 	strtoupper($this->input->post('txtCdNameHeader', TRUE));
@@ -210,7 +216,7 @@ class C_ContextDiagram extends CI_Controller
 			$info 					= 	$this->input->post('txaCdInfoHeader', TRUE);
 			$inputfile 				= 	'txtCdFileHeader';
 			$fileDokumen			= 	$this->input->post('DokumenAwal', TRUE);
-			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');			
+			$tanggalUpload			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('WaktuUpload', TRUE)), 'datetime');
 			$namaDokumen			= 	str_replace(' ', '_', $nomorKontrol).'_-_'.$nomorRevisi.'_-_'.str_replace(' ','_',$namaContextDiagram);
 
 			// Salin dari sini
@@ -302,7 +308,7 @@ class C_ContextDiagram extends CI_Controller
 			{
 				$pekerjaPemeriksa2=NULL;
 			}
-			
+
 			$fileDokumen 			= 	$this->general->uploadDokumen($inputfile, $namaDokumen, direktoriUpload);
 
 			if(is_null($fileDokumen))
@@ -310,11 +316,11 @@ class C_ContextDiagram extends CI_Controller
 				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
 				{
 					$fileDokumen = $this->general->cekFile($namaContextDiagram, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
-				}					
+				}
 			}
 			else
 			{
-				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();			
+				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
 			}
 
 
@@ -338,7 +344,7 @@ class C_ContextDiagram extends CI_Controller
 	    			);
 				$this->M_contextdiagram->updateContextDiagram($data, $plaintext_string);
 			}
-			elseif ($revisiBaru==1) 
+			elseif ($revisiBaru==1)
 			{
 				$data = array(
 					'cd_name' 		=> $namaContextDiagram,
@@ -356,8 +362,13 @@ class C_ContextDiagram extends CI_Controller
 					'bp_id' 		=> $BusinessProcess,
 					'update_revisi' => $this->general->ambilWaktuEksekusi(),
 	    			);
-				$this->M_contextdiagram->updateContextDiagram($data, $plaintext_string);				
+				$this->M_contextdiagram->updateContextDiagram($data, $plaintext_string);
 			}
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Update Context Diagram id=$plaintext_string";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			redirect(site_url('DocumentStandarization/CD'));
 		}
 	}
@@ -399,6 +410,11 @@ class C_ContextDiagram extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_contextdiagram->deleteContextDiagram($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'DOC STANDARIZATION';
+		$detail = "Delete Context Diagram id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('DocumentStandarization/CD'));
     }

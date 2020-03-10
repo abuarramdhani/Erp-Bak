@@ -5,17 +5,6 @@
 	}
 
 </style>
-<style type="text/css">
-	#cover-spin {
-    position:fixed;
-    width:100%;
-    left:0;right:0;top:0;bottom:0;
-    z-index:9999;
-    display: none;
-    background: url(<?php echo base_url('assets/img/gif/loading11.gif'); ?>) 
-              50% 50% no-repeat rgba(0,0,0,0.7);
-}
-</style>
 <div id="cover-spin">
 </div>
 	<div class="inner" >
@@ -31,7 +20,9 @@
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
-					<img src="<?php echo $dataEmployee[0]['gambar'];?>" style="width: 200px;height: 200px;margin-bottom: 15px;"/> 
+						<a href="<?php echo $dataEmployee[0]['gambar'];?>">
+							<img src="<?php echo $dataEmployee[0]['gambar'];?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
+						</a>
 				</div>
 			</div>
 			<div class="row margin-top">
@@ -144,9 +135,11 @@
 				<div class="col-md-2">
 					
 				</div>
+				<?php if(!strpos(base_url(),"erp.quick.com")): ?>
 			 	<div class="col-md-2">
 			 		<button data-toggle="modal" data-target="#locationModal" class="btn btn-success" href="#"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</button>
-			 	</div>			 
+			 	</div>
+			 	<?php endif; ?>	 
 			 </div>
 
 
@@ -154,13 +147,13 @@
 
 		<div class="panel box-footer" style="padding-left: 50px;">
 			<div class="row">
-				<div class="col-sm-1" align="center" style="margin: 7px">
+				<div class="col-sm-2" align="center" style="margin: 7px">
 					<a id="btnApprove" class="btn btn-primary btn-block" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
 				</div>
-				<div class="col-sm-1" align="center" style="margin: 7px">
+				<div class="col-sm-2" align="center" style="margin: 7px">
 					<button data-toggle="modal" data-target="#rejectApproval" class="btn btn-danger btn-block"><i class="fa fa-close"></i>    Reject</button>
 				</div>
-				<div class="col-sm-1" align="center" style="margin: 7px">
+				<div class="col-sm-2" align="center" style="margin: 7px">
 					<a id="btnCetak" class="btn btn-info btn-block" href="<?php echo base_url('AbsenAtasan/List/cetakApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-print"></i>   Cetak</a>
 				</div>
 			</div>
@@ -217,8 +210,12 @@
 					  frameborder="1" 
 					  scrolling="yes" 
 					  marginheight="0" 
-					  marginwidth="0" 
+					  marginwidth="0"
+					  <?php if(!strpos(base_url(),"erp.quick.com")): ?>
 					  src="https://maps.google.com/maps?q=<?php echo $dataEmployee[0]['latitude'];?>,<?php echo $dataEmployee[0]	['longitude']; ?>&hl=es;z=14&amp;output=embed"
+					<?php else: ?>
+						src=""
+					<?php endif; ?>
 					 >
 					 </iframe>
 					 </center>
@@ -232,19 +229,3 @@
 		</div>
 
 </section>
-
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#cover-spin").fadeIn();
-
-	$(window).on('load',function(){
-		setTimeout(function(){
-			$('#cover-spin').fadeOut();
-		},3000)
-		
-	})
-})
-
-
-	
-</script>

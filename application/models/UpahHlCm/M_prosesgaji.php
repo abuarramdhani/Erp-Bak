@@ -402,7 +402,7 @@ class M_prosesgaji extends CI_Model {
 						from hlcm.hlcm_datagaji 
 						where prs.kode_pekerjaan = kode_pekerjaan 
 						and prs.lokasi_kerja = lokasi_kerja) pekerjaan,
-					employee_name nama
+					trim(employee_name) nama
 				from hlcm.hlcm_proses prs
 				inner join er.er_employee_all eall
 					on prs.noind = eall.employee_code
@@ -410,7 +410,8 @@ class M_prosesgaji extends CI_Model {
 				and prs.tgl_akhir_periode = '$tgl_akhir'
 				$no_induk
 				$where_keluar
-				order by prs.kode_pekerjaan";
+				order by prs.noind asc";
+				
 		$result = $this->erp->query($sql);
 		return $result->result_array();
 	}

@@ -50,7 +50,17 @@ class C_LimbahKelola extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['Kiriman'] = $this->M_limbahkelola->getLimbahKirim();
+		$kiriman = $this->M_limbahkelola->getLimbahKirim();
+
+		$kiriman = array_filter($kiriman, function($item) {
+			if(strtotime($item['tanggal']) > strtotime('2020-02-20')) {
+				return ($item['status_kirim'] == 4 || $item['status_kirim'] == 1);
+			} else {
+				return true;
+			}
+		});
+
+		$data['Kiriman'] = $kiriman; 
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -245,5 +255,3 @@ class C_LimbahKelola extends CI_Controller
 		}
 	}
 }
-
-?>

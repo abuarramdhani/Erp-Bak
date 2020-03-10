@@ -6,11 +6,12 @@ class C_Daftar extends CI_Controller {
         parent::__construct();
 		$this->load->model('MasterPekerja/Surat/BAPSP3/M_Daftar');
 		$this->load->library('General');
+		$this->load->library('Log_Activity');
 		$this->load->library('Personalia');
 		$this->load->library('encrypt');
 		if(!($this->session->is_logged)) { redirect(''); }
     }
-	
+
 	public function index() {
 		$data =	$this->general->loadHeaderandSidemenu('BAP SP 3 - Master Pekerja - Quick ERP', 'BAP SP 3', 'Surat', 'BAP SP 3');
 		$data['view'] =	$this->M_Daftar->ambilDataBAP();
@@ -143,12 +144,22 @@ class C_Daftar extends CI_Controller {
 			'pihak_b'				=>	$user_02,
 			'isi_bap'				=>	$isi_surat);
 		$this->M_Daftar->inputBAPSP3($inputdata);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Create BAP SP 3 Noind='.$nomor_induk;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/BAPSP3');
 	}
 
 	public function previewcetak($data_id) {
 		$this->load->library('pdf');
 		$bap_id 	=	$this->general->dekripsi($data_id);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Cetak PDF BAP SP 3 ID='.$bap_id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$isiBAP		=	$this->M_Daftar->ambilDataBAP($bap_id);
 		$filename	=	'BAPSP3-'.str_replace('/', '_', $bap_id).'.pdf';
 		$pdf 		=	$this->pdf->load();
@@ -162,6 +173,11 @@ class C_Daftar extends CI_Controller {
 	public function update($data_id) {
 		$user_id	=	$this->session->userid;
 		$bap_id		=	$this->general->dekripsi($data_id);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update BAP SP 3 ID='.$bap_id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$data		=	$this->general->loadHeaderandSidemenu('BAP SP 3 - Master Pekerja - Quick ERP', 'BAP SP 3', 'Surat', 'BAP SP 3');
 		$data['view'] = $this->M_Daftar->ambilDataBAP($bap_id);
 		$data['wakilPerusahaan'] = $this->M_Daftar->getPekerjaData($data['view'][0]['wakil_perusahaan']);
@@ -208,12 +224,22 @@ class C_Daftar extends CI_Controller {
 			'pihak_b'				=>	$user_02,
 			'isi_bap'				=>	$isi_surat);
 		$this->M_Daftar->updateBAPSP3($bap_id, $updatedata);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Edit BAP SP 3 ID ='.$bap_id.' Noind='.$nomor_induk;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/BAPSP3');
 	}
 
 	public function delete($data_id) {
 		$bap_id		=	$this->general->dekripsi($data_id);
 		$this->M_Daftar->deleteBAPSP3($bap_id);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete BAP SP 3 ID='.$bap_id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/BAPSP3');
 	}
 

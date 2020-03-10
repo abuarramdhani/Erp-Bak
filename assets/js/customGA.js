@@ -9,11 +9,11 @@ $('#dataTables-fleetJenisKendaraan').DataTable( {
       ]
     });
 $('#dataTables-fleetServiceKendaraanDeleted').DataTable( {
-    
+
     });
 
 $('#dataTables-fleetservicekendaraan').DataTable( {
-     
+
     });
 $('#dataTables-fleetJenisKendaraanDeleted').DataTable( {
       dom: 'Bfrtip',
@@ -303,7 +303,7 @@ var   DataTableMonitoringNomorPolisi      =   $('#dataTables-fleetMonitoringNomo
 var   DataTableMonitoringKategori         =   $('#dataTables-fleetMonitoringKategori').dataTable({"sPaginationType": "full_numbers"});
 
 
-function TambahBarisMaintenanceKendaraan(base){  
+function TambahBarisMaintenanceKendaraan(base){
       var e = jQuery.Event( "click" );
       var opt = $('#txtJenisMaintenanceLine1').html();
 
@@ -316,8 +316,8 @@ function TambahBarisMaintenanceKendaraan(base){
                                 +"<div class='form-group'>"
                                 +"<div class='col-lg-12'>"
                                 +"<select class='form-control select-jenis' name='txtJenisMaintenanceLine1[]'' id='txtJenisMaintenanceLine1' style='width: 100%;'>"
-                                +"<option></option>" 
-                                +opt                                                               
+                                +"<option></option>"
+                                +opt
                                 +"</select>"
                                 +"</div>"
                                 +"</div>"
@@ -344,7 +344,7 @@ function TambahBarisMaintenanceKendaraan(base){
         });
     }
 
-function TambahBarisKecelakaanDetail(base){  
+function TambahBarisKecelakaanDetail(base){
       var e = jQuery.Event( "click" );
 
           var newRow  = jQuery( "<tr>"
@@ -365,18 +365,18 @@ function TambahBarisKecelakaanDetail(base){
     }
 
 function delSpesifikRow(th) {
-    $(th).closest('tr').remove();  
-    // $('#tblFleetMaintenanceKendaraanDetail #DetailMaintenanceKendaraan tr[row-id="'+rowid+'"]').remove();  
-}    
+    $(th).closest('tr').remove();
+    // $('#tblFleetMaintenanceKendaraanDetail #DetailMaintenanceKendaraan tr[row-id="'+rowid+'"]').remove();
+}
 
 $("#cmbLihatBerdasarkan").change(function () {
     var str = "";
-  
+
     str = parseInt($("#cmbLihatBerdasarkan option:selected").val());
-        
+
         if(str == 1){
           $("#nomor_polisi").show();
-          $("#kategori").hide();        
+          $("#kategori").hide();
         }
         else if(str == 2)
         {
@@ -393,7 +393,7 @@ $("#cmbLihatBerdasarkan").change(function () {
 $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
 {
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
-    var   NomorPolisi   =   $('#cmbNomorPolisi').val();  
+    var   NomorPolisi   =   $('#cmbNomorPolisi').val();
 
     // $('.alert').alert('close');
     // $('body').addClass('noscroll');
@@ -423,10 +423,10 @@ $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
             data['monitoringNomorPolisi'][i]['kategori'],
             data['monitoringNomorPolisi'][i]['tanggal_asli'],
             'Rp'+parseFloat(data['monitoringNomorPolisi'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
-          ]);        
+          ]);
         }
         $('#tabelMonitoringNomorPolisi').show();
-        $('table#dataTables-fleetMonitoringNomorPolisi').show();        
+        $('table#dataTables-fleetMonitoringNomorPolisi').show();
       }
     });
 });
@@ -434,7 +434,7 @@ $(document).on('click', '#ProsesMonitoringNomorPolisi',function()
 $(document).on('click', '#ProsesMonitoringLastProcessNomorPolisi',function()
 {
     var   Berdasarkan   =   $('#cmbLihatBerdasarkan').val();
-    var   NomorPolisi   =   $('#cmbNomorPolisi').val();  
+    var   NomorPolisi   =   $('#cmbNomorPolisi').val();
 
     // $('.alert').alert('close');
     // $('body').addClass('noscroll');
@@ -464,10 +464,10 @@ $(document).on('click', '#ProsesMonitoringLastProcessNomorPolisi',function()
             data['monitoringNomorPolisi'][i]['kategori'],
             data['monitoringNomorPolisi'][i]['tanggal'],
             'Rp'+parseFloat(data['monitoringNomorPolisi'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
-          ]);        
+          ]);
         }
         $('#tabelMonitoringNomorPolisi').show();
-        $('table#dataTables-fleetMonitoringNomorPolisi').show();        
+        $('table#dataTables-fleetMonitoringNomorPolisi').show();
       }
     });
 });
@@ -481,7 +481,7 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
     // $('.alert').alert('close');
     // $('body').addClass('noscroll');
     // $('#loadingAjax').addClass('overlay_loading');
-    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');    
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
     $.ajax(
     {
       type    : 'POST',
@@ -505,7 +505,7 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
         }
         // $('body').removeClass('noscroll');
         // $('#loadingAjax').html('');
-        // $('#loadingAjax').removeClass('overlay_loading'); 
+        // $('#loadingAjax').removeClass('overlay_loading');
         $('#MainMenuExport').val(Berdasarkan);
         $('#KategoriMonitoringExport').val(Kategori);
         $('#PeriodeMonitoringExport').val(Periode);
@@ -519,10 +519,10 @@ $(document).on('click', '#ProsesMonitoringKategori',function()
             data['monitoringKategori'][i]['nomor_polisi'],
             data['monitoringKategori'][i]['tanggal_asli'],
             'Rp'+parseFloat(data['monitoringKategori'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
-          ]);        
+          ]);
         }
         $('#tabelMonitoringKategori').show();
-        $('table#dataTables-fleetMonitoringKategori').show();         
+        $('table#dataTables-fleetMonitoringKategori').show();
       }
     });
 });
@@ -535,7 +535,7 @@ $(document).on('click', '#ProsesMonitoringLastProcessKategori',function()
     // $('.alert').alert('close');
     // $('body').addClass('noscroll');
     // $('#loadingAjax').addClass('overlay_loading');
-    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');    
+    // $('#loadingAjax').html('<div class="pace pace-active"><div class="pace-progress" style="height:100px;width:80px" data-progress="100"><div class="pace-progress-inner"></div></div><div class="pace-activity"></div></div>');
     $.ajax(
     {
       type    : 'POST',
@@ -550,7 +550,7 @@ $(document).on('click', '#ProsesMonitoringLastProcessKategori',function()
         var   data  = JSON.parse(data);
         // $('body').removeClass('noscroll');
         // $('#loadingAjax').html('');
-        // $('#loadingAjax').removeClass('overlay_loading');        
+        // $('#loadingAjax').removeClass('overlay_loading');
         DataTableMonitoringKategori.fnClearTable();
         for(i=0; i < data['monitoringKategori'].length; i++)
         {
@@ -559,10 +559,10 @@ $(document).on('click', '#ProsesMonitoringLastProcessKategori',function()
             data['monitoringKategori'][i]['nomor_polisi'],
             data['monitoringKategori'][i]['tanggal'],
             'Rp'+parseFloat(data['monitoringKategori'][i]['biaya']).toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
-          ]);        
+          ]);
         }
         $('#tabelMonitoringKategori').show();
-        $('table#dataTables-fleetMonitoringKategori').show();         
+        $('table#dataTables-fleetMonitoringKategori').show();
       }
     });
 });
@@ -609,7 +609,7 @@ function Grafik(canvas, data, labels, color, color2, label) {
             labels: labels,
             datasets: []
         },
-        options: { 
+        options: {
             scales: {
                 yAxes: [{
                     ticks: {
@@ -652,7 +652,7 @@ function pieChart(canvas, data, color, color2, label) {
                     var allData = data.datasets[tooltipItem.datasetIndex].data;
                     var tooltipLabel = data.labels[tooltipItem.index];
                     var tooltipData = allData[tooltipItem.index];
-                    return tooltipData; 
+                    return tooltipData;
                 }
             }
         }
@@ -670,7 +670,7 @@ function rekapPajak(tahun) {
       data: {
          tahun: tahun
       },
-      url: baseurl + 'GeneralAffair/FleetRekapPajak/ambilData', 
+      url: baseurl + 'GeneralAffair/FleetRekapPajak/ambilData',
     })
     .done(function(data){
       var data = JSON.parse(data);
@@ -698,7 +698,7 @@ function rekapPajak(tahun) {
       }
       Grafik('#RekapFrekuensiPajak',value,bulan,'#33CC33','#006600', ['Frekuensi Pajak Kendaraan']);
 
-    });  
+    });
 }
 
 function rekapKIR(tahun)
@@ -708,7 +708,7 @@ function rekapKIR(tahun)
       data: {
          tahun: tahun
       },
-      url: baseurl + 'GeneralAffair/FleetRekapKIR/ambilData', 
+      url: baseurl + 'GeneralAffair/FleetRekapKIR/ambilData',
     })
     .done(function(data){
       console.log(data);
@@ -740,14 +740,14 @@ function rekapKIR(tahun)
     });
 }
 
-function rekapMaintenance(tahun) 
+function rekapMaintenance(tahun)
 {
     $.ajax({
       type: 'POST',
       data: {
          tahun: tahun
       },
-      url: baseurl + 'GeneralAffair/FleetRekapMaintenance/ambilData', 
+      url: baseurl + 'GeneralAffair/FleetRekapMaintenance/ambilData',
     })
     .done(function(data){
       var data = JSON.parse(data);
@@ -778,14 +778,14 @@ function rekapMaintenance(tahun)
     })
 }
 
-function rekapKecelakaan(tahun) 
+function rekapKecelakaan(tahun)
 {
     $.ajax({
       type: 'POST',
       data: {
          tahun: tahun
       },
-      url: baseurl + 'GeneralAffair/FleetRekapKecelakaan/ambilData', 
+      url: baseurl + 'GeneralAffair/FleetRekapKecelakaan/ambilData',
     })
     .done(function(data){
       var data = JSON.parse(data);
@@ -823,9 +823,9 @@ function rekapTotal(tahun, bulan)
          tahun: tahun,
          bulan: bulan,
       },
-      url: baseurl + 'GeneralAffair/FleetRekapTotal/ambilData', 
+      url: baseurl + 'GeneralAffair/FleetRekapTotal/ambilData',
     })
-    .done(function(data){      
+    .done(function(data){
       var   data = JSON.parse(data);
       var   totalBiayaPajak             =   parseInt(data['biayaTotal'][0]['total_biaya_pajak']);
       var   totalBiayaKIR               =   parseInt(data['biayaTotal'][0]['total_biaya_kir']);
@@ -840,12 +840,12 @@ function rekapTotal(tahun, bulan)
       pieChart('#RekapBiayaTotal', [totalBiayaPajak, totalBiayaKIR, totalBiayaMaintenance, totalBiayaKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Biaya Pajak', 'Total Biaya KIR', 'Total Biaya Maintenance Kendaraan', 'Total Biaya Kecelakaan']);
       pieChart('#RekapFrekuensiTotal', [totalFrekuensiPajak, totalFrekuensiKIR, totalFrekuensiMaintenance, totalFrekuensiKecelakaan], ['#009933', '#ff9900', '#0066ff', '#ff0000'], ['#33cc33', '#ffcc00', '#3399ff', '#ff5050'], ['Total Frekuensi Pajak', 'Total Frekuensi KIR', 'Total Frekuensi Maintenance Kendaraan', 'Total Frekuensi Kecelakaan']);
 
-    });  
+    });
 }
 
 $(document).ready(function(){
     // $('input[name="OpsiPIC"]').click(function() {
-    //    if($('input[name="OpsiPIC"]').is(':checked')) { 
+    //    if($('input[name="OpsiPIC"]').is(':checked')) {
     //        var radioValue = $("input[name='OpsiPIC']:checked").val();
     //         if(radioValue == "Seksi"){
     //            $( "#cmbSeksi" ).prop( "disabled", false );
@@ -910,7 +910,7 @@ $(document).ready(function(){
                   text: item.merk_kendaraan
                 };
               })
-              
+
             };
           },
         },
@@ -934,7 +934,7 @@ $(document).ready(function(){
                   text: item.jenis_service
                 };
               })
-              
+
             };
           },
         },
@@ -945,7 +945,7 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     $('input[name="radioAsuransi"]').click(function() {
-       if($('input[name="radioAsuransi"]').is(':checked')) { 
+       if($('input[name="radioAsuransi"]').is(':checked')) {
            var radioValue = $("input[name='radioAsuransi']:checked").val();
             if(radioValue == "1")
             {
@@ -974,7 +974,7 @@ $(document).ready(function(){
 //fleet cetak spk
   $('#dataTables-fleetCetakSpk').DataTable({"lengthChange": false});
 
-  function TambahBarisCetakSPK(base){  
+  function TambahBarisCetakSPK(base){
       var e = jQuery.Event( "click" );
       var opt = $('#txtJenisMaintenanceLine1').html();
 
@@ -1038,7 +1038,7 @@ $(document).ready(function(){
   //       var div_input = document.getElementById("input_service");
 
   //       for (var i = 0; i < batas_lama ; i++) {
-            
+
   //           alert(lama_awal);
 
   //           // var form2 = document.createElement("label");
@@ -1077,7 +1077,7 @@ $(document).ready(function(){
               size = Math.round((size/1024)*100)/100;
               alert('File '+name+'('+size+' Mb) Terlalu Besar. maksimal '+maxSize+' Kb');
             }
-            
+
           }
           return isOk;
         }
@@ -1106,9 +1106,43 @@ $(document).ready(function(){
                     text: item.noind+' - '+item.nama
                   };
                 })
-                
+
               };
             },
           },
     });
   });
+
+  // Pesanan Shutle Dinas
+  $(document).ready(function () {
+      $('#GA_shutle').datepicker({
+          todayHighlight: true,
+          autoApply: true,
+          autoclose: true,
+          minDate: moment(),
+          format: "dd-mm-yyyy"
+      })
+      $('#GA_find_shutle').on('click', function () {
+          let wkt = $('#GA_shutle').val()
+          var loading = baseurl + 'assets/img/gif/loading14.gif';
+          $.ajax({
+              type: 'post',
+              data: {
+                  param: wkt
+              },
+              url: baseurl + 'GeneralAffair/PemesananShutle/find',
+              beforeSend: function () {
+                  swal.fire({
+                      html : "<div><img style='width: 320px; height: auto;'src='"+loading+"'><br><p>Sedang Memproses....</p></div>",
+                      customClass: {popup: 'swal-wide'},
+                      showConfirmButton:false,
+                      allowOutsideClick: false
+                  })
+              },
+              success: function (data) {
+                  swal.close()
+                  $('#GA_tabel_Shutle').html(data)
+              }
+          })
+      })
+  })

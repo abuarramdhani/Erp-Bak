@@ -11,6 +11,7 @@
 					<div class="col-lg-12">
 						<div class="box box-solid box-primary">
 							<div class="box-header with-border">
+								<a href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/memo') ?>" class="btn btn-success"><span class="fa fa-plus"></span>&nbsp;New Memo</a>
 							</div>
 							<div class="box-body">
 								<div class="row">
@@ -25,13 +26,17 @@
 													<th class="text-center">Waktu Buat</th>
 													<th class="text-center">Staff</th>
 													<th class="text-center">Non-Staff</th>
+													<th class="text-center">Action</th>
 												</tr>
 											</thead>
 											<tbody>
 												<?php 
 													if (isset($data) and !empty($data)) {
 														$nomor = 1;
-														foreach ($data as $key) { ?>
+														foreach ($data as $key) { 
+															$id_encrypted = $this->encrypt->encode($key['id_memo']);
+															$id_encrypted = str_replace(array('+', '/', '='), array('-', '_', '~'), $id_encrypted)
+															?>
 															<tr>
 																<td style="text-align: center;vertical-align: middle;"><?=$nomor; ?></td>
 																<td style="text-align: center;vertical-align: middle;"><?php echo strftime("%B %Y",strtotime($key['periode'])) ?></td>
@@ -53,6 +58,9 @@
 																	<?php }else{
 																		echo " - ";
 																	} ?>
+																</td>
+																<td>
+																	<a href="<?php echo site_url('MasterPresensi/ReffGaji/PekerjaCutoffMemo/PekerjaCutoffMemoDelete').'/'.$id_encrypted ?>"><span class="fa fa-trash" style="color: red" title="Hapus Data" onclick="return confirm('Apakah Anda yakin Ingin Menghapus Memo Ini ?')"></span></a>
 																</td>
 															</tr>
 															<?php 

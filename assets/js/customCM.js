@@ -266,7 +266,6 @@ $(document).ready(function(){
 						});
 					},
 			success: function (data) {
-				console.log(data);
 				if (data == 'Kosong') {
 					swal.fire({
 						title: "Peringatan !",
@@ -279,7 +278,6 @@ $(document).ready(function(){
 					$('#gantiHariRekap').html(data).find('.approveCatering').dataTable()
 					$('.detailPekerjaDinasPlus').on('click', function () {
 						let detail = $(this).attr('value')
-						console.log(detail);
 
 						$.ajax({
 							type: 'post',
@@ -355,7 +353,6 @@ $(document).ready(function(){
 
 	$('.detailPekerjaDinasMin').on('click', function () {
 		let detail = $(this).attr('value')
-		console.log(detail);
 		let loading = 'assets/img/gif/loadingquick.gif'
 
 		$.ajax({
@@ -591,18 +588,10 @@ $(document).ready(function(){
 	  	$('.dataTable-TmpMakan').DataTable( {
 	  		dom:'frtp',
 	  	});
-			$('.dataTable-EditTmp').DataTable( {
-
-	  	});
-			$('.dataTable_receipt').DataTable( {
-
-	  	});
-			$('.approveCatering').DataTable( {
-
-	  	});
-			$('.approvedCat').DataTable( {
-
-	  	});
+		$('.dataTable-EditTmp').DataTable( {});
+		$('.dataTable_receipt').DataTable( {});
+		$('.approveCatering').DataTable( {});
+		$('.approvedCat').DataTable( {});
 	  	$('.dataTable-Tmp').DataTable( {
 	      	dom: 'Blrtip',
         	buttons: [
@@ -1324,14 +1313,6 @@ function kirimapprove(){
 		var approval = $('#app').val();
 		var loading = baseurl + 'assets/img/gif/loadingquick.gif';
 
-		console.log(shift);
-		console.log(loker);
-		console.log(tmp_makan);
-		console.log(tambah);
-		console.log(kurang);
-		console.log(ket);
-		console.log(kep);
-
 		if (tmp_makan == null || (tambah == "" && kurang == "") || ket == null  || approval == '') {
 			Swal.fire(
 			  'Peringatan!',
@@ -1636,7 +1617,6 @@ function kirimapprove(){
 						url:baseurl+"CateringTambahan/simpan",
 						dataType: 'json',
 						success: function(result){
-							// console.log(data);
 							if(result[0] == 'invalid'){
 								swal.close();
 								swal.fire({
@@ -1694,14 +1674,12 @@ function keterangan(a) {
 function listdatadetail(id)
 {
 	var kosong1 = $('#jml_plus_Tambahan_List').val();
-	console.log(id);
 	$.ajax({
 		method: 'POST',
 		url:baseurl+"CateringTambahan/Seksi/detailList",
 		data:{id:id},
 		dataType:'json',
 		success: function(data){
-			// console.log(data);
 			$('#id_Tambahan_List').val(data[0].id);
 			$('#Shift_Tambahan_List').val(function() {
 				if (data[0].shift_tambahan == 1 || data[0].shift_tambahan == 4) {
@@ -1729,7 +1707,6 @@ function listdatadetail(id)
 			});
 
 			var ket_split = data[0].nama.split(",");
-			// console.log(ket_split);
 			if(ket_split.length < 2){
 				$('#data_ket_list').html('<input class="form-control col-lg-7" name="ket1"  id="keterangan_List" value="'+ket_split+'"readonly style="width: 52%">');
 			}else{
@@ -1792,7 +1769,6 @@ function detailcatering(id)
 		data:{id:id},
 		dataType:'json',
 		success: function(data){
-			// console.log(data);
 			$('#modal-id_Tambahan').val(data[0].id);
 			$('#modal-Shift_Tambahan').attr('shift',data[0].shift_tambahan)
 			$('#modal-Shift_Tambahan').val(function() {
@@ -1820,7 +1796,6 @@ function detailcatering(id)
 				}
 			});
 			var ket_split1 = data[0].nama.split(",");
-			console.log(ket_split1);
 			if(ket_split1.length < 2){
 				$('#data_keterangan_approv').html('<input class="form-control col-lg-7" name="ket"  id="modal-keterangan" value="'+ket_split1+'"readonly style="width: 52%">');
 			}else{

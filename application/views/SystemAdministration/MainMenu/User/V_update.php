@@ -151,7 +151,7 @@
 								<div class="row text-right">
 									<a href="<?php echo site_url('SystemAdministration/User/');?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 									&nbsp;&nbsp;
-									<button type="submit" id="btnUser" class="btn btn-primary btn-lg btn-rect">Save Changes</button>
+									<button type="button" id="btnUser" class="btn btn-primary btn-lg btn-rect" onclick="checkSave()">Save Changes</button>
 								</div>
 							</div>
 						</div>

@@ -2,13 +2,14 @@
 ini_set('memory_limit', '1024M');
 set_time_limit(0);
 class C_ApprovalKaizen extends CI_Controller {
-	
+
 	function __construct() {
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
 		$this->load->helper('form');
 		$this->load->helper('url');
 		$this->load->helper('html');
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->model('M_Index');
@@ -16,7 +17,7 @@ class C_ApprovalKaizen extends CI_Controller {
 		$this->load->model('SystemIntegration/M_submit');
 		$this->load->model('SystemIntegration/M_log');
 		$this->load->model('SystemIntegration/M_approvalkaizen');
-			
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -49,7 +50,7 @@ class C_ApprovalKaizen extends CI_Controller {
 		$this->load->view('SystemIntegration/MainMenu/ApprovalKaizen/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	
+
 	public function view($id) {
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -83,7 +84,7 @@ class C_ApprovalKaizen extends CI_Controller {
 		$reason_app = array();
 		$reason_rev = array();
 		$reason_rej = array();
-		// print_r($data['option_atasan2']); exit();
+
 		$getAllApprover = $this->M_approvalkaizen->getApprover($data['kaizen'][0]['kaizen_id'],FALSE);
 		$a = 0;
 		foreach ($getAllApprover as $key => $value) {
@@ -128,10 +129,10 @@ class C_ApprovalKaizen extends CI_Controller {
 		$reason = $this->input->post('txtReason');
 		$level = $this->input->post('levelApproval');
 		$update = $this->M_approvalkaizen->updateStatusApprove($kaizen_id,$employee_code,$status,$reason,$level);
-		$status_name = ($status == '3') ? 'Approved' : (($status == '4') ? 'Revision' : 'Rejected'); 
+		$status_name = ($status == '3') ? 'Approved' : (($status == '4') ? 'Revision' : 'Rejected');
 		$name_user = $this->session->employee;
 		//log thread
-		$getTemplateLog = $this->M_log->getTemplateLog(13); 
+		$getTemplateLog = $this->M_log->getTemplateLog(13);
 		$title = $getTemplateLog[0]['title'];
 		$body = $getTemplateLog[0]['body'];
 		$detail = "(";
@@ -149,6 +150,11 @@ class C_ApprovalKaizen extends CI_Controller {
 			'waktu' => date('Y-m-d h:i:s'),
 		);
 		$this->M_log->save_log($datalog);
+		//insert to t_log
+		$aksi = 'GENERATOR KAIZEN ATASAN';
+		$detail = 'UPDATE STATUS ID='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		//init approver
 		$getApprover = $this->M_approvalkaizen->getApprover($kaizen_id,FALSE);
 		$yangApprove = array();
@@ -166,7 +172,7 @@ class C_ApprovalKaizen extends CI_Controller {
 			} else {
 				array_push($yangBelum, $value['status']);
 			}
-			$NoindApprover[$value['level']] = $value['approver'];			
+			$NoindApprover[$value['level']] = $value['approver'];
 		}
 		// set Approval to next level ,(From Approver 2 to level Department & Dirut)
 		$needNextApproval = '0';
@@ -240,10 +246,10 @@ class C_ApprovalKaizen extends CI_Controller {
 			} else if($level == 3 && (array_key_exists(4, $NoindApprover) === true)) {
 				$updateReady = $this->M_approvalkaizen->updateReady(4, $kaizen_id, 1);
 			}
-			
+
 			$this->EmailAlert($kaizen_id, $status);
 			$this->sendPidgin($kaizen_id, $status);
-			
+
 			if ($status == '3') {
 			$this->EmailAlertAproval($kaizen_id, $status);
 			$this->sendPidginAprover($kaizen_id, $status);
@@ -251,8 +257,9 @@ class C_ApprovalKaizen extends CI_Controller {
 		}
 		redirect(base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/index'));
 	}
-	
+
 	public function resultRealisasi($id) {
+
 		$kaizen_id = $id;
 		$employee_code = $this->session->user;
 		$reason = $this->input->post('txtReason');
@@ -262,7 +269,7 @@ class C_ApprovalKaizen extends CI_Controller {
 		$status_date =  date('Y-m-d h:i:s');
 		$this->M_approvalkaizen->UpdateStatus($kaizen_id, 7, $status_date);
 		//log and mail
-		$status_name = 'Approved'; 
+		$status_name = 'Approved';
 		$name_user = $this->session->employee;
 		//log thread
 		$getTemplateLog = $this->M_log->getTemplateLog(7);
@@ -282,6 +289,11 @@ class C_ApprovalKaizen extends CI_Controller {
 			'waktu' => date('Y-m-d h:i:s'),
 		);
 		$this->M_log->save_log($datalog);
+		//insert to t_log
+		$aksi = 'GENERATOR KAIZEN ATASAN';
+		$detail = 'UPDATE Result Realisasi kaizen_id='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$this->EmailBroadcastKaizen($kaizen_id);
 		redirect(base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/index'));
 	}
@@ -351,10 +363,8 @@ class C_ApprovalKaizen extends CI_Controller {
 	}
 
 	private function EmailAlertAproval($kaizen_id, $mailStatus) {
-		// echo "a :".$kaizen_id."<br>b :".$mailStatus;
 		//get Rincian Aprover Kaizen
 		$getApprover = $this->M_approvalkaizen->getApprover($kaizen_id,FALSE);
-		// print_r('<pre>'); print_r($getApprover); exit();
 		if($getApprover) {
 			//get aprover email
 			$getEmail = $this->M_submit->getEmail($getApprover[1]['approver']);
@@ -466,13 +476,13 @@ class C_ApprovalKaizen extends CI_Controller {
 			$mail->Username = 'no-reply';
 			$mail->Password = '123456';
 			$mail->WordWrap = 50;
-			
+
 			//set email content
 			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
 			$mail->addAddress('semua_ict@quick.com');
 			$mail->Subject = $subject;
 			$mail->msgHTML($body);
-			
+
 			if (!$mail->send()) {
 				echo "Mailer Error: ".$mail->ErrorInfo;
 				exit();
@@ -490,7 +500,7 @@ class C_ApprovalKaizen extends CI_Controller {
 		if ($getEmail) {
 			$this->load->library('Sendmessage');
 			$userAccount = $getEmail[0]['pidgin_account'];
-			
+
 			//get approver name
 			$approverName = trim($this->M_submit->getEmployeeName($this->session->user));
 
@@ -533,7 +543,7 @@ class C_ApprovalKaizen extends CI_Controller {
 			$this->load->library('Sendmessage');
 			$userAccount = $getEmail[0]['pidgin_account'];
 			$getKaizen = $this->M_submit->getKaizen($kaizen_id, FALSE);
-			
+
 			//get approver name
 			$approverName = trim($this->M_submit->getEmployeeName($this->session->user));
 
@@ -558,7 +568,7 @@ class C_ApprovalKaizen extends CI_Controller {
 			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($getKaizen[0]['judul']), trim($link));
 			$body = str_replace('<br/>', "\n", $body);
 			// echo "<h1 style='color: red'>sampai sini</h1>".$userAccount."<h1 style='color: red'>awas</h1>".$subject."<h1 style='color: red'>awas</h1>".$body;exit();
-			
+
 			$pidgin = new Sendmessage;
 			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
 		}
@@ -568,14 +578,14 @@ class C_ApprovalKaizen extends CI_Controller {
 	   $config = array('upload_path' => './assets/upload_kaizen/',
 	                'upload_url' => base_url()  . './assets/upload_kaizen/',
 	                'allowed_types' => 'jpg|gif|png',
-	                'overwrite' => false,         
+	                'overwrite' => false,
 	    );
 	    $this->load->library('upload', $config);
 	    if ($this->upload->do_upload('file')) {
 	        $data = $this->upload->data();
 	        $array = array(
 	            'filelink' => $config['upload_url'] . $data['file_name']
-	        );            
+	        );
 	        echo stripslashes(json_encode($array));
 	    } else {
 	        echo json_encode(array('error' => $this->upload->display_errors('', '')));

@@ -21,7 +21,7 @@
 		?>
 	</div>
 	<div>
-		<table style="border-collapse: collapse;">
+		<table style="border-collapse: collapse;width: 100%">
 			<thead>
 				<tr>
 					<th style="text-align: center;border: 1px solid black">No</th>

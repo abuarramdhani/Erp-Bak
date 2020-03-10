@@ -95,6 +95,34 @@ class C_Puller extends CI_Controller {
         $this->load->view('V_Footer',$data);
     }
 
+    public function ReadyToRelease()
+	{   
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+		
+		$data['Menu'] = 'Order';
+		$data['SubMenuOne'] = 'Ready To Release';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['approver'] = $this->M_requisition->getPersonId($noind);
+        $person_id = $data['approver'][0]['PERSON_ID'];
+
+        // $and = "AND ooh.URGENT_FLAG ='N' AND ooh.IS_SUSULAN ='N'";
+
+        $data['listOrder'] = $this->M_puller->getOrderToReleased();
+
+        $data['panelStatOrder'] = 'panel-success';
+        $data['statOrder'] = 'Normal';
+     
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Puller/V_ReadyToRelease',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
     public function ListOrderSusulan()
 	{   
         $user_id = $this->session->userid;
@@ -173,6 +201,35 @@ class C_Puller extends CI_Controller {
                          );
             
             $this->M_puller->updateOrder($order_id[$i],$order);
+        }
+        
+
+        echo 1;
+    }
+
+    public function ReleaseOrderBatch()
+    {
+        $noind = $this->session->user;
+
+        $data['approver'] = $this->M_requisition->getPersonId($noind);
+        $person_id = $data['approver'][0]['PERSON_ID'];
+
+        $item_code = $_POST['item_code'];
+
+        for ($i=0; $i < count($item_code); $i++) { 
+
+            $pre_req = array(
+                                'CREATED_BY' => $person_id,
+                            );
+
+            $pre_req_id = $this->M_puller->releaseOrder($pre_req);
+
+                
+            $order = array(
+                                'PRE_REQ_ID' => $pre_req_id[0]['PRE_REQ_ID'],
+                            );
+                
+            $this->M_puller->updateOrderBatch($item_code[$i],$order);
         }
         
 

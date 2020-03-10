@@ -6,6 +6,7 @@ class C_RekapPenerimaanGajiStaff extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/Report/RekapPenerimaanGajiStaff/M_rekappenerimaangajistaff');
@@ -20,7 +21,7 @@ class C_RekapPenerimaanGajiStaff extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Rekap Gaji Staff';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_RekapPenerimaanGajiStaff extends CI_Controller
 	    {
 	        $this->checkSession();
 	        $user_id = $this->session->userid;
-	        			
+
 	        $data['Menu'] = 'Laporan Penggajian';
 	        $data['SubMenuOne'] = 'Lap. Rekap Gaji Staff';
 	        $data['SubMenuTwo'] = '';
@@ -75,12 +76,17 @@ class C_RekapPenerimaanGajiStaff extends CI_Controller
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', 'A4', 9, '', 15, 15, 15, 15, 0, 0, 'P');
-        
+
         $filename = 'Rekap Penerimaan Gaji Staff per Bank';
 
         $year = $this->input->get('year');
         $month = $this->input->get('month');
         $bank = $this->input->get('bank');
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Export PDF Laporan Rekap Gaji Staf bulan=$month tahun=$year bank=$bank";
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $data['year'] = $year;
         $data['month'] = $month;
@@ -98,7 +104,7 @@ class C_RekapPenerimaanGajiStaff extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

@@ -8,6 +8,8 @@ class C_Index extends CI_Controller {
   {
     parent::__construct();
 
+	$this->load->library('Log_Activity');
+	$this->load->library('KonversiBulan');
     $this->load->library('General');
     $this->load->library('encrypt');
 		$this->load->library('session');
@@ -35,37 +37,37 @@ class C_Index extends CI_Controller {
 		}
 	}
 
-  public function index()
-  {
-  	$this->checkSession();
-  	$user_id = $this->session->userid;
+	public function index()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
 
-  	$data['Title']	= 'Perhitungan Pesangon';
-  	$data['Menu'] = 'Cetak';
-  	$data['SubMenuOne'] = 'Perhitungan Pesangon';
-  	$data['SubMenuTwo'] = '';
+		$data['Title']	= 'Perhitungan Pesangon';
+		$data['Menu'] = 'Cetak';
+		$data['SubMenuOne'] = 'Perhitungan Pesangon';
+		$data['SubMenuTwo'] = '';
 
-  	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-  	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-  	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-  	$data['data'] = $this->M_pesangon->lihat();
+		$data['data'] = $this->M_pesangon->lihat();
 		$data['tertanda'] = $this->M_pesangon->getTertandaKasbon();
 
-  	$this->load->view('V_Header',$data);
-  	$this->load->view('V_Sidemenu',$data);
-  	$this->load->view('MasterPekerja/PerhitunganPesangon/V_Index',$data);
-  	$this->load->view('V_Footer',$data);
-  }
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPekerja/PerhitunganPesangon/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+	}
 
 	public function create()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-  	$data['Title']	= 'Perhitungan Pesangon';
-  	$data['Menu'] = 'Cetak';
-  	$data['SubMenuOne'] = 'Perhitungan Pesangon';
+	  	$data['Title']	= 'Perhitungan Pesangon';
+	  	$data['Menu'] = 'Cetak';
+	  	$data['SubMenuOne'] = 'Perhitungan Pesangon';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -85,9 +87,9 @@ class C_Index extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-  	$data['Title']	= 'Perhitungan Pesangon';
-  	$data['Menu'] = 'Cetak';
-  	$data['SubMenuOne'] = 'Perhitungan Pesangon';
+	  	$data['Title']	= 'Perhitungan Pesangon';
+	  	$data['Menu'] = 'Cetak';
+	  	$data['SubMenuOne'] = 'Perhitungan Pesangon';
 		$data['SubMenuTwo'] = '';
 		$data['id']			=	$encrypt_id;
 
@@ -95,7 +97,11 @@ class C_Index extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-    $data['editHitungPesangon'] = $this->M_pesangon->editHitungPesangon($id);
+	    $data['editHitungPesangon'] = $this->M_pesangon->editHitungPesangon($id);
+		$hari_terakhir = date('D', strtotime($data['editHitungPesangon'][0]['tglkeluar']));
+		$data['hari_terakhir'] = $this->konversibulan->convertke_Hari_Indonesia($hari_terakhir);
+		$hari_proses = date('D', strtotime($data['editHitungPesangon'][0]['proses_phk']));
+		$data['hari_proses'] = $this->konversibulan->convertke_Hari_Indonesia($hari_proses);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -103,75 +109,80 @@ class C_Index extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-  public function daftar_pekerja_aktif(){
-  	$noind = $this->input->get('term');
-  	$data = $this->M_pesangon->getPekerjaAktif($noind);
-  	echo json_encode($data);
-
-  }
+	public function daftar_pekerja_aktif(){
+	  	$noind = $this->input->get('term');
+	  	$data = $this->M_pesangon->getPekerjaAktif($noind);
+	  	echo json_encode($data);
+	}
 
  	public function detailPekerja()
 	{
-		$noind 						=	$this->input->post('noind');
+		$noind 				=	$this->input->post('noind');
 		$detailPekerja 		=	$this->M_pesangon->detailPekerja($noind);
-		echo json_encode($detailPekerja);
-  }
+		$hariTerakhir 		= array_merge($detailPekerja, array('hari_terakhir'=>date('D', strtotime($detailPekerja[0]['metu']))));
+		echo json_encode($hariTerakhir);
+  	}
 
 	public function add()
 	{
-		$noind 		     					=	$this->input->post('txtNoind');
+		$noind 		     			=	$this->input->post('txtNoind');
 		$jabatan_terakhir 			=	$this->input->post('txtJabatan');
 		$masa_kerja_tahun 			=	$this->input->post('txtTahun');
 		$masa_kerja_bulan 			=	$this->input->post('txtBulan');
-		$masa_kerja_hari 				=	$this->input->post('txtHari');
-		$pasal_pengali_pesangon =	$this->input->post('txtPasal');
-		$jml_pesangon 					=	$this->input->post('txtPesangon');
+		$masa_kerja_hari 			=	$this->input->post('txtHari');
+		$pasal_pengali_pesangon 	=	$this->input->post('txtPasal');
+		$jml_pesangon 				=	$this->input->post('txtPesangon');
 		$jml_upmk 	   	    		=	$this->input->post('txtUPMK');
-		$jml_cuti 	    				=	$this->input->post('txtCuti');
+		$jml_cuti 	    			=	$this->input->post('txtCuti');
 		$uang_ganti_kerugian 		=	$this->input->post('txtRugi');
-		$potongan 							=	$this->input->post('txtPotongan');
-		$hutang_koperasi 				=	$this->input->post('txtHutangKoperasi');
+		$potongan 					=	$this->input->post('txtPotongan');
+		$hutang_koperasi 			=	$this->input->post('txtHutangKoperasi');
 		$hutang_perusahaan 			=	$this->input->post('txtHutangPerusahaan');
-		$lain_lain 							=	$this->input->post('txtLainLain');
-		$no_rekening 						=	$this->input->post('txtNomorRekening');
-		$nama_rekening 					=	$this->input->post('txtNamaRekening');
-		$bank 									=	$this->input->post('txtBank');
-		$approver1 							=	'Agus Nugroho';
-		$approver2 							=	'Bambang Yudhoseno';
-		$created_by 						=	$this->session->user;
-		$penerima 				    	=	$this->input->post('txtPenerima');
-		$pengirim 							=	$this->input->post('txtPengirim');
+		$lain_lain 					=	$this->input->post('txtLainLain');
+		$no_rekening 				=	$this->input->post('txtNomorRekening');
+		$nama_rekening 				=	$this->input->post('txtNamaRekening');
+		$bank 						=	$this->input->post('txtBank');
+		$approver1 					=	'Agus Nugroho';
+		$approver2 					=	'Bambang Yudhosuseno';
+		$created_by 				=	$this->session->user;
+		$penerima 				    =	$this->input->post('txtPenerima');
+		$pengirim 					=	$this->input->post('txtPengirim');
+		$tgl_proses 				=	$this->input->post('txtProses');
+		$akhir 						= date('Y-m-d', strtotime($tgl_proses));
 
-
-		$inputHitungPesangon			= 	array
-										(
-											'noinduk'				    			=>	$noind,
-											'jabatan_terakhir'	    	=>	$jabatan_terakhir,
-											'masa_kerja_tahun'  			=>  $masa_kerja_tahun,
-											'masa_kerja_bulan'      	=>  $masa_kerja_bulan,
-											'masa_kerja_hari' 	    	=>  $masa_kerja_hari,
-											'pasal_pengali_pesangon' 	=>  $pasal_pengali_pesangon,
-											'jml_pesangon' 	        	=>  $jml_pesangon,
-											'jml_upmk' 	            	=>  $jml_upmk,
+		$inputHitungPesangon		= 	array
+									(
+										'noinduk'				    =>	$noind,
+										'jabatan_terakhir'	    	=>	$jabatan_terakhir,
+										'masa_kerja_tahun'  		=>  $masa_kerja_tahun,
+										'masa_kerja_bulan'      	=>  $masa_kerja_bulan,
+										'masa_kerja_hari' 	    	=>  $masa_kerja_hari,
+										'pasal_pengali_pesangon' 	=>  $pasal_pengali_pesangon,
+										'jml_pesangon' 	        	=>  $jml_pesangon,
+										'jml_upmk' 	            	=>  $jml_upmk,
 									    'jml_cuti'              	=>	$jml_cuti,
-									    'uang_ganti_kerugian'			=>	$uang_ganti_kerugian,
-									    'potongan'			    			=>  $potongan,
-									    'hutang_koperasi'					=>	$hutang_koperasi,
-									    'hutang_perusahaan'				=>	$hutang_perusahaan,
-									    'lain_lain'								=>	$lain_lain,
-									    'no_rekening'							=>  $no_rekening,
-									    'nama_rekening'						=>  $nama_rekening,
+									    'uang_ganti_kerugian'		=>	$uang_ganti_kerugian,
+									    'potongan'			    	=>  $potongan,
+									    'hutang_koperasi'			=>	$hutang_koperasi,
+									    'hutang_perusahaan'			=>	$hutang_perusahaan,
+									    'lain_lain'					=>	$lain_lain,
+									    'no_rekening'				=>  $no_rekening,
+									    'nama_rekening'				=>  $nama_rekening,
 									    'bank'                  	=>  $bank,
 									    'approver1'             	=>  $approver1,
 									    'approver2'             	=>  $approver2,
 									    'created_by'            	=>  $created_by,
 									    'penerima'              	=>  $penerima,
-									    'pengirim'              	=>  $pengirim
-										);
+									    'pengirim'              	=>  $pengirim,
+									    'tgl_proses_phk'            =>  $akhir
+									);
 
-										// echo "<pre>";print_r($inputHitungPesangon);exit();
 		$this->M_pesangon->inputHitungPesangon($inputHitungPesangon);
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Add Data Pesangon Noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('MasterPekerja/PerhitunganPesangon');
 
@@ -193,24 +204,30 @@ class C_Index extends CI_Controller {
 		$bank 						=	$this->input->post('txtBank');
 		$edit_by                    =	$this->session->user;
 		$edit_date                  =	date(' M,d,y');
+		$tgl_proses					= 	$this->input->post('txtProses');
+		$akhir 						= 	date('Y-m-d', strtotime($tgl_proses));
 
 		$updateHitungPesangon			= 	array
 										(
 
-											'jabatan_terakhir'	  =>	$jabatan_terakhir,
-										    'potongan'			    =>  $potongan,
-										    'hutang_koperasi'		=>	$hutang_koperasi,
+											'jabatan_terakhir'	=>	$jabatan_terakhir,
+										    'potongan'			=>  $potongan,
+										    'hutang_koperasi'	=>	$hutang_koperasi,
 										    'hutang_perusahaan'	=>	$hutang_perusahaan,
-										    'lain_lain'					=>	$lain_lain,
-										    'no_rekening'				=>  $no_rekening,
-										    'nama_rekening'			=>  $nama_rekening,
+										    'lain_lain'			=>	$lain_lain,
+										    'no_rekening'		=>  $no_rekening,
+										    'nama_rekening'		=>  $nama_rekening,
 										    'bank'              =>  $bank,
 										    'edit_by'           =>  $edit_by,
-										    'edit_date'         =>  $edit_date
-
+										    'edit_date'         =>  $edit_date,
+										    'tgl_proses_phk'    =>  $akhir
 										);
 		$this->M_pesangon->update($id,$updateHitungPesangon);
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Data Pesangon ID='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('MasterPekerja/PerhitunganPesangon');
 	}
@@ -220,20 +237,41 @@ class C_Index extends CI_Controller {
 			$id	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 			$id	=	$this->encrypt->decode($id);
 			$this->M_pesangon->delete($id);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Delete Data Pesangon ID='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect('MasterPekerja/PerhitunganPesangon');
 
 		}
 
-		public function previewcetak($encrypt_id)
+		public function getDataPreview($encrypt_id)
 		{
 			$id	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypt_id);
 			$id	=	$this->encrypt->decode($id);
 
-      $data['id']				=	$encrypt_id;
+			$data['dataPreview'] 	= $this->M_pesangon->cetak($id);
+			echo json_encode($data);
+		}
+
+		public function previewcetak()
+		{
+			$id = $this->input->post('id_prev_sangu');
 			$data['data'] 		= $this->M_pesangon->cetak($id);
-			$data['penerima'] = $this->M_pesangon->penerima($id);
-      $data['pengirim'] = $this->M_pesangon->pengirim($id);
+			$data['penerima'] 	= $this->M_pesangon->penerima($id);
+			$app1 = $this->input->post('Psg_approver1');
+			$app2 = $this->input->post('Psg_approver2');
+			$tgl = $this->input->post('psg_tglCetak');
+
+			$data['approver1'] 	= $this->M_pesangon->getdataNama($app1);
+	      	$data['approver2'] 	= $this->M_pesangon->getdataNama($app2);
+			$data['tglCetak']	= explode('-', $tgl);
+
+			if ($data['data'][0]['tgl_cetak_prev'] == null) {
+				$updateDate = $this->M_pesangon->UpdateDate($id, $tgl);
+			}
 
 			$this->load->library('pdf');
 
@@ -247,24 +285,29 @@ class C_Index extends CI_Controller {
 			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 			$pdf->WriteHTML($stylesheet1,1);
 			$pdf->WriteHTML($html, 2);
-	    $pdf->setTitle($filename);
+		    $pdf->setTitle($filename);
 			$pdf->Output($filename, 'I');
 	   }
 
 		 public function getPDF()
 		 {
-			 $id 	 								= $this->input->post('id_sangu');
+			 $id 	 				= $this->input->post('id_sangu');
+			 //insert to t_log
+	 		$aksi = 'MASTER PEKERJA';
+	 		$detail = 'Cetak PDF Pesangon ID='.$id;
+	 		$this->log_activity->activity_log($aksi, $detail);
+	 		//
 			 $data['personalia'] 	= $this->input->post('Wakil_Personalia');
-			 $data['spsi'] 				= $this->input->post('Wakil_SPSI');
-			 $data['saksi1'] 			= $this->input->post('Saksi_Janji1');
-			 $data['saksi2'] 			= $this->input->post('Saksi_Janji2');
+			 $data['spsi'] 			= $this->input->post('Wakil_SPSI');
+			 $data['saksi1'] 		= $this->input->post('Saksi_Janji1');
+			 $data['saksi2'] 		= $this->input->post('Saksi_Janji2');
 
-			 $data['pekerjaPHK'] = $this->M_pesangon->getPekerjaPHK($id);
-			 $tgl_keluar = $data['pekerjaPHK'];
-			 $alasan = $this->M_pesangon->getAlasanKeluar($tgl_keluar[0]['noind']);
-			 $data['tgl_keluar'] = date("d", strtotime($tgl_keluar[0]['tanggal_keluar']));
-			 $data['bln_keluar'] = date("m", strtotime($tgl_keluar[0]['tanggal_keluar']));
-			 $data['thn_keluar'] = date("Y", strtotime($tgl_keluar[0]['tanggal_keluar']));
+			 $data['pekerjaPHK'] 	= $this->M_pesangon->getPekerjaPHK($id);
+			 $tgl_keluar 			= $data['pekerjaPHK'];
+			 $alasan 				= $this->M_pesangon->getAlasanKeluar($tgl_keluar[0]['noind']);
+			 $data['tgl_keluar'] 	= date("d", strtotime($tgl_keluar[0]['tanggal_keluar']));
+			 $data['bln_keluar'] 	= date("m", strtotime($tgl_keluar[0]['tanggal_keluar']));
+			 $data['thn_keluar'] 	= date("Y", strtotime($tgl_keluar[0]['tanggal_keluar']));
 
 			 $propinsi = rtrim($tgl_keluar[0]['prop']);
 			 if ($propinsi == 'DI YOGYAKARTA') {
@@ -273,7 +316,6 @@ class C_Index extends CI_Controller {
 			}else {
 				$data['provinsi'] = ucwords(strtolower($propinsi));
 			}
-			 // echo "<pre>";print_r($prop);die;
 
 			 $jenkel = trim($data['pekerjaPHK'][0]['jenkel']);
 			 if ($jenkel == 'L') {

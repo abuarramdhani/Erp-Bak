@@ -4,6 +4,7 @@ Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
 set_time_limit(0);
 ini_set('date.timezone', 'Asia/Jakarta');
 setlocale(LC_TIME, "id_ID.utf8");
+ini_set('memory_limit', '-1');
 
 class C_PekerjaCutoff extends CI_Controller
 {
@@ -21,7 +22,9 @@ class C_PekerjaCutoff extends CI_Controller
 		require_once APPPATH . 'third_party/phpxbase/Table.php';
 		require_once APPPATH . 'third_party/phpxbase/WritableTable.php';
 
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
+		$this->load->library('encrypt');
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/ReffGaji/M_pekerjacutoff');
@@ -114,6 +117,12 @@ class C_PekerjaCutoff extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function searchAktif(){
+		$key = $this->input->get('term');
+		$data = $this->M_pekerjacutoff->getPekerjaAktif($key);
+		echo json_encode($data);
+	}
+
 	public function pekerjaDetail(){
 		$noind = $this->input->geT('noind');
 		$detail = $this->M_pekerjacutoff->getCutoffDetailPekerja($noind);
@@ -175,7 +184,7 @@ class C_PekerjaCutoff extends CI_Controller
 			$worksheet->setCellValue('D4','Seksi');
 
 			$nomor = 1;
-			if(!empty($data)){				
+			if(!empty($data)){
 				foreach ($data as $key) {
 					$worksheet->setCellValue('A'.($nomor + 4),$nomor);
 					$worksheet->setCellValue('B'.($nomor + 4),$key['noind']);
@@ -237,7 +246,7 @@ class C_PekerjaCutoff extends CI_Controller
 		}elseif ($key == "n" and !empty($value)) {
 			$data = $this->M_pekerjacutoff->getCutoffDetailPekerja($value);
 			$pekerja = $this->M_pekerjacutoff->getDetailPekerja($value);
-			
+
 			$this->load->library('excel');
 			$worksheet = $this->excel->getActiveSheet();
 
@@ -308,20 +317,23 @@ class C_PekerjaCutoff extends CI_Controller
 		}
 	}
 
-	public function hitung($periode){
-		// echo "<pre>";print_r($_SESSION);exit();
+	public function hitung(){
+		// echo "<pre>".date('Y-m-d');print_r($_POST);exit();
 		$waktu = time();
 		$output = "";
 		$output_2 = "";
 		$jumlah_staff = 0;
 		$jumlah_nonstaff = 0;
-		
+
 		$nomor_surat = $this->input->post('cutoff_nomor_surat');
 		$mengetahui = $this->input->post('cutoff_mengetahui');
 		$to_staff = $this->input->post('cutoff_kepada_staff');
 		$to_nonstaff = $this->input->post('cutoff_kepada_nonstaff');
 		$dibuat = $this->session->user;
 		$dibuat_oleh = $this->session->employee;
+		$prd = $this->input->post('cutoff_periode_susulan');
+		$periode = $this->M_pekerjacutoff->getcutoffByPeriode(substr($prd,0,6));
+		$noind = $this->input->post('txtNoindPekerjaCutoff');
 		$data_memo = array(
 			'nomor_surat' 		=> $nomor_surat,
 			'mengetahui' 		=> $this->M_pekerjacutoff->getNamaByNoind($mengetahui),
@@ -336,13 +348,39 @@ class C_PekerjaCutoff extends CI_Controller
 			'akhirbulan'		=> $this->M_pekerjacutoff->getAkhirbulan($periode)
 		);
 		$data['memo'] = $data_memo;
-		
+
+		$noind_text = "''";
+		if (!empty($noind)) {
+			foreach ($noind as $ni) {
+				$noind_text .= ",'$ni'";
+			}
+		}
+
 		//staff
 
-		$data_staff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'B','D','J','T'");
+		$data_staff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'B','D','J','T'",$noind_text);
 		// echo "<pre>";print_r($data_staff);exit();
+		if(!empty($data_staff)){
+			$index = 0;
+			foreach ($data_staff as $dt_staff) {
+				if($dt_staff['tanggal'] == '-'){
+					$data_staff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_aktif($periode);
+					if($kode_noind = "B" or $kode_noind = "D" or $kode_noind = "J"){
+						$data_staff[$index]['ief'] = $this->M_pekerjacutoff->hitung_if_aktif($periode);
+					}
+				}else{
+					$data_staff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_dipilih($periode,$dt_staff['noind']);
+					$kode_noind = substr($dt_staff['noind'],0,1);
+					if($kode_noind = "B" or $kode_noind = "D" or $kode_noind = "J"){
+						$data_staff[$index]['ief'] = $this->M_pekerjacutoff->hitung_if_dipilih($periode,$dt_staff['noind']);
+					}
+				}
+				$index++;
+			}
+		}
+
 		if (!empty($data_staff)) {
-			
+
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/Cutoff_STAFF".$periode.$waktu.".dbf");
 			foreach ($data_staff as $ds) {
@@ -514,7 +552,7 @@ class C_PekerjaCutoff extends CI_Controller
 				$jumlah_staff++;
 			}
 			$table3->close();
-			
+
 			$data['data'] = $data_staff;
 			$data['cut'] = $this->M_pekerjacutoff->getCutoffDetail($periode);
 			$data['jenis'] = "staff";
@@ -538,9 +576,21 @@ class C_PekerjaCutoff extends CI_Controller
 			$output_2 .= '<div class="col-lg-6">-</div>';
 			$file_staff = "-";
 		}
-		
+
 		//non-staff
-		$data_nonstaff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'A','H','E'");
+		$data_nonstaff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'A','H','E'",$noind_text);
+		// echo "<pre>";print_r($data_nonstaff);exit();
+		if(!empty($data_nonstaff)){
+			$index = 0;
+			foreach ($data_nonstaff as $dt_nonstaff) {
+				if ($dt_nonstaff['tanggal'] == '-') {
+					$data_nonstaff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_aktif($periode);
+				}else{
+					$data_nonstaff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_dipilih($periode,$dt_nonstaff['noind']);
+				}
+				$index++;
+			}
+		}
 
 		if (!empty($data_nonstaff)) {
 			$table4 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info.dbf");
@@ -723,7 +773,7 @@ class C_PekerjaCutoff extends CI_Controller
 				$jumlah_nonstaff++;
 			}
 			$table4->close();
-			
+
 			$data['data'] = $data_nonstaff;
 			$data['cut'] = $this->M_pekerjacutoff->getCutoffDetail($periode);
 			$data['jenis'] = "nonstaff";
@@ -747,7 +797,7 @@ class C_PekerjaCutoff extends CI_Controller
 			$output_2 .= '<div class="col-lg-6">-</div>';
 			$file_nonstaff = "-";
 		}
-		
+
 		$data_insert = array(
 			'nomor_surat' 		=> $nomor_surat,
 			'mengetahui' 		=> $mengetahui,
@@ -760,6 +810,28 @@ class C_PekerjaCutoff extends CI_Controller
 		);
 
 		$this->M_pekerjacutoff->insertMemo($data_insert);
+
+		$data_id = $this->M_pekerjacutoff->getMemoID($dibuat,$periode,$nomor_surat,$mengetahui,$to_staff,$to_nonstaff,$file_staff,$file_nonstaff);
+
+		foreach ($data_staff as $ds) {
+			$data_insert_staff = array(
+				'id_memo' => $data_id,
+				'noind' => $ds['noind'],
+				'htm' => $ds['htm'],
+				'ief' => $ds['ief']
+			);
+			$this->M_pekerjacutoff->insertMemoDetail($data_insert_staff);
+		}
+
+		foreach ($data_nonstaff as $dn) {
+			$data_insert_nonstaff = array(
+				'id_memo' => $data_id,
+				'noind' => $dn['noind'],
+				'htm' => $dn['htm'],
+				'ief' => $dn['ief']
+			);
+			$this->M_pekerjacutoff->insertMemoDetail($data_insert_nonstaff);
+		}
 
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
@@ -781,22 +853,22 @@ class C_PekerjaCutoff extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_hitung',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
 
 	public function download(){
 		$file = $this->input->get('file');
 		$waktu = $this->input->get('time');
 		$extensi = $this->input->get('ext');
-		
+
 		$data = file_get_contents(site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".".$extensi));
-		
+
 		header('Content-disposition: attachment; filename='.$file.".".$extensi);
-		
+
 		echo $data;
 	}
 
-	public function memo($periode){
+	public function memo(){
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
 
@@ -808,7 +880,6 @@ class C_PekerjaCutoff extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['periode'] = $periode;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -828,13 +899,249 @@ class C_PekerjaCutoff extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$data['data'] = $this->M_pekerjacutoff->getMemoList();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_list_memo',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function getPekerjaCutoffMemo(){
+		$periode = $this->input->get('periode');
+		$periode = substr($periode,0,6);
+
+		$cekCutoff = $this->M_pekerjacutoff->cekCutoffPeriode($periode);
+		$cekCutoffPlus1 = $this->M_pekerjacutoff->cekCutoffPeriodePlus1($periode);
+
+		if(!empty($cekCutoff) and !empty($cekCutoffPlus1)){
+			$dataarray = $this->M_pekerjacutoff->getPekerjaCutoffAll($periode);
+
+			$datastring = "<table class='table table-bordered table-hover table-striped'>
+							<thead>
+								<tr>
+									<th>
+										pilih
+									</th>
+									<th>
+										No. Induk
+									</th>
+									<th>
+										Nama
+									</th>
+									<th>
+										Seksi
+									</th>
+									<th>
+										Keluar
+									</th>
+									<th>
+										Sumber
+									</th>
+								</tr>
+							</thead>
+							<tbody>";
+
+			foreach ($dataarray as $key) {
+				$datastring.= " <tr>
+									<td>
+										<input type='checkbox' value='".$key['noind']."' name='txtNoindPekerjaCutoff[]' class='txtNoindPekerjaCutoff'>
+									</td>
+									<td>".$key['noind']."</td>
+									<td>".$key['nama']."</td>
+									<td>".$key['seksi']."</td>
+									<td>".$key['status_keluar']."</td>
+									<td>".$key['asal']."</td>
+								</tr>";
+			}
+
+			$datastring .= "</tbody></table>";
+
+			echo $datastring;
+		}else{
+			if (empty($cekCutoff)) {
+				echo "Tidak Ada Periode Cutoff";
+			}else{
+				echo "Tidak Ada Periode Cutoff + 1";
+			}
+		}
+
+	}
+
+	public function PekerjaCutoffMemoDelete($id){
+		$decrypted_String = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$decrypted_String = $this->encrypt->decode($decrypted_String);
+		$this->M_pekerjacutoff->deleteMemo($decrypted_String);
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Delete Memo Pekerja Cutoff ID='.$decrypted_String;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+		redirect(site_url('MasterPresensi/ReffGaji/PekerjaCutoffMemo'));
+	}
+
+	public function susulan(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Pekerja Cutoff';
+		$data['Menu'] 			= 	'Reff Gaji';
+		$data['SubMenuOne'] 	= 	'Pekerja Cutoff';
+		$data['SubMenuTwo'] 	= 	'Pekerja Cutoff Susulan';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['user'] = $this->session->user;
+		$data['data'] = $this->M_pekerjacutoff->getPeriodeCutoffSusulan();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_susulan',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function detail_susulan($periode){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Pekerja Cutoff';
+		$data['Menu'] 			= 	'Reff Gaji';
+		$data['SubMenuOne'] 	= 	'Pekerja Cutoff';
+		$data['SubMenuTwo'] 	= 	'Pekerja Cutoff Susulan';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['user'] = $this->session->user;
+		$data['periode'] = $periode;
+		$data['data'] = $this->M_pekerjacutoff->getDetailCutoffSusulan($periode);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_susulan_detail',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function hapus_susulan($periode,$noind){
+
+		$this->M_pekerjacutoff->hapusPekerjaCutoffSusulan($periode,$noind);
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Delete Memo susulan noind='.$noind.' periode='.$periode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+		redirect(site_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/detail_susulan/'.$periode));
+	}
+
+	public function cetak_susulan($jenis,$periode){
+		if ($jenis == "xls") {
+			$data = $this->M_pekerjacutoff->getDetailCutoffSusulan($periode);
+
+			$this->load->library('excel');
+			$worksheet = $this->excel->getActiveSheet();
+
+			$worksheet->setCellValue('A1','Pekerja dibayar Cutoff (Susulan)');
+			$worksheet->mergeCells('A1:D1');
+			$worksheet->setCellValue('A2',$periode);
+			$worksheet->mergeCells('A2:D2');
+
+			$worksheet->setCellValue('A4','No.');
+			$worksheet->setCellValue('B4','No. Induk');
+			$worksheet->setCellValue('C4','Nama');
+			$worksheet->setCellValue('D4','Seksi');
+
+			$nomor = 1;
+			if(!empty($data)){
+				foreach ($data as $key) {
+					$worksheet->setCellValue('A'.($nomor + 4),$nomor);
+					$worksheet->setCellValue('B'.($nomor + 4),$key['noind']);
+					$worksheet->setCellValue('C'.($nomor + 4),$key['nama']);
+					$worksheet->setCellValue('D'.($nomor + 4),$key['seksi']);
+					$nomor++;
+				}
+			}else{
+				$worksheet->setCellValue('A5','Tidak Ditemukan Data untuk Nomor Induk '.$pekerja['0']['noind'].' di Data Pekerja Cut Off');
+				$worksheet->mergeCells('A5:D5');
+			}
+
+			$this->excel->getActiveSheet()->duplicateStyleArray(
+				array(
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+						'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+					)
+				),'A1:A2');
+			$this->excel->getActiveSheet()->duplicateStyleArray(
+				array(
+					'fill' =>array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'startcolor' => array(
+							'argb' => '00ccffcc')
+					)
+				),'A4:D4');
+			$this->excel->getActiveSheet()->duplicateStyleArray(
+				array(
+					'borders' => array(
+						'allborders' => array(
+							'style' => PHPExcel_Style_Border::BORDER_THIN)
+					),
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+						'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+					)
+				),'A4:D'.($nomor + 3));
+			$this->excel->getActiveSheet()->duplicateStyleArray(
+				array(
+					'alignment' => array(
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+						'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+					)
+				),'C5:D'.($nomor + 3));
+
+			$worksheet->getColumnDimension('A')->setWidth('5');
+			$worksheet->getColumnDimension('B')->setWidth('10');
+			$worksheet->getColumnDimension('C')->setWidth('20');
+			$worksheet->getColumnDimension('D')->setWidth('30');
+			$worksheet->getStyle('C5:D'.($nomor + 3))->getAlignment()->setWrapText(true);
+
+			$filename ='Pekerja_CutOff-periode-'.$periode.'.xls';
+			header('Content-Type: aplication/vnd.ms-excel');
+			header('Content-Disposition:attachment;filename="'.$filename.'"');
+			header('Cache-Control: max-age=0');
+			$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+			$writer->save('php://output');
+		}else{
+			$data['data'] = $this->M_pekerjacutoff->getDetailCutoffSusulan($periode);
+			$data['periode'] = $periode;
+
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('utf-8', 'A4', 8, '', 12, 15, 15, 15, 10, 5);
+			$filename = 'Pekerja Cutoff Susulan periode '.$periode.'.pdf';
+			// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_susulan_cetak', $data);
+			$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_susulan_cetak', $data, true);
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->WriteHTML($html, 2);
+			$pdf->Output($filename, 'I');
+		}
+	}
+
+	public function susulan_add_new($periode){
+		$noind = $this->input->post('txtnoindpekerja');
+		$user = $this->session->user;
+		$cek = $this->M_pekerjacutoff->cekCutoffSusulan($noind,$periode);
+		if(count($cek) == 0){
+			$this->M_pekerjacutoff->insertCutOffSusulan($noind,$periode,$user);
+			//insert to t_log
+			$aksi = 'MASTER PRESENSI';
+			$detail = 'Menambah memo susulan noind='.$noind.' periode='.$periode;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
+		}
+		redirect(site_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/detail_susulan/'.$periode));
 	}
 }
 ?>

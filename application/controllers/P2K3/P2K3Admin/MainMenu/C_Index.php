@@ -10,6 +10,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('ciqrcode');
@@ -104,8 +105,8 @@ class C_Index extends CI_Controller
 			$a = explode(',', $a);
 			$b = explode(',', $b);
 			$hit = count($a);
-			for ($i=0; $i < $hit; $i++) { 
-				$jml += ($a[$i]*$b[$i]); 
+			for ($i=0; $i < $hit; $i++) {
+				$jml += ($a[$i]*$b[$i]);
 			}
 			$push = array("total"=> $jml);
 			array_splice($key,4,1,$push);
@@ -251,8 +252,8 @@ class C_Index extends CI_Controller
 			$a = explode(',', $a);
 			$b = explode(',', $b);
 			$hit = count($a);
-			for ($i=0; $i < $hit; $i++) { 
-				$jml += ($a[$i]*$b[$i]); 
+			for ($i=0; $i < $hit; $i++) {
+				$jml += ($a[$i]*$b[$i]);
 			}
 			$push = array("total"=> $jml);
 			array_splice($key,4,1,$push);
@@ -292,7 +293,7 @@ class C_Index extends CI_Controller
 		$jml_k = $this->input->post('p2k3_jmlKebutuhan');
 		$sisa_saldo = $this->input->post('p2k3_sisaSaldo');
 
-		for ($i=0; $i < count($apd); $i++) { 
+		for ($i=0; $i < count($apd); $i++) {
 			$data = array(
 				'periode'	=>	$pr,
 				'kodesie'	=>	$ks,
@@ -304,6 +305,11 @@ class C_Index extends CI_Controller
 				'sisa_saldo'	=>	$sisa_saldo[$i],
 				);
 			$input = $this->M_dtmasuk->insertBon($data);
+			//insert to sys.t_log_activity
+			$aksi = 'P2K3';
+			$detail = "Submit Bon Periode=$pr item=".$apd[$i];
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 		redirect('p2k3adm/Admin/inputBon');
 	}
@@ -351,8 +357,8 @@ class C_Index extends CI_Controller
 					$a = explode(',', $a);
 					$b = explode(',', $b);
 					$hit = count($a);
-					for ($i=0; $i < $hit; $i++) { 
-						$jml += ($a[$i]*$b[$i]); 
+					for ($i=0; $i < $hit; $i++) {
+						$jml += ($a[$i]*$b[$i]);
 					}
 					$push = array("total"=> $jml);
 					array_splice($row,3,1,$push);

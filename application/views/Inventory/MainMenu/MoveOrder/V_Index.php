@@ -47,6 +47,7 @@
 				<td style="vertical-align: middle;" rowspan="2" width="5%">UOM</td>
 				<td style="vertical-align: middle;" rowspan="2" width="5%">QTY / Unit</td>
 				<td style="vertical-align: middle;" colspan="2">Total Qty</td>
+				<td style="vertical-align: middle;" rowspan="2">ATT</td>
 				<td style="vertical-align: middle;" rowspan="2" width="7%">TTD</td>
 				<td style="vertical-align: middle;" rowspan="2" width="14%">Lokasi</td>
 			</tr>
@@ -66,6 +67,7 @@
 							<td width="5%"><?php echo $ln['QTY_UNIT']; ?></td>
 							<td width="6%"><?php echo $ln['QTY_MINTA']; ?></td>
 							<td width="6%"></td>
+							<td width="7%"><?php echo $ln['ATT']; ?></td>
 							<td width="7%"></td>
 							<td width="14%"><?php echo $ln['LOC']; ?></td>
 						</tr>

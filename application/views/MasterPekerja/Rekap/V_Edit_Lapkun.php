@@ -24,8 +24,8 @@
 					<div class="col-md-1"></div>
 					<div class="col-md-1"><label for="atasan">Atasan</label></div>
 					<div class="form-group col-md-6">
-						    
-							<select required style="width: 100%" class="form-control slc-namaatasan" name="atasan" id="atasan"><option value="<?= $noinduk_atasan." - ".$nama_atasan." - ".$jabatan_atasan  ?>"><?= $noinduk_atasan." - ".$nama_atasan." - ".$jabatan_atasan  ?></option></select>
+
+							<select required style="width: 100%" class="form-control slc-namaatasan" name="atasan" id="atasan"><option value="<?= $noinduk_atasan?>"><?= $noinduk_atasan." - ".$nama_atasan." - ".$jabatan_atasan  ?></option></select>
 					</div>
 				</div>
 			</div>
@@ -35,9 +35,9 @@
 					<div class="col-md-1"></div>
 					<div class="col-md-1"><label for="nolap">Petugas</label></div>
 					<div class="form-group col-md-6">
-						    
+
 							<select required style="width: 100%" class="form-control slc-namapetugas" name="petugas" id="nolap">
-							<option value="<?= $noinduk_petugas." - ".$nama_petugas." - ".$seksi_petugas ?>"><?= $noinduk_petugas." - ".$nama_petugas." - ".$seksi_petugas ?></option>
+							<option value="<?= $noinduk_petugas?>"><?= $noinduk_petugas." - ".$nama_petugas." - ".$seksi_petugas ?></option>
 							</select>
 					</div>
 				</div>
@@ -48,12 +48,12 @@
 				<div class="col-md-1"></div>
 				<div class="col-md-1"><label for="pekerja">Pekerja</label></div>
 					<div class="form-group col-md-6">
-						    
-						    <select required style="width: 100%" class="form-control slc-laporankunjungan" name="pekerja" id="pekerja"><option value="<?= $noinduk_pekerja." - ".$nama_pekerja." - ".$seksi_pekerja." - ".$alamat_pekerja ?>"><?= $noinduk_pekerja." - ".$nama_pekerja." - ".$seksi_pekerja." - ".$alamat_pekerja ?></option></select>
-					 </div>	
+
+						    <select required style="width: 100%" class="form-control slc-laporankunjungan" name="pekerja" id="pekerja"><option value="<?= $noinduk_pekerja?>"><?= $noinduk_pekerja." - ".$nama_pekerja." - ".$seksi_pekerja." - ".$alamat_pekerja ?></option></select>
+					 </div>
 				</div>
-			</div>		
-					
+			</div>
+
 			<div class="row">
 				<div class="col-md-12">
 				<div class="col-md-1"></div>
@@ -69,7 +69,7 @@
 				<div class="col-md-1"></div>
 				<div class="col-md-1"><label for="hal">Hal</label></div>
 					<div class="form-group col-md-6">
-					    
+
 					    <input required name="hal" type="text" class="form-control" id="hal" placeholder="Hal" value="<?= $hal_laporan ?>">
 				  </div>
 				</div>
@@ -79,12 +79,12 @@
 			<div class="row latar-belakang">
 				<div class="col-md-12">
 				<div class="col-md-1"></div>
-				
+
 				<div class="col-md-1"> <label for="latbel">Latar Belakang </label></div>
 					<div class="form-group col-md-6">
-					   
+
 					    <input required name="latar_belakang[]" type="text" class="form-control latbel" id="latbel" placeholder="Latar Belakang" value="<?= $latbel ?>">
-					
+
 					  </div>
 				</div>
 			</div>
@@ -110,11 +110,11 @@
 				<div class="col-md-1"></div>
 				<div class="col-md-1"><label for="lapkun"><i class="fa fa-pencil-square">&nbsp;&nbsp;</i>Laporan Hasil Kunjungan</label></div>
 					<div class="form-group col-md-8">
-					  	
+
 					  	<textarea required class="form-control txtLapKun preview-Lapkun ckeditor" id="lapkun" name="LapKun" rows="10" ><?= $hasil_laporan ?></textarea>
 					</div>
 				</div>
-			</div>			  
+			</div>
 			</form>
 		</div>
 
@@ -123,15 +123,18 @@
 				<div class="col-md-12">
 				<div class="col-md-1"></div>
 					<div class="col-md-1">
-						<button type="button" class="btn btn-info btn-preview"><i class="fa fa-file-pdf-o">&nbsp;&nbsp;</i><b> Preview</b></button>		
+						<center><a type="button" class="btn btn-danger" onclick="window.history.back()"><b>Back</b></a></center>
 					</div>
-					
+					<div class="col-md-1">
+						<button type="button" class="btn btn-info btn-preview"><i class="fa fa-file-pdf-o">&nbsp;&nbsp;</i><b> Preview</b></button>
+					</div>
+
 					<div class="col-md-2">
 						<center>
 						<img class="pv-loading" style="display: none;" src="<?php echo base_url('assets/img/gif/spinner.gif'); ?>">
 						</center>
 					</div>
-					
+
 				</div>
 			</div>
 <div class="box-preview" style="width: 100%;background: white;padding-top: 20px;display: none">
@@ -187,14 +190,14 @@
 							<tbody id="PvlatarBelakang">
 							</tbody>
 						</table>
-					</div>		
+					</div>
 				</div>
 
 				<div style="width: 100%;height: 300px;border-left: 1px solid black;border-right: 1px solid black;border-bottom: 1px solid black">
 					<div style="margin: 5px;">
 					<p style="font-weight: bold;">Laporan Hasil Kunjungan : </p>
 					<p class="Pvhasil_laporan"></p>
-					</div>		
+					</div>
 				</div>
 
 				<div style="margin-top: 40px;">
@@ -221,8 +224,8 @@
 	</div>
 
 
-</div>		
-</div>		
+</div>
+</div>
 
 
 

@@ -63,7 +63,7 @@ class M_input extends CI_Model
     public function getData($date) {
         $oracle = $this->load->database('oracle', true);
         $sql = "select tgl_dibuat, 
-        jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, urgent
+        jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, urgent, bon
         from khs_tampung_spb
         where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date'
         order by urgent, tgl_dibuat";
@@ -72,10 +72,10 @@ class M_input extends CI_Model
         // echo $sql;
     }
 
-    public function saveDataSPB($jam, $jenis_dokumen, $no_dokumen, $jml_item, $jml_pcs, $urgent, $tgl_dibuat) {
+    public function saveDataSPB($jam, $jenis_dokumen, $no_dokumen, $jml_item, $jml_pcs, $urgent, $tgl_dibuat, $bon) {
         $oracle = $this->load->database('oracle', true);
-        $sql = "insert into khs_tampung_spb (JAM_INPUT, JENIS_DOKUMEN, NO_DOKUMEN, JUMLAH_ITEM, JUMLAH_PCS, URGENT, TGL_DIBUAT)
-                VALUES (TO_TIMESTAMP('$jam', 'DD-MM-YYYY HH24:MI:SS'), '$jenis_dokumen', '$no_dokumen', '$jml_item', '$jml_pcs', '$urgent', '$tgl_dibuat')";
+        $sql = "insert into khs_tampung_spb (JAM_INPUT, JENIS_DOKUMEN, NO_DOKUMEN, JUMLAH_ITEM, JUMLAH_PCS, URGENT, TGL_DIBUAT, BON)
+                VALUES (TO_TIMESTAMP('$jam', 'DD-MM-YYYY HH24:MI:SS'), '$jenis_dokumen', '$no_dokumen', '$jml_item', '$jml_pcs', '$urgent', '$tgl_dibuat', '$bon')";
         $query = $oracle->query($sql);
         $query2 = $oracle->query('commit');
         // echo $sql;
@@ -89,9 +89,9 @@ class M_input extends CI_Model
         // echo $sql;
     }
 
-    public function cancelSPB($jenis, $nomor){
+    public function cancelSPB($jenis, $nomor, $date){
         $oracle = $this->load->database('oracle', true);
-        $sql = "delete from khs_tampung_spb where jenis_dokumen = '$jenis' and no_dokumen = '$nomor'";
+        $sql = "update khs_tampung_spb set cancel = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS') where jenis_dokumen = '$jenis' and no_dokumen = '$nomor'";
         $query = $oracle->query($sql);
         $query2 = $oracle->query('commit');
         // echo $sql;

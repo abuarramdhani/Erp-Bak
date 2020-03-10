@@ -6,7 +6,7 @@ class M_monitoringakuntansi extends CI_Model {
 		 $this->load->database();
 		$this->load->library('encrypt');
 	}
-
+//---------------------untuk koneksi local, aktifkan ini ------------------------------------//
    // public function checkLoginInAkuntansi($employee_code)
    //  {
    //      $oracle = $this->load->database();
@@ -17,6 +17,7 @@ class M_monitoringakuntansi extends CI_Model {
    //      $runQuery = $this->db->query($sql);
    //      return $runQuery->result_array();
    //  }
+//-------------------untuk diupload ke PROD aktifkan ini -----------------------------------//
 
     public function checkLoginInAkuntansi($employee_code)
     {
@@ -39,9 +40,201 @@ class M_monitoringakuntansi extends CI_Model {
 
     //---------------------------------------------------tambahan menu start from here-----------------------//
 
+   public function getStatusSatu()
+    {
+        $oracle = $this->load->database('oracle',TRUE);
+        $sql = " SELECT ami.invoice_id, ami.vendor_name vendor_name,
+                ami.invoice_number invoice_number,
+                ami.invoice_date invoice_date,
+                ami.tax_invoice_number tax_invoice_number,
+                ami.invoice_amount invoice_amount,
+                ami.last_status_purchasing_date last_status_purchasing_date,
+                ami.last_status_finance_date last_status_finance_date,
+                ami.finance_batch_number finance_batch_number,
+                ami.last_finance_invoice_status last_finance_invoice_status,
+                ami.reason reason, 
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.kategori_inv_bermasalah,
+                ami.kelengkapan_doc_inv_bermasalah,
+                ami.keterangan_inv_bermasalah,
+                ami.akt_action_bermasalah akt_date,
+                ami.purc_action_bermasalah purc_date,
+                ami.akt_finished_date,
+                ami.source SOURCE,
+                ami.source_bermasalah,
+                ami.no_induk_buyer,
+                ami.status_inv_bermasalah,
+                ami.feedback_buyer,
+                ami.buyer_action_bermasalah,
+                ami.status_berkas_buyer,
+                ami.status_berkas_purc,
+                ami.purc_action_bermasalah,
+                ami.feedback_purchasing,
+                ami.RESTATUS_BERKAS_AKT,
+                ami.RESTATUS_BERKAS_PURC,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'Y'
+                    and adi.invoice_id = ami.invoice_id) jmlh_y,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'N'
+                    and adi.invoice_id = ami.invoice_id) jmlh_n
+            FROM khs_ap_monitoring_invoice ami
+           WHERE ami.kategori_inv_bermasalah IS NOT NULL 
+           and ami.status_inv_bermasalah NOT IN (0,5)
+           and ami.returned_flag IS NULL
+        ORDER BY ami.last_admin_date DESC";
+        $run = $oracle->query($sql);
+        return $run->num_rows();
+    }
+
+    public function getStatusEnam()
+    {
+        $oracle = $this->load->database('oracle',TRUE);
+        $sql = "SELECT ami.invoice_id, ami.vendor_name vendor_name,
+                ami.invoice_number invoice_number,
+                ami.invoice_date invoice_date,
+                ami.tax_invoice_number tax_invoice_number,
+                ami.invoice_amount invoice_amount,
+                ami.last_status_purchasing_date last_status_purchasing_date,
+                ami.last_status_finance_date last_status_finance_date,
+                ami.finance_batch_number finance_batch_number,
+                ami.last_finance_invoice_status last_finance_invoice_status,
+                ami.reason reason, 
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.kategori_inv_bermasalah,
+                ami.kelengkapan_doc_inv_bermasalah,
+                ami.keterangan_inv_bermasalah,
+                ami.akt_action_bermasalah akt_date,
+                ami.purc_action_bermasalah purc_date,
+                ami.akt_finished_date,
+                ami.source SOURCE,
+                ami.source_bermasalah,
+                ami.no_induk_buyer,
+                ami.status_inv_bermasalah,
+                ami.feedback_buyer,
+                ami.buyer_action_bermasalah,
+                ami.status_berkas_buyer,
+                ami.status_berkas_purc,
+                ami.purc_action_bermasalah,
+                ami.feedback_purchasing,
+                ami.RESTATUS_BERKAS_AKT,
+                ami.RESTATUS_BERKAS_PURC,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                ami.returned_flag,
+                ami.note_return_akt,
+                ami.note_return_purc,
+                ami.kelengkapan_doc_inv_returned,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'Y'
+                    and adi.invoice_id = ami.invoice_id) jmlh_y,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'N'
+                    and adi.invoice_id = ami.invoice_id) jmlh_n
+            FROM khs_ap_monitoring_invoice ami
+           WHERE ami.kategori_inv_bermasalah IS NOT NULL 
+           and ami.returned_flag = 'Y'
+           and ami.status_inv_bermasalah NOT IN (5)
+        ORDER BY ami.last_admin_date DESC";
+        $run = $oracle->query($sql);
+        return $run->num_rows();
+    }
+
+     public function saveReconfirmInvBermasalah($invoice_id,$action_date,$status_berkas)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
+                SET 
+                AKT_RESTATUS_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
+                RESTATUS_BERKAS_AKT = '$status_berkas',
+                SOURCE_BERMASALAH = 'AKUNTANSI'
+                WHERE INVOICE_ID = '$invoice_id'";
+        $runQuery = $erp_db->query($sql);
+    }
+
+    public function getReturnedData($invoice_id)
+    {
+        $oracle = $this->load->database('oracle',TRUE);
+        $sql = "SELECT NOTE_RETURN_AKT, KELENGKAPAN_DOC_INV_RETURNED FROM KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
+        $run = $oracle->query($sql);
+        return $run->result_array();
+    }
+
+    public function ReupdateTabelBerkas($waktu_berkas,$doc_id,$hasil,$invoice_id)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "UPDATE KHS_AP_DOKUMEN_INV
+                SET REDATE_CONFIRMATION_AKT = '$waktu_berkas',
+                RESTATUS_DOCUMENT_AKT = '$hasil'
+                WHERE DOCUMENT_ID = '$doc_id' AND INVOICE_ID = '$invoice_id'";
+        $runQuery = $erp_db->query($sql);
+    }
+
+    public function getDokumenRekonfirmasi($invoice_id)
+      {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT 
+                    DOCUMENT_ID, 
+                    INVOICE_ID, 
+                    DOCUMENT_NAME, 
+                    RESTATUS_DOCUMENT_PURC, 
+                    REDATE_CONFIRMATION_PURC, 
+                    RESTATUS_DOCUMENT_AKT, 
+                    REDATE_CONFIRMATION_AKT,
+                    CREATION_DATE 
+                FROM KHS_AP_DOKUMEN_INV
+                WHERE INVOICE_ID = $invoice_id";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+      }
+
+    public function getHasilKonfirmasi($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT 
+                    DOCUMENT_ID, 
+                    INVOICE_ID, 
+                    DOCUMENT_NAME, 
+                    STATUS_DOCUMENT_PURC, 
+                    DATE_CONFIRMATION_PURC, 
+                    CREATION_DATE 
+                FROM KHS_AP_DOKUMEN_INV
+                WHERE INVOICE_ID = '$invoice_id'";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function EndInvoiceBermasalah($invoice_id,$end_date)
+    {
+         $erp_db = $this->load->database('oracle',true);
+         $sql = "UPDATE khs_ap_monitoring_invoice SET 
+                status_inv_bermasalah = '5',
+                source_bermasalah = 'AKUNTANSI',
+                akt_finished_date = to_date('$end_date', 'DD/MM/YYYY HH24:MI:SS')
+            WHERE invoice_id = '$invoice_id'";
+         $runQuery = $erp_db->query($sql);
+    }
+
 public function UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top)
 
-// $invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top
 {
     $erp_db = $this->load->database('oracle',true);
     $sql = "UPDATE khs_ap_monitoring_invoice SET 
@@ -57,7 +250,6 @@ public function UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amo
                 source = '$source_login',
                 term_of_payment = '$top'
             WHERE invoice_id = '$invoice_id'";
-         // echo"<pre>";echo $sql;
     $runQuery = $erp_db->query($sql);
 }
 
@@ -67,7 +259,6 @@ public function UpdatePoNumber($po_number,$invoice_id)
     $sql = "UPDATE khs_ap_invoice_purchase_order SET 
             po_number = '$po_number'
             WHERE invoice_id = '$invoice_id'";
-       // echo"<pre>";echo $sql;
     $runQuery = $erp_db->query($sql);
 }
 
@@ -77,7 +268,6 @@ public function UpdatePoNumber3($invoice_id,$action_date)
     $sql = "UPDATE khs_ap_invoice_action_detail 
             SET action_date = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
             WHERE invoice_id = '$invoice_id'";
-    // echo"<pre>";echo $sql;exit();
     $runQuery = $erp_db->query($sql);
 }
 
@@ -125,64 +315,89 @@ public function editInvData($invoice_id)
         return $runQuery->result_array();
     }
 
-    // SELECT aipo.invoice_id invoice_id, 
-    //             invoice_number invoice_number,
-    //             invoice_date invoice_date,
-    //             invoice_amount invoice_amount,
-    //             tax_invoice_number tax_invoice_number,
-    //             vendor_name vendor_name,
-    //             vendor_id vendor_id,
-    //             po_number po_number,
-    //             lppb_number lppb_number,
-    //             shipment_number shipment_number,
-    //             received_date received_date,
-    //             item_description item_description,
-    //             item_code item_code,
-    //             qty_receipt qty_receipt,
-    //             qty_reject qty_reject,
-    //             currency currency,
-    //             unit_price unit_price,
-    //             qty_invoice qty_invoice,
-    //             ami.finance_batch_number  finance_batch_number,
-    //             ami.info info,
-    //             ami.nominal_ppn,
-    //             ami.invoice_category invoice_category,
-    //             ami.nominal_dpp nominal_dpp,
-    //             ami.term_of_payment,
-    //             ami.batch_number batch_number,
-    //             ami.jenis_jasa jenis_jasa,
-    //             ami.source source,
-    //             ami.KATEGORI_INV_BERMASALAH,
-    //             ami.KELENGKAPAN_DOC_INV_BERMASALAH,
-    //             ami.KETERANGAN_INV_BERMASALAH,
-    //             poh.attribute2 ppn
-    //             FROM khs_ap_monitoring_invoice ami
-    //             JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
-    //             JOIN po_headers_all poh ON aipo.po_number = poh.segment1
-    //             WHERE ami.invoice_id = '$invoice_id'
+    public function resetInvoiceBermasalah($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "UPDATE khs_ap_monitoring_invoice 
+                SET 
+                    KATEGORI_INV_BERMASALAH = '',
+                    KELENGKAPAN_DOC_INV_BERMASALAH = '',
+                    KETERANGAN_INV_BERMASALAH = '' ,
+                    FEEDBACK_PURCHASING = '',
+                    AKT_ACTION_BERMASALAH = '',
+                    PURC_ACTION_BERMASALAH = '',
+                    STATUS_BERKAS_PURC = '',
+                    STATUS_BERKAS_BUYER = '',
+                    BUYER_ACTION_BERMASALAH = '',
+                    FEEDBACK_BUYER = '',
+                    STATUS_INV_BERMASALAH = '',
+                    NO_INDUK_BUYER = '',
+                    SOURCE_BERMASALAH = '',
+                    RESTATUS_BERKAS_PURC = '',
+                    RESTATUS_BERKAS_AKT = '',
+                    AKT_FINISHED_DATE = '',
+                    AKT_RESTATUS_DATE = '',
+                    PURC_RESTATUS_DATE = '',
+                    PURC_FINISHED_DATE = '',
+                    BUYER_FINISHED_DATE = '',
+                    RETURNED_DATE_AKT = '',
+                    RETURNED_DATE_PURC = '',
+                    RETURNED_FLAG = '',
+                    NOTE_BUYER = '',
+                    NOTE_RETURN_AKT = '',
+                    NOTE_RETURN_PURC = '',
+                    KELENGKAPAN_DOC_INV_RETURNED = ''
+                    WHERE INVOICE_ID = '$invoice_id'";
+        $runQuery = $erp_db->query($sql);
+        $sql2 = "DELETE FROM KHS_AP_DOKUMEN_INV WHERE INVOICE_ID = '$invoice_id'";
+        $runQuery2 = $erp_db->query($sql2);
+        $sql3 = "UPDATE KHS_AP_MONITORING_INVOICE SET RESET_DATE = sysdate WHERE INVOICE_ID = '$invoice_id'";
+        $runQuery2 = $erp_db->query($sql2);
+    }
+
 
     public function tarikDataPo($nomor_po)
-
     {
         $oracle = $this->load->database("oracle",TRUE);
-        $query = $oracle->query("
-                        SELECT DISTINCT  pha.SEGMENT1 NO_PO
-                        ,att.NAME PAYMENT_TERMS
-                        ,pv.VENDOR_NAME
-                        ,pv.VENDOR_ID
-                        ,pha.attribute2 PPN
-                        from
-                        po_headers_all pha
-                        ,ap_terms_tl att
-                        ,po_vendors pv
-                        where
-                        pha.TERMS_ID = att.TERM_ID
-                        and pha.VENDOR_ID = pv.VENDOR_ID
-                        and pha.SEGMENT1 = $nomor_po");
+        $query = $oracle->query(
+            
+            "SELECT pha.segment1 no_po, att.NAME payment_terms, pv.vendor_name,
+                 pv.vendor_id, pha.attribute2 ppn, ppf.full_name buyer,
+                 po_headers_sv3.get_po_status (pha.po_header_id) status,
+                 CASE
+                    WHEN UPPER
+                           (po_headers_sv3.get_po_status (pha.po_header_id)
+                           ) LIKE '%CANCELLED%'
+                       THEN 'N'
+                    ELSE 'Y'
+                 END flag,
+                 pha.ATTRIBUTE1
+            FROM po_headers_all pha,
+                 ap_terms_tl att,
+                 po_vendors pv,
+                 per_people_f ppf
+           WHERE pha.terms_id = att.term_id
+             AND pha.agent_id = ppf.person_id
+             AND pha.vendor_id = pv.vendor_id
+             AND pha.SEGMENT1 = '$nomor_po'
+             and (ppf.effective_end_date >= sysdate or ppf.effective_end_date is null)");
         return $query->result_array();
-        // oci_commit($oracle);
-
     }
+
+    // SELECT DISTINCT  pha.SEGMENT1 NO_PO
+    //                     ,att.NAME PAYMENT_TERMS
+    //                     ,pv.VENDOR_NAME
+    //                     ,pv.VENDOR_ID
+    //                     ,pha.attribute2 PPN
+    //                     from
+    //                     po_headers_all pha
+    //                     ,ap_terms_tl att
+    //                     ,po_vendors pv
+    //                     where
+    //                     pha.TERMS_ID = att.TERM_ID
+    //                     and pha.VENDOR_ID = pv.VENDOR_ID
+    //                     and pha.SEGMENT1 = $nomor_po
+
     public function getInvNumber($invNumber)
     {
         $oracle = $this->load->database("oracle",TRUE);
@@ -277,35 +492,17 @@ public function editInvData($invoice_id)
 
      }
 
-     public function savePoNumber($po_number,$inv_id){
-            // if ($received_date == '' || $received_date == '  ' || $received_date == NULL || !$received_date) {
-            //     $received_date = 'NULL';
-            // }else{
-            //     $received_date = "'".$received_date."'";
-            // }
-            // if ($qty_receipt == '' || $qty_receipt == '  ' || $qty_receipt == NULL || !$qty_receipt) {
-            //     $qty_receipt = 0;
-            // } else {
-            //     $qty_receipt = $qty_receipt;
-            // }
-            // if ($lppb_number == '' || $lppb_number == '  ' || $lppb_number == NULL || !$lppb_number) {
-            //     $lppb_number = 0;
-            // } else {
-            //     $lppb_number = $lppb_number;
-            // }
-            
+     public function savePoNumber($po_number,$inv_id)
+     {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_invoice_purchase_order
                     (po_number,invoice_id)
                     VALUES 
                     ('$po_number', $inv_id)";
         $oracle->query($query);
-        // echo "<pre>";echo $query;
-        
     }
 
     public function savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$source_login,$top)
-    // $invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top
     {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
@@ -313,12 +510,10 @@ public function editInvData($invoice_id)
                     VALUES 
                     ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$source_login','2','$top')";
         $oracle->query($query);
-        // echo "<pre>";echo $query;
         $query2 = "SELECT max(invoice_id) invoice_id
                     from khs_ap_monitoring_invoice";
         $lastId = $oracle->query($query2);
         return $lastId->result_array();
-        // echo "<pre>";echo $query2;
 
     }
     public function savePoNumber3($invoice_id,$action_date)
@@ -327,13 +522,18 @@ public function editInvData($invoice_id)
         $query = "INSERT INTO khs_ap_invoice_action_detail (invoice_id, action_date)
                 VALUES ($invoice_id,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
         $oracle->query($query);
-        // echo "<pre>";echo $query;
         $query2 = "SELECT MAX(invoice_id) invoice_id
                     from khs_ap_monitoring_invoice ";
         $last_id = $oracle->query($query2);
         return $last_id->result_array();
-        // echo "<pre>";echo $query2;exit();
+    }
 
+    public function saveTableDokumen($invoice_id,$dokumen,$action_date)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = "INSERT INTO khs_ap_dokumen_inv (invoice_id, document_name, creation_date)
+                VALUES ($invoice_id,'$dokumen', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
+        $oracle->query($query);
     }
 
     public function checkBatchNumbercount($batch_number){ //kepake
@@ -343,7 +543,6 @@ public function editInvData($invoice_id)
                 WHERE batch_number LIKE '$batch_number%'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
-        // echo "<pre>";echo $sql;
     }
      public function saveBatchNumberById($id, $batch_number, $date, $status){ //this function is for saving finance's invoice batches
         $oracle = $this->load->database('oracle',true);
@@ -353,7 +552,6 @@ public function editInvData($invoice_id)
                     last_finance_invoice_status = '$status'
                     WHERE invoice_id = $id";
         $oracle->query($query);
-        // echo "<pre>"; echo $query;
         // oci_commit($oracle);
     }
      public function saveBatchNumberById2($invoice_id,$action_date,$status)//this function is for saving finance's invoice batches
@@ -364,7 +562,7 @@ public function editInvData($invoice_id)
         $run = $oracle->query($sql);
         // echo "<pre>"; echo $sql;
     }
-// $invoice_number, $invoice_date, $amount,$vendor_name,$vendor_number,$last_admin_date,$invoice_category,$source_login,$jenis_jasa,$top,$imp_kategori,$imp_dokumen,$keterangan,$action_date
+
         public function saveInvBermasalah2($invoice_number, $invoice_date, $amount, $vendor_name,$vendor_number,$last_admin_date,$invoice_category,$source_login,$jenis_jasa,$top,$kategori,$dokumen,$keterangan,$action_date){
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
@@ -382,7 +580,9 @@ public function editInvData($invoice_id)
                     kategori_inv_bermasalah,
                     kelengkapan_doc_inv_bermasalah,
                     keterangan_inv_bermasalah,
-                    akt_action_bermasalah
+                    akt_action_bermasalah,
+                    source_bermasalah,
+                    status_inv_bermasalah
                     )
                     VALUES 
                     ('$invoice_number',
@@ -399,21 +599,21 @@ public function editInvData($invoice_id)
                     '$kategori',
                     '$dokumen',
                     '$keterangan',
-                     to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
+                     to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
+                    'AKUNTANSI',
+                    '1')";
         $oracle->query($query);
-        // echo "<pre>";echo $query;exit();
         $query2 = "SELECT max(invoice_id) invoice_id
                     from khs_ap_monitoring_invoice";
         $lastId = $oracle->query($query2);
         return $lastId->result_array();
-        // echo "<pre>";echo $query2;
 
     }
 
     public function getVendorName()
      {
         $oracle = $this->load->database('oracle', true);
-        $query = "SELECT *
+        $query = "SELECT VENDOR_NAME, VENDOR_ID
                   FROM po_vendors pov";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
@@ -427,7 +627,6 @@ public function editInvData($invoice_id)
                   FROM po_vendors where vendor_id = '$id'";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
-        // echo $query; exit();
      }
 
      public function finishAktNew()
@@ -471,7 +670,6 @@ public function editInvData($invoice_id)
 
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
-        // echo "<pre>"; echo $query; exit();                        
      }
 
      public function detailInvoiceAkt($batchNumber)
@@ -533,12 +731,107 @@ public function editInvData($invoice_id)
                 ami.batch_number batch_number,
                 ami.jenis_jasa jenis_jasa,
                 ami.source source,
+                ami.term_of_payment,
                 ami.KATEGORI_INV_BERMASALAH,
                 ami.KELENGKAPAN_DOC_INV_BERMASALAH,
-                ami.KETERANGAN_INV_BERMASALAH
+                ami.KETERANGAN_INV_BERMASALAH,
+                ami.RESTATUS_BERKAS_AKT,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                ami.status_inv_bermasalah status_ib
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
                 WHERE ami.last_finance_invoice_status = 2
+                AND ami.invoice_id = '$invoice_id'"
+                ;
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function invBermasalahChecking($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT aipo.invoice_id invoice_id, 
+                invoice_number invoice_number,
+                invoice_date invoice_date,
+                invoice_amount invoice_amount,
+                tax_invoice_number tax_invoice_number,
+                vendor_name vendor_name,
+                po_number po_number,
+                lppb_number lppb_number,
+                shipment_number shipment_number,
+                received_date received_date,
+                item_description item_description,
+                item_code item_code,
+                qty_receipt qty_receipt,
+                qty_reject qty_reject,
+                currency currency,
+                unit_price unit_price,
+                qty_invoice qty_invoice,
+                ami.finance_batch_number  finance_batch_number,
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.source source,
+                ami.term_of_payment,
+                ami.KATEGORI_INV_BERMASALAH,
+                ami.KELENGKAPAN_DOC_INV_BERMASALAH,
+                ami.KETERANGAN_INV_BERMASALAH,
+                ami.RESTATUS_BERKAS_AKT,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                ami.status_inv_bermasalah status_ib
+                FROM khs_ap_monitoring_invoice ami
+                JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
+                WHERE ami.last_finance_invoice_status = 2
+                and ami.KATEGORI_INV_BERMASALAH IS NULL
+                AND ami.invoice_id = '$invoice_id'";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function invBermasalahSuperEdit($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT aipo.invoice_id invoice_id, 
+                invoice_number invoice_number,
+                invoice_date invoice_date,
+                invoice_amount invoice_amount,
+                tax_invoice_number tax_invoice_number,
+                vendor_name vendor_name,
+                po_number po_number,
+                lppb_number lppb_number,
+                shipment_number shipment_number,
+                received_date received_date,
+                item_description item_description,
+                item_code item_code,
+                qty_receipt qty_receipt,
+                qty_reject qty_reject,
+                currency currency,
+                unit_price unit_price,
+                qty_invoice qty_invoice,
+                ami.finance_batch_number  finance_batch_number,
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.source source,
+                ami.term_of_payment,
+                ami.KATEGORI_INV_BERMASALAH,
+                ami.KELENGKAPAN_DOC_INV_BERMASALAH,
+                ami.KETERANGAN_INV_BERMASALAH,
+                ami.RESTATUS_BERKAS_AKT,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                ami.status_inv_bermasalah status_ib
+                FROM khs_ap_monitoring_invoice ami
+                JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
+                WHERE ami.last_finance_invoice_status = 2
+                AND ami.status_inv_bermasalah = 1
+                AND ami.SOURCE = 'AKUNTANSI'
                 AND ami.invoice_id = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
@@ -574,10 +867,13 @@ public function editInvData($invoice_id)
                 ami.KATEGORI_INV_BERMASALAH,
                 ami.KELENGKAPAN_DOC_INV_BERMASALAH,
                 ami.KETERANGAN_INV_BERMASALAH,
-                ami.feedback_purchasing
+                ami.feedback_purchasing,
+                ami.returned_date_akt,
+                ami.returned_date_purc
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
                 WHERE ami.kategori_inv_bermasalah is not null
+                and ami.status_inv_bermasalah = '5'
                 and ami.invoice_id = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
@@ -590,7 +886,9 @@ public function editInvData($invoice_id)
                 SET KATEGORI_INV_BERMASALAH = '$imp_kategori', 
                     KELENGKAPAN_DOC_INV_BERMASALAH = '$imp_dokumen', 
                     KETERANGAN_INV_BERMASALAH = '$keterangan',
-                    AKT_ACTION_BERMASALAH = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
+                    AKT_ACTION_BERMASALAH = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
+                    SOURCE_BERMASALAH = 'AKUNTANSI',
+                    STATUS_INV_BERMASALAH = '1'
                 WHERE INVOICE_ID = '$invoice_id'";
         // echo "<pre>"; echo $sql;
         $runQuery = $erp_db->query($sql);
@@ -599,7 +897,7 @@ public function editInvData($invoice_id)
     public function listInvBermasalah()
     {
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
+        $sql = "SELECT ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
                 ami.tax_invoice_number tax_invoice_number,
@@ -618,11 +916,99 @@ public function editInvData($invoice_id)
                 ami.kelengkapan_doc_inv_bermasalah,
                 ami.keterangan_inv_bermasalah,
                 ami.akt_action_bermasalah akt_date,
-                ami.source SOURCE
-                    FROM khs_ap_monitoring_invoice ami
-                    WHERE ami.kategori_inv_bermasalah IS NOT NULL 
-                    AND ami.feedback_purchasing IS NULL
-                    ORDER BY ami.last_admin_date DESC";
+                ami.purc_action_bermasalah purc_date,
+                ami.akt_finished_date,
+                ami.source SOURCE,
+                ami.source_bermasalah,
+                ami.no_induk_buyer,
+                ami.status_inv_bermasalah,
+                ami.feedback_buyer,
+                ami.buyer_action_bermasalah,
+                ami.status_berkas_buyer,
+                ami.status_berkas_purc,
+                ami.purc_action_bermasalah,
+                ami.feedback_purchasing,
+                ami.RESTATUS_BERKAS_AKT,
+                ami.RESTATUS_BERKAS_PURC,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'Y'
+                    and adi.invoice_id = ami.invoice_id) jmlh_y,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'N'
+                    and adi.invoice_id = ami.invoice_id) jmlh_n
+            FROM khs_ap_monitoring_invoice ami
+           WHERE ami.kategori_inv_bermasalah IS NOT NULL 
+           and ami.status_inv_bermasalah NOT IN (0,5)
+           and ami.returned_flag IS NULL
+        ORDER BY ami.akt_action_bermasalah DESC";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+
+    }
+
+    public function listInvReturned()
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT ami.invoice_id, ami.vendor_name vendor_name,
+                ami.invoice_number invoice_number,
+                ami.invoice_date invoice_date,
+                ami.tax_invoice_number tax_invoice_number,
+                ami.invoice_amount invoice_amount,
+                ami.last_status_purchasing_date last_status_purchasing_date,
+                ami.last_status_finance_date last_status_finance_date,
+                ami.finance_batch_number finance_batch_number,
+                ami.last_finance_invoice_status last_finance_invoice_status,
+                ami.reason reason, 
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.kategori_inv_bermasalah,
+                ami.kelengkapan_doc_inv_bermasalah,
+                ami.keterangan_inv_bermasalah,
+                ami.akt_action_bermasalah akt_date,
+                ami.purc_action_bermasalah purc_date,
+                ami.akt_finished_date,
+                ami.source SOURCE,
+                ami.source_bermasalah,
+                ami.no_induk_buyer,
+                ami.status_inv_bermasalah,
+                ami.feedback_buyer,
+                ami.buyer_action_bermasalah,
+                ami.status_berkas_buyer,
+                ami.status_berkas_purc,
+                ami.purc_action_bermasalah,
+                ami.feedback_purchasing,
+                ami.RESTATUS_BERKAS_AKT,
+                ami.RESTATUS_BERKAS_PURC,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                ami.returned_flag,
+                ami.note_return_akt,
+                ami.note_return_purc,
+                ami.kelengkapan_doc_inv_returned,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'Y'
+                    and adi.invoice_id = ami.invoice_id) jmlh_y,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'N'
+                    and adi.invoice_id = ami.invoice_id) jmlh_n
+            FROM khs_ap_monitoring_invoice ami
+           WHERE ami.kategori_inv_bermasalah IS NOT NULL 
+           and ami.returned_flag = 'Y'
+           and ami.status_inv_bermasalah NOT IN (5)
+        ORDER BY ami.akt_action_bermasalah DESC";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
 
@@ -631,7 +1017,7 @@ public function editInvData($invoice_id)
     public function finishInvBermasalah()
     {
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
+        $sql = "SELECT ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
                 ami.tax_invoice_number tax_invoice_number,
@@ -646,16 +1032,37 @@ public function editInvData($invoice_id)
                 ami.nominal_dpp nominal_dpp,
                 ami.batch_number batch_number,
                 ami.jenis_jasa jenis_jasa,
-                ami.source SOURCE,
-                ami.feedback_purchasing,
                 ami.kategori_inv_bermasalah,
                 ami.kelengkapan_doc_inv_bermasalah,
                 ami.keterangan_inv_bermasalah,
                 ami.akt_action_bermasalah akt_date,
-                ami.purc_action_bermasalah purc_date
+                ami.source SOURCE,
+                ami.source_bermasalah,
+                ami.akt_finished_date,
+                ami.no_induk_buyer,
+                ami.status_inv_bermasalah,
+                ami.feedback_buyer,
+                ami.buyer_action_bermasalah,
+                ami.status_berkas_buyer,
+                ami.status_berkas_purc,
+                ami.purc_action_bermasalah,
+                ami.feedback_purchasing,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'Y'
+                    and adi.invoice_id = ami.invoice_id) jmlh_y,
+                (SELECT COUNT (adi.status_document_purc) hasil_n
+                   FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
+                     ON ami2.invoice_id = adi.invoice_id
+                  WHERE status_document_purc = 'N'
+                    and adi.invoice_id = ami.invoice_id) jmlh_n
             FROM khs_ap_monitoring_invoice ami
-            WHERE ami.feedback_purchasing IS not NULL 
-            ORDER BY ami.last_admin_date DESC";
+           WHERE ami.kategori_inv_bermasalah IS NOT NULL 
+           AND ami.status_inv_bermasalah = '5'
+        ORDER BY ami.akt_action_bermasalah DESC";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
@@ -999,5 +1406,32 @@ public function editInvData($invoice_id)
                   AND aipo.po_number = poh.segment1 ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
+    }
+
+    public function getUpdatePONumber($invoice_id,$nomor_po,$vendor_id,$vendor_name,$top)
+    {
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = "update khs_ap_monitoring_invoice
+                            set vendor_number = '$vendor_id', 
+                            vendor_name = '$vendor_name', 
+                            term_of_payment = '$top' 
+                            where invoice_id = '$invoice_id'";      
+        $runQuery = $oracle->query($query);
+        $query2 = "update khs_ap_invoice_purchase_order set po_number = '$nomor_po' where invoice_id = '$invoice_id'";
+        $runQuery2 = $oracle->query($query2);
+    }
+
+    public function returning($invoice_id,$action_date,$note,$imp_dokumen)
+    {
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = "update khs_ap_monitoring_invoice
+                            set 
+                            returned_flag = 'Y',
+                            returned_date_akt = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
+                            source_bermasalah = 'AKUNTANSI',
+                            note_return_akt = '$note',
+                            kelengkapan_doc_inv_returned = '$imp_dokumen'
+                            where invoice_id = '$invoice_id'";      
+        $runQuery = $oracle->query($query);
     }
 }

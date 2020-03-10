@@ -29,7 +29,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table class="table text-center dtTableMl">
+								<table id="tblLPPBUnproses" class="tblLPPBAkt table text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>
@@ -45,7 +45,9 @@
 									<tr>
 										<td><?php echo $no?></td>
 										<td>
-											<button title="Detail Lppb" data-toggle="modal" data-target="mdlDetailAkt" onclick="ModalDetailAkt(<?php echo $lb['BATCH_NUMBER']?>)"  class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
+											<a target="_blank" href="<?php echo base_url('MonitoringLppbAkuntansi/Unprocess/openDetailLppb/'.$lb['BATCH_NUMBER']) ?>">
+											<button title="Detail Lppb"  class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
+											</a>
 										</td>
 										<td class="coba"><?php echo $lb['GROUP_BATCH']?></td>
 										<td><?php echo $lb['CREATE_DATE']?></td>
@@ -78,6 +80,16 @@
 </section>
 <script type="text/javascript">
 	var id_gd;
+	$(document).ready(function(){
+	$('#tblLPPBRejectList').DataTable({
+		"filter" : true,
+		"info":  false,
+		"pagination": false,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+})
 </script>
 
 <div class="modal fade mdlDetailAkt"  id="mdlDetailAkt" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">

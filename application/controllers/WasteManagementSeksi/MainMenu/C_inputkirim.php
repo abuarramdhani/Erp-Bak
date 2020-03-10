@@ -49,9 +49,29 @@ class C_inputkirim extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['LimbahKirim'] = $this->M_kirim->getLimbahKirim();
-		// echo "<pre>";
-		// print_r($data['LimbahKirim']);exit;
+		$limbah = $this->M_kirim->getLimbahKirim();
+
+		$location = $this->input->get('location');
+		$location_code = '';
+
+		if($location) {
+			$location_code = ($location == 'yogyakarta') ? '01' : '02';
+		}
+	
+		$data_limbah = array_filter($limbah, function ($limbah) use ($location_code) {
+			if($location_code == '') return true;
+
+			return $limbah['lokasi_kerja'] == $location_code;
+		});
+
+		// note : 
+		// 1: approved by waste management
+		// 2: rejected by waste management
+		// 3: kirim limbah baru
+		// 4: approved by kasie
+		// 5: rejected by kasie
+
+		$data['LimbahKirim'] = $data_limbah;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -61,7 +81,7 @@ class C_inputkirim extends CI_Controller
 
 	public function Create(){
 		$this->getSession();
-
+		
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 
@@ -69,7 +89,7 @@ class C_inputkirim extends CI_Controller
 		$data['Menu'] = 'Kirim Limbah';
 		$data['SubMenuOne'] = 'Input Kirim Limbah';
 		$data['SubMenuTwo'] = '';
-		// print_r($_POST); exit();
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -103,17 +123,14 @@ class C_inputkirim extends CI_Controller
 				'keterangan' => $this->input->post('txtKeterangan'),
 				'id_satuan' => $this->input->post('txtSatuan')
 			);
-			// echo "<pre>";
-			// print_r($datapost);
-			// print_r($_POST); exit();
+
 			$this->M_kirim->insertKirimLimbah($datapost);
 
 			$encrypted_string = $this->encrypt->encode($id['0']['id']);
-            $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-			redirect(site_url('WasteManagementSeksi/InputKirimLimbah/Sendmail/Create/'.$encrypted_string));
+			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+
+			redirect(site_url('WasteManagementSeksi/InputKirimLimbah'));
 		}
-
-
 	}
 
 	public function EditKirim($id){
@@ -146,7 +163,7 @@ class C_inputkirim extends CI_Controller
 		}else{
 			$data['LimbahSatuan'] = $this->M_kirim->getSatlimbyID($data['KirimLimbah']['0']['id_satuan']);
 		}
-		// print_r($data['LimbahSatuan']);exit;
+
 		$data['Lokasi'] = $this->M_kirim->getLokasi();
 
 		if (empty($_POST)) {
@@ -166,11 +183,9 @@ class C_inputkirim extends CI_Controller
 				'keterangan' => $this->input->post('txtKeterangan'),
 				'id_satuan' => $this->input->post('txtSatuan')
 			);
-			// echo "<pre>";
-			// print_r($datapost);
-			//  exit();
+
 			$this->M_kirim->UpdateLimKirim($datapost);
-			redirect(site_url('WasteManagementSeksi/InputKirimLimbah/Sendmail/Edit/'.$id));
+			redirect(site_url('WasteManagementSeksi/InputKirimLimbah'));
 		}
 
 	}
@@ -195,147 +210,29 @@ class C_inputkirim extends CI_Controller
 		$this->M_kirim->delLimKirim($plaintext_string);
 		$data['LimbahKirim'] = $this->M_kirim->getLimbahKirim();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('WasteManagementSeksi/InputKirimLimbah/V_index',$data);
-		$this->load->view('V_Footer',$data);
+		redirect(base_url('WasteManagementSeksi/InputKirimLimbah'));
 	}
 
-	public function SendMail($aksi,$id){
-		$this->load->library('PHPMailerAutoload');
 
-		$this->getSession();
-
-		$user_id = $this->session->userid;
-		$user_name = $this->session->user;
+	function cetak($id) {
+		$this->load->library('pdf');
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-		$limbah = $this->M_kirim->getLimKirimMin($plaintext_string);
-		$jenis = $limbah['0']['jenis_limbah'];
-		$seksi = $limbah['0']['seksi'];
-		$jumlah = $limbah['0']['jumlah'];
-		$tanggal = $limbah['0']['tanggal'];
-		$waktu = $limbah['0']['waktu'];
+		$pdf 	=	$this->pdf->load();
+		$pdf 	=	new mPDF('utf-8','A5-L',5, 0, 20, 20, 10, 0, 0);
+
+		$filename	=	'FORM PENGIRIMAN LIMBAH B3.pdf';
 
 		$data['data_limbah'] = $this->M_kirim->getdatalimbahkirim($plaintext_string);
 
-		// echo "<pre>"; print_r($data['data_limbah']); exit();
+		$html = $this->load->view('WasteManagementSeksi/InputKirimLimbah/V_pdf',$data,true);
 
-
-
-		if ($aksi == "Create") {
-			$text = "user <b> ".$user_name." </b> telah menginput kiriman limbah. ";
-		}else{
-			$text = "user <b> ".$user_name." </b> telah mengedit kiriman limbah. ";
-		}
-
-		$message = '	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://wwwhtml4/loose.dtd">
-				<html>
-				<head>
-			 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-			  	<title>Mail Generated By System</title>
-			  	<style>
-				#main 	{
-   	 						border: 1px solid black;
-   	 						text-align: center;
-   	 						border-collapse: collapse;
-   	 						width: 100%;
-						}
-				#detail {
-   	 						border: 1px solid black;
-   	 						text-align: justify;
-   	 						border-collapse: collapse;
-						}
-
-			  	</style>
-				</head>
-				<body>
-						<h3 style="text-decoration: underline;">Waste Management</h3>
-					<hr/>
-
-					<p> '.$text.' <br> Dengan detail sebagai berikut :
-					</p>
-					<table>
-					<tr>
-					<td>Tanggal Kirim</td>
-					<td> : </td>
-					<td>'.$tanggal.'</td>
-					</tr>
-					<tr>
-					<tr>
-					<td>Waktu Kirim</td>
-					<td> : </td>
-					<td>'.$waktu.'</td>
-					</tr>
-					<tr>
-					<td>Seksi</td>
-					<td> : </td>
-					<td>'.$seksi.'</td>
-					</tr>
-					<tr>
-					<td>Jenis Limbah</td>
-					<td> : </td>
-					<td>'.$jenis.'</td>
-					</tr>
-					<tr>
-					<td>Jumlah</td>
-					<td> : </td>
-					<td>'.$jumlah.'</td>
-					</tr>
-					</table>
-					<hr/>
-					<p>
-					Untuk melihat/mengelola, silahkan login ke ERP
-					</p>
-
-				</body>
-				</html>';
-
-		$mail = new PHPMailer();
-        $mail->SMTPDebug = 0;
-        $mail->Debugoutput = 'html';
-
-        $mail->isSMTP();
-        $mail->Host = 'mail.quick.com';
-        $mail->Port = 465;
-        $mail->SMTPAuth = true;
-		$mail->SMTPSecure = 'ssl';
-		$mail->SMTPOptions = array(
-				'ssl' => array(
-				'verify_peer' => false,
-				'verify_peer_name' => false,
-				'allow_self_signed' => true)
-				);
-        $mail->Username = 'no-reply';
-        $mail->Password = '123456';
-        $mail->WordWrap = 50;
-        $mail->setFrom('noreply@quick.com', 'Email Sistem');
-    	$mail->addAddress('wst@quick.com','Seksi Waste Management');
-        $mail->Subject = 'Waste Management';
-		$mail->msgHTML($message);
-
-		if (!$mail->send()) {
-			echo "Mailer Error: " . $mail->ErrorInfo;
-			show_error($this->email->print_debugger());
-		} else {
-
-			$this->load->library('pdf');
-			$pdf 	=	$this->pdf->load();
-			$pdf 	=	new mPDF('utf-8','A5-L',10, 20, 20, 20, 20, 0, 0);
-			// $pdf 	=	new mPDF();
-
-			$filename	=	'FORM PENGIRIMAN LIMBAH B3.pdf';
-			$html = $this->load->view('WasteManagementSeksi/InputKirimLimbah/V_pdf',$data,true);
-
-			$pdf->AddPage();
-			$pdf->WriteHTML($html);
-			$pdf->setTitle($filename);
-			$pdf->Output($filename, 'D');
-
-			redirect(base_url('WasteManagementSeksi/InputKirimLimbah'));
-		}
+		$pdf->AddPage();
+		$pdf->WriteHTML($html);
+		$pdf->setTitle($filename);
+		$pdf->Output($filename, 'I');
 	}
 
 	public function Cari(){

@@ -16,19 +16,98 @@ class M_trackingpengirimanbarang extends CI_Model {
         return $runQuery->result_array();
     }
 
+
+    public function cekSource($nomor_ind)
+    {
+        $db = $this->load->database();
+        $sql = "select 
+                eea.employee_code, 
+                eea.employee_name, 
+                es.section_name
+                    from er.er_employee_all eea, er.er_section es
+                    where eea.section_code = es.section_code
+                    and eea.employee_code = '$nomor_ind'";
+        $runQuery = $this->db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function filterUser($id_login)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "select username from tp_login where username = '$id_login'";
+        $runQuery = $db->query($sql);
+        return $runQuery->num_rows();
+        // return $runQuery->result_array();
+    }
+    public function addKacab($nomor_induk,$nama_kacab,$section_name,$status,$alamat_cabang,$password)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "insert into tp_login 
+                    (nik, 
+                    nama_pekerja, 
+                    username, 
+                    password, 
+                    last_update_date, 
+                    kacab, 
+                    alamat_cabang,
+                    section_name)
+                values 
+                    ('$nomor_induk',
+                    '$nama_kacab',
+                    '$nomor_induk',
+                    '$password', 
+                    now(), 
+                    '$status', 
+                    '$alamat_cabang',
+                    '$section_name')";
+        $runQuery = $db->query($sql);
+    }
+
+    public function getKacabData()
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "select id_login, nik, username, nama_pekerja, last_update_date, kacab, alamat_cabang, section_name from tp_login";
+        $runQuery = $db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function deleteKacab($id_login)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "delete from tp_login where id_login = '$id_login'";
+        $runQuery = $db->query($sql);
+    }
+
+    public function DiactivatedUser($id_login)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "update tp_login set kacab = 'N' where id_login = '$id_login'";
+        $runQuery = $db->query($sql);
+    }
+
+    public function activatedUser($id_login)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "update tp_login set kacab = 'Y' where id_login = '$id_login'";
+        $runQuery = $db->query($sql);
+    }
+
     public function getSPBDetail($id)
     {
         $oracle = $this->load->database('oracle',true);
         $sql = "
           SELECT distinct
                 mtrh.REQUEST_NUMBER NO_SPB
-                ,mtrh.ATTRIBUTE7 SO
-                ,party.PARTY_NAME CUST
-                ,ship_loc.address1 ALAMAT
-                ,msib.SEGMENT1 KODE_ITEM
-                ,msib.DESCRIPTION NAMA_ITEM
-                ,mtrl.quantity QTY
-                ,msib.PRIMARY_UOM_CODE UOM
+                ,mtrh.ATTRIBUTE7 SO 
+                ,party.PARTY_NAME CUST 
+                ,case when ship_loc.address1 is null
+                 then mtrh.TO_SUBINVENTORY_CODE ||' ('|| mtrh.ATTRIBUTE4
+                 else ship_loc.address1
+                 end ALAMAT 
+                ,msib.SEGMENT1 KODE_ITEM 
+                ,msib.DESCRIPTION NAMA_ITEM 
+                ,mtrl.quantity QTY 
+                ,msib.PRIMARY_UOM_CODE UOM 
               FROM mtl_txn_request_headers mtrh
                    ,mtl_txn_request_lines mtrl
                    ,MTL_SYSTEM_ITEMS_B msib
@@ -41,7 +120,7 @@ class M_trackingpengirimanbarang extends CI_Model {
                    ,hz_party_sites ship_ps
                         where mtrh.HEADER_ID(+) = mtrl.header_id
                         and mtrl.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                        and mtrh.ATTRIBUTE7 = ooha.ORDER_NUMBER
+                        and mtrh.ATTRIBUTE7 = ooha.ORDER_NUMBER(+)
                         AND ooha.sold_to_org_id = cust_acct.cust_account_id(+)
                         AND cust_acct.party_id = party.party_id(+)
                         and ooha.ship_to_org_id = ship_su.site_use_id(+)
@@ -58,16 +137,16 @@ class M_trackingpengirimanbarang extends CI_Model {
         $db = $this->load->database('tpb_sql', true);
         $sql = "SELECT 
                 m.no_spb NO_SPB, 
-                m.no_so SO,
-                m.nama_customer CUST,
+                m.so SO,
+                m.cust CUST,
                 m.alamat ALAMAT, 
-                m.kode_item KODE_ITEM,
+                m.kode_item KODE_ITEM, 
                 m.nama_item NAMA_ITEM,
                 m.qty QTY,
-                m.uom UOM,
-                m.confirmation_id CON_ID,
-                m.line_id LINE_ID,
-                n.confirmation CON_HEAD,
+                m.uom UOM, 
+                m.confirmation_status CON_ID, 
+                m.line_id LINE_ID, 
+                n.confirmation CON_HEAD, 
                 n.note NOTE
                 from tpb_spb m
                 left join tpb n on n.no_SPB = m.no_spb
@@ -76,46 +155,14 @@ class M_trackingpengirimanbarang extends CI_Model {
         return $runQuery->result_array();
     }
 
-    // select distinct
-    //           dc.nama_customer,
-    //           (select max(dad.entry) from om.om_mppl_action_detail dad where dad.no_po = drp.no_po) entry,
-    //           drp.no_po, 
-    //           TO_CHAR(drpo.tanggal_issued :: DATE, 'DD Mon YYYY') tanggal_issued,
-    //           TO_CHAR(drpo.need_by_date :: DATE, 'DD Mon YYYY') need_by_date,
-    //           drpo.status, 
-    //           TO_CHAR(drp.delivery_date :: DATE, 'DD Mon YYYY') delivery_date,
-    //           drp.no_so, 
-    //           drp.no_dosp, 
-    //           drp.keterangan,
-    //           de.nama_ekspedisi,
-    //           drp.id_rekap_pengiriman,
-    //           (select count(dcp.no_po) from om.om_mppl_count_pengiriman dcp where dcp.no_po = drp.no_po) count
-    //           from om.om_mppl_rekap_pengiriman drp
-    //           left join om.om_mppl_rekap_po drpo on drpo.no_po = drp.no_po
-    //           left join om.om_mppl_customer dc on dc.id_customer = drp.id_customer
-    //           left join om.om_mppl_ekspedisi de on de.id_ekspedisi = drp.id_ekspedisi
-    //           left join om.om_mppl_action_detail dad on dad.id_rekap_pengiriman = drp.id_rekap_pengiriman
-    //     group by dc.nama_customer,
-    //           drp.no_po, 
-    //           drpo.tanggal_issued, 
-    //           drpo.need_by_date, 
-    //           drp.delivery_date, 
-    //           drp.no_so, 
-    //           drp.no_dosp, 
-    //           drp.keterangan,
-    //           de.nama_ekspedisi,
-    //           drp.id_rekap_pengiriman,
-    //           dad.entry,
-    //           drpo.status
-    //     order by delivery_date desc
 
-    public function ambilDataConfirmation($id)
+    public function ambilDataconfirmation_status($id)
     {
         $db = $this->load->database('tpb_sql', true);
         $sql = "SELECT 
                 no_spb NO_SPB, 
-                no_so SO,
-                nama_customer CUST,
+                so SO,
+                cust CUST,
                 alamat ALAMAT, 
                 kode_item KODE_ITEM,
                 nama_item NAMA_ITEM,
@@ -131,7 +178,7 @@ class M_trackingpengirimanbarang extends CI_Model {
     public function countN($id)
     {
         $db = $this->load->database('tpb_sql', true);
-        $sql = "select count(confirmation_id)count_N from tpb_spb where no_spb = '$id' and confirmation_id = 'N'";
+        $sql = "select count(confirmation_status)count_N from tpb_spb where no_spb = '$id' and confirmation_status = 'N'";
         $runQuery = $db->query($sql);
         return $runQuery->result_array();
     }
@@ -139,7 +186,7 @@ class M_trackingpengirimanbarang extends CI_Model {
     public function countY($id)
     {
         $db = $this->load->database('tpb_sql', true);
-        $sql = "select count(confirmation_id)count_Y from tpb_spb where no_spb = '$id' and confirmation_id = 'Y'";
+        $sql = "select count(confirmation_status)count_Y from tpb_spb where no_spb = '$id' and confirmation_status = 'Y'";
         $runQuery = $db->query($sql);
         return $runQuery->result_array();
     }
@@ -148,21 +195,19 @@ class M_trackingpengirimanbarang extends CI_Model {
     {
         $db = $this->load->database('tpb_sql', true);
         $sql = "update tpb 
-                set confirmation = '$headerStatus',
+                set confirmation_status = '$headerStatus',
                 note = '$note'
                 where no_spb = $no_spb";
         $runQuery = $db->query($sql);
-        echo "<pre>";echo $sql;
     }
 
     public function saveStatusLine($arry,$line_id)
     {
         $db = $this->load->database('tpb_sql', true);
         $sql = "update tpb_spb 
-                set confirmation_id = '$arry'
+                set confirmation_status = '$arry'
                 where line_id = $line_id";
         $runQuery = $db->query($sql);
-        echo "<pre>";echo $sql;
     }
 
     public function selectHeader($id)
@@ -170,7 +215,7 @@ class M_trackingpengirimanbarang extends CI_Model {
         $oracle = $this->load->database('oracle',true);
         $sql = "
           SELECT distinct
-                mtrh.REQUEST_NUMBER NO_SPB
+                 mtrh.REQUEST_NUMBER NO_SPB
                 ,mtrh.ATTRIBUTE7 SO
                 ,party.PARTY_NAME CUST
                 ,ship_loc.address1 ALAMAT
@@ -247,7 +292,7 @@ class M_trackingpengirimanbarang extends CI_Model {
                 tpb.nama_pekerja,
                 tpb.kendaraan,
                 tpb.status,
-                tpb.penerima,
+                tpb.confirmed_by,
                 tpl.username,
                 tpb.last_update_date,
                 tpb.start_date,
@@ -268,7 +313,7 @@ class M_trackingpengirimanbarang extends CI_Model {
                 tpb.nama_pekerja,
                 tpb.kendaraan,
                 tpb.status,
-                tpb.penerima,
+                tpb.confirmed_by penerima,
                 tpl.username,
                 tpb.last_update_date,
                 tpb.confirmation
@@ -288,11 +333,12 @@ class M_trackingpengirimanbarang extends CI_Model {
                 tpb.nama_pekerja,
                 tpb.kendaraan,
                 tpb.status,
-                tpb.penerima,
+                tpb.confirmed_by penerima,
                 tpl.username,
                 tpb.last_update_date,
                 tpb.start_date,
-                tpb.end_date
+                tpb.end_date,
+                tpb.confirmation
                 from tpb tpb
                 left join tp_login tpl on tpb.nama_pekerja = tpl.nama_pekerja
                 where status = 'onFinish'
@@ -356,9 +402,24 @@ class M_trackingpengirimanbarang extends CI_Model {
     public function getData($id_login)
     {
         $db = $this->load->database('tpb_sql', true);
-        $sql = " select id_login, nik, username, nama_pekerja, kendaraan, nomor_kendaraan from tp_login where id_login = '$id_login'";
+        $sql = " select id_login, section_name, kacab, nik, username, nama_pekerja, kendaraan, nomor_kendaraan, alamat_cabang from tp_login where id_login = '$id_login'";
         $runQuery = $db->query($sql);
         return $runQuery->result_array();
+    }
+
+    public function updateDataKacab($id_login,$nama_kacab,$alamat_cabang,$status,$section_name,$nomor_induk)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "update tp_login
+                set username = '$nomor_induk',
+                    nama_pekerja='$nama_kacab',
+                    nik ='$nomor_induk',
+                    kacab ='$status',
+                    last_update_date = now(),
+                    section_name='$section_name',
+                    alamat_cabang = '$alamat_cabang'
+                where id_login = $id_login";
+        $runQuery = $db->query($sql);
     }
 
     public function updateData($id_login,$nama_pekerja,$kendaraan,$no_kendaraan,$username)

@@ -1099,16 +1099,16 @@ class C_List extends CI_Controller
 	            $row += 4;
 	            $object->setActiveSheetIndex(0)
 	                    ->setCellValue('A'.$row,'NO')
-	                    ->setCellValue('B'.$row,'KETERANGAN')
-	                    ->setCellValue('C'.$row,'NO URUT')
+	                    ->setCellValue('B'.$row,'TGL BUPOT')
+	                    ->setCellValue('C'.$row,'KETERANGAN')
 	                    ->setCellValue('D'.$row,'NPWP')
 	                    ->setCellValue('E'.$row,'NAMA NPWP')
 	                    ->setCellValue('F'.$row,'ALAMAT NPWP')
-	                    ->setCellValue('G'.$row,'JENIS JASA')
-	                    ->setCellValue('H'.$row,'DPP')
-	                    ->setCellValue('I'.$row,'PPh')
-	                    ->setCellValue('J'.$row,'TARIF')
-	                    ->setCellValue('K'.$row,'TGL BUPOT');
+	                    ->setCellValue('G'.$row,'DPP')
+	                    ->setCellValue('H'.$row,'PPh')
+	                    ->setCellValue('I'.$row,'TARIF')
+	                    ->setCellValue('J'.$row,'NO URUT')
+	                    ->setCellValue('K'.$row,'JENIS JASA');
 		        $object->getActiveSheet()->getColumnDimension('A')->setWidth(6);
 	            $object->getActiveSheet()->getStyle('A'.$row.':K'.$row)->applyFromArray($aligncenter);
 	            $object->getActiveSheet()->getStyle('A'.$row.':K'.$row)->applyFromArray($border_all);
@@ -1127,16 +1127,16 @@ class C_List extends CI_Controller
 		        		// }
 		        	$object->setActiveSheetIndex(0)
 		                    ->setCellValue('A'.$row,$nom)
-		                    ->setCellValue('B'.$row,$value2['nama_vendor'])
-		                    ->setCellValue('C'.$row,$value2['no_urut'])
+		                    ->setCellValue('B'.$row,strtoupper(date('d-M-y', strtotime($value2['tgl_transaksi']))))
+		                    ->setCellValue('C'.$row,$value2['nama_vendor'])
 		                    ->setCellValue('D'.$row,$value2['no_npwp'])
 		                    ->setCellValue('E'.$row,$value2['nama_npwp'])
 		                    ->setCellValue('F'.$row,$value2['alamat_npwp'])
-		                    ->setCellValue('G'.$row,$value2['jenis_jasa'])
-		                    ->setCellValue('H'.$row,$value2['dpp'])
-		                    ->setCellValue('I'.$row,$value2['pph'])
-		                    ->setCellValue('J'.$row,$value2['tarif_pph'])
-		                    ->setCellValue('K'.$row,strtoupper(date('d-M-y', strtotime($value2['tgl_transaksi']))));
+		                    ->setCellValue('G'.$row,$value2['dpp'])
+		                    ->setCellValue('H'.$row,$value2['pph'])
+		                    ->setCellValue('I'.$row,$value2['tarif_pph'])
+		                    ->setCellValue('J'.$row,$value2['no_urut'])
+		                    ->setCellValue('K'.$row,$value2['jenis_jasa']);
 			        $object->getActiveSheet()->getColumnDimension('A')->setWidth(6);
 		            $object->getActiveSheet()->getStyle('A'.$row.':K'.$row)->applyFromArray($border_all);
 		            $object->getActiveSheet()->getStyle('A'.$row.':K'.$row)->applyFromArray($Font13Reg);

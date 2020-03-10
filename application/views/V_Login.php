@@ -51,6 +51,18 @@
         .unsupportedBrowserPlaceholder {
             display: none;
         }
+
+        @media (max-width: 800px) {
+            .login-box {
+                max-width: 90% !important;
+            }
+
+            .is-mobile-full {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+
     </style>
     <noscript>
         .main {
@@ -107,7 +119,7 @@
                         <div class="clearfix"></div>
 
                         
-                        <p class="center col-md-5">
+                        <p class="center col-md-5 col-sm-12 is-mobile-full">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </p>
                     </fieldset>
@@ -132,6 +144,9 @@
 <script>
     var browser = '';
     var browserVersion = 0;
+    var OSName = "Unknown";
+    if (window.navigator.userAgent.indexOf("Android")            != -1) OSName="Android";
+
     if (/Opera[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
         browser = 'Opera';
     } else if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
@@ -150,9 +165,9 @@
         browser = 'chromium';
     }
     if(browserVersion === 0) browserVersion = parseFloat(new Number(RegExp.$1));
-    var error = '<div style="text-align: center;"><h3>Aplikasi Browser ('+ get_browser_info().name +' Versi '+ get_browser_info().version +') Anda <b>tidak memenuhi Spesifikasi Standar Minimum Akses</b> QuickERP.</h3> <h3>Silahkan gunakan Aplikasi Browser berikut : </h3> <h3>- Google Chrome Versi 49 ke Atas</h3><h3>- Chromium Versi 50 ke Atas</h3> <h3>- Mozilla Firefox Versi 45 ke Atas</h3><br><h3>atau </h3><h3>Silahkan <b>menghubungi Bag. Hardware ICT</b> untuk dilakukan installasi / update Browser</h3> <h3><b>di VoIP 12300 Ext. 5 atau Telkomsel MyGroup 628112545922</b></h3><br><h3>--- QuickERP ---</h3></div>';
+    var error = '<div style="text-align: center;"><h3>Aplikasi Browser ('+ get_browser_info().name +' Versi '+ get_browser_info().version +') Anda <b>tidak memenuhi Spesifikasi Standar Minimum Akses</b> QuickERP.</h3> <h3>Silahkan gunakan Aplikasi Browser berikut : </h3> <h3>- Google Chrome Versi 49 ke Atas</h3><h3>- Chromium Versi 50 ke Atas</h3> <h3>- Mozilla Firefox Versi 45 ke Atas</h3><br><h3>atau </h3><h3>Silahkan <b>menghubungi Bag. Hardware ICT</b> untuk dilakukan installasi / update Browser</h3> <h3><b>di VoIP 12300 Ext. 5 atau Telkomsel MyGroup 628112545922</b></h3><br><h3>--- QuickERP ---</h3></div> nama os : '+OSName;
     if(browser == 'Chrome' || browser == 'Mozila Firefox' || browser == 'Chromium') {
-            if(browser == 'Chrome' && browserVersion < 49) document.getElementById("body").innerHTML = error;
+            if((browser == 'Chrome' && browserVersion < 49 && OSName != 'Android') || (browser == 'Chrome' && browserVersion < 42 && OSName == 'Android')) document.getElementById("body").innerHTML = error;
             if(browser == 'Mozila Firefox' && browserVersion < 45) document.getElementById("body").innerHTML = error;
             if(browser == 'chromium' && browserVersion < 50) document.getElementById("body").innerHTML = error;
     } else {

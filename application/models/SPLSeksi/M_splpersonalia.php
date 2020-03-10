@@ -18,7 +18,8 @@ class M_splpersonalia extends CI_Model{
 		foreach ($sql_access as $item) {
 			$noind = $item['noind'];
 
-			$pgsql = "SELECT tp.noind, trim(tp.nama) nama, ts.seksi FROM hrd_khs.tpribadi tp inner join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie where tp.noind = '$noind' and trim(ts.seksi) <> '-' and tp.keluar = '0'";
+			$pgsql = "SELECT tp.noind, trim(tp.nama) nama, coalesce(nullif(ts.seksi, '-'), nullif(ts.unit, '-'), nullif(ts.bidang, '-'), nullif(ts.dept, '-')) as seksi
+			FROM hrd_khs.tpribadi tp inner join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie where tp.noind = '$noind' and tp.keluar = '0'";
 			$human = $this->prs->query($pgsql);
 
 			if($human->num_rows() < 1){

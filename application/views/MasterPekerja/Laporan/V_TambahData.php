@@ -44,7 +44,7 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label class="control-label">Jumlah upah yang diterima :</label>
-                        <input class="form-control" type="text" name="it_jumlahUpah" required="">
+                        <input class="form-control" type="number" name="it_jumlahUpah" required="" placeholder="Masukkan nominal dalam angka">
                       </div>                            
                     </div>
                     <div class="col-lg-3">

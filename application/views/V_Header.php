@@ -7,7 +7,20 @@
 	<meta name="author" content="" />
 	<meta name="description" content="" />
 	<meta name="theme-color" content="#3c8dbc">
-	<title><?= (isset($Header)) ? $Header : 'Quick ERP' ?></title>
+
+	<?php
+		if(isset($Header)){
+			$header = $Header;
+		}else {	
+			if($this->session->responsibility != '') {
+				$header = ucwords(strtolower($this->session->responsibility))." - Quick ERP";
+			}else {
+				$header = 'Quick ERP';
+			}
+		}
+	?>
+
+	<title><?= $header ?></title>
 	<link type="image/x-icon" rel="shortcut icon" href="<?= base_url('assets/img/logo.ico') ?>">
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css') ?>" />
     <link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/bootstrap/4.0.0/card.css') ?>" />

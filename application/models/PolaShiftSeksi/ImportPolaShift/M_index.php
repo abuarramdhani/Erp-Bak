@@ -60,7 +60,7 @@ class M_index extends CI_Model
  		$sql = "select tj.* from \"Presensi\".tshift ts
 				left join \"Presensi\".tjamshift tj on tj.kd_shift = ts.kd_shift
 				where ts.inisial = '$inisial' and tj.hari = '$hari'";
-				// echo json_encode($sql);
+				// echo $sql.'<br>';
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
  	}
@@ -185,5 +185,29 @@ class M_index extends CI_Model
 					tgl_import";
 		$query = $this->db->query($sql);
 		return $query->result_array();
+ 	}
+
+ 	public function getLsh($txt)
+ 	{
+ 		$sql = "select
+					*
+				from
+					\"Presensi\".tshift
+				where
+					kd_shift in (
+						select distinct kd_shift
+					from
+						\"Presensi\".tjamshift)
+				and (shift like '%$txt%' or inisial like '%$txt%')
+				order by kd_shift::int";
+ 		return $this->personalia->query($sql)->result_array();
+ 	}
+
+ 	public function getWeekPerusahaan($pr)
+ 	{
+ 		//$pr format Y-m
+ 		$sql = "SELECT substring(tanggal::text,9,2) tanggal
+				FROM \"Dinas_Luar\".tlibur where tanggal::text like '$pr%'";
+		return $this->personalia->query($sql)->result_array();
  	}
 }

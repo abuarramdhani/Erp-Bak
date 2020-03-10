@@ -6,6 +6,7 @@ class C_MasterJabatanUpah extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
 		$this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
@@ -22,7 +23,7 @@ class C_MasterJabatanUpah extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Data';
         $data['SubMenuOne'] = 'Master Jabatan Upah';
         $data['SubMenuTwo'] = '';
@@ -70,7 +71,11 @@ class C_MasterJabatanUpah extends CI_Controller
             $data = array(
 				'jabatan_upah' => strtoupper($this->input->post('txtJabatanUpahHeader',TRUE)),
 			);
-            
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Add jabatan upah=".strtoupper($this->input->post('txtJabatanUpahHeader',TRUE));
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 			$this->M_masterjabatanupah->insert_header($data);
             $header_id = $this->db->insert_id();
 			$this->session->set_flashdata('message', 'Create Record Success');
@@ -79,15 +84,15 @@ class C_MasterJabatanUpah extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterJabatanUpah'));
-        
+
     }
-    
+
     /* READ DATA */
     function read($id)
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterjabatanupah->get_header_by_id($id);
         if ($row) {
             $data = array(
@@ -100,7 +105,7 @@ class C_MasterJabatanUpah extends CI_Controller
                 /* Data Header */
                 'kd_jabatan_upah' => $row->kd_jabatan_upah,
                 'jabatan_upah' => $row->jabatan_upah,
-				
+
 			);
 			$this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
@@ -120,6 +125,11 @@ class C_MasterJabatanUpah extends CI_Controller
 
         if ($row) {
             $this->M_masterjabatanupah->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete master jabatan Upah ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -176,10 +186,15 @@ class C_MasterJabatanUpah extends CI_Controller
     function saveUpdate()
     {
         $header_id = $this->input->post('txtKdJabatanUpahHeader');
-        
+
             $data = array(
 				'jabatan_upah' => strtoupper($this->input->post('txtJabatanUpahHeader',TRUE)),
 			);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update master jabatan Upah ID=$header_id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 			$this->M_masterjabatanupah->update_header($header_id, $data);
 			$this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
@@ -191,32 +206,32 @@ class C_MasterJabatanUpah extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }
     }
-	
+
 	  public function import(){
 		$config['upload_path'] = 'assets/upload/importPR/masterjabatanupah/';
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '6000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
                 $file_path  = 'assets/upload/importPR/masterjabatanupah/'.$filename;
-                
+
             if ($this->csvimport->get_array($file_path)) {
-                
+
                 $csv_array  = $this->csvimport->get_array($file_path);
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
 					$checkstd = $this->M_masterjabatanupah->get_header_by_id($row['KD_JAB_UPAH']);
                     if($checkstd){
-                    	
+
  						//ROW DATA
 	                    $data = array(
 							'jabatan_upah' => $row['JAB_UPAH'],
@@ -235,7 +250,7 @@ class C_MasterJabatanUpah extends CI_Controller
                 //LOAD EXIST DATA VERIFICATION PAGE
                 $this->checkSession();
         		$user_id = $this->session->userid;
-        
+
         		$data['Menu'] = 'Master Data';
         		$data['SubMenuOne'] = 'Master Jabatan Upah';
         		$data['SubMenuTwo'] = '';
@@ -257,13 +272,13 @@ class C_MasterJabatanUpah extends CI_Controller
     }
 
     public function upload() {
-       
+
         $config['upload_path'] = 'assets/upload/importPR/masterjabatanupah';
         $config['file_name'] = 'MasterJabatanUpah-'.time();
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '2000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) {
             echo $this->upload->display_errors();
         }
@@ -271,7 +286,7 @@ class C_MasterJabatanUpah extends CI_Controller
             $file_data  = $this->upload->data();
             $filename   = $file_data['file_name'];
             $file_path  = 'assets/upload/importPR/masterjabatanupah/'.$file_data['file_name'];
-            
+
             if ($this->csvimport->get_array($file_path)){
                 $data = $this->csvimport->get_array($file_path);
                 $this->import($data, $filename);
@@ -304,7 +319,7 @@ class C_MasterJabatanUpah extends CI_Controller
 		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/RiwayatRekeningPekerja'));
     }
-    
+
 
 }
 
