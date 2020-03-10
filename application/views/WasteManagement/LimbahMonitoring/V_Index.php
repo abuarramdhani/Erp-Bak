@@ -87,11 +87,11 @@
                                                 <td>{{ item.jenis_limbah }}</td>
                                                 <td v-if="tableDetailed">{{ item.tanggal_kirim }}</td>
                                                 <td v-if="tableDetailed">{{ item.section_name }}</td>
-                                                <td>{{ item.berat_kirim }}</td>
+                                                <td>{{ Number(item.berat_kirim) }}</td>
                                             </tr>
                                             <tr>
                                                 <td :colspan="tableDetailed ? 4 : 2">Total Berat Limbah</td>
-                                                <td>{{ beratTotal }}</td>
+                                                <td>{{ Number(beratTotal) }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
