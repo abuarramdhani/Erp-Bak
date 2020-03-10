@@ -262,5 +262,145 @@ class M_transferpolareffgaji extends CI_Model
 		$sql = "delete from \"Presensi\".progress_transfer_reffgaji where user_ = '$user' and menu = 'transferpolareffgaji'";
 		$this->personalia->query($sql);
 	}
+
+	public function hitungIk($noind,$tanggal){
+		$sql = "select count(tdp.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi tdp INNER JOIN
+				(SELECT DISTINCT * from \"Presensi\".TShiftPekerja) tsp ON tdp.tanggal = tsp.tanggal AND tdp.noind = tsp.noind
+				WHERE tdp.tanggal = '$tanggal'
+				AND (tdp.kd_ket = 'PKJ' or (tdp.kd_ket = 'PDL') or (tdp.kd_ket = 'PDB') or tdp.kd_ket = 'PLB' or tdp.kd_ket = 'PID')
+				AND tdp.noind = '$noind'";
+		$result1 = $this->personalia->query($sql)->result_array();
+
+		$sql = "select a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind')
+				Union
+				SELECT a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind')
+				ORDER BY tanggal";
+		$result2 = $this->personalia->query($sql)->result_array();
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+		$simpan_tgl = "";
+		$lanjut = false;
+		foreach ($result2 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$lanjut = false;
+			}
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai);
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($ijin > 0 && $ijin <= 30){
+				$cek_denda = $this->cek_bebas_denda_if($keluar,$masuk,$ist_mulai,$ist_selesai);
+				if ($cek_denda == false) {
+					if($lanjut == false) {
+						$nilai -= 1;
+					}
+				}
+			}else{
+				if($lanjut == false){
+					$nilai -= 1;
+				}
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+		// echo $result1['0']['jml']."<br>".$nilai;exit();
+		return $nilai;
+	}
+
+	public function cek_bebas_denda_if($keluar,$masuk,$ist_mulai,$ist_selesai){
+		$hasil = false;
+		if ($keluar < $ist_mulai && $keluar < $ist_selesai) {
+			if($masuk <= $ist_selesai) {
+				$hit = $ist_selesai - $keluar;
+				if ($hit <= 1800) {
+					$hasil = true;
+				}else{
+					$hasil = false;
+				}
+			}
+		}
+
+		return $hasil;
+	}
 	
 } ?>
