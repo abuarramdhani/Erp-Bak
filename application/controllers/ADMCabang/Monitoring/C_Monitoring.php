@@ -70,7 +70,10 @@ class C_Monitoring extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['seksi'] = $this->M_presensibulanan->getSeksiByKodesie($kodesie);	
+		$data['seksi'] = $this->M_presensibulanan->getSeksiByKodesie($kodesie);
+
+		$data['status'] = $this->M_monitoringpresensi->statusKerja();
+		$data['unit'] = $this->M_monitoringpresensi->ambilUnit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -80,43 +83,103 @@ class C_Monitoring extends CI_Controller
 
 	function getMonTahunan(){
 		$kodesie = $this->session->kodesie;
-		$periodeAwal 			= trim($this->input->post('periodeAwal'));
-		$periodeAkhir 			= trim($this->input->post('periodeAkhir'));
+		$periode 			= trim($this->input->post('periode'));
+		$statusKerja = $this->input->post('statusKerja[]');
+		$unitKerja = $this->input->post('unitKerja');
+		$seksiKerja = $this->input->post('seksiKerja');
 
-		$selisihPeriode			= $periodeAkhir - $periodeAwal;
-		$i=0;
-		$periode = "";
-		for($i=1	;$i<=$selisihPeriode;$i++){
-			$periode .= ' , '.($periodeAkhir - $i);
+		if(!empty($statusKerja)){
+			if(is_array($statusKerja)){
+
+				if(!in_array("", $statusKerja)){
+					$statusKerja = array_map(function($val){
+						return "'$val'";
+					}, $statusKerja);
+					$statusKerja = implode(",", $statusKerja);
+
+					$q_status = "AND left(a.noind,1) IN ($statusKerja) ";
+				}else{
+					$q_status = "";
+				}
+			}
+		}else{
+			$q_status = "";
 		}
-		$periode 		= $periode.' , '.$periodeAkhir;
-		$periode = ltrim($periode, ' , ');
-		$periode = explode(' , ', $periode);
-		sort($periode);
 
-		$data['periode'] = $periode;
-
-		$queryPeriode = "";
-		$queryPeriode.= '(';
-		foreach ($periode as $prd) {
-			$queryPeriode .= "'$prd'".',';
+		if(!empty($unitKerja)){
+			$q_unit = "AND left(a.kodesie,5) = '$unitKerja'";
+		}else{
+			$q_unit = "";
 		}
-		$queryPeriode =  rtrim($queryPeriode,',');
-		$queryPeriode .= ')';
 
-		$dataTotalPeriode = $this->M_monitoringpresensi->getDataAbsensiTahunan($queryPeriode,$kodesie)[0]['jumlah_kerja'];
-		$dataPerPeriode   = array();
-		foreach ($periode as $prd) {
-			$dataPerPeriode[] = $this->M_monitoringpresensi->getDataAbsensiTahunanPerPeriode($prd,$kodesie)[0]['jumlah_kerja_per_periode'];
-			
+		if(!empty($seksiKerja)){
+			$seksiKerja = explode(' - ', $seksiKerja)[0];
+			$q_seksi = "AND left(a.kodesie,7) = '$seksiKerja' ";
+		}else{
+			$q_seksi = "";
 		}
+
+		$dataTabelPerTahun = [];
+		$dataTotalTahunan = [];
+		$dataTotalPerTahun = [];
+		for($i=1;$i<=12;$i++){
+			$dataTotalTahunan[] = $this->M_monitoringpresensi->getDataAbsensiTahunan($periode.'-'.str_pad($i, 2, '0', STR_PAD_LEFT),$kodesie,$q_status,$q_unit,$q_seksi);
+		}
+
+		for($i=1;$i<=12;$i++){
+			$dataTotalPerTahun[] = $this->M_monitoringpresensi->getDataAbsensiTahunanPerPeriode($periode.'-'.str_pad($i, 2, '0', STR_PAD_LEFT),$kodesie,$q_status,$q_unit,$q_seksi);
+		}
+
+			$dataTabelPerTahun = $this->M_monitoringpresensi->getDataPerTahun($periode,$kodesie,$q_status,$q_unit,$q_seksi);
+
+		$periodeBulan = [];
+
+		for($i = 1;$i <=12;$i++){
+			array_push($periodeBulan, date('F Y',strtotime($periode.'-'.str_pad($i, 2, '0', STR_PAD_LEFT))));
+		}
+		// echo "<pre>";print_r($dataTabelPerTahun);exit();
+
 		$persentasePerPeriode = array();
-		foreach ($dataPerPeriode as $ttlPrd) {
-			$persentasePerPeriode[] = intval($ttlPrd) / intval($dataTotalPeriode) * 100;
+		$kabehData = array();
+		$seksiPerTanggal = array();
+		$kodesieArr = array();
+		$index = 0;
+
+		for ($i=1; $i<=12; $i++) { 
+			foreach ($dataTotalTahunan[$index] as $key => $dtTtl) {
+				foreach ($dataTotalPerTahun[$index] as $key2 => $dtThn) {
+					if($key == $key2){
+						if($dtTtl['sum'] == 0 or $dtThn['sum'] == 0){
+							$persentasePerPeriode[$dtTtl['seksi']][] = 0;
+							$kabehData[] = 0;
+						}else{							
+							$persentasePerPeriode[$dtTtl['seksi']][] = intval($dtThn['sum']) / intval($dtTtl['sum']) * 100;
+							$kabehData[] = intval($dtThn['sum']) / intval($dtTtl['sum']) * 100;
+						}
+
+						$seksiPerTanggal[$index][] = $dtTtl['seksi'];
+						$kodesieArr[$index][] = $dtTtl['kodesie'];
+					}
+				}
+			}
+			$index++;
+
+			$persentasePerPeriode['TARGET'][] = 95;
 		}
-		$data['dataTotal'] = $dataTotalPeriode;
-		$data['dataPerPeriode'] = $dataPerPeriode;
+		$lastKey = key(array_slice($kabehData, -1, 1, true));
+		$kabehData[$lastKey+1] = 95;
+
+
+		$data['labelColor'][] = ['rgba(255, 99, 132, 0.7)','rgba(54, 162, 235, 0.7)','rgba(168, 50, 98, 0.7)','rgba(75, 192, 192, 0.7)','rgba(153, 102, 255, 0.7)','rgba(255, 159, 64, 0.7)','rgba(101,101,80,0.7)','rgba(101,196,0,0.7)','rgba(231,196,0,0.7)','rgba(101,101,148,0.7)','rgba(101,101,0,0.7)'];
+		
+		$data['dataTabelPerTahun'] = $dataTabelPerTahun;
+		$data['kabehData'] = $kabehData;
+		$data['kodesieArr'] = $kodesieArr;
+		$data['seksiPerTanggal'] = $seksiPerTanggal;
+		$data['dataTotalTahunan'] = $dataTotalTahunan;
+		$data['dataTotalPerTahun'] = $dataTotalPerTahun;
 		$data['data'] = $persentasePerPeriode;
+		$data['periodeBulan'] = $periodeBulan;
 
 
 		print_r(json_encode($data));
@@ -192,8 +255,12 @@ class C_Monitoring extends CI_Controller
 		$bulanAkhir 			= trim($this->input->post('periodeAkhir'));
 		$arrBulan				= $this->input->post('arrBulan');
 
-		$bulanAwal 				= date('Y-m-d',strtotime($bulanAwal));
-		$bulanAkhir 			= date('Y-m-d',strtotime($bulanAkhir));
+		
+
+		$lastKey = key(array_slice($arrBulan, -1, 1, true));
+		$bulanAwal 				= $arrBulan[0];
+		$bulanAkhir 			= $arrBulan[$lastKey];
+		// print_r($bulanAkhir);exit();
 
 		$periodeBulan = array();
 
@@ -246,9 +313,12 @@ class C_Monitoring extends CI_Controller
 			}
 			$index++;
 		}
-		// echo "<pre>";
-		// print_r($dataTotalPerBulan);exit();
 
+		$dataTabelPerBulanan = $this->M_monitoringpresensi->getDataPerBulanan($bulanAwal,$bulanAkhir,$kodesie,$q_status,$q_unit,$q_seksi);
+		// echo "<pre>";
+		// print_r($dataTabelPerBulanan);exit();
+
+		$data['dataTabelPerBulanan'] = $dataTabelPerBulanan;
 		$data['kabehData'] = $kabehData;
 		$data['kodesieArr'] = $kodesieArr;
 		$data['seksiPerTanggal'] = $seksiPerTanggal;
@@ -384,11 +454,13 @@ class C_Monitoring extends CI_Controller
 		}
 		$i = 0;
 
+		$dataTabelPerHarian = $this->M_monitoringpresensi->getDataPerHarian($tanggalAwal,$tanggalAkhir,$kodesie,$q_status,$q_unit,$q_seksi);
+
 
 
 		// echo "<pre>";
-		// print_r($persentasePerPeriode);exit();
-
+		// print_r($dataTabelPerHarian);exit();
+		$data['dataTabelPerHarian'] = $dataTabelPerHarian;
 		$data['kodesieArr'] = $kodesieArr;
 		$data['seksiPerTanggal'] = $seksiPerTanggal;
 		$data['kabehData'] = $kabehData;

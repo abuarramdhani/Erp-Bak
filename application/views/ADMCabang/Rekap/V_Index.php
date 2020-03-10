@@ -27,12 +27,25 @@
 
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-					<div class="panel panel-primary">
-					  <div class="panel-heading"><?= $Title ?></div>
+					<div class="panel panel-primary panelPrimer">
+					  <div class="panel-heading">
+					   <div class="panel-title">
+					  	<b class="pull-left"><?= $Title ?></b>
+					  	<button class="pull-right btn btn-info btn-intro">
+					  		<i class="fa fa-info-circle"></i>
+					  		&nbsp;Panduan
+					  	</button>
+					  	<button style="margin-right: 5px;" class="pull-right btn btn-warning btn-video" onclick="window.open('<?=base_url('') ?>assets/video/presensi_harian/rekappekerja.webm')">
+					  		<i class="fa fa-video-camera"></i>
+					  		&nbsp;Video Panduan
+					  	</button>
+					  </div>
+					  <div class="clearfix"></div>
+					  </div>
 					 <div class="panel-body">
 
 						<form>
-						  <div class="row">
+						  <div class="row" id="rowPeriode">
 						  <div class="form-group col-sm-2">
 						   <label>Periode</label>
 						  </div>
@@ -44,7 +57,7 @@
 	                                  </div>
 	                           </div>
 
-	                            <div class="row">
+	                            <div class="row" id="rowCheckBox">
 		                           <div class="form-group col-sm-2">
 							  		<label class="form-check-label" for="defaultCheck1">
 										All
@@ -58,7 +71,7 @@
 	                                  </div>
 	                           </div>
 
-	                           <div class="row">
+	                           <div class="row" id="rowStatusHubker">
 		                           <div class="form-group col-sm-2">								  		
 	                                    <label class="control-label" >Status Hubungan Kerja</label>
 								  		</div>
@@ -79,7 +92,7 @@
 	                                  </div>
 	                           </div>
 
-	                            <div class="row">
+	                            <div class="row" id="rowUnit">
 		                            <div class="form-group col-sm-2">								  		
 		                                    <label class="control-label" >Unit</label>
 									  	</div>
@@ -98,7 +111,7 @@
 	                                  </div>
 	                           </div>
 
-	                           <div class="row">
+	                           <div class="row" id="rowSeksi">
 	                           <div class="form-group col-sm-2">								  		
 		                                    <label class="control-label">Seksi</label>
 									  	</div>
@@ -153,7 +166,8 @@
 				             Data
 				       </div>
 				        <div class="panel-title pull-right">
-				        	<button class="btn btn-success btn-excel"><i class="fa fa-file-excel-o"></i> &nbsp;Excel</button>
+				        	<button class="btn btn-success btn-excel btn-lg"><i class="fa fa-file-excel-o"></i> &nbsp;Excel</button>
+				        	<button class="btn btn-danger btn-pdf btn-lg"><i class="fa fa-file-pdf-o"></i> &nbsp;PDF</button>
 				        </div>
 				        <div class="clearfix"></div>
 					  </div>
@@ -235,6 +249,59 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		var introguide = introJs();
+
+		introguide.setOptions({
+		    steps: [
+		        {
+		          element: '.panelPrimer',
+		          intro: 'Rekap per pekerja merupakan sebuah aplikasi yang berguna untuk memonitoring data presensi pekerja berdasarkan range tanggal / periode.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowPeriode',
+		          intro: 'Pertama, Anda Wajib Memilih Range Tanggal ! ',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowCheckBox',
+		          intro: '(Opsional) Jika Ingin Memfilter Data Berdasarkan Status Hubungan Kerja, Unit, dan Seksi Anda Bisa Meng-uncheck Checkbox ini.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowStatusHubker',
+		          intro: '(Opsional) Pilih Status Hubungan Kerja yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowUnit',
+		          intro: '(Opsional) Pilih Unit Kerja yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '#rowSeksi',
+		          intro: '(Opsional) Pilih Seksi yang Ingin Anda Filter.',
+		          position: 'bottom'
+		        },
+		        {
+		          element: '.btn-submit',
+		          intro: 'Tekan Button Proses untuk Mulai Memproses Data.',
+		          position: 'bottom'
+		        }
+		    ],
+		    skipLabel: 'Lewati',
+		    nextLabel: 'Berikutnya',
+		    prevLabel: 'Kembali',
+		    doneLabel: 'Selesai',
+		    hideNext: true
+		});
+
+		$(".btn-intro").on('click',function(e){
+			introguide.start();
+		})
+
+
 		$('input[name="periode"]').daterangepicker({
 		      autoUpdateInput: false,
 		      locale: {
@@ -256,7 +323,10 @@
 			$('.i-checks').iCheck('check')
 			$('.customInput').prop('disabled',true)
 			$("#vm-status").select2('val','')
+			$("#vm-unit	").select2().val('').trigger('change')
+			$("#vm-seksi").select2().val('').trigger('change')
 			$("#vm-unit").val('')
+			$("#vm-seksi").val('')
 			$("#vm-seksi").prop('disabled',true)
 		});
 		$(document).on('ifUnchecked', '.i-checks' ,function(event){
@@ -267,6 +337,7 @@
 		$("#vm-unit").on('change',function(e){
 			let val = $(this).val();
 			let keyKodesie = val.split(' - ')[0];
+			$("#vm-seksi").select2().val('').trigger('change')
 			if(val != ""){
 				$("#vm-seksi").prop('disabled',false)
 			}else{
@@ -297,6 +368,27 @@
 			}
 		})
 
+		})
+
+		$('.btn-pdf').on('click',function(e){
+			e.preventDefault();
+			let tanggalAwal = $('#tanggalAwal').val();
+			let tanggalAkhir = $('#tanggalAkhir').val();
+			let status = $("#vm-status").val();
+			let unit = $("#vm-unit").val();
+			let seksi = $("#vm-seksi").val();
+			if(status==null){
+				status='empty';
+			}
+			if(unit==null){
+				unit='empty';
+			}
+			if(seksi == null){
+				seksi ='empty';
+			}
+
+			let url = '<?php echo base_url(''); ?>AdmCabang/Rekap/cetakPDF?tanggalAwal='+tanggalAwal+'&tanggalAkhir='+tanggalAkhir+'&statusKerja='+status+'&unitKerja='+unit+'&seksiKerja='+seksi+' ';
+			window.open(url,'_blank')
 		})
 
 
@@ -345,8 +437,8 @@
 				selisihHari += 1
 			console.log(selisihHari)
 			if(!periode){
-				alert('Empty!');
-
+				Swal.fire('Oops!','Periode Wajib diisi!','warning')
+				$("input#daterangepicker").focus()
 			}else{
 				$('#cover-spin').fadeIn();
 				$.ajax({
@@ -388,7 +480,7 @@
 	                    $('#bodyRekap').html(html);
 	                    $('#tblRekap').DataTable();
 
-	                    var keterangan = "<p id='note' style='font-style: italic;font-weight:bold'>Persentase Kehadiran = Jumlah Kehadiran / Jumlah Hari * 100</p>";
+	                    var keterangan = "<p id='note' style='font-style: italic;font-weight:bold'>Persentase Kehadiran = ( Jumlah Kehadiran - Jumlah Izin Pribadi) / Jumlah Hari * 100</p>";
 	                    $("#tblRekap_wrapper").after(keterangan)
 						
 					},
@@ -429,7 +521,6 @@
 			let tanggalAkhir = tanggal[1];
 
 			const today = moment();
-			console.log(today)
 			$("#cover-spin").fadeIn();
 			$.ajax({
 				url: '<?php echo base_url(''); ?>AdmCabang/Rekap/getGrafik',
@@ -469,75 +560,103 @@
 					                enabled: true,
 					                mode: 'nearest',
 					                callbacks: {
+					                	title: function(tooltipItems, data){
+					                		var multistringText = [tooltipItems[0].yLabel];
+					                		switch(tooltipItems[0].index){
+					                       	case 0:
+					                       	multistringText[0] = "Terlambat : "+ res.data[0];
+					                       	multistringText.push("Terlambat pada tanggal :");
+					                       	break;
+					                       	case 1:
+					                       	multistringText[0] = "Izin Pribadi : "+res.data[1];		
+					                       	multistringText.push("Izin Pribadi pada tanggal : ")		                       	
+					                       	break;
+					                       	case 2:
+					                       	multistringText[0] = "Mangkir : " + res.data[2];
+					                     	multistringText.push("Mangkir pada tanggal : ")
+					                       	break;
+					                       	case 3:
+					                       	multistringText[0] = "Sakit : " +res.data[3];
+					                       	multistringText.push("Sakit pada tanggal : ")
+					                       	break;
+					                       	case 4:
+					                       	multistringText[0] = "Izin Pamit : "+res.data[4];
+					                       	multistringText.push("Izin Pamit pada tanggal : ")
+					                       	break;
+					                       	case 5:
+					                       	multistringText[0] = "Izin Perusahaan : " + res.data[5];
+					                       	multistringText.push("Izin Perusahaan pada tanggal : ")					                       	
+					                       	break;
+					                       	case 6:
+					                       	multistringText[0] = "Bekerja : " + res.data[6];
+					                       	multistringText.push("Bekerja pada tanggal : ")					                       	
+					                       	break;
+					                       }
+					                        return multistringText;
+					                	}
+					                	,
 					                    label: function(tooltipItems, data) {
-					                    	console.log(tooltipItems)	
 					                       var multistringText = [tooltipItems.yLabel];
 					                       switch(tooltipItems.index){
 					                       	case 0:
-					                       	multistringText[0] = "Terlambat : "+ res.data[0];
 					                       	if(res.tanggalPresensi['tgl_terlambat'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_terlambat'].split(' , ');
-					                       		multistringText.push("Terlambat pada tanggal :");
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       		
 					                       	}
 					                       	break;
 					                       	case 1:
-					                       	multistringText[0] = "Izin Pribadi : "+res.data[1];
 					                       	if(res.tanggalPresensi['tgl_izin_pribadi'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_izin_pribadi'].split(' , ');
-					                       		multistringText.push("Izin Pribadi pada tanggal : ")
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       	}					                       	
 					                       	break;
 					                       	case 2:
-					                       	multistringText[0] = "Mangkir : " + res.data[2];
 					                       	if(res.tanggalPresensi['tgl_mangkir'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_mangkir'].split(' , ');
-					                     	  	multistringText.push("Mangkir pada tanggal : ")
 					                     	  	for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}                     		
 					                       	}
 					                       	break;
 					                       	case 3:
-					                       	multistringText[0] = "Sakit : " +res.data[3];
 					                       	if(res.tanggalPresensi['tgl_sakit'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_sakit'].split(' , ');
-					                       		multistringText.push("Sakit pada tanggal : ")
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       	}
 					                       	break;
 					                       	case 4:
-					                       	multistringText[0] = "Izin Pamit : "+res.data[4];
 					                       	if(res.tanggalPresensi['tgl_izin_pamit'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_izin_pamit'].split(' , ');
-					                       		multistringText.push("Izin Pamit pada tanggal : ")
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       	}
 					                       	break;
 					                       	case 5:
-					                       	multistringText[0] = "Izin Perusahaan : " + res.data[5];
 					                       	if(res.tanggalPresensi['tgl_izin_perusahaan'] != "-"){
 					                       		let tanggal = res.tanggalPresensi['tgl_izin_perusahaan'].split(' , ');
-					                       		multistringText.push("Izin Perusahaan pada tanggal : ")
 					                       		for(var i = 0;i < tanggal.length ; i ++){
-					                       			multistringText.push(tanggal[i])
+					                       			multistringText[i] = tanggal[i]
 					                       		}
 					                       	}					                       	
 					                       	break;
 					                       	case 6:
-					                       	multistringText[0] = "Bekerja : "+res.data[6];
+					                       	if(res.tanggalPresensi['tgl_bekerja'] != "-"){
+					                       		let tanggal = res.tanggalPresensi['tgl_bekerja'].split(' , ');
+					                       		for(var i = 0;i < tanggal.length ; i ++){
+					                       			multistringText[i] = tanggal[i]
+					                       		}
+					                       	}
 					                       	break;
-					                       }
+					                       }					                       
+					                    	console.log(tooltipItems)	
 					                        return multistringText;
 					                    }
 					                }
