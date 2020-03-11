@@ -49,7 +49,7 @@
                                 <div class="panel-body">
                                     <div class="table-responsive" >
                                         <table class="datatable table table-bordered table-hover table-striped text-center tbltrack" style="width: 100%;">
-                                            <thead style="background-color:#44e3d0; color:black">
+                                            <thead class="bg-black">
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Tanggal Dibuat</th>
@@ -61,7 +61,7 @@
                                                     <th>Mulai Pelayanan</th>
                                                     <th>Selesai Pelayanan</th>
                                                     <th>Waktu Pelayanan</th>
-                                                    <th>PIC Pengeluaran</th>
+                                                    <th>PIC Pelayanan</th>
                                                     <th>Mulai Pengeluaran</th>
                                                     <th>Selesai Pengeluaran</th>
                                                     <th>Waktu Pengeluaran</th>

@@ -21,8 +21,8 @@ class M_arsip extends CI_Model {
                 urgent, pic_pelayan, pic_pengeluaran, pic_packing, bon, cancel
                 from khs_tampung_spb
                 where selesai_packing is not null 
-                or bon = 'BON' 
-                or bon = 'LANGSUNG'
+                or (bon = 'BON' AND selesai_pelayanan is not null)
+                or (bon = 'LANGSUNG' AND selesai_pengeluaran is not null)
                 or cancel is not null
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
