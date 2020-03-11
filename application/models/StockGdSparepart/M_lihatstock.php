@@ -53,8 +53,8 @@ class M_lihatstock extends CI_Model
                            AND mmt.last_updated_by = fu.user_id
                            AND mmt.transaction_type_id = mtt.transaction_type_id
                            AND mtst.transaction_source_type_id = mmt.transaction_source_type_id
-                           AND msib.segment1 = ksm.item
-                           AND khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) <> 0
+                           AND msib.segment1 = ksm.item(+)
+                           --AND khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) <> 0
                            --
                            AND mmt.transaction_date BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
                            AND mmt.subinventory_code = '$sub' --subinventory
@@ -85,8 +85,8 @@ class M_lihatstock extends CI_Model
                  AND msi.secondary_inventory_name = '$sub' --subinventory
                  $kode $kode_awal
                  AND msib.organization_id = msi.organization_id
-                 AND msib.segment1 = ksm.item
-                 AND khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) <> 0
+                 AND msib.segment1 = ksm.item(+)
+                -- AND khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) <> 0
                  AND msib.inventory_item_id NOT IN (
                         SELECT mmt.inventory_item_id
                           FROM mtl_material_transactions mmt
