@@ -20,21 +20,23 @@
                 <th>Onhand</th>
                 <th>Min</th>
                 <th>Max</th>
-                <th>Alamat</th>
+                <th>Lokasi Simpan</th>
                 <th>SubInventory</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
         <?php $i = 1; foreach ($data as $val) { 
-            if ($val['MIN_MINMAX_QUANTITY'] != '' || $val['MAX_MINMAX_QUANTITY'] != '') {
-                $avg = ($val['MIN_MINMAX_QUANTITY'] + $val['MAX_MINMAX_QUANTITY']) / 2;
-                if ($val['MIN_MINMAX_QUANTITY'] > $val['ONHAND']) {
+            if ($val['MIN'] != '' || $val['MAX'] != '') {
+                $avg = ($val['MIN'] + $val['MAX']) / 2;
+                if ($val['MIN'] >= $val['ONHAND']) {
                     $td = 'bg-danger';
-                }elseif ($val['ONHAND'] > $val['MAX_MINMAX_QUANTITY']) {
+                }elseif ($val['ONHAND'] > $val['MAX']) {
                     $td = 'bg-success';
                 }elseif ($val['ONHAND'] < ($avg / 2)) {
                     $td = 'bg-warning';
+                }else {
+                    $td = '';
                 }
             }else {
                 $td = '';
@@ -51,15 +53,34 @@
                 <td class="<?= $td?>"><input type="hidden" id="satuan<?= $i?>" value="<?= $val['UOM']?>"><?= $val['UOM']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="in<?= $i?>" value="<?= $val['SUM_QTY_IN']?>"><?= $val['SUM_QTY_IN']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="out<?= $i?>" value="<?= $val['SUM_QTY_OUT1']?>"><?= $val['SUM_QTY_OUT']?></td>
-                <td class="<?= $td?>"><input type="hidden" id="onhand<?= $i?>" value="<?= $val['ONHAND']?>"><?= $val['ONHAND']?></td>
-                <td class="<?= $td?>"><input type="hidden" id="min<?= $i?>" value="<?= $val['MIN_MINMAX_QUANTITY']?>"><?= $val['MIN_MINMAX_QUANTITY']?></td>
-                <td class="<?= $td?>"><input type="hidden" id="max<?= $i?>" value="<?= $val['MAX_MINMAX_QUANTITY']?>"><?= $val['MAX_MINMAX_QUANTITY']?></td>
-                <td class="<?= $td?>"><input type="hidden" id="alamat<?= $i?>" value=""></td>
+                <td class="<?= $td?>" style="font-weight:bold"><input type="hidden" id="onhand<?= $i?>" value="<?= $val['ONHAND']?>"><?= $val['ONHAND']?></td>
+                <td class="<?= $td?>"><input type="hidden" id="min<?= $i?>" value="<?= $val['MIN']?>"><?= $val['MIN']?></td>
+                <td class="<?= $td?>"><input type="hidden" id="max<?= $i?>" value="<?= $val['MAX']?>"><?= $val['MAX']?></td>
+                <td class="<?= $td?>"><input type="hidden" id="alamat<?= $i?>" value="<?= $val['LOKASI']?>"><?= $val['LOKASI']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="subinv<?= $i?>" value="<?= $val['SUBINV']?>"><?= $val['SUBINV']?></td>
                 <td class="<?= $td?>"><button type="button" class="btn btn-md btn-info" onclick="modalHistory(<?= $i?>)"><i class="fa fa-search"></i></button></td>
             </tr>
         <?php $i++; } ?>
         </tbody>
+    </table>
+</div>
+<div class="col-md-6">
+    <table class="table" style="width: 100%;">
+        <tr>
+            <td colspan="2" style="font-weight:bold">Keterangan :</td>
+        </tr>
+        <tr>
+            <td class="bg-danger"></td>
+            <td> Kondisi jika onhand < MIN</td>
+        </tr>
+        <tr>
+            <td class="bg-warning"></td>
+            <td> Kondisi jika onhand < average : 2</td>
+        </tr>
+        <tr>
+            <td class="bg-success"></td>
+            <td> Kondisi jika onhand > MAX</td>
+        </tr>
     </table>
 </div>
 

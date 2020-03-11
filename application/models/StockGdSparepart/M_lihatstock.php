@@ -14,8 +14,8 @@ class M_lihatstock extends CI_Model
         FROM (SELECT   aa.item, aa.description, aa.uom,
                        NVL (SUM (aa.qty_in), 0) sum_qty_in,
                        NVL (SUM (aa.qty_out), 0) sum_qty_out,
-                       NVL (SUM (aa.qty_out1), 0) sum_qty_out1, aa.onhand,
-                       aa.min_minmax_quantity, aa.max_minmax_quantity, aa.subinv
+                       NVL (SUM (aa.qty_out1), 0) sum_qty_out1, aa.onhand, aa.MIN,
+                       aa.MAX, aa.subinv, aa.lokasi
                   FROM (SELECT msib.segment1 item, msib.description,
                                mmt.transaction_uom uom,
                                (SELECT SUM (mmt_in.transaction_quantity)
@@ -30,48 +30,68 @@ class M_lihatstock extends CI_Model
                                   FROM mtl_material_transactions mmt_out
                                  WHERE mmt_out.transaction_id = mmt.transaction_id
                                    AND mmt_out.transaction_quantity LIKE '-%') qty_out1,
-                               khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, '$sub', NULL, NULL) onhand,
-                               msib.min_minmax_quantity, msib.max_minmax_quantity,
-                               mmt.subinventory_code subinv, mmt.transaction_date,
-                               mmt.transaction_type_id, mtt.transaction_type_name,
+                               khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) onhand,
+                               ksm.MIN, ksm.MAX, mmt.subinventory_code subinv,
+                               mmt.transaction_date, mmt.transaction_type_id,
+                               mtt.transaction_type_name,
                                mmt.transaction_source_type_id,
                                mtst.transaction_source_type_name,
-                               fu.user_name transact_by
+                               fu.user_name transact_by,
+                               (SELECT lok.lokasi
+                                  FROM khsinvlokasisimpan lok
+                                 WHERE mmt.inventory_item_id = lok.inventory_item_id
+                                   AND mmt.subinventory_code = lok.subinv) lokasi
                           FROM mtl_system_items_b msib,
                                mtl_material_transactions mmt,
                                fnd_user fu,
                                mtl_transaction_types mtt,
-                               mtl_txn_source_types mtst
+                               mtl_txn_source_types mtst,
+                               khs_sp_minmax ksm
                          WHERE msib.inventory_item_status_code = 'Active'
                            AND msib.organization_id = mmt.organization_id
                            AND msib.inventory_item_id = mmt.inventory_item_id
                            AND mmt.last_updated_by = fu.user_id
                            AND mmt.transaction_type_id = mtt.transaction_type_id
                            AND mtst.transaction_source_type_id = mmt.transaction_source_type_id
-                           AND khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, '$sub', NULL, NULL) <> 0
+                           AND msib.segment1 = ksm.item
+                           AND khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) <> 0
                            --
                            AND mmt.transaction_date BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
                            AND mmt.subinventory_code = '$sub' --subinventory
                            $kode $kode_awal
-                           ) aa
-              GROUP BY aa.item, aa.description, aa.uom, aa.onhand, aa.min_minmax_quantity, aa.max_minmax_quantity, aa.subinv
-      UNION
-      SELECT msib.segment1 item, msib.description, msib.primary_uom_code uom,
-             NVL (NULL, 0) sum_qty_in, NVL (NULL, 0) sum_qty_out, NVL (NULL, 0) sum_qty_out1,
-             khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) onhand,
-             msib.min_minmax_quantity, msib.max_minmax_quantity,
-             msi.secondary_inventory_name subinv
-        FROM mtl_system_items_b msib, mtl_secondary_inventories msi
-       WHERE msib.inventory_item_status_code = 'Active'
-         AND msi.secondary_inventory_name = '$sub' --subinventory
-         $kode $kode_awal
-         AND msib.organization_id = msi.organization_id
-         AND khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) <> 0
-         AND msib.inventory_item_id NOT IN (
-                SELECT mmt.inventory_item_id
-                  FROM mtl_material_transactions mmt
-                  WHERE mmt.transaction_date BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
-                   AND mmt.subinventory_code = '$sub'))
+                       ) aa
+              GROUP BY aa.item,
+                       aa.description,
+                       aa.uom,
+                       aa.onhand,
+                       aa.MIN,
+                       aa.MAX,
+                       aa.subinv,
+                       aa.lokasi
+              UNION
+              SELECT msib.segment1 item, msib.description,
+                     msib.primary_uom_code uom, NVL (NULL, 0) sum_qty_in,
+                     NVL (NULL, 0) sum_qty_out,NVL (NULL, 0) sum_qty_out1,
+                     khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) onhand,
+                     ksm.MIN, ksm.MAX, msi.secondary_inventory_name subinv,
+                     (SELECT lok.lokasi
+                        FROM khsinvlokasisimpan lok
+                       WHERE msib.inventory_item_id = lok.inventory_item_id
+                         AND msi.secondary_inventory_name = lok.subinv) lokasi
+                FROM mtl_system_items_b msib,
+                     mtl_secondary_inventories msi,
+                     khs_sp_minmax ksm
+               WHERE msib.inventory_item_status_code = 'Active'
+                 AND msi.secondary_inventory_name = '$sub' --subinventory
+                 $kode $kode_awal
+                 AND msib.organization_id = msi.organization_id
+                 AND msib.segment1 = ksm.item
+                 AND khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) <> 0
+                 AND msib.inventory_item_id NOT IN (
+                        SELECT mmt.inventory_item_id
+                          FROM mtl_material_transactions mmt
+                         WHERE mmt.transaction_date BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
+                           AND mmt.subinventory_code = '$sub'))
                 $qty";
         $query = $oracle->query($sql);
         return $query->result_array();
