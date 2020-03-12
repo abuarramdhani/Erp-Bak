@@ -76,6 +76,22 @@ class C_DPBVendor extends CI_Controller {
                 'vendor_ekspedisi' => 'readonly',
                 'lain_lain'        => ''
             ];
+        } else if ( $this->session->user === 'F2326' ) {
+            $data['UserAccess'] = [   
+                'jenis_kendaraan'  => '',
+                'no_kendaraan'     => '',
+                'nama_supir'       => '',
+                'vendor_ekspedisi' => '',
+                'lain_lain'        => ''
+            ];
+        } else if ( $this->session->user === 'J1396' ) {
+            $data['UserAccess'] = [   
+                'jenis_kendaraan'  => '',
+                'no_kendaraan'     => '',
+                'nama_supir'       => '',
+                'vendor_ekspedisi' => '',
+                'lain_lain'        => ''
+            ];
         }
 
 		$this->load->view('V_Header', $data);
