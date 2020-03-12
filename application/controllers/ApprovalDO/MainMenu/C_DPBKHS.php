@@ -77,6 +77,20 @@ class C_DPBKHS extends CI_Controller {
                 'delete_row' => '',
                 'save'       => ''
             ];
+        } else if ( $this->session->user === 'F2326' ) {
+            $data['UserAccess'] = [   
+                'add_row'    => '',
+                'edit_field' => '',
+                'delete_row' => '',
+                'save'       => ''
+            ];
+        } else if ( $this->session->user === 'J1396' ) {
+            $data['UserAccess'] = [   
+                'add_row'    => '',
+                'edit_field' => '',
+                'delete_row' => '',
+                'save'       => ''
+            ];
         }
 
 		$this->load->view('V_Header', $data);
