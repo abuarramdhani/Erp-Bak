@@ -209,6 +209,7 @@
 		<script src="<?= base_url('assets/js/customRKH.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customAC.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customSGS.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customMPI.js') ?>"></script>
 
 		
 

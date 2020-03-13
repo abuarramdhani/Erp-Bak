@@ -4036,3 +4036,33 @@ $route['StockGdSparepart/LihatTransact/(:any)/(:any)']	= 'StockGdSparepart/C_Lih
 $route['StockGdSparepart/MinMaxStock']					= 'StockGdSparepart/C_MinMax';
 $route['StockGdSparepart/MinMaxStock/(:any)']			= 'StockGdSparepart/C_MinMax/$1';
 $route['StockGdSparepart/MinMaxStock/(:any)/(:any)']	= 'StockGdSparepart/C_MinMax/$1/$2';
+
+//-------------------------------------------Monitoring Picklist--------------------------------------------------//
+$route['MonitoringPicklistPPIC'] 							= 'MonitoringPicklist/C_Index';
+$route['MonitoringPicklistFabrikasi'] 							= 'MonitoringPicklist/C_Index';
+$route['MonitoringPicklistGudang'] 							= 'MonitoringPicklist/C_Index';
+
+$route['MonitoringPicklistPPIC/BelumApprove']					= 'MonitoringPicklist/C_BelumPPIC';
+$route['MonitoringPicklistPPIC/BelumApprove/(:any)']			= 'MonitoringPicklist/C_BelumPPIC/$1';
+$route['MonitoringPicklistPPIC/BelumApprove/(:any)/(:any)']		= 'MonitoringPicklist/C_BelumPPIC/$1/$2';
+
+$route['MonitoringPicklistPPIC/SudahApprove']					= 'MonitoringPicklist/C_SudahPPIC';
+$route['MonitoringPicklistPPIC/SudahApprove/(:any)']			= 'MonitoringPicklist/C_SudahPPIC/$1';
+$route['MonitoringPicklistPPIC/SudahApprove/(:any)/(:any)']		= 'MonitoringPicklist/C_SudahPPIC/$1/$2';
+
+$route['MonitoringPicklistFabrikasi/BelumApprove']					= 'MonitoringPicklist/C_BelumFabrikasi';
+$route['MonitoringPicklistFabrikasi/BelumApprove/(:any)']			= 'MonitoringPicklist/C_BelumFabrikasi/$1';
+$route['MonitoringPicklistFabrikasi/BelumApprove/(:any)/(:any)']	= 'MonitoringPicklist/C_BelumFabrikasi/$1/$2';
+
+$route['MonitoringPicklistFabrikasi/SudahApprove']					= 'MonitoringPicklist/C_SudahFabrikasi';
+$route['MonitoringPicklistFabrikasi/SudahApprove/(:any)']			= 'MonitoringPicklist/C_SudahFabrikasi/$1';
+$route['MonitoringPicklistFabrikasi/SudahApprove/(:any)/(:any)']	= 'MonitoringPicklist/C_SudahFabrikasi/$1/$2';
+$route['MonitoringPicklistFabrikasi/SudahApprove/(:any)/(:any)/(:any)/(:any)']	= 'MonitoringPicklist/C_SudahFabrikasi/$1/$2/$3/$4';
+
+$route['MonitoringPicklistGudang/BelumApprove']					= 'MonitoringPicklist/C_BelumGudang';
+$route['MonitoringPicklistGudang/BelumApprove/(:any)']			= 'MonitoringPicklist/C_BelumGudang/$1';
+$route['MonitoringPicklistGudang/BelumApprove/(:any)/(:any)']	= 'MonitoringPicklist/C_BelumGudang/$1/$2';
+
+$route['MonitoringPicklistGudang/SudahApprove']					= 'MonitoringPicklist/C_SudahGudang';
+$route['MonitoringPicklistGudang/SudahApprove/(:any)']			= 'MonitoringPicklist/C_SudahGudang/$1';
+$route['MonitoringPicklistGudang/SudahApprove/(:any)/(:any)']	= 'MonitoringPicklist/C_SudahGudang/$1/$2';
