@@ -427,20 +427,25 @@ class C_TarikFingerspot extends CI_Controller
 
         if('192.168.168.50'==$server)
         {
-        	$mail->Subject = 'Laporan Tarik Absensi Server 168.50';
+        	$subjek = 'Laporan Tarik Absensi Server 168.50';
+        	$mail->Subject = $subjek.' - Data : '.$no_c.'';
         } else if('192.168.168.178'==$server)
         {
-        	$mail->Subject = 'Laporan Tarik Absensi Server 168.178';
+        	$subjek = 'Laporan Tarik Absensi Server 168.178';
+        	$mail->Subject = $subjek.' - Data : '.$no_c.'';
         } else if('192.168.168.179'==$server)
         {
-        	$mail->Subject = 'Laporan Tarik Absensi Server 168.179';
+        	$subjek = 'Laporan Tarik Absensi Server 168.179';
+        	$mail->Subject = $subjek.' - Data : '.$no_c.'';
         } else if('192.168.168.207'==$server)
         {
-        	$mail->Subject = 'Laporan Tarik Absensi Server 168.207';
+        	$subjek = 'Laporan Tarik Absensi Server 168.207';
+        	$mail->Subject = $subjek.' - Data : '.$no_c.'';
         }
         else
         {
-       		$mail->Subject = 'Laporan Tarik Absensi Pekerja Semua Titik';
+        	$subjek = 'Laporan Tarik Absensi Pekerja Semua Titik';
+       		$mail->Subject = $subjek.' - Data : '.$no_c.'';
         }
 
 
