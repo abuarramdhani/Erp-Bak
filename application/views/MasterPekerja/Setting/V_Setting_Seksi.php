@@ -35,7 +35,11 @@
                                         <thead>
                                             <th>No</th>
                                             <th>Kodesie</th>
+                                            <th>Dept</th>
+                                            <th>Bidang</th>
+                                            <th>Unit</th>
                                             <th>Seksi</th>
+                                            <th>Pekerjaan</th>
                                             <th>Status</th>
                                             <th>Alasan</th>
                                             <th>Action</th>
@@ -45,7 +49,11 @@
                                             <tr>
                                                 <td><?= $x ?></td>
                                                 <td id="tdmpkks"><?= $key['kodesie'] ?></td>
+                                                <td><?= $key['dept'] ?></td>
+                                                <td><?= $key['bidang'] ?></td>
+                                                <td><?= $key['unit'] ?></td>
                                                 <td id="tdmpksk" style="text-align: left;"><?= rtrim($key['seksi']) ?></td>
+                                                <td><?= $key['pekerjaan'] ?></td>
                                                 <td>
                                                     <?php
                                                     if ($key['flag'] == 1) {
