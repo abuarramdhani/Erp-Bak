@@ -1,3 +1,8 @@
+<style>
+    .dataTables_filter{
+        float: right;
+    }
+</style>
 <section class="content" id="mcc_here">
     <div class="inner" >
         <div class="row">

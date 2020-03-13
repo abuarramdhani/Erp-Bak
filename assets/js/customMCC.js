@@ -135,7 +135,23 @@ function mcc_showTbl()
 function mcc_init_tbl()
 {
 	var mcc_tabel = $('#mcc_tbl_list').DataTable({
-		scrollX: true
+		scrollX: true,
+		dom: 'Bfrtip',
+        buttons: [
+            {
+            	extend: 'print',
+            	exportOptions: {
+            		columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+            	}
+            },
+            {
+            	extend: 'excelHtml5',
+            	title: '',
+            	exportOptions: {
+            		columns: [ 0, 1, 2, 3, 4, 5, 6 ]
+            	}
+            }
+        ]
 	});
 
 	$('.mccdelrow').off('click');
