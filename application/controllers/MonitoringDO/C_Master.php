@@ -56,8 +56,37 @@ class C_Master extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
+    public function SubInv()
+    {
+        $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('MonitoringDO/V_Subinv', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
+    public function Subinv_submit()
+    {
+      $data = $this->input->post('Subinv');
+      $datasub = ['datasubinven' => $data];
+      $this->session->set_userdata($datasub);
+
+      redirect('MonitoringDO/SettingDO/');
+
+    }
+
     public function SettingDO()
     {
+
         $this->checkSession();
         $user_id = $this->session->userid;
 
@@ -76,61 +105,61 @@ class C_Master extends CI_Controller
 
     public function countDO()
     {
-      $data[0] = '';
-      $data[1] = '';
-      $data[2] = '';
-      $data[3] = '';
-      $data[4] = '';
-      // $data[0] = sizeof($this->M_monitoringdo->getDO());
-      // $data[1] = sizeof($this->M_monitoringdo->sudahdiAssign());
-      // $data[2] = sizeof($this->M_monitoringdo->sudahdiLayani());
-      // $data[3] = sizeof($this->M_monitoringdo->sudahdiMuat());
-      // $data[4] = sizeof($this->M_monitoringdo->GetSudahCetakCekFoCount());
-      echo json_encode($data);
+        $data[0] = '';
+        $data[1] = '';
+        $data[2] = '';
+        $data[3] = '';
+        $data[4] = '';
+        // $data[0] = sizeof($this->M_monitoringdo->getDO());
+        // $data[1] = sizeof($this->M_monitoringdo->sudahdiAssign());
+        // $data[2] = sizeof($this->M_monitoringdo->sudahdiLayani());
+        // $data[3] = sizeof($this->M_monitoringdo->sudahdiMuat());
+        // $data[4] = sizeof($this->M_monitoringdo->GetSudahCetakCekFoCount());
+        echo json_encode($data);
     }
 
     public function GetSetting()
     {
-      $datag = $this->M_monitoringdo->getDO();
-      // echo "<pre>";
-      // print_r($datag);
-      // die;
-      if (!empty($datag[0]['DO/SPB'])) {
-        foreach ($datag as $g) {
-            $dataku[] = $g['DO/SPB'];
-        }
-        $no = 0;
-        foreach ($dataku as $k) {
-            $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
-            $no++;
-        }
-
-        $final = [];
-        foreach ($datakau as $f) {
-            for ($i=0; $i < sizeof($f); $i++) {
-                if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
-                    $var = 'false';
-                    break;
-                } else {
-                    $var = 'true';
-                }
+        $datag = $this->M_monitoringdo->getDO();
+        // echo "<pre>";
+        // print_r($datag);
+        // die;
+        if (!empty($datag[0]['DO/SPB'])) {
+            foreach ($datag as $g) {
+                $dataku[] = $g['DO/SPB'];
             }
-            array_push($final, $var);
+            $no = 0;
+            foreach ($dataku as $k) {
+                $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
+                $no++;
+            }
+
+            $final = [];
+            foreach ($datakau as $f) {
+                for ($i=0; $i < sizeof($f); $i++) {
+                    if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
+                        $var = 'false';
+                        break;
+                    } else {
+                        $var = 'true';
+                    }
+                }
+                array_push($final, $var);
+            }
+
+            $finaldestination = [];
+            $number = 0;
+            foreach ($datag as $d) {
+                $d['CHECK'] = $final[$number];
+                $number++;
+                array_push($finaldestination, $d);
+            }
+            $data['get'] = $finaldestination;
+        } else {
+            $data['get'] = $this->M_monitoringdo->getDO();
         }
 
-        $finaldestination = [];
-        $number = 0;
-        foreach ($datag as $d) {
-            $d['CHECK'] = $final[$number];
-            $number++;
-            array_push($finaldestination, $d);
-        }
-        $data['get'] = $finaldestination;
-      }else {
-        $data['get'] = $this->M_monitoringdo->getDO();
-      }
-
-      $this->load->view('MonitoringDO/V_Ajax_Setting', $data);
+        $this->load->view('MonitoringDO/V_Ajax_Setting', $data);
     }
 
     public function InputDO()
@@ -157,7 +186,6 @@ class C_Master extends CI_Controller
         $id = $this->input->post('requests_number');
         $user = $this->input->post('person_id');
         $data = $this->M_monitoringdo->getDataSelected($id);
-
         echo json_encode($this->M_monitoringdo->insertDO(array(
           'HEADER_ID' => $data[0]['HEADER_ID'],
           'REQUEST_NUMBER' => $id,
@@ -172,45 +200,64 @@ class C_Master extends CI_Controller
             'HEADER_ID' => $this->input->post('header_id'),
             'REQUEST_NUMBER' => $this->input->post('requests_number'),
             'PERSON_ID' => strtoupper($this->input->post('person_id')),
-            'DELIVERY_FLAG'=> 'N'
+            'DELIVERY_FLAG'=> 'Y',
+            'PLAT_NUMBER' => $this->input->post('plat_number')
         )));
     }
 
     public function insertPlatnumber()
     {
-      $plat = strtoupper($this->input->post('plat_nomer'));
-      $rm = $this->input->post('rm');
-      $hi = $this->input->post('hi');
-      $data = [
+        $plat = strtoupper($this->input->post('plat_nomer'));
+        $rm = $this->input->post('rm');
+        $hi = $this->input->post('hi');
+        $data = [
         'PLAT_NUMBER' => $plat,
         'DELIVERY_FLAG'=> 'Y',
       ];
-      $this->M_monitoringdo->updatePlatnumber($data, $rm, $hi);
-      echo json_encode('sukses');
+        $this->M_monitoringdo->updatePlatnumber($data, $rm, $hi);
+        echo json_encode('sukses');
     }
 
     public function insertDOtampung()
     {
-
-      function get_client_ip() {
-          $ipaddress = '';
-          if (isset($_SERVER['HTTP_CLIENT_IP']))
-              $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-          else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-              $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-          else if(isset($_SERVER['HTTP_X_FORWARDED']))
-              $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-          else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-              $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-          else if(isset($_SERVER['HTTP_FORWARDED']))
-              $ipaddress = $_SERVER['HTTP_FORWARDED'];
-          else if(isset($_SERVER['REMOTE_ADDR']))
-              $ipaddress = $_SERVER['REMOTE_ADDR'];
-          else
-              $ipaddress = 'UNKNOWN';
-          return $ipaddress;
-      }
-      // function non active
+        function get_client_ip()
+        {
+            $ipaddress = '';
+            if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+                $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+            } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            } elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
+                $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+            } elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
+                $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+            } elseif (isset($_SERVER['HTTP_FORWARDED'])) {
+                $ipaddress = $_SERVER['HTTP_FORWARDED'];
+            } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+                $ipaddress = $_SERVER['REMOTE_ADDR'];
+            } else {
+                $ipaddress = 'UNKNOWN';
+            }
+            return $ipaddress;
+        }
+        // $tampungan = $this->input->post('array_atr');
+        // array_pop($tampungan);
+        // $rm = $this->input->post('requests_number');
+        // foreach ($tampungan as $t) {
+        //     $data = [
+        //   'HEADER_ID' => $this->input->post('header_id'),
+        //   'REQUEST_NUMBER' => $rm,
+        //   'INVENTORY_ITEM_ID' => $t,
+        //   'ORDER_NUMBER' => $this->input->post('order_number'),
+        //   'IP_ADDRESS' => get_client_ip()
+        // ];
+        //     $this->M_monitoringdo->insertDOtampung($data);
+        // }
+        //
+        // // $this->M_monitoringdo->runAPIDO($rm);
+        // $this->M_monitoringdo->DeleteDOtampung($rm, get_client_ip());
+        //
+        // echo json_encode('sukses!!!');
     }
 
     public function GetDetail()
@@ -242,9 +289,9 @@ class C_Master extends CI_Controller
 
     public function GetSudahCetak()
     {
-       // $data['get'] = $this->M_monitoringdo->sudahCetak();
-       $data['get'] = $this->M_monitoringdo->GetSudahCetak();
-       $this->load->view('MonitoringDO/V_Ajax_SudahCetak', $data);
+        // $data['get'] = $this->M_monitoringdo->sudahCetak();
+        $data['get'] = $this->M_monitoringdo->GetSudahCetak();
+        $this->load->view('MonitoringDO/V_Ajax_SudahCetak', $data);
     }
 
     public function GetSudahCetakDetail()
@@ -312,33 +359,36 @@ class C_Master extends CI_Controller
 
         function generateInTicketNumber($length = 5)
         {
-          $characters = '0123456789';
-          $charactersLength = strlen($characters);
-          $randomString = '';
-          for ($i = 0; $i < $length; $i++) $randomString .= $characters[rand(0, $charactersLength - 1)];
-          return $randomString;
+            $characters = '0123456789';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomString;
         }
 
         $datacetak = [
           'REQUEST_NUMBER' => $data['get_header'][0]['NO_DO'],
-          'ORDER_NUMBER' => $data['get_header'][0]['NO_SO'],
+          'ORDER_NUMBER' => empty($data['get_header'][0]['NO_SO']) ? NULL : $data['get_header'][0]['NO_SO'],
           'NOMOR_CETAK' => generateInTicketNumber()
         ];
         $this->M_monitoringdo->insertDOCetak($datacetak);
 
         if (!empty($data['get_serial'])) {
-          $s = [];$hasil = [];
-          foreach ($data['get_serial'] as $a) {
-            array_push($s, $a['DESCRIPTION']);
-          }
-          $sai = array_unique($s);
-          $set = array_values($sai);
-          for ($i=0; $i < sizeof($set); $i++) {
-            $explode = explode(' ', $set[$i]);
-            array_push($hasil, $explode[0]);
-          }
-          $data['check_header_sub'] = $set;
-          $data['header_sub'] = $hasil;
+            $s = [];
+            $hasil = [];
+            foreach ($data['get_serial'] as $a) {
+                array_push($s, $a['DESCRIPTION']);
+            }
+            $sai = array_unique($s);
+            $set = array_values($sai);
+            for ($i=0; $i < sizeof($set); $i++) {
+                $explode = explode(' ', $set[$i]);
+                array_push($hasil, $explode[0]);
+            }
+            $data['check_header_sub'] = $set;
+            $data['header_sub'] = $hasil;
         }
 
         if (!empty($id)) {
@@ -350,9 +400,9 @@ class C_Master extends CI_Controller
             $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/img')) {
-                mkdir('./assets/img', 0777, true);
-                chmod('./assets/img', 0777);
+            if (!is_dir('./assets/img/monitoringDOQRCODE')) {
+                mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
+                chmod('./assets/img/monitoringDOQRCODE', 0777);
             }
 
             $params['data']		= $data['get_header'][0]['NO_DO'];
@@ -360,7 +410,7 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['NO_DO'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
@@ -409,9 +459,9 @@ class C_Master extends CI_Controller
         }
 
         if (!unlink($params['savename'])) {
-          echo ("Error deleting");
-        }else {
-          unlink($params['savename']);
+            echo("Error deleting");
+        } else {
+            unlink($params['savename']);
         }
     }
 
@@ -427,26 +477,29 @@ class C_Master extends CI_Controller
 
         function generateInTicketNumber($length = 5)
         {
-          $characters = '0123456789';
-          $charactersLength = strlen($characters);
-          $randomString = '';
-          for ($i = 0; $i < $length; $i++) $randomString .= $characters[rand(0, $charactersLength - 1)];
-          return $randomString;
+            $characters = '0123456789';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomString;
         }
 
         if (!empty($data['get_serial'])) {
-          $s = [];$hasil = [];
-          foreach ($data['get_serial'] as $a) {
-            array_push($s, $a['DESCRIPTION']);
-          }
-          $sai = array_unique($s);
-          $set = array_values($sai);
-          for ($i=0; $i < sizeof($set); $i++) {
-            $explode = explode(' ', $set[$i]);
-            array_push($hasil, $explode[0]);
-          }
-          $data['check_header_sub'] = $set;
-          $data['header_sub'] = $hasil;
+            $s = [];
+            $hasil = [];
+            foreach ($data['get_serial'] as $a) {
+                array_push($s, $a['DESCRIPTION']);
+            }
+            $sai = array_unique($s);
+            $set = array_values($sai);
+            for ($i=0; $i < sizeof($set); $i++) {
+                $explode = explode(' ', $set[$i]);
+                array_push($hasil, $explode[0]);
+            }
+            $data['check_header_sub'] = $set;
+            $data['header_sub'] = $hasil;
         }
 
         if (!empty($id)) {
@@ -458,9 +511,9 @@ class C_Master extends CI_Controller
             $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/img')) {
-                mkdir('./assets/img', 0777, true);
-                chmod('./assets/img', 0777);
+            if (!is_dir('./assets/img/monitoringDOQRCODE')) {
+                mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
+                chmod('./assets/img/monitoringDOQRCODE', 0777);
             }
 
             $params['data']		= $data['get_header'][0]['NO_DO'];
@@ -468,7 +521,7 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['NO_DO'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
@@ -517,51 +570,19 @@ class C_Master extends CI_Controller
         }
 
         if (!unlink($params['savename'])) {
-          echo ("Error deleting");
-        }else {
-          unlink($params['savename']);
+            echo("Error deleting");
+        } else {
+            unlink($params['savename']);
         }
     }
 
 
     public function cekapi()
     {
-      $datag = $this->M_monitoringdo->getDO();
-      foreach ($datag as $g) {
-          $dataku[] = $g['DO/SPB'];
-      }
-      $no = 0;
-      foreach ($dataku as $k) {
-          $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
-          $no++;
-      }
-
-      $final = [];
-      foreach ($datakau as $f) {
-          for ($i=0; $i < sizeof($f); $i++) {
-              if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
-                  $var = 'false =>'.$f[$i]['DO/SPB'];
-              } else {
-                  $var = 'true =>'.$f[$i]['DO/SPB'];
-              }
-          }
-          array_push($final, $var);
-      }
-
-      $finaldestination = [];
-      $number = 0;
-      foreach ($datag as $d) {
-          $d['CHECK'] = $final[$number];
-          $number++;
-          array_push($finaldestination, $d);
-      }
-      $data['get'] = $finaldestination;
-
-      $cekaja = $this->M_monitoringdo->getDetailDataPengecekan('3408360');
-
-      $data['get_header'] = $this->M_monitoringdo->headerSurat('3749115');
-      echo "<pre>";
-      print_r($data['get_header']);
-      die;
+        
+        $cekaja = $this->M_monitoringdo->cekapi();
+        echo "<pre>";
+        print_r($cekaja);
+        die;
     }
 }
