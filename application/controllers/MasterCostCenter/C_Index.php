@@ -102,27 +102,27 @@ class C_Index extends CI_Controller
 		$seksi = $this->input->post('seksi');
 		$id = $this->input->post('id');
 		$getCC = $this->M_cc->getListCC();
-		$getCCNow = $this->M_cc->getListCC($id);
-		$listSeksi = array_column($getCC, 'seksi');
-		if (in_array($seksi, $listSeksi) && $seksi !== $getCCNow[0]['seksi']) {
-			$data['hasil'] = '1';// artinya seksi sudah ada dan tidak boleh di insertkan
-			$data['pesan'] = 'Gagal Seksi Sudah ada !!';
-			echo json_encode($data);
-			exit();
-		}
 		$cost = $this->input->post('cost');
 		$cc = explode(' | ', $cost);
 		$branch = $this->input->post('branch');
 		$akun = $this->input->post('akun');
 
+		//update ke dl t_cost_center
+		$cek = $this->M_cc->cekTcc($id);
+		if (empty($cek)) {
 		$arr = array(
-			'seksi' => $seksi,
+			'seksi'	=> $id,
 			'cost_center' => $cc[0],
 			'nama_cost_center' => $cc[1],
 			'branch' => $branch,
 			'jenis_akun' => $akun,
 			);
-		$up = $this->M_cc->upCC($arr, $id);
+		$this->M_cc->insCC($arr);
+		}else{
+			$up = $this->M_cc->upCCdl($id, $cc[0], $cc[1], $branch, $akun);
+		}
+
+		$up = $this->M_cc->upCC($id, $cc[0], $cc[1], $branch, $akun);
 		$data['hasil'] = '0';
 		echo json_encode($data);
 	}
@@ -131,12 +131,25 @@ class C_Index extends CI_Controller
 	{
 		$data['list'] = $this->M_cc->getListCC();
 		$br = array_column($data['list'], 'branch');
-		$br = implode("', '", $br);
-		$getBr = $this->M_cc->getBranch($br);
-		if (!empty($getBr)) {
-			$newBr = array_column($getBr, 'DESCRIPTION', 'FLEX_VALUE');
+		$br = array_filter($br, function($var){
+          return ($var != '');
+		});
+		if (!empty($br)) {
+			$br = implode("', '", $br);
+			$getBr = $this->M_cc->getBranch($br);
+			if (!empty($getBr)) {
+				$newBr = array_column($getBr, 'DESCRIPTION', 'FLEX_VALUE');
+				for ($i=0; $i < count($data['list']); $i++) {
+					if (!empty($data['list'][$i]['branch'])) {
+						$data['list'][$i]['nama_branch'] = $newBr[$data['list'][$i]['branch']];
+					}else{
+						$data['list'][$i]['nama_branch'] = '';
+					}
+				}
+			}
+		}else{
 			for ($i=0; $i < count($data['list']); $i++) { 
-				$data['list'][$i]['nama_branch'] = $newBr[$data['list'][$i]['branch']];
+				$data['list'][$i]['nama_branch'] = '';
 			}
 		}
 		$html = $this->load->view('MasterCostCenter/ListCC/V_Table_CC',$data);

@@ -1,11 +1,13 @@
-<button class="btn btn-sm btn-primary mccCeksk" style="margin-bottom: 30px;">Cek Seksi</button>
+<!-- <button class="btn btn-sm btn-primary mccCeksk" style="margin-bottom: 30px;">Cek Seksi</button> -->
 <table class="table table-bordered table-striped" id="mcc_tbl_list">
 	<thead class="bg-primary">
 		<th width="5%">No</th>
-		<th>Seksi</th>
-		<th>Cost Center</th>
+		<th style="width: 200px;">Seksi</th>
+		<th style="width: 150px;">Cost Center</th>
 		<th>Branch</th>
 		<th>jenis Akun</th>
+		<th>Status</th>
+		<th>Alasan</th>
 		<th>Action</th>
 	</thead>
 	<tbody>
@@ -13,16 +15,23 @@
 		$x=1; foreach ($list as $key): ?>
 		<tr>
 			<td><?= $x ?></td>
-			<td class="seksi"><?= $key['seksi'].' - '.$key['nama_seksi'] ?></td>
+			<td class="seksi"><?= $key['kodesie'].' - '.$key['seksi'] ?></td>
 			<td class="cost"><?= $key['cost_center'].' - '.$key['nama_cost_center'] ?></td>
 			<td class="branch"><?= $key['branch'].' - '.$key['nama_branch'] ?></td>
 			<td class="akun">
-				<?= $akun[$key['jenis_akun']] ?>
+				<?= ($key['jenis_akun'] == '') ? '-':$akun[$key['jenis_akun']] ?>
 				<input hidden="" value="<?= $key['jenis_akun']?>">
 			</td>
 			<td class="text-center">
-				<button value="<?= $key['id']?>" class="btn btn-primary mccuprow"><i class="fa fa-edit"></i></button>
-				<button value="<?= $key['id']?>" class="btn btn-danger mccdelrow"><i class="fa fa-trash"></i></button>
+				<?php if ($key['flag'] == 1): ?>
+					<span class="label label-success label-md">Aktif</span>
+				<?php else: ?>
+					<span class="label label-danger label-md">Tidak Aktif</span>
+				<?php endif ?>
+			</td>
+			<td><?= $key['alasan'] ?></td>
+			<td class="text-center">
+				<button value="<?= $key['kodesie']?>" class="btn btn-primary mccuprow"><i class="fa fa-edit"></i></button>
 			</td>
 		</tr>
 		<?php $x++; endforeach ?>

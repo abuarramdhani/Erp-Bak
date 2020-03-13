@@ -75,65 +75,86 @@ class M_cc extends CI_Model
 
 	public function insCC($data)
 	{
-		$this->db->insert('cs.t_setting_cc', $data);
+		// $this->personalia->insert('hrd_khs.t_setting_cc', $data);
 		$this->dl->insert('t_cost_center', $data);
 	}
 
-	public function upCC($data, $id)
+	public function upCC($id, $cost_center, $nama_cost_center, $branch, $jenis_akun)
 	{
-		$this->db->where('id', $id);
-		$this->db->update('cs.t_setting_cc', $data);
-		
-		$this->dl->where('id', $id);
-		$this->dl->update('t_cost_center', $data);
+		$sql = "UPDATE hrd_khs.tseksi set cost_center = '$cost_center', nama_cost_center = '$nama_cost_center', branch = '$branch', jenis_akun = '$jenis_akun' where kodesie like '$id%'";
+		$this->personalia->query($sql);
 	}
 
 	public function deleteCC($id)
 	{
-		$this->db->delete('cs.t_setting_cc', array('id' => $id));
+		$this->personalia->delete('hrd_khs.t_setting_cc', array('id' => $id));
 		$this->dl->delete('t_cost_center', array('id' => $id));
 	}
 
 	public function getListCC($id = false)
 	{
 		if ($id !== false) {
-			$id = "where id in ('$id')";
+			$id = "and kodesie like '$id%'";
 		}
 		$sql = "select
-					tc.*,
-					(
-					select
-						section_name
-					from
-						er.er_section es
-					where
-						substring(es.section_code::text, 1, 7) = tc.seksi::text
-					limit 1) nama_seksi,
-					null nama_branch
+					substring(kodesie, 1, 7) kodesie,
+					seksi,
+					flag,
+					alasan,
+					cost_center,
+					nama_cost_center,
+					branch,
+					jenis_akun
 				from
-					cs.t_setting_cc tc
-				$id;";
-		return $this->db->query($sql)->result_array();
+					hrd_khs.tseksi
+				where
+					kodesie not like '%-%'
+					and seksi not like '%-%'
+					$id
+				group by
+					substring(kodesie, 1, 7),
+					seksi,
+					flag,
+					alasan,
+					cost_center,
+					nama_cost_center,
+					branch,
+					jenis_akun 
+				order by
+					2;";
+		return $this->personalia->query($sql)->result_array();
 	}
 
 	public function cekSeksi()
 	{
 		$sql = "select
-					distinct substring(section_code, 1, 7) kodesie,
-					unit_name unit,
-					section_name seksi
+					distinct substring(kodesie, 1, 7) kodesie,
+					unit,
+					seksi
 				from
-					er.er_section
+					hrd_khs.tseksi
 				where
-					section_name not like '-'
-					and section_name not like '**%'
-					and substring(section_code, 1, 7) not in (
+					seksi not like '-'
+					and seksi not like '**%'
+					and substring(kodesie, 1, 7) not in (
 						select seksi::varchar
 					from
-						cs.t_setting_cc)
+						hrd_khs.t_setting_cc)
 				order by
-					unit_name,
-					section_name";
-		return $this->db->query($sql)->result_array();
+					unit,
+					seksi";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function cekTcc($kodesie)
+	{
+		$this->dl->select('*');
+		$this->dl->where('seksi', $kodesie);
+		return $this->dl->get('t_cost_center')->result_array();
+	}
+	public function upCCdl($id, $cost_center, $nama_cost_center, $branch, $jenis_akun)
+	{
+		$sql = "UPDATE t_cost_center set cost_center = '$cost_center', nama_cost_center = '$nama_cost_center', branch = '$branch', jenis_akun = '$jenis_akun' where seksi like '$id%'";
+		$this->dl->query($sql);
 	}
 }
