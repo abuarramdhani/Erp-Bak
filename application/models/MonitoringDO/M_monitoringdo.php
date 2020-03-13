@@ -6,6 +6,13 @@ class M_monitoringdo extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->oracle = $this->load->database('oracle', true);
+
+        $subinv = $this->session->datasubinven;
+    }
+
+    public function cekapi()
+    {
+      return $this->session->datasubinven;
     }
 
     public function updatePlatnumber($data, $rm, $hi)
@@ -17,7 +24,7 @@ class M_monitoringdo extends CI_Model
 
     public function insertDOCetak($data)
     {
-      
+
         if (!empty($data)) {
             $response = $this->oracle->query("INSERT INTO KHS_CETAK_DO (REQUEST_NUMBER, ORDER_NUMBER, CREATION_DATE, NOMOR_CETAK)
           VALUES('$data[REQUEST_NUMBER]','$data[ORDER_NUMBER]',SYSDATE,'$data[NOMOR_CETAK]')");
@@ -139,6 +146,7 @@ class M_monitoringdo extends CI_Model
 
     public function GetSudahCetakDetail($data)
     {
+      $subinv = $this->session->datasubinven;
         if (!empty($data)) {
             $response = $this->oracle->query("SELECT distinct
                    mtrh.HEADER_ID
@@ -148,8 +156,8 @@ class M_monitoringdo extends CI_Model
                   ,mtrl.QUANTITY qty_req
                   ,kdt.ALLOCATED_QUANTITY qty_allocated
                   ,mtrl.QUANTITY_DELIVERED qty_transact
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') stock
-                  ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'FG-TKS','','') atr
+                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') stock
+                  ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'$subinv','','') atr
                   ,kpd.PERSON_ID petugas
             from mtl_txn_request_lines mtrl
                 ,mtl_txn_request_headers mtrh
@@ -302,8 +310,8 @@ class M_monitoringdo extends CI_Model
                ,hzp.PARTY_NAME tujuan
                ,hzl.CITY kota
                ,kpd.PERSON_ID petugas
-               ,prha.ATTRIBUTE
-               ,kdk.NO_KENDARAAN plat_number
+               ,nvl(kdk.NO_KENDARAAN,prha.ATTRIBUTE) plat_number
+               ,prha.ATTRIBUTE plat_number2
                ,nvl(kdk.JENIS_KENDARAAN,prha.ATTRIBUTE3) jenis_kendaraan
                ,kdk.VENDOR_EKSPEDISI ekspedisi
          from hz_cust_site_uses_all hcsua
@@ -452,7 +460,7 @@ class M_monitoringdo extends CI_Model
                                                        ),5)
                          )                                                               kota
                ,kpd.PERSON_ID petugas
-               ,kdk.NO_KENDARAAN plat_number1
+               ,nvl(kdk.NO_KENDARAAN,prha.ATTRIBUTE5) plat_number
                ,prha.ATTRIBUTE5 plat_number2
                ,kdk.JENIS_KENDARAAN
                ,kdk.VENDOR_EKSPEDISI ekspedisi
@@ -577,6 +585,7 @@ class M_monitoringdo extends CI_Model
 
     public function getDetailData($data)
     {
+      $subinv = $this->session->datasubinven;
         if (!empty($data)) {
             $response = $this->oracle->query("SELECT distinct
                    mtrh.HEADER_ID
@@ -585,7 +594,7 @@ class M_monitoringdo extends CI_Model
                   ,mtrl.INVENTORY_ITEM_ID
                   ,msib.DESCRIPTION
                   ,mtrl.QUANTITY
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') + mtrl.quantity AV_TO_RES
+                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') + mtrl.quantity AV_TO_RES
                   ,kpd.PERSON_ID petugas
             from mtl_txn_request_lines mtrl
                 ,mtl_txn_request_headers mtrh
@@ -612,13 +621,14 @@ class M_monitoringdo extends CI_Model
 
     public function getDetailDataPengecekan($data)
     {
+        $subinv = $this->session->datasubinven;
         if (!empty($data)) {
             $response = $this->oracle->query("SELECT distinct
                    mtrh.HEADER_ID
                   ,mtrh.REQUEST_NUMBER \"DO/SPB\"
                   ,msib.SEGMENT1
                   ,mtrl.QUANTITY
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') + mtrl.quantity AV_TO_RES
+                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') + mtrl.quantity AV_TO_RES
             from mtl_txn_request_lines mtrl
                 ,mtl_txn_request_headers mtrh
                 ,mtl_system_items_b msib
@@ -739,6 +749,7 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiAssign_detail($data)
     {
+        $subinv = $this->session->datasubinven;
         if (!empty($data)) {
             $response = $this->oracle->query("SELECT distinct
                    mtrh.HEADER_ID
@@ -746,8 +757,8 @@ class M_monitoringdo extends CI_Model
                   ,msib.SEGMENT1
                   ,msib.DESCRIPTION
                   ,mtrl.QUANTITY qty_req
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') + mtrl.quantity stock
-                  ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'FG-TKS','','') atr
+                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') + mtrl.quantity stock
+                  ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'$subinv','','') atr
                   ,kpd.PERSON_ID petugas
             from mtl_txn_request_lines mtrl
                 ,mtl_txn_request_headers mtrh
@@ -888,6 +899,7 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiMuat_detail($data)
     {
+      $subinv = $this->session->datasubinven;
         if (!empty($data)) {
             $response = $this->oracle->query("SELECT distinct
                    mtrh.HEADER_ID
@@ -897,8 +909,8 @@ class M_monitoringdo extends CI_Model
                   ,mtrl.QUANTITY qty_req
                   ,kdt.ALLOCATED_QUANTITY qty_allocated
                   ,mtrl.QUANTITY_DELIVERED qty_transact
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') stock
-                  ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'FG-TKS','','') atr
+                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') stock
+                  ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'$subinv','','') atr
                   ,kpd.PERSON_ID petugas
             from mtl_txn_request_lines mtrl
                 ,mtl_txn_request_headers mtrh
@@ -1049,6 +1061,7 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiLayani_detail($data)
     {
+      $subinv = $this->session->datasubinven;
         if (!empty($data)) {
             $response = $this->oracle->query("SELECT distinct
                  mtrh.HEADER_ID
@@ -1057,8 +1070,8 @@ class M_monitoringdo extends CI_Model
                 ,msib.DESCRIPTION
                 ,mtrl.QUANTITY qty_req
                 ,kdt.ALLOCATED_QUANTITY qty_allocated
-                ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') stock
-                ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'FG-TKS','','') atr
+                ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') stock
+                ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'$subinv','','') atr
                 ,kpd.PERSON_ID petugas
           from mtl_txn_request_lines mtrl
               ,mtl_txn_request_headers mtrh
@@ -1098,6 +1111,9 @@ class M_monitoringdo extends CI_Model
 
     public function insertDO($data)
     {
+        // echo "<pre>";
+        // print_r($data);
+        // die;
         if (!empty($data['HEADER_ID'])) {
             if (!empty($data['REQUEST_NUMBER'])) {
                 if (!empty($data['PERSON_ID'])) {
