@@ -3760,6 +3760,7 @@ $route['LoginAndroidAPI/logUser'] = 'LoginAndroidAPI/C_LoginAndroid/loginAPI';
 //-------------------------------------------Monitoring DO---------------------------------------//
 $route['MonitoringDO'] = 'MonitoringDO/C_Master';
 
+$route['MonitoringDO/Subinv'] = 'MonitoringDO/C_Master/SubInv';
 $route['MonitoringDO/SettingDO'] = 'MonitoringDO/C_Master/SettingDO';
 $route['MonitoringDO/SettingDO/(:any)'] = 'MonitoringDO/C_Master/$1';
 $route['MonitoringDO/SettingDO/(:any)/(:any)'] = 'MonitoringDO/C_Master/$1/$2';
