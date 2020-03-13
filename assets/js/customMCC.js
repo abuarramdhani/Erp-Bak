@@ -29,6 +29,63 @@ $(document).ready(function(){
 			$(this).val("").trigger('change');
 		});
 	});
+
+	$('#mcctbl').on('click', '.mccuprow', function(){
+		var val = $(this).val();
+		var ini = $(this);
+
+		var seksi = $(this).closest('tr').find('td.seksi').text().split(' - ')[0];
+		var cost = $(this).closest('tr').find('td.cost').text().replace('-', '|');
+		var branch = $(this).closest('tr').find('td.branch').text().split(' - ')[0];
+		var akun = $(this).closest('tr').find('td.akun').find('input').val();
+		
+		$('.MCC_slc2').eq(0).val(seksi).trigger('change');
+		$('.MCC_slc2').eq(1).val(cost).trigger('change');
+		$('.MCC_slc2').eq(2).val(branch).trigger('change');
+		$('.MCC_slc2').eq(3).val(akun).trigger('change');
+		$('#mccsaveed').val(val);
+		$('#mccsaveed').attr('disabled', true);
+
+		$('#mcc_modal_edit').modal('show');
+	});
+
+	$('#mccsaveed').on('click', function(){
+		$('#mccsaveed').attr('disabled', true);
+		var sk = $('select[name ="mcc_seksi"]').val();
+		var cc = $('select[name ="mcc_cc"]').val();
+		var br = $('select[name ="mcc_branch"]').val();
+		var ak = $('select[name ="mcc_akun"]').val();
+		var id = $(this).val();
+		if (sk.length < 1 || cc.length < 1 || br.length < 1 || ak.length < 1 || id.length < 1) {
+			alert('Data Belum Lengkap !! \nMohon isi semua Data');
+			return false;
+		}
+
+		$.ajax({
+			url: baseurl + 'MasterCC/ListCC/updateCC',
+			type: "post",
+			dataType: 'json',
+			data: {seksi: sk, cost: cc, branch: br, id: id, akun: ak},
+			success: function (response) {
+				if (response['hasil'] == 1) {
+					alert(response['pesan']);
+				}else{
+					mcc_showAlert('success', 'Berhasil di Perbarui !');
+					$('#mcc_modal_edit').modal('hide');
+					mcc_showTbl();
+					$('.MCC_slc2').each(function() {
+						$(this).val("").trigger('change');
+					});
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus, errorThrown);
+				$('#mccsaveed').attr('disabled', false);
+				$('#mccsl').attr('disabled', false);
+				alert('Error !!\nGagal Menambahkan Data');
+			}
+		});
+	});
 });
 
 function saveAjax(sk, cc, br)
@@ -77,10 +134,12 @@ function mcc_showTbl()
 
 function mcc_init_tbl()
 {
-	var mcc_tabel = $('#mcc_tbl_list').DataTable();
+	var mcc_tabel = $('#mcc_tbl_list').DataTable({
+		scrollX: true
+	});
 
 	$('.mccdelrow').off('click');
-	$('.mccdelrow').on('click', function(){
+	$('#mcctbl').on('click', '.mccdelrow',function(){
 		var val = $(this).val();
 		var ini = $(this);
 		if (confirm("Apa anda yakin ingin menghapus Data ini ?") == true) {
@@ -99,68 +158,6 @@ function mcc_init_tbl()
 		}
 	});
 
-	$('.mccuprow').off('click');
-	$('.mccuprow').on('click', function(){
-		var val = $(this).val();
-		var ini = $(this);
-
-		var seksi = $(this).closest('tr').find('td.seksi').text().split(' - ')[0];
-		var cost = $(this).closest('tr').find('td.cost').text().replace('-', '|');
-		var branch = $(this).closest('tr').find('td.branch').text().split(' - ')[0];
-		var akun = $(this).closest('tr').find('td.akun').find('input').val();
-		$('html, body').animate({
-			scrollTop: $("#mcc_here").offset().top
-		}, 500);
-		$('.mccbtnhid').show();
-		$('#mccsl').hide();
-		
-		$('.MCC_slc2').eq(0).val(seksi).trigger('change');
-		$('.MCC_slc2').eq(1).val(cost).trigger('change');
-		$('.MCC_slc2').eq(2).val(branch).trigger('change');
-		$('.MCC_slc2').eq(3).val(akun).trigger('change');
-		$('#mccsaveed').val(val);
-		$('#mccsaveed').attr('disabled', true);
-	});
-
-	$('#mccsaveed').off('click');
-	$('#mccsaveed').on('click', function(){
-		$('#mccsaveed').attr('disabled', true);
-		var sk = $('select[name ="mcc_seksi"]').val();
-		var cc = $('select[name ="mcc_cc"]').val();
-		var br = $('select[name ="mcc_branch"]').val();
-		var ak = $('select[name ="mcc_akun"]').val();
-		var id = $(this).val();
-		if (sk.length < 1 || cc.length < 1 || br.length < 1 || ak.length < 1 || id.length < 1) {
-			alert('Data Belum Lengkap !! \nMohon isi semua Data');
-			return false;
-		}
-
-		$.ajax({
-			url: baseurl + 'MasterCC/ListCC/updateCC',
-			type: "post",
-			dataType: 'json',
-			data: {seksi: sk, cost: cc, branch: br, id: id, akun: ak},
-			success: function (response) {
-				if (response['hasil'] == 1) {
-					alert(response['pesan']);
-				}else{
-					mcc_showAlert('success', 'Berhasil di Perbarui !');
-					mcc_showTbl();
-					$('.mccbtnhid').hide();
-					$('#mccsl').show();
-					$('.MCC_slc2').each(function() {
-						$(this).val("").trigger('change');
-					});
-				}
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.log(textStatus, errorThrown);
-				$('#mccsaveed').attr('disabled', false);
-				$('#mccsl').attr('disabled', false);
-				alert('Error !!\nGagal Menambahkan Data');
-			}
-		});
-	});
 	$('.mccCeksk').off('click');
 	$('.mccCeksk').click(function(){
 		$('#surat-loading').attr('hidden', false);
