@@ -327,7 +327,7 @@
                 // })
                 $.ajax({
                     method: 'POST',
-                    url: baseurl + '/MasterPresensi/PotonganGaji/TambahData/saveData',
+                    url: baseurl + 'MasterPresensi/PotonganGaji/TambahData/saveData',
                     data: formData,
                     processData: false,
                     contentType: false,
