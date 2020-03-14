@@ -134,7 +134,7 @@ function mcc_showTbl()
 
 function mcc_init_tbl()
 {
-	var mcc_tabel = $('#mcc_tbl_list').DataTable({
+	var mcc_tabel = $('#mcc_tbl_list').dataTable({
 		scrollX: true,
 		dom: 'Bfrtip',
         buttons: [
@@ -152,6 +152,11 @@ function mcc_init_tbl()
             	}
             }
         ]
+	});
+
+	$('#mcconhover').off('click');
+	$('#mcconhover').on('click', function(){
+		mcc_tabel.fnSort( [ [5,'asc'] ] )
 	});
 
 	$('.mccdelrow').off('click');

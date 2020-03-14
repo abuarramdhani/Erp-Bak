@@ -1,4 +1,11 @@
 <!-- <button class="btn btn-sm btn-primary mccCeksk" style="margin-bottom: 30px;">Cek Seksi</button> -->
+<style>
+	#mcconhover:hover{
+		text-decoration: underline;
+	}
+</style>
+<label><?= $jumlah['sudah'] ?> Seksi Tersetting COA /</label>
+<label id="mcconhover" style="color: red; cursor: pointer;"><?= $jumlah['semua'] ?> Seksi Belum Tersetting</label>
 <table class="table table-bordered table-striped" id="mcc_tbl_list">
 	<thead class="bg-primary">
 		<th width="5%">No</th>
