@@ -1,21 +1,33 @@
 <!-- <button class="btn btn-sm btn-primary mccCeksk" style="margin-bottom: 30px;">Cek Seksi</button> -->
+<style>
+	#mcconhover:hover{
+		text-decoration: underline;
+	}
+</style>
+<label><?= $jumlah['sudah'] ?> Seksi Tersetting COA /</label>
+<label id="mcconhover" style="color: red; cursor: pointer;"><?= $jumlah['semua'] ?> Seksi Belum Tersetting</label>
 <table class="table table-bordered table-striped" id="mcc_tbl_list">
 	<thead class="bg-primary">
 		<th width="5%">No</th>
-		<th style="width: 200px;">Seksi</th>
-		<th style="width: 150px;">Cost Center</th>
-		<th>Branch</th>
-		<th>jenis Akun</th>
-		<th>Status</th>
-		<th>Alasan</th>
-		<th>Action</th>
+		<th width="10%">Dept</th>
+		<th width="10%">Bidang</th>
+		<th width="15%">Unit</th>
+		<th width="15%">Seksi</th>
+		<th width="15%">Cost Center</th>
+		<th width="10%">Branch</th>
+		<th width="10%">jenis Akun</th>
+		<th width="5%">Status</th>
+		<th width="5%">Action</th>
 	</thead>
 	<tbody>
 		<?php $akun = array('Non Produksi', 'Produksi');
 		$x=1; foreach ($list as $key): ?>
 		<tr>
 			<td><?= $x ?></td>
-			<td class="seksi"><?= $key['kodesie'].' - '.$key['seksi'] ?></td>
+			<td class="dept"><?= $key['dept'] ?></td>
+			<td class="bidang"><?= $key['bidang'] ?></td>
+			<td class="unit"><?= $key['unit'] ?></td>
+			<td class="seksi"><?= $key['seksi'] ?></td>
 			<td class="cost"><?= $key['cost_center'].' - '.$key['nama_cost_center'] ?></td>
 			<td class="branch"><?= $key['branch'].' - '.$key['nama_branch'] ?></td>
 			<td class="akun">
@@ -29,7 +41,6 @@
 					<span class="label label-danger label-md">Tidak Aktif</span>
 				<?php endif ?>
 			</td>
-			<td><?= $key['alasan'] ?></td>
 			<td class="text-center">
 				<button value="<?= $key['kodesie']?>" class="btn btn-primary mccuprow"><i class="fa fa-edit"></i></button>
 			</td>

@@ -55,7 +55,7 @@
             <div class="modal-body">
                 <form id="mcc_frm">
                     <label style="margin-top: 5px;">Seksi</label>
-                    <select style="width: 100%" class="form-control MCC_slc2" name="mcc_seksi">
+                    <select style="width: 100%" class="form-control MCC_slc2" name="mcc_seksi" disabled="disabled">
                         <option></option>
                         <?php foreach ($seksi as $s): ?>
                             <option value="<?= $s['kodesie']?>"><?= $s['kodesie'].' - ' .$s['seksi']?></option>    

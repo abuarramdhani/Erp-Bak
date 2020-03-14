@@ -152,6 +152,7 @@ class C_Index extends CI_Controller
 				$data['list'][$i]['nama_branch'] = '';
 			}
 		}
+		$data['jumlah'] = $this->M_cc->get_jumlah();
 		$html = $this->load->view('MasterCostCenter/ListCC/V_Table_CC',$data);
 
 		return json_encode($html);

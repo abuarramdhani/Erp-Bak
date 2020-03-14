@@ -98,6 +98,7 @@ class M_cc extends CI_Model
 		}
 		$sql = "select
 					substring(kodesie, 1, 7) kodesie,
+					dept,bidang,unit,
 					seksi,
 					flag,
 					alasan,
@@ -112,7 +113,7 @@ class M_cc extends CI_Model
 					and seksi not like '%-%'
 					$id
 				group by
-					substring(kodesie, 1, 7),
+					substring(kodesie, 1, 7),dept,bidang,unit,
 					seksi,
 					flag,
 					alasan,
@@ -156,5 +157,18 @@ class M_cc extends CI_Model
 	{
 		$sql = "UPDATE t_cost_center set cost_center = '$cost_center', nama_cost_center = '$nama_cost_center', branch = '$branch', jenis_akun = '$jenis_akun' where seksi like '$id%'";
 		$this->dl->query($sql);
+	}
+
+	public function get_jumlah()
+	{
+		$sql = "select
+					count(substring(kodesie,1,7)) sudah,
+					(select count(substring(kodesie,1,7)) from hrd_khs.tseksi) as semua
+				from
+					hrd_khs.tseksi
+				where
+					cost_center is not null
+					and cost_center != ''";
+		return $this->personalia->query($sql)->row_array();
 	}
 }
