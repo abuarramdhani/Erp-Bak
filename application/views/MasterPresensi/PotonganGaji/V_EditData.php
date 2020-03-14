@@ -355,23 +355,45 @@
                 formData.append('nominalTotal', document.getElementById('pg_inputNominalTotal').value)
                 formData.append('tipePembayaran', document.getElementById('pg_inputTipePembayaran').value)
                 formData.append('periode', pgEditData.formatPeriode(document.getElementById('pg_inputPeriode').value))
-                fetch('<?= base_url('MasterPresensi/PotonganGaji/EditData/updateData') ?>', {
+                // fetch('<?= base_url('MasterPresensi/PotonganGaji/EditData/updateData') ?>', {
+                //     method: 'POST',
+                //     body: formData
+                // }).then(response => response.json()).then(response => {
+                //     if(response.success) {
+                //         $.toaster('Data berhasil diperbarui', '', 'success')
+                //         element('#pg_buttonUpdateData').animate.hideLoading('fa-floppy-o')
+                //     } else {
+                //         console.error('saving data response unsuccessful')
+                //         $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
+                //         element('#pg_buttonUpdateData').animate.hideLoading('fa-floppy-o')
+                //     }
+                // }).catch(e => {
+                //     console.error(e)
+                //     $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
+                //     element('#pg_buttonUpdateData').animate.hideLoading('fa-floppy-o')
+                // })
+                $.ajax({
                     method: 'POST',
-                    body: formData
-                }).then(response => response.json()).then(response => {
-                    if(response.success) {
-                        $.toaster('Data berhasil diperbarui', '', 'success')
-                        element('#pg_buttonUpdateData').animate.hideLoading('fa-floppy-o')
-                    } else {
-                        console.error('saving data response unsuccessful')
+                    url: baseurl + '/MasterPresensi/PotonganGaji/EditData/updateData',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    error: function(xhr,status,error){
                         $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
                         element('#pg_buttonUpdateData').animate.hideLoading('fa-floppy-o')
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                        $.toaster('Data berhasil diperbarui', '', 'success')
+                        element('#pg_buttonUpdateData').animate.hideLoading('fa-floppy-o')
                     }
-                }).catch(e => {
-                    console.error(e)
-                    $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
-                    element('#pg_buttonUpdateData').animate.hideLoading('fa-floppy-o')
-                })
+                })      
             })
         },
         initDataTable() {

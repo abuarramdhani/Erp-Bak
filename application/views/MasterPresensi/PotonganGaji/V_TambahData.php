@@ -325,26 +325,26 @@
                 //     $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
                 //     element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
                 // })
-                console.log(formData)
                 $.ajax({
-                method: 'POST',
-                url: baseurl + '/MasterPresensi/PotonganGaji/TambahData/saveData',
-                data: formData,
-                processData: false,
-                contentType: false,
-                error: function(xhr,status,error){
-                    swal.fire({
-                        title: xhr['status'] + "(" + xhr['statusText'] + ")",
-                        html: xhr['responseText'],
-                        type: "error",
-                        confirmButtonText: 'OK',
-                        confirmButtonColor: '#d63031',
-                    })
-                },
-                success: function(data){
-                   window.location.href = baseurl + '/MasterPresensi/PotonganGaji/ListData';
-                }
-            })      
+                    method: 'POST',
+                    url: baseurl + '/MasterPresensi/PotonganGaji/TambahData/saveData',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    error: function(xhr,status,error){
+                        element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                       window.location.href = baseurl + '/MasterPresensi/PotonganGaji/ListData';
+                    }
+                })      
             })
         },
         initDataTable() {
