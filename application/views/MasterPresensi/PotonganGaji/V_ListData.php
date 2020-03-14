@@ -116,7 +116,11 @@
                                                             <div class="btn-group">
                                                                 <button title="Detail" onclick="javascript:pgListData.triggerFormDetail(<?= $no ?>)" class="btn btn-primary"><i class="fa fa-info-circle"></i></button>
                                                                 <button title="Edit" onclick="javascript:pgListData.triggerFormEdit(<?= $no ?>)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
+                                                                <?php if (number_format($item['kurang_bayar'],0,',','.') == '0') {
+                                                                    ?>
                                                                 <button title="Hapus" onclick="javascript:pgListData.openDeleteModal('<?= $item['potongan_id'] ?>', <?= $no ?>, '<?= $item['nama'] ?>')" type="button" class="btn btn-danger" id="buttonDelete<?= $no++ ?>"><i class='fa fa-trash'></i></button>
+                                                                    <?php 
+                                                                } ?>
                                                             </div>
                                                         </td>
                                                         <td class="text-center"><?= $item['noind'] ?></td>
