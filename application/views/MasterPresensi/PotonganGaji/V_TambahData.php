@@ -309,22 +309,42 @@
                 formData.append('nominalTotal', document.getElementById('pg_inputNominalTotal').value.replace(/[^0-9]/g, ""))
                 formData.append('tipePembayaran', document.getElementById('pg_inputTipePembayaran').value)
                 formData.append('periode', pgTambahData.formatPeriode(document.getElementById('pg_inputPeriode').value))
-                fetch('<?= base_url('MasterPresensi/PotonganGaji/TambahData/saveData') ?>', {
+                // fetch('<?= base_url('MasterPresensi/PotonganGaji/TambahData/saveData') ?>', {
+                //     method: 'POST',
+                //     body: formData
+                // }).then(response => response.json()).then(response => {
+                //     if(response.success) {
+                //         window.location.replace('<?= base_url('MasterPresensi/PotonganGaji/ListData') ?>')
+                //     } else {
+                //         console.error('saving data response unsuccessful')
+                //         $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
+                //         element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
+                //     }
+                // }).catch(e => {
+                //     console.error(e)
+                //     $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
+                //     element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
+                // })
+                $.ajax({
                     method: 'POST',
-                    body: formData
-                }).then(response => response.json()).then(response => {
-                    if(response.success) {
-                        window.location.replace('<?= base_url('MasterPresensi/PotonganGaji/ListData') ?>')
-                    } else {
-                        console.error('saving data response unsuccessful')
-                        $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
+                    url: baseurl + '/MasterPresensi/PotonganGaji/TambahData/saveData',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    error: function(xhr,status,error){
                         element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                       window.location.href = baseurl + '/MasterPresensi/PotonganGaji/ListData';
                     }
-                }).catch(e => {
-                    console.error(e)
-                    $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
-                    element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
-                })
+                })      
             })
         },
         initDataTable() {
