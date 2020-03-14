@@ -241,7 +241,7 @@
             // })
             $.ajax({
                     method: 'POST',
-                    url: baseurl + '/MasterPresensi/PotonganGaji/ListData/deleteData',
+                    url: baseurl + 'MasterPresensi/PotonganGaji/ListData/deleteData',
                     data: formData,
                     processData: false,
                     contentType: false,
