@@ -98,6 +98,7 @@ class M_cc extends CI_Model
 		}
 		$sql = "select
 					substring(kodesie, 1, 7) kodesie,
+					dept,bidang,unit,
 					seksi,
 					flag,
 					alasan,
@@ -112,7 +113,7 @@ class M_cc extends CI_Model
 					and seksi not like '%-%'
 					$id
 				group by
-					substring(kodesie, 1, 7),
+					substring(kodesie, 1, 7),dept,bidang,unit,
 					seksi,
 					flag,
 					alasan,

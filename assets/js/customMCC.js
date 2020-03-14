@@ -34,7 +34,7 @@ $(document).ready(function(){
 		var val = $(this).val();
 		var ini = $(this);
 
-		var seksi = $(this).closest('tr').find('td.seksi').text().split(' - ')[0];
+		var seksi = $(this).val();
 		var cost = $(this).closest('tr').find('td.cost').text().replace('-', '|');
 		var branch = $(this).closest('tr').find('td.branch').text().split(' - ')[0];
 		var akun = $(this).closest('tr').find('td.akun').find('input').val();
