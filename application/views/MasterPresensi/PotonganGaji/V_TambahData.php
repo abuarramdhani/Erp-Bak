@@ -342,7 +342,7 @@
                         })
                     },
                     success: function(data){
-                       window.location.href = baseurl + '/MasterPresensi/PotonganGaji/ListData';
+                       window.location.href = baseurl + 'MasterPresensi/PotonganGaji/ListData';
                     }
                 })      
             })
