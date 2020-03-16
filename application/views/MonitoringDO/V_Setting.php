@@ -20,6 +20,9 @@
             <li class="nav-item" style="background:#e7e7e7">
               <a class="nav-link" onclick="dodo4()" id="pills-transact-tab" data-toggle="pill" href="#pills-cetak" role="tab" aria-controls="pills-home" aria-selected="true">SUDAH CETAK <span id="jumlah4"></span></a>
             </li>
+            <li>
+              <h5 style="margin-top:15px;font-weight:bold;margin-left:10px;"> Sub Inventory : <?php echo $this->session->datasubinven ?></h5>
+            </li>
           </ul>
         </div>
         <div class="box-body">
