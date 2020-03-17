@@ -110,7 +110,7 @@ class M_transferpolareffgaji extends CI_Model
 					$setelah_break = $masuk - $break_selesai;
 					$sebelum_break = $break_mulai - $keluar;
 					$jam_ijin = $setelah_break + $sebelum_break;
-				}else if($keluar > $break_mulai && $masuk){
+				}else if($keluar > $break_mulai && $masuk > $ist_mulai){
 					$jam_ijin = $ist_mulai - $break_selesai;
 				}else{
 					$jam_ijin = $ist_mulai - $keluar;
