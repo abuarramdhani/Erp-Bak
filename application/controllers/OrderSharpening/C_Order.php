@@ -54,6 +54,10 @@ class C_Order extends CI_Controller {
 		$data['item'] = $this->M_order->getItem();
 		$data['reffBuilder'] = $this->reffBuilder();
 		
+		// $subinv = $this->input->post('subinv');
+		// $data['locator'] = $this->M_order->getLocator();
+		// $data['lppb'] = $detailio;
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('OrderSharpening/V_Order',$data);
@@ -66,6 +70,14 @@ class C_Order extends CI_Controller {
     	$param = $this->input->post('param');
     	$data = $this->M_order->getDeskripsi($param);
     	echo json_encode($data[0]['DESCRIPTION']);
+	}
+
+
+	public function getLocator()
+	{
+		$subinv = $this->input->post('subinv');
+		$data = $this->M_order->getLocator($subinv);
+		echo json_encode($data);
 	}
 
 	public function regen()
@@ -134,21 +146,23 @@ class C_Order extends CI_Controller {
 	}
 
 	public function Insert() {
-		$ip_address =  $this->input->ip_address();
-	   	$no_order = $this->input->post('noOrder');
-		$reff_number = $this->input->post('reffNumber');
-		$item = $this->input->post('kodeBarang');
-		$deskripsi = $this->input->post('deskBarang');
-		$qty = $this->input->post('quantity');
-		$tgl_order = $this->input->post('dateOrder');
-		$tgl = date('Y-m-d', strtotime($tgl_order));
-		$idunix = $this->makeID();
+		$ip_address 	=  $this->input->ip_address();
+	   	$no_order 		= $this->input->post('noOrder');
+		$reff_number 	= $this->input->post('reffNumber');
+		$subinv 		= $this->input->post('subinv');
+		$locator 		= $this->input->post('locator');
+		$item 			= $this->input->post('kodeBarang');
+		$deskripsi 		= $this->input->post('deskBarang');
+		$qty 			= $this->input->post('quantity');
+		$tgl_order 		= $this->input->post('dateOrder');
+		$tgl 			= date('Y-m-d', strtotime($tgl_order));
+		$idunix 		= $this->makeID();
 
 		$i = 0;
 		$o = 1;
 		foreach ($no_order as $noOrder) {
 			$getAvailability = $this->M_order->getAvailability($noOrder);
-			$this->M_order->Insert($noOrder,$item[$i],$deskripsi[$i],$qty[$i],$tgl,$reff_number[$i],$idunix);
+			$this->M_order->Insert($noOrder,$item[$i],$deskripsi[$i],$qty[$i],$tgl,$reff_number[$i],$idunix,$subinv[$i],$locator[$i]);
 			$invID1 	= $this->M_order->getInventoryID($item[$i]); 	//------------ GET INVENTORY ITEM ID
 			$invID = $invID1['INVENTORY_ITEM_ID'];
 			$uom1 = $this->M_order->getUom($item[$i]); 					//------------ GET UOM
@@ -163,7 +177,10 @@ class C_Order extends CI_Controller {
 					'QUANTITY' => $qty[$i],
 					'UOM' => $uom,
 					'IP_ADDRESS' => $ip_address,
-					'ORDER_NUMBER' => $reff_number[$i]);
+					'ORDER_NUMBER' => $reff_number[$i],
+					// 'SUBINV' => $subinv[$i],
+					// 'LOCATOR' => $locator[$i],
+					);
 			
 		$this->M_order->createTemp($data[$i]);
 
@@ -175,7 +192,9 @@ class C_Order extends CI_Controller {
 			$locatorIDTo = ''; 										//------------ Locator  Tujuan
 			$username = '';											//------------ Username
 			$transTypeID = 137;
-			$this->M_order->createMO($username,$ip_address,$transTypeID,$value['ORDER_NUMBER']);	//-------> createMo
+			// $sub_inv = $subinv;
+			// $loc = $locator;
+			$this->M_order->createMO($username,$ip_address,$transTypeID,$value['ORDER_NUMBER'],$subinv[0],$locator[0]);	//-------> createMo
 		}
 
 		foreach ($data as $key => $value) {
@@ -273,7 +292,7 @@ class C_Order extends CI_Controller {
 
     	$this->load->library('pdf');
     	$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8',array(210,297), 0, '', 3, 3, 3, 3, 3, 3); //----- A5-L
+    	$pdf = new mPDF('utf-8',array(210,297), 0, '', 3, 3, 3, 50, 3, 3); //----- A5-L
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'OrderSharpening_'.$tglNama.'.pdf';
     	$html = $this->load->view('OrderSharpening/V_Report', $data, true);		//-----> Fungsi Cetak PDF

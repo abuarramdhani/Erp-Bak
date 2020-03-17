@@ -21,6 +21,32 @@ function getDeskripsi(th){
 	});
 }
 
+$('#subinv').change(function(){
+    var subinv = $(this).val();
+    console.log(subinv);
+    $("#locator").select2('val', null);
+    
+    $.ajax( {
+            url:baseurl+"OrderSharpening/Order/getLocator",
+            dataType: 'json',
+            type:'POST',
+            data : {
+                subinv : subinv
+                },
+            success: function (data) {
+                $('#locator').html('');
+                for (let i = 0; i < data.length; i++) {
+                    var element = data[i];
+                    // console.log(element)
+                    $('#locator').append('<option value="'+element.INVENTORY_LOCATION_ID+'">'+element.SEGMENT1+" - "+element.INVENTORY_LOCATION_ID+'</option>');
+                    
+                }
+                $('#locator').select2('val',null);
+            }
+        }
+    );
+});
+
 function validasi()                                    
 { 
     var item = document.forms["Orderform"]["item_sharp"];               
@@ -59,20 +85,32 @@ var i = 1;
 function addRowOrderSharpening(){
     var noOrder = $('#no_order').val();
     var reffNumber = $('#reff_number').val();
+    var subinv = $('#subinv').val();
+    var locator = $('#locator').val();
     var kodeBarang = $('#item_sharp').val();
     var deskBarang = $('#desc_sharp').val();
     var quantity = $('#qty_sharp').val();
 
     var tambahan = '';
 
-    $('#tbodyUserResponsibility').append('<tr class="clone"><td><input type="hidden" name="reffNumber[]" value="'+reffNumber+i+'" readonly><input type="hidden" name="noOrder[]" value="'+noOrder+i+'" readonly><input type="text" name="kodeBarang[]" value="'+kodeBarang+'" readonly class="form-control"></td><td><input type="text" name="deskBarang[]" value="'+deskBarang+'" readonly class="form-control"></td><td><input type="text" name="quantity[]" value="'+quantity+'" readonly class="form-control"></td><td><button type="button" class="btn btn-md btn-danger btnRemoveUserResponsibility"><i class="fa fa-close"></i></button></td></tr>');
-    i++;
-    
+    $('#tbodyUserResponsibility').append('<tr class="clone"><td><input type="hidden" name="reffNumber[]" value="'+reffNumber+i+'" readonly><input type="hidden" name="noOrder[]" value="'+noOrder+i+'" readonly><input type="text" name="subinv[]" value="'+subinv+'" readonly class="form-control"></td><td><input type="text" name="locator[]" value="'+locator+'" readonly class="form-control"></td><td><input type="text" name="kodeBarang[]" value="'+kodeBarang+'" readonly class="form-control"></td><td><input type="text" name="deskBarang[]" value="'+deskBarang+'" readonly class="form-control"></td><td><input type="text" name="quantity[]" value="'+quantity+'" readonly class="form-control"></td><td><button onclick="Alert()" type="button" class="btn btn-md btn-danger btnRemoveUserResponsibility"><i class="fa fa-trash"></i></button></td></tr>');
+    i++;  
+}
+
+function Alert() {
+    Swal.fire({
+      type: 'success',
+      title: 'Data has been deleted!',
+      showConfirmButton: false,
+      timer: 1500
+  })
 }
 
 function insertOrderSharpening(){
     var noOrder = [];
     var reffNumber = [];
+    var subinv = [];
+    var locator = [];
     var kodeBarang = [];
     var deskBarang = [];
     var quantity = [];
@@ -83,6 +121,12 @@ function insertOrderSharpening(){
     });
     $('#tbodyUserResponsibility input[name~=reffNumber]').each(function(){
         reffNumber.push($(this).val());
+    });
+    $('#tbodyUserResponsibility input[name~=subinv]').each(function(){
+        subinv.push($(this).val());
+    });
+    $('#tbodyUserResponsibility input[name~=locator]').each(function(){
+        locator.push($(this).val());
     });
     $('#tbodyUserResponsibility input[name~=kodeBarang]').each(function(){
         kodeBarang.push($(this).val());
@@ -102,6 +146,8 @@ function insertOrderSharpening(){
         data: {
             'noOrder': noOrder,
             'reffNumber': reffNumber,
+            'subinv'    : subinv,
+            'locator'   : locator,
             'kodeBarang': kodeBarang,
             'deskBarang': deskBarang,
             'quantity': quantity,
