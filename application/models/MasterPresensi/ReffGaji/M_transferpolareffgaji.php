@@ -222,7 +222,7 @@ class M_transferpolareffgaji extends CI_Model
 	                $jam_ijin = $sebelum_break + $sebelum_istirahat + $setelah_istirahat;
 	            }elseif($keluar > $break_mulai && $keluar >= $break_selesai){
 	                $sebelum_istirahat = $ist_mulai - $keluar;
-	                $setelah_istirahat = $masuk - $ist_selesai
+	                $setelah_istirahat = $masuk - $ist_selesai;
 	                $jam_ijin = $sebelum_istirahat + $setelah_istirahat;
 	            }elseif($keluar >= $break_mulai && $keluar <= $break_selesai){
 	                $sebelum_istirahat = $ist_mulai - $break_selesai;
