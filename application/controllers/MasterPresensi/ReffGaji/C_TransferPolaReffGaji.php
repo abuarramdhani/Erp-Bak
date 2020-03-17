@@ -3,6 +3,8 @@ Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
 
 set_time_limit(0);
 ini_set("memory_limit","-1");
+setlocale(LC_TIME, "id_ID.utf8");
+date_default_timezone_set("Asia/Jakarta");
 
 class C_TransferPolaReffGaji extends CI_Controller
 {
@@ -89,6 +91,7 @@ class C_TransferPolaReffGaji extends CI_Controller
 		session_write_close();
 		flush();
 		$datajadi = array();
+		$datapdf = array();
 		$angka = 0;
 		$simpan_noind = "";
 		$simpan_tanggal = "";
@@ -223,7 +226,7 @@ class C_TransferPolaReffGaji extends CI_Controller
 			}elseif ($dt['kd_ket'] == "TIK" or $dt['kd_ket'] == "PSP") {
 				$ijin = 1 - $this->M_transferpolareffgaji->hitung_tik($dt['noind'],$dt['tanggal']);
 				$insKon = $this->M_transferpolareffgaji->hitungIk($dt['noind'],$dt['tanggal']);
-				if($insKon < 1){
+				if(floatval($insKon) < 1){
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = $ijin;
 					if (strtolower($dt['inisial']) == "s1") {
 						$datajadi[$angka]['hmp'] -= 1;
@@ -233,6 +236,8 @@ class C_TransferPolaReffGaji extends CI_Controller
 						$datajadi[$angka]['hmm'] -= 1;
 					}elseif (strtolower($dt['inisial']) == "su") {
 						$datajadi[$angka]['hmu'] -= 1;
+					}else{
+						$datajadi[$angka]['hmp'] -= 1;
 					}
 				}else{
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = strtolower($dt['inisial']);
@@ -277,6 +282,8 @@ class C_TransferPolaReffGaji extends CI_Controller
 				}
 
 			}
+
+
 
 			$simpan_tanggal = $dt['tanggal'];
 			$simpan_noind = $dt['noind'];
@@ -417,11 +424,15 @@ class C_TransferPolaReffGaji extends CI_Controller
 			//
 			session_write_close();
 			flush();
+
+			if (substr($value['noind'], 0, 1) == 'A') {
+				$datapdf[] = $value;
+			}
 		}
 
 		$table->close();
 
-		$data['datajadi'] = $datajadi;
+		$data['datajadi'] = $datapdf;
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
 		// $this->load->view('MasterPresensi/ReffGaji/TransferPolaReffGaji/V_cetak', $data);
