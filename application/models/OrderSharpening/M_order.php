@@ -19,7 +19,7 @@ class M_order extends CI_Model {
 				 WHERE msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
 				   AND msib.SEGMENT1 like '%-T'";
 
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->result_array();
     }
 
@@ -32,7 +32,20 @@ class M_order extends CI_Model {
 				   AND msib.SEGMENT1 like '%-T'
 				   AND msib.SEGMENT1 = '$param'";
 
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
+      return $query->result_array();
+    }
+
+    public function getLocator($subinv)
+    {
+
+      $sql = "SELECT mil.INVENTORY_LOCATION_ID, mil.SEGMENT1
+  FROM mtl_item_locations mil
+ WHERE mil.subinventory_code like '$subinv'
+  -- AND mil.DESCRIPTION LIKE '%UMUM%'
+  ";
+
+      $query = $this->oracle_dev->query($sql);
       return $query->result_array();
     }
 
@@ -76,11 +89,11 @@ class M_order extends CI_Model {
       return $query->result_array();
     }
 
-    public function Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number,$idunix)
+    public function Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number,$idunix,$subinv,$locator)
     
     {
-      $sql = "INSERT INTO osp.osp_order_sharpening_dev (no_order,kode_barang,deskripsi_barang,qty,tgl_order,reff_number,idunix)
-          VALUES ('$no_order','$item','$deskripsi','$qty','$tgl_order','$reff_number','$idunix')";
+      $sql = "INSERT INTO osp.osp_order_sharpening_dev (no_order,kode_barang,deskripsi_barang,qty,tgl_order,reff_number,idunix,subinv,locator)
+          VALUES ('$no_order','$item','$deskripsi','$qty','$tgl_order','$reff_number','$idunix','$subinv','$locator')";
       $query = $this->db->query($sql);
     }
 
@@ -115,7 +128,7 @@ class M_order extends CI_Model {
               AND mtrh.REQUEST_NUMBER = '$param'
               AND mtrl.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
               AND msib.ORGANIZATION_ID = mtrh.ORGANIZATION_ID";
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->result_array();
     }
 
@@ -133,7 +146,7 @@ class M_order extends CI_Model {
       $sql = "SELECT msib.INVENTORY_ITEM_ID FROM mtl_system_items_b msib
               WHERE msib.SEGMENT1 = '$item'";
 
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->row_array();
     }
 
@@ -142,7 +155,7 @@ class M_order extends CI_Model {
       $sql = "SELECT msib.PRIMARY_UOM_CODE FROM mtl_system_items_b msib
               WHERE msib.SEGMENT1 = '$item'";
 
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->row_array();
     }
 
@@ -150,7 +163,7 @@ class M_order extends CI_Model {
     {
       $sql = "SELECT mtrh.REQUEST_NUMBER FROM mtl_txn_request_headers mtrh
               WHERE mtrh.ATTRIBUTE1 = '$reff_number'";
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->row_array();
     }
 
@@ -177,7 +190,7 @@ class M_order extends CI_Model {
               WHERE mtrh.ATTRIBUTE1 = '$param'
               and mtrl.HEADER_ID = mtrh.HEADER_ID";
 
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->result_array();
     }
 
@@ -190,7 +203,7 @@ class M_order extends CI_Model {
          AND mtrl.line_id = mmts.move_order_line_id
          AND mtrh.request_number = '$param'";
 
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->row_array();
     }
 
@@ -207,7 +220,7 @@ class M_order extends CI_Model {
       $sql = "SELECT mtrL.QUANTITY from mtl_txn_request_headers mtrh, mtl_txn_request_lines mtrl
              where mtrh.HEADER_ID = mtrl.HEADER_ID
              and mtrh.REQUEST_NUMBER = '$param' ";
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->row_array();
     }
 
@@ -234,9 +247,15 @@ class M_order extends CI_Model {
       $oracle->query($sql);
       $oracle->trans_complete();
     }
-
-    function createMO($username,$ip_address,$transTypeID,$reff_number)
+// edit pseudonym
+    function createMO($username,$ip_address,$transTypeID,$reff_number,$subinv,$locator)
     {
+
+      // echo "<pre>";
+      // print_r($subinv);
+      // print_r($locator);
+      // print_r($reff_number);
+      // exit();
 
       $username = 'AA TECH TSR 01';
       $jan = 137;
@@ -248,7 +267,7 @@ class M_order extends CI_Model {
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
         }
         
-      $sql =  "BEGIN APPS.KHS_CREATE_MO_ORDER_TR(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4); END;";
+      $sql =  "BEGIN APPS.KHS_CREATE_MO_ORDER_TR(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6); END;";
 
       //Statement does not change
       $stmt = oci_parse($conn,$sql);                     
@@ -256,6 +275,10 @@ class M_order extends CI_Model {
       oci_bind_by_name($stmt,':P_PARAM2',$jan);
       oci_bind_by_name($stmt,':P_PARAM3',$ip_address);
       oci_bind_by_name($stmt,':P_PARAM4',$reff_number);
+      oci_bind_by_name($stmt,':P_PARAM5',$subinv);
+      oci_bind_by_name($stmt,':P_PARAM6',$locator);
+// sampai sini 
+
 //---
     // if (!$data) {
     // $e = oci_error($conn);  // For oci_parse errors pass the connection handle
