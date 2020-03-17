@@ -113,13 +113,18 @@
 									} else {
 										$lokasifoto=base_url('assets/theme/img/user.png');
 									}
+									$path = $lokasifoto;
+									$type = pathinfo($path, PATHINFO_EXTENSION);
+									$dat = file_get_contents($path);
+									$base64 = 'data:image/' . $type . ';base64,' .base64_encode($dat);
 								?>
-								<img src="<?= $lokasifoto ?>" class="user-image" alt="User Image">
+								<div style="background: url('<?= $base64 ?>') no-repeat ; background-size: cover; background-position: center center; " class="user-image"></div>
 								<span class="hidden-xs"><?= $this->session->employee ?></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li class="user-header">
-									<img src="<?= $lokasifoto ?>" class="img-circle" style="height: auto;" alt="User Image">
+								<li class="user-header text-center">
+								<div style="width: 90px;"></div>
+									<div style="background: url('<?= $base64 ?>') no-repeat right center; background-size: contain; background-position: 50%; min-height: 120px;"></div>
 									<p><?= $this->session->user." - ".$this->session->employee ?></p>
 								</li>
 								<li class="user-footer">

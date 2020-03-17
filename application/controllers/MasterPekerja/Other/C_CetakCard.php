@@ -106,6 +106,11 @@ class C_CetakCard extends CI_Controller
 		$data['worker'] = array();
 		foreach ($noind as $key) {
 			$DataID = $this->M_cetakcard->DataPekerja($key);
+			$path = $DataID[0]['photo'];
+			$type = pathinfo($path, PATHINFO_EXTENSION);
+			$dat = file_get_contents($path);
+			$base64 = 'data:image/' . $type . ';base64,' .base64_encode($dat);
+			$DataID[0]['photo'] = trim($base64);
 			array_push($data['worker'], $DataID);
 		}
 

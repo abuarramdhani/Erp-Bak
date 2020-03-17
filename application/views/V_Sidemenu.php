@@ -18,12 +18,24 @@
 					$ekstensi 	= 	"jpg";
 				}
 
+
 				if($ekstensi=='jpg' || $ekstensi=='JPG'){
-					echo '<img src="'.$path_photo.$this->session->user.'.'.$ekstensi.'" class="img-circle" alt="User Image" title="'.$this->session->user.' - '.$this->session->employee.'">';
+					$pat = $path_photo.$this->session->user.'.'.$ekstensi;
 				}else{
-					echo '<img src="'.base_url('assets/theme/img/user.png').'" class="img-circle" alt="User Image" />';
+					$pat = base_url('assets/theme/img/user.png');
 				}
+				$path = $pat;
+				$type = pathinfo($path, PATHINFO_EXTENSION);
+				$dat = file_get_contents($path);
+				$base64 = 'data:image/' . $type . ';base64,' .base64_encode($dat);
+
+				// if($ekstensi=='jpg' || $ekstensi=='JPG'){
+				// 	echo '<img src="'.$path_photo.$this->session->user.'.'.$ekstensi.'" class="img-circle" alt="User Image" title="'.$this->session->user.' - '.$this->session->employee.'">';
+				// }else{
+				// 	echo '<img src="'.base_url('assets/theme/img/user.png').'" class="img-circle" alt="User Image" />';
+				// }
               	?>
+              	<div style="background: url('<?= $base64 ?>') no-repeat; background-size: cover; background-position: center center; width: 50px;height: 65px;" class="img-circle"></div>
             </div>
             <div class="pull-left info">
             	<p><?php echo $this->session->user;?></p>

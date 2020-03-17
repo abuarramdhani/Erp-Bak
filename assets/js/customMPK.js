@@ -115,7 +115,7 @@ $(document).ready(function() {
                 } else {
                     html += '<td>' + data['worker'][i][0]['seksi'] + '</td>';
                 }
-                html += '<td><a target="_blank" href="' + data['worker'][i][0]['photo'] + '">PHOTO</td>';
+                html += '<td><a style="cursor:pointer;" class="mpkOpnImg" target="_blank" data-url="' + data['worker'][i][0]['photo'] + '">PHOTO</td>';
                 html += '<td><input type="text" style="text-transform:uppercase" data-noind="' + data['worker'][i][0]['noind'] + '" class="form-control" name="nick[]" id="nickname" maxlength="10"></td>'
                 html += '</tr>';
             }
@@ -124,6 +124,13 @@ $(document).ready(function() {
             $('#print_card').removeAttr('disabled', false);
             $('#print_card').removeClass('disabled');
         })
+    });
+
+    $('#tabel-idcard').on('click', '.mpkOpnImg', function(){
+      let va = $(this).attr('data-url');
+      Swal.fire({
+        html: '<div style="background: url(\''+va+'\') no-repeat right center; background-size: contain; background-position: 50%; min-height: 420px;"></div>'
+      });
     });
 
     //Untuk Rekap Perizinan Dinas
