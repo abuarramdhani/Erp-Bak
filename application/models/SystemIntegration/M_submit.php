@@ -96,7 +96,8 @@ class M_submit extends CI_Model {
 		} else if($jabatan == '4') {
 			$where = "c.kd_jabatan = '01'";
 		}
-		
+
+
 		if ($jabatan == '1') {
 			$sql2 = "SELECT 
 						a.noind employee_code, a.nama employee_name
@@ -173,6 +174,16 @@ class M_submit extends CI_Model {
 			$query5 = $personalia->query($sql5);
 			$result5 = $query5->result_array();
 			$result2 = $result5;
+		}
+
+		$sql_khusus = "select sik.no_induk employee_code,eea.employee_name from si.si_approver_khusus sik 
+					left join er.er_employee_all eea on sik.no_induk=eea.employee_code
+					where sik.kodesie in (select section_code from er.er_employee_all where employee_code='$noind')";
+
+		$query_khusus = $this->db->query($sql_khusus);
+		$hasil_khusus = $query_khusus->result_array();
+		foreach ($hasil_khusus as $value) {
+		$result2[] = $value;
 		}
 
 		$allAtasan = $this->getAllUser();
