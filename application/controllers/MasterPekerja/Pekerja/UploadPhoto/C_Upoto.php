@@ -45,7 +45,7 @@ class C_Upoto extends CI_Controller
 
 	public function cekFileFoto(){
 		$noInd = $this->input->post('noind');
-		$dir    = './assets/img/photo';
+		$dir    = './assets/img/foto';
         $files2  = array_diff(scandir($dir), array('..', '.'));
         $nama_foto = $noInd.'.JPG';
         if (in_array($nama_foto, $files2)){
@@ -65,7 +65,7 @@ class C_Upoto extends CI_Controller
 		// print_r($ext);exit();
 		//upload an image options
 		$config = array();
-		$config['upload_path'] = './assets/img/photo';
+		$config['upload_path'] = './assets/img/foto';
 		$config['allowed_types'] = '*';
 		$config['max_size']      = '1000';
 		$config['file_name']     = $noInd;
@@ -78,11 +78,11 @@ class C_Upoto extends CI_Controller
 		$this->upload->initialize($config);
 		if ($this->upload->do_upload('txtPhoto')) {
         	$this->upload->data();
-       		$pat = './assets/img/photo/'.$noInd.'.'.$ext;
-			$out = './assets/img/photo/'.$noInd.'.JPG';
+       		$pat = './assets/img/foto/'.$noInd.'.'.$ext;
+			$out = './assets/img/foto/'.$noInd.'.JPG';
 			$conv = $this->convertImagetoJPG($pat, $out, 100);
     		if($conv){
-				unlink('./assets/img/photo/'.$noInd.'.png');
+				unlink('./assets/img/foto/'.$noInd.'.png');
 	    		redirect('MasterPekerja/upload-photo');
     		}
        	} else {
