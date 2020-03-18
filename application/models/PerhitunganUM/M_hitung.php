@@ -7,7 +7,7 @@ class M_hitung extends CI_Model {
     $this->load->database();
     $this->load->library('encrypt');
     $this->oracle = $this->load->database('oracle', true);
-    $this->oracle_dev = $this->load->database('oracle_dev',TRUE);
+    //$this->oracle_dev = $this->load->database('oracle_dev',TRUE);
     }
 	
 	public function dataPUM($plan, $deptclass){
