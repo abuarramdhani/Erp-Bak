@@ -40,11 +40,20 @@
 										<input type="text" class="form-control" name="kodeitem">
 									</div>
 									<div class="col-md-4" style="text-align: left;">
-										<button class="btn btn-default" onclick="getBom(this)"><i class="fa fa-search"></i></button>
+										<button class="btn btn-warning" onclick="getBom(this)"><i class="fa fa-search"></i> Search All</button>
+										<button class="btn btn-success" onclick="getBomada(this)">BOM Ada</button>
+										<button class="btn btn-danger" onclick="getBomtdkada(this)">BOM Tidak Ada</button>
+
 									</div>
 
 								</div>
 								<div class="panel-body" id="bom_result">
+
+								</div>
+								<div class="panel-body" id="bom_ada">
+
+								</div>
+								<div class="panel-body" id="bom_tdk">
 
 								</div>
 						</div>

@@ -44,7 +44,7 @@ class M_rkhkasie extends CI_Model
              AND msi.secondary_inventory_name = 'SP-YSP'
              AND mp.organization_id = msi.organization_id
              AND msib.organization_id = msi.organization_id
-             AND msib.SEGMENT1 LIKE '$kodeitem%' ";
+             AND (msib.SEGMENT1||' - '||msib.DESCRIPTION) like '$kodeitem%'  ";
 
     $query = $oracle->query($sql);
     return $query->result_array();
