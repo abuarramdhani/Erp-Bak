@@ -56,7 +56,7 @@ class C_Personalia extends CI_Controller
                                 td.alasan,
                                 ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
                                   from er.er_section es inner join er.er_employee_all emp on substring(emp.section_code, 0,8) = substring(es.section_code,0,8)
-                                  where emp.employee_code = td.noind
+                                  where emp.employee_code = td.noind limit 1
                                 ) 
                                 seksi_name
                         FROM ps.tdata td 
@@ -95,7 +95,7 @@ class C_Personalia extends CI_Controller
                                 td.alasan,
                                 ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
                                   from er.er_section es inner join er.er_employee_all emp on substring(emp.section_code, 0,8) = substring(es.section_code,0,8)
-                                  where emp.employee_code = td.noind
+                                  where emp.employee_code = td.noind limit 1
                                 ) 
                                 seksi_name
                         FROM ps.tdata td
