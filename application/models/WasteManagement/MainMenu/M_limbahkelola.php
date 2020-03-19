@@ -13,9 +13,18 @@ class M_limbahkelola extends CI_Model
 		$this->load->database();
 	}
 
-	public function getLimbahKirim(){
-    $approveByWasteManagement = 1;
-    $approveByKasie = 4;
+	public function getLimbahKirim($lokasi = ''){
+        $approveByWasteManagement = 1;
+        $approveByKasie = 4;
+
+        if($lokasi == 'yogyakarta') {
+            $filterLokasi = "and limkir.lokasi_kerja = '01' ";
+        } else if($lokasi == 'tuksono') {
+            $filterLokasi = "and limkir.lokasi_kerja = '02' ";
+        } else if($lokasi == 'all' || $lokasi == '' || $lokasi == null) {
+            $filterLokasi = "";
+        }
+
 		$query = 	"select limkir.id_kirim,
                         cast(limkir.tanggal_kirim as date) tanggal,
                         cast(limkir.tanggal_kirim as time) waktu,
@@ -31,16 +40,15 @@ class M_limbahkelola extends CI_Model
                         limkir.lokasi_kerja,
                         limkir.berat_kirim,
                         limkir.status_kirim,
-												limkir.id_satuan,
+						limkir.id_satuan,
                         (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')
                         pekerja,
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
-
+                    where limkir.status_kirim in('1','2','4', '3') $filterLokasi 
                     order by limkir.tanggal_kirim desc";
         $result = $this->db->query($query);
-        //                    where limkir.status_kirim in ('$approveByWasteManagement','$approveByKasie')
         return $result->result_array();
 	}
 
