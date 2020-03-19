@@ -140,7 +140,7 @@
                                             <th width="20%" class="text-center">Nama Barang</th>
                                             <?php if ($DetailType === 'ListBackorder') : ?>
                                                 <th width="15%" class="text-center">QTY</th>
-                                            <?php elseif ($DetailType === 'LaunchPickRelease' || $DetailType === 'RequestedSPB' || $DetailType === 'ApprovedSPB' || $DetailType === 'RejectedSPB' || $DetailType === 'ListSPB' || $DetailType === 'ApprovalSPB' || $DetailType === 'PendingSPB') : ?>
+                                            <?php elseif ($DetailType === 'LaunchPickRelease'): ?>
                                                 <th width="10%" class="text-center">QTY REQ</th>
                                             <?php else : ?>
                                                 <th width="7.5%" class="text-center">QTY REQ</th>
@@ -169,7 +169,7 @@
                                                 <td width="5%" class="text-right"><?= $key+1 ?></td>
                                                 <td width="20%"><?= $val['KODE_BARANG'] ?></td>
                                                 <td width="20%"><?= $val['NAMA_BARANG'] ?></td>
-                                                <?php if ($DetailType === 'ListBackorder' || $DetailType === 'LaunchPickRelease' || $DetailType === 'RequestedSPB' || $DetailType === 'ApprovedSPB' || $DetailType === 'RejectedSPB' || $DetailType === 'ListSPB' || $DetailType === 'ApprovalSPB' || $DetailType === 'PendingSPB') : ?>
+                                                <?php if ($DetailType === 'ListBackorder') : ?>
                                                     <td width="10%" class="text-right"><?= $val['REQ_QTY'] ?></td>
                                                 <?php else : ?>
                                                     <td width="10%" class="text-right"><?= $val['REQ_QTY'] ?></td>
