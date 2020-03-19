@@ -249,6 +249,8 @@ class C_TransferPolaReffGaji extends CI_Controller
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "CT";
 				}elseif ($dt['kd_ket'] == "PRM") {
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "RM";
+				}elseif ($dt['kd_ket'] == "PIP") {
+					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "IP";
 				}elseif ($dt['kd_ket'] !== "TT") {
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "S1";
 					$datajadi[$angka]['hmp'] += 1;
