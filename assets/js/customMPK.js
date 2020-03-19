@@ -3073,4 +3073,23 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#dataTable_ipoto').on('click', '.mpkshowimg', function(){
+      var va = $(this).attr('data');
+      $.ajax({
+        type: 'POST',
+        data:{
+          dt: va
+        },
+        url: baseurl + 'MasterPekerja/upload-photo/getFileFoto',
+        success: function (result) {
+          Swal.fire({
+            html: '<div style="background: url(\''+result+'\') no-repeat right center; background-size: contain; background-position: 50%; min-height: 420px;"></div>'
+          });
+        },
+        error: function (result){
+          alert('Error Please Try Again !');
+        }
+      });
+    });
 });

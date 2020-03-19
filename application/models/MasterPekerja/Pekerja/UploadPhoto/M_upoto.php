@@ -11,11 +11,14 @@ class M_upoto extends CI_Model
 		$this->load->database();
 	}
 
-	public function getInfo()
+	public function getInfo($noind = false)
 	{
+		if ($noind) {
+			$noind = "and noind in ('$noind')";
+		}
 		$sql="	SELECT noind,nama, trim(photo) photo
 				FROM hrd_khs.tpribadi 
-				where keluar=false
+				where keluar=false $noind
 				group by noind,2,3
 				order by noind ASC";
 		$query = $this->personalia->query($sql);
@@ -25,7 +28,7 @@ class M_upoto extends CI_Model
 	public function insert_link($noInd)
 	{
 		$sql="	UPDATE hrd_khs.tpribadi set
-				photo='http://erp.quick.com/assets/img/photo/$noInd.JPG', path_photo='http://erp.quick.com/assets/img/photo/$noInd.JPG'
+				photo='http://erp.quick.com/assets/img/foto/$noInd.JPG', path_photo='http://erp.quick.com/assets/img/foto/$noInd.JPG'
 				where noind='$noInd'";
 		$query = $this->personalia->query($sql);
 	}

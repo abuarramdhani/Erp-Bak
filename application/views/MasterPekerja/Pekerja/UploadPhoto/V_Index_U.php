@@ -41,20 +41,24 @@
                                     </div>
                                     <table class="table table-striped table-bordered table-hover text-left" id="dataTable_ipoto" style="font-size:14px;">
                                         <thead class="bg-primary">
-                                            <tr>
-                                                <th>No</th>
+                                            <tr class="text-center">
+                                                <th style="width: 60px;">No</th>
                                                 <th>Noind</th>
                                                 <th>Nama</th>
-                                                <th>Path Photo</th>
+                                                <th style="width: 100px;">Photo</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $no=0; foreach($getInfo as $gi){ $no++ ?>
                                             <tr>
-                                                <td><?php echo $no ?></td>
+                                                <td class="text-center"><?php echo $no ?></td>
                                                 <td><?php echo $gi['noind'] ?></td>
-                                                <td><?php echo $gi['nama'] ?></td>
-                                                <td><?php echo '<a href="'.$gi['photo'].'" target="_blank">'.$gi['photo'].'</a>' ?></td>
+                                                <td><?php echo trim($gi['nama']) ?></td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-primary mpkshowimg" data="<?= $gi['noind'] ?>">
+                                                        <i class="fa fa-file-image-o"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                             <?php } ?>
                                         </tbody>
@@ -90,7 +94,7 @@
                         <br>
                         <label style="margin-top: 10px;">File Photo</label>
                         <div style="width: 500px; margin: auto;" class="thismaxwidth">
-                            <input type="file" name="txtPhoto" class="form-control">
+                            <input accept="image/*" type="file" name="txtPhoto" class="form-control">
                         </div>
                     </div>
                 </div>
