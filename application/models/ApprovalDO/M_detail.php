@@ -44,7 +44,8 @@ class M_detail extends CI_Model
                         ,msib.SEGMENT1
                         ,msib.DESCRIPTION
                         ,mtrl.QUANTITY
-                        ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') qty_atr
+                --                        ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') qty_atr
+                        ,khs_inv_qty_atr(102,msib.INVENTORY_ITEM_ID,'FG-TKS','','') qty_atr
                         ,msib.PRIMARY_UOM_CODE
                         ,ooo.LOKASI
                         ,ot.name
@@ -82,6 +83,8 @@ class M_detail extends CI_Model
                     and msib.INVENTORY_ITEM_ID = ooo.INVENTORY_ITEM_ID(+)
                     and ooha.ORDER_TYPE_ID = ot.transaction_type_id
                     and wdd.BATCH_ID = $do_number
+                --                    and wdd.BATCH_ID = 3734772
+                --                    and wdd.BATCH_ID = 3734235
                     )aa
                 group by aa.REQUEST_NUMBER
                 ,aa.ORDER_NUMBER
@@ -100,10 +103,11 @@ class M_detail extends CI_Model
     
     public function getDetailSPB()
     {
-        $sql = "SELECT mtrh.REQUEST_NUMBER          no_spb
+        $sql = "select mtrh.REQUEST_NUMBER          no_spb
                         ,msib.SEGMENT1                kode_barang           
                         ,msib.DESCRIPTION             nama_barang
                         ,mtrl.QUANTITY                req_qty
+                        ,khs_inv_qty_atr(102,msib.INVENTORY_ITEM_ID,'FG-TKS','','') qty_atr
                         ,mtrl.UOM_CODE                uom
                         ,mtrh.FROM_SUBINVENTORY_CODE  from_subinv
                         ,mtrh.TO_SUBINVENTORY_CODE    to_subinv
