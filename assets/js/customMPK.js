@@ -3048,4 +3048,48 @@ $(document).ready(function(){
             }
         ]
     });
+
+    $('#dataTable_ipoto').dataTable();
+
+    $("#mpk_cek_file").change(function(){
+        var noind = $(this).val();
+        $.ajax({
+            type: 'POST',
+            data:{
+                noind: noind
+            },
+            url: baseurl + 'MasterPekerja/upload-photo/cekFileFoto',
+            success: function (result) {
+                if (result == '1') {
+                    $('#mpk_warn_rtxt').show();
+                    $('#mpk_warn_rbtxt').text('Replace');
+                }else{
+                    $('#mpk_warn_rtxt').hide();
+                    $('#mpk_warn_rbtxt').text('Submit');
+                }
+            },
+            error: function (result){
+                alert('Error Please Try Again !');
+            }
+        });
+    });
+
+    $('#dataTable_ipoto').on('click', '.mpkshowimg', function(){
+      var va = $(this).attr('data');
+      $.ajax({
+        type: 'POST',
+        data:{
+          dt: va
+        },
+        url: baseurl + 'MasterPekerja/upload-photo/getFileFoto',
+        success: function (result) {
+          Swal.fire({
+            html: '<div style="background: url(\''+result+'\') no-repeat right center; background-size: contain; background-position: 50%; min-height: 420px;"></div>'
+          });
+        },
+        error: function (result){
+          alert('Error Please Try Again !');
+        }
+      });
+    });
 });
