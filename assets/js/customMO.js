@@ -1,4 +1,19 @@
 $(document).ready(function () {
+
+    $(function() {
+      $('input[name="txtJamPemotonganTarget"]').daterangepicker({
+            timePicker: true,
+            timePicker24Hour: true,
+            timePickerIncrement: 1,
+            timePickerSeconds: false,
+            locale: {
+                format: 'HH:mm'
+            }
+      }).on('show.daterangepicker', function (ev, picker) {
+            picker.container.find(".calendar-table").hide();
+      });
+    });
+
     var tblItem = $('#masterItem').DataTable({
         dom: 'Bfrtip',
         columnDefs: [
