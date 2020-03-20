@@ -787,6 +787,7 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
+
     public function sudahdiMuat()
     {
         $response = $this->oracle->query("SELECT distinct
@@ -824,7 +825,7 @@ class M_monitoringdo extends CI_Model
             and kdt.HEADER_ID = kpd.HEADER_ID
             and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
                          and kpd.DELIVERY_FLAG = 'Y'
-                         and kdt.FLAG = 'S'
+                         and kdt.FLAG = 'T'
                     then 1 --'SUDAH MUAT'
                     end
             --
@@ -841,6 +842,7 @@ class M_monitoringdo extends CI_Model
             and mtrh.REQUEST_NUMBER not in (select distinct 
                                          nvl(kcd.REQUEST_NUMBER,0) 
                                     from khs_cetak_do kcd
+                                    where kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
                                     )
 
           UNION ALL
@@ -880,13 +882,14 @@ class M_monitoringdo extends CI_Model
             and kdt.HEADER_ID = kpd.HEADER_ID
             and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
                          and kpd.DELIVERY_FLAG = 'Y'
-                         and kdt.FLAG = 'S'
+                         and kdt.FLAG = 'T'
                     then 1 --'SUDAH MUAT'
                     end
             --
             and mtrh.REQUEST_NUMBER not in (select distinct
                                                    nvl(kcd.REQUEST_NUMBER,0)
                                               from khs_cetak_do kcd
+                                              where kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
                                               )
             -- paramter trial
           --  and mtrh.REQUEST_NUMBER = '2000000013'
@@ -895,7 +898,6 @@ class M_monitoringdo extends CI_Model
 
         return $response;
     }
-
 
     public function sudahdiMuat_detail($data)
     {

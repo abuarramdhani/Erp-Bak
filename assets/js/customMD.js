@@ -80,25 +80,10 @@ function approveMD() {
               showConfirmButton: false,
               timer: 1500
             }).then(function() {
-              $.ajax({
-                url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
-                type: 'POST',
-                beforeSend: function() {
-                  $('#loadingArea0').show();
-                  $('div.table_area_DO_0').hide();
-                },
-                success: function(result) {
-                  // console.log(result);
-                  $('#loadingArea0').hide();
-                  $('div.table_area_DO_0').show();
-                  $('div.table_area_DO_0').html(result);
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                  console.error();
-                }
-              }).then(function() {
- 
-              })
+              $('tr[row-id="' + rowID + '"] input[name="person_id"]').attr('disabled', true);
+              $('tr[row-id="' + rowID + '"] button[name="buttondetail"]').attr('disabled', true);
+              $('tr[row-id="' + rowID + '"]').removeAttr("style");
+              $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
             })
           }
         },
@@ -148,24 +133,10 @@ function approveMD() {
               console.error();
             }
           }).then(function() {
-            $.ajax({
-              url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
-              type: 'POST',
-              beforeSend: function() {
-                $('#loadingArea0').show();
-                $('div.table_area_DO_0').hide();
-              },
-              success: function(result) {
-                // console.log(result);
-                $('#loadingArea0').hide();
-                $('div.table_area_DO_0').show();
-                $('div.table_area_DO_0').html(result);
-              },
-              error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.error();
-              }
-            })
-  
+              $('tr[row-id="' + rowID + '"] input[name="person_id"]').attr('disabled', true);
+              $('tr[row-id="' + rowID + '"] button[name="buttondetail"]').attr('disabled', true);
+              $('tr[row-id="' + rowID + '"]').removeAttr("style");
+              $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
           })
         } else {
           Swal.fire({
