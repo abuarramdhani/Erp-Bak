@@ -8,10 +8,10 @@ class M_minmax extends CI_Model
         $this->load->database();    
     }
 
-    public function insertData($item, $min, $max, $uom){
+    public function insertData($item, $desc, $min, $max, $uom){
         $oracle = $this->load->database('oracle', true);
-        $sql = "insert into khs_sp_minmax (item, min, max, uom, last_update, last_update_by)
-                values ('$item', '$min', '$max', '$uom', sysdate, 225)";
+        $sql = "insert into khs_sp_minmax (item, min, max, uom, last_update, last_update_by, description)
+                values ('$item', '$min', '$max', '$uom', sysdate, 225, '$desc')";
         $query = $oracle->query($sql);
         $query = $oracle->query('commit');
     }

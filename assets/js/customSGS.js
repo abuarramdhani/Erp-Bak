@@ -63,13 +63,20 @@ function getLihatStock(th) {
 		var kode_awal 	= $('#kode_awal').val();
 		var qty_atas 	= $('#qty_atas').val();
 		var qty_bawah 	= $('#qty_bawah').val();
-		// console.log(tglAw);
+		var unit 		= document.getElementsByName('unit');
+
+		for (var i = 0, length = unit.length; i < length; i++) {
+			if (unit[i].checked) {
+				var unit2 = unit[i].value; 
+			}
+		  }
+		console.log(unit2);
 		
 		var request = $.ajax({
 			url: baseurl+'StockGdSparepart/LihatStock/searchData',
 			data: {
                 tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal,
-				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah
+				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah, unit2 : unit2
 			},
 			type: "POST",
 			datatype: 'html'
@@ -152,6 +159,7 @@ function getLihatTransact(th) {
 
 function saveminmax(th) {
 	var item = $('input[name="item[]"]').map(function(){return $(this).val();}).get();
+	var desc = $('input[name="desc[]"]').map(function(){return $(this).val();}).get();
 	var min = $('input[name="min[]"]').map(function(){return $(this).val();}).get();
 	var max = $('input[name="max[]"]').map(function(){return $(this).val();}).get();
 	var uom = $('input[name="uom[]"]').map(function(){return $(this).val();}).get();
@@ -165,7 +173,7 @@ function saveminmax(th) {
 	var request = $.ajax({
 		url: baseurl+'StockGdSparepart/MinMaxStock/saveminmax',
 		data: {
-			item : item, min : min, max : max, uom : uom
+			item : item, min : min, max : max, uom : uom, desc : desc
 		},
 		type: "POST",
 		datatype: 'html',
