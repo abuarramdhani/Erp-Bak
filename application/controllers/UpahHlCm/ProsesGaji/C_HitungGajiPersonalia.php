@@ -347,6 +347,7 @@ class C_HitungGajiPersonalia extends CI_Controller {
 		$data = array();
 		$periode = '';
 		$cutoff = $this->M_prosesgaji->getCutOffGaji('All');
+
 		foreach ($cutoff as $cut) {
 			if ($cut['rangetanggal'] == $plaintext_string) {
 				$periode = $cut['periode'];
@@ -401,7 +402,8 @@ class C_HitungGajiPersonalia extends CI_Controller {
 			// echo "<pre>";
 			// print_r($data['data']);exit();
 
-			$period = explode(' ', $data['periode']);
+
+			$period = explode(' - ', $plaintext_string);
 
 			$worksheet->setCellValue('A1','REKAP HITUNG GAJI '.strtoupper($data['periode']));
 			$worksheet->mergeCells('A1:O1');
