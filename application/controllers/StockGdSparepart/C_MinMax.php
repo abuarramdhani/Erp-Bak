@@ -66,7 +66,7 @@ class C_MinMax extends CI_Controller
 	
 			$i=1;
 			  foreach($sheets as $row) {
-				   if ($i != 1) {
+				   if ($i != 1 && $i != 2) {
 					   $item[] = $row['B'];
 					   $desc[] = $row['C'];
 					   $uom[] = $row['D'];
