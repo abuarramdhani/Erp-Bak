@@ -94,10 +94,18 @@ class M_packing extends CI_Model
         $query2 = $oracle->query('commit');   
     }
 
-    public function insertBerat($nospb, $jenis, $berat){
+    public function insertBerat($nospb, $jenis, $berat, $no){
         $mysqli = $this->load->database('khs_packing', true);
-        $sql = "insert into sp_packing_trx (nomor_do, kode_packing, berat)
-                values('$nospb', '$jenis', '$berat')";
+        $sql = "insert into sp_packing_trx (nomor_do, kode_packing, berat, attribute)
+                values('$nospb', '$jenis', '$berat', '$no')";
+        $query = $mysqli->query($sql);
+        // echo $sql;
+    }
+
+    public function updateBerat($nospb, $jenis, $berat, $no){
+        $mysqli = $this->load->database('khs_packing', true);
+        $sql = "update sp_packing_trx set kode_packing = '$jenis', berat = '$berat'
+                where nomor_do = '$nospb' and attribute = '$no'";
         $query = $mysqli->query($sql);
         // echo $sql;
     }

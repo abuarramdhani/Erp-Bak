@@ -676,13 +676,13 @@ function saveBeratPack(no) {
     // console.log(no_spb);
     $.ajax ({
         url : baseurl + "KapasitasGdSparepart/Packing/saveberatPacking",
-        data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat},
+        data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat, no : no},
         type : "POST",
         dataType: "html",
         success: function(data){
             $('#tambahbrt').append('<tr><td>'+nomor+'</td><td><select class="form-control select2" id="jenis_kemasan'+nomor+'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan"><option></option><option value="1">KARDUS KECIL</option><option value="2">KARDUS SEDANG</option><option value="3">KARDUS PANJANG</option><option value="4">KARUNG</option><option value="5">PETI</option></select></td><td><input type="text" class="form-control" id="berat'+nomor+'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('+nomor+')"><input type="hidden" id="no_spb'+nomor+'" value="'+no_spb+'"></td></tr>');
-            $('#jenis_kemasan'+no).attr("disabled", "disabled"); 
-            $('#berat'+no).attr("disabled", "disabled"); 
+            // $('#jenis_kemasan'+no).attr("disabled", "disabled"); 
+            // $('#berat'+no).attr("disabled", "disabled"); 
         }
     });
 }
@@ -769,6 +769,19 @@ function btnPausePacking(no) {
                 });
     }})   
     
+}
+
+function gantikemasan(no) {
+    var no_spb       = $('#no_spb'+no).val();
+    var jenis_kemasan  = $('#jenis_kemasan'+no).val();   
+    var berat        = $('#berat'+no).val();   
+    // console.log(no_spb);
+    $.ajax ({
+        url : baseurl + "KapasitasGdSparepart/Packing/gantiPacking",
+        data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat, no : no},
+        type : "POST",
+        dataType: "html"
+    });
 }
 
 //----------------------------------------------------MONITORING-------------------------------------------------------------------------
@@ -859,4 +872,25 @@ function getDataPenyerahan(th) {
         $('#tb_penyerahan').html(result);
         
     })
+}
+
+function upnostttpenyerahan(event, th) {
+    if (event.keyCode === 13) {
+        var valno = $('#noscan').val();
+        var qty   = Number($('#tbserah tbody tr[data-row="'+valno+'"] input[name="item[]"]').val());
+        var jml   = Number($('#tbserah tbody tr[data-row="'+valno+'"] input[name="jmlscan[]"]').val());
+        var tambah = jml + 1;
+        $('#tbserah tbody tr[data-row="'+valno+'"] input[name="jmlscan[]"]').val(tambah);
+        if (tambah > qty) {
+            $.toaster('ERROR', 'gaboleh woy', 'danger');
+            $('#tbserah tbody td[class="'+valno+'"]').addClass('bg-success');
+            $('#tbserah tbody tr[data-row="'+valno+'"] input[name="jmlscan[]"]').val(qty);
+        }else if (tambah == qty) {
+            $('#tbserah tbody td[class="'+valno+'"]').addClass('bg-success');
+        }
+        $('#noscan').val('');
+        console.log('disini senang disana senang');
+    }else{
+        console.log('hahahaha');
+    }
 }
