@@ -90,10 +90,13 @@ class C_Moulding extends CI_Controller
 			$mouldingData[$aksen2]['production_date'] = $this->input->post('production_date');
 			$mouldingData[$aksen2]['shift'] = $this->input->post('txtShift');
 			$mouldingData[$aksen2]['print_code'] = $this->input->post('print_code');
+			$mouldingData[$aksen2]['ket_pengurangan'] = $this->input->post('txtKeteranganPemotonganTarget');
+			$mouldingData[$aksen2]['jam_pengurangan'] = $this->input->post('txtJamPemotonganTarget');
 			$aksen2++;
 		}
 
 		foreach ($mouldingData as $mo) {
+			
 			$this->M_moulding->setMoulding($mo);
 			$header_id = $this->db->insert_id();
 			
