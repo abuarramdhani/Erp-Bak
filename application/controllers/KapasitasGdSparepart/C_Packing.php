@@ -211,11 +211,17 @@ class C_Packing extends CI_Controller
 				}
 				$tr .= '<tr>
 							<td>'.$no.'</td>
-							<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan" readonly>
-								<option>'.$kemasan.'</option>
+							<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan" onchange="gantikemasan('.$no.')">
+								<option value="'.$val['kode_packing'].'">'.$kemasan.'</option>
+								<option value="1">KARDUS KECIL</option>
+								<option value="2">KARDUS SEDANG</option>
+								<option value="3">KARDUS PANJANG</option>
+								<option value="4">KARUNG</option>
+								<option value="5">PETI</option>
 								</select>
 							</td>
-							<td><input type="text" class="form-control" id="berat'.$no.'" name="berat" value="'.$val['berat'].'" readonly></td>
+							<td><input type="text" class="form-control" id="berat'.$no.'" name="berat" value="'.$val['berat'].'" onchange="gantikemasan('.$no.')">
+							<input type="hidden" id="no_spb'.$no.'" value="'.$nospb.'"></td>
 						</tr>';
 						$no++;
 			}
@@ -281,7 +287,17 @@ class C_Packing extends CI_Controller
 		$no_spb = $this->input->post('no_spb');
 		$jenis = $this->input->post('jenis_kemasan');
 		$berat = $this->input->post('berat');
-		$save = $this->M_packing->insertBerat($no_spb, $jenis, $berat);
+		$no = $this->input->post('no');
+		$save = $this->M_packing->insertBerat($no_spb, $jenis, $berat, $no);
+		// echo "<pre>";print_r($save);exit();
+	}
+
+	public function gantiPacking(){
+		$no_spb = $this->input->post('no_spb');
+		$jenis = $this->input->post('jenis_kemasan');
+		$berat = $this->input->post('berat');
+		$no = $this->input->post('no');
+		$save = $this->M_packing->updateBerat($no_spb, $jenis, $berat, $no);
 		// echo "<pre>";print_r($save);exit();
 	}
 

@@ -93,18 +93,23 @@ class C_Penyerahan extends CI_Controller
 		$qty 		= $this->input->post('item[]');
 		$berat 		= $this->input->post('berat[]');
 		$tujuan 	= $this->input->post('tujuan[]');
+		$scan 		= $this->input->post('jmlscan[]');
 		// echo "<pre>";print_r($ekspedisi);exit();
 
 		$coba = '';
 		for ($i=0; $i < count($nospb); $i++) {
-			$coba[$ekspedisi[$i]][] = array(
-				'no_dokumen' 	=> $nospb[$i],
-				'tujuan' 		=> $tujuan[$i],
-				'jumlah' 		=> $qty[$i],
-				'berat' 		=> $berat[$i],
-				'ekspedisi' 	=> $ekspedisi[$i],
-			);
+			if ($scan[$i] == $qty[$i]) {
+				$coba[$ekspedisi[$i]][] = array(
+					'no_dokumen' 	=> $nospb[$i],
+					'tujuan' 		=> $tujuan[$i],
+					'jumlah' 		=> $qty[$i],
+					'berat' 		=> $berat[$i],
+					'ekspedisi' 	=> $ekspedisi[$i],
+					'scan' 			=> $scan[$i],
+				);
+			}
 		}
+		// echo "<pre>";print_r($coba);exit();
 		
 		$data['cetak'] = $coba;
 

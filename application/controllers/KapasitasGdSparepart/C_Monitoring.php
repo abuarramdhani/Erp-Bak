@@ -259,214 +259,171 @@ class C_Monitoring extends CI_Controller
 		$this->load->view('KapasitasGdSparepart/V_TblMonitoring', $data);
 	}
 
+	public function jadiin($ket, $nama){
+		$spb = 0; $itemspb = 0; $pcsspb = 0;
+		$dosp = 0; $itemdosp = 0; $pcsdosp = 0;
+		if ($nama == 'selesai') {
+			foreach ($ket as $val) {
+				if ($val['JENIS_DOKUMEN'] == 'SPB') {
+						$spb += 1;
+						$itemspb += $val['JML_ITEM_SELESAI'];
+						$pcsspb += $val['JML_PCS_SELESAI'];
+				}else {
+						$dosp += 1;
+						$itemdosp += $val['JML_ITEM_SELESAI'];
+						$pcsdosp += $val['JML_PCS_SELESAI'];
+				}
+			}
+		}else {
+			foreach ($ket as $val) {
+				if ($val['JENIS_DOKUMEN'] == 'SPB') {
+						$spb += 1;
+						$itemspb += $val['JUMLAH_ITEM'];
+						$pcsspb += $val['JUMLAH_PCS'];
+				}else {
+						$dosp += 1;
+						$itemdosp += $val['JUMLAH_ITEM'];
+						$pcsdosp += $val['JUMLAH_PCS'];
+				}
+			}
+		}
+		$tampung = array('0' => array('lembar2' => $spb, 'item2' => $itemspb, 'pcs2' => $pcsspb, 'lembar1' => $dosp, 'item1' => $itemdosp, 'pcs1' => $pcsdosp, ));
+		return $tampung;
+	}
+
+	public function jadibelum($ket){
+		$spb = 0; $itemspb = 0; $pcsspb = 0;
+		$dosp = 0; $itemdosp = 0; $pcsdosp = 0;
+		foreach ($ket as $val) {
+			if ($val['JENIS_DOKUMEN'] == 'SPB') {
+				if ($val['BON'] == 'PENDING') {
+					$spb += 1;
+					$itemspb += $val['JUMLAH_ITEM'];
+					$pcsspb += $val['JUMLAH_PCS'];
+				}
+			}else {
+				if ($val['BON'] == 'PENDING') {
+					$dosp += 1;
+					$itemdosp += $val['JUMLAH_ITEM'];
+					$pcsdosp += $val['JUMLAH_PCS'];
+				}
+			}
+		}
+
+		$tampung = array('0' => array('lembar2' => $spb, 'item2' => $itemspb, 'pcs2' => $pcsspb, 'lembar1' => $dosp, 'item1' => $itemdosp, 'pcs1' => $pcsdosp, ));
+		return $tampung;
+	}
+
+	public function jaditoo($pack){
+		$dus_kecil = 0;
+		$dus_sdg = 0;
+		$dus_pjg = 0;
+		$karung = 0;
+		$peti = 0;
+		foreach ($pack as $pck) {
+			$cari = $this->M_monitoring->getDataColly($pck['NO_DOKUMEN']);
+			if (!empty($cari)) {
+				foreach ($cari as $val) {
+					if ($val['kode_packing'] == 1) {
+						$dus_kecil += 1;
+					}elseif ($val['kode_packing'] == 2) {
+						$dus_sdg += 1;
+					}elseif ($val['kode_packing'] == 3) {
+						$dus_pjg += 1;
+					}elseif ($val['kode_packing'] == 4) {
+						$karung += 1;
+					}elseif ($val['kode_packing'] == 5) {
+						$peti += 1;
+					}
+				}
+			}
+		}
+		
+		$tampung = array(
+			'dus_kecil' => $dus_kecil,
+			'dus_sdg' => $dus_sdg,
+			'dus_pjg' => $dus_pjg,
+			'karung' => $karung,
+			'peti' => $peti,
+		);
+		return $tampung;
+	}
+
+	public function jadigini($ket){
+		$urg = 0; $itemurg = 0; $pcsurg = 0;
+		$tdk = 0; $itemtdk = 0; $pcstdk = 0;
+		$bon = 0; $itembon = 0; $pcsbon = 0;
+		$langsung = 0; $itemlangsung = 0; $pcslangsung = 0;
+		$urg2 = 0; $itemurg2 = 0; $pcsurg2 = 0;
+		$tdk2 = 0; $itemtdk2 = 0; $pcstdk2 = 0;
+		$bon2 = 0; $itembon2 = 0; $pcsbon2 = 0;
+		$langsung2 = 0; $itemlangsung2 = 0; $pcslangsung2 = 0;
+		foreach ($ket as $val) {
+			if ($val['JENIS_DOKUMEN'] == 'SPB') {
+				if ($val['URGENT'] != '') {
+					$urg += 1;
+					$itemurg += $val['JUMLAH_ITEM'];
+					$pcsurg += $val['JUMLAH_PCS'];
+				}elseif ($val['URGENT'] == '' && $val['BON'] == '') {
+					$tdk += 1;
+					$itemtdk += $val['JUMLAH_ITEM'];
+					$pcstdk += $val['JUMLAH_PCS'];
+				}
+				if ($val['BON'] == 'BON') {
+					$bon += 1;
+					$itembon += $val['JUMLAH_ITEM'];
+					$pcsbon += $val['JUMLAH_PCS'];
+				}elseif ($val['BON'] == 'LANGSUNG') {
+					$langsung += 1;
+					$itemlangsung += $val['JUMLAH_ITEM'];
+					$pcslangsung += $val['JUMLAH_PCS'];
+				}
+			}else {
+				if ($val['URGENT'] != '') {
+					$urg2 += 1;
+					$itemurg2 += $val['JUMLAH_ITEM'];
+					$pcsurg2 += $val['JUMLAH_PCS'];
+				}elseif ($val['URGENT'] == '' && $val['BON'] == '') {
+					$tdk2 += 1;
+					$itemtdk2 += $val['JUMLAH_ITEM'];
+					$pcstdk2 += $val['JUMLAH_PCS'];
+				}
+				if ($val['BON'] == 'BON') {
+					$bon2 += 1;
+					$itembon2 += $val['JUMLAH_ITEM'];
+					$pcsbon2 += $val['JUMLAH_PCS'];
+				}elseif ($val['BON'] == 'LANGSUNG') {
+					$langsung2 += 1;
+					$itemlangsung2 += $val['JUMLAH_ITEM'];
+					$pcslangsung2 += $val['JUMLAH_PCS'];
+				}
+			}
+		}
+
+		$tampung = array('0' => array('lembar1' => $urg, 'item1' => $itemurg, 'pcs1' => $pcsurg, 'lembar2' => $urg2, 'item2' => $itemurg2, 'pcs2' => $pcsurg2,),
+		'1' => array('lembar1' => $tdk, 'item1' => $itemtdk, 'pcs1' => $pcstdk, 'lembar2' => $tdk2, 'item2' => $itemtdk2, 'pcs2' => $pcstdk2, ),
+		'2' => array('lembar1' => $bon,	'item1' => $itembon, 'pcs1' => $pcsbon, 'lembar2' => $bon2,	'item2' => $itembon2, 'pcs2' => $pcsbon2,),
+		'3' => array('lembar1' => $langsung,	'item1' => $itemlangsung, 'pcs1' => $pcslangsung,'lembar2' => $langsung2,	'item2' => $itemlangsung2, 'pcs2' => $pcslangsung2, ) );
+		return $tampung;
+	}
+
 	public function exportSPB(){
 		$tglAwal = $this->input->post('tglAwal[]');
 		$tglAkhir = $this->input->post('tglAkhir[]');
 
-		$tgl_dospb 		= $this->input->post('tgl_dospb[]');
-		$jenis_dospb 	= $this->input->post('jenis_dospb[]');
-		$no_dospb 		= $this->input->post('no_dospb[]');
-		$jml_item_dospb = $this->input->post('jml_item_dospb[]');
-		$jml_pcs_dospb 	= $this->input->post('jml_pcs_dospb[]');
-		$urgent_dospb 	= $this->input->post('urgent_dospb[]');
-
 		$dataDOSPB = $this->M_monitoring->dataDOSPB($tglAwal[0], $tglAkhir[0]);
-
-		// $dataDOSPB = array();
-		// for ($i=0; $i <count($no_dospb) ; $i++) { 
-		// 	$array = array(
-		// 		'tgl_dospb'			=> $tgl_dospb[$i],
-		// 		'jenis_dospb' 		=> $jenis_dospb[$i],
-		// 		'no_dospb' 			=> $no_dospb[$i],
-		// 		'jml_item_dospb' 	=> $jml_item_dospb[$i],
-		// 		'jml_pcs_dospb' 	=> $jml_pcs_dospb[$i],
-		// 		'urgent' 			=> $urgent_dospb[$i],
-		// 	);
-		// 	array_push($dataDOSPB, $array);
-		// }
-
-		$tgl_plyn 			= $this->input->post('tgl_plyn[]');
-		$jam_plyn 			= $this->input->post('jam_plyn[]');
-		$jenis_plyn 		= $this->input->post('jenis_plyn[]');
-		$no_plyn 			= $this->input->post('no_plyn[]');
-		$jml_item_plyn 		= $this->input->post('jml_item_plyn[]');
-		$jml_pcs_plyn 		= $this->input->post('jml_pcs_plyn[]');
-		$tgl_mulai_plyn 	= $this->input->post('tgl_mulai_plyn[]');
-		$jam_mulai_plyn 	= $this->input->post('jam_mulai_plyn[]');
-		$tgl_selesai_plyn 	= $this->input->post('tgl_selesai_plyn[]');
-		$jam_selesai_plyn 	= $this->input->post('jam_selesai_plyn[]');
-		$waktu_pelayanan 	= $this->input->post('waktu_pelayanan[]');
-		$pic_plyn 			= $this->input->post('pic_plyn[]');
-		$urgent_plyn 		= $this->input->post('urgent_plyn[]');
 
 		$dataPlyn = $this->M_monitoring->dataPlyn($tglAwal[0], $tglAkhir[0]);
 
-		// $dataPlyn = array();
-		// for ($i=0; $i <count($no_plyn) ; $i++) { 
-		// 	$array = array(
-		// 		'tgl_plyn'			=> $tgl_plyn[$i],
-		// 		'jam_plyn'			=> $jam_plyn[$i],
-		// 		'jenis_plyn' 		=> $jenis_plyn[$i],
-		// 		'no_plyn' 			=> $no_plyn[$i],
-		// 		'jml_item_plyn' 	=> $jml_item_plyn[$i],
-		// 		'jml_pcs_plyn' 		=> $jml_pcs_plyn[$i],
-		// 		'tgl_mulai_plyn' 	=> $tgl_mulai_plyn[$i],
-		// 		'jam_mulai_plyn' 	=> $jam_mulai_plyn[$i],
-		// 		'tgl_selesai_plyn' 	=> $tgl_selesai_plyn[$i],
-		// 		'jam_selesai_plyn' 	=> $jam_selesai_plyn[$i],
-		// 		'waktu_pelayanan' 	=> $waktu_pelayanan[$i],
-		// 		'pic' 				=> $pic_plyn[$i],
-		// 		'urgent' 			=> $urgent_plyn[$i],
-		// 	);
-		// 	array_push($dataPlyn, $array);
-		// }
-
-		$tgl_krgplyn 		= $this->input->post('tgl_krgplyn[]');
-		$jenis_krgplyn 		= $this->input->post('jenis_krgplyn[]');
-		$no_krgplyn 		= $this->input->post('no_krgplyn[]');
-		$jml_item_krgplyn 	= $this->input->post('jml_item_krgplyn[]');
-		$jml_pcs_krgplyn 	= $this->input->post('jml_pcs_krgplyn[]');
-		$urgent_krgplyn 	= $this->input->post('urgent_krgplyn[]');
-
 		$dataKrgPlyn = $this->M_monitoring->dataKrgPlyn($tglAwal[0], $tglAkhir[0]);
-		// echo "<pre>";print_r($dataKrgPlyn);exit();
-
-		// $dataKrgPlyn = array();
-		// for ($i=0; $i <count($no_krgplyn) ; $i++) { 
-		// 	$array = array(
-		// 		'tgl_krgplyn'		=> $tgl_krgplyn[$i],
-		// 		'jenis_krgplyn' 	=> $jenis_krgplyn[$i],
-		// 		'no_krgplyn' 		=> $no_krgplyn[$i],
-		// 		'jml_item_krgplyn' 	=> $jml_item_krgplyn[$i],
-		// 		'jml_pcs_krgplyn' 	=> $jml_pcs_krgplyn[$i],
-		// 		'urgent' 			=> $urgent_krgplyn[$i],
-		// 	);
-		// 	array_push($dataKrgPlyn, $array);
-		// }
-		
-		$tgl_pglr 			= $this->input->post('tgl_pglr[]');
-		$jam_pglr 			= $this->input->post('jam_pglr[]');
-		$jenis_pglr 		= $this->input->post('jenis_pglr[]');
-		$no_pglr 			= $this->input->post('no_pglr[]');
-		$jml_item_pglr 		= $this->input->post('jml_item_pglr[]');
-		$jml_pcs_pglr 		= $this->input->post('jml_pcs_pglr[]');
-		$tgl_mulai_pglr 	= $this->input->post('tgl_mulai_pglr[]');
-		$jam_mulai_pglr 	= $this->input->post('jam_mulai_pglr[]');
-		$tgl_selesai_pglr 	= $this->input->post('tgl_selesai_pglr[]');
-		$jam_selesai_pglr	= $this->input->post('jam_selesai_pglr[]');
-		$waktu_pengeluaran 	= $this->input->post('waktu_pengeluaran[]');
-		$pic_pglr 			= $this->input->post('pic_pglr[]');
-		$urgent_pglr 		= $this->input->post('urgent_pglr[]');
 		
 		$dataPglr = $this->M_monitoring->dataPglr($tglAwal[0], $tglAkhir[0]);
-		// echo "<pre>";print_r($dataPglr);exit();
-
-		// $dataPglr = array();
-		// for ($i=0; $i <count($no_pglr) ; $i++) { 
-		// 	$array = array(
-		// 		'tgl_pglr'				=> $tgl_pglr[$i],
-		// 		'jam_pglr'				=> $jam_pglr[$i],
-		// 		'jenis_pglr' 			=> $jenis_pglr[$i],
-		// 		'no_pglr' 				=> $no_pglr[$i],
-		// 		'jml_item_pglr' 		=> $jml_item_pglr[$i],
-		// 		'jml_pcs_pglr' 			=> $jml_pcs_pglr[$i],
-		// 		'tgl_mulai_pglr' 		=> $tgl_mulai_pglr[$i],
-		// 		'jam_mulai_pglr' 		=> $jam_mulai_pglr[$i],
-		// 		'tgl_selesai_pglr' 		=> $tgl_selesai_pglr[$i],
-		// 		'jam_selesai_pglr' 		=> $jam_selesai_pglr[$i],
-		// 		'waktu_pengeluaran' 	=> $waktu_pengeluaran[$i],
-		// 		'pic' 					=> $pic_pglr[$i],
-		// 		'urgent' 				=> $urgent_pglr[$i],
-		// 	);
-		// 	array_push($dataPglr, $array);
-		// }
-
-		$tgl_krgpglr 		= $this->input->post('tgl_krgpglr[]');
-		$jenis_krgpglr 		= $this->input->post('jenis_krgpglr[]');
-		$no_krgpglr 		= $this->input->post('no_krgpglr[]');
-		$jml_item_krgpglr 	= $this->input->post('jml_item_krgpglr[]');
-		$jml_pcs_krgpglr 	= $this->input->post('jml_pcs_krgpglr[]');
-		$pic_krgpglr 		= $this->input->post('pic_krgpglr[]');
-		$urgent_krgpglr 	= $this->input->post('urgent_krgpglr[]');
 
 		$dataKrgPglr = $this->M_monitoring->dataKrgPglr($tglAwal[0], $tglAkhir[0]);
-		// echo "<pre>";print_r($dataKrgPglr);exit();
-		
-		// $dataKrgPglr = array();
-		// for ($i=0; $i <count($no_krgpglr) ; $i++) { 
-		// 	$array = array(
-		// 		'tgl_krgpglr'		=> $tgl_krgpglr[$i],
-		// 		'jenis_krgpglr' 	=> $jenis_krgpglr[$i],
-		// 		'no_krgpglr' 		=> $no_krgpglr[$i],
-		// 		'jml_item_krgpglr' 	=> $jml_item_krgpglr[$i],
-		// 		'jml_pcs_krgpglr' 	=> $jml_pcs_krgpglr[$i],
-		// 		'pic' 			=> $pic_krgpglr[$i],
-		// 		'urgent' 			=> $urgent_krgpglr[$i],
-		// 	);
-		// 	array_push($dataKrgPglr, $array);
-		// }
-		
-		$tgl_pck 			= $this->input->post('tgl_pck[]');
-		$jam_pck 			= $this->input->post('jam_pck[]');
-		$jenis_pck 			= $this->input->post('jenis_pck[]');
-		$no_pck 			= $this->input->post('no_pck[]');
-		$jml_item_pck 		= $this->input->post('jml_item_pck[]');
-		$jml_pcs_pck 		= $this->input->post('jml_pcs_pck[]');
-		$tgl_mulai_pck 		= $this->input->post('tgl_mulai_pck[]');
-		$jam_mulai_pck 		= $this->input->post('jam_mulai_pck[]');
-		$tgl_selesai_pck 	= $this->input->post('tgl_selesai_pck[]');
-		$jam_selesai_pck 	= $this->input->post('jam_selesai_pck[]');
-		$waktu_packing 		= $this->input->post('waktu_packing[]');
-		$pic_pck 			= $this->input->post('pic_pck[]');
-		$urgent_pck 		= $this->input->post('urgent_pck[]');
-
+	
 		$dataPck = $this->M_monitoring->dataPck($tglAwal[0], $tglAkhir[0]);
-		// echo "<pre>";print_r($dataPck);exit();
-
-		// $dataPck = array();
-		// for ($i=0; $i <count($no_pck) ; $i++) { 
-		// 	$array = array(
-		// 		'tgl_pck'			=> $tgl_pck[$i],
-		// 		'jam_pck'			=> $jam_pck[$i],
-		// 		'jenis_pck' 		=> $jenis_pck[$i],
-		// 		'no_pck' 			=> $no_pck[$i],
-		// 		'jml_item_pck' 		=> $jml_item_pck[$i],
-		// 		'jml_pcs_pck' 		=> $jml_pcs_pck[$i],
-		// 		'tgl_mulai_pck' 	=> $tgl_mulai_pck[$i],
-		// 		'jam_mulai_pck' 	=> $jam_mulai_pck[$i],
-		// 		'tgl_selesai_pck' 	=> $tgl_selesai_pck[$i],
-		// 		'jam_selesai_pck' 	=> $jam_selesai_pck[$i],
-		// 		'waktu_packing' 	=> $waktu_packing[$i],
-		// 		'pic' 				=> $pic_pck[$i],
-		// 		'urgent' 			=> $urgent_pck[$i],
-		// 	);
-		// 	array_push($dataPck, $array);
-		// }
-
-		$tgl_krgpck 		= $this->input->post('tgl_krgpck[]');
-		$jenis_krgpck 		= $this->input->post('jenis_krgpck[]');
-		$no_krgpck 			= $this->input->post('no_krgpck[]');
-		$jml_item_krgpck 	= $this->input->post('jml_item_krgpck[]');
-		$jml_pcs_krgpck 	= $this->input->post('jml_pcs_krgpck[]');
-		$pic_krgpck 		= $this->input->post('pic_krgpck[]');
-		$urgent_krgpck 		= $this->input->post('urgent_krgpck[]');
 
 		$dataKrgPck = $this->M_monitoring->dataKrgPck($tglAwal[0], $tglAkhir[0]);
-		// echo "<pre>";print_r($dataKrgPck);exit();
-
-		// $dataKrgPck = array();
-		// for ($i=0; $i <count($no_krgpck) ; $i++) { 
-		// 	$array = array(
-		// 		'tgl_krgpck'		=> $tgl_krgpck[$i],
-		// 		'jenis_krgpck' 		=> $jenis_krgpck[$i],
-		// 		'no_krgpck' 		=> $no_krgpck[$i],
-		// 		'jml_item_krgpck' 	=> $jml_item_krgpck[$i],
-		// 		'jml_pcs_krgpck' 	=> $jml_pcs_krgpck[$i],
-		// 		'pic' 				=> $pic_krgpck[$i],
-		// 		'urgent' 			=> $urgent_krgpck[$i],
-		// 	);
-		// 	array_push($dataKrgPck, $array);
-		// }
 
 		$tanggal 		= $this->input->post('tanggalnya[]');
 		$jml_selesai 	= $this->input->post('jml_selesai[]');
@@ -485,6 +442,9 @@ class C_Monitoring extends CI_Controller
 			);
 			array_push($dataket, $array);
 		}
+
+		$no_pck = $this->input->post('no_pck[]');
+		$tgl_pck = $this->input->post('tgl_pck[]');
 		$dicancel = array();
 		$itemkurang = array();
 		$data_colly = array();
@@ -553,92 +513,39 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 		}
-		// echo "<pre>";print_r($data_colly);exit();
+		$kcl = 0; $sdg = 0; $pjg = 0; $krg = 0; $peti = 0;
+		foreach ($data_colly as $col) {
+			$kcl += $col['dus_kecil'];
+			$sdg += $col['dus_sdg'];
+			$pjg += $col['dus_pjg'];
+			$krg += $col['karung'];
+			$peti += $col['peti'];
+		}
+		$coly = array(
+			'dus_kecil' => $kcl,
+			'dus_sdg' => $sdg,
+			'dus_pjg' => $pjg,
+			'karung' => $krg,
+			'peti' => $peti,
+		);
+		// echo "<pre>";print_r($coly);exit();
 		$dataKurang = $this->M_monitoring->dataKurangselesai($tglAwal[0], $tglAkhir[0]);
-		// echo "<pre>";print_r($dataKurang);exit();
-
-		$jml_cancel 	= $this->M_monitoring->jml_cancel($tglAwal[0], $tglAkhir[0]);
-		$jml_pending 	= $this->M_monitoring->jml_pending();
-		$jml_bon 		= $this->M_monitoring->jml_bon($tglAwal[0], $tglAkhir[0]);
-		$jml_langsung 	= $this->M_monitoring->jml_langsung($tglAwal[0], $tglAkhir[0]);
-		$jml_urgent 	= $this->M_monitoring->jml_urgent($tglAwal[0], $tglAkhir[0]);
-		$ket 			= $this->M_monitoring->dataKeterangan($tglAwal[0], $tglAkhir[0]);
-
-		$tampung = array();
-		$initgl = array();
-		$tdk_urg = array();
-		$urg = array();
-		$bon = array();
-		$langsung = array();
-		$cancel = array();
-		for ($i=0; $i < count($ket) ; $i++) { 
-			if (!in_array($ket[$i]['JAM_INPUT'], $initgl)) {
-				if ($i != 0) {
-					$array = array(
-						'tgl' => $ket[$i-1]['JAM_INPUT'],
-						'tdk_urg' => count($tdk_urg),
-						'urg' => count($urg),
-						'bon' => count($bon),
-						'langsung' => count($langsung),
-						'cancel' => count($langsung),
-						'total' => count($tdk_urg) + count($urg) + count($bon),
-					);
-					array_push($tampung, $array);
-					// echo "<pre>";print_r($urg);exit();
-
-					$tdk_urg = array();
-					$urg = array();
-					$bon = array();
-					$langsung = array();
+		$nodo1 = array();
+		$nodo2 = array();
+		foreach ($dataKurang as $val) {
+			if ($val['JENIS_DOKUMEN'] == 'SPB') {
+				if (!in_array($val['NO_DOKUMEN'], $nodo1)) {
+					array_push($nodo1, $val['NO_DOKUMEN']);
 				}
-				array_push($initgl, $ket[$i]['JAM_INPUT']);
-				if ($ket[$i]['URGENT'] != '') {
-					array_push($urg, $ket[$i]['NO_DOKUMEN']);
-				}elseif ($ket[$i]['URGENT'] == '' && $ket[$i]['BON'] == '') {
-					array_push($tdk_urg, $ket[$i]['NO_DOKUMEN']);
+			}else {
+				if (!in_array($val['NO_DOKUMEN'], $nodo2)) {
+					array_push($nodo2, $val['NO_DOKUMEN']);
 				}
-				if ($ket[$i]['BON'] == 'BON') {
-					array_push($bon, $ket[$i]['NO_DOKUMEN']);
-				}elseif ($ket[$i]['BON'] == 'LANGSUNG') {
-					array_push($langsung, $ket[$i]['NO_DOKUMEN']);
-				}
-				if ($ket[$i]['CANCEL'] != '') {
-					array_push($cancel, $ket[$i]['NO_DOKUMEN']);
-				}
-			}else{
-				if ($ket[$i]['URGENT'] != '') {
-					array_push($urg, $ket[$i]['NO_DOKUMEN']);
-				}elseif ($ket[$i]['URGENT'] == '' && $ket[$i]['BON'] == '') {
-					array_push($tdk_urg, $ket[$i]['NO_DOKUMEN']);
-				}
-				if ($ket[$i]['BON'] == 'BON') {
-					array_push($bon, $ket[$i]['NO_DOKUMEN']);
-				}elseif ($ket[$i]['BON'] == 'LANGSUNG') {
-					array_push($langsung, $ket[$i]['NO_DOKUMEN']);
-				}
-				if ($ket[$i]['CANCEL'] != '') {
-					array_push($cancel, $ket[$i]['NO_DOKUMEN']);
-				}
-			}
-			if ($i == count($ket) - 1) {
-				$array = array(
-					'tgl' => $ket[$i-1]['JAM_INPUT'],
-					'tdk_urg' => count($tdk_urg),
-					'urg' => count($urg),
-					'bon' => count($bon),
-					'langsung' => count($langsung),
-					'cancel' => count($cancel),
-					'total' => count($tdk_urg) + count($urg) + count($bon),
-				);
-				array_push($tampung, $array);
 			}
 		}
-		// echo "<pre>";print_r($dataDOSPB);exit();
-
-
-		// $dataCancel = $this->M_monitoring->dataCancel($tglAwal[0], $tglAkhir[0]);
-		
-		// echo "<pre>"; print_r($dataKurang); exit();
+		// echo "<pre>";print_r($nodo1);exit();
+		$jml_pending 	= $this->M_monitoring->jml_pending();
+		$ket 			= $this->M_monitoring->dataKeterangan($tglAwal[0], $tglAkhir[0]);
 
 		include APPPATH.'third_party/Excel/PHPExcel.php';
 			$excel = new PHPExcel();
@@ -1521,58 +1428,504 @@ class C_Monitoring extends CI_Controller
 			}
 
 			$jml2 = $jumlah + count($dataket) + 4;
-			$jumlah2 = $jumlah + count($dataket) + 5;
+			$jml3 = $jumlah + count($dataket) + 5;
+			$jumlah2 = $jumlah + count($dataket) + 6;
+			$jumlah3 = $jumlah + count($dataket) + 7;
 			// Tabel data jumlah cancel, pending, bon,langsung
+
+			$masuk = $this->jadigini($ket);
+			$can 	= $this->M_monitoring->inicancel($tglAwal[0], $tglAkhir[0]);
+			$cancel = $this->jadigini($can);
+			$query = "where selesai_packing is not null";
+			$pack = $this->M_monitoring->getDataSPB($query);
+			$pdg 	= $this->M_monitoring->jml_pending2();
+			$pending = $this->jadibelum($pdg);
+			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+			$plyn 	= $this->M_monitoring->getDataSPB($query);
+			$pelayanan = $this->jadiin($plyn, 'plyn');
+			$query = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon = 'LANGSUNG' or bon is null)";
+			$pglr 	= $this->M_monitoring->getDataSPB($query);
+			$pengeluaran = $this->jadiin($pglr, 'pglr');
+			$query = "where selesai_pengeluaran is not null and selesai_packing is null and bon is null";
+			$pck 	= $this->M_monitoring->getDataSPB($query);
+			$packing = $this->jadiin($pck, 'pck');
+			// $dkr = $this->M_monitoring->dikerjakan();
+			$dikerjain = $this->jadiin($dataselesai, 'dkr');
+			// $kurang = $this->jadiin2($dataKurang, $dataCancel, 'krg');
+			// $sls 	= $this->M_monitoring->datapack($tglAwal[0], $tglAkhir[0]);
+			$selesai = $this->jadiin($dataselesai, 'selesai');
+			
 			$excel->setActiveSheetIndex(0)->setCellValue("A$jml2", "6.1 KETERANGAN DATA");
-			$excel->setActiveSheetIndex(0)->setCellValue("A$jumlah2", "NO");
-			$excel->setActiveSheetIndex(0)->setCellValue("B$jumlah2", "TANGGAL");
-			$excel->setActiveSheetIndex(0)->setCellValue("C$jumlah2", "TIDAK URGENT");
-			$excel->setActiveSheetIndex(0)->setCellValue("D$jumlah2", "URGENT");
-			$excel->setActiveSheetIndex(0)->setCellValue("E$jumlah2", "BON");
-			$excel->setActiveSheetIndex(0)->setCellValue("F$jumlah2", "LANGSUNG");
-			$excel->setActiveSheetIndex(0)->setCellValue("G$jumlah2", "CANCEL");
-			$excel->setActiveSheetIndex(0)->setCellValue("H$jumlah2", "JUMLAH INPUT");
-			$excel->setActiveSheetIndex(0)->setCellValue("I$jumlah2", "TOTAL PENDING");
-			$excel->getActiveSheet()->getStyle("A$jml2")->applyFromArray($style1);
-			$excel->getActiveSheet()->getStyle("A$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("B$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("C$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("D$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("E$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("F$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("G$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("H$jumlah2")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("I$jumlah2")->applyFromArray($style_col);
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$jml3, "A. MASUK"); 
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$jumlah2, "NO.");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$jumlah2, "KETERANGAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$jumlah2, "DO");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$jumlah3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$jumlah3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$jumlah3, "PCS");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$jumlah2, "SPB");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$jumlah3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$jumlah3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.$jumlah3, "PCS");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$jumlah2, "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$jumlah3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.$jumlah3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.$jumlah3, "PCS");
+			$excel->getActiveSheet()->mergeCells("A$jumlah2:A$jumlah3"); 
+			$excel->getActiveSheet()->mergeCells("B$jumlah2:B$jumlah3"); 
+			$excel->getActiveSheet()->mergeCells("C$jumlah2:E$jumlah2"); 
+			$excel->getActiveSheet()->mergeCells("F$jumlah2:H$jumlah2"); 
+			$excel->getActiveSheet()->mergeCells("I$jumlah2:K$jumlah2"); 
+			$excel->getActiveSheet()->getStyle('A'.$jml2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('A'.$jml3)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('A'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('A'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('E'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('E'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('F'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('F'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('G'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('G'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('H'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('H'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('I'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('I'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('J'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('J'.$jumlah3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('K'.$jumlah2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('K'.$jumlah3)->applyFromArray($style_col);
+	
+			$no=1;
+			$numrow = $jumlah3 + 1;
+			$h4 = $numrow+4;
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, "URGENT");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+1), 'TIDAK URGENT');
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+2), "BON");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+3), "LANGSUNG");
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h4, "JUMLAH");
+			$excel->getActiveSheet()->mergeCells("A$h4:B$h4"); 
+				foreach ($masuk as $val) {
+					$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
+					$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['lembar1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['item1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['pcs1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['lembar2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $val['item2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['pcs2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, ($val['lembar1'] + $val['lembar2']));
+					$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, ($val['item1'] + $val['item2']));
+					$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, ($val['pcs1'] + $val['pcs2']));
+					$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style3);
+					$excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style2);
+				$numrow++;
+				$no++; 
+				}
+				$awl = $numrow - 4;
+				$akh = $numrow - 1;
+				$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, "=SUM(C$awl:C$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, "=SUM(D$awl:D$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('E'.$h4, "=SUM(E$awl:E$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('F'.$h4, "=SUM(F$awl:F$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('G'.$h4, "=SUM(G$awl:G$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('H'.$h4, "=SUM(H$awl:H$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('I'.$h4, "=SUM(I$awl:I$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('J'.$h4, "=SUM(J$awl:J$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('K'.$h4, "=SUM(K$awl:K$akh)");
+				$excel->getActiveSheet()->getStyle('A'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('B'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('C'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('D'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('E'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('F'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('G'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('H'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('I'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('J'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('K'.$h4)->applyFromArray($style2);
+	
+				// TABEL DOSPB
+			$h1 = $numrow + 4;
+			$h2 = $numrow + 5;
+			$h3 = $numrow + 6;
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h1, "B. CANCEL"); 
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h2, "NO.");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h2, "KETERANGAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h2, "DO");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$h3, "PCS");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$h2, "SPB");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.$h3, "PCS");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h2, "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.$h3, "PCS");
+			$excel->getActiveSheet()->mergeCells("A$h2:A$h3"); 
+			$excel->getActiveSheet()->mergeCells("B$h2:B$h3"); 
+			$excel->getActiveSheet()->mergeCells("C$h2:E$h2"); 
+			$excel->getActiveSheet()->mergeCells("F$h2:H$h2"); 
+			$excel->getActiveSheet()->mergeCells("I$h2:K$h2"); 
+			$excel->getActiveSheet()->getStyle('A'.$h1)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('A'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('A'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('E'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('E'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('F'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('F'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('G'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('G'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('H'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('H'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('I'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('I'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('J'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('J'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('K'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('K'.$h3)->applyFromArray($style_col);
+	
+			$no=1;
+			$numrow2 = $h3 + 1;
+			$h4 = $numrow2+4;
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow2, "URGENT");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+1), 'TIDAK URGENT');
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+2), "BON");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+3), "LANGSUNG");
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h4, "JUMLAH");
+			$excel->getActiveSheet()->mergeCells("A$h4:B$h4"); 
+				foreach ($cancel as $val) {
+					$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow2, $no);
+					$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow2, $val['lembar1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow2, $val['item1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow2, $val['pcs1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow2, $val['lembar2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow2, $val['item2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow2, $val['pcs2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow2, ($val['lembar1'] + $val['lembar2']));
+					$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow2, ($val['item1'] + $val['item2']));
+					$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow2, ($val['pcs1'] + $val['pcs2']));
+					$excel->getActiveSheet()->getStyle('A'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('B'.$numrow2)->applyFromArray($style3);
+					$excel->getActiveSheet()->getStyle('C'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('D'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('E'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('F'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('G'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('H'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('I'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('J'.$numrow2)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('K'.$numrow2)->applyFromArray($style2);
+				$numrow2++;
+				$no++; 
+				}
+				$awl = $numrow2 - 4;
+				$akh = $numrow2 - 1;
+				$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, "=SUM(C$awl:C$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, "=SUM(D$awl:D$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('E'.$h4, "=SUM(E$awl:E$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('F'.$h4, "=SUM(F$awl:F$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('G'.$h4, "=SUM(G$awl:G$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('H'.$h4, "=SUM(H$awl:H$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('I'.$h4, "=SUM(I$awl:I$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('J'.$h4, "=SUM(J$awl:J$akh)");
+				$excel->setActiveSheetIndex(0)->setCellValue('K'.$h4, "=SUM(K$awl:K$akh)");
+				$excel->getActiveSheet()->getStyle('A'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('B'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('C'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('D'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('E'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('F'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('G'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('H'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('I'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('J'.$h4)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('K'.$h4)->applyFromArray($style2);
+	
+				
+			$h1 = $numrow2 + 4;
+			$h2 = $numrow2 + 5;
+			$h3 = $numrow2 + 6;
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h1, "C. PACKING"); 
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h2, "NO.");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h2, "KETERANGAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h2, "DO");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$h3, "PCS");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$h2, "SPB");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.$h3, "PCS");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h2, "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.$h3, "PCS");
+			$excel->getActiveSheet()->mergeCells("A$h2:A$h3"); 
+			$excel->getActiveSheet()->mergeCells("B$h2:B$h3"); 
+			$excel->getActiveSheet()->mergeCells("C$h2:E$h2"); 
+			$excel->getActiveSheet()->mergeCells("F$h2:H$h2"); 
+			$excel->getActiveSheet()->mergeCells("I$h2:K$h2"); 
+			$excel->getActiveSheet()->getStyle('A'.$h1)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('A'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('A'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('E'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('E'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('F'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('F'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('G'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('G'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('H'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('H'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('I'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('I'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('J'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('J'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('K'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('K'.$h3)->applyFromArray($style_col);
+	
+			$no=1;
+			$numrow3 = $h3 + 1;
+			$h4 = $numrow3 + 2;
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow3, "DIKERJAKAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow3, $dikerjain[0]['lembar1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow3, $dikerjain[0]['item1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow3, $dikerjain[0]['pcs1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow3, $dikerjain[0]['lembar2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow3, $dikerjain[0]['item2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow3, $dikerjain[0]['pcs2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow3, ($dikerjain[0]['lembar1'] + $dikerjain[0]['lembar2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow3, ($dikerjain[0]['item1'] + $dikerjain[0]['item2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow3, ($dikerjain[0]['pcs1'] + $dikerjain[0]['pcs2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+1), 'KURANG');
+			$lkrg1 = count($nodo2);
+			$lkrg2 = count($nodo1);
+			$ikrg1 = $dikerjain[0]['item1'] - $selesai[0]['item1'];
+			$ikrg2 = $dikerjain[0]['item2'] - $selesai[0]['item2'];
+			$pkrg1 = $dikerjain[0]['pcs1'] - $selesai[0]['pcs1'];
+			$pkrg2 = $dikerjain[0]['pcs2'] - $selesai[0]['pcs2'];
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+1), $lkrg1);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+1), $ikrg1);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+1), $pkrg1);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+1), $lkrg2);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+1), $ikrg2);
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+1), $pkrg2);
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+1), ($lkrg1 + $lkrg2));
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+1), ($ikrg1 + $ikrg2));
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+1), ($pkrg1 + $pkrg2));
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h4, "SELESAI");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, $selesai[0]['lembar1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, $selesai[0]['item1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$h4, $selesai[0]['pcs1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$h4, $selesai[0]['lembar2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$h4, $selesai[0]['item2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.$h4, $selesai[0]['pcs2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h4, ($selesai[0]['lembar1'] + $selesai[0]['lembar2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.$h4, ($selesai[0]['item1'] + $selesai[0]['item2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.$h4, ($selesai[0]['pcs1'] + $selesai[0]['pcs2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+3), "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+3), "=SUM(C$numrow3:C$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+3), "=SUM(D$numrow3:D$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+3), "=SUM(E$numrow3:E$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+3), "=SUM(F$numrow3:F$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+3), "=SUM(G$numrow3:G$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+3), "=SUM(H$numrow3:H$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+3), "=SUM(I$numrow3:I$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+3), "=SUM(J$numrow3:J$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+3), "=SUM(K$numrow3:K$h4)");
+				for ($i=1; $i < 5; $i++) { 
+					$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow3, $i);
+					$excel->getActiveSheet()->getStyle('A'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('B'.$numrow3)->applyFromArray($style3);
+					$excel->getActiveSheet()->getStyle('C'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('D'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('E'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('F'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('G'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('H'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('J'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('K'.$numrow3)->applyFromArray($style2);
+					$numrow3++;
+				}			
+	
+				
+			$h1 = $numrow3 + 3;
+			$h2 = $numrow3 + 4;
+			$h3 = $numrow3 + 5;
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h1, "D. PACKING DALAM COLY"); 
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h2, "NO.");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h2, "JENIS COLY");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h2, "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h3, "Kardus Kecil");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($h3+1), "Kardus Sedang");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($h3+2), "Kardus Panjang");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($h3+3), "Karung");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($h3+4), "Peti");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h3, $coly['dus_kecil']);
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($h3+1), $coly['dus_sdg']);
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($h3+2), $coly['dus_pjg']);
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($h3+3), $coly['karung']);
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($h3+4), $coly['peti']);
+			$excel->getActiveSheet()->getStyle('A'.$h1)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('A'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$h2)->applyFromArray($style_col);
 			$no = 1;
-			$numrow4 = $jumlah2 + 1;
-			$mrg = $jumlah2 + 1;
-			foreach ($tampung as $val) {
-				// echo "<pre>";print_r($tampung);exit();
-				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow4, $no);
-				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow4, $val['tgl']);
-				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow4, $val['tdk_urg']);
-				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow4, $val['urg']);
-				$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow4, $val['bon']);
-				$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow4, $val['langsung']);
-				$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow4, $val['cancel']);
-				$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow4, $val['total']);
-				$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow4, $jml_pending[0]['PENDING']);
-				$excel->getActiveSheet()->mergeCells("I$mrg:I$numrow4"); 
-				$excel->getActiveSheet()->getStyle('A'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('B'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('C'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('D'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('E'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('F'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('G'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('H'.$numrow4)->applyFromArray($style2);
-				$excel->getActiveSheet()->getStyle('I'.$numrow4)->applyFromArray($style2);
+			foreach ($coly as $key => $value) {
+				$excel->setActiveSheetIndex(0)->setCellValue('A'.$h3, $no);
+				$excel->getActiveSheet()->getStyle('A'.$h3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('B'.$h3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('C'.$h3)->applyFromArray($style2);
+				$h3 = $h3 + 1;
 				$no++;
-				$numrow4++;
-			}			
+			}
+	
+			$h1 = $h3 + 3;
+			$h2 = $h3 + 4;
+			$h3 = $h3 + 5;
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h1, "E. DOSP/SPB BELUM DIKERJAKAN"); 
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h2, "NO.");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h2, "KETERANGAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h2, "DO");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$h3, "PCS");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$h2, "SPB");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.$h3, "PCS");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h2, "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h3, "LEMBAR");
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.$h3, "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.$h3, "PCS");
+			$excel->getActiveSheet()->mergeCells("A$h2:A$h3"); 
+			$excel->getActiveSheet()->mergeCells("B$h2:B$h3"); 
+			$excel->getActiveSheet()->mergeCells("C$h2:E$h2"); 
+			$excel->getActiveSheet()->mergeCells("F$h2:H$h2"); 
+			$excel->getActiveSheet()->mergeCells("I$h2:K$h2"); 
+			$excel->getActiveSheet()->getStyle('A'.$h1)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('A'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('A'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('E'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('E'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('F'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('F'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('G'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('G'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('H'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('H'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('I'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('I'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('J'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('J'.$h3)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('K'.$h2)->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('K'.$h3)->applyFromArray($style_col);
+	
+			$no=1;
+			$numrow3 = $h3 + 1;
+			$h4 = $numrow3+3;
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow3, "PENDING");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow3, $pending[0]['lembar1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow3, $pending[0]['item1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow3, $pending[0]['pcs1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow3, $pending[0]['lembar2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow3, $pending[0]['item2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow3, $pending[0]['pcs2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow3, ($pending[0]['lembar1'] + $pending[0]['lembar2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow3, ($pending[0]['item1'] + $pending[0]['item2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow3, ($pending[0]['pcs1'] + $pending[0]['pcs2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+1), 'PELAYANAN');
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+1), $pelayanan[0]['lembar1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+1), $pelayanan[0]['item1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+1), $pelayanan[0]['pcs1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+1), $pelayanan[0]['lembar2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+1), $pelayanan[0]['item2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+1), $pelayanan[0]['pcs2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+1), ($pelayanan[0]['lembar1'] + $pelayanan[0]['lembar2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+1), ($pelayanan[0]['item1'] + $pelayanan[0]['item2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+1), ($pelayanan[0]['pcs1'] + $pelayanan[0]['pcs2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+2), "PENGELUARAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+2), $pengeluaran[0]['lembar1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+2), $pengeluaran[0]['item1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+2), $pengeluaran[0]['pcs1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+2), $pengeluaran[0]['lembar2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+2), $pengeluaran[0]['item2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+2), $pengeluaran[0]['pcs2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+2), ($pengeluaran[0]['lembar1'] + $pengeluaran[0]['lembar2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+2), ($pengeluaran[0]['item1'] + $pengeluaran[0]['item2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+2), ($pengeluaran[0]['pcs1'] + $pengeluaran[0]['pcs2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h4, "PACKING");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, $packing[0]['lembar1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, $packing[0]['item1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$h4, $packing[0]['pcs1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$h4, $packing[0]['lembar2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$h4, $packing[0]['item2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.$h4, $packing[0]['pcs2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h4, ($packing[0]['lembar1'] + $packing[0]['lembar2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.$h4, ($packing[0]['item1'] + $packing[0]['item2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.$h4, ($packing[0]['pcs1'] + $packing[0]['pcs2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+4), "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+4), "=SUM(C$numrow3:C$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+4), "=SUM(D$numrow3:D$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+4), "=SUM(E$numrow3:E$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+4), "=SUM(F$numrow3:F$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+4), "=SUM(G$numrow3:G$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+4), "=SUM(H$numrow3:H$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+4), "=SUM(I$numrow3:I$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+4), "=SUM(J$numrow3:J$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+4), "=SUM(K$numrow3:K$h4)");
+				for ($i=1; $i < 6; $i++) { 
+					$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow3, $i);
+					$excel->getActiveSheet()->getStyle('A'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('B'.$numrow3)->applyFromArray($style3);
+					$excel->getActiveSheet()->getStyle('C'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('D'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('E'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('F'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('G'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('H'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('J'.$numrow3)->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle('K'.$numrow3)->applyFromArray($style2);
+					$numrow3++;
+				}			
 
 			$excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); 
-			$excel->getActiveSheet()->getColumnDimension('B')->setWidth(13); 
+			$excel->getActiveSheet()->getColumnDimension('B')->setWidth(15); 
 			$excel->getActiveSheet()->getColumnDimension('C')->setWidth(13); 
 			$excel->getActiveSheet()->getColumnDimension('D')->setWidth(13);
 			$excel->getActiveSheet()->getColumnDimension('E')->setWidth(13);

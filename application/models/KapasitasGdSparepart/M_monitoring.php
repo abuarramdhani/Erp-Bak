@@ -86,17 +86,6 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function getcancel2($date) {
-        $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT * 
-                FROM khs_tampung_spb
-                where TO_CHAR(cancel,'DD/MM/YYYY') between '$date' and '$date'
-                and cancel is not null";
-        $query = $oracle->query($sql);
-        return $query->result_array();
-        // echo $sql;
-    }
-
     public function getTransact($nospb) {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT mtrh.request_number no_spb, msib.segment1 item, msib.description, mtrl.quantity,
@@ -386,29 +375,6 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function dataCancel($date1, $date2) {
-        $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT kts.jam_input, kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, msib.segment1 item,
-                        msib.description, mtrl.quantity, mtrl.quantity_delivered,
-                        (mtrl.quantity - mtrl.quantity_delivered) kurang
-                FROM khs_tampung_spb kts,
-                        mtl_txn_request_headers mtrh,
-                        mtl_txn_request_lines mtrl,
-                        mtl_system_items_b msib
-                WHERE kts.CANCEL IS NULL
-                    AND kts.no_dokumen = mtrh.request_number
-                    AND mtrh.header_id = mtrl.header_id
-                    AND mtrl.inventory_item_id = msib.inventory_item_id
-                    AND mtrl.organization_id = msib.organization_id
-                    AND mtrl.quantity <> mtrl.quantity_delivered
-                    AND kts.selesai_packing IS NOT NULL
-                    AND mtrl.line_status = 6
-                    AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')";
-        $query = $oracle->query($sql);
-        return $query->result_array();
-        // echo $sql;
-    }
-
     public function diCancel($no) {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, msib.segment1 item,
@@ -433,14 +399,6 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function jml_cancel($date1, $date2) {
-        $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) cancel FROM KHS_TAMPUNG_SPB where trunc(cancel) BETWEEN to_date('$date1','DD/MM/RR') AND to_date('$date2','DD/MM/RR')";
-        $query = $oracle->query($sql);
-        return $query->result_array();
-        // echo $sql;
-    }
-
     public function jml_pending() {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT count(*) pending FROM KHS_TAMPUNG_SPB where bon = 'PENDING' and cancel is null";
@@ -448,18 +406,10 @@ class M_monitoring extends CI_Model {
         return $query->result_array();
         // echo $sql;
     }
-
-    public function jml_bon($date1, $date2) {
+    
+    public function jml_pending2() {
         $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) bon FROM KHS_TAMPUNG_SPB where bon = 'BON' AND trunc(jam_input) BETWEEN to_date('$date1','DD/MM/RR') AND to_date('$date2','DD/MM/RR')";
-        $query = $oracle->query($sql);
-        return $query->result_array();
-        // echo $sql;
-    }
-
-    public function jml_langsung($date1, $date2) {
-        $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) langsung FROM KHS_TAMPUNG_SPB where bon = 'LANGSUNG' AND trunc(jam_input) BETWEEN to_date('$date1','DD/MM/RR') AND to_date('$date2','DD/MM/RR')";
+        $sql ="SELECT * FROM KHS_TAMPUNG_SPB where bon = 'PENDING' and cancel is null";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -472,20 +422,47 @@ class M_monitoring extends CI_Model {
         return $query->result_array();
     }
 
-    public function jml_urgent($date1, $date2) {
-        $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) urgent FROM KHS_TAMPUNG_SPB where urgent = 'URGENT' AND trunc(jam_input) BETWEEN to_date('$date1','DD/MM/RR') AND to_date('$date2','DD/MM/RR')";
-        $query = $oracle->query($sql);
-        return $query->result_array();
-        // echo $sql;
-    }
-
     public function dataKeterangan($date1, $date2) {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT   *
                 FROM khs_tampung_spb
                 WHERE TRUNC(jam_input) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 ORDER BY jam_input";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // echo $sql;
+    }
+    
+    public function inicancel($date1, $date2) {
+        $oracle = $this->load->database('oracle', true);
+        $sql ="SELECT   *
+                FROM khs_tampung_spb
+                WHERE TRUNC(jam_input) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
+                AND cancel is not null
+                ORDER BY jam_input";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // echo $sql;
+    }
+
+    public function datapack($date1, $date2) {
+        $oracle = $this->load->database('oracle', true);
+        $sql ="SELECT   *
+                FROM khs_tampung_spb
+                WHERE TRUNC(mulai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
+                AND cancel is null
+                AND selesai_packing is not null
+                ORDER BY jam_input";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // echo $sql;
+    }
+    
+    public function dikerjakan() {
+        $oracle = $this->load->database('oracle', true);
+        $sql ="select * from khs_tampung_spb 
+        where mulai_packing is not null
+        and selesai_packing is null ";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
