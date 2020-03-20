@@ -1379,7 +1379,9 @@ class C_GLap extends CI_Controller
 		// =================== START OF CONTENT & STYLING =================== //
 		foreach ($jadi as $akhir) {
 			$tgl = explode('-', date('d-m-Y', strtotime($akhir['Tanggal'])));
-			$worksheet->setCellValue('A' . $highestRow, PHPExcel_Shared_Date::FormattedPHPToExcel($tgl[2], $tgl[1], $tgl[0]));
+			$tglnya = $tgl[0].'/'.$tgl[1].'/'.$tgl[2];
+			// $worksheet->setCellValue('A' . $highestRow, PHPExcel_Shared_Date::FormattedPHPToExcel($tgl[2], $tgl[1], $tgl[0]));
+			$worksheet->setCellValue('A' . $highestRow, $tglnya);
 			$worksheet->setCellValue('B' . $highestRow, $akhir['KodeKelompok']);
 			$worksheet->setCellValue('C' . $highestRow, $akhir['KodeCor']);
 			$worksheet->setCellValue('D' . $highestRow, $akhir['KodeKomponen']);
@@ -1435,7 +1437,14 @@ class C_GLap extends CI_Controller
 			$worksheet->setCellValue('BB' . $highestRow, $akhir['Rej']); //rejqc (scrap)
 			$worksheet->setCellValue('BC' . $highestRow, $akhir['HasilBaik']);
 			$worksheet->setCellValue('BD' . $highestRow, $akhir['Reject']); //reject (scrap)
-			$worksheet->setCellValue('BE' . $highestRow, $akhir['ket_pengurangan'].' ('.$akhir['jam_pengurangan'].')');
+			if (array_key_exists('ket_pengurangan', $akhir) || array_key_exists('jam_pengurangan', $akhir)) {
+				if ($akhir['ket_pengurangan'] != '') {
+					$worksheet->setCellValue('BE' . $highestRow, $akhir['ket_pengurangan'].' ('.$akhir['jam_pengurangan'].')');
+				} else {
+					$worksheet->setCellValue('BE' . $highestRow, '');
+				}
+			}
+			
 			// $worksheet->setCellValue('BE' . $highestRow, $akhir['Keterangan']);
 			// $worksheet->setCellValue('BF' . $highestRow, $akhir['ket_pengurangan']);
 			// $worksheet->setCellValue('BG' . $highestRow, $akhir['jam_pengurangan']);

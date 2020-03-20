@@ -91,7 +91,12 @@ class C_Moulding extends CI_Controller
 			$mouldingData[$aksen2]['shift'] = $this->input->post('txtShift');
 			$mouldingData[$aksen2]['print_code'] = $this->input->post('print_code');
 			$mouldingData[$aksen2]['ket_pengurangan'] = $this->input->post('txtKeteranganPemotonganTarget');
-			$mouldingData[$aksen2]['jam_pengurangan'] = $this->input->post('txtJamPemotonganTarget');
+			if ($mouldingData[$aksen2]['ket_pengurangan'] != '') {
+				$mouldingData[$aksen2]['jam_pengurangan'] = $this->input->post('txtJamPemotonganTarget');
+			} else {
+				$mouldingData[$aksen2]['jam_pengurangan'] = '';
+			}
+			
 			$aksen2++;
 		}
 

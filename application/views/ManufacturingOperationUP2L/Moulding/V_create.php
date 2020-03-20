@@ -170,6 +170,7 @@
                                                         <label for="txtJamPemotonganTarget" class="control-label col-lg-4">Jam</label>
                                                         <div class="col-lg-6">
                                                             <input type="text" name="txtJamPemotonganTarget" id="txtJamPemotonganTarget" class="txtJamPemotonganTarget form-control" />
+                                                            <span>*apabila keterangan kosong, nilai jam yang akan tersimpan otomatis kosong</span>
                                                         </div>
                                                     </div>
                                                 </div>
