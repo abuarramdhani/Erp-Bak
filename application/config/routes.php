@@ -4072,3 +4072,19 @@ $route['MonitoringPicklistGudang/BelumApprove/(:any)/(:any)']	= 'MonitoringPickl
 $route['MonitoringPicklistGudang/SudahApprove']					= 'MonitoringPicklist/C_SudahGudang';
 $route['MonitoringPicklistGudang/SudahApprove/(:any)']			= 'MonitoringPicklist/C_SudahGudang/$1';
 $route['MonitoringPicklistGudang/SudahApprove/(:any)/(:any)']	= 'MonitoringPicklist/C_SudahGudang/$1/$2';
+
+// ---------------------------------------------- Production Plan Projection ---------------------------------------------//
+
+$route['ProductionPlan'] 								= 'ProductionPlan/C_Index';
+
+$route['ProductionPlan/ManageItem'] 			= 'ProductionPlan/C_Manageitem';
+$route['ProductionPlan/ManageItem/(:any)'] = 'ProductionPlan/C_Manageitem/$1';
+
+$route['ProductionPlan/Plan'] 						= 'ProductionPlan/C_Manageplan';
+$route['ProductionPlan/Plan/(:any)'] 				= 'ProductionPlan/C_Manageplan/$1';
+
+$route['ProductionPlan/Projection'] 				= 'ProductionPlan/C_Projection';
+$route['ProductionPlan/Projection/(:any)'] 	= 'ProductionPlan/C_Projection/$1';
+
+$route['ProductionPlan/Produk'] 				= 'ProductionPlan/C_Produk';
+$route['ProductionPlan/Produk/(:any)'] 	= 'ProductionPlan/C_Produk/$1';
