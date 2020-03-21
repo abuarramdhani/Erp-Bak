@@ -427,6 +427,7 @@ class M_monitoring extends CI_Model {
         $sql ="SELECT   *
                 FROM khs_tampung_spb
                 WHERE TRUNC(jam_input) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
+                AND CANCEL IS NULL
                 ORDER BY jam_input";
         $query = $oracle->query($sql);
         return $query->result_array();
