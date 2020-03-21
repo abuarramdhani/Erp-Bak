@@ -43,7 +43,6 @@ class C_MinMax extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['data'] = $this->M_minmax->getdata();
-		// echo "<pre>";print_r($ha);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -67,8 +66,9 @@ class C_MinMax extends CI_Controller
 	
 			$i=1;
 			  foreach($sheets as $row) {
-				   if ($i != 1) {
+				   if ($i != 1 && $i != 2) {
 					   $item[] = $row['B'];
+					   $desc[] = $row['C'];
 					   $uom[] = $row['D'];
 					   $min[] = $row['E'];
 					   $max[] = $row['F'];
@@ -81,6 +81,7 @@ class C_MinMax extends CI_Controller
 			  for ($b=0; $b < $jml; $b++) { 
 				$array = array(
 					'item' => $item[$b],
+					'desc' => $desc[$b],
 					'min' => $min[$b],
 					'max' => $max[$b],
 					'uom' => $uom[$b],
@@ -110,6 +111,7 @@ class C_MinMax extends CI_Controller
 
 	public function saveminmax(){
 		$item = $this->input->post('item');
+		$desc = $this->input->post('desc');
 		$min = $this->input->post('min');
 		$max = $this->input->post('max');
 		$uom = $this->input->post('uom');
@@ -118,7 +120,7 @@ class C_MinMax extends CI_Controller
 		for ($b=0; $b < $jml; $b++) { 
 			$cek = $this->M_minmax->cekimport($item[$b]);
 			if (empty($cek)) {
-				$this->M_minmax->insertData($item[$b], $min[$b], $max[$b], $uom[$b]);
+				$this->M_minmax->insertData($item[$b], $desc[$b], $min[$b], $max[$b], $uom[$b]);
 			}else {
 				$this->M_minmax->updateData($item[$b], $min[$b], $max[$b]);
 			}
@@ -146,7 +148,8 @@ class C_MinMax extends CI_Controller
 			);
 			$style1 = array(
 				'font' => array(
-					'bold' => true
+					'bold' => true,
+					'wrap' => true,
 				), 
 				'alignment' => array(
 					'vertical' 	=> PHPExcel_Style_Alignment::VERTICAL_CENTER,
@@ -166,19 +169,21 @@ class C_MinMax extends CI_Controller
 
 			//TITLE
 			$excel->setActiveSheetIndex(0)->setCellValue('A1', "Min Max Stock Gudang Sparepart"); 
-			$excel->getActiveSheet()->mergeCells('A1:E1'); 
+			$excel->getActiveSheet()->mergeCells('A1:F1'); 
 			$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
 
 			$excel->setActiveSheetIndex(0)->setCellValue('A2', "NO.");
 			$excel->setActiveSheetIndex(0)->setCellValue('B2', "ITEM");
-			$excel->setActiveSheetIndex(0)->setCellValue('C2', "MIN");
-			$excel->setActiveSheetIndex(0)->setCellValue('D2', "MAX");
-			$excel->setActiveSheetIndex(0)->setCellValue('E2', "UOM");
+			$excel->setActiveSheetIndex(0)->setCellValue('C2', "DESKRIPSI");
+			$excel->setActiveSheetIndex(0)->setCellValue('D2', "MIN");
+			$excel->setActiveSheetIndex(0)->setCellValue('E2', "MAX");
+			$excel->setActiveSheetIndex(0)->setCellValue('F2', "UOM");
 			$excel->getActiveSheet()->getStyle('A2')->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle('B2')->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle('C2')->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle('D2')->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle('E2')->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('F2')->applyFromArray($style1);
 
 			$no=1;
 			$numrow = 3;
@@ -186,22 +191,25 @@ class C_MinMax extends CI_Controller
 				// echo "<pre>";print_r($val['ITEM']);exit();
 				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
 				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['ITEM']);
-				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['MIN']);
-				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['MAX']);
-				$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['UOM']);
+				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['DESCRIPTION']);
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['MIN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['MAX']);
+				$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['UOM']);
 				$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style2);
 			$numrow++;
 			$no++; 
 			}
 			$excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); 
 			$excel->getActiveSheet()->getColumnDimension('B')->setWidth(20); 
-			$excel->getActiveSheet()->getColumnDimension('C')->setWidth(10); 
+			$excel->getActiveSheet()->getColumnDimension('C')->setWidth(70); 
 			$excel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
 			$excel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+			$excel->getActiveSheet()->getColumnDimension('F')->setWidth(10);
 			$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
 			// Set orientasi kertas jadi LANDSCAPE
 			$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);

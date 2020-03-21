@@ -21,6 +21,7 @@
                             <tr>
                                 <th style="width:10%">No</th>
                                 <th>Item</th>
+                                <th>Deskripsi</th>
                                 <th>Min</th>
                                 <th>Max</th>
                                 <th>Uom</th>
@@ -31,6 +32,7 @@
                                 <tr>
                                     <td><?= $no?></td>
                                     <td><input type="hidden" name="item[]" value="<?= $val['item']?>"><?= $val['item']?></td>
+                                    <td style="text-align:left"><input type="hidden" name="desc[]" value="<?= $val['desc']?>"><?= $val['desc']?></td>
                                     <td><input type="hidden" name="min[]" value="<?= $val['min']?>"><?= $val['min']?></td>
                                     <td><input type="hidden" name="max[]" value="<?= $val['max']?>"><?= $val['max']?></td>
                                     <td><input type="hidden" name="uom[]" value="<?= $val['uom']?>"><?= $val['uom']?></td>

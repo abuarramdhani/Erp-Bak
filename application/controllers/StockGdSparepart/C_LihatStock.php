@@ -42,6 +42,8 @@ class C_LihatStock extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['unit'] = $this->M_lihatstock->kodeUnit();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('StockGdSparepart/V_LihatStock');
@@ -80,6 +82,7 @@ class C_LihatStock extends CI_Controller
 		$kode_awal 		= $this->input->post('kode_awal');
 		$qty_atas 		= $this->input->post('qty_atas');
 		$qty_bawah 		= $this->input->post('qty_bawah');
+		$unit 			= $this->input->post('unit2');
 		$data['tglAw'] 	= $tglAw;
 		$data['tglAk'] 	= $tglAk;
 		$data['subinv'] = $subinv;
@@ -99,13 +102,19 @@ class C_LihatStock extends CI_Controller
 			$kode = '';
 		}
 
-		$kode_awal = strtoupper($kode_awal);
-		if ($kode_awal != '') {
-			$kode_awl = "AND msib.segment1 LIKE '%'||'$kode_awal'||'%'";
+		// $kode_awal = strtoupper($kode_awal);
+		// if ($kode_awal != '') {
+		// 	$kode_awl = "AND msib.segment1 LIKE '%'||'$kode_awal'||'%'";
+		// 	$kode_unit = '';
+		// }else
+		if ($unit != ''){
+			$kode_unit = "AND msib.segment1 LIKE '$unit'||'%'";
+			// $kode_awl = '';
 		}else {
-			$kode_awl = '';
+			// $kode_awl = '';
+			$kode_unit = '';
 		}
-		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty, $kode_awl);
+		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode_unit);
 		// echo "<pre>";print_r($data['data']);exit();
 		
 		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);

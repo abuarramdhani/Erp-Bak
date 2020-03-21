@@ -8,7 +8,7 @@ class M_lihatstock extends CI_Model
         $this->load->database();    
     }
 
-    public function getData($tglAwl, $tglAkh, $sub, $kode, $qty, $kode_awal) {
+    public function getData($tglAwl, $tglAkh, $sub, $kode, $qty, $unit) {
         $oracle = $this->load->database('oracle', true);
         $sql = "SELECT *
         FROM (SELECT   aa.item, aa.description, aa.uom,
@@ -40,7 +40,8 @@ class M_lihatstock extends CI_Model
                                (SELECT lok.lokasi
                                   FROM khsinvlokasisimpan lok
                                  WHERE mmt.inventory_item_id = lok.inventory_item_id
-                                   AND mmt.subinventory_code = lok.subinv) lokasi
+                                   AND mmt.subinventory_code = lok.subinv
+                                   AND ROWNUM = 1) lokasi
                           FROM mtl_system_items_b msib,
                                mtl_material_transactions mmt,
                                fnd_user fu,
@@ -58,7 +59,7 @@ class M_lihatstock extends CI_Model
                            --
                            AND mmt.transaction_date BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
                            AND mmt.subinventory_code = '$sub' --subinventory
-                           $kode $kode_awal
+                           $kode $unit
                        ) aa
               GROUP BY aa.item,
                        aa.description,
@@ -77,13 +78,14 @@ class M_lihatstock extends CI_Model
                      (SELECT lok.lokasi
                         FROM khsinvlokasisimpan lok
                        WHERE msib.inventory_item_id = lok.inventory_item_id
-                         AND msi.secondary_inventory_name = lok.subinv) lokasi
+                         AND msi.secondary_inventory_name = lok.subinv
+                         AND ROWNUM = 1) lokasi
                 FROM mtl_system_items_b msib,
                      mtl_secondary_inventories msi,
                      khs_sp_minmax ksm
                WHERE msib.inventory_item_status_code = 'Active'
                  AND msi.secondary_inventory_name = '$sub' --subinventory
-                 $kode $kode_awal
+                 $kode $unit
                  AND msib.organization_id = msi.organization_id
                  AND msib.segment1 = ksm.item(+)
                 -- AND khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) <> 0
@@ -207,6 +209,23 @@ class M_lihatstock extends CI_Model
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
+    }
+
+    public function kodeUnit(){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select distinct 
+                        ffvv.FLEX_VALUE unit
+                    ,ffvv.DESCRIPTION
+                from fnd_flex_values_vl ffvv
+                    ,mtl_system_items_b msib
+                where substr(msib.SEGMENT1,1,3) = ffvv.FLEX_VALUE
+                and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                and msib.ORGANIZATION_ID = 81
+                and ffvv.FLEX_VALUE_SET_ID = 1013710
+                and msib.PRIMARY_UOM_CODE = 'UNT'
+                order by 1";           
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 
 }

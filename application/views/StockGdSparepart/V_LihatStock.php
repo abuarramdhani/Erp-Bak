@@ -70,13 +70,52 @@
                                     <br><br>
                                     <div class="col-md-12">
                                         <div class="col-md-2">
-                                            <label class="control-label">Kode Barang :</label>
+                                            <label class="control-label">Kode Unit :</label>
                                         </div>
-                                        <div class="col-md-3">
+                                        <!-- <div class="col-md-3">
                                             <input type="text" id="kode_awal" class="form-control pull-right" placeholder="masukan kode awal">
                                         </div>
                                     </div>
                                     <br><br>
+                                    <div class="col-md-12">
+                                        <div class="col-md-2"></div> -->
+                                        <div class="col-md-1">
+                                            <?php for ($i=0; $i < 7; $i++) { 
+                                                echo '<input type="radio" name="unit" value="'.$unit[$i]['UNIT'].'">'.$unit[$i]['UNIT'].'<br>';
+                                            }?>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <?php for ($i=7; $i < 14; $i++) { 
+                                                echo '<input type="radio" name="unit" value="'.$unit[$i]['UNIT'].'">'.$unit[$i]['UNIT'].'<br>';
+                                            }?>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <?php for ($i=14; $i < 21; $i++) { 
+                                                echo '<input type="radio" name="unit" value="'.$unit[$i]['UNIT'].'">'.$unit[$i]['UNIT'].'<br>';
+                                            }?>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <?php for ($i=21; $i < 28; $i++) { 
+                                                echo '<input type="radio" name="unit" value="'.$unit[$i]['UNIT'].'">'.$unit[$i]['UNIT'].'<br>';
+                                            }?>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <?php for ($i=28; $i < 35; $i++) { 
+                                                echo '<input type="radio" name="unit" value="'.$unit[$i]['UNIT'].'">'.$unit[$i]['UNIT'].'<br>';
+                                            }?>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <?php for ($i=35; $i < 42; $i++) { 
+                                                echo '<input type="radio" name="unit" value="'.$unit[$i]['UNIT'].'">'.$unit[$i]['UNIT'].'<br>';
+                                            }?>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <?php for ($i=42; $i < 49; $i++) { 
+                                                echo '<input type="radio" name="unit" value="'.$unit[$i]['UNIT'].'">'.$unit[$i]['UNIT'].'<br>';
+                                            }?>
+                                        </div>
+                                    </div>
+                                    <br><br><br><br><br><br><br><br>
                                     <div class="col-md-12">
                                         <div class="col-md-2">
                                             <label class="control-label">Quantity Diatas :</label>
