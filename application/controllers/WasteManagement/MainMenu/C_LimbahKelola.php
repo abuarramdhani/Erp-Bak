@@ -56,7 +56,7 @@ class C_LimbahKelola extends CI_Controller
 
 		$kiriman = array_filter($kiriman, function($item) {
 			if(strtotime($item['tanggal']) > strtotime('2020-03-10')) {
-				return ($item['status_kirim'] == 4 || $item['status_kirim'] == 1 || $item['status_kirim' == 2]);
+				return ($item['status_kirim'] == 4 || $item['status_kirim'] == 1 || $item['status_kirim'] == 2);
 			} else {
 				return true;
 			}
