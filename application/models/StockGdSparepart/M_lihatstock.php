@@ -40,7 +40,8 @@ class M_lihatstock extends CI_Model
                                (SELECT lok.lokasi
                                   FROM khsinvlokasisimpan lok
                                  WHERE mmt.inventory_item_id = lok.inventory_item_id
-                                   AND mmt.subinventory_code = lok.subinv) lokasi
+                                   AND mmt.subinventory_code = lok.subinv
+                                   AND ROWNUM = 1) lokasi
                           FROM mtl_system_items_b msib,
                                mtl_material_transactions mmt,
                                fnd_user fu,
@@ -77,7 +78,8 @@ class M_lihatstock extends CI_Model
                      (SELECT lok.lokasi
                         FROM khsinvlokasisimpan lok
                        WHERE msib.inventory_item_id = lok.inventory_item_id
-                         AND msi.secondary_inventory_name = lok.subinv) lokasi
+                         AND msi.secondary_inventory_name = lok.subinv
+                         AND ROWNUM = 1) lokasi
                 FROM mtl_system_items_b msib,
                      mtl_secondary_inventories msi,
                      khs_sp_minmax ksm
