@@ -246,6 +246,8 @@ class M_pekerjakeluar extends CI_Model
 	        $jam_ijin = $jam_ijin/60;
 	    }else if($jam_ijin >= 60){
 	        $jam_ijin = $jam_ijin/60;
+	    }else if($jam_ijin < 0){
+	    	$jam_ijin = 0;
 	    }
 
 		// echo $jam_ijin."<br>";
