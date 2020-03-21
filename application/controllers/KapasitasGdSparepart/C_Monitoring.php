@@ -290,6 +290,69 @@ class C_Monitoring extends CI_Controller
 		$tampung = array('0' => array('lembar2' => $spb, 'item2' => $itemspb, 'pcs2' => $pcsspb, 'lembar1' => $dosp, 'item1' => $itemdosp, 'pcs1' => $pcsdosp, ));
 		return $tampung;
 	}
+	
+	public function jadiin2($data1, $data2){
+		$spb = 0; $itemspb = 0; $pcsspb = 0;
+		$dosp = 0; $itemdosp = 0; $pcsdosp = 0;
+		$nospb = array(); $item = array();
+		foreach ($data1 as $dat) {
+			if (!in_array($dat['NO_DOKUMEN'], $nospb)) {
+				array_push($nospb, $dat['NO_DOKUMEN']);
+				if ($dat['JENIS_DOKUMEN'] == 'SPB') {
+					$spb += 1;
+				}else {
+					$dosp += 1;
+				}
+			}
+			if (!in_array($dat['ITEM'], $item)) {
+				if ($dat['JENIS_DOKUMEN'] == 'SPB') {
+					$itemspb += 1;
+				}else {
+					$itemdosp += 1;
+				}
+			}
+			if ($dat['JENIS_DOKUMEN'] == 'SPB') {
+				if ($dat['KURANG'] == '') {
+					$pcsspb += $dat['QUANTITY'];
+				}else {
+					$pcsspb += $dat['KURANG'];
+				}
+			}else {
+				if ($dat['KURANG'] == '') {
+					$pcsdosp += $dat['QUANTITY'];
+				}else {
+					$pcsdosp += $dat['KURANG'];
+				}
+			}
+		}
+		
+		foreach ($data2 as $dat) {
+			if (!in_array($dat['NO_DOKUMEN'], $nospb)) {
+				array_push($nospb, $dat['NO_DOKUMEN']);
+				if ($dat['JENIS_DOKUMEN'] == 'SPB') {
+					$spb += 1;
+				}else {
+					$dosp += 1;
+				}
+			}
+			if (!in_array($dat['ITEM'], $item)) {
+				if ($dat['JENIS_DOKUMEN'] == 'SPB') {
+					$itemspb += 1;
+				}else {
+					$itemdosp += 1;
+				}
+			}
+			
+			if ($dat['JENIS_DOKUMEN'] == 'SPB') {
+					$pcsspb += $dat['QUANTITY'];
+			}else {
+					$pcsdosp += $dat['QUANTITY'];
+			}
+		}
+		$tampung = array('0' => array('lembar2' => $spb, 'item2' => $itemspb, 'pcs2' => $pcsspb, 'lembar1' => $dosp, 'item1' => $itemdosp, 'pcs1' => $pcsdosp, ));
+		return $tampung;
+	}
+
 
 	public function jadibelum($ket){
 		$spb = 0; $itemspb = 0; $pcsspb = 0;
@@ -1451,7 +1514,7 @@ class C_Monitoring extends CI_Controller
 			$packing = $this->jadiin($pck, 'pck');
 			// $dkr = $this->M_monitoring->dikerjakan();
 			$dikerjain = $this->jadiin($dataselesai, 'dkr');
-			// $kurang = $this->jadiin2($dataKurang, $dataCancel, 'krg');
+			$kurang = $this->jadiin2($dataKurang, $dataCancel);
 			// $sls 	= $this->M_monitoring->datapack($tglAwal[0], $tglAkhir[0]);
 			$selesai = $this->jadiin($dataselesai, 'selesai');
 			
@@ -1512,12 +1575,12 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->mergeCells("A$h4:B$h4"); 
 				foreach ($masuk as $val) {
 					$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-					$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['lembar1']);
-					$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['item1']);
-					$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['pcs1']);
-					$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['lembar2']);
-					$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $val['item2']);
-					$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['pcs2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['lembar2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['item2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['pcs2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['lembar1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $val['item1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['pcs1']);
 					$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, ($val['lembar1'] + $val['lembar2']));
 					$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, ($val['item1'] + $val['item2']));
 					$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, ($val['pcs1'] + $val['pcs2']));
@@ -1725,21 +1788,15 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow3, ($dikerjain[0]['item1'] + $dikerjain[0]['item2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow3, ($dikerjain[0]['pcs1'] + $dikerjain[0]['pcs2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+1), 'KURANG');
-			$lkrg1 = count($nodo2);
-			$lkrg2 = count($nodo1);
-			$ikrg1 = $dikerjain[0]['item1'] - $selesai[0]['item1'];
-			$ikrg2 = $dikerjain[0]['item2'] - $selesai[0]['item2'];
-			$pkrg1 = $dikerjain[0]['pcs1'] - $selesai[0]['pcs1'];
-			$pkrg2 = $dikerjain[0]['pcs2'] - $selesai[0]['pcs2'];
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+1), $lkrg1);
-			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+1), $ikrg1);
-			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+1), $pkrg1);
-			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+1), $lkrg2);
-			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+1), $ikrg2);
-			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+1), $pkrg2);
-			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+1), ($lkrg1 + $lkrg2));
-			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+1), ($ikrg1 + $ikrg2));
-			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+1), ($pkrg1 + $pkrg2));
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+1), $kurang[0]['lembar1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+1), $kurang[0]['item1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+1), $kurang[0]['pcs1']);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+1), $kurang[0]['lembar2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+1), $kurang[0]['item2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+1), $kurang[0]['pcs2']);
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+1), ($kurang[0]['lembar1'] + $kurang[0]['lembar2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+1), ($kurang[0]['item1'] + $kurang[0]['item2']));
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+1), ($kurang[0]['pcs1'] + $kurang[0]['pcs2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h4, "SELESAI");
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, $selesai[0]['lembar1']);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, $selesai[0]['item1']);
