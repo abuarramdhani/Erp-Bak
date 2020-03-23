@@ -24,7 +24,6 @@ class M_monitoringdo extends CI_Model
 
     public function insertDOCetak($data)
     {
-
         if (!empty($data)) {
             $response = $this->oracle->query("INSERT INTO KHS_CETAK_DO (REQUEST_NUMBER, ORDER_NUMBER, CREATION_DATE, NOMOR_CETAK)
           VALUES('$data[REQUEST_NUMBER]','$data[ORDER_NUMBER]',SYSDATE,'$data[NOMOR_CETAK]')");
@@ -118,7 +117,7 @@ class M_monitoringdo extends CI_Model
             ,khs_delivery_temp kdt
             ,khs_cetak_do kcd
         where mtrh.HEADER_ID = mtrl.HEADER_ID
-          and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+          and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
           and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
           --
           and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -264,8 +263,8 @@ class M_monitoringdo extends CI_Model
 
     public function runAPIDO($rm)
     {
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -562,7 +561,7 @@ class M_monitoringdo extends CI_Model
                   and prla.attribute13 is not null
                   ) prha
          where mtrh.HEADER_ID = mtrl.HEADER_ID
-           and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+           and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
            and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
            -- dengan no PR untuk kendaraan
            and mtrh.request_number = prha.ATTRIBUTE(+)
@@ -619,38 +618,60 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
-    public function getDetailDataPengecekan($data)
-    {
-        $subinv = $this->session->datasubinven;
-        if (!empty($data)) {
-            $response = $this->oracle->query("SELECT distinct
-                   mtrh.HEADER_ID
-                  ,mtrh.REQUEST_NUMBER \"DO/SPB\"
-                  ,msib.SEGMENT1
-                  ,mtrl.QUANTITY
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') + mtrl.quantity AV_TO_RES
-            from mtl_txn_request_lines mtrl
-                ,mtl_txn_request_headers mtrh
-                ,mtl_system_items_b msib
-                ,khs_approval_do kad
-                ,khs_person_delivery kpd
-            where mtrh.HEADER_ID = mtrl.HEADER_ID
-              and kad.NO_DO = mtrh.REQUEST_NUMBER
-              and kad.NO_DO = kpd.REQUEST_NUMBER(+)
-              and kad.STATUS = 'Approved'
-              and kpd.PERSON_ID is null
-              and msib.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-              and msib.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-              and mtrh.REQUEST_NUMBER = '$data'
-            order by msib.SEGMENT1")->result_array();
-        } else {
-            $response = array(
-            'success' => false,
-            'message' => 'requests_number is empty, cannot do this action'
-        );
-        }
-        return $response;
-    }
+    // public function sudahdiAssign()
+    // {
+    //     $response = $this->oracle->query("SELECT distinct
+    //            mtrh.REQUEST_NUMBER \"DO/SPB\"
+    //           ,mtrh.HEADER_ID
+    //           ,hzp.PARTY_NAME tujuan
+    //           ,hzl.CITY kota
+    //           ,kad.NO_SO
+    //           ,kpd.DELIVERY_FLAG
+    //           ,kpd.PLAT_NUMBER
+    //           ,kpd.PERSON_ID petugas
+    //     from hz_cust_site_uses_all hcsua
+    //         ,hz_party_sites hps
+    //         ,hz_locations hzl
+    //         ,hz_cust_acct_sites_all hcas
+    //         ,hz_parties hzp
+    //         ,hz_cust_accounts hca
+    //         --
+    //         ,oe_order_headers_all ooha
+    //         ,oe_order_lines_all oola
+    //         ,wsh_delivery_details wdd
+    //         --
+    //         ,mtl_txn_request_headers mtrh
+    //         ,mtl_txn_request_lines mtrl
+    //         ,khs_approval_do kad
+    //         ,khs_person_delivery kpd
+    //     where ooha.HEADER_ID = oola.HEADER_ID
+    //       --
+    //       and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
+    //       --
+    //       and kad.NO_DO = mtrh.REQUEST_NUMBER
+    //       and kad.NO_DO = kpd.REQUEST_NUMBER
+    //       and kpd.PERSON_ID is not null
+    //       --
+    //       and kpd.HEADER_ID not in (select kdt.HEADER_ID
+    //                                   from khs_delivery_temp kdt
+    //                                  where kdt.HEADER_ID = kpd.HEADER_ID)
+    //       --
+    //       and mtrh.HEADER_ID = mtrl.HEADER_ID
+    //       and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+    //       --
+    //       and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
+    //       and hca.PARTY_ID = hzp.PARTY_ID(+)
+    //       and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
+    //       and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
+    //       and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
+    //       and hps.LOCATION_ID = hzl.LOCATION_ID(+)
+    //       -- paramter trial
+    //     --  and mtrh.REQUEST_NUMBER = '3620114'
+    //     order by kpd.PERSON_ID
+    //             ,mtrh.REQUEST_NUMBER")->result_array();
+    //
+    //     return $response;
+    // }
 
     public function sudahdiAssign()
     {
@@ -726,7 +747,7 @@ class M_monitoringdo extends CI_Model
             ,khs_approval_do kad
             ,khs_person_delivery kpd
         where mtrh.HEADER_ID = mtrl.HEADER_ID
-          and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+          and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
           and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
           --
           and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -740,8 +761,7 @@ class M_monitoringdo extends CI_Model
           -- paramter trial
         --  and mtrh.REQUEST_NUMBER = '2000000013'
         order by petugas
-                ,1
-")->result_array();
+                ,1")->result_array();
 
         return $response;
     }
@@ -786,6 +806,64 @@ class M_monitoringdo extends CI_Model
         }
         return $response;
     }
+
+    // public function sudahdiMuat()
+    // {
+    //     $response = $this->oracle->query("SELECT distinct
+    //             mtrh.REQUEST_NUMBER \"DO/SPB\"
+    //            ,hzp.PARTY_NAME tujuan
+    //            ,hzl.CITY kota
+    //            ,kad.NO_SO
+    //            ,kpd.PLAT_NUMBER
+    //            ,kpd.PERSON_ID petugas
+    //      from hz_cust_site_uses_all hcsua
+    //          ,hz_party_sites hps
+    //          ,hz_locations hzl
+    //          ,hz_cust_acct_sites_all hcas
+    //          ,hz_parties hzp
+    //          ,hz_cust_accounts hca
+    //          --
+    //          ,oe_order_headers_all ooha
+    //          ,oe_order_lines_all oola
+    //          ,wsh_delivery_details wdd
+    //          --
+    //          ,mtl_txn_request_headers mtrh
+    //          ,mtl_txn_request_lines mtrl
+    //          ,khs_approval_do kad
+    //          ,khs_person_delivery kpd
+    //          --
+    //          ,khs_delivery_temp kdt
+    //      where ooha.HEADER_ID = oola.HEADER_ID
+    //        --
+    //        and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
+    //        --
+    //        and kad.NO_DO = mtrh.REQUEST_NUMBER
+    //        and kad.NO_DO = kpd.REQUEST_NUMBER
+    //        --
+    //        and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+    //        and kdt.HEADER_ID = kpd.HEADER_ID
+    //        and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
+    //                      and kpd.DELIVERY_FLAG = 'Y'
+    //                      and kdt.FLAG in ('S','B')
+    //                     then 1 --'SUDAH MUAT'
+    //                end
+    //        --
+    //        and mtrh.HEADER_ID = mtrl.HEADER_ID
+    //        and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+    //        --
+    //        and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
+    //        and hca.PARTY_ID = hzp.PARTY_ID(+)
+    //        and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
+    //        and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
+    //        and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
+    //        and hps.LOCATION_ID = hzl.LOCATION_ID(+)
+    //        -- paramter trial
+    //        -- and mtrh.REQUEST_NUMBER = '3620114'
+    //      order by kpd.PERSON_ID
+    //              ,mtrh.REQUEST_NUMBER")->result_array();
+    //
+    //     return $response;
+    // }
 
 
     public function sudahdiMuat()
@@ -870,7 +948,7 @@ class M_monitoringdo extends CI_Model
               ,khs_person_delivery kpd
               ,khs_delivery_temp kdt
           where mtrh.HEADER_ID = mtrl.HEADER_ID
-            and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+            and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
             and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
             --
             and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -898,6 +976,7 @@ class M_monitoringdo extends CI_Model
 
         return $response;
     }
+
 
     public function sudahdiMuat_detail($data)
     {
@@ -949,6 +1028,69 @@ class M_monitoringdo extends CI_Model
         }
         return $response;
     }
+
+
+    // public function sudahdiLayani()
+    // {
+    //     $response = $this->oracle->query("SELECT distinct
+    //            mtrh.REQUEST_NUMBER \"DO/SPB\"
+    //            ,hzp.PARTY_NAME tujuan
+    //            ,hzl.CITY kota
+    //            ,kad.NO_SO
+    //            ,kpd.PLAT_NUMBER
+    //            ,kpd.PERSON_ID petugas
+    //           from hz_cust_site_uses_all hcsua
+    //           ,hz_party_sites hps
+    //           ,hz_locations hzl
+    //           ,hz_cust_acct_sites_all hcas
+    //           ,hz_parties hzp
+    //           ,hz_cust_accounts hca
+    //           --
+    //           ,oe_order_headers_all ooha
+    //           ,oe_order_lines_all oola
+    //           ,wsh_delivery_details wdd
+    //           --
+    //           ,mtl_txn_request_headers mtrh
+    //           ,mtl_txn_request_lines mtrl
+    //           ,khs_approval_do kad
+    //           ,khs_person_delivery kpd
+    //           --
+    //           ,khs_delivery_temp kdt
+    //           where ooha.HEADER_ID = oola.HEADER_ID
+    //           --
+    //           and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
+    //           --
+    //           and kad.NO_DO = mtrh.REQUEST_NUMBER
+    //           and kad.NO_DO = kpd.REQUEST_NUMBER
+    //           --
+    //           and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+    //           and kdt.HEADER_ID = kpd.HEADER_ID
+    //           and 1 = case when kdt.SERIAL_STATUS = 'SERIAL'
+    //                      and kpd.DELIVERY_FLAG = 'Y'
+    //                      and kdt.FLAG = 'O'
+    //                     then 1 --'SELESAI PELAYANAN'
+    //                     when kdt.SERIAL_STATUS = 'NON SERIAL'
+    //                      and kpd.DELIVERY_FLAG = 'Y'
+    //                      and kdt.FLAG = 'Y'
+    //                     then 1 --'SELESAI PELAYANAN'
+    //                end
+    //           --
+    //           and mtrh.HEADER_ID = mtrl.HEADER_ID
+    //           and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+    //           --
+    //           and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
+    //           and hca.PARTY_ID = hzp.PARTY_ID(+)
+    //           and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
+    //           and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
+    //           and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
+    //           and hps.LOCATION_ID = hzl.LOCATION_ID(+)
+    //           -- paramter trial
+    //           -- and mtrh.REQUEST_NUMBER = '3620114'
+    //           order by kpd.PERSON_ID
+    //              ,mtrh.REQUEST_NUMBER")->result_array();
+    //
+    //     return $response;
+    // }
 
     public function sudahdiLayani()
     {
@@ -1032,7 +1174,7 @@ class M_monitoringdo extends CI_Model
              ,khs_person_delivery kpd
              ,khs_delivery_temp kdt
          where mtrh.HEADER_ID = mtrl.HEADER_ID
-           and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+           and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
            and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
            --
            and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -1270,6 +1412,85 @@ class M_monitoringdo extends CI_Model
         }
         return $response;
     }
+
+    // public function headerSurat($id)
+    // {
+    //   $response = $this->oracle->query("SELECT distinct
+    //    ooha.ORDER_NUMBER no_so
+    //   ,ooha.ORDERED_DATE
+    //   ,kpd.PLAT_NUMBER
+    //   ,to_char(wdd.BATCH_ID) no_do
+    //   ,hzp.PARTY_NAME tujuan
+    //   ,hzl.CITY kota
+    //   ,kdt.PERSON_ID assignee
+    //   ,kdt.FLAG
+    //   ,decode(kdt.FLAG,'Y','SUDAH TER-ASSIGN'
+    //                   ,'O','SUDAH PELAYANAN'
+    //                   ,'S','SUDAH DIMUAT'
+    //             ) flag_desc
+    //   --      ,case when mtrl.QUANTITY_DETAILED is null
+    //   --             and mtrl.QUANTITY_DELIVERED is null
+    //   --            then 'BELUM APA-APA'
+    //   --            when mtrl.QUANTITY_DETAILED is not null
+    //   --             and mtrl.QUANTITY_DELIVERED is null
+    //   --            then 'SUDAH TER-ALLOCATE'
+    //   --            when mtrl.QUANTITY_DETAILED is not null
+    //   --             and mtrl.QUANTITY_DELIVERED is not null
+    //   --            then 'SUDAH TRANSACT'
+    //   --       end status
+    //         -- tidak digunakan, tapi bisa diaktifkan --
+    //   --      ,hcsua.LOCATION ship_to
+    //   --      ,hcsua.LOCATION ship_to_location
+    //   --      ,hzl.address1 alamat1
+    //   --      ,decode(hzl.city,NULL,NULL,hzl.city || ', ')
+    //   --     ||decode(hzl.state,NULL,hzl.province || ', ',hzl.state || ', ')
+    //   --     ||decode(hzl.postal_code,NULL,NULL,hzl.postal_code || ', ')
+    //   --     ||decode(hzl.country,NULL,NULL,hzl.country)
+    //   --                                                                                alamat2
+    //   from hz_cust_site_uses_all hcsua
+    //       ,hz_party_sites hps
+    //       ,hz_locations hzl
+    //       ,hz_cust_acct_sites_all hcas
+    //       ,hz_parties hzp
+    //       ,hz_cust_accounts hca
+    //       --
+    //       ,oe_order_headers_all ooha
+    //       ,oe_order_lines_all oola
+    //       ,wsh_delivery_details wdd
+    //       --
+    //       ,mtl_txn_request_headers mtrh
+    //       ,mtl_txn_request_lines mtrl
+    //       ,khs_delivery_temp kdt
+    //       ,khs_person_delivery kpd
+    //   where ooha.HEADER_ID = oola.HEADER_ID
+    //     --
+    //     and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
+    //     --
+    //     and kdt.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+    //     --
+    //     and mtrh.HEADER_ID = mtrl.HEADER_ID
+    //     and mtrh.HEADER_ID = kdt.HEADER_ID
+    //     and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+    //     and kdt.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
+    //     and kpd.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+    //     and kpd.HEADER_ID = kdt.HEADER_ID
+    //     --
+    //     and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
+    //     and hca.PARTY_ID = hzp.PARTY_ID(+)
+    //     and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
+    //     and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
+    //     and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
+    //     and hps.LOCATION_ID = hzl.LOCATION_ID(+)
+    //   --  and to_char(ooha.ORDER_NUMBER) = :P_SO
+    //     and to_char(wdd.BATCH_ID) = '$id'
+    //   order by 2
+    //           ,flag_desc desc")->result_array();
+    //
+    //     if (empty($response)) {
+    //         $response = null;
+    //     }
+    //     return $response;
+    // }
 
     public function headerSurat($id)
     {
