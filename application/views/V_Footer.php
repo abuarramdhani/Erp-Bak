@@ -176,6 +176,7 @@
 		<script src="<?= base_url('assets/js/customMSO.js');?>"></script>
 		<script src="<?= base_url('assets/js/customPPHC.js');?>"></script>
 		<script src="<?= base_url('assets/js/customMPG.js');?>"></script>
+		<script src="<?= base_url('assets/js/customTM.js');?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customBD.js') ?>"></script>
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
