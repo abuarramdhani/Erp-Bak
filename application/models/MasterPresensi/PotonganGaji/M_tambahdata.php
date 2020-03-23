@@ -34,4 +34,13 @@ class M_tambahdata extends CI_Model {
     function saveDetailPotongan($data) {
         $this->personalia->insert('Presensi.tpotongan_detail', $data);
     }
+
+    function getPotonganByNoindNominalJenis($noind,$nominal,$jenis){
+        $sql = "select *
+                from \"Presensi\".tpotongan
+                where noind = ?
+                and nominal_total = ?
+                and jenis_potongan_id = ? ";
+        return $this->personalia->query($sql,array($noind,$nominal,$jenis))->result_array();
+    }
 }

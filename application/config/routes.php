@@ -3035,6 +3035,7 @@ $route['MasterPresensi/PotonganGaji/TambahData'] = 'MasterPresensi/PotonganGaji/
 $route['MasterPresensi/PotonganGaji/TambahData/getPekerjaList'] = 'MasterPresensi/PotonganGaji/C_TambahData/getPekerjaList';
 $route['MasterPresensi/PotonganGaji/TambahData/getJenisPotonganList'] = 'MasterPresensi/PotonganGaji/C_TambahData/getJenisPotonganList';
 $route['MasterPresensi/PotonganGaji/TambahData/saveData'] = 'MasterPresensi/PotonganGaji/C_TambahData/saveData';
+$route['MasterPresensi/PotonganGaji/TambahData/cekDuplikat'] = 'MasterPresensi/PotonganGaji/C_TambahData/cekDuplikat';
 $route['MasterPresensi/PotonganGaji/EditData'] = 'MasterPresensi/PotonganGaji/C_EditData';
 $route['MasterPresensi/PotonganGaji/EditData/getPekerjaList'] = 'MasterPresensi/PotonganGaji/C_EditData/getPekerjaList';
 $route['MasterPresensi/PotonganGaji/EditData/getJenisPotonganList'] = 'MasterPresensi/PotonganGaji/C_EditData/getJenisPotonganList';
