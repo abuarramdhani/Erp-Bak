@@ -130,7 +130,7 @@ class C_Master extends CI_Controller
             }
             $no = 0;
             foreach ($dataku as $k) {
-                $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
+                $datakau[] = $this->M_monitoringdo->getDetailData($k);
                 $no++;
             }
 

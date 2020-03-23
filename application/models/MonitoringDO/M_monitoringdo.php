@@ -24,7 +24,6 @@ class M_monitoringdo extends CI_Model
 
     public function insertDOCetak($data)
     {
-
         if (!empty($data)) {
             $response = $this->oracle->query("INSERT INTO KHS_CETAK_DO (REQUEST_NUMBER, ORDER_NUMBER, CREATION_DATE, NOMOR_CETAK)
           VALUES('$data[REQUEST_NUMBER]','$data[ORDER_NUMBER]',SYSDATE,'$data[NOMOR_CETAK]')");
@@ -118,7 +117,7 @@ class M_monitoringdo extends CI_Model
             ,khs_delivery_temp kdt
             ,khs_cetak_do kcd
         where mtrh.HEADER_ID = mtrl.HEADER_ID
-          and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+          and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
           and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
           --
           and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -264,8 +263,8 @@ class M_monitoringdo extends CI_Model
 
     public function runAPIDO($rm)
     {
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -562,7 +561,7 @@ class M_monitoringdo extends CI_Model
                   and prla.attribute13 is not null
                   ) prha
          where mtrh.HEADER_ID = mtrl.HEADER_ID
-           and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+           and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
            and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
            -- dengan no PR untuk kendaraan
            and mtrh.request_number = prha.ATTRIBUTE(+)
@@ -596,39 +595,6 @@ class M_monitoringdo extends CI_Model
                   ,mtrl.QUANTITY
                   ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') + mtrl.quantity AV_TO_RES
                   ,kpd.PERSON_ID petugas
-            from mtl_txn_request_lines mtrl
-                ,mtl_txn_request_headers mtrh
-                ,mtl_system_items_b msib
-                ,khs_approval_do kad
-                ,khs_person_delivery kpd
-            where mtrh.HEADER_ID = mtrl.HEADER_ID
-              and kad.NO_DO = mtrh.REQUEST_NUMBER
-              and kad.NO_DO = kpd.REQUEST_NUMBER(+)
-              and kad.STATUS = 'Approved'
-              and kpd.PERSON_ID is null
-              and msib.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-              and msib.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-              and mtrh.REQUEST_NUMBER = '$data'
-            order by msib.SEGMENT1")->result_array();
-        } else {
-            $response = array(
-            'success' => false,
-            'message' => 'requests_number is empty, cannot do this action'
-        );
-        }
-        return $response;
-    }
-
-    public function getDetailDataPengecekan($data)
-    {
-        $subinv = $this->session->datasubinven;
-        if (!empty($data)) {
-            $response = $this->oracle->query("SELECT distinct
-                   mtrh.HEADER_ID
-                  ,mtrh.REQUEST_NUMBER \"DO/SPB\"
-                  ,msib.SEGMENT1
-                  ,mtrl.QUANTITY
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') + mtrl.quantity AV_TO_RES
             from mtl_txn_request_lines mtrl
                 ,mtl_txn_request_headers mtrh
                 ,mtl_system_items_b msib
@@ -726,7 +692,7 @@ class M_monitoringdo extends CI_Model
             ,khs_approval_do kad
             ,khs_person_delivery kpd
         where mtrh.HEADER_ID = mtrl.HEADER_ID
-          and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+          and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
           and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
           --
           and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -740,8 +706,7 @@ class M_monitoringdo extends CI_Model
           -- paramter trial
         --  and mtrh.REQUEST_NUMBER = '2000000013'
         order by petugas
-                ,1
-")->result_array();
+                ,1")->result_array();
 
         return $response;
     }
@@ -786,7 +751,6 @@ class M_monitoringdo extends CI_Model
         }
         return $response;
     }
-
 
     public function sudahdiMuat()
     {
@@ -870,7 +834,7 @@ class M_monitoringdo extends CI_Model
               ,khs_person_delivery kpd
               ,khs_delivery_temp kdt
           where mtrh.HEADER_ID = mtrl.HEADER_ID
-            and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+            and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
             and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
             --
             and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -898,6 +862,7 @@ class M_monitoringdo extends CI_Model
 
         return $response;
     }
+
 
     public function sudahdiMuat_detail($data)
     {
@@ -1032,7 +997,7 @@ class M_monitoringdo extends CI_Model
              ,khs_person_delivery kpd
              ,khs_delivery_temp kdt
          where mtrh.HEADER_ID = mtrl.HEADER_ID
-           and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+           and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
            and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
            --
            and kad.NO_DO = mtrh.REQUEST_NUMBER
