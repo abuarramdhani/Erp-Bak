@@ -651,6 +651,11 @@ function cekPotonganGajiExist(){
                     console.log(obj);
                     if (obj['jumlah'] !== '0') {
                         $('#pg_buttonSimulasi').attr('disabled',true);
+                        swal.fire({
+                            title: "Data Sudah Pernah Diinput",
+                            text: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama",
+                            type: "warning"
+                        })
                     }else{
                         $('#pg_buttonSimulasi').attr('disabled',false);
                     }                    
