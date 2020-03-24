@@ -1,4 +1,7 @@
 <style>
+    .dataTables_filter{
+        float: right;
+    }
     .center {
         text-align: center;
     }
