@@ -1379,9 +1379,9 @@ class C_GLap extends CI_Controller
 		// =================== START OF CONTENT & STYLING =================== //
 		foreach ($jadi as $akhir) {
 			$tgl = explode('-', date('d-m-Y', strtotime($akhir['Tanggal'])));
-			$tglnya = $tgl[0].'/'.$tgl[1].'/'.$tgl[2];
-			// $worksheet->setCellValue('A' . $highestRow, PHPExcel_Shared_Date::FormattedPHPToExcel($tgl[2], $tgl[1], $tgl[0]));
-			$worksheet->setCellValue('A' . $highestRow, $tglnya);
+			// $tglnya = $tgl[0].'/'.$tgl[1].'/'.$tgl[2];
+			$worksheet->setCellValue('A' . $highestRow, PHPExcel_Shared_Date::FormattedPHPToExcel($tgl[2], $tgl[1], $tgl[0]));
+			// $worksheet->setCellValue('A' . $highestRow, $tglnya);
 			$worksheet->setCellValue('B' . $highestRow, $akhir['KodeKelompok']);
 			$worksheet->setCellValue('C' . $highestRow, $akhir['KodeCor']);
 			$worksheet->setCellValue('D' . $highestRow, $akhir['KodeKomponen']);
