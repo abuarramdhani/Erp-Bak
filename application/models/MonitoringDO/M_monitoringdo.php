@@ -117,7 +117,7 @@ class M_monitoringdo extends CI_Model
             ,khs_delivery_temp kdt
             ,khs_cetak_do kcd
         where mtrh.HEADER_ID = mtrl.HEADER_ID
-          and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
+          and to_number(substr(mtrl.REFERENCE,5)) = to_number(ood.ORGANIZATION_ID)
           and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
           --
           and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -561,7 +561,7 @@ class M_monitoringdo extends CI_Model
                   and prla.attribute13 is not null
                   ) prha
          where mtrh.HEADER_ID = mtrl.HEADER_ID
-           and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
+           and to_number(substr(mtrl.REFERENCE,5)) = to_number(ood.ORGANIZATION_ID)
            and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
            -- dengan no PR untuk kendaraan
            and mtrh.request_number = prha.ATTRIBUTE(+)
@@ -692,7 +692,7 @@ class M_monitoringdo extends CI_Model
             ,khs_approval_do kad
             ,khs_person_delivery kpd
         where mtrh.HEADER_ID = mtrl.HEADER_ID
-          and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
+          and to_number(substr(mtrl.REFERENCE,5)) = to_number(ood.ORGANIZATION_ID)
           and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
           --
           and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -751,6 +751,7 @@ class M_monitoringdo extends CI_Model
         }
         return $response;
     }
+
 
     public function sudahdiMuat()
     {
@@ -834,7 +835,7 @@ class M_monitoringdo extends CI_Model
               ,khs_person_delivery kpd
               ,khs_delivery_temp kdt
           where mtrh.HEADER_ID = mtrl.HEADER_ID
-            and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
+            and to_number(substr(mtrl.REFERENCE,5)) = to_number(ood.ORGANIZATION_ID)
             and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
             --
             and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -997,7 +998,7 @@ class M_monitoringdo extends CI_Model
              ,khs_person_delivery kpd
              ,khs_delivery_temp kdt
          where mtrh.HEADER_ID = mtrl.HEADER_ID
-           and substr(mtrl.REFERENCE,5) = to_char(ood.ORGANIZATION_ID)
+           and to_number(substr(mtrl.REFERENCE,5)) = to_number(ood.ORGANIZATION_ID)
            and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
            --
            and kad.NO_DO = mtrh.REQUEST_NUMBER
@@ -1320,7 +1321,7 @@ class M_monitoringdo extends CI_Model
           ,khs_person_delivery kpd
           ,khs_delivery_temp kdt
       where mtrh.HEADER_ID = mtrl.HEADER_ID
-        and substr(mtrl.REFERENCE,5) = ood.ORGANIZATION_ID
+        and to_number(substr(mtrl.REFERENCE,5)) = to_number(ood.ORGANIZATION_ID)
         and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
         --
         and kdt.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
