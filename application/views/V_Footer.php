@@ -211,6 +211,7 @@
 		<script src="<?= base_url('assets/js/customSGS.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMPI.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customPRP.js');?>"></script>
+		<script src="<?= base_url('assets/js/customTM.js');?>"></script>
 		
 
 		
