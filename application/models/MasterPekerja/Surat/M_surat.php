@@ -159,6 +159,7 @@ class M_surat extends CI_Model
 
 	public function detail_pekerja( $noind )
 	{
+		$status_aktif = '02';
 		$detail_pekerja		= "	select 		pri.noind as noind,
 		pri.nama as nama,
 		pri.kodesie as kodesie,
@@ -226,7 +227,8 @@ class M_surat extends CI_Model
 		on 	tlokasi_kerja.id_=pri.lokasi_kerja
 		left join hrd_khs.tb_status_jabatan as tb_status_jabatan 
 		on tb_status_jabatan.noind = pri.noind
-		where 		pri.noind='$noind';";
+		where pri.noind='$noind' and tb_status_jabatan.status_data = '$status_aktif'
+		order by tb_status_jabatan.tgl_berlaku desc limit 1;";
 		// echo $detail_pekerja;exit();
 		$query 				=	$this->personalia->query($detail_pekerja);
 		return $query->result_array();
