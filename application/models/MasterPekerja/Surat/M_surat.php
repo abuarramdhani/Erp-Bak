@@ -215,7 +215,7 @@ class M_surat extends CI_Model
 		pri.alamat,
 		coalesce(tb_status_jabatan.kd_status,'') as kd_status,
 		coalesce(tb_status_jabatan.nama_status,'') as nama_status,
-		coalesce(tb_status_jabatan.nama_jabatan,'-') as nama_jabatan_upah
+		concat(tb_status_jabatan.kd_jabatan, ' - ' ,coalesce(tb_status_jabatan.nama_jabatan,'-')) as nama_jabatan_upah
 		from 		hrd_khs.v_hrd_khs_tpribadi as pri
 		left join 	hrd_khs.v_hrd_khs_tseksi as tseksi
 		on 	tseksi.kodesie=pri.kodesie
