@@ -601,3 +601,66 @@ $(document).ready(function(){
         }
     });
 });
+
+// POtongan Lain
+$(document).ready(function(){
+    $('#pg_selectPekerja').on('change',function(){
+        cekPotonganGajiExist()
+    });
+
+    $('#pg_inputNominalTotal').on('change',function(){
+        cekPotonganGajiExist()
+    });
+
+    $('#pg_inputNominalTotal').on('keyup',function(){
+        cekPotonganGajiExist()
+    });
+
+    $('#pg_selectJenisPotongan').on('change',function(){
+        cekPotonganGajiExist()
+    });
+
+});
+
+function cekPotonganGajiExist(){
+    jenis = $('#pg_selectJenisPotongan').val();
+    nominal = $('#pg_inputNominalTotal').val();
+    noind = $('#pg_selectPekerja').val();
+
+    if (jenis && nominal && noind) {
+        $.ajax({
+            data: {jenis:jenis, noind:noind, nominal:nominal},
+            type: 'POST',
+            url: baseurl + 'MasterPresensi/PotonganGaji/TambahData/cekDuplikat',
+            error: function(xhr,status,error){
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+                $('#modalKPInputDataList').modal('hide');
+            },
+            success: function(result){
+                if (result) {
+                    obj = JSON.parse(result);
+                    console.log(obj);
+                    if (obj['jumlah'] !== '0') {
+                        $('#pg_buttonSimulasi').attr('disabled',true);
+                        swal.fire({
+                            title: "Data Sudah Pernah Diinput",
+                            text: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama",
+                            type: "warning"
+                        })
+                    }else{
+                        $('#pg_buttonSimulasi').attr('disabled',false);
+                    }                    
+                }
+            }
+        })
+    }
+}

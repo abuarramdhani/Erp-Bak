@@ -81,4 +81,25 @@ class C_tambahdata extends CI_Controller {
 		}
 		echo json_encode($response);
 	}
+
+	function cekDuplikat(){
+		$noind = $this->input->post('noind');
+		$nominal = $this->input->post('nominal');
+		$jenis = $this->input->post('jenis');
+		$nominal = str_replace(".", "", $nominal);
+		$data = $this->M_tambahdata->getPotonganByNoindNominalJenis($noind,$nominal,$jenis);
+		if (!empty($data)) {
+			$jumlah = count($data);
+		}else{
+			$jumlah = '0';
+		}
+		$arr = array(
+			'jumlah' 	=> $jumlah,
+			'data' 		=> $data,
+			'noind' 	=> $noind,
+			'nominal' 	=> $nominal,
+			'jenis' 	=> $jenis
+		);
+		echo json_encode($arr);
+	}
 }
