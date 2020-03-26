@@ -41,8 +41,8 @@ class C_MasterUnitGroupDetail extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Distribution';
+		$data['SubMenuOne'] = 'Master Unit Group Detail';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -71,7 +71,7 @@ class C_MasterUnitGroupDetail extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Master Unit Group Detail';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -93,25 +93,32 @@ class C_MasterUnitGroupDetail extends CI_Controller {
 	{
 		$date		= $this->input->post('txtDate');
 		$IDUnit		= $this->input->post('txtIDUnitGroup');
+		$NameUnit		= $this->input->post('txtUnitGroup');
 		$unit = array();
-		for ($i=0; $i < count($IDUnit); $i++) { 
-			$unit[] 		= $this->input->post('txtUnitDetail'.$i);
+		for ($i=0; $i < count($IDUnit); $i++) {
+			$kd = explode("*",$this->input->post('txtUnitDetail'.$i));
+			$kode[] 		= $kd[0];
+			$unit[] 		= $kd[1];
+			$b = implode(',', $kode[$i]);
 			$a = implode(',', $unit[$i]);
 
-			$dataInsert = array(
-				'id_unit_group' => $IDUnit[$i],
-				'unit'			=> $a,
-				'tberlaku'		=> $date,
-				'ttberlaku'		=> '9999-12-31',
-			);
+			echo $a."<br>";
+			// $dataInsert = array(
+			// 	'id_unit_group' => $IDUnit[$i],
+			// 	'unit'			=> $a,
+			// 	'tberlaku'		=> $date,
+			// 	'ttberlaku'		=> '9999-12-31',
+			// 	'unit_group'	=> $NameUnit[$i],
+			// 	'kodesie'		=> $b,
+			// );
 		// echo "<pre>";
 		// print_r($dataInsert);
 		// echo "</pre>";
 		// exit();
-			$insertId = $this->M_unitgroupdetail->AddMaster($dataInsert);
+			// $insertId = $this->M_unitgroupdetail->AddMaster($dataInsert);
 		}
 
-		redirect('PenilaianKinerja/MasterUnitGroupDetail');
+		// redirect('PenilaianKinerja/MasterUnitGroupDetail');
 	}
 	
 	// DELETE
@@ -128,7 +135,7 @@ class C_MasterUnitGroupDetail extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Master Unit Group Detail';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -150,7 +157,7 @@ class C_MasterUnitGroupDetail extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Master Unit Group Detail';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

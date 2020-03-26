@@ -50,7 +50,7 @@
 						for ($i=0; $i < $g ; $i++) {
 						?>
 						<hr>
-						<div class="row" style="margin: 10px 10px">
+						<div class="row" style="margin: 10px 10px;display:none;">
 							<div class="form-group">
 								<label class="col-lg-2 control-label"> Unit Group </label>
 								<div class="col-lg-7">
@@ -61,17 +61,24 @@
 						</div>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
+								<label class="col-lg-2 control-label"> Unit Group </label>
+								<div class="col-lg-4">
+									<input name="txtUnitGroup[]" id="txtUnitGroup" value="" class="form-control">
+								</div>
+							</div>
+						</div>
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
 								<label class="col-lg-2 control-label"> Seksi </label>
 								<div class="col-lg-7">
-									<select class="form-control js-slcReportSection" name="txtUnitDetail<?php echo $i; ?>[]" multiple="multiple" data-placeholder="Ambil Seksi pada Unit terkait">
+									<select class="form-control js-slcSectionPK" name="txtUnitDetail<?php echo $i; ?>[]" multiple="multiple" data-placeholder="Ambil Seksi pada Unit terkait">
 									</select>
 								</div>
 							</div>
 						</div>
-						<hr>
 						<?php } 
 					}?>
-
+						<br>
 						<div class="form-group">
 							<div class="col-lg-10 text-right">
 								<a href="<?php echo site_url('PenilaianKinerja/MasterUnitGroupDetail');?>"  class="btn btn-primary btn btn-flat">Back</a>

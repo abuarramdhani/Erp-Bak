@@ -1137,7 +1137,7 @@ $route['PenilaianKinerja/MasterTIM/(:any)']						= 'JurnalPenilaian/C_MasterTIM/
 $route['PenilaianKinerja/MasterTIM/(:any)/(:any)']				= 'JurnalPenilaian/C_MasterTIM/$1/$2';
 $route['PenilaianKinerja/MasterTIM/(:any)/(:any)/(:any)']		= 'JurnalPenilaian/C_MasterTIM/$1/$2/$3';
 
-// master kategori penilaian
+// master kategori penilaian	
 $route['PenilaianKinerja/MasterKategoriPenilaian']						= 'JurnalPenilaian/C_MasterKategoriPenilaian';
 $route['PenilaianKinerja/MasterKategoriPenilaian/(:any)']				= 'JurnalPenilaian/C_MasterKategoriPenilaian/$1';
 $route['PenilaianKinerja/MasterKategoriPenilaian/(:any)/(:any)']		= 'JurnalPenilaian/C_MasterKategoriPenilaian/$1/$2';
@@ -1171,6 +1171,8 @@ $route['PenilaianKinerja/JurnalPenilaianPersonalia/(:any)/(:any)']	= 'JurnalPeni
 
 // Jurnal Penilaian Evaluator
 $route['PenilaianKinerja/JurnalPenilaianEvaluator']		= 'JurnalPenilaian/C_JurnalPenilaianEvaluator';
+$route['PenilaianKinerja/JurnalPenilaianEvaluator/(:any)']		= 'JurnalPenilaian/C_JurnalPenilaianEvaluator/$1';
+$route['PenilaianKinerja/JurnalPenilaianEvaluator/(:any)/(:any)']		= 'JurnalPenilaian/C_JurnalPenilaianEvaluator/$1/$2';
 
 //------------------------------------External Claim.begin---------------------------------------------------
 $route['SalesOrder/BranchApproval'] 						= 'CustomerRelationship/MainMenu/C_BranchApproval/index';

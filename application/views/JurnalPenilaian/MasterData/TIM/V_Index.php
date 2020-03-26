@@ -34,36 +34,28 @@
 					</div>
 					<div class="box-body">
 
-						<div class="table-responsive" style="overflow:hidden;">
-							<table class="table table-striped table-bordered table-hover text-left" id="master-index" style="font-size:14px;">
+						<divstyle="overflow:hidden;">
+							<table class="table table-striped table-bordered table-hover text-left" id="JurnalPenilaian-masterTIM" style="width:100%;">
 								<thead class="bg-primary">
 									<tr>
-										<th width="5%">NO</th>
-										<th width="10%">Batas Atas</th>
-										<th width="10%">Batas Bawah</th>
-										<th width="20%">Nilai</th>
-										<th width="20%">Tanggal Berlaku</th>
-										<th width="20%">Tanggal Tidak Berlaku</th>
-										<th width="20%">Action</th>
+										<th width="5%" class="text-center">NO</th>
+										<th width="15%" class="text-center">Batas Atas</th>
+										<th width="15%" class="text-center">Batas Bawah</th>
+										<th width="20%" class="text-center">Nilai</th>
+										<th width="10%" class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 								<?php foreach ($GetTIM as $gt) {?>
 									<tr>
-										<td><?php echo $number++ ?></td>
-										<td><?php echo $gt['bts_ats']; ?></td>
+										<td align="center"><?php echo $number++ ?></td>
+										<td align="center"><?php echo $gt['bts_ats']; ?></td>
 										<input type="text" name="txtIdTIM" value="<?php echo $gt['id_tim_dtl']; ?>" hidden>
-										<td><?php echo $gt['bts_bwh']; ?></td>
-										<td><?php echo $gt['nilai']; ?></td>
-										<td><?php echo $gt['tberlaku']; ?></td>
-										<td style="color: red"><?php echo $gt['ttberlaku']; ?></td>
-										<td>
-											<a href="<?php echo site_url('PenilaianKinerja/MasterTIM/view/'.$gt['id_tim_dtl']);?>" class="btn btn-flat btn-sm btn-success" title="Lihat Data"><i class="fa fa-search"></i></a>
-											&nbsp;&nbsp;
-											<a href="<?php echo site_url('PenilaianKinerja/MasterTIM/edit/'.$gt['id_tim_dtl']);?>" class="btn btn-flat btn-sm  btn-warning" title="Edit data"><i class="fa fa-edit"></i></a>
-											&nbsp;&nbsp;
-											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gt['id_tim_dtl'] ?>" class="btn btn-flat btn-sm  btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
-											&nbsp;&nbsp;
+										<td align="center"><?php echo $gt['bts_bwh']; ?></td>
+										<td align="center"><?php echo $gt['nilai']; ?></td>
+										<td align="center">
+											<a href="<?php echo site_url('PenilaianKinerja/MasterTIM/edit/'.$gt['id_tim_dtl']);?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-edit"></span></a>
+											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gt['id_tim_dtl'] ?>" class="btn btn-xs btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
 										</td>
 									</tr>
 									<div class="modal fade modal-danger" id="<?php echo 'deletealert'.$gt['id_tim_dtl'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

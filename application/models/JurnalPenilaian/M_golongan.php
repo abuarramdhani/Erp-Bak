@@ -12,7 +12,7 @@ class M_golongan extends CI_Model {
 		if ($idGol==FALSE) {
 			$id='';
 		}else{
-			$id="where id_gol_num='$idGol'";
+			$id="and id= $idGol";
 		}
 		$sql="	select	*
 				from	pk.pk_gol_num
@@ -36,7 +36,7 @@ class M_golongan extends CI_Model {
 	// DELETE GOLONGAN
 	public function DeleteGol($idGol)
 	{
-		$this->db->where('id_gol_num', $idGol);
+		$this->db->where('id', $idGol);
         $this->db->delete('pk.pk_gol_num');
 	}
 
@@ -45,7 +45,7 @@ class M_golongan extends CI_Model {
 	{
 		$sql1="	update	pk.pk_gol_num
 				set		ttberlaku = '$date'
-				where 	id_gol_num='$idGol'";
+				where 	id='$idGol'";
 		$sql2=" insert into pk.pk_gol_num
 				(num,tberlaku,ttberlaku)
 				values ('$noGol', TO_DATE('$date', 'YYYY/MM/DD') , '9999-12-31')";

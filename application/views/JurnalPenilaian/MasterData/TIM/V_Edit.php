@@ -36,16 +36,6 @@
 					<div class="box-body">
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-2 control-label">Periode</label>
-								<div class="col-lg-3">
-									<input class="form-control singledatePK" name="txtDate" value="<?php echo $gt['tberlaku']; ?>" >
-								</div>
-							</div>
-						</div>
-						
-						<hr>
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
 								<label class="col-lg-2 control-label"> Batas Atas </label>
 								<div class="col-lg-7">
 									<input name="txtbts_A" class="form-control" type="number" value="<?php echo $gt['bts_ats']; ?>" >

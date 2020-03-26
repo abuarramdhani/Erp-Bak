@@ -36,16 +36,6 @@
 						<input type="text" name="txtIdBobot" value="<?php echo $gb['id_bobot']; ?>" hidden>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-2 control-label">Periode</label>
-								<div class="col-lg-3">
-									<input class="form-control singledatePK" name="txtDate" value="<?php echo $gb['tberlaku']; ?>" >
-								</div>
-							</div>
-						</div>
-						
-						<hr>
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
 								<label class="col-lg-2 control-label"> Aspek </label>
 								<div class="col-lg-7">
 									<input name="txtAspek" class="form-control" value="<?php echo $gb['aspek']; ?>">

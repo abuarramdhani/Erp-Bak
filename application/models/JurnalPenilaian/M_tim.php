@@ -9,29 +9,24 @@ class M_tim extends CI_Model {
 
 	// AMBIL 
 	public function GetTIM($idTIM=FALSE)
-	{	
-		if ($idTIM==FALSE) {
-			$id='';
-		}else{
-			$id="where id_tim_dtl='$idTIM'";
+	{
+		$this->db->select('*');
+		$this->db->from('pk.pk_tim_dtl');
+
+		if(!($idTIM === FALSE))
+		{
+			$this->db->where('id_tim_dtl', $idTIM);
 		}
-		$sql="	select	*
-				from	pk.pk_tim_dtl
-				where ttberlaku='9999-12-31'
-				$id";
-		$query= $this->db->query($sql);
-		return $query->result_array();
+
+		$this->db->order_by('nilai', 'desc');
+
+		return $this->db->get()->result_array();
 	}
 
 	// ADD MASTER DATA 
-	public function AddMaster($date, $btsA, $btsB, $nilai)
+	public function AddMaster($inputTIM)
 	{
-		$sql="insert into pk.pk_tim_dtl
-				(bts_ats,bts_bwh,nilai,tberlaku,ttberlaku)
-				values ('$btsA','$btsB', '$nilai' ,TO_DATE('$date', 'YYYY/MM/DD') , '9999-12-31')";
-		$query= $this->db->query($sql);
-		$insert_id = $this->db->insert_id();
-		return  $insert_id;
+		$this->db->insert('pk.pk_tim_dtl', $inputTIM);
 	}
 
 	// // DELETE
@@ -42,19 +37,9 @@ class M_tim extends CI_Model {
 	}
 
 	// // UPDATE 
-	public function Update($date, $btsA, $btsB, $nilai, $idTIM)
+	public function Update($updateTIM, $idTIM)
 	{
-		$sql1="	update	pk.pk_tim_dtl
-				set		ttberlaku = '$date'
-				where 	id_tim_dtl='$idTIM'";
-		$sql2=" insert into pk.pk_tim_dtl
-				(bts_ats,bts_bwh,nilai,tberlaku,ttberlaku)
-				values ('$btsA','$btsA', '$nilai' ,TO_DATE('$date', 'YYYY/MM/DD'), '9999-12-31')";
-		$query1= $this->db->query($sql1);
-		$query2= $this->db->query($sql2);
+		$this->db->where('id_tim_dtl=', $idTIM);
+		$this->db->update('pk.pk_tim_dtl', $updateTIM);
 	}
-
-//--------------------------------JAVASCRIPT RELATED--------------------------//	
-
-
 }

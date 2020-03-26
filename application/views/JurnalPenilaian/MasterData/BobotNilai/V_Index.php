@@ -34,38 +34,36 @@
 					</div>
 					<div class="box-body">
 
-						<div class="table-responsive" style="overflow:hidden;">
-							<table class="table table-striped table-bordered table-hover text-left" id="master-index" style="font-size:14px;">
+						<div style="overflow:hidden;">
+							<table class="table table-striped table-bordered table-hover text-left" id="JurnalPenilaian-masterBobot" style="width:100%;">
 								<thead class="bg-primary">
 									<tr>
-										<th width="5%">NO</th>
-										<th width="20%">Aspek</th>
-										<th width="5%">Bobot Nilai</th>
-										<th >Deskripsi</th>
-										<th width="15%">Tanggal Berlaku</th>
-										<th width="15%">Tanggal Tidak Berlaku</th>
-										<th width="15%">Action</th>
+										<th width="5%" class="text-center">No.</th>
+										<th width="20%" class="text-center">Aspek</th>
+										<th width="5%" class="text-center">Bobot</th>
+										<th  class="text-center">Deskripsi</th>
+										<th width="15%" class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-								<?php foreach ($GetBobot as $gb) {
-									$number;
+								<?php 
+									$total = 0;
+									$number 	=	1;
+									foreach ($GetBobot as $gb) 
+									{
+										$total = $total + (float)$gb['bobot'];
 								?>
 									<tr>
-										<td><?php echo $number++ ?></td>
+										<td align="center"><?php echo $number++ ?>
 											<input type="text" name="txtIdBobot" value="<?php echo $gb['id_bobot']; ?>" hidden>
-										<td><?php echo $gb['aspek']; ?>
-										<td><?php echo $gb['bobot']; ?></td>
-										<td><?php echo $gb['description']; ?></td>
-										<td><?php echo $gb['tberlaku']; ?></td>
-										<td style="color: red"><?php echo $gb['ttberlaku']; ?></td>
-										<td>
-											<a href="<?php echo site_url('PenilaianKinerja/MasterBobot/view/'.$gb['id_bobot']);?>" class="btn btn-flat btn-sm btn-success" title="Lihat Data"><i class="fa fa-search"></i></a>
-											&nbsp;&nbsp;
-											<a href="<?php echo site_url('PenilaianKinerja/MasterBobot/edit/'.$gb['id_bobot']);?>" class="btn btn-flat btn-sm  btn-warning" title="Edit data"><i class="fa fa-edit"></i></a>
-											&nbsp;&nbsp;
-											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gb['id_bobot'] ?>" class="btn btn-flat btn-sm  btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
-											&nbsp;&nbsp;
+										</td>
+										<td align="left"><?php echo $gb['aspek']; ?>
+										<td align="center"><?php echo $gb['bobot']; ?></td>
+										<td align="left"><?php echo $gb['description']; ?></td>
+										<td align="center">
+											<!-- <a href="<?php echo site_url('PenilaianKinerja/MasterBobot/view/'.$gb['id_bobot']);?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a> -->
+											<a href="<?php echo site_url('PenilaianKinerja/MasterBobot/edit/'.$gb['id_bobot']);?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-edit"></span></a>
+											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gb['id_bobot'] ?>" class="btn btn-xs btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
 										</td>
 									</tr>
 									<div class="modal fade modal-danger" id="<?php echo 'deletealert'.$gb['id_bobot'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -89,7 +87,14 @@
 										</div>
 									</div>
 									<?php } ?>
-								</tbody>																			
+								</tbody>	
+								<tfoot>
+									<tr>
+										<th colspan="2">Total Bobot Nilai</th>
+										<th style="text-align: center; vertical-align: middle;"><?php echo $total; ?></th>
+										<th colspan="2">&nbsp;</th>
+									</tr>
+								</tfoot>																		
 							</table>
 						</div>
 					</div>
