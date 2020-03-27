@@ -716,3 +716,25 @@ $efg="";
 			'failover' => array(),
 			'save_queries' => TRUE,
 		);
+		$db['mysql_pendataan'] = array(
+        	'dsn'	=> '',
+        	'hostname' => '182.23.18.194',
+        	'username' => 'dl',
+        	'password' => 'qu1ck',
+        	'database' => 'pendataan',
+        	'dbdriver' => 'mysqli',
+        	'dbprefix' => '',
+        	'pconnect' => FALSE,
+        	'db_debug' => TRUE,
+        	'cache_on' => FALSE,
+        	'cachedir' => '',
+        	'char_set' => 'utf8',
+        	'dbcollat' => 'utf8_general_ci',
+        	'swap_pre' => '',
+        	'encrypt' => FALSE,
+        	'compress' => FALSE,
+        	'stricton' => FALSE,
+        	'failover' => array(),
+        	'save_queries' => TRUE,
+        	'port' => 3306
+        );
