@@ -1,3 +1,22 @@
+
+var tanggal = new Date();
+var d= tanggal.getDate();
+var m= tanggal.getMonth()+1;
+var y= tanggal.getFullYear();
+
+
+$('#tblDataresikoPribadiMP').DataTable({
+  dom: 'Bfrtip',
+  buttons: [
+    {extend:'excel',title:'Data Resiko Pribadi-'+d+'-'+m+'-'+y}],
+  scrollY: "370px",
+  scrollX: true,
+  scrollCollapse: true,
+  fixedColumns: {
+    leftColumns: 3
+}
+});
+
 $('#tableseksi').DataTable({
     dom: 'Bfrtip',
     buttons: ['excel', 'pdf']

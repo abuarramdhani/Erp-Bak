@@ -1946,6 +1946,9 @@ $route['MasterPekerja/LaporanKunjungan']               				=   'MasterPekerja/Re
 $route['MasterPekerja/LaporanKunjungan/(:any)']               		=   'MasterPekerja/Rekap/C_Rekap/$1';
 $route['MasterPekerja/LaporanKunjungan/(:any)/(:any)']              =   'MasterPekerja/Rekap/C_Rekap/$1/$2';
 
+//--------------------------------Quesioner-----------------------------------------------------
+$route['MasterPekerja/Quesioner/(:any)'] = 'MasterPekerja/Quesioner/C_Quesioner/$1';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
