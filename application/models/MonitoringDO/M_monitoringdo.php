@@ -15,6 +15,17 @@ class M_monitoringdo extends CI_Model
       return $this->session->datasubinven;
     }
 
+    public function petugas($data)
+    {
+      $response = $this->db->select('employee_code')
+                           ->where('resign', '0')
+                           ->like('employee_code', $data, 'after')
+                           ->get('er.er_employee_all')
+                           ->result_array();
+      return $response;
+    }
+
+
     public function updatePlatnumber($data, $rm, $hi)
     {
         $sql = "UPDATE KHS_PERSON_DELIVERY SET PLAT_NUMBER = '$data[PLAT_NUMBER]', DELIVERY_FLAG = '$data[DELIVERY_FLAG]' WHERE REQUEST_NUMBER = '$rm' AND HEADER_ID = '$hi'";
@@ -1097,19 +1108,20 @@ class M_monitoringdo extends CI_Model
                 if (!empty($data['PERSON_ID'])) {
                     if (!empty($data['DELIVERY_FLAG'])) {
                         if (!empty($data['PLAT_NUMBER'])) {
-                            $response = $this->oracle->query("INSERT INTO KHS_PERSON_DELIVERY(HEADER_ID
+                            $this->oracle->query("INSERT INTO KHS_PERSON_DELIVERY(HEADER_ID
                                              ,REQUEST_NUMBER
                                              ,PERSON_ID
                                              ,DELIVERY_FLAG
                                              ,PLAT_NUMBER
                                              )
-              VALUES ('$data[HEADER_ID]'
-                     ,'$data[REQUEST_NUMBER]'
-                     ,'$data[PERSON_ID]'
-                     ,'$data[DELIVERY_FLAG]'
-                     ,'$data[PLAT_NUMBER]'
-                     )
-              ");
+                            VALUES ('$data[HEADER_ID]'
+                                   ,'$data[REQUEST_NUMBER]'
+                                   ,'$data[PERSON_ID]'
+                                   ,'$data[DELIVERY_FLAG]'
+                                   ,'$data[PLAT_NUMBER]'
+                                   )
+                            ");
+                            $response = 'suksesinput';
                         } else {
                             $response = array(
                   'success' => false,
