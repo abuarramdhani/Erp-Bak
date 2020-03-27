@@ -21,7 +21,7 @@
 
 		<div class="row">
 			<section class="col-lg-12 connectedSortable">
-				<?php if(!empty($result)){ ?>
+				<?php if(!empty($result) && !empty($_SESSION['notif'])){ ?>
 					<?php if($result == 1): ?>
 						<div class="callout callout-success">
 							<h4>Sukses!</h4>
@@ -45,7 +45,7 @@
 						</div>
 					<?php endif; ?>
 				<?php } ?>
-
+				<?php if(empty($_SESSION['review'])): ?>
 				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/Pusat/C_splseksi/new_spl_submit'); ?>" method="post" enctype="multipart/form-data">
 					<div class="box box-primary">
 						<div class="box-header">
@@ -214,7 +214,7 @@
 															<input type="text" class="form-control" name="overtime" disabled>
 														</td>
 														<td>
-															<input type="number" class="form-control" name="target[0][]" required>
+															<input type="number" min="1" class="form-control" name="target[0][]" required>
 														</td>
 														<td>
 															<select class="form-control target-satuan" name="target_satuan[0][]" required>
@@ -229,7 +229,7 @@
 															</select>
 														</td>
 														<td>
-															<input type="number" class="form-control" name="realisasi[0][]" required>
+															<input type="number" min="1" class="form-control" name="realisasi[0][]" required>
 														</td>
 														<td>
 															<input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[0][]" readonly>
@@ -245,7 +245,6 @@
 											</table>
 										</div>
 									</div>
-
 									<div class="form-group">
 										<div class="col-sm-12 pull-left">
 											<button type="reset" style="margin-right:3px" class="btn btn-primary" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
@@ -253,14 +252,50 @@
 											<a href="<?=base_url('SPL/Pusat')?>" class="btn btn-warning"> <i class="fa fa-arrow-circle-left"></i> Kembali</a>
 										</div>
 									</div>
-
 								</div>
-
 							</div>
 						</div>
 					</div>
 				</form>
-
+				<?php else: ?>
+					<div class="table-responsive">
+						<table class="table table-responsive table-bordered table-striped text-center">
+							<thead style="background:#3c8dbc; color:#fff">
+								<tr style="border: 0px solid white;">
+									<th>No</th>
+									<th>Noind</th>
+									<th>Nama</th>
+									<th>Tanggal Shift</th>
+									<th>Jenis</th>
+									<th>Awal</th>
+									<th>Akhir</th>
+									<th>Break</th>
+									<th>Istirahat</th>
+									<th>Estimasi Jam Lembur</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php $i=1; foreach($_SESSION['review'] as $item): ?>
+									<tr>
+										<td><?= $i++ ?></td>
+										<td><?= $item['noind'] ?></td>
+										<td><?= $item['nama'] ?></td>
+										<td><?= $item['tanggal_shift'] ?></td>
+										<td><?= $item['lembur'] ?></td>
+										<td><?= date('d-m-Y', strtotime($item['tanggal']))." ".$item['awal'] ?></td>
+										<td><?= (strtotime($item['awal']) > strtotime($item['akhir'])) ? date('d-m-Y', strtotime('+1 day '.$item['tanggal']))." ".$item['akhir'] : date('d-m-Y', strtotime($item['tanggal']))." ".$item['akhir'] ?></td>
+										<td><?= $item['break'] ?></td>
+										<td><?= $item['istirahat'] ?></td>
+										<td><?= $item['jam_lembur'] ?></td>
+									</tr>
+								<?php endforeach ?>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-lg-12 text-center">
+						<a class="btn btn-success" href="<?= base_url('SPL/Pusat/InputLembur') ?>"><i class="fa fa-arrow-circle-left"></i> Kembali</a>
+					</div>
+				<?php endif ?>
 			</section>
 		</div>
 	</div>

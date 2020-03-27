@@ -604,7 +604,13 @@ class M_splseksi extends CI_Model{
 
 	public function getKeteranganJamLembur($noind){
 		$sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind = '$noind'";
-		$a = $this->prs->query($sql)->row()->kodesie;
+		$a = $this->prs->query($sql);
+
+		if($a->num_rows() > 0) {
+			$a = $a->row()->kodesie;
+		} else {
+			return 'UMUM';
+		}
 
 		if($a == '401010102' || $a == '401010102'){
 			return 'SATPAM';
@@ -633,7 +639,7 @@ class M_splseksi extends CI_Model{
 
 	public function treffjamlembur($KET, $JENIS_HARI, $HARI){
 		$sql = "SELECT * FROM presensi.treffjamlembur WHERE keterangan='$KET' AND jenis_hari='$JENIS_HARI' AND hari='$HARI' order by urutan asc";
-		return $this->sql->query($sql)->result_array();
+		return $this->spl->query($sql)->result_array();
 	}
 
 	// DELETE ME: mungkin tidak digunakan
@@ -645,7 +651,7 @@ class M_splseksi extends CI_Model{
 
 	public function selectShift($noind, $tanggal){
 		$tanggal = date('Y-m-d', strtotime($tanggal));
-		$sql = "SELECT jam_msk, jam_plg, break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
+		$sql = "SELECT tanggal, jam_msk, jam_plg, break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		return $this->prs->query($sql)->row();
 	}
 
@@ -656,9 +662,32 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->result_array();
 	}
 
-	function getAbsensi($noind, $tanggal) {
-		$sql = "SELECT * FROM \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal' order by waktu asc";
-		$result = $this->prs->query($sql);
+	function getAbsensi($noind, $tanggal1, $tanggal2) {
+		// flow
+		// jika tanggal1 & tanggal 2 berbeda
+			// cek shift $masuuk =  max(tanggal1) & $pulang = shift min(tanggal2)
+		// else
+			// cek shift $masuk = min(tanggal1) & $pulang = shift max(tanggal1) 
+		if($tanggal1 == $tanggal2) {
+			$tglKemarin = date('Y-m-d', strtotime('-1 day '.$tanggal1));
+			$selectAbsenPulangKemarin = "SELECT keluar from \"Presensi\".tdatapresensi where noind='$noind' and tanggal='$tglKemarin'";
+			
+			$execute = $this->prs->query($selectAbsenPulangKemarin);
+			$tommorow = '';
+			if($execute->num_rows() > 0) {
+				$tommorow = "AND waktu <> '{$execute->row()->keluar}' ";
+			}
+
+			$sql = "SELECT min(waktu) as in, max(waktu) as out, count(*) as jumlah from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal1' $tommorow;";	
+			
+			$result = $this->prs->query($sql);
+		} else { // beda hari
+			$sql = "SELECT 
+						(select concat('$tanggal1',' ', max(waktu)) from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal1') as in,
+						(select concat('$tanggal2',' ', min(waktu)) from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal2') as out;";
+			$result = $this->prs->query($sql);
+		}
+
 		return $result;
 	}
 
@@ -698,7 +727,12 @@ class M_splseksi extends CI_Model{
 	}
 
 	function getNoindBaru($noind) {
-		$sql = "SELECT distinct noind_baru from hrd_khs.tpribadi where noind = '$noind'";
+		$sql = "SELECT distinct noind_baru from hrd_khs.tpribadi where noind = '$noind' limit 1";
 		return $this->prs->query($sql)->row()->noind_baru;
+	}
+	
+	function getNameByNoind($noind) {
+		$sql = "SELECT distinct nama from hrd_khs.tpribadi where noind = '$noind' limit 1";
+		return $this->prs->query($sql)->row()->nama;
 	}
 }
