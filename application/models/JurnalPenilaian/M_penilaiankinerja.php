@@ -263,7 +263,7 @@ class M_penilaiankinerja extends CI_Model
 									,0
 								) as total_hari_sk,
 								(
-									select 	sum(sk.status_bulan_sk)
+									select 	COALESCE(sum(sk.status_bulan_sk),0)
 									from 	(
 												select		tbltgl.tanggal_awal,
 															tbltgl.tanggal_akhir,
