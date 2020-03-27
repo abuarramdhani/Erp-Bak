@@ -198,7 +198,7 @@
 							<div class="col-lg-12">
 								<div class="box box-primary box-solid box-default" id="evaluasi-x">
 									<div class="box-header with-border">
-										<span>Input Nilai Pekerja Golongan <b><?php echo $golonganKerja['golkerja'];?></b></span>
+										<span>Input Nilai Pekerja Golongan <b>-</b></span>
 										<div class="box-tools pull-right">
 											<button type="button" class="btn btn-box-tool" data-widget="collapse">
 												<i class="fa fa-plus"></i>
