@@ -72,7 +72,7 @@ function approveMD() {
         },
         success: function(result) {
           // console.log(result);
-          if (result != '') {
+          if (result == 'suksesinput') {
             Swal.fire({
               position: 'middle',
               type: 'success',
@@ -80,10 +80,18 @@ function approveMD() {
               showConfirmButton: false,
               timer: 1500
             }).then(function() {
-              $('tr[row-id="' + rowID + '"] input[name="person_id"]').attr('disabled', true);
+              $('tr[row-id="' + rowID + '"] select[name="person_id"]').attr('disabled', true);
               $('tr[row-id="' + rowID + '"] button[name="buttondetail"]').attr('disabled', true);
               $('tr[row-id="' + rowID + '"]').removeAttr("style");
               $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
+            })
+          }else {
+            Swal.fire({
+              position: 'middle',
+              type: 'danger',
+              title: 'Failed..!!!',
+              showConfirmButton: false,
+              timer: 1500
             })
           }
         },
@@ -119,21 +127,31 @@ function approveMD() {
             },
             success: function(result) {
               console.log(result);
-              Swal.fire({
-                position: 'middle',
-                type: 'success',
-                title: 'Success inserting data',
-                showConfirmButton: false,
-                timer: 1500
-              }).then(function() {
-                $('#MyModal2').modal('hide')
-              })
+              if (result == 'suksesinput') {
+                Swal.fire({
+                  position: 'middle',
+                  type: 'success',
+                  title: 'Success inserting data',
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then(function() {
+                  $('#MyModal2').modal('hide')
+                })
+              }else {
+                Swal.fire({
+                  position: 'middle',
+                  type: 'danger',
+                  title: 'Failed..!!!',
+                  showConfirmButton: false,
+                  timer: 1200
+                })
+              }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.error();
             }
           }).then(function() {
-              $('tr[row-id="' + rowID + '"] input[name="person_id"]').attr('disabled', true);
+              $('tr[row-id="' + rowID + '"] select[name="person_id"]').attr('disabled', true);
               $('tr[row-id="' + rowID + '"] button[name="buttondetail"]').attr('disabled', true);
               $('tr[row-id="' + rowID + '"]').removeAttr("style");
               $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
@@ -383,7 +401,7 @@ ajax1 = $.ajax({
 
 //punya dodo0
 function detail(rm, id_header, rowID, order_number, plat_number) {
-  var personid = $('tr[row-id="' + rowID + '"] input[name="person_id"]').val();
+  var personid = $('tr[row-id="' + rowID + '"] select[name="person_id"]').val();
 
   $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetDetail',

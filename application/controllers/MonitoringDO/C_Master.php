@@ -37,6 +37,12 @@ class C_Master extends CI_Controller
         }
     }
 
+    public function petugas()
+    {
+      $term = strtoupper($this->input->post('term'));
+      echo json_encode($this->M_monitoringdo->petugas($term));
+    }
+
     //------------------------show the dashboard-----------------------------
     public function index()
     {
@@ -579,7 +585,7 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-        
+
         $cekaja = $this->M_monitoringdo->cekapi();
         echo "<pre>";
         print_r($cekaja);

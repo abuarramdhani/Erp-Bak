@@ -36,7 +36,8 @@
          <td>
            <center>
              <div class="form-group">
-               <input class="form-control uppercaseDO" type="text" id="person_id" name="person_id" placeholder="Assign">
+                 <select class="form-control uppercaseDO select2MonitoringDO" id="person_id" name="person_id"></select>
+               <!-- <input class="form-control uppercaseDO select2MonitoringDO" type="text" id="person_id" name="person_id" placeholder="Assign"> -->
              </div>
            </center>
          </td>
@@ -50,4 +51,32 @@
 </div>
 <script type="text/javascript">
  $('#tblMonitoringDO').DataTable();
+
+ $(document).ready(function() {
+ $('.select2MonitoringDO').select2({
+   minimumInputLength: 2,
+   placeholder: "Pilih Petugas",
+   ajax: {
+     url: baseurl + "MonitoringDO/SettingDO/petugas",
+     dataType: "JSON",
+     type: "POST",
+     data: function (params) {
+       return {
+         term: params.term
+       };
+     },
+     processResults: function (data) {
+       return {
+         results: $.map(data, function (obj) {
+           return {
+             id: obj.employee_code,
+             text: obj.employee_code
+           }
+         })
+       }
+     }
+   }
+ })
+})
+
 </script>
