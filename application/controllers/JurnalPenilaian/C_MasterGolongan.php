@@ -40,8 +40,8 @@ class C_MasterGolongan extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Data';
+		$data['SubMenuOne'] = 'Golongan';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -64,7 +64,7 @@ class C_MasterGolongan extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Golongan';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -102,7 +102,7 @@ class C_MasterGolongan extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Golongan';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -128,7 +128,7 @@ class C_MasterGolongan extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Golongan';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

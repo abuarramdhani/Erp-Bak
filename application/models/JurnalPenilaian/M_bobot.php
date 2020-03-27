@@ -9,50 +9,60 @@ class M_bobot extends CI_Model {
 
 	// AMBIL BOBOT
 	public function GetBobot($idBobot=FALSE)
-	{	
-		if ($idBobot==FALSE) {
-			$id='';
-		}else{
-			$id="and id_bobot='$idBobot'";
+	{
+		$this->db->select('*');
+		$this->db->from('pk.pk_bobot');
+
+		if(!($idBobot === FALSE))
+		{
+			$this->db->where('id_bobot', $idBobot);
 		}
-		$sql="	select	*
-				from	pk.pk_bobot
-				where ttberlaku='9999-12-31'
-				$id";
-		$query= $this->db->query($sql);
-		return $query->result_array();
+
+		$this->db->order_by('bobot', 'desc');
+
+		return $this->db->get()->result_array();
 	}
 
 	// ADD MASTER DATA GOLONGAN
-	public function AddMaster($date, $aspek, $bobot, $desc)
+	public function AddMaster($inputBobot)
 	{
-		$sql="insert into pk.pk_bobot
-				(aspek,bobot,description,tberlaku,ttberlaku)
-				values ('$aspek','$bobot','$desc', TO_DATE('$date', 'YYYY/MM/DD') , '9999-12-31')";
-		// return $sql;
-		$query= $this->db->query($sql);
-		$insert_id = $this->db->insert_id();
-		return  $insert_id;
+		$this->db->insert('pk.pk_bobot', $inputBobot);
 	}
 
 	// DELETE
 	public function DeleteBobot($idBobot)
 	{
-		$this->db->where('id_bobot', $idBobot);
+		$this->db->where('id_bobot=', $idBobot);
         $this->db->delete('pk.pk_bobot');
 	}
 
 	// UPDATE GOLONGAN
-	public function Update($date, $aspek, $bobot, $desc, $idBobot)
+	public function Update($updateBobot, $idBobot)
 	{
-		$sql1="	update	pk.pk_bobot
-				set		ttberlaku = '$date'
-				where 	id_bobot='$idBobot'";
-		$sql2=" insert into pk.pk_bobot
-				(aspek,bobot,description,tberlaku,ttberlaku)
-				values ('$aspek','$bobot','$desc', TO_DATE('$date', 'YYYY/MM/DD'), '9999-12-31')";
-		$query1= $this->db->query($sql1);
-		$query2= $this->db->query($sql2);
+		// $sql1="	update	pk.pk_bobot
+		// 		set		bobot
+		// 		where 	id_bobot='$idBobot'";
+		// $query1= $this->db->query($sql1);
+		$this->db->where('id_bobot=', $idBobot);
+		$this->db->update('pk.pk_bobot', $updateBobot);
+	}
+
+	public function createColum($real,$konversi)
+	{
+		$sql = "	ALTER TABLE 	pk.pk_assessment ADD column $real float4,ADD column $konversi float4;
+					ALTER TABLE 	pk.pk_assessment_history ADD column $real float4,ADD column $konversi float4;";
+		$query = $this->db->query($sql);
+	}
+
+	public function dropColum($real,$konversi){
+		$sql = "	ALTER TABLE pk.pk_assessment DROP column $real,DROP column $konversi; 
+					ALTER TABLE pk.pk_assessment_history DROP column $real,DROP column $konversi;";
+		$query = $this->db->query($sql);
+	}
+
+	public function get_bobot_by_id($idBobot){
+		$this->db->where('id_bobot=',$idBobot);
+		return $this->db->get('pk.pk_bobot')->row();
 	}
 
 //--------------------------------JAVASCRIPT RELATED--------------------------//	

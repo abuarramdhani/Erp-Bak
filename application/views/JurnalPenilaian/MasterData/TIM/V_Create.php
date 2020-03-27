@@ -34,19 +34,9 @@
 					<form method="post" action="<?php echo base_url('PenilaianKinerja/MasterTIM/add')?>">
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-2 control-label">Periode</label>
-								<div class="col-lg-3">
-									<input class="form-control singledatePK" name="txtDate" placeholder="Tanggal" required >
-								</div>
-							</div>
-						</div>
-						
-						<hr>
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
 								<label class="col-lg-2 control-label"> Batas Atas </label>
 								<div class="col-lg-7">
-									<input name="txtbts_A" class="form-control">
+									<input type="number" step="0.1" min="0" name="txtbts_A" class="form-control">
 								</div>
 							</div>
 						</div>
@@ -54,7 +44,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label"> Batas Bawah </label>
 								<div class="col-lg-7">
-									<input name="txtbts_B" class="form-control">
+									<input type="number" step="0.1" min="0" name="txtbts_B" class="form-control">
 								</div>
 							</div>
 						</div>
@@ -62,7 +52,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label"> Nilai </label>
 								<div class="col-lg-7">
-									<input name="txtNilai" class="form-control">
+									<input type="number" name="txtNilai" class="form-control" min="0" step="1">
 								</div>
 							</div>
 						</div>

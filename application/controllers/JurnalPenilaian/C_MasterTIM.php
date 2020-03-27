@@ -13,6 +13,7 @@ class C_MasterTIM extends CI_Controller {
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
+		$this->load->library('General');
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('JurnalPenilaian/M_tim');
@@ -40,8 +41,8 @@ class C_MasterTIM extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Data';
+		$data['SubMenuOne'] = 'TIM';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -50,12 +51,6 @@ class C_MasterTIM extends CI_Controller {
 		
 		$data['number'] = 1;
 		$data['GetTIM'] 		= $this->M_tim->GetTIM();
-		$idTIM				= $this->input->post('txtIdTIM');
-		// echo "<pre>";
-		// var_dump($_POST);
-		// print_r($data);
-		// echo "</pre>";
-		// exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('JurnalPenilaian/MasterData/TIM/V_Index',$data);
@@ -69,7 +64,7 @@ class C_MasterTIM extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'TIM';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -85,12 +80,19 @@ class C_MasterTIM extends CI_Controller {
 	// ADD 
 	public function add()
 	{
-		$date 		= $this->input->post('txtDate');
 		$btsA 		= $this->input->post('txtbts_A');
 		$btsB 		= $this->input->post('txtbts_B');
 		$nilai 		= $this->input->post('txtNilai');
 
-		$insertId = $this->M_tim->AddMaster($date, $btsA, $btsB, $nilai);
+		$inputTIM 	=	array(
+							'bts_bwh'				=>	$btsB,
+							'bts_ats'				=>	$btsA,
+							'nilai'					=>	$nilai,
+							'last_update_timestamp'	=>	$this->general->ambilWaktuEksekusi(),
+							'creation_timestamp'	=>	$this->general->ambilWaktuEksekusi(),
+						);
+
+		$insertId = $this->M_tim->AddMaster($inputTIM);
 		redirect('PenilaianKinerja/MasterTIM');
 	}
 
@@ -108,7 +110,7 @@ class C_MasterTIM extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'TIM';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -130,7 +132,7 @@ class C_MasterTIM extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'TIM';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -149,12 +151,18 @@ class C_MasterTIM extends CI_Controller {
 	public function update($idTIM)
 	{
 		$idTIM		= $this->input->post('txtIdTIM');
-		$date 		= $this->input->post('txtDate');
 		$btsA 		= $this->input->post('txtbts_A');
 		$btsB 		= $this->input->post('txtbts_B');
 		$nilai 		= $this->input->post('txtNilai');
 
-		$this->M_tim->Update($date, $btsA, $btsB, $nilai, $idTIM);
+		$updateTIM 	=	array(
+							'bts_bwh'				=>	$btsB,
+							'bts_ats'				=>	$btsA,
+							'nilai'					=>	$nilai,
+							'last_update_timestamp'	=>	$this->general->ambilWaktuEksekusi(),
+						);
+
+		$this->M_tim->Update($updateTIM, $idTIM);
 		redirect('PenilaianKinerja/MasterTIM');
 	}
 //----------------------------------- JAVASCRIPT RELATED --------------------//

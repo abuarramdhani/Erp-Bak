@@ -13,6 +13,7 @@ class C_MasterUnitGroup extends CI_Controller {
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
+		$this->load->library('General');
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('JurnalPenilaian/M_unitgroup');
@@ -24,6 +25,8 @@ class C_MasterUnitGroup extends CI_Controller {
 				  //redirect('index');
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
+
+		date_default_timezone_set('Asia/Jakarta');
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
 	
@@ -35,125 +38,158 @@ class C_MasterUnitGroup extends CI_Controller {
 		}
 	}
 
-	//HALAMAN INDEX
 	public function index(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Distribution';
+		$data['SubMenuOne'] = 'Master Unit Group';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
-		$data['number'] = 1;
-		$data['GetUnitGroup'] 		= $this->M_unitgroup->GetUnitGroup();
-		$idUnit						= $this->input->post('txtIdUnit');
-		echo "<pre>";
-		// var_dump($_POST);
-		print_r($data['GetUnitGroup']);
-		echo "</pre>";
-		exit();
+
+		$data['namaUnitGroup'] 		= 	$this->M_unitgroup->ambilNamaUnitGroup();
+		$data['seksiUnitGroup'] 	= 	$this->M_unitgroup->ambilSeksiUnitGroup();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('JurnalPenilaian/MasterDistribution/MasterUserGroup/V_Index',$data);
-		$this->load->view('V_Footer',$data);
-		
-	}
-
-	//HALAMAN CREATE
-	public function create(){
-		$this->checkSession();
-		$user_id = $this->session->userid;
-		
-		$data['Menu'] = 'Create';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('JurnalPenilaian/MasterDistribution/MasterUserGroup/V_Create',$data);
 		$this->load->view('V_Footer',$data);	
 	}
 
-	// ADD 
-	public function add()
+	public function modification()
 	{
-		$unit 		= $this->input->post('txtUnitGroup');
+		$namaUnitGroup 		= 	$this->input->post('txtnamaUnitGroup');
+		$seksiUnitGroup 	= 	$this->input->post('cmbseksiUnitGroup');
+		$idUnitGroup 		= 	$this->input->post('idUnitGroup');
 
-		$insertId = $this->M_unitgroup->AddMaster($unit);
+		$jumlahNamaUnitGroup	= 	count($namaUnitGroup);
+		$jumlahIDUnitGroup 		= 	count($idUnitGroup);
+
+
+
+		for ($i=0; $i < $jumlahNamaUnitGroup; $i++) 
+		{ 
+			$namaUnitGroup[$i] 	= 	filter_var(strtoupper($namaUnitGroup[$i]), FILTER_SANITIZE_STRING);
+		}
+
+
+		for($j = 0; $j < $jumlahNamaUnitGroup; $j++)
+		{
+			if($idUnitGroup[$j]=='-')
+			{
+				// Jika value ID Unit Group adalah '-', maka unit group tersebut merupakan data baru. (CREATE)
+				$dataNamaUnitGroup 	= 	array(
+											'unit_group' 			=> 	$namaUnitGroup[$j],
+											'creation_timestamp'		=>	$this->general->ambilWaktuEksekusi(),
+											'last_action_timestamp'	=>	$this->general->ambilWaktuEksekusi()
+										);
+				$idDBUnitGroup 		= 	$this->M_unitgroup->tambahNamaUnitGroup($dataNamaUnitGroup);
+
+				$jumlahSeksiUnitGroup 	= 	count($seksiUnitGroup[$j]);
+				for($k = 0; $k < $jumlahSeksiUnitGroup; $k++)
+				{
+					$Seksi 	= 	explode(' = ', $seksiUnitGroup[$j][$k]);
+
+					$kodesie 	= 	$Seksi[0];
+					$namaSeksi 	= 	$Seksi[1];
+
+					$dataSeksiUnitGroup 	= 	array(
+													'id_unit_group' 		=> 	$idDBUnitGroup,
+													'kodesie' 				=>	$kodesie,
+													'seksi' 				=>	$namaSeksi,
+													'creation_timestamp'		=>	$this->general->ambilWaktuEksekusi(),
+													'last_action_timestamp'	=>	$this->general->ambilWaktuEksekusi()													
+												);
+					$idSeksiDBUnitGroup 	= 	$this->M_unitgroup->tambahSeksiUnitGroup($dataSeksiUnitGroup);
+				}
+			}
+			else
+			{
+				// Jika value ID Unit Group bukan '-', maka unit group tersebut merupakan data baru. (UPDATE)
+				$dataNamaUnitGroup 	= 	array(
+											'unit_group'			=>	$namaUnitGroup[$j],
+											'last_action_timestamp'	=>	$this->general->ambilWaktuEksekusi()
+										);
+				$this->M_unitgroup->updateNamaUnitGroup($dataNamaUnitGroup, $idUnitGroup[$j]);
+				$idDBUnitGroup 		=	$idUnitGroup[$j];
+
+				$jumlahSeksiUnitGroup 	= 	count($seksiUnitGroup[$j]);
+				$kodesie 	=	'';
+				for($m = 0; $m < $jumlahSeksiUnitGroup; $m++)
+				{
+					$Seksi 		= 	explode(' = ', $seksiUnitGroup[$j][$m]);
+					$kodesie	.= 	"'".$Seksi[0]."'";
+
+					if($m<($jumlahSeksiUnitGroup-1))
+					{
+						$kodesie 	.= ', ';
+					}
+
+				}
+				$this->M_unitgroup->hapusSeksiUnitGroup($idDBUnitGroup, $kodesie);
+
+				for($m = 0; $m < $jumlahSeksiUnitGroup; $m++)
+				{
+					$Seksi 		= 	explode(' = ', $seksiUnitGroup[$j][$m]);
+
+					$statusSeksiUnitGroup 	= 	$this->M_unitgroup->checkExistDataUnitGroup($Seksi[0], $idDBUnitGroup);
+					if($statusSeksiUnitGroup==0)
+					{
+						$kodesie 	=	$Seksi[0];
+						$namaSeksi	=	$Seksi[1];
+						$dataSeksiUnitGroup 	= 	array(
+														'id_unit_group'			=>	$idDBUnitGroup,
+														'kodesie'				=>	$kodesie,
+														'seksi'					=>	$namaSeksi,
+														'creation_timestamp'		=>	$this->general->ambilWaktuEksekusi()														
+													);
+						$this->M_unitgroup->tambahSeksiUnitGroup($dataSeksiUnitGroup, $idDBUnitGroup);
+					}
+				}
+
+			}
+			echo '<br/>';
+		}
 		redirect('PenilaianKinerja/MasterUnitGroup');
+
 	}
-	
-	// DELETE
-	public function delete($idUnit)
+
+	public function delete()
 	{	
-		$this->M_unitgroup->DeleteUnitGroup($idUnit);
+		$idUnitGroup 		=	$this->input->post('txtDeleteIDUnitGroup');
+		$dataDeleted 		=	$this->M_unitgroup->ambilDataUnitGroupDeleted($idUnitGroup);
+
+		foreach ($dataDeleted as $deleted) 
+		{
+			$dataHistory 		=	array(
+										'id_unit_group'			=> 	$deleted['id_unit_group'],
+										'unit_group'			=>	$deleted['unit_group'],
+										'last_action_timestamp'	=>	$deleted['last_action_timestamp'],
+										'creation_timestamp'		=>	$deleted['creation_timestamp'],
+										'deletion_timestamp'		=>	date('Y-m-d H:i:s')
+									);
+			$this->M_unitgroup->inputDataUnitGroupDeletedkeHistory($dataHistory);
+		}
+
+		$dataDeleted 		=	$this->M_unitgroup->ambilDataUnitGroupListDeleted($idUnitGroup);
+
+		foreach ($dataDeleted as $deleted) 
+		{
+			$dataHistory 		=	array(
+										'id_unit_group_list'	=>	$deleted['id_unit_group_list'],
+										'id_unit_group'			=> 	$deleted['id_unit_group'],
+										'kodesie'				=>	$deleted['kodesie'],
+										'seksi'					=>	$deleted['seksi'],
+										'last_action_timestamp'	=>	$deleted['last_action_timestamp'],
+										'creation_timestamp'		=>	$deleted['creation_timestamp'],
+										'deletion_timestamp'		=>	date('Y-m-d H:i:s')
+									);
+			$this->M_unitgroup->inputDataUnitGroupListDeletedkeHistory($dataHistory);
+		}
+		$this->M_unitgroup->deleteUnitGroup($idUnitGroup);
 		redirect('PenilaianKinerja/MasterUnitGroup');
-	}
-
-	// VIEW
-	public function view($idUnit)
-	{
-		$this->checkSession();
-		$user_id = $this->session->userid;
-		
-		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$data['GetUnitGroup'] 		= $this->M_unitgroup->GetUnitGroup($idUnit);
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('JurnalPenilaian/MasterDistribution/MasterUserGroup/V_View',$data);
-		$this->load->view('V_Footer',$data);	
-	}
-
-	// VIEW EDIT
-	public function edit($idUnit)
-	{
-		$this->checkSession();
-		$user_id = $this->session->userid;
-		
-		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$data['GetUnitGroup'] 		= $this->M_unitgroup->GetUnitGroup($idUnit);
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('JurnalPenilaian/MasterDistribution/MasterUserGroup/V_Edit',$data);
-		$this->load->view('V_Footer',$data);	
-	}
-
-	// SAVE EDIT
-	public function update($idTIM)
-	{	
-		$idUnit		= $this->input->post('txtIdUnit');
-		$unit 		= $this->input->post('txtUnitGroup');
-
-		$this->M_unitgroup->Update($idUnit,$unit);
-		redirect('PenilaianKinerja/MasterUnitGroup');
-	}
-//----------------------------------- JAVASCRIPT RELATED --------------------//
-//----------------------------------- JAVASCRIPT RELATED --------------------//
-	
-
-
+	}	
 }

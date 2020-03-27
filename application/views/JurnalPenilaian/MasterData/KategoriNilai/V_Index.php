@@ -34,34 +34,30 @@
 					</div>
 					<div class="box-body">
 
-						<div class="table-responsive" style="overflow:hidden;">
-							<table class="table table-striped table-bordered table-hover text-left" id="master-index" style="font-size:14px;">
+						<div style="overflow:hidden;">
+							<table class="table table-striped table-bordered table-hover text-left" id="JurnalPenilaian-masterKategoriNilai" style="font-size:12px;width:50%;">
 								<thead class="bg-primary">
 									<tr>
-										<th width="5%">NO</th>
-										<th width="20%">Kategori</th>
-										<th width="20%">Standar Nilai</th>
-										<th width="20%">Tanggal Berlaku</th>
-										<th width="20%">Tanggal Tidak Berlaku</th>
-										<th width="20%">Action</th>
+										<th width="5%" class="text-center">NO</th>
+										<th width="20%" class="text-center">Standar Nilai</th>
+										<th width="20%" class="text-center">Kategori</th>
+										<th width="20%" class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-								<?php foreach ($GetKatNil as $gk) { ?>
+								<?php 
+									foreach ($GetKatNil as $gk) 
+										{ 
+								?>
 									<tr>
-										<td><?php echo $number++ ?></td>
+										<td align="center"><?php echo $number++ ?></td>
 											<input type="text" name="txtIdKatNil" value="<?php echo $gk['id_kategori']; ?>" hidden>
-										<td><?php echo $gk['kategori']; ?></td>
-										<td><?php echo $gk['std_nilai']; ?></td>
-										<td><?php echo $gk['tberlaku']; ?></td>
-										<td style="color: red"><?php echo $gk['ttberlaku']; ?></td>
-										<td>
-											<a href="<?php echo site_url('PenilaianKinerja/MasterKategoriPenilaian/view/'.$gk['id_kategori']);?>" class="btn btn-flat btn-sm btn-success" title="Lihat Data"><i class="fa fa-search"></i></a>
-											&nbsp;&nbsp;
-											<a href="<?php echo site_url('PenilaianKinerja/MasterKategoriPenilaian/edit/'.$gk['id_kategori']);?>" class="btn btn-flat btn-sm  btn-warning" title="Edit data"><i class="fa fa-edit"></i></a>
-											&nbsp;&nbsp;
-											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gk['id_kategori'] ?>" class="btn btn-flat btn-sm  btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
-											&nbsp;&nbsp;
+										<td align="center"><?php echo $gk['std_nilai']; ?></td>
+										<td align="center"><?php echo $gk['kategori']; ?></td>
+										<td align="right">
+											<a href="<?php echo site_url('PenilaianKinerja/MasterKategoriPenilaian/view/'.$gk['id_kategori']);?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+											<a href="<?php echo site_url('PenilaianKinerja/MasterKategoriPenilaian/edit/'.$gk['id_kategori']);?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-edit"></span></a>
+											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gk['id_kategori'] ?>" class="btn btn-xs btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
 										</td>
 									</tr>
 									<div class="modal fade modal-danger" id="<?php echo 'deletealert'.$gk['id_kategori'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

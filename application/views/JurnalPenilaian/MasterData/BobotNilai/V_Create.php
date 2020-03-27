@@ -34,27 +34,25 @@
 					<form method="post" action="<?php echo base_url('PenilaianKinerja/MasterBobot/Add')?>">
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-2 control-label">Periode</label>
-								<div class="col-lg-3">
-									<input class="form-control singledatePK" name="txtDate" placeholder="Tanggal" required >
+								<label class="col-lg-2 control-label"> Aspek </label>
+								<div class="col-lg-4">
+									<input name="txtAspek" class="form-control" style="text-transform: uppercase;">
 								</div>
 							</div>
 						</div>
-						
-						<hr>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-2 control-label"> Aspek </label>
-								<div class="col-lg-7">
-									<input name="txtAspek" class="form-control">
+								<label class="col-lg-2 control-label"> Singkatan </label>
+								<div class="col-lg-2">
+									<input name="txtSingkatan" class="form-control" style="text-transform: lowercase;">
 								</div>
 							</div>
 						</div>
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label"> Bobot Nilai </label>
-								<div class="col-lg-7">
-									<input name="txtBobot" class="form-control" type="number">
+								<div class="col-lg-2">
+									<input name="txtBobot" class="form-control" type="number" step="0.1" min="0">
 								</div>
 							</div>
 						</div>
