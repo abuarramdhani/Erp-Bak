@@ -154,7 +154,7 @@ class M_limbahkelola extends CI_Model
                     (select trunc(sum(berat_kirim)::numeric, 3) from ga.ga_limbah_kirim where id_jenis_limbah = limkir.id_jenis_limbah and tanggal_kirim between '$start' and '$end') as berat_kirim
                 FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
                     on limkir.id_jenis_limbah = limjen.id_jenis_limbah
-                WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim between '$start' and '$end' $filterLimbah
+                WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah
                 ORDER BY jenis_limbah";
         } else {
             // detailed
