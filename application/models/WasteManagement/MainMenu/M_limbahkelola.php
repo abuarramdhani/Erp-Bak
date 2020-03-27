@@ -165,7 +165,7 @@ class M_limbahkelola extends CI_Model
                         trunc(limkir.berat_kirim::numeric, 3) as berat_kirim
                     FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
                             on limkir.id_jenis_limbah = limjen.id_jenis_limbah
-                    WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim between '$start' and '$end' $filterLimbah
+                    WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah
                     ORDER BY limkir.tanggal_kirim"; // 1 adalah yg sudah diapprove oleh waste management
         }
         return $this->db->query($sql)->result_array();
