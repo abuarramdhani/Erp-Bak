@@ -321,9 +321,9 @@ class M_penilaiankinerja extends CI_Model
 								join 	hrd_khs.tseksi as seksi
 										on 	seksi.kodesie=a.kodesie
 						where 	a.keluar='0' 
-								and 	trim(a.kode_status_kerja)='A'
+								and 	(trim(a.kode_status_kerja)='A'
 								or (trim(a.kode_status_kerja)= 'B' and a.kd_jabatan not like '%-%' and a.kd_jabatan::integer >= 14)
-								or a.noind = 'J1364'
+								or a.noind = 'J1364')
 								and 	a.diangkat<=(('$end')::date - interval '1 year' + interval '1 days');";
 								//and 	a.diangkat<=(('$st')::date);";
 								// echo $query;exit();
