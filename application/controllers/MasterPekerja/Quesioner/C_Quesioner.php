@@ -54,4 +54,24 @@ class C_Quesioner extends CI_Controller
 		$this->load->view('MasterPekerja/Quesioner/V_DataResikoPribadi',$data);
         $this->load->view('V_Footer',$data);
     }
+
+    public function RekapKondisiKesehatan()
+    {
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = 'Quesioner';
+		$data['SubMenuOne'] = 'Rekap Kondisi Kesehatan';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['rekap_kondisi_kesehatan'] = $this->M_quesioner->getAllDataRekapKondisiKesehatan();
+
+        $this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPekerja/Quesioner/V_RekapKondisiKesehatan',$data);
+        $this->load->view('V_Footer',$data);
+    }
 }

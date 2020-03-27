@@ -1,4 +1,3 @@
-
 var tanggal = new Date();
 var d= tanggal.getDate();
 var m= tanggal.getMonth()+1;
@@ -15,6 +14,15 @@ $('#tblDataresikoPribadiMP').DataTable({
   fixedColumns: {
     leftColumns: 3
 }
+});
+
+$('#tblRekapKondisiKesehatanMP').DataTable({
+  dom: 'Bfrtip',
+  buttons: [
+    {extend:'excel',title:'Rekap Kondisi Kesehatan-'+d+'-'+m+'-'+y}],
+  scrollY: "370px",
+  scrollX: true,
+  scrollCollapse: true,
 });
 
 $('#tableseksi').DataTable({
