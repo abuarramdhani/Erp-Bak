@@ -139,7 +139,9 @@ class M_quesioner extends CI_Model
         ,case when gcr.question_29 = 'Y' then 1 else 0 end  question_29
         ,case when gcr.question_30 = 'Y' then 1 else 0 end  question_30
         FROM
-        pendataan.ga_covid19_risk gcr) tbl1
+        pendataan.ga_covid19_risk gcr
+        WHERE
+        gcr.active_flag is NULL) tbl1
         inner JOIN pendataan.ga_covid19_risk gcr ON tbl1.id = gcr.id 
         inner JOIN pendataan.tpribadi tp ON gcr.creation_by = tp.noind
         inner JOIN quickc01_dinas_luar_online.t_seksi qts ON tp.kodesie = qts.kodesie");
