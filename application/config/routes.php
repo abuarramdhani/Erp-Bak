@@ -1946,6 +1946,11 @@ $route['MasterPekerja/LaporanKunjungan']               				=   'MasterPekerja/Re
 $route['MasterPekerja/LaporanKunjungan/(:any)']               		=   'MasterPekerja/Rekap/C_Rekap/$1';
 $route['MasterPekerja/LaporanKunjungan/(:any)/(:any)']              =   'MasterPekerja/Rekap/C_Rekap/$1/$2';
 
+//------------------------------- Pendataan Pekerja Tidak Hadir ------------------------------------
+$route['MasterPekerja/Sebaran'] = 'MasterPekerja/Sebaran/C_Sebaran';
+$route['MasterPekerja/Sebaran/(:any)'] = 'MasterPekerja/Sebaran/C_Sebaran/$1';
+$route['MasterPekerja/Sebaran/(:any)/(:any)'] = 'MasterPekerja/Sebaran/C_Sebaran/$1/$2';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
