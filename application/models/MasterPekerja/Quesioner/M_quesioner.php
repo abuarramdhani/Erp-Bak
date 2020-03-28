@@ -153,20 +153,22 @@ class M_quesioner extends CI_Model
         $query = $mysql_pendataan->query("SELECT
         tbl2.dept
         ,tbl2.unit
-        ,tbl2.lokasi_kerja
+        ,qtlk.lokasi_kerja
+        ,tbl3.total
+        ,count(tbl2.dept) sudah_isi
+        ,(tbl3.total - count(tbl2.dept)) belum_isi
         ,sum(tbl2.bptd) bapil
         ,sum(tbl2.bptds) bapilsak
-        ,sum(tbl2.hs) hansak
         ,sum(tbl2.rasa) matira
-        ,count(tbl2.dept) sudah_isi
         FROM
         (SELECT
         qts.dept
         ,qts.unit
-        ,qtlk.lokasi_kerja
+        -- ,qtlk.lokasi_kerja
+        ,tp.kodesie
+        ,tp.lokasi_kerja kode_lokasi
         ,CASE when (tbl1.question_22 + tbl1.question_23 + tbl1.question_24 + tbl1.question_25)>0 then 1 else 0 end bptd
         ,CASE when ((tbl1.question_22 + tbl1.question_23 + tbl1.question_24 + tbl1.question_25)>0 and tbl1.question_26 = 1) then 1 else 0 end bptds
-        ,tbl1.question_26 hs
         ,case when (tbl1.question_27 + tbl1.question_28)>0 then 1 else 0 end rasa
         FROM
         (SELECT
@@ -207,11 +209,28 @@ class M_quesioner extends CI_Model
         where gcr.active_flag is null) tbl1
         INNER JOIN pendataan.tpribadi tp on tbl1.creation_by = tp.noind
         INNER JOIN quickc01_dinas_luar_online.t_seksi qts on tp.kodesie = qts.kodesie
-        INNER JOIN quickc01_dinas_luar_online.t_lokasi_kerja qtlk on tp.lokasi_kerja = qtlk.lokasi_id) tbl2
+        -- INNER JOIN quickc01_dinas_luar_online.t_lokasi_kerja qtlk on tp.lokasi_kerja = qtlk.lokasi_id
+        ) tbl2
+        INNER JOIN
+        (SELECT
+        COUNT(tp2.noind) total
+        ,qts2.dept
+        ,qts2.unit
+        ,tp2.lokasi_kerja
+        FROM
+        pendataan.tpribadi tp2
+        INNER JOIN quickc01_dinas_luar_online.t_seksi qts2 on tp2.kodesie = qts2.kodesie
+        WHERE tp2.keluar = '0'
+        GROUP BY
+        qts2.dept
+        ,qts2.unit
+        ,tp2.lokasi_kerja) tbl3 on tbl2.dept = tbl3.dept and tbl2.unit = tbl3.unit and tbl2.kode_lokasi = tbl3.lokasi_kerja
+        INNER JOIN quickc01_dinas_luar_online.t_lokasi_kerja qtlk on tbl2.kode_lokasi = qtlk.lokasi_id
         GROUP BY
         tbl2.dept
         ,tbl2.unit
-        ,tbl2.lokasi_kerja");
+        ,qtlk.lokasi_kerja
+        ,tbl3.total");
 
         return $query->result_array();
     }
