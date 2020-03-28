@@ -160,6 +160,9 @@ class M_quesioner extends CI_Model
         ,sum(tbl2.bptd) bapil
         ,sum(tbl2.bptds) bapilsak
         ,sum(tbl2.rasa) matira
+        ,IFNULL(tbl4.nonsk,0) nonsk
+        ,IFNULL(tbl5.skbapil,0) skbapil
+        ,IFNULL(tbl6.skbapilsak,0) skbapilsak
         FROM
         (SELECT
         qts.dept
@@ -225,12 +228,66 @@ class M_quesioner extends CI_Model
         qts2.dept
         ,qts2.unit
         ,tp2.lokasi_kerja) tbl3 on tbl2.dept = tbl3.dept and tbl2.unit = tbl3.unit and tbl2.kode_lokasi = tbl3.lokasi_kerja
+        LEFT JOIN
+        (SELECT
+        COUNT(pts.noind) nonsk
+        ,qts.dept
+        ,qts.unit
+        ,ptp.lokasi_kerja
+        FROM
+        pendataan.tpendataan_sakit pts
+        INNER JOIN pendataan.tpribadi ptp on pts.noind = ptp.noind
+        INNER JOIN quickc01_dinas_luar_online.t_seksi qts on ptp.kodesie = qts.kodesie
+        WHERE
+        pts.sk is NULL or pts.sk = 0
+        GROUP BY
+        qts.dept
+        ,qts.unit
+        ,ptp.lokasi_kerja) tbl4 on tbl2.dept = tbl4.dept and tbl2.unit = tbl4.unit and tbl2.kode_lokasi = tbl4.lokasi_kerja
+        LEFT JOIN
+        (SELECT
+        COUNT(pts.noind) skbapil
+        ,qts.dept
+        ,qts.unit
+        ,ptp.lokasi_kerja
+        FROM
+        pendataan.tpendataan_sakit pts
+        INNER JOIN pendataan.tpribadi ptp on pts.noind = ptp.noind
+        INNER JOIN quickc01_dinas_luar_online.t_seksi qts on ptp.kodesie = qts.kodesie
+        WHERE
+        pts.sk = 1
+        and (pts.batuk + pts.pilek + pts.demam) > 1
+        GROUP BY
+        qts.dept
+        ,qts.unit
+        ,ptp.lokasi_kerja) tbl5 on tbl2.dept = tbl5.dept and tbl2.unit = tbl5.unit and tbl2.kode_lokasi = tbl5.lokasi_kerja
+        LEFT JOIN
+        (SELECT
+        COUNT(pts.noind) skbapilsak
+        ,qts.dept
+        ,qts.unit
+        ,ptp.lokasi_kerja
+        FROM
+        pendataan.tpendataan_sakit pts
+        INNER JOIN pendataan.tpribadi ptp on pts.noind = ptp.noind
+        INNER JOIN quickc01_dinas_luar_online.t_seksi qts on ptp.kodesie = qts.kodesie
+        WHERE
+        pts.sk = 1
+        and (pts.batuk + pts.pilek + pts.demam) > 1
+        and pts.sesak = 1
+        GROUP BY
+        qts.dept
+        ,qts.unit
+        ,ptp.lokasi_kerja) tbl6 on tbl2.dept = tbl6.dept and tbl2.unit = tbl6.unit and tbl2.kode_lokasi = tbl6.lokasi_kerja
         INNER JOIN quickc01_dinas_luar_online.t_lokasi_kerja qtlk on tbl2.kode_lokasi = qtlk.lokasi_id
         GROUP BY
         tbl2.dept
         ,tbl2.unit
         ,qtlk.lokasi_kerja
-        ,tbl3.total");
+        ,tbl3.total
+        ,tbl4.nonsk
+        ,tbl5.skbapil
+        ,tbl6.skbapilsak");
 
         return $query->result_array();
     }
