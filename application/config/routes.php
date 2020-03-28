@@ -1137,7 +1137,7 @@ $route['PenilaianKinerja/MasterTIM/(:any)']						= 'JurnalPenilaian/C_MasterTIM/
 $route['PenilaianKinerja/MasterTIM/(:any)/(:any)']				= 'JurnalPenilaian/C_MasterTIM/$1/$2';
 $route['PenilaianKinerja/MasterTIM/(:any)/(:any)/(:any)']		= 'JurnalPenilaian/C_MasterTIM/$1/$2/$3';
 
-// master kategori penilaian
+// master kategori penilaian	
 $route['PenilaianKinerja/MasterKategoriPenilaian']						= 'JurnalPenilaian/C_MasterKategoriPenilaian';
 $route['PenilaianKinerja/MasterKategoriPenilaian/(:any)']				= 'JurnalPenilaian/C_MasterKategoriPenilaian/$1';
 $route['PenilaianKinerja/MasterKategoriPenilaian/(:any)/(:any)']		= 'JurnalPenilaian/C_MasterKategoriPenilaian/$1/$2';
@@ -1171,6 +1171,36 @@ $route['PenilaianKinerja/JurnalPenilaianPersonalia/(:any)/(:any)']	= 'JurnalPeni
 
 // Jurnal Penilaian Evaluator
 $route['PenilaianKinerja/JurnalPenilaianEvaluator']		= 'JurnalPenilaian/C_JurnalPenilaianEvaluator';
+$route['PenilaianKinerja/JurnalPenilaianEvaluator/(:any)']		= 'JurnalPenilaian/C_JurnalPenilaianEvaluator/$1';
+$route['PenilaianKinerja/JurnalPenilaianEvaluator/(:any)/(:any)']		= 'JurnalPenilaian/C_JurnalPenilaianEvaluator/$1/$2';
+
+$route['PenilaianKinerja/MasterUnitGroupDistribution'] = 'JurnalPenilaian/C_MasterUnitGroupDistribution';
+$route['PenilaianKinerja/MasterUnitGroupDistribution/(:any)'] = 'JurnalPenilaian/C_MasterUnitGroupDistribution/$1';
+$route['PenilaianKinerja/MasterUnitGroupDistribution/(:any)/(:any)'] = 'JurnalPenilaian/C_MasterUnitGroupDistribution/$1/$2';
+$route['PenilaianKinerja/MasterUnitGroupDistribution/(:any)/(:any)/(:any)'] = 'JurnalPenilaian/C_MasterUnitGroupDistribution/$1/$2/$3';
+
+$route['PenilaianKinerja/Masterskprestasi'] = 'JurnalPenilaian/C_Masterskprestasi';
+$route['PenilaianKinerja/Masterskprestasi/(:any)'] = 'JurnalPenilaian/C_Masterskprestasi/$1';
+$route['PenilaianKinerja/Masterskprestasi/(:any)/(:any)'] = 'JurnalPenilaian/C_Masterskprestasi/$1/$2';
+
+$route['PenilaianKinerja/Masterskkemauan'] = 'JurnalPenilaian/C_Masterskkemauan';
+$route['PenilaianKinerja/Masterskkemauan/(:any)'] = 'JurnalPenilaian/C_Masterskkemauan/$1';
+$route['PenilaianKinerja/Masterskkemauan/(:any)/(:any)'] = 'JurnalPenilaian/C_Masterskkemauan/$1/$2';
+
+$route['PenilaianKinerja/MasterNominal'] = 'JurnalPenilaian/C_MasterNominal';
+$route['PenilaianKinerja/MasterNominal/(:any)'] = 'JurnalPenilaian/C_MasterNominal/$1';
+$route['PenilaianKinerja/MasterNominal/(:any)/(:any)'] = 'JurnalPenilaian/C_MasterNominal/$1/$2';
+$route['PenilaianKinerja/MasterNominal/(:any)/(:any)/(:any)'] = 'JurnalPenilaian/C_MasterNominal/$1/$2/$3';
+
+$route['PenilaianKinerja/ImportData'] = 'JurnalPenilaian/C_ImportNilai';
+$route['PenilaianKinerja/ImportData/(:any)'] = 'JurnalPenilaian/C_ImportNilai/$1';
+
+$route['PenilaianKinerja/CetakHasil'] = 'JurnalPenilaian/C_CetakHasil';
+$route['PenilaianKinerja/CetakHasil/(:any)'] = 'JurnalPenilaian/C_CetakHasil/$1';
+$route['PenilaianKinerja/CetakHasil/(:any)/(:any)'] = 'JurnalPenilaian/C_CetakHasil/$1/$2';
+
+$route['PenilaianKinerja/Penyeseuaian'] = 'JurnalPenilaian/C_Penyesuaian';
+$route['PenilaianKinerja/Penyesuaian/(:any)'] = 'JurnalPenilaian/C_Penyesuaian/$1';
 
 //------------------------------------External Claim.begin---------------------------------------------------
 $route['SalesOrder/BranchApproval'] 						= 'CustomerRelationship/MainMenu/C_BranchApproval/index';
