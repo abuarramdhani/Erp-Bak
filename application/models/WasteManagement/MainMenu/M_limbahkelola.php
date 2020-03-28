@@ -151,7 +151,7 @@ class M_limbahkelola extends CI_Model
             $sql = "SELECT 
                     distinct limkir.id_jenis_limbah,
                     limjen.jenis_limbah,
-                    (select trunc(sum(berat_kirim)::numeric, 3) from ga.ga_limbah_kirim where id_jenis_limbah = limkir.id_jenis_limbah and tanggal_kirim between '$start' and '$end') as berat_kirim
+                    (select trunc(sum(berat_kirim)::numeric, 3) from ga.ga_limbah_kirim where id_jenis_limbah = limkir.id_jenis_limbah and tanggal_kirim::date between '$start' and '$end') as berat_kirim
                 FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
                     on limkir.id_jenis_limbah = limjen.id_jenis_limbah
                 WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah
@@ -168,6 +168,7 @@ class M_limbahkelola extends CI_Model
                     WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah
                     ORDER BY limkir.tanggal_kirim"; // 1 adalah yg sudah diapprove oleh waste management
         }
+        // echo $sql;exit();
         return $this->db->query($sql)->result_array();
     }
 }
