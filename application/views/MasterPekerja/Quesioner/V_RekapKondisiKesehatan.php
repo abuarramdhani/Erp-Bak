@@ -19,6 +19,9 @@
                                 <th>Batuk, Pilek, Sakit Tenggorokan, Demam</th>
                                 <th>Batuk, Pilek, Sakit Tenggorokan, Demam + Sesak Nafas</th>
                                 <th>Tidak Bisa Cium Bau / Tidak Dapat Merasakan Asin/Manis/Asam.</th>
+                                <th>Tidak Masuk Tanpa SK</th>
+                                <th>Tidak Masuk Dengan SK Batuk, Pilek, Sakit Tenggorokan, Demam</th>
+                                <th>Tidak Masuk Dengan SK Batuk, Pilek, Sakit Tenggorokan, Demam + Sesak Nafas</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,6 +37,9 @@
                                 <td><?= $list['bapil'];?></td>
                                 <td><?= $list['bapilsak'];?></td>
                                 <td><?= $list['matira'];?></td>
+                                <td><?= $list['nonsk'];?></td>
+                                <td><?= $list['skbapil'];?></td>
+                                <td><?= $list['skbapilsak'];?></td>
                             </tr>
                         <?php } ?>
                         </tbody>
