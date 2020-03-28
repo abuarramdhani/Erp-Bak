@@ -5,7 +5,7 @@ var y= tanggal.getFullYear();
 
 
 $('#tblDataresikoPribadiMP').DataTable({
-  // dom: 'Bfrtip',
+  dom: 'Bfrtip',
   buttons: [
     {extend:'excel',title:'Data Resiko Pribadi '+d+'-'+m+'-'+y}],
   scrollY: "370px",
@@ -17,7 +17,7 @@ $('#tblDataresikoPribadiMP').DataTable({
 });
 
 $('#tblRekapKondisiKesehatanMP').DataTable({
-  // dom: 'Bfrtip',
+  dom: 'Bfrtip',
   buttons: [
     {extend:'excel',title:'Rekap Kondisi Kesehatan '+d+'-'+m+'-'+y}],
   scrollY: "370px",
