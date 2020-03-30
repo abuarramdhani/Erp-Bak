@@ -24,7 +24,7 @@ class M_cetakhasil extends Ci_Model
 						pass.nama,
 						pass.nama_unit unit,
 						pass.nama_seksi seksi,
-						pass.total_nilai skor,
+						coalesce(pass.total_nilai, 0) skor,
 						pass.gol_kerja,
 						pass.gol_nilai,
 						case when pass.lokasi_kerja = '02' then
@@ -34,14 +34,14 @@ class M_cetakhasil extends Ci_Model
 						else
 							coalesce(pken.nominal_kenaikan, 0)
 						end nominal_kenaikan,
-						pgap.gp gp_lama,
-						case when pass.lokasi_kerja = '02' then
+						coalesce(pgap.gp::int, 0) gp_lama,
+						coalesce(case when pass.lokasi_kerja = '02' then
 							((coalesce(pken.nominal_kenaikan, 0) - (select tuksono::int from pk.pk_penyesuaian))+pgap.gp::int)
 						when pass.lokasi_kerja = '03' then
 							((coalesce(pken.nominal_kenaikan, 0) - (select mlati::int from pk.pk_penyesuaian))+pgap.gp::int)
 						else
 							(coalesce(pken.nominal_kenaikan, 0)+pgap.gp::int)
-						end gp_baru
+						end, 0) gp_baru
 				from pk.pk_assessment pass
 				left join pk.pk_kenaikan pken
 					on pass.id_kenaikan = pken.id_kenaikan
