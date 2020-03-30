@@ -61,21 +61,23 @@
 										<div class="col-md-10">
 											<div class="col-md-9" style="padding:3px">
 												<select required="" id="p2k3_lokasi" name="txt_lokasi" class="form-control p2k3_select2" data-placeholder="Pilih Lokasi Gudang" disabled="">
-													<option selected="" value="142">Yogyakarta </option>
+													<option selected="" value="0y64"><?= $lokk ?></option>
 													<!-- <?php foreach ($lokasi as $data_lokasi) {?>
 													<option value="<?php echo $data_lokasi['LOCATION_ID'] ?>"><?php echo $data_lokasi['LOCATION_CODE'] ?> </option>
 													<?php } ?> -->
 												</select>
 											</div>
+											<input hidden="" name="lokasi" value="<?= $lokk_id ?>">
 										</div>
 										<label class="col-md-12 control-label">Subinventory</label>
 										<div class="col-md-10">
 											<div class="col-md-9" style="padding:3px">
 												<select required="" id="p2k3_gudang_hilangkanini" name="txt_gudang" class="form-control p2k3_select2" data-placeholder="Pilih Subinventory" disabled="">
-													<option selected="" value="PNL-NPR">[PNL-NPR] GUDANG BAHAN PENOLONG NON-PRODUKSI</option>
+													<option selected="" value="1k52"><?= $sub ?></option>
 												</select>
 											</div>
 											<input id="gudang_print" type="hidden" name="txt_gudang_print">
+											<input hidden="" name="gudang" value="<?= $sub_id ?>">
 										</div>
 										<div class="form-group" style="margin: 8 auto;">
 											<label class="col-md-12 control-label">Locator</label>

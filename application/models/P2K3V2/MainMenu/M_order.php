@@ -672,4 +672,10 @@ class M_Order extends CI_Model
         $query = $this->erp->query($sql);
         return true;
     }
+
+    public function getDetailPekerja($noind)
+    {
+        $sql = "SELECT * from hrd_khs.tpribadi where noind = '$noind'";
+        return $this->personalia->query($sql);
+    }
 }
