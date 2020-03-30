@@ -111,7 +111,7 @@ class C_Index extends CI_Controller {
 
 	public function daftar_pekerja_aktif(){
 	  	$noind = $this->input->get('term');
-	  	$data = $this->M_pesangon->getPekerjaAktif($noind);
+	  	$data = $this->M_pesangon->getPekerjaAktif(strtoupper($noind));
 	  	echo json_encode($data);
 	}
 
@@ -119,8 +119,12 @@ class C_Index extends CI_Controller {
 	{
 		$noind 				=	$this->input->post('noind');
 		$detailPekerja 		=	$this->M_pesangon->detailPekerja($noind);
-		$hariTerakhir 		= array_merge($detailPekerja, array('hari_terakhir'=>date('D', strtotime($detailPekerja[0]['metu']))));
-		echo json_encode($hariTerakhir);
+		if (!empty($detailPekerja)) {
+			$hariTerakhir 		= array_merge($detailPekerja, array('hari_terakhir'=>date('D', strtotime($detailPekerja[0]['metu']))));
+			echo json_encode($hariTerakhir);
+		}else{
+			echo "Data Kosong";
+		}
   	}
 
 	public function add()

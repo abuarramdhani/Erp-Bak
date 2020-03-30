@@ -725,63 +725,88 @@ $(function() {
         });
     })
 
+    $(document).on('ifChecked','#MasterPekerja-PerhitunganPesangon-HitungCuti',function(){
+      $('#MasterPekerja-PerhitunganPesangon-StatusCuti').val('1');
+    })
+    $(document).on('ifUnchecked','#MasterPekerja-PerhitunganPesangon-HitungCuti',function(){
+      $('#MasterPekerja-PerhitunganPesangon-StatusCuti').val('0');
+    })
+
     $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').change(function() {
         var noind = $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').val();
+        var cuti = $('#MasterPekerja-PerhitunganPesangon-StatusCuti').val();
+        console.log("STATUS CUTI : " + cuti);
         if (noind) {
             $.ajax({
                 type: 'POST',
                 data: { noind: noind },
                 url: baseurl + "MasterPekerja/PerhitunganPesangon/detailPekerja",
                 success: function(result) {
-                    var res = JSON.parse(result);
-                    $('#txtSeksi').val(res[0]['seksi']);
-                    $('#txtUnit').val(res[0]['unit']);
-                    $('#txtDepartemen').val(res[0]['departemen']);
-                    $('#txtLokasi').val(res[0]['lokasi_kerja']);
-                    $('#txtJabatan').val(res[0]['pekerjaan']);
-                    $('#txtDiangkat').val(res[0]['diangkat']);
-                    $('#txtAlamat').val(res[0]['alamat']);
-                    $('#txtLahir').val(res[0]['tempat']);
-                    $('#txtMasaKerja').val(res[0]['masakerja']);
-                    $('#txtSisaCuti').val(res[0]['sisacuti']);
-                    $('#txtStatus').val(res[0]['alasan']);
-                    $('#txtUangPesangon').val(res[0]['pengali']);
-                    $('#txtUangUMPK').val(res[0]['upmk']);
-                    $('#txtSisaCutiHari').val(res[0]['sisacutihari']);
-                    $('#txtUangGantiRugi').val(res[0]['gantirugi']);
-                    $('#txtTahun').val(res[0]['masakerja_tahun']);
-                    $('#txtBulan').val(res[0]['masakerja_bulan']);
-                    $('#txtHari').val(res[0]['masakerja_hari']);
-                    $('#txtPasal').val(res[0]['pasal']);
-                    $('#txtPesangon').val(res[0]['pesangon']);
-                    $('#txtUPMK').val(res[0]['up']);
-                    $('#txtCuti').val(res[0]['cuti']);
-                    $('#txtRugi').val(res[0]['rugi']);
-                    $('#txtAkhir').val(res[0]['metu']);
-                    $('#txtNPWP').val(res[0]['npwp']);
-                    $('#txtNIK').val(res[0]['nik']);
-                    $('#txtHariLmt').val(function () {
-                        if (res['hari_terakhir'] == 'Sun') {
-                            var styles = {
-                                color : "red",
-                                fontWeight: "bold"
-                            };
-                            $(this).css(styles)
-                            return 'Minggu'
-                        }else if (res['hari_terakhir'] == 'Mon') {
-                            return 'Senin'
-                        }else if (res['hari_terakhir'] == 'Tue') {
-                            return 'Selasa'
-                        }else if (res['hari_terakhir'] == 'Wed') {
-                            return 'Rabu'
-                        }else if (res['hari_terakhir'] == 'Thu') {
-                            return 'Kamis'
-                        }else if (res['hari_terakhir'] == 'Fri') {
-                            return 'Jumat'
-                        }else if (res['hari_terakhir'] == 'Sat') {
-                            return 'Sabtu'
-                        }
-                    });
+                    if(result !== "Data Kosong"){
+                      var res = JSON.parse(result);
+                      $('#txtSeksi').val(res[0]['seksi']);
+                      $('#txtUnit').val(res[0]['unit']);
+                      $('#txtDepartemen').val(res[0]['departemen']);
+                      $('#txtLokasi').val(res[0]['lokasi_kerja']);
+                      $('#txtJabatan').val(res[0]['pekerjaan']);
+                      $('#txtDiangkat').val(res[0]['diangkat']);
+                      $('#txtAlamat').val(res[0]['alamat']);
+                      $('#txtLahir').val(res[0]['tempat']);
+                      $('#txtMasaKerja').val(res[0]['masakerja']);
+                      if(cuti == '0'){
+                        $('#txtSisaCuti').val('0 hari');
+                      }else{
+                        $('#txtSisaCuti').val(res[0]['sisacuti']);
+                      }
+                      $('#txtStatus').val(res[0]['alasan']);
+                      $('#txtUangPesangon').val(res[0]['pengali']);
+                      $('#txtUangUMPK').val(res[0]['upmk']);
+                      $('#txtSisaCutiHari').val(res[0]['sisacutihari']);
+                      $('#txtUangGantiRugi').val(res[0]['gantirugi']);
+                      $('#txtTahun').val(res[0]['masakerja_tahun']);
+                      $('#txtBulan').val(res[0]['masakerja_bulan']);
+                      $('#txtHari').val(res[0]['masakerja_hari']);
+                      $('#txtPasal').val(res[0]['pasal']);
+                      $('#txtPesangon').val(res[0]['pesangon']);
+                      $('#txtUPMK').val(res[0]['up']);
+                      if(cuti == '0'){
+                        $('#txtCuti').val('0');
+                      }else{
+                        $('#txtCuti').val(res[0]['cuti']);
+                      }
+                      $('#txtRugi').val(res[0]['rugi']);
+                      $('#txtAkhir').val(res[0]['metu']);
+                      $('#txtNPWP').val(res[0]['npwp']);
+                      $('#txtNIK').val(res[0]['nik']);
+                      $('#txtHariLmt').val(function () {
+                          if (res['hari_terakhir'] == 'Sun') {
+                              var styles = {
+                                  color : "red",
+                                  fontWeight: "bold"
+                              };
+                              $(this).css(styles)
+                              return 'Minggu'
+                          }else if (res['hari_terakhir'] == 'Mon') {
+                              return 'Senin'
+                          }else if (res['hari_terakhir'] == 'Tue') {
+                              return 'Selasa'
+                          }else if (res['hari_terakhir'] == 'Wed') {
+                              return 'Rabu'
+                          }else if (res['hari_terakhir'] == 'Thu') {
+                              return 'Kamis'
+                          }else if (res['hari_terakhir'] == 'Fri') {
+                              return 'Jumat'
+                          }else if (res['hari_terakhir'] == 'Sat') {
+                              return 'Sabtu'
+                          }
+                      });
+                    }else{
+                      swal.fire({
+                        title: "Data pekerja Tidak Ditemukan",
+                        text: "Mohon Lakukan Pengecekan Ulang Data Pekerja",
+                        type: "warning"
+                      })
+                    }
                 }
             });
         }

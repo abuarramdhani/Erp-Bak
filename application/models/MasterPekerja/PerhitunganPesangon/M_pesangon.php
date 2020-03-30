@@ -89,25 +89,25 @@ class M_pesangon extends CI_Model {
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,
-			cuti.sisa_cuti as cuti,
+			tpson.jml_cuti as cuti,
 			pesangon.uang_ganti_rugi as rugi,
 			concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
 			concat(pesangon.upmk,' X GP') as upmk,
 			concat (pesangon.uang_ganti_rugi,'% UANG PESANGON + UANG PMK') as gantirugi,
-			concat(cuti.sisa_cuti,' hari ')as sisacuti,
-			concat(cuti.sisa_cuti,' GP/30 ')as sisacutihari
+			concat(tpson.jml_cuti,' hari ')as sisacuti,
+			concat(tpson.jml_cuti,' GP/30 ')as sisacutihari
 							from 		hrd_khs.tpribadi as pri
 							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
 							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
 							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+							left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
 							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
 							and date_part('year', age(tglkeluar::date,  diangkat::date ))>= pesangon.batas_tahun_kerja_awal
 							and date_part('year', age(tglkeluar::date,  diangkat::date ))< pesangon.batas_tahun_kerja_akhir
 							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
 							where 		pri.noind='$noind' and cuti.periode=extract(year from current_date)::varchar";
-
 			$query 	=	$this->personalia->query($getDetailPekerja);
 			return $query->result_array();
 			//return $getDetailPekerja;
@@ -153,7 +153,7 @@ class M_pesangon extends CI_Model {
 
 	 public function getPekerjaAktif($noind)
 	 	{
-	 		$getPekerjaAktif="select trim(noind) as noind, concat_ws(' - ', noind, nama) as pekerja from hrd_khs.tpribadi where   noind like '$noind%' or nama like'$noind%' and keluar = '0'
+	 		$getPekerjaAktif="select trim(noind) as noind, concat_ws(' - ', noind, nama) as pekerja from hrd_khs.tpribadi where   noind like '%$noind%' or nama like '%$noind%' and keluar = '0'
 			order by noind ";
 	 		$query 	=	$this->personalia->query($getPekerjaAktif);
 			return $query->result_array();
@@ -288,19 +288,20 @@ class M_pesangon extends CI_Model {
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,
-			cuti.sisa_cuti as cuti,
+			tpson.jml_cuti as cuti,
 			pesangon.uang_ganti_rugi as rugi,
 			concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
 			concat(pesangon.upmk,' X GP') as upmk,
 			concat (pesangon.uang_ganti_rugi,'% (UANG PESANGON + UANG PMK)') as gantirugi,
-			concat(cuti.sisa_cuti,' hari ')as sisacuti,
-			concat(cuti.sisa_cuti,' GP/30 ')as sisacutihari
+			concat(tpson.jml_cuti,' hari ')as sisacuti,
+			concat(tpson.jml_cuti,' GP/30 ')as sisacutihari
 							from 		hrd_khs.tpribadi as pri
 							join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
 							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
 							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
 							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+							left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
 							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
@@ -411,19 +412,20 @@ class M_pesangon extends CI_Model {
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,
-			cuti.sisa_cuti as cuti,
+			tpson.jml_cuti as cuti,
 			pesangon.uang_ganti_rugi as rugi,
 			concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
 			concat(pesangon.upmk,' X GP') as upmk,
 			concat (pesangon.uang_ganti_rugi,'% (UANG PESANGON + UANG PMK)') as gantirugi,
-			concat(cuti.sisa_cuti,' hari ')as sisacuti,
-			concat(cuti.sisa_cuti,' GP/30 ')as sisacutihari
+			concat(tpson.jml_cuti,' hari ')as sisacuti,
+			concat(tpson.jml_cuti,' GP/30 ')as sisacutihari
 							from 		hrd_khs.tpribadi as pri
 							join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
 							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
 							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
 							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+							left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
 							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
