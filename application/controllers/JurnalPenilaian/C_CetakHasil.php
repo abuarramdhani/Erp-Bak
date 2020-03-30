@@ -62,22 +62,70 @@ class C_CetakHasil extends CI_Controller
 		$tanggal = $this->input->post('txtTanggalSKDU');
 		$periode = $this->input->post('txtPeriodeSKDU');
 
+		$pr = $this->M_cetakhasil->getPr($periode)->row_array();
+		$peny = $this->M_cetakhasil->get_penyesuaian();
+
 		$arrData = $this->M_cetakhasil->getAssessment($periode);
+
+		$lnoind = implode("', '", array_column($arrData, 'noind'));
+		$arrMutasi = $this->M_cetakhasil->getlmutasi($lnoind, $pr['periode_awal'], $pr['periode_akhir'], $periode);
+
+		$diffPr = date_diff(date_create($pr['periode_awal']),date_create($pr['periode_akhir']))->format("%a");
+		for ($i=0; $i < count($arrMutasi); $i++) { 
+			$tglarr = explode(',', $arrMutasi[$i]['tglberlaku']);
+			$lmarr = explode(',', $arrMutasi[$i]['lokasilm']);
+			$lbarr = explode(',', $arrMutasi[$i]['lokasibr']);
+
+			$indexmin = $pr['periode_awal'];
+			$indexlast = $pr['periode_akhir'];
+			$uang = $arrMutasi[$i]['kenaikan'];
+			for ($x=0; $x < count($tglarr); $x++) {
+				if ($lbarr[$x] == '02') {
+					$minbr = $peny['tuksono'];
+				}elseif ($lbarr[$x] == '03') {
+					$minbr = $peny['mlati'];
+				}else{
+					$minbr = 0;
+				}
+
+				if ($lmarr[$x] == '02') {
+					$minlm = $peny['tuksono'];
+				}elseif ($lmarr[$x] == '03') {
+					$minlm = $peny['mlati'];
+				}else{
+					$minlm = 0;
+				}
+
+				if ($x == 0) {
+					//jika di 0 gunakan min lokasi lama
+					$uang += date_diff(date_create($pr['periode_awal']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minlm);
+				}elseif($x != count($tglarr)-1){
+					$uang += date_diff(date_create($tglarr[$x]),date_create($tglarr[$x+1]))->format("%a")/$diffPr*($uang-$minbr);
+				}
+				//memang menggunakan 2 if jangan else if
+				if ($x == count($tglarr)-1) {
+					$uang += date_diff(date_create($pr['periode_akhir']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minbr);
+				}
+			}
+
+			$arrMutasi[$i]['kenaikan'] = $uang;
+		}
+		$arrmutnoind = array_column($arrMutasi, 'noind');
 		$arrHasil = array();
 		$no = 0;
 		foreach ($arrData as $key) {
-			
 			$arrHasil[$no] = $key;
 			$arrHasil[$no]['no_skdu'] = $nomor;
 			$arrHasil[$no]['tgl_skdu'] = $tanggal;
 			$arrHasil[$no]['periode'] = $periode;
+			$arrHasil[$no]['nominal_kenaikan'] = $arrMutasi[array_search($key['noind'], $arrmutnoind)]['kenaikan'];
+			$arrHasil[$no]['gp_baru'] = $arrHasil[$no]['nominal_kenaikan']+$arrHasil[$no]['gp_lama'];
 
 			$pkj = $this->M_cetakhasil->getPekerjaan($key['noind']);
 			if (isset($pkj) and !empty($pkj)) {
 				$arrHasil[$no]['pekerjaan'] = $pkj['0']['pekerjaan'];
 			}
 			$cek = $this->M_cetakhasil->checkHasil($periode,$key['noind']);
-
 			if (intval($cek) !== 0) {
 				$where = array(
 					'noind' => $key['noind'],
