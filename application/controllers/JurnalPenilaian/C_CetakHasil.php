@@ -70,7 +70,7 @@ class C_CetakHasil extends CI_Controller
 		$lnoind = implode("', '", array_column($arrData, 'noind'));
 		$arrMutasi = $this->M_cetakhasil->getlmutasi($lnoind, $pr['periode_awal'], $pr['periode_akhir'], $periode);
 
-		$diffPr = date_diff(date_create($pr['periode_awal']),date_create($pr['periode_akhir']))->format("%a");
+		$diffPr = date_diff(date_create($pr['periode_awal']),date_create($pr['periode_akhir']))->format("%a")+1;
 		for ($i=0; $i < count($arrMutasi); $i++) { 
 			$tglarr = explode(',', $arrMutasi[$i]['tglberlaku']);
 			$lmarr = explode(',', $arrMutasi[$i]['lokasilm']);
@@ -98,13 +98,13 @@ class C_CetakHasil extends CI_Controller
 
 				if ($x == 0) {
 					//jika di 0 gunakan min lokasi lama
-					$uang += date_diff(date_create($pr['periode_awal']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minlm);
+					$uang += date_diff(date_create($pr['periode_awal']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minlm)+1;
 				}elseif($x != count($tglarr)-1){
-					$uang += date_diff(date_create($tglarr[$x]),date_create($tglarr[$x+1]))->format("%a")/$diffPr*($uang-$minlm);
+					$uang += date_diff(date_create($tglarr[$x]),date_create($tglarr[$x+1]))->format("%a")/$diffPr*($uang-$minlm)+1;
 				}
 				//memang menggunakan 2 if jangan else if
 				if ($x == count($tglarr)-1) {
-					$uang += date_diff(date_create($pr['periode_akhir']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minbr);
+					$uang += date_diff(date_create($pr['periode_akhir']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minbr)+1;
 				}
 			}
 
