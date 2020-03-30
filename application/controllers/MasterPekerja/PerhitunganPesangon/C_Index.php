@@ -111,7 +111,7 @@ class C_Index extends CI_Controller {
 
 	public function daftar_pekerja_aktif(){
 	  	$noind = $this->input->get('term');
-	  	$data = $this->M_pesangon->getPekerjaAktif($noind);
+	  	$data = $this->M_pesangon->getPekerjaAktif(strtoupper($noind));
 	  	echo json_encode($data);
 	}
 
