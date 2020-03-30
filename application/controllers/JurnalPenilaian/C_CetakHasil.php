@@ -100,7 +100,7 @@ class C_CetakHasil extends CI_Controller
 					//jika di 0 gunakan min lokasi lama
 					$uang += date_diff(date_create($pr['periode_awal']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minlm);
 				}elseif($x != count($tglarr)-1){
-					$uang += date_diff(date_create($tglarr[$x]),date_create($tglarr[$x+1]))->format("%a")/$diffPr*($uang-$minbr);
+					$uang += date_diff(date_create($tglarr[$x]),date_create($tglarr[$x+1]))->format("%a")/$diffPr*($uang-$minlm);
 				}
 				//memang menggunakan 2 if jangan else if
 				if ($x == count($tglarr)-1) {
