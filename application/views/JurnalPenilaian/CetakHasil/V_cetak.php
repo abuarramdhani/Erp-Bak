@@ -4,8 +4,10 @@
 		$seksi = '';
 		$pekerjaan = '';
 		$no = 1;
+		$len = count($table);
+		$lembar = 0;
 		foreach ($table as$value) {
-?>			
+?>		
 <div>
 	<div>
 		Lampiran Surat Keputusan Direktur Utama No. <?php echo $nomor;  ?>
@@ -130,7 +132,13 @@
 		</table>
 	</div>
 </div>
-<div style="page-break-before: always"></div>
-<?php }
+<?php 
+		$lembar++;
+		if ($lembar<$len)
+			{
+				echo '<div style="page-break-before: always;"></div>';
+			}
+
+		}
 	}
 ?>
