@@ -3123,3 +3123,9 @@ $(document).on('click',function(e){
   $('#formSebaranGejalaPusat [data-toggle="popover"]').popover();
   $('#formSebaranGejalaTuksono [data-toggle="popover"]').popover();
 })
+
+$(document).on('ready',function(){
+  $('#tblPendataanTidakHadir').dataTable({
+    scrollX: true,
+  });
+});
