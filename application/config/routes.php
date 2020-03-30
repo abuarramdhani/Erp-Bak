@@ -1978,6 +1978,10 @@ $route['MasterPekerja/LaporanKunjungan/(:any)/(:any)']              =   'MasterP
 
 //--------------------------------Quesioner-----------------------------------------------------
 $route['MasterPekerja/Quesioner/(:any)'] = 'MasterPekerja/Quesioner/C_Quesioner/$1';
+//------------------------------- Pendataan Pekerja Tidak Hadir ------------------------------------
+$route['MasterPekerja/Sebaran'] = 'MasterPekerja/Sebaran/C_Sebaran';
+$route['MasterPekerja/Sebaran/(:any)'] = 'MasterPekerja/Sebaran/C_Sebaran/$1';
+$route['MasterPekerja/Sebaran/(:any)/(:any)'] = 'MasterPekerja/Sebaran/C_Sebaran/$1/$2';
 
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
