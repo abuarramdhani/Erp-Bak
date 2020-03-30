@@ -1507,6 +1507,22 @@ class C_Order extends CI_Controller
   		$data['seksi'] = array('section_name' 	=>	'');
   	}
 
+  	$pkj_lok = $this->M_order->getDetailPekerja($noind)->row()->lokasi_kerja;
+  	if (intval($pkj_lok) == 2) {
+  		$data['lokk'] = 'Tuksono';
+  		$data['lokk_id'] = '16103';
+  		$data['sub'] = '[PNL-TKS] GUDANG PENOLONG TRAKTOR DI TUKSONO';
+  		$data['sub_id'] = 'PNL-TKS';
+  	}else{
+  		$data['lokk'] = 'Yogyakarta';
+  		$data['lokk_id'] = '142';
+  		$data['sub'] = '[PNL-NPR] GUDANG BAHAN PENOLONG NON-PRODUKSI';
+  		$data['sub_id'] = 'PNL-NPR';
+  	}
+
+  	// echo "<pre>";
+  	// print_r($this->M_order->gudang('16103'));exit();
+
   	$this->load->view('V_Header',$data);
   	$this->load->view('V_Sidemenu',$data);
   	$this->load->view('P2K3V2/Order/V_Input_Bon', $data);
@@ -1580,6 +1596,16 @@ class C_Order extends CI_Controller
   	$seksi = $this->input->post('p2k3_seksi_bon');
   	$lokator = $this->input->post('txt_locator');
   	$lokator = '783';
+
+  	//revisi Order #932006
+  	$pkj_lok = $this->M_order->getDetailPekerja($noind)->row()->lokasi_kerja;
+  	if (intval($pkj_lok) == 2) {
+  		$lokasi = '16103';
+  		$gudang = 'PNL-TKS';
+  	}else{
+  		$lokasi = '142';
+  		$gudang = 'PNL-NPR';
+  	}
 
   	$account = $this->M_order->account('APD', $cost_center);
 
