@@ -3118,3 +3118,8 @@ $(document).ready(function(){
       });
     });
 });
+
+$(document).on('click',function(e){
+  $('#formSebaranGejalaPusat [data-toggle="popover"]').popover();
+  $('#formSebaranGejalaTuksono [data-toggle="popover"]').popover();
+})
