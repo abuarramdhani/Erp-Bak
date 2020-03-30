@@ -77,7 +77,7 @@ class M_cetakhasil extends Ci_Model
 		$sql = "select * 
 		from pk.pk_hasil 
 		where no_skdu = '$no' and tgl_skdu = '$tgl'
-		order by unit,seksi,gol_kerja,pekerjaan,noind";
+		order by left(noind,1),unit,seksi,gol_kerja,pekerjaan,noind";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
