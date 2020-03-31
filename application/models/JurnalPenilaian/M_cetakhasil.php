@@ -108,32 +108,23 @@ class M_cetakhasil extends Ci_Model
 		return $this->db->query($sql);
 	}
 
-	public function getlmutasi($listnoind, $pr1, $pr2, $periode)
+	public function getlmutasi($listnoind, $pr1, $pr2)
 	{
 
 		$hosP = $this->db->hostname;
 		$dbP = $this->db->database;
 		$usrP = $this->db->username;
 		$pasP = $this->db->password;
-		$sql = "			
-				select
+		$sql = "select
 					tm.noind,
 					string_agg(tm.tglberlaku::text, ',' order by tm.tglberlaku asc) tglberlaku,
 					string_agg(tm.lokasilm::text, ',' order by tm.tglberlaku asc) lokasilm,
-					string_agg(tm.lokasibr::text, ',' order by tm.tglberlaku asc) lokasibr,
-					string_agg(er.nominal_kenaikan, ',') kenaikan
+					string_agg(tm.lokasibr::text, ',' order by tm.tglberlaku asc) lokasibr
 				from
 					hrd_khs.tmutasi tm
-				left join (
-					select
-						*
-					from
-						public.dblink('host=$hosP user=$usrP password=$pasP dbname=$dbP',
-						'select pass.noind, coalesce(pken.nominal_kenaikan, 0) from pk.pk_assessment pass left join pk.pk_kenaikan pken on pken.id_kenaikan = pass.id_kenaikan') as tb2(noind text,
-						nominal_kenaikan text) ) er on
-					er.noind = tm.noind
-				where tm.noind in ('$listnoind')
-				and tglberlaku between '$pr1' and '$pr2'
+				where
+					tm.noind in ('$listnoind')
+					and tglberlaku between '$pr1' and '$pr2'
 				group by
 					tm.noind;";
 		return $this->personalia->query($sql)->result_array();
@@ -144,5 +135,21 @@ class M_cetakhasil extends Ci_Model
 		$sql = "select * from pk.pk_penyesuaian";
 		return $this->db->query($sql)->row_array();
 	}
+
+	public function getlkenaikan($lnoind, $periode)
+	{
+		$sql = "select
+					pa.noind,
+					coalesce(pken.nominal_kenaikan, 0) nominal_kenaikan
+				from
+					pk.pk_assessment pa
+				left join pk.pk_kenaikan pken on
+					pken.id_kenaikan = pa.id_kenaikan
+				where
+					pa.noind in ('$lnoind')
+					and pa.periode = '$periode';";
+		return $this->db->query($sql)->result_array();
+	}
+
 }
 ?>

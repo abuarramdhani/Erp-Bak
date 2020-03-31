@@ -68,10 +68,21 @@ class C_CetakHasil extends CI_Controller
 		$arrData = $this->M_cetakhasil->getAssessment($periode);
 
 		$lnoind = implode("', '", array_column($arrData, 'noind'));
-		$arrMutasi = $this->M_cetakhasil->getlmutasi($lnoind, $pr['periode_awal'], $pr['periode_akhir'], $periode);
+		$arrMutasi = $this->M_cetakhasil->getlmutasi($lnoind, $pr['periode_awal'], $pr['periode_akhir']);
+		$arrKenaikan = $this->M_cetakhasil->getlkenaikan($lnoind, $periode);
+		$arrKenaikan = array_column($arrKenaikan, 'nominal_kenaikan', 'noind');
 
-		$diffPr = date_diff(date_create($pr['periode_awal']),date_create($pr['periode_akhir']))->format("%a")+1;
-		// echo $diffPr;
+		for ($i=0; $i < count($arrMutasi); $i++) {
+			$id = $arrMutasi[$i]['noind'];
+			if (isset($arrKenaikan[$id])) {
+				$arrMutasi[$i]['kenaikan'] = $arrKenaikan[$id];
+			}else{
+				$arrMutasi[$i]['kenaikan'] = 0;
+			}
+		}
+
+		$diffPr = (date_diff(date_create($pr['periode_awal']),date_create($pr['periode_akhir']))->format("%a")+1);
+
 		for ($i=0; $i < count($arrMutasi); $i++) { 
 			$tglarr = explode(',', $arrMutasi[$i]['tglberlaku']);
 			$lmarr = explode(',', $arrMutasi[$i]['lokasilm']);
