@@ -116,8 +116,7 @@ class C_CetakHasil extends CI_Controller
 
 			$arrMutasi[$i]['kenaikan'] = round($uanglast);
 		}
-		// echo "<pre>";
-		// print_r($arrMutasi);exit();
+
 		$arrmutnoind = array_column($arrMutasi, 'noind');
 		$arrHasil = array();
 		$no = 0;
@@ -126,7 +125,9 @@ class C_CetakHasil extends CI_Controller
 			$arrHasil[$no]['no_skdu'] = $nomor;
 			$arrHasil[$no]['tgl_skdu'] = $tanggal;
 			$arrHasil[$no]['periode'] = $periode;
-			$arrHasil[$no]['nominal_kenaikan'] = $arrMutasi[array_search($key['noind'], $arrmutnoind)]['kenaikan'];
+			if (array_search($key['noind'], $arrmutnoind) !== false) {
+				$arrHasil[$no]['nominal_kenaikan'] = $arrMutasi[array_search($key['noind'], $arrmutnoind)]['kenaikan'];				
+			}
 			$arrHasil[$no]['gp_baru'] = $arrHasil[$no]['nominal_kenaikan']+$arrHasil[$no]['gp_lama'];
 
 			$pkj = $this->M_cetakhasil->getPekerjaan($key['noind']);
