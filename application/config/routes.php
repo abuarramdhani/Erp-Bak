@@ -1983,6 +1983,8 @@ $route['MasterPekerja/PendataanTidakHadir/(:any)/(:any)']              =   'Mast
 
 //--------------------------------Quesioner-----------------------------------------------------
 $route['MasterPekerja/Quesioner/(:any)'] = 'MasterPekerja/Quesioner/C_Quesioner/$1';
+$route['MasterPekerja/Quesioner/(:any)/(:any)'] = 'MasterPekerja/Quesioner/C_Quesioner/$1/$2';
+$route['MasterPekerja/Quesioner/(:any)/(:any)/(:any)'] = 'MasterPekerja/Quesioner/C_Quesioner/$1/$2/$3';
 //------------------------------- Sebaran Hasil Quesioner ------------------------------------
 $route['MasterPekerja/Sebaran'] = 'MasterPekerja/Sebaran/C_Sebaran';
 $route['MasterPekerja/Sebaran/(:any)'] = 'MasterPekerja/Sebaran/C_Sebaran/$1';

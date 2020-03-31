@@ -293,4 +293,78 @@ class M_quesioner extends CI_Model
 
         return $query->result_array();
     }
+
+    public function getAllDataPekerjaBelumInput(){
+        $this->pendataan = $this->load->database('dinas_luar',true);
+        $sql = "
+            select t1.noind, 
+            t1.nama, 
+            t2.seksi, 
+            t2.unit, 
+            t3.lokasi_kerja,
+            case when trim(t1.nohp) = '' then 
+                'kosong'
+            when trim(t1.nohp) = '-' then 
+                'kosong'
+            else 
+                trim(t1.nohp)
+            end as nomor
+            from pendataan.tpribadi t1 
+            left join quickc01_dinas_luar_online.t_seksi t2 
+            on t1.kodesie = t2.kodesie
+            left join quickc01_dinas_luar_online.t_lokasi_kerja t3 
+            on t1.lokasi_kerja = t3.lokasi_id
+            where keluar = '0'
+            and left(noind,1) not in ('M','Z','L')
+            and noind not in (
+                select noind
+                from pendataan.ga_covid19_risk t4 
+                where t1.noind = t4.creation_by
+                and question_1 != ''
+            )
+            order by t1.lokasi_kerja,left(t1.kodesie,7),t1.noind";
+        return $this->pendataan->query($sql)->result_array();
+    }
+
+    public function getAllDataPekerjaTidakHadirBelumInput(){
+        $this->personalia = $this->load->database('personalia',true);
+        $sql = "select t1.noind, 
+                t1.nama, 
+                t2.seksi, 
+                t2.unit, 
+                t3.lokasi_kerja,
+                case when trim(t1.nohp) = '' then 
+                    'kosong'
+                when trim(t1.nohp) = '-' then 
+                    'kosong'
+                else 
+                    trim(t1.nohp)
+                end as nomor,
+                t5.shift,
+                t4.jam_msk,
+                t4.jam_akhmsk
+                from hrd_khs.tpribadi t1 
+                inner join hrd_khs.tseksi t2 
+                on t1.kodesie = t2.kodesie
+                inner join hrd_khs.tlokasi_kerja t3 
+                on t1.lokasi_kerja = t3.id_
+                inner join \"Presensi\".tshiftpekerja t4
+                on t1.noind = t4.noind
+                and t4.tanggal = current_date
+                left join \"Presensi\".tshift t5 
+                on t4.kd_shift = t5.kd_shift
+                where t1.keluar = '0'
+                and left(t1.noind,1) not in ('M','Z','L')
+                and t1.noind not in (
+                    select noind
+                    from \"Presensi\".tprs_shift t6 
+                    where t6.noind = t1.noind
+                    and trim(t6.waktu) not in ('__:__:__','','0')
+                    and t6.tanggal = t4.tanggal
+                    and concat(t6.tanggal::date,' ',t6.waktu)::timestamp between concat(t4.tanggal::date,' ',t4.jam_akhmsk)::timestamp - interval '3 hours' and concat(t4.tanggal::date,' ',t4.jam_akhmsk)::timestamp
+                )
+                and concat(t4.tanggal::date,' ',t4.jam_akhmsk)::timestamp < current_timestamp
+                order by t4.kd_shift,t1.lokasi_kerja,left(t1.kodesie,7),t1.noind";
+        return $this->personalia->query($sql)->result_array();
+    }
 }

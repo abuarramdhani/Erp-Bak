@@ -3128,4 +3128,8 @@ $(document).on('ready',function(){
   $('#tblPendataanTidakHadir').dataTable({
     scrollX: true,
   });
+
+  $('#tblPendataanBelumInput').dataTable({
+    scrollX: true,
+  });
 });
