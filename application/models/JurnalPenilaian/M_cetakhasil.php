@@ -50,6 +50,7 @@ class M_cetakhasil extends Ci_Model
 					and pass.noind = pgap.noind
 				where pass.periode = '$periode'
 				order by kodesie;";
+				// echo $sql;exit();
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
@@ -99,6 +100,49 @@ class M_cetakhasil extends Ci_Model
 		where no_skdu = '$no' and tgl_skdu = '$tgl'";
 		$result = $this->db->query($sql);
 		return $result->result_array();
+	}
+
+	public function getPr($pr)
+	{
+		$sql = "SELECT * from pk.pk_assessment where periode = '$pr' limit 1;";
+		return $this->db->query($sql);
+	}
+
+	public function getlmutasi($listnoind, $pr1, $pr2, $periode)
+	{
+
+		$hosP = $this->db->hostname;
+		$dbP = $this->db->database;
+		$usrP = $this->db->username;
+		$pasP = $this->db->password;
+		$sql = "			
+				select
+					tm.noind,
+					string_agg(tm.tglberlaku::text, ',' order by tm.tglberlaku asc) tglberlaku,
+					string_agg(tm.lokasilm::text, ',' order by tm.tglberlaku asc) lokasilm,
+					string_agg(tm.lokasibr::text, ',' order by tm.tglberlaku asc) lokasibr,
+					string_agg(er.nominal_kenaikan, ',') kenaikan
+				from
+					hrd_khs.tmutasi tm
+				left join (
+					select
+						*
+					from
+						public.dblink('host=$hosP user=$usrP password=$pasP dbname=$dbP',
+						'select pass.noind, coalesce(pken.nominal_kenaikan, 0) from pk.pk_assessment pass left join pk.pk_kenaikan pken on pken.id_kenaikan = pass.id_kenaikan') as tb2(noind text,
+						nominal_kenaikan text) ) er on
+					er.noind = tm.noind
+				where tm.noind in ('$listnoind')
+				and tglberlaku between '$pr1' and '$pr2'
+				group by
+					tm.noind;";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function get_penyesuaian()
+	{
+		$sql = "select * from pk.pk_penyesuaian";
+		return $this->db->query($sql)->row_array();
 	}
 }
 ?>
