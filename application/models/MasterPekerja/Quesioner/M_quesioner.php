@@ -340,7 +340,8 @@ class M_quesioner extends CI_Model
                 else 
                     trim(t1.nohp)
                 end as nomor,
-                t5.shift,
+                t4.tanggal::date as tanggal,
+                trim(t5.shift) as shift,
                 t4.jam_msk,
                 t4.jam_akhmsk
                 from hrd_khs.tpribadi t1 
