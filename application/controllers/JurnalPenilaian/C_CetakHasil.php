@@ -71,6 +71,7 @@ class C_CetakHasil extends CI_Controller
 		$arrMutasi = $this->M_cetakhasil->getlmutasi($lnoind, $pr['periode_awal'], $pr['periode_akhir'], $periode);
 
 		$diffPr = date_diff(date_create($pr['periode_awal']),date_create($pr['periode_akhir']))->format("%a")+1;
+		// echo $diffPr;
 		for ($i=0; $i < count($arrMutasi); $i++) { 
 			$tglarr = explode(',', $arrMutasi[$i]['tglberlaku']);
 			$lmarr = explode(',', $arrMutasi[$i]['lokasilm']);
@@ -79,6 +80,7 @@ class C_CetakHasil extends CI_Controller
 			$indexmin = $pr['periode_awal'];
 			$indexlast = $pr['periode_akhir'];
 			$uang = $arrMutasi[$i]['kenaikan'];
+			$uanglast = 0;
 			for ($x=0; $x < count($tglarr); $x++) {
 				if ($lbarr[$x] == '02') {
 					$minbr = $peny['tuksono'];
@@ -98,18 +100,24 @@ class C_CetakHasil extends CI_Controller
 
 				if ($x == 0) {
 					//jika di 0 gunakan min lokasi lama
-					$uang += date_diff(date_create($pr['periode_awal']),date_create($tglarr[$x]))->format("%a")+1/$diffPr*($uang-$minlm);
-				}elseif($x != count($tglarr)-1){
-					$uang += date_diff(date_create($tglarr[$x]),date_create($tglarr[$x+1]))->format("%a")/$diffPr*($uang-$minlm);
+					$uanglast += (date_diff(date_create($pr['periode_awal']),date_create($tglarr[$x]))->format("%a")+1)/$diffPr*($uang-$minlm);
+				}else{
+					$uanglast += date_diff(date_create($tglarr[$x-1]),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minlm);
 				}
-				//memang menggunakan 2 if jangan else if
+
+				//untuk terakhir
 				if ($x == count($tglarr)-1) {
-					$uang += date_diff(date_create($pr['periode_akhir']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minbr);
+					$uanglast += date_diff(date_create($pr['periode_akhir']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minbr);
 				}
+				// echo $uanglast.'<br>';
 			}
 
-			$arrMutasi[$i]['kenaikan'] = $uang;
+			// $uang+=$uanglast;
+
+			$arrMutasi[$i]['kenaikan'] = round($uanglast);
 		}
+		// echo "<pre>";
+		// print_r($arrMutasi);exit();
 		$arrmutnoind = array_column($arrMutasi, 'noind');
 		$arrHasil = array();
 		$no = 0;

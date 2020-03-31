@@ -135,11 +135,7 @@ class M_cetakhasil extends Ci_Model
 				where tm.noind in ('$listnoind')
 				and tglberlaku between '$pr1' and '$pr2'
 				group by
-					tm.noind,
-					tm.tglberlaku,
-					tm.lokasilm,
-					tm.lokasibr,
-					er.nominal_kenaikan;";
+					tm.noind;";
 		return $this->personalia->query($sql)->result_array();
 	}
 
