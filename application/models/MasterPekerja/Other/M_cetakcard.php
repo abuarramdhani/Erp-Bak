@@ -20,17 +20,8 @@ class M_cetakcard extends CI_Model
     	return $sql->result_array();
     }
 
-    public function getWorker($noind,$nick, $checked){
-        if($checked) {
-            $show_noind = "tp.noind_baru as no_induk";
-        } else {
-            $show_noind = "(case
-            when 
-                tp.lokasi_kerja::int>4
-            then tp.noind_baru
-            else tp.noind
-            end) as no_induk";
-        }
+    public function getWorker($noind,$nick){
+        $show_noind = "tp.noind_baru as no_induk";
 
         $sqlserver = $this->load->database('personalia',true);
         $sql = $sqlserver->query("select tp.noind,(upper('$nick')) as nama_panggilan,
@@ -134,12 +125,7 @@ class M_cetakcard extends CI_Model
                                         then null
                                         else left(upper(tsj.nama_jabatan),30)
                                         end) as jabatan,
-                                        (case
-                                        when 
-                                            tp.lokasi_kerja::int>4
-                                        then tp.noind_baru
-                                        else tp.noind
-                                        end) as no_induk,
+                                        tp.noind_baru no_induk,
                                     tp.photo
                                     from hrd_khs.tpribadi tp 
                                     left join hrd_khs.tseksi_singkatan tss on left(tp.kodesie,7)=tss.kodesie
