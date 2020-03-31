@@ -20,6 +20,7 @@ class C_JurnalPenilaianPersonalia extends CI_Controller {
 		$this->load->model('JurnalPenilaian/M_penilaiankinerja');
 		$this->load->model('JurnalPenilaian/M_unitgroup');
 		$this->load->model('JurnalPenilaian/M_kenaikan');
+		$this->load->model('JurnalPenilaian/M_cetakhasil');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
@@ -249,8 +250,80 @@ class C_JurnalPenilaianPersonalia extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['daftarEvaluasiSeksi']	=	$daftarEvaluasiSeksi;
+		$pr = $this->M_cetakhasil->getPr($periode)->row_array();
+		$peny = $this->M_cetakhasil->get_penyesuaian();
+		$lnoind = implode("', '", array_column($daftarEvaluasiSeksi, 'noind'));
+		$arrMutasi = $this->M_cetakhasil->getlmutasi($lnoind, $pr['periode_awal'], $pr['periode_akhir']);
+		$arrKenaikan = $this->M_cetakhasil->getlkenaikan($lnoind, $periode);
+		$arrKenaikan = array_column($arrKenaikan, 'nominal_kenaikan', 'noind');
 
+		for ($i=0; $i < count($arrMutasi); $i++) {
+			$id = $arrMutasi[$i]['noind'];
+			if (isset($arrKenaikan[$id])) {
+				$arrMutasi[$i]['kenaikan'] = $arrKenaikan[$id];
+			}else{
+				$arrMutasi[$i]['kenaikan'] = 0;
+			}
+		}
+		// echo "<pre>";
+		// print_r($arrData);exit();
+
+		$diffPr = (date_diff(date_create($pr['periode_awal']),date_create($pr['periode_akhir']))->format("%a")+1);
+
+		for ($i=0; $i < count($arrMutasi); $i++) { 
+			$tglarr = explode(',', $arrMutasi[$i]['tglberlaku']);
+			$lmarr = explode(',', $arrMutasi[$i]['lokasilm']);
+			$lbarr = explode(',', $arrMutasi[$i]['lokasibr']);
+
+			$indexmin = $pr['periode_awal'];
+			$indexlast = $pr['periode_akhir'];
+			$uang = $arrMutasi[$i]['kenaikan'];
+			$uanglast = 0;
+			for ($x=0; $x < count($tglarr); $x++) {
+				if ($lbarr[$x] == '02') {
+					$minbr = $peny['tuksono'];
+				}elseif ($lbarr[$x] == '03') {
+					$minbr = $peny['mlati'];
+				}else{
+					$minbr = 0;
+				}
+
+				if ($lmarr[$x] == '02') {
+					$minlm = $peny['tuksono'];
+				}elseif ($lmarr[$x] == '03') {
+					$minlm = $peny['mlati'];
+				}else{
+					$minlm = 0;
+				}
+
+				if ($x == 0) {
+					//jika di 0 gunakan min lokasi lama
+					$uanglast += (date_diff(date_create($pr['periode_awal']),date_create($tglarr[$x]))->format("%a")+1)/$diffPr*($uang-$minlm);
+				}else{
+					$uanglast += date_diff(date_create($tglarr[$x-1]),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minlm);
+				}
+
+				//untuk terakhir
+				if ($x == count($tglarr)-1) {
+					$uanglast += date_diff(date_create($pr['periode_akhir']),date_create($tglarr[$x]))->format("%a")/$diffPr*($uang-$minbr);
+				}
+				// echo $uanglast.'<br>';
+			}
+
+			// $uang+=$uanglast;
+
+			$arrMutasi[$i]['kenaikan'] = round($uanglast);
+		}
+
+		$arrmutnoind = array_column($arrMutasi, 'noind');
+
+		for ($i=0; $i < count($daftarEvaluasiSeksi); $i++) { 
+			if (array_search($daftarEvaluasiSeksi[$i]['noind'], $arrmutnoind) !== false) {
+				$daftarEvaluasiSeksi[$i]['naik'] = $arrMutasi[array_search($daftarEvaluasiSeksi[$i]['noind'], $arrmutnoind)]['kenaikan'];				
+			}
+			$daftarEvaluasiSeksi[$i]['gpbaru'] = $daftarEvaluasiSeksi[$i]['naik']+$daftarEvaluasiSeksi[$i]['gpnaik'];
+		}
+		$data['daftarEvaluasiSeksi']	=	$daftarEvaluasiSeksi;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('JurnalPenilaian/JurnalPenilaian/V_ReportNilai',$data);
