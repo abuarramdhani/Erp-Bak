@@ -55,7 +55,34 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header">
-								
+								<table style="width: 100%">
+									<tr>
+										<td>Merah</td>
+										<td>:</td>
+										<td>Batuk, Pilek, Sakit Tenggorokan, Demam + Sesak Nafas.</td>
+									</tr>
+									<tr>
+										<td>Biru</td>
+										<td>:</td>
+										<td>Batuk, Pilek, Sakit Tenggorokan, Demam.</td>
+									</tr>
+									<tr>
+										<td>Abu-abu</td>
+										<td>:</td>
+										<td>Tidak Bisa Cium Bau / Tidak Dapat Merasakan Asin/Manis/Asam.</td>
+									</tr>
+									<tr>
+										<td>Hitam</td>
+										<td>:</td>
+										<td>Tidak Ditemukan Gejala warna Merah, Biru, Abu-abu.</td>
+									</tr>
+									<tr>
+										<td colspan="3">
+											Angka Yang ditampilkan di lingkaran berwarna merupakan Jumlah Pekerja yang sudah Input Data Di titik tersebut.
+										</td>
+									</tr>
+									
+								</table>
 							</div>
 							<div class="box-body">
 								<div class="row">
