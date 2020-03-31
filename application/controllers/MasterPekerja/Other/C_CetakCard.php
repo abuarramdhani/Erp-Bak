@@ -61,12 +61,15 @@ class C_CetakCard extends CI_Controller
 		$noind = $this->input->post('noind');
 		// $nama = $this->input->post('name');
 		$nick = $this->input->post('nick');
-		$checked = ($_POST['noind_baru'] == 1) ? true : false;
+		$checked = ($_POST['noind_baru'] == 1) ? 1 : 0;
 
 		$count = count($nick);
 		$data['worker'] = array();
 		for($i=0;$i<$count;$i++){
-			$Card = $this->M_cetakcard->getWorker($noind[$i],$nick[$i], $checked);
+			$Card = $this->M_cetakcard->getWorker($noind[$i],$nick[$i]);
+			if (!$checked) {
+				$Card[0]['no_induk'] = $Card[0]['noind'];
+			}
 			array_push($data['worker'], $Card);
 			//insert to t_log
 			$aksi = 'MASTER PEKERJA';
@@ -82,7 +85,6 @@ class C_CetakCard extends CI_Controller
 		$filename = 'ID_Card.pdf';
 
 		$html = $this->load->view('MasterPekerja/Other/V_cetakcard', $data, true);
-
 		$pdf->WriteHTML($html, 2);
 		$pdf->setTitle($filename);
 		$pdf->Output($filename, 'D');
@@ -103,6 +105,7 @@ class C_CetakCard extends CI_Controller
 		$this->checkSession();
 
 		$noind = $this->input->get('nama');
+		$baru = $this->input->get('baru');
 		$data['worker'] = array();
 		foreach ($noind as $key) {
 			$DataID = $this->M_cetakcard->DataPekerja($key);

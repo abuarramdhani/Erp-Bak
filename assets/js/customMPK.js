@@ -94,11 +94,13 @@ $(document).ready(function() {
     $(document).on('click', '#CariPekerja', function(e) {
         e.preventDefault();
         var nama = $('#NamaPekerja').val();
+        var baru = $('input[name="noind_baru"]:checked').val();
+        var noind = '';
 
         $.ajax({
             url: baseurl + "MasterPekerja/Other/DataIDCard",
             type: "get",
-            data: { nama: nama }
+            data: { nama: nama, baru: baru }
         }).done(function(data) {
             var html = '';
             var data = $.parseJSON(data);
@@ -106,9 +108,15 @@ $(document).ready(function() {
             console.log(data['worker']);
             $('tbody#dataIDcard').empty(html);
             for (var i = 0; i < data['worker'].length; i++) {
+                if (baru == '1') {
+                  noind = data['worker'][i][0]['no_induk'];
+                }else{
+                  noind = data['worker'][i][0]['noind'];
+                }
+
                 html += '<tr>';
                 html += '<td>' + (i + 1) + '</td>';
-                html += '<td>' + data['worker'][i][0]['no_induk'] + '<input type="hidden" name="noind[]" value="' + data['worker'][i][0]['noind'] + '"></td>';
+                html += '<td>' + noind + '<input type="hidden" name="noind[]" value="' + data['worker'][i][0]['noind'] + '"></td>';
                 html += '<td>' + data['worker'][i][0]['nama'] + '</td>';
                 if (data['worker'][i][0]['jabatan'] != null) {
                     html += '<td>' + data['worker'][i][0]['jabatan'] + ' ' + data['worker'][i][0]['seksi'] + '</td>';
