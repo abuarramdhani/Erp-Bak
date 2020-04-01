@@ -74,4 +74,44 @@ class C_Quesioner extends CI_Controller
 		$this->load->view('MasterPekerja/Quesioner/V_RekapKondisiKesehatan',$data);
         $this->load->view('V_Footer',$data);
     }
+
+    public function PekerjaBelumInput(){
+        $user_id = $this->session->userid;
+
+        $data['Title'] = 'Pekerja Belum Input';
+        $data['Menu'] = 'Quesioner';
+        $data['SubMenuOne'] = 'Pekerja Belum Input';
+        $data['SubMenuTwo'] = '';
+        
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['data'] = $this->M_quesioner->getAllDataPekerjaBelumInput();
+
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('MasterPekerja/Quesioner/V_PekerjaBelumInput',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
+    public function PekerjaTidakHadirBelumInput(){
+        $user_id = $this->session->userid;
+
+        $data['Title'] = 'Pekerja Tidak Hadir Belum Input';
+        $data['Menu'] = 'Quesioner';
+        $data['SubMenuOne'] = 'Pekerja Tidak Hadir Belum Input';
+        $data['SubMenuTwo'] = '';
+        
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['data'] = $this->M_quesioner->getAllDataPekerjaTidakHadirBelumInput();
+
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('MasterPekerja/Quesioner/V_PekerjaTidakHadir',$data);
+        $this->load->view('V_Footer',$data);
+    }
 }
