@@ -45,7 +45,7 @@
 															<td><?php echo $dt['nomor'] !== 'kosong' ? str_replace(' ', '', $dt['nomor']) : 'kosong' ?></td>
 															<td>
 																<?php 
-$text = 'Halo Bpk / Ibu '.$dt['nama'].' 
+$text = 'Halo '.$dt['panggil'].' '.$dt['nama'].' 
 
 Mohon bantuan mengisi form berikut : 
 Note : password menggunakan tanggal lahir dengan format : ddmmyyyy

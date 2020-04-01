@@ -308,7 +308,14 @@ class M_quesioner extends CI_Model
                 'kosong'
             else 
                 trim(t1.nohp)
-            end as nomor
+            end as nomor,
+            case when trim(t1.jenkel) = 'L' then 
+                'Bapak'
+            when trim(t1.jenkel) = 'P' then 
+                'Ibu'
+            else 
+                'Bapak / Ibu'
+            end as panggil
             from pendataan.tpribadi t1 
             left join quickc01_dinas_luar_online.t_seksi t2 
             on t1.kodesie = t2.kodesie
@@ -343,7 +350,14 @@ class M_quesioner extends CI_Model
                 t4.tanggal::date as tanggal,
                 trim(t5.shift) as shift,
                 t4.jam_msk,
-                t4.jam_akhmsk
+                t4.jam_akhmsk,
+                case when trim(t1.jenkel) = 'L' then 
+                    'Bapak'
+                when trim(t1.jenkel) = 'P' then 
+                    'Ibu'
+                else 
+                    'Bapak / Ibu'
+                end as panggil
                 from hrd_khs.tpribadi t1 
                 inner join hrd_khs.tseksi t2 
                 on t1.kodesie = t2.kodesie
