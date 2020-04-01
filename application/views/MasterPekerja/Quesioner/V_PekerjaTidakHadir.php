@@ -51,9 +51,9 @@
 															<td><?php echo $dt['jam_akhmsk'] ?></td>
 															<td>
 																<?php 
-$text = 'Halo Bpk / Ibu '.$dt['nama'].' 
+$text = 'Halo '.$dt['panggil'].' '.$dt['nama'].' 
 
-Bapak/Ibu tercatat tidak masuk (tidak ada absen finger/barcode) pada '.$dt['tanggal'].' - '.$dt['shift'].'. 
+'.$dt['panggil'].' tercatat tidak masuk (tidak ada absen finger/barcode) pada '.$dt['tanggal'].' - '.$dt['shift'].'. 
 Mohon bantuan untuk utk mengisi form pendataan berikut:
 Note : password menggunakan tanggal lahir dengan format : ddmmyyyy
 
