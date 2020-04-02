@@ -1204,6 +1204,8 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['Reject'] = '0';
 			$jadi[$o]['IP'] = '0';
 			$jadi[$o]['Keterangan'] = '';
+			$jadi[$o]['ket_pengurangan'] = $vol['ket_pengurangan'];
+			$jadi[$o]['jam_pengurangan'] = $vol['jam_pengurangan'];
 			$o++;
 		}
 		
@@ -1244,6 +1246,8 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['Reject'] = '0';
 			$jadi[$o]['IP'] = '0';
 			$jadi[$o]['Keterangan'] = '';
+			$jadi[$o]['ket_pengurangan'] = $vol['ket_pengurangan'];
+			$jadi[$o]['jam_pengurangan'] = $vol['jam_pengurangan'];
 			$o++;
 		}
 
@@ -1283,6 +1287,7 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['Reject'] = '0';
 			$jadi[$o]['IP'] = '0';
 			$jadi[$o]['Keterangan'] = '';
+			
 			$o++;
 		}
 	
@@ -1438,11 +1443,11 @@ class C_GLap extends CI_Controller
 			$worksheet->setCellValue('BC' . $highestRow, $akhir['HasilBaik']);
 			$worksheet->setCellValue('BD' . $highestRow, $akhir['Reject']); //reject (scrap)
 			if (array_key_exists('ket_pengurangan', $akhir) || array_key_exists('jam_pengurangan', $akhir)) {
-				if ($akhir['ket_pengurangan'] != '') {
-					$worksheet->setCellValue('BE' . $highestRow, $akhir['ket_pengurangan'].' ('.$akhir['jam_pengurangan'].')');
-				} else {
-					$worksheet->setCellValue('BE' . $highestRow, '');
-				}
+				// if ($akhir['ket_pengurangan'] != '') {
+					$worksheet->setCellValue('BE' . $highestRow, $akhir['ket_pengurangan'].' '.$akhir['jam_pengurangan']);
+				// } else {
+				// 	$worksheet->setCellValue('BE' . $highestRow, '');
+				// }
 			}
 			
 			// $worksheet->setCellValue('BE' . $highestRow, $akhir['Keterangan']);

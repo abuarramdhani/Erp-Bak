@@ -162,16 +162,17 @@
                                                     <div class="form-group">
                                                         <label for="txtKeteranganPemotonganTarget" class="control-label col-lg-4">Keterangan</label>
                                                         <div class="col-lg-6">
-                                                            <input type="text" placeholder="Keterangan Pemotongan Target" name="txtKeteranganPemotonganTarget" id="txtKeteranganPemotonganTarget" class="form-control" />
+                                                            <input type="text" placeholder="Keterangan Pemotongan Target" name="txtKeteranganPemotonganTarget" id="txtKeteranganPemotonganTarget" maxlength="29" class="form-control" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label for="txtJamPemotonganTarget" class="control-label col-lg-4">Jam</label>
                                                         <div class="col-lg-6">
-                                                            <input type="text" name="txtJamPemotonganTarget" id="txtJamPemotonganTarget" class="txtJamPemotonganTarget form-control" />
-                                                            <span>*apabila keterangan kosong, nilai jam yang akan tersimpan otomatis kosong</span>
+                                                            <input type="text" name="txtJamPemotonganTarget" id="txtJamPemotonganTarget" class="txtJamPemotonganTarget form-control" disabled="disabled" /> 
                                                         </div>
+                                                        <span class="btn btn-info onBtn" >ON</span>
+                                                        <span class="btn btn-danger offBtn" style="display: none">OFF</span>
                                                     </div>
                                                 </div>
                                             </div>
