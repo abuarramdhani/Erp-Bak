@@ -3144,12 +3144,16 @@ $(document).on('ready',function(){
 
 // Poliklinik
 $(document).ready(function(){
-  // $('#txtPoliklinikTanggal').datepicker({
-  //   autoclose: true,
-  //   autoApply: true,
-  //   format: 'yyyy-mm-dd',
-  //   todayHighlight: true
-  // });
+  $('#tblPoliklinik').DataTable({
+       dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                title:'',
+                filename: 'Kunjungan Poliklinik'
+            }
+        ]
+    });
 
   $('#txtPoliklinikTanggal').daterangepicker({
       "timePicker": true,

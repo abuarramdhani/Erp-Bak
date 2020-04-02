@@ -20,7 +20,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<table class="table table-striped table-hover table-bordered">
+										<table class="table table-striped table-hover table-bordered" id="tblPoliklinik">
 											<thead class="bg-success">
 												<tr>
 													<th style="text-align: center; vertical-align: middle;">No.</th>
