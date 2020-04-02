@@ -20,6 +20,7 @@
 											<thead class="bg-primary">
 												<tr>
 													<th>No.</th>
+													<th>Action</th>
 													<th>No. Induk</th>
 													<th>Nama</th>
 													<th>Seksi</th>
@@ -29,7 +30,6 @@
 													<th>Shift</th>
 													<th>Jam Masuk</th>
 													<th>Batas Toleransi Terlambat</th>
-													<th>Action</th>
 												</tr>
 											</thead>
 											<tbody>
