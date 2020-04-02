@@ -97,6 +97,12 @@ class C_Mixing extends CI_Controller
 			$mixingData[$aksen2]['shift'] = $this->input->post('txtShift');
 			$mixingData[$aksen2]['print_code'] = $this->input->post('print_code');
 			$mixingData[$aksen2]['job_id'] = $employeed;
+			$mixingData[$aksen2]['ket_pengurangan'] = $this->input->post('txtKeteranganPemotonganTarget');
+			if (array_key_exists('txtJamPemotonganTarget', $_POST)) {
+				$mixingData[$aksen2]['jam_pengurangan'] = str_replace(' ', '', $this->input->post('txtJamPemotonganTarget')) ;
+			} else {
+				$mixingData[$aksen2]['jam_pengurangan'] = '';
+			}
 			$aksen2++;
 		}
 		
