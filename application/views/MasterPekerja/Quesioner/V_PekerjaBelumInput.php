@@ -59,7 +59,7 @@ Hubungan Kerja.
 																?>
 																<a href="<?php echo 'https://web.whatsapp.com/send?phone=62'.substr(str_replace(' ', '', $dt['nomor']), 1).'&text='.urlencode($text) ?>"
 																	target="_blank"
-																	class="btn btn-info">WhatsApp Android</a>
+																	class="btn btn-info">WhatsApp Web</a>
 																	<a href="<?php echo 'https://api.whatsapp.com/send?phone=62'.substr(str_replace(' ', '', $dt['nomor']), 1).'&text='.urlencode($text) ?>"
 																	target="_blank"
 																	class="btn btn-success">WhatsApp Apps</a>
