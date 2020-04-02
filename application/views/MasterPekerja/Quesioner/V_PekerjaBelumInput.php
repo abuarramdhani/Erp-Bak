@@ -37,12 +37,6 @@
 														?>
 														<tr>
 															<td><?php echo $nomor ?></td>
-															<td><?php echo $dt['noind'] ?></td>
-															<td><?php echo $dt['nama'] ?></td>
-															<td><?php echo $dt['seksi'] ?></td>
-															<td><?php echo $dt['unit'] ?></td>
-															<td><?php echo $dt['lokasi_kerja'] ?></td>
-															<td><?php echo $dt['nomor'] !== 'kosong' ? str_replace(' ', '', $dt['nomor']) : 'kosong' ?></td>
 															<td>
 																<?php 
 $text = 'Halo '.$dt['panggil'].' '.$dt['nama'].' 
@@ -65,11 +59,20 @@ Hubungan Kerja.
 																?>
 																<a href="<?php echo 'https://web.whatsapp.com/send?phone=62'.substr(str_replace(' ', '', $dt['nomor']), 1).'&text='.urlencode($text) ?>"
 																	target="_blank"
-																	class="btn btn-info">kirim WhatsApp</a>
+																	class="btn btn-info">WhatsApp Android</a>
+																	<a href="<?php echo 'https://api.whatsapp.com/send?phone=62'.substr(str_replace(' ', '', $dt['nomor']), 1).'&text='.urlencode($text) ?>"
+																	target="_blank"
+																	class="btn btn-success">WhatsApp Apps</a>
 																<?php }else{
 																	echo "tidak mempunyai nomor HP";
 																} ?>
 															</td>
+															<td><?php echo $dt['noind'] ?></td>
+															<td><?php echo $dt['nama'] ?></td>
+															<td><?php echo $dt['seksi'] ?></td>
+															<td><?php echo $dt['unit'] ?></td>
+															<td><?php echo $dt['lokasi_kerja'] ?></td>
+															<td><?php echo $dt['nomor'] !== 'kosong' ? str_replace(' ', '', $dt['nomor']) : 'kosong' ?></td>
 														</tr>
 														<?php 
 														$nomor++;
