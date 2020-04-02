@@ -48,7 +48,7 @@ Bisa diakses melalui komputer kantor (jaringan internal/non internet), hp voip i
 http://erp.quick.com/covid19/PenilaianResikoCovid/Form 
 
 Bisa diakses melalui komputer internet di kantor maupun rumah, HP Pribadi , HP Mygroup : 
-http://quick.co.id/covid19/PenilaianResikoCovid/Form 
+https://quick.co.id/covid19/PenilaianResikoCovid/Form 
 
 Dengan terkumpulnya informasi ini, diharapkan kita dapat melihat sebaran kondisi kesehatan karyawan di KHS untuk secepatnya menentukan kebijakan-kebijakan dan keputusan-keputusan seperlunya. 
 
