@@ -895,7 +895,6 @@ class C_splseksi extends CI_Controller {
 						if ($shiftpekerja == 0) {
 							// todo select kecuali hari kemarin, absen pulang
 							$absensi = $this->M_splseksi->getAbsensi($noind, $tanggal, $tanggal1);
-
                             if ($absensi->row()->jumlah == 0) {
                                 $error = "1";
                                 $errortext = "Tidak ada absen pada tanggal ".date('d-m-Y', strtotime($tanggal));
@@ -907,7 +906,8 @@ class C_splseksi extends CI_Controller {
 								$absenPulang = date('Y-m-d H:i:s', strtotime($absensi->row()->out));
 								// jika aktual absen < input akhir lembur, maka jam aktual akhir lembur ngikut absen
 								// kalau lebih, maka ngikut inputan
-								$aktual_awal = (strtotime($absenMasuk) > strtotime($awal_lembur)) ? $awal_lembur : date('H:i:s', strtotime($absenMasuk));
+								// echo $absenMasuk.' > '.$awal_lembur;
+								$aktual_awal = (strtotime($absenMasuk) > strtotime($awal_lembur)) ? date('H:i:s', strtotime($absenMasuk)) : $awal_lembur;
 								$aktual_akhir = (strtotime($absenPulang) < strtotime($akhir_lembur)) ? date('H:i:s', strtotime($absenPulang)) : $akhir_lembur;
 							}
 						} else {
@@ -916,7 +916,7 @@ class C_splseksi extends CI_Controller {
 						}
 					}else{
 						$error = "1";
-						$errortext = "Tidak Bisa Input Lembur";
+						$errortext = "Tidak Bisa Input Lembur (Nomor Induk Sudah memiliki Data Lembur pada Tanggal Lembur Awal)";
 					}
 				}
 			}
@@ -1033,12 +1033,16 @@ class C_splseksi extends CI_Controller {
 					}
 				}else{
 					$error = "1";
-					$errortext = "Tidak Bisa Input Lembur";
+					$errortext = "Tidak Bisa Input Lembur (Tidak Ada Absen Pada Tanggal Lembur Awal)";
 				}
 			}
 		}
 
 		// Pengecekan sudah punya SPL belum  pada hari dimana lembur ?
+		$shift = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime($tanggal)), $noind);
+		if ((!empty($shift) && trim($shift['0']['kd_shift']) == '3')) {
+			$tanggal = date('Y-m-d', strtotime('-1 days '.$tanggal));
+		}
 		$checkSPL= $this->M_splseksi->checkingExistSPL($noind, $tanggal, $tanggal.$waktu0, $tanggal1.$waktu1);
 		if($checkSPL['exist'] && $error == 0) {
 			$error = 1;
@@ -1147,7 +1151,13 @@ class C_splseksi extends CI_Controller {
 			$selesai = $this->input->post("lembur_akhir[$x]");
 
 			// Agar SPL tidak ter double
-			$checkSPL= $this->M_splseksi->checkingExistSPL($noind, $tanggal, $tanggal." ".$mulai, $tanggal1." ".$selesai);
+			$shift = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime($tanggal)), $noind);
+			if ((!empty($shift) && trim($shift['0']['kd_shift']) == '3')) {
+				$tanggal_cek = date('Y-m-d', strtotime('-1 days '.$tanggal));
+			}else{
+				$tanggal_cek = $tanggal;
+			}
+			$checkSPL= $this->M_splseksi->checkingExistSPL($noind, $tanggal_cek, $tanggal." ".$mulai, $tanggal1." ".$selesai);
 			if ($checkSPL['exist']) continue;
 
 			// cek shift, khusus shift 3 , lembur selain lewat hari, dan lembur pulang, tanggal  dikurangi 1
@@ -1166,7 +1176,6 @@ class C_splseksi extends CI_Controller {
 				$spl_id = $maxid->id;
 				$spl_id = substr("0000000000", 0, 10-strlen($spl_id)).$spl_id;
 			}
-
 			if ($sendmail_splid == "") {
 				$sendmail_splid = "'$spl_id'";
 			} else {

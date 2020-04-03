@@ -684,6 +684,7 @@ class M_splseksi extends CI_Model{
 		} else { // beda hari
 			$sql = "SELECT 
 						(select concat('$tanggal1',' ', max(waktu)) from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal1') as in,
+						(select count(*) from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal2') as jumlah,
 						(select concat('$tanggal2',' ', min(waktu)) from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal2') as out;";
 			$result = $this->prs->query($sql);
 		}
