@@ -321,7 +321,7 @@ $(function() {
                 <input type="text" class="form-control" name="overtime" disabled>
             </td>
             <td>
-                <input type="number" class="form-control" name="target[${row}][]" required>
+                <input type="number" min="1" class="form-control" name="target[${row}][]" required>
             </td>
             <td>
                 <select class="form-control target-satuan" name="target_satuan[${row}][]" required>
@@ -336,7 +336,7 @@ $(function() {
                 </select>
             </td>
             <td>
-                <input type="number" class="form-control" name="realisasi[${row}][]" required>
+                <input type="number" min="1" class="form-control" name="realisasi[${row}][]" required>
             </td>
             <td>
                 <input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[${row}][]" readonly>
@@ -387,6 +387,18 @@ $(function() {
 
     $('#form-edit-spl').on('change', e => {
         console.log("You're changing, I can't stand it")
+    })
+
+    $('select[name=kd_lembur').on('change', function() {
+        const val = $(this).val()
+
+        if (val == '001') { //lembur istirahat
+            $('#break-ya, #istirahat-ya').prop('disabled', true)
+            $('#istirahat-no').iCheck('check')
+            $('#break-no').iCheck('check')
+        } else {
+            $('#break-ya, #istirahat-ya').prop('disabled', false)
+        }
     })
 
     $('#example11').on('change', ".spl-cek", function(e) {
