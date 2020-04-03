@@ -3141,3 +3141,112 @@ $(document).on('ready',function(){
     scrollX: true,
   });
 });
+
+// Poliklinik
+$(document).ready(function(){
+  $('#tblPoliklinik').DataTable({
+       dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                title:'',
+                filename: 'Kunjungan Poliklinik'
+            }
+        ]
+    });
+
+  $('#txtPoliklinikTanggal').daterangepicker({
+      "timePicker": true,
+      "timePicker24Hour": true,
+      "singleDatePicker": true,
+      "showDropdowns": true,
+      "autoApply": true,
+      "locale": {
+          "format": "YYYY-MM-DD HH:mm:ss",
+          "separator": " - ",
+          "applyLabel": "OK",
+          "cancelLabel": "Batal",
+          "fromLabel": "Dari",
+          "toLabel": "Hingga",
+          "customRangeLabel": "Custom",
+          "weekLabel": "W",
+          "daysOfWeek": [
+              "Mg",
+              "Sn",
+              "Sl",
+              "Rb",
+              "Km",
+              "Jm",
+              "Sa"
+          ],
+          "monthNames": [
+              "Januari",
+              "Februari",
+              "Maret",
+              "April",
+              "Mei",
+              "Juni",
+              "Juli",
+              "Agustus ",
+              "September",
+              "Oktober",
+              "November",
+              "Desember"
+          ],
+          "firstDay": 1
+      }
+  }, function(start, end, label) {
+    console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+  }); 
+
+  $('#slcPoliklinikPekerja').select2({
+      searching: true,
+      minimumInputLength: 3,
+      placeholder: "No. Induk / Nama Pekerja",
+      allowClear: false,
+      ajax: {
+          url: baseurl + 'MasterPekerja/Poliklinik/getPekerja',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                  })
+              }
+          }
+      }
+  });
+
+  $('#slcPoliklinikKeterangan').select2({
+      searching: true,
+      placeholder: "Keterangan",
+      allowClear: true,
+      tags: true,
+      tokenSeparators: [','],
+      ajax: {
+          url: baseurl + 'MasterPekerja/Poliklinik/getKeterangan',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.keterangan, text: obj.keterangan};
+                  })
+              }
+          }
+      }
+  });
+});
