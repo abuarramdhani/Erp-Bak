@@ -753,7 +753,6 @@ class C_splseksi extends CI_Controller {
 				} else {
 					$presensi = $this->M_splseksi->getPresensi($noind, $tanggal);
 				}
-
 				if (!empty($presensi) && count($presensi) > 0) {
 					foreach ($presensi as $datapres) {
 						$shift = $datapres['kd_shift'];
@@ -916,7 +915,7 @@ class C_splseksi extends CI_Controller {
 						}
 					}else{
 						$error = "1";
-						$errortext = "Tidak Bisa Input Lembur (Nomor Induk Sudah memiliki Data Lembur pada Tanggal Lembur Awal)";
+						$errortext = "Tidak Bisa Input Lembur (Nomor Induk Tidak memiliki Absen PKJ atau PID pada tanggal tersebut)";
 					}
 				}
 			}
@@ -1116,7 +1115,7 @@ class C_splseksi extends CI_Controller {
 		}
 
 		$is_notvalid = [];
-		$review = [];
+		$review = array();
 
 		for($x=0; $x<$size; $x++){
 			$noind = $this->input->post("noind[$x]");
@@ -1206,23 +1205,9 @@ class C_splseksi extends CI_Controller {
 
 			$noind_baru = $this->M_splseksi->getNoindBaru($noind);
 
-			function getLembur($kode) {
-				if(!$kode) return '-';
-
-				$kd_lembur = array(
-					'001' => 'Lembur Istirahat',
-					'002' => 'Lembur Pulang',
-					'003' => 'Lembur Datang',
-					'004' => 'Lembur Hari Libur',
-					'005' => 'Lembur Datang dan Pulang'
-				);
-
-				return $kd_lembur[$kode];
-			}
-
 			$tanggal_shift = $tanggal;
-			$shift = $this->M_splseksi->selectShift($noind, $tanggal);
-			if($lembur == '002' && $shift->kd_shift == '3') {
+			$shift = $this->M_splseksi->show_current_shift($tanggal, $noind);
+			if($lembur == '002' && $shift[0]['kd_shift'] == '3') {
 				$tanggal_shift = date('d-m-Y', strtotime('-1 day '.$tanggal));
 			}
 
@@ -1232,7 +1217,7 @@ class C_splseksi extends CI_Controller {
 				'nama' => $this->M_splseksi->getNameByNoind($noind),
 				'tanggal' => $tanggal,
 				'tanggal_shift' => $tanggal_shift,
-				'lembur' => getLembur($lembur),
+				'lembur' => $this->getLembur($lembur),
 				'awal' => $mulai,
 				'akhir' => $selesai,
 				'break' => $break == 1 ? 'Y' : 'N',
@@ -1302,6 +1287,20 @@ class C_splseksi extends CI_Controller {
 		$this->send_email($sendmail_splid);
 
 		redirect(base_url('SPL/Pusat/InputLembur?result=1'));
+	}
+
+	function getLembur($kode) {
+		if(!$kode) return '-';
+
+		$kd_lembur = array(
+			'001' => 'Lembur Istirahat',
+			'002' => 'Lembur Pulang',
+			'003' => 'Lembur Datang',
+			'004' => 'Lembur Hari Libur',
+			'005' => 'Lembur Datang dan Pulang'
+			);
+
+		return $kd_lembur[$kode];
 	}
 
 	public function rekap_spl(){
