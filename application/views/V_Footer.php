@@ -213,6 +213,7 @@
 		<script src="<?= base_url('assets/js/customPRP.js');?>"></script>
 		<script src="<?= base_url('assets/js/customTM.js');?>"></script>
 		<script src="<?= base_url('assets/js/customPK.js');?>"></script>
+		<script src="<?= base_url('assets/js/customPBI.js');?>"></script>
 		
 
 		
