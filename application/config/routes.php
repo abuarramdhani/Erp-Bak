@@ -4183,3 +4183,9 @@ $route['TicketingMaintenance/C_NewOrder/jenisMesin'] = 'TicketingMaintenance/Sek
 
 $route['TicketingMaintenance/C_OrderList/slcMesinRekap'] = 'TicketingMaintenance/Agent/C_OrderList/slcMesinRekap';
 $route['TicketingMaintenance/C_OrderList/slcSeksiRekap'] = 'TicketingMaintenance/Agent/C_OrderList/slcSeksiRekap';
+
+////////////////////////////////Perhitungan Biaya Impor//////////////////////////////////////////////
+$route['PerhitunganBiayaImpor'] = 'PerhitunganBiayaImpor/C_Index';
+$route['PerhitunganBiayaImpor/Laporan/(:any)'] = 'PerhitunganBiayaImpor/Laporan/C_Laporan/$1';
+$route['PerhitunganBiayaImpor/Laporan/(:any)/(:any)'] = 'PerhitunganBiayaImpor/Laporan/C_Laporan/$1/$2';
+$route['PerhitunganBiayaImpor/Laporan/(:any)/(:any)/(:any)'] = 'PerhitunganBiayaImpor/Laporan/C_Laporan/$1/$2/$3';
