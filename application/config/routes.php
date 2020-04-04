@@ -566,7 +566,7 @@ $route['CateringManagement/JamPesananDatang/Delete/(:any)/(:any)'] 	= 'CateringM
 
 $route['CateringManagement/TmpMakan'] 			= 'CateringManagement/Setup/C_TmpMakan';
 $route['CateringManagement/TmpMakan/Create'] 			= 'CateringManagement/Setup/C_TmpMakan/Create';
-$route['CateringManagement/TmpMakan/Edit/(:any)/(:any)/(:any)'] 			= 'CateringManagement/Setup/C_TmpMakan/Edit/$1/$2/$3';
+$route['CateringManagement/TmpMakan/Edit/(:any)/(:any)/(:any)/(:any)'] 			= 'CateringManagement/Setup/C_TmpMakan/Edit/$1/$2/$3/$4';
 $route['CateringManagement/TmpMakan/Delete/(:any)/(:any)'] 			= 'CateringManagement/Setup/C_TmpMakan/Delete/$1/$2';
 
 $route['CateringManagement/LetakTmpMakan'] 		= 'CateringManagement/Setup/C_LetakTmpMakan';
@@ -603,14 +603,17 @@ $route['CateringManagement/PenjadwalanCatering'] = 'CateringManagement/Penjadwal
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
+
 //------------------------------------CateringManagement - Puasa------------------------------------------------------------//
+$route['CateringManagement/Puasa/Setup'] = 'CateringManagement/Puasa/C_SetupPuasa';
+$route['CateringManagement/Puasa/Setup/(:any)'] = 'CateringManagement/Puasa/C_SetupPuasa/$1';
+
 $route['CateringManagement/Puasa/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa';
-$route['CateringManagement/Puasa/Transfer/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa/Transfer';
-$route['CateringManagement/Puasa/Transfer/Batal'] = 'CateringManagement/Puasa/C_TransferPuasa/Batal';
+$route['CateringManagement/Puasa/Transfer/(:any)'] = 'CateringManagement/Puasa/C_TransferPuasa/$1';
 
 $route['CateringManagement/Puasa/Pengurangan'] = 'CateringManagement/Puasa/C_PenguranganPuasa';
-$route['CateringManagement/Puasa/Pengurangan/Read'] = 'CateringManagement/Puasa/C_PenguranganPuasa/Read';
-$route['CateringManagement/Puasa/Pengurangan/Read/(:any)'] = 'CateringManagement/Puasa/C_PenguranganPuasa/Read/$1';
+$route['CateringManagement/Puasa/Pengurangan/(:any)'] = 'CateringManagement/Puasa/C_PenguranganPuasa/$1';
+$route['CateringManagement/Puasa/Pengurangan/(:any)/(:any)'] = 'CateringManagement/Puasa/C_PenguranganPuasa/$1/$2';
 
 //------------------------------------CateringManagement - Cetak------------------------------------------------------------//
 $route['CateringManagement/Cetak/JadwalLayanan'] = 'CateringManagement/Cetak/C_JadwalLayanan';
@@ -652,6 +655,11 @@ $route['CateringTambahan/Seksi/(:any)/(:any)']	= 'CateringTambahan/C_List/$1/$2'
 $route['CateringManagement/Plotting'] = 'CateringManagement/Pesanan/C_Plotting';
 $route['CateringManagement/Plotting/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1';
 $route['CateringManagement/Plotting/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1/$2';
+
+//------------------------------------CateringManagement - Hitung Pesanan----------------------------------------------------------//
+$route['CateringManagement/HitungPesanan'] = 'CateringManagement/HitungPesanan/C_HitungPesanan';
+$route['CateringManagement/HitungPesanan/(:any)'] = 'CateringManagement/HitungPesanan/C_HitungPesanan/$1';
+$route['CateringManagement/HitungPesanan/(:any)/(:any)'] = 'CateringManagement/HitungPesanan/C_HitungPesanan/$1/$2';
 
 //------------------------------------Management Presensi---------------------------------------------------
 $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';

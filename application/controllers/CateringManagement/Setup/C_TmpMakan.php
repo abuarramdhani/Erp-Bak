@@ -79,7 +79,8 @@ class C_TmpMakan extends CI_Controller
 		}else{
 			$arrData = array(
 				'fs_tempat_makan' => $this->input->post('txtTmpMakan'), 
-				'fs_tempat' => $this->input->post('txtLetakTmpMakan')
+				'fs_tempat' => $this->input->post('txtLetakTmpMakan'),
+				'fs_lokasi' => $this->input->post('txtLokasiTempatMakan')
 			);
 
 			$this->M_tmpmakan->insertTmpmakan($arrData);
@@ -88,13 +89,15 @@ class C_TmpMakan extends CI_Controller
 		}
 	}
 
-	public function Edit($tmpMkn,$tmp,$ltk){
+	public function Edit($tmpMkn,$tmp,$ltk,$lks){
 		$tempatMkn = str_replace(array('-','_','~'), array('+','/','='), $tmpMkn);
 		$tempatMkn = $this->encrypt->decode($tempatMkn);
 		$tempat = str_replace(array('-','_','~'), array('+','/','='), $tmp);
 		$tempat = $this->encrypt->decode($tempat);
 		$letak = str_replace(array('-','_','~'), array('+','/','='), $ltk);
 		$letak = $this->encrypt->decode($letak);
+		$lokasi = str_replace(array('-','_','~'), array('+','/','='), $lks);
+		$lokasi = $this->encrypt->decode($lokasi);
 
 		$user_id = $this->session->userid;
 
@@ -111,7 +114,8 @@ class C_TmpMakan extends CI_Controller
 		$data['fs_tempat_makan'] = $tempatMkn;
 		$data['fs_tempat'] = $tempat;
 		$data['fs_letak'] = $letak;
-		$data['encrypt'] = $tmpMkn."/".$tmp."/".$ltk;
+		$data['fs_lokasi'] = $lokasi;
+		$data['encrypt'] = $tmpMkn."/".$tmp."/".$ltk."/".$lks;
 
 		// print_r($data['letak']);exit();
 
@@ -125,7 +129,8 @@ class C_TmpMakan extends CI_Controller
 		}else{
 			$arrData = array(
 				'fs_tempat_makan' => $this->input->post('txtTmpMakan'), 
-				'fs_tempat' => $this->input->post('txtLetakTmpMakan')
+				'fs_tempat' => $this->input->post('txtLetakTmpMakan'),
+				'fs_lokasi' => $this->input->post('txtLokasiTempatMakan')
 			);
 
 			$arrwhere = array(

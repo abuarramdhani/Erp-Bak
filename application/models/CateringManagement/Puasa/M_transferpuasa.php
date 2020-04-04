@@ -21,7 +21,7 @@ class M_transferpuasa extends CI_Model
 		$sql = " select noind,
 						tempat_makan 
 				 From hrd_khs.tpribadi 
-				 where  hrd_khs.tpribadi.puasa = '1' and keluar = '0' and noind = 'F2228'
+				 where  hrd_khs.tpribadi.puasa = '1' and keluar = '0'
 				 group by 	hrd_khs.tpribadi.Noind,
 				 			tempat_makan 
 				 ORDER BY 	tempat_makan, 

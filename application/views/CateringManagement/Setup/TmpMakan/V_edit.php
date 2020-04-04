@@ -44,6 +44,16 @@
 											</div>
 										</div>
 										<div class="form-group">
+											<label class="control-label col-lg-4">Lokasi</label>
+											<div class="col-lg-4">
+												<select class="select select2" style="width: 100%" name="txtLokasiTempatMakan" data-placeholder="Lokasi Tempat Makan" required>
+													<option></option>
+													<option value="1" <?php echo $fs_lokasi == '1' ? 'selected' : '' ?>>Pusat & Mlati</option>
+													<option value="2" <?php echo $fs_lokasi == '2' ? 'selected' : '' ?>>Tuksono</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
 											<div class="col-lg-8 text-right">
 												<a href="javascript:history.back(1);" class="btn btn-primary">Back</a>
 												<button type="submit" class="btn btn-primary">Submit</button>

@@ -79,7 +79,8 @@ class C_Catering extends CI_Controller
 				'fs_nama_katering' 	=> $this->input->post('txtNamaCatering'),
 				'fs_alamat' 		=> $this->input->post('txtAlamatCatering'),
 				'fs_telepon' 		=> $this->input->post('txtTeleponCatering'),
-				'fb_status' 		=> $this->input->post('txtStatusCatering')
+				'fb_status' 		=> $this->input->post('txtStatusCatering'),
+				'lokasi_kerja'		=> $this->input->post('txtLokasiCatering')
 			);
 
 			$this->M_catering->insertCatering($arrdata);
@@ -118,7 +119,8 @@ class C_Catering extends CI_Controller
 				'fs_nama_katering' 	=> $this->input->post('txtNamaCatering'),
 				'fs_alamat' 		=> $this->input->post('txtAlamatCatering'),
 				'fs_telepon' 		=> $this->input->post('txtTeleponCatering'),
-				'fb_status' 		=> $this->input->post('txtStatusCatering')
+				'fb_status' 		=> $this->input->post('txtStatusCatering'),
+				'lokasi_kerja'		=> $this->input->post('txtLokasiCatering')
 			);
 
 			$this->M_catering->UpdateCateringByKd($arrdata,$plain_text);
