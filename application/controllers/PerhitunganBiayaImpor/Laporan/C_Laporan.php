@@ -60,7 +60,7 @@ class C_Laporan extends CI_Controller {
 		$user_id = $this->session->userid;
 		$noind = $this->session->user;
 
-		$UserResponsibility = $this->M_user->getUserResponsibility($user_id, 2721);
+		$UserResponsibility = $this->M_user->getUserResponsibility($user_id, 2723);
 
 		foreach($UserResponsibility as $UserResponsibility_item){
 			$this->session->set_userdata('responsibility', $UserResponsibility_item['user_group_menu_name']);
