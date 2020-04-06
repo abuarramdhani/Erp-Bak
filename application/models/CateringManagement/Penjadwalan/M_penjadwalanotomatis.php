@@ -13,17 +13,19 @@ class M_penjadwalanotomatis extends CI_Model
 		$this->personalia = $this->load->database('personalia',TRUE);
 	}
 
-	public function deleteAllByPeriode($periode,$i){
+	public function deleteAllByPeriode($periode,$i,$lokasi){
 		$sql1 = "delete from \"Catering\".tjadwal
 				where to_char(fd_tanggal,'month') like '%".$periode['0']."%' 
 				and to_char(fd_tanggal,'YYYY') = '".$periode['1']."'
-				and to_char(fd_tanggal,'dd') >= '".$i."'";
+				and to_char(fd_tanggal,'dd') >= '".$i."'
+				and lokasi = '$lokasi'";
 		$this->personalia->query($sql1);
 
 		$sql2 = "delete from \"Catering\".turutanjadwal
 				where to_char(fd_tanggal,'month') like '%".$periode['0']."%' 
 				and to_char(fd_tanggal,'YYYY') = '".$periode['1']."'
-				and to_char(fd_tanggal,'dd') >= '".$i."'";
+				and to_char(fd_tanggal,'dd') >= '".$i."'
+				and lokasi = '$lokasi'";
 		$this->personalia->query($sql2);
 	}
 
@@ -39,37 +41,42 @@ class M_penjadwalanotomatis extends CI_Model
 		return $result->result_array();
 	}
 
-	public function getCateringActive(){
-		$sql = "select * from \"Catering\".tkatering where fb_status = '1' 
+	public function getCateringActive($lokasi){
+		$sql = "select * from \"Catering\".tkatering 
+				where fb_status = '1' 
+				and lokasi_kerja::int = $lokasi
  				order by fs_kd_katering";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
 
-	public function getCateringCount(){
+	public function getCateringCount($lokasi){
 		$sql = "select COUNT(*) AS jml2 
 				from \"Catering\".tkatering 
 				where fb_status = '1' 
+				and lokasi_kerja::int = $lokasi
 				group by fb_status;";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
 
-	public function getCateringUrutan($kd,$periode,$mulai){
+	public function getCateringUrutan($kd,$periode,$mulai,$lokasi){
 		$sql = "select fn_urutan_jadwal 
 				from \"Catering\".tUrutanJadwal 
 				where fs_kd_katering = '$kd'   
 				and fd_tanggal < '".$mulai." ".$periode['0']." ".$periode['1']."' 
+				and lokasi = '$lokasi'
 				order by fd_tanggal desc limit 1;";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
 
-	public function getCateringNonActiveUrutan($periode,$mulai){
+	public function getCateringNonActiveUrutan($periode,$mulai,$lokasi){
 		$sql = "select ur.fn_urutan_jadwal 
 				from \"Catering\".tUrutanJadwal ur inner join 
 				\"Catering\".tkatering cat on ur.fs_kd_katering = cat.fs_kd_katering 
 				where (ur.fd_tanggal < '".$mulai." ".$periode['0']." ".$periode['1']."') and (cat.fb_status = '0') 
+				and lokasi = '$lokasi'
 				order by ur.fd_tanggal desc limit 1";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
