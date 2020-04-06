@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_DPBVendor extends CI_Controller {
+class C_DPBListPR extends CI_Controller {
 
     public function __construct()
     {
@@ -24,38 +24,34 @@ class C_DPBVendor extends CI_Controller {
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
 
-		$data['Menu']           = 'List DPB Vendor';
+		$data['Menu']           = 'List PR';
 		$data['SubMenuOne']     = '';
 		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
-        $data['DPBVendorList']  = $this->M_dpb->getDPBVendorList();
-
-        $data['judul'] = 'Pengiriman Barang Vendor';
+        $data['DPBVendorList']  = $this->M_dpb->getPRList();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-        $this->load->view('ApprovalDO/MainMenu/V_DPBVendor', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_DPBPR', $data);
         $this->load->view('V_Footer', $data);
     }
 
     public function detail()
     {
         if ( ! $data['NO_PR'] = $this->input->post('data-pr') ) {
-            redirect('ApprovalDO/ListDPBVendor');
+            redirect('ApprovalDO/ListPR');
         }
 
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
 
-        $data['Menu']            = 'List DPB Vendor';
+        $data['Menu']            = 'List PR';
 		$data['SubMenuOne']      = '';
 		$data['UserMenu']        = $this->M_user->getUserMenu($user_id, $resp_id);
 		$data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo']  = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBVendorDetail'] = $this->M_dpb->getDPBVendorDetail($data['NO_PR']);
-        // echo '<pre>';
-        // print_r($data['DPBVendorDetail']);exit;
         $data['UserAccess']      = [   
             'jenis_kendaraan'  => 'readonly',
             'no_kendaraan'     => 'readonly',
@@ -63,7 +59,7 @@ class C_DPBVendor extends CI_Controller {
             'vendor_ekspedisi' => 'readonly',
             'lain_lain'        => 'readonly'
         ];
-
+        //purchasing
         if ($this->session->responsibility_id == '2724') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => 'readonly',
@@ -72,6 +68,7 @@ class C_DPBVendor extends CI_Controller {
                     'vendor_ekspedisi' => '',
                     'lain_lain'        => ''
             ];
+            //marketing
         }else if ($this->session->responsibility_id == '2709') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
@@ -81,7 +78,6 @@ class C_DPBVendor extends CI_Controller {
                     'lain_lain'        => ''
             ];
         }
-
         // if ( $this->session->user === 'B0747' ) {
         //     $data['UserAccess'] = [   
         //         'jenis_kendaraan'  => 'readonly',
@@ -118,14 +114,14 @@ class C_DPBVendor extends CI_Controller {
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-        $this->load->view('ApprovalDO/MainMenu/V_DetailDPBVendor', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_DetailDPBPR', $data);
         $this->load->view('V_Footer', $data);
     }
 
     public function saveDetail()
     {        
         if ( ! $this->input->is_ajax_request() ) {
-            redirect('ApprovalDO/ListDPBVendor');
+            redirect('ApprovalDO/ListPR');
         }
 
         $data = [

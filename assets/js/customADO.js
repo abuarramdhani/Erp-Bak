@@ -247,7 +247,7 @@ $( () => {
             driverPhone           : $('.txtADOExpeditionVendor').val(),
             additionalInformation : $('.txtADOAdditionalInformation').val()
         }
-        let url      = `${baseurl}ApprovalDO/DPBVendor/saveDetail`
+        let url      = `${baseurl}ApprovalDO/ListDPBVendor/saveDetail`
         let question = 'Simpan Data Ini?'
         let success  = 'Berhasil Menyimpan Data'
         let fail     = 'Gagal Menyimpan Data'

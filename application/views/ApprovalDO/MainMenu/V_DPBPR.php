@@ -28,7 +28,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">List Daftar Penerimaan Barang Vendor</h3>
+                    <h3 class="box-title">List Daftar PR</h3>
                 </div>
                 <div class="box-body">
                     <div class="box-body table-responsive no-padding">
@@ -79,7 +79,7 @@
                                                 <td class="text-left"><?= $val['NAMA_SUPIR'] ?></td>
                                                 <td class="text-left"><?= $val['VENDOR_EKSPEDISI'] ?></td>
                                                 <td class="text-center">
-                                                    <form action="<?= base_url('ApprovalDO/ListDPBVendor/Detail') ?>" method="post" target="_blank">
+                                                    <form action="<?= base_url('ApprovalDO/ListPR/Detail') ?>" method="post" target="_blank">
                                                         <input type="hidden" name="data-pr" value="<?= $val['NO_PR'] ?>">
                                                         <button type="submit" title="Detail" class="btn btn-default">
                                                             <i class="fa fa-book"></i>&nbsp; Detail

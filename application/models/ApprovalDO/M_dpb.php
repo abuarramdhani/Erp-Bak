@@ -14,32 +14,48 @@ class M_dpb extends CI_Model
 
     public function getDPBVendorList()
     {
-        $sql = "SELECT distinct
-                        prha.SEGMENT1               no_pr
-                        ,to_char(prha.CREATION_DATE,'DD-MON-YYYY hh24:mi:ss')   tgl_pr
-                        ,case when dpb.jenis_kendaraan is null
-                        then prha.ATTRIBUTE3
-                        else dpb.jenis_kendaraan
-                        end jenis_kendaraan
-                        ,dpb.NO_KENDARAAN
-                        ,dpb.NAMA_SUPIR
-                        ,dpb.VENDOR_EKSPEDISI
-                --            ,msib.SEGMENT1
-                FROM po_requisition_headers_all prha,
-                PO_REQUISITION_LINES_ALL prla,
-                KHS_DPB_KENDARAAN dpb,
-                mtl_system_items_b msib
-                where prha.SEGMENT1 = dpb.NO_PR(+)
-                and msib.inventory_item_id(+) = prla.item_id
-                and prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                and prha.AUTHORIZATION_STATUS not in ('REJECTED','CANCELLED')
-                and msib.SEGMENT1 in ('JASA01','JASA57')
-                and prha.CREATION_DATE between ('01-FEB-2020') and sysdate
-                order by tgl_pr desc";
+        $sql = "select * from khs_dpb_list_dpb_vendor";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function getPRList()
+    {
+        $sql = "select * from khs_dpb_list_pr";
         
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+
+    // public function getDPBVendorList()
+    // {
+    //     $sql = "SELECT distinct
+    //                     prha.SEGMENT1               no_pr
+    //                     ,to_char(prha.CREATION_DATE,'DD-MON-YYYY hh24:mi:ss')   tgl_pr
+    //                     ,case when dpb.jenis_kendaraan is null
+    //                     then prha.ATTRIBUTE3
+    //                     else dpb.jenis_kendaraan
+    //                     end jenis_kendaraan
+    //                     ,dpb.NO_KENDARAAN
+    //                     ,dpb.NAMA_SUPIR
+    //                     ,dpb.VENDOR_EKSPEDISI
+    //             --            ,msib.SEGMENT1
+    //             FROM po_requisition_headers_all prha,
+    //             PO_REQUISITION_LINES_ALL prla,
+    //             KHS_DPB_KENDARAAN dpb,
+    //             mtl_system_items_b msib
+    //             where prha.SEGMENT1 = dpb.NO_PR(+)
+    //             and msib.inventory_item_id(+) = prla.item_id
+    //             and prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+    //             and prha.AUTHORIZATION_STATUS not in ('REJECTED','CANCELLED')
+    //             and msib.SEGMENT1 in ('JASA01','JASA57')
+    //             and prha.CREATION_DATE between ('01-FEB-2020') and sysdate
+    //             order by tgl_pr desc";
+        
+    //     $query = $this->oracle->query($sql);
+    //     return $query->result_array();
+    // }
 
     public function getDPBVendorDetail($id)
     {
