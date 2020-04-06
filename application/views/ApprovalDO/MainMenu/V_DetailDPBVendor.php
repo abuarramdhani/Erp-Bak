@@ -103,9 +103,9 @@
                                         <?php foreach ($DPBVendorDetail as $key => $val) : ?>
                                         <tr>
                                             <td class="text-right"><?= $key+1 ?></td>
-                                            <td class="text-right"><?= $val['NO.DO'] ?></td>
+                                            <td class="text-right"><?= $val['NO_DO_SPB'] ?></td>
                                             <td class="text-left"><?= $val['ITEM'] ?></td>
-                                            <td class="text-right"><?= $val['QTY'] ?></td>
+                                            <td class="text-right"><?= $val['QUANTITY'] ?></td>
                                             <td class="text-left"><?= $val['UOM'] ?></td>
                                             <td class="text-left"><?= $val['RELATION'] ?></td>
                                             <td class="text-left"><?= $val['CITY'] ?></td>
