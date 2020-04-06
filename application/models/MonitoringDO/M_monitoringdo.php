@@ -5,26 +5,40 @@ class M_monitoringdo extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle_dev', true);
 
         $subinv = $this->session->datasubinven;
+    }
+
+// SELECT * FROM er.er_employee_all
+// where resign = '0'
+// --and substring(section_code,1,5) = (select substring(section_code,1,5) from er.er_employee_all
+// --where employee_code = 'B0865')
+
+    public function petugas($data)
+    {
+      $sql = "SELECT
+              	employee_code,
+              	employee_name
+              from
+              	er.er_employee_all
+              where
+              	resign = '0'
+              	and (employee_code like '%$data%'
+              	or employee_name like '%$data%')
+              order by
+              	1";
+      $response = $this->db->query($sql)->result_array();
+      // echo "<pre>";
+      // print_r($response);
+      // die;
+      return $response;
     }
 
     public function cekapi()
     {
       return $this->session->datasubinven;
     }
-
-    public function petugas($data)
-    {
-      $response = $this->db->select('employee_code')
-                           ->where('resign', '0')
-                           ->like('employee_code', $data, 'after')
-                           ->get('er.er_employee_all')
-                           ->result_array();
-      return $response;
-    }
-
 
     public function updatePlatnumber($data, $rm, $hi)
     {
@@ -185,7 +199,7 @@ class M_monitoringdo extends CI_Model
               and kdt.HEADER_ID = kpd.HEADER_ID
               and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
                             and kpd.DELIVERY_FLAG = 'Y'
-                            and kdt.FLAG = 'S'
+                            and kdt.FLAG = 'T'
                            then 1 --'SUDAH MUAT'
                       end
               --
@@ -276,8 +290,8 @@ class M_monitoringdo extends CI_Model
 
     public function runAPIDO($rm)
     {
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -315,283 +329,193 @@ class M_monitoringdo extends CI_Model
 
     public function getDO()
     {
-        $response = $this->oracle->query("SELECT distinct
-               mtrh.REQUEST_NUMBER \"DO/SPB\"
-              ,mtrh.HEADER_ID
-              ,prha.SEGMENT1
-              ,kad.NO_SO
-              ,hzp.PARTY_NAME tujuan
-              ,hzl.CITY kota
-              ,kpd.PERSON_ID petugas
-              ,nvl(kdk.NO_KENDARAAN,prha.ATTRIBUTE) plat_number
-              ,prha.ATTRIBUTE plat_number2
-              ,nvl(kdk.JENIS_KENDARAAN,prha.ATTRIBUTE3) jenis_kendaraan
-              ,kdk.VENDOR_EKSPEDISI ekspedisi
-        from hz_cust_site_uses_all hcsua
-            ,hz_party_sites hps
-            ,hz_locations hzl
-            ,hz_cust_acct_sites_all hcas
-            ,hz_parties hzp
-            ,hz_cust_accounts hca
-            --
-            ,oe_order_headers_all ooha
-            ,oe_order_lines_all oola
-            ,wsh_delivery_details wdd
-            --
-            ,mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
-            -- dengan no PR untuk kendaraan
-            ,khs_dpb_kendaraan kdk
-            ,(select prla.attribute1 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute1 is not null
-              union all
-              select prla.attribute2 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute2 is not null
-              union all
-              select prla.attribute3 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute3 is not null
-              union all
-              select prla.attribute4 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute4 is not null
-              union all
-              select prla.attribute5 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute5 is not null
-              union all
-              select prla.attribute6 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute6 is not null
-              union all
-              select prla.attribute12 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute12 is not null
-              union all
-              select prla.attribute13 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute13 is not null
-                 ) prha
-        where ooha.HEADER_ID = oola.HEADER_ID
-          --
-          and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-          and wdd.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-          and wdd.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER(+)
-          and kpd.PERSON_ID is null
-          and kad.STATUS = 'Approved'
-          and trunc(prha.CREATION_DATE) = to_date(sysdate,'DD-MM-YY')
-          -- dengan no PR untuk kendaraan
-          and mtrh.REQUEST_NUMBER = prha.ATTRIBUTE
-          and kad.NO_DO = prha.ATTRIBUTE
-          and to_char(wdd.BATCH_ID) = prha.ATTRIBUTE
-          and kdk.NO_PR = prha.SEGMENT1
-          --
-          and mtrh.HEADER_ID = mtrl.HEADER_ID
-          and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-          --
-          and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-          and hca.PARTY_ID = hzp.PARTY_ID(+)
-          and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-          and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-          and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-          and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-        UNION ALL
-        select distinct
-               mtrh.REQUEST_NUMBER \"D0/SPB\"
-              ,mtrh.HEADER_ID
-              ,prha.SEGMENT1
-              ,kad.NO_SO
-              ,(select ood.ORGANIZATION_CODE
-                  from org_organization_definitions ood
-                 where to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                 )                                                                      tujuan
-              ,(select upper(substr(
-                                    substr(hou.NAME,1,(instr (
-                                                              (replace(hou.NAME,' (','*(')), '*')-1
-                                                       )
-                                            ),5)
-                                            )
-                  from org_organization_definitions ood
-                      ,hr_organization_units hou
-                 where ood.OPERATING_UNIT = hou.ORGANIZATION_ID
-                   and to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                   )                                                                    kota
-              ,kpd.PERSON_ID petugas
-              ,nvl(kdk.NO_KENDARAAN,prha.ATTRIBUTE5) plat_number
-              ,prha.ATTRIBUTE5 plat_number2
-              ,kdk.JENIS_KENDARAAN
-              ,kdk.VENDOR_EKSPEDISI ekspedisi
-        from mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            --
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
-            -- dengan no PR untuk kendaraan
-            ,khs_dpb_kendaraan kdk
-            ,(select prla.attribute1 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute1 is not null
-              union all
-              select prla.attribute2 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute2 is not null
-              union all
-              select prla.attribute3 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute3 is not null
-              union all
-              select prla.attribute4 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute4 is not null
-              union all
-              select prla.attribute5 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute5 is not null
-              union all
-              select prla.attribute6 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute6 is not null
-              union all
-              select prla.attribute12 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute12 is not null
-              union all
-              select prla.attribute13 attribute
-                    ,prha.segment1
-                    ,prha.attribute3
-                    ,prha.attribute5
-                    ,prha.attribute4
-                    ,prha.creation_date
-                from po_requisition_headers_all prha
-                    ,po_requisition_lines_all prla
-               where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                 and prla.attribute13 is not null
-                 ) prha
-        where mtrh.HEADER_ID = mtrl.HEADER_ID
-          -- dengan no PR untuk kendaraan
-          and mtrh.request_number = prha.ATTRIBUTE(+)
-          and kdk.NO_PR = prha.SEGMENT1
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER(+)
-          and kad.NO_SO is null
-          and kpd.PERSON_ID is null
-          and trunc(prha.CREATION_DATE) = to_date(sysdate,'DD-MM-YY')
-          and kad.STATUS = 'Approved'
-        order by petugas
-                ,1")->result_array();
+        $datacustom = '24-Mar-20';
+        $response = $this->oracle->query("with
+                purchasing as (select nvl(prha.ATTRIBUTE,kdk.NO_PR) request_number
+                                     ,prha.SEGMENT1 no_pr
+                                     ,nvl(kdk.JENIS_KENDARAAN,prha.ATTRIBUTE3) jenis_kendaraan
+                                     ,kdk.NO_KENDARAAN plat_number
+                                     ,kdk.VENDOR_EKSPEDISI ekspedisi
+                                     ,kdk.CREATION_DATE
+                                from khs_dpb_kendaraan kdk
+                                    ,(select prla.attribute1 attribute
+                                                ,prha.segment1
+                                                ,prha.attribute3
+                                            from po_requisition_headers_all prha
+                                                ,po_requisition_lines_all prla
+                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                                             and prla.attribute1 is not null
+                                          union all
+                                          select prla.attribute2 attribute
+                                                ,prha.segment1
+                                                ,prha.attribute3
+                                            from po_requisition_headers_all prha
+                                                ,po_requisition_lines_all prla
+                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                                             and prla.attribute2 is not null
+                                          union all
+                                          select prla.attribute3 attribute
+                                                ,prha.segment1
+                                                ,prha.attribute3
+                                            from po_requisition_headers_all prha
+                                                ,po_requisition_lines_all prla
+                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                                             and prla.attribute3 is not null
+                                          union all
+                                          select prla.attribute4 attribute
+                                                ,prha.segment1
+                                                ,prha.attribute3
+                                            from po_requisition_headers_all prha
+                                                ,po_requisition_lines_all prla
+                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                                             and prla.attribute4 is not null
+                                          union all
+                                          select prla.attribute5 attribute
+                                                ,prha.segment1
+                                                ,prha.attribute3
+                                            from po_requisition_headers_all prha
+                                                ,po_requisition_lines_all prla
+                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                                             and prla.attribute5 is not null
+                                          union all
+                                          select prla.attribute6 attribute
+                                                ,prha.segment1
+                                                ,prha.attribute3
+                                            from po_requisition_headers_all prha
+                                                ,po_requisition_lines_all prla
+                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                                             and prla.attribute6 is not null
+                                          union all
+                                          select prla.attribute12 attribute
+                                                ,prha.segment1
+                                                ,prha.attribute3
+                                            from po_requisition_headers_all prha
+                                                ,po_requisition_lines_all prla
+                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                                             and prla.attribute12 is not null
+                                          union all
+                                          select prla.attribute13 attribute
+                                                ,prha.segment1
+                                                ,prha.attribute3
+                                            from po_requisition_headers_all prha
+                                                ,po_requisition_lines_all prla
+                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                                             and prla.attribute13 is not null
+                                             ) prha
+                               where kdk.NO_PR = prha.SEGMENT1(+)
+                            )
+                ,app_spb as (select distinct
+                                    mtrh.REQUEST_NUMBER
+                                   ,mtrh.HEADER_ID
+                                   ,kad.NO_SO
+                                   ,ood.ORGANIZATION_CODE tujuan
+                                   ,upper(substr(
+                                                 substr(hou.NAME,1,(instr (
+                                                                           (replace(hou.NAME,' (','*(')), '*')-1
+                                                                   )
+                                                        ),5)
+                                             ) kota
+                                   ,trim(substr(mtrl.REFERENCE,5)) reference
+                               from mtl_txn_request_headers mtrh
+                                   ,mtl_txn_request_lines mtrl
+                                   ,khs_approval_do kad
+                                   --
+                                   ,org_organization_definitions ood
+                                   ,hr_organization_units hou
+                              where mtrh.HEADER_ID = mtrl.HEADER_ID
+                                and mtrh.REQUEST_NUMBER = kad.NO_DO
+                                --
+                                and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
+                                and to_char(ood.ORGANIZATION_ID) = trim(substr(mtrl.REFERENCE,5))
+                                and kad.STATUS = 'Approved'
+                                )
+                ,app_do as (select distinct
+                                   mtrh.REQUEST_NUMBER
+                                  ,mtrh.HEADER_ID
+                                  ,kad.NO_SO
+                                  ,hzp.PARTY_NAME tujuan
+                                  ,hzl.CITY kota
+                              from hz_cust_site_uses_all hcsua
+                                  ,hz_party_sites hps
+                                  ,hz_locations hzl
+                                  ,hz_cust_acct_sites_all hcas
+                                  ,hz_parties hzp
+                                  ,hz_cust_accounts hca
+                                  --
+                                  ,oe_order_headers_all ooha
+                                  ,oe_order_lines_all oola
+                                  ,wsh_delivery_details wdd
+                                  --
+                                  ,mtl_txn_request_headers mtrh
+                                  ,mtl_txn_request_lines mtrl
+                                  ,khs_approval_do kad
+                             where ooha.HEADER_ID = oola.HEADER_ID
+                               --
+                               and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
+                               and wdd.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+                               and wdd.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
+                               --
+                               and kad.NO_DO = mtrh.REQUEST_NUMBER
+                               and kad.STATUS = 'Approved'
+                               --
+                               and mtrh.HEADER_ID = mtrl.HEADER_ID
+                               and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+                               --
+                               and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
+                               and hca.PARTY_ID = hzp.PARTY_ID(+)
+                               and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
+                               and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
+                               and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
+                               and hps.LOCATION_ID = hzl.LOCATION_ID(+)
+                               )
+                ,approved as (select distinct
+                                     mtrh.HEADER_ID
+                                    ,mtrh.REQUEST_NUMBER
+                                    ,mtrh.CREATION_DATE
+                                    ,kad.NO_SO
+                                    ,mtrl.REFERENCE
+                                    --
+                                    ,kpd.PERSON_ID petugas
+                                from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                                    ,khs_approval_do kad
+                                    ,khs_person_delivery kpd
+                               where mtrh.HEADER_ID = mtrl.HEADER_ID
+                                 and mtrh.REQUEST_NUMBER = kad.NO_DO
+                                 and kad.STATUS =  'Approved'
+                                 and mtrh.REQUEST_NUMBER = kpd.REQUEST_NUMBER(+)
+                                 and kpd.PERSON_ID is null
+                                 )
+                select app.REQUEST_NUMBER \"DO/SPB\"
+                      ,app.HEADER_ID
+                      ,app.CREATION_DATE
+                      ,prha.NO_PR
+                      ,app.NO_SO
+                      ,case when app.NO_SO is null
+                            then (select distinct aa.TUJUAN
+                                    from app_spb aa
+                                   where aa.REQUEST_NUMBER = app.REQUEST_NUMBER)
+                            else (select distinct bb.TUJUAN
+                                    from app_do bb
+                                   where bb.REQUEST_NUMBER = app.REQUEST_NUMBER)
+                       end TUJUAN
+                      ,case when app.NO_SO is null
+                            then (select distinct aa.KOTA
+                                    from app_spb aa
+                                   where aa.REQUEST_NUMBER = app.REQUEST_NUMBER)
+                            else (select distinct bb.KOTA
+                                    from app_do bb
+                                   where bb.REQUEST_NUMBER = app.REQUEST_NUMBER)
+                       end KOTA
+                      ,app.PETUGAS
+                      ,prha.JENIS_KENDARAAN
+                      ,prha.EKSPEDISI
+                      ,prha.PLAT_NUMBER
+                  from approved app
+                      ,purchasing prha
+                 where app.REQUEST_NUMBER = prha.REQUEST_NUMBER(+)
+                   and trunc(prha.CREATION_DATE) = trunc(sysdate)
+                order by 3")->result_array();
         if (empty($response)) {
             $response = null;
         }
@@ -1080,7 +1004,7 @@ class M_monitoringdo extends CI_Model
               --         end
               and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
                     and kpd.DELIVERY_FLAG = 'Y'
-                    and kdt.FLAG in ('S','B')
+                    and kdt.FLAG = 'T' --in ('S','B')
                    then 1 --'SUDAH MUAT'
               end
               --
@@ -1103,6 +1027,10 @@ class M_monitoringdo extends CI_Model
         // echo "<pre>";
         // print_r($data);
         // die;
+        // if(empty($data[PLAT_NUMBER])){
+        //   $data[PLAT_NUMBER] = '-';
+        // }
+
         if (!empty($data['HEADER_ID'])) {
             if (!empty($data['REQUEST_NUMBER'])) {
                 if (!empty($data['PERSON_ID'])) {
@@ -1121,38 +1049,42 @@ class M_monitoringdo extends CI_Model
                                    ,'$data[PLAT_NUMBER]'
                                    )
                             ");
-                            $response = 'suksesinput';
+                            $response = 1;
                         } else {
-                            $response = array(
-                  'success' => false,
-                  'message' => 'PLAT_NUMBER is empty, cannot do this action'
-              );
+                            $response = 0;
+                            // $response = array(
+                            //     'success' => false,
+                            //     'message' => 'PLAT_NUMBER is empty, cannot do this action'
+                            // );
                         }
                     } else {
-                        $response = array(
-                  'success' => false,
-                  'message' => 'DELIVERY_FLAG is empty, cannot do this action'
-              );
+                        $response = 0;
+                        // $response = array(
+                        //     'success' => false,
+                        //     'message' => 'DELIVERY_FLAG is empty, cannot do this action'
+                        // );
                     }
                 } else {
-                    $response = array(
-                'success' => false,
-                'message' => 'PERSON_ID is empty, cannot do this action'
-            );
+                    $response = 0;
+                    // $response = array(
+                    //     'success' => false,
+                    //     'message' => 'PERSON_ID is empty, cannot do this action'
+                    // );
                 }
             } else {
-                $response = array(
-              'success' => false,
-              'message' => 'REQUEST_NUMBER is empty, cannot do this action'
-          );
+                $response = 0;
+                // $response = array(
+                //     'success' => false,
+                //     'message' => 'REQUEST_NUMBER is empty, cannot do this action'
+                // );
             }
         } else {
-            $response = array(
-            'success' => false,
-            'message' => 'header id is empty, cannot do this action'
-        );
+            $response = 0;
+            // $response = array(
+            //     'success' => false,
+            //     'message' => 'header id is empty, cannot do this action'
+            // );
         }
-
         return $response;
     }
 
