@@ -23,7 +23,7 @@
 						<a href="<?php
 						if (base_url()=='http://erp.quick.com/')
 							{
-								str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
+								echo str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
 							}
 							else
 							{
@@ -36,7 +36,7 @@
 
 							if (base_url()=='http://erp.quick.com/')
 								{
-									str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
+									echo str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
 								}
 								else
 								{
