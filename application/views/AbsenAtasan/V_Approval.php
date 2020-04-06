@@ -21,7 +21,7 @@
 				</div>
 				<div class="col-md-8">
 						<a href="<?php
-						if (base_url()=='http://erp.quick.com')
+						if (base_url()=='http://erp.quick.com/')
 							{
 								str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
 							}
@@ -34,7 +34,7 @@
 						 ?>">
 							<img src="<?php 
 
-							if (base_url()=='http://erp.quick.com')
+							if (base_url()=='http://erp.quick.com/')
 								{
 									str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
 								}
