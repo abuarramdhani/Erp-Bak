@@ -678,7 +678,11 @@ class M_splseksi extends CI_Model{
 				$tommorow = "AND waktu <> '{$execute->row()->keluar}' ";
 			}
 
-			$sql = "SELECT min(waktu) as in, max(waktu) as out, count(*) as jumlah from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal1' $tommorow;";	
+			$sql = "SELECT min(concat(tanggal::date,' ',waktu)::timestamp) as in, 
+						max(concat(tanggal::date,' ',waktu)::timestamp) as out, 
+						count(*) as jumlah 
+					from \"Presensi\".tprs_shift 
+					where noind = '$noind' and tanggal = '$tanggal1' $tommorow;";	
 			
 			$result = $this->prs->query($sql);
 		} else { // beda hari
