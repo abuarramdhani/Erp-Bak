@@ -70,7 +70,7 @@ class C_PenguranganPuasa extends CI_Controller
 			$tanggal = $periode_text;
 			$noind = $this->input->post('txtNoindPuasaEdit');
 			$status = $this->input->post('radioStatusPuasa');
-			print_r($_POST);
+			// print_r($_POST);exit();
 			if (isset($status)) {
 				$tanggaledit = $this->input->post('txtTanggalPuasaEdit');
 				$tanggalUpdate = explode(" - ", $tanggaledit);

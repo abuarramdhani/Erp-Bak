@@ -27,6 +27,7 @@ class M_setuppuasa extends CI_Model
 				on t1.kodesie = t2.kodesie
 				and t1.keluar = '0'
 				and lokasi_kerja in ('01','02','03','04')
+				and left(noind,1) not in ('M','Z','L')
 				order by t1.kodesie,t1.noind";
 		return $this->personalia->query($sql)->result_array();
 	}
@@ -53,7 +54,8 @@ class M_setuppuasa extends CI_Model
 				and t1.keluar = '0'
 				and upper(trim(agama)) in ('ISLAM')
 				and puasa = '0'
-				and lokasi_kerja in ('01','02','03','04')";
+				and lokasi_kerja in ('01','02','03','04')
+				and left(noind,1) not in ('M','Z','L')";
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -72,7 +74,8 @@ class M_setuppuasa extends CI_Model
 				and t1.keluar = '0'
 				and upper(trim(agama)) not in ('ISLAM')
 				and puasa = '1'
-				and lokasi_kerja in ('01','02','03','04')";
+				and lokasi_kerja in ('01','02','03','04')
+				and left(noind,1) not in ('M','Z','L')";
 		return $this->personalia->query($sql)->result_array();
 	}
 }
