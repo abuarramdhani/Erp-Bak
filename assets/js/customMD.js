@@ -164,7 +164,7 @@ function approveMD() {
           Swal.showLoading()
         },
         success: function(result) {
-          window.alert(result);
+          // window.alert(result);
           if (result == 1) {
             // window.alert('test');
             Swal.fire({
