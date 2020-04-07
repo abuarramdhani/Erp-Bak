@@ -282,8 +282,10 @@
 										<td><?= $item['nama'] ?></td>
 										<td><?= $item['tanggal_shift'] ?></td>
 										<td><?= $item['lembur'] ?></td>
-										<td><?= date('d-m-Y', strtotime($item['tanggal']))." ".$item['awal'] ?></td>
-										<td><?= (strtotime($item['awal']) > strtotime($item['akhir'])) ? date('d-m-Y', strtotime('+1 day '.$item['tanggal']))." ".$item['akhir'] : date('d-m-Y', strtotime($item['tanggal']))." ".$item['akhir'] ?></td>
+										<td><?= $item['tgl_ses1'] ?></td>
+										<td><?= $item['tgl_ses2'] ?></td>
+										<!-- <td><?= date('d-m-Y', strtotime($item['tanggal']))." ".$item['awal'] ?></td>
+										<td><?= (strtotime($item['awal']) > strtotime($item['akhir'])) ? date('d-m-Y', strtotime('+1 day '.$item['tanggal']))." ".$item['akhir'] : date('d-m-Y', strtotime($item['tanggal']))." ".$item['akhir'] ?></td> -->
 										<td><?= $item['break'] ?></td>
 										<td><?= $item['istirahat'] ?></td>
 										<td><?= $item['jam_lembur'] ?></td>

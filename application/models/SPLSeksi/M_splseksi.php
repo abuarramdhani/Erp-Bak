@@ -110,7 +110,7 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function show_current_shift($tanggal, $noind){
-		$sql = "select *from \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
+		$sql = "select * from \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		$query = $this->prs->query($sql);
 		return $query->result_array();
 	}
