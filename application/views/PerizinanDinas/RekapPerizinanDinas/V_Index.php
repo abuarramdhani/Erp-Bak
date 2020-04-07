@@ -35,7 +35,7 @@
                                         <div class="col-lg-12">
                                             <label class="col-lg-2">Jenis Rekap :</label>
                                             <div class="form-group col-lg-5">
-                                                <input type="radio" name="PerSurat" class="RD_radioDinas" value="1" required>Rekap Per Surat<br>
+                                                <input checked type="radio" name="PerSurat" class="RD_radioDinas" value="1" required>Rekap Per Surat<br>
                                                 <input type="radio" name="PerSurat" class="RD_radioDinas" value="2" required>Rekap Per Pekerja
                                             </div>
                                         </div>
@@ -84,3 +84,9 @@
         </div>
     </div>
 </section>
+<script>
+    window.addEventListener('load', function () {
+        $('#periodeRekap').val('<?= $tgl.' - '.$tgl; ?>');
+        $('#PD_Cari').trigger('click');
+    });
+</script>

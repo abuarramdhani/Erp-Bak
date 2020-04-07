@@ -80,4 +80,24 @@ class M_index extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
+    public function getIDIzinbyID($id)
+    {
+        $sql = "SELECT * from \"Surat\".tperizinan
+                where izin_id = '$id' ORDER BY izin_id DESC";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function hapusIzin($id)
+    {
+        // $this->personalia->where('izin_id', $id);
+        // $this->personalia->delete('"Surat".tperizinan');
+
+        $this->personalia->where('izin_id', $id);
+        $this->personalia->delete('"Surat".tpekerja_izin');
+
+        $this->personalia->where('izin_id', $id);
+        $this->personalia->delete('"Surat".taktual_izin');
+        return true;
+    }
+
 } ?>
