@@ -60,6 +60,7 @@ class C_Index extends CI_Controller
 		$today = date('Y-m-d');
 		$data['Izin_id'] = $this->M_index->getIDIzin();
 		$data['noind'] = $this->M_index->getNoind();
+		$data['tgl'] = date('d/m/Y');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -177,6 +178,21 @@ class C_Index extends CI_Controller
 			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Human',$data);
 		}
 		echo json_encode($view);
+	}
+
+	public function hapusini($id)
+	{
+		$lnoind = $this->M_index->getIDIzinbyID($id);
+		$noind = '';
+		foreach ($lnoind as $key) {
+			$noind .= $key['noind'].' ';
+		}
+		$aksi = 'HAPUS PERIZINAN DINAS';
+		$detail = 'Hapus Izin ID='.$id.' noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		$del = $this->M_index->hapusIzin($id);
+		
+		return $del;
 	}
 
 }

@@ -15,6 +15,7 @@
                 <th class="text-center" style="white-space: nowrap;">Tempat Makan</th>
                 <th class="text-center" style="white-space: nowrap;">Keterangan</th>
                 <th class="text-center" style="white-space: nowrap;">Status</th>
+                <th class="text-center" style="white-space: nowrap;">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -49,6 +50,13 @@
                           <?php } elseif ($row['status'] == 2) { ?>
                               <span class="label label-danger">Rejected</span>
                           <?php } ?></td>
+                    <td>
+                        <?php if (date('Y-m-d', strtotime($row['created_date'])) == date('Y-m-d')): ?>
+                            <button id="<?= $row['izin_id'] ?>" class="btn btn-danger btnDeldinas">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        <?php endif ?>
+                    </td>
                 </tr>
                 <?php
                 $no++;

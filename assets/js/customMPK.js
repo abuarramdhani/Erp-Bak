@@ -2491,9 +2491,9 @@ $(document).ready(function(){
         }
     });
 
-    $("input.periodeRekap").monthpicker({
-      changeYear:true,
-      dateFormat: 'yy-mm', });
+    // $("input.periodeRekap").monthpicker({
+    //   changeYear:true,
+    //   dateFormat: 'yy-mm', });
 
     $('#app_edit_Dinas').on('click', function () {
         var loading = baseurl + 'assets/img/gif/loadingquick.gif';
@@ -3249,4 +3249,50 @@ $(document).ready(function(){
           }
       }
   });
+
+    $('#areaRekapIzin').on('click', '.btnDeldinas', function(){
+        var id = $(this).attr('id');
+        var ini = $(this);
+        Swal.fire({
+            title: 'Apa Anda yakin akan menghapus izin "'+id+'" ?',
+            allowOutsideClick: true,
+            allowEscapeKey: true,
+            type: 'question',
+            showCancelButton: true
+        }).then(function(result) {
+            if (result.value) {
+                $(this).attr('disabled', true);
+                $.ajax({
+                    type: 'GET',
+                    url: baseurl+'PD/RekapPerizinanDinas/hapusini/'+id,
+                    data: {test: 12},
+                    success: function(response){
+                        $('#PD_Cari').click();
+                        mpk_showAlert('success', 'Data Berhasil di Hapus !');
+                    }
+                });
+            }
+        });
+    });
+
 });
+
+function mpk_showAlert(icon, title)
+{
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 5000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
+  Toast.fire({
+    icon: icon,
+    title: title
+  })
+}
