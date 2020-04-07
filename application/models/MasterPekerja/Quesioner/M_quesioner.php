@@ -13,6 +13,7 @@ class M_quesioner extends CI_Model
         $query = $mysql_pendataan->query("SELECT
         tbl1.id
         ,gcr.creation_by
+        ,tp.noind
         ,tp.nama
         ,qts.seksi
         ,(tbl1.question_1
@@ -108,43 +109,44 @@ class M_quesioner extends CI_Model
         FROM
         (SELECT
         gcr.id
-        ,case when gcr.question_1 = 'Y' then 1 else 0 end question_1
-        ,case when gcr.question_2 = 'Y' then 1 else 0 end  question_2
-        ,case when gcr.question_3 = 'Y' then 1 else 0 end  question_3
-        ,case when gcr.question_4 = 'Y' then 1 else 0 end  question_4
-        ,case when gcr.question_5 = 'Y' then 1 else 0 end  question_5
-        ,case when gcr.question_6 = 'Y' then 1 else 0 end  question_6
-        ,case when gcr.question_7 = 'Y' then 1 else 0 end  question_7
-        ,case when gcr.question_8 = 'Y' then 1 else 0 end  question_8
-        ,case when gcr.question_9 = 'Y' then 1 else 0 end  question_9
-        ,case when gcr.question_10 = 'Y' then 1 else 0 end  question_10
-        ,case when gcr.question_11 = 'Y' then 1 else 0 end  question_11
-        ,case when gcr.question_12 = 'Y' then 1 else 0 end  question_12
-        ,case when gcr.question_13 = 'Y' then 1 else 0 end  question_13
-        ,case when gcr.question_14 = 'Y' then 1 else 0 end  question_14
-        ,case when gcr.question_15 = 'Y' then 1 else 0 end  question_15
-        ,case when gcr.question_16 = 'Y' then 1 else 0 end  question_16
-        ,case when gcr.question_17 = 'Y' then 1 else 0 end  question_17
-        ,case when gcr.question_18 = 'Y' then 1 else 0 end  question_18
-        ,case when gcr.question_19 = 'Y' then 1 else 0 end  question_19
-        ,case when gcr.question_20 = 'Y' then 1 else 0 end  question_20
-        ,case when gcr.question_21 = 'Y' then 1 else 0 end  question_21
-        ,case when gcr.question_22 = 'Y' then 1 else 0 end  question_22
-        ,case when gcr.question_23 = 'Y' then 1 else 0 end  question_23
-        ,case when gcr.question_24 = 'Y' then 1 else 0 end  question_24
-        ,case when gcr.question_25 = 'Y' then 1 else 0 end  question_25
-        ,case when gcr.question_26 = 'Y' then 1 else 0 end  question_26
-        ,case when gcr.question_27 = 'Y' then 1 else 0 end  question_27
-        ,case when gcr.question_28 = 'Y' then 1 else 0 end  question_28
-        ,case when gcr.question_29 = 'Y' then 1 else 0 end  question_29
-        ,case when gcr.question_30 = 'Y' then 1 else 0 end  question_30
+        ,gcr.creation_by
+        ,(SELECT CASE WHEN question_1 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1) question_1
+        ,(SELECT CASE WHEN question_2 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_2
+        ,(SELECT CASE WHEN question_3 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_3
+        ,(SELECT CASE WHEN question_4 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_4
+        ,(SELECT CASE WHEN question_5 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_5
+        ,(SELECT CASE WHEN question_6 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_6
+        ,(SELECT CASE WHEN question_7 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_7
+        ,(SELECT CASE WHEN question_8 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_8
+        ,(SELECT CASE WHEN question_9 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_9
+        ,(SELECT CASE WHEN question_10 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_10
+        ,(SELECT CASE WHEN question_11 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_11
+        ,(SELECT CASE WHEN question_12 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_12
+        ,(SELECT CASE WHEN question_13 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_13
+        ,(SELECT CASE WHEN question_14 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_14
+        ,(SELECT CASE WHEN question_15 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_15
+        ,(SELECT CASE WHEN question_16 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_16
+        ,(SELECT CASE WHEN question_17 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_17
+        ,(SELECT CASE WHEN question_18 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_18
+        ,(SELECT CASE WHEN question_19 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_19
+        ,(SELECT CASE WHEN question_20 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_20
+        ,(SELECT CASE WHEN question_21 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_21
+        ,(SELECT CASE WHEN question_22 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_22
+        ,(SELECT CASE WHEN question_23 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_23
+        ,(SELECT CASE WHEN question_24 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_24
+        ,(SELECT CASE WHEN question_25 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_25
+        ,(SELECT CASE WHEN question_26 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_26
+        ,(SELECT CASE WHEN question_27 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_27
+        ,(SELECT CASE WHEN question_28 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_28
+        ,(SELECT CASE WHEN question_29 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_29
+        ,(SELECT CASE WHEN question_30 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_30
         FROM
         pendataan.ga_covid19_risk gcr
-        WHERE
-        gcr.active_flag is NULL) tbl1
+        GROUP BY gcr.creation_by) tbl1
         inner JOIN pendataan.ga_covid19_risk gcr ON tbl1.id = gcr.id 
         inner JOIN pendataan.tpribadi tp ON gcr.creation_by = tp.noind
-        inner JOIN quickc01_dinas_luar_online.t_seksi qts ON tp.kodesie = qts.kodesie");
+        inner JOIN quickc01_dinas_luar_online.t_seksi qts ON tp.kodesie = qts.kodesie
+        order by tp.kodesie,tp.noind");
 
         return $query->result_array();
     }
@@ -179,39 +181,39 @@ class M_quesioner extends CI_Model
         (SELECT
         gcr.id
         ,gcr.creation_by
-        ,case when gcr.question_1 = 'Y' then 1 else 0 end question_1
-        ,case when gcr.question_2 = 'Y' then 1 else 0 end  question_2
-        ,case when gcr.question_3 = 'Y' then 1 else 0 end  question_3
-        ,case when gcr.question_4 = 'Y' then 1 else 0 end  question_4
-        ,case when gcr.question_5 = 'Y' then 1 else 0 end  question_5
-        ,case when gcr.question_6 = 'Y' then 1 else 0 end  question_6
-        ,case when gcr.question_7 = 'Y' then 1 else 0 end  question_7
-        ,case when gcr.question_8 = 'Y' then 1 else 0 end  question_8
-        ,case when gcr.question_9 = 'Y' then 1 else 0 end  question_9
-        ,case when gcr.question_10 = 'Y' then 1 else 0 end  question_10
-        ,case when gcr.question_11 = 'Y' then 1 else 0 end  question_11
-        ,case when gcr.question_12 = 'Y' then 1 else 0 end  question_12
-        ,case when gcr.question_13 = 'Y' then 1 else 0 end  question_13
-        ,case when gcr.question_14 = 'Y' then 1 else 0 end  question_14
-        ,case when gcr.question_15 = 'Y' then 1 else 0 end  question_15
-        ,case when gcr.question_16 = 'Y' then 1 else 0 end  question_16
-        ,case when gcr.question_17 = 'Y' then 1 else 0 end  question_17
-        ,case when gcr.question_18 = 'Y' then 1 else 0 end  question_18
-        ,case when gcr.question_19 = 'Y' then 1 else 0 end  question_19
-        ,case when gcr.question_20 = 'Y' then 1 else 0 end  question_20
-        ,case when gcr.question_21 = 'Y' then 1 else 0 end  question_21
-        ,case when gcr.question_22 = 'Y' then 1 else 0 end  question_22
-        ,case when gcr.question_23 = 'Y' then 1 else 0 end  question_23
-        ,case when gcr.question_24 = 'Y' then 1 else 0 end  question_24
-        ,case when gcr.question_25 = 'Y' then 1 else 0 end  question_25
-        ,case when gcr.question_26 = 'Y' then 1 else 0 end  question_26
-        ,case when gcr.question_27 = 'Y' then 1 else 0 end  question_27
-        ,case when gcr.question_28 = 'Y' then 1 else 0 end  question_28
-        ,case when gcr.question_29 = 'Y' then 1 else 0 end  question_29
-        ,case when gcr.question_30 = 'Y' then 1 else 0 end  question_30
+        ,(SELECT CASE WHEN question_1 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1) question_1
+        ,(SELECT CASE WHEN question_2 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_2
+        ,(SELECT CASE WHEN question_3 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_3
+        ,(SELECT CASE WHEN question_4 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_4
+        ,(SELECT CASE WHEN question_5 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_5
+        ,(SELECT CASE WHEN question_6 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_6
+        ,(SELECT CASE WHEN question_7 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_7
+        ,(SELECT CASE WHEN question_8 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_8
+        ,(SELECT CASE WHEN question_9 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_9
+        ,(SELECT CASE WHEN question_10 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_10
+        ,(SELECT CASE WHEN question_11 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_11
+        ,(SELECT CASE WHEN question_12 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_12
+        ,(SELECT CASE WHEN question_13 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_13
+        ,(SELECT CASE WHEN question_14 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_14
+        ,(SELECT CASE WHEN question_15 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_15
+        ,(SELECT CASE WHEN question_16 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_16
+        ,(SELECT CASE WHEN question_17 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_17
+        ,(SELECT CASE WHEN question_18 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_18
+        ,(SELECT CASE WHEN question_19 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_19
+        ,(SELECT CASE WHEN question_20 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_20
+        ,(SELECT CASE WHEN question_21 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id LIMIT 1)  question_21
+        ,(SELECT CASE WHEN question_22 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_22
+        ,(SELECT CASE WHEN question_23 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_23
+        ,(SELECT CASE WHEN question_24 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_24
+        ,(SELECT CASE WHEN question_25 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_25
+        ,(SELECT CASE WHEN question_26 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_26
+        ,(SELECT CASE WHEN question_27 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_27
+        ,(SELECT CASE WHEN question_28 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_28
+        ,(SELECT CASE WHEN question_29 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_29
+        ,(SELECT CASE WHEN question_30 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_30
         FROM
         pendataan.ga_covid19_risk gcr
-        where gcr.active_flag is null) tbl1
+        GROUP BY gcr.creation_by) tbl1
         INNER JOIN pendataan.tpribadi tp on tbl1.creation_by = tp.noind
         INNER JOIN quickc01_dinas_luar_online.t_seksi qts on tp.kodesie = qts.kodesie
         -- INNER JOIN quickc01_dinas_luar_online.t_lokasi_kerja qtlk on tp.lokasi_kerja = qtlk.lokasi_id

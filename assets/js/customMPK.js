@@ -3133,11 +3133,25 @@ $(document).on('click',function(e){
 })
 
 $(document).on('ready',function(){
-  $('#tblPendataanTidakHadir').dataTable({
+  $('#tblPendataanTidakHadir').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+      {
+        extend:'excel',
+        title:'Data Pendataan Tidak Hadir '+d+'-'+m+'-'+y
+      }
+    ],
     scrollX: true,
   });
 
-  $('#tblPendataanBelumInput').dataTable({
+  $('#tblPendataanBelumInput').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+      {
+        extend:'excel',
+        title:'Data Belum Input Pendataan '+d+'-'+m+'-'+y
+      }
+    ],
     scrollX: true,
   });
 });
