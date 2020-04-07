@@ -172,14 +172,14 @@ class C_Index extends CI_Controller
 			$dataPersonalia = $this->M_absenatasan->getEmailPersonalia();
 			// echo "<pre>";print_r($dataPersonalia);exit();
 
-			// $this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
+			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
 
 			foreach ($dataPersonalia as $key => $personalia) {
 				$internalMailPersonalia = $personalia['internal_mail'];
 				$externalMailPersonalia	= $personalia['external_mail'];
 				$namaPekerjaPersonalia	= $personalia['employee_name'];
 
-			// $this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
+			$this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
 			}
 
 			// mulai transfer------------------------------------------------------------------------------ 
