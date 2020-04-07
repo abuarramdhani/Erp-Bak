@@ -10,6 +10,7 @@
                         <thead>
                             <tr class="bg-primary">
                                 <th class="bg-primary">No</th>
+                                <th class="bg-primary">No. Induk</th>
                                 <th class="bg-primary">Nama</th>
                                 <th class="bg-primary">Seksi</th>
                                 <th>Resiko tertular di luar rumah (10)</th>
@@ -53,6 +54,7 @@
                         <?php $no=0; foreach ($data_resiko_pribadi as $key => $list) { $no++; ?>
                             <tr>
                                 <td><?= $no;?></td>
+                                <td><?= $list['noind'];?></td>
                                 <td><?= $list['nama'];?></td>
                                 <td><?= $list['seksi'];?></td>
                                 <td><?= $list['r_luar_rumah'];?></td>
