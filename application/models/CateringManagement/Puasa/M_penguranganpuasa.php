@@ -16,7 +16,7 @@ class M_penguranganpuasa extends CI_Model
 		$sql = "select tp.noind,tp.nama,tp.kodesie, ts.seksi
 				from hrd_khs.tpribadi tp
 				inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
-				where agama = 'ISLAM' 
+				where upper(trim(agama)) = 'ISLAM' 
 				and keluar = '0' 
 				order by noind";
 		$result = $this->personalia->query($sql);
@@ -47,7 +47,7 @@ class M_penguranganpuasa extends CI_Model
 		$sql = "select tp.noind,tp.nama,tp.kodesie, ts.seksi
 				from hrd_khs.tpribadi tp
 				inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
-				where agama = 'ISLAM' 
+				where upper(trim(agama)) = 'ISLAM' 
 				and keluar = '0' 
 				and noind = '$noind'";
 		$result = $this->personalia->query($sql);

@@ -35,6 +35,16 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="control-label col-lg-4">Lokasi</label>
+												<div class="col-lg-4">
+													<select class="select2" name="txtlokasiPenjadwalanOtomatis" style="width: 100%" required>
+														<option></option>
+														<option value="1">Pusat & Mlati</option>
+														<option value="2">Tuksono</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
 												<div class="col-lg-8 text-right">
 													<button class="btn btn-primary" type="submit">Jadwalkan</button>
 												</div>

@@ -952,7 +952,7 @@ function transferPuasa(banyak,tglsmtr){
 
 	$.ajax({
 		type 	: 'POST',
-		url		: baseurl+'CateringManagement/Puasa/Transfer/Transfer',
+		url		: baseurl+'CateringManagement/Puasa/Transfer/Proses',
 		data 	: {tanggal : tglnow,periode : valtgl},
 		success	: function(data){
 			$('#progressTransferPuasa').attr('style','width: '+persentaseprogress+"%;");
@@ -1900,3 +1900,285 @@ function RejectCatering() {
 		}
 	})
 }
+
+
+// start Hitung Pesanan
+$(document).ready(function(){
+	$('#CateringHitungPesananTanggal').datepicker({
+		      "autoclose": true,
+		      "todayHighlight": true,
+		      "todayBtn": "linked",
+		      "format":'yyyy-mm-dd'
+		});
+
+	$('#CateringHitungRefresh').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			$('#CateringHitungLoading').show();
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/cekPesanan',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
+				error: function(xhr,status,error){
+					$('#CateringHitungLoading').hide();
+					swal.fire({
+	                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                    html: xhr['responseText'],
+	                    type: "error",
+	                    confirmButtonText: 'OK',
+	                    confirmButtonColor: '#d63031',
+	                })
+				},
+				success: function(data){
+					$('#CateringHitungLoading').hide();
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if (obj.statusKatering == "ada" && obj.statusJadwal == "ada" && obj.statusBatasDatang == "ada" && obj.statusAbsenShift == "ada") {
+						if (obj.statusPesanan == "ada") {
+							swal.fire({
+								title: 'Apakah Anda Yakin Ingin Refresh Ulang ?',
+								text: "Data Mungkin Berubah Setelah Refresh",
+								type: 'warning',
+								showCancelButton: true,
+								confirmButtonColor: '#3085d6',
+								cancelButtonColor: '#d33',
+								confirmButtonText: 'Refresh',
+								cancelButtonText: 'Tidak'
+							}).then((result) => {
+							 	if (!result.value) {
+							    	Swal.fire(
+								     	'Refresh Telah Dibatalkan',
+								     	'Action Refresh Dibatalkan',
+								     	'error'
+							    	)
+							 	}else{
+							 		getFingerCatering();
+							 	}
+							})
+						}else{
+							getFingerCatering();
+						}
+					}else{
+						if (obj.statusKatering == "tidak ada") {
+							Swal.fire(
+						     	'Refresh Telah Dihentikan',
+						     	'Tidak ada Katering yang berstatus AKTIF',
+						     	'error'
+					    	)
+						}
+						if (obj.statusJadwal == "tidak ada") {
+							Swal.fire(
+						     	'Refresh Telah Dihentikan',
+						     	'Belum ada Jadwal Katering',
+						     	'error'
+					    	)
+						}
+						if (obj.statusBatasDatang == "tidak ada") {
+							Swal.fire(
+						     	'Refresh Telah Dihentikan',
+						     	'Batas Jam Datang Belum Di Atur',
+						     	'error'
+					    	)
+						}
+						if (obj.statusAbsenShift == "tidak ada") {
+							Swal.fire(
+						     	'Refresh Telah Dihentikan',
+						     	'Data Absensi di shift yang anda pilih kosong',
+						     	'error'
+					    	)
+						}
+					}
+				}
+			});
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
+
+	$('#CateringHitungPesananForm').on('submit',function(e){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/cekLihat',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
+				error: function(xhr,status,error){
+					e.preventDefault();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					e.preventDefault();
+					if (data != "done") {
+						if (data == "Data Pesanan Belum Ada") {
+							Swal.fire(
+						     	'Data Pesanan Belum Ada',
+						     	'Pastikan Sudah Dilakukan Refresh Pesanan',
+						     	'warning'
+					    	)
+						}
+						if (data == "Jadwal Katering Belum Ada") {
+							Swal.fire(
+						     	'Jadwal Katering Belum Ada',
+						     	'Pastikan Jadwal Katering Sudah Disetting',
+						     	'warning'
+					    	)
+						}
+					}else{
+						// lanjut submit
+					}
+				}
+			})
+		}else{
+			e.preventDefault();
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
+});
+
+function getFingerCatering(){
+	tanggal = $('#CateringHitungPesananTanggal').val();
+	shift 	= $('#CateringHitungPesananShift').val();
+	lokasi 	= $('#CateringHitungPesananLokasi').val();
+	$.ajax({
+		method: 'POST',
+		url: baseurl + '/CateringManagement/HitungPesanan/getFinger',
+		data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
+		error: function(xhr,status,error){
+			$('#CateringHitungLoading').hide();
+			swal.fire({
+                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                html: xhr['responseText'],
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+		},
+		success: function(data){
+			$('#CateringHitungModal').find('.col-sm-12').html(data);
+		}
+	})
+	$('#CateringHitungModal').modal('show');
+	localStorage.setItem('refreshCatering',0);
+	loopRefreshCatering = setInterval(
+		function(){
+			console.log(localStorage.getItem('refreshCatering'));
+			if (localStorage.getItem('refreshCatering') > 0) {
+				$('#CateringHitungModal').modal('hide');
+				$('#CateringHitungLoading').show();
+				clearInterval(loopRefreshCatering);
+				if (localStorage.getItem('refreshCatering') == 2) {
+					$('#CateringHitungLoading').hide();
+					Swal.fire(
+				     	'Verifikasi Finger Pekerja Gagal',
+				     	'Action Refresh Dibatalkan',
+				     	'error'
+			    	)
+				}
+				if (localStorage.getItem('refreshCatering') == 1 && localStorage.getItem('refreshCateringTanggal') == tanggal && localStorage.getItem('refreshCateringShift') == shift && localStorage.getItem('refreshCateringLokasi') == lokasi ) {
+					hitungCatering();
+				}
+			}
+		},1000
+	)
+}
+
+function hitungCatering(){
+	tanggal = $('#CateringHitungPesananTanggal').val();
+	shift 	= $('#CateringHitungPesananShift').val();
+	lokasi 	= $('#CateringHitungPesananLokasi').val();
+	$.ajax({
+		method: 'POST',
+		url: baseurl + '/CateringManagement/HitungPesanan/prosesHitung',
+		data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
+		error: function(xhr,status,error){
+			$('#CateringHitungLoading').hide();
+			swal.fire({
+                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                html: xhr['responseText'],
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+		},
+		success: function(data){
+			$('#CateringHitungLoading').hide();
+			Swal.fire(
+		     	'Verifikasi Finger Pekerja Berhasil',
+		     	'Refresh Pesanan Selesai Dijalankan',
+		     	'success'
+			)
+		}
+	})	
+}
+
+$(document).ready(function(){
+	$('#CateringHitungPesananLihatTabel').on('click','tbody tr',function(){
+		var urutan = $(this).attr('data-urutan');
+		var tempatMakan = $(this).attr('data-katering');
+		if (urutan && tempatMakan) {
+			$('#slcCateringHitungPesananUrutan').val(urutan);
+			$('#slcCateringHitungPesananUrutan').change();
+			$('#txtCateringHitungPesananTempatmakan').val(tempatMakan);
+			$('#CateringHitungPesananLihatModal').modal('show');			
+		}
+	});
+
+	$('#btnCateringHitungPesananSimpan').on('click',function(){
+		var urutan = $('#slcCateringHitungPesananUrutan').val();
+		var tempatMakan = $('#txtCateringHitungPesananTempatmakan').val();
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (urutan && tempatMakan) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/gantiUrutan',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi,tempat_makan: tempatMakan, urutan: urutan},
+				error: function(xhr,status,error){
+					$('#CateringHitungLoading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					$('#CateringHitungPesananLihatModal').modal('hide');	
+					if (data != "Tidak Ditemukan Data") {
+						$('#CateringHitungPesananLihatTabel').html(obj['table']);						
+						$('#CateringHitungPesananLihatJumlah').html(obj['katering']);	
+					}else{
+						window.location.href = baseurl+'/CateringManagement/HitungPesanan';
+					}
+				}
+			})			
+		}
+	});
+});
+// end Hitung Pesanan
+$(document).on('ready',function(){
+	$('#tblMuslimTidakPuasa').dataTable();
+	$('#tblNonMuslimPuasa').dataTable();
+});
