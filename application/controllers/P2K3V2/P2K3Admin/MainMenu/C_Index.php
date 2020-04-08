@@ -185,19 +185,35 @@ class C_Index extends CI_Controller
 			foreach ($data['toHitung'] as $key) {
 				$kode = $key['item_kode'];
 				$stok = $this->M_dtmasuk->stokOracle($kode);
-
+				$po = $this->M_dtmasuk->OutstandingPO($kode);
+				$totalPO = 0;
+				$poarr = array();
+				if (!empty($po)) {
+					foreach ($po as $p) {
+						$totalPO += $p['PO_QTY'];
+						if (substr($p['PO_NUM'], 0,2) == substr(date('Y'), 0,2)) {
+							$poarr[] = $p['PO_NUM'];
+						}
+					}
+				}
+				$key['po']=$totalPO;
+				$key['ponum']=implode(', ', $poarr);
 				$a = $key['jml_kebutuhan'];
 				$b = $key['ttl_bon'];
 				$out = ($a-$b);
-				$push = array("total"=> $out);
-				array_splice($key,5,1,$push);
-				array_push($key, $stok);
+				$key['outBon'] = $out;
+				$key['stokg'] = $stok;
+
+				$jpp = ($a*1.1)+$out-$stok-$totalPO;
+				$key['jpp'] = ($jpp < 0) ? 0:$jpp;
+
 				$new[] = $key;
 				$data['toHitung'] = $new;
 				// print_r($new);exit();
 			}
 			$data['run'] = '1';
 		}
+		// echo "<pre>";
 		// print_r($data['toHitung']);exit();
 
 		$this->load->view('V_Header',$data);
