@@ -610,4 +610,13 @@ class M_dpb extends CI_Model
             ->update('KHS_DPB_KENDARAAN', $data);
     }
 
+    public function AddDetailInformationList($kode_do)
+    {
+        return $this->oracle
+        ->where('NO_DO_SPB',$kode_do)
+        ->get('KHS_DPB_KHS_DETAIL')
+        ->result_array();
+        
+    }
+
 }

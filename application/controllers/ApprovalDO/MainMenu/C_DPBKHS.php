@@ -228,5 +228,13 @@ class C_DPBKHS extends CI_Controller {
 
         echo json_encode('Success');
     }
+    
+    public function AddDetailInformationList()
+    {
+        $kode_do = $_GET['q'];
+        $data = $this->M_dpb->AddDetailInformationList($kode_do);
+
+        echo json_encode($data);
+    }
 
 }
