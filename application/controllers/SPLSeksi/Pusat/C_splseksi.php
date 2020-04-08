@@ -754,7 +754,7 @@ class C_splseksi extends CI_Controller {
 				// untuk shift 3, select tgl sebelumnya
 				if($lembur == '002' || $lembur == '001') {
 					$shift_kemarin = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime($tanggal. ' -1 day')), $noind);
-					if(trim($shift_kemarin[0]['kd_shift']) == '3')
+					if(!empty($shift_kemarin) && trim($shift_kemarin[0]['kd_shift']) == '3')
 						$presensi = $this->M_splseksi->getPresensi($noind, date('Y-m-d', strtotime($tanggal. ' -1 day')));
 					else
 						$presensi = $this->M_splseksi->getPresensi($noind, $tanggal);
