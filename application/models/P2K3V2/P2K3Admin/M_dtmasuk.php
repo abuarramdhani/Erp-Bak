@@ -919,6 +919,45 @@ class M_Dtmasuk extends CI_Model
         return $query->row()->STOK;
     }
 
+    public function OutstandingPO($kode)
+    {
+        $sql = "select
+                pha.SEGMENT1 po_num
+                ,pla.LINE_NUM po_line_num
+                ,msib.SEGMENT1 kode_item
+                ,plla.QUANTITY po_qty
+                ,plla.QUANTITY - plla.QUANTITY_RECEIVED outstanding_po_qty
+                ,ppf.FULL_NAME requester
+                from
+                PO_HEADERS_ALL pha
+                ,PO_LINES_ALL pla
+                ,PO_LINE_LOCATIONS_ALL plla
+                ,PO_DISTRIBUTIONS_ALL pda
+                ,PO_REQ_DISTRIBUTIONS_ALL prda
+                ,PO_REQUISITION_LINES_ALL prla
+                ,per_people_f ppf
+                ,mtl_system_items_b msib
+                where
+                pha.PO_HEADER_ID = pla.PO_HEADER_ID
+                and plla.PO_LINE_ID = pla.PO_LINE_ID
+                and plla.PO_HEADER_ID = pha.PO_HEADER_ID
+                and (plla.CANCEL_FLAG = 'N' or plla.CANCEL_FLAG is null)
+                and (plla.CLOSED_FLAG = 'N' or plla.CLOSED_FLAG is null)
+                and pla.PO_LINE_ID = pda.PO_LINE_ID
+                and pda.REQ_DISTRIBUTION_ID = prda.DISTRIBUTION_ID
+                and prla.REQUISITION_LINE_ID = prda.REQUISITION_LINE_ID
+                and prla.TO_PERSON_ID = ppf.PERSON_ID
+                AND NVL(ppf.effective_end_date,SYSDATE+1) > SYSDATE
+                and (plla.QUANTITY - plla.QUANTITY_RECEIVED) != 0 
+                and pla.ITEM_ID = msib.INVENTORY_ITEM_ID
+                and plla.SHIP_TO_ORGANIZATION_ID = msib.ORGANIZATION_ID
+                and msib.SEGMENT1 = '$kode'";
+        $query = $this->oracle->query($sql);
+
+        return $query->result_array();
+        // return $query->row()->STOK;
+    }
+
     public function getBon($id)
     {
         $sql = "select
