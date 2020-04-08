@@ -147,9 +147,11 @@ class C_Index extends CI_Controller
 			// echo "<pre>";
 			// print_r($employee);exit();
 			$noinduk 	 	= $employee[0]['noind'];
+			$noind 		 	= $employee[0]['noind'];
 			$namaPekerja 	= $employee[0]['nama'].' ('.$employee[0]['noind'].')';
 			$jenisAbsen  	= $employee[0]['jenis_absen'];
 			$waktu		 	= $employee[0]['waktu'];
+			$tanggal 		= $employee[0]['tgl'];
 			$lokasi		 	= $employee[0]['lokasi'];
 			$latitude	 	= $employee[0]['latitude'];
 			$longitude	 	= $employee[0]['longitude'];
@@ -180,12 +182,134 @@ class C_Index extends CI_Controller
 			$this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
 			}
 
+			// mulai transfer------------------------------------------------------------------------------ 
+			$abson = $this->M_absenatasan->getAbsenById($id);
+			$ins = array();
+			$no = 0;
+			$isiEmail = "";
+			$table = "";
+			$row = "";
+			$exeMail = 0;
+			$norow = 1;
+
+			foreach ($abson as $key => $value) {
+				$ins['noind'] 		= $value['noind'];
+				$ins['noind_baru'] 	= $value['noind_baru'];
+				$ins['kodesie'] 	= $value['kodesie'];
+				$ins['tanggal'] 	= $value['tgl'];
+				$ins['waktu'] 		= $value['wkt'];
+				$ins['user_']		= 'ABSON';
+
+				$cekRill = $this->M_absenatasan->cekPresensiRill($ins);
+
+				if ($cekRill == 0) {
+					$cek = $this->M_absenatasan->cekPresensi($ins);
+
+					if ($cek == 0) {
+	 					$this->M_absenatasan->insert_presensi('"FrontPresensi"', 'tpresensi', $ins);
+	 					$this->M_absenatasan->insert_presensi('"Presensi"', 'tprs_shift', $ins);
+						$this->M_absenatasan->insert_presensi('"Presensi"', 'tpresensi_riil', $ins);
+					}
+				}
+			}
+			// selesai transfer------------------------------------------------------------------------------
+
+			// mulai distribusi------------------------------------------------------------------------------
+			$pesan = "";
+			if (strtotime($tanggal) < strtotime(date('Y-m-d'))) {
+				$cekMangkir = $this->M_absenatasan->getAbsenMangkirByNoindTanggal($noind,$tanggal);
+				if (count($cekMangkir) > 0) {
+					$shift = $this->M_absenatasan->getShiftByNoindTanggal($noind,$tanggal);
+
+					if(!empty($shift)){
+						$this->M_absenatasan->deleteMangkirByNoindTanggal($noind,$tanggal);
+
+						$absen = $this->M_absenatasan->getAbsenByNoindTanggal($noind,$shift[0]['awal'],$shift[0]['akhir']);
+
+						$jam_msk = $shift[0]['jam_msk'];
+						$jam_akhmsk = $shift[0]['jam_akhmsk'];
+						$break_mulai = $shift[0]['break_mulai'];
+						$break_selesai = $shift[0]['break_selesai'];
+						$ist_mulai = $shift[0]['ist_mulai'];
+						$ist_selesai = $shift[0]['ist_selesai'];
+						$jam_plg = $shift[0]['jam_plg'];
+
+						if (count($absen) > 0) {
+							if (count($absen)%2 == 0) {
+								if (strtotime($absen['0']['waktu']) <= strtotime($jam_akhmsk) && strtotime($absen[count($absen) - 1]['waktu']) > strtotime($jam_msk)) {
+									$pesan .= "Bekerja ".$absen['0']['waktu']." s/d ".$absen[count($absen) - 1]['waktu'];
+									$this->M_absenatasan->insertBekerja($noind,$tanggal,$absen['0']['waktu'],$absen[count($absen) - 1]['waktu']);
+
+									if (strtotime($absen['0']['waktu']) > strtotime($jam_msk) && strtotime($absen['0']['waktu']) <= strtotime($jam_akhmsk)) {
+										$pesan .= "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Terlambat, Jam Absen Pertama (".$absen['0']['waktu'].") melebihi Jam Masuk Shift (".$jam_msk.")";
+										$this->M_absenatasan->insertTerlambat($noind,$tanggal,$jam_msk,$absen['0']['waktu']);
+									}
+									
+
+									if (strtotime($absen[count($absen) - 1]['waktu']) < strtotime($jam_plg)) {
+										$pesan .= "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ijin Keluar sampai Akhir Jam Kerja ".$absen[count($absen) - 1]['waktu']." s/d ".$jam_plg;
+										$point = $this->M_absenatasan->hitungPoint($jam_msk,$jam_plg,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai,$absen[count($absen) - 1]['waktu'],$jam_plg);
+										$this->M_absenatasan->insertIjinKeluar($noind,$tanggal,$absen[count($absen) - 1]['waktu'],$jam_plg,$point);
+									}
+
+									$pasang = (count($absen)/2) - 1;
+									if ($pasang > 0) {
+										for ($i=0; $i < $pasang; $i++) { 
+											$keluar_ijin = $absen[1+(2*$i)]['waktu'];
+											$masuk_ijin = $absen[2+(2*$i)]['waktu'];
+											$point = 0;
+
+											$pesan .= "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ijin Keluar ditengah Jam Absen Berangkat & Pulang ".$keluar_ijin." s/d ".$masuk_ijin;
+
+											if (strtotime($keluar_ijin) > strtotime($break_mulai) && strtotime($masuk_ijin) < strtotime($break_selesai)) {
+												$pesan .= " Ijin Break Point 0 ";
+											}elseif (strtotime($keluar_ijin) > strtotime($ist_mulai) && strtotime($masuk_ijin) < strtotime($ist_selesai)) {
+												$pesan .= " Ijin Istirahat Point 0 ";
+											}elseif (strtotime($keluar_ijin) < strtotime($jam_msk) && strtotime($masuk_ijin) < strtotime($jam_msk)) {
+												$pesan .= " Ijin Sebelum Jam Masuk Point 0 ";
+											}elseif (strtotime($keluar_ijin) > strtotime($jam_plg) && strtotime($masuk_ijin) > strtotime($jam_plg)) {
+												$pesan .= " Ijin Setelah Jam Pulang Point 0 ";
+											}else{
+												$point = $this->M_absenatasan->hitungPoint($jam_msk,$jam_plg,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai,$keluar_ijin,$masuk_ijin);
+												$pesan .= " Ijin Point ".$point;
+											}
+
+											$this->M_absenatasan->insertIjinKeluar($noind,$tanggal,$keluar_ijin,$masuk_ijin,$point);
+										}
+									}
+									foreach ($absen as $abs) {
+										$this->M_absenatasan->updateTransferAbsen($noind,$abs['waktu']);
+									}
+								}else{
+									if (strtotime($absen['0']['waktu']) > strtotime($jam_akhmsk)){
+										$pesan .= "Mangkir, Jam Absen Pertama (".$absen['0']['waktu'].") Melebihi Batas Toleransi (".$jam_akhmsk.")";
+									}
+									if (strtotime($absen[count($absen) - 1]['waktu']) > strtotime($jam_msk)) {
+										$pesan .= "Mangkir, Jam Absen Terakhir (".$absen[count($absen) - 1]['waktu'].") < jam masuk (".$jam_msk.")";
+									}
+								}
+							}else{
+								$pesan .= "Mangkir, Absen Ganjil".json_encode($absen);
+								$this->M_absenatasan->insertMangkir($noind,$tanggal);
+							}
+						}else{
+							$pesan .= "Mangkir";
+							$this->M_absenatasan->insertMangkir($noind,$tanggal);
+						}
+					}
+				}
+			}
+			// echo $pesan;exit();
+			// selesai distribusi------------------------------------------------------------------------------
+
+
 			$this->session->set_flashdata('msg','sukses');
 			//insert to t_log
 				$aksi = 'ABSEN ATASAN';
 				$detail = 'APPROVE ID='.$id;
 				$this->log_activity->activity_log($aksi, $detail);
 			//
+
 			redirect('AbsenAtasan/List');
 		}
 
