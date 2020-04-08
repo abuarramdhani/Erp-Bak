@@ -84,6 +84,7 @@
         </div>
     </div>
 </section>
+
 <script>
     window.addEventListener('load', function () {
         $('#periodeRekap').val('<?= $tgl.' - '.$tgl; ?>');
