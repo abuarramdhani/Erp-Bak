@@ -110,7 +110,7 @@ class C_splseksi extends CI_Controller {
 
 	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){ //latest 07/04/2020
 		$shift_kemarin = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime($tgl. ' -1 day')), $noind);
-		if(trim($shift_kemarin[0]['kd_shift']) == '3')
+		if(!empty($shift_kemarin) && trim($shift_kemarin[0]['kd_shift']) == '3')
 			$tgl = date('Y-m-d', strtotime($tgl. ' -1 day'));
 
 		$shift = $this->M_splseksi->selectShift($noind, $tgl);
