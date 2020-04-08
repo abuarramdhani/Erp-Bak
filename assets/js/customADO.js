@@ -258,19 +258,72 @@ $( () => {
         let rownum = dataTableADODetailList.rows().count() + 1
         dataTableADODetailList.row.add([
             rownum,
-            '<input type="number" class="form-control-auto form-control txtADODONumber">',
+            '<select class="form-control-auto form-control txtADODONumber"></select>',
             '<input type="text" class="form-control-auto form-control txtADOItemName">',
             '<input type="number" class="form-control-auto form-control txtADOQty">',
             '<input type="text" class="form-control-auto form-control txtADOUOM">',
             '<input type="text" class="form-control-auto form-control txtADOShopName">',
             '<input type="text" class="form-control-auto form-control txtADOCity">',
             '<button title="Hapus Baris" class="btn btn-danger btnADODeleteRow"><i class="fa fa-trash"></i></button>'
+            // '<input type="number" class="form-control-auto form-control txtADODONumber">',
+            // '<input type="text" class="form-control-auto form-control txtADOItemName">',
+            // '<input type="number" class="form-control-auto form-control txtADOQty">',
+            // '<input type="text" class="form-control-auto form-control txtADOUOM">',
+            // '<input type="text" class="form-control-auto form-control txtADOShopName">',
+            // '<input type="text" class="form-control-auto form-control txtADOCity">',
+            // '<button title="Hapus Baris" class="btn btn-danger btnADODeleteRow"><i class="fa fa-trash"></i></button>'
         ])
         $(dataTableADODetailList.row(':last').nodes())
             .attr('data-type', 'new')
             .children(':first').addClass('text-right').css('width', '5%')
             .parent().children(':last').addClass('text-center').css('width', '5%')
         dataTableADODetailList.draw()
+        $('.txtADODONumber').select2({
+            allowClear: true,
+            placeholder: "Insert Kode DO",
+            minimumInputLength: 5,
+            ajax: {		
+                url:baseurl+"ApprovalDO/DPBKHS/AddDetailInformationList",
+                dataType: 'json',
+                type: "GET",
+                data: function(params) {
+                    return {
+                        q: params.term,
+                    };
+                },
+                processResults: function (data) {
+                    console.log(data);
+                    return {
+                        results: $.map(data, function(obj) {
+                            return { 
+                                id: obj.NO_DO_SPB,
+                                text: obj.NO_DO_SPB,
+                                nama_barang: obj.ITEM,
+                                qty: obj.QUANTITY,
+                                uom: obj.UOM,
+                                nama_toko: obj.RELATION,
+                                kota: obj.CITY
+                            };
+                        })
+                    };
+                }
+            }
+        });
+        
+        $(document).on('change','.txtADODONumber', function () {
+            var row_ini = $(this).parentsUntil('tbody');
+            var nama_barang = $(this).select2('data')[0]['nama_barang'];
+            var qty = $(this).select2('data')[0]['qty'];
+            var uom = $(this).select2('data')[0]['uom'];
+            var nama_toko = $(this).select2('data')[0]['nama_toko'];
+            var kota = $(this).select2('data')[0]['kota'];
+
+            row_ini.find('.txtADOItemName').val(nama_barang);
+            row_ini.find('.txtADOQty').val(qty);
+            row_ini.find('.txtADOUOM').val(uom);
+            row_ini.find('.txtADOShopName').val(nama_toko);
+            row_ini.find('.txtADOCity').val(kota);
+        })
     })
 
     $('.btnADODPBSaveNew').on('click', function () {
