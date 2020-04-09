@@ -45,6 +45,8 @@
 														<th class="text-center">No Induk</th>
 														<th class="text-center">Nama</th>
 														<th class="text-center">Seksi</th>
+														<th class="text-center">Akhir Kontrak</th>
+														<th class="text-center">Tanggal Keluar</th>
 														<th class="text-center" style="width: 13%">Jumlah Invoice</th>
 														<th class="text-center" style="width: 13%">Jumlah Yang Belum Terbayar</th>
 														<th class="text-center">Deskripsi</th>
@@ -61,6 +63,12 @@
 																	<td><?php echo $pekerja_data['noind']; ?></td>
 																	<td><?php echo $pekerja_data['nama']; ?></td>
 																	<td><?php echo $pekerja_data['seksi']; ?></td>
+																	<td style="text-align: center;">
+																		<?= date('d-M-Y', strtotime($pekerja_data['akhkontrak'])) ?>
+																	</td>
+																	<td style="text-align: center;">
+																		<?= date('d-M-Y', strtotime($pekerja_data['tglkeluar']))?>
+																	</td>
 																<?php
 																}
 															}

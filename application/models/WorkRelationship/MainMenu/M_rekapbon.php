@@ -125,7 +125,9 @@ class M_rekapbon extends CI_Model
 				seksi.dept,
 				seksi.bidang,
 				seksi.unit,
-				seksi.seksi 
+				seksi.seksi,
+				emp.akhkontrak::date,
+				emp.tglkeluar::date
 			from 
 				hrd_khs.v_hrd_khs_tpribadi emp 
 			join 
@@ -157,7 +159,7 @@ class M_rekapbon extends CI_Model
 
 	public function getPekerjaKeluar($tanggal1,$tanggal2, $keluar = 1){
 		$personalia = $this->load->database("personalia",true);
-		$sql = "select noind,nama,tglkeluar::date, ts.seksi
+		$sql = "select noind,nama,tglkeluar::date, akhkontrak::date, ts.seksi
 				from hrd_khs.tpribadi tp 
 				left join hrd_khs.tseksi ts 
 				on tp.kodesie = ts.kodesie

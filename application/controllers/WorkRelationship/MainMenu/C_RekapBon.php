@@ -98,6 +98,8 @@ class C_RekapBon extends CI_Controller
 			// $data['bon'][$key]['BIDANG'] = $employee[0]['bidang'];
 			// $data['bon'][$key]['UNIT'] = $employee[0]['unit'];
 			$data['bon'][$key]['SEKSI'] = $employee[0]['seksi'];
+			$data['bon'][$key]['TGLKELUAR'] = $employee[0]['tglkeluar'];
+			$data['bon'][$key]['AKHKONTRAK'] = $employee[0]['akhkontrak'];
 		}
 		$table = $this->load->view('WorkRelationship/RekapBon/V_table', $data);
 		return $table;
