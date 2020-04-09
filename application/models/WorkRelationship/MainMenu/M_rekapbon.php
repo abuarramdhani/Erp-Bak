@@ -155,13 +155,14 @@ class M_rekapbon extends CI_Model
 		return $query->result_array();
 	}
 
-	public function getPekerjaKeluar($tanggal1,$tanggal2){
+	public function getPekerjaKeluar($tanggal1,$tanggal2, $keluar = 1){
 		$personalia = $this->load->database("personalia",true);
 		$sql = "select noind,nama,tglkeluar::date, ts.seksi
 				from hrd_khs.tpribadi tp 
 				left join hrd_khs.tseksi ts 
 				on tp.kodesie = ts.kodesie
-				where tglkeluar between '$tanggal1' and '$tanggal2' and keluar = '1'";
+				where tglkeluar between '$tanggal1' and '$tanggal2' and keluar = '$keluar'";
+				// echo $sql;exit();
 		return $personalia->query($sql)->result_array();
 	}
 
