@@ -19,8 +19,8 @@
 										<td><?php echo $bon_data['NOIND']; ?></td>
 										<td><?php echo $bon_data['NAMA']; ?></td>
 										<td><?php echo $bon_data['SEKSI']; ?></td>
-										<td><?php echo $bon_data['AKHKONTRAK']; ?></td>
-										<td><?php echo $bon_data['TGLKELUAR']; ?></td>
+										<td><?php echo  date('d-M-Y', strtotime($bon_data['AKHKONTRAK'])); ?></td>
+										<td><?php echo  date('d-M-Y', strtotime($bon_data['TGLKELUAR'])); ?></td>
 										<td><span class="pull-right"><?php echo number_format($bon_data['AMOUNT_IDR'], 2, ',', '.'); ?></span></td>
 										<td style="background-color: #FEF8B5;"><span class="pull-right"><?php echo number_format($bon_data['SALDO_PREPAYMENT'], 2, ',', '.'); ?></span></td>
 										<td><?php echo $bon_data['DESCRIPTION']; ?></td>
