@@ -1498,10 +1498,35 @@ class C_Order extends CI_Controller
   	$data['pr'] = $periode;
   	$data['ks'] = $ks;
   	$data['pri'] = $pr;
-  	$data['listtobon'] = $this->M_dtmasuk->listtobonHitung($ks, $pr);
+  	$listtobon = $this->M_dtmasuk->listtobonHitung($ks, $pr);
+  	for ($i=0; $i < count($listtobon); $i++) { 
+  		$kode = $listtobon[$i]['kode_item'];
+		$stok = $this->M_dtmasuk->stokOracle($kode);
+		$listtobon[$i]['stokg'] = $stok;
+  	}
+  	$nama_seksi = $this->M_dtmasuk->cekseksi($ks);
+  	$dataTrans = $this->M_dtmasuk->monitorbonOracle($nama_seksi[0]['section_name'], $pr);
+  	$data['canSubmit'] = true;
+  	if (!empty($dataTrans)) {
+	  	$endDataTrans = end($dataTrans);
+
+	  	foreach ($dataTrans as $key) {
+	  		$kodeItem = explode(';', $key['KODE_BARANG']);
+	  		$qty = explode(';', $key['QTY_TRANSACT']);
+	  		$arrc = array_combine($kodeItem, $qty);
+	  		for ($i=0; $i < count($listtobon); $i++) { 
+	  			if(!isset($listtobon[$i]['bonTrans'])) $listtobon[$i]['bonTrans'] = 0;
+	  			$listtobon[$i]['bonTrans'] += isset($arrc[$listtobon[$i]['kode_item']]) ? $arrc[$listtobon[$i]['kode_item']]:0;
+	  		}
+	  	}
+	  	$data['canSubmit'] = (strpos(end($endDataTrans), 'Y') === false) ? false:true;
+	  	$data['notrans'] = $endDataTrans['NO_BON'];
+  	}
   	// echo "<pre>";
-  	// print_r($data['listtobon']);exit();
+  	// print_r($listtobon);exit();
+  	$data['listtobon'] = $listtobon;
   	$data['lokasi'] = $this->M_order->lokasi();
+
   	$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
   	if (empty($data['seksi'])) {
   		$data['seksi'] = array('section_name' 	=>	'');
