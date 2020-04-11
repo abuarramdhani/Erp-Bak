@@ -89,13 +89,13 @@ class M_pesangon extends CI_Model {
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,
-			tpson.jml_cuti as cuti,
+			coalesce(tpson.jml_cuti,0) as cuti,
 			pesangon.uang_ganti_rugi as rugi,
 			concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
 			concat(pesangon.upmk,' X GP') as upmk,
 			concat (pesangon.uang_ganti_rugi,'% UANG PESANGON + UANG PMK') as gantirugi,
-			concat(tpson.jml_cuti,' hari ')as sisacuti,
-			concat(tpson.jml_cuti,' GP/30 ')as sisacutihari
+			concat(coalesce(tpson.jml_cuti,0),' hari ')as sisacuti,
+			concat(coalesce(tpson.jml_cuti,0),' GP/30 ')as sisacutihari
 							from 		hrd_khs.tpribadi as pri
 							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
 							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
