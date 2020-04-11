@@ -77,7 +77,7 @@
                                                         <?php echo $key['stokg']; ?>
                                                     </td>
                                                     <td>
-                                                        <?= $key['po'] ?>
+                                                        <p class="p2k3_jpo"><?= $key['po'] ?></p>
                                                     </td>
                                                     <td>
                                                        <?= empty($key['ponum']) ? '-':$key['ponum'] ?>
@@ -114,8 +114,9 @@
         $('tr.multiinput').each(function(){
             var ob = $(this).find('input.p2k3_ob').val();
             var keb = $(this).find('input.p2k3_kebutuhan').val();
+            var po = $(this).find('p.p2k3_jpo').text();
             var sg = $(this).closest('tr').find('td.p2k3_stok').text();
-            var hit = (Number(keb) * 1.1) + Number(ob) - Number(sg) - 0;
+            var hit = (Number(keb) * 1.1) + Number(ob) - Number(sg) - Number(po);
             var up = Math.ceil(hit);
             if (up < 0) {
                 // alert(up);
