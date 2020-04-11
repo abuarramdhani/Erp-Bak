@@ -68,7 +68,7 @@
 			<td style="vertical-align:top;border-bottom: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">Berat : <br><br> </td>
 			<td style="vertical-align:top;border-bottom: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">Syarat Pembayaran : <br><br> </td>
 			<td style="vertical-align:top;width:30%;border-bottom: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">Expedisi : <br><br> </td>
-			<td style="vertical-align:top;width:20%;border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">No Polisi : <br><?php echo $get_header[0]['PLAT_NUMBER'] ?><br> </td>
+			<td style="vertical-align:top;height:35px;width:20%;border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">No Polisi : <br><?php echo $get_header[0]['PLAT_NUMBER'] ?><br> </td>
 		</tr>
 	</table>
 
