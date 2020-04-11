@@ -1275,7 +1275,7 @@ class M_monitoringdo extends CI_Model
           ,khs_person_delivery kpd
           ,khs_delivery_temp kdt
       where mtrh.HEADER_ID = mtrl.HEADER_ID
-        and to_number(substr(mtrl.REFERENCE,5)) = to_number(ood.ORGANIZATION_ID)
+        and to_char(ood.ORGANIZATION_ID) = trim(substr(mtrl.REFERENCE,5))
         and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
         --
         and kdt.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
