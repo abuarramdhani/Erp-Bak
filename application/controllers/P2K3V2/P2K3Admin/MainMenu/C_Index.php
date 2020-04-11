@@ -204,7 +204,7 @@ class C_Index extends CI_Controller
 				$key['outBon'] = $out;
 				$key['stokg'] = $stok;
 
-				$jpp = ($a*1.1)+$out-$stok-$totalPO;
+				$jpp = ceil(($a*1.1)+$out-$stok-$totalPO);
 				$key['jpp'] = ($jpp < 0) ? 0:$jpp;
 
 				$new[] = $key;
