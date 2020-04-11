@@ -34,3 +34,12 @@ application/logs/*
 /portal-karyawan/
 /presensi_cabang/
 /quick-support-system/
+/approval-izin-satpam/
+/covid19/
+/cronjob/
+/ekatalog-13032019/
+/pendataan/
+/perizinan/
+/rencana-lembur/
+/testfile.txt
+/trial_penggajian_dev/
