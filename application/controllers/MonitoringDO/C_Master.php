@@ -92,7 +92,6 @@ class C_Master extends CI_Controller
 
     public function SettingDO()
     {
-
         $this->checkSession();
         $user_id = $this->session->userid;
 
@@ -141,6 +140,7 @@ class C_Master extends CI_Controller
             }
 
             $final = [];
+            // $var = '';
             foreach ($datakau as $f) {
                 for ($i=0; $i < sizeof($f); $i++) {
                     if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
@@ -423,35 +423,35 @@ class C_Master extends CI_Controller
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
-        		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:40.5%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+        		<tr style="width:100%">
+        			<td rowspan="2" style="vertical-align:top;width:250px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
         				<br><br><br><br><br><br><br>
         			 </td>
-        			<td rowspan="3" style="vertical-align:top;width:13%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
+        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
         				<br><br>
         				Tgl. ________
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
+        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
         				Tgl. _______
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:11%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
+        			<td rowspan="3" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
         				Tgl. _______
         				<br><br><br><br><br><br>'.$data['get_footer'][0]['GUDANG'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
         		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
+        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
         				<br><br><br><br><br><br>'.$data['get_footer'][0]['ADMIN'].'
         			</td>
-        			<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
+        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
         				<br><br><br><br><br><br>'.$data['get_footer'][0]['KEPALA'].'
         			</td>
         		</tr>
         		<tr>
-        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">Perhatian : Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
+        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
         		</tr>
         	</table>');
             $pdf->WriteHTML($aku);
@@ -534,35 +534,35 @@ class C_Master extends CI_Controller
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
-        		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:40.5%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+        		<tr style="width:100%">
+        			<td rowspan="2" style="vertical-align:top;width:250px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
         				<br><br><br><br><br><br><br>
         			 </td>
-        			<td rowspan="3" style="vertical-align:top;width:13%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
+        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
         				<br><br>
         				Tgl. ________
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
+        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
         				Tgl. _______
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:11%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
+        			<td rowspan="3" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
         				Tgl. _______
         				<br><br><br><br><br><br>'.$data['get_footer'][0]['GUDANG'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
         		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
+        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
         				<br><br><br><br><br><br>'.$data['get_footer'][0]['ADMIN'].'
         			</td>
-        			<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
+        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
         				<br><br><br><br><br><br>'.$data['get_footer'][0]['KEPALA'].'
         			</td>
         		</tr>
         		<tr>
-        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">Perhatian : Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
+        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
         		</tr>
         	</table>');
             $pdf->WriteHTML($aku);
@@ -585,10 +585,43 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-
-        $cekaja = $this->M_monitoringdo->cekapi();
+        // $datag = $this->M_monitoringdo->getDO();
+        // foreach ($datag as $g) {
+        //     $dataku[] = $g['DO/SPB'];
+        // }
+        // $no = 0;
+        // foreach ($dataku as $k) {
+        //     $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
+        //     $no++;
+        // }
+        //
+        // $final = [];
+        // foreach ($datakau as $f) {
+        //     for ($i=0; $i < sizeof($f); $i++) {
+        //         if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
+        //             $var = 'false =>'.$f[$i]['DO/SPB'];
+        //         } else {
+        //             $var = 'true =>'.$f[$i]['DO/SPB'];
+        //         }
+        //     }
+        //     array_push($final, $var);
+        // }
+        //
+        // $finaldestination = [];
+        // $number = 0;
+        // foreach ($datag as $d) {
+        //     $d['CHECK'] = $final[$number];
+        //     $number++;
+        //     array_push($finaldestination, $d);
+        // }
+        // $data['get'] = $finaldestination;
+        //
+        // $cekaja = $this->M_monitoringdo->headerSurat('S203968');
+        //
+        // $cekaja = $this->M_monitoringdo->cekapi();
+        $get = $this->M_monitoringdo->getDO();
         echo "<pre>";
-        print_r($cekaja);
+        print_r($get);
         die;
     }
 }
