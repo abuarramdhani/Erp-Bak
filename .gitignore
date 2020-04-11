@@ -43,3 +43,8 @@ application/logs/*
 /rencana-lembur/
 /testfile.txt
 /trial_penggajian_dev/
+/assets/img/
+/assets/limbah/
+/application/third_party/
+/assets/upload_kaizen/
+/assets/upload_flow_process/
