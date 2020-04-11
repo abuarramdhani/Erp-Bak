@@ -858,3 +858,201 @@ $(document).ready(function () {
  	})
  	
  }
+
+ $(document).ready(function(){
+ 	$(('#tblHLCMMOnitoringPengembalian')).DataTable();
+ 	
+ 	$('#txtHLCMIdulFitri').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
+ 	$('#txtHLCMPengembalianTHRTanggal').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
+ 	$('#txtHLCMIdulFitriBulanTHR').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
+ 	$('#txtHLCMPeriodeAwalTHR').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+ 	});
+
+ 	$('#txtHLCMPeriodeAkhirTHR').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+ 	});
+
+ 	$('#txtHLCMIdulFitri').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitri').val();
+ 		awal = $('#txtHLCMPeriodeAwalTHR').val();
+ 		akhir = $('#txtHLCMPeriodeAkhirTHR').val();
+
+ 		if (tanggal && awal && akhir) {
+ 			$('#btnHLCMHitungTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakTHR').prop('disabled',true);
+ 	})
+
+ 	$('#txtHLCMPeriodeAwalTHR').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitri').val();
+ 		awal = $('#txtHLCMPeriodeAwalTHR').val();
+ 		akhir = $('#txtHLCMPeriodeAkhirTHR').val();
+ 		
+ 		if (tanggal && awal && akhir) {
+ 			$('#btnHLCMHitungTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakTHR').prop('disabled',true);
+ 	})
+
+ 	$('#txtHLCMPeriodeAkhirTHR').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitri').val();
+ 		iawal = $('#txtHLCMPeriodeAwalTHR').val();
+ 		akhir = $('#txtHLCMPeriodeAkhirTHR').val();
+ 		
+ 		if (tanggal && awal && akhir) {
+ 			$('#btnHLCMHitungTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakTHR').prop('disabled',true);
+ 	})
+
+ 	$('#txtHLCMIdulFitriBulanTHR').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+
+ 		if (tanggal) {
+ 			$('#btnHLCMHitungBulanTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungBulanTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakBulanTHR').prop('disabled',true);
+		$('#btnHLCMExportBulanTHR').prop('disabled',true);
+ 	})
+
+ 	$('#slcHCLMLokasiBulanTHR').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+ 		
+ 		if (tanggal) {
+ 			$('#btnHLCMHitungBulanTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungBulanTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakBulanTHR').prop('disabled',true);
+		$('#btnHLCMExportBulanTHR').prop('disabled',true);
+ 	})
+
+ 	$('#btnHLCMHitungBulanTHR').on('click',function(){
+ 		lokasi = $('#slcHCLMLokasiBulanTHR').val();
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+ 		
+ 		if (tanggal) {
+ 			if (lokasi) {
+ 				isiForm = {lokasi: lokasi, tanggal: tanggal}
+ 			}else{
+ 				isiForm = {tanggal: tanggal}
+ 			}
+ 			$.ajax({
+ 				data: isiForm,
+	            type: 'POST',
+	            url: baseurl + 'HitungHlcm/THR/PerhitunganBulan/hitung',
+	            error: function(xhr,status,error){
+	                console.log(xhr);
+	                console.log(status);
+	                console.log(error);
+	                swal.fire({
+	                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                    html: xhr['responseText'],
+	                    type: "error",
+	                    confirmButtonText: 'OK',
+	                    confirmButtonColor: '#d63031',
+	                })
+	            },
+	            success: function(result){
+	            	obj = JSON.parse(result);
+	            	// console.log(obj);
+	            	html = "";
+	            	for (var i = 0; i < obj.length; i++) {
+	            		html += "<tr>";
+	            		html += "<td>";
+	            		html += (i + 1);
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['noind'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['noind'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['nama'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['masuk'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['masa_kerja'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['bulan_thr'];
+	            		html += "</td>";
+	            		html += "</tr>";
+	            	}
+	            	$('#tbodyBulanTHR').html(html);
+	            	$('#tblHLCMBulanTHR').DataTable();
+					$('#btnHLCMCetakBulanTHR').prop('disabled',false);
+					$('#btnHLCMExportBulanTHR').prop('disabled',false);
+	            }
+ 			})
+ 		};
+ 	});
+
+ 	$('#btnHLCMCetakBulanTHR').on('click',function(){
+ 		lokasi = $('#slcHCLMLokasiBulanTHR').val();
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+ 		
+ 		if (tanggal) {
+ 			if (lokasi) {
+ 				isiForm = '?lokasi=' + lokasi + '&tanggal=' + tanggal
+ 			}else{
+ 				isiForm = '?tanggal=' + tanggal
+ 			}
+ 			window.open(baseurl + 'HitungHlcm/THR/PerhitunganBulan/cetak' + isiForm,'_blank');
+ 		};
+ 	});
+
+ 	$('#btnHLCMExportBulanTHR').on('click',function(){
+ 		lokasi = $('#slcHCLMLokasiBulanTHR').val();
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+ 		
+ 		if (tanggal) {
+ 			if (lokasi) {
+ 				isiForm = '?lokasi=' + lokasi + '&tanggal=' + tanggal
+ 			}else{
+ 				isiForm = '?tanggal=' + tanggal
+ 			}
+ 			window.open(baseurl + 'HitungHlcm/THR/PerhitunganBulan/export' + isiForm,'_blank');
+ 		};
+ 	});
+ })
