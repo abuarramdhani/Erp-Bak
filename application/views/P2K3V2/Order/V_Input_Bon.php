@@ -99,13 +99,14 @@
 													<th>APD</th>
 													<th>Jumlah Kebutuhan</th>
 													<th>Total Bon Terakhir</th>
+													<th>Total Transact Terakhir</th>
 													<th>Jumlah Bon</th>
 													<th>Sisa Saldo</th>
 												</tr>
 											</thead>
 											<tbody id="DetailInputKebutuhanAPD">
 												<?php $a=1; foreach ($listtobon as $key): ?>    
-												<tr style="color: #000;" class="multiinput">
+												<tr style="color: #000;" class="multiinput p2k3_inputbon_row">
 													<td id="nomor"><?php echo $a; ?></td>
 													<td>
 														<a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
@@ -116,10 +117,18 @@
 													<td>
 														<p><?php echo $key['jml_kebutuhan']; ?></p>
 														<input class="p2k3_inKeb" hidden="" name="p2k3_jmlKebutuhan[]" value="<?php echo $key['jml_kebutuhan']; ?>">
+
+														<p class="p2k3_stokg" hidden=""><?= $key['stokg'] ?></p>
+														<!-- <p class="p2k3_stokg" hidden="">5</p> -->
 													</td>
 													<td>
 														<?php echo $key['bon']; ?>
 														<input class="p2k3_bont" hidden="" value="<?php echo $key['bon']; ?>">
+													</td>
+													<td>
+														<p class="p2k3_bontrans">
+															<?= isset($key['bonTrans']) ? $key['bonTrans']:0; ?>
+														</p>
 													</td>
 													<td>
 														<input class="form-control p2k3_inBon" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -136,10 +145,14 @@
 										</table>
 										<input hidden="" name="p2k3_pr" value="<?php echo $pri; ?>">
 										<input hidden="" name="p2k3_ks" value="<?php echo $ks; ?>">
-										<div class="col-md-3 pull-right text-right">
-											<button <?php if ($a == 1) {
-												echo "disabled";
-											}else{ echo ""; } ?> type="submit" class="btn btn-success btn-lg p2k3_btn_bon" onclick="return confirm('Apa anda yakin Akan Input Bon?')">Input</button>
+										<div class="col-md-12 pull-right text-right">
+										<?php if ($canSubmit): ?>
+											<button <?= ($a == '1') ? 'disabled':''; ?> type="submit" class="btn btn-success btn-lg p2k3_btn_bon" onclick="return confirm('Apa anda yakin Akan Input Bon?')">Input</button>
+										<?php else: ?>
+											<?php if (isset($notrans)): ?>
+												<label style="color: red">Tidak bisa Order lagi karena Bon <?= $notrans ?> Belum di Transact</label>
+											<?php endif ?>
+										<?php endif ?>
 										</div>
 									</form>
 								</div>
@@ -196,7 +209,7 @@
 	$(document).ready(function(){
 		$('tr.multiinput').each(function(){
 			var gkeb = $(this).find('input.p2k3_inKeb').val();
-			var gbon = $(this).find('input.p2k3_bont').val();
+			var gbon = $(this).find('p.p2k3_bontrans').text();
 			var hit = Number(gkeb) - Number(gbon);
 			$(this).find('input.p2k3_inHasil').val(hit);
 			$(this).find('p.p2k3_pHasil').text(hit);
@@ -211,7 +224,7 @@
 
 		$(".p2k3_inBon").bind("change paste keyup", function() {
 			var keb = $(this).closest('tr').find('input.p2k3_inKeb').val();
-			var bont = $(this).closest('tr').find('input.p2k3_bont').val();
+			var bont = $(this).closest('tr').find('p.p2k3_bontrans').text();
 			var bon = $(this).val();
 			var cal = Number(keb) - Number(bont) - Number(bon);
 			$(this).closest('tr').find('input.p2k3_inHasil').val(cal);

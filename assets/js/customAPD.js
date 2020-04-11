@@ -694,18 +694,30 @@ function format ( d ) {
     $('.p2k3_btn_bon').click(function(){
       var a = '0';
       var b = '0';
+      var c = '0', item = '', stokgudang = '';
       $('.p2k3_inHasil').each(function(){
         if ($(this).val() < 0) {
           a = '1';
         }
       });
-      $('.p2k3_inBon').each(function(){
+      $('.p2k3_inBon').each(function(){//cek jumlah apakah 0 semua
         // alert($(this).val());
         if ($(this).val() > 0) {
           b = '1';
           // alert('as');
         }
-      })
+      });
+
+      $('.p2k3_inBon').each(function(){// cek jumlah apakah melebihi stok gudang
+        var stokg = $(this).closest('tr').find('p.p2k3_stokg').text();
+        if ($(this).val() > Number(stokg)) {
+          c = '1';
+          item = $(this).closest('tr').find('a.p2k3_see_apd_text').text();
+          stokgudang = stokg;
+          // alert('as');
+        }
+      });
+
       if (a == '1') {
         Swal.fire({
           type: 'error',
@@ -718,6 +730,13 @@ function format ( d ) {
           type: 'error',
           title: 'Oops...',
           text: 'Semua Jumlah Bon 0!',
+        });
+        return false;
+      }else if(c == '1'){
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Jumlah Item '+item+' tidak boleh Melebihi jumlah Stok Gudang ('+stokgudang+') !',
         });
         return false;
       }

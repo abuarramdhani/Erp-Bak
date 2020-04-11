@@ -190,8 +190,8 @@ class C_Index extends CI_Controller
 				$poarr = array();
 				if (!empty($po)) {
 					foreach ($po as $p) {
-						$totalPO += $p['PO_QTY'];
 						if (substr($p['PO_NUM'], 0,2) == substr(date('Y'), 0,2)) {
+							$totalPO += $p['PO_QTY'];
 							$poarr[] = $p['PO_NUM'];
 						}
 					}
@@ -209,7 +209,7 @@ class C_Index extends CI_Controller
 
 				$new[] = $key;
 				$data['toHitung'] = $new;
-				// print_r($new);exit();
+				// print_r($po);
 			}
 			$data['run'] = '1';
 		}
