@@ -79,12 +79,6 @@
                     <div class="col-lg-12" id="areaRekapIzin">
 
                     </div>
-                    <script>
-                        window.addEventListener('load', function () {
-                            $('#periodeRekap').val('<?= $tgl.' - '.$tgl; ?>');
-                            $('#PD_Cari').trigger('click');
-                        });
-                    </script>
                 </div>
             </div>
         </div>
