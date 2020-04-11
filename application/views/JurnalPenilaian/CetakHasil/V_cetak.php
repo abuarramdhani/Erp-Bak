@@ -12,7 +12,7 @@
 	<div>
 		Lampiran Surat Keputusan Direktur Utama No. <?php echo $nomor;  ?>
 		<br>
-		BESAR KENAIKAN UPAH (GAJI POKOK) PEKERJA NON STAF TAHUN <?php echo $tahun['0']['tahun']; ?>
+		BESAR KENAIKAN UPAH (GAJI POKOK) PEKERJA GOLONGAN PEKERJAAN I, II & III TAHUN <?php echo $tahun['0']['tahun']; ?>
 		<br>
 		Per 1 Januari <?php echo $tahun['0']['tahun']; ?>
 	</div>
@@ -26,8 +26,6 @@
 					<th style="border-top: 1px solid black;border-bottom: 1px solid black;width: 10%">Skor</th>
 					<th style="border-top: 1px solid black;border-bottom: 1px solid black;width: 12%">Gol Nilai</th>
 					<th style="border-top: 1px solid black;border-bottom: 1px solid black;width: 12%">Naik/Bln</th>
-					<th style="border-top: 1px solid black;border-bottom: 1px solid black;width: 13%">Gp Lama</th>
-					<th style="border-top: 1px solid black;border-bottom: 1px solid black;width: 13%">Gp Baru</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,12 +84,6 @@
 									<td style="text-align: center;">
 										<?php echo $key['nominal_kenaikan'] ?>
 									</td>
-									<td style="text-align: center;">
-										<?php echo number_format($key['gp_lama'])  ?>
-									</td>
-									<td style="text-align: center;">
-										<?php echo number_format($key['gp_baru']) ?>
-									</td>
 								</tr>
 							<?php }else{ ?>
 								<tr>
@@ -112,12 +104,6 @@
 									</td>
 									<td style="text-align: center;">
 										<?php echo $key['nominal_kenaikan'] ?>
-									</td>
-									<td style="text-align: center;">
-										<?php echo number_format($key['gp_lama'])  ?>
-									</td>
-									<td style="text-align: center;">
-										<?php echo number_format($key['gp_baru']) ?>
 									</td>
 								</tr>
 							<?php }
