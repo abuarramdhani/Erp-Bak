@@ -98,6 +98,8 @@ class C_RekapBon extends CI_Controller
 			// $data['bon'][$key]['BIDANG'] = $employee[0]['bidang'];
 			// $data['bon'][$key]['UNIT'] = $employee[0]['unit'];
 			$data['bon'][$key]['SEKSI'] = $employee[0]['seksi'];
+			$data['bon'][$key]['TGLKELUAR'] = $employee[0]['tglkeluar'];
+			$data['bon'][$key]['AKHKONTRAK'] = $employee[0]['akhkontrak'];
 		}
 		$table = $this->load->view('WorkRelationship/RekapBon/V_table', $data);
 		return $table;
@@ -157,5 +159,43 @@ class C_RekapBon extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('WorkRelationship/RekapBon/V_keluar', $data);
 		$this->load->view('V_Footer',$data);
-	}	
+	}
+
+	public function Pekerja_akan_keluar()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Rekap Bon Pekerja Akan Keluar';
+		$data['Menu'] = 'Rekap Bon Pekerja Akan Keluar';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		if (!empty($_POST['txtTanggalKeluarWR'])) {
+			$tanggals = $this->input->post('txtTanggalKeluarWR');
+			$data['tanggal'] = $tanggals;
+			$tgl = explode(" - ", $tanggals);
+			$data['pekerja'] = $this->M_rekapbon->getPekerjaKeluar($tgl['0'],$tgl['1'], 0);
+			$noind = "";
+			foreach ($data['pekerja'] as $key) {
+				if ($noind == "") {
+					$noind = "'".$key['noind']."'";
+				}else{
+					$noind .= ",'".$key['noind']."'";
+				}
+			}
+
+			if ($noind !== "") {
+				$data['bon'] = $this->M_rekapbon->getBill2($noind);
+			}
+		}
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('WorkRelationship/RekapBon/V_Akan_keluar', $data);
+		$this->load->view('V_Footer',$data);
+	}
 }

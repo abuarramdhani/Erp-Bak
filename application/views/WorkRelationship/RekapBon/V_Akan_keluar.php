@@ -18,9 +18,9 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" method="POST" action="<?php echo site_url('WorkRelationship/RekapBon/ProsesKeluar') ?>">
+										<form class="form-horizontal" method="POST" action="">
 											<div class="form-group">
-												<label class="control-label col-lg-4">Periode Pekerja Keluar</label>
+												<label class="control-label col-lg-4">Periode Pekerja Akan Keluar</label>
 												<div class="col-lg-4">
 													<input type="text" class="form-control" name="txtTanggalKeluarWR" id="txtTanggalKeluarWR" value="<?php if(isset($tanggal)){echo $tanggal;} ?>">
 												</div>
