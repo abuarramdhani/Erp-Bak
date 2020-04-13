@@ -105,8 +105,8 @@ thead.toscahead tr th {
 											<td><?php echo $no ?> </td>
 											<td><?php echo  $k['nama_customer'] ?></td>
 											<td><?php echo  $k['no_po'] ?></td>
-											<td><?php echo  $k['tanggal_issued'] ?></td>
-											<td><?php echo  $k['need_by_date'] ?></td>
+											<td><span class="hidden"><?php echo  $k['tanggal_issued_order'] ?></span><?php echo $k['tanggal_issued'] ?></td>
+											<td><span class="hidden"><?php echo  $k['need_by_date_order'] ?></span><?php echo  $k['need_by_date'] ?></td>
 											<td> <a href="<?php echo base_url("MonitoringPengirimanPesananLuar/RekapPurchaseOrder/download/".$k['lampiran']) ?>"> <button class="btn btn-info btn-sm zoom"><i class="fa fa-download"></i> Download</button> </a>
 												<a target="_blank" href="<?= base_url('assets/upload/MonitoringPengirimanPesananLuar/').'/'.$k['lampiran'] ?>">
 												<button class="btn btn-default btn-sm zoom"><i class="fa fa-external-link"></i>  View</button></a>
