@@ -367,6 +367,7 @@ $(document).ready(function() {
   $('.tb_p2k3').dataTable( {
     dom: 'frtp',
   });
+  $('.p2k3_tblstok').dataTable();
   
 
   // $('.p2k3_exp_perhitungan').click(function(){

@@ -1365,4 +1365,30 @@ public function CetakBongagal($id)
 				echo $newTable;
 			}
 	}
+
+	public function monitoring_stok()
+	{
+		$user1 = $this->session->user;
+		$user_id = $this->session->userid;
+		$kodesie = $this->session->kodesie;
+
+		$data['Title'] = 'P2K3 TIM V2 Monitoring Stok';
+		$data['Menu'] = 'Monitoring Stok';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['stok'] = $this->M_dtmasuk->getStokGudang();
+		// echo "<pre>";
+		// print_r($data['stok']);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Monitoring_Stok', $data);
+		$this->load->view('V_Footer',$data);
+
+	}
 }

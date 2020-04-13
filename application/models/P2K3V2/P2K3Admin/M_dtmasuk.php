@@ -794,6 +794,7 @@ class M_Dtmasuk extends CI_Model
                          mb.keterangan,
                          mb.tujuan_gudang
                 ORDER BY 1, 3";
+        // $sql = "DELETE from im_master_bon where no_bon = '920040801'";
                 // echo $sql;exit();
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -1021,5 +1022,27 @@ class M_Dtmasuk extends CI_Model
                     2";
         $query = $this->db->query($sql);
         return $query->result_array();
+    }
+
+    public function getStokGudang()
+    {
+        $sql = "SELECT   msib.inventory_item_id, msib.segment1 item_code, msib.description,
+                         khs_inv_qty_att ('102', msib.inventory_item_id, 'PNL-NPR', 783, '') stock,
+                         msib.PRIMARY_UOM_CODE uom
+                    FROM mtl_system_items_b msib
+                   WHERE msib.organization_id = 102
+                     AND msib.inventory_item_status_code = 'Active'
+                     AND msib.segment1 IN
+                            ('PP1AA42', 'PP1AA43', 'PP1AA01', 'PP1AA02', 'PP1AA03', 'PP1AA04',
+                             'PP1AA05', 'PP1AA06', 'PP1AA07', 'PP1AA08', 'PP1AA09', 'PP1AA10',
+                             'PP1AA11', 'PP1AA12', 'PP1AA13', 'PP1AA14', 'PP1AA15', 'PP1AA16',
+                             'PP1AA17', 'PP1AA18', 'PP1AA19', 'PP1AA20', 'PP1AA21', 'PP1AA22',
+                             'PP1AA23', 'PP1AA24', 'PP1AA25', 'PP1AA26', 'PP1AA27', 'PP1AA28',
+                             'PP1AA29', 'PP1AA30', 'PP1AA31', 'PP1AC01', 'PP1AC07', 'PP1TS05',
+                             'PP1AC05', 'PP1KR02', 'PP1KR05', 'PP1KR04', 'PP1KE01', 'PP1KE02',
+                             'PP1KR03', 'PP1BS02', 'PP1BS01', 'PP1BS04', 'PP1KR01', 'PP1KR09',
+                             'PP1AC04', 'PP1KR06', 'PP1TS06')
+                ORDER BY msib.description";
+        return $this->oracle->query($sql)->result_array();
     }
 }
