@@ -191,7 +191,7 @@
            <div class="row">
              <div class="col-lg-12">
                <label class="col-lg-12 text-center">Tanggal Cetak</label><br>
-               <input class="form-control col-lg-8 text-center" style="margin-left: 23%; width: 55%; text-align: center;" name="psg_tglCetak" id="psg_tglCetak" autocomplete="off" value="">
+               <input class="form-control col-lg-8 text-center" style="margin-left: 23%; width: 55%; text-align: center;" name="psg_tglCetak" id="psg_tglCetak" autocomplete="off" value="" required>
              </div>
            </div>
          </div>

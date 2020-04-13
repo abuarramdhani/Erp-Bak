@@ -321,16 +321,22 @@ class M_pesangon extends CI_Model {
 
 	     public function cetak($id)
 	    {
-	    	$cetak="select 		trim(pri.noind) as noind,
-            										rtrim(pri.nama) as nama,
-            										rtrim(tseksi.seksi) as seksi,
-            										rtrim(tseksi.unit) as unit,
-            										rtrim(tseksi.dept) as departemen,
+	    	$cetak="select 		
+	    	trim(pri.noind) as noind,
+			rtrim(pri.nama) as nama,
+			(select string_agg(distinct rtrim(tseksi.seksi),'<br>') from hrd_khs.tseksi tseksi where tseksi.kodesie in (select kodesie from hrd_khs.trefjabatan tref where tref.noind=pri.noind)) as seksi,
+			(select string_agg(distinct rtrim(tseksi.unit),'<br>') from hrd_khs.tseksi tseksi where tseksi.kodesie in (select kodesie from hrd_khs.trefjabatan tref where tref.noind=pri.noind)) as unit,
+			(select string_agg(distinct rtrim(tseksi.dept),'<br>') from hrd_khs.tseksi tseksi where tseksi.kodesie in (select kodesie from hrd_khs.trefjabatan tref where tref.noind=pri.noind)) as dept,
             rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
-            (
-				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
-				then 	 rtrim(tpekerjaan.pekerjaan)
-				else     tref.jabatan
+            (	case
+					when pri.kd_pkj is not null
+					and pri.kd_pkj <> '' then rtrim( tpekerjaan.pekerjaan )
+					else 
+						(
+						(
+						select string_agg(distinct upper(jabatan),'<br>') from hrd_khs.torganisasi tto where tto.kd_jabatan in 
+						(select tref.kd_jabatan from hrd_khs.trefjabatan tref where tref.noind=pri.noind))
+						)
 				end
 			) as pekerjaan,
 			tpes.id_pesangon as id,
@@ -419,19 +425,18 @@ class M_pesangon extends CI_Model {
 			concat (pesangon.uang_ganti_rugi,'% (UANG PESANGON + UANG PMK)') as gantirugi,
 			concat(tpson.jml_cuti,' hari ')as sisacuti,
 			concat(tpson.jml_cuti,' GP/30 ')as sisacutihari
-							from 		hrd_khs.tpribadi as pri
-							join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
-							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
-							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
-							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
-							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
-							left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
-							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
-							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
-							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
-							and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
-							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
-							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar)::varchar";
+			from 		hrd_khs.tpribadi as pri
+			join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
+			left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
+			left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+			left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
+			left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
+			join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
+			and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
+			and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
+			join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
+			where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar)::varchar";
+	 		
 	 		$query 	=	$this->personalia->query($cetak);
 			return $query->result_array();
         }

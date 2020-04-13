@@ -258,7 +258,7 @@
                                                         <label for="txtHutangKoperasi" class="col-lg-4 control-label">Hutang Koperasi
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtHutangKoperasi" class="form-control" id="txtHutangkoperasi" >
+                                                            <input type="text" name="txtHutangKoperasi" class="form-control" id="txtHutangkoperasi" required>
                                                         </div>
                                                      </div>
                                                 </div>
@@ -277,7 +277,7 @@
                                                         <label for="txtHutangPerusahaan" class="col-lg-4 control-label">Hutang Perusahaan
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtHutangPerusahaan" class="form-control" id="txtHutangPerusahaan" >
+                                                            <input type="text" name="txtHutangPerusahaan" class="form-control" id="txtHutangPerusahaan" required >
                                                         </div>
                                                      </div>
                                                 </div>
@@ -296,7 +296,7 @@
                                                         <label for="txtLainLain" class="col-lg-4 control-label">Lain-lain
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtLainLain" class="form-control" id="txtLainLain" >
+                                                            <input type="text" name="txtLainLain" class="form-control" id="txtLainLain" required >
                                                         </div>
                                                      </div>
                                                 </div>
@@ -307,7 +307,7 @@
                                                         <label for="txtNomorRekening" class="col-lg-2 control-label ">Nomor Rekening
                                                         </label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="txtNomorRekening" class="form-control" id="txtNomorRekening" >
+                                                            <input type="text" name="txtNomorRekening" class="form-control" id="txtNomorRekening" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -318,7 +318,7 @@
                                                         <label for="txtNamaRekening" class="col-lg-2 control-label ">Nama Pemilik Rekening
                                                         </label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="txtNamaRekening" class="form-control" id="txtNamaRekening" >
+                                                            <input type="text" name="txtNamaRekening" class="form-control" id="txtNamaRekening" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -329,7 +329,7 @@
                                                         <label for="txtBank" class="col-lg-2 control-label ">Bank
                                                         </label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="txtBank" class="form-control" id="txtBank" >
+                                                            <input type="text" name="txtBank" class="form-control" id="txtBank" required >
                                                         </div>
                                                     </div>
                                                 </div>
