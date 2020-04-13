@@ -54,7 +54,7 @@
 																	<a class="btn btn-success" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/export?tanggal='.$dt['tgl_idul_fitri']) ?>" target="blank"><span class="fa fa-file-excel-o"></span>&nbsp;SEMUA</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
-																	<a class="btn btn-warning" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/cetak?tanggal='.$dt['tgl_idul_fitri']) ?>" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;SEMUA</a>
+																	<a class="btn btn-warning btnHLCMTHRCetakBulan" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="all" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;SEMUA</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
 																	<a class="btn btn-danger" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/delete?tanggal='.$dt['tgl_idul_fitri']) ?>" target="blank"><span class="fa fa-trash"></span>&nbsp;SEMUA</a>
@@ -71,7 +71,7 @@
 																	<a class="btn btn-success" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/export?tanggal='.$dt['tgl_idul_fitri']."&lokasi=01") ?>" target="blank"><span class="fa fa-file-excel-o"></span>&nbsp;YOGYAKARTA</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
-																	<a class="btn btn-warning" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/cetak?tanggal='.$dt['tgl_idul_fitri']."&lokasi=01") ?>" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;YOGYAKARTA</a>
+																	<a class="btn btn-warning btnHLCMTHRCetakBulan" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="01" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;YOGYAKARTA</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
 																	<a class="btn btn-danger" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/delete?tanggal='.$dt['tgl_idul_fitri']."&lokasi=01") ?>" target="blank"><span class="fa fa-trash"></span>&nbsp;YOGYAKARTA</a>
@@ -88,7 +88,7 @@
 																	<a class="btn btn-success" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/export?tanggal='.$dt['tgl_idul_fitri']."&lokasi=02") ?>" target="blank"><span class="fa fa-file-excel-o"></span>&nbsp;TUKSONO</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
-																	<a class="btn btn-warning" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/cetak?tanggal='.$dt['tgl_idul_fitri']."&lokasi=02") ?>" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;TUKSONO</a>
+																	<a class="btn btn-warning btnHLCMTHRCetakBulan" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="02" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;TUKSONO</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
 																	<a class="btn btn-danger" href="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/delete?tanggal='.$dt['tgl_idul_fitri']."&lokasi=02") ?>" target="blank"><span class="fa fa-trash"></span>&nbsp;TUKSONO</a>
@@ -111,3 +111,47 @@
 		</div>
 	</div>
 </section>
+<div class="modal" tabindex="-1" role="dialog" area-hidden="true" id="modal-HLCM-THRBulan">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-danger">
+				<label>Cetak THR Bulan Harian Lepas Civil Maintenance</label>
+				<button class="btn btn-danger modal-close-HLCM-THRBulan" style="float: right;border-radius: 0px">
+					<span class="glyphicon glyphicon-off"></span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<form target="_blank" method="POST" class="form-horizontal" action="<?php echo base_url('HitungHlcm/THR/PerhitunganBulan/cetak') ?>">
+							<div class="form-group">
+								<label class="control-label col-lg-4">Mengetahui</label>
+								<div class="col-lg-8">
+									<select class="slcHLCMNoindTHRBulan" name="txtMengetahui" style="width: 100%">
+										
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Tanggal</label>
+								<div class="col-lg-8">
+									<input type="text" name="txtTanggalCetak" id="txtHLCMTanggalCetakTHR" class="form-control">
+									<input type="hidden" name="txtTanggalIdulFitri" id="txtTanggalIdulFitri">
+									<input type="hidden" name="txtLokasiKerja" id="txtLokasiKerja">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-12 text-center">
+									<button type="submit" class="btn btn-danger"><span class="fa fa-file-pdf-o"></span> Cetak</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer bg-danger">
+
+			</div>
+		</div>
+	</div>
+</div>

@@ -251,6 +251,24 @@ class M_thr extends CI_Model {
 	function insertPengembalianTHR($data){
 		$this->erp->insert('hlcm.hlcm_thr_pengembalian',$data);
 	}
+
+	public function getPekerjaByKey($key){
+		$sql = "select employee_code as noind,trim(employee_name) as nama
+				from er.er_employee_all
+				where (
+					employee_code like upper(concat('%',?,'%'))
+					or employee_name like upper(concat('%',?,'%'))
+					)
+				and resign = '0'";
+		return $this->erp->query($sql,array($key,$key))->result_array();
+	}
+
+	public function getPekerjaJabatanByNoind($noind){
+		$sql = "select noind,trim(nama) as nama,trim(jabatan) as jabatan
+				from hrd_khs.tpribadi
+				where noind = ?";
+		return $this->personalia->query($sql,array($noind))->row();
+	}
 }
 
 ?>

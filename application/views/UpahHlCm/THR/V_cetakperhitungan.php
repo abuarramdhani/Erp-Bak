@@ -33,3 +33,31 @@
 	?>
 </tbody>
 </table>
+<br>
+<br>
+<table>
+	<tr>
+		<td></td>
+		<td style="text-align: right;">Yogyakarta, <?php echo date('d F Y',strtotime($waktu_dibuat)) ?></td>
+	</tr>
+	<tr>
+		<td style="text-align: center">Mengetahui,</td>
+		<td style="text-align: center">Dibuat,</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td style="text-align: center"><?php echo $mengetahui->nama ?></td>
+		<td style="text-align: center"><?php echo $dibuat->nama ?></td>
+	</tr>
+	<tr>
+		<td style="text-align: center"><?php echo $mengetahui->jabatan ?></td>
+		<td style="text-align: center"><?php echo $dibuat->jabatan ?></td>
+	</tr>
+</table>

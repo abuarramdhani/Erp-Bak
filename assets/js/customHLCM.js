@@ -883,6 +883,13 @@ $(document).ready(function () {
 	    "format":'yyyy-mm-dd',
  	});
 
+ 	$('#txtHLCMTanggalCetakTHR').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
  	$('#txtHLCMPeriodeAwalTHR').datepicker({
  		"autoclose": true,
 	    "todayHiglight": true,
@@ -900,6 +907,58 @@ $(document).ready(function () {
 	    "viewMode":'months',
 	    "minViewMode":'months'
  	});
+
+ 	$('.slcHLCMNoindTHRBulan').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        dropdownParent: $('#modal-HLCM-THRBulan'),
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'HitungHlcm/THR/PerhitunganBulan/cariPekerja',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
+    $('.slcHLCMNoindTHR').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        dropdownParent: $('#modal-HLCM-THR'),
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'HitungHlcm/THR/Perhitungan/cariPekerja',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
 
  	$('#txtHLCMIdulFitri').on('change',function(){
  		tanggal = $('#txtHLCMIdulFitri').val();
@@ -1055,4 +1114,28 @@ $(document).ready(function () {
  			window.open(baseurl + 'HitungHlcm/THR/PerhitunganBulan/export' + isiForm,'_blank');
  		};
  	});
+
+ 	$('.btnHLCMTHRCetakBulan').on('click',function(){
+ 		var lokasi = $(this).attr('data-lokasi');
+ 		var tanggal = $(this).attr('data-tanggal');
+ 		$('#txtTanggalIdulFitri').val(tanggal);
+ 		$('#txtLokasiKerja').val(lokasi);
+ 		$('#modal-HLCM-THRBulan').modal('show');
+ 	});
+
+ 	$('.modal-close-HLCM-THRBulan').on('click',function(){
+ 		$('#modal-HLCM-THRBulan').modal('hide');
+ 	})
+
+ 	$('.btnHLCMTHRCetak').on('click',function(){
+ 		var lokasi = $(this).attr('data-lokasi');
+ 		var tanggal = $(this).attr('data-tanggal');
+ 		$('#txtTanggalIdulFitri').val(tanggal);
+ 		$('#txtLokasiKerja').val(lokasi);
+ 		$('#modal-HLCM-THR').modal('show');
+ 	});
+
+ 	$('.modal-close-HLCM-THR').on('click',function(){
+ 		$('#modal-HLCM-THR').modal('hide');
+ 	})
  })

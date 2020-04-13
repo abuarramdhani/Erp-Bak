@@ -312,11 +312,16 @@ class C_PerhitunganBulan extends CI_Controller
 	}
 
 	public function cetak(){
-		$tanggal 	= $this->input->get('tanggal');
-		$lokasi 	= $this->input->get('lokasi');
+		$tanggal 	= $this->input->post('txtTanggalIdulFitri');
+		$lokasi 	= $this->input->post('txtLokasiKerja');
+		$mengetahui = $this->input->post('txtMengetahui');
+		$dibuat 		= $this->session->user;
+		$data['waktu_dibuat'] = $this->input->post('txtTanggalCetak');
 		$data['tanggal'] = $tanggal;
 
-		if (!empty($lokasi)) {
+		$data['mengetahui'] = $this->M_thr->getPekerjaJabatanByNoind($mengetahui);
+		$data['dibuat'] = $this->M_thr->getPekerjaJabatanByNoind($dibuat);
+		if (!empty($lokasi) && $lokasi !== 'all') {
 			$data['data'] = $this->M_thr->getBulanTHRByTanggalLokasi($tanggal,$lokasi);
 		}else{
 			$data['data'] = $this->M_thr->getBulanTHRByTanggal($tanggal);
@@ -331,7 +336,7 @@ class C_PerhitunganBulan extends CI_Controller
 		// $this->load->view('UpahHlCm/THR/V_cetakperhitunganbulan', $data);exit();
 
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM oleh ".$this->session->user." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i> ");
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM oleh ".$this->session->user."-".$this->session->employee." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i> ");
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');
@@ -383,6 +388,12 @@ class C_PerhitunganBulan extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/THR/V_readperhitunganbulan',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function cariPekerja(){
+		$key = $this->input->get('term');
+		$data = $this->M_thr->getPekerjaByKey($key);
+		echo json_encode($data);
 	}
 
 }
