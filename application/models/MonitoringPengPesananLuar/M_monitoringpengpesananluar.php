@@ -114,8 +114,10 @@ class M_monitoringpengpesananluar extends CI_Model
         $sql = "select distinct 
                   dvc.nama_customer,
                   dvrpo.no_po,
-                  TO_CHAR(dvrpo.tanggal_issued :: DATE, 'DD Mon YYYY') tanggal_issued,
-                  TO_CHAR(dvrpo.need_by_date :: DATE, 'DD Mon YYYY') need_by_date,
+                  --TO_CHAR(dvrpo.tanggal_issued :: DATE, 'DD Mon YYYY') tanggal_issued,
+                  --TO_CHAR(dvrpo.need_by_date :: DATE, 'DD Mon YYYY') need_by_date,
+                  dvrpo.tanggal_issued tanggal_issued,
+                  dvrpo.need_by_date need_by_date,
                   dvrpo.status,
                   dvrpo.lampiran,
                   dvrp.no_so,
