@@ -3300,6 +3300,7 @@ function mpk_showAlert(icon, title)
 
 window.addEventListener('load', function () {
     if($("#PD_Cari").get(0)){
+        $('input[name="PerSurat"]').eq(0).iCheck('check');
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
