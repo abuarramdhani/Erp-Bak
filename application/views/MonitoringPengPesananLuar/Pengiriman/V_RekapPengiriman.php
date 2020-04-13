@@ -108,9 +108,9 @@ thead.toscahead tr th {
 											<td><?php echo $no ?> </td>
 											<td><?php echo  $k['nama_customer'] ?></td>
 											<td><?php echo  $k['no_po'] ?></td>
-											<td><?php echo  $k['tanggal_issued'] ?></td>
-											<td><?php echo  $k['need_by_date'] ?></td>
-											<td><?php echo  $k['delivery_date'] ?></td>
+											<td><span class="hidden"><?php echo  $k['tanggal_issued_order'] ?></span><?php echo  $k['tanggal_issued'] ?></td>
+											<td><span class="hidden"><?php echo  $k['need_by_date_order'] ?></span><?php echo  $k['need_by_date'] ?></td>
+											<td><span class="hidden"><?php echo  $k['delivery_date_order'] ?></span><?php echo  $k['delivery_date'] ?></td>
 											<td><?php echo  $k['no_so'] ?></td>
 											<td><?php echo  $k['no_dosp'] ?></td>
 											<td>
