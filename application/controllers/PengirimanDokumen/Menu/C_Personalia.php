@@ -54,6 +54,7 @@ class C_Personalia extends CI_Controller
                                 max(tr.tgl_update)::date tgl_update, 
                                 ap.kodesie, 
                                 td.alasan,
+                                td.lokasi,
                                 ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
                                   from er.er_section es inner join er.er_employee_all emp on substring(emp.section_code, 0,8) = substring(es.section_code,0,8)
                                   where emp.employee_code = td.noind limit 1
@@ -65,7 +66,7 @@ class C_Personalia extends CI_Controller
                                 inner join ps.triwayat tr on tr.id_data = td.id_data
                                 inner join er.er_employee_all emp on emp.employee_code = td.noind 
                         WHERE $where
-                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan, seksi_name
+                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan, seksi_name, td.lokasi
             ;";
         }else{
             if ($status == 'approved') {
@@ -93,6 +94,7 @@ class C_Personalia extends CI_Controller
                                 max(tr.tgl_update)::date tgl_update, 
                                 tr.seksi,
                                 td.alasan,
+                                td.lokasi,
                                 ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
                                   from er.er_section es inner join er.er_employee_all emp on substring(emp.section_code, 0,8) = substring(es.section_code,0,8)
                                   where emp.employee_code = td.noind limit 1
@@ -103,7 +105,7 @@ class C_Personalia extends CI_Controller
                             inner join ps.triwayat tr on tr.id_data = td.id_data 
                             inner join er.er_employee_all emp on emp.employee_code = td.noind 
                         WHERE tr.seksi='$kodesie' and tr.status = '$stat' and tr.level='$level' 
-                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan, seksi_name ;
+                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan, seksi_name,td.lokasi;
                         ";
         }
         
@@ -165,6 +167,16 @@ class C_Personalia extends CI_Controller
         return $filtered;
     }
 
+    function filter_dokumen_lokasi($data){
+        function filter_lokasi($item){
+            $lk = $_GET['lokasi'];
+            return $item['lokasi'] == $lk;
+        }
+
+        $filtered = array_filter($data, 'filter_lokasi');
+        return $filtered;
+    }
+
     function allSection(){
 		$sql = "select kodesie, coalesce(nullif(trim(seksi), '-'), nullif(trim(unit),'-'), nullif(trim(bidang),'-'), dept) as nama from hrd_khs.tseksi where substring(kodesie, 8,11) = '00' and trim(seksi) <> '-' order by 1";
         return $this->personalia->query($sql)->result_object();
@@ -177,6 +189,9 @@ class C_Personalia extends CI_Controller
             $data = $this->queryApproval('pending',2)->result_array();
         }
 
+        $list_lokasi = $this->M_inputdata->getAllLoksi();
+        $this->data['all_lokasi'] = array_column($list_lokasi, 'lokasi_kerja', 'id_');
+
         // filter seksi
         $this->data['is_get'] = false;
         $this->data['selected'] = false;
@@ -185,6 +200,13 @@ class C_Personalia extends CI_Controller
             $this->data['is_get'] = true;
             $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
         }
+        
+        $this->data['c_lok'] = '00';
+        if ($this->input->get('lokasi')) {
+            $data = $this->filter_dokumen_lokasi($data);
+            $this->data['c_lok'] = $this->input->get('lokasi');
+        }
+        $this->data['l_lokasi'] = $this->M_inputdata->getLokasi2();
 
         $this->data['seksi'] = $this->allSection();
 
@@ -225,6 +247,16 @@ class C_Personalia extends CI_Controller
             $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
         }
 
+        $this->data['c_lok'] = '00';
+        if ($this->input->get('lokasi')) {
+            $data = $this->filter_dokumen_lokasi($data);
+            $this->data['c_lok'] = $this->input->get('lokasi');
+        }
+        $this->data['l_lokasi'] = $this->M_inputdata->getLokasi2();
+
+        $list_lokasi = $this->M_inputdata->getAllLoksi();
+        $this->data['all_lokasi'] = array_column($list_lokasi, 'lokasi_kerja', 'id_');
+
         $this->data['seksi'] = $this->allSection();
 
         $this->data['table'] = $data;
@@ -252,6 +284,16 @@ class C_Personalia extends CI_Controller
             $this->data['is_get'] = true;
             $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
         }
+
+        $this->data['c_lok'] = '00';
+        if ($this->input->get('lokasi')) {
+            $data = $this->filter_dokumen_lokasi($data);
+            $this->data['c_lok'] = $this->input->get('lokasi');
+        }
+        $this->data['l_lokasi'] = $this->M_inputdata->getLokasi2();
+
+        $list_lokasi = $this->M_inputdata->getAllLoksi();
+        $this->data['all_lokasi'] = array_column($list_lokasi, 'lokasi_kerja', 'id_');
 
         $this->data['seksi'] = $this->allSection();
 

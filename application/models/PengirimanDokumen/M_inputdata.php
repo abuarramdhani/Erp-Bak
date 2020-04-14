@@ -74,12 +74,13 @@ class M_inputdata extends CI_Model
         return $result;
     }
 
-    function ajaxInputData($noind,$id_master,$date){
+    function ajaxInputData($noind,$id_master,$date, $lokasi){
         $inputData = array(
             'noind'         => $noind,
             'id_master'     => $id_master,
             'tanggal_start' => $date['0'],
-            'tanggal_end'   => $date['1']
+            'tanggal_end'   => $date['1'],
+            'lokasi'        => $lokasi
         );
 
         $this->db->insert('ps.tdata', $inputData);
@@ -95,12 +96,13 @@ class M_inputdata extends CI_Model
         $this->db->insert('ps.triwayat', $inputriwayat);
     }
 
-    function ajaxUpdateData($id, $noind,$id_master,$date){
+    function ajaxUpdateData($id, $noind,$id_master,$date, $lokasi){
         $updateData = array(
             'noind'         => $noind,
             'id_master'     => $id_master,
             'tanggal_start' => $date['0'],
-            'tanggal_end'   => $date['1']
+            'tanggal_end'   => $date['1'],
+            'lokasi'        => $lokasi
         );
 
         $this->db->set($updateData);
@@ -141,7 +143,7 @@ class M_inputdata extends CI_Model
     }
 
     function ajaxShowData($id){
-        $sql = "SELECT td.id_data, td.noind, (select trim(employee_name) from er.er_employee_all where employee_code = td.noind) as name, td.id_master, td.tanggal_start, td.tanggal_end
+        $sql = "SELECT td.id_data, td.noind, (select trim(employee_name) from er.er_employee_all where employee_code = td.noind) as name, td.id_master, td.tanggal_start, td.tanggal_end, td.lokasi
                 FROM ps.tdata td
                 WHERE id_data = '$id'";
         $data = $this->db->query($sql)->result_array();
@@ -158,5 +160,17 @@ class M_inputdata extends CI_Model
         $this->db->delete('ps.triwayat', array('id_data' => $id));
 
         return true;
+    }
+
+    public function getAllLoksi()
+    {
+        $sql = "SELECT * from hrd_khs.tlokasi_kerja";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getLokasi2()
+    {
+        $sql = "SELECT * from hrd_khs.tlokasi_kerja where id_ in('01','02')";
+        return $this->personalia->query($sql)->result_array();
     }
 }
