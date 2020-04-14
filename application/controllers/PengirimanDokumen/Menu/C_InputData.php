@@ -156,9 +156,10 @@ class C_InputData extends CI_Controller
         
         foreach($allNoind as $noind){
             $id_master  = $_POST['ket'];
+            $lokasi  = $_POST['lokasi'];
             $date       = [$tgl1, $tgl2];
     
-            $this->M_inputdata->ajaxInputData($noind,$id_master,$date);
+            $this->M_inputdata->ajaxInputData($noind,$id_master,$date, $lokasi);
         }
 
     }
@@ -167,6 +168,7 @@ class C_InputData extends CI_Controller
         $id         = $_POST['id'];
         $noind      = $_POST['noind'];
         $date       = $_POST['date'];
+        $lokasi       = $_POST['lokasi'];
 
         $dt = str_replace('/', '-', $date);
         $dt = explode(' - ', $dt);
@@ -184,7 +186,7 @@ class C_InputData extends CI_Controller
             $id_master  = $_POST['inform'];
             $date       = [$tgl1, $tgl2];
     
-            $this->M_inputdata->ajaxUpdateData($id, $noind,$id_master,$date);
+            $this->M_inputdata->ajaxUpdateData($id, $noind,$id_master,$date, $lokasi);
         }
     }
 

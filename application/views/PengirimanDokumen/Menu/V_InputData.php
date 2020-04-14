@@ -152,7 +152,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title center"></h3>
             </div>
-            <div class="modal-body">
+            <div class="modal-body clearfix">
                 <div class="col-lg-12">
                     <div class="col-lg-6">
                         <form id="modalForm">
@@ -171,6 +171,16 @@
                                 <label class="col-sm-2 col-form-label" for="modalSeksi">Seksi</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" type="text" id="modalSeksi" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Lokasi Distribusi</label>
+                                <div class="col-sm-10">
+                                    <select id="pdp_lokasidis" class="form-control select2" style="width: 100%" data-allow-clear="false" required="" data-placeholder="Pilih Lokasi">
+                                        <option></option>
+                                        <option value="01">JOGJA</option>
+                                        <option value="02">TUKSONO</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -200,7 +210,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- js is powerfull -->
+                                <!-- js is (not) powerfull -->
                             </tbody>
                         </table>
                     </div>
@@ -281,6 +291,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Lokasi Distribusi</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" style="width: 100%" data-allow-clear="false" required="" data-placeholder="Pilih Lokasi" id="modalEditLokasi">
+                                <option></option>
+                                <option value="01">JOGJA</option>
+                                <option value="02">TUKSONO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label" for="modalEditInformation">Keterangan</label>
                         <div class="col-sm-10">
                             <select class="form-control" placeholder="jenis keterangan" id="modalEditInformation">
@@ -308,7 +328,7 @@
 <script>
     baseurl = '<?= base_url() ?>'
     $(document).ready(function() {
-        $('modalNoInduk').on('change', function(e) {
+        $('#modalNoInduk').on('change', function(e) {
             let noind = $(this).val()
             $.ajax({
                 type: 'GET',
@@ -344,10 +364,24 @@
             let noind = $('#modalNoInduk').val(),
                 name = $('#modalNameWorker').val().toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
             seksi = $('#modalSeksi').val().toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
-
+            var lokasi_id = $('#pdp_lokasidis').val();
+            var lokasi_nama = $('#pdp_lokasidis option:selected').text();
             if (noind == null) {
                 alert("No induk kosong")
                 return
+            }
+
+            if ($('#pdp_lokasidis').val() == ''){
+                alert('Lokasi tidak boleh kosong!');
+                return false;
+            }
+            if ($('#modalInputInformation').val() == null){
+                alert('Keterangan tidak boleh kosong!');
+                return false;
+            }
+            if ($('#modalDate').val() == ''){
+                alert('Tanggal tidak boleh kosong!');
+                return false;
             }
 
             let listNoind = []
@@ -372,25 +406,27 @@
                             <td><button class="btn btn-xs btn-danger delete-row"><i class="fa fa-close"></i></button></td>
                         </tr>`
 
-            $('.table-info-data > tbody').append(row)
+            $('.table-info-data > tbody').append(row);
+            $('#pdp_lokasidis').attr('disabled', true);
+            $('#modalInputInformation').attr('disabled', true);
+            $('#modalDate').attr('disabled', true);
+        });
+        $(document).on('click', '.delete-row', function() {
+            $(this).closest('tr').remove()
 
-            $('.delete-row').click(function() {
-                $(this).closest('tr').remove()
+            let last = $('.table-info-data > tbody tr').length
 
-                let last = $('.table-info-data > tbody tr').length
-
-                let i = 1
-                $('.table-info-data > tbody tr').each(function() {
-                    $(this).find('td').first().text(i)
-                    i++
-                })
-            })
-
-        })
+            let i = 1
+            $('.table-info-data > tbody tr').each(function() {
+                $(this).find('td').first().text(i)
+                i++
+            });
+        });
 
         //listener save Changes
         $('#modalAction').click(() => {
             let allNoind = []
+
 
             $('.table-info-data tbody tr').each(function() {
                 let noind = $(this).find('.noind').text()
@@ -400,18 +436,25 @@
             let jsonNoind = allNoind.join(',')
 
             let ket = $('#modalInputInformation').val(),
-                date = $('#modalDate').val()
+                date = $('#modalDate').val();
 
             if (allNoind.length == 0 || ket == null || date == '') {
                 showSweetAlert('Isi data dengan lengkap !')
                 return
             }
 
+            $('#pdp_lokasidis').attr('disabled', false);
+            $('#modalInputInformation').attr('disabled', false);
+            $('#modalDate').attr('disabled', false);
+
+
             let data = {
                 noind: jsonNoind,
                 ket: ket,
-                date: date
+                date: date,
+                lokasi: $('#pdp_lokasidis').val()
             }
+            console.log(data);
 
             $.ajax({
                 method: 'POST',
@@ -578,10 +621,11 @@
                             let option = $("<option selected></option>").val(res.noind).text(res.noind);
                             $('#modalEditNoInduk').append(option).trigger('change')
                             
-                            $('#modalIdData').val(res.id_data)
-                            $('#modalEditNameWorker').val(res.name)
-                            $('#modalEditSeksi').val(res.seksi)
-                            $('#modalEditInformation').val(res.id_master)
+                            $('#modalIdData').val(res.id_data);
+                            $('#modalEditNameWorker').val(res.name);
+                            $('#modalEditSeksi').val(res.seksi);
+                            $('#modalEditLokasi').val(res.lokasi).trigger('change');
+                            $('#modalEditInformation').val(res.id_master);
                             $('#modalEditDate').daterangepicker({
                                 startDate: new Date(res.tanggal_start),
                                 endDate: new Date(res.tanggal_end),
@@ -601,6 +645,7 @@
         let id = $('#modalIdData').val()
         let noind = $('#modalEditNoInduk').val()
         let inform = $('#modalEditInformation').val()
+        let lokasi = $('#modalEditLokasi').val()
         let date  = $('#modalEditDate').val()
 
         $.ajax({
@@ -610,7 +655,8 @@
                 id,
                 noind,
                 inform,
-                date
+                date,
+                lokasi
             },
             success: a => {
                 $('#modalEdit').modal('toggle')
