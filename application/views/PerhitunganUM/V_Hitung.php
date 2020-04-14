@@ -40,6 +40,7 @@
 										<select id="deptclass" name="deptclass" class="form-control select2 slcDeclas" data-placeholder="Pilih Department Class">
 											<option></option>
 										</select>
+										<input type="hidden" name="username" id="username" value="<?= $user?>">
 									</div>
 								</div>
 								<div class="form-group col-lg-12">
