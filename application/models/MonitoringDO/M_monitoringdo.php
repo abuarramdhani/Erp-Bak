@@ -5,6 +5,7 @@ class M_monitoringdo extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        // $this->oracle = $this->load->database('oracle_dev', true);
         $this->oracle = $this->load->database('oracle', true);
 
         $subinv = $this->session->datasubinven;
@@ -66,105 +67,8 @@ class M_monitoringdo extends CI_Model
 
     public function GetSudahCetak()
     {
-        $sql = "SELECT distinct
-             mtrh.REQUEST_NUMBER
-            ,mtrh.HEADER_ID
-            ,kad.NO_SO
-            ,hzp.PARTY_NAME tujuan
-            ,hzl.CITY kota
-            ,kpd.PLAT_NUMBER
-            ,kpd.PERSON_ID petugas
-      from hz_cust_site_uses_all hcsua
-          ,hz_party_sites hps
-          ,hz_locations hzl
-          ,hz_cust_acct_sites_all hcas
-          ,hz_parties hzp
-          ,hz_cust_accounts hca
-          --
-          ,oe_order_headers_all ooha
-          ,oe_order_lines_all oola
-          ,wsh_delivery_details wdd
-          --
-          ,mtl_txn_request_headers mtrh
-          ,mtl_txn_request_lines mtrl
-          ,khs_approval_do kad
-          ,khs_person_delivery kpd
-          --
-          ,khs_delivery_temp kdt
-          ,khs_cetak_do kcd
-      where ooha.HEADER_ID = oola.HEADER_ID
-        --
-        and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-        --
-        and kad.NO_DO = mtrh.REQUEST_NUMBER
-        --
-        and kdt.HEADER_ID = kpd.HEADER_ID
-        and kcd.REQUEST_NUMBER = kpd.REQUEST_NUMBER
-        and kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
-        and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
-                     and kpd.DELIVERY_FLAG = 'Y'
-                     and kdt.FLAG = 'T'
-                then 1 --'SUDAH MUAT'
-                end
-        --
-        and mtrh.HEADER_ID = mtrl.HEADER_ID
-        and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-        --
-        and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-        and hca.PARTY_ID = hzp.PARTY_ID(+)
-        and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-        and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-        and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-        and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-      UNION ALL
-      select distinct
-             mtrh.REQUEST_NUMBER
-            ,mtrh.HEADER_ID
-            ,NULL no_so
-            ,(select ood.ORGANIZATION_CODE
-                from org_organization_definitions ood
-               where to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-               )                                                                      tujuan
-            ,(select upper(substr(
-                                  substr(hou.NAME,1,(instr (
-                                                            (replace(hou.NAME,' (','*(')), '*')-1
-                                                     )
-                                          ),5)
-                                          )
-                from org_organization_definitions ood
-                    ,hr_organization_units hou
-               where ood.OPERATING_UNIT = hou.ORGANIZATION_ID
-                 and to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                 )                                                                    kota
-            ,kpd.PLAT_NUMBER
-            ,kpd.PERSON_ID petugas
-      from mtl_txn_request_headers mtrh
-          ,mtl_txn_request_lines mtrl
-          --
-          ,khs_approval_do kad
-          ,khs_person_delivery kpd
-          ,khs_delivery_temp kdt
-          ,khs_cetak_do kcd
-      where mtrh.HEADER_ID = mtrl.HEADER_ID
-        --
-        and kad.NO_DO = mtrh.REQUEST_NUMBER
-        and kad.NO_DO = kpd.REQUEST_NUMBER
-        and kad.NO_SO is null
-        --
-        and kdt.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-        and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-        and kdt.HEADER_ID = kpd.HEADER_ID
-        and kcd.REQUEST_NUMBER = kpd.REQUEST_NUMBER
-        and kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
-        and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
-                     and kpd.DELIVERY_FLAG = 'Y'
-                     and kdt.FLAG = 'T'
-                then 1 --'SUDAH MUAT'
-                end
-        -- paramter trial
-      --  and mtrh.REQUEST_NUMBER = '2000000013'
-      order by petugas
-              ,1";
+        $sql = "SELECT *
+                FROM khs_qweb_sudah_cetak kqsc";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -329,193 +233,11 @@ class M_monitoringdo extends CI_Model
 
     public function getDO()
     {
-        $datacustom = '24-Mar-20';
-        $response = $this->oracle->query("with
-                purchasing as (select nvl(prha.ATTRIBUTE,kdk.NO_PR) request_number
-                                     ,prha.SEGMENT1 no_pr
-                                     ,nvl(kdk.JENIS_KENDARAAN,prha.ATTRIBUTE3) jenis_kendaraan
-                                     ,kdk.NO_KENDARAAN plat_number
-                                     ,kdk.VENDOR_EKSPEDISI ekspedisi
-                                     ,kdk.CREATION_DATE
-                                from khs_dpb_kendaraan kdk
-                                    ,(select prla.attribute1 attribute
-                                                ,prha.segment1
-                                                ,prha.attribute3
-                                            from po_requisition_headers_all prha
-                                                ,po_requisition_lines_all prla
-                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                                             and prla.attribute1 is not null
-                                          union all
-                                          select prla.attribute2 attribute
-                                                ,prha.segment1
-                                                ,prha.attribute3
-                                            from po_requisition_headers_all prha
-                                                ,po_requisition_lines_all prla
-                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                                             and prla.attribute2 is not null
-                                          union all
-                                          select prla.attribute3 attribute
-                                                ,prha.segment1
-                                                ,prha.attribute3
-                                            from po_requisition_headers_all prha
-                                                ,po_requisition_lines_all prla
-                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                                             and prla.attribute3 is not null
-                                          union all
-                                          select prla.attribute4 attribute
-                                                ,prha.segment1
-                                                ,prha.attribute3
-                                            from po_requisition_headers_all prha
-                                                ,po_requisition_lines_all prla
-                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                                             and prla.attribute4 is not null
-                                          union all
-                                          select prla.attribute5 attribute
-                                                ,prha.segment1
-                                                ,prha.attribute3
-                                            from po_requisition_headers_all prha
-                                                ,po_requisition_lines_all prla
-                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                                             and prla.attribute5 is not null
-                                          union all
-                                          select prla.attribute6 attribute
-                                                ,prha.segment1
-                                                ,prha.attribute3
-                                            from po_requisition_headers_all prha
-                                                ,po_requisition_lines_all prla
-                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                                             and prla.attribute6 is not null
-                                          union all
-                                          select prla.attribute12 attribute
-                                                ,prha.segment1
-                                                ,prha.attribute3
-                                            from po_requisition_headers_all prha
-                                                ,po_requisition_lines_all prla
-                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                                             and prla.attribute12 is not null
-                                          union all
-                                          select prla.attribute13 attribute
-                                                ,prha.segment1
-                                                ,prha.attribute3
-                                            from po_requisition_headers_all prha
-                                                ,po_requisition_lines_all prla
-                                           where prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
-                                             and prla.attribute13 is not null
-                                             ) prha
-                               where kdk.NO_PR = prha.SEGMENT1(+)
-                            )
-                ,app_spb as (select distinct
-                                    mtrh.REQUEST_NUMBER
-                                   ,mtrh.HEADER_ID
-                                   ,kad.NO_SO
-                                   ,ood.ORGANIZATION_CODE tujuan
-                                   ,upper(substr(
-                                                 substr(hou.NAME,1,(instr (
-                                                                           (replace(hou.NAME,' (','*(')), '*')-1
-                                                                   )
-                                                        ),5)
-                                             ) kota
-                                   ,trim(substr(mtrl.REFERENCE,5)) reference
-                               from mtl_txn_request_headers mtrh
-                                   ,mtl_txn_request_lines mtrl
-                                   ,khs_approval_do kad
-                                   --
-                                   ,org_organization_definitions ood
-                                   ,hr_organization_units hou
-                              where mtrh.HEADER_ID = mtrl.HEADER_ID
-                                and mtrh.REQUEST_NUMBER = kad.NO_DO
-                                --
-                                and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
-                                and to_char(ood.ORGANIZATION_ID) = trim(substr(mtrl.REFERENCE,5))
-                                and kad.STATUS = 'Approved'
-                                )
-                ,app_do as (select distinct
-                                   mtrh.REQUEST_NUMBER
-                                  ,mtrh.HEADER_ID
-                                  ,kad.NO_SO
-                                  ,hzp.PARTY_NAME tujuan
-                                  ,hzl.CITY kota
-                              from hz_cust_site_uses_all hcsua
-                                  ,hz_party_sites hps
-                                  ,hz_locations hzl
-                                  ,hz_cust_acct_sites_all hcas
-                                  ,hz_parties hzp
-                                  ,hz_cust_accounts hca
-                                  --
-                                  ,oe_order_headers_all ooha
-                                  ,oe_order_lines_all oola
-                                  ,wsh_delivery_details wdd
-                                  --
-                                  ,mtl_txn_request_headers mtrh
-                                  ,mtl_txn_request_lines mtrl
-                                  ,khs_approval_do kad
-                             where ooha.HEADER_ID = oola.HEADER_ID
-                               --
-                               and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-                               and wdd.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-                               and wdd.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-                               --
-                               and kad.NO_DO = mtrh.REQUEST_NUMBER
-                               and kad.STATUS = 'Approved'
-                               --
-                               and mtrh.HEADER_ID = mtrl.HEADER_ID
-                               and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-                               --
-                               and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-                               and hca.PARTY_ID = hzp.PARTY_ID(+)
-                               and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-                               and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-                               and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-                               and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-                               )
-                ,approved as (select distinct
-                                     mtrh.HEADER_ID
-                                    ,mtrh.REQUEST_NUMBER
-                                    ,mtrh.CREATION_DATE
-                                    ,kad.NO_SO
-                                    ,mtrl.REFERENCE
-                                    --
-                                    ,kpd.PERSON_ID petugas
-                                from mtl_txn_request_headers mtrh
-                                    ,mtl_txn_request_lines mtrl
-                                    ,khs_approval_do kad
-                                    ,khs_person_delivery kpd
-                               where mtrh.HEADER_ID = mtrl.HEADER_ID
-                                 and mtrh.REQUEST_NUMBER = kad.NO_DO
-                                 and kad.STATUS =  'Approved'
-                                 and mtrh.REQUEST_NUMBER = kpd.REQUEST_NUMBER(+)
-                                 and kpd.PERSON_ID is null
-                                 )
-                select app.REQUEST_NUMBER \"DO/SPB\"
-                      ,app.HEADER_ID
-                      ,app.CREATION_DATE
-                      ,prha.NO_PR
-                      ,app.NO_SO
-                      ,case when app.NO_SO is null
-                            then (select distinct aa.TUJUAN
-                                    from app_spb aa
-                                   where aa.REQUEST_NUMBER = app.REQUEST_NUMBER)
-                            else (select distinct bb.TUJUAN
-                                    from app_do bb
-                                   where bb.REQUEST_NUMBER = app.REQUEST_NUMBER)
-                       end TUJUAN
-                      ,case when app.NO_SO is null
-                            then (select distinct aa.KOTA
-                                    from app_spb aa
-                                   where aa.REQUEST_NUMBER = app.REQUEST_NUMBER)
-                            else (select distinct bb.KOTA
-                                    from app_do bb
-                                   where bb.REQUEST_NUMBER = app.REQUEST_NUMBER)
-                       end KOTA
-                      ,app.PETUGAS
-                      ,prha.JENIS_KENDARAAN
-                      ,prha.EKSPEDISI
-                      ,prha.PLAT_NUMBER
-                  from approved app
-                      ,purchasing prha
-                 where app.REQUEST_NUMBER = prha.REQUEST_NUMBER(+)
-                   and trunc(prha.CREATION_DATE) = trunc(sysdate)
-                order by 3")->result_array();
+        // $datacustom = '24-Mar-20';
+        $response = $this->oracle->query("SELECT DISTINCT kqsa.*
+                                                     FROM khs_qweb_siap_assign kqsa
+                                                    WHERE TRUNC (kqsa.creation_date) = TRUNC (SYSDATE)
+                                                 ORDER BY kqsa.creation_date")->result_array();
         if (empty($response)) {
             $response = null;
         }
@@ -561,95 +283,8 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiAssign()
     {
-        $response = $this->oracle->query("SELECT distinct
-               mtrh.REQUEST_NUMBER \"DO/SPB\"
-              ,mtrh.HEADER_ID
-              ,kad.NO_SO
-              ,hzp.PARTY_NAME tujuan
-              ,hzl.CITY kota
-              ,kpd.PLAT_NUMBER
-              ,kpd.DELIVERY_FLAG
-              ,kpd.PERSON_ID petugas
-        from hz_cust_site_uses_all hcsua
-            ,hz_party_sites hps
-            ,hz_locations hzl
-            ,hz_cust_acct_sites_all hcas
-            ,hz_parties hzp
-            ,hz_cust_accounts hca
-            --
-            ,oe_order_headers_all ooha
-            ,oe_order_lines_all oola
-            ,wsh_delivery_details wdd
-            --
-            ,mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
-        where ooha.HEADER_ID = oola.HEADER_ID
-          --
-          and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER
-          and kpd.PERSON_ID is not null
-          --
-          and kpd.HEADER_ID not in (select kdt.HEADER_ID
-                                      from khs_delivery_temp kdt
-                                     where kdt.HEADER_ID = kpd.HEADER_ID)
-          --
-          and mtrh.HEADER_ID = mtrl.HEADER_ID
-          and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-          --
-          and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-          and hca.PARTY_ID = hzp.PARTY_ID(+)
-          and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-          and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-          and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-          and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-          -- paramter trial
-        --  and mtrh.REQUEST_NUMBER = '3620114'
-        UNION ALL
-        select distinct
-               mtrh.REQUEST_NUMBER \"D0/SPB\"
-              ,mtrh.HEADER_ID
-              ,NULL no_so
-              ,(select ood.ORGANIZATION_CODE
-                  from org_organization_definitions ood
-                 where to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                 )                                                                      tujuan
-              ,(select upper(substr(
-                                    substr(hou.NAME,1,(instr (
-                                                              (replace(hou.NAME,' (','*(')), '*')-1
-                                                       )
-                                            ),5)
-                                            )
-                  from org_organization_definitions ood
-                      ,hr_organization_units hou
-                 where ood.OPERATING_UNIT = hou.ORGANIZATION_ID
-                   and to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                   )                                                                    kota
-              ,kpd.PLAT_NUMBER
-              ,kpd.DELIVERY_FLAG
-              ,kpd.PERSON_ID petugas
-        from mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            --
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
-        where mtrh.HEADER_ID = mtrl.HEADER_ID
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER
-          and kad.NO_SO is null
-          and kpd.PERSON_ID is not null
-          --
-          and kpd.HEADER_ID not in (select kdt.HEADER_ID
-                                      from khs_delivery_temp kdt
-                                     where kdt.HEADER_ID = kpd.HEADER_ID)
-          -- paramter trial
-        --  and mtrh.REQUEST_NUMBER = '2000000013'
-        order by petugas
-                ,1")->result_array();
+        $response = $this->oracle->query("SELECT *
+                                            FROM khs_qweb_terassign kqt")->result_array();
 
         return $response;
     }
@@ -697,111 +332,8 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiLayani()
     {
-        $response = $this->oracle->query("SELECT distinct
-               mtrh.REQUEST_NUMBER \"DO/SPB\"
-              ,mtrh.HEADER_ID
-              ,kad.NO_SO
-              ,hzp.PARTY_NAME tujuan
-              ,hzl.CITY kota
-              ,kpd.PLAT_NUMBER
-              ,kpd.PERSON_ID petugas
-        from hz_cust_site_uses_all hcsua
-            ,hz_party_sites hps
-            ,hz_locations hzl
-            ,hz_cust_acct_sites_all hcas
-            ,hz_parties hzp
-            ,hz_cust_accounts hca
-            --
-            ,oe_order_headers_all ooha
-            ,oe_order_lines_all oola
-            ,wsh_delivery_details wdd
-            --
-            ,mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
-            --
-            ,khs_delivery_temp kdt
-        where ooha.HEADER_ID = oola.HEADER_ID
-          --
-          and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER
-          --
-          and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-          and kdt.HEADER_ID = kpd.HEADER_ID
-          and 1 = case when kdt.SERIAL_STATUS = 'SERIAL'
-                       and kpd.DELIVERY_FLAG = 'Y'
-                        and kdt.FLAG = 'O'
-                       then 1 --'SELESAI PELAYANAN'
-                       when kdt.SERIAL_STATUS = 'NON SERIAL'
-                        and kpd.DELIVERY_FLAG = 'Y'
-                        and kdt.FLAG = 'Y'
-                       then 1 --'SELESAI PELAYANAN'
-                  end
-          --
-          and mtrh.HEADER_ID = mtrl.HEADER_ID
-          and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-           --
-          and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-          and hca.PARTY_ID = hzp.PARTY_ID(+)
-          and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-          and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-          and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-          and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-          -- paramter trial
-        --  and mtrh.REQUEST_NUMBER = '3620114'
-        UNION ALL
-        select distinct
-               mtrh.REQUEST_NUMBER \"D0/SPB\"
-              ,mtrh.HEADER_ID
-              ,NULL no_so
-              ,(select ood.ORGANIZATION_CODE
-                  from org_organization_definitions ood
-                 where to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                 )                                                                      tujuan
-              ,(select upper(substr(
-                                    substr(hou.NAME,1,(instr (
-                                                              (replace(hou.NAME,' (','*(')), '*')-1
-                                                       )
-                                            ),5)
-                                            )
-                  from org_organization_definitions ood
-                      ,hr_organization_units hou
-                 where ood.OPERATING_UNIT = hou.ORGANIZATION_ID
-                   and to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                   )                                                                    kota
-              ,kpd.PLAT_NUMBER
-              ,kpd.PERSON_ID petugas
-        from mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            --
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
-            ,khs_delivery_temp kdt
-        where mtrh.HEADER_ID = mtrl.HEADER_ID
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER
-          and kad.NO_SO is null
-          --
-          and kdt.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-          and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-          and kdt.HEADER_ID = kpd.HEADER_ID
-          and 1 = case when kdt.SERIAL_STATUS = 'SERIAL'
-                       and kpd.DELIVERY_FLAG = 'Y'
-                        and kdt.FLAG = 'O'
-                       then 1 --'SELESAI PELAYANAN'
-                       when kdt.SERIAL_STATUS = 'NON SERIAL'
-                        and kpd.DELIVERY_FLAG = 'Y'
-                        and kdt.FLAG = 'Y'
-                       then 1 --'SELESAI PELAYANAN'
-                  end
-          -- paramter trial
-        --  and mtrh.REQUEST_NUMBER = '2000000013'
-        order by petugas
-                ,1")->result_array();
+        $response = $this->oracle->query("SELECT *
+                                            FROM khs_qweb_sudah_pelayanan kqsp")->result_array();
 
         return $response;
     }
@@ -859,112 +391,8 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiMuat()
     {
-        $response = $this->oracle->query("SELECT distinct
-               mtrh.REQUEST_NUMBER \"DO/SPB\"
-              ,mtrh.HEADER_ID
-              ,kad.NO_SO
-              ,hzp.PARTY_NAME tujuan
-              ,hzl.CITY kota
-              ,kpd.PLAT_NUMBER
-              ,kpd.PERSON_ID petugas
-        from hz_cust_site_uses_all hcsua
-            ,hz_party_sites hps
-            ,hz_locations hzl
-            ,hz_cust_acct_sites_all hcas
-            ,hz_parties hzp
-            ,hz_cust_accounts hca
-            --
-            ,oe_order_headers_all ooha
-            ,oe_order_lines_all oola
-            ,wsh_delivery_details wdd
-            --
-            ,mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
-            --
-            ,khs_delivery_temp kdt
-        where ooha.HEADER_ID = oola.HEADER_ID
-          --
-          and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER
-          --
-          and kdt.HEADER_ID = kpd.HEADER_ID
-          and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
-                        and kpd.DELIVERY_FLAG = 'Y'
-                        and kdt.FLAG = 'T'
-                       then 1 --'SUDAH MUAT'
-                  end
-          --
-          and mtrh.HEADER_ID = mtrl.HEADER_ID
-          and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-          --
-          and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-          and hca.PARTY_ID = hzp.PARTY_ID(+)
-          and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-          and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-          and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-          and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-          --
-          and mtrh.REQUEST_NUMBER not in (select distinct
-                                         nvl(kcd.REQUEST_NUMBER,0)
-                                    from khs_cetak_do kcd
-                                    where kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
-                                    )
-        UNION ALL
-        select distinct
-               mtrh.REQUEST_NUMBER \"D0/SPB\"
-              ,mtrh.HEADER_ID
-              ,NULL no_so
-              ,(select ood.ORGANIZATION_CODE
-                  from org_organization_definitions ood
-                 where to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                 )                                                                      tujuan
-              ,(select upper(substr(
-                                    substr(hou.NAME,1,(instr (
-                                                              (replace(hou.NAME,' (','*(')), '*')-1
-                                                       )
-                                            ),5)
-                                            )
-                  from org_organization_definitions ood
-                      ,hr_organization_units hou
-                 where ood.OPERATING_UNIT = hou.ORGANIZATION_ID
-                   and to_char(ood.ORGANIZATION_ID) = substr(mtrl.REFERENCE,5)
-                   )                                                                    kota
-              ,kpd.PLAT_NUMBER
-              ,kpd.PERSON_ID petugas
-        from mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            --
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
-            ,khs_delivery_temp kdt
-        where mtrh.HEADER_ID = mtrl.HEADER_ID
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER
-          and kad.NO_SO is null
-          --
-        --  and kdt.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-        --  and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-          and kdt.HEADER_ID = kpd.HEADER_ID
-          and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
-                        and kpd.DELIVERY_FLAG = 'Y'
-                        and kdt.FLAG = 'T'
-                       then 1 --'SUDAH MUAT'
-                  end
-          --
-          and mtrh.REQUEST_NUMBER not in (select distinct
-                                                 nvl(kcd.REQUEST_NUMBER,0)
-                                            from khs_cetak_do kcd
-                                           where kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
-                                           )
-          -- paramter trial
-        --  and mtrh.REQUEST_NUMBER = '2000000013'
-        order by petugas
-                ,1")->result_array();
+        $response = $this->oracle->query("SELECT *
+                                            FROM khs_qweb_sudah_muat kqsm")->result_array();
 
         return $response;
     }
@@ -1193,101 +621,21 @@ class M_monitoringdo extends CI_Model
 
     public function headerSurat($id)
     {
-        $response = $this->oracle->query("SELECT distinct
-             ooha.ORDER_NUMBER no_so
-            ,ooha.ORDERED_DATE
-            ,kpd.PLAT_NUMBER
-            ,to_char(wdd.BATCH_ID) no_do
-            ,hzp.PARTY_NAME tujuan
-            ,hzl.CITY kota
-            ,kdt.PERSON_ID assignee
-            ,kdt.FLAG
-            ,decode(kdt.FLAG,'Y','SUDAH TER-ASSIGN'
-                            ,'O','SUDAH PELAYANAN'
-                            ,'S','SUDAH DIMUAT'
-                      ) flag_desc
-      from hz_cust_site_uses_all hcsua
-          ,hz_party_sites hps
-          ,hz_locations hzl
-          ,hz_cust_acct_sites_all hcas
-          ,hz_parties hzp
-          ,hz_cust_accounts hca
-          --
-          ,oe_order_headers_all ooha
-          ,oe_order_lines_all oola
-          ,wsh_delivery_details wdd
-          --
-          ,mtl_txn_request_headers mtrh
-          ,mtl_txn_request_lines mtrl
-          ,khs_approval_do kad
-          ,khs_delivery_temp kdt
-          ,khs_person_delivery kpd
-      where ooha.HEADER_ID = oola.HEADER_ID
-        --
-        and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-        --
-        and kad.NO_DO = mtrh.REQUEST_NUMBER
-        and kad.NO_SO = ooha.ORDER_NUMBER
-        and kdt.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-        --
-        and mtrh.HEADER_ID = mtrl.HEADER_ID
-        and mtrh.HEADER_ID = kdt.HEADER_ID
-        and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-        and kdt.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-        and kpd.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-        and kpd.HEADER_ID = kdt.HEADER_ID
-        --
-        and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-        and hca.PARTY_ID = hzp.PARTY_ID(+)
-        and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-        and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-        and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-        and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-      --  and to_char(ooha.ORDER_NUMBER) = :P_SO
-        and mtrh.REQUEST_NUMBER = '$id'
-      UNION ALL
-      select distinct
-             kad.NO_SO
-            ,NULL ordered_date
-            ,kpd.PLAT_NUMBER
-            ,mtrh.REQUEST_NUMBER no_do
-            ,ood.ORGANIZATION_CODE tujuan
-            ,UPPER(
-                   substr(
-                          substr(hou.NAME,1,(
-                                             instr (
-                                                    (replace(hou.NAME,' (','*(')), '*')-1
-                                                    )
-                                                    ),5)
-                      )                                                               kota
-            ,kdt.PERSON_ID assignee
-            ,kdt.FLAG
-            ,decode(kdt.FLAG,'Y','SUDAH TER-ASSIGN'
-                            ,'O','SUDAH PELAYANAN'
-                            ,'S','SUDAH DIMUAT'
-                      ) flag_desc
-      from mtl_txn_request_headers mtrh
-          ,mtl_txn_request_lines mtrl
-          ,org_organization_definitions ood
-          ,hr_organization_units hou
-          --
-          ,khs_approval_do kad
-          ,khs_person_delivery kpd
-          ,khs_delivery_temp kdt
-      where mtrh.HEADER_ID = mtrl.HEADER_ID
-        and to_char(ood.ORGANIZATION_ID) = trim(substr(mtrl.REFERENCE,5))
-        and ood.OPERATING_UNIT = hou.ORGANIZATION_ID
-        --
-        and kdt.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-        and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-        and kdt.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
-        and kdt.HEADER_ID = mtrh.HEADER_ID
-        and kad.NO_DO = mtrh.REQUEST_NUMBER
-        and kad.NO_DO = kpd.REQUEST_NUMBER
-        and kad.NO_SO is null
-        and mtrh.REQUEST_NUMBER = '$id'
-      order by no_do
-              ,flag_desc desc")->result_array();
+        $response = $this->oracle->query("SELECT *
+                                            FROM khs_qweb_sudah_muat kqsm
+                                           WHERE kqsm.\"DO/SPB\" = '$id'")->result_array();
+
+        if (empty($response)) {
+            $response = null;
+        }
+        return $response;
+    }
+
+    public function headerSurat2($id)
+    {
+        $response = $this->oracle->query("SELECT *
+                                            FROM khs_qweb_sudah_cetak kqsc
+                                           WHERE kqsc.\"DO/SPB\" = '$id'")->result_array();
 
         if (empty($response)) {
             $response = null;
