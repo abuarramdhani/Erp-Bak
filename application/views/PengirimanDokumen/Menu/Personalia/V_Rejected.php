@@ -30,8 +30,8 @@
                     </div>
                     <div class="col-lg-6 pull-right">
                         <form action="">
-                            <label class="label-control col-lg-6 text-right" for="all-seksi-document">Seksi</label>
                             <label class="label-control col-lg-6 text-right" for="all-seksi-document">Lokasi</label>
+                            <label class="label-control col-lg-6 text-right" for="all-seksi-document">Seksi</label>
                             <div class="col-lg-6 pull-right">
                                 <select name="seksi" id="all-seksi-document" class="select2 form-control">
                                     <option value="">---pilih semua---</option>
