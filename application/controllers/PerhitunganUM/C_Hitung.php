@@ -33,8 +33,13 @@ class C_Hitung extends CI_Controller {
 	
 	public function index()
 	{
-		$this->checkSession();
+		// $this->checkSession();
 		$user_id = $this->session->userid;
+		$data['user'] = $this->session->user;
+		$data['name'] = $this->session->employee;
+		// $username 	 = $this->M_hitung->username($user);
+		// $data['name'] = $username[0]['FIRST_NAME'].' '.$username[0]['MIDDLE_NAMES'].' '.$username[0]['LAST_NAME'];
+		// echo "<pre>"; print_r($data['name']);exit();
 		
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
@@ -63,6 +68,7 @@ class C_Hitung extends CI_Controller {
 	{
 		$deptclass 		= $this->input->post('deptclass');
 		$plan			= $this->input->post('plan');
+		$data['username'] = $this->input->post('username');
 		$data['dept'] 	= $deptclass; 
 		$data['plan'] 	= $plan; 
 
@@ -148,6 +154,7 @@ class C_Hitung extends CI_Controller {
 		$bln1 		= $this->input->post('bln1[]');
 		$bln2 		= $this->input->post('bln2[]');
 		$bln3 		= $this->input->post('bln3[]');
+		$username 	= $this->input->post('username[]');
 		// echo "<pre>"; print_r($dept); exit();
 		
 		$data['dept']		= $dept[0];
@@ -419,7 +426,181 @@ class C_Hitung extends CI_Controller {
 		}
 
 		$data['result'] = $result;
-		// echo "<pre>"; print_r($result); exit();
+
+
+
+		// pengelompokan array table result
+		$x = 0;					// Index per CC
+		$y = 0;					// Index per data detail CC
+		$z = 0;					// Index Memory mesin	
+		$tampungan2 = array();	
+		$mesin2 = array();	
+		$rata2 = array();	
+		$insert = array();
+		$insert[$x]['Merge'] = 1; // Jumlah Merge CC-RC-DR-JM
+
+		for ($a=0; $a < sizeof($hasil); $a++) {	
+			// Initial First Data
+			if ($a == '0') {
+				$insert[$x]['Detail'][$y]['cost_center'] 	= $hasil[$a]['cost_center'];
+				$insert[$x]['Detail'][$y]['resource_code']	= $hasil[$a]['resource_code'];
+				$insert[$x]['Detail'][$y]['jenis_mesin'] 	= $hasil[$a]['jenis_mesin'];
+			 	$insert[$x]['Detail'][$z]['mesin'] 			= $hasil[$a]['Mesin'];
+				$insert[$x]['Detail'][$z]['tag_number'] 	= $hasil[$a]['tag_number'];
+				$insert[$x]['Detail'][$y]['item'] 			= $hasil[$a]['Item'];
+				$insert[$x]['Detail'][$y]['ratajam'] 		= $hasil[$a]['RataJam'];
+				$insert[$x]['Detail'][$y]['opr_seq'] 		= $hasil[$a]['opr_seq'];
+				$insert[$x]['Detail'][$y]['username'] 		= $username[0];
+				$Item_Opr	= $hasil[$a]['Item'].$hasil[$a]['opr_seq'];
+				$nomesin 	= $insert[$x]['Detail'][$z]['mesin'];
+				$ratajam 	= $insert[$x]['Detail'][$y]['ratajam'];
+				array_push($tampungan2, $Item_Opr);  
+				array_push($mesin2, $nomesin);  
+				array_push($rata2, $ratajam);  
+				$y++;
+			} else {
+				// The rest 
+				if ($hasil[$a]['tag_number'] == $hasil[$a-1]['tag_number'] ) {
+
+					if (in_array($hasil[$a]['Item'].$hasil[$a]['opr_seq'], $tampungan2)){
+						// Okelah, Ya sudahlah
+					}else{
+						$insert[$x]['Detail'][$y]['cost_center'] 	= $hasil[$a]['cost_center'];
+						$insert[$x]['Detail'][$y]['resource_code']	= $hasil[$a]['resource_code'];
+						$insert[$x]['Detail'][$y]['jenis_mesin'] 	= $hasil[$a]['jenis_mesin'];
+						$insert[$x]['Detail'][$y]['mesin'] 			= $hasil[$a]['Mesin'];
+						$insert[$x]['Detail'][$y]['tag_number'] 	= $hasil[$a]['tag_number'];
+						$insert[$x]['Detail'][$y]['item'] 			= $hasil[$a]['Item'];
+						$insert[$x]['Detail'][$y]['ratajam'] 		= $hasil[$a]['RataJam'];
+						$insert[$x]['Detail'][$y]['opr_seq'] 		= $hasil[$a]['opr_seq'];
+						$insert[$x]['Detail'][$y]['username'] 		= $username[0];
+						$result[$x]['Merge']++;
+						$Item_Opr	= $hasil[$a]['Item'].$hasil[$a]['opr_seq'];
+						$ratajam 	= $insert[$x]['Detail'][$y]['ratajam'];
+						array_push($tampungan2, $Item_Opr);  
+						array_push($rata2, $ratajam);  
+						$y++;
+			 		}
+			 		// Jaga2 klo mesin sama tapi beda CC
+					if ($hasil[$a]['cost_center'] != $hasil[$a-1]['cost_center']) {
+						$tampungan2=array();
+						$y=0;
+						$z=0;
+						$x++;
+						$hasil[$x]['Merge']=1;
+						$insert[$x]['Detail'][$y]['cost_center'] 	= $hasil[$a]['cost_center'];
+						$insert[$x]['Detail'][$y]['resource_code']	= $hasil[$a]['resource_code'];
+						$insert[$x]['Detail'][$y]['jenis_mesin'] 	= $hasil[$a]['jenis_mesin'];
+						$insert[$x]['Detail'][$y]['mesin'] 			= $hasil[$a]['Mesin'];
+						$insert[$x]['Detail'][$y]['tag_number'] 	= $hasil[$a]['tag_number'];
+						$insert[$x]['Detail'][$y]['item'] 			= $hasil[$a]['Item'];
+						$insert[$x]['Detail'][$y]['ratajam'] 		= $hasil[$a]['RataJam'];
+						$insert[$x]['Detail'][$y]['opr_seq'] 		= $hasil[$a]['opr_seq'];
+						$insert[$x]['Detail'][$y]['username'] 		= $username[0];
+						$y++;
+					}
+				// -------------------------------------
+				} else{
+					if ($hasil[$a]['cost_center'] == $hasil[$a-1]['cost_center']) {
+						if (in_array($hasil[$a]['Item'].$hasil[$a]['opr_seq'], $tampungan2)) {
+							if (sizeof($tampungan2) <= sizeof($mesin2)) {
+								$z++;
+								$insert[$x]['Detail'][$z]['cost_center'] 	= $hasil[$a]['cost_center'];
+								$insert[$x]['Detail'][$z]['resource_code']	= $hasil[$a]['resource_code'];
+								$insert[$x]['Detail'][$z]['jenis_mesin'] 	= $hasil[$a]['jenis_mesin'];
+								$insert[$x]['Detail'][$z]['mesin'] 			= $hasil[$a]['Mesin'];
+								$insert[$x]['Detail'][$z]['tag_number'] 	= $hasil[$a]['tag_number'];
+								$insert[$x]['Detail'][$z]['item'] 			= $hasil[$a]['Item'];
+								$insert[$x]['Detail'][$z]['ratajam'] 		= $hasil[$a]['RataJam'];
+								$insert[$x]['Detail'][$z]['opr_seq'] 		= $hasil[$a]['opr_seq'];
+								$insert[$x]['Detail'][$z]['username'] 		= $username[0];
+								$insert[$x]['Merge']++;
+								$nomesin = $insert[$x]['Detail'][$z]['mesin'];
+								array_push($mesin2, $nomesin);
+							}else {
+								$z++;
+							$insert[$x]['Detail'][$z]['mesin'] = $hasil[$a]['Mesin'];
+							$insert[$x]['Detail'][$z]['tag_number'] = $hasil[$a]['tag_number'];
+							$nomesin = $insert[$x]['Detail'][$z]['mesin'];
+							array_push($mesin2, $nomesin);  
+							}
+						} else{
+							$z=$y;
+							$insert[$x]['Detail'][$y]['cost_center'] 	= $hasil[$a]['cost_center'];
+							$insert[$x]['Detail'][$y]['resource_code']	= $hasil[$a]['resource_code'];
+							$insert[$x]['Detail'][$y]['jenis_mesin'] 	= $hasil[$a]['jenis_mesin'];
+							$insert[$x]['Detail'][$y]['mesin'] 			= $hasil[$a]['Mesin'];
+							$insert[$x]['Detail'][$y]['tag_number'] 	= $hasil[$a]['tag_number'];
+							$insert[$x]['Detail'][$y]['item'] 			= $hasil[$a]['Item'];
+							$insert[$x]['Detail'][$y]['ratajam'] 		= $hasil[$a]['RataJam'];
+							$insert[$x]['Detail'][$y]['opr_seq'] 		= $hasil[$a]['opr_seq'];
+							$insert[$x]['Detail'][$y]['username'] 		= $username[0];
+							$insert[$x]['Merge']++;
+							$y++;
+						}
+					}else{
+						$tampungan2=array();
+						$mesin2=array();
+						$rata2=array();
+						$y=0;
+						$z=0;
+						$x++;
+						$insert[$x]['Merge']=1;
+						$insert[$x]['Detail'][$y]['cost_center'] 	= $hasil[$a]['cost_center'];
+						$insert[$x]['Detail'][$y]['resource_code']	= $hasil[$a]['resource_code'];
+						$insert[$x]['Detail'][$y]['jenis_mesin'] 	= $hasil[$a]['jenis_mesin'];
+						$insert[$x]['Detail'][$y]['mesin'] 			= $hasil[$a]['Mesin'];
+						$insert[$x]['Detail'][$y]['tag_number'] 	= $hasil[$a]['tag_number'];
+						$insert[$x]['Detail'][$y]['item'] 			= $hasil[$a]['Item'];
+						$insert[$x]['Detail'][$y]['ratajam'] 		= $hasil[$a]['RataJam'];
+						$insert[$x]['Detail'][$y]['opr_seq'] 		= $hasil[$a]['opr_seq'];
+						$insert[$x]['Detail'][$y]['username'] 		= $username[0];
+						$Item_Opr = $hasil[$a]['Item'].$hasil[$a]['opr_seq'];
+						array_push($tampungan2, $Item_Opr);
+						$nomesin = $insert[$x]['Detail'][$z]['mesin'];
+						array_push($mesin2, $nomesin);  
+						$ratajam = $insert[$x]['Detail'][$y]['ratajam'];
+						array_push($rata2, $ratajam);  
+						$y++;
+					}
+				}
+			}
+			// hitung totaljam & utilitas
+			if ($insert[$x]['Detail'][0]['jenis_mesin'] == 'GROUP') {
+				$totaljam = array_sum($rata2);
+				$insert[$x]['totaljam'] = round($totaljam/sizeof($mesin2), 2);
+				$utilitas = round($insert[$x]['totaljam']/487.5*100, 2);
+				if ($utilitas > 100) {
+					$insert[$x]['utilitas'] = '100';
+				}else{
+					$insert[$x]['utilitas'] = $utilitas;
+				}
+			}else{
+				$totaljam = array_sum($rata2);
+				$insert[$x]['totaljam'] = round($totaljam, 2);
+				$utilitas = round($totaljam/487.5*100, 2);
+				if ($utilitas > 100) {
+					$insert[$x]['utilitas'] = '100';
+				}else{
+					$insert[$x]['utilitas'] = $utilitas;
+				}
+			}
+		}
+
+		$data['insert'] = $insert;
+		// echo "<pre>"; print_r($insert); exit();
+		$data['plan'] = $plan[0];
+		$cari = $this->M_hitung->cariHasilPUM($data['dept'], $data['plan']);
+		if (!empty($cari)) {
+			$data['tanggal'] = $cari[0]['LAST_UPDATE_DATE'];
+			$cariuser = $this->M_hitung->seksi($cari[0]['LAST_UPDATE_BY']);
+			$data['nama_user'] = $cariuser[0]['FIRST_NAME'].' '.$cariuser[0]['MIDDLE_NAMES'].' '.$cariuser[0]['LAST_NAME'];
+		}else{
+			$data['tanggal'] = '';
+			$data['nama_user'] = '';
+		}
+
+
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -923,4 +1104,29 @@ class C_Hitung extends CI_Controller {
 		
 	}
 
+	public function insertPUM(){
+		$resource 	= $this->input->post('resource');
+		$nomesin 	= $this->input->post('nomesin');
+		$tagnum 	= $this->input->post('tagnum');
+		$jenis 		= $this->input->post('jenis');
+		$cost 		= $this->input->post('cost');
+		$deptclass 	= $this->input->post('deptclass');
+		$username 	= $this->input->post('username');
+		$utilitas 	= $this->input->post('utilitas');
+		$last_update 	= $this->input->post('last_update');
+		$plan 		= $this->input->post('plan');
+		$date 		= date('d/m/Y');
+		// echo "<pre>";print_r($resource);exit();
+
+		$delete = $this->M_hitung->deletePUM($deptclass[0], $plan);
+		for ($i=0; $i < count($resource); $i++) { 
+			$cek = $this->M_hitung->cekPUM($resource[$i], $tagnum[$i], $cost[$i], $deptclass[$i], $plan);
+			if (empty($cek)) {
+				$insert = $this->M_hitung->insertPUM($resource[$i], $nomesin[$i], $tagnum[$i], $jenis[$i], $cost[$i], $deptclass[$i], $username[$i], $utilitas[$i], $date, $plan);
+			}else {
+				
+			}
+		}
+	}
+	
 }

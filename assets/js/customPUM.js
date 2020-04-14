@@ -15,7 +15,7 @@ $(document).ready(function(){
 				return queryParameters;
 			},
 			processResults: function (data) {
-				console.log(data);
+				// console.log(data);
 				return {
 					results: $.map(data, function(obj) {
 						return { id:obj.SEKSI_CODE, text:obj.SEKSI};
@@ -30,13 +30,15 @@ function getPUM(th) {
 	$(document).ready(function(){
 		var deptclass = $('select[name="deptclass"]').val();
 		var plan = $('select[name="plan"]').val();
-		console.log(deptclass, plan);
+		var username = $('#username').val();
+		// console.log(deptclass, plan);
 		
 		var request = $.ajax({
 			url: baseurl+'PerhitunganUM/Hitung/search/',
 			data: {
 				deptclass : deptclass, 
-				plan : plan
+				plan : plan,
+				username : username
 			},
 			type: "POST",
 			datatype: 'html'
@@ -74,3 +76,57 @@ $('#tbldua').DataTable({
 $('.slcDeclas').change(function(){
 	$('#findPUM').removeAttr("disabled");
 })
+
+function insertPUM(th) {
+	var resource = $('input[name="resource[]"]').map(function(){return $(this).val();}).get();
+	var nomesin = $('input[name="nomesin[]"]').map(function(){return $(this).val();}).get();
+	var tagnum = $('input[name="tagnum[]"]').map(function(){return $(this).val();}).get();
+	var jenis = $('input[name="jenis[]"]').map(function(){return $(this).val();}).get();
+	var cost = $('input[name="cost[]"]').map(function(){return $(this).val();}).get();
+	var deptclass = $('input[name="deptc[]"]').map(function(){return $(this).val();}).get();
+	var username = $('input[name="username[]"]').map(function(){return $(this).val();}).get();
+	var utilitas = $('input[name="utilitas2[]"]').map(function(){return $(this).val();}).get();
+	var last_update = $('#tgl_update').val();
+	var plan = $('#plan').val();
+	var nama_user = $('#nama_user').val();
+	console.log(last_update);
+	if (last_update == '') {
+		Swal.fire({
+			title: 'Peringatan',
+			text: 'Apakah Anda Yakin?',
+			type: 'question',
+			showCancelButton: true,
+			allowOutsideClick: false
+		}).then(result => {
+			if (result.value) {  
+				$.ajax ({
+					url : baseurl + "PerhitunganUM/Hitung/insertPUM",
+					data: { resource : resource , nomesin : nomesin, tagnum : tagnum, jenis : jenis, cost : cost, deptclass : deptclass, username : username, utilitas : utilitas, last_update : last_update, plan : plan},
+					type : "POST",
+					dataType: "html",
+					success: function(data){
+						swal.fire("Berhasil!", "Data telah disimpan.", "success");
+					}
+				});
+		}})
+	}else{
+		Swal.fire({
+			title: 'Apakah Anda Yakin?',
+			text: 'Terakhir Update Data : '+last_update,
+			type: 'question',
+			showCancelButton: true,
+			allowOutsideClick: false
+		}).then(result => {
+			if (result.value) {  
+				$.ajax ({
+					url : baseurl + "PerhitunganUM/Hitung/insertPUM",
+					data: { resource : resource , nomesin : nomesin, tagnum : tagnum, jenis : jenis, cost : cost, deptclass : deptclass, username : username, utilitas : utilitas, last_update : last_update, plan : plan},
+					type : "POST",
+					dataType: "html",
+					success: function(data){
+						swal.fire("Berhasil!", "Data telah diupdate.", "success");
+					}
+				});
+		}})
+	}
+}
