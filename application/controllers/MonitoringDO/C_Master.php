@@ -139,6 +139,10 @@ class C_Master extends CI_Controller
                 $no++;
             }
 
+            // echo "<pre>";
+            // print_r($datakau);
+            // die;
+
             $final = [];
             // $var = '';
             foreach ($datakau as $f) {
@@ -164,6 +168,9 @@ class C_Master extends CI_Controller
         } else {
             $data['get'] = $this->M_monitoringdo->getDO();
         }
+        // echo "<pre>";
+        // print_r($data);
+        // die;
 
         $this->load->view('MonitoringDO/V_Ajax_Setting', $data);
     }
@@ -363,6 +370,10 @@ class C_Master extends CI_Controller
         $data['totalbody'] = sizeof($data['get_body']);
         $data['totalserial'] = sizeof($data['get_serial']);
 
+        // echo "<pre>";
+        // print_r($data);
+        // die;
+
         function generateInTicketNumber($length = 5)
         {
             $characters = '0123456789';
@@ -375,11 +386,11 @@ class C_Master extends CI_Controller
         }
 
         $datacetak = [
-          'REQUEST_NUMBER' => $data['get_header'][0]['NO_DO'],
+          'REQUEST_NUMBER' => $data['get_header'][0]['DO/SPB'],
           'ORDER_NUMBER' => empty($data['get_header'][0]['NO_SO']) ? NULL : $data['get_header'][0]['NO_SO'],
           'NOMOR_CETAK' => generateInTicketNumber()
         ];
-        $this->M_monitoringdo->insertDOCetak($datacetak);
+        // $this->M_monitoringdo->insertDOCetak($datacetak);
 
         if (!empty($data['get_serial'])) {
             $s = [];
@@ -411,13 +422,17 @@ class C_Master extends CI_Controller
                 chmod('./assets/img/monitoringDOQRCODE', 0777);
             }
 
-            $params['data']		= $data['get_header'][0]['NO_DO'];
+            $params['data']		= $data['get_header'][0]['DO/SPB'];
             $params['level']	= 'H';
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['DO/SPB'].'.png';
             $this->ciqrcode->generate($params);
+
+            // echo "<pre>";
+            // print_r($data);
+            // die;
 
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
@@ -456,6 +471,8 @@ class C_Master extends CI_Controller
         	</table>');
             $pdf->WriteHTML($aku);
             $pdf->Output($filename, 'I');
+
+            $this->M_monitoringdo->insertDOCetak($datacetak);
         // ========================end process=========================
         } else {
             echo json_encode(array(
@@ -474,7 +491,7 @@ class C_Master extends CI_Controller
     public function PDF2($id)
     {
         //data trial
-        $data['get_header'] = $this->M_monitoringdo->headerSurat($id);
+        $data['get_header'] = $this->M_monitoringdo->headerSurat2($id);
         $data['get_body'] = $this->M_monitoringdo->bodySurat($id);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
@@ -522,12 +539,12 @@ class C_Master extends CI_Controller
                 chmod('./assets/img/monitoringDOQRCODE', 0777);
             }
 
-            $params['data']		= $data['get_header'][0]['NO_DO'];
+            $params['data']		= $data['get_header'][0]['DO/SPB'];
             $params['level']	= 'H';
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['DO/SPB'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
