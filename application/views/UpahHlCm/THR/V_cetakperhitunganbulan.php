@@ -1,4 +1,4 @@
-<h2 style="text-align: center">Perhitungan Bulan THR Idul Fitri <?php echo date('d M Y',strtotime($tanggal))  ?></h2>
+<h4 style="text-align: center">Perhitungan THR Idul Fitri tanggal <?php echo date('d M Y',strtotime($tanggal))  ?></h4>
 <table border="1" style="width: 100%;border: 1px solid black;border-collapse: collapse;font-size: 9pt">
 <thead>
 	<tr>
@@ -37,8 +37,8 @@
 <br>
 <table>
 	<tr>
-		<td></td>
-		<td style="text-align: right;">Yogyakarta, <?php echo date('d F Y',strtotime($waktu_dibuat)) ?></td>
+		<td width="50%"></td>
+		<td width="50%" style="text-align: right;">Yogyakarta, <?php echo date('d F Y',strtotime($waktu_dibuat)) ?></td>
 	</tr>
 	<tr>
 		<td style="text-align: center">Mengetahui,</td>
