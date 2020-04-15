@@ -75,8 +75,14 @@ class M_splpersonalia extends CI_Model{
 	}
 
 	function getAllSection($key){
-		$sql = "select kodesie, coalesce(nullif(trim(seksi), '-'), nullif(trim(unit),'-'), nullif(trim(bidang),'-'), dept) as nama from hrd_khs.tseksi where substring(kodesie, 8,11) = '00' and (kodesie like '$key%' OR seksi like '$key%' OR unit like '$key%' OR bidang like '$key%' OR dept like '$key%') order by 1";
-
+		$sql = "select kodesie ks, coalesce(nullif(trim(seksi), '-'), nullif(trim(unit),'-'), nullif(trim(bidang),'-'), dept) as nama,
+				seksi, unit, bidang,
+				case
+				when trim(seksi) = '-' then substring(kodesie,1,7)
+				when trim(unit) = '-' then substring(kodesie,1,5)
+				when trim(bidang) = '-' then substring(kodesie,1,3)
+				else kodesie end as kodesie
+				from hrd_khs.tseksi where substring(kodesie, 8,11) = '00' and (kodesie like '$key%' OR seksi like '$key%' OR unit like '$key%' OR bidang like '$key%' OR dept like '$key%') order by 1";
 		return $this->prs->query($sql)->result_array();
 	}
 
