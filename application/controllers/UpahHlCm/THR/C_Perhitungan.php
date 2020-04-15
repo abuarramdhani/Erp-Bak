@@ -396,7 +396,7 @@ class C_Perhitungan extends CI_Controller
 				)
 			),'A1:G'.($nomor));
 
-		$filename = "Perhitungan Bulan THR HLCM Idul Fitri ".$tanggal.".xls";
+		$filename = "Perhitungan Nominal THR HLCM Idul Fitri ".$tanggal.".xls";
 		header('Content-Type: aplication/vnd.ms-excel');
 		header('Content-Disposition:attachment;filename="'.$filename.'"');
 		header('Cache-Control: max-age=0');
@@ -409,6 +409,57 @@ class C_Perhitungan extends CI_Controller
 		$key = $this->input->get('term');
 		$data = $this->M_thr->getPekerjaByKey($key);
 		echo json_encode($data);
+	}
+
+	public function slip(){
+		$tanggal 	= $this->input->get('tanggal');
+		$lokasi 	= $this->input->get('lokasi');
+		if (!empty($lokasi) && $lokasi !== 'all') {
+			$data['data'] = $this->M_thr->getTHRByTanggalLokasi($tanggal,$lokasi);
+		}else{
+			$data['data'] = $this->M_thr->getTHRByTanggal($tanggal);
+		}
+
+		$data['tanggal'] = $tanggal;
+
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8' , array(215,140),8,'', 7, 7, 0, 0, 0,0);
+		$filename = "Slip THR HLCM Idul Fitri ".$tanggal.".pdf";
+		// echo "<pre>";print_r($data['data']);exit();
+		// $this->load->view('UpahHlCm/THR/V_slipperhitungan', $data);
+		$html = $this->load->view('UpahHlCm/THR/V_slipperhitungan', $data, true);
+		$pdf->WriteHTML($stylesheet1,1);
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'I');
+	}
+
+	public function serahTerima(){
+		$tanggal 	= $this->input->get('tanggal');
+		$lokasi 	= $this->input->get('lokasi');
+		
+		if (!empty($lokasi) && $lokasi !== 'all') {
+			$data['data'] = $this->M_thr->getTHRByTanggalLokasi($tanggal,$lokasi);
+		}else{
+			$data['data'] = $this->M_thr->getTHRByTanggal($tanggal);
+		}
+
+		$data['pj']  = $this->M_thr->getApproval("Tanda Terima");
+		$data['tanggal'] = $tanggal;
+
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'F4', 8, '', 5, 5, 5, 15, 10, 20);
+		$filename = "Serah Terima THR HLCM Idul Fitri ".$tanggal.".pdf";
+		// echo "<pre>";print_r($data['pj']);exit();
+		// $this->load->view('UpahHlCm/THR/V_serahterimaperhitungan', $data);
+
+		$html = $this->load->view('UpahHlCm/THR/V_serahterimaperhitungan', $data, true);
+		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM oleh ".$this->session->user."-".$this->session->employee." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i> ");
+		$pdf->WriteHTML($stylesheet1,1);
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'I');
 	}
 
 }

@@ -1127,7 +1127,7 @@ $(document).ready(function () {
  		$('#modal-HLCM-THRBulan').modal('hide');
  	})
 
- 	$('.btnHLCMTHRCetak').on('click',function(){
+ 	$('.btnHLCMTHRCetakRekap').on('click',function(){
  		var lokasi = $(this).attr('data-lokasi');
  		var tanggal = $(this).attr('data-tanggal');
  		$('#txtTanggalIdulFitri').val(tanggal);

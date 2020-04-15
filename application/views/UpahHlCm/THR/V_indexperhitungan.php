@@ -29,7 +29,9 @@
 													<th style="text-align: center;vertical-align: middle;">JUMLAH</th>
 													<th style="text-align: center;vertical-align: middle;">LIHAT</th>
 													<th style="text-align: center;vertical-align: middle;">EXPORT EXCEL</th>
-													<th style="text-align: center;vertical-align: middle;">CETAK PDF</th>
+													<th style="text-align: center;vertical-align: middle;">CETAK REKAP</th>
+													<th style="text-align: center;vertical-align: middle;">CETAK SLIP</th>
+													<th style="text-align: center;vertical-align: middle;">CETAK SERAH TERIMA</th>
 													<th style="text-align: center;vertical-align: middle;">HAPUS</th>
 												</tr>
 											</thead>
@@ -54,7 +56,13 @@
 																	<a class="btn btn-success" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/export?tanggal='.$dt['tgl_idul_fitri']) ?>" target="blank"><span class="fa fa-file-excel-o"></span>&nbsp;SEMUA</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
-																	<a class="btn btn-warning btnHLCMTHRCetak" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="all" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;SEMUA</a>
+																	<a class="btn btn-warning btnHLCMTHRCetakRekap" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="all" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp; SEMUA</a>
+																</td>
+																<td style="text-align: center;vertical-align: middle;">
+																	<a class="btn btn-warning btnHLCMTHRCetakSlip" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/slip?tanggal='.$dt['tgl_idul_fitri']) ?>" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="all" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp; SEMUA</a>
+																</td>
+																<td style="text-align: center;vertical-align: middle;">
+																	<a class="btn btn-warning btnHLCMTHRCetakSerah" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/serahTerima?tanggal='.$dt['tgl_idul_fitri']) ?>" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="all" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp; SEMUA</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
 																	<a class="btn btn-danger" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/delete?tanggal='.$dt['tgl_idul_fitri']) ?>" target="blank"><span class="fa fa-trash"></span>&nbsp;SEMUA</a>
@@ -71,7 +79,13 @@
 																	<a class="btn btn-success" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/export?tanggal='.$dt['tgl_idul_fitri']."&lokasi=01") ?>" target="blank"><span class="fa fa-file-excel-o"></span>&nbsp;YOGYAKARTA</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
-																	<a class="btn btn-warning btnHLCMTHRCetak" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="01" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;YOGYAKARTA</a>
+																	<a class="btn btn-warning btnHLCMTHRCetakRekap" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="01" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;YOGYAKARTA</a>
+																</td>
+																<td style="text-align: center;vertical-align: middle;">
+																	<a class="btn btn-warning btnHLCMTHRCetakSlip" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/slip?lokasi=01&tanggal='.$dt['tgl_idul_fitri']) ?>" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="01" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;YOGYAKARTA</a>
+																</td>
+																<td style="text-align: center;vertical-align: middle;">
+																	<a class="btn btn-warning btnHLCMTHRCetakSerah" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/serahTerima?lokasi=01&tanggal='.$dt['tgl_idul_fitri']) ?>" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="01" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;YOGYAKARTA</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
 																	<a class="btn btn-danger" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/delete?tanggal='.$dt['tgl_idul_fitri']."&lokasi=01") ?>" target="blank"><span class="fa fa-trash"></span>&nbsp;YOGYAKARTA</a>
@@ -88,7 +102,13 @@
 																	<a class="btn btn-success" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/export?tanggal='.$dt['tgl_idul_fitri']."&lokasi=02") ?>" target="blank"><span class="fa fa-file-excel-o"></span>&nbsp;TUKSONO</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
-																	<a class="btn btn-warning btnHLCMTHRCetak" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="02" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;TUKSONO</a>
+																	<a class="btn btn-warning btnHLCMTHRCetakRekap" data-href="" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="02" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;TUKSONO</a>
+																</td>
+																<td style="text-align: center;vertical-align: middle;">
+																	<a class="btn btn-warning btnHLCMTHRCetakSlip" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/slip?lokasi=02&tanggal='.$dt['tgl_idul_fitri']) ?>" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="02" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;TUKSONO</a>
+																</td>
+																<td style="text-align: center;vertical-align: middle;">
+																	<a class="btn btn-warning btnHLCMTHRCetakSerah" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/serahTerima?lokasi=02&tanggal='.$dt['tgl_idul_fitri']) ?>" data-tanggal="<?php echo $dt['tgl_idul_fitri'] ?>" data-lokasi="02" target="blank"><span class="fa fa-file-pdf-o"></span>&nbsp;TUKSONO</a>
 																</td>
 																<td style="text-align: center;vertical-align: middle;">
 																	<a class="btn btn-danger" href="<?php echo base_url('HitungHlcm/THR/Perhitungan/delete?tanggal='.$dt['tgl_idul_fitri']."&lokasi=02") ?>" target="blank"><span class="fa fa-trash"></span>&nbsp;TUKSONO</a>

@@ -82,52 +82,64 @@ class M_thr extends CI_Model {
 	}
 
 	function getBulanTHRByTanggalLokasi($tanggal,$lokasi){
-		$sql = "select t1.*,t2.employee_name,t3.location_name
+		$sql = "select t1.*,t2.nama as employee_name,t3.location_name,t4.pekerjaan,t2.lokasi_kerja
 				from hlcm.hlcm_thr_bulan t1 
-				inner join er.er_employee_all t2 
-				on t1.noind = t2.employee_code
+				inner join hlcm.hlcm_datapekerja t2 
+				on t1.noind = t2.noind
 				inner join er.er_location t3 
-				on t2.location_code = t3.location_code
+				on t2.lokasi_kerja = t3.location_code
+				left join hlcm.hlcm_datagaji t4 
+				on t2.kode_pekerjaan = t4.kode_pekerjaan
+				and t2.lokasi_kerja = t4.lokasi_kerja
 				where t1.tgl_idul_fitri = ?
-				and t2.location_code = ?
-				order by t2.location_code,t1.noind";
+				and t2.lokasi_kerja = ?
+				order by t2.lokasi_kerja,t1.noind";
 		return $this->erp->query($sql,array($tanggal,$lokasi))->result_array();
 	}
 
 	function getTHRByTanggalLokasi($tanggal,$lokasi){
-		$sql = "select t1.*,t2.employee_name,t3.location_name
+		$sql = "select t1.*,t2.nama as employee_name,t3.location_name,t4.pekerjaan,t2.lokasi_kerja
 				from hlcm.hlcm_thr t1 
-				inner join er.er_employee_all t2 
-				on t1.noind = t2.employee_code
+				inner join hlcm.hlcm_datapekerja t2 
+				on t1.noind = t2.noind
 				inner join er.er_location t3 
-				on t2.location_code = t3.location_code
+				on t2.lokasi_kerja = t3.location_code
+				left join hlcm.hlcm_datagaji t4 
+				on t2.kode_pekerjaan = t4.kode_pekerjaan
+				and t2.lokasi_kerja = t4.lokasi_kerja
 				where t1.tgl_idul_fitri = ?
-				and t2.location_code = ?
-				order by t2.location_code,t1.noind";
+				and t2.lokasi_kerja = ?
+				order by t2.lokasi_kerja,t1.noind";
 		return $this->erp->query($sql,array($tanggal,$lokasi))->result_array();
 	}
 
 	function getBulanTHRByTanggal($tanggal){
-		$sql = "select t1.*,t2.employee_name,t3.location_name
+		$sql = "select t1.*,t2.nama as employee_name,t3.location_name,t4.pekerjaan,t2.lokasi_kerja
 				from hlcm.hlcm_thr_bulan t1 
-				inner join er.er_employee_all t2 
-				on t1.noind = t2.employee_code
+				inner join hlcm.hlcm_datapekerja t2 
+				on t1.noind = t2.noind
 				inner join er.er_location t3 
-				on t2.location_code = t3.location_code
+				on t2.lokasi_kerja = t3.location_code
+				left join hlcm.hlcm_datagaji t4 
+				on t2.kode_pekerjaan = t4.kode_pekerjaan
+				and t2.lokasi_kerja = t4.lokasi_kerja
 				where t1.tgl_idul_fitri = ?
-				order by t2.location_code,t1.noind";
+				order by t2.lokasi_kerja,t1.noind";
 		return $this->erp->query($sql,array($tanggal))->result_array();
 	}
 
 	function getTHRByTanggal($tanggal){
-		$sql = "select t1.*,t2.employee_name,t3.location_name
+		$sql = "select t1.*,t2.nama as employee_name,t3.location_name,t4.pekerjaan,t2.lokasi_kerja
 				from hlcm.hlcm_thr t1 
-				inner join er.er_employee_all t2 
-				on t1.noind = t2.employee_code
+				inner join hlcm.hlcm_datapekerja t2 
+				on t1.noind = t2.noind
 				inner join er.er_location t3 
-				on t2.location_code = t3.location_code
+				on t2.lokasi_kerja = t3.location_code
+				left join hlcm.hlcm_datagaji t4 
+				on t2.kode_pekerjaan = t4.kode_pekerjaan
+				and t2.lokasi_kerja = t4.lokasi_kerja
 				where t1.tgl_idul_fitri = ?
-				order by t2.location_code,t1.noind";
+				order by t2.lokasi_kerja,t1.noind";
 		return $this->erp->query($sql,array($tanggal))->result_array();
 	}
 
@@ -268,6 +280,17 @@ class M_thr extends CI_Model {
 				from hrd_khs.tpribadi
 				where noind = ?";
 		return $this->personalia->query($sql,array($noind))->row();
+	}
+
+	public function getApproval($jenis){
+		$sql = "select c.posisi,a.noind,trim(a.nama) as nama,a.jabatan,a.id_status,a.lokasi_kerja 
+				from hlcm.hlcm_approval a 
+				inner join hlcm.hlcm_document b 
+				on a.document_id = b.id_document
+				inner join hlcm.hlcm_posisi c 
+				on a.id_status = c.id_status
+				where b.nama_document = '$jenis'";
+		return $this->erp->query($sql)->result_array();
 	}
 }
 
