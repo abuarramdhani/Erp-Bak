@@ -50,13 +50,13 @@
 												<div class="col-lg-10 text-right">
 
 											<?php if(base_url('')=="http://erp.quick.com/") : ?>
+												<button id="showData" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Show Data</button>
+												<?php else: ?>
 													<button id="presensiH-btnExcel_v1" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 1 </button>
 													<button id="presensiH-btnExcel_v2" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 2</button>
 													<button id="presensiH-btnPDF_v1" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 1 </button>
 													<button id="presensiH-btnPDF_v2" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 2</button>
-												<?php else: ?>
-														<button id="showData" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Show Data</button>
-											<?php endif; ?>		
+											<?php endif; ?>
 												</div>
 											</div>
 										</form>
@@ -90,14 +90,14 @@
 												</tr>
 											</thead>
 											<tbody>
-											<?php 
+											<?php
 													$no=1;
 													foreach ($pekerja as $key) {
 														?>
-														
+
 															<?php
 														foreach ($key['data'] as $shi) {
-															
+
 																?>
 																<tr>
 																	<td style="text-align: center;"><?php echo $no; ?></td>
@@ -105,14 +105,14 @@
 																	<td style=""><?php echo $key['nama']; ?></td>
 																	<td style="text-align: center;"><?php echo $shi['tgl']; ?></td>
 																	<td><?php echo $shi['shift']; ?></td>
-																	<td><?php 
+																	<td><?php
 																		if (isset($shi['tim']) and !empty($shi['tim'])) {
 																			foreach ($shi['tim'] as $tims) {
 																				echo $tims;
 																			}
 																		}
 																	 ?></td>
-																	<?php 
+																	<?php
 																		$angka = 0;
 																		if (isset($shi['wkt']) and !empty($shi['wkt'])) {
 																			foreach ($shi['wkt'] as $wkt) { ?>
@@ -124,7 +124,7 @@
 																		}
 
 																		if ($angka < $max) {
-																			for ($i=0; $i < $max - $angka; $i++) { 
+																			for ($i=0; $i < $max - $angka; $i++) {
 																				echo "<td></td>";
 																			}
 																		}
@@ -140,10 +140,10 @@
 																</tr>
 																<?php
 																$no++;
-															
+
 														}
 														?>
-														
+
 														<?php
 													}
 											?>

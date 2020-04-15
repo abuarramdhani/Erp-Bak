@@ -158,7 +158,15 @@ class M_presensiharian extends Ci_Model
 	}
 
 	public function getKeteranganByNoind($noind,$tgl){
-		$sql = "select tk.keterangan
+		$sql = "select
+					case when (
+						select point
+						from \"Presensi\".tdatatim
+						where noind = '$noind'
+						and tanggal = '$tgl'
+						and kd_ket in ('TM', 'TIK')
+						) = 0  and tp.kd_ket in ('TM', 'TIK')
+					then '' else tk.keterangan end as keterangan
 				from (
 					select kd_ket
 					from \"Presensi\".tdatapresensi
