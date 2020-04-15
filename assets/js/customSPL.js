@@ -4,7 +4,8 @@ $(function() {
         "scrollX": true,
         "dom": '<"top"Bfpi>rt<"bottom"ip>',
         "buttons": [{
-                extend: 'excel',
+                extend: 'excelHtml5',
+                text: 'Export Table',
                 className: 'btn btn-success'
             },
             {
@@ -33,9 +34,10 @@ $(function() {
 
     $(".spl-table").DataTable({
         "scrollX": true,
-        "dom": 'Bfrtip',
+        "dom": 'lfrtip',
         "buttons": [{
-            extend: 'excel',
+            extend: 'excelHtml5',
+            text: 'Export Table',
             className: 'btn btn-success'
         }],
         "ordering": false,
@@ -1667,3 +1669,17 @@ const add_jobs_spl_edit = e => {
 const del_jobs_spl = (e) => {
     e.closest('tr').remove()
 }
+
+$(document).ready(function(){
+    $('.spl_exportlist_excel').on('click', function(){
+        let val = $('#frm_list_lembur').serialize();
+        let url = baseurl+'SPLSeksi/C_splseksi/export_excel?'+val;
+        window.open(url, '_blank');
+    });
+
+    $('#spl-rekap-excel').on('click', function(){
+        let val = $('#frm_rekap_lembur').serialize();
+        let url = baseurl+'SPLSeksi/C_splseksi/export_rekap_excel?'+val;
+        window.open(url, '_blank');
+    });
+});

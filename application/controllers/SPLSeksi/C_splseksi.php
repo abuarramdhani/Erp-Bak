@@ -562,6 +562,43 @@ class C_splseksi extends CI_Controller {
 		}
 
 		$data['data_spl'] = $this->M_splseksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
+		$arrSk = array();
+		$arrSk2 = array();
+		$x = 0;
+
+		//dapatkan seksi tanpa duplikat
+		foreach ($data['data_spl'] as $key) {
+			if (empty($arrSk)) {
+				$arrSk[$x]['seksi'] = $key['seksi'];
+				$arrSk[$x]['unit'] = $key['unit'];
+				$arrSk[$x]['dept'] = $key['dept'];
+
+				$arrSk2[] = $key['seksi'];
+				$x++;
+			}elseif (in_array($key['seksi'], $arrSk2) === false) {
+				$arrSk[$x]['seksi'] = $key['seksi'];
+				$arrSk[$x]['unit'] = $key['unit'];
+				$arrSk[$x]['dept'] = $key['dept'];
+
+				$arrSk2[] = $key['seksi'];
+				$x++;
+			}
+		}
+
+		//isi tanggal berapa saja seksi tersebut muncul
+		for ($i=0; $i < count($arrSk); $i++) { 
+			foreach ($data['data_spl'] as $key) {
+				if ($arrSk[$i]['seksi'] == $key['seksi']) {
+					$arrSk[$i]['tanggal'][] = $key['Tgl_Lembur'];
+				}
+			}
+		}
+
+		$data['sk'] = $arrSk;
+		$data['tgl'] = array_values(array_unique(array_column($data['data_spl'], 'Tgl_Lembur')));
+
+		// echo "<pre>";
+		// print_r($arrSk);exit();
 
 		$filename = 'Surat Perintah Lembur.pdf';
 		$pdf = new mPDF('','A4-L', 0, '', 5, 5, 5, 5);
@@ -1427,4 +1464,277 @@ class C_splseksi extends CI_Controller {
 		// $this->load->view('SPLSeksi/Seksi/V_pdf_memo', $data);
 	}
 
+	public function export_excel()
+	{
+		$this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
+		$dari = $this->input->get('dari');
+		$dari = date_format(date_create($dari), "Y-m-d");
+
+		$sampai = $this->input->get('sampai');
+		$sampai = date_format(date_create($sampai), "Y-m-d");
+
+		$status = $this->input->get('status');
+		$noind = $this->input->get('noind');
+		$lokasi = $this->input->get('lokasi');
+		$user = $this->session->user;
+
+		$akses_sie = array();
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie(substr($ak['kodesie'],0,7).'00');
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+
+		$data_spl = array();
+		$show_list_spl = $this->M_splseksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
+
+		$arrSeksi = array_values(array_unique(array_column($show_list_spl, 'seksi')));
+		$arrHead = array('No','Status','Tgl Lembur','Noind','Nama','Pekerjaan','Jenis Lembur','Mulai','Selesai','Break','Istirahat','Estimasi','Target/Pcs/%','Realisasi/Pcs/%','Alasan Lembur','Tanggal Proses');
+		// echo "<pre>";
+		// print_r($arrSeksi);
+		// exit();
+
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator('KHS ERP')
+		->setTitle("Rekap Lembur")
+		->setSubject("Rekap Lembur")
+		->setDescription("Rekap Lembur")
+		->setKeywords("Rekap Lembur");
+
+		$style_col = array(
+			'font' => array('bold' => true),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+				),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+				),
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				// 'color' => array('rgb' => 'bababa')
+				)
+			);
+		$style_row = array(
+			'alignment' => array(
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+				),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+				)
+			);
+
+		$a = 1;
+		for ($i=0; $i < count($arrSeksi); $i++) { 
+			$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$a.':B'.$a);
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$a)->getFont()->setBold(true);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$a, $arrSeksi[$i]);
+
+			$a++;
+			$b = 0;
+			foreach ($arrHead as $ah) {
+				$kolom = PHPExcel_Cell::stringFromColumnIndex($b);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom.$a)->applyFromArray($style_col);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$a, $ah);
+				$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
+				$b++;
+			}
+
+			$a++;
+			$no = 1;
+			foreach ($show_list_spl as $key) {
+				if($arrSeksi[$i] != $key['seksi']) continue;
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$a, $no);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$a, $key['Deskripsi'].' '.$key['Noind'].' ('.$key['nama'].')');
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$a, $key['Tgl_Lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$a, $key['Noind']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$a, $key['nama']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$a, $key['Pekerjaan']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$a, $key['nama_lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$a, $key['Jam_Mulai_Lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$a, $key['Jam_Akhir_Lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$a, $key['Break']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$a, $key['Istirahat']);
+				$est = $this->hitung_jam_lembur($key['Noind'], $key['Kd_Lembur'], $key['Tgl_Lembur'], $key['Jam_Mulai_Lembur'], $key['Jam_Akhir_Lembur'], $key['Break'], $key['Istirahat']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$a, $est);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$a, $key['target']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$a, $key['realisasi']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$a, $key['alasan_lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$a, $key['Tgl_Berlaku']);
+
+				//style
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('B'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('C'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('D'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('F'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('G'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('H'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('I'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('J'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('K'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('L'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('M'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('N'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('O'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('P'.$a)->applyFromArray($style_row);
+				$a++;
+				$no++;
+			}
+			$a++;
+
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0);  
+		$filename = urlencode("List_Lembur_".$dari.'-'.$sampai.".ods");
+
+		header('Content-Type: application/vnd.ms-excel'); 
+		header('Content-Disposition: attachment;filename="'.$filename.'"'); 
+		header('Cache-Control: max-age=0'); 
+
+		$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+		$objWriter->save('php://output');
+	}
+
+	public function export_rekap_excel()
+	{
+		$this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
+		$dari = $this->input->get('dari');
+		$dari = date_format(date_create($dari), "Y-m-d");
+
+		$sampai = $this->input->get('sampai');
+		$sampai = date_format(date_create($sampai), "Y-m-d");
+
+		$status = $this->input->get('status');
+		$noind = $this->input->get('noind');
+		$noi = $this->input->get('noi');
+		$lokasi = $this->input->get('lokasi');
+		$user = $this->session->user;
+		if($noind == ""){ $noind = $noi; }
+
+		// get akses seksi
+		$akses_sie = array();
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie(substr($ak['kodesie'],0,7).'00');
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+
+		$x = 1;
+		$data_spl = array();
+		$show_list_spl = $this->M_splseksi->show_rekap($dari, $sampai, $noind, $akses_sie);
+		// echo "<pre>";
+		// print_r($show_list_spl);
+
+		$arrSeksi = array_values(array_unique(array_column($show_list_spl, 'seksi')));
+		$arrHead = array('No','Tanggal','Noind','Nama','Jenis Lembur','Mulai','Selesai', 'Total');
+		// echo "<pre>";
+		// print_r($arrSeksi);
+		// exit();
+
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator('KHS ERP')
+		->setTitle("Rekap Lembur")
+		->setSubject("Rekap Lembur")
+		->setDescription("Rekap Lembur")
+		->setKeywords("Rekap Lembur");
+
+		$style_col = array(
+			'font' => array('bold' => true),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+				),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+				),
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				// 'color' => array('rgb' => 'bababa')
+				)
+			);
+		$style_row = array(
+			'alignment' => array(
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+				),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+				)
+			);
+
+		$a = 1;
+		for ($i=0; $i < count($arrSeksi); $i++) { 
+			$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$a.':D'.$a);
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$a)->getFont()->setBold(true);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$a, $arrSeksi[$i]);
+
+			$a++;
+			$b = 0;
+			foreach ($arrHead as $ah) {
+				$kolom = PHPExcel_Cell::stringFromColumnIndex($b);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom.$a)->applyFromArray($style_col);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$a, $ah);
+				$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
+				$b++;
+			}
+
+			$a++;
+			$no = 1;
+			foreach ($show_list_spl as $key) {
+				if($arrSeksi[$i] != $key['seksi']) continue;
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$a, $no);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$a, $key['tanggal']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$a, $key['noind']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$a, $key['nama']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$a, $key['nama_lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$a, $key['jam_msk']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$a, $key['jam_klr']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$a, $key['total_lembur']);
+
+				//style
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('B'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('C'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('D'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('F'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('G'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('H'.$a)->applyFromArray($style_row);
+
+				$a++;
+				$no++;
+			}
+			$a++;
+
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0);  
+		$filename = urlencode("Rekap_Lembur_".$dari.'-'.$sampai.".ods");
+
+		header('Content-Type: application/vnd.ms-excel'); 
+		header('Content-Disposition: attachment;filename="'.$filename.'"'); 
+		header('Cache-Control: max-age=0'); 
+
+		$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+		$objWriter->save('php://output');
+	}
 }

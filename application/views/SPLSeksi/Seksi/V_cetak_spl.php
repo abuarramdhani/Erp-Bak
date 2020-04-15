@@ -1,11 +1,13 @@
 <?php
 $lst_tgl = "";
 date_default_timezone_set('Asia/Jakarta');
-foreach($data_spl as $d){
+foreach($tgl as $d){
 	try{
-		if($lst_tgl!="" && $lst_tgl>=$d['Tgl_Lembur']){
+		if($lst_tgl!="" && $lst_tgl>=$d){
 			throw new Exception('lewati');
 		}
+	foreach ($sk as $s) {
+	if(in_array($d, $s['tanggal']) === false) continue;
 ?>
 
 <html>
@@ -36,22 +38,22 @@ foreach($data_spl as $d){
 				<div style="width:100%; padding:3px; font-size:12px;">
 					<table border="0" width="100%">
 						<tr><td style="width:10%; padding:3px; font-size:12px;">Unit</td>
-							<td style="width:21%; padding:3px; font-size:12px;">: <?php echo $d['unit'] ?></td>
+							<td style="width:21%; padding:3px; font-size:12px;">: <?php echo $s['unit'] ?></td>
 							<td style="width:10%; padding:3px; font-size:12px;">Departemen</td>
-							<td style="width:21%; padding:3px; font-size:12px;">: <?php echo $d['dept'] ?></td>
+							<td style="width:21%; padding:3px; font-size:12px;">: <?php echo $s['dept'] ?></td>
 							<td style="width:10%; padding:3px; font-size:12px;">Lembur ke</td>
 							<td style="width:21%; padding:3px; font-size:12px;">: _____ dalam bulan ini</td></tr>
 						<tr><td style="width:100%; padding:3px; font-size:12px;" colspan="6">
 								Sehubungan dengan adanya pekerjaan yang bersifat penting dan mendesak yang harus segera diselesaikan, maka dengan ini kami sampaikan Surat Perintah Lembur
 							</td></tr>
 						<tr><td style="width:10%; padding:3px; font-size:12px;">Seksi</td>
-							<td style="width:21%; padding:3px; font-size:12px;">: <?php echo $d['seksi'] ?></td>
+							<td style="width:21%; padding:3px; font-size:12px;">: <?php echo $s['seksi'] ?></td>
 							<td style="width:10%; padding:3px; font-size:12px;">Seksi lain yang terkait</td>
 							<td style="width:21%; padding:3px; font-size:12px;">:</td>
 							<td style="width:10%; padding:3px; font-size:12px;"></td>
 							<td style="width:21%; padding:3px; font-size:12px;"></td></tr>
 						<tr><td style="width:10%; padding:3px; font-size:12px;">Hari / Tgl</td>
-							<td style="width:21%; padding:3px; font-size:12px;">: <?php echo date_format(date_create($d['Tgl_Lembur']), "d-m-Y") ?></td>
+							<td style="width:21%; padding:3px; font-size:12px;">: <?php echo date_format(date_create($d), "d-m-Y") ?></td>
 							<td style="width:10%; padding:3px; font-size:12px;">Jumlah Operator</td>
 							<td style="width:21%; padding:3px; font-size:12px;">:</td>
 							<td style="width:10%; padding:3px; font-size:12px;"></td>
@@ -81,7 +83,7 @@ foreach($data_spl as $d){
 							$x = 1;
 							$tmp_tgl = "";
 							foreach($data_spl as $ds){
-								if($ds['Tgl_Lembur'] == $d['Tgl_Lembur']){
+								if($ds['Tgl_Lembur'] == $d && $ds['seksi'] == $s['seksi']){
 						?>
 						<tr><td style="padding:3px; font-size:12px; text-align:center"><?php echo $x; ?></td>
 							<td style="padding:3px; font-size:12px; text-align:left"><?php echo $ds['nama']; ?></td>
@@ -131,6 +133,7 @@ foreach($data_spl as $d){
 		print_r('<pagebreak />');
 	}
 
+	}
 	}catch(Exception $e){
 		// lewati
 	}

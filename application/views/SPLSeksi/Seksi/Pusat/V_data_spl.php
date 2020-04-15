@@ -6,6 +6,12 @@
 		width: 100% !important;
 		padding: 0;
 	}
+	.dataTables_filter{
+		float: right;
+	}
+	.dataTables_length{
+		float: left;
+	}
 </style>
 	<section class="content">
 		<div class="row">
@@ -30,7 +36,7 @@
 
 		<div class="row">
 			<section class="col-lg-12 connectedSortable">
-				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_splseksi/data_spl_cetak'); ?>" method="post" enctype="multipart/form-data" target="_blank">
+				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_splseksi/data_spl_cetak'); ?>" method="post" enctype="multipart/form-data" target="_blank" id="frm_list_lembur">
 					<div class="box box-primary">
 						<div class="box-header">
 							<div class="row">
@@ -94,7 +100,8 @@
 
 									<div class="form-group">
 									<div class="col-sm-12">
-											<button type="submit" class="btn btn-primary pull-right"> <i class="fa fa-file-pdf-o"></i> Cetak</button>
+											<button type="button" class="btn btn-success pull-right spl_exportlist_excel"> <i class="fa fa-file-excel-o"></i> Cetak Excel</button>
+											<button type="submit" class="btn btn-danger pull-right" style="margin-right:3px"> <i class="fa fa-file-pdf-o"></i> Cetak PDF</button>
 											<button type="button" id="spl-pencarian" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 											<button type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 											<img src="<?php echo base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
