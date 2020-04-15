@@ -106,6 +106,7 @@ class M_quesioner extends CI_Model
         ,tbl1.question_28
         ,tbl1.question_29
         ,tbl1.question_30
+        ,tbl1.last_update
         FROM
         (SELECT
         gcr.id
@@ -140,6 +141,7 @@ class M_quesioner extends CI_Model
         ,(SELECT CASE WHEN question_28 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_28
         ,(SELECT CASE WHEN question_29 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_29
         ,(SELECT CASE WHEN question_30 = 'Y' THEN 1 ELSE 0 END FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  question_30
+        ,(SELECT creation_date FROM ga_covid19_risk xx WHERE xx.creation_by=gcr.creation_by ORDER BY id DESC LIMIT 1)  last_update
         FROM
         pendataan.ga_covid19_risk gcr
         GROUP BY gcr.creation_by) tbl1

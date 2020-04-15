@@ -48,6 +48,7 @@
                                 <th>Tidak Dapat Merasakan asin/manis/asam</th>
                                 <th>Belum Periksa Ke Dokter</th>
                                 <th>Sudah Periksa Ke Dokter Dan Dianjurkan Karantina Mandiri</th>
+                                <th>Last Update</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,6 +93,7 @@
                                 <td><?= $list['question_28'];?></td>
                                 <td><?= $list['question_29'];?></td>
                                 <td><?= $list['question_30'];?></td>
+                                <td><?= $list['last_update'];?></td>
                             </tr>
                         <?php } ?>
                         </tbody>
