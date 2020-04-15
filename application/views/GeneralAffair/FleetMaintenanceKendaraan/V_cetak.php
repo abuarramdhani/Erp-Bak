@@ -95,10 +95,10 @@
 				<td style="padding: 30px 7px"> </td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">Reny Sulistiyaningtyas</td>
+				<td style="padding: 7px;text-align: center;">Kania Niarningtyas</td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">(Kasi Madya EDP)</td>
+				<td style="padding: 7px;text-align: center;">(Kasi Madya GA)</td>
 			</tr>
 		</table>
 	</div>
