@@ -195,7 +195,12 @@ class C_THRPekerja extends CI_Controller
 				}else{
 					$bulan_thr = 0;
 				}
-
+				if (strtotime($b) > strtotime($c)) {
+					$bulan_thr = 0;
+					$tahun = 0;
+					$bulan = 0;
+					$hari = 0;
+				}
 				$pekerja[$i]['masa_kerja'] 	= $tahun." tahun ".$bulan." bulan ".$hari." hari";
 				$pekerja[$i]['bulan_thr'] 	= $bulan_thr;
 				$pekerja[$i]['proporsi'] 	= round($bulan_thr/12,2);
@@ -215,8 +220,8 @@ class C_THRPekerja extends CI_Controller
 				$this->M_thrpekerja->insertTHRDetail($data_thr_detail);
 			}
 		}
-
-		redirect(base_url('MasterPresensi/ReffGaji/THR/list/'.$id_thr));
+		// exit();
+		redirect(base_url('MasterPresensi/ReffGaji/THR/lihat/'.$id_thr));
 	}
 
 	public function lihat($id){

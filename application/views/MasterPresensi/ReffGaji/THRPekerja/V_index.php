@@ -20,7 +20,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<table class="table table-striped table-bordered table-hover">
+										<table class="table table-striped table-bordered table-hover" id="tbl-MPR-THR-index">
 											<thead class="bg-primary">
 												<tr>
 													<th>No.</th>

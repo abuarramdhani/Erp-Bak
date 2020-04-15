@@ -680,6 +680,9 @@ $(document).on('ready',function(){
         "format": 'yyyy-mm-dd'
     });
 
+    $('#tbl-MPR-THR-lihat').DataTable();
+    $('#tbl-MPR-THR-index').DataTable();
+
     $('#slcTHRMengetahui').select2({
         searching: true,
         minimumInputLength: 3,

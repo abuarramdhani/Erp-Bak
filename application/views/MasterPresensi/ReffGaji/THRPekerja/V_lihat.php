@@ -21,7 +21,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<table class="table table-striped table-bordered table-hover">
+										<table class="table table-striped table-bordered table-hover" id="tbl-MPR-THR-lihat">
 											<thead class="bg-primary">
 												<tr>
 													<th style="text-align: center;vertical-align: middle;">No.</th>
