@@ -2460,6 +2460,18 @@ $route['HitungHlcm/GajiPersonalia/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji
 $route['HitungHlcm/GajiPersonalia/(:any)/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_HitungGajiPersonalia/$1/$2/$3/$4';
 $route['HitungHlcm/GajiPersonalia/(:any)/(:any)/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_HitungGajiPersonalia/$1/$2/$3/$4/$5';
 
+$route['HitungHlcm/THR/Perhitungan'] = 'UpahHlCm/THR/C_Perhitungan';
+$route['HitungHlcm/THR/Perhitungan/(:any)'] = 'UpahHlCm/THR/C_Perhitungan/$1';
+$route['HitungHlcm/THR/Perhitungan/(:any)/(:any)'] = 'UpahHlCm/THR/C_Perhitungan/$1/$2';
+
+$route['HitungHlcm/THR/PerhitunganBulan'] = 'UpahHlCm/THR/C_PerhitunganBulan';
+$route['HitungHlcm/THR/PerhitunganBulan/(:any)'] = 'UpahHlCm/THR/C_PerhitunganBulan/$1';
+$route['HitungHlcm/THR/PerhitunganBulan/(:any)/(:any)'] = 'UpahHlCm/THR/C_PerhitunganBulan/$1/$2';
+
+$route['HitungHlcm/THR/MonitoringPengembalian'] = 'UpahHlCm/THR/C_MonitoringPengembalian';
+$route['HitungHlcm/THR/MonitoringPengembalian/(:any)'] = 'UpahHlCm/THR/C_MonitoringPengembalian/$1';
+$route['HitungHlcm/THR/MonitoringPengembalian/(:any)/(:any)'] = 'UpahHlCm/THR/C_MonitoringPengembalian/$1/$2';
+
 //------------------------------------------------Inventory------------------------------------------------//
 //Move Order
 $route['InventoryManagement/CreateMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder';
