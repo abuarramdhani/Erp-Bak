@@ -104,7 +104,7 @@ class M_splseksi extends CI_Model{
 			inner join hrd_khs.tseksi d ON b.kodesie = d.kodesie
 			where a.status like '%$status%' and a.tgl_lembur between '$dari' AND '$sampai'
 					and a.perbantuan='N' and ($akses) and b.noind like '$noind%' and b.lokasi_kerja like '%$lokasi%'
-			order by a.tgl_lembur, d.seksi, a.kd_lembur, b.nama, a.jam_mulai_lembur, a.Jam_Akhir_Lembur";
+			order by a.tgl_lembur, d.kodesie, a.kd_lembur, b.nama, a.jam_mulai_lembur, a.Jam_Akhir_Lembur";
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
@@ -171,10 +171,11 @@ class M_splseksi extends CI_Model{
 			$x++;
 		}
 
-		$sql = "select tlb.tanggal, tlb.noind, tpr.nama, tlb.jam_msk, tlb.jam_klr, tlb.jml_lembur, jns.nama_lembur, tdp.total_lembur
+		$sql = "select tlb.tanggal, tlb.noind, tpr.nama, tlb.jam_msk, tlb.jam_klr, tlb.jml_lembur, jns.nama_lembur, tdp.total_lembur, tpr.kodesie, ts.seksi
 			from presensi.tlembur tlb
 			left join presensi.tdatapresensi tdp on tlb.noind=tdp.noind and tlb.tanggal=tdp.tanggal
 			left join hrd_khs.tpribadi tpr on tlb.noind = tpr.noind
+			left join hrd_khs.tseksi ts on ts.kodesie = tpr.kodesie
 			left join presensi.tjenislembur jns on tlb.kd_lembur=jns.kd_lembur
 			where tlb.noind like '$noind%' and tlb.tanggal between '$dari' and '$sampai' and ($akses)
 			order by tlb.noind, tlb.tanggal";
