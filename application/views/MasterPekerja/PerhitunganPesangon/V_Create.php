@@ -29,20 +29,22 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
+                                                        <label for="cmbNoind" class="col-lg-4 control-label text-left">Jumlah Cuti Dihitung ? <span style="color: red">*</span></label>
+                                                        <div class="col-lg-8">
+                                                           <input type="checkbox" value="1" id="MasterPekerja-PerhitunganPesangon-HitungCuti" checked class="form-control">
+                                                           <input type="hidden" id="MasterPekerja-PerhitunganPesangon-StatusCuti" value="1"><br><span style="color: red">*checkbox hanya memiliki efek ketika memilih pekerja</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
                                                         <label for="cmbNoind" class="col-lg-4 control-label text-left">Pekerja Keluar</label>
                                                         <div class="col-lg-8">
                                                             <select required class="select2 MasterPekerja-PerhitunganPesangon-DaftarPekerja" name="txtNoind" id="MasterPekerja-PerhitunganPesangon-DaftarPekerja" style="width: 100%">
                                                                 <option></option>
                                                             </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="cmbNoind" class="col-lg-4 control-label text-left">Cuti<span style="color: red">*</span></label>
-                                                        <div class="col-lg-8">
-                                                           <input type="checkbox" value="1" id="MasterPekerja-PerhitunganPesangon-HitungCuti" checked class="form-control">
-                                                           <input type="hidden" id="MasterPekerja-PerhitunganPesangon-StatusCuti" value="1"><br><span style="color: red">*checkbox hanya memiliki efek ketika memilih pekerja</span>
                                                         </div>
                                                     </div>
                                                 </div>

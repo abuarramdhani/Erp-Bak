@@ -747,7 +747,7 @@ $(function() {
         if (noind) {
             $.ajax({
                 type: 'POST',
-                data: { noind: noind },
+                data: { noind: noind, cuti: cuti },
                 url: baseurl + "MasterPekerja/PerhitunganPesangon/detailPekerja",
                 success: function(result) {
                     if(result !== "Data Kosong"){

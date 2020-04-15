@@ -118,7 +118,11 @@ class C_Index extends CI_Controller {
  	public function detailPekerja()
 	{
 		$noind 				=	$this->input->post('noind');
-		$detailPekerja 		=	$this->M_pesangon->detailPekerja($noind);
+		$cuti 				=	$this->input->post('cuti');
+
+		
+		
+		$detailPekerja 		=	$this->M_pesangon->detailPekerja($noind,$cuti);
 		if (!empty($detailPekerja)) {
 			$hariTerakhir 		= array_merge($detailPekerja, array('hari_terakhir'=>date('D', strtotime($detailPekerja[0]['metu']))));
 			echo json_encode($hariTerakhir);
