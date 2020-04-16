@@ -342,9 +342,11 @@ class C_Monitoring extends CI_Controller
 	public function MonHarian(){
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
-		// if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-		// 	echo "Prohibited";exit();
-		// }
+		$user = $this->session->user;
+		if(substr($user, 1,1) != 'B' && substr($user, 1,1) != 'D' && substr($user, 1,1) != 'J'){
+			unset($data['UserMenu'][2]);
+			unset($data['UserMenu'][3]);
+		}
 
 		$data['Title'] = 'Monitoring Presensi Harian';
 		$data['Menu'] = 'Lihat Monitoring Presensi Harian';
