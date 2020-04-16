@@ -50,9 +50,10 @@ class C_PresensiHarian extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
-		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-			// unset($data['UserMenu'][2]);
-			// unset($data['UserMenu'][3]);
+		$user = $this->session->user;
+		if(substr($user, 1,1) != 'B' && substr($user, 1,1) != 'D' && substr($user, 1,1) != 'J'){
+			unset($data['UserMenu'][2]);
+			unset($data['UserMenu'][3]);
 		}
 
 		$this->load->view('V_Header',$data);

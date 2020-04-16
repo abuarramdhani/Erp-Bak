@@ -50,7 +50,8 @@ class C_PresensiBulanan extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensibulanan->getSeksiByKodesie($kodesie);
 
-		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
+		$user = $this->session->user;
+		if(substr($user, 1,1) != 'B' && substr($user, 1,1) != 'D' && substr($user, 1,1) != 'J'){
 			unset($data['UserMenu'][2]);
 			unset($data['UserMenu'][3]);
 		}
