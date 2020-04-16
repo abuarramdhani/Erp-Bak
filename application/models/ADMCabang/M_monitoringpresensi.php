@@ -668,5 +668,9 @@ $q_seksi)";
 		return $query->result_array();
 	}
 
-
+	public function getLiburPerusahaan($tahun)
+	{
+		$sql = "SELECT tanggal::date from \"Dinas_Luar\".tlibur where tanggal::text like '$tahun%'";
+		return $this->personalia->query($sql)->result_array();
+	}
 }

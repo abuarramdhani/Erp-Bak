@@ -396,6 +396,18 @@ class C_Monitoring extends CI_Controller
 
 		$periode 				= trim($this->input->post('periode'));
 		$arrTanggal 			= $this->input->post('arrTanggal');
+		if (empty($arrTanggal)) {
+			$tahun = date('Y');
+		}else{
+			$tahun = date('Y', strtotime($arrTanggal[0]));
+		}
+
+		$liburperusahaan 		= $this->M_monitoringpresensi->getLiburPerusahaan($tahun);
+		$tglPrei = array_column($liburperusahaan, 'tanggal');
+		$arrTanggal = array_filter($arrTanggal, function($tgal) use($tglPrei){
+		    return (date('N', strtotime($tgal)) != 7 && in_array($tgal,$tglPrei) === false);
+		});
+		$arrTanggal = array_values($arrTanggal);
 
 		$tanggalAwal 			= explode(' - ', $periode)[0];
 		$tanggalAkhir 			= explode(' - ', $periode)[1];

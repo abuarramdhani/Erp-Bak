@@ -341,23 +341,23 @@
 		    return dateArray;
 		}
 
-		async function getDataPekerja(url,periode){
-			const settings = {
-				method: 'POST',
-				headers: {
-		             Accept: 'application/json',
-		            'Content-Type': 'application/json',
-		        },
-		        body: JSON.stringify({periode: periode})
-			}
-			try{
-				const response = await fetch(url);
-				const data = await response.json();
-				return data;
-			}catch(e){
-				return e;
-			}
-		}
+		// async function getDataPekerja(url,periode){
+		// 	const settings = {
+		// 		method: 'POST',
+		// 		headers: {
+		//              Accept: 'application/json',
+		//             'Content-Type': 'application/json',
+		//         },
+		//         body: JSON.stringify({periode: periode})
+		// 	}
+		// 	try{
+		// 		const response = await fetch(url);
+		// 		const data = await response.json();
+		// 		return data;
+		// 	}catch(e){
+		// 		return e;
+		// 	}
+		// }
 
 		$(".modal").on("hidden.bs.modal", function(){
 		    $('#tblDtl').dataTable().fnDestroy();		
