@@ -614,7 +614,7 @@ class M_splseksi extends CI_Model{
 		}
 
 		if($a == '401010102' || $a == '401010102'){
-			return 'SATPAM';
+			return 'UMUM';//SATPAM
 		}
 
 		return 'UMUM';
