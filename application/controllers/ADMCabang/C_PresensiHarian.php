@@ -51,8 +51,8 @@ class C_PresensiHarian extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-			unset($data['UserMenu'][2]);
-			unset($data['UserMenu'][3]);
+			// unset($data['UserMenu'][2]);
+			// unset($data['UserMenu'][3]);
 		}
 
 		$this->load->view('V_Header',$data);
@@ -101,7 +101,7 @@ class C_PresensiHarian extends CI_Controller
 				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,$i,$key['shift']);
 				if (!empty($tim)) {
 					foreach ($tim as $valTim) {
-						$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2,$i,$valTim['point']);
+						$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2,$i,$valTim['point'] == 0 ? '' : $valTim['point']);
 					}
 				}
 				if (!empty($presensi)) {
@@ -110,12 +110,20 @@ class C_PresensiHarian extends CI_Controller
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i,$waktu['waktu']);
 						$j++;
 					}
+					$new_ket = array();
 					foreach ($ket as $keterangan) {
-						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i,$keterangan['keterangan']);
+						if ($keterangan['keterangan'] == '') {
+							unset($keterangan['keterangan']);
+						}else {
+							$new_ket[] = $keterangan['keterangan'];
+						}
+					}
+					foreach ($new_ket as $newKet) {
+						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i,$newKet);
 						$j++;
 					}
 				}else{
-					$j = 3;
+					$j = 4;
 					foreach ($ket as $keterangan) {
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i,$keterangan['keterangan']);
 						$j++;
@@ -176,7 +184,7 @@ class C_PresensiHarian extends CI_Controller
 				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3,$i+1,$key['shift']);
 				if (!empty($tim)) {
 					foreach ($tim as $valTim) {
-						$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4,$i+1,$valTim['point']);
+						$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4,$i+1,$valTim['point'] == 0 ? '': $valTim['point']);
 					}
 				}
 				if (!empty($presensi)) {
@@ -185,8 +193,16 @@ class C_PresensiHarian extends CI_Controller
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i+1,$waktu['waktu']);
 						$j++;
 					}
+					$new_ket = array();
 					foreach ($ket as $keterangan) {
-						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i+1,$keterangan['keterangan']);
+						if ($keterangan['keterangan'] == '') {
+							unset($keterangan['keterangan']);
+						}else {
+							$new_ket[] = $keterangan['keterangan'];
+						}
+					}
+					foreach ($new_ket as $newKet) {
+						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i+1,$newKet);
 						$j++;
 					}
 				}else{
@@ -269,7 +285,7 @@ class C_PresensiHarian extends CI_Controller
 				if (!empty($tim)) {
 					$angka3 = 0;
 					foreach ($tim as $valTim) {
-						$arr[$angka1]['data'][$angka2]['tim'][$angka3] = $valTim['point'];
+						$arr[$angka1]['data'][$angka2]['tim'][$angka3] = $valTim['point'] == 0 ? '': $valTim['point'];
 						$angka3++;
 					}
 				}
@@ -285,15 +301,26 @@ class C_PresensiHarian extends CI_Controller
 				}
 
 				$angka3 = 0;
+				$new_ket = array();
 				foreach ($ket as $keterangan) {
-					$arr[$angka1]['data'][$angka2]['ket'][$angka3] = $keterangan['keterangan'];
+					if ($keterangan['keterangan'] == '') {
+						unset($keterangan['keterangan']);
+					}else {
+						$new_ket[] = $keterangan['keterangan'];
+					}
+				}
+				foreach ($new_ket as $keterangan) {
+					$arr[$angka1]['data'][$angka2]['ket'][$angka3] = $keterangan;
 					$angka3++;
 				}
 				$angka2++;
 			}
+
 			$arr[$angka1]['max'] = $simpan;
 			$angka1++;
 		}
+		// die;
+
 		// $angka1 = 0;
 		// foreach ($data['shift'] as $key ) {
 		// 	$arr[$angka1] = array(
@@ -310,10 +337,8 @@ class C_PresensiHarian extends CI_Controller
 		// 	}
 		// 	$angka1++;
 		// }
-		// echo "<pre>";
-		// print_r($arr);
-		// exit();
 		$data['pekerja'] = $arr;
+
 		$today = date('d-m-Y H:i:s');
 		$seksi = $data['seksi'];
 
@@ -385,7 +410,7 @@ class C_PresensiHarian extends CI_Controller
 		$data['presensi'] = $this->M_presensiharian->getPresensiArrayNoind($noind,$tanggal);
 		$data['tim'] = $this->M_presensiharian->getTIMArrayNoind($noind,$tanggal);
 		$data['ket'] = $this->M_presensiharian->getKeteranganArrayNoind($noind,$tanggal);
-		
+
 
 		// echo "<pre>";
 		// print_r($data['presensi']);
@@ -413,7 +438,7 @@ class C_PresensiHarian extends CI_Controller
 				if (!empty($tim)) {
 					$angka3 = 0;
 					foreach ($tim as $valTim) {
-						$arr[$angka1]['data'][$angka2]['tim'][$angka3] = $valTim['point'];
+						$arr[$angka1]['data'][$angka2]['tim'][$angka3] = $valTim['point'] == 0 ? '': $valTim['point'];
 						$angka3++;
 					}
 				}
@@ -429,8 +454,16 @@ class C_PresensiHarian extends CI_Controller
 				}
 
 				$angka3 = 0;
+				$new_ket = array();
 				foreach ($ket as $keterangan) {
-					$arr[$angka1]['data'][$angka2]['ket'][$angka3] = $keterangan['keterangan'];
+					if ($keterangan['keterangan'] == '') {
+						unset($keterangan['keterangan']);
+					}else {
+						$new_ket[] = $keterangan['keterangan'];
+					}
+				}
+				foreach ($new_ket as $keterangan) {
+					$arr[$angka1]['data'][$angka2]['ket'][$angka3] = $keterangan;
 					$angka3++;
 				}
 				$angka2++;
@@ -542,7 +575,7 @@ class C_PresensiHarian extends CI_Controller
 		$data['presensi'] = $this->M_presensiharian->getPresensiArrayNoind($noind,$tanggal);
 		$data['tim'] = $this->M_presensiharian->getTIMArrayNoind($noind,$tanggal);
 		$data['ket'] = $this->M_presensiharian->getKeteranganArrayNoind($noind,$tanggal);
-		
+
 
 		// echo "<pre>";
 		// print_r($data['presensi']);

@@ -7,7 +7,7 @@
     z-index:9999;
     display: none;
     vertical-align: middle;
-     background: url(<?php echo base_url('assets/img/gif/loadingquick.gif'); ?>) 
+     background: url(<?php echo base_url('assets/img/gif/loadingquick.gif'); ?>)
               50% 50% no-repeat rgba(0,0,0,0.7);
 }
 
@@ -21,7 +21,7 @@
 
 #grafik:hover{
 	cursor: pointer;
-}	
+}
 </style>
 <div id="cover-spin">
 </div>
@@ -49,7 +49,7 @@
 
 						<form>
 						  <div class="row" id="rowPeriode">
-						  
+
 								  	 <div class="form-group col-sm-2">
 								  		<label>Periode</label>
 								  		</div>
@@ -84,7 +84,7 @@
 	                           </div>
 
 	                           <div class="row" id="rowStatusHubker">
-		                           <div class="form-group col-sm-2">								  		
+		                           <div class="form-group col-sm-2">
 	                                    <label class="control-label" >Status Hubungan Kerja</label>
 								  		</div>
 	                                  <div class="form-group col-sm-8">
@@ -105,7 +105,7 @@
 	                           </div>
 
 	                            <div class="row" id="rowUnit">
-		                            <div class="form-group col-sm-2">								  		
+		                            <div class="form-group col-sm-2">
 		                                    <label class="control-label" >Unit</label>
 									  	</div>
 	                                  <div class="form-group col-sm-8">
@@ -126,7 +126,7 @@
 	                           </div>
 
 	                           <div class="row" id="rowSeksi">
-	                           <div class="form-group col-sm-2">								  		
+	                           <div class="form-group col-sm-2">
 		                                    <label class="control-label">Seksi</label>
 									  	</div>
 	                                  <div class="form-group col-sm-8">
@@ -155,7 +155,7 @@
 					<div class="panel panel-primary panelGrafik" style="display: none">
 					 <div class="panel-body">
 					 <div id="wadah-grafik"  style="position:relative;right: 0;height: 500px !important;">
-					 	
+
 					 </div>
 					 </div>
 					</div>
@@ -176,7 +176,7 @@
 										</tr>
 									</thead>
 									<tbody id="tbodyTahunan">
-										
+
 									</tbody>
 								</table>
 							</div>
@@ -187,7 +187,7 @@
 			</section>
 			<hr />
 		</div>
-		
+
 </section>
 
 <!-- Modal -->
@@ -212,7 +212,7 @@
         		</tr>
         	</thead>
         	<tbody id="bodyTab">
-        		
+
         	</tbody>
         </table>
       </div>
@@ -392,7 +392,7 @@
 		}
 
 		$(".modal").on("hidden.bs.modal", function(){
-		    $('#tblDtl').dataTable().fnDestroy();		
+		    $('#tblDtl').dataTable().fnDestroy();
 		});
 
 		$('#tblBulanan').on('click','.btn-grafik',function(e){
@@ -408,8 +408,8 @@
 			if($('.panelGrafik').css('display') != 'none'){
 				$('.panelGrafik').fadeOut()
 				$(".panelTabel").fadeOut()
-				$('#tblBulanan').dataTable().fnDestroy();	
-			}	
+				$('#tblBulanan').dataTable().fnDestroy();
+			}
 			let kodesie = $(this).attr('data-id');
 			let periode = $('input[name="periode"]').val();
 			let statusKerja = $('#vm-status').val()
@@ -442,7 +442,7 @@
 				$('.panelGrafik').fadeOut()
 				$(".panelTabel").fadeOut()
 				$('#tblBulanan').dataTable().fnDestroy();
-			}	
+			}
 
 			let statusKerja = $('#vm-status').val()
 			let unitKerja = $('#vm-unit').val()
@@ -456,7 +456,7 @@
 			}else{
 				$('#cover-spin').fadeIn();
 				getDataBulanan(periodeAwal,periodeAkhir,arrBulan,statusKerja,unitKerja,seksiKerja);
-			}	
+			}
 		})
 
 		function getDataBulanan(periodeAwal,periodeAkhir,arrBulan,statusKerja,unitKerja,seksiKerja){
@@ -490,7 +490,7 @@
 						let periodeAkhir = $('input[name="periodeAkhir"]').val();
 
 						Date.prototype.getMonthName = function() {
-					    var monthNames = [ "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+					    var monthNames = [ "Januari", "Februari", "Maret", "April", "Mei", "Juni",
 					                       "Juli", "Agustus", "September", "Oktober", "November", "Desember" ];
 					    return monthNames[this.getMonth()];
 						}
@@ -583,7 +583,7 @@
 						           yAxes: [
 									    {
 									      ticks: {
-									      	fontColor: "#000", 
+									      	fontColor: "#000",
 									        min: 0,
 									        max: Math.max.apply(Math, res.kabehData),// Your absolute max value
 									        callback: function (value,index,values) {
@@ -609,7 +609,7 @@
            							var element = this.getElementAtEvent(c);
            							var index = element[0]['_index'];
            							var dtSetIndex = element[0]['_datasetIndex'];
-								    var dtClick = element[0]['_chart'].config.data;								  
+								    var dtClick = element[0]['_chart'].config.data;
 								    var periode = dtClick.labels[index];
 								    var kodesie = res.kodesieArr[index][dtSetIndex];
 								    $('#cover-spin').fadeIn();
@@ -641,7 +641,7 @@
 							                    $("#bodyTab").html(html);
 							                    $("#tblDtl").DataTable();
 								    	},2000)
-								    		
+
 								    	},
 								    	error: (res)=>{
 								    		$('#cover-spin').fadeOut();
@@ -649,10 +649,10 @@
 								    })
 								}
 						    }
-						    
+
 						});	//end chart
 						myChart.data.datasets.map((data,index)=>{
-							if(index == 0){ 
+							if(index == 0){
 								for(var j = 0;j < myChart.data.datasets.length;j++){
 									myChart.data.datasets[index].backgroundColor = 'rgba(255, 99, 132, 0.7)';
 									myChart.data.datasets[index].borderColor = 'rgba(255, 99, 132, 0.7)';

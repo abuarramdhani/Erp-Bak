@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
- * 
+ *
  */
 class C_Rekap extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -34,9 +34,9 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function index(){
-		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-			echo "Prohibited";exit();
-		}
+		// if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
+		// 	echo "Prohibited";exit();
+		// }
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'ADM Cabang';
@@ -55,11 +55,9 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function pekerja(){
-		// echo "<pre>";print_r($this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user));exit();
-
-		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-			echo "Prohibited";exit();
-		}
+		// if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
+		// 	echo "Prohibited";exit();
+		// }
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Rekap Per Pekerja';
@@ -110,16 +108,16 @@ class C_Rekap extends CI_Controller
 			$q_seksi = "";
 		}
 
-
 		$data = $this->M_monitoringpresensi->rekapPekerja($tanggalAwal,$tanggalAkhir,$kodesie,$q_status,$q_unit,$q_seksi);
-		print_r(json_encode($data));
+		// echo "<pre>";
 		// print_r($data);
+		// die;
+		print_r(json_encode($data));
 	}
 
 	function cetakPDF(){
 		ini_set('memory_limit', '256M');
 		ini_set('max_execution_time', 300);
-		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$this->load->library('pdf');
 		$tanggalAwal = $this->input->get('tanggalAwal');
 		$tanggalAkhir = $this->input->get('tanggalAkhir');
@@ -174,7 +172,7 @@ class C_Rekap extends CI_Controller
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet,1);
 		$pdf->AddPage();
-		
+
 		$pdf->WriteHTML($html,2);
 		$pdf->Output('rekapPekerja_'.$formatTglAwal.'-'.$formatTglAkhir.'.pdf','I');
 		$pdf->set_time_limit(0);
@@ -182,7 +180,6 @@ class C_Rekap extends CI_Controller
 	}
 
 	function cetakExcel(){
-		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$this->load->library('Excel');
 		$tanggalAwal = $this->input->get('tanggalAwal');
 		$tanggalAkhir = $this->input->get('tanggalAkhir');
@@ -392,7 +389,7 @@ class C_Rekap extends CI_Controller
 		$worksheet->getStyle($kolomB)->applyFromArray($alignment);
 		$worksheet->getStyle($kolomD)->applyFromArray($alignment);
 		$worksheet->getStyle($kolomA.':'.$kolomL)->applyFromArray($tdata);
-		
+
 
 		$worksheet->getStyle($kolomA)->applyFromArray($borderleft);$worksheet->getStyle($kolomA)->applyFromArray($borderright);
 		$worksheet->getStyle($kolomB)->applyFromArray($borderleft);$worksheet->getStyle($kolomB)->applyFromArray($borderright);
@@ -451,8 +448,7 @@ class C_Rekap extends CI_Controller
 
 	}
 
-	function getGrafik(){		
-		$this->load->model('ADMCabang/M_monitoringpresensi');
+	function getGrafik(){
 		$noinduk = $this->input->get('noinduk');
 		$tanggalAwal = $this->input->get('tanggalAwal');
 		$tanggalAkhir = $this->input->get('tanggalAkhir');
@@ -487,7 +483,7 @@ class C_Rekap extends CI_Controller
 			}
 				$tanggalPresensi[$key] = $value;
 
-				
+
 		}
 		$tglBekerja = explode(' , ', $tanggalPresensi['tgl_bekerja']);
 		$tglIzinPribadi = explode(' , ', $tanggalPresensi['tgl_izin_pribadi']);
@@ -507,7 +503,6 @@ class C_Rekap extends CI_Controller
 		$data['data'] = $presensi;
 		$data['tanggalPresensi'] = $tanggalPresensi;
 		print_r(json_encode($data));
-
 	}
 }
 ?>
