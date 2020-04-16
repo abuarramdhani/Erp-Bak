@@ -193,13 +193,13 @@ class M_pesangon extends CI_Model {
 					pesangon.pasal_pengali_pesangon as pasal,
 					pesangon.uang_pesangon as pesangon,
 					pesangon.upmk as up,
- 					coalesce(cuti.sisa_cuti,0) as cuti,
+ 					coalesce(cuti.sisa_cuti,0)+(select count(*) from \"Presensi\".tdatapresensi where tanggal>=pri.tglkeluar::date and noind=pri.noind) as cuti,
 					pesangon.uang_ganti_rugi as rugi,
 					concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
 					concat(pesangon.upmk,' X GP') as upmk,
 					concat (pesangon.uang_ganti_rugi,'% UANG PESANGON + UANG PMK') as gantirugi,
-		 			concat(coalesce(cuti.sisa_cuti,0),' hari ')as sisacuti,
-		 			concat(coalesce(cuti.sisa_cuti,0),' GP/30 ')as sisacutihari
+		 			concat((coalesce(cuti.sisa_cuti,0)+(select count(*) from \"Presensi\".tdatapresensi where tanggal>=pri.tglkeluar::date and noind=pri.noind)),' hari ')as sisacuti,
+		 			concat((coalesce(cuti.sisa_cuti,0)+(select count(*) from \"Presensi\".tdatapresensi where tanggal>=pri.tglkeluar::date and noind=pri.noind)),' GP/30 ')as sisacutihari
 									from 		hrd_khs.tpribadi as pri
 									join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
 									left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
