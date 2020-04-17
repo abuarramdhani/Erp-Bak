@@ -9,9 +9,10 @@
     </tr>
   </thead>
   <tbody>
-    <?php $no = 1; $atr = 1; foreach ($get as $g):
+    <?php $no = 1; $atr = 1; $warn = 1; foreach ($get as $g):
       if ($g['QUANTITY'] > $g['AV_TO_RES']) {
         $styleSetting = 'style="background:rgba(210, 90, 90, 0.49)"';
+        $warn = 0;
       }else {
         $styleSetting = '';
       }
@@ -27,6 +28,7 @@
     <?php $no++; endforeach; ?>
   </tbody>
 </table>
+<input type="hidden" name="cekdodo" id="checkDODO" value="<?php echo $warn; ?>">
 <input type="hidden" name="" id="user_mdo">
 <input type="hidden" name="" id="headerid_mdo">
 <input type="hidden" name="" id="rm_mdo">
