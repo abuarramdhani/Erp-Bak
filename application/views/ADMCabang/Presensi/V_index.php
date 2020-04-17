@@ -50,13 +50,13 @@
 												<div class="col-lg-10 text-right">
 
 											<?php if(base_url('')=="http://erp.quick.com/") : ?>
+											<?php else: ?>
+											<?php endif; ?>
 												<button id="showData" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Show Data</button>
-												<?php else: ?>
 													<button id="presensiH-btnExcel_v1" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 1 </button>
 													<button id="presensiH-btnExcel_v2" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 2</button>
 													<button id="presensiH-btnPDF_v1" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 1 </button>
 													<button id="presensiH-btnPDF_v2" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 2</button>
-											<?php endif; ?>
 												</div>
 											</div>
 										</form>

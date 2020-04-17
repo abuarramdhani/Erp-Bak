@@ -51,7 +51,7 @@ class C_PresensiBulanan extends CI_Controller
 		$data['seksi'] = $this->M_presensibulanan->getSeksiByKodesie($kodesie);
 
 		$user = $this->session->user;
-		if(substr($user, 1,1) != 'B' && substr($user, 1,1) != 'D' && substr($user, 1,1) != 'J'){
+		if(substr($user, 0,1) != 'B' && substr($user, 0,1) != 'D' && substr($user, 0,1) != 'J'){
 			unset($data['UserMenu'][2]);
 			unset($data['UserMenu'][3]);
 		}
