@@ -1,4 +1,4 @@
-<br>
+<!-- <br> -->
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover text-left " id="tblMonitoringDO" style="font-size:12px;">
     <thead>
@@ -28,15 +28,15 @@
       if (!empty($get[0]['DO/SPB'])) {
           $no = 1;
           foreach ($get as $g){
-            if ($g['CHECK'] == 'false') {
-              $styleSetting = 'style="background:rgba(210, 90, 90, 0.49)"';
-            }else {
+            // if ($g['CHECK'] == 'false') {
+            //   $styleSetting = 'style="background:rgba(210, 90, 90, 0.49)"';
+            // }else {
               $styleSetting = '';
-            }
+            // }
        ?>
 
        <tr row-id="<?php echo $no ?>" <?php echo $styleSetting ?>>
-         <input type="hidden" name="cekdodo" id="checkDODO" value="<?php echo $g['CHECK'] ?>">
+         <!-- <input type="hidden" name="cekdodo" id="checkDODO" value="<?php echo $g['CHECK'] ?>"> -->
          <input type="hidden" id="cekSudahAssign">
          <td><center><?php echo $no ?></center></td>
          <td><center><?php echo $g['DO/SPB'] ?></center></td>
@@ -61,35 +61,66 @@
  </table>
 </div>
 <script type="text/javascript">
- $('#tblMonitoringDO').DataTable();
+ $('#tblMonitoringDO').DataTable({
+   drawCallback: function(dt) {
 
+  $('.select2MonitoringDO').select2({
+    minimumInputLength: 2,
+    placeholder: "Pilih Petugas",
+    ajax: {
+      url: baseurl + "MonitoringDO/SettingDO/petugas",
+      dataType: "JSON",
+      type: "POST",
+      data: function (params) {
+        return {
+          term: params.term
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (obj) {
+            return {
+              id: obj.employee_code,
+              text: obj.employee_code + ' - ' + obj.employee_name
+            }
+          })
+        }
+      }
+    }
+  })
+ }
+ });
 
-$(document).ready(function() {
-
- $('.select2MonitoringDO').select2({
-   minimumInputLength: 2,
-   placeholder: "Pilih Petugas",
-   ajax: {
-     url: baseurl + "MonitoringDO/SettingDO/petugas",
-     dataType: "JSON",
-     type: "POST",
-     data: function (params) {
-       return {
-         term: params.term
-       };
-     },
-     processResults: function (data) {
-       return {
-         results: $.map(data, function (obj) {
-           return {
-             id: obj.employee_code,
-             text: obj.employee_code + ' - ' + obj.employee_name
-           }
-         })
-       }
-     }
-   }
- })
-})
+//
+// $(document).ready(function() {
+// $('#tblMonitoringDO').dataTable({
+//   drawCallback: function(dt) {
+//
+//  $('.select2MonitoringDO').select2({
+//    minimumInputLength: 2,
+//    placeholder: "Pilih Petugas",
+//    ajax: {
+//      url: baseurl + "MonitoringDO/SettingDO/petugas",
+//      dataType: "JSON",
+//      type: "POST",
+//      data: function (params) {
+//        return {
+//          term: params.term
+//        };
+//      },
+//      processResults: function (data) {
+//        return {
+//          results: $.map(data, function (obj) {
+//            return {
+//              id: obj.employee_code,
+//              text: obj.employee_code + ' - ' + obj.employee_name
+//            }
+//          })
+//        }
+//      }
+//    }
+//  })
+// }
+// })
 
 </script>
