@@ -11,11 +11,6 @@ class M_monitoringdo extends CI_Model
         $subinv = $this->session->datasubinven;
     }
 
-// SELECT * FROM er.er_employee_all
-// where resign = '0'
-// --and substring(section_code,1,5) = (select substring(section_code,1,5) from er.er_employee_all
-// --where employee_code = 'B0865')
-
     public function petugas($data)
     {
       $sql = "SELECT
@@ -248,37 +243,27 @@ class M_monitoringdo extends CI_Model
     public function getDetailData($data)
     {
       $subinv = $this->session->datasubinven;
-        if (!empty($data)) {
-            $response = $this->oracle->query("SELECT distinct
-                   mtrh.HEADER_ID
-                  ,mtrh.REQUEST_NUMBER \"DO/SPB\"
-                  ,msib.SEGMENT1
-                  ,mtrl.INVENTORY_ITEM_ID
-                  ,msib.DESCRIPTION
-                  ,mtrl.QUANTITY
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'$subinv') + mtrl.quantity AV_TO_RES
-                  ,kpd.PERSON_ID petugas
-            from mtl_txn_request_lines mtrl
-                ,mtl_txn_request_headers mtrh
-                ,mtl_system_items_b msib
-                ,khs_approval_do kad
-                ,khs_person_delivery kpd
-            where mtrh.HEADER_ID = mtrl.HEADER_ID
-              and kad.NO_DO = mtrh.REQUEST_NUMBER
-              and kad.NO_DO = kpd.REQUEST_NUMBER(+)
-              and kad.STATUS = 'Approved'
-              and kpd.PERSON_ID is null
-              and msib.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-              and msib.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
-              and mtrh.REQUEST_NUMBER = '$data'
-            order by msib.SEGMENT1")->result_array();
-        } else {
-            $response = array(
-            'success' => false,
-            'message' => 'requests_number is empty, cannot do this action'
-        );
-        }
-        return $response;
+      $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
+                                mtrl.inventory_item_id, msib.description, mtrl.quantity,
+                                khs_stock_delivery (mtrl.inventory_item_id,102,'$subinv') + mtrl.quantity av_to_res
+                           FROM mtl_txn_request_lines mtrl,
+                                mtl_txn_request_headers mtrh,
+                                mtl_system_items_b msib
+                          WHERE mtrh.header_id = mtrl.header_id
+                            AND msib.inventory_item_id = mtrl.inventory_item_id
+                            AND msib.organization_id = mtrl.organization_id
+                            AND mtrh.request_number = '$data'
+                       ORDER BY msib.segment1";
+
+      if (!empty($data)) {
+          $response = $this->oracle->query($query)->result_array();
+      } else {
+          $response = array(
+          'success' => false,
+          'message' => 'requests_number is empty, cannot do this action'
+      );
+      }
+      return $response;
     }
 
     public function sudahdiAssign()
@@ -452,13 +437,6 @@ class M_monitoringdo extends CI_Model
 
     public function insertDO($data)
     {
-        // echo "<pre>";
-        // print_r($data);
-        // die;
-        // if(empty($data[PLAT_NUMBER])){
-        //   $data[PLAT_NUMBER] = '-';
-        // }
-
         if (!empty($data['HEADER_ID'])) {
             if (!empty($data['REQUEST_NUMBER'])) {
                 if (!empty($data['PERSON_ID'])) {

@@ -125,53 +125,54 @@ class C_Master extends CI_Controller
 
     public function GetSetting()
     {
-        $datag = $this->M_monitoringdo->getDO();
+        // $datag = $this->M_monitoringdo->getDO();
         // echo "<pre>";
         // print_r($datag);
         // die;
-        if (!empty($datag[0]['DO/SPB'])) {
-            foreach ($datag as $g) {
-                $dataku[] = $g['DO/SPB'];
-            }
-            $no = 0;
-            foreach ($dataku as $k) {
-                $datakau[] = $this->M_monitoringdo->getDetailData($k);
-                $no++;
-            }
+        // if (!empty($datag[0]['DO/SPB'])) {
+        //     foreach ($datag as $g) {
+        //         $dataku[] = $g['DO/SPB'];
+        //     }
+        //     $no = 0;
+        //     foreach ($dataku as $k) {
+        //         $datakau[] = $this->M_monitoringdo->getDetailData($k);
+        //         $no++;
+        //     }
 
             // echo "<pre>";
-            // print_r($datakau);
+            // print_r($dataku);
             // die;
 
-            $final = [];
+            // $final = [];
             // $var = '';
-            foreach ($datakau as $f) {
-                for ($i=0; $i < sizeof($f); $i++) {
-                    if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
-                        $var = 'false';
-                        break;
-                    } else {
-                        $var = 'true';
-                    }
-                }
-                array_push($final, $var);
-            }
+            // foreach ($datakau as $f) {
+            //     for ($i=0; $i < sizeof($f); $i++) {
+            //         if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
+            //             $var = 'false';
+            //             break;
+            //         } else {
+            //             $var = 'true';
+            //         }
+            //     }
+            //     array_push($final, $var);
+            // }
 
-            $finaldestination = [];
-            $number = 0;
-            foreach ($datag as $d) {
-                $d['CHECK'] = $final[$number];
-                $number++;
-                array_push($finaldestination, $d);
-            }
-            $data['get'] = $finaldestination;
-        } else {
-            $data['get'] = $this->M_monitoringdo->getDO();
-        }
+            // $finaldestination = [];
+            // $number = 0;
+            // foreach ($datag as $d) {
+            //     $d['CHECK'] = $final[$number];
+            //     $number++;
+            //     array_push($finaldestination, $d);
+            // }
+            // $data['get'] = $finaldestination;
+        //     $data['get'] = $datakau;
+        // } else {
+        //     $data['get'] = $this->M_monitoringdo->getDO();
+        // }
         // echo "<pre>";
         // print_r($data);
         // die;
-
+        $data['get'] = $this->M_monitoringdo->getDO();
         $this->load->view('MonitoringDO/V_Ajax_Setting', $data);
     }
 

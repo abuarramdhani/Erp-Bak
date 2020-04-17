@@ -126,7 +126,9 @@ function approveMD() {
   var plat_number = $('#plat_number').val();
   var atr_tampung_gan = $('#atr_tampung_gan').val();
 
-  var pengecekan = $('tr[row-id="' + rowID + '"] input[name="cekdodo"]').val();
+  // var pengecekan = $('tr[row-id="' + rowID + '"] input[name="cekdodo"]').val();
+  var pengecekan = $('#checkDODO').val();
+  // window.alert(pengecekan);
 
   if (personid === '') {
     Swal.fire({
@@ -150,7 +152,7 @@ function approveMD() {
       $('#MyModal2').modal('hide');
     })
   } else {
-    if (pengecekan === 'true') {
+    if (pengecekan == 1) {
       $.ajax({
         url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
         type: 'POST',
@@ -202,7 +204,7 @@ function approveMD() {
                 })
               }
             })
-          }else {
+          } else {
             // window.alert('test_fail');
             Swal.fire({
               position: 'middle',
@@ -274,6 +276,29 @@ function approveMD() {
               $('tr[row-id="' + rowID + '"] select[name="person_id"]').attr('disabled', true);
               $('tr[row-id="' + rowID + '"]').removeAttr("style");
               $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
+
+              //redirect ulang
+              var checkDO = $('#punyaeDO').val();
+              if (checkDO == 'trueDO') {
+                $.ajax({
+                  url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
+                  type: 'POST',
+                  beforeSend: function() {
+                    $('#loadingArea0').show();
+                    $('div.table_area_DO_0').hide();
+                  },
+                  success: function(result) {
+                    // console.log(result);
+                    $('#loadingArea0').hide();
+                    $('div.table_area_DO_0').show();
+                    $('div.table_area_DO_0').html(result);
+                  },
+                  error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.error();
+                  }
+                }).then(function() {
+                })
+              }
             // $.ajax({
             //   url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
             //   type: 'POST',

@@ -12,7 +12,7 @@
 </head>
 
 <body>
-
+<br>
 	<table style="width:100%; border-collapse: collapse !important;page-break-inside:avoid">
 		<tr>
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;border-top: 1px solid black;width:10%;padding:5px" rowspan="2">
@@ -121,7 +121,7 @@
 		</thead>
 		<tbody style="vertical-align:top!important;">
 		<tr style="border-bottom:1px solid black;">
-			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 559px;font-size:10px;padding:5px">
+			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 539px;font-size:10px;padding:5px">
 				<center>
 					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $no ?> <br /><br />
