@@ -221,6 +221,9 @@ class C_Overtime extends CI_Controller
 		}
 
 			public function ExportPdf($data){
+
+				set_time_limit(0);
+				
 				$data = str_replace("%20", " ", $data);
 				$do = explode("_", $data);
 				$export = $do['0'];
