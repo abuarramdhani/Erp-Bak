@@ -4213,3 +4213,7 @@ $route['PerhitunganBiayaImpor'] = 'PerhitunganBiayaImpor/C_Index';
 $route['PerhitunganBiayaImpor/Laporan/(:any)'] = 'PerhitunganBiayaImpor/Laporan/C_Laporan/$1';
 $route['PerhitunganBiayaImpor/Laporan/(:any)/(:any)'] = 'PerhitunganBiayaImpor/Laporan/C_Laporan/$1/$2';
 $route['PerhitunganBiayaImpor/Laporan/(:any)/(:any)/(:any)'] = 'PerhitunganBiayaImpor/Laporan/C_Laporan/$1/$2/$3';
+
+// ------------------------------------Standarisasi Item Pembelian----------------------------------
+$route['StandarisasiItemPembelian'] = 'StandarisasiItemPembelian/C_Index';
+$route['StandarisasiItemPembelian/Standarisasi/(:any)'] = 'StandarisasiItemPembelian/Standarisasi/C_Standarisasi/$1';
