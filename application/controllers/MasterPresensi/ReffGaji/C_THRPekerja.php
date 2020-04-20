@@ -22,6 +22,7 @@ class C_THRPekerja extends CI_Controller
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/ReffGaji/M_thrpekerja');
+		$this->load->model('MasterPresensi/ReffGaji/M_transferreffgaji');
 		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
@@ -258,6 +259,148 @@ class C_THRPekerja extends CI_Controller
 		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." - ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');
+	}
+
+	public function transfer($id){
+		require_once APPPATH . 'third_party/phpxbase/Column.php';
+		require_once APPPATH . 'third_party/phpxbase/Record.php';
+		require_once APPPATH . 'third_party/phpxbase/Memo.php';
+		require_once APPPATH . 'third_party/phpxbase/Table.php';
+		require_once APPPATH . 'third_party/phpxbase/WritableTable.php';
+
+		$data = $this->M_thrpekerja->getTHRDetailByIdTHR($id);
+		// echo "<pre>";print_r($data);exit();
+
+		$waktu = date('Y-m-d H:i:s');
+		$table = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2_thr.dbf");
+		$table->openWrite(FCPATH."assets/upload/TransferReffGaji/PER_THR_".$waktu.".dbf");
+
+		foreach ($data as $dt) {
+
+			$seksi = $this->M_transferreffgaji->getSeksi($dt['kodesie']);
+			$seksi2 = $this->M_transferreffgaji->getSeksi2($dt['kodesie']);
+
+			if (!empty($seksi2)) {
+				if ($seksi2->kodesek == "401013") {
+					$kodsie = "040004";
+				}else{
+					$kodsie = $seksi2->kodesek;
+				}
+			}else{
+				$kodsie = "";
+			}
+
+			$record = $table->appendRecord();
+			$record->NOIND = $dt['noind'];
+			$record->NOINDBR = '';
+			$record->NAMA = $dt['nama'];
+			$record->KODESEK = $kodsie;
+			$record->SEKSI = $seksi->seksi;
+			$record->UNIT = $seksi->unit;
+			$record->DEPT = $seksi->dept;
+			$record->KODEREK = '';
+			$record->KPPH = '';
+			$record->GAJIP = 0;
+			$record->UJAM = 0;
+			$record->UPAMK = 0;
+			$record->INSK = 0;
+			$record->INSP = 0;
+			$record->INSF = 0;
+			$record->P_ASTEK = 0;
+			$record->BLKERJA = 0;
+			$record->ANGG_SPSI = "F";
+			$record->ANGG_KOP = "F";
+			$record->ANGG_DUKA = "F";
+			$record->HR_I = 0;
+			$record->HR_ABS =  0;
+			$record->HR_IK =  0;
+			$record->HR_IP =  0;
+			$record->HR_IF =  0;
+			$record->HR_S2 =  0;
+			$record->HR_S3 =  0;
+			$record->HUPAMK =  0;
+			$record->JAM_LBR =  0;
+			$record->HR_UM =  0;
+			$record->HR_CATER = 0;
+			$record->P_BONSB = 0;
+			$record->P_I_KOP =  0;
+			$record->P_UT_KOP =  0;
+			$record->P_LAIN = 0;
+			$record->P_DUKA =  0;
+			$record->P_SPSI =  0;
+			$record->T_GAJIP = 0;
+			$record->T_INSK = 0;
+			$record->T_INSP = 0;
+			$record->T_INSF = 0;
+			$record->T_IMS = 0;
+			$record->T_IMM = 0;
+			$record->T_ULEMBUR = 0;
+			$record->T_UMAKAN = 0;
+			$record->T_CATERING = 0;
+			$record->TUPAMK = 0;
+			$record->T_TAMBAH1 = 0;
+			$record->P_UTANG = 0;
+			$record->TRANSFER = 0;
+			$record->XDUKA = 0;
+			$record->PTKP = 0;
+			$record->SUBTOTAL1 = 0;
+			$record->SUBTOTAL2 = 0;
+			$record->SUBTOTAL3 = 0;
+			$record->TERIMA = 0;
+			$record->KET =  '';
+			$record->TKENAPJK =  0;
+			$record->TTAKPJK = 0;
+			$record->KOREKSI1 = '';
+			$record->KOREKSI2 = '';
+			$record->KHARGA = 0;
+			$record->HRD_IP = 0;
+			$record->HRD_IK = 0;
+			$record->HRD_IF = 0;
+			$record->HRM_GP = 0;
+			$record->HRM_IP = 0;
+			$record->HRM_IK = 0;
+			$record->HRM_IF = 0;
+			$record->TGLRMH = '';
+			$record->UBT =  0;
+			$record->TUBT = 0;
+			$record->IFDRMLAMA = 0;
+			$record->STATUS = '';
+			$record->BANK = '';
+			$record->KODEBANK = '';
+			$record->NOREK = '';
+			$record->POTBANK = 0;
+			$record->NAMAPEMREK = '';
+			$record->PERSEN = 0;
+			$record->JSPSI = '';
+			$record->STRUKTUR =  '';
+			$record->UMP = 0;
+			$record->REK_DPLK = '';
+			$record->POT_DPLK = 0;
+			$record->UBS =  0;
+			$record->ANGG_JKN =  'F';
+			$record->KD_LKS =  '';
+			$record->HR_IPT =  0;
+			$record->HR_UMC =  0;
+			$record->DLOBAT =  0;
+			$record->JKN =  0;
+			$record->JHT =  0;
+			$record->JP =  0;
+			$record->HR_CUTI = 0;
+			$record->HR_IP_LM = 0;
+			$record->HR_IK_LM = 0;
+			$record->HR_IPT_LM = 0;
+			$record->BL_THR = $dt['bulan_thr'];
+			$record->BL_UBTHR = in_array(substr($dt['noind'], 0,1), array('A','B')) ? $dt['bulan_thr'] : 0; 
+			$record->XTHR = 0;
+			$record->XUBTHR = 0;
+			$record->THR = 0;
+			$record->UBTHR = 0;
+			// echo "<pre>";print_r($record);exit();
+			$table->writeRecord();
+		}
+		$table->close();
+
+		redirect(base_url("assets/upload/TransferReffGaji/PER_THR_".$waktu.".dbf"));
 	}
 
 	public function export($id){
