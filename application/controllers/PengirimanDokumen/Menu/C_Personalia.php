@@ -348,7 +348,7 @@ class C_Personalia extends CI_Controller
     }
 
     //Menu Rekap
-    function rekapAll($periode=false, $kodedokumen=false, $kodeseksi=false){
+    function rekapAll($periode=false, $kodedokumen=false, $kodeseksi=false, $lokasi=false){
         $this->load->model('PengirimanDokumen/M_inputdata');
         $this->load->model('PengirimanDokumen/M_masterdata');
 
@@ -373,6 +373,25 @@ class C_Personalia extends CI_Controller
             $seksi = "and substring(emp.section_code,0,8) = '$kodeseksi' ";
         }
 
+        $lokasi = '';
+        if(isset($_GET['lokasi']) && $_GET['lokasi'] != 'all'){
+            $kodelokasi = $_GET['lokasi'];
+            $lokasi = "and td.lokasi='$kodelokasi'";
+        }
+
+
+        $this->data['c_lok'] = '00';
+        if ($this->input->get('lokasi')) {
+            
+            $this->data['c_lok'] = $this->input->get('lokasi');
+        }
+        $this->data['l_lokasi'] = $this->M_inputdata->getLokasi2();
+
+        $list_lokasi = $this->M_inputdata->getAllLoksi();
+        $this->data['all_lokasi'] = array_column($list_lokasi, 'lokasi_kerja', 'id_');
+
+
+
         $selectRekap = 
         "SELECT td.id_data, 
                 td.noind, 
@@ -380,7 +399,8 @@ class C_Personalia extends CI_Controller
                 substring(emp.section_code,0,8) kodesie, 
                 tm.id, 
                 tm.keterangan, 
-                td.status, 
+                td.status,
+                (case when td.lokasi='01' then concat('JOGJA')  when td.lokasi='02' then concat('TUKSONO') else concat('-') end) as lok,
                 td.tanggal_start::date, 
                 td.tanggal_end::date, 
                 tr.seksi as approver,
@@ -392,8 +412,13 @@ class C_Personalia extends CI_Controller
         WHERE tanggal_end between '$start' and '$end' 
             and td.status not in ('0','2','4') 
             and tr.level = (select max(level) from ps.triwayat where id_data = td.id_data) 
-        ORDER BY tanggal_end asc"; 
-        
+            $dokumen 
+            $seksi 
+            $lokasi
+        ORDER BY tanggal_end asc"; //query nya yang  ini ?
+        //mungkin tapi kok query ada di controller
+        //echo $selectRekap;exit();
+
         $table = $this->db->query($selectRekap)->result_array();
 
         for($i=0; $i < count($table); $i++){

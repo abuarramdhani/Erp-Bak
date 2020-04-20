@@ -34,13 +34,13 @@
                 <div class="box-body">
                 <form method="GET" action="">
                     <div class="form-group row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6"> <!-- yang diubah col-lg-3 , full 12 , ini kan ada 4 col-lg-3 jadi sudah full 12 , dibagi 2 satu nya 6 jadi diubah col-lg-6 -->
                             <label class="col-sm-2 mt-5">Periode</label>
                             <div class="col-sm-10">
                                 <input type="text" name="periode" class="form-control" value="<?php  echo (isset($_GET['periode']))? $_GET['periode'] : "" ?>" autocomplete="off" id="periode" placeholder="Periode">
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6"> 
                             <label class="col-sm-4 mt-5">Dokumen</label>
                             <div class="col-sm-8">
                                 <select class="form-control select2" name="doc" id="">
@@ -51,7 +51,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6"> 
                             <label class="col-sm-2 mt-5">Seksi</label>
                             <div class="col-sm-10">
                                 <select class="form-control select2" name="section" id="">
@@ -62,6 +62,19 @@
                                 </select>
                             </div>
                         </div>
+                        
+                        <div class="col-lg-6">
+                            <label class="col-sm-4 mt-5">Lokasi Distribusi</label>
+                            <div class="col-sm-8">
+                                <select name="lokasi" id="" class="select2 form-control">
+                                    <option value="all">semua </option>
+                                    <?php foreach ($l_lokasi as $l): ?>
+                                         <option <?= ($l['id_'] == $c_lok) ? 'selected':'' ?> value="<?= $l['id_'] ?>"><?= $l['lokasi_kerja'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                         </div> 
+                        
                         <div class="col-lg-12 text-left mt-5 ml-10">
                             <button class="btn btn-info" type="submit">Search <i class="fa fa-search"></i></button>
                         </div>
@@ -77,6 +90,7 @@
                                     <td>Nomor Induk</td>
                                     <td>Nama</td>
                                     <td>Seksi</td>
+                                    <td>Lokasi Distribusi </td>
                                     <td>Keterangan</td>
                                     <td>Status</td>
                                     <td>Tgl Terima</td>
@@ -96,6 +110,7 @@
                                     <td><?= $row['noind'] ?></td>
                                     <td><?= $row['nama'] ?></td>
                                     <td><?= $row['kodesie'] ?></td>
+                                    <td><?= $row['lok'] ?> </td>
                                     <td><?= $row['keterangan'] ?></td>
                                     <td><?= $row['status'] ?></td>
                                     <td><?= $row['tgl_app'] ?></td>
