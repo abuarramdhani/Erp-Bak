@@ -664,3 +664,49 @@ function cekPotonganGajiExist(){
         })
     }
 }
+
+// start THR
+
+$(document).on('ready',function(){
+    $('#txtTHRTanggalIdulFitri').datepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        "format": 'yyyy-mm-dd'
+    });
+
+    $('#txtTHRTanggalDibuat').datepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        "format": 'yyyy-mm-dd'
+    });
+
+    $('#tbl-MPR-THR-lihat').DataTable();
+    $('#tbl-MPR-THR-index').DataTable();
+
+    $('#slcTHRMengetahui').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/ReffGaji/THR/getPekerja',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+})
+
+// end THR

@@ -2098,6 +2098,10 @@ $route['MasterPresensi/ReffGaji/PekerjaKhusus'] = 'MasterPresensi/ReffGaji/C_Pek
 $route['MasterPresensi/ReffGaji/PekerjaKhusus/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKhusus/$1';
 $route['MasterPresensi/ReffGaji/PekerjaKhusus/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKhusus/$1/$2';
 
+$route['MasterPresensi/ReffGaji/THR'] = 'MasterPresensi/ReffGaji/C_THRPekerja';
+$route['MasterPresensi/ReffGaji/THR/(:any)'] = 'MasterPresensi/ReffGaji/C_THRPekerja/$1';
+$route['MasterPresensi/ReffGaji/THR/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_THRPekerja/$1/$2';
+
 //------------------------------------Master Presensi - Lelayu ---------------------------------------------------
 $route['MasterPresensi/Lelayu'] = 'MasterPresensi/Lelayu/C_Lelayu';
 $route['MasterPresensi/Lelayu/(:any)'] = 'MasterPresensi/Lelayu/C_Lelayu/$1';
