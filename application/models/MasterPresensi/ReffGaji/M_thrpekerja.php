@@ -86,10 +86,12 @@ class M_thrpekerja extends CI_Model
 	}
 
 	function getTHRDetailByIdTHR($id_thr){
-		$sql = "select *
-				from \"Presensi\".t_thr_detail 
-				where id_thr = ?
-				order by noind";
+		$sql = "select t1.*,t2.kodesie,t2.lokasi_kerja
+				from \"Presensi\".t_thr_detail t1 
+				left join hrd_khs.tpribadi t2 
+				on t1.noind = t2.noind
+				where t1.id_thr = ?
+				order by t1.noind";
 		return $this->personalia->query($sql,array($id_thr))->result_array();
 	}
 

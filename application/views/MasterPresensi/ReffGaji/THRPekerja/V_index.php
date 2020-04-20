@@ -47,6 +47,7 @@
 														<td>
 															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/export/'.$dt['id_thr']) ?>" class="btn btn-success"><span class="fa fa-file-excel-o"></span>&nbsp;Excel</a>
 															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/cetak/'.$dt['id_thr']) ?>" class="btn btn-danger"><span class="fa fa-file-pdf-o"></span>&nbsp;PDF</a>
+															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/transfer/'.$dt['id_thr']) ?>" class="btn btn-warning"><span class="fa fa-file"></span>&nbsp;DBF</a>
 															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/lihat/'.$dt['id_thr']) ?>" class="btn btn-info"><span class="fa fa-file-o"></span>&nbsp;Lihat</a>
 															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/hapus/'.$dt['id_thr']) ?>" class="btn btn-danger"><span class="fa fa-trash"></span>&nbsp;Hapus</a>
 														</td>
