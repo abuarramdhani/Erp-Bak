@@ -65,7 +65,7 @@
 												<option value="" <?= ($parameter == 'Total') ? 'selected' : '' ?>>-- silahkan pilih --</option>
 												<option value="01">SPL Baru</option>
 												<option value="11">SPL Sudah diproses</option>
-												<option value="21" <?= ($parameter == 'Baru') ? 'selected' : '' ?>>Approved by Kasie</option>
+												<option value="21" <?= ($parameter == 'Baru' || ($parameter != 'Total' && $parameter != 'Tolak')) ? 'selected' : '' ?>>Approved by Kasie</option>
 												<option value="25">Approved by AssKa</option>
 												<option value="31">Canceled by Kasie</option>
 												<option value="35" <?= ($parameter == 'Tolak') ? 'selected' : '' ?>>Canceled by AssKa</option>
