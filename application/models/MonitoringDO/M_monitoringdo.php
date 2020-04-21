@@ -63,7 +63,7 @@ class M_monitoringdo extends CI_Model
     public function GetSudahCetak()
     {
         $sql = "SELECT *
-                FROM khs_qweb_sudah_cetak kqsc";
+                FROM khs_qweb_sudah_cetak1 kqsc";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -267,9 +267,10 @@ class M_monitoringdo extends CI_Model
     }
 
     public function sudahdiAssign()
-    {
-        $response = $this->oracle->query("SELECT *
-                                            FROM khs_qweb_terassign kqt")->result_array();
+    {   
+        $sql = "SELECT *
+                FROM khs_qweb_terassign1 kqt";
+        $response = $this->oracle->query($sql)->result_array();
 
         return $response;
     }
@@ -317,8 +318,9 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiLayani()
     {
-        $response = $this->oracle->query("SELECT *
-                                            FROM khs_qweb_sudah_pelayanan kqsp")->result_array();
+        $sql = "SELECT *
+                FROM khs_qweb_sudah_pelayanan1 kqsp";
+        $response = $this->oracle->query($sql)->result_array();
 
         return $response;
     }
@@ -376,8 +378,9 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiMuat()
     {
-        $response = $this->oracle->query("SELECT *
-                                            FROM khs_qweb_sudah_muat kqsm")->result_array();
+        $sql = "SELECT *
+                FROM khs_qweb_sudah_muat1 kqsm";
+        $response = $this->oracle->query($sql)->result_array();
 
         return $response;
     }
@@ -600,7 +603,7 @@ class M_monitoringdo extends CI_Model
     public function headerSurat($id)
     {
         $response = $this->oracle->query("SELECT *
-                                            FROM khs_qweb_sudah_muat kqsm
+                                            FROM khs_qweb_sudah_muat1 kqsm
                                            WHERE kqsm.\"DO/SPB\" = '$id'")->result_array();
 
         if (empty($response)) {
@@ -612,7 +615,7 @@ class M_monitoringdo extends CI_Model
     public function headerSurat2($id)
     {
         $response = $this->oracle->query("SELECT *
-                                            FROM khs_qweb_sudah_cetak kqsc
+                                            FROM khs_qweb_sudah_cetak1 kqsc
                                            WHERE kqsc.\"DO/SPB\" = '$id'")->result_array();
 
         if (empty($response)) {
