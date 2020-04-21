@@ -575,7 +575,7 @@ class M_pekerjakeluar extends CI_Model
 									where b.noind = a.noind
 									and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
 									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID')
-								)  -
+								)  +
 								(select count(tanggal) as jml from
 								(
 									SELECT c.tanggal from \"Presensi\".TDataPresensi c
