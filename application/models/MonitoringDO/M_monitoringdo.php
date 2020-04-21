@@ -230,7 +230,7 @@ class M_monitoringdo extends CI_Model
     {
         // $datacustom = '24-Mar-20';
         $response = $this->oracle->query("SELECT DISTINCT kqsa.*
-                                                     FROM khs_qweb_siap_assign kqsa
+                                                     FROM khs_qweb_siap_assign1 kqsa
                                                     WHERE TRUNC (kqsa.creation_date) = TRUNC (SYSDATE)
                                                  ORDER BY kqsa.creation_date")->result_array();
         if (empty($response)) {
