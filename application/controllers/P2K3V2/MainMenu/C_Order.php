@@ -1541,8 +1541,8 @@ class C_Order extends CI_Controller
   	}else{
   		$data['lokk'] = 'Yogyakarta';
   		$data['lokk_id'] = '142';
-  		$data['sub'] = '[PNL-NPR] GUDANG BAHAN PENOLONG NON-PRODUKSI';
-  		$data['sub_id'] = 'PNL-NPR';
+  		$data['sub'] = '[PNL-DM] GUDANG BAHAN PENOLONG PRODUKSI (PUSAT)';
+  		$data['sub_id'] = 'PNL-DM';
   	}
 
   	// echo "<pre>";
@@ -1629,7 +1629,7 @@ class C_Order extends CI_Controller
   		$gudang = 'PNL-TKS';
   	}else{
   		$lokasi = '142';
-  		$gudang = 'PNL-NPR';
+  		$gudang = 'PNL-DM';
   	}
 
   	$account = $this->M_order->account('APD', $cost_center);

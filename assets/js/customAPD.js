@@ -1121,7 +1121,7 @@ $(document).ready(function(){
     var m = d.getMonth()+01;
     var v = $(this).val().split(' - ');
     if (v[1] < n) {
-      alert('Periode tidak boleh lebih kecil dari bulan sekarangasdad');
+      alert('Periode tidak boleh lebih kecil dari bulan sekarang');
       $(this).val(pad(m)+' - '+n);
     }else if(v[1] > n){
       //oke
