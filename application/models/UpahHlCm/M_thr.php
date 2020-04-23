@@ -10,21 +10,25 @@ class M_thr extends CI_Model {
 	}
 
 	function getPekerjaByLokasi($lokasi){
-		$sql = "select noind,nama,lokasi_kerja,masukkerja::date as masuk
+		$sql = "select noind,nama,tl.lokasi_kerja,masukkerja::date as masuk
 				from hrd_khs.tpribadi
+				left join hrd_khs.tlokasi_kerja tl 
+				on tp.lokasi_kerja = tl.id_
 				where keluar = '0'
 				and left(noind,1) = 'R'
-				and lokasi_kerja = ?
-				order by lokasi_kerja,noind	";
+				and tp.lokasi_kerja = ?
+				order by tp.lokasi_kerja,noind	";
 		return $this->personalia->query($sql,array($lokasi))->result_array();
 	}
 
 	function getPekerja($lokasi){
-		$sql = "select noind,nama,lokasi_kerja,masukkerja::date as masuk
-				from hrd_khs.tpribadi
+		$sql = "select noind,nama,tl.lokasi_kerja,masukkerja::date as masuk
+				from hrd_khs.tpribadi tp 
+				left join hrd_khs.tlokasi_kerja tl 
+				on tp.lokasi_kerja = tl.id_
 				where keluar = '0'
 				and left(noind,1) = 'R'
-				order by lokasi_kerja,noind	";
+				order by tp.lokasi_kerja,noind	";
 		return $this->personalia->query($sql,array($lokasi))->result_array();
 	}
 
