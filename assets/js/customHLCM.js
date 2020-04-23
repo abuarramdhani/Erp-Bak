@@ -1062,9 +1062,6 @@ $(document).ready(function () {
 	            		html += obj[i]['noind'];
 	            		html += "</td>";
 	            		html += "<td>";
-	            		html += obj[i]['noind'];
-	            		html += "</td>";
-	            		html += "<td>";
 	            		html += obj[i]['nama'];
 	            		html += "</td>";
 	            		html += "<td>";
