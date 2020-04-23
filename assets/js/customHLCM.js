@@ -1068,6 +1068,9 @@ $(document).ready(function () {
 	            		html += obj[i]['nama'];
 	            		html += "</td>";
 	            		html += "<td>";
+	            		html += obj[i]['lokasi_kerja'];
+	            		html += "</td>";
+	            		html += "<td>";
 	            		html += obj[i]['masuk'];
 	            		html += "</td>";
 	            		html += "<td>";
@@ -1080,6 +1083,8 @@ $(document).ready(function () {
 	            	}
 	            	$('#tbodyBulanTHR').html(html);
 	            	$('#tblHLCMBulanTHR').DataTable();
+					$('#btnHLCMCetakBulanTHR').attr('data-lokasi',lokasi);
+					$('#btnHLCMCetakBulanTHR').attr('data-tanggal',tanggal);
 					$('#btnHLCMCetakBulanTHR').prop('disabled',false);
 					$('#btnHLCMExportBulanTHR').prop('disabled',false);
 	            }
@@ -1087,7 +1092,7 @@ $(document).ready(function () {
  		};
  	});
 
- 	$('#btnHLCMCetakBulanTHR').on('click',function(){
+ 	/*$('#btnHLCMCetakBulanTHR').on('click',function(){
  		lokasi = $('#slcHCLMLokasiBulanTHR').val();
  		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
  		
@@ -1099,7 +1104,7 @@ $(document).ready(function () {
  			}
  			window.open(baseurl + 'HitungHlcm/THR/PerhitunganBulan/cetak' + isiForm,'_blank');
  		};
- 	});
+ 	});*/
 
  	$('#btnHLCMExportBulanTHR').on('click',function(){
  		lokasi = $('#slcHCLMLokasiBulanTHR').val();

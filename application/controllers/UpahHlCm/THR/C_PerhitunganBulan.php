@@ -315,6 +315,7 @@ class C_PerhitunganBulan extends CI_Controller
 		$tanggal 	= $this->input->post('txtTanggalIdulFitri');
 		$lokasi 	= $this->input->post('txtLokasiKerja');
 		$mengetahui = $this->input->post('txtMengetahui');
+		
 		$dibuat 		= $this->session->user;
 		$data['waktu_dibuat'] = $this->input->post('txtTanggalCetak');
 		$data['tanggal'] = $tanggal;
