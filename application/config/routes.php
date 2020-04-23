@@ -4221,3 +4221,10 @@ $route['PerhitunganBiayaImpor/Laporan/(:any)/(:any)/(:any)'] = 'PerhitunganBiaya
 // ------------------------------------Standarisasi Item Pembelian----------------------------------
 $route['StandarisasiItemPembelian'] = 'StandarisasiItemPembelian/C_Index';
 $route['StandarisasiItemPembelian/Standarisasi/(:any)'] = 'StandarisasiItemPembelian/Standarisasi/C_Standarisasi/$1';
+
+//-------------------------------------------Import Tool Room--------------------------------------------------//
+$route['ImportToolRoom'] 						= 'ImportToolRoom/C_Index';
+
+$route['ImportToolRoom/Import']					= 'ImportToolRoom/C_Import';
+$route['ImportToolRoom/Import/(:any)']			= 'ImportToolRoom/C_Import/$1';
+$route['ImportToolRoom/Import/(:any)/(:any)']	= 'ImportToolRoom/C_Import/$1/$2';
