@@ -11,7 +11,7 @@ class M_thr extends CI_Model {
 
 	function getPekerjaByLokasi($lokasi){
 		$sql = "select noind,nama,tl.lokasi_kerja,masukkerja::date as masuk
-				from hrd_khs.tpribadi
+				from hrd_khs.tpribadi tp
 				left join hrd_khs.tlokasi_kerja tl 
 				on tp.lokasi_kerja = tl.id_
 				where keluar = '0'

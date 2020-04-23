@@ -50,7 +50,6 @@
 											<thead class="bg-primary">
 												<tr>
 													<th>No.</th>
-													<th>Action</th>
 													<th>No. Induk</th>
 													<th>Nama</th>
 													<th>Lokasi Kerja</th>
