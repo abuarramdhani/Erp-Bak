@@ -85,7 +85,7 @@ class M_salestarget extends CI_Model {
 		public function viewTabel($code)
 		{
 			$db = $this->load->database('oracle',true);
-			$sql = "SELECT * FROM KHS_ORDER_TYPE_SM WHERE ORG_CODE = '$code'";
+			$sql = "SELECT * FROM KHS_ORDER_TYPE_SM WHERE ORG_ID = '$code'";
 			$query = $db->query($sql);
 			return $query->result_array();
 		}
