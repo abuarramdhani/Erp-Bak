@@ -248,7 +248,7 @@ function testtt(th) {
 				},
 			success: function(response) {
 				order.val(response+'-').trigger('change');
-				showTable(response)
+				showTable(select)
 			}
 		})
 }
