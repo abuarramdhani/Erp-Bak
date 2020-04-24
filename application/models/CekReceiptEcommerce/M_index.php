@@ -33,7 +33,7 @@ class M_index extends CI_Model {
                                 and acra.CASH_RECEIPT_ID = acrha.CASH_RECEIPT_ID
                                 and acra.CASH_RECEIPT_ID = apsa.CASH_RECEIPT_ID
                                 and acra.RECEIPT_METHOD_ID = arm.RECEIPT_METHOD_ID
-                                and hca.ACCOUNT_NUMBER in (9638, 14307, 13867, 54232)
+                                and hca.ACCOUNT_NUMBER in (9638, 14307, 13867, 14748)
                                 order by acra.RECEIPT_DATE desc");
         return $hasil->result_array();
     }
