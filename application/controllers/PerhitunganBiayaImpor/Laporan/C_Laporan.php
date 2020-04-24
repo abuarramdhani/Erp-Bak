@@ -90,6 +90,8 @@ class C_Laporan extends CI_Controller {
 		$additional = $this->M_laporan->getAdditionalCost($reqId);
 		$data['header'] = $this->M_laporan->getDetailPO($reqId);
 		$data['header2'] = $this->M_laporan->getDetail($reqId);
+		$data['nopo'] = $this->M_laporan->getnopo($reqId);
+		$data['vendor'] = $this->M_laporan->getVendor($reqId);
 		$data['local_transport'] = array();
 		$data['additional_cost'] = array();
 		
