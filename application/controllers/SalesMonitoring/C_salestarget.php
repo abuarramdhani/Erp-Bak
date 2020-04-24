@@ -120,9 +120,9 @@ class C_salestarget extends CI_Controller {
 	public function filterOrganization()
 	{
 		$select = $this->input->post('select');
-		$getCode = $this->M_salestarget->viewOrganization2($select);
-		$code = $getCode[0]['org_code'];
-		$getOrderType = $this->M_salestarget->viewOrderType2($code);
+// 		$getCode = $this->M_salestarget->viewOrganization2($select);
+// 		$code = $getCode[0]['org_code'];
+		$getOrderType = $this->M_salestarget->viewOrderType3($select);
 		echo json_encode($getOrderType);
 	}
 

@@ -145,6 +145,32 @@ class M_salestarget extends CI_Model {
 			$query = $db->query($sql);
 			return $query->result_array();
 		}
+		
+		public function viewOrderType3($code)
+		{
+			$db = $this->load->database('oracle',true);
+			$sql = "SELECT * 
+			FROM 
+			oe_transaction_types_tl ottt
+			,oe_transaction_types_all otta
+			WHERE
+			otta.TRANSACTION_TYPE_ID = ottt.TRANSACTION_TYPE_ID
+			and otta.ORG_ID = $code                        
+			and (ottt.name LIKE '%SAP%'                            
+			OR ottt.name LIKE '%boshi%'                            
+			OR ottt.name LIKE '%HDE%'                            
+			OR ottt.name LIKE '%VDE%'                            
+			OR ottt.name LIKE '%Gasket%'                            
+			OR ottt.name LIKE '%Bando%'                            
+			OR ottt.name LIKE '%Roll%'                            
+			OR ottt.name LIKE '%Bearing%'    
+			OR ottt.name LIKE '%SKF%'                    
+			) 
+			AND ottt.name LIKE '%DN'                                               
+			ORDER BY ottt.name";
+			$query = $db->query($sql);
+			return $query->result_array();
+		}
 
 		public function viewProvince()
 		{
