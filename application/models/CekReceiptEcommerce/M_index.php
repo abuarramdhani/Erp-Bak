@@ -8,7 +8,7 @@ class M_index extends CI_Model {
 
     public function getData()
     {
-        $db = $this->load->database('oracle_dev', true);
+        $db = $this->load->database('oracle', true);
         $hasil = $db->query("select
                                 hca.ACCOUNT_NUMBER CUSTOMER_NUMBER
                                 ,hp.PARTY_NAME NAMA_CUSTOMER
