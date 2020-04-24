@@ -21,7 +21,7 @@
                             <tr>
                                 <th>Eksportir</th>
                                 <th>&nbsp;:&nbsp;</th>
-                                <td><?= $header[0]['VENDOR_NAME'];?><input type="hidden" class="form-control" name="vendorPBI" style="width:200px;" value="<?= $header[0]['VENDOR_NAME'];?>"></td>
+                                <td><?= $vendor[0]['VENDOR_NAME'];?><input type="hidden" class="form-control" name="vendorPBI" style="width:200px;" value="<?= $vendor[0]['VENDOR_NAME'];?>"></td>
                             </tr>
                             <tr>
                                 <th>No. Packing List</th>
@@ -36,7 +36,7 @@
                             <tr>
                                 <th>No. PO</th>
                                 <th>&nbsp;:&nbsp;</th>
-                                <td><input type="text" class="form-control" name="noPOPBI" style="width:200px;" value="<?= $header[0]['NO_PO'];?>"></td>
+                                <td><input type="text" class="form-control" name="noPOPBI" style="width:200px;" value="<?= $nopo[0]['NO_PO'];?>"></td>
                             </tr>
                             <tr>
                                 <th>No. Interorg</th>

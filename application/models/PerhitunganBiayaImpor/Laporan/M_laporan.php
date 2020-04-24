@@ -97,4 +97,37 @@ class M_laporan extends CI_Model
         $oracle->delete('KHS_BIAYA_IMPOR_PO');
     }
 
+    public function getnopo($request_id)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = $oracle->query("SELECT
+        rtrim (xmlagg (xmlelement (e, to_char(NO_PO ) || ',')).extract ('//text()'), ',') NO_PO
+        from      
+        (select distinct 
+        no_po 
+        from 
+        khs_biaya_impor_po
+        where
+        REQUEST_ID = $request_id
+        )");
+
+        return $query->result_array();
+    }
+    public function getVendor($request_id)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = $oracle->query("SELECT
+        rtrim (xmlagg (xmlelement (e, to_char(vendor_name ) || ' | ')).extract ('//text()'), ',') vendor_name
+        from      
+        (select distinct 
+        vendor_name 
+        from 
+        khs_biaya_impor_po
+        where
+        REQUEST_ID = $request_id
+        )");
+
+        return $query->result_array();
+    }
+
 }
