@@ -882,15 +882,36 @@ function upnostttpenyerahan(event, th) {
         var tambah = jml + 1;
         $('#tbserah tbody tr[data-row="'+valno+'"] input[name="jmlscan[]"]').val(tambah);
         if (tambah > qty) {
-            $.toaster('ERROR', 'gaboleh woy', 'danger');
+            $.toaster('ERROR', 'Melebihi jumlah coly', 'danger');
             $('#tbserah tbody td[class="'+valno+'"]').addClass('bg-success');
             $('#tbserah tbody tr[data-row="'+valno+'"] input[name="jmlscan[]"]').val(qty);
         }else if (tambah == qty) {
             $('#tbserah tbody td[class="'+valno+'"]').addClass('bg-success');
         }
         $('#noscan').val('');
-        console.log('disini senang disana senang');
+        // console.log('disini senang disana senang');
     }else{
-        console.log('hahahaha');
+        // console.log('hahahaha');
     }
 }
+
+//---------------------------------------------ARSIP---------------------------------------------------------------------
+
+function editColy(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nospb'+no).val();
+    
+    var request = $.ajax ({
+        url : baseurl + "KapasitasGdSparepart/Arsip/editColy",
+        data: { jenis : jenis, no_spb : no_spb, no : no},
+        type : "POST",
+        dataType: "html",
+        });
+
+        request.done(function(result){
+            $('#datacoly2').html(result);
+            $('#editcoly').modal('show'); 
+            
+        })
+}
+

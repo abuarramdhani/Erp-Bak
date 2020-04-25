@@ -14,7 +14,7 @@
         </div>
         <!-- <div class="col-md-12"> -->
         <div class="col-md-6">
-            <label class="text-right">DOSP / SPB masuk : <?= $val['jml_spb'] ?> lembar</label>
+            <label class="text-right">DOSP / SPB masuk : <?= $val['jml_spb'] ?> lembar (<?= $val['dopcs']?>)</label>
         </div>
         <div class="col-md-6">
             <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb2(this, <?= $num?>)">Rincian</button></td>
@@ -335,6 +335,36 @@
                     <tr>
                         <th style="padding-left:15px">Penerimaan menyelesaikan</th>
                         <th>: <?= $val['jml_gd'] ?> lembar</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">Jumlah Colly</th>
+                        <th>: <?= $val['jml_colly']?></th>
+                    </tr>
+                    <tr>
+                        <th colspan="2" style="padding-left:15px">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover text-center" style="width: 100%">
+                                <thead class="bg-info">
+                                    <tr>
+                                        <th>Kardus Kecil</th>
+                                        <th>Kardus Sedang</th>
+                                        <th>Kardus Panjang</th>
+                                        <th>Karung</th>
+                                        <th>Peti</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><?= $val['dus_kecil']?></td>
+                                        <td><?= $val['dus_sdg']?></td>
+                                        <td><?= $val['dus_pjg']?></td>
+                                        <td><?= $val['karung']?></td>
+                                        <td><?= $val['peti']?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </th>
                     </tr>
                 </tbody>
             </table>
