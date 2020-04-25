@@ -1965,6 +1965,9 @@ $route['MasterPekerja/Surat/SuratResign/(:any)'] 				= 'MasterPekerja/Surat/Resi
 $route['MasterPekerja/Surat/SuratResign/(:any)/(:any)'] 		= 'MasterPekerja/Surat/Resign/C_Resign/$1/$2';
 $route['MasterPekerja/Surat/SuratResign/(:any)/(:any)/(:any)'] 	= 'MasterPekerja/Surat/Resign/C_Resign/$1/$2/$3';
 
+$route['MasterPekerja/Surat/SuratTugas'] = 'MasterPekerja/Surat/Tugas/C_Tugas';
+$route['MasterPekerja/Surat/SuratTugas/(:any)'] = 'MasterPekerja/Surat/Tugas/C_Tugas/$1';
+$route['MasterPekerja/Surat/SuratTugas/(:any)/(:any)'] = 'MasterPekerja/Surat/Tugas/C_Tugas/$1/$2';
 
 $route['MasterPekerja/upload-photo'] 	= 'MasterPekerja/Pekerja/UploadPhoto/C_Upoto';
 $route['MasterPekerja/upload-photo/(:any)'] 	= 'MasterPekerja/Pekerja/UploadPhoto/C_Upoto/$1';

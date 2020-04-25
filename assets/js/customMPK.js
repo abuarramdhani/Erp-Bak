@@ -3325,3 +3325,130 @@ window.addEventListener('load', function () {
         $('#PD_Cari').trigger('click');
     }
 });
+
+// Surat Tugas Start
+$(document).ready(function(){
+  $('#tblMPSuratTugasIndex').DataTable();
+  $('#txaMPSuratTugasRedactor').redactor({
+    buttonsHide : ['image']
+  });
+  $('#txtMPSuratTugasTanggal').datepicker({
+    "autoclose": true,
+    "todayHiglight": true,
+    "format": 'yyyy-mm-dd'
+  });
+  $('.slcMPSuratTugasPekerja').select2({
+      searching: true,
+      minimumInputLength: 3,
+      placeholder: "No. Induk / Nama Pekerja",
+      allowClear: false,
+      ajax: {
+          url: baseurl + 'MasterPekerja/Surat/SuratTugas/Pekerja',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                  })
+              }
+          }
+      }
+  });
+
+  $('#slcMPSuratTugasPekerja').on('change',function(){
+    noind = $(this).val();
+    $.ajax({
+      data  : {noind: noind},
+      type  : 'GET',
+      url   : baseurl + 'MasterPekerja/Surat/SuratTugas/Detail',
+      error: function(xhr,status,error){
+        console.log(xhr);
+        console.log(status);
+        console.log(error);
+        swal.fire({
+            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+            html: xhr['responseText'],
+            type: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d63031',
+        })
+      },
+      success: function(result){
+        obj = JSON.parse(result);
+        $('#txaMPSuratTugasRedactor').redactor('set','');
+        $('#txtMPSuratTugasNomor').val(obj['nomor_surat']);
+        $('#txtMPSuratTugasNomor').prop('disabled',false);
+        $('#slcMPSuratTugasApprover').prop('disabled',false);
+        $('#txtMPSuratTugasTanggal').prop('disabled',false);
+      }
+    })
+  })
+
+  $('#txtMPSuratTugasNomor').on('change',function(){
+    unlockPreview();
+  })
+
+  $('#slcMPSuratTugasApprover').on('change',function(){
+    unlockPreview();
+  })
+
+  $('#txtMPSuratTugasTanggal').on('change',function(){
+    unlockPreview();
+  })
+
+  $('#btnMPSuratTugasPreview').on('click',function(){
+    noind = $('#slcMPSuratTugasPekerja').val();
+    nomorSurat = $('#txtMPSuratTugasNomor').val();
+    approver = $('#slcMPSuratTugasApprover').val();
+    tanggal = $('#txtMPSuratTugasTanggal').val();
+    $.ajax({
+      data  : {noind: noind,nomor: nomorSurat, approver: approver, tanggal: tanggal},
+      type  : 'GET',
+      url   : baseurl + 'MasterPekerja/Surat/SuratTugas/Preview',
+      error: function(xhr,status,error){
+        console.log(xhr);
+        console.log(status);
+        console.log(error);
+        swal.fire({
+            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+            html: xhr['responseText'],
+            type: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d63031',
+        })
+      },
+      success: function(result){
+        obj = JSON.parse(result);
+        $('#txaMPSuratTugasRedactor').redactor('set',obj['surat']);
+        $('#txtMPSuratTugasSurat').val(obj['surat']);
+        $('#btnMPSuratTugasSubmit').prop('disabled',false);
+      }
+    })
+  })
+});
+
+function unlockPreview(){
+  nomorSurat = $('#txtMPSuratTugasNomor').val();
+  approver = $('#slcMPSuratTugasApprover').val();
+  tanggal = $('#txtMPSuratTugasTanggal').val();
+
+  if (nomorSurat && approver && tanggal) {
+    $('#btnMPSuratTugasPreview').prop('disabled',false);
+    $('#txtMPSuratTugasSurat').val('');
+    $('#txaMPSuratTugasRedactor').redactor('set','');
+    $('#btnMPSuratTugasSubmit').prop('disabled',true);
+  }else{
+    $('#btnMPSuratTugasPreview').prop('disabled',true);
+    $('#txaMPSuratTugasRedactor').redactor('set','');
+    $('#txtMPSuratTugasSurat').val('');
+    $('#btnMPSuratTugasSubmit').prop('disabled',true);
+  }
+}
+// Surat Tugas End 
