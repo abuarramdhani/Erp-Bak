@@ -23,6 +23,16 @@ class M_penguranganpuasa extends CI_Model
 		return $result->result_array();
 	}
 
+	public function getPekerjaKHSAll(){
+		$sql = "select tp.noind,tp.nama,tp.kodesie, ts.seksi
+				from hrd_khs.tpribadi tp
+				inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
+				where keluar = '0' 
+				order by noind";
+		$result = $this->personalia->query($sql);
+		return $result->result_array();
+	}
+
 	public function getPuasaPekerja($noind,$tgl1,$tgl2){
 		$sql = "select cast(fd_tanggal as date) tanggal,
 						fs_noind noind,
@@ -54,6 +64,16 @@ class M_penguranganpuasa extends CI_Model
 		return $result->result_array();
 	}
 
+	public function getPekerjaHKSAllByNoind($noind){
+		$sql = "select tp.noind,tp.nama,tp.kodesie, ts.seksi
+				from hrd_khs.tpribadi tp
+				inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
+				where keluar = '0' 
+				and noind = '$noind'";
+		$result = $this->personalia->query($sql);
+		return $result->result_array();
+	}
+
 	public function updatePuasaByTanggalNoind($tgl,$noind,$status){
 		$sql = "update \"Catering\".tpuasa set fb_status = '$status' where fd_tanggal between '".$tgl['0']."' and '".$tgl['1']."' and fs_noind = '$noind'";
 		$this->personalia->query($sql);
@@ -63,5 +83,6 @@ class M_penguranganpuasa extends CI_Model
 		$sql = "delete from \"Catering\".tpuasa where fd_tanggal between '".$tgl['0']."' and '".$tgl['1']."' and fs_noind = '$noind'";
 		$this->personalia->query($sql);
 	}
+
 }
 ?>
