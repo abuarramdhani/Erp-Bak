@@ -28,8 +28,8 @@
 				    	trim(ts.seksi) as seksi,
 				    	jabatan,
 				    	concat(trim(alamat),', ',trim(desa),', ',trim(kec),', ',trim(kab),', ',trim(prop),', ',trim(kodepos)) as alamat, 
-				    	case when lokasi_kerja in ('01','03','04') then 'Jl. Magelang 144 Yogyakarta' 
-				    	when lokasi_kerja = '02' then 'Tuksono, Sentolo, Kulon Progo' 
+				    	case when lokasi_kerja in ('01','03','04') then '&nbsp;Jl.<span style=\"color: white\">_</span>Magelang 144 Yogyakarta' 
+				    	when lokasi_kerja = '02' then '&nbsp;Tuksono, Sentolo, Kulon Progo' 
 				    	else 'tidak diketahui' end as lokasi_kerja_text
 					from hrd_khs.tpribadi tp 
 					left join hrd_khs.tseksi ts 
