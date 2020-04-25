@@ -67,7 +67,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form method="post" target="_blank" autocomplete="off" action="<?php echo base_url('KapasitasGdSparepart/Monitoring/exportSPB')?>">
+                                <form method="post" autocomplete="off" action="<?php echo base_url('KapasitasGdSparepart/Monitoring/exportSPB')?>">
                                 <div class="panel-body" id="tb_MonSPB">
                                     <div class="col-md-12">
                                         <div class="col-md-12">

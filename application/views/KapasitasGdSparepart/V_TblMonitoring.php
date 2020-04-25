@@ -14,7 +14,7 @@
         </div>
         <!-- <div class="col-md-12"> -->
         <div class="col-md-6">
-            <label class="text-right">DOSP / SPB masuk : <?= $val['jml_spb'] ?> lembar (<?= $val['dopcs']?>)</label>
+            <label class="text-right">DOSP / SPB masuk : <?= $val['jml_spb'] ?> lembar (<?= $val['dopcs']?> pcs)</label>
         </div>
         <div class="col-md-6">
             <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb2(this, <?= $num?>)">Rincian</button></td>
