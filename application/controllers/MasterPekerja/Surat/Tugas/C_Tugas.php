@@ -137,7 +137,7 @@ class C_Tugas extends CI_Controller
 		$surat_text = str_replace("tugas_lokasi_kerja" , $pekerja[0]['lokasi_kerja_text'], $surat_text);
 		$surat_text = str_replace("tugas_tanggal_dibuat" , date('d F Y',strtotime($tanggal)), $surat_text);
 		$surat_text = str_replace("tugas_approver_nama" , $appr[0]['nama'], $surat_text);
-		$surat_text = str_replace("tugas_approver_jabatan" , $appr[0]['jabatan'], $surat_text);
+		$surat_text =str_replace("tugas_approver_jabatan" ,  ucwords(strtolower($appr[0]['jabatan'])), $surat_text);
 
 
 		$data = array(
@@ -154,7 +154,26 @@ class C_Tugas extends CI_Controller
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_encoded);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$id = $plaintext_string;
-		echo $id;
+
+		$data['data'] = $this->M_tugas->getSuratTugasById($id);
+		$data['id_encoded'] = $id_encoded;
+
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Surat Tugas';
+		$data['Menu'] 			= 	'Surat';
+		$data['SubMenuOne'] 	= 	'Surat Tugas';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPekerja/Surat/Tugas/V_ubah',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function Hapus($id_encoded){
@@ -175,7 +194,7 @@ class C_Tugas extends CI_Controller
 		$data['data'] = $this->M_tugas->getSuratTugasById($id);
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8', 'A4', 10, "timesnewroman", 10, 10, 50, 10, 10, 5);
+		$pdf = new mPDF('utf-8', 'A4', 10, "timesnewroman", 20, 20, 50, 20, 20, 5);
 		$filename = 'Surat Tugas Pekerja'.$value.'.pdf';
 		// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_pcetak', $data);
 		$html = $this->load->view('MasterPekerja/Surat/Tugas/V_cetak', $data, true);

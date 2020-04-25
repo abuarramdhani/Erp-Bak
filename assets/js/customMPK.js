@@ -3432,6 +3432,11 @@ $(document).ready(function(){
       }
     })
   })
+
+  $('#txaMPSuratTugasRedactor').on('change',function(){
+    isi_surat = $('#txaMPSuratTugasRedactor').val();
+    $('#txtMPSuratTugasSurat').val(isi_surat);
+  })
 });
 
 function unlockPreview(){
