@@ -27,7 +27,7 @@
 				    	nik,
 				    	trim(ts.seksi) as seksi,
 				    	jabatan,
-				    	concat(alamat,', ',desa,', ',kec,', ',kab,', ',prop,', ',kodepos) as alamat, 
+				    	concat(trim(alamat),', ',trim(desa),', ',trim(kec),', ',trim(kab),', ',trim(prop),', ',trim(kodepos)) as alamat, 
 				    	case when lokasi_kerja in ('01','03','04') then 'Jl. Magelang 144 Yogyakarta' 
 				    	when lokasi_kerja = '02' then 'Tuksono, Sentolo, Kulon Progo' 
 				    	else 'tidak diketahui' end as lokasi_kerja_text
@@ -65,7 +65,7 @@
 	    }
 
 	    public function getSuratTugasById($id){
-	    	$sql = "select isi_surat 
+	    	$sql = "select * 
 			    	from \"Surat\".tsurat_tugas
 			    	where surat_tugas_id = ? ";
 	    	return $this->personalia->query($sql,array($id))->result_array();
