@@ -72,6 +72,8 @@
                                                     <th>PIC Packing</th>
                                                     <th>Keterangan</th>
                                                     <th>Tanggal Cancel</th>
+                                                    <th>Jumlah Coly</th>
+                                                    <th>Edit Coly</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -84,10 +86,10 @@
                                                     ?>
                                                     <tr id="baris<?= $no?>">
                                                         <td class="<?= $td?>" ><?= $no; ?></td>
-                                                        <td class="<?= $td?>"><?= $val['TGL_DIBUAT']?></td>
+                                                        <td class="<?= $td?>"><?= $val['MTRL']?></td>
                                                         <td class="<?= $td?>"><?= $val['JAM_INPUT']?></td>
-                                                        <td class="<?= $td?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><?= $val['NO_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nospb<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                         <td class="<?= $td?>"><?= $val['JUMLAH_ITEM']?></td>
                                                         <td class="<?= $td?>"><?= $val['JUMLAH_PCS']?></td>
                                                         <td class="<?= $td?>"><?= $val['MULAI_PELAYANAN'] ?></td>
@@ -104,6 +106,8 @@
                                                         <td class="<?= $td?>"><?= $val['PIC_PACKING'] ?></td>
                                                         <td class="<?= $td?>"><?= $val['URGENT'] ?>  <?= $val['BON'] ?></td>
                                                         <td class="<?= $td?>"><?= $val['CANCEL'] ?></td>
+                                                        <td class="<?= $td?>"><?= $val['COLY'] ?></td>
+                                                        <td class="<?= $td?>"><button type="button" class="btn btn-md bg-teal" onclick="editColy(<?= $no?>)">Edit Coly</button></td>
                                                     </tr>
                                                 <?php $no++; $i++;  }?>
                                             </tbody>
@@ -119,3 +123,25 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="editcoly" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 style="text-align:center">Detail Coly</h3>
+            <!-- <div id="datahidden"></div> -->
+			</div>
+			<div class="modal-body">
+            <div id="datacoly2"></div>
+            <div class="panel-body">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-danger">SAVE</button>
+                </div>
+            </div>
+		    </div>
+            <div class="modal-footer">
+		</div>
+		</div>
+	</div>
+</div>

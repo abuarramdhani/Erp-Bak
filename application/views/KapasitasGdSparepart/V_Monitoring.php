@@ -74,7 +74,7 @@
                                             <label class="text-right">Tanggal : <?php echo date("d F Y") ?></label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="text-right">DOSP / SPB masuk hari ini : <?= $jml_spb ?> lembar</label>
+                                            <label class="text-right">DOSP / SPB masuk hari ini : <?= $jml_spb ?> lembar (<?= $dopcs?> pcs)</label>
                                         </div>
                                         <div class="col-md-6">
                                             <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb(this)">Rincian</button></td>
@@ -375,6 +375,32 @@
                                                     <tr>
                                                        <th style="padding-left:15px">Penerimaan menyelesaikan</th>
                                                        <th>: <?= $jml_gd ?> lembar</th>
+                                                    </tr>
+                                                    <tr>
+                                                       <th style="padding-left:15px">Jumlah Colly</th>
+                                                       <th>: <?= $jml_colly?></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th style="padding-left:15px" colspan="2">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered table-hover text-center" style="width:100%;">
+                                                                    <thead class="bg-info">
+                                                                        <th>Kardus Kecil</th>
+                                                                        <th>Kardus Sedang</th>
+                                                                        <th>Kardus Panjang</th>
+                                                                        <th>Karung</th>
+                                                                        <th>Peti</th>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <td><?= $dus_kecil?></td>
+                                                                        <td><?= $dus_sdg?></td>
+                                                                        <td><?= $dus_pjg?></td>
+                                                                        <td><?= $karung?></td>
+                                                                        <td><?= $peti?></td>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 </tbody>
                                             </table>

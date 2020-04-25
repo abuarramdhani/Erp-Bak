@@ -46,6 +46,12 @@ class C_Monitoring extends CI_Controller
 		$dataMon = $this->M_monitoring->getDataSPB($query1);
 		$data['dospb'] = $dataMon;
 		$data['jml_spb'] = count($dataMon);
+		$pcs = 0;
+		for ($p=0; $p < count($dataMon) ; $p++) { 
+			$pcs += $dataMon[$p]['JUMLAH_PCS'];
+		}
+		$data['dopcs'] = $pcs;
+		// echo "<pre>";print_r($pcs);exit();
 
 		$query2 = "where TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and selesai_pelayanan is not null and (bon != 'PENDING' or bon is null)";
 		$pelayanan 	= $this->M_monitoring->getDataSPB($query2);
@@ -162,6 +168,11 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['tanggal'] = $tgl[$a];
 			$hasil[$a]['dosp'] = $dataMon;
 			$hasil[$a]['jml_spb'] = count($dataMon);
+			$pcs = 0;
+			for ($p=0; $p < count($dataMon) ; $p++) { 
+				$pcs += $dataMon[$p]['JUMLAH_PCS'];
+			}
+			$hasil[$a]['dopcs'] = $pcs;
 			
 			$query2 = "where TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and selesai_pelayanan is not null and (bon != 'PENDING' or bon is null)";
 			$pelayanan = $this->M_monitoring->getDataSPB($query2);
