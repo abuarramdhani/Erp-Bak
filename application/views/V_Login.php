@@ -98,8 +98,8 @@
                 <?php
                 }else{
                 ?>
-                <div class="alert alert-info text-left">
-                   Please enter your username and password to login
+                <div class="alert alert-info text-left center">
+                   Silahkan masukan username dan password Anda untuk masuk ke Sistem
                 </div>
                 <?php
                 }
@@ -118,15 +118,51 @@
                         </div>
                         <div class="clearfix"></div>
 
-                        
-                        <p class="center col-md-5 col-sm-12 is-mobile-full">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                        <p class="center">
+                            <div class="row">
+                            <div class="col-md-4"><a class="btn btn-success" data-toggle="modal" data-target="#myRequest">Permintaan Akses</a></div>
+                            <div class="col-md-4"> <a class="btn btn-default" data-toggle="modal" data-target="#myModal">Lupa Password ?</a></div>
+                            <div class="col-md-4"><button type="submit" class="btn btn-primary">Masuk</button></div>
+                            </div>
                         </p>
                     </fieldset>
                 </form>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel" align="center">Anda Lupa Password ? </h4> </div>
+                        <div class="modal-body"> Jika Anda lupa password, silahkan membuat ticket / order permintaan melalui <a href='http://ictsupport.quick.com/ticket/upload/'>ICT Support Center (Klik Disini)</a> atau akses url berikut : http://ictsupport.quick.com/ticket/upload/.
+                        <br>atau menghubungi ICT di<br>
+                        VOIP Internal Ext : 12300 ekstensi 3
+                        <br>atau<br> 
+                        melalui Whatsapp ke 08112545922.
+                        </div>
+                    <div class="modal-footer"> 
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                    </div> 
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myRequest" tabindex="-1" role="dialog" aria-labelledby="myRequestLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header"> 
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myRequestLabel" align="center">Anda menginginkan Akses ke Sistem ERP?</h4> </div>
+                            <div class="modal-body"> Jika Anda ingin mendapatkan Akses ke Quick ERP System, silahkan membuat ticket / order permintaan melalui <a href='http://ictsupport.quick.com/ticket/upload/'>ICT Support Center (Klik Disini)</a> atau akses url berikut : http://ictsupport.quick.com/ticket/upload/.
+                            </div>
+                        <div class="modal-footer"> 
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                        </div> 
+                </div>
+            </div>
+    </div>
+
     <div class="unsupportedBrowserPlaceholder" style="text-align: center;">
         <h3>Aplikasi Browser Anda tidak memenuhi Spesifikasi Standar Minimum Akses QuickERP.</h3>
         <h3>Silahkan gunakan Aplikasi Browser berikut : </h3> 
