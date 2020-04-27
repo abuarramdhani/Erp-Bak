@@ -35,6 +35,15 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="control-label col-lg-4">Jenis</label>
+												<div class="col-lg-2">
+													<input type="radio" name="rdbJenis" value="1"> Reguler
+												</div>
+												<div class="col-lg-2">
+													<input type="radio" name="rdbJenis" value="2"> SP 3
+												</div>
+											</div>
+											<div class="form-group">
 												<div class="col-lg-6 text-right">
 													<button type="submit" class="btn btn-primary">Proses</button>
 												</div>
