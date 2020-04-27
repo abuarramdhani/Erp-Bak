@@ -188,6 +188,7 @@ class C_MoveOrder extends CI_Controller
 			$locator_to 	  = $this->input->post('locatorto');
 			$subinv_from 	  = $this->input->post('subinvfrom');
 			$locator_from 	  = $this->input->post('locatorfrom');
+			$locator_fromid 	  = $this->input->post('locatorfromid');
 
 			//CHECK QTY VS ATR
 			if ($departement == 'SUBKT') {
@@ -225,7 +226,7 @@ class C_MoveOrder extends CI_Controller
 										'UOM' => $uom[$key],
 										'IP_ADDRESS' => $ip_address,
 										'JOB_ID' => $job_id[$key]);
-						$data2[$subinv_from[$key]] = $locator_from[$key];
+						$data2[$subinv_from[$key]] = $locator_fromid[$key];
 
 					}
 					// echo "<pre>";
