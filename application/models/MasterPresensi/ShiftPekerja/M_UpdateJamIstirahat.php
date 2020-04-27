@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class M_UpdateJamIstirahat extends CI_Model {
+class M_updatejamistirahat extends CI_Model {
 	function __construct() 
 	{ 
 		parent:: __construct();

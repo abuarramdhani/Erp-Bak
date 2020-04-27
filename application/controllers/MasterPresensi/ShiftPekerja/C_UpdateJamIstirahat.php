@@ -14,7 +14,7 @@ class C_UpdateJamIstirahat extends CI_Controller {
         $this->load->model('M_Index');
         $this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('MasterPresensi/ShiftPekerja/M_UpdateJamIstirahat');
+		$this->load->model('MasterPresensi/ShiftPekerja/M_updatejamistirahat');
 
 
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -51,12 +51,9 @@ class C_UpdateJamIstirahat extends CI_Controller {
 
 
         
-    	$data['shift'] = $this->M_UpdateJamIstirahat->shift();
+    	$data['shift'] = $this->M_updatejamistirahat->shift();
 
-     //    $tanggal = $this->input->post('txtTanggalShift');
-     //    $shiftpekerja = $this->input->post('txtShift');
-    
-     //    $data['data'] = $this->M_UpdateJamIstirahat->tampil($tanggal,$shiftpekerja);
+
 
     	$this->load->view('V_Header',$data);
     	$this->load->view('V_Sidemenu',$data);
@@ -83,9 +80,9 @@ class C_UpdateJamIstirahat extends CI_Controller {
 
         $data['tanggal'] = $this->input->post('txtTanggalShift');
         $data['shiftpekerja'] = $this->input->post('txtShift');
-        $data['shift'] = $this->M_UpdateJamIstirahat->shift();
+        $data['shift'] = $this->M_updatejamistirahat->shift();
 
-        $data['data'] = $this->M_UpdateJamIstirahat->tampil($data['tanggal'],$data['shiftpekerja']);
+        $data['data'] = $this->M_updatejamistirahat->tampil($data['tanggal'],$data['shiftpekerja']);
         // echo "<pre>";
         // print_r($data['data']);
         // die;
@@ -114,14 +111,14 @@ class C_UpdateJamIstirahat extends CI_Controller {
         $tanggal = $this->input->post('tanggalTampil');
         $tanggal_format = date('Y-m-d', strtotime($tanggal));
         $shift = $this->input->post('shiftTampil');
-        $cari_shift = $this->M_UpdateJamIstirahat->CariKdShift($shift);
+        $cari_shift = $this->M_updatejamistirahat->CariKdShift($shift);
         $ist_mulai = date('H:i:s', strtotime($this->input->post('txtIstirahatMulai')));
         $ist_selesai = date('H:i:s', strtotime($this->input->post('txtIstirahatSelesai')));
-        $data['update'] = $this->M_UpdateJamIstirahat->update($tanggal_format,$cari_shift,$ist_mulai,$ist_selesai);
-        $data['data'] = $this->M_UpdateJamIstirahat->tampil($tanggal_format,$shift);
+        $data['update'] = $this->M_updatejamistirahat->update($tanggal_format,$cari_shift,$ist_mulai,$ist_selesai);
+        $data['data'] = $this->M_updatejamistirahat->tampil($tanggal_format,$shift);
         $data['tanggal'] = $tanggal;
         $data['shiftpekerja'] = $shift;
-        $data['shift'] = $this->M_UpdateJamIstirahat->shift();
+        $data['shift'] = $this->M_updatejamistirahat->shift();
  
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
