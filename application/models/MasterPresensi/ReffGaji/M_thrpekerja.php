@@ -24,7 +24,7 @@ class M_thrpekerja extends CI_Model
 		return $this->personalia->query($sql,array($key,$key))->result_array();
 	}
 
-	function getPekerjaAll(){
+	function getPekerjaSP3($tgl){
 		$sql = "select 
 					tp.noind,
 					trim(nama) as nama, 
@@ -41,8 +41,43 @@ class M_thrpekerja extends CI_Model
 				on tp.kd_jabatan = ot.kd_jabatan
 				where left(tp.noind,1) in ('A', 'B', 'H', 'J', 'K', 'P', 'T')
 				and tp.keluar = '0'
+				and tp.akhkontrak >= ?
+				and noind in (
+					select noind
+					from \"Surat\".v_surat_tsp_rekap
+					where sp_ke = '3'
+					and ? between tanggal_awal_berlaku and tanggal_akhir_berlaku
+				)
 				order by tp.noind	";
-		return $this->personalia->query($sql)->result_array();
+		return $this->personalia->query($sql,array($tgl,$tgl))->result_array();
+	}
+
+	function getPekerjaReguler($tgl){
+		$sql = "select 
+					tp.noind,
+					trim(nama) as nama, 
+					ts.seksi,
+					tp.masukkerja::date,
+					tp.diangkat::date,
+					tp.kode_status_kerja,
+					ot.jabatan,
+					tp.kd_jabatan
+				from hrd_khs.tpribadi tp 
+				left join hrd_khs.tseksi ts 
+				on tp.kodesie = ts.kodesie
+				left join hrd_khs.torganisasi ot 
+				on tp.kd_jabatan = ot.kd_jabatan
+				where left(tp.noind,1) in ('A', 'B', 'H', 'J', 'K', 'P', 'T')
+				and tp.keluar = '0'
+				and tp.akhkontrak >= ?
+				and noind not in (
+					select noind
+					from \"Surat\".v_surat_tsp_rekap
+					where sp_ke = '3'
+					and ? between tanggal_awal_berlaku and tanggal_akhir_berlaku
+				)
+				order by tp.noind";
+		return $this->personalia->query($sql,array($tgl,$tgl))->result_array();
 	}
 
 	function getTHRAll(){

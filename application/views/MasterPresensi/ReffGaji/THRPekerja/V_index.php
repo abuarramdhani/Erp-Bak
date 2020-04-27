@@ -25,6 +25,7 @@
 												<tr>
 													<th>No.</th>
 													<th>Tanggal Idul Fitri</th>
+													<th>Jenis</th>
 													<th>Mengetahui</th>
 													<th>Dibuat</th>
 													<th>Tanggal Dibuat</th>
@@ -40,6 +41,7 @@
 													<tr>
 														<td><?php echo $nomor; ?></td>
 														<td><?php echo $dt['tgl_idul_fitri']; ?></td>
+														<td><?php echo $dt['jenis'] == 1 ? 'Reguler' : ($dt['jenis'] == 2 ? 'SP 3' : 'Tidak Diketahui'); ?></td>
 														<td><?php echo $dt['mengetahui'].' - '.$dt['mengetahui_nama']; ?></td>
 														<td><?php echo $dt['created_by'].' - '.$dt['created_by_nama']; ?></td>
 														<td><?php echo date('d M Y',strtotime($dt['tgl_dibuat'])); ?></td>
