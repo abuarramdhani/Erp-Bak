@@ -57,6 +57,10 @@ class C_Index extends CI_Controller {
 				$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
 			}
 
+			$tema=$this->M_Index->getTheme();
+
+			$this->session->set_userdata('tema',$tema[0]->theme);
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('V_Index',$data);

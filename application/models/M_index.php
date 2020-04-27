@@ -45,6 +45,14 @@ class M_index extends CI_Model {
 		  return $query->result();
 		}
 
+		function getTheme()
+		{
+          $sql = "	select 	theme
+          	 		from 	sys.sys_theme ";
+          $query = $this->db->query($sql);
+		  return $query->result();
+		}
+
 		public function table_columns($table_schema, $table_name)
 		{
 			$columns_not_included 	=	array

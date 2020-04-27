@@ -68,7 +68,7 @@
     <script src="<?= base_url('assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js') ?>"></script>
     <script src="<?= base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js') ?>" type="text/javascript"></script>
 </head>
-<body class="skin-blue-light sidebar-mini fixed">
+<body class="<?php echo $this->session->tema;?>">
 	<div id="loadingAjax"></div>
     <div class="wrapper">
 		<input type="hidden" value="<?= base_url(); ?>" name="txtBaseUrl" id="txtBaseUrl"/>
