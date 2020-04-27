@@ -187,6 +187,16 @@ class C_THRPekerja extends CI_Controller
 					}else{
 						$tahun = $tahun1 - $year_b;
 					}
+
+					if ($hari == 30) {
+						$hari = 0;
+						$bulan += 1;
+					}
+
+					if ($bulan == 12) {
+						$bulan = 0;
+						$tahun += 1;
+					}
 				}
 
 				if ($tahun >= 1) {
