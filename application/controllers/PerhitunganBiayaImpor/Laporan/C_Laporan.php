@@ -398,7 +398,8 @@ class C_Laporan extends CI_Controller {
 		$line = $this->M_laporan->getDetailPO($reqid);
 		$bea_masuk = $this->M_laporan->getBeaMasuk($reqid);
 		// end
-
+		// echo '<pre>';
+		// print_r($additional_cost);exit;
 		$row = 15;
 		$no = 0;
 		for ($i=0; $i < count($line); $i++) { $no++;
@@ -492,8 +493,8 @@ class C_Laporan extends CI_Controller {
 		$objset->setCellValue('F'.($row+2), 'in '.$currency);
 		$objset->setCellValue('G'.($row+2), 'in IDR');
 		
-		$rows = $row + 5;
-		$nom =1;
+		$rows = $row + 6;
+		$nom =2;
 		$locTransShip = "";
 		$hargalocTransShip = "";
 		$biayasurv = "";
@@ -505,7 +506,7 @@ class C_Laporan extends CI_Controller {
 				$rows = $rows-1;
 			}elseif ($additional_cost[$j]['DESKRIPSI'] == 'Biaya Survey') {
 				$biayasurv = $additional_cost[$j]['DESKRIPSI'];
-				$rows = $rows-2;
+				$rows = $rows-1;
 			}else {
 				$objset->mergeCells('D'.$rows.':E'.$rows);
 				$objset->mergeCells('G'.$rows.':H'.$rows);
@@ -617,5 +618,3 @@ class C_Laporan extends CI_Controller {
 		echo 1;
 	}
 }
-
-
