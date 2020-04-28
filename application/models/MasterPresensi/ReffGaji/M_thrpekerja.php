@@ -154,6 +154,17 @@ class M_thrpekerja extends CI_Model
 		return $this->personalia->query($sql,array($id_thr))->result_array();
 	}
 
+	function getTHRDetailByIdTHRKode($id_thr,$kode_induk){
+		$sql = "select t1.*,t2.kodesie,t2.lokasi_kerja
+				from \"Presensi\".t_thr_detail t1 
+				left join hrd_khs.tpribadi t2 
+				on t1.noind = t2.noind
+				where t1.id_thr = ?
+				and left(t1.noind,1) = ?
+				order by t1.noind";
+		return $this->personalia->query($sql,array($id_thr,$kode_induk))->result_array();
+	}
+
 	function hapusTHRByID($id){
 		$sql = "update \"Presensi\".t_thr
 				set status = '2'
