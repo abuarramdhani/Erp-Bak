@@ -32,6 +32,8 @@ class C_DPBVendor extends CI_Controller {
         $data['DPBVendorList']  = $this->M_dpb->getDPBVendorList();
 
         $data['judul'] = 'Pengiriman Barang Vendor';
+        // echo '<pre>';
+        // print_r($data['DPBVendorList']);exit;
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -54,31 +56,39 @@ class C_DPBVendor extends CI_Controller {
 		$data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo']  = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBVendorDetail'] = $this->M_dpb->getDPBVendorDetail($data['NO_PR']);
-        // echo '<pre>';
-        // print_r($data['DPBVendorDetail']);exit;
+        echo '<pre>';
+        print_r($data['DPBVendorDetail']);exit;
         $data['UserAccess']      = [   
             'jenis_kendaraan'  => 'readonly',
             'no_kendaraan'     => 'readonly',
             'nama_supir'       => 'readonly',
+            'kontak_supir'     => 'readonly',
             'vendor_ekspedisi' => 'readonly',
-            'lain_lain'        => 'readonly'
+            'estimasi_datang'  => 'readonly',
+            'lain_lain'        => 'readonly',
+            'estdate'          => ''
         ];
-
-        if ($this->session->responsibility_id == '2724') {
+        if ($this->session->responsibility_id == '2743') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => 'readonly',
                     'no_kendaraan'     => '',
                     'nama_supir'       => '',
+                    'kontak_supir'     => '',
                     'vendor_ekspedisi' => '',
-                    'lain_lain'        => ''
+                    'estimasi_datang'  => '',
+                    'lain_lain'        => '',
+                    'estdate'          => 'ADOEstDatang'
             ];
-        }else if ($this->session->responsibility_id == '2709') {
+        }else if ($this->session->responsibility_id == '2730') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',
                     'nama_supir'       => 'readonly',
+                    'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
-                    'lain_lain'        => ''
+                    'estimasi_datang'  => 'readonly',
+                    'lain_lain'        => '',
+                    'estdate'          => ''
             ];
         }
 
@@ -128,21 +138,34 @@ class C_DPBVendor extends CI_Controller {
             redirect('ApprovalDO/ListDPBVendor');
         }
 
+        $estDatang = date("Y-m-d H:i:s",strtotime($this->input->post('estDatang')));
+  /*       $estDatang = "TO_DATE('$estDatang1','yyyy-mm-dd HH24:MI:SS')"; */
+
+        $nopr = $this->input->post('prNumber');
+        $jnsKend = $this->input->post('vehicleCategory');
+        $nokend = $this->input->post('vehicleId');
+        $namasupir = $this->input->post('driverName');
+        $kontaksupir = $this->input->post('driverPhone');
+        $vendorekspedisi = $this->input->post('expVendor');
+        $lain = $this->input->post('additionalInformation');
+
         $data = [
-            'NO_PR'            => $this->input->post('prNumber'),
-            'JENIS_KENDARAAN'  => $this->input->post('vehicleCategory'),
-            'NO_KENDARAAN'     => $this->input->post('vehicleId'),
-            'NAMA_SUPIR'       => $this->input->post('driverName'),
-            'VENDOR_EKSPEDISI' => $this->input->post('driverPhone'),
-            'LAIN'             => $this->input->post('additionalInformation')
+            'NO_PR'            => $nopr,
+            'JENIS_KENDARAAN'  => $jnsKend,
+            'NO_KENDARAAN'     => $nokend,
+            'NAMA_SUPIR'       => $namasupir,
+            'KONTAK_SOPIR'     => $kontaksupir,
+            'VENDOR_EKSPEDISI' => $vendorekspedisi,
+            // 'ESTIMASI_DATANG'  => ,
+            'LAIN'             => $lain,
         ];
 
         if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {
-            $this->M_dpb->insertNewDetail($data);
+            $this->M_dpb->insertNewDetail($data,$estDatang);
         } else {
             $id = $data['NO_PR'];
             unset($data['NO_PR']);
-            $this->M_dpb->updateDetail($id, $data);
+            $this->M_dpb->updateDetail($id, $data,$estDatang);
         }
 
         echo json_encode('Success!');

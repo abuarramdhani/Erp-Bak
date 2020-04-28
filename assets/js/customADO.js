@@ -1,11 +1,17 @@
 $( () => {
 
+    $('.ADOEstDatang').datetimepicker({
+        locale : 'id'
+    });
+
     const dataTableADOList = $('.tblADOList').DataTable({
         columnDefs    : [{
             orderable   : false,
             targets     : 'no-orderable'
         }],
-		scrollY 	  : '350px'
+        scrollY 	  : '350px',
+        scrollX: true,
+        scrollCollapse: true,
     })
 
     dataTableADODetailList = $('.tblADODetailList').DataTable({
@@ -244,7 +250,9 @@ $( () => {
             vehicleCategory       : $('.txtADOVehicleCategory').val(),
             vehicleId             : $('.txtADOVehicleIdentity').val(),
             driverName            : $('.txtADODriverName').val(),
-            driverPhone           : $('.txtADOExpeditionVendor').val(),
+            driverPhone           : $('.txtADODriverContact').val(),
+            expVendor             : $('.txtADOExpeditionVendor').val(),
+            estDatang             : $('.txtADOEstDatang').val(),
             additionalInformation : $('.txtADOAdditionalInformation').val()
         }
         let url      = `${baseurl}ApprovalDO/ListDPBVendor/saveDetail`
@@ -258,7 +266,7 @@ $( () => {
         let rownum = dataTableADODetailList.rows().count() + 1
         dataTableADODetailList.row.add([
             rownum,
-            '<select class="form-control-auto form-control txtADODONumber"></select>',
+            '<select class="form-control-auto form-control txtADODONumber" style="width:200px;"></select>',
             '<input type="text" class="form-control-auto form-control txtADOItemName">',
             '<input type="number" class="form-control-auto form-control txtADOQty">',
             '<input type="text" class="form-control-auto form-control txtADOUOM">',

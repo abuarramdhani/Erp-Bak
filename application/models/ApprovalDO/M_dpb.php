@@ -582,7 +582,14 @@ class M_dpb extends CI_Model
             ->delete('KHS_DPB_KENDARAAN');
     }
 
-    public function insertNewDetail($data)
+    public function insertNewDetail($data, $estDatang)
+    {
+        $this->oracle
+                ->set('ESTIMASI_DATANG',"TO_DATE('$estDatang','yyyy-mm-dd HH24:MI:SS')",false)
+                ->insert('KHS_DPB_KENDARAAN', $data);
+    }
+
+    public function insertNewDetailListPR($data)
     {
         $this->oracle->insert('KHS_DPB_KENDARAAN', $data);
     }
@@ -594,7 +601,15 @@ class M_dpb extends CI_Model
             ->insert('KHS_DPB_KENDARAAN', $data);
     }
 
-    public function updateDetail($id, $data)
+    public function updateDetail($id, $data,$estDatang)
+    {
+        $this->oracle
+            ->where('NO_PR', $id)
+            ->set('ESTIMASI_DATANG',"TO_DATE('$estDatang','yyyy-mm-dd HH24:MI:SS')",false)
+            ->update('KHS_DPB_KENDARAAN', $data);
+    }
+
+    public function updateDetailListPR($id, $data)
     {
         $this->oracle
             ->where('NO_PR', $id)
