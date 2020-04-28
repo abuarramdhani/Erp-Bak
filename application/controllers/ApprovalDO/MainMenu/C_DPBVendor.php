@@ -68,7 +68,7 @@ class C_DPBVendor extends CI_Controller {
             'lain_lain'        => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->responsibility_id == '2743') {
+        if ($this->session->responsibility_id == '2724') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => 'readonly',
                     'no_kendaraan'     => '',
@@ -79,7 +79,7 @@ class C_DPBVendor extends CI_Controller {
                     'lain_lain'        => '',
                     'estdate'          => 'ADOEstDatang'
             ];
-        }else if ($this->session->responsibility_id == '2730') {
+        }else if ($this->session->responsibility_id == '2709') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',
