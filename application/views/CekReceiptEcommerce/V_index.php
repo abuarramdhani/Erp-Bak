@@ -6,6 +6,11 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-body">
+                    <div class="col-lg-12">
+                        <form action="<?php echo base_url('CekReceiptEcommerce/exportExcel')?>" method="POST">
+                        <button class="btn btn-md btn-success pull-right" type="submit"><i class="fa fa-file-excel-o"></i> EXPORT</button>
+                        </form>
+                    </div><br><br>
                     <table class="table table-fit table-bordered table-responsive tblMainMenuCRE" width="100%">
                         <thead>
                             <tr class="bg-primary">
@@ -23,24 +28,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
+                            <?php
                             $no = 0;
                             foreach ($receipt as $key => $rcpt) {
                                 $no++;
-                            ?>
-                            <tr>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $no?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['CUSTOMER_NUMBER']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['NAMA_CUSTOMER']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['RECEIPT_NUMBER']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['RECEIPT_DATE']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['AMOUNT']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['STATUS']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['APPLIED_AMOUNT']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['UNAPPLIED_AMOUNT']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['RECEIPT_METHOD']?></td>
-                                <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['COMMENTS']?></td>
-                            </tr>
+                                ?>
+                                <tr>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $no ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['CUSTOMER_NUMBER'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['NAMA_CUSTOMER'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['RECEIPT_NUMBER'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['RECEIPT_DATE'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['AMOUNT'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['STATUS'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['APPLIED_AMOUNT'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['UNAPPLIED_AMOUNT'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['RECEIPT_METHOD'] ?></td>
+                                    <td class="text-center" style="vertical-align: middle;"><?php echo $rcpt['COMMENTS'] ?></td>
+                                </tr>
                             <?php } ?>
                         </tbody>
                     </table>
@@ -49,7 +54,7 @@
         </div>
     </div>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('.tblMainMenuCRE').DataTable({
                 'scrollX': true
             });

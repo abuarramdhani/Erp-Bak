@@ -4232,3 +4232,4 @@ $route['ImportToolRoom/Import/(:any)/(:any)']	= 'ImportToolRoom/C_Import/$1/$2';
 //-------------------------------------------Cek Receipt E-Commerce--------------------------------------------------//
 $route['CekReceiptEcommerce']			= 'CekReceiptEcommerce/C_index';
 $route['CekReceiptEcommerce/List']		= 'CekReceiptEcommerce/C_index/index';
+$route['CekReceiptEcommerce/exportExcel']    = 'CekReceiptEcommerce/C_index/exportExcel';
