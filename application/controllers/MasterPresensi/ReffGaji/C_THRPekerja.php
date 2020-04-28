@@ -79,12 +79,14 @@ class C_THRPekerja extends CI_Controller
 	public function simpan(){
 		// echo "<pre>";print_r($_POST);exit();
 		$idul_fitri = $this->input->post('txtTHRTanggalIdulFitri');
+		$puasa = $this->input->post('txtTHRTanggalPuasaPertama');
 		$dibuat 	= $this->input->post('txtTHRTanggalDibuat');
 		$mengetahui = $this->input->post('slcTHRMengetahui');
 		$jenis = $this->input->post('rdbJenis');
 
 		$data_thr = array(
 			'tgl_idul_fitri'	=> $idul_fitri,
+			'tgl_puasa_pertama'	=> $puasa,
 			'tgl_dibuat'		=> $dibuat,
 			'mengetahui'		=> $mengetahui,
 			'created_by'		=> $this->session->user,
@@ -94,9 +96,11 @@ class C_THRPekerja extends CI_Controller
 		$id_thr = $this->M_thrpekerja->insertTHR($data_thr);
 
 		if ($jenis == '1') {
-			$pekerja = $this->M_thrpekerja->getPekerjaReguler($idul_fitri);
+			$pekerja = $this->M_thrpekerja->getPekerjaReguler($idul_fitri,$puasa);
 		}elseif ($jenis == '2') {
-			$pekerja = $this->M_thrpekerja->getPekerjaSP3($idul_fitri);
+			$pekerja = $this->M_thrpekerja->getPekerjaSP3($idul_fitri,$puasa);
+		}elseif($jenis == '3'){
+			$pekerja = $this->M_thrpekerja->getPekerjaKeluar($idul_fitri,$puasa);
 		}else{
 			redirect(base_url(''));
 		}

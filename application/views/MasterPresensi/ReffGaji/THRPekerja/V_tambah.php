@@ -23,6 +23,12 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="control-label col-lg-4">Puasa Pertama</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtTHRTanggalPuasaPertama" id="txtTHRTanggalPuasaPertama" class="form-control" placeholder="Tanggal Puasa Pertama" required>
+												</div>
+											</div>
+											<div class="form-group">
 												<label class="control-label col-lg-4">Mengetahui</label>
 												<div class="col-lg-4">
 													<select style="width: 100%" name="slcTHRMengetahui" id="slcTHRMengetahui" required></select>
@@ -41,6 +47,9 @@
 												</div>
 												<div class="col-lg-2">
 													<input type="radio" name="rdbJenis" value="2"> SP 3
+												</div>
+												<div class="col-lg-2">
+													<input type="radio" name="rdbJenis" value="3"> A & B Keluar
 												</div>
 											</div>
 											<div class="form-group">

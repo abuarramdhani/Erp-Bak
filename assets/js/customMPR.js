@@ -674,6 +674,12 @@ $(document).on('ready',function(){
         "format": 'yyyy-mm-dd'
     });
 
+    $('#txtTHRTanggalPuasaPertama').datepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        "format": 'yyyy-mm-dd'
+    });
+
     $('#txtTHRTanggalDibuat').datepicker({
         "autoclose": true,
         "todayHiglight": true,
