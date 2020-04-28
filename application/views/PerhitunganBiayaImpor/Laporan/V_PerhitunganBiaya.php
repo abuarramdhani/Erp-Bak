@@ -197,7 +197,15 @@
                                                 <td align="right"><input type="text" class="form-control txtLocalTransPBI" style="text-align:right;" name="localTransport" value="<?= number_format($local_transport[0]['HARGA'],2); ?>" readonly></td>
                                                 <td><button type="button" class="btn btn-danger btndeleteAddCostPBI" value="<?= $id.'-'.$local_transport[0]['DESKRIPSI']; ?>"><i class="fa fa-trash"></i></button></td>
                                             </tr>
-                                            <?php $total = $local_transport[0]['HARGA']; $no=1;foreach ($additional_cost as $key => $acost) { $no++;   $total += $acost['HARGA'];
+                                            <tr style="background-color:#FCBF02">
+                                                <td>2</td>
+                                                <td><?= $biaya_survey[0]['DESKRIPSI']; ?></td>
+                                                <td></td>
+                                                <!-- <td align="right"><input type="text" class="form-control txtBiayaSurveyPBICurrency" style="text-align:right;" name="biayaSurveyCurrency" value="<?= $biaya_survey[0]['HARGA_USD']; ?>"></td> -->
+                                                <td align="right"><input type="text" class="form-control txtBiayaSurveyPBI" style="text-align:right;" name="biayaSurvey" value="<?= number_format($biaya_survey[0]['HARGA'],2); ?>"></td>
+                                                <td><button type="button" class="btn btn-danger btndeleteAddCostPBI" value="<?= $id.'-'.$biaya_survey[0]['DESKRIPSI']; ?>"><i class="fa fa-trash"></i></button></td>
+                                            </tr>
+                                            <?php $total = $local_transport[0]['HARGA']; $no=2;foreach ($additional_cost as $key => $acost) { $no++;   $total += $acost['HARGA'];
                                             ?>
                                                 <tr>
                                                     <td><?= $no; ?></td>

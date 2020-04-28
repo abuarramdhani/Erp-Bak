@@ -235,6 +235,56 @@ $(document).ready(function () {
         $('.totalbiayaPBI').html(formatMoney(Math.round(ttotalbiaya)))
     })
 
+    $(document).on('change','.txtBiayaSurveyPBI',function () {
+        var biayaSurvey = $(this).val();
+        var idrLocalTrans = $('.txtLocalTransPBI').val();
+
+        $('.txtBiayaSurveyPBI').val(formatMoney(biayaSurvey));
+
+        var totallain = 0;
+        $('.hrgLainAdditionalCostPBI').each(function () {
+            totallain += Number(purify($(this).text()));
+        })
+        var totalHargaAdditionalCost = Number(totallain) + Number(purify(idrLocalTrans)) + Number(biayaSurvey);
+        $('.totalAdditionalCostPBI').html(formatMoney(totalHargaAdditionalCost));
+
+        var totalAdditionalAtasCost = 0;
+        
+        $('.nilaiAdditionalCostPBI').each( function () {
+            var nilaiBarang = $(this).parentsUntil('tbody').find('.nilaiBarangPBI').html();
+            var totalNilaiBarang = $('.totalNilaiBarangPBI').html();
+            var pembagianBiaya = Number(purify(nilaiBarang)) / Number(purify(totalNilaiBarang)) * 100;
+            // var additionalCost = $('.totalAdditionalCostPBI').html();
+            var rincianAdditionalCost = pembagianBiaya * totalHargaAdditionalCost / 100;
+            var rincianAdd = Math.round((rincianAdditionalCost + Number.EPSILON) * 100) / 100;
+            $(this).parentsUntil('tbody').find('.nilaiAdditionalCostPBI').html(formatMoney(rincianAdd));
+            totalAdditionalAtasCost += Number(rincianAdditionalCost);
+        })
+        $('.totalAdditionalAtasCostPBI').html(formatMoney(Math.round((totalAdditionalAtasCost))));
+        
+        var ttotalbiaya = 0;
+        $('.totalBiayaRPPBI').each(function () {
+            var beamasuk = $(this).parentsUntil('tbody').find('.beaMasukPBI').html();
+            var nilai = $(this).parentsUntil('tbody').find('.nilaiAdditionalCostPBI').html();
+            var totalbiaya = Number(purify(beamasuk)) + Number(purify(nilai));
+            ttotalbiaya += Number(totalbiaya);
+            $(this).html(formatMoney(Math.round((totalbiaya + Number.EPSILON) * 100) / 100));
+            console.log(totalbiaya)
+
+            var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').html())); 
+            var tamb = totalbiaya / qtyKirim;
+            $(this).parentsUntil('tbody').find('.tambPBI').html(formatMoney(Math.round((tamb + Number.EPSILON) * 100) / 100));
+            var po = Number(purify($(this).parentsUntil('tbody').find('.hargaPOPBI').html()));
+            var hrgtot = po + tamb;
+            $(this).parentsUntil('tbody').find('.hrgTotPBI').html(formatMoney(Math.round((hrgtot + Number.EPSILON) * 100) / 100));
+                
+            var percent = tamb / po *100;
+            $(this).parentsUntil('tbody').find('.percentPBI').html(Math.round((percent + Number.EPSILON) * 100) / 100+'%');
+                
+        })
+        $('.totalbiayaPBI').html(formatMoney(Math.round(ttotalbiaya)))
+    })
+
 
     var totalNilaiBarang = 0;
 
