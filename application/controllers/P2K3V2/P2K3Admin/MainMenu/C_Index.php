@@ -177,20 +177,23 @@ class C_Index extends CI_Controller
 		$data['pr'] = $periode;
 		if ($val == 'hitung') {
 			// $data['toHitung'] = $this->M_dtmasuk->toHitung($pr);
-			$data['toHitung'] = $this->M_dtmasuk->listPerhitungan($pr);
+			$data['toHitung'] = $this->M_dtmasuk->listperhitunganBySeksi($pr, 'not like'); //bukan tks
+			$data['toHitung2'] = $this->M_dtmasuk->listperhitunganBySeksi($pr, 'like'); //tks
 			// echo "<pre>";
-			// print_r($data['toHitung']);exit();
+			// print_r($data['toHitung']);
+			// print_r($data['toHitung2']);
+			// exit();
 
 			// echo "<pre>";
 			foreach ($data['toHitung'] as $key) {
 				$kode = $key['item_kode'];
-				$stok = $this->M_dtmasuk->stokOracle($kode);
+				$stok = $this->M_dtmasuk->stokOracle($kode, 'PNL-DM');
 				$po = $this->M_dtmasuk->OutstandingPO($kode);
 				$totalPO = 0;
 				$poarr = array();
 				if (!empty($po)) {
 					foreach ($po as $p) {
-						if (substr($p['PO_NUM'], 0,2) == substr(date('Y'), 0,2)) {
+						if (substr($p['PO_NUM'], 0,2) == substr(date('Y'), 0,2) && $p['LOCATION_CODE']=='PNL-DM') {
 							$totalPO += $p['PO_QTY'];
 							$poarr[] = $p['PO_NUM'];
 						}
@@ -209,6 +212,38 @@ class C_Index extends CI_Controller
 
 				$new[] = $key;
 				$data['toHitung'] = $new;
+				// print_r($po);
+			}
+
+			foreach ($data['toHitung2'] as $row) {
+				$kode = $row['item_kode'];
+				//tks saat ini 2 gudang
+				$stok = $this->M_dtmasuk->stokOracle($kode, "PNL-TKS");
+				$stok += $this->M_dtmasuk->stokOracle($kode, "PNL-NPR");
+				$po = $this->M_dtmasuk->OutstandingPO($kode);
+				$totalPO = 0;
+				$poarr = array();
+				if (!empty($po)) {
+					foreach ($po as $p) {
+						if (substr($p['PO_NUM'], 0,2) == substr(date('Y'), 0,2) && ($p['LOCATION_CODE']=='PNL-TKS'||$p['LOCATION_CODE']=='PNL-NPR')) {
+							$totalPO += $p['PO_QTY'];
+							$poarr[] = $p['PO_NUM'];
+						}
+					}
+				}
+				$row['po']=$totalPO;
+				$row['ponum']=implode(', ', $poarr);
+				$a = $row['jml_kebutuhan'];
+				$b = $row['ttl_bon'];
+				$out = ($a-$b);
+				$row['outBon'] = $out;
+				$row['stokg'] = $stok;
+
+				$jpp = ceil(($a*1.1)+$out-$stok-$totalPO);
+				$row['jpp'] = ($jpp < 0) ? 0:$jpp;
+
+				$new2[] = $row;
+				$data['toHitung2'] = $new2;
 				// print_r($po);
 			}
 			$data['run'] = '1';
@@ -1381,9 +1416,10 @@ public function CetakBongagal($id)
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['stok'] = $this->M_dtmasuk->getStokGudang();
+		$data['stokTks'] = $this->M_dtmasuk->getStokGudang('PNL-TKS');
+		$data['stokPusat'] = $this->M_dtmasuk->getStokGudang('PNL-DM');
 		// echo "<pre>";
-		// print_r($data['stok']);exit();
+		// print_r($data['stokPusat']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
