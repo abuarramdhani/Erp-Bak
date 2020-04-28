@@ -67,7 +67,7 @@ class C_CetakCard extends CI_Controller
 		$data['worker'] = array();
 		for($i=0;$i<$count;$i++){
 			$Card = $this->M_cetakcard->getWorker($noind[$i],$nick[$i]);
-			if (file_get_contents($Card[0]['photo'])) {
+			if (!file_get_contents($Card[0]['photo'])) {
 				$Card[0]['photo'] = './assets/img/quick-logo.jpg';
 			}
 			if (!$checked) {
