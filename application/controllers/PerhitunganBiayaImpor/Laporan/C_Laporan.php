@@ -93,11 +93,14 @@ class C_Laporan extends CI_Controller {
 		$data['nopo'] = $this->M_laporan->getnopo($reqId);
 		$data['vendor'] = $this->M_laporan->getVendor($reqId);
 		$data['local_transport'] = array();
+		$data['biaya_survey'] = array();
 		$data['additional_cost'] = array();
 		
 		foreach ($additional as $key => $selection) {
 			if ($selection['DESKRIPSI'] == 'Local Transport and Shipping') {
 				array_push($data['local_transport'],$selection);
+			}elseif ($selection['DESKRIPSI'] == 'Biaya Survey') {
+				array_push($data['biaya_survey'],$selection);
 			}else if ($selection['DESKRIPSI'] != 'BEA MASUK') {
 				array_push($data['additional_cost'],$selection);
 			}
@@ -126,6 +129,7 @@ class C_Laporan extends CI_Controller {
 	{
 		$button = $this->input->post('btnSubPBI');
 		$localTransport = $this->input->post('localTransport');
+		$biayaSurvey = $this->input->post('biayaSurvey');
 		$kodebarang = $this->input->post('kodebarang[]');
 		$rate = $this->input->post('rate[]');
 
@@ -154,24 +158,33 @@ class C_Laporan extends CI_Controller {
 						 );
 		
 		if ($button == 0) {
-			$this->Export($reqid,$localTransport,$rate,$header,$localTransportCurr,$currency);
+			$this->Export($reqid,$localTransport,$biayaSurvey,$rate,$header,$localTransportCurr,$currency);
 		}else{
-			$this->SaveData($reqid,$localTransport,$kodebarang,$rate,$header,$localTransportCurr,$currency);
+			$this->SaveData($reqid,$localTransport,$biayaSurvey,$kodebarang,$rate,$header,$localTransportCurr,$currency);
 		}
 	}
 
-	public function SaveData($reqid,$localTransport,$kodebarang,$rate,$header,$localTransportCurr,$currency)
+	public function SaveData($reqid,$localTransport,$biayaSurvey,$kodebarang,$rate,$header,$localTransportCurr,$currency)
 	{
 		// print_r($localTransportCurr);exit;
-		$harga = str_replace(',','',$localTransport);
-		$harga1 = str_replace('.00','',$harga);
-		// print_r($harga);exit;
+		$hargaLt = str_replace(',','',$localTransport);
+		$hargaLt1 = str_replace('.00','',$hargaLt);
+
 		$locTrans = array(
-							'HARGA' => $harga1,
+							'HARGA' => $hargaLt1,
 							'HARGA_USD' => $localTransportCurr,
 						 );
 		
 		$this->M_laporan->updateDataLocalTransport($reqid,$locTrans);
+
+		$hargaBs = str_replace(',','',$biayaSurvey);
+		$hargaBs1 = str_replace('.00','',$hargaBs);
+		
+		$biayaS = array(
+							'HARGA' => $hargaBs1,
+						 );
+		
+		$this->M_laporan->updateDataBiayaSurvey($reqid,$biayaS);
 
 		$additional_cost = array(
 									'NO_URUT_PERHITUNGAN' => $header['nomorUrutPBI'],
@@ -214,7 +227,7 @@ class C_Laporan extends CI_Controller {
         $this->load->view('V_Footer',$data);
 	}
 
-	public function Export($reqid,$localTransport,$rate,$header,$localTransportCurr,$currency)
+	public function Export($reqid,$localTransport,$biayaSurvey,$rate,$header,$localTransportCurr,$currency)
 	{
 		
 		$objPHPExcel = new PHPExcel();
@@ -483,11 +496,16 @@ class C_Laporan extends CI_Controller {
 		$nom =1;
 		$locTransShip = "";
 		$hargalocTransShip = "";
+		$biayasurv = "";
+		$hargaBiayaSurv = "";
 		for ($j=0; $j < count($additional_cost); $j++) { $nom++;
 			if ($additional_cost[$j]['DESKRIPSI'] == 'Local Transport and Shipping') {
 				$locTransShip = $additional_cost[$j]['DESKRIPSI'];
 				$hargalocTransShip = $localTransportCurr;
 				$rows = $rows-1;
+			}elseif ($additional_cost[$j]['DESKRIPSI'] == 'Biaya Survey') {
+				$biayasurv = $additional_cost[$j]['DESKRIPSI'];
+				$rows = $rows-2;
 			}else {
 				$objset->mergeCells('D'.$rows.':E'.$rows);
 				$objset->mergeCells('G'.$rows.':H'.$rows);
@@ -501,14 +519,23 @@ class C_Laporan extends CI_Controller {
 			}
 			$rows++;
 		}
-		$objPHPExcel->getActiveSheet()->getStyle("C".($row+4).':H'.($row+4))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FCBF02');
+		$objPHPExcel->getActiveSheet()->getStyle("C".($row+4).':H'.($row+5))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FCBF02');
 		$objset->setCellValue("C".($row+4), '1');
 		$objset->setCellValue("D".($row+4), $locTransShip);
 		$objset->setCellValue("F".($row+4), $hargalocTransShip);
 		$objPHPExcel->getActiveSheet()->getStyle("G".($row+4))->getNumberFormat()->setFormatCode('#,##0.00');
 		$objset->setCellValue("G".($row+4), str_replace(',','',$localTransport));
+
+		$objset->setCellValue("C".($row+5), '2');
+		$objset->setCellValue("D".($row+5), $biayasurv);
+		$objset->setCellValue("F".($row+5), '');
+		$objPHPExcel->getActiveSheet()->getStyle("G".($row+5))->getNumberFormat()->setFormatCode('#,##0.00');
+		$objset->setCellValue("G".($row+5), str_replace(',','',$biayaSurvey));
+
 		$objset->mergeCells('G'.($row+4).':H'.($row+4));
 		$objset->mergeCells('D'.($row+4).':E'.($row+4));
+		$objset->mergeCells('G'.($row+5).':H'.($row+5));
+		$objset->mergeCells('D'.($row+5).':E'.($row+5));
 
 		$objset->mergeCells('K'.($row+5).':L'.($row+5));
 		$objset->mergeCells('K'.($row+6).':L'.($row+9));
