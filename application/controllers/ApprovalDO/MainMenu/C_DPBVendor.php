@@ -56,8 +56,8 @@ class C_DPBVendor extends CI_Controller {
 		$data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo']  = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBVendorDetail'] = $this->M_dpb->getDPBVendorDetail($data['NO_PR']);
-        echo '<pre>';
-        print_r($data['DPBVendorDetail']);exit;
+        // echo '<pre>';
+        // print_r($data['DPBVendorDetail']);exit;
         $data['UserAccess']      = [   
             'jenis_kendaraan'  => 'readonly',
             'no_kendaraan'     => 'readonly',
