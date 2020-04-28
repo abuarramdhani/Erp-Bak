@@ -274,7 +274,13 @@ class C_THRPekerja extends CI_Controller
 	}
 
 	public function cetak($id){
-		$data['data'] = $this->M_thrpekerja->getTHRDetailByIdTHR($id);
+		$kode = $this->input->post('slcKodeIndukC');
+		if (!empty($kode)) {
+			$data['data'] = $this->M_thrpekerja->getTHRDetailByIdTHRKode($id,$kode);
+		}else{
+			$data['data'] = $this->M_thrpekerja->getTHRDetailByIdTHR($id);
+		}
+		
 		$data['mengetahui'] = $this->M_thrpekerja->getTHRById($id);
 		// print_r($data['mengetahui']);exit();
 		$pdf = $this->pdf->load();
@@ -294,7 +300,12 @@ class C_THRPekerja extends CI_Controller
 		require_once APPPATH . 'third_party/phpxbase/Table.php';
 		require_once APPPATH . 'third_party/phpxbase/WritableTable.php';
 
-		$data = $this->M_thrpekerja->getTHRDetailByIdTHR($id);
+		$kode = $this->input->post('slcKodeIndukT');
+		if (!empty($kode)) {
+			$data = $this->M_thrpekerja->getTHRDetailByIdTHRKode($id,$kode);
+		}else{
+			$data = $this->M_thrpekerja->getTHRDetailByIdTHR($id);
+		}
 		// echo "<pre>";print_r($data);exit();
 
 		$waktu = date('Y-m-d H:i:s');
@@ -430,7 +441,13 @@ class C_THRPekerja extends CI_Controller
 	}
 
 	public function export($id){
-		$data = $this->M_thrpekerja->getTHRDetailByIdTHR($id);
+		$kode = $this->input->post('slcKodeIndukE');
+		if (!empty($kode)) {
+			$data = $this->M_thrpekerja->getTHRDetailByIdTHRKode($id,$kode);
+		}else{
+			$data = $this->M_thrpekerja->getTHRDetailByIdTHR($id);
+		}
+
 		$mengetahui = $this->M_thrpekerja->getTHRById($id);
 
 		$this->load->library('excel');

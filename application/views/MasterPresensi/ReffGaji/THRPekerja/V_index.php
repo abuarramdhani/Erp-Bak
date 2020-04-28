@@ -30,7 +30,7 @@
 													<th>Dibuat</th>
 													<th>Tanggal Dibuat</th>
 													<th>Tanggal Insert</th>
-													<th>Action</th>
+													<th style="width: 200px;">Action</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -47,11 +47,88 @@
 														<td><?php echo date('d M Y',strtotime($dt['tgl_dibuat'])); ?></td>
 														<td><?php echo date('d M Y H:i:s',strtotime($dt['created_timestamp'])); ?></td>
 														<td>
-															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/export/'.$dt['id_thr']) ?>" class="btn btn-success"><span class="fa fa-file-excel-o"></span>&nbsp;Excel</a>
-															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/cetak/'.$dt['id_thr']) ?>" class="btn btn-danger"><span class="fa fa-file-pdf-o"></span>&nbsp;PDF</a>
-															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/transfer/'.$dt['id_thr']) ?>" class="btn btn-warning"><span class="fa fa-file"></span>&nbsp;DBF</a>
-															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/lihat/'.$dt['id_thr']) ?>" class="btn btn-info"><span class="fa fa-file-o"></span>&nbsp;Lihat</a>
-															<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/hapus/'.$dt['id_thr']) ?>" class="btn btn-danger"><span class="fa fa-trash"></span>&nbsp;Hapus</a>
+															<div class="row" style="margin-bottom: 10px;">
+																<div class="col-lg-12">
+																	<form target="_blank" class="form-horizontal" method="POST" action="<?php echo base_url('MasterPresensi/ReffGaji/THR/export/'.$dt['id_thr']) ?>">
+																		<div class="form-group" style="width: 100%">
+																			<div class="col-lg-8">
+																				<select class="select2" name="slcKodeIndukE" style="width: 100%">
+																					<option></option>
+																					<option>A</option>
+																					<option>B</option>
+																					<option>H</option>
+																					<option>J</option>
+																					<option>K</option>
+																					<option>P</option>
+																					<option>T</option>
+																				</select>
+																			</div>
+																			<div class="col-lg-4">
+																				<button class="btn btn-success"><span class="fa fa-file-excel-o"></span>&nbsp;XLS</button>
+																			</div>
+																		</div>
+																	</form>
+																</div>
+															</div>
+															<div class="row" style="margin-bottom: 10px;">
+																<div class="col-lg-12">
+																	<form target="_blank" class="form-horizontal" method="POST" action="<?php echo base_url('MasterPresensi/ReffGaji/THR/cetak/'.$dt['id_thr']) ?>">
+																		<div class="form-group" style="width: 100%">
+																			<div class="col-lg-8">
+																				<select class="select2" name="slcKodeIndukC" style="width: 100%">
+																					<option></option>
+																					<option>A</option>
+																					<option>B</option>
+																					<option>H</option>
+																					<option>J</option>
+																					<option>K</option>
+																					<option>P</option>
+																					<option>T</option>
+																				</select>
+																			</div>
+																			<div class="col-lg-4">
+																				<button class="btn btn-danger"><span class="fa fa-file-pdf-o"></span>&nbsp;PDF</button>
+																			</div>
+																		</div>
+																	</form>
+																</div>
+															</div>
+															<div class="row" style="margin-bottom: 10px;">
+																<div class="col-lg-12">
+																	<form target="_blank" class="form-horizontal" method="POST" action="<?php echo base_url('MasterPresensi/ReffGaji/THR/transfer/'.$dt['id_thr']) ?>">
+																		<div class="form-group" style="width: 100%">
+																			<div class="col-lg-8">
+																				<select class="select2" name="slcKodeIndukT" style="width: 100%">
+																					<option></option>
+																					<option>A</option>
+																					<option>B</option>
+																					<option>H</option>
+																					<option>J</option>
+																					<option>K</option>
+																					<option>P</option>
+																					<option>T</option>
+																				</select>
+																			</div>
+																			<div class="col-lg-4">
+																				<button class="btn btn-warning"><span class="fa fa-file"></span>&nbsp;DBF</button>
+																			</div>
+																		</div>
+																	</form>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-lg-6 text-right">
+																	<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/lihat/'.$dt['id_thr']) ?>" class="btn btn-info"><span class="fa fa-file-o"></span>&nbsp;Lihat</a>
+																</div>
+																<div class="col-lg-6 text-left">
+																	<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/hapus/'.$dt['id_thr']) ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda Yakin ingin MENGHAPUS data ini ?')"><span class="fa fa-trash"></span>&nbsp;Hapus</a>
+																</div>
+															</div>
+															<!-- 
+																<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/export/'.$dt['id_thr']) ?>" class="btn btn-success"><span class="fa fa-file-excel-o"></span>&nbsp;Excel</a>
+																<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/cetak/'.$dt['id_thr']) ?>" class="btn btn-danger"><span class="fa fa-file-pdf-o"></span>&nbsp;PDF</a>
+																<a href="<?php echo base_url('MasterPresensi/ReffGaji/THR/transfer/'.$dt['id_thr']) ?>" class="btn btn-warning"><span class="fa fa-file"></span>&nbsp;DBF</a> 
+															-->
 														</td>
 													</tr>
 													<?php
