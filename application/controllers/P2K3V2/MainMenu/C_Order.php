@@ -1483,6 +1483,19 @@ class C_Order extends CI_Controller
   	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
   	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
   	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+  	
+  	$pkj_lok = $this->M_order->getDetailPekerja($noind)->row()->lokasi_kerja;
+  	if (intval($pkj_lok) == 2) {
+  		$data['lokk'] = 'Tuksono';
+  		$data['lokk_id'] = '16103';
+  		$data['sub'] = '[PNL-TKS] GUDANG PENOLONG TRAKTOR DI TUKSONO';
+  		$data['sub_id'] = 'PNL-TKS';
+  	}else{
+  		$data['lokk'] = 'Yogyakarta';
+  		$data['lokk_id'] = '142';
+  		$data['sub'] = '[PNL-DM] GUDANG BAHAN PENOLONG PRODUKSI (PUSAT)';
+  		$data['sub_id'] = 'PNL-DM';
+  	}
 
   	$ks = $kodesie;
   	$pr = $this->input->post('k3_periode');
@@ -1501,7 +1514,7 @@ class C_Order extends CI_Controller
   	$listtobon = $this->M_dtmasuk->listtobonHitung($ks, $pr);
   	for ($i=0; $i < count($listtobon); $i++) { 
   		$kode = $listtobon[$i]['kode_item'];
-		$stok = $this->M_dtmasuk->stokOracle($kode);
+		$stok = $this->M_dtmasuk->stokOracle($kode, $data['sub_id']);
 		$listtobon[$i]['stokg'] = $stok;
   	}
   	$nama_seksi = $this->M_dtmasuk->cekseksi($ks);
@@ -1532,18 +1545,6 @@ class C_Order extends CI_Controller
   		$data['seksi'] = array('section_name' 	=>	'');
   	}
 
-  	$pkj_lok = $this->M_order->getDetailPekerja($noind)->row()->lokasi_kerja;
-  	if (intval($pkj_lok) == 2) {
-  		$data['lokk'] = 'Tuksono';
-  		$data['lokk_id'] = '16103';
-  		$data['sub'] = '[PNL-TKS] GUDANG PENOLONG TRAKTOR DI TUKSONO';
-  		$data['sub_id'] = 'PNL-TKS';
-  	}else{
-  		$data['lokk'] = 'Yogyakarta';
-  		$data['lokk_id'] = '142';
-  		$data['sub'] = '[PNL-DM] GUDANG BAHAN PENOLONG PRODUKSI (PUSAT)';
-  		$data['sub_id'] = 'PNL-DM';
-  	}
 
   	// echo "<pre>";
   	// print_r($this->M_order->gudang('16103'));exit();
