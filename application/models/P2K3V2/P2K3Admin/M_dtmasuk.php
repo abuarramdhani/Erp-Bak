@@ -561,6 +561,85 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
+    public function listperhitunganBySeksi($pr, $lik = 'not like')
+    {
+        $minPr = explode('-', $pr);
+        $y = $minPr[0];
+        $m = ($minPr[1]-1);
+        if (strlen($m) < 2) {
+            $m = '0'.$m;
+        }
+
+        if ($m == '0' || $m == '00') {
+            $m = '12';
+            $y = $y-1;
+        }
+        $newPr = $y.'-'.$m;
+        $sql = "select
+                    mon.periode ,
+                    mon.item_kode ,
+                    mon.item ,
+                    sum(mon.jml_kebutuhan) jml_kebutuhan ,
+                    sum(mon.ttl_bon) ttl_bon ,
+                    sum(mon.sisa_saldo) sisa_saldo
+                from
+                    (
+                    select
+                        kh.periode,
+                        kh.item_kode,
+                        km.item,
+                        sum(kh.jml_kebutuhan::int) jml_kebutuhan,
+                        coalesce(bon.ttl_bon, 0) ttl_bon,
+                        sum(kh.jml_kebutuhan::int)-coalesce(bon.ttl_bon, 0) sisa_saldo
+                    from
+                        k3.k3_master_item km,
+                        k3.k3n_hitung kh
+                    left join (
+                        select
+                            kb.periode,
+                            kb.item_code,
+                            sum(jml_bon::int) ttl_bon
+                        from
+                            k3.k3n_bon kb
+                        where
+                            kb.periode = '$newPr'
+                            and kb.kodesie in (
+                            select
+                                distinct(substring(section_code , 0, 8) ) kodesie
+                            from
+                                er.er_section es
+                            where
+                                trim(section_name) $lik '%TKS')
+                        group by
+                            kb.periode,
+                            kb.item_code) bon on
+                        kh.item_kode = bon.item_code
+                    where
+                        kh.item_kode = km.kode_item
+                        and kh.periode = '$pr'
+                        and kh.kodesie in (
+                        select
+                            distinct(substring(section_code , 0, 8) ) kodesie
+                        from
+                            er.er_section es
+                        where
+                            trim(section_name) $lik '%TKS')
+                    group by
+                        kh.periode,
+                        kh.item_kode,
+                        km.item,
+                        bon.ttl_bon) mon
+                group by
+                    mon.periode ,
+                    mon.item_kode ,
+                    mon.item
+                order by
+                    3;";
+                    // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return $query->result_array();
+    }
+
     public function insertBon($data)
     {
         $query = $this->db->insert('k3.k3n_bon', $data);
@@ -794,7 +873,7 @@ class M_Dtmasuk extends CI_Model
                          mb.keterangan,
                          mb.tujuan_gudang
                 ORDER BY 1, 3";
-        // $sql = "DELETE from im_master_bon where no_bon = '920040801'";
+        // $sql = "DELETE from im_master_bon where no_bon = '920042101'";
                 // echo $sql;exit();
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -902,15 +981,20 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
-    public function stokOracle($kode)
+    public function stokOracle($kode, $gudang = 'PNL-NPR')
     {
+        if ($gudang == 'PNL-NPR') {
+            $locator = 783;
+        }else{
+            $locator = '';
+        }
         $sql = "SELECT khs_inv_qty_att ('102',
                         (SELECT msib.inventory_item_id
                            FROM mtl_system_items_b msib
                           WHERE msib.organization_id = 102
                             AND msib.segment1 = '$kode'),
-                        'PNL-NPR',
-                        783,
+                        '$gudang',
+                        '$locator',
                         ''
                         ) as stok
                         FROM DUAL";
@@ -922,39 +1006,40 @@ class M_Dtmasuk extends CI_Model
 
     public function OutstandingPO($kode)
     {
-        $sql = "select
-                pha.SEGMENT1 po_num
-                ,pla.LINE_NUM po_line_num
-                ,msib.SEGMENT1 kode_item
-                ,plla.QUANTITY po_qty
-                ,plla.QUANTITY - plla.QUANTITY_RECEIVED outstanding_po_qty
-                ,ppf.FULL_NAME requester
-                from
-                PO_HEADERS_ALL pha
-                ,PO_LINES_ALL pla
-                ,PO_LINE_LOCATIONS_ALL plla
-                ,PO_DISTRIBUTIONS_ALL pda
-                ,PO_REQ_DISTRIBUTIONS_ALL prda
-                ,PO_REQUISITION_LINES_ALL prla
-                ,per_people_f ppf
-                ,mtl_system_items_b msib
-                where
-                pha.PO_HEADER_ID = pla.PO_HEADER_ID
-                and plla.PO_LINE_ID = pla.PO_LINE_ID
-                and plla.PO_HEADER_ID = pha.PO_HEADER_ID
-                and (plla.CANCEL_FLAG = 'N' or plla.CANCEL_FLAG is null)
-                and (plla.CLOSED_FLAG = 'N' or plla.CLOSED_FLAG is null)
-                and pla.PO_LINE_ID = pda.PO_LINE_ID
-                and pda.REQ_DISTRIBUTION_ID = prda.DISTRIBUTION_ID
-                and prla.REQUISITION_LINE_ID = prda.REQUISITION_LINE_ID
-                and prla.TO_PERSON_ID = ppf.PERSON_ID
-                AND NVL(ppf.effective_end_date,SYSDATE+1) > SYSDATE
-                and (plla.QUANTITY - plla.QUANTITY_RECEIVED) != 0 
-                and pla.ITEM_ID = msib.INVENTORY_ITEM_ID
-                and plla.SHIP_TO_ORGANIZATION_ID = msib.ORGANIZATION_ID
-                and msib.SEGMENT1 = '$kode'";
+        $sql = "SELECT pha.segment1 po_num, pla.line_num po_line_num, msib.segment1 kode_item,
+                    plla.quantity po_qty,
+                    plla.quantity - plla.quantity_received outstanding_po_qty,
+                    ppf.full_name requester,
+                    hla.LOCATION_CODE
+                FROM po_headers_all pha,
+                    po_lines_all pla,
+                    po_line_locations_all plla,
+                    po_distributions_all pda,
+                    po_req_distributions_all prda,
+                    po_requisition_lines_all prla,
+                    per_people_f ppf,
+                    mtl_system_items_b msib,
+                    HR_LOCATIONS_all hla
+                WHERE pha.po_header_id = pla.po_header_id
+                    AND plla.po_line_id = pla.po_line_id
+                    AND plla.po_header_id = pha.po_header_id
+                    AND (plla.cancel_flag = 'N' OR plla.cancel_flag IS NULL)
+                    AND (plla.closed_flag = 'N' OR plla.closed_flag IS NULL)
+                    AND pla.po_line_id = pda.po_line_id
+                    AND pda.req_distribution_id = prda.distribution_id
+                    AND prla.requisition_line_id = prda.requisition_line_id
+                    AND prla.to_person_id = ppf.person_id
+                    AND NVL (ppf.effective_end_date, SYSDATE + 1) > SYSDATE
+                    AND (plla.quantity - plla.quantity_received) != 0
+                    AND pla.item_id = msib.inventory_item_id
+                    AND plla.ship_to_organization_id = msib.organization_id
+                    and plla.SHIP_TO_LOCATION_ID = hla.LOCATION_ID
+                    -- AND msib.segment1 in('PP1K309','PP1KR01','PP1BS01', 'PP1BS04')
+                    AND msib.segment1 = '$kode'";
+        // echo $sql;exit();
         $query = $this->oracle->query($sql);
-
+        // echo "<pre>";
+        // print_r($query->result_array());exit();
         return $query->result_array();
         // return $query->row()->STOK;
     }
