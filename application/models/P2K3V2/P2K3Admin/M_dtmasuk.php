@@ -1109,10 +1109,15 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
-    public function getStokGudang()
+    public function getStokGudang($gudang = 'PNL-NPR')
     {
+        if ($gudang == 'PNL-NPR') {
+            $locator = 783;
+        }else{
+            $locator = '';
+        }
         $sql = "SELECT   msib.inventory_item_id, msib.segment1 item_code, msib.description,
-                         khs_inv_qty_att ('102', msib.inventory_item_id, 'PNL-NPR', 783, '') stock,
+                         khs_inv_qty_att ('102', msib.inventory_item_id, '$gudang', '$locator', '') stock,
                          msib.PRIMARY_UOM_CODE uom
                     FROM mtl_system_items_b msib
                    WHERE msib.organization_id = 102

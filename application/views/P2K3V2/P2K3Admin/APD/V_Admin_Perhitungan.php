@@ -39,6 +39,7 @@
                                     </form>
                                     <div style="height: 50px"></div>
                                     <?php if ($run == '1'): ?>
+                                        <h3 style="text-align: center;">Perhitungan APD Selain Tuksono</h3>
                                         <table class="table table-striped table-bordered table-hover text-center p2k3_perhitungan">
                                             <thead>
                                                 <tr class="bg-info">
@@ -55,6 +56,59 @@
                                             </thead>
                                             <tbody id="DetailInputKebutuhanAPD">
                                                 <?php $a = 1; foreach ($toHitung as $key): ?>
+                                                <tr style="color: #000;" class="multiinput">
+                                                    <td id="nomor"><?php echo $a; ?></td>
+                                                    <td>
+                                                        <a style="cursor:pointer;" class="p2k3_to_input"><?= $key['item_kode'] ?></a>
+                                                        <input hidden="" value="<?= $key['item_kode'] ?>" class="p2k3_see_apd">
+                                                    </td>
+                                                    <td style="text-align: left;">
+                                                        <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
+                                                        <input hidden="" class="p2k3_item" type="text" value="<?php echo $key['item']; ?>">
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $key['jml_kebutuhan']; ?>
+                                                        <input hidden="" class="p2k3_kebutuhan" type="text" value="<?php echo $key['jml_kebutuhan']; ?>">
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $key['outBon']; ?>
+                                                        <input hidden="" class="p2k3_ob" type="text" value="<?php echo $key['outBon']; ?>">
+                                                    </td>
+                                                    <td class="p2k3_stok">
+                                                        <?php echo $key['stokg']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <p class="p2k3_jpo"><?= $key['po'] ?></p>
+                                                    </td>
+                                                    <td>
+                                                       <?= empty($key['ponum']) ? '-':$key['ponum'] ?>
+                                                    </td>
+                                                    <td>
+                                                        <p class="p2k3_pjpp"><?= $key['jpp'] ?></p>
+                                                        <input class="p2k3_ijpp" hidden="" type="text">
+                                                    </td>
+                                                </tr>
+                                                <?php $a++; endforeach ?>
+                                            </tbody>
+                                        </table>
+                                        <div style="height: 50px;"></div>
+                                         <h3 style="text-align: center;">Perhitungan APD Tuksono</h3>
+                                        <table class="table table-striped table-bordered table-hover text-center p2k3_perhitungan">
+                                            <thead>
+                                                <tr class="bg-info">
+                                                    <th scope="col">No</th>
+                                                    <th scope="col">Kode Item</th>
+                                                    <th scope="col">APD</th>
+                                                    <th scope="col">Jumlah Kebutuhan</th>
+                                                    <th scope="col">Outstanding Bon</th>
+                                                    <th scope="col">Stock Gudang</th>
+                                                    <th scope="col">Outstanding PO</th>
+                                                    <th scope="col">PO Number</th>
+                                                    <th scope="col">Jumlah PP</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="DetailInputKebutuhanAPD">
+                                                <?php $a = 1; foreach ($toHitung2 as $key): ?>
                                                 <tr style="color: #000;" class="multiinput">
                                                     <td id="nomor"><?php echo $a; ?></td>
                                                     <td>

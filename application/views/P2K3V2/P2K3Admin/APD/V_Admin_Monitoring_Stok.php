@@ -45,6 +45,7 @@
                             <div class="box-body">
                                 <div class="panel-body">
                                     <div class="col-md-12">
+                                        <h2 style="text-align: center;">Gudang Tuksono (PNL-TKS)</h2>
                                         <table class="table table-bordered table-hover table-striped p2k3_tblstok">
                                             <thead class="bg-primary">
                                                 <th>No</th>
@@ -54,7 +55,36 @@
                                                 <th>Satuan</th>
                                             </thead>
                                             <tbody>
-                                                <?php $x=1; foreach ($stok as $key): ?>
+                                                <?php $x=1; foreach ($stokTks as $key): ?>
+                                                <tr>
+                                                    <td><?= $x ?></td>
+                                                    <td>
+                                                        <a style="cursor:pointer;" class="p2k3_to_input"><?= $key['ITEM_CODE'] ?></a>
+                                                        <input hidden="" value="<?= $key['ITEM_CODE'] ?>" class="p2k3_see_apd">
+                                                    </td>
+                                                    <td style="text-align: left;">
+                                                        <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['DESCRIPTION']; ?></a>
+                                                        <input hidden="" class="p2k3_item" type="text" value="<?php echo $key['DESCRIPTION']; ?>">
+                                                    </td>
+                                                    <td><?= $key['STOCK'] ?></td>
+                                                    <td><?= $key['UOM'] ?></td>
+                                                </tr>
+                                                <?php $x++; endforeach ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top: 50px;">
+                                        <h2 style="text-align: center;">Gudang Pusat (PNL-DM)</h2>
+                                        <table class="table table-bordered table-hover table-striped p2k3_tblstok">
+                                            <thead class="bg-primary">
+                                                <th>No</th>
+                                                <th>Kode Barang</th>
+                                                <th>APD</th>
+                                                <th>Jumlah Stok</th>
+                                                <th>Satuan</th>
+                                            </thead>
+                                            <tbody>
+                                                <?php $x=1; foreach ($stokPusat as $key): ?>
                                                 <tr>
                                                     <td><?= $x ?></td>
                                                     <td>
@@ -81,3 +111,6 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
