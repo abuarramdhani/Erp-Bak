@@ -55,6 +55,16 @@
                                 </div>
                             </div>
                         </div>
+                        <br/>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Kontak Supir</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-phone"></i></span>
+                                    <input class="form-control txtADODriverContact" <?= $UserAccess['kontak_supir'] ?> value="<?php if (isset($DPBVendorDetail[0]['KONTAK_SUPIR'])) echo $DPBVendorDetail[0]['KONTAK_SUPIR'] ?>">
+                                </div>
+                            </div>
+                        </div>
                         <br />
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Vendor Ekspedisi</label>
@@ -62,6 +72,16 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-truck"></i></span>
                                     <input class="form-control txtADOExpeditionVendor" <?= $UserAccess['vendor_ekspedisi'] ?> value="<?php if (isset($DPBVendorDetail[0]['VENDOR_EKSPEDISI'])) echo $DPBVendorDetail[0]['VENDOR_EKSPEDISI'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Estimasi Kedatangan</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
+                                    <input class="form-control <?= $UserAccess['estdate'] ?> txtADOEstDatang" <?= $UserAccess['estimasi_datang'] ?> value="<?php if (isset($DPBVendorDetail[0]['ESTIMASI_DATANG'])) echo date("d-m-Y H:i:s",strtotime($DPBVendorDetail[0]['ESTIMASI_DATANG'])) ?>">
                                 </div>
                             </div>
                         </div>

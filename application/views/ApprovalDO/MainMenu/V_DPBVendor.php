@@ -55,16 +55,18 @@
                                         <p><img src="<?= base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> Sedang Memproses ...</p> 
                                     </label>
                                 </div>
-                                <table class="table table-bordered table-hover table-striped tblADOList" style="display: none; width: 120%">
+                                <table class="table table-bordered table-hover table-striped tblADOList" style="display: none; width: 100%">
                                     <thead>
                                         <tr class="bg-primary" height="50px">
                                             <th class="text-center">No</th>
                                             <th class="text-center text-nowrap">No PR</th>
                                             <th class="text-center text-nowrap">Creation Date</th>
-                                            <th class="text-center text-nowrap">Jenis Kendaraan</th>
-                                            <th class="text-center text-nowrap">No. Kendaraan</th>
+                                            <th class="text-center text-nowrap">Jns. Kend.</th>
+                                            <th class="text-center text-nowrap">No. Kend.</th>
                                             <th class="text-center text-nowrap">Nama Supir</th>
-                                            <th class="text-center text-nowrap">Vendor Ekspedisi</th>
+                                            <th class="text-center text-nowrap">Kontak Sopir</th>
+                                            <th class="text-center text-nowrap">Vendor Exp.</th>
+                                            <th class="text-center text-nowrap">Est. Datang</th>
                                             <th class="text-center no-orderable">Action</th>
                                         </tr>
                                     </thead>
@@ -77,7 +79,9 @@
                                                 <td class="text-left"><?= $val['JENIS_KENDARAAN'] ?></td>
                                                 <td class="text-left"><?= $val['NO_KENDARAAN'] ?></td>
                                                 <td class="text-left"><?= $val['NAMA_SUPIR'] ?></td>
+                                                <td class="text-left"><?= $val['KONTAK_SOPIR'] ?></td>
                                                 <td class="text-left"><?= $val['VENDOR_EKSPEDISI'] ?></td>
+                                                <td class="text-left"><?php if(isset($val['ESTIMASI_DATANG'])) echo date("d-m-Y H:i:s",strtotime($val['ESTIMASI_DATANG'])) ?></td>
                                                 <td class="text-center">
                                                     <form action="<?= base_url('ApprovalDO/ListDPBVendor/Detail') ?>" method="post" target="_blank">
                                                         <input type="hidden" name="data-pr" value="<?= $val['NO_PR'] ?>">

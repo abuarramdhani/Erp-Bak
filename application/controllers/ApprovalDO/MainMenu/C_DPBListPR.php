@@ -30,7 +30,8 @@ class C_DPBListPR extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBVendorList']  = $this->M_dpb->getPRList();
-
+        // echo '<pre>';
+        // print_r($data['DPBVendorList']);exit;
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DPBPR', $data);
@@ -56,26 +57,33 @@ class C_DPBListPR extends CI_Controller {
             'jenis_kendaraan'  => 'readonly',
             'no_kendaraan'     => 'readonly',
             'nama_supir'       => 'readonly',
+            'kontak_supir'     => 'readonly',
             'vendor_ekspedisi' => 'readonly',
-            'lain_lain'        => 'readonly'
+            'estimasi_datang'  => 'readonly',
+            'lain_lain'        => 'readonly',
+            'estdate'          => ''
         ];
-        //purchasing
-        if ($this->session->responsibility_id == '2724') {
+        if ($this->session->responsibility_id == '2743') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => 'readonly',
                     'no_kendaraan'     => '',
                     'nama_supir'       => '',
+                    'kontak_supir'     => '',
                     'vendor_ekspedisi' => '',
-                    'lain_lain'        => ''
+                    'estimasi_datang'  => '',
+                    'lain_lain'        => '',
+                    'estdate'          => 'ADOEstDatang'
             ];
-            //marketing
-        }else if ($this->session->responsibility_id == '2709') {
+        }else if ($this->session->responsibility_id == '2730') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',
                     'nama_supir'       => 'readonly',
+                    'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
-                    'lain_lain'        => ''
+                    'estimasi_datang'  => 'readonly',
+                    'lain_lain'        => '',
+                    'estdate'          => ''
             ];
         }
         // if ( $this->session->user === 'B0747' ) {
@@ -134,11 +142,11 @@ class C_DPBListPR extends CI_Controller {
         ];
 
         if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {
-            $this->M_dpb->insertNewDetail($data);
+            $this->M_dpb->insertNewDetailListPR($data);
         } else {
             $id = $data['NO_PR'];
             unset($data['NO_PR']);
-            $this->M_dpb->updateDetail($id, $data);
+            $this->M_dpb->updateDetailListPR($id, $data);
         }
 
         echo json_encode('Success!');
