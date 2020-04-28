@@ -67,6 +67,9 @@ class C_CetakCard extends CI_Controller
 		$data['worker'] = array();
 		for($i=0;$i<$count;$i++){
 			$Card = $this->M_cetakcard->getWorker($noind[$i],$nick[$i]);
+			if (file_get_contents($Card[0]['photo'])) {
+				$Card[0]['photo'] = './assets/img/quick-logo.jpg';
+			}
 			if (!$checked) {
 				$Card[0]['no_induk'] = $Card[0]['noind'];
 			}
@@ -110,6 +113,9 @@ class C_CetakCard extends CI_Controller
 		foreach ($noind as $key) {
 			$DataID = $this->M_cetakcard->DataPekerja($key);
 			$path = $DataID[0]['photo'];
+			if(!file_get_contents($path)){
+				$path = './assets/img/quick-logo.jpg';
+			}
 			$type = pathinfo($path, PATHINFO_EXTENSION);
 			$dat = file_get_contents($path);
 			$base64 = 'data:image/' . $type . ';base64,' .base64_encode($dat);
