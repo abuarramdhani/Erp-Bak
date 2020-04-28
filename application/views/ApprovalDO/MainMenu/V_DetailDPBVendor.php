@@ -81,7 +81,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
-                                    <input class="form-control <?= $UserAccess['estdate'] ?> txtADOEstDatang" <?= $UserAccess['estimasi_datang'] ?> value="<?php if (isset($DPBVendorDetail[0]['ESTIMASI_DATANG'])) date("d-m-Y H:i:s",strtotime($DPBVendorDetail[0]['ESTIMASI_DATANG'])) ?>">
+                                    <input class="form-control <?= $UserAccess['estdate'] ?> txtADOEstDatang" <?= $UserAccess['estimasi_datang'] ?> value="<?php if (isset($DPBVendorDetail[0]['ESTIMASI_DATANG'])) echo date("Y/m/d H:i",strtotime($DPBVendorDetail[0]['ESTIMASI_DATANG']));?>">
                                 </div>
                             </div>
                         </div>
