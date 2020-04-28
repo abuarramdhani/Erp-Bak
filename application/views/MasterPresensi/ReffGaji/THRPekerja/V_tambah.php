@@ -48,9 +48,9 @@
 												<div class="col-lg-2">
 													<input type="radio" name="rdbJenis" value="2"> SP 3
 												</div>
-												<div class="col-lg-2">
+												<!--<div class="col-lg-2">
 													<input type="radio" name="rdbJenis" value="3"> A & B Keluar
-												</div>
+												</div>-->
 											</div>
 											<div class="form-group">
 												<div class="col-lg-6 text-right">

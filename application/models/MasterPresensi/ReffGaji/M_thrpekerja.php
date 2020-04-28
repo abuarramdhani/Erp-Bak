@@ -76,8 +76,10 @@ class M_thrpekerja extends CI_Model
 					where sp_ke = '3'
 					and ? between tanggal_awal_berlaku and tanggal_akhir_berlaku
 				)
+				or (left(tp.noind,1) in ('A', 'B') and tp.keluar='0')
+				or (left(tp.noind,1) in ('A', 'B') and tp.keluar='1' and tglkeluar>= ?)
 				order by tp.noind";
-		return $this->personalia->query($sql,array($tgl_lebaran,$tgl_lebaran))->result_array();
+		return $this->personalia->query($sql,array($tgl_lebaran,$tgl_lebaran,$tgl_puasa))->result_array();
 	}
 
 	function getPekerjaKeluar($tgl_lebaran,$tgl_puasa){
