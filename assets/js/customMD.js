@@ -125,6 +125,10 @@ function approveMD() {
   var plat_number = $('#plat_number').val();
   var atr_tampung_gan = $('#atr_tampung_gan').val();
 
+  if (plat_number === '') {
+    plat_number = 'TR 1 AL'
+  }
+
   // var pengecekan = $('tr[row-id="' + rowID + '"] input[name="cekdodo"]').val();
   var pengecekan = $('#checkDODO').val();
   // window.alert(pengecekan);
