@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOSave" style="margin-right: 10px">
+                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOCreateDPB" style="margin-right: 10px">
                         <i class="fa fa-save"></i>&nbsp; Create DPB
                     </button>
                 </div>
