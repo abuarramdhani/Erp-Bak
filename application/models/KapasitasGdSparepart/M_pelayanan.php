@@ -114,7 +114,7 @@ class M_pelayanan extends CI_Model
     }
 
     public function getPIC($term){
-        $oracle = $this->load->database('oracle_dev', true); // ini tetap oracle dev
+        $oracle = $this->load->database('oracle', true);
         $sql = "select * from khs_tabel_user
                 where pic like '%$term%'";
         $query = $oracle->query($sql);

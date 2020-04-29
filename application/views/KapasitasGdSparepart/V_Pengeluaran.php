@@ -101,6 +101,7 @@
                                                             <option value="ADI">ADI</option>
                                                             <option value="RIZAL">RIZAL</option>
                                                             <option value="DIKA">DIKA</option>
+                                                            <option value="DINAR">DINAR</option>
                                                         </select> <?php }?>
                                                         </td>
                                                         <td class="<?= $td?>"><?= $val['URGENT']?>  <?= $val['BON'] ?></td>
