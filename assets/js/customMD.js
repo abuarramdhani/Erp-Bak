@@ -151,7 +151,7 @@ function approveMD() {
 //       $('#MyModal2').modal('hide');
 //     })
   } else {
-    if (pengecekan == 1) {
+    if (pengecekan == 0) {
       $.ajax({
         url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
         type: 'POST',
