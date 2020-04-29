@@ -1,4 +1,3 @@
-
 var ajax1  = null;
 var ajax2  = null;
 var ajax3  = null;
@@ -140,17 +139,17 @@ function approveMD() {
     }).then(function() {
       $('#MyModal2').modal('hide');
     })
-  } else if (plat_number === '') {
-    Swal.fire({
-      position: 'middle',
-      type: 'error',
-      title: 'Plat Nomor Kosong!',
-      text: 'Silahkan hubungi pembelian',
-      showConfirmButton: false,
-      timer: 2500
-    }).then(function() {
-      $('#MyModal2').modal('hide');
-    })
+//   } else if (plat_number === '') {
+//     Swal.fire({
+//       position: 'middle',
+//       type: 'error',
+//       title: 'Plat Nomor Kosong!',
+//       text: 'Silahkan hubungi pembelian',
+//       showConfirmButton: false,
+//       timer: 2500
+//     }).then(function() {
+//       $('#MyModal2').modal('hide');
+//     })
   } else {
     if (pengecekan == 1) {
       $.ajax({
