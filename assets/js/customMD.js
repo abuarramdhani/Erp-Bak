@@ -151,7 +151,7 @@ function approveMD() {
 //       $('#MyModal2').modal('hide');
 //     })
   } else {
-    if (pengecekan == 0) {
+    if (pengecekan == 1) {
       $.ajax({
         url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
         type: 'POST',
@@ -166,7 +166,7 @@ function approveMD() {
         },
         success: function(result) {
           // window.alert(result);
-          if (result == 1) {
+        //   if (result == 1) {
             // window.alert('test');
             Swal.fire({
               position: 'middle',
@@ -203,16 +203,16 @@ function approveMD() {
                 })
               }
             })
-          } else {
-            // window.alert('test_fail');
-            Swal.fire({
-              position: 'middle',
-              type: 'danger',
-              title: 'Failed..!!!',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          }
+        //   } else {
+        //     // window.alert('test_fail');
+        //     Swal.fire({
+        //       position: 'middle',
+        //       type: 'danger',
+        //       title: 'Failed..!!!',
+        //       showConfirmButton: false,
+        //       timer: 1500
+        //     })
+        //   }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
