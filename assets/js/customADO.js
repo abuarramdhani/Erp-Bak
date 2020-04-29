@@ -261,6 +261,22 @@ $( () => {
         let fail     = 'Gagal Menyimpan Data'
         swalADOQuestionAjax(question, success, fail, url, data)
     })
+    
+    $('.btnADOCreateDPB').on('click', function () {
+        let data = {
+            prNumber              : $('.spnADOPRNumber').html(),
+            vehicleCategory       : $('.txtADOVehicleCategory').val(),
+            vehicleId             : $('.txtADOVehicleIdentity').val(),
+            driverName            : $('.txtADODriverName').val(),
+            driverPhone           : $('.txtADOExpeditionVendor').val(),
+            additionalInformation : $('.txtADOAdditionalInformation').val()
+        }
+        let url      = `${baseurl}ApprovalDO/ListPR/saveDetail`
+        let question = 'Simpan Data Ini?'
+        let success  = 'Berhasil Menyimpan Data'
+        let fail     = 'Gagal Menyimpan Data'
+        swalADOQuestionAjax(question, success, fail, url, data)
+    })
 
     $('.btnADOAddNewRow').on('click', function () {
         let rownum = dataTableADODetailList.rows().count() + 1
