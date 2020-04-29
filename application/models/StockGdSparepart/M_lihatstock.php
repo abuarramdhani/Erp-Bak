@@ -14,7 +14,7 @@ class M_lihatstock extends CI_Model
         FROM (SELECT   aa.item, aa.description, aa.uom,
                        NVL (SUM (aa.qty_in), 0) sum_qty_in,
                        NVL (SUM (aa.qty_out), 0) sum_qty_out,
-                       NVL (SUM (aa.qty_out1), 0) sum_qty_out1, aa.onhand, aa.MIN,
+                       NVL (SUM (aa.qty_out1), 0) sum_qty_out1, aa.onhand, aa.att, aa.MIN,
                        aa.MAX, aa.subinv, aa.lokasi
                   FROM (SELECT msib.segment1 item, msib.description,
                                mmt.transaction_uom uom,
@@ -31,6 +31,7 @@ class M_lihatstock extends CI_Model
                                  WHERE mmt_out.transaction_id = mmt.transaction_id
                                    AND mmt_out.transaction_quantity LIKE '-%') qty_out1,
                                khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) onhand,
+                               khs_inv_qty_att (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) att,
                                ksm.MIN, ksm.MAX, mmt.subinventory_code subinv,
                                mmt.transaction_date, mmt.transaction_type_id,
                                mtt.transaction_type_name,
@@ -65,6 +66,7 @@ class M_lihatstock extends CI_Model
                        aa.description,
                        aa.uom,
                        aa.onhand,
+                       aa.att,
                        aa.MIN,
                        aa.MAX,
                        aa.subinv,
@@ -74,6 +76,7 @@ class M_lihatstock extends CI_Model
                      msib.primary_uom_code uom, NVL (NULL, 0) sum_qty_in,
                      NVL (NULL, 0) sum_qty_out,NVL (NULL, 0) sum_qty_out1,
                      khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) onhand,
+                     khs_inv_qty_att (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) att,
                      ksm.MIN, ksm.MAX, msi.secondary_inventory_name subinv,
                      (SELECT lok.lokasi
                         FROM khsinvlokasisimpan lok

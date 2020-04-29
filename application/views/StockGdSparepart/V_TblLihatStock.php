@@ -18,6 +18,7 @@
                 <th>In</th>
                 <th>Out</th>
                 <th>Onhand</th>
+                <th>ATT</th>
                 <th>Min</th>
                 <th>Max</th>
                 <th>Lokasi Simpan</th>
@@ -54,6 +55,7 @@
                 <td class="<?= $td?>"><input type="hidden" id="in<?= $i?>" value="<?= $val['SUM_QTY_IN']?>"><?= $val['SUM_QTY_IN']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="out<?= $i?>" value="<?= $val['SUM_QTY_OUT1']?>"><?= $val['SUM_QTY_OUT']?></td>
                 <td class="<?= $td?>" style="font-weight:bold"><input type="hidden" id="onhand<?= $i?>" value="<?= $val['ONHAND']?>"><?= $val['ONHAND']?></td>
+                <td class="<?= $td?>"><input type="hidden" id="att<?= $i?>" value="<?= $val['ATT']?>"><?= $val['ATT']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="min<?= $i?>" value="<?= $val['MIN']?>"><?= $val['MIN']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="max<?= $i?>" value="<?= $val['MAX']?>"><?= $val['MAX']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="alamat<?= $i?>" value="<?= $val['LOKASI']?>"><?= $val['LOKASI']?></td>
@@ -64,7 +66,7 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-6">
+<div class="col-md-12">
     <table class="table" style="width: 100%;">
         <tr>
             <td colspan="2" style="font-weight:bold">Keterangan :</td>
@@ -72,12 +74,8 @@
         <tr>
             <td class="bg-danger"></td>
             <td> Kondisi jika onhand < MIN</td>
-        </tr>
-        <tr>
             <td class="bg-warning"></td>
             <td> Kondisi jika onhand < average : 2</td>
-        </tr>
-        <tr>
             <td class="bg-success"></td>
             <td> Kondisi jika onhand > MAX</td>
         </tr>

@@ -69,9 +69,9 @@ class C_MinMax extends CI_Controller
 				   if ($i != 1 && $i != 2) {
 					   $item[] = $row['B'];
 					   $desc[] = $row['C'];
-					   $uom[] = $row['D'];
-					   $min[] = $row['E'];
-					   $max[] = $row['F'];
+					   $min[] = $row['D'];
+					   $max[] = $row['E'];
+					   $uom[] = $row['F'];
 				   }
 				   $i++;
 			  }
@@ -158,13 +158,8 @@ class C_MinMax extends CI_Controller
 			$style2 = array(
 				'alignment' => array(
 					'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-				),
-				'borders' => array(
-					'top' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
-					'right' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
-					'bottom' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-					'left' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
-				)
+				),'left' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+				
 			);
 
 			//TITLE
