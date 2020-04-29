@@ -46,7 +46,7 @@
 													<input type="radio" name="rdbJenis" value="1"> Reguler
 												</div>
 												<div class="col-lg-2">
-													<input type="radio" name="rdbJenis" value="2"> SP 3
+													<input type="radio" name="rdbJenis" value="2"> SP 3 (H, J, K, P, T)
 												</div>
 												<!--<div class="col-lg-2">
 													<input type="radio" name="rdbJenis" value="3"> A & B Keluar

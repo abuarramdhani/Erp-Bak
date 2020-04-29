@@ -39,7 +39,7 @@ class M_thrpekerja extends CI_Model
 				on tp.kodesie = ts.kodesie
 				left join hrd_khs.torganisasi ot 
 				on tp.kd_jabatan = ot.kd_jabatan
-				where left(tp.noind,1) in ('A', 'B', 'H', 'J', 'K', 'P', 'T')
+				where left(tp.noind,1) in ('H', 'J', 'K', 'P', 'T')
 				and tp.keluar = '0'
 				and tp.akhkontrak >= ?
 				and noind in (
@@ -49,7 +49,7 @@ class M_thrpekerja extends CI_Model
 					and ? between tanggal_awal_berlaku and tanggal_akhir_berlaku
 				)
 				order by tp.noind	";
-		return $this->personalia->query($sql,array($tgl,$tgl))->result_array();
+		return $this->personalia->query($sql,array($tgl_lebaran,$tgl_lebaran))->result_array();
 	}
 
 	function getPekerjaReguler($tgl_lebaran,$tgl_puasa){
