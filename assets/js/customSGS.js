@@ -63,20 +63,12 @@ function getLihatStock(th) {
 		var kode_awal 	= $('#kode_awal').val();
 		var qty_atas 	= $('#qty_atas').val();
 		var qty_bawah 	= $('#qty_bawah').val();
-		var unit 		= document.getElementsByName('unit');
 
-		for (var i = 0, length = unit.length; i < length; i++) {
-			if (unit[i].checked) {
-				var unit2 = unit[i].value; 
-			}
-		  }
-		console.log(unit2);
-		
 		var request = $.ajax({
 			url: baseurl+'StockGdSparepart/LihatStock/searchData',
 			data: {
                 tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal,
-				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah, unit2 : unit2
+				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah
 			},
 			type: "POST",
 			datatype: 'html'
@@ -88,6 +80,33 @@ function getLihatStock(th) {
 			$('#tb_lihatstock').html(result);
 		});
 	});		
+}
+
+function getLihatStock2(no) {
+		var tglAw 		= $('#tglAwal').val();
+		var tglAk 		= $('#tglAkhir').val();
+		var subinv 		= $('#subinv').val();
+		var kode_brg 	= $('#kodestockgdsp').val();
+		var kode_awal 	= $('#kode_awal').val();
+		var qty_atas 	= $('#qty_atas').val();
+		var qty_bawah 	= $('#qty_bawah').val();
+		var unit 		= $('#unit'+no).val();
+		
+		var request = $.ajax({
+			url: baseurl+'StockGdSparepart/LihatStock/searchData2',
+			data: {
+                tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal,
+				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah, unit : unit
+			},
+			type: "POST",
+			datatype: 'html'
+		});
+		$('#tb_lihatstock').html('');
+		$('#tb_lihatstock').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"><br/></center>' );
+			
+		request.done(function(result){
+			$('#tb_lihatstock').html(result);
+		});
 }
 
 function modalHistory(no) {
@@ -212,7 +231,7 @@ $(document).ready(function(){
             modifier: {
                     selected: true,
             },
-            columns: [0, 2, 3, 4, 5],
+            columns: [0, 2, 3, 4, 5, 6],
 
 		},
         }        
