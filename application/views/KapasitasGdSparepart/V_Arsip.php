@@ -2,8 +2,25 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
      <script>
          $(document).ready(function () {
-            $('.tbltrack').dataTable({
+            $('.tblarsipkgs').dataTable({
                 "scrollX": true,
+                "searching": true,
+                "processing": true, //Feature control the processing indicator.
+                "serverSide": true, //Feature control DataTables' server-side processing mode.
+                "order": [], //Initial no order.
+                // Load data for the table's content from an Ajax source
+                "ajax": {
+                    "url": "<?php echo site_url('KapasitasGdSparepart/Arsip/cari_data')?>",
+                    "type": "POST",
+                    // "dataSrc": ""
+                },
+                //Set column definition initialisation properties.
+                "columnDefs": [
+                { 
+                    "targets": [ 0 ], //first column / numbering column
+                    "orderable": false, //set not orderable
+                },
+                ],
             });
          });
     </script>
@@ -25,7 +42,7 @@
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
                                 <a class="btn btn-default btn-lg"
-                                    href="<?php echo site_url('MonitoringPelayananSPB/Tracking/');?>">
+                                    href="<?php echo site_url('MonitoringPelayananSPB/Arsip/');?>">
                                     <i class="icon-wrench icon-2x">
                                     </i>
                                     <span>
@@ -48,7 +65,7 @@
                                 <div class="col-md-12">
                                 <div class="panel-body">
                                     <div class="table-responsive" >
-                                        <table class="datatable table table-bordered table-hover table-striped text-center tbltrack" style="width: 100%;">
+                                        <table class="datatable table table-bordered table-hover table-striped text-center tblarsipkgs" style="width: 100%;">
                                             <thead class="bg-black">
                                                 <tr>
                                                     <th>No</th>
@@ -76,41 +93,6 @@
                                                     <th>Edit Coly</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <?php $i=0; $no=1; foreach($data as $val){ 
-                                                    if ($val['URGENT'] != '') {
-                                                        $td = 'bg-danger';
-                                                    }else{
-                                                        $td = '';
-                                                    }
-                                                    ?>
-                                                    <tr id="baris<?= $no?>">
-                                                        <td class="<?= $td?>" ><?= $no; ?></td>
-                                                        <td class="<?= $td?>"><?= $val['MTRL']?></td>
-                                                        <td class="<?= $td?>"><?= $val['JAM_INPUT']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nospb<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                        <td class="<?= $td?>"><?= $val['JUMLAH_ITEM']?></td>
-                                                        <td class="<?= $td?>"><?= $val['JUMLAH_PCS']?></td>
-                                                        <td class="<?= $td?>"><?= $val['MULAI_PELAYANAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['SELESAI_PELAYANAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['WAKTU_PELAYANAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['PIC_PELAYAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['MULAI_PENGELUARAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['SELESAI_PENGELUARAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['WAKTU_PENGELUARAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['PIC_PENGELUARAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['MULAI_PACKING'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['SELESAI_PACKING'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['WAKTU_PACKING'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['PIC_PACKING'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT'] ?>  <?= $val['BON'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['CANCEL'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['COLY'] ?></td>
-                                                        <td class="<?= $td?>"><button type="button" class="btn btn-md bg-teal" onclick="editColy(<?= $no?>)">Edit Coly</button></td>
-                                                    </tr>
-                                                <?php $no++; $i++;  }?>
-                                            </tbody>
                                         </table>
                                     </div>
                                     </div>
