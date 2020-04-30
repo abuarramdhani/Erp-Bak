@@ -1103,15 +1103,23 @@ class C_Order extends CI_Controller
 
       	$data['seksi'] 		= $this->M_order->getSeksi($noind);
       	// print_r($data['seksi']);exit();
-      	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
 
       	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
       	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
       	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+      	$refjabatan = $this->M_order->getTrefjabatan($noind);
+      	$kodesie = array_column($refjabatan, 'kodesie');
+      	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
       	$tgl = date('Y-m');
       	$data['inputStandar'] = $this->M_order->getInputstd2($tgl, $kodesie);
-      	// print_r($data['inputStandar']);exit();
+      	$actInputStd = array_unique(array_column($data['inputStandar'], 'kodesie'));
+      	$test = array_filter($refjabatan, function($elem) use($actInputStd){
+      		return in_array($elem['kodesie'], $actInputStd);
+      	});
+      	$data['refseksi'] = $test;
+      	// echo "<pre>";
+      	// print_r($test);exit();
       	$n = substr($noind, 0,1);
       	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'T0007') {
       		$this->load->view('V_Header',$data);
