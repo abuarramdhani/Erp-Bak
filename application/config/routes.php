@@ -4243,3 +4243,9 @@ $route['ImportToolRoom/Import/(:any)/(:any)']	= 'ImportToolRoom/C_Import/$1/$2';
 $route['CekReceiptEcommerce']			= 'CekReceiptEcommerce/C_index';
 $route['CekReceiptEcommerce/List']		= 'CekReceiptEcommerce/C_index/index';
 $route['CekReceiptEcommerce/exportExcel']    = 'CekReceiptEcommerce/C_index/exportExcel';
+
+//------------------------------------- Check PPh Pusat Dan Cabang---------------------------------//
+$route['AccountPayables/CheckPPhPusatDanCabang/Upload'] = 'CheckPPHPusatDanCabang/MainMenu/C_Upload';
+$route['AccountPayables/CheckPPhPusatDanCabang/Upload/(:any)'] = 'CheckPPHPusatDanCabang/MainMenu/C_Upload/$1';
+$route['AccountPayables/CheckPPhPusatDanCabang/List'] = 'CheckPPHPusatDanCabang/MainMenu/C_List';
+$route['AccountPayables/CheckPPhPusatDanCabang/List/(:any)'] = 'CheckPPHPusatDanCabang/MainMenu/C_List/$1';
