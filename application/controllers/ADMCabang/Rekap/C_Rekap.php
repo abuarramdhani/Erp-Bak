@@ -34,9 +34,9 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function index(){
-		// if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-		// 	echo "Prohibited";exit();
-		// }
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
+			echo "Prohibited";exit();
+		}
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'ADM Cabang';
@@ -55,9 +55,9 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function pekerja(){
-		// if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-		// 	echo "Prohibited";exit();
-		// }
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
+			echo "Prohibited";exit();
+		}
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Rekap Per Pekerja';
