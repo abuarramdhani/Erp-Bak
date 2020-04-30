@@ -58,9 +58,9 @@ class C_Monitoring extends CI_Controller
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 
-		// if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-		// 	echo "Prohibited";exit();
-		// }
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
+			echo "Prohibited";exit();
+		}
 
 		$data['Title'] = 'Monitoring Presensi Tahunan';
 		$data['Menu'] = 'Lihat Monitoring Presensi Tahunan';
@@ -188,9 +188,9 @@ class C_Monitoring extends CI_Controller
 	public function MonBulanan(){
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
-		// if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
-		// 	echo "Prohibited";exit();
-		// }
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
+			echo "Prohibited";exit();
+		}
 
 		$data['Title'] = 'Monitoring Presensi Bulanan';
 		$data['Menu'] = 'Lihat Monitoring Presensi Bulanan';

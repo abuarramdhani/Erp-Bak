@@ -71,14 +71,15 @@
 										echo "<td></td>";
 									}
 
-								 	if (isset($shi['ket']) and !empty($shi['ket'])) {
+									$ketket = '';
+									if (isset($shi['ket']) and !empty($shi['ket'])) {
 										foreach ($shi['ket'] as $ket) {
-											echo "<td>$ket</td>";
+												$ketket .= $ket.'<br>';
 										}
-									}else{
+										echo "<td>".$ketket."</td>";
+									}else if(empty($shi['ket'])){
 										echo "<td></td>";
-									}
-								?>
+									} ?>
 							</tr>
 						<?php endforeach; ?>
 					</table>

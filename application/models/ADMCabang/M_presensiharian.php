@@ -112,7 +112,7 @@ class M_presensiharian extends Ci_Model
 		}
 		else
 		{
-			$sql = "select waktu
+			$sql = "select distinct waktu
 				from \"FrontPresensi\".tpresensi tp
 				where tp.noind = '$noind'
 				and tp.tanggal = '$tgl'
@@ -139,7 +139,7 @@ class M_presensiharian extends Ci_Model
 		$sql = "select sum(point) point
 				from \"Presensi\".tdatatim
 				where noind = '$noind'
-				and tanggal = '$tgl'";
+				and tanggal = '$tgl' and point != '0'";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
@@ -160,7 +160,7 @@ class M_presensiharian extends Ci_Model
 	public function getKeteranganByNoind($noind,$tgl){
 		$sql = "select
 					case when (
-						select point
+						select sum(point)
 						from \"Presensi\".tdatatim
 						where noind = '$noind'
 						and tanggal = '$tgl'
