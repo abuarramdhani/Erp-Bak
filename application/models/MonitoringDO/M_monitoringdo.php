@@ -245,7 +245,7 @@ class M_monitoringdo extends CI_Model
       $subinv = $this->session->datasubinven;
       $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
                                 mtrl.inventory_item_id, msib.description, mtrl.quantity,
-                                khs_stock_delivery (mtrl.inventory_item_id,102,'$subinv') + mtrl.quantity av_to_res
+                                khs_inv_qty_atr (102,mtrl.inventory_item_id,'$subinv','','') av_to_res
                            FROM mtl_txn_request_lines mtrl,
                                 mtl_txn_request_headers mtrh,
                                 mtl_system_items_b msib
