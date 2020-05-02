@@ -4249,3 +4249,10 @@ $route['AccountPayables/CheckPPhPusatDanCabang/Upload'] = 'CheckPPHPusatDanCaban
 $route['AccountPayables/CheckPPhPusatDanCabang/Upload/(:any)'] = 'CheckPPHPusatDanCabang/MainMenu/C_Upload/$1';
 $route['AccountPayables/CheckPPhPusatDanCabang/List'] = 'CheckPPHPusatDanCabang/MainMenu/C_List';
 $route['AccountPayables/CheckPPhPusatDanCabang/List/(:any)'] = 'CheckPPHPusatDanCabang/MainMenu/C_List/$1';
+
+// ---------------------------------------------- Cetak BOM Routing ---------------------------------------------//
+
+$route['CetakBOMResources'] 						= 'CetakBOMRouting/C_Index';
+
+$route['CetakBOMResources/Cetak'] 			= 'CetakBOMRouting/C_Cetakbom';
+$route['CetakBOMResources/Cetak/(:any)'] 	= 'CetakBOMRouting/C_Cetakbom/$1';
