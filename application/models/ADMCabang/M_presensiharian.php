@@ -235,6 +235,28 @@ class M_presensiharian extends Ci_Model
 		return $result->result_array();
 	}
 
+	public function getCountWaktu($noind,$tgl){
+		$tanggal = explode(" - ", $tgl);
+		$tgl1 = date('Y-m-d', strtotime($tanggal[0]));
+		$tgl2 = date('Y-m-d', strtotime($tanggal[1]));
+		if($noind=='L8001')
+		{
+			$sql = "SELECT max(waktu)
+				from (select count(waktu) as waktu from \"Presensi\".tprs_shift2 tp
+				where tp.noind = '$noind'
+				and tp.tanggal between '$tgl1' and '$tgl2' group by tp.tanggal) as waktu";
+		}
+		else
+		{
+			$sql = "SELECT max(waktu)
+				from (select count(waktu) as waktu from \"FrontPresensi\".tpresensi tp
+				where tp.noind = '$noind'
+				and tp.tanggal between '$tgl1' and '$tgl2' group by tp.tanggal) as waktu";
+		}
+		$result = $this->personalia->query($sql);
+		return $result->row()->max;
+	}
+
 	public function getShiftArrayNoind($noind,$tgl){
 		$tanggal = explode(" - ", $tgl);
 		$tgl1 = $tanggal[0];
