@@ -229,10 +229,10 @@ class M_monitoringdo extends CI_Model
     public function getDO()
     {
         // $datacustom = '24-Mar-20';
-        $response = $this->oracle->query("SELECT DISTINCT kqsa.*
-                                                     FROM khs_qweb_siap_assign1 kqsa
-                                                    WHERE TRUNC (kqsa.creation_date) = TRUNC (SYSDATE)
-                                                 ORDER BY kqsa.creation_date")->result_array();
+        $response = $this->oracle->query("SELECT *
+                                            FROM khs_qweb_siap_assign1 kqsa
+                                           WHERE TRUNC (kqsa.creation_date) = TRUNC (SYSDATE)
+                                        ORDER BY kqsa.no_pr, kqsa.header_id")->result_array();
         if (empty($response)) {
             $response = null;
         }
