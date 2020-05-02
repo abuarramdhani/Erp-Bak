@@ -213,7 +213,7 @@ class C_PresensiHarian extends CI_Controller
 
 					if (count($presensi) < $presensi_loop) {
 						foreach ($new_ket as $newKet) {
-							$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+$e-3,$i,$newKet);
+							$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+($presensi_loop-count($presensi)),$i,$newKet);
 							$j++;
 						}
 					}else {
