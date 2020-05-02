@@ -158,8 +158,12 @@ class C_PresensiHarian extends CI_Controller
 
 		$i = 6;
 		$k = 3;
+
 		foreach ($pekerja as $val) {
 			$i = $i+1;
+
+			$presensi_loop = $this->M_presensiharian->getCountWaktu($val['noind'],$tanggal);// i
+
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,$i,'Noind');
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,$i,$val['noind']);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,$i+1,'Nama');
@@ -169,7 +173,15 @@ class C_PresensiHarian extends CI_Controller
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,$i+3,'Tanggal');
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,$i+3,'Shift');
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2,$i+3,'Point');
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3,$i+3,'Waktu 1');
+			if (empty($presensi_loop)) {
+				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i+3,'Waktu');
+				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i+3,'Keterangan');
+			}else {
+				for ($e=1; $e <= $presensi_loop; $e++) {
+					$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2+$e, $i+3,'Waktu '.$e);
+				}
+				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2+$e, $i+3,'Keterangan');
+			}
 
 			$i = $i+4;
 			$shift = $this->M_presensiharian->getShiftByNoind($val['noind'],$tanggal);
@@ -186,9 +198,7 @@ class C_PresensiHarian extends CI_Controller
 				}
 				if (!empty($presensi)) {
 					$j = 3;
-					$o = 1;
 					foreach ($presensi as $waktu) {
-						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i-1,'Waktu '.$o++);
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i,$waktu['waktu']);
 						$j++;
 					}
@@ -201,16 +211,21 @@ class C_PresensiHarian extends CI_Controller
 						}
 					}
 
-					$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j, $i-1,'Keterangan');
-					foreach ($new_ket as $newKet) {
-						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i,$newKet);
-						$j++;
+					if (count($presensi) < $presensi_loop) {
+						foreach ($new_ket as $newKet) {
+							$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+$e-3,$i,$newKet);
+							$j++;
+						}
+					}else {
+						foreach ($new_ket as $newKet) {
+							$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i,$newKet);
+							$j++;
+						}
 					}
 				}else{
 					$j = 4;
-					$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j, $i-1,'Keterangan');
 					foreach ($ket as $keterangan) {
-						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j,$i,$keterangan['keterangan']);
+						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+$e-2,$i,$keterangan['keterangan']);
 						$j++;
 					}
 				}

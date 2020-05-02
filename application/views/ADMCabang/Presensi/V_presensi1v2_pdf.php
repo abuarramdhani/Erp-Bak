@@ -4,6 +4,9 @@
 	<title></title>
 </head>
 <body>
+	<?php
+		set_time_limit(0);
+		ini_set("memory_limit", "2048M"); ?>
 	<div style="width: 100%">
 		<div style="width: 100%">
 
@@ -47,20 +50,13 @@
 											 echo "<td>$wkt</td>";
 											 $angka++;
 										 }
-										 for ($k=0; $k < ($max - count($shi['wkt'])) ; $k++) {
-											 echo "<td></td>";
-										 }
+									 }else if($max == '0' || $angka = '0'){
+										 echo "<td></td>";
 									 }
 
-									 if ($angka < $key['max']) {
-										 for ($i=0; $i < $key['max'] - $angka; $i++) {
+									 if ($angka < $max) {
+										 for ($i=0; $i < $max - $angka; $i++) {
 											 echo "<td></td>";
-										 }
-									 }
-
-									 if ($key['max'] == '0') {
-										 for ($e=0; $e < $max; $e++) {
-											echo "<td></td>";
 										 }
 									 }
 
