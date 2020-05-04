@@ -112,7 +112,7 @@ AND msib.segment1 = '$komp'
 
    public function getdatapdf($kode,$seksi) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "SELECT DISTINCT msib.segment1 item, msib.description,
+    $sql = "SELECT DISTINCT bor.alternate_routing_designator, msib.segment1 item, msib.description,
                 bd.department_code department, br.resource_code,
                 bores.usage_rate_or_amount, bores.assigned_units,
                 (SELECT crc.resource_rate
