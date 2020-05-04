@@ -130,6 +130,7 @@ class C_Cetakbom extends CI_Controller
 			$array_pdf[$i]['NO_MESIN'] = $pdf['NO_MESIN'];
 			$array_pdf[$i]['USAGE_RATE_OR_AMOUNT'] = $pdf['USAGE_RATE_OR_AMOUNT'];
 			$array_pdf[$i]['ASSIGNED_UNITS'] = $pdf['ASSIGNED_UNITS'];
+			$array_pdf[$i]['ALTERNATE_ROUTING'] = $pdf['ALTERNATE_ROUTING_DESIGNATOR'];
 			$array_pdf[$i]['CYCLE_TIME'] = round($cycletime,2);
 			$array_pdf[$i]['TARGET'] = floor($target);
 			$array_pdf[$i]['INVERSE'] = round($inverse,3);
@@ -146,7 +147,7 @@ class C_Cetakbom extends CI_Controller
 		ob_start();
 		$this->load->library('pdf');
     	$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 25, 15, 3, 3); //----- A5-L
+    	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 27, 15, 3, 3); //----- A5-L
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'BOM_Routing_'.$tglNama.'.pdf';
     	$head = $this->load->view('CetakBOMRouting/V_CetakanHead', $data, true);	

@@ -12,14 +12,14 @@
            <img width="5%" style="height: 100px; width: 100px"
             src="<?= base_url('assets/img/logo.png') ;?>" style="display:block;">
           </td>
-          <td rowspan="4" width="25%" style="font-size: 11px; text-align: left; padding-left: 10px;">
+          <td rowspan="4" width="25%" style="font-size: 11px; text-align: left; padding-left: 5px;width: 22%">
           CV KARYA HIDUP SENTOSA<br>
           YOGYAKARTA <br>
           Departement Produksi
           </td>
-			<td style="border: 1px solid black;border-collapse: collapse; font-weight: bold;font-size: 10pt;text-align: center; background-color: yellow">PRODUCTION ENGINEERING</td>
-			<td style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px"> Doc. No.</td>
-			<td style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;text-align: left;width: 30%"></td>
+			<td style="border: 1px solid black;border-collapse: collapse; font-weight: bold;font-size: 10pt;text-align: center; background-color: yellow;width: 35%">PRODUCTION ENGINEERING</td>
+			<td style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;width: 7%">Doc. No.</td>
+			<td style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;text-align: left;width: 25%"></td>
 		</tr>
 		<tr>	
 			<td rowspan="3"  style="border: 1px solid black;border-collapse: collapse;font-size: 14pt;padding-left: 5px;font-weight: bold; text-align: center;"> RESOURCE & BoM</td>
@@ -29,7 +29,7 @@
 		</tr>
 
 		<tr>
-			<td  style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 5px">By </td>
+			<td  style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px">By </td>
 			<td  style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;text-align: left;"> <?=$user?> - <?=$name?></td>
 
 		</tr>
