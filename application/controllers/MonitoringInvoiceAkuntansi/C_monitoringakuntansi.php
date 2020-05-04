@@ -559,6 +559,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$action_date = date('d-m-Y H:i:s');//00
 		$note_admin = $this->input->post('note_admin');//00
 		$invoice_category = $this->input->post('invoice_category');//00
+		$jenis_dokumen = $this->input->post('jenis_dokumen');//00
 		
 		// ini fungsi login, hak ases
 		$noinduk = $this->session->userdata['user'];
@@ -572,7 +573,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		
 		$amount = str_replace(',', '', $invoice_amount); //478636
 		
-		$add2['invoice'] = $this->M_monitoringakuntansi->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top);
+		$add2['invoice'] = $this->M_monitoringakuntansi->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top,$jenis_dokumen);
 		
 		// foreach ($po_number as $key => $value) {
 		$this->M_monitoringakuntansi->savePoNumber($po_number,$add2['invoice'][0]['INVOICE_ID']);

@@ -132,9 +132,19 @@
 												<option value="N">NO</option>
 											</select>
 										</td>
-										
 									</tr>
-									
+									<tr>
+										<td>
+											<span><label>Jenis Dokumen</label></span>
+										</td>
+										<td>
+											<select name="jenis_dokumen" id="jenis_dokumen" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<option value="">Pilih</option>
+												<option value="Asli">Asli</option>
+												<option value="Copy">Copy</option>
+											</select>
+										</td>
+									</tr>
 									<tr>
 										<td>
 											<span><label>Info</label></span>
