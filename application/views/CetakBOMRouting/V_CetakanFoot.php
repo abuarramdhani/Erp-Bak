@@ -3,7 +3,7 @@
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;vertical-align: top;padding-left: 7px;font-size: 12px;width: 60%" rowspan="3">Catatan Umum : </td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">Prepared</td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">Checked</td>
-		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">Aproved</td>
+		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">Approved</td>
 
 	</tr>
 	<tr>
