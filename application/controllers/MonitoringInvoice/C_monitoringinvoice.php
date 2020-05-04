@@ -230,6 +230,8 @@ class C_monitoringinvoice extends CI_Controller{
 		$invoice_category = $this->input->post('invoice_category');
 		$nominal_dpp = $this->input->post('nominal_dpp');
 		$jenis_jasa = $this->input->post('jenis_jasa');
+		$jenis_dokumen = $this->input->post('jenis_dokumen');
+		
 		// ini fungsi login, hak ases
 		$noinduk = $this->session->userdata['user'];
 		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
@@ -247,7 +249,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$vendor = str_replace("'", "", $vendor_name);
 		$item_desc = str_replace("'", "", $item_description);
 		$pajak = str_replace(",", "", $nominal_dpp);
-		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_number,$vendor[0],$last_admin_date,$note_admin,$invoice_category,$pajak,$source_login,$jenis_jasa);
+		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_number,$vendor[0],$last_admin_date,$note_admin,$invoice_category,$pajak,$source_login,$jenis_jasa,$jenis_dokumen);
 		
 		foreach ($po_number as $key => $value) {
 			$add['invoice'] = $this->M_monitoringinvoice->savePoNumber($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$add2['invoice'][0]['INVOICE_ID']);
