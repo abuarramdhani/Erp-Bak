@@ -155,12 +155,30 @@ $(document).ready(function(){
 	$("#catering").change(cekpph);
 	$("#pphverify").click(cekpph);
 
+	$("#cateringBatch").change(cekpphBatch);
+	$("#pphverifyBatch").click(cekpphBatch);
+
 	//CEK STATUS PPH PADA CATERING YANG DIPILIH
 	function cekpph(){
 		$.ajax({
 			type:'POST',
 			data:{id:$("#catering").val()},
 			url:baseurl+"CateringManagement/Receipt/Checkpph",
+			success:function(result)
+			{
+				calculation(result);
+			},
+			error: function() {
+				alert('error');
+			}
+		});
+	};
+
+	function cekpphBatch(){
+		$.ajax({
+			type:'POST',
+			data:{id:$("#cateringBatch").val()},
+			url:baseurl+"CateringManagement/ReceiptBatch/Checkpph",
 			success:function(result)
 			{
 				calculation(result);
@@ -180,6 +198,41 @@ $(document).ready(function(){
 	$("#tbodyFineCatering input").click(checkncalc);
 	$("#tbodyFineCatering select").change(checkncalc);
 	$("#bonus").change(checkncalc);
+
+	$("#orderqtyBatch,#singlepriceBatch,#fineBatch").keyup(checkncalcBatch);
+	$("#orderqtyBatch,#singlepriceBatch,#fineBatch").click(checkncalcBatch);
+	$("#DelFineBatch").click(checkncalcBatch);
+	$("#ReCalculateBatch").click(checkncalcBatch);
+	$("#tbodyFineCateringBatch input").keyup(checkncalcBatch);
+	$("#tbodyFineCateringBatch input").click(checkncalcBatch);
+	$("#tbodyFineCateringBatch select").change(checkncalcBatch);
+	$("#bonusBatch, #slcLocationBatch, orderqtyBatch").change(checkncalcBatch);
+
+	$('#txtDeptQtyBatch1, #txtDeptQtyBatch2, #txtDeptQtyBatch3, #txtDeptQtyBatch4').on('change',function(){
+		var qty1 = $('#txtDeptQtyBatch1').val();
+		var qty2 = $('#txtDeptQtyBatch2').val();
+		var qty3 = $('#txtDeptQtyBatch3').val();
+		var qty4 = $('#txtDeptQtyBatch4').val();
+
+		if (qty1 && qty2 && qty3 && qty4) {
+			total_qty = parseInt(qty1) + parseInt(qty2) + parseInt(qty3) + parseInt(qty4);
+			// console.log(total_qty);
+			$('#orderqtyBatch').val(total_qty);
+		}
+	});
+
+	$('#txtDeptQtyBatch1, #txtDeptQtyBatch2, #txtDeptQtyBatch3, #txtDeptQtyBatch4').on('keyup',function(){
+		var qty1 = $('#txtDeptQtyBatch1').val();
+		var qty2 = $('#txtDeptQtyBatch2').val();
+		var qty3 = $('#txtDeptQtyBatch3').val();
+		var qty4 = $('#txtDeptQtyBatch4').val();
+
+		if (qty1 && qty2 && qty3 && qty4) {
+			total_qty = parseInt(qty1) + parseInt(qty2) + parseInt(qty3) + parseInt(qty4);
+			// console.log(total_qty);
+			$('#orderqtyBatch').val(total_qty);
+		}
+	});
 
 	function calculation(pphstatus){
 		var $qty = $('#orderqty').val();
@@ -213,10 +266,94 @@ $(document).ready(function(){
 		$("#total").val($total);
 	};
 
+	function calculationBatch(pphstatus){
+		var $qty = $('#orderqtyBatch').val();
+		var $price = $('#singlepriceBatch').val();
+		var $ordertype = $('#ordertypeBatch').val();
+		var $bonus = $('#bonusBatch').val();
+
+		if($ordertype==2 && $bonus==1){
+			var $bonus_qty = Math.floor($qty/50);
+		} else {
+			var $bonus_qty = 0;
+		}
+
+		var $net = $qty - $bonus_qty;
+		var $calc = $net * $price;
+		var $fine = $('#fineBatch').val();
+		var $est = $calc - $fine;
+
+		if (pphstatus==1){
+			var $pph = Math.ceil((2 / 100) * $est);
+		} else {
+			var $pph = Math.ceil((0 / 100) * $est);
+		}
+
+		var $total = $est - $pph;
+
+		$("#orderbonusBatch").val($bonus_qty);
+		$("#ordernetBatch").val($net);
+		$("#calcBatch").val($calc);
+		$("#pphBatch").val($pph);
+		$("#totalBatch").val($total);
+	};
+
 	//MELAKUKAN CEK PPH SEKALIGUS KALKULASI NILAI AKHIR
 	function checkncalc(){
 		cekpph();
 		calculation();
+	}
+
+	function checkncalcBatch(){
+		cekpphBatch();
+		calculationBatch();
+	}
+
+
+	$('#ordertypeBatch, #cateringBatch, #slcLocationBatch, #TxtOrderDateBatch').on('change',getQtyPerDeptBatch);
+
+	function getQtyPerDeptBatch(){
+		var tipe = $('#ordertypeBatch').val();
+		var catering = $('#cateringBatch').val();
+		var location = $('#slcLocationBatch').val();
+		var orderDate = $('#TxtOrderDateBatch').val();
+
+		if (tipe && catering && location && orderDate) {
+			$.ajax({
+				data  : {tipe: tipe, catering: catering, location: location, date: orderDate},
+				type  : 'GET',
+				url   : baseurl + 'CateringManagement/ReceiptBatch/getQtyPerDeptBatch',
+				error: function(xhr,status,error){
+				console.log(xhr);
+				console.log(status);
+				console.log(error);
+				swal.fire({
+				    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				    html: xhr['responseText'],
+				    type: "error",
+				    confirmButtonText: 'OK',
+				    confirmButtonColor: '#d63031',
+				})
+				},
+				success: function(result){
+					if (result) {
+						obj = JSON.parse(result);
+						// console.log(obj);
+						$('#txtDeptQtyBatch1').val(obj['keuangan']);
+						$('#txtDeptQtyBatch2').val(obj['pemasaran']);
+						$('#txtDeptQtyBatch3').val(obj['produksi']);
+						$('#txtDeptQtyBatch4').val(obj['personalia']);
+						$('#orderqtyBatch').val(parseInt(obj['keuangan']) + parseInt(obj['pemasaran']) + parseInt(obj['produksi']) + parseInt(obj['personalia']));
+					}else{
+						$('#txtDeptQtyBatch1').val('0');
+						$('#txtDeptQtyBatch2').val('0');
+						$('#txtDeptQtyBatch3').val('0');
+						$('#txtDeptQtyBatch4').val('0');
+						$('#orderqtyBatch').val('0');
+					}
+				}
+			})
+		}
 	}
 
 	//Untuk Catering Tambahan Rekap Dinas
@@ -551,6 +688,154 @@ $(document).ready(function(){
 		// $(".singledate:last").data('daterangepicker').setEndDate(startDate)};
 	}
 
+	function AddFineBatch(base){
+		var newgroup = $('<tr>').addClass('clone');
+		var e = jQuery.Event( "click" );
+		e.preventDefault();
+		$("select#finetypeBatch:last").select2("destroy");
+
+		$('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyFineCateringBatch');
+
+		$("select#finetypeBatch").select2({
+			placeholder: "",
+			allowClear : true,
+		});
+
+		$("select#finetypeBatch:last").select2({
+			placeholder: "",
+			allowClear : true,
+		});
+
+			$('.cmsingledate').daterangepicker({
+				    "singleDatePicker": true,
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "locale": {
+				        "format": "DD-MM-YYYY",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});
+
+		$("select#finetypeBatch:last").val("").change();
+		$("input#finepriceBatch:last").val("").change();
+		$("input#fineqtyBatch:last").val("").change();
+
+		$("#DelFineBatch").click(multInputs);
+		$("#tbodyFineCateringBatch input").keyup(finerowall);
+		$("#tbodyFineCateringBatch input").click(finerowall);
+		$("#tbodyFineCateringBatch select").change(finerowall);
+
+		// Function 1 : CALCULATE FINE PER ROW
+		function multInputs() {
+
+			$("tr.clone").each(function () {
+
+				var qty = $('#fineqtyBatch', this).val();
+				var ordertype = $('#ordertypeBatch').val();
+					if(ordertype==2){var bonus_qty = Math.floor(qty/50);}else {var bonus_qty = 0;}
+				var price = $('#finepriceBatch', this).val();
+				var percentage = $('#finetypeBatch', this).val();
+				var total = Math.ceil((qty-bonus_qty)*price*percentage/100);
+				$("#finenominalBatch", this).val(total);
+			});
+
+			var item = document.getElementsByClassName("finenominal");
+			var itemCount = item.length;
+			var total = 0;
+			for(var i = 0; i < itemCount; i++){
+				total = total +  parseInt(item[i].value);
+			}
+			document.getElementById('fineBatch').value = total;
+		}
+
+		// Function 2 : CHECK PPH (COPY)
+		function cekpphalias(){
+			$.ajax({
+				type:'POST',
+				data:{id:$("#cateringBatch").val()},
+				url:baseurl+"CateringManagement/ReceiptBatch/Checkpph",
+				success:function(result)
+				{
+					calculationalias(result);
+				},
+				error: function() {
+					alert('error');
+				}
+			});
+		};
+
+		//FUNCTION 3 : FINAL CALCULATION (COPY)
+		function calculationalias(pphstatus){
+
+			var $qty = $('#orderqtyBatch').val();
+			var $price = $('#singlepriceBatch').val();
+			var $ordertype = $('#ordertypeBatch').val();
+
+			if($ordertype==2){
+				var $bonus_qty = Math.floor($qty/50);
+			}
+			else {
+				var $bonus_qty = 0;
+			}
+
+			var $calc = (($qty-$bonus_qty) * $price);
+			var $fine = $('#fineBatch').val();
+			var $est = $calc - $fine;
+			if (pphstatus==1){
+				var $pph = Math.ceil((2 / 100) * $est);
+			} else {
+				var $pph = Math.ceil((0 / 100) * $est);
+			}
+
+			var $total = $est - $pph;
+
+			$("#calcBatch").val($calc);
+			$("#pphBatch").val($pph);
+			$("#totalBatch").val($total);
+
+		};
+
+		//FUNCTION 4 : RUN ALL FUNCTION
+		function finerowall(){
+			multInputs();
+			cekpphalias();
+			calculationalias();
+		}
+
+	}
+
 	//RECEIPT MANAGEMENT AUTO-ADD-REMOVE ROW
 
 	$(function(){
@@ -562,6 +847,16 @@ $(document).ready(function(){
 		},20);
 		setTimeout(function(){
 		  $('#ReCalculate').click();
+		},15);
+
+		setTimeout(function(){
+		  $('#AddFineBatch').click();
+		},10);
+		setTimeout(function(){
+		  $('#HiddenDelFineBatch').click();
+		},20);
+		setTimeout(function(){
+		  $('#ReCalculateBatch').click();
 		},15);
 	});
 
@@ -671,6 +966,113 @@ $(document).ready(function(){
 	});
 
 	$('#tblPrintpp').DataTable();
+
+	$('#btnProsesPP').on('click',function(){
+		var ppAwal = $('#txtPeriodeCateringAwalPP').val();
+		var ppAkhir = $('#txtPeriodeCateringAkhirPP').val();
+		var ppLokasi = $('#slcLokasiKateringPP').val();
+		var ppJenis = $('#slcJenisPesananPP').val();
+
+		if (ppJenis && ppLokasi && ppAkhir && ppAwal) {
+			$.ajax({
+				data  : {ppjenis: ppJenis, pplokasi: ppLokasi, ppawal: ppAwal, ppakhir: ppAkhir},
+				type  : 'GET',
+				url   : baseurl + 'CateringManagement/PrintPPCatering/getQtyPerDeptBatch',
+				error: function(xhr,status,error){
+					console.log(xhr);
+					console.log(status);
+					console.log(error);
+					swal.fire({
+					    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+					    html: xhr['responseText'],
+					    type: "error",
+					    confirmButtonText: 'OK',
+					    confirmButtonColor: '#d63031',
+					})
+				},
+				success: function(result){
+					if (result) {
+						if (result.search('A PHP Error was encountered') < 0) {
+							obj = JSON.parse(result);
+							console.log(obj);
+							$('#printpp').html("");
+							for (var i = 0; i < obj.length; i++) {
+								console.log(obj[i]);
+								text_row = '<tr>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <select type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control cm_select2" >'
+                                text_row = text_row + '            <option value="' + obj[i]['kode'] + '" selected>' + obj[i]['kode'] + '</option>'
+                                text_row = text_row + '        </select>'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <input value="' + obj[i]['jumlah'] + '" type="text" placeholder="Pp Jumlah" name="txtPpJumlahHeader[]" id="txtPpJumlahHeader" class="form-control hapusaja" />'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <input value="' + obj[i]['satuan'] + '" type="text" placeholder="Pp Satuan" name="txtPpSatuanHeader[]" id="txtPpSatuanHeader" class="form-control hapusaja"  />'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <input value="' + obj[i]['nama'] + obj[i]['katering'] + ' TANGGAL ' + obj[i]['awal'] + ' - ' + obj[i]['akhir'] + ' DEPT ' + obj[i]['dept'] + '" type="text" placeholder="Pp Nama Barang" name="txtPpNamaBarangHeader[]" id="txtPpNamaBarangHeader" class="form-control cm_namaItem" />'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <input value="' + obj[i]['branch'] + '" type="text" placeholder="Pp Branch" name="txtPpBranchHeader[]" id="txtPpBranchHeader" class="form-control cm_branch" />'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <input value="' + obj[i]['cc'] + '" type="text" placeholder="Pp Cost Center" name="txtPpCostCenterHeader[]" id="txtPpCostCenterHeader" class="form-control cm_costCenter" />'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <input type="text" maxlength="10" placeholder="NBD" name="txtPpNbdHeader[]" class="pp-date date form-control hapusaja" data-date-format="yyyy-mm-dd" id="txtPpNbdHeader" />'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <input type="text" placeholder="Pp Keterangan" name="txtPpKeteranganHeader[]" id="txtPpKeteranganHeader" class="form-control hapusaja" />'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td>'
+                                text_row = text_row + '        <input type="text" placeholder="Pp Supplier" name="txtPpSupplierHeader[]" id="txtPpSupplierHeader" class="form-control hapusaja" />'
+                                text_row = text_row + '    </td>'
+                                text_row = text_row + '    <td><a href="" class="btn btn-primary btn-sm delete-row-printpp"><i class="fa fa-minus"></i></a></td>'
+                                text_row = text_row + '</tr>'
+								$('#printpp').append(text_row);
+							}
+
+							$('.cm_select2').select2({
+								allowClear: false,
+								placeholder: "Pp Kodebarang",
+								minimumInputLength: 3,
+								ajax:
+								{
+									url: baseurl+'CateringManagement/PrintPP/kodeItem2',
+									dataType: 'json',
+									delay: 500,
+									data: function (params){
+										return {
+											term: params.term
+										}
+									},
+									processResults: function(data) {
+										return {
+											results: $.map(data, function(obj){
+												return {id: obj.kode_item, text: obj.kode_item};
+											})
+										};
+									}
+								}
+							});
+						}else{
+							swal.fire({
+							    title: "Error",
+							    html: result,
+							    type: "error",
+							    confirmButtonText: 'OK',
+							    confirmButtonColor: '#d63031',
+							})
+						}
+					}else{
+						console.log('KOSONG');
+					}
+				}
+			})
+		}
+	});
+
 	$('#tblDataPesanan').DataTable({
 		"lengthMenu" : [20],
 		 "paging": true,
