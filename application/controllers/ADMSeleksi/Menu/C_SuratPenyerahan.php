@@ -64,8 +64,9 @@ class C_SuratPenyerahan extends CI_Controller
         $kode = $this->input->get('kode');
 
         $explode = explode('|', $kode);
+        $tanggal = date('Y-m-d', strtotime($explode[2]));
 
-        $data['data'] = $this->M_penyerahan->getDataEdit($explode[0], $explode[1]);
+        $data['data'] = $this->M_penyerahan->getDataEdit($explode[0], $explode[1], $tanggal, $explode[3]);
         $data['tempat_makan'] = $this->M_penyerahan->getTempatMakan();
         $data['lokasi'] = $this->M_penyerahan->getLokasi();
         $data['kantor'] = $this->M_penyerahan->getKantor();

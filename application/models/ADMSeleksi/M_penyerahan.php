@@ -124,7 +124,8 @@ class M_penyerahan extends CI_Model {
 						trim(b.noind)||' - '||trim(b.nama) as pekerja,
 						a.kode,
 						trim(a.kodesie) as kodesie,
-						trim(c.seksi) as seksi
+						trim(c.seksi) as seksi,
+						trim(a.noind_baru) as noind_baru
 				FROM \"Surat\".tsurat_penyerahan a
 				LEFT JOIN hrd_khs.tpribadi b on b.noind = a.noind
 				LEFT JOIN hrd_khs.tseksi c on a.kodesie = c.kodesie
@@ -322,7 +323,7 @@ class M_penyerahan extends CI_Model {
 	}
 
 	//Get data untuk edit
-	public function getDataEdit($kode, $noind)
+	public function getDataEdit($kode, $noind, $tanggal_cetak, $noind_baru)
 	{
 		$sql = "SELECT  trim(a.noind) as noind,
 						trim(a.nama) as nama,
@@ -357,11 +358,11 @@ class M_penyerahan extends CI_Model {
 						e.tgl_mulaiik::date,
 						e.tgl_masuk::date,
 						e.jenis_pkj,
-						(SELECT lama_orientasi from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind) as lama_orientasi,
-						(SELECT tgl_diangkat::date from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind) as tgl_diangkat,
+						(SELECT lama_orientasi from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind and tgl_masuk::date = '$tanggal_cetak') as lama_orientasi,
+						(SELECT tgl_diangkat::date from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind and tgl_masuk::date = '$tanggal_cetak') as tgl_diangkat,
 						f.*,
 						case when a.kd_pkj != '' then (SELECT pekerjaan from hrd_khs.tpekerjaan where kdpekerjaan = a.kd_pkj) else '' end as pekerjaan,
-						(SELECT trim(pola_kombinasi) from \"Presensi\".tpolapernoind d where d.noind = a.noind and d.kodesie = a.kodesie) as pola_shift
+						(SELECT trim(pola_kombinasi) from \"Presensi\".tpolapernoind d where d.noind = a.noind and d.kodesie = a.kodesie and d.noind_baru = '$noind_baru') as pola_shift
 				FROM hrd_khs.tpribadi a
 				LEFT JOIN \"Adm_Seleksi\".tberkas b on a.nik = b.nik or a.nama = b.nama
 				LEFT JOIN \"Surat\".tsurat_penyerahan e on e.kodelamaran = b.kodelamaran

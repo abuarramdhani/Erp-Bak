@@ -1532,7 +1532,7 @@ $(document).ready(function () {
                             <tbody>
                             ${
                                 res.map(a => {
-                                    return `<tr><td><input type="checkbox" class="childCekAll" value="${a.kode}"><td class="text-center"><a href="${baseurl+'AdmSeleksi/SuratPenyerahan/EditData?kode='+a.kode+'|'+a.noind}" type="button" class="btn btn-primary"><i class="fa fa-pencil-square"></i></a><td>${a.pekerja}<td>${a.seksi}</td></tr>`
+                                    return `<tr><td><input type="checkbox" class="childCekAll" value="${a.kode}"><td class="text-center"><a href="${baseurl+'AdmSeleksi/SuratPenyerahan/EditData?kode='+a.kode+'|'+a.noind+'|'+data['tanggal']+'|'+a.noind_baru}" type="button" class="btn btn-primary"><i class="fa fa-pencil-square"></i></a><td>${a.pekerja}<td>${a.seksi}</td></tr>`
                                 }).join('')
                             }
                             </tbody>
