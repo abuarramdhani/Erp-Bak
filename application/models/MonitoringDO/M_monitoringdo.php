@@ -5,8 +5,8 @@ class M_monitoringdo extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', true);
-        // $this->oracle = $this->load->database('oracle', true);
+        // $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
 
         $subinv = $this->session->datasubinven;
     }
@@ -192,8 +192,8 @@ class M_monitoringdo extends CI_Model
 
     public function runAPIDO($rm)
     {
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 
         if (!$conn) {
             $e = oci_error();
