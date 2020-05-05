@@ -150,10 +150,11 @@ class C_ReceiptBatch extends CI_Controller {
 		$data['Catering'] = $this->M_receiptbatch->GetCatering();
 		$data['FineType'] = $this->M_receiptbatch->GetFineType();
 		$data['Type'] = $this->M_receiptbatch->GetOrderType();
+		$data['ReceiptQty'] = $this->M_receiptbatch->GetReceiptQty($id);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('CateringManagement/Receipt/V_Edit',$data);
+		$this->load->view('CateringManagement/ReceiptBatch/V_Edit',$data);
 		$this->load->view('V_Footer',$data);
 
 	}
@@ -224,7 +225,7 @@ class C_ReceiptBatch extends CI_Controller {
 		);
 		$qty[] = array (
 			'receipt_id' => $id,
-			'dept' => 'PEMBELIAAN',
+			'dept' => 'PEMASARAN',
 			'qty' => $this->input->post('txtDeptQty2')
 		);
 		$qty[] = array (

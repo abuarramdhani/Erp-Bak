@@ -46,7 +46,7 @@
 								$grand 		= $rc['payment'];
 						?>
 						<div class="col-md-12">
-							<a href="<?php echo base_url('CateringManagement/ReceiptBatch/Edit/'.$rc['receipt_id'])?>" class="btn btn-success" disabled><i class="fa fa-edit"></i> Edit</a>
+							<a href="<?php echo base_url('CateringManagement/ReceiptBatch/Edit/'.$rc['receipt_id'])?>" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
 							<a href="<?php echo base_url('CateringManagement/ReceiptBatch/PrintReceipt/'.$rc['receipt_id'])?>" class="btn btn-info" target="blank_"><i class="fa fa-print"></i> Print</a>
 							<a data-toggle="modal" data-target="#deletealert" class="btn btn-danger"><i class="fa fa-remove"></i> Delete</a>
 							<hr>
