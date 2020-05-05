@@ -122,7 +122,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Order Date</label>
 								<div class="col-lg-6">
-									<input type="text" name="TxtOrderDate" class="form-control cmdaterange" placeholder="Order Date" value="<?php echo date('d-m-Y', strtotime($rc['order_start_date'])).' - '.date('d-m-Y', strtotime($rc['order_end_date']));?>" required >
+									<input type="text" name="TxtOrderDate" id="TxtOrderDateBatch" class="form-control cmdaterange" placeholder="Order Date" value="<?php echo date('d-m-Y', strtotime($rc['order_start_date'])).' - '.date('d-m-Y', strtotime($rc['order_end_date']));?>" required >
 								</div>
 							</div>
 						</div>

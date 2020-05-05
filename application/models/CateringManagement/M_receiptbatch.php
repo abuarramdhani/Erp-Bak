@@ -257,6 +257,11 @@ class M_receiptbatch extends CI_Model {
 			$this->db->insert('cm.cm_receipt_qty',$data);
 		}
 
+		public function updateReceiptQty($data,$id){
+			$this->db->where('receipt_id', $id);
+			$this->db->update('cm.cm_receipt_qty', $data);
+		}
+
 		public function GetReceiptQty($id){
 			$sql = "select *
 					from cm.cm_receipt_qty 

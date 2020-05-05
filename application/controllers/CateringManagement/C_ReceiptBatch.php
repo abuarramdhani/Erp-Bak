@@ -243,23 +243,23 @@ class C_ReceiptBatch extends CI_Controller {
 			$this->M_receiptbatch->addReceiptQty($qt);
 		}
 
-			$i=0;
-			foreach($finedate as $loop){
-				$finedate[$i] 	= 	date('Y-m-d', strtotime($finedate[$i]));
-				$data_fine[$i] = array(
-					'receipt_id' 			=> $this->input->post('TxtID'),
-					'receipt_fine_date' 	=> $finedate[$i],
-					'receipt_fine_qty'		=> $fineqty[$i],
-					'receipt_fine_price'	=> $fineprice[$i],
-					'fine_type_percentage'	=> $finetype[$i],
-					'fine_description'		=> $finedesc[$i],
-					'fine_nominal'			=> $finenominal[$i]
-				);
-				if( !empty($finedate[$i]) && !empty($fineqty[$i]) && !empty($fineprice[$i]) && !empty($finetype[$i]) ){
-					$this->M_receiptbatch->AddReceiptFine($data_fine[$i]);
-				}
-				$i++;
+		$i=0;
+		foreach($finedate as $loop){
+			$finedate[$i] 	= 	date('Y-m-d', strtotime($finedate[$i]));
+			$data_fine[$i] = array(
+				'receipt_id' 			=> $this->input->post('TxtID'),
+				'receipt_fine_date' 	=> $finedate[$i],
+				'receipt_fine_qty'		=> $fineqty[$i],
+				'receipt_fine_price'	=> $fineprice[$i],
+				'fine_type_percentage'	=> $finetype[$i],
+				'fine_description'		=> $finedesc[$i],
+				'fine_nominal'			=> $finenominal[$i]
+			);
+			if( !empty($finedate[$i]) && !empty($fineqty[$i]) && !empty($fineprice[$i]) && !empty($finetype[$i]) ){
+				$this->M_receiptbatch->AddReceiptFine($data_fine[$i]);
 			}
+			$i++;
+		}
 		redirect('CateringManagement/ReceiptBatch');
 	}
 
@@ -267,10 +267,6 @@ class C_ReceiptBatch extends CI_Controller {
 	{
 		$id			= $this->input->post('TxtID');
 		$no 		= $this->input->post('TxtNo');
-		//$date 		= $this->input->post('TxtReceiptDate');
-		// $date=str_replace('/', '-', $date);
-		// $date=date_create($date);
-		// $date=date_format($date,"Y-m-d");
 
 		$date 	= 	date('Y-m-d', strtotime($this->input->post('TxtReceiptDate', TRUE)));
 
@@ -298,9 +294,6 @@ class C_ReceiptBatch extends CI_Controller {
 		$this->M_receiptbatch->DeleteReceiptFine($id);
 
 		$finedate = $this->input->post('TxtFineDate');
-		// $finedate=str_replace('/', '-', $finedate);
-		// $finedate=date_create($finedate);
-		// $finedate=date_format($finedate,"Y-m-d");
 
 		$fineqty = $this->input->post('TxtFineQty');
 		$fineprice = $this->input->post('TxtFinePrice');
@@ -308,30 +301,51 @@ class C_ReceiptBatch extends CI_Controller {
 		$finedesc = $this->input->post('TxtFineDesc');
 		$finenominal = $this->input->post('TxtFineNominal');
 
-			$i=0;
-			foreach($finedate as $loop){
+		$qty[] = array (
+			'receipt_id' => $id,
+			'dept' => 'KEUANGAN',
+			'qty' => $this->input->post('txtDeptQty1')
+		);
+		$qty[] = array (
+			'receipt_id' => $id,
+			'dept' => 'PEMASARAN',
+			'qty' => $this->input->post('txtDeptQty2')
+		);
+		$qty[] = array (
+			'receipt_id' => $id,
+			'dept' => 'PRODUKSI',
+			'qty' => $this->input->post('txtDeptQty3')
+		);
+		$qty[] = array (
+			'receipt_id' => $id,
+			'dept' => 'PERSONALIA',
+			'qty' => $this->input->post('txtDeptQty4')
+		);
 
+		foreach ($qty as $qt) {
+			$this->M_receiptbatch->updateReceiptQty($qt,$id);
+		}
 
-				// $finedate[$i]=str_replace('/', '-', $finedate[$i]);
-				// $finedate[$i]=date_create($finedate[$i]);
-				// $finedate[$i]=date_format($finedate[$i],"Y-m-d");
-				$finedate[$i] 	= 	date('Y-m-d', strtotime($finedate[$i]));
-				$data_fine[$i] = array(
-					'receipt_id' 		=> $this->input->post('TxtID'),
-					'receipt_fine_date' 	=> $finedate[$i],
-					'receipt_fine_qty'	=> $fineqty[$i],
-					'receipt_fine_price'	=> $fineprice[$i],
-					'fine_type_percentage'	=> $finetype[$i],
-					'fine_description'	=> $finedesc[$i],
-					'fine_nominal'		=> $finenominal[$i]
-				);
-				if( !empty($finedate[$i]) && !empty($fineqty[$i]) && !empty($fineprice[$i]) && !empty($finetype[$i]) ){
-					$this->M_receiptbatch->AddReceiptFine($data_fine[$i]);
-				}
-				$i++;
+		$i=0;
+		foreach($finedate as $loop){
+
+			$finedate[$i] 	= 	date('Y-m-d', strtotime($finedate[$i]));
+			$data_fine[$i] = array(
+				'receipt_id' 		=> $this->input->post('TxtID'),
+				'receipt_fine_date' 	=> $finedate[$i],
+				'receipt_fine_qty'	=> $fineqty[$i],
+				'receipt_fine_price'	=> $fineprice[$i],
+				'fine_type_percentage'	=> $finetype[$i],
+				'fine_description'	=> $finedesc[$i],
+				'fine_nominal'		=> $finenominal[$i]
+			);
+			if( !empty($finedate[$i]) && !empty($fineqty[$i]) && !empty($fineprice[$i]) && !empty($finetype[$i]) ){
+				$this->M_receiptbatch->AddReceiptFine($data_fine[$i]);
 			}
+			$i++;
+		}
 
-		redirect('CateringManagement/Receipt/Details/'.$id);
+		redirect('CateringManagement/ReceiptBatch/Details/'.$id);
 	}
 
 	public function delete($id)

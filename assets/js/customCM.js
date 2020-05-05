@@ -1066,11 +1066,43 @@ $(document).ready(function(){
 							})
 						}
 					}else{
-						console.log('KOSONG');
+						swal.fire({
+						    title: "Peringatan",
+						    html: "Data Kosong",
+						    type: "warning",
+						    confirmButtonText: 'OK',
+						    confirmButtonColor: '#d63031',
+						})
 					}
 				}
 			})
 		}
+	});
+
+	$(".select-employee-batch").select2({
+	  	ajax: {
+	        url: baseurl+'CateringManagement/PrintPPCatering/Employee',
+	        dataType: 'json',
+	        delay: 250,
+	        data: function (params) {
+	          return {
+	            q: params.term,
+	        };
+	        },
+	        processResults: function (data) {
+	          return {
+	                results: $.map(data, function (item) {
+	                    return {
+	                      id: item.employee_id,
+	                      text: item.employee_name,
+	                    }
+	                })
+	            };
+	      },
+	      cache: true
+	    },
+	    minimumInputLength: 2,
+	    allowClear: true,
 	});
 
 	$('#tblDataPesanan').DataTable({

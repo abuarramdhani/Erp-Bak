@@ -99,7 +99,7 @@ class M_printppcatering extends CI_Model
 	public function getEmployeeAll($key)
 	{
 		// $query = $this->db->get_where('er.er_employee_all', array('employee_name' => $key));
-		$query = $this->db->query("SELECT * from er.er_employee_all where employee_name like '%".$key."%' and resign='0'");
+		$query = $this->db->query("SELECT * from er.er_employee_all where upper(employee_name) like upper('%".$key."%') and resign='0'");
 		return $query->result_array();
 	}
 
@@ -221,7 +221,7 @@ class M_printppcatering extends CI_Model
                     group by tph.fs_tempat_makan,tuk.fs_nama_katering
                 ) as tbl 
                 group by dept,fs_nama_katering
-                order by dept,fs_nama_katering";
+                order by fs_nama_katering,dept,3";
         $this->personalia = $this->load->database('personalia', true);
         return $this->personalia->query($sql,array($lokasi,$lokasi,$lokasi,$lokasi,$jenis_pesanan,$jenis_pesanan,$jenis_pesanan,$jenis_pesanan,$tgl_awal,$tgl_akhir,$tgl_awal,$tgl_akhir,$lokasi,$jenis_pesanan))->result_array();
     }

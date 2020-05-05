@@ -137,7 +137,7 @@
     											<div class="form-group">
                                                     <label for="cmbPpSiepembelianHeader" class="control-label col-lg-6">Sie Pembelian</label>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbPpSiepembelianHeader" name="cmbPpSiepembelianHeader" class="select select-employee select2" data-placeholder="Choose an option" style="width:100%">
+                                                        <select id="cmbPpSiepembelianHeader" name="cmbPpSiepembelianHeader" class="select select-employee-batch select2" data-placeholder="Choose an option" style="width:100%">
                                                            <!--  <option value=""></option>
                                                             <?php
                                                                 foreach ($EmployeeAll as $row) {
@@ -158,7 +158,7 @@
     											<div class="form-group">
                                                     <label for="cmbPpDireksiHeader" class="control-label col-lg-6">Direksi</label>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbPpDireksiHeader" name="cmbPpDireksiHeader" class="select select-employee select2" data-placeholder="Choose an option" style="width:100%">
+                                                        <select id="cmbPpDireksiHeader" name="cmbPpDireksiHeader" class="select select-employee-batch select2" data-placeholder="Choose an option" style="width:100%">
                                                            <!--  <option value=""></option>
                                                             <?php
                                                                 foreach ($EmployeeAll as $row) {
@@ -182,7 +182,7 @@
     											<div class="form-group">
                                                     <label for="cmbPpKadeptHeader" class="control-label col-lg-6">Kepala Departemen</label>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbPpKadeptHeader" name="cmbPpKadeptHeader" class="select select-employee select2" data-placeholder="Choose an option" style="width:100%">
+                                                        <select id="cmbPpKadeptHeader" name="cmbPpKadeptHeader" class="select select-employee-batch select2" data-placeholder="Choose an option" style="width:100%">
                                                            <!--  <option value=""></option>
                                                             <?php
                                                                 foreach ($EmployeeAll as $row) {
@@ -203,7 +203,7 @@
     											<div class="form-group">
                                                     <label for="cmbPpKaunitHeader" class="control-label col-lg-6">Kepala Unit</label>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbPpKaunitHeader" name="cmbPpKaunitHeader" class="select select-employee select2" data-placeholder="Choose an option" style="width:100%">
+                                                        <select id="cmbPpKaunitHeader" name="cmbPpKaunitHeader" class="select select-employee-batch select2" data-placeholder="Choose an option" style="width:100%">
                                                             <!-- <option value=""></option>
                                                             <?php
                                                                 foreach ($EmployeeAll as $row) {
@@ -224,7 +224,7 @@
     											<div class="form-group">
                                                     <label for="cmbPpKasieHeader" class="control-label col-lg-6">Kasie / SPV</label>
                                                     <div class="col-lg-6">
-                                                        <select id="cmbPpKasieHeader" name="cmbPpKasieHeader" class="select select-employee select2" data-placeholder="Choose an option" style="width:100%">
+                                                        <select id="cmbPpKasieHeader" name="cmbPpKasieHeader" class="select select-employee-batch select2" data-placeholder="Choose an option" style="width:100%">
                                                           
                                                         </select>
                                                     </div>
