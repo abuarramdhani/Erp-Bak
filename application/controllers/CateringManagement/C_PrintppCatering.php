@@ -316,7 +316,7 @@ class C_PrintppCatering extends CI_Controller
 
 		$this->M_printppcatering->deletePrintpp($plaintext_string);
 
-		redirect(site_url('CateringManagement/PrintPP'));
+		redirect(site_url('CateringManagement/PrintPPCatering'));
     }
 
     public function Employee()
