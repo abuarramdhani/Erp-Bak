@@ -365,8 +365,8 @@ class C_PrintppCatering extends CI_Controller
 		$pdf->SetHTMLHeader($header);
 		$pdf->SetHTMLFooter($footer);
 		$pdf->WriteHTML($html, 2);
-		// $pdf->Output($filename, 'D');
-		$pdf->Output($filename, 'I');
+		$pdf->Output($filename, 'D');
+		// $pdf->Output($filename, 'I');
 
 	}
 
