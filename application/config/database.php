@@ -336,6 +336,28 @@ $db['daerah'] = array(
 	'save_queries' => TRUE
 );
 
+$db['alamat'] = array(
+	'dsn'	=> '',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
+	'database' => 'db_recruitment',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
 $db['erp_db'] = array(
 	'dsn'	=> '',
 	'hostname' => 'database.quick.com',
@@ -442,7 +464,7 @@ $efg="";
 		}
 
 		$sql = "SELECT a.id_lokasi,a.lokasi,a.lokasi_kerja,b.host,b.user,b.pass,b.db FROM fp_distribusi.tb_lokasi AS a
-					LEFT JOIN fp_distribusi.tb_mysql AS b ON a.id_lokasi=b.id_lokasi 
+					LEFT JOIN fp_distribusi.tb_mysql AS b ON a.id_lokasi=b.id_lokasi
 					WHERE a.status_ = '1'";
 
 		$sth = $dbh->prepare($sql);
@@ -471,7 +493,7 @@ $efg="";
 			$db['my_'.$row['id_lokasi'].'']['port'] = 3306;
 			$db['my_'.$row['id_lokasi'].'']['options'] = array(PDO::ATTR_TIMEOUT => 5);
 		}
-		
+
 		$efg="";
 		$data = explode('.',$_SERVER['SERVER_NAME']);
 		if (!empty($data[0])) {
@@ -488,7 +510,7 @@ $efg="";
 		}
 
 		$sql = "SELECT a.id_lokasi,a.lokasi,a.lokasi_kerja,b.host,b.user,b.pass,b.db FROM fp_distribusi.tb_lokasi AS a
-					LEFT JOIN fp_distribusi.tb_postgres AS b ON a.id_lokasi=b.id_lokasi 
+					LEFT JOIN fp_distribusi.tb_postgres AS b ON a.id_lokasi=b.id_lokasi
 					WHERE a.status_ = '1'";
 
 		$sth = $dbh->prepare($sql);
@@ -517,7 +539,7 @@ $efg="";
 			$db['pg_'.$row['id_lokasi'].'']['port'] = 5432;
 			$db['pg_'.$row['id_lokasi'].'']['options'] = array(PDO::ATTR_TIMEOUT => 5);
 		}
-		
+
 		$db['quickcom_orientasi'] = array(
 			'dsn'				=> '',
 			'hostname' 			=> 'database.quick.com',

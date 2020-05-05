@@ -1145,7 +1145,7 @@ $route['PenilaianKinerja/MasterTIM/(:any)']						= 'JurnalPenilaian/C_MasterTIM/
 $route['PenilaianKinerja/MasterTIM/(:any)/(:any)']				= 'JurnalPenilaian/C_MasterTIM/$1/$2';
 $route['PenilaianKinerja/MasterTIM/(:any)/(:any)/(:any)']		= 'JurnalPenilaian/C_MasterTIM/$1/$2/$3';
 
-// master kategori penilaian	
+// master kategori penilaian
 $route['PenilaianKinerja/MasterKategoriPenilaian']						= 'JurnalPenilaian/C_MasterKategoriPenilaian';
 $route['PenilaianKinerja/MasterKategoriPenilaian/(:any)']				= 'JurnalPenilaian/C_MasterKategoriPenilaian/$1';
 $route['PenilaianKinerja/MasterKategoriPenilaian/(:any)/(:any)']		= 'JurnalPenilaian/C_MasterKategoriPenilaian/$1/$2';
@@ -3143,6 +3143,10 @@ $route['SystemAdministration/Android/(:any)/(:any)'] = 'SystemAdministration/Mai
 $route['ADMSeleksi'] = 'ADMSeleksi/Menu/C_Index/index';
 $route['ADMSeleksi/Menu/(:any)'] = 'ADMSeleksi/Menu/C_Index/$1';
 $route['ADMSeleksi/Menu/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Index/$1/$2';
+$route['AdmSeleksi/SuratPenyerahan'] = 'ADMSeleksi/Menu/C_SuratPenyerahan/index';
+$route['AdmSeleksi/SuratPenyerahan/Create'] = 'ADMSeleksi/Menu/C_SuratPenyerahan/index_create';
+$route['AdmSeleksi/SuratPenyerahan/(:any)'] = 'ADMSeleksi/Menu/C_SuratPenyerahan/$1';
+$route['AdmSeleksi/SuratPenyerahan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_SuratPenyerahan/$1/$2';
 
 // ------------------------------------------------- Monitoring LPPB Penerimaan ---------------------------------------------//
 $route['MonitoringLppbPenerimaan'] 								= 'MonitoringLppbPenerimaan/C_Index';
@@ -4056,7 +4060,7 @@ $route['AssetCabang/generatePdfEdit'] 							= 'AssetCabangCbg/C_AssetCabangCbg/
 $route['AssetCabang/generatePdfEdit/(:any)'] 					= 'AssetCabangCbg/C_AssetCabangCbg/generatePdfEdit/$id';
 $route['AssetCabang/NewProposal'] 								= 'AssetCabangCbg/C_AssetCabangCbg/NewProposal';
 $route['AssetCabang/NewProposal/(:any)'] 						= 'AssetCabangCbg/C_AssetCabangCbg/$1'; // ini contohnya
-$route['AssetCabang/NewProposal/(:any)/(:any)'] 				= 'AssetCabangCbg/C_AssetCabangCbg/$1/$2'; 
+$route['AssetCabang/NewProposal/(:any)/(:any)'] 				= 'AssetCabangCbg/C_AssetCabangCbg/$1/$2';
 $route['AssetCabang/LaporanDataAssetOracle'] 					= 'AssetCabangCbg/C_AssetCabangCbg/laporanAssetDataOracle';
 $route['AssetCabang/Draft'] 									= 'AssetCabangCbg/C_AssetCabangCbg/draft';
 $route['AssetCabang/CheckedbyKacab'] 							= 'AssetCabangCbg/C_AssetCabangCbg/checkbyKacab';
