@@ -2,25 +2,15 @@
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover text-left " id="tblMonitoringDO" style="font-size:12px;">
     <thead>
-      <!-- <tr class="bg-primary">
-        <th><center>NO</center></th>
-        <th><center>NOMOR</center></th>
-        <th><center>TUJUAN</center></th>
-        <th><center>KOTA</center></th>
-        <th><center>USER</center></th>
-        <th><center>STATUS</center></th>
-        <th><center>NEXT PROCESS</center></th>
-        <th><center>DETAIL</center></th>
-      </tr> -->
       <tr class="bg-primary">
-        <th><center>NO</center></th>
-        <th><center>NO.DOK</center></th>
-        <th><center>NOMOR SO</center></th>
+        <th style="width:5px"><center>NO</center></th>
+        <th style="width:70px"><center>NO.DOK</center></th>
+        <th style="width:70px"><center>NOMOR SO</center></th>
         <th><center>TUJUAN</center></th>
-        <th><center>KOTA</center></th>
-        <th><center>PLAT NOMOR</center></th>
-        <th><center>ASSIGN</center></th>
-        <th><center>DETAIL</center></th>
+        <th style="width:100px"><center>KOTA</center></th>
+        <th style="width:70px"><center>PLAT NOMOR</center></th>
+        <th style="width:180px"><center>ASSIGN</center></th>
+        <th style="width:15px"><center>DETAIL</center></th>
       </tr>
     </thead>
     <tbody>
