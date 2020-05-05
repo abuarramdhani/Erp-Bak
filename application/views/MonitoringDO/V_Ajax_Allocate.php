@@ -2,14 +2,14 @@
   <table class="table table-striped table-bordered table-hover text-left " id="tblMonitoringDOAllocate" style="font-size:12px;width:100%">
     <thead>
       <tr class="bg-primary">
-        <th><center>NO</center></th>
-        <th><center>NO.DOK</center></th>
-        <th><center>NOMOR SO</center></th>
+        <th style="width:5px"><center>NO</center></th>
+        <th style="width:70px"><center>NO.DOK</center></th>
+        <th style="width:70px"><center>NOMOR SO</center></th>
         <th><center>TUJUAN</center></th>
-        <th><center>KOTA</center></th>
-        <th><center>PLAT NOMOR</center></th>
-        <th><center>ASSIGN</center></th>
-        <th><center>DETAIL</center></th>
+        <th style="width:100px"><center>KOTA</center></th>
+        <th style="width:70px"><center>PLAT NOMOR</center></th>
+        <th style="width:70px"><center>ASSIGN</center></th>
+        <th style="width:15px"><center>DETAIL</center></th>
       </tr>
     </thead>
     <tbody>
