@@ -11,7 +11,7 @@ class M_printppcatering extends CI_Model
     public function getPrintpp($id = FALSE)
     {
     	if ($id === FALSE) {
-            $sql = "select * from ga.ga_printpp order by tgl_buat desc";
+            $sql = "select * from ga.ga_printpp where pp_catering_lokasi is not null order by tgl_buat desc";
     		// $query = $this->db->get('ga.ga_printpp');
             $query = $this->db->query($sql);
     	} else {
@@ -86,6 +86,13 @@ class M_printppcatering extends CI_Model
     {
     	$this->db->where('pp_detail_id', $id);
         $this->db->delete('ga.ga_printpp_detail');
+    }
+
+    public function deleteDetailNotInIDAll($pp_detail_id,$pp_id){
+        $sql = "delete from ga.ga_printpp_detail
+                where pp_id = $pp_id 
+                and pp_detail_id not in ($pp_detail_id)";
+        $this->db->query($sql);
     }
 
 	public function getSection()

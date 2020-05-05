@@ -109,6 +109,10 @@ class C_PrintppCatering extends CI_Controller
 				'pp_kasie' => ($this->input->post('cmbPpKasieHeader') == '' ? null : $this->input->post('cmbPpKasieHeader')),
 				'pp_tgl_kasie' => ($this->input->post('txtPpTglKasieHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglKasieHeader')))),
 				'pp_catatan' => $this->input->post('txaPpCatatanHeader'),
+				'pp_catering_tgl_awal' => $this->input->post('txtPeriodeCateringAwalPP'),
+				'pp_catering_tgl_akhir' => $this->input->post('txtPeriodeCateringAkhirPP'),
+				'pp_catering_lokasi' => $this->input->post('slcLokasiKateringPP'),
+				'pp_catering_jenis' => $this->input->post('slcJenisPesananPP')
     		);
 
 			$this->M_printppcatering->createPrintpp($temp);
@@ -231,21 +235,43 @@ class C_PrintppCatering extends CI_Controller
 				'pp_kasie' => ($this->input->post('cmbPpKasieHeader') == '' ? null : $this->input->post('cmbPpKasieHeader')),
 				'pp_tgl_kasie' => ($this->input->post('txtPpTglKasieHeader') == '' ? null : date("Y-m-d",strtotime($this->input->post('txtPpTglKasieHeader')))),
 				'pp_catatan' => $this->input->post('txaPpCatatanHeader',TRUE),
+				'pp_catering_tgl_awal' => $this->input->post('txtPeriodeCateringAwalPP',TRUE),
+				'pp_catering_tgl_akhir' => $this->input->post('txtPeriodeCateringAkhirPP',TRUE),
+				'pp_catering_lokasi' => $this->input->post('slcLokasiKateringPP',TRUE),
+				'pp_catering_jenis' => $this->input->post('slcJenisPesananPP',TRUE)
     			);
 			$this->M_printppcatering->updatePrintpp($temp, $plaintext_string);
 
 			$kodeBarang = $this->input->post('txtPpKodebarangHeader', true);
+			$pp_id = $this->input->post('txtPpId');
+			$pp_detail_id = $this->input->post('txtPpDetailId');
+			$kodebarang = $this->input->post('txtPpKodebarangHeader');
+			$jumlahpp = $this->input->post('txtPpJumlahHeader');
+			$satuan = $this->input->post('txtPpSatuanHeader');
+			$namabarang =$this->input->post('txtPpNamaBarangHeader');
+			$nbd = $this->input->post('txtPpNbdHeader');
+			$keterangan = $this->input->post('txtPpKeteranganHeader');
+			$supplier = $this->input->post('txtPpSupplierHeader');
+			$branch_d = $this->input->post('txtPpBranchHeader');
+			$cost_center_d = $this->input->post('txtPpCostCenterHeader');
+			
+			$pdi_all = "";
+			if (!empty($pp_detail_id)) {
+				foreach ($pp_detail_id as $pdi) {
+					if (!empty($pdi)) {
+						if($pdi_all == ""){
+							$pdi_all .= $pdi;
+						}else{
+							$pdi_all .= ",".$pdi;
+						}
+					}
+				}
+			}else{
+				$pdi_all = "0";
+			}
+			$this->M_printppcatering->deleteDetailNotInIDAll($pdi_all,$plaintext_string);
 
 			foreach ($kodeBarang as $key => $value) {
-				$pp_id = $this->input->post('txtPpId');
-				$pp_detail_id = $this->input->post('txtPpDetailId');
-				$kodebarang = $this->input->post('txtPpKodebarangHeader');
-				$jumlahpp = $this->input->post('txtPpJumlahHeader');
-				$satuan = $this->input->post('txtPpSatuanHeader');
-				$namabarang =$this->input->post('txtPpNamaBarangHeader');
-				$nbd = $this->input->post('txtPpNbdHeader');
-				$keterangan = $this->input->post('txtPpKeteranganHeader');
-				$supplier = $this->input->post('txtPpSupplierHeader');
 				if($pp_id[$key] == null || $pp_id[$key] == '') {
 					$lines = array(
 						'pp_id' => $plaintext_string,
@@ -256,6 +282,8 @@ class C_PrintppCatering extends CI_Controller
 						'pp_nbd' => date("Y-m-d",strtotime($nbd[$key])),
 						'pp_keterangan' => $keterangan[$key],
 						'pp_supplier' => $supplier[$key],
+						'pp_branch' => $branch_d[$key],
+						'pp_cost_center' => $cost_center_d[$key]
 		    		);
 					$this->M_printppcatering->createPrintppDetail($lines);
 				} else {
@@ -269,12 +297,14 @@ class C_PrintppCatering extends CI_Controller
 						'pp_nbd' => date("Y-m-d",strtotime($nbd[$key])),
 						'pp_keterangan' => $keterangan[$key],
 						'pp_supplier' => $supplier[$key],
+						'pp_branch' => $branch_d[$key],
+						'pp_cost_center' => $cost_center_d[$key]
 		    		);
 					$this->M_printppcatering->updatePrintppDetail($lines, $id_lines);
 				}
 			}
 
-			redirect(site_url('CateringManagement/PrintPP'));
+			redirect(site_url('CateringManagement/PrintPPCatering'));
 		}
 	}
 

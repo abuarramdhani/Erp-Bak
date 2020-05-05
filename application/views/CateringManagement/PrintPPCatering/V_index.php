@@ -58,7 +58,7 @@
                                                 <td align='center'>
                                                     <a style="margin-right:4px" href="<?php echo base_url('CateringManagement/PrintPPCatering/export_data_load/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Export Data Load" disabled><span class="fa fa-file-excel-o fa-2x"></span></a>
                                                 	<a style="margin-right:4px" href="<?php echo base_url('CateringManagement/PrintPPCatering/cetakPDF/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Cetak Data" ><span class="fa fa-print fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('CateringManagement/PrintPPCatering/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data" disabled><span class="fa fa-pencil-square-o fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('CateringManagement/PrintPPCatering/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('CateringManagement/PrintPPCatering/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
 												<td><?php echo $row['no_pp'] ?></td>
