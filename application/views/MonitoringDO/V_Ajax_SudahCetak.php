@@ -3,13 +3,14 @@
     <thead>
       <tr class="bg-primary">
         <th style="width:5px"><center>NO</center></th>
-        <th style="width:10px"><center>NO.DOK</center></th>
-        <th style="width:10px"><center>TUJUAN</center></th>
-        <th style="width:10px"><center>KOTA</center></th>
-        <th style="width:10px"><center>PLAT NOMOR</center></th>
-        <th style="width:5px"><center>PETUGAS</center></th>
-        <th style="width:5px"><center>DETAIL</center></th>
-        <th style="width:5px"><center>CETAK</center></th>
+        <th style="width:70px"><center>NO.DOK</center></th>
+        <th style="width:70px"><center>NOMOR SO</center></th>
+        <th><center>TUJUAN</center></th>
+        <th style="width:100px"><center>KOTA</center></th>
+        <th style="width:70px"><center>PLAT NOMOR</center></th>
+        <th style="width:70px"><center>PETUGAS</center></th>
+        <th style="width:15px"><center>DETAIL</center></th>
+        <th style="width:15px"><center>CETAK</center></th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +18,7 @@
         <tr>
           <td><center><?php echo $no; ?></center></td>
           <td><center><?php echo $g['DO/SPB'] ?></center></td>
+          <td><center><?php echo $g['NO_SO'] ?></center></td>
           <td><center><?php echo $g['TUJUAN'] ?></center></td>
           <td><center><?php echo $g['KOTA'] ?></center></td>
           <td><center><?php echo $g['PLAT_NUMBER'] ?></center></td>
