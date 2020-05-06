@@ -4266,3 +4266,7 @@ $route['AbsenPekerjaLaju'] = 'AbsenPekerjaLaju/C_Index';
 $route['AbsenPekerjaLaju/PekerjaLaju'] = 'AbsenPekerjaLaju/C_PekerjaLaju';
 $route['AbsenPekerjaLaju/PekerjaLaju/(:any)'] = 'AbsenPekerjaLaju/C_PekerjaLaju/$1';
 $route['AbsenPekerjaLaju/PekerjaLaju/(:any)/(:any)'] = 'AbsenPekerjaLaju/C_PekerjaLaju/$1/$2';
+
+$route['AbsenPekerjaLaju/list_absen_pkj_laju'] = 'AbsenPekerjaLaju/C_Lpalaju';
+$route['AbsenPekerjaLaju/list_absen_pkj_laju/list/(:any)'] = 'AbsenPekerjaLaju/C_Lpalaju/$1';
+$route['AbsenPekerjaLaju/list_absen_pkj_laju/list/(:any)/(:any)'] = 'AbsenPekerjaLaju/C_Lpalaju/$1/$2';
