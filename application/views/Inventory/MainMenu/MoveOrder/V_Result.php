@@ -254,7 +254,8 @@
 								<input type="hidden" name="subinvto[]" value="<?= $vulue['GUDANG_TUJUAN'] ?>">
 								<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
 								<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
-								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
+								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+								<input type="hidden" name="locatorfromid[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 								<input type="hidden" name="departement" value="NONE">
 								<input type="hidden" name="piklis" value="1">
 							</td>

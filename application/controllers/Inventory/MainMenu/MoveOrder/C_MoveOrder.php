@@ -220,14 +220,14 @@ class C_MoveOrder extends CI_Controller
 			//Seharusnya (!in_array(1,$errQty))
 			if (!in_array(1, $errQty)) {
 					foreach ($invID as $key => $value) {
-						$data[$subinv_from[$key]][] = array('NO_URUT' => '',
+						$data[$subinv_from[$key]][$locator_from[$key]][] = array('NO_URUT' => '',
 										'INVENTORY_ITEM_ID' => $value,
 										'QUANTITY' => $qty[$key],
 										'UOM' => $uom[$key],
 										'IP_ADDRESS' => $ip_address,
 										'JOB_ID' => $job_id[$key]);
-						$data2[$subinv_from[$key]] = $locator_fromid[$key];
-
+						$data2[$subinv_from[$key]][$locator_from[$key]][] = $locator_fromid[$key];
+						$data3[$subinv_from[$key]][$locator_from[$key]][] = $locator_from[$key];
 					}
 					// echo "<pre>";
 					// print_r($data);
@@ -236,28 +236,31 @@ class C_MoveOrder extends CI_Controller
 					$x = 1; 
 					foreach ($data as $key => $value) {
 						$i = 1;
-						$nomor_mo = $job.'-'.$x;
 						// echo "PROSES SUB INV $key { ";
-						foreach ($value as $key2 => $value2) {
-							$dataNew = $value2;
-							$dataNew['NO_URUT'] = $i;
-							//create TEMP
-							// echo "insert<br>";
-							// print_r($dataNew);echo "<br>";
-							$this->M_MoveOrder->createTemp($dataNew);
-							$i++;
-
+						foreach ($value as $k => $val) {
+							$nomor_mo = $job.'-'.$x;
+							$locfrom = $data2[$key][$k][0];
+							foreach ($val as $key2 => $value2) {
+								$dataNew = $value2;
+								$dataNew['NO_URUT'] = $i;
+								//create TEMP
+								// echo "insert<br>";
+								// print_r($dataNew);echo "<br>";
+								$this->M_MoveOrder->createTemp($dataNew);
+								$i++;
+	
+							}
+								// //create MO       
+								// print_r($ip_address);echo "<br>";print_r($job_id);echo "<br>";print_r($subinv_to[0]);echo "<br>";
+								// print_r($locator_to[0]);echo "<br>";print_r($key);echo "<br>";print_r($data2[key]);echo "<br>";print_r($user_id);
+								// echo "<br>";
+								$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$locfrom,$user_id,$nomor_mo);
+	
+								//delete
+								// echo "<br>";echo "menjalankan perintah delete";echo "<br>";
+								$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
+						$x++;
 						}
-							// //create MO       
-							// print_r($ip_address);echo "<br>";print_r($job_id[0]);echo "<br>";print_r($subinv_to[0]);echo "<br>";
-							// print_r($locator_to[0]);echo "<br>";print_r($key);echo "<br>";print_r($data2[key]);echo "<br>";print_r($user_id);
-							// echo "<br>";
-							$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$data2[$key],$user_id,$nomor_mo);
-
-							//delete
-							// echo "<br>";echo "menjalankan perintah delete";echo "<br>";
-							$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
-							$x++;
 					}
 
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
