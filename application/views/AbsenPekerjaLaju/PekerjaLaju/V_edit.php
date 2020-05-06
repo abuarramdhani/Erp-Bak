@@ -15,7 +15,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" method="POST" action="<?php echo base_url('AbsenPekerjaLaju/PekerjaLaju/update') ?>">
+										<form class="form-horizontal" method="POST" action="<?php echo base_url('AbsenPekerjaLaju/PekerjaLaju/update/'.$encrypted_id) ?>">
 											<div class="form-group">
 												<label class="control-label col-lg-4">No. Induk</label>
 												<div class="col-lg-4">

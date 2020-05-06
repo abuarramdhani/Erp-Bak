@@ -61,6 +61,11 @@ class M_pekerjalaju extends CI_Model
 		return $this->db->query($sql,array($id))->row();
 	}
 
+	public function updatePekerjaLaju($data,$id){
+		$this->db->where('laju_id',$id);
+		$this->db->update('at.at_laju',$data);
+	}
+
 }
 
 ?>

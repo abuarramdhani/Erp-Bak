@@ -99,8 +99,8 @@ class C_PekerjaLaju extends CI_Controller
 			'user_input'		=> $this->session->user,
 			'mulai_laju'		=> $this->input->post('txtMulaiLajuPekerjalaju'),
 			'status_active'		=> $this->input->post('radStatusPekerjaLaju'),
-			'longitude'			=> $this->input->post('txtLatitudePekerjaLaju'),
-			'latitude'			=> $this->input->post('txtLongitudePekerjaLaju')
+			'latitude'			=> $this->input->post('txtLatitudePekerjaLaju'),
+			'longitude'			=> $this->input->post('txtLongitudePekerjaLaju')
 		);
 		$this->M_pekerjalaju->insertPekerjaLaju($data);
 
@@ -140,7 +140,7 @@ class C_PekerjaLaju extends CI_Controller
 
 		$data['transportasi'] = $this->M_pekerjalaju->getjenisTransportasi();
 		$data['data'] = $this->M_pekerjalaju->getPekerjaLajuByID($id);
-
+		$data['encrypted_id'] = $encrypted_id;
 		if (!empty($data['data'])) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
@@ -151,8 +151,10 @@ class C_PekerjaLaju extends CI_Controller
 		}
 	}
 
-	public function update(){
-		echo"<pre>";print_r($_POST);exit();
+	public function update($encrypted_id){
+		// echo"<pre>";print_r($_POST);exit();
+		$id = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
+		$id = $this->encrypt->decode($id);
 		$status_active = $this->input->post('radStatusPekerjaLaju');
 		$data_lama = $this->M_pekerjalaju->getPekerjaLajuByID($id);
 		if ($data_lama->status_active == 't' && $status_active == '0') {
@@ -174,10 +176,10 @@ class C_PekerjaLaju extends CI_Controller
 			'mulai_laju'		=> $this->input->post('txtMulaiLajuPekerjalaju'),
 			'status_active'		=> $status_active,
 			'tgl_non_active'	=> $tgl_non_active,
-			'longitude'			=> $this->input->post('txtLatitudePekerjaLaju'),
-			'latitude'			=> $this->input->post('txtLongitudePekerjaLaju')
+			'latitude'			=> $this->input->post('txtLatitudePekerjaLaju'),
+			'longitude'			=> $this->input->post('txtLongitudePekerjaLaju')
 		);
-		$this->M_pekerjalaju->insertPekerjaLaju($data);
+		$this->M_pekerjalaju->updatePekerjaLaju($data,$id);
 
 		redirect(base_url('AbsenPekerjaLaju/PekerjaLaju'));
 	}
