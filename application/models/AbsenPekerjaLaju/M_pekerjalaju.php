@@ -66,6 +66,42 @@ class M_pekerjalaju extends CI_Model
 		$this->db->update('at.at_laju',$data);
 	}
 
+	public function getAbsenBarcodeDatang($noind,$waktu){
+		$sql = "select concat(tanggal::date,' ',waktu)::timestamp as waktu_barcode
+				from \"Presensi\".tprs_shift
+				where noind = ?
+				and trim(waktu) not in ('__:__:__','0')
+				and concat(tanggal::date,' ',waktu)::timestamp > ?
+				order by tanggal asc 
+				limit 1";
+		return $this->personalia->query($sql,array($noind,$waktu))->row();
+	}
+
+	public function getAbsenBarcodePulang($noind,$waktu){
+		$sql = "select concat(tanggal::date,' ',waktu)::timestamp as waktu_barcode
+				from \"Presensi\".tprs_shift
+				where noind = ?
+				and trim(waktu) not in ('__:__:__','0')
+				and concat(tanggal::date,' ',waktu)::timestamp < ?
+				order by tanggal asc 
+				limit 1";
+		return $this->personalia->query($sql,array($noind,$waktu))->row();
+	}
+
+	public function getLokasikerjaByNoind($noind){
+		$sql = "select lokasi_kerja
+				from hrd_khs.tpribadi
+				where noind = ?";
+		return $this->personalia->query($sql,array($noind))->row();
+	}
+
+	public function getKoordinatByLokasiKerja($koordinat){
+		$sql = "select * 
+				from at.at_coordinat_lokasi_kerja 
+				where lokasi_kerja = ?";
+		return $this->db->query($sql,array($koordinat))->row();
+	}
+
 }
 
 ?>

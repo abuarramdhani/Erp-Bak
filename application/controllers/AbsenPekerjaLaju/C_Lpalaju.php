@@ -41,7 +41,95 @@ class C_Lpalaju extends CI_Controller
 		$employee = $this->session->employee;
 		$nama = trim($employee);
 		$noind = trim($this->session->user);
-		$data['listData'] = $this->M_absenatasan->getListabsLaju($noind,$nama);
+		$array_data = $this->M_absenatasan->getListabsLaju($noind,$nama);
+		// echo "<pre>";print_r($array_data);exit();
+
+		$list_data = array();
+		foreach ($array_data as $key => $value) {
+			$list_data[$key] = $value;
+			$lokasi_kerja = $this->M_pekerjalaju->getLokasikerjaByNoind($value['noind']);
+			$koordinat = $this->M_pekerjalaju->getKoordinatByLokasiKerja($lokasi_kerja->lokasi_kerja);
+			$kantor = $koordinat->latitude.','.$koordinat->longitude;
+			if ($value['jenis_absen'] == 'Pulang Kerja') {
+				$waktu_barcode = $this->M_pekerjalaju->getAbsenBarcodePulang($value['noind'],$value['waktu']);
+				$destination = $value['latitude'].','.$value['longitude'];
+				$origin = $kantor;
+			}elseif ($value['jenis_absen'] == 'Masuk Kerja') {
+				$waktu_barcode = $this->M_pekerjalaju->getAbsenBarcodeDatang($value['noind'],$value['waktu']);
+				$destination = $kantor;
+				$origin = $value['latitude'].','.$value['longitude'];
+			}else{
+				echo "Ada Data memiliki jenis absen selain pulang kerja dan masuk kerja";exit();
+			}
+			$list_data[$key]['waktu_barcode'] = $waktu_barcode->waktu_barcode;
+			
+			$perkiraan_op = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&traffic_model=optimistic&departure_time=now&language=id-ID');
+			$hasil_op = json_decode($perkiraan_op);
+			$perkiraan_pe = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&traffic_model=pessimistic&departure_time=now&language=id-ID');
+			$hasil_pe = json_decode($perkiraan_pe);
+			$perkiraan = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&departure_time=now&language=id-ID');
+			$hasil = json_decode($perkiraan);
+
+			if ($hasil->status == "OK") {
+				$rows = $hasil->rows;
+				$row = $rows['0'];
+				$elements = $row->elements;
+				$element = $elements['0'];
+				$duration = $element->duration;
+				$distance = $element->distance;
+				$duration_text = $duration->text;
+				$duration_value = $duration->value;
+				$distance_text = $distance->text;
+				$distance_value = $distance->value;
+
+				$list_data[$key]['waktu_normal_text'] = $duration_text;
+				$list_data[$key]['waktu_normal_value'] = $duration_value;
+				$list_data[$key]['jarak_normal_text'] = $distance_text;
+				$list_data[$key]['jarak_normal_value'] = $distance_value;
+			}else{
+				$list_data[$key]['waktu_normal_text'] = "~";
+				$list_data[$key]['waktu_normal_value'] = 0;
+				$list_data[$key]['jarak_normal_text'] = "~";
+				$list_data[$key]['jarak_normal_value'] = 0;
+			}
+
+			if ($hasil_pe->status == "OK") {
+				$rows_pe = $hasil_pe->rows;
+				$row_pe = $rows_pe['0'];
+				$elements_pe = $row_pe->elements;
+				$element_pe = $elements_pe['0'];
+				$duration_in_traffic_pe = $element_pe->duration_in_traffic;
+				$text_pe = $duration_in_traffic_pe->text;
+				$value_pe = $duration_in_traffic_pe->value;
+
+				$list_data[$key]['waktu_pesimis_text'] = $text_pe;
+				$list_data[$key]['waktu_pesimis_value'] = $value_pe;
+			}else{
+				$list_data[$key]['waktu_pesimis_text'] = "~";
+				$list_data[$key]['waktu_pesimis_value'] = 0;
+			}
+
+			if ($hasil_op->status == "OK") {
+				$rows_op = $hasil_op->rows;
+				$row_op = $rows_op['0'];
+				$elements_op = $row_op->elements;
+				$element_op = $elements_op['0'];
+				$duration_in_traffic_op = $element_op->duration_in_traffic;
+				$text_op = $duration_in_traffic_op->text;
+				$value_op = $duration_in_traffic_op->value;
+
+				$list_data[$key]['waktu_optimis_text'] = $text_op;
+				$list_data[$key]['waktu_optimis_value'] = $value_op;
+			}else{
+				$list_data[$key]['waktu_optimis_text'] = "~";
+				$list_data[$key]['waktu_optimis_value'] = 0;
+			}
+
+			// $list_data[$key]['gmaps'] = $hasil_op;
+		}
+		// echo "<pre>";print_r($list_data);exit();
+
+		$data['listData'] = $list_data;
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
