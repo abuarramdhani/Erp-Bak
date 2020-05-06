@@ -127,7 +127,7 @@ class C_Lpalaju extends CI_Controller
 
 			// $list_data[$key]['gmaps'] = $hasil_op;
 		}
-		echo "<pre>";print_r($list_data);exit();
+		// echo "<pre>";print_r($list_data);exit();
 
 		$data['listData'] = $list_data;
 		

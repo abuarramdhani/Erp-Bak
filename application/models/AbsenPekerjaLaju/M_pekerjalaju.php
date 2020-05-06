@@ -96,9 +96,9 @@ class M_pekerjalaju extends CI_Model
 	}
 
 	public function getKoordinatByLokasiKerja($koordinat){
-		$sql = "SELECT * 
-				FROM at.at_coordinat_lokasi_kerja 
-				WHERE lokasi_kerja = ?";
+		$sql = "select * 
+				from at.at_coordinat_lokasi_kerja 
+				where lokasi_kerja = ?";
 		return $this->db->query($sql,array($koordinat))->row();
 	}
 
