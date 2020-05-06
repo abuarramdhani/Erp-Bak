@@ -4260,3 +4260,9 @@ $route['CetakBOMResources'] 						= 'CetakBOMRouting/C_Index';
 
 $route['CetakBOMResources/Cetak'] 			= 'CetakBOMRouting/C_Cetakbom';
 $route['CetakBOMResources/Cetak/(:any)'] 	= 'CetakBOMRouting/C_Cetakbom/$1';
+
+// Absen Pekerja Laju
+$route['AbsenPekerjaLaju'] = 'AbsenPekerjaLaju/C_Index';
+$route['AbsenPekerjaLaju/PekerjaLaju'] = 'AbsenPekerjaLaju/C_PekerjaLaju';
+$route['AbsenPekerjaLaju/PekerjaLaju/(:any)'] = 'AbsenPekerjaLaju/C_PekerjaLaju/$1';
+$route['AbsenPekerjaLaju/PekerjaLaju/(:any)/(:any)'] = 'AbsenPekerjaLaju/C_PekerjaLaju/$1/$2';

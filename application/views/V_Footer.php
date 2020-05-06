@@ -216,6 +216,7 @@
 		<script src="<?= base_url('assets/js/customPBI.js');?>"></script>
 		<script src="<?= base_url('assets/js/customSIP.js');?>"></script>
 		<script src="<?= base_url('assets/js/customCBM.js');?>"></script>
+		<script src="<?= base_url('assets/js/customAPL.js');?>"></script>
 		
 		
 
