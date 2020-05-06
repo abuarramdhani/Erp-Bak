@@ -41,7 +41,7 @@ class C_Lpalaju extends CI_Controller
 		$employee = $this->session->employee;
 		$nama = trim($employee);
 		$noind = trim($this->session->user);
-		$array_data = $this->M_absenatasan->getList($noind,$nama);
+		$array_data = $this->M_absenatasan->getListabsLaju($noind,$nama);
 		// echo "<pre>";print_r($array_data);exit();
 
 		$list_data = array();
