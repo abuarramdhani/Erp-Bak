@@ -32,9 +32,10 @@
 						<th class="text-center bg-primary" style="width: 200px">Waktu Selfi</th>
 						<th class="text-center bg-primary" style="width: 300px">Lokasi</th>						
 						<th class="text-center bg-primary" style="width: 200px">Waktu Barcode</th>						
-						<th class="text-center bg-primary" style="width: 200px">Jarak Tempuh</th>						
+						<th class="text-center bg-primary" style="width: 200px">Jarak Tempuh Kantor - Titik Selfi</th>						
 						<th class="text-center bg-primary" style="width: 200px">Durasi Gmaps</th>						
 						<th class="text-center bg-primary" style="width: 200px">Durasi riil</th>						
+						<th class="text-center bg-primary" style="width: 200px">Jarak Tempuh Rumah - Titik Selfi</th>						
 					</tr>
 				</thead>
 				<tbody>
@@ -58,11 +59,16 @@
 						$date = date_create($value['waktu']);
 
 						$batas = round($value['waktu_normal_value']/60);
-						$wkt_riil = round(abs(strtotime($value['waktu']) - strtotime($value['waktu_barcode']))/60);
-						if ($wkt_riil > $batas) {
-							$style = ' style="color: red"';
+						if ($value['waktu_barcode'] !== 'Tidak ada Absen Barcode') {
+							$wkt_riil = round(abs(strtotime($value['waktu']) - strtotime($value['waktu_barcode']))/60);
+							if ($wkt_riil > $batas) {
+								$style = ' style="color: red"';
+							}else{
+								$style = "";
+							}
 						}else{
-							$style = "";
+							$style = ' style="color: blue"';
+							$wkt_riil = "0";
 						}
 						?>
 					
@@ -79,6 +85,7 @@
 						<td><?php echo $value['jarak_normal_text'].' ( '.$value['jarak_normal_value'].' m ) '; ?></td>
 						<td><?php echo 'normal : '.round($value['waktu_normal_value']/60).' Menit<br>cepat :'.round($value['waktu_optimis_value']/60).' Menit<br>lambat : '.round($value['waktu_normal_value']/60).' Menit'; ?></td>
 						<td><?php echo $wkt_riil.' Menit'; ?></td>
+						<td><?php echo $value['jarak_rumah_text'].' ( '.$value['jarak_rumah_value'].' m ) '; ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>

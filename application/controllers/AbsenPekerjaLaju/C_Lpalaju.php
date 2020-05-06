@@ -61,7 +61,11 @@ class C_Lpalaju extends CI_Controller
 			}else{
 				echo "Ada Data memiliki jenis absen selain pulang kerja dan masuk kerja";exit();
 			}
-			$list_data[$key]['waktu_barcode'] = $waktu_barcode->waktu_barcode ? $waktu_barcode->waktu_barcode : '~';
+			if (!empty($waktu_barcode) && isset($waktu_barcode->waktu_barcode)) {
+				$list_data[$key]['waktu_barcode'] = $waktu_barcode->waktu_barcode;
+			}else{
+				$list_data[$key]['waktu_barcode'] = "Tidak ada Absen Barcode";
+			}
 			
 			$perkiraan_op = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&traffic_model=optimistic&departure_time=now&language=id-ID');
 			$hasil_op = json_decode($perkiraan_op);
@@ -69,6 +73,8 @@ class C_Lpalaju extends CI_Controller
 			$hasil_pe = json_decode($perkiraan_pe);
 			$perkiraan = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&departure_time=now&language=id-ID');
 			$hasil = json_decode($perkiraan);
+			$perkiraan_rumah = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&departure_time=now&language=id-ID');
+			$hasil_rumah = json_decode($perkiraan_rumah);
 
 			if ($hasil->status == "OK") {
 				$rows = $hasil->rows;
@@ -91,6 +97,29 @@ class C_Lpalaju extends CI_Controller
 				$list_data[$key]['waktu_normal_value'] = 0;
 				$list_data[$key]['jarak_normal_text'] = "~";
 				$list_data[$key]['jarak_normal_value'] = 0;
+			}
+
+			if ($hasil_rumah->status == "OK") {
+				$rows_rumah = $hasil_rumah->rows;
+				$row_rumah = $rows_rumah['0'];
+				$elements_rumah = $row_rumah->elements;
+				$element_rumah = $elements_rumah['0'];
+				$duration_rumah = $element_rumah->duration;
+				$distance_rumah = $element_rumah->distance;
+				$duration_rumah_text = $duration_rumah->text;
+				$duration_rumah_value = $duration_rumah->value;
+				$distance_rumah_text = $distance_rumah->text;
+				$distance_rumah_value = $distance_rumah->value;
+
+				$list_data[$key]['waktu_rumah_text'] = $duration_rumah_text;
+				$list_data[$key]['waktu_rumah_value'] = $duration_rumah_value;
+				$list_data[$key]['jarak_rumah_text'] = $distance_rumah_text;
+				$list_data[$key]['jarak_rumah_value'] = $distance_rumah_value;
+			}else{
+				$list_data[$key]['waktu_rumah_text'] = "~";
+				$list_data[$key]['waktu_rumah_value'] = 0;
+				$list_data[$key]['jarak_rumah_text'] = "~";
+				$list_data[$key]['jarak_rumah_value'] = 0;
 			}
 
 			if ($hasil_pe->status == "OK") {
