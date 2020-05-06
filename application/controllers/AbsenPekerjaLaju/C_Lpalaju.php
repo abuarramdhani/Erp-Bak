@@ -41,7 +41,7 @@ class C_Lpalaju extends CI_Controller
 		$employee = $this->session->employee;
 		$nama = trim($employee);
 		$noind = trim($this->session->user);
-		$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
+		$data['listData'] = $this->M_absenatasan->getListabsLaju($noind,$nama);
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
