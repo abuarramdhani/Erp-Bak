@@ -514,7 +514,12 @@ class M_absenatasan extends CI_Model
 		$this->personalia->query($sql,array($noind,$tanggal));
 	}
 	
-
+	function getPekerjaLaju($noinduk)
+	{
+		$this->db->where('noind', $noinduk);
+		$query = $this->db->get('at.at_laju')->num_rows();
+		return $query !== 0;
+	}
 }
 
 
