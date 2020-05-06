@@ -74,10 +74,29 @@ class C_Index extends CI_Controller
 
 		public function getAtasan(){
 			$noinduk = $this->input->post('noinduk');
-			$getKodeJabatan = $this->M_submit->getKodeJabatan($noinduk);
+			if (trim($noinduk) == '') {
+				$data['status'] = false;
+				$data['result']	= "Gagal";
+				print_r(json_encode($data));
+				return;
+			}else{
+				$data['status'] = true;
+				$data['result']	= "Berhasil";
+			}
 
-			if($noinduk != null){
-					if (($getKodeJabatan >= 13) && ($getKodeJabatan != 19) && ($getKodeJabatan != 16)) {
+			$isLaju = $this->M_absenatasan->getPekerjaLaju($noinduk);
+			if ($isLaju) {
+				$data['atasan1'] = array(
+					array('employee_code'	=>	'B0307',
+						'employee_name'	=>	'RAJIWAN')
+					);
+				$data['atasan2'] = array(
+					// array('employee_code'	=>	'B0307',
+					// 	'employee_name'	=>	'RAJIWAN')
+					);
+			}else{
+				$getKodeJabatan = $this->M_submit->getKodeJabatan($noinduk);
+				if (($getKodeJabatan >= 13) && ($getKodeJabatan != 19) && ($getKodeJabatan != 16)) {
 					$atasan1 = $this->M_absenatasan->getAtasanApprover($noinduk, 1,$getKodeJabatan);
 					$atasan2 = $this->M_absenatasan->getAtasanApprover($noinduk, 2,$getKodeJabatan);
 					$data['atasan1'] = $atasan1;
@@ -86,21 +105,14 @@ class C_Index extends CI_Controller
 					$atasan2 = $this->M_absenatasan->getAtasanApprover($noinduk, 2,$getKodeJabatan);
 					$data['atasan2'] = $atasan2;
 				}
-
-
-				$data['status'] = true;
-				$data['result']	= "Berhasil";
 			}
-			else{
-				$data['status'] = false;
-				$data['result']	= "Gagal";
-			}
-				print_r(json_encode($data));
-
+			
+			print_r(json_encode($data));
 		}
 
 		public function detail($id){
 		$user_id = $this->session->userid;
+		$user = $this->session->user;
 
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';

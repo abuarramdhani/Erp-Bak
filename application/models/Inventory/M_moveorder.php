@@ -751,6 +751,7 @@ class M_moveorder extends CI_Model
 							wro.QUANTITY_PER_ASSEMBLY Qty_UNIT,
 							mtrl.QUANTITY qty_minta,
 							mtrl.FROM_SUBINVENTORY_CODE lokasi,
+							mil.SEGMENT1 lokator ,
 							bcs.DESCRIPTION || '(' || to_char(
 							to_date(
 							bst.FROM_TIME,
@@ -844,7 +845,8 @@ class M_moveorder extends CI_Model
 							BOM_DEPARTMENTS bd, -- produk
 							mtl_system_items_b msib_produk, --shift
 							BOM_SHIFT_TIMES bst,
-							BOM_CALENDAR_SHIFTS bcs
+							BOM_CALENDAR_SHIFTS bcs,
+							mtl_item_locations mil
 							where
 							mtrh.header_id = mtrl.header_id
 							and mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
@@ -865,6 +867,7 @@ class M_moveorder extends CI_Model
 							and mtrh.request_number = '$moveOrderAwal'
 							-- and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
 							and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+							and mtrl.FROM_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
 							order by
 							mtrl.LINE_ID,
 							we.WIP_ENTITY_NAME,

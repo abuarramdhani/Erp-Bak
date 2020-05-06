@@ -33,26 +33,26 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="15%">Lokasi</td>
+					<td width="15%">Subinv</td>
 					<td width="30%">: <?php echo $value['LOKASI'] ?></td>
 					<td width="15%">Job No</td>
 					<td>: <?php echo $value['JOB_NO'] ?></td>
 				</tr>
 				<tr>
-					<td>Produk</td>
-					<td>: <?php echo $value['KATEGORI_PRODUK'] ?></td>
+					<td>Locator</td>
+					<td>: <?= $dataall['line'][0]['LOKATOR']?></td>
 					<td>Department</td>
 					<td>: <?php echo $value['DEPARTMENT'] ?></td>
 				</tr>
 				<tr>
-					<td>Tanggal Dipakai</td>
-					<td>: <?php echo $value['DATE_REQUIRED'] ?></td>
+					<td>Produk</td>
+					<td>: <?php echo $value['KATEGORI_PRODUK'] ?></td>
 					<td>Kode Assembly</td>
 					<td>: <?php echo $value['PRODUK'] ?></td>
 				</tr>
 				<tr>
-					<td></td>
-					<td></td>
+					<td>Tanggal Dipakai</td>
+					<td>: <?php echo $value['DATE_REQUIRED'] ?></td>
 					<td>Nama Assembly</td>
 					<td>: <?php  echo $value['PRODUK_DESC']?><br></td>
 				</tr>

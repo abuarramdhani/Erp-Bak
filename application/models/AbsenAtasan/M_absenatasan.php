@@ -21,7 +21,15 @@ class M_absenatasan extends CI_Model
 	
 	public function getList($noind,$approver){
 		// print_r($approver);exit();	
-		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE (left(approval.approver,5) = '$noind' OR approval.approver LIKE '%$approver%' ) AND approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id ORDER BY approval.status desc";
+		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE (left(approval.approver,5) = '$noind' OR approval.approver LIKE '%$approver%' ) AND approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id and absen.noind not in (select noind from at.at_laju) ORDER BY approval.status desc";
+		$query = $this->db->query($sql);
+		// print_r($sql);exit();
+		return $query->result_array();
+	}
+
+	public function getListabsLaju($noind,$approver){
+		// print_r($approver);exit();	
+		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id and absen.noind in (select noind from at.at_laju) ORDER BY approval.status desc";
 		$query = $this->db->query($sql);
 		// print_r($sql);exit();
 		return $query->result_array();
@@ -514,7 +522,12 @@ class M_absenatasan extends CI_Model
 		$this->personalia->query($sql,array($noind,$tanggal));
 	}
 	
-
+	function getPekerjaLaju($noinduk)
+	{
+		$this->db->where('noind', $noinduk);
+		$query = $this->db->get('at.at_laju')->num_rows();
+		return $query !== 0;
+	}
 }
 
 
