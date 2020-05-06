@@ -47,20 +47,27 @@ class C_Lpalaju extends CI_Controller
 		$list_data = array();
 		foreach ($array_data as $key => $value) {
 			$list_data[$key] = $value;
+			$lokasi_kerja = $this->M_pekerjalaju->getLokasikerjaByNoind($value['noind']);
+			$koordinat = $this->M_pekerjalaju->getKoordinatByLokasiKerja($lokasi_kerja->lokasi_kerja);
+			$kantor = $koordinat->latitude.','.$koordinat->longitude;
 			if ($value['jenis_absen'] == 'Pulang Kerja') {
 				$waktu_barcode = $this->M_pekerjalaju->getAbsenBarcodePulang($value['noind'],$value['waktu']);
+				$destination = $value['latitude'].','.$value['longitude'];
+				$origin = $kantor;
 			}elseif ($value['jenis_absen'] == 'Masuk Kerja') {
 				$waktu_barcode = $this->M_pekerjalaju->getAbsenBarcodeDatang($value['noind'],$value['waktu']);
+				$destination = $kantor;
+				$origin = $value['latitude'].','.$value['longitude'];
 			}else{
 				echo "Ada Data memiliki jenis absen selain pulang kerja dan masuk kerja";exit();
 			}
 			$list_data[$key]['waktu_barcode'] = $waktu_barcode->waktu_barcode;
 			
-			$perkiraan_op = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins=-7.774910,%20110.288885&destinations=-7.774793,%20110.361402&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&traffic_model=optimistic&departure_time=now&language=id-ID');
+			$perkiraan_op = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&traffic_model=optimistic&departure_time=now&language=id-ID');
 			$hasil_op = json_decode($perkiraan_op);
-			$perkiraan_pe = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins=-7.774910,%20110.288885&destinations=-7.774793,%20110.361402&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&traffic_model=pessimistic&departure_time=now&language=id-ID');
+			$perkiraan_pe = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&traffic_model=pessimistic&departure_time=now&language=id-ID');
 			$hasil_pe = json_decode($perkiraan_pe);
-			$perkiraan = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins=-7.774910,%20110.288885&destinations=-7.774793,%20110.361402&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&departure_time=now&language=id-ID');
+			$perkiraan = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&departure_time=now&language=id-ID');
 			$hasil = json_decode($perkiraan);
 
 			if ($hasil->status == "OK") {
@@ -120,7 +127,7 @@ class C_Lpalaju extends CI_Controller
 
 			// $list_data[$key]['gmaps'] = $hasil_op;
 		}
-		// echo "<pre>";print_r($list_data);exit();
+		echo "<pre>";print_r($list_data);exit();
 
 		$data['listData'] = $list_data;
 		

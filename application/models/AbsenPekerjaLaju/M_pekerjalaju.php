@@ -88,6 +88,20 @@ class M_pekerjalaju extends CI_Model
 		return $this->personalia->query($sql,array($noind,$waktu))->row();
 	}
 
+	public function getLokasikerjaByNoind($noind){
+		$sql = "select lokasi_kerja
+				from hrd_khs.tpribadi
+				where noind = ?";
+		return $this->personalia->query($sql,array($noind))->row();
+	}
+
+	public function getKoordinatByLokasiKerja($koordinat){
+		$sql = "SELECT * 
+				FROM at.at_coordinat_lokasi_kerja 
+				WHERE lokasi_kerja = ?";
+		return $this->db->query($sql,array($koordinat))->row();
+	}
+
 }
 
 ?>
