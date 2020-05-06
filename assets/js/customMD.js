@@ -125,9 +125,9 @@ function approveMD() {
   var plat_number = $('#plat_number').val();
   var atr_tampung_gan = $('#atr_tampung_gan').val();
 
-  if (plat_number === '') {
-    plat_number = 'TR 1 AL'
-  }
+//   if (plat_number === '') {
+//     plat_number = 'TR 1 AL'
+//   }
 
   // var pengecekan = $('tr[row-id="' + rowID + '"] input[name="cekdodo"]').val();
   var pengecekan = $('#checkDODO').val();
@@ -143,17 +143,17 @@ function approveMD() {
     }).then(function() {
       $('#MyModal2').modal('hide');
     })
-//   } else if (plat_number === '') {
-//     Swal.fire({
-//       position: 'middle',
-//       type: 'error',
-//       title: 'Plat Nomor Kosong!',
-//       text: 'Silahkan hubungi pembelian',
-//       showConfirmButton: false,
-//       timer: 2500
-//     }).then(function() {
-//       $('#MyModal2').modal('hide');
-//     })
+  } else if (plat_number === '') {
+    Swal.fire({
+      position: 'middle',
+      type: 'error',
+      title: 'Plat Nomor Kosong!',
+      text: 'Silahkan hubungi pembelian',
+      showConfirmButton: false,
+      timer: 2500
+    }).then(function() {
+      $('#MyModal2').modal('hide');
+    })
   } else {
     if (pengecekan == 1) {
       $.ajax({
@@ -170,7 +170,7 @@ function approveMD() {
         },
         success: function(result) {
           // window.alert(result);
-        //   if (result == 1) {
+          if (result == 1) {
             // window.alert('test');
             Swal.fire({
               position: 'middle',
@@ -207,16 +207,16 @@ function approveMD() {
                 })
               }
             })
-        //   } else {
-        //     // window.alert('test_fail');
-        //     Swal.fire({
-        //       position: 'middle',
-        //       type: 'danger',
-        //       title: 'Failed..!!!',
-        //       showConfirmButton: false,
-        //       timer: 1500
-        //     })
-        //   }
+          } else {
+            // window.alert('test_fail');
+            Swal.fire({
+              position: 'middle',
+              type: 'danger',
+              title: 'Failed..!!!',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
