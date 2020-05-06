@@ -18,6 +18,7 @@ class M_pekerjalaju extends CI_Model
 
 	public function insertPekerjaLaju($data){
 		$this->db->insert('at.at_laju',$data);
+		return $this->db->last_query();
 	}
 
 	public function getPekerjaByKey($key){
@@ -52,6 +53,7 @@ class M_pekerjalaju extends CI_Model
 	public function deletePekerjaLajubyID($id){
 		$this->db->where('laju_id',$id);
 		$this->db->delete('at.at_laju');
+		return $this->db->last_query();
 	}
 
 	public function getPekerjaLajuByID($id){
@@ -64,6 +66,7 @@ class M_pekerjalaju extends CI_Model
 	public function updatePekerjaLaju($data,$id){
 		$this->db->where('laju_id',$id);
 		$this->db->update('at.at_laju',$data);
+		return $this->db->last_query();
 	}
 
 	public function getAbsenBarcodeDatang($noind,$waktu){
@@ -100,6 +103,10 @@ class M_pekerjalaju extends CI_Model
 				from at.at_coordinat_lokasi_kerja 
 				where lokasi_kerja = ?";
 		return $this->db->query($sql,array($koordinat))->row();
+	}
+
+	public function insertLog($data_log){
+		$this->db->insert('sys.sys_log_activity',$data_log);
 	}
 
 }

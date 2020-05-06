@@ -61,7 +61,7 @@ class C_Lpalaju extends CI_Controller
 			}else{
 				echo "Ada Data memiliki jenis absen selain pulang kerja dan masuk kerja";exit();
 			}
-			$list_data[$key]['waktu_barcode'] = $waktu_barcode->waktu_barcode;
+			$list_data[$key]['waktu_barcode'] = $waktu_barcode->waktu_barcode ? $waktu_barcode->waktu_barcode : '~';
 			
 			$perkiraan_op = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?units=metrics&origins='.$origin.'&destinations='.$destination.'&key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&traffic_model=optimistic&departure_time=now&language=id-ID');
 			$hasil_op = json_decode($perkiraan_op);

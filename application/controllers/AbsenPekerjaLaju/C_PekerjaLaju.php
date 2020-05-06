@@ -102,7 +102,15 @@ class C_PekerjaLaju extends CI_Controller
 			'latitude'			=> $this->input->post('txtLatitudePekerjaLaju'),
 			'longitude'			=> $this->input->post('txtLongitudePekerjaLaju')
 		);
-		$this->M_pekerjalaju->insertPekerjaLaju($data);
+		$query = $this->M_pekerjalaju->insertPekerjaLaju($data);
+
+		$data_log = array(
+			'log_user' => $this->session->user,
+			'log_time' => date('Y-m-d H:i:s'),
+			'log_aksi' => 'PEKERJA LAJU',
+			'log_detail' => $query
+		);
+		$this->M_pekerjalaju->insertLog($data_log);
 
 		redirect(base_url('AbsenPekerjaLaju/PekerjaLaju'));
 	}
@@ -117,7 +125,15 @@ class C_PekerjaLaju extends CI_Controller
 		$id = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 		$id = $this->encrypt->decode($id);
 
-		$this->M_pekerjalaju->deletePekerjaLajubyID($id);
+		$query = $this->M_pekerjalaju->deletePekerjaLajubyID($id);
+
+		$data_log = array(
+			'log_user' => $this->session->user,
+			'log_time' => date('Y-m-d H:i:s'),
+			'log_aksi' => 'PEKERJA LAJU',
+			'log_detail' => $query
+		);
+		$this->M_pekerjalaju->insertLog($data_log);
 
 		redirect(base_url('AbsenPekerjaLaju/PekerjaLaju'));
 	}
@@ -179,7 +195,15 @@ class C_PekerjaLaju extends CI_Controller
 			'latitude'			=> $this->input->post('txtLatitudePekerjaLaju'),
 			'longitude'			=> $this->input->post('txtLongitudePekerjaLaju')
 		);
-		$this->M_pekerjalaju->updatePekerjaLaju($data,$id);
+		$query = $this->M_pekerjalaju->updatePekerjaLaju($data,$id);
+
+		$data_log = array(
+			'log_user' => $this->session->user,
+			'log_time' => date('Y-m-d H:i:s'),
+			'log_aksi' => 'PEKERJA LAJU',
+			'log_detail' => $query
+		);
+		$this->M_pekerjalaju->insertLog($data_log);
 
 		redirect(base_url('AbsenPekerjaLaju/PekerjaLaju'));
 	}
