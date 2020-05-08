@@ -77,6 +77,17 @@
                                   <td class="text-center"><input type="number" class="form-control" name="quantity[]" required></td>
                                   <td class="text-center"><input type="text" class="form-control" id="uom_1" name="uom[]" readonly></td>
                                   <td class="text-center"><input type="text" class="form-control" id="itemtype_1" name="item_type[]" readonly></td>
+                                  <td class="text-center">
+                                    <select class="form-control" name="status[]" required>
+                                      <option>Pilih Status</option>
+                                      <option value="1">Dipersiapkan Seksi Pengirim</option>
+                                      <option value="2">Diterima Gudang Pengeluaran</option>
+                                      <option value="3">Surat Jalan Telah Dibuat</option>
+                                      <option value="4">Dikirim ke Lokasi Tujuan</option>
+                                      <option value="5">Diterima Gudang Penerimaan</option>
+                                      <option value="6">Diterima Seksi Tujuan</option>
+                                    </select>
+                                  </td>
                                   <td class="text-center"><a class="btn btn-default btn-sm" onclick="btnPlusPBI()"><i class="fa fa-plus"></i></a></td>
                                 </tr>
                               </tbody>

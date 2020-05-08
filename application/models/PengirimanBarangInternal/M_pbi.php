@@ -28,7 +28,8 @@ class M_pbi extends CI_Model
 
       $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim
               FROM khs_kirim_internal kki
-              WHERE kki.seksi_kirim = '$response->seksi'";
+              WHERE kki.seksi_kirim = '$response->seksi'
+              ORDER BY kki.doc_number DESC";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }

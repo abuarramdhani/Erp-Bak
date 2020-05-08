@@ -89,6 +89,17 @@ const btnPlusPBI = () => {
                               <td class="text-center"><input type="text" class="form-control" id="uom_${a}" name="uom[]" readonly></td>
                               <td class="text-center"><input type="text" class="form-control" id="itemtype_${a}" name="item_type[]" readonly></td>
                               <td class="text-center">
+                                <select class="form-control" name="status[]" required>
+                                  <option>Pilih Status</option>
+                                  <option value="1">Dipersiapkan Seksi Pengirim</option>
+                                  <option value="2">Diterima Gudang Pengeluaran</option>
+                                  <option value="3">Surat Jalan Telah Dibuat</option>
+                                  <option value="4">Dikirim ke Lokasi Tujuan</option>
+                                  <option value="5">Diterima Gudang Penerimaan</option>
+                                  <option value="6">Diterima Seksi Tujuan</option>
+                                </select>
+                              </td>
+                              <td class="text-center">
                                 <a class="btn btn-danger btn-sm btnpbi${a}">
                                 <i class="fa fa-minus"></i>
                                 </a>
