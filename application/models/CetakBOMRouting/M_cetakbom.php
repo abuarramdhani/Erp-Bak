@@ -112,39 +112,100 @@ AND msib.segment1 = '$komp'
 
    public function getdatapdf($kode,$seksi) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "SELECT DISTINCT bor.alternate_routing_designator, msib.segment1 item, msib.description,
-                bd.department_code department, br.resource_code,
-                bores.usage_rate_or_amount, bores.assigned_units,
-                (SELECT crc.resource_rate
-                   FROM bom_resources br2,
-                        cst_cost_types cct,
-                        cst_resource_costs crc
-                  WHERE br2.organization_id = 102
-                    AND br2.resource_id = crc.resource_id
-                    AND cct.cost_type_id = crc.cost_type_id
-                    AND br2.resource_code = br.resource_code) resource_cost,
-                bos.operation_description kode_proses, bos.attribute7 proses,
-                kdmr.no_mesin
-           FROM bom_operational_routings bor,
-                mtl_system_items_b msib,
-                bom_operation_sequences bos,
-                bom_operation_resources bores,
-                bom_departments bd,
-                bom_resources br,
-                khs_daftar_mesin_resource kdmr
-          WHERE bor.assembly_item_id = msib.inventory_item_id
-            AND bor.organization_id = msib.organization_id
-            AND bor.routing_sequence_id = bos.routing_sequence_id
-            AND bos.department_id = bd.department_id
-            AND bd.organization_id = 102
-            AND bores.operation_sequence_id = bos.operation_sequence_id
-            AND bores.resource_id = br.resource_id
-            AND br.organization_id = 102
-            -- AND bor.alternate_routing_designator IS NULL
-            AND kdmr.resource_id(+) = br.resource_id
-            AND msib.segment1 = '$kode'
+    $sql = "
+    -- SELECT DISTINCT bor.alternate_routing_designator, msib.segment1 item, msib.description,
+    --             bd.department_code department, br.resource_code,
+    --             bores.usage_rate_or_amount, bores.assigned_units,
+    --             (SELECT crc.resource_rate
+    --                FROM bom_resources br2,
+    --                     cst_cost_types cct,
+    --                     cst_resource_costs crc
+    --               WHERE br2.organization_id = 102
+    --                 AND br2.resource_id = crc.resource_id
+    --                 AND cct.cost_type_id = crc.cost_type_id
+    --                 AND br2.resource_code = br.resource_code) resource_cost,
+    --             bos.operation_description kode_proses, bos.attribute7 proses,
+    --             kdmr.no_mesin
+    --        FROM bom_operational_routings bor,
+    --             mtl_system_items_b msib,
+    --             bom_operation_sequences bos,
+    --             bom_operation_resources bores,
+    --             bom_departments bd,
+    --             bom_resources br,
+    --             khs_daftar_mesin_resource kdmr
+    --       WHERE bor.assembly_item_id = msib.inventory_item_id
+    --         AND bor.organization_id = msib.organization_id
+    --         AND bor.routing_sequence_id = bos.routing_sequence_id
+    --         AND bos.department_id = bd.department_id
+    --         AND bd.organization_id = 102
+    --         AND bores.operation_sequence_id = bos.operation_sequence_id
+    --         AND bores.resource_id = br.resource_id
+    --         AND br.organization_id = 102
+    --         AND br.disable_date IS NULL
+    --         -- AND bd.disable_date IS NULL
+    --         -- AND bor.alternate_routing_designator IS NULL
+    --         AND kdmr.resource_id(+) = br.resource_id
+    --         AND msib.segment1 = '$kode'
+    --         AND bd.department_class_code = '$seksi'
+    --    ORDER BY 1, 4
+
+                    select bor.ORGANIZATION_ID
+            ,msib.segment1
+            ,msib.description
+            ,bor.ALTERNATE_ROUTING_DESIGNATOR alt
+            ,bos.OPERATION_SEQ_NUM opr_no
+            ,BOS.OPERATION_DESCRIPTION KODE_PROSES
+            --,BOS.ATTRIBUTE7
+                ,mach.RESOURCE_CODE
+                ,mach.DESCRIPTION
+                ,mach.DFF
+                ,mach.NO_MESIN
+            --    ,mach.TAG_NUMBER
+            --    ,mach.SPEC_MESIN
+                ,mach.ASSIGNED_UNITS machine_qt
+            ,opt.USAGE_RATE_OR_AMOUNT
+            ,(opt.USAGE_RATE_OR_AMOUNT*3600) CT
+            ,floor(23400/(opt.USAGE_RATE_OR_AMOUNT*3600))target
+            ,opt.assigned_units opt_qty
+            from mtl_system_items_b msib
+            ,bom_operational_routings bor
+            ,bom_operation_sequences bos
+            ,bom_departments bd
+                ,(select borsop.OPERATION_SEQUENCE_ID
+                ,borsop.USAGE_RATE_OR_AMOUNT
+                ,borsop.ASSIGNED_UNITS 
+                from bom_operation_resources borsop
+                ,bom_resources brop
+                where borsop.RESOURCE_ID = brop.RESOURCE_ID
+                and brop.RESOURCE_TYPE = 2
+                and brop.DISABLE_DATE is null) opt
+                ,(select borsmc.OPERATION_SEQUENCE_ID
+                ,brmc.RESOURCE_CODE
+                ,kdmr.DFF
+                ,kdmr.NO_MESIN
+                ,kdmr.TAG_NUMBER
+                ,kdmr.SPEC_MESIN
+                ,brmc.DESCRIPTION
+                ,borsmc.ASSIGNED_UNITS 
+                from bom_operation_resources borsmc
+                ,bom_resources brmc
+                ,khs_daftar_mesin_resource kdmr
+                where borsmc.RESOURCE_ID = brmc.RESOURCE_ID
+                and brmc.RESOURCE_TYPE = 1
+                and brmc.AUTOCHARGE_TYPE = 1
+                and brmc.DISABLE_DATE is null
+                and borsmc.RESOURCE_ID = kdmr.RESOURCE_ID(+))mach
+            where bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
+            and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
+            and bd.ORGANIZATION_ID = bor.ORGANIZATION_ID
+            and bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+            and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
+            and bos.DISABLE_DATE is null
+            and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
+            and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
+            and msib.segment1 = '$kode'
             AND bd.department_class_code = '$seksi'
-       ORDER BY 1, 4";
+       ";
 
        $query = $oracle->query($sql);
         return $query->result_array();
