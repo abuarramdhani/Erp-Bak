@@ -45,16 +45,6 @@
 
 					foreach ($listData as $key => $value)
 					 {
-					 	/*if($value['status'] == 0){
-							$status = "New Entry";
-							$classLabel = "label label-default";
-						}else if($value['status']==1){
-							$status = "Approved";
-							$classLabel = "label label-success";
-						}else{
-							$status = "Rejected";
-							$classLabel = "label label-danger";
-						}*/
 
 						$date = date_create($value['waktu']);
 
@@ -75,7 +65,6 @@
 					<tr <?php echo $style ?>>
 						<td class="text-center"><?php echo $no++; ?></td>
 						<td><center><a target="_blank" href="<?php echo base_url('AbsenPekerjaLaju/list_absen_pkj_laju/list/detail/'.$value['absen_id']); ?>" class="btn btn-primary">Detail</a></center></td>
-						<!-- <td id="dataStatus"><span id="textStatus" class="<?php  //echo $classLabel;?>"><?php //echo $status; ?></span></td> -->
 						<td><?php echo $value['noind']; ?></td>
 						<td><?php echo $value['nama']; ?></td>
 						<td><?php echo $value['jenis_absen']; ?></td>
@@ -83,7 +72,7 @@
 						<td><?php echo $value['lokasi']." (". $value['longitude'] .", ". $value['latitude'].")"; ?></td>
 						<td><?php echo $value['waktu_barcode']; ?></td>
 						<td><?php echo $value['jarak_normal_text'].' ( '.$value['jarak_normal_value'].' m ) '; ?></td>
-						<td><?php echo 'normal : '.round($value['waktu_normal_value']/60).' Menit<br>cepat :'.round($value['waktu_optimis_value']/60).' Menit<br>lambat : '.round($value['waktu_normal_value']/60).' Menit'; ?></td>
+						<td><?php echo 'normal : '.round($value['waktu_normal_value']/60).' Menit<br>Cepat :'.round($value['waktu_optimis_value']/60).' Menit<br>Lambat : '.round($value['waktu_normal_value']/60).' Menit'; ?></td>
 						<td><?php echo $wkt_riil.' Menit'; ?></td>
 						<td><?php echo $value['jarak_rumah_text'].' ( '.$value['jarak_rumah_value'].' m ) '; ?></td>
 					</tr>

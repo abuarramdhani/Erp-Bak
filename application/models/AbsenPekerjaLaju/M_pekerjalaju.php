@@ -109,6 +109,13 @@ class M_pekerjalaju extends CI_Model
 		$this->db->insert('sys.sys_log_activity',$data_log);
 	}
 
+	public function getKoordinatRumahByNoind($noind){
+		$sql = "select *
+				from at.at_laju
+				where noind = ?";
+		return $this->db->query($sql,array($noind))->row();
+	}
+
 }
 
 ?>
