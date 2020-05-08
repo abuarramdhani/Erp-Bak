@@ -37,7 +37,7 @@
 													<th class="bg-primary" style="vertical-align: middle;text-align: center;">User Input</th>
 													<th class="bg-primary" style="vertical-align: middle;text-align: center;">Status Aktif</th>
 													<th class="bg-primary" style="vertical-align: middle;text-align: center;">Tanggal Non Aktif</th>
-													<th class="bg-primary" style="vertical-align: middle;text-align: center;">Koordinat</th>
+													<th class="bg-primary" style="vertical-align: middle;text-align: center;">Koordinat Rumah (latitude, longitude)</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -88,7 +88,7 @@
 															<td><?php echo $dt['user_input']." - ".$dt['nama_user'] ?></td>
 															<td><?php echo $dt['status_active'] == 't' ? 'Aktif' : 'NonAktif' ?></td>
 															<td><?php echo $dt['tgl_non_active'] ?></td>
-															<td><?php echo $dt['longitude'].",".$dt['latitude'] ?></td>
+															<td><?php echo $dt['latitude'].",".$dt['longitude'] ?></td>
 														</tr>
 														<?php 
 														$nomor++;

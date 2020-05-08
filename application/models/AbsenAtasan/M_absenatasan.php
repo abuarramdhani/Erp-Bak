@@ -35,6 +35,14 @@ class M_absenatasan extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getListabsLaju($noind,$approver){
+		// print_r($approver);exit();	
+		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id and absen.noind in (select noind from at.at_laju) ORDER BY approval.status desc";
+		$query = $this->db->query($sql);
+		// print_r($sql);exit();
+		return $query->result_array();
+	}
+	
 	public function getJenisAbsen(){
 		$sql = "SELECT aa.*, ja.* FROM at.at_absen aa LEFT JOIN at.at_jenis_absen ja ON aa.jenis_absen_id = ja.jenis_absen_id";
 		$query = $this->db->query($sql);
