@@ -15,6 +15,7 @@
           <td rowspan="4" width="25%" style="font-size: 11px; text-align: left; padding-left: 5px;width: 22%">
           CV KARYA HIDUP SENTOSA<br>
           YOGYAKARTA <br>
+          <br>
           Departement Produksi
           </td>
 			<td style="border: 1px solid black;border-collapse: collapse; font-weight: bold;font-size: 10pt;text-align: center; background-color: yellow;width: 35%">PRODUCTION ENGINEERING</td>

@@ -106,7 +106,7 @@ class C_Cetakbom extends CI_Controller
 		 $data['name'] = $this->session->employee;
 
 
-		// echo "<pre>";print_r($data['user']);exit();
+		// echo "<pre>";print_r($datapdf);exit();
 
 
 		
@@ -117,6 +117,17 @@ class C_Cetakbom extends CI_Controller
 		$data['desckomp'] = $desckomp[0]['DESCRIPTION'];
 		$data['descprod'] = $descprod[0]['DESCRIPTION'];
 
+		$kodeproses = array();
+		foreach ($datapdf as $pdfs) {
+			$kode="";
+			$kode .= $pdfs['KODE_PROSES'];
+			array_push($kodeproses, $kode);
+
+		}
+
+		// echo "<pre>"; print_r($kodeproses); exit();
+
+
 		$array_pdf = array();
 		$i=0;
 		foreach ($datapdf as $pdf) {
@@ -124,13 +135,14 @@ class C_Cetakbom extends CI_Controller
 			$target = 23400/$cycletime;
 			$inverse = $target / 6.5;
 
-			$array_pdf[$i]['PROSES'] = $pdf['PROSES'];
+			// $array_pdf[$i]['PROSES'] = $pdf['PROSES'];
 			$array_pdf[$i]['KODE_PROSES'] = $pdf['KODE_PROSES'];
 			$array_pdf[$i]['RESOURCE_CODE'] = $pdf['RESOURCE_CODE'];
 			$array_pdf[$i]['NO_MESIN'] = $pdf['NO_MESIN'];
 			$array_pdf[$i]['USAGE_RATE_OR_AMOUNT'] = $pdf['USAGE_RATE_OR_AMOUNT'];
-			$array_pdf[$i]['ASSIGNED_UNITS'] = $pdf['ASSIGNED_UNITS'];
-			$array_pdf[$i]['ALTERNATE_ROUTING'] = $pdf['ALTERNATE_ROUTING_DESIGNATOR'];
+			$array_pdf[$i]['MACHINE_QT'] = $pdf['MACHINE_QT'];
+			$array_pdf[$i]['ALTERNATE_ROUTING'] = $pdf['ALT'];
+			$array_pdf[$i]['OPT_QTY'] = $pdf['OPT_QTY'];
 			$array_pdf[$i]['CYCLE_TIME'] = round($cycletime,2);
 			$array_pdf[$i]['TARGET'] = floor($target);
 			$array_pdf[$i]['INVERSE'] = round($inverse,3);
@@ -140,6 +152,10 @@ class C_Cetakbom extends CI_Controller
 
 		$data['datapdf'] = $array_pdf;
 		$data['datapdf2'] = $datapdf2;
+		$kodee = array_count_values($kodeproses);
+		$data['kodee'] = $kodee;
+		
+		// print_r(); exit();
 
 
 		// echo "<pre>";print_r($array_pdf);exit();
@@ -147,7 +163,7 @@ class C_Cetakbom extends CI_Controller
 		ob_start();
 		$this->load->library('pdf');
     	$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 27, 15, 3, 3); //----- A5-L
+    	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 27, 27, 3, 3); //----- A5-L
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'BOM_Routing_'.$tglNama.'.pdf';
     	$head = $this->load->view('CetakBOMRouting/V_CetakanHead', $data, true);	

@@ -34,31 +34,49 @@
 		<tr style="background-color: grey">
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">No</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Kode Proses</th>
-			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Resource</th>
-			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Assigned Unit</th>
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 13%">Resource</th>
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Machine QT</th>
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Operator Qty</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Alternate Routing</th>
-			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Proses</th>
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Proses</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">No Mesin</th>
-			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Usage Rate<br>(Hour)</th>
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Usage Rate<br>(Hour)</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Cycle Time<br>(Second)</th>
-			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Target<br>(Pcs)</th>
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Target<br>(Pcs)</th>
 			<!-- <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Inverse</th> -->
 		</tr>
-		<?php $no=1; foreach ($datapdf as $pdf) {?>
-		<tr>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$no?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['KODE_PROSES']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['RESOURCE_CODE']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['ASSIGNED_UNITS']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['ALTERNATE_ROUTING']?></td>
+		<?php $b=1;  $no=1; for ($i=0; $i < sizeof($datapdf); $i++) {
+			 if ($i != 0 && $datapdf[$i]['KODE_PROSES'] == $datapdf[$i-1]['KODE_PROSES']) {  
+			 		// $b+1;
+			 	?>      
+
+			  <tr>                     
+				  <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['MACHINE_QT']?></td>
+				<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPT_QTY']?></td>
+				<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['ALTERNATE_ROUTING']?></td>
+				<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
+				<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['NO_MESIN']?></td>
+				<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
+				<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['CYCLE_TIME']?></td>
+				<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['TARGET']?></td>              
+			  	</tr>   
+			   <?php  } else { ?>
+			   	<tr>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$no?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['KODE_PROSES']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['RESOURCE_CODE']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['MACHINE_QT']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPT_QTY']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['ALTERNATE_ROUTING']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['NO_MESIN']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['USAGE_RATE_OR_AMOUNT']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['CYCLE_TIME']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['TARGET']?></td>
-			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf['INVERSE']?></td> -->
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['NO_MESIN']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['CYCLE_TIME']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['TARGET']?></td>
 		</tr>
-		<?php $no++; } ?>
+		<?php $no++; } } ?>
+	
+		
 </table>
 
 
@@ -94,6 +112,3 @@
 		<?php $nom++; } ?>
 </table>
 </div>
-
-     
-
