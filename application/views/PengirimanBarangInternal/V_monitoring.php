@@ -15,6 +15,7 @@
                   <th><center>User Tujuan</center></th>
                   <th><center>Seksi Tujuan</center></th>
                   <th><center>Tujuan</center></th>
+                  <th><center>Status</center></th>
                   <th><center>Detail</center></th>
                 </tr>
               </thead>
@@ -25,6 +26,7 @@
                     <td><center><?php echo $g['DOC_NUMBER'] ?></center></td>
                     <td><center><?php echo $g['USER_TUJUAN'] ?></center></td>
                     <td><center><?php echo $seksi_tujuan[$key] ?></center></td>
+                    <td><center><?php echo $g['STATUS2'] ?></center></td>
                     <td><center><?php echo $g['TUJUAN'] ?></center></td>
                     <td>
                       <center>

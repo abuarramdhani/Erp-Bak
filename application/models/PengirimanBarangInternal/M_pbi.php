@@ -26,7 +26,24 @@ class M_pbi extends CI_Model
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-      $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim
+      $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status,
+                 CASE
+                    WHEN kki.status = 1
+                       THEN 'Dipersiapkan Seksi Pengirim'
+                    WHEN kki.status = 2
+                       THEN 'Diterima Gudang Pengeluaran'
+                    WHEN kki.status = 3
+                       THEN 'Surat Jalan Telah Dibuat'
+                    WHEN kki.status = 4
+                       THEN 'Dikirim ke Lokasi Tujuan'
+                    WHEN kki.status = 5
+                       THEN 'Diterima Gudang Penerimaan'
+                    WHEN kki.status = 6
+                       THEN 'Diterima Seksi Tujuan'
+                 END status2,
+                 (SELECT ksi.no_suratjalan
+                    FROM khs_sj_internal ksi
+                   WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
               FROM khs_kirim_internal kki
               WHERE kki.seksi_kirim = '$response->seksi'
               ORDER BY kki.doc_number DESC";
@@ -215,8 +232,8 @@ class M_pbi extends CI_Model
               	er.er_employee_all
               where
               	resign = '0'
-              	and (employee_code like '$data%'
-              	or employee_name like '$data%')
+                and (employee_code like '%$data%'
+              	or employee_name like '%$data%'))
               order by
               	1";
       $response = $this->db->query($sql)->result_array();
