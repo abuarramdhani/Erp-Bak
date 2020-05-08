@@ -4270,3 +4270,18 @@ $route['AbsenPekerjaLaju/PekerjaLaju/(:any)/(:any)'] = 'AbsenPekerjaLaju/C_Peker
 $route['AbsenPekerjaLaju/list_absen_pkj_laju'] = 'AbsenPekerjaLaju/C_Lpalaju';
 $route['AbsenPekerjaLaju/list_absen_pkj_laju/list/(:any)'] = 'AbsenPekerjaLaju/C_Lpalaju/$1';
 $route['AbsenPekerjaLaju/list_absen_pkj_laju/list/(:any)/(:any)'] = 'AbsenPekerjaLaju/C_Lpalaju/$1/$2';
+
+//-------------------------------------------Pengiriman Barang Internal---------------------------------------//
+$route['PengirimanBarangInternal'] = 'PengirimanBarangInternal/C_Master';
+
+$route['PengirimanBarangInternal/Input'] = 'PengirimanBarangInternal/C_Master/input';
+$route['PengirimanBarangInternal/Input/(:any)'] = 'PengirimanBarangInternal/C_Master/$1';
+$route['PengirimanBarangInternal/Input/(:any)/(:any)'] = 'PengirimanBarangInternal/C_Master/$1/$2';
+
+$route['PengirimanBarangInternal/Monitoring'] = 'PengirimanBarangInternal/C_Master/monitoring';
+$route['PengirimanBarangInternal/Monitoring/(:any)'] = 'PengirimanBarangInternal/C_Master/$1';
+$route['PengirimanBarangInternal/Monitoring/(:any)/(:any)'] = 'PengirimanBarangInternal/C_Master/$1/$2';
+
+$route['PengirimanBarangInternal/Cetak/(:any)'] = 'PengirimanBarangInternal/C_Master/Cetak/$1';
+$route['PengirimanBarangInternal/cekapi'] = 'PengirimanBarangInternal/C_Master/cekapi';
+
