@@ -4293,3 +4293,9 @@ $route['PengirimanBarangInternal/Monitoring/(:any)/(:any)'] = 'PengirimanBarangI
 $route['PengirimanBarangInternal/Cetak/(:any)'] = 'PengirimanBarangInternal/C_Master/Cetak/$1';
 $route['PengirimanBarangInternal/cekapi'] = 'PengirimanBarangInternal/C_Master/cekapi';
 
+//-------------------------------------------Cetak NC Data Report--------------------------------------------------//
+$route['CetakNCDataReport'] 						= 'CetakNCDataReport/C_Index';
+
+$route['CetakNCDataReport/Cetak']					= 'CetakNCDataReport/C_Cetak';
+$route['CetakNCDataReport/Cetak/(:any)']			= 'CetakNCDataReport/C_Cetak/$1';
+$route['CetakNCDataReport/Cetak/(:any)/(:any)']		= 'CetakNCDataReport/C_Cetak/$1/$2';
