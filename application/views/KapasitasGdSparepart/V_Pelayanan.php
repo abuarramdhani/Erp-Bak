@@ -98,7 +98,7 @@
                                                         <?php }?>
                                                     <td class="<?= $td?>"><?= $val['URGENT']?>  <?= $val['BON'] ?>
                                                         <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
-                                                            <input type="hidden" id="mulai<?= $no?>" value="<?= $val['MULAI_PELAYANAN']?>">
+                                                            <input type="hidden" id="mulai<?= $no?>" value="<?= $val['JAM_PELAYANAN']?>">
                                                         <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
                                                     </td>
                                                     <td class="<?= $td?>">

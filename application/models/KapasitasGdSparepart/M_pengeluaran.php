@@ -11,6 +11,7 @@ class M_pengeluaran extends CI_Model
     public function tampilhariini() {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MM:SS') as jam_input,
+                to_char(mulai_pengeluaran, 'YYYY-MM-DD HH24:MI:SS') as jam_pengeluaran,
                 tgl_dibuat, to_char(mulai_pengeluaran, 'HH24:MI:SS') as mulai_pengeluaran,  pic_pengeluaran,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pengeluaran,
                 selesai_pelayanan, urgent, waktu_pengeluaran, bon

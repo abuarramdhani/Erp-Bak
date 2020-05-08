@@ -11,14 +11,15 @@ class M_packing extends CI_Model
     public function tampilhariini() {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                tgl_dibuat, to_char(mulai_packing, 'HH24:MI:SS') as mulai_packing, pic_packing,
+                tgl_dibuat, to_char(mulai_packing, 'HH24:MI:SS') as mulai_packing,
+                to_char(mulai_packing, 'YYYY-MM-DD HH24:MI:SS') as jam_packing, pic_packing,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_packing,
                 selesai_pengeluaran, urgent, waktu_packing, bon
                 from khs_tampung_spb
                 where selesai_pengeluaran is not null
                 and selesai_packing is null
                 and cancel is null
-                and bon is null
+                and (bon is null or bon = 'BESC')
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();

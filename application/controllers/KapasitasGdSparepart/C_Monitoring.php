@@ -65,7 +65,7 @@ class C_Monitoring extends CI_Controller
 		$pengeluaran = $this->M_monitoring->getDataSPB($query3);
 		$data['pengeluaran'] = $pengeluaran;
 		$data['jml_pengeluaran'] = count($pengeluaran);
-		$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon = 'LANGSUNG' or bon is null)";
+		$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
 		$data['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_pengeluaran'] = count($data['krgpengeluaran']);
 
@@ -73,13 +73,13 @@ class C_Monitoring extends CI_Controller
 		$packing = $this->M_monitoring->getDataSPB($query4);
 		$data['packing'] = $packing;
 		$data['jml_packing'] = count($packing);
-		$total = 0;
+		// $total = 0;
 		$nopck = array();
 		for ($i=0; $i < $data['jml_packing'] ; $i++) { 
-			$total += $packing[$i]['JUMLAH_PCS'];
+			// $total += $packing[$i]['JUMLAH_PCS'];
 			array_push($nopck, $packing[$i]['NO_DOKUMEN']);
 		}
-		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and bon is null";
+		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BESC')";
 		$data['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_packing'] = count($data['krgpacking']);
 
@@ -97,7 +97,23 @@ class C_Monitoring extends CI_Controller
 			}
 		}
 		$data['jml_selesai'] = array_sum($jumlah);
-		$data['krg_selesai'] = $total - $data['jml_selesai'];
+		$krg = $this->M_monitoring->dataKurangselesai($date, $date);
+		$kkrg = 0;
+		for ($i=0; $i < count($krg); $i++) { 
+			if ($krg[$i]['KURANG'] == '') {
+				$kkrg += $krg[$i]['QUANTITY'];
+			}else {
+				$kkrg += $krg[$i]['KURANG'];
+			}
+		}
+		$cacl = $this->M_monitoring->diCancel($date, $date);
+		$kccl = 0;
+		for ($i=0; $i < count($cacl); $i++) { 
+			$kccl += $cacl[$i]['QUANTITY'];
+		}
+		$data['krg_selesai'] = $kkrg + $kccl;
+		// echo "<pre>"; print_r($data['krg_selesai']); exit();
+		// $data['krg_selesai'] = $total - $data['jml_selesai'];
 
 		$jml_colly = array();
 		$dus_kecil = array();
@@ -191,7 +207,7 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['pengeluaran'] = $pengeluaran;
 			$hasil[$a]['jml_pengeluaran'] = count($pengeluaran);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon = 'LANGSUNG' or bon is null)";
+				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
 			}else {
 				$kurang = "where (bon = 'LANGSUNG' or bon is null) and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pengeluaran) > '$tgl[$a]'";
 			}
@@ -202,14 +218,14 @@ class C_Monitoring extends CI_Controller
 			$packing = $this->M_monitoring->getDataSPB($query4);
 			$hasil[$a]['packing'] = $packing;
 			$hasil[$a]['jml_packing'] = count($packing);
-			$total = 0;
+			// $total = 0;
 			$nopck = array();
 			for ($i=0; $i < $hasil[$a]['jml_packing'] ; $i++) { 
-				$total += $packing[$i]['JUMLAH_PCS'];
+				// $total += $packing[$i]['JUMLAH_PCS'];
 				array_push($nopck, $packing[$i]['NO_DOKUMEN']);
 			}
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and bon is null";
+				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BESC')";
 			}else {
 				$kurang = "where bon is null and TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_packing) > '$tgl[$a]'";
 			}
@@ -230,7 +246,22 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 			$hasil[$a]['jml_selesai'] = array_sum($jumlah);
-			$hasil[$a]['krg_selesai'] = $total - $hasil[$a]['jml_selesai'];
+			$krg = $this->M_monitoring->dataKurangselesai($date, $date);
+			$kkrg = 0;
+			for ($i=0; $i < count($krg); $i++) { 
+				if ($krg[$i]['KURANG'] == '') {
+					$kkrg += $krg[$i]['QUANTITY'];
+				}else {
+					$kkrg += $krg[$i]['KURANG'];
+				}
+			}
+			$cacl = $this->M_monitoring->diCancel($date, $date);
+			$kccl = 0;
+			for ($i=0; $i < count($cacl); $i++) { 
+				$kccl += $cacl[$i]['QUANTITY'];
+			}
+			$hasil[$a]['krg_selesai'] = $kkrg + $kccl;
+			// $hasil[$a]['krg_selesai'] = $total - $hasil[$a]['jml_selesai'];
 
 			$jml_colly 	= array();
 			$dus_kecil 	= array();
@@ -428,10 +459,12 @@ class C_Monitoring extends CI_Controller
 		$tdk = 0; $itemtdk = 0; $pcstdk = 0;
 		$bon = 0; $itembon = 0; $pcsbon = 0;
 		$langsung = 0; $itemlangsung = 0; $pcslangsung = 0;
+		$besc = 0; $itembesc = 0; $pcsbesc = 0;
 		$urg2 = 0; $itemurg2 = 0; $pcsurg2 = 0;
 		$tdk2 = 0; $itemtdk2 = 0; $pcstdk2 = 0;
 		$bon2 = 0; $itembon2 = 0; $pcsbon2 = 0;
 		$langsung2 = 0; $itemlangsung2 = 0; $pcslangsung2 = 0;
+		$besc2 = 0; $itembesc2 = 0; $pcsbesc2 = 0;
 		foreach ($ket as $val) {
 			if ($val['JENIS_DOKUMEN'] == 'SPB') {
 				if ($val['URGENT'] != '') {
@@ -451,6 +484,10 @@ class C_Monitoring extends CI_Controller
 					$langsung += 1;
 					$itemlangsung += $val['JUMLAH_ITEM'];
 					$pcslangsung += $val['JUMLAH_PCS'];
+				}elseif ($val['BON'] == 'BESC') {
+					$besc += 1;
+					$itembesc += $val['JUMLAH_ITEM'];
+					$pcsbesc += $val['JUMLAH_PCS'];
 				}
 			}else {
 				if ($val['URGENT'] != '') {
@@ -470,6 +507,10 @@ class C_Monitoring extends CI_Controller
 					$langsung2 += 1;
 					$itemlangsung2 += $val['JUMLAH_ITEM'];
 					$pcslangsung2 += $val['JUMLAH_PCS'];
+				}elseif ($val['BON'] == 'BESC') {
+					$besc2 += 1;
+					$itembesc2 += $val['JUMLAH_ITEM'];
+					$pcsbesc2 += $val['JUMLAH_PCS'];
 				}
 			}
 		}
@@ -477,7 +518,9 @@ class C_Monitoring extends CI_Controller
 		$tampung = array('0' => array('lembar1' => $urg, 'item1' => $itemurg, 'pcs1' => $pcsurg, 'lembar2' => $urg2, 'item2' => $itemurg2, 'pcs2' => $pcsurg2,),
 		'1' => array('lembar1' => $tdk, 'item1' => $itemtdk, 'pcs1' => $pcstdk, 'lembar2' => $tdk2, 'item2' => $itemtdk2, 'pcs2' => $pcstdk2, ),
 		'2' => array('lembar1' => $bon,	'item1' => $itembon, 'pcs1' => $pcsbon, 'lembar2' => $bon2,	'item2' => $itembon2, 'pcs2' => $pcsbon2,),
-		'3' => array('lembar1' => $langsung,	'item1' => $itemlangsung, 'pcs1' => $pcslangsung,'lembar2' => $langsung2,	'item2' => $itemlangsung2, 'pcs2' => $pcslangsung2, ) );
+		'3' => array('lembar1' => $langsung,	'item1' => $itemlangsung, 'pcs1' => $pcslangsung,'lembar2' => $langsung2,	'item2' => $itemlangsung2, 'pcs2' => $pcslangsung2, ),
+		'4' => array('lembar1' => $besc,	'item1' => $itembesc, 'pcs1' => $pcsbesc,'lembar2' => $besc2,	'item2' => $itembesc2, 'pcs2' => $pcsbesc2, ) 
+	);
 		return $tampung;
 	}
 
@@ -519,31 +562,31 @@ class C_Monitoring extends CI_Controller
 
 		$no_pck = $this->input->post('no_pck[]');
 		$tgl_pck = $this->input->post('tgl_pck[]');
-		$dicancel = array();
-		$itemkurang = array();
+		// $dicancel = array();
+		// $itemkurang = array();
 		$data_colly = array();
 		$no_colly = array();
 		for ($i=0; $i < count($no_pck) ; $i++) { 
-			$kurang = $this->M_monitoring->diCancel($no_pck[$i]);
-			if (!empty($kurang)) {
-			for ($a=0; $a < count($kurang); $a++) { 
-					$array = array(
-						'TGL_DIBUAT'	=> $tgl_pck[$i],
-						'JENIS_DOKUMEN'	=> $kurang[$a]['JENIS_DOKUMEN'],
-						'NO_DOKUMEN'	=> $kurang[$a]['NO_DOKUMEN'],
-						'ITEM' 			=> $kurang[$a]['ITEM'],
-						'DESCRIPTION' 	=> $kurang[$a]['DESCRIPTION'],
-						'QUANTITY' 		=> $kurang[$a]['QUANTITY'],
-						'QUANTITY_DELIVERED'	=> $kurang[$a]['QUANTITY_DELIVERED'],
-						'KURANG' 		=> $kurang[$a]['KURANG'],
-					);
-					array_push($dicancel, $array);
+			// $kurang = $this->M_monitoring->diCancel($no_pck[$i]);
+			// if (!empty($kurang)) {
+			// for ($a=0; $a < count($kurang); $a++) { 
+			// 		$array = array(
+			// 			'TGL_DIBUAT'	=> $tgl_pck[$i],
+			// 			'JENIS_DOKUMEN'	=> $kurang[$a]['JENIS_DOKUMEN'],
+			// 			'NO_DOKUMEN'	=> $kurang[$a]['NO_DOKUMEN'],
+			// 			'ITEM' 			=> $kurang[$a]['ITEM'],
+			// 			'DESCRIPTION' 	=> $kurang[$a]['DESCRIPTION'],
+			// 			'QUANTITY' 		=> $kurang[$a]['QUANTITY'],
+			// 			'QUANTITY_DELIVERED'	=> $kurang[$a]['QUANTITY_DELIVERED'],
+			// 			'KURANG' 		=> $kurang[$a]['KURANG'],
+			// 		);
+			// 		array_push($dicancel, $array);
 
-					if (!in_array($kurang[$a]['ITEM'], $itemkurang)) {
-						array_push($itemkurang, $kurang[$a]['ITEM']);
-					}
-				}
-			}
+			// 		if (!in_array($kurang[$a]['ITEM'], $itemkurang)) {
+			// 			array_push($itemkurang, $kurang[$a]['ITEM']);
+			// 		}
+			// 	}
+			// }
 			$dus_kecil 	= array();
 			$dus_sdg 	= array();
 			$dus_pjg 	= array();
@@ -579,14 +622,14 @@ class C_Monitoring extends CI_Controller
 			}
 		}
 		
-		$dataCancel = array();
-		for ($i=0; $i < count($itemkurang) ; $i++) { 
-			foreach($dicancel as $val) { 
-				if ($itemkurang[$i] == $val['ITEM']) {
-					array_push($dataCancel, $val);
-				}
-			}
-		}
+		$dataCancel = $this->M_monitoring->diCancel($tglAwal[0], $tglAkhir[0]);
+		// for ($i=0; $i < count($itemkurang) ; $i++) { 
+		// 	foreach($dicancel as $val) { 
+		// 		if ($itemkurang[$i] == $val['ITEM']) {
+		// 			array_push($dataCancel, $val);
+		// 		}
+		// 	}
+		// }
 		$kcl = 0; $sdg = 0; $pjg = 0; $krg = 0; $peti = 0;
 		foreach ($data_colly as $col) {
 			$kcl += $col['dus_kecil'];
@@ -604,21 +647,21 @@ class C_Monitoring extends CI_Controller
 		);
 		// echo "<pre>";print_r($coly);exit();
 		$dataKurang = $this->M_monitoring->dataKurangselesai($tglAwal[0], $tglAkhir[0]);
-		$nodo1 = array();
-		$nodo2 = array();
-		foreach ($dataKurang as $val) {
-			if ($val['JENIS_DOKUMEN'] == 'SPB') {
-				if (!in_array($val['NO_DOKUMEN'], $nodo1)) {
-					array_push($nodo1, $val['NO_DOKUMEN']);
-				}
-			}else {
-				if (!in_array($val['NO_DOKUMEN'], $nodo2)) {
-					array_push($nodo2, $val['NO_DOKUMEN']);
-				}
-			}
-		}
+		// $nodo1 = array();
+		// $nodo2 = array();
+		// foreach ($dataKurang as $val) {
+		// 	if ($val['JENIS_DOKUMEN'] == 'SPB') {
+		// 		if (!in_array($val['NO_DOKUMEN'], $nodo1)) {
+		// 			array_push($nodo1, $val['NO_DOKUMEN']);
+		// 		}
+		// 	}else {
+		// 		if (!in_array($val['NO_DOKUMEN'], $nodo2)) {
+		// 			array_push($nodo2, $val['NO_DOKUMEN']);
+		// 		}
+		// 	}
+		// }
 		// echo "<pre>";print_r($nodo1);exit();
-		$jml_pending 	= $this->M_monitoring->jml_pending();
+		// $jml_pending 	= $this->M_monitoring->jml_pending();
 		$ket 			= $this->M_monitoring->dataKeterangan($tglAwal[0], $tglAkhir[0]);
 
 		include APPPATH.'third_party/Excel/PHPExcel.php';
@@ -1510,17 +1553,17 @@ class C_Monitoring extends CI_Controller
 			$masuk = $this->jadigini($ket);
 			$can 	= $this->M_monitoring->inicancel($tglAwal[0], $tglAkhir[0]);
 			$cancel = $this->jadigini($can);
-			$query = "where selesai_packing is not null";
-			$pack = $this->M_monitoring->getDataSPB($query);
+			// $query = "where selesai_packing is not null";
+			// $pack = $this->M_monitoring->getDataSPB($query);
 			$pdg 	= $this->M_monitoring->jml_pending2();
 			$pending = $this->jadibelum($pdg);
 			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
 			$plyn 	= $this->M_monitoring->getDataSPB($query);
 			$pelayanan = $this->jadiin($plyn, 'plyn');
-			$query = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon = 'LANGSUNG' or bon is null)";
+			$query = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
 			$pglr 	= $this->M_monitoring->getDataSPB($query);
 			$pengeluaran = $this->jadiin($pglr, 'pglr');
-			$query = "where selesai_pengeluaran is not null and selesai_packing is null and bon is null";
+			$query = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BESC')";
 			$pck 	= $this->M_monitoring->getDataSPB($query);
 			$packing = $this->jadiin($pck, 'pck');
 			// $dkr = $this->M_monitoring->dikerjakan();
@@ -1577,11 +1620,12 @@ class C_Monitoring extends CI_Controller
 	
 			$no=1;
 			$numrow = $jumlah3 + 1;
-			$h4 = $numrow+4;
+			$h4 = $numrow+5;
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, "URGENT");
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+1), 'TIDAK URGENT');
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+2), "BON");
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+3), "LANGSUNG");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+4), "BESC");
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h4, "JUMLAH");
 			$excel->getActiveSheet()->mergeCells("A$h4:B$h4"); 
 				foreach ($masuk as $val) {
@@ -1609,7 +1653,7 @@ class C_Monitoring extends CI_Controller
 				$numrow++;
 				$no++; 
 				}
-				$awl = $numrow - 4;
+				$awl = $numrow - 5;
 				$akh = $numrow - 1;
 				$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, "=SUM(C$awl:C$akh)");
 				$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, "=SUM(D$awl:D$akh)");
@@ -1682,11 +1726,12 @@ class C_Monitoring extends CI_Controller
 	
 			$no=1;
 			$numrow2 = $h3 + 1;
-			$h4 = $numrow2+4;
+			$h4 = $numrow2+5;
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow2, "URGENT");
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+1), 'TIDAK URGENT');
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+2), "BON");
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+3), "LANGSUNG");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+4), "BESC");
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h4, "JUMLAH");
 			$excel->getActiveSheet()->mergeCells("A$h4:B$h4"); 
 				foreach ($cancel as $val) {
@@ -1714,7 +1759,7 @@ class C_Monitoring extends CI_Controller
 				$numrow2++;
 				$no++; 
 				}
-				$awl = $numrow2 - 4;
+				$awl = $numrow2 - 5;
 				$akh = $numrow2 - 1;
 				$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, "=SUM(C$awl:C$akh)");
 				$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, "=SUM(D$awl:D$akh)");

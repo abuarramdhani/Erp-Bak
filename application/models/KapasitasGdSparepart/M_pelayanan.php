@@ -11,6 +11,7 @@ class M_pelayanan extends CI_Model
     public function tampilhariini() {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
+                to_char(mulai_pelayanan, 'YYYY-MM-DD HH24:MI:SS') as jam_pelayanan,
                 tgl_dibuat, to_char(mulai_pelayanan, 'HH24:MI:SS') as mulai_pelayanan, pic_pelayan,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pelayanan, urgent, waktu_pelayanan, bon
                 from khs_tampung_spb
