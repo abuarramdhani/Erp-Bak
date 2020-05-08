@@ -15,6 +15,7 @@
                   <th><center>User Tujuan</center></th>
                   <th><center>Seksi Tujuan</center></th>
                   <th><center>Tujuan</center></th>
+                  <th><center>Status</center></th>
                   <th><center>Detail</center></th>
                 </tr>
               </thead>
@@ -26,6 +27,7 @@
                     <td><center><?php echo $g['USER_TUJUAN'] ?></center></td>
                     <td><center><?php echo $seksi_tujuan[$key] ?></center></td>
                     <td><center><?php echo $g['TUJUAN'] ?></center></td>
+                    <td><center><?php echo $g['STATUS2'] ?></center></td>
                     <td>
                       <center>
                         <a href="<?php echo base_url('PengirimanBarangInternal/Cetak/'.$g['DOC_NUMBER']) ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>

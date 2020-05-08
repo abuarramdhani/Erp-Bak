@@ -57,30 +57,30 @@
                 <div class="table-responsive">
                     <div class="row" style="margin: 1px;">
                         <div class="panel-body">
-                            <table class="table table-bordered cektable">
-                              <thead class="bg-success">
-                                <tr>
-                                  <th class="text-center" style="width:50px; !important">Line</th>
-                                  <th class="text-center" style="width:170px; !important">Item Code</th>
-                                  <th class="text-center" style="width:270px;">Description</th>
-                                  <th class="text-center" style="width:120px;">Quantity</th>
-                                  <th class="text-center" style="width:80px;">UOM</th>
-                                  <th class="text-center">Item Type</th>
-                                  <th class="text-center">Add/Min</th>
-                                </tr>
-                              </thead>
-                              <tbody id="tambahisi">
-                                <tr id="teer1">
-                                  <td class="text-center"><input type="text" class="form-control" name="line_number[]" value="1" readonly></td>
-                                  <td class="text-center"><select class="form-control select2PBILine" id="item_code_1" name="item_code[]" style="width:170px;" onchange="autofill(1)" required></select></td>
-                                  <td class="text-center"><input type="text" class="form-control" id="description_1" name="description[]" readonly></td>
-                                  <td class="text-center"><input type="number" class="form-control" name="quantity[]" required></td>
-                                  <td class="text-center"><input type="text" class="form-control" id="uom_1" name="uom[]" readonly></td>
-                                  <td class="text-center"><input type="text" class="form-control" id="itemtype_1" name="item_type[]" readonly></td>
-                                  <td class="text-center"><a class="btn btn-default btn-sm" onclick="btnPlusPBI()"><i class="fa fa-plus"></i></a></td>
-                                </tr>
-                              </tbody>
-                            </table>
+                          <table class="table table-bordered cektable">
+                            <thead class="bg-success">
+                              <tr>
+                                <th class="text-center" style="width:35px; !important">Line</th>
+                                <th class="text-center" style="width:250px; !important">Item Code</th>
+                                <th class="text-center" style="width:300px;">Description</th>
+                                <th class="text-center" style="width:120px;">Quantity</th>
+                                <th class="text-center" style="width:70px;">UOM</th>
+                                <th class="text-center" style="width:110px;">Item Type</th>
+                                <th class="text-center" style="width:50px;">Add/Min</th>
+                              </tr>
+                            </thead>
+                            <tbody id="tambahisi">
+                              <tr id="teer1">
+                                <td class="text-center"><input type="text" class="form-control" name="line_number[]" value="1" readonly></td>
+                                <td class="text-center"><select class="form-control select2PBILine" id="item_code_1" name="item_code[]" onchange="autofill(1)" required></select></td>
+                                <td class="text-center"><input type="text" class="form-control" id="description_1" name="description[]" readonly></td>
+                                <td class="text-center"><input type="number" class="form-control" name="quantity[]" required></td>
+                                <td class="text-center"><input type="text" class="form-control" id="uom_1" name="uom[]" readonly></td>
+                                <td class="text-center"><input type="text" class="form-control" id="itemtype_1" name="item_type[]" readonly></td>
+                                <td class="text-center"><a class="btn btn-default btn-sm" onclick="btnPlusPBI()"><i class="fa fa-plus"></i></a></td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                         <div class="panel-body">
                           <button type="submit" style="float:right !important;font-weight:bold" onclick="summitpbiarea()" class="btn btn-success" name="button">Submit</button>

@@ -162,7 +162,7 @@ class C_Master extends CI_Controller
           'DESCRIPTION'   => $description[$key],
           'QUANTITY'      => $quantity[$key],
           'UOM'           => $uom[$key],
-          'STATUS'        => 1,
+          'STATUS'        => 0,
           'CREATED_BY'    => $this->session->user
         ];
         $this->M_pbi->insert($data);
