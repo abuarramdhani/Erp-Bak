@@ -1,5 +1,5 @@
 <?php
-class M_receipt extends CI_Model {
+class M_receiptbatch extends CI_Model {
 
         public function __construct()
         {
@@ -30,7 +30,7 @@ class M_receipt extends CI_Model {
 				select count(*)
 				from cm.cm_receipt_qty d 
 				where a.receipt_id = d.receipt_id
-			) = 0
+			) > 0
 			order by a.receipt_id desc";
 			$query = $this->db->query($sql);
 			return $query->result_array();
@@ -116,11 +116,11 @@ class M_receipt extends CI_Model {
 		}
 		
 		//Create New Receipt
-		public function AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment,$menu,$bonus){
+		public function AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment,$menu,$bonus,$lokasi){
 			$sql = "
 			insert into cm.cm_receipt
-			(receipt_id,receipt_no,receipt_date,receipt_place,receipt_from,receipt_signer,order_start_date,order_end_date,order_qty,order_price,fine,pph,payment,order_type_id,catering_id,order_description,bonus)values
-			('$id','$no',TO_DATE('$date','YYYY-MM-DD'),'$place','$from','$signer','$startdate','$enddate','$orderqty','$orderprice','$fine','$pph','$payment','$ordertype','$catering','$menu','$bonus')";
+			(receipt_id,receipt_no,receipt_date,receipt_place,receipt_from,receipt_signer,order_start_date,order_end_date,order_qty,order_price,fine,pph,payment,order_type_id,catering_id,order_description,bonus,kd_lokasi)values
+			('$id','$no',TO_DATE('$date','YYYY-MM-DD'),'$place','$from','$signer','$startdate','$enddate','$orderqty','$orderprice','$fine','$pph','$payment','$ordertype','$catering','$menu','$bonus','$lokasi')";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -170,6 +170,13 @@ class M_receipt extends CI_Model {
 			$query = $this->db->query($sql);
 			return;
 		}
+
+		public function DeleteReceiptQty($id){
+			$sql = "delete from cm.cm_receipt_qty where receipt_id='$id'
+			";
+			$query = $this->db->query($sql);
+			return;
+		}
 		
 		public function GetPphStatus($id){
 			$sql = "select * from cm.cm_catering where catering_id='$id'";
@@ -181,6 +188,85 @@ class M_receipt extends CI_Model {
 			$sql = "select * from cm.cm_fine_type where fine_type_id='$id'";
 			$query = $this->db->query($sql);
 			return $query->result_array();
+		}
+
+		public function getCateringKode($id){
+			$sql = "select *
+					from cm.cm_catering
+					where catering_id = ?";
+			$result = $this->db->query($sql,array($id))->row();
+			if (!empty($result)) {
+				return $result->catering_code;
+			}else{
+				return 'nan';
+			}
+		}
+
+		public function getDeptQty($tgl_awal,$tgl_akhir,$lokasi,$jenis_pesanan,$katering){
+			$sql = "select gabung,
+						sum(
+							case when dept = 'KEUANGAN' then jumlah else 0 end 
+						) as keuangan,
+						sum(
+							case when dept = 'PEMASARAN' then jumlah else 0 end 
+						) as pemasaran,
+						sum(
+							case when dept = 'PRODUKSI' then jumlah else 0 end 
+						) as produksi,
+						sum(
+							case when dept = 'PERSONALIA' then jumlah else 0 end 
+						) as personalia
+					from (
+						select '1'::varchar as gabung, tph.fs_tempat_makan,
+							sum(fn_jumlah_pesan) as jumlah,
+							coalesce((
+								select
+									trim(ts.dept) as dept
+								from hrd_khs.tpribadi tp
+								left join hrd_khs.tseksi ts
+								on tp.kodesie = ts.kodesie
+								where tp.keluar = '0'
+								and tp.lokasi_kerja in ('01','02','03','04')
+								and trim(tp.tempat_makan) = trim(tph.fs_tempat_makan)
+								group by trim(tp.tempat_makan),trim(ts.dept)
+								order by 1 desc 
+								limit 1
+							), 'PERSONALIA')::varchar as dept
+						from \"Catering\".tpesanan_history tph 
+						inner join \"Catering\".turutankatering tuk
+						on tph.fd_tanggal = tuk.fd_tanggal
+						and tph.fs_tanda = tuk.fn_urutan::varchar
+						inner join \"Catering\".ttempat_makan ttm 
+						on tph.fs_tempat_makan = ttm.fs_tempat_makan
+						where tph.fd_tanggal between ? and ?
+						and tph.lokasi = ?
+						and tph.jenis_pesanan = ?
+						and tuk.fs_nama_katering = (
+							select tk.fs_nama_katering
+							from \"Catering\".tkatering tk
+							where tk.fs_kd_katering = ?
+							)
+						group by tph.fs_tempat_makan
+					) as tbl 
+					group by gabung";
+			$this->personalia = $this->load->database('personalia', true);
+			return $this->personalia->query($sql,array($tgl_awal,$tgl_akhir,$lokasi,$jenis_pesanan,$katering))->row();
+		}
+
+		public function addReceiptQty($data){
+			$this->db->insert('cm.cm_receipt_qty',$data);
+		}
+
+		public function updateReceiptQty($data,$id){
+			$this->db->where('receipt_id', $id);
+			$this->db->update('cm.cm_receipt_qty', $data);
+		}
+
+		public function GetReceiptQty($id){
+			$sql = "select *
+					from cm.cm_receipt_qty 
+					where receipt_id = ?";
+			return $this->db->query($sql, array($id))->result_array();
 		}
 		
 }

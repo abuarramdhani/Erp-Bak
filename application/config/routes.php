@@ -537,6 +537,10 @@ $route['CateringManagement/Receipt/Delete/(:any)']	= 'CateringManagement/C_Recei
 $route['CateringManagement/Receipt/Checkpph']		= 'CateringManagement/C_Receipt/checkpph';
 $route['CateringManagement/Receipt/Checkfine']		= 'CateringManagement/C_Receipt/checkfine';
 
+$route['CateringManagement/ReceiptBatch']			= 'CateringManagement/C_ReceiptBatch';
+$route['CateringManagement/ReceiptBatch/(:any)']	= 'CateringManagement/C_ReceiptBatch/$1';
+$route['CateringManagement/ReceiptBatch/(:any)/(:any)']	= 'CateringManagement/C_ReceiptBatch/$1/$2';
+
 $route['CateringManagement/List'] 					= 'CateringManagement/C_List/index';
 $route['CateringManagement/List/Create'] 			= 'CateringManagement/C_List/create';
 $route['CateringManagement/List/Update'] 			= 'CateringManagement/C_List/update';
@@ -547,6 +551,10 @@ $route['CateringManagement/List/Delete/(:any)']		= 'CateringManagement/C_List/de
 $route['CateringManagement/PrintPP'] 				= 'CateringManagement/C_Printpp';
 $route['CateringManagement/PrintPP/(:any)'] 		= 'CateringManagement/C_Printpp/$1';
 $route['CateringManagement/PrintPP/(:any)/(:any)'] 	= 'CateringManagement/C_Printpp/$1/$2';
+
+$route['CateringManagement/PrintPPCatering'] 				= 'CateringManagement/C_PrintppCatering';
+$route['CateringManagement/PrintPPCatering/(:any)'] 		= 'CateringManagement/C_PrintppCatering/$1';
+$route['CateringManagement/PrintPPCatering/(:any)/(:any)'] 	= 'CateringManagement/C_PrintppCatering/$1/$2';
 
 //-----------------------------------Catering Management -Setup-----------------------------------------------//
 $route['CateringManagement/catering'] 			= 'CateringManagement/Setup/C_Catering/index';
