@@ -46,6 +46,7 @@ class C_Input extends CI_Controller
 		$valBtn = $this->input->post('btn_urgent');
 		$btnBon = $this->input->post('btn_bon');
 		$btnlangsung = $this->input->post('btn_langsung');
+		$btnbesc = $this->input->post('btn_besc');
 		// echo "<pre>"; print_r($valBtn);exit();
 		for ($i=0; $i < count($noSPB); $i++) { 
 			if ($noSPB[$i] == '') {
@@ -62,10 +63,12 @@ class C_Input extends CI_Controller
 				}elseif ($valBtn[$i] == 'Batal') {
 					$urgent = 'URGENT';
 				}
-				if ($btnBon[$i] == 'Bon' && $btnlangsung[$i] == 'Batal') {
+				if ($btnBon[$i] == 'Bon' && $btnlangsung[$i] == 'Batal' && $btnbesc[$i] == 'Besc') {
 					$bon = 'LANGSUNG';
-				}elseif ($btnBon[$i] == 'Batal' && $btnlangsung[$i] == 'Langsung') {
+				}elseif ($btnBon[$i] == 'Batal' && $btnlangsung[$i] == 'Langsung' && $btnbesc[$i] == 'Besc') {
 					$bon = 'BON';
+				}elseif ($btnbesc[$i] == 'Batal' && $btnBon[$i] == 'Bon' && $btnlangsung[$i] == 'Langsung') {
+					$bon = 'BESC';
 				}else {
 					$bon = '';
 				}

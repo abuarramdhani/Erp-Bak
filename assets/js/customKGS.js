@@ -5,6 +5,7 @@ function inputPSPB(th) {
     var btn_urgent  = $('input[name="btn_urgent[]"]').map(function(){return $(this).val();}).get();
     var btn_bon     = $('input[name="btn_bon[]"]').map(function(){return $(this).val();}).get();
     var btn_langsung = $('input[name="btn_langsung[]"]').map(function(){return $(this).val();}).get();
+    var btn_besc = $('input[name="btn_besc[]"]').map(function(){return $(this).val();}).get();
     // console.log(btn1);
     $("#mdlloading").modal({
                 backdrop: 'static',
@@ -13,7 +14,7 @@ function inputPSPB(th) {
         }); 
 	var request = $.ajax({
         url: baseurl+'KapasitasGdSparepart/Input/',
-        data: {no_spb : no_spb, btn_urgent : btn_urgent, btn_bon : btn_bon, btn_langsung : btn_langsung},
+        data: {no_spb : no_spb, btn_urgent : btn_urgent, btn_bon : btn_bon, btn_langsung : btn_langsung, btn_besc : btn_besc},
         type: "POST",
         datatype: 'html',
         success: function(data){
@@ -56,6 +57,17 @@ function btnLangsungKgs(no) {
     }else if (langsung == 'Batal') {
         $('#btnlangsung'+no).val('Langsung');
         $('#btnlangsung'+no).removeClass('btn-danger').addClass('btn-info');
+    }
+}
+
+function btnBescKgs(no) {
+    var valBtn = $('#btnbesc'+no).val();
+    if (valBtn == 'Besc') {
+        $('#btnbesc'+no).val('Batal');
+        $('#btnbesc'+no).removeClass('btn-success').addClass('btn-danger');
+    }else if (valBtn == 'Batal') {
+        $('#btnbesc'+no).val('Besc');
+        $('#btnbesc'+no).removeClass('btn-danger').addClass('btn-success');
     }
 }
 
@@ -230,7 +242,7 @@ function btnPelayananSPB(no) {
     var pic = $('#pic'+no).val();
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
     var hoursLabel   = document.getElementById("hours"+no);
@@ -305,7 +317,7 @@ function btnRestartPelayanan(no) {
     var pic = $('#pic'+no).val();
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
         // console.log(jenis);
@@ -336,7 +348,7 @@ function btnPausePelayanan(no) {
     var no_spb = $('#nodoc'+no).val();
     var mulai  = $('#mulai'+no).val();
     var d    = new Date();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();   
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
     Swal.fire({
         title: 'Apakah Anda Yakin?',
@@ -397,7 +409,7 @@ function btnPengeluaranSPB(no) {
     var pic = $('#pic'+no).val();
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
     var hoursLabel   = document.getElementById("hours"+no);
@@ -471,7 +483,7 @@ function btnRestartPengeluaran(no) {
     var pic = $('#pic'+no).val();
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
      Swal.fire({
@@ -501,7 +513,7 @@ function btnPausePengeluaran(no) {
     var no_spb = $('#nodoc'+no).val();
     var mulai  = $('#mulai'+no).val();
     var d      = new Date();
-    var wkt    = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt    = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
     Swal.fire({
         title: 'Apakah Anda Yakin?',
@@ -535,7 +547,7 @@ function btnPackingSPB(no) {
     var pic = $('#pic'+no).val();
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
     var hoursLabel   = document.getElementById("hours"+no);
@@ -693,7 +705,7 @@ function selesaipacking(th) {
     var pic = $('#pic').val();
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var mulai  = $('#mulai').val();  
     var no  = $('#no').val();  
     
@@ -717,7 +729,7 @@ function btnRestartPacking(no) {
     var pic = $('#pic'+no).val();
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
      Swal.fire({
@@ -746,7 +758,7 @@ function btnPausePacking(no) {
     var no_spb = $('#nodoc'+no).val();
     var mulai  = $('#mulai'+no).val();
     var d    = new Date();
-    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
     Swal.fire({
         title: 'Apakah Anda Yakin Akan Melakukan Pause?',

@@ -81,7 +81,7 @@
                                                     <tr id="baris<?= $no?>">
                                                         <td width="20px" class="<?= $td?>"><?= $no; ?>
                                                         <?php if (!empty($val['MULAI_PACKING'])) { ?>
-                                                            <input type="hidden" id="mulai<?= $no?>" value="<?= $val['MULAI_PACKING']?>">
+                                                            <input type="hidden" id="mulai<?= $no?>" value="<?= $val['JAM_PACKING']?>">
                                                         <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
                                                         </td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
