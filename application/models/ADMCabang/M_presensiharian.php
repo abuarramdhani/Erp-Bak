@@ -112,10 +112,11 @@ class M_presensiharian extends Ci_Model
 		}
 		else
 		{
-			$sql = "select distinct waktu
-				from \"FrontPresensi\".tpresensi tp
+			$sql = "select distinct tp.waktu
+				from \"Presensi\".tprs_shift tp
+				left join \"Presensi\".tdatapresensi b on tp.noind = b.noind and tp.kodesie = b.kodesie and tp.tanggal = b.tanggal and tp.noind_baru = b.noind_baru
 				where tp.noind = '$noind'
-				and tp.tanggal = '$tgl'
+				and tp.tanggal = '$tgl' and tp.waktu not in ('0') and kd_ket not in ('PRM')
 				order by tp.waktu";
 		}
 		$result = $this->personalia->query($sql);
@@ -127,9 +128,9 @@ class M_presensiharian extends Ci_Model
 		$tgl1 = $tanggal[0];
 		$tgl2 = $tanggal[1];
 		$sql = "select tp.noind,tp.tanggal,tp.waktu
-				from \"FrontPresensi\".tpresensi tp
+				from \"Presensi\".tprs_shift tp
 				where tp.noind in ($noind)
-				and tp.tanggal between '$tgl1' and '$tgl2'
+				and tp.tanggal between '$tgl1' and '$tgl2' and tp.waktu not in ('0')
 				order by tp.noind,tp.tanggal,tp.waktu";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
@@ -249,9 +250,9 @@ class M_presensiharian extends Ci_Model
 		else
 		{
 			$sql = "SELECT max(waktu)
-				from (select count(waktu) as waktu from \"FrontPresensi\".tpresensi tp
+				from (select count(waktu) as waktu from \"Presensi\".tprs_shift tp
 				where tp.noind = '$noind'
-				and tp.tanggal between '$tgl1' and '$tgl2' group by tp.tanggal) as waktu";
+				and tp.tanggal between '$tgl1' and '$tgl2' and tp.waktu not in ('0') group by tp.tanggal) as waktu";
 		}
 		$result = $this->personalia->query($sql);
 		return $result->row()->max;
