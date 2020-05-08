@@ -415,26 +415,36 @@ class C_PrintppCatering extends CI_Controller
              ->setDescription("Export Data Load")
              ->setKeywords("Export Data Load");
 
-        for ($i=1; $i <= count($data['PrintppDetail']); $i++) { 
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i, "tab");
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$i, "JASA");
+        $i = 1;
+
+        // echo "<pre>";print_r($data['PrintppDetail']);exit();
+        foreach ($data['PrintppDetail'] as $key) {
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$i, "\JASA");
         	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$i, "\\".$key['pp_kode_barang']);
         	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$i, "TAB");
         	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$i, "TAB");
         	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$i, "TAB");
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$i, "TAB");
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$i, "TAB");
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$i, "TAB");
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$i, "*RT");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$i, "*SB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$i, "\:");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$i, "*SB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$i, "\\".$key['pp_nama_barang']);
         	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$i, "TAB");
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, "*DN");
-        }
-        $i = 1;
-        foreach ($data['PrintppDetail'] as $key) {
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$i, $key['pp_kode_barang']);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$i, $key['pp_jumlah']);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$i, $key['pp_nama_barang']);
-
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, "\\".$key['pp_jumlah']);
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$i, "");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$i, "*AD");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('V'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$i, "\\".$key['pp_cost_center']);
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$i, "BACK");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('Y'.$i, "*SAVE");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('Z'.$i, "*DN");
         	$i++;
         }
         
