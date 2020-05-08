@@ -16,7 +16,7 @@
             NC DATA REPORT TOOL MAKING
         </td>
         <td style="width: 30%; border-bottom :0px; border-collapse: collapse;text-align:right;font-weight:bold">
-            <img style="width: 45px;height: 60px" src="<?php echo base_url('application/views/CetakNcDataReport/tmk.png'); ?>">
+            <img style="width: 45px;height: 60px" src="<?php echo base_url('application/views/CetakNCDataReport/tmk.png'); ?>">
         </td>
     </tr>
     <tr>
