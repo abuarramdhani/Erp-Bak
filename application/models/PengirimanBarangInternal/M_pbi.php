@@ -233,7 +233,7 @@ class M_pbi extends CI_Model
               where
               	resign = '0'
                 and (employee_code like '%$data%'
-              	or employee_name like '%$data%'))
+              	or employee_name like '%$data%')
               order by
               	1";
       $response = $this->db->query($sql)->result_array();
