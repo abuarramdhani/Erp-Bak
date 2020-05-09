@@ -163,7 +163,7 @@ class C_Cetakbom extends CI_Controller
 		ob_start();
 		$this->load->library('pdf');
     	$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 27, 27, 3, 3); //----- A5-L
+    	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 30, 27, 3, 3); //----- A5-L
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'BOM_Routing_'.$tglNama.'.pdf';
     	$head = $this->load->view('CetakBOMRouting/V_CetakanHead', $data, true);	
