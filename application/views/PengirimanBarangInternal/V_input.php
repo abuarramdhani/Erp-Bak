@@ -25,7 +25,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="seksi_pengirim">Seksi Pengirim</label>
+                  <label for="seksi_pengirim">Pengirim</label>
                   <div class="row">
                     <div class="col-md-4">
                       <input type="text" class="form-control" id="nama_pengirim" name="nama_pengirim" value="<?php echo $this->session->employee ?>" readonly>
@@ -36,7 +36,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="tujuan">Seksi Tujuan</label>
+                  <label for="tujuan">Penerima</label>
                   <div class="form-group">
                     <div class="row">
                       <div class="col-md-4">
