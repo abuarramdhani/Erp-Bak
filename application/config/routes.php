@@ -1977,6 +1977,10 @@ $route['MasterPekerja/Surat/SuratTugas'] = 'MasterPekerja/Surat/Tugas/C_Tugas';
 $route['MasterPekerja/Surat/SuratTugas/(:any)'] = 'MasterPekerja/Surat/Tugas/C_Tugas/$1';
 $route['MasterPekerja/Surat/SuratTugas/(:any)/(:any)'] = 'MasterPekerja/Surat/Tugas/C_Tugas/$1/$2';
 
+$route['MasterPekerja/Surat/SuratIsolasiMandiri'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri';
+$route['MasterPekerja/Surat/SuratIsolasiMandiri/(:any)'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri/$1';
+$route['MasterPekerja/Surat/SuratIsolasiMandiri/(:any)/(:any)'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri/$1/$2';
+
 $route['MasterPekerja/upload-photo'] 	= 'MasterPekerja/Pekerja/UploadPhoto/C_Upoto';
 $route['MasterPekerja/upload-photo/(:any)'] 	= 'MasterPekerja/Pekerja/UploadPhoto/C_Upoto/$1';
 $route['MasterPekerja/upload-photo/(:any)/(:any)'] 	= 'MasterPekerja/Pekerja/UploadPhoto/C_Upoto/$1/$2';
