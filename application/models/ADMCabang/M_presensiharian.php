@@ -112,12 +112,20 @@ class M_presensiharian extends Ci_Model
 		}
 		else
 		{
-			$sql = "select distinct tp.waktu
+			if (date('Y-m-d', strtotime($tgl)) == date('Y-m-d')) {
+				$sql = "select distinct tp.waktu
+				from \"Presensi\".tprs_shift tp
+				where tp.noind = '$noind'
+				and tp.tanggal = '$tgl' and tp.waktu not in ('0')
+				order by tp.waktu";
+			}else {
+				$sql = "select distinct tp.waktu
 				from \"Presensi\".tprs_shift tp
 				left join \"Presensi\".tdatapresensi b on tp.noind = b.noind and tp.kodesie = b.kodesie and tp.tanggal = b.tanggal and tp.noind_baru = b.noind_baru
 				where tp.noind = '$noind'
 				and tp.tanggal = '$tgl' and tp.waktu not in ('0') and kd_ket not in ('PRM')
 				order by tp.waktu";
+			}
 		}
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
