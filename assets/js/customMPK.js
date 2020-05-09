@@ -3457,3 +3457,137 @@ function unlockPreview(){
   }
 }
 // Surat Tugas End 
+
+// Surat Isolasi Mandiri Start
+
+$(document).ready(function(){
+  $('#txaMPSuratIsolasiMandiriRedactor').redactor({
+    buttonsHide : ['image']
+  });
+
+  $('.txtMPSuratIsolasiMandiriTanggal').datepicker({
+    "autoclose": true,
+    "todayHiglight": true,
+    "format": 'yyyy-mm-dd'
+  });
+
+  $('.slcMPSuratIsolasiMandiriPekerja').select2({
+      searching: true,
+      minimumInputLength: 3,
+      placeholder: "No. Induk / Nama Pekerja",
+      allowClear: false,
+      ajax: {
+          url: baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/Pekerja',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                  })
+              }
+          }
+      }
+  });
+
+  $('#slcMPSuratIsolasiMandiriTo, #slcMPSuratIsolasiMandiriPekerja, #txtMPSuratIsolasiMandiriSurat, #txtMPSuratIsolasiMandiriCetakTanggal, #txtMPSuratIsolasiMandiriWawancaraTanggal, #txtMPSuratIsolasiMandiriMulaiIsolasiTanggal, #txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal, #txtMPSuratIsolasiMandiriJumlahHari, #slcMPSuratIsolasiMandiriStatus, #slcMPSuratIsolasiMandiriDibuat, #slcMPSuratIsolasiMandirimenyetujui, #slcMPSuratIsolasiMandiriMengetahui').on('change', function(){
+    
+    var simTo = $('#slcMPSuratIsolasiMandiriTo').val();
+    var simPekerja = $('#slcMPSuratIsolasiMandiriPekerja').val();
+    var simWawancara = $('#txtMPSuratIsolasiMandiriWawancaraTanggal').val();
+    var simMulai = $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val();
+    var simSelesai = $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val();
+    var simHari = $('#txtMPSuratIsolasiMandiriJumlahHari').val();
+    var simStatus = $('#slcMPSuratIsolasiMandiriStatus').val();
+    var simDibuat = $('#slcMPSuratIsolasiMandiriDibuat').val();
+    var simMenyetujui = $('#slcMPSuratIsolasiMandirimenyetujui').val();
+    var simMengetahui = $('#slcMPSuratIsolasiMandiriMengetahui').val();
+    var simCetak = $('#txtMPSuratIsolasiMandiriCetakTanggal').val();
+
+    if (simTo && simPekerja && simWawancara && simMulai && simSelesai && simHari && simStatus && simDibuat && simMenyetujui && simMengetahui && simCetak) {
+      $('#btnMPSuratIsolasiMandiriPreview').attr('disabled',false);
+    }else{
+      $('#btnMPSuratIsolasiMandiriPreview').attr('disabled',true);
+        $('#btnMPSuratIsolasiMandiriSubmit').prop('disabled',true);
+    }
+
+  });
+
+  $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal, #txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').on('change',function(){
+    mulai  = $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val();
+    selesai = $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val();
+
+    if (mulai && selesai) {
+      tgl_mulai = new Date(mulai);
+      tgl_selesai = new Date(selesai);
+      difftime = Math.abs(tgl_mulai - tgl_selesai);
+      diffday = Math.ceil(difftime / (1000 * 60 * 60 * 20));
+
+      $('#txtMPSuratIsolasiMandiriJumlahHari').val(diffday);
+    }else{
+      $('#txtMPSuratIsolasiMandiriJumlahHari').val("0");
+
+    }
+
+  })
+
+  $('#btnMPSuratIsolasiMandiriPreview').on('click', function(){
+    var simTo = $('#slcMPSuratIsolasiMandiriTo').val();
+    var simPekerja = $('#slcMPSuratIsolasiMandiriPekerja').val();
+    var simWawancara = $('#txtMPSuratIsolasiMandiriWawancaraTanggal').val();
+    var simMulai = $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val();
+    var simSelesai = $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val();
+    var simHari = $('#txtMPSuratIsolasiMandiriJumlahHari').val();
+    var simStatus = $('#slcMPSuratIsolasiMandiriStatus').val();
+    var simDibuat = $('#slcMPSuratIsolasiMandiriDibuat').val();
+    var simMenyetujui = $('#slcMPSuratIsolasiMandirimenyetujui').val();
+    var simMengetahui = $('#slcMPSuratIsolasiMandiriMengetahui').val();
+    var simCetak = $('#txtMPSuratIsolasiMandiriCetakTanggal').val();
+
+    $.ajax({
+      data  : {
+        simTo: simTo, 
+        simPekerja: simPekerja, 
+        simWawancara: simWawancara, 
+        simMulai: simMulai, 
+        simSelesai: simSelesai, 
+        simHari: simHari, 
+        simStatus: simStatus, 
+        simDibuat: simDibuat, 
+        simMenyetujui: simMenyetujui, 
+        simMengetahui: simMengetahui,
+        simCetak: simCetak
+      },
+      type  : 'GET',
+      url   : baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/Preview',
+      error: function(xhr,status,error){
+        console.log(xhr);
+        console.log(status);
+        console.log(error);
+        swal.fire({
+            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+            html: xhr['responseText'],
+            type: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d63031',
+        })
+      },
+      success: function(result){
+        obj = JSON.parse(result);
+        console.log(obj);
+        $('#txaMPSuratIsolasiMandiriRedactor').redactor('set',obj['surat']);
+        $('#txtMPSuratIsolasiMandiriSurat').val(obj['surat']);
+        $('#btnMPSuratIsolasiMandiriSubmit').prop('disabled',false);
+      }
+    })
+  })
+
+})
+
+// Surat Isolasi Mandiri End
