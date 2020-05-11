@@ -349,6 +349,7 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->setCellValue('H1','BANK');
 		$worksheet->setCellValue('I1','NOMINAL THR');
 
+		$total = 0;
 		$nomor = 1;
 		if (!empty($data)) {
 			foreach ($data as $dt) {
@@ -362,9 +363,14 @@ class C_Perhitungan extends CI_Controller
 				$worksheet->setCellValue('H'.($nomor+1),$dt['atas_nama']);
 				$worksheet->setCellValue('H'.($nomor+1),$dt['nama_bank']);
 				$worksheet->setCellValue('I'.($nomor+1),number_format($dt['nominal_thr'],2,',','.'));
+				$total += round($dt['nominal_thr'],2);
 				$nomor++;
 			}
 		}
+		$nomor++;
+
+		$worksheet->setCellValue('H'.($nomor),"Total");
+		$worksheet->setCellValue('I'.($nomor),number_format($total,2,',','.'));
 
 
 		$worksheet->getColumnDimension('A')->setWidth('5');
@@ -376,6 +382,8 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->getColumnDimension('G')->setWidth('30');
 		$worksheet->getColumnDimension('H')->setWidth('30');
 		$worksheet->getColumnDimension('I')->setWidth('20');
+
+
 
 		$worksheet->duplicateStyleArray(
 			array(
@@ -404,6 +412,13 @@ class C_Perhitungan extends CI_Controller
 						'style' => PHPExcel_Style_Border::BORDER_THIN)
 				)
 			),'A1:I'.($nomor));
+		$worksheet->duplicateStyleArray(
+			array(
+				'alignment' => array(
+					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+				)
+			),'I2:I'.($nomor));
 
 		$worksheet->setCellValue('C'.($nomor + 2),"Mengetahui,");
 		$worksheet->setCellValue('F'.($nomor + 2),"Menyetujui,");
