@@ -65,8 +65,18 @@
 	    }
 
 	    public function getSuratTugasById($id){
-	    	$sql = "select * 
-			    	from \"Surat\".tsurat_tugas
+	    	$sql = "select *, 
+						(
+							select trim(nama)
+							from hrd_khs.tpribadi tp 
+							where st.noind = tp.noind 
+						) as pekerja_nama,
+						(
+							select trim(nama)
+							from hrd_khs.tpribadi tp 
+							where st.approver = tp.noind 
+						) as approver_nama
+			    	from \"Surat\".tsurat_tugas st
 			    	where surat_tugas_id = ? ";
 	    	return $this->personalia->query($sql,array($id))->result_array();
 	    }
@@ -74,6 +84,11 @@
 	    public function deleteSuratTugasByID($id){
 	    	$this->personalia->where('surat_tugas_id',$id);
 	    	$this->personalia->delete("\"Surat\".tsurat_tugas");
+	    }
+
+	    public function updateSuratTugasByID($data,$id){
+	    	$this->personalia->where('surat_tugas_id',$id);
+	    	$this->personalia->update("\"Surat\".tsurat_tugas",$data);
 	    }
 
 	}

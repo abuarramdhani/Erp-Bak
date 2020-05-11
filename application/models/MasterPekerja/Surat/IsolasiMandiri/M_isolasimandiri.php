@@ -61,8 +61,33 @@
 	    }
 
 	    public function getSuratIsolasiMandiriById($id){
-	    	$sql = "select * 
-			    	from \"Surat\".tsurat_isolasi_mandiri
+	    	$sql = "select * ,
+	    			(
+						select trim(nama)
+						from hrd_khs.tpribadi tp 
+						where sim.pekerja = tp.noind 
+					) as pekerja_nama,
+					(
+						select trim(nama)
+						from hrd_khs.tpribadi tp 
+						where sim.kepada = tp.noind 
+					) as kepada_nama,
+					(
+						select trim(nama)
+						from hrd_khs.tpribadi tp 
+						where sim.mengetahui = tp.noind 
+					) as mengetahui_nama,
+					(
+						select trim(nama)
+						from hrd_khs.tpribadi tp 
+						where sim.menyetujui = tp.noind 
+					) as menyetujui_nama,
+					(
+						select trim(nama)
+						from hrd_khs.tpribadi tp 
+						where sim.dibuat = tp.noind 
+					) as dibuat_nama
+			    	from \"Surat\".tsurat_isolasi_mandiri sim
 			    	where id_isolasi_mandiri = ? ";
 	    	return $this->personalia->query($sql,array($id))->result_array();
 	    }
@@ -77,6 +102,11 @@
 					from \"Surat\".tsurat_isolasi_mandiri
 					where to_char(tgl_cetak,'yyyy-mm') = to_char(?::date,'yyyy-mm')";
 	    	return $this->personalia->query($sql,array($tanggal))->result_array();
+	    }
+
+	    public function updateSuratIsolasiMandiriByID($data,$id){
+	    	$this->personalia->where('id_isolasi_mandiri',$id);
+	    	$this->personalia->update("\"Surat\".tsurat_isolasi_mandiri", $data);
 	    }
 
 	}

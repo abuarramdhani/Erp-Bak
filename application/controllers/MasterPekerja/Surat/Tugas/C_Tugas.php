@@ -176,6 +176,26 @@ class C_Tugas extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function Update($id_encoded){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_encoded);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$id = $plaintext_string;
+
+		$data = array(
+			'no_surat' => $this->input->post('txtMPSuratTugasNomor'),
+			'noind' => $this->input->post('slcMPSuratTugasPekerja'),
+			'approver' => $this->input->post('slcMPSuratTugasApprover'),
+			'isi_surat' => $this->input->post('txtMPSuratTugasSurat'),
+			'tgl_dicetak' => $this->input->post('txtMPSuratTugasTanggal'),
+			'tgl_dibuat' => date('Y-m-d H:i:s'),
+			'user_' => $this->session->user
+		);
+
+		$id_insert = $this->M_tugas->updateSuratTugasByID($data,$id);
+
+		redirect(base_url('MasterPekerja/Surat/SuratTugas'));
+	}
+
 	public function Hapus($id_encoded){
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_encoded);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);

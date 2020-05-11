@@ -93,6 +93,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$menyetujui = $this->input->get('simMenyetujui');
 		$mengetahui = $this->input->get('simMengetahui');
 		$cetak = $this->input->get('simCetak');
+		$noSurat = $this->input->get('simNo');
 
 		$pekerja_arr = $this->M_isolasimandiri->getDetailPekerjaByNoind($pekerja);
 		$kepada_arr = $this->M_isolasimandiri->getDetailPekerjaByNoind($kepada);
@@ -108,6 +109,7 @@ class C_IsolasiMandiri extends CI_Controller
 
 		$surat_array = $this->M_isolasimandiri->getSuratIsolasiMandiriTemplate();
 		$surat_text = $surat_array[0]['isi_surat'];
+		$surat_text = str_replace("surat_isolasi_mandiri_no_surat", $noSurat, $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_kepada_nama", ucwords(strtolower($kepada_arr[0]['nama'])), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_kepada_jabatan", ucwords(strtolower($kepada_arr[0]['jabatan'])), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_pekerja_nama", ucwords(strtolower($pekerja_arr[0]['nama'])), $surat_text);
@@ -292,6 +294,59 @@ class C_IsolasiMandiri extends CI_Controller
 		);
 
 		return $number_array[$number];
+	}
+
+	public function Ubah($id_encoded){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_encoded);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$id = $plaintext_string;
+
+		$data['data'] = $this->M_isolasimandiri->getSuratIsolasiMandiriById($id);
+		$data['id_encoded'] = $id_encoded;
+
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Surat Isolasi Mandiri';
+		$data['Menu'] 			= 	'Surat';
+		$data['SubMenuOne'] 	= 	'Surat Isolasi Mandiri';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPekerja/Surat/IsolasiMandiri/V_edit',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function update($id_encoded){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_encoded);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$id = $plaintext_string;
+
+		$data_update = array(
+			'pekerja' 				=> $this->input->post('slcMPSuratIsolasiMandiriPekerja'),
+			'kepada' 				=> $this->input->post('slcMPSuratIsolasiMandiriTo'),
+			'mengetahui' 			=> $this->input->post('slcMPSuratIsolasiMandiriMengetahui'),
+			'menyetujui' 			=> $this->input->post('slcMPSuratIsolasiMandirimenyetujui'),
+			'dibuat' 				=> $this->input->post('slcMPSuratIsolasiMandiriDibuat'),
+			'no_surat' 				=> $this->input->post('txtMPSuratIsolasiMandiriNoSurat'),
+			'tgl_wawancara' 		=> $this->input->post('txtMPSuratIsolasiMandiriWawancaraTanggal'),
+			'tgl_mulai' 			=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
+			'tgl_selesai' 			=> $this->input->post('txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal'),
+			'jml_hari' 				=> $this->input->post('txtMPSuratIsolasiMandiriJumlahHari'),
+			'status' 				=> $this->input->post('slcMPSuratIsolasiMandiriStatus'),
+			'tgl_cetak' 			=> $this->input->post('txtMPSuratIsolasiMandiriCetakTanggal'),
+			'isi_surat' 			=> str_replace("surat_isolasi_mandiri_no_surat",$no_surat,$this->input->post('txtMPSuratIsolasiMandiriSurat')),
+			'created_by' 			=> $this->session->user
+		);
+
+		$this->M_isolasimandiri->updateSuratIsolasiMandiriByID($data_update,$id);
+
+		redirect(base_url('MasterPekerja/Surat/SuratIsolasiMandiri'));
 	}
 }
 
