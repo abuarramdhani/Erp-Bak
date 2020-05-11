@@ -1,6 +1,6 @@
 <h4 style="text-align: center">Perhitungan THR Idul Fitri </h4>
 <h4> tanggal <?php echo date('d M Y',strtotime($tanggal))  ?></h4>
-<table border="1" style="width: 100%;border: 1px solid black;border-collapse: collapse;font-size: 9pt">
+<table border="1" style="width: 100%;border: 1px solid black;border-collapse: collapse;font-size: 9pt;page-break-inside: all;">
 <thead>
 	<tr>
 		<th style="text-align: center;vertical-align: middle;">NO.</th>
@@ -42,7 +42,7 @@
 </table>
 <br>
 <br>
-<table style="width: 100%">
+<!-- <table style="width: 100%">
 	<tr>
 		<td></td>
 		<td></td>
@@ -71,4 +71,4 @@
 		<td style="text-align: center">Kepala Seksi Madya</td>
 		<td style="text-align: center">Pekerja Staff Keuangan</td>
 	</tr>
-</table>
+</table> -->
