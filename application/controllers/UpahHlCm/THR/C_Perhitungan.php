@@ -265,43 +265,14 @@ class C_Perhitungan extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('','A4-L', 8, '', 10, 10, 10, 30, 10, 5);
+		$pdf = new mPDF('','A4-L', 8, '', 10, 10, 20, 20, 10, 5);
 		$filename = "Perhitungan THR HLCM Idul Fitri ".$tanggal.".pdf";
 		$html = $this->load->view('UpahHlCm/THR/V_cetakperhitungan', $data, true);
 		// print_r($data['data']);exit();
 		// $this->load->view('UpahHlCm/THR/V_cetakperhitunganbulan', $data);exit();
 
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->SetHTMLFooter("<table style=\"width: 100%;font-size: 8pt\">
-	<tr>
-		<td></td>
-		<td></td>
-		<td style=\"text-align: right;\">Yogyakarta, ".date('d F Y',strtotime($data['waktu_dibuat']))."</td>
-	</tr>
-	<tr>
-		<td style=\"text-align: center\">Mengetahui,</td>
-		<td style=\"text-align: center\">Menyetujui,</td>
-		<td style=\"text-align: center\">Dibuat,</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td style=\"text-align: center\">Novita Sari</td>
-		<td style=\"text-align: center\">Yoga Andriawan</td>
-		<td style=\"text-align: center\">Subardi</td>
-	</tr>
-	<tr>
-		<td style=\"text-align: center\">Asisten Kepala Unit Akuntansi</td>
-		<td style=\"text-align: center\">Kepala Seksi Madya</td>
-		<td style=\"text-align: center\">Pekerja Staff Keuangan</td>
-	</tr>
-</table><i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM oleh ".$this->session->user."-".$this->session->employee." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i> ");
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM oleh ".$this->session->user."-".$this->session->employee." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i> ");
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');
@@ -378,6 +349,7 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->setCellValue('H1','BANK');
 		$worksheet->setCellValue('I1','NOMINAL THR');
 
+		$total = 0;
 		$nomor = 1;
 		if (!empty($data)) {
 			foreach ($data as $dt) {
@@ -391,9 +363,14 @@ class C_Perhitungan extends CI_Controller
 				$worksheet->setCellValue('H'.($nomor+1),$dt['atas_nama']);
 				$worksheet->setCellValue('H'.($nomor+1),$dt['nama_bank']);
 				$worksheet->setCellValue('I'.($nomor+1),number_format($dt['nominal_thr'],2,',','.'));
+				$total += round($dt['nominal_thr'],2);
 				$nomor++;
 			}
 		}
+		$nomor++;
+
+		$worksheet->setCellValue('H'.($nomor),"Total");
+		$worksheet->setCellValue('I'.($nomor),number_format($total,2,',','.'));
 
 
 		$worksheet->getColumnDimension('A')->setWidth('5');
@@ -405,6 +382,8 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->getColumnDimension('G')->setWidth('30');
 		$worksheet->getColumnDimension('H')->setWidth('30');
 		$worksheet->getColumnDimension('I')->setWidth('20');
+
+
 
 		$worksheet->duplicateStyleArray(
 			array(
@@ -433,6 +412,13 @@ class C_Perhitungan extends CI_Controller
 						'style' => PHPExcel_Style_Border::BORDER_THIN)
 				)
 			),'A1:I'.($nomor));
+		$worksheet->duplicateStyleArray(
+			array(
+				'alignment' => array(
+					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+				)
+			),'I2:I'.($nomor));
 
 		$worksheet->setCellValue('C'.($nomor + 2),"Mengetahui,");
 		$worksheet->setCellValue('F'.($nomor + 2),"Menyetujui,");
