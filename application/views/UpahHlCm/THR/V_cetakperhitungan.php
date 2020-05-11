@@ -17,6 +17,7 @@
 </thead>
 <tbody>
 	<?php 
+	$total = 0;
 	if (isset($data) && !empty($data)) {
 		$nomor = 1;
 		foreach ($data as $dt) {
@@ -34,15 +35,23 @@
 				<td style="text-align: right;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo number_format($dt['nominal_thr'],2,',','.')  ?></td>
 			</tr>
 			<?php 
+			$total += round($dt['nominal_thr'],2);
 			$nomor++;
 		}
+
+		?>
+			<tr>
+				<td colspan="9" style="text-align: center;">Total</td>
+				<td style="text-align: right;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo number_format($total,2,',','.') ?></td>
+			</tr>
+		<?php 
 	}
 	?>
 </tbody>
 </table>
 <br>
 <br>
-<!-- <table style="width: 100%">
+<table style="width: 100%">
 	<tr>
 		<td></td>
 		<td></td>
@@ -71,4 +80,4 @@
 		<td style="text-align: center">Kepala Seksi Madya</td>
 		<td style="text-align: center">Pekerja Staff Keuangan</td>
 	</tr>
-</table> -->
+</table>
