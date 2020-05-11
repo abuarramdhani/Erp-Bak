@@ -3,19 +3,20 @@
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
-          <h4 style="font-weight:bold;"><i class="fa fa-newspaper-o"></i> Tabel Monitoring Pengiriman Barang Internal</h4>
+          <h4 style="font-weight:bold;"><i class="fa fa-newspaper-o"></i> Monitoring Pengiriman Barang Internal</h4>
         </div>
         <div class="box-body">
           <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover text-left " id="tblpbi" style="font-size:12px;">
               <thead>
                 <tr class="bg-success">
-                  <th><center>NO</center></th>
+                  <th><center>No</center></th>
                   <th><center>Dokumen Number</center></th>
-                  <th><center>User Tujuan</center></th>
-                  <th><center>Seksi Tujuan</center></th>
+                  <th><center>Penerima</center></th>
+                  <th><center>Seksi Penerima</center></th>
                   <th><center>Tujuan</center></th>
                   <th><center>Status</center></th>
+                  <th><center>Tanggal Input</center></th>
                   <th><center>Detail</center></th>
                 </tr>
               </thead>
@@ -28,6 +29,7 @@
                     <td><center><?php echo $seksi_tujuan[$key] ?></center></td>
                     <td><center><?php echo $g['TUJUAN'] ?></center></td>
                     <td><center><?php echo $g['STATUS2'] ?></center></td>
+                    <td><center><?php echo date('d-M-Y H:i:s',strtotime($g['CREATION_DATE'])) ?></center></td>
                     <td>
                       <center>
                         <a href="<?php echo base_url('PengirimanBarangInternal/Cetak/'.$g['DOC_NUMBER']) ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
