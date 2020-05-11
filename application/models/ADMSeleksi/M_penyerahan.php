@@ -7,8 +7,7 @@ class M_penyerahan extends CI_Model {
 		parent:: __construct();
 		$this->personalia 	= 	$this->load->database('personalia', TRUE);
 		$this->erp 			=	$this->load->database('erp_db', TRUE);
-		$this->mysql		=	$this->load->database('alamat', TRUE);
-		$this->mysql1		=	$this->load->database('daerah', TRUE);
+		$this->mysql		=	$this->load->database('recruitment', TRUE);
 
 	}
 
