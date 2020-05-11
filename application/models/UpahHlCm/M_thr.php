@@ -102,7 +102,7 @@ class M_thr extends CI_Model {
 	}
 
 	function getTHRByTanggalLokasi($tanggal,$lokasi){
-		$sql = "select t1.*,t2.nama as employee_name,t3.location_name,t4.pekerjaan,t2.lokasi_kerja
+		$sql = "select t1.*,t2.nama as employee_name,t3.location_name,t4.pekerjaan,t2.lokasi_kerja,t2.no_rekening,t2.atas_nama,t5.nama_bank
 				from hlcm.hlcm_thr t1 
 				inner join hlcm.hlcm_datapekerja t2 
 				on t1.noind = t2.noind
@@ -111,6 +111,8 @@ class M_thr extends CI_Model {
 				left join hlcm.hlcm_datagaji t4 
 				on t2.kode_pekerjaan = t4.kode_pekerjaan
 				and t2.lokasi_kerja = t4.lokasi_kerja
+				left join hlcm.hlcm_bank t5 
+				on t2.bank = t5.code_bank
 				where t1.tgl_idul_fitri = ?
 				and t2.lokasi_kerja = ?
 				order by t2.lokasi_kerja,t1.noind";
@@ -133,7 +135,7 @@ class M_thr extends CI_Model {
 	}
 
 	function getTHRByTanggal($tanggal){
-		$sql = "select t1.*,t2.nama as employee_name,t3.location_name,t4.pekerjaan,t2.lokasi_kerja
+		$sql = "select t1.*,t2.nama as employee_name,t3.location_name,t4.pekerjaan,t2.lokasi_kerja,t2.no_rekening,t2.atas_nama,t5.nama_bank
 				from hlcm.hlcm_thr t1 
 				inner join hlcm.hlcm_datapekerja t2 
 				on t1.noind = t2.noind
@@ -142,6 +144,8 @@ class M_thr extends CI_Model {
 				left join hlcm.hlcm_datagaji t4 
 				on t2.kode_pekerjaan = t4.kode_pekerjaan
 				and t2.lokasi_kerja = t4.lokasi_kerja
+				left join hlcm.hlcm_bank t5 
+				on t2.bank = t5.code_bank
 				where t1.tgl_idul_fitri = ?
 				order by t2.lokasi_kerja,t1.noind";
 		return $this->erp->query($sql,array($tanggal))->result_array();

@@ -265,7 +265,7 @@ class C_Perhitungan extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('','A4', 8, '', 10, 10, 10, 10, 10, 5);
+		$pdf = new mPDF('','A4-L', 8, '', 10, 10, 10, 10, 10, 5);
 		$filename = "Perhitungan THR HLCM Idul Fitri ".$tanggal.".pdf";
 		$html = $this->load->view('UpahHlCm/THR/V_cetakperhitungan', $data, true);
 		// print_r($data['data']);exit();
@@ -344,7 +344,10 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->setCellValue('D1','LOKASI KERJA');
 		$worksheet->setCellValue('E1','MASUK KERJA');
 		$worksheet->setCellValue('F1','MASA KERJA');
-		$worksheet->setCellValue('G1','NOMINAL THR');
+		$worksheet->setCellValue('G1','NO REKENING');
+		$worksheet->setCellValue('H1','PEMILIK REKENING');
+		$worksheet->setCellValue('H1','BANK');
+		$worksheet->setCellValue('I1','NOMINAL THR');
 
 		$nomor = 1;
 		if (!empty($data)) {
@@ -355,10 +358,14 @@ class C_Perhitungan extends CI_Controller
 				$worksheet->setCellValue('D'.($nomor+1),$dt['location_name']);
 				$worksheet->setCellValue('E'.($nomor+1),$dt['tgl_masuk']);
 				$worksheet->setCellValue('F'.($nomor+1),$dt['masa_kerja']);
-				$worksheet->setCellValue('G'.($nomor+1),number_format($dt['nominal_thr'],2,',','.'));
+				$worksheet->setCellValue('G'.($nomor+1),$dt['no_rekening']);
+				$worksheet->setCellValue('H'.($nomor+1),$dt['atas_nama']);
+				$worksheet->setCellValue('H'.($nomor+1),$dt['nama_bank']);
+				$worksheet->setCellValue('I'.($nomor+1),number_format($dt['nominal_thr'],2,',','.'));
 				$nomor++;
 			}
 		}
+
 
 		$worksheet->getColumnDimension('A')->setWidth('5');
 		$worksheet->getColumnDimension('B')->setWidth('10');
@@ -366,7 +373,9 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->getColumnDimension('D')->setWidth('20');
 		$worksheet->getColumnDimension('E')->setWidth('20');
 		$worksheet->getColumnDimension('F')->setWidth('30');
-		$worksheet->getColumnDimension('G')->setWidth('20');
+		$worksheet->getColumnDimension('G')->setWidth('30');
+		$worksheet->getColumnDimension('H')->setWidth('30');
+		$worksheet->getColumnDimension('I')->setWidth('20');
 
 		$worksheet->duplicateStyleArray(
 			array(
@@ -386,7 +395,7 @@ class C_Perhitungan extends CI_Controller
 				'font' => array(
 					'bold' => true
 				)
-			),'A1:G1');
+			),'A1:I1');
 
 		$worksheet->duplicateStyleArray(
 			array(
@@ -394,7 +403,27 @@ class C_Perhitungan extends CI_Controller
 					'allborders' => array(
 						'style' => PHPExcel_Style_Border::BORDER_THIN)
 				)
-			),'A1:G'.($nomor));
+			),'A1:I'.($nomor));
+
+		$worksheet->setCellValue('C'.($nomor + 2),"Mengetahui,");
+		$worksheet->setCellValue('F'.($nomor + 2),"Menyetujui,");
+		$worksheet->setCellValue('I'.($nomor + 2),"Dibuat Oleh,");
+
+		$nomor += 4;
+		$worksheet->setCellValue('C'.($nomor + 2),"Novita Sari");
+		$worksheet->setCellValue('F'.($nomor + 2),"Yoga Andriawan");
+		$worksheet->setCellValue('I'.($nomor + 2),"Subardi");
+		$worksheet->setCellValue('C'.($nomor + 3),"Asisten Kepala Unit Akuntansi");
+		$worksheet->setCellValue('F'.($nomor + 3),"Kepala Seksi Madya");
+		$worksheet->setCellValue('I'.($nomor + 3),"Pekerja Staff Keuangan");
+
+		// $worksheet->duplicateStyleArray(
+		// 	array(
+		// 		'alignment' => array(
+		// 			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+		// 			'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+		// 		),
+		// 	),'A1:I1');
 
 		$filename = "Perhitungan Nominal THR HLCM Idul Fitri ".$tanggal.".xls";
 		header('Content-Type: aplication/vnd.ms-excel');
