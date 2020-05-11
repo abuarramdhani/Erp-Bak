@@ -213,34 +213,69 @@ AND msib.segment1 = '$komp'
 
     public function getdatapdf2($kode) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "SELECT mb1.segment1 assembly_num, mb2.segment1 component_num, mb2.description,
-       flv1.meaning item_type, bc.component_quantity qty,
-       mb2.primary_uom_code, flv2.meaning supply_type, bc.supply_subinventory,
-       mil.segment1 supply_locator, bc.attribute1 from_subinventory,
-       (SELECT mil.segment1
-          FROM mtl_item_locations mil
-         WHERE bc.attribute2 = mil.inventory_location_id) from_locator
-  FROM bom.bom_components_b bc,
-       bom.bom_structures_b bs,
-       inv.mtl_system_items_b mb1,
-       inv.mtl_system_items_b mb2,
-       fnd_lookup_values flv1,
-       fnd_lookup_values flv2,
-       mtl_item_locations mil
- WHERE bs.assembly_item_id = mb1.inventory_item_id
-   AND bc.component_item_id = mb2.inventory_item_id
-   AND bc.bill_sequence_id = bs.bill_sequence_id
-   AND mb1.organization_id = mb2.organization_id
-   AND bs.organization_id = mb2.organization_id
-   AND bc.disable_date IS NULL
-   AND bs.alternate_bom_designator IS NULL
-   AND mb1.organization_id = 102
-   AND mb2.item_type = flv1.lookup_code
-   AND flv1.lookup_type = 'ITEM_TYPE'
-   AND bc.wip_supply_type = flv2.lookup_code
-   AND flv2.lookup_type = 'WIP_SUPPLY'
-   AND bc.supply_locator_id = mil.inventory_location_id(+)
-   AND mb1.segment1 = '$kode'";
+    $sql = "
+--     SELECT mb1.segment1 assembly_num, mb2.segment1 component_num, mb2.description,
+--        flv1.meaning item_type, bc.component_quantity qty,
+--        mb2.primary_uom_code, flv2.meaning supply_type, bc.supply_subinventory,
+--        mil.segment1 supply_locator, bc.attribute1 from_subinventory,
+--        (SELECT mil.segment1
+--           FROM mtl_item_locations mil
+--          WHERE bc.attribute2 = mil.inventory_location_id) from_locator
+--   FROM bom.bom_components_b bc,
+--        bom.bom_structures_b bs,
+--        inv.mtl_system_items_b mb1,
+--        inv.mtl_system_items_b mb2,
+--        fnd_lookup_values flv1,
+--        fnd_lookup_values flv2,
+--        mtl_item_locations mil
+--  WHERE bs.assembly_item_id = mb1.inventory_item_id
+--    AND bc.component_item_id = mb2.inventory_item_id
+--    AND bc.bill_sequence_id = bs.bill_sequence_id
+--    AND mb1.organization_id = mb2.organization_id
+--    AND bs.organization_id = mb2.organization_id
+--    AND bc.disable_date IS NULL
+--    AND bs.alternate_bom_designator IS NULL
+--    AND mb1.organization_id = 102
+--    AND mb2.item_type = flv1.lookup_code
+--    AND flv1.lookup_type = 'ITEM_TYPE'
+--    AND bc.wip_supply_type = flv2.lookup_code
+--    AND flv2.lookup_type = 'WIP_SUPPLY'
+--    AND bc.supply_locator_id = mil.inventory_location_id(+)
+--    AND mb1.segment1 = '$kode'
+
+select msib.SEGMENT1 assembly_num
+,msib.DESCRIPTION assy_desc
+,bom.ALTERNATE_BOM_DESIGNATOR alt
+,bic.ITEM_NUM num
+,msib2.SEGMENT1 component_num
+,msib2.DESCRIPTION
+,bic.COMPONENT_QUANTITY qty
+,msib2.PRIMARY_UOM_CODE
+,flv.MEANING supply_type
+,bic.SUPPLY_SUBINVENTORY
+,mil.SEGMENT1 supply_locator
+,bic.ATTRIBUTE1 from_subinventory
+,mil2.SEGMENT1 from_locator
+from bom_bill_of_materials bom
+,bom_inventory_components bic
+,mtl_system_items_b msib
+,mtl_system_items_b msib2
+,mtl_item_locations mil
+,mtl_item_locations mil2
+,fnd_lookup_values flv
+where bom.BILL_SEQUENCE_ID = bic.BILL_SEQUENCE_ID
+and bom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+and bom.ORGANIZATION_ID = msib.ORGANIZATION_ID
+and bic.COMPONENT_ITEM_ID = msib2.INVENTORY_ITEM_ID
+and bic.DISABLE_DATE is null
+and msib2.ORGANIZATION_ID = bom.ORGANIZATION_ID
+and bic.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
+and bic.ATTRIBUTE2 = mil2.INVENTORY_LOCATION_ID(+)
+and bic.WIP_SUPPLY_TYPE = flv.LOOKUP_CODE
+and flv.LOOKUP_TYPE = 'WIP_SUPPLY'
+and msib.SEGMENT1  ='$kode'
+order by msib.SEGMENT1, bom.ALTERNATE_BOM_DESIGNATOR, bic.ITEM_NUM
+";
 
        $query = $oracle->query($sql);
         return $query->result_array();
