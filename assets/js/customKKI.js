@@ -2,7 +2,46 @@ $('#tblpbi').DataTable({
   "pageLength": 10,
 });
 
-$(document).ready(function () {
+const swalRKHToastrAlert = (type, message) => {
+  Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  }).fire({
+    customClass: 'swal-font-small',
+    type: type,
+    title: message
+  })
+}
+
+const updatePBI = (doc, no) => {
+  if (doc != '') {
+    $.ajax({
+      url: baseurl + 'PengirimanBarangInternal/Input/updatePeneriamaan',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        doc: doc,
+      },
+      success: function(result) {
+        if (result) {
+          swalRKHToastrAlert('info', 'Data Berhasil Diperbarui');
+          $('tr[row-id="' + no + '"] button[id="diterima"]').attr('disabled', 'disabled');
+          $('tr[row-id="' + no + '"] td center[id="status"]').html('Diterima Seksi Tujuan');
+        } else {
+          swalRKHToastrAlert('error', 'Gagal Memperbarui Data');
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+  }
+}
+
+$(document).ready(function() {
   $('.select2PBI').select2({
     minimumInputLength: 2,
     placeholder: "Employee",
@@ -10,14 +49,14 @@ $(document).ready(function () {
       url: baseurl + "PengirimanBarangInternal/Input/employee",
       dataType: "JSON",
       type: "POST",
-      data: function (params) {
+      data: function(params) {
         return {
           term: params.term
         };
       },
-      processResults: function (data) {
+      processResults: function(data) {
         return {
-          results: $.map(data, function (obj) {
+          results: $.map(data, function(obj) {
             return {
               id: obj.employee_code,
               text: `${obj.employee_name} - ${obj.employee_code}`
@@ -35,14 +74,14 @@ $(document).ready(function () {
       url: baseurl + "PengirimanBarangInternal/Input/listCode",
       dataType: "JSON",
       type: "POST",
-      data: function (params) {
+      data: function(params) {
         return {
           term: params.term
         };
       },
-      processResults: function (data) {
+      processResults: function(data) {
         return {
-          results: $.map(data, function (obj) {
+          results: $.map(data, function(obj) {
             return {
               id: obj.SEGMENT1,
               text: `${obj.SEGMENT1} - ${obj.DESCRIPTION}`
@@ -56,10 +95,10 @@ $(document).ready(function () {
   if ($('#cekapp').val() === 'punyaPBI') {
     $.ajax({
       url: baseurl + 'PengirimanBarangInternal/Input/getSeksiku',
-      type : 'GET',
-      dataType : 'JSON',
-      async : true,
-      success : function(result){
+      type: 'GET',
+      dataType: 'JSON',
+      async: true,
+      success: function(result) {
         $('#seksi_pengirim').val(result.seksi)
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -78,9 +117,9 @@ const btnPlusPBI = () => {
       type: 'warning',
       text: 'Harap mengisi form Seksi Tujuan terlebih dahulu!',
     })
-  }else {
+  } else {
     let n = $('.cektable tbody tr').length;
-    let a =  n + 1;
+    let a = n + 1;
     $('#tambahisi').append(`<tr class="rowbaru" id ="teer${n}">
                               <td class="text-center"><input type="text" class="form-control" name="line_number[]" value="${a}" readonly></td>
                               <td class="text-center"><select class="form-control select2PBILine" id="item_code_${a}" name="item_code[]" onchange="autofill(${a})" required></select></td>
@@ -95,21 +134,21 @@ const btnPlusPBI = () => {
                               </td>
                             </tr>`);
 
-    $('.cektable tbody tr[id="teer'+n+'"] .select2PBILine').select2({
+    $('.cektable tbody tr[id="teer' + n + '"] .select2PBILine').select2({
       minimumInputLength: 3,
       placeholder: "Item Kode",
       ajax: {
         url: baseurl + "PengirimanBarangInternal/Input/listCode",
         dataType: "JSON",
         type: "POST",
-        data: function (params) {
+        data: function(params) {
           return {
             term: params.term
           };
         },
-        processResults: function (data) {
+        processResults: function(data) {
           return {
-            results: $.map(data, function (obj) {
+            results: $.map(data, function(obj) {
               return {
                 id: obj.SEGMENT1,
                 text: `${obj.SEGMENT1} - ${obj.DESCRIPTION}`
@@ -120,8 +159,8 @@ const btnPlusPBI = () => {
       }
     });
 
-    $(document).on('click', '.btnpbi'+a,  function() {
-        $(this).parents('.rowbaru').remove()
+    $(document).on('click', '.btnpbi' + a, function() {
+      $(this).parents('.rowbaru').remove()
     });
   }
 
@@ -132,13 +171,13 @@ const autofill = (n) => {
   if (code != '') {
     $.ajax({
       url: baseurl + 'PengirimanBarangInternal/Input/autofill',
-      type : 'POST',
-      dataType : 'JSON',
-      async : true,
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
       data: {
-        code : code,
+        code: code,
       },
-      success : function(result){
+      success: function(result) {
         $(`#description_${n}`).val(result[0].DESCRIPTION);
         $(`#uom_${n}`).val(result[0].PRIMARY_UOM_CODE);
         $(`#itemtype_${n}`).val(result[0].JENIS);
@@ -198,13 +237,13 @@ const nama = _ => {
   const employee_code = $('#employee').val();
   $.ajax({
     url: baseurl + 'PengirimanBarangInternal/Input/getSeksimu',
-    type : 'POST',
-    dataType : 'JSON',
-    async : true,
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
     data: {
-      code : employee_code,
+      code: employee_code,
     },
-    success : function(result){
+    success: function(result) {
       $(`#seksi_tujuan`).val(result.seksi);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -213,20 +252,20 @@ const nama = _ => {
   })
 }
 
-const detailPBI = d =>{
+const detailPBI = d => {
   $.ajax({
     url: baseurl + 'PengirimanBarangInternal/Monitoring/Detail',
-    type : 'POST',
-    async : true,
+    type: 'POST',
+    async: true,
     data: {
-      nodoc : d,
+      nodoc: d,
     },
     beforeSend: function() {
       $('#loading-pbi').show();
       $('#table-pbi-area').hide();
       $(`#nodoc`).html('');
     },
-    success : function(result){
+    success: function(result) {
       $('#table-pbi-area').show();
       $('#loading-pbi').hide();
       $(`#nodoc`).html(d);
