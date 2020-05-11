@@ -13,7 +13,7 @@ $(document).ready(function () {
             let kode = $('#slc_kodesie_SP').val()
 
             let Hidekelas = ''
-
+            
             if ($('#kelas_pkj_SP').attr('hidden', false)) {
                 let Hidekelas = `}else if (!kelas) {
                     swal.fire({
@@ -40,6 +40,8 @@ $(document).ready(function () {
                 })
             Hidekelas
             }else {
+                ($('#slc_pkj_SP').val() == '1')? $('#kelas_pkj_SP').attr('hidden', false):$('#kelas_pkj_SP').attr('hidden', true)
+
                 sumThey = jenis == '1' ? 0 : 2
 
                 $('#slc_pri_pkj_SP').select2({
@@ -1630,5 +1632,9 @@ $(document).ready(function () {
         $('#Cari_HasilPenyerahan').removeClass('hide')
         $('.hide_Perusahaan').attr('hidden', true)
     })
+
+    // ------------------BPJS ketenagakerjaan--------------------
+
+    $('.inp_rangebpjs').daterangepicker()
 
 })
