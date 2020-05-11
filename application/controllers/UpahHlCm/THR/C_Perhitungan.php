@@ -417,13 +417,13 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->setCellValue('F'.($nomor + 3),"Kepala Seksi Madya");
 		$worksheet->setCellValue('I'.($nomor + 3),"Pekerja Staff Keuangan");
 
-		// $worksheet->duplicateStyleArray(
-		// 	array(
-		// 		'alignment' => array(
-		// 			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-		// 			'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
-		// 		),
-		// 	),'A1:I1');
+		$worksheet->duplicateStyleArray(
+			array(
+				'alignment' => array(
+					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+				),
+			),'A'.($nomor - 2).':I'.($nomor + 3));
 
 		$filename = "Perhitungan Nominal THR HLCM Idul Fitri ".$tanggal.".xls";
 		header('Content-Type: aplication/vnd.ms-excel');
