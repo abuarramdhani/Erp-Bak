@@ -106,7 +106,7 @@ class C_Cetakbom extends CI_Controller
 		 $data['name'] = $this->session->employee;
 
 
-		// echo "<pre>";print_r($datapdf);exit();
+		// echo "<pre>";print_r($datapdf2);exit();
 
 
 		
@@ -146,6 +146,11 @@ class C_Cetakbom extends CI_Controller
 			$array_pdf[$i]['CYCLE_TIME'] = round($cycletime,2);
 			$array_pdf[$i]['TARGET'] = floor($target);
 			$array_pdf[$i]['INVERSE'] = round($inverse,3);
+			$array_pdf[$i]['OPR_NO'] = $pdf['OPR_NO'];
+			$array_pdf[$i]['LAST_UPDATE_DATE'] = $pdf['LAST_UPDATE_DATE'];
+
+			
+
 
 			$i++;
 		}
@@ -158,7 +163,7 @@ class C_Cetakbom extends CI_Controller
 		// print_r(); exit();
 
 
-		// echo "<pre>";print_r($array_pdf);exit();
+		// echo "<pre>";print_r($datapdf);exit();
 
 		ob_start();
 		$this->load->library('pdf');
