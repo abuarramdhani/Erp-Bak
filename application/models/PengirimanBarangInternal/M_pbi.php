@@ -67,7 +67,7 @@ class M_pbi extends CI_Model
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status,
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.creation_date,
                  CASE
                     WHEN kki.status = 1
                        THEN 'Dipersiapkan Seksi Pengirim'
