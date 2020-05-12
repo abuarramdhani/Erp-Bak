@@ -18,7 +18,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><b>SEKSI ELECTRONIC DATA PROCESSING</b></td>
+			<td><b>PAYROLL NON STAFF</b></td>
 		</tr>
 		<tr>
 			<td><b>CV. KARYA HIDUP SENTOSA</b></td>
