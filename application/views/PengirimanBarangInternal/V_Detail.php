@@ -8,7 +8,6 @@
         <th><center>QUANTITY</center></th>
         <th><center>UOM</center></th>
         <th><center>ITEM TYPE</center></th>
-        <th><center>STATUS</center></th>
       </tr>
     </thead>
     <tbody>
@@ -20,7 +19,6 @@
           <td><center><?php echo $g['QUANTITY'] ?></center></td>
           <td><center><?php echo $g['UOM'] ?></center></td>
           <td><center><?php echo $g['ITEM_TYPE'] ?></center></td>
-          <td><center><?php echo $g['STATUS2'] ?></center></td>
         </tr>
       <?php $no++; endforeach; ?>
     </tr>
