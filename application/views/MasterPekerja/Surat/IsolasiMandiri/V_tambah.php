@@ -29,6 +29,7 @@
 												</div>
 											</div>
 											<input type="hidden" name="txtMPSuratIsolasiMandiriSurat" id="txtMPSuratIsolasiMandiriSurat">
+											<input type="hidden" value="surat_isolasi_mandiri_no_surat" name="txtMPSuratIsolasiMandiriNoSurat" id="txtMPSuratIsolasiMandiriNoSurat">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Wawancara</label>
 												<div class="col-lg-4">

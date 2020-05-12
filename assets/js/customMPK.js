@@ -3496,7 +3496,7 @@ $(document).ready(function(){
       }
   });
 
-  $('#slcMPSuratIsolasiMandiriTo, #slcMPSuratIsolasiMandiriPekerja, #txtMPSuratIsolasiMandiriSurat, #txtMPSuratIsolasiMandiriCetakTanggal, #txtMPSuratIsolasiMandiriWawancaraTanggal, #txtMPSuratIsolasiMandiriMulaiIsolasiTanggal, #txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal, #txtMPSuratIsolasiMandiriJumlahHari, #slcMPSuratIsolasiMandiriStatus, #slcMPSuratIsolasiMandiriDibuat, #slcMPSuratIsolasiMandirimenyetujui, #slcMPSuratIsolasiMandiriMengetahui').on('change', function(){
+  $('#txtMPSuratIsolasiMandiriNoSurat, #slcMPSuratIsolasiMandiriTo, #slcMPSuratIsolasiMandiriPekerja, #txtMPSuratIsolasiMandiriSurat, #txtMPSuratIsolasiMandiriCetakTanggal, #txtMPSuratIsolasiMandiriWawancaraTanggal, #txtMPSuratIsolasiMandiriMulaiIsolasiTanggal, #txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal, #txtMPSuratIsolasiMandiriJumlahHari, #slcMPSuratIsolasiMandiriStatus, #slcMPSuratIsolasiMandiriDibuat, #slcMPSuratIsolasiMandirimenyetujui, #slcMPSuratIsolasiMandiriMengetahui').on('change', function(){
     
     var simTo = $('#slcMPSuratIsolasiMandiriTo').val();
     var simPekerja = $('#slcMPSuratIsolasiMandiriPekerja').val();
@@ -3509,8 +3509,10 @@ $(document).ready(function(){
     var simMenyetujui = $('#slcMPSuratIsolasiMandirimenyetujui').val();
     var simMengetahui = $('#slcMPSuratIsolasiMandiriMengetahui').val();
     var simCetak = $('#txtMPSuratIsolasiMandiriCetakTanggal').val();
+    var simNo = $('#txtMPSuratIsolasiMandiriNoSurat').val();
 
-    if (simTo && simPekerja && simWawancara && simMulai && simSelesai && simHari && simStatus && simDibuat && simMenyetujui && simMengetahui && simCetak) {
+
+    if (simTo && simPekerja && simWawancara && simMulai && simSelesai && simHari && simStatus && simDibuat && simMenyetujui && simMengetahui && simCetak && simNo) {
       $('#btnMPSuratIsolasiMandiriPreview').attr('disabled',false);
     }else{
       $('#btnMPSuratIsolasiMandiriPreview').attr('disabled',true);
@@ -3549,6 +3551,7 @@ $(document).ready(function(){
     var simMenyetujui = $('#slcMPSuratIsolasiMandirimenyetujui').val();
     var simMengetahui = $('#slcMPSuratIsolasiMandiriMengetahui').val();
     var simCetak = $('#txtMPSuratIsolasiMandiriCetakTanggal').val();
+    var simNo = $('#txtMPSuratIsolasiMandiriNoSurat').val();
 
     $.ajax({
       data  : {
@@ -3562,7 +3565,8 @@ $(document).ready(function(){
         simDibuat: simDibuat, 
         simMenyetujui: simMenyetujui, 
         simMengetahui: simMengetahui,
-        simCetak: simCetak
+        simCetak: simCetak,
+        simNo: simNo
       },
       type  : 'GET',
       url   : baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/Preview',

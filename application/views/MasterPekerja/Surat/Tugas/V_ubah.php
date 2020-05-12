@@ -23,7 +23,7 @@
 														<?php 
 															if (isset($data[0]['noind']) && !empty($data[0]['noind'])) {
 																?>
-																	<option selected value="<?php echo $data[0]['noind'] ?>"></option>
+																	<option selected value="<?php echo $data[0]['noind'] ?>"><?php echo $data[0]['noind'].' - '.$data[0]['pekerja_nama'] ?></option>
 																<?php
 															} 
 														?>
@@ -33,7 +33,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">No. Surat</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratTugasNomor" id="txtMPSuratTugasNomor" value="<?php echo $data[0]['no_surat'] ? $data[0]['no_surat'] : ''  ?>" class="form-control" placeholder="No. Surat" disabled required>
+													<input type="text" name="txtMPSuratTugasNomor" id="txtMPSuratTugasNomor" value="<?php echo $data[0]['no_surat'] ? $data[0]['no_surat'] : ''  ?>" class="form-control" placeholder="No. Surat" required>
 												</div>
 											</div>
 											<div class="form-group">
@@ -43,7 +43,7 @@
 														<?php 
 															if (isset($data[0]['approver']) && !empty($data[0]['approver'])) {
 																?>
-																	<option selected value="<?php echo $data[0]['approver'] ?>"></option>
+																	<option selected value="<?php echo $data[0]['approver'] ?>"><?php echo $data[0]['approver'].' - '.$data[0]['approver_nama'] ?></option>
 																<?php
 															} 
 														?>
@@ -65,11 +65,7 @@
 											<div class="form-group">
                                                 <label class="col-lg-2 control-label">Format Surat</label>
                                                 <div class="col-lg-8">
-                                                    <textarea name="txaMPSuratTugasRedactor" class="form-control" id="txaMPSuratTugasRedactor" disabled required>
-                                                    	<?php 
-                                                    	echo $data[0]['isi_surat'] ? $data[0]['isi_surat'] : '';
-                                                    	?>
-                                                    </textarea>
+                                                    <textarea name="txaMPSuratTugasRedactor" class="form-control" id="txaMPSuratTugasRedactor" disabled required></textarea>
                                                 </div>
                                             </div>
 											<div class="form-group">

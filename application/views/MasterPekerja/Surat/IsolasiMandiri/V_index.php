@@ -43,7 +43,7 @@
 															<tr>
 																<td><?php echo $nomor ?></td>
 																<td style="text-align: center">
-																	<a href="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Ubah/'.$encrypted_string) ?>" class="btn btn-primary" disabled>Edit</a>
+																	<a href="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Ubah/'.$encrypted_string) ?>" class="btn btn-primary">Edit</a>
 																	<a href="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/PDF/'.$encrypted_string) ?>" target="_blank" class="btn btn-warning">PDF</a>
 																	<a href="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Hapus/'.$encrypted_string) ?>" class="btn btn-danger" onclick="return confirm('apakah anda yakin ingin menghapus data ini ?')">Delete</a>
 																</td>
