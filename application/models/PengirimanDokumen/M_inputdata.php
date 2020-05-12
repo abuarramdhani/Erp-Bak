@@ -133,7 +133,7 @@ class M_inputdata extends CI_Model
     }
 
     function getNameByNoind($noind){
-        $sql = "SELECT nama from hrd_khs.tpribadi where noind = '$noind' and keluar='0'";
+        $sql = "SELECT nama from hrd_khs.tpribadi where noind = '$noind'";
         return $this->personalia->query($sql)->row()->nama;
     }
 
