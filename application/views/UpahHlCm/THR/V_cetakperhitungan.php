@@ -35,7 +35,7 @@
 				<td style="text-align: right;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo number_format($dt['nominal_thr'],0,',','.')  ?></td>
 			</tr>
 			<?php 
-			$total += round($dt['nominal_thr'],2);
+			$total += round($dt['nominal_thr']);
 			$nomor++;
 		}
 
