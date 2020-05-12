@@ -4310,3 +4310,14 @@ $route['CetakNCDataReport'] 						= 'CetakNCDataReport/C_Index';
 $route['CetakNCDataReport/Cetak']					= 'CetakNCDataReport/C_Cetak';
 $route['CetakNCDataReport/Cetak/(:any)']			= 'CetakNCDataReport/C_Cetak/$1';
 $route['CetakNCDataReport/Cetak/(:any)/(:any)']		= 'CetakNCDataReport/C_Cetak/$1/$2';
+
+//-------------------------------------------Cetak Kartu Gudang--------------------------------------------------//
+$route['CetakKartuGudang'] 						= 'CetakKartuGudang/C_Index';
+
+$route['CetakKartuGudang/KartuBarang']					= 'CetakKartuGudang/C_KartuBarang';
+$route['CetakKartuGudang/KartuBarang/(:any)']			= 'CetakKartuGudang/C_KartuBarang/$1';
+$route['CetakKartuGudang/KartuBarang/(:any)/(:any)']	= 'CetakKartuGudang/C_KartuBarang/$1/$2';
+
+$route['CetakKartuGudang/KartuA360']					= 'CetakKartuGudang/C_KartuA360';
+$route['CetakKartuGudang/KartuA360/(:any)']			= 'CetakKartuGudang/C_KartuA360/$1';
+$route['CetakKartuGudang/KartuA360/(:any)/(:any)']	= 'CetakKartuGudang/C_KartuA360/$1/$2';
