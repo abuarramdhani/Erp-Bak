@@ -178,7 +178,7 @@ class C_Memo extends CI_Controller {
 			$worksheet = $this->excel->getActiveSheet();
 
 			$worksheet->setCellValue('B1','MEMO');
-			$worksheet->setCellValue('B2','SEKSI ELECTRONIC DATA PROCESSING');
+			$worksheet->setCellValue('B2','PAYROLL NON STAFF');
 			$worksheet->setCellValue('B3','CV. KARYA HIDUP SENTOSA');
 			$worksheet->setCellValue('B4','JL. MAGELANG NO. 144 YOGYAKARTA');
 			$worksheet->mergeCells('B1:F1');
