@@ -59,8 +59,9 @@ class C_Cetakbom extends CI_Controller
 	public function suggestproduk()
 	{
 		$term = $this->input->get('term',TRUE);
-		$term = strtoupper($term);
+		// $term = strtoupper($term);
 		$data = $this->M_cetakbom->selectproduk($term);
+		// echo "<pre>";print_r($data);exit();
 		echo json_encode($data);
 		
 	}
@@ -106,7 +107,7 @@ class C_Cetakbom extends CI_Controller
 		 $data['name'] = $this->session->employee;
 
 
-		// echo "<pre>";print_r($datapdf2);exit();
+		// echo "<pre>";print_r($descprod);exit();
 
 
 		

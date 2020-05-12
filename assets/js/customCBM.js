@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	$("#prodd").select2({
 		allowClear: true,
-		minimumInputLength: 1,
+		minimumInputLength: 0,
 		ajax: {
 			url: baseurl + "CetakBOMResources/Cetak/suggestproduk",
 			dataType: 'json',
@@ -17,8 +17,8 @@ $(document).ready(function () {
 				return {
 					results: $.map(data, function (obj) {
 						return {
-							id: obj.KODE_DIGIT,
-							text: obj.DESCRIPTION
+							id: obj.FLEX_VALUE,
+							text: obj.FLEX_VALUE+' - '+obj.DESCRIPTION
 						};
 					})
 				};
