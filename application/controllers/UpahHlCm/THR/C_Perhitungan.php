@@ -506,6 +506,326 @@ class C_Perhitungan extends CI_Controller
 		$pdf->Output($filename, 'I');
 	}
 
+	public function memo(){
+		$tanggal 	= $this->input->get('tanggal');
+		$lokasi 	= $this->input->get('lokasi');
+		
+		if (!empty($lokasi)) {
+			$data = $this->M_thr->getTHRByTanggalLokasi($tanggal,$lokasi);
+		}else{
+			$data = $this->M_thr->getTHRByTanggal($tanggal);
+		}
+
+		// echo "<pre>";print_r($data);exit();
+
+		$total_t_ktukang 	= 0;
+		$total_t_tukang 	= 0;
+		$total_t_serabutan 	= 0;
+		$total_t_tenaga 	= 0;
+		$total_p_ktukang 	= 0;
+		$total_p_tukang 	= 0;
+		$total_p_serabutan 	= 0;
+		$total_p_tenaga 	= 0;
+		$total_tuksono 		= 0;
+		$total_pusat 		= 0;
+		$totalsemua 		= 0;
+
+		if (!empty($data)) {
+			foreach ($data as $dt) {
+				if ($dt['location_name'] == "YOGYAKARTA (PUSAT)") {
+					if ($dt['pekerjaan'] == "KEPALA TUKANG") {
+						$total_p_ktukang += round($dt['nominal_thr'],2);
+					}elseif ($dt['pekerjaan'] == "TUKANG") {
+						$total_p_tukang += round($dt['nominal_thr'],2);
+					}elseif ($dt['pekerjaan'] == "TENAGA") {
+						$total_p_tenaga += round($dt['nominal_thr'],2);
+					}elseif ($dt['pekerjaan'] == "SERABUTAN") {
+						$total_p_serabutan += round($dt['nominal_thr'],2);
+					}
+				}elseif ($dt['location_name'] == "TUKSONO") {
+					if ($dt['pekerjaan'] == "KEPALA TUKANG") {
+						$total_t_ktukang += round($dt['nominal_thr'],2);
+					}elseif ($dt['pekerjaan'] == "TUKANG") {
+						$total_t_tukang += round($dt['nominal_thr'],2);
+					}elseif ($dt['pekerjaan'] == "TENAGA") {
+						$total_t_tenaga += round($dt['nominal_thr'],2);
+					}elseif ($dt['pekerjaan'] == "SERABUTAN") {
+						$total_t_serabutan += round($dt['nominal_thr'],2);
+					}
+				}
+			}
+
+			$total_pusat = $total_p_ktukang + $total_p_tukang + $total_p_tenaga + $total_p_serabutan;
+			$total_tuksono = $total_t_ktukang + $total_t_tukang + $total_t_tenaga + $total_t_serabutan;
+
+			$totalsemua = $total_pusat + $total_tuksono;
+		}
+
+		$this->load->library('excel');
+		$worksheet = $this->excel->getActiveSheet();
+
+		$worksheet->setCellValue('B1','MEMO');
+		$worksheet->setCellValue('B2','PAYROLL NON STAFF');
+		$worksheet->setCellValue('B3','CV. KARYA HIDUP SENTOSA');
+		$worksheet->setCellValue('B4','JL. MAGELANG NO. 144 YOGYAKARTA');
+		$worksheet->mergeCells('B1:F1');
+		$worksheet->mergeCells('B2:F2');
+		$worksheet->mergeCells('B3:F3');
+		$worksheet->mergeCells('B4:F4');
+
+		$worksheet->setCellValue('A6','No');
+		$worksheet->setCellValue('A7','Hal');
+		$worksheet->setCellValue('B6',':');//no. memo
+		$worksheet->setCellValue('B7',': Transfer THR Pekerja Harian Lepas idul fitri '.strftime('%d %B %Y', strtotime($tanggal)));
+		$worksheet->mergeCells('B6:G6');
+		$worksheet->mergeCells('B7:G7');
+
+		$worksheet->setCellValue('A9','Kepada Yth:');
+		$worksheet->setCellValue('A10','');//tujuan
+		$worksheet->setCellValue('A11','Ditempat');
+		$worksheet->mergeCells('A9:G9');
+		$worksheet->mergeCells('A10:G10');
+		$worksheet->mergeCells('A11:G11');
+
+		$worksheet->setCellValue('A13','Dengan hormat,');
+		$worksheet->mergeCells('A13:G13');
+		
+		$worksheet->setCellValue('A14','Dengan ini mohon agar dilakukan transfer uang untuk pembayaran THR pekerja harian lepas KHS Pusat dan Tuksono , idul fitri '.strftime('%d %B %Y', strtotime($tanggal)));
+		$worksheet->mergeCells('A14:G14');
+
+		$worksheet->setCellValue('B15','KEPALA TUKANG');
+		$worksheet->setCellValue('B16','TUKANG');
+		$worksheet->setCellValue('B17','SERABUTAN');
+		$worksheet->setCellValue('B18','TENAGA');
+
+		$worksheet->setCellValue('C15',"Rp ".number_format($total_t_ktukang,2,',','.'));
+		$worksheet->setCellValue('C16',"Rp ".number_format($total_t_tukang,2,',','.'));
+		$worksheet->setCellValue('C17',"Rp ".number_format($total_t_serabutan,2,',','.'));
+		$worksheet->setCellValue('C18',"Rp ".number_format($total_t_tenaga,2,',','.'));
+
+		$worksheet->setCellValue('E15','KEPALA TUKANG');
+		$worksheet->setCellValue('E16','TUKANG');
+		$worksheet->setCellValue('E17','SERABUTAN');
+		$worksheet->setCellValue('E18','TENAGA');
+
+		$worksheet->setCellValue('F15',"Rp ".number_format($total_p_ktukang,2,',','.'));
+		$worksheet->setCellValue('F16',"Rp ".number_format($total_p_tukang,2,',','.'));
+		$worksheet->setCellValue('F17',"Rp ".number_format($total_p_serabutan,2,',','.'));
+		$worksheet->setCellValue('F18',"Rp ".number_format($total_p_tenaga,2,',','.'));
+
+		$worksheet->setCellValue('B20','TOTAL TUKSONO');
+
+		$worksheet->setCellValue('C20',"Rp ".number_format($total_tuksono,2,',','.'));
+
+		$worksheet->setCellValue('E20','TOTAL KHS PUSAT');
+
+		$worksheet->setCellValue('F20',"Rp ".number_format($total_pusat,2,',','.'));
+
+		$worksheet->setCellValue('B22','TOTAL SEMUA');
+
+		$worksheet->setCellValue('C22',"Rp ".number_format($totalsemua,2,',','.'));
+
+		$worksheet->setCellValue('A24','Demikian memo ini kami sampaikan. Atas perhatian dan kerja samanya kami sampaikan banyak terimakasih.');
+		$worksheet->mergeCells('A24:G24');
+		$tgl = date('d');
+			$month=date('m');
+			if ($month=='01') {
+				$tgl .= " Januari ";
+			}elseif ($month=='02') {
+				$tgl .= " Februari ";
+			}elseif ($month=='03') {
+				$tgl .= " Maret ";
+			}elseif ($month=='04') {
+				$tgl .= " April ";
+			}elseif ($month=='05') {
+				$tgl .= " Mei ";
+			}elseif ($month=='06') {
+				$tgl .= " Juni ";
+			}elseif ($month=='07') {
+				$tgl .= " Juli ";
+			}elseif ($month=='08') {
+				$tgl .= " Agustus ";
+			}elseif ($month=='09') {
+				$tgl .= " September ";
+			}elseif ($month=='10') {
+				$tgl .= " Oktober ";
+			}elseif ($month=='11') {
+				$tgl .= " November ";
+			}elseif ($month=='12') {
+				$tgl .= " Desember ";
+			};
+			$tgl .= date('Y');
+		$worksheet->setCellValue('E26','Yogyakarta, '.$tgl);
+		$worksheet->mergeCells('E26:F26');
+
+		$worksheet->setCellValue('C34','Mengetahui');
+		$worksheet->setCellValue('E27','Dibuat Oleh');
+		$worksheet->setCellValue('B27','Menyetujui');
+		$worksheet->mergeCells('B27:C27');
+		$worksheet->mergeCells('E27:F27');
+		$worksheet->mergeCells('C34:E34');
+
+		
+		$worksheet->setCellValue('C38',"Novita Sari");
+		$worksheet->setCellValue('C39',"Asisten Kepala Unit Akuntansi");
+		
+		$worksheet->mergeCells('B31:C31');
+		$worksheet->mergeCells('B32:C32');
+		$worksheet->getStyle('B31')->getFont()->setUnderline(true);
+
+		
+		$worksheet->setCellValue('B31',"Yoga Andriawan");
+		$worksheet->setCellValue('B32',"Kepala Seksi Madya");
+		
+		$worksheet->mergeCells('E31:F31');
+		$worksheet->mergeCells('E32:F32');
+		$worksheet->getStyle('E31')->getFont()->setUnderline(true);
+
+		$worksheet->setCellValue('E31',"Subardi");
+		$worksheet->setCellValue('E32',"Pekerja Staff Keuangan");
+		
+		$worksheet->mergeCells('C38:E38');
+		$worksheet->mergeCells('C39:E39');
+		$worksheet->getStyle('C38')->getFont()->setUnderline(true);
+
+		$imagestr = new PHPExcel_Worksheet_Drawing();
+		$imagestr->setName('logo');
+		$imagestr->setDescription('logo');
+		$imagestr->setPath('./assets/img/logo.png');
+		$imagestr->setCoordinates('A1');
+		$imagestr->setResizeProportional(false);
+		$imagestr->setWidth(80);
+		$imagestr->setHeight(85);
+		$imagestr->setWorksheet($this->excel->getActiveSheet());
+
+
+		$worksheet->getRowDimension(14)->setRowHeight(40);
+		$worksheet->getRowDimension(24)->setRowHeight(40);
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'alignment' => array(
+				'wrap' => true,
+				'horizontal' =>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			),
+			'font' => array(
+				'bold' =>true,
+				'size' => 16
+			)
+		),'B1:B4');
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'font' => array(
+				'bold' =>true
+			)
+		),'A10:A11');
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'alignment' => array(
+				'wrap' => true,
+				'horizontal' =>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			)
+		),'B26:E39');
+		
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'alignment' => array(
+				'wrap' => true,
+				'horizontal' =>PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_TOP
+			)
+		),'A14:A24');
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			),
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN)
+			)
+		),'B15:C18');
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'borders' => array(
+				'bottom' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THICK)
+			)
+		),'A4:G4');
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			),
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN)
+			)
+		),'B20:C20');
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			),
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN)
+			)
+		),'B22:C22');
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			),
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN)
+			)
+		),'E15:F18');
+
+		$this->excel->getActiveSheet()->duplicateStyleArray(
+		array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			),
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN)
+			)
+		),'E20:F20');
+
+		$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth('3');
+		$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth('18');
+		$this->excel->getActiveSheet()->getColumnDimension('C')->setWidth('20');
+		$this->excel->getActiveSheet()->getColumnDimension('D')->setWidth('2');
+		$this->excel->getActiveSheet()->getColumnDimension('E')->setWidth('18');
+		$this->excel->getActiveSheet()->getColumnDimension('F')->setWidth('20');
+		$this->excel->getActiveSheet()->getColumnDimension('G')->setWidth('3');
+		$this->excel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_WorkSheet_PageSetup::PAPERSIZE_A4);
+		$this->excel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+
+		$filename ='Memo-THR-HLCM-'.$tgl.'.xls';
+		header('Content-Type: aplication/vnd.ms-excel');
+		header('Content-Disposition:attachment;filename="'.$filename.'"');
+		header('Cache-Control: max-age=0');
+		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+		$writer->save('php://output');
+	}
+
 }
 
 ?>
