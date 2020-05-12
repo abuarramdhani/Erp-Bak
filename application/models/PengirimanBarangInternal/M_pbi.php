@@ -12,8 +12,16 @@ class M_pbi extends CI_Model
 
     public function updatePeneriamaan($d)
     {
-        $this->oracle->where('DOC_NUMBER', $d)
-                   ->update('KHS_KIRIM_INTERNAL', ['STATUS' => '6']);
+        $user_login = $this->session->user;
+        $this->oracle->query("UPDATE
+                    KHS_KIRIM_INTERNAL
+                SET
+                    STATUS = '6',
+                    RECEIVE_DATE = SYSDATE,
+                    RECEIVED_BY = '$user_login'
+                WHERE
+                    DOC_NUMBER = '$d'
+        ");
         return 1;
     }
 
@@ -25,7 +33,7 @@ class M_pbi extends CI_Model
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.creation_date,
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.created_by, kki.creation_date,
                  CASE
                     WHEN kki.status = 1
                        THEN 'Dipersiapkan Seksi Pengirim'
