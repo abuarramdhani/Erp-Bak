@@ -10,61 +10,29 @@ class M_cetakbom extends CI_Model
 
   public function selectproduk($term) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "SELECT distinct
-            kjb.KODE_DIGIT
-            ,kjb.JENIS_BARANG 
-            ,kjb.DESCRIPTION
-            from khs_jenis_barang kjb
-            ,mtl_system_items_b msib
-            where msib.ORGANIZATION_ID = 81
-            and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-            and kjb.JENIS_BARANG = 'KOMPONEN/IMPLEMEN'
-            and kjb.KODE_DIGIT(+) = case when substr(msib.SEGMENT1,0,2) in ('MF','RZ')
-            then substr(msib.SEGMENT1,0,4)
-            when substr(msib.SEGMENT1,0,2) = 'ME'
-            then substr(msib.SEGMENT1,0,9)
-            when substr(msib.SEGMENT1,0,3) in ('MDN','MDP')
-            then substr(msib.SEGMENT1,0,4)
-            when substr(msib.SEGMENT1,0,1) = ('L')
-            and substr(msib.SEGMENT1,0,2) not in ('LB','LK','LL','LP','L-')
-            then substr(msib.SEGMENT1,0,2)
-            when substr(msib.SEGMENT1,0,2) = 'RS'
-            then substr(msib.SEGMENT1,0,2)
-            else substr(msib.SEGMENT1,0,3)
-            end
-            and kjb.DESCRIPTION like '%$term%'
-            order by 1,2
+    $sql = "select ffv.FLEX_VALUE ,ffvt.DESCRIPTION from fnd_flex_values ffv ,fnd_flex_values_tl ffvt 
+    where ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID 
+    and ffv.FLEX_VALUE_SET_ID = 1013710 
+    and ffv.END_DATE_ACTIVE is null 
+    and ffv.ENABLED_FLAG = 'Y' 
+    and (upper(ffv.FLEX_VALUE) like upper('%$term%') or upper(ffvt.DESCRIPTION) like upper('%$term%'))
  ";
-
+// return $sql;
        $query = $oracle->query($sql);
         return $query->result_array();
+
  }
   public function selectprodukdesc($produk) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "SELECT distinct
-            kjb.KODE_DIGIT
-            ,kjb.JENIS_BARANG 
-            ,kjb.DESCRIPTION
-            from khs_jenis_barang kjb
-            ,mtl_system_items_b msib
-            where msib.ORGANIZATION_ID = 81
-            and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-            and kjb.JENIS_BARANG = 'KOMPONEN/IMPLEMEN'
-            and kjb.KODE_DIGIT(+) = case when substr(msib.SEGMENT1,0,2) in ('MF','RZ')
-            then substr(msib.SEGMENT1,0,4)
-            when substr(msib.SEGMENT1,0,2) = 'ME'
-            then substr(msib.SEGMENT1,0,9)
-            when substr(msib.SEGMENT1,0,3) in ('MDN','MDP')
-            then substr(msib.SEGMENT1,0,4)
-            when substr(msib.SEGMENT1,0,1) = ('L')
-            and substr(msib.SEGMENT1,0,2) not in ('LB','LK','LL','LP','L-')
-            then substr(msib.SEGMENT1,0,2)
-            when substr(msib.SEGMENT1,0,2) = 'RS'
-            then substr(msib.SEGMENT1,0,2)
-            else substr(msib.SEGMENT1,0,3)
-            end
-            AND kjb.KODE_DIGIT = '$produk'
-            order by 1,2
+    $sql = "select ffv.FLEX_VALUE
+,ffvt.DESCRIPTION
+from fnd_flex_values ffv
+,fnd_flex_values_tl ffvt
+where ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+and ffv.FLEX_VALUE_SET_ID = 1013710
+and ffv.END_DATE_ACTIVE is null
+and ffv.ENABLED_FLAG = 'Y'
+and ffv.FLEX_VALUE = '$produk'
  ";
 
        $query = $oracle->query($sql);
