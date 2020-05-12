@@ -115,6 +115,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$surat_text = str_replace("surat_isolasi_mandiri_pekerja_nama", ucwords(strtolower($pekerja_arr[0]['nama'])), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_pekerja_noind", $pekerja_arr[0]['noind'], $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_pekerja_unit", ucwords(strtolower($pekerja_arr[0]['unit'])), $surat_text);
+		$surat_text = str_replace("surat_isolasi_mandiri_hari_wawancara", strftime('%A',strtotime($wawancara)), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_tanggal_wawancara", strftime('%d %B %Y',strtotime($wawancara)), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_hari_angka", $hari, $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_hari_kalimat", $this->readNumber($hari), $surat_text);
