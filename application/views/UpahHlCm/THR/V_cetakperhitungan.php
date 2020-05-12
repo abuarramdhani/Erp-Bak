@@ -32,7 +32,7 @@
 				<td style="text-align: left;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo $dt['no_rekening'] ?></td>
 				<td style="text-align: left;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo $dt['atas_nama'] ?></td>
 				<td style="text-align: left;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo $dt['nama_bank'] ?></td>
-				<td style="text-align: right;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo number_format($dt['nominal_thr'],2,',','.')  ?></td>
+				<td style="text-align: right;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo number_format($dt['nominal_thr'],0,',','.')  ?></td>
 			</tr>
 			<?php 
 			$total += round($dt['nominal_thr'],2);
@@ -42,7 +42,7 @@
 		?>
 			<tr>
 				<td colspan="9" style="text-align: center;">Total</td>
-				<td style="text-align: right;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo number_format($total,2,',','.') ?></td>
+				<td style="text-align: right;vertical-align: middle;padding-left: 5px;padding-right: 5px;"><?php echo number_format($total,0,',','.') ?></td>
 			</tr>
 		<?php 
 	}
