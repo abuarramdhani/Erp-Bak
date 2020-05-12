@@ -3,38 +3,41 @@
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
-          <h4 style="font-weight:bold;"><i class="fa fa-newspaper-o"></i> Monitoring Pengiriman Barang Internal</h4>
+          <h4 style="font-weight:bold;"><i class="fa fa-newspaper-o"></i> Monitoring Penerimaan Barang Internal</h4>
         </div>
         <div class="box-body">
           <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover text-left " id="tblpbi" style="font-size:12px;">
               <thead>
                 <tr class="bg-success">
-                  <th><center>No</center></th>
+                  <th><center>NO</center></th>
                   <th><center>Dokumen Number</center></th>
                   <th><center>Penerima</center></th>
                   <th><center>Seksi Penerima</center></th>
                   <th><center>Tujuan</center></th>
                   <th><center>Status</center></th>
                   <th><center>Tanggal Input</center></th>
-                  <th><center>Detail</center></th>
+                  <th style="width:150px !important;"><center>Detail</center></th>
                 </tr>
               </thead>
               <tbody>
                 <?php $no = 1; foreach ($get as $key => $g): ?>
-                  <tr>
+                  <tr row-id="<?php echo $no ?>">
                     <td><center><?php echo $no; ?></center></td>
                     <td><center><?php echo $g['DOC_NUMBER'] ?></center></td>
                     <td><center><?php echo $g['USER_TUJUAN'] ?></center></td>
                     <td><center><?php echo $seksi_tujuan[$key] ?></center></td>
                     <td><center><?php echo $g['TUJUAN'] ?></center></td>
-                    <td><center><?php echo $g['STATUS2'] ?></center></td>
+                    <td><center id="status"><?php echo $g['STATUS2'] ?></center></td>
                     <td><center><?php echo date('d-M-Y H:i:s',strtotime($g['CREATION_DATE'])) ?></center></td>
                     <td>
                       <center>
-                        <a href="<?php echo base_url('PengirimanBarangInternal/Cetak/'.$g['DOC_NUMBER']) ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+                        <!-- <a href="<?php echo base_url('PengirimanBarangInternal/Cetak/'.$g['DOC_NUMBER']) ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a> -->
                         <button type="button" class="btn btn-success" style="margin-left:5px;" name="button" style="font-weight:bold;" onclick="detailPBI('<?php echo $g['DOC_NUMBER'] ?>')" data-toggle="modal" data-target="#Mpbi">
                           <i class="fa fa-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary" id="diterima" style="margin-left:5px;" style="font-weight:bold;" onclick="updatePBI('<?php echo $g['DOC_NUMBER'] ?>', '<?php echo $no ?>')">
+                          <i class="fa fa-ship"></i> Diterima
                         </button>
                       </center>
                     </td>
@@ -50,7 +53,9 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
 
+</script>
 <div class="modal fade bd-example-modal-xl" id="Mpbi" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">

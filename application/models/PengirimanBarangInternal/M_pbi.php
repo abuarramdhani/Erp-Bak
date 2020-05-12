@@ -10,6 +10,47 @@ class M_pbi extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
+    public function updatePeneriamaan($d)
+    {
+        $this->oracle->where('DOC_NUMBER', $d)
+                   ->update('KHS_KIRIM_INTERNAL', ['STATUS' => '6']);
+        return 1;
+    }
+
+    public function GetMasterDD()
+    {
+        $response = $this->personalia->select('seksi')
+                                   ->join('hrd_khs.tseksi', 'hrd_khs.tseksi.kodesie = hrd_khs.tpribadi.kodesie', 'left')
+                                   ->where('noind', $this->session->user)
+                                   ->get('hrd_khs.tpribadi')
+                                   ->row();
+
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.creation_date,
+                 CASE
+                    WHEN kki.status = 1
+                       THEN 'Dipersiapkan Seksi Pengirim'
+                    WHEN kki.status = 2
+                       THEN 'Diterima Gudang Pengeluaran'
+                    WHEN kki.status = 3
+                       THEN 'Surat Jalan Telah Dibuat'
+                    WHEN kki.status = 4
+                       THEN 'Dikirim ke Lokasi Tujuan'
+                    WHEN kki.status = 5
+                       THEN 'Diterima Gudang Penerimaan'
+                    WHEN kki.status = 6
+                       THEN 'Diterima Seksi Tujuan'
+                 END status2,
+                 (SELECT ksi.no_suratjalan
+                    FROM khs_sj_internal ksi
+                   WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
+              FROM khs_kirim_internal kki
+              WHERE kki.seksi_kirim = '$response->seksi'
+              AND kki.status = '5'
+              ORDER BY kki.doc_number DESC";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
     public function GetMaster()
     {
         $sql = "SELECT *
@@ -20,13 +61,13 @@ class M_pbi extends CI_Model
 
     public function GetMasterD()
     {
-      $response = $this->personalia->select('seksi')
+        $response = $this->personalia->select('seksi')
                                    ->join('hrd_khs.tseksi', 'hrd_khs.tseksi.kodesie = hrd_khs.tpribadi.kodesie', 'left')
                                    ->where('noind', $this->session->user)
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-      $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status,
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.creation_date,
                  CASE
                     WHEN kki.status = 1
                        THEN 'Dipersiapkan Seksi Pengirim'
@@ -47,8 +88,8 @@ class M_pbi extends CI_Model
               FROM khs_kirim_internal kki
               WHERE kki.seksi_kirim = '$response->seksi'
               ORDER BY kki.doc_number DESC";
-      $query = $this->oracle->query($sql);
-      return $query->result_array();
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
     }
 
     public function Cetak($d)
@@ -73,7 +114,7 @@ class M_pbi extends CI_Model
 
     public function Detail($d)
     {
-      $sql = "SELECT kki.*,
+        $sql = "SELECT kki.*,
          CASE
             WHEN kki.status = 1
                THEN 'Dipersiapkan Seksi Pengirim'
@@ -93,9 +134,8 @@ class M_pbi extends CI_Model
            WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
       FROM khs_kirim_internal kki
       WHERE kki.doc_number = '$d'";
-      $query = $this->oracle->query($sql);
-      return $query->result_array();
-
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
     }
 
     public function lastDocumentNumber($value)
@@ -109,9 +149,9 @@ class M_pbi extends CI_Model
 
     public function insert($data)
     {
-      if (!empty($data['USER_TUJUAN'])) {
-          // $this->oracle->insert('KHS_KIRIM_INTERNAL', $data);
-          $this->oracle->query("INSERT INTO KHS_KIRIM_INTERNAL(DOC_NUMBER
+        if (!empty($data['USER_TUJUAN'])) {
+            // $this->oracle->insert('KHS_KIRIM_INTERNAL', $data);
+            $this->oracle->query("INSERT INTO KHS_KIRIM_INTERNAL(DOC_NUMBER
                            ,SEKSI_KIRIM
                            ,TUJUAN
                            ,USER_TUJUAN
@@ -141,19 +181,18 @@ class M_pbi extends CI_Model
                  ,'$data[CREATED_BY]'
                  ,'$data[SEKSI_TUJUAN]')
           ");
-          $response = 1;
-          return $response;
-
-      } else {
-          $response = 'USER_TUJUAN TIDAK BOLEH KOSONG';
-          echo $response;
-          die;
-      }
+            $response = 1;
+            return $response;
+        } else {
+            $response = 'USER_TUJUAN TIDAK BOLEH KOSONG';
+            echo $response;
+            die;
+        }
     }
 
     public function listCode($d)
     {
-      $sql = "SELECT msib.segment1, msib.description
+        $sql = "SELECT msib.segment1, msib.description
                 FROM mtl_system_items_b msib
                WHERE msib.organization_id = 81
                  AND msib.inventory_item_status_code = 'Active'
@@ -161,14 +200,14 @@ class M_pbi extends CI_Model
                  AND (msib.segment1 LIKE '$d%'
                  OR msib.description LIKE '$d%')
             ORDER BY 1";
-      //tambah segment1 untuk liat munculin  berdasrkan itiem_code;
-      $query = $this->oracle->query($sql);
-      return $query->result_array();
+        //tambah segment1 untuk liat munculin  berdasrkan itiem_code;
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
     }
 
     public function autofill($d)
     {
-      $sql = "SELECT msib.segment1, msib.description, msib.primary_uom_code,
+        $sql = "SELECT msib.segment1, msib.description, msib.primary_uom_code,
                    CASE
                       WHEN SUBSTR (msib.segment1, 1, 1) = 'N'
                          THEN 'ASSET'
@@ -183,9 +222,9 @@ class M_pbi extends CI_Model
                  AND SUBSTR (msib.segment1, 1, 1) <> 'J'
                  AND msib.segment1 = '$d'
             ORDER BY 1";
-      //tambah segment1 untuk liat munculin  berdasrkan itiem_code;
-      $query = $this->oracle->query($sql);
-      return $query->result_array();
+        //tambah segment1 untuk liat munculin  berdasrkan itiem_code;
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
     }
 
     public function cekComponent($value)
@@ -195,37 +234,37 @@ class M_pbi extends CI_Model
                                  ->get('KHS_KIRIM_INTERNAL')
                                  ->row();
         if (!empty($response)) {
-          $response = 1;
-        }else {
-          $response = 0;
+            $response = 1;
+        } else {
+            $response = 0;
         }
         return $response;
     }
 
     public function getSeksi($data)
     {
-      $response = $this->personalia->distinct()
+        $response = $this->personalia->distinct()
                                    ->select('seksi')
-                                   ->like('seksi', $data ,'after')
+                                   ->like('seksi', $data, 'after')
                                    ->order_by("seksi", "asc")
                                    ->get('hrd_khs.tseksi')
                                    ->result_array();
-      return $response;
+        return $response;
     }
 
     public function getSeksiku($a)
     {
-      $response = $this->personalia->select('seksi')
+        $response = $this->personalia->select('seksi')
                                    ->join('hrd_khs.tseksi', 'hrd_khs.tseksi.kodesie = hrd_khs.tpribadi.kodesie', 'left')
                                    ->where('noind', $a)
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
-      return $response;
+        return $response;
     }
 
     public function employee($data)
     {
-      $sql = "SELECT
+        $sql = "SELECT
               	employee_code,
               	employee_name
               from
@@ -236,8 +275,8 @@ class M_pbi extends CI_Model
               	or employee_name like '%$data%')
               order by
               	1";
-      $response = $this->db->query($sql)->result_array();
-      return $response;
+        $response = $this->db->query($sql)->result_array();
+        return $response;
     }
 
     // public function del($rm, $ip)
@@ -256,5 +295,4 @@ class M_pbi extends CI_Model
     //         die;
     //     }
     // }
-
 }
