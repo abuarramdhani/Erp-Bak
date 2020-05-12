@@ -346,8 +346,8 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->setCellValue('F1','MASA KERJA');
 		$worksheet->setCellValue('G1','NO REKENING');
 		$worksheet->setCellValue('H1','PEMILIK REKENING');
-		$worksheet->setCellValue('H1','BANK');
-		$worksheet->setCellValue('I1','NOMINAL THR');
+		$worksheet->setCellValue('I1','BANK');
+		$worksheet->setCellValue('J1','NOMINAL THR');
 
 		$total = 0;
 		$nomor = 1;
@@ -361,16 +361,19 @@ class C_Perhitungan extends CI_Controller
 				$worksheet->setCellValue('F'.($nomor+1),$dt['masa_kerja']);
 				$worksheet->setCellValue('G'.($nomor+1),$dt['no_rekening']);
 				$worksheet->setCellValue('H'.($nomor+1),$dt['atas_nama']);
-				$worksheet->setCellValue('H'.($nomor+1),$dt['nama_bank']);
-				$worksheet->setCellValue('I'.($nomor+1),number_format($dt['nominal_thr'],0));
+				$worksheet->setCellValue('I'.($nomor+1),$dt['nama_bank']);
+				$worksheet->setCellValue('J'.($nomor+1),round($dt['nominal_thr']));
+				$worksheet->getStyle('J'.($nomor+1))->getNumberFormat()->setFormatCode('#,###');
+				// $worksheet->getStyle('J'.($nomor+1))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 				$total += round($dt['nominal_thr']);
 				$nomor++;
 			}
 		}
 		$nomor++;
 
-		$worksheet->setCellValue('H'.($nomor),"Total");
-		$worksheet->setCellValue('I'.($nomor),number_format($total,0));
+		$worksheet->setCellValue('I'.($nomor),"Total");
+		$worksheet->setCellValue('J'.($nomor),$total);
+		$worksheet->getStyle('J'.($nomor))->getNumberFormat()->setFormatCode('#,###');
 
 
 		$worksheet->getColumnDimension('A')->setWidth('5');
@@ -382,6 +385,7 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->getColumnDimension('G')->setWidth('30');
 		$worksheet->getColumnDimension('H')->setWidth('30');
 		$worksheet->getColumnDimension('I')->setWidth('20');
+		$worksheet->getColumnDimension('J')->setWidth('20');
 
 
 
@@ -403,7 +407,7 @@ class C_Perhitungan extends CI_Controller
 				'font' => array(
 					'bold' => true
 				)
-			),'A1:I1');
+			),'A1:J1');
 
 		$worksheet->duplicateStyleArray(
 			array(
@@ -411,14 +415,14 @@ class C_Perhitungan extends CI_Controller
 					'allborders' => array(
 						'style' => PHPExcel_Style_Border::BORDER_THIN)
 				)
-			),'A1:I'.($nomor));
+			),'A1:J'.($nomor));
 		$worksheet->duplicateStyleArray(
 			array(
 				'alignment' => array(
 					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
 					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
 				)
-			),'I2:I'.($nomor));
+			),'J2:J'.($nomor));
 
 		$worksheet->setCellValue('C'.($nomor + 2),"Mengetahui,");
 		$worksheet->setCellValue('F'.($nomor + 2),"Menyetujui,");
