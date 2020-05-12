@@ -12,8 +12,16 @@ class M_pbi extends CI_Model
 
     public function updatePeneriamaan($d)
     {
-        $this->oracle->where('DOC_NUMBER', $d)
-                   ->update('KHS_KIRIM_INTERNAL', ['STATUS' => '6']);
+        $user_login = $this->session->user;
+        $this->oracle->query("UPDATE
+                    KHS_KIRIM_INTERNAL
+                SET
+                    STATUS = '6',
+                    RECEIVE_DATE = SYSDATE,
+                    RECEIVED_BY = '$user_login'
+                WHERE
+                    DOC_NUMBER = '$d'
+        ");
         return 1;
     }
 

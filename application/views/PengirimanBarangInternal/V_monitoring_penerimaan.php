@@ -12,11 +12,12 @@
                 <tr class="bg-success">
                   <th><center>NO</center></th>
                   <th><center>Dokumen Number</center></th>
-                  <th><center>Penerima</center></th>
-                  <th><center>Seksi Penerima</center></th>
+                  <th><center>Pengirim</center></th>
+                  <th><center>Seksi Pengirim</center></th>
                   <th><center>Tujuan</center></th>
-                  <th><center>Status</center></th>
+                  <th><center>Penerima</center></th>
                   <th><center>Tanggal Input</center></th>
+                  <th><center>Status</center></th>
                   <th style="width:150px !important;"><center>Detail</center></th>
                 </tr>
               </thead>
@@ -25,11 +26,12 @@
                   <tr row-id="<?php echo $no ?>">
                     <td><center><?php echo $no; ?></center></td>
                     <td><center><?php echo $g['DOC_NUMBER'] ?></center></td>
-                    <td><center><?php echo $g['USER_TUJUAN'] ?></center></td>
-                    <td><center><?php echo $seksi_tujuan[$key] ?></center></td>
+                    <td><center><?php echo $g['CREATED_BY'] ?></center></td>
+                    <td><center><?php echo $g['SEKSI_KIRIM'] ?></center></td>
                     <td><center><?php echo $g['TUJUAN'] ?></center></td>
-                    <td><center id="status"><?php echo $g['STATUS2'] ?></center></td>
+                    <td><center><?php echo $g['USER_TUJUAN'] ?></center></td>
                     <td><center><?php echo date('d-M-Y H:i:s',strtotime($g['CREATION_DATE'])) ?></center></td>
+                    <td><center id="status"><?php echo $g['STATUS2'] ?></center></td>
                     <td>
                       <center>
                         <!-- <a href="<?php echo base_url('PengirimanBarangInternal/Cetak/'.$g['DOC_NUMBER']) ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a> -->
