@@ -362,15 +362,15 @@ class C_Perhitungan extends CI_Controller
 				$worksheet->setCellValue('G'.($nomor+1),$dt['no_rekening']);
 				$worksheet->setCellValue('H'.($nomor+1),$dt['atas_nama']);
 				$worksheet->setCellValue('H'.($nomor+1),$dt['nama_bank']);
-				$worksheet->setCellValue('I'.($nomor+1),number_format($dt['nominal_thr'],2,',','.'));
-				$total += round($dt['nominal_thr'],2);
+				$worksheet->setCellValue('I'.($nomor+1),number_format($dt['nominal_thr'],0));
+				$total += round($dt['nominal_thr']);
 				$nomor++;
 			}
 		}
 		$nomor++;
 
 		$worksheet->setCellValue('H'.($nomor),"Total");
-		$worksheet->setCellValue('I'.($nomor),number_format($total,2,',','.'));
+		$worksheet->setCellValue('I'.($nomor),number_format($total,0));
 
 
 		$worksheet->getColumnDimension('A')->setWidth('5');
@@ -534,23 +534,23 @@ class C_Perhitungan extends CI_Controller
 			foreach ($data as $dt) {
 				if ($dt['location_name'] == "YOGYAKARTA (PUSAT)") {
 					if ($dt['pekerjaan'] == "KEPALA TUKANG") {
-						$total_p_ktukang += round($dt['nominal_thr'],2);
+						$total_p_ktukang += round($dt['nominal_thr']);
 					}elseif ($dt['pekerjaan'] == "TUKANG") {
-						$total_p_tukang += round($dt['nominal_thr'],2);
+						$total_p_tukang += round($dt['nominal_thr']);
 					}elseif ($dt['pekerjaan'] == "TENAGA") {
-						$total_p_tenaga += round($dt['nominal_thr'],2);
+						$total_p_tenaga += round($dt['nominal_thr']);
 					}elseif ($dt['pekerjaan'] == "SERABUTAN") {
-						$total_p_serabutan += round($dt['nominal_thr'],2);
+						$total_p_serabutan += round($dt['nominal_thr']);
 					}
 				}elseif ($dt['location_name'] == "TUKSONO") {
 					if ($dt['pekerjaan'] == "KEPALA TUKANG") {
-						$total_t_ktukang += round($dt['nominal_thr'],2);
+						$total_t_ktukang += round($dt['nominal_thr']);
 					}elseif ($dt['pekerjaan'] == "TUKANG") {
-						$total_t_tukang += round($dt['nominal_thr'],2);
+						$total_t_tukang += round($dt['nominal_thr']);
 					}elseif ($dt['pekerjaan'] == "TENAGA") {
-						$total_t_tenaga += round($dt['nominal_thr'],2);
+						$total_t_tenaga += round($dt['nominal_thr']);
 					}elseif ($dt['pekerjaan'] == "SERABUTAN") {
-						$total_t_serabutan += round($dt['nominal_thr'],2);
+						$total_t_serabutan += round($dt['nominal_thr']);
 					}
 				}
 			}
@@ -598,32 +598,32 @@ class C_Perhitungan extends CI_Controller
 		$worksheet->setCellValue('B17','SERABUTAN');
 		$worksheet->setCellValue('B18','TENAGA');
 
-		$worksheet->setCellValue('C15',"Rp ".number_format($total_t_ktukang,2,',','.'));
-		$worksheet->setCellValue('C16',"Rp ".number_format($total_t_tukang,2,',','.'));
-		$worksheet->setCellValue('C17',"Rp ".number_format($total_t_serabutan,2,',','.'));
-		$worksheet->setCellValue('C18',"Rp ".number_format($total_t_tenaga,2,',','.'));
+		$worksheet->setCellValue('C15',"Rp ".number_format($total_t_ktukang,0,',','.'));
+		$worksheet->setCellValue('C16',"Rp ".number_format($total_t_tukang,0,',','.'));
+		$worksheet->setCellValue('C17',"Rp ".number_format($total_t_serabutan,0,',','.'));
+		$worksheet->setCellValue('C18',"Rp ".number_format($total_t_tenaga,0,',','.'));
 
 		$worksheet->setCellValue('E15','KEPALA TUKANG');
 		$worksheet->setCellValue('E16','TUKANG');
 		$worksheet->setCellValue('E17','SERABUTAN');
 		$worksheet->setCellValue('E18','TENAGA');
 
-		$worksheet->setCellValue('F15',"Rp ".number_format($total_p_ktukang,2,',','.'));
-		$worksheet->setCellValue('F16',"Rp ".number_format($total_p_tukang,2,',','.'));
-		$worksheet->setCellValue('F17',"Rp ".number_format($total_p_serabutan,2,',','.'));
-		$worksheet->setCellValue('F18',"Rp ".number_format($total_p_tenaga,2,',','.'));
+		$worksheet->setCellValue('F15',"Rp ".number_format($total_p_ktukang,0,',','.'));
+		$worksheet->setCellValue('F16',"Rp ".number_format($total_p_tukang,0,',','.'));
+		$worksheet->setCellValue('F17',"Rp ".number_format($total_p_serabutan,0,',','.'));
+		$worksheet->setCellValue('F18',"Rp ".number_format($total_p_tenaga,0,',','.'));
 
 		$worksheet->setCellValue('B20','TOTAL TUKSONO');
 
-		$worksheet->setCellValue('C20',"Rp ".number_format($total_tuksono,2,',','.'));
+		$worksheet->setCellValue('C20',"Rp ".number_format($total_tuksono,0,',','.'));
 
 		$worksheet->setCellValue('E20','TOTAL KHS PUSAT');
 
-		$worksheet->setCellValue('F20',"Rp ".number_format($total_pusat,2,',','.'));
+		$worksheet->setCellValue('F20',"Rp ".number_format($total_pusat,0,',','.'));
 
 		$worksheet->setCellValue('B22','TOTAL SEMUA');
 
-		$worksheet->setCellValue('C22',"Rp ".number_format($totalsemua,2,',','.'));
+		$worksheet->setCellValue('C22',"Rp ".number_format($totalsemua,0,',','.'));
 
 		$worksheet->setCellValue('A24','Demikian memo ini kami sampaikan. Atas perhatian dan kerja samanya kami sampaikan banyak terimakasih.');
 		$worksheet->mergeCells('A24:G24');
