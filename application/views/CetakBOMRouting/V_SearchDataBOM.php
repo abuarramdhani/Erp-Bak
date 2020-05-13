@@ -38,7 +38,7 @@
 										<label>Produk</label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
-										<select style="text-align: center" id="prodd" class="select2 form-control" name="prodd" data-placeholder="Produk"> </select>
+										<select style="text-align: center" id="prodd" class="select2 form-control" name="prodd" data-placeholder="Produk" required="required"> </select>
 
 									</div>
                                     
@@ -48,7 +48,7 @@
 										<label>Kode Komponen</label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
-										<select class="form-control select2 comp" disabled data-placeholder="Kode Komponen" id="comp" name="comp">
+										<select class="form-control select2 comp" disabled data-placeholder="Kode Komponen" id="comp" name="comp" required="required">
 											
 										</select>
 									</div>
@@ -59,11 +59,12 @@
 										<label>Organization</label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
-										<select class="form-control select2 org" id="org" data-placeholder="Organization Code" name="org">
+										<!-- <select class="form-control select2 org" id="org" data-placeholder="Organization Code" name="org">
 											<option></option>
 											<option value="ODM">ODM</option>
 											<option value="OPM">OPM</option>
-										</select>
+										</select> -->
+										<input style="text-align: center" type="text" class="form-control org" id="org" value ="ODM" name="org" readonly="readonly">
 									</div>
                                     
 								</div>
@@ -72,7 +73,7 @@
 										<label>Seksi </label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
-										<select class="form-control select2 seksii" disabled data-placeholder="Seksi" name="seksi" id="seksii">
+										<select class="form-control select2 seksii" data-placeholder="Seksi" name="seksi" id="seksii">
 											
 										</select>
 									</div>

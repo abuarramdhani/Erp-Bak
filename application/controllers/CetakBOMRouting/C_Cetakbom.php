@@ -98,7 +98,17 @@ class C_Cetakbom extends CI_Controller
 		$produk = $this->input->post('prodd');
 		$organization = $this->input->post('org');
 
-		$datapdf = $this->M_cetakbom->getdatapdf($kode,$seksi);
+		if ($seksi == null) {
+			$kodee = "and msib.segment1 = '$kode'";
+			$seksii = null;
+		} else {
+			$kodee = "and msib.segment1 = '$kode'";
+			$seksii = "AND bd.department_class_code = '$seksi'";
+
+		}
+
+		$datapdf = $this->M_cetakbom->getdatapdf($kodee,$seksii);
+
 		$datapdf2 = $this->M_cetakbom->getdatapdf2($kode);
 		$desckomp = $this->M_cetakbom->getdesckomponen($kode);
 		$descprod = $this->M_cetakbom->selectprodukdesc($produk);
@@ -107,7 +117,7 @@ class C_Cetakbom extends CI_Controller
 		 $data['name'] = $this->session->employee;
 
 
-		// echo "<pre>";print_r($descprod);exit();
+		// echo "<pre>";print_r($datapdf);exit();
 
 
 		
@@ -121,7 +131,7 @@ class C_Cetakbom extends CI_Controller
 		$kodeproses = array();
 		foreach ($datapdf as $pdfs) {
 			$kode="";
-			$kode .= $pdfs['KODE_PROSES'];
+			$kode .= $pdfs['RESOURCE_CODE'];
 			array_push($kodeproses, $kode);
 
 		}
@@ -172,7 +182,7 @@ class C_Cetakbom extends CI_Controller
 		// print_r(); exit();
 
 
-		// echo "<pre>";print_r($alt);exit();
+		// echo "<pre>";print_r($datapdf);exit();
 
 		ob_start();
 		$this->load->library('pdf');

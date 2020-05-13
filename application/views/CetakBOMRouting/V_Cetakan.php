@@ -56,7 +56,7 @@
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Last<br> Update</th>
 		</tr>
 		<?php $b=1;  $no=1; for ($i=0; $i < sizeof($datapdf); $i++) {
-			 if ($i != 0 && $datapdf[$i]['KODE_PROSES'] == $datapdf[$i-1]['KODE_PROSES']) {  
+			 if ($i != 0 && $datapdf[$i]['RESOURCE_CODE'] == $datapdf[$i-1]['RESOURCE_CODE']) {  
 			 		// $b+1;
 			 	?>      
 
@@ -66,26 +66,26 @@
 			  </tr>   
 			   <?php  } else { ?>
 			   	<tr>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$no?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$no?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
 				<?php if ($datapdf[$i]['ALTERNATE_ROUTING'] == null) { ?>
 					Primary
 				<?php } else { ?>
 					<?=$datapdf[$i]['ALTERNATE_ROUTING']?>
 				<?php }?>	
 			</td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPR_NO']?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['KODE_PROSES']?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['RESOURCE_CODE']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPR_NO']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['KODE_PROSES']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['RESOURCE_CODE']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['NO_MESIN']?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['MACHINE_QT']?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPT_QTY']?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['CYCLE_TIME']?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['TARGET']?></td>
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>   
-			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['LAST_UPDATE_DATE']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['MACHINE_QT']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPT_QTY']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['CYCLE_TIME']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['TARGET']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>   
+			<td  rowspan="<?= $kodee[$datapdf[$i]['RESOURCE_CODE']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['LAST_UPDATE_DATE']?></td>
 
 		</tr>
 		<?php $no++; } } ?>
