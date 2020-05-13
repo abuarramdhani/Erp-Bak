@@ -44,19 +44,25 @@
                                         <option value="4">4</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                     <label>Masukan File : </label>
-                                        <input type="file" name="excel_file" id="excel_file" accept=".csv, .xls,.xlsx" />
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="col-md-12">
-                                        <button type="submit" class="btn btn-md btn-success"> Cetak</button>
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" name="excel_file" id="excel_file" accept=".csv, .xls,.xlsx" />
+                                            <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-md btn-success"> Cetak</button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </form> 
+                                <div class="panel-body">
+                                    <form>
+                                    <div class="col-md-2">
+                                        <label>Download Layout : </label>
+                                        <button type="submit" class="btn btn-md btn-success" formaction="<?php echo base_url('CetakKartuGudang/KartuBarang/DownloadLayout')?>"> Download</button>
+                                    </div>
+                                    </form> 
+                                </div>
                             </div>
                         </div>
                     </div>

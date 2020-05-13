@@ -34,25 +34,25 @@
                             <div class="box-body">
                             <form method="post" target="_blank" class="import_excel" id="import_excel" enctype="multipart/form-data" action="<?php echo base_url('CetakKartuGudang/KartuA360/Cetak')?>">
                                 <div class="panel-body">
-                                <br>
-                                    <center>
-                                        <table style="border: none;">
-                                            <tr>
-                                                <td>
-                                                    <div class="col-md-1"> 
-                                                        <input type="file" name="excel_file" id="excel_file" accept=".csv, .xls,.xlsx" />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="col-md-1">
-                                                        <button type="submit" title="upload" name="upload" class="btn button1 btn-success"> Cetak</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table> 
-                                    </center>
+                                    <div class="col-md-3">
+                                    <label>Masukan File : </label>
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" name="excel_file" id="excel_file" accept=".csv, .xls,.xlsx" />
+                                            <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-md btn-success"> Cetak</button>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </form> 
+                                <div class="panel-body">
+                                    <form>
+                                    <div class="col-md-2">
+                                        <label>Download Layout : </label>
+                                        <button type="submit" class="btn btn-md btn-success" formaction="<?php echo base_url('CetakKartuGudang/KartuA360/DownloadLayout')?>"> Download</button>
+                                    </div>
+                                    </form> 
+                                </div>
                             </div>
                         </div>
                     </div>
