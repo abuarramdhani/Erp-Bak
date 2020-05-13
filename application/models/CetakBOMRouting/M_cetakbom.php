@@ -220,6 +220,7 @@ select msib.SEGMENT1 assembly_num
 ,msib2.PRIMARY_UOM_CODE
 ,flv.MEANING supply_type
 ,bic.SUPPLY_SUBINVENTORY
+,bic.OPERATION_SEQ_NUM OPR_NUM
 ,mil.SEGMENT1 supply_locator
 ,bic.ATTRIBUTE1 from_subinventory
 ,mil2.SEGMENT1 from_locator

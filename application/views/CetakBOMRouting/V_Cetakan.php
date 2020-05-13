@@ -15,13 +15,14 @@
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?=$seksi?></td>
 	</tr>
 	<tr>
-		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">COMPONENT NAME</td>
-		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $desckomp?></td>
+		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">PART NUMBER</td>
+		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?=$kode?></td>
 		<td colspan="2" rowspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px;padding-left: 7px;vertical-align: top;">REMARK :</td>
 	</tr>
 	<tr>
-		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">PART NUMBER</td>
-		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?=$kode?></td>
+		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">COMPONENT NAME</td>
+		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $desckomp?></td>
+		
 	</tr>
 	<tr>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">ORGANIZATION</td>
@@ -33,7 +34,7 @@
 <table style="border: 2px solid black; border-collapse: collapse; width: 100%;margin-top: 5px;margin-right: 7px;margin-left: 7px">
 		<tr style="background-color: grey">
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">No</th>
-			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Alternate Routing</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Alternate</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 8%">Opr Number</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 8%">Kode Proses</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 13%">Resource</th>
@@ -59,36 +60,32 @@
 			 		// $b+1;
 			 	?>      
 
-			  <tr>                     
-				
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['ALTERNATE_ROUTING']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPR_NO']?></td>
+			  <tr> 
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['NO_MESIN']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['MACHINE_QT']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPT_QTY']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['CYCLE_TIME']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['TARGET']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>   
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['LAST_UPDATE_DATE']?></td>       
-			  	</tr>   
+			  </tr>   
 			   <?php  } else { ?>
 			   	<tr>
 			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$no?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['ALTERNATE_ROUTING']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPR_NO']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+				<?php if ($datapdf[$i]['ALTERNATE_ROUTING'] == null) { ?>
+					Primary
+				<?php } else { ?>
+					<?=$datapdf[$i]['ALTERNATE_ROUTING']?>
+				<?php }?>	
+			</td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPR_NO']?></td>
 			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['KODE_PROSES']?></td>
 			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['RESOURCE_CODE']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['NO_MESIN']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['MACHINE_QT']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPT_QTY']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['CYCLE_TIME']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['TARGET']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>   
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['LAST_UPDATE_DATE']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['MACHINE_QT']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPT_QTY']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['CYCLE_TIME']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['TARGET']?></td>
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>   
+			<td  rowspan="<?= $kodee[$datapdf[$i]['KODE_PROSES']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['LAST_UPDATE_DATE']?></td>
 
 		</tr>
 		<?php $no++; } } ?>
@@ -103,6 +100,8 @@
 		<tr style="background-color: grey">
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">No</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Alternate</th>
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Item Num</th>
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Opr Num</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 15%">Component</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 20%">Description</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Qty</th>
@@ -113,21 +112,49 @@
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">SubInv Picklist</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Locator Picklist</th>
 		</tr>
-		<?php $nom=1; foreach ($datapdf2 as $pdf2) {?>
+		<?php $nom=1; for ($i=0; $i < sizeof($datapdf2); $i++) {
+			 if ($i != 0 && $datapdf2[$i]['ALT'] == $datapdf2[$i-1]['ALT']) {  
+			?>
 		<tr>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['ALT']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['COMPONENT_NUM']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['DESCRIPTION']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= round($pdf2['QTY'],4)?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['PRIMARY_UOM_CODE']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['SUPPLY_TYPE']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['SUPPLY_SUBINVENTORY']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['SUPPLY_LOCATOR']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['FROM_SUBINVENTORY']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$pdf2['FROM_LOCATOR']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['NUM']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['OPR_NUM']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['COMPONENT_NUM']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['DESCRIPTION']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= round($datapdf2[$i]['QTY'],4)?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['PRIMARY_UOM_CODE']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['SUPPLY_TYPE']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['SUPPLY_SUBINVENTORY']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['SUPPLY_LOCATOR']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['FROM_SUBINVENTORY']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['FROM_LOCATOR']?></td>
 
 		</tr>
-		<?php $nom++; } ?>
+		<?php  } else { ?>
+
+			<tr>
+			<td rowspan="<?= $alt[$datapdf2[$i]['ALT']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td>
+			<td rowspan="<?= $alt[$datapdf2[$i]['ALT']]?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+				<?php if ($datapdf2[$i]['ALT'] == null) { ?>
+					Primary
+				<?php } else { ?>
+					<?=$datapdf2[$i]['ALT']?>
+				<?php }?>	
+			</td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['NUM']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['OPR_NUM']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['COMPONENT_NUM']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['DESCRIPTION']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= round($datapdf2[$i]['QTY'],4)?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['PRIMARY_UOM_CODE']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['SUPPLY_TYPE']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['SUPPLY_SUBINVENTORY']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['SUPPLY_LOCATOR']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['FROM_SUBINVENTORY']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['FROM_LOCATOR']?></td>
+
+		</tr>
+
+
+		<?php $nom++;} } ?>
 </table>
 </div>
