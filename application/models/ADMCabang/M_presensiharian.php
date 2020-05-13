@@ -105,27 +105,19 @@ class M_presensiharian extends Ci_Model
 		if($noind=='L8001')
 		{
 			$sql = "select waktu
-				from \"Presensi\".tprs_shift2 tp
-				where tp.noind = '$noind'
-				and tp.tanggal = '$tgl'
-				order by tp.waktu";
-		}
-		else
-		{
-			if (date('Y-m-d', strtotime($tgl)) == date('Y-m-d')) {
-				$sql = "select distinct tp.waktu
-				from \"Presensi\".tprs_shift tp
-				where tp.noind = '$noind'
-				and tp.tanggal = '$tgl' and tp.waktu not in ('0')
-				order by tp.waktu";
-			}else {
-				$sql = "select distinct tp.waktu
-				from \"Presensi\".tprs_shift tp
-				left join \"Presensi\".tdatapresensi b on tp.noind = b.noind and tp.kodesie = b.kodesie and tp.tanggal = b.tanggal and tp.noind_baru = b.noind_baru
-				where tp.noind = '$noind'
-				and tp.tanggal = '$tgl' and tp.waktu not in ('0') and kd_ket not in ('PRM')
-				order by tp.waktu";
-			}
+					from \"Presensi\".tprs_shift2 tp
+					where tp.noind = '$noind'
+					and tp.tanggal = '$tgl'
+					order by tp.waktu";
+		} else{
+			$sql = "SELECT DISTINCT tp.waktu
+					FROM \"Presensi\".tprs_shift tp
+					WHERE tp.noind = '$noind' AND tp.tanggal = '$tgl' AND tp.waktu NOT IN ('0')
+					UNION
+					SELECT DISTINCT ftp.waktu
+					FROM \"FrontPresensi\".tpresensi ftp
+					WHERE ftp.noind = '$noind' AND ftp.tanggal = '$tgl'
+					ORDER BY waktu";
 		}
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
@@ -175,15 +167,15 @@ class M_presensiharian extends Ci_Model
 						and tanggal = '$tgl'
 						and kd_ket in ('TM', 'TIK')
 						) = 0  and tp.kd_ket in ('TM', 'TIK')
-					then '' else tk.keterangan end as keterangan
+					then '' else trim(tk.keterangan) end as keterangan
 				from (
-					select kd_ket
+					select trim(kd_ket) as kd_ket
 					from \"Presensi\".tdatapresensi
 					where noind = '$noind'
 					and tanggal = '$tgl'
 					and kd_ket != 'PKJ'
 					union
-					select kd_ket
+					select trim(kd_ket) as kd_ket
 					from \"Presensi\".tdatatim
 					where noind = '$noind'
 					and tanggal = '$tgl'
