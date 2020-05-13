@@ -46,6 +46,7 @@ $( '#prodd').change(function() {
 		}
 	})
 });
+
 $( '#org').change(function() {
 	var value = $(this).val();
 	console.log(value)
@@ -59,6 +60,25 @@ $( '#org').change(function() {
 		{
 			if (result != '<option></option>') {
 				$("#seksii").prop("disabled",false).html(result);
+			}else{
+
+			}
+		}
+	})
+});
+
+$(document).ready(function () {
+	var value = $('#org').val();
+	console.log(value)
+	$("#seksii").select2('val', null);
+	$.ajax({
+		type:'POST',
+		data:{segment1:value},
+		url:baseurl+"CetakBOMResources/Cetak/getseksi",
+		success:function(result)
+		{
+			if (result != '<option></option>') {
+				$("#seksii").html(result);
 			}else{
 
 			}
