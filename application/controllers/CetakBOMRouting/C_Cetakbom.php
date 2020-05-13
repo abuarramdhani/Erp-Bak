@@ -126,7 +126,7 @@ class C_Cetakbom extends CI_Controller
 
 		}
 
-		// echo "<pre>"; print_r($kodeproses); exit();
+		// echo "<pre>"; print_r($datapdf2); exit();
 
 
 		$array_pdf = array();
@@ -150,21 +150,29 @@ class C_Cetakbom extends CI_Controller
 			$array_pdf[$i]['OPR_NO'] = $pdf['OPR_NO'];
 			$array_pdf[$i]['LAST_UPDATE_DATE'] = $pdf['LAST_UPDATE_DATE'];
 
-			
-
-
 			$i++;
+		}
+
+		$altkode = array();
+		foreach ($datapdf2 as $pdf2) {
+			$kode="";
+			$kode .= $pdf2['ALT'];
+			array_push($altkode, $kode);
+
 		}
 
 		$data['datapdf'] = $array_pdf;
 		$data['datapdf2'] = $datapdf2;
 		$kodee = array_count_values($kodeproses);
+		$alt = array_count_values($altkode);
 		$data['kodee'] = $kodee;
+		$data['alt'] = $alt;
+
 		
 		// print_r(); exit();
 
 
-		// echo "<pre>";print_r($datapdf);exit();
+		// echo "<pre>";print_r($alt);exit();
 
 		ob_start();
 		$this->load->library('pdf');
