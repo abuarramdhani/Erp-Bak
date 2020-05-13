@@ -117,5 +117,47 @@ class C_KartuBarang extends CI_Controller {
 
 	}
 
+	public function DownloadLayout(){
+		include APPPATH.'third_party/Excel/PHPExcel.php';
+			$excel = new PHPExcel();
+			$excel->getProperties()->setCreator('CV. KHS')
+						->setLastModifiedBy('Quick')
+						->setTitle("Cetak Kartu Gudang")
+						->setSubject("CV. KHS")
+						->setDescription("Cetak Kartu Gudang")
+						->setKeywords("CKG");
+			//style
+			$style_col = array(
+				'alignment' => array(
+					'horizontal'	=> PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+					'vertical' 		=> PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				)
+			);
+
+
+			$excel->setActiveSheetIndex(0)->setCellValue('A1', "Kode Barang");
+			$excel->setActiveSheetIndex(0)->setCellValue('B1', "Rak");
+			$excel->setActiveSheetIndex(0)->setCellValue('C1', "Qty/Unit");
+			$excel->setActiveSheetIndex(0)->setCellValue('D1', "STD HDL");
+
+			$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('B1')->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('C1')->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('D1')->applyFromArray($style_col);
+
+			// Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
+			$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+			// Set orientasi kertas jadi LANDSCAPE
+			$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+			// Set judul file excel nya
+			$excel->getActiveSheet(0)->setTitle("Cetak Kartu Gudang");
+			$excel->setActiveSheetIndex(0);
+			// Proses file excel
+			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+			header('Content-Disposition: attachment; filename="data_kartu_gudang.csv"'); 
+			header('Cache-Control: max-age=0');
+			$write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+			$write->save('php://output');
+	}
 
 	}
