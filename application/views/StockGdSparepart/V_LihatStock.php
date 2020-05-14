@@ -70,6 +70,15 @@
                                     <br><br>
                                     <div class="col-md-12">
                                         <div class="col-md-2">
+                                            <label class="control-label">Search Item :</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input id="kode_awal" class="form-control pull-right" placeholder="masukan item" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="col-md-12" id="kode_unit_ls">
+                                        <div class="col-md-2">
                                             <label class="control-label">Kode Unit :</label>
                                         </div>
                                         <!-- <div class="col-md-3">
@@ -104,7 +113,7 @@
                                             <?php for ($i=9; $i < 12; $i++) { 
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
                                                 <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
-                                                <span style="color:black;font-size:15px;font-weight:bold;padding-top:100px">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
+                                                <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
                                         <div class="col-md-1">
@@ -121,8 +130,8 @@
                                                 <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
-                                    </div>
                                     <br><br><br><br><br><br><br><br>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="col-md-2">
                                             <label class="control-label">Quantity Diatas :</label>
