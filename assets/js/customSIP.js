@@ -69,7 +69,7 @@ $(document).ready(function () {
                 success: function (response) {
                     $('.loadingImportSIP').css('display','none');
                     $('.listSIP').html(response);
-                    $('.tblListdataSIP').DataTable({
+                    tableSIP = $('.tblListdataSIP').DataTable({
                         scrollY: "300px",
                         scrollX: true,
                         scrollCollapse: true,
@@ -78,6 +78,10 @@ $(document).ready(function () {
                             leftColumns: 4,
                         },
                     });
+                    $('.btnSubmitSIP').on('click', function () {
+                        tableSIP.page.len(-1).draw();
+                        $('#frmSubmitSIP').submit()
+                    })
                 }
             });
         }else{

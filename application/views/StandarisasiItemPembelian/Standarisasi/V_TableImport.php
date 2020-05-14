@@ -3,7 +3,7 @@
         <p class="bold">List Standarisasi Item</p>
     </div>
     <div class="panel-body">
-        <form action="<?= base_url('StandarisasiItemPembelian/Standarisasi/SaveDataImport') ?>" method="post" enctype="multipart/form-data">
+        <form id="frmSubmitSIP" action="<?= base_url('StandarisasiItemPembelian/Standarisasi/SaveDataImport') ?>" method="post" enctype="multipart/form-data">
             <div style="overflow: none;">
                 <table class="table table-hover table-striped table-bordered tblListdataSIP" style="width: 100%;">
                     <thead class="bg-primary ">
@@ -62,7 +62,7 @@
                 </table>
             </div>
             <div class="pull-right">
-                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> SUBMIT</button>
+                <button type="button" class="btn btn-success btnSubmitSIP"><i class="fa fa-save"></i> SUBMIT</button>
             </div>
         </form>
     </div>
