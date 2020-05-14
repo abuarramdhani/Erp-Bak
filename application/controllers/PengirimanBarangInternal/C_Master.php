@@ -278,7 +278,7 @@ class C_Master extends CI_Controller
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
-            $filename 	= 'Cetak_FPB_'.date('d-M-Y').'.pdf';
+            $filename 	= $doc.'.pdf';
             $isi 				= $this->load->view('PengirimanBarangInternal/pdf/V_Pdf', $data, true);
             $pdf->WriteHTML($isi);
             $pdf->Output($filename, 'I');
