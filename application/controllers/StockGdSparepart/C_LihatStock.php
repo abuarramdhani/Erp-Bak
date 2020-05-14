@@ -49,7 +49,7 @@ class C_LihatStock extends CI_Controller
 		
 		$data['nama'] = array('0' => 'TL800', '1' => 'G1000', '2' => 'G600', '3' => 'E85', '4' => 'M1000', '5' => 'KIJANG',
 							'6' => 'BOXER', '7' => 'ZEVA', '8' => 'IMPALA', '9' => 'CAPUNG METAL', '10' => 'CAPUNG RAWA', '11' => 'ZENA',
-							'12' => 'CAKAR BAJA', '13' => 'CAKAR BAJA MINI', '14' => 'H-100', '15' => 'QH-11', '16' => 'QUICK TRUCK', '17' => 'OLD');
+							'12' => 'CAKAR BAJA', '13' => 'CAKAR BAJA MINI', '14' => 'H-110', '15' => 'QH-11', '16' => 'QT-14', '17' => 'OLD');
 		// echo "<pre>"; print_r($data['kode']);exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -89,12 +89,12 @@ class C_LihatStock extends CI_Controller
 		$kode_awal 		= $this->input->post('kode_awal');
 		$qty_atas 		= $this->input->post('qty_atas');
 		$qty_bawah 		= $this->input->post('qty_bawah');
-		$unit 			= $this->input->post('unit2');
+		// $unit 			= $this->input->post('unit2');
 		$data['tglAw'] 	= $tglAw;
 		$data['tglAk'] 	= $tglAk;
 		$data['subinv'] = $subinv;
 		$data['kode_brg'] = $kode_brg;
-		// echo "<pre>"; print_r($kode_brg);exit();
+		// echo "<pre>"; print_r($kode_awal);exit();
 
 		if ($qty_atas != '' || $qty_bawah != '') {
 			$qty = "WHERE onhand >= NVL('$qty_atas', onhand) --qty_atas
@@ -109,19 +109,13 @@ class C_LihatStock extends CI_Controller
 			$kode = '';
 		}
 
-		// $kode_awal = strtoupper($kode_awal);
-		// if ($kode_awal != '') {
-		// 	$kode_awl = "AND msib.segment1 LIKE '%'||'$kode_awal'||'%'";
-		// 	$kode_unit = '';
-		// }else
-		if ($unit != ''){
-			$kode_unit = "AND msib.segment1 LIKE '$unit'||'%'";
-			// $kode_awl = '';
-		}else {
-			// $kode_awl = '';
-			$kode_unit = '';
+		$kode_awal = strtoupper($kode_awal);
+		if ($kode_awal != '') {
+			$kode_awl = "AND (msib.segment1 LIKE '%'||'$kode_awal'||'%' or msib.DESCRIPTION LIKE '%'||'$kode_awal'||'%')";
+		}else{
+			$kode_awl = '';
 		}
-		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode_unit);
+		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode_awl);
 		// echo "<pre>";print_r($data['data']);exit();
 		
 		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);
