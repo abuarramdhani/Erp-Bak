@@ -72,7 +72,7 @@ if ($i > 7 && $val['size'] != 4) {
             <td rowspan="3" style="border: 1px solid black"><img style="width: <?= $d?>px;height: <?= $d?>px" src="<?php echo base_url('img/'.$val['kode'].'.png'); ?>"></td>
         </tr>
         <tr>
-            <td rowspan="2" style="font-size:<?= $b?>px;border: 1px solid black;font-weight:bold;background-color:yellow"><?= $val['kode']?></td>
+            <td rowspan="2" style="font-size:<?= $b?>px;border: 1px solid black;font-weight:bold;background-color:#54E3FF"><?= $val['kode']?></td>
             <td rowspan="2" style="font-size:<?= $a?>px;border-top: 1px solid black;border-bottom: 1px solid black;">STD HDL</td>
             <td rowspan="2" style="font-size:<?= $c?>px;border-top: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;font-weight:bold"><?= $val['stp']?></td>
         </tr>
