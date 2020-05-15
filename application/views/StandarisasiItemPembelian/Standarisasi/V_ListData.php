@@ -72,9 +72,11 @@
                     </div>
                 </div>
                 <div class="box-footer">
+                    <?php if($this->session->responsibility_id != '2735') { ?>
                     <div class="pull-right">
                     <a href="UploadCsv" class="btn btn-success">Import From CSV</a>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
