@@ -33,7 +33,7 @@ class M_pbi extends CI_Model
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.created_by, kki.creation_date,
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.created_by, to_char(kki.CREATION_DATE,'DD-MON-YYYY HH:MI:SS') CREATION_DATE,
                  CASE
                     WHEN kki.status = 1
                        THEN 'Dipersiapkan Seksi Pengirim'
@@ -75,7 +75,7 @@ class M_pbi extends CI_Model
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.creation_date,
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, to_char(kki.CREATION_DATE,'DD-MON-YYYY HH:MI:SS') CREATION_DATE,
                  CASE
                     WHEN kki.status = 1
                        THEN 'Dipersiapkan Seksi Pengirim'
