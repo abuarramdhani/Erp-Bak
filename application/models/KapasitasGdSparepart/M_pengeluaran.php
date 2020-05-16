@@ -19,7 +19,7 @@ class M_pengeluaran extends CI_Model
                 where selesai_pelayanan is not null
                 and selesai_pengeluaran is null
                 and cancel is null
-                AND (bon != 'BON' or bon is null or bon != 'PENDING ')
+                AND (bon != 'BON' or bon is null)
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();

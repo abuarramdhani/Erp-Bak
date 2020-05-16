@@ -278,7 +278,7 @@ class M_monitoring extends CI_Model {
                     AND mtrl.quantity_delivered is not null
                 --     AND kts.mulai_packing IS NOT NULL
                     AND kts.selesai_packing IS NOT NULL
-                    AND (kts.bon IS NULL OR kts.bon = 'BESC')
+                    AND (kts.bon IS NULL OR kts.bon = 'BEST')
                     AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen,
                         TO_CHAR (kts.mulai_packing, 'DD/MM/YYYY'),
@@ -311,7 +311,7 @@ class M_monitoring extends CI_Model {
                 --     AND kts.mulai_packing IS NULL
                     AND kts.selesai_packing IS NULL
                     AND mtrl.line_status <> 6
-                    AND (kts.bon IS NULL OR bon = 'BESC')
+                    AND (kts.bon IS NULL OR bon = 'BEST')
                     AND (TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR') or selesai_packing is null)
                 GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, kts.urgent, kts.bon, kts.jam_input, kts.pic_pengeluaran
                 ORDER BY kts.urgent, kts.tgl_dibuat, kts.no_dokumen";

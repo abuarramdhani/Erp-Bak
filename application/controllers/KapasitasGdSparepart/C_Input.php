@@ -63,12 +63,12 @@ class C_Input extends CI_Controller
 				}elseif ($valBtn[$i] == 'Batal') {
 					$urgent = 'URGENT';
 				}
-				if ($btnBon[$i] == 'Bon' && $btnlangsung[$i] == 'Batal' && $btnbesc[$i] == 'Besc') {
+				if ($btnBon[$i] == 'Bon' && $btnlangsung[$i] == 'Batal' && $btnbesc[$i] == 'Best') {
 					$bon = 'LANGSUNG';
-				}elseif ($btnBon[$i] == 'Batal' && $btnlangsung[$i] == 'Langsung' && $btnbesc[$i] == 'Besc') {
+				}elseif ($btnBon[$i] == 'Batal' && $btnlangsung[$i] == 'Langsung' && $btnbesc[$i] == 'Best') {
 					$bon = 'BON';
 				}elseif ($btnbesc[$i] == 'Batal' && $btnBon[$i] == 'Bon' && $btnlangsung[$i] == 'Langsung') {
-					$bon = 'BESC';
+					$bon = 'BEST';
 				}else {
 					$bon = '';
 				}

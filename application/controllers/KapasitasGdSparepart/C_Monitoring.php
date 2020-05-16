@@ -73,13 +73,7 @@ class C_Monitoring extends CI_Controller
 		$packing = $this->M_monitoring->getDataSPB($query4);
 		$data['packing'] = $packing;
 		$data['jml_packing'] = count($packing);
-		// $total = 0;
-		$nopck = array();
-		for ($i=0; $i < $data['jml_packing'] ; $i++) { 
-			// $total += $packing[$i]['JUMLAH_PCS'];
-			array_push($nopck, $packing[$i]['NO_DOKUMEN']);
-		}
-		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BESC')";
+		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
 		$data['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_packing'] = count($data['krgpacking']);
 
@@ -115,39 +109,14 @@ class C_Monitoring extends CI_Controller
 		// echo "<pre>"; print_r($data['krg_selesai']); exit();
 		// $data['krg_selesai'] = $total - $data['jml_selesai'];
 
-		$jml_colly = array();
-		$dus_kecil = array();
-		$dus_sdg = array();
-		$dus_pjg = array();
-		$karung = array();
-		$peti = array();
-		for ($i=0; $i < count($nopck); $i++) { 
-			$cari = $this->M_monitoring->getDataColly($nopck[$i]);
-			if (!empty($cari)) {
-				foreach ($cari as $val) {
-					// echo "<pre>"; print_r($val['nomor_do']); exit();
-					array_push($jml_colly, $val['nomor_do']);
-					if ($val['kode_packing'] == 1) {
-						array_push($dus_kecil, $val['nomor_do']);
-					}elseif ($val['kode_packing'] == 2) {
-						array_push($dus_sdg, $val['nomor_do']);
-					}elseif ($val['kode_packing'] == 3) {
-						array_push($dus_pjg, $val['nomor_do']);
-					}elseif ($val['kode_packing'] == 4) {
-						array_push($karung, $val['nomor_do']);
-					}elseif ($val['kode_packing'] == 5) {
-						array_push($peti, $val['nomor_do']);
-					}
-				}
-			}
-		}
+		$htgcoly = $this->jaditoo($packing);
 
-		$data['jml_colly'] = count($jml_colly);
-		$data['dus_kecil'] = count($dus_kecil);
-		$data['dus_sdg'] = count($dus_sdg);
-		$data['dus_pjg'] = count($dus_pjg);
-		$data['karung'] = count($karung);
-		$data['peti'] = count($peti);
+		$data['jml_colly'] = $htgcoly['dus_kecil'] + $htgcoly['dus_sdg'] + $htgcoly['dus_pjg'] + $htgcoly['karung'] + $htgcoly['peti'];
+		$data['dus_kecil'] = $htgcoly['dus_kecil'];
+		$data['dus_sdg'] = $htgcoly['dus_sdg'];
+		$data['dus_pjg'] = $htgcoly['dus_pjg'];
+		$data['karung'] = $htgcoly['karung'];
+		$data['peti'] = $htgcoly['peti'];
 		
 		// echo "<pre>"; print_r($dus_kecil); exit();
 
@@ -197,7 +166,13 @@ class C_Monitoring extends CI_Controller
 			if ($date == date('d/m/Y')) {
 				$kurang = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
 			}else {
-				$kurang = "where (bon != 'PENDING' or bon is null) and trunc(jam_input) < '$tgl[$a]' and trunc(selesai_pelayanan) > '$tgl[$a]'";
+				$d = date('d') - 1;
+				if ($date == date(''.$d.'/m/Y')) {
+					$tmb = 'or selesai_pelayanan is null';
+				}else {
+					$tmb = "and trunc(jam_input) <= '$tgl[$a]' or (selesai_pelayanan is null and trunc(jam_input) <= '$tgl[$a]')";
+				}
+				$kurang = "where (bon != 'PENDING' or bon is null) and TO_CHAR(jam_input,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_pelayanan) > '$tgl[$a]' ".$tmb.")";
 			}
 			$hasil[$a]['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pelayanan'] = count($hasil[$a]['krgpelayanan']);
@@ -209,7 +184,13 @@ class C_Monitoring extends CI_Controller
 			if ($date == date('d/m/Y')) {
 				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
 			}else {
-				$kurang = "where (bon = 'LANGSUNG' or bon is null) and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pengeluaran) > '$tgl[$a]'";
+				$d = date('d') - 1;
+				if ($date == date(''.$d.'/m/Y')) {
+					$tmb = 'or selesai_pengeluaran is null';
+				}else {
+					$tmb = "and trunc(selesai_pelayanan) <= '$tgl[$a]' or (selesai_pengeluaran is null and trunc(selesai_pelayanan) <= '$tgl[$a]')";
+				}
+				$kurang = "where (bon != 'BON' or bon is null) and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_pengeluaran) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
 			}
 			$hasil[$a]['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pengeluaran'] = count($hasil[$a]['krgpengeluaran']);
@@ -218,16 +199,16 @@ class C_Monitoring extends CI_Controller
 			$packing = $this->M_monitoring->getDataSPB($query4);
 			$hasil[$a]['packing'] = $packing;
 			$hasil[$a]['jml_packing'] = count($packing);
-			// $total = 0;
-			$nopck = array();
-			for ($i=0; $i < $hasil[$a]['jml_packing'] ; $i++) { 
-				// $total += $packing[$i]['JUMLAH_PCS'];
-				array_push($nopck, $packing[$i]['NO_DOKUMEN']);
-			}
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BESC')";
+				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
 			}else {
-				$kurang = "where bon is null and TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_packing) > '$tgl[$a]'";
+				$d = date('d') - 1;
+				if ($date == date(''.$d.'/m/Y')) {
+					$tmb = 'or selesai_packing is null';
+				}else {
+					$tmb = "and trunc(selesai_pengeluaran) <= '$tgl[$a]' or (selesai_packing is null and trunc(selesai_pengeluaran) <= '$tgl[$a]')";
+				}
+				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pengeluaran is not null";
 			}
 			$hasil[$a]['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_packing'] = count($hasil[$a]['krgpacking']);
@@ -263,37 +244,14 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['krg_selesai'] = $kkrg + $kccl;
 			// $hasil[$a]['krg_selesai'] = $total - $hasil[$a]['jml_selesai'];
 
-			$jml_colly 	= array();
-			$dus_kecil 	= array();
-			$dus_sdg 	= array();
-			$dus_pjg 	= array();
-			$karung 	= array();
-			$peti 		= array();
-			for ($i=0; $i < count($nopck) ; $i++) { 
-				$cari = $this->M_monitoring->getDataColly($nopck[$i]);
-				if (!empty($cari)) {
-					foreach ($cari as $val) {
-						array_push($jml_colly, $val['nomor_do']);
-						if ($val['kode_packing'] == 1) {
-							array_push($dus_kecil, $val['nomor_do']);
-						}elseif ($val['kode_packing'] == 2) {
-							array_push($dus_sdg, $val['nomor_do']);
-						}elseif ($val['kode_packing'] == 3) {
-							array_push($dus_pjg, $val['nomor_do']);
-						}elseif ($val['kode_packing'] == 4) {
-							array_push($karung, $val['nomor_do']);
-						}elseif ($val['kode_packing'] == 5) {
-							array_push($peti, $val['nomor_do']);
-						}
-					}
-				}
-			}
-			$hasil[$a]['jml_colly'] = count($jml_colly);
-			$hasil[$a]['dus_kecil'] = count($dus_kecil);
-			$hasil[$a]['dus_sdg'] 	= count($dus_sdg);
-			$hasil[$a]['dus_pjg'] 	= count($dus_pjg);
-			$hasil[$a]['karung'] 	= count($karung);
-			$hasil[$a]['peti']		= count($peti);
+			$htgcoly = $this->jaditoo($packing);
+
+			$hasil[$a]['jml_colly'] = $htgcoly['dus_kecil'] + $htgcoly['dus_sdg'] + $htgcoly['dus_pjg'] + $htgcoly['karung'] + $htgcoly['peti'];
+			$hasil[$a]['dus_kecil'] = $htgcoly['dus_kecil'];
+			$hasil[$a]['dus_sdg'] = $htgcoly['dus_sdg'];
+			$hasil[$a]['dus_pjg'] = $htgcoly['dus_pjg'];
+			$hasil[$a]['karung'] = $htgcoly['karung'];
+			$hasil[$a]['peti'] = $htgcoly['peti'];
 		}
 		$data['hasil'] = $hasil;
 		// echo "<pre>";print_r($hasil);exit();
@@ -484,7 +442,7 @@ class C_Monitoring extends CI_Controller
 					$langsung += 1;
 					$itemlangsung += $val['JUMLAH_ITEM'];
 					$pcslangsung += $val['JUMLAH_PCS'];
-				}elseif ($val['BON'] == 'BESC') {
+				}elseif ($val['BON'] == 'BEST') {
 					$besc += 1;
 					$itembesc += $val['JUMLAH_ITEM'];
 					$pcsbesc += $val['JUMLAH_PCS'];
@@ -507,7 +465,7 @@ class C_Monitoring extends CI_Controller
 					$langsung2 += 1;
 					$itemlangsung2 += $val['JUMLAH_ITEM'];
 					$pcslangsung2 += $val['JUMLAH_PCS'];
-				}elseif ($val['BON'] == 'BESC') {
+				}elseif ($val['BON'] == 'BEST') {
 					$besc2 += 1;
 					$itembesc2 += $val['JUMLAH_ITEM'];
 					$pcsbesc2 += $val['JUMLAH_PCS'];
@@ -547,6 +505,12 @@ class C_Monitoring extends CI_Controller
 		$krg_selesai 	= $this->input->post('krg_selesai[]');
 
 		$dataselesai = $this->M_monitoring->dataselesai($tglAwal[0], $tglAkhir[0]);
+
+		$dataCancel = $this->M_monitoring->diCancel($tglAwal[0], $tglAkhir[0]);
+		
+		$dataKurang = $this->M_monitoring->dataKurangselesai($tglAwal[0], $tglAkhir[0]);
+		
+		$ket = $this->M_monitoring->dataKeterangan($tglAwal[0], $tglAkhir[0]);
 		// echo "<pre>";print_r($dataselesai);exit();
 
 		$dataket = array();
@@ -560,39 +524,15 @@ class C_Monitoring extends CI_Controller
 			array_push($dataket, $array);
 		}
 
-		$no_pck = $this->input->post('no_pck[]');
-		$tgl_pck = $this->input->post('tgl_pck[]');
-		// $dicancel = array();
-		// $itemkurang = array();
 		$data_colly = array();
 		$no_colly = array();
-		for ($i=0; $i < count($no_pck) ; $i++) { 
-			// $kurang = $this->M_monitoring->diCancel($no_pck[$i]);
-			// if (!empty($kurang)) {
-			// for ($a=0; $a < count($kurang); $a++) { 
-			// 		$array = array(
-			// 			'TGL_DIBUAT'	=> $tgl_pck[$i],
-			// 			'JENIS_DOKUMEN'	=> $kurang[$a]['JENIS_DOKUMEN'],
-			// 			'NO_DOKUMEN'	=> $kurang[$a]['NO_DOKUMEN'],
-			// 			'ITEM' 			=> $kurang[$a]['ITEM'],
-			// 			'DESCRIPTION' 	=> $kurang[$a]['DESCRIPTION'],
-			// 			'QUANTITY' 		=> $kurang[$a]['QUANTITY'],
-			// 			'QUANTITY_DELIVERED'	=> $kurang[$a]['QUANTITY_DELIVERED'],
-			// 			'KURANG' 		=> $kurang[$a]['KURANG'],
-			// 		);
-			// 		array_push($dicancel, $array);
-
-			// 		if (!in_array($kurang[$a]['ITEM'], $itemkurang)) {
-			// 			array_push($itemkurang, $kurang[$a]['ITEM']);
-			// 		}
-			// 	}
-			// }
+		for ($i=0; $i < count($dataselesai) ; $i++) { 
 			$dus_kecil 	= array();
 			$dus_sdg 	= array();
 			$dus_pjg 	= array();
 			$karung 	= array();
 			$peti	 	= array();
-			$cekcolly = $this->M_monitoring->getDataColly($no_pck[$i]);
+			$cekcolly = $this->M_monitoring->getDataColly($dataselesai[$i]['NO_DOKUMEN']);
 			if (!empty($cekcolly)) {
 				foreach ($cekcolly as $val) {
 					if ($val['kode_packing'] == 1) {
@@ -608,7 +548,7 @@ class C_Monitoring extends CI_Controller
 					}
 				}
 				$array = array(
-					'nospb' => $no_pck[$i],
+					'nospb' => $dataselesai[$i]['NO_DOKUMEN'],
 					'dus_kecil' => count($dus_kecil),
 					'dus_sdg' => count($dus_sdg),
 					'dus_pjg' => count($dus_pjg),
@@ -617,19 +557,10 @@ class C_Monitoring extends CI_Controller
 				);
 				array_push($data_colly, $array);
 			}
-			if (!in_array($no_pck[$i], $no_colly)) {
-				array_push($no_colly, $no_pck[$i]);
+			if (!in_array($dataselesai[$i]['NO_DOKUMEN'], $no_colly)) {
+				array_push($no_colly, $dataselesai[$i]['NO_DOKUMEN']);
 			}
 		}
-		
-		$dataCancel = $this->M_monitoring->diCancel($tglAwal[0], $tglAkhir[0]);
-		// for ($i=0; $i < count($itemkurang) ; $i++) { 
-		// 	foreach($dicancel as $val) { 
-		// 		if ($itemkurang[$i] == $val['ITEM']) {
-		// 			array_push($dataCancel, $val);
-		// 		}
-		// 	}
-		// }
 		$kcl = 0; $sdg = 0; $pjg = 0; $krg = 0; $peti = 0;
 		foreach ($data_colly as $col) {
 			$kcl += $col['dus_kecil'];
@@ -645,24 +576,6 @@ class C_Monitoring extends CI_Controller
 			'karung' => $krg,
 			'peti' => $peti,
 		);
-		// echo "<pre>";print_r($coly);exit();
-		$dataKurang = $this->M_monitoring->dataKurangselesai($tglAwal[0], $tglAkhir[0]);
-		// $nodo1 = array();
-		// $nodo2 = array();
-		// foreach ($dataKurang as $val) {
-		// 	if ($val['JENIS_DOKUMEN'] == 'SPB') {
-		// 		if (!in_array($val['NO_DOKUMEN'], $nodo1)) {
-		// 			array_push($nodo1, $val['NO_DOKUMEN']);
-		// 		}
-		// 	}else {
-		// 		if (!in_array($val['NO_DOKUMEN'], $nodo2)) {
-		// 			array_push($nodo2, $val['NO_DOKUMEN']);
-		// 		}
-		// 	}
-		// }
-		// echo "<pre>";print_r($nodo1);exit();
-		// $jml_pending 	= $this->M_monitoring->jml_pending();
-		$ket 			= $this->M_monitoring->dataKeterangan($tglAwal[0], $tglAkhir[0]);
 
 		include APPPATH.'third_party/Excel/PHPExcel.php';
 			$excel = new PHPExcel();
@@ -1553,8 +1466,6 @@ class C_Monitoring extends CI_Controller
 			$masuk = $this->jadigini($ket);
 			$can 	= $this->M_monitoring->inicancel($tglAwal[0], $tglAkhir[0]);
 			$cancel = $this->jadigini($can);
-			// $query = "where selesai_packing is not null";
-			// $pack = $this->M_monitoring->getDataSPB($query);
 			$pdg 	= $this->M_monitoring->jml_pending2();
 			$pending = $this->jadibelum($pdg);
 			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
@@ -1563,13 +1474,11 @@ class C_Monitoring extends CI_Controller
 			$query = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
 			$pglr 	= $this->M_monitoring->getDataSPB($query);
 			$pengeluaran = $this->jadiin($pglr, 'pglr');
-			$query = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BESC')";
+			$query = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
 			$pck 	= $this->M_monitoring->getDataSPB($query);
 			$packing = $this->jadiin($pck, 'pck');
-			// $dkr = $this->M_monitoring->dikerjakan();
 			$dikerjain = $this->jadiin($dataselesai, 'dkr');
 			$kurang = $this->jadiin2($dataKurang, $dataCancel);
-			// $sls 	= $this->M_monitoring->datapack($tglAwal[0], $tglAkhir[0]);
 			$selesai = $this->jadiin($dataselesai, 'selesai');
 			
 			$excel->setActiveSheetIndex(0)->setCellValue("A$jml2", "6.1 KETERANGAN DATA");
@@ -1625,7 +1534,7 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+1), 'TIDAK URGENT');
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+2), "BON");
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+3), "LANGSUNG");
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+4), "BESC");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow+4), "BEST");
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h4, "JUMLAH");
 			$excel->getActiveSheet()->mergeCells("A$h4:B$h4"); 
 				foreach ($masuk as $val) {
@@ -1731,7 +1640,7 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+1), 'TIDAK URGENT');
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+2), "BON");
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+3), "LANGSUNG");
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+4), "BESC");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow2+4), "BEST");
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$h4, "JUMLAH");
 			$excel->getActiveSheet()->mergeCells("A$h4:B$h4"); 
 				foreach ($cancel as $val) {
@@ -2071,5 +1980,141 @@ class C_Monitoring extends CI_Controller
 			$write->save('php://output');
 
 
+	}
+
+	public function Keterangan(){
+		$tglAwal 		= $this->input->post('tglAwal[]');
+		$tglAkhir 		= $this->input->post('tglAkhir[]');
+		$tanggal 		= $this->input->post('tanggalnya[]');
+		$jml_selesai 	= $this->input->post('jml_selesai[]');
+		$krg_selesai 	= $this->input->post('krg_selesai[]');
+
+		$ketdata = array();
+		for ($t=0; $t < count($tanggal); $t++) { 
+			$ketdata['tgl'][] = $tanggal[$t];
+			$ketdata['jml'][] = $jml_selesai[$t];
+			$ketdata['krg'][] = $krg_selesai[$t];
+		}
+		// echo "<pre>";print_r($ketdata);exit();
+
+		$ket 		= $this->M_monitoring->dataKeterangan($tglAwal[0], $tglAkhir[0]);
+		$masuk 		= $this->jadigini($ket);
+		$can 		= $this->M_monitoring->inicancel($tglAwal[0], $tglAkhir[0]);
+		$cancel 	= $this->jadigini($can);
+		$pdg 		= $this->M_monitoring->jml_pending2();
+		$pending 	= $this->jadibelum($pdg);
+		$query		= "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+		$plyn 		= $this->M_monitoring->getDataSPB($query);
+		$pelayanan 	= $this->jadiin($plyn, 'plyn');
+		$query 		= "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
+		$pglr 		= $this->M_monitoring->getDataSPB($query);
+		$pengeluaran = $this->jadiin($pglr, 'pglr');
+		$query 		= "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+		$pck 		= $this->M_monitoring->getDataSPB($query);
+		$packing 	= $this->jadiin($pck, 'pck');
+		$dataselesai = $this->M_monitoring->dataselesai($tglAwal[0], $tglAkhir[0]);
+		$dataKurang = $this->M_monitoring->dataKurangselesai($tglAwal[0], $tglAkhir[0]);
+		$dataCancel = $this->M_monitoring->diCancel($tglAwal[0], $tglAkhir[0]);
+		$dikerjain 	= $this->jadiin($dataselesai, 'dkr');
+		$kurang 	= $this->jadiin2($dataKurang, $dataCancel);
+		$selesai 	= $this->jadiin($dataselesai, 'selesai');
+
+		$data_colly = array();
+		$no_colly = array();
+		for ($i=0; $i < count($dataselesai) ; $i++) { 
+			$dus_kecil 	= array();
+			$dus_sdg 	= array();
+			$dus_pjg 	= array();
+			$karung 	= array();
+			$peti	 	= array();
+			$cekcolly = $this->M_monitoring->getDataColly($dataselesai[$i]['NO_DOKUMEN']);
+			if (!empty($cekcolly)) {
+				foreach ($cekcolly as $val) {
+					if ($val['kode_packing'] == 1) {
+						array_push($dus_kecil, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 2) {
+						array_push($dus_sdg, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 3) {
+						array_push($dus_pjg, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 4) {
+						array_push($karung, $val['nomor_do']);
+					}elseif ($val['kode_packing'] == 5) {
+						array_push($peti, $val['nomor_do']);
+					}
+				}
+				$array = array(
+					'nospb' => $dataselesai[$i]['NO_DOKUMEN'],
+					'dus_kecil' => count($dus_kecil),
+					'dus_sdg' => count($dus_sdg),
+					'dus_pjg' => count($dus_pjg),
+					'karung' => count($karung),
+					'peti' => count($peti),
+				);
+				array_push($data_colly, $array);
+			}
+			if (!in_array($dataselesai[$i]['NO_DOKUMEN'], $no_colly)) {
+				array_push($no_colly, $dataselesai[$i]['NO_DOKUMEN']);
+			}
+		}
+
+		$kcl = 0; $sdg = 0; $pjg = 0; $krg = 0; $peti = 0;
+		foreach ($data_colly as $col) {
+			$kcl += $col['dus_kecil'];
+			$sdg += $col['dus_sdg'];
+			$pjg += $col['dus_pjg'];
+			$krg += $col['karung'];
+			$peti += $col['peti'];
+		}
+		$coly = array(
+			'Kardus Kecil' 	=> $kcl,
+			'Kardus Sedang' => $sdg,
+			'Kardus Panjang' => $pjg,
+			'Karung' 		=> $krg,
+			'Peti' 			=> $peti,
+		);
+
+		$pack = array(
+			'0' => $dikerjain[0],
+			'1' => $kurang[0],
+			'2' => $selesai[0],
+		);
+
+		$belum = array(
+			'0' => $pending[0],
+			'1' => $pelayanan[0],
+			'2' => $pengeluaran[0],
+			'3' => $packing[0],
+		);
+
+		$data['data'] = array(
+			'masuk' 	=> $masuk,
+			'cancel' 	=> $cancel,
+			'packing' 	=> $pack,
+			'coly' 		=> $coly,
+			'belum' 	=> $belum,
+			'tglawal' 	=> $tglAwal[0],
+			'tglakhir' 	=> $tglAkhir[0],
+			'ket' 		=> $ketdata,
+			'tanggal' 	=> $tanggal[0].' s/d '.$tanggal[count($tanggal)-1]
+		);
+		// echo "<pre>";print_r($data['data']);
+		// exit();
+
+		$user = $this->session->username;
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Monitoring Kapasitas Gudang';
+		$data['Menu'] = 'Monitoring';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('KapasitasGdSparepart/V_KetMonitoring', $data);
+		$this->load->view('V_Footer',$data);
 	}
 }

@@ -1,7 +1,5 @@
-<?php 
-    // foreach ($ekspedisi as $eks) {
-    ?>
-<!-- <div class="row" style="padding-top:20px;padding-left:10px;padding-right:10px">
+<?= $urut != '0' ? '<pagebreak resetpagenum="1" />' : '' ?>
+<div class="row" style="padding-top:20px;padding-left:10px;padding-right:10px">
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;" >
     <tr>
         <td style="width: 60%;font-weight:bold ">PT. <?= $eks?></td>
@@ -13,11 +11,9 @@
         <td style="width: 20%; border:1px solid black; border-bottom :0px; border-collapse: collapse;font-size:12px">Tgl : <?= date('d M Y')?></td>
     </tr>
 </table>
-</div> -->
+</div>
 
-<div class="row" style="padding-top:75px;padding-left:10px;padding-right:10px;">
-
-<?= $urut != '0' ? '<pagebreak resetpagenum="1" />' : '' ?>
+<div class="row" style="padding-top:10px;padding-left:10px;padding-right:10px;">
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;" >
     <thead>
         <tr>
@@ -32,28 +28,19 @@
     <tbody>
         <?php $no = 1; 
         // foreach($data as $val){
-            for ($i=0; $i < count($data) ; $i++) { 
-        
-            if ($i != 0 && $data[$i]['no_dokumen'] == $data[$i-1]['no_dokumen']) { ?>
-                <tr>
-                    <td style="height:30px;border:1px solid black;text-align:center;"><?= $data[$i]['berat']?></td>
-                </tr>
-           <?php } else {?>
+            for ($i=0; $i < count($data) ; $i++) { ?>
         <tr>
-            <td rowspan="<?= $data[$i]['jumlah']?>" style="height:30px;border:1px solid black;text-align:center;"><?= $no?></td>
-            <td rowspan="<?= $data[$i]['jumlah']?>" style="height:30px;border:1px solid black;"></td>
-            <td rowspan="<?= $data[$i]['jumlah']?>" style="height:30px;border:1px solid black;text-align:center;"><?= $data[$i]['no_dokumen']?></td>
-            <td rowspan="<?= $data[$i]['jumlah']?>" style="height:30px;border:1px solid black;"><?= $data[$i]['tujuan']?></td>
-            <td rowspan="<?= $data[$i]['jumlah']?>" style="height:30px;border:1px solid black;text-align:center;"><?= $data[$i]['jumlah']?></td>
+            <td style="height:30px;border:1px solid black;text-align:center;"><?= $no?></td>
+            <td style="height:30px;border:1px solid black;"></td>
+            <td style="height:30px;border:1px solid black;text-align:center;"><?= $data[$i]['no_dokumen']?></td>
+            <td style="height:30px;border:1px solid black;"><?= $data[$i]['tujuan']?></td>
+            <td style="height:30px;border:1px solid black;text-align:center;"><?= $data[$i]['jumlah']?></td>
             <td style="height:30px;border:1px solid black;text-align:center;"><?= $data[$i]['berat']?></td>
         </tr>
         <?php $no++; } 
         
-    
-    }
-        
-        if (count($data) < 28) {
-            $kurang = 28 - $i;
+        if (count($data) < 20) {
+            $kurang = 20 - $i;
             for ($a=0; $a < $kurang; $a++) { 
                 echo '<tr>
                         <td style=\'height:30px;border:1px solid black;\'></td>
@@ -90,7 +77,7 @@
 
 ?>
 
-<!-- <div class="row" style="padding-top:20px;padding-left:10px;padding-right:10px;padding-bottom:240px">
+<div class="row" style="padding-top:20px;padding-left:10px;padding-right:10px;padding-bottom:30px">
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;" >
     <tr>
         <td style="width: 40%;"></td>
@@ -118,5 +105,5 @@
         <td style="width: 30%; border-bottom :0px; border-collapse: collapse;text-align:center;font-weight:bold;font-size:12px">(.....................)</td>
     </tr>
 </table>
-</div> -->
+</div>
 <?php //}?>

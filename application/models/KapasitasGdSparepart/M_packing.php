@@ -19,7 +19,7 @@ class M_packing extends CI_Model
                 where selesai_pengeluaran is not null
                 and selesai_packing is null
                 and cancel is null
-                and (bon is null or bon = 'BESC')
+                and (bon is null or bon = 'BEST')
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
