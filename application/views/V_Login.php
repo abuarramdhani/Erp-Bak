@@ -234,7 +234,7 @@
 </script>
 
 <div style="position: fixed;bottom: 0px;left: 20px;margin: 0;">
-    <img width="300" src="<?php echo base_url('assets/img/SO2020.gif'); ?>">
+    <img width="250" src="<?php echo base_url('assets/img/SO2020.gif'); ?>">
     <!-- <div style="width: 300px;height: 200px;">
         <?php 
         // Minggu 1:   Launching 18 Mei 2020       
