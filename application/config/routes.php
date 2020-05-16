@@ -4321,3 +4321,21 @@ $route['CetakKartuGudang/KartuBarang/(:any)/(:any)']	= 'CetakKartuGudang/C_Kartu
 $route['CetakKartuGudang/KartuA360']					= 'CetakKartuGudang/C_KartuA360';
 $route['CetakKartuGudang/KartuA360/(:any)']			= 'CetakKartuGudang/C_KartuA360/$1';
 $route['CetakKartuGudang/KartuA360/(:any)/(:any)']	= 'CetakKartuGudang/C_KartuA360/$1/$2';
+
+//-------------------------------------------Monitoring Surat Jalan---------------------------------------//
+$route['MonitoringSuratJalan'] = 'MonitoringSuratJalan/C_Master';
+
+$route['MonitoringSuratJalan/TerimaFPB'] = 'MonitoringSuratJalan/C_Master/TerimaFPB';
+$route['MonitoringSuratJalan/TerimaFPB/(:any)'] = 'MonitoringSuratJalan/C_Master/$1';
+$route['MonitoringSuratJalan/TerimaFPB/(:any)/(:any)'] = 'MonitoringSuratJalan/C_Master/$1/$2';
+
+$route['MonitoringSuratJalan/InputSuratJalan'] = 'MonitoringSuratJalan/C_Master/InputSuratJalan';
+$route['MonitoringSuratJalan/InputSuratJalan/(:any)'] = 'MonitoringSuratJalan/C_Master/$1';
+$route['MonitoringSuratJalan/InputSuratJalan/(:any)/(:any)'] = 'MonitoringSuratJalan/C_Master/$1/$2';
+
+$route['MonitoringSuratJalan/Monitoring'] = 'MonitoringSuratJalan/C_Master/Monitoring';
+$route['MonitoringSuratJalan/Monitoring/(:any)'] = 'MonitoringSuratJalan/C_Master/$1';
+$route['MonitoringSuratJalan/Monitoring/(:any)/(:any)'] = 'MonitoringSuratJalan/C_Master/$1/$2';
+
+$route['MonitoringSuratJalan/Cetak/(:any)'] = 'MonitoringSuratJalan/C_Master/Cetak/$1';
+$route['MonitoringSuratJalan/cekapi'] = 'MonitoringSuratJalan/C_Master/cekapi';
