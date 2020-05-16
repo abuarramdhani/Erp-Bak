@@ -279,7 +279,7 @@
         
         
         if (strtotime(date('Y-m-d')) < strtotime('2020-05-18')) {
-            echo $mei18;// sebelum di naikkan ke prod nanti di pagar, seharusnya tidak ada yang tampil;
+            //echo $mei18;// sebelum di naikkan ke prod nanti di pagar, seharusnya tidak ada yang tampil;
         }elseif (strtotime(date('Y-m-d')) >= strtotime('2020-05-18') && strtotime(date('Y-m-d')) < strtotime('2020-05-26')) {
             echo $mei18;
         }elseif (strtotime(date('Y-m-d')) >= strtotime('2020-05-26') && strtotime(date('Y-m-d')) < strtotime('2020-06-02')) {
