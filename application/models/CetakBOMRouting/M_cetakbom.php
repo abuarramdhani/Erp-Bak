@@ -136,6 +136,7 @@ from mtl_system_items_b msib
     and borsmc.RESOURCE_ID = kdmr.RESOURCE_ID(+))mach
 where bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
 and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
+and bd.DEPARTMENT_CODE not like 'D-SUB%'
 and bd.ORGANIZATION_ID = bor.ORGANIZATION_ID
 and bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
 and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
