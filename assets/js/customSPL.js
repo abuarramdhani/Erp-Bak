@@ -683,9 +683,9 @@ $(function() {
 
         const resultStorage = () => {
             window.removeEventListener('storage', resultStorage)
-            let isSuccess = localStorage.getItem('resultApproveSPL')
+            let isSuccess = localStorage.getItem('resultApproveSPL') // will result string dataType
 
-            if (isSuccess === true) {
+            if (isSuccess == 'true') {
                 $('#ProsesDialog').modal('hide')
                 $('#FingerDialogApprove').modal('hide')
                 $('#FingerDialogReject').modal('hide')
@@ -699,7 +699,7 @@ $(function() {
                     $('#spl-approval-0').click()
                 })
                 localStorage.removeItem('resultApproveSPL')
-            } else if (isSuccess === 3) { // error
+            } else if (isSuccess == 3) { // error
                 swal.fire({
                     title: `Gagal, error code 500`,
                     text: '',
@@ -708,6 +708,8 @@ $(function() {
                     $('#spl-approval-1').click()
                     $('#spl-approval-0').click()
                 })
+            } else {
+                alert('Error : ' + isSuccess)
             }
         }
 
