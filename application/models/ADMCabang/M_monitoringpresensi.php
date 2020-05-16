@@ -43,7 +43,7 @@ class M_monitoringpresensi extends Ci_Model
 		$noind = $this->session->user;
 		$kd = $this->session->kodesie;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -79,7 +79,7 @@ class M_monitoringpresensi extends Ci_Model
 		$noind = $this->session->user;
 		$kd = $this->session->kodesie;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -113,7 +113,7 @@ class M_monitoringpresensi extends Ci_Model
 	function getDetailAbsensiPerhari($periode,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -169,7 +169,7 @@ $q_seksi)";
 	function getDataAbsensiPerHari($periode,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -215,7 +215,7 @@ $q_seksi)";
 	function getDataAbsensiHarianTotal($periode,$periodeAkhir,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -283,7 +283,7 @@ $q_seksi)";
 	function getDataAbsensiBulananPerPeriode($periode,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -322,7 +322,7 @@ $q_seksi)";
 	function getDataAbsensiBulanan($periode,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -362,7 +362,7 @@ $q_seksi)";
 	function getDataPerTahun($periode,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -404,7 +404,7 @@ $q_seksi)";
 	function getDataPerBulanan($bulanAwal,$bulanAkhir,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -447,7 +447,7 @@ $q_seksi)";
 	function getDataPerHarian($periode,$periodeAkhir,$kd,$q_status,$q_unit,$q_seksi){
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -491,7 +491,7 @@ $q_seksi)";
 		//jumlah semua keterangan absensi (kecuali cuti, ijin, mangkir, sakit, IP)
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -531,7 +531,7 @@ $q_seksi)";
 
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -575,7 +575,7 @@ $q_seksi)";
 		$noind = $this->session->user;
 		$kd = $this->session->kodesie;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
@@ -621,7 +621,7 @@ $q_seksi)";
 		$noind = $this->session->user;
 		$kd = $this->session->kodesie;
 		if ($noind == 'B0380') {
-			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))";
+			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') {
