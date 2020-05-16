@@ -62,11 +62,11 @@ function btnLangsungKgs(no) {
 
 function btnBescKgs(no) {
     var valBtn = $('#btnbesc'+no).val();
-    if (valBtn == 'Besc') {
+    if (valBtn == 'Best') {
         $('#btnbesc'+no).val('Batal');
         $('#btnbesc'+no).removeClass('btn-success').addClass('btn-danger');
     }else if (valBtn == 'Batal') {
-        $('#btnbesc'+no).val('Besc');
+        $('#btnbesc'+no).val('Best');
         $('#btnbesc'+no).removeClass('btn-danger').addClass('btn-success');
     }
 }
@@ -631,54 +631,6 @@ function btnPackingSPB(no) {
     }
 }
 
-// function modalPacking(no) {
-//     var jenis  = $('#jenis'+no).val();
-//     var no_spb = $('#nodoc'+no).val();
-//     var pic = $('#pic'+no).val();
-//     var d    = new Date();
-//     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-//     var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-//     var mulai  = $('#mulai'+no).val();  
-    
-//     var request = $.ajax ({
-//         url : baseurl + "KapasitasGdSparepart/Packing/modalColly",
-//         data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, no : no},
-//         type : "POST",
-//         dataType: "html"
-//         });
-//         request.done(function(result){
-//             $('#datahidden').html(result);
-//             $('#mdlcolly').modal('show');
-//     });
-// }
-
-// function savePacking(th) {
-//     var no_spb       = $('#no_spb').val();
-//     var jenis_kemasan    = $('#jenis_kemasan').val();   
-//     var berat        = $('#berat').val();   
-//     var no           = $('#no').val();   
-    
-//     if (berat == '' || jenis_kemasan == '') {
-//         $('#peringatan').html('Mohon Isi Konfirmasi Packing!!');
-//     }else{
-//         // $('#peringatan').html('Sudah save');
-//         $.ajax ({
-//             url : baseurl + "KapasitasGdSparepart/Packing/saveberatPacking",
-//             data: { no_spb : no_spb, jenis_kemasan : jenis_kemasan, berat : berat},
-//             type : "POST",
-//             dataType: "html",
-//             success: function(data){
-//                 $("#mdlcolly").modal("hide");
-//                 $('#berat').val('');
-//                 $('#jenis_kemasan').select2("val", "");
-//                 $('#peringatan').html('');
-//                 // $('#btnPacking'+no).attr("disabled", "disabled"); 
-//                 // $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
-//                 // $('#timer'+no).css('display','none');
-//             }
-//         });  
-//     }
-// }
 
 function saveBeratPack(no) {
     var no_spb       = $('#no_spb'+no).val();
@@ -693,8 +645,6 @@ function saveBeratPack(no) {
         dataType: "html",
         success: function(data){
             $('#tambahbrt').append('<tr><td>'+nomor+'</td><td><select class="form-control select2" id="jenis_kemasan'+nomor+'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan"><option></option><option value="1">KARDUS KECIL</option><option value="2">KARDUS SEDANG</option><option value="3">KARDUS PANJANG</option><option value="4">KARUNG</option><option value="5">PETI</option></select></td><td><input type="text" class="form-control" id="berat'+nomor+'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('+nomor+')"><input type="hidden" id="no_spb'+nomor+'" value="'+no_spb+'"></td></tr>');
-            // $('#jenis_kemasan'+no).attr("disabled", "disabled"); 
-            // $('#berat'+no).attr("disabled", "disabled"); 
         }
     });
 }

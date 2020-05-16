@@ -51,6 +51,7 @@ class C_Penyerahan extends CI_Controller
 		
 		$nomor = $this->M_penyerahan->getNomorSPB($tglAwal);
 		$data['spb'] = array();
+		$a = 0;
 		foreach ($nomor as $no) { 
 			// for ($a=0; $a < 8; $a++) { 
 			$getdata = $this->M_penyerahan->getDataSPB($no['no_SPB']);
@@ -58,16 +59,21 @@ class C_Penyerahan extends CI_Controller
 			// echo "<pre>";print_r($getdata);exit();
 			if (!empty($getdata)) {
 				if (!empty($berat)) {
+					$spb = array();
 					for ($i=0; $i < count($berat) ; $i++) { 
-						$array = array(
-							'MO_NUMBER' 		=> $getdata[0]['REQUEST_NUMBER'],
-							'EXPEDITION_CODE' 	=> $getdata[0]['ATTRIBUTE15'],
-							'TUJUAN' 			=> $getdata[0]['TUJUAN'],
-							'SUM_PACKING_QTY' 	=> $getdata[0]['QTY_TRANSACT'],
-							'ITEM_COLY' 		=> count($berat),
-							'SUM_WEIGHT' 		=> $berat[$i]['BERAT'],
-						);
-					array_push($data['spb'], $array);
+						if ($i == 0) {
+							$array = array(
+								'MO_NUMBER' 		=> $getdata[0]['REQUEST_NUMBER'],
+								'EXPEDITION_CODE' 	=> $getdata[0]['ATTRIBUTE15'],
+								'TUJUAN' 			=> $getdata[0]['TUJUAN'],
+								'SUM_PACKING_QTY' 	=> $getdata[0]['QTY_TRANSACT'],
+								'ITEM_COLY' 		=> count($berat),
+								'SUM_WEIGHT' 		=> $berat[$i]['BERAT'],
+							);
+						array_push($data['spb'], $array);
+						}else {
+							$data['spb'][$a]['SUM_WEIGHT'] = $data['spb'][$a]['SUM_WEIGHT'].', '.$berat[$i]['BERAT'];
+						}
 					}
 				}else {
 					$array = array(
@@ -81,6 +87,7 @@ class C_Penyerahan extends CI_Controller
 				array_push($data['spb'], $array);
 				}
 			}
+			$a++;
 		}
 		// echo "<pre>";print_r($data['spb']);exit();
 
@@ -121,13 +128,14 @@ class C_Penyerahan extends CI_Controller
 		foreach ($coba as $key => $val) {
 			$data['data'] = $val;
 			$data['urut'] = $x;
-			$head 	= $this->load->view('KapasitasGdSparepart/V_Headpdf', $data, true);	
+			$data['eks'] = $key;
+			// $head 	= $this->load->view('KapasitasGdSparepart/V_Headpdf', $data, true);	
 			$html 	= $this->load->view('KapasitasGdSparepart/V_PdfPenyerahan', $data, true);	
-			$footer = $this->load->view('KapasitasGdSparepart/V_Footerpdf', $data, true);
+			// $footer = $this->load->view('KapasitasGdSparepart/V_Footerpdf', $data, true);
 			
 		ob_end_clean();
-		$pdf->SetHTMLHeader($head);
-		$pdf->SetHTMLFooter($footer);
+		// $pdf->SetHTMLHeader($head);
+		// $pdf->SetHTMLFooter($footer);
 		$pdf->WriteHTML($html);												
 		// $pdf->debug = true; 
 		$x++;

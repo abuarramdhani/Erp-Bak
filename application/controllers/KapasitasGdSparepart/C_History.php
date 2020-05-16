@@ -48,74 +48,41 @@ class C_History extends CI_Controller
         $masuk = array();
         $tgl = array();
         $a = 0;
+        $m = 0;
+        $date = date('d/m/Y');
+        if ($val[0]['JAM_INPUT'] != $date) {
+            array_push($tgl, $date);
+            $tampung[$a]['TGL_INPUT']   = strtoupper(date('d-M-y'));
+            $hitung = $this->perhitungan($date);
+            $tampung[$a]['PELAYANAN']   = $hitung['pelayanan'];
+            $tampung[$a]['PENGELUARAN'] = $hitung['pengeluaran'];
+            $tampung[$a]['PACKING']     = $hitung['packing'];
+            $tampung[$a]['COLY']        = $hitung['coly'];
+            $tampung[$a]['LEMBAR_PACK'] = $hitung['lembar_pack'];
+            $tampung[$a]['PCS_PACK']    = $hitung['pcs_pack'];
+            $tampung[$a]['JML_PACK']    = $hitung['jml_pack'];
+            $tampung[$m]['LEMBAR_MASUK'] = 0;
+            $tampung[$m]['PCS_MASUK']   = 0;
+        $a++; $m++;
+        }
+
         for ($i=0; $i < count($val); $i++) { 
             // if (count($tampung) < 10) {
             if (!in_array($val[$i]['JAM_INPUT'], $tgl)) {
                 array_push($tgl, $val[$i]['JAM_INPUT']);
-                $tampung[$a]['TANGGAL'] = $val[$i]['TGL_INPUT'];
-                $tampung[$a]['TGL_INPUT'] = $val[$i]['JAM'];
-                $plyn = $this->M_history->getDataSPB("and selesai_pelayanan like to_date('".$val[$i]['JAM_INPUT']."','DD/MM/YYYY')");
-                $tampung[$a]['PELAYANAN'] = 0;
-                for ($l=0; $l < count($plyn); $l++) { 
-                    if ($plyn[$l]['WAKTU_PELAYANAN'] != '') {
-                        $plyn1 = explode(":", $plyn[$l]['WAKTU_PELAYANAN']);
-                        $plyn2 = ($plyn1[0]*3600) + ($plyn1[1]*60) + $plyn1[2];
-                        $tampung[$a]['PELAYANAN'] += $plyn2;
-                    }
-                }
-                if (count($plyn) == 0) {
-                    $bagi = 1;
-                }else {
-                    $bagi = count($plyn);
-                }
-                $tampung[$a]['PELAYANAN'] = round($tampung[$a]['PELAYANAN'] / $bagi, 3);
-                
-                $pglr = $this->M_history->getDataSPB("and selesai_pengeluaran like to_date('".$val[$i]['JAM_INPUT']."','DD/MM/YYYY')");
-                $tampung[$a]['PENGELUARAN'] = 0;
-                for ($l=0; $l < count($pglr); $l++) { 
-                    if ($pglr[$l]['WAKTU_PENGELUARAN'] != '') {
-                        $pglr1 = explode(":", $pglr[$l]['WAKTU_PENGELUARAN']);
-                        $pglr2 = ($pglr1[0]*3600) + ($pglr1[1]*60) + $pglr1[2];
-                        $tampung[$a]['PENGELUARAN'] += $pglr2;
-                    }
-                }
-                if (count($pglr) == 0) {
-                    $bagi = 1;
-                }else {
-                    $bagi = count($pglr);
-                }
-                $tampung[$a]['PENGELUARAN'] = round($tampung[$a]['PENGELUARAN'] / $bagi, 3);
-                
-                $pck = $this->M_history->getDataSPB("and selesai_packing like to_date('".$val[$i]['JAM_INPUT']."','DD/MM/YYYY')");
-                $tampung[$a]['PACKING'] = 0;
-                $tampung[$a]['COLY'] = 0;
-                $tampung[$a]['LEMBAR_PACK'] = 0;
-                $tampung[$a]['PCS_PACK'] = 0;
-                for ($l=0; $l < count($pck); $l++) { 
-                    if ($pck[$l]['WAKTU_PACKING'] != '') {
-                        $pck1 = explode(":", $pck[$l]['WAKTU_PACKING']);
-                        $pck2 = ($pck1[0]*3600) + ($pck1[1]*60) + $pck1[2];
-                        $tampung[$a]['PACKING'] += $pck2;
-                    }
-                    $tampung[$a]['LEMBAR_PACK'] += 1;
-                    $tampung[$a]['PCS_PACK'] += $pck[$l]['JUMLAH_PCS'];
-                    $coly = $this->M_packing->cekPacking($pck[$l]['NO_DOKUMEN']);
-                    if (!empty($coly)) {
-                        $tampung[$a]['COLY'] += count($coly);
-                    }
-                }
-                if (count($pck) == 0) {
-                    $bagi = 1;
-                }else {
-                    $bagi = count($pck);
-                }
-                $tampung[$a]['PACKING'] = round($tampung[$a]['PACKING'] / $bagi, 3);
-                
+                $tampung[$a]['TGL_INPUT']   = $val[$i]['JAM'];
+                $hitung = $this->perhitungan($val[$i]['JAM_INPUT']);
+                $tampung[$a]['PELAYANAN']   = $hitung['pelayanan'];
+                $tampung[$a]['PENGELUARAN'] = $hitung['pengeluaran'];
+                $tampung[$a]['PACKING']     = $hitung['packing'];
+                $tampung[$a]['COLY']        = $hitung['coly'];
+                $tampung[$a]['LEMBAR_PACK'] = $hitung['lembar_pack'];
+                $tampung[$a]['PCS_PACK']    = $hitung['pcs_pack'];
+                $tampung[$a]['JML_PACK']    = $hitung['jml_pack'];
             $a++;
             }            
 
             if ($i == 0) {
-                $m = 0;
                 $tampung[$m]['LEMBAR_MASUK'] = 0;
                 $tampung[$m]['PCS_MASUK'] = 0;
                 $tampung[$m]['LEMBAR_MASUK'] += 1;
@@ -134,17 +101,6 @@ class C_History extends CI_Controller
             }
         }
 
-        // $tampung[0]['TGL_INPUT'] = date('dmY');
-        // $tampung[0]['TANGGAL'] = date('dmY');
-        // $tampung[0]['PELAYANAN'] = date('dmY');
-        // $tampung[0]['PENGELUARAN'] = date('dmY');
-        // $tampung[0]['PACKING'] = date('dmY');
-        // $tampung[0]['COLY'] = date('dmY');
-        // $tampung[0]['LEMBAR_PACK'] = date('dmY');
-        // $tampung[0]['PCS_PACK'] = date('dmY');
-        // $tampung[0]['LEMBAR_MASUK'] = date('dmY');
-        // $tampung[0]['PCS_MASUK'] = date('dmY');
-
         $data['data'] = $tampung;
         // echo "<pre>";print_r($tampung);exit();
 
@@ -154,5 +110,76 @@ class C_History extends CI_Controller
         $this->load->view('V_Footer',$data);
     }
 
+    public function perhitungan($date){
+        $plyn = $this->M_history->getDataSPB("and selesai_pelayanan like to_date('".$date."','DD/MM/YYYY')");
+        $pelayanan = 0;
+        for ($l=0; $l < count($plyn); $l++) { 
+            if ($plyn[$l]['WAKTU_PELAYANAN'] != '') {
+                $plyn1 = explode(":", $plyn[$l]['WAKTU_PELAYANAN']);
+                $plyn2 = ($plyn1[0]*3600) + ($plyn1[1]*60) + $plyn1[2];
+                $pelayanan += $plyn2;
+            }
+        }
+        if (count($plyn) == 0) {
+            $bagi = 1;
+        }else {
+            $bagi = count($plyn);
+        }
+        $pelayanan = round($pelayanan / $bagi);
+        
+        $pglr = $this->M_history->getDataSPB("and selesai_pengeluaran like to_date('".$date."','DD/MM/YYYY')");
+        $pengeluaran = 0;
+        for ($l=0; $l < count($pglr); $l++) { 
+            if ($pglr[$l]['WAKTU_PENGELUARAN'] != '') {
+                $pglr1 = explode(":", $pglr[$l]['WAKTU_PENGELUARAN']);
+                $pglr2 = ($pglr1[0]*3600) + ($pglr1[1]*60) + $pglr1[2];
+                $pengeluaran += $pglr2;
+            }
+        }
+        if (count($pglr) == 0) {
+            $bagi = 1;
+        }else {
+            $bagi = count($pglr);
+        }
+        $pengeluaran = round($pengeluaran / $bagi);
+        
+        $pck = $this->M_history->getDataSPB("and selesai_packing like to_date('".$date."','DD/MM/YYYY')");
+        $packing = 0;
+        $coly = 0;
+        $lembar_pack = 0;
+        $pcs_pack = 0;
+        for ($l=0; $l < count($pck); $l++) { 
+            if ($pck[$l]['WAKTU_PACKING'] != '') {
+                $pck1 = explode(":", $pck[$l]['WAKTU_PACKING']);
+                $pck2 = ($pck1[0]*3600) + ($pck1[1]*60) + $pck1[2];
+                $packing += $pck2;
+            }
+            $lembar_pack += 1;
+            $pcs_pack += $pck[$l]['JUMLAH_PCS'];
+            $coly2 = $this->M_packing->cekPacking($pck[$l]['NO_DOKUMEN']);
+            if (!empty($coly2)) {
+                $coly += count($coly2);
+            }
+        }
+        if (count($pck) == 0) {
+            $bagi = 1;
+        }else {
+            $bagi = count($pck);
+        }
+        $packing = round($packing / $bagi);
+        $jml_pack = round($pcs_pack/50);
+        
+        $tampung = array(
+            'pelayanan'     => $pelayanan,
+            'pengeluaran'   => $pengeluaran,
+            'packing'       => $packing,
+            'coly'          => $coly,
+            'lembar_pack'   => $lembar_pack,
+            'pcs_pack'      => $pcs_pack,
+            'jml_pack'      => $jml_pack,
+        );
+
+        return $tampung;
+    }
 
 }
