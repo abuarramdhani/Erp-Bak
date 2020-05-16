@@ -2643,6 +2643,19 @@ class M_pekerjakeluar extends CI_Model
 		return $nilai;
 	}
 
+	public function getPesangon($noind){
+		$nilai = 0;
+		$sql = "select jml_cuti
+				from hrd_khs.t_pesangon
+				where noinduk = '$noind'";
+		$result = $this->personalia->query($sql)->row();
+		if(!empty($result)){
+			$nilai = $result->jml_cuti;
+		}
+
+		return $nilai;
+	}
+
 	public function get_sisa_cuti($noind,$akhir){
 		$nilai = 0;
 		$sql = "select (
