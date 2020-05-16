@@ -27,7 +27,7 @@ class M_kirim extends Ci_Model
                         limkir.status_kirim,
 												limkir.id_satuan,
 												(select limbah_satuan from ga.ga_limbah_satuan limsat where limsat.id_jenis_limbah = limkir.id_jenis_limbah ) limbah_satuan,
-                        (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0') noind_pengirim,
+                        (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim) noind_pengirim,
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
@@ -74,7 +74,7 @@ class M_kirim extends Ci_Model
                       limkir.status_kirim,
                       limkir.id_satuan,
                       (select limbah_satuan from ga.ga_limbah_satuan limsat where limsat.id_jenis_limbah = limkir.id_jenis_limbah ) limbah_satuan,
-                      (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0') noind_pengirim,
+                      (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim) noind_pengirim,
                       (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                   from ga.ga_limbah_kirim limkir
                   inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
@@ -199,11 +199,11 @@ class M_kirim extends Ci_Model
 												limkir.id_satuan,
                         (select limbah_satuan_all from ga.ga_limbah_satuan_all where id_satuan_all = limkir.id_satuan) limbah_satuan_all,
 												(select limbah_satuan from ga.ga_limbah_satuan limsat where limsat.id_jenis_limbah = limkir.id_jenis_limbah) limbah_satuan,
-                        (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')noind_pengirim,
+                        (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0') noind_pengirim,
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                     from ga.ga_limbah_kirim limkir
-                    inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
-                    inner join ga.ga_limbah_satuan limsat on limsat.id_jenis_limbah = limjen.id_jenis_limbah
+                    left join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
+                    left join ga.ga_limbah_satuan limsat on limsat.id_jenis_limbah = limjen.id_jenis_limbah
                     where id_kirim = '$id';";
         $result = $this->db->query($query);
         return $result->result_array();
@@ -235,11 +235,11 @@ class M_kirim extends Ci_Model
                     cast(limkir.tanggal_kirim as date) tanggal,
                     cast(limkir.tanggal_kirim as time) waktu,
                     (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
-                    concat(limkir.jumlah_kirim,limsat.limbah_satuan) jumlah
+                    concat(limkir.jumlah_kirim, limsat.limbah_satuan) jumlah
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
                     inner join ga.ga_limbah_satuan limsat on limsat.id_jenis_limbah = limjen.id_jenis_limbah
-                    where id_kirim = '$id'";
+                  where id_kirim = '$id'";
         // echo "<pre>"; print_r($query); exit();
 
         $result = $this->db->query($query);
@@ -247,22 +247,24 @@ class M_kirim extends Ci_Model
     }
 
     public function getdatalimbahkirim($id){
-        $query = "select limjen.jenis_limbah, limkir.bocor, (select location_name from er.er_location where location_code = limkir.lokasi_kerja) lokasi,
+        $query = "select
+        limjen.jenis_limbah, limkir.bocor, (select location_name from er.er_location where location_code = limkir.lokasi_kerja) lokasi,
         (select employee_name from er.er_employee_all where employee_code = limkir.noind_pengirim) nama_pengirim,
         cast(limkir.tanggal_kirim as date) tanggal, 
         cast(limkir.tanggal_kirim as time) waktu,
         (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
-        concat(limkir.jumlah_kirim) jumlah,  concat(limsat.limbah_satuan) satuan,
+        concat(limkir.jumlah_kirim) jumlah,
+        (select limbah_satuan_all from ga.ga_limbah_satuan_all where id_satuan_all = limkir.id_satuan) satuan,
         limkir.berat_kirim,
         limkir.approver,
         (case 
-           when limkir.approver <> '' then (select employee_name from er.er_employee_all where employee_code=limkir.approver) 
-           else ''
-         end) as approver_name,
-         limkir. approver_time
+            when limkir.approver <> '' then (select employee_name from er.er_employee_all where employee_code=limkir.approver) 
+            else ''
+          end) as approver_name,
+          limkir. approver_time
         from ga.ga_limbah_kirim limkir
-        inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
-        inner join ga.ga_limbah_satuan limsat on limsat.id_jenis_limbah = limjen.id_jenis_limbah
+        left join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
+        left join ga.ga_limbah_satuan limsat on limsat.id_jenis_limbah = limjen.id_jenis_limbah
         where id_kirim = '$id'";
                     
         $result = $this->db->query($query);
@@ -291,4 +293,3 @@ class M_kirim extends Ci_Model
       return $this->db->query($sql);
     }
 }
-
