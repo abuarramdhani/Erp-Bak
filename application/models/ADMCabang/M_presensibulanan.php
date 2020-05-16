@@ -26,7 +26,7 @@ class M_presensibulanan extends Ci_Model
 			 $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))
+				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
 		}elseif ($noind == 'B0370') { //ada di ticket
@@ -153,7 +153,7 @@ class M_presensibulanan extends Ci_Model
 			$param = "";
 			// left(pri.kodesie,7) = left('$kodesie',7)
 			if ($noind == 'B0380') { // ada di ticket
-			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('J1171','J7004','L8001'))";
+			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('J1171','G1041','L8001'))";
 		}elseif ($noind == 'B0370') { //ada di ticket
 			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)

@@ -31,7 +31,7 @@ class M_presensiharian extends Ci_Model
 			 $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))
+				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
 		}elseif ($noind == 'B0370') { //ada di ticket
