@@ -114,10 +114,16 @@ class C_Cetakbom extends CI_Controller
 		$descprod = $this->M_cetakbom->selectprodukdesc($produk);
 
 		 $data['user'] = $this->session->user;        
-		 $data['name'] = $this->session->employee;
+		 $nama = $this->M_cetakbom->getNama($this->session->user);
+		 // echo "<pre>";print_r($nama[0]['nama']);
+		 // exit();
+
+		 $name= $this->SingkatNama($nama[0]['nama'], 2);
+
+		 $data['name'] = $name;
 
 
-		// echo "<pre>";print_r($datapdf);exit();
+		// echo "<pre>";print_r($name);exit();
 
 
 		
@@ -136,15 +142,12 @@ class C_Cetakbom extends CI_Controller
 
 		}
 
-		// echo "<pre>"; print_r($datapdf2); exit();
+		// echo "<pre>"; print_r($datapdf); exit();
 
 
 		$array_pdf = array();
 		$i=0;
 		foreach ($datapdf as $pdf) {
-			$cycletime = $pdf['USAGE_RATE_OR_AMOUNT']*3600;
-			$target = 23400/$cycletime;
-			$inverse = $target / 6.5;
 
 			// $array_pdf[$i]['PROSES'] = $pdf['PROSES'];
 			$array_pdf[$i]['KODE_PROSES'] = $pdf['KODE_PROSES'];
@@ -154,9 +157,8 @@ class C_Cetakbom extends CI_Controller
 			$array_pdf[$i]['MACHINE_QT'] = $pdf['MACHINE_QT'];
 			$array_pdf[$i]['ALTERNATE_ROUTING'] = $pdf['ALT'];
 			$array_pdf[$i]['OPT_QTY'] = $pdf['OPT_QTY'];
-			$array_pdf[$i]['CYCLE_TIME'] = round($cycletime,2);
-			$array_pdf[$i]['TARGET'] = floor($target);
-			$array_pdf[$i]['INVERSE'] = round($inverse,3);
+			$array_pdf[$i]['CYCLE_TIME'] = round($pdf['CT'],2);
+			$array_pdf[$i]['TARGET'] = floor($pdf['TARGET']);
 			$array_pdf[$i]['OPR_NO'] = $pdf['OPR_NO'];
 			$array_pdf[$i]['LAST_UPDATE_DATE'] = $pdf['LAST_UPDATE_DATE'];
 
@@ -200,6 +202,33 @@ class C_Cetakbom extends CI_Controller
   		$pdf->setHTMLFooter($foot);												//-----> Pakai Library MPDF
 
     	$pdf->Output($filename, 'I');
+	}
+
+	public function SingkatNama($nama, $jumlah_Kata)
+	{
+		$array_Nama = explode(" ",$nama);
+		$nama_Jadi = '';
+
+		// echo "<pre>";print_r($array_Nama);
+
+		for ($i=0; $i < sizeof($array_Nama); $i++) { 
+			if ($i < $jumlah_Kata) {
+				if($i == 0){
+					$nama_Jadi = $array_Nama[$i];    
+				} else {
+					$nama_Jadi = $nama_Jadi.' '.$array_Nama[$i];        
+				}
+				
+			} else{
+				if($i == $jumlah_Kata){
+					$nama_Jadi = $nama_Jadi.' .'.substr($array_Nama[$i], 0,1);
+				} else {
+					$nama_Jadi = $nama_Jadi.'.'.substr($array_Nama[$i], 0,1);
+				}
+			}
+		}
+
+		return $nama_Jadi;
 	}
 
 

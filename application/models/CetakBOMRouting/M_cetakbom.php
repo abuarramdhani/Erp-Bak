@@ -6,6 +6,17 @@ class M_cetakbom extends CI_Model
   {
     parent::__construct();
     $this->load->database();    
+    $this->personalia = $this->load->database('personalia', true);
+
+  }
+
+  function getNama($opr)
+  {
+  $sql = "SELECT trim(nama) as nama from hrd_khs.tpribadi 
+      where noind = '$opr'";
+    
+  $query = $this->personalia->query($sql);
+  return $query->result_array();
   }
 
   public function selectproduk($term) {
@@ -125,6 +136,7 @@ from mtl_system_items_b msib
     and borsmc.RESOURCE_ID = kdmr.RESOURCE_ID(+))mach
 where bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
 and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
+and bd.DEPARTMENT_CODE not like 'D-SUB%'
 and bd.ORGANIZATION_ID = bor.ORGANIZATION_ID
 and bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
 and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
