@@ -77,9 +77,9 @@
               <label for="seksi_pengirim">Plat Nomor</label>
               <div class="row">
                 <div class="col-md-12">
-                  <input type="text" required style="text-transform: uppercase;width:50px;float:left;" maxlength="2" placeholder="AB" class="form-control" id="plat1" name="plat1">
-                  <input required style="width: 90px;float:left;margin-left:11.31px !important" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "5" placeholder="1001" class="form-control" id="plat2" name="plat1">
-                  <input type="text" required style="text-transform: uppercase;width:70px;float:left;margin-left:11.31px !important" maxlength="3" placeholder="EA" class="form-control" id="plat3" name="plat1">
+                  <input type="text" autocomplete="off" required style="text-transform: uppercase;width:50px;float:left;" maxlength="2" placeholder="AB" class="form-control" id="plat1" name="plat1">
+                  <input required autocomplete="off" style="width: 90px;float:left;margin-left:11.31px !important" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "5" placeholder="1001" class="form-control" id="plat2" name="plat1">
+                  <input type="text" autocomplete="off" required style="text-transform: uppercase;width:70px;float:left;margin-left:11.31px !important" maxlength="3" placeholder="EA" class="form-control" id="plat3" name="plat1">
                 </div>
               </div>
             </div>
@@ -154,7 +154,7 @@
               </table>
             </div>
             <br>
-            <center> <button type="button" class="btn btn-lg btn-primary" onclick="setMSJ3()" name="button"><i class="fa fa-space-shuttle"></i> <b>Create</b></button> </center>
+            <center> <button type="button" class="btn btn-lg btn-primary" onclick="setMSJ3()" name="button" id="btnInputMSJ" disabled="disabled"><i class="fa fa-space-shuttle"></i> <b>Create</b></button> </center>
             <br>
           </div>
         </div>

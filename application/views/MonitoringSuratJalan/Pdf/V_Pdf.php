@@ -31,7 +31,7 @@
 	 					<label><b>Nomor Polisi :</b></label><br>
 	 					<span><?php echo $get['Header'][0]['PLAT_NUMBER'] ?></span> <br><br>
 	 					<label><b>Tanggal :</b></label><br>
-	 					<span><?php echo date('d-M-Y H:i:s',strtotime($get['Header'][0]['CREATION_DATE'])) ?></span>
+	 					<span><?php echo date('d-M-Y H:i:s',strtotime($get['Header'][0]['PRINT_DATE'])) ?></span>
 	 				</div>
 	 			</div>
 	 		</div>

@@ -165,7 +165,11 @@ class C_Master extends CI_Controller
                 // print_r($data);
                 $this->M_msj->UpdateAndInsert($data);
             }
-            echo json_encode(1);
+            $n100s = [
+              'NO_DOC' => $newNumber,
+              'STATUS' => 1
+            ];
+            echo json_encode($n100s);
         }
     }
 
@@ -228,9 +232,15 @@ class C_Master extends CI_Controller
     public function Cetak($doc)
     {
         if (!empty($doc)) {
+          $dataCek = $this->M_msj->getSjRow($doc);
+
+          if (empty($dataCek[0]['PRINT_DATE'])) {
+            $this->M_msj->updatePrintDate($doc);
+          }
+
           $data['get'] = $this->M_msj->getFPB($doc);
           // echo "<PRE>";
-          // print_r($data['get']);die;
+          // print_r($dataCek);die;
           // ====================== do something =========================
           $this->load->library('Pdf');
 
@@ -299,6 +309,7 @@ class C_Master extends CI_Controller
     {
         $term = 'CABANG';
         $data = $this->M_msj->getMaster();
+        // $data = $this->M_msj->getFPB('SJ200500001');
         echo "<pre>";
         print_r($data);
         die;

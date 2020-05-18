@@ -21,7 +21,7 @@ const swalMSJ = (type, title) => {
   })
 }
 
-// ==================/alert===================
+// ==================/alert==================
 
 let tblmsj = $('#tblmsj').DataTable({
   // scrollY: "350px",
@@ -53,6 +53,18 @@ let tblmsj = $('#tblmsj').DataTable({
       } );
   }
 });
+
+tblmsj.rows('.selected').on('click', function () {
+  setTimeout(function() {
+    const itungMSJ = tblmsj.rows( { selected: true } ).count();
+    if (itungMSJ !== 0) {
+      $('#btnInputMSJ').removeAttr('disabled', 'disabled');
+    }else {
+      $('#btnInputMSJ').attr('disabled', 'disabled');
+    }
+}, 500);
+
+})
 
 const setMSJ2 = () => {
 
@@ -91,7 +103,13 @@ const setMSJ2 = () => {
           $('tr[row-id="' + v[0] + '"]').addClass("disabled");
           $('tr[row-id="' + v[0] + '"] td:nth-child(2)').attr('onClick','gaole(' + v[0] + ')');
         })
-        swalMSJ('success', 'Selesai.')
+        Swal.fire({
+          type: 'success',
+          title: `FPB berhasil diterima!!!`,
+          text: ''
+        }).then(_ => {
+          location.reload();
+        })
       } else {
         swalMSJ('error', 'Terdapat Kesalahan.')
       }
@@ -170,14 +188,20 @@ const setMSJ3 = () => {
           Swal.showLoading()
         },
         success: function(result) {
-          console.log(result);
-          if (result) {
+          // console.log(result);
+          if (result.STATUS === 1) {
             tblmsj.rows().deselect();
             getDataMSJ.forEach((v, i) => {
               $('tr[row-id="' + v[0] + '"]').addClass("disabled");
               $('tr[row-id="' + v[0] + '"] td:nth-child(2)').attr('onClick','gaole(' + v[0] + ')');
             })
-            swalMSJ('success', 'Selesai.')
+            Swal.fire({
+              type: 'success',
+              title: `Berhasil Membuat Surat Jalan ${result.NO_DOC}`,
+              text: ''
+            }).then(_ => {
+              location.reload();
+            })
           } else {
             swalMSJ('error', 'Terdapat Kesalahan.')
           }

@@ -31,7 +31,7 @@ class M_msj extends CI_Model
                                                           kki.seksi_kirim,
                                                           kki.status,
                                                           kki.created_by,
-                                                          to_char(kki.CREATION_DATE,'DD-MON-YYYY HH:MI:SS') CREATION_DATE,
+                                                          to_char(kki.CREATION_DATE,'DD-MON-YYYY HH24:MI:SS') CREATION_DATE,
                                          CASE
                                             WHEN kki.status = 1
                                                THEN 'Dipersiapkan Seksi Pengirim'
@@ -173,7 +173,18 @@ class M_msj extends CI_Model
     public function getSj()
     {
         $response = $this->oracle->distinct()
-                        ->select('NO_SURATJALAN, NAMA_SUPIR, PLAT_NUMBER')
+                        ->select('NO_SURATJALAN, NAMA_SUPIR, PLAT_NUMBER, JENIS_KENDARAAN, DARI, TUJUAN, PRINT_DATE')
+                        ->order_by('NO_SURATJALAN', 'desc')
+                        ->get('KHS_SJ_INTERNAL')
+                        ->result_array();
+        return $response;
+    }
+
+    public function getSjRow($doc)
+    {
+        $response = $this->oracle->distinct()
+                        ->select('NO_SURATJALAN, PRINT_DATE')
+                        ->where('NO_SURATJALAN', $doc)
                         ->order_by('NO_SURATJALAN', 'desc')
                         ->get('KHS_SJ_INTERNAL')
                         ->result_array();
@@ -205,6 +216,7 @@ class M_msj extends CI_Model
     {
         $response = $this->oracle->select('NO_FPB')
                              ->where('NO_SURATJALAN', $sj)
+                             ->order_by('NO_FPB', 'asc')
                              ->get('KHS_SJ_INTERNAL')
                              ->result_array();
 
@@ -223,6 +235,7 @@ class M_msj extends CI_Model
                 $responses = $this->oracle->distinct()
                                     ->select('DOC_NUMBER, ITEM_TYPE')
                                     ->where('DOC_NUMBER', $fpb['NO_FPB'])
+                                    ->order_by('DOC_NUMBER', 'asc')
                                     ->get('KHS_KIRIM_INTERNAL')
                                     ->result_array();
                 if (!empty($responses)) {
@@ -233,7 +246,7 @@ class M_msj extends CI_Model
             }
 
             $final['Header'] = $this->oracle->distinct()
-                               ->select('NO_SURATJALAN, PLAT_NUMBER, to_char(CREATION_DATE,\'DD-MON-YYYY HH:MI:SS\') CREATION_DATE, FLAG_CETAK, NAMA_SUPIR, DARI, TUJUAN, JENIS_KENDARAAN')
+                               ->select('NO_SURATJALAN, PLAT_NUMBER, to_char(PRINT_DATE,\'DD-MON-YYYY HH24:MI:SS\') PRINT_DATE, FLAG_CETAK, NAMA_SUPIR, DARI, TUJUAN, JENIS_KENDARAAN')
                                ->where('NO_SURATJALAN', $sj)
                                ->get('KHS_SJ_INTERNAL')
                                ->result_array();
@@ -244,12 +257,20 @@ class M_msj extends CI_Model
         }
     }
 
+    public function updatePrintDate($d)
+    {
+      $this->oracle->query("UPDATE
+          KHS_SJ_INTERNAL
+      SET PRINT_DATE = SYSDATE
+      WHERE NO_SURATJALAN = '$d'
+    ");
+    }
+
     public function updateCetak($d)
     {
-        $this->oracle->query("UPDATE
+      $this->oracle->query("UPDATE
             KHS_SJ_INTERNAL
-        SET PRINT_DATE = SYSDATE,
-            FLAG_CETAK = 'Y'
+        SET FLAG_CETAK = 'Y'
         WHERE NO_SURATJALAN = '$d'
       ");
 
@@ -263,6 +284,7 @@ class M_msj extends CI_Model
               KHS_KIRIM_INTERNAL
           SET STATUS = '4'
           WHERE DOC_NUMBER = '$d[NO_FPB]'
+          AND STATUS = '3'
         ");
         }
     }
