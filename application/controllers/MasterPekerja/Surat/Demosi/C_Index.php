@@ -418,7 +418,7 @@ class C_Index extends CI_Controller
 				$kode_surat 				=	'PS/KI-N';
 				$tertanda 					= 	'Cv Karya Hidup Sentosa<br/>Departemen Personalia';
 				$nama_tanda_tangan 			=	'Rajiwan';
-				$jabatan_tertanda 			=	'Asisten Kepala Unit Hubungan Kerja & General Affair';
+				$jabatan_tertanda 			=	'Kepala Seksi Utama General Affairs & Hubungan Kerja';
 
 				$cekPekerjaan 				=	$this->M_surat->cekPekerjaan($pekerjaan_baru);
 				$nama_pekerjaan_baru 		=	$cekPekerjaan[0]['pekerjaan'];

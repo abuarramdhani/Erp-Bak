@@ -39,6 +39,13 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaire();
 
@@ -60,6 +67,13 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -103,6 +117,13 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaireId($id);
 		$data['segment'] 		= $this->M_masterquestionnaire->GetQuestionnaireSegmentId($id);
@@ -162,6 +183,13 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaireId($id);
 		$data['segment'] = $this->M_masterquestionnaire->GetQuestionnaireSegmentId($id);
@@ -211,6 +239,13 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 		
 		$data['title']			= $this->M_masterquestionnaire->GetTitle($Qs_id);
 		$data['segment_title']	= $this->M_masterquestionnaire->GetSegmentTitle($Sg_id);
@@ -243,6 +278,13 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$data['questionnaire'] 	= $this->M_masterquestionnaire->GetQuestionnaireId($id);
 		$data['segment'] 		= $this->M_masterquestionnaire->GetQuestionnaireSegmentId($id);
@@ -266,6 +308,13 @@ class C_MasterQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$data['questionnaire'] 	= $this->M_masterquestionnaire->GetQuestionnaireId($id);
 		$data['segment'] 		= $this->M_masterquestionnaire->GetQuestionnaireSegmentId($id);
