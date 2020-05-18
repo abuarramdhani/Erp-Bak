@@ -25,11 +25,27 @@ const updatePBI = (doc, no) => {
       data: {
         doc: doc,
       },
+      beforeSend: function() {
+        Swal.showLoading()
+      },
       success: function(result) {
         if (result) {
+          Swal.close();
           swalRKHToastrAlert('info', 'Data Berhasil Diperbarui');
-          $('tr[row-id="' + no + '"] button[id="diterima"]').attr('disabled', 'disabled');
-          $('tr[row-id="' + no + '"] td center[id="status"]').html('Diterima Seksi Tujuan');
+          Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          }).fire({
+            customClass: 'swal-font-small',
+            type: 'info',
+            title: 'Data Berhasil Diterima'
+          }).then(_ => {
+              location.reload();
+          })
+          // $('tr[row-id="' + no + '"] button[id="diterima"]').attr('disabled', 'disabled');
+          // $('tr[row-id="' + no + '"] td center[id="status"]').html('Diterima Seksi Tujuan');
         } else {
           swalRKHToastrAlert('error', 'Gagal Memperbarui Data');
         }
@@ -70,6 +86,18 @@ $(document).ready(function() {
   $('.select2PBILine').select2({
     minimumInputLength: 3,
     placeholder: "Item Kode",
+    tags: true,
+    createSearchChoice: function(term, data) {
+      if ($(data).filter(function() {
+        let aterm = this.text.localeCompare(term).toUpperCase();
+        return aterm === 0;
+      }).length === 0) {
+        return {
+          id: obj.SEGMENT1,
+          text: `${obj.SEGMENT1} - ${obj.DESCRIPTION}`
+        };
+      }
+    },
     ajax: {
       url: baseurl + "PengirimanBarangInternal/Input/listCode",
       dataType: "JSON",
@@ -122,9 +150,9 @@ const btnPlusPBI = () => {
     let a = n + 1;
     $('#tambahisi').append(`<tr class="rowbaru" id ="teer${n}">
                               <td class="text-center"><input type="text" class="form-control" name="line_number[]" value="${a}" readonly></td>
-                              <td class="text-center"><select class="form-control select2PBILine" id="item_code_${a}" name="item_code[]" onchange="autofill(${a})" required></select></td>
+                              <td class="text-center"><select class="form-control select2PBILine" id="item_code_${a}" name="item_code[]" onchange="autofill(${a})" style="text-transform:uppercase;" required></select></td>
                               <td class="text-center"><input type="text" class="form-control" id="description_${a}" name="description[]" readonly></td>
-                              <td class="text-center"><input type="number" class="form-control" name="quantity[]" required></td>
+                              <td class="text-center"><input type="number" class="form-control" name="quantity[]" autocomplete="off" required></td>
                               <td class="text-center"><input type="text" class="form-control" id="uom_${a}" name="uom[]" readonly></td>
                               <td class="text-center"><input type="text" class="form-control" id="itemtype_${a}" name="item_type[]" readonly></td>
                               <td class="text-center">
@@ -137,10 +165,22 @@ const btnPlusPBI = () => {
     $('.cektable tbody tr[id="teer' + n + '"] .select2PBILine').select2({
       minimumInputLength: 3,
       placeholder: "Item Kode",
+      tags: true,
+      createSearchChoice: function(term, data) {
+        if ($(data).filter(function() {
+          return this.text.localeCompare(term) === 0;
+        }).length === 0) {
+          return {
+            id: obj.SEGMENT1,
+            text: `${obj.SEGMENT1} - ${obj.DESCRIPTION}`
+          };
+        }
+      },
       ajax: {
         url: baseurl + "PengirimanBarangInternal/Input/listCode",
         dataType: "JSON",
         type: "POST",
+        tags: true,
         data: function(params) {
           return {
             term: params.term
@@ -178,9 +218,15 @@ const autofill = (n) => {
         code: code,
       },
       success: function(result) {
-        $(`#description_${n}`).val(result[0].DESCRIPTION);
-        $(`#uom_${n}`).val(result[0].PRIMARY_UOM_CODE);
-        $(`#itemtype_${n}`).val(result[0].JENIS);
+        if (result == 0) {
+          $(`#description_${n}`).val(code);
+          $(`#uom_${n}`).val('PCS');
+          $(`#itemtype_${n}`).val('LAIN-LAIN');
+        }else {
+          $(`#description_${n}`).val(result[0].DESCRIPTION);
+          $(`#uom_${n}`).val(result[0].PRIMARY_UOM_CODE);
+          $(`#itemtype_${n}`).val(result[0].JENIS);
+        }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.error();

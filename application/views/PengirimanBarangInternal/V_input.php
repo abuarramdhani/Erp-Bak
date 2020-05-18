@@ -25,7 +25,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="seksi_pengirim">Pengirim</label>
+                  <label for="seksi_pengirim">Seksi Pengirim</label>
                   <div class="row">
                     <div class="col-md-4">
                       <input type="text" class="form-control" id="nama_pengirim" name="nama_pengirim" value="<?php echo $this->session->employee ?>" readonly>
@@ -36,7 +36,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="tujuan">Penerima</label>
+                  <label for="tujuan">Seksi Tujuan</label>
                   <div class="form-group">
                     <div class="row">
                       <div class="col-md-4">
@@ -72,9 +72,9 @@
                             <tbody id="tambahisi">
                               <tr id="teer1">
                                 <td class="text-center"><input type="text" class="form-control" name="line_number[]" value="1" readonly></td>
-                                <td class="text-center"><select class="form-control select2PBILine" id="item_code_1" name="item_code[]" onchange="autofill(1)" required></select></td>
+                                <td class="text-center"><select class="form-control select2PBILine" id="item_code_1" name="item_code[]" style="text-transform:uppercase !important;" onchange="autofill(1)" required></select></td>
                                 <td class="text-center"><input type="text" class="form-control" id="description_1" name="description[]" readonly></td>
-                                <td class="text-center"><input type="number" class="form-control" name="quantity[]" required></td>
+                                <td class="text-center"><input type="number" class="form-control" name="quantity[]" autocomplete="off" required></td>
                                 <td class="text-center"><input type="text" class="form-control" id="uom_1" name="uom[]" readonly></td>
                                 <td class="text-center"><input type="text" class="form-control" id="itemtype_1" name="item_type[]" readonly></td>
                                 <td class="text-center"><a class="btn btn-default btn-sm" onclick="btnPlusPBI()"><i class="fa fa-plus"></i></a></td>

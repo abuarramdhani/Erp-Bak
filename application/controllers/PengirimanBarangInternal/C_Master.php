@@ -79,7 +79,12 @@ class C_Master extends CI_Controller
     public function autofill()
     {
         $term = strtoupper($this->input->post('code'));
-        echo json_encode($this->M_pbi->autofill($term));
+        $cek = $this->M_pbi->autofill($term);
+        if (!empty($cek)) {
+          echo json_encode($cek);
+        }else {
+          echo json_encode(0);
+        }
     }
 
     public function cekComponent()
@@ -157,9 +162,9 @@ class C_Master extends CI_Controller
           'TUJUAN'        => $tujuan,
           'USER_TUJUAN'   => $user_tujuan,
           'LINE_NUM'      => $line[$key],
-          'ITEM_CODE'     => $item_code[$key],
-          'ITEM_TYPE'     => $item_type[$key],
-          'DESCRIPTION'   => $description[$key],
+          'ITEM_CODE'     => strtoupper($item_code[$key]),
+          'ITEM_TYPE'     => strtoupper($item_type[$key]),
+          'DESCRIPTION'   => strtoupper($description[$key]),
           'QUANTITY'      => $quantity[$key],
           'UOM'           => $uom[$key],
           'STATUS'        => 1,
@@ -278,7 +283,7 @@ class C_Master extends CI_Controller
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
-            $filename 	= 'Cetak_FPB_'.date('d-M-Y').'.pdf';
+            $filename 	= $doc.'.pdf';
             $isi 				= $this->load->view('PengirimanBarangInternal/pdf/V_Pdf', $data, true);
             $pdf->WriteHTML($isi);
             $pdf->Output($filename, 'I');
@@ -304,7 +309,7 @@ class C_Master extends CI_Controller
     public function cekapi()
     {
         $term = 'CABANG';
-        $data = $this->M_pbi->GetMasterD();
+        $data = $this->M_pbi->GetMaster();
         echo "<pre>";
         print_r($data);
         die;
