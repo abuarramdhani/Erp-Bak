@@ -96,12 +96,14 @@ class C_Akuntansi extends CI_Controller {
 
     function do_import(){
     	$filename = $_FILES['file']['name'];
-        $filename = str_replace(' ','_', $filename);
+        $waktu = date('Y-m-d_H-i-s');
+        $filename = $waktu.str_replace(' ','_', $filename);
     	// echo $filename;exit();
     	$config['upload_path'] = './assets/upload/RekapPresensiHLCM/'; //buat folder dengan nama assets di root folder
         $config['file_name'] = $filename;
         $config['allowed_types'] = 'xls|xlsx|csv';
         $config['max_size'] = 10000;
+        $config['overwrite']            = TRUE;
 
         $this->load->library('upload');
         $this->upload->initialize($config);
