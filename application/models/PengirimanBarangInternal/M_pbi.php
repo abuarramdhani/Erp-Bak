@@ -17,10 +17,11 @@ class M_pbi extends CI_Model
                     KHS_KIRIM_INTERNAL
                 SET
                     STATUS = '6',
-                    RECEIVE_DATE = SYSDATE,
-                    RECEIVED_BY = '$user_login'
+                    RECEIVE_DATE_SEKSI = SYSDATE,
+                    RECEIVED_BY_SEKSI = '$user_login'
                 WHERE
                     DOC_NUMBER = '$d'
+                AND STATUS = '5'
         ");
         return 1;
     }
@@ -33,7 +34,7 @@ class M_pbi extends CI_Model
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.created_by, to_char(kki.CREATION_DATE,'DD-MON-YYYY HH:MI:SS') CREATION_DATE,
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, kki.created_by, to_char(kki.creation_date,'DD-MON-YYYY HH24:MI:SS') creation_date,
                  CASE
                     WHEN kki.status = 1
                        THEN 'Dipersiapkan Seksi Pengirim'
@@ -53,7 +54,7 @@ class M_pbi extends CI_Model
                    WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
               FROM khs_kirim_internal kki
               WHERE kki.seksi_kirim = '$response->seksi'
-              AND kki.status = '5'
+              AND kki.status >= '5'
               ORDER BY kki.doc_number DESC";
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -75,7 +76,7 @@ class M_pbi extends CI_Model
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, to_char(kki.CREATION_DATE,'DD-MON-YYYY HH:MI:SS') CREATION_DATE,
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, to_char(kki.creation_date,'DD-MON-YYYY HH24:MI:SS') creation_date,
                  CASE
                     WHEN kki.status = 1
                        THEN 'Dipersiapkan Seksi Pengirim'
@@ -205,8 +206,8 @@ class M_pbi extends CI_Model
                WHERE msib.organization_id = 81
                  AND msib.inventory_item_status_code = 'Active'
                  AND SUBSTR (msib.segment1, 1, 1) <> 'J'
-                 AND (msib.segment1 LIKE '$d%'
-                 OR msib.description LIKE '$d%')
+                 AND (msib.segment1 LIKE '%$d%'
+                 OR msib.description LIKE '%$d%')
             ORDER BY 1";
         //tambah segment1 untuk liat munculin  berdasrkan itiem_code;
         $query = $this->oracle->query($sql);
@@ -287,20 +288,4 @@ class M_pbi extends CI_Model
         return $response;
     }
 
-    // public function del($rm, $ip)
-    // {
-    //     if (!empty($rm)) {
-    //         if (!empty($ip)) {
-    //             $this->oracle->where('REQUEST_NUMBER', $rm);
-    //             $this->oracle->where('IP_ADDRESS', $ip);
-    //             $this->oracle->delete('KHS_TAMPUNG_BACKORDER');
-    //         } else {
-    //             echo "IP ADDRESS is empty!!";
-    //             die;
-    //         }
-    //     } else {
-    //         echo "REQUEST_NUMBER is empty!!";
-    //         die;
-    //     }
-    // }
 }

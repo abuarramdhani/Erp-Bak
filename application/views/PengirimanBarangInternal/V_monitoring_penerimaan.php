@@ -38,9 +38,15 @@
                         <button type="button" class="btn btn-success" style="margin-left:5px;" name="button" style="font-weight:bold;" onclick="detailPBI('<?php echo $g['DOC_NUMBER'] ?>')" data-toggle="modal" data-target="#Mpbi">
                           <i class="fa fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-primary" id="diterima" style="margin-left:5px;" style="font-weight:bold;" onclick="updatePBI('<?php echo $g['DOC_NUMBER'] ?>', '<?php echo $no ?>')">
-                          <i class="fa fa-ship"></i> Diterima
-                        </button>
+                        <?php if($g['STATUS'] == 5){ ?>
+                          <button type="button" class="btn btn-primary" id="diterima" style="margin-left:5px;" style="font-weight:bold;" onclick="updatePBI('<?php echo $g['DOC_NUMBER'] ?>', '<?php echo $no ?>')">
+                            <i class="fa fa-ship"></i> Diterima
+                          </button>
+                        <?php }else { ?>
+                          <div class="btn bg-green" style="border-radius:5px;">
+                            <i class="fa fa-check-square"></i> Done
+                          </div>
+                        <?php } ?>
                       </center>
                     </td>
 
