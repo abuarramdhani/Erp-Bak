@@ -63,7 +63,7 @@ tr.disabled:hover {
               </tbody>
             </table>
           </div>
-          <center> <button type="button" class="btn btn-lg btn-primary" onclick="setMSJ2()" name="button"><i class="fa fa-retweet"></i> <b>Terima</b></button> </center>
+          <center> <button type="button" class="btn btn-lg btn-primary" onclick="setMSJ2()" id="btnInputMSJ" disabled="disabled" name="button"><i class="fa fa-retweet"></i> <b>Terima</b></button> </center>
           <br>
         </div>
       </div>

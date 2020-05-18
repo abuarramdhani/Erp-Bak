@@ -21,7 +21,7 @@
 	</div>
 	<table style="width: 100%;">
 		<tr>
-			<td style="font-size: 11px;width:83%">
+			<td style="font-size: 11px;width:83%;font-weight:bold">
 				FRM-PPB-02-02
 			</td>
 			<td style="width:17%;font-size: 11px;">
