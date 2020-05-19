@@ -115,26 +115,22 @@ class C_ProsesGaji extends CI_Controller {
 		$data['periodeGaji'] = $this->M_prosesgaji->getCutOffGaji();
 		$data['periodeGajiSelected'] = $this->input->post('periodeData');
 		$data['gaji']	= $this->M_prosesgaji->ambilNominalGaji();
-		if ($puasa == 'on' || $puasa == 'true' || $puasa == 't') {
-			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$keluar,$periode_puasa);
-		}else{
-			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$keluar);
-		}
+		$data['data'] = $this->M_prosesgaji->getRecordAbsenPekerjaByPeriode($tanggalakhir);
 
 		$data['valLink'] = $link;
+		// echo "<pre>";print_r($data['data']);exit();
 
 		$arrData = array();
 		$angka = 0;
-
 		foreach ($data['data'] as $key) {
-			$gpokok = $key['gpokok'];
-			$um = ($key['um'] - $key['ump']);
-			$lembur = $key['lembur'];
-			$ump = $key['ump'];
-			$puasa = $key['puasa'];
+			$gpokok = $key['proses_komponen_gaji_pokok'];
+			$um = $key['proses_komponen_uang_makan'];
+			$lembur = $key['proses_komponen_lembur'];
+			$ump = $key['proses_komponen_uang_makan_puasa'];
 			$thnbln 	= '';
 			$tglawal 	= '';
 			$tglakhir 	= '';
+			$kd_pekerjaan = '';
 			foreach ($data['periodeGaji'] as $prd) {
 				if ($prd['rangetanggal'] == $data['periodeGajiSelected']) {
 					$thnbln 	= $prd['periode'];
@@ -143,176 +139,33 @@ class C_ProsesGaji extends CI_Controller {
 				}
 			}
 
-			$cekUbahPekerjaan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tglawal,$tglakhir,'cek');
-			if ($cekUbahPekerjaan == 1) {
-				$tanggalPerubahan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tglawal,$tglakhir,'tanggal');
-
-				foreach ($tanggalPerubahan as$val) {
-					$dataPerubahanSebelum = $this->M_prosesgaji->getNominalPerubahan($tglawal,$val['tanggal_akhir_berlaku'],$key['noind']);
-					for ($i=0; $i < 8; $i++) {
-						if ($val['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja'] and $val['kode_pekerjaan2']==$data['gaji'][$i]['kode_pekerjaan']) {
-							$nominalgpokok = $data['gaji'][$i]['nominal'];
-						}
-						if ($val['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja']) {
-							$nominalum = $data['gaji'][$i]['uang_makan'];
-							$nominalump = $data['gaji'][$i]['uang_makan_puasa'];
-						}
-					}
-					foreach ($dataPerubahanSebelum as $value) {
-						$gajipokok1 	= $value['gpokok']*$nominalgpokok;
-						if ($puasa == 't' or $puasa == 'true') {
-							$uangmakanpuasa1 = $value['ump']*$nominalump;
-						}else{
-							$uangmakanpuasa1 = $value['ump']*$nominalum;
-						}
-						$uangmakan1 	= ($value['um'] - $value['ump'])*$nominalum;
-
-						$gajilembur1 = $value['lembur']*($nominalgpokok/7);
-						$total 		= $gajipokok1+$gajilembur1+$uangmakan1+$uangmakanpuasa1;
-
-						$createDate = date('Y-m-d H:i:s');
-
-						$arrdetail = array(
-							'noind' 			=> $key['noind'],
-							'kode_pekerjaan' 	=> $val['kode_pekerjaan2'],
-							'periode' 			=> $thnbln,
-							'gp' 				=> $value['gpokok'],
-							'jml_gp'			=> $gajipokok1,
-							'um' 				=> $value['um'] - $value['ump'],
-							'jml_um' 			=> $uangmakan1,
-							'ump' 				=> $value['ump'],
-							'jml_ump' 			=> $uangmakanpuasa1,
-							'lmbr' 				=> $value['lembur'],
-							'jml_lbr' 			=> $gajilembur1,
-							'lokasi_kerja' 		=> $val['lokasi_kerja'],
-							'creation_date' 	=> $createDate,
-							'tgl_awal_periode' 	=> $tglawal,
-							'tgl_akhir_periode' => $tglakhir
-						);
-
-						$cek = $this->M_prosesgaji->getHlcmProsesDetail($thnbln,$key['noind'],$val['kode_pekerjaan2']);
-
-						if ($cek !== 0) {
-							$this->M_prosesgaji->updateHlcmProsesDetail($arrdetail);
-							//insert to t_log
-								$aksi = 'UPAH HLCM';
-								$detail = 'UPDATE data sebelum di hlcm_proses_detail noind='.$key['noind'];
-								$this->log_activity->activity_log($aksi, $detail);
-							//
-						}else{
-							$this->M_prosesgaji->insertHlcmProsesDetail($arrdetail);
-							//insert to t_log
-							$aksi = 'UPAH HLCM';
-							$detail = 'INSERT data sebelum di hlcm_proses_detail noind='.$key['noind'];
-							$this->log_activity->activity_log($aksi, $detail);
-							//
-						}
-					}
-					$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tglakhir,$key['noind']);
-					for ($i=0; $i < 8; $i++) {
-						if ($val['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja'] and $val['kode_pekerjaan']==$data['gaji'][$i]['kode_pekerjaan']) {
-							$nominalgpokok = $data['gaji'][$i]['nominal'];
-						}
-						if ($val['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja']) {
-							$nominalum = $data['gaji'][$i]['uang_makan'];
-							$nominalump = $data['gaji'][$i]['uang_makan_puasa'];
-						}
-					}
-					foreach ($dataPerubahanSesudah as $value) {
-						$gajipokok2 	= $value['gpokok']*$nominalgpokok;
-						$uangmakan2 	= ($value['um'] - $value['ump'])*$nominalum;
-						if ($puasa == 't' or $puasa == 'true') {
-							$uangmakanpuasa2 = $value['ump']*$nominalump;
-						}else{
-							$uangmakanpuasa2 = $value['ump']*$nominalum;
-						}
-
-						$gajilembur2 = $value['lembur']*($nominalgpokok/7);
-						$total 		+= $gajipokok2+$gajilembur2+$uangmakan2+$uangmakanpuasa2;
-						$gajipokok 	= $gajipokok1+$gajipokok2;
-						$uangmakan 	= $uangmakan1+$uangmakan2;
-						$uangmakanpuasa = $uangmakanpuasa1+$uangmakanpuasa2;
-						$gajilembur = $gajilembur1+$gajilembur2;
-						$gajilembur = number_format($gajilembur,'0','.','');
-						$total 		= number_format($total,'0','.','');
-
-						$createDate = date('Y-m-d H:i:s');
-
-						$arrdetail['2'] = array(
-							'noind' 			=> $key['noind'],
-							'kode_pekerjaan' 	=> $val['kode_pekerjaan'],
-							'periode' 			=> $thnbln,
-							'gp' 				=> $value['gpokok'],
-							'jml_gp'			=> $gajipokok2,
-							'um' 				=> $value['um'] - $value['ump'],
-							'jml_um' 			=> $uangmakan2,
-							'ump' 				=> $value['ump'],
-							'jml_ump' 			=> $uangmakanpuasa1,
-							'lmbr' 				=> $value['lembur'],
-							'jml_lbr' 			=> $gajilembur2,
-							'lokasi_kerja' 		=> $val['lokasi_kerja'],
-							'creation_date' 	=> $createDate,
-							'tgl_awal_periode' 	=> $tglawal,
-							'tgl_akhir_periode' => $tglakhir
-						);
-
-						$cek = $this->M_prosesgaji->getHlcmProsesDetail($thnbln,$key['noind'],$val['kode_pekerjaan']);
-
-						if ($cek !== 0) {
-							$this->M_prosesgaji->updateHlcmProsesDetail($arrdetail);
-							//insert to t_log
-							$aksi = 'UPAH HLCM';
-							$detail = 'UPDATE data sesudah di hlcm_proses_detail noind='.$key['noind'];
-							$this->log_activity->activity_log($aksi, $detail);
-							//
-						}else{
-							$this->M_prosesgaji->insertHlcmProsesDetail($arrdetail);
-							//insert to t_log
-							$aksi = 'UPAH HLCM';
-							$detail = 'INSERT data sesudah di hlcm_proses_detail noind='.$key['noind'];
-							$this->log_activity->activity_log($aksi, $detail);
-							//
-						}
-					}
+			
+			for ($i=0; $i < 8; $i++) {
+				if ($key['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja'] and $key['status']==$data['gaji'][$i]['pekerjaan']) {
+					$nominalgpokok = $data['gaji'][$i]['nominal'];
+					$kd_pekerjaan = $data['gaji'][$i]['kode_pekerjaan'];
 				}
-			}else{
-				for ($i=0; $i < 8; $i++) {
-					if ($key['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja'] and $key['kdpekerjaan']==$data['gaji'][$i]['kode_pekerjaan']) {
-						$nominalgpokok = $data['gaji'][$i]['nominal'];
-					}
-					if ($key['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja']) {
-						$nominalum = $data['gaji'][$i]['uang_makan'];
-							$nominalump = $data['gaji'][$i]['uang_makan_puasa'];
-					}
+				if ($key['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja']) {
+					$nominalum = $data['gaji'][$i]['uang_makan'];
+					$nominalump = $data['gaji'][$i]['uang_makan_puasa'];
 				}
-
-				$gajipokok 	= $gpokok*$nominalgpokok;
-				if ($puasa == 't' or $puasa == 'true') {
-					$uangmakan 	= ($um*$nominalum);
-					$uangmakanpuasa = ($ump*$nominalump);
-				}else{
-					$uangmakan 	= ($um*$nominalum);
-					$uangmakanpuasa = ($ump*$nominalum);
-				}
-
-				$gajilembur = $lembur*($nominalgpokok/7);
-				$gajilembur = number_format($gajilembur,'0','.','');
-				$total 		= $gajipokok+$gajilembur+$uangmakan+$uangmakanpuasa;
-				$total 		= number_format($total,'0','.','');
 			}
 
+			$gajipokok 	= $gpokok*$nominalgpokok;
+			
+			$uangmakan 	= ($um*$nominalum);
+			$uangmakanpuasa = ($ump*$nominalump);
+
+			$gajilembur = $lembur*($nominalgpokok/7);
+			$gajilembur = number_format($gajilembur,'0','.','');
+			$total 		= $gajipokok+$gajilembur+$uangmakan+$uangmakanpuasa;
+			$total 		= number_format($total,'0','.','');
 
 			$createDate = date('Y-m-d H:i:s');
 
-			if ($cekUbahPekerjaan == 1) {
-				$status_perubahan = '1';
-			}else{
-				$status_perubahan = '0';
-			}
-
 			$arrData[$angka] = array(
 				'noind' 			=> $key['noind'],
-				'kode_pekerjaan' 	=> $key['kdpekerjaan'],
+				'kode_pekerjaan' 	=> $kd_pekerjaan,
 				'periode' 			=> $thnbln,
 				'jml_gp' 			=> $gpokok,
 				'gp' 				=> $gajipokok,
@@ -327,7 +180,7 @@ class C_ProsesGaji extends CI_Controller {
 				'tgl_akhir_periode' => $tglakhir,
 				'creation_date' 	=> $createDate,
 				'lokasi_kerja'		=> $key['lokasi_kerja'],
-				'status_perubahan' 	=> $status_perubahan
+				'status_perubahan' 	=> '0'
 			);
 
 			$cek = $this->M_prosesgaji->getHlcmProses($thnbln,$key['noind']);
@@ -348,12 +201,14 @@ class C_ProsesGaji extends CI_Controller {
 				//
 			}
 			$arrData[$angka]['nama'] = $key['nama'];
-			$arrData[$angka]['pekerjaan'] = $key['pekerjaan'];
+			$arrData[$angka]['pekerjaan'] = $key['status'];
 			$arrData[$angka]['lokasi'] = $this->M_prosesgaji->getLocationCode($key['noind']);
 			$arrData[$angka]['tambahan'] = $this->M_prosesgaji->getTambahan($key['noind'],$tglawal,$tglakhir);
 			$arrData[$angka]['potongan'] = $this->M_prosesgaji->getPotongan($key['noind'],$tglawal,$tglakhir);
 			$angka++;
 		}
+		// echo "<pre>";print_r($arrData);exit();
+
 		$data['hasil'] = $arrData;
 
 		$this->load->view('V_Header',$data);
