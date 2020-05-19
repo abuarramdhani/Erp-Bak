@@ -79,6 +79,19 @@
 									</div>
                                     
 								</div>
+								</div>
+									<div class="panel-body">
+									<div class="col-md-4" style="text-align: right;">
+										<label>Tipe Cetak</label>
+									</div>
+									<div class="col-md-3" style="text-align: center;">
+										<select class="form-control select2 typeCetak" id="typeCetak" name="typeCetak" required="required">
+											<option value="N">Default</option>
+											<option value="Y">Detail Proses</option>
+										</select>
+									</div>
+                                    
+								</div>
 							<!-- 		<div class="panel-body">
 									<div class="col-md-4" style="text-align: right;">
 										<label>Type</label>
