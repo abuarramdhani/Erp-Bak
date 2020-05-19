@@ -421,6 +421,14 @@ class M_prosesgaji extends CI_Model {
 		$result = $this->personalia->query($sql);
 		return $result->num_rows();
 	}
+
+	public function getRecordAbsenPekerjaByPeriode($periode){
+		$sql = "select *
+				from hlcm.record_absen_pekerja
+				where to_char(periode,'yyyy-mm') = to_char('$periode'::date,'yyyy-mm')";
+		$result = $this->erp->query($sql);
+		return $result->result_array();
+	}
 	
 	public function prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$keluar,$puasa = FALSE)
 	{
