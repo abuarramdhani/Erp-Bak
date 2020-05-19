@@ -231,6 +231,7 @@ class M_prosesgaji extends CI_Model {
 						tanggal_akhir::date
 				from \"Presensi\".tcutoff $all 
 				order by periode";
+
 		$data = $this->personalia->query($sql);
 		return $data->result_array();
 	}
@@ -369,7 +370,7 @@ class M_prosesgaji extends CI_Model {
 					(	select pekerjaan 
 						from hlcm.hlcm_datagaji 
 						where prs.kode_pekerjaan = kode_pekerjaan 
-						and prs.lokasi_kerja = lokasi_kerja) pekerjaan,
+						and concat('0',prs.lokasi_kerja) = lokasi_kerja) pekerjaan,
 					employee_name nama
 				from hlcm.hlcm_proses prs
 				inner join er.er_employee_all eall
@@ -378,6 +379,7 @@ class M_prosesgaji extends CI_Model {
 				$lokasi_kerja
 				$where_keluar
 				order by prs.kode_pekerjaan";
+
 		$result = $this->erp->query($sql);
 		return $result->result_array();
 	}
@@ -401,7 +403,7 @@ class M_prosesgaji extends CI_Model {
 					(	select pekerjaan 
 						from hlcm.hlcm_datagaji 
 						where prs.kode_pekerjaan = kode_pekerjaan 
-						and prs.lokasi_kerja = lokasi_kerja) pekerjaan,
+						and concat('0',prs.lokasi_kerja) = lokasi_kerja) pekerjaan,
 					trim(employee_name) nama
 				from hlcm.hlcm_proses prs
 				inner join er.er_employee_all eall
@@ -448,7 +450,7 @@ class M_prosesgaji extends CI_Model {
 		}else{
 			$where_keluar = " and tp.tglkeluar between '$tanggalawal' and '$tanggalakhir' ";
 		}
-		// echo "aaa";exit();
+		
 		
 		$query = "select tp.noind,tp.nama,tp.lokasi_kerja, (select tpk.pekerjaan from hrd_khs.tpekerjaan tpk where tpk.kdpekerjaan=tp.kd_pkj) as pekerjaan, (select tpk.kdpekerjaan from hrd_khs.tpekerjaan tpk where tpk.kdpekerjaan=tp.kd_pkj) as kdpekerjaan, 
 				round((
