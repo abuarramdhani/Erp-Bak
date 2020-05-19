@@ -224,7 +224,14 @@ class C_PekerjaKeluar extends CI_Controller
 				}
 			}
 
-			$kom_sisa_cuti = $this->M_pekerjakeluar->get_sisa_cuti($pkj['noind'],$tgl_keluar);
+			$cuti_pesangon = $this->M_pekerjakeluar->getPesangon($pkj['noind']);
+			if (!empty($cuti_pesangon)) {
+				$kom_sisa_cuti = $this->M_pekerjakeluar->get_sisa_cuti($pkj['noind'],$tgl_keluar);
+				$kom_sisa_cuti = $kom_sisa_cuti - $cuti_pesangon;
+			}else{
+				$kom_sisa_cuti = $this->M_pekerjakeluar->get_sisa_cuti($pkj['noind'],$tgl_keluar);
+			}
+
 
 			if ($puasa == 'puasa') {
 				$kom_um_puasa = $this->M_pekerjakeluar->getKomUmPuasa($pkj['noind'],$tgl_bulan_awal,$tgl_keluar,$tgl_puasa);
