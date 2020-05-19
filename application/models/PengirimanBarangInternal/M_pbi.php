@@ -53,7 +53,7 @@ class M_pbi extends CI_Model
                     FROM khs_sj_internal ksi
                    WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
               FROM khs_kirim_internal kki
-              WHERE kki.seksi_kirim = '$response->seksi'
+              WHERE kki.seksi_tujuan = '$response->seksi'
               AND kki.status >= '5'
               ORDER BY kki.doc_number DESC";
         $query = $this->oracle->query($sql);
