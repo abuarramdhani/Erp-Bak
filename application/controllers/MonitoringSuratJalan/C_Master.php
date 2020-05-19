@@ -136,17 +136,19 @@ class C_Master extends CI_Controller
             die;
         } else {
             //==========generate document_number=====
-            $time 				= date('ym');
-            $lastNumber   = $this->M_msj->lastDocumentNumber('SJ'.$time);
-            if (empty($lastNumber[0]['NO_SJ'])) {
-                $newNumber = 'SJ'.$time.'00001';
-            } else {
-                $newNumber = $lastNumber[0]['NO_SJ']+1;
-                if (strlen($newNumber) < 5) {
-                    $newNumber = str_pad($newNumber, 5, "0000", STR_PAD_LEFT);
-                }
-                $newNumber = 'SJ'.$time.$newNumber;
-            }
+            // $time 				= date('ym');
+            // $lastNumber   = $this->M_msj->lastDocumentNumber('SJ'.$time);
+            // if (empty($lastNumber[0]['NO_SJ'])) {
+            //     $newNumber = 'SJ'.$time.'00001';
+            // } else {
+            //     $newNumber = $lastNumber[0]['NO_SJ']+1;
+            //     if (strlen($newNumber) < 5) {
+            //         $newNumber = str_pad($newNumber, 5, "0000", STR_PAD_LEFT);
+            //     }
+            //     $newNumber = 'SJ'.$time.$newNumber;
+            // }
+            $n012a = $this->M_msj->generateNoSJ();
+            $newNumber = $n012a[0]['NO_SJ'];
             //==========end generate========
 
             $doc = $this->input->post('nodoc');

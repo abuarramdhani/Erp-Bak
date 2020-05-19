@@ -15,6 +15,16 @@ class M_msj extends CI_Model
         $response = $this->oracle->query("SELECT ksi.* FROM khs_sj_internal ksi ORDER BY ksi.NO_SURATJALAN DESC")->result_array();
         return $response;
     }
+    
+    public function generateNoSJ()
+    {
+      $response = $this->oracle->query("SELECT 'SJ'
+                         ||to_char(sysdate,'RR')
+                         ||to_char(sysdate,'MM')
+                         ||lpad(khs_suratjalan_fpb.nextval, 5, '0') no_sj
+                  from dual")->result_array();
+      return $response;
+    }
 
     public function get($i)
     {
