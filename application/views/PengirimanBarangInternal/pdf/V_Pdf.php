@@ -49,8 +49,8 @@
 				<td style="width:42%;padding:5px;border-bottom: 1px solid black;border-left: 1px solid black;">
 					<b style="font-size:14px;">UNTUK :</b><br><br>
 					<span>
-						<?php echo $get[0]['USER_TUJUAN'] ?><br>
-						<?php echo $user_tujuan[0]['employee_name'] ?>
+						<b><?php echo $get[0]['USER_TUJUAN'] ?><br>
+						<?php echo $user_tujuan[0]['employee_name'] ?></b>
 					</span>
 				</td>
 				<td style="width:58%;padding:5px;border-top: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
