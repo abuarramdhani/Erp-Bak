@@ -18,11 +18,11 @@ class M_msj extends CI_Model
 
     public function get($i)
     {
-        $s = $this->personalia->select('seksi')
-                            ->join('hrd_khs.tseksi', 'hrd_khs.tseksi.kodesie = hrd_khs.tpribadi.kodesie', 'left')
-                            ->where('noind', $this->session->user)
-                            ->get('hrd_khs.tpribadi')
-                            ->row();
+        // $s = $this->personalia->select('seksi')
+        //                     ->join('hrd_khs.tseksi', 'hrd_khs.tseksi.kodesie = hrd_khs.tpribadi.kodesie', 'left')
+        //                     ->where('noind', $this->session->user)
+        //                     ->get('hrd_khs.tpribadi')
+        //                     ->row();
 
         $response = $this->oracle->query("SELECT distinct kki.doc_number,
                                                           kki.user_tujuan,
@@ -50,8 +50,7 @@ class M_msj extends CI_Model
                                          --    FROM khs_sj_internal ksi
                                          --   WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
                                       FROM khs_kirim_internal kki
-                                      WHERE kki.seksi_kirim = '$s->seksi'
-                                      AND kki.status = '$i'
+                                      WHERE kki.status = '$i'
                                       ORDER BY kki.doc_number DESC")->result_array();
 
         return $response;
