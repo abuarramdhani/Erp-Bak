@@ -155,7 +155,8 @@ and bos.DISABLE_DATE is null
 and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
 and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
 and msib.segment1 = '$kode' 
-$seksii";
+$seksii
+order by bos.OPERATION_SEQ_NUM";
 
        $query = $oracle->query($sql);
         return $query->result_array();
