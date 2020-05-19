@@ -97,17 +97,11 @@ class C_Cetakbom extends CI_Controller
 		$seksi = $this->input->post('seksi');
 		$produk = $this->input->post('prodd');
 		$organization = $this->input->post('org');
+		$tipe = $this->input->post('typeCetak');
 
-		if ($seksi == null) {
-			$kodee = "and msib.segment1 = '$kode'";
-			$seksii = null;
-		} else {
-			$kodee = "and msib.segment1 = '$kode'";
-			$seksii = "AND bd.department_class_code = '$seksi'";
 
-		}
 
-		$datapdf = $this->M_cetakbom->getdatapdf($kodee,$seksii);
+		$datapdf = $this->M_cetakbom->getdatapdf($kode,$seksi);
 
 		$datapdf2 = $this->M_cetakbom->getdatapdf2($kode);
 		$desckomp = $this->M_cetakbom->getdesckomponen($kode);
@@ -161,6 +155,11 @@ class C_Cetakbom extends CI_Controller
 			$array_pdf[$i]['TARGET'] = floor($pdf['TARGET']);
 			$array_pdf[$i]['OPR_NO'] = $pdf['OPR_NO'];
 			$array_pdf[$i]['LAST_UPDATE_DATE'] = $pdf['LAST_UPDATE_DATE'];
+			$array_pdf[$i]['P1'] = $pdf['P1'];
+			$array_pdf[$i]['P2'] = $pdf['P2'];
+			$array_pdf[$i]['P3'] = $pdf['P3'];
+			$array_pdf[$i]['P4'] = $pdf['P4'];
+			$array_pdf[$i]['P5'] = $pdf['P5'];
 
 			$i++;
 		}
@@ -192,8 +191,12 @@ class C_Cetakbom extends CI_Controller
     	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 30, 27, 3, 3); //----- A5-L
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'BOM_Routing_'.$tglNama.'.pdf';
-    	$head = $this->load->view('CetakBOMRouting/V_CetakanHead', $data, true);	
-    	$html = $this->load->view('CetakBOMRouting/V_Cetakan', $data, true);
+		$head = $this->load->view('CetakBOMRouting/V_CetakanHead', $data, true);
+		if ($tipe == 'Y') {
+			$html = $this->load->view('CetakBOMRouting/V_Cetakan_Detail', $data, true);
+		} elseif ($tipe == 'N'){
+			$html = $this->load->view('CetakBOMRouting/V_Cetakan', $data, true);
+		}
     	$foot = $this->load->view('CetakBOMRouting/V_CetakanFoot', $data, true);	
 
 		ob_end_clean();

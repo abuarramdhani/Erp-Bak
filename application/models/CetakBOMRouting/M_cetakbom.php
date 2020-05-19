@@ -89,9 +89,15 @@ AND msib.segment1 = '$komp'
         return $query->result_array();
  }
 
-   public function getdatapdf($kodee,$seksii) {
+   public function getdatapdf($kode,$seksi) {
     $oracle = $this->load->database('oracle', true);
-    $sql = " select bor.ORGANIZATION_ID
+    if ($seksi == null) {
+			$seksii = null;
+		} else {
+			$seksii = "AND bd.department_class_code = '$seksi'";
+		}
+
+    $sql = "Select bor.ORGANIZATION_ID
 ,msib.segment1
 ,msib.description
 ,bor.ALTERNATE_ROUTING_DESIGNATOR alt
@@ -104,7 +110,12 @@ AND msib.segment1 = '$komp'
 ,opt.USAGE_RATE_OR_AMOUNT
 ,(opt.USAGE_RATE_OR_AMOUNT*3600) CT
 ,floor(23400/(opt.USAGE_RATE_OR_AMOUNT*3600))target
-,opt.LAST_UPDATE_DATE 
+,opt.LAST_UPDATE_DATE
+,bos.ATTRIBUTE7 P1
+,bos.ATTRIBUTE8 P2
+,bos.ATTRIBUTE9 P3
+,bos.ATTRIBUTE10 P4
+,bos.ATTRIBUTE11 P5
 from mtl_system_items_b msib
 ,bom_operational_routings bor
 ,bom_operation_sequences bos
@@ -143,7 +154,7 @@ and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
 and bos.DISABLE_DATE is null
 and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
 and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
-$kodee 
+and msib.segment1 = '$kode' 
 $seksii";
 
        $query = $oracle->query($sql);
