@@ -31,23 +31,19 @@ const updatePBI = (doc, no) => {
       success: function(result) {
         if (result) {
           Swal.close();
-          swalRKHToastrAlert('info', 'Data Berhasil Diperbarui');
-          Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          }).fire({
-            customClass: 'swal-font-small',
-            type: 'info',
-            title: 'Data Berhasil Diterima'
+          Swal.fire({
+            type: 'success',
+            title: `FPB berhasil diterima!!!`,
+            text: ''
           }).then(_ => {
-              location.reload();
+            location.reload();
           })
-          // $('tr[row-id="' + no + '"] button[id="diterima"]').attr('disabled', 'disabled');
-          // $('tr[row-id="' + no + '"] td center[id="status"]').html('Diterima Seksi Tujuan');
         } else {
-          swalRKHToastrAlert('error', 'Gagal Memperbarui Data');
+          Swal.fire({
+            type: 'error',
+            title: `Gagal Memperbarui Data.`,
+            text: ''
+          })
         }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
