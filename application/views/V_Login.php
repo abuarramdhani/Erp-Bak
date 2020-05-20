@@ -243,14 +243,14 @@
         left: 50%;
         margin-top: -120px;
         margin-left: -200px;
-        width:400px;
+        width:500px;
         height: 239px;
         z-index: 20;
         background-color: transparent;
     }
     .popupso_close {
-        -webkit-transform: translate(360px, -230px);
-        transform: translate(360px, -230px);
+        -webkit-transform: translate(460px, -310px);
+        transform: translate(460px, -310px);
         color: red;
         border: 3px solid white;
         font-weight: bold;
@@ -291,7 +291,7 @@
     }
 </style>
 <div class="popupso" id="popupso">
-    <img class="popupso_img" src="<?php echo base_url('assets/img/CS_SO2020.png'); ?>" alt="" width="400" />
+    <img class="popupso_img" src="<?php echo base_url('assets/img/CS_SO2020.png'); ?>" alt="" width="500" />
     <div class="popupso_close" onclick="close_popupso()">X</div>
     <script type="text/javascript">
         document.getElementById("popupso").style.display = "block"; 
