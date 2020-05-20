@@ -235,76 +235,72 @@
 
 <div style="position: fixed;bottom: 0px;left: 20px;margin: 0;">
     <img width="250" src="<?php echo base_url('assets/img/SO2020.gif'); ?>">
-    <!-- <div style="width: 300px;height: 200px;">
-        <?php 
-        // Minggu 1:   Launching 18 Mei 2020       
-            // Isi konten:     
-            $mei18 = "TAHUKAH KAMU PENTINGNYA KESESUAIAN DATA STOCK ?     
-                <ol>
-                <li>Planning produksi dan pembelian barang tepat </li>
-                <li>Next proses menjadi lancar</li>   
-                <li>Pengambilan keputusan tepat sasaran</li>
-                </ol>";
-                    
-        // Minggu 2:   Launching 26 Mei 2020       
-            // Isi konten:     
-            $mei26 = "TAHUKAH KAMU, APA AKIBAT JIKA STOCK TIDAK SESUAI?       
-                <ol>
-                <li>Planning produksi dan pembelian barang tidak tepat --> PEMBOROSAN !!!</li>
-                <li>Next Proses tidak lancar --> PRODUKSI BERHENTI !!!</li>
-                <li>Pengambilan keputusan tidak tepat --> PERUSAHAAN RUGI !!!</li>
-                </ol>
-                ";    
-                    
-        // Minggu 3:   Launching 2 Juni 2020       
-            // Isi konten:     
-            $juni2 = "APA YANG PERLU DIPERSIAPKAN UNTUK STOCK OPNAME NASIONAL?        
-                <ol>
-                <li>Selesaikan semua transaksi yang menggantung</li>  
-                <li>Selesaikan semua JOB yang masih WIP</li>  
-                <li>Penataan barang gudang sesuai standar 5S</li> 
-                <li>Menjaga kesesuaian Stock fisik dan Oracle</li>
-                </ol>
-                ";    
-                    
-        // Minggu 4:   Launching 8 Juni 2020       
-            // Isi konten:  
-            $juni8 = "Jadwal SO Nasional      
-            <br>tanya TIM SO";
-                    
-        // Minggu 5:   Launching 15 Juni 2020      
-            // Isi konten:     
-            $juni15= "SO Nasional 2020, Cepat, Tepat, Pantang Selisih !!";
-
-        
-        
-        if (strtotime(date('Y-m-d')) < strtotime('2020-05-18')) {
-            //echo $mei18;// sebelum di naikkan ke prod nanti di pagar, seharusnya tidak ada yang tampil;
-        }elseif (strtotime(date('Y-m-d')) >= strtotime('2020-05-18') && strtotime(date('Y-m-d')) < strtotime('2020-05-26')) {
-            echo $mei18;
-        }elseif (strtotime(date('Y-m-d')) >= strtotime('2020-05-26') && strtotime(date('Y-m-d')) < strtotime('2020-06-02')) {
-            echo $mei26;
-        }elseif (strtotime(date('Y-m-d')) >= strtotime('2020-06-02') && strtotime(date('Y-m-d')) < strtotime('2020-06-08')) {
-            echo $juni2;
-        }elseif (strtotime(date('Y-m-d')) >= strtotime('2020-06-08') && strtotime(date('Y-m-d')) < strtotime('2020-06-15')) {
-            echo $juni8;
-        }elseif (strtotime(date('Y-m-d')) >= strtotime('2020-06-15')) {
-            echo $juni15;
-        }
-
-        ?>
-    </div> -->
 </div>
-<script type="text/javascript">
-    $(document).ready(function(){
-        swal.fire({
-            title: 'JUNI 2020',
-            text: 'COMING SOON STOCK OPNAME NASIONAL JUNI 2020. PERSIAPKAN DATAMU !!',
-            type: 'warning',
-            allowOutsideClick: false
-        })
-        console.log('SO NASIONAL 2020');
-    });
-</script>
+<style>
+    .popupso {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -120px;
+        margin-left: -200px;
+        width:400px;
+        height: 239px;
+        z-index: 20;
+        background-color: transparent;
+    }
+    .popupso_close {
+        -webkit-transform: translate(360px, -230px);
+        transform: translate(360px, -230px);
+        color: red;
+        border: 3px solid white;
+        font-weight: bold;
+        text-align: center;
+        vertical-align: middle;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        font-size: 20px;
+        font-family: Arial,Helvetica,sans-serif;
+        box-sizing: content-box;
+        line-height: normal;
+    }
+    .popupso_close:hover {
+        border: 3px solid red;
+        background-color: white;
+    }
+    .popupso:after {
+        position: fixed;
+        content: "";
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: -2;
+    }
+    .popupso:before{
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: #FFF;
+        z-index: -1;
+        display: block;
+    }
+</style>
+<div class="popupso" id="popupso">
+    <img class="popupso_img" src="<?php echo base_url('assets/img/CS_SO2020.png'); ?>" alt="" width="400" />
+    <div class="popupso_close" onclick="close_popupso()">X</div>
+    <script type="text/javascript">
+        document.getElementById("popupso").style.display = "block"; 
+        function close_popupso(){
+            var popupso = document.getElementById("popupso");
+            popupso.parentNode.removeChild(popupso);
+        }       
+    </script>
+</div>
+
 </body>
 </html> 
