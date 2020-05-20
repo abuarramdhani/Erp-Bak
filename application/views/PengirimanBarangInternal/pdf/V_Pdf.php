@@ -33,7 +33,7 @@
 		</tr>
 	</table>
 	<div style="padding:18px;">
-		<table style="font-size:18px !important;width:100%;border-collapse: collapse !important;page-break-inside:avoid;">
+		<table style="font-size:16.3px !important;width:100%;border-collapse: collapse !important;page-break-inside:avoid;">
 			<tr>
 				<td style="width:42%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-top: 1px solid black;">
 					<b style="font-size:14px;">DARI :</b> <br><br>
