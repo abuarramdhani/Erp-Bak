@@ -2491,47 +2491,50 @@ function getFingerCatering(){
 	tanggal = $('#CateringHitungPesananTanggal').val();
 	shift 	= $('#CateringHitungPesananShift').val();
 	lokasi 	= $('#CateringHitungPesananLokasi').val();
-	$.ajax({
-		method: 'POST',
-		url: baseurl + '/CateringManagement/HitungPesanan/getFinger',
-		data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
-		error: function(xhr,status,error){
-			$('#CateringHitungLoading').hide();
-			swal.fire({
-                title: xhr['status'] + "(" + xhr['statusText'] + ")",
-                html: xhr['responseText'],
-                type: "error",
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#d63031',
-            })
-		},
-		success: function(data){
-			$('#CateringHitungModal').find('.col-sm-12').html(data);
-		}
-	})
-	$('#CateringHitungModal').modal('show');
-	localStorage.setItem('refreshCatering',0);
-	loopRefreshCatering = setInterval(
-		function(){
-			console.log(localStorage.getItem('refreshCatering'));
-			if (localStorage.getItem('refreshCatering') > 0) {
-				$('#CateringHitungModal').modal('hide');
-				$('#CateringHitungLoading').show();
-				clearInterval(loopRefreshCatering);
-				if (localStorage.getItem('refreshCatering') == 2) {
-					$('#CateringHitungLoading').hide();
-					Swal.fire(
-				     	'Verifikasi Finger Pekerja Gagal',
-				     	'Action Refresh Dibatalkan',
-				     	'error'
-			    	)
-				}
-				if (localStorage.getItem('refreshCatering') == 1 && localStorage.getItem('refreshCateringTanggal') == tanggal && localStorage.getItem('refreshCateringShift') == shift && localStorage.getItem('refreshCateringLokasi') == lokasi ) {
-					hitungCatering();
-				}
-			}
-		},1000
-	)
+
+	// $.ajax({
+	// 	method: 'POST',
+	// 	url: baseurl + '/CateringManagement/HitungPesanan/getFinger',
+	// 	data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
+	// 	error: function(xhr,status,error){
+	// 		$('#CateringHitungLoading').hide();
+	// 		swal.fire({
+ //                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+ //                html: xhr['responseText'],
+ //                type: "error",
+ //                confirmButtonText: 'OK',
+ //                confirmButtonColor: '#d63031',
+ //            })
+	// 	},
+	// 	success: function(data){
+	// 		$('#CateringHitungModal').find('.col-sm-12').html(data);
+	// 	}
+	// })
+	// $('#CateringHitungModal').modal('show');
+	// localStorage.setItem('refreshCatering',0);
+	// loopRefreshCatering = setInterval(
+	// 	function(){
+	// 		console.log(localStorage.getItem('refreshCatering'));
+	// 		if (localStorage.getItem('refreshCatering') > 0) {
+	// 			$('#CateringHitungModal').modal('hide');
+	// 			$('#CateringHitungLoading').show();
+	// 			clearInterval(loopRefreshCatering);
+	// 			if (localStorage.getItem('refreshCatering') == 2) {
+	// 				$('#CateringHitungLoading').hide();
+	// 				Swal.fire(
+	// 			     	'Verifikasi Finger Pekerja Gagal',
+	// 			     	'Action Refresh Dibatalkan',
+	// 			     	'error'
+	// 		    	)
+	// 			}
+	// 			if (localStorage.getItem('refreshCatering') == 1 && localStorage.getItem('refreshCateringTanggal') == tanggal && localStorage.getItem('refreshCateringShift') == shift && localStorage.getItem('refreshCateringLokasi') == lokasi ) {
+	// 				hitungCatering();
+	// 			}
+	// 		}
+	// 	},1000
+	// )
+
+	hitungCatering();
 }
 
 function hitungCatering(){
@@ -2554,8 +2557,14 @@ function hitungCatering(){
 		},
 		success: function(data){
 			$('#CateringHitungLoading').hide();
+			// Swal.fire(
+		 //     	'Verifikasi Finger Pekerja Berhasil',
+		 //     	'Refresh Pesanan Selesai Dijalankan',
+		 //     	'success'
+			// )
+
 			Swal.fire(
-		     	'Verifikasi Finger Pekerja Berhasil',
+		     	'Berhasil',
 		     	'Refresh Pesanan Selesai Dijalankan',
 		     	'success'
 			)
