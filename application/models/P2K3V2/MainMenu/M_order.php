@@ -699,4 +699,26 @@ class M_Order extends CI_Model
                     ts.seksi";
         return $this->personalia->query($sql)->result_array();
     }
+
+    public function cekSeksiDibawah($ks)
+    {
+        //seksi di bawahnya yang tidak memiliki atasan
+        $ks = substr($ks, 0,5);
+        $sql = "select
+                    distinct(substring(kodesie,1,7)) kodesie,
+                    seksi
+                from
+                    hrd_khs.tseksi ts
+                where
+                    ts.kodesie like '$ks%'
+                    and (select
+                        count(noind)
+                    from
+                        hrd_khs.tpribadi t
+                    where
+                        t.keluar = false
+                        and substring(t.kodesie,1,7) = substring(ts.kodesie,1,7)
+                        and substring(noind, 1, 1) in ('B','D','J')) = 0";
+        return $this->personalia->query($sql)->result_array();
+    }
 }

@@ -1108,8 +1108,22 @@ class C_Order extends CI_Controller
       	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
       	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+      	$seksiBawah = array();
+      	if (substr($kodesie, 5) == '0000') {
+      		$seksiBawah = $this->M_order->cekSeksiDibawah($kodesie);
+      	}
       	$refjabatan = $this->M_order->getTrefjabatan($noind);
       	$kodesie = array_column($refjabatan, 'kodesie');
+      	$x = count($refjabatan);
+      	if (!empty($seksiBawah)) {
+      		foreach ($seksiBawah as $key) {
+      			$kodesie[] = $key['kodesie'];
+      			$refjabatan[$x]['kodesie'] = $key['kodesie'];
+      			$refjabatan[$x]['seksi'] = $key['seksi'];
+      			$x++;
+      		}
+      	}
+      	// print_r($kodesie);exit();
       	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
       	$tgl = date('Y-m');
       	$data['inputStandar'] = $this->M_order->getInputstd2($tgl, $kodesie);
