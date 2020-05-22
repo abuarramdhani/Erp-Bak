@@ -3526,10 +3526,10 @@ $(document).ready(function(){
     selesai = $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val();
 
     if (mulai && selesai) {
-      tgl_mulai = new Date(mulai);
-      tgl_selesai = new Date(selesai);
+      tgl_mulai = new Date(mulai + ' 00:00:00');
+      tgl_selesai = new Date(selesai + ' 23:59:59');
       difftime = Math.abs(tgl_mulai - tgl_selesai);
-      diffday = Math.ceil(difftime / (1000 * 60 * 60 * 20));
+      diffday = Math.ceil(difftime / (1000 * 60 * 60 * 24));
 
       $('#txtMPSuratIsolasiMandiriJumlahHari').val(diffday);
     }else{
