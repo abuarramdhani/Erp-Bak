@@ -73,14 +73,14 @@ class C_EvaluasiOSNS extends CI_Controller {
             return $this->load->view('BlankoEvaluasi/V_Blanko_404');
         }
 
-        $staff = ['14', '16'];
-        $nonstaff = ['15', '17'];
-        $os = ['18'];
+        $staff = ['J', 'G'];
+        $nonstaff = ['H', 'T'];
+        $os = ['K', 'P'];
 
         $position = null;
-        if(in_array($data->kd_jabatan, $staff)) {
+        if(in_array(substr($data->noind, 0, 1), $staff)) {
             $position = 'staff';
-        } else if(in_array($data->kd_jabatan, $nonstaff)) {
+        } else if(in_array(substr($data->noind, 0, 1), $nonstaff)) {
             $position = 'nonstaff';
         } else {
             $position = 'os';
@@ -147,7 +147,8 @@ class C_EvaluasiOSNS extends CI_Controller {
         $TIMS = $this->M_blankoevaluasi->getTIMS(
             $data['worker']['noind'], 
             $data['worker']['periode_awal'], 
-            $data['worker']['periode_akhir']);
+            $data['worker']['periode_akhir']
+        );
 
         $TIMS['presensi_ok'] = $this->M_blankoevaluasi->calculationTIMS(
             $data['worker']['noind'], 

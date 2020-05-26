@@ -51,7 +51,7 @@ const baseurl = "<?= base_url() ?>";
 			<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
 			<!-- just load as you need  -->
 			<!-- <script src="<?= base_url('assets/plugins/vue/vue@2.6.11.js') ?>"></script> -->
-			<script src="<?= base_url('assets/js/customBE.js') ?>"></script>
+			<!-- <script src="<?= base_url('assets/js/customBE.js') ?>"></script> -->
 
 			</body>
 

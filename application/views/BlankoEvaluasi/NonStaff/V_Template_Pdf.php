@@ -6,87 +6,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Evaluasi Kontrak Outsourching dan Non-staff</title>
   <style media="print">
-  .m-0 {
-    margin: 0;
-  }
+    .m-0 {
+      margin: 0;
+    }
 
-  table {
-    width: 100%;
-    margin: 0;
-    table-layout: fixed;
-  }
+    table {
+      width: 100%;
+      margin: 0;
+      table-layout: fixed;
+    }
 
-  table.bordered {
-    padding: 0;
-    border-collapse: collapse;
-  }
+    table.bordered {
+      padding: 0;
+      border-collapse: collapse;
+    }
 
-  table.bordered td {
-    border: 1px solid black;
-  }
+    table.bordered td {
+      border: 1px solid black;
+    }
 
-  .centered td,
-  .centered th {
-    text-align: center;
-  }
+    .centered td,
+    .centered th {
+      text-align: center;
+    }
 
-  table.bordered thead td,
-  table.bordered thead th {
-    font-weight: bold;
-  }
+    table.bordered thead td,
+    table.bordered thead th {
+      font-weight: bold;
+    }
 
-  table.bordered th,
-  table.bordered td {
-    border: 1px solid black;
-  }
+    table.bordered th,
+    table.bordered td {
+      border: 1px solid black;
+    }
 
-  table.header>tr {
-    height: 100px;
-  }
+    table.header>tr {
+      height: 100px;
+    }
 
-  td {
-    word-wrap: break-word;
-  }
+    td {
+      word-wrap: break-word;
+    }
 
-  .logo {
-    width: 60px;
-    height: auto;
-  }
+    .logo {
+      width: 60px;
+      height: auto;
+    }
 
-  /* ------------------------------------------------ */
-  .title {
-    background-color: #C0C0C0;
-    width: 100%;
-    font-weight: bold;
-  }
+    /* ------------------------------------------------ */
+    .title {
+      background-color: #C0C0C0;
+      width: 100%;
+      font-weight: bold;
+    }
 
-  .center {
-    text-align: center;
-  }
+    .center {
+      text-align: center;
+    }
 
-  .text-left {
-    text-align: left;
-  }
+    .text-left {
+      text-align: left;
+    }
 
-  .text-top-left {
-    text-align: left;
-    vertical-align: top;
-  }
+    .text-top-left {
+      text-align: left;
+      vertical-align: top;
+    }
 
-  .bold {
-    font-weight: bold;
-  }
+    .bold {
+      font-weight: bold;
+    }
   </style>
 </head>
-<?php 
-    function repeat($string, $x) {
-        $val = '';
-        for($i = 0; $i < $x; $i++) {
-            $val .= $string;
-        }
+<?php
+function repeat($string, $x)
+{
+  $val = '';
+  for ($i = 0; $i < $x; $i++) {
+    $val .= $string;
+  }
 
-        return $val;
-    }
+  return $val;
+}
 ?>
 
 <body>
@@ -128,13 +129,13 @@
   </div>
   <table cellspacing="0" style="border: none; margin-bottom: 10px; margin-top: 5px;">
     <tr>
-      <td style="width: 40%;"></td>
+      <td style="width: 35%;"></td>
       <td>
         <p class="bold">DATA PRESENSI PEKERJA TIGA BULAN TERAKHIR (OS) / DUA TAHUN TERAKHIR (KONTRAK) DAN SURAT PERINGATAN</p>
       </td>
     </tr>
     <tr>
-      <td>
+      <td style="vertical-align: top; padding-top: 1em;">
         <table>
           <tr>
             <td>
@@ -188,9 +189,9 @@
               <table class="bordered centered">
                 <thead>
                   <tr>
-                    <td rowspan="3">PARAMETER</td>
+                    <td width="200px" rowspan="3">PARAMETER</td>
                     <td colspan="3">REKAP PRESENSI</td>
-                    <td width="20%" rowspan="3">JUMLAH</td>
+                    <td width="15%" rowspan="3">JUMLAH</td>
                   </tr>
                   <tr>
                     <td>OS</td>
@@ -232,6 +233,13 @@
                     <td><?= $tims['data']['S']['jumlah'] ?></td>
                   </tr>
                   <tr>
+                    <td>Izin Pamit (IP) <b>(hanya OS)</b></td>
+                    <td><?= $worker['jabatan'] == 'os' ? $tims['data']['P']['bulan3'] : '-' ?></td>
+                    <td><?= $worker['jabatan'] == 'nonstaff' ? $tims['data']['P']['tahun1'] : '-' ?></td>
+                    <td><?= $worker['jabatan'] == 'nonstaff' ? $tims['data']['P']['tahun2'] : '-' ?></td>
+                    <td><?= $tims['data']['S']['jumlah'] ?></td>
+                  </tr>
+                  <tr>
                     <td colspan="4"><b>TOTAL FREKUENSI (∑)</b> <i>(OS)</i></td>
                     <td><?= $worker['jabatan'] == 'os' ? $tims['total'] : '-' ?></td>
                   </tr>
@@ -260,14 +268,14 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td style="vertical-align: top;" height="110">
-                        <?php foreach($sp as $item): ?>
-                        <?= $item['bulan']."<br>"; ?>
+                      <td style="vertical-align: top;" height="140">
+                        <?php foreach ($sp as $item) : ?>
+                          <?= $item['bulan'] . "<br>"; ?>
                         <?php endforeach; ?>
                       </td>
                       <td style="vertical-align: top;">
-                        <?php foreach($sp as $item): ?>
-                        <?= $item['jenis']."<br>"; ?>
+                        <?php foreach ($sp as $item) : ?>
+                          <?= $item['jenis'] . "<br>"; ?>
                         <?php endforeach; ?>
                       </td>
                     </tr>
@@ -467,7 +475,7 @@
         <span>3. <?= ($three[2]['text']) ? $three[2]['text'] : repeat('.', 232); ?></span>
       </td>
       <td class="center">
-        <span><b>(<span style="color: white;"><?= str_pad('<span style="color: black">'.$worker['nama'].'</span>', 60, '-', STR_PAD_BOTH)  ?></span>)</b></span><br>
+        <span><b>(<span style="color: white;"><?= str_pad('<span style="color: black">' . $worker['nama'] . '</span>', 60, '-', STR_PAD_BOTH)  ?></span>)</b></span><br>
         <span>Tgl. <i style="color: white;">----------------</i></span>
       </td>
     </tr>
@@ -518,7 +526,7 @@
         <td class="center"><span>(<?= $four['supervisor'] ? $four['supervisor'] : '<i style="color: white">-----------------------------------------</i>' ?>)</span></td>
         <td></td>
         <!-- <td>( <i style="color: white">-------------------------------------------</i> )</td> -->
-        <td class="center"><span>(<span style="color: white;"><?= str_pad('<span style="color: black">'.$four['kasie'].'</span>', 60, '-', STR_PAD_BOTH)  ?></span>)</span></td>
+        <td class="center"><span>(<span style="color: white;"><?= str_pad('<span style="color: black">' . $four['kasie'] . '</span>', 60, '-', STR_PAD_BOTH)  ?></span>)</span></td>
       </tr>
     </table>
   </div>
@@ -562,8 +570,8 @@
         <!-- <td class="center">( <i style="color: white">-------------------------------------------</i> )</td>
                 <td class="center">( <i style="color: white">-------------------------------------------</i> )</td>
                 <td class="center">( <i style="color: white">-------------------------------------------</i> )</td> -->
-        <td class="center">( <span style="color: white;"><?= str_pad('<span style="color: black">'.$four['unit'].'</span>', 60, '-', STR_PAD_BOTH)  ?></span>)</td>
-        <td class="center">( <span style="color: white;"><?= $four['dept'] ? str_pad('<span style="color: black">'.$four['dept'].'</span>', 60, '-', STR_PAD_BOTH) : '<i style="color: white">-------------------------------------------</i>' ?></span> )</td>
+        <td class="center">( <span style="color: white;"><?= str_pad('<span style="color: black">' . $four['unit'] . '</span>', 60, '-', STR_PAD_BOTH)  ?></span>)</td>
+        <td class="center">( <span style="color: white;"><?= $four['dept'] ? str_pad('<span style="color: black">' . $four['dept'] . '</span>', 60, '-', STR_PAD_BOTH) : '<i style="color: white">-------------------------------------------</i>' ?></span> )</td>
         <td class="center">( <i style="color: white">-------------------------------------------</i> )</td>
       </tr>
     </table>

@@ -8,17 +8,17 @@ class M_blankoevaluasi extends CI_Model
         // $this->load->database();
     }
 
-    public function getWorkers($keyword, $withJabatan = [], $filterSie = null) {
+    public function getWorkers($keyword, $withCode = [], $filterSie = null) {
         // $kodesie = substr($this->session->kodesie,0,7);
         function parseToString($item) {
             return "'$item'";
         }
 
         $stringWithJabatan = "";
-        if($withJabatan) {
-            $withJabatan = array_map('parseToString', $withJabatan);
-            $withJabatan = implode(', ', $withJabatan);
-            $stringWithJabatan = "AND tp.kd_jabatan in ($withJabatan)";
+        if($withCode) {
+            $withCode = array_map('parseToString', $withCode);
+            $withCode = implode(', ', $withCode);
+            $stringWithJabatan = "AND substring(tp.noind, 1, 1) in ($withCode)";
         }
 
         $stringFilterSie = '';
@@ -42,6 +42,7 @@ class M_blankoevaluasi extends CI_Model
                         ORDER BY tp.nama
                         LIMIT 5";
         $result = $this->personalia->query($queryNoind)->result_array();
+
         return $result;
     }
 
@@ -68,7 +69,7 @@ class M_blankoevaluasi extends CI_Model
                 inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie 
             WHERE 
                 tp.keluar='0' 
-                AND tp.kd_jabatan in ('14', '16') 
+                AND substring(tp.noind, 1, 1) in ('G', 'J') 
                 $stringFilterSie 
             ORDER BY tp.nama LIMIT 5";
 
@@ -82,6 +83,12 @@ class M_blankoevaluasi extends CI_Model
                 tp.kodesie,
                 tp.kd_jabatan,
                 tp.jabatan,
+                (
+                    CASE 
+                        WHEN substring(tp.noind, 1, 1) in ('K', 'P') then 'os'
+                        ELSE 'nonstaff'
+                    END
+                ) jenis_kode,
                 trim(tp.nama) nama, 
                 concat(coalesce(nullif(ts.seksi, '-'), nullif(ts.unit, '-'), nullif(ts.bidang, '-'), nullif(ts.dept, '-')), ' / ', ts.dept) as seksi,
                 ts.dept as departemen,
@@ -247,12 +254,14 @@ class M_blankoevaluasi extends CI_Model
         $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
 
         $terlambat = $this->personalia->query($q_terlambat)->result_array();
         $izin = $this->personalia->query($q_izin)->result_array();
         $mangkir = $this->personalia->query($q_mangkir)->result_array();
         $sakit = $this->personalia->query($q_sakit)->result_array();
+        $pamit = $this->personalia->query($q_pamit)->result_array();
         $freq_all = $this->personalia->query($q_freq_all);
 
         $dataTIMS =  array(
@@ -261,7 +270,8 @@ class M_blankoevaluasi extends CI_Model
                 'T' => $terlambat,
                 'I' => $izin,
                 'M' => $mangkir,
-                'S' => $sakit
+                'S' => $sakit,
+                'P' => $pamit
             ],
             'total' => $freq_all->row()->count,
             'total_tim' => count($terlambat) + count($izin) + count($mangkir),

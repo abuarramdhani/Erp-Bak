@@ -60,16 +60,16 @@ class C_Api extends CI_Controller {
         $filterSie = $this->input->get('filterSie'); // 1 / 0
         
         if($jabatan == 'staff') {
-            $withJabatan = [14, 16]; // kode jabatan di torganisasi { 14: pekerja staff, 16: pekerja kontrak staff }
+            $withCode = ['G', 'J']; // kode jabatan staff
         } else if($jabatan == 'nonstaff') {
-            $withJabatan = [17, 18]; // kode jabatan di  { 15: pekerja non-staff, 17: pekerja kontak non-staff, 18: outsourcing }
+            $withCode = ['H', 'T', 'K', 'P']; // kode jabatan nonstaff & os
         } else {
-            $withJabatan = null;
+            $withCode = null;
         }
 
         if(!$keyword) return $this->errorResponse('Parameter failed');
 
-        $workersData = $this->M_blankoevaluasi->getWorkers($keyword, $withJabatan, $filterSie);
+        $workersData = $this->M_blankoevaluasi->getWorkers($keyword, $withCode, $filterSie);
         if(!$workersData && !count($workersData)) return $this->successResponse('Data pekerja tidak ditemukan di database', $workersData);
         $found = count($workersData);
 
