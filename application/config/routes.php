@@ -4345,3 +4345,23 @@ $route['MonitoringSuratJalan/Monitoring/(:any)/(:any)'] = 'MonitoringSuratJalan/
 
 $route['MonitoringSuratJalan/Cetak/(:any)'] = 'MonitoringSuratJalan/C_Master/Cetak/$1';
 $route['MonitoringSuratJalan/cekapi'] = 'MonitoringSuratJalan/C_Master/cekapi';
+
+//----------------------------------------- Evaluasi Kontrak ---------------------------------------
+$route['BlankoEvaluasi'] = 'BlankoEvaluasi/C_Index';
+$route['BlankoEvaluasi/Staff'] = 'BlankoEvaluasi/C_EvaluasiStaff';
+$route['BlankoEvaluasi/Staff/Create'] = 'BlankoEvaluasi/C_EvaluasiStaff/create';
+$route['BlankoEvaluasi/Staff/Blanko'] = 'BlankoEvaluasi/C_EvaluasiStaff/blanko';
+$route['BlankoEvaluasi/Staff/Store'] = 'BlankoEvaluasi/C_EvaluasiStaff/store';
+$route['BlankoEvaluasi/Staff/Print'] = 'BlankoEvaluasi/C_EvaluasiStaff/handlePrintPeview';
+
+$route['BlankoEvaluasi/NonStaff'] = 'BlankoEvaluasi/C_EvaluasiOSNS/index';
+$route['BlankoEvaluasi/NonStaff/Create'] = 'BlankoEvaluasi/C_EvaluasiOSNS/create';
+$route['BlankoEvaluasi/NonStaff/Blanko'] = 'BlankoEvaluasi/C_EvaluasiOSNS/blanko';
+$route['BlankoEvaluasi/NonStaff/Store'] = 'BlankoEvaluasi/C_EvaluasiOSNS/store';
+$route['BlankoEvaluasi/NonStaff/Print'] = 'BlankoEvaluasi/C_EvaluasiOSNS/handlePrintPreview';
+
+$route['BlankoEvaluasi/api'] = 'BlankoEvaluasi/C_Api/index';
+$route['BlankoEvaluasi/api/workers'] = 'BlankoEvaluasi/C_Api/workers';
+$route['BlankoEvaluasi/api/workers/information'] = 'BlankoEvaluasi/C_Api/workerInformation';
+$route['BlankoEvaluasi/api/tims'] = 'BlankoEvaluasi/C_Api/TIMS';
+$route['BlankoEvaluasi/api/tims/calculation'] = 'BlankoEvaluasi/C_Api/calculationTIMS';
