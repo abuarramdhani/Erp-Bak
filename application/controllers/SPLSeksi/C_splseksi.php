@@ -874,7 +874,7 @@ class C_splseksi extends CI_Controller {
 		$tanggal = date_format(date_create($tanggal), 'Y-m-d');
 
 		$tim = $this->M_splseksi->getTim($noind,$tanggal);
-		if (!empty($tim) && count($tim) > 0) {
+		if (!empty($tim->point) && count($tim->point) > 0) {
 			foreach ($tim as $tm) {
 				if ($tm['point'] == '1') {
 					$error = "1";

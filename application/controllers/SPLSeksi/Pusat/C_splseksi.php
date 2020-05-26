@@ -738,7 +738,7 @@ class C_splseksi extends CI_Controller {
 		//untuk tgl lembur kemarin
 		if(strtotime($tanggal) < strtotime(date('Y-m-d'))){
 			$tim = $this->M_splseksi->getTim($noind,$tanggal);
-			if (!empty($tim) && count($tim) > 0) {
+			if (!empty($tim->point) && count($tim->point) > 0) {
 				foreach ($tim as $tm) {
 					if ($tm['point'] == '1') {
 						$error = "1";
@@ -761,6 +761,7 @@ class C_splseksi extends CI_Controller {
 				} else {
 					$presensi = $this->M_splseksi->getPresensi($noind, $tanggal);
 				}
+
 				if (!empty($presensi) && count($presensi) > 0) {
 					foreach ($presensi as $datapres) {
 						$shift = $datapres['kd_shift'];
@@ -905,28 +906,28 @@ class C_splseksi extends CI_Controller {
 							if ($absensi->row()->jumlah == 0) {
 								$error = "1";
 								$errortext = "Tidak ada absen pada tanggal ".date('d-m-Y', strtotime($tanggal));
-                            } else if ($tanggal1 == $tanggal && $absensi->row()->jumlah % 2 == 1) { // sama hari dan absennya ganjil
-                            	$error = "1";
-                            	$errortext = "Absen pada tanggal ".date('d-m-Y', strtotime($tanggal))." tidak lengkap mohon membuat memo absen, jam absen({$absensi->row()->in})";
-                            } else {	
-                            	$absenMasuk = date('Y-m-d H:i:s', strtotime($absensi->row()->in));
-                            	$absenPulang = date('Y-m-d H:i:s', strtotime($absensi->row()->out));
+							} else if ($tanggal1 == $tanggal && $absensi->row()->jumlah % 2 == 1) { // sama hari dan absennya ganjil
+								$error = "1";
+								$errortext = "Absen pada tanggal ".date('d-m-Y', strtotime($tanggal))." tidak lengkap mohon membuat memo absen, jam absen({$absensi->row()->in})";
+							} else {	
+								$absenMasuk = date('Y-m-d H:i:s', strtotime($absensi->row()->in));
+								$absenPulang = date('Y-m-d H:i:s', strtotime($absensi->row()->out));
 								// jika aktual absen < input akhir lembur, maka jam aktual akhir lembur ngikut absen
 								// kalau lebih, maka ngikut inputan
 								// echo $absenMasuk.' > '.$awal_lembur;
-                            	$aktual_awal = (strtotime($absenMasuk) > strtotime($awal_lembur)) ? date('H:i:s', strtotime($absenMasuk)) : $awal_lembur;
-                            	$aktual_akhir = (strtotime($absenPulang) < strtotime($akhir_lembur)) ? date('H:i:s', strtotime($absenPulang)) : $akhir_lembur;
-                            }
-                        } else {
-                        	$error = "1";
-                        	$errortext = "Lembur Tidak Valid (Terdapat Shift)";
-                        }
-                    }else{
-                    	$error = "1";
-                    	$errortext = "Tidak Bisa Input Lembur (Nomor Induk Tidak memiliki Absen PKJ atau PID pada tanggal tersebut)";
-                    }
-                }
-            }
+								$aktual_awal = (strtotime($absenMasuk) > strtotime($awal_lembur)) ? date('H:i:s', strtotime($absenMasuk)) : $awal_lembur;
+								$aktual_akhir = (strtotime($absenPulang) < strtotime($akhir_lembur)) ? date('H:i:s', strtotime($absenPulang)) : $akhir_lembur;
+							}
+						} else {
+							$error = "1";
+							$errortext = "Lembur Tidak Valid (Terdapat Shift)";
+						}
+					}else{
+						$error = "1";
+						$errortext = "Tidak Bisa Input Lembur (Nomor Induk Tidak memiliki Absen PKJ atau PID pada tanggal tersebut)";
+          }
+        }
+      }
 		}else{ //input lembur di kedepannya || tgl lembur == tgl input
 			$presensi = $this->M_splseksi->getPresensiPusat($noind,$tanggal); // cari shiftpekerja
 
