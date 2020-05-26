@@ -233,9 +233,6 @@
     }
 </script>
 
-<div style="position: fixed;bottom: 0px;left: 20px;margin: 0;">
-    <img width="250" src="<?php echo base_url('assets/img/SO2020.gif'); ?>">
-</div>
 <style>
     .popupso {
         position: fixed;
@@ -247,6 +244,9 @@
         height: 239px;
         z-index: 20;
         background-color: transparent;
+    }
+    .popupso_img {
+        width: 500px;
     }
     .popupso_close {
         -webkit-transform: translate(460px, -310px);
@@ -289,9 +289,31 @@
         z-index: -1;
         display: block;
     }
+    .iconso {
+        position: fixed;
+        bottom: 0px;
+        left: 20px;
+        margin: 0;
+    }
+
+    .iconso-img {
+        width: 300px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .popupso {
+            display: none !important;
+        }
+        .iconso-img {
+            display: none !important;
+        }
+    }
 </style>
+<div class="iconso">
+    <img class="iconso-img" src="<?php echo base_url('assets/img/SO2020.gif'); ?>">
+</div>
 <div class="popupso" id="popupso">
-    <img class="popupso_img" src="<?php echo base_url('assets/img/CS_SO2020.png'); ?>" alt="" width="500" />
+    <img class="popupso_img" src="<?php echo base_url('assets/img/CS_SO2020.png'); ?>" alt="" />
     <div class="popupso_close" onclick="close_popupso()">X</div>
     <script type="text/javascript">
         document.getElementById("popupso").style.display = "block"; 
