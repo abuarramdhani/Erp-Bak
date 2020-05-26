@@ -1047,9 +1047,12 @@ class C_splseksi extends CI_Controller {
 
 		// Pengecekan sudah punya SPL belum  pada hari dimana lembur ?
 		$shift = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime('-1 days '.$tanggal)), $noind);
-		if ((!empty($shift) && trim($shift['0']['kd_shift']) == '3')) {
-			$tanggal = date('Y-m-d', strtotime('-1 days '.$tanggal));
-		}
+
+		// jika kode ini sudah tidak perlu, hapus saja / refactor
+		// 2020-05-26 -> uncomment (input lembur hari libur shift 3 jadi salah)
+		// if ((!empty($shift) && trim($shift['0']['kd_shift']) == '3')) {
+		// 	$tanggal = date('Y-m-d', strtotime('-1 days '.$tanggal));
+		// }
 		$checkSPL= $this->M_splseksi->checkingExistSPL($noind, $tanggal, $tanggal.$waktu0, $tanggal1.$waktu1);
 		if($checkSPL['exist'] && $error == 0) {
 			$error = 1;
