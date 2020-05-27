@@ -67,8 +67,8 @@ $( '#org').change(function() {
 	})
 });
 
-$(document).ready(function () {
-	var value = $('#org').val();
+$('#org').change(function () {
+	var value = $(this).val();
 	console.log(value)
 	$("#seksii").select2('val', null);
 	$.ajax({
@@ -79,7 +79,14 @@ $(document).ready(function () {
 		{
 			if (result != '<option></option>') {
 				$("#seksii").html(result);
+				$("#typeCetak").attr("required","required");
+				$("#typeCetak").removeAttr("disabled");
+
 			}else{
+				$("#seksii").attr("disabled","disabled");
+				$("#typeCetak").attr("disabled","disabled");
+				$("#typeCetak").removeAttr("required","required");
+
 
 			}
 		}

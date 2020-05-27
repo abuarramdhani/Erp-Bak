@@ -16,7 +16,7 @@
 			<td style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;text-align: left;width: 20%"></td>
 		</tr>
 		<tr>	
-			<td rowspan="3"  style="border: 2px solid black;border-collapse: collapse;font-size: 14pt;padding-left: 5px;font-weight: bold; text-align: center;border-top: 1px solid black"> RESOURCE & BoM</td>
+			<td rowspan="3"  style="border: 2px solid black;border-collapse: collapse;font-size: 14pt;padding-left: 5px;font-weight: bold; text-align: center;border-top: 1px solid black"><?php if ($organization=='ODM') { ?> RESOURCE & BoM <?php } else { ?> RESOURCE & FORMULA <?php }?></td>
 			<td  style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px">Print Date </td>
 			<td  style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;text-align: left;"><?= date('d M Y')?></td>
 

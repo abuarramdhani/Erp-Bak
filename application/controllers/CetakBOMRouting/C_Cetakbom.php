@@ -81,14 +81,14 @@ class C_Cetakbom extends CI_Controller
 		$term	= $this->input->post('segment1');
 		if ($term=='ODM') {
 			$seksi=$this->M_cetakbom->getseksiodm();	
+			foreach ($seksi as $s) {
+			echo '<option value="'.$s['ROUTING_CLASS'].'">'.$s['ROUTING_CLASS'].'</option>';
+			}
 		} elseif ($term=='OPM') {
-			$seksi=$this->M_cetakbom->getseksiopm();		
+			echo '<option></option>';	
 		}
 
-		echo '<option></option>';
-		foreach ($seksi as $s) {
-			echo '<option value="'.$s['ROUTING_CLASS'].'">'.$s['ROUTING_CLASS'].'</option>';
-		}
+	
 	}
 
 	public function CetakBOM()
@@ -99,13 +99,10 @@ class C_Cetakbom extends CI_Controller
 		$organization = $this->input->post('org');
 		$tipe = $this->input->post('typeCetak');
 
-
-
-		$datapdf = $this->M_cetakbom->getdatapdf($kode,$seksi);
-
-		$datapdf2 = $this->M_cetakbom->getdatapdf2($kode);
 		$desckomp = $this->M_cetakbom->getdesckomponen($kode);
 		$descprod = $this->M_cetakbom->selectprodukdesc($produk);
+		$data['kode'] = $kode;
+
 
 		 $data['user'] = $this->session->user;        
 		 $nama = $this->M_cetakbom->getNama($this->session->user);
@@ -114,71 +111,91 @@ class C_Cetakbom extends CI_Controller
 
 		 $name= $this->SingkatNama($nama[0]['nama'], 2);
 
-		 $data['name'] = $name;
+		// echo "<pre>";print_r($kode);exit();
 
+		if ($tipe== null) {
+			$tipe = 'N';
+		}
 
-		// echo "<pre>";print_r($name);exit();
+		if ($organization =='ODM') {
+			$datapdf = $this->M_cetakbom->getdatapdf($kode,$seksi);
+			$datapdf2 = $this->M_cetakbom->getdatapdf2($kode);
 
+			$array_pdf = array();
+			$i=0;
+			foreach ($datapdf as $pdf) {
 
-		
-		$data['kode'] = $kode;
+				// $array_pdf[$i]['PROSES'] = $pdf['PROSES'];
+				$array_pdf[$i]['KODE_PROSES'] = $pdf['KODE_PROSES'];
+				$array_pdf[$i]['RESOURCE_CODE'] = $pdf['RESOURCE_CODE'];
+				$array_pdf[$i]['NO_MESIN'] = $pdf['NO_MESIN'];
+				$array_pdf[$i]['USAGE_RATE_OR_AMOUNT'] = $pdf['USAGE_RATE_OR_AMOUNT'];
+				$array_pdf[$i]['MACHINE_QT'] = $pdf['MACHINE_QT'];
+				$array_pdf[$i]['ALTERNATE_ROUTING'] = $pdf['ALT'];
+				$array_pdf[$i]['OPT_QTY'] = $pdf['OPT_QTY'];
+				$array_pdf[$i]['CYCLE_TIME'] = round($pdf['CT'],2);
+				$array_pdf[$i]['TARGET'] = floor($pdf['TARGET']);
+				$array_pdf[$i]['OPR_NO'] = $pdf['OPR_NO'];
+				$array_pdf[$i]['LAST_UPDATE_DATE'] = $pdf['LAST_UPDATE_DATE'];
+				$array_pdf[$i]['P1'] = $pdf['P1'];
+				$array_pdf[$i]['P2'] = $pdf['P2'];
+				$array_pdf[$i]['P3'] = $pdf['P3'];
+				$array_pdf[$i]['P4'] = $pdf['P4'];
+				$array_pdf[$i]['P5'] = $pdf['P5'];
+
+				$i++;
+			}
+
+			$data['datapdf'] = $array_pdf;
+			$data['datapdf2'] = $datapdf2;
+
+		// 	$kodeproses = array();
+		// 	foreach ($datapdf as $pdfs) {
+		// 		$kodek="";
+		// 		$kodek .= $pdfs['RESOURCE_CODE'];
+		// 		array_push($kodeproses, $kodek);
+
+		// 	}
+
+		// // echo "<pre>"; print_r($datapdf); exit();
+
+		// 	$altkode = array();
+		// 	foreach ($datapdf2 as $pdf2) {
+		// 		$kodei="";
+		// 		$kodei .= $pdf2['ALT'];
+		// 		array_push($altkode, $kodei);
+
+		// 	}
+
+		// 	$kodee = array_count_values($kodeproses);
+		// 	$alt = array_count_values($altkode);
+		// 	$data['kodee'] = $kodee;
+		// 	$data['alt'] = $alt;
+
+		} else if ($organization == 'OPM') {
+
+			$dataopm1 = $this->M_cetakbom->dataopm1($kode);
+			$dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
+			$dataopm3 =  $this->M_cetakbom->dataopm3($dataopm1[0]['FORMULA_ID']);
+
+			$data['dataopm1'] = $dataopm1;
+			$data['dataopm2'] = $dataopm2;
+			$data['dataopm3'] = $dataopm3;
+
+			
+		}
+
+		// echo "<pre>";print_r($dataopm2);exit();
+	
+
+	
+
+		$data['name'] = $name;
 		$data['seksi'] = $seksi;
 		$data['produk'] = $produk;
 		$data['organization'] = $organization;
 		$data['desckomp'] = $desckomp[0]['DESCRIPTION'];
 		$data['descprod'] = $descprod[0]['DESCRIPTION'];
-
-		$kodeproses = array();
-		foreach ($datapdf as $pdfs) {
-			$kode="";
-			$kode .= $pdfs['RESOURCE_CODE'];
-			array_push($kodeproses, $kode);
-
-		}
-
-		// echo "<pre>"; print_r($datapdf); exit();
-
-
-		$array_pdf = array();
-		$i=0;
-		foreach ($datapdf as $pdf) {
-
-			// $array_pdf[$i]['PROSES'] = $pdf['PROSES'];
-			$array_pdf[$i]['KODE_PROSES'] = $pdf['KODE_PROSES'];
-			$array_pdf[$i]['RESOURCE_CODE'] = $pdf['RESOURCE_CODE'];
-			$array_pdf[$i]['NO_MESIN'] = $pdf['NO_MESIN'];
-			$array_pdf[$i]['USAGE_RATE_OR_AMOUNT'] = $pdf['USAGE_RATE_OR_AMOUNT'];
-			$array_pdf[$i]['MACHINE_QT'] = $pdf['MACHINE_QT'];
-			$array_pdf[$i]['ALTERNATE_ROUTING'] = $pdf['ALT'];
-			$array_pdf[$i]['OPT_QTY'] = $pdf['OPT_QTY'];
-			$array_pdf[$i]['CYCLE_TIME'] = round($pdf['CT'],2);
-			$array_pdf[$i]['TARGET'] = floor($pdf['TARGET']);
-			$array_pdf[$i]['OPR_NO'] = $pdf['OPR_NO'];
-			$array_pdf[$i]['LAST_UPDATE_DATE'] = $pdf['LAST_UPDATE_DATE'];
-			$array_pdf[$i]['P1'] = $pdf['P1'];
-			$array_pdf[$i]['P2'] = $pdf['P2'];
-			$array_pdf[$i]['P3'] = $pdf['P3'];
-			$array_pdf[$i]['P4'] = $pdf['P4'];
-			$array_pdf[$i]['P5'] = $pdf['P5'];
-
-			$i++;
-		}
-
-		$altkode = array();
-		foreach ($datapdf2 as $pdf2) {
-			$kode="";
-			$kode .= $pdf2['ALT'];
-			array_push($altkode, $kode);
-
-		}
-
-		$data['datapdf'] = $array_pdf;
-		$data['datapdf2'] = $datapdf2;
-		$kodee = array_count_values($kodeproses);
-		$alt = array_count_values($altkode);
-		$data['kodee'] = $kodee;
-		$data['alt'] = $alt;
-
 		
 		// print_r(); exit();
 
@@ -188,14 +205,19 @@ class C_Cetakbom extends CI_Controller
 		ob_start();
 		$this->load->library('pdf');
     	$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 30, 27, 3, 3); //----- A5-L
+    	$pdf = new mPDF('utf-8','f4', 0, '', 3, 3, 30, 25, 3, 3); //----- A5-L
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'BOM_Routing_'.$tglNama.'.pdf';
 		$head = $this->load->view('CetakBOMRouting/V_CetakanHead', $data, true);
 		if ($tipe == 'Y') {
 			$html = $this->load->view('CetakBOMRouting/V_Cetakan_Detail', $data, true);
 		} elseif ($tipe == 'N'){
-			$html = $this->load->view('CetakBOMRouting/V_Cetakan', $data, true);
+			if ($organization == 'ODM') {
+				$html = $this->load->view('CetakBOMRouting/V_Cetakan', $data, true);
+			} else {
+				$html = $this->load->view('CetakBOMRouting/V_CetakanOPM', $data, true);
+
+			}
 		}
     	$foot = $this->load->view('CetakBOMRouting/V_CetakanFoot', $data, true);	
 

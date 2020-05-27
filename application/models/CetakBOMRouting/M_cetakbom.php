@@ -233,5 +233,122 @@ order by msib.SEGMENT1, bom.ALTERNATE_BOM_DESIGNATOR, bic.ITEM_NUM
        $query = $oracle->query($sql);
         return $query->result_array();
  }
+  public function dataopm1($kode) {
+    $oracle = $this->load->database('oracle', true);
+    $sql = "select msib.SEGMENT1
+,msib.DESCRIPTION
+,grb.RECIPE_NO
+,grb.RECIPE_VERSION
+,grb.ROUTING_ID
+,grb.FORMULA_ID
+from gmd_recipe_validity_rules grvr
+,gmd_recipes_b grb
+,mtl_system_items_b msib
+where grvr.RECIPE_ID = grb.RECIPE_ID
+and grvr.ORGANIZATION_ID = grb.OWNER_ORGANIZATION_ID
+and grvr.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+and grvr.ORGANIZATION_ID = msib.ORGANIZATION_ID
+and grvr.END_DATE is null
+and grvr.VALIDITY_RULE_STATUS = 700
+and msib.SEGMENT1 = '$kode'";
+
+       $query = $oracle->query($sql);
+        return $query->result_array();
+ }
+
+public function dataopm2($routing) {
+    $oracle = $this->load->database('oracle', true);
+    $sql = "select
+grb.ROUTING_ID
+,grb.ROUTING_CLASS
+,grb.ROUTING_NO
+,grt.ROUTING_DESC
+,grb.ROUTING_VERS
+,grb.ROUTING_QTY
+,grb.ROUTING_UOM
+,gst.DESCRIPTION rout_status
+,frd.ROUTINGSTEP_NO step
+,gob.OPRN_NO
+,gob.OPRN_VERS
+,got.OPRN_DESC
+,frd.STEP_QTY
+,gob.PROCESS_QTY_UOM
+,gst2.DESCRIPTION oprn_status
+,goa.ACTIVITY
+,gat.ACTIVITY_DESC
+,goa.ACTIVITY_FACTOR
+,gor.RESOURCES
+,crmt.RESOURCE_DESC
+,crmb.RESOURCE_CLASS
+,gor.PROCESS_QTY
+,gor.RESOURCE_PROCESS_UOM
+,gor.RESOURCE_USAGE
+,gor.RESOURCE_USAGE_UOM
+from
+gmd_routings_tl grt
+,gmd_routings_b grb
+,gmd_status_tl gst
+,gmd_status_tl gst2
+,fm_rout_dtl frd
+,gmd_operations_tl got
+,gmd_operations_b gob
+,gmd_operation_activities goa
+,gmd_activities_tl gat
+,gmd_operation_resources gor
+,cr_rsrc_mst_tl crmt
+,cr_rsrc_mst_b crmb
+where
+grb.ROUTING_ID=grt.ROUTING_ID
+and grb.ROUTING_STATUS=gst.STATUS_CODE
+and grb.ROUTING_ID=frd.ROUTING_ID
+and grb.ROUTING_STATUS = 700
+and frd.OPRN_ID=gob.OPRN_ID
+and gob.OPRN_ID=got.OPRN_ID
+and gob.OPERATION_STATUS=gst2.STATUS_CODE
+and gob.OPRN_ID=goa.OPRN_ID
+and gob.OPERATION_STATUS = 700
+and goa.OPRN_LINE_ID=gor.OPRN_LINE_ID
+and gor.RESOURCES=crmb.RESOURCES
+and gor.RESOURCES=crmt.RESOURCES
+and goa.ACTIVITY=gat.ACTIVITY
+and grt.routing_id = '$routing'
+order by grt.ROUTING_ID
+,grb.ROUTING_VERS";
+
+       $query = $oracle->query($sql);
+        return $query->result_array();
+ }
+
+ public function dataopm3($formula) {
+    $oracle = $this->load->database('oracle', true);
+    $sql = "select fmd.FORMULA_ID
+,decode(fmd.LINE_TYPE,1,'PRODUCT',2,'BY PRODUCT',-1,'INGREDIENT')tipe
+,fmd.LINE_NO
+,msib2.segment1
+,msib2.DESCRIPTION
+,fmd.QTY
+,msib2.PRIMARY_UOM_CODE uom
+,mp.ORGANIZATION_CODE IO_KIB
+,fmd.ATTRIBUTE2 SUBINV_KIB
+,mil.SEGMENT1 loc_kib
+from fm_matl_dtl fmd
+,fm_form_mst_b ffb
+,mtl_parameters mp
+,mtl_item_locations mil
+,mtl_system_items_b msib2
+where ffb.FORMULA_ID = fmd.FORMULA_ID
+and ffb.FORMULA_STATUS  = 700
+and ffb.OWNER_ORGANIZATION_ID = fmd.ORGANIZATION_ID
+and fmd.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
+and fmd.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+and fmd.ATTRIBUTE1 = mp.ORGANIZATION_ID(+)
+and fmd.ATTRIBUTE3 = mil.INVENTORY_LOCATION_ID(+)
+and fmd.FORMULA_ID = '$formula'
+order by fmd.FORMULA_ID
+,fmd.LINE_TYPE";
+
+       $query = $oracle->query($sql);
+        return $query->result_array();
+ }
    
  }
