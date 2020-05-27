@@ -59,12 +59,12 @@
 										<label>Organization</label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
-										<!-- <select class="form-control select2 org" id="org" data-placeholder="Organization Code" name="org">
+										<select class="form-control select2 org" id="org" data-placeholder="Organization Code" name="org">
 											<option></option>
 											<option value="ODM">ODM</option>
 											<option value="OPM">OPM</option>
-										</select> -->
-										<input style="text-align: center" type="text" class="form-control org" id="org" value ="ODM" name="org" readonly="readonly">
+										</select>
+										<!-- <input style="text-align: center" type="text" class="form-control org" id="org" value ="ODM" name="org" readonly="readonly"> -->
 									</div>
                                     
 								</div>
@@ -85,27 +85,13 @@
 										<label>Tipe Cetak</label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
-										<select class="form-control select2 typeCetak" id="typeCetak" name="typeCetak" required="required">
+										<select class="form-control select2 typeCetak" id="typeCetak" name="typeCetak">
 											<option value="N">Default</option>
 											<option value="Y">Detail Proses</option>
 										</select>
 									</div>
                                     
 								</div>
-							<!-- 		<div class="panel-body">
-									<div class="col-md-4" style="text-align: right;">
-										<label>Type</label>
-									</div>
-									<div class="col-md-3" style="text-align: center;">
-										<select class="form-control select2 typ" data-placeholder="Type Cetak" name="typ">
-											<option></option>
-											<option value="Body">Body</option>
-											<option value="Handle Bar">Handle Bar</option>
-											<option value="Dos">Dos</option>
-										</select>
-									</div>
-                                    
-								</div> -->
 								<div class="panel-body">
 									<div  class="col-md-4" ></div>
 									<div class="col-md-3" style="text-align: center;">
