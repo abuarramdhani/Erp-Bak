@@ -252,10 +252,10 @@ class M_blankoevaluasi extends CI_Model
 
         $q_terlambat = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TT' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
 
         $terlambat = $this->personalia->query($q_terlambat)->result_array();
         $izin = $this->personalia->query($q_izin)->result_array();
