@@ -445,11 +445,14 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$pr = $this->input->post('k3_periode');
+		$ks = $this->input->post('k3_seksi');
+		if (!is_numeric($ks)) {
+			$ks = '';
+		}
 		$m = substr($pr, 0,2);
 		$y = substr($pr, 5,5);
 		$periode = $pr;
 		$pr = $y.'-'.$m;
-		// echo $pr;exit();
 		if (empty($pr)) {
 			$pr = date('Y-m');
 			$periode = date('m - Y');
@@ -459,21 +462,14 @@ class C_Index extends CI_Controller
 		$jml = '';
 		$validasi = $this->input->post('validasi');
 		if ($validasi == 'hitung') {
-			$delPeriode = $this->M_dtmasuk->delPeriode($pr);
+			$delPeriode = $this->M_dtmasuk->delPeriode($pr, $ks);
 			$list = array();
-			$data['allKs'] = $this->M_dtmasuk->allKs($pr);
-			// echo "<pre>";
-			// print_r($data['allKs']);
-			// exit();
+			$data['allKs'] = $this->M_dtmasuk->allKs($pr, $ks);
 			foreach ($data['allKs'] as $key) {
 				$record = $this->M_dtmasuk->getlistHitung($pr, $key['kodesie']);
-				// echo "<br><b>";print_r($key['kodesie']);echo "</b><br>";
 				$new = array();
 				foreach ($record as $row) {
 					$a = $row['jml_item'];
-					// echo $row['kode_item'];
-					// echo "<br>";
-					// echo $row['kode_item'];
 					$b = $row['jml_pekerja'];
 					$c = $row['jml_kebutuhan_umum'];
 					$d = $row['jml_kebutuhan_staff'];
@@ -484,15 +480,11 @@ class C_Index extends CI_Controller
 					for ($i=0; $i < $hit; $i++) {
 						$jml += ($a[$i]*$b[$i]);
 					}
-					// echo "<br>";
-					// echo $row['kode_item'].'=';
-					// echo $jml.'-'.$c.'-'.$d.'-'.$e;
 					$jml = ceil($jml+$c+($d*$e));
-					// echo "___".$jml;
+
 					$push = array("total"=> $jml);
 					array_splice($row,4,1,$push);
 					$new[] = $row;
-					// print_r($new);exit();
 
 					$item = array(
 						'periode'	=>	$pr,
@@ -500,18 +492,14 @@ class C_Index extends CI_Controller
 						'kodesie'	=>	$row['kodesie'],
 						'jml_kebutuhan'	=>	$jml,
 						);
-				// echo "<pre>";print_r($record);exit();
 					$inpHitung = $this->M_dtmasuk->inpHitung($item);
 					$jml = 0;
-					// print_r($record);exit();
 				}
 				$list[] = $new;
 			}
-			// exit();
+
 			$data['listHitung'] = $list;
-			// echo "<pre>";
-			// print_r($data['listHitung']);
-			// exit();
+
 			$run = '1';
 		}
 		$data['run'] = $run;
@@ -1316,10 +1304,14 @@ public function CetakBongagal($id)
 	public function cekHitung()
 	{
 		$pr = $this->input->post('pr');
+		$ks = $this->input->post('kodesie');
+		if (!is_numeric($ks)) {
+			$ks = '';
+		}
 		$m = substr($pr, 0,2);
 		$y = substr($pr, 5,5);
 		$per = $y.'-'.$m;
-		$data['allKs'] = $this->M_dtmasuk->allKs($per);
+		$data['allKs'] = $this->M_dtmasuk->allKs($per, $ks);
 		$arrTable = array();
 		foreach ($data['allKs'] as $key) {
 		$table = '';

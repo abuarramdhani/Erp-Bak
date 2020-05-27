@@ -839,11 +839,12 @@ function format ( d ) {
 
     $('.p2k3_cek_hitung').click(function(){
       var pr = $('.p2k3_tanggal_periode').val();
+      var ks = $('.k3_admin_monitorbon').val();
       $('#surat-loading').attr('hidden', false);
       $.ajax({
         url: baseurl+'p2k3adm_V2/Admin/cekHitung',
         method: "POST",
-        data: {pr:pr},
+        data: {pr:pr, kodesie:ks},
         success: function(data){
           $('#p2k3_result').html(data);
           $('#surat-loading').attr('hidden', true);

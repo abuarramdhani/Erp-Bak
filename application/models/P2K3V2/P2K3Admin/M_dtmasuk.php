@@ -716,14 +716,17 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
-    public function allKs($pr)
+    public function allKs($pr, $ks = '')
     {
+        $and = '';
+        if (strlen($ks) > 5) {
+            $and = "and ko.kodesie like '$ks%'";
+        }
         $sql = "select distinct(substring(ks.kd_pekerjaan,0,8)) kodesie, (select section_name from er.er_section 
                 where substring(section_code,0,8) = substring(ks.kd_pekerjaan,0,8) limit 1) section_name from k3.k3n_standar_kebutuhan ks
-                inner join k3.k3n_order ko on substring(ko.kodesie,0,8) = substring(ks.kodesie,0,8) where ko.periode = '$pr'
+                inner join k3.k3n_order ko on substring(ko.kodesie,0,8) = substring(ks.kodesie,0,8) where ko.periode = '$pr' $and
                 and ko.status = '1'
                 order by 2 asc";
-                // and ko.kodesie like '%1010301%'
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
@@ -750,9 +753,9 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
-    public function delPeriode($pr)
+    public function delPeriode($pr, $ks = '')
     {
-        $sql = "DELETE from k3.k3n_hitung where periode = '$pr'";
+        $sql = "DELETE from k3.k3n_hitung where periode = '$pr' and kodesie like '$ks%'";
         $query = $this->erp->query($sql);
     }
 
