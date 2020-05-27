@@ -45,10 +45,10 @@ Class M_batch extends CI_Model {
         $res_id = $params['res_id'];
         $inet = $params['inet'];
         $local = $params['local'];
-        $user_id = '568';
+        $user_id = $this->session->userid;
 
         // create an account if not yet have (if created by F2327 xD)
-        $queryAddAccount = "INSERT INTO sys.sys_user (user_name, user_password, employee_id, creation_date, created_by) SELECT employee_code, md5('123456'), employee_id ,now(), '568' FROM er.er_employee_all WHERE employee_code in ($paramsNoind) AND employee_code not in ( select user_name from sys.sys_user where user_name in ($paramsNoind) );";
+        $queryAddAccount = "INSERT INTO sys.sys_user (user_name, user_password, employee_id, creation_date, created_by) SELECT employee_code, md5('123456'), employee_id ,now(), '$user_id' FROM er.er_employee_all WHERE employee_code in ($paramsNoind) AND employee_code not in ( select user_name from sys.sys_user where user_name in ($paramsNoind) );";
         $queryAddRes     = "INSERT INTO sys.sys_user_application
         (user_group_menu_id, user_id, active, creation_date, created_by, lokal, internet)
         select '$res_id', user_id, 'Y', now(), '$user_id', '$local', '$inet' from sys.sys_user where user_name in ($paramsNoind) and user_name not in (SELECT su.user_name
