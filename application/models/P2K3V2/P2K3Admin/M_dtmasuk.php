@@ -753,9 +753,14 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
-    public function delPeriode($pr, $ks = '')
+    public function delPeriode($pr, $ks = '', $apd = '')
     {
-        $sql = "DELETE from k3.k3n_hitung where periode = '$pr' and kodesie like '$ks%'";
+        $and = '';
+        if ($apd != '') {
+            $apd = implode("', '", $apd);
+            $and = "and item_kode in ('$apd')";
+        }
+        $sql = "DELETE from k3.k3n_hitung where periode = '$pr' and kodesie like '$ks%' $and";
         $query = $this->erp->query($sql);
     }
 
@@ -1137,5 +1142,11 @@ class M_Dtmasuk extends CI_Model
                              'PP1AC04', 'PP1KR06', 'PP1TS06')
                 ORDER BY msib.description";
         return $this->oracle->query($sql)->result_array();
+    }
+
+    public function getApdmaster()
+    {
+        $sql = "SELECT * from k3.k3_master_item";
+        return $this->db->query($sql)->result_array();
     }
 }
