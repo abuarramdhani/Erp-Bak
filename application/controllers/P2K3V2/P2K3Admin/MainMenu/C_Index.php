@@ -443,9 +443,11 @@ class C_Index extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['master_apd'] = $this->M_dtmasuk->getApdmaster();
 
 		$pr = $this->input->post('k3_periode');
 		$ks = $this->input->post('k3_seksi');
+		$apd = $this->input->post('k3_apd');
 		if (!is_numeric($ks)) {
 			$ks = '';
 		}
@@ -462,13 +464,16 @@ class C_Index extends CI_Controller
 		$jml = '';
 		$validasi = $this->input->post('validasi');
 		if ($validasi == 'hitung') {
-			$delPeriode = $this->M_dtmasuk->delPeriode($pr, $ks);
+			$delPeriode = $this->M_dtmasuk->delPeriode($pr, $ks, $apd);
 			$list = array();
 			$data['allKs'] = $this->M_dtmasuk->allKs($pr, $ks);
 			foreach ($data['allKs'] as $key) {
 				$record = $this->M_dtmasuk->getlistHitung($pr, $key['kodesie']);
 				$new = array();
 				foreach ($record as $row) {
+					if (!empty($apd) && !in_array($row['kode_item'], $apd)) {
+						continue;
+					}
 					$a = $row['jml_item'];
 					$b = $row['jml_pekerja'];
 					$c = $row['jml_kebutuhan_umum'];

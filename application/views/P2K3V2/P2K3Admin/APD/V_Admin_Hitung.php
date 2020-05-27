@@ -20,16 +20,17 @@
                             <div class="box-body">
                                 <div class="panel-body" style="">
                                     <form method="post" class="form-horizontal" action="<?php echo site_url('p2k3adm_V2/Admin/hitung');?>" enctype="multipart/form-data">
+                                    <div class="col-md-12">
                                         <div class="col-md-1 text-left" align="right">
-                                            <label for="lb_periode" class="control-label">Periode : </label>
+                                            <label for="lb_periode" class="control-label">Periode</label>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input-group col-md-12">
                                                 <input placeholder="Masukan Periode" required="" class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" id="yangPentingtdkKosong" value="<?php echo $pr; ?>"/>
                                             </div>
                                         </div>
-                                        <div class="col-md-1 text-left" align="right">
-                                            <label for="lb_periode" class="control-label">Seksi : </label>
+                                        <div class="col-md-1 text-center" align="right">
+                                            <label for="lb_periode" class="control-label">Seksi</label>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input-group col-md-12">
@@ -38,10 +39,25 @@
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top: 10px;">
+                                        <div class="col-md-1 text-left" align="right">
+                                        <label for="lb_periode" class="control-label">APD</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="input-group col-md-12">
+                                                <select class="form-control select2" name="k3_apd[]" multiple="" data-placeholder="kosongkan untuk semua APD">
+                                                    <?php foreach ($master_apd as $key): ?>
+                                                        <option value="<?=$key['kode_item']?>"><?=$key['item']?></option>   
+                                                    <?php endforeach ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-md-2">
                                             <button style="cursor: not-allowed" name="validasi" type="button" class="btn btn-primary p2k3_submit_hitung" value="hitung" data-toggle="tooltip" data-placement="top" title="Silahkan klik button Cek terlebih dahulu">Hitung</button>
                                             <button style="margin-left: 10px;" type="button" class="btn btn-primary p2k3_cek_hitung" disabled="">Cek</button>
                                         </div>
+                                    </div>
                                     </form>
                                     <?php if ($run == '1') { ?>
                                     <?php $a = 0; foreach ($listHitung as $key): ?>
