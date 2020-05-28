@@ -310,7 +310,7 @@
     }
 </style>
 <div class="iconso">
-    <img class="iconso-img" src="<?php echo base_url('assets/img/SO2020.gif'); ?>">
+    <img class="iconso-img" src="<?php echo base_url('assets/img/SO2020.gif?v='.time()); ?>">
 </div>
 <div class="popupso" id="popupso">
     <img class="popupso_img" src="<?php echo base_url('assets/img/CS_SO2020.png'); ?>" alt="" />
