@@ -104,6 +104,7 @@ class C_Penyerahan extends CI_Controller
 		// echo "<pre>";print_r($ekspedisi);exit();
 
 		$coba = '';
+		$exs = array();
 		for ($i=0; $i < count($nospb); $i++) {
 			if ($scan[$i] == $qty[$i]) {
 				$coba[$ekspedisi[$i]][] = array(
@@ -114,29 +115,43 @@ class C_Penyerahan extends CI_Controller
 					'ekspedisi' 	=> $ekspedisi[$i],
 					'scan' 			=> $scan[$i],
 				);
+				$pisah = explode(",", $berat[$i]);
+				if (!in_array($ekspedisi[$i], $exs)) {
+					array_push($exs, $ekspedisi[$i]);
+					$size[$ekspedisi[$i]] = 0;
+				}
+				if (count($pisah) < 15) {
+					$size[$ekspedisi[$i]] += 1;
+				}elseif (count($pisah) > 14 && count($pisah) < 20) {
+					$size[$ekspedisi[$i]] += 2;
+				}else {
+					$t = substr(count($pisah),0,1);
+					$size[$ekspedisi[$i]] += $t;
+				}
 			}
 		}
-		// echo "<pre>";print_r($coba);exit();
+		// echo "<pre>";print_r($size);exit();
 		
 		$data['cetak'] = $coba;
 
 		$this->load->library('Pdf');
 		$pdf 		= $this->pdf->load();
-		$pdf		= new mPDF('utf-8','f4', 0, '', 1, 1, 3, 1, 10, 10);
+		$pdf		= new mPDF('utf-8','f4', 0, '', 5, 5, 22, 35, 7, 4);
 		$filename 	= 'penyerahan-paket.pdf';
 		$x = 0;
 		foreach ($coba as $key => $val) {
+			$data['size'] = $size[$key];
 			$data['data'] = $val;
 			$data['urut'] = $x;
 			$data['eks'] = $key;
-			// $head 	= $this->load->view('KapasitasGdSparepart/V_Headpdf', $data, true);	
+			$head 	= $this->load->view('KapasitasGdSparepart/V_Headpdf', $data, true);	
 			$html 	= $this->load->view('KapasitasGdSparepart/V_PdfPenyerahan', $data, true);	
-			// $footer = $this->load->view('KapasitasGdSparepart/V_Footerpdf', $data, true);
+			$footer = $this->load->view('KapasitasGdSparepart/V_Footerpdf', $data, true);
 			
 		ob_end_clean();
-		// $pdf->SetHTMLHeader($head);
-		// $pdf->SetHTMLFooter($footer);
-		$pdf->WriteHTML($html);												
+		$pdf->SetHTMLHeader($head);		
+		$pdf->WriteHTML($html);	
+		$pdf->SetHTMLFooter($footer);									
 		// $pdf->debug = true; 
 		$x++;
 		}	

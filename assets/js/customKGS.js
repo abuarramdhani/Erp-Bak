@@ -13,7 +13,7 @@ function inputPSPB(th) {
                 show: true
         }); 
 	var request = $.ajax({
-        url: baseurl+'KapasitasGdSparepart/Input/',
+        url: baseurl+'KapasitasGdSparepart/Input/save',
         data: {no_spb : no_spb, btn_urgent : btn_urgent, btn_bon : btn_bon, btn_langsung : btn_langsung, btn_besc : btn_besc},
         type: "POST",
         datatype: 'html',

@@ -2019,58 +2019,13 @@ class C_Monitoring extends CI_Controller
 		$kurang 	= $this->jadiin2($dataKurang, $dataCancel);
 		$selesai 	= $this->jadiin($dataselesai, 'selesai');
 
-		$data_colly = array();
-		$no_colly = array();
-		for ($i=0; $i < count($dataselesai) ; $i++) { 
-			$dus_kecil 	= array();
-			$dus_sdg 	= array();
-			$dus_pjg 	= array();
-			$karung 	= array();
-			$peti	 	= array();
-			$cekcolly = $this->M_monitoring->getDataColly($dataselesai[$i]['NO_DOKUMEN']);
-			if (!empty($cekcolly)) {
-				foreach ($cekcolly as $val) {
-					if ($val['kode_packing'] == 1) {
-						array_push($dus_kecil, $val['nomor_do']);
-					}elseif ($val['kode_packing'] == 2) {
-						array_push($dus_sdg, $val['nomor_do']);
-					}elseif ($val['kode_packing'] == 3) {
-						array_push($dus_pjg, $val['nomor_do']);
-					}elseif ($val['kode_packing'] == 4) {
-						array_push($karung, $val['nomor_do']);
-					}elseif ($val['kode_packing'] == 5) {
-						array_push($peti, $val['nomor_do']);
-					}
-				}
-				$array = array(
-					'nospb' => $dataselesai[$i]['NO_DOKUMEN'],
-					'dus_kecil' => count($dus_kecil),
-					'dus_sdg' => count($dus_sdg),
-					'dus_pjg' => count($dus_pjg),
-					'karung' => count($karung),
-					'peti' => count($peti),
-				);
-				array_push($data_colly, $array);
-			}
-			if (!in_array($dataselesai[$i]['NO_DOKUMEN'], $no_colly)) {
-				array_push($no_colly, $dataselesai[$i]['NO_DOKUMEN']);
-			}
-		}
-
-		$kcl = 0; $sdg = 0; $pjg = 0; $krg = 0; $peti = 0;
-		foreach ($data_colly as $col) {
-			$kcl += $col['dus_kecil'];
-			$sdg += $col['dus_sdg'];
-			$pjg += $col['dus_pjg'];
-			$krg += $col['karung'];
-			$peti += $col['peti'];
-		}
+		$cari = $this->jaditoo($dataselesai);
 		$coly = array(
-			'Kardus Kecil' 	=> $kcl,
-			'Kardus Sedang' => $sdg,
-			'Kardus Panjang' => $pjg,
-			'Karung' 		=> $krg,
-			'Peti' 			=> $peti,
+			'Kardus Kecil' 	=> $cari['dus_kecil'],
+			'Kardus Sedang' => $cari['dus_sdg'],
+			'Kardus Panjang' => $cari['dus_pjg'],
+			'Karung' 		=> $cari['karung'],
+			'Peti' 			=> $cari['peti'],
 		);
 
 		$pack = array(

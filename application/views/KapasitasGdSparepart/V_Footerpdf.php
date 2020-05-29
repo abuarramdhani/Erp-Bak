@@ -1,4 +1,4 @@
-<div class="row" style="padding-left:10px;padding-right:10px;padding-bottom:0px">
+<div class="row" style="padding-left:10px;padding-right:10px;padding-bottom:20px">
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;" >
     <tr>
         <td style="width: 40%;"></td>
