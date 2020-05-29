@@ -86,7 +86,7 @@ class M_pekerjalaju extends CI_Model
 				where noind = ?
 				and trim(waktu) not in ('__:__:__','0')
 				and concat(tanggal::date,' ',waktu)::timestamp < ?
-				order by tanggal asc 
+				order by tanggal desc 
 				limit 1";
 		return $this->personalia->query($sql,array($noind,$waktu))->row();
 	}
