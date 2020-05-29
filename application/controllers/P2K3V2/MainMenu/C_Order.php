@@ -1123,7 +1123,8 @@ class C_Order extends CI_Controller
       			$x++;
       		}
       	}
-      	// print_r($kodesie);exit();
+      	$data['listKs'] = $refjabatan;
+      	// print_r($refjabatan);exit();
       	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
       	$tgl = date('Y-m');
       	$data['inputStandar'] = $this->M_order->getInputstd2($tgl, $kodesie);
@@ -1888,7 +1889,7 @@ class C_Order extends CI_Controller
 						<th style="width:20px;">No</th>
 						<th style="width:200px;">Noind</th>
 						<th>Nama</th>
-						<th style="width:200px;">Pekerjaan</th>
+						<th>Pekerjaan</th>
 					</tr>';
 					$i = 1;
 					foreach($getPekerja as $key){
