@@ -42,6 +42,25 @@ class C_Input extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$date = date('d/m/Y');
+		$data['value'] = $this->M_input->getData($date);
+		for ($v=0; $v < count($data['value']); $v++) { 
+			if ($data['value'][$v]['JENIS_DOKUMEN'] == '') {
+				$this->M_input->hapusData();
+			}else{
+
+			}
+		}
+		
+		// echo "<pre>"; print_r($data['value']);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('KapasitasGdSparepart/V_Input');
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function save(){
 		$noSPB = $this->input->post('no_spb');
 		$valBtn = $this->input->post('btn_urgent');
 		$btnBon = $this->input->post('btn_bon');
@@ -79,34 +98,9 @@ class C_Input extends CI_Controller
 				$cek = $this->M_input->cekData($noSPB[$i]);
 				if (empty($cek)) {
 					$save= $this->M_input->saveDataSPB($jam, $jenis, $nodoc, $jml_item, $jml_pcs, $urgent, $tgl_dibuat, $bon);	
-				}else{
-					
 				}
 			}
 		}
-
-		$date = date('d/m/Y');
-		$data['value'] = $this->M_input->getData($date);
-		for ($v=0; $v < count($data['value']); $v++) { 
-			if ($data['value'][$v]['JENIS_DOKUMEN'] == '') {
-				$this->M_input->hapusData();
-			}else{
-
-			}
-			// if ($data['value'][$v]['TGL_DIBUAT'] == '') {
-			// 	$cari = $this->M_input->dataSPB($data['value'][$v]['NO_DOKUMEN']);
-			// 	$tgl = $cari[0]['MTRL'];
-
-			// 	$update = $this->M_input->update($tgl, $data['value'][$v]['NO_DOKUMEN']);
-			// }
-		}
-		
-		// echo "<pre>"; print_r($data['value']);exit();
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('KapasitasGdSparepart/V_Input');
-		$this->load->view('V_Footer',$data);
 	}
 
 	function cancelSPB(){

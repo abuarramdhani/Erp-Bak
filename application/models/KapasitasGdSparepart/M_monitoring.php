@@ -323,7 +323,7 @@ class M_monitoring extends CI_Model {
     public function dataselesai($date1, $date2) {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT   kts.tgl_dibuat, kts.selesai_packing, kts.jenis_dokumen,
-                        kts.no_dokumen, kts.jumlah_item, kts.jumlah_pcs,
+                        kts.no_dokumen, COUNT (mtrl.inventory_item_id) jumlah_item, SUM (mtrl.quantity) jumlah_pcs,
                         COUNT (mtrl.inventory_item_id) jml_item_selesai,
                         SUM (mtrl.quantity_delivered) jml_pcs_selesai, kts.urgent keterangan,
                         kts.bon
