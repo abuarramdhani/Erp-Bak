@@ -20,6 +20,18 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
+										<style type="text/css">
+											.dt-buttons {
+												float: left;
+											}
+											.dataTables_filter {
+												float: right;
+											}
+											
+											.dataTables_info {
+												float: left
+											}
+										</style>
 										<table class="table table-striped table-hover table-bordered" id="tblMPSuratIsolasiMandiriIndex">
 											<thead class="bg-primary">
 												<tr>
