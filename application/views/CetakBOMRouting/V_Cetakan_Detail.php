@@ -56,7 +56,9 @@
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Status</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Last<br> Update</th>
 		</tr>
-		<?php $b=1;  $no=1; for ($i=0; $i < sizeof($datapdf); $i++) {
+		<?php $b=1;  $no=1; 
+			
+		for ($i=0; $i < sizeof($datapdf); $i++) {
 			//  if ($i != 0 && $datapdf[$i]['RESOURCE_CODE'] == $datapdf[$i-1]['RESOURCE_CODE']) {  
 			 		// $b+1;
 			 	?>      
