@@ -123,6 +123,17 @@ class C_Cetakbom extends CI_Controller
 			$datapdf = $this->M_cetakbom->getdatapdf($kode,$seksi);
 			$datapdf2 = $this->M_cetakbom->getdatapdf2($kode);
 
+			$array_Resource2 = array();
+		for ($i=0; $i < sizeof($datapdf2); $i++) {
+			if ($datapdf2[$i]['ALT'] == null) {
+				$alter2[$i] = 'Primary';
+			} else {
+				$alter2[$i] = $datapdf2[$i]['ALT'];
+			}
+				$array_Resource2['ALT'][$alter2[$i]][$i] = $datapdf2[$i]['COMPONENT_NUM'];
+				$array_Resource2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']][$i] = $datapdf2[$i]['COMPONENT_NUM'];
+		}
+
 			$array_Resource = array();
 		for ($i=0; $i < sizeof($datapdf); $i++) {
 			if ($datapdf[$i]['ALT'] == null) {
@@ -242,6 +253,7 @@ class C_Cetakbom extends CI_Controller
 				$i++;
 			}
 			$data['arrayR'] = $array_Resource;
+			$data['arrayR2'] = $array_Resource2;
 			$data['datapdf'] = $array_pdf;
 			$data['datapdf2'] = $datapdf2;
 

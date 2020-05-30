@@ -199,6 +199,7 @@ order by bos.OPERATION_SEQ_NUM";
 
 select msib.SEGMENT1 assembly_num
 ,msib.DESCRIPTION assy_desc
+,bom.BILL_SEQUENCE_ID
 ,bom.ALTERNATE_BOM_DESIGNATOR alt
 ,bic.ITEM_NUM num
 ,msib2.SEGMENT1 component_num
