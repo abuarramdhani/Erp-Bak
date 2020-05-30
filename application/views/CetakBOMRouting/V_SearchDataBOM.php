@@ -60,7 +60,6 @@
 									</div>
 									<div class="col-md-3" style="text-align: center;">
 										<select class="form-control select2 org" id="org" data-placeholder="Organization Code" name="org">
-											<option></option>
 											<option value="ODM">ODM</option>
 											<option value="OPM">OPM</option>
 										</select>
