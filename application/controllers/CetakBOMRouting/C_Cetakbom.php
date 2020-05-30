@@ -79,11 +79,13 @@ class C_Cetakbom extends CI_Controller
 		public function getseksi()
 	{
 		$term	= $this->input->post('segment1');
+		$html = '<option></option>';
 		if ($term=='ODM') {
 			$seksi=$this->M_cetakbom->getseksiodm();	
 			foreach ($seksi as $s) {
-			echo '<option value="'.$s['ROUTING_CLASS'].'">'.$s['ROUTING_CLASS'].'</option>';
+			$html = $html.'<option value="'.$s['ROUTING_CLASS'].'">'.$s['ROUTING_CLASS'].'</option>';
 			}
+			echo $html;
 		} elseif ($term=='OPM') {
 			echo '<option></option>';	
 		}
