@@ -60,9 +60,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 5px;border-bottom: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;">
-					<b style="font-size:14px">JENIS BARANG :</b> <br> <br>
-					<b><?php echo $jenisbarang ?></b>
-				</tr>
+					<b style="font-size:14px">KETERANGAN :</b> <br> <br>
+					<b><?php echo $get[0]['KETERANGAN'] ?></b>
 				</td>
 			</tr>
 		</table>
