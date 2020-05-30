@@ -7,6 +7,7 @@ class M_user extends CI_Model {
 				$this->load->library('encrypt');
 				$this->load->helper('url');
 				$this->load->library('session');
+				$this->personalia = $this->load->database('personalia', true);
         }
 		
 		public function getUser($user_id=FALSE)
@@ -33,6 +34,16 @@ class M_user extends CI_Model {
 			$query = $this->db->query($sql);
 			return $query->result_array();
 				
+		}
+
+		public function getDataUpdatePassword($noind)
+		{
+			$sql = "SELECT trim(a.nama) nama,
+							a.email_internal as email,
+							(select seksi from hrd_khs.tseksi b where b.kodesie = a.kodesie) as seksi
+					FROM hrd_khs.tpribadi a
+					WHERE a.noind = '$noind'";
+			return $this->personalia->query($sql)->result_array();
 		}
 
 		public function getCheckUser($text)

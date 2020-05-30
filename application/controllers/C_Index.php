@@ -211,6 +211,7 @@ class C_Index extends CI_Controller {
 	{	$this->checkSession();
 		//$usr = "D1178";
 		$user_id = $this->session->userid;
+		$noind = $this->session->user;
 
 		$data['UserData'] = $this->M_user->getUser($user_id);
 		$data['id'] = $user_id;
@@ -218,37 +219,42 @@ class C_Index extends CI_Controller {
 		foreach($data['UserData'] as $user){
 			$password = $user['user_password'];
 		}
+		
+		$data['password'] = $password;
 
 		$this->form_validation->set_rules('txtPasswordNow', 'username', 'required');
-		// $this->form_validation->set_rules('txtPassword', 'username', 'required');
 
 		if ($this->form_validation->run() === FALSE)
 		{
 				$data['error'] = '';
 				$this->load->view('V_ChangePassword',$data);
-
 		}
 		else
 		{
-			if($password == md5($this->input->post('txtPasswordNow'))){
+			if($password == $this->input->post('txtPasswordNow')){
 				if($this->input->post('txtPassword')!='' and $this->input->post('txtPasswordCheck')!=''){
-					$aksi = 'Change Password';
-					$detail = 'Change Password';
-					$this->log_activity->activity_log($aksi, $detail);
-
-					$data = array(
-						'user_password'	=> md5($this->input->post('txtPassword')),
-						'creation_date'=>  $this->input->post('hdnDate'),
-						'created_by'=>  $this->input->post('hdnUser')
-						);
+					if (md5($this->input->post('txtPassword')) == $password) {
+						$data['error'] = "Password Masih Sama";
+						$this->load->view('V_ChangePassword', $data);
+					}else{
+						$aksi = 'Change Password';
+						$detail = 'Change Password';
+						$this->log_activity->activity_log($aksi, $detail);
+	
+						$data = array(
+							'user_password'	=> md5($this->input->post('txtPassword')),
+							'creation_date'=>  $this->input->post('hdnDate'),
+							'created_by'=>  $this->input->post('hdnUser')
+							);
+						$this->M_user->updateUser($data,$user_id);
+						$this->EmailAlert($noind, date('Y-m-d H:i:s'));
+						redirect(base_url('logout'));
+					}
 				}
 				else{
 					$data['error'] = 'New Password Empty';
 					$this->load->view('V_ChangePassword',$data);
 				}
-				$this->M_user->updateUser($data,$user_id);
-				//print_r($data);
-				redirect(base_url('logout'));
 			}else{
 				$aksi = 'Error Change Password';
 				$detail = 'Error Change Password';
@@ -297,4 +303,60 @@ class C_Index extends CI_Controller {
 
 	}
 
+	public function EmailAlert($noind, $waktu) {
+		//email
+		$getnama = $this->M_user->getDataUpdatePassword($noind);
+		$emailUser = 'kasie_ict_hrd@quick.com';
+	
+			$subject = "Reset Password ERP";
+			$body = "Pemberitahuan,
+					<br>Pekerja dengan data sebagai berikut telah mengganti password erp:
+					<br>
+					<br><b>Noind&emsp;&emsp;:</b> $noind
+					<br>
+					<br><b>Nama&emsp;&emsp;:</b> ".$getnama[0]['nama']."
+					<br>
+					<br><b>Seksi &emsp;&emsp;:</b> ".$getnama[0]['seksi']."
+					<br>
+					<br><b>Tanggal &nbsp;&nbsp;:</b> ".date('d-m-Y H:i:s', strtotime($waktu))."
+					<br><br>
+					<hr>
+					<br>Demikian yang dapat kami informasikan. Terimakasih";
+	
+			//send Email
+			$this->load->library('PHPMailerAutoload');
+			$mail = new PHPMailer();
+			$mail->SMTPDebug = 0;
+			$mail->Debugoutput = 'html';
+	
+			// set smtp
+			$mail->isSMTP();
+			$mail->Host = 'm.quick.com';
+			$mail->Port = 465;
+			$mail->SMTPAuth = true;
+			$mail->SMTPSecure = 'ssl';
+			$mail->SMTPOptions = array(
+					'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true)
+				);
+			$mail->Username = 'no-reply';
+			$mail->Password = '123456';
+			$mail->WordWrap = 50;
+	
+			// set email content
+			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+			$mail->addAddress($getnama[0]['email']);
+			$mail->addAddress('kasie_ict_hrd@quick.com');
+			$mail->Subject = $subject;
+			$mail->msgHTML($body);
+	
+			// check error
+			if (!$mail->send()) {
+				echo "Mailer Error: ".$mail->ErrorInfo;
+				exit();
+			}
+	}
 }
+
