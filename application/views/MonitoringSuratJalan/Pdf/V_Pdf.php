@@ -1,4 +1,3 @@
-
 		 <div style="border-left: 1px solid black;border-right: 1px solid black;background:white">
 	 			<div style="padding:15.534px;">
 	 				<div style="width:69.15%;float:left">
@@ -8,7 +7,7 @@
 	 							<th style="padding: 3px;width: 40%;border-left:1px solid black;border-top:1px solid black;">
 	 								NOMOR FPB <br> (Form Pengiriman Barang)
 	 							</th>
-	 							<th style="padding: 3px;width: 55%;border-left:1px solid black;border-top:1px solid black;border-right:1px solid black;">JENIS BARANG</th>
+	 							<th style="padding: 3px;width: 55%;border-left:1px solid black;border-top:1px solid black;border-right:1px solid black;">KETERANGAN</th>
 	 						</tr>
 
 	 						<?php for ($i=0; $i < 10; $i++) { ?>
@@ -18,7 +17,7 @@
 	 									<?php !empty($get['Item'][$i]['DOC_CUSTOM']) ? $z = $get['Item'][$i]['DOC_CUSTOM'] : $z = ''; echo $z; ?>
 	 								</td>
 	 								<td style="text-align: center;padding: 3px;border-left:1px solid black;border-top:1px solid black;border-right:1px solid black;">
-	 									<?php !empty($get['Item'][$i]['DOC_CUSTOM']) ? $z = $get['Item'][$i]['ITEM_CUSTOM'] : $z = ''; echo $z; ?>
+	 									<?php !empty($get['Item'][$i]['DOC_CUSTOM']) ? $z = $get['Item'][$i]['KETERANGAN'] : $z = ''; echo $z; ?>
 	 								</td>
 	 							</tr>
 	 						<?php } ?>
