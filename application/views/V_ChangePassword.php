@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<style>
+.swal2-modal.swal2-popup{
+	width: 30%;
+	height: 60%;
+	font-size: 15px;
+}
+</style>
     <!--
         ===
         This comment should NOT be removed.
@@ -30,6 +38,7 @@
     <script src="<?php echo base_url('assets/plugins/jquery-2.0.3.min.js');?>"></script>
     <script src="<?php echo base_url('assets/plugins/bootstrap/3.0.0/js/bootstrap.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/js/HtmlFunction.js');?>"></script>
+	<script src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
     <!--<script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>"></script>
 	
 	<script src="<?php echo base_url('assets/js/formsInit.js');?>"></script>
@@ -70,7 +79,18 @@
 							<input type="hidden" value="<?php echo $this->session->userid; ?>" name="hdnUser" id="hdnUser" />
 							<div class="panel-heading text-left">
 							</div>
-							<?= (isset($error))?$error:"" ?>
+						<?php if($error){ ?>
+							<script src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
+							<script>
+								swal.fire({
+									title: 'Peringatan',
+									text: '<?= $error ?>',
+									type: 'warning',
+									customClass: 'swalWidth',
+									allowOutsideClick: false
+								})
+							</script>
+						<?php }else { echo ""; } ?>
 							<div class="panel-body">
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">NIK</label>
@@ -81,7 +101,7 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">Password</label>
 											<div class="col-lg-4">
-												<input type="password" placeholder="Password Now" name="txtPasswordNow" id="txtPasswordNow" class="form-control" />
+												<input type="password" placeholder="Password Now" name="txtPasswordNow" id="txtPasswordNow" class="form-control" value="<?= $password ?>" readonly/>
 											</div>
 									</div>
 									<div class="form-group">
@@ -107,7 +127,7 @@
 							</div>
 							<div class="panel-footer">
 								<div class="row text-right">
-									<a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
+									<a href="<?= base_url('')?>" class="btn btn-primary btn-lg btn-rect">Back</a>
 									&nbsp;&nbsp;
 									<button type="submit" id="btnUser" class="btn btn-primary btn-lg btn-rect">Save Changes</button>
 								</div>
