@@ -100,7 +100,9 @@ AND msib.segment1 = '$komp'
     $sql = "Select bor.ORGANIZATION_ID
 ,msib.segment1
 ,msib.description
+,bor.ROUTING_SEQUENCE_ID
 ,bor.ALTERNATE_ROUTING_DESIGNATOR alt
+,bos.OPERATION_SEQUENCE_ID
 ,bos.OPERATION_SEQ_NUM opr_no
 ,BOS.OPERATION_DESCRIPTION KODE_PROSES
     ,mach.RESOURCE_CODE
