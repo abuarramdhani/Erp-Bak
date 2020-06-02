@@ -92,6 +92,13 @@ $(document).ready(function(){
         "buttons" : [
             'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
         ],
+        "processing": true,
+        "serverSide": true,
+        "order" : [],
+        "ajax":{
+            "url": baseurl+'AbsenPekerjaLaju/list_absen_pkj_laju/list/ListPekerja',
+            "type": "post"
+        },
 	});
 
 
