@@ -411,13 +411,14 @@ class C_Personalia extends CI_Controller
                 td.tanggal_start::date, 
                 td.tanggal_end::date, 
                 tr.seksi as approver,
-                tr.tgl_update as app_time
+                tr.tgl_update as app_time,
+                td.alasan
         FROM ps.tdata td 
             inner join er.er_employee_all emp on td.noind = emp.employee_code 
             inner join ps.tmaster tm on td.id_master = tm.id 
             inner join ps.triwayat tr on tr.id_data = td.id_data
         WHERE tanggal_end between '$start' and '$end' 
-            and td.status not in ('0','2','4') 
+            and td.status not in ('0') 
             and tr.level = (select max(level) from ps.triwayat where id_data = td.id_data) 
             $dokumen 
             $seksi 
@@ -430,7 +431,11 @@ class C_Personalia extends CI_Controller
 
         for($i=0; $i < count($table); $i++){
             $table[$i]['kodesie'] = $this->M_inputdata->getNameSeksi($table[$i]['kodesie']);
-            $table[$i]['status'] = 'Diterima oleh seksi '.$this->M_inputdata->getNameSeksi($table[$i]['approver']);
+            if (in_array($table[$i]['status'], array('1','3'))) {
+                $table[$i]['status'] = 'Diterima oleh seksi '.$this->M_inputdata->getNameSeksi($table[$i]['approver']);
+            }else{
+                $table[$i]['status'] = 'Ditolak oleh seksi '.$this->M_inputdata->getNameSeksi($table[$i]['approver']).' dengan alasan '.$table[$i]['alasan'];
+            }
             $table[$i]['tgl_app'] = date('d/m/Y H:i:s', strtotime($table[$i]['app_time']));
         }
 
