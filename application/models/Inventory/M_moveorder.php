@@ -987,6 +987,7 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM7 = '.$jan.'<br>';
 		// echo ':P_PARAM8 = '.$job_id.'<br>';		
 		// echo ':P_PARAM9 = '.$nomor_mo.'<br>';
+		// echo ':P_PARAM10 = '.$user_id.'<br>';
 
 		// exit();
 		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
@@ -996,7 +997,7 @@ class M_moveorder extends CI_Model
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
 		  
-		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9); END;";
+		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9,:P_PARAM10); END;";
 
 		// $param4 = '';
 
@@ -1012,6 +1013,7 @@ class M_moveorder extends CI_Model
 		oci_bind_by_name($stmt,':P_PARAM7',$jan);
 		oci_bind_by_name($stmt,':P_PARAM8',$job_id);
 		oci_bind_by_name($stmt,':P_PARAM9',$nomor_mo);
+		oci_bind_by_name($stmt,':P_PARAM10',$user_id);
 
 		
 		// if (!$data) {
