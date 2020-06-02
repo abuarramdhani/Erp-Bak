@@ -116,6 +116,81 @@ class M_pekerjalaju extends CI_Model
 		return $this->db->query($sql,array($noind))->row();
 	}
 
+	/*
+		SELECT at_absen_approval.approver, at_absen.*,at_jenis_absen.* 
+		FROM at.at_absen_approval
+		left join at.at_absen
+		on at_absen_approval.absen_id = at_absen.absen_id 
+		left join at.at_jenis_absen 
+		on at_absen.jenis_absen_id = at_jenis_absen.jenis_absen_id
+		WHERE at_absen.noind in (select noind from at.at_laju) 
+		ORDER BY at_absen.waktu desc
+	*/
+
+	var $table = 'at.at_absen_approval';
+	var	$column_order = array('tsurat_isolasi_mandiri.created_timestamp','tsurat_isolasi_mandiri.created_timestamp','tsurat_isolasi_mandiri.no_surat',2,'tsurat_isolasi_mandiri.tgl_wawancara','tsurat_isolasi_mandiri.tgl_cetak');
+	var	$column_search = array('tpribadi.noind','tpribadi.nama','tsurat_isolasi_mandiri.no_surat');
+	var $order = array('at_absen.waktu' => 'desc');
+	var $select = "	at_absen_approval.approver, 
+					at_absen.*,
+					at_jenis_absen.* ";
+	var $where = "at_absen.noind in (select noind from at.at_laju)";
+
+	public function user_table_query(){
+
+		$this->db->select($this->select);
+		$this->db->from($this->table);
+		$this->db->join('at.at_absen','at_absen_approval.absen_id = at_absen.absen_id','left');
+		$this->db->join('at.at_jenis_absen','at_absen.jenis_absen_id = at_jenis_absen.jenis_absen_id','left');
+		$this->db->where($this->where);
+		$i = 0;
+		foreach ($this->column_search as $item) {
+			if ($_POST['search']['value']) {
+				if ($i===0) {
+					$this->db->group_start();
+					$this->db->like($item,strtoupper($_POST['search']['value']));
+				}else{
+					$this->db->or_like($item,strtoupper($_POST['search']['value']));
+				}
+				if (count($this->column_search)-1 == $i) {
+					$this->db->group_end();
+				}
+				$i++;
+			}
+		}
+		if (isset($_POST['order'])) {
+			$this->db->order_by($this->column_order[$_POST['order']['0']['column']],$_POST['order']['0']['dir']);
+		}elseif (isset($this->order)) {
+			$order = $this->order;
+			$this->db->order_by(key($order),$order[key($order)]);
+		}
+	}
+
+    public function user_table(){
+		$this->user_table_query();
+		if ($_POST['length'] != -1) {
+			$this->db->limit($_POST['length'],$_POST['start']);
+			$query = $this->db->get();
+			return $query->result();
+		}
+	}
+
+	public function count_filtered(){
+		$this->user_table_query();
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
+	public function count_all(){
+		$this->db->select($this->select);
+		$this->db->from($this->table);
+		$this->db->join('at.at_absen','at_absen_approval.absen_id = at_absen.absen_id','left');
+		$this->db->join('at.at_jenis_absen','at_absen.jenis_absen_id = at_jenis_absen.jenis_absen_id','left');
+		$this->db->where($this->where);
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
 }
 
 ?>
