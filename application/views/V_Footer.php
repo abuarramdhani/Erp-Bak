@@ -156,7 +156,7 @@
 		<script src="<?= base_url('assets/js/customSGA.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customTB.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customPurM.js') ?>"></script>
-		<script src="<?= base_url('assets/js/customSPO.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customSPO.js?version='.filemtime('assets/js/customSPO.js')) ?>"></script>
 		<script src="<?= base_url('assets/js/customTK.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customAS.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMBK.js') ?>"></script>
