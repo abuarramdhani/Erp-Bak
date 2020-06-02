@@ -3461,6 +3461,38 @@ function unlockPreview(){
 // Surat Isolasi Mandiri Start
 
 $(document).ready(function(){
+  $('#tblMPSuratIsolasiMandiriIndex').DataTable({
+    "processing": true,
+    "serverSide": true,
+    "order" : [],
+    "ajax":{
+      "url": baseurl+'MasterPekerja/Surat/SuratIsolasiMandiri/ListPekerja',
+      "type": "post"
+    },
+    "columnDefs" : [
+    {
+      "targets":[0],
+      // "orderable":false,
+      "className": 'text-center'
+    },
+    {
+      "targets":[1],
+      // "orderable":false,
+      "className": 'text-center'
+    },
+    {
+      "targets":[4],
+      // "orderable":false,
+      "className": 'text-center'
+    },
+    {
+      "targets":[5],
+      // "orderable":false,
+      "className": 'text-center'
+    }
+    ],
+  });
+
   $('#txaMPSuratIsolasiMandiriRedactor').redactor({
     buttonsHide : ['image']
   });

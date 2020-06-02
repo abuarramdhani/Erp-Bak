@@ -48,7 +48,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$data['data'] = $this->M_isolasimandiri->getSuratIsolasiMandiriAll();
+		// $data['data'] = $this->M_isolasimandiri->getSuratIsolasiMandiriAll();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -348,6 +348,37 @@ class C_IsolasiMandiri extends CI_Controller
 		$this->M_isolasimandiri->updateSuratIsolasiMandiriByID($data_update,$id);
 
 		redirect(base_url('MasterPekerja/Surat/SuratIsolasiMandiri'));
+	}
+
+	public function ListPekerja(){
+		$list = $this->M_isolasimandiri->user_table();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $key) {
+			$no++;
+			$encrypted_string = $this->encrypt->encode($key->id_isolasi_mandiri);
+			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+			$row = array();
+			$row[] = $no;
+			$row[] = '	<a href="'.site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Ubah/'.$encrypted_string).'" class="btn btn-primary">Edit</a>
+						<a href="'.site_url('MasterPekerja/Surat/SuratIsolasiMandiri/PDF/'.$encrypted_string).'" target="_blank" class="btn btn-warning">PDF</a>
+						<a href="'.site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Hapus/'.$encrypted_string).'" class="btn btn-danger" onclick="return confirm(\'apakah anda yakin ingin menghapus data ini ?\')">Delete</a>';
+			$row[] = $key->no_surat;
+			$row[] = $key->pekerja;
+			$row[] = $key->tgl_wawancara;
+			$row[] = $key->tgl_cetak;
+
+			$data[] = $row;
+		}
+
+		$output = array(
+			'draw' => $_POST['draw'],
+			'recordsTotal' =>$this->M_isolasimandiri->count_all(),
+			'recordsFiltered' => $this->M_isolasimandiri->count_filtered(),
+			'data' => $data
+		);
+
+		echo json_encode($output);
 	}
 }
 
