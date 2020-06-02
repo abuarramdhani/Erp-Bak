@@ -19,7 +19,26 @@
 	<div class="panel box-body" >
 
 		<div class="table-responsive">
-			
+			<style type="text/css">
+				.dataTables_wrapper .dataTables_processing {
+					position: absolute;
+					top: 0px !important;
+					left: 0px !important;
+					width: 100% !important;
+					height: 100% !important;
+					margin-left: 0px !important;
+					margin-top: 0px !important;
+					text-align: center;
+					z-index: 9999 !important;
+					border: 0px !important;
+    				background: rgba(0,0,0,.5) !important;
+    				color: transparent !important;
+					background-image: url(<?php echo base_url('assets/img/gif/loadingquick.gif') ?>) !important;
+					background-size: 300px 300px;
+					background-position: center !important;
+					background-repeat: no-repeat !important;
+				}
+			</style>
 			<table id="tblListPekerjaLaju" class="table table-striped table-bordered table-hover">
 				<thead>
 					<tr>
@@ -72,6 +91,6 @@
 </section>
 <script type="text/javascript">
 	$(document).ready(function(){
-	$("#absenAtasanTable").DataTable();
-});
+		$("#absenAtasanTable").DataTable();
+	});
 </script>
