@@ -31,7 +31,7 @@
             <div class="box box-success box-solid">
                 <div class="box-header with-border">
                     <div class="col-lg-6">
-                        <h2><b>Data Approved - Personalia <?= $lv ?></b></h2>
+                        <h2><b>Data Approved - Hubungan Kerja <?= $lv ?></b></h2>
                     </div>
                     <div class="col-lg-6 pull-right">
                         <form action="">

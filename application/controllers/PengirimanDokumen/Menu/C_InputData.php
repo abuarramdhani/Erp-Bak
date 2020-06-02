@@ -53,7 +53,9 @@ class C_InputData extends CI_Controller
             $alasan     = $res['alasan'];
             $approver1  = $res['approver1'];
             $approver2  = $res['approver2'];
-
+            $tanggal_appr = DateTime::createFromFormat('d/m/Y H:i:s', $appTime)->format('d-m-y');
+            $waktu_appr = DateTime::createFromFormat('d/m/Y H:i:s', $appTime)->format('H:i:s');
+            
             $tanggal    = ($tanggal1 == $tanggal2)? $tanggal1 : $tanggal1." - ".$tanggal2;
 
             $editButton = '';
@@ -66,19 +68,19 @@ class C_InputData extends CI_Controller
                     $status = '<td class="bg-yellow">Pending</td>';
                     break;
                 case '1':
-                    $status = '<td class="bg-blue">Diterima oleh seksi '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
+                    $status = '<td class="bg-blue">Diterima oleh seksi '.ucwords(strtolower($approver1))." 1 pada tanggal ".$tanggal_appr.' dan jam '.$waktu_appr.'</td>';
                     if($approver2 === ''){
-                        $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
+                        $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver1))." 1 pada tanggal ".$tanggal_appr.' dan jam '.$waktu_appr.'</td>';
                     }
                     break;
                 case '2':
-                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
+                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver1))." 1 pada tanggal ".$tanggal_appr.' dan jam '.$waktu_appr.'</td>';
                     break;
                 case '3':
-                    $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver2))." pada tanggal ".$appTime.'</td>';
+                    $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver2))." 2 pada tanggal ".$tanggal_appr.' dan jam '.$waktu_appr.'</td>';
                     break;
                 case '4':
-                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver2))." pada tanggal ".$appTime.'</td>';
+                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver2))." 2 pada tanggal ".$tanggal_appr.' dan jam '.$waktu_appr.'</td>';
                     break;
                 default:
                     $status = 'null';

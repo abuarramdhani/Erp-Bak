@@ -26,7 +26,7 @@
             <div class="box box-danger box-solid">
                 <div class="box-header with-border">
                     <div class="col-lg-6">
-                        <h2><b>Data Rejected - Personalia <?=$lv?></b></h2>
+                        <h2><b>Data Rejected - Hubungan Kerja <?=$lv?></b></h2>
                     </div>
                     <div class="col-lg-6 pull-right">
                         <form action="">
