@@ -168,6 +168,7 @@ class C_Master extends CI_Controller
           'DESCRIPTION'   => strtoupper($description[$key]),
           'QUANTITY'      => $quantity[$key],
           'UOM'           => $uom[$key],
+          'STATUS'        => 1,
           'CREATED_BY'    => $this->session->user,
           'KETERANGAN'    => strtoupper($keterangan)
         ];
