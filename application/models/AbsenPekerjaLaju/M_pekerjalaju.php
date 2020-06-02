@@ -128,7 +128,7 @@ class M_pekerjalaju extends CI_Model
 	*/
 
 	var $table = 'at.at_absen_approval';
-	var	$column_order = array('at_absen.waktu','at_absen.waktu','at_absen.noind','at_absen.nama','at_jenis_absen.jenis_absen','at_absen.waktu','at_absen.lokasi','at_absen.waktu','at_absen.waktu','at_absen.waktu','at_absen.waktu','at_absen.waktu','at_absen.waktu');
+	var	$column_order = array('at_absen.waktu','at_absen.waktu','at_absen.waktu','at_absen.noind','at_absen.nama','at_jenis_absen.jenis_absen','at_absen.waktu','at_absen.lokasi','at_absen.waktu','at_absen.waktu','at_absen.waktu','at_absen.waktu','at_absen.waktu','at_absen.waktu');
 	var	$column_search = array('at_absen.noind','at_absen.nama');
 	var $order = array('at_absen.waktu' => 'desc');
 	var $select = "	at_absen_approval.approver, 
