@@ -1054,6 +1054,22 @@ class C_Order extends CI_Controller
       	$noind 	= $this->session->user;
       	$tgl = date('Y-m');
       	$data['inputStandar'] = $this->M_order->getInputstd($kodesie);
+      	$seksiBawah = array();
+      	if (substr($kodesie, 5) == '0000') {
+      		$seksiBawah = $this->M_order->cekSeksiDibawah($kodesie);
+      	}
+      	$refjabatan = $this->M_order->getTrefjabatan($noind);
+      	$kodesie = array_column($refjabatan, 'kodesie');
+      	$x = count($refjabatan);
+      	if (!empty($seksiBawah)) {
+      		foreach ($seksiBawah as $key) {
+      			$kodesie[] = $key['kodesie'];
+      			$refjabatan[$x]['kodesie'] = $key['kodesie'];
+      			$refjabatan[$x]['seksi'] = $key['seksi'];
+      			$x++;
+      		}
+      	}
+      	$data['listKs'] = $refjabatan;
       	// print_r($data['inputStandar']);exit();
 
       	$this->load->view('V_Header',$data);
@@ -1329,6 +1345,23 @@ class C_Order extends CI_Controller
       	$jml = '';
       	$data['pr'] = $periode;
       	$data['listmonitor'] = $this->M_dtmasuk->listtobonHitung2($kodesie, $pr);
+
+      	$seksiBawah = array();
+      	if (substr($kodesie, 5) == '0000') {
+      		$seksiBawah = $this->M_order->cekSeksiDibawah($kodesie);
+      	}
+      	$refjabatan = $this->M_order->getTrefjabatan($noind);
+      	$kodesie = array_column($refjabatan, 'kodesie');
+      	$x = count($refjabatan);
+      	if (!empty($seksiBawah)) {
+      		foreach ($seksiBawah as $key) {
+      			$kodesie[] = $key['kodesie'];
+      			$refjabatan[$x]['kodesie'] = $key['kodesie'];
+      			$refjabatan[$x]['seksi'] = $key['seksi'];
+      			$x++;
+      		}
+      	}
+      	$data['listKs'] = $refjabatan;
 		// echo "<pre>";
 		// print_r($data['listmonitor']);exit();
 
