@@ -34,6 +34,13 @@ class C_Personalia extends CI_Controller
 
     function queryApproval($status, $level){ //nak ngene aku yo rakuat
         $kodesie = substr($this->session->kodesie, 0, 7);
+        $user = $this->session->user;
+        // echo $kodesie;exit();
+        if ($level == 1) {
+            $akses = " and '$user' in ('P0601', 'A2395', 'B0696', 'B0697', 'J1370') ";
+        }else{
+            $akses = " and '$user' in ('P0597', 'P0322')";
+        }
 
         if($status == 'pending'){
             if($level == 1){
@@ -65,7 +72,7 @@ class C_Personalia extends CI_Controller
                                 inner join ps.tmaster tm on tm.id = td.id_master
                                 inner join ps.triwayat tr on tr.id_data = td.id_data
                                 inner join er.er_employee_all emp on emp.employee_code = td.noind 
-                        WHERE $where
+                        WHERE $where $akses
                         GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan, seksi_name, td.lokasi
             ;";
         }else{
@@ -104,11 +111,11 @@ class C_Personalia extends CI_Controller
                             inner join ps.tmaster tm on tm.id = td.id_master 
                             inner join ps.triwayat tr on tr.id_data = td.id_data 
                             inner join er.er_employee_all emp on emp.employee_code = td.noind 
-                        WHERE tr.seksi='$kodesie' and tr.status = '$stat' and tr.level='$level' 
+                        WHERE tr.seksi='$kodesie' and tr.status = '$stat' and tr.level='$level' $akses
                         GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan, seksi_name,td.lokasi;
                         ";
         }
-        
+        // echo "<pre>".$selecta;exit();
         return $this->db->query($selecta);
     }
 
