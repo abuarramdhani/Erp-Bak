@@ -14,7 +14,7 @@
                                     <div class="panel-body">
                                         <h3>A. MASUK</h3>
                                         <table class="table table-bordered table-hover table-striped text-center" style="width: 100%;">
-                                            <thead class="bg-primary">
+                                            <thead class="btn-info">
                                                 <tr>
                                                     <th rowspan="2" width="5px">No</th>
                                                     <th rowspan="2">Keterangan</th>
@@ -85,7 +85,7 @@
                                     <div class="panel-body">
                                         <h3>B. CANCEL</h3>
                                         <table class="table table-bordered table-hover table-striped text-center" style="width: 100%;">
-                                            <thead class="bg-primary">
+                                            <thead class="btn-danger">
                                                 <tr>
                                                     <th rowspan="2" width="5px">No</th>
                                                     <th rowspan="2">Keterangan</th>
@@ -153,7 +153,7 @@
                                     <div class="panel-body">
                                         <h3>C. PACKING</h3>
                                         <table class="table table-bordered table-hover table-striped text-center" style="width: 100%;">
-                                            <thead class="bg-primary">
+                                            <thead class="bg-orange">
                                                 <tr>
                                                     <th rowspan="2" width="5px">No</th>
                                                     <th rowspan="2">Keterangan</th>
@@ -220,7 +220,7 @@
                                     <div class="panel-body">
                                         <h3>D. PACKING DALAM COLY</h3>
                                         <table class="table table-bordered table-hover table-striped text-center" style="width: 30%;">
-                                            <thead class="bg-primary">
+                                            <thead class="btn-warning">
                                                 <tr>
                                                     <th width="5px">No</th>
                                                     <th>Jenis Coly</th>
@@ -248,7 +248,7 @@
                                     <div class="panel-body">
                                         <h3>E. DOSP/SPB BELUM DIKERJAKAN</h3>
                                         <table class="table table-bordered table-hover table-striped text-center" style="width: 100%;">
-                                            <thead class="bg-primary">
+                                            <thead class="btn-success">
                                                 <tr>
                                                     <th rowspan="2" width="5px">No</th>
                                                     <th rowspan="2">Keterangan</th>
