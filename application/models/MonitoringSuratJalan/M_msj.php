@@ -242,13 +242,14 @@ class M_msj extends CI_Model
         if (!empty($response)) {
             foreach ($response as $key => $fpb) {
                 $responses = $this->oracle->distinct()
-                                    ->select('DOC_NUMBER, ITEM_TYPE')
+                                    ->select('DOC_NUMBER, ITEM_TYPE, KETERANGAN')
                                     ->where('DOC_NUMBER', $fpb['NO_FPB'])
                                     ->order_by('DOC_NUMBER', 'asc')
                                     ->get('KHS_KIRIM_INTERNAL')
                                     ->result_array();
                 if (!empty($responses)) {
                   $data['DOC_CUSTOM'] = $responses[0]['DOC_NUMBER'];
+                  $data['KETERANGAN'] = $responses[0]['KETERANGAN'];
                   $data['ITEM_CUSTOM'] = custom($responses);
                   $done[] = $data;
                 }

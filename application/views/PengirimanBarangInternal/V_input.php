@@ -48,6 +48,16 @@
                     </div>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label for="tujuan">Keterangan</label>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <input type="text" class="form-control" id="keterangan" name="keterangan" value="" autocomplete="off" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
             <div class="col-md-2"></div>
             <div class="col-md-12 mt-4">

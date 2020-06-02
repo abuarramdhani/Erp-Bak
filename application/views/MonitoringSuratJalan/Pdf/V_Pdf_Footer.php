@@ -6,14 +6,26 @@
 						<i style="font-size:11px;">*) Untuk melihat detail barang, cek web Monitoring Pengiriman Barang Internal KHS.
 						<span style="color:blue;">http://produksi.quick.com/PengirimanBarangInternal</span></i style="font-size:10px;">
 				</td>
-				<td style="width:26%;padding:5px;font-size:12px;">
+				<td style="width:26%;padding:5px;font-size:12px;vertical-align: text-top">
 					<center>
-						<br><b>DIKIRIM OLEH :</b><br><br><br><br><br><?php echo $get['Header'][0]['NAMA_SUPIR']?>
+						<br><b>DIKIRIM OLEH :</b>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<?php echo $get['Header'][0]['NAMA_SUPIR']?>
+						<!-- STEV -->
 					</center>
 				</td>
-				<td style="width:26%;padding:5px;font-size:12px;">
+				<td style="width:26%;padding:5px;font-size:12px;vertical-align: text-top">
 					<center>
-						<br><b>DITERIMA OLEH :</b><br><br><br><br><br>GUDANG PENERIMAAN
+						<br><b>DITERIMA OLEH :</b><br>
+						<br>
+						<br>
+						<br>
+						<br>
+						GUDANG PENERIMAAN
 					</center>
 				</td>
 			</tr>

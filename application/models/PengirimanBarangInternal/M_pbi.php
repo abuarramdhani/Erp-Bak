@@ -104,7 +104,7 @@ class M_pbi extends CI_Model
     public function Cetak($d)
     {
         $response = $this->oracle->distinct()
-                                 ->select('DOC_NUMBER, USER_TUJUAN, TUJUAN, SEKSI_KIRIM, CREATED_BY, CREATION_DATE')
+                                 ->select('DOC_NUMBER, USER_TUJUAN, TUJUAN, SEKSI_KIRIM, CREATED_BY, CREATION_DATE, KETERANGAN')
                                  ->where("DOC_NUMBER", $d)
                                  ->get('KHS_KIRIM_INTERNAL')
                                  ->result_array();
@@ -174,6 +174,7 @@ class M_pbi extends CI_Model
                            ,CREATION_DATE
                            ,CREATED_BY
                            ,SEKSI_TUJUAN
+                           ,KETERANGAN
                            )
           VALUES ('$data[DOC_NUMBER]'
                  ,'$data[SEKSI_KIRIM]'
@@ -188,7 +189,8 @@ class M_pbi extends CI_Model
                  ,'$data[STATUS]'
                  , SYSDATE
                  ,'$data[CREATED_BY]'
-                 ,'$data[SEKSI_TUJUAN]')
+                 ,'$data[SEKSI_TUJUAN]'
+                 ,'$data[KETERANGAN]')
           ");
             $response = 1;
             return $response;

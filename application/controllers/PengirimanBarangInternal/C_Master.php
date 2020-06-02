@@ -153,6 +153,7 @@ class C_Master extends CI_Controller
         $quantity       = $this->input->post('quantity');
         $uom            = $this->input->post('uom');
         $item_type      = $this->input->post('item_type');
+        $keterangan     = $this->input->post('keterangan');
 
         foreach ($line as $key => $l) {
             $data = [
@@ -167,8 +168,8 @@ class C_Master extends CI_Controller
           'DESCRIPTION'   => strtoupper($description[$key]),
           'QUANTITY'      => $quantity[$key],
           'UOM'           => $uom[$key],
-          'STATUS'        => 1,
-          'CREATED_BY'    => $this->session->user
+          'CREATED_BY'    => $this->session->user,
+          'KETERANGAN'    => strtoupper($keterangan)
         ];
             $this->M_pbi->insert($data);
         }

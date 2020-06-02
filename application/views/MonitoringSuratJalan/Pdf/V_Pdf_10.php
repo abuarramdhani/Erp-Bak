@@ -1,4 +1,3 @@
-
 		 <div style="border-bottom: 1.5px solid black;border-top: 1.5px solid black;border-left: 1.5px solid black;border-right: 1.5px solid black;background:white">
 			<!-- header -->
 			<table style="width:100%;border-bottom: 1px solid black;border-collapse: collapse !important;page-break-inside:avoid;">
@@ -59,7 +58,7 @@
 								<tr>
 									<td style="text-align: center;padding: 3px;border-bottom:1px solid black;border-left:1px solid black;border-top:1px solid black;"><?php echo $key+1 ?></td>
 									<td style="text-align: center;padding: 3px;border-bottom:1px solid black;border-left:1px solid black;border-top:1px solid black;"><?php echo $g['DOC_CUSTOM'] ?></td>
-									<td style="text-align: center;padding: 3px;border-bottom:1px solid black;border-left:1px solid black;border-top:1px solid black;border-right:1px solid black;"><?php echo $g['ITEM_CUSTOM'] ?></td>
+									<td style="text-align: center;padding: 3px;border-bottom:1px solid black;border-left:1px solid black;border-top:1px solid black;border-right:1px solid black;"><?php echo $g['KETERANGAN'] ?></td>
 								</tr>
 						<?php endforeach; ?>
 						<!-- <?php foreach ($ge as $key => $g): ?>
@@ -82,14 +81,26 @@
 									<i style="font-size:11px;">*) Untuk melihat detail barang, cek web Monitoring Pengiriman Barang Internal KHS.
 									<span style="color:blue;">http://produksi.quick.com/PengirimanBarangInternal</span></i style="font-size:10px;">
 							</td>
-							<td style="width:26%;padding:5px;font-size:12px;">
+							<td style="width:26%;padding:5px;font-size:12px;vertical-align: text-top">
 								<center>
-									<br><b>DIKIRIM OLEH :</b><br><br><br><br><br><br><?php echo $get['Header'][0]['NAMA_SUPIR']?>
+									<br><b>DIKIRIM OLEH :</b>
+									<br>
+									<br>
+									<br>
+									<br>
+									<br>
+									<?php echo $get['Header'][0]['NAMA_SUPIR']?>
+									<!-- STEV -->
 								</center>
 							</td>
-							<td style="width:26%;padding:5px;font-size:12px;">
+							<td style="width:26%;padding:5px;font-size:12px;vertical-align: text-top">
 								<center>
-									<br><b>DITERIMA OLEH :</b><br><br><br><br><br><br>GUDANG PENERIMAAN
+									<br><b>DITERIMA OLEH :</b><br>
+									<br>
+									<br>
+									<br>
+									<br>
+									GUDANG PENERIMAAN
 								</center>
 							</td>
 						</tr>
