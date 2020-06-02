@@ -244,7 +244,7 @@ class C_Lpalaju extends CI_Controller
 					$destination_rumah = $origin;
 				}
 
-				if (!empty($waktu_barcode) && isset($waktu_barcode->waktu_barcode)) {
+				if (!empty($waktu_barcode_array) && isset($waktu_barcode_array->waktu_barcode)) {
 					$waktu_barcode = $waktu_barcode_array->waktu_barcode;
 				}else{
 					$waktu_barcode = "Tidak ada Absen Barcode";
@@ -383,8 +383,9 @@ class C_Lpalaju extends CI_Controller
 			
 			if ($waktu_barcode != "Tidak ada Absen Barcode") {
 				$waktu_riil = round(abs(strtotime($key->waktu) - strtotime($waktu_barcode))/60);
-				$date = date_create($value['waktu']);
-				if ($wkt_riil > $batas) {
+				$date = date_create($key->waktu);
+				$batas = $duration_pesimis_value;
+				if ($waktu_riil > $batas) {
 					$style = ' style="color: red"';
 					$status = "Melebihi Estimasi Waktu Normal";
 				}else{
