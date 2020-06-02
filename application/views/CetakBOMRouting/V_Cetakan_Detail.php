@@ -82,7 +82,9 @@
 			//  if ($i != 0 && $datapdf[$i]['RESOURCE_CODE'] == $datapdf[$i-1]['RESOURCE_CODE']) {  
 			 		// $b+1;
 			 	?>      
-            <?php 	//P1
+			<?php 	
+				// DETAIL
+					//P1
                     if ($datapdf[$i]['P1'] != null) {
                         $p1 = '<br>P1: '.$datapdf[$i]['P1'];
                     } else {
@@ -347,14 +349,23 @@
 							}
 						}
 				  	?>
-
-            <td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detailproses[$i]?></td>
+			<?php
+				$dtl = str_replace("#$%","",$datapdf[$i]['DETAIL']);
+				$detail = str_replace("#","<br>-",$dtl)
+			?>
+			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detailproses[$i]?></td>
+			<!-- <td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detail?></td> -->
 		</tr>
 		<?php $no++; } ?>
 	
 		
 </table>
 
+<?php 
+	if ((sizeof($datapdf) % 10) === 0 || (sizeof($datapdf) % 10) > 5) {
+		echo "<pagebreak>";
+	}
+?>
 
 <div style="margin-top: 20px;border: 2px solid black;border-collapse: collapse;"><h3 style="margin-top: 5px;margin-bottom: 5px;text-align: center; ">Bills of Material</h3></div>
 
