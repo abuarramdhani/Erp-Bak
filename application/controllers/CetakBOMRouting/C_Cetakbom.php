@@ -186,6 +186,8 @@ class C_Cetakbom extends CI_Controller
 
 				$detailproses[$i] = $p1.$p2.$p3.$p4.$p5;
 				$array_Resource['Detail_Process'][$detailproses[$i]][$i] = $datapdf[$i]['NO_MESIN'];
+				$array_Resource['Detail'][$detailproses[$i]][$i] = $datapdf[$i]['NO_MESIN'];
+
 		}
 		// echo "<pre>";
 		// print_r($array_Resource);
@@ -218,6 +220,7 @@ class C_Cetakbom extends CI_Controller
 				$array_pdf[$i]['P3'] = $pdf['P3'];
 				$array_pdf[$i]['P4'] = $pdf['P4'];
 				$array_pdf[$i]['P5'] = $pdf['P5'];
+				$array_pdf[$i]['DETAIL'] = $pdf['DETAIL'];
 				//P1
 				if ($pdf['P1'] != null) {
 					$p1 = 'P1: '.$pdf['P1'];
@@ -285,7 +288,24 @@ class C_Cetakbom extends CI_Controller
 			$dataopm1 = $this->M_cetakbom->dataopm1($kode);
 			$dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
 			$dataopm3 =  $this->M_cetakbom->dataopm3($dataopm1[0]['FORMULA_ID']);
-
+			
+			for ($i=0; $i < sizeof($dataopm2); $i++) { 
+				$activity[$dataopm2[$i]['ACTIVITY']][] = $i;  
+			}
+			foreach ($activity as $key => $value) {
+				$act[] = $key;
+			}
+			$acti = '';
+			for ($i=0; $i < sizeof($act); $i++) { 
+				if ($i === (sizeof($act)-1)) {
+					$acti = $acti.$act[$i];
+				} else {
+					$acti = $acti.$act[$i].', ';
+				}
+				
+			}
+			 
+			$data['act'] = $acti;
 			$data['dataopm1'] = $dataopm1;
 			$data['dataopm2'] = $dataopm2;
 			$data['dataopm3'] = $dataopm3;

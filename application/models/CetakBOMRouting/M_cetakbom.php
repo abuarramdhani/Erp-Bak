@@ -118,6 +118,7 @@ AND msib.segment1 = '$komp'
 ,bos.ATTRIBUTE9 P3
 ,bos.ATTRIBUTE10 P4
 ,bos.ATTRIBUTE11 P5
+,NVL(bos.ATTRIBUTE7, '$%' )||'#'||NVL(bos.ATTRIBUTE8, '$%' )||'#'||NVL(bos.ATTRIBUTE9, '$%' )||'#'||NVL(bos.ATTRIBUTE10, '$%' )||'#'||NVL(bos.ATTRIBUTE11, '$%' ) detail
 from mtl_system_items_b msib
 ,bom_operational_routings bor
 ,bom_operation_sequences bos
