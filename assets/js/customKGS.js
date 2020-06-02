@@ -74,7 +74,7 @@ function btnBescKgs(no) {
 function btnCancelKGS(no) {
     var jenis = $('#jenis'+no).val();
     var nodoc = $('#nodoc'+no).val();
-    console.log(jenis);
+    // console.log(jenis);
     Swal.fire({
         title: 'Apakah Anda Yakin Akan Melakukan Cancel?',
         type: 'question',
@@ -100,7 +100,7 @@ function btnPendingSpb(no) {
     var jenis = $('#jenis'+no).val();
     var nodoc = $('#nodoc'+no).val();
     var bon = $('#bon'+no).val();
-    console.log(jenis);
+    // console.log(jenis);
     if (bon == 'PENDING') {
         Swal.fire({
             title: 'Apakah Anda Yakin Akan Menghapus Pending?',
@@ -243,7 +243,7 @@ function btnPelayananSPB(no) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-     console.log(jenis, no_spb);
+    //  console.log(jenis, no_spb);
 
     var hoursLabel   = document.getElementById("hours"+no);
     var minutesLabel = document.getElementById("minutes"+no);
@@ -318,7 +318,7 @@ function btnRestartPelayanan(no) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-     console.log(jenis, no_spb);
+    //  console.log(jenis, no_spb);
 
         // console.log(jenis);
         Swal.fire({
@@ -389,7 +389,7 @@ $(document).ready(function () {
                 return queryParameters;
             },
             processResults: function (data) {
-                console.log(data);
+                // console.log(data);
                 return {
                     results: $.map(data, function (obj) {
                         return {id:obj.PIC, text:obj.PIC};
@@ -410,7 +410,7 @@ function btnPengeluaranSPB(no) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-     console.log(jenis, no_spb);
+    //  console.log(jenis, no_spb);
 
     var hoursLabel   = document.getElementById("hours"+no);
     var minutesLabel = document.getElementById("minutes"+no);
@@ -484,7 +484,7 @@ function btnRestartPengeluaran(no) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-     console.log(jenis, no_spb);
+    //  console.log(jenis, no_spb);
 
      Swal.fire({
         title: 'Apakah Anda Yakin?',
@@ -548,7 +548,7 @@ function btnPackingSPB(no) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-     console.log(jenis, no_spb);
+    //  console.log(jenis, no_spb);
 
     var hoursLabel   = document.getElementById("hours"+no);
     var minutesLabel = document.getElementById("minutes"+no);
@@ -680,7 +680,7 @@ function btnRestartPacking(no) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-     console.log(jenis, no_spb);
+    //  console.log(jenis, no_spb);
 
      Swal.fire({
         title: 'Apakah Anda Yakin Akan Melakukan Restart?',

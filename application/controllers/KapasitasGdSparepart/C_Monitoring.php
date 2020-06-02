@@ -80,7 +80,7 @@ class C_Monitoring extends CI_Controller
 		$jml_gd = $this->M_monitoring->getjmlGd($date);
 		$data['jml_gd'] = count($jml_gd);
 
-		$cancel = $this->M_monitoring->getcancel($date);
+		$cancel = $this->M_monitoring->getcancel($date, $date);
 		$data['cancel'] = count($cancel);
 		
 		$jumlah = array();
@@ -216,7 +216,7 @@ class C_Monitoring extends CI_Controller
 			$jml_gd = $this->M_monitoring->getjmlGd2($date);
 			$hasil[$a]['jml_gd'] = count($jml_gd);
 
-			$cancel = $this->M_monitoring->getcancel($date);
+			$cancel = $this->M_monitoring->getcancel($date, $date);
 			$hasil[$a]['cancel'] = count($cancel);
 
 			$jumlah = array();
@@ -424,7 +424,7 @@ class C_Monitoring extends CI_Controller
 		$langsung2 = 0; $itemlangsung2 = 0; $pcslangsung2 = 0;
 		$besc2 = 0; $itembesc2 = 0; $pcsbesc2 = 0;
 		foreach ($ket as $val) {
-			if ($val['JENIS_DOKUMEN'] == 'SPB') {
+			if ($val['JENIS_DOKUMEN'] == 'DOSP') {
 				if ($val['URGENT'] != '') {
 					$urg += 1;
 					$itemurg += $val['JUMLAH_ITEM'];
@@ -1464,7 +1464,7 @@ class C_Monitoring extends CI_Controller
 			// Tabel data jumlah cancel, pending, bon,langsung
 
 			$masuk = $this->jadigini($ket);
-			$can 	= $this->M_monitoring->inicancel($tglAwal[0], $tglAkhir[0]);
+			$can 	= $this->M_monitoring->getcancel($tglAwal[0], $tglAkhir[0]);
 			$cancel = $this->jadigini($can);
 			$pdg 	= $this->M_monitoring->jml_pending2();
 			$pending = $this->jadibelum($pdg);
@@ -1539,12 +1539,12 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->mergeCells("A$h4:B$h4"); 
 				foreach ($masuk as $val) {
 					$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-					$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['lembar2']);
-					$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['item2']);
-					$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['pcs2']);
-					$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['lembar1']);
-					$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $val['item1']);
-					$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['pcs1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['lembar1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['item1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['pcs1']);
+					$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['lembar2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $val['item2']);
+					$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['pcs2']);
 					$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, ($val['lembar1'] + $val['lembar2']));
 					$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, ($val['item1'] + $val['item2']));
 					$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, ($val['pcs1'] + $val['pcs2']));
@@ -1999,7 +1999,7 @@ class C_Monitoring extends CI_Controller
 
 		$ket 		= $this->M_monitoring->dataKeterangan($tglAwal[0], $tglAkhir[0]);
 		$masuk 		= $this->jadigini($ket);
-		$can 		= $this->M_monitoring->inicancel($tglAwal[0], $tglAkhir[0]);
+		$can 		= $this->M_monitoring->getcancel($tglAwal[0], $tglAkhir[0]);
 		$cancel 	= $this->jadigini($can);
 		$pdg 		= $this->M_monitoring->jml_pending2();
 		$pending 	= $this->jadibelum($pdg);
