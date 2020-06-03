@@ -124,74 +124,74 @@ class C_Cetakbom extends CI_Controller
 			$datapdf2 = $this->M_cetakbom->getdatapdf2($kode);
 
 			$array_Resource2 = array();
-		for ($i=0; $i < sizeof($datapdf2); $i++) {
-			if ($datapdf2[$i]['ALT'] == null) {
-				$alter2[$i] = 'Primary';
-			} else {
-				$alter2[$i] = $datapdf2[$i]['ALT'];
+			for ($i=0; $i < sizeof($datapdf2); $i++) {
+				if ($datapdf2[$i]['ALT'] == null) {
+					$alter2[$i] = 'Primary';
+				} else {
+					$alter2[$i] = $datapdf2[$i]['ALT'];
+				}
+					$array_Resource2['ALT'][$alter2[$i]][$i] = $datapdf2[$i]['COMPONENT_NUM'];
+					$array_Resource2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']][$i] = $datapdf2[$i]['COMPONENT_NUM'];
 			}
-				$array_Resource2['ALT'][$alter2[$i]][$i] = $datapdf2[$i]['COMPONENT_NUM'];
-				$array_Resource2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']][$i] = $datapdf2[$i]['COMPONENT_NUM'];
-		}
 
 			$array_Resource = array();
-		for ($i=0; $i < sizeof($datapdf); $i++) {
-			if ($datapdf[$i]['ALT'] == null) {
-				$alter[$i] = 'Primary';
-			} else {
-				$alter[$i] = $datapdf[$i]['ALT'];
+			for ($i=0; $i < sizeof($datapdf); $i++) {
+				if ($datapdf[$i]['ALT'] == null) {
+					$alter[$i] = 'Primary';
+				} else {
+					$alter[$i] = $datapdf[$i]['ALT'];
+				}
+					$array_Resource['ALT'][$alter[$i]][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['ROUTING_SEQUENCE_ID'][$datapdf[$i]['ROUTING_SEQUENCE_ID']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['OPERATION_SEQUENCE_ID'][$datapdf[$i]['OPERATION_SEQUENCE_ID']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['OPR_NO'][$datapdf[$i]['OPR_NO']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['KODE_PROSES'][$datapdf[$i]['KODE_PROSES']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['RESOURCE_CODE'][$datapdf[$i]['RESOURCE_CODE']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['MACHINE_QT'][$datapdf[$i]['MACHINE_QT']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['OPT_QTY'][$datapdf[$i]['OPT_QTY']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['USAGE_RATE_OR_AMOUNT'][$datapdf[$i]['USAGE_RATE_OR_AMOUNT']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['CYCLE_TIME'][$datapdf[$i]['CT']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['TARGET'][$datapdf[$i]['TARGET']][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['LAST_UPDATE_DATE'][$datapdf[$i]['LAST_UPDATE_DATE']][$i] = $datapdf[$i]['NO_MESIN'];
+					//P1
+					if ($datapdf[$i]['P1'] != null) {
+						$p1 = '<br>P1: '.$datapdf[$i]['P1'];
+					} else {
+						$p1 = '';
+					}	
+					//P2	
+					if ($datapdf[$i]['P2'] != null) {
+						$p2 = '<br>P2: '.$datapdf[$i]['P2'];
+					} else {
+						$p2 = '';
+					}
+					//P3
+					if ($datapdf[$i]['P3'] != null) {
+						$p3 = '<br>P3: '.$datapdf[$i]['P3'];
+					} else {
+						$p3 = '';
+					}
+					//P4
+					if ($datapdf[$i]['P4'] != null) {
+						$p4 = '<br>P4: '.$datapdf[$i]['P4'];
+					} else {
+						$p4 = '';
+					}
+					//P5
+					if ($datapdf[$i]['P5'] != null) {
+						$p5 = '<br>P5: '.$datapdf[$i]['P5'];
+					} else {
+						$p5 = '';
+					}
+
+					$detailproses[$i] = $p1.$p2.$p3.$p4.$p5;
+					$array_Resource['Detail_Process'][$detailproses[$i]][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['Detail'][$detailproses[$i]][$i] = $datapdf[$i]['NO_MESIN'];
+
 			}
-				$array_Resource['ALT'][$alter[$i]][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['ROUTING_SEQUENCE_ID'][$datapdf[$i]['ROUTING_SEQUENCE_ID']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['OPERATION_SEQUENCE_ID'][$datapdf[$i]['OPERATION_SEQUENCE_ID']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['OPR_NO'][$datapdf[$i]['OPR_NO']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['KODE_PROSES'][$datapdf[$i]['KODE_PROSES']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['RESOURCE_CODE'][$datapdf[$i]['RESOURCE_CODE']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['MACHINE_QT'][$datapdf[$i]['MACHINE_QT']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['OPT_QTY'][$datapdf[$i]['OPT_QTY']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['USAGE_RATE_OR_AMOUNT'][$datapdf[$i]['USAGE_RATE_OR_AMOUNT']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['CYCLE_TIME'][$datapdf[$i]['CT']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['TARGET'][$datapdf[$i]['TARGET']][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['LAST_UPDATE_DATE'][$datapdf[$i]['LAST_UPDATE_DATE']][$i] = $datapdf[$i]['NO_MESIN'];
-				//P1
-				if ($datapdf[$i]['P1'] != null) {
-					$p1 = '<br>P1: '.$datapdf[$i]['P1'];
-				} else {
-					$p1 = '';
-				}	
-				//P2	
-				if ($datapdf[$i]['P2'] != null) {
-					$p2 = '<br>P2: '.$datapdf[$i]['P2'];
-				} else {
-					$p2 = '';
-				}
-				//P3
-				if ($datapdf[$i]['P3'] != null) {
-					$p3 = '<br>P3: '.$datapdf[$i]['P3'];
-				} else {
-					$p3 = '';
-				}
-				//P4
-				if ($datapdf[$i]['P4'] != null) {
-					$p4 = '<br>P4: '.$datapdf[$i]['P4'];
-				} else {
-					$p4 = '';
-				}
-				//P5
-				if ($datapdf[$i]['P5'] != null) {
-					$p5 = '<br>P5: '.$datapdf[$i]['P5'];
-				} else {
-					$p5 = '';
-				}
-
-				$detailproses[$i] = $p1.$p2.$p3.$p4.$p5;
-				$array_Resource['Detail_Process'][$detailproses[$i]][$i] = $datapdf[$i]['NO_MESIN'];
-				$array_Resource['Detail'][$detailproses[$i]][$i] = $datapdf[$i]['NO_MESIN'];
-
-		}
-		// echo "<pre>";
-		// print_r($array_Resource);
-		// exit();
+			// echo "<pre>";
+			// print_r($array_Resource);
+			// exit();
 
 			$array_pdf = array();
 			$i=0;
@@ -260,60 +260,66 @@ class C_Cetakbom extends CI_Controller
 			$data['datapdf'] = $array_pdf;
 			$data['datapdf2'] = $datapdf2;
 
-		// 	$kodeproses = array();
-		// 	foreach ($datapdf as $pdfs) {
-		// 		$kodek="";
-		// 		$kodek .= $pdfs['RESOURCE_CODE'];
-		// 		array_push($kodeproses, $kodek);
+			// 	$kodeproses = array();
+			// 	foreach ($datapdf as $pdfs) {
+			// 		$kodek="";
+			// 		$kodek .= $pdfs['RESOURCE_CODE'];
+			// 		array_push($kodeproses, $kodek);
 
-		// 	}
+			// 	}
 
-		// // echo "<pre>"; print_r($datapdf); exit();
+			// // echo "<pre>"; print_r($datapdf); exit();
 
-		// 	$altkode = array();
-		// 	foreach ($datapdf2 as $pdf2) {
-		// 		$kodei="";
-		// 		$kodei .= $pdf2['ALT'];
-		// 		array_push($altkode, $kodei);
+			// 	$altkode = array();
+			// 	foreach ($datapdf2 as $pdf2) {
+			// 		$kodei="";
+			// 		$kodei .= $pdf2['ALT'];
+			// 		array_push($altkode, $kodei);
 
-		// 	}
+			// 	}
 
-		// 	$kodee = array_count_values($kodeproses);
-		// 	$alt = array_count_values($altkode);
-		// 	$data['kodee'] = $kodee;
-		// 	$data['alt'] = $alt;
+			// 	$kodee = array_count_values($kodeproses);
+			// 	$alt = array_count_values($altkode);
+			// 	$data['kodee'] = $kodee;
+			// 	$data['alt'] = $alt;
 
 		} else if ($organization == 'OPM') {
 
 			$dataopm1 = $this->M_cetakbom->dataopm1($kode);
-			$dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
-			$dataopm3 =  $this->M_cetakbom->dataopm3($dataopm1[0]['FORMULA_ID']);
-			
-			for ($i=0; $i < sizeof($dataopm2); $i++) { 
-				$activity[$dataopm2[$i]['ACTIVITY']][] = $i;  
-			}
-			foreach ($activity as $key => $value) {
-				$act[] = $key;
-			}
-			$acti = '';
-			for ($i=0; $i < sizeof($act); $i++) { 
-				if ($i === (sizeof($act)-1)) {
-					$acti = $acti.$act[$i];
-				} else {
-					$acti = $acti.$act[$i].', ';
+			if ($dataopm1 == null) {
+				echo "<br><br> <center> <b>ROUTING / FORMULA TIDAK DITEMUKAN <br> HARAP HUBUNGI PIC TERKAIT !!</b></center>";exit();
+			} else {
+				// echo "<pre>";print_r($dataopm1);exit();
+				$dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
+				$dataopm3 =  $this->M_cetakbom->dataopm3($dataopm1[0]['FORMULA_ID']);
+				
+				for ($i=0; $i < sizeof($dataopm2); $i++) { 
+					$activity[$dataopm2[$i]['ACTIVITY']][] = $i;  
+				}
+				foreach ($activity as $key => $value) {
+					$act[] = $key;
+				}
+				$acti = '';
+				for ($i=0; $i < sizeof($act); $i++) { 
+					if ($i === (sizeof($act)-1)) {
+						$acti = $acti.$act[$i];
+					} else {
+						$acti = $acti.$act[$i].', ';
+					}
+					
 				}
 				
+				$data['act'] = $acti;
+				$data['dataopm1'] = $dataopm1;
+				$data['dataopm2'] = $dataopm2;
+				$data['dataopm3'] = $dataopm3;
 			}
-			 
-			$data['act'] = $acti;
-			$data['dataopm1'] = $dataopm1;
-			$data['dataopm2'] = $dataopm2;
-			$data['dataopm3'] = $dataopm3;
+			
 
 			
 		}
 
-		// echo "<pre>";print_r($dataopm2);exit();
+		
 	
 
 	
