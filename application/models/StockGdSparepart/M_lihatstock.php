@@ -58,7 +58,7 @@ class M_lihatstock extends CI_Model
                            AND msib.segment1 = ksm.item(+)
                            --AND khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) <> 0
                            --
-                           AND mmt.transaction_date BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
+                           AND TRUNC(mmt.transaction_date) BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
                            AND mmt.subinventory_code = '$sub' --subinventory
                            $kode $unit
                        ) aa
@@ -95,7 +95,7 @@ class M_lihatstock extends CI_Model
                  AND msib.inventory_item_id NOT IN (
                         SELECT mmt.inventory_item_id
                           FROM mtl_material_transactions mmt
-                         WHERE mmt.transaction_date BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
+                         WHERE TRUNC(mmt.transaction_date) BETWEEN to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') 
                            AND mmt.subinventory_code = '$sub'))
                 $qty";
         $query = $oracle->query($sql);
@@ -206,7 +206,7 @@ class M_lihatstock extends CI_Model
                     AND mmt.transaction_type_id = mtt.transaction_type_id
                     AND mtst.transaction_source_type_id = mmt.transaction_source_type_id
                     --
-                    AND mmt.transaction_date between to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') --periode
+                    AND TRUNC(mmt.transaction_date) between to_date('$tglAwl','DD/MM/RR') and to_date('$tglAkh','DD/MM/RR') --periode
                     AND mmt.subinventory_code = '$sub'                        --subinventory
                     AND msib.segment1 = '$kode'                                   --item";
         $query = $oracle->query($sql);
