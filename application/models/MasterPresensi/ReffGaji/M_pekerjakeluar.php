@@ -7064,5 +7064,13 @@ class M_pekerjakeluar extends CI_Model
 			return 0;
 		}
 	}
+
+	public function get_komponen_pekerja_khusus($noind){
+		$sql = "select *
+				from \"Presensi\".t_komponen_gaji_reffgaji
+				where noind = '$noind'";
+		$result = $this->personalia->query($sql)->row();
+		return $result;
+	}
 }
 ?>
