@@ -1,3 +1,8 @@
+<?php 
+	// echo "<pre>";
+	// print_r($datapdf);
+	// exit();
+?>
 <style>           
 	 #page-border{                
 		 width: 100%;                
@@ -68,6 +73,7 @@
         $tgt = '#$%';
 		$last_update = '#$%';
 		$routing_seq = '#$%';
+		$detail = '#$%';
 		$opr_seq = '#$%';
 		$opr_seq1 = '#$%'; 
 		$opr_seq2 = '#$%'; 
@@ -78,6 +84,7 @@
 		$opr_seq7 = '#$%'; 
 		$opr_seq8 = '#$%'; 
 		$opr_seq9 = '#$%';  
+		$opr_seq10 = '#$%';  
 		for ($i=0; $i < sizeof($datapdf); $i++) {
 			//  if ($i != 0 && $datapdf[$i]['RESOURCE_CODE'] == $datapdf[$i-1]['RESOURCE_CODE']) {  
 			 		// $b+1;
@@ -349,12 +356,47 @@
 							}
 						}
 				  	?>
+				<!----DETAIL PROSES------>
+					<?php
+					$dtl = str_replace("#$%","",$datapdf[$i]['DETAIL']);
+					$k = 1;
+					while (strpos($dtl, '#') !== false)
+					{	
+						if ($k === 1) {
+							$strt = 'P';
+						} else {
+							$strt = '<br>P';
+						}
+						$dtl = preg_replace('/#/', $strt.$k++.': ', $dtl, 1);
+					}
+					$detil = $dtl;
+					// $detil = str_replace("#","<br>-",$dtl);
+					// echo "<pre>";
+					// print_r($arrayR); exit();
+
+						if (sizeof($arrayR['DETAIL'][$datapdf[$i]['DETAIL']]) <= sizeof($arrayR['OPERATION_SEQUENCE_ID'][$datapdf[$i]['OPERATION_SEQUENCE_ID']])) {
+							$mergeDET = sizeof($arrayR['DETAIL'][$datapdf[$i]['DETAIL']]);
+							if ($detail != $datapdf[$i]['DETAIL']) {
+					 ?>
+					 		<td rowspan="<?php echo $mergeDET;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detil?></td>
+					 <?php
+								$detail = $datapdf[$i]['DETAIL'];
+							}
+						} else {
+							$mergeDET = sizeof($arrayR['OPERATION_SEQUENCE_ID'][$datapdf[$i]['OPERATION_SEQUENCE_ID']]);
+							if ($opr_seq10 != $datapdf[$i]['OPERATION_SEQUENCE_ID']) {
+					 ?>
+					 		<td rowspan="<?php echo $mergeDET;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detil?></td>
+					 <?php
+								$opr_seq10 = $datapdf[$i]['OPERATION_SEQUENCE_ID'];
+							}
+						}
+				  	?>
 			<?php
-				$dtl = str_replace("#$%","",$datapdf[$i]['DETAIL']);
-				$detail = str_replace("#","<br>-",$dtl)
+				
 			?>
-			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detailproses[$i]?></td>
-			<!-- <td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detail?></td> -->
+			<!-- <td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detailproses[$i]?></td> -->
+			
 		</tr>
 		<?php $no++; } ?>
 	
