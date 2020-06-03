@@ -186,7 +186,7 @@ class C_Cetakbom extends CI_Controller
 
 					$detailproses[$i] = $p1.$p2.$p3.$p4.$p5;
 					$array_Resource['Detail_Process'][$detailproses[$i]][$i] = $datapdf[$i]['NO_MESIN'];
-					$array_Resource['Detail'][$detailproses[$i]][$i] = $datapdf[$i]['NO_MESIN'];
+					$array_Resource['DETAIL'][$datapdf[$i]['DETAIL']][$i] = $datapdf[$i]['NO_MESIN'];
 
 			}
 			// echo "<pre>";
@@ -315,12 +315,7 @@ class C_Cetakbom extends CI_Controller
 				$data['dataopm3'] = $dataopm3;
 			}
 			
-
-			
 		}
-
-		
-	
 
 	
 
