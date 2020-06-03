@@ -3909,6 +3909,10 @@ $route['ApprovalDO/ListDPBVendor'] = 'ApprovalDO/MainMenu/C_DPBVendor';
 $route['ApprovalDO/ListDPBVendor/(:any)'] = 'ApprovalDO/MainMenu/C_DPBVendor/$1';
 $route['ApprovalDO/ListDPBVendor/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_DPBVendor/$1/$2';
 
+$route['ApprovalDO/ApprovalDPB'] = 'ApprovalDO/MainMenu/C_ApprovalDPB';
+$route['ApprovalDO/ApprovalDPB/(:any)'] = 'ApprovalDO/MainMenu/C_ApprovalDPB/$1';
+$route['ApprovalDO/WaitingListApprove'] = 'ApprovalDO/MainMenu/C_ApprovalDPB/WaitingListApprove';
+
 $route['ApprovalDO/ListPR'] = 'ApprovalDO/MainMenu/C_DPBListPR';
 $route['ApprovalDO/ListPR/(:any)'] = 'ApprovalDO/MainMenu/C_DPBListPR/$1';
 $route['ApprovalDO/ListPR/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_DPBListPR/$1/$2';

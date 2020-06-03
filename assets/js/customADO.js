@@ -4,6 +4,12 @@ $( () => {
         locale : 'id'
     });
 
+    $('.txttglKirimAO').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd-M-yyyy'
+    })
+
     const dataTableADOList = $('.tblADOList').DataTable({
         columnDefs    : [{
             orderable   : false,
@@ -269,13 +275,40 @@ $( () => {
             vehicleId             : $('.txtADOVehicleIdentity').val(),
             driverName            : $('.txtADODriverName').val(),
             driverPhone           : $('.txtADOExpeditionVendor').val(),
-            additionalInformation : $('.txtADOAdditionalInformation').val()
+            additionalInformation : $('.txtADOAdditionalInformation').val(),
+            tglKirim              : $('.txttglKirimAO').val()
         }
         let url      = `${baseurl}ApprovalDO/ListPR/saveDetail`
         let question = 'Simpan Data Ini?'
         let success  = 'Berhasil Menyimpan Data'
         let fail     = 'Gagal Menyimpan Data'
         swalADOQuestionAjax(question, success, fail, url, data)
+    })
+
+    $('.btnApproveDPBDO').on('click', function () {
+        var value = $(this).val();
+        if (value == 0) {
+            let data = {
+                flag : 'N',
+                prNumber              : $('.spnADOPRNumber').html(),
+            }
+            let url      = `${baseurl}ApprovalDO/ApprovalDPB/Action`
+            let question = 'Reject Data Ini?'
+            let success  = 'Berhasil Reject Data'
+            let fail     = 'Gagal Reject Data'
+            swalADOQuestionAjax(question, success, fail, url, data)
+        }else{
+            let data = {
+                flag : 'Y',
+                prNumber              : $('.spnADOPRNumber').html(),
+            }
+            let url      = `${baseurl}ApprovalDO/ApprovalDPB/Action`
+            let question = 'Approve Data Ini?'
+            let success  = 'Berhasil Approve Data'
+            let fail     = 'Gagal Approve Data'
+            swalADOQuestionAjax(question, success, fail, url, data)
+        }
+
     })
 
     $('.btnADOAddNewRow').on('click', function () {
