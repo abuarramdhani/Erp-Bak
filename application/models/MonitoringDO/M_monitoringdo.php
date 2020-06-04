@@ -693,28 +693,22 @@ class M_monitoringdo extends CI_Model
 
     public function serial($id)
     {
-        $query = "SELECT mtrh.header_id, mtrh.request_number, msib.segment1 item,
-                         msib.description, ksnt.serial_number
-                    FROM mtl_txn_request_headers mtrh,
-                         mtl_txn_request_lines mtrl,
-                         khs_delivery_temp kdt,
-                         khs_serial_number_temp ksnt,
-                         mtl_system_items_b msib
-                   WHERE mtrh.header_id = mtrl.header_id
-                     --
-                     AND kdt.header_id = mtrh.header_id
-                     AND kdt.inventory_item_id = mtrl.inventory_item_id
-                     AND kdt.organization_id = mtrl.organization_id
-                     AND ksnt.header_id = mtrl.header_id
-                     AND ksnt.inventory_item_id = mtrl.inventory_item_id
-                     --
-                     AND msib.inventory_item_id = mtrl.inventory_item_id
-                     AND msib.organization_id = mtrl.organization_id
-                     --
-                     AND mtrl.transaction_type_id IN (327, 64, 52, 33)       -- DO,SPB,SPB KIT
-                     --
-                     AND mtrh.request_number = '$id'
-                ORDER BY msib.segment1";
+        $query = "SELECT distinct
+                         mtrl.header_id
+                        ,ksnt.request_number
+                        ,msib.segment1 item
+                        ,msib.description
+                        ,ksnt.serial_number
+                  from mtl_txn_request_lines mtrl
+                      ,khs_serial_number_temp ksnt
+                      ,mtl_system_items_b msib
+                  where ksnt.header_id = mtrl.header_id
+                    and ksnt.inventory_item_id = mtrl.inventory_item_id
+                    --
+                    and msib.inventory_item_id = mtrl.inventory_item_id
+                    and msib.organization_id = mtrl.organization_id
+                    and ksnt.request_number = '$id'
+                  order by msib.segment1";
 
         $response = $this->oracle->query($query)->result_array();
 
@@ -726,72 +720,9 @@ class M_monitoringdo extends CI_Model
 
     public function footersurat($data)
     {
-        $query = "SELECT distinct
-                   ooha.SHIPPING_INSTRUCTIONS description
-                  ,ooha.ATTRIBUTE1 ket1
-                  ,ooha.ATTRIBUTE4 ket2
-                  ,wdd.BATCH_ID
-                  ||' - '||ooha.ORDER_NUMBER request_number
-                  ,kdw.APPROVED_DATE
-                  ,(select ppf.FULL_NAME
-                      from per_people_f ppf
-                     where ppf.NATIONAL_IDENTIFIER = kdw.APPROVED_BY
-                     ) approved_by
-                  ,to_char(kdw.creation_date, 'DD-MON-YYYY') creation_date
-                  ,(select ppf.FULL_NAME
-                      from per_people_f ppf
-                     where ppf.NATIONAL_IDENTIFIER = kdw.CREATED_BY
-                     ) created_by
-                  ,kpd.ASSIGN_DATE
-                  ,(select ppf.FULL_NAME
-                      from per_people_f ppf
-                     where ppf.NATIONAL_IDENTIFIER = kpd.ASSIGNER_ID
-                     ) assigner_id
-                  ,kdw.APPROVED_BY approved_by_ind
-                  ,kdw.CREATED_BY created_by_ind
-            from oe_order_headers_all ooha
-                ,wsh_delivery_details wdd
-                --
-                ,khs_person_delivery kpd
-                ,khs_dpb_web kdw
-            where ooha.ORDER_NUMBER = wdd.SOURCE_HEADER_NUMBER
-              and kdw.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-              and kpd.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-              and kdw.REQUEST_NUMBER = '$data'
-            UNION ALL
-            select distinct
-                   mtrh.DESCRIPTION
-                  ,mtrh.ATTRIBUTE7 ket1
-                  ,mtrh.ATTRIBUTE8 ket2
-                  ,mtrh.REQUEST_NUMBER
-                  ,kdw.APPROVED_DATE
-                  ,(select ppf.FULL_NAME
-                      from per_people_f ppf
-                     where ppf.NATIONAL_IDENTIFIER = kdw.APPROVED_BY
-                     ) approved_by
-                  ,to_char(kdw.creation_date, 'DD-MON-YYYY') creation_date
-                  ,(select ppf.FULL_NAME
-                      from per_people_f ppf
-                     where ppf.NATIONAL_IDENTIFIER = kdw.CREATED_BY
-                     ) created_by
-                  ,kpd.ASSIGN_DATE
-                  ,(select ppf.FULL_NAME
-                      from per_people_f ppf
-                     where ppf.NATIONAL_IDENTIFIER = kpd.ASSIGNER_ID
-                     ) assigner_id
-                  ,kdw.APPROVED_BY approved_by_ind
-                  ,kdw.CREATED_BY created_by_ind
-            from mtl_txn_request_headers mtrh
-                --
-                ,khs_person_delivery kpd
-                ,khs_dpb_web kdw
-            where mtrh.REQUEST_NUMBER = kpd.REQUEST_NUMBER
-              and kdw.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
-              and mtrh.REQUEST_NUMBER = '$data'
-              and not exists (select wdd.BATCH_ID
-                                from wsh_delivery_details wdd
-                               where wdd.BATCH_ID = '$data'
-                               )";
+        $query = "SELECT *
+                  from khs_qweb_footer_dospb1 kqfd
+                  where kqfd.REQUEST_NUMBER = '$data'";
 
         $response = $this->oracle->query($query)->result_array();
 
