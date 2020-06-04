@@ -444,14 +444,14 @@ class C_Master extends CI_Controller
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'];
             }
 
-            if (!empty($data['get_footer'][0]['APPROVED_BY_IND'])) {
-              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY_IND'].'<br><br><br>'.$data['get_footer'][0]['APPROVED_BY'].'</center>';
+            if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVED_NAME'].'</center>';
             }else {
               $appr = '';
             }
 
-            if (!empty($data['get_footer'][0]['CREATED_BY_IND'])) {
-              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY_IND'].'<br><br><br>'.$data['get_footer'][0]['CREATED_BY'].'</center>';
+            if (!empty($data['get_footer'][0]['CREATED_BY'])) {
+              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
             }else {
               $appr2 = '';
             }
@@ -575,14 +575,14 @@ class C_Master extends CI_Controller
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'];
             }
 
-            if (!empty($data['get_footer'][0]['APPROVED_BY_IND'])) {
-              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY_IND'].'<br><br><br>'.$data['get_footer'][0]['APPROVED_BY'].'</center>';
+            if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVED_NAME'].'</center>';
             }else {
               $appr = '';
             }
 
-            if (!empty($data['get_footer'][0]['CREATED_BY_IND'])) {
-              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY_IND'].'<br><br><br>'.$data['get_footer'][0]['CREATED_BY'].'</center>';
+            if (!empty($data['get_footer'][0]['CREATED_BY'])) {
+              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
             }else {
               $appr2 = '';
             }
@@ -639,8 +639,8 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-        // $get = $this->M_monitoringdo->headerDariMbaDiv('2000000526');
-       $get = $this->M_monitoringdo->cekkpd();
+        $get = $this->M_monitoringdo->footersurat('2000000930');
+       // $get = $this->M_monitoringdo->cekkpd();
         echo "<pre>";
         print_r($get);
         die;
