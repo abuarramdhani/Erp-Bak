@@ -757,7 +757,7 @@ class M_monitoringdo extends CI_Model
             where ooha.ORDER_NUMBER = wdd.SOURCE_HEADER_NUMBER
               and kdw.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
               and kpd.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-              and wdd.BATCH_ID = '$data'
+              and kdw.REQUEST_NUMBER = '$data'
             UNION ALL
             select distinct
                    mtrh.DESCRIPTION
