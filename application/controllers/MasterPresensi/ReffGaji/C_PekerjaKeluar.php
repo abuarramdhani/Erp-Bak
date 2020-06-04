@@ -783,8 +783,8 @@ class C_PekerjaKeluar extends CI_Controller
 				$record->UMP		= $dt['um_puasa'];
 				$record->IK			= $dt['tik'];
 				$record->ABS		= $dt['tm'];
-				$record->TAMBAHAN	= $dt['tambahan'];
-				$record->POTONGAN 	= "";
+				$record->TAMBAHAN	= $dt['tam_susulan'];
+				$record->POTONGAN 	= $dt['pot_susulan'];
 				$record->KD_LKS		= $pri->lokasi_kerja;
 				$record->POTSERAGAM = $dt['pot_seragam'];
 				$record->JKN 		= $dt['jkn'];
