@@ -55,7 +55,7 @@
                                 </div>
                             </div>
                         </div>
-                        <br/>
+                        <br />
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Kontak Supir</label>
                             <div class="col-sm-5">
@@ -82,16 +82,6 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
                                     <input class="form-control <?= $UserAccess['estdate'] ?> txtADOEstDatang" <?= $UserAccess['estimasi_datang'] ?> value="<?php if (isset($DPBVendorDetail[0]['ESTIMASI_DATANG'])) echo date("Y/m/d H:i",strtotime($DPBVendorDetail[0]['ESTIMASI_DATANG']));?>">
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Tanggal Kirim</label>
-                            <div class="col-sm-5">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
-                                    <input class="form-control txttglKirimAO">
                                 </div>
                             </div>
                         </div>
@@ -148,8 +138,11 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOCreateDPB" style="margin-right: 10px">
-                        <i class="fa fa-save"></i>&nbsp; Create DPB
+                    <button type="button" title="Reject" class="btn btn-danger pull-right btnApproveDPBDO" style="margin-right: 10px" value="0">
+                        <i class="fa fa-close"></i>&nbsp; Reject
+                    </button>
+                    <button type="button" title="Approve" class="btn btn-primary pull-right btnApproveDPBDO" style="margin-right: 10px" value="1">
+                        <i class="fa fa-check"></i>&nbsp; Approve
                     </button>
                 </div>
             </div>

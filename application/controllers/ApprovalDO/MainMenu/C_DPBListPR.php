@@ -132,21 +132,28 @@ class C_DPBListPR extends CI_Controller {
             redirect('ApprovalDO/ListPR');
         }
 
+        $noind = $this->session->user;
+
+        $tglKirim = $this->input->post('tglKirim');
+
+        $tgl_kirim = date("Y-m-d", strtotime($tglKirim));
+
         $data = [
             'NO_PR'            => $this->input->post('prNumber'),
             'JENIS_KENDARAAN'  => $this->input->post('vehicleCategory'),
             'NO_KENDARAAN'     => $this->input->post('vehicleId'),
             'NAMA_SUPIR'       => $this->input->post('driverName'),
             'VENDOR_EKSPEDISI' => $this->input->post('driverPhone'),
-            'LAIN'             => $this->input->post('additionalInformation')
+            'LAIN'             => $this->input->post('additionalInformation'),
+            'CREATED_BY'       => $noind,
         ];
 
         if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {
-            $this->M_dpb->insertNewDetailListPR($data);
+            $this->M_dpb->insertNewDetailListPR1($data,$tgl_kirim);
         } else {
             $id = $data['NO_PR'];
             unset($data['NO_PR']);
-            $this->M_dpb->updateDetailListPR($id, $data);
+            $this->M_dpb->updateDetailListPR1($id, $data, $tgl_kirim);
         }
 
         echo json_encode('Success!');

@@ -14,7 +14,15 @@ class M_dpb extends CI_Model
 
     public function getDPBVendorList()
     {
-        $sql = "select * from khs_dpb_list_dpb_vendor";
+        $sql = "select * from khs_dpb_list_dpb_vendor where approval_flag ='Y'";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function getWaitingListApprovalDPB()
+    {
+        $sql = "select * from khs_dpb_list_dpb_vendor where approval_flag is null";
 
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -594,6 +602,13 @@ class M_dpb extends CI_Model
         $this->oracle->insert('KHS_DPB_KENDARAAN', $data);
     }
 
+    public function insertNewDetailListPR1($data, $tglKirim)
+    {
+        $this->oracle
+                    ->set('TGL_KIRIM',"TO_DATE('$tglKirim','yyyy-mm-dd')",false)
+                    ->insert('KHS_DPB_KENDARAAN', $data);
+    }
+
     public function insertNewDetailKHS($data)
     {
         $this->oracle
@@ -616,6 +631,14 @@ class M_dpb extends CI_Model
             ->update('KHS_DPB_KENDARAAN', $data);
     }
 
+    public function updateDetailListPR1($id, $data, $tglKirim)
+    {
+        $this->oracle
+            ->where('NO_PR', $id)
+            ->set('TGL_KIRIM',"TO_DATE('$tglKirim','yyyy-mm-dd')",false)
+            ->update('KHS_DPB_KENDARAAN', $data);
+    }
+
     public function updateDetailKHS($pr_number, $line_number, $data)
     {
         $this->oracle
@@ -632,6 +655,22 @@ class M_dpb extends CI_Model
         ->get('KHS_DPB_KHS_DETAIL')
         ->result_array();
         
+    }
+
+    public function getListApprovalDPB()
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = $oracle->get_where('KHS_DPB_KENDARAAN', array('APPROVED_FLAG' => NULL));
+
+        return $query->result_array();
+    }
+
+    public function ApproveDPB($id, $data)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $oracle->where('NO_PR',$id);
+        $oracle->set('APPROVED_DATE',"SYSDATE",false);
+        $oracle->update('KHS_DPB_KENDARAAN', $data);
     }
 
 }
