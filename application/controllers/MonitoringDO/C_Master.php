@@ -364,7 +364,7 @@ class C_Master extends CI_Controller
     public function CetakPDF($id)
     {
         //data trial
-        $data['get_header'] = $this->M_monitoringdo->headerSurat($id);
+        $data['get_header'] = $this->M_monitoringdo->headerDariMbaDiv($id);
         $data['get_body'] = $this->M_monitoringdo->bodySurat($id);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
@@ -438,10 +438,27 @@ class C_Master extends CI_Controller
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
+            if ($data['get_footer'][0]['DESCRIPTION'] == '') {
+              $a = '<br><br>';
+            }else {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'];
+            }
+
+            if (!empty($data['get_footer'][0]['APPROVED_BY_IND'])) {
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY_IND'].'<br><br><br>'.$data['get_footer'][0]['APPROVED_BY'].'</center>';
+            }else {
+              $appr = '';
+            }
+
+            if (!empty($data['get_footer'][0]['CREATED_BY_IND'])) {
+              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY_IND'].'<br><br><br>'.$data['get_footer'][0]['CREATED_BY'].'</center>';
+            }else {
+              $appr2 = '';
+            }
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
         		<tr style="width:100%">
         			<td rowspan="2" style="vertical-align:top;width:250px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-        				<br><br><br><br><br><br><br>
+                '.$a.'<br><br><br><br><br>
         			 </td>
         			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
         				<br><br>
@@ -453,17 +470,17 @@ class C_Master extends CI_Controller
         				<br><br><br><br><br><br><br><br>
         			</td>
         			<td rowspan="3" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
-        				Tgl. _______
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['GUDANG'].'
+        				Tgl. '.$data['get_footer'][0]['ASSIGN_DATE'].'
+        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_ID'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
         		<tr>
         			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ADMIN'].'
+        				<br><br>'.$appr.'
         			</td>
-        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['KEPALA'].'
+        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
+        				<br><br>'.$appr2.'
         			</td>
         		</tr>
         		<tr>
@@ -492,12 +509,13 @@ class C_Master extends CI_Controller
     public function PDF2($id)
     {
         //data trial
-        $data['get_header'] = $this->M_monitoringdo->headerSurat2($id);
+        $data['get_header'] = $this->M_monitoringdo->headerDariMbaDiv($id);
         $data['get_body'] = $this->M_monitoringdo->bodySurat($id);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
         $data['totalbody'] = sizeof($data['get_body']);
         $data['totalserial'] = sizeof($data['get_serial']);
+        $data['cek_spb_do'] = $this->M_monitoringdo->cekSpbDo($id);
 
         function generateInTicketNumber($length = 5)
         {
@@ -551,12 +569,30 @@ class C_Master extends CI_Controller
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
+            if ($data['get_footer'][0]['DESCRIPTION'] == '') {
+              $a = '<br><br>';
+            }else {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'];
+            }
+
+            if (!empty($data['get_footer'][0]['APPROVED_BY_IND'])) {
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY_IND'].'<br><br><br>'.$data['get_footer'][0]['APPROVED_BY'].'</center>';
+            }else {
+              $appr = '';
+            }
+
+            if (!empty($data['get_footer'][0]['CREATED_BY_IND'])) {
+              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY_IND'].'<br><br><br>'.$data['get_footer'][0]['CREATED_BY'].'</center>';
+            }else {
+              $appr2 = '';
+            }
+            // $newDate = date("m-d-Y", strtotime($orgDate));
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
         		<tr style="width:100%">
         			<td rowspan="2" style="vertical-align:top;width:250px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-        				<br><br><br><br><br><br><br>
+                '.$a.'<br><br><br><br><br>
         			 </td>
-        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
+        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
         				<br><br>
         				Tgl. ________
         				<br><br><br><br><br><br><br><br>
@@ -566,17 +602,17 @@ class C_Master extends CI_Controller
         				<br><br><br><br><br><br><br><br>
         			</td>
         			<td rowspan="3" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
-        				Tgl. _______
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['GUDANG'].'
+        				Tgl. '.$data['get_footer'][0]['ASSIGN_DATE'].'
+        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_ID'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
         		<tr>
         			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ADMIN'].'
+        				<br><br>'.$appr.'
         			</td>
-        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['KEPALA'].'
+        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
+        				<br><br>'.$appr2.'
         			</td>
         		</tr>
         		<tr>
@@ -603,41 +639,8 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-        // $datag = $this->M_monitoringdo->getDO();
-        // foreach ($datag as $g) {
-        //     $dataku[] = $g['DO/SPB'];
-        // }
-        // $no = 0;
-        // foreach ($dataku as $k) {
-        //     $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
-        //     $no++;
-        // }
-        //
-        // $final = [];
-        // foreach ($datakau as $f) {
-        //     for ($i=0; $i < sizeof($f); $i++) {
-        //         if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
-        //             $var = 'false =>'.$f[$i]['DO/SPB'];
-        //         } else {
-        //             $var = 'true =>'.$f[$i]['DO/SPB'];
-        //         }
-        //     }
-        //     array_push($final, $var);
-        // }
-        //
-        // $finaldestination = [];
-        // $number = 0;
-        // foreach ($datag as $d) {
-        //     $d['CHECK'] = $final[$number];
-        //     $number++;
-        //     array_push($finaldestination, $d);
-        // }
-        // $data['get'] = $finaldestination;
-        //
-        // $cekaja = $this->M_monitoringdo->headerSurat('S203968');
-        //
-        // $cekaja = $this->M_monitoringdo->cekapi();
-        $get = $this->M_monitoringdo->getDO();
+        // $get = $this->M_monitoringdo->headerDariMbaDiv('2000000526');
+       $get = $this->M_monitoringdo->cekkpd();
         echo "<pre>";
         print_r($get);
         die;
