@@ -5,8 +5,8 @@ class M_monitoringdo extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        // $this->oracle = $this->load->database('oracle_dev', true);
         $this->oracle = $this->load->database('oracle', true);
+        // $this->oracle = $this->load->database('oracle_dev', true);
 
         $subinv = $this->session->datasubinven;
     }
@@ -69,9 +69,9 @@ class M_monitoringdo extends CI_Model
 
     public function GetSudahCetak()
     {
-        $sql = "SELECT *
-                  FROM khs_qweb_sudah_cetak1 kqsc
-              ORDER BY 1";
+        $sql = "SELECT   *
+                    FROM khs_qweb_sudah_cetak1 kqsc
+                ORDER BY kqsc.header_id DESC, kqsc.plat_number";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -275,7 +275,7 @@ class M_monitoringdo extends CI_Model
     }
 
     public function sudahdiAssign()
-    {   
+    {
         $sql = "SELECT *
                   FROM khs_qweb_terassign1 kqt
               ORDER BY 1";
@@ -373,9 +373,9 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiMuat()
     {
-        $sql = "SELECT *
-                  FROM khs_qweb_sudah_muat1 kqsm
-              ORDER BY 1";
+        $sql = "SELECT   *
+                    FROM khs_qweb_sudah_muat1 kqsc
+                ORDER BY kqsc.header_id DESC, kqsc.plat_number";
         $response = $this->oracle->query($sql)->result_array();
 
         return $response;
@@ -423,9 +423,17 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
+    public function cekkpd()
+    {
+      $response = $this->oracle->get('KHS_PERSON_DELIVERY')->result_array();
+      return $response;
+    }
+
 
     public function insertDO($data)
     {
+        $user_login = $this->session->user;
+        $date_now = date('d-M-Y');
         if (!empty($data['HEADER_ID'])) {
             if (!empty($data['REQUEST_NUMBER'])) {
                 if (!empty($data['PERSON_ID'])) {
@@ -436,12 +444,16 @@ class M_monitoringdo extends CI_Model
                                              ,PERSON_ID
                                              ,DELIVERY_FLAG
                                              ,PLAT_NUMBER
+                                             ,ASSIGNER_ID
+                                             ,ASSIGN_DATE
                                              )
                             VALUES ('$data[HEADER_ID]'
                                    ,'$data[REQUEST_NUMBER]'
                                    ,'$data[PERSON_ID]'
                                    ,'$data[DELIVERY_FLAG]'
                                    ,'$data[PLAT_NUMBER]'
+                                   ,'$user_login'
+                                   ,'$date_now'
                                    )
                             ");
                             $response = 1;
@@ -584,11 +596,13 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
-    public function headerSurat($id)
+    public function cekSpbDo($id)
     {
-        $query = "SELECT *
-                    FROM khs_qweb_sudah_muat1 kqsm
-                   WHERE kqsm.\"DO/SPB\" = '$id'";
+        $query = "SELECT kdt.delivery_type
+                    FROM khs_delivery_temp kdt
+                   WHERE kdt.request_number = '$id'
+                   AND kdt.delivery_type like 'SPB%'
+                   ";
 
         $response = $this->oracle->query($query)->result_array();
 
@@ -598,19 +612,47 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
-    public function headerSurat2($id)
+    public function headerDariMbaDiv($id)
     {
-        $query = "SELECT *
-                    FROM khs_qweb_sudah_cetak1 kqsc
-                   WHERE kqsc.\"DO/SPB\" = '$id'";
+      $query = "SELECT *
+                from khs_qweb_header_dospb1 kqhd
+                where kqhd.REQUEST_NUMBER = '$id'";
 
-        $response = $this->oracle->query($query)->result_array();
+      $response = $this->oracle->query($query)->result_array();
 
-        if (empty($response)) {
-            $response = null;
-        }
-        return $response;
+      if (empty($response)) {
+          $response = null;
+      }
+      return $response;
     }
+
+    // public function headerSurat($id)
+    // {
+    //     $query = "SELECT *
+    //                 FROM khs_qweb_sudah_muat1 kqsm
+    //                WHERE kqsm.\"DO/SPB\" = '$id'";
+    //
+    //     $response = $this->oracle->query($query)->result_array();
+    //
+    //     if (empty($response)) {
+    //         $response = null;
+    //     }
+    //     return $response;
+    // }
+    //
+    // public function headerSurat2($id)
+    // {
+    //     $query = "SELECT *
+    //                 FROM khs_qweb_sudah_cetak1 kqsc
+    //                WHERE kqsc.\"DO/SPB\" = '$id'";
+    //
+    //     $response = $this->oracle->query($query)->result_array();
+    //
+    //     if (empty($response)) {
+    //         $response = null;
+    //     }
+    //     return $response;
+    // }
 
 
     public function bodySurat($id)
@@ -684,33 +726,83 @@ class M_monitoringdo extends CI_Model
 
     public function footersurat($data)
     {
-        $query = "SELECT DISTINCT kad.request_by, ppf.full_name ADMIN, kad.approved_by,
-                                  ppf1.full_name kepala, kad.approved_date tanggal,
-                                  kdt.request_number nomor_do, kdt.person_id,
-                                  ppf2.full_name gudang
-                             FROM khs_approval_do kad,
-                                  khs_delivery_temp kdt,
-                                  per_people_f ppf,
-                                  per_people_f ppf1,
-                                  per_people_f ppf2
-                            WHERE kad.no_do = kdt.request_number
-                              AND kad.request_by = ppf.national_identifier
-                              AND kad.approved_by = ppf1.national_identifier
-                              AND kdt.person_id = ppf2.national_identifier
-                              AND kdt.request_number = '$data'
-                              AND kad.status = 'Approved'";
+        $query = "SELECT distinct
+                   ooha.SHIPPING_INSTRUCTIONS description
+                  ,ooha.ATTRIBUTE1 ket1
+                  ,ooha.ATTRIBUTE4 ket2
+                  ,wdd.BATCH_ID
+                  ||' - '||ooha.ORDER_NUMBER request_number
+                  ,kdw.APPROVED_DATE
+                  ,(select ppf.FULL_NAME
+                      from per_people_f ppf
+                     where ppf.NATIONAL_IDENTIFIER = kdw.APPROVED_BY
+                     ) approved_by
+                  ,to_char(kdw.creation_date, 'DD-MON-YYYY') creation_date
+                  ,(select ppf.FULL_NAME
+                      from per_people_f ppf
+                     where ppf.NATIONAL_IDENTIFIER = kdw.CREATED_BY
+                     ) created_by
+                  ,kpd.ASSIGN_DATE
+                  ,(select ppf.FULL_NAME
+                      from per_people_f ppf
+                     where ppf.NATIONAL_IDENTIFIER = kpd.ASSIGNER_ID
+                     ) assigner_id
+                  ,kdw.APPROVED_BY approved_by_ind
+                  ,kdw.CREATED_BY created_by_ind
+            from oe_order_headers_all ooha
+                ,wsh_delivery_details wdd
+                --
+                ,khs_person_delivery kpd
+                ,khs_dpb_web kdw
+            where ooha.ORDER_NUMBER = wdd.SOURCE_HEADER_NUMBER
+              and kdw.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+              and kpd.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+              and wdd.BATCH_ID = '$data'
+            UNION ALL
+            select distinct
+                   mtrh.DESCRIPTION
+                  ,mtrh.ATTRIBUTE7 ket1
+                  ,mtrh.ATTRIBUTE8 ket2
+                  ,mtrh.REQUEST_NUMBER
+                  ,kdw.APPROVED_DATE
+                  ,(select ppf.FULL_NAME
+                      from per_people_f ppf
+                     where ppf.NATIONAL_IDENTIFIER = kdw.APPROVED_BY
+                     ) approved_by
+                  ,to_char(kdw.creation_date, 'DD-MON-YYYY') creation_date
+                  ,(select ppf.FULL_NAME
+                      from per_people_f ppf
+                     where ppf.NATIONAL_IDENTIFIER = kdw.CREATED_BY
+                     ) created_by
+                  ,kpd.ASSIGN_DATE
+                  ,(select ppf.FULL_NAME
+                      from per_people_f ppf
+                     where ppf.NATIONAL_IDENTIFIER = kpd.ASSIGNER_ID
+                     ) assigner_id
+                  ,kdw.APPROVED_BY approved_by_ind
+                  ,kdw.CREATED_BY created_by_ind
+            from mtl_txn_request_headers mtrh
+                --
+                ,khs_person_delivery kpd
+                ,khs_dpb_web kdw
+            where mtrh.REQUEST_NUMBER = kpd.REQUEST_NUMBER
+              and kdw.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
+              and mtrh.REQUEST_NUMBER = '$data'
+              and not exists (select wdd.BATCH_ID
+                                from wsh_delivery_details wdd
+                               where wdd.BATCH_ID = '$data'
+                               )";
 
         $response = $this->oracle->query($query)->result_array();
 
         if (empty($response)) {
             $response = array(
-                'success' => true,
+                'success' => 0,
                 'message' => 'there is no data available.'
             );
         }
         return $response;
     }
-
 
     public function test($data)
     {
