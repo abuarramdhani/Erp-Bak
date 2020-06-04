@@ -50,6 +50,7 @@ $(document).ready(function(){
         targets: "_all",
         orderable: false
       }],
+      lengthMenu: [ 10, 25, 50, 75, 100 , 1000],
     })
 
     $('#filterStatus0').change(function() {
@@ -107,6 +108,7 @@ $(document).ready(function(){
         targets: "_all",
         orderable: false
       }],
+      lengthMenu: [ 10, 25, 50, 75, 100 , 1000],
     })
 
     $('#filterStatus0').change(function() {
@@ -256,7 +258,8 @@ $(document).ready( function () {
     $('#tblMonitoringPembelianPE').DataTable({
     	columnDefs: [
     		{ targets: '_all', orderable: false}
-    	], 
+      ], 
+      lengthMenu: [ 10, 25, 50, 75, 100 , 1000],
     	initComplete: function () {
     			this.api().columns([1]).every( function () {
 	                var column1 = this;
