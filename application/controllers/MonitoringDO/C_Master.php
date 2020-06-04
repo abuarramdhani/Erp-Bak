@@ -445,7 +445,7 @@ class C_Master extends CI_Controller
             }
 
             if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
-              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVED_NAME'].'</center>';
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
             }else {
               $appr = '';
             }
@@ -471,7 +471,7 @@ class C_Master extends CI_Controller
         			</td>
         			<td rowspan="3" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
         				Tgl. '.$data['get_footer'][0]['ASSIGN_DATE'].'
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_ID'].'
+        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_NAME'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
@@ -576,7 +576,7 @@ class C_Master extends CI_Controller
             }
 
             if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
-              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVED_NAME'].'</center>';
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
             }else {
               $appr = '';
             }
@@ -603,7 +603,7 @@ class C_Master extends CI_Controller
         			</td>
         			<td rowspan="3" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
         				Tgl. '.$data['get_footer'][0]['ASSIGN_DATE'].'
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_ID'].'
+        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_NAME'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
