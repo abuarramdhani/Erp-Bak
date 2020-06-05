@@ -91,14 +91,8 @@
                                 <td><input type="hidden" name="no_plyn[]" value="<?= $plyn['NO_DOKUMEN']?>"><?= $plyn['NO_DOKUMEN']?></td>
                                 <td><input type="hidden" name="jml_item_plyn[]" value="<?= $plyn['JUMLAH_ITEM']?>"><?= $plyn['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_plyn[]" value="<?= $plyn['JUMLAH_PCS']?>"><?= $plyn['JUMLAH_PCS']?></td>
-                                <td><?= $plyn['MULAI_PELAYANAN']?>
-                                    <input type="hidden" name="tgl_mulai_plyn[]" value="<?= $plyn['TGL_MULAI_PELAYANAN']?>">
-                                    <input type="hidden" name="jam_mulai_plyn[]" value="<?= $plyn['JAM_MULAI_PELAYANAN']?>">
-                                </td>
-                                <td><?= $plyn['SELESAI_PELAYANAN']?>
-                                    <input type="hidden" name="tgl_selesai_plyn[]" value="<?= $plyn['TGL_SELESAI_PELAYANAN']?>">
-                                    <input type="hidden" name="jam_selesai_plyn[]" value="<?= $plyn['JAM_SELESAI_PELAYANAN']?>">
-                                </td>
+                                <td><?= $plyn['MULAI_PELAYANAN']?></td>
+                                <td><?= $plyn['SELESAI_PELAYANAN']?></td>
                                 <td><input type="hidden" name="waktu_pelayanan[]" value="<?= $plyn['WAKTU_PELAYANAN']?>"><?= $plyn['WAKTU_PELAYANAN']?></td>
                                 <td><input type="hidden" name="pic_plyn[]" value="<?= $plyn['PIC_PELAYAN']?>"><?= $plyn['PIC_PELAYAN']?></td>
                                 <td><input type="hidden" name="urgent_plyn[]" value="<?= $plyn['URGENT']?> <?= $plyn['BON'] ?>"><?= $plyn['URGENT']?> <?= $plyn['BON'] ?></td>
@@ -178,14 +172,8 @@
                                 <td><input type="hidden" name="no_pglr[]" value="<?= $pglr['NO_DOKUMEN']?>"><?= $pglr['NO_DOKUMEN']?></td>
                                 <td><input type="hidden" name="jml_item_pglr[]" value="<?= $pglr['JUMLAH_ITEM']?>"><?= $pglr['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_pglr[]" value="<?= $pglr['JUMLAH_PCS']?>"><?= $pglr['JUMLAH_PCS']?></td>
-                                <td><?= $pglr['MULAI_PENGELUARAN']?>
-                                    <input type="hidden" name="tgl_mulai_pglr[]" value="<?= $pglr['TGL_MULAI_PENGELUARAN']?>">
-                                    <input type="hidden" name="jam_mulai_pglr[]" value="<?= $pglr['JAM_MULAI_PENGELUARAN']?>">
-                                </td>
-                                <td><?= $pglr['SELESAI_PENGELUARAN']?>
-                                    <input type="hidden" name="tgl_selesai_pglr[]" value="<?= $pglr['TGL_SELESAI_PENGELUARAN']?>">
-                                    <input type="hidden" name="jam_selesai_pglr[]" value="<?= $pglr['JAM_SELESAI_PENGELUARAN']?>">
-                                </td>
+                                <td><?= $pglr['MULAI_PENGELUARAN']?></td>
+                                <td><?= $pglr['SELESAI_PENGELUARAN']?></td>
                                 <td><input type="hidden" name="waktu_pengeluaran[]" value="<?= $pglr['WAKTU_PENGELUARAN']?>"><?= $pglr['WAKTU_PENGELUARAN']?></td>
                                 <td><input type="hidden" name="pic_pglr[]" value="<?= $pglr['PIC_PENGELUARAN']?>"><?= $pglr['PIC_PENGELUARAN']?></td>
                                 <td><input type="hidden" name="urgent_pglr[]" value="<?= $pglr['URGENT']?> <?= $pglr['BON'] ?>"><?= $pglr['URGENT']?> <?= $pglr['BON'] ?></td>
@@ -268,14 +256,8 @@
                                 <td><input type="hidden" name="no_pck[]" value="<?= $pck['NO_DOKUMEN']?>"><?= $pck['NO_DOKUMEN']?></td>
                                 <td><input type="hidden" name="jml_item_pck[]" value="<?= $pck['JUMLAH_ITEM']?>"><?= $pck['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_pck[]" value="<?= $pck['JUMLAH_PCS']?>"><?= $pck['JUMLAH_PCS']?></td>
-                                <td><?= $pck['MULAI_PACKING']?>
-                                    <input type="hidden" name="tgl_mulai_pck[]" value="<?= $pck['TGL_MULAI_PACKING']?>">
-                                    <input type="hidden" name="jam_mulai_pck[]" value="<?= $pck['JAM_MULAI_PACKING']?>">
-                                </td>
-                                <td><?= $pck['SELESAI_PACKING']?>
-                                    <input type="hidden" name="tgl_selesai_pck[]" value="<?= $pck['TGL_SELESAI_PACKING']?>">
-                                    <input type="hidden" name="jam_selesai_pck[]" value="<?= $pck['JAM_SELESAI_PACKING']?>">
-                                </td>
+                                <td><?= $pck['MULAI_PACKING']?></td>
+                                <td><?= $pck['SELESAI_PACKING']?></td>
                                 <td><input type="hidden" name="waktu_packing[]" value="<?= $pck['WAKTU_PACKING']?>"><?= $pck['WAKTU_PACKING']?></td>
                                 <td><input type="hidden" name="pic_pck[]" value="<?= $pck['PIC_PACKING']?>"><?= $pck['PIC_PACKING']?></td>
                                 <td><input type="hidden" name="urgent_pck[]" value="<?= $pck['URGENT']?> <?= $pck['BON'] ?>"><?= $pck['URGENT']?> <?= $pck['BON'] ?></td>
