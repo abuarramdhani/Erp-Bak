@@ -146,7 +146,7 @@ class C_ApprovalDPB extends CI_Controller {
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-        $this->load->view('ApprovalDO/MainMenu/V_DPBVendor', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_WaitingDPBVendor', $data);
         $this->load->view('V_Footer', $data);
     }
 
