@@ -87,6 +87,16 @@
                         </div>
                         <br />
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Tanggal Kirim</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
+                                    <input class="form-control txttglKirimAO" <?= $UserAccess['tgl_kirim'] ?> value="<?php if (isset($DPBVendorDetail[0]['TGL_KIRIM'])) echo date("d-M-Y",strtotime($DPBVendorDetail[0]['TGL_KIRIM']));?>">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">Lain-Lain</label>
                             <div class="col-sm-8">
                                 <div class="input-group">

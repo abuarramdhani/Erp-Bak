@@ -66,7 +66,8 @@ class C_DPBVendor extends CI_Controller {
             'vendor_ekspedisi' => 'readonly',
             'estimasi_datang'  => 'readonly',
             'lain_lain'        => 'readonly',
-            'estdate'          => ''
+            'estdate'          => '',
+            'tgl_kirim'          => ''
         ];
         if ($this->session->responsibility_id == '2724') {
             $data['UserAccess'] = [   
@@ -77,18 +78,20 @@ class C_DPBVendor extends CI_Controller {
                     'vendor_ekspedisi' => '',
                     'estimasi_datang'  => '',
                     'lain_lain'        => '',
-                    'estdate'          => 'ADOEstDatang'
-            ];
-        }else if ($this->session->responsibility_id == '2709') {
+                    'estdate'          => 'ADOEstDatang',
+                    'tgl_kirim'        => 'readonly',
+                ];
+            }else if ($this->session->responsibility_id == '2709') {
             $data['UserAccess'] = [   
-                    'jenis_kendaraan'  => '',
+                'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',
                     'nama_supir'       => 'readonly',
                     'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
                     'estimasi_datang'  => 'readonly',
                     'lain_lain'        => '',
-                    'estdate'          => ''
+                    'estdate'          => '',
+                    'tgl_kirim'        => '',
             ];
         }
 

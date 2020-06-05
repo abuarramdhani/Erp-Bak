@@ -67,6 +67,7 @@
                                             <th class="text-center text-nowrap">Kontak Sopir</th>
                                             <th class="text-center text-nowrap">Vendor Exp.</th>
                                             <th class="text-center text-nowrap">Est. Datang</th>
+                                            <th class="text-center text-nowrap">Tgl Kirim</th>
                                             <th class="text-center no-orderable">Action</th>
                                         </tr>
                                     </thead>
@@ -82,6 +83,7 @@
                                                 <td class="text-left"><?= $val['KONTAK_SOPIR'] ?></td>
                                                 <td class="text-left"><?= $val['VENDOR_EKSPEDISI'] ?></td>
                                                 <td class="text-left"><?php if(isset($val['ESTIMASI_DATANG'])) echo date("d-m-Y H:i:s",strtotime($val['ESTIMASI_DATANG'])) ?></td>
+                                                <td class="text-left"><?php if(isset($val['TGL_KIRIM'])) echo date("d-M-Y",strtotime($val['TGL_KIRIM'])) ?></td>
                                                 <td class="text-center">
                                                     <form action="<?= base_url('ApprovalDO/ListDPBVendor/Detail') ?>" method="post" target="_blank">
                                                         <input type="hidden" name="data-pr" value="<?= $val['NO_PR'] ?>">

@@ -269,20 +269,33 @@ $( () => {
     })
     
     $('.btnADOCreateDPB').on('click', function () {
-        let data = {
-            prNumber              : $('.spnADOPRNumber').html(),
-            vehicleCategory       : $('.txtADOVehicleCategory').val(),
-            vehicleId             : $('.txtADOVehicleIdentity').val(),
-            driverName            : $('.txtADODriverName').val(),
-            driverPhone           : $('.txtADOExpeditionVendor').val(),
-            additionalInformation : $('.txtADOAdditionalInformation').val(),
-            tglKirim              : $('.txttglKirimAO').val()
+
+        var tgl_kirim = $('.txttglKirimAO').val();
+
+        if (tgl_kirim) {
+            let data = {
+                prNumber              : $('.spnADOPRNumber').html(),
+                vehicleCategory       : $('.txtADOVehicleCategory').val(),
+                vehicleId             : $('.txtADOVehicleIdentity').val(),
+                driverName            : $('.txtADODriverName').val(),
+                driverPhone           : $('.txtADOExpeditionVendor').val(),
+                additionalInformation : $('.txtADOAdditionalInformation').val(),
+                tglKirim              : $('.txttglKirimAO').val()
+            }
+            let url      = `${baseurl}ApprovalDO/ListPR/saveDetail`
+            let question = 'Simpan Data Ini?'
+            let success  = 'Berhasil Menyimpan Data'
+            let fail     = 'Gagal Menyimpan Data'
+            swalADOQuestionAjax(question, success, fail, url, data)
+        }else{
+
+            Swal.fire({
+                customClass: 'swal-font-large',
+                type: 'error',
+                title: 'Gagal',
+                text: 'Tanggal Kirim tidak boleh kosong!',
+            });
         }
-        let url      = `${baseurl}ApprovalDO/ListPR/saveDetail`
-        let question = 'Simpan Data Ini?'
-        let success  = 'Berhasil Menyimpan Data'
-        let fail     = 'Gagal Menyimpan Data'
-        swalADOQuestionAjax(question, success, fail, url, data)
     })
 
     $('.btnApproveDPBDO').on('click', function () {
