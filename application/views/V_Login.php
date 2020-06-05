@@ -160,6 +160,10 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" id="myRequestLabel" align="center">Anda menginginkan Akses ke Sistem ERP?</h4> </div>
                             <div class="modal-body"> Jika Anda ingin mendapatkan Akses ke Quick ERP System, silahkan membuat ticket / order permintaan melalui <a href='http://ictsupport.quick.com/ticket/upload/'>ICT Support Center (Klik Disini)</a> atau akses url berikut : http://ictsupport.quick.com/ticket/upload/.
+                            <br>atau menghubungi ICT di<br>
+                            VOIP Internal Ext : 12300 ekstensi 3
+                            <br>atau<br> 
+                            melalui Whatsapp ke 08112545922.
                             </div>
                         <div class="modal-footer"> 
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
