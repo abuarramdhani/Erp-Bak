@@ -8,29 +8,14 @@ class M_monitoring extends CI_Model {
 
     public function getDataSPB($query) {
         $oracle = $this->load->database('oracle', true);
-        $sql ="select to_char(kts.jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                    kts.tgl_dibuat, 
-                    to_char(kts.jam_input, 'DD/MM/YYYY') as tgl_input, 
-                    to_char(kts.jam_input, 'HH24:MI:SS') as jam_input2,
+        $sql ="select kts.tgl_dibuat, 
                     kts.jenis_dokumen, kts.no_dokumen, count(mtrl.quantity) jumlah_item, sum(mtrl.quantity) jumlah_pcs,
                     to_char(kts.mulai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as mulai_pelayanan, 
-                    to_char(kts.mulai_pelayanan, 'DD/MM/YYYY') as tgl_mulai_pelayanan, 
-                    to_char(kts.mulai_pelayanan, 'HH24:MI:SS') as jam_mulai_pelayanan, 
                     to_char(kts.selesai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as selesai_pelayanan,kts.waktu_pelayanan,
-                    to_char(kts.selesai_pelayanan, 'DD/MM/YYYY') as tgl_selesai_pelayanan,
-                    to_char(kts.selesai_pelayanan, 'HH24:MI:SS') as jam_selesai_pelayanan,
                     to_char(kts.mulai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as mulai_pengeluaran, 
-                    to_char(kts.mulai_pengeluaran, 'DD/MM/YYYY') as tgl_mulai_pengeluaran, 
-                    to_char(kts.mulai_pengeluaran, 'HH24:MI:SS') as jam_mulai_pengeluaran, 
                     to_char(kts.selesai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as selesai_pengeluaran, kts.waktu_pengeluaran,
-                    to_char(kts.selesai_pengeluaran, 'DD/MM/YYYY') as tgl_selesai_pengeluaran, 
-                    to_char(kts.selesai_pengeluaran, 'HH24:MI:SS') as jam_selesai_pengeluaran, 
                     to_char(kts.mulai_packing, 'DD/MM/YYYY HH24:MI:SS') as mulai_packing, 
                     to_char(kts.selesai_packing, 'DD/MM/YYYY HH24:MI:SS') as selesai_packing, kts.waktu_packing,
-                    to_char(kts.mulai_packing, 'DD/MM/YYYY') as tgl_mulai_packing, 
-                    to_char(kts.mulai_packing, 'HH24:MI:SS') as jam_mulai_packing, 
-                    to_char(kts.selesai_packing, 'DD/MM/YYYY') as tgl_selesai_packing,
-                    to_char(kts.selesai_packing, 'HH24:MI:SS') as jam_selesai_packing,
                     kts.urgent, kts.pic_pelayan, kts.pic_pengeluaran, kts.pic_packing, kts.bon
                 from khs_tampung_spb kts,
                     mtl_txn_request_headers mtrh,
@@ -39,12 +24,12 @@ class M_monitoring extends CI_Model {
                 and kts.cancel is null
                 AND kts.no_dokumen = mtrh.request_number
                 AND mtrh.header_id = mtrl.header_id
-                GROUP BY kts.jam_input, kts.tgl_dibuat,
+                GROUP BY kts.tgl_dibuat,
                     kts.mulai_packing,kts.mulai_pengeluaran,kts.mulai_pelayanan,
                     kts.selesai_packing,kts.selesai_pengeluaran,kts.selesai_pelayanan,
                     kts.waktu_packing,kts.waktu_pengeluaran,kts.waktu_pelayanan,
                     kts.pic_pelayan, kts.pic_pengeluaran, kts.pic_packing,
-                    kts.jenis_dokumen, kts.no_dokumen, kts.jumlah_item,  kts.jumlah_pcs,
+                    kts.jenis_dokumen, kts.no_dokumen,
                     kts.urgent, kts.bon
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
@@ -54,10 +39,7 @@ class M_monitoring extends CI_Model {
 
     public function dataKurang($querykrg){
         $oracle = $this->load->database('oracle', true);
-        $sql="select to_char(kts.jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                    kts.tgl_dibuat, kts.bon,
-                    to_char(kts.jam_input, 'DD/MM/YYYY') as tgl_input, 
-                    to_char(kts.jam_input, 'HH24:MI:SS') as jam_input2,
+        $sql="select kts.tgl_dibuat, kts.bon,
                     kts.jenis_dokumen, kts.no_dokumen, count(mtrl.quantity) jumlah_item, sum(mtrl.quantity) jumlah_pcs, kts.selesai_pengeluaran,
                     kts.selesai_pelayanan, kts.selesai_packing, kts.urgent, kts.pic_pelayan, kts.pic_pengeluaran, kts.pic_packing
                 from khs_tampung_spb kts,
@@ -67,10 +49,10 @@ class M_monitoring extends CI_Model {
                 and cancel is null
                 AND kts.no_dokumen = mtrh.request_number
                 AND mtrh.header_id = mtrl.header_id
-                GROUP BY kts.jam_input, kts.tgl_dibuat,
+                GROUP BY kts.tgl_dibuat,
                     kts.selesai_packing,kts.selesai_pengeluaran,kts.selesai_pelayanan,
                     kts.pic_pelayan, kts.pic_pengeluaran, kts.pic_packing,
-                    kts.jenis_dokumen, kts.no_dokumen, kts.jumlah_item, kts.jumlah_pcs,
+                    kts.jenis_dokumen, kts.no_dokumen,
                     kts.urgent, kts.bon
             order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
@@ -343,14 +325,16 @@ class M_monitoring extends CI_Model {
     public function dataselesai($date1, $date2) {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT   kts.tgl_dibuat, kts.selesai_packing, kts.jenis_dokumen,
-                        kts.no_dokumen, COUNT (mtrl.inventory_item_id) jumlah_item, SUM (mtrl.quantity) jumlah_pcs,
+                        kts.no_dokumen, COUNT (mtrl.inventory_item_id) jumlah_item,
+                        SUM (mtrl.quantity) jumlah_pcs,
                         COUNT (mtrl.inventory_item_id) jml_item_selesai,
                         SUM (mtrl.quantity_delivered) jml_pcs_selesai, kts.urgent keterangan,
                         kts.bon
                 FROM khs_tampung_spb kts,
                         mtl_txn_request_headers mtrh,
                         mtl_txn_request_lines mtrl
-                WHERE kts.CANCEL IS NULL
+                WHERE kts.jenis_dokumen = 'SPB'
+                    AND kts.CANCEL IS NULL
                     AND kts.selesai_packing IS NOT NULL
                     AND kts.no_dokumen = mtrh.request_number
                     AND mtrh.header_id = mtrl.header_id
@@ -363,7 +347,41 @@ class M_monitoring extends CI_Model {
                         kts.jumlah_pcs,
                         kts.urgent,
                         kts.bon
-                ORDER BY kts.urgent, kts.tgl_dibuat, kts.no_dokumen";
+                UNION
+                --DOSP
+                SELECT   tgl_dibuat, selesai_packing, jenis_dokumen, no_dokumen,
+                        COUNT (jumlah_item) jumlah_item,
+                        SUM (src_requested_quantity) jumlah_pcs,
+                        COUNT (jml_item_selesai) jml_item_selesai,
+                        SUM (quantity_delivered) jml_pcs_selesai, keterangan, bon
+                FROM (SELECT DISTINCT kts.tgl_dibuat, kts.selesai_packing,
+                                        kts.jenis_dokumen, kts.no_dokumen,
+                                        wdd.inventory_item_id jumlah_item,
+                                        wdd.src_requested_quantity,
+                                        mtrl.inventory_item_id jml_item_selesai,
+                                        mtrl.quantity_delivered, kts.urgent keterangan,
+                                        kts.bon
+                                    FROM khs_tampung_spb kts,
+                                        mtl_txn_request_headers mtrh,
+                                        mtl_txn_request_lines mtrl,
+                                        wsh_delivery_details wdd
+                                WHERE kts.jenis_dokumen = 'DOSP'
+                                    AND kts.CANCEL IS NULL
+                                    AND kts.selesai_packing IS NOT NULL
+                                    AND kts.no_dokumen = mtrh.request_number
+                                    AND mtrh.header_id = mtrl.header_id
+                                    AND mtrh.request_number = TO_CHAR (wdd.batch_id)
+                                    AND mtrl.inventory_item_id = wdd.inventory_item_id
+                                    AND mtrl.organization_id = wdd.organization_id
+                                    AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
+                        )
+                GROUP BY tgl_dibuat,
+                        selesai_packing,
+                        jenis_dokumen,
+                        no_dokumen,
+                        keterangan,
+                        bon
+                ORDER BY 9, 1, 4";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -391,27 +409,27 @@ class M_monitoring extends CI_Model {
                                     AND kts.selesai_packing IS NOT NULL
                                     AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 --                    order by msib.segment1
-                --UNION
-                --SELECT kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, msib.segment1 item,
-                                        --msib.description, wdd.SRC_REQUESTED_QUANTITY quantity, mtrl.quantity_delivered,
-                                        --(wdd.SRC_REQUESTED_QUANTITY - mtrl.quantity_delivered) kurang
-                                --FROM khs_tampung_spb kts,
-                                        --wsh_delivery_details wdd,
-                                        --mtl_txn_request_headers mtrh,
-                                        --mtl_txn_request_lines mtrl,
-                                        --mtl_system_items_b msib
-                                --WHERE kts.CANCEL IS NULL
-                                    --AND kts.no_dokumen = mtrh.request_number
-                                    --AND mtrh.header_id = mtrl.header_id
-                                    --AND mtrl.inventory_item_id = msib.inventory_item_id
-                                    --AND mtrl.organization_id = msib.organization_id
-                                    --and to_char(wdd.batch_id) = mtrh.request_number
-                                    --and wdd.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-                                    --AND (wdd.SRC_REQUESTED_QUANTITY <> mtrl.quantity_delivered or mtrl.quantity_delivered is null)
-                                    --AND wdd.SRC_REQUESTED_QUANTITY <> 0
-                                    --AND mtrl.line_status <> 6
-                                    --AND kts.selesai_packing IS NOT NULL
-                                    --AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
+                UNION
+                SELECT kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, msib.segment1 item,
+                                        msib.description, wdd.SRC_REQUESTED_QUANTITY quantity, mtrl.quantity_delivered,
+                                        (wdd.SRC_REQUESTED_QUANTITY - mtrl.quantity_delivered) kurang
+                                FROM khs_tampung_spb kts,
+                                        wsh_delivery_details wdd,
+                                        mtl_txn_request_headers mtrh,
+                                        mtl_txn_request_lines mtrl,
+                                        mtl_system_items_b msib
+                                WHERE kts.CANCEL IS NULL
+                                    AND kts.no_dokumen = mtrh.request_number
+                                    AND mtrh.header_id = mtrl.header_id
+                                    AND mtrl.inventory_item_id = msib.inventory_item_id
+                                    AND mtrl.organization_id = msib.organization_id
+                                    and to_char(wdd.batch_id) = mtrh.request_number
+                                    and wdd.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+                                    AND (wdd.SRC_REQUESTED_QUANTITY <> mtrl.quantity_delivered or mtrl.quantity_delivered is null)
+                                    AND wdd.SRC_REQUESTED_QUANTITY <> 0
+                                    AND mtrl.line_status <> 6
+                                    AND kts.selesai_packing IS NOT NULL
+                                    AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                                     )
                                     order by 4";
         $query = $oracle->query($sql);
@@ -438,27 +456,27 @@ class M_monitoring extends CI_Model {
                     AND mtrl.line_status = 6
                    -- AND mtrh.REQUEST_NUMBER = ''
                 AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
-                --UNION
-                --SELECT kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, msib.segment1 item,
-                        --msib.description, wdd.SRC_REQUESTED_QUANTITY quantity, mtrl.quantity_delivered,
-                        --(wdd.SRC_REQUESTED_QUANTITY - mtrl.quantity_delivered) kurang
-                --FROM khs_tampung_spb kts,
-                        --wsh_delivery_details wdd,
-                        --mtl_txn_request_headers mtrh,
-                        --mtl_txn_request_lines mtrl,
-                        --mtl_system_items_b msib
-                --WHERE kts.CANCEL IS NULL
-                    --AND kts.no_dokumen = mtrh.request_number
-                    --AND mtrh.header_id = mtrl.header_id
-                    --AND mtrl.inventory_item_id = msib.inventory_item_id
-                    --AND mtrl.organization_id = msib.organization_id
-                    --AND (wdd.SRC_REQUESTED_QUANTITY <> mtrl.quantity_delivered or mtrl.quantity_delivered is null)
-                    --and to_char(wdd.batch_id) = mtrh.request_number
-                    --and wdd.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-                    --AND kts.selesai_packing IS NOT NULL
-                    --AND mtrl.line_status = 6
-                    ----AND mtrh.REQUEST_NUMBER = ''
-                --AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
+                UNION
+                SELECT kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, msib.segment1 item,
+                        msib.description, wdd.SRC_REQUESTED_QUANTITY quantity, mtrl.quantity_delivered,
+                        (wdd.SRC_REQUESTED_QUANTITY - mtrl.quantity_delivered) kurang
+                FROM khs_tampung_spb kts,
+                        wsh_delivery_details wdd,
+                        mtl_txn_request_headers mtrh,
+                        mtl_txn_request_lines mtrl,
+                        mtl_system_items_b msib
+                WHERE kts.CANCEL IS NULL
+                    AND kts.no_dokumen = mtrh.request_number
+                    AND mtrh.header_id = mtrl.header_id
+                    AND mtrl.inventory_item_id = msib.inventory_item_id
+                    AND mtrl.organization_id = msib.organization_id
+                    AND (wdd.SRC_REQUESTED_QUANTITY <> mtrl.quantity_delivered or mtrl.quantity_delivered is null)
+                    and to_char(wdd.batch_id) = mtrh.request_number
+                    and wdd.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+                    AND kts.selesai_packing IS NOT NULL
+                    AND mtrl.line_status = 6
+                    --AND mtrh.REQUEST_NUMBER = ''
+                AND TRUNC(kts.selesai_packing) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 order by 4";
         $query = $oracle->query($sql);
         return $query->result_array();
