@@ -194,7 +194,7 @@ class C_Index extends CI_Controller
 				if (!empty($po)) {
 					foreach ($po as $p) {
 						if (substr($p['PO_NUM'], 0,2) == substr(date('Y'), 0,2) && $p['LOCATION_CODE']=='PNL-DM') {
-							$totalPO += $p['PO_QTY'];
+							$totalPO += $p['OUTSTANDING_PO_QTY'];
 							$poarr[] = $p['PO_NUM'];
 						}
 					}
@@ -226,7 +226,7 @@ class C_Index extends CI_Controller
 				if (!empty($po)) {
 					foreach ($po as $p) {
 						if (substr($p['PO_NUM'], 0,2) == substr(date('Y'), 0,2) && ($p['LOCATION_CODE']=='PNL-TKS'||$p['LOCATION_CODE']=='PNL-NPR')) {
-							$totalPO += $p['PO_QTY'];
+							$totalPO += $p['OUTSTANDING_PO_QTY'];
 							$poarr[] = $p['PO_NUM'];
 						}
 					}
