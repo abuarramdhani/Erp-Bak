@@ -50,7 +50,7 @@
 			</td>
 			<td><?php echo $i['STATUS_PAYMENT']?></td>
 			<td><?php echo $i['SOURCE']?></td>
-			<td></td>
+			<td><?php echo $i['JENIS_DOKUMEN']?></td>
 		</tr>
 		<?php $no++;}} ?>
 		<!-- <?php 
