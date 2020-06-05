@@ -724,14 +724,14 @@ class M_hitungpesanan extends Ci_Model
  		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
 	}
 
-	public function insertPesananTambahan($tanggal,$tempat_makan){
+	public function insertPesananTambahanRencanaLembur($tanggal,$tempat_makan,$shift){
 		$sql = "insert into Catering.tpesanantambahan 
 				(fd_tanggal,fs_tempat_makan,fs_kd_shift,fn_jumlah_pesanan,fb_kategori) 
-				values(?,?,'1',0,'1')";
+				values(?,?,?,0,'1')";
 		$this->personalia->query($sql,array($tanggal,$tempat_makan));
 	}
 
-	public function getPesananTambahanDetailByIdTambahanNoind($id_tambahan,$noind){
+	public function getPesananTambahanDetailByIdTambahanNoind($id_tambahan,$noind,$shift){
 		$sql = "select * 
 				from \"Catering\".tpesanantambahan_detail 
 				where id_tambahan =  ?
@@ -757,6 +757,20 @@ class M_hitungpesanan extends Ci_Model
 				) 
 				Where id_tambahan = ? ";
 		$this->personalia->query($sql,array($id_tambahan));
+	}
+
+	public function updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,$kategori){
+		$sql = "update \"Catering\".tpesanantambahan tpt
+				set fn_jumlah_pesanan = ( 
+				select count(*) 
+				from \"Catering\".tpesanantambahan_detail tptd
+				where tptd.id_tambahan = tpt.id_tambahan 
+				) 
+				Where fd_tanggal = ?
+				  and fs_kd_shift = ?
+				  and fs_tempat_makan = ?
+				  and fb_kategori = ? ";
+		$this->personalia->query($sql,array($tanggal,$shift,$tempat_makan,$kategori));
 	}
 
 	public function getPesananPenguranganByTanggalShiftTempatMakan($tanggal,$shift,$tempat_makan){

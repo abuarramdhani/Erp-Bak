@@ -3858,3 +3858,275 @@ $(document).on('ready', function(){
 	});
 });
 // end Pengurangan Pesanan
+
+// start pekerja terhitung katering
+$(document).ready(function(){
+	var tblCMPekerjaTerhitungKatering = $('#tbl-CM-PekerjaTerhitungKatering-Table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	$('#txt-CM-PekerjaTerhitungCatering-Tanggal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#btn-CM-PekerjaTerhitungCatering-Lihat').on('click', function(){
+		tanggal = $('#txt-CM-PekerjaTerhitungCatering-Tanggal').val();
+		shift = $('#slc-CM-PekerjaTerhitungCatering-Shift').val();
+		lokasi = $('#slc-CM-PekerjaTerhitungCatering-Lokasi').val();
+		tempat_makan = $('#slc-CM-PekerjaTerhitungCatering-TempatMakan').val();
+		$('#ldg-CM-PekerjaTerhitungKatering-Loading').show();
+
+		if (tanggal && shift && lokasi && tempat_makan) {
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Extra/PekerjaTerhitungCatering/getList',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, tempat_makan: tempat_makan},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					tblCMPekerjaTerhitungKatering.clear().draw();
+					obj.forEach(function(daftar, index){
+						tblCMPekerjaTerhitungKatering.row.add([
+							(index + 1),
+							daftar.noind,
+							daftar.nama,
+							daftar.waktu,
+							daftar.tempat_makan,
+							daftar.user_,
+							daftar.seksi,
+							daftar.shift,
+							daftar.status
+						]).draw(false);
+					})
+					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
+					tblCMPekerjaTerhitungKatering.columns.adjust().draw();
+				}
+			})
+		}else{
+			$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Form Sudah Terisi Semua !',
+				'warning'
+			)
+		}
+	})
+});
+// end pekerja terhitung katering
+
+// start absen per lokasi absen
+$(document).ready(function(){
+	var tblCMAbsenPerLokasiAbsen = $('#tbl-CM-AbsenPerLokasiAbsen-table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	var tblCMAbsenPerLokasiAbsenDetailAbsen = $('#tbl-CM-AbsenPerLokasiAbsen-Absen').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	var tblCMAbsenPerLokasiAbsenDetailKatering = $('#tbl-CM-AbsenPerLokasiAbsen-Katering').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	$('#txt-CM-AbsenPerLokasiAbsen-Tanggal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#btn-CM-AbsenPerLokasiAbsen-cari').on('click', function(){
+		tanggal = $('#txt-CM-AbsenPerLokasiAbsen-Tanggal').val();
+		$('#ldg-CM-AbsenPerLokasiAbsen-Loading').show();
+		if (tanggal) {
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Extra/AbsenPerLokasiAbsen/getList',
+				data: {tanggal: tanggal},
+				error: function(xhr,status,error){
+					$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					tblCMAbsenPerLokasiAbsen.clear().draw();
+					obj.forEach(function(daftar, index){
+						tblCMAbsenPerLokasiAbsen.row.add([
+							daftar.device_name + '<input class="lokasi" type="hidden" value="' + daftar.device_name + '">',
+							daftar.inisial_lokasi + '<input class="inisial_lokasi" type="hidden" value="' + daftar.inisial_lokasi + '">',
+							daftar.office + '<input class="tanggal" type="hidden" value="' + tanggal + '">',
+							daftar.jml_absen,
+							daftar.jml_katering,
+							daftar.last_update,
+						]).draw(false);
+					})
+					tblCMAbsenPerLokasiAbsen.columns.adjust().draw();
+					$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+				}
+			})
+		}else{
+			$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Tanggal Sudah Terisi !',
+				'warning'
+			)
+		}
+	});
+
+	$('#tbl-CM-AbsenPerLokasiAbsen-table').on('click', 'td', function(){
+		tanggal = $(this).closest('tr').find('.tanggal').val();
+		inisial_lokasi = $(this).closest('tr').find('.inisial_lokasi').val();
+		lokasi = $(this).closest('tr').find('.lokasi').val();
+		$('#ldg-CM-AbsenPerLokasiAbsen-Loading').show();
+		$('#mdl-CM-AbsenPerLokasiAbsen-judul').text(lokasi + " ( " + inisial_lokasi + " )");
+		$.ajax({
+			method: 'GET',
+			url: baseurl + 'CateringManagement/Extra/AbsenPerLokasiAbsen/getDetail',
+			data: {tanggal: tanggal, inisial_lokasi: inisial_lokasi},
+			error: function(xhr,status,error){
+				$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				tblCMAbsenPerLokasiAbsenDetailAbsen.clear().draw();
+				obj.absen.forEach(function(daftar, index){
+					tblCMAbsenPerLokasiAbsenDetailAbsen.row.add([
+						daftar.noind ,
+						daftar.nama,
+						daftar.shift,
+						daftar.waktu,
+						daftar.tempat_makan
+					]).draw(false);
+				})
+
+				tblCMAbsenPerLokasiAbsenDetailKatering.clear().draw();
+				obj.katering.forEach(function(daftar, index){
+					tblCMAbsenPerLokasiAbsenDetailKatering.row.add([
+						daftar.noind ,
+						daftar.nama,
+						daftar.shift,
+						daftar.waktu,
+						daftar.tempat_makan
+					]).draw(false);
+				})
+
+				$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+				$('#mdl-CM-AbsenPerLokasiAbsen').modal('show');
+
+				tblCMAbsenPerLokasiAbsenDetailAbsen.columns.adjust().draw();
+				tblCMAbsenPerLokasiAbsenDetailKatering.columns.adjust().draw();
+			}
+		})
+	})
+
+	$('#mdl-CM-AbsenPerLokasiAbsen-close').on('click', function(){
+		$('#mdl-CM-AbsenPerLokasiAbsen').modal('hide');
+	})
+})
+// end absen per lokasi absen
+
+// start izin dinas pusat tuksono mlati
+$(document).ready(function(){
+	var tblCMIzinDinasPTM = $('#tbl-CM-IzinDinasPTM-table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	$('#btn-CM-IzinDinasPTM-Proses').on('click', function(){
+		$('#ldg-CM-IzinDinasPTM-Loading').show();
+		$.ajax({
+			method: 'GET',
+			url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/proses',
+			error: function(xhr,status,error){
+				$('#ldg-CM-IzinDinasPTM-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				tblCMIzinDinasPTM.clear().draw();
+				console.log(obj);
+				obj.forEach(function(daftar, index){
+					tblCMIzinDinasPTM.row.add([
+						daftar.noind ,
+						daftar.nama,
+						daftar.tujuan,
+						daftar.keterangan,
+						daftar.jenis_dinas,
+						daftar.diproses
+					]).draw(false);
+				})
+
+				$('#ldg-CM-IzinDinasPTM-Loading').hide();
+
+				tblCMIzinDinasPTM.columns.adjust().draw();
+			}
+		})
+	});
+})
+// end izin dinas pusat tuksono mlati

@@ -646,10 +646,30 @@ $route['CateringManagement/Extra/PesananManual'] = 'CateringManagement/Extra/C_P
 $route['CateringManagement/Extra/PesananManual/(:any)'] = 'CateringManagement/Extra/C_PesananManual/$1';
 $route['CateringManagement/Extra/PesananManual/(:any)/(:any)'] = 'CateringManagement/Extra/C_PesananManual/$1/$2';
 
+$route['CateringManagement/Extra/PekerjaTerhitungCatering'] = 'CateringManagement/Extra/C_PekerjaTerhitungCatering';
+$route['CateringManagement/Extra/PekerjaTerhitungCatering/(:any)'] = 'CateringManagement/Extra/C_PekerjaTerhitungCatering/$1';
+$route['CateringManagement/Extra/PekerjaTerhitungCatering/(:any)/(:any)'] = 'CateringManagement/Extra/C_PekerjaTerhitungCatering/$1/$2';
+
+$route['CateringManagement/Extra/AbsenPerLokasiAbsen'] = 'CateringManagement/Extra/C_AbsenPerLokasiAbsen';
+$route['CateringManagement/Extra/AbsenPerLokasiAbsen/(:any)'] = 'CateringManagement/Extra/C_AbsenPerLokasiAbsen/$1';
+$route['CateringManagement/Extra/AbsenPerLokasiAbsen/(:any)/(:any)'] = 'CateringManagement/Extra/C_AbsenPerLokasiAbsen/$1/$2';
+
+$route['CateringManagement/Extra/IzinDinasPTM'] = 'CateringManagement/Extra/C_IzinDinasPTM';
+$route['CateringManagement/Extra/IzinDinasPTM/(:any)'] = 'CateringManagement/Extra/C_IzinDinasPTM/$1';
+$route['CateringManagement/Extra/IzinDinasPTM/(:any)/(:any)'] = 'CateringManagement/Extra/C_IzinDinasPTM/$1/$2';
+
 //------------------------------------CateringManagement - Pesanan----------------------------------------------------------//
 $route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
 $route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
 $route['CateringManagement/DataPesanan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1/$2';
+
+$route['CateringManagement/Pesanan/Tambahan'] = 'CateringManagement/Pesanan/C_Tambahan';
+$route['CateringManagement/Pesanan/Tambahan/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1';
+$route['CateringManagement/Pesanan/Tambahan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1/$2';
+
+$route['CateringManagement/Pesanan/Pengurangan'] = 'CateringManagement/Pesanan/C_Pengurangan';
+$route['CateringManagement/Pesanan/Pengurangan/(:any)'] = 'CateringManagement/Pesanan/C_Pengurangan/$1';
+$route['CateringManagement/Pesanan/Pengurangan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Pengurangan/$1/$2';
 
 $route['CateringTambahan'] = 'CateringTambahan/C_Tambahan';
 $route['CateringTambahan/(:any)'] = 'CateringTambahan/C_Tambahan/$1';

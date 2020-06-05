@@ -262,7 +262,7 @@ class C_HitungPesanan extends CI_Controller
                 $this->M_hitungpesanan->insertPesananTambahanDetail($idTambahan,$noind);
               }
             }else{
-              $this->M_hitungpesanan->insertPesananTambahan($tanggal,$tempatMakan);
+              $this->M_hitungpesanan->insertPesananTambahanRencanaLembur($tanggal,$tempatMakan,$shift);
               $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
               if (!empty($cekPesananTambahanLembur)) {
                 $idTambahan = $cekPesananTambahanLembur['0']['id_tambahan'];
@@ -274,6 +274,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
+        $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
       }
 
       // Pesanan Tambahan
@@ -328,7 +329,7 @@ class C_HitungPesanan extends CI_Controller
               $this->M_hitungpesanan->insertPesananTambahanDetail($idTambahan,$noind);
             }
           }else{
-            $this->M_hitungpesanan->insertPesananTambahan($tanggal,$tempatMakan);
+            $this->M_hitungpesanan->insertPesananTambahanRencanaLembur($tanggal,$tempatMakan,$shift);
             $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
             if (!empty($cekPesananTambahanLembur)) {
               $idTambahan = $cekPesananTambahanLembur['0']['id_tambahan'];
@@ -340,6 +341,7 @@ class C_HitungPesanan extends CI_Controller
           }
         }
       }
+      $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
     }
 
     // Pesanan Tambahan Yang Tidak ada Absennya 
@@ -412,7 +414,7 @@ class C_HitungPesanan extends CI_Controller
                 $this->M_hitungpesanan->insertPesananTambahanDetail($idTambahan,$noind);
               }
             }else{
-              $this->M_hitungpesanan->insertPesananTambahan($tanggal,$tempatMakan);
+              $this->M_hitungpesanan->insertPesananTambahanRencanaLembur($tanggal,$tempatMakan,$shift);
               $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
               if (!empty($cekPesananTambahanLembur)) {
                 $idTambahan = $cekPesananTambahanLembur['0']['id_tambahan'];
@@ -424,6 +426,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
+        $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
       }
 
       // Pesanan Tambahan
@@ -479,7 +482,7 @@ class C_HitungPesanan extends CI_Controller
               $this->M_hitungpesanan->insertPesananTambahanDetail($idTambahan,$noind);
             }
           }else{
-            $this->M_hitungpesanan->insertPesananTambahan($tanggal,$tempatMakan);
+            $this->M_hitungpesanan->insertPesananTambahanRencanaLembur($tanggal,$tempatMakan,$shift);
             $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
             if (!empty($cekPesananTambahanLembur)) {
               $idTambahan = $cekPesananTambahanLembur['0']['id_tambahan'];
@@ -491,6 +494,7 @@ class C_HitungPesanan extends CI_Controller
           }
         }
       }
+      $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
     }
 
      // Pesanan Tambahan Yang Tidak ada Absennya 
@@ -562,7 +566,7 @@ class C_HitungPesanan extends CI_Controller
                 $this->M_hitungpesanan->insertPesananTambahanDetail($idTambahan,$noind);
               }
             }else{
-              $this->M_hitungpesanan->insertPesananTambahan($tanggal,$tempatMakan);
+              $this->M_hitungpesanan->insertPesananTambahanRencanaLembur($tanggal,$tempatMakan,$shift);
               $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
               if (!empty($cekPesananTambahanLembur)) {
                 $idTambahan = $cekPesananTambahanLembur['0']['id_tambahan'];
@@ -574,6 +578,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
+        $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
       }
 
       // Pesanan Tambahan
@@ -628,7 +633,7 @@ class C_HitungPesanan extends CI_Controller
               $this->M_hitungpesanan->insertPesananTambahanDetail($idTambahan,$noind);
             }
           }else{
-            $this->M_hitungpesanan->insertPesananTambahan($tanggal,$tempatMakan);
+            $this->M_hitungpesanan->insertPesananTambahanRencanaLembur($tanggal,$tempatMakan,$shift);
             $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
             if (!empty($cekPesananTambahanLembur)) {
               $idTambahan = $cekPesananTambahanLembur['0']['id_tambahan'];
@@ -640,6 +645,7 @@ class C_HitungPesanan extends CI_Controller
           }
         }
       }
+      $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
     }
 
      // Pesanan Tambahan Yang Tidak ada Absennya 
