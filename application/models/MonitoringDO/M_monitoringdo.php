@@ -423,10 +423,14 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
-    public function cekkpd()
+    public function cekkpd($data)
     {
-      $response = $this->oracle->get('KHS_PERSON_DELIVERY')->result_array();
-      return $response;
+      $response = $this->oracle->where('ASSIGNER_ID', $data['no_ind'])->where('REQUEST_NUMBER', $data['rn'])->get('KHS_PERSON_DELIVERY')->result_array();
+      if (!empty($response)) {
+        return 1;
+      }else {
+        return 0;
+      }
     }
 
 

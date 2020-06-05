@@ -125,231 +125,273 @@ function approveMD() {
   var plat_number = $('#plat_number').val();
   var atr_tampung_gan = $('#atr_tampung_gan').val();
 
-//   if (plat_number === '') {
-//     plat_number = 'TR 1 AL'
-//   }
-
-  // var pengecekan = $('tr[row-id="' + rowID + '"] input[name="cekdodo"]').val();
   var pengecekan = $('#checkDODO').val();
-  // window.alert(pengecekan);
 
-  if (personid === '') {
-    Swal.fire({
-      position: 'middle',
-      type: 'error',
-      title: 'Kolom User/Assign Kosong!',
-      showConfirmButton: false,
-      timer: 2500
-    }).then(function() {
-      $('#MyModal2').modal('hide');
-    })
-  } else if (plat_number === '') {
-    Swal.fire({
-      position: 'middle',
-      type: 'error',
-      title: 'Plat Nomor Kosong!',
-      text: 'Silahkan hubungi pembelian',
-      showConfirmButton: false,
-      timer: 2500
-    }).then(function() {
-      $('#MyModal2').modal('hide');
-    })
-  } else {
-    if (pengecekan == 1) {
-      $.ajax({
-        url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
-        type: 'POST',
-        data: {
-          header_id: id,
-          requests_number: rm,
-          person_id: personid,
-          plat_number:plat_number
-        },
-        beforeSend: function() {
-          Swal.showLoading()
-        },
-        success: function(result) {
-          // window.alert(result);
-          if (result == 1) {
-            // window.alert('test');
-            Swal.fire({
-              position: 'middle',
-              type: 'success',
-              title: 'Success inserting data',
-              showConfirmButton: false,
-              timer: 1500
-            }).then(function() {
-              $('tr[row-id="' + rowID + '"] select[name="person_id"]').attr('disabled', true);
-              $('tr[row-id="' + rowID + '"] button[name="buttondetail"]').attr('disabled', true);
-              $('tr[row-id="' + rowID + '"]').removeAttr("style");
-              $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
-
-              //redirect ulang
-              var checkDO = $('#punyaeDO').val();
-              if (checkDO == 'trueDO') {
-                $.ajax({
-                  url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
-                  type: 'POST',
-                  beforeSend: function() {
-                    $('#loadingArea0').show();
-                    $('div.table_area_DO_0').hide();
-                  },
-                  success: function(result) {
-                    // console.log(result);
-                    $('#loadingArea0').hide();
-                    $('div.table_area_DO_0').show();
-                    $('div.table_area_DO_0').html(result);
-                  },
-                  error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    console.error();
-                  }
-                }).then(function() {
-                })
-              }
-            })
-          } else {
-            // window.alert('test_fail');
-            Swal.fire({
-              position: 'middle',
-              type: 'danger',
-              title: 'Failed..!!!',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-          console.error();
-        }
-      }).then(function() {
-        $('#MyModal2').modal('hide')
-        // $('tr[row-id="' + rowID + '"] input[name="person_id"]').attr('disabled', true);
-        // $('tr[row-id="' + rowID + '"] button[id="cekButton"]').attr('disabled', true);
-      })
-
-    } else {
-      Swal.mixin({
-        input: 'password',
-        confirmButtonText: 'Submit',
-        showCancelButton: true,
-        progressSteps: ['1']
-      }).queue([{
-        title: 'Autentikasi',
-        text: 'Masukan Password'
-      }]).then((result) => {
-        // console.log(result.value[0]);
-        if (result.value[0] === '1231313') {
+  $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/cekkpd',
+    type: 'POST',
+    dataType : 'JSON',
+    data: {
+      rn: rm,
+      no_ind: personid,
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result123) {
+      console.log(result123);
+      if (result123) {
+        Swal.fire({
+          position: 'middle',
+          type: 'error',
+          title: `No dokumen ${rm} sudah ter assign sebelumnya!`,
+          showConfirmButton: true,
+        }).then(function() {
+          $('#MyModal2').modal('hide');
           $.ajax({
-            url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
-            type: 'POST',
-            data: {
-              header_id: id,
-              requests_number: rm,
-              person_id: personid,
-              plat_number:plat_number
-            },
-            success: function(result) {
-              // console.log(result);
-              if (result == 1) {
-                Swal.fire({
-                  position: 'middle',
-                  type: 'success',
-                  title: 'Success inserting data',
-                  showConfirmButton: false,
-                  timer: 1500
-                }).then(function() {
-                  $('#MyModal2').modal('hide')
-                })
-              }else {
-                Swal.fire({
-                  position: 'middle',
-                  type: 'danger',
-                  title: 'Failed..!!!',
-                  showConfirmButton: false,
-                  timer: 1200
-                })
-              }
+              url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
+              type: 'POST',
+              beforeSend: function() {
+                $('#loadingArea0').show();
+                $('div.table_area_DO_0').hide();
+              },
+              success: function(result) {
+                // console.log(result);
+                $('#loadingArea0').hide();
+                $('div.table_area_DO_0').show();
+                $('div.table_area_DO_0').html(result);
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.error();
+               }
+            })
+        })
+      }else {
 
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-              console.error();
-            }
-          }).then(function() {
-              $('tr[row-id="' + rowID + '"] button[name="buttondetail"]').attr('disabled', true);
-              $('tr[row-id="' + rowID + '"] select[name="person_id"]').attr('disabled', true);
-              $('tr[row-id="' + rowID + '"]').removeAttr("style");
-              $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
-
-              //redirect ulang
-              var checkDO = $('#punyaeDO').val();
-              if (checkDO == 'trueDO') {
-                $.ajax({
-                  url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
-                  type: 'POST',
-                  beforeSend: function() {
-                    $('#loadingArea0').show();
-                    $('div.table_area_DO_0').hide();
-                  },
-                  success: function(result) {
-                    // console.log(result);
-                    $('#loadingArea0').hide();
-                    $('div.table_area_DO_0').show();
-                    $('div.table_area_DO_0').html(result);
-                  },
-                  error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    console.error();
-                  }
-                }).then(function() {
-                })
-              }
-            // $.ajax({
-            //   url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
-            //   type: 'POST',
-            //   beforeSend: function() {
-            //     $('#loadingArea0').show();
-            //     $('div.table_area_DO_0').hide();
-            //   },
-            //   success: function(result) {
-            //     // console.log(result);
-            //     $('#loadingArea0').hide();
-            //     $('div.table_area_DO_0').show();
-            //     $('div.table_area_DO_0').html(result);
-            //   },
-            //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-            //     console.error();
-            //   }
-            // })
-            // $.ajax({
-            //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
-            //   type: 'POST',
-            //   dataType: 'json',
-            //   success: function(result) {
-            //     $('#jumlah0').html('(' + result[0] + ')');
-            //     $('#jumlah1').html('(' + result[1] + ')');
-            //     $('#jumlah2').html('(' + result[2] + ')');
-            //     $('#jumlah3').html('(' + result[3] + ')');
-            //     $('#jumlah4').html('(' + result[4] + ')');
-            //
-            //   },
-            //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-            //     console.error();
-            //   }
-            // })
-          })
-        } else {
+        if (personid === '') {
           Swal.fire({
             position: 'middle',
             type: 'error',
-            title: 'Wrong password !!!',
+            title: 'Kolom User/Assign Kosong!',
             showConfirmButton: false,
-            timer: 1500
+            timer: 2500
+          }).then(function() {
+            $('#MyModal2').modal('hide');
           })
+        } else if (plat_number === '') {
+          Swal.fire({
+            position: 'middle',
+            type: 'error',
+            title: 'Plat Nomor Kosong!',
+            text: 'Silahkan hubungi pembelian',
+            showConfirmButton: false,
+            timer: 2500
+          }).then(function() {
+            $('#MyModal2').modal('hide');
+          })
+        } else {
+          if (pengecekan == 1) {
+            $.ajax({
+              url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
+              type: 'POST',
+              data: {
+                header_id: id,
+                requests_number: rm,
+                person_id: personid,
+                plat_number:plat_number
+              },
+              beforeSend: function() {
+                Swal.showLoading()
+              },
+              success: function(result) {
+                // window.alert(result);
+                if (result == 1) {
+                  // window.alert('test');
+                  Swal.fire({
+                    position: 'middle',
+                    type: 'success',
+                    title: 'Success inserting data',
+                    showConfirmButton: false,
+                    timer: 1500
+                  }).then(function() {
+                    $('tr[row-id="' + rowID + '"] select[name="person_id"]').attr('disabled', true);
+                    $('tr[row-id="' + rowID + '"] button[name="buttondetail"]').attr('disabled', true);
+                    $('tr[row-id="' + rowID + '"]').removeAttr("style");
+                    $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
+
+                    //redirect ulang
+                    var checkDO = $('#punyaeDO').val();
+                    if (checkDO == 'trueDO') {
+                      $.ajax({
+                        url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
+                        type: 'POST',
+                        beforeSend: function() {
+                          $('#loadingArea0').show();
+                          $('div.table_area_DO_0').hide();
+                        },
+                        success: function(result) {
+                          // console.log(result);
+                          $('#loadingArea0').hide();
+                          $('div.table_area_DO_0').show();
+                          $('div.table_area_DO_0').html(result);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                          console.error();
+                        }
+                      }).then(function() {
+                      })
+                    }
+                  })
+                } else {
+                  // window.alert('test_fail');
+                  Swal.fire({
+                    position: 'middle',
+                    type: 'danger',
+                    title: 'Failed..!!!',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                }
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.error();
+              }
+            }).then(function() {
+              $('#MyModal2').modal('hide')
+              // $('tr[row-id="' + rowID + '"] input[name="person_id"]').attr('disabled', true);
+              // $('tr[row-id="' + rowID + '"] button[id="cekButton"]').attr('disabled', true);
+            })
+
+          } else {
+            Swal.mixin({
+              input: 'password',
+              confirmButtonText: 'Submit',
+              showCancelButton: true,
+              progressSteps: ['1']
+            }).queue([{
+              title: 'Autentikasi',
+              text: 'Masukan Password'
+            }]).then((result) => {
+              // console.log(result.value[0]);
+              if (result.value[0] === '1231313') {
+                $.ajax({
+                  url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
+                  type: 'POST',
+                  data: {
+                    header_id: id,
+                    requests_number: rm,
+                    person_id: personid,
+                    plat_number:plat_number
+                  },
+                  success: function(result) {
+                    // console.log(result);
+                    if (result == 1) {
+                      Swal.fire({
+                        position: 'middle',
+                        type: 'success',
+                        title: 'Success inserting data',
+                        showConfirmButton: false,
+                        timer: 1500
+                      }).then(function() {
+                        $('#MyModal2').modal('hide')
+                      })
+                    }else {
+                      Swal.fire({
+                        position: 'middle',
+                        type: 'danger',
+                        title: 'Failed..!!!',
+                        showConfirmButton: false,
+                        timer: 1200
+                      })
+                    }
+
+                  },
+                  error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.error();
+                  }
+                }).then(function() {
+                    $('tr[row-id="' + rowID + '"] button[name="buttondetail"]').attr('disabled', true);
+                    $('tr[row-id="' + rowID + '"] select[name="person_id"]').attr('disabled', true);
+                    $('tr[row-id="' + rowID + '"]').removeAttr("style");
+                    $('tr[row-id="' + rowID + '"]').css({"background":"rgba(150,150,150,0.2)"});
+
+                    //redirect ulang
+                    var checkDO = $('#punyaeDO').val();
+                    if (checkDO == 'trueDO') {
+                      $.ajax({
+                        url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
+                        type: 'POST',
+                        beforeSend: function() {
+                          $('#loadingArea0').show();
+                          $('div.table_area_DO_0').hide();
+                        },
+                        success: function(result) {
+                          // console.log(result);
+                          $('#loadingArea0').hide();
+                          $('div.table_area_DO_0').show();
+                          $('div.table_area_DO_0').html(result);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                          console.error();
+                        }
+                      }).then(function() {
+                      })
+                    }
+                  // $.ajax({
+                  //   url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
+                  //   type: 'POST',
+                  //   beforeSend: function() {
+                  //     $('#loadingArea0').show();
+                  //     $('div.table_area_DO_0').hide();
+                  //   },
+                  //   success: function(result) {
+                  //     // console.log(result);
+                  //     $('#loadingArea0').hide();
+                  //     $('div.table_area_DO_0').show();
+                  //     $('div.table_area_DO_0').html(result);
+                  //   },
+                  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+                  //     console.error();
+                  //   }
+                  // })
+                  // $.ajax({
+                  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
+                  //   type: 'POST',
+                  //   dataType: 'json',
+                  //   success: function(result) {
+                  //     $('#jumlah0').html('(' + result[0] + ')');
+                  //     $('#jumlah1').html('(' + result[1] + ')');
+                  //     $('#jumlah2').html('(' + result[2] + ')');
+                  //     $('#jumlah3').html('(' + result[3] + ')');
+                  //     $('#jumlah4').html('(' + result[4] + ')');
+                  //
+                  //   },
+                  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+                  //     console.error();
+                  //   }
+                  // })
+                })
+              } else {
+                Swal.fire({
+                  position: 'middle',
+                  type: 'error',
+                  title: 'Wrong password !!!',
+                  showConfirmButton: false,
+                  timer: 1500
+                })
+              }
+            })
+
+          }
+
         }
-      })
-
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
     }
+  })
 
-  }
 }
 
 function dodo1() {
@@ -358,23 +400,23 @@ function dodo1() {
   if(ajax1 != null) ajax1.abort()
   if(ajax3 != null) ajax3.abort()
   if(ajax5 != null) ajax5.abort()
-ajax2 =  $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/GetAssign',
-    type: 'POST',
-    beforeSend: function() {
-      $('#loadingArea1').show();
-      $('div.table_area_DO_1').hide();
-    },
-    success: function(result) {
-      // console.log(result);
-      $('#loadingArea1').hide();
-      $('div.table_area_DO_1').show();
-      $('div.table_area_DO_1').html(result);
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-    }
-  })
+  ajax2 =  $.ajax({
+      url: baseurl + 'MonitoringDO/SettingDO/GetAssign',
+      type: 'POST',
+      beforeSend: function() {
+        $('#loadingArea1').show();
+        $('div.table_area_DO_1').hide();
+      },
+      success: function(result) {
+        // console.log(result);
+        $('#loadingArea1').hide();
+        $('div.table_area_DO_1').show();
+        $('div.table_area_DO_1').html(result);
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
   // $.ajax({
   //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
   //   type: 'POST',

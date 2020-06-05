@@ -387,11 +387,15 @@ class C_Master extends CI_Controller
         }
 
         $datacetak = [
-          'REQUEST_NUMBER' => $data['get_header'][0]['DO/SPB'],
+          'REQUEST_NUMBER' => $data['get_header'][0]['REQUEST_NUMBER'],
           'ORDER_NUMBER' => empty($data['get_header'][0]['NO_SO']) ? NULL : $data['get_header'][0]['NO_SO'],
           'NOMOR_CETAK' => generateInTicketNumber()
         ];
-        // $this->M_monitoringdo->insertDOCetak($datacetak);
+        $this->M_monitoringdo->insertDOCetak($datacetak);
+
+        // echo "<pre>";
+        // print_r($datacetak);
+        // die;
 
         if (!empty($data['get_serial'])) {
             $s = [];
@@ -431,17 +435,21 @@ class C_Master extends CI_Controller
             $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['DO/SPB'].'.png';
             $this->ciqrcode->generate($params);
 
-            // echo "<pre>";
-            // print_r($data);
-            // die;
 
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-            if ($data['get_footer'][0]['DESCRIPTION'] == '') {
-              $a = '<br><br>';
+
+            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 41) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 82) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 123) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 164) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
             }else {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'];
+              $a = '<br><br><br><br><br><br><br><br>';
             }
 
             if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
@@ -455,11 +463,11 @@ class C_Master extends CI_Controller
             }else {
               $appr2 = '';
             }
-            $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
+            $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
         		<tr style="width:100%">
-        			<td rowspan="2" style="vertical-align:top;width:250px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-                '.$a.'<br><br><br><br><br>
-        			 </td>
+              <td rowspan="2" style="max-width:250px;white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+                '.$a.'
+               </td>
         			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
         				<br><br>
         				Tgl. ________
@@ -569,10 +577,17 @@ class C_Master extends CI_Controller
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-            if ($data['get_footer'][0]['DESCRIPTION'] == '') {
-              $a = '<br><br>';
+
+            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 41) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 82) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 123) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 164) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
             }else {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'];
+              $a = '<br><br><br><br><br><br><br><br>';
             }
 
             if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
@@ -587,10 +602,10 @@ class C_Master extends CI_Controller
               $appr2 = '';
             }
             // $newDate = date("m-d-Y", strtotime($orgDate));
-            $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
+            $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
         		<tr style="width:100%">
-        			<td rowspan="2" style="vertical-align:top;width:250px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-                '.$a.'<br><br><br><br><br>
+        			<td rowspan="2" style="max-width:250px;white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+                '.$a.'
         			 </td>
         			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
         				<br><br>
@@ -636,11 +651,25 @@ class C_Master extends CI_Controller
         }
     }
 
+    public function cekkpd()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "You haven't access";
+      }else {
+        $param = [
+          'rn' => $this->input->post('rn'),
+          'no_ind' => $this->input->post('no_ind')
+        ];
+        $res = $this->M_monitoringdo->cekkpd($param);
+        echo json_encode($res);
+      }
+    }
+
 
     public function cekapi()
     {
-        $get = $this->M_monitoringdo->footersurat('2000000930');
-       // $get = $this->M_monitoringdo->cekkpd();
+        $get = $this->M_monitoringdo->footersurat('2000000526');
+        // $get = $this->M_monitoringdo->cekkpd();
         echo "<pre>";
         print_r($get);
         die;
