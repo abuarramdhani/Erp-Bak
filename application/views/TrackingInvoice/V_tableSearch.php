@@ -16,6 +16,7 @@
 			<td class="text-center" title="Nomor PO - Line Num - LPPB Num - Status LPPB">PO Detail</td>
 			<td class="text-center" title="Status Paid / Unpaid">Status</td>
 			<td class="text-center" title="Status Paid / Unpaid">PIC</td>
+			<td class="text-center">Jenis Dokumen</td>
 		</tr>
 	</thead>
 	<tbody>
@@ -49,6 +50,7 @@
 			</td>
 			<td><?php echo $i['STATUS_PAYMENT']?></td>
 			<td><?php echo $i['SOURCE']?></td>
+			<td><?php echo $i['JENIS_DOKUMEN']?></td>
 		</tr>
 		<?php $no++;}} ?>
 		<!-- <?php 
