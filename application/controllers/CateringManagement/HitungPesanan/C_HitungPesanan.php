@@ -815,7 +815,7 @@ class C_HitungPesanan extends CI_Controller
           );
 
           $jumlahSementara = $dp['fn_jumlah_pesan'];
-          $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($pembagian[$index]['urutan'],$tanggal,$shift,$lokasi,$dp['fd_tanggal']);
+          $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($pembagian[$index]['urutan'],$tanggal,$shift,$lokasi,$dp['fs_tempat_makan']);
           $index2++;
         }else{
           $pengurangan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakan($tanggal,$shift,$dp['fs_tempat_makan']);
@@ -844,7 +844,7 @@ class C_HitungPesanan extends CI_Controller
           );
 
           $jumlahSementara += $dp['fn_jumlah_pesan'];
-          $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($pembagian[$index]['urutan'],$tanggal,$shift,$lokasi,$dp['fd_tanggal']);
+          $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($pembagian[$index]['urutan'],$tanggal,$shift,$lokasi,$dp['fs_tempat_makan']);
           $index2++;
         }
       }      
