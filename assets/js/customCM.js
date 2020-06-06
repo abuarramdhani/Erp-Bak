@@ -4320,3 +4320,18 @@ $(document).ready(function(){
 	});
 })
 // end izin dinas pusat tuksono mlati
+
+// start mutasi pekerja
+$(document).ready(function(){
+	$('#tbl-CM-MutasiPekerja-Table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+})
+// end mutasi pekerja

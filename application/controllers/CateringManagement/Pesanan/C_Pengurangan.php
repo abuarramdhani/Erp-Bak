@@ -1,8 +1,11 @@
 <?php 
 Defined('BASEPATH') or exit('No direct Script access allowed');
-/**
- * 
- */
+
+set_time_limit(0);
+ini_set('date.timezone', 'Asia/Jakarta');
+setlocale(LC_TIME, "id_ID.utf8");
+ini_set('memory_limit', '-1');
+
 class C_Pengurangan extends CI_Controller
 {
   
