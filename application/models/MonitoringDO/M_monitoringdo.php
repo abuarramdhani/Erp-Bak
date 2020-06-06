@@ -234,7 +234,7 @@ class M_monitoringdo extends CI_Model
     {
         $response = $this->oracle->query("  SELECT *
                                               FROM khs_qweb_siap_assign1 kqsa
-                                             WHERE TRUNC (kqsa.creation_date) = TRUNC (SYSDATE-2)
+                                             WHERE TRUNC (kqsa.creation_date) between TRUNC (SYSDATE-1) and TRUNC (SYSDATE)
                                           ORDER BY kqsa.no_pr, kqsa.header_id")->result_array();
         // echo "<pre>";
         // print_r($response);
