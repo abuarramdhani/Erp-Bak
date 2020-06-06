@@ -203,18 +203,18 @@ class C_Pengurangan extends CI_Controller
                 'fn_jumlah_pesanan' => $jumlah, 
                 'fb_kategori' => $kategori,  
             );
-            $id_tambahan = $this->M_tambahan->insertTambahan($insert);
+            $id_pengurangan = $this->M_pengurangan->insertPengurangan($insert);
 
-            $this->M_tambahan->deleteTambahanDetailByIdTambahan($id_tambahan);
+            $this->M_pengurangan->deletePenguranganDetailByIdPengurangan($id_pengurangan);
             if (!empty($penerima)) {
                 foreach ($penerima as $pn) {
-                    $cekTambahanDetail = $this->M_tambahan->getTambahanDetailByIdTambahanNoind($id_tambahan, $pn);
-                    if (empty($cekTambahanDetail)) {
-                        $this->M_tambahan->insertTambahanDetail($id_tambahan,$pn);
+                    $cekPenguranganDetail = $this->M_tambahan->getPenguranganDetailByIdPenguranganNoind($id_pengurangan, $pn);
+                    if (empty($cekPenguranganDetail)) {
+                        $this->M_pengurangan->insertPenguranganDetail($id_pengurangan,$pn);
                     }
                 }
             }
-            $this->M_tambahan->updateTambahanJumlahByIdTambahan($id_tambahan);
+            $this->M_pengurangan->updatePenguranganJumlahByIdPengurangan($id_pengurangan);
 
             $pengurangan = $this->M_pengurangan->getPenguranganByIdPengurangan($id_pengurangan);
 

@@ -17,8 +17,10 @@ class M_izindinasptm extends CI_Model
 						tai.izin_id,
 						tpi.noind,
 						tpri.nama,
+						tpri.tempat_makan,
 						tpi.makan,
 						tai.tujuan,
+						tai.created_date::date as tanggal,
 						tp.keterangan, 
 						case when tp.jenis_izin = '1' then 'PUSAT' 
 						when tp.jenis_izin = '2' then 'TUKSONO' 

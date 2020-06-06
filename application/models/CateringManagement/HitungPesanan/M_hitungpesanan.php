@@ -339,7 +339,7 @@ class M_hitungpesanan extends Ci_Model
 						group by a.tempat_makan, a.nama,a.noind,b.jam_msk
 					) derivedtbl 
 				where noind = ?
-				order by tempat_makan, jumlah ";
+				order by tempat_makan ";
 		return $this->personalia->query($sql,array($tanggal,$lokasi,$tempat_makan,$lokasi,$tanggal,$tempat_makan,$noind))->result_array();
 	}
 
@@ -629,7 +629,7 @@ class M_hitungpesanan extends Ci_Model
 					group by tpri.tempat_makan, tpres.noind
 				) derivedtbl 
 				where noind = ?
-				order by tempat_makan, jumlah ";
+				order by tempat_makan ";
 		return $this->personalia->query($sql,array($tanggal,$lokasi,$tanggal,$tempat_makan,$noind))->result_array();
 	}
 
@@ -680,7 +680,7 @@ class M_hitungpesanan extends Ci_Model
 				and left(tpri.noind, 1) not in ('m', 'z') 
 				and tempat_makan = ?
 				and tpri.noind = ?
-				order by tempat_makan, jumlah ";
+				order by tempat_makan ";
 		return $this->personalia->query($sql,array($lokasi,$tanggal,$tempat_makan,$noind))->result_array();
 	}
 
@@ -781,6 +781,16 @@ class M_hitungpesanan extends Ci_Model
 				  and fs_tempat_makan = ?
 				group by fs_tempat_makan, fs_kd_shift, fd_tanggal ";
 		return $this->personalia->query($sql,array($tanggal,$shift,$tempat_makan))->result_array();
+	}
+
+	public function getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan,$kategori){
+		$sql = "select *
+				from \"Catering\".tpenguranganpesanan 
+				where fd_tanggal = ?
+				  and fs_kd_shift = ?
+				  and fs_tempat_makan = ?
+				  and fb_kategori = ?";
+		return $this->personalia->query($sql,array($tanggal,$shift,$tempat_makan,$kategori))->result_array();
 	}
 
 	public function deletePesananByTanggalShiftLokasi($tanggal,$shift,$lokasi){

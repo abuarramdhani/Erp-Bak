@@ -187,6 +187,11 @@ class M_pengurangan extends CI_Model
         $this->personalia->insert('"Catering".tpesanan',$data);
     }
 
+    public function insertPengurangan($data){
+        $this->personalia->insert('"Catering".tpenguranganpesanan',$data);
+        return $this->personalia->insert_id();
+    }
+
 }
 
 ?>
