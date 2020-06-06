@@ -420,7 +420,7 @@ class C_Master extends CI_Controller
 
             $pdf 		= $this->pdf->load();
             $this->load->library('ciqrcode');
-            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
+            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 0);
 
             // ------ GENERATE QRCODE ------
             if (!is_dir('./assets/img/monitoringDOQRCODE')) {
@@ -494,7 +494,10 @@ class C_Master extends CI_Controller
         		<tr>
         			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
         		</tr>
-        	</table>');
+        	</table>
+          <i style="font-size:10px;">
+            *Putih : Ekspedisi &nbsp;&nbsp;&nbsp;&nbsp;Merah : Marketing &nbsp;&nbsp;&nbsp;&nbsp;Kuning : Akuntansi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hijau : Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Biru : Gudang FG
+          </i>');
             $pdf->WriteHTML($aku);
             $pdf->Output($filename, 'I');
 
@@ -557,7 +560,7 @@ class C_Master extends CI_Controller
 
             $pdf 		= $this->pdf->load();
             $this->load->library('ciqrcode');
-            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
+            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 0);
 
             // ------ GENERATE QRCODE ------
             if (!is_dir('./assets/img/monitoringDOQRCODE')) {
@@ -632,7 +635,10 @@ class C_Master extends CI_Controller
         		<tr>
         			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
         		</tr>
-        	</table>');
+        	</table>
+            <i style="font-size:10px;">
+              *Putih : Ekspedisi &nbsp;&nbsp;&nbsp;&nbsp;Merah : Marketing &nbsp;&nbsp;&nbsp;&nbsp;Kuning : Akuntansi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hijau : Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Biru : Gudang FG
+            </i>');
             $pdf->WriteHTML($aku);
             $pdf->Output($filename, 'I');
         // ========================end process=========================
