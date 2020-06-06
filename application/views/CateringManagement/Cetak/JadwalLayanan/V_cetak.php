@@ -6,7 +6,7 @@
 <body>
 	<div class="row">
 		<div class="col-lg-12 text-center">
-			<label><b style="font-size: 15pt;">Jadwal Pelayanan Catering</b><br>Bulan : <?php echo $data['bulan'] ?></label>
+			<label><b style="font-size: 15pt;">Jadwal Pelayanan Catering<?php echo $data['lokasi'] == '1' ? 'Yogyakarta & Mlati' : 'Tuksono' ?></b><br>Bulan : <?php echo $data['bulan'] ?></label>
 		</div>
 	</div>
 	<div class="row">

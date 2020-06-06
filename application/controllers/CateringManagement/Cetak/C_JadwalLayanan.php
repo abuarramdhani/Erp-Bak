@@ -64,8 +64,9 @@ class C_JadwalLayanan extends CI_Controller
 		$bln = $this->input->post('txtPeriodeJadwalLayanan');
 		$paket = $this->input->post('txtPaketJadwalLayanan');
 		$tglCetak = $this->input->post('txtTanggalJadwalLayanan');
+		$lokasi = $this->input->post('slcLokasiJadwalLayanan');
 
-		$tanggalTampilPesanan = $this->M_jadwallayanan->getTanggalTampilPesanan($bln);
+		$tanggalTampilPesanan = $this->M_jadwallayanan->getTanggalTampilPesanan($bln,$lokasi);
 		$angka = 0;
 		$dayow = array("","Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu");
 		foreach ($tanggalTampilPesanan as $key) {
@@ -89,7 +90,7 @@ class C_JadwalLayanan extends CI_Controller
 				);
 			}
 
-			$dataTampilPesanan = $this->M_jadwallayanan->getDataTampilPesanan($key['fs_tanggal']);
+			$dataTampilPesanan = $this->M_jadwallayanan->getDataTampilPesanan($key['fs_tanggal'],$lokasi);
 			foreach ($dataTampilPesanan as $value) {
 				if ($value['fs_tujuan_shift1'] == 't') {
 					if ($arrData[$angka]['shift1'] == "") {
@@ -134,6 +135,7 @@ class C_JadwalLayanan extends CI_Controller
 		$data['data'] = array(
 			'bulan' => $bln, 
 			'cetak' => $tglCetak, 
+			'lokasi' => $lokasi,
 			'paket' => $paket
 		);
 		$data['table'] = $arrData;
@@ -148,8 +150,9 @@ class C_JadwalLayanan extends CI_Controller
 		$bln = $this->input->post('txtPeriodeJadwalLayanan');
 		$paket = $this->input->post('txtPaketJadwalLayanan');
 		$tglCetak = $this->input->post('txtTanggalJadwalLayanan');
+		$lokasi = $this->input->post('slcLokasiJadwalLayanan');
 
-		$tanggalTampilPesanan = $this->M_jadwallayanan->getTanggalTampilPesanan($bln);
+		$tanggalTampilPesanan = $this->M_jadwallayanan->getTanggalTampilPesanan($bln,$lokasi);
 		$angka = 0;
 		$dayow = array("","Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu");
 		foreach ($tanggalTampilPesanan as $key) {
@@ -173,7 +176,7 @@ class C_JadwalLayanan extends CI_Controller
 				);
 			}
 			
-			$dataTampilPesanan = $this->M_jadwallayanan->getDataTampilPesanan($key['fs_tanggal']);
+			$dataTampilPesanan = $this->M_jadwallayanan->getDataTampilPesanan($key['fs_tanggal'],$lokasi);
 			foreach ($dataTampilPesanan as $value) {
 				if ($value['fs_tujuan_shift1'] == 't') {
 					if ($arrData[$angka]['shift1'] == "") {
