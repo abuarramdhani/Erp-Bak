@@ -526,7 +526,7 @@ class M_createkib extends CI_Model
 				  ,nvl(
 					(select mil1.ATTRIBUTE15
 						from mtl_item_locations mil1
-						where mil1.INVENTORY_LOCATION_ID = msi.LOCATION_ID
+						where mil1.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
 						and rownum = 1
 						),msi.ATTRIBUTE1) ALIAS_KODE
 			      ,decode(kkk.ITEM_STATUS,1,'OK',2,'REJECT',3,'SCRAP') status
@@ -603,7 +603,7 @@ class M_createkib extends CI_Model
 				  ,nvl(
 					(select mil1.ATTRIBUTE15
 						from mtl_item_locations mil1
-						where mil1.INVENTORY_LOCATION_ID = msi.LOCATION_ID
+						where mil1.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
 						and rownum = 1
 						),msi.ATTRIBUTE1) ALIAS_KODE
                   ,msib.SEGMENT1 item_code
@@ -654,7 +654,7 @@ class M_createkib extends CI_Model
 					  ,nvl(
 						(select mil1.ATTRIBUTE15
 							from mtl_item_locations mil1
-							where mil1.INVENTORY_LOCATION_ID = msi.LOCATION_ID
+							where mil1.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
 							and rownum = 1
 							),msi.ATTRIBUTE1) ALIAS_KODE
 				      ,decode(kkk.ITEM_STATUS,1,'OK',2,'REJECT',3,'SCRAP') status
@@ -734,7 +734,7 @@ class M_createkib extends CI_Model
 				 ,nvl(
 					(select mil1.ATTRIBUTE15
 						from mtl_item_locations mil1
-						where mil1.INVENTORY_LOCATION_ID = msi.LOCATION_ID
+						where mil1.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
 						and rownum = 1
 						),msi.ATTRIBUTE1) ALIAS_KODE
 				FROM 
