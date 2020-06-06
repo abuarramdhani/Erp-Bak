@@ -2339,11 +2339,11 @@ function RejectCatering() {
 // start Hitung Pesanan
 $(document).ready(function(){
 	$('#CateringHitungPesananTanggal').datepicker({
-		      "autoclose": true,
-		      "todayHighlight": true,
-		      "todayBtn": "linked",
-		      "format":'yyyy-mm-dd'
-		});
+	      "autoclose": true,
+	      "todayHighlight": true,
+	      "todayBtn": "linked",
+	      "format":'yyyy-mm-dd'
+	});
 
 	$('#CateringHitungRefresh').on('click',function(){
 		tanggal = $('#CateringHitungPesananTanggal').val();
@@ -2442,7 +2442,7 @@ $(document).ready(function(){
 		if (tanggal && shift && lokasi) {
 			$.ajax({
 				method: 'POST',
-				url: baseurl + '/CateringManagement/HitungPesanan/cekLihat',
+				url: baseurl + 'CateringManagement/HitungPesanan/cekLihat',
 				data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
 				error: function(xhr,status,error){
 					e.preventDefault();
@@ -2543,7 +2543,7 @@ function hitungCatering(){
 	lokasi 	= $('#CateringHitungPesananLokasi').val();
 	$.ajax({
 		method: 'POST',
-		url: baseurl + '/CateringManagement/HitungPesanan/prosesHitung',
+		url: baseurl + 'CateringManagement/HitungPesanan/prosesHitung',
 		data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
 		error: function(xhr,status,error){
 			$('#CateringHitungLoading').hide();
@@ -2573,6 +2573,13 @@ function hitungCatering(){
 }
 
 $(document).ready(function(){
+	$('#txt-CM-HitungPesanan-CopyPembagian-Tanggal').datepicker({
+	      "autoclose": true,
+	      "todayHighlight": true,
+	      "todayBtn": "linked",
+	      "format":'yyyy-mm-dd'
+	});
+
 	$('#CateringHitungPesananLihatTabel').on('click','tbody tr',function(){
 		var urutan = $(this).attr('data-urutan');
 		var tempatMakan = $(this).attr('data-katering');
@@ -2594,10 +2601,9 @@ $(document).ready(function(){
 		if (urutan && tempatMakan) {
 			$.ajax({
 				method: 'POST',
-				url: baseurl + '/CateringManagement/HitungPesanan/gantiUrutan',
+				url: baseurl + 'CateringManagement/HitungPesanan/gantiUrutan',
 				data: {tanggal: tanggal, shift: shift, lokasi: lokasi,tempat_makan: tempatMakan, urutan: urutan},
 				error: function(xhr,status,error){
-					$('#CateringHitungLoading').hide();
 					swal.fire({
 		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
 		                html: xhr['responseText'],
@@ -2619,6 +2625,190 @@ $(document).ready(function(){
 			})			
 		}
 	});
+
+	$('#btn-CM-HitungPesanan-CopyPembagian').on('click', function(){
+		$('#mdl-CM-HitungPesanan-CopyPembagian').modal('show');
+	})
+
+	$('#btn-CM-HitungPesanan-CopyPembagian-Proses').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+		var tanggalCopy = $('#txt-CM-HitungPesanan-CopyPembagian-Tanggal').val();
+
+		if (tanggal && tanggalCopy) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + 'CateringManagement/HitungPesanan/copyPembagian',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, tanggal_copy: tanggalCopy},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					$('#mdl-CM-HitungPesanan-CopyPembagian').modal('hide');	
+					if (data != "Tidak Ditemukan Data") {
+						$('#CateringHitungPesananLihatTabel').html(obj['table']);						
+						$('#CateringHitungPesananLihatJumlah').html(obj['katering']);	
+					}else{
+						window.location.href = baseurl+'/CateringManagement/HitungPesanan';
+					}
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-SimpanMakan').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + 'CateringManagement/HitungPesanan/simpanHistory',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '1'},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					if (data == 'success') {
+						swal.fire('Sukses!',
+							'Simpan Pembagian Makan Berhasil !',
+							'success'
+						)
+					}else{
+						swal.fire('Gagal!',
+							'Simpan Pembagian Makan Gagal !',
+							'error'
+						)
+					}
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-SimpanSnack').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					if (data == 'success') {
+						swal.fire('Sukses!',
+							'Simpan Pembagian Makan Sukses!',
+							'success'
+						)
+					}else{
+						swal.fire('Gagal!',
+							'Simpan Pembagian Makan Gagal!',
+							'error'
+						)
+					}
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-CetakMakan').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					if (data == 'success') {
+						swal.fire('Sukses!',
+							'Simpan Pembagian Makan Sukses!',
+							'success'
+						)
+					}else{
+						swal.fire('Gagal!',
+							'Simpan Pembagian Makan Gagal!',
+							'error'
+						)
+					}
+					window.open(baseurl + 'CateringManagement/HitungPesanan/cetakHistory?tanggal=' + tanggal + '&lokasi=' + lokasi + '&shift=' + shift + '&jenis=1');
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-CetakSnack').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					if (data == 'success') {
+						swal.fire('Sukses!',
+							'Simpan Pembagian Makan Sukses!',
+							'success'
+						)
+					}else{
+						swal.fire('Gagal!',
+							'Simpan Pembagian Makan Gagal!',
+							'error'
+						)
+					}
+					window.open(baseurl + 'CateringManagement/HitungPesanan/cetakHistory?tanggal=' + tanggal + '&lokasi=' + lokasi + '&shift=' + shift + '&jenis=0');
+				}
+			})
+		}
+	})
 });
 // end Hitung Pesanan
 $(document).on('ready',function(){

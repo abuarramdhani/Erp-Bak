@@ -1,3 +1,13 @@
+<style type="text/css">
+	.btn-cm {
+		background-color: #4bcffa;
+		color: white;
+	}
+	.btn-cm:hover {
+		color: #4bcffa !important;
+		background-color: white !important;
+	}
+</style>
 <section class="content">
 	<div class="inner">
 		<div class="row">
@@ -6,7 +16,18 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid" style="margin-bottom: 0px">
 							<div class="box-header with-header">
-								<?php echo "Pesanan Katering Tanggal : ".date("Y-m-d",strtotime($tanggal))." Shift : ".($shift == '1' ? 'Shift Satu dan Umum' : ($shift == '2' ? 'Shift Dua' : ($shift == '3' ? 'Shift Tiga' : 'Tidak Diketahui')))." Lokasi : ".($lokasi == '1' ? 'Yogyakarta' :($lokasi == '2' ? 'Tuksono' : 'Tidak Diketahui')) ?>
+								<div class="row">
+									<div class="col-lg-5">
+									<?php echo "Pesanan Katering <br>Tanggal : ".date("Y-m-d",strtotime($tanggal))." Shift : ".($shift == '1' ? 'Shift Satu dan Umum' : ($shift == '2' ? 'Shift Dua' : ($shift == '3' ? 'Shift Tiga' : 'Tidak Diketahui')))." Lokasi : ".($lokasi == '1' ? 'Yogyakarta' :($lokasi == '2' ? 'Tuksono' : 'Tidak Diketahui')) ?>
+									</div>
+									<div class="col-lg-7 text-right">
+										<button class="btn btn-cm" id="btn-CM-HitungPesanan-CopyPembagian">Copy Pembagian</button>	
+										<button class="btn btn-cm" id="btn-CM-HitungPesanan-SimpanMakan">Simpan Makan</button>	
+										<button class="btn btn-cm" id="btn-CM-HitungPesanan-SimpanSnack">Simpan Snack</button>	
+										<button class="btn btn-cm" id="btn-CM-HitungPesanan-CetakMakan">Cetak Makan</button>	
+										<button class="btn btn-cm" id="btn-CM-HitungPesanan-CetakSnack">Cetak Snack</button>	
+									</div>
+								</div>
 							</div>
 							<div class="box-body">
 								<div class="row">
@@ -138,7 +159,51 @@
 			<div class="modal-footer">
 				<div class="row">
 					<div class="col-lg-12">
-						<button type="button" class="btn btn-primary" id="btnCateringHitungPesananSimpan">Simpan</button>
+						<?php 
+						if($tanggal == date('Y-m-d')){
+							?>
+							<button type="button" class="btn btn-primary" id="btnCateringHitungPesananSimpan">Simpan</button>
+							<?php
+						}
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="mdl-CM-HitungPesanan-CopyPembagian">
+	<div class="modal-dialog modal-sm" role="document">
+    	<div class="modal-content">
+    		<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Copy Pembagian</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="control-label col-lg-4">Tanggal</label>
+								<div class="col-lg-8">
+									<input type="text" id="txt-CM-HitungPesanan-CopyPembagian-Tanggal" class="form-control" placeholder="Pilih Tanggal">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-lg-12">
+						<?php 
+						if($tanggal == date('Y-m-d')){
+							?>
+							<button type="button" class="btn btn-primary" id="btn-CM-HitungPesanan-CopyPembagian-Proses">Proses</button>
+							<?php
+						}
+						?>
 					</div>
 				</div>
 			</div>

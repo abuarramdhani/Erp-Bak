@@ -229,6 +229,16 @@ class C_HitungPesanan extends CI_Controller
     if($shift == '1' or $shift == '2'){
       $this->M_hitungpesanan->UpdateWaktuHitungByShift($shift,'1');      
     }
+
+    $data_log = array(
+      'wkt' => date('Y-m-d H:i:s'),
+      'menu' => 'HITUNG PESANAN',
+      'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi,
+      'noind' => $this->session->user,
+      'jenis' => 'HITUNG DATA PESANAN',
+      'program' => 'CATERING MANAGEMENT ERP'
+    );
+    $this->M_hitungpesanan->insertTlog($data_log);
   }
 
   public function hitungShift1($tanggal,$shift,$lokasi){
@@ -919,6 +929,16 @@ class C_HitungPesanan extends CI_Controller
     $data['lokasi'] = $lokasi;
     $data['pembagian'] = $this->getpesananList($tanggal,$shift,$lokasi);
 
+    $data_log = array(
+      'wkt' => date('Y-m-d H:i:s'),
+      'menu' => 'HITUNG PESANAN',
+      'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi,
+      'noind' => $this->session->user,
+      'jenis' => 'LIHAT DATA PESANAN',
+      'program' => 'CATERING MANAGEMENT ERP'
+    );
+
+    $this->M_hitungpesanan->insertTlog($data_log);
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);
     $this->load->view('CateringManagement/HitungPesanan/V_hasil',$data);
@@ -933,7 +953,19 @@ class C_HitungPesanan extends CI_Controller
     $urutan = $this->input->post('urutan');
 
     $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($urutan,$tanggal,$shift,$lokasi,$tempat_makan);
+    $data_log = array(
+      'wkt' => date('Y-m-d H:i:s'),
+      'menu' => 'HITUNG PESANAN',
+      'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi.' TEMPAT-MAKAN: '.$tempat_makan.' URUTAN-BARU: '.$urutan,
+      'noind' => $this->session->user,
+      'jenis' => 'GANTI URUTAN DATA PESANAN',
+      'program' => 'CATERING MANAGEMENT ERP'
+    );
+    $this->M_hitungpesanan->insertTlog($data_log);
+    $this->getPesananListByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+  }
 
+  public function getPesananListByTanggalShiftLokasi($tanggal,$shift,$lokasi){
     $pembagian = $this->getpesananList($tanggal,$shift,$lokasi);
 
     if (isset($pembagian) and !empty($pembagian)) { 
@@ -1002,7 +1034,253 @@ class C_HitungPesanan extends CI_Controller
     }
   }
 
-  
+  public function copyPembagian(){
+    $tanggal = $this->input->post('tanggal');
+    $shift = $this->input->post('shift');
+    $lokasi = $this->input->post('lokasi');
+    $tanggal_copy = $this->input->post('tanggal_copy');
+
+    $dataPembagian = $this->M_hitungpesanan->getPembagianByTanggalShiftLokasiTanggalCopy($tanggal,$shift,$lokasi,$tanggal_copy);
+    if(!empty($dataPembagian)){
+      $simpanUrutan = "0";
+      foreach ($dataPembagian as $key => $value) {
+        if ($value['tanda_baru'] == '0') {
+          $urutan_baru = $simpanUrutan;
+        }else{
+          $urutan_baru = $value['tanda_baru'];
+        }
+        $tempat_makan = $value['fs_tempat_makan'];
+        $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($urutan_baru,$tanggal,$shift,$lokasi,$tempat_makan);
+      }
+    }
+    $data_log = array(
+      'wkt' => date('Y-m-d H:i:s'),
+      'menu' => 'HITUNG PESANAN',
+      'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi.' TGL-COPY: '.$tanggal_copy,
+      'noind' => $this->session->user,
+      'jenis' => 'COPY PEMBAGIAN DATA PESANAN',
+      'program' => 'CATERING MANAGEMENT ERP'
+    );
+    $this->M_hitungpesanan->insertTlog($data_log);
+    $this->getPesananListByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+  }  
+
+  public function simpanHistory(){
+    $tanggal = $this->input->post('tanggal');
+    $shift = $this->input->post('shift');
+    $lokasi = $this->input->post('lokasi');
+    $jenis = $this->input->post('jenis');
+    if ($jenis == '0') {
+      $jenis_nama = 'SNACK';
+    }else{
+      $jenis_nama = 'MAKAN';
+    }
+    $data = $this->M_hitungpesanan->getViPesananByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+    $history = $this->M_hitungpesanan->getPesananHistoryByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+    if (!empty($history)) {
+      if (!empty($data)) {
+        foreach ($data as $key => $value) {
+          $data_insert = array(
+            'fd_tanggal' => $value['fd_tanggal'],
+            'fs_tempat_makan' => $value['fs_tempat_makan'],
+            'fs_kd_shift' => $value['fs_kd_shift'],
+            'fn_jumlah_nonstaff' => $value['fn_jumlah_nonstaff'],
+            'fn_jumlah_staff' => $value['fn_jumlah_staff'],
+            'fn_jumlah' => $value['fn_jumlah'],
+            'fn_jumlah_tambahan' => $value['fn_jumlah_tambahan'],
+            'fn_jumlah_tambahan' => $value['fn_jumlah_pengurangan'],
+            'fn_jumlah_pesan' => $value['fn_jumlah_pesan'],
+            'fs_tanda' => $value['fs_tanda'],
+            'lokasi' => $value['fs_lokasi'],
+            'jenis_pesanan' => $jenis,
+          );
+          $this->M_hitungpesanan->insertPesananHistory($data_insert);
+        }
+        $data_log = array(
+          'wkt' => date('Y-m-d H:i:s'),
+          'menu' => 'HITUNG PESANAN',
+          'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi,
+          'noind' => $this->session->user,
+          'jenis' => 'SIMPAN - REPLACE DATA PESANAN '.$jenis_nama,
+          'program' => 'CATERING MANAGEMENT ERP'
+        );
+        $this->M_hitungpesanan->insertTlog($data_log);
+      }
+    }else{
+      if (!empty($data)) {
+        foreach ($data as $key => $value) {
+          $data_insert = array(
+            'fd_tanggal' => $value['fd_tanggal'],
+            'fs_tempat_makan' => $value['fs_tempat_makan'],
+            'fs_kd_shift' => $value['fs_kd_shift'],
+            'fn_jumlah_nonstaff' => $value['fn_jumlah_nonstaff'],
+            'fn_jumlah_staff' => $value['fn_jumlah_staff'],
+            'fn_jumlah' => $value['fn_jumlah'],
+            'fn_jumlah_tambahan' => $value['fn_jumlah_tambahan'],
+            'fn_jumlah_tambahan' => $value['fn_jumlah_pengurangan'],
+            'fn_jumlah_pesan' => $value['fn_jumlah_pesan'],
+            'fs_tanda' => $value['fs_tanda'],
+            'lokasi' => $value['fs_lokasi'],
+            'jenis_pesanan' => $jenis,
+          );
+          $this->M_hitungpesanan->insertPesananHistory($data_insert);
+        }
+        $data_log = array(
+          'wkt' => date('Y-m-d H:i:s'),
+          'menu' => 'HITUNG PESANAN',
+          'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi,
+          'noind' => $this->session->user,
+          'jenis' => 'SIMPAN DATA PESANAN '.$jenis_nama,
+          'program' => 'CATERING MANAGEMENT ERP'
+        );
+        $this->M_hitungpesanan->insertTlog($data_log);
+      }
+    }
+    echo "success";
+  }
+
+  public function cetakHistory(){
+    $tanggal = $this->input->get('tanggal');
+    $shift = $this->input->get('shift');
+    $lokasi = $this->input->get('lokasi');
+    $jenis = $this->input->get('jenis');
+    
+    $pembagian = $this->getpesananList($tanggal,$shift,$lokasi);
+
+    $data = array();
+    
+    if ($jenis == '0') {
+      $jenis_nama = 'SNACK';
+      $nomor = 1;
+      if (isset($pembagian) and !empty($pembagian)) { 
+        $isi = " <table style='width: 100%;border: 2px solid white'>";
+
+        foreach ($pembagian as $bagi) {
+
+          foreach ($bagi['data'] as $data) {
+            if ($nomor%3 == 1) {
+              $isi .= "<tr>";
+            }elseif ($nomor%3 == 3) {
+              $isi .= "</tr>";
+            }
+            $isi .= "
+            <td style='width: 33%;'>
+              <table border='2' style='width: 100%;border: 2px solid black;'>
+                <tr>
+                  <td colspan='2' style='text-align: center;border-bottom: 2px solid black;font-weight: bold;font-size: 15pt;vertical-align: middle;height: 60px;'>
+                    ".$data['tempat_makan']."
+                  </td>
+                </tr>
+                <tr>
+                  <td rowspan='4' style='text-align: center;font-weight: bold;font-size: 40pt;width: 220px;'>
+                    ".$data['jumlah_pesan']."
+                  </td>
+                  <td style='color: grey;text-align: right'>
+                    ".$data['staff']."
+                  </td>
+                </tr>
+                <tr>
+                  <td style='color: grey;text-align: right'>
+                    ".$data['nonstaff']."
+                  </td>
+                </tr>
+                <tr>
+                  <td style='color: grey;text-align: right'>
+                    ".$data['tambahan']."
+                  </td>
+                </tr>
+                <tr>
+                  <td style='color: grey;text-align: right'>
+                    ".$data['pengurangan']."
+                  </td>
+                </tr>
+              </table>
+            </td>";
+            $nomor++;
+          }
+        }
+
+        $isi .= "</table>";
+        $data['daftar'] = $isi;
+        
+      }else{
+        $data['daftar'] = "";
+      }
+    }else{
+      $jenis_nama = 'MAKAN';
+       if (isset($pembagian) and !empty($pembagian)) { 
+        $isi = " <table border=\"1\" style=\"width: 100%;border-collapse: collapse;\" id=\"CateringHitungPesananLihatTabel\">";
+
+        foreach ($pembagian as $bagi) {
+          $isi .= "<tr>
+            <td colspan=\"7\">Nama Katering : ".$bagi['fs_nama_katering']."</td>
+          </tr>
+          <tr>
+            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">No.</td>
+            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Tempat Makan</td>
+            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Staff</td>
+            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Non Staff</td>
+            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Tambah</td>
+            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Kurang</td>
+            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Jumlah</td>
+          </tr>";
+
+          $nomor = 1;
+          foreach ($bagi['data'] as $data) {
+
+            $isi .= "<tr data-urutan=\"".$bagi['urutan']."\" data-katering=\"".$data['tempat_makan']."\">
+              <td style=\"text-align: center\">".$nomor."</td>
+              <td style=\"text-align: left;padding-left: 20px;\">".$data['tempat_makan']."</td>
+              <td style=\"text-align: right;padding-right: 20px;\">".$data['staff']."</td>
+              <td style=\"text-align: right;padding-right: 20px;\">".$data['nonstaff']."</td>
+              <td style=\"text-align: right;padding-right: 20px;\">".$data['tambahan']."</td>
+              <td style=\"text-align: right;padding-right: 20px;\">".$data['pengurangan']."</td>
+              <td style=\"text-align: right;padding-right: 20px;\">".$data['jumlah_pesan']."</td>
+            </tr>";
+
+            $nomor++;
+          }
+          $isi .= "<tr>
+            <td colspan=\"6\" style=\"text-align: right;padding-right: 20px;\">Total : </td>
+            <td style=\"text-align: right;padding-right: 20px;\">".$bagi['jumlah_total']."</td>
+          </tr>
+          <tr>
+            <td colspan=\"7\">&nbsp;</td>
+          </tr>";
+
+        }
+
+        $isi .= "</table>";
+        $data['daftar'] = $isi;
+        
+      }else{
+        $data['daftar'] = "";
+      }
+    }
+
+    $data_log = array(
+      'wkt' => date('Y-m-d H:i:s'),
+      'menu' => 'HITUNG PESANAN',
+      'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi,
+      'noind' => $this->session->user,
+      'jenis' => 'CETAK DATA PESANAN '.$jenis_nama,
+      'program' => 'CATERING MANAGEMENT ERP'
+    );
+    $this->M_hitungpesanan->insertTlog($data_log);
+    // echo $data['daftar'];exit();
+
+    $this->load->library('pdf');
+
+    $pdf = $this->pdf->load();
+    $pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 5, 5, 5, 'P');
+    $filename = 'PESANAN_'.$jenis_nama.'_'.$tanggal.'_'.$shift.'_'.$lokasi.'.pdf';
+    // echo "<pre>";print_r($data['PrintppDetail']);exit();
+    $html = $this->load->view('CateringManagement/HitungPesanan/V_pdf', $data, true);
+    $pdf->WriteHTML($html, 2);
+    // $pdf->Output($filename, 'D');
+    $pdf->Output($filename, 'I');
+  }
+
 }
 
 ?>

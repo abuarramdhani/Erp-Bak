@@ -1173,6 +1173,45 @@ class M_hitungpesanan extends Ci_Model
 				and fs_tempat_makan = ?";
 		$this->personalia->query($sql,array($urutan,$tanggal,$shift,$lokasi,$tempat_makan));
 	}
+
+	public function getPembagianByTanggalShiftLokasiTanggalCopy($tanggal,$shift,$lokasi,$tanggal_copy){
+		$sql = "select a.fd_tanggal,a.fs_kd_shift,a.fs_tempat_makan,a.fs_tanda as tanda_sekarang, 
+				b.fs_nama_katering as katering_sekarang, 
+				c.fs_tempat_makan,c.fs_tanda as tanda_dulu, 
+				d.fs_nama_katering as katering_dulu, 
+				coalesce(e.fn_urutan,0) as tanda_baru, e.fs_nama_katering as katering_baru 
+				from \"Catering\".tpesanan a 
+				left join \"Catering\".turutankatering b 
+				on a.fd_tanggal = b.fd_tanggal and a.fs_tanda::int = b.fn_urutan and a.fs_kd_shift = b.fs_kd_shift and a.lokasi = b.lokasi 
+				left join \"Catering\".tpesanan c 
+				on a.fs_tempat_makan = c.fs_tempat_makan and a.fs_kd_shift = c.fs_kd_shift and c.fd_tanggal = ? and a.lokasi = c.lokasi 
+				left join \"Catering\".turutankatering d 
+				on c.fd_tanggal = d.fd_tanggal and c.fs_tanda::int = d.fn_urutan and c.fs_kd_shift = d.fs_kd_shift and c.lokasi = d.lokasi 
+				left join \"Catering\".turutankatering e 
+				on a.fd_tanggal = e.fd_tanggal and a.fs_kd_shift = e.fs_kd_shift and d.fs_nama_katering = e.fs_nama_katering and d.lokasi = e.lokasi 
+				where a.fd_tanggal = ?
+				and a.fs_kd_shift = ? 
+				and a.lokasi::int = ?::int 
+				order by e.fn_urutan ";
+		return $this->personalia->query($sql,array($tanggal_copy,$tanggal,$shift,$lokasi))->result_array();
+	}
+
+	public function insertPesananHistory($data){
+		$this->personalia->insert('"Catering".tpesanan_history',$data);
+	}
+
+	public function insertTlog($data){
+		$this->personalia->insert('hrd_khs.tlog',$data);
+	}
+
+	public function getPesananHistoryByTanggalShiftLokasi($tanggal,$shift,$lokasi){
+		$sql = "select *
+				from \"Catering\".tpesanan_history as tp 
+				where tp.fd_tanggal = ? 
+				and tp.fs_kd_shift = ? 
+				and tp.lokasi = ?";
+		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
+	}
 }
 
 ?>
