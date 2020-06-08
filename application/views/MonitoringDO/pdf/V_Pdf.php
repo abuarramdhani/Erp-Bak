@@ -30,7 +30,7 @@
 
 			</td>
 			<td colspan="2" style="text-align: center;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black; height: 25px;">
-				<?php if ($cek_spb_do[0]['DELIVERY_TYPE'] !== ''){ ?>
+				<?php if (!empty($cek_spb_do[0]['DELIVERY_TYPE'])){ ?>
 					<b style="font-size:14px;padding:10px">SURAT PENGANTAR BARANG </b>
 				<?php }else { ?>
 					<b style="font-size:16px;">DELIVERY ORDER</b>
