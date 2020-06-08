@@ -19,6 +19,11 @@ const swalWIPP = (type, title) => {
   })
 }
 // ========================do something below the alert =================
+const print_besar = (kode_item, key, line) => {
+  const qty = $(`#qtyl${line}_${key}`).val();
+  window.open(baseurl + 'WorkInProcessPackaging/JobManager/LabelBesar/' + kode_item + '_' + qty );
+}
+
 const updateTargetPe = _ => {
   let wipp_cek2 = $('.wipp2').val();
   let param = $('#linenumber').html();

@@ -58,7 +58,7 @@
                 </td>
               </tr>
               <input type="hidden" name="id_job_list1[]" value="<?php echo $l1['id_job_list'] ?>">
-              <input type="hidden" name="id_split1[]" value="<?php echo $l1['id_split'] ?>">
+              <!-- <input type="hidden" name="id_split1[]" value="<?php echo $l1['id_split'] ?>"> -->
              <?php endforeach; ?>
 
             </tbody>
@@ -123,7 +123,7 @@
                 </td>
               </tr>
               <input type="hidden" name="id_job_list2[]" value="<?php echo $l2['id_job_list'] ?>">
-              <input type="hidden" name="id_split2[]" value="<?php echo $l2['id_split'] ?>">
+              <!-- <input type="hidden" name="id_split2[]" value="<?php echo $l2['id_split'] ?>"> -->
              <?php endforeach; ?>
 
             </tbody>
@@ -193,7 +193,7 @@
                   </td>
                 </tr>
                 <input type="hidden" name="id_job_list3[]" value="<?php echo $l3['id_job_list'] ?>">
-                <input type="hidden" name="id_split3[]" value="<?php echo $l3['id_split'] ?>">
+                <!-- <input type="hidden" name="id_split3[]" value="<?php echo $l3['id_split'] ?>"> -->
               <?php endforeach; ?>
             </tbody>
           </table>
@@ -257,7 +257,7 @@
                   </td>
                 </tr>
                 <input type="hidden" name="id_job_list4[]" value="<?php echo $l4['id_job_list'] ?>">
-                <input type="hidden" name="id_split4[]" value="<?php echo $l4['id_split'] ?>">
+                <!-- <input type="hidden" name="id_split4[]" value="<?php echo $l4['id_split'] ?>"> -->
               <?php endforeach; ?>
             </tbody>
           </table>
@@ -323,7 +323,7 @@
               </td>
             </tr>
             <input type="hidden" name="id_job_list5[]" value="<?php echo $l5['id_job_list'] ?>">
-            <input type="hidden" name="id_split5[]" value="<?php echo $l5['id_split'] ?>">
+            <!-- <input type="hidden" name="id_split5[]" value="<?php echo $l5['id_split'] ?>"> -->
           <?php endforeach; ?>
 
         </tbody>

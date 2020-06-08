@@ -253,11 +253,11 @@ class C_Master extends CI_Controller
                     }
                     $dos[] = [
                         'no_job' => $l['no_job'],
-                        'id_split' => $l['id_split'],
+                        // 'id_split' => $l['id_split'],
                         'id_job_list' => $l['id'],
                         'kode_item' => $l['kode_item'],
-                        'qty' => !empty($l['qty_split']) ? $l['qty_split'] : $l['qty'],
-                        'target_pe' => !empty($l['target_pe_split']) ? $l['target_pe_split'] : $l['waktu_satu_shift']/($l['qty']/$l['usage_rate']),
+                        'qty' => $l['qty'],
+                        'target_pe' => $l['waktu_satu_shift']/($l['qty']/$l['usage_rate']),
                         'dos' => $dicek
                      ];
                 }
@@ -288,6 +288,8 @@ class C_Master extends CI_Controller
                             break;
                         }
                     }
+                    // echo "<pre>";
+                    // print_r($adados);
                     if ($adados[0]['target_pe'] > $get_target_pe[3]['target_max']) {
                         $line4_ada_dos = [];
                         $line5_ada_dos = [];
@@ -500,7 +502,7 @@ class C_Master extends CI_Controller
             'qty' => $qty1[$key],
             'target_pe' => $target1[$key],
             'target_pe_max' => $get_target_pe[0]['target_max'],
-            'id_split' => trim($id_split1[$key]),
+            // 'id_split' => trim($id_split1[$key]),
             'id_job_list' => trim($id_job1[$key]),
             'line' => 1
         ]);
@@ -521,7 +523,7 @@ class C_Master extends CI_Controller
           'qty' => $qty2[$key],
           'target_pe' => $target2[$key],
           'target_pe_max' => $get_target_pe[1]['target_max'],
-          'id_split' => $id_split2[$key],
+          // 'id_split' => $id_split2[$key],
           'id_job_list' => $id_job2[$key],
           'line' => 2
         ]);
@@ -542,7 +544,7 @@ class C_Master extends CI_Controller
           'qty' => $qty3[$key],
           'target_pe' => $target3[$key],
           'target_pe_max' => $get_target_pe[2]['target_max'],
-          'id_split' => trim($id_split3[$key]),
+          // 'id_split' => trim($id_split3[$key]),
           'id_job_list' => trim($id_job3[$key]),
           'line' => 3
         ]);
@@ -563,7 +565,7 @@ class C_Master extends CI_Controller
           'qty' => $qty4[$key],
           'target_pe' => $target4[$key],
           'target_pe_max' => $get_target_pe[3]['target_max'],
-          'id_split' => $id_split4[$key],
+          // 'id_split' => $id_split4[$key],
           'id_job_list' => $id_job4[$key],
           'line' => 4
         ]);
@@ -585,7 +587,7 @@ class C_Master extends CI_Controller
           'qty' => $qty5[$key],
           'target_pe' => $target5[$key],
           'target_pe_max' => $get_target_pe[4]['target_max'],
-          'id_split' => $id_split5[$key],
+          // 'id_split' => $id_split5[$key],
           'id_job_list' => $id_job5[$key],
           'line' => 5
         ]);
@@ -611,7 +613,6 @@ class C_Master extends CI_Controller
 
                 foreach ($tampung as $h) {
                     $tampung_1[] = [
-                    'id_split' => $h['id_split'],
                     'id_job_list' => $h['id_job_list']
                   ];
                 }
@@ -623,7 +624,7 @@ class C_Master extends CI_Controller
                 // die;
                 foreach ($split as $key1 => $t) {
                     foreach ($tampung_1 as $key2 => $q) {
-                        if (($t['id']=== $q['id_job_list'] && $t['id_split'] === $q['id_split']) || ($t['id_split'] === $q['id_split']) || ($t['id']=== $q['id_job_list'])) {
+                        if ($t['id']=== $q['id_job_list']) {
                             unset($split[$key1]);
                         }
                     }
@@ -659,16 +660,31 @@ class C_Master extends CI_Controller
             $target_pe = $this->input->post('target_pe');
             $ca = $this->input->post('created_at');
 
+            $cek_job = $this->M_wipp->cek_job($nojob);
+            $id_parent_hapus = $cek_job[0]['id'];
+
             foreach ($qty as $key => $q) {
-                $data = $this->M_wipp->insertSplit([
-              'date_target' => $date,
-              'no_job' => $nojob,
-              'item' => $item,
-              'qty' => $qty[$key],
-              'target_pe' => $target_pe[$key],
-            ], !empty($ca[$key])?$ca[$key]:'2010-05-28 08:28:16');
+
+              $data = $this->M_wipp->insertSplit([
+                'date_target' => $date,
+                'nama_item' => $cek_job[0]['nama_item'],
+                'usage_rate' => $cek_job[0]['usage_rate'],
+                'scedule_start_date' => $cek_job[0]['scedule_start_date'],
+                'waktu_satu_shift' => $cek_job[0]['waktu_satu_shift'],
+                'photo' => $cek_job[0]['photo'],
+                'no_job' => $nojob,
+                'kode_item' => $item,
+                'qty' => $qty[$key],
+                'qty_parrent' => !empty($cek_job[0]['qty_parrent'])?$cek_job[0]['qty_parrent']:$cek_job[0]['qty'],
+                // 'target_pe' => $target_pe[$key],
+              ], !empty($ca[$key])?$ca[$key]:'2010-05-28 08:28:16');
             }
-            echo json_encode($data);
+
+            $this->M_wipp->delete_parent_job($id_parent_hapus);
+            // echo "<pre>";
+            // print_r($data);
+            // die;
+            echo json_encode($cek_job);
         }
     }
 
@@ -702,11 +718,17 @@ class C_Master extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
-    public function LabelKecil($doc)
+    public function LabelKecil($do)
     {
+        $d = explode('_', $do);
+        $doc = $d[0];
+        $qty = $d[1];
+        // echo "<pre>";
+        // print_r($d);
+        // die;
         if (!empty($doc)) {
             $data['row'] = $this->M_wipp->LabelKecil($doc);
-
+            $data['qty'] = $qty;
             // ====================== do something =========================
             $this->load->library('Pdf');
             $pdf 		= $this->pdf->load();
@@ -714,9 +736,9 @@ class C_Master extends CI_Controller
             $this->load->library('ciqrcode');
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/upload/WIPP')) {
-                mkdir('./assets/upload/WIPP', 0777, true);
-                chmod('./assets/upload', 0777);
+            if (!is_dir('./assets/upload/wipp')) {
+                mkdir('./assets/upload/wipp', 0777, true);
+                chmod('./assets/upload/wipp', 0777);
             }
 
             $params['data']		= $doc;
@@ -724,12 +746,70 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = '.assets/upload/'.$doc.'.png';
+            $params['savename'] = '.assets/upload/wipp'.$doc.'.png';
             $this->ciqrcode->generate($params);
+
+            // echo "<pre>";
+            // print_r($this->ciqrcode->generate($params));
+            // die;
 
             ob_end_clean() ;
             $filename 	= $doc.'.pdf';
             $isi 				= $this->load->view('WorkInProcessPackaging/pdf/V_Pdf', $data, true);
+            $pdf->WriteHTML($isi);
+            $pdf->Output($filename, 'I');
+        } else {
+          echo json_encode(array(
+            'success' => false,
+            'message' => 'id is null'
+          ));
+        }
+
+        // if (!unlink($params['savename'])) {
+        //     echo("Error deleting");
+        // } else {
+        //     unlink($params['savename']);
+        // }
+    }
+
+    public function LabelBesar($do)
+    {
+        $d = explode('_', $do);
+        $doc = $d[0];
+        $qty = $d[1];
+        // echo "<pre>";
+        // print_r($d);
+        // die;
+        if (!empty($doc)) {
+            $data['row'] = $this->M_wipp->LabelKecil($doc);
+            $data['qty'] = $qty;
+            // ====================== do something =========================
+            $this->load->library('Pdf');
+            $pdf 		= $this->pdf->load();
+            $pdf 		= new mPDF('utf-8', array(71.12,40.64), 0, '', 0, 0, 0, 0, 0, 0);
+            $this->load->library('ciqrcode');
+
+            // ------ GENERATE QRCODE ------
+            if (!is_dir('./assets/upload/wipp')) {
+                mkdir('./assets/upload/wipp', 0777, true);
+                chmod('./assets/upload/wipp', 0777);
+            }
+
+            $params['data']		= $doc;
+            $params['level']	= 'H';
+            $params['size']		= 4;
+            $params['black']	= array(255,255,255);
+            $params['white']	= array(0,0,0);
+            $params['savename'] = '.assets/upload/wipp'.$doc.'.png';
+            $this->ciqrcode->generate($params);
+
+            // echo "<pre>";
+            // print_r($this->ciqrcode->generate($params));
+            // die;
+
+            ob_end_clean() ;
+            $filename 	= $doc.'.pdf';
+            $isi 				= $this->load->view('WorkInProcessPackaging/pdf/V_Pdf_Besar', $data, true);
             $pdf->WriteHTML($isi);
             $pdf->Output($filename, 'I');
         } else {
@@ -775,11 +855,11 @@ class C_Master extends CI_Controller
 
         if (!empty($_FILES['filenyagan']['name'])) {
             // upload area
-            if (!is_dir('./assets/upload/WIPP')) {
-                mkdir('./assets/upload/WIPP', 0777, true);
-                chmod('./assets/upload/WIPP', 0777);
+            if (!is_dir('./assets/upload/wipp')) {
+                mkdir('./assets/upload/wipp', 0777, true);
+                chmod('./assets/upload/wipp', 0777);
             }
-            $config['upload_path'] = './assets/upload/WIPP';
+            $config['upload_path'] = './assets/upload/wipp';
             $config['allowed_types'] = '*';
             $config['overwrite'] 	= true;
             $config['file_name'] = $item.'.png';

@@ -43,6 +43,12 @@ class M_wipp extends CI_Model
      return $res;
    }
 
+   public function cek_job($nojob)
+   {
+     $res = $this->db->select('id, qty, nama_item, usage_rate, scedule_start_date, waktu_satu_shift, photo')->where('no_job', $nojob)->get('wip_pnp.job_list')->result_array();
+     return $res;
+   }
+
     public function cekLineSaved($date)
     {
         $response = $this->db->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
@@ -120,33 +126,38 @@ class M_wipp extends CI_Model
 
     public function getSplit($value)
     {
-        $response = $this->db->where('no_job', $value)->order_by('id_split', 'asc')->get('wip_pnp.split_job')->result_array();
+        $response = $this->db->where('no_job', $value)->order_by('id', 'asc')->get('wip_pnp.job_list')->result_array();
         return $response;
     }
 
     public function insertSplit($data, $ca)
     {
         $cek = $this->db->select('no_job')
-                      ->where('created_at', $ca)
-                      ->get('wip_pnp.split_job')
+                      ->where('create_at', $ca)
+                      ->get('wip_pnp.job_list')
                       ->row();
         if (!empty($cek->no_job)) {
             $nj = $cek->no_job;
-            $this->db->delete('wip_pnp.split_job', ['no_job' => $nj]);
-            $this->db->insert('wip_pnp.split_job', $data);
+            $this->db->delete('wip_pnp.job_list', ['no_job' => $nj, 'create_at' => $ca]);
+            $this->db->insert('wip_pnp.job_list', $data);
             if ($this->db->affected_rows() == 1) {
                 return 1;
             } else {
                 return 2;
             }
         } else {
-            $this->db->insert('wip_pnp.split_job', $data);
+            $this->db->insert('wip_pnp.job_list', $data);
             if ($this->db->affected_rows() == 1) {
                 return 1;
             } else {
                 return 2;
             }
         }
+    }
+
+    public function delete_parent_job($id)
+    {
+      $this->db->delete('wip_pnp.job_list', ['id' => $id]);
     }
 
     public function getPhoto()
@@ -162,15 +173,25 @@ class M_wipp extends CI_Model
         $this->db->where('kode_item', $code)->update('wip_pnp.job_list', ['photo' => $path]);
     }
 
+    // public function getListRKH($value)
+    // {
+    //     $wipp = $this->db->select('wip_pnp.job_list.*
+    //                             , wip_pnp.split_job.no_job as no_job_split
+    //                             , wip_pnp.split_job.item as kode_item_split
+    //                             , wip_pnp.split_job.qty as qty_split
+    //                             , wip_pnp.split_job.id_split
+    //                             , wip_pnp.split_job.target_pe as target_pe_split')
+    //                    ->join('wip_pnp.split_job', 'wip_pnp.split_job.date_target = wip_pnp.job_list.date_target and wip_pnp.split_job.no_job = wip_pnp.job_list.no_job', 'left')
+    //                    ->where('wip_pnp.job_list.date_target', $value)
+    //                    ->order_by('kode_item', 'asc')
+    //                    ->get('wip_pnp.job_list')
+    //                    ->result_array();
+    //     return $wipp;
+    // }
+
     public function getListRKH($value)
     {
-        $wipp = $this->db->select('wip_pnp.job_list.*
-                                , wip_pnp.split_job.no_job as no_job_split
-                                , wip_pnp.split_job.item as kode_item_split
-                                , wip_pnp.split_job.qty as qty_split
-                                , wip_pnp.split_job.id_split
-                                , wip_pnp.split_job.target_pe as target_pe_split')
-                       ->join('wip_pnp.split_job', 'wip_pnp.split_job.date_target = wip_pnp.job_list.date_target and wip_pnp.split_job.no_job = wip_pnp.job_list.no_job', 'left')
+        $wipp = $this->db->select('wip_pnp.job_list.*')
                        ->where('wip_pnp.job_list.date_target', $value)
                        ->order_by('kode_item', 'asc')
                        ->get('wip_pnp.job_list')

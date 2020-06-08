@@ -64,7 +64,7 @@
             ?></center>
           </td>
           <td>
-            <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('<?php echo $g['no_job'] ?>', '<?php echo $g['qty'] ?>', '<?php echo $g['kode_item'] ?>', '<?php echo $g['nama_item'] ?>', '<?php echo $h ?>', '<?php echo $g['usage_rate'] ?>', '<?php echo $g['waktu_satu_shift'] ?>', '<?php echo $g['date_target'] ?>', '<?php echo $g['create_at'] ?>')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+            <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('<?php echo $g['no_job'] ?>', '<?php !empty($g['qty_parrent']) ? $qt = $g['qty_parrent'] : $qt = $g['qty']; echo $qt ?>', '<?php echo $g['kode_item'] ?>', '<?php echo $g['nama_item'] ?>', '<?php echo $h ?>', '<?php echo $g['usage_rate'] ?>', '<?php echo $g['waktu_satu_shift'] ?>', '<?php echo $g['date_target'] ?>', '<?php echo $g['create_at'] ?>')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
           </td>
         </tr>
       <?php endforeach; ?>
