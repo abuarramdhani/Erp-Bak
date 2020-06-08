@@ -148,7 +148,7 @@
 						</tr>
 						<tr>
 							<td style="width: 70mm;vertical-align: bottom;">
-								<b style="font-size: 86px; ">
+								<b style="font-size: 80px; ">
 								 <?php echo $value['ALIAS_KODE']; ?>
 								</b>
 							</td>
