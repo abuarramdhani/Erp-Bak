@@ -151,62 +151,28 @@ class C_Index extends CI_Controller {
 			$domainbase = $ip['ip'];
 			$domainbase2 = $ip['ip2'];
 
-			$status_router = $this->pingDomain($domainbase2);
-	
-			if ($status_router != -1) {
-				
-				echo "<tr><td>http://$domainbase2 is ALIVE ($status_router ms)</td><tr>";
-				$messages = "http://$domainbase2 is ALIVE ($status_router ms)";
-				
-				$status_gateway = $this->pingDomain($domainbase);
-				if ($status_router != -1) {
-					echo "<tr><td>http://$domainbase is ALIVE ($status_gateway ms)</td><tr>";
-					$messages = "http://$domainbase is ALIVE ($status_gateway ms)";
-				}else{
-					echo 'mati';
-				}
-				
+			$status_gateway = $this->pingDomain($domainbase);
+			if ($status_gateway != -1) {
+				echo "<tr><td>http://$domainbase is ALIVE ($status_gateway ms)</td><tr>";
+				$messages = "http://$domainbase is ALIVE ($status_gateway ms)";
+				$gateway = 'Alive';
 			}else {
-	
-				echo "<tr><td>http://$domainbase2 is DOWN</td><tr>";
-				$messages = "http://$domainbase2 is DOWN ($status_router ms)";
-				$name1 = "";
-				$name2 = "Router";
+				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
+				$messages = "http://$domainbase is DOWN ($status_gateway ms)";
+				$gateway ='Down';
+				$name1 = "Gateway";
+				echo 'mati';
 
-				
-				$router = 'Down';
-				$gateway = '';
-				if ($domainbase != $domainbase2) {
-					$status_gateway = $this->pingDomain($domainbase);
-					if ($status_gateway == -1) {
-						echo "<tr><td>http://$domainbase is DOWN</td><tr>";
-						$messages = "http://$domainbase is DOWN ($status_gateway ms)";
-						$gateway ='Down';
-						$name1 = "Gateway";
-						echo 'mati';
-					}else{
-						$gateway = 'Alive';
-						$name1 = "Gateway";
-					}
-				}
-
-				$status = $this->M_index->checkStatusAction($domainbase2);
-
+				$status = $this->M_index->checkStatusAction($domainbase);
 				if ($status == null) {
 					$statusNow = 0;
 					$stat = array(
 									'creation_date' => 'now()',
-									'ip' => $domainbase2,
+									'ip' => $domainbase,
 									'status' => 0,
 								 );
 					$this->M_index->setStatus($stat);
-					if ($domainbase2 == $domainbase) {
-						$name1 = "Access Point";
-						$name2 = "";
-						$router="";
-						$domainbase2 = "";
-						$gateway = "Down";
-					}
+
 					$time = date('d-m-Y H:i:s');
 					$st = "OPEN";
 
@@ -238,11 +204,6 @@ class C_Index extends CI_Controller {
 								 	<td style='border-collapse: collapse; border:1px solid black;'>$name1</td>
 								 	<td style='border-collapse: collapse; border:1px solid black;'>$gateway</td>
 								</tr>
-								<tr style='border-collapse: collapse; border:1px solid black;'>
-									<td style='border-collapse: collapse; border:1px solid black;'>$domainbase2</td>
-									<td style='border-collapse: collapse; border:1px solid black;'>$name2</td>
-									<td style='border-collapse: collapse; border:1px solid black;'>$router</td>
-								</tr>
 							</table>";
 				}else {
 					if ($status[0]['action'] == null) {
@@ -252,17 +213,11 @@ class C_Index extends CI_Controller {
 						$downtime = $statusNows * 15 / 60;
 						$stat = array(
 										'creation_date' => 'now()',
-										'ip' => $domainbase2,
+										'ip' => $domainbase,
 										'status' => $statusNows,
 								);
 						$this->M_index->setStatus($stat);
-						if ($domainbase2 == $domainbase) {
-							$name1 = "Access Point";
-							$name2 = "";
-							$router="";
-							$domainbase2 = "";
-							$gateway = "Down";
-						}
+
 						$time = date('d-m-Y H:i:s');
 						$st = "OPEN";
 						$message ="<table>
@@ -293,11 +248,6 @@ class C_Index extends CI_Controller {
 										<td style='border-collapse: collapse; border:1px solid black;'>$name1</td>
 										<td style='border-collapse: collapse; border:1px solid black;'>$gateway</td>
 									</tr>
-									<tr style='border-collapse: collapse; border:1px solid black;'>
-										<td style='border-collapse: collapse; border:1px solid black;' style='border-collapse: collapse; border:1px solid black;'>$domainbase2</td>
-										<td style='border-collapse: collapse; border:1px solid black;' style='border-collapse: collapse; border:1px solid black;'>$name2</td>
-										<td style='border-collapse: collapse; border:1px solid black;' style='border-collapse: collapse; border:1px solid black;'>$router</td>
-									</tr>
 								</table>";
 					}else {
 						$action = $status[0]['action'];
@@ -312,20 +262,13 @@ class C_Index extends CI_Controller {
 						
 							$stat = array(
 								'creation_date' => 'now()',
-								'ip' => $domainbase2,
+								'ip' => $domainbase,
 								'action' => $action,
 								'action_by' => $actBy,
 								'no_ticket' => $noticket,
 								'status' => $statusNow,
 							);
 						$this->M_index->setStatus($stat);
-						if ($domainbase2 == $domainbase) {
-							$name1 = "Access Point";
-							$name2 = "";
-							$router="";
-							$domainbase2 = "";
-							$gateway = "Down";
-						}
 
 						$time = date('d-m-Y H:i:s');
 						$st = "WIP";
@@ -373,14 +316,240 @@ class C_Index extends CI_Controller {
 										<td style='border-collapse: collapse; border:1px solid black;'>$name1</td>
 										<td style='border-collapse: collapse; border:1px solid black;'>$gateway</td>
 									</tr>
-									<tr style='border-collapse: collapse; border:1px solid black;'>
-										<td style='border-collapse: collapse; border:1px solid black;'>$domainbase2</td>
-										<td style='border-collapse: collapse; border:1px solid black;'>$name2</td>
-										<td style='border-collapse: collapse; border:1px solid black;'>$router</td>
-									</tr>
 								</table>";
 					}
 				}
+			}
+			// $status_router = $this->pingDomain($domainbase2);
+	
+			// if ($status_router != -1) {
+				
+			// 	echo "<tr><td>http://$domainbase2 is ALIVE ($status_router ms)</td><tr>";
+			// 	$messages = "http://$domainbase2 is ALIVE ($status_router ms)";
+				
+			// 	$status_gateway = $this->pingDomain($domainbase);
+			// 	if ($status_router != -1) {
+			// 		echo "<tr><td>http://$domainbase is ALIVE ($status_gateway ms)</td><tr>";
+			// 		$messages = "http://$domainbase is ALIVE ($status_gateway ms)";
+			// 	}else{
+			// 		echo 'mati';
+			// 	}
+				
+			// }else {
+	
+			// 	echo "<tr><td>http://$domainbase2 is DOWN</td><tr>";
+			// 	$messages = "http://$domainbase2 is DOWN ($status_router ms)";
+			// 	$name1 = "";
+			// 	$name2 = "Router";
+
+				
+			// 	$router = 'Down';
+			// 	$gateway = '';
+			// 	if ($domainbase != $domainbase2) {
+			// 		$status_gateway = $this->pingDomain($domainbase);
+			// 		if ($status_gateway == -1) {
+			// 			echo "<tr><td>http://$domainbase is DOWN</td><tr>";
+			// 			$messages = "http://$domainbase is DOWN ($status_gateway ms)";
+			// 			$gateway ='Down';
+			// 			$name1 = "Gateway";
+			// 			echo 'mati';
+			// 		}else{
+			// 			$gateway = 'Alive';
+			// 			$name1 = "Gateway";
+			// 		}
+			// 	}
+
+			// 	$status = $this->M_index->checkStatusAction($domainbase2);
+
+			// 	if ($status == null) {
+			// 		$statusNow = 0;
+			// 		$stat = array(
+			// 						'creation_date' => 'now()',
+			// 						'ip' => $domainbase2,
+			// 						'status' => 0,
+			// 					 );
+			// 		$this->M_index->setStatus($stat);
+			// 		if ($domainbase2 == $domainbase) {
+			// 			$name1 = "Access Point";
+			// 			$name2 = "";
+			// 			$router="";
+			// 			$domainbase2 = "";
+			// 			$gateway = "Down";
+			// 		}
+			// 		$time = date('d-m-Y H:i:s');
+			// 		$st = "OPEN";
+
+			// 		$message ="<table>
+			// 					<tr>
+			// 					 	<th align='left'>STATUS</th>
+			// 						<th>:</th>
+			// 						<td>$st</td>
+			// 					</tr>
+			// 					<tr>
+			// 					 	<th align='left'>TIME</th>
+			// 						<th>:</th>
+			// 						<td>$time</td>
+			// 					</tr>
+			// 					<tr>
+			// 					 	<th align='left'>DOWN TIME</th>
+			// 						<th>:</th>
+			// 						<td>$statusNow Jam</td>
+			// 					</tr>
+			// 				</table>
+			// 				<table style='border-collapse: collapse; border:1px solid black;'>
+			// 					<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 					 	<th style='border-collapse: collapse; border:1px solid black;'>IP Address</th>
+			// 					 	<th style='border-collapse: collapse; border:1px solid black;'>Name</th>
+			// 					 	<th style='border-collapse: collapse; border:1px solid black;'>Ping Result</th>
+			// 					</tr>
+			// 					<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 					 	<td style='border-collapse: collapse; border:1px solid black;'>$domainbase</td>
+			// 					 	<td style='border-collapse: collapse; border:1px solid black;'>$name1</td>
+			// 					 	<td style='border-collapse: collapse; border:1px solid black;'>$gateway</td>
+			// 					</tr>
+			// 					<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 						<td style='border-collapse: collapse; border:1px solid black;'>$domainbase2</td>
+			// 						<td style='border-collapse: collapse; border:1px solid black;'>$name2</td>
+			// 						<td style='border-collapse: collapse; border:1px solid black;'>$router</td>
+			// 					</tr>
+			// 				</table>";
+			// 	}else {
+			// 		if ($status[0]['action'] == null) {
+			// 			$sts = $status[0]['status'];
+			// 			$statusNow = 0;
+			// 			$statusNows = $sts + 1;
+			// 			$downtime = $statusNows * 15 / 60;
+			// 			$stat = array(
+			// 							'creation_date' => 'now()',
+			// 							'ip' => $domainbase2,
+			// 							'status' => $statusNows,
+			// 					);
+			// 			$this->M_index->setStatus($stat);
+			// 			if ($domainbase2 == $domainbase) {
+			// 				$name1 = "Access Point";
+			// 				$name2 = "";
+			// 				$router="";
+			// 				$domainbase2 = "";
+			// 				$gateway = "Down";
+			// 			}
+			// 			$time = date('d-m-Y H:i:s');
+			// 			$st = "OPEN";
+			// 			$message ="<table>
+			// 						<tr>
+			// 							<th align='left'>STATUS</th>
+			// 							<th>:</th>
+			// 							<td>$st</td>
+			// 						</tr>
+			// 						<tr>
+			// 							<th align='left'>TIME</th>
+			// 							<th>:</th>
+			// 							<td>$time</td>
+			// 						</tr>
+			// 						<tr>
+			// 							<th align='left'>DOWN TIME</th>
+			// 							<th>:</th>
+			// 							<td>$downtime Jam</td>
+			// 						</tr>
+			// 					</table>
+			// 					<table style='border-collapse: collapse; border:1px solid black;'>
+			// 						<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 							<th style='border-collapse: collapse; border:1px solid black;'>IP Address</th>
+			// 							<th style='border-collapse: collapse; border:1px solid black;'>Name</th>
+			// 							<th style='border-collapse: collapse; border:1px solid black;'>Ping Result</th>
+			// 						</tr>
+			// 						<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$domainbase</td>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$name1</td>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$gateway</td>
+			// 						</tr>
+			// 						<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 							<td style='border-collapse: collapse; border:1px solid black;' style='border-collapse: collapse; border:1px solid black;'>$domainbase2</td>
+			// 							<td style='border-collapse: collapse; border:1px solid black;' style='border-collapse: collapse; border:1px solid black;'>$name2</td>
+			// 							<td style='border-collapse: collapse; border:1px solid black;' style='border-collapse: collapse; border:1px solid black;'>$router</td>
+			// 						</tr>
+			// 					</table>";
+			// 		}else {
+			// 			$action = $status[0]['action'];
+			// 			$actBy = $status[0]['action_by'];
+			// 			$noticket = $status[0]['no_ticket'];
+			// 			$sts = $status[0]['status'];
+			// 			$statusNow = $sts +1;
+			// 			$downtime = $statusNow * 15 / 60;
+
+			// 			$getNamaCreator = $this->M_index->getNamaCreator($actBy);
+			// 			$creator = RTRIM($getNamaCreator[0]['employee_name']);
+						
+			// 				$stat = array(
+			// 					'creation_date' => 'now()',
+			// 					'ip' => $domainbase2,
+			// 					'action' => $action,
+			// 					'action_by' => $actBy,
+			// 					'no_ticket' => $noticket,
+			// 					'status' => $statusNow,
+			// 				);
+			// 			$this->M_index->setStatus($stat);
+			// 			if ($domainbase2 == $domainbase) {
+			// 				$name1 = "Access Point";
+			// 				$name2 = "";
+			// 				$router="";
+			// 				$domainbase2 = "";
+			// 				$gateway = "Down";
+			// 			}
+
+			// 			$time = date('d-m-Y H:i:s');
+			// 			$st = "WIP";
+			// 			$message ="<table>
+			// 					 <tr>
+			// 					 	<th align='left'>STATUS</th>
+			// 						<th>:</th>
+			// 						<td>$st</td>
+			// 					 </tr>
+			// 					 <tr>
+			// 					 	<th align='left'>TIME</th>
+			// 						<th>:</th>
+			// 						<td>$time</td>
+			// 					 </tr>
+			// 					 <tr>
+			// 					 	<th align='left'>NO TICKET</th>
+			// 						<th>:</th>
+			// 						<td>$noticket</td>
+			// 					 </tr>
+			// 					 <tr>
+			// 					 	<th align='left'>ACTION</th>
+			// 						<th>:</th>
+			// 						<td>$action</td>
+			// 					 </tr>
+			// 					 <tr>
+			// 					 	<th align='left'>ACTION BY</th>
+			// 						<th>:</th>
+			// 						<td>$actBy - $creator</td>
+			// 					 </tr>
+			// 					 <tr>
+			// 					 	<th align='left'>DOWN TIME</th>
+			// 						<th>:</th>
+			// 						<td>$downtime Jam</td>
+			// 					 </tr>
+			// 					</table>
+			// 					<table>
+			// 					<table style='border-collapse: collapse; border:1px solid black;'>
+			// 						<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 							<th style='border-collapse: collapse; border:1px solid black;'>IP Address</th>
+			// 							<th style='border-collapse: collapse; border:1px solid black;'>Name</th>
+			// 							<th style='border-collapse: collapse; border:1px solid black;'>Ping Result</th>
+			// 						</tr>
+			// 						<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$domainbase</td>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$name1</td>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$gateway</td>
+			// 						</tr>
+			// 						<tr style='border-collapse: collapse; border:1px solid black;'>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$domainbase2</td>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$name2</td>
+			// 							<td style='border-collapse: collapse; border:1px solid black;'>$router</td>
+			// 						</tr>
+			// 					</table>";
+			// 		}
+				// }
 				
 				$subject = "($st) ".$ip['name']." is Down";
 
@@ -395,7 +564,7 @@ class C_Index extends CI_Controller {
                 $this->EmailAlert($subject, $message, $emailUser);
                 $this->EmailAlertInternal($subject, $message, $emailUserInternal);
 
-			}
+			// }
             
 		}
 
@@ -406,55 +575,55 @@ class C_Index extends CI_Controller {
 		$ipName = array(
 			array(
 				'name' => 'IconPlus PUSAT-BANJARMASIN',
-				'ip' => '172.16.100.94',
+				'ip' => '172.16.100.93',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-JAKARTA',
-				'ip' => '172.16.100.26',
+				'ip' => '172.16.100.25',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-LAMPUNG',
-				'ip' => '172.16.100.14',
+				'ip' => '172.16.100.13',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-LANGKAPURA',
-				'ip' => '172.16.100.62',
+				'ip' => '172.16.100.61',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-MAKASSAR',
-				'ip' => '172.16.100.30',
+				'ip' => '172.16.100.29',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-MEDAN',
-				'ip' => '172.16.100.18',
+				'ip' => '172.16.100.17',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-MLATI',
-				'ip' => '172.16.100.22',
+				'ip' => '172.16.100.21',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-PALU',
-				'ip' => '172.16.100.102',
+				'ip' => '172.16.100.101',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-PEKANBARU',
-				'ip' => '172.16.100.90',
+				'ip' => '172.16.100.89',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-PONTIANAK',
-				'ip' => '172.16.100.50',
+				'ip' => '172.16.100.49',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-SURABAYA',
-				'ip' => '172.16.100.10',
+				'ip' => '172.16.100.9',
 			),
 			array(
 				'name' => 'IconPlus PUSAT-TUKSONO',
-				'ip' => '172.16.100.6',
+				'ip' => '172.16.100.5',
 			),
 			array(
 				'name' => 'LDP PUSAT-TUKSONO',
-				'ip' => '172.18.22.2',
+				'ip' => '172.18.22.1',
 			)
 		);
 
