@@ -54,7 +54,7 @@
 				Kepada Yth : <br>
 				<?php echo $get_header[0]['NAMA_ASAL'] ?> <br>
 				<?php echo $get_header[0]['ALAMAT_ASAL'] ?>, <?php echo $get_header[0]['KOTA_ASAL'] ?><br>
-				NPWP :
+				NPWP : <br> <?php echo $get_header[0]['NPWP'] ?>
 			</td>
 			<td colspan="2" style="height: 88.3px;vertical-align:top; border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">
 				Dikirim Kepada : <br>

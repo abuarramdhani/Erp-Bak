@@ -71,11 +71,18 @@ class M_monitoringdo extends CI_Model
     {
         $sql = "SELECT   *
                     FROM khs_qweb_sudah_cetak1 kqsc
-                ORDER BY kqsc.header_id DESC, kqsc.plat_number";
+                ORDER BY CASE
+                            WHEN kqsc.tgl_kirim IS NULL
+                               THEN 1
+                            ELSE 0
+                         END,
+                         kqsc.tgl_kirim DESC,
+                         kqsc.waktu_datang DESC,
+                         kqsc.plat_number,
+                         kqsc.header_id";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
-
 
     public function GetSudahCetakDetail($data)
     {
@@ -232,9 +239,9 @@ class M_monitoringdo extends CI_Model
 
     public function getDO()
     {
-        $response = $this->oracle->query("  SELECT *
+        $response = $this->oracle->query("SELECT *
                                               FROM khs_qweb_siap_assign1 kqsa
-                                             WHERE TRUNC (kqsa.creation_date) between TRUNC (SYSDATE-1) and TRUNC (SYSDATE)
+                                             WHERE TRUNC (kqsa.tgl_kirim) BETWEEN TRUNC (SYSDATE-1) AND TRUNC (SYSDATE)
                                           ORDER BY kqsa.no_pr, kqsa.header_id")->result_array();
         // echo "<pre>";
         // print_r($response);
@@ -373,9 +380,17 @@ class M_monitoringdo extends CI_Model
 
     public function sudahdiMuat()
     {
-        $sql = "SELECT   *
-                    FROM khs_qweb_sudah_muat1 kqsc
-                ORDER BY kqsc.header_id DESC, kqsc.plat_number";
+        $sql = "SELECT *
+                from khs_qweb_sudah_muat1 kqsm
+                ORDER BY CASE
+                            WHEN kqsm.tgl_kirim IS NULL
+                               THEN 1
+                            ELSE 0
+                         END,
+                         kqsm.tgl_kirim DESC,
+                         kqsm.waktu_datang DESC,
+                         kqsm.plat_number,
+                         kqsm.header_id";
         $response = $this->oracle->query($sql)->result_array();
 
         return $response;
