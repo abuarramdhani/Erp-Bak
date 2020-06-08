@@ -6,55 +6,56 @@ class M_Dtmasuk extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->personalia   =   $this->load->database('personalia', TRUE) ;
+        $this->personalia   =   $this->load->database('personalia', TRUE);
         $this->erp          =   $this->load->database('erp_db', TRUE);
         $this->oracle          =   $this->load->database('oracle', TRUE);
     }
 
-    public function daftar_seksi($tgl, $tahun){
-    	$query = "select distinct left(kb.kodesie, 7) kodesie, es.section_name seksi from k3.k3_kebutuhan kb
+    public function daftar_seksi($tgl, $tahun)
+    {
+        $query = "select distinct left(kb.kodesie, 7) kodesie, es.section_name seksi from k3.k3_kebutuhan kb
 					join er.er_section es on es.section_code = kb.kodesie
 					where extract(month from kb.create_timestamp) = '$tgl' 
 					and extract (year from kb.create_timestamp) = '$tahun'
 					order by es.section_name asc";
-		// echo $query;
-		// exit();
-    	$result = $this->db->query($query);
-    	return $result->result_array();
+        // echo $query;
+        // exit();
+        $result = $this->db->query($query);
+        return $result->result_array();
     }
 
     public function daftar_apd($seksi, $tgl, $tahun)
-    {	
-    	// print_r($seksi);
-    	// exit();
-		$query = "select km.*, 
+    {
+        // print_r($seksi);
+        // exit();
+        $query = "select km.*, 
 	";
 
-		$k = '1';
-		foreach ($seksi as $row) {
-			$no = $row['kodesie'];
-			// $k = 1;
-			$query = $query."(select sum(kd1.ttl_order) from k3.k3_kebutuhan k1 
+        $k = '1';
+        foreach ($seksi as $row) {
+            $no = $row['kodesie'];
+            // $k = 1;
+            $query = $query . "(select sum(kd1.ttl_order) from k3.k3_kebutuhan k1 
 		inner join k3.k3_kebutuhan_detail kd1 on k1.id_kebutuhan = kd1.id_kebutuhan 
 		where km.kode_item = kd1.kode_item 
 		and extract(month from kd1.create_date) = '$tgl' 
 		and extract (year from kd1.create_date) = '$tahun'
 		and k1.kodesie like '$no%') a$k, ";
-		$k++;
-		}
-		$query = $query." (select sum(kd.ttl_order) 
+            $k++;
+        }
+        $query = $query . " (select sum(kd.ttl_order) 
 		from k3.k3_kebutuhan_detail kd 
 		where km.kode_item = kd.kode_item
 		and extract(month from kd.create_date) = '$tgl' 
 		and extract (year from kd.create_date) = '$tahun') jumlah_total from k3.k3_master_item km
 		order by km.item asc";
-		// echo $query;
-		// exit();
-    	$result = $this->db->query($query);
-    	return $result->result_array();
+        // echo $query;
+        // exit();
+        $result = $this->db->query($query);
+        return $result->result_array();
     }
 
-        public function getSeksiApprove($item)
+    public function getSeksiApprove($item)
     {
         $sql = "select section_name, substring(section_code,0,8) section_code from er.er_section 
         where section_code like '%$item%' or section_name like '%$item%'
@@ -79,36 +80,36 @@ class M_Dtmasuk extends CI_Model
 
     public function getListAprove($ks, $baru)
     {
-    	$ks = substr($ks, 0,7);
+        $ks = substr($ks, 0, 7);
         // $sql = "select ks.id, ks.kode_item, ks.jml_item, km.item from k3.k3n_standar_kebutuhan ks
         // left join k3.k3_master_item km on km.kode_item = ks.kode_item
         // where status = '3' and ks.kodesie like '$ks%' and tgl_approve_tim = '$baru' order by tgl_input desc";
         // echo $sql;exit();
-       	$sql = "select distinct ks.kode_item, km.item from k3.k3n_standar_kebutuhan ks left join
+        $sql = "select distinct ks.kode_item, km.item from k3.k3n_standar_kebutuhan ks left join
                 k3.k3_master_item km on km.kode_item = ks.kode_item
                 where status = '3' and ks.kodesie like '$ks%' order by km.item asc";
-		$result = $this->erp->query($sql)->result_array();
-		$data = array();
-		$angka = 0;
-		foreach ($result as $key) {
-			$sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks
+        $result = $this->erp->query($sql)->result_array();
+        $data = array();
+        $angka = 0;
+        foreach ($result as $key) {
+            $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks
 				left join k3.k3_master_item km on km.kode_item = ks.kode_item
-				where status = '3' and ks.kodesie like '$ks%' and ks.kode_item = '".$key['kode_item']."'
+				where status = '3' and ks.kodesie like '$ks%' and ks.kode_item = '" . $key['kode_item'] . "'
 				order by tgl_approve_tim desc
 				limit 1;";
-       		$query = $this->erp->query($sql)->result_array();
-       		foreach ($query as $value) {
-       			$data[$angka] = $value;
-       		}
-       		$angka++;
-		}
+            $query = $this->erp->query($sql)->result_array();
+            foreach ($query as $value) {
+                $data[$angka] = $value;
+            }
+            $angka++;
+        }
         return $data;
     }
 
     public function cekseksi($ks)
     {
-    	$sql = "select section_name from er.er_section where section_code like '$ks%' limit 1";
-    	$query = $this->erp->query($sql);
+        $sql = "select section_name from er.er_section where section_code like '$ks%' limit 1";
+        $query = $this->erp->query($sql);
         // echo $sql;exit();
         return $query->result_array();
     }
@@ -138,7 +139,7 @@ class M_Dtmasuk extends CI_Model
 
     public function listDahApprove($ks, $pr)
     {
-    	$sql = "select
+        $sql = "select
                     kb.kode_item,
                     km.item,
                     kb.kd_pekerjaan,
@@ -164,18 +165,18 @@ class M_Dtmasuk extends CI_Model
                         and kb2.status = kb.status
                         and kb.kode_item = kb2.kode_item )
                 order by 2";
-                // echo $sql;exit();
-    	$query = $this->erp->query($sql);
+        // echo $sql;exit();
+        $query = $this->erp->query($sql);
 
         return $query->result_array();
     }
 
     public function daftarKerjaan($ks)
     {
-    	$sql = "select *, km.item from k3.k3n_standar_kebutuhan ks 
+        $sql = "select *, km.item from k3.k3n_standar_kebutuhan ks 
 		left join k3.k3_master_item km on km.kode_item = ks.kode_item
 		where cast(tgl_approve as varchar) like '$pr%' and ks.kodesie like '$ks%'";
-    	$query = $this->erp->query($sql);
+        $query = $this->erp->query($sql);
 
         return $query->result_array();
     }
@@ -183,19 +184,19 @@ class M_Dtmasuk extends CI_Model
     public function updateTIM($id, $action, $noind)
     {
 
-    	$tgl = date('Y-m-d H:i:s');
-    	$sql = "update k3.k3n_standar_kebutuhan set status = '$action', tgl_approve_tim = '$tgl', approve_tim_by = '$noind'
+        $tgl = date('Y-m-d H:i:s');
+        $sql = "update k3.k3n_standar_kebutuhan set status = '$action', tgl_approve_tim = '$tgl', approve_tim_by = '$noind'
     			where id = '$id'";
-    	$query = $this->erp->query($sql);
+        $query = $this->erp->query($sql);
     }
 
     public function cek_terbaru($ks)
     {
-    	$sql = "select tgl_approve_tim from k3.k3n_standar_kebutuhan
+        $sql = "select tgl_approve_tim from k3.k3n_standar_kebutuhan
 				where tgl_approve_tim is not null and kodesie like '$ks%' and status = '3'
 				order by tgl_approve_tim desc limit 1;";
-		$query = $this->erp->query($sql);
-		return $query->result_array();
+        $query = $this->erp->query($sql);
+        return $query->result_array();
     }
 
     public function getOrder($pr)
@@ -217,7 +218,7 @@ class M_Dtmasuk extends CI_Model
                     substring(es.section_code, 0, 8)
                 order by
                     es.section_name asc;";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -237,14 +238,14 @@ class M_Dtmasuk extends CI_Model
                     from
                         k3.k3n_standar_kebutuhan ks)
                 order by 2;";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
 
     public function listtobon($ks, $pr)
     {
-        $ks = substr($ks, 0,7);
+        $ks = substr($ks, 0, 7);
         // $sql = "select
         //             mon.periode ,
         //             mon.item_kode ,
@@ -348,14 +349,14 @@ class M_Dtmasuk extends CI_Model
                         and periode = '$pr') b
                 order by
                     1";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
 
-     public function listtobon2($ks, $pr)
+    public function listtobon2($ks, $pr)
     {
-        $ks = substr($ks, 0,7);
+        $ks = substr($ks, 0, 7);
         $sql = "select
                     mon.periode ,
                     mon.item_kode ,
@@ -408,14 +409,14 @@ class M_Dtmasuk extends CI_Model
                     mon.item
                 order by
                     3";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
 
     public function listtobonHitung($ks, $pr)
     {
-        $ks = substr($ks, 0,7);
+        $ks = substr($ks, 0, 7);
         $sql = "select
                     kh.periode,
                     kh.item_kode kode_item,
@@ -442,14 +443,14 @@ class M_Dtmasuk extends CI_Model
                     kh.jml_kebutuhan
                 order by
                     3";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
 
     public function listtobonHitung2($ks, $pr)
     {
-        $ks = substr($ks, 0,7);
+        $ks = substr($ks, 0, 7);
         $sql = "select
                     a.periode,
                     a.kode_item item_kode,
@@ -490,7 +491,7 @@ class M_Dtmasuk extends CI_Model
                     a.item
                 order by
                     3";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -498,16 +499,16 @@ class M_Dtmasuk extends CI_Model
     {
         $minPr = explode('-', $pr);
         $y = $minPr[0];
-        $m = ($minPr[1]-1);
+        $m = ($minPr[1] - 1);
         if (strlen($m) < 2) {
-            $m = '0'.$m;
+            $m = '0' . $m;
         }
 
         if ($m == '0' || $m == '00') {
             $m = '12';
-            $y = $y-1;
+            $y = $y - 1;
         }
-        $newPr = $y.'-'.$m;
+        $newPr = $y . '-' . $m;
         $sql = "select
                     mon.periode ,
                     mon.item_kode ,
@@ -556,7 +557,7 @@ class M_Dtmasuk extends CI_Model
                     mon.item
                 order by
                     3";
-                    // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -565,16 +566,16 @@ class M_Dtmasuk extends CI_Model
     {
         $minPr = explode('-', $pr);
         $y = $minPr[0];
-        $m = ($minPr[1]-1);
+        $m = ($minPr[1] - 1);
         if (strlen($m) < 2) {
-            $m = '0'.$m;
+            $m = '0' . $m;
         }
 
         if ($m == '0' || $m == '00') {
             $m = '12';
-            $y = $y-1;
+            $y = $y - 1;
         }
-        $newPr = $y.'-'.$m;
+        $newPr = $y . '-' . $m;
         $sql = "select
                     mon.periode ,
                     mon.item_kode ,
@@ -635,7 +636,7 @@ class M_Dtmasuk extends CI_Model
                     mon.item
                 order by
                     3;";
-                    // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -650,20 +651,20 @@ class M_Dtmasuk extends CI_Model
         $sql = "SELECT max(NO_ID) baris from im_master_bon";
 
         $query = $this->oracle->query($sql);
-        return $query->row()->BARIS+1;
+        return $query->row()->BARIS + 1;
     }
 
     public function insertBonIm($data)
     {
         $this->oracle->trans_start();
-        $this->oracle->insert('IM_MASTER_BON',$data);
+        $this->oracle->insert('IM_MASTER_BON', $data);
         $this->oracle->trans_complete();
         // $query = $this->oracle->insert('im_master_bon', $data);
     }
 
     public function getlistHitung($pr, $ks)
     {
-       $sql = "select
+        $sql = "select
                     ks.jml_kebutuhan_staff,
                     ks.jml_kebutuhan_umum,
                     km.item,
@@ -711,7 +712,7 @@ class M_Dtmasuk extends CI_Model
                     and substring(ks.kodesie, 0, 8) = substring(ko.kodesie, 0, 8)
                 order by
                     3";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -727,7 +728,7 @@ class M_Dtmasuk extends CI_Model
                 inner join k3.k3n_order ko on substring(ko.kodesie,0,8) = substring(ks.kodesie,0,8) where ko.periode = '$pr' $and
                 and ko.status = '1'
                 order by 2 asc";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -748,7 +749,7 @@ class M_Dtmasuk extends CI_Model
                 where kh.periode = '$pr'
                 group by kh.periode, kh.item_kode, kb.ttl_bon, km.item
                 order by 2";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -782,8 +783,8 @@ class M_Dtmasuk extends CI_Model
 
     public function detail_seksi($id_kebutuhan)
     {
-        $tgl = substr($id_kebutuhan, 0,2);
-        $y = substr($id_kebutuhan,5,9);
+        $tgl = substr($id_kebutuhan, 0, 2);
+        $y = substr($id_kebutuhan, 5, 9);
         // echo $y;exit();
         $sql = "select
                     ttl.*
@@ -805,7 +806,7 @@ class M_Dtmasuk extends CI_Model
                     where
                         ko.periode = '$y-$tgl' 
                         ) order by 2 asc;";
-                        // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -849,7 +850,7 @@ class M_Dtmasuk extends CI_Model
                 order by
                     1,
                     3";
-                    // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -858,7 +859,7 @@ class M_Dtmasuk extends CI_Model
     {
         if ($ks == '') {
             $seksi = "mb.seksi_bon like '%%'";
-        }else{
+        } else {
             $seksi = "mb.seksi_bon = '$ks'";
         }
         $sql = "SELECT   mb.no_bon,
@@ -881,9 +882,18 @@ class M_Dtmasuk extends CI_Model
                          mb.keterangan,
                          mb.tujuan_gudang
                 ORDER BY 1, 3";
-        // $sql = "DELETE from im_master_bon where no_bon = '920042101'";
-                // echo $sql;exit();
+        // $sql = "DELETE from im_master_bon where no_bon in ('920060601', '920060602', '920060603', '920060604', '920060605', '920060606')";
+        // echo $sql;exit();
         $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function monitorbonOracleById($id)
+    {
+        $query = $this->oracle->query("SELECT *
+           FROM im_master_bon mb
+          WHERE mb.no_bon = '$id'
+        ORDER BY 2");
         return $query->result_array();
     }
 
@@ -901,7 +911,7 @@ class M_Dtmasuk extends CI_Model
         return true;
     }
 
-    public function editEmail($id,$email)
+    public function editEmail($id, $email)
     {
         $sql = "update k3.k3n_email set email = '$email' where id = '$id';";
         $query = $this->erp->query($sql);
@@ -915,7 +925,7 @@ class M_Dtmasuk extends CI_Model
         return true;
     }
 
-    public function updateRiwayat($id, $jmlUmum, $staffJumlah,$pkj)
+    public function updateRiwayat($id, $jmlUmum, $staffJumlah, $pkj)
     {
         $sql = "update k3.k3n_standar_kebutuhan set jml_item = '$pkj', jml_kebutuhan_umum = '$jmlUmum', jml_kebutuhan_staff = '$staffJumlah' where id = '$id';";
         // echo $sql;exit();
@@ -957,7 +967,8 @@ class M_Dtmasuk extends CI_Model
     public function delItem($id)
     {
         $sql = "delete from k3.k3_master_item where id = '$id'";
-        echo $sql;exit();
+        echo $sql;
+        exit();
         $query = $this->db->query($sql);
     }
 
@@ -993,7 +1004,7 @@ class M_Dtmasuk extends CI_Model
     {
         if ($gudang == 'PNL-NPR') {
             $locator = 783;
-        }else{
+        } else {
             $locator = '';
         }
         $sql = "SELECT khs_inv_qty_att ('102',
@@ -1071,7 +1082,8 @@ class M_Dtmasuk extends CI_Model
                 left join im.im_master_bon ib on
                     ib.no_bon = kb.no_bon
                 where kb.no_bon = '$id'";
-            echo $sql;exit();
+        echo $sql;
+        exit();
         $query = $this->db->query($sql);
         return $query->result_array();
     }
@@ -1121,7 +1133,7 @@ class M_Dtmasuk extends CI_Model
     {
         if ($gudang == 'PNL-NPR') {
             $locator = 783;
-        }else{
+        } else {
             $locator = '';
         }
         $sql = "SELECT   msib.inventory_item_id, msib.segment1 item_code, msib.description,
