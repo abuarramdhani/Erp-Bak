@@ -31,7 +31,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Periode</label>
 												<div class="col-lg-4">
-													<input type="text" class="date form-control" name="txtperiodePenjadwalanCatering" id="txtperiodePenjadwalanCatering" value="<?php if (isset($select)) {echo $select['periode'];}?>" placeholder="Periode" data-date-format="yyyy-mm-dd" required>
+													<input type="text" class="date form-control" name="txtperiodePenjadwalanCatering" id="txtperiodePenjadwalanCatering" value="<?php if (isset($select)) {echo $select['periode'];}?>" placeholder="Periode" data-date-format="yyyy-mm-dd" required autocomplete="off">
 												</div>
 												<div class="col-lg-4">
 													<button class="btn fa fa-search fa-2x"></button>
@@ -40,7 +40,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Catering</label>
 												<div class="col-lg-4">
-													<select class="select select2" name="txtCateringPenjadwalanCatering" data-placeholder="Katering" required style="width: 100%;">
+													<select class="select select2" name="txtCateringPenjadwalanCatering" data-placeholder="Katering" required style="width: 100%;" autocomplete="off">
 														<option></option>
 														<?php
 

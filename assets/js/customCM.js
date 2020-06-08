@@ -4313,8 +4313,6 @@ $(document).ready(function(){
 				})
 
 				$('#ldg-CM-IzinDinasPTM-Loading').hide();
-
-				tblCMIzinDinasPTM.columns.adjust().draw();
 			}
 		})
 	});
@@ -4335,3 +4333,55 @@ $(document).ready(function(){
 	});
 })
 // end mutasi pekerja
+
+// start notifikasi dinas luar
+$(document).ready(function(){
+	var tblCMNotifDL = $('#tbl-CM-NotifDL-Table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	$('#btn-CM-NotifDL-Proses').on('click', function(){
+		$('#ldg-CM-NotifDL-Loading').show();
+		$.ajax({
+			method: 'GET',
+			url: baseurl + 'CateringManagement/Extra/NotifDL/proses',
+			error: function(xhr,status,error){
+				$('#ldg-CM-NotifDL-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				tblCMNotifDL.clear().draw();
+				console.log(obj);
+				obj.forEach(function(daftar, index){
+					tblCMNotifDL.row.add([
+						daftar.noind ,
+						daftar.nama,
+						daftar.tempat_makan,
+						daftar.lokasi_kerja,
+						daftar.spdl_id,
+						daftar.status,
+						daftar.wkt_realisasi,
+						daftar.dikurangi
+					]).draw(false);
+				})
+
+				$('#ldg-CM-NotifDL-Loading').hide();
+			}
+		})
+	});
+})
+// end notifikasi dinas luar

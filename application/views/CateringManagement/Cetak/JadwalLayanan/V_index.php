@@ -27,25 +27,25 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Periode</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtPeriodeJadwalLayanan" id="txtPeriodeJadwalLayanan" class="date form-control" placeholder="Bulan Tahun" required>
+													<input type="text" name="txtPeriodeJadwalLayanan" id="txtPeriodeJadwalLayanan" class="date form-control" placeholder="Bulan Tahun" required autocomplete="off">
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-4">Paket</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtPaketJadwalLayanan" class="form-control" placeholder="Paket" required>
+													<input type="text" name="txtPaketJadwalLayanan" class="form-control" placeholder="Paket" required autocomplete="off">
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-4">Dibuat Tanggal</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtTanggalJadwalLayanan" id="txtTanggalJadwalLayanan" class="date form-control" placeholder="Tanggal" required>
+													<input type="text" name="txtTanggalJadwalLayanan" id="txtTanggalJadwalLayanan" class="date form-control" placeholder="Tanggal" required autocomplete="off">
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-4">Lokasi</label>
 												<div class="col-lg-4">
-													<select class="select2" style="width: 100%" name="slcLokasiJadwalLayanan" data-placeholder="Lokasi">
+													<select class="select2" style="width: 100%" name="slcLokasiJadwalLayanan" data-placeholder="Lokasi" autocomplete="off">
 														<option></option>
 														<option value="1">Yogyakarta & Mlati</option>
 														<option value="2">Tuksono</option>

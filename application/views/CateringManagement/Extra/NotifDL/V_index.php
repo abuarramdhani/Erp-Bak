@@ -13,10 +13,10 @@
 							<div class="box-header with-border">
 								<div class="row">
 									<div class="col-sm-11">
-										<h3 style="text-align: center;vertical-align: middle;">Pekerja Yang Izin Dinas Pusat / Tuksono / Mlati dan Makan Ditempat Tujuan Hari Ini</h3>
+										<h3 style="text-align: center;vertical-align: middle;">Pekerja Yang Berangkat / Pulang Dinas Luar Hari Ini</h3>
 									</div>
 									<div class="col-sm-1">
-										<button class="btn btn-primary" style="text-align: right;vertical-align: middle;" id="btn-CM-IzinDinasPTM-Proses">Proses</button>
+										<button class="btn btn-primary" style="text-align: right;vertical-align: middle;" id="btn-CM-NotifDL-Proses">Proses</button>
 									</div>
 								</div>
 							</div>
@@ -35,15 +35,17 @@
 												float: left
 											}
 										</style>
-										<table class="table table-striped table-hover table-bordered" id="tbl-CM-IzinDinasPTM-table">
+										<table class="table table-striped table-hover table-bordered" id="tbl-CM-NotifDL-Table">
 											<thead>
 												<tr>
-													<th class="bg-primary">No. Induk</th>
-													<th class="bg-primary">Nama</th>
-													<th class="bg-primary">Tujuan</th>
-													<th class="bg-primary">Keterangan</th>
-													<th class="bg-primary">Jenis Dinas</th>
-													<th class="bg-primary">DiProses</th>
+													<th class="bg-primary text-center">No. Induk</th>
+													<th class="bg-primary text-center">Nama</th>
+													<th class="bg-primary text-center">Tempat Makan</th>
+													<th class="bg-primary text-center">Lokasi Kerja</th>
+													<th class="bg-primary text-center">SPDL ID</th>
+													<th class="bg-primary text-center">Status</th>
+													<th class="bg-primary text-center">Waktu</th>
+													<th class="bg-primary text-center">Dikurangi</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -54,10 +56,12 @@
 														<tr>
 															<td><?php echo $dt['noind'] ?></td>
 															<td><?php echo $dt['nama'] ?></td>
-															<td><?php echo $dt['tujuan'] ?></td>
-															<td><?php echo $dt['keterangan'] ?></td>
-															<td><?php echo $dt['jenis_dinas'] ?></td>
-															<td><?php echo $dt['diproses'] ?></td>
+															<td><?php echo $dt['tempat_makan'] ?></td>
+															<td><?php echo $dt['lokasi_kerja'] ?></td>
+															<td><?php echo $dt['spdl_id'] ?></td>
+															<td><?php echo $dt['status'] ?></td>
+															<td><?php echo $dt['wkt_realisasi'] ?></td>
+															<td><?php echo $dt['dikurangi'] ?></td>
 														</tr>
 														<?php
 													}
@@ -112,7 +116,7 @@
 }
 
 </style>
-<div class="loading" id="ldg-CM-IzinDinasPTM-Loading" style="display: none;">
+<div class="loading" id="ldg-CM-NotifDL-Loading" style="display: none;">
 	<div class="loading-wheel"><img height="100px" width="100px" src="<?php echo site_url('assets/img/gif/loadingquick.gif') ?>"></div>
 	<div class="loading-wheel-2">Permintaan Anda Sedang Di Proses ..</div>
 </div>

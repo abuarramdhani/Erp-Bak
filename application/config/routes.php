@@ -662,6 +662,10 @@ $route['CateringManagement/Extra/MutasiPekerja'] = 'CateringManagement/Extra/C_M
 $route['CateringManagement/Extra/MutasiPekerja/(:any)'] = 'CateringManagement/Extra/C_MutasiPekerja/$1';
 $route['CateringManagement/Extra/MutasiPekerja/(:any)/(:any)'] = 'CateringManagement/Extra/C_MutasiPekerja/$1/$2';
 
+$route['CateringManagement/Extra/NotifDL'] = 'CateringManagement/Extra/C_NotifDL';
+$route['CateringManagement/Extra/NotifDL/(:any)'] = 'CateringManagement/Extra/C_NotifDL/$1';
+$route['CateringManagement/Extra/NotifDL/(:any)/(:any)'] = 'CateringManagement/Extra/C_NotifDL/$1/$2';
+
 //------------------------------------CateringManagement - Pesanan----------------------------------------------------------//
 $route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
 $route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
