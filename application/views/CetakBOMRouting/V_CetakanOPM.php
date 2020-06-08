@@ -59,7 +59,7 @@
 			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Class</th>
 			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Process Qty(PCS)</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Proses UOM</th> -->
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Usage(HR)</th>
+			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Usage(Minutes)</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Usage UOM</th> -->
 			<!-- <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Inverse</th> -->
 		</tr>
@@ -89,7 +89,18 @@
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_CLASS']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['PROCESS_QTY']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['RESOURCE_PROCESS_UOM']?></td>    -->
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_USAGE']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt">
+				<?php 
+					$ruMinutes = $dataopm2[$i]['RESOURCE_USAGE']*60;
+					if (strpos($ruMinutes,'.') == null) {
+						echo $ruMinutes;
+					} else {
+						echo number_format((float)$ruMinutes, 2, '.', '');
+					}
+					// $dataopm2[$i]['RESOURCE_USAGE']
+				?>
+			
+			</td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['RESOURCE_USAGE_UOM']?></td> -->
 
 
