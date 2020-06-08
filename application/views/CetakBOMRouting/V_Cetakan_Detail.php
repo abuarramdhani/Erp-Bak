@@ -49,7 +49,7 @@
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Machine Qty</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Operator Qty</th>
 			
-			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Usage Rate<br>(Hour)</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Usage Rate<br>(Minutes)</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Cycle Time<br>(Second)</th>
 			<th colspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Target</th>
 			<!-- <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Inverse</th> -->
@@ -280,7 +280,17 @@
 							$mergeUR = sizeof($arrayR['USAGE_RATE_OR_AMOUNT'][$datapdf[$i]['USAGE_RATE_OR_AMOUNT']]);
 							if ($usage_rate != $datapdf[$i]['USAGE_RATE_OR_AMOUNT']) {
 					?>
-							<td rowspan="<?php echo $mergeUR;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
+							<td rowspan="<?php echo $mergeUR;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+							<?php
+								// $datapdf[$i]['USAGE_RATE_OR_AMOUNT']
+								$ruMinutes = $datapdf[$i]['USAGE_RATE_OR_AMOUNT']*60;
+								if (strpos($ruMinutes,'.') == null) {
+									echo $ruMinutes;
+								} else {
+									echo number_format((float)$ruMinutes, 2, '.', '');
+								}
+							?>
+							</td>
 					<?php
 								$usage_rate = $datapdf[$i]['USAGE_RATE_OR_AMOUNT'];
 							}
@@ -288,7 +298,17 @@
 							$mergeUR = sizeof($arrayR['OPERATION_SEQUENCE_ID'][$datapdf[$i]['OPERATION_SEQUENCE_ID']]);
 							if ($opr_seq6 != $datapdf[$i]['OPERATION_SEQUENCE_ID']) {
 					?>
-							<td rowspan="<?php echo $mergeUR;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
+							<td rowspan="<?php echo $mergeUR;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+							<?php 
+								// $datapdf[$i]['USAGE_RATE_OR_AMOUNT']
+								$ruMinutes = $datapdf[$i]['USAGE_RATE_OR_AMOUNT']*60;
+								if (strpos($ruMinutes,'.') == null) {
+									echo $ruMinutes;
+								} else {
+									echo number_format((float)$ruMinutes, 2, '.', '');
+								}
+							?>
+							</td>
 					<?php
 								$opr_seq6 = $datapdf[$i]['OPERATION_SEQUENCE_ID'];
 							}
