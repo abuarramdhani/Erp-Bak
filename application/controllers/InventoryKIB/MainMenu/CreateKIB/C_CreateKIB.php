@@ -157,10 +157,16 @@ class C_CreateKIB extends CI_Controller
 	{
 		$n = 0;
 		$org = 'odm';
-		echo "<pre>";
+		$data = $org;
+		// echo "<pre>";
 		// print_r($org);print_r($status);print_r($no_batch);print_r($kib,$n);
 		// exit();
-		$this->printpdf($org,$status,$no_batch,$kib,$n);
+		// $this->printpdf($org,$status,$no_batch,$kib,$n);
+
+		$filename			= 'KIB_'.time().'.pdf';
+		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_SO',$data,true);
+		$pdf->WriteHTML($html,0);
+		$pdf->Output($filename, 'I');
 	}
 
 	public function cetakserial($serial)
@@ -585,6 +591,7 @@ public function printpdf99(){
 		$filename			= 'KIB_'.time().'.pdf';
 		if ($org == 'odm') {
 			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Odm',$data,true);
+			// $html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_SO',$data,true);
 		} else {
 			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf',$data,true);
 		}
