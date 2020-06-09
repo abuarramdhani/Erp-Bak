@@ -4369,3 +4369,7 @@ $route['BlankoEvaluasi/api/workers'] = 'BlankoEvaluasi/C_Api/workers';
 $route['BlankoEvaluasi/api/workers/information'] = 'BlankoEvaluasi/C_Api/workerInformation';
 $route['BlankoEvaluasi/api/tims'] = 'BlankoEvaluasi/C_Api/TIMS';
 $route['BlankoEvaluasi/api/tims/calculation'] = 'BlankoEvaluasi/C_Api/calculationTIMS';
+
+// -------------------------------------------Omzet Relasi Sparepart-----------------------------------
+$route['OmzetRelasiSparepart'] = 'OmzetRelasiSparepart/C_Index';
+$route['OmzetRelasiSparepart/Laporan/(:any)'] = 'OmzetRelasiSparepart/Laporan/C_Laporan/$1';
