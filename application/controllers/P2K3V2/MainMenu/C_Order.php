@@ -1253,10 +1253,10 @@ class C_Order extends CI_Controller
 		$mail->Password = '123456';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'P2K3');
-		$mail->addAddress('dicka_ismaji@quick.com');
-		// foreach ($arr as $key) {
-		// 	$mail->addAddress($key);
-		// }
+		// $mail->addAddress('your_mail@quick.com');
+		foreach ($arr as $key) {
+		    $mail->addAddress($key);
+		}
 		$mail->Subject = 'NEW!!! P2K3 Approval Standar Kebutuhan';
 		$mail->msgHTML($message);
 
