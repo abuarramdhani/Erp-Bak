@@ -584,7 +584,8 @@ public function printpdf99(){
 
 		$filename			= 'KIB_'.time().'.pdf';
 		if ($org == 'odm') {
-			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Odm',$data,true);
+			// $html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Odm',$data,true);
+			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_SO',$data,true);
 		} else {
 			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf',$data,true);
 		}
