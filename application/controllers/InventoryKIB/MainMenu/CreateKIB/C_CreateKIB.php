@@ -161,12 +161,12 @@ class C_CreateKIB extends CI_Controller
 		// echo "<pre>";
 		// print_r($org);print_r($status);print_r($no_batch);print_r($kib,$n);
 		// exit();
-		// $this->printpdf($org,$status,$no_batch,$kib,$n);
+		$this->printpdf($org,$status,$no_batch,$kib,$n);
 
-		$filename			= 'KIB_'.time().'.pdf';
-		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_SO',$data,true);
-		$pdf->WriteHTML($html,0);
-		$pdf->Output($filename, 'I');
+		// $filename			= 'KIB_'.time().'.pdf';
+		// $html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_SO',$data,true);
+		// $pdf->WriteHTML($html,0);
+		// $pdf->Output($filename, 'I');
 	}
 
 	public function cetakserial($serial)
