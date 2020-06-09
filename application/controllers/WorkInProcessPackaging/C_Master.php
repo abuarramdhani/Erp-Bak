@@ -97,34 +97,40 @@ class C_Master extends CI_Controller
         $waktu_shift = $this->input->post('waktu_shift');
         $data = $this->input->post('data');
 
-        foreach ($data as $key => $d) {
-            $cek = $this->db->select('no_job')->where('no_job', $d[1])->get('wip_pnp.job_list')->row();
-            if (!empty($cek)) {
-                break;
-            }
+        $cek_date = $this->db->select('date_target')->where('date_target', $date)->get('wip_pnp.job_list')->row();
+        if (!empty($cek_date)) {
+          echo json_encode(3);
+        }else {
+          foreach ($data as $key => $d) {
+              $cek = $this->db->select('no_job')->where('no_job', $d[1])->get('wip_pnp.job_list')->row();
+              if (!empty($cek)) {
+                  break;
+              }
+          }
+
+          if (!empty($cek)) {
+              $a = [
+              'no_job' => $data[$key][1],
+              'status' => 2
+            ];
+              echo json_encode($a);
+          } else {
+              foreach ($data as $key => $d) {
+                  $n195 = $this->M_wipp->savenewRKH([
+                      'date_target' => $date,
+                      'waktu_satu_shift' => $waktu_shift,
+                      'no_job' => $d[1],
+                      'kode_item' => $d[2],
+                      'nama_item' => $d[3],
+                      'qty' => $d[4],
+                      'usage_rate' => $d[5],
+                      'scedule_start_date' => $d[6]
+                    ]);
+              }
+              echo json_encode($n195);
+          }
         }
 
-        if (!empty($cek)) {
-            $a = [
-            'no_job' => $data[$key][1],
-            'status' => 2
-          ];
-            echo json_encode($a);
-        } else {
-            foreach ($data as $key => $d) {
-                $n195 = $this->M_wipp->savenewRKH([
-                    'date_target' => $date,
-                    'waktu_satu_shift' => $waktu_shift,
-                    'no_job' => $d[1],
-                    'kode_item' => $d[2],
-                    'nama_item' => $d[3],
-                    'qty' => $d[4],
-                    'usage_rate' => $d[5],
-                    'scedule_start_date' => $d[6]
-                  ]);
-            }
-            echo json_encode($n195);
-        }
     }
 
     public function productPriority()
@@ -142,7 +148,40 @@ class C_Master extends CI_Controller
         if (!$this->input->is_ajax_request()) {
             echo "Akses Terlarang!!!";
         } else {
-            $data['get'] =  $this->M_wipp->JobRelease();
+
+            $data_a = $this->M_wipp->JobRelease();
+            $priority = $this->M_wipp->getPP();
+            //urutkan data
+            usort($data_a, function ($a, $b) {
+                return $a['KODE_ASSY'] > $b['KODE_ASSY'] ? 1 : -1;
+            });
+            usort($priority, function ($a, $b) {
+                return $a['kode_item'] > $b['kode_item'] ? 1 : -1;
+            });
+            // ambil data master job dengan kode_item produk priority
+            foreach ($data_a as $key => $da) {
+              $data_a[$key]['PRIORITY'] = 0;
+              foreach ($priority as $key => $pa) {
+                if ($da['KODE_ASSY']  === $pa['kode_item']) {
+                  $tampung_priority[] = $da;
+                }
+              }
+            }
+            //pengecekan di jika itu priority
+            foreach ($tampung_priority as $key => $pr) {
+              $tampung_priority[$key]['PRIORITY'] = 1;
+            }
+            // hapus item yang ada sama di produk prioritas
+             foreach ($data_a as $key0 => $value) {
+               foreach ($tampung_priority as $key2 => $v) {
+                if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
+                  unset($data_a[$key0]);
+                }
+               }
+             }
+             //gabungkan data dengan produk prioritas di awal index
+             $data['get'] = array_merge($tampung_priority, $data_a);
+
             $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released', $data);
         }
     }
@@ -308,6 +347,7 @@ class C_Master extends CI_Controller
                             for ($d=$n12; $d <= $max5; $d++) {
                                 $hitung_pe_ada_5 += $adados[$d]['target_pe'];
                                 if ($hitung_pe_ada_5 >=$get_target_pe[4]['target_max']) {
+                                    $key5 = $d;
                                     break;
                                 }
                             }
@@ -316,7 +356,7 @@ class C_Master extends CI_Controller
                                 $line5_ada_dos = [];
                             // echo json_encode(5);
                             } else {
-                                for ($e=$d; $e <= $max5; $e++) {
+                                for ($e=$d; $e <= $key5; $e++) {
                                     $line5_ada_dos[] = $adados[$e];
                                 }
                             }
@@ -818,7 +858,6 @@ class C_Master extends CI_Controller
             'message' => 'id is null'
           ));
         }
-
         // if (!unlink($params['savename'])) {
         //     echo("Error deleting");
         // } else {
@@ -846,6 +885,15 @@ class C_Master extends CI_Controller
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('WorkInProcessPackaging/V_Photo_Manager');
         $this->load->view('V_Footer', $data);
+    }
+
+    public function delete_photo()
+    {
+      if (!$this->input->is_ajax_request()) {
+          echo "Akses Terlarang!!!";
+      } else {
+          echo json_encode($this->M_wipp->delete_photo($this->input->post('id')));
+      }
     }
 
     public function Save()
@@ -889,11 +937,44 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-        $term = 'CABANG';
-        $data = $this->M_wipp->JobRelease();
-        // $data = $this->M_wipp->getDetailBom('AAB1000AA1AZ-F');
+
+      $data_a = $this->M_wipp->JobRelease();
+      $priority = $this->M_wipp->getPP();
+      //urutkan data
+      usort($data_a, function ($a, $b) {
+          return $a['KODE_ASSY'] > $b['KODE_ASSY'] ? 1 : -1;
+      });
+      usort($priority, function ($a, $b) {
+          return $a['kode_item'] > $b['kode_item'] ? 1 : -1;
+      });
+      // ambil data master job dengan kode_item produk priority
+      foreach ($data_a as $key => $da) {
+        $data_a[$key]['PRIORITY'] = 0;
+        foreach ($priority as $key => $pa) {
+          if ($da['KODE_ASSY']  === $pa['kode_item']) {
+            $tampung_priority[] = $da;
+          }
+        }
+      }
+      //pengecekan di jika itu priority
+      foreach ($tampung_priority as $key => $pr) {
+        $tampung_priority[$key]['PRIORITY'] = 1;
+      }
+      // hapus item yang ada sama di produk prioritas
+       foreach ($data_a as $key0 => $value) {
+         foreach ($tampung_priority as $key2 => $v) {
+          if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
+            unset($data_a[$key0]);
+          }
+         }
+       }
+       //gabungkan data dengan produk prioritas di awal index
+       $result = array_merge($tampung_priority, $data_a);
         echo "<pre>";
-        print_r($data);
+        print_r($result);
+        // echo "================priority================";
+        // echo "<pre>";
+        // print_r($data_a);
         die;
     }
 }

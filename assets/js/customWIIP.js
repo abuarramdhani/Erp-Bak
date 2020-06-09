@@ -320,6 +320,50 @@ const photoWIPP = path => {
   $('#showPhoto').attr('src', baseurl + path)
 }
 
+const update_null = p => {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: baseurl + 'WorkInProcessPackaging/JobManager/delete_photo',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          id: p,
+        },
+        beforeSend: function() {
+          Swal.showLoading()
+        },
+        success: function(result) {
+          if (result === 1) {
+            Swal.fire({
+              type: 'success',
+              title: 'Berhasil menghapus data.',
+              text: ''
+            }).then(_ => {
+              window.location.replace(baseurl + 'WorkInProcessPackaging/JobManager/PhotoManager');
+            })
+          }else {
+            swalWIPPToastrAlert('error', 'Gagal menghapus data!');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    }
+  })
+
+}
+
 const saveNewRKH = _ => {
   var tableInfo = Array.prototype.map.call(document.querySelectorAll('.tblNewRKH tr'), function(tr) {
     return Array.prototype.map.call(tr.querySelectorAll('td center'), function(td) {
@@ -350,6 +394,8 @@ const saveNewRKH = _ => {
         })
       }else if (result.status === 2) {
         swalWIPPToastrAlert('error', 'Gagal menyimpan data! No job '+ result.no_job+', data telah digunakan!');
+      }else if (result === 3) {
+        swalWIPPToastrAlert('error', 'Gagal menyimpan data! job dengan tanggal '+ $('#dateSaveWIIP').val() +' telah digunakan!');
       } else {
         swalWIPPToastrAlert('error', 'Gagal menyimpan data!, mohon isi form waktu shift dan tanggal dengan benar.');
       }
@@ -606,6 +652,25 @@ $('.select2itemcodewipp').on('change', function() {
       $(`#nama_komponen`).val('Loading...');
     },
     success: function(result) {
+      $.ajax({
+        url: baseurl + 'WorkInProcessPackaging/JobManager/cek_job',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          job: val,
+        },
+        success: function(result2) {
+          if (result2) {
+            swalWIPPToastrAlert('error', 'kode_item tidak ada di database.');
+          }else {
+
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
       $(`#nama_komponen`).val(result[0].DESCRIPTION);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -630,7 +695,11 @@ const addrowlinewipp0 = _ => {
                                   <td><center><input type="number" class="form-control iminhere" name="qty0[]" id="qty0_wipp${a}" oninput="changeQtyValue(${a})" placeholder="QTY"></center></td>
                                   <td><center><input type="number" class="form-control andhere" name="target0[]" id="target0_pe${a}" placeholder="20%"></center></td>
                                   <td hidden></td>
-                                  <td><center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp0(${a})" style="border-radius:10px;"name="button"><i class="fa fa-minus-square"></i></button></center></td>
+                                  <td>
+                                    <center>
+                                     <button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp0(${a})" style="border-radius:10px;"name="button"><i class="fa fa-minus-square"></i></button>
+                                    </center>
+                                  </td>
                                 </tr>`);
   // $('.line0wipp tbody tr[id="wipp0row' + n + '"] .select0wipp').select0({
   //   placeholder: "Item Kode",

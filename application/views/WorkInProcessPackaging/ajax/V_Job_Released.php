@@ -8,25 +8,37 @@
         <th>NAMA ITEM</th>
         <th>QTY</th>
         <th>USAGE RATE</th>
-        <th>SCHEDULED START DATE </th>
+        <th>ONHAND YSP</th>
+        <th >SCHEDULED START DATE </th>
         <th><center>ACTION </center></th>
       </tr>
     </thead>
     <tbody>
       <?php $no = 1; foreach ($get as $key => $g): ?>
-        <tr row="<?php echo $no ?>">
+        <?php
+          if ($g['PRIORITY'] == 1) {
+            $style = 'style="background:rgba(42, 86, 152, 0.45)"';
+          }else {
+            $style = '';
+          }
+         ?>
+        <tr row="<?php echo $no ?>" <?php echo $style ?>>
           <td><?php echo $no ?></td>
-          <td><?php echo $g['NO_JOB'] ?></td>
+          <td ><?php echo $g['NO_JOB'] ?></td>
           <td><?php echo $g['KODE_ASSY'] ?></td>
           <td><?php echo $g['DESCRIPTION'] ?></td>
-          <td><?php echo $g['START_QUANTITY'] ?></td>
-          <td><?php echo abs($g['USAGE_RATE_OR_AMOUNT']) ?></td>
+          <td><?php echo $g['START_QUANTITY'] ?></center></td>
+          <td ><?php echo abs($g['USAGE_RATE_OR_AMOUNT']) ?></td>
+          <td><?php echo $g['ONHAND_YSP'] ?></td>
           <td><?php echo $g['SCHEDULED_START_DATE'] ?></center></td>
-          <td><center><button type="button" class="btn btn-md btn-primary cencelWipp" stat="1" onclick="addRKH(<?php echo $no ?>, '<?php echo $g['NO_JOB'] ?>')" name="button"><i class="fa fa-plus-square"></i> <b>Add to RKH</b></button></center></td>
+          <td><center>
+            <button type="button" class="btn btn-md btn-primary cencelWipp" stat="1" onclick="addRKH(<?php echo $no ?>, '<?php echo $g['NO_JOB'] ?>')" name="button"><i class="fa fa-plus-square"></i> <b>Add to RKH</b></button></center></td>
         </tr>
       <?php $no++; endforeach; ?>
     </tbody>
   </table>
+  <br>
+  <span style="font-weight:bold">*Dark Blue Color = Product Priority</span>
 </div>
 <script type="text/javascript">
 let wipp1 = $('.tblwiip1').DataTable();
@@ -76,7 +88,7 @@ function getJobReleased() {
                       <td><center>${v[3]}</center></td>
                       <td><center>${v[4]}</center></td>
                       <td><center>${v[5]}</center></td>
-                      <td><center>${v[6]}</center></td>
+                      <td><center>${v[7]}</center></td>
                       <td><center><button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${i+1})"><i class="fa fa-minus-square"></i></button></center></td>
                     </tr>
                   `;
