@@ -4385,3 +4385,274 @@ $(document).ready(function(){
 	});
 })
 // end notifikasi dinas luar
+
+// start Presensi Pekerja
+$(document).ready(function(){
+	var tblCMPresensipekerja = $('#tbl-CM-PresensiPekerja-Table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        "scrollX" : true,
+		"fixedColumns":   {
+            leftColumns: 6
+        },
+	})
+
+	$('#txt-CM-PresensiPekerja-TanggalAwal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#txt-CM-PresensiPekerja-TanggalAkhir').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#slc-CM-PresensiPekerja-Dept').select2({
+		searching: true,
+        minimumInputLength: 0,
+        placeholder: "Pilih Departement",
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'CateringManagement/Extra/PresensiPekerja/getDepartement',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kodesie, text: obj.kodesie + " - " + obj.dept };
+                    })
+                }
+            }
+        }
+	});
+
+	$('#slc-CM-PresensiPekerja-Bidang').select2({
+		searching: true,
+        minimumInputLength: 0,
+        placeholder: "Pilih Bidang",
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'CateringManagement/Extra/PresensiPekerja/getBidang',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+            	var query = {
+            		term: params.term,
+            		kode: $('#slc-CM-PresensiPekerja-Dept').val()
+            	}
+                return query;
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kodesie, text: obj.kodesie + " - " + obj.bidang };
+                    })
+                }
+            }
+        }
+	});
+
+	$('#slc-CM-PresensiPekerja-Unit').select2({
+		searching: true,
+        minimumInputLength: 0,
+        placeholder: "Pilih Unit",
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'CateringManagement/Extra/PresensiPekerja/getUnit',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+            	var query = {
+            		term: params.term,
+            		kode: $('#slc-CM-PresensiPekerja-Bidang').val()
+            	}
+                return query;
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kodesie, text: obj.kodesie + " - " + obj.unit };
+                    })
+                }
+            }
+        }
+	});
+
+	$('#slc-CM-PresensiPekerja-Seksi').select2({
+		searching: true,
+        minimumInputLength: 0,
+        placeholder: "Pilih Seksi",
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'CateringManagement/Extra/PresensiPekerja/getSeksi',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+            	var query = {
+            		term: params.term,
+            		kode: $('#slc-CM-PresensiPekerja-Unit').val()
+            	}
+                return query;
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kodesie, text: obj.kodesie + " - " + obj.seksi };
+                    })
+                }
+            }
+        }
+	});
+
+	$('#slc-CM-PresensiPekerja-Dept').on('change', function(){
+		var kodesie = $(this).val();
+		if (kodesie == '-') {
+			$('#slc-CM-PresensiPekerja-Bidang').select2("").trigger('change');
+			$('#slc-CM-PresensiPekerja-Unit').val("").trigger('change');
+			$('#slc-CM-PresensiPekerja-Seksi').val("").trigger('change');
+			$('#slc-CM-PresensiPekerja-Bidang').attr('disabled', true);
+			$('#slc-CM-PresensiPekerja-Unit').attr('disabled', true);
+			$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+		}else{
+			$('#slc-CM-PresensiPekerja-Bidang').attr('disabled', false);
+			$('#slc-CM-PresensiPekerja-Unit').attr('disabled', true);
+			$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+		}
+	})
+
+	$('#slc-CM-PresensiPekerja-Bidang').on('change', function(){
+		var kodesie = $(this).val();
+		if (kodesie) {
+			var kodesie_text = kodesie.substr(kodesie.length - 2);
+			
+			if (kodesie_text == '00') {
+				$('#slc-CM-PresensiPekerja-Unit').val("").trigger('change');
+				$('#slc-CM-PresensiPekerja-Seksi').val("").trigger('change');
+				$('#slc-CM-PresensiPekerja-Unit').attr('disabled', true);
+				$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+			}else{
+				$('#slc-CM-PresensiPekerja-Unit').attr('disabled', false);
+				$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+			}
+		}
+	})
+	
+	$('#slc-CM-PresensiPekerja-Unit').on('change', function(){
+		var kodesie = $(this).val();
+		if (kodesie) {
+			var kodesie_text = kodesie.substr(kodesie.length - 2);
+			
+			if (kodesie_text == '00') {
+				$('#slc-CM-PresensiPekerja-Seksi').val("").trigger('change');
+				$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+			}else{
+				$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', false);
+			}
+		}
+	})
+
+	$('#btn-CM-PresensiPekerja-Tampil').on('click', function(){
+		$('#ldg-CM-PresensiPekerja-Loading').show();
+		var tanggalAwal = $('#txt-CM-PresensiPekerja-TanggalAwal').val();
+		var tanggalAkhir = $('#txt-CM-PresensiPekerja-TanggalAkhir').val();
+		var dept = $('#slc-CM-PresensiPekerja-Dept').val();
+		var bidang = $('#slc-CM-PresensiPekerja-Bidang').val();
+		var unit = $('#slc-CM-PresensiPekerja-Unit').val();
+		var seksi = $('#slc-CM-PresensiPekerja-Seksi').val();
+
+		var kodesie = "";
+		if (seksi.length > 0) {
+			kodesie = seksi;
+		}else if(unit.length > 0) {
+			kodesie = unit;
+		}else if(bidang.length > 0){
+			kodesie = bidang;
+		}else if (dept.length > 0) {
+			kodesie = dept
+		}
+		console.log('kodesie : ' + kodesie);
+		if (kodesie.length > 0 && tanggalAwal && tanggalAkhir) {
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Extra/PresensiPekerja/tampil',
+				data: {kodesie: kodesie, tanggal_awal: tanggalAwal, tanggal_akhir: tanggalAkhir},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PresensiPekerja-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					tblCMPresensipekerja.clear().draw();
+					console.log(obj);
+					obj.forEach(function(daftar, index){
+						tblCMPresensipekerja.row.add([
+							(index + 1),
+							daftar.dept,
+							daftar.bidang,
+							daftar.unit,
+							daftar.seksi,
+							daftar.tanggal,
+							daftar.estimasi_satu,
+							daftar.realitas_satu,
+							daftar.cuti_satu,
+							daftar.sakit_satu,
+							daftar.lain_satu,
+							daftar.estimasi_dua,
+							daftar.realitas_dua,
+							daftar.cuti_dua,
+							daftar.sakit_dua,
+							daftar.lain_dua,
+							daftar.estimasi_tiga,
+							daftar.realitas_tiga,
+							daftar.cuti_tiga,
+							daftar.sakit_tiga,
+							daftar.lain_tiga,
+							daftar.estimasi_umum,
+							daftar.realitas_umum,
+							daftar.cuti_umum,
+							daftar.sakit_umum,
+							daftar.lain_umum,
+						]).draw(false);
+					})
+
+					tblCMPresensipekerja.columns.adjust().draw();
+					$('#ldg-CM-PresensiPekerja-Loading').hide();
+				}
+			})
+		}else{
+			$('#ldg-CM-PresensiPekerja-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Form Sudah Terisi !',
+				'warning'
+			)
+		}
+
+	})
+})
+// end Presensi Pekerja
