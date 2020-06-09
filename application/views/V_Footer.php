@@ -220,6 +220,7 @@
 		<script src="<?= base_url('assets/js/customKKI.js');?>"></script>
 		<script src="<?= base_url('assets/js/customCNDP.js');?>"></script>
 	    <script src="<?= base_url('assets/js/customMSJ.js');?>"></script>
+	    <script src="<?= base_url('assets/js/customORS.js');?>"></script>
 
 		
 
