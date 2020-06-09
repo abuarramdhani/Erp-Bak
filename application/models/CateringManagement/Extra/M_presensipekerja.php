@@ -142,4 +142,17 @@ class M_presensipekerja extends CI_Model
 		return $this->personalia->query($sql,array($tanggal,$kodesie))->row();
     }
 
+    public function getMangkir($tanggal,$shift,$kodesie){
+    	$sql = "select COUNT(*) AS jumlah 
+				FROM \"Presensi\".tdatatim dt 
+				INNER JOIN \"Presensi\".tshiftpekerja sp 
+				ON dt.noind = sp.noind 
+				AND dt.tanggal = sp.tanggal 
+				WHERE sp.tanggal = ?
+				AND sp.kodesie like concat(?,'%')
+				AND sp.kd_shift IN ($shift) 
+				AND dt.kd_ket = 'TM' ";
+		return $this->personalia->query($sql,array($tanggal,$kodesie))->row();
+    }
+
 } ?>

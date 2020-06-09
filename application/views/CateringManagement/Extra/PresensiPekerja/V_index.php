@@ -25,7 +25,7 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Departement</label>
 													<div class="col-lg-8">
-														<select id="slc-CM-PresensiPekerja-Dept" style="width: 100%">
+														<select id="slc-CM-PresensiPekerja-Dept" style="width: 100%" autocomplete="off">
 															<option></option>
 														</select>
 													</div>
@@ -33,7 +33,7 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Bidang</label>
 													<div class="col-lg-8">
-														<select id="slc-CM-PresensiPekerja-Bidang" style="width: 100%" disabled>
+														<select id="slc-CM-PresensiPekerja-Bidang" style="width: 100%" disabled autocomplete="off">
 															<option></option>
 														</select>
 													</div>
@@ -41,7 +41,7 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Unit</label>
 													<div class="col-lg-8">
-														<select id="slc-CM-PresensiPekerja-Unit" style="width: 100%" disabled>
+														<select id="slc-CM-PresensiPekerja-Unit" style="width: 100%" disabled autocomplete="off">
 															<option></option>
 														</select>
 													</div>
@@ -49,7 +49,7 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Seksi</label>
 													<div class="col-lg-8">
-														<select id="slc-CM-PresensiPekerja-Seksi" style="width: 100%" disabled>
+														<select id="slc-CM-PresensiPekerja-Seksi" style="width: 100%" disabled autocomplete="off">
 															<option></option>
 														</select>
 													</div>
@@ -59,13 +59,13 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Tanggal Awal</label>
 													<div class="col-lg-8">
-														<input type="text" id="txt-CM-PresensiPekerja-TanggalAwal" class="form-control">
+														<input type="text" id="txt-CM-PresensiPekerja-TanggalAwal" class="form-control" autocomplete="off">
 													</div>
 												</div>
 												<div class="form-group">
 													<label class="control-label col-lg-4">Tanggal Akhir</label>
 													<div class="col-lg-8">
-														<input type="text" id="txt-CM-PresensiPekerja-TanggalAkhir" class="form-control">
+														<input type="text" id="txt-CM-PresensiPekerja-TanggalAkhir" class="form-control" autocomplete="off">
 													</div>
 												</div>
 												<div class="form-group">
@@ -100,34 +100,38 @@
 													<th rowspan="3" class="bg-primary" style="text-align: center;vertical-align: middle;">Unit</th>
 													<th rowspan="3" class="bg-primary" style="text-align: center;vertical-align: middle;">Seksi</th>
 													<th rowspan="3" class="bg-primary" style="text-align: center;vertical-align: middle;">Tanggal</th>
-													<th colspan="20" class="bg-primary" style="text-align: center;vertical-align: middle;">Shift</th>
+													<th colspan="24" class="bg-primary" style="text-align: center;vertical-align: middle;">Shift</th>
 												</tr>
 												<tr>
-													<th class="bg-primary" colspan="5" style="text-align: center;vertical-align: middle;">Shift 1</th>
-													<th class="bg-primary" colspan="5" style="text-align: center;vertical-align: middle;">Shift 2</th>
-													<th class="bg-primary" colspan="5" style="text-align: center;vertical-align: middle;">Shift 3</th>
-													<th class="bg-primary" colspan="5" style="text-align: center;vertical-align: middle;">Shift Umum</th>
+													<th class="bg-primary" colspan="6" style="text-align: center;vertical-align: middle;">Shift 1</th>
+													<th class="bg-primary" colspan="6" style="text-align: center;vertical-align: middle;">Shift 2</th>
+													<th class="bg-primary" colspan="6" style="text-align: center;vertical-align: middle;">Shift 3</th>
+													<th class="bg-primary" colspan="6" style="text-align: center;vertical-align: middle;">Shift Umum</th>
 												</tr>
 												<tr>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">E</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">R</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">CT</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">SK</th>
+													<th class="bg-primary" style="text-align: center;vertical-align: middle;">M</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">L</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">E</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">R</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">CT</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">SK</th>
+													<th class="bg-primary" style="text-align: center;vertical-align: middle;">M</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">L</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">E</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">R</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">CT</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">SK</th>
+													<th class="bg-primary" style="text-align: center;vertical-align: middle;">M</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">L</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">E</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">R</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">CT</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">SK</th>
+													<th class="bg-primary" style="text-align: center;vertical-align: middle;">M</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">L</th>
 												</tr>
 											</thead>

@@ -153,6 +153,13 @@ class C_PresensiPekerja extends CI_Controller
 							$sakit_jumlah = 0;
 						}
 
+						$mangkir = $this->M_presensipekerja->getMangkir($tanggal_value['tanggal'],$shift_value['kd_shift'],$seksi_value['kodesie']);
+						if (!empty($mangkir)) {
+							$mangkir_jumlah = $mangkir->jumlah;
+						}else{
+							$mangkir_jumlah = 0;
+						}
+
 						$lain = $this->M_presensipekerja->getLain($tanggal_value['tanggal'],$shift_value['kd_shift'],$seksi_value['kodesie']);
 						if (!empty($lain)) {
 							$lain_jumlah = $lain->jumlah;
@@ -164,6 +171,7 @@ class C_PresensiPekerja extends CI_Controller
 						$data[$index]['realitas_'.$shift_value['shift']] = $realitas_jumlah;
 						$data[$index]['cuti_'.$shift_value['shift']] = $cuti_jumlah;
 						$data[$index]['sakit_'.$shift_value['shift']] = $sakit_jumlah;
+						$data[$index]['mangkir_'.$shift_value['shift']] = $mangkir_jumlah;
 						$data[$index]['lain_'.$shift_value['shift']] = $lain_jumlah;
 					}
 					$index++;
