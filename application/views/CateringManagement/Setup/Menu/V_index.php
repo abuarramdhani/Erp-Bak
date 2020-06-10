@@ -71,8 +71,7 @@
 																<a target="_blank" href="<?php echo base_url('CateringManagement/Setup/Menu/pdf?menu_id='.$encrypted_string) ?>" class="btn btn-danger"><span class="fa fa-file-pdf-o"></span> PDF</a>
 																<a href="<?php echo base_url('CateringManagement/Setup/Menu/edit?menu_id='.$encrypted_string) ?>" class="btn btn-info"><span class="fa fa-pencil-square-o"></span> Edit</a>
 																<button 
-																	id="btn-CM-Menu-Hapus" 
-																	class="btn btn-danger" 
+																	class="btn btn-danger btn-CM-Menu-Hapus" 
 																	data-bulan="<?php echo $bulan[$value['bulan']] ?>" 
 																	data-tahun="<?php echo $value['tahun'] ?>" 
 																	data-shift="<?php echo $shift[$value['shift']] ?>"

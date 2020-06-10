@@ -4671,7 +4671,17 @@ $(document).ready(function(){
         "dom" : 'Bfrtip',
         "buttons" : [
             'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
-        ]
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			},
+			{
+			    "targets": 1,
+			    "className": "text-center"
+			}
+		],
 	})
 
 	var tblCMMenuDetail = $('#tbl-CM-Menu-Detail').DataTable({
@@ -4701,7 +4711,7 @@ $(document).ready(function(){
 	    "minViewMode":'months'
 	});
 
-	var tblMenuCreate = $('#tbl-CM-Menu-Create').DataTable({
+	var tblCMMenuCreate = $('#tbl-CM-Menu-Create').DataTable({
 		"paging": false,
 		"searching": false,
 		"sort": false,
@@ -4709,13 +4719,13 @@ $(document).ready(function(){
 	})
 
 	$('#slc-CM-Menu-Shift').on('change', function(){
-		CMMenuCreateChange(tblMenuCreate)
+		CMMenuCreateChange(tblCMMenuCreate)
 	});
 	$('#slc-CM-Menu-Lokasi').on('change', function(){
-		CMMenuCreateChange(tblMenuCreate)
+		CMMenuCreateChange(tblCMMenuCreate)
 	});
 	$('#txt-CM-Menu-BulanTahun').on('change', function(){
-		CMMenuCreateChange(tblMenuCreate)
+		CMMenuCreateChange(tblCMMenuCreate)
 	});
 	
 	$('#btn-CM-Menu-CopyMenu').on('click', function(){
@@ -4753,12 +4763,12 @@ $(document).ready(function(){
 				success: function(data){
 					obj = JSON.parse(data);
 					if (obj) {
-						tblMenuCreate.clear().draw();
+						tblCMMenuCreate.clear().draw();
 						if (obj.status == "INSERT") {
 
 							if (obj.isi > 0) {
 								obj.data.forEach(function(daftar, index){
-									tblMenuCreate.row.add([
+									tblCMMenuCreate.row.add([
 										daftar.tanggal,
 										"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
 										"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
@@ -4792,11 +4802,11 @@ $(document).ready(function(){
 								})
 							}
 
-							tblMenuCreate.columns.adjust().draw();
+							tblCMMenuCreate.columns.adjust().draw();
 						}else if(obj.status == "UPDATE"){
 							if (obj.isi > 0) {
 								obj.data.forEach(function(daftar, index){
-									tblMenuCreate.row.add([
+									tblCMMenuCreate.row.add([
 										daftar.tanggal,
 										"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.sayur_option + "</select>",
 										"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.lauk_utama_option + "</select>",
@@ -4806,7 +4816,7 @@ $(document).ready(function(){
 								})
 							}
 
-							tblMenuCreate.columns.adjust().draw();
+							tblCMMenuCreate.columns.adjust().draw();
 
 						}
 
@@ -4977,13 +4987,22 @@ $(document).ready(function(){
 					data: JSON.stringify(formData),
 					error: function(xhr,status,error){
 						$('#ldg-CM-Menu-Loading').hide();
-						swal.fire({
-			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
-			                html: xhr['responseText'],
-			                type: "error",
-			                confirmButtonText: 'OK',
-			                confirmButtonColor: '#d63031',
-			            })
+						if (xhr['responseText'] == "sukses") {
+							Swal.fire(
+								'Berhasil Diinput!',
+								'Data Berhasil Diinput !!',
+								'success'
+							)
+							tblCMMenuCreate.clear().draw();
+						}else{
+							swal.fire({
+				                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				                html: xhr['responseText'],
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+				        }
 					},
 					success: function(data){
 						$('#ldg-CM-Menu-Loading').hide();
@@ -5005,7 +5024,7 @@ $(document).ready(function(){
 		}
 	})
 
-	$('#btn-CM-Menu-Hapus').on('click', function(){
+	$('#tbl-CM-Menu-Table').on('click','.btn-CM-Menu-Hapus', function(){
 		var bulan = $(this).attr("data-bulan");
 		var tahun = $(this).attr("data-tahun");
 		var shift = $(this).attr("data-shift");
@@ -5028,31 +5047,23 @@ $(document).ready(function(){
 					data: {menu_id: menuId},
 					error: function(xhr,status,error){
 						$('#ldg-CM-Menu-Loading').hide();
-						if (xhr['responseText'] == "sukses") {
-							Swal.fire(
-								'Berhasil Dihapus!',
-								'Data Bulan ' + bulan + ' ' + tahun + ' Shift ' + shift + ' Berhasil Dihapus !!',
-								'success'
-							)
-							tblMenuCreate.clear().draw();
-						}else{
-							swal.fire({
-				                title: xhr['status'] + "(" + xhr['statusText'] + ")",
-				                html: xhr['responseText'],
-				                type: "error",
-				                confirmButtonText: 'OK',
-				                confirmButtonColor: '#d63031',
-				            })
-						}
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
 					},
 					success: function(data){
 						obj = JSON.parse(data);
+						tblCMMenu.clear().draw();
 						if (obj) {
 							obj.forEach(function(daftar, index){
-								tblMenuCreate.row.add([
+								tblCMMenu.row.add([
 									(index + 1),
-									"-",
-									daftar.bulan + daftar.tahun,
+									daftar.action,
+									daftar.bulan_tahun,
 									daftar.shift
 								]).draw(false);
 							})
@@ -5063,7 +5074,6 @@ $(document).ready(function(){
 							'Data Bulan ' + bulan + ' ' + tahun + ' Shift ' + shift + ' Berhasil Dihapus !!',
 							'success'
 						)
-						tblMenuCreate.clear().draw();
 					}
 				})
 			}
@@ -5071,7 +5081,7 @@ $(document).ready(function(){
 	})
 })
 
-function CMMenuCreateChange(tblMenuCreate){
+function CMMenuCreateChange(tblCMMenuCreate){
 	var shift = $('#slc-CM-Menu-Shift').val();
 	var lokasi = $('#slc-CM-Menu-Lokasi').val();
 	var bulan_tahun = $('#txt-CM-Menu-BulanTahun').val();
@@ -5095,12 +5105,12 @@ function CMMenuCreateChange(tblMenuCreate){
 			success: function(data){
 				obj = JSON.parse(data);
 				if (obj) {
-					tblMenuCreate.clear().draw();
+					tblCMMenuCreate.clear().draw();
 					if (obj.status == "INSERT") {
 
 						if (obj.isi > 0) {
 							obj.data.forEach(function(daftar, index){
-								tblMenuCreate.row.add([
+								tblCMMenuCreate.row.add([
 									daftar.tanggal,
 									"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
 									"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
@@ -5134,11 +5144,11 @@ function CMMenuCreateChange(tblMenuCreate){
 							})
 						}
 
-						tblMenuCreate.columns.adjust().draw();
+						tblCMMenuCreate.columns.adjust().draw();
 					}else if(obj.status == "UPDATE"){
 						if (obj.isi > 0) {
 							obj.data.forEach(function(daftar, index){
-								tblMenuCreate.row.add([
+								tblCMMenuCreate.row.add([
 									daftar.tanggal,
 									"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.sayur_option + "</select>",
 									"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.lauk_utama_option + "</select>",
@@ -5148,7 +5158,7 @@ function CMMenuCreateChange(tblMenuCreate){
 							})
 						}
 
-						tblMenuCreate.columns.adjust().draw();
+						tblCMMenuCreate.columns.adjust().draw();
 
 						Swal.fire(
 							'Peringatan!',
@@ -5230,7 +5240,7 @@ function CMMenuCreateChange(tblMenuCreate){
 			}
 		})
 	}else{
-		tblMenuCreate.clear().draw();
+		tblCMMenuCreate.clear().draw();
 	}
 }
 // end Menu

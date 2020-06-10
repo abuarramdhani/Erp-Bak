@@ -291,36 +291,30 @@ class C_Menu extends CI_Controller
 				12 => 'Desember'
 			);
 			$shift = array(
-				1 => 'SHIFT_1_Umum',
-				2 => 'SHIFT_2',
-				3 => 'SHIFT_3'
+				1 => '1 & Umum',
+				2 => '2',
+				3 => '3'
 			);
 			$nomor = 1;
 			foreach ($data_awal as $key => $value) {
 				$encrypted_string = $this->encrypt->encode($value['menu_id']);
         		$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-				$data_akhir[$key]['nomor'] = "<td style=\"text-align: center\">".$nomor."</td>";
+				$data_akhir[$key]['nomor'] = $nomor;
 				$data_akhir[$key]['action'] = "
-				<tr>
-					<td style=\"text-align: center\">".$nomor."</td>
-					<td style=\"text-align: center\">
 						<a href=\"".base_url('CateringManagement/Setup/Menu/detail?menu_id='.$encrypted_string)."\" class=\"btn btn-primary\"><span class=\"fa fa-info-circle\"></span> Detail</a>
 						<a target=\"_blank\" href=\"".base_url('CateringManagement/Setup/Menu/pdf?menu_id='.$encrypted_string)."\" class=\"btn btn-danger\"><span class=\"fa fa-file-pdf-o\"></span> PDF</a>
 						<a href=\"".base_url('CateringManagement/Setup/Menu/edit?menu_id='.$encrypted_string)."\" class=\"btn btn-info\"><span class=\"fa fa-pencil-square-o\"></span> Edit</a>
 						<button 
-							id=\"btn-CM-Menu-Hapus\" 
-							class=\"btn btn-danger\" 
+							class=\"btn btn-danger btn-CM-Menu-Hapus\" 
 							data-bulan=\"".$bulan[$value['bulan']]."\" 
 							data-tahun=\"".$value['tahun']."\" 
 							data-shift=\"".$shift[$value['shift']]."\"
 							data-menuid=\"".$encrypted_string."\">
 								<span class=\"fa fa-trash\"></span> 
 							Hapus
-						</button>
-					</td>
-				</tr>";
-				$data_akhir[$key]['bulan_tahun'] = "<td>".$bulan[$value['bulan']].' - '.$value['tahun']."</td>";
-				$data_akhir[$key]['shift'] = "<td>".$shift[$value['shift']]."</td>";
+						</button>";
+				$data_akhir[$key]['bulan_tahun'] = $bulan[$value['bulan']].' - '.$value['tahun'];
+				$data_akhir[$key]['shift'] = $shift[$value['shift']];
 				
 				$nomor++;
 			}
