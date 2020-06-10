@@ -15,8 +15,80 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
+										<div class="panel panel-info">
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-lg-11">
+														<h3 class="panel-title">Copy Menu</h3>
+													</div>
+													<div class="col-lg-1 text-right">
+														<button class="btn btn-info btn-sm" type="button" data-toggle="collapse" data-target="#div-CM-Menu-CopyMenu"><span class="fa fa-plus"></span></button>
+													</div>
+												</div>
+											</div>
+											<div class="panel-body collapse" id="div-CM-Menu-CopyMenu">
+												<div class="row">
+													<div class="col-lg-12">
+														<form class="form-horizontal">
+															<div class="col-lg-4">
+																<div class="form-group">
+																	<label class="control-label col-lg-4">Bulan Tahun</label>
+																	<div class="col-lg-8">
+																		<input type="text" class="form-control" placeholder="Pilih Bulan Tahun..." autocomplete="off" id="txt-CM-Menu-BulanTahun-Copy">
+																	</div>
+																</div>
+															</div>
+															<div class="col-lg-4">
+																<div class="form-group">
+																	<label class="control-label col-lg-4">Shift</label>
+																	<div class="col-lg-8">
+																		<select class="select2" data-placeholder="Pilih Shift..." style="width: 100%" autocomplete="off" id="slc-CM-Menu-Shift-Copy">
+																			<option></option>
+																			<option value="1">Shift 1 & Umum</option>
+																			<option value="2">Shift 2</option>
+																			<option value="3">Shift 3</option>
+																		</select>
+																	</div>
+																</div>
+															</div>
+															<div class="col-lg-4">
+																<div class="form-group">
+																	<label class="control-label col-lg-4">Lokasi</label>
+																	<div class="col-lg-8">
+																		<select class="select2" data-placeholder="Pilih Lokasi..." style="width: 100%" autocomplete="off" id="slc-CM-Menu-Lokasi-Copy">
+																			<option></option>
+																			<option value="1">Yogyakarta & Mlati</option>
+																			<option value="2">Tuksono</option>
+																		</select>
+																	</div>
+																</div>
+															</div>
+															<div class="col-lg-12">
+																<div class="form-group">
+																	<div class="col-lg-12 text-center">
+																		<button type="button" class="btn btn-primary" id="btn-CM-Menu-CopyMenu">Copy Menu</button>
+																	</div>
+																</div>
+															</div>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-12">
 										<form class="form-horizontal">
-											<div class="col-lg-6">
+											<div class="col-lg-4">
+												<div class="form-group">
+													<label class="control-label col-lg-4">Bulan Tahun</label>
+													<div class="col-lg-8">
+														<input type="text" class="form-control" placeholder="Pilih Bulan Tahun..." autocomplete="off" id="txt-CM-Menu-BulanTahun">
+													</div>
+												</div>
+											</div>
+											<div class="col-lg-4">
 												<div class="form-group">
 													<label class="control-label col-lg-4">Shift</label>
 													<div class="col-lg-8">
@@ -28,14 +100,8 @@
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
-													<label class="control-label col-lg-4">Bulan Tahun</label>
-													<div class="col-lg-8">
-														<input type="text" class="form-control" placeholder="Pilih Bulan Tahun..." autocomplete="off" id="txt-CM-Menu-BulanTahun">
-													</div>
-												</div>
 											</div>
-											<div class="col-lg-6">
+											<div class="col-lg-4">
 												<div class="form-group">
 													<label class="control-label col-lg-4">Lokasi</label>
 													<div class="col-lg-8">
@@ -44,15 +110,6 @@
 															<option value="1">Yogyakarta & Mlati</option>
 															<option value="2">Tuksono</option>
 														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="control-label col-lg-4">Copy Menu</label>
-													<div class="col-lg-6">
-														<input type="text" class="form-control" placeholder="Pilih Bulan Tahun yang di Copy..." autocomplete="off" id="txt-CM-Menu-CopyMenu">
-													</div>
-													<div class="col-lg-2">
-														<button type="button" class="btn btn-primary">Copy</button>
 													</div>
 												</div>
 											</div>

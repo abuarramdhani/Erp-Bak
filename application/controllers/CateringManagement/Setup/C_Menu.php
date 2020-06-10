@@ -83,7 +83,7 @@ class C_Menu extends CI_Controller
 		$tahun = date('Y',strtotime($bulan_tahun));
 		
 		$data = array();
-		
+
 		$sayur = $this->M_menu->getSayur();
 		if (!empty($sayur)) {
 			$data['sayur'] = $sayur;
@@ -407,4 +407,154 @@ class C_Menu extends CI_Controller
 		$data['data'] = $this->M_menu->getMenuByMenuId($plaintext_string);
 		$data['detail'] = $this->M_menu->getmenuDetailByMenuId($plaintext_string);
 	}
+
+	public function copyMenu(){
+		$shift = $this->input->get('shift');
+		$lokasi = $this->input->get('lokasi');
+		$bulan_tahun = $this->input->get('bulan_tahun');
+		$bulan = date('m',strtotime($bulan_tahun));
+		$tahun = date('Y',strtotime($bulan_tahun));
+
+		$shift_copy = $this->input->get('shift_copy');
+		$lokasi_copy = $this->input->get('lokasi_copy');
+		$bulan_tahun_copy = $this->input->get('bulan_tahun_copy');
+		$bulan_copy = date('m',strtotime($bulan_tahun_copy));
+		$tahun_copy = date('Y',strtotime($bulan_tahun_copy));
+		
+		$data = array();
+
+		$sayur = $this->M_menu->getSayur();
+		if (!empty($sayur)) {
+			$data['sayur'] = $sayur;
+			$data['sayur_jumlah'] = count($sayur);
+		}else{
+			$data['sayur'] = array();
+			$data['sayur_jumlah'] = 0;
+		}
+
+		$lauk_utama = $this->M_menu->getlaukUtama();
+		if (!empty($lauk_utama)) {
+			$data['lauk_utama'] = $lauk_utama;
+			$data['lauk_utama_jumlah'] = count($lauk_utama);
+		}else{
+			$data['lauk_utama'] = array();
+			$data['lauk_utama_jumlah'] = 0;
+		}
+
+		$lauk_pendamping = $this->M_menu->getlaukPendamping();
+		if (!empty($lauk_pendamping)) {
+			$data['lauk_pendamping'] = $lauk_pendamping;
+			$data['lauk_pendamping_jumlah'] = count($lauk_pendamping);
+		}else{
+			$data['lauk_pendamping'] = array();
+			$data['lauk_pendamping_jumlah'] = 0;
+		}
+
+		$buah = $this->M_menu->getBuah();
+		if (!empty($buah)) {
+			$data['buah'] = $buah;
+			$data['buah_jumlah'] = count($buah);
+		}else{
+			$data['buah'] = array();
+			$data['buah_jumlah'] = 0;
+		}
+
+		$menu = $this->M_menu->getMenuByLokasiShiftBulanTahun($lokasi_copy,$shift_copy,$bulan_copy,$tahun_copy);
+		if (!empty($menu)) {
+			$detail = $this->M_menu->getMenuDetailByMenuIdBulanTahun($menu['0']['menu_id'],$tahun,$bulan,$tahun,$bulan);
+			if (!empty($detail)) {
+				foreach ($detail as $detail_key => $detail_value) {
+					$nama_sayur = explode(",", $detail_value['sayur']);
+					$sayur_option = "";
+					foreach ($sayur as $sayur_key => $sayur_value) {
+						$sayur_sama = 0;
+						foreach ($nama_sayur as $nama_sayur_key => $nama_sayur_value) {
+							if ($sayur_value['text'] == $nama_sayur_value) {
+								$sayur_sama = 1;
+							}
+						}
+						if ($sayur_sama == 1) {
+							$sayur_option .= "<option selected>".$sayur_value['text']."</option>";
+						}else{
+							$sayur_option .= "<option>".$sayur_value['text']."</option>";
+						}
+					}
+					$detail[$detail_key]['sayur_option'] = $sayur_option;
+
+					$nama_lauk_utama = explode(",", $detail_value['lauk_utama']);
+					$lauk_utama_option = "";
+					foreach ($lauk_utama as $lauk_utama_key => $lauk_utama_value) {
+						$lauk_utama_sama = 0;
+						foreach ($nama_lauk_utama as $nama_lauk_utama_key => $nama_lauk_utama_value) {
+							if ($lauk_utama_value['text'] == $nama_lauk_utama_value) {
+								$lauk_utama_sama = 1;
+							}
+						}
+						if ($lauk_utama_sama == 1) {
+							$lauk_utama_option .= "<option selected>".$lauk_utama_value['text']."</option>";
+						}else{
+							$lauk_utama_option .= "<option>".$lauk_utama_value['text']."</option>";
+						}
+					}
+					$detail[$detail_key]['lauk_utama_option'] = $lauk_utama_option;
+
+					$nama_lauk_pendamping = explode(",", $detail_value['lauk_pendamping']);
+					$lauk_pendamping_option = "";
+					foreach ($lauk_pendamping as $lauk_pendamping_key => $lauk_pendamping_value) {
+						$lauk_pendamping_sama = 0;
+						foreach ($nama_lauk_pendamping as $nama_lauk_pendamping_key => $nama_lauk_pendamping_value) {
+							if ($lauk_pendamping_value['text'] == $nama_lauk_pendamping_value) {
+								$lauk_pendamping_sama = 1;
+							}
+						}
+						if ($lauk_pendamping_sama == 1) {
+							$lauk_pendamping_option .= "<option selected>".$lauk_pendamping_value['text']."</option>";
+						}else{
+							$lauk_pendamping_option .= "<option>".$lauk_pendamping_value['text']."</option>";
+						}
+					}
+					$detail[$detail_key]['lauk_pendamping_option'] = $lauk_pendamping_option;
+
+					$nama_buah = explode(",", $detail_value['buah']);
+					$buah_option = "";
+					foreach ($buah as $buah_key => $buah_value) {
+						$buah_sama = 0;
+						foreach ($nama_buah as $nama_buah_key => $nama_buah_value) {
+							if ($buah_value['text'] == $nama_buah_value) {
+								$buah_sama = 1;
+							}
+						}
+						if ($buah_sama == 1) {
+							$buah_option .= "<option selected>".$buah_value['text']."</option>";
+						}else{
+							$buah_option .= "<option>".$buah_value['text']."</option>";
+						}
+					}
+					$detail[$detail_key]['buah_option'] = $buah_option;
+
+					
+				}
+				$data['data'] = $detail;
+				$data['isi'] = count($detail);
+			}else{
+				$data['isi'] = 0;
+				$data['data'] = array();
+			}
+			$data['status'] = "UPDATE";
+		}else{
+			$tanggal = $this->M_menu->getTanggalByBulanTahun($bulan,$tahun);
+			if (!empty($tanggal)) {
+				$data['isi'] = count($tanggal);
+				$data['data'] = $tanggal;
+			}else{
+				$data['isi'] = 0;
+				$data['data'] = array();
+			}
+			$data['status'] = "INSERT";
+		}
+
+		echo json_encode($data);
+	}
+
+
 } ?>
