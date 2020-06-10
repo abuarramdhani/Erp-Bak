@@ -4660,3 +4660,409 @@ $(document).ready(function(){
 	})
 })
 // end Presensi Pekerja
+
+// start Menu
+$(document).ready(function(){
+	var tblCMMenu = $('#tbl-CM-Menu-Table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+	})
+
+	var tblCMMenuDetail = $('#tbl-CM-Menu-Detail').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+	})
+
+	$('#txt-CM-Menu-CopyMenu').datepicker({
+	    "autoclose": true,
+	    "todayHiglight": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+	});
+
+	$('#txt-CM-Menu-BulanTahun').datepicker({
+	    "autoclose": true,
+	    "todayHiglight": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+	});
+
+	var tblMenuCreate = $('#tbl-CM-Menu-Create').DataTable({
+		"paging": false,
+		"searching": false,
+		"sort": false,
+		"info": false
+	})
+
+	$('#slc-CM-Menu-Shift').on('change', function(){
+		CMMenuCreateChange(tblMenuCreate)
+	});
+	$('#slc-CM-Menu-Lokasi').on('change', function(){
+		CMMenuCreateChange(tblMenuCreate)
+	});
+	$('#txt-CM-Menu-BulanTahun').on('change', function(){
+		CMMenuCreateChange(tblMenuCreate)
+	});
+	
+	$('#slc-CM-Menu-CopyMenu').on('change', function(){
+
+	});
+
+	$('#tbl-CM-Menu-Create').on('change','.slc-CM-Menu-Sayur', function(){
+		var sayur = $(this).val();
+		// sayur.forEach(function(value,index){
+		// 	element_sayur = $('.slc-CM-Menu-Sayur');
+		// 	console.log(element_sayur);
+		// });
+	})
+
+	$('#btn-CM-Menu-Simpan').on('click', function(){
+		$('#ldg-CM-Menu-Loading').show();
+		var shift = $('#slc-CM-Menu-Shift').val();
+		var lokasi = $('#slc-CM-Menu-Lokasi').val();
+		var bulan_tahun = $('#txt-CM-Menu-BulanTahun').val();
+		if (shift && lokasi && bulan_tahun) {
+			var data_tanggal_array = $('#tbl-CM-Menu-Create tbody tr');
+			var data_tanggal = {};
+			var sayur_kosong = 0;
+			var lauk_utama_kosong = 0;
+			var lauk_pendamping_kosong = 0;
+			var buah_kosong = 0;
+			for (var i = 0; i < data_tanggal_array.length; i++) {
+				data_tanggal[i] = {}
+				data_tanggal[i]['tanggal'] = data_tanggal_array[i]['children'][0]['innerText'];
+
+				data_tanggal[i]['sayur'] = []
+				selectedOptions = data_tanggal_array[i]['children'][1]['children'][0]['selectedOptions'];
+				if (selectedOptions.length > 0) {
+					for (var j = 0; j < selectedOptions.length; j++) {
+						data_tanggal[i]['sayur'][j] = selectedOptions[j]['value'];
+					}
+				}else{
+					sayur_kosong++;
+				}
+
+				data_tanggal[i]['lauk_utama'] = []
+				selectedOptions = data_tanggal_array[i]['children'][2]['children'][0]['selectedOptions'];
+				if (selectedOptions.length > 0) {
+					for (var j = 0; j < selectedOptions.length; j++) {
+						data_tanggal[i]['lauk_utama'][j] = selectedOptions[j]['value'];
+					}
+				}else{
+					lauk_utama_kosong++;
+				}
+
+				data_tanggal[i]['lauk_pendamping'] = []
+				selectedOptions = data_tanggal_array[i]['children'][3]['children'][0]['selectedOptions'];
+				if (selectedOptions.length > 0) {
+					for (var j = 0; j < selectedOptions.length; j++) {
+						data_tanggal[i]['lauk_pendamping'][j] = selectedOptions[j]['value'];
+					}
+				}else{
+					lauk_pendamping_kosong++;
+				}
+
+				data_tanggal[i]['buah'] = []
+				selectedOptions = data_tanggal_array[i]['children'][4]['children'][0]['selectedOptions'];
+				if (selectedOptions.length > 0) {
+					for (var j = 0; j < selectedOptions.length; j++) {
+						data_tanggal[i]['buah'][j] = selectedOptions[j]['value'];
+					}
+				}else{
+					buah_kosong++;
+				}
+			}
+			if (sayur_kosong > 0 || lauk_utama_kosong > 0 || lauk_pendamping_kosong > 0 || buah_kosong > 0) {
+				$('#ldg-CM-Menu-Loading').hide();
+				swal.fire(
+					'Peringatan!',
+					'Pastikan Menu Sudah Lengkap !',
+					'warning'
+				)
+			}else{
+				formData = {
+					shift: shift,
+					lokasi: lokasi,
+					bulan_tahun: bulan_tahun,
+					data: data_tanggal
+				}
+				console.log(formData);
+				$.ajax({
+					method: 'POST',
+					url: baseurl + 'CateringManagement/Setup/Menu/simpan',
+					contentType: 'application/json',
+					dataType: 'json',
+					data: JSON.stringify(formData),
+					error: function(xhr,status,error){
+						$('#ldg-CM-Menu-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						$('#ldg-CM-Menu-Loading').hide();
+						swal.fire(
+							'Sukses!',
+							'Data Berhasil Diinput !',
+							'success'
+						)
+					}
+				})
+			}
+		}else{
+			$('#ldg-CM-Menu-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Form Sudah Terisi !',
+				'warning'
+			)
+		}
+	})
+
+	$('#btn-CM-Menu-Hapus').on('click', function(){
+		var bulan = $(this).attr("data-bulan");
+		var tahun = $(this).attr("data-tahun");
+		var shift = $(this).attr("data-shift");
+		var menuId = $(this).attr("data-menuid");
+		Swal.fire({
+			title: 'Apakah Anda yakin ?',
+			text: 'Data Bulan ' + bulan + ' ' + tahun + ' Shift ' + shift + ' yang Sudah Dihapus Tidak Dapat Dikembalikan !!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Hapus',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {			
+			if (result.value) {
+				$('#ldg-CM-Menu-Loading').show();
+				$.ajax({
+					method: 'GET',
+					url: baseurl + 'CateringManagement/Setup/Menu/delete',
+					data: {menu_id: menuId},
+					error: function(xhr,status,error){
+						$('#ldg-CM-Menu-Loading').hide();
+						if (xhr['responseText'] == "sukses") {
+							Swal.fire(
+								'Berhasil Dihapus!',
+								'Data Bulan ' + bulan + ' ' + tahun + ' Shift ' + shift + ' Berhasil Dihapus !!',
+								'success'
+							)
+							tblMenuCreate.clear().draw();
+						}else{
+							swal.fire({
+				                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				                html: xhr['responseText'],
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+						}
+					},
+					success: function(data){
+						obj = JSON.parse(data);
+						if (obj) {
+							obj.forEach(function(daftar, index){
+								tblMenuCreate.row.add([
+									(index + 1),
+									"-",
+									daftar.bulan + daftar.tahun,
+									daftar.shift
+								]).draw(false);
+							})
+						}
+						$('#ldg-CM-Menu-Loading').hide();
+						Swal.fire(
+							'Berhasil Dihapus!',
+							'Data Bulan ' + bulan + ' ' + tahun + ' Shift ' + shift + ' Berhasil Dihapus !!',
+							'success'
+						)
+						tblMenuCreate.clear().draw();
+					}
+				})
+			}
+		})
+	})
+})
+
+function CMMenuCreateChange(tblMenuCreate){
+	var shift = $('#slc-CM-Menu-Shift').val();
+	var lokasi = $('#slc-CM-Menu-Lokasi').val();
+	var bulan_tahun = $('#txt-CM-Menu-BulanTahun').val();
+
+	if (shift && lokasi && bulan_tahun) {
+		$('#ldg-CM-Menu-Loading').show();
+		$.ajax({
+			method: 'GET',
+			url: baseurl + 'CateringManagement/Setup/Menu/listTanggal',
+			data: {shift: shift, lokasi: lokasi, bulan_tahun: bulan_tahun},
+			error: function(xhr,status,error){
+				$('#ldg-CM-Menu-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				if (obj) {
+					tblMenuCreate.clear().draw();
+					if (obj.status == "INSERT") {
+
+						if (obj.isi > 0) {
+							obj.data.forEach(function(daftar, index){
+								tblMenuCreate.row.add([
+									daftar.tanggal,
+									"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+									"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+									"<select class=\"slc-CM-Menu-LaukPendamping\" data-placeholder=\"Pilih Lauk Pendamping...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+									"<select class=\"slc-CM-Menu-Buah\" data-placeholder=\"Pilih Buah...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>"
+								]).draw(false);
+							})
+						}
+
+						if (obj.sayur_jumlah > 0) {
+							obj.sayur.forEach(function(text, index){
+								$('.slc-CM-Menu-Sayur').append("<option>" + text.text + "</option>")
+							})
+						}
+
+						if (obj.lauk_utama_jumlah > 0) {
+							obj.lauk_utama.forEach(function(text, index){
+								$('.slc-CM-Menu-LaukUtama').append("<option>" + text.text + "</option>")
+							})
+						}
+
+						if (obj.lauk_pendamping_jumlah > 0) {
+							obj.lauk_pendamping.forEach(function(text, index){
+								$('.slc-CM-Menu-LaukPendamping').append("<option>" + text.text + "</option>")
+							})
+						}
+
+						if (obj.buah_jumlah > 0) {
+							obj.buah.forEach(function(text, index){
+								$('.slc-CM-Menu-Buah').append("<option>" + text.text + "</option>")
+							})
+						}
+
+						tblMenuCreate.columns.adjust().draw();
+					}else if(obj.status == "UPDATE"){
+						if (obj.isi > 0) {
+							obj.data.forEach(function(daftar, index){
+								tblMenuCreate.row.add([
+									daftar.tanggal,
+									"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.sayur_option + "</select>",
+									"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.lauk_utama_option + "</select>",
+									"<select class=\"slc-CM-Menu-LaukPendamping\" data-placeholder=\"Pilih Lauk Pendamping...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.lauk_pendamping_option + "</select>",
+									"<select class=\"slc-CM-Menu-Buah\" data-placeholder=\"Pilih Buah...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.buah_option + "</select>"
+								]).draw(false);
+							})
+						}
+
+						tblMenuCreate.columns.adjust().draw();
+
+						Swal.fire(
+							'Peringatan!',
+							'Data Sudah Ada Di Database !!',
+							'warning'
+						)
+					}
+
+					$('.slc-CM-Menu-Sayur').select2({
+						tags: true,
+						tokenSeparators: [','],
+						createTag: function (params) {
+						    var term = $.trim(params.term);
+
+						    if (term === '') {
+						    	return null;
+						    }
+
+						    return {
+						    	id: term,
+						    	text: term,
+						    	newTag: true
+						    }
+						}
+					});
+					$('.slc-CM-Menu-LaukUtama').select2({
+						tags: true,
+						// tokenSeparators: [','],
+						createTag: function (params) {
+						    var term = $.trim(params.term);
+
+						    if (term === '') {
+						    	return null;
+						    }
+
+						    return {
+						    	id: term,
+						    	text: term,
+						    	newTag: true 
+						    }
+						},
+					});
+					$('.slc-CM-Menu-LaukPendamping').select2({
+						tags: true,
+						// tokenSeparators: [','],
+						createTag: function (params) {
+						    var term = $.trim(params.term);
+
+						    if (term === '') {
+						    	return null;
+						    }
+
+						    return {
+						    	id: term,
+						    	text: term,
+						    	newTag: true
+						    }
+						}
+					});
+					$('.slc-CM-Menu-Buah').select2({
+						tags: true,
+						// tokenSeparators: [','],
+						createTag: function (params) {
+						    var term = $.trim(params.term);
+
+						    if (term === '') {
+						    	return null;
+						    }
+
+						    return {
+						    	id: term,
+						    	text: term,
+						    	newTag: true 
+						    }
+						}
+					});
+				}
+				$('#ldg-CM-Menu-Loading').hide();
+			}
+		})
+	}else{
+		tblMenuCreate.clear().draw();
+	}
+}
+// end Menu

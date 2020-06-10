@@ -587,6 +587,10 @@ $route['CateringManagement/DetailUrutanJdwl/Create'] 	= 'CateringManagement/Setu
 $route['CateringManagement/DetailUrutanJdwl/Edit/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Edit/$1/$2';
 $route['CateringManagement/DetailUrutanJdwl/Delete/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Delete/$1/$2';
 
+$route['CateringManagement/Setup/Menu'] = 'CateringManagement/Setup/C_Menu';
+$route['CateringManagement/Setup/Menu/(:any)'] = 'CateringManagement/Setup/C_Menu/$1';
+$route['CateringManagement/Setup/Menu/(:any)/(:any)'] = 'CateringManagement/Setup/C_Menu/$1/$2';
+
 //-----------------------------------Catering Management -Penjadwalan-----------------------------------------------//
 $route['CateringManagement/PenjadwalanCatering'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering';
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
