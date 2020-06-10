@@ -61,7 +61,6 @@
 				Dikirim Kepada : <br>
 				<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
 				<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br><br>
- 				<br>
 				<?php echo $get_header[0]['LAIN'] ?>
 			</td>
 		</tr>
