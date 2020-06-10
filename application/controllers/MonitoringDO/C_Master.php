@@ -370,7 +370,7 @@ class C_Master extends CI_Controller
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
         $data['totalbody'] = sizeof($data['get_body']);
         $data['totalserial'] = sizeof($data['get_serial']);
-
+        $data['cek_spb_do'] = $this->M_monitoringdo->cekSpbDo($id);
         // echo "<pre>";
         // print_r($data);
         // die;
