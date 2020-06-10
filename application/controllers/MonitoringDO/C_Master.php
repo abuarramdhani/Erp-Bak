@@ -438,15 +438,14 @@ class C_Master extends CI_Controller
 
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
-            $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-
-            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 41) {
+            $aku    	= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
+            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 35) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 82) {
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 70) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 123) {
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 105) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 164) {
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 140) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
             }else {
               $a = '<br><br><br><br><br><br><br>';
@@ -463,41 +462,46 @@ class C_Master extends CI_Controller
             }else {
               $appr2 = '';
             }
+            // $newDate = date("m-d-Y", strtotime($orgDate));
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
         		<tr style="width:100%">
-              <td rowspan="2" style="max-width:250px;white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+        			<td rowspan="2" style="white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
                 '.$a.'
-               </td>
-        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
+        			 </td>
+        			<td rowspan="3" style="vertical-align:top;width:98px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
         				<br><br>
         				Tgl. ________
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
+        			<td rowspan="3" style="vertical-align:top;width:90px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
         				Tgl. _______
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
+              <td rowspan="3" style="vertical-align:top;width:90px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengeluaran : <br> <br>
+                Tgl. _______
+                <br><br><br><br><br><br><br><br>
+              </td>
+        			<td rowspan="3" style="vertical-align:top;width:95px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
         				Tgl. '.$data['get_footer'][0]['ASSIGN_DATE'].'
         				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_NAME'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
         		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
+        			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
         				<br><br>'.$appr.'
         			</td>
-        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
+        			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
         				<br><br>'.$appr2.'
         			</td>
         		</tr>
         		<tr>
-        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
+        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:8.5px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
         		</tr>
         	</table>
-          <i style="font-size:10px;">
-            *Putih : Ekspedisi &nbsp;&nbsp;&nbsp;&nbsp;Merah : Marketing &nbsp;&nbsp;&nbsp;&nbsp;Kuning : Akuntansi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hijau : Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Biru : Gudang FG
-          </i>');
+            <i style="font-size:10px;">
+              *Putih : Ekspedisi &nbsp;&nbsp;&nbsp;&nbsp;Merah : Marketing &nbsp;&nbsp;&nbsp;&nbsp;Kuning : Akuntansi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hijau : Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Biru : Gudang FG
+            </i>');
             $pdf->WriteHTML($aku);
             $pdf->Output($filename, 'I');
 
@@ -577,16 +581,15 @@ class C_Master extends CI_Controller
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
-            $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
+          $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-
-            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 41) {
+            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 35) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 82) {
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 70) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 123) {
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 105) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 164) {
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 140) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
             }else {
               $a = '<br><br><br><br><br><br><br>';
@@ -606,34 +609,38 @@ class C_Master extends CI_Controller
             // $newDate = date("m-d-Y", strtotime($orgDate));
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
         		<tr style="width:100%">
-        			<td rowspan="2" style="max-width:250px;white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+        			<td rowspan="2" style="white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
                 '.$a.'
         			 </td>
-        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
+        			<td rowspan="3" style="vertical-align:top;width:98px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
         				<br><br>
         				Tgl. ________
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
+        			<td rowspan="3" style="vertical-align:top;width:90px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
         				Tgl. _______
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
+              <td rowspan="3" style="vertical-align:top;width:90px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengeluaran : <br> <br>
+                Tgl. _______
+                <br><br><br><br><br><br><br><br>
+              </td>
+        			<td rowspan="3" style="vertical-align:top;width:95px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
         				Tgl. '.$data['get_footer'][0]['ASSIGN_DATE'].'
         				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_NAME'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
         		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
+        			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
         				<br><br>'.$appr.'
         			</td>
-        			<td rowspan="2" style="vertical-align:top;width:110px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
+        			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
         				<br><br>'.$appr2.'
         			</td>
         		</tr>
         		<tr>
-        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
+        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:8.5px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
         		</tr>
         	</table>
             <i style="font-size:10px;">

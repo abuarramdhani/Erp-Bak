@@ -54,12 +54,15 @@
 				Kepada Yth : <br>
 				<?php echo $get_header[0]['NAMA_ASAL'] ?> <br>
 				<?php echo $get_header[0]['ALAMAT_ASAL'] ?>, <?php echo $get_header[0]['KOTA_ASAL'] ?><br>
-				NPWP : <br> <?php echo $get_header[0]['NPWP'] ?>
+				<br>
+				NPWP : <?php echo $get_header[0]['NPWP'] ?>
 			</td>
-			<td colspan="2" style="height: 88.3px;vertical-align:top; border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">
+			<td colspan="2" style="height: 116.3px;vertical-align:top; border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">
 				Dikirim Kepada : <br>
 				<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
-				<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
+				<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br><br>
+ 				<br>
+				<?php echo $get_header[0]['LAIN'] ?>
 			</td>
 		</tr>
 		<tr style="text-align:center">
@@ -121,7 +124,7 @@
 		</thead>
 		<tbody style="vertical-align:top!important;">
 		<tr style="border-bottom:1px solid black;">
-			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 539px;font-size:10px;padding:5px">
+			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 509px;font-size:10px;padding:5px">
 				<center>
 					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $no ?> <br /><br />
