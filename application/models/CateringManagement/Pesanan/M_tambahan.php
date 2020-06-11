@@ -205,6 +205,18 @@ class M_tambahan extends CI_Model
         $this->personalia->delete('"Catering".tpesanantambahan');
     }
 
+    public function getPenerimaByKeyTempatMakan($key,$tempat_makan){
+        $sql = "select noind,trim(nama) as nama
+                from hrd_khs.tpribadi
+                where keluar = '0'
+                and (
+                    upper(noind) like concat(upper(?),'%')
+                    or upper(nama) like concat('%',upper(?),'%')
+                )
+                and tempat_makan = ?";
+        return $this->personalia->query($sql, array($key,$key,$tempat_makan))->result_array();
+    }
+
 }
 
 ?>

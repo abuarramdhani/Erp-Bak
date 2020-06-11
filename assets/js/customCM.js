@@ -2872,6 +2872,31 @@ $(document).on('ready', function(){
         }
     });
 
+	$('.slc-CM-Tambahan-Penerima').select2({
+        searching: true,
+        minimumInputLength: 3,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'CateringManagement/Pesanan/Tambahan/getPenerima',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    tempat_makan: $('#slc-CM-Tambahan-TempatMakan').val()
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
 	$('#slc-CM-Tambahan-Kategori').on('change', function(){
 		var kategori = $(this).val();
 
@@ -3109,41 +3134,64 @@ $(document).on('ready', function(){
 			var elem_shift = $('#slc-CM-Tambahan-Shift').val();
 			var elem_kategori = $('#slc-CM-Tambahan-Kategori').val();
 			var elem_urutan = $('#slc-CM-Tambahan-Urutan').val();
+			var elem_jumlah = $('#txt-CM-Tambahan-JumlahPesan').val();
+			var elem_pemohon = $('#slc-CM-Tambahan-Pemohon').val();
+			var elem_keterangan = $('#txt-CM-Tambahan-Keterangan').val();
+
 
 			var stat_tanggal = 0;
 			var stat_tempatMakan = 0;
 			var stat_shift = 0;
 			var stat_kategori = 0;
 			var stat_urutan = 0;
+			var stat_jumlah = 0;
+			var stat_pemohon = 0;
+			var stat_keterangan = 0;
+			var stat_penerima = 0;
 
 			if (elem_tanggal) {
 				stat_tanggal = 1;
-			}else{
-				stat_tanggal = 0;
 			}
 			if (elem_tempatMakan) {
 				stat_tempatMakan = 1;
-			}else{
-				stat_tempatMakan = 0;
 			}
 			if (elem_shift) {
 				stat_shift = 1;
-			}else{
-				stat_shift = 0;
 			}
 			if (elem_kategori) {
 				stat_kategori = 1;
-			}else{
-				stat_kategori = 0;
+				if (elem_kategori == "6" || elem_kategori == "7") {
+					if (elem_jumlah) {
+						stat_jumlah = 1;
+					}
+					if (elem_pemohon) {
+						stat_pemohon = 1;
+					}
+					if (elem_keterangan) {
+						stat_keterangan = 1;
+					}
+
+					stat_penerima = 1;
+				}else{
+					stat_jumlah = 1;
+					stat_pemohon = 1;
+					stat_keterangan = 1;
+
+					if (!tblCMTambahanPenerima.data().count()) {
+						stat_penerima = 0;
+					}else{
+						stat_penerima = 1;
+					}
+				}
 			}
 			if (elem_urutan) {
 				stat_urutan = 1;
-			}else{
-				stat_urutan = 0;
 			}
 
+
+
 			
-			if (stat_tanggal == 1 && stat_tempatMakan == 1 && stat_shift == 1 && stat_kategori == 1 && stat_urutan == 1) {
+			if (stat_tanggal == 1 && stat_tempatMakan == 1 && stat_shift == 1 && stat_kategori == 1 && stat_urutan == 1 && stat_jumlah == 1 && stat_pemohon == 1 && stat_keterangan == 1 && stat_penerima == 1) {
 				var formData = $('#frm-CM-Tambahan-Form').serialize();
 				
 				$.ajax({
@@ -3505,24 +3553,51 @@ $(document).on('ready', function(){
         ],
 	});
 
-	$('.slc-CM-Pengurangan-Pekerja').select2({
+	$('.slc-CM-Pengurangan-Penerima').select2({
         searching: true,
         minimumInputLength: 3,
         allowClear: false,
         ajax: {
-            url: baseurl + 'CateringManagement/Pesanan/Pengurangan/searchActiveEmployees',
+            url: baseurl + 'CateringManagement/Pesanan/Pengurangan/getPenerima',
             dataType: 'json',
             delay: 500,
             type: 'GET',
             data: function(params) {
                 return {
-                    term: params.term
+                    term: params.term,
+                    tempat_makan: $('#slc-CM-Pengurangan-TempatMakan').val()
                 }
             },
             processResults: function(data) {
                 return {
                     results: $.map(data, function(obj) {
                         return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
+	$('.slc-CM-Pengurangan-TempatMakanBaru').select2({
+        searching: true,
+        minimumInputLength: 3,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'CateringManagement/Pesanan/Pengurangan/getTempatMakanBaru',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    tempat_makan: $('#slc-CM-Pengurangan-TempatMakan').val(),
+                    kategori: $('#slc-CM-Pengurangan-Kategori').val()
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.fs_tempat_makan, text: obj.fs_tempat_makan + " - " + obj.lokasi };
                     })
                 }
             }
@@ -3749,11 +3824,14 @@ $(document).on('ready', function(){
 			var elem_tempatMakan = $('#slc-CM-Pengurangan-TempatMakan').val();
 			var elem_shift = $('#slc-CM-Pengurangan-Shift').val();
 			var elem_kategori = $('#slc-CM-Pengurangan-Kategori').val();
+			var elem_tempatMakanBaru = $('#slc-CM-Pengurangan-TempatMakanBaru').val();
 
 			var stat_tanggal = 0;
 			var stat_tempatMakan = 0;
 			var stat_shift = 0;
 			var stat_kategori = 0;
+			var stat_tempatMakanBaru = 0;
+			var stat_penerima = 0;
 
 			if (elem_tanggal) {
 				stat_tanggal = 1;
@@ -3772,12 +3850,26 @@ $(document).on('ready', function(){
 			}
 			if (elem_kategori) {
 				stat_kategori = 1;
+				if (elem_kategori == "2" || elem_kategori == "3" || elem_kategori == "4" || elem_kategori == "5") {
+					if (elem_tempatMakanBaru) {
+						stat_tempatMakanBaru = 1;
+					}else{
+						stat_tempatMakanBaru = 0;
+					}
+				}else{
+					stat_tempatMakanBaru = 1;
+				}
 			}else{
 				stat_kategori = 0;
 			}
 
+			if (tblCMPenguranganPenerima.data().count() > 0) {
+				stat_penerima = 1;
+			}else{
+				stat_penerima = 0;
+			}
 			
-			if (stat_tanggal == 1 && stat_tempatMakan == 1 && stat_shift == 1 && stat_kategori == 1) {
+			if (stat_tanggal == 1 && stat_tempatMakan == 1 && stat_shift == 1 && stat_kategori == 1 && stat_tempatMakanBaru == 1 && stat_penerima == 1) {
 				var formData = $('#frm-CM-Pengurangan-Form').serialize();
 				
 				$.ajax({
@@ -3879,6 +3971,8 @@ $(document).on('ready', function(){
 		}else{
 			tanggal = $('#txt-CM-Pengurangan-Tanggal').val();
 			if (tanggal) {
+				$('#txt-CM-Pengurangan-Tanggal-Baru').val(tanggal);
+
 				$('#slc-CM-Pengurangan-Kategori').val("").change();
 				$('#slc-CM-Pengurangan-Shift').val("").change();
 				$('#slc-CM-Pengurangan-TempatMakan').val("").change();

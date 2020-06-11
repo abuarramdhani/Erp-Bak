@@ -109,7 +109,7 @@
 												<div class="form-group" id="opt-CM-Tambahan-Penerima" style="display: none;">
 													<label class="control-label col-lg-4">Penerima</label>
 													<div class="col-lg-8">
-														<select class="slc-CM-Tambahan-Pekerja" name="slc-CM-Tambahan-Penerima" id="slc-CM-Tambahan-Penerima" autocomplete="off" data-placeholder="Penerima" style="width: 100%" disabled></select>
+														<select class="slc-CM-Tambahan-Penerima" name="slc-CM-Tambahan-Penerima" id="slc-CM-Tambahan-Penerima" autocomplete="off" data-placeholder="Penerima" style="width: 100%" disabled></select>
 													</div>
 												</div>
 												<div class="form-group" id="opt-CM-Tambahan-Penerima-Table" style="display: none;">
@@ -242,6 +242,7 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0,0,0,.5);
+    z-index: 9999;
 }
 .loading-wheel {
     width: 40px;

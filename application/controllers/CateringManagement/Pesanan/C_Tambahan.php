@@ -416,5 +416,12 @@ class C_Tambahan extends CI_Controller
         echo json_encode($data);
     }
 
+    public function getPenerima(){
+        $key = $this->input->get('term');
+        $tempat_makan = $this->input->get('tempat_makan');
+        $data = $this->M_tambahan->getPenerimaByKeyTempatMakan($key,$tempat_makan);
+        echo json_encode($data);
+    }
+
 }
 ?>
