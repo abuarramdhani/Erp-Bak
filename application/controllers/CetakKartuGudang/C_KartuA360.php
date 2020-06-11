@@ -62,20 +62,35 @@ class C_KartuA360 extends CI_Controller {
 		$load = PHPExcel_IOFactory::load($file);
 		$sheets = $load->getActiveSheet()->toArray(null,true,true,true);
 		
+		$cek = count($sheets[1]);
 		$getdata = array();
 		$i = 0;
-		$tanda = substr($sheets[1]['A'],9,1);
-		foreach ($sheets as $val) {
-			if ($i != 0) {
-				$isi = explode($tanda, $val['A']);
-				$array = array(
-					'engine' => $isi[0],
-					'body' => $isi[1],
-					'weight' => $isi[2],
-				);
-				array_push($getdata,$array);
+		if ($cek == 1) {
+			$tanda = substr($sheets[1]['A'],9,1);
+			foreach ($sheets as $val) {
+				if ($i != 0) {
+					$isi = explode($tanda, $val['A']);
+					$array = array(
+						'engine' => $isi[0],
+						'body' => $isi[1],
+						'weight' => $isi[2],
+					);
+					array_push($getdata,$array);
+				}
+				$i++;
 			}
-			$i++;
+		}else {
+			foreach ($sheets as $val) {
+				if ($i != 0) {
+					$array = array(
+						'engine' => $val['A'],
+						'body' => $val['B'],
+						'weight' => $val['C'],
+					);
+					array_push($getdata,$array);
+				}
+				$i++;
+			}
 		}
 		$data['data'] = $getdata;
 		// echo "<pre>";print_r($getdata);exit();
