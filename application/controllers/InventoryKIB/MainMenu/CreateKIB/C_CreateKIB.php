@@ -161,7 +161,7 @@ class C_CreateKIB extends CI_Controller
 		//$no_batch menampung item
 		$n = 1;
 		$org = 'opm';
-		$this->printpdf($org,$status,$no_batch,$kib,$n);
+		// $this->printpdf($org,$status,$no_batch,$kib,$n);
 	
 		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
 		$filename			= 'KIB_'.time().'.pdf';
