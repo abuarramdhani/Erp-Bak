@@ -226,12 +226,13 @@ class C_JadwalLayanan extends CI_Controller
 		$data['table'] = $arrData;
 		
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('', 'F4',8,15, 15, 16, 16, 9, 9);
+		$pdf = new mPDF('', 'F4',8,10, 10, 10, 10, 9, 9);
 		$filename = "JadwalLayanan.pdf";
 		$html = $this->load->view('CateringManagement/Cetak/JadwalLayanan/V_cetak.php',$data,true);
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh ".$this->session->user." - ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". <br>Halaman {PAGENO} dari {nb}</i>");
 		$pdf->Output($filename, 'I');
 	}
 }

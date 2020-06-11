@@ -1222,6 +1222,19 @@ class M_hitungpesanan extends Ci_Model
 				and tp.lokasi = ?";
 		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
 	}
+
+	public function getMenuDetailByTanggalBulanTahunShiftLokasi($tanggal,$bulan,$tahun,$shift,$lokasi){
+		$sql = "select *
+				from \"Catering\".t_menu tm 
+				left join \"Catering\".t_menu_detail tmd 
+				on tm.menu_id = tmd.menu_id
+				where tmd.tanggal = ?
+				and tm.bulan = ?
+				and tm.tahun = ?
+				and tm.shift = ?
+				and tm.lokasi = ?";
+		return $this->personalia->query($sql,array($tanggal,$bulan,$tahun,$shift,$lokasi))->row();
+	}
 }
 
 ?>

@@ -1156,7 +1156,7 @@ class C_HitungPesanan extends CI_Controller
       $jenis_nama = 'SNACK';
       $nomor = 1;
       if (isset($pembagian) and !empty($pembagian)) { 
-        $isi = " <table style='width: 100%;border: 2px solid white'>";
+        $isi = "<table style='width: 100%;border: 2px solid white'>";
 
         foreach ($pembagian as $bagi) {
 
@@ -1170,7 +1170,7 @@ class C_HitungPesanan extends CI_Controller
             <td style='width: 33%;'>
               <table border='2' style='width: 100%;border: 2px solid black;'>
                 <tr>
-                  <td colspan='2' style='text-align: center;border-bottom: 2px solid black;font-weight: bold;font-size: 15pt;vertical-align: middle;height: 60px;'>
+                  <td colspan='3' style='text-align: center;border-bottom: 2px solid black;font-weight: bold;font-size: 15pt;vertical-align: middle;height: 60px;'>
                     ".$data['tempat_makan']."
                   </td>
                 </tr>
@@ -1178,21 +1178,25 @@ class C_HitungPesanan extends CI_Controller
                   <td rowspan='4' style='text-align: center;font-weight: bold;font-size: 40pt;width: 220px;'>
                     ".$data['jumlah_pesan']."
                   </td>
+                  <td style='color: grey;text-align: right'>S</td>
                   <td style='color: grey;text-align: right'>
                     ".$data['staff']."
                   </td>
                 </tr>
                 <tr>
+                  <td style='color: grey;text-align: right'>NS</td>
                   <td style='color: grey;text-align: right'>
                     ".$data['nonstaff']."
                   </td>
                 </tr>
                 <tr>
+                  <td style='color: grey;text-align: right'>T</td>
                   <td style='color: grey;text-align: right'>
                     ".$data['tambahan']."
                   </td>
                 </tr>
                 <tr>
+                  <td style='color: grey;text-align: right'>K</td>
                   <td style='color: grey;text-align: right'>
                     ".$data['pengurangan']."
                   </td>
@@ -1212,7 +1216,84 @@ class C_HitungPesanan extends CI_Controller
     }else{
       $jenis_nama = 'MAKAN';
        if (isset($pembagian) and !empty($pembagian)) { 
-        $isi = " <table border=\"1\" style=\"width: 100%;border-collapse: collapse;\" id=\"CateringHitungPesananLihatTabel\">";
+        $tgl = explode("-", $tanggal)['2'];
+        $bln = explode("-", $tanggal)['1'];
+        $thn = explode("-", $tanggal)['0'];
+        $menu = $this->M_hitungpesanan->getMenuDetailByTanggalBulanTahunShiftLokasi($tgl,$bln,$thn,$shift,$lokasi);
+        if (!empty($menu)) {
+          $sayur = $menu->sayur;
+          $lauk_utama = $menu->lauk_utama;
+          $lauk_pendamping = $menu->lauk_pendamping;
+          $buah = $menu->buah;
+        }else{
+          $sayur = "-";
+          $lauk_utama = "-";
+          $lauk_pendamping = "-";
+          $buah = "-";
+        }
+
+        if ($lokasi == "1") {
+          $lokasi_str = "Yogyakarta & Mlati";
+        }elseif ($lokasi == "2") {
+          $lokasi_str = "Tuksono";
+        }else{
+          $lokasi_str ="tidak diketahui";
+        }
+
+        if ($shift == "1") {
+          $shift_str = "1 & Umum";
+        }elseif ($shift == "2") {
+          $shift_str = "2";
+        }elseif ($shift == "3") {
+          $shift_str = "3";
+        }else{
+          $shift_str = "tidak diketahui";
+        }
+
+        $isi_header = "
+        <table style=\"width: 100%\">
+          <tr>
+            <td rowspan=\"2\" style=\"width: 75%;font-size: 20pt;\">
+              <b>Daftar Pesanan Catering</b>
+            </td>
+            <td style=\"width: 6%\">
+              Lokasi
+            </td>
+            <td style=\"width: 2%\">
+              :
+            </td>
+            <td style=\"width: 17%\">
+              ".$lokasi_str."
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Tanggal
+            </td>
+            <td>
+              :
+            </td>
+            <td>
+              ".date('d M Y', strtotime($tanggal))."
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Menu ".$sayur." - ".$lauk_utama." - ". $lauk_pendamping." - ".$buah."
+            </td>
+            <td>
+              Shift
+            </td>
+            <td>
+              :
+            </td>
+            <td>
+              ".$shift_str."
+            </td>
+          </tr>
+        </table>
+        ";
+        $isi = $isi_header." <table border=\"1\" style=\"width: 100%;border-collapse: collapse;\" id=\"CateringHitungPesananLihatTabel\">";
 
         foreach ($pembagian as $bagi) {
           $isi .= "<tr>
@@ -1230,15 +1311,23 @@ class C_HitungPesanan extends CI_Controller
 
           $nomor = 1;
           foreach ($bagi['data'] as $data) {
-
+            if ($data['pengurangan'] !== "0" && $data['tambahan'] !== "0") {
+              $warna = "green";
+            }elseif ($data['pengurangan'] !== "0") {
+              $warna = "red";
+            }elseif ($data['tambahan'] !== "0") {
+              $warna = "blue";
+            }else{
+              $warna = "black";
+            }
             $isi .= "<tr data-urutan=\"".$bagi['urutan']."\" data-katering=\"".$data['tempat_makan']."\">
-              <td style=\"text-align: center\">".$nomor."</td>
-              <td style=\"text-align: left;padding-left: 20px;\">".$data['tempat_makan']."</td>
-              <td style=\"text-align: right;padding-right: 20px;\">".$data['staff']."</td>
-              <td style=\"text-align: right;padding-right: 20px;\">".$data['nonstaff']."</td>
-              <td style=\"text-align: right;padding-right: 20px;\">".$data['tambahan']."</td>
-              <td style=\"text-align: right;padding-right: 20px;\">".$data['pengurangan']."</td>
-              <td style=\"text-align: right;padding-right: 20px;\">".$data['jumlah_pesan']."</td>
+              <td style=\"text-align: center;color: ".$warna."\">".$nomor."</td>
+              <td style=\"text-align: left;padding-left: 20px;color: ".$warna."\">".$data['tempat_makan']."</td>
+              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['staff']."</td>
+              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['nonstaff']."</td>
+              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['tambahan']."</td>
+              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['pengurangan']."</td>
+              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['jumlah_pesan']."</td>
             </tr>";
 
             $nomor++;
@@ -1254,6 +1343,21 @@ class C_HitungPesanan extends CI_Controller
         }
 
         $isi .= "</table>";
+        $isi_footer = "
+        <table style=\"width: 100%\">
+          <tr>
+            <td style=\"color: blue;width: 33%\">
+              Ada Penambahan
+            </td>
+            <td style=\"color: red;width: 33%\">
+              Ada Pengurangan
+            </td>
+            <td style=\"color: green;width: 33%\">
+              Ada Penambahan dan Pengurangan
+            </td>
+          </tr>
+        </table>";
+        $isi .= $isi_footer;
         $data['daftar'] = $isi;
         
       }else{
@@ -1279,6 +1383,7 @@ class C_HitungPesanan extends CI_Controller
     $filename = 'PESANAN_'.$jenis_nama.'_'.$tanggal.'_'.$shift.'_'.$lokasi.'.pdf';
     // echo "<pre>";print_r($data['PrintppDetail']);exit();
     $html = $this->load->view('CateringManagement/HitungPesanan/V_pdf', $data, true);
+    $pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh ".$this->session->user." - ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". <br>Halaman {PAGENO} dari {nb}</i>");
     $pdf->WriteHTML($html, 2);
     // $pdf->Output($filename, 'D');
     $pdf->Output($filename, 'I');

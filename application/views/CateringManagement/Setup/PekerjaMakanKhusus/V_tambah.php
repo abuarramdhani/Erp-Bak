@@ -90,7 +90,6 @@
 													<div class="col-lg-8">
 														<select id="slc-CM-PekerjaMakanKhusus-LaukUtama" style="width: 100%" data-placeholder="Pilih Lauk Utama...">
 															<option></option>
-															<option>Semua Lauk Utama</option>
 															<?php 
 															if (isset($data) && !empty($data)) {
 																if ($data->menu_lauk_utama == "Semua Lauk Utama") {

@@ -53,15 +53,24 @@
 												<?php 
 												$nomor = 1;
 												foreach ($bagi['data'] as $data) {
+													if ($data['pengurangan'] !== "0" && $data['tambahan'] !== "0") {
+														$warna = "green";
+													}elseif ($data['pengurangan'] !== "0") {
+														$warna = "red";
+													}elseif ($data['tambahan'] !== "0") {
+														$warna = "blue";
+													}else{
+														$warna = "black";
+													}
 													?>
 													<tr data-urutan="<?php echo $bagi['urutan'] ?>" data-katering="<?php echo $data['tempat_makan'] ?>">
-														<td style="text-align: center"><?php echo $nomor ?></td>
-														<td style="text-align: left;padding-left: 20px;"><?php echo $data['tempat_makan'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['staff'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['nonstaff'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['tambahan'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['pengurangan'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['jumlah_pesan'] ?></td>
+														<td style="text-align: center;color: <?php echo $warna ?>"><?php echo $nomor ?></td>
+														<td style="text-align: left;padding-left: 20px;color: <?php echo $warna ?>"><?php echo $data['tempat_makan'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['staff'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['nonstaff'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['tambahan'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['pengurangan'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['jumlah_pesan'] ?></td>
 													</tr>
 													<?php 
 													$nomor++;
@@ -105,6 +114,17 @@
 												?>
 											</div>
 										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4" style="color: blue"> 
+										<span class="fa fa-square"></span> Ada Penambahan
+									</div>
+									<div class="col-sm-4" style="color: red">
+										<span class="fa fa-square"></span> Ada Pengurangan
+									</div>
+									<div class="col-sm-4" style="color: green">
+										<span class="fa fa-square"></span> Ada Penambahan dan Pengurangan
 									</div>
 								</div>
 							</div>
