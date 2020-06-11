@@ -5623,3 +5623,170 @@ $(document).ready(function(){
 	})
 })
 // end Pekerja Makan Khusus
+
+// start Pekerja Tidak Makan
+$(document).ready(function(){
+	var tblCMPekerjaTidakMakan = $('#tbl-CM-PekerjaTidakMakan-Table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			},
+			{
+			    "targets": 1,
+			    "className": "text-center"
+			}
+		],
+	})
+
+	$('#txt-CM-PekerjaTidakMakan-TanggalAwal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#txt-CM-PekerjaTidakMakan-TanggalAkhir').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#slc-CM-PekerjaTidakMakan-Pekerja').select2({
+		minimumInputLength: 1,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/PekerjaTidakMakan/getPekerja',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.noind,
+							text: item.noind + ' - ' + item.nama
+						};
+					})
+
+				};
+			},
+		},
+	})
+
+	$('#btn-CM-PekerjaTidakMakan-Simpan').on('click', function(){
+		var pekerja = $('#slc-CM-PekerjaTidakMakan-Pekerja').val();
+		var tanggalAwal = $('#txt-CM-PekerjaTidakMakan-TanggalAwal').val();
+		var tanggalAkhir = $('#txt-CM-PekerjaTidakMakan-TanggalAkhir').val();
+		var keterangan = $('#txa-CM-PekerjaTidakMakan-Keterangan').val();
+		var permintaanId = $('#txt-CM-PekerjaTidakMakan-PermintaanId').val();
+		if (pekerja && tanggalAwal && tanggalAkhir && keterangan) {
+			$('#ldg-CM-PekerjaTidakMakan-Loading').show();
+			$.ajax({
+				method: 'POST',
+				url: baseurl + 'CateringManagement/Extra/PekerjaTidakMakan/simpan',
+				data: {
+					pekerja: pekerja,
+					tanggal_awal: tanggalAwal,
+					tanggal_akhir: tanggalAkhir,
+					keterangan: keterangan,
+					permintaan_id: permintaanId
+				},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PekerjaTidakMakan-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-PekerjaTidakMakan-Loading').hide();
+					Swal.fire(
+						'Berhasil Disimpan!',
+						'Data Berhasil Disimpan !!',
+						'success'
+					)
+					window.location.href = baseurl + 'CateringManagement/Extra/PekerjaTidakMakan';
+				}
+			})
+		}else{
+			Swal.fire(
+				'Peringatan!',
+				'Pastikan Semua Sudah Terisi !!',
+				'warning'
+			)
+		}
+	});
+
+	$('#tbl-CM-PekerjaTidakMakan-Table').on('click','.btn-CM-PekerjaTidakMakan-Delete', function(){
+		var permintaanId = $(this).attr("data-id");
+		Swal.fire({
+			title: 'Apakah Anda yakin ?',
+			text: 'Data yang Sudah Dihapus Tidak Dapat Dikembalikan !!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Hapus',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {			
+			if (result.value) {
+				$('#ldg-CM-Menu-Loading').show();
+				$.ajax({
+					method: 'GET',
+					url: baseurl + 'CateringManagement/Extra/PekerjaTidakMakan/hapus',
+					data: {id: permintaanId},
+					error: function(xhr,status,error){
+						$('#ldg-CM-Menu-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						obj = JSON.parse(data);
+						tblCMPekerjaTidakMakan.clear().draw();
+						if (obj) {
+							obj.forEach(function(daftar, index){
+								tblCMPekerjaTidakMakan.row.add([
+									(index + 1),
+									daftar.action,
+									daftar.pekerja,
+									daftar.dari,
+									daftar.sampai,
+									daftar.keterangan
+								]).draw(false);
+							})
+						}
+						$('#ldg-CM-Menu-Loading').hide();
+						Swal.fire(
+							'Berhasil Dihapus!',
+							'Data Berhasil Dihapus !!',
+							'success'
+						)
+					}
+				})
+			}
+		})
+	})
+})
+// end Pekerja Tidak Makan

@@ -678,6 +678,10 @@ $route['CateringManagement/Extra/PresensiPekerja'] = 'CateringManagement/Extra/C
 $route['CateringManagement/Extra/PresensiPekerja/(:any)'] = 'CateringManagement/Extra/C_PresensiPekerja/$1';
 $route['CateringManagement/Extra/PresensiPekerja/(:any)/(:any)'] = 'CateringManagement/Extra/C_PresensiPekerja/$1/$2';
 
+$route['CateringManagement/Extra/PekerjaTidakMakan'] = 'CateringManagement/Extra/C_PekerjaTidakMakan';
+$route['CateringManagement/Extra/PekerjaTidakMakan/(:any)'] = 'CateringManagement/Extra/C_PekerjaTidakMakan/$1';
+$route['CateringManagement/Extra/PekerjaTidakMakan/(:any)/(:any)'] = 'CateringManagement/Extra/C_PekerjaTidakMakan/$1/$2';
+
 //------------------------------------CateringManagement - Pesanan----------------------------------------------------------//
 $route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
 $route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
