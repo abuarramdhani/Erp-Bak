@@ -591,6 +591,10 @@ $route['CateringManagement/Setup/Menu'] = 'CateringManagement/Setup/C_Menu';
 $route['CateringManagement/Setup/Menu/(:any)'] = 'CateringManagement/Setup/C_Menu/$1';
 $route['CateringManagement/Setup/Menu/(:any)/(:any)'] = 'CateringManagement/Setup/C_Menu/$1/$2';
 
+$route['CateringManagement/Setup/PekerjaMakanKhusus'] = 'CateringManagement/Setup/C_PekerjaMakanKhusus';
+$route['CateringManagement/Setup/PekerjaMakanKhusus/(:any)'] = 'CateringManagement/Setup/C_PekerjaMakanKhusus/$1';
+$route['CateringManagement/Setup/PekerjaMakanKhusus/(:any)/(:any)'] = 'CateringManagement/Setup/C_PekerjaMakanKhusus/$1/$2';
+
 //-----------------------------------Catering Management -Penjadwalan-----------------------------------------------//
 $route['CateringManagement/PenjadwalanCatering'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering';
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';

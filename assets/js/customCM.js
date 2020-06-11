@@ -5169,7 +5169,7 @@ function CMMenuCreateChange(tblCMMenuCreate){
 
 					$('.slc-CM-Menu-Sayur').select2({
 						tags: true,
-						tokenSeparators: [','],
+						// tokenSeparators: [','],
 						createTag: function (params) {
 						    var term = $.trim(params.term);
 
@@ -5244,3 +5244,311 @@ function CMMenuCreateChange(tblCMMenuCreate){
 	}
 }
 // end Menu
+
+// start Pekerja Makan Khusus
+$(document).ready(function(){
+	var tblCMPekerjaMakanKhusus = $('#tbl-CM-PekerjaMakanKhusus-Table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			},
+			{
+			    "targets": 1,
+			    "className": "text-center"
+			}
+		],
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-Pekerja').select2({
+		minimumInputLength: 1,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Setup/PekerjaMakanKhusus/getPekerja',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.noind,
+							text: item.noind + ' - ' + item.nama
+						};
+					})
+
+				};
+			},
+		},
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-Sayur').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-LaukUtama').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-LaukPendamping').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-Buah').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-SayurPengganti').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-LaukUtamaPengganti').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-LaukPendampingPengganti').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-BuahPengganti').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#btn-CM-PekerjaMakanKhusus-Simpan').on('click', function(){
+		var pekerja = $('#slc-CM-PekerjaMakanKhusus-Pekerja').val();
+		var sayur = $('#slc-CM-PekerjaMakanKhusus-Sayur').val();
+		var lauk_utama = $('#slc-CM-PekerjaMakanKhusus-LaukUtama').val();
+		var lauk_pendamping = $('#slc-CM-PekerjaMakanKhusus-LaukPendamping').val();
+		var buah = $('#slc-CM-PekerjaMakanKhusus-Buah').val();
+		var sayur_pengganti = $('#slc-CM-PekerjaMakanKhusus-SayurPengganti').val();
+		var lauk_utama_pengganti = $('#slc-CM-PekerjaMakanKhusus-LaukUtamaPengganti').val();
+		var lauk_pendamping_pengganti = $('#slc-CM-PekerjaMakanKhusus-LaukPendampingPengganti').val();
+		var buah_pengganti = $('#slc-CM-PekerjaMakanKhusus-BuahPengganti').val();
+		var pekerja_makan_khusus_id = $('#txt-CM-PekerjMakanKhusus-Id').val();
+
+		if (pekerja && sayur && lauk_utama && lauk_pendamping && buah && sayur_pengganti && lauk_utama_pengganti && lauk_pendamping_pengganti && buah_pengganti) {
+			$('#ldg-CM-PekerjaMakanKhusus-Loading').show();
+			$.ajax({
+				method: 'POST',
+				url: baseurl + 'CateringManagement/Setup/PekerjaMakanKhusus/simpan',
+				data: {
+					pekerja: pekerja,
+					sayur: sayur,
+					lauk_utama: lauk_utama,
+					lauk_pendamping: lauk_pendamping,
+					buah: buah,
+					sayur_pengganti: sayur_pengganti,
+					lauk_utama_pengganti: lauk_utama_pengganti,
+					lauk_pendamping_pengganti: lauk_pendamping_pengganti,
+					buah_pengganti: buah_pengganti,
+					pekerja_makan_khusus_id: pekerja_makan_khusus_id
+				},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
+					Swal.fire(
+						'Behasil!',
+						'Data Berhasil Disimpan !!',
+						'success'
+					)
+					window.location.href = baseurl + 'CateringManagement/Setup/PekerjaMakanKhusus';
+				}
+			})
+		}else{
+			Swal.fire(
+				'Peringatan!',
+				'Pastikan Semua Sudah Terisi !!',
+				'warning'
+			)
+		}
+
+	})
+
+	$('#tbl-CM-PekerjaMakanKhusus-Table').on('click','.btn-CM-PekerjaMakanKhusus-Hapus', function(){
+		var id = $(this).attr('data-id');
+		Swal.fire({
+			title: 'Apakah Anda yakin ?',
+			text: 'Data yang Sudah Dihapus Tidak Dapat Dikembalikan !!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Hapus',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {			
+			if (result.value) {
+				$('#ldg-CM-PekerjaMakanKhusus-Loading').show();
+				$.ajax({
+					method: 'GET',
+					url: baseurl + 'CateringManagement/Setup/PekerjaMakanKhusus/delete',
+					data: {id: id},
+					error: function(xhr,status,error){
+						$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						obj = JSON.parse(data);
+						tblCMPekerjaMakanKhusus.clear().draw();
+						if (obj) {
+							obj.forEach(function(daftar, index){
+								tblCMPekerjaMakanKhusus.row.add([
+									(index + 1),
+									daftar.action,
+									daftar.pekerja,
+									daftar.menu,
+									daftar.pengganti
+								]).draw(false);
+							})
+						}
+						$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
+						Swal.fire(
+							'Berhasil Dihapus!',
+							'Data Berhasil Dihapus !!',
+							'success'
+						)
+					}
+				})
+			}
+		})
+	})
+})
+// end Pekerja Makan Khusus
