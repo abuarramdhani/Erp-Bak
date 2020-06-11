@@ -177,7 +177,7 @@ $(document).ready(function () {
         var localTrans = $(this).val();
         var totallain = 0;
         $('.hrgLainAdditionalCostPBI').each(function () {
-            totallain += parseInt($(this).text());
+            totallain += parseInt($(this).val());
         })
         var totalHargaAdditionalCost = Number(totallain) + Number(localTrans);
         $('.totalAdditionalCostPBI').html(totalHargaAdditionalCost);
@@ -193,7 +193,7 @@ $(document).ready(function () {
 
         var totallain = 0;
         $('.hrgLainAdditionalCostPBI').each(function () {
-            totallain += Number(purify($(this).text()));
+            totallain += Number(purify($(this).val()));
         })
         var totalHargaAdditionalCost = Number(totallain) + Number(idrLocalTrans);
         $('.totalAdditionalCostPBI').html(formatMoney(totalHargaAdditionalCost));
@@ -243,7 +243,7 @@ $(document).ready(function () {
 
         var totallain = 0;
         $('.hrgLainAdditionalCostPBI').each(function () {
-            totallain += Number(purify($(this).text()));
+            totallain += Number(purify($(this).val()));
         })
         var totalHargaAdditionalCost = Number(totallain) + Number(purify(idrLocalTrans)) + Number(biayaSurvey);
         $('.totalAdditionalCostPBI').html(formatMoney(totalHargaAdditionalCost));
@@ -413,6 +413,52 @@ $(document).ready(function () {
           })
     })
 
+    $(document).on('change','.hrgLainAdditionalCostPBI', function () {
+        refreshNilaiAdditionalCostAtasLengkap();
+        refreshNilaiLineLengkap();
+    })
+
+    $(document).on('click','.editAdditionalCostPBI', function () {
+        var rid = $(this).attr('rid');
+        $('.hrgLainAdditionalCostPBI[rid="'+rid+'"]').removeAttr('readonly');
+        $('.prosesEditAddCostPBI[rid="'+rid+'"]').css('display','block');
+        $(this).css('display','none');
+    })
+    
+    $(document).on('click','.prosesEditAddCostPBI', function () {
+        var rid = $(this).attr('rid');
+        var value = $(this).val();
+        value = value.split("-");
+        var request_id = value[0];
+        var deskripsi = value[1];
+        var price = purify($('.hrgLainAdditionalCostPBI[rid="'+rid+'"]').val());
+
+        $(this).css('display','none');
+        $('.loadingEditAddCostPBI[rid="'+rid+'"]').css('display','block');
+        $('.hrgLainAdditionalCostPBI[rid="'+rid+'"]').attr('readonly','readonly');
+
+        $.ajax({
+            type: "POST",
+            url: baseurl+"PerhitunganBiayaImpor/Laporan/EditAdditionalCost",
+            data: {
+                    request_id : request_id,
+                    deskripsi : deskripsi,
+                    price : price
+                    },
+            success: function (response) {
+                if (response == 1) {
+                    Swal.fire(
+                        'Updated!',
+                        'Data berhasil diperbarui',
+                        'success'
+                    )
+                    $('.loadingEditAddCostPBI[rid="'+rid+'"]').css('display','none');
+                    $('.editAdditionalCostPBI[rid="'+rid+'"]').css('display','block');
+                }
+            }
+        });
+    })
+
 })
 
 function refreshNilaiLineLengkap() {
@@ -504,7 +550,8 @@ function refreshNilaiAdditionalCostAtasLengkap() {
     // alert($('.hrgLainAdditionalCostPBI').length)
     var totallain = 0;
     $('.hrgLainAdditionalCostPBI').each(function () {
-        totallain += Number(purify($(this).text()));
+        totallain += Number(purify($(this).val()));
+        // alert(totallain)
     })
     var totalHargaAdditionalCost = Number(totallain) + Number(purify(idrLocalTrans));
     // console.log(idrLocalTrans)

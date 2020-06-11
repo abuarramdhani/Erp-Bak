@@ -296,7 +296,6 @@ class C_Laporan extends CI_Controller {
 		$objPHPExcel->getActiveSheet()->getStyle('E3:E10')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('E3:E10')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		
-
 		$objPHPExcel->getActiveSheet()->getStyle('A12:T14')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('A')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('A')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
@@ -453,8 +452,7 @@ class C_Laporan extends CI_Controller {
 			$objset->setCellValue("R".$row, '=P'.$row.'/H'.$row);
 			$objset->setCellValue("S".$row, '=Q'.$row.'+R'.$row);
 			$objset->setCellValue("T".$row, '=R'.$row.'/Q'.$row);
-			
-			
+				
 			$row++;
 		}
 		// $objPHPExcel->getActiveSheet()->getStyle("J".$row)->getNumberFormat()->setFormatCode('#,##0.00');
@@ -469,6 +467,7 @@ class C_Laporan extends CI_Controller {
 		}else{
 			$bea = '0';
 		}
+
 		$objset->setCellValue("J".$row, '=SUM(J15:J'.($row-1).')');
 		$objset->setCellValue("L".$row, '=SUM(L15:L'.($row-1).')');
 		$objset->setCellValue("N".$row, $bea);
@@ -476,9 +475,7 @@ class C_Laporan extends CI_Controller {
 		$objset->setCellValue("P".$row, '=SUM(P15:P'.($row-1).')');
 		$objPHPExcel->getActiveSheet()->getStyle("N".$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FEF81B');
 
-		
 		$objPHPExcel->getActiveSheet()->getStyle('H'.$row.':P'.$row)->applyFromArray($style['border_bottom']);
-
 
 		//additional cost
 		$objset->mergeCells('C'.($row+2).':E'.($row+3));
@@ -487,7 +484,6 @@ class C_Laporan extends CI_Controller {
 
 		$objPHPExcel->getActiveSheet()->getStyle('C'.($row+2).':H'.($row+3))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('C'.($row+2).':H'.($row+3))->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-
 
 		$objset->setCellValue('C'.($row+2), 'ADDITIONAL COST');
 		$objset->setCellValue('F'.($row+2), 'in '.$currency);
@@ -561,7 +557,6 @@ class C_Laporan extends CI_Controller {
 		$objset->setCellValue("M".($row+11),'Tgl: '.date('d/m/Y'));
 		$objset->setCellValue("O".($row+11),'Tgl: ');
 
-
 		$objPHPExcel->getActiveSheet()->getStyle('K'.($row+5).':P'.($row+11))->applyFromArray($style['border_all']);
 		$objPHPExcel->getActiveSheet()->getStyle('K'.($row+5).':P'.($row+10))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
@@ -575,7 +570,6 @@ class C_Laporan extends CI_Controller {
 		$objset->setCellValue("G".($rows), '=SUM(G'.($row + 4).':G'.($rows-1).')');
 
 		$objPHPExcel->getActiveSheet()->getStyle('C'.($rows+1).':J'.($rows+1))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('FCBF02');
-
 
 		$objPHPExcel->getActiveSheet()->getStyle("D".($rows))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle("D".($rows))->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
@@ -614,6 +608,17 @@ class C_Laporan extends CI_Controller {
 		$request_id = $_POST['request_id'];
 
 		$this->M_laporan->HapusLine($kode_barang,$no_po,$qty_po,$io,$request_id);
+
+		echo 1;
+	}
+
+	public function EditAdditionalCost()
+	{
+		$request_id = $_POST['request_id'];
+		$deskripsi = $_POST['deskripsi'];
+		$price = $_POST['price'];
+
+		$this->M_laporan->EditAdditionalCost($request_id, $deskripsi, $price);
 
 		echo 1;
 	}
