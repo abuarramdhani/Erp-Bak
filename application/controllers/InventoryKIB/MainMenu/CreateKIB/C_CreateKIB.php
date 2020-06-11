@@ -140,26 +140,46 @@ class C_CreateKIB extends CI_Controller
 
 	public function pdf($status,$no_batch,$kib)
 	{
+		
+
 		$n = 0;
 		$org = 'opm';
 		$this->printpdf($org,$status,$no_batch,$kib,$n);
+
 	}
 
 	public function pdf1($status,$no_batch,$kib)
 	{
-		//$no_batch menampung item
-		$n = 1;
-		$org = 'opm';
-		$this->printpdf($org,$status,$no_batch,$kib,$n);
-	}
-
-	public function pdf2($status,$no_batch,$kib)
-	{
+		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
 		$length = 370;
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
 		$pdf 			= $this->pdf->load();
 		$pdf = new mPDF('utf-8',array(210,$length), 0, '', 13, 13, 0, 20, 0, 0);
+		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
+
+		//$no_batch menampung item
+		$n = 1;
+		$org = 'opm';
+		$this->printpdf($org,$status,$no_batch,$kib,$n);
+	
+		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
+		$filename			= 'KIB_'.time().'.pdf';
+		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_SO',$data,true);
+		$pdf->WriteHTML($html,0);
+		$pdf->Output($filename, 'I');
+		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
+	}
+
+	public function pdf2($status,$no_batch,$kib)
+	{
+		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
+		$length = 370;
+		$this->load->library('ciqrcode');
+		$this->load->library('Pdf');
+		$pdf 			= $this->pdf->load();
+		$pdf = new mPDF('utf-8',array(210,$length), 0, '', 13, 13, 0, 20, 0, 0);
+		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
 
 		$n = 0;
 		$org = 'odm';
@@ -169,10 +189,12 @@ class C_CreateKIB extends CI_Controller
 		// exit();
 		// $this->printpdf($org,$status,$no_batch,$kib,$n);
 
+		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
 		$filename			= 'KIB_'.time().'.pdf';
 		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_SO',$data,true);
 		$pdf->WriteHTML($html,0);
 		$pdf->Output($filename, 'I');
+		/////////////////////////////////////////////////////////////////////////KEPERLUAN SO
 	}
 
 	public function cetakserial($serial)
@@ -597,7 +619,6 @@ public function printpdf99(){
 		$filename			= 'KIB_'.time().'.pdf';
 		if ($org == 'odm') {
 			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Odm',$data,true);
-			// $html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_SO',$data,true);
 		} else {
 			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf',$data,true);
 		}
