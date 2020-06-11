@@ -64,25 +64,43 @@ class C_KartuBarang extends CI_Controller {
 		$sheets = $load->getActiveSheet()->toArray(null,true,true,true);
 
 		$size = $this->input->post('size_cetak');
-		
+		$cek = count($sheets[1]);
 		$getdata = array();
 		$i = 0;
-		$tanda = substr($sheets[1]['A'],11,1);
-		foreach ($sheets as $val) {
-			if ($i != 0) {
-				$isi = explode($tanda, $val['A']);
-				$desc = $this->M_kartubrg->getdesc($isi[0]);
-				$array = array(
-					'kode' => $isi[0],
-					'desc' => $desc[0]['DESCRIPTION'],
-					'rak' => $isi[1],
-					'qty' => $isi[2],
-					'stp' => $isi[3],
-					'size' => $size
-				);
-				array_push($getdata,$array);
+		if ($cek == 1) {
+			$tanda = substr($sheets[1]['A'],11,1);
+			foreach ($sheets as $val) {
+				if ($i != 0) {
+					$isi = explode($tanda, $val['A']);
+					$desc = $this->M_kartubrg->getdesc($isi[0]);
+					$array = array(
+						'kode' => $isi[0],
+						'desc' => $desc[0]['DESCRIPTION'],
+						'rak' => $isi[1],
+						'qty' => $isi[2],
+						'stp' => $isi[3],
+						'size' => $size
+					);
+					array_push($getdata,$array);
+				}
+				$i++;
 			}
-			$i++;
+		}else {
+			foreach ($sheets as $val) {
+				if ($i != 0) {
+					$desc = $this->M_kartubrg->getdesc($val['A']);
+					$array = array(
+						'kode' => $val['A'],
+						'desc' => $desc[0]['DESCRIPTION'],
+						'rak' => $val['B'],
+						'qty' => $val['C'],
+						'stp' => $val['D'],
+						'size' => $size
+					);
+					array_push($getdata,$array);
+				}
+				$i++;
+			}
 		}
 		$data['data'] = $getdata;
 		// echo "<pre>";print_r($getdata);exit();
