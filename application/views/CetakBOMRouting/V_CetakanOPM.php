@@ -57,6 +57,8 @@
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resources</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Desc</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Class</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Machine Qty</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Operator Qty</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Process Qty (PCS)</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Proses UOM</th> -->
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Usage (Minutes)</th>
@@ -71,7 +73,9 @@
 			<!-- <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Status</th> -->
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Last<br> Update</th>
 		</tr>
-		<?php $b=1;  $no=1; for ($i=0; $i < sizeof($dataopm2); $i++) {	?>
+		<?php 
+		// echo "<pre>"; print_r($dataopm2);exit(); 
+		$b=1;  $no=1; for ($i=0; $i < sizeof($dataopm2); $i++) {	?>
 		<tr>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$no?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['ROUTING_ID']?></td> -->
@@ -95,6 +99,8 @@
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCES']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_DESC']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_CLASS']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['MACHINE_QTY']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPERATOR_QTY']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['PROCESS_QTY']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['RESOURCE_PROCESS_UOM']?></td>    -->
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt">
