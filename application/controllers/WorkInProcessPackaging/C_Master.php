@@ -96,39 +96,30 @@ class C_Master extends CI_Controller
         $date = $this->input->post('date');
         $waktu_shift = $this->input->post('waktu_shift');
         $data = $this->input->post('data');
-
-        $cek_date = $this->db->select('date_target')->where('date_target', $date)->get('wip_pnp.job_list')->row();
-        if (!empty($cek_date)) {
-          echo json_encode(3);
-        }else {
-          foreach ($data as $key => $d) {
-              $cek = $this->db->select('no_job')->where('no_job', $d[1])->get('wip_pnp.job_list')->row();
-              if (!empty($cek)) {
-                  break;
-              }
-          }
-
-          if (!empty($cek)) {
-              $a = [
-              'no_job' => $data[$key][1],
-              'status' => 2
-            ];
-              echo json_encode($a);
-          } else {
+        if (!empty($date)) {
+            $cekk = $this->db->select('date_target')
+                         ->where('date_target', $date)
+                         ->get('wip_pnp.job_list')
+                         ->row();
+            if (empty($cekk->date_target)) {
               foreach ($data as $key => $d) {
                   $n195 = $this->M_wipp->savenewRKH([
                       'date_target' => $date,
                       'waktu_satu_shift' => $waktu_shift,
-                      'no_job' => $d[1],
-                      'kode_item' => $d[2],
-                      'nama_item' => $d[3],
-                      'qty' => $d[4],
-                      'usage_rate' => $d[5],
-                      'scedule_start_date' => $d[6]
+                      'no_job' => $d[0],
+                      'kode_item' => $d[1],
+                      'nama_item' => $d[2],
+                      'qty' => $d[3],
+                      'usage_rate' => $d[4],
+                      'scedule_start_date' => $d[5]
                     ]);
               }
               echo json_encode($n195);
-          }
+            }else {
+              echo json_encode(2);
+            }
+        }else {
+          echo json_encode('fail');
         }
 
     }
@@ -349,6 +340,8 @@ class C_Master extends CI_Controller
                                 if ($hitung_pe_ada_5 >=$get_target_pe[4]['target_max']) {
                                     $key5 = $d;
                                     break;
+                                }else {
+                                    $key5 = $max5;
                                 }
                             }
                             $d = $n12;
@@ -377,6 +370,8 @@ class C_Master extends CI_Controller
                         return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
                     });
                     // ==========RANGE LINE 1 GA ADA DOS===========
+                    // echo "<pre>";
+                    // print_r($gaadados);
                     $hitung_pe_gada = 0;
                     foreach ($gaadados as $key => $g) {
                         $hitung_pe_gada += $g['target_pe'];
@@ -425,6 +420,7 @@ class C_Master extends CI_Controller
                         // ==========RANGE LINE 3 ADA DOS===========
                         $hitung_pe_ga_ada_3 = 0;
                         $n3 = !empty($e)?$e:$e='gada';
+
                         if (!empty($gaadados[$n3])) {
                             $max3 = sizeof($gaadados) - 1;
                             for ($f=$n3; $f <= $max3; $f++) {
@@ -439,7 +435,7 @@ class C_Master extends CI_Controller
 
                             if ($gaadados[$key_4]['target_pe'] >= $get_target_pe[2]['target_max']) {
                                 $line3_ga_ada_dos = [];
-                            // echo json_encode(3);
+
                             } else {
                                 if ($n3 > $key_4) {
                                     $line3_ga_ada_dos = [];
@@ -455,6 +451,7 @@ class C_Master extends CI_Controller
                         // ==========END RANGE LINE 3 ADA DOS=========
                     } else {
                         $line2_ga_ada_dos = [];
+                        $line3_ga_ada_dos = [];
                     }
                     // ==========END RANGE LINE 2 ADA DOS=========
                 }
@@ -696,6 +693,7 @@ class C_Master extends CI_Controller
             $nojob = $this->input->post('nojob');
             $item = $this->input->post('item');
             $date = $this->input->post('date');
+
             $qty = $this->input->post('qty');
             $target_pe = $this->input->post('target_pe');
             $ca = $this->input->post('created_at');
@@ -724,7 +722,53 @@ class C_Master extends CI_Controller
             // echo "<pre>";
             // print_r($data);
             // die;
-            echo json_encode($cek_job);
+            echo json_encode($data);
+        }
+    }
+
+    public function SaveSplit_()
+    {
+        if (!$this->input->is_ajax_request()) {
+            echo "Akses Terlarang!!!";
+        } else {
+            $date = $this->input->post('date');
+            $wss = $this->input->post('wss');
+            if (!empty($date) && !empty($wss)) {
+              $nojob = $this->input->post('nojob');
+              $cekk = $this->db->select('date_target, no_job')
+                           ->where('date_target', $date)
+                           ->where('no_job', $nojob)
+                           ->get('wip_pnp.job_list')
+                           ->row();
+              if (!empty($cekk->date_target)) {
+                  echo json_encode(3);
+              }else {
+                  $item = $this->input->post('item');
+                  $item_dec = $this->input->post('item_name');
+                  $qty = $this->input->post('qty');
+                  $target_pe = $this->input->post('target_pe');
+                  $urs = $this->input->post('urs');
+                  $ssd = $this->input->post('ssd');
+                  $qty_parrent = $this->input->post('qty_parrent');
+
+                  foreach ($qty as $key => $q) {
+                    $data = $this->M_wipp->insertSplit([
+                      'date_target' => $date,
+                      'nama_item' => $item_dec,
+                      'usage_rate' => $urs,
+                      'scedule_start_date' => $ssd,
+                      'waktu_satu_shift' => $wss,
+                      'no_job' => $nojob,
+                      'kode_item' => $item,
+                      'qty' => $qty[$key],
+                      'qty_parrent' => $qty_parrent,
+                    ], '2012-12-12 12:12:12');
+                  }
+                  echo json_encode($data);
+                }
+              }else {
+                echo json_encode(2);
+              }
         }
     }
 
@@ -928,7 +972,12 @@ class C_Master extends CI_Controller
         }
 
         if (!empty($path)) {
-            $this->M_wipp->insertPhoto($item, $path);
+            $save = [
+              'kode_item' => $item,
+              'nama_item' => $nama_comp,
+              'photo' => $path
+            ];
+            $this->M_wipp->insertPhoto($save);
         }
         redirect('WorkInProcessPackaging/PhotoManager');
     }

@@ -19,6 +19,31 @@ const swalWIPP = (type, title) => {
   })
 }
 // ========================do something below the alert =================
+const cekhover = _ => {
+  const jsw = $('#jenisSaveWIIP').val()
+  const date = $('#dateSaveWIIP').val()
+  const wss = $('#waktuSaveWIIP').val()
+  if (jsw === '' || date === '' || wss === '') {
+    swalWIPP('info', 'Harap isi form input jenis date dan waktu terlebih dahulu!');
+  }
+}
+
+const jenisRKH = _ => {
+  const jsw = $('#jenisSaveWIIP').val()
+  const date = $('#dateSaveWIIP').val()
+  const wss = $('#waktuSaveWIIP').val()
+
+  let hdatee =  new Date(date);
+  let hdate = hdatee.toString().split(' ');
+  if (hdate[0] === 'Mon' || hdate[0] === 'Tue' || hdate[0] === 'Wed' || hdate[0] === 'Thu') {
+    $('#waktuSaveWIIP').val('7')
+  }else if (hdate[0] === 'Fri' || hdate[0] === 'Sat' ) {
+    $('#waktuSaveWIIP').val('6')
+  }else {
+    $('#waktuSaveWIIP').val('')
+  }
+}
+
 const print_besar = (kode_item, key, line) => {
   const qty = $(`#qtyl${line}_${key}`).val();
   window.open(baseurl + 'WorkInProcessPackaging/JobManager/LabelBesar/' + kode_item + '_' + qty );
@@ -217,7 +242,7 @@ const saveSplit = _ => {
           $('.lines-area').html('')
         })
       } else {
-        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, mohon isi form waktu shift dan tanggal dengan benar.');
+        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, harap isi form waktu shift dan tanggal dengan benar.');
       }
       $('#wipp2').modal('hide');
     },
@@ -227,6 +252,120 @@ const saveSplit = _ => {
   })
 }
 
+// COLAPSE
+const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
+    function a() {
+      let qty_tampung = [];
+      const qty_split = $('.line0wipp'+id).find('.iminhere'+id).toArray();
+      qty_split.forEach((v, i) => {
+        qty_tampung.push($(v).val());
+      })
+      const idtrz = $('.tblNewRKH').find('tr[hesoyam="ya"]:last td center').html();
+      let html = [];
+      qty_tampung.forEach((val, i) => {
+        let hhtml = `<tr hesoyam="ya" row="${Number(idtrz)+(Number(i)+1)}">
+                        <td><center>${Number(idtrz)+(Number(i)+1)}</center></td>
+                        <td><center>${no_job}</center></td>
+                        <td><center>${kode_item}</center></td>
+                        <td><center>${nama_item}</center></td>
+                        <td><center>${val}</center></td>
+                        <td><center>${usage_rate}</center></td>
+                        <td><center>${ssd}</center></td>
+                        <td onmouseover="cekhover()">
+                          <center>
+                            <button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${Number(idtrz)+(Number(i)+1)})"><i class="fa fa-minus-square"></i></button>
+                          </center>
+                        </td>
+                      </tr>`;
+              html.push(hhtml)
+      })
+      console.log(html);
+      $('#create-new-rkh').append(html);
+    }
+    function b() {
+      $('.tblNewRKH').find(`tr[row="${id}"]`).remove();
+      $('.tblNewRKH').find(`tr[collapse-row="${id}"]`).remove();
+
+      $('.tblNewRKH tr[row]:visible').each(function(i) {
+        $(this).find('td:first').text(i + 1);
+      })
+    }
+    function run() {
+      let d = $.Deferred(),
+      p=d.promise();
+      //instead of the loop doing the following has the same output
+      p.then(a).then(b);
+      d.resolve();
+    }
+    run();
+
+  // console.log(html);
+  // const nojob = $(`#job0${id}_wipp1`).val();
+  // const item = $(`#item0${id}_wipp1`).val();
+  // const item_name = $(`#item_name${id}`).val();
+  //
+  // const urs = $('#usage_rate_split'+id).val();
+  // let qty_tampung = [];
+  // let target_pe_tampung = [];
+  // let ca_tampung = [];
+  //
+  // const qty_split = $('.line0wipp'+id).find('.iminhere'+id).toArray();
+  // qty_split.forEach((v, i) => {
+  //   qty_tampung.push($(v).val());
+  // })
+  //
+  // const target_pe = $('.line0wipp'+id).find('.andhere'+id).toArray();
+  // target_pe.forEach((v, i) => {
+  //   target_pe_tampung.push($(v).val());
+  // })
+  //
+  // $.ajax({
+  //   url: baseurl + 'WorkInProcessPackaging/JobManager/SaveSplit_',
+  //   type: 'POST',
+  //   dataType: 'JSON',
+  //   async: true,
+  //   data: {
+  //     date: $('#dateSaveWIIP').val(),
+  //     wss: $('#waktuSaveWIIP').val(),
+  //     ssd: $('#ssd'+id).val(),
+  //     urs: urs,
+  //     qty_parrent: $('#qty_split_save'+id).val(),
+  //     nojob: nojob,
+  //     item: item,
+  //     item_name:item_name,
+  //     qty: qty_tampung,
+  //     target_pe: target_pe_tampung,
+  //     created_at: ''
+  //     // created_at: created_at
+  //   },
+  //   beforeSend: function() {
+  //     Swal.showLoading()
+  //   },
+  //   success: function(result) {
+  //     if (result === 1) {
+  //       Swal.mixin({
+  //         toast: true,
+  //         position: 'top-end',
+  //         showConfirmButton: false,
+  //         timer: 2900
+  //       }).fire({
+  //         customClass: 'swal-font-small',
+  //         type: 'success',
+  //         title: 'Data berhasil disimpan.'
+  //       })
+  //     }else if (result === 3) {
+  //       swalWIPPToastrAlert('error', `Gagal menyimpan data!, No job ${nojob} dengan tanggal ${$('#dateSaveWIIP').val()} telah tersimpan.`);
+  //     }else {
+  //       swalWIPPToastrAlert('error', 'Gagal menyimpan data!, harap isi form waktu shift dan tanggal dengan benar.');
+  //     }
+  //   },
+  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //     console.error();
+  //   }
+  // })
+}
+
+// INI UNTUK MODAL
 const changeQtyValue = t => {
   let a = $(`#qty0_wipp${t}`).val();
   let b = $('#qtySplit').val();
@@ -273,7 +412,55 @@ const changeQtyValue = t => {
       }, 200);
     }
   }, 100);
+}
 
+//INI UNTUK COLLAPSE
+const changeQtyValue_ = (t, i) => {
+  let a = $(`#qty0${i}_wipp${t}`).val();
+  let b = $(`#qtySplit${i}`).val();
+  let b_d = $('#qty_split_save'+i).val();
+  let ur = $('#usage_rate_split'+i).val();
+  let wss = $('#waktuSaveWIIP').val();
+
+  let sum = 0;
+  const q_q = $('.line0wipp'+i).find('.iminhere'+i).toArray();
+  q_q.forEach((v, i) => {
+    sum += Math.round($(v).val())
+  })
+
+  setTimeout(function() {
+    if (Number(b_d - sum) < 0) {
+      $(`#qty0${i}_wipp${t}`).val('00');
+      $('.btnsplit').attr("hidden", "hidden");
+      Swal.fire({
+        type: 'info',
+        title: 'QTY tidak boleh kurang dari 0',
+        text: ''
+      }).then(_ => {
+        let sum_s = 0;
+        const q_p = $('.line0wipp'+i).find('.iminhere'+i).toArray();
+        q_p.forEach((v, i) => {
+          sum_s += Math.round($(v).val())
+        })
+        setTimeout(function() {
+          $('#qtySplit'+i).val(b_d - sum_s);
+        }, 300);
+      })
+    } else if (Number(b_d - sum) == 0) {
+      $('.btnsplit'+i).removeAttr("hidden"); //nanti ==============
+      setTimeout(function() {
+        $('#qtySplit'+i).val(b_d - sum);
+        $(`#target0${i}_pe${t}`).val(wss / (a / ur));
+      }, 200);
+    } else {
+      $('.btnsplit'+i).attr("hidden", "hidden"); //nanti ==============
+      setTimeout(function() {
+        $('#qtySplit'+i).val(b_d - sum);
+        let z_z = wss / (a / ur);
+        $(`#target0${i}_pe${t}`).val(z_z.toFixed(5));
+      }, 200);
+    }
+  }, 100);
 }
 
 const getModalSplit = (nj, qty, kode, desc, target, ur, wss, dt, ct) => {
@@ -365,11 +552,12 @@ const update_null = p => {
 }
 
 const saveNewRKH = _ => {
-  var tableInfo = Array.prototype.map.call(document.querySelectorAll('.tblNewRKH tr'), function(tr) {
+  var tableInfo = Array.prototype.map.call(document.querySelectorAll('.tblNewRKH tr[hesoyam="ya"]'), function(tr) {
     return Array.prototype.map.call(tr.querySelectorAll('td center'), function(td) {
       return td.innerHTML;
     });
   });
+
   $.ajax({
     url: baseurl + 'WorkInProcessPackaging/JobManager/SaveJobList',
     type: 'POST',
@@ -392,13 +580,17 @@ const saveNewRKH = _ => {
         }).then(_ => {
           window.location.replace(baseurl + 'WorkInProcessPackaging/JobManager/ArrangeJobList/' + $('#dateSaveWIIP').val(), );
         })
-      }else if (result.status === 2) {
-        swalWIPPToastrAlert('error', 'Gagal menyimpan data! No job '+ result.no_job+', data telah digunakan!');
-      }else if (result === 3) {
-        swalWIPPToastrAlert('error', 'Gagal menyimpan data! job dengan tanggal '+ $('#dateSaveWIIP').val() +' telah digunakan!');
-      } else {
+      }else if (result === 2) {
+        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, RKH dengan tanggal '+$('#dateSaveWIIP').val()+' telah ada di database.');
+      }else {
         swalWIPPToastrAlert('error', 'Gagal menyimpan data!, mohon isi form waktu shift dan tanggal dengan benar.');
       }
+      // else if (result.status === 2) {
+      //   swalWIPPToastrAlert('error', 'Gagal menyimpan data! No job '+ result.no_job+', data telah digunakan!');
+      // }else if (result === 3) {
+      //   swalWIPPToastrAlert('error', 'Gagal menyimpan data! job dengan tanggal '+ $('#dateSaveWIIP').val() +' telah digunakan!');
+      // }
+
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
@@ -705,7 +897,6 @@ const addrowlinewipp0 = _ => {
   //   placeholder: "Item Kode",
   // });
 }
-
 const minus_wipp0 = n => {
   if (n === 1) {
     swalWIPP('warning', 'Minimal harus ada 1 row yang tersisa');
@@ -725,6 +916,53 @@ const minus_wipp0 = n => {
   }
 }
 // END INI UNUTK MODAL
+
+// INI UNTUK COLLAPSE
+const addrowlinewipp_0 = id => {
+  let nojob = $(`#job0${id}_wipp1`).val();
+  let item = $(`#item0${id}_wipp1`).val();
+  let ur = $('#usage_rate_split').val();
+
+  let n = $(`.line0wipp${id} tbody tr`).length;
+  let a = n + 1;
+  $('#tambahisiwipp0'+id).append(`<tr class="rowbaru0_wipp" id="wipp0row${n}">
+                                  <td>
+                                    <center><input type="text" value="${nojob}" class="form-control" name="job0[]" id="job0${id}_wipp${a}" placeholder="ITEM CODE"></center>
+                                  </td>
+                                  <td><center><input type="text" value="${item}" class="form-control" name="item0[]" id="item0_wipp${a}" placeholder="ITEM"></center></td>
+                                  <td><center><input type="number" class="form-control iminhere${id}" name="qty0[]" id="qty0${id}_wipp${a}" oninput="changeQtyValue_(${a}, ${id})" placeholder="QTY"></center></td>
+                                  <td><center><input type="number" class="form-control andhere${id}" name="target0[]" id="target0${id}_pe${a}" placeholder="20%"></center></td>
+                                  <td hidden></td>
+                                  <td>
+                                    <center>
+                                     <button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp0_(${a}, ${id})" style="border-radius:10px;"name="button"><i class="fa fa-minus-square"></i></button>
+                                    </center>
+                                  </td>
+                                </tr>`);
+  // $('.line0wipp tbody tr[id="wipp0row' + n + '"] .select0wipp').select0({
+  //   placeholder: "Item Kode",
+  // });
+}
+
+const minus_wipp0_ = (n, id) => {
+  if (n === 1) {
+    swalWIPP('warning', 'Minimal harus ada 1 row yang tersisa');
+  } else {
+    $(`#job0${id}_wipp${n}`).parents('.rowbaru0_wipp').remove()
+
+    setTimeout(function() {
+      let b_d = $('#qty_split_save'+id).val();
+      let sum = 0;
+      const q_q = $('.line0wipp'+id).find('.iminhere').toArray();
+      q_q.forEach((v, i) => {
+        sum += Math.round($(v).val())
+      })
+      $('#qtySplit').val(b_d - sum);
+    }, 200);
+
+  }
+}
+// END COLLAPSE
 
 const addrowlinewipp5 = _ => {
 
@@ -876,8 +1114,10 @@ const readFile = input => {
 }
 
 $('.txtWIIPdate').datepicker({
-  autoclose: true,
-  format: 'dd-M-yy'
+  "autoclose": true,
+  "todayHighlight": true,
+  "allowClear" : true,
+  "format": 'dd-M-yy'
 })
 
 // $.ajax({

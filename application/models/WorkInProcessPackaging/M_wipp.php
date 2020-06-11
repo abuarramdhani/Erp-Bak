@@ -132,7 +132,7 @@ class M_wipp extends CI_Model
 
     public function insertSplit($data, $ca)
     {
-        $cek = $this->db->select('no_job')
+        $cek = $this->db->select('no_job, date_target')
                       ->where('create_at', $ca)
                       ->get('wip_pnp.job_list')
                       ->row();
@@ -152,6 +152,7 @@ class M_wipp extends CI_Model
             } else {
                 return 2;
             }
+
         }
     }
 
@@ -164,14 +165,14 @@ class M_wipp extends CI_Model
     {
         $response = $this->db->distinct()
                              ->select('kode_item, nama_item, photo')->where('photo !=', null)
-                             ->get('wip_pnp.job_list')
+                             ->get('wip_pnp.item_photo')
                              ->result_array();
         return $response;
     }
 
     public function delete_photo($id)
     {
-      $this->db->where('kode_item', $id)->update('wip_pnp.job_list', ['photo' => NULL]);
+      $this->db->delete('wip_pnp.item_photo', ['kode_item' => $id]);
       if ($this->db->affected_rows() == 1) {
           return 1;
       } else {
@@ -179,9 +180,14 @@ class M_wipp extends CI_Model
       }
     }
 
-    public function insertPhoto($code, $path)
+    public function insertPhoto($data)
     {
-        $this->db->where('kode_item', $code)->update('wip_pnp.job_list', ['photo' => $path]);
+        $cek = $this->db->select('kode_item')->where('kode_item', $data['kode_item'])->get('wip_pnp.item_photo')->row();
+        if (!empty($cek->kode_item)) {
+          $this->where('kode_item', $data['kode_item'])->update('wip_pnp.item_photo', $data);
+        }else {
+          $this->db->insert('wip_pnp.item_photo', $data);
+        }
     }
 
     // public function getListRKH($value)
@@ -239,8 +245,8 @@ class M_wipp extends CI_Model
     public function savenewRKH($data)
     {
         if (!empty($data['date_target'])) {
-          $this->db->insert('wip_pnp.job_list', $data);
-          return 1;
+            $this->db->insert('wip_pnp.job_list', $data);
+            return 1;
         } else {
             return 0;
         }

@@ -114,13 +114,21 @@
                 </center>
                 <div class="row">
                   <div class="form-group">
-                    <div class="col-md-6">
-                      <h5 style="display:inline-block !important; font-weight:bold">Waktu Satu Shift : </h5> <input type="number" id="waktuSaveWIIP" class="form-control" placeholder="..." style="width:70px;display:inline-block; margin-left:10px;" name="" value="">
+                    <div class="col-md-4">
+                      <h5 style="display:inline-block !important; font-weight:bold">Jenis : </h5>
+                      <select class="form-control" id="jenisSaveWIIP" style="width:55%;display:inline-block; margin-left:10px;" autocomplete="off">
+                        <option value="">Chosee..</option>
+                        <option value="Reguler">Reguler</option>
+                        <option value="Lembur">Lembur</option>
+                      </select>
                     </div>
-                    <div class="col-md-6">
-                      <div style="float:right">
-                        <h5 style="display:inline-block !important; font-weight:bold">Tanggal : </h5> <input type="text" class="form-control txtWIIPdate" id="dateSaveWIIP" placeholder="..." style="display:inline-block !important; width:150px;" name="" value="">
+                    <div class="col-md-4">
+                      <div style="float:left" on>
+                        <h5 style="display:inline-block !important; font-weight:bold">Tanggal : </h5> <input type="text" onchange="jenisRKH()" autocomplete="off" class="form-control txtWIIPdate" id="dateSaveWIIP" placeholder="..." style="display:inline-block !important; width:65%;" name="" value="">
                       </div>
+                    </div>
+                    <div class="col-md-4">
+                      <h5 style="display:inline-block !important; font-weight:bold">Waktu Satu Shift : </h5> <input type="number" autocomplete="off" id="waktuSaveWIIP" class="form-control" placeholder="..." style="width:50%;display:inline-block; margin-left:10px;" name="" value="">
                     </div>
                     <div class="col-md-12">
                       <br>
