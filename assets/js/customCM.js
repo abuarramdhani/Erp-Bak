@@ -4718,6 +4718,75 @@ $(document).ready(function(){
 		"info": false
 	})
 
+	$('.slc-CM-Menu-Sayur').select2({
+		tags: true,
+		tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true
+		    }
+		}
+	});
+	$('.slc-CM-Menu-LaukUtama').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		},
+	});
+	$('.slc-CM-Menu-LaukPendamping').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true
+		    }
+		}
+	});
+	$('.slc-CM-Menu-Buah').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	});
+
 	$('#slc-CM-Menu-Shift').on('change', function(){
 		CMMenuCreateChange(tblCMMenuCreate)
 	});
@@ -4978,7 +5047,7 @@ $(document).ready(function(){
 					bulan_tahun: bulan_tahun,
 					data: data_tanggal
 				}
-				console.log(formData);
+				// console.log(formData);
 				$.ajax({
 					method: 'POST',
 					url: baseurl + 'CateringManagement/Setup/Menu/simpan',
@@ -4994,6 +5063,7 @@ $(document).ready(function(){
 								'success'
 							)
 							tblCMMenuCreate.clear().draw();
+							window.location.href = baseurl + "CateringManagement/Setup/Menu";
 						}else{
 							swal.fire({
 				                title: xhr['status'] + "(" + xhr['statusText'] + ")",
@@ -5011,6 +5081,7 @@ $(document).ready(function(){
 							'Data Berhasil Diinput !',
 							'success'
 						)
+						window.location.href = baseurl + "CateringManagement/Setup/Menu";
 					}
 				})
 			}

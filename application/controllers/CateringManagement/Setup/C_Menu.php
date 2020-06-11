@@ -231,6 +231,12 @@ class C_Menu extends CI_Controller
 		$menu = $this->M_menu->getMenuByLokasiShiftBulanTahun($lokasi,$shift,$bulan,$tahun);
 		if (!empty($menu)) {
 			$menu_id = $menu['0']['menu_id'];
+
+			$menu_update = array(
+				'updated_by' => $this->session->user,
+				'updated_date' => date('Y-m-d H:i:s')
+			);
+			$this->M_menu->updateMenuByMenuId($menu_update,$menu_id);
 		}else{
 			$menu_insert = array(
 				'bulan' => $bulan,
@@ -399,7 +405,103 @@ class C_Menu extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$data['data'] = $this->M_menu->getMenuByMenuId($plaintext_string);
-		$data['detail'] = $this->M_menu->getmenuDetailByMenuId($plaintext_string);
+		$detail = $this->M_menu->getmenuDetailByMenuId($plaintext_string);
+		
+		$sayur = $this->M_menu->getSayur();
+		$lauk_utama = $this->M_menu->getlaukUtama();
+		$lauk_pendamping = $this->M_menu->getlaukPendamping();
+		$buah = $this->M_menu->getBuah();
+		if (!empty($detail)) {
+			foreach ($detail as $detail_key => $detail_value) {
+				$nama_sayur = explode(",", $detail_value['sayur']);
+				$sayur_option = "";
+				foreach ($sayur as $sayur_key => $sayur_value) {
+					$sayur_sama = 0;
+					foreach ($nama_sayur as $nama_sayur_key => $nama_sayur_value) {
+						if ($sayur_value['text'] == $nama_sayur_value) {
+							$sayur_sama = 1;
+						}
+					}
+					if ($sayur_sama == 1) {
+						$sayur_option .= "<option selected>".$sayur_value['text']."</option>";
+					}else{
+						$sayur_option .= "<option>".$sayur_value['text']."</option>";
+					}
+				}
+				$detail[$detail_key]['sayur_option'] = $sayur_option;
+
+				$nama_lauk_utama = explode(",", $detail_value['lauk_utama']);
+				$lauk_utama_option = "";
+				foreach ($lauk_utama as $lauk_utama_key => $lauk_utama_value) {
+					$lauk_utama_sama = 0;
+					foreach ($nama_lauk_utama as $nama_lauk_utama_key => $nama_lauk_utama_value) {
+						if ($lauk_utama_value['text'] == $nama_lauk_utama_value) {
+							$lauk_utama_sama = 1;
+						}
+					}
+					if ($lauk_utama_sama == 1) {
+						$lauk_utama_option .= "<option selected>".$lauk_utama_value['text']."</option>";
+					}else{
+						$lauk_utama_option .= "<option>".$lauk_utama_value['text']."</option>";
+					}
+				}
+				$detail[$detail_key]['lauk_utama_option'] = $lauk_utama_option;
+
+				$nama_lauk_pendamping = explode(",", $detail_value['lauk_pendamping']);
+				$lauk_pendamping_option = "";
+				foreach ($lauk_pendamping as $lauk_pendamping_key => $lauk_pendamping_value) {
+					$lauk_pendamping_sama = 0;
+					foreach ($nama_lauk_pendamping as $nama_lauk_pendamping_key => $nama_lauk_pendamping_value) {
+						if ($lauk_pendamping_value['text'] == $nama_lauk_pendamping_value) {
+							$lauk_pendamping_sama = 1;
+						}
+					}
+					if ($lauk_pendamping_sama == 1) {
+						$lauk_pendamping_option .= "<option selected>".$lauk_pendamping_value['text']."</option>";
+					}else{
+						$lauk_pendamping_option .= "<option>".$lauk_pendamping_value['text']."</option>";
+					}
+				}
+				$detail[$detail_key]['lauk_pendamping_option'] = $lauk_pendamping_option;
+
+				$nama_buah = explode(",", $detail_value['buah']);
+				$buah_option = "";
+				foreach ($buah as $buah_key => $buah_value) {
+					$buah_sama = 0;
+					foreach ($nama_buah as $nama_buah_key => $nama_buah_value) {
+						if ($buah_value['text'] == $nama_buah_value) {
+							$buah_sama = 1;
+						}
+					}
+					if ($buah_sama == 1) {
+						$buah_option .= "<option selected>".$buah_value['text']."</option>";
+					}else{
+						$buah_option .= "<option>".$buah_value['text']."</option>";
+					}
+				}
+				$detail[$detail_key]['buah_option'] = $buah_option;		
+			}
+			$data['detail'] = $detail;
+		}else{
+			$data['detail'] = array();
+		}
+		// echo "<pre>";print_r($data);exit();
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'List Menu';
+		$data['Menu'] 			= 	'Setup';
+		$data['SubMenuOne'] 	= 	'Menu';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('CateringManagement/Setup/Menu/V_tambah',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function copyMenu(){

@@ -77,6 +77,19 @@
 										</div>
 									</div>
 								</div>
+								<?php 
+								if (isset($data) && !empty($data)) {
+									$bulan_tahun = date('F Y', strtotime($data[0]['tahun'].'-'.$data[0]['bulan'].'-1'));
+									$shift = $data[0]['shift'];
+									$lokasi = $data[0]['lokasi'];
+									$disabled = "disabled";
+								}else{
+									$bulan_tahun = "";
+									$shift = "";
+									$lokasi = "";
+									$disabled = "";
+								}
+								?>
 								<div class="row">
 									<div class="col-lg-12">
 										<form class="form-horizontal">
@@ -84,7 +97,7 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Bulan Tahun</label>
 													<div class="col-lg-8">
-														<input type="text" class="form-control" placeholder="Pilih Bulan Tahun..." autocomplete="off" id="txt-CM-Menu-BulanTahun">
+														<input type="text" class="form-control" placeholder="Pilih Bulan Tahun..." autocomplete="off" id="txt-CM-Menu-BulanTahun" value="<?php echo $bulan_tahun ?>" <?php echo $disabled ?>>
 													</div>
 												</div>
 											</div>
@@ -92,11 +105,11 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Shift</label>
 													<div class="col-lg-8">
-														<select class="select2" data-placeholder="Pilih Shift..." style="width: 100%" autocomplete="off" id="slc-CM-Menu-Shift">
+														<select class="select2" data-placeholder="Pilih Shift..." style="width: 100%" autocomplete="off" id="slc-CM-Menu-Shift" <?php echo $disabled ?>>
 															<option></option>
-															<option value="1">Shift 1 & Umum</option>
-															<option value="2">Shift 2</option>
-															<option value="3">Shift 3</option>
+															<option value="1" <?php echo $shift == "1" ? "selected" : ""; ?>>Shift 1 & Umum</option>
+															<option value="2" <?php echo $shift == "2" ? "selected" : ""; ?>>Shift 2</option>
+															<option value="3" <?php echo $shift == "3" ? "selected" : ""; ?>>Shift 3</option>
 														</select>
 													</div>
 												</div>
@@ -105,10 +118,10 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Lokasi</label>
 													<div class="col-lg-8">
-														<select class="select2" data-placeholder="Pilih Lokasi..." style="width: 100%" autocomplete="off" id="slc-CM-Menu-Lokasi">
+														<select class="select2" data-placeholder="Pilih Lokasi..." style="width: 100%" autocomplete="off" id="slc-CM-Menu-Lokasi" <?php echo $disabled ?>>
 															<option></option>
-															<option value="1">Yogyakarta & Mlati</option>
-															<option value="2">Tuksono</option>
+															<option value="1" <?php echo $lokasi == "1" ? "selected" : ""; ?>>Yogyakarta & Mlati</option>
+															<option value="2" <?php echo $lokasi == "2" ? "selected" : ""; ?>>Tuksono</option>
 														</select>
 													</div>
 												</div>
@@ -129,7 +142,37 @@
 												</tr>
 											</thead>
 											<tbody>
-												
+												<?php 
+												if (isset($detail) && !empty($detail)) {
+													foreach ($detail as $key => $value) {
+														?>
+														<tr>
+															<td><?php echo $value['tanggal'] ?></td>
+															<td>
+																<select class="slc-CM-Menu-Sayur" data-placeholder="Pilih Sayur..." style="width: 200px" autocomplete="off" multiple="multiple">
+																	<?php echo $value['sayur_option'] ?>																	
+																</select>
+															</td>
+															<td>
+																<select class="slc-CM-Menu-LaukUtama" data-placeholder="Pilih lauk Utama..." style="width: 200px" autocomplete="off" multiple="multiple">
+																	<?php echo $value['lauk_utama_option'] ?>
+																</select>
+															</td>
+															<td>
+																<select class="slc-CM-Menu-LaukPendamping" data-placeholder="Pilih Lauk Pendamping..." style="width: 200px" autocomplete="off" multiple="multiple">
+																	<?php echo $value['lauk_pendamping_option'] ?>
+																</select>
+															</td>
+															<td>
+																<select class="slc-CM-Menu-Buah" data-placeholder="Pilih Buah..." style="width: 200px" autocomplete="off" multiple="multiple">
+																	<?php echo $value['buah_option'] ?>
+																</select>
+															</td>
+														</tr>
+														<?php
+													}
+												}
+												?>
 											</tbody>
 										</table>
 									</div>

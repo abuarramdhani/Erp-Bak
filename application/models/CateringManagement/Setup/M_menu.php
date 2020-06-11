@@ -62,6 +62,11 @@ class M_menu extends CI_Model
         return $this->personalia->insert_id();
     }
 
+    public function updateMenuByMenuId($data,$menu_id){
+        $this->personalia->where('menu_id', $menu_id);
+        $this->personalia->update('"Catering".t_menu', $data);
+    }
+
     public function insertMenuDetail($data){
         $this->personalia->insert("\"Catering\".t_menu_detail",$data);
         return $this->personalia->insert_id();   
