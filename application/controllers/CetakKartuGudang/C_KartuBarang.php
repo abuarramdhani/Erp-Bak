@@ -67,15 +67,17 @@ class C_KartuBarang extends CI_Controller {
 		
 		$getdata = array();
 		$i = 0;
+		$tanda = substr($sheets[1]['A'],11,1);
 		foreach ($sheets as $val) {
 			if ($i != 0) {
-				$desc = $this->M_kartubrg->getdesc($val['A']);
+				$isi = explode($tanda, $val['A']);
+				$desc = $this->M_kartubrg->getdesc($isi[0]);
 				$array = array(
-					'kode' => $val['A'],
+					'kode' => $isi[0],
 					'desc' => $desc[0]['DESCRIPTION'],
-					'rak' => $val['B'],
-					'qty' => $val['C'],
-					'stp' => $val['D'],
+					'rak' => $isi[1],
+					'qty' => $isi[2],
+					'stp' => $isi[3],
 					'size' => $size
 				);
 				array_push($getdata,$array);
@@ -135,10 +137,10 @@ class C_KartuBarang extends CI_Controller {
 			);
 
 
-			$excel->setActiveSheetIndex(0)->setCellValue('A1', "Kode Barang");
+			$excel->setActiveSheetIndex(0)->setCellValue('A1', "Kode_Barang");
 			$excel->setActiveSheetIndex(0)->setCellValue('B1', "Rak");
 			$excel->setActiveSheetIndex(0)->setCellValue('C1', "Qty/Unit");
-			$excel->setActiveSheetIndex(0)->setCellValue('D1', "STD HDL");
+			$excel->setActiveSheetIndex(0)->setCellValue('D1', "STD_HDL");
 
 			$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle('B1')->applyFromArray($style_col);
