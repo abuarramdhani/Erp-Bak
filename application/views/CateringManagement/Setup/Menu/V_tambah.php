@@ -179,7 +179,7 @@
 								</div>
 								<div class="row">
 									<div class="col-lg-12 text-right">
-										<a href="javascript:history.back()" class="btn btn-danger">Kembali</a>
+										<a href="javascript:history.back()" class="btn btn-info">Kembali</a>
 										<button type="text" class="btn btn-primary" id="btn-CM-Menu-Simpan">Simpan</button>
 									</div>
 								</div>

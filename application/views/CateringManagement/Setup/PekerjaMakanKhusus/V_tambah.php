@@ -381,7 +381,7 @@
 											<div class="col-lg-12">
 												<div class="form-group">
 													<div class="col-lg-12 text-right">
-														<a href="javascript:history.back()" class="btn btn-danger">kembali</a>
+														<a href="javascript:history.back()" class="btn btn-info">kembali</a>
 														<button type="button" class="btn btn-primary" id="btn-CM-PekerjaMakanKhusus-Simpan">Simpan</button>
 													</div>
 												</div>

@@ -63,7 +63,7 @@
 											</div>
 											<div class="form-group">
 												<div class="col-lg-7 text-right">
-													<a href="javascript:history.back()" class="btn btn-danger"><span class="fa fa-arrow-left"></span> Kembali</a>
+													<a href="javascript:history.back()" class="btn btn-info"><span class="fa fa-arrow-left"></span> Kembali</a>
 													<button type="button" class="btn btn-primary" id="btn-CM-PekerjaTidakMakan-Simpan"><span class="fa fa-save"></span> Simpan</button>
 												</div>
 											</div>
