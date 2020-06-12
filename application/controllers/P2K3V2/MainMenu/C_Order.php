@@ -1589,7 +1589,7 @@ class C_Order extends CI_Controller
 					$listtobon[$i]['bonTrans'] += isset($arrc[$listtobon[$i]['kode_item']]) ? $arrc[$listtobon[$i]['kode_item']] : 0;
 				}
 			}
-			$data['canSubmit'] = (strpos(end($endDataTrans), 'Y') === false) ? false : true;
+			$data['canSubmit'] = (strpos(end($endDataTrans), 'N')) ? false : true;
 			$data['notrans'] = $endDataTrans['NO_BON'];
 		}
 		// echo "<pre>";
