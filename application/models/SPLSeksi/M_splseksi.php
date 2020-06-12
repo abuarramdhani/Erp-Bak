@@ -520,15 +520,13 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function gettfingerphp(){
-		$sql = "select 	a.user_name as noind,
-						b.noind_baru,
-						b.nama,
-						count(a.user_name) as jumlah
-				from splseksi.tfinger_php a
-				left join hrd_khs.tpribadi b
-				on a.user_name = b.Noind
-				group by a.user_name,b.Nama
-				order by user_id";
+		$sql = "SELECT b.Noind as noind,
+				b.Noind_Baru as noind_baru,
+				b.Nama as nama,
+				(SELECT count(user_name) FROM splseksi.tfinger_php WHERE user_name = b.Noind) as jumlah
+				FROM  hrd_khs.tpribadi as b
+				WHERE b.Noind in (SELECT user_name FROM splseksi.tfinger_php)
+				ORDER BY noind";
 		return $this->spl->query($sql)->result_array();
 	}
 
