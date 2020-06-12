@@ -78,7 +78,7 @@
 																								<i class="fa fa-sort"></i>
 																							</td>
 																							<td>
-																								<input type="number" min="0" placeholder="Menu Sequence" name="txtMenuSequence[]" id="txtMenuSequence" value="<?= $MenuGroupList_item['menu_sequence'] ?>" class="form-control" required />
+																								<input type="number" min="0" placeholder="Menu Sequence" name="txtMenuSequence[]" id="txtMenuSequence" value="<?= $MenuGroupList_item['menu_sequence'] ?>" class="form-control" required readonly />
 																								<input type="hidden" name="txtMenuLevel[]" id="txtMenuLevel" value="<?php echo ($grup_list_id == "") ? "1" : intval($MenuGroup_item['menu_level']) + 1; ?>" class="form-control" required />
 																								<input type="hidden" name="hdnMenuGroupListId[]" id="hdnMenuGroupListId" value="<?= $MenuGroupList_item['group_menu_list_id'] ?>" class="form-control" required />
 																							</td>
