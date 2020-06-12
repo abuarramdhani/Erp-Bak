@@ -61,7 +61,12 @@
 				Dikirim Kepada : <br>
 				<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
 				<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br><br>
-				<?php echo $get_header[0]['LAIN'] ?>
+				<?php
+					$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
+					foreach($arr as $i) {
+						echo $i.'<br>';
+					}
+				?>
 			</td>
 		</tr>
 		<tr style="text-align:center">

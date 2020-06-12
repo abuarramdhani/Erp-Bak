@@ -3,14 +3,15 @@
   <table class="table table-striped table-bordered table-hover text-left " id="tblMonitoringDO" style="font-size:12px;">
     <thead>
       <tr class="bg-primary">
-        <th style="width:5px"><center>NO</center></th>
-        <th style="width:70px"><center>NO.DOK</center></th>
-        <th style="width:70px"><center>NOMOR SO</center></th>
-        <th><center>TUJUAN</center></th>
-        <th style="width:100px"><center>KOTA</center></th>
-        <th style="width:70px"><center>PLAT NOMOR</center></th>
-        <th style="width:180px"><center>ASSIGN</center></th>
-        <th style="width:15px"><center>DETAIL</center></th>
+        <th style=""><center>NO</center></th>
+        <th style=""><center>NO.DOK</center></th>
+        <th style=""><center>NOMOR SO</center></th>
+        <th style=""><center>TUJUAN</center></th>
+        <th style=""><center>KOTA</center></th>
+        <th style=""><center>PLAT NOMOR</center></th>
+        <th style=""><center>ASSIGN</center></th>
+        <th style=""><center>TGL PENGIRIMAN</center></th>
+        <th style=""><center>DETAIL</center></th>
       </tr>
     </thead>
     <tbody>
@@ -37,11 +38,12 @@
          <td>
            <center>
              <div class="form-group">
-                 <select class="form-control uppercaseDO select2MonitoringDO" id="person_id" name="person_id"></select>
+                 <select class="form-control uppercaseDO select2MonitoringDO" id="person_id" name="person_id" style="width:250px"></select>
                <!-- <input class="form-control uppercaseDO select2MonitoringDO" type="text" id="person_id" name="person_id" placeholder="Assign"> -->
              </div>
            </center>
          </td>
+         <td><center><?php echo strtoupper(date("d-M-Y", strtotime($g['TGL_KIRIM']))) ?></center></td>
          <td><center><button type="button" class="btn btn-info" name="buttondetail" style="font-weight:bold;" onclick="detail('<?php echo $g['DO/SPB'] ?>', <?php echo $g['HEADER_ID'] ?>, <?php echo $no ?>, '<?php echo $g['NO_SO'] ?>', '<?php echo $g['PLAT_NUMBER'] ?>')" data-toggle="modal" data-target="#MyModal2">
            <i class="fa fa-eye"></i></button> </center></td>
        </tr>
