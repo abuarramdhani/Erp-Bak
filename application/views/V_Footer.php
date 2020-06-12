@@ -226,6 +226,7 @@
 			<script src="<?= base_url('assets/js/customMSJ.js'); ?>"></script>
 			<script src="<?= base_url('assets/js/customORS.js'); ?>"></script>
 			<script src="<?= base_url('assets/js/customORP.js'); ?>"></script>
+			<script src="<?= base_url('assets/js/customPTS.js'); ?>"></script>
 
 
 

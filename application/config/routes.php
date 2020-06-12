@@ -4395,3 +4395,9 @@ $route['OrderPro/masterpro/(:any)'] 		= 'OrderPrototype/Prototype/C_Masterproses
 $route['OrderFab'] 								= 'OrderPrototype/C_Index';
 $route['OrderFab/monorderfab'] 			= 'OrderPrototype/Fabrikasi/C_Monfab';
 $route['OrderFab/monorderfab/(:any)'] = 'OrderPrototype/Fabrikasi/C_Monfab/$1';
+
+// ----------------------------------Patroli Satpam-------------------------------
+$route['PatroliSatpam']								= 'PatroliSatpam/C_WebPatroli/index';
+$route['PatroliSatpam/web/(:any)']					= 'PatroliSatpam/C_WebPatroli/$1';
+$route['PatroliSatpam/web/(:any)/(:any)']			= 'PatroliSatpam/C_WebPatroli/$1/$2';
+$route['PatroliSatpam/api/(:any)']					= 'PatroliSatpam/C_ApiPatroli/$1';
