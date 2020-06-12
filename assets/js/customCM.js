@@ -2395,28 +2395,31 @@ $(document).ready(function(){
 							getFingerCatering();
 						}
 					}else{
-						if (obj.statusKatering == "tidak ada") {
+						if (obj.statusTanggal == "not ok") {
+							Swal.fire(
+						     	'Refresh Telah Dihentikan',
+						     	'Tanggal Yang Dipilih Harus Sama Dengan Tanggal Hari Ini',
+						     	'error'
+					    	)
+						}else if (obj.statusKatering == "tidak ada") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
 						     	'Tidak ada Katering yang berstatus AKTIF',
 						     	'error'
 					    	)
-						}
-						if (obj.statusJadwal == "tidak ada") {
+						}else if (obj.statusJadwal == "tidak ada") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
 						     	'Belum ada Jadwal Katering',
 						     	'error'
 					    	)
-						}
-						if (obj.statusBatasDatang == "tidak ada") {
+						}else if (obj.statusBatasDatang == "tidak ada") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
 						     	'Batas Jam Datang Belum Di Atur',
 						     	'error'
 					    	)
-						}
-						if (obj.statusAbsenShift == "tidak ada") {
+						}else if (obj.statusAbsenShift == "tidak ada") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
 						     	'Data Absensi di shift yang anda pilih kosong',

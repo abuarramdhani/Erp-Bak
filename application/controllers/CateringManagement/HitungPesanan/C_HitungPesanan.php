@@ -153,55 +153,71 @@ class C_HitungPesanan extends CI_Controller
     $lokasi = $this->input->post('lokasi');
     $data = array();
 
-    $dataPesanan = $this->M_hitungpesanan->getPesananByTanggalShiftLokasi($tanggal,$shift,$lokasi);
-    if (!empty($dataPesanan)) {
-      $data['JumlahPesanan'] = count($dataPesanan);
-      $data['statusPesanan'] = 'ada';
+    if (strtotime($tanggal) == strtotime(date('Y-m-d'))) {
+      $data['statusTanggal'] = "ok";
     }else{
-      $data['JumlahPesanan'] = 0;
-      $data['statusPesanan'] = 'tidak ada';
+      $data['statusTanggal'] = "not ok";
     }
 
-    $dataKatering = $this->M_hitungpesanan->getKateringByLokasi($lokasi);
-    if (!empty($dataKatering)) {
-      $data['jumlahKatering'] = count($dataKatering);
-      $data['statusKatering'] = 'ada';
-    }else{
-      $data['jumlahKatering'] = 0;
-      $data['statusKatering'] = 'tidak ada';
+    if (isset($data['statusTanggal']) && $data['statusTanggal'] == "ok") {
+      $dataPesanan = $this->M_hitungpesanan->getPesananByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+      if (!empty($dataPesanan)) {
+        $data['JumlahPesanan'] = count($dataPesanan);
+        $data['statusPesanan'] = 'ada';
+      }else{
+        $data['JumlahPesanan'] = 0;
+        $data['statusPesanan'] = 'tidak ada';
+      }
     }
 
-    $dataJadwal = $this->M_hitungpesanan->getJadwalByTanggalLokasi($tanggal,$lokasi);
-    if (!empty($dataJadwal)) {
-      $data['jumlahJadwal'] = count($dataJadwal);
-      $data['statusJadwal'] = 'ada';
-    }else{
-      $data['jumlahJadwal'] = 0;
-      $data['statusJadwal'] = 'tidak ada';
+    if (isset($data['statusPesanan']) && $data['statusPesanan'] == "ada") {
+      $dataKatering = $this->M_hitungpesanan->getKateringByLokasi($lokasi);
+      if (!empty($dataKatering)) {
+        $data['jumlahKatering'] = count($dataKatering);
+        $data['statusKatering'] = 'ada';
+      }else{
+        $data['jumlahKatering'] = 0;
+        $data['statusKatering'] = 'tidak ada';
+      }
     }
 
-    $dataBatasDatang = $this->M_hitungpesanan->getBatasDatangByTanggalShift($tanggal,$shift);
-    if (!empty($dataBatasDatang)) {
-      $data['jumlahBatasDatang'] = count($dataBatasDatang);
-      $data['statusBatasDatang'] = 'ada';
-    }else{
-      $data['jumlahBatasDatang'] = 0;
-      $data['statusBatasDatang'] = 'tidak ada';
+    if (isset($data['statusKatering']) && $data['statusKatering'] == 'ada') {
+      $dataJadwal = $this->M_hitungpesanan->getJadwalByTanggalLokasi($tanggal,$lokasi);
+      if (!empty($dataJadwal)) {
+        $data['jumlahJadwal'] = count($dataJadwal);
+        $data['statusJadwal'] = 'ada';
+      }else{
+        $data['jumlahJadwal'] = 0;
+        $data['statusJadwal'] = 'tidak ada';
+      }
     }
 
-    if ($shift == '1') {
-      $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasi($tanggal,$lokasi);
-    }elseif($shift == '2'){
-      $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi);
-    }elseif ($shift == '3') {
-      $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi);
+    if (isset($data['statusJadwal']) && $data['statusJadwal'] == 'ada') {
+      $dataBatasDatang = $this->M_hitungpesanan->getBatasDatangByTanggalShift($tanggal,$shift);
+      if (!empty($dataBatasDatang)) {
+        $data['jumlahBatasDatang'] = count($dataBatasDatang);
+        $data['statusBatasDatang'] = 'ada';
+      }else{
+        $data['jumlahBatasDatang'] = 0;
+        $data['statusBatasDatang'] = 'tidak ada';
+      }
     }
-    if (!empty($dataAbsenShift)) {
-      $data['jumlahAbsenShift'] = count($dataAbsenShift);
-      $data['statusAbsenShift'] = 'ada';
-    }else{
-      $data['jumlahAbsenShift'] = 0;
-      $data['statusAbsenShift'] = 'tidak ada';
+
+    if (isset($data['statusBatasDatang']) && $data['statusBatasDatang'] == 'ada') {
+      if ($shift == '1') {
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasi($tanggal,$lokasi);
+      }elseif($shift == '2'){
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi);
+      }elseif ($shift == '3') {
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi);
+      }
+      if (!empty($dataAbsenShift)) {
+        $data['jumlahAbsenShift'] = count($dataAbsenShift);
+        $data['statusAbsenShift'] = 'ada';
+      }else{
+        $data['jumlahAbsenShift'] = 0;
+        $data['statusAbsenShift'] = 'tidak ada';
+      }
     }
 
     echo json_encode($data);
@@ -232,6 +248,8 @@ class C_HitungPesanan extends CI_Controller
     if($shift == '1' or $shift == '2'){
       $this->M_hitungpesanan->UpdateWaktuHitungByShift($shift,'1');      
     }
+    
+    $this->simpanDetail($tanggal,$shift,$lokasi);
 
     $data_log = array(
       'wkt' => date('Y-m-d H:i:s'),
@@ -288,6 +306,36 @@ class C_HitungPesanan extends CI_Controller
           }
         }
         $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+      }
+
+      // Insert Pekerja Tidak Makan
+      $pekerjaTidakMakan = $this->M_hitungpesanan->getPekerjaTidakMakanByTanggalTempatMakan($tanggal,$tempatMakan);
+      if (!empty($pekerjaTidakMakan)) {
+        foreach ($pekerjaTidakMakan as $ptm) {
+          $noind = $ptm['pekerja'];
+          $cekPresensi = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind);
+          if (!empty($cekPresensi)) {
+            $cekPesananPenguranganTidakMakan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
+            if (!empty($cekPesananPenguranganTidakMakan)) {
+              $idPengurangan = $cekPesananPenguranganTidakMakan['0']['id_pengurangan'];
+              $cekPesananPenguranganTidakMakanDetail = $this->M_hitungpesanan->getPesananPenguranganByIdPenguranganNoind($idPengurangan,$noind);
+              if (empty($cekPesananPenguranganTidakMakanDetail)) {
+                $this->M_hitungpesanan->insertPesananPenguranganDetail($idPengurangan,$noind);
+              }
+            }else{
+              $this->M_hitungpesanan->insertPesananPenguranganTidakMakan($tanggal,$tempatMakan,$shift);
+              $cekPesananPenguranganTidakMakan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
+              if (!empty($cekPesananPenguranganTidakMakan)) {
+                $idPengurangan = $cekPesananPenguranganTidakMakan['0']['id_pengurangan'];
+                $cekPesananPenguranganTidakMakanDetail = $this->M_hitungpesanan->getPesananPenguranganByIdPenguranganNoind($idPengurangan,$noind);
+                if (empty($cekPesananPenguranganTidakMakanDetail)) {
+                  $this->M_hitungpesanan->insertPesananPenguranganDetail($idPengurangan,$noind);
+                }
+              }
+            }
+          }
+        }
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
       }
 
       // Pesanan Tambahan
@@ -442,6 +490,37 @@ class C_HitungPesanan extends CI_Controller
         $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
       }
 
+
+      // Insert Pekerja Tidak Makan
+      $pekerjaTidakMakan = $this->M_hitungpesanan->getPekerjaTidakMakanByTanggalTempatMakan($tanggal,$tempatMakan);
+      if (!empty($pekerjaTidakMakan)) {
+        foreach ($pekerjaTidakMakan as $ptm) {
+          $noind = $ptm['pekerja'];
+          $cekPresensi = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind);
+          if (!empty($cekPresensi)) {
+            $cekPesananPenguranganTidakMakan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
+            if (!empty($cekPesananPenguranganTidakMakan)) {
+              $idPengurangan = $cekPesananPenguranganTidakMakan['0']['id_pengurangan'];
+              $cekPesananPenguranganTidakMakanDetail = $this->M_hitungpesanan->getPesananPenguranganByIdPenguranganNoind($idPengurangan,$noind);
+              if (empty($cekPesananPenguranganTidakMakanDetail)) {
+                $this->M_hitungpesanan->insertPesananPenguranganDetail($idPengurangan,$noind);
+              }
+            }else{
+              $this->M_hitungpesanan->insertPesananPenguranganTidakMakan($tanggal,$tempatMakan,$shift);
+              $cekPesananPenguranganTidakMakan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
+              if (!empty($cekPesananPenguranganTidakMakan)) {
+                $idPengurangan = $cekPesananPenguranganTidakMakan['0']['id_pengurangan'];
+                $cekPesananPenguranganTidakMakanDetail = $this->M_hitungpesanan->getPesananPenguranganByIdPenguranganNoind($idPengurangan,$noind);
+                if (empty($cekPesananPenguranganTidakMakanDetail)) {
+                  $this->M_hitungpesanan->insertPesananPenguranganDetail($idPengurangan,$noind);
+                }
+              }
+            }
+          }
+        }
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+      }
+
       // Pesanan Tambahan
       $pesananTambahan = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakan($tanggal,$shift,$tempatMakan);
       if (!empty($pesananTambahan)) {
@@ -592,6 +671,36 @@ class C_HitungPesanan extends CI_Controller
           }
         }
         $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+      }
+
+      // Insert Pekerja Tidak Makan
+      $pekerjaTidakMakan = $this->M_hitungpesanan->getPekerjaTidakMakanByTanggalTempatMakan($tanggal,$tempatMakan);
+      if (!empty($pekerjaTidakMakan)) {
+        foreach ($pekerjaTidakMakan as $ptm) {
+          $noind = $ptm['pekerja'];
+          $cekPresensi = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind);
+          if (!empty($cekPresensi)) {
+            $cekPesananPenguranganTidakMakan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
+            if (!empty($cekPesananPenguranganTidakMakan)) {
+              $idPengurangan = $cekPesananPenguranganTidakMakan['0']['id_pengurangan'];
+              $cekPesananPenguranganTidakMakanDetail = $this->M_hitungpesanan->getPesananPenguranganByIdPenguranganNoind($idPengurangan,$noind);
+              if (empty($cekPesananPenguranganTidakMakanDetail)) {
+                $this->M_hitungpesanan->insertPesananPenguranganDetail($idPengurangan,$noind);
+              }
+            }else{
+              $this->M_hitungpesanan->insertPesananPenguranganTidakMakan($tanggal,$tempatMakan,$shift);
+              $cekPesananPenguranganTidakMakan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
+              if (!empty($cekPesananPenguranganTidakMakan)) {
+                $idPengurangan = $cekPesananPenguranganTidakMakan['0']['id_pengurangan'];
+                $cekPesananPenguranganTidakMakanDetail = $this->M_hitungpesanan->getPesananPenguranganByIdPenguranganNoind($idPengurangan,$noind);
+                if (empty($cekPesananPenguranganTidakMakanDetail)) {
+                  $this->M_hitungpesanan->insertPesananPenguranganDetail($idPengurangan,$noind);
+                }
+              }
+            }
+          }
+        }
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
       }
 
       // Pesanan Tambahan
@@ -1253,9 +1362,42 @@ class C_HitungPesanan extends CI_Controller
         $isi_header = "
         <table style=\"width: 100%\">
           <tr>
-            <td rowspan=\"2\" style=\"width: 75%;font-size: 20pt;\">
+            <td colspan=\"9\" rowspan=\"3\" style=\"width: 60%;font-size: 20pt;\">
               <b>Daftar Pesanan Catering</b>
             </td>
+            <td  style=\"width: 13%\">
+              Sayur
+            </td>
+            <td style=\"width: 2%\">
+              :
+            </td>
+            <td style=\"width: 25%\">
+              ".$sayur."
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Lauk Utama
+            </td>
+            <td>
+              :
+            </td>
+            <td>
+              ".$lauk_utama."
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Lauk Pendamping
+            </td>
+            <td>
+              :
+            </td>
+            <td>
+              ". $lauk_pendamping."
+            </td>
+          </tr>
+          <tr>
             <td style=\"width: 6%\">
               Lokasi
             </td>
@@ -1265,8 +1407,6 @@ class C_HitungPesanan extends CI_Controller
             <td style=\"width: 17%\">
               ".$lokasi_str."
             </td>
-          </tr>
-          <tr>
             <td>
               Tanggal
             </td>
@@ -1275,11 +1415,6 @@ class C_HitungPesanan extends CI_Controller
             </td>
             <td>
               ".date('d M Y', strtotime($tanggal))."
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Menu ".$sayur." - ".$lauk_utama." - ". $lauk_pendamping." - ".$buah."
             </td>
             <td>
               Shift
@@ -1290,26 +1425,39 @@ class C_HitungPesanan extends CI_Controller
             <td>
               ".$shift_str."
             </td>
+            <td>
+              Buah
+            </td>
+            <td>
+              :
+            </td>
+            <td>
+              ".$buah."
+            </td>
           </tr>
         </table>
         ";
-        $isi = $isi_header." <table border=\"1\" style=\"width: 100%;border-collapse: collapse;\" id=\"CateringHitungPesananLihatTabel\">";
+        $isi = $isi_header;
+        // $isi = $isi_header." <table border=\"1\" style=\"width: 100%;border-collapse: collapse;\" id=\"CateringHitungPesananLihatTabel\">";
 
         foreach ($pembagian as $bagi) {
-          $isi .= "<tr>
-            <td colspan=\"7\">Nama Katering : ".$bagi['fs_nama_katering']."</td>
-          </tr>
-          <tr>
-            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">No.</td>
-            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Tempat Makan</td>
-            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Staff</td>
-            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Non Staff</td>
-            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Tambah</td>
-            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Kurang</td>
-            <td style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black\">Jumlah</td>
-          </tr>";
+          $isi .= "<h4>Katering : ".$bagi['fs_nama_katering']."</h4>";
+          $isi .= "<table border=\"1\" style=\"width: 100%;border-collapse: collapse;\">
+          <thead>
+            <tr>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">No.</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 20%\">Tempat Makan</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Staff</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Non Staff</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Tambah</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Kurang</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Jumlah</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 35%\">Keterangan</th>
+            </tr>
+          </thead>";
 
           $nomor = 1;
+          $khusus = 0;
           foreach ($bagi['data'] as $data) {
             if ($data['pengurangan'] !== "0" && $data['tambahan'] !== "0") {
               $warna = "green";
@@ -1320,44 +1468,143 @@ class C_HitungPesanan extends CI_Controller
             }else{
               $warna = "black";
             }
-            $isi .= "<tr data-urutan=\"".$bagi['urutan']."\" data-katering=\"".$data['tempat_makan']."\">
+
+          
+            $keterangan = "";
+            $sayur_arr = explode(",", $sayur);
+            $lauk_utama_arr = explode(",", $lauk_utama);
+            $lauk_pendamping_arr = explode(",", $lauk_pendamping);
+            $buah_arr = explode(",", $buah);
+
+            $filter_sayur = "";
+            foreach ($sayur_arr as $sar) {
+              if ($filter_sayur == "") {
+                $filter_sayur = "'".$sar."'";
+              }else{
+                $filter_sayur .= ",'".$sar."'";
+              }
+            }
+            if ($filter_sayur !== "") {
+              $filter = "tpmk.menu_sayur in (".$filter_sayur.")";
+            }
+
+            $filter_lauk_utama = "";
+            foreach ($lauk_utama_arr as $luar) {
+              if ($filter_lauk_utama == "") {
+                $filter_lauk_utama = "'".$luar."'";
+              }else{
+                $filter_lauk_utama .= ",'".$luar."'";
+              }
+            }
+            if ($filter_lauk_utama !== "") {
+              if ($filter == "") {
+                $filter = "tpmk.menu_lauk_utama in (".$filter_lauk_utama.")";
+              }else{
+                $filter .= " or tpmk.menu_lauk_utama in (".$filter_lauk_utama.")";
+              }
+            }
+            $filter_lauk_pendamping = "";
+            foreach ($lauk_pendamping_arr as $lpar) {
+              if ($filter_lauk_pendamping == "") {
+                $filter_lauk_pendamping = "'".$lpar."'";
+              }else{
+                $filter_lauk_pendamping .= ",'".$lpar."'";
+              }
+            }
+            if ($filter_lauk_pendamping !== "") {
+              if ($filter == "") {
+                $filter = "tpmk.menu_lauk_pendamping in (".$filter_lauk_pendamping.")";
+              }else{
+                $filter .= " or tpmk.menu_lauk_pendamping in (".$filter_lauk_pendamping.")";
+              }
+            }
+            $filter_buah = "";
+            foreach ($buah_arr as $bar) {
+              if ($filter_buah == "") {
+                $filter_buah = "'".$bar."'";
+              }else{
+                $filter_buah .= ",'".$bar."'";
+              }
+            }
+            if ($filter_buah !== "") {
+              if ($filter == "") {
+                $filter = "tpmk.menu_buah in (".$filter_buah.")";
+              }else{
+                $filter .= " or tpmk.menu_buah in (".$filter_buah.")";
+              }
+            }
+            $menuPengganti = $this->M_hitungpesanan->getMenuPenggantiByTanggalShiftLokasiTempatMakan($tanggal,$shift,$lokasi,$data['tempat_makan']," and (".$filter.")");
+            if (!empty($menuPengganti)) {
+              foreach ($menuPengganti as $mp) {
+                if ($keterangan == "") {
+                  $keterangan = "";
+                }else{
+                  $keterangan .= "<br>";
+                }
+                $keterangan .= "-&nbsp;".$mp['noind']." - ".ucwords(strtolower($mp['nama']))."( ";
+                foreach ($sayur_arr as $sar) {
+                  if ($sar == $mp['menu_sayur']) {
+                    $keterangan .= " Sayur : ".$mp['pengganti_sayur'];
+                  }
+                }
+                foreach ($lauk_utama_arr as $luar) {
+                  if ($luar == $mp['menu_lauk_utama']) {
+                    $keterangan .= " Lauk Utama : ".$mp['pengganti_lauk_utama'];
+                  }
+                }
+                foreach ($lauk_pendamping_arr as $lpar) {
+                  if ($lpar == $mp['menu_lauk_pendamping']) {
+                    $keterangan .= " Lauk Pendamping : ".$mp['pengganti_lauk_pendamping'];
+                  }
+                }
+                foreach ($buah_arr as $bar) {
+                  if ($bar == $mp['menu_buah']) {
+                    $keterangan .= " Buah : ".$mp['pengganti_buah'];
+                  }
+                }
+                $keterangan .= ")";
+                $khusus++;
+              }
+            }
+          
+
+            $isi .= "<tr data-urutan=\"".$bagi['urutan']."\" data-katering=\"".$data['tempat_makan']."\" style=\"page-break-inside: avoid\">
               <td style=\"text-align: center;color: ".$warna."\">".$nomor."</td>
-              <td style=\"text-align: left;padding-left: 20px;color: ".$warna."\">".$data['tempat_makan']."</td>
-              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['staff']."</td>
-              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['nonstaff']."</td>
-              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['tambahan']."</td>
-              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['pengurangan']."</td>
-              <td style=\"text-align: right;padding-right: 20px;color: ".$warna."\">".$data['jumlah_pesan']."</td>
+              <td style=\"text-align: left;padding-left: 5px;color: ".$warna."\">".$data['tempat_makan']."</td>
+              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data['staff']."</td>
+              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data['nonstaff']."</td>
+              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data['tambahan']."</td>
+              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data['pengurangan']."</td>
+              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data['jumlah_pesan']."</td>
+              <td>".$keterangan."</td>
             </tr>";
 
             $nomor++;
           }
           $isi .= "<tr>
-            <td colspan=\"6\" style=\"text-align: right;padding-right: 20px;\">Total : </td>
-            <td style=\"text-align: right;padding-right: 20px;\">".$bagi['jumlah_total']."</td>
+            <td colspan=\"6\" style=\"text-align: right;padding-right: 5px;\">Total : </td>
+            <td style=\"text-align: right;padding-right: 5px;\">".$bagi['jumlah_total']."</td>
+            <td style=\"text-align: right;padding-right: 5px;\">".$khusus."</td>
           </tr>
-          <tr>
-            <td colspan=\"7\">&nbsp;</td>
-          </tr>";
+          </table>";
+          $isi_footer = "
+          <table style=\"width: 100%\">
+            <tr>
+              <td style=\"color: blue;width: 33%;border-bottom: 1px solid blue;\">
+                ■ Ada Penambahan
+              </td>
+              <td style=\"color: red;width: 33%;border-bottom: 1px solid red;\">
+                ■ Ada Pengurangan
+              </td>
+              <td style=\"color: green;width: 33%;border-bottom: 1px solid green;\">
+                ■ Ada Penambahan dan Pengurangan
+              </td>
+            </tr>
+          </table>";
+          $isi .= $isi_footer;
 
         }
 
-        $isi .= "</table>";
-        $isi_footer = "
-        <table style=\"width: 100%\">
-          <tr>
-            <td style=\"color: blue;width: 33%\">
-              Ada Penambahan
-            </td>
-            <td style=\"color: red;width: 33%\">
-              Ada Pengurangan
-            </td>
-            <td style=\"color: green;width: 33%\">
-              Ada Penambahan dan Pengurangan
-            </td>
-          </tr>
-        </table>";
-        $isi .= $isi_footer;
         $data['daftar'] = $isi;
         
       }else{
@@ -1379,14 +1626,101 @@ class C_HitungPesanan extends CI_Controller
     $this->load->library('pdf');
 
     $pdf = $this->pdf->load();
-    $pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 5, 5, 5, 'P');
+    $pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 15, 5, 5, 'P');
     $filename = 'PESANAN_'.$jenis_nama.'_'.$tanggal.'_'.$shift.'_'.$lokasi.'.pdf';
     // echo "<pre>";print_r($data['PrintppDetail']);exit();
+    // $this->load->view('CateringManagement/HitungPesanan/V_pdf', $data);
     $html = $this->load->view('CateringManagement/HitungPesanan/V_pdf', $data, true);
     $pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh ".$this->session->user." - ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". <br>Halaman {PAGENO} dari {nb}</i>");
     $pdf->WriteHTML($html, 2);
     // $pdf->Output($filename, 'D');
     $pdf->Output($filename, 'I');
+  }
+
+  public function simpanDetail($tanggal,$shift,$lokasi){
+    $this->M_hitungpesanan->deletePesananDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+
+    $tambahan = $this->M_hitungpesanan->getPesananTambahanDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+    if (!empty($tambahan)) {
+      foreach ($tambahan as $tmb) {
+          $data_insert = array(
+            'tanggal' => $tanggal,
+            'shift' => $shift,
+            'lokasi' => $lokasi,
+            'tempat_makan' => $tmb['fs_tempat_makan'],
+            'noind' => $tmb['fs_noind'],
+            'keterangan' => 'TAMBAHAN',
+            'created_by' => $this->session->user
+          );
+          $this->M_hitungpesanan->insertPesananDetail($data_insert);
+      }
+    }
+
+    $pengurangan = $this->M_hitungpesanan->getPesananPenguranganDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+    if (!empty($pengurangan)) {
+      foreach ($pengurangan as $png) {
+          $data_insert = array(
+            'tanggal' => $tanggal,
+            'shift' => $shift,
+            'lokasi' => $lokasi,
+            'tempat_makan' => $png['fs_tempat_makan'],
+            'noind' => $png['fs_noind'],
+            'keterangan' => 'PENGURANGAN',
+            'created_by' => $this->session->user
+          );
+          $this->M_hitungpesanan->insertPesananDetail($data_insert);
+      }
+    }
+
+    if ($shift == '1') {
+      $absen = $this->M_hitungpesanan->getAbsenShiftSatuDetailByTanggalLokasi($tanggal,$lokasi);
+      if (!empty($absen)) {
+        foreach ($absen as $abs) {
+          $data_insert = array(
+            'tanggal' => $tanggal,
+            'shift' => $shift,
+            'lokasi' => $lokasi,
+            'tempat_makan' => $abs['tempat_makan'],
+            'noind' => $abs['noind'],
+            'keterangan' => strtoupper($abs['keterangan']),
+            'created_by' => $this->session->user
+          );
+          $this->M_hitungpesanan->insertPesananDetail($data_insert);
+        }
+      }
+    }elseif($shift == '2'){
+      $absen = $this->M_hitungpesanan->getAbsenShiftDuaDetailByTanggalLokasi($tanggal,$lokasi);
+      if (!empty($absen)) {
+        foreach ($absen as $abs) {
+          $data_insert = array(
+            'tanggal' => $tanggal,
+            'shift' => $shift,
+            'lokasi' => $lokasi,
+            'tempat_makan' => $abs['tempat_makan'],
+            'noind' => $abs['noind'],
+            'keterangan' => strtoupper($abs['keterangan']),
+            'created_by' => $this->session->user
+          );
+          $this->M_hitungpesanan->insertPesananDetail($data_insert);
+        }
+      }
+    }elseif ($shift == '3') {
+      $absen = $this->M_hitungpesanan->getAbsenShiftTigaDetailByTanggalLokasi($tanggal,$lokasi);
+      if (!empty($absen)) {
+        foreach ($absen as $abs) {
+          $data_insert = array(
+            'tanggal' => $tanggal,
+            'shift' => $shift,
+            'lokasi' => $lokasi,
+            'tempat_makan' => $abs['tempat_makan'],
+            'noind' => $abs['noind'],
+            'keterangan' => strtoupper($abs['keterangan']),
+            'created_by' => $this->session->user
+          );
+          $this->M_hitungpesanan->insertPesananDetail($data_insert);
+        }
+      }
+    }
   }
 
 }
