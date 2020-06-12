@@ -68,7 +68,7 @@
 			<div class="modal-header" style="background-color: #F1C40F;">
 				<label>Update Fingerspot</label>
 				<button class="btn btn-danger spl-fingerprint-modal-edit-close" style="float: right;border-radius: 0px">
-					<span class="glyphicon glyphicon-off"></span>
+					<span class="glyphicon glyphicon-remove"></span>
 				</button>
 			</div>
 			<div class="modal-body">
@@ -113,7 +113,7 @@
 			<div class="modal-header" style="background-color: #2ECC71;">
 				<label>Tambahkan Fingerspot</label>
 				<button class="btn btn-danger spl-fingerprint-modal-add-close" style="float: right;border-radius: 0px">
-					<span class="glyphicon glyphicon-off"></span>
+					<span class="glyphicon glyphicon-remove"></span>
 				</button>
 			</div>
 			<div class="modal-body">
