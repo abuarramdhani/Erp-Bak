@@ -143,7 +143,7 @@
                               <th><center>QTY</center></th>
                               <th><center>USAGE RATE</center></th>
                               <th><center>SCHEDULED START DATE </center></th>
-                              <th><center>ACTION </center></th>
+                              <th style="width:15%"><center>ACTION </center></th>
                             </tr>
                           </thead>
                           <tbody id="create-new-rkh">

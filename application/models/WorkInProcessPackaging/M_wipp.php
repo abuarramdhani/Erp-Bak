@@ -333,14 +333,20 @@ class M_wipp extends CI_Model
 
     public function JobReleaseSelected($d)
     {
-        $response = $this->oracle->query("SELECT DISTINCT msib_assy.segment1 kode_assy
-                       -- ,wdj.SCHEDULED_START_DATE
+      $response = $this->oracle->query("SELECT DISTINCT msib_assy.segment1 kode_assy
+                       -- ,we.wip_entity_name no_job
+                       ,wdj.SCHEDULED_START_DATE
                        ,wdj.completion_subinventory
-                       -- ,we.wip_entity_name no_job
-                       ,msib_assy.DESCRIPTION
-                       ,msib_assy.ORGANIZATION_ID
-                       -- ,wdj.start_quantity
-                       -- ,bores.usage_rate_or_amount
+                       ,msib_assy.DESCRIPTION
+                --        ,wdj.start_quantity
+                --        ,khs_inv_qty_oh (225, 
+                --                        msib_assy.inventory_item_id,
+                --                        'SP-YSP',
+                --                        NULL,
+                --                        NULL
+                --                       ) onhand_ysp
+                       ,bd.department_code
+                --        ,bores.usage_rate_or_amount
                   FROM wip_entities we,
                        wip_discrete_jobs wdj,
                        wip_requirement_operations wro,
@@ -370,8 +376,63 @@ class M_wipp extends CI_Model
                    AND br.resource_code not like 'OPTR%'
                    AND bd.department_code like 'PP%'
                    AND (msib_assy.segment1 LIKE '$d%'OR msib_assy.DESCRIPTION LIKE '$d%')
-                   order by KODE_ASSY DESC")->result_array();
+                   order by msib_assy.segment1 ASC, wdj.SCHEDULED_START_DATE DESC")->result_array();
         return $response;
+    }
+
+    public function getitembykodeitem($kode_item)
+    {
+      $response = $this->oracle->query("SELECT DISTINCT we.wip_entity_name no_job
+                       ,wdj.SCHEDULED_START_DATE
+                       ,wdj.completion_subinventory
+                       ,msib_assy.segment1 kode_assy
+                       ,msib_assy.DESCRIPTION
+                       ,wdj.start_quantity
+                       ,khs_inv_qty_oh (225, 
+                                       msib_assy.inventory_item_id,
+                                       'SP-YSP',
+                                       NULL,
+                                       NULL
+                                      ) onhand_ysp
+                       ,bd.department_code
+                       ,bores.usage_rate_or_amount
+                  FROM wip_entities we,
+                       wip_discrete_jobs wdj,
+                       wip_requirement_operations wro,
+                       mtl_system_items_b msib_comp,
+                       mtl_system_items_b msib_assy,
+                       bom_departments bd,
+                       bom_operation_sequences bos,
+                       bom_operation_resources bores,
+                       bom_operational_routings bor,
+                       bom_resources br
+                 WHERE we.wip_entity_id = wdj.wip_entity_id
+                   AND wdj.completion_subinventory LIKE 'INT-P&%'
+                   AND wdj.wip_entity_id = wro.wip_entity_id
+                   AND wro.inventory_item_id = msib_comp.inventory_item_id
+                   AND wro.organization_id = msib_comp.organization_id
+                   AND wdj.primary_item_id = msib_assy.inventory_item_id
+                   AND wdj.organization_id = msib_assy.organization_id
+                   --
+                   AND bor.assembly_item_id = msib_assy.inventory_item_id
+                   AND bor.organization_id = msib_assy.organization_id
+                   AND bos.routing_sequence_id = bor.routing_sequence_id
+                   AND bd.department_id = bos.department_id
+                   AND wro.department_id = bd.department_id
+                   AND bores.operation_sequence_id = bos.operation_sequence_id
+                   AND bores.resource_id = br.resource_id
+                   AND wdj.STATUS_TYPE = 3
+                   AND br.resource_code not like 'OPTR%'
+                   AND bd.department_code like 'PP%'
+                   AND msib_assy.segment1 LIKE '$kode_item'
+                   order by msib_assy.segment1 ASC, wdj.SCHEDULED_START_DATE DESC")->result_array();
+
+        if (!empty($response)) {
+           return $response;
+        }else {
+          $responses = [];
+          return $responses;
+        }
     }
 
     public function getDetailBom($kodebarang)

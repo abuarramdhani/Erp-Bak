@@ -19,6 +19,7 @@ const swalWIPP = (type, title) => {
   })
 }
 // ========================do something below the alert =================
+
 const cekhover = _ => {
   const jsw = $('#jenisSaveWIIP').val()
   const date = $('#dateSaveWIIP').val()
@@ -35,9 +36,9 @@ const jenisRKH = _ => {
 
   let hdatee =  new Date(date);
   let hdate = hdatee.toString().split(' ');
-  if (hdate[0] === 'Mon' || hdate[0] === 'Tue' || hdate[0] === 'Wed' || hdate[0] === 'Thu') {
+  if ((hdate[0] === 'Mon' || hdate[0] === 'Tue' || hdate[0] === 'Wed' || hdate[0] === 'Thu') && jsw === 'Reguler') {
     $('#waktuSaveWIIP').val('7')
-  }else if (hdate[0] === 'Fri' || hdate[0] === 'Sat' ) {
+  }else if ((hdate[0] === 'Fri' || hdate[0] === 'Sat') && jsw === 'Reguler') {
     $('#waktuSaveWIIP').val('6')
   }else {
     $('#waktuSaveWIIP').val('')
