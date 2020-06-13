@@ -62,7 +62,7 @@ class C_KartuBarang extends CI_Controller {
 		$file = $_FILES['excel_file']['tmp_name'];
 		$load = PHPExcel_IOFactory::load($file);
 		$sheets = $load->getActiveSheet()->toArray(null,true,true,true);
-
+		// echo "<pre>";print_r($sheets);exit();
 		$size = $this->input->post('size_cetak');
 		$cek = count($sheets[1]);
 		$getdata = array();
@@ -72,7 +72,8 @@ class C_KartuBarang extends CI_Controller {
 			foreach ($sheets as $val) {
 				if ($i != 0) {
 					$isi = explode($tanda, $val['A']);
-					$desc = $this->M_kartubrg->getdesc($isi[0]);
+					$item = strtoupper($isi[0]);
+					$desc = $this->M_kartubrg->getdesc($item);
 					$array = array(
 						'kode' => $isi[0],
 						'desc' => $desc[0]['DESCRIPTION'],
@@ -88,7 +89,8 @@ class C_KartuBarang extends CI_Controller {
 		}else {
 			foreach ($sheets as $val) {
 				if ($i != 0) {
-					$desc = $this->M_kartubrg->getdesc($val['A']);
+					$item = strtoupper($val['A']);
+					$desc = $this->M_kartubrg->getdesc($item);
 					$array = array(
 						'kode' => $val['A'],
 						'desc' => $desc[0]['DESCRIPTION'],
