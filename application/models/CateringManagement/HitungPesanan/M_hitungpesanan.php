@@ -1557,7 +1557,9 @@ class M_hitungpesanan extends Ci_Model
 				and tpd.shift = ?
 				and tpd.lokasi = ?
 				and tpd.tempat_makan = ?
-				$custom_condition ";
+				and lower(tpd.keterangan) in ('absen', 'shift tanggung', 'tambahan')
+				$custom_condition
+				order by tpmk.noind ";
 		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi,$tempat_makan))->result_array();
 	}
 }

@@ -2,6 +2,7 @@
 	.btn-cm {
 		background-color: #4bcffa;
 		color: white;
+		margin: 2px !important;
 	}
 	.btn-cm:hover {
 		color: #4bcffa !important;
@@ -21,11 +22,12 @@
 									<?php echo "Pesanan Katering <br>Tanggal : ".date("Y-m-d",strtotime($tanggal))." Shift : ".($shift == '1' ? 'Shift Satu dan Umum' : ($shift == '2' ? 'Shift Dua' : ($shift == '3' ? 'Shift Tiga' : 'Tidak Diketahui')))." Lokasi : ".($lokasi == '1' ? 'Yogyakarta' :($lokasi == '2' ? 'Tuksono' : 'Tidak Diketahui')) ?>
 									</div>
 									<div class="col-lg-7 text-right">
-										<button class="btn btn-cm" id="btn-CM-HitungPesanan-CopyPembagian">Copy Pembagian</button>	
-										<button class="btn btn-cm" id="btn-CM-HitungPesanan-SimpanMakan">Simpan Makan</button>	
-										<button class="btn btn-cm" id="btn-CM-HitungPesanan-SimpanSnack">Simpan Snack</button>	
-										<button class="btn btn-cm" id="btn-CM-HitungPesanan-CetakMakan">Cetak Makan</button>	
-										<button class="btn btn-cm" id="btn-CM-HitungPesanan-CetakSnack">Cetak Snack</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-CopyPembagian">Copy Pembagian</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-SimpanMakan">Simpan Makan</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-SimpanSnack">Simpan Snack</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-CetakMakan">Cetak Makan</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-CetakSnack">Cetak Snack</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-FormPesanan">Cetak Form Pesanan Makan Pekerja</button>	
 									</div>
 								</div>
 							</div>

@@ -2812,6 +2812,16 @@ $(document).ready(function(){
 			})
 		}
 	})
+
+	$('#btn-CM-HitungPesanan-FormPesanan').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			window.open(baseurl + 'CateringManagement/HitungPesanan/cetakFormPesananMakan?tanggal=' + tanggal + '&lokasi=' + lokasi + '&shift=' + shift);
+		}
+	})
 });
 // end Hitung Pesanan
 $(document).on('ready',function(){
