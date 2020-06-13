@@ -24,10 +24,6 @@ $(document).ready(function(){
 		$('#pts_mdl_upask').modal('show');
 	});
 
-	$('.pts_slcask').select2({
-		placeholder: "Pilih Pertanyaan"
-	});
-
 	$('.pts_tblask').dataTable({});
 
 	$('.pts_tblask').on('click','.pts_btn_edlokasi', function(){
@@ -54,6 +50,13 @@ $(document).ready(function(){
 				console.log(textStatus, errorThrown);
 			}
 		});
+
+		$('#pts_mdl_editlokasi').modal('show');
+
+	});
+	$('#pts_slcask').select2({
+		width: '100%',
+		placeholder: "Pilih Pertanyaan"
 	});
 
 	$('.pts_tblask').on('click','.pts_btn_todelok', function(){
@@ -107,7 +110,7 @@ $(document).ready(function(){
 		var pr = $('.pts_daterange').val();
 		var pkj = $('.pts_getPekerja').val();
 		tbl_rkp.clear().draw();
-
+		$('#surat-loading').show();
 		$.ajax({
 			url: baseurl + 'PatroliSatpam/web/get_rekap_data',
 			type: "post",
@@ -115,10 +118,11 @@ $(document).ready(function(){
 			success: function (response) {
 				var send = $.parseJSON(response);
 				tbl_rkp.rows.add(send);
-
+				$('#surat-loading').hide();
 				tbl_rkp.draw();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
+				$('#surat-loading').hide();
 				console.log(textStatus, errorThrown);
 			}
 		});

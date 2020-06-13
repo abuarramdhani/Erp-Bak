@@ -1,5 +1,18 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw0IlgLwNcUk4v1Zl0HkB9NCY70jEy6uw&callback=initMap&libraries=&v=weekly" defer></script>
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice{
+        color:#000;
+        background-color: #F5F5F5;
+        border-color : #9E9E9E;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+        color: #000;
+    }
+    .modal {
+        overflow-y:auto;
+    }
+</style>
 <section class="content">
     <div class="inner" >
         <div class="row">
@@ -53,10 +66,10 @@
                                                     <td style="text-align: center;"><?= $key['longitude'] ?></td>
                                                     <td style="text-align: center;">
                                                         <input id="what" hidden="" value="<?=$key['list_pertanyaan']?>">
-                                                        <a href="<?= base_url('PatroliSatpam/web/cetak_qr_patroli?id='.$key['id']) ?>" class="btn btn-info" target="_blank">
+                                                        <a href="<?= base_url('PatroliSatpam/web/cetak_qr_patroli?id='.$key['id']) ?>" class="btn btn-info" target="_blank" title="Cetak QR Code">
                                                             <i class="fa fa-qrcode"></i>
                                                         </a>
-                                                        <button value="<?=$key['id']?>" class="btn btn-primary pts_btn_edlokasi" title="Edit" data-toggle="modal" data-target="#pts_mdl_editlokasi">
+                                                        <button value="<?=$key['id']?>" class="btn btn-primary pts_btn_edlokasi" title="Edit">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
                                                         <button value="<?=$key['id']?>" class="btn btn-danger pts_btn_todelok">
@@ -82,7 +95,7 @@
 <div hidden id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
     <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
-<div class="modal fade" id="pts_mdl_editlokasi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="pts_mdl_editlokasi" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form method="post" action="<?= base_url('PatroliSatpam/web/update_lokasi'); ?>">
             <div class="modal-content">
@@ -108,12 +121,12 @@
                     </div>
                     <label>Pertanyaan</label>
                     <br>
-                    <select class="form-control pts_slcask" name="pertanyaan[]" multiple="" style="width: 100%">
+                    <select class="form-control" id="pts_slcask" name="pertanyaan[]" style="width: 100%" multiple="">
                         <?php foreach ($ask as $key): ?>
                             <option value="<?=$key['id_pertanyaan']?>"><?=$key['pertanyaan']?></option>
                         <?php endforeach ?>
                     </select>
-                    <div style="width: 100%; text-align: center; color: red">
+                    <div style="width: 100%; text-align: center; color: red; margin-top: 20px;">
                         <label style="">Klik pada Map untuk Mendapatkan koordinat!</label>
                     </div>
                     <div style="height: 300px;" id="pts_gMap_modal">

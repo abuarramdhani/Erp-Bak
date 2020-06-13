@@ -74,7 +74,7 @@
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="panel-body">
-                                    <div class="col-md-12" id="pts_tblrekapdata">
+                                    <div class="col-md-12" id="pts_tblrekapdata" style="overflow-x:scroll;">
                                         <table class="table table-bordered table-striped table-hover pts_tbl_rkp">
                                             <thead class="bg-primary">
                                                 <th style="width: 0px;">No</th>

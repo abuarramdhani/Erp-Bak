@@ -30,7 +30,7 @@
                                             <i class="fa fa-plus"></i> Tambah Pertanyaan
                                         </button>
                                     </div>
-                                    <div class="col-md-12" style="margin-top: 50px">
+                                    <div class="col-md-12" style="margin-top: 50px; overflow-x:scroll;">
                                         <table class="table table-hover table-striped table-bordered">
                                             <thead class="bg-primary">
                                                 <th width="5%" style="text-align: center;">No</th>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="modal-body">
                     <label>Pertanyaan</label>
-                    <input class="form-control" name="pertanyaan">
+                    <input class="form-control" name="pertanyaan" required="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="modal-body">
                     <label>Pertanyaan</label>
-                    <input class="form-control" name="pertanyaan">
+                    <input class="form-control" name="pertanyaan" required="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
