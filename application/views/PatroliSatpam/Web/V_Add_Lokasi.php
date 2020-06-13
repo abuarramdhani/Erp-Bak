@@ -40,7 +40,7 @@
                                                         <label>Nama Lokasi</label>
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <input class="form-control" name="lokasi" placeholder="Nama Lokasi">
+                                                        <input class="form-control" name="lokasi" placeholder="Nama Lokasi" required="">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12" style="margin-top: 10px;">
@@ -48,7 +48,7 @@
                                                         <label style="margin-top: 5px;">Latitude</label>
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <input id="pts_toSetlat" class="form-control" name="lat" placeholder="Latitude">
+                                                        <input id="pts_toSetlat" class="form-control" name="lat" placeholder="Latitude" required="">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12" style="margin-top: 10px;">
@@ -56,7 +56,7 @@
                                                         <label style="margin-top: 5px;">Longitude</label>
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <input id="pts_toSetlong" class="form-control" name="long" placeholder="Longitude">
+                                                        <input id="pts_toSetlong" class="form-control" name="long" placeholder="Longitude" required="">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12" style="margin-top: 10px;">
@@ -64,7 +64,7 @@
                                                         <label style="margin-top: 5px;">Pertanyaan</label>
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <select class="form-control pts_slcask" name="ask[]" multiple="" style="width: 100%">
+                                                        <select class="form-control" id="pts_slcask" name="ask[]" multiple="" style="width: 100%">
                                                             <?php foreach ($ask as $key): ?>
                                                                 <option value="<?=$key['id_pertanyaan']?>"><?=$key['pertanyaan']?></option>
                                                             <?php endforeach ?>
