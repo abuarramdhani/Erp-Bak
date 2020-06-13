@@ -218,7 +218,7 @@ class M_monitoring extends CI_Model {
                     AND mtrl.line_status <> 6
                     AND kts.mulai_pengeluaran IS NOT NULL
                     AND kts.selesai_pengeluaran IS NOT NULL
-                    AND (kts.bon IS NULL OR kts.bon = 'BON')
+                    AND (kts.bon IS NULL OR kts.bon != 'BON')
                     AND TRUNC(kts.selesai_pengeluaran) BETWEEN to_date('$date1','DD/MM/YYYY') AND to_date('$date2','DD/MM/YYYY')
                 GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen,
                         TO_CHAR (kts.mulai_pengeluaran, 'DD/MM/YYYY'),

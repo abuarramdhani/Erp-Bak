@@ -11,8 +11,9 @@
 }
 
 .chartAreaWrapper {
-  width: 1100px;
-  overflow-x: scroll;
+  width: 1000px;
+  height: 350px;
+  /* overflow-x: scroll; */
 }
 </style>
 <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.js');?>"></script>
@@ -29,16 +30,24 @@ var pglr = [];
 var pck = [];
 var coly = [];
 var pcs = [];
+var item_in = [];
+var out = [];
+var plynout = [];
+var pglrout = [];
 
 <?php 
 $jml = count($data);
-for ($i=0; $i < 7; $i++) { ?>
+for ($i=6; $i > -1; $i--) { ?>
     wkt.push("<?= $data[$i]['TGL_INPUT']; ?>")
     plyn.push(<?= $data[$i]['PELAYANAN'];?>)
     pglr.push(<?= $data[$i]['PENGELUARAN'];?>)
     pck.push(<?= $data[$i]['PACKING'];?>)
     coly.push(<?= $data[$i]['COLY'];?>)
     pcs.push(<?= $data[$i]['JML_PACK'];?>)
+    item_in.push(<?= $data[$i]['ITEM_MASUK'];?>)
+    out.push(<?= $data[$i]['ITEM_KELUAR'];?>)
+    plynout.push(<?= $data[$i]['ITEM_PLYN'];?>)
+    pglrout.push(<?= $data[$i]['ITEM_PGLR'];?>)
 <?php }?>
 
 
@@ -199,6 +208,173 @@ var myChart2 = new Chart(ctx, {
         }
   }
 });
+
+var ctx = document.getElementById("myChart3");
+var myChart3 = new Chart(ctx, {
+  type: 'line',
+  data: {
+        labels: wkt,
+        datasets: [ {
+            data: [210, 210, 210, 210, 210, 210,210],
+            label: "Standar",
+            borderColor: "black",
+            backgroundColor: "black",
+            pointBackgroundColor: "black",
+            fill: false
+        }, { 
+            data: item_in,
+            label: "In",
+            borderColor: "#47A861",
+            backgroundColor: "#47A861",
+            pointBackgroundColor: "#005C28",
+            fill: false
+        },{ 
+            data: out,
+            label: "Out",
+            borderColor: "#00A5F5",
+            backgroundColor: "#00A5F5",
+            pointBackgroundColor: "#003D5C",
+            fill: false
+        }
+        ]
+    },
+  options: {
+    "hover": {
+      "animationDuration": 0
+    },
+    "animation": {
+        "duration": 1,
+                    "onComplete": function () {
+                        var chartInstance = this.chart,
+                        ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                        meta.data.forEach(function (line, index) {
+                        var data = dataset.data[index];                            
+                        ctx.fillText(data, line._model.x, line._model.y - 5);
+                    });
+                });
+            }
+    },
+    scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: 'ITEM IN OUT'
+        },
+        responsive: true,
+        
+       tooltips: {
+            callbacks: {
+                labelColor: function(tooltipItem, chart) {
+                    return {
+                        borderColor: '#7C7B78',
+                        backgroundColor: '#FFFDF7'
+                    }
+                }
+            }
+        },
+        legend: {
+            labels: {
+                fontColor: 'black',
+               
+            }
+        }
+  }
+});
+
+var ctx = document.getElementById("myChart4");
+var myChart3 = new Chart(ctx, {
+  type: 'bar',
+  data: {
+        labels: wkt,
+        datasets: [ {
+            data: plynout,
+            label: "Pelayanan",
+            borderColor: "#FF3E45",
+            backgroundColor: "#FF3E45",
+            fill: true
+        }, { 
+            data: pglrout,
+            label: "Pengeluaran",
+            borderColor: "#EB794B",
+            backgroundColor: "#EB794B",
+            fill: true
+        },{ 
+            data: out,
+            label: "Packing",
+            borderColor: "#00CE9B",
+            backgroundColor: "#00CE9B",
+            fill: true
+        }
+        ]
+    },
+  options: {
+    "hover": {
+      "animationDuration": 0
+    },
+    "animation": {
+        "duration": 1,
+                    "onComplete": function () {
+                        var chartInstance = this.chart,
+                        ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                        meta.data.forEach(function (line, index) {
+                        var data = dataset.data[index];                            
+                        ctx.fillText(data, line._model.x, line._model.y - 5);
+                    });
+                });
+            }
+    },
+    scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: 'ITEM PELAYANAN SPB/DO'
+        },
+        responsive: true,
+        
+       tooltips: {
+            callbacks: {
+                labelColor: function(tooltipItem, chart) {
+                    return {
+                        borderColor: '#7C7B78',
+                        backgroundColor: '#FFFDF7'
+                    }
+                }
+            }
+        },
+        legend: {
+            labels: {
+                fontColor: 'black',
+               
+            }
+        }
+  }
+});
+
+
 });
     </script>
 <section class="content">
@@ -248,12 +424,14 @@ var myChart2 = new Chart(ctx, {
                                                     <th style="width:5%">No</th>
                                                     <th>Tanggal Input</th>
                                                     <th>Lembar Masuk</th>
+                                                    <th>Item Masuk</th>
                                                     <th>Pcs Masuk</th>
                                                     <th>Pelayanan</th>
                                                     <th>Pengeluaran</th>
                                                     <th>Packing</th>
                                                     <th>Coly</th>
                                                     <th>Lembar Packing</th>
+                                                    <th>Item Packing</th>
                                                     <th>Pcs Packing</th>
                                                 </tr>
                                             </thead>
@@ -263,12 +441,14 @@ var myChart2 = new Chart(ctx, {
                                                         <td ><?= $no; ?></td>
                                                         <td><input type="hidden" id="pglr<?= $no?>" value="<?= $val['TGL_INPUT']?>"><?= $val['TGL_INPUT']?></td>
                                                         <td><input type="hidden" id="lembar_msk<?= $no?>" value="<?= $val['LEMBAR_MASUK']?>"><?= $val['LEMBAR_MASUK']?></td>
+                                                        <td><input type="hidden" id="item_in<?= $no?>" value="<?= $val['ITEM_MASUK']?>"><?= $val['ITEM_MASUK']?></td>
                                                         <td><input type="hidden" id="pcs_msk<?= $no?>" value="<?= $val['PCS_MASUK']?>"><?= $val['PCS_MASUK']?></td>
                                                         <td><input type="hidden" id="plyn<?= $no?>" value="<?= $val['PELAYANAN']?>"><?= $val['PELAYANAN']?> detik</td>
                                                         <td><input type="hidden" id="pglr<?= $no?>" value="<?= $val['PENGELUARAN']?>"><?= $val['PENGELUARAN']?> detik</td>
                                                         <td><input type="hidden" id="pck<?= $no?>" value="<?= $val['PACKING']?>"><?= $val['PACKING']?> detik</td>
                                                         <td><input type="hidden" id="coly<?= $no?>" value="<?= $val['COLY']?>"><?= $val['COLY']?></td>
                                                         <td><input type="hidden" id="lembar_pack<?= $no?>" value="<?= $val['LEMBAR_PACK']?>"><?= $val['LEMBAR_PACK']?></td>
+                                                        <td><input type="hidden" id="item_out<?= $no?>" value="<?= $val['ITEM_KELUAR']?>"><?= $val['ITEM_KELUAR']?></td>
                                                         <td><input type="hidden" id="pcs_pack<?= $no?>" value="<?= $val['PCS_PACK']?>"><?= $val['PCS_PACK']?></td>
                                                     </tr>
                                                 <?php $no++; $i++;  }?>
@@ -297,6 +477,26 @@ var myChart2 = new Chart(ctx, {
                                     </div>
                                 </div>
 
+                                <div class="panel-body">
+                                    <div class="chartWrapper">
+                                        <div class="chartAreaWrapper">
+                                            <div class="chartAreaWrapper2">
+                                            <canvas id="myChart3" width="2400px" height="800px" style="width:2400px;height:800px"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="panel-body">
+                                    <div class="chartWrapper">
+                                        <div class="chartAreaWrapper">
+                                            <div class="chartAreaWrapper2">
+                                            <canvas id="myChart4" width="2400px" height="800px" style="width:2400px;height:800px"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
                             </div>
                         </div>
                     </div>
