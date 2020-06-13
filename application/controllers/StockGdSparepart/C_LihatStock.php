@@ -51,7 +51,7 @@ class C_LihatStock extends CI_Controller
 		$data['nama'] = array('0' => 'TL800', '1' => 'G1000', '2' => 'G600', '3' => 'E85', '4' => 'M1000', '5' => 'KIJANG',
 							'6' => 'BOXER', '7' => 'ZEVA', '8' => 'IMPALA', '9' => 'CAPUNG METAL', '10' => 'CAPUNG RAWA', '11' => 'ZENA',
 							'12' => 'CAKAR BAJA', '13' => 'CAKAR BAJA MINI', '14' => 'H-110', '15' => 'QH-11', '16' => 'QT-14', '17' => 'OLD',
-							'18' => 'MITSUBOSHI', '19' => 'BEARING NACHI', '20' => 'DIESEL PDE', '21' => 'V BELT BANDO',
+							'18' => 'MITSUBOSHI', '19' => 'BEARING NACHI', '20' => 'DIESEL VDE', '21' => 'V BELT BANDO',
 							'22' => 'BEARING SKF', '23' => 'DIESEL HDE');
 		// echo "<pre>"; print_r($data['kode']);exit();
 		$this->load->view('V_Header',$data);
