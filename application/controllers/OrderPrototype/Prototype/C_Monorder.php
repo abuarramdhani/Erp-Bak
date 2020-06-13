@@ -12,9 +12,9 @@ class C_Monorder extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
-		
 
-		
+
+
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('OrderPrototype/M_order');
 
@@ -23,8 +23,7 @@ class C_Monorder extends CI_Controller
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-			
+		if ($this->session->is_logged) {
 		} else {
 			redirect('index');
 		}
@@ -42,14 +41,14 @@ class C_Monorder extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('OrderPrototype/Prototype/V_MonitoringOrder',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('OrderPrototype/Prototype/V_MonitoringOrder', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function loadview()
@@ -59,43 +58,41 @@ class C_Monorder extends CI_Controller
 
 		// echo "<pre>";print_r($monitor);exit();
 
-		$data['monitor']= $monitor;
+		$data['monitor'] = $monitor;
 
-		$this->load->view('OrderPrototype/Prototype/V_TblMonitoringOrder',$data);
-
+		$this->load->view('OrderPrototype/Prototype/V_TblMonitoringOrder', $data);
 	}
 
 	public function format_date($date)
 	{
-		$ss = explode("/",$date);
-		return $ss[2]."-".$ss[1]."-".$ss[0];
+		$ss = explode("/", $date);
+		return $ss[2] . "-" . $ss[1] . "-" . $ss[0];
 	}
 
 	public function lihatgambar()
 	{
 		$no_order = $this->input->post('no_order');
 
-		$img = '<center><img style="width:50%" src="'.base_url('/img/'.$no_order.'.png?t=' . time()).'"></center>';
+		$img = '<center><img style="width:50%" src="' . base_url('/assets/upload/OrderPrototype/' . $no_order . '.png?t=' . time()) . '"></center>';
 
 		echo $img;
-		
 	}
 
-		public function lihatprogress()
+	public function lihatprogress()
 	{
 		$no_order = $this->input->post('no_order');
 
 		$progress = $this->M_order->progress($no_order);
 
 
-		$arrayprogress= array();
-		$i=0;
+		$arrayprogress = array();
+		$i = 0;
 		foreach ($progress as $pro) {
 			$nama_proses = $this->M_order->nama_proses($pro['id_proses']);
 
 			$arrayprogress[$i]['urutan'] = $pro['urutan'];
 			$arrayprogress[$i]['nama_proses'] = $nama_proses[0]['nama_proses'];
-			$arrayprogress[$i]['done'] = $pro['done'];		
+			$arrayprogress[$i]['done'] = $pro['done'];
 			$i++;
 		}
 
@@ -103,28 +100,26 @@ class C_Monorder extends CI_Controller
 
 		$tbody = '';
 		foreach ($arrayprogress as  $pro) {
-			if ($pro['done']== 'N') {
+			if ($pro['done'] == 'N') {
 				$fa = '<i style="color: red" class="fa fa- fa-remove fa-2x">';
 				$back = 'bg-danger';
 				$keter = '-';
-
-			}else if ($pro['done'] == 'P') {
-				$fa='<i style="color: black" class="fa fa-  fa-clock-o fa-2x">';
-				$back='bg-warning';
+			} else if ($pro['done'] == 'P') {
+				$fa = '<i style="color: black" class="fa fa-  fa-clock-o fa-2x">';
+				$back = 'bg-warning';
 				$keter = 'On Proccess';
 			} else {
 				$fa = '<i style="color: green" class="fa fa- fa-check fa-2x"></i>';
 				$back = 'bg-success';
 				$keter = 'Finished';
-
 			}
 
 			$tbody .= '
-		<tr class="'.$back.'">
-		<td class="text-center"><input type="hidden" value="'.$pro['urutan'].'">'.$pro['urutan'].'</td>
-		<td class="text-center"><input type="hidden" value="'.$pro['nama_proses'].'">'.$pro['nama_proses'].'</td>
-		<td class="text-center">'.$fa.'</td>
-		<td class="text-center">'.$keter.'</td>
+		<tr class="' . $back . '">
+		<td class="text-center"><input type="hidden" value="' . $pro['urutan'] . '">' . $pro['urutan'] . '</td>
+		<td class="text-center"><input type="hidden" value="' . $pro['nama_proses'] . '">' . $pro['nama_proses'] . '</td>
+		<td class="text-center">' . $fa . '</td>
+		<td class="text-center">' . $keter . '</td>
 
 		</tr>';
 		}
@@ -139,12 +134,11 @@ class C_Monorder extends CI_Controller
 
 		</tr>
 		</thead>
-		<tbody>'.$tbody.'
+		<tbody>' . $tbody . '
 		</tbody>
 		</table>';
 
 		echo $tabelprogress;
-		
 	}
 
 	public function updateterima()
@@ -153,7 +147,7 @@ class C_Monorder extends CI_Controller
 		date_default_timezone_set('Asia/Jakarta');
 		$datetime = date("d-M-Y H:i:s");
 
-		$this->M_order->updateterima($no_order,$datetime);
+		$this->M_order->updateterima($no_order, $datetime);
 	}
 
 	public function edit()
@@ -166,8 +160,8 @@ class C_Monorder extends CI_Controller
 		$progress = $this->M_order->progress($no_order);
 
 
-		$arrayprogress= array();
-		$i=0;
+		$arrayprogress = array();
+		$i = 0;
 		foreach ($progress as $pro) {
 			$nama_proses = $this->M_order->nama_proses($pro['id_proses']);
 
@@ -187,50 +181,50 @@ class C_Monorder extends CI_Controller
 		// echo "<pre>";print_r($datatoedit);
 		// echo "<pre>";print_r($proses);exit();
 
-		if ($datatoedit[0]['tgl_kirim_material']== null) {
+		if ($datatoedit[0]['tgl_kirim_material'] == null) {
 			$datatoedit[0]['asal_material'] = 'Tuksono';
-			$opet='Pusat';
+			$opet = 'Pusat';
 			$disable = 'disabled ="disabled"';
-			$vulue ='';
+			$vulue = '';
 		} else {
 			$datatoedit[0]['asal_material'] = 'Pusat';
-			$opet='Tuksono';
+			$opet = 'Tuksono';
 			$disable = '';
-			$vulue = date('d-M-Y',strtotime($datatoedit[0]['tgl_kirim_material']));
+			$vulue = date('d-M-Y', strtotime($datatoedit[0]['tgl_kirim_material']));
 		}
 
 		// echo "<pre>";print_r($value);exit();
-		$select='';
-		for ($i=0; $i < count($datatoedit[0]['proses']); $i++) { 
-		$option='';
+		$select = '';
+		for ($i = 0; $i < count($datatoedit[0]['proses']); $i++) {
+			$option = '';
 			foreach ($proses as $value) {
 				if ($datatoedit[0]['proses'][$i]['nama_proses'] != $value['nama_proses']) {
-					$option.='<option value="'.$value['id_proses'].'">'.$value['nama_proses'].'</option>';
+					$option .= '<option value="' . $value['id_proses'] . '">' . $value['nama_proses'] . '</option>';
 				}
 			}
-		// Nampilin proses yang udah ada dari awal ----------------------------------------------------------------------------------
-			$select .='<div class ="panel-body">
+			// Nampilin proses yang udah ada dari awal ----------------------------------------------------------------------------------
+			$select .= '<div class ="panel-body">
         	<div class="col-md-4" style="text-align: right;"><label>Proses</label></div>
 			<div class="col-md-1">
-			<input class="form-control" type="text" name="urutan[]" value="'.$datatoedit[0]['proses'][$i]['urutan'].'" readonly="readonly">
+			<input class="form-control" type="text" name="urutan[]" value="' . $datatoedit[0]['proses'][$i]['urutan'] . '" readonly="readonly">
 			</div>
 			<div class="col-md-5" style="text-align: left;">
-				<select style="width:100%;" class="form-control select2 proses_order" id="proses_order'.$datatoedit[0]['proses'][$i]['urutan'].'" name="proses_order[]">
-						<option value="'.$datatoedit[0]['proses'][$i]['id_proses'].'">'.$datatoedit[0]['proses'][$i]['nama_proses'].'</option>
-						'.$option.'
+				<select style="width:100%;" class="form-control select2 proses_order" id="proses_order' . $datatoedit[0]['proses'][$i]['urutan'] . '" name="proses_order[]">
+						<option value="' . $datatoedit[0]['proses'][$i]['id_proses'] . '">' . $datatoedit[0]['proses'][$i]['nama_proses'] . '</option>
+						' . $option . '
 				</select><br>
 			</div><div class="col-md-1" style="text-align:left"><a class="btn btn-danger btn-sm hpsbtnnn"><i class="fa fa-minus"></i></a></div></div>';
 		}
 
 		// View Modal Edit --------------------------------------------------------------------------------------------------------------
-        $input='<form name="Orderform" enctype="multipart/form-data" action="'.base_url('OrderPro/monorderpro/update').'" class="form-horizontal" onsubmit="return validasi();window.location.reload();" method="post">
+		$input = '<form name="Orderform" enctype="multipart/form-data" action="' . base_url('OrderPro/monorderpro/update') . '" class="form-horizontal" onsubmit="return validasi();window.location.reload();" method="post">
        
                 <div class ="panel-body">
         	<div class="col-md-4" style="text-align: right;">
 				<label>No Order</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;">
-				 <input type="text" class="form-control" name="no_order" value="'.$no_order.'" readonly="readonly">
+				 <input type="text" class="form-control" name="no_order" value="' . $no_order . '" readonly="readonly">
 			</div>
         </div>
          <div class ="panel-body">
@@ -238,7 +232,7 @@ class C_Monorder extends CI_Controller
 				<label>Kode Komponen</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;">
-				<input type="text"class="form-control" name="kode_komponen" value ="'.$datatoedit[0]['kode_komponen'].'"  >
+				<input type="text"class="form-control" name="kode_komponen" value ="' . $datatoedit[0]['kode_komponen'] . '"  >
 			</div>
         </div>
           <div class ="panel-body">
@@ -246,7 +240,7 @@ class C_Monorder extends CI_Controller
 				<label>Nama Komponen</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;">
-				<input type="text"class="form-control" name="nama_komponen" value ="'.$datatoedit[0]['nama_komponen'].'"  >
+				<input type="text"class="form-control" name="nama_komponen" value ="' . $datatoedit[0]['nama_komponen'] . '"  >
 			</div>
         </div>
          <div class ="panel-body">
@@ -255,8 +249,8 @@ class C_Monorder extends CI_Controller
 			</div>
 			<div class="col-md-6" style="text-align: left;">
 				<select style="width:100%;" class="form-control select2 asal_material" id="asal_material" name="asal_material">
-						<option value="'.$datatoedit[0]['asal_material'].'">'.$datatoedit[0]['asal_material'].'</option>
-						<option value="'.$opet.'">'.$opet.'</option>
+						<option value="' . $datatoedit[0]['asal_material'] . '">' . $datatoedit[0]['asal_material'] . '</option>
+						<option value="' . $opet . '">' . $opet . '</option>
 				</select>
 			</div>
         </div>
@@ -265,7 +259,7 @@ class C_Monorder extends CI_Controller
 				<label>Tanggal Kirim Material</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;">
-				<input id="tanggaledit" type="text" '.$disable.' class="form-control tanggaledit" name="tgl_kirim_material" data-inputmask="\'mask\': \'99-Aaa-9999\'" placeholder="Ketik Tanggal" value="'.$vulue.'" />
+				<input id="tanggaledit" type="text" ' . $disable . ' class="form-control tanggaledit" name="tgl_kirim_material" data-inputmask="\'mask\': \'99-Aaa-9999\'" placeholder="Ketik Tanggal" value="' . $vulue . '" />
 				<span style="color:red;">*Format Tanggal 01-Jan-2020(Hapus untuk mengedit)</span>
 			</div>
         </div>
@@ -274,7 +268,7 @@ class C_Monorder extends CI_Controller
 				<label>Due Date</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;">
-				<input id="duedate" type="text" class="form-control duedate" name="due_date" data-inputmask="\'mask\': \'99-Aaa-9999\'" placeholder="Ketik Tanggal" value ="'.date('d-M-Y',strtotime($datatoedit[0]['dd_order'])).'" />
+				<input id="duedate" type="text" class="form-control duedate" name="due_date" data-inputmask="\'mask\': \'99-Aaa-9999\'" placeholder="Ketik Tanggal" value ="' . date('d-M-Y', strtotime($datatoedit[0]['dd_order'])) . '" />
 				<span  style="color:red;">*Format Tanggal 01-Jan-2020(Hapus untuk mengedit)</span>
 
 			</div>
@@ -285,7 +279,7 @@ class C_Monorder extends CI_Controller
 				<label>Type</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;">
-				<input type="text"class="form-control" name="type" value ="'.$datatoedit[0]['type'].'"  >
+				<input type="text"class="form-control" name="type" value ="' . $datatoedit[0]['type'] . '"  >
 			</div>
         </div>
         <div class ="panel-body">
@@ -293,7 +287,7 @@ class C_Monorder extends CI_Controller
 				<label>Qty</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;">
-				<input type="text"class="form-control" name="qty" value ="'.$datatoedit[0]['qty'].'"  >
+				<input type="text"class="form-control" name="qty" value ="' . $datatoedit[0]['qty'] . '"  >
 			</div>
         </div>
          <div class ="panel-body">
@@ -301,11 +295,11 @@ class C_Monorder extends CI_Controller
 				<label>Keterangan</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;">
-				<input type="text"class="form-control" name="keterangann" value ="'.$datatoedit[0]['keterangan'].'"  >
+				<input type="text"class="form-control" name="keterangann" value ="' . $datatoedit[0]['keterangan'] . '"  >
 			</div>
         </div>
         <div id="kanann">
-           '.$select.'
+           ' . $select . '
            <div id="tambah_proses2"></div>
          </div>
          <div class ="panel-body">
@@ -320,7 +314,7 @@ class C_Monorder extends CI_Controller
 				<label>Gambar Kerja</label>
 			</div>
 			<div class="col-md-6" style="text-align: left;" id="preview1">
-				<center><img  style="width:100%" src="'.base_url('/img/'.$no_order.'.png?t='. time()).'"></center>
+				<center><img  style="width:100%" src="' . base_url('/assets/upload/OrderPrototype/' . $no_order . '.png?t=' . time()) . '"></center>
 			</div>
 			<div class="col-md-6" style="text-align: left; display:none;" id="previewgambarpilih">
 			<center><img id="previewgambar" style="width:100%;"></center>
@@ -342,7 +336,7 @@ class C_Monorder extends CI_Controller
         </form>
         ';
 
-        echo $input;
+		echo $input;
 	}
 
 	public function update()
@@ -360,7 +354,7 @@ class C_Monorder extends CI_Controller
 
 		$batasupdate = count($urutan);
 
-		$dataasli= $this->M_order->progress($no_order);
+		$dataasli = $this->M_order->progress($no_order);
 
 		$aslinya = count($dataasli);
 
@@ -368,59 +362,52 @@ class C_Monorder extends CI_Controller
 
 
 		if ($aslinya > $batasupdate) {
-			for ($i=0; $i < $aslinya ; $i++) { 
+			for ($i = 0; $i < $aslinya; $i++) {
 
 				if ($i < $batasupdate) {
-					$this->M_order->update_proses_order($urutan[$i],$proses_order[$i],$no_order);
-				} else{
+					$this->M_order->update_proses_order($urutan[$i], $proses_order[$i], $no_order);
+				} else {
 					$this->M_order->hapusprosess($no_order, $dataasli[$i]['urutan']);
 				}
-
 			}
-		} else{
+		} else {
 
-			for ($i=0; $i < $batasupdate ; $i++) { 
+			for ($i = 0; $i < $batasupdate; $i++) {
 
 				$cekcek = $this->M_order->cek_urutan($no_order, $urutan[$i]);
 
 				if (!empty($cekcek)) {
-					$this->M_order->update_proses_order($urutan[$i],$proses_order[$i],$no_order);
-				} else{
-					$this->M_order->insertorderproses($no_order ,$proses_order[$i], $urutan[$i]);
+					$this->M_order->update_proses_order($urutan[$i], $proses_order[$i], $no_order);
+				} else {
+					$this->M_order->insertorderproses($no_order, $proses_order[$i], $urutan[$i]);
 				}
-
 			}
-
 		}
 
 		if ($tgl_kirim_material != null) {
-			$this->M_order->update($no_order,$due_date,$tgl_kirim_material,$kode_komponen,$nama_komponen,$type,$qty,$keterangan);
-		
-		} else{
-			$this->M_order->update2($no_order,$due_date,$kode_komponen,$nama_komponen,$type,$qty,$keterangan);
-
+			$this->M_order->update($no_order, $due_date, $tgl_kirim_material, $kode_komponen, $nama_komponen, $type, $qty, $keterangan);
+		} else {
+			$this->M_order->update2($no_order, $due_date, $kode_komponen, $nama_komponen, $type, $qty, $keterangan);
 		}
 
-	
 
-		if(!is_dir('./img')) 
-		{
-			mkdir('./img', 0777, true);
-			chmod('./img', 0777);
+
+		if (!is_dir('./assets/upload/OrderPrototype')) {
+			mkdir('./assets/upload/OrderPrototype', 0777, true);
+			chmod('./assets/upload/OrderPrototype', 0777);
 		}
 
-		$filename = "img/".$no_order.'.png'; 
+		$filename = "assets/upload/OrderPrototype/" . $no_order . '.png';
 		$temp_name = $_FILES['img_order']['tmp_name'];
 
 		// echo "<pre>";print_r($_FILES);exit();
 
 		// Check if file already exists
 		if (file_exists($filename)) {
-			move_uploaded_file($temp_name,$filename); 
-		}else{
-			move_uploaded_file($temp_name,$filename); 
-				
-			}
+			move_uploaded_file($temp_name, $filename);
+		} else {
+			move_uploaded_file($temp_name, $filename);
+		}
 
 		redirect(base_url('OrderPro/monorderpro'));
 	}
@@ -430,7 +417,5 @@ class C_Monorder extends CI_Controller
 		$data = $this->M_order->selectproses();
 		echo json_encode($data);
 	}
-
-
+	// hahahahaha
 }
-
