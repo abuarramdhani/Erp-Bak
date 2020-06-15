@@ -20,6 +20,8 @@ class C_WebPatroli extends CI_Controller
 		$this->load->library('General');
 		$this->load->library('KonversiBulan');
 		$this->load->model('PatroliSatpam/M_patrolis');
+
+		if(strpos(current_url(), 'qrcode_patroli') === false)
 		$this->checkSession();
 	}
 
@@ -452,6 +454,7 @@ class C_WebPatroli extends CI_Controller
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8',array(210,330), 7,'',5,5,5,5,0,0,'P');
 		$pdf->allow_charset_conversion = true;
+		$pdf->showImageErrors = true;
 		$pdf->charset_in = 'iso-8859-4';
 		$range = $this->input->post('tgl');
 		if (strlen($range) < 10) {
@@ -556,24 +559,33 @@ class C_WebPatroli extends CI_Controller
 		$lk = $this->M_patrolis->getPosbyId($id);
 		$data['kode']= $lk[0]['lokasi'];
 		$data['pos']= $lk[0]['id'];
-		// echo $data['kode'];exit();
+		// echo $data['qr'];exit();
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8',array(100,130), 7,'',5,5,5,5,0,0,'P');
+		$pdf->curlAllowUnsafeSslRequests = true;
+		$pdf->allow_charset_conversion = true;
+		$pdf->showImageErrors = true;
+		$pdf->debug = true;
+		$pdf->charset_in = 'iso-8859-4';
 		$filename = 'Patroli Qrcode.pdf';
 		$html = $this->load->view('PatroliSatpam/Web/V_Cetak_Qrcode', $data, true);
+		// echo $html;
+		// exit();
 		$pdf->WriteHTML($html);
 		$pdf->Output($filename, 'I');
 	}
 
-	public function qrcode_patroli()
+	public function qrcode_patroli($kode='')
 	{
-		$kode = $this->input->get('kode');
 		header("Content-Type: image/png");
 		$this->load->library('ciqrcode');
+		if (empty($kode)) {
+			$kode = $this->input->get('kode');
+		}
 		$params['data'] = $kode;
-		$params['size'] = 100;
+		$params['size'] = 1024;
 		$params['level'] = 'H';
-	  	$qr = $this->ciqrcode->generate($params);
+	    $this->ciqrcode->generate($params);
 	}
 }
