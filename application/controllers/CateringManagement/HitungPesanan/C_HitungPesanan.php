@@ -1665,381 +1665,192 @@ class C_HitungPesanan extends CI_Controller
 
     $data = array();
     
-    if ($jenis == '0') {
-      $jenis_nama = 'SNACK';
-      $nomor = 1;
-      if (isset($pembagian) and !empty($pembagian)) { 
-        $isi = "<table style='width: 100%;border: 2px solid white'>";
+    if (isset($pembagian) and !empty($pembagian)) { 
+      $tgl = explode("-", $tanggal)['2'];
+      $bln = explode("-", $tanggal)['1'];
+      $thn = explode("-", $tanggal)['0'];
+      $menu = $this->M_hitungpesanan->getMenuDetailByTanggalBulanTahunShiftLokasi($tgl,$bln,$thn,$shift,$lokasi);
+      if (!empty($menu)) {
+        $sayur = $menu->sayur;
+        $lauk_utama = $menu->lauk_utama;
+        $lauk_pendamping = $menu->lauk_pendamping;
+        $buah = $menu->buah;
+      }else{
+        $sayur = "-";
+        $lauk_utama = "-";
+        $lauk_pendamping = "-";
+        $buah = "-";
+      }
 
-        foreach ($pembagian as $bagi) {
+      if ($lokasi == "1") {
+        $lokasi_str = "Yogyakarta & Mlati";
+      }elseif ($lokasi == "2") {
+        $lokasi_str = "Tuksono";
+      }else{
+        $lokasi_str ="tidak diketahui";
+      }
 
-          foreach ($bagi['data'] as $data) {
-            if ($nomor%3 == 1) {
-              $isi .= "<tr>";
-            }elseif ($nomor%3 == 3) {
-              $isi .= "</tr>";
-            }
-            $isi .= "
-            <td style='width: 33%;'>
-              <table border='2' style='width: 100%;border: 2px solid black;'>
+      if ($shift == "1") {
+        $shift_str = "1 DAN UMUM";
+      }elseif ($shift == "2") {
+        $shift_str = "2";
+      }elseif ($shift == "3") {
+        $shift_str = "3";
+      }else{
+        $shift_str = "tidak diketahui";
+      }
+
+      
+      $isi = "";
+
+      foreach ($pembagian as $bagi) {
+        $isi .= "
+        <table style=\"width: 100%;\">
+          <tr>
+            <td colspan=\"3\" style=\"font-weight: bold;\">
+              DEPARTEMEN PERSONALIA<br>CV. KARYA HIDUP SENTOSA<br>YOGYAKARTA
+            </td>
+            <td colspan=\"3\" style=\"font-weight: bold;\">
+              DEPARTEMEN PERSONALIA<br>CV. KARYA HIDUP SENTOSA<br>YOGYAKARTA
+            </td>
+          </tr>
+          <tr>
+            <td colspan=\"3\" style=\"text-align: center;font-weight: bold;\">
+              PESANAN MAKAN PEKERJA
+            </td>
+            <td colspan=\"3\" style=\"text-align: center;font-weight: bold;\">
+              PESANAN MAKAN PEKERJA
+            </td>
+          </tr>
+          <tr>
+            <td style=\"width: 15%;\">NAMA KATERING</td>
+            <td style=\"width: 2%;\">:</td>
+            <td style=\"width: 33%;\">".$bagi['fs_nama_katering']."</td>
+            <td style=\"width: 15%;\">NAMA KATERING</td>
+            <td style=\"width: 2%;\">:</td>
+            <td style=\"width: 33%;\">".$bagi['fs_nama_katering']."</td>
+          </tr>
+          <tr>
+            <td>HARI/TANGGAL</td>
+            <td>:</td>
+            <td>".strftime("%A, %d %B %Y",strtotime($tanggal))."</td>
+            <td>HARI/TANGGAL</td>
+            <td>:</td>
+            <td>".strftime("%A, %d %B %Y",strtotime($tanggal))."</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td></td>
+            <td></td>
+            <td>&nbsp;</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>JUMLAH PESANAN</td>
+            <td>:</td>
+            <td>".$bagi['jumlah_total']."</td>
+            <td>JUMLAH PESANAN</td>
+            <td>:</td>
+            <td>".$bagi['jumlah_total']."</td>
+          </tr>
+          <tr>
+            <td colspan=\"3\">
+              PESANAN MAKAN PEKERJA SHIFT ".$shift_str."
+            </td>
+            <td colspan=\"3\">
+              PESANAN MAKAN PEKERJA SHIFT ".$shift_str."
+            </td>
+          </tr>
+          <tr>
+            <td colspan=\"3\">
+              <table style=\"width: 100%;\">
                 <tr>
-                  <td colspan='3' style='text-align: center;border-bottom: 2px solid black;font-weight: bold;font-size: 15pt;vertical-align: middle;height: 60px;'>
-                    ".$data['tempat_makan']."
+                  <td style=\"text-align: center;width: 50%;\">
+                    PEMESAN
+                  </td>
+                  <td style=\"text-align: center;width: 50%;\">
+                    MENGETAHUI<br>KOORDINATOR
                   </td>
                 </tr>
                 <tr>
-                  <td rowspan='4' style='text-align: center;font-weight: bold;font-size: 40pt;width: 220px;'>
-                    ".$data['jumlah_pesan']."
+                  <td style=\"text-align: center;width: 50%;\">
+                   &nbsp;
                   </td>
-                  <td style='color: grey;text-align: right'>S</td>
-                  <td style='color: grey;text-align: right'>
-                    ".$data['staff']."
-                  </td>
-                </tr>
-                <tr>
-                  <td style='color: grey;text-align: right'>NS</td>
-                  <td style='color: grey;text-align: right'>
-                    ".$data['nonstaff']."
+                  <td style=\"text-align: center;width: 50%;\">
+                    
                   </td>
                 </tr>
                 <tr>
-                  <td style='color: grey;text-align: right'>T</td>
-                  <td style='color: grey;text-align: right'>
-                    ".$data['tambahan']."
+                  <td style=\"text-align: center;width: 50%;\">
+                   &nbsp;
+                  </td>
+                  <td style=\"text-align: center;width: 50%;\">
+                    
                   </td>
                 </tr>
                 <tr>
-                  <td style='color: grey;text-align: right'>K</td>
-                  <td style='color: grey;text-align: right'>
-                    ".$data['pengurangan']."
+                  <td style=\"text-align: center;width: 50%;\">
+                    ..............
+                  </td>
+                  <td style=\"text-align: center;width: 50%;\">
+                    ..............
                   </td>
                 </tr>
               </table>
-            </td>";
-            $nomor++;
-          }
-        }
-
-        $isi .= "</table>";
-        $data['daftar'] = $isi;
-        
-      }else{
-        $data['daftar'] = "";
-      }
-    }else{
-      $jenis_nama = 'MAKAN';
-      $data['daftar'] = "";
-    }
-      // echo "<pre>";print_r($data);exit();
-       if (isset($pembagian) and !empty($pembagian)) { 
-        $tgl = explode("-", $tanggal)['2'];
-        $bln = explode("-", $tanggal)['1'];
-        $thn = explode("-", $tanggal)['0'];
-        $menu = $this->M_hitungpesanan->getMenuDetailByTanggalBulanTahunShiftLokasi($tgl,$bln,$thn,$shift,$lokasi);
-        if (!empty($menu)) {
-          $sayur = $menu->sayur;
-          $lauk_utama = $menu->lauk_utama;
-          $lauk_pendamping = $menu->lauk_pendamping;
-          $buah = $menu->buah;
-        }else{
-          $sayur = "-";
-          $lauk_utama = "-";
-          $lauk_pendamping = "-";
-          $buah = "-";
-        }
-
-        if ($lokasi == "1") {
-          $lokasi_str = "Yogyakarta & Mlati";
-        }elseif ($lokasi == "2") {
-          $lokasi_str = "Tuksono";
-        }else{
-          $lokasi_str ="tidak diketahui";
-        }
-
-        if ($shift == "1") {
-          $shift_str = "1 & Umum";
-        }elseif ($shift == "2") {
-          $shift_str = "2";
-        }elseif ($shift == "3") {
-          $shift_str = "3";
-        }else{
-          $shift_str = "tidak diketahui";
-        }
-
-        $isi_header = "
-        <table border=\"0\" style=\"width: 100%;border-collapse: collapse;border: 0px solid red;\">
-          <tr>
-            <td colspan=\"9\" rowspan=\"3\" style=\"width: 60%;font-size: 20pt;\">
-              <b>Daftar Pesanan Catering</b>
             </td>
-            <td  style=\"width: 13%;border-left: 1px solid red;border-top: 1px solid red\">
-              Sayur
-            </td>
-            <td style=\"width: 2%;border-top: 1px solid red\">
-              :
-            </td>
-            <td style=\"width: 25%;border-top: 1px solid red;border-right: 1px solid red\">
-              ".$sayur."
-            </td>
-          </tr>
-          <tr>
-            <td style=\"border-left: 1px solid red;\">
-              Lauk Utama
-            </td>
-            <td>
-              :
-            </td>
-            <td style=\"border-right: 1px solid red;\">
-              ".$lauk_utama."
-            </td>
-          </tr>
-          <tr>
-            <td style=\"border-left: 1px solid red;\">
-              Lauk Pendamping
-            </td>
-            <td>
-              :
-            </td>
-            <td style=\"border-right: 1px solid red;\">
-              ". $lauk_pendamping."
-            </td>
-          </tr>
-          <tr>
-            <td style=\"width: 6%\">
-              Lokasi
-            </td>
-            <td style=\"width: 2%\">
-              :
-            </td>
-            <td style=\"width: 17%\">
-              ".$lokasi_str."
-            </td>
-            <td>
-              Tanggal
-            </td>
-            <td>
-              :
-            </td>
-            <td>
-              ".date('d M Y', strtotime($tanggal))."
-            </td>
-            <td>
-              Shift
-            </td>
-            <td>
-              :
-            </td>
-            <td>
-              ".$shift_str."
-            </td>
-            <td style=\"border-left: 1px solid red;border-bottom: 1px solid red;\">
-              Buah
-            </td>
-            <td style=\"border-bottom: 1px solid red;\">
-              :
-            </td>
-            <td style=\"border-bottom: 1px solid red;border-right: 1px solid red;\">
-              ".$buah."
+            <td colspan=\"3\">
+              <table style=\"width: 100%;\">
+                <tr>
+                  <td style=\"text-align: center;width: 50%;\">
+                    PEMESAN
+                  </td>
+                  <td style=\"text-align: center;width: 50%;\">
+                    MENGETAHUI<br>KOORDINATOR
+                  </td>
+                </tr>
+                <tr>
+                  <td style=\"text-align: center;width: 50%;\">
+                   &nbsp;
+                  </td>
+                  <td style=\"text-align: center;width: 50%;\">
+                    
+                  </td>
+                </tr>
+                <tr>
+                  <td style=\"text-align: center;width: 50%;\">
+                   &nbsp;
+                  </td>
+                  <td style=\"text-align: center;width: 50%;\">
+                    
+                  </td>
+                </tr>
+                <tr>
+                  <td style=\"text-align: center;width: 50%;\">
+                    ..............
+                  </td>
+                  <td style=\"text-align: center;width: 50%;\">
+                    ..............
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
-        ";
-        $isi = "";
-
-        foreach ($pembagian as $bagi) {
-          if ($isi !== "") {
-            if ($jenis !== '0') {
-              $isi .= "<div style=\"page-break-after: always\"></div>";
-              $isi .= $isi_header;
-            }
-          }else{
-            $isi .= $isi_header;
-          }
-          $isi .= "<h4>Katering : ".$bagi['fs_nama_katering']."</h4>";
-          $isi .= "<table border=\"1\" style=\"width: 100%;border-collapse: collapse;\">
-          <thead>
-            <tr>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">No.</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 20%\">Tempat Makan</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Staff</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Non Staff</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Tambah</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Kurang</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Jumlah</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 35%\">Keterangan</th>
-            </tr>
-          </thead>";
-
-          $nomor = 1;
-          $khusus = 0;
-          foreach ($bagi['data'] as $data_bagi) {
-            if ($data_bagi['pengurangan'] !== "0" && $data_bagi['tambahan'] !== "0") {
-              $warna = "green";
-            }elseif ($data_bagi['pengurangan'] !== "0") {
-              $warna = "red";
-            }elseif ($data_bagi['tambahan'] !== "0") {
-              $warna = "blue";
-            }else{
-              $warna = "black";
-            }
-
-          
-            $keterangan = "";
-            $sayur_arr = explode(",", $sayur);
-            $lauk_utama_arr = explode(",", $lauk_utama);
-            $lauk_pendamping_arr = explode(",", $lauk_pendamping);
-            $buah_arr = explode(",", $buah);
-
-            $filter_sayur = "";
-            foreach ($sayur_arr as $sar) {
-              if ($filter_sayur == "") {
-                $filter_sayur = "'".$sar."'";
-              }else{
-                $filter_sayur .= ",'".$sar."'";
-              }
-            }
-            if ($filter_sayur !== "") {
-              $filter = "tpmk.menu_sayur in (".$filter_sayur.")";
-            }
-
-            $filter_lauk_utama = "";
-            foreach ($lauk_utama_arr as $luar) {
-              if ($filter_lauk_utama == "") {
-                $filter_lauk_utama = "'".$luar."'";
-              }else{
-                $filter_lauk_utama .= ",'".$luar."'";
-              }
-            }
-            if ($filter_lauk_utama !== "") {
-              if ($filter == "") {
-                $filter = "tpmk.menu_lauk_utama in (".$filter_lauk_utama.")";
-              }else{
-                $filter .= " or tpmk.menu_lauk_utama in (".$filter_lauk_utama.")";
-              }
-            }
-            $filter_lauk_pendamping = "";
-            foreach ($lauk_pendamping_arr as $lpar) {
-              if ($filter_lauk_pendamping == "") {
-                $filter_lauk_pendamping = "'".$lpar."'";
-              }else{
-                $filter_lauk_pendamping .= ",'".$lpar."'";
-              }
-            }
-            if ($filter_lauk_pendamping !== "") {
-              if ($filter == "") {
-                $filter = "tpmk.menu_lauk_pendamping in (".$filter_lauk_pendamping.")";
-              }else{
-                $filter .= " or tpmk.menu_lauk_pendamping in (".$filter_lauk_pendamping.")";
-              }
-            }
-            $filter_buah = "";
-            foreach ($buah_arr as $bar) {
-              if ($filter_buah == "") {
-                $filter_buah = "'".$bar."'";
-              }else{
-                $filter_buah .= ",'".$bar."'";
-              }
-            }
-            if ($filter_buah !== "") {
-              if ($filter == "") {
-                $filter = "tpmk.menu_buah in (".$filter_buah.")";
-              }else{
-                $filter .= " or tpmk.menu_buah in (".$filter_buah.")";
-              }
-            }
-            $menuPengganti = $this->M_hitungpesanan->getMenuPenggantiByTanggalShiftLokasiTempatMakan($tanggal,$shift,$lokasi,$data_bagi['tempat_makan']," and (".$filter.")");
-            if (!empty($menuPengganti)) {
-              $simpanNoind = "";
-              foreach ($menuPengganti as $mp) {
-                  if ($simpanNoind !== $mp['noind']) {
-                    if ($keterangan == "") {
-                      $keterangan = "";
-                    }else{
-                      $keterangan .= "<br>";
-                    } 
-                    $keterangan .= "-&nbsp;".$mp['noind']." - ".ucwords(strtolower($mp['nama']))." ( ";
-                    $khusus++;
-                  }else{
-                    $keterangan .= " ; ";
-                  }
-                foreach ($sayur_arr as $sar) {
-                  if ($sar == $mp['menu_sayur']) {
-                    $keterangan .= " Sayur : ".$mp['pengganti_sayur'];
-                  }
-                }
-                foreach ($lauk_utama_arr as $luar) {
-                  if ($luar == $mp['menu_lauk_utama']) {
-                    $keterangan .= " Lauk Utama : ".$mp['pengganti_lauk_utama'];
-                  }
-                }
-                foreach ($lauk_pendamping_arr as $lpar) {
-                  if ($lpar == $mp['menu_lauk_pendamping']) {
-                    $keterangan .= " Lauk Pendamping : ".$mp['pengganti_lauk_pendamping'];
-                  }
-                }
-                foreach ($buah_arr as $bar) {
-                  if ($bar == $mp['menu_buah']) {
-                    $keterangan .= " Buah : ".$mp['pengganti_buah'];
-                  }
-                }
-                $keterangan .= " )";
-                $simpanNoind = $mp['noind'];
-              }
-            }
-          
-
-            $isi .= "<tr data-urutan=\"".$bagi['urutan']."\" data-katering=\"".$data_bagi['tempat_makan']."\" style=\"page-break-inside: avoid\">
-              <td style=\"text-align: center;color: ".$warna."\">".$nomor."</td>
-              <td style=\"text-align: left;padding-left: 5px;color: ".$warna."\">".$data_bagi['tempat_makan']."</td>
-              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['staff']."</td>
-              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['nonstaff']."</td>
-              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['tambahan']."</td>
-              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['pengurangan']."</td>
-              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['jumlah_pesan']."</td>
-              <td>".$keterangan."</td>
-            </tr>";
-
-            $nomor++;
-          }
-          $isi .= "<tr>
-            <td colspan=\"6\" style=\"text-align: right;padding-right: 5px;\">Total : </td>
-            <td style=\"text-align: right;padding-right: 5px;\">".$bagi['jumlah_total']."</td>
-            <td style=\"text-align: right;padding-right: 5px;\">".$khusus."</td>
-          </tr>
-          </table>";
-          $isi_footer = "
-          <table style=\"width: 100%\">
-            <tr>
-              <td style=\"color: blue;width: 33%;border-bottom: 1px solid blue;\">
-                ■ Ada Penambahan
-              </td>
-              <td style=\"color: red;width: 33%;border-bottom: 1px solid red;\">
-                ■ Ada Pengurangan
-              </td>
-              <td style=\"color: green;width: 33%;border-bottom: 1px solid green;\">
-                ■ Ada Penambahan dan Pengurangan
-              </td>
-            </tr>
-          </table>";
-          $isi .= $isi_footer;
-
-        }
-
-        if ($jenis !== '0') {
-          $data['daftar'] = $isi;
-        }else{
-          $data['daftar'] = $data['daftar']."<div style=\"page-break-after: always\"></div>".$isi;
-        }
-      }else{
-        $data['daftar'] = $data['daftar'];
+        <hr>";
       }
+
+      $data['daftar'] = $isi;
+    }else{
+      $data['daftar'] = $data['daftar'];
+    }
 
     $data_log = array(
       'wkt' => date('Y-m-d H:i:s'),
       'menu' => 'HITUNG PESANAN',
       'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi,
       'noind' => $this->session->user,
-      'jenis' => 'CETAK DATA PESANAN '.$jenis_nama,
+      'jenis' => 'CETAK FORM PESANAN MAKAN',
       'program' => 'CATERING MANAGEMENT ERP'
     );
     $this->M_hitungpesanan->insertTlog($data_log);
@@ -2049,7 +1860,7 @@ class C_HitungPesanan extends CI_Controller
 
     $pdf = $this->pdf->load();
     $pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 15, 5, 5, 'P');
-    $filename = 'PESANAN_'.$jenis_nama.'_'.$tanggal.'_'.$shift.'_'.$lokasi.'.pdf';
+    $filename = 'FORM_PESANAN_MAKAN_'.$tanggal.'_'.$shift.'_'.$lokasi.'.pdf';
     // echo "<pre>";print_r($data['PrintppDetail']);exit();
     // $this->load->view('CateringManagement/HitungPesanan/V_pdf', $data);
     $html = $this->load->view('CateringManagement/HitungPesanan/V_pdf', $data, true);
