@@ -297,6 +297,13 @@ class M_patrolis extends CI_Model
         return $this->personalia->affected_rows() > 0;
     }
 
+    public function upkesimpulan($data, $id)
+    {
+        $this->personalia->where('id', $id);
+        $this->personalia->update('"Satpam".tkesimpulan', $data);
+        return $this->personalia->affected_rows() > 0;
+    }
+
     public function getPutaranperLok($awal, $akhir)
     {
         $sql = "SELECT id,lokasi,

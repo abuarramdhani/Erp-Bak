@@ -22,7 +22,7 @@
 				</h2>
 			</td>
 			<td style="width: 20%; text-align: left;">
-				<img width="40" src="<?=base_url('assets/img/logo.png')?>">
+				<img width="40" src="<?=base_url('assets/img/HSE_LOGO.png')?>">
 			</td>
 			<td style="width: 20%; text-align: right;" colspan="0">
 				<table border="1" style="border-collapse: collapse;">
@@ -301,7 +301,7 @@
 		<table width="100%" border="0" style="border-collapse: collapse;">
 			<tr>
 				<td width="33%" style="border: 0px solid black">
-					<img style="height: 600px;" src="<?=base_url('assets/img/Denah_Amano.jpg')?>">
+					<img style="height: 600px;" src="<?=base_url('assets/img/map/Denah_Amano.jpg')?>">
 				</td>
 				<td width="38%" valign="top" style="border: 0px solid black; padding-left: 10px;">
 					<table width="100%" border="1" style="border-collapse: collapse; font-size: 14px;">

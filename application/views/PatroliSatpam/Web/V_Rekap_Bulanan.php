@@ -40,14 +40,14 @@
                                 </div>
                                 <div class="box-body">
                                     <form method="post" action="<?= base_url('PatroliSatpam/web/cetak_laporan') ?>" target="_blank"
-                                    onsubmit="setTimeout(function () { window.location.href = baseurl+'PatroliSatpam/web/rekap_bulanan'; }, 1)">
+                                    onsubmit="setTimeout(function () { window.location.href = baseurl+'PatroliSatpam/web/rekap_bulanan'; }, 1)" autocomplete="false">
                                         <div class="panel-body">
                                             <div class="col-md-6 offset-col-md-6 row">
                                                 <div class="col-md-3">
                                                     <label style="margin-top: 5px;">Periode</label>
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <input required="" class="form-control pts_monthrange pts_loadKs" id="hmmm" name="periode" autocomplete="false" <?=$reon?> value="<?=$periode?>"/>
+                                                    <input required="" class="form-control pts_monthrange pts_loadKs" id="hmmm" name="periodeR" autocomplete="false" <?=$reon?> value="<?=$periode?>"/>
                                                 </div> 
                                             </div>
                                             <div class="col-md-12" id="pts_alertCek">
@@ -70,7 +70,7 @@
                                                         <thead class="bg-primary">
                                                             <th style="width: 10px;">No</th>
                                                             <th style="text-align: center;">Kesimpulan</th>
-                                                            <th style="width: 10px;">Action</th>
+                                                            <th style="width: 100px;">Action</th>
                                                         </thead>
                                                     </table>
                                                 </div>
@@ -99,14 +99,14 @@
                                     <button class="btn btn-danger btn-sm pull-right" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                 </div>
                                 <div class="box-body">
-                                    <form method="post" action="<?= base_url('PatroliSatpam/web/cetak_temuan') ?>" target="_blank" onsubmit="setTimeout(function () { window.location.href = baseurl+'PatroliSatpam/web/rekap_temuan'; }, 1)">
+                                    <form autocomplete="false" method="post" action="<?= base_url('PatroliSatpam/web/cetak_temuan') ?>" target="_blank" onsubmit="setTimeout(function () { window.location.href = baseurl+'PatroliSatpam/web/rekap_temuan'; }, 1)">
                                         <div class="panel-body">
                                             <div class="col-md-12">
                                                 <div class="col-md-1 row text-center">
                                                     <label style="margin-top: 5px;">Tanggal</label>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <input required="" class="form-control pts_tglrkp" id="hmmm" name="tgl" autocomplete="false"/>
+                                                    <input required="" class="form-control pts_tglrkp" id="hmmm" name="tgl" autocomplete="false" type="text" />
                                                 </div>
                                                 <div class="col-md-4 text-left">
                                                     <label style="color: red; margin-top: 5px;">*Jangka Waktu maksimal 16 hari</label>
@@ -133,6 +133,28 @@
 </section>
 <div hidden id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
     <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
+<div class="modal fade" id="pts_mdl_upKs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form id="pts_frmUpKs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <label class="modal-title" id="exampleModalLongTitle">Edit Kesimpulan</label>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="pts_kesimpulan" name="kesimpulan"></textarea>
+                    <input hidden="" name="idnya" id="pts_idupKs" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="pts_saveUpKs" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <?php if (!empty($periode)): ?>
     <script>

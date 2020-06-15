@@ -133,6 +133,7 @@ $(document).ready(function(){
 		dateFormat: 'mm - yy', });
 
 	$('.pts_kesimpulan').redactor();
+	$('#pts_mdl_upKs .pts_kesimpulan').redactor();
 
 	$('#pts_addKs').click(function(){
 		var pr = $('.pts_monthrange').val();
@@ -160,11 +161,13 @@ $(document).ready(function(){
 	var tblKs = $('.pts_tblKS').DataTable();
 	$('.pts_loadKs').change(function(){
 		var pr = $(this).val();
+		$('#surat-loading').show();
 		$.ajax({
 			url: baseurl + 'PatroliSatpam/web/get_kesimpulan',
 			type: "get",
 			data: {pr: pr},
 			success: function (response) {
+				$('#surat-loading').hide();
 				tblKs.clear().draw();
 				var send = $.parseJSON(response);
 				tblKs.rows.add(send);
@@ -172,6 +175,7 @@ $(document).ready(function(){
 				tblKs.draw();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
+				$('#surat-loading').hide();
 				console.log(textStatus, errorThrown);
 			}
 		});
@@ -223,6 +227,31 @@ $(document).ready(function(){
 		});
 	});
 
+	$('.pts_tblKS').on('click', '.pts_btnUpKs', function(){
+		var kes = $(this).closest('tr').find('p').html();
+		var vall = $(this).val();
+		// alert(vall);
+		$('#pts_mdl_upKs textarea').redactor('set', kes);
+		$('#pts_mdl_upKs #pts_idupKs').val(vall);
+		$('#pts_mdl_upKs').modal('show');
+	});
+
+	$('#pts_saveUpKs').click(function(){
+		$('#surat-loading').show();
+		$.ajax({
+			url: baseurl + 'PatroliSatpam/web/up_kesimpulan',
+			type: "post",
+			data: $('#pts_frmUpKs').serialize(),
+			success: function (response) {
+				$('#pts_mdl_upKs').modal('hide');
+				$('.pts_loadKs').trigger('change');
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus, errorThrown);
+			}
+		});
+	});
+
 	$('.pts_tblask').on('click', '.pts_delrkpData', function(){
 		var id = $(this).val();
 		Swal.fire({
@@ -233,21 +262,23 @@ $(document).ready(function(){
 			focusCancel: true
 		}).then(function(result) {
 			if (result.value) {
+				$('#surat-loading').show();
 				$.ajax({
 					url: baseurl + 'PatroliSatpam/web/del_rekap_file',
 					type: "post",
 					data: {id: id},
 					success: function (response) {
+						$('#surat-loading').hide();
 						location.reload();
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
 						console.log(textStatus, errorThrown);
+						$('#surat-loading').hide();
 					}
 				});
 			}
 		});
 	});
-
 
 
 	// $('.pts_tglrkp').datepicker({
