@@ -53,7 +53,7 @@
 							CHECKLIST MONITORING PATROLI SATPAM<br/>
 							POS AMANO NO. <?= $no_pos.'/'.$max ?><br>CV KARYA HIDUP SENTOSA</td>
 						<td style="width: 50px;">
-							<img style="width: 50px;" src="<?=base_url('assets/img/logo.png')?>">
+							<img style="width: 50px;" src="<?=base_url('assets/img/HSE_LOGO.png')?>">
 						</td>
 					</tr>
 					<tr>

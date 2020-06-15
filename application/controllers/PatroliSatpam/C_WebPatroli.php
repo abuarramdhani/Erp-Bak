@@ -293,7 +293,7 @@ class C_WebPatroli extends CI_Controller
 	{
 		$user = $this->session->user;
 		// print_r($user);exit();
-		$pr = $this->input->post('periode');
+		$pr = $this->input->post('periodeR');
 		$id = $this->input->post('id');
 		if (strlen($pr) != 9) {
 			echo "periode not valid";
@@ -389,7 +389,10 @@ class C_WebPatroli extends CI_Controller
 		foreach ($data as $key) {
 			$a1 = $x;
 			$a2 = $key['kesimpulan'];
-			$a3 = '<button type="button" value="'.$key['id'].'" class="btn btn-danger pts_btnDelKs">
+			$a3 = '<button type="button" value="'.$key['id'].'" class="btn btn-primary pts_btnUpKs">
+					<i class="fa fa-edit"></i>
+					</button>
+					<button type="button" value="'.$key['id'].'" class="btn btn-danger pts_btnDelKs">
 					<i class="fa fa-trash"></i>
 					</button>';
 			$arr[] = array($a1, $a2, $a3);
@@ -417,6 +420,17 @@ class C_WebPatroli extends CI_Controller
 		$id = $this->input->post('id');
 		$del = $this->M_patrolis->hapusKesimpulan($id);
 		if ($del) {
+			echo json_encode(true);
+		}
+	}
+
+	public function up_kesimpulan()
+	{
+		$id = $this->input->post('idnya');
+		$kes = $this->input->post('kesimpulan');
+		$arr = array('kesimpulan' => $kes);
+		$up = $this->M_patrolis->upkesimpulan($arr, $id);
+		if ($up) {
 			echo json_encode(true);
 		}
 	}
