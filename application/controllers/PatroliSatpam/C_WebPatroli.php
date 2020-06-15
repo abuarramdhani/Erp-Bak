@@ -20,6 +20,16 @@ class C_WebPatroli extends CI_Controller
 		$this->load->library('General');
 		$this->load->library('KonversiBulan');
 		$this->load->model('PatroliSatpam/M_patrolis');
+		$this->checkSession();
+	}
+
+	public function checkSession()
+	{
+		if($this->session->is_logged){
+
+		} else {
+			redirect('index');
+		}
 	}
 
 	public function index()
