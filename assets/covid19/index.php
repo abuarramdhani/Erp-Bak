@@ -36,6 +36,7 @@
     </script>
     <script>
       var overlay;
+      var overlays = [];
       USGSOverlay.prototype = new google.maps.OverlayView();
       var map;
       function initMap() {
@@ -92,7 +93,7 @@
             var name = type.name;
             var color = type.color;
             var div = document.createElement('div');
-            div.innerHTML = '<span style="color: ' + color + '">■</span> ' + name;
+            div.innerHTML = '<input type="checkbox" id="' + key + '" checked onchange="toggleChange()"><span style="color: ' + color + '">■</span> ' + name;
             legend.appendChild(div);
           }
 
@@ -102,57 +103,8 @@
           map.data.loadGeoJson(
               'http://192.168.8.66/kabupaten.json'
           );
-          map.data.setStyle(function(feature){
-           var color = "black";
-           var border = "black";
-           var isColorful  = feature.getProperty('isColorful');
-           if (isColorful) {
-           // 0-10 -> Hijau muda
-          // 11-20 -> Hijau tua
-          // 21-30 -> kuning
-          // 31-40 -> oranye
-          // 41-50 -> merah muda
-          // 51-100 -> merah tua
-          // >100 -> merah maron
-             var jumlah = feature.getProperty('dirawat');
-            if (jumlah >= 0 && jumlah <= 10) {
-             color = "#2ecc71";
-            }else if (jumlah >= 11 && jumlah <= 20) {
-             color = "#27ae60";
-            }else if (jumlah >= 21 && jumlah <= 30) {
-             color = "#f1c40f";
-            }else if (jumlah >= 31 && jumlah <= 40) {
-             color = "#f39c12";
-            }else if (jumlah >= 41 && jumlah <= 50) {
-             color = "#e74c3c";
-            }else if (jumlah >= 51 && jumlah <= 100) {
-             color = "#c0392b";
-            }else if (jumlah >100) {
-             color = "#800000";
-            }
-            border = "black";
-             return ({
-               fillColor: color,
-               strokeColor: border,
-               fillOpacity: 1,
-               strokeWeight: 0.4,
-               title: color
-             })
-           }else{
-             return ({
-               fillColor: color,
-               strokeColor: border,
-               fillOpacity: 0,
-               strokeWeight: 0,
-               title: color
-             })
-
-           }
-           // console.log(feature.getProperty('labelLat'));
-           var labelLat = feature.getProperty('labelLat');
-           var labelLng = feature.getProperty('labelLng');
-            
-          })
+          
+          setStyle();
 
           var infowindow = new google.maps.InfoWindow();
 
@@ -166,7 +118,6 @@
                  rawat = "-";
                }
            let html = kab + "(" + rawat + ")";
-               console.log(html);
            infowindow.setContent(html); // show the html variable in the infowindow
            infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
            infowindow.open(map);
@@ -197,12 +148,61 @@
                  });
 
               });
+              var himu = document.getElementById('himu').checked;
+              var hitu = document.getElementById('hitu').checked;
+              var kuni = document.getElementById('kuni').checked;
+              var oran = document.getElementById('oran').checked;
+              var memu = document.getElementById('memu').checked;
+              var metu = document.getElementById('metu').checked;
+              var mema = document.getElementById('mema').checked;
               var jumlah = 0;
               var isColorful  = e.feature.getProperty('isColorful');
                if (isColorful) {
                 jumlah = e.feature.getProperty("dirawat");
                 var text = e.feature.getProperty("NAME_2") + "<br>" + jumlah;
-                overlay = new USGSOverlay(bounds, text, map);
+                if (jumlah >= 0 && jumlah <= 10) {
+                 color = "#2ecc71";
+                 if (himu) {
+                  overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                 }
+                }else if (jumlah >= 11 && jumlah <= 20) {
+                 color = "#27ae60";
+                 if (hitu) {
+                  overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                 }
+                }else if (jumlah >= 21 && jumlah <= 30) {
+                 color = "#f1c40f";
+                 if (kuni) {
+                  overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                 }
+                }else if (jumlah >= 31 && jumlah <= 40) {
+                 color = "#f39c12";
+                 if (oran) {
+                  overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                 }
+                }else if (jumlah >= 41 && jumlah <= 50) {
+                 color = "#e74c3c";
+                 if (memu) {
+                  overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                 }
+                }else if (jumlah >= 51 && jumlah <= 100) {
+                 color = "#c0392b";
+                 if (metu) {
+                  overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                 }
+                }else if (jumlah >100) {
+                 color = "#800000";
+                 if (mema) {
+                  overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                 }
+                }
                }
             }else{
               if (e.feature.getGeometry() !== null && e.feature.getGeometry().getType() === 'MultiPolygon'){
@@ -222,12 +222,61 @@
                   });
 
                 });
+                var himu = document.getElementById('himu').checked;
+                var hitu = document.getElementById('hitu').checked;
+                var kuni = document.getElementById('kuni').checked;
+                var oran = document.getElementById('oran').checked;
+                var memu = document.getElementById('memu').checked;
+                var metu = document.getElementById('metu').checked;
+                var mema = document.getElementById('mema').checked;
                 var jumlah = 0;
                 var isColorful  = e.feature.getProperty('isColorful');
                  if (isColorful) {
                   jumlah = e.feature.getProperty("dirawat");
                   var text = e.feature.getProperty("NAME_2") + "<br>" + jumlah;
-                  overlay = new USGSOverlay(bounds, text, map);
+                  if (jumlah >= 0 && jumlah <= 10) {
+                   color = "#2ecc71";
+                   if (himu) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }else if (jumlah >= 11 && jumlah <= 20) {
+                   color = "#27ae60";
+                   if (hitu) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }else if (jumlah >= 21 && jumlah <= 30) {
+                   color = "#f1c40f";
+                   if (kuni) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }else if (jumlah >= 31 && jumlah <= 40) {
+                   color = "#f39c12";
+                   if (oran) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }else if (jumlah >= 41 && jumlah <= 50) {
+                   color = "#e74c3c";
+                   if (memu) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }else if (jumlah >= 51 && jumlah <= 100) {
+                   color = "#c0392b";
+                   if (metu) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }else if (jumlah >100) {
+                   color = "#800000";
+                   if (mema) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }
                  }
               }else{
                 console.log(e.feature.getProperty("NAME_2") + "-");
@@ -236,13 +285,148 @@
           })
       }
 
+      function setStyle(){
+        map.data.setStyle(function(feature){
+           var color = "black";
+           var border = "black";
+           var isColorful  = feature.getProperty('isColorful');
+           if (isColorful) {
+           // 0-10 -> Hijau muda
+          // 11-20 -> Hijau tua
+          // 21-30 -> kuning
+          // 31-40 -> oranye
+          // 41-50 -> merah muda
+          // 51-100 -> merah tua
+          // >100 -> merah maron
+            var himu = document.getElementById('himu').checked;
+            var hitu = document.getElementById('hitu').checked;
+            var kuni = document.getElementById('kuni').checked;
+            var oran = document.getElementById('oran').checked;
+            var memu = document.getElementById('memu').checked;
+            var metu = document.getElementById('metu').checked;
+            var mema = document.getElementById('mema').checked;
+
+            var jumlah = feature.getProperty('dirawat');
+            if (jumlah >= 0 && jumlah <= 10) {
+             color = "#2ecc71";
+             if (!himu) {
+              return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 0,
+               strokeWeight: 0,
+               title: color
+             })
+             }
+            }else if (jumlah >= 11 && jumlah <= 20) {
+             color = "#27ae60";
+             if (!hitu) {
+              return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 0,
+               strokeWeight: 0,
+               title: color
+             })
+             }
+            }else if (jumlah >= 21 && jumlah <= 30) {
+             color = "#f1c40f";
+             if (!kuni) {
+              return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 0,
+               strokeWeight: 0,
+               title: color
+             })
+             }
+            }else if (jumlah >= 31 && jumlah <= 40) {
+             color = "#f39c12";
+             if (!oran) {
+              return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 0,
+               strokeWeight: 0,
+               title: color
+             })
+             }
+            }else if (jumlah >= 41 && jumlah <= 50) {
+             color = "#e74c3c";
+             if (!memu) {
+              return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 0,
+               strokeWeight: 0,
+               title: color
+             })
+             }
+            }else if (jumlah >= 51 && jumlah <= 100) {
+             color = "#c0392b";
+             if (!metu) {
+              return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 0,
+               strokeWeight: 0,
+               title: color
+             })
+             }
+            }else if (jumlah >100) {
+             color = "#800000";
+             if (!mema) {
+              return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 0,
+               strokeWeight: 0,
+               title: color
+             })
+             }
+            }
+
+             return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
+               title: color
+             })
+           }else{
+             return ({
+               fillColor: color,
+               strokeColor: border,
+               fillOpacity: 0,
+               strokeWeight: 0,
+               title: color
+             })
+
+           }
+          })
+      }
+
+      function toggleChange(){
+        for(var i=0;i<overlays.length;i++) {
+          overlays[i].setMap(null);
+        }
+        map.data.forEach(function(feature) {
+          map.data.remove(feature);
+        });
+        map.data.loadGeoJson(
+            'http://192.168.8.66/kabupaten.json'
+        );
+        setStyle();
+      }
+
       /** @constructor */
-      function USGSOverlay(bounds, text, map) {
+      function USGSOverlay(bounds, text, value, map) {
 
         // Now initialize all properties.
         this.bounds_ = bounds;
         this.map_ = map;
         this.text_ = text;
+        this.value_ = value;
         // We define a property to hold the image's div. We'll
         // actually create this div upon receipt of the onAdd()
         // method so we'll leave it null for now.
