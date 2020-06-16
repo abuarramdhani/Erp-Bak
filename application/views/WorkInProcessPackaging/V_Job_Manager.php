@@ -123,7 +123,7 @@
                       </select>
                     </div>
                     <div class="col-md-4">
-                      <div style="float:left" on>
+                      <div style="float:left">
                         <h5 style="display:inline-block !important; font-weight:bold">Tanggal : </h5> <input type="text" onchange="jenisRKH()" autocomplete="off" class="form-control txtWIIPdate" id="dateSaveWIIP" placeholder="..." style="display:inline-block !important; width:65%;" name="" value="">
                       </div>
                     </div>
@@ -143,6 +143,7 @@
                               <th><center>QTY</center></th>
                               <th><center>USAGE RATE</center></th>
                               <th><center>SCHEDULED START DATE </center></th>
+                              <th hidden><center></center></th>
                               <th style="width:15%"><center>ACTION </center></th>
                             </tr>
                           </thead>

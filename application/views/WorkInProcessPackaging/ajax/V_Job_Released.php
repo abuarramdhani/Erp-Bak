@@ -26,7 +26,7 @@
           <td <?php echo $style ?>><?php echo $g['KODE_ASSY'] ?></td>
           <td <?php echo $style ?>><?php echo $g['DESCRIPTION'] ?></td>
           <td <?php echo $style ?>><?php echo $g['ONHAND_YSP'] ?></td>
-          <td <?php echo $style ?>></td>
+          <td <?php echo $style ?>>-</td>
           <td <?php echo $style ?>>-</td>
           <td <?php echo $style ?>><center>
             <button type="button" class="btn btn-md btn-primary cencelWipp" stat="1" onclick="detail_wipp_1(<?php echo $no ?>, '<?php echo $g['KODE_ASSY'] ?>')" name="button"><i class="fa fa-eye"></i> <b>Job Detail</b></button></center></td>

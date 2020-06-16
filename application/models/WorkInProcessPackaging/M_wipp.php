@@ -10,6 +10,14 @@ class M_wipp extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
+
+  public function minMax($value)
+  {
+    $res = [];
+    // $res = $this->oracle->where('KODE_ASSY', $valaue)->get('KHS_SP_MINMAX')->result_array();
+    return $res;
+  }
+
    public function LabelKecil($segment_1)
    {
      $res = $this->oracle->query("SELECT  distinct msib.SEGMENT1,
@@ -57,6 +65,12 @@ class M_wipp extends CI_Model
         } else {
             return 1;
         }
+    }
+
+    public function cekLineSaved2($date)
+    {
+        $response = $this->db->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        return $response;
     }
 
     public function getline1($date)
@@ -124,13 +138,24 @@ class M_wipp extends CI_Model
         }
     }
 
-    public function getSplit($value)
+    public function getSplit($value, $date)
     {
-        $response = $this->db->where('no_job', $value)->order_by('id', 'asc')->get('wip_pnp.job_list')->result_array();
+        $response = $this->db->where('no_job', $value)->where('date_target', $date)->order_by('id', 'asc')->get('wip_pnp.job_list')->result_array();
         return $response;
     }
 
     public function insertSplit($data, $ca)
+    {
+        $this->db->insert('wip_pnp.job_list', $data);
+        if ($this->db->affected_rows() == 1) {
+            return 1;
+        } else {
+            return 2;
+        }
+
+    }
+
+    public function insertSplit_($data, $ca)
     {
         $cek = $this->db->select('no_job, date_target')
                       ->where('create_at', $ca)

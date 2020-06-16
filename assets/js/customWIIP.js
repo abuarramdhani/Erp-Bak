@@ -272,6 +272,7 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
                         <td><center>${val}</center></td>
                         <td><center>${usage_rate}</center></td>
                         <td><center>${ssd}</center></td>
+                        <td hidden><center>${qty}</center></td>
                         <td onmouseover="cekhover()">
                           <center>
                             <button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${Number(idtrz)+(Number(i)+1)})"><i class="fa fa-minus-square"></i></button>
@@ -464,13 +465,14 @@ const changeQtyValue_ = (t, i) => {
   }, 100);
 }
 
-const getModalSplit = (nj, qty, kode, desc, target, ur, wss, dt, ct) => {
+const getModalSplit = (nj, qty, kode, desc, target, ur, wss, dt, ct, qty_parrent) => {
   $.ajax({
     url: baseurl + 'WorkInProcessPackaging/JobManager/getSplit',
     type: 'POST',
     async: true,
     data: {
       nojob: nj,
+      date: dt,
     },
     beforeSend: function() {
       Swal.showLoading()
@@ -485,7 +487,7 @@ const getModalSplit = (nj, qty, kode, desc, target, ur, wss, dt, ct) => {
   }).then(_ => {
     $('#jobnumber').html(nj);
     $('#qtySplit').val('0');
-    $('#qty_split_save').val(qty);
+    $('#qty_split_save').val(qty_parrent);
     $('#wss').val(wss);
     $('#dt').val(dt);
     $('#created_at').val(ct);
@@ -537,7 +539,7 @@ const update_null = p => {
               title: 'Berhasil menghapus data.',
               text: ''
             }).then(_ => {
-              window.location.replace(baseurl + 'WorkInProcessPackaging/JobManager/PhotoManager');
+              location.reload();
             })
           }else {
             swalWIPPToastrAlert('error', 'Gagal menghapus data!');
@@ -988,6 +990,7 @@ const addrowlinewipp5 = _ => {
 }
 
 const minus_wipp5 = n => {
+  $('#jobid5_'+n).remove();
   $('#job5_wipp' + n).parents('.rowbaru5_wipp').remove()
 }
 
@@ -1014,6 +1017,7 @@ const addrowlinewipp4 = _ => {
 }
 
 const minus_wipp4 = n => {
+  $('#jobid4_'+n).remove();
   $('#job4_wipp' + n).parents('.rowbaru4_wipp').remove()
 }
 
@@ -1041,6 +1045,7 @@ const addrowlinewipp3 = _ => {
 }
 
 const minus_wipp3 = n => {
+  $('#jobid3_'+n).remove();
   $('#job3_wipp' + n).parents('.rowbaru3_wipp').remove()
 }
 
@@ -1068,6 +1073,7 @@ const addrowlinewipp2 = _ => {
 }
 
 const minus_wipp2 = n => {
+  $('#jobid2_'+n).remove();
   $('#job2_wipp' + n).parents('.rowbaru2_wipp').remove()
 }
 
@@ -1094,6 +1100,7 @@ const addrowlinewipp = _ => {
 }
 
 const minus_wipp = n => {
+  $('#jobid1_'+n).remove();
   $('#job_wipp' + n).parents('.rowbaru_wipp').remove()
 }
 

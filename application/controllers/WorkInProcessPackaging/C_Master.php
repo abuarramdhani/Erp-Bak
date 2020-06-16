@@ -123,7 +123,8 @@ class C_Master extends CI_Controller
                       'nama_item' => $d[2],
                       'qty' => $d[3],
                       'usage_rate' => $d[4],
-                      'scedule_start_date' => $d[5]
+                      'scedule_start_date' => $d[5],
+                      'qty_parrent' => $d[6]
                     ]);
                 }
                 echo json_encode($n195);
@@ -168,22 +169,27 @@ class C_Master extends CI_Controller
                     }
                 }
             }
-            //pengecekan di jika itu priority
-            foreach ($tampung_priority as $key => $pr) {
-                $tampung_priority[$key]['PRIORITY'] = 1;
-            }
-            // hapus item yang ada sama di produk prioritas
-            foreach ($tampung_item_unique as $key0 => $value) {
-                foreach ($tampung_priority as $key2 => $v) {
-                    if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
-                        $tampung_priority_reedition[] = $v;
-                        unset($tampung_item_unique[$key0]);
-                    }
 
-                }
+            if (!empty($tampung_priority)) {
+              //pengecekan di jika itu priority
+              foreach ($tampung_priority as $key => $pr) {
+                  $tampung_priority[$key]['PRIORITY'] = 1;
+              }
+              // hapus item yang ada sama di produk prioritas
+              foreach ($tampung_item_unique as $key0 => $value) {
+                  foreach ($tampung_priority as $key2 => $v) {
+                      if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
+                          $tampung_priority_reedition[] = $v;
+                          unset($tampung_item_unique[$key0]);
+                      }
+
+                  }
+              }
+              // gabungkan data dengan produk prioritas di awal index
+              $data['get_unique'] = array_merge($tampung_priority_reedition, $tampung_item_unique);
+            }else {
+              $data['get_unique'] = $tampung_item_unique;
             }
-            // gabungkan data dengan produk prioritas di awal index
-            $data['get_unique'] = array_merge($tampung_priority_reedition, $tampung_item_unique);
 
             $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released', $data);
         }
@@ -317,7 +323,7 @@ class C_Master extends CI_Controller
                   usort($adados, function ($a, $b) {
                       return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
                   });
-                  
+
                   $line_4_target_max = $get_target_pe[3]['target_max'];
                   $line_4_count = 0;
                   $line4 = [];
@@ -738,6 +744,9 @@ class C_Master extends CI_Controller
 
     public function saveLine()
     {
+        // echo "<pre>";
+        // print_r($_POST);
+        // die;
         $get_target_pe = $this->M_wipp->setTarget_Pe('');
         $this->M_wipp->ceklineaja($this->input->post('param'));
         // line 1
@@ -879,6 +888,8 @@ class C_Master extends CI_Controller
                     foreach ($tampung_1 as $key2 => $q) {
                         if ($t['id']=== $q['id_job_list']) {
                             unset($split[$key1]);
+                            // echo "<pre>";
+                            // print_r($split[$key1]);
                         }
                     }
                 }
@@ -896,7 +907,7 @@ class C_Master extends CI_Controller
         if (!$this->input->is_ajax_request()) {
             echo "Akses Terlarang!!!";
         } else {
-            $data['get'] = $this->M_wipp->getSplit($this->input->post('nojob'));
+            $data['get'] = $this->M_wipp->getSplit($this->input->post('nojob'), $this->input->post('date'));
             $this->load->view('WorkInProcessPackaging/ajax/V_Row_Split', $data);
         }
     }
@@ -917,6 +928,14 @@ class C_Master extends CI_Controller
             $cek_job = $this->M_wipp->cek_job($nojob);
             $id_parent_hapus = $cek_job[0]['id'];
 
+            $cek = $this->db->select('date_target, no_job')
+                       ->where('date_target', $date)
+                       ->where('no_job', $nojob)
+                       ->get('wip_pnp.job_list')
+                       ->row();
+            if (!empty($cek->no_job)) {
+              $this->db->delete('wip_pnp.job_list', ['no_job' => $nojob]);
+            }
             foreach ($qty as $key => $q) {
                 $data = $this->M_wipp->insertSplit([
                 'date_target' => $date,
@@ -967,7 +986,7 @@ class C_Master extends CI_Controller
                     $qty_parrent = $this->input->post('qty_parrent');
 
                     foreach ($qty as $key => $q) {
-                        $data = $this->M_wipp->insertSplit([
+                        $data = $this->M_wipp->insertSplit_([
                       'date_target' => $date,
                       'nama_item' => $item_dec,
                       'usage_rate' => $urs,
@@ -1201,348 +1220,61 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-        // $date = $this->input->post('date');
-        // $listRKH = $this->M_wipp->getListRKH('2020-06-12');
-        // $get_target_pe = $this->M_wipp->setTarget_Pe('');
-        //
-        // if (!empty($listRKH)) {
-        //     foreach ($listRKH as $key => $l) {
-        //         $list[] = $l['kode_item'];
-        //     }
-        //     $list_unique = array_unique($list);
-        //
-        //     foreach ($listRKH as $key => $l) {
-        //         $cek = $this->M_wipp->getDetailBom($l['kode_item']);
-        //         foreach ($cek as $key => $c) {
-        //             if (strpos($c['DESCRIPTION'], 'DOS') !== false) {
-        //                 $dicek = 1;
-        //                 break;
-        //             } else {
-        //                 $dicek = 0;
-        //             }
-        //         }
-        //         $dos[] = [
-        //             'no_job' => $l['no_job'],
-        //             'id_job_list' => $l['id'],
-        //             'kode_item' => $l['kode_item'],
-        //             'qty' => $l['qty'],
-        //             'target_pe' => $l['waktu_satu_shift']/($l['qty']/$l['usage_rate']),
-        //             'dos' => $dicek
-        //          ];
-        //     }
-        //
-        //     foreach ($dos as $key => $d) {
-        //         if ($d['dos']) {
-        //             $adados[] = $d;
-        //         }
-        //         if ($d['dos'] === 0) {
-        //             $gaadados[] = $d;
-        //         }
-        //     }
-        //
-        //     usort($adados, function ($a, $b) {
-        //         return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
-        //     });
-        //
-        //     //LINE 4
-        //     if (!empty($adados)) {
-        //       $line_4_target_max = 0.08;
-        //       $line_4_count = 0;
-        //       $line4 = [];
-        //       foreach ($adados as $key4 => $val4) {
-        //           $line_4_count += $val4['target_pe'];
-        //           if ($line_4_count < $line_4_target_max && ! array_key_exists($val4['no_job'], $line4)) {
-        //               $line_4[$val4['no_job']] = $val4;
-        //           }
-        //       }
-        //       //UNSET LINE 4
-        //       if (!empty($line_4)) {
-        //         foreach ($line_4 as $key4a => $val4a) {
-        //             $keys4= array_keys(array_column($adados, 'id_job_list'), $val4a['id_job_list']);
-        //             $unset4[] = $keys4[0];
-        //         }
-        //         foreach ($unset4 as $key4b => $al4b) {
-        //             unset($adados[$al4b]);
-        //         }
-        //         $adados_line4 = array_values($adados);
-        //       }else {
-        //         $line_4 = [];
-        //       }
-        //     }
-        //     if (empty($line_4)) {
-        //        $line_4 = [];
-        //     }
-        //
-        //     //LINE 5
-        //     if (!empty($line_4)) {
-        //         if (!empty($adados_line4)) {
-        //           $line_5_target_max = 0.0005;
-        //           $line_5_count = 0;
-        //           $line5 = [];
-        //           foreach ($adados_line4 as $key5 => $val5) {
-        //               $line_5_count += $val5['target_pe'];
-        //               if ($line_5_count < $line_5_target_max && ! array_key_exists($val5['no_job'], $line5)) {
-        //                   $line_5[$val5['no_job']] = $val5;
-        //               }
-        //           }
-        //           //UNSET LINE 5
-        //           if (!empty($line_5)) {
-        //             foreach ($line_5 as $key5a => $val5a) {
-        //                 $keys5= array_keys(array_column($adados_line4, 'id_job_list'), $val5a['id_job_list']);
-        //                 $unset5[] = $keys5[0];
-        //             }
-        //             foreach ($unset5 as $key5b => $al5b) {
-        //                 unset($adados_line4[$key5b]);
-        //             }
-        //             $adados_line5 = array_values($adados_line4);
-        //           }else {
-        //             $line_5 = [];
-        //           }
-        //         }
-        //     }
-        //     if (empty($line_5)) {
-        //        $line_5 = [];
-        //     }
-        //     echo "<br>=========================ADA DOS=======================";
-        //     echo "<pre>";
-        //     print_r($adados_line5);
-        //     echo "<br>====================ADA DOS LINE 4=======================";
-        //     echo "<pre>";
-        //     print_r($line_4);
-        //     echo "<br>====================ADA DOS LINE 5=======================";
-        //     echo "<pre>";
-        //     print_r($line_5);
-        //
-        //     echo "<br>=========================GA ADA DOS=======================";
-        //     echo "<pre>";
-        //     print_r($gaadados);
-        //     echo "<br>";
-        //
-        //     usort($gaadados, function ($a, $b) {
-        //         return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
-        //     });
-        //
-        //     if (!empty($gaadados)) {
-        //       $line_1_target_max = 0.01;
-        //       $line_1_count = 0;
-        //       $line1 = [];
-        //       foreach ($gaadados as $key1 => $val1) {
-        //           $line_1_count += $val1['target_pe'];
-        //           if ($line_1_count < $line_1_target_max && ! array_key_exists($val1['no_job'], $line1)) {
-        //               $line_1[$val1['no_job']] = $val1;
-        //           }
-        //       }
-        //       //UNSET LINE 1
-        //       if (!empty($line_1)) {
-        //         foreach ($line_1 as $key1a => $val1a) {
-        //             $keys1= array_keys(array_column($gaadados, 'id_job_list'), $val1a['id_job_list']);
-        //             $unset1[] = $keys1[0];
-        //         }
-        //         foreach ($unset1 as $key1b => $al1b) {
-        //             unset($gaadados[$al1b]);
-        //         }
-        //         $gaadados_line1 = array_values($gaadados);
-        //       }else {
-        //         $line_1 = [];
-        //       }
-        //
-        //     }
-        //     if (empty($line_1)) {
-        //        $line_1 = [];
-        //     }
-        //
-        //     //LINE 2
-        //     if (!empty($gaadados_line1)) {
-        //       $line_2_target_max = 0.002;
-        //       $line_2_count = 0;
-        //       $line2 = [];
-        //       foreach ($gaadados_line1 as $key2 => $val2) {
-        //           $line_2_count += $val2['target_pe'];
-        //           if ($line_2_count < $line_2_target_max && ! array_key_exists($val2['no_job'], $line2)) {
-        //               $line_2[$val2['no_job']] = $val2;
-        //           }
-        //       }
-        //       //UNSET LINE 2
-        //       if (!empty($line_2)) {
-        //         foreach ($line_2 as $key2a => $val2a) {
-        //             $keys2= array_keys(array_column($gaadados_line1, 'id_job_list'), $val2a['id_job_list']);
-        //             $unset2[] = $keys2[0];
-        //         }
-        //         foreach ($unset2 as $key2b => $al2b) {
-        //             unset($gaadados_line1[$al2b]);
-        //         }
-        //         $gaadados_line2 = array_values($gaadados_line1);
-        //       }else {
-        //         $line_2 = [];
-        //       }
-        //
-        //     }
-        //     if (empty($line_2)) {
-        //        $line_2 = [];
-        //     }
-        //
-        //     //LINE 3
-        //     if (!empty($gaadados_line2)) {
-        //       $line_3_target_max = 0.003;
-        //       $line_3_count = 0;
-        //       $line3 = [];
-        //       foreach ($gaadados_line2 as $key3 => $val3) {
-        //           $line_3_count += $val3['target_pe'];
-        //           if ($line_3_count < $line_3_target_max && ! array_key_exists($val3['no_job'], $line3)) {
-        //               $line_3[$val3['no_job']] = $val3;
-        //           }
-        //       }
-        //       //UNSET LINE 3
-        //       if (!empty($line_3)) {
-        //         foreach ($line_3 as $key3a => $val3a) {
-        //             $keys3= array_keys(array_column($gaadados_line2, 'id_job_list'), $val3a['id_job_list']);
-        //             $unset3[] = $keys3[0];
-        //         }
-        //         foreach ($unset3 as $key3b => $al3b) {
-        //             unset($gaadados_line2[$al3b]);
-        //         }
-        //         $gaadados_line3 = array_values($gaadados_line2);
-        //       }else {
-        //         $line_3 = [];
-        //       }
-        //
-        //     }
-        //     if (empty($line_3)) {
-        //        $line_3 = [];
-        //     }
-        //
-        //     echo "<br>====================GA ADA DOS LINE 1=======================";
-        //     echo "<pre>";
-        //     print_r($line_1);
-        //     echo "<br>=========================GA ADA DOS 1=======================";
-        //     echo "<pre>";
-        //     print_r($gaadados_line1);
-        //     echo "<br>=======================GADA DOS LINE 2=======================";
-        //     echo "<pre>";
-        //     print_r($line_2);
-        //     echo "<br>=========================GA ADA DOS 2=======================";
-        //     echo "<pre>";
-        //     print_r($gaadados_line2);
-        //     echo "<br>========================GADA DOS LINE 3=======================";
-        //     echo "<pre>";
-        //     print_r($line_3);
-        //     echo "<br>=========================GA ADA DOS 3=======================";
-        //     echo "<pre>";
-        //     print_r($gaadados_line3);
-        //
-        //   } else {
-        //     $line_1 = [];
-        //     $line_2 = [];
-        //     $line_3 = [];
-        //     $line_4 = [];
-        //     $line_5 = [];
-        //   }
+      $data_a = $this->M_wipp->JobRelease();
+      $priority = $this->M_wipp->getPP();
 
-        // //LINE 2
-        // $line_2_target_max = $line_2_target_max = 0.003;
-        // $line_2_count_now = 0;
-        //
-        // foreach ($get as $key4 => $value) {
-        //     if ($line_2_count_now + $value['target_pe'] < $line_2_target_max && ! array_key_exists($value['no_job'], $value)) {
-        //         $line_2_arr[$value['no_job']] = $value;
-        //         $line_2_count_now += $value['target_pe'];
-        //     } else {
-        //         $line_2_arr = [];
-        //     }
-        // }
-        //
-        // echo "<br><br> Line 2";
-        // echo "<pre>";
-        // print_r($line_2_arr);
-        // if (!empty($line_1_arr)) {
-        //     $getline2 = array_values($get);
-        //     foreach ($line_2_arr as $key => $v2) {
-        //         $keys2 = array_keys(array_column($getline2, 'id_job_list'), $v2['id_job_list']);
-        //         $unset1[] = $keys2[0];
-        //     }
-        //
-        //     foreach ($unset1 as $key4 => $v3) {
-        //         unset($getline2[$v3]);
-        //     }
-        //
-        //     echo "<pre>";
-        //     print_r($getline2);
-        // }
-        // //LINE 3
-        // $line_3_target_max = $line__target_max = 0.003;
-        // $line_3_count_now = 0;
-        // if (!empty($getline2)) {
-        //     foreach ($getline2 as $key4 => $value) {
-        //         if ($line_3_count_now + $value['target_pe'] < $line_3_target_max && ! array_key_exists($value['no_job'], $value)) {
-        //             $line_3_arr[$value['no_job']] = $value;
-        //             $line_3_count_now += $value['target_pe'];
-        //         } else {
-        //             $line_3_arr = [];
-        //         }
-        //     }
-        //
-        //     echo "<br><br> Line 3 <br><br>";
-        //     echo "<pre>";
-        //     print_r($line_3_arr);
-        //
-        //     if (!empty($line_3_arr)) {
-        //         $getline3 = array_values($getline2);
-        //         foreach ($line_3_arr as $key => $v2) {
-        //             $keys2 = array_keys(array_column($getline3, 'id_job_list'), $v2['id_job_list']);
-        //             $unset3[] = $keys2[0];
-        //         }
-        //
-        //         foreach ($unset1 as $key4 => $v3) {
-        //             unset($getline3[$v3]);
-        //         }
-        //
-        //         echo "<pre>";
-        //         print_r($unset112);
-        //     }
-        // }
-        $data_a = $this->M_wipp->JobRelease();
-        $priority = $this->M_wipp->getPP();
-        // //urutkan data
-        // usort($data_a, function ($a, $b) {
-        //     return $a['KODE_ASSY'] > $b['KODE_ASSY'] ? 1 : -1;
-        // });
-        // usort($priority, function ($a, $b) {
-        //     return $a['kode_item'] > $b['kode_item'] ? 1 : -1;
-        // });
-        // // ambil data master job dengan kode_item produk priority
-        // foreach ($data_a as $key => $da) {
-        //     $data_a[$key]['PRIORITY'] = 0;
-        //     foreach ($priority as $key => $pa) {
-        //         if ($da['KODE_ASSY']  === $pa['kode_item']) {
-        //             $tampung_priority[] = $da;
-        //         }
-        //     }
-        // }
-        // //pengecekan di jika itu priority
-        // foreach ($tampung_priority as $key => $pr) {
-        //     $tampung_priority[$key]['PRIORITY'] = 1;
-        // }
-        // // hapus item yang ada sama di produk prioritas
-        // foreach ($data_a as $key0 => $value) {
-        //     foreach ($tampung_priority as $key2 => $v) {
-        //         if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
-        //             unset($data_a[$key0]);
-        //         }
-        //     }
-        // }
-        // //gabungkan data dengan produk prioritas di awal index
-        // $data['get'] = array_merge($tampung_priority, $data_a);
-        // array_unique($data_a, SORT_REGULAR);
-        // foreach($data_a as $element) {
-        //     $hash = $element['KODE_ASSY'];
-        //     $tampung_item_unique[$hash]['KODE_ASSY'] = $element['KODE_ASSY'];
-        //     $tampung_item_unique[$hash]['DESCRIPTION'] = $element['DESCRIPTION'];
-        //     $tampung_item_unique[$hash]['ONHAND_YSP'] = $element['ONHAND_YSP'];
-        // }
+      foreach($data_a as $element) {
+          $hash = $element['KODE_ASSY'];
+          $tampung_item_unique[$hash]['KODE_ASSY'] = $element['KODE_ASSY'];
+          $tampung_item_unique[$hash]['DESCRIPTION'] = $element['DESCRIPTION'];
+          $tampung_item_unique[$hash]['ONHAND_YSP'] = $element['ONHAND_YSP'];
+      }
+      // ambil data master job dengan kode_item produk priority
+      foreach ($tampung_item_unique as $key => $da) {
+          $tampung_item_unique[$key]['PRIORITY'] = 0;
+          foreach ($priority as $key => $pa) {
+              if ($da['KODE_ASSY']  === $pa['kode_item']) {
+                  $tampung_priority[] = $da;
+              }
+          }
+      }
+
+      if (!empty($tampung_priority)) {
+        //pengecekan di jika itu priority
+        foreach ($tampung_priority as $key => $pr) {
+            $tampung_priority[$key]['PRIORITY'] = 1;
+        }
+        // hapus item yang ada sama di produk prioritas
+        foreach ($tampung_item_unique as $key0 => $value) {
+            foreach ($tampung_priority as $key2 => $v) {
+                if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
+                    $tampung_priority_reedition[] = $v;
+                    unset($tampung_item_unique[$key0]);
+                }
+
+            }
+        }
+        // gabungkan data dengan produk prioritas di awal index
+        $data1 = array_merge($tampung_priority_reedition, $tampung_item_unique);
+      }else {
+        $data1 = $tampung_item_unique;
+      }
+
+      foreach ($data1 as $key => $val) {
+        $minmax = $this->M_wipp->minMax($val['KODE_ASSY']);
+        if (!empty($minmax)) {
+          $data1[$key]['MIN'] = $minmax[0]['MIN'];
+          $data1[$key]['MAX'] = $minmax[0]['MAX'];
+        }else {
+          $data1[$key]['MIN'] = '-';
+          $data1[$key]['MAX'] = '-';
+        }
+
+      }
 
         echo "<pre>";
-        print_r($data_a);
-        echo sizeof($data_a);
+        echo sizeof($data1);
+        print_r($data1);
         die;
     }
 }

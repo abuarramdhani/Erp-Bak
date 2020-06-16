@@ -90,6 +90,7 @@ function getJobReleased() {
                       <td><center>${v[4]}</center></td>
                       <td><center>${v[5]}</center></td>
                       <td><center>${v[7]}</center></td>
+                      <td hidden><center>${v[4]}</center></td>
                       <td onmouseover="cekhover()">
                         <center>
                           <button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${i+1})"><i class="fa fa-minus-square"></i></button>
