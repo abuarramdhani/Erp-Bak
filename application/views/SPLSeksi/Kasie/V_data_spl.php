@@ -183,7 +183,7 @@
 								<div class="modal-footer">
 									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=31&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="hidden"><i class="fa fa-exclamation-circle"></i> Reject</a>
 									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=21&data=&ket='); ?>" type="submit" id="spl_proses_approve" class="hidden"><i class="fa fa-check-square"></i> Approve</a>
-									<button class="btn btn-danger" id="rejectSPL" type="button">
+									<button class="btn btn-danger" id="rejectSPL" style="float:left;" type="button">
 										<i class="fa fa-exclamation-circle"></i>
 										Reject
 									</button>
