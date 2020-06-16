@@ -412,7 +412,7 @@
           map.data.remove(feature);
         });
         map.data.loadGeoJson(
-            'http://erp.quick.com/kabupaten.json'
+            'http://erp.quick.com/assets/covid19/kabupaten.json'
         );
         setStyle();
       }
