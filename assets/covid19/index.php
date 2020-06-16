@@ -101,7 +101,7 @@
 
           // NOTE: This uses cross-domain XHR, and may not work on older browsers.
           map.data.loadGeoJson(
-              'http://192.168.8.66/kabupaten.json'
+              'http://' + <?php echo $_SERVER['SERVER_ADDR'] ?> + '/assets/covid19/kabupaten.json'
           );
           
           setStyle();
