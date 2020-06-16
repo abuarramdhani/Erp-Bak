@@ -2339,11 +2339,11 @@ function RejectCatering() {
 // start Hitung Pesanan
 $(document).ready(function(){
 	$('#CateringHitungPesananTanggal').datepicker({
-		      "autoclose": true,
-		      "todayHighlight": true,
-		      "todayBtn": "linked",
-		      "format":'yyyy-mm-dd'
-		});
+	      "autoclose": true,
+	      "todayHighlight": true,
+	      "todayBtn": "linked",
+	      "format":'yyyy-mm-dd'
+	});
 
 	$('#CateringHitungRefresh').on('click',function(){
 		tanggal = $('#CateringHitungPesananTanggal').val();
@@ -2395,28 +2395,31 @@ $(document).ready(function(){
 							getFingerCatering();
 						}
 					}else{
-						if (obj.statusKatering == "tidak ada") {
+						if (obj.statusTanggal == "not ok") {
+							Swal.fire(
+						     	'Refresh Telah Dihentikan',
+						     	'Tanggal Yang Dipilih Harus Sama Dengan Tanggal Hari Ini',
+						     	'error'
+					    	)
+						}else if (obj.statusKatering == "tidak ada") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
 						     	'Tidak ada Katering yang berstatus AKTIF',
 						     	'error'
 					    	)
-						}
-						if (obj.statusJadwal == "tidak ada") {
+						}else if (obj.statusJadwal == "tidak ada") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
 						     	'Belum ada Jadwal Katering',
 						     	'error'
 					    	)
-						}
-						if (obj.statusBatasDatang == "tidak ada") {
+						}else if (obj.statusBatasDatang == "tidak ada") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
 						     	'Batas Jam Datang Belum Di Atur',
 						     	'error'
 					    	)
-						}
-						if (obj.statusAbsenShift == "tidak ada") {
+						}else if (obj.statusAbsenShift == "tidak ada") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
 						     	'Data Absensi di shift yang anda pilih kosong',
@@ -2442,7 +2445,7 @@ $(document).ready(function(){
 		if (tanggal && shift && lokasi) {
 			$.ajax({
 				method: 'POST',
-				url: baseurl + '/CateringManagement/HitungPesanan/cekLihat',
+				url: baseurl + 'CateringManagement/HitungPesanan/cekLihat',
 				data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
 				error: function(xhr,status,error){
 					e.preventDefault();
@@ -2543,7 +2546,7 @@ function hitungCatering(){
 	lokasi 	= $('#CateringHitungPesananLokasi').val();
 	$.ajax({
 		method: 'POST',
-		url: baseurl + '/CateringManagement/HitungPesanan/prosesHitung',
+		url: baseurl + 'CateringManagement/HitungPesanan/prosesHitung',
 		data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
 		error: function(xhr,status,error){
 			$('#CateringHitungLoading').hide();
@@ -2573,6 +2576,13 @@ function hitungCatering(){
 }
 
 $(document).ready(function(){
+	$('#txt-CM-HitungPesanan-CopyPembagian-Tanggal').datepicker({
+	      "autoclose": true,
+	      "todayHighlight": true,
+	      "todayBtn": "linked",
+	      "format":'yyyy-mm-dd'
+	});
+
 	$('#CateringHitungPesananLihatTabel').on('click','tbody tr',function(){
 		var urutan = $(this).attr('data-urutan');
 		var tempatMakan = $(this).attr('data-katering');
@@ -2594,10 +2604,9 @@ $(document).ready(function(){
 		if (urutan && tempatMakan) {
 			$.ajax({
 				method: 'POST',
-				url: baseurl + '/CateringManagement/HitungPesanan/gantiUrutan',
+				url: baseurl + 'CateringManagement/HitungPesanan/gantiUrutan',
 				data: {tanggal: tanggal, shift: shift, lokasi: lokasi,tempat_makan: tempatMakan, urutan: urutan},
 				error: function(xhr,status,error){
-					$('#CateringHitungLoading').hide();
 					swal.fire({
 		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
 		                html: xhr['responseText'],
@@ -2619,6 +2628,200 @@ $(document).ready(function(){
 			})			
 		}
 	});
+
+	$('#btn-CM-HitungPesanan-CopyPembagian').on('click', function(){
+		$('#mdl-CM-HitungPesanan-CopyPembagian').modal('show');
+	})
+
+	$('#btn-CM-HitungPesanan-CopyPembagian-Proses').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+		var tanggalCopy = $('#txt-CM-HitungPesanan-CopyPembagian-Tanggal').val();
+
+		if (tanggal && tanggalCopy) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + 'CateringManagement/HitungPesanan/copyPembagian',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, tanggal_copy: tanggalCopy},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					$('#mdl-CM-HitungPesanan-CopyPembagian').modal('hide');	
+					if (data != "Tidak Ditemukan Data") {
+						$('#CateringHitungPesananLihatTabel').html(obj['table']);						
+						$('#CateringHitungPesananLihatJumlah').html(obj['katering']);	
+					}else{
+						window.location.href = baseurl+'/CateringManagement/HitungPesanan';
+					}
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-SimpanMakan').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + 'CateringManagement/HitungPesanan/simpanHistory',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '1'},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					if (data == 'success') {
+						swal.fire('Sukses!',
+							'Simpan Pembagian Makan Berhasil !',
+							'success'
+						)
+					}else{
+						swal.fire('Gagal!',
+							'Simpan Pembagian Makan Gagal !',
+							'error'
+						)
+					}
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-SimpanSnack').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					if (data == 'success') {
+						swal.fire('Sukses!',
+							'Simpan Pembagian Makan Sukses!',
+							'success'
+						)
+					}else{
+						swal.fire('Gagal!',
+							'Simpan Pembagian Makan Gagal!',
+							'error'
+						)
+					}
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-CetakMakan').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					if (data == 'success') {
+						swal.fire('Sukses!',
+							'Simpan Pembagian Makan Sukses!',
+							'success'
+						)
+					}else{
+						swal.fire('Gagal!',
+							'Simpan Pembagian Makan Gagal!',
+							'error'
+						)
+					}
+					window.open(baseurl + 'CateringManagement/HitungPesanan/cetakHistory?tanggal=' + tanggal + '&lokasi=' + lokasi + '&shift=' + shift + '&jenis=1');
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-CetakSnack').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			$.ajax({
+				method: 'POST',
+				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
+				error: function(xhr,status,error){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					if (data == 'success') {
+						swal.fire('Sukses!',
+							'Simpan Pembagian Makan Sukses!',
+							'success'
+						)
+					}else{
+						swal.fire('Gagal!',
+							'Simpan Pembagian Makan Gagal!',
+							'error'
+						)
+					}
+					window.open(baseurl + 'CateringManagement/HitungPesanan/cetakHistory?tanggal=' + tanggal + '&lokasi=' + lokasi + '&shift=' + shift + '&jenis=0');
+				}
+			})
+		}
+	})
+
+	$('#btn-CM-HitungPesanan-FormPesanan').on('click', function(){
+		var tanggal = $('#txtCateringHitungPesananTanggal').val();
+		var lokasi = $('#txtCateringHitungPesananLokasi').val();
+		var shift = $('#txtCateringHitungPesananShift').val();
+
+		if (tanggal) {
+			window.open(baseurl + 'CateringManagement/HitungPesanan/cetakFormPesananMakan?tanggal=' + tanggal + '&lokasi=' + lokasi + '&shift=' + shift);
+		}
+	})
 });
 // end Hitung Pesanan
 $(document).on('ready',function(){
@@ -2670,6 +2873,31 @@ $(document).on('ready', function(){
             data: function(params) {
                 return {
                     term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
+	$('.slc-CM-Tambahan-Penerima').select2({
+        searching: true,
+        minimumInputLength: 3,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'CateringManagement/Pesanan/Tambahan/getPenerima',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    tempat_makan: $('#slc-CM-Tambahan-TempatMakan').val()
                 }
             },
             processResults: function(data) {
@@ -2919,41 +3147,64 @@ $(document).on('ready', function(){
 			var elem_shift = $('#slc-CM-Tambahan-Shift').val();
 			var elem_kategori = $('#slc-CM-Tambahan-Kategori').val();
 			var elem_urutan = $('#slc-CM-Tambahan-Urutan').val();
+			var elem_jumlah = $('#txt-CM-Tambahan-JumlahPesan').val();
+			var elem_pemohon = $('#slc-CM-Tambahan-Pemohon').val();
+			var elem_keterangan = $('#txt-CM-Tambahan-Keterangan').val();
+
 
 			var stat_tanggal = 0;
 			var stat_tempatMakan = 0;
 			var stat_shift = 0;
 			var stat_kategori = 0;
 			var stat_urutan = 0;
+			var stat_jumlah = 0;
+			var stat_pemohon = 0;
+			var stat_keterangan = 0;
+			var stat_penerima = 0;
 
 			if (elem_tanggal) {
 				stat_tanggal = 1;
-			}else{
-				stat_tanggal = 0;
 			}
 			if (elem_tempatMakan) {
 				stat_tempatMakan = 1;
-			}else{
-				stat_tempatMakan = 0;
 			}
 			if (elem_shift) {
 				stat_shift = 1;
-			}else{
-				stat_shift = 0;
 			}
 			if (elem_kategori) {
 				stat_kategori = 1;
-			}else{
-				stat_kategori = 0;
+				if (elem_kategori == "6" || elem_kategori == "7") {
+					if (elem_jumlah) {
+						stat_jumlah = 1;
+					}
+					if (elem_pemohon) {
+						stat_pemohon = 1;
+					}
+					if (elem_keterangan) {
+						stat_keterangan = 1;
+					}
+
+					stat_penerima = 1;
+				}else{
+					stat_jumlah = 1;
+					stat_pemohon = 1;
+					stat_keterangan = 1;
+
+					if (!tblCMTambahanPenerima.data().count()) {
+						stat_penerima = 0;
+					}else{
+						stat_penerima = 1;
+					}
+				}
 			}
 			if (elem_urutan) {
 				stat_urutan = 1;
-			}else{
-				stat_urutan = 0;
 			}
 
+
+
 			
-			if (stat_tanggal == 1 && stat_tempatMakan == 1 && stat_shift == 1 && stat_kategori == 1 && stat_urutan == 1) {
+			if (stat_tanggal == 1 && stat_tempatMakan == 1 && stat_shift == 1 && stat_kategori == 1 && stat_urutan == 1 && stat_jumlah == 1 && stat_pemohon == 1 && stat_keterangan == 1 && stat_penerima == 1) {
 				var formData = $('#frm-CM-Tambahan-Form').serialize();
 				
 				$.ajax({
@@ -3315,24 +3566,51 @@ $(document).on('ready', function(){
         ],
 	});
 
-	$('.slc-CM-Pengurangan-Pekerja').select2({
+	$('.slc-CM-Pengurangan-Penerima').select2({
         searching: true,
         minimumInputLength: 3,
         allowClear: false,
         ajax: {
-            url: baseurl + 'CateringManagement/Pesanan/Pengurangan/searchActiveEmployees',
+            url: baseurl + 'CateringManagement/Pesanan/Pengurangan/getPenerima',
             dataType: 'json',
             delay: 500,
             type: 'GET',
             data: function(params) {
                 return {
-                    term: params.term
+                    term: params.term,
+                    tempat_makan: $('#slc-CM-Pengurangan-TempatMakan').val()
                 }
             },
             processResults: function(data) {
                 return {
                     results: $.map(data, function(obj) {
                         return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
+	$('.slc-CM-Pengurangan-TempatMakanBaru').select2({
+        searching: true,
+        minimumInputLength: 3,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'CateringManagement/Pesanan/Pengurangan/getTempatMakanBaru',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    tempat_makan: $('#slc-CM-Pengurangan-TempatMakan').val(),
+                    kategori: $('#slc-CM-Pengurangan-Kategori').val()
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.fs_tempat_makan, text: obj.fs_tempat_makan + " - " + obj.lokasi };
                     })
                 }
             }
@@ -3559,11 +3837,14 @@ $(document).on('ready', function(){
 			var elem_tempatMakan = $('#slc-CM-Pengurangan-TempatMakan').val();
 			var elem_shift = $('#slc-CM-Pengurangan-Shift').val();
 			var elem_kategori = $('#slc-CM-Pengurangan-Kategori').val();
+			var elem_tempatMakanBaru = $('#slc-CM-Pengurangan-TempatMakanBaru').val();
 
 			var stat_tanggal = 0;
 			var stat_tempatMakan = 0;
 			var stat_shift = 0;
 			var stat_kategori = 0;
+			var stat_tempatMakanBaru = 0;
+			var stat_penerima = 0;
 
 			if (elem_tanggal) {
 				stat_tanggal = 1;
@@ -3582,12 +3863,26 @@ $(document).on('ready', function(){
 			}
 			if (elem_kategori) {
 				stat_kategori = 1;
+				if (elem_kategori == "2" || elem_kategori == "3" || elem_kategori == "4" || elem_kategori == "5") {
+					if (elem_tempatMakanBaru) {
+						stat_tempatMakanBaru = 1;
+					}else{
+						stat_tempatMakanBaru = 0;
+					}
+				}else{
+					stat_tempatMakanBaru = 1;
+				}
 			}else{
 				stat_kategori = 0;
 			}
 
+			if (tblCMPenguranganPenerima.data().count() > 0) {
+				stat_penerima = 1;
+			}else{
+				stat_penerima = 0;
+			}
 			
-			if (stat_tanggal == 1 && stat_tempatMakan == 1 && stat_shift == 1 && stat_kategori == 1) {
+			if (stat_tanggal == 1 && stat_tempatMakan == 1 && stat_shift == 1 && stat_kategori == 1 && stat_tempatMakanBaru == 1 && stat_penerima == 1) {
 				var formData = $('#frm-CM-Pengurangan-Form').serialize();
 				
 				$.ajax({
@@ -3689,6 +3984,8 @@ $(document).on('ready', function(){
 		}else{
 			tanggal = $('#txt-CM-Pengurangan-Tanggal').val();
 			if (tanggal) {
+				$('#txt-CM-Pengurangan-Tanggal-Baru').val(tanggal);
+
 				$('#slc-CM-Pengurangan-Kategori').val("").change();
 				$('#slc-CM-Pengurangan-Shift').val("").change();
 				$('#slc-CM-Pengurangan-TempatMakan').val("").change();
@@ -3858,3 +4155,1746 @@ $(document).on('ready', function(){
 	});
 });
 // end Pengurangan Pesanan
+
+// start pekerja terhitung katering
+$(document).ready(function(){
+	var tblCMPekerjaTerhitungKatering = $('#tbl-CM-PekerjaTerhitungKatering-Table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	$('#txt-CM-PekerjaTerhitungCatering-Tanggal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#btn-CM-PekerjaTerhitungCatering-Lihat').on('click', function(){
+		tanggal = $('#txt-CM-PekerjaTerhitungCatering-Tanggal').val();
+		shift = $('#slc-CM-PekerjaTerhitungCatering-Shift').val();
+		lokasi = $('#slc-CM-PekerjaTerhitungCatering-Lokasi').val();
+		tempat_makan = $('#slc-CM-PekerjaTerhitungCatering-TempatMakan').val();
+		$('#ldg-CM-PekerjaTerhitungKatering-Loading').show();
+
+		if (tanggal && shift && lokasi && tempat_makan) {
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Extra/PekerjaTerhitungCatering/getList',
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, tempat_makan: tempat_makan},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					tblCMPekerjaTerhitungKatering.clear().draw();
+					obj.forEach(function(daftar, index){
+						tblCMPekerjaTerhitungKatering.row.add([
+							(index + 1),
+							daftar.noind,
+							daftar.nama,
+							daftar.waktu,
+							daftar.tempat_makan,
+							daftar.user_,
+							daftar.seksi,
+							daftar.shift,
+							daftar.status
+						]).draw(false);
+					})
+					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
+					tblCMPekerjaTerhitungKatering.columns.adjust().draw();
+				}
+			})
+		}else{
+			$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Form Sudah Terisi Semua !',
+				'warning'
+			)
+		}
+	})
+});
+// end pekerja terhitung katering
+
+// start absen per lokasi absen
+$(document).ready(function(){
+	var tblCMAbsenPerLokasiAbsen = $('#tbl-CM-AbsenPerLokasiAbsen-table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "iDisplayLength" : -1,
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	var tblCMAbsenPerLokasiAbsenDetailAbsen = $('#tbl-CM-AbsenPerLokasiAbsen-Absen').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	var tblCMAbsenPerLokasiAbsenDetailKatering = $('#tbl-CM-AbsenPerLokasiAbsen-Katering').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	$('#txt-CM-AbsenPerLokasiAbsen-Tanggal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#btn-CM-AbsenPerLokasiAbsen-cari').on('click', function(){
+		tanggal = $('#txt-CM-AbsenPerLokasiAbsen-Tanggal').val();
+		$('#ldg-CM-AbsenPerLokasiAbsen-Loading').show();
+		if (tanggal) {
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Extra/AbsenPerLokasiAbsen/getList',
+				data: {tanggal: tanggal},
+				error: function(xhr,status,error){
+					$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					tblCMAbsenPerLokasiAbsen.clear().draw();
+					obj.forEach(function(daftar, index){
+						tblCMAbsenPerLokasiAbsen.row.add([
+							daftar.device_name + '<input class="lokasi" type="hidden" value="' + daftar.device_name + '">',
+							daftar.inisial_lokasi + '<input class="inisial_lokasi" type="hidden" value="' + daftar.inisial_lokasi + '">',
+							daftar.office + '<input class="tanggal" type="hidden" value="' + tanggal + '">',
+							daftar.jml_absen,
+							daftar.jml_katering,
+							daftar.last_update,
+						]).draw(false);
+					})
+					tblCMAbsenPerLokasiAbsen.columns.adjust().draw();
+					$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+				}
+			})
+		}else{
+			$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Tanggal Sudah Terisi !',
+				'warning'
+			)
+		}
+	});
+
+	$('#tbl-CM-AbsenPerLokasiAbsen-table').on('click', 'td', function(){
+		tanggal = $(this).closest('tr').find('.tanggal').val();
+		inisial_lokasi = $(this).closest('tr').find('.inisial_lokasi').val();
+		lokasi = $(this).closest('tr').find('.lokasi').val();
+		$('#ldg-CM-AbsenPerLokasiAbsen-Loading').show();
+		$('#mdl-CM-AbsenPerLokasiAbsen-judul').text(lokasi + " ( " + inisial_lokasi + " )");
+		$.ajax({
+			method: 'GET',
+			url: baseurl + 'CateringManagement/Extra/AbsenPerLokasiAbsen/getDetail',
+			data: {tanggal: tanggal, inisial_lokasi: inisial_lokasi},
+			error: function(xhr,status,error){
+				$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				tblCMAbsenPerLokasiAbsenDetailAbsen.clear().draw();
+				obj.absen.forEach(function(daftar, index){
+					tblCMAbsenPerLokasiAbsenDetailAbsen.row.add([
+						daftar.noind ,
+						daftar.nama,
+						daftar.shift,
+						daftar.waktu,
+						daftar.tempat_makan
+					]).draw(false);
+				})
+
+				tblCMAbsenPerLokasiAbsenDetailKatering.clear().draw();
+				obj.katering.forEach(function(daftar, index){
+					tblCMAbsenPerLokasiAbsenDetailKatering.row.add([
+						daftar.noind ,
+						daftar.nama,
+						daftar.shift,
+						daftar.waktu,
+						daftar.tempat_makan
+					]).draw(false);
+				})
+
+				$('#ldg-CM-AbsenPerLokasiAbsen-Loading').hide();
+				$('#mdl-CM-AbsenPerLokasiAbsen').modal('show');
+
+				tblCMAbsenPerLokasiAbsenDetailAbsen.columns.adjust().draw();
+				tblCMAbsenPerLokasiAbsenDetailKatering.columns.adjust().draw();
+			}
+		})
+	})
+
+	$('#mdl-CM-AbsenPerLokasiAbsen-close').on('click', function(){
+		$('#mdl-CM-AbsenPerLokasiAbsen').modal('hide');
+	})
+})
+// end absen per lokasi absen
+
+// start izin dinas pusat tuksono mlati
+$(document).ready(function(){
+	var tblCMIzinDinasPTM = $('#tbl-CM-IzinDinasPTM-table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	$('#btn-CM-IzinDinasPTM-Proses').on('click', function(){
+		$('#ldg-CM-IzinDinasPTM-Loading').show();
+		$.ajax({
+			method: 'GET',
+			url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/proses',
+			error: function(xhr,status,error){
+				$('#ldg-CM-IzinDinasPTM-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				tblCMIzinDinasPTM.clear().draw();
+				console.log(obj);
+				obj.forEach(function(daftar, index){
+					tblCMIzinDinasPTM.row.add([
+						daftar.noind ,
+						daftar.nama,
+						daftar.tujuan,
+						daftar.keterangan,
+						daftar.jenis_dinas,
+						daftar.diproses
+					]).draw(false);
+				})
+
+				$('#ldg-CM-IzinDinasPTM-Loading').hide();
+			}
+		})
+	});
+})
+// end izin dinas pusat tuksono mlati
+
+// start mutasi pekerja
+$(document).ready(function(){
+	$('#tbl-CM-MutasiPekerja-Table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+})
+// end mutasi pekerja
+
+// start notifikasi dinas luar
+$(document).ready(function(){
+	var tblCMNotifDL = $('#tbl-CM-NotifDL-Table').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+	});
+
+	$('#btn-CM-NotifDL-Proses').on('click', function(){
+		$('#ldg-CM-NotifDL-Loading').show();
+		$.ajax({
+			method: 'GET',
+			url: baseurl + 'CateringManagement/Extra/NotifDL/proses',
+			error: function(xhr,status,error){
+				$('#ldg-CM-NotifDL-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				tblCMNotifDL.clear().draw();
+				console.log(obj);
+				obj.forEach(function(daftar, index){
+					tblCMNotifDL.row.add([
+						daftar.noind ,
+						daftar.nama,
+						daftar.tempat_makan,
+						daftar.lokasi_kerja,
+						daftar.spdl_id,
+						daftar.status,
+						daftar.wkt_realisasi,
+						daftar.dikurangi
+					]).draw(false);
+				})
+
+				$('#ldg-CM-NotifDL-Loading').hide();
+			}
+		})
+	});
+})
+// end notifikasi dinas luar
+
+// start Presensi Pekerja
+$(document).ready(function(){
+	var tblCMPresensipekerja = $('#tbl-CM-PresensiPekerja-Table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        "scrollX" : true,
+		"fixedColumns":   {
+            leftColumns: 6
+        },
+	})
+
+	$('#txt-CM-PresensiPekerja-TanggalAwal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#txt-CM-PresensiPekerja-TanggalAkhir').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#slc-CM-PresensiPekerja-Dept').select2({
+		searching: true,
+        minimumInputLength: 0,
+        placeholder: "Pilih Departement",
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'CateringManagement/Extra/PresensiPekerja/getDepartement',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kodesie, text: obj.kodesie + " - " + obj.dept };
+                    })
+                }
+            }
+        }
+	});
+
+	$('#slc-CM-PresensiPekerja-Bidang').select2({
+		searching: true,
+        minimumInputLength: 0,
+        placeholder: "Pilih Bidang",
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'CateringManagement/Extra/PresensiPekerja/getBidang',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+            	var query = {
+            		term: params.term,
+            		kode: $('#slc-CM-PresensiPekerja-Dept').val()
+            	}
+                return query;
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kodesie, text: obj.kodesie + " - " + obj.bidang };
+                    })
+                }
+            }
+        }
+	});
+
+	$('#slc-CM-PresensiPekerja-Unit').select2({
+		searching: true,
+        minimumInputLength: 0,
+        placeholder: "Pilih Unit",
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'CateringManagement/Extra/PresensiPekerja/getUnit',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+            	var query = {
+            		term: params.term,
+            		kode: $('#slc-CM-PresensiPekerja-Bidang').val()
+            	}
+                return query;
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kodesie, text: obj.kodesie + " - " + obj.unit };
+                    })
+                }
+            }
+        }
+	});
+
+	$('#slc-CM-PresensiPekerja-Seksi').select2({
+		searching: true,
+        minimumInputLength: 0,
+        placeholder: "Pilih Seksi",
+        allowClear: true,
+        ajax: {
+            url: baseurl + 'CateringManagement/Extra/PresensiPekerja/getSeksi',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+            	var query = {
+            		term: params.term,
+            		kode: $('#slc-CM-PresensiPekerja-Unit').val()
+            	}
+                return query;
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kodesie, text: obj.kodesie + " - " + obj.seksi };
+                    })
+                }
+            }
+        }
+	});
+
+	$('#slc-CM-PresensiPekerja-Dept').on('change', function(){
+		var kodesie = $(this).val();
+		if (kodesie == '-') {
+			$('#slc-CM-PresensiPekerja-Bidang').select2("").trigger('change');
+			$('#slc-CM-PresensiPekerja-Unit').val("").trigger('change');
+			$('#slc-CM-PresensiPekerja-Seksi').val("").trigger('change');
+			$('#slc-CM-PresensiPekerja-Bidang').attr('disabled', true);
+			$('#slc-CM-PresensiPekerja-Unit').attr('disabled', true);
+			$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+		}else{
+			$('#slc-CM-PresensiPekerja-Bidang').attr('disabled', false);
+			$('#slc-CM-PresensiPekerja-Unit').attr('disabled', true);
+			$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+		}
+	})
+
+	$('#slc-CM-PresensiPekerja-Bidang').on('change', function(){
+		var kodesie = $(this).val();
+		if (kodesie) {
+			var kodesie_text = kodesie.substr(kodesie.length - 2);
+			
+			if (kodesie_text == '00') {
+				$('#slc-CM-PresensiPekerja-Unit').val("").trigger('change');
+				$('#slc-CM-PresensiPekerja-Seksi').val("").trigger('change');
+				$('#slc-CM-PresensiPekerja-Unit').attr('disabled', true);
+				$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+			}else{
+				$('#slc-CM-PresensiPekerja-Unit').attr('disabled', false);
+				$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+			}
+		}
+	})
+	
+	$('#slc-CM-PresensiPekerja-Unit').on('change', function(){
+		var kodesie = $(this).val();
+		if (kodesie) {
+			var kodesie_text = kodesie.substr(kodesie.length - 2);
+			
+			if (kodesie_text == '00') {
+				$('#slc-CM-PresensiPekerja-Seksi').val("").trigger('change');
+				$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', true);
+			}else{
+				$('#slc-CM-PresensiPekerja-Seksi').attr('disabled', false);
+			}
+		}
+	})
+
+	$('#btn-CM-PresensiPekerja-Tampil').on('click', function(){
+		$('#ldg-CM-PresensiPekerja-Loading').show();
+		var tanggalAwal = $('#txt-CM-PresensiPekerja-TanggalAwal').val();
+		var tanggalAkhir = $('#txt-CM-PresensiPekerja-TanggalAkhir').val();
+		var dept = $('#slc-CM-PresensiPekerja-Dept').val();
+		var bidang = $('#slc-CM-PresensiPekerja-Bidang').val();
+		var unit = $('#slc-CM-PresensiPekerja-Unit').val();
+		var seksi = $('#slc-CM-PresensiPekerja-Seksi').val();
+
+		var kodesie = "";
+		if (seksi.length > 0) {
+			kodesie = seksi;
+		}else if(unit.length > 0) {
+			kodesie = unit;
+		}else if(bidang.length > 0){
+			kodesie = bidang;
+		}else if (dept.length > 0) {
+			kodesie = dept
+		}
+		console.log('kodesie : ' + kodesie);
+		if (kodesie.length > 0 && tanggalAwal && tanggalAkhir) {
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Extra/PresensiPekerja/tampil',
+				data: {kodesie: kodesie, tanggal_awal: tanggalAwal, tanggal_akhir: tanggalAkhir},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PresensiPekerja-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					tblCMPresensipekerja.clear().draw();
+					console.log(obj);
+					obj.forEach(function(daftar, index){
+						tblCMPresensipekerja.row.add([
+							(index + 1),
+							daftar.dept,
+							daftar.bidang,
+							daftar.unit,
+							daftar.seksi,
+							daftar.tanggal,
+							daftar.estimasi_satu,
+							daftar.realitas_satu,
+							daftar.cuti_satu,
+							daftar.sakit_satu,
+							daftar.mangkir_satu,
+							daftar.lain_satu,
+							daftar.estimasi_dua,
+							daftar.realitas_dua,
+							daftar.cuti_dua,
+							daftar.sakit_dua,
+							daftar.mangkir_dua,
+							daftar.lain_dua,
+							daftar.estimasi_tiga,
+							daftar.realitas_tiga,
+							daftar.cuti_tiga,
+							daftar.sakit_tiga,
+							daftar.mangkir_tiga,
+							daftar.lain_tiga,
+							daftar.estimasi_umum,
+							daftar.realitas_umum,
+							daftar.cuti_umum,
+							daftar.sakit_umum,
+							daftar.mangkir_umum,
+							daftar.lain_umum,
+						]).draw(false);
+					})
+
+					tblCMPresensipekerja.columns.adjust().draw();
+					$('#ldg-CM-PresensiPekerja-Loading').hide();
+				}
+			})
+		}else{
+			$('#ldg-CM-PresensiPekerja-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Form Sudah Terisi !',
+				'warning'
+			)
+		}
+
+	})
+})
+// end Presensi Pekerja
+
+// start Menu
+$(document).ready(function(){
+	var tblCMMenu = $('#tbl-CM-Menu-Table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			},
+			{
+			    "targets": 1,
+			    "className": "text-center"
+			}
+		],
+	})
+
+	var tblCMMenuDetail = $('#tbl-CM-Menu-Detail').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+	})
+
+	$('#txt-CM-Menu-BulanTahun-Copy').datepicker({
+	    "autoclose": true,
+	    "todayHiglight": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+	});
+
+	$('#txt-CM-Menu-BulanTahun').datepicker({
+	    "autoclose": true,
+	    "todayHiglight": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+	});
+
+	var tblCMMenuCreate = $('#tbl-CM-Menu-Create').DataTable({
+		"paging": false,
+		"searching": false,
+		"sort": false,
+		"info": false
+	})
+
+	$('.slc-CM-Menu-Sayur').select2({
+		tags: true,
+		tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true
+		    }
+		}
+	});
+	$('.slc-CM-Menu-LaukUtama').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		},
+	});
+	$('.slc-CM-Menu-LaukPendamping').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true
+		    }
+		}
+	});
+	$('.slc-CM-Menu-Buah').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	});
+
+	$('#slc-CM-Menu-Shift').on('change', function(){
+		CMMenuCreateChange(tblCMMenuCreate)
+	});
+	$('#slc-CM-Menu-Lokasi').on('change', function(){
+		CMMenuCreateChange(tblCMMenuCreate)
+	});
+	$('#txt-CM-Menu-BulanTahun').on('change', function(){
+		CMMenuCreateChange(tblCMMenuCreate)
+	});
+	
+	$('#btn-CM-Menu-CopyMenu').on('click', function(){
+		$('#ldg-CM-Menu-Loading').show();
+		var shift = $('#slc-CM-Menu-Shift').val();
+		var lokasi = $('#slc-CM-Menu-Lokasi').val();
+		var bulan_tahun = $('#txt-CM-Menu-BulanTahun').val();
+
+		var shift_copy = $('#slc-CM-Menu-Shift-Copy').val();
+		var lokasi_copy = $('#slc-CM-Menu-Lokasi-Copy').val();
+		var bulan_tahun_copy = $('#txt-CM-Menu-BulanTahun-Copy').val();
+
+		if (shift && lokasi && bulan_tahun && shift_copy && lokasi_copy && bulan_tahun_copy) {
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Setup/Menu/copyMenu',
+				data: {
+						shift: shift, 
+						lokasi: lokasi, 
+						bulan_tahun: bulan_tahun,
+						shift_copy: shift_copy, 
+						lokasi_copy: lokasi_copy, 
+						bulan_tahun_copy: bulan_tahun_copy
+				},
+				error: function(xhr,status,error){
+					$('#ldg-CM-Menu-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					if (obj) {
+						tblCMMenuCreate.clear().draw();
+						if (obj.status == "INSERT") {
+
+							if (obj.isi > 0) {
+								obj.data.forEach(function(daftar, index){
+									tblCMMenuCreate.row.add([
+										daftar.tanggal,
+										"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+										"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+										"<select class=\"slc-CM-Menu-LaukPendamping\" data-placeholder=\"Pilih Lauk Pendamping...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+										"<select class=\"slc-CM-Menu-Buah\" data-placeholder=\"Pilih Buah...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>"
+									]).draw(false);
+								})
+							}
+
+							if (obj.sayur_jumlah > 0) {
+								obj.sayur.forEach(function(text, index){
+									$('.slc-CM-Menu-Sayur').append("<option>" + text.text + "</option>")
+								})
+							}
+
+							if (obj.lauk_utama_jumlah > 0) {
+								obj.lauk_utama.forEach(function(text, index){
+									$('.slc-CM-Menu-LaukUtama').append("<option>" + text.text + "</option>")
+								})
+							}
+
+							if (obj.lauk_pendamping_jumlah > 0) {
+								obj.lauk_pendamping.forEach(function(text, index){
+									$('.slc-CM-Menu-LaukPendamping').append("<option>" + text.text + "</option>")
+								})
+							}
+
+							if (obj.buah_jumlah > 0) {
+								obj.buah.forEach(function(text, index){
+									$('.slc-CM-Menu-Buah').append("<option>" + text.text + "</option>")
+								})
+							}
+
+							tblCMMenuCreate.columns.adjust().draw();
+						}else if(obj.status == "UPDATE"){
+							if (obj.isi > 0) {
+								obj.data.forEach(function(daftar, index){
+									tblCMMenuCreate.row.add([
+										daftar.tanggal,
+										"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.sayur_option + "</select>",
+										"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.lauk_utama_option + "</select>",
+										"<select class=\"slc-CM-Menu-LaukPendamping\" data-placeholder=\"Pilih Lauk Pendamping...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.lauk_pendamping_option + "</select>",
+										"<select class=\"slc-CM-Menu-Buah\" data-placeholder=\"Pilih Buah...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.buah_option + "</select>"
+									]).draw(false);
+								})
+							}
+
+							tblCMMenuCreate.columns.adjust().draw();
+
+						}
+
+						$('.slc-CM-Menu-Sayur').select2({
+							tags: true,
+							tokenSeparators: [','],
+							createTag: function (params) {
+							    var term = $.trim(params.term);
+
+							    if (term === '') {
+							    	return null;
+							    }
+
+							    return {
+							    	id: term,
+							    	text: term,
+							    	newTag: true
+							    }
+							}
+						});
+						$('.slc-CM-Menu-LaukUtama').select2({
+							tags: true,
+							// tokenSeparators: [','],
+							createTag: function (params) {
+							    var term = $.trim(params.term);
+
+							    if (term === '') {
+							    	return null;
+							    }
+
+							    return {
+							    	id: term,
+							    	text: term,
+							    	newTag: true 
+							    }
+							},
+						});
+						$('.slc-CM-Menu-LaukPendamping').select2({
+							tags: true,
+							// tokenSeparators: [','],
+							createTag: function (params) {
+							    var term = $.trim(params.term);
+
+							    if (term === '') {
+							    	return null;
+							    }
+
+							    return {
+							    	id: term,
+							    	text: term,
+							    	newTag: true
+							    }
+							}
+						});
+						$('.slc-CM-Menu-Buah').select2({
+							tags: true,
+							// tokenSeparators: [','],
+							createTag: function (params) {
+							    var term = $.trim(params.term);
+
+							    if (term === '') {
+							    	return null;
+							    }
+
+							    return {
+							    	id: term,
+							    	text: term,
+							    	newTag: true 
+							    }
+							}
+						});
+
+						swal.fire(
+							'Peringatan!',
+							'Copy Data Sudah Selesai !',
+							'success'
+						)
+					}
+					$('#ldg-CM-Menu-Loading').hide();
+				}
+			})
+		}else{
+			$('#ldg-CM-Menu-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Form Sudah Terisi !',
+				'warning'
+			)
+		}
+	});
+
+	$('#btn-CM-Menu-Simpan').on('click', function(){
+		$('#ldg-CM-Menu-Loading').show();
+		var shift = $('#slc-CM-Menu-Shift').val();
+		var lokasi = $('#slc-CM-Menu-Lokasi').val();
+		var bulan_tahun = $('#txt-CM-Menu-BulanTahun').val();
+		if (shift && lokasi && bulan_tahun) {
+			var data_tanggal_array = $('#tbl-CM-Menu-Create tbody tr');
+			var data_tanggal = {};
+			var sayur_kosong = 0;
+			var lauk_utama_kosong = 0;
+			var lauk_pendamping_kosong = 0;
+			var buah_kosong = 0;
+			for (var i = 0; i < data_tanggal_array.length; i++) {
+				data_tanggal[i] = {}
+				data_tanggal[i]['tanggal'] = data_tanggal_array[i]['children'][0]['innerText'];
+
+				data_tanggal[i]['sayur'] = []
+				selectedOptions = data_tanggal_array[i]['children'][1]['children'][0]['selectedOptions'];
+				if (selectedOptions.length > 0) {
+					for (var j = 0; j < selectedOptions.length; j++) {
+						data_tanggal[i]['sayur'][j] = selectedOptions[j]['value'];
+					}
+				}else{
+					sayur_kosong++;
+				}
+
+				data_tanggal[i]['lauk_utama'] = []
+				selectedOptions = data_tanggal_array[i]['children'][2]['children'][0]['selectedOptions'];
+				if (selectedOptions.length > 0) {
+					for (var j = 0; j < selectedOptions.length; j++) {
+						data_tanggal[i]['lauk_utama'][j] = selectedOptions[j]['value'];
+					}
+				}else{
+					lauk_utama_kosong++;
+				}
+
+				data_tanggal[i]['lauk_pendamping'] = []
+				selectedOptions = data_tanggal_array[i]['children'][3]['children'][0]['selectedOptions'];
+				if (selectedOptions.length > 0) {
+					for (var j = 0; j < selectedOptions.length; j++) {
+						data_tanggal[i]['lauk_pendamping'][j] = selectedOptions[j]['value'];
+					}
+				}else{
+					lauk_pendamping_kosong++;
+				}
+
+				data_tanggal[i]['buah'] = []
+				selectedOptions = data_tanggal_array[i]['children'][4]['children'][0]['selectedOptions'];
+				if (selectedOptions.length > 0) {
+					for (var j = 0; j < selectedOptions.length; j++) {
+						data_tanggal[i]['buah'][j] = selectedOptions[j]['value'];
+					}
+				}else{
+					buah_kosong++;
+				}
+			}
+			if (sayur_kosong > 0 || lauk_utama_kosong > 0 || lauk_pendamping_kosong > 0 || buah_kosong > 0) {
+				$('#ldg-CM-Menu-Loading').hide();
+				swal.fire(
+					'Peringatan!',
+					'Pastikan Menu Sudah Lengkap !',
+					'warning'
+				)
+			}else{
+				formData = {
+					shift: shift,
+					lokasi: lokasi,
+					bulan_tahun: bulan_tahun,
+					data: data_tanggal
+				}
+				// console.log(formData);
+				$.ajax({
+					method: 'POST',
+					url: baseurl + 'CateringManagement/Setup/Menu/simpan',
+					contentType: 'application/json',
+					dataType: 'json',
+					data: JSON.stringify(formData),
+					error: function(xhr,status,error){
+						$('#ldg-CM-Menu-Loading').hide();
+						if (xhr['responseText'] == "sukses") {
+							Swal.fire(
+								'Berhasil Diinput!',
+								'Data Berhasil Diinput !!',
+								'success'
+							)
+							tblCMMenuCreate.clear().draw();
+							window.location.href = baseurl + "CateringManagement/Setup/Menu";
+						}else{
+							swal.fire({
+				                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				                html: xhr['responseText'],
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+				        }
+					},
+					success: function(data){
+						$('#ldg-CM-Menu-Loading').hide();
+						swal.fire(
+							'Sukses!',
+							'Data Berhasil Diinput !',
+							'success'
+						)
+						window.location.href = baseurl + "CateringManagement/Setup/Menu";
+					}
+				})
+			}
+		}else{
+			$('#ldg-CM-Menu-Loading').hide();
+			swal.fire(
+				'Peringatan!',
+				'Pastikan Form Sudah Terisi !',
+				'warning'
+			)
+		}
+	})
+
+	$('#tbl-CM-Menu-Table').on('click','.btn-CM-Menu-Hapus', function(){
+		var bulan = $(this).attr("data-bulan");
+		var tahun = $(this).attr("data-tahun");
+		var shift = $(this).attr("data-shift");
+		var menuId = $(this).attr("data-menuid");
+		Swal.fire({
+			title: 'Apakah Anda yakin ?',
+			text: 'Data Bulan ' + bulan + ' ' + tahun + ' Shift ' + shift + ' yang Sudah Dihapus Tidak Dapat Dikembalikan !!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Hapus',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {			
+			if (result.value) {
+				$('#ldg-CM-Menu-Loading').show();
+				$.ajax({
+					method: 'GET',
+					url: baseurl + 'CateringManagement/Setup/Menu/delete',
+					data: {menu_id: menuId},
+					error: function(xhr,status,error){
+						$('#ldg-CM-Menu-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						obj = JSON.parse(data);
+						tblCMMenu.clear().draw();
+						if (obj) {
+							obj.forEach(function(daftar, index){
+								tblCMMenu.row.add([
+									(index + 1),
+									daftar.action,
+									daftar.bulan_tahun,
+									daftar.shift
+								]).draw(false);
+							})
+						}
+						$('#ldg-CM-Menu-Loading').hide();
+						Swal.fire(
+							'Berhasil Dihapus!',
+							'Data Bulan ' + bulan + ' ' + tahun + ' Shift ' + shift + ' Berhasil Dihapus !!',
+							'success'
+						)
+					}
+				})
+			}
+		})
+	})
+})
+
+function CMMenuCreateChange(tblCMMenuCreate){
+	var shift = $('#slc-CM-Menu-Shift').val();
+	var lokasi = $('#slc-CM-Menu-Lokasi').val();
+	var bulan_tahun = $('#txt-CM-Menu-BulanTahun').val();
+
+	if (shift && lokasi && bulan_tahun) {
+		$('#ldg-CM-Menu-Loading').show();
+		$.ajax({
+			method: 'GET',
+			url: baseurl + 'CateringManagement/Setup/Menu/listTanggal',
+			data: {shift: shift, lokasi: lokasi, bulan_tahun: bulan_tahun},
+			error: function(xhr,status,error){
+				$('#ldg-CM-Menu-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				if (obj) {
+					tblCMMenuCreate.clear().draw();
+					if (obj.status == "INSERT") {
+
+						if (obj.isi > 0) {
+							obj.data.forEach(function(daftar, index){
+								tblCMMenuCreate.row.add([
+									daftar.tanggal,
+									"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+									"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+									"<select class=\"slc-CM-Menu-LaukPendamping\" data-placeholder=\"Pilih Lauk Pendamping...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>",
+									"<select class=\"slc-CM-Menu-Buah\" data-placeholder=\"Pilih Buah...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\"></select>"
+								]).draw(false);
+							})
+						}
+
+						if (obj.sayur_jumlah > 0) {
+							obj.sayur.forEach(function(text, index){
+								$('.slc-CM-Menu-Sayur').append("<option>" + text.text + "</option>")
+							})
+						}
+
+						if (obj.lauk_utama_jumlah > 0) {
+							obj.lauk_utama.forEach(function(text, index){
+								$('.slc-CM-Menu-LaukUtama').append("<option>" + text.text + "</option>")
+							})
+						}
+
+						if (obj.lauk_pendamping_jumlah > 0) {
+							obj.lauk_pendamping.forEach(function(text, index){
+								$('.slc-CM-Menu-LaukPendamping').append("<option>" + text.text + "</option>")
+							})
+						}
+
+						if (obj.buah_jumlah > 0) {
+							obj.buah.forEach(function(text, index){
+								$('.slc-CM-Menu-Buah').append("<option>" + text.text + "</option>")
+							})
+						}
+
+						tblCMMenuCreate.columns.adjust().draw();
+					}else if(obj.status == "UPDATE"){
+						if (obj.isi > 0) {
+							obj.data.forEach(function(daftar, index){
+								tblCMMenuCreate.row.add([
+									daftar.tanggal,
+									"<select class=\"slc-CM-Menu-Sayur\" data-placeholder=\"Pilih Sayur...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.sayur_option + "</select>",
+									"<select class=\"slc-CM-Menu-LaukUtama\" data-placeholder=\"Pilih lauk Utama...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.lauk_utama_option + "</select>",
+									"<select class=\"slc-CM-Menu-LaukPendamping\" data-placeholder=\"Pilih Lauk Pendamping...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.lauk_pendamping_option + "</select>",
+									"<select class=\"slc-CM-Menu-Buah\" data-placeholder=\"Pilih Buah...\" style=\"width: 200px\" autocomplete=\"off\" multiple=\"multiple\">" + daftar.buah_option + "</select>"
+								]).draw(false);
+							})
+						}
+
+						tblCMMenuCreate.columns.adjust().draw();
+
+						Swal.fire(
+							'Peringatan!',
+							'Data Sudah Ada Di Database !!',
+							'warning'
+						)
+					}
+
+					$('.slc-CM-Menu-Sayur').select2({
+						tags: true,
+						// tokenSeparators: [','],
+						createTag: function (params) {
+						    var term = $.trim(params.term);
+
+						    if (term === '') {
+						    	return null;
+						    }
+
+						    return {
+						    	id: term,
+						    	text: term,
+						    	newTag: true
+						    }
+						}
+					});
+					$('.slc-CM-Menu-LaukUtama').select2({
+						tags: true,
+						// tokenSeparators: [','],
+						createTag: function (params) {
+						    var term = $.trim(params.term);
+
+						    if (term === '') {
+						    	return null;
+						    }
+
+						    return {
+						    	id: term,
+						    	text: term,
+						    	newTag: true 
+						    }
+						},
+					});
+					$('.slc-CM-Menu-LaukPendamping').select2({
+						tags: true,
+						// tokenSeparators: [','],
+						createTag: function (params) {
+						    var term = $.trim(params.term);
+
+						    if (term === '') {
+						    	return null;
+						    }
+
+						    return {
+						    	id: term,
+						    	text: term,
+						    	newTag: true
+						    }
+						}
+					});
+					$('.slc-CM-Menu-Buah').select2({
+						tags: true,
+						// tokenSeparators: [','],
+						createTag: function (params) {
+						    var term = $.trim(params.term);
+
+						    if (term === '') {
+						    	return null;
+						    }
+
+						    return {
+						    	id: term,
+						    	text: term,
+						    	newTag: true 
+						    }
+						}
+					});
+				}
+				$('#ldg-CM-Menu-Loading').hide();
+			}
+		})
+	}else{
+		tblCMMenuCreate.clear().draw();
+	}
+}
+// end Menu
+
+// start Pekerja Makan Khusus
+$(document).ready(function(){
+	var tblCMPekerjaMakanKhusus = $('#tbl-CM-PekerjaMakanKhusus-Table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			},
+			{
+			    "targets": 1,
+			    "className": "text-center"
+			}
+		],
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-Pekerja').select2({
+		minimumInputLength: 1,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Setup/PekerjaMakanKhusus/getPekerja',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.noind,
+							text: item.noind + ' - ' + item.nama
+						};
+					})
+
+				};
+			},
+		},
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-Sayur').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-LaukUtama').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-LaukPendamping').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-Buah').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-SayurPengganti').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-LaukUtamaPengganti').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-LaukPendampingPengganti').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#slc-CM-PekerjaMakanKhusus-BuahPengganti').select2({
+		tags: true,
+		// tokenSeparators: [','],
+		createTag: function (params) {
+		    var term = $.trim(params.term);
+
+		    if (term === '') {
+		    	return null;
+		    }
+
+		    return {
+		    	id: term,
+		    	text: term,
+		    	newTag: true 
+		    }
+		}
+	})
+
+	$('#btn-CM-PekerjaMakanKhusus-Simpan').on('click', function(){
+		var pekerja = $('#slc-CM-PekerjaMakanKhusus-Pekerja').val();
+		var sayur = $('#slc-CM-PekerjaMakanKhusus-Sayur').val();
+		var lauk_utama = $('#slc-CM-PekerjaMakanKhusus-LaukUtama').val();
+		var lauk_pendamping = $('#slc-CM-PekerjaMakanKhusus-LaukPendamping').val();
+		var buah = $('#slc-CM-PekerjaMakanKhusus-Buah').val();
+		var sayur_pengganti = $('#slc-CM-PekerjaMakanKhusus-SayurPengganti').val();
+		var lauk_utama_pengganti = $('#slc-CM-PekerjaMakanKhusus-LaukUtamaPengganti').val();
+		var lauk_pendamping_pengganti = $('#slc-CM-PekerjaMakanKhusus-LaukPendampingPengganti').val();
+		var buah_pengganti = $('#slc-CM-PekerjaMakanKhusus-BuahPengganti').val();
+		var pekerja_makan_khusus_id = $('#txt-CM-PekerjMakanKhusus-Id').val();
+
+		if (pekerja && sayur && lauk_utama && lauk_pendamping && buah && sayur_pengganti && lauk_utama_pengganti && lauk_pendamping_pengganti && buah_pengganti) {
+			$('#ldg-CM-PekerjaMakanKhusus-Loading').show();
+			$.ajax({
+				method: 'POST',
+				url: baseurl + 'CateringManagement/Setup/PekerjaMakanKhusus/simpan',
+				data: {
+					pekerja: pekerja,
+					sayur: sayur,
+					lauk_utama: lauk_utama,
+					lauk_pendamping: lauk_pendamping,
+					buah: buah,
+					sayur_pengganti: sayur_pengganti,
+					lauk_utama_pengganti: lauk_utama_pengganti,
+					lauk_pendamping_pengganti: lauk_pendamping_pengganti,
+					buah_pengganti: buah_pengganti,
+					pekerja_makan_khusus_id: pekerja_makan_khusus_id
+				},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
+					Swal.fire(
+						'Behasil!',
+						'Data Berhasil Disimpan !!',
+						'success'
+					)
+					window.location.href = baseurl + 'CateringManagement/Setup/PekerjaMakanKhusus';
+				}
+			})
+		}else{
+			Swal.fire(
+				'Peringatan!',
+				'Pastikan Semua Sudah Terisi !!',
+				'warning'
+			)
+		}
+
+	})
+
+	$('#tbl-CM-PekerjaMakanKhusus-Table').on('click','.btn-CM-PekerjaMakanKhusus-Hapus', function(){
+		var id = $(this).attr('data-id');
+		Swal.fire({
+			title: 'Apakah Anda yakin ?',
+			text: 'Data yang Sudah Dihapus Tidak Dapat Dikembalikan !!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Hapus',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {			
+			if (result.value) {
+				$('#ldg-CM-PekerjaMakanKhusus-Loading').show();
+				$.ajax({
+					method: 'GET',
+					url: baseurl + 'CateringManagement/Setup/PekerjaMakanKhusus/delete',
+					data: {id: id},
+					error: function(xhr,status,error){
+						$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						obj = JSON.parse(data);
+						tblCMPekerjaMakanKhusus.clear().draw();
+						if (obj) {
+							obj.forEach(function(daftar, index){
+								tblCMPekerjaMakanKhusus.row.add([
+									(index + 1),
+									daftar.action,
+									daftar.pekerja,
+									daftar.menu,
+									daftar.pengganti
+								]).draw(false);
+							})
+						}
+						$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
+						Swal.fire(
+							'Berhasil Dihapus!',
+							'Data Berhasil Dihapus !!',
+							'success'
+						)
+					}
+				})
+			}
+		})
+	})
+})
+// end Pekerja Makan Khusus
+
+// start Pekerja Tidak Makan
+$(document).ready(function(){
+	var tblCMPekerjaTidakMakan = $('#tbl-CM-PekerjaTidakMakan-Table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			},
+			{
+			    "targets": 1,
+			    "className": "text-center"
+			}
+		],
+	})
+
+	$('#txt-CM-PekerjaTidakMakan-TanggalAwal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#txt-CM-PekerjaTidakMakan-TanggalAkhir').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#slc-CM-PekerjaTidakMakan-Pekerja').select2({
+		minimumInputLength: 1,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/PekerjaTidakMakan/getPekerja',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.noind,
+							text: item.noind + ' - ' + item.nama
+						};
+					})
+
+				};
+			},
+		},
+	})
+
+	$('#btn-CM-PekerjaTidakMakan-Simpan').on('click', function(){
+		var pekerja = $('#slc-CM-PekerjaTidakMakan-Pekerja').val();
+		var tanggalAwal = $('#txt-CM-PekerjaTidakMakan-TanggalAwal').val();
+		var tanggalAkhir = $('#txt-CM-PekerjaTidakMakan-TanggalAkhir').val();
+		var keterangan = $('#txa-CM-PekerjaTidakMakan-Keterangan').val();
+		var permintaanId = $('#txt-CM-PekerjaTidakMakan-PermintaanId').val();
+		if (pekerja && tanggalAwal && tanggalAkhir && keterangan) {
+			$('#ldg-CM-PekerjaTidakMakan-Loading').show();
+			$.ajax({
+				method: 'POST',
+				url: baseurl + 'CateringManagement/Extra/PekerjaTidakMakan/simpan',
+				data: {
+					pekerja: pekerja,
+					tanggal_awal: tanggalAwal,
+					tanggal_akhir: tanggalAkhir,
+					keterangan: keterangan,
+					permintaan_id: permintaanId
+				},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PekerjaTidakMakan-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-PekerjaTidakMakan-Loading').hide();
+					Swal.fire(
+						'Berhasil Disimpan!',
+						'Data Berhasil Disimpan !!',
+						'success'
+					)
+					window.location.href = baseurl + 'CateringManagement/Extra/PekerjaTidakMakan';
+				}
+			})
+		}else{
+			Swal.fire(
+				'Peringatan!',
+				'Pastikan Semua Sudah Terisi !!',
+				'warning'
+			)
+		}
+	});
+
+	$('#tbl-CM-PekerjaTidakMakan-Table').on('click','.btn-CM-PekerjaTidakMakan-Delete', function(){
+		var permintaanId = $(this).attr("data-id");
+		Swal.fire({
+			title: 'Apakah Anda yakin ?',
+			text: 'Data yang Sudah Dihapus Tidak Dapat Dikembalikan !!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Hapus',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Batal'
+		}).then((result) => {			
+			if (result.value) {
+				$('#ldg-CM-Menu-Loading').show();
+				$.ajax({
+					method: 'GET',
+					url: baseurl + 'CateringManagement/Extra/PekerjaTidakMakan/hapus',
+					data: {id: permintaanId},
+					error: function(xhr,status,error){
+						$('#ldg-CM-Menu-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						obj = JSON.parse(data);
+						tblCMPekerjaTidakMakan.clear().draw();
+						if (obj) {
+							obj.forEach(function(daftar, index){
+								tblCMPekerjaTidakMakan.row.add([
+									(index + 1),
+									daftar.action,
+									daftar.pekerja,
+									daftar.dari,
+									daftar.sampai,
+									daftar.keterangan
+								]).draw(false);
+							})
+						}
+						$('#ldg-CM-Menu-Loading').hide();
+						Swal.fire(
+							'Berhasil Dihapus!',
+							'Data Berhasil Dihapus !!',
+							'success'
+						)
+					}
+				})
+			}
+		})
+	})
+})
+// end Pekerja Tidak Makan

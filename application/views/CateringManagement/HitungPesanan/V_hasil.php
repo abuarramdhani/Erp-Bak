@@ -1,3 +1,14 @@
+<style type="text/css">
+	.btn-cm {
+		background-color: #4bcffa;
+		color: white;
+		margin: 2px !important;
+	}
+	.btn-cm:hover {
+		color: #4bcffa !important;
+		background-color: white !important;
+	}
+</style>
 <section class="content">
 	<div class="inner">
 		<div class="row">
@@ -6,7 +17,19 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid" style="margin-bottom: 0px">
 							<div class="box-header with-header">
-								<?php echo "Pesanan Katering Tanggal : ".date("Y-m-d",strtotime($tanggal))." Shift : ".($shift == '1' ? 'Shift Satu dan Umum' : ($shift == '2' ? 'Shift Dua' : ($shift == '3' ? 'Shift Tiga' : 'Tidak Diketahui')))." Lokasi : ".($lokasi == '1' ? 'Yogyakarta' :($lokasi == '2' ? 'Tuksono' : 'Tidak Diketahui')) ?>
+								<div class="row">
+									<div class="col-lg-5">
+									<?php echo "Pesanan Katering <br>Tanggal : ".date("Y-m-d",strtotime($tanggal))." Shift : ".($shift == '1' ? 'Shift Satu dan Umum' : ($shift == '2' ? 'Shift Dua' : ($shift == '3' ? 'Shift Tiga' : 'Tidak Diketahui')))." Lokasi : ".($lokasi == '1' ? 'Yogyakarta' :($lokasi == '2' ? 'Tuksono' : 'Tidak Diketahui')) ?>
+									</div>
+									<div class="col-lg-7 text-right">
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-CopyPembagian">Copy Pembagian</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-SimpanMakan">Simpan Makan</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-SimpanSnack">Simpan Snack</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-CetakMakan">Cetak Makan</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-CetakSnack">Cetak Snack</button>	
+										<button class="btn btn-cm btn-sm" id="btn-CM-HitungPesanan-FormPesanan">Cetak Form Pesanan Makan Pekerja</button>	
+									</div>
+								</div>
 							</div>
 							<div class="box-body">
 								<div class="row">
@@ -32,15 +55,24 @@
 												<?php 
 												$nomor = 1;
 												foreach ($bagi['data'] as $data) {
+													if ($data['pengurangan'] !== "0" && $data['tambahan'] !== "0") {
+														$warna = "green";
+													}elseif ($data['pengurangan'] !== "0") {
+														$warna = "red";
+													}elseif ($data['tambahan'] !== "0") {
+														$warna = "blue";
+													}else{
+														$warna = "black";
+													}
 													?>
 													<tr data-urutan="<?php echo $bagi['urutan'] ?>" data-katering="<?php echo $data['tempat_makan'] ?>">
-														<td style="text-align: center"><?php echo $nomor ?></td>
-														<td style="text-align: left;padding-left: 20px;"><?php echo $data['tempat_makan'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['staff'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['nonstaff'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['tambahan'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['pengurangan'] ?></td>
-														<td style="text-align: right;padding-right: 20px;"><?php echo $data['jumlah_pesan'] ?></td>
+														<td style="text-align: center;color: <?php echo $warna ?>"><?php echo $nomor ?></td>
+														<td style="text-align: left;padding-left: 20px;color: <?php echo $warna ?>"><?php echo $data['tempat_makan'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['staff'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['nonstaff'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['tambahan'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['pengurangan'] ?></td>
+														<td style="text-align: right;padding-right: 20px;color: <?php echo $warna ?>"><?php echo $data['jumlah_pesan'] ?></td>
 													</tr>
 													<?php 
 													$nomor++;
@@ -84,6 +116,17 @@
 												?>
 											</div>
 										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4" style="color: blue"> 
+										<span class="fa fa-square"></span> Ada Penambahan
+									</div>
+									<div class="col-sm-4" style="color: red">
+										<span class="fa fa-square"></span> Ada Pengurangan
+									</div>
+									<div class="col-sm-4" style="color: green">
+										<span class="fa fa-square"></span> Ada Penambahan dan Pengurangan
 									</div>
 								</div>
 							</div>
@@ -138,7 +181,51 @@
 			<div class="modal-footer">
 				<div class="row">
 					<div class="col-lg-12">
-						<button type="button" class="btn btn-primary" id="btnCateringHitungPesananSimpan">Simpan</button>
+						<?php 
+						if($tanggal == date('Y-m-d')){
+							?>
+							<button type="button" class="btn btn-primary" id="btnCateringHitungPesananSimpan">Simpan</button>
+							<?php
+						}
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="mdl-CM-HitungPesanan-CopyPembagian">
+	<div class="modal-dialog modal-sm" role="document">
+    	<div class="modal-content">
+    		<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Copy Pembagian</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="control-label col-lg-4">Tanggal</label>
+								<div class="col-lg-8">
+									<input type="text" id="txt-CM-HitungPesanan-CopyPembagian-Tanggal" class="form-control" placeholder="Pilih Tanggal">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-lg-12">
+						<?php 
+						if($tanggal == date('Y-m-d')){
+							?>
+							<button type="button" class="btn btn-primary" id="btn-CM-HitungPesanan-CopyPembagian-Proses">Proses</button>
+							<?php
+						}
+						?>
 					</div>
 				</div>
 			</div>
