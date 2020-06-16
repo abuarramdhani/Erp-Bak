@@ -412,7 +412,7 @@
           map.data.remove(feature);
         });
         map.data.loadGeoJson(
-            'http://192.168.8.66/kabupaten.json'
+            'http://erp.quick.com/kabupaten.json'
         );
         setStyle();
       }
