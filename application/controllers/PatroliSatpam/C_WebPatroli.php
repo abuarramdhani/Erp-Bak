@@ -454,7 +454,7 @@ class C_WebPatroli extends CI_Controller
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8',array(210,330), 7,'',5,5,5,5,0,0,'P');
 		$pdf->allow_charset_conversion = true;
-		$pdf->showImageErrors = true;
+		// $pdf->showImageErrors = true;
 		$pdf->charset_in = 'iso-8859-4';
 		$range = $this->input->post('tgl');
 		if (strlen($range) < 10) {
@@ -565,7 +565,7 @@ class C_WebPatroli extends CI_Controller
 		$pdf = new mPDF('utf-8',array(100,130), 7,'',5,5,5,5,0,0,'P');
 		$pdf->curlAllowUnsafeSslRequests = true;
 		$pdf->allow_charset_conversion = true;
-		$pdf->showImageErrors = true;
+		// $pdf->showImageErrors = true;
 		$pdf->debug = true;
 		$pdf->charset_in = 'iso-8859-4';
 		$filename = 'Patroli Qrcode.pdf';
