@@ -100,9 +100,7 @@
           map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
           // NOTE: This uses cross-domain XHR, and may not work on older browsers.
-          map.data.loadGeoJson(
-              'http://' + <?php echo $_SERVER['SERVER_ADDR'] ?> + '/assets/covid19/kabupaten.json'
-          );
+          map.data.loadGeoJson('http://' + <?php echo $_SERVER['SERVER_ADDR'] ?> + '/assets/covid19/kabupaten.json');
           
           setStyle();
 
