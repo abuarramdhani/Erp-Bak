@@ -37,6 +37,44 @@
     <script>
       var overlay;
       var overlays = [];
+      var icons = {
+        hitu: {
+          name: '0-10',
+          color: '#218c74'
+        },
+        hise: {
+          name: '11-20',
+          color: '#27ae60'
+        },
+        himu: {
+          name: '21-30',
+          color: '#7bed9f'
+        },
+        kuni: {
+          name: '31-40',
+          color: '#f1c40f'
+        },
+        oran: {
+          name: '41-50',
+          color: '#f39c12'
+        },
+        memu: {
+          name: '51-100',
+          color: '#e74c3c'
+        },
+        metu: {
+          name: '101-500',
+          color: '#c0392b'
+        },
+        mema: {
+          name: '501-1000',
+          color: '#800000'
+        },
+        hita: {
+          name: '>1000',
+          color: 'black'
+        }
+      };
       USGSOverlay.prototype = new google.maps.OverlayView();
       var map;
       function initMap() {
@@ -55,36 +93,7 @@
         ]
           });
 
-          var icons = {
-            himu: {
-              name: '0-10',
-              color: '#2ecc71'
-            },
-            hitu: {
-              name: '11-20',
-              color: '#27ae60'
-            },
-            kuni: {
-              name: '21-30',
-              color: '#f1c40f'
-            },
-            oran: {
-              name: '31-40',
-              color: '#f39c12'
-            },
-            memu: {
-              name: '41-50',
-              color: '#e74c3c'
-            },
-            metu: {
-              name: '51-100',
-              color: '#c0392b'
-            },
-            mema: {
-              name: '>100',
-              color: '#800000'
-            }
-          };
+          
 
           var legend = document.getElementById('legend');
           for (var key in icons) {
@@ -99,6 +108,7 @@
           map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
           // NOTE: This uses cross-domain XHR, and may not work on older browsers.
+          // map.data.loadGeoJson('http://192.168.8.66/khs-erp-map/assets/covid19/kabupaten.json');
           map.data.loadGeoJson('http://erp.quick.com/assets/covid19/kabupaten.json');
           
           setStyle();
@@ -145,21 +155,23 @@
                  });
 
               });
-              var himu = document.getElementById('himu').checked;
               var hitu = document.getElementById('hitu').checked;
+              var hise = document.getElementById('hise').checked;
+              var himu = document.getElementById('himu').checked;
               var kuni = document.getElementById('kuni').checked;
               var oran = document.getElementById('oran').checked;
               var memu = document.getElementById('memu').checked;
               var metu = document.getElementById('metu').checked;
               var mema = document.getElementById('mema').checked;
+              var hita = document.getElementById('hita').checked;
               var jumlah = 0;
               var isColorful  = e.feature.getProperty('isColorful');
                if (isColorful) {
                 jumlah = e.feature.getProperty("dirawat");
                 var text = e.feature.getProperty("NAME_2") + "<br>" + jumlah;
                 if (jumlah >= 0 && jumlah <= 10) {
-                 color = "#2ecc71";
-                 if (himu) {
+                 color = icons.hitu.color;
+                 if (hitu) {
                   overlay = new USGSOverlay(bounds, text, jumlah, map);
                     overlays.push(overlay);
                  }
@@ -232,44 +244,47 @@
                   jumlah = e.feature.getProperty("dirawat");
                   var text = e.feature.getProperty("NAME_2") + "<br>" + jumlah;
                   if (jumlah >= 0 && jumlah <= 10) {
-                   color = "#2ecc71";
-                   if (himu) {
-                    overlay = new USGSOverlay(bounds, text, jumlah, map);
-                    overlays.push(overlay);
-                   }
-                  }else if (jumlah >= 11 && jumlah <= 20) {
-                   color = "#27ae60";
                    if (hitu) {
                     overlay = new USGSOverlay(bounds, text, jumlah, map);
                     overlays.push(overlay);
                    }
+                  }else if (jumlah >= 11 && jumlah <= 20) {
+                   if (hise) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
                   }else if (jumlah >= 21 && jumlah <= 30) {
-                   color = "#f1c40f";
-                   if (kuni) {
+                   if (himu) {
                     overlay = new USGSOverlay(bounds, text, jumlah, map);
                     overlays.push(overlay);
                    }
                   }else if (jumlah >= 31 && jumlah <= 40) {
-                   color = "#f39c12";
-                   if (oran) {
+                   if (kuni) {
                     overlay = new USGSOverlay(bounds, text, jumlah, map);
                     overlays.push(overlay);
                    }
                   }else if (jumlah >= 41 && jumlah <= 50) {
-                   color = "#e74c3c";
-                   if (memu) {
+                   if (oran) {
                     overlay = new USGSOverlay(bounds, text, jumlah, map);
                     overlays.push(overlay);
                    }
                   }else if (jumlah >= 51 && jumlah <= 100) {
-                   color = "#c0392b";
+                   if (memu) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }else if (jumlah >= 101 && jumlah <= 500) {
                    if (metu) {
                     overlay = new USGSOverlay(bounds, text, jumlah, map);
                     overlays.push(overlay);
                    }
-                  }else if (jumlah >100) {
-                   color = "#800000";
+                  }else if (jumlah >= 501 && jumlah <= 1000) {
                    if (mema) {
+                    overlay = new USGSOverlay(bounds, text, jumlah, map);
+                    overlays.push(overlay);
+                   }
+                  }else if (jumlah >100) {
+                   if (hita) {
                     overlay = new USGSOverlay(bounds, text, jumlah, map);
                     overlays.push(overlay);
                    }
@@ -295,89 +310,104 @@
           // 41-50 -> merah muda
           // 51-100 -> merah tua
           // >100 -> merah maron
-            var himu = document.getElementById('himu').checked;
             var hitu = document.getElementById('hitu').checked;
+            var hise = document.getElementById('hise').checked;
+            var himu = document.getElementById('himu').checked;
             var kuni = document.getElementById('kuni').checked;
             var oran = document.getElementById('oran').checked;
             var memu = document.getElementById('memu').checked;
             var metu = document.getElementById('metu').checked;
             var mema = document.getElementById('mema').checked;
+            var hita = document.getElementById('hita').checked;
 
             var jumlah = feature.getProperty('dirawat');
             if (jumlah >= 0 && jumlah <= 10) {
-             color = "#2ecc71";
-             if (!himu) {
+             if (hitu) {
               return ({
-               fillColor: color,
+               fillColor: icons.hitu.color,
                strokeColor: border,
-               fillOpacity: 0,
-               strokeWeight: 0,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
                title: color
              })
              }
             }else if (jumlah >= 11 && jumlah <= 20) {
-             color = "#27ae60";
-             if (!hitu) {
+             if (hise) {
               return ({
-               fillColor: color,
+               fillColor: icons.hise.color,
                strokeColor: border,
-               fillOpacity: 0,
-               strokeWeight: 0,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
                title: color
              })
              }
             }else if (jumlah >= 21 && jumlah <= 30) {
-             color = "#f1c40f";
-             if (!kuni) {
+             if (himu) {
               return ({
-               fillColor: color,
+               fillColor: icons.himu.color,
                strokeColor: border,
-               fillOpacity: 0,
-               strokeWeight: 0,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
                title: color
              })
              }
             }else if (jumlah >= 31 && jumlah <= 40) {
-             color = "#f39c12";
-             if (!oran) {
+             if (kuni) {
               return ({
-               fillColor: color,
+               fillColor: icons.kuni.color,
                strokeColor: border,
-               fillOpacity: 0,
-               strokeWeight: 0,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
                title: color
              })
              }
             }else if (jumlah >= 41 && jumlah <= 50) {
-             color = "#e74c3c";
-             if (!memu) {
+             if (oran) {
               return ({
-               fillColor: color,
+               fillColor: icons.oran.color,
                strokeColor: border,
-               fillOpacity: 0,
-               strokeWeight: 0,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
                title: color
              })
              }
             }else if (jumlah >= 51 && jumlah <= 100) {
-             color = "#c0392b";
-             if (!metu) {
+             if (memu) {
               return ({
-               fillColor: color,
+               fillColor: icons.memu.color,
                strokeColor: border,
-               fillOpacity: 0,
-               strokeWeight: 0,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
+               title: color
+             })
+             }
+            }else if (jumlah >= 101 && jumlah <= 500) {
+             if (metu) {
+              return ({
+               fillColor: icons.metu.color,
+               strokeColor: border,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
+               title: color
+             })
+             }
+            }else if (jumlah >= 501 && jumlah <= 1000) {
+             if (mema) {
+              return ({
+               fillColor: icons.mema.color,
+               strokeColor: border,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
                title: color
              })
              }
             }else if (jumlah >100) {
-             color = "#800000";
-             if (!mema) {
+             if (hita) {
               return ({
-               fillColor: color,
+               fillColor: icons.hita.color,
                strokeColor: border,
-               fillOpacity: 0,
-               strokeWeight: 0,
+               fillOpacity: 1,
+               strokeWeight: 0.4,
                title: color
              })
              }
@@ -386,8 +416,8 @@
              return ({
                fillColor: color,
                strokeColor: border,
-               fillOpacity: 1,
-               strokeWeight: 0.4,
+               fillOpacity: 0,
+               strokeWeight: 0,
                title: color
              })
            }else{
@@ -411,6 +441,7 @@
           map.data.remove(feature);
         });
         map.data.loadGeoJson(
+            // 'http://192.168.8.66/khs-erp-map/assets/covid19/kabupaten.json'
             'http://erp.quick.com/assets/covid19/kabupaten.json'
         );
         setStyle();
