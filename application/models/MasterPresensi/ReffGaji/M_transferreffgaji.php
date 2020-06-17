@@ -50,7 +50,7 @@ class M_transferreffgaji extends CI_Model
 	}
 
 	public function getDataStaff($periode){
-		$sql = "select tbl.*,tpri.nik from (
+		$sql = "select tbl.*,tpri.nik,tor.jabatan from (
 				 select * from \"Presensi\".Treffgaji 
 				 where (
 				 			left(noind,1) = 'B' 
@@ -77,6 +77,8 @@ class M_transferreffgaji extends CI_Model
 				) as tbl 
 				left join hrd_khs.tpribadi tpri 
 					on tpri.noind = tbl.noind
+				left join hrd_khs.torganisasi tor
+					on tpri.kd_jabatan = tor.kd_jabatan
 				order by noind";
  		return $this->personalia->query($sql)->result_array();
 	}
@@ -179,32 +181,42 @@ class M_transferreffgaji extends CI_Model
 		$this->personalia->query($sql);
 
 		$sql ="insert into \"Presensi\".progress_transfer_reffgaji(user_,progress,total,menu)
-				select '$user',0,
-				 (
-				 	select count(*) 
-				 	from \"Presensi\".Treffgaji 
-				 	where left(noind,1) in ('A','B','C','D','E','F','G','H','J','K','P','Q','T')
-				 	and to_char(tanggal,'mmyy') ='$periode'
-				 	and jns_transaksi in('01')
-				 ) + 
-				 (
-				 	select count(*) from \"Presensi\".Treffgaji_keluar refkel
-				 	where left(noind,1) in ('B','D','J','T','G','Q') 
-				 	and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0
-				 	and to_char(tanggal_keluar,'mmyy') ='$periode'
-				) + (
- 				 	select count(*) from hrd_khs.tpribadi 
- 				 	where left(noind,1) in ('K','P')
- 					and to_char(tglkeluar,'yy')::int = right('$periode',2)::int
- 					and to_char(tglkeluar,'mm')::int = left('$periode',2)::int - 1
- 					and keluar = '1'
- 					and noind not in (	select noind
- 									 	from \"Presensi\".Treffgaji 
- 									 	where left(noind,1) in ('K','P')
- 									 	and to_char(tanggal,'mmyy') ='$periode'
- 									 	and jns_transaksi in('01')
- 									 )
- 				),'transferreffgaji'";
+				select '$user',
+					0,
+					(
+						select count(*) 
+						from \"Presensi\".Treffgaji 
+						where left(noind,1) in ('A','B','C','D','E','F','G','H','J','K','P','Q','T')
+						and to_char(tanggal,'mmyy') ='$periode'
+						and jns_transaksi in('01')
+					) + 
+					(
+						select count(*) 
+						from \"Presensi\".Treffgaji 
+						where left(noind,1) in ('A','B','C','D','E','F','G','H','J','K','P','Q','T')
+						and to_char(tanggal,'mmyy') ='$periode'
+						and jns_transaksi in('01')
+					) + 
+					(
+						select count(*) from \"Presensi\".Treffgaji_keluar refkel
+						where left(noind,1) in ('B','D','J','T','G','Q') 
+						and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0
+						and to_char(tanggal_keluar,'mmyy') ='$periode'
+					) + 
+					(
+					 	select count(*) from hrd_khs.tpribadi 
+					 	where left(noind,1) in ('K','P')
+						and to_char(tglkeluar,'yy')::int = right('$periode',2)::int
+						and to_char(tglkeluar,'mm')::int = left('$periode',2)::int - 1
+						and keluar = '1'
+						and noind not in (	select noind
+										 	from \"Presensi\".Treffgaji 
+										 	where left(noind,1) in ('K','P')
+										 	and to_char(tanggal,'mmyy') ='$periode'
+										 	and jns_transaksi in('01')
+										 )
+					 ),
+					 'transferreffgaji'";
 		$this->personalia->query($sql);
 	}
 
