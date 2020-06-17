@@ -1551,6 +1551,7 @@ class M_hitungpesanan extends Ci_Model
 				from \"Catering\".t_pesanan_detail tpd
 				inner join \"Catering\".t_pekerja_menu_khusus tpmk
 				on tpd.noind = tpmk.noind
+				and tpd.fd_tanggal between tpmk.tanggal_mulai and tpmk.tanggal_selesai
 				left join hrd_khs.tpribadi tp 
 				on tpd.noind = tp.noind
 				where tpd.tanggal = ?
