@@ -231,13 +231,15 @@
                   });
 
                 });
-                var himu = document.getElementById('himu').checked;
                 var hitu = document.getElementById('hitu').checked;
+                var hise = document.getElementById('hise').checked;
+                var himu = document.getElementById('himu').checked;
                 var kuni = document.getElementById('kuni').checked;
                 var oran = document.getElementById('oran').checked;
                 var memu = document.getElementById('memu').checked;
                 var metu = document.getElementById('metu').checked;
                 var mema = document.getElementById('mema').checked;
+                var hita = document.getElementById('hita').checked;
                 var jumlah = 0;
                 var isColorful  = e.feature.getProperty('isColorful');
                  if (isColorful) {
