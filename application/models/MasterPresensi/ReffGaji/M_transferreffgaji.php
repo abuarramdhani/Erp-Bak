@@ -193,9 +193,15 @@ class M_transferreffgaji extends CI_Model
 					(
 						select count(*) 
 						from \"Presensi\".Treffgaji 
-						where left(noind,1) in ('A','B','C','D','E','F','G','H','J','K','P','Q','T')
+						where left(noind,1) in ('B','D','G','J','Q','T')
 						and to_char(tanggal,'mmyy') ='$periode'
 						and jns_transaksi in('01')
+					) + 
+					(
+						select count(*) from \"Presensi\".Treffgaji_keluar refkel
+						where left(noind,1) in ('B','D','J','T','G','Q') 
+						and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0
+						and to_char(tanggal_keluar,'mmyy') ='$periode'
 					) + 
 					(
 						select count(*) from \"Presensi\".Treffgaji_keluar refkel
