@@ -42,8 +42,8 @@ class C_PekerjaMakanKhusus extends CI_Controller
 
 		$data['Title']			=	'List Pekerja Makan Khusus';
 		$data['Menu'] 			= 	'Setup';
-		$data['SubMenuOne'] 	= 	'Menu';
-		$data['SubMenuTwo'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuOne'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuTwo'] 	= 	'';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
