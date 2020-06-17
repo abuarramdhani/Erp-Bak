@@ -43,7 +43,6 @@
           map = new google.maps.Map(document.getElementById('map'), {
         zoom: 7,
         center: {lat: -7.333465, lng: 109.790425},
-        mapTypeId: 'satellite',
         style: [
           {
             "elementType": "labels",
