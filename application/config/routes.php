@@ -2099,6 +2099,9 @@ $route['IKP/ApprovalAtasan/(:any)/(:any)']	= 'PerizinanPribadi/C_Index/$1/$2';
 $route['RPP/RekapIKP'] 						= 'PerizinanPribadi/C_Rekap';
 $route['RPP/RekapIKP/(:any)'] 				= 'PerizinanPribadi/C_Rekap/$1';
 $route['RPP/RekapIKP/(:any)/(:any)'] 		= 'PerizinanPribadi/C_Rekap/$1/$2';
+$route['PerizinanPribadi/PSP/ApproveParamedik'] 			= 'PerizinanPribadi/C_Paramedik/index';
+$route['PerizinanPribadi/PSP/ApproveParamedik/(:any)']		= 'PerizinanPribadi/C_Paramedik/$1';
+
 
 //------------------------------------------------Product Cost-------------------------------------------------------//
 $route['ProductCost']										= 'ProductCost/C_Index';
