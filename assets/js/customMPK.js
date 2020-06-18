@@ -234,13 +234,21 @@ $(document).ready(function () {
 
 })
 
-function getApprovalIKP(a, b) {
+function getApprovalIKP(a, b, jenis) {
   var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+
+  var txt = '';
+  if(jenis == 1)
+    txt = 'Sudahkah Anda mengecek pekerja yang akan Izin Keluar Pribadi ?';
+  else if(jenis == 2)
+    txt = 'Sudahkah Anda mengecek pekerja yang akan Izin Sakit Perusahaan ?';
+  else
+    txt = 'Sudahkah Anda mengecek pekerja yang akan Izin Keluar Perusahaan ?';
 
   if (a == '1') {
       swal.fire({
         title: 'Checking...',
-        text: "Sudahkah Anda mengecek pekerja yang akan Izin Keluar Pribadi ?",
+        text: txt,
         type: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -297,53 +305,66 @@ function getApprovalIKP(a, b) {
             })
         }
     })
-}else if (a == '2') {
-    swal.fire({
-      title: 'Peringatan',
-      text: "Anda akan memberikan keputusan REJECT !",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'OK',
-      allowOutsideClick: false
-    }).then(result => {
-      if (result.value) {
-        $.ajax({
-          beforeSend: function(){
-            Swal.fire({
-              html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
-              text : 'Loading...',
-              customClass: 'swal-wide',
-              showConfirmButton:false,
-              allowOutsideClick: false
-            });
-          },
-          data: {
-            keputusan: a,
-            id: b
-          },
-          type: 'post',
-          url: baseurl + 'IKP/ApprovalAtasan/update',
-          success: function (data) {
-            Swal.fire({
-              title: 'Izin Telah di Reject',
-              type: 'error',
-              showCancelButton: false,
-              allowOutsideClick: false
-            }).then( result => {
+}else if (a == '0') {
+  swal.fire({
+        title: 'Checking...',
+        text: txt,
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false
+      }).then(result => {
+        if (result.value) {
+        swal.fire({
+          title: 'Peringatan',
+          text: "Anda akan memberikan keputusan REJECT !",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false
+        }).then(result => {
+          if (result.value) {
+            $.ajax({
+              beforeSend: function(){
                 Swal.fire({
                   html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
                   text : 'Loading...',
                   customClass: 'swal-wide',
                   showConfirmButton:false,
                   allowOutsideClick: false
-              }).then(window.location.reload())
+                });
+              },
+              data: {
+                keputusan: a,
+                id: b
+              },
+              type: 'post',
+              url: baseurl + 'IKP/ApprovalAtasan/update',
+              success: function (data) {
+                Swal.fire({
+                  title: 'Izin Telah di Reject',
+                  type: 'error',
+                  showCancelButton: false,
+                  allowOutsideClick: false
+                }).then( result => {
+                    Swal.fire({
+                      html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                      text : 'Loading...',
+                      customClass: 'swal-wide',
+                      showConfirmButton:false,
+                      allowOutsideClick: false
+                  }).then(window.location.reload())
+                })
+              }
             })
           }
         })
-      }
-    })
+        }
+      });
   }
 }
 
@@ -475,8 +496,10 @@ $('#app_edit_ikp').on('click', function () {
 })
 
 $('#RPP_Cari').on('click', function () {
-    let tanggal = $('#periodeRekap').val()
-    let jenis = $("input:radio[class=RPP_radioIKP]:checked").val()
+    var tanggal = $('#periodeRekap').val()
+    var jenis = $("input:radio[class=RD_radioDinas]:checked").val();
+    var list_id = $(".RPD_id_rekap").val();
+    var list_noind = $(".RPD_perNoind").val();
     var loading = baseurl + 'assets/img/gif/loadingquick.gif';
 
     if (jenis == '' || jenis == null) {
@@ -491,7 +514,9 @@ $('#RPP_Cari').on('click', function () {
             type: 'POST',
             data:{
                 periodeRekap: tanggal,
-                jenis: jenis
+                jenis: jenis,
+                id: list_id,
+                noind: list_noind
             },
             url: baseurl + 'RPP/RekapIKP/rekapbulanan',
             beforeSend: function () {
@@ -510,7 +535,15 @@ $('#RPP_Cari').on('click', function () {
                 $('.tabel_rekap').DataTable({
                     "dom": 'Bfrtip',
                     "buttons": [
-                        'excel', 'pdf'
+                        {
+                          extend: 'excelHtml5',
+                          title: 'Rekap Perizinan'
+                        }, 
+                        {
+                          extend: 'pdfHtml5',
+                          orientation: 'landscape',
+                          title: 'Rekap Perizinan'
+                        }
                     ],
                     scrollX: true,
                     fixedColumns:{
