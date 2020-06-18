@@ -423,9 +423,10 @@ class M_invoice extends CI_Model{
 		return $query*$query1;
 	}
 
-	public function saveTaxNumberManual($invoice_id, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir){
+	public function saveTaxNumberManual($invoice_id, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $seller){
 
 		$oracle = $this->load->database("oracle",true);
+		$checkFak = $this->M_Invoice->checkFaktur($tax_number);
 		// echo "UPDATE ap_invoices_all SET ATTRIBUTE5 = '$tax_number_awal', ATTRIBUTE3 = '$tax_number_akhir' WHERE INVOICE_ID = '$invoice_id'";
 		$query = true;
 		if ($invoice_id != NULL || $invoice_id != '') {
@@ -438,6 +439,13 @@ class M_invoice extends CI_Model{
 									WHERE INVOICE_ID = '$invoice_id'
 									");
 		};
+
+		if ($checkFak){
+			$oracle->query("UPDATE KHS_FAKTUR_WEB SET SELLER = '$seller' WHERE FAKTUR_PAJAK = '$tax_number'");
+		} else {
+			$oracle->query("INSERT INTO KHS_FAKTUR_WEB(FAKTUR_PAJAK, SELLER) VALUES ('$tax_number', '$seller')");
+		}
+
 		return $query;
 	}
 

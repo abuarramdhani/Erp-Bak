@@ -927,6 +927,7 @@ function ajaxForSubmitFakturManual(){
 	var tanggalFaktur 		= $('[name=tanggalFaktur]').val();
 	var tanggalFakturCon	= $('[name=tanggalFakturCon]').val();
 	var nomorFaktur 		= $('[name=nomorFaktur]').val();
+	var nameFaktur			= $('[name=nameFaktur]').val();
 	//first step ajax --- CheckInvoice
 	$.ajax({
 		type: "POST",
@@ -950,7 +951,8 @@ function ajaxForSubmitFakturManual(){
 								invoice_id		: invId,
 								tanggalFaktur 	: tanggalFaktur,
 								tanggalFakturCon: tanggalFakturCon,
-								nomorFaktur		: nomorFaktur
+								nomorFaktur		: nomorFaktur,
+								nameFaktur		: nameFaktur
 							},
 					cache:false,
 					success:function(){
