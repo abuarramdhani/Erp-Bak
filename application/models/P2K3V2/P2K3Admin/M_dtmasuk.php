@@ -888,6 +888,42 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
+    public function getBonSafetyShoes($seksi, $periode)
+    {
+        $periode = $periode . '-01';
+        $periode = date('M Y', strtotime($periode));
+        $filterseksi = '';;
+        if ($seksi == '') {
+            $filterseksi = "mb.seksi_bon like '%%'";
+        } else {
+            $filterseksi = "mb.seksi_bon = '$seksi'";
+        }
+
+        $sql = "SELECT   mb.no_bon,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.kode_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') kode_barang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.nama_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') nama_apd,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.permintaan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') jml_bon,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.satuan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') satuan,
+                         mb.tanggal tgl_bon, mb.seksi_bon seksi_pengebon,
+                         mb.pemakai seksi_pemakai, mb.penggunaan, mb.keterangan,
+                         mb.tujuan_gudang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.penyerahan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') qty_transact,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.flag || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') transact
+                    FROM im_master_bon mb
+                   WHERE mb.tanggal LIKE '%$periode' and $filterseksi and mb.penggunaan = 'SAFETY SHOES'
+                GROUP BY mb.no_bon,
+                         mb.tanggal,
+                         mb.seksi_bon,
+                         mb.pemakai,
+                         mb.penggunaan,
+                         mb.keterangan,
+                         mb.tujuan_gudang
+                ORDER BY 1, 3";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
     public function monitorbonOracleById($id)
     {
         $query = $this->oracle->query("SELECT *

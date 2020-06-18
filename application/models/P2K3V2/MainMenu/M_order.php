@@ -6,8 +6,8 @@ class M_Order extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->personalia   =   $this->load->database('personalia', TRUE) ;
-        $this->erp          =   $this->load->database('erp_db', TRUE);
+        $this->personalia   =   $this->load->database('personalia', TRUE);
+        $this->erp          =   $this->load->database('default', true);
         $this->oracle       =   $this->load->database('oracle', TRUE);
     }
 
@@ -24,12 +24,13 @@ class M_Order extends CI_Model
                 left join er.er_section as es
                 on el.section_code=es.section_code
                 where el.employee_code='$noind'";
-                // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->db->query($sql);
         return $query->result_array();
     }
 
-    public function getItem($item){
+    public function getItem($item)
+    {
         $query = $this->db->query("select * from k3.k3_master_item where item like upper('%$item%')");
         return $query->result_array();
     }
@@ -43,8 +44,8 @@ class M_Order extends CI_Model
     public function daftar_pekerjaan($kodesie)
     {
         if (gettype($kodesie) == 'string') {
-            $kodesie = substr($kodesie, 0,7);
-        }elseif (gettype($kodesie) == 'array'){
+            $kodesie = substr($kodesie, 0, 7);
+        } elseif (gettype($kodesie) == 'array') {
             $kodesie = implode("', '", $kodesie);
         }
         $sql = "select
@@ -61,10 +62,9 @@ class M_Order extends CI_Model
                     substring(kdpekerjaan, 1, 7) in ('$kodesie')
                     order by kdpekerjaan asc
                     ";
-                    // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->personalia->query($sql);
         return $query->result_array();
-
     }
 
     public function kode_pekerjaan($kodesie)
@@ -72,15 +72,15 @@ class M_Order extends CI_Model
         $this->personalia->select('kdpekerjaan');
         $this->personalia->from('hrd_khs.tpekerjaan');
         $this->personalia->where('substring(kdpekerjaan, 1, 7) =', substr($kodesie, 0, 7));
-        
+
         return $this->personalia->get()->result_array();
     }
 
     public function save_dataPeriode($data)
     {
         $query = $this->db->insert('k3.k3_kebutuhan', $data);
-    } 
-    
+    }
+
     public function save_data_apd($lines)
     {
         $query = $this->db->insert('k3.k3_kebutuhan_detail', $lines);
@@ -98,21 +98,22 @@ class M_Order extends CI_Model
 
     public function getNamaApd($kode)
     {
-        $this->db->where('kode_item',$kode);
+        $this->db->where('kode_item', $kode);
         $query = $this->db->get('k3.k3_master_item');
         return $query->result_array();
     }
 
     public function tampil_data($kodesie)
     {
-        $kd = substr($kodesie, 0,7);
+        $kd = substr($kodesie, 0, 7);
         $sql = "select * from k3.k3n_order where kodesie like '$kd%'";
-                                    // echo $sql;exit();
-               $query = $this ->db->query($sql);
+        // echo $sql;exit();
+        $query = $this->db->query($sql);
         return $query->result_array();
     }
 
-    public function tampil_data_2($kodesie,$m,$y){
+    public function tampil_data_2($kodesie, $m, $y)
+    {
         $sql = "select * from k3.k3_kebutuhan_detail tb1 join k3.k3_kebutuhan tb2 on
                                     tb1.id_kebutuhan = tb2.id_kebutuhan join k3.k3_kebutuhan_pekerja tb3 on
                                     tb1.id_kebutuhan_detail = tb3.id_kebutuhan_detail 
@@ -126,31 +127,31 @@ class M_Order extends CI_Model
 
     public function join_3($id_kebutuhan_detail)
     {
-         $query = $this->db->query("select * from k3.k3_kebutuhan t1 inner join k3.k3_kebutuhan_detail t2 on t1.id_kebutuhan = t2.id_kebutuhan inner join k3.k3_kebutuhan_pekerja t3 on t2.id_kebutuhan_detail = t3.id_kebutuhan_detail where t2.id_kebutuhan_detail = '$id_kebutuhan_detail'");
+        $query = $this->db->query("select * from k3.k3_kebutuhan t1 inner join k3.k3_kebutuhan_detail t2 on t1.id_kebutuhan = t2.id_kebutuhan inner join k3.k3_kebutuhan_pekerja t3 on t2.id_kebutuhan_detail = t3.id_kebutuhan_detail where t2.id_kebutuhan_detail = '$id_kebutuhan_detail'");
         return $query->result_array();
-    } 
+    }
 
-    public function update_status($id_kebutuhan_detail,$status1)
+    public function update_status($id_kebutuhan_detail, $status1)
     {
-       $this->db->where('id_kebutuhan_detail', $id_kebutuhan_detail);
-       $this->db->update('k3.k3_kebutuhan_detail',$status1);
-       return;
-    } 
+        $this->db->where('id_kebutuhan_detail', $id_kebutuhan_detail);
+        $this->db->update('k3.k3_kebutuhan_detail', $status1);
+        return;
+    }
 
-    public function update_c_status($id_kebutuhan,$status2)
+    public function update_c_status($id_kebutuhan, $status2)
     {
-       $this->db->where('id_kebutuhan', $id_kebutuhan);
-       $this->db->update('k3.k3_kebutuhan',$status2);
-       return;
-    } 
+        $this->db->where('id_kebutuhan', $id_kebutuhan);
+        $this->db->update('k3.k3_kebutuhan', $status2);
+        return;
+    }
 
     public function tampil_data_edit($id_kebutuhan_detail)
     {
         $this->db->select('*');
         $this->db->join('k3.k3_kebutuhan_pekerja kp', 'kd.id_kebutuhan_detail = kp.id_kebutuhan_detail');
         $this->db->join('k3.k3_kebutuhan kb', 'kd.id_kebutuhan = kb.id_kebutuhan');
-        $this->db->order_by('kp.id_kebutuhan_detail'); 
-        $this->db->where('kd.id_kebutuhan_detail',$id_kebutuhan_detail);
+        $this->db->order_by('kp.id_kebutuhan_detail');
+        $this->db->where('kd.id_kebutuhan_detail', $id_kebutuhan_detail);
         $query = $this->db->get('k3.k3_kebutuhan_detail kd');
         return $query->result_array();
     }
@@ -167,7 +168,7 @@ class M_Order extends CI_Model
         // $this->erp->where('extract(year from create_timestamp) = extract(year from current_timestamp)');
         // $query = $this->db->get('k3.k3_kebutuhan');
         return $query->result_array();
-    } 
+    }
 
     public function join_2($id_kebutuhan)
     {
@@ -178,16 +179,16 @@ class M_Order extends CI_Model
         return $query->result_array();
     }
 
-    public function update_kebutuhan_detail($lines,$id_kebutuhan_detail)
+    public function update_kebutuhan_detail($lines, $id_kebutuhan_detail)
     {
-        $this->db->where('id_kebutuhan_detail',$id_kebutuhan_detail);
+        $this->db->where('id_kebutuhan_detail', $id_kebutuhan_detail);
         $this->db->update('k3.k3_kebutuhan_detail', $lines);
         return;
-    }  
+    }
 
-    public function update_kebutuhan_pekerja($tbl_pekerja,$id_kebutuhan_detail)
+    public function update_kebutuhan_pekerja($tbl_pekerja, $id_kebutuhan_detail)
     {
-        $this->db->where('id_kebutuhan_detail',$id_kebutuhan_detail);
+        $this->db->where('id_kebutuhan_detail', $id_kebutuhan_detail);
         $this->db->update('k3.k3_kebutuhan_pekerja', $tbl_pekerja);
         return;
     }
@@ -203,23 +204,23 @@ class M_Order extends CI_Model
         $this->db->where('id_kebutuhan_detail', $id_kebutuhan_detail);
         $query = $this->db->get('k3.k3_kebutuhan_pekerja');
         return $query->result_array();
-    } 
+    }
 
     public function delete_apd($id_kebutuhan_detail)
     {
-        $this->db->where('id_kebutuhan_detail',$id_kebutuhan_detail);
+        $this->db->where('id_kebutuhan_detail', $id_kebutuhan_detail);
         $this->db->delete('k3.k3_kebutuhan_detail');
         return;
     }
     public function delete_apd2($id_kebutuhan_detail)
     {
-        $this->db->where('id_kebutuhan_detail',$id_kebutuhan_detail);
+        $this->db->where('id_kebutuhan_detail', $id_kebutuhan_detail);
         $this->db->delete('k3.k3_kebutuhan_pekerja');
         return;
     }
 
     public function export_apd()
-    {   
+    {
         $query = $this->db->get('k3.k3_kebutuhan_detail');
         return $query->result_array();
     }
@@ -250,7 +251,7 @@ class M_Order extends CI_Model
 
     public function modalView($id_kebutuhan)
     {
-       $query = $this->db->query("select item, status
+        $query = $this->db->query("select item, status
             from k3.k3_kebutuhan_detail kb
             inner join k3.k3_kebutuhan kd on kb.id_kebutuhan = kd.id_kebutuhan
             where kb.id_kebutuhan = '$id_kebutuhan'");
@@ -278,23 +279,24 @@ class M_Order extends CI_Model
                 order by
                     tgl_approve,
                     er.section_name asc";
-       $query = $this->db->query($sql);
+        $query = $this->db->query($sql);
         return $query->result_array();
     }
 
     public function getListSeksi($kode_seksi)
     {
-        $query = $this ->db->query("select * from k3.k3_kebutuhan_detail tb1 join k3.k3_kebutuhan tb2 on
+        $query = $this->db->query("select * from k3.k3_kebutuhan_detail tb1 join k3.k3_kebutuhan tb2 on
                                     tb1.id_kebutuhan = tb2.id_kebutuhan join k3.k3_kebutuhan_pekerja tb3 on
                                     tb1.id_kebutuhan_detail = tb3.id_kebutuhan_detail where tb2.kodesie = '$kode_seksi'
                                     order by tb1.status_updated desc");
         return $query->result_array();
     }
 
-    public function updateDocumentApproval($nama_file,$id_kebutuhan){
+    public function updateDocumentApproval($nama_file, $id_kebutuhan)
+    {
         $sql = "update k3.k3_kebutuhan set document_approval = '$nama_file' where id_kebutuhan = $id_kebutuhan";
         $this->db->query($sql);
-        return ;
+        return;
     }
 
     public function save_standar($data)
@@ -317,7 +319,7 @@ class M_Order extends CI_Model
 
     public function getInputstd($kodesie)
     {
-        $kodesie = substr($kodesie, 0,7);
+        $kodesie = substr($kodesie, 0, 7);
         // echo $kodesie;exit();
         $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks
         left join k3.k3_master_item km on km.kode_item = ks.kode_item
@@ -331,8 +333,8 @@ class M_Order extends CI_Model
     public function getInputstd2($tgl, $kodesie)
     {
         if (gettype($kodesie) == 'string') {
-            $kodesie = substr($kodesie, 0,7);
-        }elseif (gettype($kodesie) == 'array'){
+            $kodesie = substr($kodesie, 0, 7);
+        } elseif (gettype($kodesie) == 'array') {
             $kodesie = implode("', '", $kodesie);
         }
         // $kodesie = substr($kodesie, 0,7);
@@ -375,7 +377,7 @@ class M_Order extends CI_Model
 
     public function getInputOrder($kodesie)
     {
-        $kodesie = substr($kodesie, 0,7);
+        $kodesie = substr($kodesie, 0, 7);
         $sql = "select * from k3.k3n_order
         where status = '0' and kodesie like '$kodesie%' order by tgl_input desc";
         // echo $sql;exit();
@@ -406,9 +408,9 @@ class M_Order extends CI_Model
 
     public function ceklineOrder($ks)
     {
-        $kodesie = substr($ks, 0,7);
+        $kodesie = substr($ks, 0, 7);
         $pr = date('Y-m');
-        $pr = date('Y-m',strtotime($pr . "+1 month"));
+        $pr = date('Y-m', strtotime($pr . "+1 month"));
         $sql = "select * from k3.k3n_order where kodesie like '$kodesie%' and periode = '$pr'";
         // echo $sql;exit();
         $query = $this->erp->query($sql);
@@ -418,7 +420,7 @@ class M_Order extends CI_Model
 
     public function listmonitor($ks, $pr)
     {
-        $ks = substr($ks, 0,7);
+        $ks = substr($ks, 0, 7);
         $sql = "select
                     a.*,
                     b.jml_pekerja,
@@ -508,8 +510,8 @@ class M_Order extends CI_Model
                     and ffvt.DESCRIPTION like '%$t%'
                 order by ffv.FLEX_VALUE
                 ";
-                // echo $sql;exit();
-        $query = $this ->oracle->query($sql);
+        // echo $sql;exit();
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 
@@ -533,25 +535,25 @@ class M_Order extends CI_Model
                     AND ffv.END_DATE_ACTIVE IS NULL
                     and ffv.ENABLED_FLAG = 'Y'
                 order by ffv.FLEX_VALUE";
-        $query = $this ->oracle->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     function lokasi()
     {
-        $sql="select
+        $sql = "select
                 hla.LOCATION_ID,
                 hla.LOCATION_CODE,
                 hla.ADDRESS_LINE_1
                 from HR_LOCATIONS_ALL hla
                 where hla.LOCATION_ID in (29650,142,182,17204,16103,3089,3090,3091,3092)
                 order by 2";
-        $query=$this->oracle->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 
     function gudang($lokasi)
     {
-        $sql=" SELECT
+        $sql = " SELECT
                 msi.ORGANIZATION_ID,
                 msi.SECONDARY_INVENTORY_NAME,
                 msi.DESCRIPTION,
@@ -565,7 +567,7 @@ class M_Order extends CI_Model
                 and msi.STATUS_ID=mms.STATUS_ID
                 and (msi.STATUS_ID not like 20 or msi.ATTRIBUTE2 = 'Y')
                 and msi.location_id = '$lokasi'";
-        $query=$this->oracle->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 
@@ -580,7 +582,7 @@ class M_Order extends CI_Model
 
     function lokator($gudang)
     {
-        $sql="select
+        $sql = "select
                     distinct(mil.SUBINVENTORY_CODE),
                     moq.LOCATOR_ID,
                     mil.SEGMENT1,
@@ -592,15 +594,19 @@ class M_Order extends CI_Model
                     mil.SUBINVENTORY_CODE = '$gudang'
                 and
                     mil.INVENTORY_LOCATION_ID =moq.LOCATOR_ID";
-        $query=$this->oracle->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 
-    function account($fungsi,$cost){
-        $sql = "select kba.account_number
-                from khs_bppbg_account kba
-                where kba.using_category_code = '$fungsi'
-                and kba.cost_center = '$cost'";
+
+    function account($fungsi, $cost)
+    {
+        $cost = substr($cost, 0, 1);
+
+        $sql = "SELECT kba.ACCOUNT_NUMBER
+                FROM  khs_bppbg_account_v2 kba
+                WHERE kba.USING_CATEGORY_CODE LIKE '$fungsi'
+                AND COST_CENTER_PREFIX = '$cost'";
         $query = $this->oracle->query($sql);
         // echo $sql;
         return $query->row()->ACCOUNT_NUMBER;
@@ -608,16 +614,16 @@ class M_Order extends CI_Model
 
     public function cekOrder($ks, $pr)
     {
-        $ks = substr($ks, 0,7);
+        $ks = substr($ks, 0, 7);
         $sql = "select * from k3.k3n_order where kodesie like '$ks%' and periode = '$pr' and status = '1';";
-                                    // echo $sql;exit();
+        // echo $sql;exit();
         $query = $this->db->query($sql);
         return $query->num_rows();
     }
 
     public function maxPekerja($kodesie)
     {
-        $ks = substr($kodesie, 0,7);
+        $ks = substr($kodesie, 0, 7);
         $sql = "select * from hrd_khs.tpribadi
                 where keluar = '0'
                 and kodesie like '$ks%'";
@@ -627,7 +633,7 @@ class M_Order extends CI_Model
 
     public function getPekerja($ks)
     {
-        $ks = substr($ks, 0,7);
+        $ks = substr($ks, 0, 7);
         $sql = "select
                     tp.noind,
                     tp.nama,
@@ -647,7 +653,7 @@ class M_Order extends CI_Model
 
     public function getEmail($kodesie)
     {
-        $ks = substr($kodesie, 0,7);
+        $ks = substr($kodesie, 0, 7);
         $sql = "Select * from k3.k3n_email_seksi where kodesie like '%$ks%'";
         $query = $this->db->query($sql);
         return $query->result_array();
@@ -656,13 +662,13 @@ class M_Order extends CI_Model
     public function addEmailSeksi($email, $kodesie, $noind)
     {
         $tgl = date('Y-m-d H:i:s');
-        $ks = substr($kodesie, 0,7);
+        $ks = substr($kodesie, 0, 7);
         $sql = "insert into k3.k3n_email_seksi (kodesie, email, last_update_by, last_update_date) values ('$ks', '$email', '$noind', '$tgl');";
         $query = $this->erp->query($sql);
         return true;
     }
 
-    public function editEmailSeksi($id,$email, $noind)
+    public function editEmailSeksi($id, $email, $noind)
     {
         $tgl = date('Y-m-d H:i:s');
         $sql = "update k3.k3n_email_seksi set email = '$email', last_update_by = '$noind', last_update_date = '$tgl' where id = '$id';";
@@ -703,7 +709,7 @@ class M_Order extends CI_Model
     public function cekSeksiDibawah($ks)
     {
         //seksi di bawahnya yang tidak memiliki atasan
-        $ks = substr($ks, 0,5);
+        $ks = substr($ks, 0, 5);
         $sql = "select
                     distinct(substring(kodesie,1,7)) kodesie,
                     seksi
@@ -721,4 +727,277 @@ class M_Order extends CI_Model
                         and substring(noind, 1, 1) in ('B','D','J')) = 0";
         return $this->personalia->query($sql)->result_array();
     }
+
+    /*
+        DK -> bon sepatu safety
+    */
+    /* 
+        @params: null
+        @return Array<Array>
+    */
+    public function getSafetyShoes()
+    {
+        $sql = "SELECT msib.inventory_item_id, msib.segment1 item_code, msib.description,
+                    khs_inv_qty_att ('102', msib.inventory_item_id, 'PNL-TKS', '', '') stock,
+                    msib.PRIMARY_UOM_CODE uom
+                FROM mtl_system_items_b msib
+                WHERE msib.organization_id = '102'
+                    AND msib.inventory_item_status_code = 'Active'
+                    AND msib.segment1 IN
+                        (
+                            'PP1AA42', 'PP1AA43', 'PP1AA01', 'PP1AA02', 'PP1AA03', 'PP1AA04',
+                            'PP1AA05', 'PP1AA06', 'PP1AA07', 'PP1AA08', 'PP1AA09', 'PP1AA10',
+                            'PP1AA11', 'PP1AA12', 'PP1AA13', 'PP1AA14', 'PP1AA15', 'PP1AA16',
+                            'PP1AA17', 'PP1AA18', 'PP1AA19', 'PP1AA20', 'PP1AA21', 'PP1AA22',
+                            'PP1AA23', 'PP1AA24', 'PP1AA25', 'PP1AA26', 'PP1AA27', 'PP1AA28',
+                            'PP1AA29', 'PP1AA30', 'PP1AA31', 'PP1AC01', 'PP1AC07', 'PP1TS05',
+                            'PP1AC05', 'PP1KR02', 'PP1KR05', 'PP1KR04', 'PP1KE01', 'PP1KE02',
+                            'PP1KR03', 'PP1BS02', 'PP1BS01', 'PP1BS04', 'PP1KR01', 'PP1KR09',
+                            'PP1AC04', 'PP1KR06', 'PP1TS06'
+                        )
+                    AND msib.DESCRIPTION LIKE 'SEPATU%'
+                ORDER BY msib.description";
+        return $this->oracle->query($sql)->result_array();
+    }
+
+    /* 
+        @params: String kode gudang
+        @return: Array
+    */
+    public function getStockSafetyShoes($gudang)
+    {
+        $sql = "SELECT msib.inventory_item_id, msib.segment1 item_code, msib.description,
+                    khs_inv_qty_att ('102', msib.inventory_item_id, '$gudang', '', '') stock,
+                    msib.PRIMARY_UOM_CODE uom
+                FROM mtl_system_items_b msib
+                WHERE msib.organization_id = '102'
+                    AND msib.inventory_item_status_code = 'Active'
+                    AND msib.segment1 IN
+                        (
+                            'PP1AA42', 'PP1AA43', 'PP1AA01', 'PP1AA02', 'PP1AA03', 'PP1AA04',
+                            'PP1AA05', 'PP1AA06', 'PP1AA07', 'PP1AA08', 'PP1AA09', 'PP1AA10',
+                            'PP1AA11', 'PP1AA12', 'PP1AA13', 'PP1AA14', 'PP1AA15', 'PP1AA16',
+                            'PP1AA17', 'PP1AA18', 'PP1AA19', 'PP1AA20', 'PP1AA21', 'PP1AA22',
+                            'PP1AA23', 'PP1AA24', 'PP1AA25', 'PP1AA26', 'PP1AA27', 'PP1AA28',
+                            'PP1AA29', 'PP1AA30', 'PP1AA31', 'PP1AC01', 'PP1AC07', 'PP1TS05',
+                            'PP1AC05', 'PP1KR02', 'PP1KR05', 'PP1KR04', 'PP1KE01', 'PP1KE02',
+                            'PP1KR03', 'PP1BS02', 'PP1BS01', 'PP1BS04', 'PP1KR01', 'PP1KR09',
+                            'PP1AC04', 'PP1KR06', 'PP1TS06'
+                        )
+                    AND msib.DESCRIPTION LIKE 'SEPATU%'
+                ORDER BY msib.description";
+        return $this->oracle->query($sql)->result_array();
+    }
+
+    /* 
+        @params: String nomor apd, String $gudang
+        @return: Object
+    */
+    public function getStockSafetyShoesById($no_apd, $gudang)
+    {
+        $sql = "SELECT msib.inventory_item_id, msib.segment1 item_code, msib.description,
+                    khs_inv_qty_att ('102', msib.inventory_item_id, '$gudang', '', '') stock,
+                    msib.PRIMARY_UOM_CODE uom
+                FROM mtl_system_items_b msib
+                WHERE msib.organization_id = '102'
+                    AND msib.inventory_item_status_code = 'Active'
+                    AND msib.segment1 = '$no_apd'
+                ORDER BY msib.description";
+        return $this->oracle->query($sql)->row();
+    }
+
+    /* 
+        @params: String -> kodesie, String -> keyword, Array -> except worker
+        @return Array<Array>
+    */
+    public function getSemuaPekerja($kodesie, $q, $exceptWorker)
+    {
+        $this->personalia
+            ->select(['noind', 'nama', 'kodesie'])
+            ->where('keluar', '0')
+            ->where_not_in('noind', $exceptWorker)
+            ->like('kodesie', substr($kodesie, 0, 7), 'after')
+            ->group_start()
+            ->like('noind', $q, 'after')
+            ->or_like('nama', strtoupper($q), 'after')
+            ->group_end()
+            ->limit(10)
+            ->get_compiled_select('hrd_khs.tpribadi', FALSE);
+
+        return $this->personalia->get()->result_array();
+    }
+
+    /* 
+        @params: String -> nomor induk
+        @return Object
+    */
+    public function getLatestBonSafetyShoes($noind)
+    {
+        $sql = "SELECT noind, seksi, create_timestamp::date as date FROM k3.tbon_sepatu WHERE noind = '$noind' ORDER BY create_timestamp DESC LIMIT 1";
+        return $this->db->query($sql)->row();
+        // abaikan
+        $this->db
+            ->select(['noind', 'seksi', 'create_timestamp as "date"'])
+            ->where('noind', $noind)
+            ->limit(1)
+            ->order_by('create_timestamp', 'DESC')
+            ->get_compiled_select('k3.tbon_sepatu', FALSE);
+        return $this->db->get()->row();
+    }
+
+    /* 
+        @insert ke database postgre k3 & oracle
+        @params: Array [[noind, item_code]], String Nobon
+        @return Boolean
+    */
+    public function insertBonSafetyShoes($data, $nobon)
+    {
+        $logged_user = $this->session->user;
+        $user_logged = $this->session->user;
+        $lokasi = '142';
+        $gudang = 'PNL-NPR';
+        $lokator = '783';
+
+        $pkj_lok = $this->getDetailPekerja($user_logged)->row()->lokasi_kerja;
+        if (intval($pkj_lok) == 2) {
+            $lokasi = '16103';
+            $gudang = 'PNL-TKS';
+        } else {
+            $lokasi = '142';
+            $gudang = 'PNL-DM';
+        }
+
+        try {
+            foreach ($data as $item) {
+                $apd = $this->getStockSafetyShoesById($item['item_code'], $gudang);
+                $sepatu = trim(substr($apd->DESCRIPTION, 0, strlen($apd->DESCRIPTION) - 2));
+                $ukuran = trim(substr($apd->DESCRIPTION, -2, 2));
+
+                $sql = "SELECT 
+                        tp.noind, tp.nama, tp.kodesie, ts.seksi, tpk.pekerjaan, '$ukuran' uk_sepatu, '{$item['item_code']}' item_code, '$sepatu' jenis_sepatu, now() create_timestamp, '$logged_user' user_, '$nobon' no_bon
+                    FROM 
+                        hrd_khs.tpribadi tp 
+                        inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
+                        left join hrd_khs.tpekerjaan tpk on tp.kd_pkj = tpk.kdpekerjaan
+                    WHERE 
+                        noind = '{$item['noind']}'
+                    ";
+                $item_data = $this->personalia->query($sql)->result_array()['0'];
+
+                // oracle
+                $generate_new_id = $this->M_dtmasuk->getIdOr();
+                $cost_center = $this->getCostCenter($item_data['kodesie']);
+                $account = $this->account('APD', $cost_center);
+                $kode_cabang = $this->pemakai_2($cost_center);
+
+                $dataBonOracle = array(
+                    'NO_ID'          =>    $generate_new_id,
+                    'KODE_BARANG'    =>    $item_data['item_code'],
+                    'NAMA_BARANG'    =>    $item_data['jenis_sepatu'] . " " . $item_data['uk_sepatu'],
+                    'SATUAN'         =>    'SET',
+                    'PERMINTAAN'     =>    1,
+                    'KETERANGAN'     =>    $item['noind'],
+                    'COST_CENTER'    =>    $cost_center,
+                    'PENGGUNAAN'     =>    'SAFETY SHOES',
+                    'SEKSI_BON'      =>    $item_data['seksi'],
+                    'TUJUAN_GUDANG'  =>    $gudang,
+                    'TANGGAL'        =>    date('d M Y'),
+                    'NO_BON'         =>    $nobon,
+                    'PEMAKAI'        =>    $cost_center,
+                    'JENIS_PEMAKAI'  =>    'Seksi',
+                    'LOKASI'         =>    $lokasi,
+                    'LOKATOR'        =>    $lokator,
+                    'ACCOUNT'        =>    $account,
+                    'KODE_CABANG'    =>    $kode_cabang['0']['KODE_CABANG'],
+                    'EXP'            =>    'N',
+                );
+                $this->insertBonIm($dataBonOracle);
+
+                // postgre k3_bon
+                $data_bon = [
+                    'tgl_bon' => date('Y-m-d H:i:s'),
+                    'periode' => date('Y-m'),
+                    'kodesie' => substr($item_data['kodesie'], 0, 7),
+                    'item_code' => $item_data['item_code'],
+                    'jml_bon' => 1,
+                    'input_by' => $logged_user,
+                    'jml_kebutuhan' => NULL,
+                    'sisa_saldo' => NULL,
+                    'no_bon' => $nobon,
+                ];
+
+                // insert k3n_bon
+                $this->db->insert('k3.k3n_bon', $data_bon);
+                // id k3n_bon terakhir
+                $id = $this->db->insert_id();
+                $item_data['id'] = $id;
+
+                unset($item_data['kodesie']);
+                $item_data['id_oracle'] = $generate_new_id;
+                // insert t_bon sepatu
+                $this->db->insert('k3.tbon_sepatu', $item_data);
+            }
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /* 
+        @params: String nomor bon
+        @return Array
+    */
+    public function getBonSafetyShoesById($no_bon)
+    {
+        $sql = "SELECT tbs.*, ers.oracle_cost_code
+                FROM k3.tbon_sepatu tbs
+                    inner join er.er_employee_all era on era.employee_code = tbs.noind
+                    inner join er.er_section ers on ers.section_code = era.section_code
+                WHERE tbs.no_bon = '$no_bon'";
+        return $this->db->query($sql)->result_array();
+
+        // hmm useless
+        $this->db->where('no_bon', $no_bon);
+        return $this->db->get('k3.tbon_sepatu')->result_array();
+    }
+
+    /* 
+        @params: String kodesie
+        @return String cost_center
+    */
+    public function getCostCenter($kodesie)
+    {
+        $sql = "SELECT ers.oracle_cost_code
+                FROM  er.er_section ers
+                WHERE ers.section_code = '$kodesie'";
+        return $this->db->query($sql)->row()->oracle_cost_code;
+    }
+
+    /* 
+        @insert ke database oracle
+        @params: Array Bon
+        @return void
+    */
+    public function insertBonIm($data)
+    {
+        $this->oracle->trans_start();
+        $this->oracle->insert('IM_MASTER_BON', $data);
+        $this->oracle->trans_complete();
+    }
+
+    // /*
+
+    // */
+    // public function getBonSepatu($month, $section)
+    // {
+    //     $sql = "SELECT ts.*
+    //             FROM k3.tbon_sepatu ts 
+    //                 inner join er.er_employee_all era on era.employee_code = ts.noind
+    //             WHERE 
+    //                 era.section_code like '$section%'
+    //             and to_char(ts.create_timestamp, 'YYYY-MM') = '$month'
+    //     ";
+    //     $tbon_sepatu = $this->db->query($sql)->result_array();
+    // }
+
 }
