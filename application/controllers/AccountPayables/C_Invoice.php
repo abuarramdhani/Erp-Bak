@@ -239,8 +239,9 @@ class C_Invoice extends CI_Controller {
 		$tax_number = $this->input->post('nomorFaktur');
 		$tax_number_awal = substr($tax_number, 0, 3).'.'.substr($tax_number, 3, 3).'-'.substr($tax_number, 6, 2).'.';
 		$tax_number_akhir = substr($tax_number, 8, strlen($tax_number)-7);
+		$name_faktur = $this->input->post('nameFaktur');
 
-		$query = $this->M_Invoice->saveTaxNumberManual($invoice_id, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir);
+		$query = $this->M_Invoice->saveTaxNumberManual($invoice_id, $tanggalFakturCon, $tax_number_awal, $tax_number_akhir, $tax_number, $name_faktur);
 	}	
 
 	public function deleteTaxNumber($invoice_id,$invoice_num){
