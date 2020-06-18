@@ -50,7 +50,7 @@ class M_transferreffgaji extends CI_Model
 	}
 
 	public function getDataStaff($periode){
-		$sql = "select tbl.*,tpri.nik,tor.jabatan from (
+		$sql = "select tbl.*,tpri.nik,tor.singkatan as jabatan from (
 				 select * from \"Presensi\".Treffgaji 
 				 where (
 				 			left(noind,1) = 'B' 
