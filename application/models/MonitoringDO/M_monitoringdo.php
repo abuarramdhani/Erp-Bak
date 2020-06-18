@@ -80,36 +80,42 @@ class M_monitoringdo extends CI_Model
     public function GetSudahCetakDetail($data)
     {
         $subinv = $this->session->datasubinven;
-        $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
-                                  msib.description, mtrl.quantity qty_req,
-                                  kdt.allocated_quantity qty_allocated,
-                                  mtrl.quantity_delivered qty_transact,
-                                  khs_inv_qty_atr (102,mtrl.inventory_item_id,'$subinv','','') atr,
-                                  kpd.person_id petugas
-                             FROM mtl_txn_request_lines mtrl,
-                                  mtl_txn_request_headers mtrh,
-                                  mtl_system_items_b msib,
-                                  khs_person_delivery kpd,
-                                  khs_delivery_temp kdt,
-                                  khs_cetak_do kcd
-                            WHERE mtrh.header_id = mtrl.header_id
-                              AND kpd.request_number = mtrh.request_number
-                              AND kcd.request_number = mtrh.request_number
-                              --
-                              AND kdt.inventory_item_id = mtrl.inventory_item_id
-                              AND kdt.header_id = kpd.header_id
-                              AND 1 =
-                                     CASE
-                                        WHEN kdt.serial_status IN ('NON SERIAL', 'SERIAL')
-                                        AND kpd.delivery_flag = 'Y'
-                                        AND kdt.flag = 'T'
-                                           THEN 1                                 --'SUDAH MUAT'
-                                     END
-                              --
-                              AND msib.inventory_item_id = mtrl.inventory_item_id
-                              AND msib.organization_id = mtrl.organization_id
-                              AND mtrh.request_number = '$data'
-                         ORDER BY msib.segment1";
+        $query = "SELECT DISTINCT   mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
+                                    kdt.line_number, msib.description, mtrl.quantity qty_req,
+                                    kdt.allocated_quantity qty_allocated,
+                                    mtrl.quantity_delivered qty_transact,
+                                    khs_inv_qty_atr (102,
+                                                     mtrl.inventory_item_id,
+                                                     '$subinv',
+                                                     '',
+                                                     ''
+                                                    ) atr,
+                                    kpd.person_id petugas
+                               FROM mtl_txn_request_lines mtrl,
+                                    mtl_txn_request_headers mtrh,
+                                    mtl_system_items_b msib,
+                                    khs_person_delivery kpd,
+                                    khs_delivery_temp kdt,
+                                    khs_cetak_do kcd
+                              WHERE mtrh.header_id = mtrl.header_id
+                                AND kpd.request_number = mtrh.request_number
+                                AND kcd.request_number = mtrh.request_number
+                                --
+                                AND kdt.inventory_item_id = mtrl.inventory_item_id
+                                AND kdt.line_number = mtrl.line_number
+                                AND kdt.header_id = kpd.header_id
+                                AND 1 =
+                                       CASE
+                                          WHEN kdt.serial_status IN ('NON SERIAL', 'SERIAL')
+                                          AND kpd.delivery_flag = 'Y'
+                                          AND kdt.flag = 'T'
+                                             THEN 1                                 --'SUDAH MUAT'
+                                       END
+                                --
+                                AND msib.inventory_item_id = mtrl.inventory_item_id
+                                AND msib.organization_id = mtrl.organization_id
+                                AND mtrh.request_number = '$data'
+                           ORDER BY msib.segment1, kdt.line_number";
 
         if (!empty($data)) {
             $response = $this->oracle->query($query)->result_array();
@@ -696,23 +702,20 @@ class M_monitoringdo extends CI_Model
 
     public function serial($id)
     {
-        $query = "SELECT distinct
-                         mtrl.header_id
-                        ,ksnt.request_number
-                        ,msib.segment1 item
-                        ,msib.description
-                        ,ksnt.serial_number
-                  from mtl_txn_request_lines mtrl
-                      ,khs_serial_number_temp ksnt
-                      ,mtl_system_items_b msib
-                  where ksnt.header_id = mtrl.header_id
-                    and ksnt.inventory_item_id = mtrl.inventory_item_id
-                    and ksnt.line_number = mtrl.line_number
-                    --
-                    and msib.inventory_item_id = mtrl.inventory_item_id
-                    and msib.organization_id = mtrl.organization_id
-                    and ksnt.request_number = '$id'
-                  order by msib.segment1";
+        $query = "SELECT DISTINCT   mtrl.header_id, ksnt.request_number, mtrl.line_number,
+                                    msib.segment1 item, msib.description, ksnt.serial_number
+                               FROM mtl_txn_request_lines mtrl,
+                                    khs_serial_number_temp ksnt,
+                                    mtl_system_items_b msib
+                              WHERE ksnt.header_id = mtrl.header_id
+                                AND ksnt.inventory_item_id = mtrl.inventory_item_id
+                                AND ksnt.line_number = mtrl.line_number
+                                AND mtrl.line_status = 5
+                                --
+                                AND msib.inventory_item_id = mtrl.inventory_item_id
+                                AND msib.organization_id = mtrl.organization_id
+                                AND ksnt.request_number = '$id'
+                           ORDER BY msib.segment1";
 
         $response = $this->oracle->query($query)->result_array();
 
