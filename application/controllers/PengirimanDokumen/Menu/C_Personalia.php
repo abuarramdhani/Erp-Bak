@@ -34,6 +34,13 @@ class C_Personalia extends CI_Controller
 
     function queryApproval($status, $level){ //nak ngene aku yo rakuat
         $kodesie = substr($this->session->kodesie, 0, 7);
+        $user = $this->session->user;
+        // echo $kodesie;exit();
+        if ($level == 1) {
+            $akses = " and '$user' in ('P0601', 'A2395', 'B0696', 'B0697', 'J1370') ";
+        }else{
+            $akses = " and '$user' in ('P0597', 'P0322')";
+        }
 
         if($status == 'pending'){
             if($level == 1){
@@ -54,9 +61,10 @@ class C_Personalia extends CI_Controller
                                 max(tr.tgl_update)::date tgl_update, 
                                 ap.kodesie, 
                                 td.alasan,
+                                td.lokasi,
                                 ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
                                   from er.er_section es inner join er.er_employee_all emp on substring(emp.section_code, 0,8) = substring(es.section_code,0,8)
-                                  where emp.employee_code = td.noind
+                                  where emp.employee_code = td.noind limit 1
                                 ) 
                                 seksi_name
                         FROM ps.tdata td 
@@ -64,8 +72,8 @@ class C_Personalia extends CI_Controller
                                 inner join ps.tmaster tm on tm.id = td.id_master
                                 inner join ps.triwayat tr on tr.id_data = td.id_data
                                 inner join er.er_employee_all emp on emp.employee_code = td.noind 
-                        WHERE $where
-                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan, seksi_name
+                        WHERE $where $akses
+                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan, seksi_name, td.lokasi
             ;";
         }else{
             if ($status == 'approved') {
@@ -93,20 +101,21 @@ class C_Personalia extends CI_Controller
                                 max(tr.tgl_update)::date tgl_update, 
                                 tr.seksi,
                                 td.alasan,
+                                td.lokasi,
                                 ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
                                   from er.er_section es inner join er.er_employee_all emp on substring(emp.section_code, 0,8) = substring(es.section_code,0,8)
-                                  where emp.employee_code = td.noind
+                                  where emp.employee_code = td.noind limit 1
                                 ) 
                                 seksi_name
                         FROM ps.tdata td
                             inner join ps.tmaster tm on tm.id = td.id_master 
                             inner join ps.triwayat tr on tr.id_data = td.id_data 
                             inner join er.er_employee_all emp on emp.employee_code = td.noind 
-                        WHERE tr.seksi='$kodesie' and tr.status = '$stat' and tr.level='$level' 
-                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan, seksi_name ;
+                        WHERE tr.seksi='$kodesie' and tr.status = '$stat' and tr.level='$level' $akses
+                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan, seksi_name,td.lokasi;
                         ";
         }
-        
+        // echo "<pre>".$selecta;exit();
         return $this->db->query($selecta);
     }
 
@@ -165,6 +174,16 @@ class C_Personalia extends CI_Controller
         return $filtered;
     }
 
+    function filter_dokumen_lokasi($data){
+        function filter_lokasi($item){
+            $lk = $_GET['lokasi'];
+            return $item['lokasi'] == $lk;
+        }
+
+        $filtered = array_filter($data, 'filter_lokasi');
+        return $filtered;
+    }
+
     function allSection(){
 		$sql = "select kodesie, coalesce(nullif(trim(seksi), '-'), nullif(trim(unit),'-'), nullif(trim(bidang),'-'), dept) as nama from hrd_khs.tseksi where substring(kodesie, 8,11) = '00' and trim(seksi) <> '-' order by 1";
         return $this->personalia->query($sql)->result_object();
@@ -177,6 +196,9 @@ class C_Personalia extends CI_Controller
             $data = $this->queryApproval('pending',2)->result_array();
         }
 
+        $list_lokasi = $this->M_inputdata->getAllLoksi();
+        $this->data['all_lokasi'] = array_column($list_lokasi, 'lokasi_kerja', 'id_');
+
         // filter seksi
         $this->data['is_get'] = false;
         $this->data['selected'] = false;
@@ -185,6 +207,13 @@ class C_Personalia extends CI_Controller
             $this->data['is_get'] = true;
             $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
         }
+        
+        $this->data['c_lok'] = '00';
+        if ($this->input->get('lokasi')) {
+            $data = $this->filter_dokumen_lokasi($data);
+            $this->data['c_lok'] = $this->input->get('lokasi');
+        }
+        $this->data['l_lokasi'] = $this->M_inputdata->getLokasi2();
 
         $this->data['seksi'] = $this->allSection();
 
@@ -225,6 +254,16 @@ class C_Personalia extends CI_Controller
             $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
         }
 
+        $this->data['c_lok'] = '00';
+        if ($this->input->get('lokasi')) {
+            $data = $this->filter_dokumen_lokasi($data);
+            $this->data['c_lok'] = $this->input->get('lokasi');
+        }
+        $this->data['l_lokasi'] = $this->M_inputdata->getLokasi2();
+
+        $list_lokasi = $this->M_inputdata->getAllLoksi();
+        $this->data['all_lokasi'] = array_column($list_lokasi, 'lokasi_kerja', 'id_');
+
         $this->data['seksi'] = $this->allSection();
 
         $this->data['table'] = $data;
@@ -252,6 +291,16 @@ class C_Personalia extends CI_Controller
             $this->data['is_get'] = true;
             $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
         }
+
+        $this->data['c_lok'] = '00';
+        if ($this->input->get('lokasi')) {
+            $data = $this->filter_dokumen_lokasi($data);
+            $this->data['c_lok'] = $this->input->get('lokasi');
+        }
+        $this->data['l_lokasi'] = $this->M_inputdata->getLokasi2();
+
+        $list_lokasi = $this->M_inputdata->getAllLoksi();
+        $this->data['all_lokasi'] = array_column($list_lokasi, 'lokasi_kerja', 'id_');
 
         $this->data['seksi'] = $this->allSection();
 
@@ -306,7 +355,7 @@ class C_Personalia extends CI_Controller
     }
 
     //Menu Rekap
-    function rekapAll($periode=false, $kodedokumen=false, $kodeseksi=false){
+    function rekapAll($periode=false, $kodedokumen=false, $kodeseksi=false, $lokasi=false){
         $this->load->model('PengirimanDokumen/M_inputdata');
         $this->load->model('PengirimanDokumen/M_masterdata');
 
@@ -331,6 +380,25 @@ class C_Personalia extends CI_Controller
             $seksi = "and substring(emp.section_code,0,8) = '$kodeseksi' ";
         }
 
+        $lokasi = '';
+        if(isset($_GET['lokasi']) && $_GET['lokasi'] != 'all'){
+            $kodelokasi = $_GET['lokasi'];
+            $lokasi = "and td.lokasi='$kodelokasi'";
+        }
+
+
+        $this->data['c_lok'] = '00';
+        if ($this->input->get('lokasi')) {
+            
+            $this->data['c_lok'] = $this->input->get('lokasi');
+        }
+        $this->data['l_lokasi'] = $this->M_inputdata->getLokasi2();
+
+        $list_lokasi = $this->M_inputdata->getAllLoksi();
+        $this->data['all_lokasi'] = array_column($list_lokasi, 'lokasi_kerja', 'id_');
+
+
+
         $selectRekap = 
         "SELECT td.id_data, 
                 td.noind, 
@@ -338,25 +406,36 @@ class C_Personalia extends CI_Controller
                 substring(emp.section_code,0,8) kodesie, 
                 tm.id, 
                 tm.keterangan, 
-                td.status, 
+                td.status,
+                (case when td.lokasi='01' then concat('JOGJA')  when td.lokasi='02' then concat('TUKSONO') else concat('-') end) as lok,
                 td.tanggal_start::date, 
                 td.tanggal_end::date, 
                 tr.seksi as approver,
-                tr.tgl_update as app_time
+                tr.tgl_update as app_time,
+                td.alasan
         FROM ps.tdata td 
             inner join er.er_employee_all emp on td.noind = emp.employee_code 
             inner join ps.tmaster tm on td.id_master = tm.id 
             inner join ps.triwayat tr on tr.id_data = td.id_data
         WHERE tanggal_end between '$start' and '$end' 
-            and td.status not in ('0','2','4') 
+            and td.status not in ('0') 
             and tr.level = (select max(level) from ps.triwayat where id_data = td.id_data) 
-        ORDER BY tanggal_end asc"; 
-        
+            $dokumen 
+            $seksi 
+            $lokasi
+        ORDER BY tanggal_end asc"; //query nya yang  ini ?
+        //mungkin tapi kok query ada di controller
+        //echo $selectRekap;exit();
+
         $table = $this->db->query($selectRekap)->result_array();
 
         for($i=0; $i < count($table); $i++){
             $table[$i]['kodesie'] = $this->M_inputdata->getNameSeksi($table[$i]['kodesie']);
-            $table[$i]['status'] = 'Diterima oleh seksi '.$this->M_inputdata->getNameSeksi($table[$i]['approver']);
+            if (in_array($table[$i]['status'], array('1','3'))) {
+                $table[$i]['status'] = 'Diterima oleh seksi '.$this->M_inputdata->getNameSeksi($table[$i]['approver']);
+            }else{
+                $table[$i]['status'] = 'Ditolak oleh seksi '.$this->M_inputdata->getNameSeksi($table[$i]['approver']).' dengan alasan '.$table[$i]['alasan'];
+            }
             $table[$i]['tgl_app'] = date('d/m/Y H:i:s', strtotime($table[$i]['app_time']));
         }
 

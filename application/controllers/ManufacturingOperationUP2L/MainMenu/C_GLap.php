@@ -1111,6 +1111,8 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['MS'] = '';
 			$jadi[$o]['RT'] = '';
 			$jadi[$o]['PK'] = '';
+			$jadi[$o]['ket_pengurangan'] = $vol['ket_pengurangan'];
+			$jadi[$o]['jam_pengurangan'] = $vol['jam_pengurangan'];
 			foreach ($scrap as $key) {
 				if ($key['kode_scrap'] == 'RC') {
 					$jadi[$o]['RC'] += $key['quantity'];
@@ -1202,6 +1204,8 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['Reject'] = '0';
 			$jadi[$o]['IP'] = '0';
 			$jadi[$o]['Keterangan'] = '';
+			$jadi[$o]['ket_pengurangan'] = $vol['ket_pengurangan'];
+			$jadi[$o]['jam_pengurangan'] = $vol['jam_pengurangan'];
 			$o++;
 		}
 		
@@ -1242,6 +1246,8 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['Reject'] = '0';
 			$jadi[$o]['IP'] = '0';
 			$jadi[$o]['Keterangan'] = '';
+			$jadi[$o]['ket_pengurangan'] = $vol['ket_pengurangan'];
+			$jadi[$o]['jam_pengurangan'] = $vol['jam_pengurangan'];
 			$o++;
 		}
 
@@ -1281,6 +1287,7 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['Reject'] = '0';
 			$jadi[$o]['IP'] = '0';
 			$jadi[$o]['Keterangan'] = '';
+			
 			$o++;
 		}
 	
@@ -1368,6 +1375,8 @@ class C_GLap extends CI_Controller
 		$worksheet->setCellValue('BC1', 'BAIKAKHIR,N,9,0');
 		$worksheet->setCellValue('BD1', 'REJECT,N,9,0');
 		$worksheet->setCellValue('BE1', 'KET,C,30');
+		// $worksheet->setCellValue('BF1', 'KETERANGAN_PENGURANGAN_TARGET');
+		// $worksheet->setCellValue('BG1', 'JAM_PENGURANGAN');
 		// =================== END OF HEADER & STYLING =================== //
 
 		$highestRow = $worksheet->getHighestRow() + 1;
@@ -1375,7 +1384,9 @@ class C_GLap extends CI_Controller
 		// =================== START OF CONTENT & STYLING =================== //
 		foreach ($jadi as $akhir) {
 			$tgl = explode('-', date('d-m-Y', strtotime($akhir['Tanggal'])));
+			// $tglnya = $tgl[0].'/'.$tgl[1].'/'.$tgl[2];
 			$worksheet->setCellValue('A' . $highestRow, PHPExcel_Shared_Date::FormattedPHPToExcel($tgl[2], $tgl[1], $tgl[0]));
+			// $worksheet->setCellValue('A' . $highestRow, $tglnya);
 			$worksheet->setCellValue('B' . $highestRow, $akhir['KodeKelompok']);
 			$worksheet->setCellValue('C' . $highestRow, $akhir['KodeCor']);
 			$worksheet->setCellValue('D' . $highestRow, $akhir['KodeKomponen']);
@@ -1431,7 +1442,17 @@ class C_GLap extends CI_Controller
 			$worksheet->setCellValue('BB' . $highestRow, $akhir['Rej']); //rejqc (scrap)
 			$worksheet->setCellValue('BC' . $highestRow, $akhir['HasilBaik']);
 			$worksheet->setCellValue('BD' . $highestRow, $akhir['Reject']); //reject (scrap)
-			$worksheet->setCellValue('BE' . $highestRow, $akhir['Keterangan']);
+			if (array_key_exists('ket_pengurangan', $akhir) || array_key_exists('jam_pengurangan', $akhir)) {
+				// if ($akhir['ket_pengurangan'] != '') {
+					$worksheet->setCellValue('BE' . $highestRow, $akhir['ket_pengurangan'].' '.$akhir['jam_pengurangan']);
+				// } else {
+				// 	$worksheet->setCellValue('BE' . $highestRow, '');
+				// }
+			}
+			
+			// $worksheet->setCellValue('BE' . $highestRow, $akhir['Keterangan']);
+			// $worksheet->setCellValue('BF' . $highestRow, $akhir['ket_pengurangan']);
+			// $worksheet->setCellValue('BG' . $highestRow, $akhir['jam_pengurangan']);
 			$highestRow++;
 		}
 		// =================== END OF CONTENT & STYLING =================== //
@@ -1483,6 +1504,8 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['Rintf'] = 0;
 			$jadi[$o]['Rejc25'] = (empty($vol['scrap_qty']) ? '0' : $vol['scrap_qty']);
 			$jadi[$o]['Rejt25'] = (empty($vol['scrap_qty']) ? '0' : $vol['scrap_qty']);
+			$jadi[$o]['ket_pengurangan'] = $vol['ket_pengurangan'];
+			$jadi[$o]['jam_pengurangan'] = $vol['jam_pengurangan'];
 			$o++;
 		}
 	
@@ -1596,6 +1619,8 @@ class C_GLap extends CI_Controller
 		$worksheet->setCellValue('P1', 'RINTF,N,9,0');
 		$worksheet->setCellValue('Q1', 'REJC25,N,9,0');
 		$worksheet->setCellValue('R1', 'REJT25,N,9,0');
+		// $worksheet->setCellValue('S1', 'KETERANGAN');
+		// $worksheet->setCellValue('T1', 'JAM_PENGURANGAN');
 
 		$highestRow = $worksheet->getHighestRow() + 1;
 
@@ -1620,6 +1645,8 @@ class C_GLap extends CI_Controller
 			$worksheet->setCellValue('P' . $highestRow, $akhir['Rintf']);
 			$worksheet->setCellValue('Q' . $highestRow, $akhir['Rejc25']);
 			$worksheet->setCellValue('R' . $highestRow, $akhir['Rejt25']);
+			// $worksheet->setCellValue('S' . $highestRow, $akhir['ket_pengurangan'].' ('.$akhir['jam_pengurangan'].')');
+			// $worksheet->setCellValue('T' . $highestRow, $akhir['jam_pengurangan']);
 			$highestRow++;
 		}
 		// =================== END OF CONTENT & STYLING =================== //

@@ -6,6 +6,7 @@ class C_RiwayatUpamk extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
@@ -21,7 +22,7 @@ class C_RiwayatUpamk extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Pekerja';
         $data['SubMenuOne'] = 'UPAMK';
         $data['SubMenuTwo'] = '';
@@ -47,7 +48,7 @@ class C_RiwayatUpamk extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_riwayatupamk->get_by_id($id);
         if ($row) {
             $data = array(
@@ -57,7 +58,7 @@ class C_RiwayatUpamk extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_upamk' => $row->id_upamk,
 				'tgl_berlaku' => $row->tgl_berlaku,
 				'tgl_tberlaku' => $row->tgl_tberlaku,
@@ -117,7 +118,7 @@ class C_RiwayatUpamk extends CI_Controller
     {
         $this->formValidation();
 
-        
+
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 				'tgl_tberlaku' => '9999-12-31',
@@ -128,8 +129,14 @@ class C_RiwayatUpamk extends CI_Controller
 				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
 			$data_riwayat	= array(
-				'tgl_tberlaku'	=>	$this->input->post('txtTglBerlaku',TRUE), 
+				'tgl_tberlaku'	=>	$this->input->post('txtTglBerlaku',TRUE),
 			);
+
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Create UPAMK noind=".$this->input->post('txtNoind');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_riwayatupamk->update_riwayat($this->input->post('txtNoind',TRUE),'9999-12-31',$data_riwayat);
             $this->M_riwayatupamk->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -138,7 +145,7 @@ class C_RiwayatUpamk extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
-        
+
     }
 
     public function update($id)
@@ -185,7 +192,7 @@ class C_RiwayatUpamk extends CI_Controller
     {
         $this->formValidation();
 
-        
+
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
@@ -196,6 +203,12 @@ class C_RiwayatUpamk extends CI_Controller
 				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
 			);
 
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update UPAMK ID=".$this->input->post('txtIdUpamk');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
+
             $this->M_riwayatupamk->update($this->input->post('txtIdUpamk', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
@@ -203,7 +216,7 @@ class C_RiwayatUpamk extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatUpamk'));
-        
+
     }
 
     public function delete($id)
@@ -212,6 +225,11 @@ class C_RiwayatUpamk extends CI_Controller
 
         if ($row) {
             $this->M_riwayatupamk->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete UPAMK ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -233,20 +251,20 @@ class C_RiwayatUpamk extends CI_Controller
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '6000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
                 $file_path  = 'assets/upload/importPR/masterupamk/'.$file_data['file_name'];
-                
+
             if ($this->csvimport->get_array($file_path)) {
-                
+
                 $csv_array  = $this->csvimport->get_array($file_path);
                 $data_exist = array();
                 $i = 0;
                 foreach ($csv_array as $row) {
                     if(array_key_exists('NOIND', $row)){
-                    	
+
  						//ROW DATA
 	                    $data = array(
 	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
@@ -301,14 +319,14 @@ class C_RiwayatUpamk extends CI_Controller
 	                    }else{
 	                    	$this->M_riwayatupamk->insert($data);
 	                    }
-	                    
+
                 	}
                 }
 
                 //LOAD EXIST DATA VERIFICATION PAGE
                 $this->checkSession();
         		$user_id = $this->session->userid;
-        
+
         		$data['Menu'] = 'Master Pekerja';
         		$data['SubMenuOne'] = '';
         		$data['SubMenuTwo'] = '';
@@ -331,13 +349,13 @@ class C_RiwayatUpamk extends CI_Controller
     }
 
     public function upload() {
-       
+
         $config['upload_path'] = 'assets/upload/importPR/masterupamk/';
         $config['file_name'] = 'MasterUPAMK-'.time();
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) {
             echo $this->upload->display_errors();
         }
@@ -345,7 +363,7 @@ class C_RiwayatUpamk extends CI_Controller
             $file_data  = $this->upload->data();
             $filename   = $file_data['file_name'];
             $file_path  = 'assets/upload/importPR/masterupamk/'.$file_data['file_name'];
-            
+
             if ($this->csvimport->get_array($file_path)){
                 $data = $this->csvimport->get_array($file_path);
                 $this->import($data, $filename);
@@ -354,11 +372,11 @@ class C_RiwayatUpamk extends CI_Controller
                 $this->import($data = array(), $filename = '');
             }
         }
-	}	
-	
+	}
+
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

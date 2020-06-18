@@ -60,11 +60,12 @@ class C_Index extends CI_Controller
 		$today = date('Y-m-d');
 		$data['Izin_id'] = $this->M_index->getIDIzin();
 		$data['noind'] = $this->M_index->getNoind();
+		$data['tgl'] = date('d/m/Y');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('PerizinanDinas/V_Footer',$data);
 
 	}
 
@@ -87,8 +88,10 @@ class C_Index extends CI_Controller
 		//
 		if (!empty($perioderekap)) {
 			$explode = explode(' - ', $perioderekap);
-			$periode1 = str_replace('/', '-', date('Y-m-d', strtotime($explode[0])));
-			$periode2 = str_replace('/', '-', date('Y-m-d', strtotime($explode[1])));
+			$wkt_satu = str_replace('/', '-', $explode[0]);
+			$wkt_dua = str_replace('/', '-', $explode[1]);
+			$periode1 = date('Y-m-d', strtotime($wkt_satu));
+			$periode2 = date('Y-m-d', strtotime($wkt_dua));
 
 			if ($periode1 == $periode2) {
 				$periode = "WHERE cast(ti.created_date as date) = '$periode1'";
@@ -123,13 +126,73 @@ class C_Index extends CI_Controller
 		}
 
 		if ($jenis == '1') {
-			$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
+			$izin = $this->M_index->IzinApprove($periode);
+			//untuk nyari pekerja
+			$a = $this->M_index->getTujuanA($periode);
+			$b = array();
+			$output = array();
+			foreach ($a as $key) {
+				$b[$key['izin_id']][] = $key['pekerja'];
+			}
+			foreach($b as $type => $label)
+			{
+				$output[] = array(
+					'izin_id' => $type,
+					'pekerja' => $label
+				);
+			}
+			// untuk nyari makan
+			$makan = array();
+			$ot_makan = array();
+			foreach ($a as $key) {
+				$makan[$key['izin_id']][] = $key['tujuan'];
+			}
+			foreach($makan as $type => $label)
+			{
+				$ot_makan[] = array(
+					'izin_id' => $type,
+					'tujuan' => $label
+				);
+			}
+			//menggabungkan data dengan makan
+			$c = array();
+			foreach ($izin as $key) {
+				foreach ($ot_makan as $value) {
+					if ($key['izin_id'] == $value['izin_id']) {
+						$c[] = array_merge($key, $value);
+					}
+				}
+			}
+			//menggabungkan data dengan pekerja
+			$data['IzinApprove'] = array();
+			foreach ($c as $key) {
+				foreach ($output as $value) {
+					if ($key['izin_id'] == $value['izin_id']) {
+						$data['IzinApprove'][] = array_merge($key, $value);
+					}
+				}
+			}
 			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Process',$data);
 		}else {
 			$data['pekerja'] = $this->M_index->getPekerja($periodea);
 			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Human',$data);
 		}
 		echo json_encode($view);
+	}
+
+	public function hapusini($id)
+	{
+		$lnoind = $this->M_index->getIDIzinbyID($id);
+		$noind = '';
+		foreach ($lnoind as $key) {
+			$noind .= $key['noind'].' ';
+		}
+		$aksi = 'HAPUS PERIZINAN DINAS';
+		$detail = 'Hapus Izin ID='.$id.' noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		$del = $this->M_index->hapusIzin($id);
+		
+		return $del;
 	}
 
 }

@@ -48,19 +48,21 @@
                                 <div class="col-md-12">
                                 <div class="panel-body">
                                     <div class="table-responsive" >
-                                        <table class="datatable table table-bordered table-hover table-striped text-center tbltrack" style="width: 100%;">
+                                        <table class="datatable table table-bordered table-hover table-striped text-center tbltrack" style="width: 100%;table-layout:fixed">
                                             <thead class="btn-info" style="color:black">
                                                 <tr>
-                                                    <th>No</th>
-                                                    <th></th>
+                                                    <th style="width:20px">No</th>
+                                                    <th style="width:20px"></th>
                                                     <th>Tanggal</th>
                                                     <th>Jenis Dokumen</th>
                                                     <th>No Dokumen</th>
+                                                    <th>Ekspedisi</th>
+                                                    <th>Kota</th>
                                                     <th>Jumlah Item</th>
                                                     <th>Jumlah Pcs</th>
                                                     <th>Keterangan</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th style="width:70px">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -77,6 +79,18 @@
                                                     }elseif ($val['SELESAI_PELAYANAN'] != '' && $val['SELESAI_PENGELUARAN'] != '' && $val['SELESAI_PACKING'] == '') {
                                                         $status = "PACKING";
                                                     }
+                                                    if ($val['BON'] == 'BON' && $val['SELESAI_PELAYANAN'] != '') {
+                                                    
+                                                    }elseif ($val['BON'] == 'LANGSUNG' && $val['SELESAI_PENGELUARAN'] != '') {
+                                                        
+                                                    }else{
+                                                        if ($val['BON'] == 'PENDING') {
+                                                            $btn = 'btn-warning';
+                                                        }else {
+                                                            $btn = 'btn-info';
+                                                        }
+                                                    $eks = $this->M_tracking->getEkspedisi($val['NO_DOKUMEN']);
+                                                    // echo "<pre>";print_r($eks);exit();
                                                     ?>
                                                     <tr id="baris<?= $no?>">
                                                         <td class="<?= $td?>" ><?= $no; ?></td>
@@ -84,13 +98,16 @@
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
                                                         <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="ekspedisi<?= $no?>" value="<?= $eks[0]['EKSPEDISI']?>"><?= $eks[0]['EKSPEDISI']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="kota<?= $no?>" value="<?= $eks[0]['KOTA_KIRIM']?>"><?= $eks[0]['KOTA_KIRIM']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT'] ?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="bon<?= $no?>" value="<?= $val['BON']?>"><?= $val['URGENT'] ?>  <?= $val['BON'] ?></td>
                                                         <td class="<?= $td?>"><?= $status ?></td>
-                                                        <td class="<?= $td?>"><button type="button" class="btn btn-danger" id="btncancelSPB" onclick="btnCancelKGS(<?= $no?>)"><i class="fa fa-close"></i></button></td>
+                                                        <td class="<?= $td?>"><button type="button" class="btn btn-danger" id="btncancelSPB" onclick="btnCancelKGS(<?= $no?>)"><i class="fa fa-close"></i></button>
+                                                        <button type="button" class="btn <?= $btn?>" id="btnpendingSPB<?= $no?>" onclick="btnPendingSpb(<?= $no?>)"><i class="fa fa-history"></i></button></td>
                                                     </tr>
-                                                <?php $no++; $i++; }?>
+                                                <?php $no++; $i++; } }?>
                                                 
                                             </tbody>
                                         </table>

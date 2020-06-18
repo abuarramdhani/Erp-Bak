@@ -253,7 +253,8 @@ $(document).ready(function () {
 
    $('#table_prosesgaji').dataTable({
           "paging": true,
-          "lengthChange": false,
+          "lengthChange": true,
+          "iDisplayLength" : -1,
           "searching": true,
           "ordering": true,
 		  "info": true,
@@ -857,3 +858,286 @@ $(document).ready(function () {
  	})
  	
  }
+
+ $(document).ready(function(){
+ 	$(('#tblHLCMMOnitoringPengembalian')).DataTable();
+ 	
+ 	$('#txtHLCMIdulFitri').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
+ 	$('#txtHLCMPengembalianTHRTanggal').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
+ 	$('#txtHLCMIdulFitriBulanTHR').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
+ 	$('#txtHLCMTanggalCetakTHR').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
+ 	$('#txtHLCMPeriodeAwalTHR').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+ 	});
+
+ 	$('#txtHLCMPeriodeAkhirTHR').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+ 	});
+
+ 	$('.slcHLCMNoindTHRBulan').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        dropdownParent: $('#modal-HLCM-THRBulan'),
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'HitungHlcm/THR/PerhitunganBulan/cariPekerja',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
+    $('.slcHLCMNoindTHR').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        dropdownParent: $('#modal-HLCM-THR'),
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'HitungHlcm/THR/Perhitungan/cariPekerja',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
+ 	$('#txtHLCMIdulFitri').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitri').val();
+ 		awal = $('#txtHLCMPeriodeAwalTHR').val();
+ 		akhir = $('#txtHLCMPeriodeAkhirTHR').val();
+
+ 		if (tanggal && awal && akhir) {
+ 			$('#btnHLCMHitungTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakTHR').prop('disabled',true);
+ 	})
+
+ 	$('#txtHLCMPeriodeAwalTHR').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitri').val();
+ 		awal = $('#txtHLCMPeriodeAwalTHR').val();
+ 		akhir = $('#txtHLCMPeriodeAkhirTHR').val();
+ 		
+ 		if (tanggal && awal && akhir) {
+ 			$('#btnHLCMHitungTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakTHR').prop('disabled',true);
+ 	})
+
+ 	$('#txtHLCMPeriodeAkhirTHR').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitri').val();
+ 		iawal = $('#txtHLCMPeriodeAwalTHR').val();
+ 		akhir = $('#txtHLCMPeriodeAkhirTHR').val();
+ 		
+ 		if (tanggal && awal && akhir) {
+ 			$('#btnHLCMHitungTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakTHR').prop('disabled',true);
+ 	})
+
+ 	$('#txtHLCMIdulFitriBulanTHR').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+
+ 		if (tanggal) {
+ 			$('#btnHLCMHitungBulanTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungBulanTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakBulanTHR').prop('disabled',true);
+		$('#btnHLCMExportBulanTHR').prop('disabled',true);
+ 	})
+
+ 	$('#slcHCLMLokasiBulanTHR').on('change',function(){
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+ 		
+ 		if (tanggal) {
+ 			$('#btnHLCMHitungBulanTHR').prop('disabled',false);
+ 		}else{
+ 			$('#btnHLCMHitungBulanTHR').prop('disabled',true);
+ 		}
+		$('#btnHLCMCetakBulanTHR').prop('disabled',true);
+		$('#btnHLCMExportBulanTHR').prop('disabled',true);
+ 	})
+
+ 	$('#btnHLCMHitungBulanTHR').on('click',function(){
+ 		lokasi = $('#slcHCLMLokasiBulanTHR').val();
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+ 		
+ 		if (tanggal) {
+ 			if (lokasi) {
+ 				isiForm = {lokasi: lokasi, tanggal: tanggal}
+ 			}else{
+ 				isiForm = {tanggal: tanggal}
+ 			}
+ 			$.ajax({
+ 				data: isiForm,
+	            type: 'POST',
+	            url: baseurl + 'HitungHlcm/THR/PerhitunganBulan/hitung',
+	            error: function(xhr,status,error){
+	                console.log(xhr);
+	                console.log(status);
+	                console.log(error);
+	                swal.fire({
+	                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                    html: xhr['responseText'],
+	                    type: "error",
+	                    confirmButtonText: 'OK',
+	                    confirmButtonColor: '#d63031',
+	                })
+	            },
+	            success: function(result){
+	            	obj = JSON.parse(result);
+	            	// console.log(obj);
+	            	html = "";
+	            	for (var i = 0; i < obj.length; i++) {
+	            		html += "<tr>";
+	            		html += "<td>";
+	            		html += (i + 1);
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['noind'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['nama'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['lokasi_kerja'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['masuk'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['masa_kerja'];
+	            		html += "</td>";
+	            		html += "<td>";
+	            		html += obj[i]['bulan_thr'];
+	            		html += "</td>";
+	            		html += "</tr>";
+	            	}
+	            	$('#tbodyBulanTHR').html(html);
+	            	$('#tblHLCMBulanTHR').DataTable();
+					$('#btnHLCMCetakBulanTHR').attr('data-lokasi',lokasi);
+					$('#btnHLCMCetakBulanTHR').attr('data-tanggal',tanggal);
+					$('#btnHLCMCetakBulanTHR').prop('disabled',false);
+					$('#btnHLCMExportBulanTHR').prop('disabled',false);
+	            }
+ 			})
+ 		};
+ 	});
+
+ 	/*$('#btnHLCMCetakBulanTHR').on('click',function(){
+ 		lokasi = $('#slcHCLMLokasiBulanTHR').val();
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+ 		
+ 		if (tanggal) {
+ 			if (lokasi) {
+ 				isiForm = '?lokasi=' + lokasi + '&tanggal=' + tanggal
+ 			}else{
+ 				isiForm = '?tanggal=' + tanggal
+ 			}
+ 			window.open(baseurl + 'HitungHlcm/THR/PerhitunganBulan/cetak' + isiForm,'_blank');
+ 		};
+ 	});*/
+
+ 	$('#btnHLCMExportBulanTHR').on('click',function(){
+ 		lokasi = $('#slcHCLMLokasiBulanTHR').val();
+ 		tanggal = $('#txtHLCMIdulFitriBulanTHR').val();
+ 		
+ 		if (tanggal) {
+ 			if (lokasi) {
+ 				isiForm = '?lokasi=' + lokasi + '&tanggal=' + tanggal
+ 			}else{
+ 				isiForm = '?tanggal=' + tanggal
+ 			}
+ 			window.open(baseurl + 'HitungHlcm/THR/PerhitunganBulan/export' + isiForm,'_blank');
+ 		};
+ 	});
+
+ 	$('.btnHLCMTHRCetakBulan').on('click',function(){
+ 		var lokasi = $(this).attr('data-lokasi');
+ 		var tanggal = $(this).attr('data-tanggal');
+ 		$('#txtTanggalIdulFitri').val(tanggal);
+ 		$('#txtLokasiKerja').val(lokasi);
+ 		$('#modal-HLCM-THRBulan').modal('show');
+ 	});
+
+ 	$('.modal-close-HLCM-THRBulan').on('click',function(){
+ 		$('#modal-HLCM-THRBulan').modal('hide');
+ 	})
+
+ 	$('.btnHLCMTHRCetakRekap').on('click',function(){
+ 		var lokasi = $(this).attr('data-lokasi');
+ 		var tanggal = $(this).attr('data-tanggal');
+ 		$('#txtTanggalIdulFitri').val(tanggal);
+ 		$('#txtLokasiKerja').val(lokasi);
+ 		$('#modal-HLCM-THR').modal('show');
+ 	});
+
+ 	$('.modal-close-HLCM-THR').on('click',function(){
+ 		$('#modal-HLCM-THR').modal('hide');
+ 	})
+ })

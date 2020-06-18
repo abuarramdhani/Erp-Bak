@@ -521,7 +521,14 @@ class M_createkib extends CI_Model
 		// }
 		$sql = " SELECT kkk.FROM_SUBINVENTORY_CODE FROM_SUBINVENTORY_CODE
 			      ,kkk.TO_SUBINVENTORY_CODE
-			      ,msi.ATTRIBUTE1 ALIAS_KODE
+			      --,msi.ATTRIBUTE1 ALIAS_KODE
+				  --,nvl(mil.ATTRIBUTE15, msi.ATTRIBUTE1) ALIAS_KODE
+				  ,nvl(
+					(select mil1.ATTRIBUTE15
+						from mtl_item_locations mil1
+						where mil1.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
+						and rownum = 1
+						),msi.ATTRIBUTE1) ALIAS_KODE
 			      ,decode(kkk.ITEM_STATUS,1,'OK',2,'REJECT',3,'SCRAP') status
 			      ,msib.SEGMENT1 item_code
 			      ,msib.DESCRIPTION
@@ -591,7 +598,14 @@ class M_createkib extends CI_Model
 		$sql = "SELECT kkk.FROM_SUBINVENTORY_CODE FROM_SUBINVENTORY_CODE
 				  ,mil.SEGMENT1 TO_LOCATOR 
                   ,kkk.TO_SUBINVENTORY_CODE
-                  ,msi.ATTRIBUTE1 ALIAS_KODE
+                  --,msi.ATTRIBUTE1 ALIAS_KODE
+				  --,nvl(mil.ATTRIBUTE15, msi.ATTRIBUTE1) ALIAS_KODE
+				  ,nvl(
+					(select mil1.ATTRIBUTE15
+						from mtl_item_locations mil1
+						where mil1.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
+						and rownum = 1
+						),msi.ATTRIBUTE1) ALIAS_KODE
                   ,msib.SEGMENT1 item_code
                   ,msib.DESCRIPTION
                   ,msib.CONTAINER_TYPE_CODE kode_kontainer
@@ -635,7 +649,14 @@ class M_createkib extends CI_Model
 		$sql = " SELECT kkk.FROM_SUBINVENTORY_CODE FROM_SUBINVENTORY_CODE 
 				      ,kkk.TO_SUBINVENTORY_CODE
 				      ,mil.SEGMENT1 TO_LOCATOR 
-				      ,msi.ATTRIBUTE1 ALIAS_KODE
+				      --,msi.ATTRIBUTE1 ALIAS_KODE
+					  --,nvl(mil.ATTRIBUTE15, msi.ATTRIBUTE1) ALIAS_KODE
+					  ,nvl(
+						(select mil1.ATTRIBUTE15
+							from mtl_item_locations mil1
+							where mil1.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
+							and rownum = 1
+							),msi.ATTRIBUTE1) ALIAS_KODE
 				      ,decode(kkk.ITEM_STATUS,1,'OK',2,'REJECT',3,'SCRAP') status
 				      ,msib.SEGMENT1 item_code
 				      ,msib.DESCRIPTION
@@ -708,7 +729,14 @@ class M_createkib extends CI_Model
 				 ,msibkom.description desc_komp
 				 ,kkk.qty_kib
 				 ,msibkom.PRIMARY_UOM_CODE uom_komp
-				 ,msi.ATTRIBUTE1 ALIAS_KODE
+				 --,msi.ATTRIBUTE1 ALIAS_KODE
+				 --,nvl(mil.ATTRIBUTE15, msi.ATTRIBUTE1) ALIAS_KODE
+				 ,nvl(
+					(select mil1.ATTRIBUTE15
+						from mtl_item_locations mil1
+						where mil1.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
+						and rownum = 1
+						),msi.ATTRIBUTE1) ALIAS_KODE
 				FROM 
 				MTL_SYSTEM_ITEMS_B msibkom ,
 				 mtl_system_items_b msibassy,

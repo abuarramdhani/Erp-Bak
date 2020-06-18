@@ -110,16 +110,16 @@ class C_JadwalPengiriman extends CI_Controller
 			$angka2 = 0;
 			if ($key['hari2'] == '0') {
 				$arrData[$angka] = array(
-					'tanggal' => $key['tanggal1']." ".$bulan[$key['bulan']]." ".$key['tahun']."<br>(".$dayow[$key['hari1']].")"
+					'tanggal' => $key['tanggal1']." ".$bulan[intval($key['bulan'])]." ".$key['tahun']."<br>(".$dayow[intval($key['hari1'])].")"
 				);
 			}else{
 				$arrData[$angka] = array(
-					'tanggal' => $key['tanggal1']." - ".$key['tanggal2']." ".$bulan[$key['bulan']]." ".$key['tahun']."<br>(".$dayow[$key['hari1']]." - ".$dayow[$key['hari2']].")"
+					'tanggal' => $key['tanggal1']." - ".$key['tanggal2']." ".$bulan[intval($key['bulan'])]." ".$key['tahun']."<br>(".$dayow[intval($key['hari1'])]." - ".$dayow[intval($key['hari2'])].")"
 				);
 			}
 			
 			if ($key['fs_tujuan_shift1'] == 't' or $key['fs_tujuan_shift1'] == '1') {
-				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"1",$key['fs_tanggal'],$bulan[$key['bulan']]);
+				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"1",$key['fs_tanggal'],$bulan[intval($key['bulan'])]);
 				$wkt = $this->M_jadwalpengiriman->getWaktuJadwalPengiriman('4',$key['hari1']);
 				$arrData[$angka]['jadwal'] = "SHIFT 1 & SHIFT UMUM";
 				$arrData[$angka]['shift'] = "1";
@@ -134,7 +134,7 @@ class C_JadwalPengiriman extends CI_Controller
 				$angka++;
 			}
 			if ($key['fs_tujuan_shift2'] == 't' or $key['fs_tujuan_shift2'] == '1') {
-				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"2",$key['fs_tanggal'],$bulan[$key['bulan']]);
+				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"2",$key['fs_tanggal'],$bulan[intval($key['bulan'])]);
 				$wkt = $this->M_jadwalpengiriman->getWaktuJadwalPengiriman('2',$key['hari1']);
 				$arrData[$angka]['jadwal'] = "SHIFT 2";
 				$arrData[$angka]['shift'] = "2";
@@ -149,7 +149,7 @@ class C_JadwalPengiriman extends CI_Controller
 				$angka++;
 			}
 			if ($key['fs_tujuan_shift3'] == 't' or $key['fs_tujuan_shift3'] == '1') {
-				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"3",$key['fs_tanggal'],$bulan[$key['bulan']]);
+				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"3",$key['fs_tanggal'],$bulan[intval($key['bulan'])]);
 				$wkt = $this->M_jadwalpengiriman->getWaktuJadwalPengiriman('3',$key['hari1']);
 				$arrData[$angka]['jadwal'] = "SHIFT 3";
 				$arrData[$angka]['shift'] = "3";
@@ -222,14 +222,14 @@ class C_JadwalPengiriman extends CI_Controller
 		foreach ($hasil as $key) {
 			if ($key['hari2'] == '0') {
 				$arrData[$angka] = array(
-					'tanggal' => $key['tanggal1']." ".$bulan[$key['bulan']]." ".$key['tahun']."<br>(".$dayow[$key['hari1']].")",
+					'tanggal' => $key['tanggal1']." ".$bulan[intval($key['bulan'])]." ".$key['tahun']."<br>(".$dayow[intval($key['hari1'])].")",
 					'jadwal' => "",
 					'waktu' => "",
 					'keterangan' => ""
 				);
 			}else{
 				$arrData[$angka] = array(
-					'tanggal' => $key['tanggal1']." - ".$key['tanggal2']." ".$bulan[$key['bulan']]." ".$key['tahun']."<br>(".$dayow[$key['hari1']]." - ".$dayow[$key['hari2']].")",
+					'tanggal' => $key['tanggal1']." - ".$key['tanggal2']." ".$bulan[intval($key['bulan'])]." ".$key['tahun']."<br>(".$dayow[intval($key['hari1'])]." - ".$dayow[intval($key['hari2'])].")",
 					'jadwal' => "",
 					'waktu' => "",
 					'keterangan' => ""
@@ -237,7 +237,7 @@ class C_JadwalPengiriman extends CI_Controller
 			}
 			
 			if ($key['fs_tujuan_shift1'] == 't' or $key['fs_tujuan_shift1'] == '1') {
-				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"1",$key['fs_tanggal'],$bulan[$key['bulan']]);
+				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"1",$key['fs_tanggal'],$bulan[intval($key['bulan'])]);
 
 				if (empty($arrData[$angka]['jadwal'])) {
 					$arrData[$angka]['jadwal'] = "SHIFT 1 & SHIFT UMUM";
@@ -257,7 +257,7 @@ class C_JadwalPengiriman extends CI_Controller
 				 
 			}
 			if ($key['fs_tujuan_shift2'] == 't' or $key['fs_tujuan_shift2'] == '1') {
-				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"2",$key['fs_tanggal'],$bulan[$key['bulan']]);
+				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"2",$key['fs_tanggal'],$bulan[intval($key['bulan'])]);
 
 				if (empty($arrData[$angka]['jadwal'])) {
 					$arrData[$angka]['jadwal'] = "SHIFT 2";
@@ -276,7 +276,7 @@ class C_JadwalPengiriman extends CI_Controller
 				}
 			}
 			if ($key['fs_tujuan_shift3'] == 't' or $key['fs_tujuan_shift3'] == '1') {
-				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"3",$key['fs_tanggal'],$bulan[$key['bulan']]);
+				$ket = $this->M_jadwalpengiriman->getKeteranganJadwalPengiriman($key['fs_kd_katering'],"3",$key['fs_tanggal'],$bulan[intval($key['bulan'])]);
 
 				if (empty($arrData[$angka]['jadwal'])) {
 					$arrData[$angka]['jadwal'] = "SHIFT 3";
@@ -302,12 +302,13 @@ class C_JadwalPengiriman extends CI_Controller
 		$data['table'] = $arrData;
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('', 'F4',8,15, 15, 16, 16, 9, 9);
+		$pdf = new mPDF('', 'F4',8,10, 10, 10, 10, 9, 9);
 		$filename = "JadwalPengiriman.pdf";
 		$html = $this->load->view('CateringManagement/Cetak/JadwalPengiriman/V_cetak.php',$data,true);
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh ".$this->session->user." - ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". <br>Halaman {PAGENO} dari {nb}</i>");
 		$pdf->Output($filename, 'I');
 	}
 

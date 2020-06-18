@@ -13,6 +13,7 @@ class C_MasterSuratPeringatan extends CI_Controller {
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
+		$this->load->library('General');
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('JurnalPenilaian/M_sp');
@@ -40,8 +41,8 @@ class C_MasterSuratPeringatan extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Data';
+		$data['SubMenuOne'] = 'Surat Peringatan';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -50,12 +51,6 @@ class C_MasterSuratPeringatan extends CI_Controller {
 		
 		$data['number'] = 1;
 		$data['GetSP'] 	= $this->M_sp->GetSP();
-		$idSP			= $this->input->post('txtIdSP');
-		// echo "<pre>";
-		// var_dump($_POST);
-		// print_r($data);
-		// echo "</pre>";
-		// exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('JurnalPenilaian/MasterData/SuratPeringatan/V_Index',$data);
@@ -69,7 +64,7 @@ class C_MasterSuratPeringatan extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Surat Peringatan';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -85,11 +80,17 @@ class C_MasterSuratPeringatan extends CI_Controller {
 	// ADD 
 	public function add()
 	{
-		$date 		= $this->input->post('txtDate');
 		$noSP		= $this->input->post('txtNoSP');
 		$nilai 		= $this->input->post('txtNilai');
 
-		$insertId = $this->M_sp->AddMaster($date, $noSP, $nilai);
+		$inputSP	=	array(
+							'sp_num'					=>	$noSP,
+							'nilai'						=>	$nilai,
+							'last_update_timestamp'		=> 	$this->general->ambilWaktuEksekusi(),
+							'creation_timestamp'		=>	$this->general->ambilWaktuEksekusi(),
+						);
+
+		$insertId = $this->M_sp->AddMaster($inputSP);
 		redirect('PenilaianKinerja/MasterSuratPeringatan');
 	}
 
@@ -107,7 +108,7 @@ class C_MasterSuratPeringatan extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Surat Peringatan';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -128,7 +129,7 @@ class C_MasterSuratPeringatan extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Surat Peringatan';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -147,12 +148,16 @@ class C_MasterSuratPeringatan extends CI_Controller {
 	public function update($idSP)
 	{
 		$idSP		= $this->input->post('txtIdSP');
-		$date 		= $this->input->post('txtDate');
 		$noSP		= $this->input->post('txtNoSP');
 		$nilai 		= $this->input->post('txtNilai');
 
+		$updateSP 	=	array(
+							'sp_num'					=>	$noSP,
+							'nilai'						=>	$nilai,
+							'last_update_timestamp'		=>	$this->general->ambilWaktuEksekusi(),
+						);
 
-		$this->M_sp->Update($date, $noSP, $nilai, $idSP);
+		$this->M_sp->Update($updateSP, $idSP);
 		redirect('PenilaianKinerja/MasterSuratPeringatan');
 	}
 //----------------------------------- JAVASCRIPT RELATED --------------------//

@@ -28,16 +28,25 @@
             <div class="box box-warning box-solid">
                 <div class="box-header with-border">
                     <div class="col-lg-6">
-                        <h2><b>Data Baru - Personalia <?= $lv ?></b></h2>
+                        <h2><b>Data Baru - Hubungan Kerja <?= $lv ?></b></h2>
                     </div>
                     <div class="col-lg-6 pull-right">
                         <form action="">
-                            <label class="label-control col-lg-12 text-right" for="all-seksi-document">Seksi</label>
-                            <div class="col-lg-8 pull-right">
+                            <label class="label-control col-lg-6 text-right" for="all-seksi-document">Lokasi</label>
+                            <label class="label-control col-lg-6 text-right" for="all-seksi-document">Seksi</label>
+                            <div class="col-lg-6 pull-right">
                                 <select name="seksi" id="all-seksi-document" class="select2 form-control">
                                     <option value="">---pilih semua---</option>
                                     <?php foreach($seksi as $item): ?>
                                         <option <?php echo ($is_get && substr($item->kodesie,0,7) == $selected) ? 'selected'  : '' ?> value="<?= substr($item->kodesie,0,7) ?>"><?=$item->kodesie." - ".$item->nama ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 pull-right">
+                                <select name="lokasi" id="all-seksi-document" class="select2 form-control">
+                                    <option value="">Semua Lokasi</option>
+                                    <?php foreach ($l_lokasi as $l): ?>
+                                         <option <?= ($l['id_'] == $c_lok) ? 'selected':'' ?> value="<?= $l['id_'] ?>"><?= $l['lokasi_kerja'] ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -57,6 +66,7 @@
                                     <td>Nama</td>
                                     <td>Keterangan</td>
                                     <td>Seksi</td>
+                                    <td>Lokasi Distribusi</td>
                                     <td>Tanggal</td>
                                     <td>Tanggal Update</td>
                                     <td>Action</td>
@@ -77,6 +87,9 @@
                                     </td>
                                     <td>
                                         <?= $row['seksi_name'] ?>
+                                    </td>
+                                    <td>
+                                        <?= empty($row['lokasi']) ? '-':$all_lokasi[$row['lokasi']] ?>
                                     </td>
                                     <td>
                                         <?php echo 
@@ -106,15 +119,17 @@
 <!-- only noob die in redzone -->
 <script>
     baseurl = '<?= base_url() ?>'
+
     const accData = (id, lv) => {
+        let checked = $('.check').parent().filter(".checked")
+
         swal.fire({
-            title: 'Yakin untuk mengapprove ?',
+            title: `Yakin untuk mengapprove &nbsp;<span style="color: red;">${checked.length ? checked.length : 1}</span>&nbsp; data ?`,
             text: 'cek kevalid-an data',
             type: 'question',
             showCancelButton: true
         }).then(res => {
             if (res.value) {
-                let checked = $('.check').parent().filter(".checked")
                 let allid = []
                 if (checked.length > 0) {
                     checked.each(function() {
@@ -150,15 +165,16 @@
     }
 
     const rejData = (id, lv) => {
+        let checked = $('.check').parent().filter(".checked")
+
         swal.fire({
-            title: 'Yakin untuk reject ?',
+            title: `Yakin untuk reject &nbsp<span style="color: red;">${checked.length ? checked.length : 1}</span>&nbsp data ?`,
             text: 'masukkan alasan',
             input: 'textarea',
             type: 'question',
             showCancelButton: true
         }).then(res => {
             if (res.value) {
-                let checked = $('.check').parent().filter(".checked")
                 let allid = []
                 if (checked.length > 0) {
                     checked.each(function() {

@@ -54,7 +54,7 @@ class C_TransferPuasa extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function Transfer(){
+	public function Proses(){
 		$tgl = $this->input->post('tanggal');
 		$periode = $this->input->post('periode');
 		$periode = explode(" - ", $periode);

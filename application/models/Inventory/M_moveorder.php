@@ -751,6 +751,7 @@ class M_moveorder extends CI_Model
 							wro.QUANTITY_PER_ASSEMBLY Qty_UNIT,
 							mtrl.QUANTITY qty_minta,
 							mtrl.FROM_SUBINVENTORY_CODE lokasi,
+							mil.SEGMENT1 lokator ,
 							bcs.DESCRIPTION || '(' || to_char(
 							to_date(
 							bst.FROM_TIME,
@@ -844,7 +845,8 @@ class M_moveorder extends CI_Model
 							BOM_DEPARTMENTS bd, -- produk
 							mtl_system_items_b msib_produk, --shift
 							BOM_SHIFT_TIMES bst,
-							BOM_CALENDAR_SHIFTS bcs
+							BOM_CALENDAR_SHIFTS bcs,
+							mtl_item_locations mil
 							where
 							mtrh.header_id = mtrl.header_id
 							and mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
@@ -865,6 +867,7 @@ class M_moveorder extends CI_Model
 							and mtrh.request_number = '$moveOrderAwal'
 							-- and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
 							and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+							and mtrl.FROM_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
 							order by
 							mtrl.LINE_ID,
 							we.WIP_ENTITY_NAME,
@@ -984,6 +987,7 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM7 = '.$jan.'<br>';
 		// echo ':P_PARAM8 = '.$job_id.'<br>';		
 		// echo ':P_PARAM9 = '.$nomor_mo.'<br>';
+		// echo ':P_PARAM10 = '.$user_id.'<br>';
 
 		// exit();
 		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
@@ -993,7 +997,7 @@ class M_moveorder extends CI_Model
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
 		  
-		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9); END;";
+		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9,:P_PARAM10); END;";
 
 		// $param4 = '';
 
@@ -1009,6 +1013,7 @@ class M_moveorder extends CI_Model
 		oci_bind_by_name($stmt,':P_PARAM7',$jan);
 		oci_bind_by_name($stmt,':P_PARAM8',$job_id);
 		oci_bind_by_name($stmt,':P_PARAM9',$nomor_mo);
+		oci_bind_by_name($stmt,':P_PARAM10',$user_id);
 
 		
 		// if (!$data) {
@@ -1132,5 +1137,82 @@ class M_moveorder extends CI_Model
 	// 	$query = $oracle->query($sql);
 	// 	return $query->result_array();
 	// }
+
+	function getKurang($job,$atr)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "SELECT distinct wro.REQUIRED_QUANTITY req ,msib2.SEGMENT1 item_code
+				,msib2.DESCRIPTION item_desc ,wro.ATTRIBUTE1 gudang_asal  $atr
+                     from wip_entities we
+                    ,wip_discrete_jobs wdj
+                    ,mtl_system_items_b msib
+                    ,wip_requirement_operations wro 
+                    ,mtl_system_items_b msib2
+--                    ,bom_bill_of_materials bom
+--                    ,bom_inventory_components bic
+                    ,MTL_ITEM_LOCATIONS mil
+                    ,MTL_ITEM_LOCATIONS mil2
+                    ,wip_operations wo
+                    ,bom_calendar_shifts bcs
+                    ,bom_departments bd
+                    ,BOM_OPERATIONAL_ROUTINGS bor
+                where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+                and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+                and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+                and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
+                and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
+                and wro.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
+                and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+--                and bom.BILL_SEQUENCE_ID = bic.BILL_SEQUENCE_ID
+--                and bom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+--                and bom.ORGANIZATION_ID = msib.ORGANIZATION_ID
+--                and bic.COMPONENT_ITEM_ID = msib2.INVENTORY_ITEM_ID
+--                and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
+                and wro.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
+                and wro.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
+                --routing
+                and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+                --
+                and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+                and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
+                and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+                and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+                -- INT THE TRUTH IT WILL USED --
+                and wro.ATTRIBUTE1 is not null
+                -- INT THE TRUTH ABOVE IT WILL USED --
+                and we.WIP_ENTITY_NAME = '$job'--'D191103750'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getShift2($shift)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select distinct BCS.SHIFT_NUM,BCS.DESCRIPTION
+				from BOM_SHIFT_TIMES bst
+				    ,BOM_CALENDAR_SHIFTS bcs
+				    ,bom_shift_dates bsd
+				where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+				  and bst.SHIFT_NUM = bcs.SHIFT_NUM
+				  and bcs.CALENDAR_CODE='KHS_CAL'
+				  and bst.shift_num = bsd.shift_num
+				  and bst.calendar_code=bsd.calendar_code
+				  and BCS.SHIFT_NUM = '$shift'
+				  and bsd.SEQ_NUM is not null
+				  ORDER BY BCS.SHIFT_NUM asc";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getDescDept($dept)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = " SELECT distinct dept, description 
+				  FROM KHS_DEPT_ROUT_CLASS_V
+				  WHERE dept = '$dept'
+				  ORDER BY dept asc";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
 
 }

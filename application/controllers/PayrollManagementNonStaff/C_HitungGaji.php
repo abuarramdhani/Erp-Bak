@@ -9,6 +9,7 @@ class C_HitungGaji extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -60,7 +61,7 @@ class C_HitungGaji extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(   
+		$columns = array(
 			0 => 'noind',
 			1 => 'noind',
 			2 => 'tgl_pembayaran',
@@ -125,7 +126,7 @@ class C_HitungGaji extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -232,21 +233,21 @@ class C_HitungGaji extends CI_Controller
 					elseif (date('l', strtotime($dataLKHSeksi['tgl'])) == 'Friday' || date('l', strtotime($dataLKHSeksi['tgl'])) == 'Saturday') {
 						$target = $dataLKHSeksi['target_jumat_sabtu'];
 						$waktu_cycletime = $this->M_hitunggaji->getSetelan('cycle_time_jumat_sabtu');
-						
+
 					}
 					else{
 						$target = $dataLKHSeksi['target_senin_kamis'];
 						$waktu_cycletime = $this->M_hitunggaji->getSetelan('cycle_time_senin_kamis');
-						
+
 					}
 
 					/*hasil rapat 26 April :
-					LKH 			Target Benda 		
+					LKH 			Target Benda
 					Waktu setting 	Target setting 		Waktu Efektif
 					0 				20 					Hari Panjang : 390 & Hari Pendek 330
 					10 				20 					Hari Panjang : 370 & Hari Pendek 310
 					30  			20 					Hari Panjang : 370 & Hari Pendek 310
-					
+
 					if (0 != $dataLKHSeksi['setting_time']) {
 						$waktu_cycletime=$waktu_cycletime-$dataLKHSeksi['waktu_setting'];
 					}*/
@@ -254,7 +255,7 @@ class C_HitungGaji extends CI_Controller
 					if ($dataLKHSeksi['kode_barang'] == '')  {
 						$pesanerror='Kode Barang kosong di LKH.<br>';
 					}
-					
+
 
 					if (($dataLKHSeksi['kode_barang'] != 'ABSEN') && ($dataLKHSeksi['kode_proses']==''))  {
 						$pesanerror='Kode Proses kosong di LKH.<br>';
@@ -276,7 +277,7 @@ class C_HitungGaji extends CI_Controller
 					if ($dataLKHSeksi['kd_brg'] == 'ABSEN') {
 						$target = 0;
 					}
-					
+
 					$targe_proposional = $target/360 * (360-$dataLKHSeksi['setting_time']);
 
 					if ($target == 0 || $target == '') {
@@ -311,7 +312,7 @@ class C_HitungGaji extends CI_Controller
 					$pencapaian_hari_ini = $pencapaian_hari_ini + $pencapaian;
 					$tanggal = $dataLKHSeksi['tgl'];
 				}
-			} //end foreach 
+			} //end foreach
 
 			if ($tanggal != 0) {
 				if (strtoupper(substr($noind, 0, 1)) == 'E') {
@@ -568,9 +569,9 @@ class C_HitungGaji extends CI_Controller
 		$tgl_bayar = $this->input->post('txtTglPembayaran');
 
 		$dataDelete = array(
-			'kodesie' => $kodesie, 
-			'bln_gaji' => $bln_gaji, 
-			'thn_gaji' => $thn_gaji, 
+			'kodesie' => $kodesie,
+			'bln_gaji' => $bln_gaji,
+			'thn_gaji' => $thn_gaji,
 		);
 
 		$this->M_hitunggaji->deleteHasilHitung($dataDelete);
@@ -593,12 +594,12 @@ class C_HitungGaji extends CI_Controller
 		$IMMNominal = 0;
 		$UBTNominal = 0;
 		$UPAMKNominal = 0;
-			
+
 		$IMSNilai = 0;
 		$IMMNilai = 0;
 		$UBTNilai = 0;
 		$UPAMKNilai = 0;
-			
+
 		$jamLembur = 0;
 		$jmlIzin = 0;
 		$jmlMangkir = 0;
@@ -680,9 +681,9 @@ class C_HitungGaji extends CI_Controller
 				$pk_kondite = $dataLKHSeksi['pk_kondite'];
 				$pesanError = $pesanError.$dataLKHSeksi['pesanError'];
 			}
-			
+
 			$getInsentifKondite = $this->getInsentifKondite($noind, $kodesie, $bln_gaji, $thn_gaji, $pk_kondite);
-			
+
 			$golA = 0;
 			$golB = 0;
 			$golC = 0;
@@ -800,6 +801,11 @@ class C_HitungGaji extends CI_Controller
 
 			$this->M_hitunggaji->setHasilHitung($dataInsert);
 		}
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Set Hitung Gaji noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$data['hasilHitungGaji'] = $processResultArray;
 		$this->session->set_userdata('doHitungGaji', $processResultArray);
@@ -813,8 +819,13 @@ class C_HitungGaji extends CI_Controller
 		$resultProcess = $this->session->userdata('doHitungGaji');
 		$data['noind'] = $this->input->post('noind');
 		$data['HitungHasil'] = $this->input->post('txtHitungHasil');
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Cetak Struk Hitung Gaji noind=".$data['noind'];
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		if ($data['HitungHasil'] != '') {
-			
+
 			$data['strukData'] = $this->M_hitunggaji->getHitungGajiById($data['HitungHasil']);
 			// $html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_struk_by_id', $data, true);
 		}
@@ -911,7 +922,7 @@ class C_HitungGaji extends CI_Controller
 		$noind = $this->input->post('txtNoind');
 		$bln_gaji = $this->input->post('txtBulan');
 		$thn_gaji = $this->input->post('txtTahun');
-		
+
 		// $noind = 'A1926';
 		// $bln_gaji = 1;
 		// $thn_gaji = 2017;
@@ -922,7 +933,7 @@ class C_HitungGaji extends CI_Controller
 		$data['firstdate'] = $firstdate;
 		$data['lastdate'] = $lastdate;
 		//echo $data['firstdate'].' and '.$data['lastdate'];
-		 
+
 		$data['getDetailPekerja'] = $this->M_hitunggaji->getHitungGaji($noind, $kodesie = '', $bln_gaji, $thn_gaji);
 		// $data['getDetailMasterGaji'] = $this->M_hitunggaji->getDetailMasterGaji($noind);
 		$data['getDetailLKHSeksi'] = $this->M_hitunggaji->getLKHSeksi($noind, $firstdate, $lastdate);
@@ -936,8 +947,8 @@ class C_HitungGaji extends CI_Controller
 		$data['persenan_jp'] = $this->M_hitunggaji->getSetelan('jp');
 		$data['waktu_cycletime_jumat_sabtu'] = $this->M_hitunggaji->getSetelan('cycle_time_jumat_sabtu');
 		$data['waktu_cycletime_senin_kamis'] = $this->M_hitunggaji->getSetelan('cycle_time_senin_kamis');
-		
-						
+
+
 		$data['insentif_prestasi_mask'] = $this->M_hitunggaji->getSetelan('insentif_prestasi_maksimal');
 		$data['insentif_kondite_1'] = $this->M_hitunggaji->getSetelan('insentif_kondite_1');
 		$data['insentif_kondite_2'] = $this->M_hitunggaji->getSetelan('insentif_kondite_2');
@@ -956,11 +967,16 @@ class C_HitungGaji extends CI_Controller
 		$month = $this->input->post('month');
 		$year = $this->input->post('year');
 		$tgl_bayar = $this->input->post('tanggal');
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Export Hitung Gaji tahun/bulan=$year/$month";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$data['hitung'] = $this->M_hitunggaji->getHitungGajiDBF($section,$month,$year);
 		$pembagi_gp = $this->M_hitunggaji->getSetelan('pembagi_gp');
 		$pembagi_lembur = $this->M_hitunggaji->getSetelan('pembagi_lembur');
-		
+
 		$col = array(
 			array("KELUAR","C",1),
 			array("PAYED_ON","C",12),
@@ -1099,7 +1115,7 @@ class C_HitungGaji extends CI_Controller
 		dbase_create($dir.$filename, $col);
 		$db = dbase_open($dir.$filename, 2);
 
-		//variabel untuk perhitungan 
+		//variabel untuk perhitungan
 		$jmlSKD=0;
 		$jmlIjin=0;
 		$jmlABS=0;
@@ -1126,8 +1142,8 @@ class C_HitungGaji extends CI_Controller
 			$hariinsentifkonditeE=substr($hariinsentifkondite[4], 0, -1);
 
 			//hitungjumlah mangkir
-			$posplus = strpos($htg['hitung_insentif_kondite'], '+', 1)+1; 
-			$posm = strpos($htg['hitung_insentif_kondite'], 'm', 1)-1; 
+			$posplus = strpos($htg['hitung_insentif_kondite'], '+', 1)+1;
+			$posm = strpos($htg['hitung_insentif_kondite'], 'm', 1)-1;
 			$jmlmangkirgp=substr($htg['hitung_insentif_kondite'], $posplus, $posm);
 
 			//menghitung jumlah izin
@@ -1175,7 +1191,7 @@ class C_HitungGaji extends CI_Controller
 			}
 
 			$jmlharihanyaip=$jml_hari_ip-$jmlkelebihan;
-			
+
 			$data1 = array(
 				'',
 				$htg['location_name'],
@@ -1345,12 +1361,17 @@ class C_HitungGaji extends CI_Controller
 		$thn_gaji = $this->input->post('txtTahun');
 
 		$dataDelete = array(
-			'kodesie' => $kodesie, 
-			'bln_gaji' => $bln_gaji, 
-			'thn_gaji' => $thn_gaji, 
+			'kodesie' => $kodesie,
+			'bln_gaji' => $bln_gaji,
+			'thn_gaji' => $thn_gaji,
 		);
 
 		$this->M_hitunggaji->deleteHasilHitung($dataDelete);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Delete Hasil Hitung Gaji tahun/bulan=$thn_gaji/$bln_gaji kodesie=$kodesie";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 	}
 
 	public function cetakCrosscheckById($noind,$bln_gaji,$thn_gaji)
@@ -1358,7 +1379,11 @@ class C_HitungGaji extends CI_Controller
 		set_time_limit(0);
 		$this->checkSession();
 
-        
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Cetak Crosscheck Hitung Gaji noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		//ambil data pekerja
 		$pkj=$this->M_hitunggaji->getEmployee($noind);
 		foreach ($pkj as $d) {
@@ -1399,11 +1424,11 @@ class C_HitungGaji extends CI_Controller
 		$data['insentif_prestasi_mask'] = $this->M_hitunggaji->getSetelan('insentif_prestasi_maksimal');
 
 
-		//get hasil pengerjaan 
+		//get hasil pengerjaan
 
 		$html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_crosscheck', $data, true);
 		//$this->load->view('PayrollManagementNonStaff/HitungGaji/V_crosscheck', $data);
-		
+
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
@@ -1415,7 +1440,7 @@ class C_HitungGaji extends CI_Controller
 
 		// $stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		//$pdf->setFooter('{PAGENO}');
-		
+
 		$pdf->setFooter("dicetak : {DATE j-m-Y}  ---  Hal : {PAGENO} ");
 		$pdf->use_kwt = true;
 		$pdf->shrink_tables_to_fit=1;
@@ -1427,16 +1452,21 @@ class C_HitungGaji extends CI_Controller
 	public function downloadExcel()
     {
 		$filter = $this->input->get('filter');
-		$column_table = array('', 'tgl_pembayaran', 'noind', 'employee_name', 'section_code', 'section_name', 'bln_gaji', 
-			'thn_gaji', 'gaji_pokok', 'insentif_prestasi', 'insentif_kelebihan', 'insentif_kondite', 'insentif_masuk_sore', 
-			'insentif_masuk_malam', 'ubt', 'upamk', 'uang_lembur', 'tambah_kurang_bayar', 'tambah_lain', 'uang_dl', 
-			'tambah_pajak', 'denda_insentif_kondite', 'pot_htm', 'pot_lebih_bayar', 'pot_gp', 'pot_uang_dl', 'jht', 'jkn', 'jp', 
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Export Excel Hitung Gaji Filter=$filter";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+		$column_table = array('', 'tgl_pembayaran', 'noind', 'employee_name', 'section_code', 'section_name', 'bln_gaji',
+			'thn_gaji', 'gaji_pokok', 'insentif_prestasi', 'insentif_kelebihan', 'insentif_kondite', 'insentif_masuk_sore',
+			'insentif_masuk_malam', 'ubt', 'upamk', 'uang_lembur', 'tambah_kurang_bayar', 'tambah_lain', 'uang_dl',
+			'tambah_pajak', 'denda_insentif_kondite', 'pot_htm', 'pot_lebih_bayar', 'pot_gp', 'pot_uang_dl', 'jht', 'jkn', 'jp',
 			'spsi', 'duka', 'pot_koperasi', 'pot_hutang_lain', 'pot_dplk', 'tkp');
-		$column_view = array('No', 'Tanggal Pembayaran', 'No Induk', 'Nama', 'Kodesie', 'Nama Seksi', 'Bulan Gaji', 'Tahun Gaji', 
-			'Gaji Pokok', 'Insentif Prestasi', 'Insentif Kelebihan', 'Insentif Kondite', 'Insentif Masuk Sore', 
-			'Insentif Masuk Malam', 'UBT', 'UPAMK', 'Uang Lembur', 'Tambah Kurang Bayar', 'Tambah Lain', 'Uang DL', 
-			'Tambah Pajak', 'Denda Insentif Kondite', 'Potongan HTM', 'Potongan Lebih Bayar', 'Potongan Gaji Pokok', 
-			'Potongan Uang DL', 'JHT', 'JKN', 'JP', 'SPSI', 'Duka', 'Potongan Koperasi', 'Potongan Hutang Lain', 
+		$column_view = array('No', 'Tanggal Pembayaran', 'No Induk', 'Nama', 'Kodesie', 'Nama Seksi', 'Bulan Gaji', 'Tahun Gaji',
+			'Gaji Pokok', 'Insentif Prestasi', 'Insentif Kelebihan', 'Insentif Kondite', 'Insentif Masuk Sore',
+			'Insentif Masuk Malam', 'UBT', 'UPAMK', 'Uang Lembur', 'Tambah Kurang Bayar', 'Tambah Lain', 'Uang DL',
+			'Tambah Pajak', 'Denda Insentif Kondite', 'Potongan HTM', 'Potongan Lebih Bayar', 'Potongan Gaji Pokok',
+			'Potongan Uang DL', 'JHT', 'JKN', 'JP', 'SPSI', 'Duka', 'Potongan Koperasi', 'Potongan Hutang Lain',
 			'Potongan DPLK', 'TKP');
 		$data_table = $this->M_hitunggaji->getHasilHitungSearch($filter)->result_array();
 
@@ -1463,10 +1493,10 @@ class C_HitungGaji extends CI_Controller
 			}
 			$excel_row++;
 		}
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);

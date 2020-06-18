@@ -83,7 +83,7 @@
 												<div class="form-group">
 													<label for="txtberat" class="form-label col-lg-12">Berat (Kg)</label>
 													<div class="col-lg-12">
-														<input type="text" name="txtberat" value="<?php echo $LimbahKirim['0']['berat_kirim']; ?>" class="form-control" <?php if($LimbahKirim['0']['status_kirim'] !== '3'){echo "disabled";}else{echo "required";} ?>>
+														<input type="text" name="txtberat" value="<?php echo $LimbahKirim['0']['berat_kirim']; ?>" class="form-control" <?php if($LimbahKirim['0']['status_kirim'] !== '4'){echo "disabled";}else{echo "required";} ?>>
 													</div>
 												</div>
 											</div>
@@ -99,7 +99,7 @@
 												<?php
 												$status = $LimbahKirim['0']['status_kirim'];
 												$url_reject = site_url('WasteManagement/KirimanMasuk/Reject/'.$encrypted_text);
-												if($status == '3'){ ?>
+												if($status == '4' || $status == '1'){ ?>
 													<button type='submit' onclick='return confirm("Apakah Anda Yakin Ingin Approve data ini ?")' class='btn btn-success'>Approve</button>
 													<a href='<?php echo $url_reject;?>' onclick='return confirm("Apakah Anda Yakin Ingin Reject data ini ?")' class='btn btn-danger'>Reject</a>
 												<?php }else if($status =='1'){

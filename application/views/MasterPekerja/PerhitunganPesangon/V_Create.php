@@ -13,19 +13,30 @@
                                     <a class="btn btn-default btn-lg" href="<?php echo site_url('MasterPekerja/PerhitunganPesangon/Pesangon');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
-                                    </a>                             
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br />
-                
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border">Tambah / Edit Pesangon</div>
                                     <div class="box-body">
                                         <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="cmbNoind" class="col-lg-4 control-label text-left">Jumlah Cuti Dihitung ? <span style="color: red">*</span></label>
+                                                        <div class="col-lg-8">
+                                                           <input type="checkbox" value="1" id="MasterPekerja-PerhitunganPesangon-HitungCuti" checked class="form-control">
+                                                           <input type="hidden" id="MasterPekerja-PerhitunganPesangon-StatusCuti" value="1"><br><span style="color: red">*checkbox hanya memiliki efek ketika memilih pekerja</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -53,7 +64,7 @@
                                                         <div class="col-lg-8">
                                                              <input type="text" name="txtSeksi" class="form-control" id="txtSeksi" readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -62,7 +73,7 @@
                                                         <div class="col-lg-8">
                                                             <input type="text" name="txtJabatan" class="form-control" id="txtJabatan">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -72,7 +83,7 @@
                                                         <div class="col-lg-8">
                                                             <input type="text" name="txtUnit" class="form-control" id="txtUnit" readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             <div class="col-lg-6">
                                                     <div class="form-group">
@@ -81,7 +92,7 @@
                                                         <div class="col-lg-8">
                                                             <input type="text" name="txtLokasi" class="form-control" id="txtLokasi" readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -91,7 +102,7 @@
                                                         <div class="col-lg-8">
                                                             <input type="text" name="txtDepartemen" class="form-control" id="txtDepartemen" readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -100,10 +111,10 @@
                                                         <label for="txtLahir" class="col-lg-2 control-label ">Tempat,Tgl lahir
                                                         </label>
                                                         <div class="col-lg-4">
-                                                          <input type="text" name="txtLahir" class="form-control" id="txtLahir" 
-                                                          readonly="">  
+                                                          <input type="text" name="txtLahir" class="form-control" id="txtLahir"
+                                                          readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                              <div class="row">
@@ -118,13 +129,16 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label for="txtProses" class="col-lg-4 control-label">Tgl Akhir Kerja
+                                                        <label for="txtProses" class="col-lg-4 control-label">Tgl Keluar
                                                         </label>
-                                                        <div class="col-lg-8">
-                                                            <input type="text" name="txtAkhir" class="form-control" id="txtAkhir" 
-                                                          readonly="" >  
+                                                        <div class="col-lg-5">
+                                                            <input type="text" name="txtAkhir" class="form-control" id="txtAkhir" readonly>
                                                         </div>
-                                                     </div>   
+                                                        <div class="col-lg-3">
+                                                            <input type="text" name="txtHari" class="form-control" id="txtHariLmt"
+                                                          readonly="" >
+                                                        </div>
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -132,20 +146,23 @@
                                                     <div class="form-group">
                                                         <label for="txtDiangkat" class="col-lg-4 control-label ">Tgl Diangkat</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtDiangkat" class="form-control" id="txtDiangkat" 
-                                                          readonly="">  
+                                                            <input type="text" name="txtDiangkat" class="form-control" id="txtDiangkat"
+                                                          readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="txtProses" class="col-lg-4 control-label">Tgl Proses PHK
                                                         </label>
-                                                        <div class="col-lg-8">
-                                                            <input type="text" name="txtProses" class="form-control" id="txtProses" 
-                                                          readonly="">  
+                                                        <div class="col-lg-5">
+                                                            <input type="text" name="txtProses" class="form-control" id="txtProses" autocomplete="off">
                                                         </div>
-                                                     </div>   
+                                                        <div class="col-lg-3">
+                                                            <input type="text" name="txtPrs" class="form-control" id="txtHariPrs"
+                                                          readonly="">
+                                                        </div>
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -154,20 +171,20 @@
                                                         <label for="txtMasaKerja" class="col-lg-4 control-label ">Masa Kerja
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtMasaKerja" class="form-control" id="txtMasaKerja" readonly="">  
+                                                            <input type="text" name="txtMasaKerja" class="form-control" id="txtMasaKerja" readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
-                                            
+
                                              <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="txtNPWP" class="col-lg-4 control-label">NPWP
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtNPWP" class="form-control" id="txtNPWP" 
-                                                          readonly="">  
+                                                            <input type="text" name="txtNPWP" class="form-control" id="txtNPWP"
+                                                          readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -176,19 +193,19 @@
                                                         <label for="txtSisaCuti" class="col-lg-4 control-label ">Sisa Cuti
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtSisaCuti" class="form-control" id="txtSisaCuti"  readonly="">  
+                                                            <input type="text" name="txtSisaCuti" class="form-control" id="txtSisaCuti"  readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="txtNIK" class="col-lg-4 control-label">NIK
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtNIK" class="form-control" id="txtNIK" 
-                                                          readonly="">  
+                                                            <input type="text" name="txtNIK" class="form-control" id="txtNIK"
+                                                          readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -197,7 +214,7 @@
                                                         <label for="txtStatus" class="col-lg-2 control-label">Status
                                                         </label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="txtStatus" class="form-control" id="txtStatus"  readonly="">  
+                                                            <input type="text" name="txtStatus" class="form-control" id="txtStatus"  readonly="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -215,9 +232,9 @@
                                                     <div class="form-group">
                                                         <label for="txtUangPesangon" class="col-lg-4 control-label ">Perhitungan Pesangon </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtUangPesangon" class="form-control" id="txtUangPesangon"  readonly="">  
+                                                            <input type="text" name="txtUangPesangon" class="form-control" id="txtUangPesangon"  readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -226,7 +243,7 @@
                                                         <div class="col-lg-8" hidden="">
                                                             <input type="text" name="txtPotongan" class="form-control" id="txtPotongan" value="0">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -234,18 +251,18 @@
                                                     <div class="form-group">
                                                         <label for="txtUangUMPK" class="col-lg-4 control-label ">Penghargaan Masa Kerja</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtUangUMPK" class="form-control" id="txtUangUMPK"  readonly="">  
+                                                            <input type="text" name="txtUangUMPK" class="form-control" id="txtUangUMPK"  readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="txtHutangKoperasi" class="col-lg-4 control-label">Hutang Koperasi
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtHutangKoperasi" class="form-control" id="txtHutangkoperasi" >
+                                                            <input type="text" name="txtHutangKoperasi" class="form-control" id="txtHutangkoperasi" required>
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                              <div class="row">
@@ -253,18 +270,18 @@
                                                     <div class="form-group">
                                                         <label for="txtSisaCutiHari" class="col-lg-4 control-label ">Sisa Cuti Hari </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtSisaCutiHari" class="form-control" id="txtSisaCutiHari"  readonly="">  
+                                                            <input type="text" name="txtSisaCutiHari" class="form-control" id="txtSisaCutiHari"  readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="txtHutangPerusahaan" class="col-lg-4 control-label">Hutang Perusahaan
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtHutangPerusahaan" class="form-control" id="txtHutangPerusahaan" >
+                                                            <input type="text" name="txtHutangPerusahaan" class="form-control" id="txtHutangPerusahaan" required >
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                              <div class="row">
@@ -272,18 +289,18 @@
                                                     <div class="form-group">
                                                         <label for="txtUangGantiRugi" class="col-lg-4 control-label ">Uang Ganti Rugi </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtUangGantiRugi" class="form-control" id="txtUangGantiRugi"  readonly="">  
+                                                            <input type="text" name="txtUangGantiRugi" class="form-control" id="txtUangGantiRugi"  readonly="">
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="txtLainLain" class="col-lg-4 control-label">Lain-lain
                                                         </label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtLainLain" class="form-control" id="txtLainLain" >
+                                                            <input type="text" name="txtLainLain" class="form-control" id="txtLainLain" required >
                                                         </div>
-                                                     </div>   
+                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -292,7 +309,7 @@
                                                         <label for="txtNomorRekening" class="col-lg-2 control-label ">Nomor Rekening
                                                         </label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="txtNomorRekening" class="form-control" id="txtNomorRekening" >
+                                                            <input type="text" name="txtNomorRekening" class="form-control" id="txtNomorRekening" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -303,7 +320,7 @@
                                                         <label for="txtNamaRekening" class="col-lg-2 control-label ">Nama Pemilik Rekening
                                                         </label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="txtNamaRekening" class="form-control" id="txtNamaRekening" >
+                                                            <input type="text" name="txtNamaRekening" class="form-control" id="txtNamaRekening" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -314,7 +331,7 @@
                                                         <label for="txtBank" class="col-lg-2 control-label ">Bank
                                                         </label>
                                                         <div class="col-lg-4">
-                                                            <input type="text" name="txtBank" class="form-control" id="txtBank" >
+                                                            <input type="text" name="txtBank" class="form-control" id="txtBank" required >
                                                         </div>
                                                     </div>
                                                 </div>

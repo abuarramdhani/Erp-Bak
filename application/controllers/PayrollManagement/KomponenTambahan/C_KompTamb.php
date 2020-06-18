@@ -6,6 +6,7 @@ class C_KompTamb extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/KomponenTambahan/M_komptamb');
@@ -21,7 +22,7 @@ class C_KompTamb extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Komponen Penggajian';
         $data['SubMenuOne'] = 'Komp. Kena/Tdk Kena Pajak';
         $data['SubMenuTwo'] = '';
@@ -58,7 +59,7 @@ class C_KompTamb extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id' => $row->id,
 				'periode' => $row->periode,
 				'noind' => $row->noind,
@@ -123,7 +124,11 @@ class C_KompTamb extends CI_Controller
 				'stat' => $this->input->post('cmbStat',TRUE),
 				'desc_' => $this->input->post('txtDesc',TRUE),
 			);
-
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Create Komponen Tambahan pajak noind=".$this->input->post('txtNoind');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_komptamb->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
@@ -184,7 +189,11 @@ class C_KompTamb extends CI_Controller
 				'stat' => $this->input->post('cmbStat',TRUE),
 				'desc_' => $this->input->post('txtDesc',TRUE),
 			);
-
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update Komponen Tambahan pajak ID=".$this->input->post('txtId');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_komptamb->update($this->input->post('txtId', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
@@ -201,6 +210,11 @@ class C_KompTamb extends CI_Controller
         $row = $this->M_komptamb->get_by_id($id);
         if ($row) {
             $this->M_komptamb->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete Komponen Tambahan pajak ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -219,7 +233,7 @@ class C_KompTamb extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

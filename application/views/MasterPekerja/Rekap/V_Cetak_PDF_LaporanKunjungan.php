@@ -1,9 +1,9 @@
 <header>
-	
+
 </header>
 <body>
 <div>
-	
+
 	<div style="width: 100%;margin-bottom: 10px;">
 		<h3 style="text-align: center;font-size: 20px;font-weight: bold;">
 			LAPORAN HASIL KUNJUNGAN PEKERJA
@@ -49,7 +49,7 @@
 			<table width="100%" style="margin: 5px;">
 				<thead><tr><th>Latar Belakang</th></tr></thead>
 				<tbody>
-				<?php 
+				<?php
 				$no = 0;
 				if(!empty($latar_belakang)):
 				foreach ($latar_belakang as $latbel):
@@ -62,14 +62,14 @@
 		<?php endif; ?>
 				</tbody>
 			</table>
-		</div>		
+		</div>
 	</div>
 
 	<div style="width: 100%;height: 300px;border-left: 2px solid black;border-right: 2px solid black;border-bottom: 2px solid black">
 		<div style="margin: 5px;">
 		<p style="font-weight: bold;">Laporan Hasil Kunjungan : </p>
 		<p><?= $hasil_laporan;?></p>
-		</div>		
+		</div>
 	</div>
 
 	<div style="margin-top: 40px;">
@@ -79,7 +79,7 @@
 
 			<tr><td style="width: 33%"></td><td style="width: 33%;text-align: center;font-weight: bold;text-decoration: underline;"><?=$nama_atasan?></td><td style="width: 33%;text-align: center;font-weight: bold;text-decoration: underline;"><?=$nama_petugas ?></td></tr>
 
-			<tr><td style="width: 33%"></td><td style="width: 33%;text-align: center;"><?=$jabatan_atasan?></td><td style="width: 33%;text-align: center;">Petugas</td></tr>
+			<tr><td style="width: 33%"></td><td style="width: 33%;text-align: center;"><?= ucwords(strtolower($jabatan_atasan))?></td><td style="width: 33%;text-align: center;">Petugas</td></tr>
 		</table>
 	</div>
 

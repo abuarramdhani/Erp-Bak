@@ -51,7 +51,7 @@ class C_NotifikasiPembelian extends CI_Controller {
         $mail->ClearAddresses();
         $mail->ClearBCCs();
         $mail->addAddress($value['EMAIL_INTERNAL']);
-        $mail->addBCC('nugroho@quick.com');
+        // $mail->addBCC('nugroho@quick.com');
         $mail->addBCC('fahima_choirun_n@quick.com');
         //set content email
         $emailBody = '

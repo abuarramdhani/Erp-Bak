@@ -68,10 +68,8 @@ class C_TarikFingerspot extends CI_Controller
 
 		$this->form_validation->set_rules('required');
 		if($this->form_validation->run() === TRUE){
-
 			$tanggal = $this->input->post('txtTanggalTarikFinger');
 			$sn_device = empty($this->input->post('txtFingerspot')) ? null : $this->input->post('txtFingerspot');
-
 			$data['tgl'] = $tanggal;
 			$data['sn_device'] = $sn_device;
 
@@ -79,6 +77,7 @@ class C_TarikFingerspot extends CI_Controller
 
 			$encrypted_string = $this->encrypt->encode($tanggal);
             $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+
 			$data['tanggal'] = $encrypted_string;
 
 			$this->load->view('V_Header',$data);
@@ -86,12 +85,18 @@ class C_TarikFingerspot extends CI_Controller
 			$this->load->view('TarikFingerspot/V_tarikdata',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
-			if (isset($tanggal) and !empty($tanggal)) {
+			if (!empty($this->input->get('tanggal'))) {
 
-				$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $tanggal);
+				$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $this->input->get('tanggal'));
 				$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-				$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'');
+				if(!empty($this->input->get('sn'))){
+					$sn_device = empty($this->input->get('sn')) ? null : $this->input->get('sn');
+				}else{
+					$sn_device = null;
+				}
+
+				$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'',$sn_device);
 				$no = 0;
 				$no_c = 0;
 				$insert = array();
@@ -116,8 +121,6 @@ class C_TarikFingerspot extends CI_Controller
 							$cek_katering = $this->M_tarikfingerspot->cekCatering($data_presensi);
 							$cek_lokasi_finger = $this->M_tarikfingerspot->cekLokasiFinger($key['user_']);
 						}
-
-
 						if ($cek == '0') {
 
 							if (substr($key['noind'], 0,1) == 'L') {
@@ -427,20 +430,25 @@ class C_TarikFingerspot extends CI_Controller
 
         if('192.168.168.50'==$server)
         {
-        	$mail->Subject = 'Laporan Tarik Absensi Server 168.50';
+        	$subjek = 'Laporan Tarik Absensi Server 168.50';
+        	$mail->Subject = $subjek.' - Data : '.$no_c.'';
         } else if('192.168.168.178'==$server)
         {
-        	$mail->Subject = 'Laporan Tarik Absensi Server 168.178';
+        	$subjek = 'Laporan Tarik Absensi Server 168.178';
+        	$mail->Subject = $subjek.' - Data : '.$no_c.'';
         } else if('192.168.168.179'==$server)
         {
-        	$mail->Subject = 'Laporan Tarik Absensi Server 168.179';
+        	$subjek = 'Laporan Tarik Absensi Server 168.179';
+        	$mail->Subject = $subjek.' - Data : '.$no_c.'';
         } else if('192.168.168.207'==$server)
         {
-        	$mail->Subject = 'Laporan Tarik Absensi Server 168.207';
+        	$subjek = 'Laporan Tarik Absensi Server 168.207';
+        	$mail->Subject = $subjek.' - Data : '.$no_c.'';
         }
         else
         {
-       		$mail->Subject = 'Laporan Tarik Absensi Pekerja Semua Titik';
+        	$subjek = 'Laporan Tarik Absensi Pekerja Semua Titik';
+       		$mail->Subject = $subjek.' - Data : '.$no_c.'';
         }
 
 

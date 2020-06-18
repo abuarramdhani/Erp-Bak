@@ -27,6 +27,23 @@ class M_lelayu extends CI_Model
     return $this->personalia->query($sql)->result_array();
   }
 
+  public function getPekerjaMengajukanResign($tanggal_awal){
+    $sql = "select tp.noind ,trim(tp.nama) as nama, '',ts.seksi, case when tp.keluar = '0' then 'Masih Aktif' else 'Sudah Keluar' end as status_keluar,tp.tglkeluar
+            from hrd_khs.tpribadi tp  
+            left join hrd_khs.tseksi ts 
+            on tp.kodesie = ts.kodesie
+            where 
+            tp.keluar = '0'
+            and
+            (tp.tglkeluar<= current_date
+              or 
+              noind in (select noind from hrd_khs.t_pengajuan_resign_pekerja)
+            )
+           and left(noind,1) in ('A','B')
+           order by tp.noind ";
+    return $this->personalia->query($sql)->result_array();
+  }
+
   public function getCutoffBulanIni(){
     $sql = "select
               tanggal_awal::date

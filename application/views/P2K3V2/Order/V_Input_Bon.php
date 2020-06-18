@@ -61,21 +61,23 @@
 										<div class="col-md-10">
 											<div class="col-md-9" style="padding:3px">
 												<select required="" id="p2k3_lokasi" name="txt_lokasi" class="form-control p2k3_select2" data-placeholder="Pilih Lokasi Gudang" disabled="">
-													<option selected="" value="142">Yogyakarta </option>
+													<option selected="" value="0y64"><?= $lokk ?></option>
 													<!-- <?php foreach ($lokasi as $data_lokasi) {?>
 													<option value="<?php echo $data_lokasi['LOCATION_ID'] ?>"><?php echo $data_lokasi['LOCATION_CODE'] ?> </option>
 													<?php } ?> -->
 												</select>
 											</div>
+											<input hidden="" name="lokasi" value="<?= $lokk_id ?>">
 										</div>
 										<label class="col-md-12 control-label">Subinventory</label>
 										<div class="col-md-10">
 											<div class="col-md-9" style="padding:3px">
 												<select required="" id="p2k3_gudang_hilangkanini" name="txt_gudang" class="form-control p2k3_select2" data-placeholder="Pilih Subinventory" disabled="">
-													<option selected="" value="PNL-NPR">[PNL-NPR] GUDANG BAHAN PENOLONG NON-PRODUKSI</option>
+													<option selected="" value="1k52"><?= $sub ?></option>
 												</select>
 											</div>
 											<input id="gudang_print" type="hidden" name="txt_gudang_print">
+											<input hidden="" name="gudang" value="<?= $sub_id ?>">
 										</div>
 										<div class="form-group" style="margin: 8 auto;">
 											<label class="col-md-12 control-label">Locator</label>
@@ -97,13 +99,14 @@
 													<th>APD</th>
 													<th>Jumlah Kebutuhan</th>
 													<th>Total Bon Terakhir</th>
+													<th>Total Transact Terakhir</th>
 													<th>Jumlah Bon</th>
 													<th>Sisa Saldo</th>
 												</tr>
 											</thead>
 											<tbody id="DetailInputKebutuhanAPD">
 												<?php $a=1; foreach ($listtobon as $key): ?>    
-												<tr style="color: #000;" class="multiinput">
+												<tr style="color: #000;" class="multiinput p2k3_inputbon_row">
 													<td id="nomor"><?php echo $a; ?></td>
 													<td>
 														<a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
@@ -114,10 +117,18 @@
 													<td>
 														<p><?php echo $key['jml_kebutuhan']; ?></p>
 														<input class="p2k3_inKeb" hidden="" name="p2k3_jmlKebutuhan[]" value="<?php echo $key['jml_kebutuhan']; ?>">
+
+														<p class="p2k3_stokg" hidden=""><?= $key['stokg'] ?></p>
+														<!-- <p class="p2k3_stokg" hidden="">5</p> -->
 													</td>
 													<td>
 														<?php echo $key['bon']; ?>
 														<input class="p2k3_bont" hidden="" value="<?php echo $key['bon']; ?>">
+													</td>
+													<td>
+														<p class="p2k3_bontrans">
+															<?= isset($key['bonTrans']) ? $key['bonTrans']:0; ?>
+														</p>
 													</td>
 													<td>
 														<input class="form-control p2k3_inBon" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -134,10 +145,14 @@
 										</table>
 										<input hidden="" name="p2k3_pr" value="<?php echo $pri; ?>">
 										<input hidden="" name="p2k3_ks" value="<?php echo $ks; ?>">
-										<div class="col-md-3 pull-right text-right">
-											<button <?php if ($a == 1) {
-												echo "disabled";
-											}else{ echo ""; } ?> type="submit" class="btn btn-success btn-lg p2k3_btn_bon" onclick="return confirm('Apa anda yakin Akan Input Bon?')">Input</button>
+										<div class="col-md-12 pull-right text-right">
+										<?php if ($canSubmit): ?>
+											<button <?= ($a == '1') ? 'disabled':''; ?> type="submit" class="btn btn-success btn-lg p2k3_btn_bon" onclick="return confirm('Apa anda yakin Akan Input Bon?')">Input</button>
+										<?php else: ?>
+											<?php if (isset($notrans)): ?>
+												<label style="color: red">Tidak bisa Order lagi karena Bon <?= $notrans ?> Belum di Transact</label>
+											<?php endif ?>
+										<?php endif ?>
 										</div>
 									</form>
 								</div>
@@ -152,11 +167,49 @@
 <div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
 	<img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
+
+<div class="modal fade" id="p2k3_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<label class="modal-title" id="exampleModalLabel">Pop Up Tidak Aktif</label>
+			</div>
+			<div class="modal-body">
+				<h3 style="font-weight: bold; text-align: center;">Cara mengaktifkan Pop-up</h3>
+				<p style="color: red; text-align: center;">*(Refresh/Reload Halaman ini setelah Pop up di Aktifkan!)</p>
+				<p style="text-align: center;">
+					<strong>Cara pertama</strong>
+				</p>
+				<p style="text-align: center;">
+					<img src="http://erp.quick.com/./assets/upload_kaizen/Screenshot_83.png" style="width: 559px;">
+				</p>
+				<p style="text-align: center;">
+					<strong>Cara Kedua</strong>
+				</p>
+				<p style="text-align: center;">
+					1. Clik pada bagian kiri atas browser dan pilih 
+					<strong style="background-color: initial;">Site Setting</strong>
+				</p>
+				<p style="text-align: center;">
+					<img src="http://erp.quick.com/./assets/upload_kaizen/Screenshot_81.png" style="width: 412px;">
+				</p>
+				<p style="text-align: center;">
+					2. Ubah bagian Pop-up menjadi 
+					<strong>Allow</strong>
+				</p>
+				<p style="text-align: center;">
+					<img src="http://erp.quick.com/./assets/upload_kaizen/Screenshot_82.png">
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$(document).ready(function(){
 		$('tr.multiinput').each(function(){
 			var gkeb = $(this).find('input.p2k3_inKeb').val();
-			var gbon = $(this).find('input.p2k3_bont').val();
+			var gbon = $(this).find('p.p2k3_bontrans').text();
 			var hit = Number(gkeb) - Number(gbon);
 			$(this).find('input.p2k3_inHasil').val(hit);
 			$(this).find('p.p2k3_pHasil').text(hit);
@@ -171,7 +224,7 @@
 
 		$(".p2k3_inBon").bind("change paste keyup", function() {
 			var keb = $(this).closest('tr').find('input.p2k3_inKeb').val();
-			var bont = $(this).closest('tr').find('input.p2k3_bont').val();
+			var bont = $(this).closest('tr').find('p.p2k3_bontrans').text();
 			var bon = $(this).val();
 			var cal = Number(keb) - Number(bont) - Number(bon);
 			$(this).closest('tr').find('input.p2k3_inHasil').val(cal);
@@ -207,5 +260,8 @@
 			// $('#p2k3_lokasi').attr('disabled', true);
 			$('#surat-loading').attr('hidden', true);
 		}
+	});
+	window.addEventListener('load', function () {
+		erp_checkPopUp();
 	});
 </script>

@@ -6,6 +6,7 @@ class C_TransaksiHutang extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/TransaksiHutang/M_transaksihutang');
@@ -21,7 +22,7 @@ class C_TransaksiHutang extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Komponen Penggajian';
         $data['SubMenuOne'] = 'Hutang Karyawan';
         $data['SubMenuTwo'] = '';
@@ -38,17 +39,17 @@ class C_TransaksiHutang extends CI_Controller
         $this->load->view('PayrollManagement/TransaksiHutang/V_index', $data);
         $this->load->view('V_Footer',$data);
     }
-	
+
 	public function list_($id){
 		$this->checkSession();
         $user_id = $this->session->userid;
-        
+
 		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$id = $this->encrypt->decode($plaintext_string);
         $data['Menu'] = 'Komponen Penggajian';
         $data['SubMenuOne'] = 'Hutang Karyawan';
         $data['SubMenuTwo'] = '';
-		
+
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -67,7 +68,7 @@ class C_TransaksiHutang extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_transaksihutang->get_by_id($id);
         if ($row) {
             $data = array(
@@ -77,7 +78,7 @@ class C_TransaksiHutang extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_transaksi_hutang' => $row->id_transaksi_hutang,
 				'no_hutang' => $row->no_hutang,
 				'tgl_transaksi' => $row->tgl_transaksi,
@@ -112,7 +113,7 @@ class C_TransaksiHutang extends CI_Controller
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
 			'pr_jns_transaksi_data' => $this->M_transaksihutang->get_pr_jns_transaksi_data(),
             'action' => site_url('PayrollManagement/TransaksiHutang/save'),
-			
+
 			'noind' => set_value('noind'),
 			'no_hutang' => set_value('no_hutang'),
 			'tgl_transaksi' => set_value('tgl_transaksi'),
@@ -166,11 +167,21 @@ class C_TransaksiHutang extends CI_Controller
 				'jumlah_transaksi' => $angsuran,
 				'lunas' => $lunas
 			);
-			
+
         $this->M_transaksihutang->insert($data2);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Insert Komponen Penggajian angsuran transaksi Hutang id_transaksi=".$id_transaksi;
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 		}
 
         $this->M_transaksihutang->insert_data($data);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create Komponen Penggajian transaksi Hutang id_transaksi=".$id_transaksi;
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->session->set_flashdata('message', 'Create Record Success');
         redirect(site_url('PayrollManagement/TransaksiHutang'));
     }
@@ -180,7 +191,7 @@ class C_TransaksiHutang extends CI_Controller
 
         $this->checkSession();
         $user_id = $this->session->userid;
-		
+
 		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_transaksihutang->get_by_id($id);
@@ -235,6 +246,11 @@ class C_TransaksiHutang extends CI_Controller
 			'tgl_record' => date("Y-m-d H:i:s"),
 		);
 		$this->M_transaksihutang->delete($nohutang);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Delete Komponen Penggajian transaksi Hutang noind=".$noind;
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 		for($i=1;$i<=$jumlah_angsuran;$i++){
 			if($i<10){
 				$id_transaksi = str_replace(" ","",$nohutang."0".$i);
@@ -250,8 +266,13 @@ class C_TransaksiHutang extends CI_Controller
 				'jumlah_transaksi' => $angsuran,
 				'lunas' => $lunas
 			);
-			
+
         $this->M_transaksihutang->insert($data2);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create Komponen Penggajian angsuran transaksi Hutang id_transaksi=".$id_transaksi;
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 		}
 
         $this->M_transaksihutang->update($this->input->post('txtIdTransaksiHutang', TRUE), $data);
@@ -266,6 +287,11 @@ class C_TransaksiHutang extends CI_Controller
         $row = $this->M_transaksihutang->get_by_id($id);
         if ($row) {
             $this->M_transaksihutang->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete Komponen Penggajian transaksi Hutang id_transaksi=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_transaksihutang->delete_transaction($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('PayrollManagement/TransaksiHutang'));
@@ -277,7 +303,7 @@ class C_TransaksiHutang extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

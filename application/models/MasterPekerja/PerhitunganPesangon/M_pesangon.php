@@ -9,104 +9,210 @@ class M_pesangon extends CI_Model {
 		$this->erp 			=	$this->load->database('erp_db', TRUE);
 
 	}
-	public function detailPekerja($noind)
+	public function detailPekerja($noind,$cuti)
 	 	{
-	 		$getDetailPekerja 		= "	select 		trim(pri.noind) as noind,
-            										rtrim(pri.nama) as nama,
-            										rtrim(tseksi.seksi) as seksi,
-            										rtrim(tseksi.unit) as unit,
-            										rtrim(tseksi.dept) as departemen,
-            rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
-            (
-				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
-				then 	 rtrim(tpekerjaan.pekerjaan)
-				else     tref.jabatan
-				end
-			) as pekerjaan,
-			to_char(pri.diangkat,'DD/MM/YYYY') as diangkat,
-			date_part('year', age(tglkeluar::date,  diangkat::date )) || ' tahun ' ||
-             date_part('month', age(tglkeluar::date,  diangkat::date )) || ' bulan ' ||
-           date_part('day', age(tglkeluar::date,  diangkat::date )) || ' hari 'as
-			 masakerja,
-			 date_part('year', age(tglkeluar::date,  diangkat::date ))  as
-			 masakerja_tahun,
-			 date_part('month', age(tglkeluar::date,  diangkat::date ))  as
-			 masakerja_bulan,
-			 date_part('day', age(tglkeluar::date,  diangkat::date ))  as
-			 masakerja_hari,
-			pri.templahir  || '  ' ||  to_char(pri.tgllahir,'DD/MM/YYYY') as tempat,
-			rtrim(pri.alamat)|| ',' ||  pri.kec || ',' ||  pri.kab || ',' ||  pri.prop as alamat,
-			case when extract(month from pri.tglkeluar) = 1 then
-				concat(extract(day from pri.tglkeluar),' Januari ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 2 then
-				concat(extract(day from pri.tglkeluar),' Februari ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 3 then
-				concat(extract(day from pri.tglkeluar),' Maret ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 4 then
-				concat(extract(day from pri.tglkeluar),' April ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 5 then
-				concat(extract(day from pri.tglkeluar),' Mei ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 6 then
-				concat(extract(day from pri.tglkeluar),' Juni ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 7 then
-				concat(extract(day from pri.tglkeluar),' Juli ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 8 then
-				concat(extract(day from pri.tglkeluar),' Agustus ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 9 then
-				concat(extract(day from pri.tglkeluar),' September ',extract(year from pri.tglkeluar))
-			 when extract(month from pri.tglkeluar) = 10 then
-				concat(extract(day from pri.tglkeluar),' Oktober ',extract(year from pri.tglkeluar))
-			when extract(month from pri.tglkeluar) = 11 then
-				concat(extract(day from pri.tglkeluar),' November ',extract(year from pri.tglkeluar))
-			else
-				concat(extract(day from pri.tglkeluar),' Desember ',extract(year from pri.tglkeluar))
-			end metu,alasan.alasan_tampil as alasan,
-			case when extract(month from pri.akhkontrak) = 1 then
-				concat(extract(day from pri.akhkontrak),' Januari ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 2 then
-				concat(extract(day from pri.akhkontrak),' Februari ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 3 then
-				concat(extract(day from pri.akhkontrak),' Maret ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 4 then
-				concat(extract(day from pri.akhkontrak),' April ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 5 then
-				concat(extract(day from pri.akhkontrak),' Mei ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 6 then
-				concat(extract(day from pri.akhkontrak),' Juni ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 7 then
-				concat(extract(day from pri.akhkontrak),' Juli ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 8 then
-				concat(extract(day from pri.akhkontrak),' Agustus ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 9 then
-				concat(extract(day from pri.akhkontrak),' September ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 10 then
-				concat(extract(day from pri.akhkontrak),' Oktober ',extract(year from pri.akhkontrak))
-			when extract(month from pri.akhkontrak) = 11 then
-				concat(extract(day from pri.akhkontrak),' November ',extract(year from pri.akhkontrak))
-			else
-				concat(extract(day from pri.akhkontrak),' Desember ',extract(year from pri.akhkontrak))
-			end akhir,
-			pesangon.pasal_pengali_pesangon as pasal,
-			pesangon.uang_pesangon as pesangon,
-			pesangon.upmk as up,
-			cuti.sisa_cuti as cuti,
-			pesangon.uang_ganti_rugi as rugi,
-			concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
-			concat(pesangon.upmk,' X GP') as upmk,
-			concat (pesangon.uang_ganti_rugi,'% UANG PESANGON + UANG PMK') as gantirugi,
-			concat(cuti.sisa_cuti,' hari ')as sisacuti,
-			concat(cuti.sisa_cuti,' GP/30 ')as sisacutihari
-							from 		hrd_khs.tpribadi as pri
-							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
-							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
-							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
-							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
-							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
-							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
-							and date_part('year', age(tglkeluar::date,  diangkat::date ))>= pesangon.batas_tahun_kerja_awal
-							and date_part('year', age(tglkeluar::date,  diangkat::date ))< pesangon.batas_tahun_kerja_akhir
-							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
-							where 		pri.noind='$noind' and cuti.periode=extract(year from current_date)::varchar";
+
+	 		if('0'==$cuti)
+	 			{
+			 		$getDetailPekerja 		= "	select 		trim(pri.noind) as noind,
+		            										rtrim(pri.nama) as nama,
+		            										rtrim(tseksi.seksi) as seksi,
+		            										rtrim(tseksi.unit) as unit,
+		            										rtrim(tseksi.dept) as departemen,
+		            rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
+		            (
+						case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
+						then 	 rtrim(tpekerjaan.pekerjaan)
+						else     tref.jabatan
+						end
+					) as pekerjaan,
+					to_char(pri.diangkat,'DD/MM/YYYY') as diangkat,
+					date_part('year', age(tglkeluar::date,  diangkat::date )) || ' tahun ' ||
+		             date_part('month', age(tglkeluar::date,  diangkat::date )) || ' bulan ' ||
+		           date_part('day', age(tglkeluar::date,  diangkat::date )) || ' hari 'as
+					 masakerja,
+					 date_part('year', age(tglkeluar::date,  diangkat::date ))  as
+					 masakerja_tahun,
+					 date_part('month', age(tglkeluar::date,  diangkat::date ))  as
+					 masakerja_bulan,
+					 date_part('day', age(tglkeluar::date,  diangkat::date ))  as
+					 masakerja_hari,
+					pri.templahir  || '  ' ||  to_char(pri.tgllahir,'DD/MM/YYYY') as tempat,
+					rtrim(pri.alamat)|| ',' ||  pri.kec || ',' ||  pri.kab || ',' ||  pri.prop as alamat,
+					case when extract(month from pri.tglkeluar) = 1 then
+						concat(extract(day from pri.tglkeluar),' January ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 2 then
+						concat(extract(day from pri.tglkeluar),' February ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 3 then
+						concat(extract(day from pri.tglkeluar),' March ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 4 then
+						concat(extract(day from pri.tglkeluar),' April ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 5 then
+						concat(extract(day from pri.tglkeluar),' May ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 6 then
+						concat(extract(day from pri.tglkeluar),' June ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 7 then
+						concat(extract(day from pri.tglkeluar),' July ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 8 then
+						concat(extract(day from pri.tglkeluar),' August ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 9 then
+						concat(extract(day from pri.tglkeluar),' September ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 10 then
+						concat(extract(day from pri.tglkeluar),' October ',extract(year from pri.tglkeluar))
+					when extract(month from pri.tglkeluar) = 11 then
+						concat(extract(day from pri.tglkeluar),' November ',extract(year from pri.tglkeluar))
+					else
+						concat(extract(day from pri.tglkeluar),' December ',extract(year from pri.tglkeluar))
+					end metu,alasan.alasan_tampil as alasan,
+					case when extract(month from pri.akhkontrak) = 1 then
+						concat(extract(day from pri.akhkontrak),' January ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 2 then
+						concat(extract(day from pri.akhkontrak),' February ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 3 then
+						concat(extract(day from pri.akhkontrak),' March ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 4 then
+						concat(extract(day from pri.akhkontrak),' April ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 5 then
+						concat(extract(day from pri.akhkontrak),' May ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 6 then
+						concat(extract(day from pri.akhkontrak),' June ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 7 then
+						concat(extract(day from pri.akhkontrak),' July ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 8 then
+						concat(extract(day from pri.akhkontrak),' August ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 9 then
+						concat(extract(day from pri.akhkontrak),' September ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 10 then
+						concat(extract(day from pri.akhkontrak),' October ',extract(year from pri.akhkontrak))
+					when extract(month from pri.akhkontrak) = 11 then
+						concat(extract(day from pri.akhkontrak),' November ',extract(year from pri.akhkontrak))
+					else
+						concat(extract(day from pri.akhkontrak),' December ',extract(year from pri.akhkontrak))
+					end akhir,
+					pesangon.pasal_pengali_pesangon as pasal,
+					pesangon.uang_pesangon as pesangon,
+					pesangon.upmk as up,
+					coalesce(tpson.jml_cuti,0) as cuti,
+					pesangon.uang_ganti_rugi as rugi,
+					concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
+					concat(pesangon.upmk,' X GP') as upmk,
+					concat (pesangon.uang_ganti_rugi,'% UANG PESANGON + UANG PMK') as gantirugi,
+					concat(coalesce(tpson.jml_cuti,0),' hari ')as sisacuti,
+					concat(coalesce(tpson.jml_cuti,0),' GP/30 ')as sisacutihari
+									from 		hrd_khs.tpribadi as pri
+									join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
+									left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
+									left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
+									left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+									left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
+									left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
+									join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
+									and date_part('year', age(tglkeluar::date,  diangkat::date ))>= pesangon.batas_tahun_kerja_awal
+									and date_part('year', age(tglkeluar::date,  diangkat::date ))< pesangon.batas_tahun_kerja_akhir
+									join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
+									where 		pri.noind='$noind' and cuti.periode=extract(year from current_date)::varchar";
+					}
+					else
+					{
+
+					$getDetailPekerja 		= "	select 		trim(pri.noind) as noind,
+		            										rtrim(pri.nama) as nama,
+		            										rtrim(tseksi.seksi) as seksi,
+		            										rtrim(tseksi.unit) as unit,
+		            										rtrim(tseksi.dept) as departemen,
+		            rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
+		            (
+						case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
+						then 	 rtrim(tpekerjaan.pekerjaan)
+						else     tref.jabatan
+						end
+					) as pekerjaan,
+					to_char(pri.diangkat,'DD/MM/YYYY') as diangkat,
+					date_part('year', age(tglkeluar::date,  diangkat::date )) || ' tahun ' ||
+		             date_part('month', age(tglkeluar::date,  diangkat::date )) || ' bulan ' ||
+		           date_part('day', age(tglkeluar::date,  diangkat::date )) || ' hari 'as
+					 masakerja,
+					 date_part('year', age(tglkeluar::date,  diangkat::date ))  as
+					 masakerja_tahun,
+					 date_part('month', age(tglkeluar::date,  diangkat::date ))  as
+					 masakerja_bulan,
+					 date_part('day', age(tglkeluar::date,  diangkat::date ))  as
+					 masakerja_hari,
+					pri.templahir  || '  ' ||  to_char(pri.tgllahir,'DD/MM/YYYY') as tempat,
+					rtrim(pri.alamat)|| ',' ||  pri.kec || ',' ||  pri.kab || ',' ||  pri.prop as alamat,
+					case when extract(month from pri.tglkeluar) = 1 then
+						concat(extract(day from pri.tglkeluar),' January ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 2 then
+						concat(extract(day from pri.tglkeluar),' February ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 3 then
+						concat(extract(day from pri.tglkeluar),' March ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 4 then
+						concat(extract(day from pri.tglkeluar),' April ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 5 then
+						concat(extract(day from pri.tglkeluar),' May ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 6 then
+						concat(extract(day from pri.tglkeluar),' June ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 7 then
+						concat(extract(day from pri.tglkeluar),' July ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 8 then
+						concat(extract(day from pri.tglkeluar),' August ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 9 then
+						concat(extract(day from pri.tglkeluar),' September ',extract(year from pri.tglkeluar))
+					 when extract(month from pri.tglkeluar) = 10 then
+						concat(extract(day from pri.tglkeluar),' October ',extract(year from pri.tglkeluar))
+					when extract(month from pri.tglkeluar) = 11 then
+						concat(extract(day from pri.tglkeluar),' November ',extract(year from pri.tglkeluar))
+					else
+						concat(extract(day from pri.tglkeluar),' December ',extract(year from pri.tglkeluar))
+					end metu,alasan.alasan_tampil as alasan,
+					case when extract(month from pri.akhkontrak) = 1 then
+						concat(extract(day from pri.akhkontrak),' January ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 2 then
+						concat(extract(day from pri.akhkontrak),' February ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 3 then
+						concat(extract(day from pri.akhkontrak),' March ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 4 then
+						concat(extract(day from pri.akhkontrak),' April ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 5 then
+						concat(extract(day from pri.akhkontrak),' May ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 6 then
+						concat(extract(day from pri.akhkontrak),' June ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 7 then
+						concat(extract(day from pri.akhkontrak),' July ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 8 then
+						concat(extract(day from pri.akhkontrak),' August ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 9 then
+						concat(extract(day from pri.akhkontrak),' September ',extract(year from pri.akhkontrak))
+					 when extract(month from pri.akhkontrak) = 10 then
+						concat(extract(day from pri.akhkontrak),' October ',extract(year from pri.akhkontrak))
+					when extract(month from pri.akhkontrak) = 11 then
+						concat(extract(day from pri.akhkontrak),' November ',extract(year from pri.akhkontrak))
+					else
+						concat(extract(day from pri.akhkontrak),' December ',extract(year from pri.akhkontrak))
+					end akhir,
+					pesangon.pasal_pengali_pesangon as pasal,
+					pesangon.uang_pesangon as pesangon,
+					pesangon.upmk as up,
+ 					coalesce(cuti.sisa_cuti,0)+(select count(*) from \"Presensi\".tdatapresensi where tanggal>=pri.tglkeluar::date and noind=pri.noind) as cuti,
+					pesangon.uang_ganti_rugi as rugi,
+					concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
+					concat(pesangon.upmk,' X GP') as upmk,
+					concat (pesangon.uang_ganti_rugi,'% UANG PESANGON + UANG PMK') as gantirugi,
+		 			concat((coalesce(cuti.sisa_cuti,0)+(select count(*) from \"Presensi\".tdatapresensi where tanggal>=pri.tglkeluar::date and noind=pri.noind)),' hari ')as sisacuti,
+		 			concat((coalesce(cuti.sisa_cuti,0)+(select count(*) from \"Presensi\".tdatapresensi where tanggal>=pri.tglkeluar::date and noind=pri.noind)),' GP/30 ')as sisacutihari
+									from 		hrd_khs.tpribadi as pri
+									join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
+									left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
+									left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
+									left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+									left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
+									left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
+									join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
+									and date_part('year', age(tglkeluar::date,  diangkat::date ))>= pesangon.batas_tahun_kerja_awal
+									and date_part('year', age(tglkeluar::date,  diangkat::date ))< pesangon.batas_tahun_kerja_akhir
+									join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
+									where 		pri.noind='$noind' and cuti.periode=extract(year from current_date)::varchar";
+					}
 
 			$query 	=	$this->personalia->query($getDetailPekerja);
 			return $query->result_array();
@@ -153,7 +259,7 @@ class M_pesangon extends CI_Model {
 
 	 public function getPekerjaAktif($noind)
 	 	{
-	 		$getPekerjaAktif="select trim(noind) as noind, concat_ws(' - ', noind, nama) as pekerja from hrd_khs.tpribadi where   noind like '$noind%' or nama like'$noind%' and keluar = '0'
+	 		$getPekerjaAktif="select trim(noind) as noind, concat_ws(' - ', noind, nama) as pekerja from hrd_khs.tpribadi where   noind like '%$noind%' or nama like '%$noind%' and keluar = '0'
 			order by noind ";
 	 		$query 	=	$this->personalia->query($getPekerjaAktif);
 			return $query->result_array();
@@ -203,6 +309,7 @@ class M_pesangon extends CI_Model {
             										rtrim(tseksi.seksi) as seksi,
             										rtrim(tseksi.unit) as unit,
             										rtrim(tseksi.dept) as departemen,
+													pri.tglkeluar,
             rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
             (
 				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
@@ -232,71 +339,75 @@ class M_pesangon extends CI_Model {
 			pri.templahir  || '  ' ||  to_char(pri.tgllahir,'DD/MM/YYYY') as tempat,
 			rtrim(pri.alamat)|| ',' ||  pri.kec || ',' ||  pri.kab || ',' ||  pri.prop as alamat,
 			case when extract(month from pri.tglkeluar) = 1 then
-				concat(extract(day from pri.tglkeluar),' Januari ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' January ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 2 then
-				concat(extract(day from pri.tglkeluar),' Februari ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' February ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 3 then
-				concat(extract(day from pri.tglkeluar),' Maret ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' March ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 4 then
 				concat(extract(day from pri.tglkeluar),' April ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 5 then
-				concat(extract(day from pri.tglkeluar),' Mei ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' May ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 6 then
-				concat(extract(day from pri.tglkeluar),' Juni ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' Juny ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 7 then
-				concat(extract(day from pri.tglkeluar),' Juli ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' July ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 8 then
-				concat(extract(day from pri.tglkeluar),' Agustus ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' August ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 9 then
 				concat(extract(day from pri.tglkeluar),' September ',extract(year from pri.tglkeluar))
 			 when extract(month from pri.tglkeluar) = 10 then
-				concat(extract(day from pri.tglkeluar),' Oktober ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' October ',extract(year from pri.tglkeluar))
 			when extract(month from pri.tglkeluar) = 11 then
 				concat(extract(day from pri.tglkeluar),' November ',extract(year from pri.tglkeluar))
 			else
-				concat(extract(day from pri.tglkeluar),' Desember ',extract(year from pri.tglkeluar))
+				concat(extract(day from pri.tglkeluar),' December ',extract(year from pri.tglkeluar))
 			end metu,alasan.alasan_tampil as alasan,
-			case when extract(month from pri.akhkontrak) = 1 then
-				concat(extract(day from pri.akhkontrak),' Januari ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 2 then
-				concat(extract(day from pri.akhkontrak),' Februari ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 3 then
-				concat(extract(day from pri.akhkontrak),' Maret ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 4 then
-				concat(extract(day from pri.akhkontrak),' April ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 5 then
-				concat(extract(day from pri.akhkontrak),' Mei ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 6 then
-				concat(extract(day from pri.akhkontrak),' Juni ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 7 then
-				concat(extract(day from pri.akhkontrak),' Juli ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 8 then
-				concat(extract(day from pri.akhkontrak),' Agustus ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 9 then
-				concat(extract(day from pri.akhkontrak),' September ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 10 then
-				concat(extract(day from pri.akhkontrak),' Oktober ',extract(year from pri.akhkontrak))
-			when extract(month from pri.akhkontrak) = 11 then
-				concat(extract(day from pri.akhkontrak),' November ',extract(year from pri.akhkontrak))
+			case when extract(month from tpes.tgl_proses_phk) = 1 then
+				concat(extract(day from tpes.tgl_proses_phk),' January ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 2 then
+				concat(extract(day from tpes.tgl_proses_phk),' February ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 3 then
+				concat(extract(day from tpes.tgl_proses_phk),' March ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 4 then
+				concat(extract(day from tpes.tgl_proses_phk),' April ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 5 then
+				concat(extract(day from tpes.tgl_proses_phk),' May ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 6 then
+				concat(extract(day from tpes.tgl_proses_phk),' June ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 7 then
+				concat(extract(day from tpes.tgl_proses_phk),' July ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 8 then
+				concat(extract(day from tpes.tgl_proses_phk),' August ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 9 then
+				concat(extract(day from tpes.tgl_proses_phk),' September ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 10 then
+				concat(extract(day from tpes.tgl_proses_phk),' October ',extract(year from tpes.tgl_proses_phk))
+			when extract(month from tpes.tgl_proses_phk) = 11 then
+				concat(extract(day from tpes.tgl_proses_phk),' November ',extract(year from tpes.tgl_proses_phk))
+			when extract(month from tpes.tgl_proses_phk) = 12 then
+				concat(extract(day from tpes.tgl_proses_phk),' December ',extract(year from tpes.tgl_proses_phk))
 			else
-				concat(extract(day from pri.akhkontrak),' Desember ',extract(year from pri.akhkontrak))
-			end akhir,
+			null
+			end tgl_phk,
+			tpes.tgl_proses_phk as proses_phk,
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,
-			cuti.sisa_cuti as cuti,
+			tpson.jml_cuti as cuti,
 			pesangon.uang_ganti_rugi as rugi,
 			concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
 			concat(pesangon.upmk,' X GP') as upmk,
 			concat (pesangon.uang_ganti_rugi,'% (UANG PESANGON + UANG PMK)') as gantirugi,
-			concat(cuti.sisa_cuti,' hari ')as sisacuti,
-			concat(cuti.sisa_cuti,' GP/30 ')as sisacutihari
+			concat(tpson.jml_cuti,' hari ')as sisacuti,
+			concat(tpson.jml_cuti,' GP/30 ')as sisacutihari
 							from 		hrd_khs.tpribadi as pri
 							join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
 							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
 							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
 							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+							left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
 							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
@@ -316,16 +427,22 @@ class M_pesangon extends CI_Model {
 
 	     public function cetak($id)
 	    {
-	    	$cetak="select 		trim(pri.noind) as noind,
-            										rtrim(pri.nama) as nama,
-            										rtrim(tseksi.seksi) as seksi,
-            										rtrim(tseksi.unit) as unit,
-            										rtrim(tseksi.dept) as departemen,
+	    	$cetak="select 		
+	    	trim(pri.noind) as noind,
+			rtrim(pri.nama) as nama,
+			(select string_agg(distinct rtrim(tseksi.seksi),'<br>') from hrd_khs.tseksi tseksi where tseksi.kodesie in (select kodesie from hrd_khs.trefjabatan tref where tref.noind=pri.noind)) as seksi,
+			(select string_agg(distinct rtrim(tseksi.unit),'<br>') from hrd_khs.tseksi tseksi where tseksi.kodesie in (select kodesie from hrd_khs.trefjabatan tref where tref.noind=pri.noind)) as unit,
+			(select string_agg(distinct rtrim(tseksi.dept),'<br>') from hrd_khs.tseksi tseksi where tseksi.kodesie in (select kodesie from hrd_khs.trefjabatan tref where tref.noind=pri.noind)) as dept,
             rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
-            (
-				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
-				then 	 rtrim(tpekerjaan.pekerjaan)
-				else     tref.jabatan
+            (	case
+					when pri.kd_pkj is not null
+					and pri.kd_pkj <> '' then rtrim( tpekerjaan.pekerjaan )
+					else 
+						(
+						(
+						select string_agg(distinct upper(jabatan),'<br>') from hrd_khs.torganisasi tto where tto.kd_jabatan in 
+						(select tref.kd_jabatan from hrd_khs.trefjabatan tref where tref.noind=pri.noind))
+						)
 				end
 			) as pekerjaan,
 			tpes.id_pesangon as id,
@@ -376,53 +493,56 @@ class M_pesangon extends CI_Model {
 			else
 				concat(extract(day from pri.tglkeluar),' Desember ',extract(year from pri.tglkeluar))
 			end metu,alasan.alasan_tampil as alasan,
-			case when extract(month from pri.akhkontrak) = 1 then
-				concat(extract(day from pri.akhkontrak),' Januari ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 2 then
-				concat(extract(day from pri.akhkontrak),' Februari ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 3 then
-				concat(extract(day from pri.akhkontrak),' Maret ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 4 then
-				concat(extract(day from pri.akhkontrak),' April ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 5 then
-				concat(extract(day from pri.akhkontrak),' Mei ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 6 then
-				concat(extract(day from pri.akhkontrak),' Juni ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 7 then
-				concat(extract(day from pri.akhkontrak),' Juli ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 8 then
-				concat(extract(day from pri.akhkontrak),' Agustus ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 9 then
-				concat(extract(day from pri.akhkontrak),' September ',extract(year from pri.akhkontrak))
-			 when extract(month from pri.akhkontrak) = 10 then
-				concat(extract(day from pri.akhkontrak),' Oktober ',extract(year from pri.akhkontrak))
-			when extract(month from pri.akhkontrak) = 11 then
-				concat(extract(day from pri.akhkontrak),' November ',extract(year from pri.akhkontrak))
+			case when extract(month from tpes.tgl_proses_phk) = 1 then
+				concat(extract(day from tpes.tgl_proses_phk),' Januari ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 2 then
+				concat(extract(day from tpes.tgl_proses_phk),' Februari ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 3 then
+				concat(extract(day from tpes.tgl_proses_phk),' Maret ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 4 then
+				concat(extract(day from tpes.tgl_proses_phk),' April ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 5 then
+				concat(extract(day from tpes.tgl_proses_phk),' Mei ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 6 then
+				concat(extract(day from tpes.tgl_proses_phk),' Juni ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 7 then
+				concat(extract(day from tpes.tgl_proses_phk),' Juli ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 8 then
+				concat(extract(day from tpes.tgl_proses_phk),' Agustus ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 9 then
+				concat(extract(day from tpes.tgl_proses_phk),' September ',extract(year from tpes.tgl_proses_phk))
+			 when extract(month from tpes.tgl_proses_phk) = 10 then
+				concat(extract(day from tpes.tgl_proses_phk),' Oktober ',extract(year from tpes.tgl_proses_phk))
+			when extract(month from tpes.tgl_proses_phk) = 11 then
+				concat(extract(day from tpes.tgl_proses_phk),' November ',extract(year from tpes.tgl_proses_phk))
+			when extract(month from tpes.tgl_proses_phk) = 12 then
+				concat(extract(day from tpes.tgl_proses_phk),' Desember ',extract(year from tpes.tgl_proses_phk))
 			else
-				concat(extract(day from pri.akhkontrak),' Desember ',extract(year from pri.akhkontrak))
-			end akhir,
+			null
+			end tgl_phk,
+			tpes.tgl_proses_phk as proses_phk,
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,
-			cuti.sisa_cuti as cuti,
+			tpson.jml_cuti as cuti,
 			pesangon.uang_ganti_rugi as rugi,
 			concat (pesangon.pasal_pengali_pesangon,' X ',pesangon.uang_pesangon, ' GP ') as pengali ,
 			concat(pesangon.upmk,' X GP') as upmk,
 			concat (pesangon.uang_ganti_rugi,'% (UANG PESANGON + UANG PMK)') as gantirugi,
-			concat(cuti.sisa_cuti,' hari ')as sisacuti,
-			concat(cuti.sisa_cuti,' GP/30 ')as sisacutihari
-							from 		hrd_khs.tpribadi as pri
-							join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
-							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
-							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
-							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
-							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
-							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
-							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
-							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
-							and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
-							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
-							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar)::varchar";
+			concat(tpson.jml_cuti,' hari ')as sisacuti,
+			concat(tpson.jml_cuti,' GP/30 ')as sisacutihari
+			from 		hrd_khs.tpribadi as pri
+			join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
+			left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
+			left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+			left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
+			left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
+			join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
+			and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
+			and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
+			join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
+			where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar)::varchar";
+	 		
 	 		$query 	=	$this->personalia->query($cetak);
 			return $query->result_array();
         }

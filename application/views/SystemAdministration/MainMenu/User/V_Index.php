@@ -32,6 +32,9 @@
 									  <i class="icon-plus icon-2x"></i>
 									</button>
 								</a>
+								<a class="btn btn-default btn-sm" href="<?php echo site_url('SystemAdministration/Batch') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add Batch" title="Multiple Input" >
+									<i class="fa fa-tasks fa-2x"></i>
+								</a>
 								User List
 							</div>
 							<div class="box-body">

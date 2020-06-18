@@ -395,18 +395,11 @@ class M_pekerjacutoff extends CI_Model
 				left join hrd_khs.tseksi ts
 				on tp.kodesie = ts.kodesie
 				where tp.keluar = '0' or  (
-					(
-						tp.tglkeluar < (
-											select tanggal_akhir + interval '1 day' 
-											from \"Presensi\".tcutoff 
-											where periode = '$periode' limit 1
-										) 
-						or tp.tglkeluar >= concat(
+					tp.tglkeluar >= concat(
 												left('$periode',4),
 												'-',
 												right('$periode',2),'-01'
 											)::date + interval '1 month'
-					)  
 					and tp.keluar = '1'
 				)
 				order by tbl.noind";
@@ -741,6 +734,38 @@ class M_pekerjacutoff extends CI_Model
 		}
 
 		return $nilai;
+	}
+
+	public function hitung_htm_aktif($periode){
+		$sql = "select extract(day from tanggal_akhir) as jumlah
+				from \"Presensi\".tcutoff t 
+				where periode = to_char('$periode'::date,'yyyymm')
+				and os='0'";
+		$result = $this->personalia->query($sql)->row();
+		if (!empty($result)) {
+			return $result->jumlah;
+		}else{
+			return 0;
+		}
+	}
+
+	public function hitung_if_aktif($periode){
+		$sql = "select count(*) as jumlah
+				from pg_catalog.generate_series(
+						'$periode'::date + interval '1 day',
+						to_char('$periode'::date,'yyyy-mm-01')::date + interval '1 month' - interval '1 day',
+						interval '1 day'
+					) as dates  
+				left join \"Dinas_Luar\".tlibur tl 
+				on dates.dates = tl.tanggal 
+				where tl.tanggal is null 
+				and extract(isodow from dates.dates) != 7";
+		$result = $this->personalia->query($sql)->row();
+		if (!empty($result)) {
+			return $result->jumlah;
+		}else{
+			return 0;
+		}
 	}
 
 }

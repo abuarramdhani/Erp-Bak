@@ -5,6 +5,7 @@
 	    {
 	        parent::__construct();
 	        $this->load->library('session');
+			$this->load->library('Log_Activity');
 	        $this->load->helper('url');
 	        $this->load->model('SystemAdministration/MainMenu/M_user');
 	        $this->load->model('PayrollManagement/Report/RiwayatKenaikanGaji/M_riwayatkenaikangaji');
@@ -20,7 +21,7 @@
 	    {
 	        $this->checkSession();
 	        $user_id = $this->session->userid;
-	        
+
 	        $data['Menu'] = 'Laporan Penggajian';
 	        $data['SubMenuOne'] = 'Lap. Riwayat Kenaikan Gaji';
 	        $data['SubMenuTwo'] = '';
@@ -36,12 +37,12 @@
 	        $this->load->view('PayrollManagement/Report/RiwayatKenaikanGaji/V_index', $data);
 	        $this->load->view('V_Footer',$data);
 	    }
-		
+
 		public function search()
 	    {
 	        $this->checkSession();
 	        $user_id = $this->session->userid;
-	        
+
 			$periode = $this->input->post('txtPeriodeHitung',TRUE);
 			$year	 = substr($periode,0,4);
 			$month	 = substr($periode,5,2);
@@ -67,7 +68,7 @@
 
 	    public function checkSession(){
 	        if($this->session->is_logged){
-	            
+
 	        }else{
 	            redirect(site_url());
 	        }
@@ -77,7 +78,7 @@
 	    {
 		}
 
-		public function generatePDF() 
+		public function generatePDF()
 		{
 	        $this->checkSession();
 
@@ -89,6 +90,11 @@
 
 			$year	 = $this->input->get('year');
 			$month	 = $this->input->get('month');
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management';
+			$detail = "Export PDF Riwayat Kenaikan Gaji bulan=$month tahun=$year";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 	        $data['riwayat_gaji'] = $this->M_riwayatkenaikangaji->get_all($year,$month);
 	        $data['year'] = $year;

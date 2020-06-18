@@ -11,8 +11,9 @@ class C_RekapPerPekerja extends CI_Controller {
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
-          //load the login model
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
+          //load the login model
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -116,6 +117,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		if ($detail==0) {
 			$data['periode1']	= $periode1;
 			$data['periode2']	= $periode2;
+			$data['detail']	= $detail;
 			$data['status']	= $status;
 			/*$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk, $status);
 			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk, $status);*/
@@ -163,6 +165,7 @@ class C_RekapPerPekerja extends CI_Controller {
 			$data['periode2']	= $period2;
 
 			$data['status']	= $status;
+			$data['detail']	= $detail;
 			/*$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk,$status);
 			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk,$status);*/
 
@@ -178,6 +181,11 @@ class C_RekapPerPekerja extends CI_Controller {
 		$periode2 = $this->input->post("txtPeriode2_export");
 		$NoInduk = $this->input->post("txtNoInduk_export");
 		$status = $this->input->post("txtStatus");
+		//insert to sys.log_activity
+		$aksi = 'REKAP TIMS';
+		$detail_log = "Export Excel perpekerja tanggal=".$periode1." - ".$periode2;
+		$this->log_activity->activity_log($aksi, $detail_log);
+		//
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -662,10 +670,11 @@ class C_RekapPerPekerja extends CI_Controller {
 				$angka++;
 			}
 		}
-		// echo "<pre>";print_r($data['detail']);
-		// exit();
-		// $this->load->view('er/RekapTims/V_cetak_tims_per_pekerja', $data);
-		// exit();
+		//insert to sys.log_activity
+		$aksi = 'REKAP TIMS';
+		$detail_log = "Export PDF per pekerja noind=$NoInduk tanggal=".$periode1." - ".$periode2;
+		$this->log_activity->activity_log($aksi, $detail_log);
+		//
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();

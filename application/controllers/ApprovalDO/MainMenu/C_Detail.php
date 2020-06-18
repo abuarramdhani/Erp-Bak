@@ -67,6 +67,11 @@ class C_Detail extends CI_Controller {
                 'name'          => 'B0328 - Bambang Pudjijono',
                 'id'            => 'B0328',
                 'email_address' => 'bambang_pudjijono@quick.com'
+            ],
+            [
+                'name'          => 'J1287 - Muhammad Shalahuddin Azmi',
+                'id'            => 'J1287',
+                'email_address' => 'muhammad_shalahuddin_a@quick.com'
             ]
         ];
         switch ($exp_id[0]) {

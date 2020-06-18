@@ -20,8 +20,30 @@
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
-						<a href="<?php echo $dataEmployee[0]['gambar'];?>">
-							<img src="<?php echo $dataEmployee[0]['gambar'];?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
+						<a href="<?php
+						if (base_url()=='http://erp.quick.com/')
+							{
+								echo str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
+							}
+							else
+							{
+								echo $dataEmployee[0]['gambar'];
+							}
+
+
+						 ?>">
+							<img src="<?php 
+
+							if (base_url()=='http://erp.quick.com/')
+								{
+									echo str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
+								}
+								else
+								{
+									echo $dataEmployee[0]['gambar'];
+								}
+
+							?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
 						</a>
 				</div>
 			</div>
@@ -147,13 +169,13 @@
 
 		<div class="panel box-footer" style="padding-left: 50px;">
 			<div class="row">
-				<div class="col-sm-1" align="center" style="margin: 7px">
+				<div class="col-sm-2" align="center" style="margin: 7px">
 					<a id="btnApprove" class="btn btn-primary btn-block" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
 				</div>
-				<div class="col-sm-1" align="center" style="margin: 7px">
+				<div class="col-sm-2" align="center" style="margin: 7px">
 					<button data-toggle="modal" data-target="#rejectApproval" class="btn btn-danger btn-block"><i class="fa fa-close"></i>    Reject</button>
 				</div>
-				<div class="col-sm-1" align="center" style="margin: 7px">
+				<div class="col-sm-2" align="center" style="margin: 7px">
 					<a id="btnCetak" class="btn btn-info btn-block" href="<?php echo base_url('AbsenAtasan/List/cetakApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-print"></i>   Cetak</a>
 				</div>
 			</div>

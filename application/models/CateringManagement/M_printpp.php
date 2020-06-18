@@ -11,7 +11,7 @@ class M_printpp extends CI_Model
     public function getPrintpp($id = FALSE)
     {
     	if ($id === FALSE) {
-            $sql = "select * from ga.ga_printpp order by tgl_buat desc";
+            $sql = "select * from ga.ga_printpp where pp_catering_lokasi is null order by tgl_buat desc";
     		// $query = $this->db->get('ga.ga_printpp');
             $query = $this->db->query($sql);
     	} else {

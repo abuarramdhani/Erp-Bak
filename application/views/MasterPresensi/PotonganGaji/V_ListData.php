@@ -116,7 +116,11 @@
                                                             <div class="btn-group">
                                                                 <button title="Detail" onclick="javascript:pgListData.triggerFormDetail(<?= $no ?>)" class="btn btn-primary"><i class="fa fa-info-circle"></i></button>
                                                                 <button title="Edit" onclick="javascript:pgListData.triggerFormEdit(<?= $no ?>)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
+                                                                <?php if ($item['sudah_bayar'] == '0') {
+                                                                    ?>
                                                                 <button title="Hapus" onclick="javascript:pgListData.openDeleteModal('<?= $item['potongan_id'] ?>', <?= $no ?>, '<?= $item['nama'] ?>')" type="button" class="btn btn-danger" id="buttonDelete<?= $no++ ?>"><i class='fa fa-trash'></i></button>
+                                                                    <?php 
+                                                                } ?>
                                                             </div>
                                                         </td>
                                                         <td class="text-center"><?= $item['noind'] ?></td>
@@ -202,41 +206,66 @@
     })
 
     const pgListData = {
-        triggerFormDetail: async id => {
+        triggerFormDetail: id => {
             const form = document.getElementById(`formDetail${id}`)
             if(form) form.submit();
         },
-        triggerFormEdit: async id => {
+        triggerFormEdit: id => {
             const form = document.getElementById(`formEdit${id}`)
             if(form) form.submit();
         },
-        deleteData: async (id, row, employeeName) => {
+        deleteData: (id, row, employeeName) => {
             element(`#buttonDelete${row}`).animate.showLoading()
             const formData = new FormData()
             formData.append('id', id)
-            fetch('<?= base_url('MasterPresensi/PotonganGaji/ListData/deleteData') ?>', {
-                method: 'POST',
-                body: formData
-            }).then(response => response.json()).then(response => {
-                if(response.success) {
-                    $.toaster(`Data potongan ${employeeName} berhasil dihapus`, '', 'success')
-                    element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
-                    if(dataTable) {
-                        dataTable.row($(`#potonganRow${row}`)).remove().draw()
-                        $('.potonganRowNumber').each((i, item) => { $(item).html(`${i + 1}.`) })
+            // fetch('<?= base_url('MasterPresensi/PotonganGaji/ListData/deleteData') ?>', {
+            //     method: 'POST',
+            //     body: formData
+            // }).then(response => response.json()).then(response => {
+            //     if(response.success) {
+            //         $.toaster(`Data potongan ${employeeName} berhasil dihapus`, '', 'success')
+            //         element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
+            //         if(dataTable) {
+            //             dataTable.row($(`#potonganRow${row}`)).remove().draw()
+            //             $('.potonganRowNumber').each((i, item) => { $(item).html(`${i + 1}.`) })
+            //         }
+            //     } else {
+            //         console.error('delete data response unsuccessful')
+            //         $.toaster('Terjadi kesalahan saat menghapus data', '', 'danger')
+            //         element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
+            //     }
+            // }).catch(e => {
+            //     console.error(e)
+            //     $.toaster('Terjadi kesalahan saat menghapus data', '', 'danger')
+            //     element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
+            // })
+            $.ajax({
+                    method: 'POST',
+                    url: baseurl + 'MasterPresensi/PotonganGaji/ListData/deleteData',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    error: function(xhr,status,error){
+                        element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                        element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
+                        $.toaster(`Data potongan ${employeeName} berhasil dihapus`, '', 'success')
+                        if(dataTable) {
+                            dataTable.row($(`#potonganRow${row}`)).remove().draw()
+                            $('.potonganRowNumber').each((i, item) => { $(item).html(`${i + 1}.`) })
+                        }
                     }
-                } else {
-                    console.error('delete data response unsuccessful')
-                    $.toaster('Terjadi kesalahan saat menghapus data', '', 'danger')
-                    element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
-                }
-            }).catch(e => {
-                console.error(e)
-                $.toaster('Terjadi kesalahan saat menghapus data', '', 'danger')
-                element(`#buttonDelete${row}`).animate.hideLoading('fa-trash')
-            })
+                })  
         },
-        openDeleteModal: async (id, row, employeeName) => {
+        openDeleteModal: (id, row, employeeName) => {
             if(confirm(`Anda yakin ingin menghapus data potongan ${employeeName} ?`)) pgListData.deleteData(id, row, employeeName)
         }
     }
@@ -325,19 +354,20 @@
         }
     }
 
-    String.prototype.isEmpty = function() { return this.toString() == '' }
+    // note, if u not know what is this, learn es6 syntax js
+    String.prototype.isEmpty = () => this.toString() == '' 
 
-    String.prototype.isNotEmpty = function() { return this.toString() != '' }
+    String.prototype.isNotEmpty = () => this.toString() != ''
 
-    String.prototype.isNull = function() { return this.toString() == null }
+    String.prototype.isNull = () => this.toString() == null
 
-    String.prototype.isNotNull = function() { return this.toString() != null }
+    String.prototype.isNotNull = () => this.toString() != null
 
-    String.prototype.isNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
+    String.prototype.isNullAndEmpty = () => this.toString() == null && this.toString() == ''
 
-    String.prototype.isNullOrEmpty = function() { return this.toString() == null || this.toString() == '' }
+    String.prototype.isNullOrEmpty = () => this.toString() == null || this.toString() == ''
 
-    String.prototype.isNotNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
+    String.prototype.isNotNullAndEmpty = () => this.toString() == null && this.toString() == ''
 
-    String.prototype.isNotNullOrEmpty = function() { return this.toString() != null || this.toString() != '' }
+    String.prototype.isNotNullOrEmpty = () => this.toString() != null || this.toString() != ''
 </script>

@@ -367,6 +367,7 @@ $(document).ready(function() {
   $('.tb_p2k3').dataTable( {
     dom: 'frtp',
   });
+  $('.p2k3_tblstok').dataTable();
   
 
   // $('.p2k3_exp_perhitungan').click(function(){
@@ -694,18 +695,30 @@ function format ( d ) {
     $('.p2k3_btn_bon').click(function(){
       var a = '0';
       var b = '0';
+      var c = '0', item = '', stokgudang = '';
       $('.p2k3_inHasil').each(function(){
         if ($(this).val() < 0) {
           a = '1';
         }
       });
-      $('.p2k3_inBon').each(function(){
+      $('.p2k3_inBon').each(function(){//cek jumlah apakah 0 semua
         // alert($(this).val());
         if ($(this).val() > 0) {
           b = '1';
           // alert('as');
         }
-      })
+      });
+
+      $('.p2k3_inBon').each(function(){// cek jumlah apakah melebihi stok gudang
+        var stokg = $(this).closest('tr').find('p.p2k3_stokg').text();
+        if ($(this).val() > Number(stokg)) {
+          c = '1';
+          item = $(this).closest('tr').find('a.p2k3_see_apd_text').text();
+          stokgudang = stokg;
+          // alert('as');
+        }
+      });
+
       if (a == '1') {
         Swal.fire({
           type: 'error',
@@ -718,6 +731,13 @@ function format ( d ) {
           type: 'error',
           title: 'Oops...',
           text: 'Semua Jumlah Bon 0!',
+        });
+        return false;
+      }else if(c == '1'){
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Jumlah Item '+item+' tidak boleh Melebihi jumlah Stok Gudang ('+stokgudang+') !',
         });
         return false;
       }
@@ -819,11 +839,12 @@ function format ( d ) {
 
     $('.p2k3_cek_hitung').click(function(){
       var pr = $('.p2k3_tanggal_periode').val();
+      var ks = $('.k3_admin_monitorbon').val();
       $('#surat-loading').attr('hidden', false);
       $.ajax({
         url: baseurl+'p2k3adm_V2/Admin/cekHitung',
         method: "POST",
-        data: {pr:pr},
+        data: {pr:pr, kodesie:ks},
         success: function(data){
           $('#p2k3_result').html(data);
           $('#surat-loading').attr('hidden', true);
@@ -1098,14 +1119,34 @@ $(document).ready(function(){
   $('.p2k3_tanggal_periode').change(function(){
     var d = new Date();
     var n = d.getFullYear();
-    var m = d.getMonth();
+    var m = d.getMonth()+01;
     var v = $(this).val().split(' - ');
-    if(v[1] < n){
-      $(this).val(null);
-      alert('Periode tidak boleh lebih kecil !');
-    }else if(Number(v[0]) < m+1){
-      $(this).val(null);
-      alert('Periode tidak boleh lebih kecil !');
+    if (v[1] < n) {
+      alert('Periode tidak boleh lebih kecil dari bulan sekarang');
+      $(this).val(pad(m)+' - '+n);
+    }else if(v[1] > n){
+      //oke
+    }else if (v[0] < m) {
+      alert('Periode tidak boleh lebih kecil dari bulan sekarang');
+      $(this).val(pad(m)+' - '+n);
     }
   });
 });
+
+function erp_checkPopUp()
+{
+    setTimeout(function() {
+        var newWin = window.open(url);
+        if(!newWin || newWin.closed || typeof newWin.closed=='undefined') 
+        { 
+            alert('Popup Tidak Aktif (Blocked)!\nMohon Aktifkan Pop up Untuk melanjutkan, lalu refresh/reload Halaman ini!');
+            $('#p2k3_popup').modal({backdrop: 'static', keyboard: false});
+        }else{
+            newWin.close();
+        }
+    }, 500);
+}
+
+function pad(d) {
+    return (d < 10) ? '0' + d.toString() : d.toString();
+}

@@ -96,6 +96,13 @@ class C_Selep extends CI_Controller
 			$selepData[$aksen2]['shift'] = $this->input->post('txtShift');
 			$selepData[$aksen2]['scrap_quantity'] = '0';
 			$selepData[$aksen2]['job_id'] = $employee;
+			$selepData[$aksen2]['ket_pengurangan'] = $this->input->post('txtKeteranganPemotonganTarget');
+			if ($selepData[$aksen2]['ket_pengurangan'] != '') {
+				$selepData[$aksen2]['jam_pengurangan'] = $this->input->post('txtJamPemotonganTarget');
+			} else {
+				$selepData[$aksen2]['jam_pengurangan'] = '';
+			}
+			// $selepData[$aksen2]['jam_pengurangan'] = $this->input->post('txtJamPemotonganTarget');
 			$aksen2++;
 		}
 

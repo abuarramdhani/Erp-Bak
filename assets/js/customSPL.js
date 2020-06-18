@@ -1,31 +1,30 @@
 //--------------------- surat perintah lembur ----------------//
 $(function() {
-    // Initialize Elements
-    /////////////////////////////////////////////////////////////////////////////////
-
-    // FIXME: untuk halaman aska sama kasie aja ditampilin tombol proses
     $(".spl-table.kasie, .spl-table.aska").DataTable({
         "scrollX": true,
-        "dom": 'Bfrtip',
+        "dom": '<"top"Bfpi>rt<"bottom"ip>',
         "buttons": [{
-                extend: 'excel',
+                extend: 'excelHtml5',
+                text: 'Export Table',
                 className: 'btn btn-success'
             },
             {
                 text: 'Proses',
-                className: 'btn btn-primary disabled',
-                action: function(e, dt, node, config) {
+                className: 'btn btn-proses btn-primary disabled',
+                action: (e, dt, node, config) => {
+                    $('#spl_tex_proses').val('')
                     $('#btn-ProsesSPL').click();
                 }
             }
         ],
         "ordering": false,
         "retrieve": true,
-        "initComplete": function() {
+        "initComplete": () => {
             if ($('#btn-ProsesSPL').attr('id') == undefined) {
                 $('#example11_wrapper').find('a.dt-button:last').hide();
                 $('#example11_wrapper').find('button.dt-button:last').hide();
             };
+
             $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
@@ -35,9 +34,10 @@ $(function() {
 
     $(".spl-table").DataTable({
         "scrollX": true,
-        "dom": 'Bfrtip',
+        "dom": 'lfrtip',
         "buttons": [{
-            extend: 'excel',
+            extend: 'excelHtml5',
+            text: 'Export Table',
             className: 'btn btn-success'
         }],
         "ordering": false,
@@ -47,6 +47,7 @@ $(function() {
                 $('#example11_wrapper').find('a.dt-button:last').hide();
                 $('#example11_wrapper').find('button.dt-button:last').hide();
             };
+
             $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
@@ -268,6 +269,17 @@ $(function() {
         thisrow.nextUntil(nextrow, 'tr.spl-jobs').remove()
         $(this).closest('tr').remove();
 
+        let existError = false;
+        $('.spl-new-error').each(function() {
+            existError = true;
+        })
+
+        if (existError) {
+            $("button#submit_spl").attr("type", "button").attr("class", "btn btn-default");
+        } else {
+            $("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
+        }
+
         if (totalRow == 2) {
             $('.multiinput').find('.spl-pkj-del').prop('disabled', true)
         }
@@ -311,7 +323,7 @@ $(function() {
                 <input type="text" class="form-control" name="overtime" disabled>
             </td>
             <td>
-                <input type="number" class="form-control" name="target[${row}][]" required>
+                <input type="number" min="1" class="form-control" name="target[${row}][]" required>
             </td>
             <td>
                 <select class="form-control target-satuan" name="target_satuan[${row}][]" required>
@@ -326,7 +338,7 @@ $(function() {
                 </select>
             </td>
             <td>
-                <input type="number" class="form-control" name="realisasi[${row}][]" required>
+                <input type="number" min="1" class="form-control" name="realisasi[${row}][]" required>
             </td>
             <td>
                 <input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[${row}][]" readonly>
@@ -377,6 +389,18 @@ $(function() {
 
     $('#form-edit-spl').on('change', e => {
         console.log("You're changing, I can't stand it")
+    })
+
+    $('select[name=kd_lembur').on('change', function() {
+        const val = $(this).val()
+
+        if (val == '001') { //lembur istirahat
+            $('#break-ya, #istirahat-ya').prop('disabled', true)
+            $('#istirahat-no').iCheck('check')
+            $('#break-no').iCheck('check')
+        } else {
+            $('#break-ya, #istirahat-ya').prop('disabled', false)
+        }
     })
 
     $('#example11').on('change', ".spl-cek", function(e) {
@@ -437,7 +461,7 @@ $(function() {
                     // console.log(obj);
                     if (obj['error'] == '1') {
                         parentSelect.css("background", "#ffe6e6");
-                        $("button[type*=submit]").attr("type", "button").attr("class", "btn btn-grey");
+                        $("button#submit_spl").attr("type", "button").attr("class", "btn btn-grey");
                         parentSelect.find(".spl-new-error").remove();
                         parentSelect.append("<p class='spl-new-error' style='color: red'><br><i style='color:#ed2b1f' class='fa fa-lg fa-info-circle spl-error'></i>  Peringatan : " + obj['text'] + "</p>");
                         parentTr.find('input[name*=lbrawal]').val("");
@@ -468,8 +492,7 @@ $(function() {
                             chk = "1";
                         });
                         if (chk == "0") {
-                            //$("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
-                            // what is this ?
+                            $("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
                         }
 
 
@@ -534,6 +557,7 @@ $(function() {
     for (x = 0; x < 2; x++) {
         $('#spl-approval-' + x).on('click', { id: x }, function(e) {
             e.preventDefault();
+            $('.btn-proses').addClass('disabled')
             var id = e.data.id;
             var table = $('.spl-table').DataTable();;
 
@@ -555,9 +579,9 @@ $(function() {
                     noind: $('#noind').val(),
                     kodesie: $('#kodesie').val()
                 },
-                success: function(data) {
-                    if (data != "[]") {
-                        var send = $.parseJSON(data);
+                success: data => {
+                    if (data.length) {
+                        let send = JSON.parse(data);
                         table.rows.add(send);
                         table.draw();
                     } else {
@@ -588,14 +612,14 @@ $(function() {
         $('.spl-chk-data').each(function() {
             if (this.checked) { chk += '.' + $(this).val(); }
         });
-        console.log(chk);
+
         if (chk == "") {
             $('#example11_wrapper').find('a.btn-primary').addClass("disabled");
             $('#example11_wrapper').find('button.btn-primary').addClass("disabled");
             console.log("tidak ada");
         } else {
-            $('#example11_wrapper').find('a.btn-primary').removeClass("disabled");
-            $('#example11_wrapper').find('button.btn-primary').removeClass("disabled");
+            $('#example11_wrapper').find('a.btn-primary').removeClass("disabled btn-default");
+            $('#example11_wrapper').find('button.btn-primary').removeClass("disabled btn-default");
             console.log("ada");
         };
 
@@ -615,6 +639,82 @@ $(function() {
     $(document).on('input', '#spl_tex_proses', function(e) {
         spl_load_data();
     });
+
+    $('#approveSPL, #rejectSPL').on('click', e => {
+        const button = e.target.id
+        let reason = $('#spl_tex_proses')
+
+        reason.on('change', () => {
+            reason.css({
+                "border": "1px solid #ccc"
+            })
+        })
+
+        if (!reason.val() && button == 'rejectSPL') {
+            reason.css({
+                "border": "1px solid red"
+            })
+            Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            }).fire({
+                customClass: 'swal-font-small',
+                type: 'error',
+                title: 'Masukkan alasan terlebih dahulu!'
+            });
+            return
+        } else {
+            reason.css({
+                "border": "1px solid #ccc"
+            })
+        }
+
+        if (button == 'approveSPL') {
+            $('#FingerDialogApprove').modal('show')
+        } else {
+            $('#FingerDialogReject').modal('show')
+        }
+    })
+
+    function waitingFingerPrint(params) {
+        localStorage.setItem('resultApproveSPL', false)
+
+        const resultStorage = () => {
+            window.removeEventListener('storage', resultStorage)
+            let isSuccess = localStorage.getItem('resultApproveSPL') // will result string dataType
+
+            if (isSuccess == 'true') {
+                $('#ProsesDialog').modal('hide')
+                $('#FingerDialogApprove').modal('hide')
+                $('#FingerDialogReject').modal('hide')
+
+                swal.fire({
+                    title: `Sukses ${params} lembur pekerja`,
+                    text: '',
+                    type: 'success'
+                }).then(() => {
+                    $('#spl-approval-1').click()
+                    $('#spl-approval-0').click()
+                })
+                localStorage.removeItem('resultApproveSPL')
+            } else if (isSuccess == 3) { // error
+                swal.fire({
+                    title: `Gagal, error code 500`,
+                    text: '',
+                    type: 'error'
+                }).then(() => {
+                    $('#spl-approval-1').click()
+                    $('#spl-approval-0').click()
+                })
+            } else {
+                alert('Error : ' + isSuccess)
+            }
+        }
+
+        window.addEventListener('storage', resultStorage)
+    }
 
     $(document).on('click', '#FingerDialogReject .spl_finger_proses', function(e) {
         finger = $(this).attr('data');
@@ -647,7 +747,10 @@ $(function() {
             $('#spl_proses_approve').attr('href', tmp + btoa('&stat=25&data=' + chk + '&ket=' + ket));
         }
 
-        window.location.href = $('#spl_proses_reject').attr('href');
+        let apiProcess = $('#spl_proses_reject').attr('href');
+        window.location.href = apiProcess
+
+        waitingFingerPrint('Reject')
     });
 
     $(document).on('click', '#FingerDialogApprove .spl_finger_proses', function(e) {
@@ -681,9 +784,11 @@ $(function() {
             $('#spl_proses_approve').attr('href', tmp + btoa('&stat=25&data=' + chk + '&ket=' + ket));
         }
 
-        window.location.href = $('#spl_proses_approve').attr('href');
-    });
+        let apiProcess = $('#spl_proses_approve').attr('href')
+        window.location.href = apiProcess
 
+        waitingFingerPrint('Approve')
+    });
 });
 
 $(document).ready(function() {
@@ -721,6 +826,7 @@ $(document).ready(function() {
         }
         $(this).val(value);
     });
+
     $('.spl-time-mask').on('focusout', function(e) {
         value = $(this).val();
         if (value.length > 0) {
@@ -1565,3 +1671,17 @@ const add_jobs_spl_edit = e => {
 const del_jobs_spl = (e) => {
     e.closest('tr').remove()
 }
+
+$(document).ready(function(){
+    $('.spl_exportlist_excel').on('click', function(){
+        let val = $('#frm_list_lembur').serialize();
+        let url = baseurl+'SPLSeksi/C_splseksi/export_excel?'+val;
+        window.open(url, '_blank');
+    });
+
+    $('#spl-rekap-excel').on('click', function(){
+        let val = $('#frm_rekap_lembur').serialize();
+        let url = baseurl+'SPLSeksi/C_splseksi/export_rekap_excel?'+val;
+        window.open(url, '_blank');
+    });
+});

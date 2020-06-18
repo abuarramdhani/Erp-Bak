@@ -23,7 +23,7 @@ function getHistory(th) {
 			$('#hasil').html(result);
 				$('#uwuuwu').DataTable({
 					scrollX: false,
-					scrollY:  300,
+					scrollY:  400,
 					scrollCollapse: true,
 					paging:false,
                     info:false,
@@ -56,7 +56,7 @@ function Detail(no) {
 			$('#detail').html(result);
 				$('#detaillist').DataTable({
 					scrollX: false,
-					scrollY:  145,
+					scrollY:  100,
 					scrollCollapse: true,
 					paging:false,
                     info:false,
@@ -68,7 +68,7 @@ function Detail(no) {
 
 $(document).ready(function() {
 	$('.tanggalan').datepicker({
-	    format: 'dd/M/yy'
+	    format: 'dd/M/yyyy'
 	});
 });
 
@@ -79,10 +79,19 @@ function intine(th, no)
 }
 
 function CetakKartu(no) {
-	$(document).ready(function(){
+
+		var ket = $('#keterangandong').val();
+		if (ket == '') {
+			Swal.fire(
+			  'Mohon Isikan keterangan',
+			  '',
+			  'warning'
+			)
+		} else if (ket != '') {
 
 		var descrecipt = $('#descrecipt'+no).val(); 	
-		var itemrecipt = $('#itemrecipt'+no).val(); 	
+		var itemrecipt = $('#itemrecipt'+no).val(); 
+
 		// var serial = $('input[name="serial[]"]').val();
 
 		var serial = [];
@@ -96,7 +105,8 @@ function CetakKartu(no) {
 			data: {
 				descrecipt:descrecipt,
 				itemrecipt:itemrecipt,
-			    serial:serial
+			    serial:serial,
+			    ket:ket
 			},
 			type: "POST",
 			// datatype: 'json'
@@ -107,10 +117,94 @@ function CetakKartu(no) {
 			var win = window.open(result, '_blank');
   			win.focus()
 			console.log("sukses2");
-				// window.open(baseurl+"ReceivePO/History/CetakKartu/"+data['url'],'_blank');
-				// window.open(baseurl+'ReceivePO/History/CetakKartu/''_blank');
-				// window.location.replace (baseurl+"ReceivePO/History/CetakKartu/");
+			console.log(ket)
+
 				
+			});
+	}
+}
+
+// -------------------------------------------------------------------------- DELIVER -------------------------------------------------------------------- //
+
+function getPO(th) {
+	$(document).ready(function(){
+		var lppbno = $('input[name="lppbno"]').val();
+		
+		var request = $.ajax({
+			url: baseurl+'ReceivePO/Deliver/getPO/',
+			data: {
+			    lppbno : lppbno
+			},
+			type: "POST",
+			datatype: 'html'
+		});
+		
+		
+			$('#has').html('');
+			$('#has').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+			
+
+		request.done(function(result){
+			// console.log("sukses2");
+			$('#has').html(result);
+			});
+		});		
+}
+function getdataInsert(th) {
+	$(document).ready(function(){
+
+		var itemdelive			= [];
+		$('input[name="itemdelive[]"]').each(function(){ itemdelive.push($(this).val())});
+		var descdelive			= [];
+		$('input[name="descdelive[]"]').each(function(){ descdelive.push($(this).val())});
+		var qtydelive				= [];
+		$('input[name="qtydelive[]"]').each(function(){ qtydelive.push($(this).val())});
+		var commentsdelive	= [];
+		$('input[name="commentsdelive[]"]').each(function(){ commentsdelive.push($(this).val())});
+		var podelive				= [];
+		$('input[name="podelive[]"]').each(function(){ podelive.push($(this).val())});
+		var sujadelive			= [];
+		$('input[name="sujadelive[]"]').each(function(){ sujadelive.push($(this).val())});
+		var serialstatus			= [];
+		$('input[name="serialstatus[]"]').each(function(){ serialstatus.push($(this).val())});
+		var lppbnumber		= [];
+		$('input[name="lppbnumber[]"]').each(function(){ lppbnumber.push($(this).val())});
+		var iddelive				= [];
+		$('input[name="iddelive[]"]').each(function(){ iddelive.push($(this).val())});
+		var pilihloc				= [];
+		$('input[name="pilihloc[]"]').each(function(){ pilihloc.push($(this).val())});
+		
+		var request = $.ajax({
+			url: baseurl+'ReceivePO/Deliver/Insertketable/',
+			data: {
+			    itemdelive 			: itemdelive,
+			    descdelive 			: descdelive,
+			    qtydelive 				: qtydelive,
+				commentsdelive 	: commentsdelive,
+				podelive 				: podelive,
+				sujadelive 				: sujadelive,
+				serialstatus 			: serialstatus,
+				lppbnumber 			: lppbnumber,
+				iddelive 				: iddelive,
+				pilihloc 					: pilihloc
+
+			},
+			type: "POST",
+			datatype: 'html'
+		});
+		
+		
+			// $('#has').html('');
+			// $('#has').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+			
+
+		request.done(function(result){
+			console.log("sukses2");
+			 Swal.fire(
+			      'Delivered!',
+			      'Proses Deliver Selesai',
+			      'success'
+			    )
 			});
 		});		
 }

@@ -11,13 +11,15 @@ class M_packing extends CI_Model
     public function tampilhariini() {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                tgl_dibuat, to_char(mulai_packing, 'HH24:MI:SS') as mulai_packing, pic_packing,
+                tgl_dibuat, to_char(mulai_packing, 'HH24:MI:SS') as mulai_packing,
+                to_char(mulai_packing, 'YYYY-MM-DD HH24:MI:SS') as jam_packing, pic_packing,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_packing,
-                selesai_pengeluaran, urgent, waktu_packing
+                selesai_pengeluaran, urgent, waktu_packing, bon
                 from khs_tampung_spb
                 where selesai_pengeluaran is not null
                 and selesai_packing is null
                 and cancel is null
+                and (bon is null or bon = 'BEST')
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -33,7 +35,7 @@ class M_packing extends CI_Model
                 to_char(mulai_packing, 'HH24:MI:SS') as jam_mulai, 
                 to_char(selesai_packing, 'HH24:MI:SS') as jam_selesai,
                 to_char(selesai_packing, 'DD/MM/YYYY HH24:MI:SS') as selesai_packing, 
-                waktu_packing, urgent, pic_packing
+                waktu_packing, urgent, pic_packing, bon
                 from khs_tampung_spb
                 where TO_CHAR(selesai_packing,'DD/MM/YYYY') between '$date' and '$date'
                 and cancel is null
@@ -83,5 +85,36 @@ class M_packing extends CI_Model
                     where no_dokumen = '$nospb' and jenis_dokumen = '$jenis'";
         $query = $oracle->query($sql);      
         $query2 = $oracle->query('commit');          
+    }
+
+    public function insertColly($nospb, $jml_colly, $kardus_kecil, $kardus_sdg, $kardus_bsr, $karung){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "insert into khs_sp_packaging (no_dokumen, jml_colly, kardus_kecil, kardus_sedang, kardus_besar, karung)
+                values('$nospb', '$jml_colly', '$kardus_kecil', '$kardus_sdg', '$kardus_bsr', '$karung')";
+        $query = $oracle->query($sql);      
+        $query2 = $oracle->query('commit');   
+    }
+
+    public function insertBerat($nospb, $jenis, $berat, $no){
+        $mysqli = $this->load->database('khs_packing', true);
+        $sql = "insert into sp_packing_trx (nomor_do, kode_packing, berat, attribute)
+                values('$nospb', '$jenis', '$berat', '$no')";
+        $query = $mysqli->query($sql);
+        // echo $sql;
+    }
+
+    public function updateBerat($nospb, $jenis, $berat, $no){
+        $mysqli = $this->load->database('khs_packing', true);
+        $sql = "update sp_packing_trx set kode_packing = '$jenis', berat = '$berat'
+                where nomor_do = '$nospb' and attribute = '$no'";
+        $query = $mysqli->query($sql);
+        // echo $sql;
+    }
+
+    public function cekPacking($nospb){
+        $oracle = $this->load->database('khs_packing', true);
+        $sql = "select * from sp_packing_trx where nomor_do = '$nospb'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 }

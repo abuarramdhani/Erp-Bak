@@ -50,7 +50,19 @@ class C_LimbahKelola extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['Kiriman'] = $this->M_limbahkelola->getLimbahKirim();
+		$lokasi = (isset($_GET['location'])) ? $_GET['location'] : null;
+
+		$kiriman = $this->M_limbahkelola->getLimbahKirim($lokasi);
+
+		$kiriman = array_filter($kiriman, function($item) {
+			if(strtotime($item['tanggal']) > strtotime('2020-03-10')) {
+				return ($item['status_kirim'] == 4 || $item['status_kirim'] == 1 || $item['status_kirim'] == 2);
+			} else {
+				return true;
+			}
+		});
+
+		$data['Kiriman'] = $kiriman; 
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -117,7 +129,7 @@ class C_LimbahKelola extends CI_Controller
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-		$this->M_limbahkelola->updateLimbahStatus('3',$plaintext_string);
+		$this->M_limbahkelola->updateLimbahStatus('4',$plaintext_string);
 
 		redirect(site_url('WasteManagement/KirimanMasuk'));
 	}
@@ -245,5 +257,3 @@ class C_LimbahKelola extends CI_Controller
 		}
 	}
 }
-
-?>

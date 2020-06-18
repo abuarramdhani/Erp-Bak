@@ -29,7 +29,7 @@
 									<div class="col-lg-12">
 										<form class="form-horizontal" method="post" action="">
 											<div class="form-group">
-												<label class="control-label col-lg-4">Periode Transfer</label>
+												<label class="control-label col-lg-4">Periode Puasa</label>
 												<div class="col-lg-4">
 													<input type="text" class="date form-control cmpuasadaterange" id="txtPeriodeTranferPuasa" required>
 												</div>
@@ -52,8 +52,8 @@
 											</div>
 											<div class="form-group">
 												<div class="col-lg-8 text-right">
-													<button type="button" class="btn btn-primary" onclick="transferPuasa(0,0)">Transfer</button>
-													<button type="button" class="btn btn-danger" onclick="batalTransferPuasa()">Batal Transfer</button>
+													<button type="button" class="btn btn-primary" onclick="transferPuasa(0,0)">Proses Puasa</button>
+													<button type="button" class="btn btn-danger" onclick="batalTransferPuasa()">Batalkan Puasa</button>
 												</div>
 											</div>
 										</form>

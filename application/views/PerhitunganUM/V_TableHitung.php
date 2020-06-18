@@ -29,6 +29,7 @@
             <?php $p=0; $no=1;foreach($hasil as $v){ ?>     
                 <tr style="text-align: center; vertical-align: middle;">                        
                     <td><?= $no; ?>
+                        <input type="hidden" name="username[]" id="username" value="<?= $username?>"/>
                         <input type="hidden" name="jenis_mesin[]" id="jenis_mesin" value="<?= $v['jenis_mesin']?>"/>            
                         <input type="hidden" name="dept[]" id="dept" value="<?= $dept?>"/>                      
                         <input type="hidden" name="plan[]" id="plan" value="<?= $plan?>"/>                      

@@ -6,9 +6,9 @@
 <body>
 	<div style="width: 100%">
 		<div style="width: 100%">
-			
+
 		</div>
-		<?php 
+		<?php
 				foreach ($pekerja as $key) {
 					?>
 					<div style="width: 100%">
@@ -35,48 +35,53 @@
 							<td style="text-align: center;" colspan="<?php echo $key['max'] ?>">Waktu</td>
 							<td >Keterangan</td>
 						</tr>
-						<?php
-					foreach ($key['data'] as $shi) {
-						
-							?>
+						<?php foreach ($key['data'] as $shi) : ?>
 							<tr>
-								<td style="text-align: center;"><?php echo $shi['tgl']; ?></td>
-								<td><?php echo $shi['shift']; ?></td>
-								<td><?php 
-									if (isset($shi['tim']) and !empty($shi['tim'])) {
-										foreach ($shi['tim'] as $tims) {
-											echo $tims;
+								<td style="text-align: center;">
+									<?php echo $shi['tgl']; ?>
+								</td>
+								<td>
+									<?php echo $shi['shift']; ?>
+								</td>
+								<td>
+									<?php
+										if (isset($shi['tim']) and !empty($shi['tim'])) {
+											foreach ($shi['tim'] as $tims) {
+												echo $tims;
+											}
 										}
-									}
-								 ?></td>
-								<?php 
+								 	?>
+							 	</td>
+								<?php
 									$angka = 0;
 									if (isset($shi['wkt']) and !empty($shi['wkt'])) {
-										foreach ($shi['wkt'] as $wkt) { ?>
-										<td><?php echo $wkt; ?></td>
-									<?php $angka++;
+										foreach ($shi['wkt'] as $wkt) {
+											echo "<td>$wkt</td>";
+											$angka++;
 										}
 									}
 
 									if ($angka < $key['max']) {
-										for ($i=0; $i < $key['max'] - $angka; $i++) { 
+										for ($i=0; $i < $key['max'] - $angka; $i++) {
 											echo "<td></td>";
 										}
 									}
-								?>
-								<?php if (isset($shi['ket']) and !empty($shi['ket'])) {
-									foreach ($shi['ket'] as $ket) { ?>
-										<td><?php echo $ket; ?></td>
-									<?php }
-									}else{
+
+									if ($key['max'] == '0') {
 										echo "<td></td>";
 									}
-								?>
+
+									$ketket = '';
+									if (isset($shi['ket']) and !empty($shi['ket'])) {
+										foreach ($shi['ket'] as $ket) {
+												$ketket .= $ket.'<br>';
+										}
+										echo "<td>".$ketket."</td>";
+									}else if(empty($shi['ket'])){
+										echo "<td></td>";
+									} ?>
 							</tr>
-							<?php
-						
-					}
-					?>
+						<?php endforeach; ?>
 					</table>
 					<br>
 					<br>

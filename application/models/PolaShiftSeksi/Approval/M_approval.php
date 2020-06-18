@@ -32,7 +32,7 @@ class M_approval extends CI_Model
 					tgl_import,
 					es.section_name
 				order by
-					jum desc";
+					tsp.tgl_import desc";
 		// echo $sql;exit();
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -59,7 +59,7 @@ class M_approval extends CI_Model
 					tgl_import,
 					es.section_name
 				order by
-					jum desc";
+					tsp.tgl_import desc";
 
 		$query = $this->db->query($sql);
 		return $query->result_array();

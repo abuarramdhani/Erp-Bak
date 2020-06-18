@@ -64,8 +64,9 @@ class C_JadwalLayanan extends CI_Controller
 		$bln = $this->input->post('txtPeriodeJadwalLayanan');
 		$paket = $this->input->post('txtPaketJadwalLayanan');
 		$tglCetak = $this->input->post('txtTanggalJadwalLayanan');
+		$lokasi = $this->input->post('slcLokasiJadwalLayanan');
 
-		$tanggalTampilPesanan = $this->M_jadwallayanan->getTanggalTampilPesanan($bln);
+		$tanggalTampilPesanan = $this->M_jadwallayanan->getTanggalTampilPesanan($bln,$lokasi);
 		$angka = 0;
 		$dayow = array("","Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu");
 		foreach ($tanggalTampilPesanan as $key) {
@@ -89,7 +90,7 @@ class C_JadwalLayanan extends CI_Controller
 				);
 			}
 
-			$dataTampilPesanan = $this->M_jadwallayanan->getDataTampilPesanan($key['fs_tanggal']);
+			$dataTampilPesanan = $this->M_jadwallayanan->getDataTampilPesanan($key['fs_tanggal'],$lokasi);
 			foreach ($dataTampilPesanan as $value) {
 				if ($value['fs_tujuan_shift1'] == 't') {
 					if ($arrData[$angka]['shift1'] == "") {
@@ -134,6 +135,7 @@ class C_JadwalLayanan extends CI_Controller
 		$data['data'] = array(
 			'bulan' => $bln, 
 			'cetak' => $tglCetak, 
+			'lokasi' => $lokasi,
 			'paket' => $paket
 		);
 		$data['table'] = $arrData;
@@ -148,8 +150,9 @@ class C_JadwalLayanan extends CI_Controller
 		$bln = $this->input->post('txtPeriodeJadwalLayanan');
 		$paket = $this->input->post('txtPaketJadwalLayanan');
 		$tglCetak = $this->input->post('txtTanggalJadwalLayanan');
+		$lokasi = $this->input->post('slcLokasiJadwalLayanan');
 
-		$tanggalTampilPesanan = $this->M_jadwallayanan->getTanggalTampilPesanan($bln);
+		$tanggalTampilPesanan = $this->M_jadwallayanan->getTanggalTampilPesanan($bln,$lokasi);
 		$angka = 0;
 		$dayow = array("","Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu");
 		foreach ($tanggalTampilPesanan as $key) {
@@ -173,7 +176,7 @@ class C_JadwalLayanan extends CI_Controller
 				);
 			}
 			
-			$dataTampilPesanan = $this->M_jadwallayanan->getDataTampilPesanan($key['fs_tanggal']);
+			$dataTampilPesanan = $this->M_jadwallayanan->getDataTampilPesanan($key['fs_tanggal'],$lokasi);
 			foreach ($dataTampilPesanan as $value) {
 				if ($value['fs_tujuan_shift1'] == 't') {
 					if ($arrData[$angka]['shift1'] == "") {
@@ -223,12 +226,13 @@ class C_JadwalLayanan extends CI_Controller
 		$data['table'] = $arrData;
 		
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('', 'F4',8,15, 15, 16, 16, 9, 9);
+		$pdf = new mPDF('', 'F4',8,10, 10, 10, 10, 9, 9);
 		$filename = "JadwalLayanan.pdf";
 		$html = $this->load->view('CateringManagement/Cetak/JadwalLayanan/V_cetak.php',$data,true);
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh ".$this->session->user." - ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". <br>Halaman {PAGENO} dari {nb}</i>");
 		$pdf->Output($filename, 'I');
 	}
 }

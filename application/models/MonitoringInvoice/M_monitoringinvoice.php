@@ -145,12 +145,12 @@ SELECT DISTINCT pol.po_line_id line_id,
         $oracle->query($query);
         
     }
-    public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa){
+    public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa,$jenis_dokumen){
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
-                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_number, vendor_name, last_admin_date, info,invoice_category,nominal_dpp,source,jenis_jasa)
+                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_number, vendor_name, last_admin_date, info,invoice_category,nominal_dpp,source,jenis_jasa,jenis_dokumen)
                     VALUES 
-                    ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$nominal_dpp','$source_login','$jenis_jasa')";
+                    ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$nominal_dpp','$source_login','$jenis_jasa','$jenis_dokumen')";
         $oracle->query($query);
         $query2 = "SELECT max(invoice_id) invoice_id
                     from khs_ap_monitoring_invoice";

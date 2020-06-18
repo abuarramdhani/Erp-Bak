@@ -38,7 +38,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Periode</label>
 								<div class="col-lg-3">
-									<input class="form-control singledatePK" name="txtDate" value="<?php echo $gk['tberlaku']; ?>"  >
+									<input class="form-control JurnalPenilaian-daterangepickersingledate" name="txtDate" value="<?php echo $gk['tberlaku']; ?>"  >
 								</div>
 							</div>
 						</div>

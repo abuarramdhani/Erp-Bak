@@ -85,7 +85,11 @@
                   </thead>
                   <tbody>
                     <?php $no=1; foreach($dua as $n) { ?>
+                      <?php if ($n['confirmation'] == 'N') { ?>
+                      <tr style="background-color: #ffd3db">
+                      <?php }else { ?>
                       <tr>
+                      <?php }?>
                       <td><?php echo $no ?> </td>
                       <td><?php echo  $n['no_spb'] ?></td>
                       <td><?php echo  $n['username'] ?> - <?php echo  $n['nama_pekerja'] ?></td>

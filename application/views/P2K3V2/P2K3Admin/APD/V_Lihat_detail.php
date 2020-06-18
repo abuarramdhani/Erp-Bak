@@ -98,7 +98,7 @@
                                                     <tr style="color: #000;">
                                                 <?php endif ?>
                                                     <td>
-                                                        <input type="checkbox" disabled="">
+                                                        <input type="checkbox" disabled="" style="cursor: not-allowed">
                                                     </td>
                                                         <td id="nomor"><?php echo $a; ?></td>
                                                         <td>
@@ -110,9 +110,16 @@
                                                         </td>
                                                         <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
                                                         <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
-                                                        <?php $jml = explode(',', $key['jml_item']);
-                                                        foreach ($jml as $row) { ?>
-                                                        <td><?php echo $row; ?></td>
+                                                        <?php 
+                                                        $jml = explode(',', $key['jml_item']);
+                                                        $ks = explode(',', $key['kd_pekerjaan']);
+                                                        $arrItem = array_combine($ks, $jml);
+                                                        foreach ($daftar_pekerjaan as $row) { ?>
+                                                            <?php if (in_array($row['kdpekerjaan'], $ks)): ?>
+                                                                <td><?= $arrItem[$row['kdpekerjaan']] ?></td>
+                                                            <?php else: ?>
+                                                                <td>0</td>
+                                                            <?php endif ?>
                                                         <?php  } ?>
                                                         <td><?php echo $key['tgl_approve_tim']; ?></td>
                                                         <!-- <input name="id[]" hidden value="<?php echo $key['id']; ?>"> -->
@@ -134,3 +141,12 @@
 <div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
     <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
+<script>
+    window.addEventListener('load', function () {
+        $('.iCheck-helper').each(function(){
+            if($(this).prev().is('div')){
+                $(this).remove();
+            }
+        });
+    });
+</script>

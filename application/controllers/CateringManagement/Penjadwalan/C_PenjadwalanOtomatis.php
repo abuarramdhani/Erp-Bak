@@ -53,7 +53,8 @@ class C_PenjadwalanOtomatis extends CI_Controller
 
 	public function Proses(){
 		$priode = $this->input->post('txtperiodePenjadwalanOtomatis');
-		
+		$lokasi = $this->input->post('txtlokasiPenjadwalanOtomatis');
+
 		$priode = strtolower($priode);
 		$periode = explode(" ", $priode);
 
@@ -69,14 +70,14 @@ class C_PenjadwalanOtomatis extends CI_Controller
 			$mulai = "0".$mulai;
 		}
 
-		$this->M_penjadwalanotomatis->deleteAllByPeriode($periode,$mulai);
-		$katering = $this->M_penjadwalanotomatis->getCateringActive();
-		$jumlah = $this->M_penjadwalanotomatis->getCateringCount();
+		$this->M_penjadwalanotomatis->deleteAllByPeriode($periode,$mulai,$lokasi);
+		$katering = $this->M_penjadwalanotomatis->getCateringActive($lokasi);
+		$jumlah = $this->M_penjadwalanotomatis->getCateringCount($lokasi);
 		$jumlah = $jumlah['0']['jml2'];
 		foreach ($katering as $kat) {
-			$urutan = $this->M_penjadwalanotomatis->getCateringUrutan($kat['fs_kd_katering'],$periode,$mulai);
+			$urutan = $this->M_penjadwalanotomatis->getCateringUrutan($kat['fs_kd_katering'],$periode,$mulai,$lokasi);
 			if ($jumlah < $urutan['0']['fn_urutan_jadwal']) {
-				$urutan2 = $this->M_penjadwalanotomatis->getCateringNonActiveUrutan($kat['fs_kd_katering'],$periode,$mulai);
+				$urutan2 = $this->M_penjadwalanotomatis->getCateringNonActiveUrutan($kat['fs_kd_katering'],$periode,$mulai,$lokasi);
 				$urut = $urutan2['0']['fn_urutan_jadwal'];
 			}else{
 				$urut = $urutan['0']['fn_urutan_jadwal'];
@@ -128,9 +129,10 @@ class C_PenjadwalanOtomatis extends CI_Controller
 					
 					if (intval($i) >= intval($mulai)) {
 						$arrData = array(
-							'fd_tanggal' => $days['lengkap'],
-							'fs_kd_katering' => $kat['fs_kd_katering'],
-							'fn_urutan_jadwal' => $urut
+							'fd_tanggal' 		=> $days['lengkap'],
+							'fs_kd_katering' 	=> $kat['fs_kd_katering'],
+							'fn_urutan_jadwal' 	=> $urut,
+							'lokasi' 			=> $lokasi.''
 						);
 
 						$this->M_penjadwalanotomatis->insertUrutanJadwal($arrData);
@@ -142,7 +144,8 @@ class C_PenjadwalanOtomatis extends CI_Controller
 								'fs_tujuan_shift1' 	=> $dtlJdwl['fs_tujuan_shift1'],
 								'fs_tujuan_shift2' 	=> $dtlJdwl['fs_tujuan_shift2'],
 								'fs_tujuan_shift3' 	=> $dtlJdwl['fs_tujuan_shift3'],
-								'fb_tanda' => '0'
+								'lokasi'			=> $lokasi.'',
+								'fb_tanda' 			=> '0'
 							);
 						}
 

@@ -96,11 +96,11 @@ class C_RekapPresensi extends CI_Controller {
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 			$pdf = $this->pdf->load();
-			$pdf = new mPDF('utf-8', 'A4', 8, '', 12, 15, 15, 15, 10, 20);
+			$pdf = new mPDF('utf-8', 'A4-L', 8, '', 10, 10, 10, 10, 10, 5);
 			$filename = 'Rekap-'.$tgl.'.pdf';
 			// $this->load->view('UpahHlCm/PresensiPekerja/V_cetakRekapPresensi', $data);
 			$html = $this->load->view('UpahHlCm/PresensiPekerja/V_cetakRekapPresensi', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." ".$this->session->employee." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
 			$pdf->Output($filename, 'I');
 		}elseif($submit == 'Simpan Data'){
@@ -147,51 +147,55 @@ class C_RekapPresensi extends CI_Controller {
 			$period = explode(' - ', $data['periode']);
 
 			$worksheet->setCellValue('A1','REKAP PRESENSI');
-			$worksheet->mergeCells('A1:M1');
+			$worksheet->mergeCells('A1:O1');
 			$worksheet->setCellValue('A2','PERIODE TANGGAL : '.date('d F Y',strtotime($period[0]))." - ".date('d F Y',strtotime($period[1])));
-			$worksheet->mergeCells('A2:M2');
+			$worksheet->mergeCells('A2:O2');
 			$worksheet->setCellValue('A3','NO');
-			$worksheet->setCellValue('B3','NAMA');
-			$worksheet->setCellValue('C3','STATUS');
-			$worksheet->setCellValue('D3','GAJI');
-			$worksheet->setCellValue('H3','TAMBAHAN');
-			$worksheet->setCellValue('K3','POTONGAN');
-			$worksheet->setCellValue('D4','Gaji Pokok');
-			$worksheet->setCellValue('E4','Lembur');
-			$worksheet->setCellValue('F4','Uang Makan');
-			$worksheet->setCellValue('G4','Uang Makan Puasa');
-			$worksheet->setCellValue('H4','Gaji Pokok');
-			$worksheet->setCellValue('I4','Lembur');
-			$worksheet->setCellValue('J4','Uang Makan');
-			$worksheet->setCellValue('K4','Gaji Pokok');
-			$worksheet->setCellValue('L4','Lembur');
-			$worksheet->setCellValue('M4','Uang Makan');
+			$worksheet->setCellValue('B3','NO INDUK');
+			$worksheet->setCellValue('C3','NAMA');
+			$worksheet->setCellValue('D3','LOKASI KERJA');
+			$worksheet->setCellValue('E3','STATUS');
+			$worksheet->setCellValue('F3','GAJI');
+			$worksheet->setCellValue('J3','TAMBAHAN');
+			$worksheet->setCellValue('M3','POTONGAN');
+			$worksheet->setCellValue('F4','Gaji Pokok');
+			$worksheet->setCellValue('G4','Lembur');
+			$worksheet->setCellValue('H4','Uang Makan');
+			$worksheet->setCellValue('I4','Uang Makan Puasa');
+			$worksheet->setCellValue('J4','Gaji Pokok');
+			$worksheet->setCellValue('K4','Lembur');
+			$worksheet->setCellValue('L4','Uang Makan');
+			$worksheet->setCellValue('M4','Gaji Pokok');
+			$worksheet->setCellValue('N4','Lembur');
+			$worksheet->setCellValue('O4','Uang Makan');
 
 			$worksheet->mergeCells('A3:A4');
 			$worksheet->mergeCells('B3:B4');
 			$worksheet->mergeCells('C3:C4');
-			$worksheet->mergeCells('D3:G3');
-			$worksheet->mergeCells('H3:J3');
-			$worksheet->mergeCells('K3:M3');
+			$worksheet->mergeCells('D3:D4');
+			$worksheet->mergeCells('E3:E4');
+			$worksheet->mergeCells('F3:I3');
+			$worksheet->mergeCells('J3:L3');
+			$worksheet->mergeCells('M3:O3');
 
 			if (isset($data['RekapPresensi']) and !empty($data['RekapPresensi'])) {
 				$nomor = 1;
 				foreach ($data['RekapPresensi'] as $key) {
 					$worksheet->setCellValue('A'.($nomor + 4),$nomor);
-					$worksheet->setCellValue('B'.($nomor + 4),$key['nama']);
-					$worksheet->setCellValue('C'.($nomor + 4),$key['pekerjaan']);
-					$worksheet->setCellValue('D'.($nomor + 4),$key['gp_gaji']);
-					$worksheet->setCellValue('E'.($nomor + 4),$key['lembur_gaji']);
-					$worksheet->setCellValue('F'.($nomor + 4),$key['um_gaji']);
-					$worksheet->setCellValue('G'.($nomor + 4),$key['ump_gaji']);
-					$worksheet->setCellValue('H'.($nomor + 4),$key['gp_tambahan']);
-					$worksheet->setCellValue('I'.($nomor + 4),$key['lembur_tambahan']);
-					$worksheet->setCellValue('J'.($nomor + 4),$key['um_tambahan']);
-					$worksheet->setCellValue('K'.($nomor + 4),$key['gp_potongan']);
-					$worksheet->setCellValue('L'.($nomor + 4),$key['lembur_potongan']);
-					$worksheet->setCellValue('M'.($nomor + 4),$key['um_potongan']);
-					$worksheet->getStyle("D".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-					$worksheet->getStyle("E".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+					$worksheet->setCellValue('B'.($nomor + 4),$key['noind']);
+					$worksheet->setCellValue('C'.($nomor + 4),$key['nama']);
+					$worksheet->setCellValue('D'.($nomor + 4),$key['lokasi']);
+					$worksheet->setCellValue('E'.($nomor + 4),$key['pekerjaan']);
+					$worksheet->setCellValue('F'.($nomor + 4),$key['gp_gaji']);
+					$worksheet->setCellValue('G'.($nomor + 4),$key['lembur_gaji']);
+					$worksheet->setCellValue('H'.($nomor + 4),$key['um_gaji']);
+					$worksheet->setCellValue('I'.($nomor + 4),$key['ump_gaji']);
+					$worksheet->setCellValue('J'.($nomor + 4),$key['gp_tambahan']);
+					$worksheet->setCellValue('K'.($nomor + 4),$key['lembur_tambahan']);
+					$worksheet->setCellValue('L'.($nomor + 4),$key['um_tambahan']);
+					$worksheet->setCellValue('M'.($nomor + 4),$key['gp_potongan']);
+					$worksheet->setCellValue('N'.($nomor + 4),$key['lembur_potongan']);
+					$worksheet->setCellValue('O'.($nomor + 4),$key['um_potongan']);
 					$worksheet->getStyle("F".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 					$worksheet->getStyle("G".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 					$worksheet->getStyle("H".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
@@ -200,14 +204,16 @@ class C_RekapPresensi extends CI_Controller {
 					$worksheet->getStyle("K".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 					$worksheet->getStyle("L".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 					$worksheet->getStyle("M".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+					$worksheet->getStyle("N".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+					$worksheet->getStyle("O".($nomor + 4))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 					$nomor++;
 				}
 			}
 
 			$worksheet->getColumnDimension('A')->setWidth('5');
-			$worksheet->getColumnDimension('B')->setWidth('20');
+			$worksheet->getColumnDimension('B')->setWidth('10');
 			$worksheet->getColumnDimension('C')->setWidth('20');
-			$worksheet->getColumnDimension('D')->setWidth('10');
+			$worksheet->getColumnDimension('D')->setWidth('20');
 			$worksheet->getColumnDimension('E')->setWidth('10');
 			$worksheet->getColumnDimension('F')->setWidth('10');
 			$worksheet->getColumnDimension('G')->setWidth('10');
@@ -217,14 +223,16 @@ class C_RekapPresensi extends CI_Controller {
 			$worksheet->getColumnDimension('K')->setWidth('10');
 			$worksheet->getColumnDimension('L')->setWidth('10');
 			$worksheet->getColumnDimension('M')->setWidth('10');
-			$worksheet->getStyle('D4:M4')->getAlignment()->setWrapText(true);
+			$worksheet->getColumnDimension('N')->setWidth('10');
+			$worksheet->getColumnDimension('O')->setWidth('10');
+			$worksheet->getStyle('F4:O4')->getAlignment()->setWrapText(true);
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(
 				'alignment' => array(
 					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
 					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
 				)
-			),'A1:M1');
+			),'A1:O1');
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(
 				'fill' =>array(
@@ -240,14 +248,14 @@ class C_RekapPresensi extends CI_Controller {
 					'allborders' => array(
 						'style' => PHPExcel_Style_Border::BORDER_THIN)
 				)
-			),'A3:M4');
+			),'A3:O4');
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(
 				'borders' => array(
 					'allborders' => array(
 						'style' => PHPExcel_Style_Border::BORDER_THIN)
 				)
-			),'A5:M'.($nomor + 3));
+			),'A5:O'.($nomor + 3));
 
 			$filename ='RekapPresensi-'.$tgl.'.xls';
 			header('Content-Type: aplication/vnd.ms-excel');

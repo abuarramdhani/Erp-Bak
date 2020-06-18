@@ -25,7 +25,9 @@
                                                 <label class="control-label">: <?php echo $seksi[0]["dept"] ?></label> <br>
                                                 <label class="control-label">: <?php echo $seksi[0]["bidang"] ?></label> <br>
                                                 <label class="control-label">: <?php echo $seksi[0]["unit"] ?></label> <br>
-                                                <label class="control-label">: <?php echo $seksi[0]["section"] ?></label> <button type="button" class="btn btn-xs p2k3_detail_seksi" value="<?php echo $seksi[0]['section_code'] ?>">Details</button>
+                                                <?php foreach ($listKs as $key): ?>
+                                                    <label class="control-label">: <?php echo $key['seksi'] ?></label> <button type="button" class="btn btn-xs p2k3_detail_seksi" value="<?php echo $key['kodesie'] ?>">Details</button><br/>
+                                                <?php endforeach ?>
                                             </div>
                                         </div>
                                         

@@ -159,6 +159,7 @@ class M_surat extends CI_Model
 
 	public function detail_pekerja( $noind )
 	{
+		$status_aktif = '02';
 		$detail_pekerja		= "	select 		pri.noind as noind,
 		pri.nama as nama,
 		pri.kodesie as kodesie,
@@ -199,7 +200,7 @@ class M_surat extends CI_Model
 		pri.kd_jabatan as kode_jabatan,
 		rtrim(torganisasi.jabatan) as jenis_jabatan,
 		pri.kd_pkj as kode_pekerjaan,
-		tpekerjaan.pekerjaan as nama_pekerjaan,
+		coalesce(tpekerjaan.pekerjaan,'') as nama_pekerjaan,
 		tlokasi_kerja.id_ as kode_lokasi_kerja,
 		tlokasi_kerja.lokasi_kerja as nama_lokasi_kerja,
 		pri.tempat_makan1,
@@ -212,9 +213,9 @@ class M_surat extends CI_Model
 			end
 		) as status_staf,
 		pri.alamat,
-		tb_status_jabatan.kd_status as kd_status,
-		tb_status_jabatan.nama_status as nama_status,
-		tb_status_jabatan.nama_jabatan as nama_jabatan_upah
+		coalesce(tb_status_jabatan.kd_status,'') as kd_status,
+		coalesce(tb_status_jabatan.nama_status,'') as nama_status,
+		concat(tb_status_jabatan.kd_jabatan, ' - ' ,coalesce(tb_status_jabatan.nama_jabatan,'-')) as nama_jabatan_upah
 		from 		hrd_khs.v_hrd_khs_tpribadi as pri
 		left join 	hrd_khs.v_hrd_khs_tseksi as tseksi
 		on 	tseksi.kodesie=pri.kodesie
@@ -226,7 +227,8 @@ class M_surat extends CI_Model
 		on 	tlokasi_kerja.id_=pri.lokasi_kerja
 		left join hrd_khs.tb_status_jabatan as tb_status_jabatan 
 		on tb_status_jabatan.noind = pri.noind
-		where 		pri.noind='$noind';";
+		where pri.noind='$noind' and tb_status_jabatan.status_data = '$status_aktif'
+		order by tb_status_jabatan.tgl_berlaku desc limit 1;";
 		// echo $detail_pekerja;exit();
 		$query 				=	$this->personalia->query($detail_pekerja);
 		return $query->result_array();

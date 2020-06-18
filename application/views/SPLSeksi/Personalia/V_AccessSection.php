@@ -115,7 +115,7 @@
 			<div class="modal-header" style="background-color: #3c8dbc;">
 				<label>Tambah Pekerja</label>
 				<button class="btn btn-danger spl-fingertemp-modal-user-close" style="float: right;border-radius: 0px">
-					<span class="glyphicon glyphicon-off"></span>
+					<span class="glyphicon glyphicon-remove"></span>
 				</button>
 			</div>
 			<div class="modal-body">

@@ -31,7 +31,7 @@ class M_list extends CI_Model
         $sql = "INSERT INTO
                     KHS_APPROVAL_DO (no_do, no_so, creation_date)
                 VALUES
-                    ($do_number, $so_number, SYSDATE)";
+                    ('$do_number', $so_number, SYSDATE)";
         $query = $this->oracle->query($sql);
     }
 
@@ -57,7 +57,7 @@ class M_list extends CI_Model
                 from mtl_txn_request_headers mtrh
                     ,mtl_txn_request_lines mtrl
                 where mtrh.HEADER_ID = mtrl.HEADER_ID
-                    and mtrl.TRANSACTION_TYPE_ID = 327     
+                    and mtrl.TRANSACTION_TYPE_ID IN (327, 64)
                     and mtrl.LINE_STATUS in (3,7)
                     and mtrh.HEADER_STATUS in (3,7)
                     and nvl(mtrl.QUANTITY_DETAILED,0) = 0
@@ -77,7 +77,7 @@ class M_list extends CI_Model
         $sql = "INSERT INTO
                     KHS_APPROVAL_DO (no_do, creation_date)
                 VALUES
-                    ($spb_number, SYSDATE)";
+                    ('$spb_number', SYSDATE)";
         $query = $this->oracle->query($sql);
     }
 

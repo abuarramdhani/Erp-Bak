@@ -95,7 +95,7 @@ class C_TandaTerima extends CI_Controller {
 		$filename = 'Tanda_Terima-'.$tgl.'.pdf';
 		// $this->load->view('UpahHlCm/MenuCetak/V_cetakTandaTerima', $data);
 		$html = $this->load->view('UpahHlCm/MenuCetak/V_cetakTandaTerima', $data, true);
-		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." ".$this->session->employee." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');
 

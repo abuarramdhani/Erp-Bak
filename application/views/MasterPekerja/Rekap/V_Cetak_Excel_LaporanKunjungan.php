@@ -28,8 +28,8 @@ $head = array(
    'fill' => array(
             'type' => PHPExcel_Style_Fill::FILL_SOLID,
             'color' => array('rgb' => 'ffb41f')
-        ) 
-); 
+        )
+);
 
 $borderleft = array(
     'borders' => array(
@@ -106,10 +106,10 @@ $objPHPExcel->getActiveSheet()
     ->applyFromArray($head);
 $objPHPExcel->getActiveSheet()
     ->getStyle('E2:E3')
-    ->applyFromArray($head);   
+    ->applyFromArray($head);
 $objPHPExcel->getActiveSheet()
     ->getStyle('F2:F3')
-    ->applyFromArray($head);   
+    ->applyFromArray($head);
 $objPHPExcel->getActiveSheet()
     ->getStyle('G2:G3')
     ->applyFromArray($head);
@@ -132,7 +132,7 @@ $i=4;
 
 foreach ($rekap as $key => $data) {
     $i++;
-    
+
     $kolomB='B'.$i;
     $kolomC='C'.$i;
     $kolomD='D'.$i;
@@ -152,7 +152,7 @@ $objPHPExcel->getActiveSheet()
     ->applyFromArray($tengah);
 $objPHPExcel->getActiveSheet()
     ->getStyle('D4:'.$kolomD)
-    ->applyFromArray($tengah); 
+    ->applyFromArray($tengah);
 
 $tanggal_laporan = date_create($data['tanggal_laporan']);
 $tanggal_laporan = date_format($tanggal_laporan,'d-F-Y');
@@ -163,7 +163,7 @@ $tanggal_laporan = date_format($tanggal_laporan,'d-F-Y');
                     ->setCellValueExplicit($kolomD, $data['noinduk_pekerja'], PHPExcel_Cell_DataType::TYPE_STRING)
                     ->setCellValueExplicit($kolomE, $data['nama_pekerja'], PHPExcel_Cell_DataType::TYPE_STRING)
                     ->setCellValueExplicit($kolomF, $data['seksi_pekerja'], PHPExcel_Cell_DataType::TYPE_STRING)
-                    ->setCellValueExplicit($kolomG, $data['nama_petugas'], PHPExcel_Cell_DataType::TYPE_STRING)
+                    ->setCellValueExplicit($kolomG, $data['petugas'], PHPExcel_Cell_DataType::TYPE_STRING)
                     ;
 }
 

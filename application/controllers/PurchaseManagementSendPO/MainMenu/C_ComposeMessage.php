@@ -223,10 +223,15 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 		if ($data['UserMenu'][0]['user_group_menu_name'] != 'WEB SEND PO BDL') {
 			$doc_dir		= './assets/upload/PurchaseManagementSendPO/Attachment/';
 			$doc_filename	= 'Pedoman Kerjasama Vendor Rev 7 (Quick Reference PO)';
+			$doc_filename2	= 'PURSUP-EKSM-20-05-047 tentang Ketentuan Kunjungan Tamu Perusahaan';
 
 			if (file_exists($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format) == TRUE && file_exists($doc_dir.$doc_filename.$pdf_format) == FALSE)
 			{
 				rename($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format , $doc_dir.$doc_filename.$pdf_format);
+			};
+			if (file_exists($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename2).$pdf_format) == TRUE && file_exists($doc_dir.$doc_filename2.$pdf_format) == FALSE)
+			{
+				rename($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename2).$pdf_format , $doc_dir.$doc_filename2.$pdf_format);
 			};
 
 			// Zip get Document Vendor
@@ -237,6 +242,13 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 					echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
 					exit;
 				}
+			}
+
+			if ( file_exists($doc_dir.$doc_filename2.$pdf_format) == TRUE ) {
+				$this->zip->read_file($doc_dir.$doc_filename2.$pdf_format,$doc_filename2.$pdf_format);
+			} else {
+				echo json_encode('Lampiran '.$doc_filename2.' tidak ditemukan.');
+				exit;
 			}
 		}
 
@@ -379,7 +391,14 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 						exit;
 					};
 				};
-		  }
+
+				if (file_exists($doc_dir.$doc_filename2.$pdf_format) == TRUE) {
+					$mail->addAttachment($doc_dir.$doc_filename2.$pdf_format);
+				} else {
+					echo json_encode('Lampiran '.$doc_filename2.' tidak ditemukan.');
+					exit;
+				};
+		  	}
 
 			if (isset($_FILES['file_attach1']) && $_FILES['file_attach1']['error'] == UPLOAD_ERR_OK)
 			{

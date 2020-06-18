@@ -97,29 +97,10 @@ class C_Rekap extends CI_Controller
 		}
 		$save_latar_belakang = ltrim($save_latar_belakang,' , ');
 		$data = array();
+		$dataPekerja = $this->M_lapkunjungan->getDataPribadi($pekerja);
+		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($petugas);
+		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($atasan);
 
-		if(!empty($atasan)){
-			$atasan 		= explode(' - ', $atasan);
-			$noindAtasan	= $atasan[0];
-			$namaAtasan 	= $atasan[1];
-			$jabatanAtasan 	= $atasan[2];
-		}
-
-		if(!empty($petugas)){
-			$petugas 		= explode(' - ', $petugas);
-			$noindPetugas	= $petugas[0];
-			$namaPetugas 	= $petugas[1];
-			$seksiPetugas 	= $petugas[2];
-		}
-
-
-		if(!empty($pekerja)){
-			$pekerja 		= explode(' - ', $pekerja);
-			$noindPekerja 	= $pekerja[0];
-			$namaPekerja 	= $pekerja[1];
-			$seksiPekerja 	= $pekerja[2];
-			$alamatPekerja 	= $pekerja[3];
-		}
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
 		$no_surat 		 = $this->M_lapkunjungan->getNomorSurat($bulan_laporan);
@@ -156,62 +137,62 @@ class C_Rekap extends CI_Controller
 		$data['latar_belakang']		= $latar_belakang;
 		$data['hasil_laporan']		= $hasil_laporan;
 
-		if($noindAtasan != "null"){
-			$data['noind_atasan'] 		= $noindAtasan;
+		if($atasan != "null"){
+			$data['noind_atasan'] 		= $atasan;
 		}else{
 			$data['noind_atasan'] 		= "";
 		}
 
-		if($namaAtasan != "null"){
-			$data['nama_atasan']		= $namaAtasan;
+		if($dataAtasan[0]['nama'] != "null"){
+			$data['nama_atasan']		= $dataAtasan[0]['nama'];
 		}else{
 			$data['nama_atasan']		= "";
 		}
 
-		if($jabatanAtasan != "null"){
-			$data['jabatan_atasan']		= $jabatanAtasan;
+		if($dataAtasan[0]['jabatan'] != "null"){
+			$data['jabatan_atasan']		= ucwords(strtolower($dataAtasan[0]['jabatan']));
 		}else{
 			$data['jabatan_atasan']		= "";
 		}
 
-		if($noindPetugas != "null"){
-			$data['noind_petugas'] 		= $noindPetugas;
+		if($petugas != "null"){
+			$data['noind_petugas'] 		= $petugas;
 		}else{
 			$data['noind_petugas'] 		= "";
 		}
 
-		if($namaPetugas != "null"){
-			$data['nama_petugas']		= $namaPetugas;
+		if($dataPetugas[0]['nama'] != "null"){
+			$data['nama_petugas']		= $dataPetugas[0]['nama'];
 		}else{
 			$data['nama_petugas']		= "";
 		}
 
-		if($seksiPetugas != "null"){
-			$data['seksi_petugas']		= $seksiPetugas;
+		if($dataPetugas[0]['seksi'] != "null"){
+			$data['seksi_petugas']		= $dataPetugas[0]['seksi'];
 		}else{
 			$data['seksi_petugas']		= "";
 		}
 
-		if($noindPekerja != "null"){
-			$data['noind_pekerja']		= $noindPekerja;
+		if($pekerja != "null"){
+			$data['noind_pekerja']		= $pekerja;
 		}else{
 			$data['noind_pekerja']		= "";
 		}
 
-		if($namaPekerja != "null"){
-			$data['nama_pekerja']		= $namaPekerja;
+		if($dataPekerja[0]['nama'] != "null"){
+			$data['nama_pekerja']		= $dataPekerja[0]['nama'];
 		}else{
 			$data['nama_pekerja']		= "";
 		}
 
-		if($seksiPekerja != "null"){
-			$data['seksi_pekerja']		= $seksiPekerja;
+		if($dataPekerja[0]['seksi'] != "null"){
+			$data['seksi_pekerja']		= $dataPekerja[0]['seksi'];
 		}else{
 			$data['seksi_pekerja']		= "";
 		}
 
-		if($alamatPekerja != "null"){
-			$data['alamat_pekerja']		= $alamatPekerja;
+		if($dataPekerja[0]['alamat'] != "null"){
+			$data['alamat_pekerja']		= $dataPekerja[0]['alamat'];
 		}else{
 			$data['alamat_pekerja']		= "";
 		}
@@ -242,28 +223,10 @@ class C_Rekap extends CI_Controller
 		$save_latar_belakang = ltrim($save_latar_belakang,' , ');
 		$data = array();
 
-		if(!empty($atasan)){
-			$atasan 		= explode(' - ', $atasan);
-			$noindAtasan	= $atasan[0];
-			$namaAtasan 	= $atasan[1];
-			$jabatanAtasan 	= $atasan[2];
-		}
+		$dataPekerja = $this->M_lapkunjungan->getDataPribadi($pekerja);
+		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($petugas);
+		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($atasan);
 
-		if(!empty($petugas)){
-			$petugas 		= explode(' - ', $petugas);
-			$noindPetugas	= $petugas[0];
-			$namaPetugas 	= $petugas[1];
-			$seksiPetugas 	= $petugas[2];
-		}
-
-
-		if(!empty($pekerja)){
-			$pekerja 		= explode(' - ', $pekerja);
-			$noindPekerja 	= $pekerja[0];
-			$namaPekerja 	= $pekerja[1];
-			$seksiPekerja 	= $pekerja[2];
-			$alamatPekerja 	= $pekerja[3];
-		}
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
 
@@ -308,63 +271,63 @@ class C_Rekap extends CI_Controller
 		$data['latar_belakang']		= $latar_belakang;
 		$data['hasil_laporan']		= $hasil_laporan;
 
-		if($noindAtasan != "null"){
-			$data['noind_atasan'] 		= $noindAtasan;
+		if($atasan != "null"){
+			$data['noind_atasan'] 		= $atasan;
 		}else{
 			$data['noind_atasan'] 		= "";
 		}
 
-		if($namaAtasan != "null"){
-			$data['nama_atasan']		= $namaAtasan;
+		if($dataAtasan[0]['nama'] != "null"){
+			$data['nama_atasan']		= $dataAtasan[0]['nama'];
 		}else{
 			$data['nama_atasan']		= "";
 		}
 
-		if($jabatanAtasan != "null"){
-			$data['jabatan_atasan']		= $jabatanAtasan;
+		if($dataAtasan[0]['jabatan'] != "null"){
+			$data['jabatan_atasan']		= $dataAtasan[0]['jabatan'];
 		}else{
 			$data['jabatan_atasan']		= "";
 		}
 
 
-		if($noindPetugas != "null"){
-			$data['noind_petugas'] 		= $noindPetugas;
+		if($petugas != "null"){
+			$data['noind_petugas'] 		= $petugas;
 		}else{
 			$data['noind_petugas'] 		= "";
 		}
 
-		if($namaPetugas != "null"){
-			$data['nama_petugas']		= $namaPetugas;
+		if($dataPetugas[0]['nama'] != "null"){
+			$data['nama_petugas']		= $dataPetugas[0]['nama'];
 		}else{
 			$data['nama_petugas']		= "";
 		}
 
-		if($seksiPetugas != "null"){
-			$data['seksi_petugas']		= $seksiPetugas;
+		if($dataPetugas[0]['seksi'] != "null"){
+			$data['seksi_petugas']		= $dataPetugas[0]['seksi'];
 		}else{
 			$data['seksi_petugas']		= "";
 		}
 
-		if($noindPekerja != "null"){
-			$data['noind_pekerja']		= $noindPekerja;
+		if($pekerja != "null"){
+			$data['noind_pekerja']		= $pekerja;
 		}else{
 			$data['noind_pekerja']		= "";
 		}
 
-		if($namaPekerja != "null"){
-			$data['nama_pekerja']		= $namaPekerja;
+		if($dataPekerja[0]['nama'] != "null"){
+			$data['nama_pekerja']		= $dataPekerja[0]['nama'];
 		}else{
 			$data['nama_pekerja']		= "";
 		}
 
-		if($seksiPekerja != "null"){
-			$data['seksi_pekerja']		= $seksiPekerja;
+		if($dataPekerja[0]['seksi'] != "null"){
+			$data['seksi_pekerja']		= $dataPekerja[0]['seksi'];
 		}else{
 			$data['seksi_pekerja']		= "";
 		}
 
-		if($alamatPekerja != "null"){
-			$data['alamat_pekerja']		= $alamatPekerja;
+		if($dataPekerja[0]['alamat'] != "null"){
+			$data['alamat_pekerja']		= $dataPekerja[0]['alamat'];
 		}else{
 			$data['alamat_pekerja']		= "";
 		}
@@ -379,21 +342,21 @@ class C_Rekap extends CI_Controller
 
 		$simpanLaporan = [
 			'hal_laporan' 			=> $hal,
-			'nama_petugas' 			=> $namaPetugas,
-			'noinduk_petugas'		=> $noindPetugas,
-			'seksi_petugas'			=> $seksiPetugas,
-			'nama_pekerja'			=> $namaPekerja,
-			'noinduk_pekerja'		=> $noindPekerja,
-			'seksi_pekerja'			=> $seksiPekerja,
-			'alamat_pekerja'		=> $alamatPekerja,
+			'nama_petugas' 			=> $dataPetugas[0]['nama'],
+			'noinduk_petugas'		=> $petugas,
+			'seksi_petugas'			=> $dataPetugas[0]['seksi'],
+			'nama_pekerja'			=> $dataPekerja[0]['nama'],
+			'noinduk_pekerja'		=> $pekerja,
+			'seksi_pekerja'			=> $dataPekerja[0]['seksi'],
+			'alamat_pekerja'		=> $dataPekerja[0]['alamat'],
 			'diagnosa' 				=> $diagnosa,
 			'latar_belakang'		=> $save_latar_belakang,
 			'hasil_laporan'			=> $hasil_laporan,
 			'tanggal_laporan'		=> date('Y-m-d'),
 			'no_surat'				=> $save_no_surat,
-			'noinduk_atasan'		=> $noindAtasan,
-			'nama_atasan'			=> $namaAtasan,
-			'jabatan_atasan'			=> $jabatanAtasan
+			'noinduk_atasan'		=> $atasan,
+			'nama_atasan'			=> $dataAtasan[0]['nama'],
+			'jabatan_atasan'		=> $dataAtasan[0]['jabatan']
 		];
 
 		$this->M_lapkunjungan->saveLaporan($simpanLaporan);
@@ -420,18 +383,9 @@ class C_Rekap extends CI_Controller
 		}
 		$save_latar_belakang = ltrim($save_latar_belakang,' , ');
 
-		$noindAtasan	= $data_pdf[0]['noinduk_atasan'];
-		$namaAtasan 	= $data_pdf[0]['nama_atasan'];
-		$jabatanAtasan 	= $data_pdf[0]['jabatan_atasan'];
-
-		$noindPetugas	= $data_pdf[0]['noinduk_petugas'];
-		$namaPetugas 	= $data_pdf[0]['nama_petugas'];
-		$seksiPetugas 	= $data_pdf[0]['seksi_petugas'];
-
-		$noindPekerja 	= $data_pdf[0]['noinduk_pekerja'];
-		$namaPekerja 	= $data_pdf[0]['nama_pekerja'];
-		$seksiPekerja 	= $data_pdf[0]['seksi_pekerja'];
-		$alamatPekerja 	= $data_pdf[0]['alamat_pekerja'];
+		$dataPekerja = $this->M_lapkunjungan->getDataPribadi($data_pdf[0]['noinduk_pekerja']);
+		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($data_pdf[0]['noinduk_petugas']);
+		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($data_pdf[0]['noinduk_atasan']);
 
 		$hal 			= $data_pdf[0]['hal_laporan'];
 		$diagnosa		= $data_pdf[0]['diagnosa'];
@@ -474,62 +428,62 @@ class C_Rekap extends CI_Controller
 		$data['latar_belakang']		= $latar_belakang;
 		$data['hasil_laporan']		= $hasil_laporan;
 
-		if($noindAtasan != "null"){
-			$data['noind_atasan'] 		= $noindAtasan;
+		if($data_pdf[0]['noinduk_atasan'] != "null"){
+			$data['noind_atasan'] 		= $data_pdf[0]['noinduk_atasan'];
 		}else{
 			$data['noind_atasan'] 		= "";
 		}
 
-		if($namaAtasan != "null"){
-			$data['nama_atasan']		= $namaAtasan;
+		if($dataAtasan[0]['nama'] != "null"){
+			$data['nama_atasan']		= $dataAtasan[0]['nama'];
 		}else{
 			$data['nama_atasan']		= "";
 		}
 
-		if($jabatanAtasan != "null"){
-			$data['jabatan_atasan']		= $jabatanAtasan;
+		if($dataAtasan[0]['jabatan'] != "null"){
+			$data['jabatan_atasan']		= $dataAtasan[0]['jabatan'];
 		}else{
 			$data['jabatan_atasan']		= "";
 		}
 
-		if($noindPetugas != "null"){
-			$data['noind_petugas'] 		= $noindPetugas;
+		if($data_pdf[0]['noinduk_petugas'] != "null"){
+			$data['noind_petugas'] 		= $data_pdf[0]['noinduk_petugas'];
 		}else{
 			$data['noind_petugas'] 		= "";
 		}
 
-		if($namaPetugas != "null"){
-			$data['nama_petugas']		= $namaPetugas;
+		if($dataPetugas[0]['nama'] != "null"){
+			$data['nama_petugas']		= $dataPetugas[0]['nama'];
 		}else{
 			$data['nama_petugas']		= "";
 		}
 
-		if($seksiPetugas != "null"){
-			$data['seksi_petugas']		= $seksiPetugas;
+		if($dataPetugas[0]['seksi'] != "null"){
+			$data['seksi_petugas']		= $dataPetugas[0]['seksi'];
 		}else{
 			$data['seksi_petugas']		= "";
 		}
 
-		if($noindPekerja != "null"){
-			$data['noind_pekerja']		= $noindPekerja;
+		if($data_pdf[0]['noinduk_pekerja'] != "null"){
+			$data['noind_pekerja']		= $data_pdf[0]['noinduk_pekerja'];
 		}else{
 			$data['noind_pekerja']		= "";
 		}
 
-		if($namaPekerja != "null"){
-			$data['nama_pekerja']		= $namaPekerja;
+		if($dataPekerja[0]['nama'] != "null"){
+			$data['nama_pekerja']		= $dataPekerja[0]['nama'];
 		}else{
 			$data['nama_pekerja']		= "";
 		}
 
-		if($seksiPekerja != "null"){
-			$data['seksi_pekerja']		= $seksiPekerja;
+		if($dataPekerja[0]['seksi'] != "null"){
+			$data['seksi_pekerja']		= $dataPekerja[0]['seksi'];
 		}else{
 			$data['seksi_pekerja']		= "";
 		}
 
-		if($alamatPekerja != "null"){
-			$data['alamat_pekerja']		= $alamatPekerja;
+		if($dataPekerja[0]['alamat'] != "null"){
+			$data['alamat_pekerja']		= $dataPekerja[0]['alamat'];
 		}else{
 			$data['alamat_pekerja']		= "";
 		}
@@ -648,16 +602,19 @@ class C_Rekap extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$detail 					= $this->M_lapkunjungan->getDataPDF($id_laporan);
+		$dataPekerja = $this->M_lapkunjungan->getDataPribadi($detail[0]['noinduk_pekerja']);
+		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($detail[0]['noinduk_petugas']);
+		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($detail[0]['noinduk_atasan']);
 
 		$data['id_laporan']			= $detail[0]['id_laporan'];
 		$data['hal_laporan']		= $detail[0]['hal_laporan'];
 		$data['nama_petugas']		= $detail[0]['nama_petugas'];
 		$data['noinduk_petugas']	= $detail[0]['noinduk_petugas'];
-		$data['seksi_petugas']		= $detail[0]['seksi_petugas'];
-		$data['nama_pekerja']		= $detail[0]['nama_pekerja'];
+		$data['seksi_petugas']		= $dataPetugas[0]['seksi'];
+		$data['nama_pekerja']		= $dataPekerja[0]['nama'];
 		$data['noinduk_pekerja']	= $detail[0]['noinduk_pekerja'];
-		$data['seksi_pekerja']		= $detail[0]['seksi_pekerja'];
-		$data['alamat_pekerja']		= $detail[0]['alamat_pekerja'];
+		$data['seksi_pekerja']		= $dataPekerja[0]['seksi'];
+		$data['alamat_pekerja']		= $dataPekerja[0]['alamat'];
 		$data['diagnosa']			= $detail[0]['diagnosa'];
 		$data['latar_belakang']		= explode(' , ', $detail[0]['latar_belakang']);
 		$data['hasil_laporan']		= $detail[0]['hasil_laporan'];
@@ -665,7 +622,7 @@ class C_Rekap extends CI_Controller
 		$data['tanggal_laporan']	= $detail[0]['tanggal_laporan'];
 		$data['nama_atasan']		= $detail[0]['nama_atasan'];
 		$data['noinduk_atasan']		= $detail[0]['noinduk_atasan'];
-		$data['jabatan_atasan']		= $detail[0]['jabatan_atasan'];
+		$data['jabatan_atasan']		= $dataAtasan[0]['jabatan'];
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -689,28 +646,10 @@ class C_Rekap extends CI_Controller
 		$save_latar_belakang = ltrim($save_latar_belakang,' , ');
 		$data = array();
 
-		if(!empty($atasan)){
-			$atasan 		= explode(' - ', $atasan);
-			$noindAtasan	= $atasan[0];
-			$namaAtasan 	= $atasan[1];
-			$jabatanAtasan 	= $atasan[2];
-		}
+		$dataPekerja = $this->M_lapkunjungan->getDataPribadi($pekerja);
+		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($petugas);
+		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($atasan);
 
-		if(!empty($petugas)){
-			$petugas 		= explode(' - ', $petugas);
-			$noindPetugas	= $petugas[0];
-			$namaPetugas 	= $petugas[1];
-			$seksiPetugas 	= $petugas[2];
-		}
-
-
-		if(!empty($pekerja)){
-			$pekerja 		= explode(' - ', $pekerja);
-			$noindPekerja 	= $pekerja[0];
-			$namaPekerja 	= $pekerja[1];
-			$seksiPekerja 	= $pekerja[2];
-			$alamatPekerja 	= $pekerja[3];
-		}
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
 		$no_surat 		 = $this->input->post('no_surat');
@@ -747,63 +686,63 @@ class C_Rekap extends CI_Controller
 		$data['latar_belakang']		= $latar_belakang;
 		$data['hasil_laporan']		= $hasil_laporan;
 
-		if($noindAtasan != "null"){
-			$data['noind_atasan'] 		= $noindAtasan;
+		if($atasan != "null"){
+			$data['noind_atasan'] 		= $atasan;
 		}else{
 			$data['noind_atasan'] 		= "";
 		}
 
-		if($namaAtasan != "null"){
-			$data['nama_atasan']		= $namaAtasan;
+		if($dataAtasan[0]['nama'] != "null"){
+			$data['nama_atasan']		= $dataAtasan[0]['nama'];
 		}else{
 			$data['nama_atasan']		= "";
 		}
 
-		if($jabatanAtasan != "null"){
-			$data['jabatan_atasan']		= $jabatanAtasan;
+		if($dataAtasan[0]['jabatan'] != "null"){
+			$data['jabatan_atasan']		= $dataAtasan[0]['jabatan'];
 		}else{
 			$data['jabatan_atasan']		= "";
 		}
 
 
-		if($noindPetugas != "null"){
-			$data['noind_petugas'] 		= $noindPetugas;
+		if($petugas != "null"){
+			$data['noind_petugas'] 		= $petugas;
 		}else{
 			$data['noind_petugas'] 		= "";
 		}
 
-		if($namaPetugas != "null"){
-			$data['nama_petugas']		= $namaPetugas;
+		if($dataPetugas[0]['nama'] != "null"){
+			$data['nama_petugas']		= $dataPetugas[0]['nama'];
 		}else{
 			$data['nama_petugas']		= "";
 		}
 
-		if($seksiPetugas != "null"){
-			$data['seksi_petugas']		= $seksiPetugas;
+		if($dataPetugas[0]['seksi'] != "null"){
+			$data['seksi_petugas']		= $dataPetugas[0]['seksi'];
 		}else{
 			$data['seksi_petugas']		= "";
 		}
 
-		if($noindPekerja != "null"){
-			$data['noind_pekerja']		= $noindPekerja;
+		if($pekerja != "null"){
+			$data['noind_pekerja']		= $pekerja;
 		}else{
 			$data['noind_pekerja']		= "";
 		}
 
-		if($namaPekerja != "null"){
-			$data['nama_pekerja']		= $namaPekerja;
+		if($dataPekerja[0]['nama'] != "null"){
+			$data['nama_pekerja']		= $dataPekerja[0]['nama'];
 		}else{
 			$data['nama_pekerja']		= "";
 		}
 
-		if($seksiPekerja != "null"){
-			$data['seksi_pekerja']		= $seksiPekerja;
+		if($dataPekerja[0]['seksi'] != "null"){
+			$data['seksi_pekerja']		= $dataPekerja[0]['seksi'];
 		}else{
 			$data['seksi_pekerja']		= "";
 		}
 
-		if($alamatPekerja != "null"){
-			$data['alamat_pekerja']		= $alamatPekerja;
+		if($dataPekerja[0]['alamat'] != "null"){
+			$data['alamat_pekerja']		= $dataPekerja[0]['alamat'];
 		}else{
 			$data['alamat_pekerja']		= "";
 		}
@@ -816,21 +755,21 @@ class C_Rekap extends CI_Controller
 
 		$simpanLaporan = [
 			'hal_laporan' 			=> $hal,
-			'nama_petugas' 			=> $namaPetugas,
-			'noinduk_petugas'		=> $noindPetugas,
-			'seksi_petugas'			=> $seksiPetugas,
-			'nama_pekerja'			=> $namaPekerja,
-			'noinduk_pekerja'		=> $noindPekerja,
-			'seksi_pekerja'			=> $seksiPekerja,
-			'alamat_pekerja'		=> $alamatPekerja,
+			'nama_petugas' 			=> $dataPetugas[0]['nama'],
+			'noinduk_petugas'		=> $petugas,
+			'seksi_petugas'			=> $dataPetugas[0]['seksi'],
+			'nama_pekerja'			=> $dataPekerja[0]['nama'],
+			'noinduk_pekerja'		=> $pekerja,
+			'seksi_pekerja'			=> $dataPekerja[0]['seksi'],
+			'alamat_pekerja'		=> $dataPekerja[0]['alamat'],
 			'diagnosa' 				=> $diagnosa,
 			'latar_belakang'		=> $save_latar_belakang,
 			'hasil_laporan'			=> $hasil_laporan,
 			'tanggal_laporan'		=> date('Y-m-d'),
 			'no_surat'				=> $no_surat,
-			'noinduk_atasan'		=> $noindAtasan,
-			'nama_atasan'			=> $namaAtasan,
-			'jabatan_atasan'		=> $jabatanAtasan
+			'noinduk_atasan'		=> $atasan,
+			'nama_atasan'			=> $dataAtasan[0]['nama'],
+			'jabatan_atasan'		=> $dataAtasan[0]['jabatan']
 		];
 
 		$this->M_lapkunjungan->updateLaporanKunjungan($id_laporan,$simpanLaporan);

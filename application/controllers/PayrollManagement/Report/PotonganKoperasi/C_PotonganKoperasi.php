@@ -6,6 +6,7 @@ class C_PotonganKoperasi extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/Report/PotonganKoperasi/M_potongankoperasi');
@@ -20,7 +21,7 @@ class C_PotonganKoperasi extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Potongan Koperasi';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_PotonganKoperasi extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        			
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Potongan Koperasi';
         $data['SubMenuTwo'] = '';
@@ -66,19 +67,24 @@ class C_PotonganKoperasi extends CI_Controller
         $this->load->view('V_Footer',$data);
     }
 
-	public function generatePDF() 
+	public function generatePDF()
     {
         $this->checkSession();
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', 'A4', 9, '', 5, 5, 15, 15, 0, 0, 'P');
-        
+
         $filename = 'Potongan Koperasi.pdf';
         $pdf->setFooter('{PAGENO}');
 
         $year	 = $this->input->get('year');
 		$month	 = $this->input->get('month');
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Export PDF Laporan Potongan Koperasi bulan=$month tahun=$year";
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $data['potongan_koperasi'] = $this->M_potongankoperasi->get_all($year, $month);
         $data['total'] = $this->M_potongankoperasi->get_sum($year, $month);
@@ -95,7 +101,7 @@ class C_PotonganKoperasi extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

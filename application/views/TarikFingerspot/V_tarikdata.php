@@ -21,7 +21,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" method="POST" action="">
+										<form class="form-horizontal" method="POST" action="" autocomplete="off">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tanggal</label>
 												<div class="col-lg-3">
@@ -81,7 +81,7 @@
 											</div>
 										</div>
 										<div class="col-lg-11 text-right">
-											<a href="<?php echo base_url('TarikFingerspot/TarikData/'.$tanggal); ?>" target="_blank" class="btn btn-success">Insert</a>
+											<a href="<?php echo $sn_device!= null ? base_url('TarikFingerspot/TarikData?tanggal='.$tanggal.'&sn='.$sn_device.'') : base_url('TarikFingerspot/TarikData?tanggal='.$tanggal.'')  ; ?>" target="_blank" class="btn btn-success">Insert</a>
 										</div>
 									<?php } ?>
 								</div> 

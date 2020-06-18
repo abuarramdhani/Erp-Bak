@@ -5,13 +5,8 @@
 </head>
 <body class="container-fluid">
 	<div class="row">
-		<div class="col-lg-12 text-left">
-			<label><b style="font-size: 20px;">CV. Karya Hidup Sentosa<br>Yogyakarta</b></label>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-12 text-center">
-			<label><b style="font-size: 20px;">Jadwal Pengiriman Catering <?php echo $pengiriman['nama_catering'] ?><br>Bulan : <?php echo $pengiriman['bulan'] ?></b></label>
+		<div class="col-lg-12">
+			<label><b style="font-size: 15pt;">Jadwal Pengiriman Catering <?php echo $pengiriman['nama_catering'] ?></b><br><b>Bulan : <?php echo $pengiriman['bulan'] ?></b></label>
 		</div>
 	</div>
 	<div class="row">
@@ -20,10 +15,10 @@
 				<table class="table table-striped table-bordered table-hover text-left">
 					<thead>
 						<tr>
-							<th>Tanggal</th>
-							<th>Jadwal Kirim</th>
-							<th>Waktu</th>
-							<th>Keterangan</th>
+							<th style="text-align: center">Tanggal</th>
+							<th style="text-align: center">Jadwal Kirim</th>
+							<th style="text-align: center">Waktu</th>
+							<th style="text-align: center">Keterangan</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -42,21 +37,34 @@
 		</div>
 	</div>
 	<div class="row">
-		<label class="form-label"><b>Catatan<br>Daftar Menu : Paket <?php echo $pengiriman['paket'] ?></b></label>
-	</div>
-	<div class="row">
-		<div style="width: 30%;float: left">
-			<div class="col-lg-3 text-center">
-				<br><label>Departement Personalia,</label><br><br><br><br>
-				<label><?php echo $pengiriman['ppersonalia'] ?></label>
-			</div>
-		</div>
-		<div class="text-right" style="width: 30%;float: right">
-			<label class="control-label">Yogyakarya, <?php  echo $pengiriman['tanggalbuat'] ?></label>
-			<div class="col-lg-3 text-center">
-				<label>Catering <?php echo $pengiriman['nama_catering'] ?>,</label><br><br><br><br>
-				<label><?php echo $pengiriman['pcatering'] ?></label>
-			</div>
+		<div class="col-lg-12">
+			<label class="form-label"><b>Catatan<br>Daftar Menu : Paket <?php echo $pengiriman['paket'] ?></b></label>
+			<table style="width: 100%">
+				<tr>
+					<td style="width: 50%;text-align: center;"></td>
+					<td style="width: 50%;text-align: center;">Yogyakarya, <?php  echo $pengiriman['tanggalbuat'] ?></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">Departement Personalia,</td>
+					<td style="text-align: center;">Catering <?php echo $pengiriman['nama_catering'] ?>,</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;"><?php echo $pengiriman['ppersonalia'] ?></td>
+					<td style="text-align: center;"><?php echo $pengiriman['pcatering'] ?></td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </body>

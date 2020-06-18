@@ -69,7 +69,7 @@ class C_salestarget extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/salestarget/V_index',$data);
+		$this->load->view('SalesMonitoring/setting/SalesTarget/V_index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -91,7 +91,7 @@ class C_salestarget extends CI_Controller {
 		$data['selected'] = $select;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/salestarget/V_update',$data);
+		$this->load->view('SalesMonitoring/setting/SalesTarget/V_update',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -113,8 +113,220 @@ class C_salestarget extends CI_Controller {
 		$data['sourceOrderType'] = $this->M_salestarget->viewOrderType();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/salestarget/V_create',$data);
+		$this->load->view('SalesMonitoring/setting/SalesTarget/V_create',$data);
 		$this->load->view('V_Footer',$data);
+	}
+//ajax selection
+	public function filterOrganization()
+	{
+		$select = $this->input->post('select');
+// 		$getCode = $this->M_salestarget->viewOrganization2($select);
+// 		$code = $getCode[0]['org_code'];
+		$getOrderType = $this->M_salestarget->viewOrderType3($select);
+		echo json_encode($getOrderType);
+	}
+
+	public function filterOrganization2()
+	{
+		$select = $this->input->post('select');
+		$getCode = $this->M_salestarget->viewOrganization2($select);
+		$code = $getCode[0]['org_code'];
+		$getOrderType = $this->M_salestarget->viewOrderType2($code);
+		echo json_encode($getOrderType);
+	}
+
+	public function showTable()
+	{
+		$select = $this->input->post('select');
+		$getOrderType = $this->M_salestarget->viewTabel($select);
+		$data['order'] = $getOrderType;
+
+		return $this->load->view('SalesMonitoring/setting/SalesTarget/V_tableOrder',$data);
+	}
+
+	public function SettingOrg()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		
+		$data['province'] = $this->M_salestarget->viewProvince();
+		$data['org'] = $this->M_salestarget->viewContentSetup();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SalesMonitoring/setting/SalesTarget/V_setting_organization',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function filterCity()
+	{
+		$prov_id = $this->input->post('prov');
+		$getCity = $this->M_salestarget->viewCity($prov_id);
+
+		echo json_encode($getCity);
+	}
+
+	public function filterDistrict()
+	{
+		$city_id = $this->input->post('city');
+		$getDis = $this->M_salestarget->viewDistrict($city_id);
+
+		echo json_encode($getDis);
+	}
+
+	public function filterVillage()
+	{
+		$kcmtn_id = $this->input->post('kcmtn');
+		$getVill = $this->M_salestarget->viewVillage($kcmtn_id);
+
+		echo json_encode($getVill);
+	}
+
+	public function saveSetupOrg()
+	{
+		$province = $this->input->post('province');
+		$city = $this->input->post('city');
+		$kecamatan = $this->input->post('kecamatan');
+		$kelurahan = $this->input->post('kelurahan');
+		$alamat = $this->input->post('alamat');
+		$org_id = $this->input->post('org_id');
+		$org_code = strtoupper($this->input->post('org_code'));
+		$org_name = strtoupper($this->input->post('org_name'));
+
+		$cekDuplikasi = $this->M_salestarget->cekRow($org_id);
+		if ($cekDuplikasi == '0') {
+		$this->M_salestarget->saveSetup($province,$city,$kecamatan,$kelurahan,$alamat,$org_id,$org_code,$org_name);
+		echo json_encode(1);
+		}else if ($cekDuplikasi !=='0'){
+		echo json_encode(0);
+		}
+	}
+
+	public function deleteOrg()
+	{
+		$org_id = $this->input->post('org_id');
+		$delete = $this->M_salestarget->deleteOrg($org_id);
+	}
+
+	public function deleteOrder()
+	{
+		$item_id = $this->input->post('item_id');
+		$delete = $this->M_salestarget->deleteOrder($item_id);
+	}
+
+	public function detailOrderEdit()
+	{
+		$item_id = $this->input->post('item_id');
+		$data['order'] = $this->M_salestarget->getDataOrder($item_id);
+
+		return $this->load->view('SalesMonitoring/setting/SalesTarget/v_mdlOrder',$data);
+	}
+
+	public function updateOrder()
+	{
+		$item_id = $this->input->post('item_id');
+		$order = $this->input->post('new_order');
+
+		$this->M_salestarget->updateOrder($item_id,$order);
+	}
+
+	public function insertOrder()
+	{
+		$order_type = $this->input->post('order_type');
+		$param = $this->input->post('param'); //org_id
+		$org_code = $this->M_salestarget->getCodeAndName($param);
+		$code = $org_code[0]['ORG_CODE'];
+		$org_name = $this->M_salestarget->getCodeAndName($param);
+		$name = $org_name[0]['ORG_NAME'];
+
+		$this->M_salestarget->insertNewOrderType($order_type,$param,$code,$name);
+	}
+
+	public function openMdlDetail()
+	{
+		$org_id = $this->input->post('org_id');
+		$data['province'] = $this->M_salestarget->viewProvince();
+		$data['list'] = $this->M_salestarget->getDataDetail($org_id);
+		return $this->load->view('SalesMonitoring/setting/SalesTarget/V_mdlDetail',$data);
+	}
+
+	public function filterCity2()
+	{
+		$prov_id = $this->input->post('prov');
+		$getCity = $this->M_salestarget->viewCity($prov_id);
+
+		echo json_encode($getCity);
+	}
+
+	public function filterDistrict2()
+	{
+		$city_id = $this->input->post('city');
+		$getDis = $this->M_salestarget->viewDistrict($city_id);
+
+		echo json_encode($getDis);
+	}
+
+	public function filterVillage2()
+	{
+		$kcmtn_id = $this->input->post('kcmtn');
+		$getVill = $this->M_salestarget->viewVillage($kcmtn_id);
+
+		echo json_encode($getVill);
+	}
+
+	public function updateSetupOrg()
+	{
+		// echo "<pre>";print_r($_POST);exit();
+		$province = $this->input->post('province');
+		$city = $this->input->post('city');
+		$kecamatan = $this->input->post('kecamatan');
+		$kelurahan = $this->input->post('kelurahan');
+		$alamat = $this->input->post('alamat');
+		$org_id = $this->input->post('org_id');
+		$org_code = strtoupper($this->input->post('org_code'));
+		$org_name = strtoupper($this->input->post('org_name'));
+
+		$this->M_salestarget->updateOrg($province,$city,$kecamatan,$kelurahan,$alamat,$org_id,$org_code,$org_name);
+	}
+
+
+	public function SettingOrder()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		//$data['user'] = $usr;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		
+		$data['source'] = $this->M_salestarget->viewOrganization();
+		// $data['sourceOrderType'] = $this->M_salestarget->viewOrderType();
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SalesMonitoring/setting/SalesTarget/V_setting_order',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function createPlaceHolder()
+	{
+		$select = $this->input->post('select');
+		$cek = $this->M_salestarget->viewOrganization2($select);
+		$cekk = $cek[0]['org_code'];
+
+		echo json_encode($cekk);
+
 	}
 	
 	//menambah data
@@ -133,6 +345,19 @@ class C_salestarget extends CI_Controller {
 		$createdby = $this->input->post('txt_created_by');
 		$create = $this->M_salestarget->insertSalestarget($ordertype,$month,$year,$target,$orgid,$startdate,$enddate,$lastupdated,$lastupdateby,$creationdate,$createdby);
 		redirect('SalesMonitoring/salestarget');
+	}
+
+	public function filtering()
+	{
+		$org_id = $this->input->post('org');
+		$month = $this->input->post('month');
+		$year = $this->input->post('year');
+		$target = $this->input->post('target');
+		$order_type = $this->input->post('order_type');
+
+		$filtering = $this->M_salestarget->getFiltered($org_id,$month,$year,$order_type);
+
+		echo json_encode($filtering);
 	}
 	
 	//menghapus data
@@ -238,7 +463,7 @@ class C_salestarget extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SalesMonitoring/setting/salestarget/V_filter',$data);
+		$this->load->view('SalesMonitoring/setting/SalesTarget/V_filter',$data);
 		$this->load->view('V_Footer',$data);
 	}
 }

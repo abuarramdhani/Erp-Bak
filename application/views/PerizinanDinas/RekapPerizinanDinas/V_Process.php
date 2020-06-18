@@ -15,6 +15,7 @@
                 <th class="text-center" style="white-space: nowrap;">Tempat Makan</th>
                 <th class="text-center" style="white-space: nowrap;">Keterangan</th>
                 <th class="text-center" style="white-space: nowrap;">Status</th>
+                <th class="text-center" style="white-space: nowrap;">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -24,16 +25,21 @@
                   <td style="white-space: nowrap;"><?php echo $no; ?></td>
                   <td style="white-space: nowrap;"><?php echo $row['izin_id'] ?></td>
                   <td style="white-space: nowrap;"><?= date("d F Y", strtotime($row['created_date'])); ?></td>
-                  <td style="white-space: nowrap;"><?php echo $row['pekerja'] ?></td>
+                  <td style="white-space: nowrap;"><?php foreach ($row['pekerja'] as $val) {
+                         if ($val == null || $val == '') {
+                           echo " - <br>";
+                         }else {
+                           echo $val.'<br>';
+                         }
+                   } ?></td>
                   <td style="text-align: center; white-space: nowrap;"><?php echo $row['to_dinas'] ?></td>
                   <td style="white-space: nowrap;"><?php echo $row['atasan'] ?></td>
-                  <td style="white-space: nowrap;"><?php $tempat_makan = explode(',', $row['tujuan']);
-                  foreach ($tempat_makan as $lue) {
-                    if (empty($lue)) {
-                      echo '-';
-                    }else {
-                      echo $lue.'<br>';
-                    }
+                  <td style="white-space: nowrap;"><?php foreach ($row['tujuan'] as $key) {
+                        if ($key == null || $key == '') {
+                          echo " - <br>";
+                        }else {
+                          echo $key.'<br>';
+                        }
                   } ?></td>
                   <td style="white-space: nowrap;"><?php echo $row['keterangan'] ?></td>
                     <td><?php
@@ -44,6 +50,13 @@
                           <?php } elseif ($row['status'] == 2) { ?>
                               <span class="label label-danger">Rejected</span>
                           <?php } ?></td>
+                    <td>
+                        <?php if (date('Y-m-d', strtotime($row['created_date'])) == date('Y-m-d')): ?>
+                            <button id="<?= $row['izin_id'] ?>" class="btn btn-danger btnDeldinas">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        <?php endif ?>
+                    </td>
                 </tr>
                 <?php
                 $no++;

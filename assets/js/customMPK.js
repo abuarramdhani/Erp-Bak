@@ -1,6 +1,7 @@
 $(document).on('ifChecked', '#fingerYa', function(){
     // alert('oke');
   $('#fingerpindah').prop('hidden', false);
+  $("select[name='txtFingerGanti']").attr('required', 'required');
 });
 
 $(document).on('ifChecked', '#fingerTidak', function(){
@@ -93,11 +94,13 @@ $(document).ready(function() {
     $(document).on('click', '#CariPekerja', function(e) {
         e.preventDefault();
         var nama = $('#NamaPekerja').val();
+        var baru = $('input[name="noind_baru"]:checked').val();
+        var noind = '';
 
         $.ajax({
             url: baseurl + "MasterPekerja/Other/DataIDCard",
             type: "get",
-            data: { nama: nama }
+            data: { nama: nama, baru: baru }
         }).done(function(data) {
             var html = '';
             var data = $.parseJSON(data);
@@ -105,16 +108,22 @@ $(document).ready(function() {
             console.log(data['worker']);
             $('tbody#dataIDcard').empty(html);
             for (var i = 0; i < data['worker'].length; i++) {
+                if (baru == '1') {
+                  noind = data['worker'][i][0]['no_induk'];
+                }else{
+                  noind = data['worker'][i][0]['noind'];
+                }
+
                 html += '<tr>';
                 html += '<td>' + (i + 1) + '</td>';
-                html += '<td>' + data['worker'][i][0]['no_induk'] + '<input type="hidden" name="noind[]" value="' + data['worker'][i][0]['noind'] + '"></td>';
+                html += '<td>' + noind + '<input type="hidden" name="noind[]" value="' + data['worker'][i][0]['noind'] + '"></td>';
                 html += '<td>' + data['worker'][i][0]['nama'] + '</td>';
                 if (data['worker'][i][0]['jabatan'] != null) {
                     html += '<td>' + data['worker'][i][0]['jabatan'] + ' ' + data['worker'][i][0]['seksi'] + '</td>';
                 } else {
                     html += '<td>' + data['worker'][i][0]['seksi'] + '</td>';
                 }
-                html += '<td><a target="_blank" href="' + data['worker'][i][0]['photo'] + '">PHOTO</td>';
+                html += '<td><a style="cursor:pointer;" class="mpkOpnImg" target="_blank" data-url="' + data['worker'][i][0]['photo'] + '">PHOTO</td>';
                 html += '<td><input type="text" style="text-transform:uppercase" data-noind="' + data['worker'][i][0]['noind'] + '" class="form-control" name="nick[]" id="nickname" maxlength="10"></td>'
                 html += '</tr>';
             }
@@ -123,6 +132,13 @@ $(document).ready(function() {
             $('#print_card').removeAttr('disabled', false);
             $('#print_card').removeClass('disabled');
         })
+    });
+
+    $('#tabel-idcard').on('click', '.mpkOpnImg', function(){
+      let va = $(this).attr('data-url');
+      Swal.fire({
+        html: '<div style="background: url(\''+va+'\') no-repeat right center; background-size: contain; background-position: 50%; min-height: 420px;"></div>'
+      });
     });
 
     //Untuk Rekap Perizinan Dinas
@@ -207,26 +223,13 @@ $(document).ready(function() {
 
 
      $('input.periodeRekap').on('apply.daterangepicker', function(ev, picker) {
-       $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
      });
 
      $('input.periodeRekap').on('cancel.daterangepicker', function(ev, picker) {
          $(this).val('');
      });
 });
-
-
-
-// function RPD_Hidden(a) {
-//     alert('aa')
-//     if (a == '1') {
-//         $('#RPD_Surat').prop('hidden', false)
-//         $('#RPD_Noind').prop('hidden', true)
-//     }else {
-//         $('#RPD_Surat').prop('hidden', true)
-//         $('#RPD_Noind').prop('hidden', false)
-//     }
-// }
 //Selesai
 
 //Untuk Approve IKP
@@ -559,14 +562,11 @@ $('#RPP_Cari').on('click', function () {
 
 // 	-------Master Pekerja--------------------------------------------start
 $(function() {
-    // 	Surat-surat
-    // 	{
-    //	DateRangePicker
-    //	{
 
     $('.monthpickerq').monthpicker({
       Button: false ,
-      dateFormat: "MM yy"
+      dateFormat: "MM yy",
+      autocomplete: "off"
     });
 
     $('.monthpickerq1').monthpicker({
@@ -703,6 +703,7 @@ $(function() {
     });
     //	}
     //  select3
+
     $('.MasterPekerja-PerhitunganPesangon-DaftarPekerja').select2({
         allowClear: false,
         placeholder: "Pilih Pekerja",
@@ -726,43 +727,127 @@ $(function() {
         }
     });
 
+    $('#txtProses').datepicker({
+        "showDropdowns": true,
+        "autoApply": true,
+        "autoclose": true,
+        "format": "dd MM yyyy"
+    }).on('change', function () {
+        let wkt = moment($(this).val()).format('dd');
+        $('#txtHariPrs').removeClass('ahad')
+
+        $('#txtHariPrs').val(function () {
+            if (wkt == 'Su') {
+                var styles = {
+                    color : "red",
+                    fontWeight: "bold"
+                };
+                $(this).css(styles)
+                return 'Minggu'
+            }else if (wkt == 'Mo') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Senin'
+            }else if (wkt == 'Tu') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Selasa'
+            }else if (wkt == 'We') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Rabu'
+            }else if (wkt == 'Th') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Kamis'
+            }else if (wkt == 'Fr') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Jumat'
+            }else if (wkt == 'Sa') {
+                $(this).css({ 'color' : '', 'fontWeight' : '' });
+                return 'Sabtu'
+            }
+        });
+    })
+
+    $(document).on('ifChecked','#MasterPekerja-PerhitunganPesangon-HitungCuti',function(){
+      $('#MasterPekerja-PerhitunganPesangon-StatusCuti').val('1');
+    })
+    $(document).on('ifUnchecked','#MasterPekerja-PerhitunganPesangon-HitungCuti',function(){
+      $('#MasterPekerja-PerhitunganPesangon-StatusCuti').val('0');
+    })
+
     $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').change(function() {
         var noind = $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').val();
+        var cuti = $('#MasterPekerja-PerhitunganPesangon-StatusCuti').val();
+        console.log("STATUS CUTI : " + cuti);
         if (noind) {
             $.ajax({
                 type: 'POST',
-                data: { noind: noind },
+                data: { noind: noind, cuti: cuti },
                 url: baseurl + "MasterPekerja/PerhitunganPesangon/detailPekerja",
                 success: function(result) {
-                    var res = JSON.parse(result);
-                    $('#txtSeksi').val(res[0]['seksi']);
-                    $('#txtUnit').val(res[0]['unit']);
-                    $('#txtDepartemen').val(res[0]['departemen']);
-                    $('#txtLokasi').val(res[0]['lokasi_kerja']);
-                    $('#txtJabatan').val(res[0]['pekerjaan']);
-                    $('#txtDiangkat').val(res[0]['diangkat']);
-                    $('#txtAlamat').val(res[0]['alamat']);
-                    $('#txtLahir').val(res[0]['tempat']);
-                    $('#txtMasaKerja').val(res[0]['masakerja']);
-                    $('#txtSisaCuti').val(res[0]['sisacuti']);
-                    $('#txtProses').val(res[0]['metu']);
-                    $('#txtStatus').val(res[0]['alasan']);
-                    $('#txtUangPesangon').val(res[0]['pengali']);
-                    $('#txtUangUMPK').val(res[0]['upmk']);
-                    $('#txtSisaCutiHari').val(res[0]['sisacutihari']);
-                    $('#txtUangGantiRugi').val(res[0]['gantirugi']);
-                    $('#txtTahun').val(res[0]['masakerja_tahun']);
-                    $('#txtBulan').val(res[0]['masakerja_bulan']);
-                    $('#txtHari').val(res[0]['masakerja_hari']);
-                    $('#txtPasal').val(res[0]['pasal']);
-                    $('#txtPesangon').val(res[0]['pesangon']);
-                    $('#txtUPMK').val(res[0]['up']);
-                    $('#txtCuti').val(res[0]['cuti']);
-                    $('#txtRugi').val(res[0]['rugi']);
-                    $('#txtAkhir').val(res[0]['akhir']);
-                    $('#txtNPWP').val(res[0]['npwp']);
-                    $('#txtNIK').val(res[0]['nik']);
-
+                    if(result !== "Data Kosong"){
+                      var res = JSON.parse(result);
+                      $('#txtSeksi').val(res[0]['seksi']);
+                      $('#txtUnit').val(res[0]['unit']);
+                      $('#txtDepartemen').val(res[0]['departemen']);
+                      $('#txtLokasi').val(res[0]['lokasi_kerja']);
+                      $('#txtJabatan').val(res[0]['pekerjaan']);
+                      $('#txtDiangkat').val(res[0]['diangkat']);
+                      $('#txtAlamat').val(res[0]['alamat']);
+                      $('#txtLahir').val(res[0]['tempat']);
+                      $('#txtMasaKerja').val(res[0]['masakerja']);
+                      if(cuti == '0'){
+                        $('#txtSisaCuti').val('0 hari');
+                      }else{
+                        $('#txtSisaCuti').val(res[0]['sisacuti']);
+                      }
+                      $('#txtStatus').val(res[0]['alasan']);
+                      $('#txtUangPesangon').val(res[0]['pengali']);
+                      $('#txtUangUMPK').val(res[0]['upmk']);
+                      $('#txtSisaCutiHari').val(res[0]['sisacutihari']);
+                      $('#txtUangGantiRugi').val(res[0]['gantirugi']);
+                      $('#txtTahun').val(res[0]['masakerja_tahun']);
+                      $('#txtBulan').val(res[0]['masakerja_bulan']);
+                      $('#txtHari').val(res[0]['masakerja_hari']);
+                      $('#txtPasal').val(res[0]['pasal']);
+                      $('#txtPesangon').val(res[0]['pesangon']);
+                      $('#txtUPMK').val(res[0]['up']);
+                      if(cuti == '0'){
+                        $('#txtCuti').val('0');
+                      }else{
+                        $('#txtCuti').val(res[0]['cuti']);
+                      }
+                      $('#txtRugi').val(res[0]['rugi']);
+                      $('#txtAkhir').val(res[0]['metu']);
+                      $('#txtNPWP').val(res[0]['npwp']);
+                      $('#txtNIK').val(res[0]['nik']);
+                      $('#txtHariLmt').val(function () {
+                          if (res['hari_terakhir'] == 'Sun') {
+                              var styles = {
+                                  color : "red",
+                                  fontWeight: "bold"
+                              };
+                              $(this).css(styles)
+                              return 'Minggu'
+                          }else if (res['hari_terakhir'] == 'Mon') {
+                              return 'Senin'
+                          }else if (res['hari_terakhir'] == 'Tue') {
+                              return 'Selasa'
+                          }else if (res['hari_terakhir'] == 'Wed') {
+                              return 'Rabu'
+                          }else if (res['hari_terakhir'] == 'Thu') {
+                              return 'Kamis'
+                          }else if (res['hari_terakhir'] == 'Fri') {
+                              return 'Jumat'
+                          }else if (res['hari_terakhir'] == 'Sat') {
+                              return 'Sabtu'
+                          }
+                      });
+                    }else{
+                      swal.fire({
+                        title: "Data pekerja Tidak Ditemukan",
+                        text: "Mohon Lakukan Pengecekan Ulang Data Pekerja",
+                        type: "warning"
+                      })
+                    }
                 }
             });
         }
@@ -909,6 +994,9 @@ $(function() {
     $('#MasterPekerja-DaftarSeksi').change(function() {
         var kode_seksi = $(this).val();
         var kode_seksi = kode_seksi.substr(0, 7);
+
+        $("#rowmutasi .select2-selection").css('background-color','');
+        $("#validMutasi").hide()
 
         $('#MasterPekerja-DaftarPekerjaan').select2({
             allowClear: false,
@@ -1324,7 +1412,6 @@ $('#MasterPekerja-Surat-DaftarPekerja').change(function() {
             url: baseurl + "MasterPekerja/Surat/detail_pekerja",
             success: function(result) {
                 var result = JSON.parse(result);
-                console.log(result);
                 $('#MasterPekerja-txtKodesieLama').val(result['kodesie'] + ' - ' + result['posisi']);
                 $('#MasterPekerja-txtPekerjaanLama').val(result['kode_pekerjaan'] + ' - ' + result['nama_pekerjaan']);
                 $('#MasterPekerja-txtGolonganKerjaLama').val(result['golongan_pekerjaan']);
@@ -1423,6 +1510,27 @@ $('.MasterPekerja-Surat-DaftarPekerja').change(function() {
 
 $('#MasterPekerja-Surat-btnPreview').click(function() {
     // alert($('#MasterPekerja-txtLokasiKerjaLama').val());
+    let fingerakhir = $("select[name='txtFingerGanti']").val();
+    let tujuanmutasi = $("select[name='txtKodesieBaru']").val();
+    let golkerja = $("select[name='txtGolonganPekerjaanBaru']").val();
+
+    if(!tujuanmutasi){
+       Swal.fire('Oops!','Mohon lengkapi form!','warning')
+       $("#MasterPekerja-DaftarSeksi").focus();
+       $("#rowmutasi .select2-selection").css('background-color','rgba(255, 0, 0, 0.4)');
+       $("#validMutasi").show()
+       return;
+    }
+
+    const pindah = $('#fingerYa').iCheck('update')[0].checked;
+
+    if(pindah && !fingerakhir){
+      Swal.fire('Oops!','Mohon lengkapi form!','warning')
+      $("#rowfinger .select2-selection").css('background-color','rgba(255, 0, 0, 0.4)');
+      $("#validFinger").show();
+      return;
+    }
+
     $('#surat-loading').attr('hidden', false);
     $(document).ajaxStop(function() {
         $('#surat-loading').attr('hidden', true);
@@ -1431,18 +1539,25 @@ $('#MasterPekerja-Surat-btnPreview').click(function() {
         type: 'POST',
         data: $('#MasterPekerja-FormCreate').serialize(),
         url: baseurl + "MasterPekerja/Surat/SuratMutasi/prosesPreviewMutasi",
-        success: function(result) {
-            var result = JSON.parse(result);
-            console.log(result);
-
-            /*CKEDITOR.instances['MasterPekerja-Surat-txaPreview'].setData(result['preview']);*/
-            $('.MasterPekerja-Surat-txaPreview').redactor('set', result['preview']);
-            $('#MasterPekerja-Surat-txtNomorSurat').val(result['nomor_surat']);
-            $('#MasterPekerja-Surat-txtHalSurat').val(result['hal_surat']);
-            $('#MasterPekerja-Surat-txtKodeSurat').val(result['kode_surat']);
+        dataType: 'json',
+        success: function(result) {          
+            console.log("result :"+ result);
+            if(result['status']){              
+              /*CKEDITOR.instances['MasterPekerja-Surat-txaPreview'].setData(result['preview']);*/
+              $('.MasterPekerja-Surat-txaPreview').redactor('set', result['preview']);
+              $('#MasterPekerja-Surat-txtNomorSurat').val(result['nomor_surat']);
+              $('#MasterPekerja-Surat-txtHalSurat').val(result['hal_surat']);
+              $('#MasterPekerja-Surat-txtKodeSurat').val(result['kode_surat']);
+            }else{
+              $('#surat-loading').attr('hidden', true);
+              Swal.fire('Oops','Error!','error')              
+            }
+        },
+        error: (res) =>{
+          $('#surat-loading').attr('hidden', true);
+          Swal.fire('Oops','Error!','error')
         }
     });
-
 });
 
 $('#MasterPekerja-SuratDemosi-btnPreview').click(function() {
@@ -2134,7 +2249,6 @@ $('.prevSangu').click(function() {
         dataType: 'json',
         url: baseurl + 'MasterPekerja/PerhitunganPesangon/getDataPreview/'+a,
         success: function (result) {
-            console.log(result.dataPreview[0].pengirim);
             $('#Psg_approver1').val(result.dataPreview[0].pengirim).trigger('change')
             $('#id_prev_sangu').val(result.dataPreview[0].id).trigger('change')
             $('#psg_tglCetak').val(result.dataPreview[0].tgl_cetak_prev).trigger('change')
@@ -2410,9 +2524,9 @@ $(document).ready(function(){
         }
     });
 
-    $("input.periodeRekap").monthpicker({
-      changeYear:true,
-      dateFormat: 'yy-mm', });
+    // $("input.periodeRekap").monthpicker({
+    //   changeYear:true,
+    //   dateFormat: 'yy-mm', });
 
     $('#app_edit_Dinas').on('click', function () {
         var loading = baseurl + 'assets/img/gif/loadingquick.gif';
@@ -2987,5 +3101,562 @@ $(document).ready(function(){
         }
     });
 
+    $('#tbl_mpkSt').DataTable({
+       dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                title:'',
+                filename: 'Daftar Seksi',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4 ]
+                }
+            }
+        ]
+    });
+
+    $('#dataTable_ipoto').dataTable();
+
+    $("#mpk_cek_file").change(function(){
+        var noind = $(this).val();
+        $.ajax({
+            type: 'POST',
+            data:{
+                noind: noind
+            },
+            url: baseurl + 'MasterPekerja/upload-photo/cekFileFoto',
+            success: function (result) {
+                if (result == '1') {
+                    $('#mpk_warn_rtxt').show();
+                    $('#mpk_warn_rbtxt').text('Replace');
+                }else{
+                    $('#mpk_warn_rtxt').hide();
+                    $('#mpk_warn_rbtxt').text('Submit');
+                }
+            },
+            error: function (result){
+                alert('Error Please Try Again !');
+            }
+        });
+    });
+
+    $('#dataTable_ipoto').on('click', '.mpkshowimg', function(){
+      var va = $(this).attr('data');
+      $.ajax({
+        type: 'POST',
+        data:{
+          dt: va
+        },
+        url: baseurl + 'MasterPekerja/upload-photo/getFileFoto',
+        success: function (result) {
+          Swal.fire({
+            html: '<div style="background: url(\''+result+'\') no-repeat right center; background-size: contain; background-position: 50%; min-height: 420px;"></div>'
+          });
+        },
+        error: function (result){
+          alert('Error Please Try Again !');
+        }
+      });
+    });
+});
+
+$(document).on('click',function(e){
+  $('#formSebaranGejalaPusat [data-toggle="popover"]').popover();
+  $('#formSebaranGejalaTuksono [data-toggle="popover"]').popover();
+})
+
+$(document).on('ready',function(){
+  $('#tblPendataanTidakHadir').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+      {
+        extend:'excel',
+        title:'Data Pendataan Tidak Hadir '+d+'-'+m+'-'+y
+      }
+    ],
+    scrollX: true,
+  });
+
+  $('#tblPendataanBelumInput').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+      {
+        extend:'excel',
+        title:'Data Belum Input Pendataan '+d+'-'+m+'-'+y
+      }
+    ],
+    scrollX: true,
+  });
+});
+
+// Poliklinik
+$(document).ready(function(){
+  $('#tblPoliklinik').DataTable({
+       dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                title:'',
+                filename: 'Kunjungan Poliklinik'
+            }
+        ]
+    });
+
+  $('#txtPoliklinikTanggal').daterangepicker({
+      "timePicker": true,
+      "timePicker24Hour": true,
+      "singleDatePicker": true,
+      "showDropdowns": true,
+      "autoApply": true,
+      "locale": {
+          "format": "YYYY-MM-DD HH:mm:ss",
+          "separator": " - ",
+          "applyLabel": "OK",
+          "cancelLabel": "Batal",
+          "fromLabel": "Dari",
+          "toLabel": "Hingga",
+          "customRangeLabel": "Custom",
+          "weekLabel": "W",
+          "daysOfWeek": [
+              "Mg",
+              "Sn",
+              "Sl",
+              "Rb",
+              "Km",
+              "Jm",
+              "Sa"
+          ],
+          "monthNames": [
+              "Januari",
+              "Februari",
+              "Maret",
+              "April",
+              "Mei",
+              "Juni",
+              "Juli",
+              "Agustus ",
+              "September",
+              "Oktober",
+              "November",
+              "Desember"
+          ],
+          "firstDay": 1
+      }
+  }, function(start, end, label) {
+    console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+  }); 
+
+  $('#slcPoliklinikPekerja').select2({
+      searching: true,
+      minimumInputLength: 3,
+      placeholder: "No. Induk / Nama Pekerja",
+      allowClear: false,
+      ajax: {
+          url: baseurl + 'MasterPekerja/Poliklinik/getPekerja',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                  })
+              }
+          }
+      }
+  });
+
+  $('#slcPoliklinikKeterangan').select2({
+      searching: true,
+      placeholder: "Keterangan",
+      allowClear: true,
+      tags: true,
+      tokenSeparators: [','],
+      ajax: {
+          url: baseurl + 'MasterPekerja/Poliklinik/getKeterangan',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.keterangan, text: obj.keterangan};
+                  })
+              }
+          }
+      }
+  });
+
+    $('#areaRekapIzin').on('click', '.btnDeldinas', function(){
+        var id = $(this).attr('id');
+        var ini = $(this);
+        Swal.fire({
+            title: 'Apa Anda yakin akan menghapus izin "'+id+'" ?',
+            allowOutsideClick: true,
+            allowEscapeKey: true,
+            type: 'question',
+            showCancelButton: true
+        }).then(function(result) {
+            if (result.value) {
+                $(this).attr('disabled', true);
+                $.ajax({
+                    type: 'GET',
+                    url: baseurl+'PD/RekapPerizinanDinas/hapusini/'+id,
+                    data: {test: 12},
+                    success: function(response){
+                        $('#PD_Cari').click();
+                        mpk_showAlert('success', 'Data Berhasil di Hapus !');
+                    }
+                });
+            }
+        });
+    });
 
 });
+
+function mpk_showAlert(icon, title)
+{
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 5000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
+  Toast.fire({
+    icon: icon,
+    title: title
+  })
+}
+
+
+window.addEventListener('load', function () {
+    if($("#PD_Cari").get(0)){
+        $('input[name="PerSurat"]').eq(0).iCheck('check');
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+
+        today = dd + '/' + mm + '/' + yyyy;
+        $('#periodeRekap').val(today+' - '+today);
+        $('#PD_Cari').trigger('click');
+    }
+});
+
+// Surat Tugas Start
+$(document).ready(function(){
+  $('#tblMPSuratTugasIndex').DataTable();
+  $('#txaMPSuratTugasRedactor').redactor({
+    buttonsHide : ['image']
+  });
+  $('#txtMPSuratTugasTanggal').datepicker({
+    "autoclose": true,
+    "todayHiglight": true,
+    "format": 'yyyy-mm-dd'
+  });
+  $('.slcMPSuratTugasPekerja').select2({
+      searching: true,
+      minimumInputLength: 3,
+      placeholder: "No. Induk / Nama Pekerja",
+      allowClear: false,
+      ajax: {
+          url: baseurl + 'MasterPekerja/Surat/SuratTugas/Pekerja',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                  })
+              }
+          }
+      }
+  });
+
+  $('#slcMPSuratTugasPekerja').on('change',function(){
+    noind = $(this).val();
+    $.ajax({
+      data  : {noind: noind},
+      type  : 'GET',
+      url   : baseurl + 'MasterPekerja/Surat/SuratTugas/Detail',
+      error: function(xhr,status,error){
+        console.log(xhr);
+        console.log(status);
+        console.log(error);
+        swal.fire({
+            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+            html: xhr['responseText'],
+            type: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d63031',
+        })
+      },
+      success: function(result){
+        obj = JSON.parse(result);
+        $('#txaMPSuratTugasRedactor').redactor('set','');
+        $('#txtMPSuratTugasNomor').val(obj['nomor_surat']);
+        $('#txtMPSuratTugasNomor').prop('disabled',false);
+        $('#slcMPSuratTugasApprover').prop('disabled',false);
+        $('#txtMPSuratTugasTanggal').prop('disabled',false);
+      }
+    })
+  })
+
+  $('#txtMPSuratTugasNomor').on('change',function(){
+    unlockPreview();
+  })
+
+  $('#slcMPSuratTugasApprover').on('change',function(){
+    unlockPreview();
+  })
+
+  $('#txtMPSuratTugasTanggal').on('change',function(){
+    unlockPreview();
+  })
+
+  $('#btnMPSuratTugasPreview').on('click',function(){
+    noind = $('#slcMPSuratTugasPekerja').val();
+    nomorSurat = $('#txtMPSuratTugasNomor').val();
+    approver = $('#slcMPSuratTugasApprover').val();
+    tanggal = $('#txtMPSuratTugasTanggal').val();
+    $.ajax({
+      data  : {noind: noind,nomor: nomorSurat, approver: approver, tanggal: tanggal},
+      type  : 'GET',
+      url   : baseurl + 'MasterPekerja/Surat/SuratTugas/Preview',
+      error: function(xhr,status,error){
+        console.log(xhr);
+        console.log(status);
+        console.log(error);
+        swal.fire({
+            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+            html: xhr['responseText'],
+            type: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d63031',
+        })
+      },
+      success: function(result){
+        obj = JSON.parse(result);
+        $('#txaMPSuratTugasRedactor').redactor('set',obj['surat']);
+        $('#txtMPSuratTugasSurat').val(obj['surat']);
+        $('#btnMPSuratTugasSubmit').prop('disabled',false);
+      }
+    })
+  })
+
+  $('#txaMPSuratTugasRedactor').on('change',function(){
+    isi_surat = $('#txaMPSuratTugasRedactor').val();
+    $('#txtMPSuratTugasSurat').val(isi_surat);
+  })
+});
+
+function unlockPreview(){
+  nomorSurat = $('#txtMPSuratTugasNomor').val();
+  approver = $('#slcMPSuratTugasApprover').val();
+  tanggal = $('#txtMPSuratTugasTanggal').val();
+
+  if (nomorSurat && approver && tanggal) {
+    $('#btnMPSuratTugasPreview').prop('disabled',false);
+    $('#txtMPSuratTugasSurat').val('');
+    $('#txaMPSuratTugasRedactor').redactor('set','');
+    $('#btnMPSuratTugasSubmit').prop('disabled',true);
+  }else{
+    $('#btnMPSuratTugasPreview').prop('disabled',true);
+    $('#txaMPSuratTugasRedactor').redactor('set','');
+    $('#txtMPSuratTugasSurat').val('');
+    $('#btnMPSuratTugasSubmit').prop('disabled',true);
+  }
+}
+// Surat Tugas End 
+
+// Surat Isolasi Mandiri Start
+
+$(document).ready(function(){
+  $('#tblMPSuratIsolasiMandiriIndex').DataTable({
+    "processing": true,
+    "serverSide": true,
+    "order" : [],
+    "ajax":{
+      "url": baseurl+'MasterPekerja/Surat/SuratIsolasiMandiri/ListPekerja',
+      "type": "post"
+    },
+    "columnDefs" : [
+    {
+      "targets":[0],
+      // "orderable":false,
+      "className": 'text-center'
+    },
+    {
+      "targets":[1],
+      // "orderable":false,
+      "className": 'text-center'
+    },
+    {
+      "targets":[4],
+      // "orderable":false,
+      "className": 'text-center'
+    },
+    {
+      "targets":[5],
+      // "orderable":false,
+      "className": 'text-center'
+    }
+    ],
+  });
+
+  $('#txaMPSuratIsolasiMandiriRedactor').redactor({
+    buttonsHide : ['image']
+  });
+
+  $('.txtMPSuratIsolasiMandiriTanggal').datepicker({
+    "autoclose": true,
+    "todayHiglight": true,
+    "format": 'yyyy-mm-dd'
+  });
+
+  $('.slcMPSuratIsolasiMandiriPekerja').select2({
+      searching: true,
+      minimumInputLength: 3,
+      placeholder: "No. Induk / Nama Pekerja",
+      allowClear: false,
+      ajax: {
+          url: baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/Pekerja',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                  })
+              }
+          }
+      }
+  });
+
+  $('#txtMPSuratIsolasiMandiriNoSurat, #slcMPSuratIsolasiMandiriTo, #slcMPSuratIsolasiMandiriPekerja, #txtMPSuratIsolasiMandiriSurat, #txtMPSuratIsolasiMandiriCetakTanggal, #txtMPSuratIsolasiMandiriWawancaraTanggal, #txtMPSuratIsolasiMandiriMulaiIsolasiTanggal, #txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal, #txtMPSuratIsolasiMandiriJumlahHari, #slcMPSuratIsolasiMandiriStatus, #slcMPSuratIsolasiMandiriDibuat, #slcMPSuratIsolasiMandirimenyetujui, #slcMPSuratIsolasiMandiriMengetahui').on('change', function(){
+    
+    var simTo = $('#slcMPSuratIsolasiMandiriTo').val();
+    var simPekerja = $('#slcMPSuratIsolasiMandiriPekerja').val();
+    var simWawancara = $('#txtMPSuratIsolasiMandiriWawancaraTanggal').val();
+    var simMulai = $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val();
+    var simSelesai = $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val();
+    var simHari = $('#txtMPSuratIsolasiMandiriJumlahHari').val();
+    var simStatus = $('#slcMPSuratIsolasiMandiriStatus').val();
+    var simDibuat = $('#slcMPSuratIsolasiMandiriDibuat').val();
+    var simMenyetujui = $('#slcMPSuratIsolasiMandirimenyetujui').val();
+    var simMengetahui = $('#slcMPSuratIsolasiMandiriMengetahui').val();
+    var simCetak = $('#txtMPSuratIsolasiMandiriCetakTanggal').val();
+    var simNo = $('#txtMPSuratIsolasiMandiriNoSurat').val();
+
+
+    if (simTo && simPekerja && simWawancara && simMulai && simSelesai && simHari && simStatus && simDibuat && simMenyetujui && simMengetahui && simCetak && simNo) {
+      $('#btnMPSuratIsolasiMandiriPreview').attr('disabled',false);
+    }else{
+      $('#btnMPSuratIsolasiMandiriPreview').attr('disabled',true);
+        $('#btnMPSuratIsolasiMandiriSubmit').prop('disabled',true);
+    }
+
+  });
+
+  $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal, #txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').on('change',function(){
+    mulai  = $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val();
+    selesai = $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val();
+
+    if (mulai && selesai) {
+      tgl_mulai = new Date(mulai + ' 00:00:00');
+      tgl_selesai = new Date(selesai + ' 23:59:59');
+      difftime = Math.abs(tgl_mulai - tgl_selesai);
+      diffday = Math.ceil(difftime / (1000 * 60 * 60 * 24));
+
+      $('#txtMPSuratIsolasiMandiriJumlahHari').val(diffday);
+    }else{
+      $('#txtMPSuratIsolasiMandiriJumlahHari').val("0");
+
+    }
+
+  })
+
+  $('#btnMPSuratIsolasiMandiriPreview').on('click', function(){
+    var simTo = $('#slcMPSuratIsolasiMandiriTo').val();
+    var simPekerja = $('#slcMPSuratIsolasiMandiriPekerja').val();
+    var simWawancara = $('#txtMPSuratIsolasiMandiriWawancaraTanggal').val();
+    var simMulai = $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val();
+    var simSelesai = $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val();
+    var simHari = $('#txtMPSuratIsolasiMandiriJumlahHari').val();
+    var simStatus = $('#slcMPSuratIsolasiMandiriStatus').val();
+    var simDibuat = $('#slcMPSuratIsolasiMandiriDibuat').val();
+    var simMenyetujui = $('#slcMPSuratIsolasiMandirimenyetujui').val();
+    var simMengetahui = $('#slcMPSuratIsolasiMandiriMengetahui').val();
+    var simCetak = $('#txtMPSuratIsolasiMandiriCetakTanggal').val();
+    var simNo = $('#txtMPSuratIsolasiMandiriNoSurat').val();
+
+    $.ajax({
+      data  : {
+        simTo: simTo, 
+        simPekerja: simPekerja, 
+        simWawancara: simWawancara, 
+        simMulai: simMulai, 
+        simSelesai: simSelesai, 
+        simHari: simHari, 
+        simStatus: simStatus, 
+        simDibuat: simDibuat, 
+        simMenyetujui: simMenyetujui, 
+        simMengetahui: simMengetahui,
+        simCetak: simCetak,
+        simNo: simNo
+      },
+      type  : 'GET',
+      url   : baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/Preview',
+      error: function(xhr,status,error){
+        console.log(xhr);
+        console.log(status);
+        console.log(error);
+        swal.fire({
+            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+            html: xhr['responseText'],
+            type: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d63031',
+        })
+      },
+      success: function(result){
+        obj = JSON.parse(result);
+        console.log(obj);
+        $('#txaMPSuratIsolasiMandiriRedactor').redactor('set',obj['surat']);
+        $('#txtMPSuratIsolasiMandiriSurat').val(obj['surat']);
+        $('#btnMPSuratIsolasiMandiriSubmit').prop('disabled',false);
+      }
+    })
+  })
+
+})
+
+// Surat Isolasi Mandiri End

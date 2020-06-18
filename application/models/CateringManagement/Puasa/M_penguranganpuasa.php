@@ -16,8 +16,18 @@ class M_penguranganpuasa extends CI_Model
 		$sql = "select tp.noind,tp.nama,tp.kodesie, ts.seksi
 				from hrd_khs.tpribadi tp
 				inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
-				where agama = 'ISLAM' 
+				where upper(trim(agama)) = 'ISLAM' 
 				and keluar = '0' 
+				order by noind";
+		$result = $this->personalia->query($sql);
+		return $result->result_array();
+	}
+
+	public function getPekerjaKHSAll(){
+		$sql = "select tp.noind,tp.nama,tp.kodesie, ts.seksi
+				from hrd_khs.tpribadi tp
+				inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
+				where keluar = '0' 
 				order by noind";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
@@ -47,8 +57,18 @@ class M_penguranganpuasa extends CI_Model
 		$sql = "select tp.noind,tp.nama,tp.kodesie, ts.seksi
 				from hrd_khs.tpribadi tp
 				inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
-				where agama = 'ISLAM' 
+				where upper(trim(agama)) = 'ISLAM' 
 				and keluar = '0' 
+				and noind = '$noind'";
+		$result = $this->personalia->query($sql);
+		return $result->result_array();
+	}
+
+	public function getPekerjaHKSAllByNoind($noind){
+		$sql = "select tp.noind,tp.nama,tp.kodesie, ts.seksi
+				from hrd_khs.tpribadi tp
+				inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
+				where keluar = '0' 
 				and noind = '$noind'";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
@@ -63,5 +83,6 @@ class M_penguranganpuasa extends CI_Model
 		$sql = "delete from \"Catering\".tpuasa where fd_tanggal between '".$tgl['0']."' and '".$tgl['1']."' and fs_noind = '$noind'";
 		$this->personalia->query($sql);
 	}
+
 }
 ?>

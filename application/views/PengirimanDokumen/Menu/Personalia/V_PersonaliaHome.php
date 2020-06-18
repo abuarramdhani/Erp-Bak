@@ -70,7 +70,7 @@
         <div class="row">
             <div class="box box-primary box-solid">
                 <div class="box-header with-border">
-                    <h2><b>Personalia <?= $lv?></b></h2>
+                    <h2><b>Hubungan Kerja <?= $lv?></b></h2>
                 </div>
                 <div class="box-body ">
                     <div class="col-lg-3 col-xs-6 width-33">

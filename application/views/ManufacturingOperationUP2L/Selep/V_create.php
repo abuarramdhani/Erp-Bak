@@ -100,6 +100,30 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="box box-default box-solid">
+                                                    <div class="box-header with-border">
+                                                        <div class="col-lg-12">
+                                                            <div class="col-lg-10"><b>Pemotongan Target</b></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel-body" id="container-component">
+                                                        <div class="form-group">
+                                                            <label for="txtKeteranganPemotonganTarget" class="control-label col-lg-4">Keterangan</label>
+                                                            <div class="col-lg-6">
+                                                                <input type="text" placeholder="Keterangan Pemotongan Target" name="txtKeteranganPemotonganTarget" id="txtKeteranganPemotonganTarget" maxlength="29" class="form-control" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="txtJamPemotonganTarget" class="control-label col-lg-4">Jam</label>
+                                                            <div class="col-lg-6">
+                                                                <input type="text" name="txtJamPemotonganTarget" id="txtJamPemotonganTarget" class="txtJamPemotonganTarget form-control" disabled="disabled" /> 
+                                                            </div>
+                                                            <span class="btn btn-info onBtn" >ON</span>
+                                                            <span class="btn btn-danger offBtn" style="display: none">OFF</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                         </div>
 
 

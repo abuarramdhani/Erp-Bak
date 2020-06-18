@@ -35,33 +35,26 @@
 					<div class="box-body">
 
 						<div class="table-responsive" style="overflow:hidden;">
-							<table class="table table-striped table-bordered table-hover text-left" id="master-index" style="font-size:14px;">
+							<table class="table table-striped table-bordered table-hover text-left" id="master-index" style="font-size:12px;">
 								<thead class="bg-primary">
 									<tr>
-										<th width="5%">NO</th>
-										<th width="5%">ID Unit Group</th>
-										<th width="20%">Unit Group</th>
-										<th width="10%">Tanggal Berlaku</th>
-										<th width="10%">Tanggal Tidak Berlaku</th>
-										<th width="10%">Action</th>
+										<th width="5%" class="text-center">NO</th>
+										<th width="5%" class="text-center">ID Unit Group</th>
+										<th width="20%" class="text-center">Unit Group</th>
+										<th width="10%" class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 								<?php foreach ($GetUnitGroupDetail as $gu) {?>
 									<tr>
-										<td><?php echo $number++ ?></td>
+										<td class="text-center"><?php echo $number++ ?></td>
 											<input type="text" name="txtIdUnitDetail" value="<?php echo $gu['id_unit_group_list']; ?>" hidden>
-										<td><?php echo $gu['id_unit_group']; ?></td>
-										<td><?php echo $gu['unit']; ?></td>
-										<td><?php echo $gu['tberlaku']; ?></td>
-										<td  style="color: red"><?php echo $gu['ttberlaku']; ?></td>
-										<td>
-											<a href="<?php echo site_url('PenilaianKinerja/MasterUnitGroupDetail/view/'.$gu['id_unit_group_list']);?>" class="btn btn-flat btn-sm btn-success" title="Lihat Data"><i class="fa fa-search"></i></a>
-											&nbsp;&nbsp;
-											<a href="<?php echo site_url('PenilaianKinerja/MasterUnitGroupDetail/edit/'.$gu['id_unit_group_list']);?>" class="btn btn-flat btn-sm  btn-warning" title="Edit data"><i class="fa fa-edit"></i></a>
-											&nbsp;&nbsp;
-											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gu['id_unit_group_list'] ?>" class="btn btn-flat btn-sm  btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
-											&nbsp;&nbsp;
+										<td class="text-center"><?php echo $gu['id_unit_group']; ?></td>
+										<td class="text-left"><?php echo $gu['unit']; ?></td>
+										<td class="text-right">
+											<a href="<?php echo site_url('PenilaianKinerja/MasterUnitGroupDetail/view/'.$gu['id_unit_group_list']);?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+											<a href="<?php echo site_url('PenilaianKinerja/MasterUnitGroupDetail/edit/'.$gu['id_unit_group_list']);?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-edit"></span></a>
+											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gu['id_unit_group_list'] ?>" class="btn btn-xs btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
 										</td>
 									</tr>
 									<!-- MODAL DELETE -->

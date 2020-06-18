@@ -42,13 +42,11 @@ class M_Order extends CI_Model
 
     public function daftar_pekerjaan($kodesie)
     {
-        $kodesie = substr($kodesie, 0,7);
-        // $this->personalia->select('*');
-        // $this->personalia->from('hrd_khs.tpekerjaan');
-        // $this->personalia->where('substring(kdpekerjaan, 1, 7) =', substr($kodesie, 0, 7));
-        // $this->personalia->order_by('kdpekerjaan ASC');
-
-        // return $this->personalia->get()->result_array();
+        if (gettype($kodesie) == 'string') {
+            $kodesie = substr($kodesie, 0,7);
+        }elseif (gettype($kodesie) == 'array'){
+            $kodesie = implode("', '", $kodesie);
+        }
         $sql = "select
                     tn.*,
                     (select count(kd_pkj)
@@ -60,9 +58,10 @@ class M_Order extends CI_Model
                 from
                     hrd_khs.tpekerjaan tn
                 where
-                    substring(kdpekerjaan, 1, 7) = '$kodesie'
+                    substring(kdpekerjaan, 1, 7) in ('$kodesie')
                     order by kdpekerjaan asc
                     ";
+                    // echo $sql;exit();
         $query = $this->personalia->query($sql);
         return $query->result_array();
 
@@ -331,10 +330,15 @@ class M_Order extends CI_Model
 
     public function getInputstd2($tgl, $kodesie)
     {
-        $kodesie = substr($kodesie, 0,7);
-        $sql = "select ks.jml_kebutuhan_umum, ks.jml_kebutuhan_staff, ks.id, ks.kode_item, ks.jml_item, km.item from k3.k3n_standar_kebutuhan ks
+        if (gettype($kodesie) == 'string') {
+            $kodesie = substr($kodesie, 0,7);
+        }elseif (gettype($kodesie) == 'array'){
+            $kodesie = implode("', '", $kodesie);
+        }
+        // $kodesie = substr($kodesie, 0,7);
+        $sql = "select ks.jml_kebutuhan_umum, ks.jml_kebutuhan_staff, ks.id, ks.kode_item, ks.jml_item, km.item, ks.kodesie from k3.k3n_standar_kebutuhan ks
         left join k3.k3_master_item km on km.kode_item = ks.kode_item
-        where status = '0' and ks.kodesie like '$kodesie%' order by tgl_input desc";
+        where status = '0' and ks.kodesie in ('$kodesie') order by tgl_input desc";
         // echo $sql;exit();
         $query = $this->erp->query($sql);
 
@@ -671,5 +675,50 @@ class M_Order extends CI_Model
         $sql = "delete from k3.k3n_email_seksi where id = '$id';";
         $query = $this->erp->query($sql);
         return true;
+    }
+
+    public function getDetailPekerja($noind)
+    {
+        $sql = "SELECT * from hrd_khs.tpribadi where noind = '$noind'";
+        return $this->personalia->query($sql);
+    }
+
+    public function getTrefjabatan($noind)
+    {
+        $sql = "select
+                    substring(t.kodesie,0,8) kodesie,
+                    ts.seksi
+                from
+                    hrd_khs.trefjabatan t
+                left join hrd_khs.tseksi ts on
+                    ts.kodesie = t.kodesie
+                where
+                    noind = '$noind'
+                group by
+                    t.kodesie ,
+                    ts.seksi";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function cekSeksiDibawah($ks)
+    {
+        //seksi di bawahnya yang tidak memiliki atasan
+        $ks = substr($ks, 0,5);
+        $sql = "select
+                    distinct(substring(kodesie,1,7)) kodesie,
+                    seksi
+                from
+                    hrd_khs.tseksi ts
+                where
+                    ts.kodesie like '$ks%'
+                    and (select
+                        count(noind)
+                    from
+                        hrd_khs.tpribadi t
+                    where
+                        t.keluar = false
+                        and substring(t.kodesie,1,7) = substring(ts.kodesie,1,7)
+                        and substring(noind, 1, 1) in ('B','D','J')) = 0";
+        return $this->personalia->query($sql)->result_array();
     }
 }

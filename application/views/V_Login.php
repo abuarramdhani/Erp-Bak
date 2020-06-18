@@ -16,7 +16,7 @@
         ===
     -->
     <meta charset="utf-8">
-    <title>Login - Quick ERP</title>
+    <title>QuickERP Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
     <meta name="author" content="Muhammad Usman">
@@ -29,6 +29,9 @@
     <!-- GLOBAL SCRIPTS -->
     <script src="<?php echo base_url('assets/plugins/jquery-2.0.3.min.js');?>"></script>
     <script src="<?php echo base_url('assets/plugins/bootstrap/3.0.0/js/bootstrap.min.js');?>"></script>
+    <script src="<?= base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
+    <script src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
+    <!-- <script src="<?= base_url('assets/plugins/sweetAlert/sweetalert.js') ?>"></script> -->
     <!--<script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>"></script>
 	
 	<script src="<?php echo base_url('assets/js/formsInit.js');?>"></script>
@@ -50,6 +53,20 @@
     <style type="text/css">
         .unsupportedBrowserPlaceholder {
             display: none;
+        }
+
+        @media (max-width: 800px) {
+            .login-box {
+                max-width: 90% !important;
+            }
+
+            .is-mobile-full {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+        .swal2-popup {
+          font-size: 1.6rem !important;
         }
     </style>
     <noscript>
@@ -86,8 +103,8 @@
                 <?php
                 }else{
                 ?>
-                <div class="alert alert-info text-left">
-                   Please enter your username and password to login
+                <div class="alert alert-info text-left center">
+                   Silahkan masukan username dan password Anda untuk masuk ke Sistem
                 </div>
                 <?php
                 }
@@ -106,15 +123,55 @@
                         </div>
                         <div class="clearfix"></div>
 
-                        
-                        <p class="center col-md-5">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                        <p class="center">
+                            <div class="row">
+                            <div class="col-md-4"><a class="btn btn-success" data-toggle="modal" data-target="#myRequest">Permintaan Akses</a></div>
+                            <div class="col-md-4"> <a class="btn btn-default" data-toggle="modal" data-target="#myModal">Lupa Password ?</a></div>
+                            <div class="col-md-4"><button type="submit" class="btn btn-primary">Masuk</button></div>
+                            </div>
                         </p>
                     </fieldset>
                 </form>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel" align="center">Anda Lupa Password ? </h4> </div>
+                        <div class="modal-body"> Jika Anda lupa password, silahkan membuat ticket / order permintaan melalui <a href='http://ictsupport.quick.com/ticket/upload/'>ICT Support Center (Klik Disini)</a> atau akses url berikut : http://ictsupport.quick.com/ticket/upload/.
+                        <br>atau menghubungi ICT di<br>
+                        VOIP Internal Ext : 12300 ekstensi 3
+                        <br>atau<br> 
+                        melalui Whatsapp ke 08112545922.
+                        </div>
+                    <div class="modal-footer"> 
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                    </div> 
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myRequest" tabindex="-1" role="dialog" aria-labelledby="myRequestLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header"> 
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myRequestLabel" align="center">Anda menginginkan Akses ke Sistem ERP?</h4> </div>
+                            <div class="modal-body"> Jika Anda ingin mendapatkan Akses ke Quick ERP System, silahkan membuat ticket / order permintaan melalui <a href='http://ictsupport.quick.com/ticket/upload/'>ICT Support Center (Klik Disini)</a> atau akses url berikut : http://ictsupport.quick.com/ticket/upload/.
+                            <br>atau menghubungi ICT di<br>
+                            VOIP Internal Ext : 12300 ekstensi 3
+                            <br>atau<br> 
+                            melalui Whatsapp ke 08112545922.
+                            </div>
+                        <div class="modal-footer"> 
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                        </div> 
+                </div>
+            </div>
+    </div>
+
     <div class="unsupportedBrowserPlaceholder" style="text-align: center;">
         <h3>Aplikasi Browser Anda tidak memenuhi Spesifikasi Standar Minimum Akses QuickERP.</h3>
         <h3>Silahkan gunakan Aplikasi Browser berikut : </h3> 
@@ -132,6 +189,9 @@
 <script>
     var browser = '';
     var browserVersion = 0;
+    var OSName = "Unknown";
+    if (window.navigator.userAgent.indexOf("Android")            != -1) OSName="Android";
+
     if (/Opera[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
         browser = 'Opera';
     } else if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
@@ -150,9 +210,9 @@
         browser = 'chromium';
     }
     if(browserVersion === 0) browserVersion = parseFloat(new Number(RegExp.$1));
-    var error = '<div style="text-align: center;"><h3>Aplikasi Browser ('+ get_browser_info().name +' Versi '+ get_browser_info().version +') Anda <b>tidak memenuhi Spesifikasi Standar Minimum Akses</b> QuickERP.</h3> <h3>Silahkan gunakan Aplikasi Browser berikut : </h3> <h3>- Google Chrome Versi 49 ke Atas</h3><h3>- Chromium Versi 50 ke Atas</h3> <h3>- Mozilla Firefox Versi 45 ke Atas</h3><br><h3>atau </h3><h3>Silahkan <b>menghubungi Bag. Hardware ICT</b> untuk dilakukan installasi / update Browser</h3> <h3><b>di VoIP 12300 Ext. 5 atau Telkomsel MyGroup 628112545922</b></h3><br><h3>--- QuickERP ---</h3></div>';
+    var error = '<div style="text-align: center;"><h3>Aplikasi Browser ('+ get_browser_info().name +' Versi '+ get_browser_info().version +') Anda <b>tidak memenuhi Spesifikasi Standar Minimum Akses</b> QuickERP.</h3> <h3>Silahkan gunakan Aplikasi Browser berikut : </h3> <h3>- Google Chrome Versi 49 ke Atas</h3><h3>- Chromium Versi 50 ke Atas</h3> <h3>- Mozilla Firefox Versi 45 ke Atas</h3><br><h3>atau </h3><h3>Silahkan <b>menghubungi Bag. Hardware ICT</b> untuk dilakukan installasi / update Browser</h3> <h3><b>di VoIP 12300 Ext. 5 atau Telkomsel MyGroup 628112545922</b></h3><br><h3>--- QuickERP ---</h3></div> nama os : '+OSName;
     if(browser == 'Chrome' || browser == 'Mozila Firefox' || browser == 'Chromium') {
-            if(browser == 'Chrome' && browserVersion < 49) document.getElementById("body").innerHTML = error;
+            if((browser == 'Chrome' && browserVersion < 49 && OSName != 'Android') || (browser == 'Chrome' && browserVersion < 42 && OSName == 'Android')) document.getElementById("body").innerHTML = error;
             if(browser == 'Mozila Firefox' && browserVersion < 45) document.getElementById("body").innerHTML = error;
             if(browser == 'chromium' && browserVersion < 50) document.getElementById("body").innerHTML = error;
     } else {
@@ -176,6 +236,97 @@
         };
     }
 </script>
+
+<style>
+    .popupso {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -120px;
+        margin-left: -200px;
+        width:500px;
+        height: 239px;
+        z-index: 20;
+        background-color: transparent;
+    }
+    .popupso_img {
+        width: 500px;
+    }
+    .popupso_close {
+        -webkit-transform: translate(460px, -310px);
+        transform: translate(460px, -310px);
+        color: red;
+        border: 3px solid white;
+        font-weight: bold;
+        text-align: center;
+        vertical-align: middle;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        font-size: 20px;
+        font-family: Arial,Helvetica,sans-serif;
+        box-sizing: content-box;
+        line-height: normal;
+    }
+    .popupso_close:hover {
+        border: 3px solid red;
+        background-color: white;
+    }
+    .popupso:after {
+        position: fixed;
+        content: "";
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: -2;
+    }
+    .popupso:before{
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: #FFF;
+        z-index: -1;
+        display: block;
+    }
+    .iconso {
+        position: fixed;
+        bottom: 0px;
+        left: 20px;
+        margin: 0;
+    }
+
+    .iconso-img {
+        width: 300px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .popupso {
+            display: none !important;
+        }
+        .iconso-img {
+            display: none !important;
+        }
+    }
+</style>
+<div class="iconso">
+    <img class="iconso-img" src="<?php echo base_url('assets/img/SO2020.gif?v='.time()); ?>">
+</div>
+<div class="popupso" id="popupso">
+    <img class="popupso_img" src="<?php echo base_url('assets/img/CS_SO2020.png'); ?>" alt="" />
+    <div class="popupso_close" onclick="close_popupso()">X</div>
+    <script type="text/javascript">
+        document.getElementById("popupso").style.display = "block"; 
+        function close_popupso(){
+            var popupso = document.getElementById("popupso");
+            popupso.parentNode.removeChild(popupso);
+        }       
+    </script>
+</div>
 
 </body>
 </html> 

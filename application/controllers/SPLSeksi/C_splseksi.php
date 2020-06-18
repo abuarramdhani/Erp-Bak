@@ -33,7 +33,7 @@ class C_splseksi extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		return $data;
-    }
+	}
 
     public function index(){
     	$this->checkSession();
@@ -41,8 +41,6 @@ class C_splseksi extends CI_Controller {
 		$data = $this->menu('', '', '');
 		$data['responsibility_id'] = $this->session->responsibility_id;
 		$data['jari'] = $this->M_splseksi->getJari($this->session->userid);
-		// $this->session->spl_validasi_operator = FALSE;
-		// echo "<pre>";print_r($_SESSION);exit();
 
 		if ($this->session->spl_validasi_kasie !== TRUE) {
 			 $this->session->spl_validasi_kasie = FALSE;
@@ -69,8 +67,25 @@ class C_splseksi extends CI_Controller {
 			}
 		}
 
-		if ($data['responsibility_id'] == 2592) {
-			$data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'7');
+		// echo $data['responsibility_id']; die;
+		$akses_sie = array();
+		$akses_kue = $this->M_splseksi->show_pekerja('', $this->session->user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($this->session->user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+
+		if ($data['responsibility_id'] == 2592) { // KASIE
+			// $data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'7');
+			$data['baru'] = $this->M_splseksi->getCountDashboard($akses_sie, "'01'");
+			$data['reject'] = $this->M_splseksi->getCountDashboard($akses_sie, "'35'");
+			$data['total'] = $this->M_splseksi->getCountDashboard($akses_sie);
+				// get akses seksi
+
+
 			if ($this->session->spl_validasi_kasie == TRUE) {
 				$this->load->view('V_Header',$data);
 				$this->load->view('V_Sidemenu',$data);
@@ -81,8 +96,12 @@ class C_splseksi extends CI_Controller {
 				$this->load->view('SPLSeksi/Seksi/V_Index',$data);
 				$this->load->view('V_Footer',$data);
 			}
-		}elseif ($data['responsibility_id'] == 2593){
-			$data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'5');
+		}elseif ($data['responsibility_id'] == 2593){ // ASKA
+			// $data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'5');
+			$data['baru'] = $this->M_splseksi->getCountDashboard($akses_sie, "'01','21'");
+			$data['reject'] = $this->M_splseksi->getCountDashboard($akses_sie, "'35'");
+			$data['total'] = $this->M_splseksi->getCountDashboard($akses_sie);
+
 			if ($this->session->spl_validasi_asska == TRUE) {
 				$this->load->view('V_Header',$data);
 				$this->load->view('V_Sidemenu',$data);
@@ -93,7 +112,7 @@ class C_splseksi extends CI_Controller {
 				$this->load->view('SPLSeksi/Seksi/V_Index',$data);
 				$this->load->view('V_Footer',$data);
 			}
-		}elseif($data['responsibility_id'] == 2587){
+		}elseif($data['responsibility_id'] == 2587){ 
 			$data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'7');
 			if ($this->session->spl_validasi_operator == TRUE) {
 				$this->load->view('V_Header',$data);
@@ -171,14 +190,21 @@ class C_splseksi extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){ //latest
+	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){ //latest 07/04/2020
+		$shift_kemarin = $this->M_splseksi->show_current_shift(date('Y-m-d', strtotime($tgl. ' -1 day')), $noind);
+		if(!empty($shift_kemarin) && trim($shift_kemarin[0]['kd_shift']) == '3')
+			$tgl = date('Y-m-d', strtotime($tgl. ' -1 day'));
+
+		$shift = $this->M_splseksi->selectShift($noind, $tgl);
 		$day   = date('w', strtotime($tgl));
 
 		$hari_indo = "Minggu Senin Selasa Rabu Kamis Jumat Sabtu";
 		$array_hari = explode(' ', $hari_indo);
+		$bedaHari = strtotime($mulai) > strtotime($selesai) ? true : false;
 		//--------------------core variable
 		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
-		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind);
+		// $JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind); // useless, u can delete it
+		$JENIS_HARI = $shift ? 'Biasa' : 'Libur';
 		$HARI 		= $array_hari[$day];
 		//-----------------------
 		$treffjamlembur = $this->M_splseksi->treffjamlembur($KET, $JENIS_HARI, $HARI);
@@ -199,25 +225,29 @@ class C_splseksi extends CI_Controller {
 		$b = $second[0]*60+$second[1];
 
 		if($a>$b){
-		 	$zero = 24*60; // jam sehari dalam menit
+		 	$zero = 24*60; // 1 day in minutes
 		 	$z = $zero - $a;
 		 	$lama_lembur = $z+$b;
-		}else{
-			$lama_lembur = $b-$a;
-		}
+		 }else{
+		 	$lama_lembur = $b-$a;
+		 }
 
-		$shift = $this->M_splseksi->selectShift($noind, $tgl);
-		if($kode_lembur == '005'){
-			$shift = (strtotime($shift->jam_plg) - strtotime($shift->jam_msk));
-			$shift = $shift/60;
-		 	$result = $lama_lembur-$shift;
-		}else{
+		 if($kode_lembur == '005'){
+		 	$shiftmsk = strtotime($tgl." ".$shift->jam_msk);
+		 	$shiftklr = strtotime($shift->jam_plg) < strtotime($shift->jam_msk) ? 
+		 	strtotime('+1 day '.$tgl." ".$shift->jam_plg) : 
+		 	strtotime($tgl." ".$shift->jam_plg);
+
+		 	$jamshift = $shiftklr - $shiftmsk;
+		 	$jamshift = $jamshift/60;
+		 	$result = $lama_lembur-$jamshift;
+		 }else{
 		 	$result = $lama_lembur;
-		}
+		 }
 		//-----end cari menit lembur
 
 		//-----------------------core variable
-		$MENIT_LEMBUR = $result;
+		 $MENIT_LEMBUR = $result;
 		//buat jaga jaga error
 		$BREAK = $break == 'Y' ? 15 : 0;
 		$ISTIRAHAT = $istirahat == 'Y' ? 45 : 0;
@@ -229,9 +259,17 @@ class C_splseksi extends CI_Controller {
 				$ISTIRAHAT = 0;
 				$distinct_start = [];
 
-				foreach($allShift as $shift){
-					$rest_start = strtotime($shift['ist_mulai']);
-					$rest_end   = strtotime($shift['ist_selesai']);
+				foreach($allShift as $item){
+					$rest_start = (strtotime($item['ist_mulai']) < strtotime($mulai)) ? strtotime('+1 day '.$tgl." ".$item['ist_mulai']) : strtotime($tgl." ".$item['ist_mulai']);
+					$rest_end   = (strtotime($item['ist_selesai']) < strtotime($mulai)) ? strtotime('+1 day '.$tgl." ".$item['ist_selesai']) : strtotime($tgl." ".$item['ist_selesai']);
+
+					// lembur datang pulang
+					if( $kode_lembur == '005' 
+						&& $rest_start >= $shiftmsk
+						&& $rest_end <= $shiftklr
+					  ) {
+						continue;
+					}
 
 					if($rest_start == $rest_end){
 						continue;
@@ -244,12 +282,12 @@ class C_splseksi extends CI_Controller {
 						$distinct_start[] = $rest_start;
 					}
 
-					$overtime_start = strtotime($mulai);
-					$overtime_end   = strtotime($selesai);
+					$overtime_start = strtotime($tgl." ".$mulai);
+					$overtime_end   = (strtotime($mulai)  > strtotime($selesai)) ? strtotime('+1 day '.$tgl." ".$selesai) : strtotime($tgl." ".$selesai);
 
-					if (($rest_start > $overtime_start && $rest_end < $overtime_end)) { // jika jam istirahat masuk range lembur
+					if (($rest_start >= $overtime_start && $rest_end <= $overtime_end)) { // jika jam istirahat masuk range lembur
 						$ISTIRAHAT = $ISTIRAHAT + 45;
-					}else if($rest_start > $overtime_start && $rest_end > $overtime_end && $rest_start < $overtime_end){
+					}else if($rest_start >= $overtime_start && $rest_end >= $overtime_end && $rest_start <= $overtime_end){
 						$ISTIRAHAT = $ISTIRAHAT + (45 + ($overtime_end - $rest_end)/60);
 					}
 				}
@@ -259,28 +297,36 @@ class C_splseksi extends CI_Controller {
 				$BREAK = 0;
 				$distinct_start = [];
 
-				foreach($allShift as $shift){
-					$break_start = strtotime($shift['break_mulai']);
-					$break_end   = strtotime($shift['break_selesai']);
+				foreach($allShift as $item){
+					$break_start = (strtotime($item['break_mulai']) < strtotime($mulai)) ? strtotime('+1 day '.$tgl." ".$item['break_mulai']) : strtotime($tgl." ".$item['break_mulai']);
+					$break_end   = (strtotime($item['break_selesai']) < strtotime($mulai)) ? strtotime('+1 day '.$tgl." ".$item['break_selesai']) : strtotime($tgl." ".$item['break_selesai']);
+
+					// lembur datang dan pulang
+					if( $kode_lembur == '005' 
+						&& $break_start >= $shiftmsk
+						&& $break_end <= $shiftklr
+					  ) {
+						continue;
+					}
 
 					//jika tidak ada istirahat, lewati
-					if($break_start == $break_end){
-						continue;
-					}
+				if($break_start == $break_end){
+					continue;
+				}
 
 					//biar jam break tidak terdouble
-					if(in_array($break_start, $distinct_start)){
-						continue;
-					}else{
-						$distinct_start[] = $break_start;
-					}
+				if(in_array($break_start, $distinct_start)){
+					continue;
+				}else{
+					$distinct_start[] = $break_start;
+				}
 
-					$overtime_start = strtotime($mulai);
-					$overtime_end   = strtotime($selesai);
+				$overtime_start = strtotime($tgl." ".$mulai);
+				$overtime_end   = (strtotime($mulai)  > strtotime($selesai)) ? strtotime('+1 day '.$tgl." ".$selesai) : strtotime($tgl." ".$selesai);
 				
-					if ($break_start > $overtime_start && $break_end < $overtime_end) { // jika jam istirahat masuk range lembur
+					if ($break_start >= $overtime_start && $break_end <= $overtime_end) { // jika jam istirahat masuk range lembur
 						$BREAK = $BREAK + 15;
-					}else if($break_start > $overtime_start && $break_end > $overtime_end && $break_start < $overtime_end){
+					}else if($break_start >= $overtime_start && $break_end >= $overtime_end && $break_start <= $overtime_end){
 						$BREAK = $BREAK + (15 + ($overtime_end - $break_end)/60);
 					}
 				}
@@ -292,23 +338,23 @@ class C_splseksi extends CI_Controller {
 		if(!empty($treffjamlembur)):
 			$total_lembur = $MENIT_LEMBUR-($BREAK+$ISTIRAHAT);
 
-			$i = 0;
-			while($total_lembur > 0){
-				$jml_jam = $treffjamlembur[$i]['jml_jam'] * 60;
-				$pengali = $treffjamlembur[$i]['pengali'];
+		$i = 0;
+		while($total_lembur > 0){
+			$jml_jam = $treffjamlembur[$i]['jml_jam'] * 60;
+			$pengali = $treffjamlembur[$i]['pengali'];
 
-				if($total_lembur > $jml_jam){
+			if($total_lembur > $jml_jam){
 
-					$estimasi = $estimasi + $jml_jam * $pengali/60;
-					$total_lembur = $total_lembur - $jml_jam;
-				}else{
+				$estimasi = $estimasi + $jml_jam * $pengali/60;
+				$total_lembur = $total_lembur - $jml_jam;
+			}else{
 
-					$estimasi = $estimasi + ($total_lembur * $pengali/60);
-					$estimasi = number_format($estimasi,2);
-					$total_lembur = 0;
-				}
-				$i++;
+				$estimasi = $estimasi + ($total_lembur * $pengali/60);
+				$estimasi = number_format($estimasi,2);
+				$total_lembur = 0;
 			}
+			$i++;
+		}
 		else:
 			$estimasi = "tdk bisa diproses";
 		endif;
@@ -520,6 +566,43 @@ class C_splseksi extends CI_Controller {
 		}
 
 		$data['data_spl'] = $this->M_splseksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
+		$arrSk = array();
+		$arrSk2 = array();
+		$x = 0;
+
+		//dapatkan seksi tanpa duplikat
+		foreach ($data['data_spl'] as $key) {
+			if (empty($arrSk)) {
+				$arrSk[$x]['seksi'] = $key['seksi'];
+				$arrSk[$x]['unit'] = $key['unit'];
+				$arrSk[$x]['dept'] = $key['dept'];
+
+				$arrSk2[] = $key['seksi'];
+				$x++;
+			}elseif (in_array($key['seksi'], $arrSk2) === false) {
+				$arrSk[$x]['seksi'] = $key['seksi'];
+				$arrSk[$x]['unit'] = $key['unit'];
+				$arrSk[$x]['dept'] = $key['dept'];
+
+				$arrSk2[] = $key['seksi'];
+				$x++;
+			}
+		}
+
+		//isi tanggal berapa saja seksi tersebut muncul
+		for ($i=0; $i < count($arrSk); $i++) { 
+			foreach ($data['data_spl'] as $key) {
+				if ($arrSk[$i]['seksi'] == $key['seksi']) {
+					$arrSk[$i]['tanggal'][] = $key['Tgl_Lembur'];
+				}
+			}
+		}
+
+		$data['sk'] = $arrSk;
+		$data['tgl'] = array_values(array_unique(array_column($data['data_spl'], 'Tgl_Lembur')));
+
+		// echo "<pre>";
+		// print_r($arrSk);exit();
 
 		$filename = 'Surat Perintah Lembur.pdf';
 		$pdf = new mPDF('','A4-L', 0, '', 5, 5, 5, 5);
@@ -574,6 +657,7 @@ class C_splseksi extends CI_Controller {
 		$noind = $this->input->post("noind[0]");
 		$target_arr = $this->input->post("target");
 		$target_satuan_arr = $this->input->post("target_satuan");
+		$noind_baru = $this->M_splseksi->getNoindBaru($noind);
 
 		//menyatukan target
 		$i=0;
@@ -629,7 +713,7 @@ class C_splseksi extends CI_Controller {
 			"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 			"Tgl_Lembur" => $tanggal,
 			"Noind" => $noind,
-			"Noind_Baru" => "0000000",
+			"Noind_Baru" => $noind_baru,
 			"Kd_Lembur" => $lembur,
 			"Jam_Mulai_Lembur" => $mulai,
 			"Jam_Akhir_Lembur" => $selesai,
@@ -650,7 +734,7 @@ class C_splseksi extends CI_Controller {
 			"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 			"Tgl_Lembur" => $tanggal,
 			"Noind" => $noind,
-			"Noind_Baru" => "0000000",
+			"Noind_Baru" => $noind_baru,
 			"Kd_Lembur" => $lembur,
 			"Jam_Mulai_Lembur" => $mulai,
 			"Jam_Akhir_Lembur" => $selesai,
@@ -790,7 +874,7 @@ class C_splseksi extends CI_Controller {
 		$tanggal = date_format(date_create($tanggal), 'Y-m-d');
 
 		$tim = $this->M_splseksi->getTim($noind,$tanggal);
-		if (!empty($tim) && count($tim) > 0) {
+		if (!empty($tim->point) && count($tim->point) > 0) {
 			foreach ($tim as $tm) {
 				if ($tm['point'] == '1') {
 					$error = "1";
@@ -999,6 +1083,7 @@ class C_splseksi extends CI_Controller {
 			$pekerjaan = $this->input->post("alasan[$x]");
 			$mulai = $this->input->post("lembur_awal[$x]");
 			$selesai = $this->input->post("lembur_akhir[$x]");
+			$noind_baru = $this->M_splseksi->getNoindBaru($noind);
 
 			// Generate ID SPL
 			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl", "ID_SPL");
@@ -1039,7 +1124,7 @@ class C_splseksi extends CI_Controller {
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $tanggal,
 				"Noind" => $noind,
-				"Noind_Baru" => "0000000",
+				"Noind_Baru" => $noind_baru,
 				"Kd_Lembur" => $lembur,
 				"Jam_Mulai_Lembur" => $mulai,
 				"Jam_Akhir_Lembur" => $selesai,
@@ -1060,7 +1145,7 @@ class C_splseksi extends CI_Controller {
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $tanggal,
 				"Noind" => $noind,
-				"Noind_Baru" => "0000000",
+				"Noind_Baru" => $noind_baru,
 				"Kd_Lembur" => $lembur,
 				"Jam_Mulai_Lembur" => $mulai,
 				"Jam_Akhir_Lembur" => $selesai,
@@ -1383,4 +1468,277 @@ class C_splseksi extends CI_Controller {
 		// $this->load->view('SPLSeksi/Seksi/V_pdf_memo', $data);
 	}
 
+	public function export_excel()
+	{
+		$this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
+		$dari = $this->input->get('dari');
+		$dari = date_format(date_create($dari), "Y-m-d");
+
+		$sampai = $this->input->get('sampai');
+		$sampai = date_format(date_create($sampai), "Y-m-d");
+
+		$status = $this->input->get('status');
+		$noind = $this->input->get('noind');
+		$lokasi = $this->input->get('lokasi');
+		$user = $this->session->user;
+
+		$akses_sie = array();
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie(substr($ak['kodesie'],0,7).'00');
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+
+		$data_spl = array();
+		$show_list_spl = $this->M_splseksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
+
+		$arrSeksi = array_values(array_unique(array_column($show_list_spl, 'seksi')));
+		$arrHead = array('No','Status','Tgl Lembur','Noind','Nama','Pekerjaan','Jenis Lembur','Mulai','Selesai','Break','Istirahat','Estimasi','Target/Pcs/%','Realisasi/Pcs/%','Alasan Lembur','Tanggal Proses');
+		// echo "<pre>";
+		// print_r($arrSeksi);
+		// exit();
+
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator('KHS ERP')
+		->setTitle("Rekap Lembur")
+		->setSubject("Rekap Lembur")
+		->setDescription("Rekap Lembur")
+		->setKeywords("Rekap Lembur");
+
+		$style_col = array(
+			'font' => array('bold' => true),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+				),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+				),
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				// 'color' => array('rgb' => 'bababa')
+				)
+			);
+		$style_row = array(
+			'alignment' => array(
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+				),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+				)
+			);
+
+		$a = 1;
+		for ($i=0; $i < count($arrSeksi); $i++) { 
+			$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$a.':B'.$a);
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$a)->getFont()->setBold(true);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$a, $arrSeksi[$i]);
+
+			$a++;
+			$b = 0;
+			foreach ($arrHead as $ah) {
+				$kolom = PHPExcel_Cell::stringFromColumnIndex($b);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom.$a)->applyFromArray($style_col);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$a, $ah);
+				$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
+				$b++;
+			}
+
+			$a++;
+			$no = 1;
+			foreach ($show_list_spl as $key) {
+				if($arrSeksi[$i] != $key['seksi']) continue;
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$a, $no);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$a, $key['Deskripsi'].' '.$key['Noind'].' ('.$key['nama'].')');
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$a, $key['Tgl_Lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$a, $key['Noind']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$a, $key['nama']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$a, $key['Pekerjaan']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$a, $key['nama_lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$a, $key['Jam_Mulai_Lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$a, $key['Jam_Akhir_Lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$a, $key['Break']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$a, $key['Istirahat']);
+				$est = $this->hitung_jam_lembur($key['Noind'], $key['Kd_Lembur'], $key['Tgl_Lembur'], $key['Jam_Mulai_Lembur'], $key['Jam_Akhir_Lembur'], $key['Break'], $key['Istirahat']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$a, $est);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$a, $key['target']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$a, $key['realisasi']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$a, $key['alasan_lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$a, $key['Tgl_Berlaku']);
+
+				//style
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('B'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('C'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('D'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('F'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('G'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('H'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('I'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('J'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('K'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('L'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('M'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('N'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('O'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('P'.$a)->applyFromArray($style_row);
+				$a++;
+				$no++;
+			}
+			$a++;
+
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0);  
+		$filename = urlencode("List_Lembur_".$dari.'-'.$sampai.".ods");
+
+		header('Content-Type: application/vnd.ms-excel'); 
+		header('Content-Disposition: attachment;filename="'.$filename.'"'); 
+		header('Cache-Control: max-age=0'); 
+
+		$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+		$objWriter->save('php://output');
+	}
+
+	public function export_rekap_excel()
+	{
+		$this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
+		$dari = $this->input->get('dari');
+		$dari = date_format(date_create($dari), "Y-m-d");
+
+		$sampai = $this->input->get('sampai');
+		$sampai = date_format(date_create($sampai), "Y-m-d");
+
+		$status = $this->input->get('status');
+		$noind = $this->input->get('noind');
+		$noi = $this->input->get('noi');
+		$lokasi = $this->input->get('lokasi');
+		$user = $this->session->user;
+		if($noind == ""){ $noind = $noi; }
+
+		// get akses seksi
+		$akses_sie = array();
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie(substr($ak['kodesie'],0,7).'00');
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+
+		$x = 1;
+		$data_spl = array();
+		$show_list_spl = $this->M_splseksi->show_rekap($dari, $sampai, $noind, $akses_sie);
+		// echo "<pre>";
+		// print_r($show_list_spl);
+
+		$arrSeksi = array_values(array_unique(array_column($show_list_spl, 'seksi')));
+		$arrHead = array('No','Tanggal','Noind','Nama','Jenis Lembur','Mulai','Selesai', 'Total');
+		// echo "<pre>";
+		// print_r($arrSeksi);
+		// exit();
+
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator('KHS ERP')
+		->setTitle("Rekap Lembur")
+		->setSubject("Rekap Lembur")
+		->setDescription("Rekap Lembur")
+		->setKeywords("Rekap Lembur");
+
+		$style_col = array(
+			'font' => array('bold' => true),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+				),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+				),
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				// 'color' => array('rgb' => 'bababa')
+				)
+			);
+		$style_row = array(
+			'alignment' => array(
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+				),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+				)
+			);
+
+		$a = 1;
+		for ($i=0; $i < count($arrSeksi); $i++) { 
+			$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$a.':D'.$a);
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$a)->getFont()->setBold(true);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$a, $arrSeksi[$i]);
+
+			$a++;
+			$b = 0;
+			foreach ($arrHead as $ah) {
+				$kolom = PHPExcel_Cell::stringFromColumnIndex($b);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom.$a)->applyFromArray($style_col);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$a, $ah);
+				$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
+				$b++;
+			}
+
+			$a++;
+			$no = 1;
+			foreach ($show_list_spl as $key) {
+				if($arrSeksi[$i] != $key['seksi']) continue;
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$a, $no);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$a, $key['tanggal']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$a, $key['noind']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$a, $key['nama']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$a, $key['nama_lembur']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$a, $key['jam_msk']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$a, $key['jam_klr']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$a, $key['total_lembur']);
+
+				//style
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('B'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('C'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('D'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('F'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('G'.$a)->applyFromArray($style_row);
+				$objPHPExcel->getActiveSheet()->getStyle('H'.$a)->applyFromArray($style_row);
+
+				$a++;
+				$no++;
+			}
+			$a++;
+
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0);  
+		$filename = urlencode("Rekap_Lembur_".$dari.'-'.$sampai.".ods");
+
+		header('Content-Type: application/vnd.ms-excel'); 
+		header('Content-Disposition: attachment;filename="'.$filename.'"'); 
+		header('Cache-Control: max-age=0'); 
+
+		$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+		$objWriter->save('php://output');
+	}
 }

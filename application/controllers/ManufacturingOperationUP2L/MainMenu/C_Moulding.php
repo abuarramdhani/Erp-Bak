@@ -74,6 +74,7 @@ class C_Moulding extends CI_Controller
 
 	public function create()
 	{
+		
 		$mouldingData = array();
 		$aksen1 = 0;
 		foreach ($this->input->post('txtMouldingQuantityHeader[]') as $a) {
@@ -90,10 +91,19 @@ class C_Moulding extends CI_Controller
 			$mouldingData[$aksen2]['production_date'] = $this->input->post('production_date');
 			$mouldingData[$aksen2]['shift'] = $this->input->post('txtShift');
 			$mouldingData[$aksen2]['print_code'] = $this->input->post('print_code');
+			$mouldingData[$aksen2]['ket_pengurangan'] = $this->input->post('txtKeteranganPemotonganTarget');
+			if (array_key_exists('txtJamPemotonganTarget', $_POST)) {
+				$mouldingData[$aksen2]['jam_pengurangan'] = str_replace(' ', '', $this->input->post('txtJamPemotonganTarget')) ;
+			} else {
+				$mouldingData[$aksen2]['jam_pengurangan'] = '';
+			}
+			
 			$aksen2++;
 		}
 
+
 		foreach ($mouldingData as $mo) {
+			
 			$this->M_moulding->setMoulding($mo);
 			$header_id = $this->db->insert_id();
 			

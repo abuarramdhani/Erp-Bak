@@ -32,6 +32,7 @@
 												<th>Nama Katering</th>
 												<th>Alamat</th>
 												<th>Telepon</th>
+												<th>Lokasi</th>
 												<th>Status</th>
 												<th>Action</th>
 											</tr>
@@ -49,6 +50,7 @@
 														<td><?php echo $value['fs_nama_katering']; ?></td>
 														<td><?php echo $value['fs_alamat']; ?></td>
 														<td><?php echo $value['fs_telepon']; ?></td>
+														<td><?php echo $value['lokasi_kerja'] == '01' ? 'Pusat & Mlati' : ($value['lokasi_kerja'] == '02' ? 'Tuksono' : 'Tidak Diketahui'); ?></td>
 														<td><?php if($value['fb_status'] == 't'){ echo "<span class='label label-success'>Aktif</span>"; }else{ echo "<span class='label label-danger'>Tidak Aktif</span>";} ?></td>
 														<td>
 															<a href="<?php echo base_url('CateringManagement/catering/Edit/'.$encrypted_string) ?>" class="fa fa-edit fa-2x" data-toggle='tooltip' data-placement='bottom' data-original-title='Edit Data'></a>

@@ -19,14 +19,22 @@ class M_absenatasan extends CI_Model
 	}
 
 	
-	public function getList($approver){
+	public function getList($noind,$approver){
 		// print_r($approver);exit();	
-		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE approval.approver='$approver' AND approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id ORDER BY approval.status desc";
+		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE (left(approval.approver,5) = '$noind' OR approval.approver LIKE '%$approver%' ) AND approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id and absen.noind not in (select noind from at.at_laju) ORDER BY approval.status desc";
 		$query = $this->db->query($sql);
 		// print_r($sql);exit();
 		return $query->result_array();
 	}
 
+	public function getListabsLaju($noind,$approver){
+		// print_r($approver);exit();	
+		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id and absen.noind in (select noind from at.at_laju) ORDER BY approval.status desc";
+		$query = $this->db->query($sql);
+		// print_r($sql);exit();
+		return $query->result_array();
+	}
+	
 	public function getJenisAbsen(){
 		$sql = "SELECT aa.*, ja.* FROM at.at_absen aa LEFT JOIN at.at_jenis_absen ja ON aa.jenis_absen_id = ja.jenis_absen_id";
 		$query = $this->db->query($sql);
@@ -72,8 +80,8 @@ class M_absenatasan extends CI_Model
 		return $query->result_array();
 	}
 
-	public function getEmployeeEmailByNama($nama){
-		$sql = "SELECT * FROM er.er_employee_all WHERE employee_name LIKE '%$nama%' and resign=0";
+	public function getEmployeeEmailByNama($noinduk,$nama){
+		$sql = "SELECT * FROM er.er_employee_all WHERE employee_code='$noinduk' and resign=0";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -245,6 +253,31 @@ class M_absenatasan extends CI_Model
 		return $this->db->query($sql)->result_array();
 	}
 
+	public function getAbsenById($id){
+		$sql = "
+			select 	a.employee_code as noind , 
+					rtrim(a.employee_name) as nama ,
+					a.new_employee_code as noind_baru , 
+					a.section_code as kodesie , 
+					b.tgl, 
+					b.lokasi,
+					b.longitude,
+					b.latitude,
+					b.waktu::time as wkt,
+					c.jenis_absen,
+					d.approver,
+					d.tgl_approval,
+					b.status
+			FROM er.er_employee_all a INNER JOIN at.at_absen B ON a.employee_code = b.noind 
+			INNER JOIN at.at_jenis_absen c ON b.jenis_absen_id = c.jenis_absen_id  
+			INNER JOIN at.at_absen_approval d ON b.absen_id = d.absen_id
+			WHERE b.absen_id = ?
+			order by b.waktu
+			";
+			// b.status = 1 and
+		return $this->db->query($sql,array($id))->result_array();
+	}
+
 	public function insert_presensi($table_schema, $table_name, $insert){
     	$this->personalia->insert($table_schema.".".$table_name, $insert);
     }
@@ -287,9 +320,214 @@ class M_absenatasan extends CI_Model
 		$this->personalia->delete($table_schema.".".$table_name);
 	}
 
+	function getShiftByNoindTanggal($noind,$tanggal){
+		$sqlSelectShift = "select 
+					concat(tsp.tanggal::date,' ',tjs.jam_msk) as jam_msk,
+					concat(tsp.tanggal::date,' ',tjs.jam_akhmsk) as jam_akhmsk,
+					case when tjs.break_mulai::time > tjs.jam_msk::time then 
+						concat(tsp.tanggal::date,' ',tjs.break_mulai)
+					else 
+						concat((tsp.tanggal + interval '1 day')::date,' ',tjs.break_mulai)
+					end as break_mulai,
+					case when tjs.break_selesai::time > tjs.jam_msk::time then 
+						concat(tsp.tanggal::date,' ',tjs.break_selesai)
+					else 
+						concat((tsp.tanggal + interval '1 day')::date,' ',tjs.break_selesai)
+					end as break_selesai,
+					case when tjs.ist_mulai::time > tjs.jam_msk::time then 
+						concat(tsp.tanggal::date,' ',tjs.ist_mulai)
+					else 
+						concat((tsp.tanggal + interval '1 day')::date,' ',tjs.ist_mulai)
+					end as ist_mulai,
+					case when tjs.ist_selesai::time > tjs.jam_msk::time then 
+						concat(tsp.tanggal::date,' ',tjs.ist_selesai)
+					else 
+						concat((tsp.tanggal + interval '1 day')::date,' ',tjs.ist_selesai)
+					end as ist_selesai,
+					case when tjs.jam_plg::time > tjs.jam_msk::time then 
+						concat(tsp.tanggal::date,' ',tjs.jam_plg)
+					else 
+						concat((tsp.tanggal + interval '1 day')::date,' ',tjs.jam_plg)
+					end as jam_plg,
+					tjs.jam_kerja,
+					tjs.lompat_tgl,
+					case when tjs.lompat_tgl = '1' then 
+						(tsp.tanggal + interval '1 day')::date
+					else 
+						tsp.tanggal::date
+					end as akhir,
+					tsp.tanggal::date as awal
+				from \"Presensi\".tshiftpekerja tsp 
+				left join \"Presensi\".tjamshift tjs 
+				on trim(tsp.kd_shift) = trim(tjs.kd_shift)
+				and ( 
+					case when extract(isodow from tsp.tanggal) = 1 then 
+						'Senin'
+					when extract(isodow from tsp.tanggal) = 2 then
+						'Selasa'
+					when extract(isodow from tsp.tanggal) = 3 then
+						'Rabu'
+					when extract(isodow from tsp.tanggal) = 4 then
+						'Kamis'
+					when extract(isodow from tsp.tanggal) = 5 then
+						'Jumat'
+					when extract(isodow from tsp.tanggal) = 6 then
+						'Sabtu'
+					when extract(isodow from tsp.tanggal) = 7 then
+						'Minggu'
+					end
+				) = trim(tjs.hari)
+				where tsp.noind = '$noind'
+				and tsp.tanggal = '$tanggal'
+				order by tsp.tanggal";
+		return $this->personalia->query($sqlSelectShift)->result_array();
+	}
 
+	function getAbsenByNoindTanggal($noind,$awal,$akhir){
+		$sqlSelectAbsen = "select concat(tanggal::date,' ',waktu) as waktu
+				from \"Presensi\".tprs_shift
+				where noind = '$noind'
+				and tanggal between '$awal' and '$akhir'
+				and transfer = '0'
+				order by 1 ";
+		return $this->personalia->query($sqlSelectAbsen)->result_array();
+	}
+
+	function insertMangkir($noind,$tanggal){
+		$sqlInsertMangkir = "insert into \"Presensi\".tdatatim
+				(tanggal,noind,kodesie,masuk,keluar,kd_ket,point,user_,noind_baru)
+				select '$tanggal',noind,kodesie,'0','0','TM',1,'CRDIS',noind_baru
+				from hrd_khs.tpribadi
+				where noind ='$noind'";
+		$this->personalia->query($sqlInsertMangkir);
+	}
+
+	function insertTerlambat($noind,$tanggal,$jam_msk,$abs_masuk){
+		$sqlInsertTerlambat = "insert into \"Presensi\".tdatatim
+				(tanggal,noind,kodesie,masuk,keluar,kd_ket,point,user_,noind_baru)
+				select '$tanggal',noind,kodesie,'$abs_masuk'::time,'$jam_msk'::time,'TT',0.4,'CRDIS',noind_baru
+				from hrd_khs.tpribadi
+				where noind ='$noind'";
+		$this->personalia->query($sqlInsertTerlambat);
+	}
+
+	function insertBekerja($noind,$tanggal,$masuk,$keluar){
+		$sqlInsertBekerja = "insert into \"Presensi\".tdatapresensi
+				(tanggal,noind,kodesie,masuk,keluar,kd_ket,total_lembur,ket,user_,noind_baru)
+				select '$tanggal',noind,kodesie,'$masuk'::time,'$keluar'::time,'PKJ',0,'biasa','CRDIS',noind_baru
+				from hrd_khs.tpribadi
+				where noind ='$noind'";
+		$this->personalia->query($sqlInsertBekerja);
+	}
+
+	function insertIjinKeluar($noind,$tanggal,$keluar,$masuk,$point){
+		$sqlInsertIjinKeluar = "insert into \"Presensi\".tdatatim
+				(tanggal,noind,kodesie,masuk,keluar,kd_ket,point,user_,noind_baru)
+				select '$tanggal',noind,kodesie,'$masuk'::time,'$keluar'::time,'TIK',$point,'CRDIS',noind_baru
+				from hrd_khs.tpribadi
+				where noind ='$noind'";
+		$this->personalia->query($sqlInsertIjinKeluar);
+	}
+
+	function hitungPoint($jam_msk,$jam_plg,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai,$keluar_ijin,$masuk_ijin){
+		$point = 0;
+		
+		if (strtotime($keluar_ijin) < strtotime($jam_msk)) {
+			$keluar_ijin = $jam_msk;
+		}
+
+		if (strtotime($masuk_ijin) > strtotime($jam_plg)) {
+			$masuk_ijin = $jam_plg;
+		}
+
+		$sebelum_break = 0;
+		$setelah_break = 0;
+		$setelah_istirahat = 0;
+
+		if (strtotime($keluar_ijin) < strtotime($break_mulai)) {
+			if (strtotime($masuk_ijin < strtotime($break_mulai))) {
+				$sebelum_break = strtotime($masuk_ijin) - strtotime($keluar_ijin);
+			}else{
+				$sebelum_break = strtotime($break_mulai) - strtotime($keluar_ijin);
+			}
+		}else{
+			$sebelum_break = 0;
+		}
+
+		if (strtotime($keluar_ijin) < strtotime($ist_mulai) && strtotime($masuk_ijin) > strtotime($break_selesai)) {
+			if (strtotime($keluar_ijin) < strtotime($break_selesai)) {
+				if (strtotime($masuk_ijin) > strtotime($ist_mulai)) {
+					$setelah_break = strtotime($ist_mulai) - strtotime($break_selesai);
+				}else{
+					$setelah_break = strtotime($masuk_ijin) - strtotime($break_selesai);
+				}
+			}else{
+				if (strtotime($masuk_ijin) > strtotime($ist_mulai)) {
+					$setelah_break = strtotime($ist_mulai) - strtotime($keluar_ijin);
+				}else{
+					$setelah_break = strtotime($masuk_ijin) - strtotime($keluar_ijin);
+				}
+			}
+		}else{
+			$setelah_break = 0;
+		}
+
+		if (strtotime($masuk_ijin) > strtotime($ist_selesai)) {
+			if (strtotime($keluar_ijin > strtotime($ist_selesai))) {
+				$setelah_istirahat = strtotime($masuk_ijin) - strtotime($keluar_ijin);
+			}else{
+				$setelah_istirahat = strtotime($masuk_ijin) - strtotime($ist_selesai);
+			}
+		}else{
+			$setelah_istirahat = 0;
+		}
+
+		$point = ($sebelum_break + $setelah_break + $setelah_istirahat)/60;
+
+		$sqlSelectPoint = "select point
+				from \"Presensi\".tpoint
+				where kd_ket='TIK'
+				and $point between waktua and waktub";
+		$resultSelectPoint = $this->personalia->query($sqlSelectPoint)->result_array();
+		if (!empty($resultSelectPoint)) {
+			return $resultSelectPoint['0']['point'];
+		}else{
+			return '0';
+		}
+	}
+
+	function updateTransferAbsen($noind,$waktu){
+		$sqlupdateTransferAbsen = "update \"Presensi\".tprs_shift
+				set transfer = '1'
+				where noind = '$noind'
+				and tanggal = '$waktu'::date
+				and waktu = '$waktu'::time::varchar";
+		$this->personalia->query($sqlupdateTransferAbsen);
+	}
+
+	function getAbsenMangkirByNoindTanggal($noind,$tanggal){
+		$sql = "select *
+				from \"Presensi\".tdatatim
+				where noind =  ?
+				and trim(kd_ket) = 'TM'
+				and tanggal = ?";
+		return $this->personalia->query($sql,array($noind,$tanggal))->result_array();
+	}
+
+	function deleteMangkirByNoindTanggal($noind,$tanggal){
+		$sql = "delete from \"Presensi\".tdatatim 
+				where noind =  ?
+				and trim(kd_ket) = 'TM'
+				and tanggal = ?";
+		$this->personalia->query($sql,array($noind,$tanggal));
+	}
 	
-
+	function getPekerjaLaju($noinduk)
+	{
+		$this->db->where('noind', $noinduk);
+		$query = $this->db->get('at.at_laju')->num_rows();
+		return $query !== 0;
+	}
 }
 
 

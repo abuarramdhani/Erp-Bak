@@ -9,6 +9,7 @@ class C_Kondite extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -106,7 +107,7 @@ class C_Kondite extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Kondite/V_import', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doCreate($term){
@@ -135,6 +136,11 @@ class C_Kondite extends CI_Controller
 				$this->M_kondite->setKondite($data);
 
 			}
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Create kondite noind=$noind";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 		}
@@ -162,16 +168,21 @@ class C_Kondite extends CI_Controller
 					'creation_date' => 'NOW()',
 					'created_by' => $this->session->userid,
 				);
-				$this->M_kondite->setKondite($data);
 
 			}
+			$this->M_kondite->setKondite($data);
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Create kondite noind=$noind";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 		}
 		else{
 			redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 		}
-		
+
 	}
 
 	public function doImport(){
@@ -189,6 +200,11 @@ class C_Kondite extends CI_Controller
 
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Import kondite filename=$fileName";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/PayrollNonStaff/InsKondite/'.$uploadData['file_name'];
 			$inputFileType = $uploadData['file_type'];
@@ -212,9 +228,9 @@ class C_Kondite extends CI_Controller
 
 			$db_record = array();
 
-			for ($row=0; $row <= $highestRow - 2 ; $row++) { 
+			for ($row=0; $row <= $highestRow - 2 ; $row++) {
 				$a = array();
-				for ($column=0; $column <= $columnCount - 1; $column++) { 
+				for ($column=0; $column <= $columnCount - 1; $column++) {
 					$headTitle = explode(',', $sheetHead[0][$column]);
 					$a[$headTitle[0]] = $sheetData[$row][$column];
 				}
@@ -242,7 +258,7 @@ class C_Kondite extends CI_Controller
 
 				$ImportProgress = ($i/($highestRow - 2))*100;
 				$ImportProgress = round($ImportProgress);
-				
+
 				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Kondite');
 				if ($cek_data == 0) {
 					$this->M_dataabsensi->setProgress('Import Kondite',$ImportProgress,$user);
@@ -294,7 +310,7 @@ class C_Kondite extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Kondite/V_update', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doUpdate($id){
@@ -321,6 +337,11 @@ class C_Kondite extends CI_Controller
 			'ks' => $this->input->post('txtKSHeader',TRUE)
 			);
 		$this->M_kondite->updateKondite($data, $plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Update kondite noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 
@@ -363,6 +384,11 @@ class C_Kondite extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_kondite->deleteKondite($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Delete kondite Id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 	}
@@ -393,6 +419,11 @@ class C_Kondite extends CI_Controller
 		$thn_gaji = $this->input->post('txtTahun');
 
 		$this->M_kondite->clearKondite($bln_gaji,$thn_gaji);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Clear Data kondite periode=$thn_gaji $bln_gaji";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Kondite'));
 	}
 
@@ -473,11 +504,11 @@ class C_Kondite extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(  
-			0 => 'noind', 
-			1 => 'noind', 
-			2 => 'noind', 
-			3 => 'employee_name', 
+		$columns = array(
+			0 => 'noind',
+			1 => 'noind',
+			2 => 'noind',
+			3 => 'employee_name',
 			4 => 'kodesie',
 			5 => 'unit_name',
 			6 => 'tanggal',
@@ -507,7 +538,7 @@ class C_Kondite extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -563,10 +594,10 @@ class C_Kondite extends CI_Controller
 			}
 			$excel_row++;
 		}
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);

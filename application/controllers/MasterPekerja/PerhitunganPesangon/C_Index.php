@@ -9,6 +9,7 @@ class C_Index extends CI_Controller {
     parent::__construct();
 
 	$this->load->library('Log_Activity');
+	$this->load->library('KonversiBulan');
     $this->load->library('General');
     $this->load->library('encrypt');
 		$this->load->library('session');
@@ -97,6 +98,10 @@ class C_Index extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 	    $data['editHitungPesangon'] = $this->M_pesangon->editHitungPesangon($id);
+		$hari_terakhir = date('D', strtotime($data['editHitungPesangon'][0]['tglkeluar']));
+		$data['hari_terakhir'] = $this->konversibulan->convertke_Hari_Indonesia($hari_terakhir);
+		$hari_proses = date('D', strtotime($data['editHitungPesangon'][0]['proses_phk']));
+		$data['hari_proses'] = $this->konversibulan->convertke_Hari_Indonesia($hari_proses);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -106,15 +111,24 @@ class C_Index extends CI_Controller {
 
 	public function daftar_pekerja_aktif(){
 	  	$noind = $this->input->get('term');
-	  	$data = $this->M_pesangon->getPekerjaAktif($noind);
+	  	$data = $this->M_pesangon->getPekerjaAktif(strtoupper($noind));
 	  	echo json_encode($data);
 	}
 
  	public function detailPekerja()
 	{
-		$noind 						=	$this->input->post('noind');
-		$detailPekerja 		=	$this->M_pesangon->detailPekerja($noind);
-		echo json_encode($detailPekerja);
+		$noind 				=	$this->input->post('noind');
+		$cuti 				=	$this->input->post('cuti');
+
+		
+		
+		$detailPekerja 		=	$this->M_pesangon->detailPekerja($noind,$cuti);
+		if (!empty($detailPekerja)) {
+			$hariTerakhir 		= array_merge($detailPekerja, array('hari_terakhir'=>date('D', strtotime($detailPekerja[0]['metu']))));
+			echo json_encode($hariTerakhir);
+		}else{
+			echo "Data Kosong";
+		}
   	}
 
 	public function add()
@@ -141,7 +155,8 @@ class C_Index extends CI_Controller {
 		$created_by 				=	$this->session->user;
 		$penerima 				    =	$this->input->post('txtPenerima');
 		$pengirim 					=	$this->input->post('txtPengirim');
-
+		$tgl_proses 				=	$this->input->post('txtProses');
+		$akhir 						= date('Y-m-d', strtotime($tgl_proses));
 
 		$inputHitungPesangon		= 	array
 									(
@@ -166,7 +181,8 @@ class C_Index extends CI_Controller {
 									    'approver2'             	=>  $approver2,
 									    'created_by'            	=>  $created_by,
 									    'penerima'              	=>  $penerima,
-									    'pengirim'              	=>  $pengirim
+									    'pengirim'              	=>  $pengirim,
+									    'tgl_proses_phk'            =>  $akhir
 									);
 
 		$this->M_pesangon->inputHitungPesangon($inputHitungPesangon);
@@ -196,21 +212,23 @@ class C_Index extends CI_Controller {
 		$bank 						=	$this->input->post('txtBank');
 		$edit_by                    =	$this->session->user;
 		$edit_date                  =	date(' M,d,y');
+		$tgl_proses					= 	$this->input->post('txtProses');
+		$akhir 						= 	date('Y-m-d', strtotime($tgl_proses));
 
 		$updateHitungPesangon			= 	array
 										(
 
-											'jabatan_terakhir'	  =>	$jabatan_terakhir,
-										    'potongan'			    =>  $potongan,
-										    'hutang_koperasi'		=>	$hutang_koperasi,
+											'jabatan_terakhir'	=>	$jabatan_terakhir,
+										    'potongan'			=>  $potongan,
+										    'hutang_koperasi'	=>	$hutang_koperasi,
 										    'hutang_perusahaan'	=>	$hutang_perusahaan,
-										    'lain_lain'					=>	$lain_lain,
-										    'no_rekening'				=>  $no_rekening,
-										    'nama_rekening'			=>  $nama_rekening,
+										    'lain_lain'			=>	$lain_lain,
+										    'no_rekening'		=>  $no_rekening,
+										    'nama_rekening'		=>  $nama_rekening,
 										    'bank'              =>  $bank,
 										    'edit_by'           =>  $edit_by,
-										    'edit_date'         =>  $edit_date
-
+										    'edit_date'         =>  $edit_date,
+										    'tgl_proses_phk'    =>  $akhir
 										);
 		$this->M_pesangon->update($id,$updateHitungPesangon);
 		//insert to t_log

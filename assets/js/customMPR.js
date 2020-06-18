@@ -601,3 +601,118 @@ $(document).ready(function(){
         }
     });
 });
+
+// POtongan Lain
+$(document).ready(function(){
+    $('#pg_selectPekerja').on('change',function(){
+        cekPotonganGajiExist()
+    });
+
+    $('#pg_inputNominalTotal').on('change',function(){
+        cekPotonganGajiExist()
+    });
+
+    $('#pg_inputNominalTotal').on('keyup',function(){
+        cekPotonganGajiExist()
+    });
+
+    $('#pg_selectJenisPotongan').on('change',function(){
+        cekPotonganGajiExist()
+    });
+
+});
+
+function cekPotonganGajiExist(){
+    jenis = $('#pg_selectJenisPotongan').val();
+    nominal = $('#pg_inputNominalTotal').val();
+    noind = $('#pg_selectPekerja').val();
+
+    if (jenis && nominal && noind) {
+        $.ajax({
+            data: {jenis:jenis, noind:noind, nominal:nominal},
+            type: 'POST',
+            url: baseurl + 'MasterPresensi/PotonganGaji/TambahData/cekDuplikat',
+            error: function(xhr,status,error){
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+                $('#modalKPInputDataList').modal('hide');
+            },
+            success: function(result){
+                if (result) {
+                    obj = JSON.parse(result);
+                    console.log(obj);
+                    if (obj['jumlah'] !== '0') {
+                        $('#pg_buttonSimulasi').attr('disabled',true);
+                        swal.fire({
+                            title: "Data Sudah Pernah Diinput",
+                            text: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama",
+                            type: "warning"
+                        })
+                    }else{
+                        $('#pg_buttonSimulasi').attr('disabled',false);
+                    }                    
+                }
+            }
+        })
+    }
+}
+
+// start THR
+
+$(document).on('ready',function(){
+    $('#txtTHRTanggalIdulFitri').datepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        "format": 'yyyy-mm-dd'
+    });
+
+    $('#txtTHRTanggalPuasaPertama').datepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        "format": 'yyyy-mm-dd'
+    });
+
+    $('#txtTHRTanggalDibuat').datepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        "format": 'yyyy-mm-dd'
+    });
+
+    $('#tbl-MPR-THR-lihat').DataTable();
+    $('#tbl-MPR-THR-index').DataTable();
+
+    $('#slcTHRMengetahui').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/ReffGaji/THR/getPekerja',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+})
+
+// end THR

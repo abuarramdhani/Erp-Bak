@@ -133,8 +133,7 @@ class C_Report extends CI_Controller {
 				$baris++;
 			}
 		}else{
-			if($status == 3){ $colStyle = 'N1'; } else { $colStyle = 'J1'; };
-			$objget->getStyle("A1:$colStyle")->applyFromArray(
+			$objget->getStyle("A1:N1")->applyFromArray(
 				array(
 					'fill' => array(
 						'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -159,17 +158,12 @@ class C_Report extends CI_Controller {
 						,"PPN"
 						,"Total"
 						,"No. Faktur"
-						);
-			if($status == 3){
-				array_push($val
 						,"No. PO"
 						,"No. Receipt"
 						,"Tgl Receipt"
 						,"GL Date");
-			}
 			
-			if($status == 3){ $colCount = '14'; } else { $colCount = '10'; };
-			for ($a=0;$a<$colCount; $a++) {
+			for ($a=0;$a<14; $a++) {
 				$objset->setCellValue($cols[$a].'1',$val[$a]);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(45);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(13);
@@ -181,12 +175,10 @@ class C_Report extends CI_Controller {
 				$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(13);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(13);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
-				if($status == 3){
-					$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(13);
-					$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(18);
-					$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(18);
-					$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(13);
-				}
+				$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(18);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(18);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(13);
 				$style = array(
 					'alignment' => array(
 						'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
@@ -212,12 +204,10 @@ class C_Report extends CI_Controller {
 					$numfaktur = '-';
 				};
 				$objset->setCellValue("J".$baris, $numfaktur);
-				if($status == 3){
-					$objset->setCellValue("K".$baris, $frow['PO_NUMBER']);
-					$objset->setCellValue("L".$baris, $frow['RECEIPT_NUM']);
-					$objset->setCellValue("M".$baris, $frow['RECEIPT_DATE']);
-					$objset->setCellValue("N".$baris, $frow['GL_DATE']);
-				}
+				$objset->setCellValue("K".$baris, $frow['PO_NUMBER']);
+				$objset->setCellValue("L".$baris, $frow['RECEIPT_NUM']);
+				$objset->setCellValue("M".$baris, $frow['RECEIPT_DATE']);
+				$objset->setCellValue("N".$baris, $frow['GL_DATE']);
 				$baris++;
 			}
 		};

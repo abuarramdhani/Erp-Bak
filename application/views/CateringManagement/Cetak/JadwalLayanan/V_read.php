@@ -23,7 +23,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12 text-center">
-										<label>Jadwal Pelayanan Catering<br>Bulan : <?php echo $data['bulan'] ?></label>
+										<label>Jadwal Pelayanan Catering <?php echo $data['lokasi'] == '1' ? 'Yogyakarta & Mlati' : 'Tuksono' ?><br>Bulan : <?php echo $data['bulan'] ?></label>
 									</div>
 								</div>
 								<div class="row">
@@ -37,6 +37,7 @@
 												</div>
 												<div class="col-lg-7">
 													<input type="hidden" name="txtPeriodeJadwalLayanan"  value="<?php echo $data['bulan'] ?>">
+													<input type="hidden" name="slcLokasiJadwalLayanan"  value="<?php echo $data['lokasi'] ?>">
 												</div>
 												<label class="control-label col-lg-5">Dibuat Tanggal</label>
 												<div class="col-lg-2">

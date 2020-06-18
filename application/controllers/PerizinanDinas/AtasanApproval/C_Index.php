@@ -57,17 +57,207 @@ class C_Index extends CI_Controller
 			$data['UserMenu'] = $datamenu;
 		}
 
-		$data['izin'] = $this->M_index->GetIzin($no_induk);
-		$data['IzinApprove'] = $this->M_index->IzinApprove($no_induk);
-		$data['IzinUnApprove'] = $this->M_index->IzinUnApprove($no_induk);
-		$data['IzinReject'] = $this->M_index->IzinReject($no_induk);
+		//Data makan yang diambil (aktual),
+		//apabila sudah di approve atau reject ambil data dari taktual izin,
+		//kalau status 0 / 5 ambil data dari tpekerja izin
+
+		$izin = $this->M_index->GetIzin($no_induk);
+		//untuk nyari pekerja
+		$a = $this->M_index->getTujuanA(date('Y-m-d'));
+		$b = array();
+		$output = array();
+		$data['izin'] = array();
+		foreach ($a as $key) {
+			$b[$key['izin_id']][] = $key['pekerja'];
+		}
+		foreach($b as $type => $label)
+		{
+			$output[] = array(
+				'izin_id' => $type,
+				'pekerja' => $label
+			);
+		}
+		// untuk nyari makan
+		$makan = array();
+		$ot_makan = array();
+		foreach ($a as $key) {
+			$makan[$key['izin_id']][] = $key['tujuan'];
+		}
+		foreach($makan as $type => $label)
+		{
+			$ot_makan[] = array(
+				'izin_id' => $type,
+				'tujuan' => $label
+			);
+		}
+		//menggabungkan data dengan makan
+		$c = array();
+		foreach ($izin as $key) {
+			foreach ($ot_makan as $value) {
+				if ($key['izin_id'] == $value['izin_id']) {
+					$c[] = array_merge($key, $value);
+				}
+			}
+		}
+		//menggabungkan data dengan pekerja
+		foreach ($c as $key) {
+			foreach ($output as $value) {
+				if ($key['izin_id'] == $value['izin_id']) {
+					$data['izin'][] = array_merge($key, $value);
+				}
+			}
+		}
+
+		//--------------------------
+		$approve = $this->M_index->IzinApprove($no_induk);
+		//untuk nyari pekerja
+		$a1 = $this->M_index->getTujuanApprove(date('Y-m-d'));
+		$b1 = array();
+		$output1 = array();
+		$data['IzinApprove'] = array();
+		foreach ($a1 as $key) {
+			$b1[$key['izin_id']][] = $key['pekerja'];
+		}
+		foreach($b as $type => $label)
+		{
+			$output1[] = array(
+				'izin_id' => $type,
+				'pekerja' => $label
+			);
+		}
+		// untuk nyari makan
+		$makan1 = array();
+		$ot_makan1 = array();
+		foreach ($a1 as $key) {
+			$makan1[$key['izin_id']][] = $key['tujuan'];
+		}
+		foreach($makan1 as $type => $label)
+		{
+			$ot_makan1[] = array(
+				'izin_id' => $type,
+				'tujuan' => $label
+			);
+		}
+		//menggabungkan data dengan makan
+		$c1 = array();
+		foreach ($approve as $key) {
+			foreach ($ot_makan1 as $value) {
+				if ($key['izin_id'] == $value['izin_id']) {
+					$c1[] = array_merge($key, $value);
+				}
+			}
+		}
+		//menggabungkan data dengan pekerja
+		foreach ($c1 as $key) {
+			foreach ($output1 as $value) {
+				if ($key['izin_id'] == $value['izin_id']) {
+					$data['IzinApprove'][] = array_merge($key, $value);
+				}
+			}
+		}
+
+		//--------------------------
+		$unprov = $this->M_index->IzinUnApprove($no_induk);
+		//untuk nyari pekerja
+		$a2 = $this->M_index->getTujuanUnapprove(date('Y-m-d'));
+		$b2 = array();
+		$output2 = array();
+		$data['IzinUnApprove'] = array();
+		foreach ($a2 as $key) {
+			$b2[$key['izin_id']][] = $key['pekerja'];
+		}
+		foreach($b2 as $type => $label)
+		{
+			$output2[] = array(
+				'izin_id' => $type,
+				'pekerja' => $label
+			);
+		}
+		// untuk nyari makan
+		$makan2 = array();
+		$ot_makan2 = array();
+		foreach ($a as $key) {
+			$makan2[$key['izin_id']][] = $key['tujuan'];
+		}
+		foreach($makan2 as $type => $label)
+		{
+			$ot_makan2[] = array(
+				'izin_id' => $type,
+				'tujuan' => $label
+			);
+		}
+		//menggabungkan data dengan makan
+		$c2 = array();
+		foreach ($unprov as $key) {
+			foreach ($ot_makan2 as $value) {
+				if ($key['izin_id'] == $value['izin_id']) {
+					$c2[] = array_merge($key, $value);
+				}
+			}
+		}
+		//menggabungkan data dengan pekerja
+		foreach ($c2 as $key) {
+			foreach ($output2 as $value) {
+				if ($key['izin_id'] == $value['izin_id']) {
+					$data['izin'][] = array_merge($key, $value);
+				}
+			}
+		}
+
+		//--------------------------
+		$reject = $this->M_index->IzinReject($no_induk);
+		//untuk nyari pekerja
+		$a3 = $this->M_index->getTujuanReject(date('Y-m-d'));
+		$b3 = array();
+		$output3 = array();
+		$data['IzinReject'] = array();
+		foreach ($a3 as $key) {
+			$b3[$key['izin_id']][] = $key['pekerja'];
+		}
+		foreach($b3 as $type => $label)
+		{
+			$output3[] = array(
+				'izin_id' => $type,
+				'pekerja' => $label
+			);
+		}
+		// untuk nyari makan
+		$makan3 = array();
+		$ot_makan3 = array();
+		foreach ($a3 as $key) {
+			$makan3[$key['izin_id']][] = $key['tujuan'];
+		}
+		foreach($makan3 as $type => $label)
+		{
+			$ot_makan3[] = array(
+				'izin_id' => $type,
+				'tujuan' => $label
+			);
+		}
+		//menggabungkan data dengan makan
+		$c3 = array();
+		foreach ($reject as $key) {
+			foreach ($ot_makan3 as $value) {
+				if ($key['izin_id'] == $value['izin_id']) {
+					$c3[] = array_merge($key, $value);
+				}
+			}
+		}
+		//menggabungkan data dengan pekerja
+		foreach ($c3 as $key) {
+			foreach ($output3 as $value) {
+				if ($key['izin_id'] == $value['izin_id']) {
+					$data['IzinReject'][] = array_merge($key, $value);
+				}
+			}
+		}
 
 		$today = date('Y-m-d');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PerizinanDinas/AtasanApproval/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('PerizinanDinas/V_Footer',$data);
 
 	}
 

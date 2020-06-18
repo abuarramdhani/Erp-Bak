@@ -1,3 +1,33 @@
+var tanggal = new Date();
+var d= tanggal.getDate();
+var m= tanggal.getMonth()+1;
+var y= tanggal.getFullYear();
+
+
+$('#tblDataresikoPribadiMP').DataTable({
+  dom: 'Bfrtip',
+  buttons: [
+    {extend:'excel',title:'Data Resiko Pribadi '+d+'-'+m+'-'+y}],
+  scrollY: "370px",
+  scrollX: true,
+  scrollCollapse: true,
+  fixedColumns: {
+    leftColumns: 3
+  }
+});
+
+$('#tblRekapKondisiKesehatanMP').DataTable({
+  dom: 'Bfrtip',
+  buttons: [
+    {extend:'excel',title:'Rekap Kondisi Kesehatan '+d+'-'+m+'-'+y}],
+  scrollY: "370px",
+  scrollX: true,
+  scrollCollapse: true,
+  fixedColumns: {
+    leftColumns: 3
+  }
+});
+
 $('#tableseksi').DataTable({
     dom: 'Bfrtip',
     buttons: ['excel', 'pdf']
@@ -446,4 +476,22 @@ $('#duka_to_excel').on('click', function(){
   }else{
     alert('Data Tidak Lengkap');
   }
+});
+
+$(document).on('click', '.btnmpkmdlsk', function(){
+  var ks = $(this).closest('tr').find('#tdmpkks').text();
+  var sk = $(this).closest('tr').find('#tdmpksk').text();
+  var st = $(this).closest('tr').find('#tdmpkst').val();
+  var alsn = $(this).closest('tr').find('#tdmpkalsn').text();
+
+  $('#mdmpkodesi').text(ks+' - '+sk);
+  if (st == 1) {
+    $('#mpkst1').iCheck('check');
+  }else{
+    $('#mpkst0').iCheck('check');
+  }
+
+  $('#mdmpkalasan').find('textarea').val(alsn);
+  $('#mpkkds').val(ks);
+  $('#mdlmpksk').modal('show');
 });

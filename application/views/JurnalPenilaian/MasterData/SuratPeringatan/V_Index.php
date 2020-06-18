@@ -6,7 +6,7 @@
 				<div class="col-lg-12">
 					<div class="col-lg-11">
 						<div class="text-right">
-						<h1><b>Master Surat Peringatan</b></h1>
+						<h1><b>Surat Peringatan</b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
@@ -30,38 +30,31 @@
 							  <i class="icon-plus icon-2x"></i>
 							</button>
 						</a>
-						<b data-toogle="tooltip" title="Halaman untuk membuat Master Surat Peringatan.">Master Surat Peringatan</b>
+						<b data-toogle="tooltip" title="Halaman untuk membuat Master Surat Peringatan.">Bobot Penilaian Berdasarkan Surat Peringatan</b>
 					</div>
 					<div class="box-body">
 
-						<div class="table-responsive" style="overflow:hidden;">
-							<table class="table table-striped table-bordered table-hover text-left" id="master-index" style="font-size:14px;">
+						<div style="overflow:hidden;">
+							<table class="table table-striped table-bordered table-hover text-left" id="JurnalPenilaian-masterSuratPeringatan" style="width:100%;">
 								<thead class="bg-primary">
 									<tr>
-										<th width="5%">NO</th>
-										<th width="10%">Nomor SP</th>
-										<th width="20%">Nilai</th>
-										<th width="20%">Tanggal Berlaku</th>
-										<th width="20%">Tanggal Tidak Berlaku</th>
-										<th width="20%">Action</th>
+										<th width="5%" class="text-center">NO</th>
+										<th width="10%" class="text-center">Point SP</th>
+										<th width="20%" class="text-center">Nilai</th>
+										<th width="20%" class="text-center">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 								<?php foreach ($GetSP as $gs) {?>
 									<tr>
-										<td><?php echo $number++ ?></td>
-										<td><?php echo $gs['sp_num']; ?></td>
+										<td align="center"><?php echo $number++ ?></td>
+										<td align="center"><?php echo $gs['sp_num']; ?>
 											<input type="text" name="txtIdSP" value="<?php echo $gs['id_sp_dtl']; ?>" hidden>
-										<td><?php echo $gs['nilai']; ?></td>
-										<td><?php echo $gs['tberlaku']; ?></td>
-										<td style="color: red"><?php echo $gs['ttberlaku']; ?></td>
-										<td>
-											<a href="<?php echo site_url('PenilaianKinerja/MasterSuratPeringatan/view/'.$gs['id_sp_dtl']);?>" class="btn btn-flat btn-sm btn-success" title="Lihat Data"><i class="fa fa-search"></i></a>
-											&nbsp;&nbsp;
-											<a href="<?php echo site_url('PenilaianKinerja/MasterSuratPeringatan/edit/'.$gs['id_sp_dtl']);?>" class="btn btn-flat btn-sm  btn-warning" title="Edit data"><i class="fa fa-edit"></i></a>
-											&nbsp;&nbsp;
-											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gs['id_sp_dtl'] ?>" class="btn btn-flat btn-sm  btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
-											&nbsp;&nbsp;
+										</td>
+										<td align="center"><?php echo $gs['nilai']; ?></td>
+										<td align="center">
+											<a href="<?php echo site_url('PenilaianKinerja/MasterSuratPeringatan/edit/'.$gs['id_sp_dtl']);?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-edit"></span></a>
+											<a data-toggle="modal" data-target="<?php echo '#deletealert'.$gs['id_sp_dtl'] ?>" class="btn btn-xs btn-danger" title="Batalkan penilaian"><i class="fa fa-remove"></i></a>
 										</td>
 									</tr>
 									<div class="modal fade modal-danger" id="<?php echo 'deletealert'.$gs['id_sp_dtl'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

@@ -104,13 +104,13 @@ class M_splseksi extends CI_Model{
 			inner join hrd_khs.tseksi d ON b.kodesie = d.kodesie
 			where a.status like '%$status%' and a.tgl_lembur between '$dari' AND '$sampai'
 					and a.perbantuan='N' and ($akses) and b.noind like '$noind%' and b.lokasi_kerja like '%$lokasi%'
-			order by a.tgl_lembur, d.seksi, a.kd_lembur, b.nama, a.jam_mulai_lembur, a.Jam_Akhir_Lembur";
+			order by a.tgl_lembur, d.kodesie, a.kd_lembur, b.nama, a.jam_mulai_lembur, a.Jam_Akhir_Lembur";
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_current_shift($tanggal, $noind){
-		$sql = "select *from \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
+		$sql = "select * from \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		$query = $this->prs->query($sql);
 		return $query->result_array();
 	}
@@ -171,14 +171,16 @@ class M_splseksi extends CI_Model{
 			$x++;
 		}
 
-		$sql = "select tlb.tanggal, tlb.noind, tpr.nama, tlb.jam_msk, tlb.jam_klr, tlb.jml_lembur, jns.nama_lembur, tdp.total_lembur
+		$sql = "select tlb.tanggal, tlb.noind, tpr.nama, tlb.jam_msk, tlb.jam_klr, tlb.jml_lembur, jns.nama_lembur, tdp.total_lembur, tpr.kodesie, ts.seksi
 			from presensi.tlembur tlb
 			left join presensi.tdatapresensi tdp on tlb.noind=tdp.noind and tlb.tanggal=tdp.tanggal
 			left join hrd_khs.tpribadi tpr on tlb.noind = tpr.noind
+			left join hrd_khs.tseksi ts on ts.kodesie = tpr.kodesie
 			left join presensi.tjenislembur jns on tlb.kd_lembur=jns.kd_lembur
 			where tlb.noind like '$noind%' and tlb.tanggal between '$dari' and '$sampai' and ($akses)
 			order by tlb.noind, tlb.tanggal";
 		$query = $this->spl->query($sql);
+		
 		return $query->result_array();
 	}
 
@@ -262,6 +264,33 @@ class M_splseksi extends CI_Model{
 		return $this->spl->query($sql)->result_array();
 	}
 
+	public function getCountDashboard($akses_sie, $status = false) {
+		$noind = $this->session->user;
+		$monthNow = date('Ym');
+
+		$x = 0;
+		foreach($akses_sie as $as){
+			if($x == 0){
+				$akses = "tp.kodesie like '$as%'";
+			}else{
+				$akses .= " or tp.kodesie like '$as%'";
+			}
+			$x++;
+		}
+
+		$filter = '';
+		if($status) {
+			$filter = "and ts.Status in($status)";
+		}
+
+		$sql = "select count(ts.noind) as jumlah
+		from splseksi.tspl ts inner join hrd_khs.tpribadi tp on ts.Noind = tp.noind
+		where DATE_FORMAT(Tgl_Lembur, '%Y%m') = '$monthNow' $filter
+		and ($akses)";
+
+		return $this->spl->query($sql)->row()->jumlah;
+	}
+
 	public function show_spl2($kd,$user){
 		$sql = "select a.*, b.nama, d.kodesie, d.seksi, d.unit, d.dept, e.nama_lembur, c.Deskripsi, (select nama from 	hrd_khs.tpribadi where noind = a.user_) as user_approve
 				from splseksi.tspl a
@@ -273,6 +302,7 @@ class M_splseksi extends CI_Model{
 				and EXTRACT(year from a.Tgl_lembur) = EXTRACT(year from now())
 				and EXTRACT(month from a.Tgl_lembur) = EXTRACT(month from now())
 				and a.Status like '$kd'";
+				
 		return $this->spl->query($sql)->result_array();
 	}
 
@@ -282,7 +312,7 @@ class M_splseksi extends CI_Model{
 				where tdt.noind = '$noind'
 				and tdt.tanggal = '$tanggal'
 				and trim(tdt.kd_ket) = 'TM'";
-		return $this->prs->query($sql)->result_array();
+		return $this->prs->query($sql)->row();
 	}
 
 	public function getPresensi($noind,$tanggal){
@@ -490,15 +520,13 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function gettfingerphp(){
-		$sql = "select 	a.user_name as noind,
-						b.noind_baru,
-						b.nama,
-						count(a.user_name) as jumlah
-				from splseksi.tfinger_php a
-				left join hrd_khs.tpribadi b
-				on a.user_name = b.Noind
-				group by a.user_name,b.Nama
-				order by user_id";
+		$sql = "SELECT b.Noind as noind,
+				b.Noind_Baru as noind_baru,
+				b.Nama as nama,
+				(SELECT count(user_name) FROM splseksi.tfinger_php WHERE user_name = b.Noind) as jumlah
+				FROM  hrd_khs.tpribadi as b
+				WHERE b.Noind in (SELECT user_name FROM splseksi.tfinger_php)
+				ORDER BY noind";
 		return $this->spl->query($sql)->result_array();
 	}
 
@@ -574,11 +602,17 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function getKeteranganJamLembur($noind){
-		$sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind = '$noind' and keluar = '0'";
-		$a = $this->prs->query($sql)->row()->kodesie;
+		$sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind = '$noind'";
+		$a = $this->prs->query($sql);
+
+		if($a->num_rows() > 0) {
+			$a = $a->row()->kodesie;
+		} else {
+			return 'UMUM';
+		}
 
 		if($a == '401010102' || $a == '401010102'){
-			return 'SATPAM';
+			return 'UMUM';//SATPAM
 		}
 
 		return 'UMUM';
@@ -604,17 +638,19 @@ class M_splseksi extends CI_Model{
 
 	public function treffjamlembur($KET, $JENIS_HARI, $HARI){
 		$sql = "SELECT * FROM presensi.treffjamlembur WHERE keterangan='$KET' AND jenis_hari='$JENIS_HARI' AND hari='$HARI' order by urutan asc";
-		return $this->sql->query($sql)->result_array();
+		return $this->spl->query($sql)->result_array();
 	}
 
+	// DELETE ME: mungkin tidak digunakan
 	public function checkSPL($noind, $tanggal){
 		$sql = "SELECT * FROM splseksi.tspl WHERE Tgl_Lembur ='$tanggal' AND noind='$noind'";
-		return $this->spl->query($sql)->num_rows() > 0 ? true : false;
+		// return $this->spl->query($sql)->num_rows() > 0 ? true : false; -> dihilangi karena diganti pengecekan saat input
+		return false;
 	}
 
 	public function selectShift($noind, $tanggal){
 		$tanggal = date('Y-m-d', strtotime($tanggal));
-		$sql = "SELECT jam_msk, jam_plg, break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
+		$sql = "SELECT tanggal, jam_msk, jam_plg, break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		return $this->prs->query($sql)->row();
 	}
 
@@ -623,5 +659,84 @@ class M_splseksi extends CI_Model{
 		$numDay = date('w', strtotime($tanggal))+1;
 		$sql = "SELECT break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tjamshift WHERE numhari='$numDay' and kd_shift in('1','2','3','4')";
 		return $this->prs->query($sql)->result_array();
+	}
+
+	function getAbsensi($noind, $tanggal1, $tanggal2) {
+		// flow
+		// jika tanggal1 & tanggal 2 berbeda
+			// cek shift $masuuk =  max(tanggal1) & $pulang = shift min(tanggal2)
+		// else
+			// cek shift $masuk = min(tanggal1) & $pulang = shift max(tanggal1) 
+		if($tanggal1 == $tanggal2) {
+			$tglKemarin = date('Y-m-d', strtotime('-1 day '.$tanggal1));
+			$selectAbsenPulangKemarin = "SELECT keluar from \"Presensi\".tdatapresensi where noind='$noind' and tanggal='$tglKemarin'";
+			
+			$execute = $this->prs->query($selectAbsenPulangKemarin);
+			$tommorow = '';
+			if($execute->num_rows() > 0) {
+				$tommorow = "AND waktu <> '{$execute->row()->keluar}' ";
+			}
+
+			$sql = "SELECT min(concat(tanggal::date,' ',waktu)::timestamp) as in, 
+						max(concat(tanggal::date,' ',waktu)::timestamp) as out, 
+						count(*) as jumlah 
+					from \"Presensi\".tprs_shift 
+					where noind = '$noind' and tanggal = '$tanggal1' $tommorow;";	
+			
+			$result = $this->prs->query($sql);
+		} else { // beda hari
+			$sql = "SELECT 
+						(select concat('$tanggal1',' ', max(waktu)) from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal1') as in,
+						(select count(*) from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal2') as jumlah,
+						(select concat('$tanggal2',' ', min(waktu)) from \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal2') as out;";
+			$result = $this->prs->query($sql);
+		}
+
+		return $result;
+	}
+
+	function checkingExistSPL($noind, $tanggal, $waktuAwal, $waktuAkhir) {
+		$sql = "SELECT * FROM splseksi.tspl WHERE Tgl_Lembur ='$tanggal' AND noind='$noind'";
+		$result = $this->spl->query($sql)->result_array();
+		
+		$endResult = [
+			'exist' => false,
+			'message' => ''
+		];
+		
+		// jika ada
+		if(count($result)) {
+			foreach($result as $item) {
+				$waktu1 = $item['Tgl_Lembur']." ".$item['Jam_Mulai_Lembur'];
+				// jika jam mulai lembur > jam akhir lembur maka akhir lembur adl besoknya
+				$waktu2 = (strtotime($item['Jam_Mulai_Lembur']) > strtotime($item['Jam_Akhir_Lembur']) ) ? date('Y-m-d', strtotime($item['Tgl_Lembur']." +1 days"))." ".$item['Jam_Akhir_Lembur'] : $item['Tgl_Lembur']." ".$item['Jam_Akhir_Lembur'];
+				
+				// beberapa case pengecekan lembur 
+				$case1 = strtotime($waktuAwal) < strtotime($waktu1) && strtotime($waktuAkhir) < strtotime($waktu1);
+				$case2 = strtotime($waktuAwal) > strtotime($waktu2) && strtotime($waktuAkhir) > strtotime($waktu2);
+				
+				if(!$case1 && !$case2){
+					$endResult = [
+						'exist' => true,
+						'message' => [
+							'tanggal' => $item['Tgl_Lembur'],
+							'jam' => $item['Jam_Mulai_Lembur']." - ".$item['Jam_Akhir_Lembur']
+						]
+					];
+				}
+			}
+		}
+
+		return $endResult;
+	}
+
+	function getNoindBaru($noind) {
+		$sql = "SELECT distinct noind_baru from hrd_khs.tpribadi where noind = '$noind' limit 1";
+		return $this->prs->query($sql)->row()->noind_baru;
+	}
+	
+	function getNameByNoind($noind) {
+		$sql = "SELECT distinct nama from hrd_khs.tpribadi where noind = '$noind' limit 1";
+		return $this->prs->query($sql)->row()->nama;
 	}
 }

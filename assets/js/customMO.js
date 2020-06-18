@@ -1,4 +1,35 @@
 $(document).ready(function () {
+
+    $('.onBtn').click(function () {
+        $('.onBtn').hide();
+        $('.offBtn').show();
+        $('input[name="txtJamPemotonganTarget"]').prop("disabled", false);
+        $('input[name="txtKeteranganPemotonganTarget"]').val('');
+        $('input[name="txtKeteranganPemotonganTarget"]').attr('maxlength','18');
+    });
+
+    $('.offBtn').click(function () {
+        $('.onBtn').show();
+        $('.offBtn').hide();
+        $('input[name="txtJamPemotonganTarget"]').prop("disabled", true);
+        $('input[name="txtKeteranganPemotonganTarget"]').val('');
+        $('input[name="txtKeteranganPemotonganTarget"]').attr('maxlength','29');
+    });
+
+    $(function() {
+      $('input[name="txtJamPemotonganTarget"]').daterangepicker({
+            timePicker: true,
+            timePicker24Hour: true,
+            timePickerIncrement: 1,
+            timePickerSeconds: false,
+            locale: {
+                format: 'HH:mm'
+            }
+      }).on('show.daterangepicker', function (ev, picker) {
+            picker.container.find(".calendar-table").hide();
+      });
+    });
+
     var tblItem = $('#masterItem').DataTable({
         dom: 'Bfrtip',
         columnDefs: [

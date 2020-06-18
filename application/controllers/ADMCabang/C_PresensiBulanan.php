@@ -15,12 +15,14 @@ class C_PresensiBulanan extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('ADMCabang/M_presensibulanan');
+		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$this->checkSession();
 	}
 
@@ -48,7 +50,8 @@ class C_PresensiBulanan extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensibulanan->getSeksiByKodesie($kodesie);
 
-		if($this->session->user != "J1338"){
+		$user = $this->session->user;
+		if(substr($user, 0,1) != 'B' && substr($user, 0,1) != 'D' && substr($user, 0,1) != 'J'){
 			unset($data['UserMenu'][2]);
 			unset($data['UserMenu'][3]);
 		}
@@ -67,7 +70,11 @@ class C_PresensiBulanan extends CI_Controller
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		$tgl = $this->M_presensibulanan->getTanggal($tanggal);
 		$tims = $this->M_presensibulanan->rekapTIMS($tanggal,$kodesie);
-
+		//insert to sys.log_activity
+		$aksi = 'Presensi';
+		$detail = "Export excel tanggal=".$this->input->post('txtPeriodePresensiHarian')." kodesie=$kodesie";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,1,'Data Pegawai Periode '.$tanggal);
 
 

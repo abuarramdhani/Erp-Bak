@@ -16,6 +16,7 @@ class C_DraftCuti extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -211,7 +212,11 @@ class C_DraftCuti extends CI_Controller
 	public function PreviewCetak($id_cuti){ // preview for Hari Perkiraan Lahir Letter :v
 		$id_cuti_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $id_cuti);
 		$id_cuti = $this->encrypt->decode($id_cuti_decode);
-
+		//insert to sys.log_activity
+		$aksi = 'Permohonan Cuti';
+		$detail = "Preview Cetak HPL Cuti Istimewa id=$id_cuti";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$data['data'] = $this->M_permohonancuti->getDataLampiran($id_cuti);
 		$now = date('d-m-Y');
 		$this->load->library('pdf');
@@ -503,6 +508,11 @@ class C_DraftCuti extends CI_Controller
 		if($notif == '-'){
 			$id_cuti = $_POST['id_cuti'];
 			$this->M_permohonancuti->resetTglCuti($id_cuti);
+			//insert to sys.log_activity
+			$aksi = 'Permohonan Cuti';
+			$detail = "Update Cuti Istimewa id=$id_cuti";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			if(isset($hpl)){
 				$start_date = $before;

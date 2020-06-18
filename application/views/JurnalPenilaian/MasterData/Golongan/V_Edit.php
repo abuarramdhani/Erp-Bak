@@ -37,7 +37,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Periode</label>
 								<div class="col-lg-3">
-									<input class="form-control singledatePK" name="txtDate" placeholder="Tanggal" value="<?php echo $gg['tberlaku']; ?>" >
+									<input class="form-control JurnalPenilaian-daterangepickersingledate" name="txtDate" placeholder="Tanggal" value="<?php echo $gg['tberlaku']; ?>" >
 								</div>
 							</div>
 						</div>
@@ -48,7 +48,7 @@
 								<label class="col-lg-2 control-label"> Nomor Golongan </label>
 								<div class="col-lg-7">
 									<input name="txtGolongan" class="form-control" value="<?php echo $gg['num']; ?>">
-									<input type="text" name="txtIdGol" value="<?php echo $gg['id_gol_num']; ?>" hidden>
+									<input type="text" name="txtIdGol" value="<?php echo $gg['id']; ?>" hidden>
 								</div>
 							</div>
 						</div>

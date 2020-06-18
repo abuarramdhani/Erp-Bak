@@ -65,22 +65,6 @@ class C_History extends CI_Controller
 		$datefrom	= $this->input->post('datefrom');
 		$dateto	= $this->input->post('dateto');
 		$result =  $this->M_receive->historyPO($datefrom,$dateto);
-		// dummy array 
-		// $date = array( '17/01/20','17/01/20',  '17/01/20',  '17/01/20');
-		// $shipment_number = array('SJ123', 'SJ456', 'SJ789',  'SJ101112');
-		// $po_number = array('1901000', '1901001', '1901002',  '1901003');
-
-		// $result=array();
-		// for ($i=0; $i < sizeof($po_number) ; $i++) { 
-		// 	if ($date[$i] == $datefrom || $date[$i] ==  $dateto) {
-		// 	$result[$i]['PO_NUMBER'] = $po_number[$i];
-		// 	$result[$i]['SHIPMENT_NUMBER'] = $shipment_number[$i];
-		// 	$result[$i]['DATE'] = $date[$i];
-
-		// 	}
-		// }
-
-
 		// echo"<pre>";print_r($result);exit();
 
 		$data['result'] = $result;
@@ -99,8 +83,9 @@ class C_History extends CI_Controller
 
 		$i=0;
 		foreach ($detail as $value) {
-
 			$detail[$i]['SERIAL_NUMBER'] =  $this->M_receive->serial_number($value['PO_NUMBER'],$value['ID'],$value['SHIPMENT_NUMBER']);
+			$detail[$i]['LPPB_NUMBERS'] =  $this->M_receive->lppb_number($value['PO_NUMBER'],$value['SHIPMENT_NUMBER']);
+
 			
 
 		$i++;
@@ -118,6 +103,8 @@ class C_History extends CI_Controller
 		$serial	= $this->input->post('serial');
 		$descrecipt	= $this->input->post('descrecipt');
 		$itemrecipt	= $this->input->post('itemrecipt');
+		$ket	= $this->input->post('ket');
+
 
 
 		
@@ -130,7 +117,7 @@ class C_History extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8',array(210,297), 0, '', 3, 3, 3, 3, 3, 3); //----- A5-L
+    	$pdf = new mPDF('utf-8',array(210,310), 0, '', 1, 1, 5, 1, 1, 1); 
 		// $tglNama = date("d/m/Y");
 
 		$this->load->library('ciqrcode');
@@ -156,6 +143,8 @@ class C_History extends CI_Controller
 			$data['itemrecipt'] = $itemrecipt;
 			$data['descrecipt'] = $descrecipt;
 			$data['serial'] = $serial;
+			$data['ket'] = $ket;
+
 
     	$pdf_dir = './assets/upload/KartuReceivePo/';
     	if (preg_match("/diesel/i", $descrecipt)) {

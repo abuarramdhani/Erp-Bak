@@ -35,16 +35,12 @@
                                         <div class="col-lg-12">
                                             <label class="col-lg-2">Jenis Rekap :</label>
                                             <div class="form-group col-lg-5">
-                                                <input type="radio" name="PerSurat" class="RD_radioDinas" value="1" required>Rekap Per Surat<br>
+                                                <input checked type="radio" name="PerSurat" class="RD_radioDinas" value="1" required>Rekap Per Surat<br>
                                                 <input type="radio" name="PerSurat" class="RD_radioDinas" value="2" required>Rekap Per Pekerja
                                             </div>
                                         </div>
                                         <div class="col-lg-12" id="RPD_ID">
                                             <label for="id_rekap" class="col-lg-2">ID Izin :</label>
-                                            <!-- <div class="form-group col-lg-5"> -->
-                                                <!-- <input type="number" name="id_rekap[]" class="form-control RPD_id_rekap" multiple> -->
-                                                <!-- <p style="color: red;">*kosongkan kolom ID Izin, untuk menampilkan semua data</p>
-                                            </div> -->
                                             <div class="form-group col-lg-5">
                                                 <select name="id_rekap[]" class="form-control select select2 RPD_id_rekap" multiple>
                                                     <option></option>
@@ -88,3 +84,4 @@
         </div>
     </div>
 </section>
+

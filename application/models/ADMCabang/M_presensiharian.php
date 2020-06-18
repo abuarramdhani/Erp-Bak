@@ -31,7 +31,7 @@ class M_presensiharian extends Ci_Model
 			 $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))
+				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
 		}elseif ($noind == 'B0370') { //ada di ticket
@@ -69,6 +69,13 @@ class M_presensiharian extends Ci_Model
 	    		where left(a.kodesie,3) in ('302','324','325')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
+	    }elseif ($noind == 'H8455') { //Order #574033 dapat mengakses Presensi Harian gudang PPB dan Produksi & Expedisi Pusat
+	    	 $sql = "select a.noind,a.nama, b.seksi
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+	    		where left(a.kodesie,7) in ('3070103','3070201','3070301')
+	    		and a.keluar = false
+				order by a.kodesie,a.noind;";
 	    }else{
 			    if('306030'==substr($kd,0,6)) //ada diticket
 			    {
@@ -98,18 +105,19 @@ class M_presensiharian extends Ci_Model
 		if($noind=='L8001')
 		{
 			$sql = "select waktu
-				from \"Presensi\".tprs_shift2 tp
-				where tp.noind = '$noind'
-				and tp.tanggal = '$tgl'
-				order by tp.waktu";
-		}
-		else
-		{
-			$sql = "select waktu
-				from \"FrontPresensi\".tpresensi tp
-				where tp.noind = '$noind'
-				and tp.tanggal = '$tgl'
-				order by tp.waktu";
+					from \"Presensi\".tprs_shift2 tp
+					where tp.noind = '$noind'
+					and tp.tanggal = '$tgl'
+					order by tp.waktu";
+		} else{
+			$sql = "SELECT DISTINCT tp.waktu
+					FROM \"Presensi\".tprs_shift tp
+					WHERE tp.noind = '$noind' AND tp.tanggal = '$tgl' AND tp.waktu NOT IN ('0')
+					UNION
+					SELECT DISTINCT ftp.waktu
+					FROM \"FrontPresensi\".tpresensi ftp
+					WHERE ftp.noind = '$noind' AND ftp.tanggal = '$tgl'
+					ORDER BY waktu";
 		}
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
@@ -120,9 +128,9 @@ class M_presensiharian extends Ci_Model
 		$tgl1 = $tanggal[0];
 		$tgl2 = $tanggal[1];
 		$sql = "select tp.noind,tp.tanggal,tp.waktu
-				from \"FrontPresensi\".tpresensi tp
+				from \"Presensi\".tprs_shift tp
 				where tp.noind in ($noind)
-				and tp.tanggal between '$tgl1' and '$tgl2'
+				and tp.tanggal between '$tgl1' and '$tgl2' and tp.waktu not in ('0')
 				order by tp.noind,tp.tanggal,tp.waktu";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
@@ -132,7 +140,7 @@ class M_presensiharian extends Ci_Model
 		$sql = "select sum(point) point
 				from \"Presensi\".tdatatim
 				where noind = '$noind'
-				and tanggal = '$tgl'";
+				and tanggal = '$tgl' and point != '0'";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
@@ -151,15 +159,23 @@ class M_presensiharian extends Ci_Model
 	}
 
 	public function getKeteranganByNoind($noind,$tgl){
-		$sql = "select tk.keterangan
+		$sql = "select
+					case when (
+						select sum(point)
+						from \"Presensi\".tdatatim
+						where noind = '$noind'
+						and tanggal = '$tgl'
+						and kd_ket in ('TM', 'TIK')
+						) = 0  and tp.kd_ket in ('TM', 'TIK')
+					then '' else trim(tk.keterangan) end as keterangan
 				from (
-					select kd_ket
+					select trim(kd_ket) as kd_ket
 					from \"Presensi\".tdatapresensi
 					where noind = '$noind'
 					and tanggal = '$tgl'
 					and kd_ket != 'PKJ'
 					union
-					select kd_ket
+					select trim(kd_ket) as kd_ket
 					from \"Presensi\".tdatatim
 					where noind = '$noind'
 					and tanggal = '$tgl'
@@ -218,6 +234,28 @@ class M_presensiharian extends Ci_Model
 				order by shift.tanggal";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
+	}
+
+	public function getCountWaktu($noind,$tgl){
+		$tanggal = explode(" - ", $tgl);
+		$tgl1 = date('Y-m-d', strtotime($tanggal[0]));
+		$tgl2 = date('Y-m-d', strtotime($tanggal[1]));
+		if($noind=='L8001')
+		{
+			$sql = "SELECT max(waktu)
+				from (select count(waktu) as waktu from \"Presensi\".tprs_shift2 tp
+				where tp.noind = '$noind'
+				and tp.tanggal between '$tgl1' and '$tgl2' group by tp.tanggal) as waktu";
+		}
+		else
+		{
+			$sql = "SELECT max(waktu)
+				from (select count(waktu) as waktu from \"Presensi\".tprs_shift tp
+				where tp.noind = '$noind'
+				and tp.tanggal between '$tgl1' and '$tgl2' and tp.waktu not in ('0') group by tp.tanggal) as waktu";
+		}
+		$result = $this->personalia->query($sql);
+		return $result->row()->max;
 	}
 
 	public function getShiftArrayNoind($noind,$tgl){

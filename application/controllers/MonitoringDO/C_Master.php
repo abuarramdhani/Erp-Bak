@@ -37,6 +37,12 @@ class C_Master extends CI_Controller
         }
     }
 
+    public function petugas()
+    {
+      $term = strtoupper($this->input->post('term'));
+      echo json_encode($this->M_monitoringdo->petugas($term));
+    }
+
     //------------------------show the dashboard-----------------------------
     public function index()
     {
@@ -54,6 +60,34 @@ class C_Master extends CI_Controller
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('MonitoringDO/V_Index');
         $this->load->view('V_Footer', $data);
+    }
+
+    public function SubInv()
+    {
+        $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('MonitoringDO/V_Subinv', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
+    public function Subinv_submit()
+    {
+      $data = $this->input->post('Subinv');
+      $datasub = ['datasubinven' => $data];
+      $this->session->set_userdata($datasub);
+
+      redirect('MonitoringDO/SettingDO/');
+
     }
 
     public function SettingDO()
@@ -76,61 +110,70 @@ class C_Master extends CI_Controller
 
     public function countDO()
     {
-      $data[0] = '';
-      $data[1] = '';
-      $data[2] = '';
-      $data[3] = '';
-      $data[4] = '';
-      // $data[0] = sizeof($this->M_monitoringdo->getDO());
-      // $data[1] = sizeof($this->M_monitoringdo->sudahdiAssign());
-      // $data[2] = sizeof($this->M_monitoringdo->sudahdiLayani());
-      // $data[3] = sizeof($this->M_monitoringdo->sudahdiMuat());
-      // $data[4] = sizeof($this->M_monitoringdo->GetSudahCetakCekFoCount());
-      echo json_encode($data);
+        $data[0] = '';
+        $data[1] = '';
+        $data[2] = '';
+        $data[3] = '';
+        $data[4] = '';
+        // $data[0] = sizeof($this->M_monitoringdo->getDO());
+        // $data[1] = sizeof($this->M_monitoringdo->sudahdiAssign());
+        // $data[2] = sizeof($this->M_monitoringdo->sudahdiLayani());
+        // $data[3] = sizeof($this->M_monitoringdo->sudahdiMuat());
+        // $data[4] = sizeof($this->M_monitoringdo->GetSudahCetakCekFoCount());
+        echo json_encode($data);
     }
 
     public function GetSetting()
     {
-      $datag = $this->M_monitoringdo->getDO();
-      // echo "<pre>";
-      // print_r($datag);
-      // die;
-      if (!empty($datag[0]['DO/SPB'])) {
-        foreach ($datag as $g) {
-            $dataku[] = $g['DO/SPB'];
-        }
-        $no = 0;
-        foreach ($dataku as $k) {
-            $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
-            $no++;
-        }
+        // $datag = $this->M_monitoringdo->getDO();
+        // echo "<pre>";
+        // print_r($datag);
+        // die;
+        // if (!empty($datag[0]['DO/SPB'])) {
+        //     foreach ($datag as $g) {
+        //         $dataku[] = $g['DO/SPB'];
+        //     }
+        //     $no = 0;
+        //     foreach ($dataku as $k) {
+        //         $datakau[] = $this->M_monitoringdo->getDetailData($k);
+        //         $no++;
+        //     }
 
-        $final = [];
-        foreach ($datakau as $f) {
-            for ($i=0; $i < sizeof($f); $i++) {
-                if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
-                    $var = 'false';
-                    break;
-                } else {
-                    $var = 'true';
-                }
-            }
-            array_push($final, $var);
-        }
+            // echo "<pre>";
+            // print_r($dataku);
+            // die;
 
-        $finaldestination = [];
-        $number = 0;
-        foreach ($datag as $d) {
-            $d['CHECK'] = $final[$number];
-            $number++;
-            array_push($finaldestination, $d);
-        }
-        $data['get'] = $finaldestination;
-      }else {
+            // $final = [];
+            // $var = '';
+            // foreach ($datakau as $f) {
+            //     for ($i=0; $i < sizeof($f); $i++) {
+            //         if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
+            //             $var = 'false';
+            //             break;
+            //         } else {
+            //             $var = 'true';
+            //         }
+            //     }
+            //     array_push($final, $var);
+            // }
+
+            // $finaldestination = [];
+            // $number = 0;
+            // foreach ($datag as $d) {
+            //     $d['CHECK'] = $final[$number];
+            //     $number++;
+            //     array_push($finaldestination, $d);
+            // }
+            // $data['get'] = $finaldestination;
+        //     $data['get'] = $datakau;
+        // } else {
+        //     $data['get'] = $this->M_monitoringdo->getDO();
+        // }
+        // echo "<pre>";
+        // print_r($data);
+        // die;
         $data['get'] = $this->M_monitoringdo->getDO();
-      }
-
-      $this->load->view('MonitoringDO/V_Ajax_Setting', $data);
+        $this->load->view('MonitoringDO/V_Ajax_Setting', $data);
     }
 
     public function InputDO()
@@ -157,7 +200,6 @@ class C_Master extends CI_Controller
         $id = $this->input->post('requests_number');
         $user = $this->input->post('person_id');
         $data = $this->M_monitoringdo->getDataSelected($id);
-
         echo json_encode($this->M_monitoringdo->insertDO(array(
           'HEADER_ID' => $data[0]['HEADER_ID'],
           'REQUEST_NUMBER' => $id,
@@ -172,45 +214,64 @@ class C_Master extends CI_Controller
             'HEADER_ID' => $this->input->post('header_id'),
             'REQUEST_NUMBER' => $this->input->post('requests_number'),
             'PERSON_ID' => strtoupper($this->input->post('person_id')),
-            'DELIVERY_FLAG'=> 'N'
+            'DELIVERY_FLAG'=> 'Y',
+            'PLAT_NUMBER' => $this->input->post('plat_number')
         )));
     }
 
     public function insertPlatnumber()
     {
-      $plat = strtoupper($this->input->post('plat_nomer'));
-      $rm = $this->input->post('rm');
-      $hi = $this->input->post('hi');
-      $data = [
+        $plat = strtoupper($this->input->post('plat_nomer'));
+        $rm = $this->input->post('rm');
+        $hi = $this->input->post('hi');
+        $data = [
         'PLAT_NUMBER' => $plat,
         'DELIVERY_FLAG'=> 'Y',
       ];
-      $this->M_monitoringdo->updatePlatnumber($data, $rm, $hi);
-      echo json_encode('sukses');
+        $this->M_monitoringdo->updatePlatnumber($data, $rm, $hi);
+        echo json_encode('sukses');
     }
 
     public function insertDOtampung()
     {
-
-      function get_client_ip() {
-          $ipaddress = '';
-          if (isset($_SERVER['HTTP_CLIENT_IP']))
-              $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-          else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-              $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-          else if(isset($_SERVER['HTTP_X_FORWARDED']))
-              $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-          else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-              $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-          else if(isset($_SERVER['HTTP_FORWARDED']))
-              $ipaddress = $_SERVER['HTTP_FORWARDED'];
-          else if(isset($_SERVER['REMOTE_ADDR']))
-              $ipaddress = $_SERVER['REMOTE_ADDR'];
-          else
-              $ipaddress = 'UNKNOWN';
-          return $ipaddress;
-      }
-      // function non active
+        function get_client_ip()
+        {
+            $ipaddress = '';
+            if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+                $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+            } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            } elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
+                $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+            } elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
+                $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+            } elseif (isset($_SERVER['HTTP_FORWARDED'])) {
+                $ipaddress = $_SERVER['HTTP_FORWARDED'];
+            } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+                $ipaddress = $_SERVER['REMOTE_ADDR'];
+            } else {
+                $ipaddress = 'UNKNOWN';
+            }
+            return $ipaddress;
+        }
+        // $tampungan = $this->input->post('array_atr');
+        // array_pop($tampungan);
+        // $rm = $this->input->post('requests_number');
+        // foreach ($tampungan as $t) {
+        //     $data = [
+        //   'HEADER_ID' => $this->input->post('header_id'),
+        //   'REQUEST_NUMBER' => $rm,
+        //   'INVENTORY_ITEM_ID' => $t,
+        //   'ORDER_NUMBER' => $this->input->post('order_number'),
+        //   'IP_ADDRESS' => get_client_ip()
+        // ];
+        //     $this->M_monitoringdo->insertDOtampung($data);
+        // }
+        //
+        // // $this->M_monitoringdo->runAPIDO($rm);
+        // $this->M_monitoringdo->DeleteDOtampung($rm, get_client_ip());
+        //
+        // echo json_encode('sukses!!!');
     }
 
     public function GetDetail()
@@ -242,9 +303,9 @@ class C_Master extends CI_Controller
 
     public function GetSudahCetak()
     {
-       // $data['get'] = $this->M_monitoringdo->sudahCetak();
-       $data['get'] = $this->M_monitoringdo->GetSudahCetak();
-       $this->load->view('MonitoringDO/V_Ajax_SudahCetak', $data);
+        // $data['get'] = $this->M_monitoringdo->sudahCetak();
+        $data['get'] = $this->M_monitoringdo->GetSudahCetak();
+        $this->load->view('MonitoringDO/V_Ajax_SudahCetak', $data);
     }
 
     public function GetSudahCetakDetail()
@@ -303,42 +364,54 @@ class C_Master extends CI_Controller
     public function CetakPDF($id)
     {
         //data trial
-        $data['get_header'] = $this->M_monitoringdo->headerSurat($id);
+        $data['get_header'] = $this->M_monitoringdo->headerDariMbaDiv($id);
         $data['get_body'] = $this->M_monitoringdo->bodySurat($id);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
         $data['totalbody'] = sizeof($data['get_body']);
         $data['totalserial'] = sizeof($data['get_serial']);
+        $data['cek_spb_do'] = $this->M_monitoringdo->cekSpbDo($id);
+        // echo "<pre>";
+        // print_r($data);
+        // die;
 
         function generateInTicketNumber($length = 5)
         {
-          $characters = '0123456789';
-          $charactersLength = strlen($characters);
-          $randomString = '';
-          for ($i = 0; $i < $length; $i++) $randomString .= $characters[rand(0, $charactersLength - 1)];
-          return $randomString;
+            $characters = '0123456789';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomString;
         }
 
         $datacetak = [
-          'REQUEST_NUMBER' => $data['get_header'][0]['NO_DO'],
-          'ORDER_NUMBER' => $data['get_header'][0]['NO_SO'],
+          'REQUEST_NUMBER' => $data['get_header'][0]['REQUEST_NUMBER'],
+          'ORDER_NUMBER' => empty($data['get_header'][0]['NO_SO']) ? NULL : $data['get_header'][0]['NO_SO'],
           'NOMOR_CETAK' => generateInTicketNumber()
         ];
+
         $this->M_monitoringdo->insertDOCetak($datacetak);
 
+        // echo "<pre>";
+        // print_r($datacetak);
+        // die;
+
         if (!empty($data['get_serial'])) {
-          $s = [];$hasil = [];
-          foreach ($data['get_serial'] as $a) {
-            array_push($s, $a['DESCRIPTION']);
-          }
-          $sai = array_unique($s);
-          $set = array_values($sai);
-          for ($i=0; $i < sizeof($set); $i++) {
-            $explode = explode(' ', $set[$i]);
-            array_push($hasil, $explode[0]);
-          }
-          $data['check_header_sub'] = $set;
-          $data['header_sub'] = $hasil;
+            $s = [];
+            $hasil = [];
+            foreach ($data['get_serial'] as $a) {
+                array_push($s, $a['DESCRIPTION']);
+            }
+            $sai = array_unique($s);
+            $set = array_values($sai);
+            for ($i=0; $i < sizeof($set); $i++) {
+                $explode = explode(' ', $set[$i]);
+                array_push($hasil, $explode[0]);
+            }
+            $data['check_header_sub'] = $set;
+            $data['header_sub'] = $hasil;
         }
 
         if (!empty($id)) {
@@ -347,59 +420,91 @@ class C_Master extends CI_Controller
 
             $pdf 		= $this->pdf->load();
             $this->load->library('ciqrcode');
-            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
+            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 0);
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/img')) {
-                mkdir('./assets/img', 0777, true);
-                chmod('./assets/img', 0777);
+            if (!is_dir('./assets/img/monitoringDOQRCODE')) {
+                mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
+                chmod('./assets/img/monitoringDOQRCODE', 0777);
             }
 
-            $params['data']		= $data['get_header'][0]['NO_DO'];
+            $params['data']		= $data['get_header'][0]['DO/SPB'];
             $params['level']	= 'H';
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['DO/SPB'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
-            $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-            $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
-        		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:40.5%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-        				<br><br><br><br><br><br><br>
+            $aku    	= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
+            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 35) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 70) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 105) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 140) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
+            }else {
+              $a = '<br><br><br><br><br><br><br>';
+            }
+
+            if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
+            }else {
+              $appr = '';
+            }
+
+            if (!empty($data['get_footer'][0]['CREATED_BY'])) {
+              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
+            }else {
+              $appr2 = '';
+            }
+            // $newDate = date("m-d-Y", strtotime($orgDate));
+            $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
+        		<tr style="width:100%">
+        			<td rowspan="2" style="white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+                '.$a.'
         			 </td>
-        			<td rowspan="3" style="vertical-align:top;width:13%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
+        			<td rowspan="3" style="vertical-align:top;width:98px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
         				<br><br>
         				Tgl. ________
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
+        			<td rowspan="3" style="vertical-align:top;width:90px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
         				Tgl. _______
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:11%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
-        				Tgl. _______
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['GUDANG'].'
+              <td rowspan="3" style="vertical-align:top;width:90px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengeluaran : <br> <br>
+                Tgl. _______
+                <br><br><br><br><br><br><br><br>
+              </td>
+        			<td rowspan="3" style="vertical-align:top;width:95px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
+        				Tgl. '.$data['get_footer'][0]['ASSIGN_DATE'].'
+        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_NAME'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
         		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ADMIN'].'
+        			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
+        				<br><br>'.$appr.'
         			</td>
-        			<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['KEPALA'].'
+        			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
+        				<br><br>'.$appr2.'
         			</td>
         		</tr>
         		<tr>
-        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">Perhatian : Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
+        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:8.5px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
         		</tr>
-        	</table>');
+        	</table>
+            <i style="font-size:10px;">
+              *Putih : Ekspedisi &nbsp;&nbsp;&nbsp;&nbsp;Merah : Marketing &nbsp;&nbsp;&nbsp;&nbsp;Kuning : Akuntansi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hijau : Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Biru : Gudang FG
+            </i>');
             $pdf->WriteHTML($aku);
             $pdf->Output($filename, 'I');
+
         // ========================end process=========================
         } else {
             echo json_encode(array(
@@ -409,44 +514,48 @@ class C_Master extends CI_Controller
         }
 
         if (!unlink($params['savename'])) {
-          echo ("Error deleting");
-        }else {
-          unlink($params['savename']);
+            echo("Error deleting");
+        } else {
+            unlink($params['savename']);
         }
     }
 
     public function PDF2($id)
     {
         //data trial
-        $data['get_header'] = $this->M_monitoringdo->headerSurat($id);
+        $data['get_header'] = $this->M_monitoringdo->headerDariMbaDiv($id);
         $data['get_body'] = $this->M_monitoringdo->bodySurat($id);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
         $data['totalbody'] = sizeof($data['get_body']);
         $data['totalserial'] = sizeof($data['get_serial']);
+        $data['cek_spb_do'] = $this->M_monitoringdo->cekSpbDo($id);
 
         function generateInTicketNumber($length = 5)
         {
-          $characters = '0123456789';
-          $charactersLength = strlen($characters);
-          $randomString = '';
-          for ($i = 0; $i < $length; $i++) $randomString .= $characters[rand(0, $charactersLength - 1)];
-          return $randomString;
+            $characters = '0123456789';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomString;
         }
 
         if (!empty($data['get_serial'])) {
-          $s = [];$hasil = [];
-          foreach ($data['get_serial'] as $a) {
-            array_push($s, $a['DESCRIPTION']);
-          }
-          $sai = array_unique($s);
-          $set = array_values($sai);
-          for ($i=0; $i < sizeof($set); $i++) {
-            $explode = explode(' ', $set[$i]);
-            array_push($hasil, $explode[0]);
-          }
-          $data['check_header_sub'] = $set;
-          $data['header_sub'] = $hasil;
+            $s = [];
+            $hasil = [];
+            foreach ($data['get_serial'] as $a) {
+                array_push($s, $a['DESCRIPTION']);
+            }
+            $sai = array_unique($s);
+            $set = array_values($sai);
+            for ($i=0; $i < sizeof($set); $i++) {
+                $explode = explode(' ', $set[$i]);
+                array_push($hasil, $explode[0]);
+            }
+            $data['check_header_sub'] = $set;
+            $data['header_sub'] = $hasil;
         }
 
         if (!empty($id)) {
@@ -455,57 +564,88 @@ class C_Master extends CI_Controller
 
             $pdf 		= $this->pdf->load();
             $this->load->library('ciqrcode');
-            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
+            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 0);
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/img')) {
-                mkdir('./assets/img', 0777, true);
-                chmod('./assets/img', 0777);
+            if (!is_dir('./assets/img/monitoringDOQRCODE')) {
+                mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
+                chmod('./assets/img/monitoringDOQRCODE', 0777);
             }
 
-            $params['data']		= $data['get_header'][0]['NO_DO'];
+            $params['data']		= $data['get_header'][0]['DO/SPB'];
             $params['level']	= 'H';
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['DO/SPB'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
-            $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
+          $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-            $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
-        		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:40.5%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-        				<br><br><br><br><br><br><br>
+            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 35) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 70) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 105) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
+            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 140) {
+              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
+            }else {
+              $a = '<br><br><br><br><br><br><br>';
+            }
+
+            if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
+            }else {
+              $appr = '';
+            }
+
+            if (!empty($data['get_footer'][0]['CREATED_BY'])) {
+              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
+            }else {
+              $appr2 = '';
+            }
+            // $newDate = date("m-d-Y", strtotime($orgDate));
+            $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
+        		<tr style="width:100%">
+        			<td rowspan="2" style="white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+                '.$a.'
         			 </td>
-        			<td rowspan="3" style="vertical-align:top;width:13%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
+        			<td rowspan="3" style="vertical-align:top;width:98px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
         				<br><br>
         				Tgl. ________
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
+        			<td rowspan="3" style="vertical-align:top;width:90px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
         				Tgl. _______
         				<br><br><br><br><br><br><br><br>
         			</td>
-        			<td rowspan="3" style="vertical-align:top;width:11%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
-        				Tgl. _______
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['GUDANG'].'
+              <td rowspan="3" style="vertical-align:top;width:90px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengeluaran : <br> <br>
+                Tgl. _______
+                <br><br><br><br><br><br><br><br>
+              </td>
+        			<td rowspan="3" style="vertical-align:top;width:95px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
+        				Tgl. '.$data['get_footer'][0]['ASSIGN_DATE'].'
+        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ASSIGNER_NAME'].'
         			</td>
         			<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
         		</tr>
         		<tr>
-        			<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['ADMIN'].'
+        			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
+        				<br><br>'.$appr.'
         			</td>
-        			<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
-        				<br><br><br><br><br><br>'.$data['get_footer'][0]['KEPALA'].'
+        			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
+        				<br><br>'.$appr2.'
         			</td>
         		</tr>
         		<tr>
-        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">Perhatian : Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
+        			<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:8.5px;padding:5px;height:60px!important;">Perhatian :<br>Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
         		</tr>
-        	</table>');
+        	</table>
+            <i style="font-size:10px;">
+              *Putih : Ekspedisi &nbsp;&nbsp;&nbsp;&nbsp;Merah : Marketing &nbsp;&nbsp;&nbsp;&nbsp;Kuning : Akuntansi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hijau : Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Biru : Gudang FG
+            </i>');
             $pdf->WriteHTML($aku);
             $pdf->Output($filename, 'I');
         // ========================end process=========================
@@ -517,51 +657,33 @@ class C_Master extends CI_Controller
         }
 
         if (!unlink($params['savename'])) {
-          echo ("Error deleting");
-        }else {
-          unlink($params['savename']);
+            echo("Error deleting");
+        } else {
+            unlink($params['savename']);
         }
+    }
+
+    public function cekkpd()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "You haven't access";
+      }else {
+        $param = [
+          'rn' => $this->input->post('rn'),
+          'no_ind' => $this->input->post('no_ind')
+        ];
+        $res = $this->M_monitoringdo->cekkpd($param);
+        echo json_encode($res);
+      }
     }
 
 
     public function cekapi()
     {
-      $datag = $this->M_monitoringdo->getDO();
-      foreach ($datag as $g) {
-          $dataku[] = $g['DO/SPB'];
-      }
-      $no = 0;
-      foreach ($dataku as $k) {
-          $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
-          $no++;
-      }
-
-      $final = [];
-      foreach ($datakau as $f) {
-          for ($i=0; $i < sizeof($f); $i++) {
-              if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
-                  $var = 'false =>'.$f[$i]['DO/SPB'];
-              } else {
-                  $var = 'true =>'.$f[$i]['DO/SPB'];
-              }
-          }
-          array_push($final, $var);
-      }
-
-      $finaldestination = [];
-      $number = 0;
-      foreach ($datag as $d) {
-          $d['CHECK'] = $final[$number];
-          $number++;
-          array_push($finaldestination, $d);
-      }
-      $data['get'] = $finaldestination;
-
-      $cekaja = $this->M_monitoringdo->getDetailDataPengecekan('3408360');
-
-      $data['get_header'] = $this->M_monitoringdo->headerSurat('3749115');
-      echo "<pre>";
-      print_r($data['get_header']);
-      die;
+        $get = $this->M_monitoringdo->footersurat('2000000935');
+        // $get = $this->M_monitoringdo->cekkpd();
+        echo "<pre>";
+        print_r($get);
+        die;
     }
 }

@@ -86,6 +86,7 @@ class C_ApprovalKaizen extends CI_Controller {
 		$reason_rej = array();
 
 		$getAllApprover = $this->M_approvalkaizen->getApprover($data['kaizen'][0]['kaizen_id'],FALSE);
+
 		$a = 0;
 		foreach ($getAllApprover as $key => $value) {
 			$data['kaizen'][0]['status_app'][$value['level']]['level'] = $value['level'];

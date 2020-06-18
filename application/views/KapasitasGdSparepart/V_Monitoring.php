@@ -67,14 +67,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form method="post" autocomplete="off" action="<?php echo base_url('KapasitasGdSparepart/Monitoring/exportSPB')?>">
+                                <form method="post" target="_blank" autocomplete="off" action="<?php echo base_url('KapasitasGdSparepart/Monitoring/Keterangan')?>">
                                 <div class="panel-body" id="tb_MonSPB">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <label class="text-right">Tanggal : <?php echo date("d F Y") ?></label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="text-right">DOSP / SPB masuk hari ini : <?= $jml_spb ?> lembar</label>
+                                            <label class="text-right">DOSP / SPB masuk hari ini : <?= $jml_spb ?> lembar (<?= $dopcs?> pcs)</label>
                                         </div>
                                         <div class="col-md-6">
                                             <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb(this)">Rincian</button></td>
@@ -102,7 +102,7 @@
                                                                 <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                                 <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                                 <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                             </tr>
                                                         <?php $no++; $i++;}?>
                                                     </tbody>
@@ -154,7 +154,7 @@
                                                                 <td><input type="hidden" name="selesai_pelayanan[]" value="<?= $val['SELESAI_PELAYANAN']?>"><?= $val['SELESAI_PELAYANAN']?></td>
                                                                 <td><input type="hidden" name="waktu_pelayanan[]" value="<?= $val['WAKTU_PELAYANAN']?>"><?= $val['WAKTU_PELAYANAN']?></td>
                                                                 <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PELAYAN']?>"><?= $val['PIC_PELAYAN']?></td>
-                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                             </tr>
                                                         <?php $no++; $i++; }?>
                                                     </tbody>
@@ -183,7 +183,7 @@
                                                                 <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                                 <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                                 <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                             </tr>
                                                         <?php $no++; }?>
                                                     </tbody>
@@ -235,7 +235,7 @@
                                                             <td><input type="hidden" name="selesai_pengeluaran[]" value="<?= $val['SELESAI_PENGELUARAN']?>"><?= $val['SELESAI_PENGELUARAN']?></td>
                                                             <td><input type="hidden" name="waktu_pengeluaran[]" value="<?= $val['WAKTU_PENGELUARAN']?>"><?= $val['WAKTU_PENGELUARAN']?></td>
                                                             <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PENGELUARAN']?>"><?= $val['PIC_PENGELUARAN']?></td>
-                                                            <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                            <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                         </tr>
                                                     <?php $no++; $i++; } ?>
                                                 </tbody>
@@ -266,7 +266,7 @@
                                                             <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                             <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                             <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PELAYAN']?>"><?= $val['PIC_PELAYAN']?></td>
-                                                            <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                            <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                         </tr>
                                                     <?php $no++; } ?>
                                                 </tbody>
@@ -318,7 +318,7 @@
                                                                 <td><input type="hidden" name="selesai_packing[]" value="<?= $val['SELESAI_PACKING']?>"><?= $val['SELESAI_PACKING']?></td>
                                                                 <td><input type="hidden" name="waktu_packing[]" value="<?= $val['WAKTU_PACKING']?>"><?= $val['WAKTU_PACKING']?></td>
                                                                 <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PACKING']?>"><?= $val['PIC_PACKING']?></td>
-                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                             </tr>
                                                         <?php $no++; $i++; } ?>
                                                     </tbody>
@@ -349,7 +349,7 @@
                                                                 <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                                 <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                                 <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PENGELUARAN']?>"><?= $val['PIC_PENGELUARAN']?></td>
-                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                             </tr>
                                                         <?php $no++; } ?>
                                                     </tbody>
@@ -375,6 +375,32 @@
                                                     <tr>
                                                        <th style="padding-left:15px">Penerimaan menyelesaikan</th>
                                                        <th>: <?= $jml_gd ?> lembar</th>
+                                                    </tr>
+                                                    <tr>
+                                                       <th style="padding-left:15px">Jumlah Colly</th>
+                                                       <th>: <?= $jml_colly?></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th style="padding-left:15px" colspan="2">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered table-hover text-center" style="width:100%;">
+                                                                    <thead class="bg-info">
+                                                                        <th>Kardus Kecil</th>
+                                                                        <th>Kardus Sedang</th>
+                                                                        <th>Kardus Panjang</th>
+                                                                        <th>Karung</th>
+                                                                        <th>Peti</th>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <td><?= $dus_kecil?></td>
+                                                                        <td><?= $dus_sdg?></td>
+                                                                        <td><?= $dus_pjg?></td>
+                                                                        <td><?= $karung?></td>
+                                                                        <td><?= $peti?></td>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                 </tbody>
                                             </table>

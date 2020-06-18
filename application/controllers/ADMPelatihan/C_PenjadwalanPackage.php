@@ -54,6 +54,13 @@ class C_PenjadwalanPackage extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 		
 		$data['GetScheduledPackage'] = $this->M_penjadwalanpackage->GetScheduledPackage();
 		
@@ -76,6 +83,13 @@ class C_PenjadwalanPackage extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$data['GetPackage'] = $this->M_penjadwalanpackage->GetPackage();
 
@@ -97,6 +111,13 @@ class C_PenjadwalanPackage extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$data['GetPackageId'] = $this->M_penjadwalanpackage->GetPackageId($id);
 
@@ -133,6 +154,13 @@ class C_PenjadwalanPackage extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 		
 		$data['GetScheduledPackageId'] = $this->M_penjadwalanpackage->GetScheduledPackageId($id);
 		//$data['GetPackageTraining'] = $this->M_masterpackage->GetPackageTrainingNum($num);
@@ -155,6 +183,13 @@ class C_PenjadwalanPackage extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$training		= $this->M_penjadwalanpackage->GetPackageIdNumber($id);
 		$training_id	= $training[0]->package_id;

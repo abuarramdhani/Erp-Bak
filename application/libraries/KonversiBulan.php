@@ -311,4 +311,46 @@ class KonversiBulan
   		return $hari;
   	}
   }
+
+  public function convertke_Hari_Indonesia($nama_hari)
+  {
+	/**
+	* Fungsi ini digunakan untuk konvert hari en ke in
+	* @param $nama_hari String
+	* @param $upper Int 0/1 default 0/false
+	* @version 1.0
+	*/
+  	$nama_hari = str_replace( array(
+  			'Mon',
+  			'Tue',
+  			'Wed',
+  			'Thu',
+  			'Fri',
+  			'Sat',
+  			'Sun',
+  		),
+  	     array(
+  			'Senin',
+  			'Selasa',
+  			'Rabu',
+  			'Kamis',
+  			'Jumat',
+  			'Sabtu',
+  			'Minggu',
+  		), $nama_hari);
+  	return $nama_hari;
+  }
+
+  	public function konvert_periode_en($periode)
+  	{
+  		/**
+		* Fungsi ini digunakan untuk konvert tanggal periode bulan dan tahun, bulan menjadi en
+		* @param $periode String ex.(2020-03)
+		* @param $upper Int 0/1 default 
+		* @version 1.0
+		*/
+		$m = date('M', strtotime($periode.'-01'));
+		$expr = explode('-', $periode);
+		return $m.' - '.$expr[0];
+  	}
 }

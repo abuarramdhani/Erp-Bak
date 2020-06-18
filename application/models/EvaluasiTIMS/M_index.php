@@ -2427,7 +2427,7 @@ class M_Index extends CI_Model
 						tp.kodesie = ts.kodesie
 						and tp.keluar = '0'
 						and (tp.kd_jabatan between '02' and '09'
-						or noind like 'J7004')
+						or noind like 'G1041')
 						and ts.bidang like '-%'
 						and ts.dept like '%$s%'
 					order by
@@ -2463,13 +2463,13 @@ class M_Index extends CI_Model
     public function getNamaKadept($id, $text, $ks)
     {
     	if ($id == '1') {
-    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '04')";
+    		$add = "and (noind = 'G1041' or kd_jabatan between '02' and '04')";
     	}elseif ($id == '2') {
-    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '07')";
+    		$add = "and (noind = 'G1041' or kd_jabatan between '02' and '07')";
     	}elseif ($id == '3') {
-    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '09')";
+    		$add = "and (noind = 'G1041' or kd_jabatan between '02' and '09')";
     	}else{
-    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '10')";
+    		$add = "and (noind = 'G1041' or kd_jabatan between '02' and '10')";
     	}
     	$sql = "SELECT noind, case when jenkel = 'L' then 'Bapak ' else 'Ibu ' end || initcap(trim(nama)) nama FROM hrd_khs.tpribadi
 				where keluar = '0' $add
@@ -2487,13 +2487,13 @@ class M_Index extends CI_Model
     	$nama = strtoupper(substr($nama, ($pos+1)));
     	// echo $nama;
     	if ($id == '1') {
-    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '04')";
+    		$add = "and (noind = 'G1041' or kd_jabatan between '02' and '04')";
     	}elseif ($id == '2') {
-    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '07')";
+    		$add = "and (noind = 'G1041' or kd_jabatan between '02' and '07')";
     	}elseif ($id == '3') {
-    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '09')";
+    		$add = "and (noind = 'G1041' or kd_jabatan between '02' and '09')";
     	}else{
-    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '10')";
+    		$add = "and (noind = 'G1041' or kd_jabatan between '02' and '10')";
     	}
     	$sql = "SELECT substring(kodesie,1,1) kodesie,noind, case when jenkel = 'L' then 'Bapak ' else 'Ibu ' end || initcap(trim(nama)) nama FROM hrd_khs.tpribadi
 				where keluar = '0' $add

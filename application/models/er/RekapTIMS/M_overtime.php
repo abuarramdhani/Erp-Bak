@@ -20,7 +20,7 @@ class M_overtime extends CI_Model
 			$kd = '';
 		}
 		if ($detail == 1 ){
-		$sql = "select to_char(tdp.tanggal, 'mon/YYYY') periode,
+		$sql = "select to_char(tdp.tanggal, 'YYYYMM') periode,
 				tdp.noind,
 				tp.nama,
 				ts.seksi,
@@ -47,8 +47,8 @@ class M_overtime extends CI_Model
 				$kd
 				and tdp.kd_ket = 'PKJ'
 				and left(tdp.noind,1) in ($hubungan)
-				group by to_char(tdp.tanggal, 'mon/YYYY'),tdp.noind,tp.nama,ts.seksi
-				order by ts.seksi,tdp.noind,to_char(tdp.tanggal, 'mon/YYYY')";
+				group by to_char(tdp.tanggal, 'YYYYMM'),tdp.noind,tp.nama,ts.seksi
+				order by ts.seksi,tdp.noind,to_char(tdp.tanggal, 'YYYYMM')";
 			}
 			else {
 				$sql = "select

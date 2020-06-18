@@ -61,7 +61,7 @@
 		</tbody>
 	</table>
 	<br></br>
-	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke alamat email fuad.quick@gmail.com UP Ibu Rizqy Widhianggitasari dan di cc operator1@quick.co.id UP Ibu Reny dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetHeaderCetakSpk['merk_kendaraan']." Plat No ".$FleetHeaderCetakSpk['no_pol'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
+	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke email purchasing.sec11@gmail.com dan WhatsApp ke 0811 2575 216 up/ Pak Fikri dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetHeaderCetakSpk['merk_kendaraan']." Plat No ".$FleetHeaderCetakSpk['no_pol'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
 		Demikian surat ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.
 	</p>
 	<div style="position: absolute;bottom: 100px;left: 100px">
@@ -79,7 +79,7 @@
 				<td style="padding: 7px;text-align: center;">Rajiwan</td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">(Ass. Ka. Unit GA & Hubungan Kerja)</td>
+				<td style="padding: 7px;text-align: center;">(Kepala Seksi Utama GA & Hubungan Kerja)</td>
 			</tr>
 		</table>
 	</div>
@@ -95,10 +95,10 @@
 				<td style="padding: 30px 7px"> </td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">Reny Sulistiyaningtyas</td>
+				<td style="padding: 7px;text-align: center;">Kania Niarningtyas</td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">(Kasi Madya EDP)</td>
+				<td style="padding: 7px;text-align: center;">(Kasi Madya GA)</td>
 			</tr>
 		</table>
 	</div>

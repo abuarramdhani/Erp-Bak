@@ -99,8 +99,23 @@
 											<?php } ?>
 										</tbody>
 									</table>
-									<div class="row text-center" style="padding-right: 10px">
-										<button type="submit" title="Export" class="btn" style="background-color:inherit;"><i class="fa fa-3x fa-download"></i></button>
+									<?php foreach ($insert as $key) {
+										foreach ($key['Detail'] as $val) { ?>
+											<input type="hidden" name="resource[]" class="resource" value="<?= $val['resource_code'] ?>">
+											<input type="hidden" name="nomesin[]" class="nomesin" value="<?= $val['mesin'] ?>">
+											<input type="hidden" name="tagnum[]" class="tagnum" value="<?= $val['tag_number']?>">
+											<input type="hidden" name="jenis[]" class="jenis" value="<?= $val['jenis_mesin'] ?>">
+											<input type="hidden" name="cost[]" class="cost" value="<?= $val['cost_center'] ?>">
+											<input type="hidden" name="deptc[]" class="deptc" value="<?= $dept ?>">
+											<input type="hidden" name="username[]" class="username" value="<?= $val['username'] ?>">
+											<input type="hidden" name="utilitas2[]" class="utilitas" value="<?= $key['utilitas'] ?>">
+									<?php } }?>
+									<input type="hidden" id="tgl_update" name="tgl_last" value="<?= $tanggal ?>">
+									<input type="hidden" id="plan" name="plan" value="<?= $plan ?>">
+									<input type="hidden" id="nama_user" name="nama_user" value="<?= $nama_user ?>">
+									<div class="row" style="padding-right: 10px">
+										<button type="button" class="btn btn-warning" onclick="insertPUM(this)"><i class="fa fa-upload"></i> Upload Oracle</button>
+										<button type="submit" title="Export" class="btn btn-success" style="position: absolute; right: 0;"><i class="fa fa-download"></i> Export Excel</button>
 									</div>
 									</form>
 								</div>

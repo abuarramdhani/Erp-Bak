@@ -21,11 +21,13 @@ class M_transferpuasa extends CI_Model
 		$sql = " select noind,
 						tempat_makan 
 				 From hrd_khs.tpribadi 
-				 where  hrd_khs.tpribadi.puasa = '1' and keluar = '0' and noind = 'F2228'
-				 group by 	hrd_khs.tpribadi.Noind,
+				 where  puasa = '1' 
+				 and keluar = '0'
+				 and left(noind,1) not in ('M','Z','L')
+				 group by 	noind,
 				 			tempat_makan 
 				 ORDER BY 	tempat_makan, 
-				 			hrd_khs.tpribadi.Noind";
+				 			noind";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}

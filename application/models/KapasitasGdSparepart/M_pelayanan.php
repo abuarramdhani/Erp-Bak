@@ -11,11 +11,13 @@ class M_pelayanan extends CI_Model
     public function tampilhariini() {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
+                to_char(mulai_pelayanan, 'YYYY-MM-DD HH24:MI:SS') as jam_pelayanan,
                 tgl_dibuat, to_char(mulai_pelayanan, 'HH24:MI:SS') as mulai_pelayanan, pic_pelayan,
-                jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pelayanan, urgent, waktu_pelayanan
+                jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pelayanan, urgent, waktu_pelayanan, bon
                 from khs_tampung_spb
                 where selesai_pelayanan is null
                 and cancel is null
+                and (bon != 'PENDING' or bon is null)
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -31,7 +33,7 @@ class M_pelayanan extends CI_Model
                 to_char(mulai_pelayanan, 'HH24:MI:SS') as jam_mulai, 
                 to_char(selesai_pelayanan, 'HH24:MI:SS') as jam_selesai,
                 to_char(selesai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as selesai_pelayanan,
-                waktu_pelayanan, urgent, pic_pelayan
+                waktu_pelayanan, urgent, pic_pelayan, bon
                 from khs_tampung_spb
                 where TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date'
                 and cancel is null
@@ -113,7 +115,7 @@ class M_pelayanan extends CI_Model
     }
 
     public function getPIC($term){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "select * from khs_tabel_user
                 where pic like '%$term%'";
         $query = $oracle->query($sql);

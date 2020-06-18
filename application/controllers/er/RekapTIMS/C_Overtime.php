@@ -14,6 +14,7 @@ class C_Overtime extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -143,6 +144,11 @@ class C_Overtime extends CI_Controller
 		$kdsie = $do['1'];
 		$hubker = explode("-", $do['2']);
 		$hub = "";
+		//insert to sys.log_activity
+		$aksi = 'REKAP TIMS';
+		$detail = "Export Excel Overtime Pekerja kodesie = $kdsie";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		foreach ($hubker as $key) {
 			if ($hub == "") {
 				$hub = "'".$key."'";
@@ -215,12 +221,20 @@ class C_Overtime extends CI_Controller
 		}
 
 			public function ExportPdf($data){
+
+				set_time_limit(0);
+				
 				$data = str_replace("%20", " ", $data);
 				$do = explode("_", $data);
 				$export = $do['0'];
 				$kdsie = $do['1'];
 				$hubker = explode("-", $do['2']);
 				$hub = "";
+				//insert to sys.log_activity
+				$aksi = 'REKAP TIMS';
+				$detail = "Export PDF Overtime Pekerja kodesie = $kdsie";
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 				foreach ($hubker as $key) {
 					if ($hub == "") {
 						$hub = "'".$key."'";

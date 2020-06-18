@@ -164,7 +164,10 @@ class M_api extends CI_Model {
                 $sql = "SELECT distinct mtrh.REQUEST_NUMBER \"NO_SPB\"
                                         ,mtrh.ATTRIBUTE7 \"SO\"
                                         ,party.PARTY_NAME \"CUST\"
-                                        ,ship_loc.address1 \"ALAMAT\"
+                                        ,case when ship_loc.address1 is null
+                                         then mtrh.TO_SUBINVENTORY_CODE ||' ('|| mtrh.ATTRIBUTE4
+                                         else ship_loc.address1
+                                         end \"ALAMAT\"
                                         ,msib.SEGMENT1 \"KODE_ITEM\"
                                         ,msib.DESCRIPTION \"NAMA_ITEM\"
                                         ,mtrl.quantity \"QTY\"
@@ -181,7 +184,7 @@ class M_api extends CI_Model {
                                 ,hz_party_sites ship_ps
                         where mtrh.HEADER_ID(+) = mtrl.header_id
                         and mtrl.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                        and mtrh.ATTRIBUTE7 = ooha.ORDER_NUMBER
+                        and mtrh.ATTRIBUTE7 = ooha.ORDER_NUMBER(+)
                         and ooha.sold_to_org_id = cust_acct.cust_account_id(+)
                         and cust_acct.party_id = party.party_id(+)
                         and ooha.ship_to_org_id = ship_su.site_use_id(+)
@@ -269,7 +272,10 @@ class M_api extends CI_Model {
         $sql = "SELECT distinct mtrh.REQUEST_NUMBER \"NO SPB\"
                                 ,mtrh.ATTRIBUTE7 \"SO\"
                                 ,party.PARTY_NAME \"CUST\"
-                                ,ship_loc.address1 \"ALAMAT\"
+                                ,case when ship_loc.address1 is null
+                                         then mtrh.TO_SUBINVENTORY_CODE ||' ('|| mtrh.ATTRIBUTE4
+                                         else ship_loc.address1
+                                         end \"ALAMAT\"
                                 ,msib.SEGMENT1 \"KODE ITEM\"
                                 ,msib.DESCRIPTION \"NAMA ITEM\"
                                 ,mtrl.quantity \"QTY\"
@@ -286,7 +292,7 @@ class M_api extends CI_Model {
                         ,hz_party_sites ship_ps
                         where mtrh.HEADER_ID(+) = mtrl.header_id
                         and mtrl.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                        and mtrh.ATTRIBUTE7 = ooha.ORDER_NUMBER
+                        and mtrh.ATTRIBUTE7 = ooha.ORDER_NUMBER(+)
                         AND ooha.sold_to_org_id = cust_acct.cust_account_id(+)
                         AND cust_acct.party_id = party.party_id(+)
                         and ooha.ship_to_org_id = ship_su.site_use_id(+)

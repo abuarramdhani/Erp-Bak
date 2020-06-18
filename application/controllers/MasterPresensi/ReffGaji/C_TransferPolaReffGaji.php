@@ -3,6 +3,8 @@ Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
 
 set_time_limit(0);
 ini_set("memory_limit","-1");
+setlocale(LC_TIME, "id_ID.utf8");
+date_default_timezone_set("Asia/Jakarta");
 
 class C_TransferPolaReffGaji extends CI_Controller
 {
@@ -89,6 +91,7 @@ class C_TransferPolaReffGaji extends CI_Controller
 		session_write_close();
 		flush();
 		$datajadi = array();
+		$datapdf = array();
 		$angka = 0;
 		$simpan_noind = "";
 		$simpan_tanggal = "";
@@ -222,17 +225,22 @@ class C_TransferPolaReffGaji extends CI_Controller
 				$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "M";
 			}elseif ($dt['kd_ket'] == "TIK" or $dt['kd_ket'] == "PSP") {
 				$ijin = 1 - $this->M_transferpolareffgaji->hitung_tik($dt['noind'],$dt['tanggal']);
-				if($ijin < 1){
+				$insKon = $this->M_transferpolareffgaji->hitungIk($dt['noind'],$dt['tanggal']);
+				if(floatval($insKon) < 1){
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = $ijin;
-				if (strtolower($dt['inisial']) == "s1") {
-					$datajadi[$angka]['hmp'] -= 1;
-				}elseif (strtolower($dt['inisial']) == "s2") {
-					$datajadi[$angka]['hms'] -= 1;
-				}elseif (strtolower($dt['inisial']) == "s3") {
-					$datajadi[$angka]['hmm'] -= 1;
-				}elseif (strtolower($dt['inisial']) == "su") {
-					$datajadi[$angka]['hmu'] -= 1;
-				}
+					if (strtolower($dt['inisial']) == "s1") {
+						$datajadi[$angka]['hmp'] -= 1;
+					}elseif (strtolower($dt['inisial']) == "s2") {
+						$datajadi[$angka]['hms'] -= 1;
+					}elseif (strtolower($dt['inisial']) == "s3") {
+						$datajadi[$angka]['hmm'] -= 1;
+					}elseif (strtolower($dt['inisial']) == "su") {
+						$datajadi[$angka]['hmu'] -= 1;
+					}else{
+						$datajadi[$angka]['hmp'] -= 1;
+					}
+				}else{
+					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = strtolower($dt['inisial']);
 				}
 			}elseif ($dt['kd_ket'] !== "PKJ" and $dt['kd_ket'] !== "PLB" and $dt['kd_ket'] !== "HL" ) {
 				if ($dt['kd_ket'] == "PSK") {
@@ -241,20 +249,22 @@ class C_TransferPolaReffGaji extends CI_Controller
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "CT";
 				}elseif ($dt['kd_ket'] == "PRM") {
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "RM";
+				}elseif ($dt['kd_ket'] == "PIP") {
+					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "IP";
 				}elseif ($dt['kd_ket'] !== "TT") {
 					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "S1";
 					$datajadi[$angka]['hmp'] += 1;
 				}elseif ($dt['kd_ket'] == "TT") {
-					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = strtoupper($dt['inisial']);
-					if (strtolower($dt['inisial']) == "s1") {
-						$datajadi[$angka]['hmp'] += 1;
-					}elseif (strtolower($dt['inisial']) == "s2") {
-						$datajadi[$angka]['hms'] += 1;
-					}elseif (strtolower($dt['inisial']) == "s3") {
-						$datajadi[$angka]['hmm'] += 1;
-					}elseif (strtolower($dt['inisial']) == "su") {
-						$datajadi[$angka]['hmu'] += 1;
-					}
+					// $datajadi[$angka][$bulan_str.$arraytanggal['2']] = strtoupper($dt['inisial']);
+					// if (strtolower($dt['inisial']) == "s1") {
+					// 	$datajadi[$angka]['hmp'] += 1;
+					// }elseif (strtolower($dt['inisial']) == "s2") {
+					// 	$datajadi[$angka]['hms'] += 1;
+					// }elseif (strtolower($dt['inisial']) == "s3") {
+					// 	$datajadi[$angka]['hmm'] += 1;
+					// }elseif (strtolower($dt['inisial']) == "su") {
+					// 	$datajadi[$angka]['hmu'] += 1;
+					// }
 				}
 			}elseif ($dt['kd_ket'] !== "HL") {
 				if (strtolower($dt['inisial']) !== "s1" and strtolower($dt['inisial']) !== "s2" and strtolower($dt['inisial']) !== "s3" and strtolower($dt['inisial']) !== "su" ) {
@@ -274,6 +284,8 @@ class C_TransferPolaReffGaji extends CI_Controller
 				}
 
 			}
+
+
 
 			$simpan_tanggal = $dt['tanggal'];
 			$simpan_noind = $dt['noind'];
@@ -414,11 +426,26 @@ class C_TransferPolaReffGaji extends CI_Controller
 			//
 			session_write_close();
 			flush();
+
+			if (substr($value['noind'], 0, 1) == 'A') {
+				$datapdf[] = $value;
+			}
 		}
 
 		$table->close();
 
-		echo '<a href="'.site_url("MasterPresensi/ReffGaji/TransferPolaReffGaji/download?file=lv_info_pola&time=".$waktu).'" class="btn btn-info">lv_info_pola.dbf</a>';
+		$data['datajadi'] = $datapdf;
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
+		// $this->load->view('MasterPresensi/ReffGaji/TransferPolaReffGaji/V_cetak', $data);
+		$html = $this->load->view('MasterPresensi/ReffGaji/TransferPolaReffGaji/V_cetak', $data, true);
+		$waktu_cetak = strftime('%d/%h/%Y %H:%M:%S');
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_cetak.". Halaman {PAGENO} dari {nb}</i>");
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output(FCPATH."assets/upload/TransferReffGaji/lv_info_pola".$waktu.".pdf", 'F');
+		// $pdf->Output($filename, 'I');
+		echo '<a href="'.site_url("MasterPresensi/ReffGaji/TransferPolaReffGaji/download?file=lv_info_pola&type=dbf&time=".$waktu).'" class="btn btn-info">lv_info_pola.dbf</a>
+		<a href="'.site_url("MasterPresensi/ReffGaji/TransferPolaReffGaji/download?file=lv_info_pola&type=pdf&time=".$waktu).'" class="btn btn-danger">lv_info_pola.pdf</a>';
 	}
 
 	public function cekProgress(){
@@ -442,11 +469,12 @@ class C_TransferPolaReffGaji extends CI_Controller
 	public function download(){
 		$file = $this->input->get('file');
 		$waktu = $this->input->get('time');
+		$type = $this->input->get('type');
 		// print_r($_GET);exit();
 		// echo site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".dbf");exit();
-		$data = file_get_contents(site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".dbf"));
+		$data = file_get_contents(site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".".$type));
 		// echo $data;
-		header('Content-disposition: attachment; filename='.$file.'.dbf');
+		header('Content-disposition: attachment; filename='.$file.".".$type);
 		// header("Content-type: application/octet-stream");
 		echo $data;
 	}

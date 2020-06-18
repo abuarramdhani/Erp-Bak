@@ -98,6 +98,12 @@ class C_Core extends CI_Controller
 			$coreData[$aksen2]['shift'] = $this->input->post('txtShift');
 			$coreData[$aksen2]['print_code'] = $this->input->post('print_code');
 			$coreData[$aksen2]['employee_id'] = $employeed;
+			$coreData[$aksen2]['ket_pengurangan'] = $this->input->post('txtKeteranganPemotonganTarget');
+			if (array_key_exists('txtJamPemotonganTarget', $_POST)) {
+				$coreData[$aksen2]['jam_pengurangan'] = str_replace(' ', '', $this->input->post('txtJamPemotonganTarget')) ;
+			} else {
+				$coreData[$aksen2]['jam_pengurangan'] = '';
+			}
 			$aksen2++;
 		}
 		

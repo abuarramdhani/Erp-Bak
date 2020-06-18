@@ -1,4 +1,4 @@
-            <?php 
+<?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_kasiepembelian extends CI_Controller{
@@ -77,16 +77,18 @@ class C_kasiepembelian extends CI_Controller{
 	{
 		$invoice_id = $this->input->post('invoice_id');
 		$buyer = $this->input->post('no_induk_buyer');
+		$note = $this->input->post('note');
 
-		$submitKeBuyer = $this->M_kasiepembelian->ForwardToBuyer($invoice_id,$buyer);
+		$submitKeBuyer = $this->M_kasiepembelian->ForwardToBuyer($invoice_id,$buyer,$note);
+		// $isiNote = $this->M_kasiepembelian->isiNote($invoice_id,$note);
 	}
 
 	public function ambilAlert()
 	{
 		$getStatusSatu = $this->M_kasiepembelian->getStatusSatu();
-		$status = $getStatusSatu[0]['SATU'];
+		// echo $getStatusSatu; exit();
 
-		echo json_encode($status);
+		echo json_encode($getStatusSatu);
 	}
 
 	public function ambilAlert2()
@@ -130,6 +132,8 @@ class C_kasiepembelian extends CI_Controller{
 		$data['invoice'] = $invoice_id;
 		$data['feedback'] = $feedback;
 
+		// echo "<pre>";print_r($data['feedback']);exit();
+
 		$this->load->view('MonitoringInvKasiePembelian/V_TabelConfirmation', $data);
 	}
 
@@ -159,8 +163,16 @@ class C_kasiepembelian extends CI_Controller{
 
 	public function getDataBuyer()
 	{
+		$invoice_id = $this->input->post('invoice_id');
 		$getDataBuyer = $this->M_kasiepembelian->getBuyer();
+		$data_purchasing = $this->M_kasiepembelian->getStatusPurc($invoice_id);
+		$cariPo = $this->M_kasiepembelian->getPoandBuyer($invoice_id);
+		$po_number = $cariPo[0]['PO_NUMBER'];
+		$cariBuyer = $this->M_kasiepembelian->cariBuyerDefault($po_number);
+
 		$data['buyer'] = $getDataBuyer;
+		$data['param'] = $data_purchasing;
+		$data['default'] = $cariBuyer;
 
 		$this->load->view('MonitoringInvKasiePembelian/V_buyer', $data);
 	}
@@ -937,9 +949,9 @@ class C_kasiepembelian extends CI_Controller{
 		$invoice_id = $this->input->post('mi-check-list[]');
 		$saveDate = date('d-m-Y H:i:s');
 
-		echo "<pre>";
-		print_r($invoice_id);
-		exit();
+		// echo "<pre>";
+		// print_r($invoice_id);
+		// exit();
 	}
 		// $this->M_kasiepembelian->approveInvoice($invoice_id,$status,$saveDate);
 		// $this->M_kasiepembelian->inputstatuspurchasing($invoice_id,$saveDate,$status);
@@ -953,6 +965,39 @@ class C_kasiepembelian extends CI_Controller{
 
 	}
 
+	public function showReturnedfromAkuntansi()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$show = $this->M_kasiepembelian->showInv($invoice_id);
+		$data['show'] = $show;
+		return $this->load->view('MonitoringInvKasiePembelian/V_returnedForm', $data);
+	}
+
+		public function showModalReturnBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$show = $this->M_kasiepembelian->showInvBuyer($invoice_id);
+		$data['show'] = $show;
+		return $this->load->view('MonitoringInvKasiePembelian/V_returnedFormBuyer', $data);
+	}
+
+	public function returnToAkuntansi()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$note = $this->input->post('note_return_purchasing');
+		$action_date = date('d-m-Y H:i:s');
+		$this->M_kasiepembelian->returnToAkuntansi($invoice_id, $action_date, $note);
+	}
+
+	public function returnToAkuntansiBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$note = $this->input->post('note_return_buyer');
+		$action_date = date('d-m-Y H:i:s');
+		$this->M_kasiepembelian->returnToAkuntansiBuyer($invoice_id, $action_date, $note);
+	}
+
 
 
 }
+?>

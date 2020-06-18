@@ -11,8 +11,9 @@ class C_Rekap extends CI_Controller {
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
-          //load the login model
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
+          //load the login model
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -273,6 +274,12 @@ class C_Rekap extends CI_Controller {
 		$section	= $this->input->post('txtSeksi_export');
 		$detail 	= $this->input->post('txtDetail');
 		$lokasi 	= $this->input->post('txtLokasi_export');
+
+		//insert to sys.log_activity
+		$aksi = 'REKAP TIMS';
+		$detail = "Export Excel perarea kerje tanggal=".$periode1." - ".$periode2;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();

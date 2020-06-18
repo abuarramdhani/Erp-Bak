@@ -10,6 +10,7 @@ class C_MasterJobDescription extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 
@@ -82,7 +83,7 @@ class C_MasterJobDescription extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/MasterJobDescription/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 
 			$namaJobDescription 	= 	strtoupper($this->input->post('txtJdNameHeader'));
@@ -124,6 +125,11 @@ class C_MasterJobDescription extends CI_Controller
     		);
 			$this->M_jobdesk->setJobdesk($data);
 			$header_id = $this->db->insert_id();
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Set Master Jobdesk id=$header_id";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/MasterJobDescription'));
 		}
@@ -168,7 +174,7 @@ class C_MasterJobDescription extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/MasterJobDescription/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaJobDescription 	= 	strtoupper($this->input->post('txtJdNameHeader', TRUE));
 			$detailJobDescription 	= 	$this->input->post('txaJdDetailHeader', TRUE);
@@ -208,6 +214,11 @@ class C_MasterJobDescription extends CI_Controller
 				'kodesie' 	=> $kodesie,
     		);
 			$this->M_jobdesk->updateJobdesk($data, $plaintext_string);
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Update Master Jobdesk id=$plaintext_string";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/MasterJobDescription'));
 		}
@@ -250,6 +261,11 @@ class C_MasterJobDescription extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_jobdesk->deleteJobdesk($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'DOC STANDARIZATION';
+		$detail = "Delete Master Jobdesk id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('DocumentStandarization/MasterJobDescription'));
     }

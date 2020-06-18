@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
- * 
+ *
  */
 class C_Rekap extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -19,6 +19,7 @@ class C_Rekap extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('ADMCabang/M_monitoringpresensi');
 
 		$this->checkSession();
 	}
@@ -33,7 +34,7 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function index(){
-		if($this->session->user != "J1338"){
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			echo "Prohibited";exit();
 		}
 		$user_id = $this->session->userid;
@@ -54,10 +55,9 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function pekerja(){
-		if($this->session->user != "J1338"){
+		if(!$this->M_monitoringpresensi->getAksesAtasanProduksi($this->session->user)){
 			echo "Prohibited";exit();
 		}
-		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Rekap Per Pekerja';
@@ -78,7 +78,6 @@ class C_Rekap extends CI_Controller
 	}
 
 	public function getData(){
-		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$tanggalAwal = $this->input->post('tanggalAwal');
 		$tanggalAkhir = $this->input->post('tanggalAkhir');
 		$kodesie = $this->session->kodesie;
@@ -109,14 +108,78 @@ class C_Rekap extends CI_Controller
 			$q_seksi = "";
 		}
 
-
 		$data = $this->M_monitoringpresensi->rekapPekerja($tanggalAwal,$tanggalAkhir,$kodesie,$q_status,$q_unit,$q_seksi);
-		print_r(json_encode($data));
+		// echo "<pre>";
 		// print_r($data);
+		// die;
+		print_r(json_encode($data));
+	}
+
+	function cetakPDF(){
+		ini_set('memory_limit', '256M');
+		ini_set('max_execution_time', 300);
+		$this->load->library('pdf');
+		$tanggalAwal = $this->input->get('tanggalAwal');
+		$tanggalAkhir = $this->input->get('tanggalAkhir');
+
+		$diff = abs(strtotime($tanggalAkhir) - strtotime($tanggalAwal));
+		$years = floor($diff / (365*60*60*24));
+		$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+		$days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24)) + 1;
+
+		$statusKerja = $this->input->get('statusKerja');
+		$unitKerja = $this->input->get('unitKerja');
+		$seksiKerja = $this->input->get('seksiKerja');
+		if($statusKerja != "empty"){
+			$statusKerja = explode(',', $statusKerja);
+			$statusKerja = array_map(function($val){
+				return "'$val'";
+			}, $statusKerja);
+			$statusKerja = implode(",", $statusKerja);
+
+			$q_status = "AND left(a.noind,1) IN ($statusKerja) ";
+		}else{
+			$q_status = "";
+		}
+
+		if(!empty($unitKerja) and $unitKerja != ""){
+			$q_unit = "AND left(a.kodesie,5) = '$unitKerja'";
+		}else{
+			$q_unit = "";
+		}
+
+		if(!empty($seksiKerja) and $seksiKerja != ""){
+			$seksiKerja = explode(' - ', $seksiKerja)[0];
+			$q_seksi = "AND left(a.kodesie,7) = '$seksiKerja' ";
+		}else{
+			$q_seksi = "";
+		}
+
+
+		$kodesie = $this->session->kodesie;
+
+		$data['data'] = $this->M_monitoringpresensi->rekapPekerja($tanggalAwal,$tanggalAkhir,$kodesie,$q_status,$q_unit,$q_seksi);
+		$data['days'] = $days;
+
+		$formatTglAwal = date('d_F_Y',strtotime($tanggalAwal));
+    	$formatTglAkhir = date('d_F_Y',strtotime($tanggalAkhir));
+
+		// echo "<pre>";
+		// print_r($data);exit();
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('', 'A4-L', 0, '', 10, 10, 10, 10, 5, 5);
+		$html 	= $this->load->view('ADMCabang/Rekap/V_RekapPDF',$data,true);
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$pdf->WriteHTML($stylesheet,1);
+		$pdf->AddPage();
+
+		$pdf->WriteHTML($html,2);
+		$pdf->Output('rekapPekerja_'.$formatTglAwal.'-'.$formatTglAkhir.'.pdf','I');
+		$pdf->set_time_limit(0);
+
 	}
 
 	function cetakExcel(){
-		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$this->load->library('Excel');
 		$tanggalAwal = $this->input->get('tanggalAwal');
 		$tanggalAkhir = $this->input->get('tanggalAkhir');
@@ -129,7 +192,6 @@ class C_Rekap extends CI_Controller
 		$statusKerja = $this->input->get('statusKerja');
 		$unitKerja = $this->input->get('unitKerja');
 		$seksiKerja = $this->input->get('seksiKerja');
-		// echo "<pre>";var_dump($statusKerja);exit();
 		if($statusKerja != "empty"){
 			$statusKerja = explode(',', $statusKerja);
 			$statusKerja = array_map(function($val){
@@ -240,8 +302,8 @@ class C_Rekap extends CI_Controller
 			   )
 			);
 
-		$worksheet->getStyle('A3:I3')->applyFromArray($thead);
-		$worksheet->getStyle('A3:I3')->applyFromArray($borderleft);
+		$worksheet->getStyle('A3:L3')->applyFromArray($thead);
+		$worksheet->getStyle('A3:L3')->applyFromArray($borderleft);
 		$worksheet->getStyle('A3')->applyFromArray($borderright);
 		$worksheet->getStyle('B3')->applyFromArray($borderright);
 		$worksheet->getStyle('C3')->applyFromArray($borderright);
@@ -251,35 +313,41 @@ class C_Rekap extends CI_Controller
 		$worksheet->getStyle('G3')->applyFromArray($borderright);
 		$worksheet->getStyle('H3')->applyFromArray($borderright);
 		$worksheet->getStyle('I3')->applyFromArray($borderright);
-		$worksheet->getStyle('A3:I3')->applyFromArray($bordertop);
-		$worksheet->getStyle('A3:I3')->applyFromArray($borderbottom);
+		$worksheet->getStyle('J3')->applyFromArray($borderright);
+		$worksheet->getStyle('K3')->applyFromArray($borderright);
+		$worksheet->getStyle('L3')->applyFromArray($borderright);
+		$worksheet->getStyle('A3:L3')->applyFromArray($bordertop);
+		$worksheet->getStyle('A3:L3')->applyFromArray($borderbottom);
 
 
 
 		//Width
 		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(18);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(18);
 
 		$sheet->setTitle('Sheet1');
 		$sheet->setCellValue('A3','No');
 		$sheet->setCellValue('B3','Nomor Induk');
 		$sheet->setCellValue('C3','Nama');
 		$sheet->setCellValue('D3','Seksi');
-		$sheet->setCellValue('E3','Jumlah Izin Pribadi');
-		$sheet->setCellValue('F3','Jumlah Mangkir');
-		$sheet->setCellValue('G3','Jumlah Sakit');
-		$sheet->setCellValue('H3','Jumlah Izin Pamit');
-		$sheet->setCellValue('I3','Presentase Kehadiran');
-
-
-
+		$sheet->setCellValue('E3','Jumlah Terlambat');
+		$sheet->setCellValue('F3','Jumlah Izin Pribadi');
+		$sheet->setCellValue('G3','Jumlah Mangkir');
+		$sheet->setCellValue('H3','Jumlah Sakit');
+		$sheet->setCellValue('I3','Jumlah Izin Pamit (Cuti)');
+		$sheet->setCellValue('J3','Jumlah Izin Perusahaan');
+		$sheet->setCellValue('K3','Jumlah Kehadiran');
+		$sheet->setCellValue('L3','Persentase Kehadiran');
 
 		$i = 3;
 		$nomor = 0;
@@ -297,24 +365,31 @@ class C_Rekap extends CI_Controller
 			$kolomG='G'.$i;
 			$kolomH='H'.$i;
 			$kolomI='I'.$i;
+			$kolomJ='J'.$i;
+			$kolomK='K'.$i;
+			$kolomL='L'.$i;
 
-			$persentaseKehadiran = round(($value['bekerja'] / $days * 100),2);
+			$persentaseKehadiran = round(((intval($value['bekerja']) - intval($value['izin_pribadi']) ) / $days * 100),2);
+			// $persentaseKehadiran = round(($value['bekerja'] / $days * 100),2);
 
 			$sheet  ->setCellValueExplicit($kolomA, $nomor, PHPExcel_Cell_DataType::TYPE_NUMERIC)
 					->setCellValueExplicit($kolomB, $value['noind'], PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomC, rtrim($value['nama']), PHPExcel_Cell_DataType::TYPE_STRING)
 					->setCellValueExplicit($kolomD, $value['seksi'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomE, $value['izin_pribadi'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomF, $value['mangkir'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomG, $value['sakit'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomH, $value['izin_pamit'] , PHPExcel_Cell_DataType::TYPE_STRING)
-					->setCellValueExplicit($kolomI, $persentaseKehadiran.' % ' , PHPExcel_Cell_DataType::TYPE_STRING);
+					->setCellValueExplicit($kolomE, $value['terlambat'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomF, $value['izin_pribadi'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomG, $value['mangkir'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomH, $value['sakit'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomI, $value['izin_pamit'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomJ, $value['izin_perusahaan'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomK, $value['bekerja'] , PHPExcel_Cell_DataType::TYPE_STRING)
+					->setCellValueExplicit($kolomL, $persentaseKehadiran.' % ' , PHPExcel_Cell_DataType::TYPE_STRING);
 
 		$worksheet->getStyle($kolomA)->applyFromArray($alignment);
 		$worksheet->getStyle($kolomB)->applyFromArray($alignment);
 		$worksheet->getStyle($kolomD)->applyFromArray($alignment);
-		$worksheet->getStyle($kolomA.':'.$kolomI)->applyFromArray($tdata);
-		
+		$worksheet->getStyle($kolomA.':'.$kolomL)->applyFromArray($tdata);
+
 
 		$worksheet->getStyle($kolomA)->applyFromArray($borderleft);$worksheet->getStyle($kolomA)->applyFromArray($borderright);
 		$worksheet->getStyle($kolomB)->applyFromArray($borderleft);$worksheet->getStyle($kolomB)->applyFromArray($borderright);
@@ -325,6 +400,9 @@ class C_Rekap extends CI_Controller
 		$worksheet->getStyle($kolomG)->applyFromArray($borderleft);$worksheet->getStyle($kolomG)->applyFromArray($borderright);
 		$worksheet->getStyle($kolomH)->applyFromArray($borderleft);$worksheet->getStyle($kolomH)->applyFromArray($borderright);
 		$worksheet->getStyle($kolomI)->applyFromArray($borderleft);$worksheet->getStyle($kolomI)->applyFromArray($borderright);
+		$worksheet->getStyle($kolomJ)->applyFromArray($borderleft);$worksheet->getStyle($kolomJ)->applyFromArray($borderright);
+		$worksheet->getStyle($kolomK)->applyFromArray($borderleft);$worksheet->getStyle($kolomK)->applyFromArray($borderright);
+		$worksheet->getStyle($kolomL)->applyFromArray($borderleft);$worksheet->getStyle($kolomL)->applyFromArray($borderright);
 
 		$worksheet->getStyle($kolomA)->applyFromArray($borderbottom);$worksheet->getStyle($kolomA)->applyFromArray($bordertop);
 		$worksheet->getStyle($kolomB)->applyFromArray($borderbottom);$worksheet->getStyle($kolomB)->applyFromArray($bordertop);
@@ -335,6 +413,9 @@ class C_Rekap extends CI_Controller
 		$worksheet->getStyle($kolomG)->applyFromArray($borderbottom);$worksheet->getStyle($kolomG)->applyFromArray($bordertop);
 		$worksheet->getStyle($kolomH)->applyFromArray($borderbottom);$worksheet->getStyle($kolomH)->applyFromArray($bordertop);
 		$worksheet->getStyle($kolomI)->applyFromArray($borderbottom);$worksheet->getStyle($kolomI)->applyFromArray($bordertop);
+		$worksheet->getStyle($kolomJ)->applyFromArray($borderbottom);$worksheet->getStyle($kolomJ)->applyFromArray($bordertop);
+		$worksheet->getStyle($kolomK)->applyFromArray($borderbottom);$worksheet->getStyle($kolomK)->applyFromArray($bordertop);
+		$worksheet->getStyle($kolomL)->applyFromArray($borderbottom);$worksheet->getStyle($kolomL)->applyFromArray($bordertop);
 		}
 		// $worksheet->getStyle('E4:'.$kolomI)->getAlignment()
   //   										->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
@@ -367,8 +448,7 @@ class C_Rekap extends CI_Controller
 
 	}
 
-	function getGrafik(){		
-		$this->load->model('ADMCabang/M_monitoringpresensi');
+	function getGrafik(){
 		$noinduk = $this->input->get('noinduk');
 		$tanggalAwal = $this->input->get('tanggalAwal');
 		$tanggalAkhir = $this->input->get('tanggalAkhir');
@@ -377,14 +457,12 @@ class C_Rekap extends CI_Controller
 
 		$dt = $this->M_monitoringpresensi->getGrafikPiePerPekerja($noinduk,$tanggalAwal,$tanggalAkhir,$kodesie);
 
-		// echo "<pre>";print_r($dt);exit();
-
 		$label = array();
 		$presensi = array();
 		$tanggalPresensi = array();
 		$dt[0]['bekerja'] -= $dt[0]['izin_pribadi'];
 		foreach ($dt[0] as $key => $value) {
-			if($key != "noind" and $key != "nama" and $key != "seksi" and $key != "masukkerja" and $key != "tgl_izin_pribadi" and $key != "tgl_mangkir" and $key != "tgl_sakit" and $key != "tgl_izin_pamit" and $key != "tgl_izin_perusahaan" and $key != "tgl_terlambat"){
+			if($key != "noind" and $key != "nama" and $key != "seksi" and $key != "masukkerja" and $key != "tgl_izin_pribadi" and $key != "tgl_mangkir" and $key != "tgl_sakit" and $key != "tgl_izin_pamit" and $key != "tgl_izin_perusahaan" and $key != "tgl_terlambat" and $key != "tgl_bekerja"){
 				if($key == "terlambat")
 					$key = "Terlambat";
 				if($key == "izin_pribadi")
@@ -394,7 +472,7 @@ class C_Rekap extends CI_Controller
 				if($key == "sakit")
 					$key = "Sakit";
 				if($key == "izin_pamit")
-					$key = "Izin Pamit";
+					$key = "Izin Pamit (Cuti)";
 				if($key == "bekerja")
 					$key = "Bekerja";
 				if($key == "izin_perusahaan")
@@ -403,17 +481,28 @@ class C_Rekap extends CI_Controller
 
 				$presensi[] = $value;
 			}
-			if($key == "tgl_terlambat" or $key == "tgl_izin_pribadi" or $key == "tgl_mangkir" or $key == "tgl_sakit" or $key == "tgl_izin_pamit" or $key == "tgl_izin_perusahaan"){
 				$tanggalPresensi[$key] = $value;
+
+
+		}
+		$tglBekerja = explode(' , ', $tanggalPresensi['tgl_bekerja']);
+		$tglIzinPribadi = explode(' , ', $tanggalPresensi['tgl_izin_pribadi']);
+		foreach ($tglBekerja as $key => $bkj) {
+			foreach ($tglIzinPribadi as $key => $izinPribadi) {
+				if($bkj == $izinPribadi){
+					unset($tglBekerja[array_search($bkj, $tglBekerja)]);
+				}
 			}
 		}
-		// echo "<pre>";print_r($tanggalPresensi);exit();
+		$tglBekerja = array_values($tglBekerja);
+		$tglBekerja = implode(' , ', $tglBekerja);
+
+		$tanggalPresensi['tgl_bekerja'] = $tglBekerja;
 		$data['inf'] = $dt[0];
 		$data['label'] = $label;
 		$data['data'] = $presensi;
 		$data['tanggalPresensi'] = $tanggalPresensi;
 		print_r(json_encode($data));
-
 	}
 }
 ?>

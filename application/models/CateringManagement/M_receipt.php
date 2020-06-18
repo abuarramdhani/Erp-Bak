@@ -26,6 +26,11 @@ class M_receipt extends CI_Model {
 			from cm.cm_receipt a
 			left join cm.cm_type b on a.order_type_id = b.type_id
 			left join cm.cm_catering c on a.catering_id = c.catering_id
+			where (
+				select count(*)
+				from cm.cm_receipt_qty d 
+				where a.receipt_id = d.receipt_id
+			) = 0
 			order by a.receipt_id desc";
 			$query = $this->db->query($sql);
 			return $query->result_array();

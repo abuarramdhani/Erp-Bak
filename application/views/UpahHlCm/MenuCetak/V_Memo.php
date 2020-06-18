@@ -14,7 +14,7 @@
 								<label class="control-label">Periode</label>
 							</div>
 							<div class="col-lg-3">
-								<select class="select select2" data-placeholder="Bulan" name="periode" style="width: 100%">
+								<select required class="select select2" data-placeholder="Bulan" name="periode" style="width: 100%">
 									<option></option>
 									<?php if (isset($periodeGaji) and !empty($periodeGaji)) {
 										foreach ($periodeGaji as $key) {
@@ -53,6 +53,29 @@
 					</div>
 					<br>
 					<div class="row">
+						<div class="form-group">
+							<div class="col-lg-2" style="text-align: right;">
+								<label class="control-label">Tujuan Surat</label>
+							</div>
+							<div class="col-lg-3">
+							<input required type="text" name="tujuan_surat" class="form-control" autofocus="true" placeholder="Bp. / Ibu."></input>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="form-group">
+							<div class="col-lg-2" style="text-align: right;">
+							</div>
+							<div class="col-lg-3" id="preview" style="display: none;">
+							<p>Kepada Yth : </p>
+							<p style="font-weight: bold;" id="tujuanSurat"></p>
+							<p style="font-weight: bold;">Ditempat</p>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
 						<div class="col-lg-4">
 							<input type="submit" name="txtSubmit" class="btn btn-danger pull-right" value="Cetak Pdf">
 							<input type="submit" name="txtSubmit" class="btn btn-success pull-right" value="Cetak Excel" style="margin-right: 10px">
@@ -65,3 +88,12 @@
 		
 </section>
 </body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("input[name='tujuan_surat']").on('keyup',function(){
+			const tujuan = $(this).val();
+			$('div#preview').show()
+			$("p#tujuanSurat").text(tujuan)
+		})
+	})
+</script>

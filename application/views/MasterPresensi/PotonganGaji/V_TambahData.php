@@ -215,7 +215,7 @@
     let tabelSimulasi = null
     let formData = null
 
-    document.addEventListener('DOMContentLoaded', async _ => {
+    document.addEventListener('DOMContentLoaded', () => {
         pgTambahData.initSelect()
         pgTambahData.initInput()
         pgTambahData.initButton()
@@ -224,7 +224,7 @@
     })
 
     const pgTambahData = {
-        async initSelect() {
+        initSelect() {
             $('#pg_selectPekerja').select2({
                 placeholder: 'Pilih Pekerja',
                 allowClear: true,
@@ -252,6 +252,7 @@
                     }
                 }
             })
+
             $('#pg_selectJenisPotongan').select2({
                 placeholder: 'Pilih Jenis Potongan',
                 allowClear: true,
@@ -280,17 +281,17 @@
                 }
             })
         },
-        async initInput() {
+        initInput() {
             $('#pg_inputPeriode').datepicker({
                 format: 'M-yyyy',
                 viewMode: 'months',
                 minViewMode: 'months'
             })
         },
-        async initForm() {
+        initForm() {
             document.getElementById('pg_formPotongan').addEventListener('submit', pgTambahData.simulateData.bind(event))
         },
-        async initButton() {
+        initButton() {
             element('#pg_buttonCloseSimulasi').onClick( _ => {
                 element('#pg_divTabelSimulasi').animate.css('fadeOut', _ => {
                     element('#pg_divTabelSimulasi').hide()
@@ -308,32 +309,52 @@
                 formData.append('nominalTotal', document.getElementById('pg_inputNominalTotal').value.replace(/[^0-9]/g, ""))
                 formData.append('tipePembayaran', document.getElementById('pg_inputTipePembayaran').value)
                 formData.append('periode', pgTambahData.formatPeriode(document.getElementById('pg_inputPeriode').value))
-                fetch('<?= base_url('MasterPresensi/PotonganGaji/TambahData/saveData') ?>', {
+                // fetch('<?= base_url('MasterPresensi/PotonganGaji/TambahData/saveData') ?>', {
+                //     method: 'POST',
+                //     body: formData
+                // }).then(response => response.json()).then(response => {
+                //     if(response.success) {
+                //         window.location.replace('<?= base_url('MasterPresensi/PotonganGaji/ListData') ?>')
+                //     } else {
+                //         console.error('saving data response unsuccessful')
+                //         $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
+                //         element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
+                //     }
+                // }).catch(e => {
+                //     console.error(e)
+                //     $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
+                //     element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
+                // })
+                $.ajax({
                     method: 'POST',
-                    body: formData
-                }).then(response => response.json()).then(response => {
-                    if(response.success) {
-                        window.location.replace('<?= base_url('MasterPresensi/PotonganGaji/ListData') ?>')
-                    } else {
-                        console.error('saving data response unsuccessful')
-                        $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
+                    url: baseurl + 'MasterPresensi/PotonganGaji/TambahData/saveData',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    error: function(xhr,status,error){
                         element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                       window.location.href = baseurl + 'MasterPresensi/PotonganGaji/ListData';
                     }
-                }).catch(e => {
-                    console.error(e)
-                    $.toaster('Terjadi kesalahan saat menyimpan data', '', 'danger')
-                    element('#pg_buttonSaveData').animate.hideLoading('fa-floppy-o')
-                })
+                })      
             })
         },
-        async initDataTable() {
+        initDataTable() {
             tabelSimulasi = $('#pg_tabelSimulasi').DataTable({
                 columnDefs: [
                     { className: 'text-center', targets: [0, 1, 2, 3, 4] }
                 ]
             })
         },
-        async simulateData(event) {
+        simulateData(event) {
             event.preventDefault()
             potongan_total = document.getElementById('pg_inputNominalTotal').value;
             element('#pg_buttonSimulasi').animate.showLoading()
@@ -509,24 +530,25 @@
         }
     }
 
-    String.prototype.isEmpty = function() { return this.toString() == '' }
+    // note, if u not know what is this, learn es6 syntax js
+    String.prototype.isEmpty = () => this.toString() == '' 
 
-    String.prototype.isNotEmpty = function() { return this.toString() != '' }
+    String.prototype.isNotEmpty = () => this.toString() != ''
 
-    String.prototype.isNull = function() { return this.toString() == null }
+    String.prototype.isNull = () => this.toString() == null
 
-    String.prototype.isNotNull = function() { return this.toString() != null }
+    String.prototype.isNotNull = () => this.toString() != null
 
-    String.prototype.isNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
+    String.prototype.isNullAndEmpty = () => this.toString() == null && this.toString() == ''
 
-    String.prototype.isNullOrEmpty = function() { return this.toString() == null || this.toString() == '' }
+    String.prototype.isNullOrEmpty = () => this.toString() == null || this.toString() == ''
 
-    String.prototype.isNotNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
+    String.prototype.isNotNullAndEmpty = () => this.toString() == null && this.toString() == ''
 
-    String.prototype.isNotNullOrEmpty = function() { return this.toString() != null || this.toString() != '' }
+    String.prototype.isNotNullOrEmpty = () => this.toString() != null || this.toString() != ''
 
     $(document).on('ready',function(){
-      $("section").on("keyup",".inputnumber", function(event ) {
+      $("section").on("keyup",".inputnumber", function(event) {
         val_number = $(this).val()
         if (val_number.length > 0) {
           val_number = val_number.replace(/[^0-9]/g, "")
@@ -538,12 +560,11 @@
 
       })
 
-      $("section").on("blur",".inputnumber", function(event ) {
+      $("section").on("blur",".inputnumber", function(event) {
         val_number = $(this).val()
         if (val_number.length == 0) {
-          $(this).val("0");
+            $(this).val("0");
         }
-
       })
 
       $("table").on("keyup",".inputnumber", function(event){

@@ -332,7 +332,7 @@ class C_PekerjaCutoff extends CI_Controller
 		$dibuat = $this->session->user;
 		$dibuat_oleh = $this->session->employee;
 		$prd = $this->input->post('cutoff_periode_susulan');
-		$periode = $this->M_pekerjacutoff->getcutoffByPeriode($prd);
+		$periode = $this->M_pekerjacutoff->getcutoffByPeriode(substr($prd,0,6));
 		$noind = $this->input->post('txtNoindPekerjaCutoff');
 		$data_memo = array(
 			'nomor_surat' 		=> $nomor_surat,
@@ -363,11 +363,24 @@ class C_PekerjaCutoff extends CI_Controller
 		if(!empty($data_staff)){
 			$index = 0;
 			foreach ($data_staff as $dt_staff) {
-				$data_staff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_dipilih($periode,$dt_staff['noind']);
-				$kode_noind = substr($dt_staff['noind'],0,1);
+				// if($dt_staff['tanggal'] == '-'){
+				// 	$data_staff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_aktif($periode);
+				// 	if($kode_noind = "B" or $kode_noind = "D" or $kode_noind = "J"){
+				// 		$data_staff[$index]['ief'] = $this->M_pekerjacutoff->hitung_if_aktif($periode);
+				// 	}
+				// }else{
+				// 	$data_staff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_dipilih($periode,$dt_staff['noind']);
+				// 	$kode_noind = substr($dt_staff['noind'],0,1);
+				// 	if($kode_noind = "B" or $kode_noind = "D" or $kode_noind = "J"){
+				// 		$data_staff[$index]['ief'] = $this->M_pekerjacutoff->hitung_if_dipilih($periode,$dt_staff['noind']);
+				// 	}
+				// }
+
+				$data_staff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_aktif($periode);
 				if($kode_noind = "B" or $kode_noind = "D" or $kode_noind = "J"){
-					$data_staff[$index]['ief'] = $this->M_pekerjacutoff->hitung_if_dipilih($periode,$dt_staff['noind']);
+					$data_staff[$index]['ief'] = $this->M_pekerjacutoff->hitung_if_aktif($periode);
 				}
+				
 				$index++;
 			}
 		}
@@ -576,7 +589,14 @@ class C_PekerjaCutoff extends CI_Controller
 		if(!empty($data_nonstaff)){
 			$index = 0;
 			foreach ($data_nonstaff as $dt_nonstaff) {
-				$data_nonstaff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_dipilih($periode,$dt_nonstaff['noind']);
+				// if ($dt_nonstaff['tanggal'] == '-') {
+				// 	$data_nonstaff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_aktif($periode);
+				// }else{
+				// 	$data_nonstaff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_dipilih($periode,$dt_nonstaff['noind']);
+				// }
+
+				$data_nonstaff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_aktif($periode);
+
 				$index++;
 			}
 		}

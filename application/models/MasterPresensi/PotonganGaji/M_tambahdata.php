@@ -9,7 +9,7 @@ class M_tambahdata extends CI_Model {
     }
 
     function searchPekerja($term) {
-        return $this->personalia->select('upper(trim(noind)) as noind, upper(trim(nama)) as nama')->where('keluar', false)->like('lower(noind)', $term, 'after')->or_like('lower(trim(nama))', $term, 'after')->order_by('noind')->get('hrd_khs.tpribadi')->result_array();
+        return $this->personalia->select('upper(trim(noind)) as noind, upper(trim(nama)) as nama')->where("(keluar = '0' or (keluar = '1' and tglkeluar >= current_date - interval '2 month')) and (lower(noind) like lower('".$term."%') or lower(trim(nama)) like lower('%".$term."%'))")->order_by('noind')->get('hrd_khs.tpribadi')->result_array();
     }
 
     function searchJenisPotongan($term) {
@@ -17,7 +17,7 @@ class M_tambahdata extends CI_Model {
     }
 
     function getPekerjaList() {
-        return $this->personalia->select('upper(trim(noind)) as noind, upper(trim(nama)) as nama')->where('keluar', false)->order_by('noind')->get('hrd_khs.tpribadi')->result_array();
+        return $this->personalia->select('upper(trim(noind)) as noind, upper(trim(nama)) as nama')->where("keluar = '0' or (keluar = '1' and tglkeluar >= current_date - interval '2 month')")->order_by('noind')->get('hrd_khs.tpribadi')->result_array();
     }
 
     function getJenisPotonganList() {
@@ -33,5 +33,14 @@ class M_tambahdata extends CI_Model {
 
     function saveDetailPotongan($data) {
         $this->personalia->insert('Presensi.tpotongan_detail', $data);
+    }
+
+    function getPotonganByNoindNominalJenis($noind,$nominal,$jenis){
+        $sql = "select *
+                from \"Presensi\".tpotongan
+                where noind = ?
+                and nominal_total = ?
+                and jenis_potongan_id = ? ";
+        return $this->personalia->query($sql,array($noind,$nominal,$jenis))->result_array();
     }
 }

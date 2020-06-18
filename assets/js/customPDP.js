@@ -49,7 +49,16 @@ $(document).ready(function() {
     }), $(".table-input-dokumen tfoot th").each(function() {
         var a = $(this).text();
         $(this).html(`<input type="text" placeholder="search ${a}" style="width:100%;"></input>`)
-    }), $(".table-input-dokumen").DataTable().columns().every(function() {
+    }), $(".table-input-dokumen").DataTable({
+        dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excel',
+                title: '',
+                filename: 'Pengiriman Dokumen'
+            }
+            ]
+    }).columns().every(function() {
         let a = this;
         $("input", this.footer()).on("keyup change", function() {
             a.search(this.value, !0, !1).draw()

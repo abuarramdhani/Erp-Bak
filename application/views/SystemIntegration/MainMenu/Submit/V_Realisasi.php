@@ -82,14 +82,14 @@
         <div class="col-lg-12 " style="background-color: white;padding: 5px">
           <div class="form-group" >
             <label class="checkbox-inline" style="padding: 5px; padding-left: 0" > 
-              <input type="checkbox" name="chkStandarisasiRealisasi" data-class="textareaKaizenRealisasi" value="1" id="checkRealisasiKai"><b> Standarisasi</b>
+              <input type="checkbox" name="chkStandarisasiRealisasi" data-class="textareaKaizenRealisasi" value="1" id="checkRealisasiStandarisasiKai"><b> Standarisasi</b>
             </label><br>
               <small>Masukan nomor WI COP atau lampirkan file WI COP</small>
               <textarea onkeyup ="checkFillRealisasi(this)" class="textareaKaizenRealisasi must" name="txtStandarisasi" id="txtStandarisasi" placeholder="Standarisasi WI COP .." style="width: 100%; height: 40px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" disabled="disabled"></textarea>
           </div>
           <div class="form-group" style="background-color: white;">
             <label class="checkbox-inline" style="padding: 5px; padding-left: 0" > 
-              <input type="checkbox" name="chkSosialisasiRealisasi"  data-class="textareaKaizenSosialisasi" value="1" id="checkRealisasiKai"><b> Sosialisasi</b>
+              <input type="checkbox" name="chkSosialisasiRealisasi"  data-class="textareaKaizenSosialisasi" value="1" id="checkRealisasiSosialisasiKai"><b> Sosialisasi</b>
             </label><br>
               <small>Masukan metode sosialisasi yang telah dilakukan dan tanggal pelaksanaannya</small>
               <div class="form-group">

@@ -18,7 +18,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><b>SEKSI ELECTRONIC DATA PROCESSING</b></td>
+			<td><b>PAYROLL NON STAFF</b></td>
 		</tr>
 		<tr>
 			<td><b>CV. KARYA HIDUP SENTOSA</b></td>
@@ -47,7 +47,7 @@
 			<td>Kepada Yth:</td>
 		</tr>
 		<tr>
-			<td><b>Bp. Agus Wahyudi ( Keuangan )</b></td>
+			<td><b><?=$tujuan ?></b></td>
 		</tr>
 		<tr>
 			<td><b>Ditempat</b></td>

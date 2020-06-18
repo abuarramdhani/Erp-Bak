@@ -7,7 +7,7 @@ class M_hitung extends CI_Model {
     $this->load->database();
     $this->load->library('encrypt');
     $this->oracle = $this->load->database('oracle', true);
-    $this->oracle_dev = $this->load->database('oracle_dev',TRUE);
+    //$this->oracle_dev = $this->load->database('oracle_dev',TRUE);
     }
 	
 	public function dataPUM($plan, $deptclass){
@@ -239,6 +239,72 @@ class M_hitung extends CI_Model {
 			$query = $this ->oracle->query($sql);
 			return $query->result_array();
 	}
+
+	public function username($user){
+        $sql = "select first_name, middle_names, last_name
+        from PER_PEOPLE_F ppf 
+        where ppf.NATIONAL_IDENTIFIER = '$user' 
+        and ppf.CURRENT_EMPLOYEE_FLAG = 'Y'
+        order by ppf.NATIONAL_IDENTIFIER desc";
+        $query = $this->oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cekPUM($resource, $tagnum, $cost, $deptclass, $plan){
+		$sql = "select * from khs_hasil_utilitas_mesin
+				where resource_code = '$resource'
+				and tag_number = '$tagnum'
+				and cost_center = '$cost'
+				and department_class_code = '$deptclass'
+				and khs_plan = '$plan'";
+		$query = $this ->oracle->query($sql);
+		return $query->result_array();
+	}
+	
+	public function insertPUM($resource, $nomesin, $tagnum, $jenis, $cost, $deptclass, $username, $utilitas, $date, $plan){
+		$sql = "insert into khs_hasil_utilitas_mesin (resource_code, no_mesin, tag_number, jenis_mesin, cost_center, utilitas, department_class_code, last_update_date, last_update_by, khs_plan)
+				values ('$resource', '$nomesin', '$tagnum', '$jenis', '$cost', '$utilitas', '$deptclass',to_timestamp('$date', 'DD/MM/YYYY'), '$username', '$plan')";
+        $query = $this->oracle->query($sql);
+        $query = $this->oracle->query('COMMIT');
+	}
+
+	public function updatePUM($resource, $nomesin, $tagnum, $jenis, $cost, $deptclass, $username, $utilitas, $date, $plan){
+		$sql = "update khs_hasil_utilitas_mesin set last_update_date = to_timestamp('$date', 'DD/MM/YYYY'), last_update_by = '$username'
+				where resource_code = '$resource'
+				and no_mesin = '$nomesin'
+				and tag_number = '$tagnum'
+				and cost_center = '$cost'
+				and department_class_code = '$deptclass'
+				and khs_plan = '$plan'";
+		$query = $this->oracle->query($sql);
+        $query = $this->oracle->query('COMMIT');
+	}
+
+	public function cariHasilPUM($dept, $plan){
+		$sql = "select distinct last_update_date, last_update_by
+				from khs_hasil_utilitas_mesin
+				where department_class_code = '$dept'
+				and khs_plan = '$plan'";
+		$query = $this ->oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function deletePUM($dept, $plan){
+		$sql = "delete from khs_hasil_utilitas_mesin where department_class_code = '$dept' and khs_plan = '$plan'";
+        $query = $this->oracle->query($sql);
+        $query = $this->oracle->query('COMMIT');
+	}
+	
+	public function seksi($user){
+        // $sql= "SELECT er.er_section.section_name FROM er.er_section WHERE er.er_section.section_code = '$kodesie'";
+        $sql = "select FIRST_NAME,MIDDLE_NAMES,LAST_NAME
+        from PER_PEOPLE_F ppf 
+        where ppf.NATIONAL_IDENTIFIER = '$user' 
+        and ppf.CURRENT_EMPLOYEE_FLAG = 'Y'
+        order by ppf.NATIONAL_IDENTIFIER desc";
+        $query = $this->oracle->query($sql);
+		return $query->result_array();
+    }
 }
 
 

@@ -55,6 +55,7 @@ class M_trackingInvoice extends CI_Model {
                          END
                          FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment,
                          ami.source source
+                         ,ami.jenis_dokumen jenis_dokumen
                         FROM khs_ap_monitoring_invoice ami, 
                          (SELECT   aipo.invoice_id,
                                    REPLACE

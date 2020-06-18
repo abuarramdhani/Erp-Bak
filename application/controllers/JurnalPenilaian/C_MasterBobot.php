@@ -13,6 +13,7 @@ class C_MasterBobot extends CI_Controller {
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
+		$this->load->library('General');
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('JurnalPenilaian/M_bobot');
@@ -36,12 +37,13 @@ class C_MasterBobot extends CI_Controller {
 	}
 
 	//HALAMAN INDEX
-	public function index(){
+	public function index()
+	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+		$data['Menu'] = 'Master Data';
+		$data['SubMenuOne'] = 'Bobot Nilai';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -49,13 +51,6 @@ class C_MasterBobot extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['GetBobot'] 		= $this->M_bobot->GetBobot();
-		$idBobot				= $this->input->post('txtIdBobot');
-		$data['number'] = 1;
-		// echo "<pre>";
-		// var_dump($_POST);
-		// print_r($data);
-		// echo "</pre>";
-		// exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('JurnalPenilaian/MasterData/BobotNilai/V_Index',$data);
@@ -64,18 +59,18 @@ class C_MasterBobot extends CI_Controller {
 	}
 
 	//HALAMAN CREATE
-	public function create(){
+	public function create()
+	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Bobot Nilai';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -86,18 +81,35 @@ class C_MasterBobot extends CI_Controller {
 	// ADD 
 	public function add()
 	{
-		$date 	= $this->input->post('txtDate');
-		$aspek 	= $this->input->post('txtAspek');
-		$bobot 	= $this->input->post('txtBobot');
-		$desc 	= $this->input->post('txtDesc');
+		$aspek 		= filter_var(strtoupper($this->input->post('txtAspek')), FILTER_SANITIZE_SPECIAL_CHARS);
+		$singkatan 	= strtolower($this->input->post('txtSingkatan'));
+		$bobot 		= $this->input->post('txtBobot');
+		$desc 		= filter_var($this->input->post('txtDesc'), FILTER_SANITIZE_SPECIAL_CHARS);
 
-		$insertId = $this->M_bobot->AddMaster($date, $aspek, $bobot, $desc);
+		$real 		= "t_".$singkatan;
+		$konversi 	= "n_".$singkatan;
+
+		$inputBobot 	=	array(
+								'aspek'						=>	$aspek,
+								'bobot'						=>	$bobot,
+								'description'				=>	$desc,
+								'singkatan'					=>	$singkatan,
+								'last_update_timestamp'		=>	$this->general->ambilWaktuEksekusi(),
+								'creation_timestamp'		=>	$this->general->ambilWaktuEksekusi(),
+							);
+
+		$insertId = $this->M_bobot->AddMaster($inputBobot);
+		$createColumn = $this->M_bobot->createColum($real,$konversi);
 		redirect('PenilaianKinerja/MasterBobot');
 	}
 
 	// DELETE
 	public function delete($idBobot)
 	{	
+		$singkatan = $this->M_bobot->get_bobot_by_id($idBobot);
+		$real = "t_".$singkatan->singkatan;
+		$konversi = "n_".$singkatan->singkatan;
+		$dropColumn = $this->M_bobot->dropColum($real,$konversi);
 		$this->M_bobot->DeleteBobot($idBobot);
 		redirect('PenilaianKinerja/MasterBobot');
 	}
@@ -109,7 +121,7 @@ class C_MasterBobot extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Bobot Nilai';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -130,7 +142,7 @@ class C_MasterBobot extends CI_Controller {
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Create Penilaian';
-		$data['SubMenuOne'] = '';
+		$data['SubMenuOne'] = 'Bobot Nilai';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -149,12 +161,20 @@ class C_MasterBobot extends CI_Controller {
 	public function update($idBobot)
 	{
 		$idBobot= $this->input->post('txtIdBobot');
-		$date 	= $this->input->post('txtDate');
 		$aspek 	= $this->input->post('txtAspek');
+		$singkatan 	= $this->input->post('txtSingkatan');
 		$bobot 	= $this->input->post('txtBobot');
 		$desc 	= $this->input->post('txtDesc');
 
-		$this->M_bobot->Update($date, $aspek, $bobot, $desc, $idBobot);
+		$updateBobot 	=	array(
+								'aspek'					=>	$aspek,
+								'bobot'					=>	$bobot,
+								'description'			=>	$desc,
+								'singkatan'				=>	$singkatan,
+								'last_update_timestamp'	=>	$this->general->ambilWaktuEksekusi()
+							);
+
+		$this->M_bobot->Update($updateBobot, $idBobot);
 		redirect('PenilaianKinerja/MasterBobot');
 	}
 

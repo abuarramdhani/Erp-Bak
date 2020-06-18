@@ -57,6 +57,13 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 
 		$data['trainer'] = $this->M_record->GetTrainer();
 		$data['participant_confirm'] = $this->M_record->GetParticipant();
@@ -156,6 +163,13 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 		
 		// $data['record'] = $this->M_record->GetRecordFinished();
 		$schedule 						= $this->M_report->GetSchName_QuesName();
@@ -265,6 +279,13 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 		
 		$data['record'] = $this->M_record->GetRecordId($id);
 		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
@@ -297,6 +318,13 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 		
 		$data['details'] = $this->M_penjadwalan->GetTrainingId($id);
 		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
@@ -379,6 +407,13 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
+			unset($data['UserSubMenuOne'][0]);
+		}
+
+		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
+			unset($data['UserSubMenuOne'][5]);
+		}
 		
 		//---GET NOINDUK
 		$participant = $this->M_record->GetParticipantId($id);
