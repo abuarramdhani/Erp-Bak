@@ -38,6 +38,36 @@ class C_Master extends CI_Controller
         }
     }
 
+    public function Lane5()
+    {
+      $this->checkSession();
+      $user_id = $this->session->userid;
+
+      $data['Menu'] = 'Dashboard';
+      $data['SubMenuOne'] = '';
+
+      $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+      $date = '2020-06-12'; //for trial
+      // $date = date('Y-m-d');
+      $line5 = $this->M_rtlp->getline5($date);
+      if (!empty($line5)) {
+        foreach ($line5 as $key => $value) {
+          $getNamaKomponen = $this->M_rtlp->getNamaKomponen($value['kode_item']);
+          $line5[$key]['nama_komponen'] = $getNamaKomponen->nama_item;
+        }
+      }
+
+      $data['line5'] = $line5;
+
+      $this->load->view('V_Header', $data);
+      $this->load->view('V_Sidemenu', $data);
+      $this->load->view('RunningTimeLinePnP/V_Lane5');
+      $this->load->view('V_Footer', $data);
+    }
+
     //------------------------show the dashboard-----------------------------
     public function index()
     {
@@ -73,20 +103,81 @@ class C_Master extends CI_Controller
         // $date = date('Y-m-d');
 
         $line1 = $this->M_rtlp->getline1($date);
+        if (!empty($line1)) {
+          foreach ($line1 as $key => $value) {
+            $getNamaKomponen = $this->M_rtlp->getNamaKomponen($value['kode_item']);
+            $line1[$key]['nama_komponen'] = $getNamaKomponen->nama_item;
+          }
+        }
         $line2 = $this->M_rtlp->getline2($date);
-        $line3 = $this->M_rtlp->getline3($date);
-        $line4 = $this->M_rtlp->getline4($date);
-        $line5 = $this->M_rtlp->getline5($date);
+        if (!empty($line2)) {
+          foreach ($line2 as $key => $value) {
+            $getNamaKomponen = $this->M_rtlp->getNamaKomponen($value['kode_item']);
+            $line2[$key]['nama_komponen'] = $getNamaKomponen->nama_item;
+          }
+        }
+        // $line5 = $this->M_rtlp->getline5($date);
 
         $data['line_1'] = $line1;
         $data['line_2'] = $line2;
-        $data['line_3'] = $line3;
-        $data['line_4'] = $line4;
-        $data['line_5'] = $line5;
+
+        // $data['line_5'] = $line5;
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('RunningTimeLinePnP/V_Setting');
+        $this->load->view('V_Footer', $data);
+    }
+
+    public function detail()
+    {
+     if (!$this->input->is_ajax_request()) {
+       echo "Akses terlarang!";
+     }else {
+       $data['get'] =  $this->M_rtlp->getDetailBom($this->input->post('kode_item'));
+       $this->load->view('RunningTimeLinePnP/ajax/V_Detail', $data);
+     }
+    }
+
+    public function setting34()
+    {
+        $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        $date = '2020-06-12'; //for trial
+        // $date = date('Y-m-d');
+
+        $line3 = $this->M_rtlp->getline3($date);
+        if (!empty($line3)) {
+          foreach ($line3 as $key => $value) {
+            $getNamaKomponen = $this->M_rtlp->getNamaKomponen($value['kode_item']);
+            $line3[$key]['nama_komponen'] = $getNamaKomponen->nama_item;
+          }
+        }
+
+        $line4 = $this->M_rtlp->getline4($date);
+        if (!empty($line4)) {
+          foreach ($line4 as $key => $value) {
+            $getNamaKomponen = $this->M_rtlp->getNamaKomponen($value['kode_item']);
+            $line4[$key]['nama_komponen'] = $getNamaKomponen->nama_item;
+          }
+        }
+        // $line5 = $this->M_rtlp->getline5($date);
+
+        $data['line_3'] = $line3;
+        $data['line_4'] = $line4;
+        // $data['line_5'] = $line5;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('RunningTimeLinePnP/V_Setting34');
         $this->load->view('V_Footer', $data);
     }
 
@@ -118,13 +209,15 @@ class C_Master extends CI_Controller
         return $ss[2]."-".$ss[1]."-".$ss[0];
     }
 
+
     // ============================ CHECK AREA =====================================
 
     public function cekapi()
     {
-        // echo "<pre>";
-        // print_r($data_a);
-        // echo sizeof($data_a);
-        // die;
+      $data_a = $this->M_rtlp->getDetailBom('AAG2EA0001AY-1');
+      echo "<pre>";
+      print_r($data_a);
+      echo sizeof($data_a);
+      die;
     }
 }

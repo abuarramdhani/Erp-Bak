@@ -13,8 +13,7 @@ class M_wipp extends CI_Model
 
   public function minMax($value)
   {
-    $res = [];
-    // $res = $this->oracle->where('KODE_ASSY', $valaue)->get('KHS_SP_MINMAX')->result_array();
+    $res = $this->oracle->query("SELECT * FROM KHS_SP_MINMAX WHERE item = '$value'")->result_array();
     return $res;
   }
 
@@ -209,7 +208,7 @@ class M_wipp extends CI_Model
     {
         $cek = $this->db->select('kode_item')->where('kode_item', $data['kode_item'])->get('wip_pnp.item_photo')->row();
         if (!empty($cek->kode_item)) {
-          $this->where('kode_item', $data['kode_item'])->update('wip_pnp.item_photo', $data);
+          $this->db->where('kode_item', $data['kode_item'])->update('wip_pnp.item_photo', $data);
         }else {
           $this->db->insert('wip_pnp.item_photo', $data);
         }

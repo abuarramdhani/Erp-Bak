@@ -186,11 +186,22 @@ class C_Master extends CI_Controller
                   }
               }
               // gabungkan data dengan produk prioritas di awal index
-              $data['get_unique'] = array_merge($tampung_priority_reedition, $tampung_item_unique);
+              $data1_1 = array_merge($tampung_priority_reedition, $tampung_item_unique);
             }else {
-              $data['get_unique'] = $tampung_item_unique;
+              $data1_1 = $tampung_item_unique;
             }
 
+            foreach ($data1_1 as $key => $val) {
+              $minmax = $this->M_wipp->minMax($val['KODE_ASSY']);
+              if (!empty($minmax)) {
+                $data1_1[$key]['MIN'] = $minmax[0]['MIN'];
+                $data1_1[$key]['MAX'] = $minmax[0]['MAX'];
+              }else {
+                $data1_1[$key]['MIN'] = '-';
+                $data1_1[$key]['MAX'] = '-';
+              }
+            }
+            $data['get_unique'] = $data1_1;
             $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released', $data);
         }
     }
@@ -1054,9 +1065,9 @@ class C_Master extends CI_Controller
             $this->load->library('ciqrcode');
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/upload/wipp')) {
-                mkdir('./assets/upload/wipp', 0777, true);
-                chmod('./assets/upload/wipp', 0777);
+            if (!is_dir('./assets/upload/wipp/qrcode')) {
+                mkdir('./assets/upload/wipp/qrcode', 0777, true);
+                chmod('./assets/upload/wipp/qrcode', 0777);
             }
 
             $params['data']		= $doc;
@@ -1108,9 +1119,9 @@ class C_Master extends CI_Controller
             $this->load->library('ciqrcode');
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/upload/wipp')) {
-                mkdir('./assets/upload/wipp', 0777, true);
-                chmod('./assets/upload/wipp', 0777);
+            if (!is_dir('./assets/upload/wipp/qrcode')) {
+                mkdir('./assets/upload/wipp/qrcode', 0777, true);
+                chmod('./assets/upload/wipp/qrcode', 0777);
             }
 
             $params['data']		= $doc;
@@ -1221,60 +1232,58 @@ class C_Master extends CI_Controller
     public function cekapi()
     {
       $data_a = $this->M_wipp->JobRelease();
-      $priority = $this->M_wipp->getPP();
-
-      foreach($data_a as $element) {
-          $hash = $element['KODE_ASSY'];
-          $tampung_item_unique[$hash]['KODE_ASSY'] = $element['KODE_ASSY'];
-          $tampung_item_unique[$hash]['DESCRIPTION'] = $element['DESCRIPTION'];
-          $tampung_item_unique[$hash]['ONHAND_YSP'] = $element['ONHAND_YSP'];
-      }
-      // ambil data master job dengan kode_item produk priority
-      foreach ($tampung_item_unique as $key => $da) {
-          $tampung_item_unique[$key]['PRIORITY'] = 0;
-          foreach ($priority as $key => $pa) {
-              if ($da['KODE_ASSY']  === $pa['kode_item']) {
-                  $tampung_priority[] = $da;
-              }
-          }
-      }
-
-      if (!empty($tampung_priority)) {
-        //pengecekan di jika itu priority
-        foreach ($tampung_priority as $key => $pr) {
-            $tampung_priority[$key]['PRIORITY'] = 1;
-        }
-        // hapus item yang ada sama di produk prioritas
-        foreach ($tampung_item_unique as $key0 => $value) {
-            foreach ($tampung_priority as $key2 => $v) {
-                if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
-                    $tampung_priority_reedition[] = $v;
-                    unset($tampung_item_unique[$key0]);
-                }
-
-            }
-        }
-        // gabungkan data dengan produk prioritas di awal index
-        $data1 = array_merge($tampung_priority_reedition, $tampung_item_unique);
-      }else {
-        $data1 = $tampung_item_unique;
-      }
-
-      foreach ($data1 as $key => $val) {
-        $minmax = $this->M_wipp->minMax($val['KODE_ASSY']);
-        if (!empty($minmax)) {
-          $data1[$key]['MIN'] = $minmax[0]['MIN'];
-          $data1[$key]['MAX'] = $minmax[0]['MAX'];
-        }else {
-          $data1[$key]['MIN'] = '-';
-          $data1[$key]['MAX'] = '-';
-        }
-
-      }
-
+      // $priority = $this->M_wipp->getPP();
+      //
+      // foreach($data_a as $element) {
+      //     $hash = $element['KODE_ASSY'];
+      //     $tampung_item_unique[$hash]['KODE_ASSY'] = $element['KODE_ASSY'];
+      //     $tampung_item_unique[$hash]['DESCRIPTION'] = $element['DESCRIPTION'];
+      //     $tampung_item_unique[$hash]['ONHAND_YSP'] = $element['ONHAND_YSP'];
+      // }
+      // // ambil data master job dengan kode_item produk priority
+      // foreach ($tampung_item_unique as $key => $da) {
+      //     $tampung_item_unique[$key]['PRIORITY'] = 0;
+      //     foreach ($priority as $key => $pa) {
+      //         if ($da['KODE_ASSY']  === $pa['kode_item']) {
+      //             $tampung_priority[] = $da;
+      //         }
+      //     }
+      // }
+      //
+      // if (!empty($tampung_priority)) {
+      //   //pengecekan di jika itu priority
+      //   foreach ($tampung_priority as $key => $pr) {
+      //       $tampung_priority[$key]['PRIORITY'] = 1;
+      //   }
+      //   // hapus item yang ada sama di produk prioritas
+      //   foreach ($tampung_item_unique as $key0 => $value) {
+      //       foreach ($tampung_priority as $key2 => $v) {
+      //           if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
+      //               $tampung_priority_reedition[] = $v;
+      //               unset($tampung_item_unique[$key0]);
+      //           }
+      //
+      //       }
+      //   }
+      //   // gabungkan data dengan produk prioritas di awal index
+      //   $data1 = array_merge($tampung_priority_reedition, $tampung_item_unique);
+      // }else {
+      //   $data1 = $tampung_item_unique;
+      // }
+      //
+      // foreach ($data1 as $key => $val) {
+      //   $minmax[] = $this->M_wipp->minMax($val['KODE_ASSY']);
+      //   // if (!empty($minmax)) {
+      //   //   $data1[$key]['MIN'] = $minmax[0]['MIN'];
+      //   //   $data1[$key]['MAX'] = $minmax[0]['MAX'];
+      //   // }else {
+      //   //   $data1[$key]['MIN'] = '-';
+      //   //   $data1[$key]['MAX'] = '-';
+      //   // }
+      // }
         echo "<pre>";
-        echo sizeof($data1);
-        print_r($data1);
+        echo sizeof($data_a);
+        print_r($data_a);
         die;
     }
 }

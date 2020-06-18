@@ -21,6 +21,47 @@ const swalRKH = (type, title) => {
   })
 }
 
+// $(document).ready(function() {
+//   $('.tblwiip10').DataTable();
+// })
+let rtlp1 =  $('.tblwiip10').DataTable();
+
+function format_wipp( d, kode_item ){
+  return `<div class="detail_area${kode_item}"> </div>`;
+}
+
+const detail_rtlp = (id, no) => {
+  let tr = $(`tr[data-rtlp=${id}_${no}]`);
+  let row = rtlp1.row(tr);
+  if ( row.child.isShown() ) {
+      row.child.hide();
+      tr.removeClass('shown');
+  }
+  else {
+      row.child( format_wipp(row.data(), id)).show();
+      tr.addClass('shown');
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/detail',
+        type: 'POST',
+        async: true,
+        data: {
+          kode_item: id,
+        },
+        beforeSend: function() {
+          $('.detail_area'+id).html(`<div id="loadingArea0">
+                                          <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+                                        </div>`)
+        },
+        success: function(result) {
+          $('.detail_area'+id).html(result)
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+  }
+}
+
 const setDate = () => {
   swalRKH('info', 'Fitur ini baru didiskusikan.')
 }
@@ -45,6 +86,11 @@ let pause4 = [];
 let reset4 = [];
 let selesai4 = [];
 
+let start5 = [];
+let pause5 = [];
+let reset5 = [];
+let selesai5 = [];
+
 let startTimer1 = [];
 let hours1 = [];
 let minutes1 = [];
@@ -65,6 +111,11 @@ let hours4 = [];
 let minutes4 = [];
 let seconds4 = [];
 
+let startTimer5 = [];
+let hours5 = [];
+let minutes5 = [];
+let seconds5 = [];
+
 let totalSeconds_i1 = [];
 let intervalId1 = [];
 
@@ -76,6 +127,9 @@ let intervalId3 = [];
 
 let totalSeconds_i4 = [];
 let intervalId4 = [];
+
+let totalSeconds_i5 = [];
+let intervalId5 = [];
 
 let detikk1 = [];
 let menitt1 = [];
@@ -93,12 +147,17 @@ let detikk4 = [];
 let menitt4 = [];
 let jamm4 = [];
 
+let detikk5 = [];
+let menitt5 = [];
+let jamm5 = [];
+
 
 // const dataLength = $('#length').data('length');
 const jumlahEl1 = $('.length1').find('.timer1').toArray();
 const jumlahEl2 = $('.length2').find('.timer2').toArray();
 const jumlahEl3 = $('.length3').find('.timer3').toArray();
 const jumlahEl4 = $('.length4').find('.timer4').toArray();
+const jumlahEl5 = $('.length5').find('.timer5').toArray();
 
 jumlahEl1.forEach((v, i) => {
   hours1[i] = 0;
@@ -627,4 +686,145 @@ jumlahEl4.forEach((v, i) => {
   };
 
 })
+
+jumlahEl5.forEach((v, i) => {
+  hours5[i] = 0;
+  minutes5[i] = 0;
+  seconds5[i] = 0;
+  totalSeconds_i5[i] = 0;
+
+  intervalId5[i] = null;
+
+  startTimer5[i] = () => {
+    let line = '5';
+
+    ++totalSeconds_i5[i];
+    hours5[i] = Math.floor(totalSeconds_i5[i] / 3600);
+    minutes5[i] = Math.floor((totalSeconds_i5[i] - hours5[i] * 3600) / 60);
+    seconds5[i] = totalSeconds_i5[i] - (hours5[i] * 3600 + minutes5[i] * 60);
+
+    function pad(val) {
+      let valString = val + "";
+      if (valString.length < 2) {
+        return "0" + valString;
+      } else {
+        return valString;
+      }
+    }
+    document.getElementById(`hours5-${i}`).innerHTML = pad(hours5[i]);
+    document.getElementById(`minutes5-${i}`).innerHTML = pad(minutes5[i]);
+    document.getElementById(`seconds5-${i}`).innerHTML = pad(seconds5[i]);
+  }
+
+  start5[i] = (code, line) => {
+    $('.img-area-wipp').html(``);
+    $('#cekline').val(line);
+    // if ($('#btnstart'+i).val() === 'Start') {
+    intervalId5[i] = setInterval(startTimer5[i], 1000);
+    $('#btnlanjut5' + i).removeAttr("disabled");
+    $('#btnrestart5' + i).removeAttr("disabled");
+    $('#btnfinish5' + i).removeAttr("disabled");
+    const waktu_mulai = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/SetStart',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        waktu_mulai: waktu_mulai,
+        line: 5,
+        code: code
+      },
+      success: function(result) {
+        if (!result) {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: 'Gagal Melakukan Insert Data (!)',
+            showConfirmButton: false,
+            timer: 1700
+          })
+        } else {
+          swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+          $('.img-area-wipp').html(`<div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                          <label for="">Code Item : ${code}</label>
+                                          <br>
+                                          <center><img src="${baseurl}/assets/upload/wipp/${code}.png" style="max-width:100%;max-height:400px" class="img-fluid" alt="Responsive image"></center>
+                                        </div>
+                                      </div>
+                                    </div>`)
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+  }
+
+  selesai5[i] = (code, line) => {
+    if (intervalId5[i]) {
+      clearInterval(intervalId5[i]);
+
+      const waktu_selesai = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+      // waktu yang digunakan
+      const jm = document.getElementById(`hours5-${i}`).innerHTML;
+      const mnt = document.getElementById(`minutes5-${i}`).innerHTML;
+      const sec = document.getElementById(`seconds5-${i}`).innerHTML;
+      const time_se_di_dapet = `${jm}:${mnt}:${sec}`;
+
+      $('#btnstart5' + i).attr("disabled", "disabled"); // sesuai kondisi pasien antum
+      $('#btnlanjut5' + i).attr("disabled", "disabled");
+      $('#btnrestart5' + i).attr("disabled", "disabled");
+      $('#btnfinish5' + i).attr("disabled", "disabled");
+
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/SetFinish',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_selesai: waktu_selesai,
+          line: 5,
+          code: code,
+          lama_waktu: time_se_di_dapet
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'danger',
+              title: 'Gagal Memperbarui Data, Hubungi (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            $('.img-area-wipp').html(``)
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    }
+  }
+
+  pause5[i] = _ => {
+    if (intervalId5[i]) {
+      clearInterval(intervalId5[i]);
+      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      // action
+    }
+  };
+
+  reset5[i] = _ => {
+    totalSeconds_i5[i] = 0;
+    document.getElementById(`hours5-${i}`).innerHTML = '00';
+    document.getElementById(`minutes5-${i}`).innerHTML = '00';
+    document.getElementById(`seconds5-${i}`).innerHTML = '00';
+  };
+})
+
 // ------------------------- END GET TIME REV ALD ------------------------------//
