@@ -326,7 +326,7 @@ class M_monitoringdo extends CI_Model
     public function sudahdiLayani_detail($data)
     {
       $subinv = $this->session->datasubinven;
-      $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
+      $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", kdt.line_number, msib.segment1,
                                 msib.description, mtrl.quantity qty_req,
                                 kdt.allocated_quantity qty_allocated,
                                 -- khs_stock_delivery (mtrl.inventory_item_id,102,'$subinv') stock,
@@ -341,6 +341,7 @@ class M_monitoringdo extends CI_Model
                             AND kpd.request_number = mtrh.request_number
                             --
                             AND kdt.inventory_item_id = mtrl.inventory_item_id
+                            AND kdt.line_number = mtrl.line_number
                             AND kdt.header_id = kpd.header_id
                             AND 1 =
                                    CASE
@@ -386,7 +387,7 @@ class M_monitoringdo extends CI_Model
     {
       $subinv = $this->session->datasubinven;
       $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
-                                msib.description, mtrl.quantity qty_req,
+                                kdt.line_number, msib.description, mtrl.quantity qty_req,
                                 kdt.allocated_quantity qty_allocated,
                                 mtrl.quantity_delivered qty_transact, kpd.person_id petugas
                            FROM mtl_txn_request_lines mtrl,
@@ -398,6 +399,7 @@ class M_monitoringdo extends CI_Model
                             AND kpd.request_number = mtrh.request_number
                             --
                             AND kdt.inventory_item_id = mtrl.inventory_item_id
+                            AND kdt.line_number = mtrl.line_number
                             AND kdt.header_id = kpd.header_id
                             AND 1 =
                                    CASE
@@ -657,7 +659,7 @@ class M_monitoringdo extends CI_Model
 
     public function bodySurat($id)
     {
-        $query = "SELECT mtrh.header_id, mtrh.request_number, msib.segment1 item,
+        $query = "SELECT mtrh.header_id, mtrh.request_number, msib.segment1 item, kdt.line_number,
                          msib.description, mtrl.uom_code, NVL (mtrl.quantity, 0) quantity,
                          NVL (mtrl.quantity_delivered, 0) transact_qty,
                          NVL (mtrl.quantity_detailed, 0) allocated_qty,
@@ -671,6 +673,7 @@ class M_monitoringdo extends CI_Model
                      AND mtrh.header_id = kdt.header_id
                      AND kdt.inventory_item_id = mtrl.inventory_item_id
                      AND kdt.organization_id = mtrl.organization_id
+                     AND kdt.line_number = mtrl.line_number
                      --
                      AND msib.inventory_item_id = mtrl.inventory_item_id
                      AND msib.organization_id = mtrl.organization_id
@@ -704,6 +707,7 @@ class M_monitoringdo extends CI_Model
                       ,mtl_system_items_b msib
                   where ksnt.header_id = mtrl.header_id
                     and ksnt.inventory_item_id = mtrl.inventory_item_id
+                    and ksnt.line_number = mtrl.line_number
                     --
                     and msib.inventory_item_id = mtrl.inventory_item_id
                     and msib.organization_id = mtrl.organization_id
