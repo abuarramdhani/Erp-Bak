@@ -15,10 +15,84 @@ class M_index extends CI_Model
 
     public function GetIzin($noind)
     {
-        $sql = "SELECT * FROM \"Surat\".tizin_pribadi
-                WHERE atasan LIKE '%$noind%'
-                Order BY status, id DESC";
-        return $this->personalia->query($sql)->result_array();
+        $sql = "select
+                ip.*,
+                ipd.noind,
+                trim(tp.nama) nama,
+                ip.atasan,
+                trim(tp2.nama) nama_atasan,
+                ip.keperluan ket_pekerja,
+                case
+                    when ip.jenis_ijin in (1,3) then
+                    case
+                        when ip.verifikasi_satpam = '1' then 'Izin Keluar'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_atasan = '1' then 'Belum Verifikasi Satpam'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_atasan = '0' then 'Rejected Atasan'
+                        when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                    end
+                    when ip.jenis_ijin = 2 then
+                    case
+                        when ip.verifikasi_satpam = '1' then 'Izin Pulang'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_paramedik = '1' then 'Belum Verifikasi Satpam'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_paramedik = '0' then 'Rejected Paramedik'
+                        when ip.appr_paramedik is null
+                        and ip.appr_atasan = '1' then 'Periksa Paramedik'
+                        when ip.appr_paramedik is null
+                        and ip.appr_atasan = '0' then 'Rejected Atasan'
+                        when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                    end
+                end status
+            from
+                \"Surat\".tizin_pribadi ip,
+                \"Surat\".tizin_pribadi_detail ipd,
+                hrd_khs.tpribadi tp,
+                hrd_khs.tpribadi tp2
+            where
+                ip.id = ipd.id
+                and ipd.noind = tp.noind
+                and ip.atasan = tp2.noind
+                and ip.atasan = '$noind'
+            order by
+                ip.id desc";
+
+        $sql2 = "select
+                *,
+                (select trim(nama) from hrd_khs.tpribadi where noind = ip.atasan) nama_atasan,
+                (select string_agg(concat(noind,' - ',trim(nama)),',') from hrd_khs.tpribadi where noind in 
+                (select noind from \"Surat\".tizin_pribadi_detail tpd where tpd.id = ip.id)
+                ) nama_pkj,
+                case
+                    when ip.jenis_ijin in (1,
+                    3) then
+                    case
+                        when ip.verifikasi_satpam = '1' then 'Izin Keluar'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_atasan = '1' then 'Belum Verifikasi Satpam'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_atasan = '0' then 'Rejected Atasan'
+                        when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                    end
+                    when ip.jenis_ijin = 2 then
+                    case
+                        when ip.verifikasi_satpam = '1' then 'Izin Pulang'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_paramedik = '1' then 'Belum Verifikasi Satpam'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_paramedik = '0' then 'Rejected Paramedik'
+                        when ip.appr_paramedik is null
+                        and ip.appr_atasan = '1' then 'Periksa Paramedik'
+                        when ip.appr_paramedik is null
+                        and ip.appr_atasan = '0' then 'Rejected Atasan'
+                        when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                    end
+                end status from \"Surat\".tizin_pribadi ip
+                order by id desc";
+                // echo $sql;exit();
+        return $this->personalia->query($sql2)->result_array();
     }
 
     public function updatePekerja($status, $idizin)
@@ -32,7 +106,7 @@ class M_index extends CI_Model
     public function update($status, $idizin)
     {
         $sql = "update \"Surat\".tizin_pribadi
-                set status ='$status'
+                set appr_atasan ='$status', tgl_appr_atasan = now()
                 WHERE id ='$idizin'";
         $query = $this->personalia->query($sql);
     }
@@ -93,15 +167,56 @@ class M_index extends CI_Model
       return $this->personalia->query("SELECT DISTINCT noind, trim(nama) as nama FROM hrd_khs.tpribadi")->result_array();
     }
 
-  	public function IzinApprove($periode)
+  	public function IzinApprove($periode, $and)
   	{
-        if (!empty($periode)) {
-            $new = "WHERE $periode";
-        }else {
-            $new = "";
-        }
-  		$sql = "SELECT tp.* FROM \"Surat\".tizin_pribadi tp $new order by tp.created_date DESC, tp.status ";
-
+        $user = $this->session->userdata('user');
+  		$sql = "select
+                    ip.id,
+                    created_date,
+                    (select trim(nama) from hrd_khs.tpribadi where noind = ip.atasan) nama_atasan,
+                    (select string_agg(concat(noind,' - ',trim(nama)),',') from hrd_khs.tpribadi where noind in 
+                    (select noind from \"Surat\".tizin_pribadi_detail tpd where tpd.id = ip.id)
+                    ) nama_pkj,
+                    case
+                        when jenis_ijin = 1 then 'IZIN KELUAR PRIBADI'
+                        when jenis_ijin = 2 then 'IZIN SAKIT PERUSAHAAN'
+                        else 'IZIN KELUAR PERUSAHAAN'
+                    end jenis_ijin,
+                    ip.atasan,
+                    ip.keperluan ket_pekerja,
+                    case
+                        when ip.jenis_ijin in (1,3) then
+                        case
+                            when ip.verifikasi_satpam = '1' then 'Izin Keluar'
+                            when ip.verifikasi_satpam is null
+                            and ip.appr_atasan = '1' then 'Belum Verifikasi Satpam'
+                            when ip.verifikasi_satpam is null
+                            and ip.appr_atasan = '0' then 'Rejected Atasan'
+                            when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                        end
+                        when ip.jenis_ijin = 2 then
+                        case
+                            when ip.verifikasi_satpam = '1' then 'Izin Pulang'
+                            when ip.verifikasi_satpam is null
+                            and ip.appr_paramedik = '1' then 'Belum Verifikasi Satpam'
+                            when ip.verifikasi_satpam is null
+                            and ip.appr_paramedik = '0' then 'Rejected Paramedik'
+                            when ip.appr_paramedik is null
+                            and ip.appr_atasan = '1' then 'Periksa Paramedik'
+                            when ip.appr_paramedik is null
+                            and ip.appr_atasan = '0' then 'Rejected Atasan'
+                            when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                        end
+                    end status
+                from
+                    \"Surat\".tizin_pribadi ip
+                where
+                    (ip.noind like '%$user%' or ip.atasan = '$user' or ip.paramedik = '$user')
+                    $and
+                    $periode
+                order by
+                    ip.id desc";
+                    // echo $sql;exit();
   		$query = $this->personalia->query($sql);
   		return $query->result_array();
   	}
@@ -109,7 +224,7 @@ class M_index extends CI_Model
     public function approveAtasan($atasan)
   	{
         $today = date('Y-m-d');
-  		$sql = "SELECT * from \"Surat\".tizin_pribadi where atasan = '$atasan' and status = '1' Order BY id DESC, status";
+  		$sql = "SELECT * from \"Surat\".tizin_pribadi where atasan = '$atasan' Order BY id DESC";
 
   		$query = $this->personalia->query($sql);
   		return $query->result_array();
@@ -118,7 +233,7 @@ class M_index extends CI_Model
     public function IzinUnApprove($no_induk)
   	{
         $today = date('Y-m-d');
-  		$sql = "SELECT * from \"Surat\".tizin_pribadi where atasan = '$no_induk' and status = '0' and created_date::date = '$today' Order BY id DESC, status";
+  		$sql = "SELECT * from \"Surat\".tizin_pribadi where atasan = '$no_induk' and created_date::date = '$today' Order BY id DESC";
 
   		$query = $this->personalia->query($sql);
   		return $query->result_array();
@@ -127,7 +242,7 @@ class M_index extends CI_Model
     public function IzinReject($no_induk)
   	{
         $today = date('Y-m-d');
-  		$sql = "SELECT * from \"Surat\".tizin_pribadi where atasan = '$no_induk' and (status = '0' and created_date::date < '$today') or status = '5' Order BY id DESC, status";
+  		$sql = "SELECT * from \"Surat\".tizin_pribadi where atasan = '$no_induk' and (created_date::date < '$today') Order BY id DESC";
 
   		$query = $this->personalia->query($sql);
   		return $query->result_array();
@@ -147,6 +262,72 @@ class M_index extends CI_Model
 		return $this->personalia->query($sql)->result_array();
 	}
 
+    public function getList2()
+    {
+        $sql = "select
+                    *
+                from
+                    \"Surat\".tizin_pribadi tzp
+                where
+                    tzp.jenis_ijin = '2'
+                order by id desc";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function updateTizin($id, $arr)
+    {
+        $this->personalia->where('id', $id);
+        $this->personalia->update('"Surat".tizin_pribadi', $arr);
+    }
+
+    public function GetIzinbyId($id)
+    {
+        $sql = "select
+                    tzp.*, rtrim(tp.nama) nama_pkj, tp2.email_internal, rtrim(tp2.nama) nama_atasan
+                from
+                    \"Surat\".tizin_pribadi tzp
+                    left join hrd_khs.tpribadi tp on tp.noind = tzp.noind
+                    left join hrd_khs.tpribadi tp2 on tp2.noind = tzp.atasan
+                where
+                    id = '$id'";
+        return $this->personalia->query($sql);
+    }
+
+    public function getLIzin($kolom)
+    {
+        $sql = "Select $kolom from \"Surat\".tizin_pribadi order by id desc";
+        return $this->personalia->query($sql);
+    }
+
+    public function getLIzinNoind()
+    {
+        $sql = "select
+                    distinct(tp.noind),
+                    rtrim(tp.nama) nama
+                from
+                    \"Surat\".tizin_pribadi_detail tpd
+                left join hrd_khs.tpribadi tp on
+                    tp.noind = tpd.noind";
+        return $this->personalia->query($sql);
+    }
+
+    public function allowedParamedik()
+    {
+        $sql = "select
+                    *
+                from
+                    hrd_khs.tpribadi
+                where
+                    (kodesie like '4010101%'
+                    or noind = 'B0307'
+                    or noind = 'J1269'
+                    or noind = 'B0819'
+                    or noind = 'B0898'
+                    or noind = 'B0720')
+                    and keluar = '0'
+                    and kd_jabatan <= '13'";
+        return $this->personalia->query($sql)->result_array();
+    }
 }
 
  ?>
