@@ -21,8 +21,8 @@ class C_WebPatroli extends CI_Controller
 		$this->load->library('KonversiBulan');
 		$this->load->model('PatroliSatpam/M_patrolis');
 
-		if(strpos(current_url(), 'qrcode_patroli') === false)
-		$this->checkSession();
+		// if(strpos(current_url(), 'qrcode_patroli') === false)
+		// $this->checkSession();
 	}
 
 	public function checkSession()
@@ -36,7 +36,7 @@ class C_WebPatroli extends CI_Controller
 
 	public function index()
 	{
-		$user_id = $this->session->userid;
+		$this->checkSession();
 
 		$data  = $this->general->loadHeaderandSidemenu('Patroli Satpam', 'Patroli Satpam', '', '', '');
 
