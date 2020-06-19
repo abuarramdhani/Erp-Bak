@@ -2164,6 +2164,9 @@ $route['MasterPresensi/ReffGaji/THR'] = 'MasterPresensi/ReffGaji/C_THRPekerja';
 $route['MasterPresensi/ReffGaji/THR/(:any)'] = 'MasterPresensi/ReffGaji/C_THRPekerja/$1';
 $route['MasterPresensi/ReffGaji/THR/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_THRPekerja/$1/$2';
 
+$route['MasterPresensi/Proses/CutiBersama'] = 'MasterPresensi/Proses/C_CutiBersama';
+$route['MasterPresensi/Proses/CutiBersama/(:any)'] = 'MasterPresensi/Proses/C_CutiBersama/$1';
+$route['MasterPresensi/Proses/CutiBersama/(:any)/(:any)'] = 'MasterPresensi/Proses/C_CutiBersama/$1/$2';
 
 //------------------------------------Master Presensi - ShiftPekerja ---------------------------------------------------
 $route['MasterPresensi/ShiftPekerja/UpdateJamIstirahat'] = 'MasterPresensi/ShiftPekerja/C_UpdateJamIstirahat';
