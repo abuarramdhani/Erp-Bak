@@ -124,13 +124,16 @@ class M_invoice extends CI_Model{
 									NVL( aia.total_tax_amount, 0 ) PPN,
 									aia.attribute5 tax_number_depan,
 									aia.attribute3 tax_number_belakang,
-									ass.VAT_REGISTRATION_NUM NPWP
+									ass.VAT_REGISTRATION_NUM NPWP,
+									khs.seller
 								FROM
 									ap_suppliers ass,
 									ap_invoices_all aia,
-									ap_invoice_lines_all aila
+									ap_invoice_lines_all aila,
+									khs_faktur_web khs
 								WHERE
 									1 = 1 
+									and khs.faktur_pajak(+) = replace(replace(replace((aia.attribute5 || aia.attribute3),'-',''),'.',''),' ','')
 									and aia.vendor_id = ass.vendor_id 
 									and aia.invoice_id = aila.invoice_id 
 									AND aia.invoice_id = '$invoice_id'
