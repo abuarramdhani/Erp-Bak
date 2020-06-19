@@ -4448,3 +4448,10 @@ $route['PatroliSatpam']								= 'PatroliSatpam/C_WebPatroli/index';
 $route['PatroliSatpam/web/(:any)']					= 'PatroliSatpam/C_WebPatroli/$1';
 $route['PatroliSatpam/web/(:any)/(:any)']			= 'PatroliSatpam/C_WebPatroli/$1/$2';
 $route['PatroliSatpam/api/(:any)']					= 'PatroliSatpam/C_ApiPatroli/$1';
+
+//----------------------------------- Civil maintenance Order -------------------------------------------
+$route['civil-maintenance-order'] = 'CivilMaintenanceOrder/C_Civil';
+$route['civil-maintenance-order/order/(:any)'] = 'CivilMaintenanceOrder/C_Civil/$1';
+$route['civil-maintenance-order/order/(:any)/(:any)'] = 'CivilMaintenanceOrder/C_Civil/$1/$2';
+$route['civil-maintenance-order/setting/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1';
+$route['civil-maintenance-order/setting/(:any)/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1/$2';
