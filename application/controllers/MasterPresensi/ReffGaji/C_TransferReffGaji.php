@@ -482,7 +482,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->SUBTOTAL2 = 0;
 				$record->SUBTOTAL3 = 0;
 				$record->TERIMA = 0;
-				$record->KET =  (str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "0" and str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "") ? str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) : '-' ;
+				$record->KET =  (str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "0" and str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "") ? str_replace(".00","",Trim($ds['ket'])) : '-' ;
 				$record->TKENAPJK =  round($ds['tkpajak'], 2) ;
 				$record->TTAKPJK = 0;
 				$record->KOREKSI1 = '';
