@@ -679,8 +679,8 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HR_IF =  round($ds['ief'], 2) ;
 				$record->HR_IKH = $ds['ikh'];
 				$record->HR_TP = $ds['tp'];
-				$record->HR_TKPW = $ds['hari_tkpw'];
-				$record->JAM_TKPW = $ds['jam_tkpw'];
+				$record->HR_TKPW = round($ds['hari_tkpw'],2);
+				$record->JAM_TKPW = round($ds['jam_tkpw'],2);
 				$record->JAM_PKL = $ds['pkl'];
 				$record->HR_S2 =  round($ds['ims'], 2) ;
 				$record->HR_S3 =  round($ds['imm'], 2) ;
