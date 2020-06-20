@@ -3,7 +3,8 @@
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
-          <h4 style="font-weight:bold;"><i class="fa fa-cloud-upload"></i> Setting Job Lane</h4>
+          <h4 style="font-weight:bold;display:inline;"><i class="fa fa-cloud-upload"></i> Setting Job Lane 5</h4>
+          <a style="display:inline;float:right;border:1.5px solid white;" href="<?php echo base_url('RunningTimeLinePnP/setting/history') ?>" class="btn btn-primary"><i class="fa fa-hourglass-3"></i> History</a>
         </div>
         <div class="box-body" style="background:#f0f0f0 !important;">
           <div class="row">
@@ -26,6 +27,7 @@
                     <h4 style="font-weight:bold;">LINE 5 (<span style="color:#2284af" id="target_pe_line5"><?php !empty($line5[0]['target_pe_max'])?$l5 = $line5[0]['target_pe_max'] : $l5 = ''; echo $l5; ?></span><b>%</b>)</h4>
                   </div>
                 </div>
+                <br>
                 <div class="table-responsive">
                   <table class="table table-striped table-bordered table-hover text-left line5wipp tblwiip10" style="font-size:11px;">
                     <thead>

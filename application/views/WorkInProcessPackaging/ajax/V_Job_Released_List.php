@@ -50,7 +50,7 @@ function addRKH(n, nj, ki){
       $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `0`)
       $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-primary`)
       $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-danger`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-close"></i> <b>Cencel</b>`)
+      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-close"></i> <b>Cancel</b>`)
       $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).toggleClass('selected');
   }else {
       $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)

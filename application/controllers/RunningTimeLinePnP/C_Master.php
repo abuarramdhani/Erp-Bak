@@ -209,6 +209,34 @@ class C_Master extends CI_Controller
         return $ss[2]."-".$ss[1]."-".$ss[0];
     }
 
+    public function history()
+    {
+      $this->checkSession();
+      $user_id = $this->session->userid;
+
+      $data['Menu'] = 'Dashboard';
+      $data['SubMenuOne'] = '';
+
+      $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+      $data['get'] = $this->M_rtlp->getHistory();
+      if (!empty($data['get'])) {
+        foreach ($data['get'] as $key => $value) {
+          $getNamaKomponen = $this->M_rtlp->getNamaKomponen($value['Komponen']);
+          $data['get'][$key]['Nama_Komponen']  = '-';
+          if (!empty($getNamaKomponen->nama_item)) {
+              $data['get'][$key]['Nama_Komponen'] = $getNamaKomponen->nama_item;
+          }
+        }
+      }
+      $this->load->view('V_Header', $data);
+      $this->load->view('V_Sidemenu', $data);
+      $this->load->view('RunningTimeLinePnP/V_History');
+      $this->load->view('V_Footer', $data);
+    }
+
 
     // ============================ CHECK AREA =====================================
 

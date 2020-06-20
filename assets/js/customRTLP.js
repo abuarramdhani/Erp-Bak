@@ -23,6 +23,7 @@ const swalRKH = (type, title) => {
 
 // $(document).ready(function() {
 //   $('.tblwiip10').DataTable();
+// 300000/4 = 75000; 30000; 2800
 // })
 let rtlp1 =  $('.tblwiip10').DataTable();
 

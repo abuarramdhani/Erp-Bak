@@ -31,7 +31,7 @@
 						<tr>
 							<td colspan="2" style="height: 40px; padding: 5px;font-size: 15px;border: 0px solid black;"  > <b><?php echo $row[0]['DESCRIPTION'];?>  </b></td>
 							<td align="right" style="border: 0px solid black;" colspan="2" rowspan="3"  >
-							<img style=" float:right; width:100%; padding-right: 2px;  height:auto;" src="<?php echo base_url('assets/upload/wipp/qrcode/'.$row[0]['SEGMENT1']) ?>" />
+							<img style=" float:right; width:100%; padding-right: 2px;  height:auto;" src="<?php echo base_url('assets/upload/wipp/qrcode/'.$row[0]['SEGMENT1'].'.png') ?>" />
 							<h2>INIQRCODE</h2>
 							</td>
 						</tr>
@@ -77,7 +77,7 @@
 						<tr>
 							<td colspan="2" style="height: 40px; padding: 5px;font-size: 15px;border: 0px solid black;"  > <b><?php echo $row[0]['DESCRIPTION'];?>  </b></td>
 							<td align="right" style="border: 0px solid black;" colspan="2" rowspan="3"  >
-							<img style=" float:right; width:100%; padding-right: 2px;  height:auto;" src="<?php echo base_url('assets/upload/wipp/'.$row[0]['SEGMENT1']) ?>" />
+							<img style=" float:right; width:100%; padding-right: 2px;  height:auto;" src="<?php echo base_url('assets/upload/wipp/qrcode/'.$row[0]['SEGMENT1'].'.png') ?>" />
 							<h2>INIQRCODE</h2>
 							</td>
 						</tr>

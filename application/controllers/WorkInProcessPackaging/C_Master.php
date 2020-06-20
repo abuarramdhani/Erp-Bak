@@ -93,14 +93,14 @@ class C_Master extends CI_Controller
 
     public function getitembykodeitem()
     {
-      if (!$this->input->is_ajax_request()) {
-          echo "Akses Terlarang!!!";
-      } else {
-          $data['get'] =  $this->M_wipp->getitembykodeitem($this->input->post('kode_item'));
-          // echo "<pre>";
-          // print_r($data['get'] );
-          $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released_List', $data);
-      }
+        if (!$this->input->is_ajax_request()) {
+            echo "Akses Terlarang!!!";
+        } else {
+            $data['get'] =  $this->M_wipp->getitembykodeitem($this->input->post('kode_item'));
+            // echo "<pre>";
+            // print_r($data['get'] );
+            $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released_List', $data);
+        }
     }
 
     public function SaveJobList()
@@ -154,7 +154,7 @@ class C_Master extends CI_Controller
             $data_a = $this->M_wipp->JobRelease();
             $priority = $this->M_wipp->getPP();
 
-            foreach($data_a as $element) {
+            foreach ($data_a as $element) {
                 $hash = $element['KODE_ASSY'];
                 $tampung_item_unique[$hash]['KODE_ASSY'] = $element['KODE_ASSY'];
                 $tampung_item_unique[$hash]['DESCRIPTION'] = $element['DESCRIPTION'];
@@ -171,35 +171,34 @@ class C_Master extends CI_Controller
             }
 
             if (!empty($tampung_priority)) {
-              //pengecekan di jika itu priority
-              foreach ($tampung_priority as $key => $pr) {
-                  $tampung_priority[$key]['PRIORITY'] = 1;
-              }
-              // hapus item yang ada sama di produk prioritas
-              foreach ($tampung_item_unique as $key0 => $value) {
-                  foreach ($tampung_priority as $key2 => $v) {
-                      if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
-                          $tampung_priority_reedition[] = $v;
-                          unset($tampung_item_unique[$key0]);
-                      }
-
-                  }
-              }
-              // gabungkan data dengan produk prioritas di awal index
-              $data1_1 = array_merge($tampung_priority_reedition, $tampung_item_unique);
-            }else {
-              $data1_1 = $tampung_item_unique;
+                //pengecekan di jika itu priority
+                foreach ($tampung_priority as $key => $pr) {
+                    $tampung_priority[$key]['PRIORITY'] = 1;
+                }
+                // hapus item yang ada sama di produk prioritas
+                foreach ($tampung_item_unique as $key0 => $value) {
+                    foreach ($tampung_priority as $key2 => $v) {
+                        if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
+                            $tampung_priority_reedition[] = $v;
+                            unset($tampung_item_unique[$key0]);
+                        }
+                    }
+                }
+                // gabungkan data dengan produk prioritas di awal index
+                $data1_1 = array_merge($tampung_priority_reedition, $tampung_item_unique);
+            } else {
+                $data1_1 = $tampung_item_unique;
             }
 
             foreach ($data1_1 as $key => $val) {
-              $minmax = $this->M_wipp->minMax($val['KODE_ASSY']);
-              if (!empty($minmax)) {
-                $data1_1[$key]['MIN'] = $minmax[0]['MIN'];
-                $data1_1[$key]['MAX'] = $minmax[0]['MAX'];
-              }else {
-                $data1_1[$key]['MIN'] = '-';
-                $data1_1[$key]['MAX'] = '-';
-              }
+                $minmax = $this->M_wipp->minMax($val['KODE_ASSY']);
+                if (!empty($minmax)) {
+                    $data1_1[$key]['MIN'] = $minmax[0]['MIN'];
+                    $data1_1[$key]['MAX'] = $minmax[0]['MAX'];
+                } else {
+                    $data1_1[$key]['MIN'] = '-';
+                    $data1_1[$key]['MAX'] = '-';
+                }
             }
             $data['get_unique'] = $data1_1;
             $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released', $data);
@@ -331,393 +330,390 @@ class C_Master extends CI_Controller
 
                 //LINE 4
                 if (!empty($adados)) {
-                  usort($adados, function ($a, $b) {
-                      return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
-                  });
+                    usort($adados, function ($a, $b) {
+                        return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
+                    });
 
-                  $line_4_target_max = $get_target_pe[3]['target_max'];
-                  $line_4_count = 0;
-                  $line4 = [];
-                  foreach ($adados as $key4 => $val4) {
-                      $line_4_count += $val4['target_pe'];
-                      if ($line_4_count < $line_4_target_max && ! array_key_exists($val4['no_job'], $line4)) {
-                          $line_4[$val4['no_job']] = $val4;
-                      }
-                  }
-                  //UNSET LINE 4
-                  if (!empty($line_4)) {
-                    foreach ($line_4 as $key4a => $val4a) {
-                        $keys4= array_keys(array_column($adados, 'id_job_list'), $val4a['id_job_list']);
-                        $unset4[] = $keys4[0];
+                    $line_4_target_max = $get_target_pe[3]['target_max'];
+                    $line_4_count = 0;
+                    $line4 = [];
+                    foreach ($adados as $key4 => $val4) {
+                        $line_4_count += $val4['target_pe'];
+                        if ($line_4_count < $line_4_target_max && ! array_key_exists($val4['no_job'], $line4)) {
+                            $line_4[$val4['no_job']] = $val4;
+                        }
                     }
-                    foreach ($unset4 as $key4b => $al4b) {
-                        unset($adados[$al4b]);
+                    //UNSET LINE 4
+                    if (!empty($line_4)) {
+                        foreach ($line_4 as $key4a => $val4a) {
+                            $keys4= array_keys(array_column($adados, 'id_job_list'), $val4a['id_job_list']);
+                            $unset4[] = $keys4[0];
+                        }
+                        foreach ($unset4 as $key4b => $al4b) {
+                            unset($adados[$al4b]);
+                        }
+                        $adados_line4 = array_values($adados);
+                    } else {
+                        $line_4 = [];
                     }
-                    $adados_line4 = array_values($adados);
-                  }else {
-                    $line_4 = [];
-                  }
                 }
                 if (empty($line_4)) {
-                   $line_4 = [];
+                    $line_4 = [];
                 }
 
                 //LINE 5
                 if (!empty($line_4)) {
                     if (!empty($adados_line4)) {
-                      $line_5_target_max = $get_target_pe[4]['target_max'];
-                      $line_5_count = 0;
-                      $line5 = [];
-                      foreach ($adados_line4 as $key5 => $val5) {
-                          $line_5_count += $val5['target_pe'];
-                          if ($line_5_count < $line_5_target_max && ! array_key_exists($val5['no_job'], $line5)) {
-                              $line_5[$val5['no_job']] = $val5;
-                          }
-                      }
-                      //UNSET LINE 5
-                      if (!empty($line_5)) {
-                        foreach ($line_5 as $key5a => $val5a) {
-                            $keys5= array_keys(array_column($adados_line4, 'id_job_list'), $val5a['id_job_list']);
-                            $unset5[] = $keys5[0];
+                        $line_5_target_max = $get_target_pe[4]['target_max'];
+                        $line_5_count = 0;
+                        $line5 = [];
+                        foreach ($adados_line4 as $key5 => $val5) {
+                            $line_5_count += $val5['target_pe'];
+                            if ($line_5_count < $line_5_target_max && ! array_key_exists($val5['no_job'], $line5)) {
+                                $line_5[$val5['no_job']] = $val5;
+                            }
                         }
-                        foreach ($unset5 as $key5b => $al5b) {
-                            unset($adados_line4[$key5b]);
+                        //UNSET LINE 5
+                        if (!empty($line_5)) {
+                            foreach ($line_5 as $key5a => $val5a) {
+                                $keys5= array_keys(array_column($adados_line4, 'id_job_list'), $val5a['id_job_list']);
+                                $unset5[] = $keys5[0];
+                            }
+                            foreach ($unset5 as $key5b => $al5b) {
+                                unset($adados_line4[$key5b]);
+                            }
+                            $adados_line5 = array_values($adados_line4);
+                        } else {
+                            $line_5 = [];
                         }
-                        $adados_line5 = array_values($adados_line4);
-                      }else {
-                        $line_5 = [];
-                      }
                     }
                 }
                 if (empty($line_5)) {
-                   $line_5 = [];
+                    $line_5 = [];
                 }
 
                 // LINE1
                 if (!empty($gaadados)) {
-                  usort($gaadados, function ($a, $b) {
-                      return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
-                  });
+                    usort($gaadados, function ($a, $b) {
+                        return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
+                    });
 
-                  $line_1_target_max = $get_target_pe[0]['target_max'];
-                  $line_1_count = 0;
-                  $line1 = [];
-                  foreach ($gaadados as $key1 => $val1) {
-                      $line_1_count += $val1['target_pe'];
-                      if ($line_1_count < $line_1_target_max && ! array_key_exists($val1['no_job'], $line1)) {
-                          $line_1[$val1['no_job']] = $val1;
-                      }
-                  }
-                  //UNSET LINE 1
-                  if (!empty($line_1)) {
-                    foreach ($line_1 as $key1a => $val1a) {
-                        $keys1= array_keys(array_column($gaadados, 'id_job_list'), $val1a['id_job_list']);
-                        $unset1[] = $keys1[0];
+                    $line_1_target_max = $get_target_pe[0]['target_max'];
+                    $line_1_count = 0;
+                    $line1 = [];
+                    foreach ($gaadados as $key1 => $val1) {
+                        $line_1_count += $val1['target_pe'];
+                        if ($line_1_count < $line_1_target_max && ! array_key_exists($val1['no_job'], $line1)) {
+                            $line_1[$val1['no_job']] = $val1;
+                        }
                     }
-                    foreach ($unset1 as $key1b => $al1b) {
-                        unset($gaadados[$al1b]);
+                    //UNSET LINE 1
+                    if (!empty($line_1)) {
+                        foreach ($line_1 as $key1a => $val1a) {
+                            $keys1= array_keys(array_column($gaadados, 'id_job_list'), $val1a['id_job_list']);
+                            $unset1[] = $keys1[0];
+                        }
+                        foreach ($unset1 as $key1b => $al1b) {
+                            unset($gaadados[$al1b]);
+                        }
+                        $gaadados_line1 = array_values($gaadados);
+                    } else {
+                        $line_1 = [];
                     }
-                    $gaadados_line1 = array_values($gaadados);
-                  }else {
-                    $line_1 = [];
-                  }
-
                 }
                 if (empty($line_1)) {
-                   $line_1 = [];
+                    $line_1 = [];
                 }
 
                 //LINE 2
                 if (!empty($gaadados_line1)) {
-                  $line_2_target_max = $get_target_pe[1]['target_max'];
-                  $line_2_count = 0;
-                  $line2 = [];
-                  foreach ($gaadados_line1 as $key2 => $val2) {
-                      $line_2_count += $val2['target_pe'];
-                      if ($line_2_count < $line_2_target_max && ! array_key_exists($val2['no_job'], $line2)) {
-                          $line_2[$val2['no_job']] = $val2;
-                      }
-                  }
-                  //UNSET LINE 2
-                  if (!empty($line_2)) {
-                    foreach ($line_2 as $key2a => $val2a) {
-                        $keys2= array_keys(array_column($gaadados_line1, 'id_job_list'), $val2a['id_job_list']);
-                        $unset2[] = $keys2[0];
+                    $line_2_target_max = $get_target_pe[1]['target_max'];
+                    $line_2_count = 0;
+                    $line2 = [];
+                    foreach ($gaadados_line1 as $key2 => $val2) {
+                        $line_2_count += $val2['target_pe'];
+                        if ($line_2_count < $line_2_target_max && ! array_key_exists($val2['no_job'], $line2)) {
+                            $line_2[$val2['no_job']] = $val2;
+                        }
                     }
-                    foreach ($unset2 as $key2b => $al2b) {
-                        unset($gaadados_line1[$al2b]);
+                    //UNSET LINE 2
+                    if (!empty($line_2)) {
+                        foreach ($line_2 as $key2a => $val2a) {
+                            $keys2= array_keys(array_column($gaadados_line1, 'id_job_list'), $val2a['id_job_list']);
+                            $unset2[] = $keys2[0];
+                        }
+                        foreach ($unset2 as $key2b => $al2b) {
+                            unset($gaadados_line1[$al2b]);
+                        }
+                        $gaadados_line2 = array_values($gaadados_line1);
+                    } else {
+                        $line_2 = [];
                     }
-                    $gaadados_line2 = array_values($gaadados_line1);
-                  }else {
-                    $line_2 = [];
-                  }
-
                 }
                 if (empty($line_2)) {
-                   $line_2 = [];
+                    $line_2 = [];
                 }
 
                 //LINE 3
                 if (!empty($gaadados_line2)) {
-                  $line_3_target_max =$get_target_pe[2]['target_max'];
-                  $line_3_count = 0;
-                  $line3 = [];
-                  foreach ($gaadados_line2 as $key3 => $val3) {
-                      $line_3_count += $val3['target_pe'];
-                      if ($line_3_count < $line_3_target_max && ! array_key_exists($val3['no_job'], $line3)) {
-                          $line_3[$val3['no_job']] = $val3;
-                      }
-                  }
-                  //UNSET LINE 3
-                  if (!empty($line_3)) {
-                    foreach ($line_3 as $key3a => $val3a) {
-                        $keys3= array_keys(array_column($gaadados_line2, 'id_job_list'), $val3a['id_job_list']);
-                        $unset3[] = $keys3[0];
+                    $line_3_target_max =$get_target_pe[2]['target_max'];
+                    $line_3_count = 0;
+                    $line3 = [];
+                    foreach ($gaadados_line2 as $key3 => $val3) {
+                        $line_3_count += $val3['target_pe'];
+                        if ($line_3_count < $line_3_target_max && ! array_key_exists($val3['no_job'], $line3)) {
+                            $line_3[$val3['no_job']] = $val3;
+                        }
                     }
-                    foreach ($unset3 as $key3b => $al3b) {
-                        unset($gaadados_line2[$al3b]);
+                    //UNSET LINE 3
+                    if (!empty($line_3)) {
+                        foreach ($line_3 as $key3a => $val3a) {
+                            $keys3= array_keys(array_column($gaadados_line2, 'id_job_list'), $val3a['id_job_list']);
+                            $unset3[] = $keys3[0];
+                        }
+                        foreach ($unset3 as $key3b => $al3b) {
+                            unset($gaadados_line2[$al3b]);
+                        }
+                        $gaadados_line3 = array_values($gaadados_line2);
+                    } else {
+                        $line_3 = [];
                     }
-                    $gaadados_line3 = array_values($gaadados_line2);
-                  }else {
-                    $line_3 = [];
-                  }
-
                 }
                 if (empty($line_3)) {
-                   $line_3 = [];
+                    $line_3 = [];
                 }
 
-              $data['line_1'] = $line_1;
-              $data['line_2'] = $line_2;
-              $data['line_3'] = $line_3;
-              $data['line_4'] = $line_4;
-              $data['line_5'] = $line_5;
-            // if (!empty($listRKH)) {
-            //     foreach ($listRKH as $key => $l) {
-            //         $list[] = $l['kode_item'];
-            //     }
-            //     $list_unique = array_unique($list);
-            //
-            //     foreach ($listRKH as $key => $l) {
-            //         $cek = $this->M_wipp->getDetailBom($l['kode_item']);
-            //         foreach ($cek as $key => $c) {
-            //             if (strpos($c['DESCRIPTION'], 'DOS') !== false) {
-            //                 $dicek = 1;
-            //                 break;
-            //             } else {
-            //                 $dicek = 0;
-            //             }
-            //         }
-            //         $dos[] = [
-            //             'no_job' => $l['no_job'],
-            //             // 'id_split' => $l['id_split'],
-            //             'id_job_list' => $l['id'],
-            //             'kode_item' => $l['kode_item'],
-            //             'qty' => $l['qty'],
-            //             'target_pe' => $l['waktu_satu_shift']/($l['qty']/$l['usage_rate']),
-            //             'dos' => $dicek
-            //          ];
-            //     }
-            //
-            //     foreach ($dos as $key => $d) {
-            //         if ($d['dos']) {
-            //             $adados[] = $d;
-            //         }
-            //         if ($d['dos'] === 0) {
-            //             $gaadados[] = $d;
-            //         }
-            //     }
-            //
-            //     if (empty($adados)) {
-            //         $adados = [];
-            //         $line4_ada_dos = [];
-            //         $line5_ada_dos = [];
-            //     } else {
-            //         usort($adados, function ($a, $b) {
-            //             return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
-            //         });
-            //         // ==========RANGE LINE 4 ADA DOS===========
-            //         $hitung_pe_ada = 0;
-            //         foreach ($adados as $key => $a) {
-            //             $hitung_pe_ada += $a['target_pe'];
-            //             if ($hitung_pe_ada >= $get_target_pe[3]['target_max']) {
-            //                 $key = $key-1;
-            //                 break;
-            //             }
-            //         }
-            //
-            //         if ($adados[0]['target_pe'] > $get_target_pe[3]['target_max']) {
-            //             $line4_ada_dos = [];
-            //             $line5_ada_dos = [];
-            //         // echo json_encode(4);
-            //         } else {
-            //             for ($c=0; $c <= $key; $c++) {
-            //                 $line4_ada_dos[] = $adados[$c];
-            //             }
-            //             // ==========END RANGE LINE 4 ADA DOS=========
-            //
-            //             // ==========RANGE LINE 5 ADA DOS===========
-            //             $hitung_pe_ada_5 = 0;
-            //             $n12 = $key+1;
-            //             if (!empty($adados[$n12])) {
-            //                 $max5 = sizeof($adados) - 1;
-            //                 for ($d=$n12; $d <= $max5; $d++) {
-            //                     $hitung_pe_ada_5 += $adados[$d]['target_pe'];
-            //                     if ($hitung_pe_ada_5 >=$get_target_pe[4]['target_max']) {
-            //                         $key5 = $d;
-            //                         break;
-            //                     } else {
-            //                         $key5 = $max5;
-            //                     }
-            //                 }
-            //                 $d = $n12;
-            //                 if ($adados[$d]['target_pe'] >=$get_target_pe[4]['target_max']) {
-            //                     $line5_ada_dos = [];
-            //                 // echo json_encode(5);
-            //                 } else {
-            //                     for ($e=$d; $e <= $key5; $e++) {
-            //                         $line5_ada_dos[] = $adados[$e];
-            //                     }
-            //                 }
-            //             } else {
-            //                 $line5_ada_dos = [];
-            //             }
-            //             // ==========END RANGE LINE 5 ADA DOS=========
-            //         }
-            //     }
-            //
-            //     if (empty($gaadados)) {
-            //         $gaadados = [];
-            //         $line1_ga_ada_dos = [];
-            //         $line2_ga_ada_dos = [];
-            //         $line3_ga_ada_dos = [];
-            //     } else {
-            //         usort($gaadados, function ($a, $b) {
-            //             return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
-            //         });
-            //         // ==========RANGE LINE 1 GA ADA DOS===========
-            //         // echo "<pre>";
-            //         // print_r($gaadados);
-            //         $hitung_pe_gada = 0;
-            //         foreach ($gaadados as $key => $g) {
-            //             $hitung_pe_gada += $g['target_pe'];
-            //             if ($hitung_pe_gada >= $get_target_pe[0]['target_max']) {
-            //                 $key = $key-1;
-            //                 break;
-            //             }
-            //         }
-            //         if ($gaadados[0]['target_pe'] > $get_target_pe[0]['target_max']) {
-            //             $line1_ga_ada_dos = [];
-            //             $line2_ga_ada_dos = [];
-            //         // echo json_encode(1);
-            //         } else {
-            //             for ($c=0; $c <= $key; $c++) {
-            //                 $line1_ga_ada_dos[] = $gaadados[$c];
-            //                 $line_1[] = $gaadados[$c];
-            //             }
-            //             // $cek = array_search('D200601355', array_column($gaadados, 'no_job')) !== false ? 'found' : 'notfound';
-            //             // print_r($cek) ;
-            //         }
-            //         // ==========END RANGE LINE 1 GA ADA DOS=========
-            //
-            //         // ==========RANGE LINE 2 ADA DOS===========
-            //         $hitung_pe_ga_ada_2 = 0;
-            //         $n2 = $key+1;
-            //         if (!empty($gaadados[$n2])) {
-            //             $max2 = sizeof($gaadados) - 1;
-            //
-            //             for ($d=$n2; $d <= $max2; $d++) {
-            //                 $hitung_pe_ga_ada_2 += $gaadados[$d]['target_pe'];
-            //                 if ($hitung_pe_ga_ada_2 >= $get_target_pe[1]['target_max']) {
-            //                     $key_3 = $d-1;
-            //                     break;
-            //                 } else {
-            //                     $key_3 = $d;
-            //                 }
-            //             }
-            //             $d = $n2;
-            //             if ($gaadados[$d]['target_pe'] >= $get_target_pe[1]['target_max']) {
-            //                 $line2_ga_ada_dos = [];
-            //                 $line3_ga_ada_dos = [];
-            //             // echo json_encode(2);
-            //             } else {
-            //                 for ($e=$d; $e <= $key_3; $e++) {
-            //                     $line2_ga_ada_dos[] = $gaadados[$e];
-            //                 }
-            //             }
-            //
-            //             // ==========RANGE LINE 3 ADA DOS===========
-            //             $hitung_pe_ga_ada_3 = 0;
-            //             $n3 = !empty($e)?$e:$e='gada';
-            //
-            //             if (!empty($gaadados[$n3])) {
-            //                 $max3 = sizeof($gaadados) - 1;
-            //                 for ($f=$n3; $f <= $max3; $f++) {
-            //                     $hitung_pe_ga_ada_3 += $gaadados[$f]['target_pe'];
-            //                     if ($hitung_pe_ga_ada_3 >= $get_target_pe[2]['target_max']) {
-            //                         $key_4 = $f-1;
-            //                         break;
-            //                     } else {
-            //                         $key_4 = $f;
-            //                     }
-            //                 }
-            //
-            //                 if ($gaadados[$key_4]['target_pe'] >= $get_target_pe[2]['target_max']) {
-            //                     $line3_ga_ada_dos = [];
-            //                 } else {
-            //                     if ($n3 > $key_4) {
-            //                         $line3_ga_ada_dos = [];
-            //                     } else {
-            //                         for ($e=$n3; $e <= $key_4; $e++) {
-            //                             $line3_ga_ada_dos[] = $gaadados[$e];
-            //                         }
-            //                     }
-            //                 }
-            //             } else {
-            //                 $line3_ga_ada_dos = [];
-            //             }
-            //             // ==========END RANGE LINE 3 ADA DOS=========
-            //         } else {
-            //             $line2_ga_ada_dos = [];
-            //             $line3_ga_ada_dos = [];
-            //         }
-            //         // ==========END RANGE LINE 2 ADA DOS=========
-            //     }
-            //
-            //     if (empty($line1_ada)) {
-            //         $line1_ada = '';
-            //     }
-            //
-            //     if (empty($line1_gaada)) {
-            //         $line1_gaada = '';
-            //     }
-            //
-            //     // echo "======== ada dos (line 4 dan 5)==========";
-            //     // echo "<pre>";
-            //     // print_r($adados); // jangan lupa pengecekan
-            //     // echo "========== max index line 4========";
-            //     // echo "<pre>";
-            //     // print_r($line4_ada_dos);
-            //     // echo "<br>";
-            //     // echo "========== max index line 5========";
-            //     // echo "<pre>";
-            //     // print_r($line5_ada_dos);
-            //     // echo "<br>";
-            //     // echo "========== ga ada (line 1,2 dan 3) ========";
-            //     // echo "<pre>";
-            //     // print_r($gaadados);
-            //     // echo "========== max index line 1 ========";
-            //     // echo "<pre>";
-            //     // print_r($line1_ga_ada_dos);
-            //     // echo "<br>";
-            //     // echo "========== max index line 2 ========";
-            //     // echo "<pre>";
-            //     // print_r($line2_ga_ada_dos);
-            //     // echo "<br>";
-            //     // echo "========== max index line 3 ========";
-            //     // echo "<pre>";
-            //     // print_r($line3_ga_ada_dos);
-            //     // echo "<br>";
+                $data['line_1'] = $line_1;
+                $data['line_2'] = $line_2;
+                $data['line_3'] = $line_3;
+                $data['line_4'] = $line_4;
+                $data['line_5'] = $line_5;
+                // if (!empty($listRKH)) {
+                //     foreach ($listRKH as $key => $l) {
+                //         $list[] = $l['kode_item'];
+                //     }
+                //     $list_unique = array_unique($list);
+                //
+                //     foreach ($listRKH as $key => $l) {
+                //         $cek = $this->M_wipp->getDetailBom($l['kode_item']);
+                //         foreach ($cek as $key => $c) {
+                //             if (strpos($c['DESCRIPTION'], 'DOS') !== false) {
+                //                 $dicek = 1;
+                //                 break;
+                //             } else {
+                //                 $dicek = 0;
+                //             }
+                //         }
+                //         $dos[] = [
+                //             'no_job' => $l['no_job'],
+                //             // 'id_split' => $l['id_split'],
+                //             'id_job_list' => $l['id'],
+                //             'kode_item' => $l['kode_item'],
+                //             'qty' => $l['qty'],
+                //             'target_pe' => $l['waktu_satu_shift']/($l['qty']/$l['usage_rate']),
+                //             'dos' => $dicek
+                //          ];
+                //     }
+                //
+                //     foreach ($dos as $key => $d) {
+                //         if ($d['dos']) {
+                //             $adados[] = $d;
+                //         }
+                //         if ($d['dos'] === 0) {
+                //             $gaadados[] = $d;
+                //         }
+                //     }
+                //
+                //     if (empty($adados)) {
+                //         $adados = [];
+                //         $line4_ada_dos = [];
+                //         $line5_ada_dos = [];
+                //     } else {
+                //         usort($adados, function ($a, $b) {
+                //             return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
+                //         });
+                //         // ==========RANGE LINE 4 ADA DOS===========
+                //         $hitung_pe_ada = 0;
+                //         foreach ($adados as $key => $a) {
+                //             $hitung_pe_ada += $a['target_pe'];
+                //             if ($hitung_pe_ada >= $get_target_pe[3]['target_max']) {
+                //                 $key = $key-1;
+                //                 break;
+                //             }
+                //         }
+                //
+                //         if ($adados[0]['target_pe'] > $get_target_pe[3]['target_max']) {
+                //             $line4_ada_dos = [];
+                //             $line5_ada_dos = [];
+                //         // echo json_encode(4);
+                //         } else {
+                //             for ($c=0; $c <= $key; $c++) {
+                //                 $line4_ada_dos[] = $adados[$c];
+                //             }
+                //             // ==========END RANGE LINE 4 ADA DOS=========
+                //
+                //             // ==========RANGE LINE 5 ADA DOS===========
+                //             $hitung_pe_ada_5 = 0;
+                //             $n12 = $key+1;
+                //             if (!empty($adados[$n12])) {
+                //                 $max5 = sizeof($adados) - 1;
+                //                 for ($d=$n12; $d <= $max5; $d++) {
+                //                     $hitung_pe_ada_5 += $adados[$d]['target_pe'];
+                //                     if ($hitung_pe_ada_5 >=$get_target_pe[4]['target_max']) {
+                //                         $key5 = $d;
+                //                         break;
+                //                     } else {
+                //                         $key5 = $max5;
+                //                     }
+                //                 }
+                //                 $d = $n12;
+                //                 if ($adados[$d]['target_pe'] >=$get_target_pe[4]['target_max']) {
+                //                     $line5_ada_dos = [];
+                //                 // echo json_encode(5);
+                //                 } else {
+                //                     for ($e=$d; $e <= $key5; $e++) {
+                //                         $line5_ada_dos[] = $adados[$e];
+                //                     }
+                //                 }
+                //             } else {
+                //                 $line5_ada_dos = [];
+                //             }
+                //             // ==========END RANGE LINE 5 ADA DOS=========
+                //         }
+                //     }
+                //
+                //     if (empty($gaadados)) {
+                //         $gaadados = [];
+                //         $line1_ga_ada_dos = [];
+                //         $line2_ga_ada_dos = [];
+                //         $line3_ga_ada_dos = [];
+                //     } else {
+                //         usort($gaadados, function ($a, $b) {
+                //             return $a['target_pe'] > $b['target_pe'] ? 1 : -1;
+                //         });
+                //         // ==========RANGE LINE 1 GA ADA DOS===========
+                //         // echo "<pre>";
+                //         // print_r($gaadados);
+                //         $hitung_pe_gada = 0;
+                //         foreach ($gaadados as $key => $g) {
+                //             $hitung_pe_gada += $g['target_pe'];
+                //             if ($hitung_pe_gada >= $get_target_pe[0]['target_max']) {
+                //                 $key = $key-1;
+                //                 break;
+                //             }
+                //         }
+                //         if ($gaadados[0]['target_pe'] > $get_target_pe[0]['target_max']) {
+                //             $line1_ga_ada_dos = [];
+                //             $line2_ga_ada_dos = [];
+                //         // echo json_encode(1);
+                //         } else {
+                //             for ($c=0; $c <= $key; $c++) {
+                //                 $line1_ga_ada_dos[] = $gaadados[$c];
+                //                 $line_1[] = $gaadados[$c];
+                //             }
+                //             // $cek = array_search('D200601355', array_column($gaadados, 'no_job')) !== false ? 'found' : 'notfound';
+                //             // print_r($cek) ;
+                //         }
+                //         // ==========END RANGE LINE 1 GA ADA DOS=========
+                //
+                //         // ==========RANGE LINE 2 ADA DOS===========
+                //         $hitung_pe_ga_ada_2 = 0;
+                //         $n2 = $key+1;
+                //         if (!empty($gaadados[$n2])) {
+                //             $max2 = sizeof($gaadados) - 1;
+                //
+                //             for ($d=$n2; $d <= $max2; $d++) {
+                //                 $hitung_pe_ga_ada_2 += $gaadados[$d]['target_pe'];
+                //                 if ($hitung_pe_ga_ada_2 >= $get_target_pe[1]['target_max']) {
+                //                     $key_3 = $d-1;
+                //                     break;
+                //                 } else {
+                //                     $key_3 = $d;
+                //                 }
+                //             }
+                //             $d = $n2;
+                //             if ($gaadados[$d]['target_pe'] >= $get_target_pe[1]['target_max']) {
+                //                 $line2_ga_ada_dos = [];
+                //                 $line3_ga_ada_dos = [];
+                //             // echo json_encode(2);
+                //             } else {
+                //                 for ($e=$d; $e <= $key_3; $e++) {
+                //                     $line2_ga_ada_dos[] = $gaadados[$e];
+                //                 }
+                //             }
+                //
+                //             // ==========RANGE LINE 3 ADA DOS===========
+                //             $hitung_pe_ga_ada_3 = 0;
+                //             $n3 = !empty($e)?$e:$e='gada';
+                //
+                //             if (!empty($gaadados[$n3])) {
+                //                 $max3 = sizeof($gaadados) - 1;
+                //                 for ($f=$n3; $f <= $max3; $f++) {
+                //                     $hitung_pe_ga_ada_3 += $gaadados[$f]['target_pe'];
+                //                     if ($hitung_pe_ga_ada_3 >= $get_target_pe[2]['target_max']) {
+                //                         $key_4 = $f-1;
+                //                         break;
+                //                     } else {
+                //                         $key_4 = $f;
+                //                     }
+                //                 }
+                //
+                //                 if ($gaadados[$key_4]['target_pe'] >= $get_target_pe[2]['target_max']) {
+                //                     $line3_ga_ada_dos = [];
+                //                 } else {
+                //                     if ($n3 > $key_4) {
+                //                         $line3_ga_ada_dos = [];
+                //                     } else {
+                //                         for ($e=$n3; $e <= $key_4; $e++) {
+                //                             $line3_ga_ada_dos[] = $gaadados[$e];
+                //                         }
+                //                     }
+                //                 }
+                //             } else {
+                //                 $line3_ga_ada_dos = [];
+                //             }
+                //             // ==========END RANGE LINE 3 ADA DOS=========
+                //         } else {
+                //             $line2_ga_ada_dos = [];
+                //             $line3_ga_ada_dos = [];
+                //         }
+                //         // ==========END RANGE LINE 2 ADA DOS=========
+                //     }
+                //
+                //     if (empty($line1_ada)) {
+                //         $line1_ada = '';
+                //     }
+                //
+                //     if (empty($line1_gaada)) {
+                //         $line1_gaada = '';
+                //     }
+                //
+                //     // echo "======== ada dos (line 4 dan 5)==========";
+                //     // echo "<pre>";
+                //     // print_r($adados); // jangan lupa pengecekan
+                //     // echo "========== max index line 4========";
+                //     // echo "<pre>";
+                //     // print_r($line4_ada_dos);
+                //     // echo "<br>";
+                //     // echo "========== max index line 5========";
+                //     // echo "<pre>";
+                //     // print_r($line5_ada_dos);
+                //     // echo "<br>";
+                //     // echo "========== ga ada (line 1,2 dan 3) ========";
+                //     // echo "<pre>";
+                //     // print_r($gaadados);
+                //     // echo "========== max index line 1 ========";
+                //     // echo "<pre>";
+                //     // print_r($line1_ga_ada_dos);
+                //     // echo "<br>";
+                //     // echo "========== max index line 2 ========";
+                //     // echo "<pre>";
+                //     // print_r($line2_ga_ada_dos);
+                //     // echo "<br>";
+                //     // echo "========== max index line 3 ========";
+                //     // echo "<pre>";
+                //     // print_r($line3_ga_ada_dos);
+                //     // echo "<br>";
 
                 // $data['line_1'] = $line1_ga_ada_dos;
                 // $data['line_2'] = $line2_ga_ada_dos;
@@ -727,11 +723,11 @@ class C_Master extends CI_Controller
 
                 $this->load->view('WorkInProcessPackaging/ajax/V_Lines', $data);
             } else {
-              $line_1 = [];
-              $line_2 = [];
-              $line_3 = [];
-              $line_4 = [];
-              $line_5 = [];
+                $line_1 = [];
+                $line_2 = [];
+                $line_3 = [];
+                $line_4 = [];
+                $line_5 = [];
             }
         }
     }
@@ -945,7 +941,7 @@ class C_Master extends CI_Controller
                        ->get('wip_pnp.job_list')
                        ->row();
             if (!empty($cek->no_job)) {
-              $this->db->delete('wip_pnp.job_list', ['no_job' => $nojob]);
+                $this->db->delete('wip_pnp.job_list', ['no_job' => $nojob]);
             }
             foreach ($qty as $key => $q) {
                 $data = $this->M_wipp->insertSplit([
@@ -1075,7 +1071,7 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = '.assets/upload/wipp'.$doc.'.png';
+            $params['savename'] = '.assets/upload/wipp/qrcode/'.$doc.'.png';
             $this->ciqrcode->generate($params);
 
             // echo "<pre>";
@@ -1094,11 +1090,11 @@ class C_Master extends CI_Controller
           ));
         }
 
-        // if (!unlink($params['savename'])) {
-        //     echo("Error deleting");
-        // } else {
-        //     unlink($params['savename']);
-        // }
+        if (!unlink($params['savename'])) {
+            echo("Error deleting");
+        } else {
+            unlink($params['savename']);
+        }
     }
 
     public function LabelBesar($do)
@@ -1129,7 +1125,7 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = '.assets/upload/wipp'.$doc.'.png';
+            $params['savename'] = '.assets/upload/wipp/qrcode/'.$doc.'.png';
             $this->ciqrcode->generate($params);
 
             // echo "<pre>";
@@ -1147,11 +1143,11 @@ class C_Master extends CI_Controller
             'message' => 'id is null'
           ));
         }
-        // if (!unlink($params['savename'])) {
-        //     echo("Error deleting");
-        // } else {
-        //     unlink($params['savename']);
-        // }
+        if (!unlink($params['savename'])) {
+            echo("Error deleting");
+        } else {
+            unlink($params['savename']);
+        }
     }
 
     // =========================Photo Manager====================================
@@ -1231,56 +1227,56 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-      $data_a = $this->M_wipp->JobRelease();
-      // $priority = $this->M_wipp->getPP();
-      //
-      // foreach($data_a as $element) {
-      //     $hash = $element['KODE_ASSY'];
-      //     $tampung_item_unique[$hash]['KODE_ASSY'] = $element['KODE_ASSY'];
-      //     $tampung_item_unique[$hash]['DESCRIPTION'] = $element['DESCRIPTION'];
-      //     $tampung_item_unique[$hash]['ONHAND_YSP'] = $element['ONHAND_YSP'];
-      // }
-      // // ambil data master job dengan kode_item produk priority
-      // foreach ($tampung_item_unique as $key => $da) {
-      //     $tampung_item_unique[$key]['PRIORITY'] = 0;
-      //     foreach ($priority as $key => $pa) {
-      //         if ($da['KODE_ASSY']  === $pa['kode_item']) {
-      //             $tampung_priority[] = $da;
-      //         }
-      //     }
-      // }
-      //
-      // if (!empty($tampung_priority)) {
-      //   //pengecekan di jika itu priority
-      //   foreach ($tampung_priority as $key => $pr) {
-      //       $tampung_priority[$key]['PRIORITY'] = 1;
-      //   }
-      //   // hapus item yang ada sama di produk prioritas
-      //   foreach ($tampung_item_unique as $key0 => $value) {
-      //       foreach ($tampung_priority as $key2 => $v) {
-      //           if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
-      //               $tampung_priority_reedition[] = $v;
-      //               unset($tampung_item_unique[$key0]);
-      //           }
-      //
-      //       }
-      //   }
-      //   // gabungkan data dengan produk prioritas di awal index
-      //   $data1 = array_merge($tampung_priority_reedition, $tampung_item_unique);
-      // }else {
-      //   $data1 = $tampung_item_unique;
-      // }
-      //
-      // foreach ($data1 as $key => $val) {
-      //   $minmax[] = $this->M_wipp->minMax($val['KODE_ASSY']);
-      //   // if (!empty($minmax)) {
-      //   //   $data1[$key]['MIN'] = $minmax[0]['MIN'];
-      //   //   $data1[$key]['MAX'] = $minmax[0]['MAX'];
-      //   // }else {
-      //   //   $data1[$key]['MIN'] = '-';
-      //   //   $data1[$key]['MAX'] = '-';
-      //   // }
-      // }
+        $data_a = $this->M_wipp->JobRelease();
+        // $priority = $this->M_wipp->getPP();
+        //
+        // foreach($data_a as $element) {
+        //     $hash = $element['KODE_ASSY'];
+        //     $tampung_item_unique[$hash]['KODE_ASSY'] = $element['KODE_ASSY'];
+        //     $tampung_item_unique[$hash]['DESCRIPTION'] = $element['DESCRIPTION'];
+        //     $tampung_item_unique[$hash]['ONHAND_YSP'] = $element['ONHAND_YSP'];
+        // }
+        // // ambil data master job dengan kode_item produk priority
+        // foreach ($tampung_item_unique as $key => $da) {
+        //     $tampung_item_unique[$key]['PRIORITY'] = 0;
+        //     foreach ($priority as $key => $pa) {
+        //         if ($da['KODE_ASSY']  === $pa['kode_item']) {
+        //             $tampung_priority[] = $da;
+        //         }
+        //     }
+        // }
+        //
+        // if (!empty($tampung_priority)) {
+        //   //pengecekan di jika itu priority
+        //   foreach ($tampung_priority as $key => $pr) {
+        //       $tampung_priority[$key]['PRIORITY'] = 1;
+        //   }
+        //   // hapus item yang ada sama di produk prioritas
+        //   foreach ($tampung_item_unique as $key0 => $value) {
+        //       foreach ($tampung_priority as $key2 => $v) {
+        //           if ($value['KODE_ASSY'] == $v['KODE_ASSY']) {
+        //               $tampung_priority_reedition[] = $v;
+        //               unset($tampung_item_unique[$key0]);
+        //           }
+        //
+        //       }
+        //   }
+        //   // gabungkan data dengan produk prioritas di awal index
+        //   $data1 = array_merge($tampung_priority_reedition, $tampung_item_unique);
+        // }else {
+        //   $data1 = $tampung_item_unique;
+        // }
+        //
+        // foreach ($data1 as $key => $val) {
+        //   $minmax[] = $this->M_wipp->minMax($val['KODE_ASSY']);
+        //   // if (!empty($minmax)) {
+        //   //   $data1[$key]['MIN'] = $minmax[0]['MIN'];
+        //   //   $data1[$key]['MAX'] = $minmax[0]['MAX'];
+        //   // }else {
+        //   //   $data1[$key]['MIN'] = '-';
+        //   //   $data1[$key]['MAX'] = '-';
+        //   // }
+        // }
         echo "<pre>";
         echo sizeof($data_a);
         print_r($data_a);

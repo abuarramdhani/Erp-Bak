@@ -3,7 +3,8 @@
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
-          <h4 style="font-weight:bold;"><i class="fa fa-cloud-upload"></i> Setting Job Lane 1 - 2</h4>
+          <h4 style="font-weight:bold;display:inline;"><i class="fa fa-cloud-upload"></i> Setting Job Lane Lane 1 - 2</h4>
+          <a style="display:inline;float:right;border:1.5px solid white;" href="<?php echo base_url('RunningTimeLinePnP/setting/history') ?>" class="btn btn-primary"><i class="fa fa-hourglass-3"></i> History</a>
         </div>
         <div class="box-body" style="background:#f0f0f0 !important;">
           <div class="row">

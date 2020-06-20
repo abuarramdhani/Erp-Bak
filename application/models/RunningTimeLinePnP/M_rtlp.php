@@ -10,6 +10,12 @@ class M_rtlp extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
+    public function getHistory()
+    {
+      $res = $this->db->order_by('Id', 'desc')->get('wip_pnp.Time_Record')->result_array();
+      return $res;
+    }
+
     public function getNamaKomponen($value)
     {
       $res = $this->db->distinct()->select('nama_item')->where('kode_item', $value)->get('wip_pnp.job_list')->row();
