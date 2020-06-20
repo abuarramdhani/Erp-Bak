@@ -105,7 +105,7 @@
             legend.appendChild(div);
           }
 
-          map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+          map.controls[google.maps.ControlPosition.TOP_RIGHT].push(legend);
 
           // NOTE: This uses cross-domain XHR, and may not work on older browsers.
           // map.data.loadGeoJson('http://192.168.8.66/khs-erp-map/assets/covid19/kabupaten.json');
