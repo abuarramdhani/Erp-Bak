@@ -675,12 +675,6 @@ class C_Mutasi extends CI_Controller
 		    $aksi = 'MASTER PEKERJA';
 		    $detail = 'Cetak Surat Mutasi Nomor Surat='.$no_surat_decode.'/'.$kodeDekripsi;
 		    $this->log_activity->activity_log($aksi, $detail);
-		    //
-			// echo $no_surat_decode;
-			// echo $kodeDekripsi;
-			// $waktu = date("d/m/Y h:i:s A T",$tanggal);
-			// echo $waktu;
-			// exit();
 
 			$data['isiSuratMutasi']		=	$this->M_surat->ambilIsiSuratMutasi($tanggal,$kodeDekripsi,$no_surat_decode);
 			// echo $isiSuratMutasi['isi_surat'];
@@ -689,16 +683,20 @@ class C_Mutasi extends CI_Controller
 
 			$this->load->library('pdf');
 			$pdf 	=	$this->pdf->load();
-			$pdf 	=	new mPDF('utf-8', array(216,297), 10, "timesnewroman", 20, 20, 50, 10, 0, 0, 'P');
-			// $pdf 	=	new mPDF();
-
+			$pdf 	=	new mPDF('utf-8', array(216,297), 0, "timesnewroman", 20, 20, 48, 40, 0, 0, 'P');
 			$filename	=	'SuratMutasi-'.str_replace('/', '_', $no_surat_decode).'.pdf';
 
 			$pdf->AddPage();
-			$pdf->WriteHTML($data['isiSuratMutasi'][0]['isi_surat']);
+			// $pdf->SetImportUse();
+			// $pagecount = $pdf->SetSourceFile('assets/upload/Surat/TEMPLATE_KERTAS_KOP_A4008.pdf');
+			// $tplIdx = $pdf->ImportPage($pagecount);
+			// $pdf->UseTemplate($tplIdx);
+			$stylesheet = file_get_contents(base_url('assets/css/surat.css'));
+			// print_r($data['isiSuratMutasi'][0]['isi_surat']);exit();
+			$pdf->WriteHTML($stylesheet,1);
+			$pdf->WriteHTML($data['isiSuratMutasi'][0]['isi_surat'],2);
 			$pdf->setTitle($filename);
 			$pdf->Output($filename, 'I');
-			// $this->load->view('MasterPekerja/Surat/Mutasi/V_PDF');
 
 		}
 
