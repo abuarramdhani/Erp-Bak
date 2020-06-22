@@ -188,7 +188,7 @@ class M_wipp extends CI_Model
     public function getPhoto()
     {
         $response = $this->db->distinct()
-                             ->select('kode_item, nama_item, photo')->where('photo !=', null)
+                             ->select('kode_item, nama_item, photo, id')->where('photo !=', null)
                              ->get('wip_pnp.item_photo')
                              ->result_array();
         return $response;
@@ -212,6 +212,11 @@ class M_wipp extends CI_Model
         }else {
           $this->db->insert('wip_pnp.item_photo', $data);
         }
+    }
+
+    public function updatePhoto($data)
+    {
+        $this->db->where('id', $data['id'])->update('wip_pnp.item_photo', $data);
     }
 
     // public function getListRKH($value)

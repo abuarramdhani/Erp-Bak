@@ -1219,7 +1219,17 @@ class C_Master extends CI_Controller
               'photo' => $path
             ];
             $this->M_wipp->insertPhoto($save);
+
+        }else {
+          $save = [
+            'kode_item' => $item,
+            'nama_item' => $nama_comp,
+            'id'        => $this->input->post('id_photo')
+          ];
+          $this->M_wipp->UpdatePhoto($save);
+
         }
+
         redirect('WorkInProcessPackaging/PhotoManager');
     }
 

@@ -831,6 +831,31 @@ $(document).ready(function() {
       }
     }
   })
+
+  $('.select2itemcodewipp2').select2({
+    minimumInputLength: 3,
+    placeholder: "Item Kode",
+    ajax: {
+      url: baseurl + "WorkInProcessPackaging/JobManager/JobReleaseSelected",
+      dataType: "JSON",
+      type: "POST",
+      data: function(params) {
+        return {
+          term: params.term
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: `${obj.KODE_ASSY}`,
+              text: `${obj.KODE_ASSY} - ${obj.DESCRIPTION}`
+            }
+          })
+        }
+      }
+    }
+  })
 })
 
 $('.select2itemcodewipp').on('change', function() {
@@ -867,6 +892,28 @@ $('.select2itemcodewipp').on('change', function() {
         }
       })
       $(`#nama_komponen`).val(result[0].DESCRIPTION);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+})
+
+$('.select2itemcodewipp2').on('change', function() {
+  let val = $(this).val();
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/JobReleaseSelected',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      term: val,
+    },
+    beforeSend: function() {
+      $(`#nama_komponen_update`).val('Loading...');
+    },
+    success: function(result) {
+      $(`#nama_komponen_update`).val(result[0].DESCRIPTION);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
