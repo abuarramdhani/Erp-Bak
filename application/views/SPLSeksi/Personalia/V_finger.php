@@ -28,27 +28,27 @@
 													<th>Action</th>
 												</tr>
 											</thead>
-											<tbody id = 'spl-fingertemp'>
-												<?php $number = 1; foreach ($fingertemp as $temp) {
-													?>
+											<tbody id='spl-fingertemp'>
+												<?php $number = 1;
+												foreach ($fingertemp as $temp) : ?>
 													<tr>
 														<td><?php echo $number; ?></td>
 														<td><?php echo $temp['noind'] ?></td>
-														<td><?php echo $temp['noind_baru'];?></td>
-														<td><?php echo $temp['nama'];?></td>
-														<td><?php echo $temp['jumlah'];?></td>
+														<td><?php echo $temp['noind_baru']; ?></td>
+														<td><?php echo $temp['nama']; ?></td>
+														<td><?php echo $temp['jumlah']; ?></td>
 														<td>
-															<button class="btn btn-warning spl-fingertemp-modal-add-temp-triger" data-id="<?php echo $temp['noind'];?>" style="border-radius: 0px">
+															<button class="btn btn-warning spl-fingertemp-modal-add-temp-triger" data-id="<?php echo $temp['noind']; ?>" style="border-radius: 0px">
 																Finger
 															</button>
-															<button class="btn btn-danger spl-fingertemp-delete" data-id="<?php echo $temp['noind'];?>" style="border-radius: 0px">
+															<button class="btn btn-danger spl-fingertemp-delete" data-id="<?php echo $temp['noind']; ?>" style="border-radius: 0px">
 																Delete
 															</button>
 														</td>
 													</tr>
-													<?php
+												<?php
 													$number++;
-												} ?>
+												endforeach ?>
 											</tbody>
 										</table>
 									</div>

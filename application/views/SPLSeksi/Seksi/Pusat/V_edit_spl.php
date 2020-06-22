@@ -21,12 +21,12 @@
 
 		<div class="row">
 			<section class="col-lg-12 connectedSortable">
-				<?php if(!empty($result)){ ?>
+				<?php if(!empty($result)) : ?>
 					<div class="callout callout-success">
 						<h4>Sukses!</h4>
 						<p>Data berhasil di update</p>
 					</div>
-				<?php } ?>
+				<?php endif ?>
 
 				<?php if(!empty($lembur)){ foreach($lembur as $l){
 					$status = "";

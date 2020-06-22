@@ -4,7 +4,9 @@
 			<div class="col-lg-12">
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="col-lg-11"><h3><b><?=$Menu; ?></b></h3></div>
+						<div class="col-lg-11">
+							<h3><b><?= $Menu; ?></b></h3>
+						</div>
 						<div class="col-lg-1"></div>
 					</div>
 				</div>
@@ -28,27 +30,28 @@
 													<th>Action</th>
 												</tr>
 											</thead>
-											<tbody id ='spl-fingerspot'>
-												<?php $number = 1; foreach ($fingerprint as $finger) {
-													?>
+											<tbody id='spl-fingerspot'>
+												<?php $number = 1;
+												foreach ($fingerprint as $finger) :
+												?>
 													<tr>
 														<td><?php echo $number; ?></td>
 														<td class='d-sn'><?php echo $finger['SN'] ?></td>
-														<td class='d-vc'><?php echo $finger['Verification_Code'];?></td>
-														<td class='d-ac'><?php echo $finger['Activation_Code'];?></td>
-														<td class='d-vkey'><?php echo $finger['VKEY'];?></td>
+														<td class='d-vc'><?php echo $finger['Verification_Code']; ?></td>
+														<td class='d-ac'><?php echo $finger['Activation_Code']; ?></td>
+														<td class='d-vkey'><?php echo $finger['VKEY']; ?></td>
 														<td>
-															<button class="btn btn-warning spl-fingerprint-modal-edit-triger" data-id="<?php echo $finger['ID_'];?>" style="border-radius: 0px">
+															<button class="btn btn-warning spl-fingerprint-modal-edit-triger" data-id="<?php echo $finger['ID_']; ?>" style="border-radius: 0px">
 																Edit
 															</button>
-															<button class="btn btn-danger spl-fingerprint-delete" data-id="<?php echo $finger['ID_'];?>" style="border-radius: 0px">
+															<button class="btn btn-danger spl-fingerprint-delete" data-id="<?php echo $finger['ID_']; ?>" style="border-radius: 0px">
 																Delete
 															</button>
 														</td>
 													</tr>
-													<?php
+												<?php
 													$number++;
-												} ?>
+												endforeach ?>
 											</tbody>
 										</table>
 									</div>
