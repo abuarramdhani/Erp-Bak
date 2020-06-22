@@ -370,7 +370,7 @@ class M_prosesgaji extends CI_Model {
 					(	select pekerjaan 
 						from hlcm.hlcm_datagaji 
 						where prs.kode_pekerjaan = kode_pekerjaan 
-						and concat('0',prs.lokasi_kerja) = lokasi_kerja) pekerjaan,
+						and prs.lokasi_kerja::int = lokasi_kerja::int) pekerjaan,
 					employee_name nama
 				from hlcm.hlcm_proses prs
 				inner join er.er_employee_all eall
