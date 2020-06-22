@@ -1270,13 +1270,13 @@ class C_HitungPesanan extends CI_Controller
         foreach ($pembagian as $bagi) {
 
           foreach ($bagi['data'] as $data) {
-            if ($nomor%3 == 1) {
+            if ($nomor%5 == 1) {
               $isi .= "<tr>";
-            }elseif ($nomor%3 == 3) {
+            }elseif ($nomor%5 == 5) {
               $isi .= "</tr>";
             }
             $isi .= "
-            <td style='width: 33%;'>
+            <td style='width: 20%;'>
               <table border='2' style='width: 100%;border: 2px solid black;'>
                 <tr>
                   <td colspan='3' style='text-align: center;border-bottom: 2px solid black;font-weight: bold;font-size: 15pt;vertical-align: middle;height: 60px;'>
@@ -1338,10 +1338,10 @@ class C_HitungPesanan extends CI_Controller
           $lauk_pendamping = $menu->lauk_pendamping;
           $buah = $menu->buah;
         }else{
-          $sayur = "-";
-          $lauk_utama = "-";
-          $lauk_pendamping = "-";
-          $buah = "-";
+          $sayur = "............................";
+          $lauk_utama = "............................";
+          $lauk_pendamping = "............................";
+          $buah = "............................";
         }
 
         if ($lokasi == "1") {
@@ -1362,84 +1362,165 @@ class C_HitungPesanan extends CI_Controller
           $shift_str = "tidak diketahui";
         }
 
-        $isi_header = "
-        <table border=\"0\" style=\"width: 100%;border-collapse: collapse;border: 0px solid red;\">
-          <tr>
-            <td colspan=\"9\" rowspan=\"3\" style=\"width: 60%;font-size: 20pt;\">
-              <b>Daftar Pesanan Catering</b>
-            </td>
-            <td  style=\"width: 13%;border-left: 1px solid red;border-top: 1px solid red\">
-              Sayur
-            </td>
-            <td style=\"width: 2%;border-top: 1px solid red\">
-              :
-            </td>
-            <td style=\"width: 25%;border-top: 1px solid red;border-right: 1px solid red\">
-              ".$sayur."
-            </td>
-          </tr>
-          <tr>
-            <td style=\"border-left: 1px solid red;\">
-              Lauk Utama
-            </td>
-            <td>
-              :
-            </td>
-            <td style=\"border-right: 1px solid red;\">
-              ".$lauk_utama."
-            </td>
-          </tr>
-          <tr>
-            <td style=\"border-left: 1px solid red;\">
-              Lauk Pendamping
-            </td>
-            <td>
-              :
-            </td>
-            <td style=\"border-right: 1px solid red;\">
-              ". $lauk_pendamping."
-            </td>
-          </tr>
-          <tr>
-            <td style=\"width: 6%\">
-              Lokasi
-            </td>
-            <td style=\"width: 2%\">
-              :
-            </td>
-            <td style=\"width: 17%\">
-              ".$lokasi_str."
-            </td>
-            <td>
-              Tanggal
-            </td>
-            <td>
-              :
-            </td>
-            <td>
-              ".date('d M Y', strtotime($tanggal))."
-            </td>
-            <td>
-              Shift
-            </td>
-            <td>
-              :
-            </td>
-            <td>
-              ".$shift_str."
-            </td>
-            <td style=\"border-left: 1px solid red;border-bottom: 1px solid red;\">
-              Buah
-            </td>
-            <td style=\"border-bottom: 1px solid red;\">
-              :
-            </td>
-            <td style=\"border-bottom: 1px solid red;border-right: 1px solid red;\">
-              ".$buah."
-            </td>
-          </tr>
-        </table>
-        ";
+        if ($jenis == "0") {          
+          $isi_header = "
+          <table border=\"0\" style=\"width: 100%;border-collapse: collapse;border: 0px solid red;\">
+            <tr>
+              <td colspan=\"9\" rowspan=\"3\" style=\"width: 48%;font-size: 20pt;\">
+                <b>Daftar Pesanan ".ucwords(strtolower($jenis_nama))."</b>
+              </td>
+              <td  style=\"width: 13%;border-left: 1px solid red;border-top: 1px solid red\">
+                Snack
+              </td>
+              <td style=\"width: 2%;border-top: 1px solid red\">
+                :
+              </td>
+              <td style=\"width: 37%;border-top: 1px solid red;border-right: 1px solid red\">
+                ............................
+              </td>
+            </tr>
+            <tr>
+              <td style=\"border-left: 1px solid red;\">
+                
+              </td>
+              <td>
+                :
+              </td>
+              <td style=\"border-right: 1px solid red;\">
+                ............................
+              </td>
+            </tr>
+            <tr>
+              <td style=\"border-left: 1px solid red;\">
+                
+              </td>
+              <td>
+                :
+              </td>
+              <td style=\"border-right: 1px solid red;\">
+                ............................
+              </td>
+            </tr>
+            <tr>
+              <td style=\"width: 5%\">
+                Lokasi
+              </td>
+              <td style=\"width: 1%\">
+                :
+              </td>
+              <td style=\"width: 10%\">
+                ".$lokasi_str."
+              </td>
+              <td style=\"width: 5%\">
+                Tanggal
+              </td>
+              <td style=\"width: 1%\">
+                :
+              </td>
+              <td style=\"width: 10%\">
+                ".date('d M Y', strtotime($tanggal))."
+              </td>
+              <td style=\"width: 5%\">
+                Shift
+              </td>
+              <td style=\"width: 1%\">
+                :
+              </td>
+              <td style=\"width: 10%\">
+                ".$shift_str."
+              </td>
+              <td style=\"border-left: 1px solid red;border-bottom: 1px solid red;\">
+                
+              </td>
+              <td style=\"border-bottom: 1px solid red;\">
+                :
+              </td>
+              <td style=\"border-bottom: 1px solid red;border-right: 1px solid red;\">
+                ............................
+              </td>
+            </tr>
+          </table>
+          ";
+        }else{
+          $isi_header = "
+          <table border=\"0\" style=\"width: 100%;border-collapse: collapse;border: 0px solid red;\">
+            <tr>
+              <td colspan=\"9\" rowspan=\"3\" style=\"width: 48%;font-size: 20pt;\">
+                <b>Daftar Pesanan ".ucwords(strtolower($jenis_nama))."</b>
+              </td>
+              <td  style=\"width: 13%;border-left: 1px solid red;border-top: 1px solid red\">
+                Sayur
+              </td>
+              <td style=\"width: 2%;border-top: 1px solid red\">
+                :
+              </td>
+              <td style=\"width: 37%;border-top: 1px solid red;border-right: 1px solid red\">
+                ".$sayur."
+              </td>
+            </tr>
+            <tr>
+              <td style=\"border-left: 1px solid red;\">
+                Lauk Utama
+              </td>
+              <td>
+                :
+              </td>
+              <td style=\"border-right: 1px solid red;\">
+                ".$lauk_utama."
+              </td>
+            </tr>
+            <tr>
+              <td style=\"border-left: 1px solid red;\">
+                Lauk Pendamping
+              </td>
+              <td>
+                :
+              </td>
+              <td style=\"border-right: 1px solid red;\">
+                ". $lauk_pendamping."
+              </td>
+            </tr>
+            <tr>
+              <td style=\"width: 5%\">
+                Lokasi
+              </td>
+              <td style=\"width: 1%\">
+                :
+              </td>
+              <td style=\"width: 10%\">
+                ".$lokasi_str."
+              </td>
+              <td style=\"width: 5%\">
+                Tanggal
+              </td>
+              <td style=\"width: 1%\">
+                :
+              </td>
+              <td style=\"width: 10%\">
+                ".date('d M Y', strtotime($tanggal))."
+              </td>
+              <td style=\"width: 5%\">
+                Shift
+              </td>
+              <td style=\"width: 1%\">
+                :
+              </td>
+              <td style=\"width: 10%\">
+                ".$shift_str."
+              </td>
+              <td style=\"border-left: 1px solid red;border-bottom: 1px solid red;\">
+                Buah
+              </td>
+              <td style=\"border-bottom: 1px solid red;\">
+                :
+              </td>
+              <td style=\"border-bottom: 1px solid red;border-right: 1px solid red;\">
+                ".$buah."
+              </td>
+            </tr>
+          </table>
+          ";
+        }
         $isi = "";
 
         foreach ($pembagian as $bagi) {
@@ -1451,18 +1532,40 @@ class C_HitungPesanan extends CI_Controller
           }else{
             $isi .= $isi_header;
           }
-          $isi .= "<h4>Katering : ".$bagi['fs_nama_katering']."</h4>";
+          if ($jenis !== '0') {
+            $isi .= "<table style=\"width: 100%\">
+              <tr>
+                <td style=\"width: 50%\">Nama Katering : ".$bagi['fs_nama_katering']."</td>
+                <td style=\"width: 50%\">Nama Petugas GA : ..................................................</td>
+              </tr>
+            </table>";
+            $supplier = "Katering";
+          }else{
+            $isi .= "<table style=\"width: 100%\">
+              <tr>
+                <td style=\"width: 50%\">Nama Supplier : ..................................................</td>
+                <td style=\"width: 50%\">Nama Petugas GA: ..................................................</td>
+              </tr>
+            </table>";
+            $supplier = "Supplier";
+          }
           $isi .= "<table border=\"1\" style=\"width: 100%;border-collapse: collapse;\">
           <thead>
             <tr>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">No.</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 20%\">Tempat Makan</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Staff</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Non Staff</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Tambah</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Kurang</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 8%\">Jumlah</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 35%\">Keterangan</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 3%\">No.</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 20%\">Tempat Makan</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Staff</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Non Staff</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Tambah</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Kurang</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Jumlah Pesanan</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Jumlah Dikirim</th>
+              <th colspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 20%\">Tanda Tangan</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 27%\">Keterangan</th>
+            </tr>
+            <tr>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">".$supplier."</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">Seksi GA</th>
             </tr>
           </thead>";
 
@@ -1592,6 +1695,9 @@ class C_HitungPesanan extends CI_Controller
               <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['tambahan']."</td>
               <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['pengurangan']."</td>
               <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['jumlah_pesan']."</td>
+              <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">........</td>
+              <td style=\"text-align: ".($nomor%2 == 0 ? "right" : "left").";padding-right: 5px;padding-left: 5px;color: ".$warna."\"><sup style\"font-size: 5pt;\">".$nomor."</sup>.............</td>
+              <td style=\"text-align: ".($nomor%2 == 0 ? "right" : "left").";padding-right: 5px;padding-left: 5px;color: ".$warna."\"><sup style\"font-size: 5pt;\">".$nomor."</sup>.............</td>
               <td>".$keterangan."</td>
             </tr>";
 
@@ -1600,7 +1706,18 @@ class C_HitungPesanan extends CI_Controller
           $isi .= "<tr>
             <td colspan=\"6\" style=\"text-align: right;padding-right: 5px;\">Total : </td>
             <td style=\"text-align: right;padding-right: 5px;\">".$bagi['jumlah_total']."</td>
-            <td style=\"text-align: right;padding-right: 5px;\">".$khusus."</td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\">".($khusus <> 0 ? $khusus : "" )."</td>
+          </tr>
+          <tr>
+            <td colspan=\"6\" style=\"text-align: right;padding-right: 5px;\">Sampel : </td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
           </tr>
           </table>";
           $isi_footer = "
@@ -1618,6 +1735,34 @@ class C_HitungPesanan extends CI_Controller
             </tr>
           </table>";
           $isi .= $isi_footer;
+          if ($jenis !== "0") {
+            $isi .= "<table style=\"width: 100%\">
+              <tr>
+                <td style=\"width: 70%\">&nbsp;</td>
+                <td style=\"text-align: center;width: 30%\">Mengetahui,</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td style=\"text-align: center\">Kepala Seksi General Affair</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td style=\"text-align: center\">".$this->session->employee."</td>
+              </tr>
+            </table>";
+          }
 
         }
 
@@ -1639,17 +1784,16 @@ class C_HitungPesanan extends CI_Controller
       'program' => 'CATERING MANAGEMENT ERP'
     );
     $this->M_hitungpesanan->insertTlog($data_log);
-    // echo $data['daftar'];exit();
 
     $this->load->library('pdf');
 
     $pdf = $this->pdf->load();
-    $pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 15, 5, 5, 'P');
+    $pdf = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 5, 15, 5, 5, 'P');
     $filename = 'PESANAN_'.$jenis_nama.'_'.$tanggal.'_'.$shift.'_'.$lokasi.'.pdf';
-    // echo "<pre>";print_r($data['PrintppDetail']);exit();
+    // echo "<pre>";print_r($_SESSION);exit();
     // $this->load->view('CateringManagement/HitungPesanan/V_pdf', $data);
     $html = $this->load->view('CateringManagement/HitungPesanan/V_pdf', $data, true);
-    $pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh ".$this->session->user." - ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". <br>Halaman {PAGENO} dari {nb}</i>");
+    $pdf->SetHTMLFooter("<table style=\"width: 100%\"><tr><td><i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh ".$this->session->user." - ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S')."</i></td><td rowspan=\"2\" style=\"vertical-align: middle; text-align: right\">Mengetahui,<br>(..........)<br>".$this->session->user." - ".$this->session->employee."</td></tr><tr><td>Halaman {PAGENO} dari {nb}</td></tr></table>");
     $pdf->WriteHTML($html, 2);
     // $pdf->Output($filename, 'D');
     $pdf->Output($filename, 'I');
