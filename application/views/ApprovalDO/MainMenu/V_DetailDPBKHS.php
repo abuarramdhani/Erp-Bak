@@ -115,7 +115,8 @@
                                         <?php foreach ($DPBKHSDetail as $key => $val) : ?>
                                         <tr data-type="update" data-line="<?= $val['LINE_NUM'] ?>">
                                             <td class="text-right" style="width: 5%"><?= $key+1 ?></td>
-                                            <td class="text-right"><input type="text" class="form-control-auto form-control txtADODONumber" value="<?= $val['DO_NUM'] ?>" <?= $UserAccess['edit_field'] ?>></td>
+                                            <td class="text-right"><select class="form-control-auto form-control txtADODONumber" <?= $UserAccess['edit_field'] ?>><option value="<?= $val['DO_NUM'] ?>"><?= $val['DO_NUM'] ?></option></select></td>
+                                            <!--<td class="text-right"><input type="text" class="form-control-auto form-control txtADODONumber" value="<?= $val['DO_NUM'] ?>" <?= $UserAccess['edit_field'] ?>></td>-->
                                             <td class="text-left"><input type="text" class="form-control-auto form-control txtADOItemName" value="<?= $val['ITEM_NAME'] ?>" <?= $UserAccess['edit_field'] ?>></td>
                                             <td class="text-right"><input type="number" class="form-control-auto form-control txtADOQty" value="<?= $val['QTY'] ?>" <?= $UserAccess['edit_field'] ?>></td>
                                             <td class="text-left"><input type="text" class="form-control-auto form-control txtADOUOM" value="<?= $val['UOM'] ?>" <?= $UserAccess['edit_field'] ?>></td>
