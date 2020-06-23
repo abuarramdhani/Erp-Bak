@@ -42,6 +42,22 @@
 											</div>
 											<div class="col-lg-6">
 												<div class="form-group">
+													<label class="control-label col-lg-4">Tanggal Mulai</label>
+													<div class="col-lg-8">
+														<input type="text" class="form-control" id="txt-CM-PekerjMakanKhusus-TanggalMulai" placeholder="Pilih Tanggal Mulai...">
+													</div>
+												</div>
+											</div>
+											<div class="col-lg-6">
+												<div class="form-group">
+													<label class="control-label col-lg-4">Tanggal Selesai</label>
+													<div class="col-lg-8">
+														<input type="text" class="form-control" id="txt-CM-PekerjMakanKhusus-TanggalSelesai" placeholder="Pilih Tanggal Selesai...">
+													</div>
+												</div>
+											</div>
+											<div class="col-lg-6">
+												<div class="form-group">
 													<label class="form-label col-lg-12">Menu</label>
 												</div>
 												<div class="form-group">

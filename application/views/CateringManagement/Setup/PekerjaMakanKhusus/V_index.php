@@ -36,6 +36,8 @@
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Pekerja</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Menu</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Menu Pengganti</th>
+													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Tanggal Mulai</th>
+													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Tanggal Selesai</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -55,6 +57,8 @@
 															<td><?php echo $value['noind'].' - '.$value['nama'] ?></td>
 															<td><?php echo $value['menu_sayur'].' - '.$value['menu_lauk_utama'].' - '.$value['menu_lauk_pendamping'].' - '.$value['menu_buah'] ?></td>
 															<td><?php echo $value['pengganti_sayur'].' - '.$value['pengganti_lauk_utama'].' - '.$value['pengganti_lauk_pendamping'].' - '.$value['pengganti_buah'] ?></td>
+															<td><?php echo $value['tanggal_mulai'] ?></td>
+															<td><?php echo $value['tanggal_selesai'] ?></td>
 														</tr>
 														<?php
 														$nomor++;

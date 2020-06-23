@@ -5617,6 +5617,20 @@ $(document).ready(function(){
 		}
 	})
 
+	$('#txt-CM-PekerjMakanKhusus-TanggalMulai').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#txt-CM-PekerjMakanKhusus-TanggalSelesai').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
 	$('#btn-CM-PekerjaMakanKhusus-Simpan').on('click', function(){
 		var pekerja = $('#slc-CM-PekerjaMakanKhusus-Pekerja').val();
 		var sayur = $('#slc-CM-PekerjaMakanKhusus-Sayur').val();
@@ -5628,8 +5642,10 @@ $(document).ready(function(){
 		var lauk_pendamping_pengganti = $('#slc-CM-PekerjaMakanKhusus-LaukPendampingPengganti').val();
 		var buah_pengganti = $('#slc-CM-PekerjaMakanKhusus-BuahPengganti').val();
 		var pekerja_makan_khusus_id = $('#txt-CM-PekerjMakanKhusus-Id').val();
+		var tanggal_mulai = $('#txt-CM-PekerjMakanKhusus-TanggalMulai').val();
+		var tanggal_selesai = $('#txt-CM-PekerjMakanKhusus-TanggalSelesai').val();
 
-		if (pekerja && sayur && lauk_utama && lauk_pendamping && buah && sayur_pengganti && lauk_utama_pengganti && lauk_pendamping_pengganti && buah_pengganti) {
+		if (pekerja && sayur && lauk_utama && lauk_pendamping && buah && sayur_pengganti && lauk_utama_pengganti && lauk_pendamping_pengganti && buah_pengganti && tanggal_mulai && tanggal_selesai) {
 			$('#ldg-CM-PekerjaMakanKhusus-Loading').show();
 			$.ajax({
 				method: 'POST',
@@ -5644,7 +5660,9 @@ $(document).ready(function(){
 					lauk_utama_pengganti: lauk_utama_pengganti,
 					lauk_pendamping_pengganti: lauk_pendamping_pengganti,
 					buah_pengganti: buah_pengganti,
-					pekerja_makan_khusus_id: pekerja_makan_khusus_id
+					pekerja_makan_khusus_id: pekerja_makan_khusus_id,
+					tanggal_mulai: tanggal_mulai,
+					tanggal_selesai, tanggal_selesai
 				},
 				error: function(xhr,status,error){
 					$('#ldg-CM-PekerjaMakanKhusus-Loading').hide();
@@ -5714,7 +5732,9 @@ $(document).ready(function(){
 									daftar.action,
 									daftar.pekerja,
 									daftar.menu,
-									daftar.pengganti
+									daftar.pengganti,
+									daftar.tanggal_mulai,
+									daftar.tanggal_selesai
 								]).draw(false);
 							})
 						}

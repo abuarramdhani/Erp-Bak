@@ -42,8 +42,8 @@ class C_PekerjaMakanKhusus extends CI_Controller
 
 		$data['Title']			=	'List Pekerja Makan Khusus';
 		$data['Menu'] 			= 	'Setup';
-		$data['SubMenuOne'] 	= 	'Menu';
-		$data['SubMenuTwo'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuOne'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuTwo'] 	= 	'';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -63,8 +63,8 @@ class C_PekerjaMakanKhusus extends CI_Controller
 
 		$data['Title']			=	'Pekerja Makan Khusus';
 		$data['Menu'] 			= 	'Setup';
-		$data['SubMenuOne'] 	= 	'Menu';
-		$data['SubMenuTwo'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuOne'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuTwo'] 	= 	'';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -98,6 +98,8 @@ class C_PekerjaMakanKhusus extends CI_Controller
 		$lauk_pendamping_pengganti = $this->input->post('lauk_pendamping_pengganti');
 		$buah_pengganti = $this->input->post('buah_pengganti');
 		$pekerja_makan_khusus_id = $this->input->post('pekerja_makan_khusus_id');
+		$tanggal_mulai = $this->input->post('tanggal_mulai');
+		$tanggal_selesai = $this->input->post('tanggal_selesai');
 
 		$khusus = $this->M_pekerjamakankhusus->getPekerjaMakanKhususByNoindSayurLaukUtamaLaukPendampingBuah($pekerja,$sayur,$lauk_utama,$lauk_pendamping,$buah);
 		if (!empty($khusus)) {
@@ -107,7 +109,9 @@ class C_PekerjaMakanKhusus extends CI_Controller
 				'pengganti_lauk_pendamping' => $lauk_pendamping_pengganti,
 				'pengganti_buah' => $buah_pengganti,
 				'updated_by' => $this->session->user,
-				'updated_date' => date('Y-m-d H:i:s')
+				'updated_date' => date('Y-m-d H:i:s'),
+				'tanggal_mulai' => $tanggal_mulai,
+				'tanggal_selesai' => $tanggal_selesai
 			);
 			$this->M_pekerjamakankhusus->updatePekerjaMakanKhususByPekerjaMenuKhususId($data_update,$khusus[0]['pekerja_menu_khusus_id']);
 		}elseif ($pekerja_makan_khusus_id !== "0") {
@@ -121,7 +125,9 @@ class C_PekerjaMakanKhusus extends CI_Controller
 				'pengganti_lauk_pendamping' => $lauk_pendamping_pengganti,
 				'pengganti_buah' => $buah_pengganti,
 				'updated_by' => $this->session->user,
-				'updated_date' => date('Y-m-d H:i:s')
+				'updated_date' => date('Y-m-d H:i:s'),
+				'tanggal_mulai' => $tanggal_mulai,
+				'tanggal_selesai' => $tanggal_selesai
 			);
 			$this->M_pekerjamakankhusus->updatePekerjaMakanKhususByPekerjaMenuKhususId($data_update,$pekerja_makan_khusus_id);
 		}else{
@@ -136,7 +142,9 @@ class C_PekerjaMakanKhusus extends CI_Controller
 				'pengganti_lauk_pendamping' => $lauk_pendamping_pengganti,
 				'pengganti_buah' => $buah_pengganti,
 				'created_by' => $this->session->user,
-				'created_date' => date('Y-m-d H:i:s')
+				'created_date' => date('Y-m-d H:i:s'),
+				'tanggal_mulai' => $tanggal_mulai,
+				'tanggal_selesai' => $tanggal_selesai
 			);
 			$this->M_pekerjamakankhusus->insertPekerjaMakanKhusus($data_insert);
 		}
@@ -154,8 +162,8 @@ class C_PekerjaMakanKhusus extends CI_Controller
 
 		$data['Title']			=	'Pekerja Makan Khusus';
 		$data['Menu'] 			= 	'Setup';
-		$data['SubMenuOne'] 	= 	'Menu';
-		$data['SubMenuTwo'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuOne'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuTwo'] 	= 	'';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -191,6 +199,8 @@ class C_PekerjaMakanKhusus extends CI_Controller
 				$data_akhir[$key]['pekerja'] = $value['noind'].' - '.$value['nama'];
 				$data_akhir[$key]['menu'] = $value['menu_sayur'].' - '.$value['menu_lauk_utama'].' - '.$value['menu_lauk_pendamping'].' - '.$value['menu_buah'];
 				$data_akhir[$key]['pengganti'] = $value['pengganti_sayur'].' - '.$value['pengganti_lauk_utama'].' - '.$value['pengganti_lauk_pendamping'].' - '.$value['pengganti_buah'];
+				$data_akhir[$key]['tanggal_mulai'] = $value['tanggal_mulai'];
+				$data_akhir[$key]['tanggal_selesai'] = $value['tanggal_selesai'];
 				
 			}
 		}
