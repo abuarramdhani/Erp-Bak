@@ -71,7 +71,9 @@ class C_Input extends CI_Controller
 			} else if ($jenis_dokumen == 'LPPB'){
 				$atr = "and RSH.RECEIPT_NUM ='$noDokumen'";
 				$data['input'] = $this->M_input->getInputLPPB($atr);
-			} else {
+			} else if ($jenis_dokumen == 'FPB') {
+				$data['input'] = $this->M_input->getInputFPB($noDokumen);
+			}else {
 				$atr = '';
 			}
 		}

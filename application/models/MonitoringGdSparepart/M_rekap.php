@@ -1,73 +1,51 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_monitoring extends CI_Model {
+class M_rekap extends CI_Model {
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function tampilsemua($date, $date2) {
+    public function getdata() {
         $oracle = $this->load->database('oracle', true);
-        $sql ="
-                SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION, 
-                UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT, 
-                STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
-                from KHS_MONITORING_GD_SP 
-                where TRUNC(creation_date) BETWEEN TO_DATE('$date', 'DD/MM/YYYY') AND TO_DATE('$date2', 'DD/MM/YYYY')
-                order by CREATION_DATE DESC";
+        $sql ="select distinct to_date(creation_date, 'DD-MON-YYYY') creation_date 
+                from khs_monitoring_gd_sp 
+                order by creation_date desc";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
     }
 
-    
-    public function getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item) {
+    public function getMasuk($date) {
         $oracle = $this->load->database('oracle', true);
-        $no_document == null? $nodoku = '' : $nodoku = "and no_document = '$no_document'";
-        $pic == null ? $pic2 = '' : $pic2 = "and pic like '%$pic%'";
-        $item == null ? $item2 = '' : $item2 = "and ITEM = '$item'";
-        $jenis_dokumen == null ? $dokudoku = '' : $dokudoku= "and jenis_dokumen = '$jenis_dokumen'";
-        if ($tglAkhir != null && $tglAwal != null) {
-            $tanggal = "and TRUNC(creation_date) BETWEEN TO_DATE('$tglAwal', 'DD/MM/YYYY') AND TO_DATE('$tglAkhir', 'DD/MM/YYYY')";
-        } else {
-            $tanggal = '';
-        }
-        $sql ="
-                SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
-                        UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
-                        STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION
-                from KHS_MONITORING_GD_SP
-                WHERE CREATION_DATE IS NOT NULL
-                $dokudoku $nodoku $tanggal $pic2 $item2
-                order by CREATION_DATE DESC";
+        $sql ="select *
+                from khs_monitoring_gd_sp 
+                where creation_date like to_date('$date','DD/MM/YYYY')
+                order by no_document";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
     }
 
-    public function getExport($jenis_dokumen, $tglAwal, $tglAkhir) {
+    public function getpcs($date) {
         $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
-                UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
-                STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
-        from KHS_MONITORING_GD_SP
-        WHERE jenis_dokumen = '$jenis_dokumen'
-        AND TRUNC(creation_date) BETWEEN TO_DATE('$tglAwal', 'DD/MM/YYYY') AND TO_DATE('$tglAkhir', 'DD/MM/YYYY')
-        order by CREATION_DATE DESC";
+        $sql ="select sum(qty) pcs
+                from khs_monitoring_gd_sp 
+                where creation_date like to_date('$date','DD/MM/YYYY')";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
     }
 
-        public function dataUpdate($item, $query, $doc)
-    {
+    public function getitem($no) {
         $oracle = $this->load->database('oracle', true);
-        $sql="UPDATE KHS_MONITORING_GD_SP $query WHERE ITEM = '$item' and NO_DOCUMENT = '$doc'";
+        $sql ="select no_document, jenis_dokumen, item 
+                from khs_monitoring_gd_sp 
+                where no_document = '$no'";
         $query = $oracle->query($sql);
-        $query2 = $oracle->query('commit');
-			// echo $sql;
-        }  
-        
+        return $query->result_array();
+        // echo $sql;
+    }
         
     public function getKet($no_document){
         $oracle = $this->load->database('oracle', true);
@@ -84,9 +62,9 @@ class M_monitoring extends CI_Model {
                 and rt.TRANSACTION_TYPE = 'RECEIVE'
                 and mmt.TRANSACTION_TYPE_ID in (21,12)";
           $query = $oracle->query($sql);
-          return $query->result_array();
-          
+          return $query->result_array();     
     }
+    
     public function getKetLPPB($no_document){
         $oracle = $this->load->database('oracle', true);
         $sql = "select distinct rt.*
@@ -119,27 +97,25 @@ class M_monitoring extends CI_Model {
           
     }
 
-    public function getKetFPB($no_document){
+    public function getKetMO($no_document){
         $oracle = $this->load->database('oracle', true);
-        $sql = "SELECT doc_number no_interorg, item_code item, description, quantity qty, uom, seksi_kirim, status
-                FROM KHS_KIRIM_INTERNAL 
-                WHERE DOC_NUMBER = '$no_document'";
+        $sql = "SELECT mtrh.request_number no_do_spb, msib.segment1 item, msib.description,
+                        (mmt.transaction_quantity * -1) transaction_quantity,
+                        mtrl.quantity_delivered, mtrl.from_subinventory_code,
+                        mtrl.to_subinventory_code, mtrh.creation_date, mmt.transaction_date
+                FROM mtl_txn_request_headers mtrh,
+                        mtl_txn_request_lines mtrl,
+                        mtl_system_items_b msib,
+                        mtl_material_transactions mmt
+                WHERE mtrh.request_number = '$no_document'
+                    AND mtrl.header_id = mtrh.header_id
+                    AND mtrl.inventory_item_id = msib.inventory_item_id
+                    AND mtrl.organization_id = msib.organization_id
+                    AND mmt.move_order_line_id = mtrl.line_id
+                    AND mmt.inventory_item_id = mtrl.inventory_item_id
+                    AND mmt.transaction_quantity LIKE '-%'";
           $query = $oracle->query($sql);
           return $query->result_array();
-    }
-
-    public function tampilbody($no_document) {
-        $oracle = $this->load->database('oracle', true);
-        $sql ="
-                SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
-                        UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
-                        STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
-                from KHS_MONITORING_GD_SP
-                where NO_DOCUMENT = '$no_document'
-                order by CREATION_DATE DESC";
-        $query = $oracle->query($sql);
-        return $query->result_array();
-        // echo $sql;
     }
 
     public function gdAsalIO($no_document) {
@@ -194,12 +170,13 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function getPIC($term){
+    public function getKetFPB($no_document){
         $oracle = $this->load->database('oracle', true);
-        $sql = "select * from khs_tabel_user
-                where pic like '%$term%'";
-        $query = $oracle->query($sql);
-        return $query->result_array();
+        $sql = "SELECT doc_number no_interorg, item_code item, description, quantity qty, uom, seksi_kirim, status
+                FROM KHS_KIRIM_INTERNAL 
+                WHERE DOC_NUMBER = '$no_document'";
+          $query = $oracle->query($sql);
+          return $query->result_array();
     }
 
     public function cariKIB($atr) {

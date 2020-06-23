@@ -43,12 +43,14 @@
                                 <div class="panel-body">
                                     <div class="col-md-2">
                                         <label class="control-label">Jenis Dokumen </label>
-                                        <select id="jenis_dokumen" name="jenis_dokumen" class="form-control select2 select2-hidden-accessible" disabled style="width:100%;">
+                                        <input id="jenis_dokumen" name="jenis_dokumen" class="form-control" style="width:100%;" readonly>
+                                        <!-- <select id="jenis_dokumen" name="jenis_dokumen" class="form-control select2 select2-hidden-accessible" disabled style="width:100%;">
                                             <option></option>
                                             <option value="IO">IO</option>
                                             <option value="KIB">KIB</option>
                                             <option value="LPPB">LPPB</option>
-                                        </select>
+                                            <option value="MO">MO</option>
+                                        </select> -->
                                     </div>
                                 </div>
                                 <div class="panel-body">
