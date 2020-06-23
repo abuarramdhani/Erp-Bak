@@ -371,6 +371,7 @@ class C_Master extends CI_Controller
         $data['totalbody'] = sizeof($data['get_body']);
         $data['totalserial'] = sizeof($data['get_serial']);
         $data['cek_spb_do'] = $this->M_monitoringdo->cekSpbDo($id);
+
         // echo "<pre>";
         // print_r($data);
         // die;
@@ -677,11 +678,45 @@ class C_Master extends CI_Controller
       }
     }
 
+    public function cekDObukan()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Akses dilarang!";
+      }else {
+        $param = $this->input->post('rn');
+        $get = $this->M_monitoringdo->cekDObukan($param);
+        if (!empty($get)) {
+          if ($get[0]['TIPE'] === 'DO') {
+            echo json_encode(1);
+          }elseif ($get[0]['TIPE'] !== 'DO' && empty($get[0]['ATTRIBUTE4'])) {
+            echo json_encode(0);
+          }else {
+            echo json_encode(1);
+          }
+        }else {
+          echo json_encode(0);
+        }
+      }
+
+    }
+
 
     public function cekapi()
     {
-        $get = $this->M_monitoringdo->footersurat('2000000935');
+
         // $get = $this->M_monitoringdo->cekkpd();
+        $get = $this->M_monitoringdo->cekDObukan('2000000543');
+        if (!empty($get)) {
+          if ($get[0]['TIPE'] === 'DO') {
+            echo json_encode(1);
+          }elseif ($get[0]['TIPE'] !== 'DO' && empty($get[0]['ATTRIBUTE4'])) {
+            echo json_encode(0);
+          }else {
+            echo json_encode(1);
+          }
+        }else {
+          echo json_encode(0);
+        }
         echo "<pre>";
         print_r($get);
         die;
