@@ -241,14 +241,13 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 				} else {
 					echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
 					exit;
+				}	
+				if ( file_exists($doc_dir.$doc_filename2.$pdf_format) == TRUE ) {
+					$this->zip->read_file($doc_dir.$doc_filename2.$pdf_format,$doc_filename2.$pdf_format);
+				} else {
+					echo json_encode('Lampiran '.$doc_filename2.' tidak ditemukan.');
+					exit;
 				}
-			}
-
-			if ( file_exists($doc_dir.$doc_filename2.$pdf_format) == TRUE ) {
-				$this->zip->read_file($doc_dir.$doc_filename2.$pdf_format,$doc_filename2.$pdf_format);
-			} else {
-				echo json_encode('Lampiran '.$doc_filename2.' tidak ditemukan.');
-				exit;
 			}
 		}
 
@@ -390,13 +389,12 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 						echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
 						exit;
 					};
-				};
-
-				if (file_exists($doc_dir.$doc_filename2.$pdf_format) == TRUE) {
-					$mail->addAttachment($doc_dir.$doc_filename2.$pdf_format);
-				} else {
-					echo json_encode('Lampiran '.$doc_filename2.' tidak ditemukan.');
-					exit;
+					if (file_exists($doc_dir.$doc_filename2.$pdf_format) == TRUE) {
+						$mail->addAttachment($doc_dir.$doc_filename2.$pdf_format);
+					} else {
+						echo json_encode('Lampiran '.$doc_filename2.' tidak ditemukan.');
+						exit;
+					};
 				};
 		  	}
 
