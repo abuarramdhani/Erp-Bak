@@ -1,5 +1,6 @@
 <style media="screen">
-	thead > tr > th, tbody > tr > td {
+	thead>tr>th,
+	tbody>tr>td {
 		text-align: center;
 	}
 </style>
@@ -35,14 +36,15 @@
 											</thead>
 											<tbody>
 
-												<?php $no=1;
-													foreach ($all_access as $key): ?>
+												<?php $no = 1;
+												foreach ($all_access as $key) : ?>
 													<tr>
 														<td><?= $no++ ?></td>
 														<td><?= $key['noind'] ?></td>
 														<td><?= $key['nama'] ?></td>
 														<td><?= $key['seksi'] ?></td>
-														<td><?php $data = explode('|', $key['nama_seksi']); echo count($data) ?></td>
+														<td><?php $data = explode('|', $key['nama_seksi']);
+																echo count($data) ?></td>
 														<td><button data-noind="<?= $key['noind'] ?>" data-nama="<?= $key['nama'] ?>" class="btn btn-success btn-md edit-access-section" onclick="btnEditListener($(this))" data-target="#modaladd" data-toggle="modal"><i class="fa fa-edit"></i></button></td>
 													</tr>
 												<?php endforeach; ?>
