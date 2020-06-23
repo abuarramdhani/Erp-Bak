@@ -44,95 +44,22 @@ class C_Monitoring extends CI_Controller
 
 		// menampilkan semua data
 		$date = date('d/m/Y', strtotime('-1 days'));
-		$date2 = date('d/m/Y', strtotime('+1 days'));
-		// $date2 = date('d/m/Y');
+		$date2 = date('d/m/Y');
 		$dataTampil = $this->M_monitoring->tampilsemua($date, $date2);
-		// echo "<pre>"; 
-		// print_r($dataTampil); 
-		// echo "<br>"; 
-		// print_r($date2); 
-		// exit();
-		$i=0;
-		$no_document= array();
-		foreach ($dataTampil as $tampil) {
-			if (in_array($tampil['NO_DOCUMENT'], $no_document)) {
-				
-			}else{
-			$no_document[$i] = $tampil['NO_DOCUMENT'];
-			$i++;
-			}
-		}
+		
 		// pengelompokan data
 		$a= 0;
 		$array_sudah = array();
 		$array_terkelompok = array();
 		foreach ($dataTampil as $key => $value) {
-			if (in_array($value['NO_DOCUMENT'], $array_sudah)) {
-				
-			}else{
+			if (!in_array($value['NO_DOCUMENT'], $array_sudah)) {
 				array_push($array_sudah, $value['NO_DOCUMENT']);
-				if ($no_document[$a] == $value['NO_DOCUMENT']) {
-					$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
-					if ($value['JENIS_DOKUMEN'] == 'IO') {
-						$getKet = $this->M_monitoring->getKet($no_document[$a]);
-						$gudang = $this->M_monitoring->gdAsalIO($no_document[$a]);
-						if (empty($gudang)) {
-							$gdAsal = '';
-						}else {
-							$gdAsal = $gudang[0]['GUDANG_ASAL'];
-						}
-					}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-						$getKet = $this->M_monitoring->getKetLPPB($no_document[$a]);
-						$gdAsal = 'PPB';
-					}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-						$getKet = $this->M_monitoring->getKetKIB($no_document[$a]);
-						$gudang = $this->M_monitoring->gdAsalKIB($no_document[$a]);
-						if (empty($gudang)) {
-							$gdAsal = '';
-						}else {
-							$gdAsal = $gudang[0]['SUBINVENTORY_CODE'];
-						}
-					}
-					$hitung_bd = count($getBody);
-					$hitung_ket = count($getKet);
-					if ($hitung_bd == $hitung_ket) {
-						$status= 'Sudah terlayani';
-					} else {
-						$status = 'Belum terlayani';
-					}
+				// if ($no_document[$a] == $value['NO_DOCUMENT']) {
+					$cari = $this->pencarian($value);
+					$getBody = $cari['getbody'];
+					$gdAsal = $cari['asal'];
+					$status = $cari['status'];
 				$a++;
-				}
-				else {
-					$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
-					if ($value['JENIS_DOKUMEN'] == 'IO') {
-						$getKet = $this->M_monitoring->getKet($no_document[$a]);
-						$gudang = $this->M_monitoring->gdAsalIO($no_document[$a]);
-						if (empty($gudang)) {
-							$gdAsal = '';
-						}else {
-							$gdAsal = $gudang[0]['GUDANG_ASAL'];
-						}
-					}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-						$getKet = $this->M_monitoring->getKetLPPB($no_document[$a]);
-						$gdAsal = 'PPB';
-					}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-						$getKet = $this->M_monitoring->getKetKIB($no_document[$a]);
-						$gudang = $this->M_monitoring->gdAsalKIB($no_document[$a]);
-						if (empty($gudang)) {
-							$gdAsal = '';
-						}else {
-							$gdAsal = $gudang[0]['SUBINVENTORY_CODE'];
-						}
-					}
-					$hitung_bd = count($getBody);
-					$hitung_ket = count($getKet);
-					if ($hitung_bd == $hitung_ket) {
-						$status= 'Sudah terlayani';
-					} else {
-						$status = 'Belum terlayani';
-					}
-				$a++;
-				}
 				$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
 				$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
 				$array_terkelompok[$value['NO_DOCUMENT']]['header']['gd_asal'] = $gdAsal; 
@@ -166,92 +93,25 @@ class C_Monitoring extends CI_Controller
 
 		if ($search == 'export') {		// jika search by export excel
 			$dataGET = $this->M_monitoring->getExport($jenis_dokumen, $tglAwal, $tglAkhir);
-			$i=0;
-			$no_document= array();
-			foreach ($dataGET as $tampil) {
-				if (in_array($tampil['NO_DOCUMENT'], $no_document)) {
-					
-				}else{
-				$no_document[$i] = $tampil['NO_DOCUMENT'];
-				$i++;
-				}
-			}
+			
 			// pengelompokan data export
 			$a= 0;
 			$array_sudah = array();
 			$array_terkelompok = array();
 			foreach ($dataGET as $key => $value) {
-				if (in_array($value['NO_DOCUMENT'], $array_sudah)) {
-					
-				}else{
+				if (!in_array($value['NO_DOCUMENT'], $array_sudah)) {
 					array_push($array_sudah, $value['NO_DOCUMENT']);
-					if ($no_document[$a] == $value['NO_DOCUMENT']) {
-						$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
-						if ($value['JENIS_DOKUMEN'] == 'IO') {
-							$getKet = $this->M_monitoring->getKet($no_document[$a]);
-							$gudang = $this->M_monitoring->gdAsalIO($no_document[$a]);
-							if (empty($gudang)) {
-								$gdAsal = '';
-							}else {
-								$gdAsal = $gudang[0]['GUDANG_ASAL'];
-							}
-						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-							$getKet = $this->M_monitoring->getKetLPPB($no_document[$a]);
-							$gdAsal = 'PPB';
-						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-							$getKet = $this->M_monitoring->getKetKIB($no_document[$a]);
-							$gudang = $this->M_monitoring->gdAsalKIB($no_document[$a]);
-							if (empty($gudang)) {
-								$gdAsal = '';
-							}else {
-								$gdAsal = $gudang[0]['SUBINVENTORY_CODE'];
-							}
-						}
-						$hitung_bd = count($getBody);
-						$hitung_ket = count($getKet);
-						if ($hitung_bd == $hitung_ket) {
-							$status= 'Sudah terlayani';
-						} else {
-							$status = 'Belum terlayani';
-						}
+						$cari = $this->pencarian($value);
+						$getBody = $cari['getbody'];
+						$gdAsal = $cari['asal'];
+						$status = $cari['status'];
 					$a++;
-					}else{
-						$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
-						if ($value['JENIS_DOKUMEN'] == 'IO') {
-							$getKet = $this->M_monitoring->getKet($no_document[$a]);
-							$gudang = $this->M_monitoring->gdAsalIO($no_document[$a]);
-							if (empty($gudang)) {
-								$gdAsal = '';
-							}else {
-								$gdAsal = $gudang[0]['GUDANG_ASAL'];
-							}
-						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-							$getKet = $this->M_monitoring->getKetLPPB($no_document[$a]);
-							$gdAsal = 'PPB';
-						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-							$getKet = $this->M_monitoring->getKetKIB($no_document[$a]);
-							$gudang = $this->M_monitoring->gdAsalKIB($no_document[$a]);
-							if (empty($gudang)) {
-								$gdAsal = '';
-							}else {
-								$gdAsal = $gudang[0]['SUBINVENTORY_CODE'];
-							}
-						}
-						$hitung_bd = count($getBody);
-						$hitung_ket = count($getKet);
-						if ($hitung_bd == $hitung_ket) {
-							$status= 'Sudah terlayani';
-						} else {
-							$status = 'Belum terlayani';
-						}
-					$a++;
-					}
-					$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
-					$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
-					$array_terkelompok[$value['NO_DOCUMENT']]['header']['gd_asal'] = $gdAsal; 
-					$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
-					}
-				}	
+				$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
+				$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
+				$array_terkelompok[$value['NO_DOCUMENT']]['header']['gd_asal'] = $gdAsal; 
+				$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
+				}
+			}	
 			$data['value'] = $array_terkelompok;
 
 		}else{
@@ -262,112 +122,93 @@ class C_Monitoring extends CI_Controller
 			$array_sudah = array();
 			$array_terkelompok = array();
 			foreach ($dataGET as $key => $value) {
-				if (in_array($value['NO_DOCUMENT'], $array_sudah)) {
-					
-				}else {	
+				if (!in_array($value['NO_DOCUMENT'], $array_sudah)) {
 					array_push($array_sudah, $value['NO_DOCUMENT']);
-					if ($no_document == 'NO_DOCUMENT') {
+					if ($no_document == $value['NO_DOCUMENT']) {
 						$getBody = $dataGET;
-						if ($value['JENIS_DOKUMEN'] == 'IO') {
-							$getKet = $this->M_monitoring->getKet($no_document);
-							$gudang = $this->M_monitoring->gdAsalIO($no_document);
-							if (empty($gudang)) {
-								$gdAsal = '';
-							}else {
-								$gdAsal = $gudang[0]['GUDANG_ASAL'];
-							}
-						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-							$getKet = $this->M_monitoring->getKetLPPB($no_document);
-							$gdAsal = 'PPB';
-						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-							$getKet = $this->M_monitoring->getKetKIB($no_document);
-							$gudang = $this->M_monitoring->gdAsalKIB($no_document);
-							if (empty($gudang)) {
-								$gdAsal = '';
-							}else {
-								$gdAsal = $gudang[0]['SUBINVENTORY_CODE'];
-							}
-						}
-						$hitung_bd = count($getBody);
-						$hitung_ket = count($getKet);
-						if ($hitung_bd == $hitung_ket) {
-							$status= 'Sudah terlayani';
-						} else {
-							$status = 'Belum terlayani';
-						}
+						$cari = $this->pencarian($value);
+						$gdAsal = $cari['asal'];
+						$status = $cari['status'];
 					}else {
 						$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $jenis_dokumen,  $tglAwal, $tglAkhir, $pic, $item);
-						if ($value['JENIS_DOKUMEN'] == 'IO') {
-							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
-							$gudang = $this->M_monitoring->gdAsalIO($value['NO_DOCUMENT']);
-							if (empty($gudang)) {
-								$gdAsal = '';
-							}else {
-								$gdAsal = $gudang['0']['GUDANG_ASAL'];
-							}
-						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-							$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
-							$gdAsal = 'PPB';
-						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-							$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
-							$gudang = $this->M_monitoring->gdAsalKIB($value['NO_DOCUMENT']);
-							if (empty($gudang)) {
-								$gdAsal = '';
-							}else {
-								$gdAsal = $gudang['0']['SUBINVENTORY_CODE'];
-							}
-							
-						}
-						$hitung_bd = count($getBody);
-						$hitung_ket = count($getKet);
-						if ($hitung_bd == $hitung_ket) {
-							$status= 'Sudah terlayani';
-						} else {
-							$status = 'Belum terlayani';
-						}
+						$cari = $this->pencarian($value);
+						$gdAsal = $cari['asal'];
+						$status = $cari['status'];
 					}
-					$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
-					$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
-					$array_terkelompok[$value['NO_DOCUMENT']]['header']['gd_asal'] = $gdAsal; 
-					$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
+					if ($status == 'Sudah terlayani' && $search == 'belumterlayani') {
+						
+					}else {
+						$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
+						$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
+						$array_terkelompok[$value['NO_DOCUMENT']]['header']['gd_asal'] = $gdAsal; 
+						$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
+					}
 				}
-				}
+			}
 			$data['value'] = $array_terkelompok;
 		}
 		if ($search == "belumterlayani") {
-			// echo "haha";exit();
 			$this->load->view('MonitoringGdSparepart/V_Result2', $data);
 		}else{
-			// echo "hihi";exit();
 			$this->load->view('MonitoringGdSparepart/V_Result', $data);
 		}
 	}
 
+	public function pencarian($value){
+		$cari = array();
+		$cari['getbody'] = $this->M_monitoring->tampilbody($value['NO_DOCUMENT']);
+		if ($value['JENIS_DOKUMEN'] == 'IO') {
+			$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
+			$gudang = $this->M_monitoring->gdAsalIO($value['NO_DOCUMENT']);
+			if (empty($gudang)) {
+				$cari['asal'] = '';
+			}else {
+				$cari['asal'] = $gudang[0]['GUDANG_ASAL'];
+			}
+		}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
+			$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
+			$cari['asal'] = 'PPB';
+		}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+			$cek = $this->M_monitoring->cariKib($value['NO_DOCUMENT']);
+			if (!empty($cek)) {
+				$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
+			}else {
+				$getKet = $cari['getbody'];
+			}
+			$gudang = $this->M_monitoring->gdAsalKIB($value['NO_DOCUMENT']);
+			if (empty($gudang)) {
+				$cari['asal'] = '';
+			}else {
+				$cari['asal'] = $gudang[0]['SUBINVENTORY_CODE'];
+			}
+		}elseif ($value['JENIS_DOKUMEN'] == 'FPB') {
+			$gudang = $this->M_monitoring->getKetFPB($value['NO_DOCUMENT']);
+			if (empty($gudang)) {
+				$cari['asal'] = '';
+				$cari['status'] = '';
+			}else {
+				$cari['asal'] = $gudang[0]['SEKSI_KIRIM'];
+				$cari['status'] = $gudang[0]['STATUS'] == 5 ? 'Belum terlayani' : 
+									($gudang[0]['STATUS'] == 6 ? 'Sudah terlayani' : 'Sedang dibuat')
+				;
+			}
+		}
+		if ($value['JENIS_DOKUMEN'] != 'FPB') {
+			$hitung_bd = count($cari['getbody']);
+			$hitung_ket = count($getKet);
+			if ($hitung_bd <= $hitung_ket) {
+				$cari['status']= 'Sudah terlayani';
+			} else {
+				$cari['status'] = 'Belum terlayani';
+			}
+		}
+		
+		return $cari;
+	}
+
 
 	public function getUpdate(){
-		if ($_POST['action'] == 'Save') {		
-			$nitem = $this->input->post('item[]');
-			$jok = $this->input->post('jml_ok[]');
-			$not = $this->input->post('jml_not_ok[]');
-			$ket = $this->input->post('keterangan[]');
-			// echo "<pre>"; print_r ($_POST); exit();
-			
-			for ($i=0; $i < count($nitem); $i++) { 
-				$item 		= $nitem[$i];
-				$jml_ok 	= $jok[$i];
-				$jml_not_ok = $not[$i];
-				$keterangan = $ket[$i];
-
-				if (!empty($jml_ok) && !empty($jml_not_ok) && !empty($keterangan)) {
-					$this->M_monitoring->dataUpdate($item, $jml_ok, $jml_not_ok, $keterangan);
-				}
-				// echo"<pre>";
-				// print_r($update);
-			}
-			// exit;
-			redirect(base_url('MonitoringGdSparepart/Monitoring/'));
-
-		} else if ($_POST['action'] == 'Export') {		
+		if ($_POST['action'] == 'Export') {		
 			$tanggal 	= $this->input->post('tanggal[]');
 			$no_dokumen = $this->input->post('doc[]');
 			$jenis_doc 	= $this->input->post('jenis[]');
@@ -477,10 +318,10 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('I3', "STATUS");
 			$excel->setActiveSheetIndex(0)->setCellValue('I4', "OK");
 			$excel->setActiveSheetIndex(0)->setCellValue('J4', "NOT OK");
-			$excel->setActiveSheetIndex(0)->setCellValue('K3', "KETERANGAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('K4', "KETERANGAN");
 			$excel->setActiveSheetIndex(0)->setCellValue('L3', "ASAL");
 			$excel->setActiveSheetIndex(0)->setCellValue('M3', "ACTION");
-			$excel->setActiveSheetIndex(0)->setCellValue('N3', "");
+			$excel->setActiveSheetIndex(0)->setCellValue('N3', "KETERANGAN");
 			$excel->getActiveSheet()->mergeCells('A3:A4'); 
 			$excel->getActiveSheet()->mergeCells('B3:B4'); 
 			$excel->getActiveSheet()->mergeCells('C3:C4'); 
@@ -489,8 +330,7 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->mergeCells('F3:F4'); 
 			$excel->getActiveSheet()->mergeCells('G3:G4'); 
 			$excel->getActiveSheet()->mergeCells('H3:H4'); 
-			$excel->getActiveSheet()->mergeCells('I3:J3'); 
-			$excel->getActiveSheet()->mergeCells('K3:K4'); 
+			$excel->getActiveSheet()->mergeCells('I3:K3'); 
 			$excel->getActiveSheet()->mergeCells('L3:L4'); 
 			$excel->getActiveSheet()->mergeCells('M3:M4'); 
 			$excel->getActiveSheet()->mergeCells('N3:N4'); 
