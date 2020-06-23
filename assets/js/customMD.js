@@ -4,6 +4,37 @@ var ajax3  = null;
 var ajax4  = null;
 var ajax5  = null;
 
+function cetakDO(rn) {
+  $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/cekDObukan',
+    type: 'POST',
+    dataType: 'JSON',
+    data:{
+      rn : rn,
+    },
+    beforeSend: function() {
+      Swal.showLoading();
+    },
+    success: function(result) {
+      if (result) {
+        Swal.close()
+        dodo3();
+        window.open(baseurl+'MonitoringDO/PDF/'+rn)
+      }else {
+        Swal.fire({
+          position: 'middle',
+          type: 'warning',
+          title: 'Alamat belum lengkap!',
+          text: 'Silahkan hubungi Marketing!'
+        })
+      }
+
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
 
 $(document).ready(function() {
 

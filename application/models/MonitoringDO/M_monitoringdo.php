@@ -11,6 +11,22 @@ class M_monitoringdo extends CI_Model
         $subinv = $this->session->datasubinven;
     }
 
+    public function cekDObukan($rn)
+    {
+      $res = $this->oracle->query("SELECT distinct
+                                         mtrh.REQUEST_NUMBER
+                                        ,case when (select distinct to_char(wdd.BATCH_ID)
+                                                      from wsh_delivery_details wdd
+                                                     where to_char(wdd.BATCH_ID) = mtrh.REQUEST_NUMBER) = mtrh.REQUEST_NUMBER
+                                              then 'DO'
+                                              else 'SPB'
+                                         end tipe
+                                        ,mtrh.ATTRIBUTE4
+                                  from mtl_txn_request_headers mtrh
+                                  where mtrh.REQUEST_NUMBER = '$rn'")->result_array();
+      return $res;
+    }
+
     public function petugas($data)
     {
         $sql = "SELECT

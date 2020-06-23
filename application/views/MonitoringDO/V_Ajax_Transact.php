@@ -26,7 +26,7 @@
           <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detailTransact('<?php echo $g['DO/SPB'] ?>', <?php echo $no ?>)" data-toggle="modal" data-target="#MyModalTransact"><i class="fa fa-eye"></i></button> </center></td>
           <td>
             <center>
-              <a href="<?php echo base_url('MonitoringDO/PDF/'.$g['DO/SPB']) ?>" target="_blank" onclick="dodo3()" class="btn btn-danger">Cetak</a>
+              <button type="button" class="btn btn-danger" name="button" style="font-weight:bold;" onclick="cetakDO('<?php echo $g['DO/SPB'] ?>')"><i class="fa fa-file-pdf-o"></i> Cetak</button>
             </center>
           </td>
         </tr>
