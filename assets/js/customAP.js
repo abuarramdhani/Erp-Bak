@@ -597,8 +597,13 @@ $(document).ready(function(){
 			$('#tanggalFakturCon').val(resf);
 			var nfRes = $('#nomorFaktur').val().replace(/[\D]/g, '');
 			$('#nomorFaktur').val(nfRes);
+			var seller = $('#nameFaktur').val()
 
-			ajaxForSubmitFakturManual();
+			if (tglf.length == 0 || nfRes.length == 0 || seller.length == 0) {
+				alert('Pastikan Semua Inputan Telah Diisi')
+			} else {
+				ajaxForSubmitFakturManual();
+			}
 
 			// alert($('#nomorFaktur').val());
 			// $('#pph').submit();
