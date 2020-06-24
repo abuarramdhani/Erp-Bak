@@ -21,6 +21,7 @@ class C_ApiPatroli extends CI_Controller
 		if (date('H:i:s') < '12:00:00') {
 			$tshift = date('Y-m-d', strtotime('-1 days'));
 		}
+		// $tshift = '2020-06-17';
 		$pos = $this->M_patrolis->getPos($noind, $tshift, $ronde);
 		echo json_encode($pos);
 	}
@@ -233,7 +234,7 @@ class C_ApiPatroli extends CI_Controller
 
 	public function get_profile()
 	{
-		$noind = $this->input->get('noind');
+		$noind = strtoupper($this->input->get('noind'));
 		$data = $this->M_patrolis->getProfile($noind);
 		echo json_encode($data);
 	}
@@ -247,6 +248,18 @@ class C_ApiPatroli extends CI_Controller
 		}
 		$data['max_ronde'] = 4;
 		$data['ronde'] = $this->M_patrolis->getRonde($tshift);
+		echo json_encode($data);
+	}
+
+	public function list_rondeID()
+	{
+		$rond = $this->input->get('id');//id ronde
+		if (date('H:i:s') < '12:00:00') {
+			$tshift = date('Y-m-d', strtotime('-1 days'));
+		}else{
+			$tshift = date('Y-m-d');
+		}
+		$data['ronde'] = $this->M_patrolis->getRonde($tshift, $rond);
 		echo json_encode($data);
 	}
 	

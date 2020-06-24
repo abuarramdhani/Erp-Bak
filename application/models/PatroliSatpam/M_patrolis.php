@@ -42,7 +42,7 @@ class M_patrolis extends CI_Model
                     -- tp.noind = '$noind'
                     tp.tgl_shift = '$shift'
                     and tp.ronde = $ronde) zub on
-                zub.pos = ttq.id";
+                zub.pos = ttq.id order by ttq.id";
     	return $this->personalia->query($sql)->result_array();
     }
 
@@ -150,12 +150,16 @@ class M_patrolis extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
-    public function getRonde($tgl_shift)
+    public function getRonde($tgl_shift, $ronde = false)
     {
+        $and = '';
+        if ($ronde !== false) {
+            $and = 'and ronde = '.$ronde;
+        }
         $sql = "SELECT
                 ronde,
                 case
-                    when count(pos) = (select count(*) from \"Satpam\".titik_qrcode tq)
+                    when count(distinct(pos)) = (select count(distinct(id)) from \"Satpam\".titik_qrcode tq)
                     then 1
                     else 0 
                 end as selesai
@@ -163,6 +167,7 @@ class M_patrolis extends CI_Model
                     \"Satpam\".tpatroli t
                 where
                     tgl_shift = '$tgl_shift'
+                    $and
                 group by
                     ronde
                 order by
@@ -249,13 +254,13 @@ class M_patrolis extends CI_Model
     {
         $sql = "SELECT 
                 distinct pos,
-                (SELECT jam_patroli from \"Satpam\".tpatroli tp1 
+                (SELECT case when kode = 'Tidak Scan' then concat(jam_patroli::text,'N') else jam_patroli::text end jam_patroli from \"Satpam\".tpatroli tp1 
                 where tp1.tgl_shift = tp0.tgl_shift and ronde = 1 and tp1.pos = tp0.pos) r1,
-                (select jam_patroli from \"Satpam\".tpatroli tp2 
+                (select case when kode = 'Tidak Scan' then concat(jam_patroli::text,'N') else jam_patroli::text end jam_patroli from \"Satpam\".tpatroli tp2 
                 where tp2.tgl_shift = tp0.tgl_shift and ronde = 2 and tp2.pos = tp0.pos) r2,
-                (select jam_patroli from \"Satpam\".tpatroli tp3 
+                (select case when kode = 'Tidak Scan' then concat(jam_patroli::text,'N') else jam_patroli::text end jam_patroli from \"Satpam\".tpatroli tp3 
                 where tp3.tgl_shift = tp0.tgl_shift and ronde = 3 and tp3.pos = tp0.pos) r3,
-                (select jam_patroli from \"Satpam\".tpatroli tp4
+                (select case when kode = 'Tidak Scan' then concat(jam_patroli::text,'N') else jam_patroli::text end jam_patroli from \"Satpam\".tpatroli tp4
                 where tp4.tgl_shift = tp0.tgl_shift and ronde = 4 and tp4.pos = tp0.pos) r4
                 FROM \"Satpam\".tpatroli tp0
                 where tgl_shift::date = '$tgl'

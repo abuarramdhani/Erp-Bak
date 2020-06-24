@@ -91,10 +91,17 @@
 									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
 									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
 									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
-									echo "<td>".substr($r1, 0,5)."</td>";
-									echo "<td>".substr($r2, 0,5)."</td>";
-									echo "<td>".substr($r3, 0,5)."</td>";
-									echo "<td>".substr($r4, 0,5)."</td>";
+									$color = strpos($r1, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
+
+									$color = strpos($r2, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r2, 0,5)."</td>";
+
+									$color = strpos($r3, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r3, 0,5)."</td>";
+
+									$color = strpos($r4, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r4, 0,5)."</td>";
 								}
 							}
 						}
@@ -152,10 +159,17 @@
 									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
 									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
 									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
-									echo "<td>".substr($r1, 0,5)."</td>";
-									echo "<td>".substr($r2, 0,5)."</td>";
-									echo "<td>".substr($r3, 0,5)."</td>";
-									echo "<td>".substr($r4, 0,5)."</td>";
+									$color = strpos($r1, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
+
+									$color = strpos($r2, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r2, 0,5)."</td>";
+
+									$color = strpos($r3, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r3, 0,5)."</td>";
+
+									$color = strpos($r4, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r4, 0,5)."</td>";
 								}
 							}
 						}
@@ -217,10 +231,17 @@
 									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
 									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
 									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
-									echo "<td>".substr($r1, 0,5)."</td>";
-									echo "<td>".substr($r2, 0,5)."</td>";
-									echo "<td>".substr($r3, 0,5)."</td>";
-									echo "<td>".substr($r4, 0,5)."</td>";
+									$color = strpos($r1, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
+
+									$color = strpos($r2, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r2, 0,5)."</td>";
+
+									$color = strpos($r3, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r3, 0,5)."</td>";
+
+									$color = strpos($r4, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r4, 0,5)."</td>";
 								}
 							}
 						}
@@ -278,10 +299,17 @@
 									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
 									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
 									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
-									echo "<td>".substr($r1, 0,5)."</td>";
-									echo "<td>".substr($r2, 0,5)."</td>";
-									echo "<td>".substr($r3, 0,5)."</td>";
-									echo "<td>".substr($r4, 0,5)."</td>";
+									$color = strpos($r1, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
+
+									$color = strpos($r2, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r2, 0,5)."</td>";
+
+									$color = strpos($r3, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r3, 0,5)."</td>";
+
+									$color = strpos($r4, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r4, 0,5)."</td>";
 								}
 							}
 						}
