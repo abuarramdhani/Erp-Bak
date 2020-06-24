@@ -429,12 +429,12 @@ class C_Master extends CI_Controller
                 chmod('./assets/img/monitoringDOQRCODE', 0777);
             }
 
-            $params['data']		= $data['get_header'][0]['DO/SPB'];
+            $params['data']		= $data['get_header'][0]['REQUEST_NUMBER'];
             $params['level']	= 'H';
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['DO/SPB'].'.png';
+            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['REQUEST_NUMBER'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
@@ -572,13 +572,15 @@ class C_Master extends CI_Controller
                 mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
                 chmod('./assets/img/monitoringDOQRCODE', 0777);
             }
-
-            $params['data']		= $data['get_header'][0]['DO/SPB'];
+            // echo "<pre>";
+            // print_r($data['get_header'][0]['REQUEST_NUMBER']);
+            // die;
+            $params['data']		= $data['get_header'][0]['REQUEST_NUMBER'];
             $params['level']	= 'H';
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['DO/SPB'].'.png';
+            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['REQUEST_NUMBER'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
