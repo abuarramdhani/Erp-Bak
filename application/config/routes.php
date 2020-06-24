@@ -4461,3 +4461,13 @@ $route['civil-maintenance-order/order/(:any)'] = 'CivilMaintenanceOrder/C_Civil/
 $route['civil-maintenance-order/order/(:any)/(:any)'] = 'CivilMaintenanceOrder/C_Civil/$1/$2';
 $route['civil-maintenance-order/setting/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1';
 $route['civil-maintenance-order/setting/(:any)/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1/$2';
+
+//------------------------------------------ pengembalian APD-----------------------
+$route['pengembalian-apd']								= 'PengembalianAPD/C_PekerjaApd/menu';
+$route['pengembalian-apd/pekerja']						= 'PengembalianAPD/C_PekerjaApd/pekerja';
+$route['pengembalian-apd/pekerja/(:any)']				= 'PengembalianAPD/C_PekerjaApd/$1';
+$route['pengembalian-apd/pekerja/(:any)/(:any)']		= 'PengembalianAPD/C_PekerjaApd/$1/$2';
+
+$route['pengembalian-apd/hubker']						= 'PengembalianAPD/C_HubkerApd/hubker';
+$route['pengembalian-apd/hubker/(:any)']				= 'PengembalianAPD/C_HubkerApd/$1';
+$route['pengembalian-apd/hubker/(:any)/(:any)']			= 'PengembalianAPD/C_HubkerApd/$1/$2';
