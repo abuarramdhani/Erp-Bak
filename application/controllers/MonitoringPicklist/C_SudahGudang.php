@@ -50,9 +50,15 @@ class C_SudahGudang extends CI_Controller
 
 	function searchData(){
 		$subinv 	= $this->input->post('subinv');
-		$tanggal 	= $this->input->post('tanggal');
+		$tanggal1 	= $this->input->post('tanggal1');
+		$tanggal2 	= $this->input->post('tanggal2');
 
-		$data['data'] = $this->M_pickgudang->getdataSudah($subinv, $tanggal);
+		$getdata = $this->M_pickgudang->getdataSudah($subinv, $tanggal1, $tanggal2);
+		foreach ($getdata as $key => $get) {
+			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
+			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
+		}
+		$data['data'] = $getdata;
 		
 		$this->load->view('MonitoringPicklist/GUDANG/V_TblSudahGudang', $data);
 	}

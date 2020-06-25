@@ -8,7 +8,7 @@ class M_pickfabrikasi extends CI_Model
         $this->load->database();    
     }
 
-    function getdataBelum($dept, $tgl)
+    function getdataBelum($dept, $tgl1, $tgl2)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "select distinct
@@ -56,6 +56,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+			and wdj.STATUS_TYPE not in (5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -66,16 +67,68 @@ class M_pickfabrikasi extends CI_Model
 					) = 1
 			and kpa.PROCESS = 1 -- ppic
 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
-			and to_char(we.CREATION_DATE,'DD/MM/YYYY') = '$tgl' ";
+			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			order by 11 desc ";
+		$query = $oracle->query($sql);
+		// echo "<pre>";print_r($sql);exit();
+		return $query->result_array();
+	}
+	
+	function getdataBelum2($picklist)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select TO_CHAR(sysdate, 'DD-MON-YYYY HH24:MI:SS') tgl_cetak,
+		TO_CHAR(wdj.SCHEDULED_START_DATE, 'DD-MON-YYYY HH24:MI:SS') tgl_job,
+		bd.DEPARTMENT_CLASS_CODE dept_class,
+		mtrh.FROM_SUBINVENTORY_CODE,
+		mil.SEGMENT1 FROM_LOCATOR,
+		mtrh.REQUEST_NUMBER no_picklist,
+		we.WIP_ENTITY_NAME no_job,
+		msib.SEGMENT1 kode_item,
+		msib.DESCRIPTION,
+        wdj.START_QUANTITY
+		from mtl_txn_request_headers mtrh,
+		mtl_txn_request_lines mtrl,
+		wip_entities we,
+		wip_discrete_jobs wdj,
+		mtl_system_items_b msib,
+		wip_requirement_operations wro,
+		wip_operations wo,
+		bom_departments bd,
+		mtl_item_locations mil
+		where mtrh.HEADER_ID = mtrl.HEADER_ID
+		and mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
+		and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+		and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
+		and we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+		and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+		and wro.WIP_ENTITY_ID = we.WIP_ENTITY_ID
+		and wro.ORGANIZATION_ID = we.ORGANIZATION_ID
+		and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
+		and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
+		and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+		and mtrl.FROM_LOCATOR_ID = mil.INVENTORY_LOCATION_ID
+		and mtrh.REQUEST_NUMBER = '$picklist'
+		group by
+		wdj.SCHEDULED_START_DATE,
+		bd.DEPARTMENT_CLASS_CODE,
+		mtrh.FROM_SUBINVENTORY_CODE,
+		mil.SEGMENT1,
+		mtrh.REQUEST_NUMBER,
+		we.WIP_ENTITY_NAME,
+		msib.SEGMENT1,
+		msib.DESCRIPTION,
+        wdj.START_QUANTITY";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
 
-	function getdataSudah($dept, $tgl)
+	function getdataSudah($dept, $tgl1, $tgl2)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "select distinct
-					msib_produk.SEGMENT1 produk
+				to_char(we.CREATION_DATE, 'dd-mm-yyyy') creation_date
+				,msib_produk.SEGMENT1 produk
 				,msib_produk.DESCRIPTION produk_desc
 				,msib_produk.INVENTORY_ITEM_ID item_id_produk 
 				,msib_produk.ORGANIZATION_ID org_id_produk
@@ -124,6 +177,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+			and wdj.STATUS_TYPE not in (5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -134,7 +188,7 @@ class M_pickfabrikasi extends CI_Model
 					) = 2
 			and kpa.PROCESS = 2 -- fabrikasi
 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
-			and to_char(we.CREATION_DATE,'DD/MM/YYYY') = '$tgl' ";
+			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -192,6 +246,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+			and wdj.STATUS_TYPE not in (5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -226,6 +281,24 @@ class M_pickfabrikasi extends CI_Model
 	public function cekapprove($picklist, $nojob){
 		$oracle = $this->load->database('oracle', true);
 		$sql = "select * from khs_picklist_approved where picklist = '$picklist' and job_number = '$nojob' and process = 3";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cekapprove2($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_picklist_approved where job_number = '$nojob' and process = 2";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cekdeliver($picklist){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select sum(mtrl.QUANTITY_DELIVERED) deliver
+		from mtl_txn_request_headers mtrh,
+		mtl_txn_request_lines mtrl
+		where mtrh.HEADER_ID = mtrl.HEADER_ID
+		and mtrh.REQUEST_NUMBER = '$picklist'";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

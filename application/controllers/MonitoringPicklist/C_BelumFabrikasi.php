@@ -50,11 +50,27 @@ class C_BelumFabrikasi extends CI_Controller
 
 	function searchData(){
 		$dept 		= $this->input->post('dept');
-		$tanggal 	= $this->input->post('tanggal');
+		$tanggal1 	= $this->input->post('tanggal1');
+		$tanggal2 	= $this->input->post('tanggal2');
 
-		$data['data'] = $this->M_pickfabrikasi->getdataBelum($dept, $tanggal);
+		$getdata = $this->M_pickfabrikasi->getdataBelum($dept, $tanggal1, $tanggal2);
+		foreach ($getdata as $key => $get) {
+			$cek = $this->M_pickfabrikasi->cekdeliver($get['PICKLIST']);
+			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
+		}
+		$data['data'] = $getdata;
 		
 		$this->load->view('MonitoringPicklist/FABRIKASI/V_TblBelumFabrikasi', $data);
+	}
+
+	function searchData2(){
+		$dept 		= $this->input->post('dept');
+		$tanggal1 	= $this->input->post('tanggal1');
+		$tanggal2 	= $this->input->post('tanggal2');
+
+		$data['data'] = $this->M_pickfabrikasi->getdataBelum($dept, $tanggal1, $tanggal2);
+		$jml = count($data['data']);
+		echo json_encode($jml);
 	}
 
 	function approveData(){
@@ -64,6 +80,103 @@ class C_BelumFabrikasi extends CI_Controller
 		// echo "<pre>";print_r($nojob);exit();
 
 		$this->M_pickfabrikasi->approveData($picklist, $nojob, $user);
+	}
+
+	function approveData2(){
+		$nojob 		= $this->input->post('nojob');
+		$picklist 	= $this->input->post('picklist');
+		$cek 		= $this->input->post('cek');
+		$user 		= $this->session->user;
+		// echo "<pre>";print_r($cek);exit();
+
+		for ($i=0; $i < count($nojob); $i++) { 
+			if ($cek[$i] == 'uncek') {
+				$cek2 = $this->M_pickfabrikasi->cekapprove2($nojob[$i]);
+				if (empty($cek2)) {
+					$this->M_pickfabrikasi->approveData($picklist[$i], $nojob[$i], $user);
+				}
+			}
+		}
+
+	}
+
+	function printBelumFabrikasi($picklist){
+		$date = date('dMY');
+		$getdata = $this->M_pickfabrikasi->getdataBelum2($picklist);
+		// echo "<pre>";print_r($getdata);exit();
+
+		ob_start();
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+    	$pdf = new mPDF('utf-8',array(82,112), 0, '', 3, 3, 3, 3, 0, 0);
+		$filename 	= 'BelumFabrikasi-'.$date.'.pdf';
+
+		$this->load->library('ciqrcode');
+
+		if(!is_dir('./img'))
+		{
+			mkdir('./img', 0777, true);
+			chmod('./img', 0777);
+		}
+		
+		foreach ($getdata as  $get) {
+			$params['data']		= $get['NO_PICKLIST'];
+			$params['level']	= 'H';
+			$params['size']		= 10;
+			$params['black']	= array(255,255,255);
+			$params['white']	= array(0,0,0);
+			$params['savename'] = './img/'.($get['NO_PICKLIST']).'.png';
+			$this->ciqrcode->generate($params);
+		}
+
+		$data['data'] = $getdata;
+    	$html = $this->load->view('MonitoringPicklist/FABRIKASI/V_PdfBelumFabrikasi', $data,true);
+    	ob_end_clean();
+    	$pdf->WriteHTML($html);												
+    	$pdf->Output($filename, 'I');
+		
+	}
+
+	public function cetaksemua(){
+		$date = date('dMY');
+		$picklist = $this->input->post('picklist[]');
+		$cek = $this->input->post('printsemua[]');
+
+		ob_start();
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+    	$pdf = new mPDF('utf-8',array(82,112), 0, '', 3, 3, 3, 3, 0, 0);
+		$filename 	= 'BelumFabrikasi-'.$date.'.pdf';
+
+		$this->load->library('ciqrcode');
+
+		if(!is_dir('./img'))
+		{
+			mkdir('./img', 0777, true);
+			chmod('./img', 0777);
+		}
+
+		for ($i=0; $i < count($picklist) ; $i++) { 
+			if ($cek[$i] == 'uncek') {
+				$getdata = $this->M_pickfabrikasi->getdataBelum2($picklist[$i]);
+				// echo "<pre>";print_r($getdata);exit();
+				foreach ($getdata as  $get) {
+					$params['data']		= $get['NO_PICKLIST'];
+					$params['level']	= 'H';
+					$params['size']		= 10;
+					$params['black']	= array(255,255,255);
+					$params['white']	= array(0,0,0);
+					$params['savename'] = './img/'.($get['NO_PICKLIST']).'.png';
+					$this->ciqrcode->generate($params);
+				}
+		
+				$data['data'] = $getdata;
+				$html = $this->load->view('MonitoringPicklist/FABRIKASI/V_PdfBelumFabrikasi', $data,true);
+				ob_end_clean();
+				$pdf->WriteHTML($html);	
+			}
+		}										
+    	$pdf->Output($filename, 'I');
 	}
 
 

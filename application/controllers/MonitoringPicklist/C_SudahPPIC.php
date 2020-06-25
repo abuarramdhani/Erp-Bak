@@ -50,9 +50,15 @@ class C_SudahPPIC extends CI_Controller
 
 	function searchData(){
 		$dept 	 = $this->input->post('dept');
-		$tanggal = $this->input->post('tanggal');
+		$tanggal1 = $this->input->post('tanggal1');
+		$tanggal2 = $this->input->post('tanggal2');
 
-		$data['data'] = $this->M_picklistppic->getDataSudah($dept, $tanggal);
+		$getdata = $this->M_picklistppic->getDataSudah($dept, $tanggal1, $tanggal2);
+		foreach ($getdata as $key => $get) {
+			$cek = $this->M_picklistppic->cekdeliver($get['PICKLIST']);
+			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
+		}
+		$data['data'] = $getdata;
 		// echo "<pre>";print_r($tanggal);exit();
 		
 		$this->load->view('MonitoringPicklist/PPIC/V_TblSudahPPIC', $data);
