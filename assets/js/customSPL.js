@@ -604,6 +604,7 @@ $(function () {
 				success: (data) => {
 					if (data.length) {
 						let send = JSON.parse(data);
+						table.clear().draw();
 						table.rows.add(send);
 						table.draw();
 					} else {
