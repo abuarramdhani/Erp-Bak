@@ -19,7 +19,7 @@ class M_pickgudang extends CI_Model
         // return $sql;
 	}
 	
-	public function getdataBelum($sub, $tgl) {
+	public function getdataBelum($sub, $tgl1, $tgl2) {
         $oracle = $this->load->database('oracle', true);
         $sql = "select distinct
 					msib_produk.SEGMENT1 produk
@@ -71,6 +71,7 @@ class M_pickgudang extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+			and wdj.STATUS_TYPE not in (5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -82,13 +83,13 @@ class M_pickgudang extends CI_Model
 			and kpa.PROCESS = 2 -- fabrikasi
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
-			and to_char(we.CREATION_DATE,'DD/MM/YYYY') = '$tgl' ";
+			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY') ";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
 	}
 	
-	public function getdataSudah($sub, $tgl) {
+	public function getdataSudah($sub, $tgl1, $tgl2) {
         $oracle = $this->load->database('oracle', true);
         $sql = "select distinct
 					msib_produk.SEGMENT1 produk
@@ -140,6 +141,7 @@ class M_pickgudang extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+			and wdj.STATUS_TYPE not in (5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -151,7 +153,7 @@ class M_pickgudang extends CI_Model
 			and kpa.PROCESS = 3 -- gudang
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
-			and to_char(we.CREATION_DATE,'DD/MM/YYYY') = '$tgl'";
+			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
@@ -190,6 +192,24 @@ class M_pickgudang extends CI_Model
 		$sql = "delete from khs_picklist_approved where picklist = '$picklist' and job_number = '$nojob' and process = 3";
 		$query = $oracle->query($sql);
 		$query = $oracle->query('commit');
+	}
+
+	public function cekapprove2($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_picklist_approved where job_number = '$nojob' and process = 3";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cekdeliver($picklist){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select sum(mtrl.QUANTITY_DELIVERED) deliver
+		from mtl_txn_request_headers mtrh,
+		mtl_txn_request_lines mtrl
+		where mtrh.HEADER_ID = mtrl.HEADER_ID
+		and mtrh.REQUEST_NUMBER = '$picklist'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
 	}
 
 }

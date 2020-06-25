@@ -58,9 +58,15 @@ class C_BelumGudang extends CI_Controller
 
 	function searchData(){
 		$subinv 	= $this->input->post('subinv');
-		$tanggal 	= $this->input->post('tanggal');
+		$tanggal1 	= $this->input->post('tanggal1');
+		$tanggal2 	= $this->input->post('tanggal2');
 
-		$data['data'] = $this->M_pickgudang->getdataBelum($subinv, $tanggal);
+		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2);
+		foreach ($getdata as $key => $get) {
+			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
+			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
+		}
+		$data['data'] = $getdata;
 		
 		$this->load->view('MonitoringPicklist/GUDANG/V_TblBelumGudang', $data);
 	}
@@ -68,11 +74,14 @@ class C_BelumGudang extends CI_Controller
 	function modalData(){
 		$nojob 	= $this->input->post('nojob');
 		$picklist 	= $this->input->post('picklist');
+		$deliver 	= $this->input->post('deliver');
 		$cekapp = $this->M_pickgudang->cekapp($nojob, $picklist);
-		if (!empty($cekapp)) {
+		if (!empty($cekapp) || $deliver != '') {
 			$btn = 'disabled';
+			$warna = '';
 		}else {
 			$btn = '';
+			$warna = 'btn-danger';
 		}
 
 		$getdata = $this->M_pickgudang->getdetail($picklist);
@@ -109,7 +118,7 @@ class C_BelumGudang extends CI_Controller
 				<span>Picklist sudah melakukan allocate, jadi sudah pasti bisa di-transact.</span>
 				<div class="panel-body">
 					<div class="col-md-12 text-center">
-						<button type="button" class="btn btn-danger" '.$btn.' onclick="approveGudang(this)">Approve</button>
+						<button type="button" class="btn '.$warna.'" '.$btn.' onclick="approveGudang(this)">Approve</button>
 					</div>
 				</div>
 				';
@@ -122,6 +131,24 @@ class C_BelumGudang extends CI_Controller
 		$nojob = $this->input->post('nojob');
 		$user = $this->session->user;
 		$this->M_pickgudang->approveData($picklist, $nojob, $user);
+	}
+
+	function approveData2(){
+		$nojob 		= $this->input->post('nojob');
+		$picklist 	= $this->input->post('picklist');
+		$cek 		= $this->input->post('cek');
+		$user 		= $this->session->user;
+		// echo "<pre>";print_r($cek);exit();
+
+		for ($i=0; $i < count($nojob); $i++) { 
+			if ($cek[$i] == 'uncek') {
+				$cek2 = $this->M_pickgudang->cekapprove2($nojob[$i]);
+				if (empty($cek2)) {
+					$this->M_pickgudang->approveData($picklist[$i], $nojob[$i], $user);
+				}
+			}
+		}
+
 	}
 
 
