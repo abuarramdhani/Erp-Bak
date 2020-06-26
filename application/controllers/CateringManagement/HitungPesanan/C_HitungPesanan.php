@@ -266,6 +266,13 @@ class C_HitungPesanan extends CI_Controller
     $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasi($tanggal,$lokasi);
     // echo "<pre>";print_r($dataAbsenShift);exit();
     $data = array();
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
+
     foreach ($dataAbsenShift as $pesanan) {
       $jumlahPesananAwal = $pesanan['jumlah'];
       $tempatMakan = $pesanan['tempat_makan'];
@@ -375,6 +382,13 @@ class C_HitungPesanan extends CI_Controller
       $this->M_hitungpesanan->insertPesananCatering($dataInsert);
     }
 
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
+
     // Rencana lembur yang belum ada absen di tempat makan
     $rencanaLembur = $this->M_hitungpesanan->getRencanaLemburShiftSatuNonAbsensiByTanggalLokasi($tanggal,$lokasi);
     if (!empty($rencanaLembur)) {
@@ -404,6 +418,13 @@ class C_HitungPesanan extends CI_Controller
       }
       $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
     }
+
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
 
     // Pesanan Tambahan Yang Tidak ada Absennya 
     $pesananTambahanNonAbsensi = $this->M_hitungpesanan->getPesananTambahanNonAbsensiByTanggalShiftLokasi($tanggal,$shift,$lokasi);
@@ -446,6 +467,13 @@ class C_HitungPesanan extends CI_Controller
     $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi);
      // echo "<pre>";print_r($dataAbsenShift);exit();
     $data = array();
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
+
     foreach ($dataAbsenShift as $pesanan) {
       $jumlahPesananAwal = $pesanan['jumlah'];
       $tempatMakan = $pesanan['tempat_makan'];
@@ -558,6 +586,12 @@ class C_HitungPesanan extends CI_Controller
       $this->M_hitungpesanan->insertPesananCatering($dataInsert);
     }
 
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
 
     // Rencana lembur yang belum ada absen di tempat makan
     $rencanaLembur = $this->M_hitungpesanan->getRencanaLemburShiftDuaNonAbsensiByTanggalLokasi($tanggal,$lokasi);
@@ -588,6 +622,13 @@ class C_HitungPesanan extends CI_Controller
       }
       $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
     }
+
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
 
      // Pesanan Tambahan Yang Tidak ada Absennya 
     $pesananTambahanNonAbsensi = $this->M_hitungpesanan->getPesananTambahanNonAbsensiByTanggalShiftLokasi($tanggal,$shift,$lokasi);
@@ -629,6 +670,13 @@ class C_HitungPesanan extends CI_Controller
     $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi);
      // echo "<pre>";print_r($dataAbsenShift);exit();
     $data = array();
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
+
     foreach ($dataAbsenShift as $pesanan) {
       $jumlahPesananAwal = $pesanan['jumlah'];
       $tempatMakan = $pesanan['tempat_makan'];
@@ -740,6 +788,13 @@ class C_HitungPesanan extends CI_Controller
       $this->M_hitungpesanan->insertPesananCatering($dataInsert);
     }
 
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
+
      // Rencana lembur yang belum ada absen di tempat makan
     $rencanaLembur = $this->M_hitungpesanan->getRencanaLemburShiftTigaNonAbsensiByTanggalLokasi($tanggal,$lokasi);
     if (!empty($rencanaLembur)) {
@@ -769,6 +824,13 @@ class C_HitungPesanan extends CI_Controller
       }
       $this->M_hitungpesanan->updatePesananTambahanTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
     }
+
+    $jumlahPesananAwal = 0;
+    $jumlahPesananStaff = 0;
+    $jumlahPesananNonStaff = 0;
+    $jumlahPesananTambahan = 0;
+    $jumlahPesananPengurangan = 0;
+    $jumlahPesananTotal = 0;
 
      // Pesanan Tambahan Yang Tidak ada Absennya 
     $pesananTambahanNonAbsensi = $this->M_hitungpesanan->getPesananTambahanNonAbsensiByTanggalShiftLokasi($tanggal,$shift,$lokasi);
