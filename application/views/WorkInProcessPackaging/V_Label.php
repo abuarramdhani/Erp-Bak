@@ -22,13 +22,13 @@
                   <table class="table table-striped table-bordered table-hover text-left line1wipp tblwiip" style="font-size:11px;">
                     <thead>
                       <tr class="bg-info">
-                        <th style="width:25%">
+                        <th style="width:26%">
                           <center>JOB</center>
                         </th>
                         <th style="width:25%">
                           <center>ITEM</center>
                         </th>
-                        <th style="width:15%">
+                        <th style="width:17%">
                           <center>QTY</center>
                         </th>
                         <th style="width:15%">

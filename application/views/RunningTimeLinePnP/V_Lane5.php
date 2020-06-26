@@ -50,7 +50,7 @@
                         <td class="text-center"><?php echo $l5['kode_item'] ?></td>
                         <td><center><?php echo $l5['nama_komponen'] ?></center></td>
                         <td><center><?php echo $l5['qty'] ?></center></td>
-                        <td><center><?php echo $l5['target_pe'] ?></center></td>
+                        <td><center><?php echo round($l5['qty']*$l5['target_pe'], 3) ?></center></td>
                         <td><center>
                           <button type="button" style="margin-top: 29px;border-radius: 50px;" class="btn bg-maroon btn-xs btn-flat " onclick="detail_rtlp('<?php echo $l5['kode_item'] ?>', '<?php echo $key+1 ?>')" name="button"><i class="fa fa-eye"></i></button>
                         </center></td>

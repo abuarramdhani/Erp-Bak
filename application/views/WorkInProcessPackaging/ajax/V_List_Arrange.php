@@ -24,21 +24,23 @@
           <center>SCHEDULED START DATE </center>
         </th>
         <th>
-          <center>TARGET PE </center>
+          <center>TARGET PPIC </center>
         </th>
         <th>
           <center>ACTION </center>
         </th>
+        <th hidden></th>
+        <th hidden></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="tambahisilistjobyangadadiarrange">
       <?php foreach ($get as $key => $g): ?>
-        <tr>
+        <tr class="id-list-arrange-<?php echo $g['id'] ?>">
           <td>
             <center><?php echo $key+1 ?></center>
           </td>
           <td>
-            <center><?php echo $g['no_job'] ?></center>
+            <center class="nojob"><?php echo $g['no_job'] ?></center>
           </td>
           <td>
             <center><?php echo $g['kode_item'] ?></center>
@@ -60,13 +62,16 @@
             <?php
               $h = $g['waktu_satu_shift']/($g['qty']/$g['usage_rate']);
               // !empty($g['target_pe_split']) ? $pe = $g['target_pe_split'] :
-              $pe = $h;
+              $pe = $h*$g['qty'];
               echo $pe.'%';
             ?></center>
           </td>
           <td>
             <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('<?php echo $g['no_job'] ?>', '<?php !empty($g['qty_parrent']) ? $qt = $g['qty_parrent'] : $qt = $g['qty']; echo $qt ?>', '<?php echo $g['kode_item'] ?>', '<?php echo $g['nama_item'] ?>', '<?php echo $h ?>', '<?php echo $g['usage_rate'] ?>', '<?php echo $g['waktu_satu_shift'] ?>', '<?php echo $g['date_target'] ?>', '<?php echo $g['create_at'] ?>', '<?php echo $g['qty_parrent'] ?>')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+            <input type="hidden" id="id_job_list" value="<?php echo $g['id'] ?>">
           </td>
+          <td hidden><center><?php echo $g['id'] ?></center></td>
+          <td hidden><center><?php echo $h ?></center></td>
         </tr>
       <?php endforeach; ?>
 

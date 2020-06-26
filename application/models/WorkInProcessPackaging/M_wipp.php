@@ -10,6 +10,11 @@ class M_wipp extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
+  public function cek_job_id($id)
+  {
+    $res = $this->db->where('id', $id)->get('wip_pnp.job_list')->result_array();
+    return $res;
+  }
 
   public function minMax($value)
   {
@@ -185,10 +190,12 @@ class M_wipp extends CI_Model
       $this->db->delete('wip_pnp.job_list', ['kode_item' => $id]);
     }
 
-    public function getPhoto()
+    public function getPhoto($p)
     {
         $response = $this->db->distinct()
-                             ->select('kode_item, nama_item, photo, id')->where('photo !=', null)
+                             ->select('kode_item, nama_item, photo, id')
+                             ->where('photo !=', null)
+                             ->where('type', $p)
                              ->get('wip_pnp.item_photo')
                              ->result_array();
         return $response;
@@ -206,17 +213,23 @@ class M_wipp extends CI_Model
 
     public function insertPhoto($data)
     {
-        $cek = $this->db->select('kode_item')->where('kode_item', $data['kode_item'])->get('wip_pnp.item_photo')->row();
-        if (!empty($cek->kode_item)) {
-          $this->db->where('kode_item', $data['kode_item'])->update('wip_pnp.item_photo', $data);
-        }else {
-          $this->db->insert('wip_pnp.item_photo', $data);
-        }
+      $cek = $this->db->select('kode_item')
+                      ->where('kode_item', $data['kode_item'])
+                      ->where('type', $data['type'])
+                      ->get('wip_pnp.item_photo')
+                      ->row();
+      if (!empty($cek->kode_item)) {
+
+        $this->db->where('kode_item', $data['kode_item'])->update('wip_pnp.item_photo', $data);
+      }else {
+
+        $this->db->insert('wip_pnp.item_photo', $data);
+      }
     }
 
     public function updatePhoto($data)
     {
-        $this->db->where('id', $data['id'])->update('wip_pnp.item_photo', $data);
+      $this->db->where('id', $data['id'])->update('wip_pnp.item_photo', $data);
     }
 
     // public function getListRKH($value)

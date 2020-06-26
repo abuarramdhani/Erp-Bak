@@ -22,6 +22,7 @@
                       </div>
                       <div class="col-md-6">
                         <label for="">Nama Komponen</label>
+                        <input type="hidden" name="type_gambar" value="<?php echo $param ?>">
                         <input type="text" class="form-control" name="nama_komponen" id="nama_komponen" placeholder="Nama Komponen">
                       </div>
                     </div>
@@ -32,7 +33,7 @@
                       <div class="col-md-12">
                         <input type="file" class="form-control" name="filenyagan" placeholder="Nama Komponen" onchange="readFile(this)">
                         <br>
-                        <iframe src="../assets/img/erp.png" id="showPre" frameborder="0" class="mt-1" style="width:100%;"></iframe>
+                        <iframe src="<?php echo base_url('/assets/img/erp.png') ?>" id="showPre" frameborder="0" class="mt-1" style="width:100%;"></iframe>
                       </div>
                     </div>
                   </div>
@@ -115,6 +116,7 @@
                                                   </div>
                                                   <div class="col-md-6">
                                                     <label for="">Nama Komponen</label>
+                                                    <input type="hidden" name="type_gambar" value="<?php echo $param ?>">
                                                     <input type="text" class="form-control" name="nama_komponen" id="nama_komponen_update" placeholder="Nama Komponen" value="<?php echo $g['nama_item'] ?>">
                                                   </div>
                                                 </div>
@@ -123,9 +125,9 @@
                                                 <label for="seksi_pengirim">File</label>
                                                 <div class="row">
                                                   <div class="col-md-12">
-                                                    <input type="file" class="form-control" value="" name="filenyagan" placeholder="Nama Komponen" onchange="readFile(this)">
+                                                    <input type="file" class="form-control" value="" name="filenyagan" placeholder="Nama Komponen" onchange="readFileForEdit(this)">
                                                     <br>
-                                                    <iframe src="<?php echo base_url($g['photo']) ?>" id="showPre" frameborder="0" class="mt-1" style="width:100%;height:350px"></iframe>
+                                                    <iframe src="<?php echo base_url($g['photo']) ?>" id="showPreEdit" frameborder="0" class="mt-1" style="width:100%;height:350px"></iframe>
                                                   </div>
                                                 </div>
                                               </div>

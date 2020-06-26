@@ -20,6 +20,15 @@ const swalWIPP = (type, title) => {
 }
 // ========================do something below the alert =================
 
+const submit_type = () => {
+  const type = $('#type_proses_gambar').val();
+  if (type === '') {
+      swalWIPPToastrAlert('error', 'Pilih salah satu dari 2 tipe proses yang tersedia')
+  }else {
+    window.location.replace(baseurl + `WorkInProcessPackaging/PhotoManager/Type/${type}`);
+  }
+}
+
 const cekhover = _ => {
   const jsw = $('#jenisSaveWIIP').val()
   const date = $('#dateSaveWIIP').val()
@@ -72,25 +81,25 @@ const updateTargetPe = _ => {
         swalWIPP('success', 'Berhasil mengupdate data taget max.');
         $(`#target_pe_line${param}`).html(data_max_target);
         $('#wipp4').modal('hide');
-        $.ajax({
-          url: baseurl + 'WorkInProcessPackaging/JobManager/setArrange',
-          type: 'POST',
-          async: true,
-          data: {
-            date: d,
-          },
-          beforeSend: function() {
-            $('.lines-area').html(`<div id="loadingArea0">
-                                            <center><img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
-                                          </div>`)
-          },
-          success: function(result) {
-            $('.lines-area').html(result)
-          },
-          error: function(XMLHttpRequest, textStatus, errorThrown) {
-            console.error();
-          }
-        }).then(_ => {
+        // $.ajax({
+        //   url: baseurl + 'WorkInProcessPackaging/JobManager/setArrange',
+        //   type: 'POST',
+        //   async: true,
+        //   data: {
+        //     date: d,
+        //   },
+        //   beforeSend: function() {
+        //     $('.lines-area').html(`<div id="loadingArea0">
+        //                                     <center><img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+        //                                   </div>`)
+        //   },
+        //   success: function(result) {
+        //     $('.lines-area').html(result)
+        //   },
+        //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+        //     console.error();
+        //   }
+        // })
           $.ajax({
             url: baseurl + 'WorkInProcessPackaging/JobManager/setTarget_Pe',
             type: 'POST',
@@ -109,8 +118,9 @@ const updateTargetPe = _ => {
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.error();
             }
+          }).then(_=>{
+            arrange(wipp_cek2)
           })
-        })
 
       } else {
         swalWIPP('error', 'Terjadi Kesalahan, Coba kembali...')
@@ -185,6 +195,13 @@ function arrange(d) {
         console.error();
       }
     })
+
+    let item_selected = $('.tampungID').map((_,el) => el.value).get()
+    item_selected.forEach((val, i) =>{
+      $(`.id-list-arrange-${val}`).remove()
+    })
+
+
   })
 }
 
@@ -301,70 +318,6 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     }
     run();
 
-  // console.log(html);
-  // const nojob = $(`#job0${id}_wipp1`).val();
-  // const item = $(`#item0${id}_wipp1`).val();
-  // const item_name = $(`#item_name${id}`).val();
-  //
-  // const urs = $('#usage_rate_split'+id).val();
-  // let qty_tampung = [];
-  // let target_pe_tampung = [];
-  // let ca_tampung = [];
-  //
-  // const qty_split = $('.line0wipp'+id).find('.iminhere'+id).toArray();
-  // qty_split.forEach((v, i) => {
-  //   qty_tampung.push($(v).val());
-  // })
-  //
-  // const target_pe = $('.line0wipp'+id).find('.andhere'+id).toArray();
-  // target_pe.forEach((v, i) => {
-  //   target_pe_tampung.push($(v).val());
-  // })
-  //
-  // $.ajax({
-  //   url: baseurl + 'WorkInProcessPackaging/JobManager/SaveSplit_',
-  //   type: 'POST',
-  //   dataType: 'JSON',
-  //   async: true,
-  //   data: {
-  //     date: $('#dateSaveWIIP').val(),
-  //     wss: $('#waktuSaveWIIP').val(),
-  //     ssd: $('#ssd'+id).val(),
-  //     urs: urs,
-  //     qty_parrent: $('#qty_split_save'+id).val(),
-  //     nojob: nojob,
-  //     item: item,
-  //     item_name:item_name,
-  //     qty: qty_tampung,
-  //     target_pe: target_pe_tampung,
-  //     created_at: ''
-  //     // created_at: created_at
-  //   },
-  //   beforeSend: function() {
-  //     Swal.showLoading()
-  //   },
-  //   success: function(result) {
-  //     if (result === 1) {
-  //       Swal.mixin({
-  //         toast: true,
-  //         position: 'top-end',
-  //         showConfirmButton: false,
-  //         timer: 2900
-  //       }).fire({
-  //         customClass: 'swal-font-small',
-  //         type: 'success',
-  //         title: 'Data berhasil disimpan.'
-  //       })
-  //     }else if (result === 3) {
-  //       swalWIPPToastrAlert('error', `Gagal menyimpan data!, No job ${nojob} dengan tanggal ${$('#dateSaveWIIP').val()} telah tersimpan.`);
-  //     }else {
-  //       swalWIPPToastrAlert('error', 'Gagal menyimpan data!, harap isi form waktu shift dan tanggal dengan benar.');
-  //     }
-  //   },
-  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-  //     console.error();
-  //   }
-  // })
 }
 
 // INI UNTUK MODAL
@@ -767,6 +720,8 @@ $(document).ready(function() {
     list_RKH();
   }
 
+
+
   if (wipp_cek3 == 2) {
     list_Arrage(wipp_cek2)
     $.ajax({
@@ -793,6 +748,27 @@ $(document).ready(function() {
             },
             success: function(result) {
               $('.lines-area').html(result)
+
+              $.ajax({
+                url: baseurl + 'WorkInProcessPackaging/JobManager/getTargetMaxPE',
+                type: 'POST',
+                dataType: 'JSON',
+                async: true,
+                data: {
+                  param: '',
+                },
+                success: function(result) {
+                  $('#target_pe_line1').html()==''?$('#target_pe_line1').html(result[0].target_max):'';
+                  $('#target_pe_line2').html()==''?$('#target_pe_line2').html(result[1].target_max):'';
+                  $('#target_pe_line3').html()==''?$('#target_pe_line3').html(result[2].target_max):'';
+                  $('#target_pe_line4').html()==''?$('#target_pe_line4').html(result[3].target_max):'';
+                  $('#target_pe_line5').html()==''?$('#target_pe_line5').html(result[4].target_max):'';
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                  console.error();
+                }
+              })
+
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.error();
@@ -1036,9 +1012,71 @@ const addrowlinewipp5 = _ => {
   });
 }
 
-const minus_wipp5 = n => {
+const minus_wipp5 = (n, id_job_list) => {
   $('#jobid5_'+n).remove();
   $('#job5_wipp' + n).parents('.rowbaru5_wipp').remove()
+  let total_sebelumnya = $('#total_ppic_5').html()
+
+  $.ajax({
+      url: baseurl + 'WorkInProcessPackaging/JobManager/getappendToJobList',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        id_job: id_job_list,
+      },
+      beforeSend: function() {
+        Swal.showLoading()
+      },
+      success: function(result) {
+        Swal.close()
+        let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
+        if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
+
+        $('#total_ppic_5').html(`${setelah_dikurangi.toFixed(3)}%`);
+        let n = $('.tblwiip4 tbody tr:last td:first-child center').html();
+        if (n === undefined) {n = 0}
+        let a = Number(n) + 1;
+        $('#tambahisilistjobyangadadiarrange').append(`<tr class="id-list-arrange-${id_job_list}">
+                                                        <td>
+                                                          <center>${a}</center>
+                                                        </td>
+                                                        <td>
+                                                          <center>${result[0].no_job}</center>
+                                                        </td>
+                                                        <td>
+                                                          <center>${result[0].kode_item}</center>
+                                                        </td>
+                                                        <td>
+                                                          <center>${result[0].nama_item}</center>
+                                                        </td>
+                                                        <td style="background:rgba(58, 149, 215, 0.3)">
+                                                          <center>${result[0].qty}</center>
+                                                        </td>
+                                                        <td>
+                                                          <center>${result[0].usage_rate}</center>
+                                                        </td>
+                                                        <td>
+                                                          <center>${result[0].scedule_start_date}</center>
+                                                        </td>
+                                                        <td style="background:rgba(58, 149, 215, 0.3)">
+                                                          <center>
+                                                          ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                          </center>
+                                                        </td>
+                                                        <td>
+                                                          <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
+                                                          '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                          <input type="hidden" id="id_job_list" value="${id_job_list}">
+                                                        </td>
+                                                        <td hidden><center>${id_job_list}</center></td>
+                                                        <td hidden><center>${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))}</center></td>
+                                                      </tr>`);
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
 }
 
 const addrowlinewipp4 = _ => {
@@ -1063,9 +1101,72 @@ const addrowlinewipp4 = _ => {
   });
 }
 
-const minus_wipp4 = n => {
+const minus_wipp4 = (n, id_job_list) => {
   $('#jobid4_'+n).remove();
   $('#job4_wipp' + n).parents('.rowbaru4_wipp').remove()
+  let total_sebelumnya = $('#total_ppic_4').html()
+
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/getappendToJobList',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      id_job: id_job_list,
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result) {
+      Swal.close()
+      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
+      // console.log(setelah_dikurangi);
+      // console.log(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1));
+      if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
+      $('#total_ppic_4').html(`${setelah_dikurangi.toFixed(3)}%`);
+      let n = $('.tblwiip4 tbody tr:last td:first-child center').html();
+      if (n === undefined) {n = 0}
+      let a = Number(n) + 1;
+      $('#tambahisilistjobyangadadiarrange').append(`<tr class="id-list-arrange-${id_job_list}">
+                                                      <td>
+                                                        <center>${a}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].no_job}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].kode_item}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].nama_item}</center>
+                                                      </td>
+                                                      <td style="background:rgba(58, 149, 215, 0.3)">
+                                                        <center>${result[0].qty}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].usage_rate}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].scedule_start_date}</center>
+                                                      </td>
+                                                      <td style="background:rgba(58, 149, 215, 0.3)">
+                                                        <center>
+                                                        ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                        </center>
+                                                      </td>
+                                                      <td>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <input type="hidden" id="id_job_list" value="${id_job_list}">
+                                                      </td>
+                                                      <td hidden><center>${id_job_list}</center></td>
+                                                      <td hidden><center>${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))}</center></td>
+                                                    </tr>`);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
 }
 
 
@@ -1091,9 +1192,71 @@ const addrowlinewipp3 = _ => {
   });
 }
 
-const minus_wipp3 = n => {
+const minus_wipp3 = (n, id_job_list) => {
   $('#jobid3_'+n).remove();
   $('#job3_wipp' + n).parents('.rowbaru3_wipp').remove()
+  let total_sebelumnya = $('#total_ppic_3').html()
+
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/getappendToJobList',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      id_job: id_job_list,
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result) {
+      Swal.close()
+      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
+      if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
+
+      $('#total_ppic_3').html(`${setelah_dikurangi.toFixed(3)}%`);
+      let n = $('.tblwiip4 tbody tr:last td:first-child center').html();
+      if (n === undefined) {n = 0}
+      let a = Number(n) + 1;
+      $('#tambahisilistjobyangadadiarrange').append(`<tr class="id-list-arrange-${id_job_list}">
+                                                      <td>
+                                                        <center>${a}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].no_job}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].kode_item}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].nama_item}</center>
+                                                      </td>
+                                                      <td style="background:rgba(58, 149, 215, 0.3)">
+                                                        <center>${result[0].qty}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].usage_rate}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].scedule_start_date}</center>
+                                                      </td>
+                                                      <td style="background:rgba(58, 149, 215, 0.3)">
+                                                        <center>
+                                                        ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                        </center>
+                                                      </td>
+                                                      <td>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <input type="hidden" id="id_job_list" value="${id_job_list}">
+                                                      </td>
+                                                      <td hidden><center>${id_job_list}</center></td>
+                                                      <td hidden><center>${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))}</center></td>
+                                                    </tr>`);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
 }
 
 
@@ -1119,36 +1282,281 @@ const addrowlinewipp2 = _ => {
   });
 }
 
-const minus_wipp2 = n => {
+const minus_wipp2 = (n, id_job_list) => {
   $('#jobid2_'+n).remove();
   $('#job2_wipp' + n).parents('.rowbaru2_wipp').remove()
+  let total_sebelumnya = $('#total_ppic_2').html()
+
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/getappendToJobList',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      id_job: id_job_list,
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result) {
+      Swal.close()
+
+      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
+      if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
+
+      $('#total_ppic_2').html(`${setelah_dikurangi.toFixed(3)}%`);
+
+      let n = $('.tblwiip4 tbody tr:last td:first-child center').html();
+      if (n === undefined) {n = 0}
+      let a = Number(n) + 1;
+      $('#tambahisilistjobyangadadiarrange').append(`<tr class="id-list-arrange-${id_job_list}">
+                                                      <td>
+                                                        <center>${a}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].no_job}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].kode_item}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].nama_item}</center>
+                                                      </td>
+                                                      <td style="background:rgba(58, 149, 215, 0.3)">
+                                                        <center>${result[0].qty}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].usage_rate}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].scedule_start_date}</center>
+                                                      </td>
+                                                      <td style="background:rgba(58, 149, 215, 0.3)">
+                                                        <center>
+                                                        ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                        </center>
+                                                      </td>
+                                                      <td>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <input type="hidden" id="id_job_list" value="${id_job_list}">
+                                                      </td>
+                                                      <td hidden><center>${id_job_list}</center></td>
+                                                      <td hidden><center>${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))}</center></td>
+                                                    </tr>`);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
 }
 
-const addrowlinewipp = _ => {
+const addLaneArrange = (line, target_pe, no, id) =>{
+  let target_pe_max = $('#target_pe_line'+line).html();
+  // let item_selected = $('.item-selected-arrange-'+no).html();
+  let item_selected = Array.prototype.map.call(document.querySelectorAll(`.item-selected-arrange-${no} td center`), function(td) {
+      return td.innerHTML;
+    });
+  // console.log(item_selected);
+  let tampung_pe = $('.tampung_pe_'+line).map((_,el) => el.value).get();
+  tampungan = 0;
+  tampung_pe.forEach((val, i) =>{
+    tampungan += Number(val);
+  })
 
-  let n = $('.line1wipp tbody tr').length;
-  let a = n + 1;
-  $('#tambahisiwipp').append(`<tr class="rowbaru_wipp" id="wipprow${n}">
-                          <td>
-                            <center>
-                              <select class="form-control select2wipp" id="job_wipp${a}" name="job[]" style="width:100%" required>
-                                <option value="">Komponen Kode</option>
-                              </select>
-                            </center>
-                          </td>
-                          <td><center><input type="text" class="form-control" name="item[]" id="item_wipp${a}" placeholder="ITEM"></center></td>
-                          <td><center><input type="number" class="form-control" name="qty[]" id="qty_wipp${a}" placeholder="QTY"></center></td>
-                          <td><center><input type="number" class="form-control" name="target[]" id="target_pe${a}" placeholder="20%"></center></td>
-                          <td><center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp(${a})" style="border-radius:10px;"name="button"><i class="fa fa-minus-square"></i></button></center></td>
-                        </tr>`);
-  $('.line1wipp tbody tr[id="wipprow' + n + '"] .select2wipp').select2({
-    placeholder: "Item Kode",
+  let count_to_cek = Number(tampungan) + Number(target_pe);
+
+  // update count PPIC
+  let total_sebelumnya = $('#total_ppic_'+line).html()
+  let total_ppic_setelah_ditambahkan = Number(item_selected[7].trim().substring(0, item_selected[7].trim().length - 1))+Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1));
+  $('#total_ppic_'+line).html(`${total_ppic_setelah_ditambahkan.toFixed(3)}%`);
+  console.log(Number(item_selected[7].trim().substring(0, item_selected[7].trim().length - 1)));
+  // console.log(target_pe_max);
+
+  if (count_to_cek > target_pe_max) {
+    swalWIPP('warning', `Jumlah Target PE (${count_to_cek.toFixed(5)}) > Target PE Max (${target_pe_max})`)
+  }else {
+    let n = $(`.line${line}wipp tbody tr`).length;
+    let a = n + 1;
+    $(`#tambahisiwipp${line}`).append(`<tr class="rowbaru${line}_wipp" id="wipp${line}row1">
+                                        <td>
+                                          <center>
+                                            <input type="text" class="form-control" id="job${line}_wipp${a}" name="job${line}[]" value="${item_selected[1]}" readonly>
+                                          </center>
+                                        </td>
+                                        <td><center><input type="text" class="form-control" value="${item_selected[2]}" name="item${line}[]" id="item${line}_wipp${a}" readonly placeholder="ITEM"></center></td>
+                                        <td><center><input type="number" class="form-control" value="${item_selected[4]}" name="qty${line}[]" id="qty${line}_wipp${a}" readonly placeholder="QTY"></center></td>
+                                        <td>
+                                         <center>
+                                         <input type="text" class="form-control" value="${item_selected[7].trim().substring(0, item_selected[7].trim().length - 1)}" placeholder="50%" readonly>
+                                         <input type="hidden" class="form-control tampung_pe_${line}" name="target${line}[]" value="${target_pe}" id="target${line}_pe${a}" placeholder="50%">
+                                         </center>
+                                        </td>
+                                        <td><center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp${line}(${a}, ${id})" style="border-radius:10px;"name="button"><i class="fa fa-minus-square"></i></button></center></td>
+                                      </tr>
+                                      <input type="hidden" name="id_job_list${line}[]" id="jobid${line}_${a}" value="${id}">
+                                      `);
+    $('.item-selected-arrange-'+item_selected[0]).remove()
+    $('.id-list-arrange-'+id).remove()
+
+  }
+
+}
+
+const addrowlinewipp = (cek, line) => {
+  $('.areaplusitem').html('');
+  $('#ini-line').html(line);
+  if (cek === 0) {
+    $('#infoAddItem').html('Ada Dos')
+  }else {
+    $('#infoAddItem').html('Tidak Ada Dos')
+  }
+  let get = $('.nojob').html();
+  let tableInfo = Array.prototype.map.call(document.querySelectorAll('#tambahisilistjobyangadadiarrange tr'), function(tr) {
+    return Array.prototype.map.call(tr.querySelectorAll('td center'), function(td) {
+      return td.innerHTML;
+    });
   });
+  let tampung
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/bedaindosNbukandos',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      data: tableInfo,
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result) {
+      Swal.close()
+      if (cek === 0) {
+        tampung = result.adados;
+      }else if (cek === 1) {
+        tampung = result.gaadados;
+      }
+      if (tampung == '') {
+        $('.areaplusitem').html('<tr><td colspan="9"><center>Data is empty.</center></td></tr>')
+      }
+      console.log(tampung);
+      tampung.forEach((val, i) =>{
+        $('.areaplusitem').append(`<tr class="item-selected-arrange-${i+1}">
+                                    <td>
+                                      <center>${i+1}</center>
+                                    </td>
+                                    <td>
+                                      <center>${val[1]}</center>
+                                    </td>
+                                    <td>
+                                      <center>${val[2]}</center>
+                                    </td>
+                                    <td>
+                                      <center>${val[3]}</center>
+                                    </td>
+                                    <td style="background:rgba(58, 149, 215, 0.3)">
+                                      <center>${val[4]}</center>
+                                    </td>
+                                    <td>
+                                      <center>${val[5]}</center>
+                                    </td>
+                                    <td>
+                                      <center>${val[6]}</center>
+                                    </td>
+                                    <td style="background:rgba(58, 149, 215, 0.3)">
+                                      <center>
+                                      ${val[7]}
+                                      </center>
+                                    </td>
+                                    <td>
+                                      <center><button type="button" onclick="addLaneArrange(${line}, ${val[10]}, ${i+1}, ${val[9]})" class="btn btn-md bg-navy" name="button"><i class="fa fa-mail-forward"></i> <b>ADD</b></button></center>
+                                    </td>
+                                    <td hidden>${val[9]}</td>
+                                  </tr>`);
+      })
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      // swalWIPP('error', 'Data kosong, data tidak ditemukan di detail bom.');
+      Swal.close()
+      console.error();
+    }
+  })
+
+
 }
 
-const minus_wipp = n => {
+const minus_wipp1 = (n, id_job_list) => {
   $('#jobid1_'+n).remove();
-  $('#job_wipp' + n).parents('.rowbaru_wipp').remove()
+  $('#job1_wipp' +n).parents('.rowbaru1_wipp').remove()
+
+  let total_sebelumnya = $('#total_ppic_1').html()
+
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/getappendToJobList',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      id_job: id_job_list,
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result) {
+      Swal.close()
+
+      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty);
+      if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
+
+      // console.log(Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)));
+      // console.log(Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty));
+      // console.log(setelah_dikurangi);
+
+      $('#total_ppic_1').html(`${setelah_dikurangi.toFixed(3)}%`);
+
+      let n = $('.tblwiip4 tbody tr:last td:first-child center').html();
+      if (n === undefined) {n = 0}
+      let a = Number(n) + 1;
+      $('#tambahisilistjobyangadadiarrange').append(`<tr class="id-list-arrange-${id_job_list}">
+                                                      <td>
+                                                        <center>${a}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center class="nojob">${result[0].no_job}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].kode_item}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].nama_item}</center>
+                                                      </td>
+                                                      <td style="background:rgba(58, 149, 215, 0.3)">
+                                                        <center>${result[0].qty}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].usage_rate}</center>
+                                                      </td>
+                                                      <td>
+                                                        <center>${result[0].scedule_start_date}</center>
+                                                      </td>
+                                                      <td style="background:rgba(58, 149, 215, 0.3)">
+                                                        <center>
+                                                        ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                        </center>
+                                                      </td>
+                                                      <td>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <input type="hidden" id="id_job_list" value="${id_job_list}">
+                                                      </td>
+                                                      <td hidden><center>${id_job_list}</center></td>
+                                                      <td hidden><center>${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))}</center></td>
+                                                    </tr>`);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
 }
 
 $('.tblwiip').DataTable({
@@ -1157,10 +1565,24 @@ $('.tblwiip').DataTable({
 
 const readFile = input => {
   if (input.files && input.files[0]) {
-    var reader = new FileReader();
+    let reader = new FileReader();
 
     reader.onload = function(e) {
       $('#showPre')
+        .attr('src', e.target.result)
+        .height(350);
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+const readFileForEdit = input =>{
+  if (input.files && input.files[0]) {
+    let reader = new FileReader();
+
+    reader.onload = function(e) {
+      console.log(e.target.result);
+      $('#showPreEdit')
         .attr('src', e.target.result)
         .height(350);
     };
@@ -1202,3 +1624,71 @@ $('.txtWIIPdate').datepicker({
 //     console.error();
 //   }
 // })
+
+
+// saveSplit_
+
+  // console.log(html);
+  // const nojob = $(`#job0${id}_wipp1`).val();
+  // const item = $(`#item0${id}_wipp1`).val();
+  // const item_name = $(`#item_name${id}`).val();
+  //
+  // const urs = $('#usage_rate_split'+id).val();
+  // let qty_tampung = [];
+  // let target_pe_tampung = [];
+  // let ca_tampung = [];
+  //
+  // const qty_split = $('.line0wipp'+id).find('.iminhere'+id).toArray();
+  // qty_split.forEach((v, i) => {
+  //   qty_tampung.push($(v).val());
+  // })
+  //
+  // const target_pe = $('.line0wipp'+id).find('.andhere'+id).toArray();
+  // target_pe.forEach((v, i) => {
+  //   target_pe_tampung.push($(v).val());
+  // })
+  //
+  // $.ajax({
+  //   url: baseurl + 'WorkInProcessPackaging/JobManager/SaveSplit_',
+  //   type: 'POST',
+  //   dataType: 'JSON',
+  //   async: true,
+  //   data: {
+  //     date: $('#dateSaveWIIP').val(),
+  //     wss: $('#waktuSaveWIIP').val(),
+  //     ssd: $('#ssd'+id).val(),
+  //     urs: urs,
+  //     qty_parrent: $('#qty_split_save'+id).val(),
+  //     nojob: nojob,
+  //     item: item,
+  //     item_name:item_name,
+  //     qty: qty_tampung,
+  //     target_pe: target_pe_tampung,
+  //     created_at: ''
+  //     // created_at: created_at
+  //   },
+  //   beforeSend: function() {
+  //     Swal.showLoading()
+  //   },
+  //   success: function(result) {
+  //     if (result === 1) {
+  //       Swal.mixin({
+  //         toast: true,
+  //         position: 'top-end',
+  //         showConfirmButton: false,
+  //         timer: 2900
+  //       }).fire({
+  //         customClass: 'swal-font-small',
+  //         type: 'success',
+  //         title: 'Data berhasil disimpan.'
+  //       })
+  //     }else if (result === 3) {
+  //       swalWIPPToastrAlert('error', `Gagal menyimpan data!, No job ${nojob} dengan tanggal ${$('#dateSaveWIIP').val()} telah tersimpan.`);
+  //     }else {
+  //       swalWIPPToastrAlert('error', 'Gagal menyimpan data!, harap isi form waktu shift dan tanggal dengan benar.');
+  //     }
+  //   },
+  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //     console.error();
+  //   }
+  // })

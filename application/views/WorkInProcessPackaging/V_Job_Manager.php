@@ -1,3 +1,23 @@
+<style media="screen">
+.modal {
+text-align: center;
+padding: 0!important;
+}
+
+.modal:before {
+content: '';
+display: inline-block;
+height: 100%;
+vertical-align: middle;
+margin-right: -4px; /* Adjusts for spacing */
+}
+
+.modal-dialog {
+display: inline-block;
+text-align: left;
+vertical-align: middle;
+}
+</style>
 <input type="hidden" class="wipp" value="1">
 <div class="content">
   <div class="row">

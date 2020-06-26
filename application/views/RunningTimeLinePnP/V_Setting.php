@@ -29,7 +29,7 @@
 												<th class="text-center">Kode</th>
 												<th class="text-center">Nama Barang</th>
 												<th class="text-center">QTY</th>
-												<th class="text-center">Target PE</th>
+												<th class="text-center">Target PPIC</th>
 												<th class="text-center">Ket</th>
 												<th class="text-center">Waktu</th>
                       </tr>
@@ -44,7 +44,7 @@
                         <td><center><?php echo $l1['kode_item'] ?></center></td>
                         <td><center><?php echo $l1['nama_komponen'] ?></center></td>
                         <td><center><?php echo $l1['qty'] ?></center></td>
-                        <td><center><?php echo $l1['target_pe'] ?>%</center></td>
+                        <td><center><?php echo round($l1['qty']*$l1['target_pe'], 3) ?>%</center></td>
                         <td><center>
                           <button type="button" style="margin-top: 29px;border-radius: 50px;" class="btn bg-maroon btn-xs btn-flat " onclick="detail_rtlp('<?php echo $l1['kode_item'] ?>', '<?php echo $key+1 ?>')" name="button"><i class="fa fa-eye"></i></button>
                         </center></td>
@@ -84,7 +84,7 @@
                         <th class="text-center">Kode</th>
                         <th class="text-center">Nama Barang</th>
                         <th class="text-center">QTY</th>
-                        <th class="text-center">Target PE</th>
+                        <th class="text-center">Target PPIC</th>
                         <th class="text-center">Ket</th>
                         <th class="text-center">Waktu</th>
                       </tr>
@@ -99,7 +99,7 @@
                         <td><center><?php echo $l2['kode_item'] ?></center></td>
                         <td><center><?php echo $l2['nama_komponen'] ?></center></td>
                         <td class="text-center"><?php echo $l2['qty'] ?></td>
-                        <td><center><?php echo $l2['target_pe'] ?>%</center></td>
+                        <td><center><?php echo round($l2['qty']*$l2['target_pe'], 3) ?>%</center></td>
                         <td><center>
                           <button type="button" style="margin-top: 29px;border-radius: 50px;" class="btn bg-maroon btn-xs btn-flat " onclick="detail_rtlp('<?php echo $l2['kode_item'] ?>', '<?php echo $key+1 ?>')" name="button"><i class="fa fa-eye"></i></button>
                         </center></td>
