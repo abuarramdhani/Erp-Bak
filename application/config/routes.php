@@ -4471,3 +4471,9 @@ $route['pengembalian-apd/pekerja/(:any)/(:any)']		= 'PengembalianAPD/C_PekerjaAp
 $route['pengembalian-apd/hubker']						= 'PengembalianAPD/C_HubkerApd/hubker';
 $route['pengembalian-apd/hubker/(:any)']				= 'PengembalianAPD/C_HubkerApd/$1';
 $route['pengembalian-apd/hubker/(:any)/(:any)']			= 'PengembalianAPD/C_HubkerApd/$1/$2';
+
+// ------------------------------------------------- Jembatan Timbang ---------------------------------------------//
+$route['JembatanTimbang'] 											= 'JembatanTimbang/C_Index';
+$route['JembatanTimbang/Cetak/(:any)'] 					= 'JembatanTimbang/C_Index/$1';
+$route['JembatanTimbang/Cetak/(:any)/(:any)'] 	= 'JembatanTimbang/C_Index/$1/$2';
+$route['JembatanTimbang/Cetak'] 								= 'JembatanTimbang/C_Index/Cetak';
