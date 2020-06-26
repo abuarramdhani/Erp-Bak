@@ -2353,7 +2353,7 @@ $(document).ready(function(){
 			$('#CateringHitungLoading').show();
 			$.ajax({
 				method: 'POST',
-				url: baseurl + '/CateringManagement/HitungPesanan/cekPesanan',
+				url: baseurl + 'CateringManagement/HitungPesanan/cekPesanan',
 				data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
 				error: function(xhr,status,error){
 					$('#CateringHitungLoading').hide();
@@ -2497,7 +2497,7 @@ function getFingerCatering(){
 
 	// $.ajax({
 	// 	method: 'POST',
-	// 	url: baseurl + '/CateringManagement/HitungPesanan/getFinger',
+	// 	url: baseurl + 'CateringManagement/HitungPesanan/getFinger',
 	// 	data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
 	// 	error: function(xhr,status,error){
 	// 		$('#CateringHitungLoading').hide();
@@ -2622,7 +2622,7 @@ $(document).ready(function(){
 						$('#CateringHitungPesananLihatTabel').html(obj['table']);						
 						$('#CateringHitungPesananLihatJumlah').html(obj['katering']);	
 					}else{
-						window.location.href = baseurl+'/CateringManagement/HitungPesanan';
+						window.location.href = baseurl+'CateringManagement/HitungPesanan';
 					}
 				}
 			})			
@@ -2660,7 +2660,7 @@ $(document).ready(function(){
 						$('#CateringHitungPesananLihatTabel').html(obj['table']);						
 						$('#CateringHitungPesananLihatJumlah').html(obj['katering']);	
 					}else{
-						window.location.href = baseurl+'/CateringManagement/HitungPesanan';
+						window.location.href = baseurl+'CateringManagement/HitungPesanan';
 					}
 				}
 			})
@@ -2711,7 +2711,7 @@ $(document).ready(function(){
 		if (tanggal) {
 			$.ajax({
 				method: 'POST',
-				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				url: baseurl + 'CateringManagement/HitungPesanan/simpanHistory',
 				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
 				error: function(xhr,status,error){
 					swal.fire({
@@ -2747,7 +2747,7 @@ $(document).ready(function(){
 		if (tanggal) {
 			$.ajax({
 				method: 'POST',
-				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				url: baseurl + 'CateringManagement/HitungPesanan/simpanHistory',
 				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
 				error: function(xhr,status,error){
 					swal.fire({
@@ -2784,7 +2784,7 @@ $(document).ready(function(){
 		if (tanggal) {
 			$.ajax({
 				method: 'POST',
-				url: baseurl + '/CateringManagement/HitungPesanan/simpanHistory',
+				url: baseurl + 'CateringManagement/HitungPesanan/simpanHistory',
 				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: '0'},
 				error: function(xhr,status,error){
 					swal.fire({
