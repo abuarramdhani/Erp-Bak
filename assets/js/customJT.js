@@ -17,7 +17,7 @@ function getDataTicketJTI() {
 
   event.preventDefault();
   $.ajax({
-    url: 'http://192.168.168.196/api-jti-master/out/report',
+    url: 'http://produksi.quick.com/api-jti/out/report',
     type: 'POST',
     async: true,
     dataType: 'json',
@@ -41,7 +41,7 @@ function getDataTicketJTI() {
         $('#nothing').show();
       }
       console.log(result);
-      $('#photo').attr('src', 'http://192.168.168.196/api-jti-master/' + result['driver'].photo);
+      $('#photo').attr('src', 'http://produksi.quick.com/api-jti/' + result['driver'].photo);
 
       $('#no_id').val(result['ticket'].id);
       $('#nama').val(result['driver'].name);
@@ -104,7 +104,7 @@ function SubmitMasterTimbangan() { //rev
       method: 'POST',
       async: false,
       dataType: 'json',
-      url: 'http://192.168.168.196/api-jti-master/out/report/history',
+      url: 'http://produksi.quick.com/api-jti/out/report/history',
       data: {
         ticket: code
       },
@@ -115,7 +115,7 @@ function SubmitMasterTimbangan() { //rev
             method: 'POST',
             async: false,
             dataType: 'json',
-            url: 'http://192.168.168.196/api-jti-master/out/report/save/' + id,
+            url: 'http://produksi.quick.com/api-jti/out/report/save/' + id,
             data: {
               noTiket: $('#noTiket').val(),
               noind: $('#noind').val(),
@@ -134,7 +134,7 @@ function SubmitMasterTimbangan() { //rev
             },
           }).then(_ => {
             setTimeout(function() {
-              window.open('http://192.168.168.196/api-jti-master/out/report/pdf/' + code);
+              window.open('http://produksi.quick.com/api-jti/out/report/pdf/' + code);
             }, 1600);
             $('#tblJMT').addClass('tblJMT');
             $('#qrcode').val('');
@@ -146,7 +146,7 @@ function SubmitMasterTimbangan() { //rev
               method: 'POST',
               async: false,
               dataType: 'json',
-              url: 'http://192.168.168.196/api-jti-master/out/report/save/' + id,
+              url: 'http://produksi.quick.com/api-jti/out/report/save/' + id,
               data: {
                 noTiket: $('#noTiket').val(),
                 noind: $('#noind').val(),
@@ -165,7 +165,7 @@ function SubmitMasterTimbangan() { //rev
               },
             }).then(_ => {
               setTimeout(function() {
-                window.open('http://192.168.168.196/api-jti-master/out/report/pdf/' + code);
+                window.open('http://produksi.quick.com/api-jti/out/report/pdf/' + code);
               }, 1600);
               $('#tblJMT').addClass('tblJMT');
               $('#qrcode').val('');
