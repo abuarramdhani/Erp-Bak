@@ -909,7 +909,7 @@ class C_HitungPesanan extends CI_Controller
               'fd_tanggal' => $tanggal,
               'fs_kd_shift' => $shift,
               'fs_nama_katering' => $katering,
-              'fn_urutan' => $i + 1,
+              'fn_urutan' => $index + 1,
               'lokasi' => $lokasi
             );
             $this->M_hitungpesanan->insertUrutanKatering($insertUrutanKatering);
