@@ -4477,3 +4477,11 @@ $route['JembatanTimbang'] 											= 'JembatanTimbang/C_Index';
 $route['JembatanTimbang/Cetak/(:any)'] 					= 'JembatanTimbang/C_Index/$1';
 $route['JembatanTimbang/Cetak/(:any)/(:any)'] 	= 'JembatanTimbang/C_Index/$1/$2';
 $route['JembatanTimbang/Cetak'] 								= 'JembatanTimbang/C_Index/Cetak';
+
+//---------------------------- JTI INPUT PEMBELIAN -----------------------------//
+$route['jtipembelian'] = 'JTIPembelian/C_Index';
+$route['jtipembelian/Input'] = 'JTIPembelian/C_Index/Input';
+$route['jtipembelian/Input/(:any)']			= 'JTIPembelian/C_Index/$1';
+$route['jtipembelian/Input/(:any)/(:any)']	= 'JTIPembelian/C_Index/$1/$2';
+$route['jtipembelian/History'] = 'JTIPembelian/C_Index/History';
+$route['jtipembelian/History/(:any)'] = 'JTIPembelian/C_Index/$1';
