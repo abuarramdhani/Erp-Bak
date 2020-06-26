@@ -230,7 +230,7 @@
 			<script src="<?= base_url('assets/js/customPPD.js'); ?>"></script>
 			<script src="<?= base_url('assets/js/customCMO.js'); ?>"></script>
 			<script src="<?= base_url('assets/js/customPAD.js'); ?>"></script>
-
+			<script src="<?= base_url('assets/js/customJT.js'); ?>"></script>
 
 
 
