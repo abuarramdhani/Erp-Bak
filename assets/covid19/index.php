@@ -526,6 +526,6 @@
 </head>
 <body>
   <div id="map"></div>
-  <div id="legend"><h3>Positif Dirawat</h3><h5>Data Update Per 2020-06-19</h5></div>
+  <div id="legend"><h3>Positif Dirawat</h3><h5>Data Update Per 2020-06-19 <br> Jateng : 2020-06-26</h5></div>
 </body>
 </html>
