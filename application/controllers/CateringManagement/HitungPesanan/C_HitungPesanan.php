@@ -905,6 +905,14 @@ class C_HitungPesanan extends CI_Controller
             $katering = $urutankatering['0']['fs_nama_katering'];
           }else{
             $katering = $urutanJadwal[$index]['fs_nama_katering'];
+             $insertUrutanKatering = array(
+              'fd_tanggal' => $tanggal,
+              'fs_kd_shift' => $shift,
+              'fs_nama_katering' => $katering,
+              'fn_urutan' => $i + 1,
+              'lokasi' => $lokasi
+            );
+            $this->M_hitungpesanan->insertUrutanKatering($insertUrutanKatering);
           }
 
 
@@ -977,6 +985,14 @@ class C_HitungPesanan extends CI_Controller
             $katering = $urutankatering['0']['fs_nama_katering'];
           }else{
             $katering = $urutanJadwal[$i]['fs_nama_katering'];
+            $insertUrutanKatering = array(
+              'fd_tanggal' => $tanggal,
+              'fs_kd_shift' => $shift,
+              'fs_nama_katering' => $katering,
+              'fn_urutan' => $i + 1,
+              'lokasi' => $lokasi
+            );
+            $this->M_hitungpesanan->insertUrutanKatering($insertUrutanKatering);
           }
 
           $pembagian[$i]['fs_nama_katering'] = $katering;
