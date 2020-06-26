@@ -170,7 +170,7 @@ class C_HitungPesanan extends CI_Controller
       }
     }
 
-    if (isset($data['statusPesanan']) && $data['statusPesanan'] == "ada") {
+    if (isset($data['statusPesanan'])) {
       $dataKatering = $this->M_hitungpesanan->getKateringByLokasi($lokasi);
       if (!empty($dataKatering)) {
         $data['jumlahKatering'] = count($dataKatering);
