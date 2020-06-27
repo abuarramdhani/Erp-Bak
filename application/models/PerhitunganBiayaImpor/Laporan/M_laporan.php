@@ -53,6 +53,12 @@ class M_laporan extends CI_Model
         $oracle->update('KHS_BIAYA_IMPOR',$localTransport);
     }
 
+    public function tambahAdditionInfo($addInfo)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $oracle->insert('KHS_BIAYA_IMPOR',$addInfo);
+    }
+
     public function updateDataBiayaSurvey($reqid,$biayaSurvey)
     {
         $oracle = $this->load->database('oracle',true);
