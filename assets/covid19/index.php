@@ -79,19 +79,22 @@
       var map;
       function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 7,
-        center: {lat: -7.333465, lng: 109.790425},
-        style: [
-          {
-            "elementType": "labels",
-            "styler": [
-              {
-                visibility: "off"
-              }
-            ]
-          }
-        ]
-          });
+              zoom: 7,
+              mapTypeControl: false,
+              fullscreenControl: false,
+              streetViewControl: false,
+              center: {lat: -7.333465, lng: 109.790425},
+              style: [
+                {
+                  "elementType": "labels",
+                  "styler": [
+                    {
+                      visibility: "off"
+                    }
+                  ]
+                }
+              ]
+            });
 
           
 
@@ -108,8 +111,8 @@
           map.controls[google.maps.ControlPosition.TOP_RIGHT].push(legend);
 
           // NOTE: This uses cross-domain XHR, and may not work on older browsers.
-          // map.data.loadGeoJson('http://192.168.8.66/khs-erp-map/assets/covid19/kabupaten.json');
-          map.data.loadGeoJson('http://erp.quick.com/assets/covid19/kabupaten.json');
+          // map.data.loadGeoJson('http://192.168.8.66/khs-erp-map2/assets/covid19/jawa.json');
+          map.data.loadGeoJson('http://erp.quick.com/assets/covid19/jawa.json');
           
           setStyle();
 
@@ -443,8 +446,8 @@
           map.data.remove(feature);
         });
         map.data.loadGeoJson(
-            // 'http://192.168.8.66/khs-erp-map/assets/covid19/kabupaten.json'
-            'http://erp.quick.com/assets/covid19/kabupaten.json'
+            // 'http://192.168.8.66/khs-erp-map2/assets/covid19/jawa.json'
+            'http://erp.quick.com/assets/covid19/jawa.json'
         );
         setStyle();
       }
@@ -526,6 +529,15 @@
 </head>
 <body>
   <div id="map"></div>
-  <div id="legend"><h3>Positif Dirawat</h3><h5>Data Update Per 2020-06-19 <br> Jateng : 2020-06-26</h5></div>
+  <div id="legend">
+    <h3>Positif Dirawat</h3>
+    <h5>
+      Data Update Per :
+      <br> 
+      *Jateng, DIY, Banten : 2020-06-26
+      <br> 
+      *Jabar,Jatim,DKI : 2020-06-19
+    </h5>
+  </div>
 </body>
 </html>
