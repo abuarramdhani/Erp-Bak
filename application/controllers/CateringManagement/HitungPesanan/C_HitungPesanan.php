@@ -141,6 +141,8 @@ class C_HitungPesanan extends CI_Controller
     $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+    $data['lokasi_kerja'] = intval($this->session->kode_lokasi_kerja);
+    
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);
     $this->load->view('CateringManagement/HitungPesanan/V_index.php',$data);
