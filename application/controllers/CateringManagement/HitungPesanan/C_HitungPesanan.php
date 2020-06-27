@@ -1350,16 +1350,16 @@ class C_HitungPesanan extends CI_Controller
         foreach ($pembagian as $bagi) {
 
           foreach ($bagi['data'] as $data) {
-            if ($nomor%5 == 1) {
+            if ($nomor%4 == 1) {
               $isi .= "<tr>";
-            }elseif ($nomor%5 == 5) {
+            }elseif ($nomor%4 == 4) {
               $isi .= "</tr>";
             }
             $isi .= "
-            <td style='width: 20%;'>
+            <td style='width: 25%;'>
               <table border='2' style='width: 100%;border: 2px solid black;'>
                 <tr>
-                  <td colspan='3' style='text-align: center;border-bottom: 2px solid black;font-weight: bold;font-size: 15pt;vertical-align: middle;height: 60px;'>
+                  <td colspan='3' style='text-align: center;border-bottom: 2px solid black;font-weight: bold;font-size: 18pt;vertical-align: middle;height: 60px;'>
                     ".$data['tempat_makan']."
                   </td>
                 </tr>
@@ -1639,9 +1639,9 @@ class C_HitungPesanan extends CI_Controller
               <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Tambah</th>
               <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Kurang</th>
               <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Jumlah Pesanan</th>
+              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 27%\">Keterangan</th>
               <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 5%\">Jumlah Dikirim</th>
               <th colspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 20%\">Tanda Tangan</th>
-              <th rowspan=\"2\" style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 27%\">Keterangan</th>
             </tr>
             <tr>
               <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">".$supplier."</th>
@@ -1775,10 +1775,10 @@ class C_HitungPesanan extends CI_Controller
               <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['tambahan']."</td>
               <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['pengurangan']."</td>
               <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">".$data_bagi['jumlah_pesan']."</td>
+              <td>".$keterangan."</td>
               <td style=\"text-align: right;padding-right: 5px;color: ".$warna."\">........</td>
               <td style=\"text-align: ".($nomor%2 == 0 ? "right" : "left").";padding-right: 5px;padding-left: 5px;color: ".$warna."\"><sup style\"font-size: 5pt;\">".$nomor."</sup>.............</td>
               <td style=\"text-align: ".($nomor%2 == 0 ? "right" : "left").";padding-right: 5px;padding-left: 5px;color: ".$warna."\"><sup style\"font-size: 5pt;\">".$nomor."</sup>.............</td>
-              <td>".$keterangan."</td>
             </tr>";
 
             $nomor++;
@@ -1786,10 +1786,10 @@ class C_HitungPesanan extends CI_Controller
           $isi .= "<tr>
             <td colspan=\"6\" style=\"text-align: right;padding-right: 5px;\">Total : </td>
             <td style=\"text-align: right;padding-right: 5px;\">".$bagi['jumlah_total']."</td>
-            <td style=\"text-align: right;padding-right: 5px;\"></td>
-            <td style=\"text-align: right;padding-right: 5px;\"></td>
-            <td style=\"text-align: right;padding-right: 5px;\"></td>
             <td style=\"text-align: right;padding-right: 5px;\">".($khusus <> 0 ? $khusus : "" )."</td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
+            <td style=\"text-align: right;padding-right: 5px;\"></td>
           </tr>
           <tr>
             <td colspan=\"6\" style=\"text-align: right;padding-right: 5px;\">Sampel : </td>
