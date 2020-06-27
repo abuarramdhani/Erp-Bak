@@ -3,7 +3,7 @@
 		<div class="user-panel" style="height:100px;">
             <div class="pull-left image">
               	<?php
-				$path_photo  		=	base_url('assets/img/photo').'/';
+				$path_photo  		=	base_url('assets/img/foto').'/';
 				$file 					= "$path_photo".$this->session->user.'.'.'jpg';
 				$file_headers 	= 	@get_headers($file);
 				if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
