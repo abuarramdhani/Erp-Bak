@@ -111,8 +111,8 @@
           map.controls[google.maps.ControlPosition.TOP_RIGHT].push(legend);
 
           // NOTE: This uses cross-domain XHR, and may not work on older browsers.
-          map.data.loadGeoJson('http://192.168.8.66/khs-erp-map2/assets/covid19/jawa.json');
-          // map.data.loadGeoJson('http://erp.quick.com/assets/covid19/jawa.json');
+          // map.data.loadGeoJson('http://192.168.8.66/khs-erp-map2/assets/covid19/jawa.json');
+          map.data.loadGeoJson('http://erp.quick.com/assets/covid19/jawa.json');
           
           setStyle();
 
@@ -446,8 +446,8 @@
           map.data.remove(feature);
         });
         map.data.loadGeoJson(
-            'http://192.168.8.66/khs-erp-map2/assets/covid19/jawa.json'
-            // 'http://erp.quick.com/assets/covid19/jawa.json'
+            // 'http://192.168.8.66/khs-erp-map2/assets/covid19/jawa.json'
+            'http://erp.quick.com/assets/covid19/jawa.json'
         );
         setStyle();
       }
