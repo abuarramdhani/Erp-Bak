@@ -13,6 +13,27 @@
 
 <body>
 <br>
+<div style="position:absolute;">
+	<br>
+	<!-- trial untuk serial -->
+	 <!-- <?php foreach ($header_sub as $key => $h) {
+		foreach ($check_header_sub as $key2 => $h2) {
+			$explode = explode(' ', $h2);
+			if ($h == $explode[0]) {
+				echo '<div style="width:250px;">';
+				echo '<br /><br /><b style="font-size:11.5px;">'."$h".'</b><br />';
+				foreach ($get_serial as $key3 => $h3) {
+					if ($h3['DESCRIPTION'] == $h2) {
+						echo '<div style="width:82px;float:left;font-size:11.5px;background: rgba(11, 143, 99, 0.49);margin-left:3px">'.$h3['SERIAL_NUMBER'].' </div>';
+					}
+				}
+				echo "</div><br><br>";
+			}
+		}
+	} ?> -->
+	<!-- trial untuk serial -->
+
+</div>
 	<table style="width:100%; border-collapse: collapse !important;page-break-inside:avoid">
 		<tr>
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;border-top: 1px solid black;width:10%;padding:5px" rowspan="2">
@@ -94,6 +115,19 @@
 		<?php $no++; } ?>
 	</table>
 </div>
+<?php $cobaaja = 'DOKUMEN # RAHASIA# MUDAH PECAH# JAUHKAN DARI JANGKAUAN ANAK ANAK' ?>
+<div style="position:absolute;">
+	<div style="margin-top:470px;margin-left:297px;">
+		<h4 style="color	:rgba(0, 0, 0, 0.5) !important">
+		<?php
+			$arr = explode("#", $get_header[0]['NOTES']); //jika mau ganti baris gunakan tanda # (pagar)
+						foreach($arr as $i) {
+							echo $i.'<br>';
+						}
+		 ?>
+	 </h4>
+	</div>
+</div>
 
 	<table style="width:100%;border-collapse: collapse !important; margin-top:-1px;page-break-inside:avoid">
 		<thead>
@@ -172,25 +206,31 @@
 			<td style="vertical-align:top;font-size:11.5px;padding:5px;border-right:1px solid black;">
 				<center>
 					<?php if (!empty($get_serial)){ ?>
-					<table style="border-collapse: collapse !important;">
+					<table style="border-collapse: collapse !important;margin-top:-30px !important">
 						<thead>
 							<tr>
-								<?php foreach ($header_sub as $h): ?>
-									<th style="padding: 5px;font-size:11.5px;"><?php echo $h ?></th>
-								<?php endforeach; ?>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<?php foreach ($check_header_sub as $h): ?>
-									<td style="padding: 5px;font-size:11.5px;">
-										<?php foreach ($get_serial as $gs) { ?>
-											<?php if ($gs['DESCRIPTION'] == $h){
-												echo $gs['SERIAL_NUMBER'].'<br />';
-											}?>
-										<?php } ?>
-									</td>
-								<?php endforeach; ?>
+								<td style="padding: 5px;margin-top:20px;font-size:11.5px;">
+									<br>
+									 <?php foreach ($header_sub as $key => $h) {
+										foreach ($check_header_sub as $key2 => $h2) {
+											$explode = explode(' ', $h2);
+											if ($h == $explode[0]) {
+												echo '<div style="width:250px;">';
+												echo '<br /><b style="font-size:11.5px;">'."$h".'</b><br>';
+												foreach ($get_serial as $key3 => $h3) {
+													if ($h3['DESCRIPTION'] == $h2) {
+														echo '<span style = "font-size:11.5px;">'.$h3['SERIAL_NUMBER'].', </span>';
+													}
+												}
+												echo "</div><br>";
+											}
+										}
+									} ?>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -204,7 +244,6 @@
 		</tr>
 		</tbody>
 	</table>
-
 	<!-- <table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
 	<tr>
 		<td rowspan="2" style="vertical-align:top;width:40.5%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
@@ -221,7 +260,7 @@
 		</td>
 		<td rowspan="3" style="vertical-align:top;width:11%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
 			Tgl. _______
-			<br><br><br><br><br><br><?php echo $get_footer['get_footer'][0]['GUDANG'] ?>
+			<br><br><br><br><br><br><?php echo $get_footer['get_footer'][0]['GUDANG']; ?>
 		</td>
 		<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
 	</tr>
