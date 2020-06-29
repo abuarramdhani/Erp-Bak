@@ -16,7 +16,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid" style="margin-bottom: 0px">
-							<div class="box-header with-header">
+							<div class="box-header with-border">
 								<div class="row">
 									<div class="col-lg-5">
 									<?php echo "Pesanan Katering <br>Tanggal : ".date("Y-m-d",strtotime($tanggal))." Shift : ".($shift == '1' ? 'Shift Satu dan Umum' : ($shift == '2' ? 'Shift Dua' : ($shift == '3' ? 'Shift Tiga' : 'Tidak Diketahui')))." Lokasi : ".($lokasi == '1' ? 'Yogyakarta' :($lokasi == '2' ? 'Tuksono' : 'Tidak Diketahui')) ?>
@@ -33,7 +33,11 @@
 							</div>
 							<div class="box-body">
 								<div class="row">
-									<div class="col-sm-9" style="height: 450px;overflow-x: scroll;">
+									<div class="col-sm-8" style="padding-right: 0px;">
+										<div class="box box-solid box-success">
+											<div class="box-body" style="height: 450px;overflow-x: scroll;">
+												<div class="row">
+													<div class="col-lg-12">
 										<?php if (isset($pembagian) and !empty($pembagian)) { 
 											?>
 											<table border="1" style="width: 100%;border-collapse: collapse;" id="CateringHitungPesananLihatTabel">
@@ -93,10 +97,14 @@
 										}else{
 											echo "<h1>Tidak Ditemukan Data</h1>";
 										} ?>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
-									<div class="col-sm-3" style="height: 450px;overflow-x: scroll;">
+									<div class="col-sm-2">
 										<div class="box box-solid box-info">
-											<div class="box-body" id="CateringHitungPesananLihatJumlah">
+											<div class="box-body" id="CateringHitungPesananLihatJumlah"  style="height: 450px;overflow-x: scroll;">
 												<?php 
 												for ($i=1; $i <= 10; $i++) { 
 													?>
@@ -114,6 +122,47 @@
 													<?php 
 												}
 												?>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-2" style="padding-left: 0px;">
+										<div class="box box-solid box-danger">
+											<div class="box-header with-border" style="height: 100px;">
+												Tempat makan hari sebelumnya yang tidak muncul di shift dan lokasi yang sama.
+											</div>
+											<div class="box-body" style="height: 350px;overflow-x: scroll;">
+												<div class="row">
+													<div class="col-lg-12">
+														<table border="1" style="border: 1px solid black;width: 100%;border-collapse: collapse;">
+															<thead>
+																<tr>
+																	<th>Tempat Makan</th>
+																	<th>Pesanan</th>
+																</tr>
+															</thead>
+															<tbody>
+																<?php 
+																if (isset($tempat_makan_kemarin) && !empty($tempat_makan_kemarin)) {
+																	foreach ($tempat_makan_kemarin as $tmk) {
+																		?>
+																		<tr>
+																			<td><?php echo $tmk['fs_tempat_makan'] ?></td>
+																			<td><?php echo $tmk['fn_jumlah_pesan'] ?></td>
+																		</tr>
+																		<?php 
+																	}
+																}else{
+																	?>
+																	<tr>
+																		<td colspan="2" style="text-align: center;"><i>Tabel Kosong</i></td>
+																	</tr>
+																	<?php
+																}
+																?>
+															</tbody>
+														</table>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
