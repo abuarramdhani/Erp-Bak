@@ -51,7 +51,7 @@
 												if (isset($data) && !empty($data)) {
 													foreach ($data as $dt) {
 														?>
-														<tr>
+														<tr style="color: <?php echo $dt['diproses'] == "Belum diproses" ? "red" : "black"; ?>">
 															<td><?php echo $dt['noind'] ?></td>
 															<td><?php echo $dt['nama'] ?></td>
 															<td><?php echo $dt['tujuan'] ?></td>

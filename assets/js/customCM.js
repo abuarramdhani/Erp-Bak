@@ -4381,8 +4381,8 @@ $(document).ready(function(){
 $(document).ready(function(){
 	var tblCMIzinDinasPTM = $('#tbl-CM-IzinDinasPTM-table').DataTable({
         "lengthMenu": [
-            [ 5, 10, 25, 50, -1 ],
-            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+            [  -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
         ],
         "dom" : 'Bfrtip',
         "buttons" : [
