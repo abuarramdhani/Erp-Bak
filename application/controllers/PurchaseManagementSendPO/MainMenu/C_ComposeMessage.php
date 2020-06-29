@@ -356,7 +356,7 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 			)
 				);
 		$mail->Username = 'purchasingsec12.quick3@gmail.com';
-		$mail->Password = 'sUppLieReM4iL';
+		$mail->Password = 'qu1cksec3';
 		$mail->WordWrap = 50;
 
         // Set email content to sent
@@ -411,7 +411,7 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 
 		// Send email
 		if (!$mail->send()) {
-			echo json_encode(null);
+			echo json_encode('Terjadi kesalahan saat mengkonfigurasi email');
 			// echo "Mailer Error: " . $mail->ErrorInfo;
 		} else {
 			echo json_encode('Message sent!');
