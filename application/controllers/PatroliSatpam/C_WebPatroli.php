@@ -562,7 +562,7 @@ class C_WebPatroli extends CI_Controller
 		// echo $data['qr'];exit();
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8',array(100,130), 7,'',5,5,5,5,0,0,'P');
+		$pdf = new mPDF('utf-8',array(100,130), 7,'',2,2,4,0,0,0,'P');
 		$pdf->curlAllowUnsafeSslRequests = true;
 		$pdf->allow_charset_conversion = true;
 		// $pdf->showImageErrors = true;
