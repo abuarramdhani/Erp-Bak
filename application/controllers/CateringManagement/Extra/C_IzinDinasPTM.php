@@ -197,9 +197,28 @@ class C_IzinDinasPTM extends CI_Controller
 			}
 		}
 
-		exit();		
+		// exit();		
 		$data_akhir = $this->M_izindinasptm->getPekerjaDinasHariIni();
 		echo json_encode($data_akhir);
+	}
+
+	public function getUserCatering(){
+		$noind = $this->session->user;
+		$data = $this->M_izindinasptm->getUserCateringByNoind($noind);
+		if (!empty($data)) {
+			echo "ya";
+		}else{
+			echo "tidak";
+		}
+	}
+
+	public function getNotifikasiIzinDinasPTM(){
+		$data = $this->M_izindinasptm->getPekerjaDinasHariIniBelumTerproses();
+		if (!empty($data)) {
+			echo count($data);
+		}else{
+			echo 0;
+		}
 	}
 
 }

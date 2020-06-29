@@ -1365,7 +1365,7 @@ class C_HitungPesanan extends CI_Controller
                   </td>
                 </tr>
                 <tr>
-                  <td rowspan='4' style='text-align: center;font-weight: bold;font-size: 40pt;width: 220px;'>
+                  <td rowspan='4' style='text-align: center;font-weight: bold;font-size: 50pt;width: 220px;'>
                     ".$data['jumlah_pesan']."
                   </td>
                   <td style='color: grey;text-align: right'>S</td>
