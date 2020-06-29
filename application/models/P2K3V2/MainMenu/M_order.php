@@ -728,17 +728,17 @@ class M_Order extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
-    /*
-        DK -> bon sepatu safety
-    */
-    /* 
-        @params: null
-        @return Array<Array>
-    */
-    public function getSafetyShoes()
+    /**
+     * DK -> bon sepatu safety
+     */
+    /**
+     *  @params: null
+     *  @return Array<Array>
+     */
+    public function getSafetyShoes($kode_gudang = 'PNL-DM')
     {
         $sql = "SELECT msib.inventory_item_id, msib.segment1 item_code, msib.description,
-                    khs_inv_qty_att ('102', msib.inventory_item_id, 'PNL-TKS', '', '') stock,
+                    khs_inv_qty_att ('102', msib.inventory_item_id, '$kode_gudang', '', '') stock,
                     msib.PRIMARY_UOM_CODE uom
                 FROM mtl_system_items_b msib
                 WHERE msib.organization_id = '102'
@@ -760,10 +760,10 @@ class M_Order extends CI_Model
         return $this->oracle->query($sql)->result_array();
     }
 
-    /* 
-        @params: String kode gudang
-        @return: Array
-    */
+    /** 
+     *  @params: String kode gudang
+     *  @return: Array
+     */
     public function getStockSafetyShoes($gudang)
     {
         $sql = "SELECT msib.inventory_item_id, msib.segment1 item_code, msib.description,
@@ -789,10 +789,10 @@ class M_Order extends CI_Model
         return $this->oracle->query($sql)->result_array();
     }
 
-    /* 
-        @params: String nomor apd, String $gudang
-        @return: Object
-    */
+    /**
+     *  @params: String nomor apd, String $gudang
+     *  @return: Object
+     */
     public function getStockSafetyShoesById($no_apd, $gudang)
     {
         $sql = "SELECT msib.inventory_item_id, msib.segment1 item_code, msib.description,
@@ -806,10 +806,10 @@ class M_Order extends CI_Model
         return $this->oracle->query($sql)->row();
     }
 
-    /* 
-        @params: String -> kodesie, String -> keyword, Array -> except worker
-        @return Array<Array>
-    */
+    /** 
+     * @params: String -> kodesie, String -> keyword, Array -> except worker
+     * @return Array<Array>
+     */
     public function getSemuaPekerja($kodesie, $q, $exceptWorker)
     {
         $this->personalia
@@ -827,10 +827,10 @@ class M_Order extends CI_Model
         return $this->personalia->get()->result_array();
     }
 
-    /* 
-        @params: String -> nomor induk
-        @return Object
-    */
+    /** 
+     * @params: String -> nomor induk
+     * @return Object
+     */
     public function getLatestBonSafetyShoes($noind)
     {
         $sql = "SELECT noind, seksi, create_timestamp::date as date FROM k3.tbon_sepatu WHERE noind = '$noind' ORDER BY create_timestamp DESC LIMIT 1";
@@ -845,11 +845,11 @@ class M_Order extends CI_Model
         return $this->db->get()->row();
     }
 
-    /* 
-        @insert ke database postgre k3 & oracle
-        @params: Array [[noind, item_code]], String Nobon
-        @return Boolean
-    */
+    /**
+     * @insert ke database postgre k3 & oracle
+     * @params: Array [[noind, item_code]], String Nobon
+     * @return Boolean
+     */
     public function insertBonSafetyShoes($data, $nobon)
     {
         $logged_user = $this->session->user;
@@ -873,6 +873,10 @@ class M_Order extends CI_Model
                 $sepatu = trim(substr($apd->DESCRIPTION, 0, strlen($apd->DESCRIPTION) - 2));
                 $ukuran = trim(substr($apd->DESCRIPTION, -2, 2));
 
+                $terakhir_bon = $this->getLatestBonSafetyShoes($item['noind']);
+
+                $terakhir_bon = $terakhir_bon ? date('d-m-Y', strtotime($terakhir_bon->date)) : '';
+
                 $sql = "SELECT 
                         tp.noind, tp.nama, tp.kodesie, ts.seksi, tpk.pekerjaan, '$ukuran' uk_sepatu, '{$item['item_code']}' item_code, '$sepatu' jenis_sepatu, now() create_timestamp, '$logged_user' user_, '$nobon' no_bon
                     FROM 
@@ -890,13 +894,15 @@ class M_Order extends CI_Model
                 $account = $this->account('APD', $cost_center);
                 $kode_cabang = $this->pemakai_2($cost_center);
 
+                $nick_name = implode(' ', array_slice(explode(' ', $item_data['nama']), 0, 2));
+
                 $dataBonOracle = array(
                     'NO_ID'          =>    $generate_new_id,
                     'KODE_BARANG'    =>    $item_data['item_code'],
                     'NAMA_BARANG'    =>    $item_data['jenis_sepatu'] . " " . $item_data['uk_sepatu'],
                     'SATUAN'         =>    'SET',
                     'PERMINTAAN'     =>    1,
-                    'KETERANGAN'     =>    $item['noind'],
+                    'KETERANGAN'     =>    $item['noind'] . " - $nick_name ({$item['reason']}) | $terakhir_bon",
                     'COST_CENTER'    =>    $cost_center,
                     'PENGGUNAAN'     =>    'SAFETY SHOES',
                     'SEKSI_BON'      =>    $item_data['seksi'],
@@ -934,6 +940,7 @@ class M_Order extends CI_Model
 
                 unset($item_data['kodesie']);
                 $item_data['id_oracle'] = $generate_new_id;
+                $item_data['alasan'] = $item['reason'];
                 // insert t_bon sepatu
                 $this->db->insert('k3.tbon_sepatu', $item_data);
             }
@@ -943,10 +950,10 @@ class M_Order extends CI_Model
         }
     }
 
-    /* 
-        @params: String nomor bon
-        @return Array
-    */
+    /**
+     * @params: String nomor bon
+     * @return Array
+     */
     public function getBonSafetyShoesById($no_bon)
     {
         $sql = "SELECT tbs.*, ers.oracle_cost_code
@@ -961,10 +968,10 @@ class M_Order extends CI_Model
         return $this->db->get('k3.tbon_sepatu')->result_array();
     }
 
-    /* 
-        @params: String kodesie
-        @return String cost_center
-    */
+    /**
+     * @params: String kodesie
+     * @return String cost_center
+     */
     public function getCostCenter($kodesie)
     {
         $sql = "SELECT ers.oracle_cost_code
@@ -973,11 +980,11 @@ class M_Order extends CI_Model
         return $this->db->query($sql)->row()->oracle_cost_code;
     }
 
-    /* 
-        @insert ke database oracle
-        @params: Array Bon
-        @return void
-    */
+    /**
+     * @insert ke database oracle
+     * @params: Array Bon
+     * @return void
+     */
     public function insertBonIm($data)
     {
         $this->oracle->trans_start();

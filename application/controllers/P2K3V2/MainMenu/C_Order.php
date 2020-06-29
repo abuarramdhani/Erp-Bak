@@ -1879,44 +1879,6 @@ class C_Order extends CI_Controller
 		redirect('P2K3_V2/Order/PDF/' . $noBon);
 	}
 
-	/*
-		@API
-		@url : P2K3/Order/BonSafetyShoes
-		@method: POST, why? (:any) just for parameter, not for static url, sad :(
-		@generate: json
-	*/
-	public function BonSafetyShoes()
-	{
-		$data = $this->input->post('data');
-
-		// find new nomor bon
-		$number = $this->M_order->getNum();
-		$d = date('ymd');
-		$noBon = '9' . $d . '00';
-		if (strlen($number) > 2) {
-			$noBon = $number;
-		}
-		++$noBon;
-
-		// insert postgre and oracle
-		$insert = $this->M_order->insertBonSafetyShoes($data, $noBon);
-
-		// return no bon, selanjutnya akan buka new tab pdf di js
-		if ($insert) {
-			echo json_encode(array(
-				'error' => false,
-				'no_bon' => $noBon,
-				'message' => 'Sukses menginsert ke database'
-			));
-		} else {
-			echo json_encode(array(
-				'error' => true,
-				'no_bon' => '',
-				'message' => "Error: Tidak bisa insert ke database"
-			));
-		}
-	}
-
 	// Yang ini memakai sistem save file dulu
 	// public function PDF($id)
 	// {
@@ -1934,7 +1896,8 @@ class C_Order extends CI_Controller
 	// }
 
 	/*
-		@!!!DEPRECATED
+		@generate bon pdf
+		@params: String $noBon
 		@url: P2K3_V2/Order/PDF/:no_bon
 	*/
 	public function PDF($noBon)
@@ -1989,9 +1952,9 @@ class C_Order extends CI_Controller
 		// split array to per group(10 array inside)
 		$chunk = array_chunk($getBon, 10);
 
-		// buat template ksosong 10 row
+		// buat template kosong 10 row
 		$templateTabel = array_fill(0, count($chunk), []);
-		// $this->log($templateTabel);
+
 		for ($x = 0; $x < count($chunk); $x++) {
 			for ($i = 0; $i < 10; $i++) {
 				array_push($templateTabel[$x], array(
@@ -2048,15 +2011,151 @@ class C_Order extends CI_Controller
 
 		$html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
 
-		$pdf->setFooter('<div style="float: left; margin-right: 30px; width:200px">
-  		<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
-  	</div>
-  	<div style="float: left; width: 350px; background-color=red">
-  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
-  	</div>
-  	<div style="float: right; width: 100px">
-  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
-		</div>');
+		$pdf->setFooter('
+			<div style="float: left; margin-right: 30px; width:200px">
+				<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
+			</div>
+			<div style="float: left; width: 350px; background-color=red">
+				<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
+			</div>
+			<div style="float: right; width: 100px">
+				<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
+			</div>
+		');
+		$pdf->shrink_tables_to_fit = 1;
+		$pdf->WriteHTML($stylesheet, 1);
+		$pdf->WriteHTML($html);
+		$pdf->Output($filename, 'I');
+	}
+
+
+	/*
+		@generate bon pdf
+		@params: String $noBon
+		@url: P2K3_V2/Order/PDF/:no_bon
+	*/
+	public function PDFSafetyShoes($noBon)
+	{
+		if (!is_dir('./assets/img/temp_qrcode')) {
+			mkdir('./assets/img/temp_qrcode', 0777, true);
+			chmod('./assets/img/temp_qrcode', 0777);
+		}
+		if (!is_dir('./assets/upload/P2K3/PDF')) {
+			mkdir('./assets/upload/P2K3/PDF', 0777, true);
+			chmod('./assets/upload/P2K3/PDF', 0777);
+		}
+
+		// QR CODE no bon
+		if (!file_exists('./assets/img/temp_qrcode/' . $noBon . '.png')) {
+			$params['data']			= $noBon;
+			$params['level']		= 'H';
+			$params['size']			= 10;
+			$config['black']		= array(224, 255, 255);
+			$config['white']		= array(70, 130, 180);
+			$params['savename'] = './assets/img/temp_qrcode/' . $noBon . '.png';
+			$this->ciqrcode->generate($params);
+		}
+
+		$this->load->library('Pdf');
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('', array(210, 148.5), 0, '', 10, 10, 5, 0, 0, 5, 'P');
+		$pdf->setAutoTopMargin = 'stretch';
+		$pdf->setAutoBottomMargin = 'stretch';
+		$filename = './assets/upload/P2K3/PDF/' . $noBon . '-Bon-Bppbg.pdf';
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		$getBon = $this->M_dtmasuk->monitorbonOracleById($noBon);
+
+		if (!count($getBon)) {
+			echo "
+				<div style='
+					display: flex;
+					text-align: center;
+					align-items: center;
+					height: 100vh;
+					justify-content: center;
+				'>
+					<div style='margin: 0 auto;'>
+						<h2>Bon dengan nomor {$noBon} tidak ditemukan</h2>
+						<h1 style='font-size: 100px;transform: rotate(90deg)'>:(</h1>
+					</div>
+				</div>
+			";
+			return;
+		}
+
+		// split array to per group(10 array inside)
+		$chunk = array_chunk($getBon, 10);
+
+		// buat template kosong 10 row
+		$templateTabel = array_fill(0, count($chunk), []);
+
+		for ($x = 0; $x < count($chunk); $x++) {
+			for ($i = 0; $i < 10; $i++) {
+				array_push($templateTabel[$x], array(
+					'kode' => '',
+					'nama' => '',
+					'produk' => '',
+					'lokasi_simpanku' => '',
+					'satuan' => '',
+					'diminta' => '',
+					'penyerahan' => '',
+					'ket' => '',
+					'account' => '',
+				));
+			}
+		}
+
+		for ($i = 0; $i < count($chunk); $i++) {
+			$bonWithTemplate[$i] = array_map(function ($item) {
+				return array(
+					'kode' => $item['KODE_BARANG'],
+					'nama' => $item['NAMA_BARANG'],
+					'produk' => $item['PRODUK'],
+					'lokasi_simpanku' => $item['LOKASI_SIMPAN'],
+					'satuan' => $item['SATUAN'],
+					'diminta' => $item['PERMINTAAN'],
+					'penyerahan' => $item['PENYERAHAN'],
+					'ket' => $item['KETERANGAN'],
+					'account' => $item['ACCOUNT'],
+				);
+			}, $chunk[$i]);
+		}
+
+		// merge bon ke template
+		for ($i = 0; $i < count($chunk); $i++) {
+			for ($x = 0; $x < count($chunk[$i]); $x++) {
+				$templateTabel[$i][$x] = $bonWithTemplate[$i][$x];
+			}
+		}
+
+		for ($i = 0; $i < count($chunk); $i++) {
+			$data['kumpulandata'][$i] = array(
+				'tgl' => $getBon['0']['TANGGAL'],
+				'nomor' => $getBon['0']['NO_BON'],
+				'seksi' => $getBon['0']['SEKSI_BON'],
+				'gudang' => $getBon['0']['TUJUAN_GUDANG'],
+				'rdPemakai' => $getBon['0']['JENIS_PEMAKAI'],
+				'fungsi' => $getBon['0']['PENGGUNAAN'],
+				'pemakai' => $getBon['0']['PEMAKAI'],
+				'cost' => $getBon['0']['COST_CENTER'],
+				'kocab' => $getBon['0']['KODE_CABANG'],
+				'data_body' => $templateTabel[$i]
+			);
+		}
+
+		$html = $this->load->view('P2K3V2/Order/V_pdfBonSafetyShoes', $data, true);
+
+		$pdf->setFooter('
+			<div style="float: left; margin-right: 30px; width:200px">
+				<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
+			</div>
+			<div style="float: left; width: 350px; background-color=red">
+				<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
+			</div>
+			<div style="float: right; width: 100px">
+				<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
+			</div>
+		');
 		$pdf->shrink_tables_to_fit = 1;
 		$pdf->WriteHTML($stylesheet, 1);
 		$pdf->WriteHTML($html);
@@ -2240,112 +2339,120 @@ class C_Order extends CI_Controller
 		@View
 		P2K3/Order/Seragam
 	*/
-	public function seragam()
-	{
-		$user_id = $this->session->userid;
-		$kodesie = $this->session->kodesie;
+	// public function seragam()
+	// {
+	// 	$user_id = $this->session->userid;
+	// 	$kodesie = $this->session->kodesie;
 
-		$data['Title'] = 'Monitoring Bon';
-		$data['Menu'] = 'Input Kebutuhan Pekerja';
-		$data['SubMenuOne'] = 'Seragam';
-		$data['SubMenuTwo'] = '';
+	// 	$data['Title'] = 'Monitoring Bon';
+	// 	$data['Menu'] = 'Input Kebutuhan Pekerja';
+	// 	$data['SubMenuOne'] = 'Seragam';
+	// 	$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+	// 	$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+	// 	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+	// 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
-		$this->load->view('P2K3V2/Order/V_Input_Seragam', $data);
-		$this->load->view('V_Footer', $data);
-	}
+	// 	$this->load->view('V_Header', $data);
+	// 	$this->load->view('V_Sidemenu', $data);
+	// 	$this->load->view('P2K3V2/Order/V_Input_Seragam', $data);
+	// 	$this->load->view('V_Footer', $data);
+	// }
 
-	/*
-		@View
-		P2K3/Order/Sepatu
-	*/
-	public function sepatu()
-	{
-		$user_id = $this->session->userid;
-		$kodesie = $this->session->kodesie;
-		$logged_noind = $this->session->user;
+	// /*
+	// 	@View
+	// 	P2K3/Order/Sepatu
+	// */
+	// public function sepatu()
+	// {
+	// 	$user_id = $this->session->userid;
+	// 	$kodesie = $this->session->kodesie;
+	// 	$logged_noind = $this->session->user;
 
-		$data['Title'] = 'Monitoring Bon';
-		$data['Menu'] = 'Input Kebutuhan Pekerja';
-		$data['SubMenuOne'] = 'Sepatu';
-		$data['SubMenuTwo'] = '';
+	// 	$data['Title'] = 'Monitoring Bon';
+	// 	$data['Menu'] = 'Input Kebutuhan Pekerja';
+	// 	$data['SubMenuOne'] = 'Sepatu';
+	// 	$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+	// 	$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+	// 	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+	// 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$pkj_lok = $this->M_order->getDetailPekerja($logged_noind)->row()->lokasi_kerja;
-		if (intval($pkj_lok) == 2) {
-			$data['lokk'] = 'Tuksono';
-			$data['lokk_id'] = '16103';
-			$data['sub'] = '[PNL-TKS] GUDANG PENOLONG TRAKTOR DI TUKSONO';
-			$data['sub_id'] = 'PNL-TKS';
-		} else {
-			$data['lokk'] = 'Yogyakarta';
-			$data['lokk_id'] = '142';
-			$data['sub'] = '[PNL-DM] GUDANG BAHAN PENOLONG PRODUKSI (PUSAT)';
-			$data['sub_id'] = 'PNL-DM';
-		}
+	// 	$pkj_lok = $this->M_order->getDetailPekerja($logged_noind)->row()->lokasi_kerja;
+	// 	if (intval($pkj_lok) == 2) {
+	// 		$data['lokk'] = 'Tuksono';
+	// 		$data['lokk_id'] = '16103';
+	// 		$data['sub'] = '[PNL-TKS] GUDANG PENOLONG TRAKTOR DI TUKSONO';
+	// 		$data['sub_id'] = 'PNL-TKS';
+	// 	} else {
+	// 		$data['lokk'] = 'Yogyakarta';
+	// 		$data['lokk_id'] = '142';
+	// 		$data['sub'] = '[PNL-DM] GUDANG BAHAN PENOLONG PRODUKSI (PUSAT)';
+	// 		$data['sub_id'] = 'PNL-DM';
+	// 	}
 
-		$periode = $this->input->post('k3_periode');
-		$m = substr($periode, 0, 2);
-		$y = substr($periode, 5, 5);
+	// 	$periode = $this->input->post('k3_periode');
+	// 	$m = substr($periode, 0, 2);
+	// 	$y = substr($periode, 5, 5);
 
-		$periode = $y . '-' . $m;
-		// echo $pr;exit();
-		if (empty($periode)) {
-			$periode = date('m - Y');
-		}
+	// 	$periode = $y . '-' . $m;
+	// 	// echo $pr;exit();
+	// 	if (empty($periode)) {
+	// 		$periode = date('m - Y');
+	// 	}
 
-		$data['pr'] = $periode;
-		$data['ks'] = $kodesie;
-		$data['pri'] = $periode;
+	// 	$data['pr'] = $periode;
+	// 	$data['ks'] = $kodesie;
+	// 	$data['pri'] = $periode;
 
-		$nama_seksi = $this->M_dtmasuk->cekseksi($kodesie);
-		$dataTrans = $this->M_dtmasuk->monitorbonOracle($nama_seksi[0]['section_name'], $periode);
+	// 	$nama_seksi = $this->M_dtmasuk->cekseksi($kodesie);
+	// 	$dataTrans = $this->M_dtmasuk->monitorbonOracle($nama_seksi[0]['section_name'], $periode);
 
-		// echo "<pre>";
-		// print_r($listtobon);
-		// exit();
-		$data['lokasi'] = $this->M_order->lokasi();
+	// 	// echo "<pre>";
+	// 	// print_r($listtobon);
+	// 	// exit();
+	// 	$data['lokasi'] = $this->M_order->lokasi();
 
-		$data['seksi'] = $this->M_dtmasuk->cekseksi($kodesie);
-		if (empty($data['seksi'])) {
-			$data['seksi'] = array('section_name' 	=>	'');
-		}
+	// 	$data['seksi'] = $this->M_dtmasuk->cekseksi($kodesie);
+	// 	if (empty($data['seksi'])) {
+	// 		$data['seksi'] = array('section_name' 	=>	'');
+	// 	}
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
-		$this->load->view('P2K3V2/Order/V_Input_Sepatu', $data);
-		$this->load->view('V_Footer', $data);
-	}
+	// 	$this->load->view('V_Header', $data);
+	// 	$this->load->view('V_Sidemenu', $data);
+	// 	$this->load->view('P2K3V2/Order/V_Input_Sepatu', $data);
+	// 	$this->load->view('V_Footer', $data);
+	// }
 
-	/*
-		@View
-		@url : P2K3/Order/BonSafetyShoes
-	*/
+	/** 
+	 * @View
+	 * @url : P2K3/Order/BonSafetyShoes
+	 */
 	public function SafetyShoes()
 	{
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 		$logged_noind = $this->session->user;
+		$lokasi_kerja = $this->session->kode_lokasi_kerja;
 
 		$data['Title'] = 'Monitoring Bon';
-		$data['Menu'] = 'Input Kebutuhan Pekerja';
-		$data['SubMenuOne'] = 'Sepatu';
+		$data['Menu'] = 'Input Bon SafetyShoes';
+		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$data['safetyShoes'] = $this->M_order->getSafetyShoes();
+		// kode gudang
+		if ((int) $lokasi_kerja == 1) {
+			$gudang = 'PNL-DM';
+		} else {
+			$gudang = 'PNL-TKS';
+		}
 
+		$data['safetyShoes'] = $this->M_order->getSafetyShoes($gudang);
+		$data['gudang'] = $gudang;
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($kodesie);
 		if (empty($data['seksi'])) {
 			$data['seksi'] = array('section_name' 	=>	'');
@@ -2357,12 +2464,12 @@ class C_Order extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
-	/*
-		@API
-		@url : P2K3/Order/Pekerja
-		@params : null
-		@return : json
-	*/
+	/** 
+	 * @API
+	 * @url : P2K3/Order/Pekerja
+	 * @params : null
+	 * @return : json
+	 */
 	public function Pekerja()
 	{
 		$kodesie = $this->session->kodesie;
@@ -2375,12 +2482,12 @@ class C_Order extends CI_Controller
 		echo json_encode($data);
 	}
 
-	/*
-		@Helper
-		@function:  Response json
-		@params : error<Boolean>, data<Any>, message<String>
-		@echo 	: json
-	*/
+	/**
+	 * @Helper
+	 * @function:  Response json
+	 * @params : error<Boolean>, data<Any>, message<String>
+	 * @echo 	: json
+	 */
 	private function response($err, $data, $message)
 	{
 		echo json_encode([
@@ -2390,11 +2497,11 @@ class C_Order extends CI_Controller
 		]);
 	}
 
-	/*
-		@API
-		@url : P2K3/Order/CheckStockSafetyShoes
-		@generate: json
-	*/
+	/**
+	 * @API
+	 * @url : P2K3/Order/CheckStockSafetyShoes
+	 * @generate: json
+	 */
 	public function CheckStockSafetyShoes()
 	{
 		$user_logged = $this->session->user;
@@ -2411,18 +2518,18 @@ class C_Order extends CI_Controller
 		$this->response(false, $stock, 'Sukses mengambil stock');
 	}
 
-	/*
-		@API
-		@url : P2K3/Order/CheckBonSafetyShoes
-		@generate: json
-		@flow : ticket no #250055
-		@response format:
+	/** 
+	 * @API
+	 * @url : P2K3/Order/CheckBonSafetyShoes
+	 * @generate: json
+	 * @flow : ticket no #250055
+	 * @response format:
 			{
 				error: Boolean,
 				data: String
 				message: String
 			}
-	*/
+	 */
 	public function CheckBonSafetyShoes()
 	{
 		$no_apd = $this->input->get('sepatu');
@@ -2483,10 +2590,48 @@ class C_Order extends CI_Controller
 		], "Pekerja dapat mengebon sepatu");
 	}
 
-	/*
-		@!!!DEPRECATED
-		@url: P2K3_V2/Order/PDFBonSepatu/:no_bon
-	*/
+	/**
+	 * @API INSERT
+	 * @url : P2K3/Order/BonSafetyShoes
+	 * @method: POST, why? (:any) just for parameter, not for static url, sad :(
+	 * @generate: json
+	 */
+	public function BonSafetyShoes()
+	{
+		$data = $this->input->post('data');
+
+		// find new nomor bon
+		$number = $this->M_order->getNum();
+		$d = date('ymd');
+		$noBon = '9' . $d . '00';
+		if (strlen($number) > 2) {
+			$noBon = $number;
+		}
+		++$noBon;
+
+		// insert postgre and oracle
+		$insert = $this->M_order->insertBonSafetyShoes($data, $noBon);
+
+		// return no bon, selanjutnya akan buka new tab pdf di js
+		if ($insert) {
+			echo json_encode(array(
+				'error' => false,
+				'no_bon' => $noBon,
+				'message' => 'Sukses menginsert ke database'
+			));
+		} else {
+			echo json_encode(array(
+				'error' => true,
+				'no_bon' => '',
+				'message' => "Error: Tidak bisa insert ke database"
+			));
+		}
+	}
+
+	/**
+	 * @!!!DEPRECATED
+	 * @url: P2K3_V2/Order/PDFBonSepatu/:no_bon
+	 */
 	public function PDFBonSepatux($no_bon)
 	{
 		echo "<pre>";

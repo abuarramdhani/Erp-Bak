@@ -207,7 +207,7 @@
                                 <span><?php echo count($item); ?> Pekerja</span>
                               </td>
                               <td>
-                                <a target="_blank" data-toggle="tooltip" data-placement="top" title="Cetak Bon" href="<?php echo site_url('p2k3adm_V2/Admin/CetakBon/' . $item['0']['no_bon']); ?>" class="btn btn-danger">
+                                <a target="_blank" data-toggle="tooltip" data-placement="top" title="Cetak Bon" href="<?php echo site_url('P2K3_V2/Order/PDFSafetyShoes/' . $item['0']['no_bon']); ?>" class="btn btn-danger">
                                   <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                 </a>
                               </td>
@@ -221,6 +221,7 @@
                                       <tr>
                                         <td width="5%"><b>No</b></td>
                                         <td width="5%"><b>No Induk</b></td>
+                                        <td width="15%"><b>Nama</b></td>
                                         <td width="15%"><b>Kode Item</b></td>
                                         <td><b>Nama Item</b></td>
                                         <td width="10%"><b>Jumlah Bon</b></td>
@@ -234,7 +235,8 @@
                                       foreach ($item as $key) : ?>
                                         <tr>
                                           <td><?= $i++; ?></td>
-                                          <td><?= $key['keterangan']; ?></td>
+                                          <td><?= explode('-', $key['keterangan'])[0]; ?></td>
+                                          <td><?= $key['nama'] ?></td>
                                           <td>
                                             <a style="cursor:pointer;" class="p2k3_to_input"><?= $key['kode_barang']; ?></a>
                                             <input hidden="" value="<?= $key['nama_apd']; ?>" class="p2k3_see_apd">

@@ -900,6 +900,7 @@ class M_Dtmasuk extends CI_Model
         }
 
         $sql = "SELECT   mb.no_bon,
+                         mb.no_id,
                          RTRIM (XMLAGG (XMLELEMENT (e, mb.kode_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') kode_barang,
                          RTRIM (XMLAGG (XMLELEMENT (e, mb.nama_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') nama_apd,
                          RTRIM (XMLAGG (XMLELEMENT (e, mb.permintaan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') jml_bon,
@@ -912,6 +913,7 @@ class M_Dtmasuk extends CI_Model
                     FROM im_master_bon mb
                    WHERE mb.tanggal LIKE '%$periode' and $filterseksi and mb.penggunaan = 'SAFETY SHOES'
                 GROUP BY mb.no_bon,
+                         mb.no_id,
                          mb.tanggal,
                          mb.seksi_bon,
                          mb.pemakai,
@@ -921,7 +923,23 @@ class M_Dtmasuk extends CI_Model
                 ORDER BY 1, 3";
 
         $query = $this->oracle->query($sql);
-        return $query->result_array();
+        $bonOracle =  $query->result_array();
+
+        // cari nama
+        $arr_id = array_map(function ($item) {
+            return $item['NO_ID'];
+        }, $bonOracle);
+
+        // jika ada isinya
+        if ($bonOracle) {
+            $nama = $this->erp->select('nama')->where_in('id_oracle', $arr_id)->get('k3.tbon_sepatu')->result_array();
+
+            for ($i = 0; $i < count($bonOracle); $i++) {
+                $bonOracle[$i]['NAMA'] = $nama[$i]['nama'];
+            }
+        }
+
+        return $bonOracle;
     }
 
     public function monitorbonOracleById($id)
@@ -929,7 +947,7 @@ class M_Dtmasuk extends CI_Model
         $query = $this->oracle->query("SELECT *
            FROM im_master_bon mb
           WHERE mb.no_bon = '$id'
-        ORDER BY 2");
+        ORDER BY no_id asc");
         return $query->result_array();
     }
 

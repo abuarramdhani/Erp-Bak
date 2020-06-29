@@ -47,6 +47,7 @@
                           <td class="text-center" width="30%">Nama APD</td>
                           <td class="text-center">Kode Barang</td>
                           <td class="text-center" width="30%">Nama / No Induk</td>
+                          <td class="text-center" width="30%">Alasan</td>
                           <td class="text-center">Tanggal Terakhir Bon</td>
                           <td class="text-center">Jumlah</td>
                           <td class="text-center">Action</td>
@@ -59,7 +60,7 @@
                             <select required="required" name="shoes_code" data-placeholder="Pilih sepatu - ukuran" class="form-control select-shoes select2">
                               <option></option>
                               <?php foreach ($safetyShoes as $item) : ?>
-                                <option value="<?= $item['ITEM_CODE'] ?>"><?= $item['DESCRIPTION'] ?></option>
+                                <option <?= $item['STOCK'] <= 0 ? 'disabled' : '' ?> value="<?= $item['ITEM_CODE'] ?>"><?= $item['ITEM_CODE'] . " - " . $item['DESCRIPTION'] ?></option>
                               <?php endforeach ?>
                             </select>
                           </td>
@@ -68,6 +69,9 @@
                             <select name="worker_code" name="" id="" required class="form-control select-pekerja">
                               <option value=""></option>
                             </select>
+                          </td>
+                          <td>
+                            <textarea maxlength="30" name="reason" style="resize: vertical;max-height: 100px; min-height: 34px; height: 34px;" class="form-control reason" id="" placeholder="Alasan" required></textarea>
                           </td>
                           <td class="text-center latest_bon"></td>
                           <td class="text-center">1</td>
@@ -140,7 +144,7 @@
         }
       </style>
       <div class="modal-header">
-        <h2>Stok Sepatu</h2>
+        <h2>Stok Sepatu - Gudang <?= $gudang ?></h2>
       </div>
       <div class="modal-body text-center"></div>
       <div class="modal-footer"></div>
@@ -191,7 +195,7 @@
                           <td class="text-center">${i+1}</td>
                           <td>${item.ITEM_CODE}</td>
                           <td>${item.DESCRIPTION}</td>
-                          <td class="text-center text-bold">${item.STOCK == 0 ? '' : item.STOCK}</td>
+                          <td class="text-center text-${item.STOCK == 0 ? '' : 'bold'}">${item.STOCK}</td>
                         </tr>
                       `
                     }).join('')
@@ -218,9 +222,11 @@
           $('#table-shoes tbody > tr').each(function() {
             let apd = $(this).find('.select-shoes').val()
             let noind = $(this).find('.select-pekerja').val()
+            let reason = $(this).find('.reason').val()
             data.push({
               item_code: apd,
-              noind
+              noind,
+              reason
             })
           })
           return data
@@ -249,10 +255,11 @@
               $('.counter').text(count--)
               if (count < 0) clearInterval(counter)
             }, 1000)
+            var timeout = setTimeout(() => window.open(pdf_url), 5200)
 
-            let pdf_url = baseurl + 'P2K3_V2/Order/PDF/' + res.no_bon
+            let pdf_url = baseurl + 'P2K3_V2/Order/PDFSafetyShoes/' + res.no_bon
+            $('#pdf_button').click(e => clearTimeout(timeout))
             $('#pdf_button').attr('href', pdf_url)
-            setTimeout(() => window.open(pdf_url), 5200)
           },
           error(e) {
             return Swal.fire(e, '', 'error')
@@ -272,7 +279,8 @@
       let last_pekerja = $('#table-shoes > tbody > tr .select-pekerja').last()
       let last_kode = $('#table-shoes > tbody > tr .apd_code').last()
       let last_bon = $('#table-shoes > tbody > tr .latest_bon').last()
-      let last_pekerja_column = $('tbody > tr > td.pekerja').last()
+      let last_pekerja_column = $('#table-shoes > tbody > tr > td.pekerja').last()
+      let last_reason = $('#table-shoes > tbody > tr > td > .reason').last()
 
       last_kode.text('')
       last_bon.text('')
@@ -287,7 +295,9 @@
       })
       last_pekerja_column.find('p').remove()
       last_pekerja_column.attr('valid', 0)
+      last_reason.val('')
       refreshPlugin()
+      clearNonChar()
     })
 
     $('#reset').click(function(e) {
@@ -301,6 +311,7 @@
         backgroundColor: ''
       })
       $('.latest_bon').first().text('')
+      $('.reason').first().val('')
       $('#submit_bon').prop('disabled', true)
     })
 
@@ -309,6 +320,8 @@
       $('#reset').trigger('click')
       switch_screen('#app_screen')
     })
+
+    clearNonChar()
 
     setTimeout(() => {
       refreshPlugin()
@@ -446,6 +459,13 @@
       $('#table-shoes > tbody > tr').each(function() {
         $(this).find('td').first().text(i++)
       })
+    })
+  }
+
+  // hilangi char yg bukan word
+  const clearNonChar = () => {
+    $('textarea').keydown(function(e) {
+      if (!!e.key.match(/[^a-zA-Z0-9, ]/g)) e.preventDefault()
     })
   }
 
