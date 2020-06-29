@@ -1567,6 +1567,27 @@ class M_hitungpesanan extends Ci_Model
 	public function insertUrutanKatering($data){
 		$this->personalia->insert('"Catering".turutankatering', $data);
 	}
+
+	public function getTempatMakanKemarinBelumAda($tanggal,$shift,$lokasi){
+			$sql = "select *  
+			from ( 
+				select a.fs_tempat_makan,a.fs_kd_shift,a.fn_jumlah_pesan, 
+				( 
+					select count(*) from \"Catering\".tpesanan b  
+					where a.fs_tempat_makan = b.fs_tempat_makan  
+					and a.fs_kd_shift = b.fs_kd_shift  
+					and a.fd_tanggal + interval '1 day' = b.fd_tanggal
+				) as jumlah 
+				from \"Catering\".tpesanan a  
+				inner join \"Catering\".ttempat_makan c  
+				on a.fs_tempat_makan = c.fs_tempat_makan  
+				where a.fd_tanggal = ?::date - interval '1 day' 
+				and a.fs_kd_shift = ? 
+				and a.lokasi = ?
+				) as tbl  
+			where jumlah =  0"; 
+		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
+	}
 }
 
 ?>

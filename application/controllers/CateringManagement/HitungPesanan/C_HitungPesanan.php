@@ -1120,6 +1120,7 @@ class C_HitungPesanan extends CI_Controller
     $data['shift'] = $shift;
     $data['lokasi'] = $lokasi;
     $data['pembagian'] = $this->getpesananList($tanggal,$shift,$lokasi);
+    $data['tempat_makan_kemarin'] = $this->M_hitungpesanan->getTempatMakanKemarinBelumAda($tanggal,$shift,$lokasi);
 
     $data_log = array(
       'wkt' => date('Y-m-d H:i:s'),
