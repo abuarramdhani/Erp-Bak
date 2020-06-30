@@ -440,16 +440,16 @@ class C_Master extends CI_Controller
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku    	= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 35) {
+            if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 1) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 70) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 2) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 105) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 3) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 140) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 4) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
-            }else {
-              $a = '<br><br><br><br><br><br><br>';
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 0) {
+              $a = '<br><br><br><br><br><br>';
             }
 
             if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
@@ -586,16 +586,16 @@ class C_Master extends CI_Controller
             ob_end_clean() ;
           $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-            if (strlen($data['get_footer'][0]['DESCRIPTION']) < 35) {
+            if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 1) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 70) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 2) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 105) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 3) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
-            }elseif (strlen($data['get_footer'][0]['DESCRIPTION']) < 140) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 4) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
-            }else {
-              $a = '<br><br><br><br><br><br><br>';
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 0) {
+              $a = '<br><br><br><br><br><br>';
             }
 
             if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
