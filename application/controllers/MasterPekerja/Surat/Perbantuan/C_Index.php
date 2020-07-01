@@ -587,7 +587,7 @@ class C_Index extends CI_Controller
 		$pdf->AddPage();
 		$pdf->WriteHTML($stylesheet,1);
 		$pdf->WriteHTML($data['isiSuratPerbantuan'][0]['isi_surat']);
-		print_r($data['isiSuratPerbantuan'][0]['isi_surat']);exit();
+		// print_r($data['isiSuratPerbantuan'][0]['isi_surat']);exit();
 		$pdf->setTitle($filename);
 		$pdf->Output($filename, 'I');
 	}
