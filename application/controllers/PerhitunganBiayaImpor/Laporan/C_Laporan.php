@@ -172,6 +172,7 @@ class C_Laporan extends CI_Controller {
 
 		}else{
 			$this->SaveData($reqid,$kodebarang,$rate,$qtyKirim,$header,$currency,$addAdditionalInfo,$addAdditionalInfoPrice);
+			redirect('PerhitunganBiayaImpor/Laporan/Perhitungan/'.$reqid,'refresh');
 		}
 
 		// redirect('PerhitunganBiayaImpor/Laporan/DataHistory','refresh');
