@@ -16,7 +16,6 @@
                                         <option></option>
                                         <option value="172.16.100.93" title="IconPlus PUSAT-BANJARMASIN">172.16.100.93 - IconPlus PUSAT-BANJARMASIN</option>
                                         <option value="172.16.100.25" title="IconPlus PUSAT-JAKARTA">172.16.100.25 - IconPlus PUSAT-JAKARTA</option>
-                                        <option value="172.16.100.13" title="IconPlus PUSAT-LAMPUNG">172.16.100.13 - IconPlus PUSAT-LAMPUNG</option>
                                         <option value="172.16.100.61" title="IconPlus PUSAT-LANGKAPURA">172.16.100.61 - IconPlus PUSAT-LANGKAPURA</option>
                                         <option value="172.16.100.29" title="IconPlus PUSAT-MAKASSAR">172.16.100.29 - IconPlus PUSAT-MAKASSAR</option>
                                         <option value="172.16.100.17" title="IconPlus PUSAT-MEDAN">172.16.100.17 - IconPlus PUSAT-MEDAN</option>

@@ -58,8 +58,6 @@ class C_Monitoring extends CI_Controller {
             $link = 'IconPlus PUSAT-BANJARMASIN';
         }else if($ip == '172.16.100.25') {
             $link = 'IconPlus PUSAT-JAKARTA';
-        }else if($ip == '172.16.100.13') {
-            $link = 'IconPlus PUSAT-LAMPUNG';
         }else if($ip == '172.16.100.61') {
             $link = 'IconPlus PUSAT-LANGKAPURA';
         }else if($ip == '172.16.100.29') {
