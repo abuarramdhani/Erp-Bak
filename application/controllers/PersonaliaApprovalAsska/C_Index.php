@@ -7,7 +7,7 @@ date_default_timezone_set('Asia/Jakarta');
 setlocale(LC_TIME, "id_ID.utf8");
 ini_set('memory_limit', '-1');
 
-class C_index extends CI_Controller
+class C_Index extends CI_Controller
 {
 
 	function __construct()
