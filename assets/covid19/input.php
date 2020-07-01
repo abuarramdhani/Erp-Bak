@@ -40,7 +40,7 @@ ini_set('memory_limit', '-1');
 											}
 											$data_new = json_encode($data);
 											file_put_contents(dirname(__FILE__)."/jawa.json", $data_new);
-											echo "<h1>Perubahan Berhasil Disimpan</h1><br><a href=\"\">Klik Disini untuk menuju halaman utama edit</a>";
+											echo "<h1>Perubahan Berhasil Disimpan</h1><br><a href=\"http://".$_SERVER['SERVER_NAME'].str_replace("?kd=".$_GET['kd'], '', $_SERVER['REQUEST_URI'])."\">Klik Disini untuk menuju halaman utama edit</a>";
 										}
 									}else{
 										if($kode == "ID.BT"){
