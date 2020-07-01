@@ -1743,22 +1743,22 @@ class C_HitungPesanan extends CI_Controller
                     $keterangan .= " ; ";
                   }
                 foreach ($sayur_arr as $sar) {
-                  if ($sar == $mp['menu_sayur']) {
+                  if ($sar == $mp['menu_sayur'] || $mp['menu_sayur'] != $mp['pengganti_sayur']) {
                     $keterangan .= " Sayur : ".$mp['pengganti_sayur'];
                   }
                 }
                 foreach ($lauk_utama_arr as $luar) {
-                  if ($luar == $mp['menu_lauk_utama']) {
+                  if ($luar == $mp['menu_lauk_utama'] || $mp['menu_lauk_utama'] != $mp['pengganti_lauk_utama']) {
                     $keterangan .= " Lauk Utama : ".$mp['pengganti_lauk_utama'];
                   }
                 }
                 foreach ($lauk_pendamping_arr as $lpar) {
-                  if ($lpar == $mp['menu_lauk_pendamping']) {
+                  if ($lpar == $mp['menu_lauk_pendamping'] || $mp['menu_lauk_pendamping'] != $mp['pengganti_lauk_pendamping']) {
                     $keterangan .= " Lauk Pendamping : ".$mp['pengganti_lauk_pendamping'];
                   }
                 }
                 foreach ($buah_arr as $bar) {
-                  if ($bar == $mp['menu_buah']) {
+                  if ($bar == $mp['menu_buah'] || $mp['menu_buah'] != $mp['pengganti_buah']) {
                     $keterangan .= " Buah : ".$mp['pengganti_buah'];
                   }
                 }
