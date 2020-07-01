@@ -4485,3 +4485,10 @@ $route['jtipembelian/Input/(:any)']			= 'JTIPembelian/C_Index/$1';
 $route['jtipembelian/Input/(:any)/(:any)']	= 'JTIPembelian/C_Index/$1/$2';
 $route['jtipembelian/History'] = 'JTIPembelian/C_Index/History';
 $route['jtipembelian/History/(:any)'] = 'JTIPembelian/C_Index/$1';
+
+// ------------------------------------------- Personalia Approval Kasie -------------------------------------------
+$route['PersonaliaApprovalKasie'] = 'PersonaliaApprovalKasie/C_Index';
+$route['PersonaliaApprovalKasie/Dashboard'] = 'PersonaliaApprovalKasie/C_Index';
+
+// ------------------------------------------- Personalia Approval Asska -------------------------------------------
+$route['PersonaliaApprovalAsska'] = 'PersonaliaApprovalAsska/C_Index';
