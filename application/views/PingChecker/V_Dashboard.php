@@ -24,8 +24,6 @@
                                     $link = 'IconPlus PUSAT-BANJARMASIN';
                                 }else if($list['ip'] == '172.16.100.25' || $list['ip'] == '172.16.100.26') {
                                     $link = 'IconPlus PUSAT-JAKARTA';
-                                }else if($list['ip'] == '172.16.100.13' || $list['ip'] == '172.16.100.14') {
-                                    $link = 'IconPlus PUSAT-LAMPUNG';
                                 }else if($list['ip'] == '172.16.100.61' || $list['ip'] == '172.16.100.62') {
                                     $link = 'IconPlus PUSAT-LANGKAPURA';
                                 }else if($list['ip'] == '172.16.100.29' || $list['ip'] == '172.16.100.30') {
