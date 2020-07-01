@@ -61,11 +61,6 @@ class C_Index extends CI_Controller {
 						'ip2' => '172.16.100.26',
 					),
 					array(
-						'name' => 'IconPlus PUSAT-LAMPUNG',
-						'ip' => '172.16.100.13',
-						'ip2' => '172.16.100.14',
-					),
-					array(
 						'name' => 'IconPlus PUSAT-LANGKAPURA',
 						'ip' => '172.16.100.61',
 						'ip2' => '172.16.100.62',
