@@ -1022,3 +1022,35 @@ $(document).ready(function(){
 		})
 	});
 })
+
+$(document).ready(function(){
+	$('#txt-Dashboard-ResponsibilitySearch').on('keyup', function(){
+		var responsibilityBoxItems = $('.dashboard-responsibility');
+		var responsibilityMenuItems = $('.treeview');
+		var nama = $(this).val();
+		responsibilityBoxItems.each(function(index, box){
+			var namaResponsibility = $(box).attr('data-nama');
+			if (namaResponsibility.toLowerCase().search(nama.toLowerCase()) >= 0) {
+				$(box).find("a").html(namaResponsibility.toLowerCase().replace(nama.toLowerCase(),"<b>" + nama.toLowerCase() + "</b>"));
+				// console.log($(box).find("a").html() + " --- " + namaResponsibility);
+				$(box).show();
+			}else{
+				$(box).hide();
+			}
+		})
+		// console.log(responsibilityMenuItems);
+		responsibilityMenuItems.each(function(index, menu){
+			if ($(menu).attr('data-nama')) {
+				// console.log($(menu).attr('data-nama'));
+				var namaResponsibility = $(menu).attr('data-nama');
+				if (namaResponsibility.toLowerCase().search(nama.toLowerCase()) >= 0) {
+					$(menu).find("a").html(namaResponsibility.toLowerCase().replace(nama.toLowerCase(),"<b style='color: blue'>" + nama.toLowerCase() + "</b>"));
+					// console.log($(menu).find("a").html() + " --- " + namaResponsibility);
+					$(menu).show();
+				}else{
+					$(menu).hide();
+				}
+			}
+		})
+	});
+})

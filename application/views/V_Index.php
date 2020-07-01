@@ -18,7 +18,7 @@
                 <?php
                     foreach($UserResponsibility as $UserResponsibility_item){
                   ?>
-                    <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-md-4 col-sm-6 col-xs-12 dashboard-responsibility" data-nama="<?= $UserResponsibility_item['user_group_menu_name']?>">
                       <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="fa <?= $UserResponsibility_item['module_image']?>"></i></span>
 
