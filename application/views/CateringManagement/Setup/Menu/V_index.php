@@ -35,6 +35,7 @@
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Action</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Bulan Tahun</th>
 													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Shift</th>
+													<th class="bg-primary" style="text-align: center;vertical-align: middle;">Lokasi</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -60,6 +61,10 @@
 														2 => '2',
 														3 => '3'
 													);
+													$lokasi = array(
+														1 => 'Yogyakarta & Mlati',
+														2 => 'Tuksono'
+													);
 													foreach ($data as $key => $value) {
 														$encrypted_string = $this->encrypt->encode($value['menu_id']);
                                                 		$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
@@ -82,6 +87,7 @@
 															</td>
 															<td><?php echo $bulan[$value['bulan']].' - '.$value['tahun'] ?></td>
 															<td><?php echo $shift[$value['shift']] ?></td>
+															<td><?php echo $lokasi[$value['lokasi']] ?></td>
 														</tr>
 														<?php
 														$nomor++;
