@@ -12,7 +12,7 @@
         <tr row-id= "<?php echo $g['ROOT_ASSEMBLY'] ?>" >
           <td><center><?php echo $no ?></center></td>
           <td><center><?php echo $g['DESCRIPTION'] ?></center></td>
-          <td><center><?php echo $g['QTY'] ?></center></td>
+          <td><center><?php echo abs($g['QTY']) ?></center></td>
           <td><center><?php echo $g['UOM'] ?></center></td>
         </tr>
       <?php $no++; endforeach; ?>

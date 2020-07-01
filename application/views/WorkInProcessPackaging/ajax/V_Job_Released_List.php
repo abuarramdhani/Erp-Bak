@@ -8,7 +8,6 @@
         <th>NAMA ITEM</th>
         <th>QTY</th>
         <th>USAGE RATE</th>
-        <th>ONHAND YSP</th>
         <th >SCHEDULED START DATE </th>
         <th><center>ACTION </center></th>
       </tr>
@@ -30,7 +29,6 @@
           <td <?php echo $style ?>><?php echo $g['DESCRIPTION'] ?></td>
           <td <?php echo $style ?>><?php echo $g['START_QUANTITY'] ?></center></td>
           <td <?php echo $style ?>><?php echo abs($g['USAGE_RATE_OR_AMOUNT']) ?></td>
-          <td <?php echo $style ?>><?php echo $g['ONHAND_YSP'] ?></td>
           <td <?php echo $style ?>><?php echo $g['SCHEDULED_START_DATE'] ?></center></td>
           <td <?php echo $style ?>><center>
             <button type="button" class="btn btn-md btn-success cencelWipp" stat="1" onclick="addRKH(<?php echo $no ?>, '<?php echo $g['NO_JOB'] ?>', '<?php echo $g['KODE_ASSY'] ?>')" name="button"><i class="fa fa-plus-square"></i> <b>Add to RKH</b></button></center></td>
@@ -89,7 +87,7 @@ function getJobReleased() {
                       <td><center>${v[3]}</center></td>
                       <td><center>${v[4]}</center></td>
                       <td><center>${v[5]}</center></td>
-                      <td><center>${v[7]}</center></td>
+                      <td><center>${v[6]}</center></td>
                       <td hidden><center>${v[4]}</center></td>
                       <td onmouseover="cekhover()">
                         <center>
@@ -125,7 +123,7 @@ function getJobReleased() {
                                       </center>
                                       <input type="hidden" id="qty_split_save${i+1}" value="${v[4]}" readonly>
                                       <input type="hidden" id="usage_rate_split${i+1}" value="${v[5]}" readonly>
-                                      <input type="hidden" id="ssd${i+1}" value="${v[7]}" readonly>
+                                      <input type="hidden" id="ssd${i+1}" value="${v[6]}" readonly>
                                       <input type="hidden" id="item_name${i+1}" value="${v[3]}" readonly>
                                       <input type="hidden" id="created_at" value="" readonly>
                                       <br>
@@ -177,7 +175,7 @@ function getJobReleased() {
                                           </tbody>
                                         </table>
                                         <br>
-                                        <center class="btnsplit${i+1}" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-navy" onclick="saveSplit_(${i+1}, '${v[1]}', '${v[2]}', '${v[3]}', '${v[4]}', '${v[5]}', '${v[7]}')" name="button"><i class="fa fa-sign-in"></i> Append</button>
+                                        <center class="btnsplit${i+1}" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-navy" onclick="saveSplit_(${i+1}, '${v[1]}', '${v[2]}', '${v[3]}', '${v[4]}', '${v[5]}', '${v[6]}')" name="button"><i class="fa fa-sign-in"></i> Append</button>
                                       </div>
                                     </div>
                                   </div>

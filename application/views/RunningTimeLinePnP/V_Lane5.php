@@ -10,7 +10,7 @@
           <div class="row">
             <div class="col-md-12" style="margin-top:10px">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;">
-                  <label for="">Data Tanggal 2020-06-12 (Trial)</label>
+                  <label for="">Data Tanggal <?php echo date('Y-m-d'); ?></label>
                 <!-- <input type="text" autocomplete="off" class="form-control txtWIIPdate" placeholder="..." style="width:100%;" name="" value=""> -->
                 <!-- <div class="col-md-2">
                   <button type="button" style="width:100%;margin-top:25px" class="btn bg-maroon" onclick="setDate()" name="button"><i class="fa fa-gears"></i> Submit</button>
@@ -59,10 +59,11 @@
                             <label id="hours5-<?php echo $key ?>">00</label>:<label id="minutes5-<?php echo $key ?>">00</label>:<label id="seconds5-<?php echo $key ?>">00</label>
                           </p>
                           <button style="border-radius: 50px" class="btn bg-primary btn-xs btn-flat" onclick="start5[<?php echo $key ?>]('<?php echo $l5['kode_item'] ?>', '<?php echo '5' ?>')" id="btnstart5<?php echo $key ?>"> <i class="fa fa-play-circle"></i> </button>
-                          <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause5[<?php echo $key ?>]()" id="btnlanjut<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
-                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset5[<?php echo $key ?>]()" id="btnrestart<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
+                          <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause5[<?php echo $key ?>]()" id="btnlanjut5<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
+                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset5[<?php echo $key ?>]()" id="btnrestart5<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-red btn-xs btn-flat" onclick="selesai5[<?php echo $key ?>]('<?php echo $l5['kode_item'] ?>', '<?php echo '5' ?>')" id="btnfinish5<?php echo $key ?>" disabled> <i class="fa fa-stop"></i> </button>
                         </td>
+                        <input type="hidden" id="val_to_cek5<?php echo $key ?>" value="first_load">
                       </tr>
                       <?php endforeach; ?>
                     </tbody>

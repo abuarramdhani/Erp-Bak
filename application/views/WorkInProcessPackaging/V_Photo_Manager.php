@@ -110,14 +110,14 @@
                                                   <div class="col-md-6">
                                                     <label for="">Kode Komponen</label>
                                                     <input type="hidden" name="id_photo" value="<?php echo $g['id'] ?>">
-                                                    <select class="form-control select2itemcodewipp2" name="kode_komponen" id="kode_komponen_update" style="width:100%" required>
+                                                    <select class="form-control select2itemcodewipp2 kode_item_upd_<?php echo $g['kode_item'] ?>"  onchange="gantiKomp('<?php echo $g['kode_item'] ?>')" name="kode_komponen" style="width:100%" required>
                                                       <option value="<?php echo $g['kode_item'] ?>" selected><?php echo $g['kode_item'] ?></option>
                                                     </select>
                                                   </div>
                                                   <div class="col-md-6">
                                                     <label for="">Nama Komponen</label>
                                                     <input type="hidden" name="type_gambar" value="<?php echo $param ?>">
-                                                    <input type="text" class="form-control" name="nama_komponen" id="nama_komponen_update" placeholder="Nama Komponen" value="<?php echo $g['nama_item'] ?>">
+                                                    <input type="text" class="form-control" name="nama_komponen" id="nama_komponen_update_<?php echo $g['kode_item'] ?>" placeholder="Nama Komponen" value="<?php echo $g['nama_item'] ?>">
                                                   </div>
                                                 </div>
                                               </div>

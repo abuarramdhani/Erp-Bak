@@ -325,6 +325,100 @@ class M_wipp extends CI_Model
         }
     }
 
+    public function getItem()
+    {
+      $res = $this->oracle->query("SELECT msib.segment1 kode_assy, msib.description, msib.primary_uom_code uom,
+                 moqd.subinventory_code, mil.segment1 LOCATOR,
+                 NVL (SUM (moqd.primary_transaction_quantity), 0) qty_onhand
+            FROM mtl_system_items_b msib,
+                 mtl_onhand_quantities_detail moqd,
+                 mtl_item_locations mil
+           WHERE msib.inventory_item_status_code = 'Active'
+             AND msib.segment1 NOT LIKE 'MGA%'
+             AND msib.segment1 NOT LIKE 'MAP%'
+             AND msib.segment1 NOT LIKE 'MEN%'
+             AND msib.segment1 NOT LIKE 'MGB%'
+             AND msib.segment1 NOT LIKE 'PSC%'
+             AND msib.inventory_item_id = moqd.inventory_item_id
+             AND msib.organization_id = moqd.organization_id
+             AND moqd.subinventory_code LIKE '%INT-P&%'
+             AND moqd.locator_id = mil.inventory_location_id
+             AND mil.segment1 IN
+                    ('FINISHED PACKAGING')
+        GROUP BY msib.segment1,
+                 msib.description,
+                 msib.primary_uom_code,
+                 moqd.subinventory_code,
+                 mil.segment1
+        ORDER BY 1")->result_array();
+        return $res;
+    }
+
+    public function getJob($kode_item)
+    {
+      $res = $this->oracle->query("SELECT DISTINCT we.wip_entity_name no_job, wdj.scheduled_start_date,
+                                    wdj.completion_subinventory, msib_assy.segment1 kode_assy,
+                                    msib_assy.description, wdj.start_quantity, bd.department_code,
+                                    bores.usage_rate_or_amount, msib_comp.segment1 kode_comp,
+                                    msib_comp.description comp_description
+                               FROM wip_entities we,
+                                    wip_discrete_jobs wdj,
+                                    wip_requirement_operations wro,
+                                    mtl_system_items_b msib_comp,
+                                    mtl_system_items_b msib_assy,
+                                    bom_departments bd,
+                                    bom_operation_sequences bos,
+                                    bom_operation_resources bores,
+                                    bom_operational_routings bor,
+                                    bom_resources br,
+                                    bom_bill_of_materials bom,
+                                    bom_inventory_components bic
+                              WHERE we.wip_entity_id = wdj.wip_entity_id
+                                AND wdj.completion_subinventory LIKE 'INT-P&%'
+                                AND wdj.wip_entity_id = wro.wip_entity_id
+                                AND wro.inventory_item_id = msib_comp.inventory_item_id
+                                AND wro.organization_id = msib_comp.organization_id
+                                AND wdj.primary_item_id = msib_assy.inventory_item_id
+                                AND wdj.organization_id = msib_assy.organization_id
+                                --
+                                AND bor.assembly_item_id = msib_assy.inventory_item_id
+                                AND bor.organization_id = msib_assy.organization_id
+                                AND bos.routing_sequence_id = bor.routing_sequence_id
+                                AND bd.department_id = bos.department_id
+                                AND wro.department_id = bd.department_id
+                                AND bores.operation_sequence_id = bos.operation_sequence_id
+                                AND bores.resource_id = br.resource_id
+                                --
+                                AND bom.assembly_item_id = msib_assy.inventory_item_id
+                                AND bom.organization_id = msib_assy.organization_id
+                                AND bom.bill_sequence_id = bic.bill_sequence_id
+                                AND bic.component_item_id = msib_comp.inventory_item_id
+                                AND wdj.status_type = 3
+                                AND br.resource_code NOT LIKE 'OPTR%'
+                                AND bd.department_code LIKE 'PP%'
+                                AND msib_comp.segment1 NOT LIKE 'MGA%'
+                                AND msib_comp.segment1 NOT LIKE 'MAP%'
+                                AND msib_comp.segment1 NOT LIKE 'MEN%'
+                                AND msib_comp.segment1 NOT LIKE 'MGB%'
+                                AND msib_comp.segment1 NOT LIKE 'PSC%'
+                                AND bor.routing_sequence_id IN (
+                                       SELECT MAX (bor.routing_sequence_id) OVER (PARTITION BY we.wip_entity_name)
+                                         FROM wip_entities we,
+                                              wip_discrete_jobs wdj,
+                                              mtl_system_items_b msib_assy,
+                                              bom_operational_routings bor
+                                        WHERE we.wip_entity_id = wdj.wip_entity_id
+                                          AND wdj.completion_subinventory LIKE 'INT-P&%'
+                                          AND wdj.status_type = 3
+                                          AND wdj.primary_item_id = msib_assy.inventory_item_id
+                                          AND wdj.organization_id = msib_assy.organization_id
+                                          AND bor.assembly_item_id = msib_assy.inventory_item_id
+                                          AND bor.organization_id = msib_assy.organization_id)
+                                AND msib_comp.segment1 LIKE '$kode_item%'
+                           ORDER BY msib_assy.segment1 ASC, wdj.scheduled_start_date DESC")->result_array();
+                           return $res;
+    }
+
     public function JobRelease()
     {
         $response = $this->oracle->query("SELECT DISTINCT we.wip_entity_name no_job
@@ -333,12 +427,12 @@ class M_wipp extends CI_Model
                          ,msib_assy.segment1 kode_assy
                          ,msib_assy.DESCRIPTION
                          ,wdj.start_quantity
-                         ,khs_inv_qty_oh (225, 
-                                         msib_assy.inventory_item_id,
-                                         'SP-YSP',
-                                         NULL,
-                                         NULL
-                                        ) onhand_ysp
+                  --        ,khs_inv_qty_oh (225, 
+                  --                        msib_assy.inventory_item_id,
+                  --                        'SP-YSP',
+                  --                        NULL,
+                  --                        NULL
+                  --                       ) onhand_ysp
                          ,bd.department_code
                          ,bores.usage_rate_or_amount
                     FROM wip_entities we,
@@ -477,6 +571,20 @@ class M_wipp extends CI_Model
         }
     }
 
+    public function getDetailItem($value)
+    {
+      $sql = "SELECT DISTINCT msib.segment1 kode_assy
+      					,msib.description
+      					from mtl_system_items_b msib
+      					where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+      					-- and msib.organization_id = 81
+      					AND (msib.DESCRIPTION LIKE '%$value%'
+                     		OR msib.SEGMENT1 LIKE '%$value%')";
+              $query = $this->oracle->query($sql);
+      		return $query->result_array();
+
+    }
+
     public function getDetailBom($kodebarang)
     {
         $sql = " SELECT
@@ -532,4 +640,62 @@ class M_wipp extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+
+    public function getDetailBom2($kodebarang)
+    {
+        $sql = " SELECT
+        rownum line_id
+        ,CONNECT_BY_ROOT q_bom.assembly_num root_assembly
+        -- ,q_bom.component_num
+        -- ,q_bom.component_id
+        ,q_bom.description
+        -- ,q_bom.item_num
+        -- ,q_bom.item_type
+        ,q_bom.qty
+        ,q_bom.uom
+        -- ,SUBSTR(SYS_CONNECT_BY_PATH(q_bom.assembly_Num, ' <-- '),5) assembly_path
+        -- ,LEVEL  bom_level
+        -- ,organization_id
+        -- ,organization_code
+        -- ,item_cost--,  CONNECT_BY_ISCYCLE is_cycle
+         FROM
+         (SELECT mb1.segment1 assembly_num, mb2.segment1 component_num,
+                 mb2.inventory_item_id component_id, mb2.description,
+                 bc.item_num, flv.meaning item_type, bc.component_quantity qty,
+                 mb2.primary_uom_code uom, mb1.organization_id, mp.organization_code,
+                 (SELECT cic.item_cost
+                    FROM cst_item_costs cic
+                   WHERE mb2.inventory_item_id = cic.inventory_item_id
+                     AND mb2.organization_id = cic.organization_id
+                     AND cic.cost_type_id = 1020--KHSStandar
+                 ) item_cost
+          FROM   bom.bom_components_b bc,
+                 bom.bom_structures_b bs,
+                 inv.mtl_system_items_b mb1,
+                 inv.mtl_system_items_b mb2,
+                 fnd_lookup_values flv,
+                 mtl_parameters mp
+          WHERE  bs.assembly_item_id = mb1.inventory_item_id
+             AND bc.component_item_id = mb2.inventory_item_id
+             AND bc.bill_sequence_id = bs.bill_sequence_id
+             AND mb1.organization_id = mb2.organization_id
+             AND bs.organization_id = mb2.organization_id
+             AND bc.disable_date IS NULL
+             AND bs.alternate_bom_designator IS NULL
+             AND mb1.organization_id = NVL (102, mb1.organization_id) --in (102,386)
+             AND mp.organization_id = mb1.organization_id
+             AND mb2.item_type = flv.lookup_code
+             AND flv.lookup_type = 'ITEM_TYPE'
+         ) q_bom
+         WHERE
+         q_bom.component_num LIKE 'MGA%'
+       START WITH  q_bom.assembly_Num IN ('$kodebarang')
+       CONNECT BY NOCYCLE PRIOR q_bom.component_num = q_bom.assembly_num
+       ORDER SIBLINGS BY q_bom.assembly_Num, q_bom.item_num";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+
 }

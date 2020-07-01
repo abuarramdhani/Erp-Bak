@@ -6,7 +6,7 @@
         <th><center>NO</center></th>
         <th>KODE ITEM</th>
         <th>NAMA ITEM</th>
-        <th>ONHAND YSP</th>
+        <th>ONHAND INT-P&P</th>
         <th>MIN</th>
         <th>MAX</th>
         <th><center>ACTION </center></th>
@@ -25,7 +25,7 @@
           <td <?php echo $style ?>><center><?php echo $no ?></center></td>
           <td <?php echo $style ?>><?php echo $g['KODE_ASSY'] ?></td>
           <td <?php echo $style ?>><?php echo $g['DESCRIPTION'] ?></td>
-          <td <?php echo $style ?>><?php echo $g['ONHAND_YSP'] ?></td>
+          <td <?php echo $style ?>><?php echo $g['QTY_ONHAND'] ?></td>
           <td <?php echo $style ?>><?php echo $g['MIN'] ?></td>
           <td <?php echo $style ?>><?php echo $g['MAX'] ?></td>
           <td <?php echo $style ?>><center>
@@ -67,8 +67,8 @@ function detail_wipp_1(no, kode_item) {
         },
         beforeSend: function() {
           $('.JobReleaseArea'+kode_item).html(`<div id="loadingArea0">
-                                          <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
-                                        </div>`)
+                                                <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+                                              </div>`)
         },
         success: function(result) {
           $('.JobReleaseArea'+kode_item).html(result)

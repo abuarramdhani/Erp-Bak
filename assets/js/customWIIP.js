@@ -19,6 +19,71 @@ const swalWIPP = (type, title) => {
   })
 }
 // ========================do something below the alert =================
+let wipp_skrtt = $('.tblwiip12').DataTable({
+  "pageLength": 10,
+});
+
+function format_wipp_bom( d, kode_item ){
+  return `<div class="JobReleaseArea_${kode_item}"></div>`;
+}
+
+const detailBOM = (kode_item, no) => {
+  let tr = $(`tr[row-bom="${no}"]`);
+  let row = wipp_skrtt.row(tr);
+  if ( row.child.isShown() ) {
+       row.child.hide();
+       tr.removeClass('shown');
+  }
+  else {
+      row.child( format_wipp_bom(row.data(), kode_item)).show();
+      tr.addClass('shown');
+      $.ajax({
+        url: baseurl + 'WorkInProcessPackaging/JobManager/getDetailBom',
+        type: 'POST',
+        async: true,
+        dataType: 'JSON',
+        data: {
+          kode_item: kode_item,
+        },
+        beforeSend: function() {
+          $('.JobReleaseArea_'+kode_item).html(`<div id="loadingArea0">
+                                                <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+                                              </div>`)
+        },
+        success: function(result) {
+          let item = '';
+          let push = [];
+          result.forEach((v, i) =>{
+            item = `<tr row-id="${v.ROOT_ASSEMBLY}">
+                      <td><center>${v.ROOT_ASSEMBLY}</center></td>
+                      <td><center>${v.DESCRIPTION}</center></td>
+                      <td><center>${Math.abs(v.QTY)}</center></td>
+                      <td><center>${v.UOM}</center></td>
+                    </tr>`;
+            push.push(item);
+          })
+          let join = push.join();
+          let html = `<table class="table table-striped table-bordered table-hover text-left" style="font-size:12px;width:50%;float:right">
+              <thead>
+                <tr class="bg-success">
+                  <th><center>ROOT_ASSEMBLY</center></th>
+                  <th><center>DESCRIPTION</center></th>
+                  <th><center>QTY</center></th>
+                  <th><center>UOM</center></th>
+                </tr>
+              </thead>
+              <tbody>
+              ${join}
+              </tbody>
+            </table>`
+          $('.JobReleaseArea_'+kode_item).html(html)
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+  }
+}
 
 const submit_type = () => {
   const type = $('#type_proses_gambar').val();
@@ -298,7 +363,7 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
                       </tr>`;
               html.push(hhtml)
       })
-      console.log(html);
+      // console.log(html);
       $('#create-new-rkh').append(html);
     }
     function b() {
@@ -459,7 +524,7 @@ const getModalSplit = (nj, qty, kode, desc, target, ur, wss, dt, ct, qty_parrent
 }
 
 const photoWIPP = path => {
-  console.log(path);
+  // console.log(path);
   $('#showPhoto').attr('src', baseurl + path)
 }
 
@@ -875,8 +940,8 @@ $('.select2itemcodewipp').on('change', function() {
   })
 })
 
-$('.select2itemcodewipp2').on('change', function() {
-  let val = $(this).val();
+const gantiKomp = (param) =>{
+  let val = $(`.kode_item_upd_${param}`).val();
   $.ajax({
     url: baseurl + 'WorkInProcessPackaging/JobManager/JobReleaseSelected',
     type: 'POST',
@@ -886,16 +951,16 @@ $('.select2itemcodewipp2').on('change', function() {
       term: val,
     },
     beforeSend: function() {
-      $(`#nama_komponen_update`).val('Loading...');
+      $(`#nama_komponen_update_${param}`).val('Loading...');
     },
     success: function(result) {
-      $(`#nama_komponen_update`).val(result[0].DESCRIPTION);
+      $(`#nama_komponen_update_${param}`).val(result[0].DESCRIPTION);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
     }
   })
-})
+}
 
 // INI UNTUK MODAL
 const addrowlinewipp0 = _ => {
@@ -1120,8 +1185,8 @@ const minus_wipp4 = (n, id_job_list) => {
     success: function(result) {
       Swal.close()
       let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
-      // console.log(setelah_dikurangi);
-      // console.log(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1));
+      // // console.log(setelah_dikurangi);
+      // // console.log(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1));
       if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
       $('#total_ppic_4').html(`${setelah_dikurangi.toFixed(3)}%`);
       let n = $('.tblwiip4 tbody tr:last td:first-child center').html();
@@ -1357,7 +1422,7 @@ const addLaneArrange = (line, target_pe, no, id) =>{
   let item_selected = Array.prototype.map.call(document.querySelectorAll(`.item-selected-arrange-${no} td center`), function(td) {
       return td.innerHTML;
     });
-  // console.log(item_selected);
+  // // console.log(item_selected);
   let tampung_pe = $('.tampung_pe_'+line).map((_,el) => el.value).get();
   tampungan = 0;
   tampung_pe.forEach((val, i) =>{
@@ -1370,8 +1435,8 @@ const addLaneArrange = (line, target_pe, no, id) =>{
   let total_sebelumnya = $('#total_ppic_'+line).html()
   let total_ppic_setelah_ditambahkan = Number(item_selected[7].trim().substring(0, item_selected[7].trim().length - 1))+Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1));
   $('#total_ppic_'+line).html(`${total_ppic_setelah_ditambahkan.toFixed(3)}%`);
-  console.log(Number(item_selected[7].trim().substring(0, item_selected[7].trim().length - 1)));
-  // console.log(target_pe_max);
+  // console.log(Number(item_selected[7].trim().substring(0, item_selected[7].trim().length - 1)));
+  // // console.log(target_pe_max);
 
   if (count_to_cek > target_pe_max) {
     swalWIPP('warning', `Jumlah Target PE (${count_to_cek.toFixed(5)}) > Target PE Max (${target_pe_max})`)
@@ -1439,7 +1504,7 @@ const addrowlinewipp = (cek, line) => {
       if (tampung == '') {
         $('.areaplusitem').html('<tr><td colspan="9"><center>Data is empty.</center></td></tr>')
       }
-      console.log(tampung);
+      //// console.log(tampung);
       tampung.forEach((val, i) =>{
         $('.areaplusitem').append(`<tr class="item-selected-arrange-${i+1}">
                                     <td>
@@ -1508,9 +1573,9 @@ const minus_wipp1 = (n, id_job_list) => {
       let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty);
       if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
 
-      // console.log(Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)));
-      // console.log(Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty));
-      // console.log(setelah_dikurangi);
+      // // console.log(Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)));
+      // // console.log(Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty));
+      // // console.log(setelah_dikurangi);
 
       $('#total_ppic_1').html(`${setelah_dikurangi.toFixed(3)}%`);
 
@@ -1581,7 +1646,6 @@ const readFileForEdit = input =>{
     let reader = new FileReader();
 
     reader.onload = function(e) {
-      console.log(e.target.result);
       $('#showPreEdit')
         .attr('src', e.target.result)
         .height(350);
@@ -1609,7 +1673,7 @@ $('.txtWIIPdate').datepicker({
 //     Swal.showLoading()
 //   },
 //   success: function(result) {
-//     console.log(result);
+//     // console.log(result);
 //     if (result===1) {
 //       Swal.close()
 //     }else {
@@ -1628,7 +1692,7 @@ $('.txtWIIPdate').datepicker({
 
 // saveSplit_
 
-  // console.log(html);
+  // // console.log(html);
   // const nojob = $(`#job0${id}_wipp1`).val();
   // const item = $(`#item0${id}_wipp1`).val();
   // const item_name = $(`#item_name${id}`).val();

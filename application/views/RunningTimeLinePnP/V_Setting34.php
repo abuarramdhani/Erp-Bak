@@ -11,7 +11,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;">
-                  <label for="">Data Tanggal 2020-06-12 (Trial)</label>
+                  <label for="">Data Tanggal <?php echo date('Y-m-d'); ?></label>
                 <!-- <input type="text" autocomplete="off" class="form-control txtWIIPdate" placeholder="..." style="width:100%;" name="" value=""> -->
                 <!-- <div class="col-md-2">
                   <button type="button" style="width:100%;margin-top:25px" class="btn bg-maroon" onclick="setDate()" name="button"><i class="fa fa-gears"></i> Submit</button>
@@ -58,10 +58,11 @@
 														<label id="hours3-<?php echo $key ?>">00</label>:<label id="minutes3-<?php echo $key ?>">00</label>:<label id="seconds3-<?php echo $key ?>">00</label>
 													</p>
 													<button style="border-radius: 50px" class="btn bg-primary btn-xs btn-flat" onclick="start3[<?php echo $key ?>]('<?php echo $l3['kode_item'] ?>', '<?php echo '3' ?>')" id="btnstart3<?php echo $key ?>"> <i class="fa fa-play-circle"></i> </button>
-													<button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause3[<?php echo $key ?>]()" id="btnlanjut<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
-													<button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset3[<?php echo $key ?>]()" id="btnrestart<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
+													<button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause3[<?php echo $key ?>]()" id="btnlanjut3<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
+													<button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset3[<?php echo $key ?>]()" id="btnrestart3<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
 													<button style="border-radius: 50px" class="btn bg-red btn-xs btn-flat" onclick="selesai3[<?php echo $key ?>]('<?php echo $l3['kode_item'] ?>', '<?php echo '3' ?>')" id="btnfinish3<?php echo $key ?>" disabled> <i class="fa fa-stop"></i> </button>
 												</td>
+                        <input type="hidden" id="val_to_cek3<?php echo $key ?>" value="first_load">
 											</tr>
                       <?php endforeach; ?>
                     </tbody>
@@ -108,10 +109,11 @@
                             <label id="hours4-<?php echo $key ?>">00</label>:<label id="minutes4-<?php echo $key ?>">00</label>:<label id="seconds4-<?php echo $key ?>">00</label>
                           </p>
                           <button style="border-radius: 50px" class="btn bg-primary btn-xs btn-flat" onclick="start4[<?php echo $key ?>]('<?php echo $l4['kode_item'] ?>', '<?php echo '4' ?>')" id="btnstart4<?php echo $key ?>"> <i class="fa fa-play-circle"></i> </button>
-                          <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause4[<?php echo $key ?>]()" id="btnlanjut<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
-                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset4[<?php echo $key ?>]()" id="btnrestart<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
+                          <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause4[<?php echo $key ?>]()" id="btnlanjut4<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
+                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset4[<?php echo $key ?>]()" id="btnrestart4<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-red btn-xs btn-flat" onclick="selesai4[<?php echo $key ?>]('<?php echo $l4['kode_item'] ?>', '<?php echo '4' ?>')" id="btnfinish4<?php echo $key ?>" disabled> <i class="fa fa-stop"></i> </button>
                         </td>
+                        <input type="hidden" id="val_to_cek4<?php echo $key ?>" value="first_load">
                       </tr>
                       <?php endforeach; ?>
                     </tbody>
