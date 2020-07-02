@@ -3,7 +3,11 @@
           <h1>
            RESPONSIBILITY
           </h1>
-         
+          <div class="row">
+            <div class="col-lg-4">
+              <input type="text" id="txt-Dashboard-ResponsibilitySearch" class="form-control" placeholder="Cari Responsibility ...">
+            </div>
+          </div>
         </section>
 
         <!-- Main content -->
