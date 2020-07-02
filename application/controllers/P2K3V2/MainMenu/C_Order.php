@@ -2083,14 +2083,16 @@ class C_Order extends CI_Controller
 			return;
 		}
 
+		// jumlah baris dalam 1 halaman
+		$LIMIT_ROW_PER_PAGE = 10;
 		// split array to per group(10 array inside)
-		$chunk = array_chunk($getBon, 10);
+		$chunk = array_chunk($getBon, $LIMIT_ROW_PER_PAGE);
 
 		// buat template kosong 10 row
 		$templateTabel = array_fill(0, count($chunk), []);
 
 		for ($x = 0; $x < count($chunk); $x++) {
-			for ($i = 0; $i < 10; $i++) {
+			for ($i = 0; $i < $LIMIT_ROW_PER_PAGE; $i++) {
 				array_push($templateTabel[$x], array(
 					'kode' => '',
 					'nama' => '',

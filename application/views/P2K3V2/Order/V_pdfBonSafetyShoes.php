@@ -104,7 +104,7 @@ foreach ($kumpulandata as $data) : ?>
 				<td style="width: 20%; border-right: 1px solid black;">Diterima : </td>
 				<td style="width: 20%; border-right: 1px solid black;">Disetujui : **) <br /> PPIC </td>
 				<td style="width: 20%; border-right: 1px solid black; ">Disetujui : <br /> Kepala Unit</td>
-				<td style="width: 20%; height: 70px; ">Diminta : <br /> Kepala Seksi</td>
+				<td style="width: 20%; height: 62px; ">Diminta : <br /> Kepala Seksi</td>
 			</tr>
 			<tr>
 				<td style="border-right: 1px solid black;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
@@ -114,5 +114,8 @@ foreach ($kumpulandata as $data) : ?>
 				<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 			</tr>
 		</table>
+		<div>
+			<small style="font-size: 10px; font-style: italic;">Halaman ini dicetak melalui QuickERP - (P2K3 SEKSI V.2) - <?= date('d-m-Y H:i:s') ?> oleh <?= $this->session->user . ' - ' . $this->session->employee ?></small>
+		</div>
 	</div>
 <?php endforeach ?>
