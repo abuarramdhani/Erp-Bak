@@ -62,7 +62,7 @@
                         <div class="col-md-12 text-right">
                           <button type="button" class="btn btn-primary" onclick="start_introjs()" style="background-color: #007bff; border-color: #007bff;">
                             <i class="fa fa-mouse-pointer"></i>
-                            Intro Aplikasi
+                            Petunjuk Penggunaan Aplikasi
                           </button>
                         </div>
                         <div class="form-group">

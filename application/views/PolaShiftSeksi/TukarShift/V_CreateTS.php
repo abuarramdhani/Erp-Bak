@@ -34,7 +34,7 @@
                                     <div class="col-md-12" style="margin-bottom: 2em;">
                                         <button class="btn btn-primary" onclick="start_introjs()" style="background-color: #007bff; border-color: #007bff;">
                                             <i class="fa fa-mouse-pointer"></i>
-                                            Intro Aplikasi
+                                            Petunjuk Penggunaan Aplikasi
                                         </button>
                                         <!-- <a href="#" class="btn btn-primary" style="background-color: #ffc107; border-color: #ffc107; color: black;">
                                             <i class="fa fa-book"></i>

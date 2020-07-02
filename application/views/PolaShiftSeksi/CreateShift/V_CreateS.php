@@ -43,7 +43,7 @@
                   <div class="col-md-12 text-left" style="margin-bottom: 2em;">
                     <button type="button" id="start_intro" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">
                       <i class="fa fa-mouse-pointer"></i>
-                      Intro Aplikasi
+                      Petunjuk Penggunaan Aplikasi
                     </button>
                   </div>
                   <div class="row">
