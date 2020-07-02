@@ -261,7 +261,7 @@ class M_blankoevaluasi extends CI_Model
         $akhir = date('Y-m-d', strtotime($akhir));
 
         $q_terlambat = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TT' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK and point <> '0'' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
