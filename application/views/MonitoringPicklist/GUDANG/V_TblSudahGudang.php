@@ -21,6 +21,7 @@
             <td>Item Assy</td>
             <td>QTY</td>
             <td>From Subinv</td>
+            <td>Locator</td>
             <td>Action</td>
         </tr>
     </thead>
@@ -37,6 +38,7 @@
             <td><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC'] ?></td>
             <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
             <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
+            <td><input type="hidden" id="locator<?= $no?>" value="<?= $val['LOCATOR']?>"><?= $val['LOCATOR']?></td>
             <td><button type="button" class="btn btn-success" id="regud<?= $no?>" onclick="recallGudang(<?= $no?>)" <?= $del?>>Recall</button></td>
         </tr>
     <?php $no++; }?>

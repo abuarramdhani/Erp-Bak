@@ -40,7 +40,7 @@
     ?>
         <tr>
             <td><input type="hidden" id="baris" class="baris" value="<?= $x?>"><?= $no?></td>
-            <td><span class="btn check_semua" style="background-color:inherit" id="cek<?= $no?>" <?= $cek?> <?= $del?>><i id="ceka<?= $no?>" class="fa fa-square-o ceka<?= $del?>"></i></span>
+            <td><span class="btn check_semua" style="background-color:inherit" id="cek<?= $no?>" <?= $cek?> <?= $del?>><i id="ceka<?= $no?>" class="fa fa-square-o bisacek ceka<?= $del?>"></i></span>
                 <input type="hidden" class="tandasemua<?= $del?>" id="tandacek<?= $no?>" value="cek"></td>
             <td><input type="hidden" id="dept<?= $no?>" value="<?= $val['DEPARTMENT']?>"><?= $val['DEPARTMENT']?></td>
             <td><input type="hidden" class="nojob<?= $del?>" id="nojob<?= $no?>" value="<?= $val['JOB_NO']?>"><?= $val['JOB_NO']?></td>
@@ -48,7 +48,7 @@
             <td style="text-align:left"><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC']?></td>
             <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
             <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
-            <td><button type="button" class="btn btn-success <?= $btn?>" id="btnppic1<?= $no?>" onclick="approvePPIC(<?= $no?>)" <?= $del?>>Approve</button></td>
+            <td><button type="button" class="btn btn-success <?= $btn?>" id="btnapp<?= $no?>" onclick="approvePPIC(<?= $no?>)" <?= $del?>>Approve</button></td>
         </tr>
     <?php $no++;  }?>
     </tbody>
