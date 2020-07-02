@@ -10,7 +10,7 @@ class C_Api extends CI_Controller {
     function __construct(){
         parent::__construct();
 
-        // erorr in win xp
+        // error in win xp
         // $this->checkSession();
         
         $this->load->model('BlankoEvaluasi/M_blankoevaluasi');
