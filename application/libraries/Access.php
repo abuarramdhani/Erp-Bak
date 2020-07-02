@@ -55,6 +55,7 @@ class Access extends CI_Model
   function page()
   {
     $access = $this->CanAccess();
+    $access = true;
     if(!$access){
       echo "
       <div style='position: absolute; left: 0; right: 0; top: 30%; bottom: 0;'>

@@ -51,8 +51,7 @@
 						<div class="box-header">
 							<div class="row">
 								<div class="col-lg-6">
-
-									<div class="form-group" style="margin-bottom: 0 !important;">
+									<div data-step="1" data-intro="Pilih tanggal awal dan jam awal lembur" class="form-group" style="margin-bottom: 0 !important;">
 										<label class="col-sm-2 control-label">Lembur Awal</label>
 										<div class="col-sm-5">
 											<div class="bootstrap-timepicker">
@@ -75,7 +74,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="form-group">
+									<div data-step="2" data-intro="Pilih tanggal akhir dan jam akhir lembur" class="form-group">
 										<label class="col-sm-2 control-label">Lembur Akhir</label>
 										<div class="col-sm-5">
 											<div class="bootstrap-timepicker">
@@ -99,7 +98,7 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div data-step="3" data-intro="Pilih lembur yang akan diinputkan" class="form-group">
 										<label class="col-sm-2 control-label">Jenis</label>
 										<div class="col-sm-10">
 											<select class="form-control select2" style="width: 100% !important;" data-placeholder="-- silahkan pilih --" name="kd_lembur" required>
@@ -111,7 +110,7 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div data-step="4" data-intro="Apakah saat lembur ada jam break, pilih ya jika ada" class="form-group">
 										<label class="col-sm-2 control-label">Break</label>
 										<div class="col-sm-2">
 											<label style="margin-left:2%; top:+3;">
@@ -127,7 +126,7 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div data-step="5" data-intro="Apakah saat lembur ada jam istirahat, pilih ya jika ada" class="form-group">
 										<label class="col-sm-2 control-label">Istirahat</label>
 										<div class="col-sm-2">
 											<label style="margin-left:2%; top:+3;">
@@ -143,13 +142,19 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div data-step="6" data-intro="Masukkan alasan lembur yang akan diinputkan" class="form-group">
 										<label class="col-sm-2 control-label">Alasan</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" style="min-height: 40px; max-height: 120px; resize: vertical;" rows="3" name="alasan" placeholder="Alasan kenapa lembur" class="" required></textarea>
 										</div>
 									</div>
 
+								</div>
+								<div class="col-md-6 text-right">
+									<button type="button" class="btn btn-primary" onclick="start_introjs()" style="background-color: #007bff; border-color: #007bff;">
+										<i class="fa fa-mouse-pointer"></i>
+										Intro Aplikasi
+									</button>
 								</div>
 							</div>
 							<!-- hidden input start -->
@@ -166,7 +171,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="form-group">
-										<div class="col-sm-12">
+										<div data-step="7" data-intro="Tabel untuk menginputkan pekerja yang lembur" class="col-sm-12">
 											<table id="example11" class="table table-responsive table-bordered table-striped text-center">
 												<thead style="background:#3c8dbc; color:#fff">
 													<tr style="background: #fff; color: #444; border: 0px solid white;">
@@ -174,7 +179,7 @@
 															<label class="col-sm-1 control-label">Pekerja</label>
 														</td>
 														<td>
-															<button id="spl_pkj_add" type="button" class="btn btn-primary btn-sm" style="float: right; margin-bottom: 1em;">
+															<button data-step="13" data-intro="Tombol untuk menambahkan pekerja lain" id="spl_pkj_add" type="button" class="btn btn-primary btn-sm" style="float: right; margin-bottom: 1em;">
 																<i class="fa fa-plus"></i>
 															</button>
 														</td>
@@ -197,7 +202,7 @@
 														<td>
 															<button disabled type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>
 														</td>
-														<td>
+														<td data-step="8" data-intro="Pilih pekerja yang lembur">
 															<select class="spl-new-pkj-select2 spl-cek" name="noind[]" style="width: 100%" required>
 																<!-- select2 -->
 															</select>
@@ -213,10 +218,10 @@
 														<td>
 															<input type="text" class="form-control" name="overtime" disabled>
 														</td>
-														<td>
+														<td data-step="9" data-intro="Masukkan berapa target lembur">
 															<input type="number" min="1" class="form-control" name="target[0][]" required>
 														</td>
-														<td>
+														<td data-step="10" data-intro="Masukkan satuan target lembur">
 															<select class="form-control target-satuan" name="target_satuan[0][]" required>
 																<option value=""></option>
 																<option value="Pcs">Pcs</option>
@@ -228,13 +233,13 @@
 																<option value="Flask">Flask</option>
 															</select>
 														</td>
-														<td>
+														<td data-step="11" data-intro="Masukkan berapa realisasi lembur">
 															<input type="number" min="1" class="form-control" name="realisasi[0][]" required>
 														</td>
 														<td>
 															<input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[0][]" readonly>
 														</td>
-														<td colspan="2">
+														<td data-step="12" data-intro="Masukkan pekerjaan yang dilakukan saat lembur" colspan="2">
 															<textarea style="resize: vertical; min-height: 30px;" class="form-control pekerjaan" rows="1" name="pekerjaan[0][]" required></textarea>
 														</td>
 														<td>
@@ -247,8 +252,8 @@
 									</div>
 									<div class="form-group">
 										<div class="col-sm-12 pull-left">
-											<button type="reset" style="margin-right:3px" class="btn btn-primary" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
-											<button type="submit" id="submit_spl" class="btn btn-primary"> <i class="fa fa-save"></i> Submit</button>
+											<button data-step="15" data-intro="Tombol untuk reset isian" type="reset" style="margin-right:3px" class="btn btn-primary" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
+											<button data-step="14" data-intro="Klik tombol ini jika data sudah diisi dengan benar" type="submit" id="submit_spl" class="btn btn-primary"> <i class="fa fa-save"></i> Submit</button>
 											<a href="<?= base_url('SPL/Pusat') ?>" class="btn btn-warning"> <i class="fa fa-arrow-circle-left"></i> Kembali</a>
 										</div>
 									</div>
@@ -310,6 +315,10 @@
 	//   console.log('Got focus');
 	//   window.location.reload();
 	// }
+
+	function start_introjs() {
+		introJs().start()
+	}
 
 	var timeoutInMiliseconds = 120000;
 	var timeoutId;
