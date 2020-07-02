@@ -305,7 +305,7 @@ function repeat($string, $x)
         <th rowspan="2" width="13%">ASPEK PENILAIAN</th>
         <th rowspan="2" width="15%">DASAR NILAI</th>
         <th rowspan="2" width="15%">URAIAN</th>
-        <th rowspan="2" width="20%">BUKTI PELAKU</th>
+        <th rowspan="2" width="20%">BUKTI PERILAKU</th>
         <th width="60px;" rowspan="2">NILAI</th>
         <th colspan="5">SKALA PENILAIAN</th>
       </tr>
@@ -483,7 +483,7 @@ function repeat($string, $x)
   <table style="margin-bottom: 5px;">
     <tr>
       <td class="center bold" style="width: 40px; height: 30px; border: 3px solid black;"> </td>
-      <td>Saya bersedia diperpanjang sebagai pekerja <u><i>outsourcing / kontrak non-staf</i></u> di CV. KHS (<i>coret salah satu</i>)</td>
+      <td>Saya bersedia diperpanjang sebagai pekerja <b><u><i>outsourcing / kontrak non-staf</i></u></b> di CV. KHS (<i>coret salah satu</i>)</td>
     </tr>
   </table>
 
