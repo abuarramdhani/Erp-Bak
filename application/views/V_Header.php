@@ -106,7 +106,7 @@
 											$ekstensi = 'JPG';
 										}
 									} else {
-										$ekstensi = 'jpg';
+										$ekstensi = 'JPG';
 									}
 									if($ekstensi=='jpg' || $ekstensi=='JPG') {
 										$lokasifoto=$path_photo.$this->session->user.".".$ekstensi;
