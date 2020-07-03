@@ -72,7 +72,7 @@ img {
 						$ekstensi 	= 	'JPG';
 					}
 				}else{
-					$ekstensi 	= 	"jpg";
+					$ekstensi 	= 	"JPG";
 				}
 
 				if($ekstensi=='jpg' || $ekstensi=='JPG'){
