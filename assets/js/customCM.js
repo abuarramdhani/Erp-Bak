@@ -3353,7 +3353,6 @@ $(document).on('ready', function(){
 	});
 
 	$('#btn-CM-Tambahan-Hapus').on('click', function(){
-		$('#CateringTambahanLoading').show();
 		ButtonText = $(this).text();
 		if (ButtonText == "Hapus") {
 			var id_tambahan = $('#txt-CM-Tambahan-IdTambahan').val();
@@ -3368,6 +3367,7 @@ $(document).on('ready', function(){
 				cancelButtonText: 'Batal'
 			}).then((result) => {
 				if (result.value) {
+					$('#CateringTambahanLoading').show();
 					$.ajax({
 						method: 'POST',
 						url: baseurl + 'CateringManagement/Pesanan/Tambahan/hapus',
@@ -4030,8 +4030,8 @@ $(document).on('ready', function(){
 				confirmButtonText: 'Hapus',
 				cancelButtonText: 'Batal'
 			}).then((result) => {
-				$('#CateringPenguranganLoading').show();
 				if (result.value) {
+					$('#CateringPenguranganLoading').show();
 					$.ajax({
 						method: 'POST',
 						url: baseurl + 'CateringManagement/Pesanan/Pengurangan/hapus',
