@@ -33,7 +33,7 @@
 							</div>
 							<div class="box-body">
 								<div class="row">
-									<div class="col-sm-8" style="padding-right: 0px;">
+									<div class="col-lg-8 col-sm-12" style="padding-right: 0px;">
 										<div class="box box-solid box-success">
 											<div class="box-body" style="height: 450px;overflow-x: scroll;">
 												<div class="row">
@@ -102,7 +102,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-2">
+									<div class="col-lg-2 col-sm-6">
 										<div class="box box-solid box-info">
 											<div class="box-body" id="CateringHitungPesananLihatJumlah"  style="height: 450px;overflow-x: scroll;">
 												<?php 
@@ -111,10 +111,10 @@
 													<div class="row">
 														<div class="col-lg-12">
 															<label class="control-label">Katering <?php echo $i ?></label>
-															<div class="col-lg-9" style="padding: 0%">
+															<div class="col-lg-8" style="padding: 0%">
 																<input type="text" class="form-control input-sm" name="txtKateringTampilNama<?php echo $i ?>" value="<?php echo isset($pembagian[$i-1]['fs_nama_katering']) ? $pembagian[$i-1]['fs_nama_katering'] : '' ?>" <?php echo isset($pembagian[$i-1]['fs_nama_katering']) ? '' : 'disabled' ?> >
 															</div>
-															<div class="col-lg-3" style="padding: 0%">
+															<div class="col-lg-4" style="padding: 0%">
 																<input type="text" class="form-control input-sm" name="txtKateringTampilJumlah<?php echo $i ?>" value="<?php echo isset($pembagian[$i-1]['fs_nama_katering']) ? $pembagian[$i-1]['jumlah_total'] : '' ?>" <?php echo isset($pembagian[$i-1]['fs_nama_katering']) ? '' : 'disabled' ?> >
 															</div>
 														</div>
@@ -125,7 +125,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-2" style="padding-left: 0px;">
+									<div class="col-lg-2 col-sm-6" style="padding-left: 0px;">
 										<div class="box box-solid box-danger">
 											<div class="box-header with-border" style="height: 100px;">
 												Tempat makan hari sebelumnya yang tidak muncul di shift dan lokasi yang sama.
@@ -133,11 +133,11 @@
 											<div class="box-body" style="height: 350px;overflow-x: scroll;">
 												<div class="row">
 													<div class="col-lg-12">
-														<table border="1" style="border: 1px solid black;width: 100%;border-collapse: collapse;">
+														<table border="1" style="border: 1px solid black;width: 100%;border-collapse: collapse;font-size: 7pt">
 															<thead>
 																<tr>
-																	<th>Tempat Makan</th>
-																	<th>Pesanan</th>
+																	<th style="text-align: center;width: 100px;">T. Makan</th>
+																	<th style="text-align: center;width: 30px;">Psn</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -146,8 +146,8 @@
 																	foreach ($tempat_makan_kemarin as $tmk) {
 																		?>
 																		<tr>
-																			<td><?php echo $tmk['fs_tempat_makan'] ?></td>
-																			<td><?php echo $tmk['fn_jumlah_pesan'] ?></td>
+																			<td style="padding-left: 5px;padding-right: 5px;text-align: left;"><?php echo $tmk['fs_tempat_makan'] ?></td>
+																			<td style="padding-left: 5px;padding-right: 5px;text-align: right;"><?php echo $tmk['fn_jumlah_pesan'] ?></td>
 																		</tr>
 																		<?php 
 																	}
@@ -281,3 +281,9 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		console.log("tes");
+		$('body').addClass("sidebar-collapse");
+	})
+</script>

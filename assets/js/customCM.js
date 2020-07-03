@@ -2366,7 +2366,6 @@ $(document).ready(function(){
 	                })
 				},
 				success: function(data){
-					$('#CateringHitungLoading').hide();
 					var obj = JSON.parse(data);
 					console.log(obj);
 					if (obj.statusKatering == "ada" && obj.statusJadwal == "ada" && obj.statusBatasDatang == "ada" && obj.statusAbsenShift == "ada") {
@@ -2382,12 +2381,14 @@ $(document).ready(function(){
 								cancelButtonText: 'Tidak'
 							}).then((result) => {
 							 	if (!result.value) {
+									$('#CateringHitungLoading').hide();
 							    	Swal.fire(
 								     	'Refresh Telah Dibatalkan',
 								     	'Action Refresh Dibatalkan',
 								     	'error'
 							    	)
 							 	}else{
+							 		$('#CateringHitungLoading').show();
 							 		getFingerCatering();
 							 	}
 							})
@@ -2395,6 +2396,7 @@ $(document).ready(function(){
 							getFingerCatering();
 						}
 					}else{
+						$('#CateringHitungLoading').hide();
 						if (obj.statusTanggal == "not ok") {
 							Swal.fire(
 						     	'Refresh Telah Dihentikan',
