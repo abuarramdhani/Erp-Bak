@@ -263,8 +263,8 @@
 	              <div style="width: 100%; text-align: center;">
 	              <div class="image-cropper" style="display: inline-block">
 				    <?php
-					$path_photo  		=	base_url('assets/img/photo').'/';
-					$file 					= 	$path_photo.$this->session->user.'.'.'jpg';
+					$path_photo  		=	base_url('assets/img/foto').'/';
+					$file 					= 	$path_photo.$this->session->user.'.'.'JPG';
 					$file_headers 	= 	@get_headers($file);
 					if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
 						$file 			= 	$path_photo.$this->session->user.'.'.'JPG';

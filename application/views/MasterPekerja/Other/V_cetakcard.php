@@ -1,5 +1,4 @@
 <?php
-$path_photo  =	base_url('assets/img/photo').'/';
 for($i = 0; $i < count($worker); $i++): ?>
 <table style="width:50%; margin-bottom: 5px;" cellspacing="0">
 	<?php if(($i+1)%2 == 0): ?>
