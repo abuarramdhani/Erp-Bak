@@ -4017,7 +4017,6 @@ $(document).on('ready', function(){
 	});
 
 	$('#btn-CM-Pengurangan-Hapus').on('click', function(){
-		$('#CateringPenguranganLoading').show();
 		ButtonText = $(this).text();
 		if (ButtonText == "Hapus") {
 			var id_pengurangan = $('#txt-CM-Pengurangan-IdPengurangan').val();
@@ -4031,6 +4030,7 @@ $(document).on('ready', function(){
 				confirmButtonText: 'Hapus',
 				cancelButtonText: 'Batal'
 			}).then((result) => {
+				$('#CateringPenguranganLoading').show();
 				if (result.value) {
 					$.ajax({
 						method: 'POST',
