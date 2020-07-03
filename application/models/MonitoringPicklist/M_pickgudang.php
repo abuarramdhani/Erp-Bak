@@ -41,6 +41,7 @@ class M_pickgudang extends CI_Model
 						) release_ppic
 				,kpa.APPROVED_DATE realase_fabrikasi
 				,wdj.SCHEDULED_START_DATE date_job
+				,mil.SEGMENT1 locator
 			--      ,msib_compnt.SEGMENT1 kode_komponen
 			--      ,msib_compnt.DESCRIPTION komp_desc
 			--      ,msib_compnt.INVENTORY_ITEM_ID item_id_komp
@@ -56,6 +57,7 @@ class M_pickgudang extends CI_Model
 				,wip_requirement_operations wro
 				,wip_operations wo
 				,bom_departments bd 
+				,MTL_ITEM_LOCATIONS mil
 				--
 				,khs_picklist_approved kpa
 			where mtrh.HEADER_ID = mtrl.HEADER_ID
@@ -70,6 +72,7 @@ class M_pickgudang extends CI_Model
 			and wro.ORGANIZATION_ID = wdj.ORGANIZATION_ID
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
+            and wro.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 			and wdj.STATUS_TYPE not in (5, 6, 12)
 			--
@@ -83,7 +86,8 @@ class M_pickgudang extends CI_Model
 			and kpa.PROCESS = 2 -- fabrikasi
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
-			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY') ";
+			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			order by 12 desc ";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
@@ -111,6 +115,7 @@ class M_pickgudang extends CI_Model
 						) release_ppic
 				,kpa.APPROVED_DATE realase_gudang
 				,wdj.SCHEDULED_START_DATE date_job
+				,mil.SEGMENT1 locator
 			--      ,msib_compnt.SEGMENT1 kode_komponen
 			--      ,msib_compnt.DESCRIPTION komp_desc
 			--      ,msib_compnt.INVENTORY_ITEM_ID item_id_komp
@@ -126,6 +131,7 @@ class M_pickgudang extends CI_Model
 				,wip_requirement_operations wro
 				,wip_operations wo
 				,bom_departments bd 
+				,MTL_ITEM_LOCATIONS mil
 				--
 				,khs_picklist_approved kpa
 			where mtrh.HEADER_ID = mtrl.HEADER_ID
@@ -139,7 +145,8 @@ class M_pickgudang extends CI_Model
 			and wro.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
 			and wro.ORGANIZATION_ID = wdj.ORGANIZATION_ID
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
-			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
+			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM            
+            and wro.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)       
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 			and wdj.STATUS_TYPE not in (5, 6, 12)
 			--

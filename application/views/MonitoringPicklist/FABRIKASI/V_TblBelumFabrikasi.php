@@ -10,6 +10,10 @@
                 "scrollY": 500,
                 "paging":false
             });
+            var refreshId = setInterval(function()
+            {
+                $("#notiffabrks").load(notiffabrikasi());
+            }, 3000);
         });
     </script>
 <form method="post" target="_blank" action="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/cetaksemua')?>">
@@ -39,14 +43,15 @@
         $del = $val['DELIVER'] != '' ? 'disabled' : ''; 
         $cek = $val['DELIVER'] == '' ? 'onclick="inicek('.$no.')"' : '';
         $btn = $val['DELIVER'] == '' ? 'aktif' : '';
+        $ctk = $val['DELIVER'] == '' ? 'bisaprint' : '';
         if ($val['DELIVER'] == '') { $x++; }
         ?>
         <tr>
             <td><input type="hidden" id="jmli" class="jmli" value="<?= $i?>">
                 <input type="hidden" id="baris" class="baris" value="<?= $x?>"><?= $no?></td>
-            <td><span class="btn check_semua" style="background-color:inherit" id="cek<?= $no?>" <?= $cek?> <?= $del?>><i id="ceka<?= $no?>" class="fa fa-square-o ceka<?= $del?>"></i></span>
+            <td><span class="btn check_semua2" style="background-color:inherit" id="cek<?= $no?>" <?= $cek?> <?= $del?>><i id="ceka<?= $no?>" class="fa fa-square-o bisacek ceka<?= $del?>"></i></span>
                 <input type="hidden" class="tandasemua<?= $del?>" name="tandacek[]" id="tandacek<?= $no?>" value="cek">
-                <input type="hidden" class="printsemua" name="printsemua[]" id="printsemua<?= $no?>" value="cek"></td>
+                <input type="hidden" class="printsemua" name="printsemua[]" id="printcek<?= $no?>" value="cek"></td>
             <td><input type="hidden" id="dept<?= $no?>" value="<?= $val['DEPARTMENT']?>"><?= $val['DEPARTMENT']?></td>
             <td><input type="hidden" class="nojob<?= $del?>" id="nojob<?= $no?>" value="<?= $val['JOB_NO'] ?>"><?= $val['JOB_NO'] ?></td>
             <td><input type="hidden" id="release<?= $no?>" value="<?= $val['REALASE_PPIC']?>"><?= $val['REALASE_PPIC']?></td>
@@ -55,8 +60,8 @@
             <td style="text-align:left"><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC']?></td>
             <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
             <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
-            <td><button type="button" class="btn btn-success <?= $btn?>" id="appfab<?= $no?>" onclick="approveFabrikasi(<?= $no?>)" <?= $del?>>Approve</button>
-            <a href="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/printBelumFabrikasi/'.$val['PICKLIST'].''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a></td>
+            <td><button type="button" class="btn btn-success <?= $btn?>" id="btnapp<?= $no?>" onclick="approveFabrikasi(<?= $no?>)" <?= $del?>>Approve</button>
+            <button formaction="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/printBelumFabrikasi/'.$val['PICKLIST'].''); ?>" id="iniprint<?= $no?>" class="btn btn-danger <?= $ctk?>" disabled>Print</button></td>
         </tr>
     <?php $no++; }?>
     </tbody>

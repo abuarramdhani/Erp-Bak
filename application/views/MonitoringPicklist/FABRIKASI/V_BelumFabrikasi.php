@@ -1,11 +1,11 @@
-<script>
+<!-- <script>
         $(document).ready(function () {
         var refreshId = setInterval(function()
         {
             $("#notiffabrks").load(notiffabrikasi());
         }, 1000);
     });
-</script>
+</script> -->
 <section class="content">
     <div class="inner">
         <div class="row">

@@ -71,6 +71,21 @@ class C_BelumGudang extends CI_Controller
 		$this->load->view('MonitoringPicklist/GUDANG/V_TblBelumGudang', $data);
 	}
 
+	function searchData2(){
+		$subinv 	= $this->input->post('subinv');
+		$tanggal1 	= $this->input->post('tanggal1');
+		$tanggal2 	= $this->input->post('tanggal2');
+
+		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2);
+		foreach ($getdata as $key => $get) {
+			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
+			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
+		}
+		$data['data'] = $getdata;
+		$jml = count($data['data']);
+		echo json_encode($jml);
+	}
+
 	function modalData(){
 		$nojob 	= $this->input->post('nojob');
 		$picklist 	= $this->input->post('picklist');

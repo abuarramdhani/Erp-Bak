@@ -24,7 +24,9 @@ $('.datepicklist').datepicker({
         format: 'dd/mm/yyyy',
         todayHighlight: true,
         autoClose: true
-});
+}).on('change', function(){
+    $('.datepicker').hide();
+});;
 
 $(".deptpicklist").select2({
     allowClear: true,
@@ -88,8 +90,9 @@ function approvePPIC(no) {
         datatype: 'html',
         success: function(data) {
             swal.fire("Berhasil!", "", "success");
-            $('#btnppic1'+no).attr('disabled', 'disabled');
-            $('#btnppic1'+no).removeClass('btn-success');
+            $('#btnapp'+no).attr('disabled', 'disabled');
+            $('#btnapp'+no).removeClass('btn-success');
+            belumapprovePPIC();
         }
     });
 }
@@ -134,7 +137,7 @@ function recallPPIC(no) {
     function ceksemua(){
         var cek = $('#tandacekall').val();
         var jml = $('.baris:last').val();
-        console.log(jml);
+        // console.log(jml);
         if(cek == 'cek') {
             $('#tandacekall').val('uncek');
             $('#cekall').removeClass('fa-square-o').addClass('fa-check-square-o');
@@ -142,8 +145,10 @@ function recallPPIC(no) {
             $('.printsemua').val('uncek');
             $('.ceka').removeClass('fa-square-o').addClass('fa-check-square-o');
             $('.aktif').addClass('tercek');
+            $('.check_semua2').addClass('tercek2');
+            $('.bisaprint').addClass('tercek4');
+            $('.bisacek').addClass('tercek5');
             $('#appsemua').removeAttr('disabled');
-            $('#ctksemua').removeAttr('disabled');
             $('#appsemua').val('Approve Selected ('+jml+')');
             $('#ctksemua').val('Print Selected ('+jml+')');
         } else {
@@ -153,8 +158,10 @@ function recallPPIC(no) {
             $('.printsemua').val('cek');
             $('.ceka').removeClass('fa-check-square-o').addClass('fa-square-o');
             $('.aktif').removeClass('tercek');
+            $('.check_semua2').removeClass('tercek2');
+            $('.bisaprint').removeClass('tercek4');
+            $('.bisacek').removeClass('tercek5');
             $('#appsemua').attr('disabled', 'disabled');
-            $('#ctksemua').attr('disabled', 'disabled');
             $('#appsemua').val('Approve Selected (0)');
             $('#ctksemua').val('Print Selected (0)');
         }
@@ -170,9 +177,11 @@ function recallPPIC(no) {
             $('#tandacek'+no).val('uncek');
             $('#printcek'+no).val('uncek');
             $('#ceka'+no).removeClass('fa-square-o').addClass('fa-check-square-o');
-            $('#btnppic1'+no).addClass('tercek');
+            $('#btnapp'+no).addClass('tercek');
+            $('#cek'+no).addClass('tercek2');
+            $('#iniprint'+no).addClass('tercek4');
+            $('#ceka'+no).addClass('tercek5');
             $('#appsemua').removeAttr('disabled');
-            $('#ctksemua').removeAttr('disabled');
             $('#appsemua').val('Approve Selected ('+coba2+')')
             $('#ctksemua').val('Print Selected ('+coba2+')')
         } else {
@@ -180,7 +189,10 @@ function recallPPIC(no) {
             $('#tandacek'+no).val('cek');
             $('#printcek'+no).val('cek');
             $('#ceka'+no).removeClass('fa-check-square-o').addClass('fa-square-o');
-            $('#btnppic1'+no).removeClass('tercek');
+            $('#btnapp'+no).removeClass('tercek');
+            $('#cek'+no).removeClass('tercek2');
+            $('#iniprint'+no).removeClass('tercek4');
+            $('#ceka'+no).removeClass('tercek5');
             $('#appsemua').val('Approve Selected ('+coba2+')')
             $('#ctksemua').val('Print Selected ('+coba2+')')
         }
@@ -200,6 +212,7 @@ function recallPPIC(no) {
                 swal.fire("Berhasil!", "", "success");
                 $('.tercek').attr('disabled', 'disabled');
                 $('.tercek').removeClass('btn-success');
+                belumapprovePPIC();
             }
         });
     }
@@ -245,8 +258,11 @@ function approveFabrikasi(no) {
             datatype: 'html',
             success: function(data) {
                 swal.fire("Berhasil!", "", "success");
-                $('#appfab'+no).attr('disabled', 'disabled');
-                $('#appfab'+no).removeClass('btn-success');
+                $('#btnapp'+no).attr('disabled', 'disabled');
+                $('#btnapp'+no).removeClass('btn-success');
+                $('#cek'+no).removeAttr("onclick");
+                $('#ceka'+no).removeClass("ceka");
+                $('#iniprint'+no).removeAttr('disabled');
             }
         });
 }
@@ -265,6 +281,10 @@ function approveFabrikasi2() {
             swal.fire("Berhasil!", "", "success");
             $('.tercek').attr('disabled', 'disabled');
             $('.tercek').removeClass('btn-success');
+            $('.tercek5').removeClass('ceka');
+            $('#ctksemua').removeAttr('disabled');
+            $('.tercek4').removeAttr('disabled');
+            $('.tercek2').removeAttr("onclick");
         }
     });
 }
@@ -391,6 +411,7 @@ function approveGudang(th) {
 		success: function(data) {
                 $('#mdlapprovegd').modal('hide'); 
                 swal.fire("Berhasil!", "", "success");
+                belumapproveGudang()
 		}
         });
 }
@@ -407,6 +428,7 @@ function approveGudang2(th) {
             datatype: 'html',
     success: function(data) {
             swal.fire("Berhasil!", "", "success");
+            belumapproveGudang()
     }
     });
 }
@@ -443,6 +465,42 @@ function recallGudang(no) {
         success: function(data) {
             swal.fire("Berhasil!", "", "success");
             $('#regud'+no).attr('disabled', 'disabled');
+        }
+    });
+}
+
+
+function notifgudang(th) {
+    var subinv = $('#subinv').val();
+    var tampil = $('.baris:last').val();
+    var tanggal1 = $('#tanggal1').val();
+    var tanggal2 = $('#tanggal2').val();
+
+    var request = $.ajax({
+            url: baseurl+'MonitoringPicklistGudang/BelumApprove/searchData2',
+            data: {subinv : subinv, tanggal1 : tanggal1, tanggal2 : tanggal2},
+            type: "POST",
+            datatype: 'html',
+            success: function(data){
+                // console.log(subinv);
+                if (tampil == 0 && data != 0) {
+                    // console.log(data);
+                    var jml = data;
+                    $('#notifgdg').html(jml);
+                    $('#notifgdg').addClass('label-danger');
+                }else if (tampil != 0 && data != 0){
+                    var jml = data - tampil;
+                    if (jml > 0) {
+                        $('#notifgdg').html(jml);
+                        $('#notifgdg').addClass('label-danger');
+                    }else{
+                        $('#notifgdg').html('');
+                        $('#notifgdg').removeClass('label-danger');
+                    }
+                }else{
+                    $('#notifgdg').html('');
+                    $('#notifgdg').removeClass('label-danger');
+                }
         }
     });
 }

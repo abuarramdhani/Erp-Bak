@@ -15,13 +15,9 @@
                         </div>
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg"
-                                    href="<?php echo site_url('MonitoringPicklistGudang/BelumApprove/');?>">
-                                    <i class="icon-wrench icon-2x">
-                                    </i>
-                                    <span>
-                                        <br />
-                                    </span>
+                                <a class="btn btn-default btn-lg" onclick="belumapproveGudang(this)">
+                                    <i class="fa fa-2x fa-bell-o"></i>
+                                    <span id="notifgdg" class="label" style="border-radius:100%"></span>
                                 </a>
                             </div>
                         </div>
