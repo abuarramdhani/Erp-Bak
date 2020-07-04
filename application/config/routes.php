@@ -2950,6 +2950,8 @@ $route['SettingMinMax/SaveMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/SaveMi
 $route['SettingMinMax/IE'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/IE';
 $route['SettingMinMax/EditbyRouteIE'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditbyRouteIE';
 $route['SettingMinMax/EditbyRouteIE/EditItem/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2';
+$route['SettingMinMax/Efectivedays'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/effectiveDays';
+$route['SettingMinMax/SaveHariEffektif'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/SaveHariEffektif';
 
 //----------------------------------- Internal Audit ------------------------------------------------//
 

@@ -429,6 +429,85 @@ class C_settingMinMaxOPM extends CI_Controller
 
     }
 
+    public function generateOptionTahun()
+    {
+        $tahun = date("Y");
+        $option[10] = $tahun;
+        for ($i=1; $i <= 10; $i++) { 
+            $option[10+$i] = $tahun+$i;
+            $option[10-$i] = $tahun-$i;
+        }
+        return $option;
+    }
+
+    public function effectiveDays()
+    {   $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+
+        $user = $this->session->user;
+        $optionTahun = $this->generateOptionTahun();
+        ksort($optionTahun);
+        $data['optionTahun'] = $optionTahun;
+
+        $dataEfektif = $this->M_settingminmaxopm->tampilDataEfektif();
+        $data['HariEfektif'] = $dataEfektif;
+        $data['user'] = $user;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('SettingMinMaxOPM/V_EffectiveDays', $data);
+        $this->load->view('V_Footer', $data);
+        
+    }
+
+    public function SaveHariEffektif(){
+        $tahun = $this->input->post('tahun');
+        $jan = $this->input->post('januari');
+        $feb = $this->input->post('februari');
+        $mar = $this->input->post('maret');
+        $apr = $this->input->post('april');
+        $mei = $this->input->post('mei');
+        $jun = $this->input->post('juni');
+        $jul = $this->input->post('juli');
+        $agu = $this->input->post('agustus');
+        $sep = $this->input->post('september');
+        $okt = $this->input->post('oktober');
+        $nov = $this->input->post('november');
+        $des = $this->input->post('desember');
+        $user = $this->input->post('user');
+
+        $isYearExist = $this->cekYearExist($tahun);
+        if ($isYearExist === TRUE) {
+            $this->M_settingminmaxopm->updateEffectiveday($tahun, $jan, $feb, $mar, $apr, $mei, $jun, $jul, $agu, $sep, $okt, $nov, $des, $user);
+        } elseif ($isYearExist === FALSE) {
+            $this->M_settingminmaxopm->saveEffectiveday($tahun, $jan, $feb, $mar, $apr, $mei, $jun, $jul, $agu, $sep, $okt, $nov, $des, $user);
+        }
+        // echo "<pre>";
+        // print_r($hasil);
+        // exit();
+
+
+
+        redirect('SettingMinMax/Efectivedays');
+    }
+
+    public function cekYearExist($tahun){
+        $exist = $this->M_settingminmaxopm->isYearExist($tahun);
+        if ($exist > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+
+    }
 
 
 }
