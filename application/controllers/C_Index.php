@@ -289,7 +289,7 @@ class C_Index extends CI_Controller {
 		}
 		//variabel session spl (surat perintah lembur) HR akhir
 
-		redirect('index');
+		redirect('');
 	}
 
 	public function getLog()
