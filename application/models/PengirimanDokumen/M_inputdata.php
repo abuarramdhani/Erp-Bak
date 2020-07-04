@@ -28,7 +28,7 @@ class M_inputdata extends CI_Model
                     inner join ps.tmaster tm on tm.id = td.id_master
                     inner join ps.triwayat tr on td.id_data = tr.id_data
                 WHERE ('$kodesie' = tr.seksi OR substring(emp.section_code,0,8) = '$kodesie') and tr.status = '0' 
-                ORDER BY td.id_data";
+                ORDER BY td.id_data DESC";
 
         $result = $this->db->query($sql)->result_array();
 
