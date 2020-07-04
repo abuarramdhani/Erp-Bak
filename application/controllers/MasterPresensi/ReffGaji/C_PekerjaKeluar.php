@@ -257,7 +257,7 @@ class C_PekerjaKeluar extends CI_Controller
 			}
 
 
-			if ($puasa == 'puasa') {
+			if ($puasa == 'puasa' && strtolower(trim($pkj['agama'])) == 'islam') {
 				$kom_um_puasa = $this->M_pekerjakeluar->getKomUmPuasa($pkj['noind'],$tgl_bulan_awal,$tgl_keluar,$tgl_puasa);
 			}
 
@@ -993,6 +993,103 @@ class C_PekerjaKeluar extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_detail', $data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function listGaji(){
+		$user_id = $this->session->userid;
+
+		$data['Title']			=	'List Pekerja Keluar';
+		$data['Menu'] 			= 	'Reff Gaji';
+		$data['SubMenuOne'] 	= 	'Pekerja Keluar';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['data'] = $this->M_pekerjakeluar->getListPekerjaKeluar();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_list', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function editGaji($noind_encrypted){
+		$noind_encrypted_ = str_replace(array('-', '_', '~'), array('+', '/', '='), $noind_encrypted);
+      	$noind = $this->encrypt->decode($noind_encrypted_);
+
+      	$user_id = $this->session->userid;
+
+		$data['Title']			=	'Edit Pekerja Keluar';
+		$data['Menu'] 			= 	'Reff Gaji';
+		$data['SubMenuOne'] 	= 	'Pekerja Keluar';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['data'] = $this->M_pekerjakeluar->getListPekerjaKeluarByNoind($noind);
+		$data['noind_encrypted'] = $noind_encrypted;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_edit', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function updateGaji($noind_encrypted){
+		$noind_encrypted_ = str_replace(array('-', '_', '~'), array('+', '/', '='), $noind_encrypted);
+      	$noind = $this->encrypt->decode($noind_encrypted_);
+
+      	$txtKomIP 		= $this->input->post('txtKomIP');
+	    $txtKomIPT 		= $this->input->post('txtKomIPT');
+	    $txtKomIK 		= $this->input->post('txtKomIK');
+	    $txtKomIF 		= $this->input->post('txtKomIF');
+	    $txtKomUBT 		= $this->input->post('txtKomUBT');
+	    $txtKomUPAMK 	= $this->input->post('txtKomUPAMK');
+	    $txtKomLEMBUR 	= $this->input->post('txtKomLEMBUR');
+	    $txtKomIMS 		= $this->input->post('txtKomIMS');
+	    $txtKomIMM 		= $this->input->post('txtKomIMM');
+	    $txtKomUMP 		= $this->input->post('txtKomUMP');
+	    $txtKomUMC 		= $this->input->post('txtKomUMC');
+	    $txtKomCT 		= $this->input->post('txtKomCT');
+	    $txtKomHTM 		= $this->input->post('txtKomHTM');
+	    $txtKomIJIN 	= $this->input->post('txtKomIJIN');
+	    $txtKomTAMB 	= $this->input->post('txtKomTAMB');
+	    $txtKomDL 		= $this->input->post('txtKomDL');
+	    $txtKomPOT 		= $this->input->post('txtKomPOT');
+	    $txtKomDUKA 	= $this->input->post('txtKomDUKA');
+	    $txtKomKOP 		= $this->input->post('txtKomKOP');
+	    $txtKomPLAIN 	= $this->input->post('txtKomPLAIN');
+	    $txtKomKET 		= $this->input->post('txtKomKET');
+
+	    $data = array(
+	    	'ipe' =>$txtKomIP,
+			'ipet' =>$txtKomIPT,
+			'ika' =>$txtKomIK,
+			'ief' =>$txtKomIF,
+			'ubt' =>$txtKomUBT,
+			'upamk' =>$txtKomUPAMK,
+			'jam_lembur' =>$txtKomLEMBUR,
+			'ims' =>$txtKomIMS,
+			'imm' =>$txtKomIMM,
+			'um_puasa' =>$txtKomUMP,
+			'um_cabang' =>$txtKomUMC,
+			'ct' =>$txtKomCT,
+			'htm' =>$txtKomHTM,
+			'ijin' =>$txtKomIJIN,
+			'tambahan_str' =>$txtKomTAMB,
+			'dldobat' =>$txtKomDL,
+			'potongan_str' =>$txtKomPOT,
+			'pduka' =>$txtKomDUKA,
+			'putang' =>$txtKomKOP,
+			'plain' =>$txtKomPLAIN,
+			'ket' =>$txtKomKET
+	    );
+	    $this->M_pekerjakeluar->updateGajipekerjaKeluarByNoind($data,$noind);
+      	redirect(base_url('MasterPresensi/ReffGaji/PekerjaKeluar/listGaji'));
 	}
 }
 ?>

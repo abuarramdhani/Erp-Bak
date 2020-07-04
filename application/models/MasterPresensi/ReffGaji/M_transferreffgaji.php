@@ -50,35 +50,41 @@ class M_transferreffgaji extends CI_Model
 	}
 
 	public function getDataStaff($periode){
-		$sql = "select tbl.*,tpri.nik,tor.singkatan as jabatan from (
-				 select * from \"Presensi\".Treffgaji 
-				 where (
-				 			left(noind,1) = 'B' 
-				 			or left(noind,1) = 'D' 
-				 			or left(noind,1) = 'J' 
-				 			or left(noind,1) = 'T' 
-				 			or left(noind,1) = 'G'
-				 			or left(noind,1) = 'Q'
-				 		) 
-				 and to_char(tanggal,'mmyy') ='$periode'
-				 and jns_transaksi in('01')
-				 union all 
-				 select * from \"Presensi\".Treffgaji_keluar refkel
-				 where (
-				 			left(noind,1) = 'B' 
-				 			or left(noind,1) = 'D' 
-				 			or left(noind,1) = 'J' 
-				 			or left(noind,1) = 'T' 
-				 			or left(noind,1) = 'G'
-				 			or left(noind,1) = 'Q'
-				 		) 
-				 and to_char(tanggal_keluar,'mmyy') ='$periode'
-				 /*and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0*/
+		$sql = "select tbl.*,tpri.nik,
+					(
+						select string_agg(distinct c.singkatan,',')
+						from hrd_khs.trefjabatan b 
+						left join hrd_khs.torganisasi c 
+						on b.kd_jabatan = c.kd_jabatan
+						where b.noind = tpri.noind
+					) as jabatan
+				from (
+					select * from \"Presensi\".Treffgaji 
+					where (
+					 			left(noind,1) = 'B' 
+					 			or left(noind,1) = 'D' 
+					 			or left(noind,1) = 'J' 
+					 			or left(noind,1) = 'T' 
+					 			or left(noind,1) = 'G'
+					 			or left(noind,1) = 'Q'
+					 		) 
+					and to_char(tanggal,'mmyy') ='$periode'
+					and jns_transaksi in('01')
+					union all 
+					select * from \"Presensi\".Treffgaji_keluar refkel
+					where (
+					 			left(noind,1) = 'B' 
+					 			or left(noind,1) = 'D' 
+					 			or left(noind,1) = 'J' 
+					 			or left(noind,1) = 'T' 
+					 			or left(noind,1) = 'G'
+					 			or left(noind,1) = 'Q'
+					 		) 
+					and to_char(tanggal_keluar,'mmyy') ='$periode'
+					/*and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0*/
 				) as tbl 
 				left join hrd_khs.tpribadi tpri 
 					on tpri.noind = tbl.noind
-				left join hrd_khs.torganisasi tor
-					on tpri.kd_jabatan = tor.kd_jabatan
 				order by noind";
  		return $this->personalia->query($sql)->result_array();
 	}

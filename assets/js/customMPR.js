@@ -55,6 +55,21 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+    $('#tbl-MPR-PekerjaKeluar-List').DataTable({
+        "scrollX" : true,
+        "fixedColumns":   {
+            leftColumns: 5
+        },
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+    });
+
     $(document).on('ifChecked','#txtPuasaPKJKeluar', function() {
         $('#txtPeriodePuasaPKJKeluar').prop("disabled", false);
     });
