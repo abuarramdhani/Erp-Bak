@@ -178,7 +178,7 @@ class C_SearchItem extends CI_Controller {
 		// $objset->setCellValue("J1", 'has image');			
 		
 		$row = 2;
-		for ($i=0; $i < Count($hdnItem); $i++)
+		for ($i=0; $i < count($hdnItem); $i++)
 		{
 			$objset->setCellValue("A".$row, $i+1);
 			$objset->setCellValue("B".$row, $hdnDsc[$i]);
