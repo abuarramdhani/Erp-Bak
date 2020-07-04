@@ -4442,31 +4442,40 @@ $(document).ready(function(){
 		success: function(data){
 			if (data == "ya") {
 				setInterval(function(){
-					$.ajax({
-						method: 'GET',
-						url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/getNotifikasiIzinDinasPTM',
-						error: function(xhr,status,error){
-							swal.fire({
-				                title: xhr['status'] + "(" + xhr['statusText'] + ")",
-				                html: xhr['responseText'],
-				                type: "error",
-				                confirmButtonText: 'OK',
-				                confirmButtonColor: '#d63031',
-				            })
-						},
-						success: function(data){
-							if (data != "0") {
-								swal.fire({
-					                title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
-					                html: "Terdapat " + data + " yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
-					                type: "warning",
-					                confirmButtonText: 'Close',
-					                confirmButtonColor: '#d63031',
-					            })
-							}							
+					var waktuCatering = new Date();
+					jamKatering = waktuCatering.getHours();
+					menitKatering = waktuCatering.getMinutes();
+					detikKatering = waktuCatering.getSeconds();
+
+					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) <= 45 ) ) {
+						if ( parseInt(menitKatering)%5 == 0 ) {
+							$.ajax({
+								method: 'GET',
+								url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/getNotifikasiIzinDinasPTM',
+								error: function(xhr,status,error){
+									swal.fire({
+						                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+						                html: xhr['responseText'],
+						                type: "error",
+						                confirmButtonText: 'OK',
+						                confirmButtonColor: '#d63031',
+						            })
+								},
+								success: function(data){
+									if (data != "0") {
+										swal.fire({
+							                title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
+							                html: "Terdapat " + data + " yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
+							                type: "warning",
+							                confirmButtonText: 'Close',
+							                confirmButtonColor: '#d63031',
+							            })
+									}							
+								}
+							});
 						}
-					});
-				},10000);
+					}
+				},20000);
 			}
 		}
 	});
