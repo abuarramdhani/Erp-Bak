@@ -121,6 +121,18 @@ class C_EvaluasiOSNS extends CI_Controller {
         $this->printPDF($data);
     }
 
+    function deleteBlanko() {
+        $logged_user = $this->session->user;
+        $id = $this->input->post('id');
+        $id = (int)base64_decode($id);
+        if($id <= 0) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+
+        $this->M_blankoevaluasi->deleteNonStaffBlanko($id, $logged_user);
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
     function store() {
         $data = $this->input->get();
 
@@ -285,14 +297,21 @@ class C_EvaluasiOSNS extends CI_Controller {
         $pdf =	$this->pdf->load();
         // params => $mode='',$format='A4',$default_font_size=0,$default_font='',$mgl=15,$mgr=15,$mgt=16,$mgb=16,$mgh=9,$mgf=9, $orientation='P'
         $pdf = new mPDF('UTF-8', 'A4', '8', 'Arial', 5, 5, 5, 5, 0, 0, 'L');
-
+        
         $title = 'Evaluasi';
         $filename = 'Evalasi kontrak';
         $content = $this->load->view('BlankoEvaluasi/NonStaff/V_Template_Pdf', $data, true);
-
+        
+        $pdf->defaultfooterline = false;
+        $pdf->setFooter("
+        <div style='text-align: left; font-weight: 100;'>
+        <small style='font-size: 10px; float: left; font-style: italic;'>Halaman ini dicetak melalui QuickERP - (Blanko Evaluasi) - ". date('d-m-Y H:i:s') . " oleh {$this->session->user} - {$this->session->employee}</small>
+        </div>
+        ");
         $pdf->AddPage('L');
         $pdf->SetTitle($title);
         $pdf->WriteHTML($content);
+        // $pdf->SetDisplayPreferences('/FullScreen');
         $pdf->Output($filename, 'I');
     }
 
