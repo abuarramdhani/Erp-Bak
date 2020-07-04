@@ -42,7 +42,6 @@ $(document).ready(function () {
 		$('#searchResultTableItemBySubInventory').html('<img src="'+baseurl+'/assets/img/gif/loading12.gif">');
 		$('#slcEcommerceSubInventory').attr('disabled','disabled');
 		$('#slcEcommerceOrganization').attr('disabled','disabled');
-		$('#submitExportExcelItemEcatalog').attr('disabled','disabled');
 
 		var kriteria = $('#slcEcommerceKriteriaCari').val();
 
@@ -56,9 +55,24 @@ $(document).ready(function () {
 				$('#slcEcommerceSubInventory').removeAttr('disabled');
 				$('#slcEcommerceOrganization').removeAttr('disabled');
 				$('#btnTambahKriteriaPencarian').removeAttr('disabled');
-				$('#submitExportExcelItemEcatalog').removeAttr('disabled');
 				$('#searchResultTableItemBySubInventory').html(response);
-				$('#tbItemTokoquick').DataTable();
+				$('.tbItemTokoquick').DataTable({
+					dom: `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4'B> <'col-sm-12 col-md-4'f> >
+						<'row' <'col-sm-12'tr> >
+						<'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
+					buttons: [{
+						extend: 'excelHtml5',
+						exportOptions: {
+							columns: [0, 2, 1, 4]
+						},
+						customize: function(xlsx) {
+							var sheet = xlsx.xl.worksheets['sheet1.xml'];
+							$('c[r=B2] t', sheet).text('NAME');
+							$('c[r=C2] t', sheet).text('REFERENCE');
+							$('c[r=D2] t', sheet).text('QUANTITY');
+						}
+					}]
+				});
 			}
 		});
 	});
@@ -70,13 +84,4 @@ $(document).ready(function () {
     $('#btn-search').click(function(){
 		$('#searchResultTableItemByDate').html('<img src="'+baseurl+'/assets/img/gif/loading12.gif">');
 	});
-
-    // $('#dataWaktuOrder').DataTable({
-    //     "searching"		: true,
-    //     "lengthChange"	: false,
-    //     "scrollX"		: false,
-    //     "paging"		: false
-
-    // });
-
 });

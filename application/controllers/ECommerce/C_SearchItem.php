@@ -135,45 +135,4 @@ class C_SearchItem extends CI_Controller {
 
 		$returnTable = $this->load->view('ECommerce/SearchItem/V_tableItem',$data);
 	}
-
-    public function exportExcelDataItem()
-    {
-        $hdnItem = $this->input->post('hdnItem[]');
-        $hdnDsc = $this->input->post('hdnDsc[]');
-        $hdnQty = $this->input->post('hdnQty[]');
-
-        $objPHPExcel = new PHPExcel();
-
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(83);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(24);
-
-        $objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getFont()->setBold(true);
-
-        $objset = $objPHPExcel->getActiveSheet();
-
-        $objset->setCellValue("A1", 'no');
-        $objset->setCellValue("B1", 'name');
-        $objset->setCellValue("C1", 'reference');
-        $objset->setCellValue("D1", 'quantity');
-
-        $row = 2;
-        for ($i = 0; $i < count($hdnItem); $i++) {
-			$row_num = $i + 1;
-            $objset->setCellValue("A" . $row, $row_num);
-            $objset->setCellValue("B" . $row, $hdnDsc[$i]);
-            $objset->setCellValue("C" . $row, $hdnItem[$i]);
-            $objset->setCellValue("D" . $row, $hdnQty[$i]);
-            $row++;
-        }
-        $objPHPExcel->getActiveSheet()->setTitle('Admin Digital E-Commerce');
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        header('Cache-Control: no-store, no-cache, must-revalidate');
-        header('Cache-Control: post-check=0, pre-check=0', false);
-        header('Pragma: no-cache');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Data_Produk.xlsx"');
-        $objWriter->save("php://output");
-    }
 }
