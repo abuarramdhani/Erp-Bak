@@ -4447,16 +4447,17 @@ $(document).ready(function(){
 					jamKatering = waktuCatering.getHours();
 					menitKatering = waktuCatering.getMinutes();
 					detikKatering = waktuCatering.getSeconds();
-					if ( parseInt(jamKatering) == 11 || (parseInt(jamKatering) == 12 && parseInt(menitKatering) <= 45 ) ) {
+					// console.log(localStorage.getItem("lastMinutes"))
+					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) <= 45 ) ) {
 						if ( parseInt(menitKatering)%5 == 0 && localStorage.getItem("lastMinutes") != parseInt(menitKatering) ) {
 							localStorage.setItem("lastMinutes", parseInt(menitKatering))
-							swal.fire({
-				                title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
-				                html: "Terdapat XX yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
-				                type: "warning",
-				                confirmButtonText: 'Close',
-				                confirmButtonColor: '#d63031',
-				            })
+							// swal.fire({
+				   //              title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
+				   //              html: "Terdapat XX yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
+				   //              type: "warning",
+				   //              confirmButtonText: 'Close',
+				   //              confirmButtonColor: '#d63031',
+				   //          })
 							$.ajax({
 								method: 'GET',
 								url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/getNotifikasiIzinDinasPTM',
