@@ -4441,14 +4441,22 @@ $(document).ready(function(){
 		},
 		success: function(data){
 			if (data == "ya") {
+				localStorage.setItem("lastMinutes", -1)
 				setInterval(function(){
 					var waktuCatering = new Date();
 					jamKatering = waktuCatering.getHours();
 					menitKatering = waktuCatering.getMinutes();
 					detikKatering = waktuCatering.getSeconds();
-
-					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) <= 45 ) ) {
-						if ( parseInt(menitKatering)%5 == 0 ) {
+					if ( parseInt(jamKatering) == 11 || (parseInt(jamKatering) == 12 && parseInt(menitKatering) <= 45 ) ) {
+						if ( parseInt(menitKatering)%5 == 0 && localStorage.getItem("lastMinutes") != parseInt(menitKatering) ) {
+							localStorage.setItem("lastMinutes", parseInt(menitKatering))
+							swal.fire({
+				                title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
+				                html: "Terdapat XX yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
+				                type: "warning",
+				                confirmButtonText: 'Close',
+				                confirmButtonColor: '#d63031',
+				            })
 							$.ajax({
 								method: 'GET',
 								url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/getNotifikasiIzinDinasPTM',
@@ -4475,7 +4483,7 @@ $(document).ready(function(){
 							});
 						}
 					}
-				},20000);
+				},1000);
 			}
 		}
 	});
