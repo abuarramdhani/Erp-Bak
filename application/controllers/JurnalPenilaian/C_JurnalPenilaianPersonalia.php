@@ -78,11 +78,45 @@ class C_JurnalPenilaianPersonalia extends CI_Controller {
 		$st 							= 	$periodeAwal;
 		$end 							=	$periodeAkhir;
 
-		$get_wk 	= $this->M_penilaiankinerja->get_worker($st,$end);
+		//update table er.er_section
+		$getL1 = $this->M_penilaiankinerja->listErSection('dev');
+		$getL2 = $this->M_penilaiankinerja->listErSection('prod');
 		// echo "<pre>";
-		// print_r($get_wk);exit();
+		// print_r($getL2);
+		for ($i=0; $i < count($getL1); $i++) { 
+			if ($getL1[$i] != $getL2[$i]) {
+				// echo $getL1[$i]['er_section_id'].'||';
+				// echo $getL2[$i]['er_section_id'].'<br>';
+				$id = $getL1[$i]['er_section_id'];
+				$sc = empty($getL2[$i]['sort_code']) ? NULL:$getL2[$i]['sort_code'];
+				$occ = empty($getL2[$i]['oracle_cost_code']) ? NULL:$getL2[$i]['oracle_cost_code'];
+				$arr = array(
+					'section_code' => $getL2[$i]['section_code'],
+					'department_name' => $getL2[$i]['department_name'],
+					'field_name' => $getL2[$i]['field_name'],
+					'unit_name' => $getL2[$i]['unit_name'],
+					'section_name' => $getL2[$i]['section_name'],
+					'job_name' => $getL2[$i]['job_name'],
+					'worker_group' => $getL2[$i]['worker_group'],
+					'sort_code' => $sc,
+					'oracle_cost_code' => $occ,
+					);
+				$up = $this->M_penilaiankinerja->updateErSeksi($arr, $id);
+			}
+		}
+		// exit();
+
+		$get_wk 	= $this->M_penilaiankinerja->get_worker($st,$end);
+		
 		foreach ($get_wk as $gw) 
 		{
+			if (!empty($gw['lokerja2'])) {
+				$lokerja = $gw['lokerja2'];
+			}else{
+				$lokerja = $gw['lokerja'];
+			}
+			// echo $gw['noind'].' - '.$lokerja.'<br>';
+
 			$check = $this->M_penilaiankinerja->check($st, $end, $gw['noind']);
 			if($check>0)
 			{
@@ -99,7 +133,7 @@ class C_JurnalPenilaianPersonalia extends CI_Controller {
 								'nama_bidang'				=> $gw['bidang'],
 								'nama_unit'					=> $gw['unit'],
 								'nama_seksi'				=> $gw['seksi'],
-								'lokasi_kerja'				=> $gw['lokerja']
+								'lokasi_kerja'				=> $lokerja
 							);
 				$where =	array(
 								'noind' 		=>	$gw['noind'],
@@ -128,12 +162,12 @@ class C_JurnalPenilaianPersonalia extends CI_Controller {
 								'nama_bidang'				=> $gw['bidang'],
 								'nama_unit'					=> $gw['unit'],
 								'nama_seksi'				=> $gw['seksi'],
-								'lokasi_kerja'				=> $gw['lokerja']
+								'lokasi_kerja'				=> $lokerja
 							);
 				$this->M_penilaiankinerja->insert_worker($insert);
 			}
 		}
-
+		// exit();
 		$this->session->set_flashdata('message', 'Create Record Success');
 		$ses=array(
 			 "success_insert" => 1
