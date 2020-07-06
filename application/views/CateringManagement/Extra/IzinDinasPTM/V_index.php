@@ -42,10 +42,10 @@
 													<th class="bg-primary">ID Dinas</th>
 													<th class="bg-primary">No. Induk</th>
 													<th class="bg-primary">Nama</th>
-													<th class="bg-primary">Tujuan</th>
+													<th class="bg-primary">Tempat Makan Tujuan</th>
 													<th class="bg-primary">Keterangan</th>
 													<th class="bg-primary">Jenis Dinas</th>
-													<th class="bg-primary">DiProses</th>
+													<th class="bg-primary">Status</th>
 												</tr>
 											</thead>
 											<tbody>
