@@ -188,7 +188,11 @@ class C_MenuGroup extends CI_Controller {
 					}
 				}
 			}
-			redirect('SystemAdministration/MenuGroup');
+			echo json_encode(array(
+				'success' => true,
+				'message' => "Sukses mengupdate menu"
+			));
+			// redirect('SystemAdministration/MenuGroup');
 		}
 	}
 
