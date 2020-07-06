@@ -170,4 +170,11 @@ class M_index extends CI_Model {
 
 			return $this->quick->get()->result_array();
 		}
+
+		public function path_photo($noind)
+		{
+			$personalia = $this->load->database('personalia', true);
+			$sql = "SELECT path_photo from hrd_khs.tpribadi where noind = '$noind'";
+			return $personalia->query($sql)->row()->path_photo;
+		}
 }

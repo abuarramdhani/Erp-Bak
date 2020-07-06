@@ -94,22 +94,8 @@
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<?php
-                  $path_photo  		=	base_url('assets/img/foto').'/';
-									$file           = $path_photo.$this->session->user.'.'.'JPG';
-									$file_headers   = @get_headers($file);
-									if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found') {
-										$file = $path_photo.$this->session->user.'.'.'JPG';
-										$file_headers = @get_headers($file);
-										if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found') {
-											$ekstensi = 'Not Found';
-										} else {
-											$ekstensi = 'JPG';
-										}
-									} else {
-										$ekstensi = 'JPG';
-									}
-									if($ekstensi=='jpg' || $ekstensi=='JPG') {
-										$lokasifoto=$path_photo.$this->session->user.".".$ekstensi;
+									if($_SERVER['SERVER_NAME'] == 'erp.quick.com') {
+										$lokasifoto=$this->session->path_photo;
 									} else {
 										$lokasifoto=base_url('assets/theme/img/user.png');
 									}
