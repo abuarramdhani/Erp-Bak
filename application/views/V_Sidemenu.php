@@ -3,7 +3,7 @@
 		<div class="user-panel" style="height:100px;">
             <div class="pull-left image">
               	<?php
-					if($_SERVER['SERVER_NAME'] == 'erp.quick.com') {
+					if($_SERVER['SERVER_NAME'] == 'erp.quick.com' && @file_get_contents($this->session->path_photo)) {
 						$lokasifoto=$this->session->path_photo;
 					} else {
 						$lokasifoto=base_url('assets/theme/img/user.png');
