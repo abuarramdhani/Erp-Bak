@@ -20,9 +20,22 @@ class M_dpb extends CI_Model
         return $query->result_array();
     }
 
-    public function getWaitingListApprovalDPB()
+    public function getWaitingListApprovalDPBVendor()
     {
         $sql = "select * from khs_dpb_list_dpb_vendor where approval_flag is null";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function getWaitingListApprovalDPBKHS()
+    {
+        $sql = "SELECT DISTINCT dpb.no_pr, dpb.tgl_kirim, dpb.jenis_kendaraan,
+                dpb.no_kendaraan, dpb.nama_supir, dpb.vendor_ekspedisi
+        FROM khs_dpb_kendaraan dpb
+        WHERE dpb.no_pr LIKE 'KHS%' 
+                AND dpb.APPROVED_FLAG = 'P'
+        ORDER BY dpb.tgl_kirim DESC ";
 
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -511,23 +524,55 @@ class M_dpb extends CI_Model
 
     public function getDPBKHSList()
     {
-        $sql = "SELECT
-                    DISTINCT dpb.NO_PR,
-                    dpb.TGL_KIRIM,
-                    dpb.JENIS_KENDARAAN,
-                    dpb.NO_KENDARAAN,
-                    dpb.NAMA_SUPIR,
-                    dpb.VENDOR_EKSPEDISI
-                FROM
-                    KHS_DPB_KENDARAAN dpb
-                WHERE
-                    dpb.NO_PR LIKE 'KHS%'
-                ORDER BY
-                    dpb.TGL_KIRIM DESC";
+        $sql = "SELECT 
+                    DISTINCT dpb.no_pr, 
+                    dpb.tgl_kirim, 
+                    dpb.jenis_kendaraan,
+                    dpb.no_kendaraan,
+                    dpb.nama_supir,
+                    dpb.vendor_ekspedisi
+                FROM 
+                    khs_dpb_kendaraan dpb
+                WHERE 
+                    dpb.no_pr LIKE 'KHS%' 
+                AND dpb.APPROVED_FLAG is null
+                ORDER BY dpb.tgl_kirim DESC";
 
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+
+    public function getListDPBKHS()
+    {
+        $sql = "SELECT DISTINCT dpb.NO_PR,
+                dpb.JENIS_KENDARAAN,
+                dpb.NO_KENDARAAN,
+                dpb.CREATION_DATE,
+                dpb.KONTAK_SOPIR,
+                dpb.NAMA_SUPIR,
+                dpb.VENDOR_EKSPEDISI,
+                dpb.LAIN,
+                dpb.LINE_NUM,
+                dpb.DO_NUM,
+                dpb.ITEM_NAME,
+                dpb.UOM,
+                dpb.QTY,
+                dpb.NAMA_TOKO,
+                dpb.KOTA,
+                dpb.TGL_KIRIM
+            FROM
+                KHS_DPB_KENDARAAN dpb
+            WHERE 
+                dpb.NO_PR LIKE 'KHS%' 
+            AND
+                dpb.APPROVED_FLAG = 'Y'
+            ORDER BY 
+                dpb.TGL_KIRIM DESC";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
 
     public function getDPBKHSDetail($id)
     {
@@ -657,10 +702,18 @@ class M_dpb extends CI_Model
         
     }
 
-    public function getListApprovalDPB()
+    public function getListApprovalDPBVendor()
     {
         $oracle = $this->load->database('oracle',true);
         $query = $oracle->get_where('KHS_DPB_KENDARAAN', array('APPROVED_FLAG' => NULL));
+
+        return $query->result_array();
+    }
+
+    public function getListApprovalDPBKHS()
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = $oracle->get_where('KHS_DPB_KENDARAAN', array('APPROVED_FLAG' => 'P'));
 
         return $query->result_array();
     }

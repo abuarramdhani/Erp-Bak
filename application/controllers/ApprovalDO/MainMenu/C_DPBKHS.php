@@ -58,6 +58,45 @@ class C_DPBKHS extends CI_Controller {
         $this->load->view('V_Footer', $data);
     }
 
+    public function ListDPBKHS()
+    {
+        $user_id = $this->session->userid;
+        $resp_id = $this->session->responsibility_id;
+
+		$data['Menu']           = 'DPB KHS';
+		$data['SubMenuOne']     = '';
+		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
+        $data['DPBKHSList']     = $this->M_dpb->getListDPBKHS();
+        $data['UserAccess']     = [   
+            'add_data'  => 'disabled',
+            'delete'    => 'disabled'
+        ];
+
+        if ( $this->session->user === 'B0445' ) {
+            $data['UserAccess'] = [   
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        } else if ( $this->session->user === 'F2326' ) {
+            $data['UserAccess'] = [   
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        } else if ( $this->session->user === 'J1396' ) {
+            $data['UserAccess'] = [ 
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        }
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_ListDPBKHS', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
     public function detail()
     {
         if ( ! $data['NO_PR'] = $this->input->post('data-pr') ) {
@@ -157,7 +196,7 @@ class C_DPBKHS extends CI_Controller {
 		        'UOM'              => $val['uom'],
 		        'QTY'              => $val['qty'],
 		        'NAMA_TOKO'        => $val['shopName'],
-		        'KOTA'             => $val['city']
+                'KOTA'             => $val['city'],
             ]);
         }
 
@@ -192,7 +231,8 @@ class C_DPBKHS extends CI_Controller {
                     'UOM'              => $val['uom'],
                     'QTY'              => $val['qty'],
                     'NAMA_TOKO'        => $val['shopName'],
-                    'KOTA'             => $val['city']
+                    'KOTA'             => $val['city'],
+                    'APPROVED_FLAG'    => 'P'
                 ]);
             }
         }
@@ -211,7 +251,8 @@ class C_DPBKHS extends CI_Controller {
                     'UOM'              => $val['uom'],
                     'QTY'              => $val['qty'],
                     'NAMA_TOKO'        => $val['shopName'],
-                    'KOTA'             => $val['city']
+                    'KOTA'             => $val['city'],
+                    'APPROVED_FLAG'    => 'P'
                 ]);
             }
         }

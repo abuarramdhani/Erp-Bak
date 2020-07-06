@@ -1,7 +1,4 @@
 <style>    
-    .bg-danger-important {
-        background-color: #f2dede !important;
-    }
     label {
         font-weight: normal !important;
     }
@@ -10,9 +7,6 @@
         display: inline-block;
         width: 100px;
         padding: 5px;
-    }
-    .form-control-auto {
-        width: 100% !important;
     }
     .swal-font-small {
         font-size: 1.5rem !important;
@@ -37,7 +31,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-car"></i></span>
-                                    <input class="form-control txtADOVehicleCategory" <?= $UserAccess['edit_field'] ?> value="<?php if (isset($DPBKHSDetail[0]['JENIS_KENDARAAN'])) echo $DPBKHSDetail[0]['JENIS_KENDARAAN'] ?>">
+                                    <input class="form-control txtADOVehicleCategory" <?= $UserAccess['jenis_kendaraan'] ?> value="<?php if (isset($DPBKHSDetail[0]['JENIS_KENDARAAN'])) echo $DPBKHSDetail[0]['JENIS_KENDARAAN'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -47,7 +41,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-list-ol"></i></span>
-                                    <input class="form-control txtADOVehicleIdentity" <?= $UserAccess['edit_field'] ?> value="<?php if (isset($DPBKHSDetail[0]['NO_KENDARAAN'])) echo $DPBKHSDetail[0]['NO_KENDARAAN'] ?>">
+                                    <input class="form-control txtADOVehicleIdentity" <?= $UserAccess['no_kendaraan'] ?> value="<?php if (isset($DPBKHSDetail[0]['NO_KENDARAAN'])) echo $DPBKHSDetail[0]['NO_KENDARAAN'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -57,7 +51,17 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-user"></i></span>
-                                    <input class="form-control txtADODriverName" <?= $UserAccess['edit_field'] ?> value="<?php if (isset($DPBKHSDetail[0]['NAMA_SUPIR'])) echo $DPBKHSDetail[0]['NAMA_SUPIR'] ?>">
+                                    <input class="form-control txtADODriverName" <?= $UserAccess['nama_supir'] ?> value="<?php if (isset($DPBKHSDetail[0]['NAMA_SUPIR'])) echo $DPBKHSDetail[0]['NAMA_SUPIR'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Kontak Supir</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-phone"></i></span>
+                                    <input class="form-control txtADODriverContact" <?= $UserAccess['kontak_supir'] ?> value="<?php if (isset($DPBKHSDetail[0]['KONTAK_SUPIR'])) echo $DPBKHSDetail[0]['KONTAK_SUPIR'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -67,7 +71,17 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-truck"></i></span>
-                                    <input class="form-control txtADOExpeditionVendor" <?= $UserAccess['edit_field'] ?> value="<?php if (isset($DPBKHSDetail[0]['VENDOR_EKSPEDISI'])) echo $DPBKHSDetail[0]['VENDOR_EKSPEDISI'] ?>">
+                                    <input class="form-control txtADOExpeditionVendor" <?= $UserAccess['vendor_ekspedisi'] ?> value="<?php if (isset($DPBKHSDetail[0]['VENDOR_EKSPEDISI'])) echo $DPBKHSDetail[0]['VENDOR_EKSPEDISI'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Estimasi Kedatangan</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
+                                    <input class="form-control <?= $UserAccess['estdate'] ?> txtADOEstDatang" <?= $UserAccess['estimasi_datang'] ?> value="<?php if (isset($DPBKHSDetail[0]['ESTIMASI_DATANG'])) echo date("Y/m/d H:i",strtotime($DPBKHSDetail[0]['ESTIMASI_DATANG']));?>">
                                 </div>
                             </div>
                         </div>
@@ -77,7 +91,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-plus"></i></span>
-                                    <input class="form-control txtADOAdditionalInformation" <?= $UserAccess['edit_field'] ?> value="<?php if (isset($DPBKHSDetail[0]['LAIN'])) echo $DPBKHSDetail[0]['LAIN'] ?>">
+                                    <input class="form-control txtADOAdditionalInformation" <?= $UserAccess['lain_lain'] ?> value="<?php if (isset($DPBKHSDetail[0]['LAIN'])) echo $DPBKHSDetail[0]['LAIN'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -85,12 +99,7 @@
                         <br />
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <p class="bold pull-left">Detail Information List</p>
-                                <button class="btn btn-success pull-right btnADOAddNewRow" title="Tambahkan Data Baru" <?= $UserAccess['add_row'] ?>>
-                                    <i class="fa fa-plus"></i>&nbsp; Tambah Baris
-                                </button>
-                                <br>
-                                <br>
+                                <p class="bold">Detail Information List</p>
                             </div>
                             <div class="panel-body">
                                 <div class="col-sm-12 text-center divADOLoadingTable">
@@ -101,29 +110,25 @@
                                 <table class="table table-bordered table-hover table-striped tblADODetailList" style="display: none">
                                     <thead>
                                         <tr class="bg-primary" height="50px">
-                                            <th class="text-center text-nowrap" style="width: 5%">No</th>
+                                            <th class="text-center text-nowrap">No</th>
                                             <th class="text-center text-nowrap">Kode DO</th>
                                             <th class="text-center text-nowrap">Nama Barang</th>
                                             <th class="text-center text-nowrap">Qty</th>
                                             <th class="text-center text-nowrap">UOM</th>
                                             <th class="text-center text-nowrap">Nama Toko</th>
                                             <th class="text-center text-nowrap">Kota</th>
-                                            <th class="text-center text-nowrap" style="width: 5%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($DPBKHSDetail as $key => $val) : ?>
-                                        <tr data-type="update" data-line="<?= $val['LINE_NUM'] ?>">
-                                            <td class="text-right" style="width: 5%"><?= $key+1 ?></td>
-                                            <td class="text-right"><input type="number" class="form-control-auto form-control txtADODONumber" value="<?= $val['DO_NUM'] ?>" <?= $UserAccess['edit_field'] ?>></td>
-                                            <td class="text-left"><input type="text" class="form-control-auto form-control txtADOItemName" value="<?= $val['ITEM_NAME'] ?>" <?= $UserAccess['edit_field'] ?>></td>
-                                            <td class="text-right"><input type="number" class="form-control-auto form-control txtADOQty" value="<?= $val['QTY'] ?>" <?= $UserAccess['edit_field'] ?>></td>
-                                            <td class="text-left"><input type="text" class="form-control-auto form-control txtADOUOM" value="<?= $val['UOM'] ?>" <?= $UserAccess['edit_field'] ?>></td>
-                                            <td class="text-left"><input type="text" class="form-control-auto form-control txtADOShopName" value="<?= $val['NAMA_TOKO'] ?>" <?= $UserAccess['edit_field'] ?>></td>
-                                            <td class="text-left"><input type="text" class="form-control-auto form-control txtADOCity" value="<?= $val['KOTA'] ?>" <?= $UserAccess['edit_field'] ?>></td>
-                                            <td class="text-center" style="width: 5%">
-                                                <button title="Hapus Baris" class="btn btn-danger btnADODeleteRow" <?= $UserAccess['delete_row'] ?>><i class="fa fa-trash"></i></button> 
-                                            </td>
+                                        <tr>
+                                            <td class="text-right"><?= $key+1 ?></td>
+                                            <td class="text-right"><?= $val['DO_NUM'] ?></td>
+                                            <td class="text-left"><?= $val['ITEM_NAME'] ?></td>
+                                            <td class="text-right"><?= $val['QTY'] ?></td>
+                                            <td class="text-left"><?= $val['UOM'] ?></td>
+                                            <td class="text-left"><?= $val['NAMA_TOKO'] ?></td>
+                                            <td class="text-left"><?= $val['KOTA'] ?></td>
                                         </tr>
                                         <?php endforeach ?>
                                     </tbody>
@@ -133,8 +138,11 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOSaveUpdate" style="margin-right: 10px" <?= $UserAccess['save'] ?>>
-                        <i class="fa fa-save"></i>&nbsp; Save
+                    <button type="button" title="Reject" class="btn btn-danger pull-right btnApproveDPBDO" style="margin-right: 10px" value="0">
+                        <i class="fa fa-close"></i>&nbsp; Reject
+                    </button>
+                    <button type="button" title="Approve" class="btn btn-primary pull-right btnApproveDPBDO" style="margin-right: 10px" value="1">
+                        <i class="fa fa-check"></i>&nbsp; Approve
                     </button>
                 </div>
             </div>
