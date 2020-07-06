@@ -38,6 +38,8 @@
 										<table class="table table-striped table-hover table-bordered" id="tbl-CM-IzinDinasPTM-table">
 											<thead>
 												<tr>
+													<th class="bg-primary">Tanggal</th>
+													<th class="bg-primary">ID Dinas</th>
 													<th class="bg-primary">No. Induk</th>
 													<th class="bg-primary">Nama</th>
 													<th class="bg-primary">Tujuan</th>
@@ -52,6 +54,8 @@
 													foreach ($data as $dt) {
 														?>
 														<tr style="color: <?php echo $dt['diproses'] == "Belum diproses" ? "red" : "black"; ?>">
+															<td><?php echo $dt['tanggal'] ?></td>
+															<td><?php echo $dt['izin_id'] ?></td>
 															<td><?php echo $dt['noind'] ?></td>
 															<td><?php echo $dt['nama'] ?></td>
 															<td><?php echo $dt['tujuan'] ?></td>

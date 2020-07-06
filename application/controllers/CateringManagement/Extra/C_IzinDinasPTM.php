@@ -43,6 +43,7 @@ class C_IzinDinasPTM extends CI_Controller
 		$user = $this->session->user;
 
 		$data['Title']			=	'Izin Dinas Pusat Tuksono Mlati';
+		$data['Header']			=	'Izin Dinas Pusat Tuksono Mlati';
 		$data['Menu'] 			= 	'Extra';
 		$data['SubMenuOne'] 	= 	'Izin Dinas Pusat Tuksono Mlati';
 		$data['SubMenuTwo'] 	= 	'';
