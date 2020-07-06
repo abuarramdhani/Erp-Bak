@@ -74,7 +74,7 @@ class C_DPBListPR extends CI_Controller {
                     'lain_lain'        => '',
                     'estdate'          => 'ADOEstDatang'
             ];
-        }else if ($this->session->responsibility_id == '2709') {
+        }else if ($this->session->responsibility_id == '2730') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',

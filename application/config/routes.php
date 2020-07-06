@@ -3966,7 +3966,8 @@ $route['ApprovalDO/ListDPBVendor/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_DPBVen
 
 $route['ApprovalDO/ApprovalDPB'] = 'ApprovalDO/MainMenu/C_ApprovalDPB';
 $route['ApprovalDO/ApprovalDPB/(:any)'] = 'ApprovalDO/MainMenu/C_ApprovalDPB/$1';
-$route['ApprovalDO/WaitingListApprove'] = 'ApprovalDO/MainMenu/C_ApprovalDPB/WaitingListApprove';
+$route['ApprovalDO/WaitingListApproveDPBVendor'] = 'ApprovalDO/MainMenu/C_ApprovalDPB/WaitingListApproveVendor';
+$route['ApprovalDO/WaitingListApproveDPBKHS'] = 'ApprovalDO/MainMenu/C_ApprovalDPB/WaitingListApproveKHS';
 
 $route['ApprovalDO/ListPR'] = 'ApprovalDO/MainMenu/C_DPBListPR';
 $route['ApprovalDO/ListPR/(:any)'] = 'ApprovalDO/MainMenu/C_DPBListPR/$1';
