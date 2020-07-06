@@ -172,6 +172,8 @@ class C_DPBKHS extends CI_Controller {
 
         $pr_number = 'KHS'.date('Ymd');
 
+        $noind = $this->session->user;
+
         if ($last_pr_number = $this->M_dpb->checkPRNumber($pr_number)) {
             $array_pr_number = explode('-', $last_pr_number['NO_PR']);
             $pr_number_now   = $array_pr_number[1] + 1;
@@ -197,6 +199,7 @@ class C_DPBKHS extends CI_Controller {
 		        'QTY'              => $val['qty'],
 		        'NAMA_TOKO'        => $val['shopName'],
                 'KOTA'             => $val['city'],
+                'CREATED_BY'       => $noind,
             ]);
         }
 
