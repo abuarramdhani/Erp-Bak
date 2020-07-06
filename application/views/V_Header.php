@@ -94,7 +94,7 @@
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<?php
-									if($_SERVER['SERVER_NAME'] == 'erp.quick.com') {
+									if($_SERVER['SERVER_NAME'] == 'erp.quick.com' && @file_get_contents($this->session->path_photo)) {
 										$lokasifoto=$this->session->path_photo;
 									} else {
 										$lokasifoto=base_url('assets/theme/img/user.png');
