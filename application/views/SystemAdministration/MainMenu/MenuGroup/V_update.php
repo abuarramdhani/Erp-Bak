@@ -47,7 +47,6 @@
 												<div class="table-responsive" style="overflow:hidden;">
 													<div class="row">
 														<div class="col-lg-12">
-
 															<div class="panel panel-default">
 																<div class="panel-heading text-right">
 																	<a href="javascript:void(0);" id="addMenu" title="Tambah Baris" onclick="addRowMenu('<?php echo base_url(); ?>')" class="btn btn-primary"><i class="fa fa-plus"></i></a>
@@ -83,7 +82,7 @@
 																								<input type="hidden" name="hdnMenuGroupListId[]" id="hdnMenuGroupListId" value="<?= $MenuGroupList_item['group_menu_list_id'] ?>" class="form-control" required />
 																							</td>
 																							<td>
-																								<select class="form-control select4" name="slcMenu[]" id="slcMenu">
+																								<select class="form-control select4" name="slcMenu[]" id="slcMenu" required>
 																									<option value=""></option>
 																									<?php foreach ($Menu as $Menu_item) {
 																									?>
@@ -92,7 +91,7 @@
 																								</select>
 																							</td>
 																							<td>
-																								<input type="text" placeholder="Menu Prompt" name="txtMenuPrompt[]" id="txtMenuPrompt" value="<?= $MenuGroupList_item['prompt'] ?>" class="form-control" />
+																								<input type="text" placeholder="Menu Prompt" name="txtMenuPrompt[]" id="txtMenuPrompt" value="<?= $MenuGroupList_item['prompt'] ?>" class="form-control" required />
 																							</td>
 																							<td>
 																								<a id="btn-edit-row" class="btn btn-success" href="<?= base_url('SystemAdministration/MenuGroup/UpdateMenuGroup/') . '/' . $id . '/' . $encrypted_string ?>" title="Update SubMenu <?= strtoupper($MenuGroupList_item['prompt']) ?>" style="margin-right: 6px;"><i class="fa fa-edit"></i></a>
@@ -104,12 +103,15 @@
 																				} else {
 																					?>
 																					<tr class="clone">
+																						<td class="text-center handle">
+																							<i class="fa fa-sort"></i>
+																						</td>
 																						<td>
-																							<input type="number" min="0" placeholder="Menu Sequence" name="txtMenuSequence[]" id="txtMenuSequence" class="form-control" required />
+																							<input readonly type="number" value="1" min="0" placeholder="Menu Sequence" name="txtMenuSequence[]" id="txtMenuSequence" class="form-control" required />
 																							<input type="hidden" name="txtMenuLevel[]" id="txtMenuLevel" value="<?php echo ($grup_list_id == "") ? "1" : intval($MenuGroup_item['menu_level']) + 1; ?>" class="form-control" required />
 																						</td>
 																						<td>
-																							<select class="form-control select4" name="slcMenu[]" id="slcMenu">
+																							<select class="form-control select4" name="slcMenu[]" id="slcMenu" required>
 																								<option value=""></option>
 																								<?php foreach ($Menu as $Menu_item) {
 																								?>
@@ -118,7 +120,10 @@
 																							</select>
 																						</td>
 																						<td>
-																							<input type="text" placeholder="Menu Prompt" name="txtMenuPrompt[]" id="txtMenuPrompt" class="form-control" />
+																							<input type="text" placeholder="Menu Prompt" name="txtMenuPrompt[]" id="txtMenuPrompt" class="form-control" required />
+																						</td>
+																						<td>
+																							<a id="btn-delete-row" class="btn btn-danger" href="#!" onclick="deleteRowMenu(this)" title="Delete SubMenu"><i class="fa fa-trash"></i></a>
 																						</td>
 																					</tr>
 																				<?php } ?>
@@ -135,9 +140,12 @@
 										</div>
 										<div class="panel-footer">
 											<div class="row text-right">
-												<a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
+												<a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">
+													<i class="fa fa-arrow-left"></i>
+													<span>Back</span>
+												</a>
 												&nbsp;&nbsp;
-												<button id="btnMenuGroup" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+												<button type="submit" id="btnMenuGroup" class="btn btn-primary btn-lg btn-rect">Save Data</button>
 											</div>
 										</div>
 									</div>
@@ -166,12 +174,65 @@
 			placeholder: "ui-state-highlight",
 			update: sortSequence
 		})
+
+		// Sweetalert2 mixin toast
+		const toast = Swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000
+		})
+
+		// Submit ajax
+		$('form').submit(function(e) {
+			e.preventDefault()
+			const submitButton = $('#btnMenuGroup')
+			$(submitButton).prop('disabled', true)
+
+			// handle error
+			const handleError = (e) => {
+				$(submitButton).prop('disabled', false)
+
+				toast.fire({
+					customClass: 'swal-font-small',
+					type: 'error',
+					title: e
+				})
+			}
+
+			// submit
+			$.ajax({
+				method: 'post',
+				url: '<?= site_url('SystemAdministration/MenuGroup/UpdateMenuGroup/' . $id . "/" . $grup_list_id) ?>',
+				data: $('form').serialize(),
+				dataType: 'json',
+				success(data) {
+					if (!data.success) return handleError('Terjadi kesalahan saat mengupdate menu')
+					$(submitButton).prop('disabled', false)
+
+					toast.fire({
+						customClass: 'swal-font-small',
+						type: 'success',
+						title: 'Sukses mengupdate menu'
+					})
+				},
+				error: () => handleError('Terjadi kesalahan saat mengupdate menu')
+			})
+		})
 	})
 
-	function deleteSubMenuGroup(id, group_id) {
+	function deleteRowMenu(e) {
+		if ($('.clone').length === 1) return alert('Minimal harus ada 1 menu')
+
+		$(e).closest('tr').remove()
+		sortSequence()
+	}
+
+	function deleteSubMenuGroup(id, group_id, element = '') {
 		if (id) {
 			Swal.fire({
 				text: "Anda yakin ingin menghapus sub menu?",
+				type: 'question',
 				showCancelButton: true,
 				confirmButtonText: 'Ya',
 				cancelButtonText: 'Batal'
@@ -181,7 +242,7 @@
 				}
 			});
 		} else {
-			deleteRow('tblMenuGroup');
+			deleteRowMenu(element);
 		}
 	}
 </script>

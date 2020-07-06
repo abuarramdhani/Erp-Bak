@@ -404,7 +404,7 @@ function addRowMenu(base) {
 		allowClear: true,
 	});
 	$("select#slcMenu:last").val("").change();
-	$("input#txtMenuSequence:last").val($(".clone").length + 1);
+	$("input#txtMenuSequence:last").val($(".clone").length);
 	$("input#txtMenuPrompt:last").val("");
 	$("input#hdnMenuGroupListId:last").val("");
 	$("input#hdnMenuGroupListId:last").val("");
@@ -413,9 +413,9 @@ function addRowMenu(base) {
 	$("a#btn-delete-row:last")
 		.off("click")
 		.click(function () {
-			deleteSubMenuGroup("", "");
+			deleteSubMenuGroup("", "", this);
 		});
-	sortSequence();
+	// sortSequence();
 	console.log("test");
 }
 
