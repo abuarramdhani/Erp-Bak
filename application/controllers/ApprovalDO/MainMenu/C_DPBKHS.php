@@ -200,6 +200,7 @@ class C_DPBKHS extends CI_Controller {
 		        'NAMA_TOKO'        => $val['shopName'],
                 'KOTA'             => $val['city'],
                 'CREATED_BY'       => $noind,
+                'APPROVED_FLAG'    => 'P'
             ]);
         }
 
