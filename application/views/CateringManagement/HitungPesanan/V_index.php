@@ -44,11 +44,14 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<div class="col-sm-2 col-sm-offset-4 text-center">
+												<div class="col-sm-2 col-sm-offset-3 text-center">
 													<button type="submit" class="btn btn-primary" id="CateringHitungLihat">Lihat</button>
 												</div>
 												<div class="col-sm-2 text-center">
-													<button type="button" class="btn btn-success" id="CateringHitungRefresh">Refresh</button>
+													<button type="button" class="btn btn-info" id="CateringHitungRefreshSnack">Refresh Snack</button>
+												</div>
+												<div class="col-sm-2 text-center">
+													<button type="button" class="btn btn-success" id="CateringHitungRefreshMakan">Refresh Makan</button>
 												</div>
 											</div>
 										</form>
@@ -92,6 +95,7 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0,0,0,.5);
+    z-index: 9999;
 }
 .loading-wheel {
     width: 40px;
