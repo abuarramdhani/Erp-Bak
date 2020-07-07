@@ -43,43 +43,63 @@
 let wipp1 = $('.tblwiip1').DataTable();
 
 function addRKH(n, nj, ki){
-  let stat = $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`);
-  if (stat==1) {
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `0`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-primary`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-danger`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-close"></i> <b>Cancel</b>`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).toggleClass('selected');
-  }else {
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-danger`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-primary`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-plus-square"></i> <b>Add to RKH</b>`)
-      $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).removeClass('selected');
-  }
+    let stat = $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`);
+    if (stat==1) {
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `0`)
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-primary`)
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-danger`)
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-close"></i> <b>Cancel</b>`)
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).toggleClass('selected');
+    }else {
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-danger`)
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-primary`)
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-plus-square"></i> <b>Add to RKH</b>`)
+        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).removeClass('selected');
+    }
 
-  let get = wipp1.rows('.selected').data();
-  var bool=$(".btnWIPP").is(":hidden")
-  if (Number(get.length) == 0) {
+    let get = wipp1.rows('.selected').data();
+    var bool=$(".btnWIPP").is(":hidden")
+    if (Number(get.length) == 0) {
+        setTimeout(function () {
+          $('.btnWIPP').attr('hidden',!bool);
+      }, 300);
+    }else {
       setTimeout(function () {
-        $('.btnWIPP').attr('hidden',!bool);
-    }, 300);
-  }else {
-    setTimeout(function () {
-      $('.btnWIPP').removeAttr("hidden");
-    }, 300);
-  }
+        $('.btnWIPP').removeAttr("hidden");
+      }, 300);
+    }
+}
+
+Array.prototype.unique = function() {
+  return this.filter(function (value, index, self) {
+    return self.indexOf(value) === index;
+  });
 }
 
 function getJobReleased() {
   let get = wipp1.rows('.selected').data();
   let getDataWIPP = [];
+  let getData_WIPP = []; let index = [];
   for (var i = 0; i < get.length; i++) {
     getDataWIPP.push(get[i])
   }
+  getDataWIPP.forEach((v, i) =>{
+    index.push(v[1])
+  })
+  let uniqueJob = index.unique();
+  uniqueJob.forEach((u,ii) =>{
+    getDataWIPP.forEach((v, i) =>{
+      if (u == v[1]) {
+        getData_WIPP[ii] = v;
+      }
+    })
+  })
+  console.log(getData_WIPP);
+
   let listJobWipp = [];
 
-    getDataWIPP.forEach((v, i) =>{
+    getData_WIPP.forEach((v, i) =>{
       let a2134a = `<tr hesoyam="ya" row="${i+1}">
                       <td><center>${i+1}</center></td>
                       <td><center>${v[1]}</center></td>

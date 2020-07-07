@@ -14,7 +14,8 @@
                     <thead>
                       <tr class="bg-info">
                         <th class="text-center">No</th>
-												<th class="text-center">Kode Ttem</th>
+                        <th class="text-center">No Job</th>
+                        <th class="text-center">Kode Ttem</th>
 												<th class="text-center">Nama Barang</th>
 												<th class="text-center">Lane</th>
 												<th class="text-center">Tanggal</th>
@@ -27,6 +28,7 @@
                       <?php foreach ($get as $key => $g): ?>
                       <tr>
                         <td class="text-center"><?php echo $key+1 ?></td>
+                        <td class="text-center"><?php echo $g['No_Job'] ?></td>
                         <td class="text-center"><?php echo $g['Komponen'] ?></td>
                         <td class="text-center"><?php echo $g['Nama_Komponen'] ?></td>
                         <td class="text-center"><?php echo $g['Line'] ?></td>

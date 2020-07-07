@@ -129,6 +129,20 @@ class C_Master extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
+    public function insertTimePause()
+    {
+      $data = [
+        'No_Job' => $this->input->post('no_job'),
+        'Kode_Item' => $this->input->post('code'),
+        'Line' => $this->input->post('line'),
+        'No' => $this->input->post('no'),
+        'Pause_Start' => $this->input->post('waktu_mulai')
+      ];
+
+      $result = $this->M_rtlp->insertTimePause($data);
+      echo json_encode($result);
+    }
+
     public function detail()
     {
      if (!$this->input->is_ajax_request()) {
@@ -187,6 +201,7 @@ class C_Master extends CI_Controller
         'Line'     => $this->input->post('line'),
         'Komponen' => $this->input->post('code'),
         'Start'    => $this->input->post('waktu_mulai'),
+        'No_Job'   => $this->input->post('no_job'),
         'Tanggal'  => date('Y-m-d')
       ]);
       echo json_encode($data);
@@ -198,6 +213,7 @@ class C_Master extends CI_Controller
         'Finish'   => $this->input->post('waktu_selesai'),
         'Line'     => $this->input->post('line'),
         'Komponen' => $this->input->post('code'),
+        'No_Job'   => $this->input->post('no_job'),
         'Time'     => $this->input->post('lama_waktu')
       ]);
       echo json_encode($data);
@@ -243,6 +259,7 @@ class C_Master extends CI_Controller
     public function cekapi()
     {
       $data_a = $this->M_rtlp->getDetailBom('AAG2EA0001AY-1');
+      // $data_a = $this->M_rtlp->getItem();
       echo "<pre>";
       print_r($data_a);
       echo sizeof($data_a);

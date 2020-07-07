@@ -67,7 +67,7 @@ body{
                     <!-- <select class="form-control select2" id="job_wipp1" name="job[]" style="width:100%" required>
                       <option value="">AAA123213EA</option>
                     </select> -->
-                    <input type="text" class="form-control" id="job1_wipp<?php echo $no ?>" name="job1[]" value="<?php echo $l1['no_job'] ?>" readonly>
+                    <input type="text" class="form-control get-job-1" id="job1_wipp<?php echo $no ?>" name="job1[]" value="<?php echo $l1['no_job'] ?>" readonly>
                   </center>
                 </td>
                 <td>
@@ -134,7 +134,7 @@ body{
                     <!-- <select class="form-control select2" id="job2_wipp1" name="job2[]" style="width:100%" required>
                       <option value="">AAA123213EA</option>
                     </select> -->
-                    <input type="text" class="form-control" id="job2_wipp<?php echo $no ?>" name="job2[]" value="<?php echo $l2['no_job'] ?>" readonly>
+                    <input type="text" class="form-control get-job-2" id="job2_wipp<?php echo $no ?>" name="job2[]" value="<?php echo $l2['no_job'] ?>" readonly>
                   </center>
                 </td>
                 <td>
@@ -207,7 +207,7 @@ body{
                       <!-- <select class="form-control select3" id="job3_wipp1" name="job3[]" style="width:100%" required>
                         <option value="">AAA133313EA</option>
                       </select> -->
-                      <input type="text" class="form-control" id="job3_wipp<?php echo $no ?>" name="job3[]" value="<?php echo $l3['no_job'] ?>" readonly>
+                      <input type="text" class="form-control get-job-3" id="job3_wipp<?php echo $no ?>" name="job3[]" value="<?php echo $l3['no_job'] ?>" readonly>
                     </center>
                   </td>
                   <td>
@@ -241,7 +241,7 @@ body{
             </div>
             <div class="col-md-3">
               <button type="button" style="float:right" name="button" class="btn btn-danger" data-toggle="modal" data-target="#wipp4" onclick="setTargetPe(4)"><i class="fa fa-pencil"></i>
-              <b>Max PE : <span style="color:#ffffff" id="target_pe_line4"><?php !empty($line_4[0]['target_pe_max'])?$l4 = $line_4[0]['target_pe_max'] : $l4 = ''; echo $l4; ?></span></b><b>%</b>)</button>
+              <b>Max PE : <span style="color:#ffffff" id="target_pe_line4"><?php !empty($line_4[0]['target_pe_max'])?$l4 = $line_4[0]['target_pe_max'] : $l4 = ''; echo $l4; ?></span></b><b>%</b></button>
             </div>
         </div>
         <div class="table-responsive">
@@ -273,7 +273,7 @@ body{
                       <!-- <select class="form-control select4" id="job4_wipp1" name="job4[]" style="width:100%" required>
                         <option value="">AAA144414EA</option>
                       </select> -->
-                      <input type="text" class="form-control" id="job4_wipp<?php echo $no ?>" name="job4[]" value="<?php echo $l4['no_job'] ?>" readonly>
+                      <input type="text" class="form-control get-job-4" id="job4_wipp<?php echo $no ?>" name="job4[]" value="<?php echo $l4['no_job'] ?>" readonly>
                     </center>
                   </td>
                   <td>
@@ -309,7 +309,7 @@ body{
         </div>
         <div class="col-md-3">
           <button type="button" style="float:right" name="button" class="btn btn-danger" data-toggle="modal" data-target="#wipp4" onclick="setTargetPe(5)"><i class="fa fa-wifi"></i>
-          <b>Max PE : <span style="color:#ffffff" id="target_pe_line5"><?php !empty($line_5[0]['target_pe_max'])?$l5 = $line_5[0]['target_pe_max'] : $l5 = ''; echo $l5; ?></span></b><b>%</b>)</button>
+          <b>Max PE : <span style="color:#ffffff" id="target_pe_line5"><?php !empty($line_5[0]['target_pe_max'])?$l5 = $line_5[0]['target_pe_max'] : $l5 = ''; echo $l5; ?></span></b><b>%</b></button>
         </div>
     </div>
     <div class="table-responsive">
@@ -341,7 +341,7 @@ body{
                   <!-- <select class="form-control select5" id="job5_wipp1" name="job5[]" style="width:100%" required>
                     <option value="">AAA155515EA</option>
                   </select> -->
-                  <input type="text" class="form-control" id="job5_wipp<?php echo $no ?>" name="job5[]" value="<?php echo $l5['no_job'] ?>" readonly>
+                  <input type="text" class="form-control get-job-5" id="job5_wipp<?php echo $no ?>" name="job5[]" value="<?php echo $l5['no_job'] ?>" readonly>
                 </center>
               </td>
               <td>

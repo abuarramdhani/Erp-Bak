@@ -1422,7 +1422,6 @@ const addLaneArrange = (line, target_pe, no, id) =>{
   let item_selected = Array.prototype.map.call(document.querySelectorAll(`.item-selected-arrange-${no} td center`), function(td) {
       return td.innerHTML;
     });
-  // // console.log(item_selected);
   let tampung_pe = $('.tampung_pe_'+line).map((_,el) => el.value).get();
   tampungan = 0;
   tampung_pe.forEach((val, i) =>{
@@ -1431,40 +1430,45 @@ const addLaneArrange = (line, target_pe, no, id) =>{
 
   let count_to_cek = Number(tampungan) + Number(target_pe);
 
+  let getJob = $('.get-job-'+line).map((_,el) => el.value).get();
+
   // update count PPIC
   let total_sebelumnya = $('#total_ppic_'+line).html()
   let total_ppic_setelah_ditambahkan = Number(item_selected[7].trim().substring(0, item_selected[7].trim().length - 1))+Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1));
   $('#total_ppic_'+line).html(`${total_ppic_setelah_ditambahkan.toFixed(3)}%`);
-  // console.log(Number(item_selected[7].trim().substring(0, item_selected[7].trim().length - 1)));
-  // // console.log(target_pe_max);
 
-  if (count_to_cek > target_pe_max) {
-    swalWIPP('warning', `Jumlah Target PE (${count_to_cek.toFixed(5)}) > Target PE Max (${target_pe_max})`)
+  if (getJob.includes(item_selected[1])) {
+    swalWIPP('warning', `Pada Line ${line} sudah terdapat no job ${item_selected[1]}`);
   }else {
-    let n = $(`.line${line}wipp tbody tr`).length;
-    let a = n + 1;
-    $(`#tambahisiwipp${line}`).append(`<tr class="rowbaru${line}_wipp" id="wipp${line}row1">
-                                        <td>
-                                          <center>
-                                            <input type="text" class="form-control" id="job${line}_wipp${a}" name="job${line}[]" value="${item_selected[1]}" readonly>
-                                          </center>
-                                        </td>
-                                        <td><center><input type="text" class="form-control" value="${item_selected[2]}" name="item${line}[]" id="item${line}_wipp${a}" readonly placeholder="ITEM"></center></td>
-                                        <td><center><input type="number" class="form-control" value="${item_selected[4]}" name="qty${line}[]" id="qty${line}_wipp${a}" readonly placeholder="QTY"></center></td>
-                                        <td>
-                                         <center>
-                                         <input type="text" class="form-control" value="${item_selected[7].trim().substring(0, item_selected[7].trim().length - 1)}" placeholder="50%" readonly>
-                                         <input type="hidden" class="form-control tampung_pe_${line}" name="target${line}[]" value="${target_pe}" id="target${line}_pe${a}" placeholder="50%">
-                                         </center>
-                                        </td>
-                                        <td><center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp${line}(${a}, ${id})" style="border-radius:10px;"name="button"><i class="fa fa-minus-square"></i></button></center></td>
-                                      </tr>
-                                      <input type="hidden" name="id_job_list${line}[]" id="jobid${line}_${a}" value="${id}">
-                                      `);
-    $('.item-selected-arrange-'+item_selected[0]).remove()
-    $('.id-list-arrange-'+id).remove()
-
+    if (count_to_cek > target_pe_max) {
+      swalWIPP('warning', `Jumlah Target PE (${count_to_cek.toFixed(5)}) > Target PE Max (${target_pe_max})`)
+    }else {
+      let n = $(`.line${line}wipp tbody tr`).length;
+      let a = n + 1;
+      $(`#tambahisiwipp${line}`).append(`<tr class="rowbaru${line}_wipp" id="wipp${line}row1">
+                                          <td>
+                                            <center>
+                                              <input type="text" class="form-control" id="job${line}_wipp${a}" name="job${line}[]" value="${item_selected[1]}" readonly>
+                                            </center>
+                                          </td>
+                                          <td><center><input type="text" class="form-control" value="${item_selected[2]}" name="item${line}[]" id="item${line}_wipp${a}" readonly placeholder="ITEM"></center></td>
+                                          <td><center><input type="number" class="form-control" value="${item_selected[4]}" name="qty${line}[]" id="qty${line}_wipp${a}" readonly placeholder="QTY"></center></td>
+                                          <td>
+                                           <center>
+                                           <input type="text" class="form-control" value="${item_selected[7].trim().substring(0, item_selected[7].trim().length - 1)}" placeholder="50%" readonly>
+                                           <input type="hidden" class="form-control tampung_pe_${line}" name="target${line}[]" value="${target_pe}" id="target${line}_pe${a}" placeholder="50%">
+                                           </center>
+                                          </td>
+                                          <td><center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp${line}(${a}, ${id})" style="border-radius:10px;"name="button"><i class="fa fa-minus-square"></i></button></center></td>
+                                        </tr>
+                                        <input type="hidden" name="id_job_list${line}[]" id="jobid${line}_${a}" value="${id}">
+                                        `);
+      $('.item-selected-arrange-'+item_selected[0]).remove()
+      $('.id-list-arrange-'+id).remove()
+    }
   }
+
+
 
 }
 

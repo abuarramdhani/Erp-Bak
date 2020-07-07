@@ -153,6 +153,24 @@ let menitt5 = [];
 let jamm5 = [];
 
 
+// // get total seconds between the times
+// var delta = Math.abs(date_future - date_now) / 1000;
+//
+// // calculate (and subtract) whole days
+// var days = Math.floor(delta / 86400);
+// delta -= days * 86400;
+//
+// // calculate (and subtract) whole hours
+// var hours = Math.floor(delta / 3600) % 24;
+// delta -= hours * 3600;
+//
+// // calculate (and subtract) whole minutes
+// var minutes = Math.floor(delta / 60) % 60;
+// delta -= minutes * 60;
+//
+// // what's left is seconds
+// var seconds = delta % 60;  // in theory the modulus is not required
+
 // const dataLength = $('#length').data('length');
 const jumlahEl1 = $('.length1').find('.timer1').toArray();
 const jumlahEl2 = $('.length2').find('.timer2').toArray();
@@ -190,7 +208,7 @@ jumlahEl1.forEach((v, i) => {
     document.getElementById(`seconds1-${i}`).innerHTML = pad(seconds1[i]);
   }
 
-  start1[i] = (code, line) => {
+  start1[i] = (code, line, no_job, no) => {
     $('#cekline').val(line);
     let cek1_1 = $(`#val_to_cek1${i}`).val();
 
@@ -215,7 +233,8 @@ jumlahEl1.forEach((v, i) => {
         data: {
           waktu_mulai: waktu_mulai,
           line: 1,
-          code: code
+          code: code,
+          no_job: no_job
         },
         success: function(result) {
           if (!result) {
@@ -237,11 +256,41 @@ jumlahEl1.forEach((v, i) => {
       })
     }else {
       swalRKH('info', `${waktu_mulai}`)
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: 1,
+          no: no,
+          code: code
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+
+
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
     }
 
   }
 
-  selesai1[i] = (code, line) => {
+  selesai1[i] = (code, line, no_job) => {
     if (intervalId1[i]) {
       clearInterval(intervalId1[i]);
 
@@ -282,6 +331,7 @@ jumlahEl1.forEach((v, i) => {
           waktu_selesai: waktu_selesai,
           line: 1,
           code: code,
+          no_job: no_job,
           lama_waktu: time_se_di_dapet
         },
         success: function(result) {
@@ -304,11 +354,41 @@ jumlahEl1.forEach((v, i) => {
     }
   }
 
-  pause1[i] = _ => {
+  pause1[i] = (no_job, kode_item, no_param) => {
     if (intervalId1[i]) {
       clearInterval(intervalId1[i]);
+      let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
       console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: start_pause,
+          line: 1,
+          code: kode_item,
+          no_job: no_job,
+          no: no_param
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data pada table Time_Pause_Record (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          }else {
+            console.log(result);
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
     }
   }
 
@@ -351,7 +431,7 @@ jumlahEl2.forEach((v, i) => {
     document.getElementById(`seconds2-${i}`).innerHTML = pad(seconds2[i]);
   }
 
-  start2[i] = (code, line) => {
+  start2[i] = (code, line, no_job) => {
     $('#cekline').val(line);
     let cek2_2 = $(`#val_to_cek2${i}`).val();
 
@@ -374,6 +454,7 @@ jumlahEl2.forEach((v, i) => {
         data: {
           waktu_mulai: waktu_mulai,
           line: 2,
+          no_job: no_job,
           code: code
         },
         success: function(result) {
@@ -397,7 +478,7 @@ jumlahEl2.forEach((v, i) => {
     }
   }
 
-  selesai2[i] = (code, line) => {
+  selesai2[i] = (code, line, no_job) => {
     if (intervalId2[i]) {
       clearInterval(intervalId2[i]);
 
@@ -435,6 +516,7 @@ jumlahEl2.forEach((v, i) => {
           waktu_selesai: waktu_selesai,
           line: 2,
           code: code,
+          no_job: no_job,
           lama_waktu: time_se_di_dapet
         },
         success: function(result) {
@@ -457,11 +539,41 @@ jumlahEl2.forEach((v, i) => {
     }
   }
 
-  pause2[i] = _ => {
+  pause2[i] = (no_job, kode_item, no_param) => {
     if (intervalId2[i]) {
       clearInterval(intervalId2[i]);
+      let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
       console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: start_pause,
+          line: 2,
+          code: kode_item,
+          no_job: no_job,
+          no: no_param
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data pada table Time_Pause_Record (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          }else {
+            console.log(result);
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
     }
   };
 
@@ -504,7 +616,7 @@ jumlahEl3.forEach((v, i) => {
     document.getElementById(`seconds3-${i}`).innerHTML = pad(seconds3[i]);
   }
 
-  start3[i] = (code, line) => {
+  start3[i] = (code, line, no_job) => {
     $('#cekline').val(line);
 
     let cek1_1 = $(`#val_to_cek3${i}`).val();
@@ -528,6 +640,7 @@ jumlahEl3.forEach((v, i) => {
         data: {
           waktu_mulai: waktu_mulai,
           line: 3,
+          no_job: no_job,
           code: code
         },
         success: function(result) {
@@ -552,7 +665,7 @@ jumlahEl3.forEach((v, i) => {
 
   }
 
-  selesai3[i] = (code, line) => {
+  selesai3[i] = (code, line, no_job) => {
     if (intervalId3[i]) {
       clearInterval(intervalId3[i]);
 
@@ -589,6 +702,7 @@ jumlahEl3.forEach((v, i) => {
           waktu_selesai: waktu_selesai,
           line: 3,
           code: code,
+          no_job: no_job,
           lama_waktu: time_se_di_dapet
         },
         success: function(result) {
@@ -658,7 +772,7 @@ jumlahEl4.forEach((v, i) => {
     document.getElementById(`seconds4-${i}`).innerHTML = pad(seconds4[i]);
   }
 
-  start4[i] = (code, line) => {
+  start4[i] = (code, line, no_job) => {
     $('#cekline').val(line);
     // if ($('#btnstart'+i).val() === 'Start') {
     let cek1_1 = $(`#val_to_cek4${i}`).val();
@@ -682,6 +796,7 @@ jumlahEl4.forEach((v, i) => {
         data: {
           waktu_mulai: waktu_mulai,
           line: 4,
+          no_job: no_job,
           code: code
         },
         success: function(result) {
@@ -705,7 +820,7 @@ jumlahEl4.forEach((v, i) => {
     }
   }
 
-  selesai4[i] = (code, line) => {
+  selesai4[i] = (code, line, no_job) => {
     if (intervalId4[i]) {
       clearInterval(intervalId4[i]);
 
@@ -742,6 +857,7 @@ jumlahEl4.forEach((v, i) => {
           waktu_selesai: waktu_selesai,
           line: 4,
           code: code,
+          no_job: no_job,
           lama_waktu: time_se_di_dapet
         },
         success: function(result) {
@@ -810,7 +926,7 @@ jumlahEl5.forEach((v, i) => {
     document.getElementById(`seconds5-${i}`).innerHTML = pad(seconds5[i]);
   }
 
-  start5[i] = (code, line) => {
+  start5[i] = (code, line, no_job) => {
     $('.img-area-wipp').html(``);
     $('#cekline').val(line);
 
@@ -834,6 +950,7 @@ jumlahEl5.forEach((v, i) => {
         data: {
           waktu_mulai: waktu_mulai,
           line: 5,
+          no_job: no_job,
           code: code
         },
         success: function(result) {
@@ -866,7 +983,7 @@ jumlahEl5.forEach((v, i) => {
     }
   }
 
-  selesai5[i] = (code, line) => {
+  selesai5[i] = (code, line, no_job) => {
     if (intervalId5[i]) {
       clearInterval(intervalId5[i]);
 
@@ -902,6 +1019,7 @@ jumlahEl5.forEach((v, i) => {
         data: {
           waktu_selesai: waktu_selesai,
           line: 5,
+          no_job: no_job,
           code: code,
           lama_waktu: time_se_di_dapet
         },

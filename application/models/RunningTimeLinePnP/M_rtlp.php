@@ -10,6 +10,12 @@ class M_rtlp extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
+    public function insertTimePause($data)
+    {
+      $this->db->insert('wip_pnp.Time_Break', $data);
+      return 1;
+    }
+
     public function getHistory()
     {
       $res = $this->db->order_by('Id', 'desc')->get('wip_pnp.Time_Record')->result_array();
@@ -54,9 +60,9 @@ class M_rtlp extends CI_Model
 
     public function SetStart($data)
     {
-      $cek = $this->db->where('Komponen', $data['Komponen'])->get('wip_pnp.Time_Record')->row();
+      $cek = $this->db->where('No_Job', $data['No_Job'])->where('Line', $data['Line'])->get('wip_pnp.Time_Record')->row();
       if (!empty($cek)) {
-        $this->db->where('Komponen', $data['Komponen'])->update('wip_pnp.Time_Record', $data);
+        $this->db->where('No_Job', $data['No_Job'])->where('Line', $data['Line'])->update('wip_pnp.Time_Record', $data);
         if ($this->db->affected_rows() == 1) {
           $check = $this->db->where('Line', $data['Line'])->get('wip_pnp.running_line')->row();
           if (empty($check)) {
@@ -89,9 +95,9 @@ class M_rtlp extends CI_Model
 
     public function SetFinish($data)
     {
-      $cek = $this->db->where('Komponen', $data['Komponen'])->get('wip_pnp.Time_Record')->row();
+      $cek = $this->db->where('No_Job', $data['No_Job'])->where('Line', $data['Line'])->get('wip_pnp.Time_Record')->row();
       if (!empty($cek)) {
-         $this->db->where('Komponen', $data['Komponen'])->update('wip_pnp.Time_Record', $data);
+         $this->db->where('No_Job', $data['No_Job'])->where('Line', $data['Line'])->update('wip_pnp.Time_Record', $data);
          $check = $this->db->where('Line', $data['Line'])->get('wip_pnp.running_line')->row();
          if (!empty($check)) {
            $this->db->where('Line', $data['Line'])->update('wip_pnp.running_line', ['Line' => $data['Line'], 'Component_Code' => NULL]);
