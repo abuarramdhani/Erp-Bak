@@ -162,4 +162,12 @@ class C_NotifDL extends CI_Controller
 		echo json_encode($data_akhir);
 	}
 
+	public function getNotifikasiDinasLuar(){
+		$data = $this->M_notifdl->getDLThisDayBelumDiProses();
+		if (!empty($data)) {
+			echo count($data);
+		}else{
+			echo 0;
+		}
+	}
 } ?>

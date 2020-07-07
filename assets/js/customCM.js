@@ -4441,7 +4441,7 @@ $(document).ready(function(){
 		},
 		success: function(data){
 			if (data == "ya") {
-				localStorage.setItem("lastMinutes", -1)
+				localStorage.setItem("lastMinutesID", -1)
 				setInterval(function(){
 					var waktuCatering = new Date();
 					jamKatering = waktuCatering.getHours();
@@ -4449,8 +4449,8 @@ $(document).ready(function(){
 					detikKatering = waktuCatering.getSeconds();
 					// console.log(localStorage.getItem("lastMinutes"))
 					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) <= 45 ) ) {
-						if ( parseInt(menitKatering)%5 == 0 && localStorage.getItem("lastMinutes") != parseInt(menitKatering) ) {
-							localStorage.setItem("lastMinutes", parseInt(menitKatering))
+						if ( parseInt(menitKatering)%5 == 0 && localStorage.getItem("lastMinutesID") != parseInt(menitKatering) ) {
+							localStorage.setItem("lastMinutesID", parseInt(menitKatering))
 							// swal.fire({
 				   //              title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
 				   //              html: "Terdapat XX yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
@@ -4474,7 +4474,7 @@ $(document).ready(function(){
 									if (data != "0") {
 										swal.fire({
 							                title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
-							                html: "Terdapat " + data + " yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
+							                html: "Terdapat " + data + " yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas pusat tuksono mlati",
 							                type: "warning",
 							                confirmButtonText: 'Close',
 							                confirmButtonColor: '#d63031',
@@ -4554,6 +4554,68 @@ $(document).ready(function(){
 				$('#ldg-CM-NotifDL-Loading').hide();
 			}
 		})
+	});
+
+	$.ajax({
+		method: 'GET',
+		url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/getUserCatering',
+		error: function(xhr,status,error){
+			swal.fire({
+                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                html: xhr['responseText'],
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+		},
+		success: function(data){
+			if (data == "ya") {
+				localStorage.setItem("lastMinutesDL", -1)
+				setInterval(function(){
+					var waktuCatering = new Date();
+					jamKatering = waktuCatering.getHours();
+					menitKatering = waktuCatering.getMinutes();
+					detikKatering = waktuCatering.getSeconds();
+					// console.log(localStorage.getItem("lastMinutesDL"))
+					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) <= 45 ) ) {
+						if ( parseInt(menitKatering)%5 == 0 && localStorage.getItem("lastMinutesDL") != parseInt(menitKatering) ) {
+							localStorage.setItem("lastMinutesDL", parseInt(menitKatering))
+							// swal.fire({
+				   //              title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
+				   //              html: "Terdapat XX yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
+				   //              type: "warning",
+				   //              confirmButtonText: 'Close',
+				   //              confirmButtonColor: '#d63031',
+				   //          })
+							$.ajax({
+								method: 'GET',
+								url: baseurl + 'CateringManagement/Extra/NotifDL/getNotifikasiDinasLuar',
+								error: function(xhr,status,error){
+									swal.fire({
+						                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+						                html: xhr['responseText'],
+						                type: "error",
+						                confirmButtonText: 'OK',
+						                confirmButtonColor: '#d63031',
+						            })
+								},
+								success: function(data){
+									if (data != "0") {
+										swal.fire({
+							                title: "Notifikasi Dinas Luar",
+							                html: "Terdapat " + data + " yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/NotifDL'>klik disini </a> untuk masuk ke menu catering dinas luar",
+							                type: "warning",
+							                confirmButtonText: 'Close',
+							                confirmButtonColor: '#d63031',
+							            })
+									}							
+								}
+							});
+						}
+					}
+				},1000);
+			}
+		}
 	});
 })
 // end notifikasi dinas luar
