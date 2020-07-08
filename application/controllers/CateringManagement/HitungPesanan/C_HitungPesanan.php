@@ -153,6 +153,7 @@ class C_HitungPesanan extends CI_Controller
     $tanggal = $this->input->post('tanggal');
     $shift = $this->input->post('shift');
     $lokasi = $this->input->post('lokasi');
+    $jenis = $this->input->post('jenis');
     $data = array();
 
     if (strtotime($tanggal) == strtotime(date('Y-m-d'))) {
@@ -207,11 +208,11 @@ class C_HitungPesanan extends CI_Controller
 
     if (isset($data['statusBatasDatang']) && $data['statusBatasDatang'] == 'ada') {
       if ($shift == '1') {
-        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasi($tanggal,$lokasi);
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasi($tanggal,$lokasi,$jenis);
       }elseif($shift == '2'){
-        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi);
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi,$jenis);
       }elseif ($shift == '3') {
-        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi);
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi,$jenis);
       }
       if (!empty($dataAbsenShift)) {
         $data['jumlahAbsenShift'] = count($dataAbsenShift);
@@ -232,6 +233,7 @@ class C_HitungPesanan extends CI_Controller
     $tanggal = $this->input->post('tanggal');
     $shift = $this->input->post('shift');
     $lokasi = $this->input->post('lokasi');
+    $jenis = $this->input->post('jenis');
 
     $this->M_hitungpesanan->deletePesananByTanggalShiftLokasi($tanggal,$shift,$lokasi);
     $this->M_hitungpesanan->deleteUrutanKateringByTanggalShiftLokasi($tanggal,$shift,$lokasi);
@@ -240,9 +242,9 @@ class C_HitungPesanan extends CI_Controller
     }
 
     if ($shift == '1') {
-      $this->hitungShift1($tanggal,$shift,$lokasi);
+      $this->hitungShift1($tanggal,$shift,$lokasi,$jenis);
     }elseif($shift == '2'){
-      $this->hitungShift2($tanggal,$shift,$lokasi);
+      $this->hitungShift2($tanggal,$shift,$lokasi,$jenis);
     }elseif ($shift == '3') {
       $this->hitungShift3($tanggal,$shift,$lokasi);
     }
@@ -264,8 +266,8 @@ class C_HitungPesanan extends CI_Controller
     $this->M_hitungpesanan->insertTlog($data_log);
   }
 
-  public function hitungShift1($tanggal,$shift,$lokasi){
-    $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasi($tanggal,$lokasi);
+  public function hitungShift1($tanggal,$shift,$lokasi,$jenis){
+    $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasi($tanggal,$lokasi,$jenis);
     // echo "<pre>";print_r($dataAbsenShift);exit();
     $data = array();
     $jumlahPesananAwal = 0;
@@ -278,7 +280,7 @@ class C_HitungPesanan extends CI_Controller
     foreach ($dataAbsenShift as $pesanan) {
       $jumlahPesananAwal = $pesanan['jumlah'];
       $tempatMakan = $pesanan['tempat_makan'];
-      $pesananStaff = $this->M_hitungpesanan->getAbsenShiftSatuStaffByTanggalLokasiTempatMakan($tanggal,$lokasi,$tempatMakan);
+      $pesananStaff = $this->M_hitungpesanan->getAbsenShiftSatuStaffByTanggalLokasiTempatMakan($tanggal,$lokasi,$tempatMakan,$jenis);
       if (!empty($pesananStaff)) {
         $jumlahPesananStaff = $pesananStaff['0']['jumlah'];
         $jumlahPesananNonStaff = $jumlahPesananAwal - $jumlahPesananStaff;
@@ -465,8 +467,8 @@ class C_HitungPesanan extends CI_Controller
 
   }
 
-  public function hitungShift2($tanggal,$shift,$lokasi){
-    $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi);
+  public function hitungShift2($tanggal,$shift,$lokasi,$jenis){
+    $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi,$jenis);
      // echo "<pre>";print_r($dataAbsenShift);exit();
     $data = array();
     $jumlahPesananAwal = 0;
@@ -479,7 +481,7 @@ class C_HitungPesanan extends CI_Controller
     foreach ($dataAbsenShift as $pesanan) {
       $jumlahPesananAwal = $pesanan['jumlah'];
       $tempatMakan = $pesanan['tempat_makan'];
-      $pesananStaff = $this->M_hitungpesanan->getAbsenShiftDuaStaffByTanggalLokasiTempatMakan($tanggal,$lokasi,$tempatMakan);
+      $pesananStaff = $this->M_hitungpesanan->getAbsenShiftDuaStaffByTanggalLokasiTempatMakan($tanggal,$lokasi,$tempatMakan,$jenis);
       $pesananTambahan = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakan($tanggal,$shift,$tempatMakan);
       
       if (!empty($pesananStaff)) {
@@ -2095,7 +2097,7 @@ class C_HitungPesanan extends CI_Controller
     $pdf->Output($filename, 'I');
   }
 
-  public function simpanDetail($tanggal,$shift,$lokasi){
+  public function simpanDetail($tanggal,$shift,$lokasi,$jenis){
     $this->M_hitungpesanan->deletePesananDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
 
     $tambahan = $this->M_hitungpesanan->getPesananTambahanDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
@@ -2131,7 +2133,7 @@ class C_HitungPesanan extends CI_Controller
     }
 
     if ($shift == '1') {
-      $absen = $this->M_hitungpesanan->getAbsenShiftSatuDetailByTanggalLokasi($tanggal,$lokasi);
+      $absen = $this->M_hitungpesanan->getAbsenShiftSatuDetailByTanggalLokasi($tanggal,$lokasi,$jenis);
       if (!empty($absen)) {
         foreach ($absen as $abs) {
           $data_insert = array(
@@ -2147,7 +2149,7 @@ class C_HitungPesanan extends CI_Controller
         }
       }
     }elseif($shift == '2'){
-      $absen = $this->M_hitungpesanan->getAbsenShiftDuaDetailByTanggalLokasi($tanggal,$lokasi);
+      $absen = $this->M_hitungpesanan->getAbsenShiftDuaDetailByTanggalLokasi($tanggal,$lokasi,$jenis);
       if (!empty($absen)) {
         foreach ($absen as $abs) {
           $data_insert = array(
