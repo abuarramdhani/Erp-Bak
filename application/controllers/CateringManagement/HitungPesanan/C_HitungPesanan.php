@@ -196,7 +196,7 @@ class C_HitungPesanan extends CI_Controller
 
     if (isset($data['statusJadwal']) && $data['statusJadwal'] == 'ada') {
       $dataBatasDatang = $this->M_hitungpesanan->getBatasDatangByTanggalShift($tanggal,$shift);
-      if (!empty($dataBatasDatang)) {
+      if (!empty($dataBatasDatang) || $shift == '3') {
         $data['jumlahBatasDatang'] = count($dataBatasDatang);
         $data['statusBatasDatang'] = 'ada';
       }else{
