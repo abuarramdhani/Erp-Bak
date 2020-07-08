@@ -4,7 +4,7 @@
         height: 70px;
     }
 </style>
-<section class="content" id="datacuttingtool" onmouseover="monitoringcuttingtool(this)">
+<section class="content" id="datacuttingtool">
     <div class="inner">
         <div class="row">
             <div class="col-lg-12">
@@ -51,3 +51,9 @@
         </div>
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+        monitoringcuttingtool(this);
+    
+    });
+</script>

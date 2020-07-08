@@ -13,7 +13,7 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function getdataResharp($item) {
+    public function getdataResharp() {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT TRIM (SUBSTR (item, 1, INSTR (item, '-') - 1)) baru
                         ,item,description
@@ -31,7 +31,7 @@ class M_monitoring extends CI_Model {
                     AND moqd.locator_id = mil.inventory_location_id
                     AND mil.inventory_location_id = 1131
                     AND msib.SEGMENT1 like '%-R'
-                    AND msib.SEGMENT1 like '%$item%'
+                    --AND msib.SEGMENT1 like '%%'
                 GROUP BY msib.inventory_item_id, msib.segment1, msib.description, msib.PREPROCESSING_LEAD_TIME ,msib.MINIMUM_ORDER_QUANTITY,msib.FULL_LEAD_TIME ,msib.POSTPROCESSING_LEAD_TIME )
                 ORDER BY item";
         $query = $oracle->query($sql);
@@ -39,7 +39,7 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function getdataTumpul($item) {
+    public function getdataTumpul() {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT TRIM (SUBSTR (item, 1, INSTR (item, '-') - 1)) baru
                         ,item,description
@@ -57,7 +57,7 @@ class M_monitoring extends CI_Model {
                     AND moqd.locator_id = mil.inventory_location_id
                     AND mil.inventory_location_id = 1131
                     AND msib.SEGMENT1 like '%-T'
-                    AND msib.SEGMENT1 like '%$item%'
+                    --AND msib.SEGMENT1 like '%%'
                 GROUP BY msib.inventory_item_id, msib.segment1, msib.description, msib.PREPROCESSING_LEAD_TIME ,msib.MINIMUM_ORDER_QUANTITY,msib.FULL_LEAD_TIME ,msib.POSTPROCESSING_LEAD_TIME )
                 ORDER BY item";
         $query = $oracle->query($sql);
@@ -94,7 +94,7 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function getrataIN($item) {
+    public function getrataIN() {
         $oracle = $this->load->database('oracle', true);
         $sql ="
                 SELECT it.item, nvl(sum(tot.in_total),0) total_in
@@ -110,7 +110,7 @@ class M_monitoring extends CI_Model {
                         AND moqd.subinventory_code = 'TR-TKS'
                         AND moqd.locator_id = mil.inventory_location_id
                         AND mil.inventory_location_id = 1131
-                          AND msib.SEGMENT1 LIKE '%$item%'
+                          --AND msib.SEGMENT1 LIKE '%%'
                 --        AND msib.SEGMENT1 like '%-R'  -----item resharpening
                 --           AND msib.SEGMENT1 like '%-T'  -----item Tumpul
                 --           AND msib.SEGMENT1 not like '%-R'  -----item baru
@@ -135,7 +135,7 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function getrataOUT($item) {
+    public function getrataOUT() {
         $oracle = $this->load->database('oracle', true);
         $sql ="
         SELECT it.item, nvl(sum(tot.in_total),0) total_out
@@ -151,7 +151,7 @@ class M_monitoring extends CI_Model {
                    AND moqd.subinventory_code = 'TR-TKS'
                    AND moqd.locator_id = mil.inventory_location_id
                    AND mil.inventory_location_id = 1131
-                   AND msib.SEGMENT1 LIKE '%$item%'
+                   --AND msib.SEGMENT1 LIKE '%%'
         --           AND msib.SEGMENT1 like '%-R'  -----item resharpening
         --           AND msib.SEGMENT1 like '%-T'  -----item Tumpul
         --           AND msib.SEGMENT1 not like '%-R'  -----item baru
@@ -176,7 +176,7 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
     
-    public function getOutstanding($item) {
+    public function getOutstanding() {
         $oracle = $this->load->database('oracle', true);
         $sql ="select distinct
                         prla.destination_subinventory                 subinv 
@@ -252,7 +252,7 @@ class M_monitoring extends CI_Model {
                 -- parameter
                 and plla.SHIP_TO_ORGANIZATION_ID = 102
                 and prla.DESTINATION_SUBINVENTORY = 'TR-TKS'
-                and msib.SEGMENT1 = '$item'
+                --and msib.SEGMENT1 = ''
                 and decode(nvl(plla.closed_code,'NULL'),'NULL',
                                         decode(prha.AUTHORIZATION_STATUS,
                                                 'APPROVED','TRUE','FALSE'),'OPEN',

@@ -119,7 +119,7 @@ class M_transaksi extends CI_Model {
     }
 
     
-    public function cariin($item) {
+    public function cariin() {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT it.item ,it.description 
                         ,tot_in.in_total total_in
@@ -136,7 +136,7 @@ class M_transaksi extends CI_Model {
                             AND moqd.subinventory_code = 'TR-TKS'
                             AND moqd.locator_id = mil.inventory_location_id
                             AND mil.inventory_location_id = 1131
-                            AND msib.segment1 = '$item'
+                            --AND msib.segment1 = ''
                         --   AND msib.SEGMENT1 not like '%-T'
                         GROUP BY msib.inventory_item_id, msib.segment1, msib.description) it
                         --SUBQUERY TOTAL TRANSAKSI MASUK
@@ -159,7 +159,7 @@ class M_transaksi extends CI_Model {
         // echo $sql;
     }
 
-    public function cariout($item) {
+    public function cariout() {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT it.item ,it.description 
                         ,tot_out.out_total total_out
@@ -176,7 +176,7 @@ class M_transaksi extends CI_Model {
                             AND moqd.subinventory_code = 'TR-TKS'
                             AND moqd.locator_id = mil.inventory_location_id
                             AND mil.inventory_location_id = 1131
-                            AND msib.segment1 = '$item'
+                            --AND msib.segment1 = ''
                         --   AND msib.SEGMENT1 not like '%-T'
                         GROUP BY msib.inventory_item_id, msib.segment1, msib.description) it
                         --SUBQUERY TOTAL TRANSAKSI KELUAR

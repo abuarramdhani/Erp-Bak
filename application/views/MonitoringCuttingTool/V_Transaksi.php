@@ -1,4 +1,4 @@
-<section class="content" id="datatransaksi" onmouseover="monitoringtransaksi(this)">
+<section class="content" id="datatransaksi">
     <div class="inner">
         <div class="row">
             <div class="col-lg-12">
@@ -53,3 +53,10 @@
         </div>
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+        monitoringtransaksi(this);
+    
+
+    });
+</script>

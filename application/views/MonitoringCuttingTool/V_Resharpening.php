@@ -64,8 +64,8 @@
                 <td><?= $val['01-'.date('Y').'']['OUT']?></td>
                 <td><?= $val['02-'.date('Y').'']['IN']?></td>
                 <td><?= $val['02-'.date('Y').'']['OUT']?></td>
-                <td><?= $val['02-'.date('Y').'']['IN']?></td>
-                <td><?= $val['02-'.date('Y').'']['OUT']?></td>
+                <td><?= $val['03-'.date('Y').'']['IN']?></td>
+                <td><?= $val['03-'.date('Y').'']['OUT']?></td>
                 <td><?= $val['04-'.date('Y').'']['IN']?></td>
                 <td><?= $val['04-'.date('Y').'']['OUT']?></td>
                 <td><?= $val['05-'.date('Y').'']['IN']?></td>

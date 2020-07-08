@@ -26,7 +26,6 @@ $(document).ready(function () {
 });
 
 function monitoringcuttingtool(th) {
-	$('#datacuttingtool').removeAttr("onmouseover");
 	$.ajax({
 		url: baseurl + 'MonitoringCuttingTool/Monitoring/mon_cuttingtool',
 		type: 'POST',
@@ -47,7 +46,6 @@ function monitoringcuttingtool(th) {
 
 
 function monitoringtransaksi(th) {
-	$('#datatransaksi').removeAttr("onmouseover");
 	$.ajax({
 		url: baseurl + 'MonitoringCuttingTool/MonitoringTransaksi/cuttingtoolbaru',
 		type: 'POST',

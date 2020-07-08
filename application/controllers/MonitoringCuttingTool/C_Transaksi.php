@@ -97,37 +97,61 @@ class C_Transaksi extends CI_Controller {
     }
 
     public function olahdata($getdata){
+        $in = $this->M_transaksi->cariin();
+        $out = $this->M_transaksi->cariout();
         $tampung = array();
         foreach ($getdata as $key => $val) {
             $tampung[$key]['ITEM'] = $val['ITEM'];
             $tampung[$key]['DESCRIPTION'] = $val['DESCRIPTION'];
             $tampung[$key]['TOTAL_IN'] = 0;
             $tampung[$key]['TOTAL_OUT'] = 0;
-            for ($a=0; $a < date('m') ; $a++) { 
-                $b = ''.sprintf("%02d", ($a+1)).'-'.date('Y').'';
-                $tampung[$key][$b]['IN'] = 0;
-                $tampung[$key][$b]['OUT'] = 0;
+            
+            for ($d=0; $d < date('n'); $d++) { 
+                $date = ''.sprintf("%02d", ($d+1)).'-'.date('Y').'';
+                $totalin = $this->cariIN($in, $val['ITEM'], $date);
+                $tampung[$key][$date]['IN'] = $totalin;
+                $tampung[$key]['TOTAL_IN'] += $totalin;
+                $totalout = $this->cariOUT($out, $val['ITEM'], $date);
+                $tampung[$key][$date]['OUT'] = $totalout;
+                $tampung[$key]['TOTAL_OUT'] += $totalout;
             }
             if (date('n') < 12) {
-                for ($f= $a; $f < 12 ; $f++) { 
+                for ($f= $d; $f < 12 ; $f++) { 
                     $c = ''.sprintf("%02d", ($f+1)).'-'.date('Y').'';
                     $tampung[$key][$c]['IN'] = '';
                     $tampung[$key][$c]['OUT'] = '';
                 }
             }
-            $in = $this->M_transaksi->cariin($val['ITEM']);
-            for ($d=0; $d < count($in); $d++) { 
-                $tampung[$key][$in[$d]['BULAN']]['IN'] += $in[$d]['TOTAL_IN'];
-                $tampung[$key]['TOTAL_IN'] += $in[$d]['TOTAL_IN'];
-            }
-            $out = $this->M_transaksi->cariout($val['ITEM']);
-            for ($e=0; $e < count($out); $e++) { 
-                $tampung[$key][$out[$e]['BULAN']]['OUT'] += $out[$e]['TOTAL_OUT'];
-                $tampung[$key]['TOTAL_OUT'] += $out[$e]['TOTAL_OUT'];
-            }
-            // echo "<pre>";print_r($tampung);exit();
+        // echo "<pre>";print_r($tampung);exit();
+            
         }
         return $tampung;
+    }
+
+    public function cariIN($data, $item, $date){
+        $val = 0;
+        $bln = date('n');
+        for ($i=0; $i < count($data); $i++) { 
+            if ($data[$i]['ITEM'] == $item && $data[$i]['BULAN'] == $date) {
+                $val = $data[$i]['TOTAL_IN'];
+            }else {
+                $val = $val;
+            }
+        }
+        return $val;
+    }
+
+    public function cariOUT($data, $item, $date){
+        $val = 0;
+        $bln = date('n');
+        for ($i=0; $i < count($data); $i++) { 
+            if ($data[$i]['ITEM'] == $item && $data[$i]['BULAN'] == $date) {
+                $val = $data[$i]['TOTAL_OUT'];
+            }else {
+                $val = $val;
+            }
+        }
+        return $val;
     }
     
     public function DetailTransaksiBaru($no){
