@@ -81,7 +81,7 @@ class C_DPBVendor extends CI_Controller {
                     'estdate'          => 'ADOEstDatang',
                     'tgl_kirim'        => 'readonly',
                 ];
-            }else if ($this->session->responsibility_id == '2730') {
+            }else if ($this->session->responsibility_id == '2709') {
             $data['UserAccess'] = [   
                 'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',
