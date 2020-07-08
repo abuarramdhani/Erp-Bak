@@ -15,23 +15,6 @@
 <br>
 <div style="position:absolute;">
 	<br>
-	<!-- trial untuk serial -->
-	 <!-- <?php foreach ($header_sub as $key => $h) {
-		foreach ($check_header_sub as $key2 => $h2) {
-			$explode = explode(' ', $h2);
-			if ($h == $explode[0]) {
-				echo '<div style="width:250px;">';
-				echo '<br /><br /><b style="font-size:11.5px;">'."$h".'</b><br />';
-				foreach ($get_serial as $key3 => $h3) {
-					if ($h3['DESCRIPTION'] == $h2) {
-						echo '<div style="width:82px;float:left;font-size:11.5px;background: rgba(11, 143, 99, 0.49);margin-left:3px">'.$h3['SERIAL_NUMBER'].' </div>';
-					}
-				}
-				echo "</div><br><br>";
-			}
-		}
-	} ?> -->
-	<!-- trial untuk serial -->
 
 </div>
 	<table style="width:100%; border-collapse: collapse !important;page-break-inside:avoid">
@@ -75,19 +58,30 @@
 				Kepada Yth : <br>
 				<?php echo $get_header[0]['NAMA_ASAL'] ?> <br>
 				<?php echo $get_header[0]['ALAMAT_ASAL'] ?>, <?php echo $get_header[0]['KOTA_ASAL'] ?><br>
-				<br>
-				NPWP : <?php echo $get_header[0]['NPWP'] ?>
+				NPWP : <?php echo $get_header[0]['NPWP'] ?><br>
+				<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?>
 			</td>
 			<td colspan="2" style="height: 116.3px;vertical-align:top; border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">
 				Dikirim Kepada : <br>
-				<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
-				<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br><br>
-				<?php
-					$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
-					foreach($arr as $i) {
-						echo $i.'<br>';
-					}
-				?>
+				<?php if (!empty($get_header[0]['NOTES'])){ ?>
+					<br><br><br>
+					<?php
+						$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
+						foreach($arr as $i) {
+							echo $i.'<br>';
+						}
+					?>
+				<?php }else {?>
+					<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
+					<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br><br>
+					<?php
+						$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
+						foreach($arr as $i) {
+							echo $i.'<br>';
+						}
+					?>
+				<?php } ?>
+
 			</td>
 		</tr>
 		<tr style="text-align:center">
@@ -106,19 +100,20 @@
 		<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 			<tr>
 				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $no ?></td>
-				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $gb['QUANTITY'] ?></td>
-				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $gb['QTY_TERLAYANI'] ?></td>
-				<td style="font-size:9.7px;padding:3.5px 3.5px 3.5px 10px;width:10%;text-align:left"><?php echo $gb['UOM_CODE'] ?></td>
-				<td style="font-size:9.7px;padding:3.5px;width:24.5%;"><?php echo $gb['ITEM'] ?></td>
-				<td style="font-size:9.7px;padding:3.5px;width:48%;"><?php echo $gb['DESCRIPTION'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:10%;text-align:center"><?php echo $gb['QUANTITY'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:10%;text-align:center;"><?php echo $gb['QTY_TERLAYANI'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px 3.5px 3.5px 10px;width:10%;text-align:left;"><?php echo $gb['UOM_CODE'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:22.5%;"><?php echo $gb['ITEM'] ?></td>
+				<td style="white-space:pre-line;font-size:9.7px;padding:3.5px;width:48%;"><?php echo $gb['DESCRIPTION'] ?></td>
 			</tr>
 		<?php $no++; } ?>
 	</table>
 </div>
-<?php $cobaaja = 'DOKUMEN # RAHASIA# MUDAH PECAH# JAUHKAN DARI JANGKAUAN ANAK ANAK' ?>
+
 <div style="position:absolute;">
 	<div style="margin-top:470px;margin-left:297px;">
-		<h4 style="color	:rgba(0, 0, 0, 0.5) !important">
+		<!-- <watermarktext content="HIAHIAHIA" alpha="0.4" /> -->
+		<h4 style="color:black;alpha:0.4" alpha="0.4">
 		<?php
 			$arr = explode("#", $get_header[0]['NOTES']); //jika mau ganti baris gunakan tanda # (pagar)
 						foreach($arr as $i) {
@@ -147,13 +142,13 @@
 				<td rowspan="2" style="width:32%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Nama Barang</center>
 				</td>
-				<td rowspan="2" style="width:30%;border-right:1px solid black;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
+				<td rowspan="2" style="width:27.5%;border-right:1px solid black;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Nomor Barang</center>
 				</td>
 			</tr>
 			<tr>
-				<td style="width:5%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">
-					<center>DO</center>
+				<td style="width:7.5%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">
+					<center>Diminta</center>
 				</td>
 				<td style="width:6%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">
 					<center>Dikirim</center>
@@ -240,42 +235,18 @@
 					echo "";
 				} ?>
 
+				<?php $gass = 0; foreach ($get_body as $key => $gb){
+					$gass += strlen($gb['DESCRIPTION']);
+				}
+				if ($gass > 600) {
+					// echo "<pagebreak />";
+				}
+				?>
+
 			</td>
 		</tr>
 		</tbody>
 	</table>
-	<!-- <table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
-	<tr>
-		<td rowspan="2" style="vertical-align:top;width:40.5%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-			<br><br><br><br><br><br><br>
-		 </td>
-		<td rowspan="3" style="vertical-align:top;width:13%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
-			<br><br>
-			Tgl. ________
-			<br><br><br><br><br><br><br><br>
-		</td>
-		<td rowspan="3" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
-			Tgl. _______
-			<br><br><br><br><br><br><br><br>
-		</td>
-		<td rowspan="3" style="vertical-align:top;width:11%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
-			Tgl. _______
-			<br><br><br><br><br><br><?php echo $get_footer['get_footer'][0]['GUDANG']; ?>
-		</td>
-		<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
-	</tr>
-	<tr>
-		<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
-			<br><br><br><br><br><br><?php echo $get_footer['get_footer'][0]['ADMIN'] ?>
-		</td>
-		<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
-			<br><br><br><br><br><br><?php echo $get_footer['get_footer'][0]['KEPALA'] ?>
-		</td>
-	</tr>
-	<tr>
-		<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">Perhatian : Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
-	</tr>
-</table> -->
 	<br>
 </body>
 </html>
