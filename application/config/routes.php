@@ -4495,3 +4495,18 @@ $route['PersonaliaApprovalKasie/Dashboard'] = 'PersonaliaApprovalKasie/C_Index';
 
 // ------------------------------------------- Personalia Approval Asska -------------------------------------------
 $route['PersonaliaApprovalAsska'] = 'PersonaliaApprovalAsska/C_Index';
+
+//-------------------------------------------Monitoring Cutting Tool--------------------------------------------------//
+$route['MonitoringCuttingTool'] 						= 'MonitoringCuttingTool/C_Index';
+
+$route['MonitoringCuttingTool/Monitoring']					= 'MonitoringCuttingTool/C_Monitoring';
+$route['MonitoringCuttingTool/Monitoring/(:any)']			= 'MonitoringCuttingTool/C_Monitoring/$1';
+$route['MonitoringCuttingTool/Monitoring/(:any)/(:any)']	= 'MonitoringCuttingTool/C_Monitoring/$1/$2';
+
+$route['MonitoringCuttingTool/SettingMin']					= 'MonitoringCuttingTool/C_Minmax';
+$route['MonitoringCuttingTool/SettingMin/(:any)']			= 'MonitoringCuttingTool/C_Minmax/$1';
+$route['MonitoringCuttingTool/SettingMin/(:any)/(:any)']	= 'MonitoringCuttingTool/C_Minmax/$1/$2';
+
+$route['MonitoringCuttingTool/MonitoringTransaksi']					= 'MonitoringCuttingTool/C_Transaksi';
+$route['MonitoringCuttingTool/MonitoringTransaksi/(:any)']			= 'MonitoringCuttingTool/C_Transaksi/$1';
+$route['MonitoringCuttingTool/MonitoringTransaksi/(:any)/(:any)']	= 'MonitoringCuttingTool/C_Transaksi/$1/$2';
