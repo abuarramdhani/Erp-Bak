@@ -372,10 +372,6 @@ class C_Master extends CI_Controller
         $data['totalserial'] = sizeof($data['get_serial']);
         $data['cek_spb_do'] = $this->M_monitoringdo->cekSpbDo($id);
 
-        // echo "<pre>";
-        // print_r($data);
-        // die;
-
         function generateInTicketNumber($length = 5)
         {
             $characters = '0123456789';
@@ -440,34 +436,34 @@ class C_Master extends CI_Controller
             ob_end_clean() ;
             $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku    	= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-            if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 1) {
+            if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 1) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 2) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 2) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 3) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 3) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 4) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 4) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 0) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 0) {
               $a = '<br><br><br><br><br><br>';
             }
 
-            if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
-              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
-            }else {
+            // if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
+            //   $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
+            // }else {
               $appr = '';
-            }
+            // }
 
-            if (!empty($data['get_footer'][0]['CREATED_BY'])) {
-              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
-            }else {
+            // if (!empty($data['get_footer'][0]['CREATED_BY'])) {
+            //   $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
+            // }else {
               $appr2 = '';
-            }
+            // }
             // $newDate = date("m-d-Y", strtotime($orgDate));
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
         		<tr style="width:100%">
         			<td rowspan="2" style="white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-                '.$a.'
+                '.strtoupper($a).'
         			 </td>
         			<td rowspan="3" style="vertical-align:top;width:98px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
         				<br><br>
@@ -490,7 +486,7 @@ class C_Master extends CI_Controller
         		</tr>
         		<tr>
         			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
-        				<br><br>'.$appr.'
+                <br><br>'.$appr.'
         			</td>
         			<td rowspan="2" style="vertical-align:top;width:100px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. '.$data['get_footer'][0]['CREATION_DATE'].'
         				<br><br>'.$appr2.'
@@ -566,7 +562,7 @@ class C_Master extends CI_Controller
             $pdf 		= $this->pdf->load();
             $this->load->library('ciqrcode');
             $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 0);
-
+            // $pdf->showWatermarkText = true;
             // ------ GENERATE QRCODE ------
             if (!is_dir('./assets/img/monitoringDOQRCODE')) {
                 mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
@@ -584,36 +580,36 @@ class C_Master extends CI_Controller
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
-          $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
+            $filename 	= 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku 				= $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
-            if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 1) {
+            if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 1) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 2) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 2) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 3) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 3) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 4) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 4) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/29) == 0) {
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 0) {
               $a = '<br><br><br><br><br><br>';
             }
 
-            if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
-              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
-            }else {
+            // if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
+            //   $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
+            // }else {
               $appr = '';
-            }
+            // }
 
-            if (!empty($data['get_footer'][0]['CREATED_BY'])) {
-              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
-            }else {
+            // if (!empty($data['get_footer'][0]['CREATED_BY'])) {
+            //   $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
+            // }else {
               $appr2 = '';
-            }
+            // }
             // $newDate = date("m-d-Y", strtotime($orgDate));
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
         		<tr style="width:100%">
-        			<td rowspan="2" style="white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-                '.$a.'
+        			<td rowspan="2" style="height:300px;white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
+                '.strtoupper($a).'
         			 </td>
         			<td rowspan="3" style="vertical-align:top;width:98px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
         				<br><br>
@@ -649,6 +645,8 @@ class C_Master extends CI_Controller
             <i style="font-size:10px;">
               *Putih : Ekspedisi &nbsp;&nbsp;&nbsp;&nbsp;Merah : Marketing &nbsp;&nbsp;&nbsp;&nbsp;Kuning : Akuntansi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hijau : Customer &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Biru : Gudang FG
             </i>');
+            $pdf->SetFillColor(0,255,0);
+            // $pdf->SetAlpha(0.4);
             $pdf->WriteHTML($aku);
             $pdf->Output($filename, 'I');
         // ========================end process=========================
