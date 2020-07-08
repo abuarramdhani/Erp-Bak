@@ -56,6 +56,11 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<div class="col-lg-6 col-lg-offset-3 text-center">
+													<h4 id="MPR-transferreffgaji-progress-keterangan"></h4>
+												</div>
+											</div>
+											<div class="form-group">
 												<div class="col-lg-6 pull-right">
 													<button type="button" class="btn btn-primary" id="MPR-transferreffgaji-submit">Transfer</button>
 												</div>
@@ -148,9 +153,13 @@
 					url: baseurl + 'MasterPresensi/ReffGaji/TransferReffGaji/cekProgress',
 					success: function(data){
 	              	if (data !== "kosong") {
-	              		$('#MPR-transferreffgaji-progress').attr('aria-valuenow',data);
-		                $('#MPR-transferreffgaji-progress').css('width',data+'%');
-		                $('#MPR-transferreffgaji-progress').text(data+' %');
+	              		// var obj = JSON.parse(data);
+	              		// console.log(data);
+	              		// console.log(obj);
+	              		$('#MPR-transferreffgaji-progress').attr('aria-valuenow',data.progress);
+		                $('#MPR-transferreffgaji-progress').css('width',data.progress+'%');
+		                $('#MPR-transferreffgaji-progress').text(data.progress+' % ');
+		                $('#MPR-transferreffgaji-progress-keterangan').text(data.keterangan);
 	              	}
 	              }
 	            });

@@ -22,6 +22,8 @@ class C_TransferReffGaji extends CI_Controller
 		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('General');
+		$this->load->library('pdf');
+
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/ReffGaji/M_transferreffgaji');
 		date_default_timezone_set('Asia/Jakarta');
@@ -64,21 +66,48 @@ class C_TransferReffGaji extends CI_Controller
 	public function proses(){
 		$user = $this->session->user;
 		$periode = $this->input->post('periode');
-
-		$waktu = time();
-
 		if (empty($periode)) {
 			$periode = $this->input->get('periode');
 		}
+		$bulan = array(
+			1 => "Januari",
+			2 => "Februari",
+			3 => "Maret",
+			4 => "April",
+			5 => "Mei",
+			6 => "Juni",
+			7 => "Juli",
+			8 => "Agustus",
+			9 => "September",
+			10 => "Oktober",
+			11 => "November",
+			12 => "Desember"
+		);
 
-		$this->M_transferreffgaji->insertProgres($user,$periode);
+		$waktu = time();
+		$waktu_string = strftime('%d/%h/%Y %H:%M:%S',$waktu);
+		$hari_string = strftime('%d/%h/%Y',$waktu);
+		$bulan_gaji = $bulan[intval(substr($periode, 0, 2))]." 20".substr($periode, 2, 2);
+		$periode_penggajian = $this->M_transferreffgaji->getPeriodePenggajianByPeriode($periode);
+
+		$data_pkl_non = $this->M_transferreffgaji->getDataPkl('F',$periode); // pkl non staff
+		$data_staff = $this->M_transferreffgaji->getDataStaff($periode); // staff lama & staff baru
+		$data_nonstaff = $this->M_transferreffgaji->getDataNonStaff($periode); // non-staff
+		$data_os = $this->M_transferreffgaji->getDataOs($periode); // os
+		$data_cetak_per_kode_induk = $this->M_transferreffgaji->getDataCetakPerKodeInduk($periode); // cetak per kode induk
+		$data_cetak_per_kodesie = $this->M_transferreffgaji->getDataCetakPerKodesie($periode); // cetak per seksi
+		$data_rekap = $this->M_transferreffgaji->getRekapNominal($periode); // rekap nominal
+
+		$jumlah_total = count($data_pkl_non) + (count($data_staff)*2) + count($data_nonstaff) + count($data_os) + count($data_cetak_per_kode_induk) + count($data_cetak_per_kodesie) + count($data_rekap);
+		$this->M_transferreffgaji->insertProgres($user,$periode,$jumlah_total);
 		$progres = 0;
-		$this->M_transferreffgaji->updateProgres($user,$progres);
+		$this->M_transferreffgaji->updateProgres($user,$progres,"Mempersiapkan Data");
 		session_write_close();
 		flush();
-		//pkl non staff
 
-		$data_pkl_non = $this->M_transferreffgaji->getDataPkl('F',$periode);
+		$data_download = "";
+
+		//pkl non staff
 		if (!empty($data_pkl_non)) {
 			$table = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info.dbf");
 			$table->openWrite(FCPATH."assets/upload/TransferReffGaji/PKLNONSTAFFDATA-ABS".$periode.$waktu.".dbf");
@@ -306,7 +335,7 @@ class C_TransferReffGaji extends CI_Controller
 							$table->writeRecord();
 
 							$progres +=1;
-							$this->M_transferreffgaji->updateProgres($user,$progres);
+							$this->M_transferreffgaji->updateProgres($user,$progres,'Memproses DBF PKLNONSTAFFDATA-ABS');
 							//insert to t_log
 							$aksi = 'MASTER PRESENSI';
 							$detail = 'Update reff gaji pkl non staf noind='.$dppn['noind'];
@@ -319,12 +348,10 @@ class C_TransferReffGaji extends CI_Controller
 				}
 			}
 			$table->close();
+			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PKLNONSTAFFDATA-ABS".$periode."&time=".$waktu."&type=dbf").'" class="btn btn-info">PKLNONSTAFFDATA-ABS'.$periode.'</a>';
 		}
 
 		//staff lama
-
-		$data_staff = $this->M_transferreffgaji->getDataStaff($periode);
-		// echo "<pre>";print_r($data_staff);exit();
 		if (!empty($data_staff)) {
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/PER".$periode.$waktu.".dbf");
@@ -333,20 +360,20 @@ class C_TransferReffGaji extends CI_Controller
 				$ik_lama = 0;
 				$ipt_lama = 0;
 				//SEMENTARA BELUM DIGUNAKAN DAHULU
-				/*$data_pekerja_keluar = $this->M_transferreffgaji->getPekerjaKeluar($ds['nik'],$periode);
-				if(!empty($data_pekerja_keluar)){
-					$ds['ief'] += $data_pekerja_keluar->ief;
-					$ds['ims'] += $data_pekerja_keluar->ims;
-					$ds['imm'] += $data_pekerja_keluar->imm;
-					$ds['jam_lembur'] += $data_pekerja_keluar->jam_lembur;
-					$ds['um_cabang'] += $data_pekerja_keluar->um_cabang;
-					$ds['dldobat'] += $data_pekerja_keluar->dldobat;
-					$ds['htm'] += $data_pekerja_keluar->htm;
-					$ds['ijin'] += $data_pekerja_keluar->ijin;
-					$ip_lama = floatval($data_pekerja_keluar->ipe);
-					$ik_lama = floatval($data_pekerja_keluar->ika);
-					$ipt_lama = floatval($data_pekerja_keluar->ipet);
-				}*/
+				// $data_pekerja_keluar = $this->M_transferreffgaji->getPekerjaKeluar($ds['nik'],$periode);
+				// if(!empty($data_pekerja_keluar)){
+				// 	$ds['ief'] += $data_pekerja_keluar->ief;
+				// 	$ds['ims'] += $data_pekerja_keluar->ims;
+				// 	$ds['imm'] += $data_pekerja_keluar->imm;
+				// 	$ds['jam_lembur'] += $data_pekerja_keluar->jam_lembur;
+				// 	$ds['um_cabang'] += $data_pekerja_keluar->um_cabang;
+				// 	$ds['dldobat'] += $data_pekerja_keluar->dldobat;
+				// 	$ds['htm'] += $data_pekerja_keluar->htm;
+				// 	$ds['ijin'] += $data_pekerja_keluar->ijin;
+				// 	$ip_lama = floatval($data_pekerja_keluar->ipe);
+				// 	$ik_lama = floatval($data_pekerja_keluar->ika);
+				// 	$ipt_lama = floatval($data_pekerja_keluar->ipet);
+				// }
 				$jabatan = $this->M_transferreffgaji->getStatusJabatan($ds['noind']);
 				if ($jabatan <= 11) {
 					$st = "3";
@@ -528,7 +555,7 @@ class C_TransferReffGaji extends CI_Controller
 				$table3->writeRecord();
 
 				$progres +=1;
-				$this->M_transferreffgaji->updateProgres($user,$progres);
+				$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses DBF PER");
 				//insert to t_log
 				$aksi = 'MASTER PRESENSI';
 				$detail = 'Update reff gaji staf lama noind='.$ds['noind'];
@@ -539,11 +566,10 @@ class C_TransferReffGaji extends CI_Controller
 
 			}
 			$table3->close();
+			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PER".$periode."&time=".$waktu."&type=dbf") .'" class="btn btn-info">PER'.$periode.'</a>';
 		}
 
 		//staff baru
-		$data_staff = $this->M_transferreffgaji->getDataStaff($periode);
-		// echo "<pre>";print_r($data_staff);exit();
 		if (!empty($data_staff)) {
 			$table3_new = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2_new.dbf");
 			$table3_new->openWrite(FCPATH."assets/upload/TransferReffGaji/PERNEW".$periode.$waktu.".dbf");
@@ -552,20 +578,20 @@ class C_TransferReffGaji extends CI_Controller
 				$ik_lama = 0;
 				$ipt_lama = 0;
 				//SEMENTARA BELUM DIGUNAKAN DAHULU
-				/*$data_pekerja_keluar = $this->M_transferreffgaji->getPekerjaKeluar($ds['nik'],$periode);
-				if(!empty($data_pekerja_keluar)){
-					$ds['ief'] += $data_pekerja_keluar->ief;
-					$ds['ims'] += $data_pekerja_keluar->ims;
-					$ds['imm'] += $data_pekerja_keluar->imm;
-					$ds['jam_lembur'] += $data_pekerja_keluar->jam_lembur;
-					$ds['um_cabang'] += $data_pekerja_keluar->um_cabang;
-					$ds['dldobat'] += $data_pekerja_keluar->dldobat;
-					$ds['htm'] += $data_pekerja_keluar->htm;
-					$ds['ijin'] += $data_pekerja_keluar->ijin;
-					$ip_lama = floatval($data_pekerja_keluar->ipe);
-					$ik_lama = floatval($data_pekerja_keluar->ika);
-					$ipt_lama = floatval($data_pekerja_keluar->ipet);
-				}*/
+				// $data_pekerja_keluar = $this->M_transferreffgaji->getPekerjaKeluar($ds['nik'],$periode);
+				// if(!empty($data_pekerja_keluar)){
+				// 	$ds['ief'] += $data_pekerja_keluar->ief;
+				// 	$ds['ims'] += $data_pekerja_keluar->ims;
+				// 	$ds['imm'] += $data_pekerja_keluar->imm;
+				// 	$ds['jam_lembur'] += $data_pekerja_keluar->jam_lembur;
+				// 	$ds['um_cabang'] += $data_pekerja_keluar->um_cabang;
+				// 	$ds['dldobat'] += $data_pekerja_keluar->dldobat;
+				// 	$ds['htm'] += $data_pekerja_keluar->htm;
+				// 	$ds['ijin'] += $data_pekerja_keluar->ijin;
+				// 	$ip_lama = floatval($data_pekerja_keluar->ipe);
+				// 	$ik_lama = floatval($data_pekerja_keluar->ika);
+				// 	$ipt_lama = floatval($data_pekerja_keluar->ipet);
+				// }
 				$jabatan = $this->M_transferreffgaji->getStatusJabatan($ds['noind']);
 				if ($jabatan <= 11) {
 					$st = "3";
@@ -758,7 +784,7 @@ class C_TransferReffGaji extends CI_Controller
 				// echo "<pre>";print_r($record);exit();
 				$table3_new->writeRecord();
 				$progres +=1;
-				$this->M_transferreffgaji->updateProgres($user,$progres);
+				$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses DBF PERNEW");
 				//insert to t_log
 				$aksi = 'MASTER PRESENSI';
 				$detail = 'Update reff gaji staf naru noind='.$ds['noind'];
@@ -768,11 +794,10 @@ class C_TransferReffGaji extends CI_Controller
 				flush();
 			}
 			$table3_new->close();
+			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PERNEW".$periode."&time=".$waktu."&type=dbf") .'" class="btn btn-info">PERNEW'.$periode.'</a>';
 		}
 
 		//non-staff
-		$data_nonstaff = $this->M_transferreffgaji->getDataNonStaff($periode);
-
 		if (!empty($data_nonstaff)) {
 			$table4 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info.dbf");
 			$table4->openWrite(FCPATH."assets/upload/TransferReffGaji/DATA-ABS".$periode.$waktu.".dbf");
@@ -953,7 +978,7 @@ class C_TransferReffGaji extends CI_Controller
 				$table4->writeRecord();
 
 				$progres +=1;
-				$this->M_transferreffgaji->updateProgres($user,$progres);
+				$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses DBF DATA-ABS");
 				//insert to t_log
 				$aksi = 'MASTER PRESENSI';
 				$detail = 'Update reff gaji non staf noind='.$dn['noind'];
@@ -963,10 +988,10 @@ class C_TransferReffGaji extends CI_Controller
 				flush();
 			}
 			$table4->close();
+			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=DATA-ABS".$periode."&time=".$waktu."&type=dbf") .'" class="btn btn-info">DATA-ABS'.$periode.'</a>';
 		}
 
 		//os
-		$data_os = $this->M_transferreffgaji->getDataOs($periode);
 		if (!empty($data_os)) {
 			$table5 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info3.dbf");
 			$table5->openWrite(FCPATH."assets/upload/TransferReffGaji/K".$periode.$waktu.".dbf");
@@ -1069,7 +1094,7 @@ class C_TransferReffGaji extends CI_Controller
 					$table5->writeRecord();
 
 					$progres +=1;
-					$this->M_transferreffgaji->updateProgres($user,$progres);
+					$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses DBF K");
 					//insert to t_log
 					$aksi = 'MASTER PRESENSI';
 					$detail = 'Update reff gaji noind='.$do['noind'];
@@ -1081,19 +1106,982 @@ class C_TransferReffGaji extends CI_Controller
 			}
 
 			$table5->close();
+			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=K".$periode."&time=".$waktu."&type=dbf") .'" class="btn btn-info">K'.$periode.'</a>';
+		}
+		
+		if (!empty($data_download)) {
+			$data_download .= '<br><br>';
 		}
 
+		// cetak per kode induk
+		if (!empty($data_cetak_per_kode_induk)) {
+			$pdf_cetak_per_kode_induk = $this->pdf->load();
+			$pdf_cetak_per_kode_induk->debug = true;
+			$pdf_cetak_per_kode_induk = new mPDF('utf-8', 'A4-L', 8, '', 10, 10, 20, 23, 5, 5);
+			$filename = 'CETAKALL'.$periode.$waktu.'.pdf';
+
+			$html_cetak_per_kode_induk = $this->cetakAll($data_cetak_per_kode_induk,$user,$progres);
+
+			$pdf_cetak_per_kode_induk->setHTMLHeader("<table style='width: 100%'>
+									<tr>
+										<td style='width: 10%'>Data Bulan</td>
+										<td style='width: 3%'>:</td>
+										<td style='width: 10%'>$bulan_gaji</td>
+										<td style='width: 10%'>Tanggal Cetak</td>
+										<td style='width: 3%'>:</td>
+										<td style='width: 64%'>".$hari_string."</td>
+									</tr>
+									<tr>
+										<td colspan='6'>$periode_penggajian</td>
+									</tr>
+								</table>");
+			$pdf_cetak_per_kode_induk->SetHTMLFooter("<table style='width: 100%'>
+					<tr>
+						<td style='width: 50%'></td>
+						<td style='width: 20%;text-align: center;'>Kasie,</td>
+						<td style='width: 20%;text-align: center;'>Atasan,</td>
+					</tr>
+					<tr>
+						<td style='vertical-align: bottom'><i>* Dibayar cutoff.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
+						<td></td>
+						<td>&nbsp;<br>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><i>Halaman {PAGENO} dari {nb}</i></td>
+						<td style='text-align: center;'>(".ucwords(strtolower($this->session->employee)).")</td>
+						<td style='text-align: center;'>(..................)</td>
+					</tr>
+				</table>");
+			$pdf_cetak_per_kode_induk->WriteHTML($html_cetak_per_kode_induk);
+			$pdf_cetak_per_kode_induk->Output(FCPATH."assets/upload/TransferReffGaji/".$filename, 'F');
+			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=CETAKALL".$periode."&time=".$waktu."&type=pdf") .'" class="btn btn-danger">CETAKALL'.$periode.'</a>';
+		}
+		$progres += count($data_cetak_per_kode_induk);
+
+		// cetak per kode seksi
+		if (!empty($data_cetak_per_kodesie)) {
+			$pdf_cetak_per_kodesie = $this->pdf->load();
+			$pdf_cetak_per_kodesie->debug = true;
+			$pdf_cetak_per_kodesie = new mPDF('utf-8', 'A4-L', 8, '', 10, 10, 10, 20, 10, 5);
+			$filename = 'CETAKSEKSI'.$periode.$waktu.'.pdf';
+
+			$html_cetak_per_kodesie = $this->cetakSeksi($data_cetak_per_kodesie,$hari_string,$user,$progres,$bulan_gaji,$periode_penggajian);
+
+			$pdf_cetak_per_kodesie->SetHTMLFooter("<table style='width: 100%'>
+					<tr>
+						<td style='width: 50%'></td>
+						<td style='width: 20%;text-align: center;'>Kasie,</td>
+						<td style='width: 20%;text-align: center;'>Atasan,</td>
+					</tr>
+					<tr>
+						<td style='vertical-align: bottom'><i>* Dibayar cutoff.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
+						<td></td>
+						<td>&nbsp;<br>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><i>Halaman {PAGENO} dari {nb}</i></td>
+						<td style='text-align: center;'>(".ucwords(strtolower($this->session->employee)).")</td>
+						<td style='text-align: center;'>(..................)</td>
+					</tr>
+				</table>");
+			$pdf_cetak_per_kodesie->WriteHTML($html_cetak_per_kodesie);
+			$pdf_cetak_per_kodesie->Output(FCPATH."assets/upload/TransferReffGaji/".$filename, 'F');
+			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=CETAKSEKSI".$periode."&time=".$waktu."&type=pdf") .'" class="btn btn-danger">CETAKSEKSI'.$periode.'</a>';
+		}
+		$progres += count($data_cetak_per_kodesie);
+
+		// rekap nominal
+		if (!empty($data_rekap)) {
+			$pdf_rekap = $this->pdf->load();
+			$pdf_rekap->debug = true;
+			$pdf_rekap = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
+			$filename = 'REKAP'.$periode.$waktu.'.pdf';
+			$html_rekap = $this->rekapNominal($data_rekap,$user,$progres,$bulan_gaji,$hari_string,$periode_penggajian);
+
+			$pdf_rekap->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.". Halaman {PAGENO} dari {nb}</i>");
+			$pdf_rekap->WriteHTML($html_rekap);
+			$pdf_rekap->Output(FCPATH."assets/upload/TransferReffGaji/".$filename, 'F');
+			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=REKAP".$periode."&time=".$waktu."&type=pdf") .'" class="btn btn-danger">REKAP'.$periode.'</a>';
+		}
+		$progres += count($data_rekap);
+		
 		//finish
 
-		// <!-- <a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PKLSTAFFDATA-ABS".$periode."&time=".$waktu).'" class="btn btn-info">PKLSTAFFDATA-ABS'.$periode.'</a> --> pkl staff dihidden
+		$lama_waktu = time() - $waktu;
 		$data_download = '
-		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PKLNONSTAFFDATA-ABS".$periode."&time=".$waktu).'" class="btn btn-info">PKLNONSTAFFDATA-ABS'.$periode.'</a>
-		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PER".$periode."&time=".$waktu) .'" class="btn btn-info">PER'.$periode.'</a>
-		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PERNEW".$periode."&time=".$waktu) .'" class="btn btn-info">PERNEW'.$periode.'</a>
-		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=DATA-ABS".$periode."&time=".$waktu) .'" class="btn btn-info">DATA-ABS'.$periode.'</a>
-		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=K".$periode."&time=".$waktu) .'" class="btn btn-info">K'.$periode.'</a>
-		';
+		<h5>lama proses :'.($lama_waktu/60).' Menit</h5>
+		<br>
+		<br>'.$data_download;
 		echo $data_download;
+	}
+
+	public function cetakAll($data_cetak_per_kode_induk,$user,$progres){
+		$html_cetak_per_kode_induk = "<!DOCTYPE html>
+						<html>
+							<body>";
+		if (isset($data_cetak_per_kode_induk) && !empty($data_cetak_per_kode_induk)) {
+			$simpan_kode_induk = "";
+			$nomor = 1;
+			$simpan_dldobat = 0;
+			$simpan_pduka_spsi = 0;
+			$simpan_putkop_pikop = 0;
+			$simpan_plain = 0;
+			$simpan_pot_plain = 0;
+			foreach ($data_cetak_per_kode_induk as $key => $value) {
+				if ($simpan_kode_induk != substr($value['noind'], 0, 1)) {
+					if ($simpan_kode_induk !== "") {
+						if (in_array($simpan_kode_induk, array("A","E","H","T","F","K","P"))) {
+							$html_cetak_per_kode_induk .= "
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>".$simpan_pduka_spsi."</td>
+								<td>".$simpan_pot_plain."</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>".$simpan_dldobat."</td>
+								<td></td>
+								<td></td>
+							</tr>";
+						}elseif(in_array($simpan_kode_induk, array("B","D","G","J"))){
+							$html_cetak_per_kode_induk .= "
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>".$simpan_dldobat."</td>
+								<td></td>
+								<td>".$simpan_putkop_pikop."</td>
+								<td>".$simpan_pduka_spsi."</td>
+								<td>".$simpan_plain."</td>
+							</tr>";
+						}elseif(in_array($simpan_kode_induk, array("Q"))){
+							$html_cetak_per_kode_induk .= "
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>".$simpan_dldobat."</td>
+								<td></td>
+								<td>".$simpan_putkop_pikop."</td>
+								<td>".$simpan_pduka_spsi."</td>
+								<td>".$simpan_plain."</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>";
+						}else{
+							$html_cetak_per_kode_induk .= "
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>";
+						}
+						$html_cetak_per_kode_induk .= "</tbody></table><div style='page-break-after: always'></div>";
+					}
+					if (in_array(substr($value['noind'], 0, 1), array("A","E","H","P","T"))) {
+						$html_cetak_per_kode_induk .= "<table border='1' style='border: 1px solid black;width:100%;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td style='width: 2%;text-align: center;'>NO</td>
+										<td style='width: 5%;text-align: center;'>KODESIE</td>
+										<td style='width: 4%;text-align: center;'>NOIND</td>
+										<td style='width: 11%;text-align: center;'>NAMA</td>
+										<td style='width: 3%;text-align: center;'>IP</td>
+										<td style='width: 3%;text-align: center;'>IK</td>
+										<td style='width: 3%;text-align: center;'>IF</td>
+										<td style='width: 4%;text-align: center;'>HTM</td>
+										<td style='width: 4%;text-align: center;'>UBT</td>
+										<td style='width: 4%;text-align: center;'>UPAMK</td>
+										<td style='width: 3%;text-align: center;'>UM</td>
+										<td style='width: 4%;text-align: center;'>IMS</td>
+										<td style='width: 4%;text-align: center;'>IMM</td>
+										<td style='width: 4%;text-align: center;'>LEMBUR</td>
+										<td style='width: 3%;text-align: center;'>CT</td>
+										<td style='width: 3%;text-align: center;'>HL</td>
+										<td style='width: 4%;text-align: center;'>P.DUKA</td>
+										<td style='width: 4%;text-align: center;'>POT.</td>
+										<td style='width: 4%;text-align: center;'>TAMB.</td>
+										<td style='width: 4%;text-align: center;'>IJIN</td>
+										<td style='width: 4%;text-align: center;'>UBS</td>
+										<td style='width: 4%;text-align: center;'>UMP</td>
+										<td style='width: 4%;text-align: center;'>DL&OBAT</td>
+										<td style='width: 4%;text-align: center;'>POT.2</td>
+										<td style='width: 4%;text-align: center;'>TAMB.2</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
+						$html_cetak_per_kode_induk .= "<table border='1' style='border: 1px solid black;width:100%;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td style='width: 4%;text-align: center'>NO</td>
+										<td style='width: 4%;text-align: center'>NOIND</td>
+										<td style='width: 8%;text-align: center'>NAMA KARYAWAN</td>
+										<td style='width: 8%;text-align: center'>NAMA SEKSI</td>
+										<td style='width: 6%;text-align: center'>LOKASI KRJ</td>
+										<td style='width: 3%;text-align: center'>IK</td>
+										<td style='width: 3%;text-align: center'>IP</td>
+										<td style='width: 3%;text-align: center'>IPT</td>
+										<td style='width: 3%;text-align: center'>IF</td>
+										<td style='width: 3%;text-align: center'>S2</td>
+										<td style='width: 3%;text-align: center'>S3</td>
+										<td style='width: 2%;text-align: center'>JAM LBR</td>
+										<td style='width: 2%;text-align: center'>UM</td>
+										<td style='width: 2%;text-align: center'>UMC</td>
+										<td style='width: 2%;text-align: center'>UBT</td>
+										<td style='width: 2%;text-align: center'>HUP AMK</td>
+										<td style='width: 6%;text-align: center'>KET. ABSEN</td>
+										<td style='width: 4%;text-align: center'>DL&OBAT</td>
+										<td style='width: 4%;text-align: center'>I+ ABS</td>
+										<td style='width: 6%;text-align: center'>P.KOPR</td>
+										<td style='width: 6%;text-align: center'>P.DUKA+SPSI</td>
+										<td style='width: 6%;text-align: center'>P.LAIN</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
+						$html_cetak_per_kode_induk .= "<table border='1' style='border: 1px solid black;width:100%;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td style='width: 4%;text-align: center'>NO</td>
+										<td style='width: 4%;text-align: center'>NOIND</td>
+										<td style='width: 8%;text-align: center'>NAMA KARYAWAN</td>
+										<td style='width: 8%;text-align: center'>NAMA SEKSI</td>
+										<td style='width: 8%;text-align: center'>LOKASI KRJ</td>
+										<td style='width: 4%;text-align: center'>IK</td>
+										<td style='width: 4%;text-align: center'>IP</td>
+										<td style='width: 4%;text-align: center'>IPT</td>
+										<td style='width: 4%;text-align: center'>IF</td>
+										<td style='width: 4%;text-align: center'>S2</td>
+										<td style='width: 4%;text-align: center'>S3</td>
+										<td style='width: 4%;text-align: center'>JAMLBR</td>
+										<td style='width: 4%;text-align: center'>UM</td>
+										<td style='width: 4%;text-align: center'>UMC</td>
+										<td style='width: 4%;text-align: center'>UBT</td>
+										<td style='width: 4%;text-align: center'>HUPAMK</td>
+										<td style='width: 4%;text-align: center'>KET.ABSEN</td>
+										<td style='width: 4%;text-align: center'>DL&OBAT</td>
+										<td style='width: 4%;text-align: center'>I+ABS</td>
+										<td style='width: 4%;text-align: center'>P.KOPR</td>
+										<td style='width: 4%;text-align: center'>P.DUKA+SPSI</td>
+										<td style='width: 4%;text-align: center'>P.LAIN</td>
+										<td style='width: 4%;text-align: center'>SEKOLAH</td>
+										<td style='width: 4%;text-align: center'>JURUSAN</td>
+										<td style='width: 4%;text-align: center'>PEND.</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}elseif(in_array(substr($value['noind'], 0, 1), array("F","K"))){
+						$html_cetak_per_kode_induk .= "<table border='1' style='border: 1px solid black;width:100%;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td style='width: 2%;text-align: center;'>NO</td>
+										<td style='width: 5%;text-align: center;'>KODESIE</td>
+										<td style='width: 4%;text-align: center;'>NOIND</td>
+										<td style='width: 11%;text-align: center;'>NAMA</td>
+										<td style='width: 3%;text-align: center;'>IP</td>
+										<td style='width: 3%;text-align: center;'>IK</td>
+										<td style='width: 3%;text-align: center;'>HM</td>
+										<td style='width: 4%;text-align: center;'>HTM</td>
+										<td style='width: 4%;text-align: center;'>UBT</td>
+										<td style='width: 4%;text-align: center;'>UPAMK</td>
+										<td style='width: 3%;text-align: center;'>UM</td>
+										<td style='width: 4%;text-align: center;'>IMS</td>
+										<td style='width: 4%;text-align: center;'>IMM</td>
+										<td style='width: 4%;text-align: center;'>LEMBUR</td>
+										<td style='width: 3%;text-align: center;'>CT</td>
+										<td style='width: 3%;text-align: center;'>HL</td>
+										<td style='width: 4%;text-align: center;'>P.DUKA</td>
+										<td style='width: 4%;text-align: center;'>POT.</td>
+										<td style='width: 4%;text-align: center;'>TAMB.</td>
+										<td style='width: 4%;text-align: center;'>IJIN</td>
+										<td style='width: 4%;text-align: center;'>UBS</td>
+										<td style='width: 4%;text-align: center;'>UMP</td>
+										<td style='width: 4%;text-align: center;'>DL&OBAT</td>
+										<td style='width: 4%;text-align: center;'>POT.2</td>
+										<td style='width: 4%;text-align: center;'>TAMB.2</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}else{
+						$html_cetak_per_kode_induk .= "<table border='1' style='border: 1px solid black;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td>NO</td>
+										<td>NOIND</td>
+										<td>NAMA KARYAWAN</td>
+										<td>NAMA SEKSI</td>
+										<td>LOKASI KRJ</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}
+					$nomor = 1;
+					$simpan_dldobat = 0;
+					$simpan_pduka_spsi = 0;
+					$simpan_putkop_pikop = 0;
+					$simpan_plain = 0;
+					$simpan_pot_plain = 0;
+				}
+
+				if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","F","K","P"))) {
+					$html_cetak_per_kode_induk .= "
+					<tr>
+						<td>".$nomor."</td>
+						<td>".$value['kodesie']."</td>
+						<td>".$value['noind']."</td>
+						<td>".substr($value['nama'], 0, 18)."</td>
+						<td>".$value['ipe']."</td>
+						<td>".$value['ika']."</td>
+						<td>".$value['ief']."</td>
+						<td>".$value['htm']."</td>
+						<td>".$value['ubt']."</td>
+						<td>".$value['upamk']."</td>
+						<td>".$value['um']."</td>
+						<td>".$value['ims']."</td>
+						<td>".$value['imm']."</td>
+						<td>".$value['jam_lembur']."</td>
+						<td>".$value['ct']."</td>
+						<td>".$value['hl']."</td>
+						<td>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
+						<td>".(intval(trim($value['pot'])) + intval(trim($value['plain'])))."</td>
+						<td>".$value['tamb_gaji']."</td>
+						<td>".$value['ijin']."</td>
+						<td>".$value['ubs_rp']."</td>
+						<td>".$value['um_puasa']."</td>
+						<td>".$value['dldobat']."</td>
+						<td>".$value['potongan_str']."</td>
+						<td>".$value['tambahan_str']."</td>
+					</tr>";
+				}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
+					$html_cetak_per_kode_induk .= "
+					<tr>
+						<td>".$nomor."</td>
+						<td>".$value['noind']."</td>
+						<td>".substr($value['nama'],0,15)."</td>
+						<td>".substr($value['seksi'],0,16)."</td>
+						<td>".substr($value['lokasi_krj'],0,9)."</td>
+						<td>".$value['ika']."</td>
+						<td>".$value['ipe']."</td>
+						<td>".$value['ipet']."</td>
+						<td>".$value['ief']."</td>
+						<td>".$value['ims']."</td>
+						<td>".$value['imm']."</td>
+						<td>".$value['jam_lembur']."</td>
+						<td>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+						<td>".$value['um_cabang']."</td>
+						<td>".$value['ubt']."</td>
+						<td>".$value['upamk']."</td>
+						<td>".$value['ket']."</td>
+						<td>".$value['dldobat']."</td>
+						<td>".($value['ijin'] + $value['htm'])."</td>
+						<td>".(intval(trim($value['putkop'])) + intval(trim($value['pikop'])))."</td>
+						<td>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
+						<td>".$value['plain']."</td>
+					</tr>";
+				}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
+					$html_cetak_per_kode_induk .= "
+					<tr>
+						<td>".$nomor."</td>
+						<td>".$value['noind']."</td>
+						<td>".$value['nama']."</td>
+						<td>".$value['seksi']."</td>
+						<td>".$value['lokasi_krj']."</td>
+						<td>".$value['ika']."</td>
+						<td>".$value['ipe']."</td>
+						<td>".$value['ipet']."</td>
+						<td>".$value['ief']."</td>
+						<td>".$value['ims']."</td>
+						<td>".$value['imm']."</td>
+						<td>".$value['jam_lembur']."</td>
+						<td>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+						<td>".$value['um_cabang']."</td>
+						<td>".$value['ubt']."</td>
+						<td>".$value['upamk']."</td>
+						<td>".$value['ket']."</td>
+						<td>".$value['dldobat']."</td>
+						<td>".($value['ijin'] + $value['htm'])."</td>
+						<td>".(intval(trim($value['putkop'])) + intval(trim($value['pikop'])))."</td>
+						<td>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
+						<td>".$value['plain']."</td>
+						<td>".substr($value['sekolah'], 0, 10)."</td>
+						<td>".substr($value['jurusan'], 0, 10)."</td>
+						<td>".substr($value['pendidikan'], 0, 5)."</td>
+					</tr>";
+				}else{
+					$html_cetak_per_kode_induk .= "
+					<tr>
+						<td>".$nomor."</td>
+						<td>".$value['noind']."</td>
+						<td>".$value['nama']."</td>
+						<td>".$value['seksi']."</td>
+						<td>".$value['lokasi_krj']."</td>
+					</tr>";
+				}
+				$simpan_kode_induk = substr($value['noind'], 0, 1);
+
+				$simpan_dldobat += intval(trim($value['dldobat']));
+				$simpan_pduka_spsi += (intval(trim($value['pduka'])) + intval(trim($value['pspsi'])));
+				$simpan_putkop_pikop += (intval(trim($value['putkop'])) + intval(trim($value['pikop'])));
+				$simpan_plain += intval(trim($value['plain']));
+				$simpan_pot_plain = (intval(trim($value['pot'])) + intval(trim($value['plain'])));
+
+				$nomor++;
+				$progres +=1;
+				$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses PDF CETAKALL");
+				session_write_close();
+				flush();
+			}
+		}
+		if (in_array($simpan_kode_induk, array("A","E","H","T","F","K","P"))) {
+			$html_cetak_per_kode_induk .= "
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>".$simpan_pduka_spsi."</td>
+				<td>".$simpan_pot_plain."</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>".$simpan_dldobat."</td>
+				<td></td>
+				<td></td>
+			</tr>";
+		}elseif(in_array($simpan_kode_induk, array("B","D","G","J"))){
+			$html_cetak_per_kode_induk .= "
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>".$simpan_dldobat."</td>
+				<td></td>
+				<td>".$simpan_putkop_pikop."</td>
+				<td>".$simpan_pduka_spsi."</td>
+				<td>".$simpan_plain."</td>
+			</tr>";
+		}elseif(in_array($simpan_kode_induk, array("Q"))){
+			$html_cetak_per_kode_induk .= "
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>".$simpan_dldobat."</td>
+				<td></td>
+				<td>".$simpan_putkop_pikop."</td>
+				<td>".$simpan_pduka_spsi."</td>
+				<td>".$simpan_plain."</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>";
+		}else{
+			$html_cetak_per_kode_induk .= "
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>";
+		}
+		$html_cetak_per_kode_induk .= "</tbody>
+								</table>
+							</body>
+						</html>";
+		return $html_cetak_per_kode_induk;
+	}
+
+	public function cetakSeksi($data_cetak_per_kodesie,$hari_string,$user,$progres,$bulan_gaji,$periode_penggajian){
+		$html_cetak_per_kodesie = "<!DOCTYPE html>
+						<html>
+							<body>";
+		if (isset($data_cetak_per_kodesie) && !empty($data_cetak_per_kodesie)) {
+			$simpan_kode_induk = "";
+			$simpan_kodesie = "";
+			$simpan_asal_os = "";
+			$nomor = 1;
+			foreach ($data_cetak_per_kodesie as $key => $value) {
+				if ($simpan_kode_induk != substr($value['noind'], 0, 1) && $simpan_kode_induk !== "") {
+					$html_cetak_per_kodesie .= "</tbody></table><div style='page-break-after: always'></div>";
+				}
+				if (substr($value['kodesie'], 0, 7) != $simpan_kodesie || (in_array(substr($value['noind'], 0, 1), array("P","K")) && $simpan_asal_os != $value['asal_outsourcing'])) {
+					if ($simpan_kodesie != "" && $simpan_kode_induk == substr($value['noind'], 0, 1)) {
+						$html_cetak_per_kodesie .= "</tbody></table>";
+					}
+					if(in_array(substr($value['noind'], 0, 1), array("P","K"))){
+						$asal_os = "<tr>
+										<td>Unit</td>
+										<td>:</td>
+										<td colspan='4'>".$value['asal_outsourcing']."</td>
+									</tr>";
+					}else{
+						$asal_os = "";
+					}
+					$html_cetak_per_kodesie .= "<table style='width: 100%'>
+								".$asal_os."
+								<tr>
+									<td>Unit</td>
+									<td>:</td>
+									<td colspan='4'>".$value['unit']."</td>
+								</tr>
+								<tr>
+									<td>Seksi</td>
+									<td>:</td>
+									<td colspan='4'>".$value['seksi']."</td>
+								</tr>
+								<tr>
+									<td style='width: 10%'>Data Bulan</td>
+									<td style='width: 3%'>:</td>
+									<td style='width: 10%'></td>
+									<td style='width: 10%'>Tanggal Cetak</td>
+									<td style='width: 3%'>:</td>
+									<td style='width: 64%'>".$hari_string."</td>
+								</tr>
+								<tr>
+									<td colspan='6'>$periode_penggajian</td>
+								</tr>
+							</table>";
+					if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T"))) {
+						$html_cetak_per_kodesie .= "<table border='1' style='border: 1px solid black;width:100%;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td style='width: 2%;text-align: center;'>NO</td>
+										<td style='width: 5%;text-align: center;'>KODESIE</td>
+										<td style='width: 4%;text-align: center;'>NOIND</td>
+										<td style='width: 11%;text-align: center;'>NAMA</td>
+										<td style='width: 3%;text-align: center;'>IP</td>
+										<td style='width: 3%;text-align: center;'>IK</td>
+										<td style='width: 3%;text-align: center;'>IF</td>
+										<td style='width: 4%;text-align: center;'>HTM</td>
+										<td style='width: 4%;text-align: center;'>UBT</td>
+										<td style='width: 4%;text-align: center;'>UPAMK</td>
+										<td style='width: 3%;text-align: center;'>UM</td>
+										<td style='width: 4%;text-align: center;'>IMS</td>
+										<td style='width: 4%;text-align: center;'>IMM</td>
+										<td style='width: 4%;text-align: center;'>LEMBUR</td>
+										<td style='width: 3%;text-align: center;'>CT</td>
+										<td style='width: 3%;text-align: center;'>HL</td>
+										<td style='width: 4%;text-align: center;'>P.DUKA</td>
+										<td style='width: 4%;text-align: center;'>POT.</td>
+										<td style='width: 4%;text-align: center;'>TAMB.</td>
+										<td style='width: 4%;text-align: center;'>IJIN</td>
+										<td style='width: 4%;text-align: center;'>UBS</td>
+										<td style='width: 4%;text-align: center;'>UMP</td>
+										<td style='width: 4%;text-align: center;'>DL&OBAT</td>
+										<td style='width: 4%;text-align: center;'>POT.2</td>
+										<td style='width: 4%;text-align: center;'>TAMB.2</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
+						$html_cetak_per_kodesie .= "<table border='1' style='border: 1px solid black;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td style='width: 4%;text-align: center'>NO</td>
+										<td style='width: 4%;text-align: center'>NOIND</td>
+										<td style='width: 8%;text-align: center'>NAMA KARYAWAN</td>
+										<td style='width: 8%;text-align: center'>NAMA SEKSI</td>
+										<td style='width: 8%;text-align: center'>LOKASI KRJ</td>
+										<td style='width: 4%;text-align: center'>IK</td>
+										<td style='width: 4%;text-align: center'>IP</td>
+										<td style='width: 4%;text-align: center'>IPT</td>
+										<td style='width: 4%;text-align: center'>IF</td>
+										<td style='width: 4%;text-align: center'>S2</td>
+										<td style='width: 4%;text-align: center'>S3</td>
+										<td style='width: 4%;text-align: center'>JAMLBR</td>
+										<td style='width: 4%;text-align: center'>UM</td>
+										<td style='width: 4%;text-align: center'>UMC</td>
+										<td style='width: 4%;text-align: center'>UBT</td>
+										<td style='width: 4%;text-align: center'>HUPAMK</td>
+										<td style='width: 4%;text-align: center'>KET.ABSEN</td>
+										<td style='width: 4%;text-align: center'>DL&OBAT</td>
+										<td style='width: 4%;text-align: center'>I+ABS</td>
+										<td style='width: 4%;text-align: center'>P.KOPR</td>
+										<td style='width: 4%;text-align: center'>P.DUKA+SPSI</td>
+										<td style='width: 4%;text-align: center'>P.LAIN</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
+						$html_cetak_per_kode_induk .= "<table border='1' style='border: 1px solid black;width:100%;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td style='width: 4%;text-align: center'>NO</td>
+										<td style='width: 4%;text-align: center'>NOIND</td>
+										<td style='width: 8%;text-align: center'>NAMA KARYAWAN</td>
+										<td style='width: 8%;text-align: center'>NAMA SEKSI</td>
+										<td style='width: 8%;text-align: center'>LOKASI KRJ</td>
+										<td style='width: 4%;text-align: center'>IK</td>
+										<td style='width: 4%;text-align: center'>IP</td>
+										<td style='width: 4%;text-align: center'>IPT</td>
+										<td style='width: 4%;text-align: center'>IF</td>
+										<td style='width: 4%;text-align: center'>S2</td>
+										<td style='width: 4%;text-align: center'>S3</td>
+										<td style='width: 4%;text-align: center'>JAMLBR</td>
+										<td style='width: 4%;text-align: center'>UM</td>
+										<td style='width: 4%;text-align: center'>UMC</td>
+										<td style='width: 4%;text-align: center'>UBT</td>
+										<td style='width: 4%;text-align: center'>HUPAMK</td>
+										<td style='width: 4%;text-align: center'>KET.ABSEN</td>
+										<td style='width: 4%;text-align: center'>DL&OBAT</td>
+										<td style='width: 4%;text-align: center'>I+ABS</td>
+										<td style='width: 4%;text-align: center'>P.KOPR</td>
+										<td style='width: 4%;text-align: center'>P.DUKA+SPSI</td>
+										<td style='width: 4%;text-align: center'>P.LAIN</td>
+										<td style='width: 4%;text-align: center'>SEKOLAH</td>
+										<td style='width: 4%;text-align: center'>JURUSAN</td>
+										<td style='width: 4%;text-align: center'>PEND.</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}elseif(in_array(substr($value['noind'], 0, 1), array("F","K"))){
+						$html_cetak_per_kode_induk .= "<table border='1' style='border: 1px solid black;width:100%;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td style='width: 2%;text-align: center;'>NO</td>
+										<td style='width: 5%;text-align: center;'>KODESIE</td>
+										<td style='width: 4%;text-align: center;'>NOIND</td>
+										<td style='width: 11%;text-align: center;'>NAMA</td>
+										<td style='width: 3%;text-align: center;'>IP</td>
+										<td style='width: 3%;text-align: center;'>IK</td>
+										<td style='width: 3%;text-align: center;'>HM</td>
+										<td style='width: 4%;text-align: center;'>HTM</td>
+										<td style='width: 4%;text-align: center;'>UBT</td>
+										<td style='width: 4%;text-align: center;'>UPAMK</td>
+										<td style='width: 3%;text-align: center;'>UM</td>
+										<td style='width: 4%;text-align: center;'>IMS</td>
+										<td style='width: 4%;text-align: center;'>IMM</td>
+										<td style='width: 4%;text-align: center;'>LEMBUR</td>
+										<td style='width: 3%;text-align: center;'>CT</td>
+										<td style='width: 3%;text-align: center;'>HL</td>
+										<td style='width: 4%;text-align: center;'>P.DUKA</td>
+										<td style='width: 4%;text-align: center;'>POT.</td>
+										<td style='width: 4%;text-align: center;'>TAMB.</td>
+										<td style='width: 4%;text-align: center;'>IJIN</td>
+										<td style='width: 4%;text-align: center;'>UBS</td>
+										<td style='width: 4%;text-align: center;'>UMP</td>
+										<td style='width: 4%;text-align: center;'>DL&OBAT</td>
+										<td style='width: 4%;text-align: center;'>POT.2</td>
+										<td style='width: 4%;text-align: center;'>TAMB.2</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}else{
+						$html_cetak_per_kodesie .= "<table border='1' style='border: 1px solid black;border-collapse: collapse;'>
+								<thead>
+									<tr>
+										<td>NO</td>
+										<td>NOIND</td>
+										<td>NAMA KARYAWAN</td>
+										<td>NAMA SEKSI</td>
+										<td>LOKASI KRJ</td>
+									</tr>
+								</thead>
+								<tbody>";
+					}
+					$nomor = 1;
+				}
+
+				if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","F","K","P"))) {
+					$html_cetak_per_kodesie .= "
+					<tr>
+						<td>".$nomor."</td>
+						<td>".$value['kodesie']."</td>
+						<td>".$value['noind']."</td>
+						<td>".substr($value['nama'], 0, 18)."</td>
+						<td>".$value['ipe']."</td>
+						<td>".$value['ika']."</td>
+						<td>".$value['ief']."</td>
+						<td>".$value['htm']."</td>
+						<td>".$value['ubt']."</td>
+						<td>".$value['upamk']."</td>
+						<td>".$value['um']."</td>
+						<td>".$value['ims']."</td>
+						<td>".$value['imm']."</td>
+						<td>".$value['jam_lembur']."</td>
+						<td>".$value['ct']."</td>
+						<td>".$value['hl']."</td>
+						<td>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
+						<td>".(intval(trim($value['pot'])) + intval(trim($value['plain'])))."</td>
+						<td>".$value['tamb_gaji']."</td>
+						<td>".$value['ijin']."</td>
+						<td>".$value['ubs_rp']."</td>
+						<td>".$value['um_puasa']."</td>
+						<td>".$value['dldobat']."</td>
+						<td>".$value['potongan_str']."</td>
+						<td>".$value['tambahan_str']."</td>
+					</tr>";
+				}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
+					$html_cetak_per_kodesie .= "
+					<tr>
+						<td>".$nomor."</td>
+						<td>".$value['noind']."</td>
+						<td>".$value['nama']."</td>
+						<td>".$value['seksi']."</td>
+						<td>".$value['lokasi_krj']."</td>
+						<td>".$value['ika']."</td>
+						<td>".$value['ipe']."</td>
+						<td>".$value['ipet']."</td>
+						<td>".$value['ief']."</td>
+						<td>".$value['ims']."</td>
+						<td>".$value['imm']."</td>
+						<td>".$value['jam_lembur']."</td>
+						<td>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+						<td>".$value['um_cabang']."</td>
+						<td>".$value['ubt']."</td>
+						<td>".$value['upamk']."</td>
+						<td>".$value['ket']."</td>
+						<td>".$value['dldobat']."</td>
+						<td>".($value['ijin'] + $value['htm'])."</td>
+						<td>".($value['putkop'] + $value['pikop'])."</td>
+						<td>".($value['pduka'] + $value['pspsi'])."</td>
+						<td>".$value['plain']."</td>
+					</tr>";
+				}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
+					$html_cetak_per_kode_induk .= "
+					<tr>
+						<td>".$nomor."</td>
+						<td>".$value['noind']."</td>
+						<td>".$value['nama']."</td>
+						<td>".$value['seksi']."</td>
+						<td>".$value['lokasi_krj']."</td>
+						<td>".$value['ika']."</td>
+						<td>".$value['ipe']."</td>
+						<td>".$value['ipet']."</td>
+						<td>".$value['ief']."</td>
+						<td>".$value['ims']."</td>
+						<td>".$value['imm']."</td>
+						<td>".$value['jam_lembur']."</td>
+						<td>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+						<td>".$value['um_cabang']."</td>
+						<td>".$value['ubt']."</td>
+						<td>".$value['upamk']."</td>
+						<td>".$value['ket']."</td>
+						<td>".$value['dldobat']."</td>
+						<td>".($value['ijin'] + $value['htm'])."</td>
+						<td>".($value['putkop'] + $value['pikop'])."</td>
+						<td>".($value['pduka'] + $value['pspsi'])."</td>
+						<td>".$value['plain']."</td>
+						<td>".substr($value['sekolah'], 0, 10)."</td>
+						<td>".substr($value['jurusan'], 0, 10)."</td>
+						<td>".substr($value['pendidikan'], 0, 5)."</td>
+					</tr>";
+				}else{
+					$html_cetak_per_kodesie .= "
+					<tr>
+						<td>".$nomor."</td>
+						<td>".$value['noind']."</td>
+						<td>".$value['nama']."</td>
+						<td>".$value['seksi']."</td>
+						<td>".$value['lokasi_krj']."</td>
+					</tr>";
+				}
+				$simpan_kodesie = substr($value['kodesie'], 0, 7);
+				$simpan_asal_os = trim($value['asal_outsourcing']);
+				$simpan_kode_induk = substr($value['noind'], 0, 1);
+				$nomor++;
+				$progres +=1;
+				$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses PDF CETAKSEKSI");
+				session_write_close();
+				flush();
+			}
+		}
+		$html_cetak_per_kodesie .= "</tbody>
+								</table>
+							</body>
+						</html>";
+		return $html_cetak_per_kodesie;
+	}
+
+	public function rekapNominal($data_rekap,$user,$progres,$bulan_gaji,$hari_string,$periode_penggajian){
+		$html_rekap = "<!DOCTYPE html>
+		<html>
+		<body>
+			<label>MEMO dari Bu Reny</label>
+			<div style=\"page-break-after: always;\"></div>
+			<label>Rekap Nominal Penggajian</label>
+			<table style='width: 100%'>
+				<tr>
+					<td style='width: 10%'>Data Bulan</td>
+					<td style='width: 3%'>:</td>
+					<td style='width: 10%'>$bulan_gaji</td>
+					<td style='width: 10%'>Tanggal Cetak</td>
+					<td style='width: 3%'>:</td>
+					<td style='width: 64%'>$hari_string</td>
+				</tr>
+				<tr>
+					<td colspan='6'>$periode_penggajian</td>
+				</tr>
+			</table>
+			<table style=\"border-collapse: collapse;border: 1px solid black;width: 100%\" border=\"1\">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Kode Induk</th>
+						<th>DL&OBAT</th>
+						<th>P.DUKA</th>
+						<th>SPSI</th>
+						<th>IKOP</th>
+						<th>UTKOP</th>
+						<th>POT. LAIN</th>
+					</tr>
+				</thead>
+				<tbody>";
+		$nomor = 1;
+		$total_uang_dl = 0;
+		$total_pot_duka = 0;
+		$total_pot_ikop = 0;
+		$total_pot_spsi = 0;
+		$total_pot_utkop = 0;
+		$total_pot_lain = 0;
+		if (isset($data_rekap) && !empty($data_rekap)) {
+			foreach ($data_rekap as $key => $value) {
+				$html_rekap .= "<tr>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: center;\">".$nomor."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: center;\">".$value['kode_induk']."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['uang_dl'], 0, ',', '.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_duka'], 0, ',', '.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_spsi'], 0, ',', '.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_ikop'], 0, ',', '.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_utkop'], 0, ',', '.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_lain'], 0, ',', '.')."</td>
+					</tr>";
+				$total_uang_dl 		+= $value['uang_dl'];
+				$total_pot_duka 	+= $value['pot_duka'];
+				$total_pot_ikop 	+= $value['pot_ikop'];
+				$total_pot_spsi 	+= $value['pot_spsi'];
+				$total_pot_utkop 	+= $value['pot_utkop'];
+				$total_pot_lain 	+= $value['pot_lain'];
+				$nomor++;
+				$progres +=1;
+				$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses PDF REKAP");
+				session_write_close();
+				flush();
+			}
+		}
+		$html_rekap .= "	<tr>
+						<td colspan=\"2\">Total</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_uang_dl, 0, ',','.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_duka, 0, ',','.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_spsi, 0, ',','.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_ikop, 0, ',','.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_utkop, 0, ',','.')."</td>
+						<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_lain, 0, ',','.')."</td>
+					</tr>
+				</tbody>
+			</table>
+			<table style=\"width: 100%\">
+				<tr>
+					<td style=\"width: 60%\"></td>
+					<td style=\"width: 40%;text-align: center;\">Yogyakarta, ".strftime("%d %B %Y")."</td>
+				</tr>
+				<tr>
+					<td style=\"width: 60%\"></td>
+					<td style=\"width: 40%;text-align: center;\">Dicetak oleh,</td>
+				</tr>
+				<tr>
+					<td style=\"width: 60%\"></td>
+					<td style=\"width: 40%\">&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br></td>
+				</tr>
+				<tr>
+					<td style=\"width: 60%\"></td>
+					<td style=\"width: 40%;text-align: center;\">".ucwords(strtolower($this->session->employee))."</td>
+				</tr>
+			</table>
+		</body>
+		</html>";
+		return $html_rekap;
 	}
 
 	public function cekProgress(){
@@ -1108,7 +2096,11 @@ class C_TransferReffGaji extends CI_Controller
 				$this->log_activity->activity_log($aksi, $detail);
 				//
 			}
-			echo round(($data->progress/$data->total)*100);
+			$json = array(
+				'progress' 		=> floor(($data->progress/$data->total)*100),
+				'keterangan' 	=> $data->keterangan
+			);
+			echo json_encode($json);
 		}else{
 			echo "kosong";
 		}
@@ -1117,11 +2109,12 @@ class C_TransferReffGaji extends CI_Controller
 	public function download(){
 		$file = $this->input->get('file');
 		$waktu = $this->input->get('time');
+		$type = $this->input->get('type');
 		// print_r($_GET);exit();
 		// echo site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".dbf");exit();
-		$data = file_get_contents(site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".dbf"));
+		$data = file_get_contents(site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".".$type));
 		// echo $data;
-		header('Content-disposition: attachment; filename='.$file.'.dbf');
+		header('Content-disposition: attachment; filename='.$file.'.'.$type);
 		// header("Content-type: application/octet-stream");
 		echo $data;
 	}
