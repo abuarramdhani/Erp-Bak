@@ -1,4 +1,4 @@
-<section class="content" id="datatransaksi">
+<section class="content" id="datamontransaksi">
     <div class="inner">
         <div class="row">
             <div class="col-lg-12">
@@ -53,10 +53,3 @@
         </div>
     </div>
 </section>
-<script>
-    $(document).ready(function () {
-        monitoringtransaksi(this);
-    
-
-    });
-</script>

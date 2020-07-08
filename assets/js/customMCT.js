@@ -23,6 +23,62 @@ $(document).ready(function () {
 			}
 	});
 
+	var carimct = document.getElementById("datamoncuttingtool");
+    if(carimct){
+		$.ajax({
+		url: baseurl + 'MonitoringCuttingTool/Monitoring/mon_cuttingtool',
+		type: 'POST',
+		beforeSend: function() {
+		  $('div#tb_moncuttol' ).html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading4.gif"></center>' );
+		},
+		success: function(result) {
+			$('div#tb_moncuttol').html(result);
+			$('#tblcutting').DataTable({
+			"scrollX" : true,
+			"columnDefs": [{
+				"targets": '_all',
+			}],
+			});
+		}
+	})
+    }
+
+	var caritrans = document.getElementById("datamontransaksi");
+    if(caritrans){
+		$.ajax({
+			url: baseurl + 'MonitoringCuttingTool/MonitoringTransaksi/cuttingtoolbaru',
+			type: 'POST',
+			beforeSend: function() {
+			$('div#tb_baru' ).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading3.gif"></center>' );
+			},
+			success: function(result) {
+				$('div#tb_baru').html(result);
+			}
+		})
+	
+		$.ajax({
+			url: baseurl + 'MonitoringCuttingTool/MonitoringTransaksi/cuttingtoolresharp',
+			type: 'POST',
+			beforeSend: function() {
+			  $('div#tb_resharp' ).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading3.gif"></center>' );
+			},
+			success: function(result) {
+				$('div#tb_resharp').html(result);
+			}
+		})
+	
+		$.ajax({
+			url: baseurl + 'MonitoringCuttingTool/MonitoringTransaksi/cuttingtooltumpul',
+			type: 'POST',
+			beforeSend: function() {
+				$('div#tb_tumpul' ).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading3.gif"></center>' );
+			},
+			success: function(result) {
+				$('div#tb_tumpul').html(result);
+			}
+		})
+    }
+
 });
 
 function monitoringcuttingtool(th) {
