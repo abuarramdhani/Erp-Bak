@@ -307,23 +307,24 @@ class C_MyKaizen extends CI_Controller {
 	}
 
 	private function sendPidgin($user, $kaizen_id) {
-		// $getEmail = $this->M_submit->getEmail($user);
-		// $userAccount = $getEmail[0]['pidgin_account'];
-		// if($userAccount) {
-		// 	$this->load->library('Sendmessage');
+		$getEmail = $this->M_submit->getEmail($user);
+		$userAccount = $getEmail[0]['pidgin_account'];
+		if($userAccount) {
+			$this->load->library('Sendmessage');
 
-		// 	//get Rincian Kaizen
-		// 	$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
+			//get Rincian Kaizen
+			$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
 
-		// 	//get template
-		// 	$link = base_url("SystemIntegration/KaizenGenerator/ApprovalKaizen/View/$kaizen_id");
-		// 	$getEmailTemplate = $this->M_submit->getPidginTemplate(2);
-		// 	$subject = $getEmailTemplate[0]['subject'];
-		// 	$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($getKaizen[0]['judul']), trim($link));
-		// 	$body = str_replace('<br/>', "\n", $body);
-		// 	$pidgin = new Sendmessage;
-		// 	@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
-		// }
+			//get template
+			$link = base_url("SystemIntegration/KaizenGenerator/ApprovalKaizen/View/$kaizen_id");
+			$getEmailTemplate = $this->M_submit->getPidginTemplate(2);
+			$subject = $getEmailTemplate[0]['subject'];
+			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($getKaizen[0]['judul']), trim($link));
+			$body = str_replace('<br/>', "\n", $body);
+			$pidgin = new Sendmessage;
+			// @($pidgin->send($userAccount," \n ".$subject." \n ".$body)); // menyembunyikan error
+			$pidgin->send($userAccount," \n ".$subject." \n ".$body); // menampilkan error
+		}
 	}
 
 	public function report() {

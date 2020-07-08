@@ -310,7 +310,11 @@ class XMPPHP_XMLStream {
         $conntype = 'ssl';
       $this->log->log("Connecting to $conntype://{$this->host}:{$this->port}");
       try {
-        $this->socket = @stream_socket_client("$conntype://{$this->host}:{$this->port}", $errno, $errstr, $timeout, $conflag);
+        $context = stream_context_create();
+        stream_context_set_option($context, 'ssl', 'allow_self_signed', true);
+        stream_context_set_option($context, 'ssl', 'verify_peer', false);
+        stream_context_set_option($context, 'ssl', 'verify_peer_name', false);
+        $this->socket = @stream_socket_client("$conntype://{$this->host}:{$this->port}", $errno, $errstr, $timeout, $conflag, $context);
       } catch (Exception $e) {
         throw new XMPPHP_Exception($e->getMessage());
       }
