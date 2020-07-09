@@ -6,7 +6,7 @@
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
           <ul class="list-inline">
-            <li><h4 style="font-weight:bold;"><i class="fa fa-cloud-upload"></i> Job Manager</h4></li>
+            <li><h4 style="font-weight:bold;"><i class="fa fa-cloud-upload"></i> Job Manager (<?php echo $param ?>)</h4></li>
             <li style="float:right"><a class="btn btn-md bg-navy" style="margin-top:6px;" target="_blank" href="<?php echo base_url('WorkInProcessPackaging/JobManager/Label/'.$param.'')?>"><i class="fa fa-print"></i> Label</a></li>
           </ul>
         </div>

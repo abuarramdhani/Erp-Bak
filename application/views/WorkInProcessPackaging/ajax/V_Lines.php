@@ -35,7 +35,7 @@ body{
             </div>
             <div class="col-md-3">
               <button type="button" style="float:right" name="button" class="btn btn-danger" data-toggle="modal" data-target="#wipp4" onclick="setTargetPe(1)"><i class="fa fa-pencil"></i>
-              <b>Max PE : </b> <b style="color:#fbfbfb" id="target_pe_line1"><?php !empty($line_1[0]['target_pe_max'])?$l1 = $line_1[0]['target_pe_max'] : $l1 = ''; echo $l1; ?></b><b>%</b></button>
+              <b>MAX : </b> <b style="color:#fbfbfb" id="target_pe_line1"><?php !empty($line_1[0]['target_pe_max'])?$l1 = $line_1[0]['target_pe_max'] : $l1 = ''; echo $l1; ?></b><b>%</b></button>
             </div>
         </div>
         <div class="table-responsive">
@@ -78,8 +78,8 @@ body{
                 </td>
                 <td>
                   <center>
-                    <center><input type="text" class="form-control" value="<?php echo $l1['target_pe']*$l1['qty'] ?>" placeholder="50%" readonly></center>
-                    <input type="hidden" class="form-control tampung_pe_1" name="target1[]" id="target_pe<?php echo $no ?>" placeholder="20%" value="<?php echo $l1['target_pe'] ?>" readonly></center>
+                    <input type="text" class="form-control tampung_pe_1" name="target1[]" id="target_pe<?php echo $no ?>" placeholder="20%" value="<?php echo $l1['target_pe'] ?>" readonly></center>
+                  </center>
                 </td>
                 <td>
                   <center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp1(<?php echo $no ?>, <?php echo $l1['id_job_list'] ?>)" style="border-radius:10px;" name="button"><i class="fa fa-minus-square"></i></button></center>
@@ -102,7 +102,7 @@ body{
             </div>
             <div class="col-md-3">
               <button type="button" style="float:right" name="button" class="btn btn-danger" data-toggle="modal" data-target="#wipp4" onclick="setTargetPe(2)"><i class="fa fa-pencil"></i>
-              <b>Max PE :</b> <b style="color:#fefefe" id="target_pe_line2"><?php !empty($line_2[0]['target_pe_max'])?$l2 = $line_2[0]['target_pe_max'] : $l2 = ''; echo $l2; ?></b><b>%</b>)</button>
+              <b>MAX :</b> <b style="color:#fefefe" id="target_pe_line2"><?php !empty($line_2[0]['target_pe_max'])?$l2 = $line_2[0]['target_pe_max'] : $l2 = ''; echo $l2; ?></b><b>%</b>)</button>
             </div>
         </div>
         <div class="table-responsive">
@@ -145,8 +145,8 @@ body{
                 </td>
                 <td>
                   <center>
-                    <center><input type="text" class="form-control" value="<?php echo $l2['target_pe']*$l2['qty'] ?>" placeholder="50%" readonly></center>
-                    <input type="hidden" class="form-control tampung_pe_2" name="target2[]" id="target2_pe<?php echo $no ?>" placeholder="20%" value="<?php echo $l2['target_pe'] ?>" readonly></center>
+                    <input type="text" class="form-control tampung_pe_2" name="target2[]" id="target2_pe<?php echo $no ?>" placeholder="20%" value="<?php echo $l2['target_pe'] ?>" readonly></center>
+                  </center>
                 </td>
                 <td>
                   <center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp2(<?php echo $no ?>, <?php echo $l2['id_job_list'] ?>)" style="border-radius:10px;" name="button"><i class="fa fa-minus-square"></i></button></center>
@@ -174,7 +174,7 @@ body{
             </div>
             <div class="col-md-3">
               <button type="button" style="float:right" name="button" class="btn btn-danger" data-toggle="modal" data-target="#wipp4" onclick="setTargetPe(3)"><i class="fa fa-pencil"></i>
-                <b>Max PE :</b> <b style="color:#f9f9f9" id="target_pe_line3"><?php !empty($line_3[0]['target_pe_max'])?$l3 = $line_3[0]['target_pe_max'] : $l3 = ''; echo $l3; ?></b><b>%</b>
+                <b>MAX :</b> <b style="color:#f9f9f9" id="target_pe_line3"><?php !empty($line_3[0]['target_pe_max'])?$l3 = $line_3[0]['target_pe_max'] : $l3 = ''; echo $l3; ?></b><b>%</b>
               </button>
             </div>
         </div>
@@ -218,8 +218,8 @@ body{
                   </td>
                   <td>
                     <center>
-                      <center><input type="text" class="form-control" value="<?php echo $l3['target_pe']*$l3['qty'] ?>" placeholder="50%" readonly></center>
-                      <input type="hidden" class="form-control tampung_pe_3" name="target3[]" id="target3_pe<?php echo $no ?>" value="<?php echo $l3['target_pe'] ?>" placeholder="30%" readonly></center>
+                      <input type="text" class="form-control tampung_pe_3" name="target3[]" id="target3_pe<?php echo $no ?>" value="<?php echo $l3['target_pe'] ?>" placeholder="30%" readonly></center>
+                    </center>
                   </td>
                   <td>
                     <center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp3(<?php echo $no ?>, <?php echo $l3['id_job_list'] ?>)" style="border-radius:10px;" name="button"><i class="fa fa-minus-square"></i></button></center>
@@ -241,7 +241,7 @@ body{
             </div>
             <div class="col-md-3">
               <button type="button" style="float:right" name="button" class="btn btn-danger" data-toggle="modal" data-target="#wipp4" onclick="setTargetPe(4)"><i class="fa fa-pencil"></i>
-              <b>Max PE : <span style="color:#ffffff" id="target_pe_line4"><?php !empty($line_4[0]['target_pe_max'])?$l4 = $line_4[0]['target_pe_max'] : $l4 = ''; echo $l4; ?></span></b><b>%</b></button>
+              <b>MAX : <span style="color:#ffffff" id="target_pe_line4"><?php !empty($line_4[0]['target_pe_max'])?$l4 = $line_4[0]['target_pe_max'] : $l4 = ''; echo $l4; ?></span></b><b>%</b></button>
             </div>
         </div>
         <div class="table-responsive">
@@ -284,8 +284,8 @@ body{
                   </td>
                   <td>
                     <center>
-                      <center><input type="text" class="form-control" value="<?php echo $l4['target_pe']*$l4['qty'] ?>" placeholder="50%" readonly></center>
-                      <input type="hidden" class="form-control tampung_pe_4" name="target4[]" id="target4_pe<?php echo $no ?>" value="<?php echo $l4['target_pe'] ?>" placeholder="40%" readonly></center>
+                      <input type="text" class="form-control tampung_pe_4" name="target4[]" id="target4_pe<?php echo $no ?>" value="<?php echo $l4['target_pe'] ?>" placeholder="40%" readonly></center>
+                    </center>
                   </td>
                   <td>
                     <center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp4(<?php echo $no ?>, <?php echo $l4['id_job_list'] ?>)" style="border-radius:10px;" name="button"><i class="fa fa-minus-square"></i></button></center>
@@ -309,7 +309,7 @@ body{
         </div>
         <div class="col-md-3">
           <button type="button" style="float:right" name="button" class="btn btn-danger" data-toggle="modal" data-target="#wipp4" onclick="setTargetPe(5)"><i class="fa fa-wifi"></i>
-          <b>Max PE : <span style="color:#ffffff" id="target_pe_line5"><?php !empty($line_5[0]['target_pe_max'])?$l5 = $line_5[0]['target_pe_max'] : $l5 = ''; echo $l5; ?></span></b><b>%</b></button>
+          <b>MAX : <span style="color:#ffffff" id="target_pe_line5"><?php !empty($line_5[0]['target_pe_max'])?$l5 = $line_5[0]['target_pe_max'] : $l5 = ''; echo $l5; ?></span></b><b>%</b></button>
         </div>
     </div>
     <div class="table-responsive">
@@ -351,8 +351,7 @@ body{
                 <center><input type="text" class="form-control" name="qty5[]" id="qty5_wipp<?php echo $no ?>" value="<?php echo $l5['qty'] ?>" placeholder="QTY" readonly></center>
               </td>
               <td>
-                <center><input type="text" class="form-control" value="<?php echo $l5['target_pe']*$l5['qty'] ?>" placeholder="50%" readonly></center>
-                <center><input type="hidden" class="form-control tampung_pe_5" name="target5[]" id="target5_pe<?php echo $no ?>" value="<?php echo $l5['target_pe'] ?>" placeholder="50%" readonly></center>
+                <center><input type="text" class="form-control tampung_pe_5" name="target5[]" id="target5_pe<?php echo $no ?>" value="<?php echo $l5['target_pe'] ?>" placeholder="50%" readonly></center>
               </td>
               <td>
                 <center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp5(<?php echo $no ?>, <?php echo $l5['id_job_list'] ?>)" style="border-radius:10px;" name="button"><i class="fa fa-minus-square"></i></button></center>

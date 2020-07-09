@@ -1095,7 +1095,8 @@ const minus_wipp5 = (n, id_job_list) => {
       },
       success: function(result) {
         Swal.close()
-        let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
+
+        let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100)
         if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
 
         $('#total_ppic_5').html(`${setelah_dikurangi.toFixed(3)}%`);
@@ -1126,7 +1127,7 @@ const minus_wipp5 = (n, id_job_list) => {
                                                         </td>
                                                         <td style="background:rgba(58, 149, 215, 0.3)">
                                                           <center>
-                                                          ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                          ${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100}%
                                                           </center>
                                                         </td>
                                                         <td>
@@ -1184,7 +1185,7 @@ const minus_wipp4 = (n, id_job_list) => {
     },
     success: function(result) {
       Swal.close()
-      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
+      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100)
       // // console.log(setelah_dikurangi);
       // // console.log(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1));
       if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
@@ -1216,7 +1217,7 @@ const minus_wipp4 = (n, id_job_list) => {
                                                       </td>
                                                       <td style="background:rgba(58, 149, 215, 0.3)">
                                                         <center>
-                                                        ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                        ${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100}%
                                                         </center>
                                                       </td>
                                                       <td>
@@ -1275,7 +1276,7 @@ const minus_wipp3 = (n, id_job_list) => {
     },
     success: function(result) {
       Swal.close()
-      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
+      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100)
       if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
 
       $('#total_ppic_3').html(`${setelah_dikurangi.toFixed(3)}%`);
@@ -1306,7 +1307,7 @@ const minus_wipp3 = (n, id_job_list) => {
                                                       </td>
                                                       <td style="background:rgba(58, 149, 215, 0.3)">
                                                         <center>
-                                                        ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                        ${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100}%
                                                         </center>
                                                       </td>
                                                       <td>
@@ -1365,8 +1366,8 @@ const minus_wipp2 = (n, id_job_list) => {
     },
     success: function(result) {
       Swal.close()
-
-      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty)
+      console.log(result);
+      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100)
       if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
 
       $('#total_ppic_2').html(`${setelah_dikurangi.toFixed(3)}%`);
@@ -1398,7 +1399,7 @@ const minus_wipp2 = (n, id_job_list) => {
                                                       </td>
                                                       <td style="background:rgba(58, 149, 215, 0.3)">
                                                         <center>
-                                                        ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                        ${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100}%
                                                         </center>
                                                       </td>
                                                       <td>
@@ -1574,7 +1575,7 @@ const minus_wipp1 = (n, id_job_list) => {
     success: function(result) {
       Swal.close()
 
-      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty);
+      let setelah_dikurangi = Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)) - Number((Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100)
       if (setelah_dikurangi === 'NaN') {setelah_dikurangi = 0;}
 
       // // console.log(Number(total_sebelumnya.substring(0, total_sebelumnya.trim().length - 1)));
@@ -1610,7 +1611,7 @@ const minus_wipp1 = (n, id_job_list) => {
                                                       </td>
                                                       <td style="background:rgba(58, 149, 215, 0.3)">
                                                         <center>
-                                                        ${(Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate)))*result[0].qty}%
+                                                        ${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*100/100}%
                                                         </center>
                                                       </td>
                                                       <td>
