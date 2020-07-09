@@ -35,8 +35,8 @@
 								<p id="rcorners2" style="text-align:center;">
 									 <?php
 									 	foreach ($detail as $dt) {
-											$path_photo  		=	base_url('assets/img/foto').'/';
-											$file 			= 	$path_photo.$dt['noind'].'.'.'JPG';
+											$path_photo  		=	base_url('assets/img/photo').'/';
+											$file 			= 	$path_photo.$dt['noind'].'.'.'jpg';
 											$file_headers 	= 	@get_headers($file);
 											if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found')
 											{
@@ -53,7 +53,7 @@
 											}
 											else
 											{
-												$ekstensi 	= 	"JPG";
+												$ekstensi 	= 	"jpg";
 											}
 
 											if($ekstensi=='jpg' || $ekstensi=='JPG')

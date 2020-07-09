@@ -75,9 +75,12 @@
 																		<td>
 																			<?php
 																				$encrypted_string = $this->encrypt->encode($key['scheduling_id']);
-                                                								$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                                								$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string)
 																			 ?>
-																			<a href="<?php echo site_url('ADMPelatihan/Cetak/Daftarhadir/PrintDaftarPelatihan/'.$encrypted_string) ?>" class="fa fa-print fa-2x" target="_blank"></a>
+	
+																<a href="<?php echo site_url('ADMPelatihan/Cetak/Daftarhadir/Edit/'.$encrypted_string) ?>" data-toggle="tooltip" data-placement='bottom' data-original-title='Edit Data' class="fa fa-pencil-square-o fa-2x"></a>
+																<a target="_blank" href="<?php echo site_url('ADMPelatihan/Cetak/Daftarhadir/PrintDaftarPelatihan/'.$encrypted_string) ?>" data-toggle="tooltip" data-placement='bottom' data-original-title='Cetak Data' class="fa fa-print fa-2x"></a>
+																<a href="<?php echo site_url('ADMPelatihan/Cetak/Daftarhadir/Delete/'.$encrypted_string) ?>" data-toggle="tooltip" data-placement='bottom' data-original-title='Delete ' onclick="return confirm('Anda Yakin Ingin Menghapus Data Ini ?')" class="fa fa-trash fa-2x"></a>
 																		</td>
 																	</tr>
 															<?php	$angka1++;}
@@ -140,7 +143,11 @@
 																				$encrypted_string = $this->encrypt->encode($key['package_scheduling_id']);
                                                 								$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 																			 ?>
-																			<a href="<?php echo site_url('ADMPelatihan/Cetak/Daftarhadir/PrintDaftarPaket/'.$encrypted_string) ?>" class="fa fa-print fa-2x" target="_blank"></a>
+
+																<a href="<?php echo site_url('ADMPelatihan/Cetak/Daftarhadir/Editpaket/'.$encrypted_string) ?>" data-toggle="tooltip" data-placement='bottom' data-original-title='Edit Data' class="fa fa-pencil-square-o fa-2x"></a>
+																<a target="_blank" href="<?php echo site_url('ADMPelatihan/Cetak/Daftarhadir/PrintDaftarPaket/'.$encrypted_string) ?>" data-toggle="tooltip" data-placement='bottom' data-original-title='Cetak Data' class="fa fa-print fa-2x"></a>
+																<a href="<?php echo site_url('ADMPelatihan/Cetak/Daftarhadir/Deletepaket/'.$encrypted_string) ?>" data-toggle="tooltip" data-placement='bottom' data-original-title='Delete ' onclick="return confirm('Anda Yakin Ingin Menghapus Data Ini ?')" class="fa fa-trash fa-2x"></a>
+																	
 																		</td>
 																	</tr>
 															<?php	$angka2++;}

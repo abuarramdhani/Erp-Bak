@@ -398,6 +398,22 @@ class C_MasterTrainer extends CI_Controller {
 		echo "]";
 	}
 
+	public function GetNoIndukTraining(){
+		$term = $this->input->get("term");
+		$training = $this->input->get("training");
+		$data = $this->M_mastertrainer->GetNoIndukTraining($term,$training);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{"NoInduk":"'.$data['employee_code'].'","Nama":"'.$data['name'].'"}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
+	}
+
 	public function delete_exp($trainer_id,$idex)
 		{		
 			
