@@ -189,7 +189,8 @@ class C_DPBKHS extends CI_Controller {
                 'NO_KENDARAAN'     => $data['header']['vehicleId'],
                 'NAMA_SUPIR'       => $data['header']['driverName'],
                 'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
-                'LAIN'             => $data['header']['additionalInformation'],
+                'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
+                'CATATAN'          => $data['header']['catatan'],
                 'LINE_NUM'         => $val['line'],
 		        'DO_NUM'           => $val['doNumber'],
 		        'ITEM_NAME'        => $val['itemName'],
@@ -197,6 +198,7 @@ class C_DPBKHS extends CI_Controller {
 		        'QTY'              => $val['qty'],
 		        'NAMA_TOKO'        => $val['shopName'],
                 'KOTA'             => $val['city'],
+                'APPROVED_FLAG'    => 'P'
             ]);
         }
 

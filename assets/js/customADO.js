@@ -4,7 +4,7 @@ $( () => {
         locale : 'id'
     });
 
-    $('.txttglKirimAO').datepicker({
+    $('.txttglKirimADO').datepicker({
         autoclose: true,
         todayHighlight: true,
         format: 'dd-M-yyyy'
@@ -407,7 +407,9 @@ $( () => {
                 vehicleId             : $('.txtADOVehicleIdentity').val(),
                 driverName            : $('.txtADODriverName').val(),
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
-                additionalInformation : $('.txtADOAdditionalInformation').val()
+                alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+                catatan               : $('.txtADOCatatan').val()
+                // additionalInformation : $('.txtADOAdditionalInformation').val()
             },
             line : ( () => {
                 let data = []
