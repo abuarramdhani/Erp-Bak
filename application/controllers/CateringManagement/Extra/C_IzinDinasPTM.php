@@ -81,19 +81,20 @@ class C_IzinDinasPTM extends CI_Controller
 						$kategori = '4';
 					}
 					$tempat_makan = $da['tempat_makan'];
+					$tempat_makan_tujuan = $da['tujuan'];
 					$noind = $da['noind'];
 
-					$tambahan = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan,$kategori);
+					$tambahan = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan_tujuan,$kategori);
 					if (empty($tambahan)) {
 						$tambahan_insert = array(
 							'fd_tanggal' => $tanggal, 
-	                        'fs_tempat_makan' => $tempat_makan, 
+	                        'fs_tempat_makan' => $tempat_makan_tujuan, 
 	                        'fs_kd_shift' => $shift, 
 	                        'fn_jumlah_pesanan' => 0, 
 	                        'fb_kategori' => $kategori,  
 						);
 						$hasil_tambahan = $this->M_tambahan->insertTambahan($tambahan_insert);
-						$tambahan = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan,$kategori);
+						$tambahan = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan_tujuan,$kategori);
 					}
 
 					$id_tambahan = $tambahan['0']['id_tambahan'];
@@ -128,9 +129,9 @@ class C_IzinDinasPTM extends CI_Controller
 						}
 
 						$this->M_pengurangan->updatePenguranganJumlahByIdPengurangan($id_pengurangan);
-
 					}
-
+					
+					// update pesanan tempat makan asal
 					$cekPesanan = $this->M_pengurangan->getPesananByTempatMakanTanggalShift($tempat_makan,$tanggal,$shift);
 		            $tempat_makan_ = $this->M_pengurangan->getLokasiTempatMakanByTempatMakan($tempat_makan);
 		            if (!empty($cekPesanan)) { // sudah ada pesanan
@@ -181,6 +182,70 @@ class C_IzinDinasPTM extends CI_Controller
 		                $insert = array(
 		                    'fd_tanggal'          => $tanggal,
 		                    'fs_tempat_makan'     => $tempat_makan,
+		                    'fs_kd_shift'         => $shift,
+		                    'fn_jumlah_staff'     => 0,
+		                    'fn_jumlah_nonstaff'  => 0,
+		                    'fn_jumlah'           => 0,
+		                    'fn_jumlah_tambahan'    => $jumlah_tambahan,
+		                    'fn_jumlah_pengurangan' => $jumlah_pengurangan,
+		                    'fn_jumlah_pesan'     => $jumlah_pesan,
+		                    'fs_tanda'            => '0',
+		                    'lokasi'              => $tempat_makan_->fs_lokasi
+		                );
+
+		                $this->M_pengurangan->insertPesanan($insert);
+		            }
+		            // update pesanan tempat makan tujuan
+		            $cekPesanan = $this->M_pengurangan->getPesananByTempatMakanTanggalShift($tempat_makan_tujuan,$tanggal,$shift);
+		            $tempat_makan_ = $this->M_pengurangan->getLokasiTempatMakanByTempatMakan($tempat_makan_tujuan);
+		            if (!empty($cekPesanan)) { // sudah ada pesanan
+		                $total_tambahan = $this->M_pengurangan->getTotalTambahanByTempatMakanTanggalShift($tempat_makan_tujuan,$tanggal,$shift);
+		                $total_pengurangan = $this->M_pengurangan->getTotalPenguranganByTempatMakanTanggalShift($tempat_makan_tujuan,$tanggal,$shift);
+		                
+		                $jumlah_staff = $cekPesanan->fn_jumlah_staff;
+		                $jumlah_nonstaff = $cekPesanan->fn_jumlah_nonstaff;
+		                $jumlah_awal = $cekPesanan->fn_jumlah_staff + $cekPesanan->fn_jumlah_nonstaff;
+		                if (!empty($total_tambahan)) {
+		                    $jumlah_tambahan = $total_tambahan->jumlah;
+		                }else{
+		                    $jumlah_tambahan = 0;
+		                }
+		                if (!empty($jumlah_pengurangan)) {
+		                    $jumlah_pengurangan = $total_pengurangan->jumlah;
+		                }else{
+		                    $jumlah_pengurangan = 0;
+		                }
+		                $jumlah_pesan = $jumlah_awal + $jumlah_tambahan - $jumlah_pengurangan;
+
+		                $update = array(
+		                    'fn_jumlah_staff'     => $jumlah_staff,
+		                    'fn_jumlah_nonstaff'  => $jumlah_nonstaff,
+		                    'fn_jumlah'           => $jumlah_awal,
+		                    'fn_jumlah_tambahan'    => $jumlah_tambahan,
+		                    'fn_jumlah_pengurangan' => $jumlah_pengurangan,
+		                    'fn_jumlah_pesan'     => $jumlah_pesan
+		                );
+
+		                $this->M_pengurangan->updatePesananByTempatMakanTanggalShift($update,$tempat_makan_tujuan,$tanggal,$shift);
+		            }else{ //belum ada pesanan
+		                $total_tambahan = $this->M_pengurangan->getTotalTambahanByTempatMakanTanggalShift($tempat_makan_tujuan,$tanggal,$shift);
+		                $total_pengurangan = $this->M_pengurangan->getTotalPenguranganByTempatMakanTanggalShift($tempat_makan_tujuan,$tanggal,$shift);
+		               
+		                if (!empty($total_tambahan)) {
+		                    $jumlah_tambahan = $total_tambahan->jumlah;
+		                }else{
+		                    $jumlah_tambahan = 0;
+		                }
+		                if (!empty($jumlah_pengurangan)) {
+		                    $jumlah_pengurangan = $total_pengurangan->jumlah;
+		                }else{
+		                    $jumlah_pengurangan = 0;
+		                }
+		                $jumlah_pesan = $jumlah_tambahan - $jumlah_pengurangan;
+
+		                $insert = array(
+		                    'fd_tanggal'          => $tanggal,
+		                    'fs_tempat_makan'     => $tempat_makan_tujuan,
 		                    'fs_kd_shift'         => $shift,
 		                    'fn_jumlah_staff'     => 0,
 		                    'fn_jumlah_nonstaff'  => 0,
