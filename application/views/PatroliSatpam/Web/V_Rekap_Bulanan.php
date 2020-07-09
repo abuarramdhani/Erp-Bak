@@ -75,13 +75,32 @@
                                                     </table>
                                                 </div>
                                                 <div class="col-md-12 text-center">
+                                                    <label>Pilih Approval</label> <i class="fa fa-question-circle" data-toggle="modal" data-target="#pts_mdl_approval" style="cursor: pointer;"></i>
+                                                </div>
+                                                <div class="col-md-2 text-center">
+                                                    <label style="margin-top: 5px;">Tingkat 1</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-control pts_slcPKJ" style="width: 100%" name="ttd1">
+                                                        <option selected="" value="<?= $ttd1['noind'] ?>"><?= $ttd1['noind'].' - '.$ttd1['nama'] ?></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2 text-center">
+                                                    <label style="margin-top: 5px;">Tingkat 2</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-control pts_slcPKJ" style="width: 100%" name="ttd2">
+                                                        <option selected="" value="<?= $ttd2['noind'] ?>"><?= $ttd2['noind'].' - '.$ttd2['nama'] ?></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12 text-center" style="margin-top: 30px;">
                                                 <?php if (empty($periode)): ?>
                                                     <button type="submit" class="btn btn-primary">
                                                         Cetak Laporan
                                                     </button>
                                                 <?php else: ?>
                                                     <button name="id" value="<?=$id?>" type="submit" class="btn btn-primary">
-                                                        Update Temuan
+                                                        Update Laporan
                                                     </button>
                                                 <?php endif ?>
                                                 </div>
@@ -154,6 +173,24 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+<div class="modal fade" id="pts_mdl_approval" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <label class="modal-title" id="exampleModalLongTitle">Approval Tingkat</label>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="http://erp.quick.com/./assets/upload_kaizen/Screenshot_145.png">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 <?php if (!empty($periode)): ?>

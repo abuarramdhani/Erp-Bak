@@ -406,4 +406,19 @@ class M_patrolis extends CI_Model
         $sql = "SELECT * from hrd_khs.tpribadi t where noind = '$noind'";
         return $this->personalia->query($sql)->result_array();
     }
+
+    public function getApproval1($id)
+    {
+        $sql =  "SELECT approval_1 noind, trim(tp.nama) nama from \"Satpam\".trekap tr
+                left join hrd_khs.tpribadi tp on tp.noind = tr.approval_1
+                where tr.id = '$id'";
+        return $this->personalia->query($sql)->row_array();
+    }
+    public function getApproval2($id)
+    {
+        $sql =  "SELECT approval_2 noind, trim(tp.nama) nama from \"Satpam\".trekap tr
+                left join hrd_khs.tpribadi tp on tp.noind = tr.approval_2
+                where tr.id = '$id'";
+        return $this->personalia->query($sql)->row_array();
+    }
 }
