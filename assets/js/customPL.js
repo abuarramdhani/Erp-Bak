@@ -49,6 +49,36 @@ $(document).ready(function(){
 	$('.datatable-undangan-adm').DataTable({
 		dom: 'frtp',
 	});
+	$(document).ready(function(){
+		$('.data-tims-personal').DataTable({
+			"dom": '<"pull-left"f>t<"pull-right"p>',
+        	"info"		: false,
+        	"searching"	: false,
+        	"lengthChange": false,
+        	"pageLength": 5
+		});
+		$('.datatable-tarikdatapekerja').DataTable({
+			retrieve : true,
+			"info"		: true,
+	    	"searching"	: true,
+	    	"lengthChange": true,
+		});
+	});
+	$(document).ready(function(){
+		$('.data-tims-personal').DataTable({
+			"dom": '<"pull-left"f>t<"pull-right"p>',
+        	"info"		: false,
+        	"searching"	: false,
+        	"lengthChange": false,
+        	"pageLength": 5
+		});
+		$('.datatable-tarikshiftpekerja').DataTable({
+			retrieve : true,
+			"info"		: true,
+	    	"searching"	: true,
+	    	"lengthChange": true,
+		});
+	});
 
 	// SELECT2 UNDANGAN
 	$('#txtPesertaUndanganPelatihan').select2({
@@ -169,6 +199,29 @@ $(document).ready(function(){
 				return {
 					results: $.map(data, function(obj) {
 						return { id:obj.NoInduk+'-'+obj.Nama, text:obj.NoInduk+' - '+obj.Nama};
+					})
+				};
+			}
+		}
+	});
+	$(".js-slcEmployeeTraining").select2({
+		placeholder: "No Induk",
+		minimumInputLength: 3,
+		ajax: {		
+			url:baseurl+"ADMPelatihan/MasterTrainer/GetNoIndukTraining",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					training: $('#txtNamaPelatihan').val()
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function(obj) {
+						return { id:obj.NoInduk, text:obj.NoInduk+' - '+obj.Nama};
 					})
 				};
 			}

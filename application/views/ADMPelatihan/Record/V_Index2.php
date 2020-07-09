@@ -3,11 +3,11 @@
 								<thead class="bg-primary">
 									<tr>
 										<th width="5%" style="text-align:center;">NO</th>
-										<th width="15%">Action</th>
+										<th width="20%">Action</th>
 										<th width="15%">Trainer</th>
 										<th width="20%">Nama Pelatihan</th>
 										<th width="10%">Tanggal</th>
-										<th width="20%">Nama Paket</th>
+										<th width="15%">Nama Paket</th>
 										<th width="10%">Tanggal Paket</th>
 										<th width="5%" style="text-align:center;">Jumlah Peserta</th>
 									</tr>
@@ -45,6 +45,7 @@
 													<td align="center"><?php echo $no ?></td>
 													<td>
 														<?php if ($rc['package_scheduling_id']==0) {?>
+														   <a target="_blank" href="<?php echo site_url('ADMPelatihan/Record/CetakSertifikat/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip" title="Cetak Serifikat"><i class="fa fa-file-text-o"></i></a>
 															<a target="_blank" href="<?php echo site_url('ADMPelatihan/Cetak/Undangan/CetakUndanganPelatihan/'.$rc['scheduling_id']) ?>" class="btn btn-flat btn-sm btn-danger" data-toggle="tooltip" title="Cetak Undangan"><i class="fa fa-file-pdf-o"></i></a>
 															<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip1" title="View" ><i class="fa fa-search"></i></a>
 															<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip1" title="Input Kehadiran & Nilai"><i class="fa fa-check"></i></a>

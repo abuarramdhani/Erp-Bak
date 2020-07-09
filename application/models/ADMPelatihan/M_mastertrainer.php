@@ -125,6 +125,45 @@ class M_mastertrainer extends CI_Model {
 			// return $sql;
 		}
 
+		public function GetNoIndukTraining($term,$training){
+			if ($term === FALSE) {
+				$sql = "
+					SELECT TRIM(TRAILING ' ' from a.employee_name) as name, a.* 
+					FROM er.er_employee_all a 
+					WHERE a.resign = '0' 
+					and a.employee_code not in(
+					select noind
+					from pl.pl_participant a
+					inner join pl.pl_scheduling_training b on a.scheduling_id=b.scheduling_id
+					inner join pl.pl_master_training c on b.training_id=c.training_id
+					where 
+					training_name = '$training'
+					)  ORDER BY a.employee_code ASC 
+				";
+			}
+			else{
+				$sql = "
+					SELECT TRIM(TRAILING ' ' from a.employee_name )as name, a.* 
+					FROM er.er_employee_all a 
+					WHERE a.resign = '0' 
+					AND (a.employee_code ILIKE '%$term%' OR a.employee_name LIKE '%$term%') 
+					and a.employee_code not in (
+					select noind
+					from pl.pl_participant a
+					inner join pl.pl_scheduling_training b on a.scheduling_id=b.scheduling_id
+					inner join pl.pl_master_training c on b.training_id=c.training_id
+					where 
+					training_name = '$training'
+					) 
+					ORDER BY a.employee_code ASC
+				";
+			}
+			$query = $this->db->query($sql);//diganti ke erp, pl di erp kan ?
+			//ya
+			return $query->result_array();
+			// return $sql;
+		}
+
 		public function GetApplicant($term){
 			if ($term === FALSE) {
 				$sql = "
