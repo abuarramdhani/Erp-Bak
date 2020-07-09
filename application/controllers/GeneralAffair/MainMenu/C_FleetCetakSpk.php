@@ -28,7 +28,7 @@ class C_FleetCetakSpk extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 

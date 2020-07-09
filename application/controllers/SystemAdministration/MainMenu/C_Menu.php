@@ -42,7 +42,7 @@ class C_Menu extends CI_Controller {
 		if($this->session->is_logged){
 			//redirect('Home');
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 	

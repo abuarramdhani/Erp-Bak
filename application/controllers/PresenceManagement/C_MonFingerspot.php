@@ -30,7 +30,7 @@ Defined('BASEPATH') or exit('No Direct Script Access Allowed');
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
  	}
 

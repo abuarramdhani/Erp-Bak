@@ -29,7 +29,7 @@ class C_FleetMonitoringServiceKendaraan extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 	public function sudahsave()

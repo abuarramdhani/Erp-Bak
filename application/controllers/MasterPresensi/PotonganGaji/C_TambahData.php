@@ -4,7 +4,7 @@ class C_tambahdata extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
-        if(!$this->session->is_logged){ redirect('index'); }
+        if(!$this->session->is_logged){ redirect(''); }
 		$this->load->library('Log_Activity');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/PotonganGaji/M_tambahdata');

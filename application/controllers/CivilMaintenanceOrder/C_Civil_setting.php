@@ -25,7 +25,7 @@ class C_Civil_setting extends CI_Controller
 
 		date_default_timezone_set('Asia/Jakarta');
 
-		if($this->session->is_logged === false) redirect('index');
+		if($this->session->is_logged === false) redirect('');
 	}
 
 	public function jenis_order()

@@ -29,7 +29,7 @@ class C_Pembelianasset extends CI_COntroller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 

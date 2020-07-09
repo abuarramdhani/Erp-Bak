@@ -44,7 +44,7 @@ class C_Report extends CI_Controller {
 		if($this->session->is_logged){
 			//redirect('Home');
 		}else{
-			redirect('index');
+			redirect('');
 		}
 	}
 

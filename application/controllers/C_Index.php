@@ -36,7 +36,7 @@ class C_Index extends CI_Controller {
 		  if($this->session->userdata('logged_in')!=TRUE) {
 		  $this->load->helper('url');
 		  $this->session->set_userdata('last_page', current_url());
-		  //redirect('index');
+		  //redirect('');
     }
 		  //$this->load->model('CustomerRelationship/M_Index');
   }

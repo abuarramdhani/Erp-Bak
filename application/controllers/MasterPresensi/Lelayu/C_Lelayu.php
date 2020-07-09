@@ -30,7 +30,7 @@ class C_Lelayu extends CI_Controller
     if ($this->session->is_logged) {
       // code...
     }else {
-      redirect('index');
+      redirect('');
     }
   }
 

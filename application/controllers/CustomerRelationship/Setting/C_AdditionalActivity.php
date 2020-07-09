@@ -17,7 +17,7 @@ class C_AdditionalActivity extends CI_Controller {
 			if($this->session->is_logged){
 				
 			}else{
-				redirect('index');
+				redirect('');
 			}
 		} */
 		

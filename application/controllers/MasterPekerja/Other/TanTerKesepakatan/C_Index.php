@@ -15,7 +15,7 @@ class C_Index extends CI_Controller {
 
 	/* CHECK SESSION */
 	public function checkSession() {
-		if(!$this->session->is_logged) redirect('index');
+		if(!$this->session->is_logged) redirect('');
 	}
 
 	/* LIST DATA */

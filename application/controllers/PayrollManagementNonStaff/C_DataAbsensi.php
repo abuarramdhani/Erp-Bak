@@ -29,7 +29,7 @@ class C_DataAbsensi extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
