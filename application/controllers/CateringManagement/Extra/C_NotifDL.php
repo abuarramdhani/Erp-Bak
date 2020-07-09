@@ -67,6 +67,7 @@ class C_NotifDL extends CI_Controller
 				$tempat_makan = $da['tempat_makan'];
 				$noind = $da['noind'];
 				$shift = '1';
+				$kategori = '6';
 				$terhitung = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempat_makan,$noind);
 				if (!empty($terhitung)) {
 					$pengurangan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan,$kategori);
