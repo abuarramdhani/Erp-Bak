@@ -4528,3 +4528,8 @@ $route['ADMPelatihan/TarikShiftPekerja/(:any)/(:any)'] = 'ADMPelatihan/TarikShif
 $route['MasterPekerja/Surat/PengalamanKerja'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja';
 $route['MasterPekerja/Surat/PengalamanKerja/(:any)'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja/$1';
 $route['MasterPekerja/Surat/PengalamanKerja/(:any)/(:any)'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja/$1/$2';
+
+// ---------------------------------------------Progress PP PR-----------------------------------------------------
+$route['ProgressPPPR'] = 'ProgressPPPR/C_Index';
+$route['ProgressPPPR/Progress/(:any)'] = 'ProgressPPPR/C_Progress/$1';
+$route['ProgressPPPR/Progress/(:any)/(:any)'] = 'ProgressPPPR/C_Progress/$1/$2';
