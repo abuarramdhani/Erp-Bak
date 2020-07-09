@@ -16,7 +16,7 @@ class C_StokCat extends CI_Controller {
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
-				  //redirect('index');
+				  //redirect('');
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
 	}
@@ -62,7 +62,7 @@ public function stockonhand2(){
 		$this->load->view('V_LihatStockOnHand',$data);
 		$this->load->view('template/footer');
 		}else{
-			redirect('Index');
+			redirect('');
 		}
 }
 
@@ -75,7 +75,7 @@ public function stockonhand(){
 		$this->load->view('V_LihatStockOnHand',$data);
 		$this->load->view('template/footer'); 
 		}else{
-			redirect('Index');
+			redirect('');
 		}
 
 }

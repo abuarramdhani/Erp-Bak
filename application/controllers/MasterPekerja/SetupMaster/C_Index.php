@@ -32,7 +32,7 @@ class C_Index extends CI_Controller
 	{
 		if(!($this->session->is_logged))
 		{
-			redirect('index');
+			redirect('');
 		}
 	}
 

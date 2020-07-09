@@ -33,7 +33,7 @@ class C_ArsipPresensi extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 

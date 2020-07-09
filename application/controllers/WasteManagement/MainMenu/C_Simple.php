@@ -30,7 +30,7 @@ class C_Simple extends Ci_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
