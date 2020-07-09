@@ -409,23 +409,28 @@
 				<td colspan="2" width="33%" valign="top" style="text-align: center;">
 					<table border="1" style="border-collapse: collapse; font-size: 14px; width: 300px;">
 						<tr>
-							<td style="text-align: left;">Tgl.</td>
-							<td style="text-align: left;">Tgl.</td>
+							<td style="text-align: left; width: 50%;">Tgl.</td>
+							<td style="text-align: left; width: 50%;">Tgl.</td>
 						</tr>
 						<tr>
-							<td style="height: 100px;" valign="bottom">
-								RAJIWAN
+							<td style="height: 100px; border-bottom: 0px;" valign="bottom">
+								
 							</td>
-							<td style="height: 100px;" valign="bottom">
-								TENKU DIAN SR
+							<td style="height: 100px; border-bottom: 0px;" valign="bottom">
+								
 							</td>
 						</tr>
 						<tr>
-							<td>Asst. Ka Unit<br>
-							General Affairs & Hubungan Kerja</td>
-							<td>Kasi K3, Pengawasan<br>
-							Gangguan Lingkungan<br>
-							Serta Audit Pengamanan</td>
+							<td style="border-top: 0px;">
+								<?= trim($ttd1[0]['nama']) ?>
+							</td>
+							<td style="border-top: 0px;">
+								<?= trim($ttd2[0]['nama']) ?>
+							</td>
+						</tr>
+						<tr>
+							<td><?= trim(ucwords(strtolower($ttd1[0]['jabatan']))) ?></td>
+							<td><?= trim(ucwords(strtolower($ttd2[0]['jabatan']))) ?></td>
 						</tr>
 					</table>
 				</td>

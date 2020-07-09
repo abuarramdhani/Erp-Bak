@@ -400,4 +400,10 @@ class M_patrolis extends CI_Model
         $this->personalia->delete('"Satpam".trekap');
         return $this->personalia->affected_rows() > 0;
     }
+
+    public function getTTD($noind)
+    {
+        $sql = "SELECT * from hrd_khs.tpribadi t where noind = '$noind'";
+        return $this->personalia->query($sql)->result_array();
+    }
 }
