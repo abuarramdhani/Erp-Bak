@@ -263,13 +263,28 @@ class C_WebPatroli extends CI_Controller
 		$data  = $this->general->loadHeaderandSidemenu('Patroli Satpam', 'Rekap Bulanan', 'Rekap', 'Rekap Bulanan', 'Cetak Laporan');
 		$data['jenis'] = 'laporan';
 		$pr = $this->input->get('pr');
+		$id = $this->input->get('id');
+		if (empty($pr) && !empty($id)) {
+			echo 'url error';exit();
+		}
+		if (!empty($pr) && empty($id)) {
+			echo 'url error';exit();
+		}
 		$data['periode'] = '';
 		$data['reon'] = '';
+		$data['ttd1']['noind'] = 'B0654';
+		$data['ttd1']['nama'] = 'TENGKU DIAN SYAHRUL RIZA SH';
+		$data['ttd2']['noind'] = 'B0307';
+		$data['ttd2']['nama'] = 'RAJIWAN';
 		if (strlen($pr) == 7) {
 			$pr = explode('-', $pr);
 			$data['periode'] = $pr[1].' - '.$pr[0];
 			$data['reon'] = 'readonly';
-			$data['id'] = $this->input->get('id');;
+			$data['id'] = $this->input->get('id');
+			if (!empty($data['id'])) {
+				$data['ttd1'] = $this->M_patrolis->getApproval1($data['id']);
+				$data['ttd2'] = $this->M_patrolis->getApproval2($data['id']);
+			}
 		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -303,10 +318,14 @@ class C_WebPatroli extends CI_Controller
 
 	public function cetak_laporan()
 	{
+		// echo '<pre>';
+		// print_r($_POST);exit();
 		$user = $this->session->user;
 		// print_r($user);exit();
 		$pr = $this->input->post('periodeR');
 		$id = $this->input->post('id');
+		$ttd1 = $this->input->post('ttd1');
+		$ttd2 = $this->input->post('ttd2');
 		if (strlen($pr) != 9) {
 			echo "periode not valid";
 			exit();
@@ -324,6 +343,8 @@ class C_WebPatroli extends CI_Controller
 				'filename'		=>	$filename,
 				'create_date'	=>	date('Y-m-d H:i:s'),
 				'create_by'		=>	$user,
+				'approval_1'	=>	$ttd1,
+				'approval_2'	=>	$ttd2,
 			);
 		if (!empty($id)) {
 			$this->M_patrolis->upCetakan($arr, $id);
@@ -350,8 +371,8 @@ class C_WebPatroli extends CI_Controller
 		$data['bulan'] = $this->konversibulan->KonversiKeBulanIndonesia($bulan);
 		$data['kesimpulan'] = $this->M_patrolis->getKesimpulanbyId($periode_db);
 		$data['putaran'] = $this->M_patrolis->getPutaranperLok($awal, $akhir);
-		$data['ttd1'] = $this->M_patrolis->getTTD('B0307');
-		$data['ttd2'] = $this->M_patrolis->getTTD('B0654');
+		$data['ttd1'] = $this->M_patrolis->getTTD($ttd1);
+		$data['ttd2'] = $this->M_patrolis->getTTD($ttd2);
 
 		// echo "<pre>";
 		// print_r($data['putaran']);exit();

@@ -422,15 +422,15 @@
 						</tr>
 						<tr>
 							<td style="border-top: 0px;">
-								<?= trim($ttd1[0]['nama']) ?>
+								<?= trim($ttd2[0]['nama']) ?>
 							</td>
 							<td style="border-top: 0px;">
-								<?= trim($ttd2[0]['nama']) ?>
+								<?= trim($ttd1[0]['nama']) ?>
 							</td>
 						</tr>
 						<tr>
-							<td><?= trim(ucwords(strtolower($ttd1[0]['jabatan']))) ?></td>
 							<td><?= trim(ucwords(strtolower($ttd2[0]['jabatan']))) ?></td>
+							<td><?= trim(ucwords(strtolower($ttd1[0]['jabatan']))) ?></td>
 						</tr>
 					</table>
 				</td>

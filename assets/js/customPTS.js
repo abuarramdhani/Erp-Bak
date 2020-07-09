@@ -25,6 +25,7 @@ $(document).ready(function(){
 	});
 
 	$('.pts_tblask').dataTable({});
+	getAllPekerjaTpribadi('.pts_slcPKJ');
 
 	$('.pts_tblask').on('click','.pts_btn_edlokasi', function(){
 		var lokasi = $(this).closest('tr').find('td').eq(2).text();
