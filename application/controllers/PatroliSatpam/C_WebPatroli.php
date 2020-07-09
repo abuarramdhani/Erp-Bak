@@ -350,6 +350,8 @@ class C_WebPatroli extends CI_Controller
 		$data['bulan'] = $this->konversibulan->KonversiKeBulanIndonesia($bulan);
 		$data['kesimpulan'] = $this->M_patrolis->getKesimpulanbyId($periode_db);
 		$data['putaran'] = $this->M_patrolis->getPutaranperLok($awal, $akhir);
+		$data['ttd1'] = $this->M_patrolis->getTTD('B0307');
+		$data['ttd2'] = $this->M_patrolis->getTTD('B0654');
 
 		// echo "<pre>";
 		// print_r($data['putaran']);exit();
