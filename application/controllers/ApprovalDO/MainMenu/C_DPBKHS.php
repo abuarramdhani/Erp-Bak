@@ -172,8 +172,6 @@ class C_DPBKHS extends CI_Controller {
 
         $pr_number = 'KHS'.date('Ymd');
 
-        $noind = $this->session->user;
-
         if ($last_pr_number = $this->M_dpb->checkPRNumber($pr_number)) {
             $array_pr_number = explode('-', $last_pr_number['NO_PR']);
             $pr_number_now   = $array_pr_number[1] + 1;
@@ -199,8 +197,6 @@ class C_DPBKHS extends CI_Controller {
 		        'QTY'              => $val['qty'],
 		        'NAMA_TOKO'        => $val['shopName'],
                 'KOTA'             => $val['city'],
-                'CREATED_BY'       => $noind,
-                'APPROVED_FLAG'    => 'P'
             ]);
         }
 
@@ -228,7 +224,8 @@ class C_DPBKHS extends CI_Controller {
                     'NO_KENDARAAN'     => $data['header']['vehicleId'],
                     'NAMA_SUPIR'       => $data['header']['driverName'],
                     'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
-                    'LAIN'             => $data['header']['additionalInformation'],
+                    'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
+                    'CATATAN'          => $data['header']['catatan'],
                     'LINE_NUM'         => $val['lineNumber'],
                     'DO_NUM'           => $val['doNumber'],
                     'ITEM_NAME'        => $val['itemName'],
@@ -249,7 +246,8 @@ class C_DPBKHS extends CI_Controller {
                     'NO_KENDARAAN'     => $data['header']['vehicleId'],
                     'NAMA_SUPIR'       => $data['header']['driverName'],
                     'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
-                    'LAIN'             => $data['header']['additionalInformation'],
+                    'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
+                    'CATATAN'          => $data['header']['catatan'],
                     'DO_NUM'           => $val['doNumber'],
                     'ITEM_NAME'        => $val['itemName'],
                     'UOM'              => $val['uom'],

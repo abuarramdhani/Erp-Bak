@@ -61,20 +61,11 @@ class C_DPBListPR extends CI_Controller {
             'vendor_ekspedisi' => 'readonly',
             'estimasi_datang'  => 'readonly',
             'lain_lain'        => 'readonly',
+            'alamat_bongkar'   => 'readonly',
+            'catatan'          => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->responsibility_id == '2724') {
-            $data['UserAccess'] = [   
-                    'jenis_kendaraan'  => 'readonly',
-                    'no_kendaraan'     => '',
-                    'nama_supir'       => '',
-                    'kontak_supir'     => '',
-                    'vendor_ekspedisi' => '',
-                    'estimasi_datang'  => '',
-                    'lain_lain'        => '',
-                    'estdate'          => 'ADOEstDatang'
-            ];
-        }else if ($this->session->responsibility_id == '2709') {
+        if ($this->session->user === 'B0445') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',
@@ -82,8 +73,21 @@ class C_DPBListPR extends CI_Controller {
                     'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
                     'estimasi_datang'  => 'readonly',
-                    'lain_lain'        => '',
+                    'alamat_bongkar'   => '',
+                    'catatan'          => '',
                     'estdate'          => ''
+            ];
+        }else {
+            $data['UserAccess'] = [   
+                    'jenis_kendaraan'  => 'readonly',
+                    'no_kendaraan'     => '',
+                    'nama_supir'       => '',
+                    'kontak_supir'     => '',
+                    'vendor_ekspedisi' => '',
+                    'estimasi_datang'  => '',
+                    'alamat_bongkar'   => 'readonly',
+                    'catatan'          => 'readonly',
+                    'estdate'          => 'ADOEstDatang'
             ];
         }
         // if ( $this->session->user === 'B0747' ) {
@@ -144,7 +148,8 @@ class C_DPBListPR extends CI_Controller {
             'NO_KENDARAAN'     => $this->input->post('vehicleId'),
             'NAMA_SUPIR'       => $this->input->post('driverName'),
             'VENDOR_EKSPEDISI' => $this->input->post('driverPhone'),
-            'LAIN'             => $this->input->post('additionalInformation'),
+            'ALAMAT_BONGKAR'   => $this->input->post('alamatBongkar'),
+            'CATATAN'          => $this->input->post('catatan'),
             'CREATED_BY'       => $noind,
         ];
 
