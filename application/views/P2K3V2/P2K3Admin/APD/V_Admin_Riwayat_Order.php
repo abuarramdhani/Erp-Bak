@@ -84,7 +84,7 @@
                                                 </td>
                                                 <td><?php echo $key['jml_pekerja_staff']; ?></td>
                                                 <?php $jml = explode(',', $key['jml_pekerja']);
-                                                foreach ($jml as $row) { ?>
+                                                foreach ($jml as $row) { if($row == '') continue; ?>
                                                 <td><?php echo $row; ?></td>
                                                 <?php  } ?>
                                                 <td><?php echo $key['tgl_input']; ?></td>
