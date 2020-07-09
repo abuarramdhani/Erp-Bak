@@ -4413,6 +4413,8 @@ $(document).ready(function(){
 				console.log(obj);
 				obj.forEach(function(daftar, index){
 					tblCMIzinDinasPTM.row.add([
+						daftar.tanggal ,
+						daftar.izin_id ,
 						daftar.noind ,
 						daftar.nama,
 						daftar.tujuan,
