@@ -1752,7 +1752,7 @@ class C_Order extends CI_Controller
 				if ($input2) {
 					//insert to sys.t_log_activity
 					$aksi = 'P2K3 V2';
-					$detail = "Insert Order ID= $id ";
+					$detail = "Insert Order ID= $idOr ";
 					$this->log_activity->activity_log($aksi, $detail);
 					//
 				}
