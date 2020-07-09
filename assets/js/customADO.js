@@ -272,7 +272,7 @@ $( () => {
     
     $('.btnADOCreateDPB').on('click', function () {
 
-        var tgl_kirim = $('.txttglKirimAO').val();
+        var tgl_kirim = $('.txttglKirimADO').val();
 
         if (tgl_kirim) {
             let data = {
