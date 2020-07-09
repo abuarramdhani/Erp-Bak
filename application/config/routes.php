@@ -4510,3 +4510,21 @@ $route['MonitoringCuttingTool/SettingMin/(:any)/(:any)']	= 'MonitoringCuttingToo
 $route['MonitoringCuttingTool/MonitoringTransaksi']					= 'MonitoringCuttingTool/C_Transaksi';
 $route['MonitoringCuttingTool/MonitoringTransaksi/(:any)']			= 'MonitoringCuttingTool/C_Transaksi/$1';
 $route['MonitoringCuttingTool/MonitoringTransaksi/(:any)/(:any)']	= 'MonitoringCuttingTool/C_Transaksi/$1/$2';
+
+//---------------------------Adm Pelatihan Dojo------------
+$route['ADMPelatihan/DataPekerja'] = 'ADMPelatihan/Pekerja/C_Index';
+$route['ADMPelatihan/DataPekerja/(:any)'] = 'ADMPelatihan/Pekerja/C_Index/$1';
+$route['ADMPelatihan/DataPekerja/(:any)/(:any)'] = 'ADMPelatihan/Pekerja/C_Index/$1/$2';
+
+$route['ADMPelatihan/TarikDataPekerja'] = 'ADMPelatihan/TarikDataPekerja/C_Index';
+$route['ADMPelatihan/TarikDataPekerja/(:any)'] = 'ADMPelatihan/TarikDataPekerja/C_Index/$1';
+$route['ADMPelatihan/TarikDataPekerja/(:any)/(:any)'] = 'ADMPelatihan/TarikDataPekerja/C_Index/$1/$2';
+
+$route['ADMPelatihan/TarikShiftPekerja'] = 'ADMPelatihan/TarikShiftPekerja/C_Index';
+$route['ADMPelatihan/TarikShiftPekerja/(:any)'] = 'ADMPelatihan/TarikShiftPekerja/C_Index/$1';
+$route['ADMPelatihan/TarikShiftPekerja/(:any)/(:any)'] = 'ADMPelatihan/TarikShiftPekerja/C_Index/$1/$2';
+
+//---------------Master Pekerja ---Surat Pengalaman Kerja-------------
+$route['MasterPekerja/Surat/PengalamanKerja'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja';
+$route['MasterPekerja/Surat/PengalamanKerja/(:any)'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja/$1';
+$route['MasterPekerja/Surat/PengalamanKerja/(:any)/(:any)'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja/$1/$2';
