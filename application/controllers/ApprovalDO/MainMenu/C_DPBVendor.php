@@ -65,11 +65,25 @@ class C_DPBVendor extends CI_Controller {
             'kontak_supir'     => 'readonly',
             'vendor_ekspedisi' => 'readonly',
             'estimasi_datang'  => 'readonly',
-            'lain_lain'        => 'readonly',
+            'alamat_bongkar'   => 'readonly',
+            'catatan'          => 'readonly',
             'estdate'          => '',
             'tgl_kirim'          => ''
         ];
-        if ($this->session->responsibility_id == '2724') {
+        if ($this->session->user === 'B0445') {
+            $data['UserAccess'] = [   
+                    'jenis_kendaraan'  => '',
+                    'no_kendaraan'     => 'readonly',
+                    'nama_supir'       => 'readonly',
+                    'kontak_supir'     => 'readonly',
+                    'vendor_ekspedisi' => 'readonly',
+                    'estimasi_datang'  => 'readonly',
+                    'alamat_bongkar'   => '',
+                    'catatan'          => '',
+                    'estdate'          => '',
+                    'tgl_kirim'        => ''
+            ];
+        }else {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => 'readonly',
                     'no_kendaraan'     => '',
@@ -77,21 +91,10 @@ class C_DPBVendor extends CI_Controller {
                     'kontak_supir'     => '',
                     'vendor_ekspedisi' => '',
                     'estimasi_datang'  => '',
-                    'lain_lain'        => '',
-                    'estdate'          => 'ADOEstDatang',
+                    'alamat_bongkar'   => 'readonly',
+                    'catatan'          => 'readonly',
                     'tgl_kirim'        => 'readonly',
-                ];
-            }else if ($this->session->responsibility_id == '2709') {
-            $data['UserAccess'] = [   
-                'jenis_kendaraan'  => '',
-                    'no_kendaraan'     => 'readonly',
-                    'nama_supir'       => 'readonly',
-                    'kontak_supir'     => 'readonly',
-                    'vendor_ekspedisi' => 'readonly',
-                    'estimasi_datang'  => 'readonly',
-                    'lain_lain'        => '',
-                    'estdate'          => '',
-                    'tgl_kirim'        => '',
+                    'estdate'          => 'ADOEstDatang'
             ];
         }
 

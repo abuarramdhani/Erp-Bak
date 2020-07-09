@@ -259,7 +259,9 @@ $( () => {
             driverPhone           : $('.txtADODriverContact').val(),
             expVendor             : $('.txtADOExpeditionVendor').val(),
             estDatang             : $('.txtADOEstDatang').val(),
-            additionalInformation : $('.txtADOAdditionalInformation').val()
+            tglKirim              : $('.txttglKirimADO').val(),
+            alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+            catatan               : $('.txtADOCatatan').val()
         }
         let url      = `${baseurl}ApprovalDO/ListDPBVendor/saveDetail`
         let question = 'Simpan Data Ini?'
@@ -279,8 +281,10 @@ $( () => {
                 vehicleId             : $('.txtADOVehicleIdentity').val(),
                 driverName            : $('.txtADODriverName').val(),
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
-                additionalInformation : $('.txtADOAdditionalInformation').val(),
-                tglKirim              : $('.txttglKirimAO').val()
+                // additionalInformation : $('.txtADOAdditionalInformation').val(),
+                tglKirim              : $('.txttglKirimADO').val(),
+                alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+                catatan               : $('.txtADOCatatan').val()
             }
             let url      = `${baseurl}ApprovalDO/ListPR/saveDetail`
             let question = 'Simpan Data Ini?'
@@ -474,7 +478,10 @@ $( () => {
                 vehicleId             : $('.txtADOVehicleIdentity').val(),
                 driverName            : $('.txtADODriverName').val(),
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
-                additionalInformation : $('.txtADOAdditionalInformation').val()
+                alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+                catatan               : $('.txtADOCatatan').val()
+
+                // additionalInformation : $('.txtADOAdditionalInformation').val()
             },
             newLine : ( () => {
                 let data = []
