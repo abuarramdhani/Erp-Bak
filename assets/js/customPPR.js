@@ -79,11 +79,15 @@ $(document).ready( function () {
         var requester = $('.slcRequesterPPR').val();
         var item = $('.slcItemPPR').val();
         var date = $('#datePPR').val();
-        var date_split = date.split("-");
-
-        var date1 = date_split[0];
-        var date2 = date_split[1];
-
+        if (date) {
+            var date_split = date.split("-");
+    
+            var date1 = date_split[0];
+            var date2 = date_split[1];
+        }else{
+            var date1 = '';
+            var date2 = '';
+        }
         $.ajax({
             type: "POST",
             url: baseurl+"ProgressPPPR/Progress/getReport",
