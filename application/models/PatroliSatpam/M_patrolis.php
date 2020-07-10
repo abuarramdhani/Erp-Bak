@@ -10,6 +10,7 @@ class M_patrolis extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->personalia = $this->load->database('personalia', true);
+        $this->dl = $this->load->database('dinas_luar', true);
 		date_default_timezone_set("Asia/Bangkok");
     }
 
@@ -455,5 +456,11 @@ class M_patrolis extends CI_Model
                     and ronde = $ronde";
                     // echo $sql;exit();
         return $this->personalia->query($sql)->row_array();
+    }
+
+    public function loginSatpam($user,$password)
+    {
+        $sql = "select * from t_pekerja where keluar='0' and noind='$user' and (pass_word='$password' or token='$password')";
+        return $this->dl->query($sql)->num_rows() > 0;
     }
 }

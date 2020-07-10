@@ -250,10 +250,15 @@ class C_ApiPatroli extends CI_Controller
 		$ronde[] = $this->M_patrolis->getRonde($tshift, 2);
 		$ronde[] = $this->M_patrolis->getRonde($tshift, 3);
 		$ronde[] = $this->M_patrolis->getRonde($tshift, 4);
+		$x = 0;
 		foreach ($ronde as $key) {
 			if ($key != null) {
 				$data['ronde'][] = $key;
+				$x++;
 			}
+		}
+		if ($x == 0) {
+			$data['ronde'] = array('ronde'=>1, 'selesai'=>0);
 		}
 		$data['max_ronde'] = 4;
 		echo json_encode($data);
@@ -304,6 +309,24 @@ class C_ApiPatroli extends CI_Controller
 		//0 artinya bisa tidak langsung redirect ke mapActifity
 		$data['ronde'] = $ronde;
 		echo json_encode($data);
+	}
 
+	public function login_satpam()
+	{
+		$username = $this->input->post('username');
+		$password = $this->input->post('password');
+		$password_md5 = md5($password);
+		$log = $this->M_patrolis->loginSatpam($username,$password_md5);
+
+		if($log){
+
+			$response["error"] = FALSE;
+			echo json_encode($response);
+		}else{
+			
+			$response["error"] = TRUE;
+			$response["error_msg"] = "Username / Password salah";
+			echo json_encode($response);
+		}
 	}
 }
