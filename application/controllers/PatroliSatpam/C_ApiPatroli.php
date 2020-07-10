@@ -304,6 +304,24 @@ class C_ApiPatroli extends CI_Controller
 		//0 artinya bisa tidak langsung redirect ke mapActifity
 		$data['ronde'] = $ronde;
 		echo json_encode($data);
+	}
 
+	public function login_satpam()
+	{
+		$username = $this->input->post('username');
+		$password = $this->input->post('password');
+		$password_md5 = md5($password);
+		$log = $this->M_patrolis->loginSatpam($username,$password_md5);
+
+		if($log){
+
+			$response["error"] = FALSE;
+			echo json_encode($response);
+		}else{
+			
+			$response["error"] = TRUE;
+			$response["error_msg"] = "Username / Password salah";
+			echo json_encode($response);
+		}
 	}
 }
