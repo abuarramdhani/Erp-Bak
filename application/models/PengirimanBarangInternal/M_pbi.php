@@ -5,9 +5,54 @@ class M_pbi extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
-        // $this->oracle = $this->load->database('oracle_dev', true);
+        // $this->oracle = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle_dev', true);
         $this->personalia = $this->load->database('personalia', true);
+    }
+
+    public function cek_no_mo($mo)
+    {
+      $res = $this->oracle->select('NO_MOVE_ORDER')->where('NO_MOVE_ORDER', $mo)->get('KHS_KIRIM_INTERNAL')->row();
+      return $res;
+    }
+
+    public function getDetailMo($val)
+    {
+      $res = $this->oracle->query("SELECT msib.segment1, msib.description, mtrl.quantity, mtrl.uom_code,
+                 mp.organization_id from_org_id, mp.organization_code from_io,
+                 mtrl.from_subinventory_code, mp2.organization_id to_org_id,
+                 mp2.organization_code to_io, mtrl.to_subinventory_code,
+                 CASE
+                    WHEN SUBSTR (msib.segment1, 1, 1) = 'N'
+                       THEN 'ASSET'
+                    WHEN msib.inventory_item_flag = 'Y'
+                    AND msib.item_type <> '3085'
+                       THEN 'INVENTORY'
+                    ELSE 'EXPENSE'
+                 END jenis,
+                 mtrh.transaction_type_id
+            FROM mtl_txn_request_headers mtrh,
+                 mtl_txn_request_lines mtrl,
+                 mtl_system_items_b msib,
+                 mtl_secondary_inventories msi,
+                 mtl_secondary_inventories msi2,
+                 mtl_parameters mp,
+                 mtl_parameters mp2
+           WHERE mtrh.header_id = mtrl.header_id
+             AND mtrl.inventory_item_id = msib.inventory_item_id
+             AND msib.organization_id = mtrl.organization_id
+             AND msi.secondary_inventory_name(+) = mtrl.from_subinventory_code
+             AND msi2.secondary_inventory_name(+) = mtrl.to_subinventory_code
+             AND mp.organization_id(+) = msi.organization_id
+             AND mp2.organization_id(+) = msi2.organization_id
+             AND mtrl.line_status IN (3, 7)
+             AND mtrh.request_number IN ('$val')")->result_array();
+
+       if (empty($res)) {
+         return 0;
+       }else {
+         return $res;
+       }
     }
 
     public function updatePeneriamaan($d)
@@ -104,7 +149,7 @@ class M_pbi extends CI_Model
     public function Cetak($d)
     {
         $response = $this->oracle->distinct()
-                                 ->select('DOC_NUMBER, USER_TUJUAN, TUJUAN, SEKSI_KIRIM, CREATED_BY, CREATION_DATE, KETERANGAN')
+                                 ->select('*')
                                  ->where("DOC_NUMBER", $d)
                                  ->get('KHS_KIRIM_INTERNAL')
                                  ->result_array();
@@ -175,6 +220,8 @@ class M_pbi extends CI_Model
                            ,CREATED_BY
                            ,SEKSI_TUJUAN
                            ,KETERANGAN
+                           ,NO_MOVE_ORDER
+                           ,TYPE
                            )
           VALUES ('$data[DOC_NUMBER]'
                  ,'$data[SEKSI_KIRIM]'
@@ -190,7 +237,68 @@ class M_pbi extends CI_Model
                  , SYSDATE
                  ,'$data[CREATED_BY]'
                  ,'$data[SEKSI_TUJUAN]'
-                 ,'$data[KETERANGAN]')
+                 ,'$data[KETERANGAN]'
+                 ,'$data[MO]'
+                 ,'$data[TYPE]')
+          ");
+            $response = 1;
+            return $response;
+        } else {
+            $response = 'USER_TUJUAN TIDAK BOLEH KOSONG';
+            echo $response;
+            die;
+        }
+    }
+
+    public function deleteMO($mo)
+    {
+      $this->oracle->delete('KHS_KIRIM_INTERNAL', ['NO_MOVE_ORDER' => $mo]);
+    }
+
+    public function insertMO($data)
+    {
+        if (!empty($data['USER_TUJUAN'])) {
+            // $this->oracle->insert('KHS_KIRIM_INTERNAL', $data);
+            $user_login = $this->session->user;
+            $this->oracle->query("INSERT INTO KHS_KIRIM_INTERNAL(DOC_NUMBER
+                           ,SEKSI_KIRIM
+                           ,TUJUAN
+                           ,USER_TUJUAN
+                           ,LINE_NUM
+                           ,ITEM_CODE
+                           ,ITEM_TYPE
+                           ,DESCRIPTION
+                           ,QUANTITY
+                           ,UOM
+                           ,STATUS
+                           ,CREATION_DATE
+                           ,CREATED_BY
+                           ,SEKSI_TUJUAN
+                           ,KETERANGAN
+                           ,NO_MOVE_ORDER
+                           ,TYPE
+                           ,RECEIVED_BY
+                           ,RECEIVE_DATE
+                           )
+          VALUES ('$data[DOC_NUMBER]'
+                 ,'$data[SEKSI_KIRIM]'
+                 ,'$data[TUJUAN]'
+                 ,'$data[USER_TUJUAN]'
+                 ,'$data[LINE_NUM]'
+                 ,'$data[ITEM_CODE]'
+                 ,'$data[ITEM_TYPE]'
+                 ,'$data[DESCRIPTION]'
+                 ,'$data[QUANTITY]'
+                 ,'$data[UOM]'
+                 ,'$data[STATUS]'
+                 , SYSDATE
+                 ,'$data[CREATED_BY]'
+                 ,'$data[SEKSI_TUJUAN]'
+                 ,'$data[KETERANGAN]'
+                 ,'$data[MO]'
+                 ,'$data[TYPE]'
+                 ,'$user_login'
+                 , SYSDATE)
           ");
             $response = 1;
             return $response;
