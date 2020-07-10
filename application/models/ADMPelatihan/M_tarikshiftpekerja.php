@@ -13,7 +13,7 @@ class M_tarikshiftpekerja extends CI_Model
 		$this->personalia = $this->load->database('personalia',true);
 	}
 
-	public function getData($periode1,$periode2,$hubungan,$kdsie = FALSE){
+	public function getData($periode1,$periode2,$hubungan,$kdsie = FALSE,$lok){
 		if (isset($kdsie) and !empty($kdsie)) {
 			$kd = " and b.kodesie like '$kdsie%'";
 		}else{
@@ -25,7 +25,9 @@ class M_tarikshiftpekerja extends CI_Model
 				INNER JOIN hrd_khs.TPribadi b ON b.noind=a.noind 
 				inner join  \"Presensi\".tshift c on a.kd_shift=c.kd_shift
 				inner join hrd_khs.tseksi d on d.kodesie=b.kodesie
-				WHERE b.keluar='0'and ( a.tanggal between '$periode1' and '$periode2' )AND left(a.noind,1) in ($hubungan) $kd
+				inner join hrd_khs.tlokasi_kerja e on b.lokasi_kerja=e.id_
+				WHERE b.keluar='0'and ( a.tanggal between '$periode1' and '$periode2' )AND left(a.noind,1) in ($hubungan) $kd 
+				and b.lokasi_kerja in ($lok)
 				ORDER BY  a.kodesie,a.noind ";
 				
 
@@ -60,6 +62,13 @@ class M_tarikshiftpekerja extends CI_Model
 					date_part('month', dates.dates) as bulan,date_part('year', dates.dates) as tahun, dates.dates::date as tanggal
 				from generate_series('$awal'::date, '$akhir'::date, '1 day') as dates ";
 		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function lokasiKerja()
+	{
+		$sql = "SELECT * FROM hrd_khs.tlokasi_kerja ORDER BY id_";
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
 	}
 
 }

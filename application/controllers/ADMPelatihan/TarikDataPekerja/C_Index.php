@@ -48,6 +48,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['status'] = $this->M_rekapmssql->statusKerja();
+		$data['lokasi'] = $this->M_tarikdatapekerja->lokasiKerja();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -63,9 +64,11 @@ class C_Index extends CI_Controller
 		$unit = $this->input->post('cmbUnit');
 		$seksi = $this->input->post('cmbSeksi');
 		$hubker = $this->input->post('statushubker');
+		$lokasi = $this->input->post('lokasi');
 		$all = $this->input->post('statusAll');
+		$alllok = $this->input->post('lokasiAll');
 		$detail = $this->input->post('detail');
-
+        $data['lokasi'] = $this->M_tarikdatapekerja->lokasiKerja();
 
 
 			$hub = "";
@@ -93,6 +96,31 @@ class C_Index extends CI_Controller
 				}
 			}
 
+			$lok = "";
+			$exlok = "";
+			if (isset($alllok) and !empty($alllok) and $alllok == '1') {
+				$slok = $this->M_tarikdatapekerja->lokasiKerja();
+				foreach ($slok as $key) {
+					if ($lok == "") {
+							$lok = "'".$key['id_']."'";
+							$exlok = $key['id_'];
+					}else{
+							$lok .= ",'".$key['id_']."'";
+							$exlok .= "-".$key['id_'];
+					}
+				}
+			}else{
+				foreach ($lokasi as $key) {
+					if ($lok == "") {
+						$lok = "'".$key."'";
+						$exlok = $key;
+					}else{
+						$lok .= ",'".$key."'";
+						$exlok .= "-".$key;
+					}
+				}
+			}
+
 			$kdsie = $dept;
 			if (isset($bid) and !empty($bid) and substr($bid, -2) !== '00') {
 				$kdsie = $bid;
@@ -105,13 +133,13 @@ class C_Index extends CI_Controller
 			if (isset($seksi) and !empty($seksi) and substr($seksi, -2) !== '00') {
 				$kdsie = $seksi;
 			}
-			// echo $kdsie;exit();
+			// echo $lok;exit();
 			$data['detail'] = $detail;
 			$prd = explode(' - ', $periode);
 			if ($kdsie == '0') {
-				$tarikdatapekerja= $this->M_tarikdatapekerja->getData($hub,$kdsie=false,$detail);
+				$tarikdatapekerja= $this->M_tarikdatapekerja->getData($hub,$kdsie=false,$lok);
 			}else{
-				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie,$detail);
+				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie,$lok);
 			}
 		 //echo "<pre>111".strtotime("2053-01-01");
 		 // print_r($tarikdatapekerja);
@@ -128,7 +156,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['status'] = $this->M_rekapmssql->statusKerja();
 		$data['table'] = $tarikdatapekerja;
-		$data['export'] = $kdsie.'_'.$exhub;
+		$data['export'] = $kdsie.'_'.$exhub.'_'.$exlok;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/TarikDataPekerja/V_tarikdatapekerja',$data);
@@ -136,12 +164,17 @@ class C_Index extends CI_Controller
 	}
 
 	public function ExportExcel($data){
+		//echo "<pre>");
+		 // print_r($data);
+		 //exit();
 		$data = str_replace("%20", " ", $data);
 				$do = explode("_", $data);
 				$export = $do['0'];
 				$kdsie = $do['1'];
 				$hubker = explode("-", $do['2']);
 				$hub = "";
+				$lokasi = explode("-", $do['3']);
+				$lok = "";
 				//insert to sys.log_activity
 				$aksi = 'ADM Pelatihan';
 				$detail = "Export EXCEL Tarik Data Pekerja kodesie = $kdsie";
@@ -155,10 +188,19 @@ class C_Index extends CI_Controller
 					}
 				}
 
+				foreach ($lokasi as $key) {
+					if ($lok == "") {
+						$lok = "'".$key."'";
+					}else{
+						$lok .= ",'".$key."'";
+					}
+				}
+
+
               if ($kdsie == '0') {
-				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie=false);
+				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie=false,$lok);
 			}else{
-				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie);
+				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie,$lok);
 			}
 
 			$this->load->library('excel');
@@ -237,6 +279,8 @@ class C_Index extends CI_Controller
 				$kdsie = $do['1'];
 				$hubker = explode("-", $do['2']);
 				$hub = "";
+				$lokasi = explode("-", $do['3']);
+				$lok = "";
 				//insert to sys.log_activity
 				$aksi = 'ADM Pelatihan';
 				$detail = "Export PDF Tarik Data Pekerja kodesie = $kdsie";
@@ -250,10 +294,18 @@ class C_Index extends CI_Controller
 					}
 				}
 
+				foreach ($lokasi as $key) {
+					if ($lok == "") {
+						$lok = "'".$key."'";
+					}else{
+						$lok .= ",'".$key."'";
+					}
+				}
+
               if ($kdsie == '0') {
-				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie=false);
+				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie=false,$lok);
 			}else{
-				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie);
+				$tarikdatapekerja = $this->M_tarikdatapekerja->getData($hub,$kdsie,$lok);
 			}
 
 

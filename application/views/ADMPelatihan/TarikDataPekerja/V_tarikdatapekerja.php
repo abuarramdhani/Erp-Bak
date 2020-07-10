@@ -37,6 +37,25 @@
 															</label>
 														</div>
 													</div>
+													<div class="form-group">
+		                                            	<label class="control-label col-lg-4">Lokasi Kerja</label>
+														<div class="col-lg-6">
+															<select id="adm-lokasi" data-placeholder="Lokasi Kerja" class="form-control select2" style="width:100%" name ="lokasi[]" required multiple="multiple">
+																<option value=""><option>
+																	<!-- <option value="All">ALL</option> -->
+																	<?php foreach ($lokasi as $status_kerja){
+																		?>
+																		<option value="<?php echo $status_kerja['id_'];?>"><?php echo $status_kerja['id_'].' - '.$status_kerja['lokasi_kerja'];?></option>
+																		<?php } ?>
+															</select>
+														</div>
+														<div class="col-lg-1">
+															<label style="margin-top: 5px" class="pull-center">
+																<input class="azek" type="checkbox" id="a_all" class="form-control" name="lokasiAll" value="1">
+																ALL
+															</label>
+														</div>
+													</div>
 		                                            <div class="form-group">
 		                                                <label for="cmbDepartemen" class="control-label col-lg-4">Departemen</label>
 		                                                <div class="col-lg-6">
