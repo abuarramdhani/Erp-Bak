@@ -246,8 +246,16 @@ class C_ApiPatroli extends CI_Controller
 		}else{
 			$tshift = date('Y-m-d');
 		}
+		$ronde[] = $this->M_patrolis->getRonde($tshift, 1);
+		$ronde[] = $this->M_patrolis->getRonde($tshift, 2);
+		$ronde[] = $this->M_patrolis->getRonde($tshift, 3);
+		$ronde[] = $this->M_patrolis->getRonde($tshift, 4);
+		foreach ($ronde as $key) {
+			if ($key != null) {
+				$data['ronde'][] = $key;
+			}
+		}
 		$data['max_ronde'] = 4;
-		$data['ronde'] = $this->M_patrolis->getRonde($tshift);
 		echo json_encode($data);
 	}
 
@@ -259,7 +267,15 @@ class C_ApiPatroli extends CI_Controller
 		}else{
 			$tshift = date('Y-m-d');
 		}
-		$data['ronde'] = $this->M_patrolis->getRonde($tshift, $rond);
+		$allPos = $this->M_patrolis->getAllPos();
+		$cekScan = $this->M_patrolis->getScann($tshift, $rond);
+		$c = count($allPos);
+		if ($c == $cekScan['patroli'] && $c == $cekScan['temuan'] && $c == $cekScan['jawaban'])
+			$selesai = 1;
+		else
+			$selesai = 0;
+
+		$data['selesai'] = $selesai;
 		echo json_encode($data);
 	}
 	
@@ -269,5 +285,25 @@ class C_ApiPatroli extends CI_Controller
 		$lk = $this->M_patrolis->getPosbyId($id);
 		$data['kode']= $lk[0]['lokasi'];
 		echo json_encode($data);
+	}
+
+	public function cek_pos_terakhir()
+	{
+		$lokasi = $this->input->get('lokasi');
+		if (date('H:i:s') < '12:00:00') {
+			$tshift = date('Y-m-d', strtotime('-1 days'));
+		}else{
+			$tshift = date('Y-m-d');
+		}
+		$ronde = $this->M_patrolis->posTerakhir($tshift);
+		if ($ronde != 0) {
+			$p = $this->M_patrolis->getScann($tshift, $ronde);
+			if (($p['temuan'] == $p['patroli'] && $p['jawaban'] == $p['patroli']))
+				$ronde = 0;
+		}
+		//0 artinya bisa tidak langsung redirect ke mapActifity
+		$data['ronde'] = $ronde;
+		echo json_encode($data);
+
 	}
 }
