@@ -10,7 +10,7 @@
             <th>Tanggal PP Diterima</th>
             <th>PP Approve</th>
             <th>NBD Seksi</th>
-            <th>MBD Pembelian</th>
+            <th>NBD Pembelian</th>
             <th>Promised Date</th>
             <th>Kode Item</th>
             <th>Item Desc PR</th>
