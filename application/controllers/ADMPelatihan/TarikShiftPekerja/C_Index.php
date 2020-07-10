@@ -48,6 +48,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['status'] = $this->M_tarikshiftpekerja->statusKerja();
+		$data['lokasi'] = $this->M_tarikshiftpekerja->lokasiKerja();
 		// print_r($data['status']);exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -65,7 +66,11 @@ class C_Index extends CI_Controller
 		$hubker = $this->input->post('statushubker');
 		$all = $this->input->post('statusAll');
 		$detail = $this->input->post('detail');
+		$all = $this->input->post('statusAll');
+		$lokasi = $this->input->post('lokasi');
+		$alllok = $this->input->post('lokasiAll');
 		$data['status'] = $this->M_tarikshiftpekerja->statusKerja();
+		$data['lokasi'] = $this->M_tarikshiftpekerja->lokasiKerja();
 		// di sini sudah ada $data['status'] ? $status di view kan dari $data['status'], sedangkan di function cari belum ada status (kaya'e)
 		$date = explode(' - ', $periode);
 		$tgl1 = $date[0];
@@ -97,6 +102,31 @@ class C_Index extends CI_Controller
 				}
 			}
 
+			$lok = "";
+			$exlok = "";
+			if (isset($alllok) and !empty($alllok) and $alllok == '1') {
+				$slok = $this->M_tarikshiftpekerja->lokasiKerja();
+				foreach ($slok as $key) {
+					if ($lok == "") {
+							$lok = "'".$key['id_']."'";
+							$exlok = $key['id_'];
+					}else{
+							$lok .= ",'".$key['id_']."'";
+							$exlok .= "-".$key['id_'];
+					}
+				}
+			}else{
+				foreach ($lokasi as $key) {
+					if ($lok == "") {
+						$lok = "'".$key."'";
+						$exlok = $key;
+					}else{
+						$lok .= ",'".$key."'";
+						$exlok .= "-".$key;
+					}
+				}
+			}
+
 			$kdsie = $dept;
 			if (isset($bid) and !empty($bid) and substr($bid, -2) !== '00') {
 				$kdsie = $bid;
@@ -109,13 +139,13 @@ class C_Index extends CI_Controller
 			if (isset($seksi) and !empty($seksi) and substr($seksi, -2) !== '00') {
 				$kdsie = $seksi;
 			}
-			// echo $kdsie;exit();
+			 //echo $exlok;exit();
 			$data['detail'] = $detail;
 			$prd = explode(' - ', $periode);
 			if ($kdsie == '0') {
-				$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$kdsie=false,$detail);
+				$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$kdsie=false,$lok);
 			}else{
-				$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$kdsie,$detail);
+				$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$kdsie,$lok);
 			}
 			// langkah langkah mengisi data yang kolomnya dinamis :
 			// 1 buat looping yang kebawah (vertical) disini ada noind & nama, pastikan noind & nama tidak ada duplikat
@@ -210,8 +240,8 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['table'] = $shift;
-		$data['export'] = $kdsie.'_'.$exhub.'_'.$periode.'_'.$detail;
-		// echo "<pre>";print_r($data['table']);exit();
+		$data['export'] = $kdsie.'_'.$exhub.'_'.$periode.'_'.$exlok;
+		 //echo "<pre>";print_r($data['table']);exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMPelatihan/TarikShiftPekerja/V_tarikshiftpekerja',$data);
@@ -219,6 +249,9 @@ class C_Index extends CI_Controller
 	}
 
 	public function ExportExcel($data){
+		//echo "<pre>";
+		 //print_r($data);
+		// exit();
 		$data = str_replace("%20", " ", $data);
 				$do = explode("_", $data);
 				$export = $do['0'];
@@ -238,14 +271,24 @@ class C_Index extends CI_Controller
 					}
 				}
 				$prd = explode(' - ', $do['3']);
-				$detail = $do['4'];
+				$lokasi = explode("-", $do['4']);
+				$lok = "";
+
+				foreach ($lokasi as $key) {
+					if ($lok == "") {
+						$lok = "'".$key."'";
+					}else{
+						$lok .= ",'".$key."'";
+					}
+				}
+
 				if ($kdsie !== '0') {
-			$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$kdsie,$detail);
+			$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$kdsie,$lok);
 		}else{
-			$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$detail);
+			$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$lok);
 		}
-        	//echo "<pre>";
-		//print_r($shift);
+        //echo "<pre>";
+		//print_r($lok);
 		//exit;
 
 				$tgl1 = $prd[0];
@@ -446,11 +489,21 @@ class C_Index extends CI_Controller
 					}
 				}
 				$prd = explode(' - ', $do['3']);
-				$detail = $do['4'];
+				$lokasi = explode("-", $do['4']);
+				$lok = "";
+
+				foreach ($lokasi as $key) {
+					if ($lok == "") {
+						$lok = "'".$key."'";
+					}else{
+						$lok .= ",'".$key."'";
+					}
+				}
+
 				if ($kdsie !== '0') {
-			$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$kdsie,$detail);
+			$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$kdsie,$lok);
 		}else{
-			$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$detail);
+			$shift = $this->M_tarikshiftpekerja->getData($prd[0],$prd[1],$hub,$lok);
 		}
         	//echo "<pre>";
 		//print_r($shift);
