@@ -258,7 +258,7 @@ class C_ApiPatroli extends CI_Controller
 			}
 		}
 		if ($x == 0) {
-			$data['ronde'][] = null;
+			$data['ronde'] = array('ronde'=>1, 'selesai'=>0);
 		}
 		$data['max_ronde'] = 4;
 		echo json_encode($data);
