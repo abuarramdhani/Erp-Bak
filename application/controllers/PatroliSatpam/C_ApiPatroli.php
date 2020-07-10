@@ -250,10 +250,15 @@ class C_ApiPatroli extends CI_Controller
 		$ronde[] = $this->M_patrolis->getRonde($tshift, 2);
 		$ronde[] = $this->M_patrolis->getRonde($tshift, 3);
 		$ronde[] = $this->M_patrolis->getRonde($tshift, 4);
+		$x = 0;
 		foreach ($ronde as $key) {
 			if ($key != null) {
 				$data['ronde'][] = $key;
+				$x++;
 			}
+		}
+		if ($x == 0) {
+			$data['ronde'][] = null;
 		}
 		$data['max_ronde'] = 4;
 		echo json_encode($data);
