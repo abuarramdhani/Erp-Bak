@@ -150,29 +150,26 @@ class M_patrolis extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
-    public function getRonde($tgl_shift, $ronde = false)
+    public function getRonde($tgl_shift, $ronde)
     {
-        $and = '';
-        if ($ronde !== false) {
-            $and = 'and ronde = '.$ronde;
-        }
         $sql = "SELECT
-                ronde,
+                tp.ronde,
                 case
-                    when count(distinct(pos)) = (select count(distinct(id)) from \"Satpam\".titik_qrcode tq)
-                    then 1
-                    else 0 
-                end as selesai
+                    when count(distinct(tp.id_patroli)) = count(distinct(tt.id_patroli))
+                    and count(distinct(tp.id_patroli)) = count(distinct(tj.id_patroli)) then 1
+                    else 0 end selesai
                 from
-                    \"Satpam\".tpatroli t
+                    \"Satpam\".tpatroli tp
+                left join \"Satpam\".ttemuan tt on
+                    tt.id_patroli = tp.id_patroli
+                left join \"Satpam\".tjawaban tj on
+                    tj.id_patroli = tp.id_patroli
                 where
                     tgl_shift = '$tgl_shift'
-                    $and
+                    and ronde = $ronde
                 group by
-                    ronde
-                order by
                     ronde";
-        return $this->personalia->query($sql)->result_array();
+        return $this->personalia->query($sql)->row_array();
     }
 
     public function insertPertanyaan($data)
@@ -419,6 +416,44 @@ class M_patrolis extends CI_Model
         $sql =  "SELECT approval_2 noind, trim(tp.nama) nama from \"Satpam\".trekap tr
                 left join hrd_khs.tpribadi tp on tp.noind = tr.approval_2
                 where tr.id = '$id'";
+        return $this->personalia->query($sql)->row_array();
+    }
+
+    public function posTerakhir($shift)
+    {
+        $sql = "SELECT
+                    *
+                from
+                    \"Satpam\".tpatroli t
+                where
+                    tgl_shift = '$shift'
+                order by
+                    id_patroli desc
+                limit 1";
+        $row = $this->personalia->query($sql)->num_rows();
+        if ($row < 1) {
+            return 0;
+        }else{
+            return $this->personalia->query($sql)->row()->ronde;
+        }
+    }
+
+    public function getScann($shift, $ronde)
+    {
+        $sql = "SELECT
+                    count(distinct(tp.id_patroli)) patroli,
+                    count(distinct(tt.id_patroli)) temuan,
+                    count(distinct(tj.id_patroli)) jawaban
+                from
+                    \"Satpam\".tpatroli tp
+                left join \"Satpam\".ttemuan tt on
+                    tt.id_patroli = tp.id_patroli
+                left join \"Satpam\".tjawaban tj on
+                    tj.id_patroli = tp.id_patroli
+                where
+                    tgl_shift = '$shift'
+                    and ronde = $ronde";
+                    // echo $sql;exit();
         return $this->personalia->query($sql)->row_array();
     }
 }
