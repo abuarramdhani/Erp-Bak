@@ -9,6 +9,15 @@ class M_pbi extends CI_Model
         // $this->oracle = $this->load->database('oracle_dev', true);
         $this->personalia = $this->load->database('personalia', true);
     }
+    
+    public function generateTicketPBI()
+    {
+      $response = $this->oracle->query("SELECT trim('FPB'
+                                              ||to_char(sysdate,'RRMMDD')
+                                              ||lpad(khs_fpb_num.nextval,3,'0')) no_fpb
+                                        from dual")->row_array();
+      return $response['NO_FPB'];
+    }
 
     public function cek_no_mo($mo)
     {

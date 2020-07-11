@@ -130,17 +130,18 @@ class C_Master extends CI_Controller
     public function SaveNon()
     {
       //==========generate document_number=====
-      $time 				= date('ymd');
-      $lastNumber   = $this->M_pbi->lastDocumentNumber('FPB'.$time);
-      if (empty($lastNumber[0]['DOC_NUMBER'])) {
-          $newNumber = 'FPB'.$time.'001';
-      } else {
-          $newNumber = $lastNumber[0]['DOC_NUMBER']+1;
-          if (strlen($newNumber) < 3) {
-              $newNumber = str_pad($newNumber, 3, "00", STR_PAD_LEFT);
-          }
-          $newNumber = 'FPB'.$time.$newNumber;
-      }
+    //   $time 				= date('ymd');
+    //   $lastNumber   = $this->M_pbi->lastDocumentNumber('FPB'.$time);
+    //   if (empty($lastNumber[0]['DOC_NUMBER'])) {
+    //       $newNumber = 'FPB'.$time.'001';
+    //   } else {
+    //       $newNumber = $lastNumber[0]['DOC_NUMBER']+1;
+    //       if (strlen($newNumber) < 3) {
+    //           $newNumber = str_pad($newNumber, 3, "00", STR_PAD_LEFT);
+    //       }
+    //       $newNumber = 'FPB'.$time.$newNumber;
+    //   }
+      $newNumber = $this->M_pbi->generateTicketPBI();
       //==========end generate========
 
       // ======== header data ===========
@@ -218,10 +219,10 @@ class C_Master extends CI_Controller
       }
     }
 
-    public function hapusMO($monya)
-    {
-      $this->M_pbi->deleteMO($monya);
-    }
+    // public function hapusMO($monya)
+    // {
+    //   $this->M_pbi->deleteMO($monya);
+    // }
 
     public function Save()
     {
@@ -229,17 +230,18 @@ class C_Master extends CI_Controller
         $cek_no_mo = $this->M_pbi->cek_no_mo($mo);
         if (empty($cek_no_mo->NO_MOVE_ORDER)) {
           //==========generate document_number=====
-          $time 				= date('ymd');
-          $lastNumber   = $this->M_pbi->lastDocumentNumber('FPB'.$time);
-          if (empty($lastNumber[0]['DOC_NUMBER'])) {
-              $newNumber = 'FPB'.$time.'001';
-          } else {
-              $newNumber = $lastNumber[0]['DOC_NUMBER']+1;
-              if (strlen($newNumber) < 3) {
-                  $newNumber = str_pad($newNumber, 3, "00", STR_PAD_LEFT);
-              }
-              $newNumber = 'FPB'.$time.$newNumber;
-          }
+        //   $time 				= date('ymd');
+        //   $lastNumber   = $this->M_pbi->lastDocumentNumber('FPB'.$time);
+        //   if (empty($lastNumber[0]['DOC_NUMBER'])) {
+        //       $newNumber = 'FPB'.$time.'001';
+        //   } else {
+        //       $newNumber = $lastNumber[0]['DOC_NUMBER']+1;
+        //       if (strlen($newNumber) < 3) {
+        //           $newNumber = str_pad($newNumber, 3, "00", STR_PAD_LEFT);
+        //       }
+        //       $newNumber = 'FPB'.$time.$newNumber;
+        //   }
+          $newNumber = $this->M_pbi->generateTicketPBI();
           //==========end generate========
 
           // ======== header data ===========
