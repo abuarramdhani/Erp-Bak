@@ -3,7 +3,7 @@
     <div  width= "49,5%"  style="float: left; margin-left:5px;">
       <table width="100%" style="margin-top: 2px; margin-bottom:10px; border: 1px solid black; padding: 0px;border-collapse: collapse;">
           <tr>
-            <th align="center" rowspan="6" style="font-size: 7px; border-right: 1px solid black; border-bottom: 1px solid black;">
+            <th align="center" rowspan="6" style="width:100px;font-size: 7px; border-right: 1px solid black; border-bottom: 1px solid black;">
               <img style=""  src="<?php echo base_url('assets/img/'.$idunix[$i].'.png');?>">
               <center> <span style="font-size:5px;"><?php echo $idunix[$i] ?></span> </center>
             </th>
@@ -17,8 +17,8 @@
             <td align="left" style="font-size: 10px; border-right: 1px solid black;border-bottom: 1px solid black;">: <?php echo $kode_; ?></td>
           </tr>
           <tr>
-            <th align="left" style="width: 80px;font-size: 7px; border-bottom: 1px solid black;padding-left:5px;"><b>DESKRIPSI</b></th>
-            <td align="left" style="font-size: 10px; border-right: 1px solid black;border-bottom: 1px solid black;">: <?php echo $desc[$i]; ?></td>
+            <th align="left" style="width: 80px;font-size: 7px; border-bottom: 1px solid black;padding-left:5px;"><b>NAMA BARANG</b></th>
+            <td align="left" style="font-size: 10px; border-right: 1px solid black;border-bottom: 1px solid black;">: <?php echo $nama_barang[$i]; ?></td>
           </tr>
           <tr>
             <th align="left" style="width: 80px;font-size: 7px; border-bottom: 1px solid black;padding-left:5px;"><b>COST CENTER</b></th>
