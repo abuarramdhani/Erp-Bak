@@ -72,46 +72,73 @@ $(document).ready( function () {
         placeholder : 'Search Requester'
     })
 
+    $(document).on('input', '.txtNoPRPPR', function(event) {
+
+        var value_input = $(this).val();
+        // var value_split = value_input.split(".");
+        var hasil = value_input.replace(/\D/g, '')
+
+        return $(this).val(hasil);
+
+    })
+
     $(document).on('click','.btnProcessPPR', function () {
-        $(this).attr('disabled','disabled');
-        $('.loadingPPR').css('display','block');
+        
         $('.tableReportPPR').html('');
         var requester = $('.slcRequesterPPR').val();
         var item = $('.slcItemPPR').val();
         var date = $('#datePPR').val();
-        var date_split = date.split("-");
+        var nopr = $('.txtNoPRPPR').val();
+        if (date) {
+            $(this).attr('disabled','disabled');
+            $('.loadingPPR').css('display','block');
 
-        var date1 = date_split[0];
-        var date2 = date_split[1];
+            var date_split = date.split("-");
+    
+            var date1 = date_split[0];
+            var date2 = date_split[1];
 
-        $.ajax({
-            type: "POST",
-            url: baseurl+"ProgressPPPR/Progress/getReport",
-            data: {
-                requester : requester,
-                item : item,
-                date1 : date1,
-                date2 : date2
-            },
-            success: function (response) {
-                $('.btnProcessPPR').removeAttr('disabled');
-                $('.loadingPPR').css('display','none');
-                $('.tableReportPPR').html(response);
+            $.ajax({
+                type: "POST",
+                url: baseurl+"ProgressPPPR/Progress/getReport",
+                data: {
+                    requester : requester,
+                    item : item,
+                    nopr : nopr,
+                    date1 : date1,
+                    date2 : date2
+                },
+                success: function (response) {
+                    $('.btnProcessPPR').removeAttr('disabled');
+                    $('.loadingPPR').css('display','none');
+                    $('.tableReportPPR').html(response);
+    
+                    $('#tblReportPPR').dataTable({
+                        dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
+                            <'row' <'col-sm-12'tr> >
+                            <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
+                        buttons: [
+                            'copy', 'excel', 'print'
+                        ],
+                        scrollY: "500px",
+                        scrollX: true,
+                        scrollCollapse: true,
+                    });
+    
+                }
+            });
+        }else{
+            Swal.fire({
+                type: 'warning',
+                title: 'Peringatan',
+                text: 'Anda harus mengisi tanggal!',
+            });
 
-                $('#tblReportPPR').dataTable({
-                    dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
-                        <'row' <'col-sm-12'tr> >
-                        <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
-                    buttons: [
-                        'copy', 'excel', 'print'
-                    ],
-                    scrollY: "500px",
-                    scrollX: true,
-                    scrollCollapse: true,
-                });
+            $('#datePPR').attr({
+                style: 'background-color :#fbfb5966;'
+            });
+        }
 
-            }
-        });
 
     })
 })

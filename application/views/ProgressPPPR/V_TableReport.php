@@ -20,7 +20,7 @@
             <th>Keterangan</th>
             <th>No Induk</th>
             <th>Requestor</th>
-            <th>Transction Date</th>
+            <th>Receipt Date</th>
         </tr>
     </thead>
     <tbody>
@@ -45,7 +45,7 @@
                 <td><?= $rep['KETERANGAN'];?></td>
                 <td><?= $rep['NO_INDUK'];?></td>
                 <td><?= $rep['REQUESTOR'];?></td>
-                <td><?= $rep['TRANSACTION_DATE'];?></td>
+                <td><?= $rep['RECEIPT_DATE'];?></td>
             </tr>
         <?php } ?>
     </tbody>

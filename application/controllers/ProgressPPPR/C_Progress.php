@@ -40,10 +40,11 @@ class C_Progress extends CI_Controller {
     {
         $requester = $_POST['requester'];
         $item = $_POST['item'];
+        $no_pr = $_POST['nopr'];
         $date1 = $_POST['date1'];
         $date2 = $_POST['date2'];
 
-        $data['report'] = $this->M_progress->getReport($requester,$item,$date1,$date2);
+        $data['report'] = $this->M_progress->getReport($requester,$item,$no_pr,$date1,$date2);
         echo $this->load->view('ProgressPPPR/V_TableReport',$data,true);
         // echo json_encode($data);
     }

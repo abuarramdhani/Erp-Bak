@@ -26,7 +26,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="" class="col-sm-2 control-label">LIST ITEM</label>
+                                                    <label for="" class="col-sm-2 control-label"> ITEM</label>
 
                                                     <div class="col-sm-10">
                                                         <select class="form-control slcItemPPR">
@@ -35,7 +35,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="" class="col-sm-2 control-label">Date</label>
+                                                    <label for="" class="col-sm-2 control-label">NO PR</label>
+
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control txtNoPRPPR" placeholder="Input No PR">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-2 control-label">DATE</label>
 
                                                     <div class="col-sm-10">
                                                         <input type="text" class="form-control" id="datePPR" placeholder="Date">
