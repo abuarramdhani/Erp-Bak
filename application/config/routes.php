@@ -4533,3 +4533,32 @@ $route['MasterPekerja/Surat/PengalamanKerja/(:any)/(:any)'] ='MasterPekerja/Sura
 $route['ProgressPPPR'] = 'ProgressPPPR/C_Index';
 $route['ProgressPPPR/Progress/(:any)'] = 'ProgressPPPR/C_Progress/$1';
 $route['ProgressPPPR/Progress/(:any)/(:any)'] = 'ProgressPPPR/C_Progress/$1/$2';
+
+//-------------------------------------------Work In Process Packaging---------------------------------------//
+$route['WorkInProcessPackaging'] = 'WorkInProcessPackaging/C_Master';
+$route['WorkInProcessPackaging/JobManager'] = 'WorkInProcessPackaging/C_Master/JobManager';
+$route['WorkInProcessPackaging/JobManager/(:any)'] = 'WorkInProcessPackaging/C_Master/$1';
+$route['WorkInProcessPackaging/JobManager/(:any)/(:any)'] = 'WorkInProcessPackaging/C_Master/$1/$2';
+$route['WorkInProcessPackaging/JobRelease'] = 'WorkInProcessPackaging/C_Master/JobRelease';
+$route['WorkInProcessPackaging/JobRelease/(:any)'] = 'WorkInProcessPackaging/C_Master/$1';
+
+$route['WorkInProcessPackaging/PhotoManager'] = 'WorkInProcessPackaging/C_Master/PhotoManager';
+$route['WorkInProcessPackaging/PhotoManager/(:any)'] = 'WorkInProcessPackaging/C_Master/$1';
+$route['WorkInProcessPackaging/PhotoManager/(:any)/(:any)'] = 'WorkInProcessPackaging/C_Master/$1/$2';
+
+$route['WorkInProcessPackaging/Cetak/(:any)'] = 'WorkInProcessPackaging/C_Master/Cetak/$1';
+$route['WorkInProcessPackaging/cekapi'] = 'WorkInProcessPackaging/C_Master/cekapi';
+
+//-------------------------------------------Running Time Line PnP---------------------------------------//
+$route['RunningTimeLinePnP'] = 'RunningTimeLinePnP/C_Master';
+
+$route['RunningTimeLinePnP/setting'] = 'RunningTimeLinePnP/C_Master/setting';
+$route['RunningTimeLinePnP/setting34'] = 'RunningTimeLinePnP/C_Master/setting34';
+$route['RunningTimeLinePnP/setting/(:any)'] = 'RunningTimeLinePnP/C_Master/$1';
+$route['RunningTimeLinePnP/setting/(:any)/(:any)'] = 'RunningTimeLinePnP/C_Master/$1/$2';
+
+$route['RunningTimeLinePnP/lane5'] = 'RunningTimeLinePnP/C_Master/Lane5';
+$route['RunningTimeLinePnP/lane5/(:any)'] = 'RunningTimeLinePnP/C_Master/$1';
+$route['RunningTimeLinePnP/lane5/(:any)/(:any)'] = 'RunningTimeLinePnP/C_Master/$1/$2';
+
+$route['RunningTimeLinePnP/cekapi'] = 'RunningTimeLinePnP/C_Master/cekapi';
