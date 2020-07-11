@@ -76,7 +76,7 @@ class C_NotifDL extends CI_Controller
 			                'fd_tanggal' => $tanggal, 
 			                'fs_tempat_makan' => $tempat_makan, 
 			                'fs_kd_shift' => $shift, 
-			                'fn_jumlah_pesanan' => 0, 
+			                'fn_jml_tdkpesan' => 0, 
 			                'fb_kategori' => $kategori,  
 			            );
 						$hasil_pengurangan = $this->M_pengurangan->insertPengurangan($pengurangan_insert);
