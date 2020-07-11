@@ -356,9 +356,10 @@ class C_Master extends CI_Controller
                         'id_job_list' => $l['id'],
                         'kode_item' => $l['kode_item'],
                         'qty' => $l['qty'],
-                        'target_pe' => $l['waktu_satu_shift']/($l['qty']/$l['usage_rate']),
+                        'target_pe' => ($l['qty']/($l['waktu_satu_shift']/$l['usage_rate']))*100/100,
                         'dos' => $dicek
                      ];
+
                 }
 
                 foreach ($dos as $key => $d) {
@@ -525,11 +526,19 @@ class C_Master extends CI_Controller
                     $line_3 = [];
                 }
 
-                foreach ($line_1 as $key => $value) {$line_1[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
-                foreach ($line_2 as $key => $value) {$line_2[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
-                foreach ($line_3 as $key => $value) {$line_3[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
-                foreach ($line_4 as $key => $value) {$line_4[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
-                foreach ($line_5 as $key => $value) {$line_5[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
+                // foreach ($line_1 as $key => $value) {$line_1[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
+                // foreach ($line_2 as $key => $value) {$line_2[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
+                // foreach ($line_3 as $key => $value) {$line_3[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
+                // foreach ($line_4 as $key => $value) {$line_4[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
+                // foreach ($line_5 as $key => $value) {$line_5[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
+
+
+
+                foreach ($line_1 as $key => $value) {$line_1[$key]['PPIC'] = $value['target_pe'];}
+                foreach ($line_2 as $key => $value) {$line_2[$key]['PPIC'] = $value['target_pe'];}
+                foreach ($line_3 as $key => $value) {$line_3[$key]['PPIC'] = $value['target_pe'];}
+                foreach ($line_4 as $key => $value) {$line_4[$key]['PPIC'] = $value['target_pe'];}
+                foreach ($line_5 as $key => $value) {$line_5[$key]['PPIC'] = $value['target_pe'];}
 
                 $data['line_1'] = $line_1;
                 $data['line_2'] = $line_2;
@@ -543,6 +552,16 @@ class C_Master extends CI_Controller
                 $data['PPIC_4'] = array_sum(array_column($line_4,'PPIC'));
                 $data['PPIC_5'] = array_sum(array_column($line_5,'PPIC'));
 
+                // echo "<pre>";
+                // print_r($line_1);
+                // echo "<pre>";
+                // print_r($line_2);
+                // echo "<pre>";
+                // print_r($data['PPIC_1']);
+                // echo "<pre>";
+                // print_r($data['PPIC_2']);
+                // die;
+                // die;
                 $this->load->view('WorkInProcessPackaging/ajax/V_Lines', $data);
             } else {
                 $line_1 = [];
