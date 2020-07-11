@@ -303,12 +303,12 @@ class C_ApiPatroli extends CI_Controller
 		$ronde = $this->M_patrolis->posTerakhir($tshift);
 		if ($ronde != 0) {
 			$p = $this->M_patrolis->getScann($tshift, $ronde);
-			if (($p['temuan'] == $p['patroli'] && $p['jawaban'] == $p['patroli']))
+			if (($p['temuan'] == $p['patroli'] && $p['jawaban'] == $p['patroli'] && $p['jumlah'] == $p['patroli']))
 				$ronde = 0;
 		}
-		//0 artinya bisa tidak langsung redirect ke mapActifity
 		$data['ronde'] = $ronde;
 		echo json_encode($data);
+		//0 artinya bisa tidak langsung redirect ke mapActifity
 	}
 
 	public function login_satpam()
