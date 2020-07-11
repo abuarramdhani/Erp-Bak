@@ -54,7 +54,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('WorkInProcessPackaging/V_Index');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     // ============================Job Manager====================================
@@ -73,7 +73,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('WorkInProcessPackaging/V_Job_Manager');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     public function cekNojob()
@@ -154,18 +154,25 @@ class C_Master extends CI_Controller
             $data_a = $this->M_wipp->getItem();
             $priority = $this->M_wipp->getPP();
 
-            // ambil data master job dengan kode_item produk priority
-            foreach ($data_a as $key => $da) {
-                $data_a[$key]['PRIORITY'] = 0;
-                foreach ($priority as $key => $pa) {
-                    if ($da['KODE_ASSY']  === $pa['kode_item']) {
-                        $tampung_priority[] = $da;
+            // ambil data getItem kemudian ditampung di produk priority
+            foreach ($data_a as $key1 => $da) {
+                $data_a[$key1]['PRIORITY'] = 0;
+                $get_job = $this->M_wipp->getJob($da['KODE_ASSY']);
+                if (!empty($get_job)) {
+                    $gj = $get_job;
+                    foreach ($priority as $key2 => $pr) {
+                        foreach ($gj as $key3 => $g) {
+                            if ($g['KODE_ASSY'] === $pr['kode_item']) {
+                                $tampung_priority[] = $da;
+                                break 1;
+                            }
+                        }
                     }
                 }
             }
-
             if (!empty($tampung_priority)) {
-                //pengecekan di jika itu priority
+
+                //pengecekan di jika itu priority = 1
                 foreach ($tampung_priority as $key => $pr) {
                     $tampung_priority[$key]['PRIORITY'] = 1;
                 }
@@ -246,7 +253,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('WorkInProcessPackaging/V_Arrange');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     public function setTarget_Pe()
@@ -280,50 +287,49 @@ class C_Master extends CI_Controller
 
     public function bedaindosNbukandos()
     {
-      if (!$this->input->is_ajax_request()) {
-          echo "Akses Dilarang !!";
-      } else {
-        $data = $this->input->post('data');
-        if (!empty($data)) {
-            foreach ($data as $key => $l) {
-                $list[] = $l[2]; //kode item
-            }
-            $list_unique = array_unique($list);
+        if (!$this->input->is_ajax_request()) {
+            echo "Akses Dilarang !!";
+        } else {
+            $data = $this->input->post('data');
+            if (!empty($data)) {
+                foreach ($data as $key => $l) {
+                    $list[] = $l[2]; //kode item
+                }
+                $list_unique = array_unique($list);
 
-            foreach ($data as $key => $l) {
-                $cek = $this->M_wipp->getDetailBom($l[2]);
-                if (empty($cek)) {
-                  $data[$key]['dicek'] = 3;
-                }else {
-                  $data[$key]['dicek'] = 1;
-                  $dicek = '';
-                    foreach ($cek as $key2 => $c) {
-                        if (strpos($c['DESCRIPTION'], 'DOS') !== false) {
-                            $dicek = 0;
-                            $data[$key]['dicek'] = $dicek;
-                            break;
+                foreach ($data as $key => $l) {
+                    $cek = $this->M_wipp->getDetailBom($l[2]);
+                    if (empty($cek)) {
+                        $data[$key]['dicek'] = 3;
+                    } else {
+                        $data[$key]['dicek'] = 1;
+                        $dicek = '';
+                        foreach ($cek as $key2 => $c) {
+                            if (strpos($c['DESCRIPTION'], 'DOS') !== false) {
+                                $dicek = 0;
+                                $data[$key]['dicek'] = $dicek;
+                                break;
+                            }
                         }
                     }
                 }
-
-            }
-            // echo "<pre>";
-            // print_r($data);
-            foreach ($data as $key => $d) {
-                if ($d['dicek'] === 0) {
-                    $adados[] = $d;
+                // echo "<pre>";
+                // print_r($data);
+                foreach ($data as $key => $d) {
+                    if ($d['dicek'] === 0) {
+                        $adados[] = $d;
+                    }
+                    if ($d['dicek'] === 1) {
+                        $gaadados[] = $d;
+                    }
                 }
-                if ($d['dicek'] === 1) {
-                    $gaadados[] = $d;
-                }
-            }
-            $data_final = [
+                $data_final = [
               'adados' => !empty($adados)?$adados:[],
               'gaadados' => !empty($gaadados)?$gaadados:[]
             ];
-            echo json_encode($data_final);
-          }
-      }
+                echo json_encode($data_final);
+            }
+        }
     }
 
     public function setArrange()
@@ -359,7 +365,6 @@ class C_Master extends CI_Controller
                         'target_pe' => ($l['qty']/($l['waktu_satu_shift']/$l['usage_rate']))*100/100,
                         'dos' => $dicek
                      ];
-
                 }
 
                 foreach ($dos as $key => $d) {
@@ -534,11 +539,21 @@ class C_Master extends CI_Controller
 
 
 
-                foreach ($line_1 as $key => $value) {$line_1[$key]['PPIC'] = $value['target_pe'];}
-                foreach ($line_2 as $key => $value) {$line_2[$key]['PPIC'] = $value['target_pe'];}
-                foreach ($line_3 as $key => $value) {$line_3[$key]['PPIC'] = $value['target_pe'];}
-                foreach ($line_4 as $key => $value) {$line_4[$key]['PPIC'] = $value['target_pe'];}
-                foreach ($line_5 as $key => $value) {$line_5[$key]['PPIC'] = $value['target_pe'];}
+                foreach ($line_1 as $key => $value) {
+                    $line_1[$key]['PPIC'] = $value['target_pe'];
+                }
+                foreach ($line_2 as $key => $value) {
+                    $line_2[$key]['PPIC'] = $value['target_pe'];
+                }
+                foreach ($line_3 as $key => $value) {
+                    $line_3[$key]['PPIC'] = $value['target_pe'];
+                }
+                foreach ($line_4 as $key => $value) {
+                    $line_4[$key]['PPIC'] = $value['target_pe'];
+                }
+                foreach ($line_5 as $key => $value) {
+                    $line_5[$key]['PPIC'] = $value['target_pe'];
+                }
 
                 $data['line_1'] = $line_1;
                 $data['line_2'] = $line_2;
@@ -546,11 +561,11 @@ class C_Master extends CI_Controller
                 $data['line_4'] = $line_4;
                 $data['line_5'] = $line_5;
 
-                $data['PPIC_1'] = array_sum(array_column($line_1,'PPIC'));
-                $data['PPIC_2'] = array_sum(array_column($line_2,'PPIC'));
-                $data['PPIC_3'] = array_sum(array_column($line_3,'PPIC'));
-                $data['PPIC_4'] = array_sum(array_column($line_4,'PPIC'));
-                $data['PPIC_5'] = array_sum(array_column($line_5,'PPIC'));
+                $data['PPIC_1'] = array_sum(array_column($line_1, 'PPIC'));
+                $data['PPIC_2'] = array_sum(array_column($line_2, 'PPIC'));
+                $data['PPIC_3'] = array_sum(array_column($line_3, 'PPIC'));
+                $data['PPIC_4'] = array_sum(array_column($line_4, 'PPIC'));
+                $data['PPIC_5'] = array_sum(array_column($line_5, 'PPIC'));
 
                 // echo "<pre>";
                 // print_r($line_1);
@@ -582,11 +597,21 @@ class C_Master extends CI_Controller
         $line_4 = $this->M_wipp->getline4($date);
         $line_5 = $this->M_wipp->getline5($date);
 
-        foreach ($line_1 as $key => $value) {$line_1[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
-        foreach ($line_2 as $key => $value) {$line_2[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
-        foreach ($line_3 as $key => $value) {$line_3[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
-        foreach ($line_4 as $key => $value) {$line_4[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
-        foreach ($line_5 as $key => $value) {$line_5[$key]['PPIC'] = $value['qty']*$value['target_pe'];}
+        foreach ($line_1 as $key => $value) {
+            $line_1[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+        }
+        foreach ($line_2 as $key => $value) {
+            $line_2[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+        }
+        foreach ($line_3 as $key => $value) {
+            $line_3[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+        }
+        foreach ($line_4 as $key => $value) {
+            $line_4[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+        }
+        foreach ($line_5 as $key => $value) {
+            $line_5[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+        }
 
         $data['line_1'] = $line_1;
         $data['line_2'] = $line_2;
@@ -594,11 +619,11 @@ class C_Master extends CI_Controller
         $data['line_4'] = $line_4;
         $data['line_5'] = $line_5;
 
-        $data['PPIC_1'] = array_sum(array_column($line_1,'PPIC'));
-        $data['PPIC_2'] = array_sum(array_column($line_2,'PPIC'));
-        $data['PPIC_3'] = array_sum(array_column($line_3,'PPIC'));
-        $data['PPIC_4'] = array_sum(array_column($line_4,'PPIC'));
-        $data['PPIC_5'] = array_sum(array_column($line_5,'PPIC'));
+        $data['PPIC_1'] = array_sum(array_column($line_1, 'PPIC'));
+        $data['PPIC_2'] = array_sum(array_column($line_2, 'PPIC'));
+        $data['PPIC_3'] = array_sum(array_column($line_3, 'PPIC'));
+        $data['PPIC_4'] = array_sum(array_column($line_4, 'PPIC'));
+        $data['PPIC_5'] = array_sum(array_column($line_5, 'PPIC'));
 
 
         // echo "<pre>";
@@ -612,8 +637,8 @@ class C_Master extends CI_Controller
 
     public function getTargetMaxPE()
     {
-      $get_target_pe = $this->M_wipp->setTarget_Pe('');
-      echo json_encode($get_target_pe);
+        $get_target_pe = $this->M_wipp->setTarget_Pe('');
+        echo json_encode($get_target_pe);
     }
 
     public function saveLine()
@@ -905,7 +930,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('WorkInProcessPackaging/V_Label');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     public function LabelKecil($do)
@@ -1017,29 +1042,29 @@ class C_Master extends CI_Controller
 
     public function JobRelease()
     {
-      $this->checkSession();
-      $user_id = $this->session->userid;
+        $this->checkSession();
+        $user_id = $this->session->userid;
 
-      $data['Menu'] = 'Dashboard';
-      $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
 
-      $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
-      $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
-      $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-      $data['get'] = $this->M_wipp->JobRelease();
+        $data['get'] = $this->M_wipp->JobRelease();
 
-      $this->load->view('V_Header', $data);
-      $this->load->view('V_Sidemenu', $data);
-      $this->load->view('WorkInProcessPackaging/V_Monitoring_Job');
-      $this->load->view('V_Footer', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('WorkInProcessPackaging/V_Monitoring_Job');
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     public function getDetailBom()
     {
-      if ($this->input->is_ajax_request()) {
-       echo json_encode($this->M_wipp->getDetailBom2($this->input->post('kode_item')));
-      }
+        if ($this->input->is_ajax_request()) {
+            echo json_encode($this->M_wipp->getDetailBom2($this->input->post('kode_item')));
+        }
     }
 
     // =========================Photo Manager====================================
@@ -1059,7 +1084,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('WorkInProcessPackaging/V_Photo_Manager_Choose');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     public function Type($param)
@@ -1080,7 +1105,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('WorkInProcessPackaging/V_Photo_Manager');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
 
@@ -1095,9 +1120,9 @@ class C_Master extends CI_Controller
 
     public function Save()
     {
-      // echo "<pre>";
-      // print_r($_FILES);
-      // die;
+        // echo "<pre>";
+        // print_r($_FILES);
+        // die;
         $item = $this->input->post('kode_komponen');
         $nama_comp = $this->input->post('nama_komponen');
         $param = $this->input->post('type_gambar');
@@ -1136,16 +1161,14 @@ class C_Master extends CI_Controller
             ];
 
             $this->M_wipp->insertPhoto($save);
-
-        }else {
-          $save = [
+        } else {
+            $save = [
             'kode_item' => $item,
             'nama_item' => $nama_comp,
             'type'      => $param,
             'id'        => $this->input->post('id_photo')
           ];
-          $this->M_wipp->UpdatePhoto($save);
-
+            $this->M_wipp->UpdatePhoto($save);
         }
 
         redirect('WorkInProcessPackaging/PhotoManager/Type/'.$param);
@@ -1153,23 +1176,22 @@ class C_Master extends CI_Controller
 
     public function getappendToJobList()
     {
-      if (!$this->input->is_ajax_request()) {
-         echo "Akses anda dilarang";
-      }else {
-        $data = $this->M_wipp->cek_job_id($this->input->post('id_job'));
-        echo json_encode($data);
-      }
+        if (!$this->input->is_ajax_request()) {
+            echo "Akses anda dilarang";
+        } else {
+            $data = $this->M_wipp->cek_job_id($this->input->post('id_job'));
+            echo json_encode($data);
+        }
     }
 
     // ============================ CHECK AREA =====================================
 
     public function cekapi()
     {
-      $data_a = $this->M_wipp->getJob('AAG1BA0031AY-0');
-      echo "<pre>";
-      print_r($data_a);
-      echo sizeof($data_a);
-      die;
-
+        $data_a = $this->M_wipp->getJob('AAA1AB0021AY-0');
+        echo "<pre>";
+        print_r($data_a);
+        echo sizeof($data_a);
+        die;
     }
 }

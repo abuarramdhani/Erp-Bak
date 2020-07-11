@@ -65,7 +65,7 @@ class C_Master extends CI_Controller
       $this->load->view('V_Header', $data);
       $this->load->view('V_Sidemenu', $data);
       $this->load->view('RunningTimeLinePnP/V_Lane5');
-      $this->load->view('V_Footer', $data);
+      $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     //------------------------show the dashboard-----------------------------
@@ -84,7 +84,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('RunningTimeLinePnP/V_Index');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     public function setting()
@@ -126,7 +126,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('RunningTimeLinePnP/V_Setting');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     public function insertTimePause()
@@ -192,7 +192,7 @@ class C_Master extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('RunningTimeLinePnP/V_Setting34');
-        $this->load->view('V_Footer', $data);
+        $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
     public function SetStart()
@@ -250,7 +250,7 @@ class C_Master extends CI_Controller
       $this->load->view('V_Header', $data);
       $this->load->view('V_Sidemenu', $data);
       $this->load->view('RunningTimeLinePnP/V_History');
-      $this->load->view('V_Footer', $data);
+      $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
     }
 
 
