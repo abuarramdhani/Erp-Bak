@@ -28,10 +28,11 @@
           <td <?php echo $style ?>><?php echo $g['KODE_ASSY'] ?></td>
           <td <?php echo $style ?>><?php echo $g['DESCRIPTION'] ?></td>
           <td <?php echo $style ?>><?php echo $g['START_QUANTITY'] ?></center></td>
+          <input type="hidden" class="qpa_wipp_<?php echo $g['KODE_COMP'] ?>" value="<?php echo $g['QUANTITY_PER_ASSEMBLY']*$g['START_QUANTITY'] ?>">
           <td <?php echo $style ?>><?php echo abs($g['USAGE_RATE_OR_AMOUNT']) ?></td>
           <td <?php echo $style ?>><?php echo $g['SCHEDULED_START_DATE'] ?></center></td>
           <td <?php echo $style ?>><center>
-            <button type="button" class="btn btn-md btn-success cencelWipp" stat="1" onclick="addRKH(<?php echo $no ?>, '<?php echo $g['NO_JOB'] ?>', '<?php echo $g['KODE_ASSY'] ?>')" name="button"><i class="fa fa-plus-square"></i> <b>Add to RKH</b></button></center></td>
+            <button type="button" class="btn btn-md btn-success cencelWipp" stat="1" onclick="addRKH(<?php echo $no ?>, '<?php echo $g['NO_JOB'] ?>', '<?php echo $g['KODE_ASSY'] ?>', '<?php echo $g['KODE_COMP'] ?>')" name="button"><i class="fa fa-plus-square"></i> <b>Add to RKH</b></button></center></td>
         </tr>
       <?php $no++; endforeach; ?>
     </tbody>
@@ -42,33 +43,50 @@
 // add to rkh area ===========
 let wipp1 = $('.tblwiip1').DataTable();
 
-function addRKH(n, nj, ki){
-    let stat = $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`);
-    if (stat==1) {
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `0`)
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-primary`)
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-danger`)
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-close"></i> <b>Cancel</b>`)
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).toggleClass('selected');
+function addRKH(n, nj, ki, kc){
+    let job_check = $(`.qpa_wipp_${kc}`).map((_, el) => el.value).get();
+    let count_job_check = 0;
+    job_check.forEach((v,i)=>{
+      count_job_check += Number(v);
+    })
+    let onhand = $(`#onhand_${kc}`).val();
+    if (onhand < count_job_check) {
+      Swal.fire({
+        type: 'warning',
+        title: 'Peringatan !',
+        text: 'tidak dapat membuat RKH, Onhand < Start_QTY'
+      })
     }else {
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-danger`)
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-primary`)
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-plus-square"></i> <b>Add to RKH</b>`)
-        $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).removeClass('selected');
+      let stat = $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`);
+      if (stat==1) {
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `0`)
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-primary`)
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-danger`)
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-close"></i> <b>Cancel</b>`)
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).toggleClass('selected');
+      }else {
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-danger`)
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-primary`)
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-plus-square"></i> <b>Add to RKH</b>`)
+          $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).removeClass('selected');
+      }
+
+      let get = wipp1.rows('.selected').data();
+      var bool=$(".btnWIPP").is(":hidden")
+      if (Number(get.length) == 0) {
+          setTimeout(function () {
+            $('.btnWIPP').attr('hidden',!bool);
+        }, 300);
+      }else {
+        setTimeout(function () {
+          $('.btnWIPP').removeAttr("hidden");
+        }, 300);
+      }
     }
 
-    let get = wipp1.rows('.selected').data();
-    var bool=$(".btnWIPP").is(":hidden")
-    if (Number(get.length) == 0) {
-        setTimeout(function () {
-          $('.btnWIPP').attr('hidden',!bool);
-      }, 300);
-    }else {
-      setTimeout(function () {
-        $('.btnWIPP').removeAttr("hidden");
-      }, 300);
-    }
+
+
 }
 
 Array.prototype.unique = function() {
@@ -95,7 +113,7 @@ function getJobReleased() {
       }
     })
   })
-  console.log(getData_WIPP);
+  // console.log(getData_WIPP);
 
   let listJobWipp = [];
 
