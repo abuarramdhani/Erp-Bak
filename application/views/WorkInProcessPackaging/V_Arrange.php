@@ -86,7 +86,7 @@
                                 <center>QTY</center>
                               </th>
                               <th style="width:17%">
-                                <center>TARGET PE (%)</center>
+                                <center>TARGET PPIC (%)</center>
                               </th>
                               <th hidden>
                                 <center>CREATED AT</center>

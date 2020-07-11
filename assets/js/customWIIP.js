@@ -473,13 +473,14 @@ const changeQtyValue_ = (t, i) => {
       $('.btnsplit' + i).removeAttr("hidden"); //nanti ==============
       setTimeout(function() {
         $('#qtySplit' + i).val(b_d - sum);
-        $(`#target0${i}_pe${t}`).val(wss / (a / ur));
+        $(`#target0${i}_pe${t}`).val(Number((a/(wss/ur))*100)/100);
       }, 200);
     } else {
       $('.btnsplit' + i).attr("hidden", "hidden"); //nanti ==============
       setTimeout(function() {
         $('#qtySplit' + i).val(b_d - sum);
-        let z_z = wss / (a / ur);
+        // let z_z = wss / (a / ur);
+        let z_z = Number((a/(wss/ur))*100)/100;
         $(`#target0${i}_pe${t}`).val(z_z.toFixed(5));
       }, 200);
     }

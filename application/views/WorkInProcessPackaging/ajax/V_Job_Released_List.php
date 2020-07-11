@@ -85,8 +85,6 @@ function addRKH(n, nj, ki, kc){
       }
     }
 
-
-
 }
 
 Array.prototype.unique = function() {
