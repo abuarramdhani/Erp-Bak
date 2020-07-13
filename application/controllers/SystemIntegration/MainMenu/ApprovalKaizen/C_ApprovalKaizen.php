@@ -240,20 +240,22 @@ class C_ApprovalKaizen extends CI_Controller {
 		}
 		$status = trim($status);
 		if($status) {
-			if($level == 1 && (array_key_exists(2, $NoindApprover) === true)) {
-				$updateReady = $this->M_approvalkaizen->updateReady(2, $kaizen_id, 1);
-			} else if($level == 2 && (array_key_exists(3, $NoindApprover) === true)) {
-				$updateReady = $this->M_approvalkaizen->updateReady(3, $kaizen_id, 1);
-			} else if($level == 3 && (array_key_exists(4, $NoindApprover) === true)) {
-				$updateReady = $this->M_approvalkaizen->updateReady(4, $kaizen_id, 1);
+			if ($status == '3') {
+				if($level == 1 && (array_key_exists(2, $NoindApprover) === true)) {
+					$updateReady = $this->M_approvalkaizen->updateReady(2, $kaizen_id, 1);
+				} else if($level == 2 && (array_key_exists(3, $NoindApprover) === true)) {
+					$updateReady = $this->M_approvalkaizen->updateReady(3, $kaizen_id, 1);
+				} else if($level == 3 && (array_key_exists(4, $NoindApprover) === true)) {
+					$updateReady = $this->M_approvalkaizen->updateReady(4, $kaizen_id, 1);
+				}
 			}
 
 			$this->EmailAlert($kaizen_id, $status);
 			$this->sendPidgin($kaizen_id, $status);
 
 			if ($status == '3') {
-			$this->EmailAlertAproval($kaizen_id, $status);
-			$this->sendPidginAprover($kaizen_id, $status);
+				$this->EmailAlertAproval($kaizen_id, $status);
+				$this->sendPidginAprover($kaizen_id, $status);
 			}
 		}
 		redirect(base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/index'));
