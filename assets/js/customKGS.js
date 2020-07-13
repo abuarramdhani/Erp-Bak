@@ -400,6 +400,29 @@ $(document).ready(function () {
 	});
 });
 
+function checkdata(no) {
+    var val = $('#tandacek'+no).val();
+    // console.log(val);
+
+    if (val == 'cek') {
+        $('#tandacek'+no).val('uncek');
+        $('#ceka'+no).removeClass('fa-square-o').addClass('fa-check-square-o');
+        $('#no'+no).addClass('noall');
+    }else{
+        $('#tandacek'+no).val('cek');
+        $('#ceka'+no).removeClass('fa-check-square-o').addClass('fa-square-o');
+        $('#no'+no).removeClass('noall');
+    }
+}
+
+function startselectedPelayanan() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        btnPelayananSPB(n);        
+    }
+}
+
 //----------------------------------------------------------PENGELUARAN--------------------------------------------------------------------------
 
 function btnPengeluaranSPB(no) {
@@ -535,6 +558,14 @@ function btnPausePengeluaran(no) {
                     }
             });
     }})    
+}
+
+function startselectedPengeluaran() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        btnPengeluaranSPB(n);        
+    }
 }
 
 //----------------------------------------------------------PACKING--------------------------------------------------------------------------------

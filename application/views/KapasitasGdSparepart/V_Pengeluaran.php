@@ -61,7 +61,8 @@
                                         <table class="datatable table table-bordered table-hover table-striped text-center tblpengeluaran" style="width: 100%;table-layout:fixed">
                                             <thead class="btn-success">
                                                 <tr>
-                                                    <th width="20px">No</th>
+                                                    <th style="width:5%">No</th>
+                                                    <th style="width:7%">Check</th>
                                                     <th>Tanggal</th>
                                                     <th>Jenis Dokumen</th>
                                                     <th>No Dokumen</th>
@@ -81,11 +82,13 @@
                                                     }
                                                     ?>
                                                     <tr id="baris<?= $no?>">
-                                                        <td class="<?= $td?>" width="20px"><?= $no; ?>
+                                                        <td class="<?= $td?>" width="20px"><input type="hidden" id="no<?= $no?>" value="<?= $no?>"><?= $no; ?>
                                                         <?php if (!empty($val['MULAI_PENGELUARAN'])) { ?>
                                                             <input type="hidden" id="mulai<?= $no?>" value="<?= $val['JAM_PENGELUARAN']?>">
                                                         <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
                                                         </td>
+                                                        <td class="<?= $td?>"><span class="btn check_semua2" style="background-color:inherit" id="cek<?= $no?>" onclick="checkdata(<?= $no?>)" ><i id="ceka<?= $no?>" class="fa fa-square-o bisacek ceka"></i></span>
+                                                        <input type="hidden" class="tandasemua" name="tandacek[]" id="tandacek<?= $no?>" value="cek"></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
                                                         <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
@@ -120,6 +123,10 @@
                                                 <?php $no++; } ?>
                                             </tbody>
                                         </table>
+                                        </div>
+                                        <div class="text-right">
+                                            <button class="btn btn-warning" onclick="startselectedPengeluaran()"><i class="fa fa-play"></i> Start Selected</button>
+                                            <button class="btn btn-danger" onclick="startselectedPengeluaran()"><i class="fa fa-stop"></i> Stop Selected</button>
                                         </div>
                                     </div>
                                 </form>
