@@ -159,7 +159,7 @@ and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
 and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
 and msib.segment1 = '$kode' 
 $seksii
-order by bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID ,bos.OPERATION_SEQ_NUM";
+order by bos.OPERATION_SEQ_NUM ,bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID";
 
        $query = $oracle->query($sql);
         return $query->result_array();
