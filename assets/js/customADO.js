@@ -104,6 +104,10 @@ $( () => {
     $('.slcADOAssignerList').select2({
         width : 'resolve'
     })
+    
+    $('.slcADOGudangPengirim').select2({
+        placeholder : 'Pilih Gudang Pengirim'
+    })
 
     $(document).on('ifChanged', '.chkADOPickedReleaseAll', function (e) {
         e.target.checked ?
@@ -260,6 +264,7 @@ $( () => {
             expVendor             : $('.txtADOExpeditionVendor').val(),
             estDatang             : $('.txtADOEstDatang').val(),
             tglKirim              : $('.txttglKirimADO').val(),
+            gudangPengirim        : $('.slcADOGudangPengirim').val(),
             alamatBongkar         : $('.txtADOAlamatBongkar').val(),
             catatan               : $('.txtADOCatatan').val()
         }
@@ -283,6 +288,7 @@ $( () => {
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
                 // additionalInformation : $('.txtADOAdditionalInformation').val(),
                 tglKirim              : $('.txttglKirimADO').val(),
+                gudangPengirim        : $('.slcADOGudangPengirim').val(),
                 alamatBongkar         : $('.txtADOAlamatBongkar').val(),
                 catatan               : $('.txtADOCatatan').val()
             }
@@ -408,6 +414,7 @@ $( () => {
                 driverName            : $('.txtADODriverName').val(),
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
                 alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+                gudangPengirim        : $('.slcADOGudangPengirim').val(),
                 catatan               : $('.txtADOCatatan').val()
                 // additionalInformation : $('.txtADOAdditionalInformation').val()
             },

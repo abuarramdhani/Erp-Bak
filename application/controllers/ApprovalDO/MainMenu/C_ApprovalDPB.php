@@ -102,6 +102,7 @@ class C_ApprovalDPB extends CI_Controller {
             'kontak_supir'     => 'readonly',
             'vendor_ekspedisi' => 'readonly',
             'estimasi_datang'  => 'readonly',
+            'gudang_pengirim'  => 'readonly',
             'alamat_bongkar'   => 'readonly',
             'catatan'          => 'readonly',
             'estdate'          => ''
@@ -114,6 +115,7 @@ class C_ApprovalDPB extends CI_Controller {
                     'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
                     'estimasi_datang'  => 'readonly',
+                    'gudang_pengirim'  => 'readonly',
                     'alamat_bongkar'   => '',
                     'catatan'          => '',
                     'estdate'          => ''
@@ -126,6 +128,7 @@ class C_ApprovalDPB extends CI_Controller {
                     'kontak_supir'     => '',
                     'vendor_ekspedisi' => '',
                     'estimasi_datang'  => '',
+                    'gudang_pengirim'   => 'readonly',
                     'alamat_bongkar'   => 'readonly',
                     'catatan'          => 'readonly',
                     'estdate'          => 'ADOEstDatang'
@@ -162,6 +165,7 @@ class C_ApprovalDPB extends CI_Controller {
             'kontak_supir'     => 'readonly',
             'vendor_ekspedisi' => 'readonly',
             'estimasi_datang'  => 'readonly',
+            'gudang_pengirim'  => 'readonly',
             'alamat_bongkar'   => 'readonly',
             'catatan'          => 'readonly',
             'estdate'          => ''
@@ -174,6 +178,7 @@ class C_ApprovalDPB extends CI_Controller {
                     'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
                     'estimasi_datang'  => 'readonly',
+                    'gudang_pengirim'  => 'readonly',
                     'alamat_bongkar'   => '',
                     'catatan'          => '',
                     'estdate'          => ''
@@ -186,6 +191,7 @@ class C_ApprovalDPB extends CI_Controller {
                     'kontak_supir'     => '',
                     'vendor_ekspedisi' => '',
                     'estimasi_datang'  => '',
+                    'gudang_pengirim'  => 'readonly',
                     'alamat_bongkar'   => 'readonly',
                     'catatan'          => 'readonly',
                     'estdate'          => 'ADOEstDatang'
