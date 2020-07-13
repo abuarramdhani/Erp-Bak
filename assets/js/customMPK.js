@@ -702,7 +702,60 @@ $(function() {
         console.log("New date range selected: ' + start.format('YYYY-MM-DD H:i:s') + ' to ' + end.format('YYYY-MM-DD H:i:s') + ' (predefined range: ' + label + ')");
     });
     //	}
-    //  select3
+   //  select3
+
+    $('.slcMPSuratPengalamanKerjaPekerja').select2({
+      searching: true,
+      minimumInputLength: 3,
+      placeholder: "No. Induk / Nama Pekerja",
+      allowClear: false,
+      ajax: {
+          url: baseurl + 'MasterPekerja/Surat/PengalamanKerja/Pekerja',
+          dataType: 'json',
+          delay: 500,
+          type: 'GET',
+          data: function(params) {
+              return {
+                  term: params.term
+              }
+          },
+          processResults: function(data) {
+              return {
+                  results: $.map(data, function(obj) {
+                      return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                  })
+              }
+          }
+      }
+  });
+
+    $('#slcMPSuratPengalamanKerjaPekerja').change(function() {
+    var noind = $('#slcMPSuratPengalamanKerjaPekerja').val();
+    if (noind) {
+        $.ajax({
+            type: 'POST',
+            data: { noind: noind },
+            url: baseurl + "MasterPekerja/Surat/PengalamanKerja/detailPekerja",
+            success: function(result) {
+                var result = JSON.parse(result);
+                // console.log(result[0]['seksi']);
+                $('#txtMPSuratPengalamanKerjaSeksi').val(result[0]['seksi']);
+                $('#txtMPSuratPengalamanKerjaBidang').val(result[0]['bidang']);
+                $('#txtMPSuratPengalamanKerjaUnit').val(result[0]['unit']);
+                $('#txtMPSuratPengalamanKerjaDept').val(result[0]['dept']);
+                $('#txtMPSuratPengalamanKerjaMasuk').val(result[0]['masukkerja']);
+                $('#txtMPSuratPengalamanKerjaMasuk').val(result[0]['masukkerja']);
+                $('#txtMPSuratPengalamanKerjaSampai').val(result[0]['akhkontrak']);
+                $('#txtMPSuratPengalamanKerjaAlamat').val(result[0]['alamat']);
+                $('#txtMPSuratPengalamanKerjaDesa').val(result[0]['desa']);
+                $('#txtMPSuratPengalamanKerjaKab').val(result[0]['kab']);
+                $('#txtMPSuratPengalamanKerjaKec').val(result[0]['kec']);
+                $('#txtMPSuratPengalamanKerjaNIK').val(result[0]['nik']);
+
+            }
+        });
+    }
+});
 
     $('.MasterPekerja-PerhitunganPesangon-DaftarPekerja').select2({
         allowClear: false,

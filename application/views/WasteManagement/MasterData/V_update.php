@@ -107,7 +107,7 @@
                                         <div class="row text-right">
                                             <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
                                             &nbsp;&nbsp;
-                                            <button type="button" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+                                            <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
                                         </div>
                                     </div>
                                 </div>
