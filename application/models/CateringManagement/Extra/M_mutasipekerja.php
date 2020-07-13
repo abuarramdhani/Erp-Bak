@@ -15,6 +15,8 @@ class M_mutasipekerja extends CI_Model
     			b.nama,
 				concat(c.dept,' / ',c.bidang,' / ',c.unit,' / ',c.seksi) as seksi_lama, 
 				concat(c.dept, '/ ',d.bidang,' / ',d.unit,' / ',d.seksi) as seksi_baru, 
+                a.tempat_makan1lm,
+                a.tglberlaku,
 				b.tempat_makan
 				from hrd_khs.tmutasi a 
 				inner join hrd_khs.tpribadi b 

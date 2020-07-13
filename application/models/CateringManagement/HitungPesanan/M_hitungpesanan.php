@@ -1894,7 +1894,7 @@ class M_hitungpesanan extends Ci_Model
 								) = 1
 							)  
 						) 
-						and left(tpres.noind, 1) IN ('B', 'D', 'J', 'L', 'G')
+						and left(tpres.noind, 1) not in ('m', 'z') 	
 						group by tpri.tempat_makan, tpres.noind
 					) derivedtbl 
 					order by tempat_makan ";
@@ -1990,7 +1990,7 @@ class M_hitungpesanan extends Ci_Model
 							where kd_shift in('5','8','18') 
 							and tanggal= ? 
 						) 
-						and left(tpres.noind, 1) IN ('B', 'D', 'J', 'L', 'G')
+						and left(tpres.noind, 1) not in ('m', 'z') 	
 						group by tpri.tempat_makan, tpres.noind
 					) derivedtbl 
 					order by tempat_makan ";
