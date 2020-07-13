@@ -14,7 +14,7 @@ class M_indexinfo extends CI_Model
 
   public function getDataAll()
   {
-    return $this->personalia->query("SELECT * FROM \"Surat\".t_memo_cutoff ORDER BY update_date DESC")->result_array();
+    return $this->personalia->query("SELECT * FROM \"Surat\".t_memo_cutoff where deleted_date is null ORDER BY update_date DESC")->result_array();
   }
 
   public function getDataPrint($id)
@@ -132,7 +132,8 @@ class M_indexinfo extends CI_Model
 
   public function deleteMemo($id)
   {
-    $sql = "DELETE FROM \"Surat\".t_memo_cutoff WHERE id='$id'";
+    $logged_user = $this->session->user;
+    $sql = "UPDATE \"Surat\".t_memo_cutoff set deleted_by = '$logged_user', deleted_date = now() WHERE id='$id'";
     $this->personalia->query($sql);
   }
 
