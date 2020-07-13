@@ -33,6 +33,7 @@ class C_Daftar extends CI_Controller {
 		$nomor_induk = $this->input->post('cmbNoind');
 		$text_pokok_masalah = $this->input->post('txtPokokMasalah');
 		$data = $this->M_Daftar->ambilDataSP3($nomor_induk);
+		// WHAT ?? undefined $datasp3 variable
 		$nama_pekerja =	$datasp3[0]['nama'];
 		$tanggal_berlaku_mulai = $this->personalia->konversitanggalIndonesia($data[0]['berlaku_mulai']);
 		$tanggal_berlaku_selesai = $this->personalia->konversitanggalIndonesia($data[0]['berlaku_selesai']);
