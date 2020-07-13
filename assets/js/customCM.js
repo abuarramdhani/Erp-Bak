@@ -6141,3 +6141,142 @@ $(document).ready(function(){
 	})
 })
 // end Pekerja Tidak Makan
+
+// start Prediksi Snack
+$(document).ready(function(){
+	$('#ldg-CM-PrediksiSnack-Loading').hide();
+	$('#txt-CM-PrediksiSnack-Tanggal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	var tblCMPrediksiSnack = $('#tbl-CM-PrediksiSnack-Table').DataTable({
+		"lengthMenu": [
+            [ -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			},
+			{
+			    "targets": 2,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 3,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 4,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 5,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 6,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 7,
+			    "className": "text-right"
+			}
+		],
+	})
+
+	var tblCMPrediksiSnackList = $('#tbl-CM-PrediksiSnack-List').DataTable({
+		"lengthMenu": [
+            [ -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			}
+		],
+	})
+
+	$('#btn-CM-PrediksiSnack-Prediksi').on('click', function(){
+		tanggal = $('#txt-CM-PrediksiSnack-Tanggal').val();
+		shift = $('#slc-CM-PrediksiSnack-Shift').val();
+		lokasi = $('#slc-CM-PrediksiSnack-Lokasi').val();
+
+		if (tanggal && shift && lokasi) {
+			$('#ldg-CM-PrediksiSnack-Loading').show();
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Pesanan/PrediksiSnack/Proses',
+				data: {tanggal: tanggal,shift: shift,lokasi: lokasi},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PrediksiSnack-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-PrediksiSnack-Loading').hide();
+					obj = JSON.parse(data);
+					console.log(obj.status);
+					if (obj.status && obj.status == 'sukses') {
+						Swal.fire({
+							title: 'Prediksi selesai',
+							text: "Apakah Anda Ingin Melihat Hasil Prediksi ?",
+							type: 'success',
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Ya',
+							cancelButtonText: 'Tidak'
+						}).then((result) => {
+						  	if (result.value) {
+						  		window.location.href = baseurl+"CateringManagement/Pesanan/PrediksiSnack/lihat/"+obj.text;
+						  	}
+						});
+					}else{
+						swal.fire({
+			                title: "Output Tidak Sesuai...",
+			                html: data,
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					}
+				}
+			})
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Semua Data Terisi',
+				'warning'
+			)
+		}
+	})
+
+	$('#btn-CM-PrediksiSnack-List').on('click', function(){
+		tanggal = $('#txt-CM-PrediksiSnack-Tanggal').val();
+		shift = $('#slc-CM-PrediksiSnack-Shift').val();
+		lokasi = $('#slc-CM-PrediksiSnack-Lokasi').val();
+		if (tanggal && shift && lokasi) {
+			window.location.href = baseurl+"CateringManagement/Pesanan/PrediksiSnack/daftar/"+tanggal+"_"+shift+"_"+lokasi;
+		}
+	})
+})
+// end Prediksi Snack
