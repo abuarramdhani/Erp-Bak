@@ -10,7 +10,14 @@ class M_history extends CI_Model {
         $oracle = $this->load->database('oracle', true);
         $sql ="select distinct tgl_dibuat, jam_input as jam,
                 to_char(jam_input, 'DD/MM/YYYY') as jam_input,
-                to_char(jam_input, 'DDMMYYYY') as tgl_input,
+                to_char(jam_input, 'YYYYMMDD') as tgl_input,
+                selesai_pelayanan, selesai_pengeluaran, selesai_packing,
+                to_char(selesai_pelayanan, 'DD/MM/YYYY') as selesai_pelayanan2,
+                to_char(selesai_pengeluaran, 'DD/MM/YYYY') as selesai_pengeluaran2,
+                to_char(selesai_packing, 'DD/MM/YYYY') as selesai_packing2,
+                to_char(selesai_pelayanan, 'YYYYMMDD') as tgl_pelayanan,
+                to_char(selesai_pengeluaran, 'YYYYMMDD') as tgl_pengeluaran,
+                to_char(selesai_packing, 'YYYYMMDD') as tgl_packing,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
                 waktu_pelayanan, waktu_pengeluaran, waktu_packing
                 from khs_tampung_spb
