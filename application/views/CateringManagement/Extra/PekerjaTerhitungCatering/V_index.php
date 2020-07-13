@@ -21,7 +21,7 @@
 												<div class="form-group">
 													<label class="col-sm-4">Tanggal</label>
 													<div class="col-sm-8">
-														<input type="text" class="form-control" placeholder="Pilih Tanggal..." id="txt-CM-PekerjaTerhitungCatering-Tanggal">
+														<input type="text" class="form-control" placeholder="Pilih Tanggal..." id="txt-CM-PekerjaTerhitungCatering-Tanggal" value="<?php echo date("Y-m-d") ?>">
 													</div>
 												</div>
 												<div class="form-group">
@@ -29,8 +29,8 @@
 													<div class="col-sm-8">
 														<select class="select2" style="width: 100%" data-placeholder="Pilih Shift..." id="slc-CM-PekerjaTerhitungCatering-Shift">
 															<option></option>
-															<option value="1">Shift 1 & Umum</option>
-															<option value="2">Shift 2</option>
+															<option value="1" <?php echo strtotime(date('Y-m-d H:i:s')) - strtotime(date("Y-m-d 14:00:00")) <= 0 ? 'selected' : ''  ?> >Shift 1 & Umum</option>
+															<option value="2" <?php echo strtotime(date('Y-m-d H:i:s')) - strtotime(date("Y-m-d 14:00:00")) > 0 ? 'selected' : ''  ?> >Shift 2</option>
 														</select>
 													</div>
 												</div>
@@ -39,8 +39,8 @@
 													<div class="col-sm-8">
 														<select class="select2" style="width: 100%" data-placeholder="Pilih Lokasi Kerja..." id="slc-CM-PekerjaTerhitungCatering-Lokasi">
 															<option></option>
-															<option value="1">Yogyakarta & Mlati</option>
-															<option value="2">Tuksono</option>
+															<option value="1" <?php echo (isset($_SESSION['kode_lokasi_kerja']) && $_SESSION['kode_lokasi_kerja'] == '01') ? 'selected' : '' ?> >Yogyakarta & Mlati</option>
+															<option value="2" <?php echo (isset($_SESSION['kode_lokasi_kerja']) && $_SESSION['kode_lokasi_kerja'] == '02') ? 'selected' : '' ?> >Tuksono</option>
 														</select>
 													</div>
 												</div>
