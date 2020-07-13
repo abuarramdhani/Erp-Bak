@@ -189,6 +189,7 @@ class C_DPBKHS extends CI_Controller {
                 'NO_KENDARAAN'     => $data['header']['vehicleId'],
                 'NAMA_SUPIR'       => $data['header']['driverName'],
                 'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
+                'GUDANG_PENGIRIM'  => $data['header']['gudangPengirim'],
                 'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
                 'CATATAN'          => $data['header']['catatan'],
                 'LINE_NUM'         => $val['line'],

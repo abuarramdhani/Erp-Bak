@@ -87,6 +87,16 @@
                         </div>
                         <br />
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Gudang Pengirim</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-home"></i></span>
+                                    <input class="form-control" <?= $UserAccess['gudang_pengirim'] ?> value="<?php if (isset($DPBVendorDetail[0]['GUDANG_PENGIRIM'])) echo $DPBVendorDetail[0]['GUDANG_PENGIRIM'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">Alamat Bongkar</label>
                             <div class="col-sm-5">
                                 <div class="input-group">

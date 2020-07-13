@@ -148,6 +148,7 @@ class C_DPBListPR extends CI_Controller {
             'NO_KENDARAAN'     => $this->input->post('vehicleId'),
             'NAMA_SUPIR'       => $this->input->post('driverName'),
             'VENDOR_EKSPEDISI' => $this->input->post('driverPhone'),
+            'GUDANG_PENGIRIM'  => $this->input->post('gudangPengirim'),
             'ALAMAT_BONGKAR'   => $this->input->post('alamatBongkar'),
             'CATATAN'          => $this->input->post('catatan'),
             'CREATED_BY'       => $noind,
