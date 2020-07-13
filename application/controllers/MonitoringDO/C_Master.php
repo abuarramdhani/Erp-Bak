@@ -448,17 +448,17 @@ class C_Master extends CI_Controller
               $a = '<br><br><br><br><br><br>';
             }
 
-            // if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
-            //   $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
-            // }else {
+            if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
+            }else {
               $appr = '';
-            // }
+            }
 
-            // if (!empty($data['get_footer'][0]['CREATED_BY'])) {
-            //   $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
-            // }else {
+            if (!empty($data['get_footer'][0]['CREATED_BY'])) {
+              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
+            }else {
               $appr2 = '';
-            // }
+            }
             // $newDate = date("m-d-Y", strtotime($orgDate));
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
         		<tr style="width:100%">
@@ -594,17 +594,17 @@ class C_Master extends CI_Controller
               $a = '<br><br><br><br><br><br>';
             }
 
-            // if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
-            //   $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
-            // }else {
+            if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
+              $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
+            }else {
               $appr = '';
-            // }
+            }
 
-            // if (!empty($data['get_footer'][0]['CREATED_BY'])) {
-            //   $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
-            // }else {
+            if (!empty($data['get_footer'][0]['CREATED_BY'])) {
+              $appr2 = '<center>Approved by <br>'.$data['get_footer'][0]['CREATED_BY'].'<br><br><br>'.$data['get_footer'][0]['CREATOR_NAME'].'</center>';
+            }else {
               $appr2 = '';
-            // }
+            }
             // $newDate = date("m-d-Y", strtotime($orgDate));
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
         		<tr style="width:100%">
