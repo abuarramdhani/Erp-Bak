@@ -750,7 +750,7 @@ class M_monitoringdo extends CI_Model
                                 AND msib.inventory_item_id = mtrl.inventory_item_id
                                 AND msib.organization_id = mtrl.organization_id
                                 AND ksnt.request_number = '$id'
-                           ORDER BY msib.segment1";
+                           ORDER BY msib.segment1, ksnt.serial_number";
 
         $response = $this->oracle->query($query)->result_array();
 
