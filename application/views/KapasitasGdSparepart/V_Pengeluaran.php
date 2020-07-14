@@ -54,7 +54,7 @@
                                       <label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time()+60*60*7) ?></label>
                             </div>
                             <br>
-                            <form method="post" autocomplete="off" action="<?php echo base_url('KapasitasGdSparepart/Pengeluaran/')?>">
+                            <!-- <form method="post" autocomplete="off" action="<?php echo base_url('KapasitasGdSparepart/Pengeluaran/')?>"> -->
                                     <center><label>DAFTAR KERJAAN BELUM RAMPUNG</label></center>
                                     <div class="panel-body">
                                         <div class="table-responsive" >
@@ -99,7 +99,7 @@
                                                             <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" disabled>
                                                             <option value="<?= $val['PIC_PENGELUARAN']?>"><?= $val['PIC_PENGELUARAN']?></option>
                                                         </select>
-                                                        <?php }else{?><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                                        <?php }else{?><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;">
                                                             <option></option>
                                                             <option value="ADI">ADI</option>
                                                             <option value="RIZAL">RIZAL</option>
@@ -126,10 +126,10 @@
                                         </div>
                                         <div class="text-right">
                                             <button class="btn btn-warning" onclick="startselectedPengeluaran()"><i class="fa fa-play"></i> Start Selected</button>
-                                            <button class="btn btn-danger" onclick="startselectedPengeluaran()"><i class="fa fa-stop"></i> Stop Selected</button>
+                                            <button class="btn btn-danger" onclick="finishselectedPengeluaran()"><i class="fa fa-stop"></i> Stop Selected</button>
                                         </div>
                                     </div>
-                                </form>
+                                <!-- </form> -->
 
                                 <center><label>KERJAAN YANG SUDAH DILAYANI HARI INI</label></center>
                                 <div class="panel-body">
@@ -185,3 +185,25 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="mdlfinishpglr" tabindex="-1" role="dialog" aria-labelledby="myModalLoading">
+	<div class="modal-dialog" role="document" style="padding-top:200px;width:40%">
+		<div class="modal-content">
+			<div class="modal-header">
+			</div>
+			<div class="modal-body">
+            <h3 class="modal-title" style="text-align:center;"><b>Masukan PIC Finish</b></h3>
+            <select id="picfinish" name="picfinish" class="form-control select2" style="width:100%;">
+                <option></option>
+                <option value="ADI">ADI</option>
+                <option value="RIZAL">RIZAL</option>
+                <option value="DIKA">DIKA</option>
+                <option value="DINAR">DINAR</option>
+            </select>
+            <br>
+            <br>
+                <center><button class="btn btn-danger" onclick="savefinish2()">FINISH</button></center>
+		    </div>
+		</div>
+	</div>
+</div>
