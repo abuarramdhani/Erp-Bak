@@ -1173,6 +1173,10 @@ $route['ADMPelatihan/Cetak/Daftarhadir'] 				= 'ADMPelatihan/C_DaftarHadir';
 $route['ADMPelatihan/Cetak/Daftarhadir/(:any)'] 		= 'ADMPelatihan/C_DaftarHadir/$1';
 $route['ADMPelatihan/Cetak/Daftarhadir/(:any)/(:any)'] 	= 'ADMPelatihan/C_DaftarHadir/$1/$2';
 
+$route['QuickWisata/DBQTW']				= 'ADMPelatihan/C_DatabaseQTW';
+$route['QuickWisata/DBQTW/(:any)']			= 'ADMPelatihan/C_DatabaseQTW/$1';
+$route['QuickWisata/DBQTW/(:any)/(:any)']	= 'ADMPelatihan/C_DatabaseQTW/$1/$2';
+
 //---------------------------------------- JURNAL PELATIHAN ----------------------------------------
 // dashboard
 $route['JurnalPenilaian'] 								= 'JurnalPenilaian/C_JurnalPenilaian';
