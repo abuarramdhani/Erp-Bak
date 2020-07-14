@@ -126,7 +126,7 @@
                                     </div>
                                     <div class="text-right">
                                         <button class="btn btn-warning" onclick="startselectedPelayanan()"><i class="fa fa-play"></i> Start Selected</button>
-                                        <button class="btn btn-danger" onclick="startselectedPelayanan()"><i class="fa fa-stop"></i> Stop Selected</button>
+                                        <button class="btn btn-danger" onclick="finishselectedPelayanan()"><i class="fa fa-stop"></i> Stop Selected</button>
                                     </div>
                                 </div>
 
@@ -183,3 +183,21 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="mdlfinishplyn" tabindex="-1" role="dialog" aria-labelledby="myModalLoading">
+	<div class="modal-dialog" role="document" style="padding-top:200px;width:40%">
+		<div class="modal-content">
+			<div class="modal-header">
+			</div>
+			<div class="modal-body">
+            <h3 class="modal-title" style="text-align:center;"><b>Masukan PIC Finish</b></h3>
+            <select id="picfinish" name="picfinish" class="form-control select2 picSPB2" style="width:100%;">
+                <option></option>
+            </select>
+            <br>
+            <br>
+                <center><button class="btn btn-danger" onclick="savefinish()">FINISH</button></center>
+		    </div>
+		</div>
+	</div>
+</div>
