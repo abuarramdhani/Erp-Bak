@@ -1245,7 +1245,7 @@ class C_Order extends CI_Controller
 		$mail->setFrom('noreply@quick.com', 'P2K3');
 		// $mail->addAddress('your_mail@quick.com');
 		foreach ($arr as $key) {
-		    $mail->addAddress($key);
+			$mail->addAddress($key);
 		}
 		$mail->Subject = 'NEW!!! P2K3 Approval Standar Kebutuhan';
 		$mail->msgHTML($message);
@@ -2479,6 +2479,12 @@ class C_Order extends CI_Controller
 		$withOutWorker = $this->input->get('withOutWorker');
 
 		if (!$kodesie) return;
+		// if session responsibility is P2K3 TIM V2
+		// "can select all worker
+		if ((int)$this->session->responsibility_id === 2615 || $this->session->responsibility == 'P2K3 TIM V.2') {
+			$kodesie = '';
+		}
+
 		if (empty($q)) $q = '';
 		$data = $this->M_order->getSemuaPekerja($kodesie, $q, $withOutWorker);
 		echo json_encode($data);
