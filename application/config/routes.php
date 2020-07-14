@@ -695,6 +695,10 @@ $route['CateringManagement/Pesanan/Pengurangan'] = 'CateringManagement/Pesanan/C
 $route['CateringManagement/Pesanan/Pengurangan/(:any)'] = 'CateringManagement/Pesanan/C_Pengurangan/$1';
 $route['CateringManagement/Pesanan/Pengurangan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Pengurangan/$1/$2';
 
+$route['CateringManagement/Pesanan/PrediksiSnack'] = 'CateringManagement/Pesanan/C_PrediksiSnack';
+$route['CateringManagement/Pesanan/PrediksiSnack/(:any)'] = 'CateringManagement/Pesanan/C_PrediksiSnack/$1';
+$route['CateringManagement/Pesanan/PrediksiSnack/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_PrediksiSnack/$1/$2';
+
 $route['CateringTambahan'] = 'CateringTambahan/C_Tambahan';
 $route['CateringTambahan/(:any)'] = 'CateringTambahan/C_Tambahan/$1';
 $route['CateringTambahan/(:any)/(:any)'] = 'CateringTambahan/C_Tambahan/$1/$2';
