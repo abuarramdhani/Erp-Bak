@@ -765,6 +765,7 @@ class C_Index extends CI_Controller
 		if ($ks == 'semua') {
 			$ks = '';
 		}
+
 		$data['pr'] = $periode;
 		$data['period'] = $pr;
 		// echo "<pre>";
@@ -777,6 +778,19 @@ class C_Index extends CI_Controller
 		}
 		$data['monitorbon'] = $a;
 		// print_r($data['monitorbon']);exit();
+
+		$monitorbonSafetyShoes = $this->M_dtmasuk->getBonSafetyShoes($ks, $pr);
+		$total_safety_shoes = count($monitorbonSafetyShoes);
+		$bon_safety_shoes = array();
+		for ($i = 0; $i < $total_safety_shoes; $i++) {
+			$bon_safety_shoes[] = array_change_key_case($monitorbonSafetyShoes[$i], CASE_LOWER);
+		}
+
+		$safetyShoes = [];
+		foreach ($bon_safety_shoes as $item) {
+			$safetyShoes[$item['no_bon']][] = $item;
+		}
+		$data['monitorBonSafetyShoes'] = $safetyShoes;
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);

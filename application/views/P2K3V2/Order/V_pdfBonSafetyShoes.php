@@ -61,11 +61,11 @@ foreach ($kumpulandata as $data) : ?>
 			<thead>
 				<tr>
 					<th align="center" width="4%" style=" font-size: 11px; border:1px solid black; border-left: 0px; border-top: 0px" rowspan="2">NO</th>
-					<th align="center" width="13%" style=" font-size: 11px; border:1px solid black; border-left: 0px; border-top: 0px" rowspan="2">Kode</th>
+					<th align="center" width="8%" style=" font-size: 11px; border:1px solid black; border-left: 0px; border-top: 0px" rowspan="2">Kode</th>
 					<th colspan="2" align="center" style="font-size: 11px; border:1px solid black; border-left: 0px; border-top: 0px" rowspan="2">Nama Barang</th>
 					<th align="center" width="8%" style="font-size: 11px; border:1px solid black; border-left: 0px; border-top: 0px" rowspan="2">Satuan</th>
 					<th align="center" style="height:20px; font-size: 11px; border:1px solid black; border-left: 0px; border-top: 0px" colspan="2">Qty</th>
-					<th align="center" width="15%" style="font-size: 11px; border-bottom:1px solid black;" rowspan="2">Keterangan Pemakaian dan No. Order/target</th>
+					<th align="center" width="20%" style="font-size: 11px; border-bottom:1px solid black;" rowspan="2">Keterangan Pemakaian dan No. Order/target</th>
 					<th align="center" width="8%" style=" font-size: 11px; border:1px solid black; border-left: 1px solid black; border-top: 0px" rowspan="2">Account</th>
 				</tr>
 				<tr>
@@ -75,10 +75,15 @@ foreach ($kumpulandata as $data) : ?>
 			</thead>
 			<tbody>
 				<?php foreach ($data['data_body'] as $data_body) : ?>
+					<?php
+					$split_ket = explode('|', $data_body['ket']);
+					$ket = $split_ket[0];
+					$bon_terakhir = isset($split_ket[1]) && !empty(trim($split_ket[1])) ? '<br>(bon terakhir: ' . trim($split_ket[1]) . ')' : '';
+					?>
 					<tr>
 						<td align="center" style="height: 25px; font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $i++ ?></td>
 						<td align="center" style="height: 25px; font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['kode'] ?></td>
-						<td style="font-size: 10px; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['nama'] . ' ' . $data_body['produk']; ?></td>
+						<td style="font-size: 10px; border-bottom: 1px solid black; padding: 0 5px;"><?php echo $data_body['nama'] . ' ' . $data_body['produk'] . " $bon_terakhir"; ?></td>
 						<td style="font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['lokasi_simpanku'] ?>&nbsp;&nbsp;</td>
 						<td align="center" style="font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['satuan'] ?></td>
 						<td align="center" style="font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['diminta'] ?></td>
@@ -87,7 +92,7 @@ foreach ($kumpulandata as $data) : ?>
 						<?php else : ?>
 							<td align="center" style="font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?= '0' ?></td>
 						<?php endif ?>
-						<td align="center" style="font-size: 10px; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['ket'] ?></td>
+						<td align="center" style="font-size: 8vh; border-bottom: 1px solid black">&nbsp;<?= $ket ?></td>
 						<td align="center" style="height: 25px; font-size: 10px; border-left: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['account'] ?></td>
 					</tr>
 				<?php endforeach; ?>
@@ -99,7 +104,7 @@ foreach ($kumpulandata as $data) : ?>
 				<td style="width: 20%; border-right: 1px solid black;">Diterima : </td>
 				<td style="width: 20%; border-right: 1px solid black;">Disetujui : **) <br /> PPIC </td>
 				<td style="width: 20%; border-right: 1px solid black; ">Disetujui : <br /> Kepala Unit</td>
-				<td style="width: 20%; height: 70px; ">Diminta : <br /> Kepala Seksi</td>
+				<td style="width: 20%; height: 62px; ">Diminta : <br /> Kepala Seksi</td>
 			</tr>
 			<tr>
 				<td style="border-right: 1px solid black;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
@@ -109,5 +114,8 @@ foreach ($kumpulandata as $data) : ?>
 				<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 			</tr>
 		</table>
+		<div>
+			<small style="font-size: 10px; font-style: italic;">Halaman ini dicetak melalui QuickERP - (P2K3 SEKSI V.2) - <?= date('d-m-Y H:i:s') ?> oleh <?= $this->session->user . ' - ' . $this->session->employee ?></small>
+		</div>
 	</div>
 <?php endforeach ?>
