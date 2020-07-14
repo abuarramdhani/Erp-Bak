@@ -59,7 +59,7 @@
         </tr>
         <tr>
             <td style="width: 100%; border-bottom :0px; border-collapse: collapse;text-align:center;font-weight:bold">
-                <img style="max-width: 150px;max-height: 150px" src="<?php echo base_url('img/tmk.png'); ?>">
+                <img style="max-width: 400px;max-height: 400px" src="<?php echo base_url('img/tmk.png'); ?>">
             </td>
         </tr>
     </table>
