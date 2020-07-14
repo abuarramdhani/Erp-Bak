@@ -335,7 +335,6 @@ const saveSplit = _ => {
     }
   })
 }
-
 // COLAPSE
 const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
   function a() {
@@ -344,7 +343,10 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     qty_split.forEach((v, i) => {
       qty_tampung.push($(v).val());
     })
-    const idtrz = $('.tblNewRKH').find('tr[hesoyam="ya"]:last td center').html();
+    // let idtrz = $('.tblNewRKH').find('tr[hesoyam="ya"]:last td:first center').html();
+    const idtrz_ = $('.tblNewRKH tr[hesoyam="ya"]').toArray();
+    let idtrz = idtrz_.length;
+    console.log(idtrz);
     let html = [];
     qty_tampung.forEach((val, i) => {
       let hhtml = `<tr hesoyam="ya" row="${Number(idtrz)+(Number(i)+1)}">
@@ -359,7 +361,100 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
                         <td onmouseover="cekhover()">
                           <center>
                             <button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${Number(idtrz)+(Number(i)+1)})"><i class="fa fa-minus-square"></i></button>
+                            <button type="button" class="btn btn-md bg-navy" data-toggle="collapse" data-target="#Mycollapse${Number(idtrz)+(Number(i)+1)}" aria-expanded="false" aria-controls="collapseExample" name="button"><i class="fa fa-cut"></i></button>
                           </center>
+                        </td>
+                      </tr>
+                      <tr collapse-row="${Number(idtrz)+(Number(i)+1)}">
+                        <td colspan="8" style="margin:0;padding:0;width:0">
+                        <div class="collapse" id="Mycollapse${Number(idtrz)+(Number(i)+1)}">
+                          <div class="card card-body" style="padding-top: 10px; padding-bottom: 20px;border-color:transparent">
+
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <div class="box box-primary box-solid">
+                                <div class="box-header with-border">
+                                  <div style="float:left">
+                                    <h4 style="font-weight:bold;">SPLIT JOB (<span>${no_job}</span>)</h4>
+                                  </div>
+                                </div>
+                                <div class="box-body">
+                                  <center>
+                                    <div id="loading-pbi" style="display:none;">
+                                      <center><img style="width: 5%" src="${baseurl}/assets/img/gif/loading5.gif"></center>
+                                    </div>
+                                  </center>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <div class="box-body" style="background:#ffffff !important; border-radius:7px;">
+                                        <center>
+                                          <h4 style="font-weight:bold;display:inline-block;">QTY Avaliable :</h4> <input type="number" readonly value="0" id="qtySplit${Number(idtrz)+(Number(i)+1)}" style="display:inline-block;width:10%;margin-left:10px;" class="form-control" placeholder="QTY">
+                                        </center>
+                                        <input type="hidden" id="qty_split_save${Number(idtrz)+(Number(i)+1)}" value="${val}" readonly>
+                                        <input type="hidden" id="usage_rate_split${Number(idtrz)+(Number(i)+1)}" value="${usage_rate}" readonly>
+                                        <input type="hidden" id="ssd${Number(idtrz)+(Number(i)+1)}" value="${ssd}" readonly>
+                                        <input type="hidden" id="item_name${Number(idtrz)+(Number(i)+1)}" value="${nama_item}" readonly>
+                                        <input type="hidden" id="created_at" value="" readonly>
+                                        <br>
+                                        <div class="table-responsive">
+                                          <table class="table table-striped table-bordered table-hover text-left line0wipp${Number(idtrz)+(Number(i)+1)}" style="font-size:11px;">
+                                            <thead>
+                                              <tr class="bg-info">
+                                                <th style="width:26%">
+                                                  <center>JOB</center>
+                                                </th>
+                                                <th style="width:35%">
+                                                  <center>ITEM</center>
+                                                </th>
+                                                <th style="width:17%">
+                                                  <center>QTY</center>
+                                                </th>
+                                                <th style="width:17%">
+                                                  <center>TARGET PPIC (%)</center>
+                                                </th>
+                                                <th hidden>
+                                                  <center>CREATED AT</center>
+                                                </th>
+                                                <th style="width:5%">
+                                                  <center><button type="button" class="btn btn-sm bg-navy" onclick="addrowlinewipp_0(${Number(idtrz)+(Number(i)+1)})" style="border-radius:10px;" name="button"><i class="fa fa-plus-square"></i></button></center>
+                                                </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody id="tambahisiwipp0${Number(idtrz)+(Number(i)+1)}" class="tbl_row_split">
+                                            <tr class="rowbaru0_wipp" id="wipp0row1">
+                                              <td>
+                                                <center><input type="text" readonly value="${no_job}" class="form-control" name="job0[]" id="job0${Number(idtrz)+(Number(i)+1)}_wipp1" placeholder="ITEM CODE"></center>
+                                              </td>
+                                              <td>
+                                                <center><input type="text" readonly value="${kode_item}" class="form-control" name="item0[]" id="item0${Number(idtrz)+(Number(i)+1)}_wipp1" placeholder="ITEM"></center>
+                                              </td>
+                                              <td>
+                                                <center><input type="number" value="${val}" class="form-control iminhere${Number(idtrz)+(Number(i)+1)}" oninput="changeQtyValue_(1, ${Number(idtrz)+(Number(i)+1)})" name="qty0[]" id="qty0${Number(idtrz)+(Number(i)+1)}_wipp1" placeholder="QTY"></center>
+                                              </td>
+                                              <td>
+                                                <center><input type="number" value="" class="form-control andhere${Number(idtrz)+(Number(i)+1)}" name="target0[]" id="target0${Number(idtrz)+(Number(i)+1)}_pe1" placeholder="00%"></center>
+                                              </td>
+                                              <td hidden>
+                                                <center><input type="text" value="" class="form-control param"></center>
+                                              </td>
+                                              <td>
+                                                <center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp0_(1, ${Number(idtrz)+(Number(i)+1)})" style="border-radius:10px;" name="button"><i class="fa fa-minus-square"></i></button></center>
+                                              </td>
+                                            </tr>
+                                            </tbody>
+                                          </table>
+                                          <br>
+                                          <center class="btnsplit${Number(idtrz)+(Number(i)+1)}" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-navy" onclick="saveSplit_(${Number(idtrz)+(Number(i)+1)}, '${no_job}', '${kode_item}', '${nama_item}', '${val}', '${usage_rate}', '${ssd}')" name="button"><i class="fa fa-sign-in"></i> Append</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
                         </td>
                       </tr>`;
       html.push(hhtml)
@@ -424,13 +519,13 @@ const changeQtyValue = t => {
       $('.btnsplit').removeAttr("hidden");
       setTimeout(function() {
         $('#qtySplit').val(b_d - sum);
-        $(`#target0_pe${t}`).val(wss / (a / ur));
+        $(`#target0_pe${t}`).val(Number((a/(wss/ur))*100)/100);
       }, 200);
     } else {
       $('.btnsplit').attr("hidden", "hidden");
       setTimeout(function() {
         $('#qtySplit').val(b_d - sum);
-        let z_z = wss / (a / ur);
+        let z_z = Number((a/(wss/ur))*100)/100;
         $(`#target0_pe${t}`).val(z_z.toFixed(5));
       }, 200);
     }
