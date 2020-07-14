@@ -68,6 +68,8 @@ class C_TransferReffGaji extends CI_Controller
 		$periode = $this->input->post('periode');
 		if (empty($periode)) {
 			$periode = $this->input->get('periode');
+			$noMemoStaff = $this->input->get('staff');
+			$noMemoNonstaff = $this->input->get('nonstaff');
 		}
 		$bulan = array(
 			1 => "Januari",
@@ -1196,7 +1198,7 @@ class C_TransferReffGaji extends CI_Controller
 			$pdf_rekap->debug = true;
 			$pdf_rekap = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
 			$filename = 'REKAP'.$periode.$waktu.'.pdf';
-			$html_rekap = $this->rekapNominal($data_rekap,$user,$progres,$bulan_gaji,$hari_string,$periode_penggajian);
+			$html_rekap = $this->rekapNominal($data_rekap,$user,$progres,$bulan_gaji,$hari_string,$periode_penggajian,$noMemoStaff,$noMemoNonstaff);
 
 			$pdf_rekap->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.". Halaman {PAGENO} dari {nb}</i>");
 			$pdf_rekap->WriteHTML($html_rekap);
@@ -1984,21 +1986,131 @@ class C_TransferReffGaji extends CI_Controller
 		return $html_cetak_per_kodesie;
 	}
 
-	public function rekapNominal($data_rekap,$user,$progres,$bulan_gaji,$hari_string,$periode_penggajian){
+	public function rekapNominal($data_rekap,$user,$progres,$bulan_gaji,$hari_string,$periode_penggajian,$noMemoStaff,$noMemoNonstaff){
 		$html_rekap = "<!DOCTYPE html>
 		<html>
-		<body>
-			<label>MEMO dari Bu Reny</label>
+		<body style=\"font-family: arial; font-size: 12pt;\">
+			<div style=\"padding-top: 150px;\">
+				<h2 style=\"text-align: center\">MEMO</h2>
+				<table style='width: 100%'>
+					<tr>
+						<td style=\"width: 18%\">No</td>
+						<td style=\"width: 2%\">:</td>
+						<td style=\"width: 60%\">$noMemoNonstaff</td>
+						<td style=\"width: 20%\">".strftime('%d %B %Y')."</td>
+					</tr>
+					<tr>
+						<td>Hal</td>
+						<td>:</td>
+						<td colspan=\"2\">Memo Penggajian Pekerja Non Staf Aktif</td>
+					</tr>
+					<tr>
+						<td>Dari</td>
+						<td>:</td>
+						<td colspan=\"2\">Seksi Hubungan Kerja</td>
+					</tr>
+					<tr>
+						<td><b>Kepada</b></td>
+						<td>:</td>
+						<td colspan=\"2\"><b>Bpk Subardi (Akuntansi)</b></td>
+					</tr>
+				</table>
+				<p>Dengan hormat,</p>
+				<p>Mohon diperhitungkan pada penggajian bulan <b>$bulan_gaji</b> untuk pekerja NON STAFF, dengan data terlampir.</p>
+				<p>Demikian pemberitahuan ini kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
+				<table style='width: 100%'>
+					<tr>
+						<td style=\"width:50%;text-align: center\">Mengetahui,</td>
+						<td style=\"width:50%;text-align: center\">Hormat kami,</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td style=\"text-align: center\"><b><u>Bambang Yudhosuseno</b></u></td>
+						<td style=\"text-align: center\"><b><u>Reny Sulistiyaningtyas</b></u></td>
+					</tr>
+					<tr>
+						<td style=\"text-align: center\">As. Ka. Dept. Personalia</td>
+						<td style=\"text-align: center\">Kasie Madya Hubungan Kerja</td>
+					</tr>
+				</table>
+			</div>
+			<div style=\"page-break-after: always;\"></div>
+			<div style=\"padding-top: 150px;\">
+				<h2 style=\"text-align: center\">MEMO</h2>
+				<table style='width: 100%'>
+					<tr>
+						<td style=\"width: 18%\">No</td>
+						<td style=\"width: 2%\">:</td>
+						<td style=\"width: 60%\">$noMemoStaff</td>
+						<td style=\"width: 20%\">".strftime('%d %B %Y',time())."</td>
+					</tr>
+					<tr>
+						<td>Hal</td>
+						<td>:</td>
+						<td colspan=\"2\">Memo Penggajian Pekerja Non Staf Aktif</td>
+					</tr>
+					<tr>
+						<td>Dari</td>
+						<td>:</td>
+						<td colspan=\"2\">Seksi Hubungan Kerja</td>
+					</tr>
+					<tr>
+						<td><b>Kepada</b></td>
+						<td>:</td>
+						<td colspan=\"2\"><b>Ibu RR. Angela</b></td>
+					</tr>
+				</table>
+				<p>Dengan hormat,</p>
+				<p>Mohon diperhitungkan pada penggajian bulan <b>$bulan_gaji</b> untuk pekerja STAFF, dengan data terlampir.</p>
+				<p>Demikian pemberitahuan ini kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
+				<table style='width: 100%'>
+					<tr>
+						<td style=\"width:50%;text-align: center\">Mengetahui,</td>
+						<td style=\"width:50%;text-align: center\">Hormat kami,</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td style=\"text-align: center\"><b><u>Bambang Yudhosuseno</b></u></td>
+						<td style=\"text-align: center\"><b><u>Reny Sulistiyaningtyas</b></u></td>
+					</tr>
+					<tr>
+						<td style=\"text-align: center\">As. Ka. Dept. Personalia</td>
+						<td style=\"text-align: center\">Kasie Madya Hubungan Kerja</td>
+					</tr>
+				</table>
+			</div>
 			<div style=\"page-break-after: always;\"></div>
 			<label>Rekap Nominal Penggajian</label>
 			<table style='width: 100%'>
 				<tr>
-					<td style='width: 10%'>Data Bulan</td>
+					<td style='width: 20%'>Data Bulan</td>
 					<td style='width: 3%'>:</td>
-					<td style='width: 10%'>$bulan_gaji</td>
-					<td style='width: 10%'>Tanggal Cetak</td>
+					<td style='width: 27%'>$bulan_gaji</td>
+					<td style='width: 20%'>Tanggal Cetak</td>
 					<td style='width: 3%'>:</td>
-					<td style='width: 64%'>$hari_string</td>
+					<td style='width: 27%'>$hari_string</td>
 				</tr>
 				<tr>
 					<td colspan='6'>$periode_penggajian</td>
@@ -2007,14 +2119,14 @@ class C_TransferReffGaji extends CI_Controller
 			<table style=\"border-collapse: collapse;border: 1px solid black;width: 100%\" border=\"1\">
 				<thead>
 					<tr>
-						<th>No</th>
-						<th>Kode Induk</th>
-						<th>DL&OBAT</th>
-						<th>P.DUKA</th>
-						<th>SPSI</th>
-						<th>IKOP</th>
-						<th>UTKOP</th>
-						<th>POT. LAIN</th>
+						<th style=\"width: 5%\">No</th>
+						<th style=\"width: 11%\">Kode Induk</th>
+						<th style=\"width: 14%\">DL&OBAT</th>
+						<th style=\"width: 14%\">P.DUKA</th>
+						<th style=\"width: 14%\">SPSI</th>
+						<th style=\"width: 14%\">IKOP</th>
+						<th style=\"width: 14%\">UTKOP</th>
+						<th style=\"width: 14%\">POT. LAIN</th>
 					</tr>
 				</thead>
 				<tbody>";

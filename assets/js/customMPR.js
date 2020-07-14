@@ -190,9 +190,12 @@ $(document).on('ready',function(){
         $('#MPR-status-Read').val("1");
         $('#MPR-transferreffgaji-download').html("");
         periode = $('#MPR-transferreffgaji-periode').val();
+        memoNonStaff = $('#txt-MPR-transferreffgaji-memo-nonstaff').val();
+        memoStaff = $('#txt-MPR-transferreffgaji-memo-staff').val();
+        // console.log(memoNonStaff + "......." + memoStaff)
         $('#MPR-transferreffgaji-progress').css("width","0%");
         $.ajax({
-            data : {periode : periode},
+            data : {periode : periode,staff: memoStaff,nonstaff: memoNonStaff},
             url : baseurl + 'MasterPresensi/ReffGaji/TransferReffGaji/proses',
             type : 'GET',
             success: function(e){

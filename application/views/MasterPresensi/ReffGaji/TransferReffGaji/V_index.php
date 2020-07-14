@@ -39,7 +39,7 @@
 													</select>
 												</div>
 											</div>
-											<div class="form-group">
+											<div class="form-group MPR-transferreffgaji-progress-form-group" style="display: none">
 												<div class="col-lg-6 col-lg-offset-3">
 													<div class="progress">
 													  	<div
@@ -55,13 +55,25 @@
 													</div>
 												</div>
 											</div>
-											<div class="form-group">
+											<div class="form-group MPR-transferreffgaji-progress-form-group" style="display: none">
 												<div class="col-lg-6 col-lg-offset-3 text-center">
 													<h4 id="MPR-transferreffgaji-progress-keterangan"></h4>
 												</div>
 											</div>
-											<div class="form-group">
-												<div class="col-lg-6 pull-right">
+											<div class="form-group MPR-transferreffgaji-submit-form-group">
+												<label class="control-label col-lg-5">No. Memo Non-Staff</label>
+												<div class="col-lg-3">
+													<input type="text" id="txt-MPR-transferreffgaji-memo-nonstaff" class="form-control" placeholder="No. Memo Non-Staff">
+												</div>
+											</div>
+											<div class="form-group MPR-transferreffgaji-submit-form-group">
+												<label class="control-label col-lg-5">No. Memo Staff</label>
+												<div class="col-lg-3">
+													<input type="text" id="txt-MPR-transferreffgaji-memo-staff" class="form-control" placeholder="No. Memo Staff">
+												</div>
+											</div>
+											<div class="form-group MPR-transferreffgaji-submit-form-group">
+												<div class="col-lg-6 col-lg-offset-3 text-center">
 													<button type="button" class="btn btn-primary" id="MPR-transferreffgaji-submit">Transfer</button>
 												</div>
 											</div>
@@ -146,6 +158,8 @@
         setInterval(function(){
 			status = $('#MPR-status-Read').val();
 			if(status == 1){
+				$('.MPR-transferreffgaji-submit-form-group').hide();
+				$('.MPR-transferreffgaji-progress-form-group').show();
 	            $.ajax({
 					type:'get',
 					data: {user: '<?php echo $user; ?>'},
@@ -153,9 +167,6 @@
 					url: baseurl + 'MasterPresensi/ReffGaji/TransferReffGaji/cekProgress',
 					success: function(data){
 	              	if (data !== "kosong") {
-	              		// var obj = JSON.parse(data);
-	              		// console.log(data);
-	              		// console.log(obj);
 	              		$('#MPR-transferreffgaji-progress').attr('aria-valuenow',data.progress);
 		                $('#MPR-transferreffgaji-progress').css('width',data.progress+'%');
 		                $('#MPR-transferreffgaji-progress').text(data.progress+' % ');
@@ -163,6 +174,9 @@
 	              	}
 	              }
 	            });
+			}else{
+				$('.MPR-transferreffgaji-progress-form-group').hide();
+				$('.MPR-transferreffgaji-submit-form-group').show();
 			}
         },1000);
     });
