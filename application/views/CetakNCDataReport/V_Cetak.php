@@ -37,26 +37,29 @@
                             </div>
                             <form method="post" target="_blank" class="import_txt" id="import_txt" enctype="multipart/form-data" action="<?php echo base_url('CetakNCDataReport/Cetak/CetakData')?>">
                                 <div class="panel-body">
+                                    <div class="col-md-3"></div>
                                     <div class="col-md-2">
                                         <label>Tool No / Item : </label>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <input id="toolno" name="toolno" class="form-control" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="col-md-3"></div>
                                     <div class="col-md-2">
                                     <label>Part Name : </label>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <input id="partname" name="partname" class="form-control" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="col-md-3"></div>
                                     <div class="col-md-2">
                                     <label>Programmer :</label>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <select name="programmer" class="form-control select2" data-placeholder="pilih programmer" autocomplete="off">
                                         <option></option>
                                         <option value="SUDEX">SUDEX</option>
@@ -66,10 +69,11 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="col-md-3"></div>
                                     <div class="col-md-2">
                                     <label>Shift :</label>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <select name="shift" class="form-control select2" data-placeholder="pilih shift" autocomplete="off">
                                         <option></option>
                                         <option value="1">1</option>
@@ -79,6 +83,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="col-md-3"></div>
                                     <div class="col-md-2">
                                     <label>Masukan Gambar : </label>
                                     </div>
@@ -87,13 +92,14 @@
                                     </div>
                                 </div>
                                 <div class="panel-body" id="tambahTarget">
+                                    <div class="col-md-3"></div>
                                     <div class="col-md-2">
                                     <label>Masukan File : </label>
                                     </div>
                                     <div class="col-md-2">
                                         <input type="file" name="txt_file[]" id="txt_file" accept=".txt, .NC, .NF" />
                                     </div>
-                                    <div class="col-md-1" style="text-align:right">
+                                    <div class="col-md-2" style="text-align:right">
                                             <a href="javascript:void(0);" id="addinputFile" onclick="addinputFile()" class="btn btn-default"><i class="fa fa-plus"></i></a>
                                         </div>
                                 </div>
