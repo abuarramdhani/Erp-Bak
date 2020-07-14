@@ -8,6 +8,7 @@
         <th><center>EKSPEDISI</center></th>
         <th style="width:70px"><center>PLAT NOMOR</center></th>
         <th style="width:70px"><center>ASSIGN</center></th>
+        <th style="width:50px"><center>TGL PENGIRIMAN</center></th>
         <th style="width:15px"><center>DETAIL</center></th>
         <th style="width:15px"><center>CETAK</center></th>
       </tr>
@@ -21,10 +22,11 @@
           <td><center><?php echo $g['EKSPEDISI'] ?></center></td>
           <td><center><?php echo $g['PLAT_NUMBER'] ?></center></td>
           <td><center><?php echo $g['PETUGAS'] ?></center></td>
+          <td><center><?php echo strtoupper(date("d-M-Y", strtotime($g['TGL_KIRIM']))) ?></center></td>
           <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detailTransact('<?php echo $g['DO/SPB'] ?>', <?php echo $no ?>)" data-toggle="modal" data-target="#MyModalTransact"><i class="fa fa-eye"></i></button> </center></td>
           <td>
             <center>
-              <a href="<?php echo base_url('MonitoringDO/PDF/'.$g['DO/SPB']) ?>" target="_blank" onclick="dodo3()" class="btn btn-danger">Cetak</a>
+              <button type="button" class="btn btn-danger" name="button" style="font-weight:bold;" onclick="cetakDO('<?php echo $g['DO/SPB'] ?>')"><i class="fa fa-file-pdf-o"></i> Cetak</button>
             </center>
           </td>
         </tr>

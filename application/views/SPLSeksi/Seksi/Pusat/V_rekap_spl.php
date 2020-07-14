@@ -1,11 +1,12 @@
 <style>
-	.dataTables_filter{
+	.dataTables_filter {
 		float: right;
 	}
-	.dataTables_length{
+
+	.dataTables_length {
 		float: left;
 	}
-</style>	
+</style>
 <section class="content">
 	<div class="row">
 		<div class="col-lg-12">
@@ -17,9 +18,9 @@
 				</div>
 				<div class="col-lg-1">
 					<div class="text-right hidden-md hidden-sm hidden-xs">
-						<a class="btn btn-default btn-lg" href="<?php echo site_url('SPL/RekapLembur');?>">
+						<a class="btn btn-default btn-lg" href="<?php echo site_url('SPL/RekapLembur'); ?>">
 							<i class="icon-wrench icon-2x"></i>
-							<span><br/></span>
+							<span><br /></span>
 						</a>
 					</div>
 				</div>
@@ -42,7 +43,7 @@
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input name="dari" type="text" class="form-control pull-right spl-date" id="tgl_mulai" value="<?php echo '01-'.date("m-Y"); ?>">
+											<input name="dari" type="text" class="form-control pull-right spl-date" id="tgl_mulai" value="<?php echo '01-' . date("m-Y"); ?>">
 										</div>
 									</div>
 									<div class="col-sm-5">
@@ -58,11 +59,11 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Noind</label>
 									<div class="col-sm-3">
-										<select name="noi" class="form-control select2" id="noi">
-											<option value="">-- pilih --</option>
-											<?php foreach($noind as $n){ ?>
-											<option value="<?php echo $n['fs_noind']; ?>"><?php echo $n['fs_noind']; ?></option>
-											<?php } ?>
+										<select name="noi" data-placeholder="--pilih--" class="form-control select2" id="noi">
+											<option value=""></option>
+											<?php foreach ($noind as $n) : ?>
+												<option value="<?php echo $n['fs_noind']; ?>"><?php echo $n['fs_noind']; ?></option>
+											<?php endforeach ?>
 										</select>
 									</div>
 									<div class="col-sm-7">
@@ -75,12 +76,10 @@
 										<button type="button" id="spl-rekap-excel" style="margin-right:3px" class="btn btn-success pull-right"> <i class="fa fa-file-excel-o"></i> Export Excel</button>
 										<button type="buttons" id="spl-rekap" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 										<button type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
-										<img src="<?php echo base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
+										<img src="<?= base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
 									</div>
 								</div>
-
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -106,42 +105,42 @@
 			</div>
 		</section>
 	</div>
-</div>
+</section>
 <script type="text/javascript">
 	// need some idea
 	window.onfocus = function() {
-	  console.log('Got focus');
-	  //window.location.reload();
+		console.log('Got focus');
+		//window.location.reload();
 	}
 
 	var timeoutInMiliseconds = 120000;
 	var timeoutId;
 
 	function startTimer() {
-	    // window.setTimeout returns an Id that can be used to start and stop a timer
-	    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
+		// window.setTimeout returns an Id that can be used to start and stop a timer
+		timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
 	}
 
 	function doInactive() {
-	    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
-	    //window.location.reload();
+		// does whatever you need it to actually do - probably signs them out or stops polling the server for info
+		//window.location.reload();
 	}
 
 	function resetTimer() {
-	    window.clearTimeout(timeoutId)
-	    startTimer();
+		window.clearTimeout(timeoutId)
+		startTimer();
 	}
 
-	function setupTimers () {
-	    document.addEventListener("mousemove", resetTimer(), false);
-	    document.addEventListener("mousedown", resetTimer(), false);
-	    document.addEventListener("keypress", resetTimer(), false);
-	    document.addEventListener("touchmove", resetTimer(), false);
+	function setupTimers() {
+		document.addEventListener("mousemove", resetTimer(), false);
+		document.addEventListener("mousedown", resetTimer(), false);
+		document.addEventListener("keypress", resetTimer(), false);
+		document.addEventListener("touchmove", resetTimer(), false);
 
-	    startTimer();
+		startTimer();
 	}
 
-	document.addEventListener("DOMContentLoaded",function(e){
+	document.addEventListener("DOMContentLoaded", function(e) {
 		setupTimers();
 	});
 </script>

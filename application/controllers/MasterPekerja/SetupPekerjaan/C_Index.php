@@ -21,7 +21,7 @@ class C_Index extends CI_Controller {
 			$this->load->helper('url');
 			$this->load->helper('terbilang_helper');
 			$this->session->set_userdata('last_page', current_url());
-				  //redirect('index');
+				  //redirect('');
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
 		date_default_timezone_set('Asia/Jakarta');

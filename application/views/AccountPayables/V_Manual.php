@@ -39,6 +39,23 @@
 	                     				<br/>
 	                     			</td>
 	                     		</tr>
+							 </table>
+							 
+							 <table>	
+	                     		<tr>
+	                     			<td width="150px">
+	                     				<label for="exampleInputPassword1">Nama Penjual di Faktur Pajak</label>
+	                     			</td>
+	                     			<td>
+										 <!-- <input type="text" id="nomor_cari" style="width:280px;" class="form-control " name="namaPenjualOnFaktur" value="<?php echo $data[0]->VENDOR_NAME; ?>" readonly="readonly"> -->
+										 <input type="text" id="nameFaktur" style="width:280px;" class="form-control " name="nameFaktur" placeholder="Name" value="<?php echo $data[0]->SELLER; ?>">
+	                     			</td>
+	                     		</tr>
+	                     		<tr>
+	                     			<td>
+	                     				<br/>
+	                     			</td>
+	                     		</tr>
 	                     	</table>
 
 	                     	<table>	

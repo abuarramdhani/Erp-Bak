@@ -62,25 +62,47 @@ class C_KartuBarang extends CI_Controller {
 		$file = $_FILES['excel_file']['tmp_name'];
 		$load = PHPExcel_IOFactory::load($file);
 		$sheets = $load->getActiveSheet()->toArray(null,true,true,true);
-
+		// echo "<pre>";print_r($sheets);exit();
 		$size = $this->input->post('size_cetak');
-		
+		$cek = count($sheets[1]);
 		$getdata = array();
 		$i = 0;
-		foreach ($sheets as $val) {
-			if ($i != 0) {
-				$desc = $this->M_kartubrg->getdesc($val['A']);
-				$array = array(
-					'kode' => $val['A'],
-					'desc' => $desc[0]['DESCRIPTION'],
-					'rak' => $val['B'],
-					'qty' => $val['C'],
-					'stp' => $val['D'],
-					'size' => $size
-				);
-				array_push($getdata,$array);
+		if ($cek == 1) {
+			$tanda = substr($sheets[1]['A'],11,1);
+			foreach ($sheets as $val) {
+				if ($i != 0) {
+					$isi = explode($tanda, $val['A']);
+					$item = strtoupper($isi[0]);
+					$desc = $this->M_kartubrg->getdesc($item);
+					$array = array(
+						'kode' => $isi[0],
+						'desc' => $desc[0]['DESCRIPTION'],
+						'rak' => $isi[1],
+						'qty' => $isi[2],
+						'stp' => $isi[3],
+						'size' => $size
+					);
+					array_push($getdata,$array);
+				}
+				$i++;
 			}
-			$i++;
+		}else {
+			foreach ($sheets as $val) {
+				if ($i != 0) {
+					$item = strtoupper($val['A']);
+					$desc = $this->M_kartubrg->getdesc($item);
+					$array = array(
+						'kode' => $val['A'],
+						'desc' => $desc[0]['DESCRIPTION'],
+						'rak' => $val['B'],
+						'qty' => $val['C'],
+						'stp' => $val['D'],
+						'size' => $size
+					);
+					array_push($getdata,$array);
+				}
+				$i++;
+			}
 		}
 		$data['data'] = $getdata;
 		// echo "<pre>";print_r($getdata);exit();
@@ -135,10 +157,10 @@ class C_KartuBarang extends CI_Controller {
 			);
 
 
-			$excel->setActiveSheetIndex(0)->setCellValue('A1', "Kode Barang");
+			$excel->setActiveSheetIndex(0)->setCellValue('A1', "Kode_Barang");
 			$excel->setActiveSheetIndex(0)->setCellValue('B1', "Rak");
 			$excel->setActiveSheetIndex(0)->setCellValue('C1', "Qty/Unit");
-			$excel->setActiveSheetIndex(0)->setCellValue('D1', "STD HDL");
+			$excel->setActiveSheetIndex(0)->setCellValue('D1', "STD_HDL");
 
 			$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle('B1')->applyFromArray($style_col);

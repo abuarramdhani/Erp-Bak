@@ -94,14 +94,24 @@ class M_blankoevaluasi extends CI_Model
                 ts.dept as departemen,
                 tpkj.pekerjaan,
                 (select nama_status from hrd_khs.tb_status_jabatan where noind = tp.noind limit 1) status_jabatan,
-                (SELECT to_char((tanggal_akhir::date + INTERVAL '1 DAY')::date, 'dd-mm-yyyy') from \"Surat\".tevaluasi_nonstaff where noind = tp.noind order by tanggal_akhir desc) periode_awal,
+                (SELECT to_char((tanggal_akhir::date + INTERVAL '1 DAY')::date, 'dd-mm-yyyy') from \"Surat\".tevaluasi_nonstaff where noind = tp.noind and deleted = '0' order by tanggal_akhir desc limit 1) periode_awal,
                 null as periode_akhir,
                 null as presensi_ok,
                 (
-                    CASE
-                        when date_part('year',age(CURRENT_DATE, tp.masukkerja)) > 0 then concat(date_part('year',age(CURRENT_DATE, tp.masukkerja)), ' Tahun ', date_part('month',age(CURRENT_DATE, tp.masukkerja)), ' Bulan ', date_part('day',age(CURRENT_DATE, tp.masukkerja)), ' Hari')
-                        when date_part('month',age(CURRENT_DATE, tp.masukkerja)) > 0 then concat(date_part('month',age(CURRENT_DATE, tp.masukkerja)), ' Bulan ', date_part('day',age(CURRENT_DATE, tp.masukkerja)), ' Hari')
-                        else concat(date_part('day',age(CURRENT_DATE, tp.masukkerja)), ' Hari')
+                    CASE 
+                        WHEN tp.diangkat >= tp.masukkerja AND tp.diangkat < now() then
+                            CASE
+                                when date_part('year',age(CURRENT_DATE, tp.diangkat)) > 0 then concat(date_part('year',age(CURRENT_DATE, tp.diangkat)), ' Tahun ', date_part('month',age(CURRENT_DATE, tp.diangkat)), ' Bulan ', date_part('day',age(CURRENT_DATE, tp.diangkat)), ' Hari')
+                                when date_part('month',age(CURRENT_DATE, tp.diangkat)) > 0 then concat(date_part('month',age(CURRENT_DATE, tp.diangkat)), ' Bulan ', date_part('day',age(CURRENT_DATE, tp.diangkat)), ' Hari')
+                                else concat(date_part('day',age(CURRENT_DATE, tp.diangkat)), ' Hari')
+                            END
+                        ELSE 
+                            CASE
+                                when date_part('year',age(CURRENT_DATE, tp.masukkerja)) > 0 then concat(date_part('year',age(CURRENT_DATE, tp.masukkerja)), ' Tahun ', date_part('month',age(CURRENT_DATE, tp.masukkerja)), ' Bulan ', date_part('day',age(CURRENT_DATE, tp.masukkerja)), ' Hari')
+                                when date_part('month',age(CURRENT_DATE, tp.masukkerja)) > 0 then concat(date_part('month',age(CURRENT_DATE, tp.masukkerja)), ' Bulan ', date_part('day',age(CURRENT_DATE, tp.masukkerja)), ' Hari')
+                                else concat(date_part('day',age(CURRENT_DATE, tp.masukkerja)), ' Hari')
+                            END
+                            
                     END
                 ) as masa_kerja,
                 to_char(tp.akhkontrak::date, 'DD-MM-YYYY') akhir_kontrak
@@ -190,7 +200,7 @@ class M_blankoevaluasi extends CI_Model
             $query = "
                 SELECT ten.*, tp.kodesie 
                 FROM \"Surat\".tevaluasi_nonstaff ten inner join hrd_khs.tpribadi tp on ten.noind = tp.noind 
-                WHERE $filterKodesie
+                WHERE $filterKodesie and ten.deleted = '0'
                 ORDER BY ten.created_time desc";
             return $this->personalia->query($query);
         }
@@ -250,11 +260,11 @@ class M_blankoevaluasi extends CI_Model
         $awal = date('Y-m-d', strtotime($awal));
         $akhir = date('Y-m-d', strtotime($akhir));
 
-        $q_terlambat = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TT' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_terlambat = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TT' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
 
         $terlambat = $this->personalia->query($q_terlambat)->result_array();
@@ -347,5 +357,16 @@ class M_blankoevaluasi extends CI_Model
         order by berlaku desc";
 
         return $this->personalia->query($query)->result_array();
+    }
+
+    public function deleteNonStaffBlanko($id, $user) {
+        $data = $this->personalia
+            ->where('id', $id)
+            ->update('"Surat".tevaluasi_nonstaff', [
+                'deleted' => true,
+                'deleted_time' => date('Y-m-d H:i:s'),
+                'deleted_by' => $user
+            ]);
+        return;
     }
 }

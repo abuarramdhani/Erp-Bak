@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	$('#org').trigger("change");
 	$("#prodd").select2({
 		allowClear: true,
 		minimumInputLength: 0,

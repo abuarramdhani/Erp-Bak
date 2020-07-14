@@ -36,7 +36,7 @@ class C_MasterTrainer extends CI_Controller {
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
-				  //redirect('index');
+				  //redirect('');
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
@@ -391,6 +391,22 @@ class C_MasterTrainer extends CI_Controller {
 		foreach ($data as $data) {
 			$count--;
 			echo '{"NoInduk":"'.$data['noind'].'","Nama":"'.$data['nama'].'"}';
+			if ($count !== 0) {
+				echo ",";
+			}
+		}
+		echo "]";
+	}
+
+	public function GetNoIndukTraining(){
+		$term = $this->input->get("term");
+		$training = $this->input->get("training");
+		$data = $this->M_mastertrainer->GetNoIndukTraining($term,$training);
+		$count = count($data);
+		echo "[";
+		foreach ($data as $data) {
+			$count--;
+			echo '{"NoInduk":"'.$data['employee_code'].'","Nama":"'.$data['name'].'"}';
 			if ($count !== 0) {
 				echo ",";
 			}

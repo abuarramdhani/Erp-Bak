@@ -63,6 +63,8 @@
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/mdtimepicker/mdtimepicker.css') ?>" />
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/css/custom.css') ?>" />
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/css/animate.css') ?>" />
+	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/fullcalendar-1.6.2/fullcalendar/fullcalendar.css') ?>" />
+	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/fullcalendar-1.6.2/fullcalendar/fullcalendar.print.css') ?>" />
     <script src="<?= base_url('assets/plugins/jquery-2.1.4.min.js') ?>" type="text/javascript"></script>
 	<script src="<?= base_url('assets/plugins/jQueryUI/jquery-ui.min.js') ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js') ?>"></script>
@@ -94,22 +96,8 @@
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<?php
-                  $path_photo  		=	base_url('assets/img/photo').'/';
-									$file           = $path_photo.$this->session->user.'.'.'jpg';
-									$file_headers   = @get_headers($file);
-									if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found') {
-										$file = $path_photo.$this->session->user.'.'.'JPG';
-										$file_headers = @get_headers($file);
-										if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found') {
-											$ekstensi = 'Not Found';
-										} else {
-											$ekstensi = 'JPG';
-										}
-									} else {
-										$ekstensi = 'jpg';
-									}
-									if($ekstensi=='jpg' || $ekstensi=='JPG') {
-										$lokasifoto=$path_photo.$this->session->user.".".$ekstensi;
+									if($_SERVER['SERVER_NAME'] == 'erp.quick.com' && @file_get_contents($this->session->path_photo)) {
+										$lokasifoto=$this->session->path_photo;
 									} else {
 										$lokasifoto=base_url('assets/theme/img/user.png');
 									}

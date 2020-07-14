@@ -16,7 +16,8 @@ class M_resign extends CI_Model
 		$sql = "select a.*,b.nama 
 				from hrd_khs.t_pengajuan_resign_pekerja a 
 				inner join hrd_khs.tpribadi b 
-				on a.noind = b.noind";
+				on a.noind = b.noind
+				where deleted_date is null";
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -45,7 +46,9 @@ class M_resign extends CI_Model
 
 	public function deleteResignMailByID($id){
 		$this->personalia->where('pengajuan_id',$id);
-		$this->personalia->delete("hrd_khs.t_pengajuan_resign_pekerja");
+		$this->personalia->set('deleted_by',$this->session->user);
+		$this->personalia->set('deleted_date', date('Y-m-d H:i:s'));
+		$this->personalia->update("hrd_khs.t_pengajuan_resign_pekerja");
 	}
 
 	public function updateResignMailByID($data,$id){

@@ -24,7 +24,7 @@ class C_Sweep extends CI_Controller
 	}
 
 	public function checkSession() {
-		if(!$this->session->is_logged) { redirect('index'); }
+		if(!$this->session->is_logged) { redirect(''); }
 	}
 
 	public function index()

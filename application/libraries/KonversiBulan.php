@@ -340,4 +340,17 @@ class KonversiBulan
   		), $nama_hari);
   	return $nama_hari;
   }
+
+  	public function konvert_periode_en($periode)
+  	{
+  		/**
+		* Fungsi ini digunakan untuk konvert tanggal periode bulan dan tahun, bulan menjadi en
+		* @param $periode String ex.(2020-03)
+		* @param $upper Int 0/1 default 
+		* @version 1.0
+		*/
+		$m = date('M', strtotime($periode.'-01'));
+		$expr = explode('-', $periode);
+		return $m.' - '.$expr[0];
+  	}
 }

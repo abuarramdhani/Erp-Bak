@@ -30,7 +30,7 @@ class C_ChartDetail extends CI_Controller
 	{
 		if ( $this->session->is_logged ){
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 

@@ -238,61 +238,6 @@
 </script>
 
 <style>
-    .popupso {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        margin-top: -120px;
-        margin-left: -200px;
-        width:500px;
-        height: 239px;
-        z-index: 20;
-        background-color: transparent;
-    }
-    .popupso_img {
-        width: 500px;
-    }
-    .popupso_close {
-        -webkit-transform: translate(460px, -310px);
-        transform: translate(460px, -310px);
-        color: red;
-        border: 3px solid white;
-        font-weight: bold;
-        text-align: center;
-        vertical-align: middle;
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        font-size: 20px;
-        font-family: Arial,Helvetica,sans-serif;
-        box-sizing: content-box;
-        line-height: normal;
-    }
-    .popupso_close:hover {
-        border: 3px solid red;
-        background-color: white;
-    }
-    .popupso:after {
-        position: fixed;
-        content: "";
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: -2;
-    }
-    .popupso:before{
-        position: absolute;
-        content: "";
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: #FFF;
-        z-index: -1;
-        display: block;
-    }
     .iconso {
         position: fixed;
         bottom: 0px;
@@ -305,9 +250,6 @@
     }
 
     @media only screen and (max-width: 600px) {
-        .popupso {
-            display: none !important;
-        }
         .iconso-img {
             display: none !important;
         }
@@ -315,17 +257,6 @@
 </style>
 <div class="iconso">
     <img class="iconso-img" src="<?php echo base_url('assets/img/SO2020.gif?v='.time()); ?>">
-</div>
-<div class="popupso" id="popupso">
-    <img class="popupso_img" src="<?php echo base_url('assets/img/CS_SO2020.png'); ?>" alt="" />
-    <div class="popupso_close" onclick="close_popupso()">X</div>
-    <script type="text/javascript">
-        document.getElementById("popupso").style.display = "block"; 
-        function close_popupso(){
-            var popupso = document.getElementById("popupso");
-            popupso.parentNode.removeChild(popupso);
-        }       
-    </script>
 </div>
 
 </body>

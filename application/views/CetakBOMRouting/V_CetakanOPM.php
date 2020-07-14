@@ -35,35 +35,47 @@
 <div style="margin-top: 20px;border: 2px solid black;border-collapse: collapse;"><h3 style="text-align: center;margin-top: 5px;margin-bottom: 5px;">Resource and Process</h3></div>
 <table style="border: 2px solid black; border-collapse: collapse; width: 100%;margin-top: 5px;margin-right: 7px;margin-left: 7px">
 		<tr style="background-color: grey">
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">No</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">No</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Routing ID</th> -->
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Routing Class</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Routing No</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Routing Desc</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Routing Vers</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Routing Class</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Routing No</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Routing Desc</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Routing Vers</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Routing Qty</th>
 			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Routing UOM</th>
 			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Rout Status</th> -->
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Step</th> -->
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr No</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Vers</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Desc</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr No</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Vers</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Desc</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Step Qty</th> -->
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Process UOM</th> -->
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Status</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity Desc</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Status</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity Desc</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity Factor</th> -->
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resources</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Desc</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Class</th>
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Process Qty(PCS)</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resources</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Desc</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Class</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Machine Qty</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Operator Qty</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Process Qty (PCS)</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Proses UOM</th> -->
-			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Usage(Minutes)</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Usage (Hours)</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Cycle Time (Seconds)</th>
+			<th colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">Target</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Usage UOM</th> -->
 			<!-- <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Inverse</th> -->
 		</tr>
-		<?php $b=1;  $no=1; for ($i=0; $i < sizeof($dataopm2); $i++) {	?>
+		<tr style="background-color: grey" >
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 3%">Qty</th>
+
+			<!-- <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Status</th> -->
+			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Last<br> Update</th>
+		</tr>
+		<?php 
+		// echo "<pre>"; print_r($dataopm2);exit(); 
+		$b=1;  $no=1; for ($i=0; $i < sizeof($dataopm2); $i++) {	?>
 		<tr>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$no?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['ROUTING_ID']?></td> -->
@@ -87,20 +99,33 @@
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCES']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_DESC']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_CLASS']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['MACHINE_QTY']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPERATOR_QTY']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['PROCESS_QTY']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['RESOURCE_PROCESS_UOM']?></td>    -->
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt">
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_USAGE']?>
 				<?php 
-					$ruMinutes = $dataopm2[$i]['RESOURCE_USAGE']*60;
-					if (strpos($ruMinutes,'.') == null) {
-						echo $ruMinutes;
-					} else {
-						echo number_format((float)$ruMinutes, 2, '.', '');
-					}
-					// $dataopm2[$i]['RESOURCE_USAGE']
+					// $ruMinutes = $dataopm2[$i]['RESOURCE_USAGE']*60;
+					// // echo "<pre>";
+					// // echo $dataopm2[$i]['RESOURCE_USAGE'];
+					// // echo "<br>";
+					// // print_r($ruMinutes);
+					// // exit();
+					// if (strpos($ruMinutes,'.') == null) {
+					// 	echo $ruMinutes;
+					// } else {
+					// 	echo number_format((float)$ruMinutes, 2, '.', '');
+					// }
+					// // $dataopm2[$i]['RESOURCE_USAGE']
 				?>
 			
 			</td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['CT']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['TARGET']?></td>
+			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"></td> -->
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['LAST_UPDATE_DATE']?></td>
+			
+
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['RESOURCE_USAGE_UOM']?></td> -->
 
 

@@ -159,7 +159,7 @@ and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
 and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
 and msib.segment1 = '$kode' 
 $seksii
-order by bos.OPERATION_SEQ_NUM";
+order by bos.OPERATION_SEQ_NUM ,bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID";
 
        $query = $oracle->query($sql);
         return $query->result_array();
@@ -262,7 +262,64 @@ and msib.SEGMENT1 = '$kode'";
 
 public function dataopm2($routing) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "select
+//     $sql = "select
+// grb.ROUTING_ID
+// ,grb.ROUTING_CLASS
+// ,grb.ROUTING_NO
+// ,grt.ROUTING_DESC
+// ,grb.ROUTING_VERS
+// ,grb.ROUTING_QTY
+// ,grb.ROUTING_UOM
+// ,gst.DESCRIPTION rout_status
+// ,frd.ROUTINGSTEP_NO step
+// ,gob.OPRN_NO
+// ,gob.OPRN_VERS
+// ,got.OPRN_DESC
+// ,frd.STEP_QTY
+// ,gob.PROCESS_QTY_UOM
+// ,gst2.DESCRIPTION oprn_status
+// ,goa.ACTIVITY
+// ,gat.ACTIVITY_DESC
+// ,goa.ACTIVITY_FACTOR
+// ,gor.RESOURCES
+// ,crmt.RESOURCE_DESC
+// ,crmb.RESOURCE_CLASS
+// ,gor.PROCESS_QTY
+// ,gor.RESOURCE_PROCESS_UOM
+// ,gor.RESOURCE_USAGE
+// ,gor.RESOURCE_USAGE_UOM
+// from
+// gmd_routings_tl grt
+// ,gmd_routings_b grb
+// ,gmd_status_tl gst
+// ,gmd_status_tl gst2
+// ,fm_rout_dtl frd
+// ,gmd_operations_tl got
+// ,gmd_operations_b gob
+// ,gmd_operation_activities goa
+// ,gmd_activities_tl gat
+// ,gmd_operation_resources gor
+// ,cr_rsrc_mst_tl crmt
+// ,cr_rsrc_mst_b crmb
+// where
+// grb.ROUTING_ID=grt.ROUTING_ID
+// and grb.ROUTING_STATUS=gst.STATUS_CODE
+// and grb.ROUTING_ID=frd.ROUTING_ID
+// and grb.ROUTING_STATUS = 700
+// and frd.OPRN_ID=gob.OPRN_ID
+// and gob.OPRN_ID=got.OPRN_ID
+// and gob.OPERATION_STATUS=gst2.STATUS_CODE
+// and gob.OPRN_ID=goa.OPRN_ID
+// and gob.OPERATION_STATUS = 700
+// and goa.OPRN_LINE_ID=gor.OPRN_LINE_ID
+// and gor.RESOURCES=crmb.RESOURCES
+// and gor.RESOURCES=crmt.RESOURCES
+// and goa.ACTIVITY=gat.ACTIVITY
+// and grt.routing_id = '$routing'
+// order by grt.ROUTING_ID
+// ,grb.ROUTING_VERS";
+
+$sql = "select
 grb.ROUTING_ID
 ,grb.ROUTING_CLASS
 ,grb.ROUTING_NO
@@ -281,13 +338,19 @@ grb.ROUTING_ID
 ,goa.ACTIVITY
 ,gat.ACTIVITY_DESC
 ,goa.ACTIVITY_FACTOR
-,gor.RESOURCES
-,crmt.RESOURCE_DESC
-,crmb.RESOURCE_CLASS
-,gor.PROCESS_QTY
-,gor.RESOURCE_PROCESS_UOM
-,gor.RESOURCE_USAGE
-,gor.RESOURCE_USAGE_UOM
+,mach.resources
+,mach.resource_desc
+,mach.resource_class
+,'' proses
+,'' nomor_mesin
+,mach.RESOURCE_COUNT machine_qty
+,opt.RESOURCE_COUNT operator_qty
+--,opt.RESOURCE_USAGE
+,opt.PROCESS_QTY
+,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
+,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
+,floor(23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600)) target
+,opt.LAST_UPDATE_DATE
 from
 gmd_routings_tl grt
 ,gmd_routings_b grb
@@ -298,9 +361,28 @@ gmd_routings_tl grt
 ,gmd_operations_b gob
 ,gmd_operation_activities goa
 ,gmd_activities_tl gat
-,gmd_operation_resources gor
-,cr_rsrc_mst_tl crmt
-,cr_rsrc_mst_b crmb
+,(select gor.OPRN_LINE_ID
+,crmb.RESOURCES
+,crmt.RESOURCE_DESC
+,crmb.RESOURCE_CLASS
+,gor.RESOURCE_USAGE/gor.PROCESS_QTY
+,gor.RESOURCE_COUNT
+from gmd_operation_resources gor
+,cr_rsrc_mst_b crmb ,cr_rsrc_mst_tl crmt
+where gor.RESOURCES=crmb.RESOURCES
+and gor.RESOURCES=crmt.RESOURCES
+--and gor.OPRN_LINE_ID = 18327
+and crmb.RESOURCE_CLASS = 'MESIN')mach
+,(select gor2.OPRN_LINE_ID
+,gor2.RESOURCE_USAGE
+,gor2.PROCESS_QTY
+,gor2.RESOURCE_COUNT
+,gor2.LAST_UPDATE_DATE
+from gmd_operation_resources gor2
+,cr_rsrc_mst_b crmb2
+where gor2.RESOURCES=crmb2.RESOURCES
+--and gor2.OPRN_LINE_ID = 18327
+and crmb2.RESOURCE_CLASS = 'OPERATOR')opt
 where
 grb.ROUTING_ID=grt.ROUTING_ID
 and grb.ROUTING_STATUS=gst.STATUS_CODE
@@ -311,11 +393,10 @@ and gob.OPRN_ID=got.OPRN_ID
 and gob.OPERATION_STATUS=gst2.STATUS_CODE
 and gob.OPRN_ID=goa.OPRN_ID
 and gob.OPERATION_STATUS = 700
-and goa.OPRN_LINE_ID=gor.OPRN_LINE_ID
-and gor.RESOURCES=crmb.RESOURCES
-and gor.RESOURCES=crmt.RESOURCES
 and goa.ACTIVITY=gat.ACTIVITY
 and grt.routing_id = '$routing'
+and goa.OPRN_LINE_ID = opt.OPRN_LINE_ID(+)
+and goa.OPRN_LINE_ID = mach.OPRN_LINE_ID(+)
 order by grt.ROUTING_ID
 ,grb.ROUTING_VERS";
 

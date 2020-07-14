@@ -24,7 +24,7 @@ class C_LihatStock extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -45,11 +45,14 @@ class C_LihatStock extends CI_Controller
 		// $data['unit'] = $this->M_lihatstock->kodeUnit();
 		$data['kode'] = array('0' => 'AAA', '1' => 'AAB', '2' => 'AAC', '3' => 'AAD', '4' => 'AAE', '5' => 'AAF',
 							'6' => 'AAG', '7' => 'AAH', '8' => 'AAK', '9' => 'AAL', '10' => 'AAN', '11' => 'ACA',
-							'12' => 'ADA', '13' => 'ADB', '14' => 'AFA', '15' => 'AFC', '16' => 'AGC', '17' => 'BAC');
+							'12' => 'ADA', '13' => 'ADB', '14' => 'AFA', '15' => 'AFC', '16' => 'AGC', '17' => 'BAC',
+							'18' => 'IAO', '19' => 'IBB', '20' => 'IAA', '21' => 'IAP', '22' => 'IAU', '23' => 'IAB');
 		
 		$data['nama'] = array('0' => 'TL800', '1' => 'G1000', '2' => 'G600', '3' => 'E85', '4' => 'M1000', '5' => 'KIJANG',
 							'6' => 'BOXER', '7' => 'ZEVA', '8' => 'IMPALA', '9' => 'CAPUNG METAL', '10' => 'CAPUNG RAWA', '11' => 'ZENA',
-							'12' => 'CAKAR BAJA', '13' => 'CAKAR BAJA MINI', '14' => 'H-110', '15' => 'QH-11', '16' => 'QT-14', '17' => 'OLD');
+							'12' => 'CAKAR BAJA', '13' => 'CAKAR BAJA MINI', '14' => 'H-110', '15' => 'QH-11', '16' => 'QT-14', '17' => 'OLD',
+							'18' => 'MITSUBOSHI', '19' => 'BEARING NACHI', '20' => 'DIESEL VDE', '21' => 'V BELT BANDO',
+							'22' => 'BEARING SKF', '23' => 'DIESEL HDE');
 		// echo "<pre>"; print_r($data['kode']);exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

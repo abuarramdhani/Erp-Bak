@@ -166,7 +166,7 @@ class M_pengurangan extends CI_Model
     }
 
     public function updatePenguranganJumlahByIdPengurangan($id_pengurangan){
-        $sql = "update \"Catering\".tpenguranganpesanan_detail
+        $sql = "update \"Catering\".tpenguranganpesanan
                 set fn_jml_tdkpesan = (
                     select count(distinct fs_noind)
                     from \"Catering\".tpenguranganpesanan_detail
@@ -185,6 +185,41 @@ class M_pengurangan extends CI_Model
 
     public function insertPesanan($data){
         $this->personalia->insert('"Catering".tpesanan',$data);
+    }
+
+    public function insertPengurangan($data){
+        $this->personalia->insert('"Catering".tpenguranganpesanan',$data);
+        return $this->personalia->insert_id();
+    }
+
+    public function getPenerimaByKeyTempatMakan($key,$tempat_makan){
+        $sql = "select noind,trim(nama) as nama
+                from hrd_khs.tpribadi
+                where keluar = '0'
+                and (
+                    upper(noind) like concat(upper(?),'%')
+                    or upper(nama) like concat('%',upper(?),'%')
+                )
+                and tempat_makan = ?";
+        return $this->personalia->query($sql, array($key,$key,$tempat_makan))->result_array();
+    }
+
+    public function getTempatMakanBaruByKeyTempatMakanKategori($key,$tempat_makan,$kategori){
+        $sql = "select fs_tempat_makan,
+                    case when fs_lokasi = '1' then 
+                        'Yogyakarta'
+                    when fs_lokasi = '2' then 
+                        'Tuksono'
+                    when fs_lokasi = '3' then 
+                        'Mlati'
+                    else
+                        'Tidak Diketahui'
+                    end as lokasi
+                from \"Catering\".ttempat_makan
+                where upper(fs_tempat_makan) like upper(concat('%',?,'%'))
+                and upper(fs_tempat_makan) != ?
+                $kategori";
+        return $this->personalia->query($sql, array($key,$tempat_makan))->result_array();   
     }
 
 }

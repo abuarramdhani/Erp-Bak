@@ -321,7 +321,7 @@ class C_TransferReffGaji extends CI_Controller
 			$table->close();
 		}
 
-		//staff
+		//staff lama
 
 		$data_staff = $this->M_transferreffgaji->getDataStaff($periode);
 		// echo "<pre>";print_r($data_staff);exit();
@@ -482,7 +482,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->SUBTOTAL2 = 0;
 				$record->SUBTOTAL3 = 0;
 				$record->TERIMA = 0;
-				$record->KET =  (str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "0" and str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "") ? str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) : '-' ;
+				$record->KET =  (str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "0" and str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "") ? str_replace(".00","",Trim($ds['ket'])) : '-' ;
 				$record->TKENAPJK =  round($ds['tkpajak'], 2) ;
 				$record->TTAKPJK = 0;
 				$record->KOREKSI1 = '';
@@ -531,7 +531,7 @@ class C_TransferReffGaji extends CI_Controller
 				$this->M_transferreffgaji->updateProgres($user,$progres);
 				//insert to t_log
 				$aksi = 'MASTER PRESENSI';
-				$detail = 'Update reff gaji staf noind='.$ds['noind'];
+				$detail = 'Update reff gaji staf lama noind='.$ds['noind'];
 				$this->log_activity->activity_log($aksi, $detail);
 				//
 				session_write_close();
@@ -539,6 +539,235 @@ class C_TransferReffGaji extends CI_Controller
 
 			}
 			$table3->close();
+		}
+
+		//staff baru
+		$data_staff = $this->M_transferreffgaji->getDataStaff($periode);
+		// echo "<pre>";print_r($data_staff);exit();
+		if (!empty($data_staff)) {
+			$table3_new = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2_new.dbf");
+			$table3_new->openWrite(FCPATH."assets/upload/TransferReffGaji/PERNEW".$periode.$waktu.".dbf");
+			foreach ($data_staff as $ds) {
+				$ip_lama = 0;
+				$ik_lama = 0;
+				$ipt_lama = 0;
+				//SEMENTARA BELUM DIGUNAKAN DAHULU
+				/*$data_pekerja_keluar = $this->M_transferreffgaji->getPekerjaKeluar($ds['nik'],$periode);
+				if(!empty($data_pekerja_keluar)){
+					$ds['ief'] += $data_pekerja_keluar->ief;
+					$ds['ims'] += $data_pekerja_keluar->ims;
+					$ds['imm'] += $data_pekerja_keluar->imm;
+					$ds['jam_lembur'] += $data_pekerja_keluar->jam_lembur;
+					$ds['um_cabang'] += $data_pekerja_keluar->um_cabang;
+					$ds['dldobat'] += $data_pekerja_keluar->dldobat;
+					$ds['htm'] += $data_pekerja_keluar->htm;
+					$ds['ijin'] += $data_pekerja_keluar->ijin;
+					$ip_lama = floatval($data_pekerja_keluar->ipe);
+					$ik_lama = floatval($data_pekerja_keluar->ika);
+					$ipt_lama = floatval($data_pekerja_keluar->ipet);
+				}*/
+				$jabatan = $this->M_transferreffgaji->getStatusJabatan($ds['noind']);
+				if ($jabatan <= 11) {
+					$st = "3";
+				}
+				elseif ($jabatan == 12 or $jabatan == 13) {
+					$st = "2";
+				}
+				elseif ($jabatan >= 14) {
+					$st = "1";
+				}
+				$tpribadi = $this->M_transferreffgaji->getPribadi($ds['noind']);
+				if (substr($ds['noind'], 0,1) == "B"){
+					$spsi = "T";
+					$duka = "T";
+					if (trim($tpribadi->nokoperasi) == "Ya") {
+						$kop = "T";
+					}else{
+						$kop = "F";
+					}
+				}else{
+					$spsi = "F";
+					$duka = "F";
+					$kop = "F";
+				}
+				if (empty($ds['xduka']) or $ds['xduka'] == "") {
+					$duk = "0";
+				}else{
+					$duk = $ds['xduka'];
+				}
+				if (empty($ds['ubs']) or $ds['ubs'] == "") {
+					$ubs = "0";
+				}else{
+					$ubs = $ds['ubs'];
+				}
+				if ($ds['kodesie'] == "401010102") {
+					$asdf = "0";
+				}
+				if (empty($ds['angg_jkn']) or $ds['angg_jkn'] == "t") {
+					$angg_jkn_bpjs_kes = "T";
+				}else{
+					$angg_jkn_bpjs_kes = "F";
+				}
+				$um_ = floatval($ds['hl']) + floatval($ds['um_puasa']);
+				$seksi2 = $this->M_transferreffgaji->getSeksi2($ds['kodesie']);
+				$seksi = $this->M_transferreffgaji->getSeksi($ds['kodesie']);
+				if (!empty($seksi2)) {
+					if ($seksi2->kodesek == "401013") {
+						$kodsie = "040004";
+					}else{
+						$kodsie = $seksi2->kodesek;
+					}
+				}else{
+					$kodsie = "";
+				}
+				// if (round($ds['plain']) > 0) {
+					// echo round($ds['plain']);exit();
+				// }
+				if(trim($ds['ket']) == "-"){
+					$ds['ket'] = "";
+				}
+				if (substr($ds['noind'], 0,1) == "Q") {
+					$ds['ijin'] = 0;
+					$ds['htm'] = 0;
+					$ds['ika'] = 0;
+					$ds['ipe'] = 0;
+					$ds['ief'] = 0;
+					$ds['ims'] = 0;
+					$ds['imm'] = 0;
+				}
+				if (!isset($ds['ikh'])) {
+					$ds['ikh'] = 0;
+				}
+				if (!isset($ds['tp'])) {
+					$ds['tp'] = 0;
+				}
+				if (!isset($ds['hari_tkpw'])) {
+					$ds['hari_tkpw'] = 0;
+				}
+				if (!isset($ds['jam_tkpw'])) {
+					$ds['jam_tkpw'] = 0;
+				}
+				if (!isset($ds['pkl'])) {
+					$ds['pkl'] = 0;
+				}
+				$record = $table3_new->appendRecord();
+				$record->NOIND = $ds['noind'];
+				$record->NOINDBR = '';
+				$record->NAMA = $ds['nama'];
+				$record->JABATAN = $ds['jabatan'];
+				$record->KODESEK = $kodsie;
+				$record->SEKSI = $seksi->seksi;
+				$record->UNIT = $seksi->unit;
+				$record->DEPT = $seksi->dept;
+				$record->KODEREK = '';
+				$record->KPPH = '';
+				$record->GAJIP = 0;
+				$record->UJAM = 0;
+				$record->UPAMK = 0;
+				$record->INSK = 0;
+				$record->INSP = 0;
+				$record->INSF = 0;
+				$record->P_ASTEK = 0;
+				$record->BLKERJA = 0;
+				$record->ANGG_SPSI = $spsi;
+				$record->ANGG_KOP = $kop;
+				$record->ANGG_DUKA = $duka;
+				$record->HR_I = round($ds['ijin'], 2);
+				$record->HR_ABS =  round($ds['htm'],2) ;
+				$record->HR_IK =  round($ds['ika'],2) ;
+				$record->HR_IP =  round($ds['ipe'],2) ;
+				$record->HR_IF =  round($ds['ief'], 2) ;
+				$record->HR_IKH = $ds['ikh'];
+				$record->HR_TP = $ds['tp'];
+				$record->HR_TKPW = round($ds['hari_tkpw'],2);
+				$record->JAM_TKPW = round($ds['jam_tkpw'],2);
+				$record->JAM_PKL = $ds['pkl'];
+				$record->HR_S2 =  round($ds['ims'], 2) ;
+				$record->HR_S3 =  round($ds['imm'], 2) ;
+				$record->HUPAMK =  round($ds['upamk'], 2) ;
+				$record->JAM_LBR =  round($ds['jam_lembur'], 2) ;
+				$record->HR_UM =  $um_ ;
+				$record->HR_CUTI = floatval($ds['ct']);
+				$record->HR_CATER = 0;
+				$record->P_BONSB = 0;
+				$record->P_I_KOP =  round($ds['pikop']);
+				$record->P_UT_KOP =  round($ds['putkop']) ;
+				$record->P_LAIN = round($ds['plain']);
+				$record->P_DUKA =  round($ds['pduka']) ;
+				$record->P_SPSI =  round($ds['pspsi']) ;
+				$record->T_GAJIP = 0;
+				$record->T_INSK = 0;
+				$record->T_INSP = 0;
+				$record->T_INSF = 0;
+				$record->T_IMS = 0;
+				$record->T_IMM = 0;
+				$record->T_ULEMBUR = 0;
+				$record->T_UMAKAN = 0;
+				$record->T_CATERING = 0;
+				$record->TUPAMK = 0;
+				$record->T_TAMBAH1 = 0;
+				$record->P_UTANG = 0;
+				$record->TRANSFER = 0;
+				$record->XDUKA =  $duk ;
+				$record->PTKP = 0;
+				$record->SUBTOTAL1 = 0;
+				$record->SUBTOTAL2 = 0;
+				$record->SUBTOTAL3 = 0;
+				$record->TERIMA = 0;
+				$record->KET =  (str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "0" and str_replace("Hari","",str_replace(".00","",Trim($ds['ket']))) !== "") ? str_replace(".00","",Trim($ds['ket'])) : '-' ;
+				$record->TKENAPJK =  round($ds['tkpajak'], 2) ;
+				$record->TTAKPJK = 0;
+				$record->KOREKSI1 = '';
+				$record->KOREKSI2 = '';
+				$record->KHARGA = 0;
+				$record->HRD_IP = 0;
+				$record->HRD_IK = 0;
+				$record->HRD_IF = 0;
+				$record->HRM_GP = 0;
+				$record->HRM_IP = 0;
+				$record->HRM_IK = 0;
+				$record->HRM_IF = 0;
+				$record->TGLRMH = '';
+				$record->UBT =  round($ds['ubt'], 2) ;
+				$record->TUBT = 0;
+				$record->IFDRMLAMA = 0;
+				$record->STATUS = '';
+				$record->BANK = '';
+				$record->KODEBANK = '';
+				$record->NOREK = '';
+				$record->POTBANK = 0;
+				$record->NAMAPEMREK = '';
+				$record->PERSEN = 0;
+				$record->JSPSI = '';
+				$record->STRUKTUR =  Trim($st) ;
+				$record->UMP = 0;
+				$record->REK_DPLK = '';
+				$record->POT_DPLK = 0;
+				$record->UBS =  floatval($ubs) ;
+				$record->ANGG_JKN =  $angg_jkn_bpjs_kes ;
+				$record->KD_LKS =  $ds['lokasi_krj'] ;
+				$record->HR_IPT =  floatval($ds['ipet']) ;
+				$record->HR_UMC =  floatval($ds['um_cabang']) ;
+				$record->DLOBAT =  floatval($ds['dldobat']);
+				$record->JKN =  $ds['jml_jkn'] ;
+				$record->JHT =  $ds['jml_jht'] ;
+				$record->JP =  $ds['jml_jp'] ;
+				$record->HR_IP_LM = $ip_lama;
+				$record->HR_IK_LM = $ik_lama;
+				$record->HR_IPT_LM = $ipt_lama;
+				// echo "<pre>";print_r($record);exit();
+				$table3_new->writeRecord();
+				$progres +=1;
+				$this->M_transferreffgaji->updateProgres($user,$progres);
+				//insert to t_log
+				$aksi = 'MASTER PRESENSI';
+				$detail = 'Update reff gaji staf naru noind='.$ds['noind'];
+				$this->log_activity->activity_log($aksi, $detail);
+				//
+				session_write_close();
+				flush();
+			}
+			$table3_new->close();
 		}
 
 		//non-staff
@@ -860,6 +1089,7 @@ class C_TransferReffGaji extends CI_Controller
 		$data_download = '
 		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PKLNONSTAFFDATA-ABS".$periode."&time=".$waktu).'" class="btn btn-info">PKLNONSTAFFDATA-ABS'.$periode.'</a>
 		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PER".$periode."&time=".$waktu) .'" class="btn btn-info">PER'.$periode.'</a>
+		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PERNEW".$periode."&time=".$waktu) .'" class="btn btn-info">PERNEW'.$periode.'</a>
 		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=DATA-ABS".$periode."&time=".$waktu) .'" class="btn btn-info">DATA-ABS'.$periode.'</a>
 		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=K".$periode."&time=".$waktu) .'" class="btn btn-info">K'.$periode.'</a>
 		';

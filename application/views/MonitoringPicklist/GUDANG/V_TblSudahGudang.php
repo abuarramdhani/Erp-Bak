@@ -21,11 +21,13 @@
             <td>Item Assy</td>
             <td>QTY</td>
             <td>From Subinv</td>
+            <td>Locator</td>
             <td>Action</td>
         </tr>
     </thead>
     <tbody>
-    <?php $no = 1; foreach ($data as $val) { ?>
+    <?php $no = 1; foreach ($data as $val) {
+        $del = $val['DELIVER'] != '' ? 'disabled' : ''; ?>
         <tr>
             <td><?= $no?></td>
             <td><input type="hidden" id="dept<?= $no?>" value="<?= $val['DEPARTMENT']?>"><?= $val['DEPARTMENT']?></td>
@@ -36,7 +38,8 @@
             <td><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC'] ?></td>
             <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
             <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
-            <td><button type="button" class="btn btn-success" id="regud<?= $no?>" onclick="recallGudang(<?= $no?>)">Recall</button></td>
+            <td><input type="hidden" id="locator<?= $no?>" value="<?= $val['LOCATOR']?>"><?= $val['LOCATOR']?></td>
+            <td><button type="button" class="btn btn-success" id="regud<?= $no?>" onclick="recallGudang(<?= $no?>)" <?= $del?>>Recall</button></td>
         </tr>
     <?php $no++; }?>
     </tbody>

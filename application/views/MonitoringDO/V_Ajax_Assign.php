@@ -9,6 +9,7 @@
         <th style="width:100px"><center>KOTA</center></th>
         <th style="width:70px"><center>PLAT NOMOR</center></th>
         <th style="width:70px"><center>ASSIGN</center></th>
+        <th style="width:50px"><center>TGL PENGIRIMAN</center></th>
         <th style="width:15px"><center>DETAIL</center></th>
       </tr>
     </thead>
@@ -22,6 +23,8 @@
           <td><center><?php echo $g['KOTA'] ?></center></td>
           <td><center><?php echo $g['PLAT_NUMBER'] ?></center></td>
           <td><center><?php echo $g['PETUGAS'] ?></center></td>
+          <td><center><?php echo strtoupper(date("d-M-Y", strtotime($g['TGL_KIRIM']))) ?></center></td>
+
           <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detailAssign('<?php echo $g['DO/SPB'] ?>', <?php echo $no ?>)" data-toggle="modal" data-target="#MyModalAssign"><i class="fa fa-eye"></i></button> </center></td>
         </tr>
       <?php $no++; endforeach; ?>

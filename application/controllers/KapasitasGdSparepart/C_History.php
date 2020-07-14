@@ -24,7 +24,7 @@ class C_History extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -49,9 +49,10 @@ class C_History extends CI_Controller
         $tgl = array();
         $a = 0;
         $m = 0;
-        $date = date('d/m/Y');
-        if ($val[0]['JAM_INPUT'] != $date) {
+        $date = date('Ymd');
+        if ($val[0]['TGL_INPUT'] != $date) {
             array_push($tgl, $date);
+            $tampung[$a]['TANGGAL']     = $date;
             $tampung[$a]['TGL_INPUT']   = strtoupper(date('d-M-y'));
             $hitung = $this->perhitungan($date);
             $tampung[$a]['PELAYANAN']   = $hitung['pelayanan'];
@@ -61,15 +62,20 @@ class C_History extends CI_Controller
             $tampung[$a]['LEMBAR_PACK'] = $hitung['lembar_pack'];
             $tampung[$a]['PCS_PACK']    = $hitung['pcs_pack'];
             $tampung[$a]['JML_PACK']    = $hitung['jml_pack'];
+            $tampung[$a]['ITEM_KELUAR'] = $hitung['item_out'];
+            $tampung[$a]['ITEM_PGLR']   = $hitung['item_pglr'];
+            $tampung[$a]['ITEM_PLYN']   = $hitung['item_plyn'];
             $tampung[$m]['LEMBAR_MASUK'] = 0;
             $tampung[$m]['PCS_MASUK']   = 0;
+            $tampung[$m]['ITEM_MASUK']  = 0;
         $a++; $m++;
         }
 
         for ($i=0; $i < count($val); $i++) { 
             // if (count($tampung) < 10) {
-            if (!in_array($val[$i]['JAM_INPUT'], $tgl)) {
-                array_push($tgl, $val[$i]['JAM_INPUT']);
+            if (!in_array($val[$i]['TGL_INPUT'], $tgl)) {
+                array_push($tgl, $val[$i]['TGL_INPUT']);
+                $tampung[$a]['TANGGAL']   = $val[$i]['TGL_INPUT'];
                 $tampung[$a]['TGL_INPUT']   = $val[$i]['JAM'];
                 $hitung = $this->perhitungan($val[$i]['JAM_INPUT']);
                 $tampung[$a]['PELAYANAN']   = $hitung['pelayanan'];
@@ -79,28 +85,88 @@ class C_History extends CI_Controller
                 $tampung[$a]['LEMBAR_PACK'] = $hitung['lembar_pack'];
                 $tampung[$a]['PCS_PACK']    = $hitung['pcs_pack'];
                 $tampung[$a]['JML_PACK']    = $hitung['jml_pack'];
+                $tampung[$a]['ITEM_MASUK']  = $hitung['item_in'];
+                $tampung[$a]['ITEM_KELUAR'] = $hitung['item_out'];
+                $tampung[$a]['ITEM_PGLR']   = $hitung['item_pglr'];
+                $tampung[$a]['ITEM_PLYN']   = $hitung['item_plyn'];
+                $tampung[$a]['LEMBAR_MASUK']= $hitung['lembar_masuk'];
+                $tampung[$a]['PCS_MASUK']   = $hitung['pcs_masuk'];
             $a++;
             }            
-
-            if ($i == 0) {
-                $tampung[$m]['LEMBAR_MASUK'] = 0;
-                $tampung[$m]['PCS_MASUK'] = 0;
-                $tampung[$m]['LEMBAR_MASUK'] += 1;
-                $tampung[$m]['PCS_MASUK'] += $val[$i]['JUMLAH_PCS'];
-            }else {
-                if ($val[$i]['JAM_INPUT'] == $val[$i-1]['JAM_INPUT']) {
-                    $tampung[$m]['LEMBAR_MASUK'] += 1;
-                    $tampung[$m]['PCS_MASUK'] += $val[$i]['JUMLAH_PCS'];
-                }else {
-                    $m = $m + 1;
-                    $tampung[$m]['LEMBAR_MASUK'] = 0;
-                    $tampung[$m]['PCS_MASUK'] = 0;
-                    $tampung[$m]['LEMBAR_MASUK'] += 1;
-                    $tampung[$m]['PCS_MASUK'] += $val[$i]['JUMLAH_PCS'];
+        }
+        $haha = array();
+        foreach ($val as $key => $value) {
+            if (!in_array($value['TGL_PELAYANAN'], $tgl) && $value['TGL_PELAYANAN'] != '') {
+                if (!in_array($value['TGL_PELAYANAN'], $haha)) {
+                    array_push($tgl, $value['TGL_PELAYANAN']);
+                    array_push($haha, $value['TGL_PELAYANAN']);
+                    $tampung[$a]['TANGGAL']   = $value['TGL_PELAYANAN'];
+                    $tampung[$a]['TGL_INPUT']   = $value['SELESAI_PELAYANAN'];
+                    $hitung = $this->perhitungan($value['SELESAI_PELAYANAN2']);
+                    $tampung[$a]['PELAYANAN']   = $hitung['pelayanan'];
+                    $tampung[$a]['PENGELUARAN'] = $hitung['pengeluaran'];
+                    $tampung[$a]['PACKING']     = $hitung['packing'];
+                    $tampung[$a]['COLY']        = $hitung['coly'];
+                    $tampung[$a]['LEMBAR_PACK'] = $hitung['lembar_pack'];
+                    $tampung[$a]['PCS_PACK']    = $hitung['pcs_pack'];
+                    $tampung[$a]['JML_PACK']    = $hitung['jml_pack'];
+                    $tampung[$a]['ITEM_MASUK']  = $hitung['item_in'];
+                    $tampung[$a]['ITEM_KELUAR'] = $hitung['item_out'];
+                    $tampung[$a]['ITEM_PGLR']   = $hitung['item_pglr'];
+                    $tampung[$a]['ITEM_PLYN']   = $hitung['item_plyn'];
+                    $tampung[$a]['LEMBAR_MASUK']= $hitung['lembar_masuk'];
+                    $tampung[$a]['PCS_MASUK']   = $hitung['pcs_masuk'];
+                    $a++;
+                }
+            }
+            if (!in_array($value['TGL_PENGELUARAN'], $tgl) && $value['TGL_PENGELUARAN'] != '') {
+                if (!in_array($value['TGL_PENGELUARAN'], $haha)) {
+                    array_push($tgl, $value['TGL_PENGELUARAN']);
+                    array_push($haha, $value['TGL_PENGELUARAN']);
+                    $tampung[$a]['TANGGAL']   = $value['TGL_PENGELUARAN'];
+                    $tampung[$a]['TGL_INPUT']   = $value['SELESAI_PENGELUARAN'];
+                    $hitung = $this->perhitungan($value['SELESAI_PENGELUARAN2']);
+                    $tampung[$a]['PELAYANAN']   = $hitung['pelayanan'];
+                    $tampung[$a]['PENGELUARAN'] = $hitung['pengeluaran'];
+                    $tampung[$a]['PACKING']     = $hitung['packing'];
+                    $tampung[$a]['COLY']        = $hitung['coly'];
+                    $tampung[$a]['LEMBAR_PACK'] = $hitung['lembar_pack'];
+                    $tampung[$a]['PCS_PACK']    = $hitung['pcs_pack'];
+                    $tampung[$a]['JML_PACK']    = $hitung['jml_pack'];
+                    $tampung[$a]['ITEM_MASUK']  = $hitung['item_in'];
+                    $tampung[$a]['ITEM_KELUAR'] = $hitung['item_out'];
+                    $tampung[$a]['ITEM_PGLR']   = $hitung['item_pglr'];
+                    $tampung[$a]['ITEM_PLYN']   = $hitung['item_plyn'];
+                    $tampung[$a]['LEMBAR_MASUK']= $hitung['lembar_masuk'];
+                    $tampung[$a]['PCS_MASUK']   = $hitung['pcs_masuk'];
+                    $a++;
+                }
+            }
+            if (!in_array($value['TGL_PACKING'], $tgl) && $value['TGL_PACKING'] != '') {
+                if (!in_array($value['TGL_PACKING'], $haha)) {
+                    array_push($tgl, $value['TGL_PACKING']);
+                    array_push($haha, $value['TGL_PACKING']);
+                    $tampung[$a]['TANGGAL']   = $value['TGL_PACKING'];
+                    $tampung[$a]['TGL_INPUT']   = $value['SELESAI_PACKING'];
+                    $hitung = $this->perhitungan($value['SELESAI_PACKING2']);
+                    $tampung[$a]['PELAYANAN']   = $hitung['pelayanan'];
+                    $tampung[$a]['PENGELUARAN'] = $hitung['pengeluaran'];
+                    $tampung[$a]['PACKING']     = $hitung['packing'];
+                    $tampung[$a]['COLY']        = $hitung['coly'];
+                    $tampung[$a]['LEMBAR_PACK'] = $hitung['lembar_pack'];
+                    $tampung[$a]['PCS_PACK']    = $hitung['pcs_pack'];
+                    $tampung[$a]['JML_PACK']    = $hitung['jml_pack'];
+                    $tampung[$a]['ITEM_MASUK']  = $hitung['item_in'];
+                    $tampung[$a]['ITEM_KELUAR'] = $hitung['item_out'];
+                    $tampung[$a]['ITEM_PGLR']   = $hitung['item_pglr'];
+                    $tampung[$a]['ITEM_PLYN']   = $hitung['item_plyn'];
+                    $tampung[$a]['LEMBAR_MASUK']= $hitung['lembar_masuk'];
+                    $tampung[$a]['PCS_MASUK']   = $hitung['pcs_masuk'];
+                    $a++;
                 }
             }
         }
-
+        array_multisort($tgl, SORT_DESC, $tampung);
         $data['data'] = $tampung;
         // echo "<pre>";print_r($tampung);exit();
 
@@ -111,13 +177,27 @@ class C_History extends CI_Controller
     }
 
     public function perhitungan($date){
-        $plyn = $this->M_history->getDataSPB("and selesai_pelayanan like to_date('".$date."','DD/MM/YYYY')");
+        $masuk = $this->M_history->getDataSPB("and TRUNC(jam_input) = to_date('".$date."', 'DD/MM/YYYY')");
+        $in = 0;
+        $lembar_masuk = 0;
+        $pcs_masuk = 0;
+        for ($l=0; $l < count($masuk) ; $l++) { 
+            $in += $masuk[$l]['JUMLAH_ITEM'];
+            $pcs_masuk += $masuk[$l]['JUMLAH_PCS'];
+            $lembar_masuk += 1;
+        }
+        // echo "<pre>";print_r($in);exit();
+
+        $plyn = $this->M_history->dataPlyn($date);
+        // $plyn = $this->M_history->getDataSPB("and selesai_pelayanan like to_date('".$date."','DD/MM/YYYY')");
         $pelayanan = 0;
+        $item_plyn = 0;
         for ($l=0; $l < count($plyn); $l++) { 
             if ($plyn[$l]['WAKTU_PELAYANAN'] != '') {
                 $plyn1 = explode(":", $plyn[$l]['WAKTU_PELAYANAN']);
                 $plyn2 = ($plyn1[0]*3600) + ($plyn1[1]*60) + $plyn1[2];
                 $pelayanan += $plyn2;
+                $item_plyn += $plyn[$l]['JUMLAH_ITEM'];
             }
         }
         if (count($plyn) == 0) {
@@ -127,13 +207,16 @@ class C_History extends CI_Controller
         }
         $pelayanan = round($pelayanan / $bagi);
         
-        $pglr = $this->M_history->getDataSPB("and selesai_pengeluaran like to_date('".$date."','DD/MM/YYYY')");
+        $pglr = $this->M_history->dataPglr($date);
+        // $pglr = $this->M_history->getDataSPB("and selesai_pengeluaran like to_date('".$date."','DD/MM/YYYY')");
         $pengeluaran = 0;
+        $item_pglr = 0;
         for ($l=0; $l < count($pglr); $l++) { 
             if ($pglr[$l]['WAKTU_PENGELUARAN'] != '') {
                 $pglr1 = explode(":", $pglr[$l]['WAKTU_PENGELUARAN']);
                 $pglr2 = ($pglr1[0]*3600) + ($pglr1[1]*60) + $pglr1[2];
                 $pengeluaran += $pglr2;
+                $item_pglr += $pglr[$l]['JUMLAH_ITEM'];
             }
         }
         if (count($pglr) == 0) {
@@ -143,11 +226,13 @@ class C_History extends CI_Controller
         }
         $pengeluaran = round($pengeluaran / $bagi);
         
-        $pck = $this->M_history->getDataSPB("and selesai_packing like to_date('".$date."','DD/MM/YYYY')");
+        $pck = $this->M_history->dataPck($date);
+        // $pck = $this->M_history->getDataSPB("and selesai_packing like to_date('".$date."','DD/MM/YYYY')");
         $packing = 0;
         $coly = 0;
         $lembar_pack = 0;
         $pcs_pack = 0;
+        $out = 0;
         for ($l=0; $l < count($pck); $l++) { 
             if ($pck[$l]['WAKTU_PACKING'] != '') {
                 $pck1 = explode(":", $pck[$l]['WAKTU_PACKING']);
@@ -160,6 +245,7 @@ class C_History extends CI_Controller
             if (!empty($coly2)) {
                 $coly += count($coly2);
             }
+            $out += $pck[$l]['JUMLAH_ITEM'];
         }
         if (count($pck) == 0) {
             $bagi = 1;
@@ -177,6 +263,12 @@ class C_History extends CI_Controller
             'lembar_pack'   => $lembar_pack,
             'pcs_pack'      => $pcs_pack,
             'jml_pack'      => $jml_pack,
+            'item_in'       => $in,
+            'item_out'      => $out,
+            'item_plyn'     => $item_plyn,
+            'item_pglr'     => $item_pglr,
+            'lembar_masuk'  => $lembar_masuk,
+            'pcs_masuk'     => $pcs_masuk,
         );
 
         return $tampung;

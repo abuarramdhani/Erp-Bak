@@ -28,7 +28,7 @@ class C_CetakCard extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -67,6 +67,7 @@ class C_CetakCard extends CI_Controller
 		$data['worker'] = array();
 		for($i=0;$i<$count;$i++){
 			$Card = $this->M_cetakcard->getWorker($noind[$i],$nick[$i]);
+			$Card[0]['photo'] = trim($Card[0]['photo']);
 			if (!file_get_contents($Card[0]['photo'])) {
 				$Card[0]['photo'] = './assets/img/quick-logo.jpg';
 			}
@@ -112,7 +113,7 @@ class C_CetakCard extends CI_Controller
 		$data['worker'] = array();
 		foreach ($noind as $key) {
 			$DataID = $this->M_cetakcard->DataPekerja($key);
-			$path = $DataID[0]['photo'];
+			$path = trim($DataID[0]['photo']);
 			if(!file_get_contents($path)){
 				$path = './assets/img/quick-logo.jpg';
 			}

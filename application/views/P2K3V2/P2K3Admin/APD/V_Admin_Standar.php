@@ -74,7 +74,7 @@
                                             <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
                                             <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
                                             <?php $jml = explode(',', $key['jml_item']);
-                                            foreach ($jml as $row) { ?>
+                                            foreach ($jml as $row) { if($row == '') continue; ?>
                                             <td><?php echo $row; ?></td>
                                             <?php  } ?>
                                         </tr>

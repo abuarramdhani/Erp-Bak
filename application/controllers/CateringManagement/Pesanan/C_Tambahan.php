@@ -1,8 +1,11 @@
 <?php 
 Defined('BASEPATH') or exit('No direct Script access allowed');
-/**
- * 
- */
+
+set_time_limit(0);
+ini_set('date.timezone', 'Asia/Jakarta');
+setlocale(LC_TIME, "id_ID.utf8");
+ini_set('memory_limit', '-1');
+
 class C_Tambahan extends CI_Controller
 {
   
@@ -24,7 +27,7 @@ class C_Tambahan extends CI_Controller
 
     public function checkSession(){
         if(!$this->session->is_logged){
-            redirect('index');
+            redirect('');
         }
     }
 
@@ -410,6 +413,13 @@ class C_Tambahan extends CI_Controller
             );
         }
             
+        echo json_encode($data);
+    }
+
+    public function getPenerima(){
+        $key = $this->input->get('term');
+        $tempat_makan = $this->input->get('tempat_makan');
+        $data = $this->M_tambahan->getPenerimaByKeyTempatMakan($key,$tempat_makan);
         echo json_encode($data);
     }
 

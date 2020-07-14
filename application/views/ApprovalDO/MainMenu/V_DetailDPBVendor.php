@@ -91,17 +91,46 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
-                                    <input class="form-control txttglKirimAO" <?= $UserAccess['tgl_kirim'] ?> value="<?php if (isset($DPBVendorDetail[0]['TGL_KIRIM'])) echo date("d-M-Y",strtotime($DPBVendorDetail[0]['TGL_KIRIM']));?>">
+                                    <input class="form-control txttglKirimADO" <?= $UserAccess['tgl_kirim'] ?> value="<?php if (isset($DPBVendorDetail[0]['TGL_KIRIM'])) echo date("d-M-Y",strtotime($DPBVendorDetail[0]['TGL_KIRIM']));?>">
                                 </div>
                             </div>
                         </div>
                         <br />
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Lain-Lain</label>
-                            <div class="col-sm-8">
+                            <label class="col-sm-2 control-label">Gudang Pengirim</label>
+                            <div class="col-sm-5">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-plus"></i></span>
-                                    <input class="form-control txtADOAdditionalInformation" <?= $UserAccess['lain_lain'] ?> value="<?php if (isset($DPBVendorDetail[0]['LAIN'])) echo $DPBVendorDetail[0]['LAIN'] ?>">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-home"></i></span>
+                                    <select class="form-control slcADOGudangPengirim" id="" <?= $UserAccess['gudang_pengirim'] ?>>
+                                        <?php if (isset($DPBVendorDetail[0]['GUDANG_PENGIRIM'])) { ?>
+                                            
+                                         <option value="<?= $DPBVendorDetail[0]['GUDANG_PENGIRIM'];?>"><?= $DPBVendorDetail[0]['GUDANG_PENGIRIM'];?></option>
+                                        <?php }else { ?>
+                                          <option></option>  
+                                        <?php } ?>
+                                        <option value="TUKSONO">TUKSONO</option>
+                                        <option value="MLATI">MLATI</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Alamat Bongkar</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-home"></i></span>
+                                    <input class="form-control txtADOAlamatBongkar" <?= $UserAccess['alamat_bongkar'] ?> value="<?php if (isset($DPBVendorDetail[0]['ALAMAT_BONGKAR'])) echo $DPBVendorDetail[0]['ALAMAT_BONGKAR'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Catatan</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-sticky-note"></i></span>
+                                    <input class="form-control txtADOCatatan" <?= $UserAccess['catatan'] ?> value="<?php if (isset($DPBVendorDetail[0]['CATATAN'])) echo $DPBVendorDetail[0]['CATATAN'] ?>">
                                 </div>
                             </div>
                         </div>

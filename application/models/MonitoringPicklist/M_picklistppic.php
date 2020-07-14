@@ -19,7 +19,7 @@ class M_picklistppic extends CI_Model
 		return $query->result_array();
 	}
 
-	function getDataBelum($dept, $tgl)
+	function getDataBelum($dept, $tgl1, $tgl2)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "select distinct
@@ -62,18 +62,19 @@ class M_picklistppic extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+			and wdj.STATUS_TYPE not in (5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER not in (select distinct kpa.PICKLIST 
 												from khs_picklist_approved kpa
 												)
 			-- 
 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
-			and to_char(we.CREATION_DATE,'DD/MM/YYYY') = '$tgl' ";
+			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
 
-	function getDataSudah($dept, $tgl)
+	function getDataSudah($dept, $tgl1, $tgl2)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "select distinct
@@ -118,6 +119,7 @@ class M_picklistppic extends CI_Model
    and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
    and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
    and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+	 and wdj.STATUS_TYPE not in (5, 6, 12)
    --
    and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
    -- 
@@ -128,7 +130,7 @@ class M_picklistppic extends CI_Model
 		 ) = 1
    and kpa.PROCESS = 1 -- ppic
    and bd.DEPARTMENT_CLASS_CODE = '$dept'
-   and to_char(we.CREATION_DATE,'DD/MM/YYYY') = '$tgl'";
+   and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -151,6 +153,24 @@ class M_picklistppic extends CI_Model
 	public function cekapprove($picklist, $nojob){
 		$oracle = $this->load->database('oracle', true);
 		$sql = "select * from khs_picklist_approved where picklist = '$picklist' and job_number = '$nojob' and process = 2";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+	
+	public function cekapprove2($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_picklist_approved where job_number = '$nojob' and process = 1";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cekdeliver($picklist){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select sum(mtrl.QUANTITY_DELIVERED) deliver
+		from mtl_txn_request_headers mtrh,
+		mtl_txn_request_lines mtrl
+		where mtrh.HEADER_ID = mtrl.HEADER_ID
+		and mtrh.REQUEST_NUMBER = '$picklist'";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

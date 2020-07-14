@@ -65,11 +65,27 @@ class C_DPBVendor extends CI_Controller {
             'kontak_supir'     => 'readonly',
             'vendor_ekspedisi' => 'readonly',
             'estimasi_datang'  => 'readonly',
-            'lain_lain'        => 'readonly',
+            'alamat_bongkar'   => 'readonly',
+            'catatan'          => 'readonly',
             'estdate'          => '',
-            'tgl_kirim'          => ''
+            'tgl_kirim'          => '',
+            'gudang_pengirim'  => 'readonly'
         ];
-        if ($this->session->responsibility_id == '2724') {
+        if ($this->session->user === 'B0445') {
+            $data['UserAccess'] = [   
+                    'jenis_kendaraan'  => '',
+                    'no_kendaraan'     => 'readonly',
+                    'nama_supir'       => 'readonly',
+                    'kontak_supir'     => 'readonly',
+                    'vendor_ekspedisi' => 'readonly',
+                    'estimasi_datang'  => 'readonly',
+                    'alamat_bongkar'   => '',
+                    'catatan'          => '',
+                    'estdate'          => '',
+                    'tgl_kirim'        => '',
+                    'gudang_pengirim'  => ''
+            ];
+        }else {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => 'readonly',
                     'no_kendaraan'     => '',
@@ -77,21 +93,11 @@ class C_DPBVendor extends CI_Controller {
                     'kontak_supir'     => '',
                     'vendor_ekspedisi' => '',
                     'estimasi_datang'  => '',
-                    'lain_lain'        => '',
-                    'estdate'          => 'ADOEstDatang',
+                    'alamat_bongkar'   => 'readonly',
+                    'catatan'          => 'readonly',
                     'tgl_kirim'        => 'readonly',
-                ];
-            }else if ($this->session->responsibility_id == '2709') {
-            $data['UserAccess'] = [   
-                'jenis_kendaraan'  => '',
-                    'no_kendaraan'     => 'readonly',
-                    'nama_supir'       => 'readonly',
-                    'kontak_supir'     => 'readonly',
-                    'vendor_ekspedisi' => 'readonly',
-                    'estimasi_datang'  => 'readonly',
-                    'lain_lain'        => '',
-                    'estdate'          => '',
-                    'tgl_kirim'        => '',
+                    'gudang_pengirim'  => 'readonly',
+                    'estdate'          => 'ADOEstDatang'
             ];
         }
 
@@ -150,7 +156,10 @@ class C_DPBVendor extends CI_Controller {
         $namasupir = $this->input->post('driverName');
         $kontaksupir = $this->input->post('driverPhone');
         $vendorekspedisi = $this->input->post('expVendor');
-        $lain = $this->input->post('additionalInformation');
+        $gudangPengirim = $this->input->post('gudangPengirim');
+        $alamatBongkar = $this->input->post('alamatBongkar');
+        $catatan = $this->input->post('catatan');
+        // $lain = $this->input->post('additionalInformation');
 
         $data = [
             'NO_PR'            => $nopr,
@@ -159,8 +168,11 @@ class C_DPBVendor extends CI_Controller {
             'NAMA_SUPIR'       => $namasupir,
             'KONTAK_SOPIR'     => $kontaksupir,
             'VENDOR_EKSPEDISI' => $vendorekspedisi,
+            'GUDANG_PENGIRIM'  => $gudangPengirim,
+            'ALAMAT_BONGKAR'   => $alamatBongkar,
+            'CATATAN'          => $catatan
             // 'ESTIMASI_DATANG'  => ,
-            'LAIN'             => $lain,
+            // 'LAIN'             => $lain,
         ];
 
         if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {

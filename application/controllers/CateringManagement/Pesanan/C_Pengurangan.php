@@ -1,8 +1,11 @@
 <?php 
 Defined('BASEPATH') or exit('No direct Script access allowed');
-/**
- * 
- */
+
+set_time_limit(0);
+ini_set('date.timezone', 'Asia/Jakarta');
+setlocale(LC_TIME, "id_ID.utf8");
+ini_set('memory_limit', '-1');
+
 class C_Pengurangan extends CI_Controller
 {
   
@@ -24,7 +27,7 @@ class C_Pengurangan extends CI_Controller
 
     public function checkSession(){
         if(!$this->session->is_logged){
-            redirect('index');
+            redirect('');
         }
     }
 
@@ -200,21 +203,21 @@ class C_Pengurangan extends CI_Controller
                 'fd_tanggal' => $tanggal, 
                 'fs_tempat_makan' => $tempat_makan, 
                 'fs_kd_shift' => $shift, 
-                'fn_jumlah_pesanan' => $jumlah, 
+                'fn_jml_tdkpesan' => $jumlah, 
                 'fb_kategori' => $kategori,  
             );
-            $id_tambahan = $this->M_tambahan->insertTambahan($insert);
+            $id_pengurangan = $this->M_pengurangan->insertPengurangan($insert);
 
-            $this->M_tambahan->deleteTambahanDetailByIdTambahan($id_tambahan);
+            $this->M_pengurangan->deletePenguranganDetailByIdPengurangan($id_pengurangan);
             if (!empty($penerima)) {
                 foreach ($penerima as $pn) {
-                    $cekTambahanDetail = $this->M_tambahan->getTambahanDetailByIdTambahanNoind($id_tambahan, $pn);
-                    if (empty($cekTambahanDetail)) {
-                        $this->M_tambahan->insertTambahanDetail($id_tambahan,$pn);
+                    $cekPenguranganDetail = $this->M_pengurangan->getPenguranganDetailByIdPenguranganNoind($id_pengurangan, $pn);
+                    if (empty($cekPenguranganDetail)) {
+                        $this->M_pengurangan->insertPenguranganDetail($id_pengurangan,$pn);
                     }
                 }
             }
-            $this->M_tambahan->updateTambahanJumlahByIdTambahan($id_tambahan);
+            $this->M_pengurangan->updatePenguranganJumlahByIdPengurangan($id_pengurangan);
 
             $pengurangan = $this->M_pengurangan->getPenguranganByIdPengurangan($id_pengurangan);
 
@@ -341,6 +344,30 @@ class C_Pengurangan extends CI_Controller
             );
         }
 
+        echo json_encode($data);
+    }
+
+    public function getPenerima(){
+        $key = $this->input->get('term');
+        $tempat_makan = $this->input->get('tempat_makan');
+        $data = $this->M_pengurangan->getPenerimaByKeyTempatMakan($key,$tempat_makan);
+        echo json_encode($data);
+    }
+
+    public function getTempatMakanBaru(){
+        $key = $this->input->get('term');
+        $tempat_makan = $this->input->get('tempat_makan');
+        $kategori = $this->input->get('kategori');
+        if ($kategori == "3") {
+            $kategori = " and fs_perizinan_dinas = 1 ";
+        }elseif ($kategori == "4") {
+            $kategori = " and fs_perizinan_dinas = 2 ";
+        }elseif ($kategori == "5") {
+            $kategori = " and fs_perizinan_dinas = 3 ";
+        }else{
+            $kategori = " ";
+        }
+        $data = $this->M_pengurangan->getTempatMakanBaruByKeyTempatMakanKategori($key,$tempat_makan,$kategori);
         echo json_encode($data);
     }
 

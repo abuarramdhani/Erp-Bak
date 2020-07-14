@@ -60,6 +60,7 @@
 					from \"Surat\".tsurat_tugas ts
 					left join hrd_khs.tpribadi tp 
 					on ts.noind = tp.noind
+					where deleted_date is null
 					order by ts.tgl_dibuat desc ";
 			return $this->personalia->query($sql)->result_array();
 	    }
@@ -83,7 +84,9 @@
 
 	    public function deleteSuratTugasByID($id){
 	    	$this->personalia->where('surat_tugas_id',$id);
-	    	$this->personalia->delete("\"Surat\".tsurat_tugas");
+	    	$this->personalia->set('deleted_by', $this->session->user);
+	    	$this->personalia->set('deleted_date', date('Y-m-d H:i:s'));
+	    	$this->personalia->update("\"Surat\".tsurat_tugas");
 	    }
 
 	    public function updateSuratTugasByID($data,$id){

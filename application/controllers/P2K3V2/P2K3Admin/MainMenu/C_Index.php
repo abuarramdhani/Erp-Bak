@@ -28,7 +28,7 @@ class C_Index extends CI_Controller
 	{
 		if ($this->session->is_logged) {
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -461,7 +461,7 @@ class C_Index extends CI_Controller
 		}
 		$data['pr'] = $periode;
 		$run = '0';
-		$jml = '';
+		$jml = 0;
 		$validasi = $this->input->post('validasi');
 		if ($validasi == 'hitung') {
 			$delPeriode = $this->M_dtmasuk->delPeriode($pr, $ks, $apd);

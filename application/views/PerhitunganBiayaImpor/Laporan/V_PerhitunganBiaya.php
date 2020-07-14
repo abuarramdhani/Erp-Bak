@@ -211,8 +211,14 @@
                                                     <td><?= $no; ?></td>
                                                     <td><?= $acost['DESKRIPSI']; ?></td>
                                                     <td align="right"><?= $acost['HARGA_USD']; ?></td>
-                                                    <td align="right" class="hrgLainAdditionalCostPBI"><?= number_format($acost['HARGA'],2); ?></td>
+                                                    <td align="right" class=""><input type="text" class="form-control hrgLainAdditionalCostPBI" value="<?= number_format($acost['HARGA'],2); ?>" style="text-align:right;" rid="<?= $no;?>" readonly></td>
                                                     <td><button type="button" class="btn btn-danger btndeleteAddCostPBI" value="<?= $id.'-'.$acost['DESKRIPSI']; ?>"><i class="fa fa-trash"></i></button>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary editAdditionalCostPBI" rid="<?= $no;?>"><i class="fa fa-pencil"></i></button>
+                                                        <button type="button" class="btn btn-success prosesEditAddCostPBI" style="display:none" rid="<?= $no;?>" value="<?= $id.'-'.$acost['DESKRIPSI']; ?>"><i class="fa fa-check"></i></button>
+                                                        <img src="<?= base_url('assets/img/gif/spinner.gif');?>" alt="" class="loadingEditAddCostPBI" style="display:none" rid="<?= $no;?>">
+                                                    </td>
+                                                    <td></td>
                                                 </tr>
                                             <?php } ?>
                                             <tr>

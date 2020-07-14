@@ -29,7 +29,7 @@ class C_Order extends CI_Controller
 	{
 		if ($this->session->is_logged) {
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -1243,10 +1243,10 @@ class C_Order extends CI_Controller
 		$mail->Password = '123456';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'P2K3');
-		$mail->addAddress('dicka_ismaji@quick.com');
-		// foreach ($arr as $key) {
-		// 	$mail->addAddress($key);
-		// }
+		// $mail->addAddress('your_mail@quick.com');
+		foreach ($arr as $key) {
+		    $mail->addAddress($key);
+		}
 		$mail->Subject = 'NEW!!! P2K3 Approval Standar Kebutuhan';
 		$mail->msgHTML($message);
 
@@ -1580,7 +1580,7 @@ class C_Order extends CI_Controller
 					$listtobon[$i]['bonTrans'] += isset($arrc[$listtobon[$i]['kode_item']]) ? $arrc[$listtobon[$i]['kode_item']] : 0;
 				}
 			}
-			$data['canSubmit'] = (strpos(end($endDataTrans), 'Y') === false) ? false : true;
+			$data['canSubmit'] = (strpos(end($endDataTrans), 'N')) ? false : true;
 			$data['notrans'] = $endDataTrans['NO_BON'];
 		}
 		// echo "<pre>";
@@ -1740,7 +1740,7 @@ class C_Order extends CI_Controller
 				if ($input2) {
 					//insert to sys.t_log_activity
 					$aksi = 'P2K3 V2';
-					$detail = "Insert Order ID= $id ";
+					$detail = "Insert Order ID= $idOr ";
 					$this->log_activity->activity_log($aksi, $detail);
 					//
 				}

@@ -1,4 +1,5 @@
 <?php
+//hello
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class C_Master extends CI_Controller
@@ -118,6 +119,7 @@ class C_Master extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        $data['error'] = '';
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -125,62 +127,212 @@ class C_Master extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
+    public function SaveNon()
+    {
+      //==========generate document_number=====
+    //   $time 				= date('ymd');
+    //   $lastNumber   = $this->M_pbi->lastDocumentNumber('FPB'.$time);
+    //   if (empty($lastNumber[0]['DOC_NUMBER'])) {
+    //       $newNumber = 'FPB'.$time.'001';
+    //   } else {
+    //       $newNumber = $lastNumber[0]['DOC_NUMBER']+1;
+    //       if (strlen($newNumber) < 3) {
+    //           $newNumber = str_pad($newNumber, 3, "00", STR_PAD_LEFT);
+    //       }
+    //       $newNumber = 'FPB'.$time.$newNumber;
+    //   }
+      $newNumber = $this->M_pbi->generateTicketPBI();
+      //==========end generate========
+
+      // ======== header data ===========
+      $nama_pengirim  = $this->input->post('nama_pengirim');
+      $seksi_pengirim = $this->input->post('seksi_pengirim');
+      $seksi_tujuan   = $this->input->post('seksi_tujuan'); // SADARNYA BLAKANGAN ~_-
+      $user_tujuan    = $this->input->post('employee_seksi_tujuan');
+      $tujuan         = $this->input->post('tujuan');
+      $mo             = '';
+      $type           = $this->input->post('type');
+      // ======== line data ===========
+      $line           = $this->input->post('line_number');
+      $item_code      = $this->input->post('item_code');
+      $description    = $this->input->post('description');
+      $quantity       = $this->input->post('quantity');
+      $uom            = $this->input->post('uom');
+      $item_type      = $this->input->post('item_type');
+      $keterangan     = $this->input->post('keterangan');
+
+      foreach ($line as $key => $l) {
+          $data = [
+        'DOC_NUMBER'    => $newNumber,
+        'SEKSI_KIRIM'   => $seksi_pengirim,
+        'SEKSI_TUJUAN'  => $seksi_tujuan,
+        'TUJUAN'        => $tujuan,
+        'USER_TUJUAN'   => $user_tujuan,
+        'LINE_NUM'      => $line[$key],
+        'ITEM_CODE'     => strtoupper($item_code[$key]),
+        'ITEM_TYPE'     => strtoupper($item_type[$key]),
+        'DESCRIPTION'   => strtoupper($description[$key]),
+        'QUANTITY'      => $quantity[$key],
+        'UOM'           => $uom[$key],
+        'STATUS'        => 1,
+        'CREATED_BY'    => !empty($mo)?$nama_pengirim:$this->session->user,
+        'MO'            => $mo,
+        'TYPE'          => $type,
+        'KETERANGAN'    => strtoupper($keterangan)
+      ];
+          $this->M_pbi->insert($data);
+      }
+      echo '<script type="text/javascript">
+            function openWindows(){
+                window.location.replace("'.base_url('PengirimanBarangInternal/Input').'");
+                window.open("'.base_url('PengirimanBarangInternal/Cetak/'.$newNumber).'");
+            }
+            openWindows();
+          </script>';
+    }
+
+    public function cek_no_mo()
+    {
+      foreach ($this->input->post('mo') as $key => $v) {
+        $hasil = $this->M_pbi->cek_no_mo($v);
+        if (!empty($hasil->NO_MOVE_ORDER)) {
+          $cek = 0;
+          break;
+        }else {
+          $cek = 1;
+        }
+      }
+      $data = [
+        'status' => $cek,
+        'mo' => $v
+      ];
+      echo json_encode($data);
+    }
+
+    public function getDetailMo()
+    {
+      if ($this->input->is_ajax_request()) {
+        $param = $this->input->post('mo');
+        // foreach ($param as $key => $value) {
+          echo json_encode($this->M_pbi->getDetailMo($param));
+        // }
+      }
+    }
+
+    // public function hapusMO($monya)
+    // {
+    //   $this->M_pbi->deleteMO($monya);
+    // }
+
     public function Save()
     {
-        //==========generate document_number=====
-        $time 				= date('ymd');
-        $lastNumber   = $this->M_pbi->lastDocumentNumber('FPB'.$time);
-        if (empty($lastNumber[0]['DOC_NUMBER'])) {
-            $newNumber = 'FPB'.$time.'001';
-        } else {
-            $newNumber = $lastNumber[0]['DOC_NUMBER']+1;
-            if (strlen($newNumber) < 3) {
-                $newNumber = str_pad($newNumber, 3, "00", STR_PAD_LEFT);
-            }
-            $newNumber = 'FPB'.$time.$newNumber;
-        }
-        //==========end generate========
+        $mo        = $this->input->post('mo');
+        $cek_no_mo = $this->M_pbi->cek_no_mo($mo);
+        if (empty($cek_no_mo->NO_MOVE_ORDER)) {
+          //==========generate document_number=====
+        //   $time 				= date('ymd');
+        //   $lastNumber   = $this->M_pbi->lastDocumentNumber('FPB'.$time);
+        //   if (empty($lastNumber[0]['DOC_NUMBER'])) {
+        //       $newNumber = 'FPB'.$time.'001';
+        //   } else {
+        //       $newNumber = $lastNumber[0]['DOC_NUMBER']+1;
+        //       if (strlen($newNumber) < 3) {
+        //           $newNumber = str_pad($newNumber, 3, "00", STR_PAD_LEFT);
+        //       }
+        //       $newNumber = 'FPB'.$time.$newNumber;
+        //   }
+          $newNumber = $this->M_pbi->generateTicketPBI();
+          //==========end generate========
 
-        // ======== header data ===========
-        $seksi_pengirim = $this->input->post('seksi_pengirim');
-        $seksi_tujuan   = $this->input->post('seksi_tujuan'); // SADARNYA BLAKANGAN ~_-
-        $user_tujuan    = $this->input->post('employee_seksi_tujuan');
-        $tujuan         = $this->input->post('tujuan');
-        // ======== line data ===========
-        $line           = $this->input->post('line_number');
-        $item_code      = $this->input->post('item_code');
-        $description    = $this->input->post('description');
-        $quantity       = $this->input->post('quantity');
-        $uom            = $this->input->post('uom');
-        $item_type      = $this->input->post('item_type');
-        $keterangan     = $this->input->post('keterangan');
+          // ======== header data ===========
+          $tujuan         = $this->input->post('tujuan');
+          $type           = $this->input->post('type');
+          // ======== line data ===========
+          $nama_pengirim  = $this->input->post('nama_pengirim');
+          $seksi_pengirim = $this->input->post('seksi_pengirim');
+          $seksi_tujuan   = $this->input->post('seksi_tujuan'); // SADARNYA BLAKANGAN ~_-
+          $user_tujuan    = $this->input->post('employee_seksi_tujuan');
 
-        foreach ($line as $key => $l) {
-            $data = [
-          'DOC_NUMBER'    => $newNumber,
-          'SEKSI_KIRIM'   => $seksi_pengirim,
-          'SEKSI_TUJUAN'  => $seksi_tujuan,
-          'TUJUAN'        => $tujuan,
-          'USER_TUJUAN'   => $user_tujuan,
-          'LINE_NUM'      => $line[$key],
-          'ITEM_CODE'     => strtoupper($item_code[$key]),
-          'ITEM_TYPE'     => strtoupper($item_type[$key]),
-          'DESCRIPTION'   => strtoupper($description[$key]),
-          'QUANTITY'      => $quantity[$key],
-          'UOM'           => $uom[$key],
-          'STATUS'        => 1,
-          'CREATED_BY'    => $this->session->user,
-          'KETERANGAN'    => strtoupper($keterangan)
-        ];
-            $this->M_pbi->insert($data);
+          $line           = $this->input->post('line_number');
+          $item_code      = $this->input->post('item_code');
+          $description    = $this->input->post('description');
+          $quantity       = $this->input->post('quantity');
+          $uom            = $this->input->post('uom');
+          $item_type      = $this->input->post('item_type');
+          $item_mo        = $this->input->post('item_mo');
+          $keterangan     = $this->input->post('keterangan');
+
+          foreach ($line as $key => $l) {
+              $data = [
+            'DOC_NUMBER'    => $newNumber,
+            'SEKSI_KIRIM'   => $seksi_pengirim[$key],
+            'SEKSI_TUJUAN'  => $seksi_tujuan[$key],
+            'TUJUAN'        => $tujuan,
+            'USER_TUJUAN'   => $user_tujuan[$key],
+            'LINE_NUM'      => $line[$key],
+            'ITEM_CODE'     => strtoupper($item_code[$key]),
+            'ITEM_TYPE'     => strtoupper($item_type[$key]),
+            'DESCRIPTION'   => strtoupper($description[$key]),
+            'QUANTITY'      => $quantity[$key],
+            'UOM'           => $uom[$key],
+            'STATUS'        => 2,
+            'CREATED_BY'    => $nama_pengirim[$key],
+            'MO'            => $item_mo[$key],
+            'TYPE'          => $type,
+            'KETERANGAN'    => strtoupper($keterangan)
+          ];
+              $this->M_pbi->insertMO($data);
+          }
+          $this->checkSession();
+          $user_id = $this->session->userid;
+
+          $data['Menu'] = 'Dashboard';
+          $data['SubMenuOne'] = '';
+
+          $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+          $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+          $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+          $data['error'] = '<br><div class="alert alert-success alert-dismissible no-border fade in mb-2" role="alert">
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">
+                                  <i class="icon-cross2"></i>
+                                </span>
+                              </button>
+                              <strong>Data telah berhasil disimpan !</strong>
+                            </div>';
+
+          $this->load->view('V_Header', $data);
+          $this->load->view('V_Sidemenu', $data);
+          $this->load->view('PengirimanBarangInternal/V_input', $data);
+          $this->load->view('V_Footer', $data);
+
+        }else {
+          $this->checkSession();
+          $user_id = $this->session->userid;
+
+          $data['Menu'] = 'Dashboard';
+          $data['SubMenuOne'] = '';
+
+          $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+          $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+          $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+          $data['error'] = '<br><div class="alert alert-danger alert-dismissible no-border fade in mb-2" role="alert">
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">
+                                  <i class="icon-cross2"></i>
+                                </span>
+                              </button>
+                              <strong>Peringatan!</strong> No MO <b>'.$mo.'</b> telah ada di database.
+                            </div>';
+
+          $this->load->view('V_Header', $data);
+          $this->load->view('V_Sidemenu', $data);
+          $this->load->view('PengirimanBarangInternal/V_input', $data);
+          $this->load->view('V_Footer', $data);
         }
-        echo '<script type="text/javascript">
-              function openWindows(){
-                  window.location.replace("'.base_url('PengirimanBarangInternal/Input').'");
-                  window.open("'.base_url('PengirimanBarangInternal/Cetak/'.$newNumber).'");
-              }
-              openWindows();
-            </script>';
+
     }
 
     // =========================MONITORING AREA====================================
@@ -200,7 +352,11 @@ class C_Master extends CI_Controller
         $data['get'] = $this->M_pbi->GetMasterD();
         foreach ($data['get'] as $key => $g) {
             $seksi = $this->M_pbi->getSeksiku($g['USER_TUJUAN']);
-            $data['seksi_tujuan'][] = $seksi->seksi;
+            if (!empty($seksi)) {
+              $data['seksi_tujuan'][] = $seksi->seksi;
+            }else {
+              $data['seksi_tujuan'][] = $g['USER_TUJUAN'];
+            }
         }
 
         $this->load->view('V_Header', $data);
@@ -232,7 +388,11 @@ class C_Master extends CI_Controller
         $data['get'] = $this->M_pbi->GetMasterDD();
         foreach ($data['get'] as $key => $g) {
             $seksi = $this->M_pbi->getSeksiku($g['USER_TUJUAN']);
-            $data['seksi_tujuan'][] = $seksi->seksi;
+            if (!empty($seksi)) {
+              $data['seksi_tujuan'][] = $seksi->seksi;
+            }else {
+              $data['seksi_tujuan'][] = $g['USER_TUJUAN'];
+            }
         }
 
         $this->load->view('V_Header', $data);

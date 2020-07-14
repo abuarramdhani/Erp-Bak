@@ -1,38 +1,44 @@
 <?php
-class M_splseksi extends CI_Model{
+class M_splseksi extends CI_Model
+{
 
-	function __construct(){
+	function __construct()
+	{
 		parent::__construct();
 		$this->load->database();
-		$this->spl = $this->load->database('spl_db',true);
+		$this->spl = $this->load->database('spl_db', true);
 		$this->prs = $this->load->database('personalia', true);
 		$this->sql = $this->load->database('quick', true);
 	}
 
-	public function show_noind(){
+	public function show_noind()
+	{
 		$this->prs->order_by('fs_noind', 'asc');
 		$query = $this->prs->get('hrd_khs.tnoind');
 		return $query->result_array();
 	}
 
-	public function show_lokasi(){
+	public function show_lokasi()
+	{
 		$query = $this->spl->get('hrd_khs.tlokasi_kerja');
 		return $query->result_array();
 	}
 
-	public function show_jenis_lembur(){
+	public function show_jenis_lembur()
+	{
 		$query = $this->spl->get('splseksi.tjenislembur');
 		return $query->result_array();
 	}
 
-	public function show_pekerja($filter, $filter2, $akses_sie){
+	public function show_pekerja($filter, $filter2, $akses_sie)
+	{
 		$x = 0;
 		$akses = "";
-		if(!empty($akses_sie)){
-			foreach($akses_sie as $as){
-				if($x == 0){
+		if (!empty($akses_sie)) {
+			foreach ($akses_sie as $as) {
+				if ($x == 0) {
 					$akses = "kodesie like '$as%'";
-				}else{
+				} else {
 					$akses .= " or kodesie like '$as%'";
 				}
 				$x++;
@@ -47,14 +53,15 @@ class M_splseksi extends CI_Model{
 		return $query->result_array();
 	}
 
-	public function show_seksi($filter, $filter2, $akses_sie){
+	public function show_seksi($filter, $filter2, $akses_sie)
+	{
 		$x = 0;
 		$akses = "";
-		if(!empty($akses_sie)){
-			foreach($akses_sie as $as){
-				if($x == 0){
+		if (!empty($akses_sie)) {
+			foreach ($akses_sie as $as) {
+				if ($x == 0) {
 					$akses = "kodesie like '$as%'";
-				}else{
+				} else {
 					$akses .= " or kodesie like '$as%'";
 				}
 				$x++;
@@ -79,18 +86,21 @@ class M_splseksi extends CI_Model{
 		return $query->result_array();
 	}
 
-	public function show_akses_seksi($filter){
+	public function show_akses_seksi($filter)
+	{
 		$this->spl->where('noind', $filter);
 		$query = $this->spl->get('takses_seksi');
 		return $query->result_array();
 	}
 
-	public function show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie){
+	public function show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie)
+	{
 		$x = 0;
-		foreach($akses_sie as $as){
-			if($x == 0){
+		$akses = '';
+		foreach ($akses_sie as $as) {
+			if ($x == 0) {
 				$akses = "b.kodesie like '$as%'";
-			}else{
+			} else {
 				$akses .= " or b.kodesie like '$as%'";
 			}
 			$x++;
@@ -109,43 +119,50 @@ class M_splseksi extends CI_Model{
 		return $query->result_array();
 	}
 
-	public function show_current_shift($tanggal, $noind){
+	public function show_current_shift($tanggal, $noind)
+	{
 		$sql = "select * from \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		$query = $this->prs->query($sql);
 		return $query->result_array();
 	}
 
-	public function show_current_spl($tanggal, $noind, $lembur, $idspl){
-		if($idspl == ""){
+	public function show_current_spl($tanggal, $noind, $lembur, $idspl)
+	{
+		if ($idspl == "") {
 			$sql = "select *from splseksi.tspl where Noind='$noind' and Tgl_Lembur='$tanggal' and Kd_Lembur='$lembur'";
-		}else{
+		} else {
 			$sql = "select *,b.nama from splseksi.tspl a inner join hrd_khs.tpribadi b on a.noind=b.noind where id_spl='$idspl'";
 		}
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
 
-	public function show_maxid($table, $col){
+	public function show_maxid($table, $col)
+	{
 		$query = $this->spl->query("select max($col)+1 as id from $table");
 		return $query->row();
 	}
 
-	public function save_log($data){
-		$this->spl->insert('splseksi.tlog',$data);
+	public function save_log($data)
+	{
+		$this->spl->insert('splseksi.tlog', $data);
 		return;
 	}
 
-	public function save_spl($data){
-		$this->spl->insert('splseksi.tspl',$data);
+	public function save_spl($data)
+	{
+		$this->spl->insert('splseksi.tspl', $data);
 		return;
 	}
 
-	public function save_splr($data){
-		$this->spl->insert('splseksi.tspl_riwayat',$data);
+	public function save_splr($data)
+	{
+		$this->spl->insert('splseksi.tspl_riwayat', $data);
 		return;
 	}
 
-	public function drop_spl($filter){
+	public function drop_spl($filter)
+	{
 		$this->spl->where('ID_SPL', $filter);
 		$this->spl->delete('splseksi.tspl');
 
@@ -154,18 +171,21 @@ class M_splseksi extends CI_Model{
 		return;
 	}
 
-	public function update_spl($data, $filter){
+	public function update_spl($data, $filter)
+	{
 		$this->spl->where('ID_SPL', $filter);
 		$this->spl->update('splseksi.tspl', $data);
 		return;
 	}
 
-	public function show_rekap($dari, $sampai, $noind, $akses_sie){
+	public function show_rekap($dari, $sampai, $noind, $akses_sie)
+	{
 		$x = 0;
-		foreach($akses_sie as $as){
-			if($x == 0){
+		$akses = '';
+		foreach ($akses_sie as $as) {
+			if ($x == 0) {
 				$akses = "tlb.kodesie like '$as%'";
-			}else{
+			} else {
 				$akses .= " or tlb.kodesie like '$as%'";
 			}
 			$x++;
@@ -180,11 +200,12 @@ class M_splseksi extends CI_Model{
 			where tlb.noind like '$noind%' and tlb.tanggal between '$dari' and '$sampai' and ($akses)
 			order by tlb.noind, tlb.tanggal";
 		$query = $this->spl->query($sql);
-		
+
 		return $query->result_array();
 	}
 
-	public function show_email_addres($sie){
+	public function show_email_addres($sie)
+	{
 		$user = $this->session->user; //untuk trial
 		$sql = "select eea.employee_code, eea.employee_name, eea.internal_mail, sugm.user_group_menu_name
 			from er.er_employee_all eea
@@ -192,12 +213,13 @@ class M_splseksi extends CI_Model{
 			inner join sys.sys_user_application sua on su.user_id = sua.user_id
 			inner join sys.sys_user_group_menu sugm on sua.user_group_menu_id = sugm.user_group_menu_id
 			where eea.resign='0' and eea.section_code like '$sie%' and lower(sugm.user_group_menu_name) like '%lembur%kasie%' ";
-				// and su.user_name='$user'"; //untuk trial
+		// and su.user_name='$user'"; //untuk trial
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
-	public function show_spl_byid($id){
+	public function show_spl_byid($id)
+	{
 		$sql = "select 	a.id_spl,
 						a.tgl_lembur,
 						a.jam_mulai_lembur,
@@ -237,12 +259,14 @@ class M_splseksi extends CI_Model{
 		return $query->result_array();
 	}
 
-	public function getSexEmployee($user){
+	public function getSexEmployee($user)
+	{
 		$sql = "select trim(sex) as sex from er.er_employee_all where employee_code = '$user'";
 		return $this->db->query($sql)->row()->sex;
 	}
 
-	public function getJari($user){
+	public function getJari($user)
+	{
 		$sql = "select * from splseksi.tfinger_php tf
 				inner join fp_distribusi.tb_jari tj
 				on tj.id_finger = tf.kd_finger
@@ -250,7 +274,8 @@ class M_splseksi extends CI_Model{
 		return $this->spl->query($sql)->result_array();
 	}
 
-	public function getRekapSpl($user,$kd){
+	public function getRekapSpl($user, $kd)
+	{
 		$sql = "select left(status, 1) as status, sum(jumlah) as jumlah
 				from (
 					select Status as status,COUNT(Status) jumlah from splseksi.tspl ts
@@ -264,22 +289,24 @@ class M_splseksi extends CI_Model{
 		return $this->spl->query($sql)->result_array();
 	}
 
-	public function getCountDashboard($akses_sie, $status = false) {
+	public function getCountDashboard($akses_sie, $status = false)
+	{
 		$noind = $this->session->user;
 		$monthNow = date('Ym');
 
 		$x = 0;
-		foreach($akses_sie as $as){
-			if($x == 0){
+		$akses = '';
+		foreach ($akses_sie as $as) {
+			if ($x == 0) {
 				$akses = "tp.kodesie like '$as%'";
-			}else{
+			} else {
 				$akses .= " or tp.kodesie like '$as%'";
 			}
 			$x++;
 		}
 
 		$filter = '';
-		if($status) {
+		if ($status) {
 			$filter = "and ts.Status in($status)";
 		}
 
@@ -291,7 +318,8 @@ class M_splseksi extends CI_Model{
 		return $this->spl->query($sql)->row()->jumlah;
 	}
 
-	public function show_spl2($kd,$user){
+	public function show_spl2($kd, $user)
+	{
 		$sql = "select a.*, b.nama, d.kodesie, d.seksi, d.unit, d.dept, e.nama_lembur, c.Deskripsi, (select nama from 	hrd_khs.tpribadi where noind = a.user_) as user_approve
 				from splseksi.tspl a
 				inner join hrd_khs.tpribadi b ON a.noind = b.noind
@@ -302,11 +330,12 @@ class M_splseksi extends CI_Model{
 				and EXTRACT(year from a.Tgl_lembur) = EXTRACT(year from now())
 				and EXTRACT(month from a.Tgl_lembur) = EXTRACT(month from now())
 				and a.Status like '$kd'";
-				
+
 		return $this->spl->query($sql)->result_array();
 	}
 
-	public function getTim($noind, $tanggal){
+	public function getTim($noind, $tanggal)
+	{
 		$sql = "select tdt.point as point
 				from \"Presensi\".tdatatim tdt
 				where tdt.noind = '$noind'
@@ -315,7 +344,8 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->row();
 	}
 
-	public function getPresensi($noind,$tanggal){
+	public function getPresensi($noind, $tanggal)
+	{
 		$sql = "select 	tdp.noind,
 						tsp.kd_shift,
 						tdp.tanggal::date,
@@ -352,7 +382,8 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->result_array();
 	}
 
-	public function getPresensiPusat($noind,$tanggal){
+	public function getPresensiPusat($noind, $tanggal)
+	{
 		$sql = "select 	tsp.noind,
 						tsp.kd_shift,
 						tsp.tanggal::date,
@@ -378,12 +409,14 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->result_array();
 	}
 
-	public function getShiftpekerja($noind,$tanggal){
+	public function getShiftpekerja($noind, $tanggal)
+	{
 		$sql = "select * from \"Presensi\".tshiftpekerja where noind = '$noind' and tanggal = '$tanggal'";
 		return $this->prs->query($sql)->num_rows();
 	}
 
-	public function getDataForMemo($noind,$tanggal){
+	public function getDataForMemo($noind, $tanggal)
+	{
 		$sql = "select a.nama,a.noind,b.seksi,b.unit,
 						'$tanggal' as tanggal,
 						extract(dow from '$tanggal'::date) as hari,
@@ -402,17 +435,20 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->result_array();
 	}
 
-	public function getAlasanMemo(){
+	public function getAlasanMemo()
+	{
 		$sql = "select * from splseksi.talasan order by 1";
 		return $this->spl->query($sql)->result_array();
 	}
 
-	public function show_pekerja2($key){
+	public function show_pekerja2($key)
+	{
 		$sql = "select noind,nama from hrd_khs.tpribadi where (nama like upper('%$key%') or noind like upper('%$key%')) and keluar = '0'";
 		return $this->prs->query($sql)->result_array();
 	}
 
-	public function getShiftMemo($key,$tgl){
+	public function getShiftMemo($key, $tgl)
+	{
 		$sql = "select distinct a.kd_shift,
 				concat(trim(b.shift),' (',a.jam_msk,' - ',a.jam_plg,')') as shift
 				from \"Presensi\".tjamshift a
@@ -423,27 +459,32 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->result_array();
 	}
 
-	public function insertMemo($data){
-		$this->spl->insert('splseksi.tabsen_manual',$data);
+	public function insertMemo($data)
+	{
+		$this->spl->insert('splseksi.tabsen_manual', $data);
 		return $this->spl->insert_id();
 	}
 
-	public function show_memo($data){
-		$this->spl->where('absen_manual_id',$data);
+	public function show_memo($data)
+	{
+		$this->spl->where('absen_manual_id', $data);
 		return $this->spl->get('splseksi.tabsen_manual')->row();
 	}
 
-	public function insertAlasanMemo($data){
-		$this->spl->insert('splseksi.talasan_absen_manual',$data);
+	public function insertAlasanMemo($data)
+	{
+		$this->spl->insert('splseksi.talasan_absen_manual', $data);
 		return $this->spl->insert_id();
 	}
 
-	public function show_AlasanMemo($data){
-		$this->spl->where('absen_manual_id',$data);
+	public function show_AlasanMemo($data)
+	{
+		$this->spl->where('absen_manual_id', $data);
 		return $this->spl->get('splseksi.talasan_absen_manual')->result_array();
 	}
 
-	public function show_pekerjamemo($noind){
+	public function show_pekerjamemo($noind)
+	{
 		$sql = "select a.noind, a.nama, a.kodesie, b.seksi, b.unit
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b
@@ -452,7 +493,8 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->row();
 	}
 
-	public function show_shiftmemo($kd_shift,$tanggal){
+	public function show_shiftmemo($kd_shift, $tanggal)
+	{
 		$sql = "select a.kd_shift,
 				concat(trim(b.shift),' (',a.jam_msk,' - ',a.jam_plg,')') as shift
 				from \"Presensi\".tjamshift a
@@ -463,7 +505,8 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->row();
 	}
 
-	public function show_atasan($noind1,$noind2,$noind3){
+	public function show_atasan($noind1, $noind2, $noind3)
+	{
 		$sql = "select noind,
 				case when length(concat(split_part(nama,' ',1),' ',split_part(nama,' ',2),' ',left(split_part(nama,' ',3),1))) > 17 then
 									concat(split_part(nama,' ',1),' ',left(split_part(nama,' ',2),1),' ',left(split_part(nama,' ',3),1))
@@ -475,14 +518,15 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->result_array();
 	}
 
-	public function show_pekerja3($key,$key2,$akses_sie){
+	public function show_pekerja3($key, $key2, $akses_sie)
+	{
 		$x = 0;
 		$akses = "";
-		if(!empty($akses_sie)){
-			foreach($akses_sie as $as){
-				if($x == 0){
+		if (!empty($akses_sie)) {
+			foreach ($akses_sie as $as) {
+				if ($x == 0) {
 					$akses = "kodesie like '$as%'";
-				}else{
+				} else {
 					$akses .= " or kodesie like '$as%'";
 				}
 				$x++;
@@ -494,45 +538,50 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->result_array();
 	}
 
-	public function show_pekerja4($key,$key2){
+	public function show_pekerja4($key, $key2)
+	{
 		$kodesie = $this->session->kodesie;
 		$sql = "select noind,nama from hrd_khs.tpribadi where (noind like upper('%$key%') or nama like upper('%$key%')) and noind not in ($key2) and keluar = '0' and lefT(kodesie,7) = left('$kodesie',7);";
 		return $this->prs->query($sql)->result_array();
 	}
 
-	public function gettcodefingerprint(){
+	public function gettcodefingerprint()
+	{
 		$sql = "select * from splseksi.tcode_fingerprint";
 		return $this->spl->query($sql)->result_array();
 	}
 
-	public function inserttcodefingerprint($data){
-		$this->spl->insert('splseksi.tcode_fingerprint',$data);
+	public function inserttcodefingerprint($data)
+	{
+		$this->spl->insert('splseksi.tcode_fingerprint', $data);
 	}
 
-	public function updatetcodefingerprint($data,$id){
-		$this->spl->where('ID_',$id);
-		$this->spl->update('splseksi.tcode_fingerprint',$data);
+	public function updatetcodefingerprint($data, $id)
+	{
+		$this->spl->where('ID_', $id);
+		$this->spl->update('splseksi.tcode_fingerprint', $data);
 	}
 
-	public function deletetcodefingerprint($id){
-		$this->spl->where('ID_',$id);
+	public function deletetcodefingerprint($id)
+	{
+		$this->spl->where('ID_', $id);
 		$this->spl->delete('splseksi.tcode_fingerprint');
 	}
 
-	public function gettfingerphp(){
-		$sql = "select 	a.user_name as noind,
-						b.noind_baru,
-						b.nama,
-						count(a.user_name) as jumlah
-				from splseksi.tfinger_php a
-				left join hrd_khs.tpribadi b
-				on a.user_name = b.Noind
-				group by a.user_name,b.Nama
-				order by user_id";
+	public function gettfingerphp()
+	{
+		$sql = "SELECT b.Noind as noind,
+				b.Noind_Baru as noind_baru,
+				b.Nama as nama,
+				(SELECT count(user_name) FROM splseksi.tfinger_php WHERE user_name = b.Noind) as jumlah
+				FROM  hrd_khs.tpribadi as b
+				WHERE b.Noind in (SELECT user_name FROM splseksi.tfinger_php)
+				ORDER BY noind";
 		return $this->spl->query($sql)->result_array();
 	}
 
-	public function getfingerdata($noind){
+	public function getfingerdata($noind)
+	{
 		$sql = "select *,
 				(select concat(left(finger_data,30),'...')
 				from splseksi.tfinger_php b
@@ -542,7 +591,8 @@ class M_splseksi extends CI_Model{
 		return $this->spl->query($sql)->result_array();
 	}
 
-	public function getUserfinger($key){
+	public function getUserfinger($key)
+	{
 		$sql = "select a.user_name as noind,
 				b.employee_name as nama,
 				b.new_employee_code as noind_baru
@@ -556,32 +606,37 @@ class M_splseksi extends CI_Model{
 		return $this->db->query($sql)->result_array();
 	}
 
-	public function deleteFingertempAll($noind){
-		$this->spl->where('user_name',$noind);
+	public function deleteFingertempAll($noind)
+	{
+		$this->spl->where('user_name', $noind);
 		$this->spl->delete('splseksi.tfinger_php');
 	}
 
-	public function deleteFingertemp($userid,$kd_finger){
-		$this->spl->where('user_id',$userid);
-		$this->spl->where('kd_finger',$kd_finger);
+	public function deleteFingertemp($userid, $kd_finger)
+	{
+		$this->spl->where('user_id', $userid);
+		$this->spl->where('kd_finger', $kd_finger);
 		$this->spl->delete('splseksi.tfinger_php');
 	}
 
-	public function getAcSnByVc($vc){
+	public function getAcSnByVc($vc)
+	{
 		$sql = "select Activation_Code as ac, SN as sn
 				from splseksi.tcode_fingerprint
 				where Verification_Code = '$vc'";
 		return $this->spl->query($sql)->row();
 	}
 
-	public function getDeviceBySn($sn){
+	public function getDeviceBySn($sn)
+	{
 		$sql = "select Activation_Code as ac, VKEY as vkey
 				from splseksi.tcode_fingerprint
 				where SN = '$sn' ";
 		return $this->spl->query($sql)->row();
 	}
 
-	public function getUseridByNoind($noind){
+	public function getUseridByNoind($noind)
+	{
 		$sql = "select a.user_id
 				from sys.sys_user a
 				inner join er.er_employee_all b
@@ -590,7 +645,8 @@ class M_splseksi extends CI_Model{
 		return $this->db->query($sql)->row()->user_id;
 	}
 
-	public function getNoindByUserid($userid){
+	public function getNoindByUserid($userid)
+	{
 		$sql = "select b.employee_code as noind
 				from sys.sys_user a
 				inner join er.er_employee_all b
@@ -599,58 +655,64 @@ class M_splseksi extends CI_Model{
 		return $this->db->query($sql)->row()->noind;
 	}
 
-	public function insertFingerTemp($data){
-		$this->spl->insert('splseksi.tfinger_php',$data);
+	public function insertFingerTemp($data)
+	{
+		$this->spl->insert('splseksi.tfinger_php', $data);
 	}
 
-	public function getKeteranganJamLembur($noind){
+	public function getKeteranganJamLembur($noind)
+	{
 		$sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind = '$noind'";
 		$a = $this->prs->query($sql);
 
-		if($a->num_rows() > 0) {
+		if ($a->num_rows() > 0) {
 			$a = $a->row()->kodesie;
 		} else {
 			return 'UMUM';
 		}
 
-		if($a == '401010102' || $a == '401010102'){
-			return 'UMUM';//SATPAM
+		if ($a == '401010102' || $a == '401010102') {
+			return 'UMUM'; //SATPAM
 		}
 
 		return 'UMUM';
 	}
 
-	public function getJenisHari($tgl, $noind){
+	public function getJenisHari($tgl, $noind)
+	{
 		$name_hari = date('D', strtotime($tgl));
 		$tanggal = date('Y-m-d', strtotime($tgl));
 
 		//cek minggu
-		if($name_hari == 'Sun'){
+		if ($name_hari == 'Sun') {
 			//cek shift
 			$sql = "SELECT * FROM \"Presensi\".tshiftpekerja WHERE tanggal='$tanggal' and noind ='$noind'";
-			$jenis = $this->prs->query($sql)->num_rows() > 0? 'Biasa' : 'Libur';
-		}else{
+			$jenis = $this->prs->query($sql)->num_rows() > 0 ? 'Biasa' : 'Libur';
+		} else {
 			//cek hari libur
 			$sql = "SELECT * FROM \"Dinas_Luar\".tlibur WHERE tanggal = '$tanggal'";
-			$jenis =  $this->prs->query($sql)->num_rows() > 0? 'Libur' : 'Biasa';
+			$jenis =  $this->prs->query($sql)->num_rows() > 0 ? 'Libur' : 'Biasa';
 		}
 
 		return $jenis;
 	}
 
-	public function treffjamlembur($KET, $JENIS_HARI, $HARI){
+	public function treffjamlembur($KET, $JENIS_HARI, $HARI)
+	{
 		$sql = "SELECT * FROM presensi.treffjamlembur WHERE keterangan='$KET' AND jenis_hari='$JENIS_HARI' AND hari='$HARI' order by urutan asc";
 		return $this->spl->query($sql)->result_array();
 	}
 
 	// DELETE ME: mungkin tidak digunakan
-	public function checkSPL($noind, $tanggal){
+	public function checkSPL($noind, $tanggal)
+	{
 		$sql = "SELECT * FROM splseksi.tspl WHERE Tgl_Lembur ='$tanggal' AND noind='$noind'";
 		// return $this->spl->query($sql)->num_rows() > 0 ? true : false; -> dihilangi karena diganti pengecekan saat input
 		return false;
 	}
 
-	public function selectShift($noind, $tanggal){
+	public function selectShift($noind, $tanggal)
+	{
 		$tanggal = date('Y-m-d', strtotime($tanggal));
 		$sql = "SELECT tanggal, jam_msk, jam_plg, break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		return $this->prs->query($sql)->row();
@@ -658,24 +720,25 @@ class M_splseksi extends CI_Model{
 
 	public function selectAllShift($tanggal)
 	{
-		$numDay = date('w', strtotime($tanggal))+1;
+		$numDay = date('w', strtotime($tanggal)) + 1;
 		$sql = "SELECT break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tjamshift WHERE numhari='$numDay' and kd_shift in('1','2','3','4')";
 		return $this->prs->query($sql)->result_array();
 	}
 
-	function getAbsensi($noind, $tanggal1, $tanggal2) {
+	function getAbsensi($noind, $tanggal1, $tanggal2)
+	{
 		// flow
 		// jika tanggal1 & tanggal 2 berbeda
-			// cek shift $masuuk =  max(tanggal1) & $pulang = shift min(tanggal2)
+		// cek shift $masuuk =  max(tanggal1) & $pulang = shift min(tanggal2)
 		// else
-			// cek shift $masuk = min(tanggal1) & $pulang = shift max(tanggal1) 
-		if($tanggal1 == $tanggal2) {
-			$tglKemarin = date('Y-m-d', strtotime('-1 day '.$tanggal1));
+		// cek shift $masuk = min(tanggal1) & $pulang = shift max(tanggal1) 
+		if ($tanggal1 == $tanggal2) {
+			$tglKemarin = date('Y-m-d', strtotime('-1 day ' . $tanggal1));
 			$selectAbsenPulangKemarin = "SELECT keluar from \"Presensi\".tdatapresensi where noind='$noind' and tanggal='$tglKemarin'";
-			
+
 			$execute = $this->prs->query($selectAbsenPulangKemarin);
 			$tommorow = '';
-			if($execute->num_rows() > 0) {
+			if ($execute->num_rows() > 0) {
 				$tommorow = "AND waktu <> '{$execute->row()->keluar}' ";
 			}
 
@@ -683,8 +746,8 @@ class M_splseksi extends CI_Model{
 						max(concat(tanggal::date,' ',waktu)::timestamp) as out, 
 						count(*) as jumlah 
 					from \"Presensi\".tprs_shift 
-					where noind = '$noind' and tanggal = '$tanggal1' $tommorow;";	
-			
+					where noind = '$noind' and tanggal = '$tanggal1' $tommorow;";
+
 			$result = $this->prs->query($sql);
 		} else { // beda hari
 			$sql = "SELECT 
@@ -697,32 +760,33 @@ class M_splseksi extends CI_Model{
 		return $result;
 	}
 
-	function checkingExistSPL($noind, $tanggal, $waktuAwal, $waktuAkhir) {
+	function checkingExistSPL($noind, $tanggal, $waktuAwal, $waktuAkhir)
+	{
 		$sql = "SELECT * FROM splseksi.tspl WHERE Tgl_Lembur ='$tanggal' AND noind='$noind'";
 		$result = $this->spl->query($sql)->result_array();
-		
+
 		$endResult = [
 			'exist' => false,
 			'message' => ''
 		];
-		
+
 		// jika ada
-		if(count($result)) {
-			foreach($result as $item) {
-				$waktu1 = $item['Tgl_Lembur']." ".$item['Jam_Mulai_Lembur'];
+		if (count($result)) {
+			foreach ($result as $item) {
+				$waktu1 = $item['Tgl_Lembur'] . " " . $item['Jam_Mulai_Lembur'];
 				// jika jam mulai lembur > jam akhir lembur maka akhir lembur adl besoknya
-				$waktu2 = (strtotime($item['Jam_Mulai_Lembur']) > strtotime($item['Jam_Akhir_Lembur']) ) ? date('Y-m-d', strtotime($item['Tgl_Lembur']." +1 days"))." ".$item['Jam_Akhir_Lembur'] : $item['Tgl_Lembur']." ".$item['Jam_Akhir_Lembur'];
-				
+				$waktu2 = (strtotime($item['Jam_Mulai_Lembur']) > strtotime($item['Jam_Akhir_Lembur'])) ? date('Y-m-d', strtotime($item['Tgl_Lembur'] . " +1 days")) . " " . $item['Jam_Akhir_Lembur'] : $item['Tgl_Lembur'] . " " . $item['Jam_Akhir_Lembur'];
+
 				// beberapa case pengecekan lembur 
 				$case1 = strtotime($waktuAwal) < strtotime($waktu1) && strtotime($waktuAkhir) < strtotime($waktu1);
 				$case2 = strtotime($waktuAwal) > strtotime($waktu2) && strtotime($waktuAkhir) > strtotime($waktu2);
-				
-				if(!$case1 && !$case2){
+
+				if (!$case1 && !$case2) {
 					$endResult = [
 						'exist' => true,
 						'message' => [
 							'tanggal' => $item['Tgl_Lembur'],
-							'jam' => $item['Jam_Mulai_Lembur']." - ".$item['Jam_Akhir_Lembur']
+							'jam' => $item['Jam_Mulai_Lembur'] . " - " . $item['Jam_Akhir_Lembur']
 						]
 					];
 				}
@@ -732,13 +796,36 @@ class M_splseksi extends CI_Model{
 		return $endResult;
 	}
 
-	function getNoindBaru($noind) {
+	function getNoindBaru($noind)
+	{
 		$sql = "SELECT distinct noind_baru from hrd_khs.tpribadi where noind = '$noind' limit 1";
 		return $this->prs->query($sql)->row()->noind_baru;
 	}
-	
-	function getNameByNoind($noind) {
+
+	function getNameByNoind($noind)
+	{
 		$sql = "SELECT distinct nama from hrd_khs.tpribadi where noind = '$noind' limit 1";
 		return $this->prs->query($sql)->row()->nama;
+	}
+
+	function getSplById($spl_id_array)
+	{
+		$this->spl->where_in('ID_SPL', $spl_id_array);
+		return $this->spl->get('tspl')->result_array();
+	}
+
+	function insertBatchSPLRiwayat($data)
+	{
+		$this->spl->insert_batch('splseksi.tspl_riwayat', $data);
+	}
+
+	function insertBatchLogSPL($data)
+	{
+		$this->spl->insert_batch('splseksi.tlog', $data);
+	}
+
+	function updateBatchSPL($data)
+	{
+		$this->spl->update_batch('splseksi.tspl', $data, 'ID_SPL'); // (table, array, where key arraynya)
 	}
 }

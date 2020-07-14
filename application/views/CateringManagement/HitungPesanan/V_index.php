@@ -11,7 +11,6 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								
 							</div>
 							<div class="box-body">
 								<div class="row">
@@ -20,7 +19,7 @@
 											<div class="form-group">
 												<label class="control-label col-md-4">Tanggal</label>
 												<div class="col-md-4">
-													<input type="text"class="form-control" placeholder="Pilih Tanggal..." id="CateringHitungPesananTanggal" name="CateringHitungPesananTanggal" autocomplete="off">
+													<input type="text"class="form-control" placeholder="Pilih Tanggal..." id="CateringHitungPesananTanggal" name="CateringHitungPesananTanggal" autocomplete="off" value="<?php echo date('Y-m-d') ?>">
 												</div>
 											</div>
 											<div class="form-group">
@@ -28,9 +27,9 @@
 												<div class="col-md-4">
 													<select class="select2" style="width: 100%" data-placeholder="Pilih Shift..." id="CateringHitungPesananShift" name="CateringHitungPesananShift">
 														<option></option>
-														<option value="1">Shift 1 & Umum</option>
-														<option value="2">Shift 2</option>
-														<option value="3">Shift 3</option>
+														<option value="1" <?php echo (strtotime(date("Y-m-d H:i:s")) < strtotime(date('Y-m-d 12:30:00'))) ? "selected" : ""  ?>>Shift 1 & Umum</option>
+														<option value="2" <?php echo (strtotime(date("Y-m-d H:i:s")) >= strtotime(date('Y-m-d 12:30:00')) && strtotime(date("Y-m-d H:i:s")) <= strtotime(date('Y-m-d 16:30:00'))) ? "selected" : ""  ?>>Shift 2</option>
+														<option value="3" <?php echo (strtotime(date("Y-m-d H:i:s")) > strtotime(date('Y-m-d 16:30:00'))) ? "selected" : ""  ?>>Shift 3</option>
 													</select>
 												</div>
 											</div>
@@ -39,17 +38,20 @@
 												<div class="col-md-4">
 													<select class="select2" style="width: 100%" data-placeholder="Pilih Lokasi Kerja..." id="CateringHitungPesananLokasi" name="CateringHitungPesananLokasi">
 														<option></option>
-														<option value="1">Pusat</option>
-														<option value="2">Tuksono</option>
+														<option value="1" <?php echo (isset($lokasi_kerja) && $lokasi_kerja == 1) ? "selected" : "" ?>>Pusat</option>
+														<option value="2" <?php echo (isset($lokasi_kerja) && $lokasi_kerja == 2) ? "selected" : "" ?>>Tuksono</option>
 													</select>
 												</div>
 											</div>
 											<div class="form-group">
-												<div class="col-sm-2 col-sm-offset-4 text-center">
+												<div class="col-sm-2 col-sm-offset-3 text-center">
 													<button type="submit" class="btn btn-primary" id="CateringHitungLihat">Lihat</button>
 												</div>
 												<div class="col-sm-2 text-center">
-													<button type="button" class="btn btn-success" id="CateringHitungRefresh">Refresh</button>
+													<button type="button" class="btn btn-info" id="CateringHitungRefreshSnack">Refresh Snack</button>
+												</div>
+												<div class="col-sm-2 text-center">
+													<button type="button" class="btn btn-success" id="CateringHitungRefreshMakan">Refresh Makan</button>
 												</div>
 											</div>
 										</form>
@@ -93,6 +95,7 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0,0,0,.5);
+    z-index: 9999;
 }
 .loading-wheel {
     width: 40px;

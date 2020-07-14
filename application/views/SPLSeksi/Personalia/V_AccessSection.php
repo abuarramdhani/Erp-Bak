@@ -1,5 +1,6 @@
 <style media="screen">
-	thead > tr > th, tbody > tr > td {
+	thead>tr>th,
+	tbody>tr>td {
 		text-align: center;
 	}
 </style>
@@ -35,14 +36,15 @@
 											</thead>
 											<tbody>
 
-												<?php $no=1;
-													foreach ($all_access as $key): ?>
+												<?php $no = 1;
+												foreach ($all_access as $key) : ?>
 													<tr>
 														<td><?= $no++ ?></td>
 														<td><?= $key['noind'] ?></td>
 														<td><?= $key['nama'] ?></td>
 														<td><?= $key['seksi'] ?></td>
-														<td><?php $data = explode('|', $key['nama_seksi']); echo count($data) ?></td>
+														<td><?php $data = explode('|', $key['nama_seksi']);
+																echo count($data) ?></td>
 														<td><button data-noind="<?= $key['noind'] ?>" data-nama="<?= $key['nama'] ?>" class="btn btn-success btn-md edit-access-section" onclick="btnEditListener($(this))" data-target="#modaladd" data-toggle="modal"><i class="fa fa-edit"></i></button></td>
 													</tr>
 												<?php endforeach; ?>
@@ -115,7 +117,7 @@
 			<div class="modal-header" style="background-color: #3c8dbc;">
 				<label>Tambah Pekerja</label>
 				<button class="btn btn-danger spl-fingertemp-modal-user-close" style="float: right;border-radius: 0px">
-					<span class="glyphicon glyphicon-off"></span>
+					<span class="glyphicon glyphicon-remove"></span>
 				</button>
 			</div>
 			<div class="modal-body">

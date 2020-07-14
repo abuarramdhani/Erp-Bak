@@ -58,6 +58,45 @@ class C_DPBKHS extends CI_Controller {
         $this->load->view('V_Footer', $data);
     }
 
+    public function ListDPBKHS()
+    {
+        $user_id = $this->session->userid;
+        $resp_id = $this->session->responsibility_id;
+
+		$data['Menu']           = 'DPB KHS';
+		$data['SubMenuOne']     = '';
+		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
+        $data['DPBKHSList']     = $this->M_dpb->getListDPBKHS();
+        $data['UserAccess']     = [   
+            'add_data'  => 'disabled',
+            'delete'    => 'disabled'
+        ];
+
+        if ( $this->session->user === 'B0445' ) {
+            $data['UserAccess'] = [   
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        } else if ( $this->session->user === 'F2326' ) {
+            $data['UserAccess'] = [   
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        } else if ( $this->session->user === 'J1396' ) {
+            $data['UserAccess'] = [ 
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        }
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_ListDPBKHS', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
     public function detail()
     {
         if ( ! $data['NO_PR'] = $this->input->post('data-pr') ) {
@@ -150,14 +189,17 @@ class C_DPBKHS extends CI_Controller {
                 'NO_KENDARAAN'     => $data['header']['vehicleId'],
                 'NAMA_SUPIR'       => $data['header']['driverName'],
                 'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
-                'LAIN'             => $data['header']['additionalInformation'],
+                'GUDANG_PENGIRIM'  => $data['header']['gudangPengirim'],
+                'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
+                'CATATAN'          => $data['header']['catatan'],
                 'LINE_NUM'         => $val['line'],
 		        'DO_NUM'           => $val['doNumber'],
 		        'ITEM_NAME'        => $val['itemName'],
 		        'UOM'              => $val['uom'],
 		        'QTY'              => $val['qty'],
 		        'NAMA_TOKO'        => $val['shopName'],
-		        'KOTA'             => $val['city']
+                'KOTA'             => $val['city'],
+                'APPROVED_FLAG'    => 'P'
             ]);
         }
 
@@ -185,14 +227,16 @@ class C_DPBKHS extends CI_Controller {
                     'NO_KENDARAAN'     => $data['header']['vehicleId'],
                     'NAMA_SUPIR'       => $data['header']['driverName'],
                     'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
-                    'LAIN'             => $data['header']['additionalInformation'],
+                    'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
+                    'CATATAN'          => $data['header']['catatan'],
                     'LINE_NUM'         => $val['lineNumber'],
                     'DO_NUM'           => $val['doNumber'],
                     'ITEM_NAME'        => $val['itemName'],
                     'UOM'              => $val['uom'],
                     'QTY'              => $val['qty'],
                     'NAMA_TOKO'        => $val['shopName'],
-                    'KOTA'             => $val['city']
+                    'KOTA'             => $val['city'],
+                    'APPROVED_FLAG'    => 'P'
                 ]);
             }
         }
@@ -205,13 +249,15 @@ class C_DPBKHS extends CI_Controller {
                     'NO_KENDARAAN'     => $data['header']['vehicleId'],
                     'NAMA_SUPIR'       => $data['header']['driverName'],
                     'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
-                    'LAIN'             => $data['header']['additionalInformation'],
+                    'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
+                    'CATATAN'          => $data['header']['catatan'],
                     'DO_NUM'           => $val['doNumber'],
                     'ITEM_NAME'        => $val['itemName'],
                     'UOM'              => $val['uom'],
                     'QTY'              => $val['qty'],
                     'NAMA_TOKO'        => $val['shopName'],
-                    'KOTA'             => $val['city']
+                    'KOTA'             => $val['city'],
+                    'APPROVED_FLAG'    => 'P'
                 ]);
             }
         }

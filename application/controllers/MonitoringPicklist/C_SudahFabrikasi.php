@@ -24,7 +24,7 @@ class C_SudahFabrikasi extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -50,12 +50,18 @@ class C_SudahFabrikasi extends CI_Controller
 
 	function searchData(){
 		$dept 	= $this->input->post('dept');
-		$tanggal 	= $this->input->post('tanggal');
-		$tgl = explode('/', $tanggal);
-		$data['tgl'] = $tgl[0].'-'.$tgl[1].'-'.$tgl[2];
+		$tanggal1 	= $this->input->post('tanggal1');
+		$tanggal2 	= $this->input->post('tanggal2');
+		// $tgl = explode('/', $tanggal1);
+		// $data['tgl'] = $tgl[0].'-'.$tgl[1].'-'.$tgl[2];
 		// echo "<pre>";print_r($tgl);exit();
 
-		$data['data'] = $this->M_pickfabrikasi->getdataSudah($dept, $tanggal);
+		$getdata = $this->M_pickfabrikasi->getdataSudah($dept, $tanggal1, $tanggal2);
+		foreach ($getdata as $key => $get) {
+			$cek = $this->M_pickfabrikasi->cekdeliver($get['PICKLIST']);
+			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
+		}
+		$data['data'] = $getdata;
 		
 		$this->load->view('MonitoringPicklist/FABRIKASI/V_TblSudahFabrikasi', $data);
 	}

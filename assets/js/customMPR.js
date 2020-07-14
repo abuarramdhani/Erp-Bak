@@ -716,3 +716,89 @@ $(document).on('ready',function(){
 })
 
 // end THR
+
+// start Cuti Bersama
+$(document).ready(function(){
+    $('#txtTanggalCutiBersama').datepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        "format": 'yyyy-mm-dd'
+    });
+
+    $('#tbl-MPR-CutiBersama-index').DataTable();
+    
+    $('#MPR-cutibersama-submit').on('click',function(){
+        $('#MPR-status-Read').val("1");
+        $('#MPR-cutibersama-download').html("");
+        txtTanggalCutiBersama = $('#txtTanggalCutiBersama').val();
+        txtKeteranganCutiBersama = $('#txtKeteranganCutiBersama').val();
+        $('#MPR-cutibersama-progress').css("width","0%");
+        $.ajax({
+            data : {txtTanggalCutiBersama : txtTanggalCutiBersama, txtKeteranganCutiBersama : txtKeteranganCutiBersama},
+            url : baseurl + 'MasterPresensi/Proses/CutiBersama/Proses',
+            type : 'POST',
+            success: function(e){
+               $('#MPR-cutibersama-download').html(e);
+               setTimeout(function(e){
+                 $('#MPR-status-Read').val("0");
+               },5000);
+            }
+        })
+    });
+
+    $('.td-MPR-CutiBersama-cb').on('click',function(){
+       showModalCutiBersama($(this));
+    });
+
+    $('.td-MPR-CutiBersama-mtp').on('click',function(){
+        showModalCutiBersama($(this));
+    });
+
+    $('.td-MPR-CutiBersama-mp').on('click',function(){
+        showModalCutiBersama($(this));
+    });
+
+    $('.td-MPR-CutiBersama-l').on('click',function(){
+        showModalCutiBersama($(this));
+    });
+
+    $('.td-MPR-CutiBersama-j').on('click',function(){
+       showModalCutiBersama($(this));
+    });
+
+    $('.modal-close-MPR-CutiBersama').on('click',function(){
+        $('#modal-MPR-CutiBersama').modal('hide');
+    });
+
+})
+
+function showModalCutiBersama(dt){
+    tanggal = dt.attr('data-tanggal');
+    keterangan =  dt.attr('data-ket');
+    $('.loading').show();
+    $.ajax({
+        data: {tanggal: tanggal, keterangan: keterangan},
+        type: 'GET',
+        url: baseurl + 'MasterPresensi/Proses/CutiBersama/Detail',
+        error: function(xhr,status,error){
+            console.log(xhr);
+            console.log(status);
+            console.log(error);
+            $('.loading').hide();
+            swal.fire({
+                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                html: xhr['responseText'],
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+        },
+        success: function(result){
+            $('#modal-MPR-CutiBersama-isi').html(result);
+            $('#modal-MPR-CutiBersama-isi .tbl-MPR-CutiBersama-modal-table').DataTable();
+            $('.loading').hide();
+            $('#modal-MPR-CutiBersama').modal('show');
+        }
+    })
+}
+// end Cuti Bersama

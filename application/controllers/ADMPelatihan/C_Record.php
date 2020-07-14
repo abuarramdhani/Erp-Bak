@@ -39,7 +39,7 @@ class C_Record extends CI_Controller {
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
-				  //redirect('index');
+				  //redirect('');
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
@@ -582,6 +582,48 @@ class C_Record extends CI_Controller {
 			redirect('');
 		}
 	}
+
+	 public function CetakSertifikat($id)
+		{
+		//$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		//$plaintext_string = $this->encrypt->decode($plaintext_string);
+		//$data ['peserta']= $this->M_daftarhadir->getPesertaPelatihanByID($plaintext_string);
+		//$data['Pelatihan'] = $this->M_daftarhadir->getPelatihanByID($plaintext_string);
+         //Ini kalau mau ditampilkan datanya di view yang dituju harus ditulis seperti ini, karena yang dibawa $data
+         // echo "<pre>";
+		  //print_r($data);exit();
+
+		
+		$data['record'] = $this->M_record->GetRecordId($id);
+		   //echo "<pre>";
+		  //print_r($data['record']);exit();
+		$data['GetEvaluationType'] = $this->M_penjadwalan->GetEvaluationType();
+		$data['purpose'] = $this->M_record->GetObjectiveId($data['record'][0]['training_id']);
+
+		//MENENTUKAN SOURCE OBJECTIVE BERDASARKAN STATUS PELATIHAN (PAKET/NON-PAKET)
+		$trainingdt		= $data['record'][0];
+		$trainingid 	= $trainingdt['training_id'];
+		$trainingst		= $this->M_record->GetTrainingType($trainingid);
+		$status 		= $trainingst[0]->status;
+		
+		$data['participant'] = $this->M_record->GetParticipantId($id);
+		$data['trainer'] = $this->M_record->GetTrainer();
+
+			$this->load->library('pdf');
+
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('utf-8', array(210,297), 0, '',9, 9, 9, 0, 0, 0, 'L');
+			$filename = 'sertifikat.pdf';
+
+
+			$html = $this->load->view('ADMPelatihan/Record/V_CetakSertifikat', $data, true);
+
+			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+			$pdf->WriteHTML($stylesheet1,1);
+			$pdf->WriteHTML($html, 2);
+		    $pdf->setTitle($filename);
+			$pdf->Output($filename, 'I');
+		}
 // ----------------------------------------------------------------------JAVASCRIPT---------------------------------------------------------------
 	//FILTER RECORD
 	public function FilterRecord(){

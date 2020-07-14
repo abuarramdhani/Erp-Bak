@@ -44,8 +44,8 @@
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Machine Qty</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Operator Qty</th>
 			
-			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Usage Rate<br>(Minutes)</th>
-			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Cycle Time<br>(Second)</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Usage Rate<br>(Hours)</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Cycle Time<br>(Seconds)</th>
 			<th colspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Target</th>
 			<!-- <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Inverse</th> -->
 		</tr>
@@ -223,13 +223,13 @@
 					?>
 							<td rowspan="<?php echo $mergeUR;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
 							<?php 
-								// $datapdf[$i]['USAGE_RATE_OR_AMOUNT']
-								$ruMinutes = $datapdf[$i]['USAGE_RATE_OR_AMOUNT']*60;
-								if (strpos($ruMinutes,'.') == null) {
-									echo $ruMinutes;
-								} else {
-									echo number_format((float)$ruMinutes, 2, '.', '');
-								}
+								echo $datapdf[$i]['USAGE_RATE_OR_AMOUNT']
+								// $ruMinutes = $datapdf[$i]['USAGE_RATE_OR_AMOUNT']*60;
+								// if (strpos($ruMinutes,'.') == null) {
+								// 	echo $ruMinutes;
+								// } else {
+								// 	echo number_format((float)$ruMinutes, 2, '.', '');
+								// }
 							?>
 							</td>
 					<?php
@@ -241,13 +241,13 @@
 					?>
 							<td rowspan="<?php echo $mergeUR;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
 							<?php 
-								// $datapdf[$i]['USAGE_RATE_OR_AMOUNT']
-								$ruMinutes = $datapdf[$i]['USAGE_RATE_OR_AMOUNT']*60;
-								if (strpos($ruMinutes,'.') == null) {
-									echo $ruMinutes;
-								} else {
-									echo number_format((float)$ruMinutes, 2, '.', '');
-								}
+								echo $datapdf[$i]['USAGE_RATE_OR_AMOUNT']
+								// $ruMinutes = $datapdf[$i]['USAGE_RATE_OR_AMOUNT']*60;
+								// if (strpos($ruMinutes,'.') == null) {
+								// 	echo $ruMinutes;
+								// } else {
+								// 	echo number_format((float)$ruMinutes, 2, '.', '');
+								// }
 							?>
 							</td>
 					<?php

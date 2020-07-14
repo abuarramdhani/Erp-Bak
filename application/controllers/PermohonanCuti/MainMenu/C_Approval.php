@@ -35,7 +35,7 @@ class C_Approval extends CI_Controller
 	public function checkSession()
 	{
 		if(!$this->session->is_logged){
-			redirect('index');
+			redirect('');
 		}
 	}
 

@@ -130,6 +130,24 @@
                                                 <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
+                                        <div class="col-md-1">
+                                            <?php for ($i=18; $i < 21; $i++) { 
+                                                $warna = $i == 18 ? 'bg-black' : ($i == 19 ? 'bg-primary' : 'bg-orange');
+                                                $warna2 = $i == 20 ? 'black' : 'white';
+                                                echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
+                                                <button type="button" class="btn btn-md '.$warna.'" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <span style="color:'.$warna2.';font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
+                                            }?>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <?php for ($i=21; $i < 24; $i++) { 
+                                                $warna = $i == 21 ? 'bg-black' : ($i == 22 ? 'bg-primary' : 'bg-orange');
+                                                $warna2 = $i == 23 ? 'black' : 'white';
+                                                echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
+                                                <button type="button" class="btn btn-md '.$warna.'" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <span style="color:'.$warna2.';font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
+                                            }?>
+                                        </div>
                                     <br><br><br><br><br><br><br><br>
                                     </div>
                                     <div class="col-md-12">

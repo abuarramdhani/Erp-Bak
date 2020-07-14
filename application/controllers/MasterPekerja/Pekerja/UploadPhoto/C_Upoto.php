@@ -68,7 +68,7 @@ class C_Upoto extends CI_Controller
 		//upload an image options
 		$config = array();
 		$config['upload_path'] = './assets/img/foto';
-		$config['allowed_types'] = '*';
+		$config['allowed_types'] = 'jpg|png|gif|';
 		$config['max_size']      = '1000';
 		$config['file_name']     = $noInd;
 		$config['overwrite'] 	 = TRUE;	

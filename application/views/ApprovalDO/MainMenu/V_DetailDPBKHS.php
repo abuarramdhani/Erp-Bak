@@ -73,11 +73,40 @@
                         </div>
                         <br />
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Lain-Lain</label>
-                            <div class="col-sm-8">
+                            <label class="col-sm-2 control-label">Gudang Pengirim</label>
+                            <div class="col-sm-5">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-plus"></i></span>
-                                    <input class="form-control txtADOAdditionalInformation" <?= $UserAccess['edit_field'] ?> value="<?php if (isset($DPBKHSDetail[0]['LAIN'])) echo $DPBKHSDetail[0]['LAIN'] ?>">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-home"></i></span>
+                                    <select class="form-control slcADOGudangPengirim" id="">
+                                        <?php if (isset($DPBKHSDetail[0]['GUDANG_PENGIRIM'])) { ?>
+                                            
+                                            <option value="<?= $DPBKHSDetail[0]['GUDANG_PENGIRIM'];?>"><?= $DPBKHSDetail[0]['GUDANG_PENGIRIM'];?></option>
+                                        <?php }else { ?>
+                                            <option></option>  
+                                        <?php } ?>
+                                           <option value="TUKSONO">TUKSONO</option>
+                                           <option value="MLATI">MLATI</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Alamat Bongkar</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-home"></i></span>
+                                    <input class="form-control txtADOAlamatBongkar"  <?= $UserAccess['edit_field'] ?> value="<?php if (isset($DPBKHSDetail[0]['ALAMAT_BONGKAR'])) echo $DPBKHSDetail[0]['ALAMAT_BONGKAR'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Catatan</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-sticky-note"></i></span>
+                                    <input class="form-control txtADOCatatan" <?= $UserAccess['edit_field'] ?> value="<?php if (isset($DPBKHSDetail[0]['CATATAN'])) echo $DPBKHSDetail[0]['CATATAN'] ?>">
                                 </div>
                             </div>
                         </div>

@@ -24,11 +24,16 @@ class C_ApprovalDPB extends CI_Controller {
     }
 
     public function index()
+    {
+        # code...
+    }
+
+    public function Vendor()
 	{
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
         
-		$data['Menu']            = 'Approval';
+		$data['Menu']            = 'Approval DPB Vendor';
 		$data['SubMenuOne']      = 'List Data';
 		$data['UserMenu']        = $this->M_user->getUserMenu($user_id, $resp_id);
 		$data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
@@ -38,17 +43,42 @@ class C_ApprovalDPB extends CI_Controller {
 
         $this->session->set_userdata('last_menu', $data['Menu']);
 
-        $data['listApproval'] = $this->M_dpb->getListApprovalDPB();
+        $data['listApproval'] = $this->M_dpb->getListApprovalDPBVendor();
 
         // print_r($data['listApproval']);exit;
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-        $this->load->view('ApprovalDO/MainMenu/V_ApprovalDPB', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_ApprovalDPBVendor', $data);
         $this->load->view('V_Footer', $data);
     }
 
-    public function Detail()
+    public function KHS()
+	{
+        $user_id = $this->session->userid;
+        $resp_id = $this->session->responsibility_id;
+        
+		$data['Menu']            = 'Approval DPB KHS';
+		$data['SubMenuOne']      = 'List Data';
+		$data['UserMenu']        = $this->M_user->getUserMenu($user_id, $resp_id);
+		$data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['UserSubMenuTwo']  = $this->M_user->getMenuLv3($user_id, $resp_id);
+
+        $data['RequestedDOList'] = $this->M_approval->getRequestedDOListById($this->session->user);
+
+        $this->session->set_userdata('last_menu', $data['Menu']);
+
+        $data['listApproval'] = $this->M_dpb->getListApprovalDPBKHS();
+
+        // print_r($data['listApproval']);exit;
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_ApprovalDPBKHS', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
+    public function DetailVendor()
     {
         if ( ! $data['NO_PR'] = $this->input->post('data-pr') ) {
             redirect('ApprovalDO/ListDPBVendor');
@@ -72,21 +102,12 @@ class C_ApprovalDPB extends CI_Controller {
             'kontak_supir'     => 'readonly',
             'vendor_ekspedisi' => 'readonly',
             'estimasi_datang'  => 'readonly',
-            'lain_lain'        => 'readonly',
+            'gudang_pengirim'  => 'readonly',
+            'alamat_bongkar'   => 'readonly',
+            'catatan'          => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->responsibility_id == '2724') {
-            $data['UserAccess'] = [   
-                    'jenis_kendaraan'  => 'readonly',
-                    'no_kendaraan'     => '',
-                    'nama_supir'       => '',
-                    'kontak_supir'     => '',
-                    'vendor_ekspedisi' => '',
-                    'estimasi_datang'  => '',
-                    'lain_lain'        => '',
-                    'estdate'          => 'ADOEstDatang'
-            ];
-        }else if ($this->session->responsibility_id == '2709') {
+        if ($this->session->user === 'B0445') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',
@@ -94,14 +115,92 @@ class C_ApprovalDPB extends CI_Controller {
                     'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
                     'estimasi_datang'  => 'readonly',
-                    'lain_lain'        => '',
+                    'gudang_pengirim'  => 'readonly',
+                    'alamat_bongkar'   => '',
+                    'catatan'          => '',
                     'estdate'          => ''
+            ];
+        }else {
+            $data['UserAccess'] = [   
+                    'jenis_kendaraan'  => 'readonly',
+                    'no_kendaraan'     => '',
+                    'nama_supir'       => '',
+                    'kontak_supir'     => '',
+                    'vendor_ekspedisi' => '',
+                    'estimasi_datang'  => '',
+                    'gudang_pengirim'   => 'readonly',
+                    'alamat_bongkar'   => 'readonly',
+                    'catatan'          => 'readonly',
+                    'estdate'          => 'ADOEstDatang'
             ];
         }
 
         $this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DetailApprovalDPBVendor', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
+    public function DetailKHS()
+    {
+        if ( ! $data['NO_PR'] = $this->input->post('data-pr') ) {
+            redirect('ApprovalDO/DPBKHS');
+        }
+
+        $user_id = $this->session->userid;
+        $resp_id = $this->session->responsibility_id;
+
+        $data['Menu']           = 'List DPB KHS';
+		$data['SubMenuOne']     = '';
+		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
+        $data['DPBKHSDetail']   = $this->M_dpb->getDPBKHSDetail($data['NO_PR']);
+        // echo '<pre>';
+        // print_r($data['DPBKHSDetail']);exit;
+        $data['UserAccess']      = [   
+            'jenis_kendaraan'  => 'readonly',
+            'no_kendaraan'     => 'readonly',
+            'nama_supir'       => 'readonly',
+            'kontak_supir'     => 'readonly',
+            'vendor_ekspedisi' => 'readonly',
+            'estimasi_datang'  => 'readonly',
+            'gudang_pengirim'  => 'readonly',
+            'alamat_bongkar'   => 'readonly',
+            'catatan'          => 'readonly',
+            'estdate'          => ''
+        ];
+        if ($this->session->user === 'B0445') {
+            $data['UserAccess'] = [   
+                    'jenis_kendaraan'  => '',
+                    'no_kendaraan'     => 'readonly',
+                    'nama_supir'       => 'readonly',
+                    'kontak_supir'     => 'readonly',
+                    'vendor_ekspedisi' => 'readonly',
+                    'estimasi_datang'  => 'readonly',
+                    'gudang_pengirim'  => 'readonly',
+                    'alamat_bongkar'   => '',
+                    'catatan'          => '',
+                    'estdate'          => ''
+            ];
+        }else {
+            $data['UserAccess'] = [   
+                    'jenis_kendaraan'  => 'readonly',
+                    'no_kendaraan'     => '',
+                    'nama_supir'       => '',
+                    'kontak_supir'     => '',
+                    'vendor_ekspedisi' => '',
+                    'estimasi_datang'  => '',
+                    'gudang_pengirim'  => 'readonly',
+                    'alamat_bongkar'   => 'readonly',
+                    'catatan'          => 'readonly',
+                    'estdate'          => 'ADOEstDatang'
+            ];
+        }
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_DetailApprovalDPBKHS', $data);
         $this->load->view('V_Footer', $data);
     }
 
@@ -125,7 +224,7 @@ class C_ApprovalDPB extends CI_Controller {
         echo json_encode('Success!');
     }
 
-    public function WaitingListApprove()
+    public function WaitingListApproveVendor()
     {
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
@@ -140,13 +239,38 @@ class C_ApprovalDPB extends CI_Controller {
 
         $this->session->set_userdata('last_menu', $data['Menu']);
 
-        $data['DPBVendorList'] = $this->M_dpb->getWaitingListApprovalDPB();
+        $data['DPBVendorList'] = $this->M_dpb->getWaitingListApprovalDPBVendor();
 
         // print_r($data['listApproval']);exit;
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_WaitingDPBVendor', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
+    public function WaitingListApproveKHS()
+    {
+        $user_id = $this->session->userid;
+        $resp_id = $this->session->responsibility_id;
+        
+		$data['Menu']            = 'Approval';
+		$data['SubMenuOne']      = 'List Data';
+		$data['UserMenu']        = $this->M_user->getUserMenu($user_id, $resp_id);
+		$data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['UserSubMenuTwo']  = $this->M_user->getMenuLv3($user_id, $resp_id);
+
+        $data['RequestedDOList'] = $this->M_approval->getRequestedDOListById($this->session->user);
+
+        $this->session->set_userdata('last_menu', $data['Menu']);
+
+        $data['DPBKHSList'] = $this->M_dpb->getWaitingListApprovalDPBKHS();
+
+        // print_r($data['listApproval']);exit;
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_WaitingDPBKHS', $data);
         $this->load->view('V_Footer', $data);
     }
 
