@@ -720,7 +720,8 @@ class M_monitoringdo extends CI_Model
                      AND msib.organization_id = mtrl.organization_id
                      --
                      AND mtrl.transaction_type_id IN (327, 64, 52, 33)         -- DO,SPB,SPB KIT
-                     AND NVL (mtrl.quantity_delivered, 0) <> 0
+                //     AND NVL (mtrl.quantity_delivered, 0) <> 0
+                    AND NVL (kdt.allocated_quantity, 0) <> 0
                      --
                      AND mtrh.request_number = '$id'";
 
@@ -745,7 +746,7 @@ class M_monitoringdo extends CI_Model
                               WHERE ksnt.header_id = mtrl.header_id
                                 AND ksnt.inventory_item_id = mtrl.inventory_item_id
                                 AND ksnt.line_number = mtrl.line_number
-                                AND mtrl.line_status = 5
+                        //        AND mtrl.line_status = 5
                                 --
                                 AND msib.inventory_item_id = mtrl.inventory_item_id
                                 AND msib.organization_id = mtrl.organization_id
