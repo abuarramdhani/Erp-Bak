@@ -46,7 +46,7 @@ class C_DatabaseQTW extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMPelatihan/DatabaseQTW/V_monitoring', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMPelatihan/DatabaseQTW/V_Footer', $data);
     }
     
     public function create()
@@ -65,7 +65,7 @@ class C_DatabaseQTW extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMPelatihan/DatabaseQTW/V_index', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMPelatihan/DatabaseQTW/V_Footer', $data);
     }
     
     public function findPemandu()
@@ -130,7 +130,7 @@ class C_DatabaseQTW extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMPelatihan/DatabaseQTW/V_edit', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMPelatihan/DatabaseQTW/V_Footer', $data);
     }
 
     public function searchDetailInstansi()
@@ -256,7 +256,7 @@ class C_DatabaseQTW extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMPelatihan/DatabaseQTW/V_calender', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMPelatihan/DatabaseQTW/V_Footer', $data);
     }
     
     public function cekThisMonth()
@@ -342,7 +342,7 @@ class C_DatabaseQTW extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMPelatihan/DatabaseQTW/V_report', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMPelatihan/DatabaseQTW/V_Footer', $data);
     }
 
     public function generateData($jenis, $tahun, $start, $end){
@@ -547,7 +547,7 @@ class C_DatabaseQTW extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMPelatihan/DatabaseQTW/V_grafik', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMPelatihan/DatabaseQTW/V_Footer', $data);
     }
 
     public function dataGrafik()
