@@ -44,8 +44,10 @@ let wipp1_1 = $('.tblwipp1').DataTable({
   scrollY : "500px",
 })
 
-function format_wipp( d, kode_item, onhand){
-  return `<input type="hidden" id="onhand_${kode_item}" value="${onhand}"><div class="JobReleaseArea${kode_item}"> </div>`;
+function format_wipp( d, kode_item, onhand, no){
+  return `<input type="hidden" id="onhand_${kode_item}" value="${onhand}">
+          <input type="text" readonly id="cek_${kode_item}" style="background:transparent;border-color:transparent">
+          <div class="JobReleaseArea${kode_item}"> </div>`;
 }
 
 function detail_wipp_1(no, kode_item, onhand) {
@@ -56,7 +58,7 @@ function detail_wipp_1(no, kode_item, onhand) {
       tr.removeClass('shown');
   }
   else {
-      row.child( format_wipp(row.data(), kode_item, onhand)).show();
+      row.child( format_wipp(row.data(), kode_item, onhand, no)).show();
       tr.addClass('shown');
       $.ajax({
         url: baseurl + 'WorkInProcessPackaging/JobManager/getitembykodeitem',

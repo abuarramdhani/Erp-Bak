@@ -28,7 +28,7 @@
           <td <?php echo $style ?>><?php echo $g['KODE_ASSY'] ?></td>
           <td <?php echo $style ?>><?php echo $g['DESCRIPTION'] ?></td>
           <td <?php echo $style ?>><?php echo $g['START_QUANTITY'] ?></center></td>
-          <input type="hidden" class="qpa_wipp_<?php echo $g['KODE_COMP'] ?>" value="<?php echo $g['QUANTITY_PER_ASSEMBLY']*$g['START_QUANTITY'] ?>">
+          <input type="hidden" class="qpa_wipp_<?php echo $g['KODE_COMP'] ?> qpa_wipp_<?php echo $g['KODE_COMP'] ?>_<?php echo $no ?>" value="<?php echo $g['QUANTITY_PER_ASSEMBLY']*$g['START_QUANTITY'] ?>">
           <td <?php echo $style ?>><?php echo abs($g['USAGE_RATE_OR_AMOUNT']) ?></td>
           <td <?php echo $style ?>><?php echo $g['SCHEDULED_START_DATE'] ?></center></td>
           <td <?php echo $style ?>><center>
@@ -42,7 +42,6 @@
 <script type="text/javascript">
 // add to rkh area ===========
 let wipp1 = $('.tblwiip1').DataTable();
-
 function addRKH(n, nj, ki, kc){
     let job_check = $(`.qpa_wipp_${kc}`).map((_, el) => el.value).get();
     let count_job_check = 0;
@@ -50,13 +49,9 @@ function addRKH(n, nj, ki, kc){
       count_job_check += Number(v);
     })
     let onhand = $(`#onhand_${kc}`).val();
-    if (onhand < count_job_check) {
-      Swal.fire({
-        type: 'warning',
-        title: 'Peringatan !',
-        text: 'tidak dapat membuat RKH, Onhand < Start_QTY'
-      })
-    }else {
+    let qty_tampung_before = $(`#cek_${kc}`).val()
+    let get_qtynya = $(`.qpa_wipp_${kc}_${n}`).val();
+
       let stat = $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`);
       if (stat==1) {
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `0`)
@@ -64,13 +59,33 @@ function addRKH(n, nj, ki, kc){
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-danger`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-close"></i> <b>Cancel</b>`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).toggleClass('selected');
+          $(`#cek_${kc}`).val(Number(qty_tampung_before)+Number(get_qtynya))
       }else {
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-danger`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-primary`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-plus-square"></i> <b>Add to RKH</b>`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).removeClass('selected');
+          $(`#cek_${kc}`).val(Number(qty_tampung_before)-Number(get_qtynya))
       }
+
+      setTimeout(function () {
+        let qty_tampung_be = $(`#cek_${kc}`).val();
+        if (qty_tampung_be > onhand) {
+          Swal.fire({
+            type: 'warning',
+            title: 'Peringatan !',
+            text: 'tidak dapat membuat RKH, Onhand < Qty Job'
+          }).then(_=>{
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-danger`)
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-primary`)
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-plus-square"></i> <b>Add to RKH</b>`)
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).removeClass('selected');
+            $(`#cek_${kc}`).val(Number(qty_tampung_be)-Number(get_qtynya))
+          })
+        }
+      }, 100);
 
       let get = wipp1.rows('.selected').data();
       var bool=$(".btnWIPP").is(":hidden")
@@ -83,7 +98,6 @@ function addRKH(n, nj, ki, kc){
           $('.btnWIPP').removeAttr("hidden");
         }, 300);
       }
-    }
 
 }
 
