@@ -46,7 +46,7 @@ let wipp1_1 = $('.tblwipp1').DataTable({
 
 function format_wipp( d, kode_item, onhand, no){
   return `<input type="hidden" id="onhand_${kode_item}" value="${onhand}">
-          <input type="text" readonly id="cek_${kode_item}" value="">
+          <input type="text" readonly id="cek_${kode_item}" style="background:transparent;border-color:transparent">
           <div class="JobReleaseArea${kode_item}"> </div>`;
 }
 

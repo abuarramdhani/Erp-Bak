@@ -343,10 +343,11 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     qty_split.forEach((v, i) => {
       qty_tampung.push($(v).val());
     })
-    // let idtrz = $('.tblNewRKH').find('tr[hesoyam="ya"]:last td:first center').html();
-    const idtrz_ = $('.tblNewRKH tr[hesoyam="ya"]').toArray();
-    let idtrz = idtrz_.length;
+    let idtrz = $('.tblNewRKH').find('tr[hesoyam="ya"]:last td:nth-child(1) center').text();
     console.log(idtrz);
+    // const idtrz_ = $('.tblNewRKH tr[hesoyam="ya"]').toArray();
+    // let idtrz = idtrz_.length;
+
     let html = [];
     qty_tampung.forEach((val, i) => {
       let hhtml = `<tr hesoyam="ya" row="${Number(idtrz)+(Number(i)+1)}">
@@ -461,6 +462,7 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     })
     // console.log(html);
     $('#create-new-rkh').append(html);
+
   }
 
   function b() {
@@ -468,7 +470,7 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     $('.tblNewRKH').find(`tr[collapse-row="${id}"]`).remove();
 
     $('.tblNewRKH tr[row]:visible').each(function(i) {
-      $(this).find('td:first').text(i + 1);
+      $(this).find('td:first center').text(i + 1);
     })
   }
 
