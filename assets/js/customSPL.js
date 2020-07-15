@@ -724,21 +724,35 @@ $(function () {
 		spl_load_data();
 	});
 
-	function waitingFingerPrint(params, callback = function () {}) {
-		localStorage.setItem("resultApproveSPL", false);
+	function waitingFingerPrint() {
+		var MESSAGE = ''
+		var CALLBACK = () => null
+		var STORAGE_NAME = 'resultApproveSPL'
+		var DESTROY = () => window.removeEventListener("storage", resultStorage)
+		var GET_ITEM = () => JSON.parse(localStorage.getItem(STORAGE_NAME))
+		var SET_ITEM = (val) => localStorage.setItem(STORAGE_NAME, JSON.stringify(val))
+		var ERROR_CODE = 3
 
-		const resultStorage = () => {
-			window.removeEventListener("storage", resultStorage);
-			let isSuccess = localStorage.getItem("resultApproveSPL"); // will result string dataType
+		// initial code
+		SET_ITEM(false)
 
-			if (isSuccess == "true") {
+		function resultStorage(event) {
+			console.log(event.key)
+			if(event.key !== STORAGE_NAME) return
+			DESTROY()
+			let done = GET_ITEM()
+
+			if (done === true) {
 				$("#ProsesDialog").modal("hide");
 				$("#FingerDialogApprove").modal("hide");
 				$("#FingerDialogReject").modal("hide");
-				callback();
+				// call callback function
+				CALLBACK();
+				SET_ITEM(false)
+
 				swal
 					.fire({
-						title: `Sukses ${params} lembur pekerja`,
+						title: `Sukses ${MESSAGE} lembur pekerja`,
 						text: "",
 						type: "success",
 					})
@@ -746,9 +760,7 @@ $(function () {
 						$("#spl-approval-1").click();
 						$("#spl-approval-0").click();
 					});
-				localStorage.setItem("resultApproveSPL", false);
-			} else if (isSuccess == 3) {
-				// error
+			} else if (done === ERROR_CODE) {
 				swal
 					.fire({
 						title: `Gagal, error code 500`,
@@ -760,12 +772,27 @@ $(function () {
 						$("#spl-approval-0").click();
 					});
 			} else {
-				alert("Error : " + isSuccess);
+				alert("Error : " + done);
 			}
 		};
 
-		window.addEventListener("storage", resultStorage);
+		return {
+			setCallback(newcallback) {
+				CALLBACK = newcallback
+				return this
+			},
+			setMessage(newmessage) {
+				MESSAGE = newmessage
+				return this
+			},
+			init() {
+				DESTROY()
+				window.addEventListener('storage', resultStorage)
+			}
+		}
 	}
+
+	const ApprovalLemburListener = waitingFingerPrint()
 
 	$(document).on("click", "#FingerDialogReject .spl_finger_proses", function (
 		e
@@ -853,7 +880,7 @@ $(function () {
 		function send_email() {
 			$.ajax({
 				method: "get",
-				url: base_url + email_endpoint,
+				url: baseurl + email_endpoint,
 				success(e) {
 					console.log(e + "Success");
 				},
@@ -863,7 +890,10 @@ $(function () {
 		let apiProcess = $("#spl_proses_reject").attr("href");
 		window.location.href = apiProcess;
 
-		waitingFingerPrint("Reject", send_email);
+		ApprovalLemburListener
+			.setMessage("Reject")
+			.setCallback(send_email)
+			.init()
 	});
 
 	$(document).on("click", "#FingerDialogApprove .spl_finger_proses", function (
@@ -947,7 +977,11 @@ $(function () {
 		let apiProcess = $("#spl_proses_approve").attr("href");
 		window.location.href = apiProcess;
 
-		waitingFingerPrint("Approve", send_email);
+		ApprovalLemburListener
+			.setMessage("Approve")
+			.setCallback(send_email)
+			.init()
+
 	});
 });
 
