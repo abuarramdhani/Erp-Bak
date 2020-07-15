@@ -11,7 +11,7 @@
 		 padding: 5px;         
 		}       
 </style>
-<div>
+<div style="padding-bottom: 46px;">
 <table  style="border: 2px solid black; border-collapse: collapse; width: 100%; margin:7px"  >
 	<tr>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px; width: 20%">PRODUCT NAME</td>
@@ -450,6 +450,8 @@
 		<?php $nom=1; 
 		$alter2 = '#$%';
 		$bsi = '#$%';
+		$count = 0;
+		$step = 0;
 		for ($i=0; $i < sizeof($datapdf2); $i++) { 
 			?>
 		<!-- <tr>
@@ -468,31 +470,87 @@
 		</tr> -->
 
 			<tr>
-			<!----ALT------>
+		<!----ALT------>
+			<?php 
+			// if ($datapdf2[$i]['ALT'] == null) {
+			// 	$datapdf2[$i]['ALT'] = 'Primary';
+			// }
+			// 			if (sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]) <= sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']])) {
+			// 				$mergeALT2 = sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]);
+			// 				if ($alter2 != $datapdf2[$i]['ALT']) {
+			// 		?> 
+			<!-- // 					<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td> -->
+			<!-- // 					<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td> -->
+			// 		<?php
+			// 					$alter2 = $datapdf2[$i]['ALT'];
+			// 				}
+			// 			}else{
+			// 				$mergeALT2 = sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']]);
+			// 				if ($bsi != $datapdf2[$i]['BILL_SEQUENCE_ID']) {
+			// 		?> 
+			<!-- // 					<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td> -->
+			<!-- // 					<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td> -->
+			// 		<?php
+			// 					$bsi = $datapdf2[$i]['BILL_SEQUENCE_ID'];
+			// 				}
+			// 			}
+					?>
+		<!----ALT------>
+		<!----ALT BARU------>
 			<?php 
 			if ($datapdf2[$i]['ALT'] == null) {
 				$datapdf2[$i]['ALT'] = 'Primary';
 			}
-						if (sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]) <= sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']])) {
-							$mergeALT2 = sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]);
-							if ($alter2 != $datapdf2[$i]['ALT']) {
-					?> 
-								<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td>
-								<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td>
-					<?php
-								$alter2 = $datapdf2[$i]['ALT'];
+
+       		if (sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]) <= sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']])) {
+							if (sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]) >= $merge['batas']) {
+								if ($step == $merge['frekuensi'][$datapdf2[$i]['ALT']] && $merge['sisa'][$datapdf2[$i]['ALT']] != 0) {
+									$mergeALT2 = $merge['sisa'][$datapdf2[$i]['ALT']];
+								} else {
+									$mergeALT2 = $merge['batas'];
+								}
+								if ($alter2 != $datapdf2[$i]['ALT'] || $count == $merge['batas']) {
+									?> 
+												<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $nom?></td>
+												<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td>
+									<?php
+												$alter2 = $datapdf2[$i]['ALT'];
+												$count = 0;
+												$step++;
+												// $nom++;
+									}
+
+							} else {
+								$mergeALT2 = sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]);
+								if ($alter2 != $datapdf2[$i]['ALT']) {
+									?> 
+												<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td>
+												<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td>
+									<?php
+												$alter2 = $datapdf2[$i]['ALT'];
+												$nom++;
+									}
 							}
+							
 						}else{
-							$mergeALT2 = sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']]);
-							if ($bsi != $datapdf2[$i]['BILL_SEQUENCE_ID']) {
-					?> 
-								<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td>
-								<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td>
-					<?php
-								$bsi = $datapdf2[$i]['BILL_SEQUENCE_ID'];
+							if (sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']]) >= $merge['batas']) {
+								$mergeALT2 = $merge['batas'];
+
+							} else {
+								$mergeALT2 = sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']]);
+								if ($bsi != $datapdf2[$i]['BILL_SEQUENCE_ID']) {
+									?> 
+												<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td>
+												<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td>
+									<?php
+												$bsi = $datapdf2[$i]['BILL_SEQUENCE_ID'];
+												$nom++;
+									}
 							}
 						}
 					?>
+		<!----ALT BARU------>
+
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['NUM']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['OPR_NUM']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['COMPONENT_NUM']?></td>
@@ -508,6 +566,6 @@
 		</tr>
 
 
-		<?php $nom++;} ?>
+		<?php $count++;} ?>
 </table>
 </div>
