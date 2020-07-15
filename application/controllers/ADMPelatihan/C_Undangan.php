@@ -44,12 +44,10 @@ class C_Undangan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$undangan = $this->M_undangan->getUndangan();
@@ -124,12 +122,10 @@ class C_Undangan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$this->form_validation->set_rules('required');
@@ -308,12 +304,10 @@ class C_Undangan extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$data['pekerja'] = $this->M_undangan->getPekerjaKHS();

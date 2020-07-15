@@ -206,11 +206,11 @@ class M_penjadwalan extends CI_Model {
 		}
 
 		//Create New Master
-		public function AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$sifat,$trainers,$jenis,$standar_nilai){
+		public function AddSchedule($package_scheduling_id,$package_training_id,$training_id,$scheduling_name,$date,$start_time,$end_time,$room,$participant_type,$participant_number,$evaluasi2,$sifat,$trainers,$jenis,$standar_nilai,$status){
 			$sql = "
 			insert INTO pl.pl_scheduling_training
-			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,start_time,end_time,room,participant_type,participant_number,evaluation,trainer,sifat,training_type,standar_kelulusan)values
-			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$start_time','$end_time','$room','$participant_type','$participant_number','$evaluasi2','$trainers','$sifat',$jenis,'$standar_nilai')";
+			(package_scheduling_id,package_training_id,training_id,scheduling_name,date,start_time,end_time,room,participant_type,participant_number,evaluation,trainer,sifat,training_type,standar_kelulusan,status)values
+			('$package_scheduling_id','$package_training_id','$training_id','$scheduling_name',TO_DATE('$date', 'DD/MM/YYYY'),'$start_time','$end_time','$room','$participant_type','$participant_number','$evaluasi2','$trainers','$sifat',$jenis,'$standar_nilai','$status')";
 			$query = $this->db->query($sql);
 			$insert_id = $this->db->insert_id();
 			return  $insert_id;
