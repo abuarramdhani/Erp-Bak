@@ -49,6 +49,7 @@ class M_prediksisnack extends CI_Model
 				and tdp.tanggal = tsp.tanggal
 				where tsp.tanggal = ?
 				and ttm.fs_lokasi = ?
+				and tp.keluar = '0'
 				and tsp.kd_shift in ('1','4','10')
 				group by tp.tempat_makan,tsp.tanggal
 				order by 1 ";
