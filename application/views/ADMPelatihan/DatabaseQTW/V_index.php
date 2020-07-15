@@ -136,7 +136,7 @@
                                     <div class="row">
                                         <label for="txtKodePosQtw" class="col-lg-3">Kodepos :</label>
                                         <div class="col-lg-7" style="margin-left: -15px;">
-                                            <input type="text" id="txtKodePosQtw" name="txtKodePosQtw" class="form-control">
+                                            <input type="text" id="txtKodePosQtw" name="txtKodePosQtw" class="form-control" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
