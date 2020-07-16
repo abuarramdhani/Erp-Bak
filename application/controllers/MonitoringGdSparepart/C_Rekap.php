@@ -187,7 +187,7 @@ class C_Rekap extends CI_Controller
 			if (!empty($cek)) {
 				$getKet = $this->M_rekap->getKetKIB($val['NO_DOCUMENT']);
 			}else {
-				$getKet = count($cari['getbody']);
+				$getKet = $item;
 			}
             $gudang = $this->M_rekap->gdAsalKIB($val['NO_DOCUMENT']);
             if (empty($gudang)) {
