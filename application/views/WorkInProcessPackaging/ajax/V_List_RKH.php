@@ -10,7 +10,14 @@
     </thead>
     <tbody>
       <?php foreach ($pp as $key => $p): ?>
-        <tr>
+        <?php
+         if ($p['waktu_satu_shift'] == 7 || $p['waktu_satu_shift'] == 6) {
+           $style = '';
+         }else {
+           $style = 'rgba(255, 0, 84, 0.29)';
+         }
+         ?>
+        <tr style="background:<?php echo $style ?>">
           <td><?php echo $key+1 ?></td>
           <td><?php echo $p['date_target'] ?></td>
           <td><?php echo $p['waktu_satu_shift'] ?> Jam</td>

@@ -59,7 +59,8 @@
                         </td>
                         <td>
                           <center>
-                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" target="_blank" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l1['kode_item'].'_'.$l1['qty'].'')?>"><i class="fa fa-print"></i> PRINT</a>
+                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" target="_blank" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.ceil($l1['kode_item']*abs($l1['QTY_BOM'])).'_'.$l1['qty'].'')?>"><i class="fa fa-print"></i> PRINT
+                              (<?php echo ceil($l1['qty']*abs($l1['QTY_BOM'])) ?>)</a>
                           </center>
                         </td>
                         <td>
@@ -124,7 +125,8 @@
                         </td>
                         <td>
                           <center>
-                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l2['kode_item'].'_'.$l2['qty'].'')?>"><i class="fa fa-print"></i> PRINT</a>
+                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l2['kode_item'].'_'.ceil($l2['qty']*abs($l2['QTY_BOM'])).'')?>"><i class="fa fa-print"></i> PRINT
+                              (<?php echo ceil($l2['qty']*abs($l2['QTY_BOM'])) ?>)</a>
                           </center>
                         </td>
                         <td>
@@ -153,7 +155,7 @@
                   <table class="table table-striped table-bordered table-hover text-left line3wipp tblwiip" style="font-size:11px;">
                     <thead>
                       <tr class="bg-info">
-                        <th style="width:23%">
+                        <th style="width:26%">
                           <center>JOB</center>
                         </th>
                         <th style="width:25%">
@@ -189,7 +191,8 @@
                         </td>
                         <td>
                           <center>
-                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l3['kode_item'].'_'.$l3['qty'].'')?>"><i class="fa fa-print"></i> PRINT</a>
+                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l3['kode_item'].'_'.ceil($l3['qty']*abs($l3['QTY_BOM'])).'')?>"><i class="fa fa-print"></i> PRINT(<?php echo
+                            ceil($l3['qty']*abs($l3['QTY_BOM'])) ?>)</a>
                           </center>
                         </td>
                         <td>
@@ -217,7 +220,7 @@
                   <table class="table table-striped table-bordered table-hover text-left line4wipp tblwiip" style="font-size:11px;">
                     <thead>
                       <tr class="bg-info">
-                        <th style="width:23%">
+                        <th style="width:26%">
                           <center>JOB</center>
                         </th>
                         <th style="width:25%">
@@ -250,13 +253,14 @@
                         </td>
                         <td>
                           <center>
-                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l4['kode_item'].'_'.$l4['qty'].'')?>"><i class="fa fa-print"></i> PRINT</a>
+                            <button type="button" class="btn btn-sm bg-navy" onclick="print_kecil('<?php echo $l4['kode_item'] ?>', '<?php echo $key ?>', 4)" style="border-radius:3px;padding:7px;margin-top:0;" name="button"><i class="fa fa-print"></i> PRINT</button>
+                            <input type="number" class="form-control" id="qtyll4_<?php echo $key ?>" style="width:45%;display:inline;margin-left:10px;">
                           </center>
                         </td>
                         <td>
                           <center>
                             <button type="button" class="btn btn-sm bg-navy" onclick="print_besar('<?php echo $l4['kode_item'] ?>', '<?php echo $key ?>', 4)" style="border-radius:3px;padding:7px;margin-top:0;" name="button"><i class="fa fa-print"></i> PRINT</button>
-                            <input type="number" class="form-control" id="qtyl4_<?php echo $key ?>" style="width:30%;display:inline;margin-left:10px;">
+                            <input type="number" class="form-control" id="qtyl4_<?php echo $key ?>" style="width:45%;display:inline;margin-left:10px;">
                           </center>
                         </td>
                       </tr>
@@ -278,7 +282,7 @@
                   <table class="table table-striped table-bordered table-hover text-left line5wipp tblwiip" style="font-size:11px;">
                     <thead>
                       <tr class="bg-info">
-                        <th style="width:23%">
+                        <th style="width:26%">
                           <center>JOB</center>
                         </th>
                         <th style="width:25%">
@@ -311,13 +315,14 @@
                         </td>
                         <td>
                           <center>
-                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l5['kode_item'].'_'.$l5['qty'].'')?>"><i class="fa fa-print"></i> PRINT</a>
+                            <button type="button" class="btn btn-sm bg-navy" onclick="print_kecil('<?php echo $l5['kode_item'] ?>', '<?php echo $key ?>', 5)" style="border-radius:3px;padding:7px;margin-top:0;" name="button"><i class="fa fa-print"></i> PRINT</button>
+                            <input type="number" class="form-control" id="qtyll5_<?php echo $key ?>" style="width:45%;display:inline;margin-left:10px;">
                           </center>
                         </td>
                         <td>
                           <center>
                             <button type="button" class="btn btn-sm bg-navy" onclick="print_besar('<?php echo $l5['kode_item'] ?>', '<?php echo $key ?>', 5)" style="border-radius:3px;padding:7px;margin-top:0;" name="button"><i class="fa fa-print"></i> PRINT</button>
-                            <input type="number" class="form-control" id="qtyl5_<?php echo $key ?>" style="width:30%;display:inline;margin-left:10px;">
+                            <input type="number" class="form-control" id="qtyl5_<?php echo $key ?>" style="width:45%;display:inline;margin-left:10px;">
                           </center>
                         </td>
                       </tr>

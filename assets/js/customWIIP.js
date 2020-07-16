@@ -125,6 +125,11 @@ const print_besar = (kode_item, key, line) => {
   window.open(baseurl + 'WorkInProcessPackaging/JobManager/LabelBesar/' + kode_item + '_' + qty);
 }
 
+const print_kecil = (kode_item, key, line) => {
+  const qty = $(`#qtyll${line}_${key}`).val();
+  window.open(baseurl + 'WorkInProcessPackaging/JobManager/LabelKecil/' + kode_item + '_' + qty);
+}
+
 const updateTargetPe = _ => {
   let wipp_cek2 = $('.wipp2').val();
   let param = $('#linenumber').html();
@@ -469,9 +474,9 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     $('.tblNewRKH').find(`tr[row="${id}"]`).remove();
     $('.tblNewRKH').find(`tr[collapse-row="${id}"]`).remove();
 
-    $('.tblNewRKH tr[row]:visible').each(function(i) {
-      $(this).find('td:first center').text(i + 1);
-    })
+    // $('.tblNewRKH tr[row]:visible').each(function(i) {
+    //   $(this).find('td:first center').text(i + 1);
+    // })
   }
 
   function run() {
