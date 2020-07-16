@@ -59,7 +59,7 @@
                         </td>
                         <td>
                           <center>
-                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" target="_blank" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.ceil($l1['kode_item']*abs($l1['QTY_BOM'])).'_'.$l1['qty'].'')?>"><i class="fa fa-print"></i> PRINT
+                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" target="_blank" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l1['kode_item'].'_'.ceil($l1['qty']*abs($l1['QTY_BOM'])).'')?>"><i class="fa fa-print"></i> PRINT
                               (<?php echo ceil($l1['qty']*abs($l1['QTY_BOM'])) ?>)</a>
                           </center>
                         </td>
@@ -125,7 +125,7 @@
                         </td>
                         <td>
                           <center>
-                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l2['kode_item'].'_'.ceil($l2['qty']*abs($l2['QTY_BOM'])).'')?>"><i class="fa fa-print"></i> PRINT
+                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" target="_blank" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l2['kode_item'].'_'.ceil($l2['qty']*abs($l2['QTY_BOM'])).'')?>"><i class="fa fa-print"></i> PRINT
                               (<?php echo ceil($l2['qty']*abs($l2['QTY_BOM'])) ?>)</a>
                           </center>
                         </td>
@@ -191,7 +191,7 @@
                         </td>
                         <td>
                           <center>
-                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l3['kode_item'].'_'.ceil($l3['qty']*abs($l3['QTY_BOM'])).'')?>"><i class="fa fa-print"></i> PRINT(<?php echo
+                            <a class="btn btn-sm bg-navy" style="border-radius:3px;padding:7px;margin-top:0;" target="_blank" href="<?php echo base_url('WorkInProcessPackaging/JobManager/LabelKecil/'.$l3['kode_item'].'_'.ceil($l3['qty']*abs($l3['QTY_BOM'])).'')?>"><i class="fa fa-print"></i> PRINT(<?php echo
                             ceil($l3['qty']*abs($l3['QTY_BOM'])) ?>)</a>
                           </center>
                         </td>
