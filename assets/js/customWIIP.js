@@ -469,9 +469,9 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     $('.tblNewRKH').find(`tr[row="${id}"]`).remove();
     $('.tblNewRKH').find(`tr[collapse-row="${id}"]`).remove();
 
-    $('.tblNewRKH tr[row]:visible').each(function(i) {
-      $(this).find('td:first center').text(i + 1);
-    })
+    // $('.tblNewRKH tr[row]:visible').each(function(i) {
+    //   $(this).find('td:first center').text(i + 1);
+    // })
   }
 
   function run() {

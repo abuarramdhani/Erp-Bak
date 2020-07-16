@@ -108,6 +108,7 @@ class C_Master extends CI_Controller
         $date = $this->input->post('date');
         $waktu_shift = $this->input->post('waktu_shift');
         $data = $this->input->post('data');
+        // echo "<pre>";print_r($data);die;
         if (!empty($date)) {
             $cekk = $this->db->select('date_target')
                          ->where('date_target', $date)
@@ -118,13 +119,13 @@ class C_Master extends CI_Controller
                     $n195 = $this->M_wipp->savenewRKH([
                       'date_target' => $date,
                       'waktu_satu_shift' => $waktu_shift,
-                      'no_job' => $d[0],
-                      'kode_item' => $d[1],
-                      'nama_item' => $d[2],
-                      'qty' => $d[3],
-                      'usage_rate' => $d[4],
-                      'scedule_start_date' => $d[5],
-                      'qty_parrent' => $d[6]
+                      'no_job' => $d[1],
+                      'kode_item' => $d[2],
+                      'nama_item' => $d[3],
+                      'qty' => $d[4],
+                      'usage_rate' => $d[5],
+                      'scedule_start_date' => $d[6],
+                      'qty_parrent' => $d[7]
                     ]);
                 }
                 echo json_encode($n195);
@@ -155,21 +156,22 @@ class C_Master extends CI_Controller
             $priority = $this->M_wipp->getPP();
 
             // ambil data getItem kemudian ditampung di produk priority
-            foreach ($data_a as $key1 => $da) {
-                $data_a[$key1]['PRIORITY'] = 0;
-                $get_job = $this->M_wipp->getJob($da['KODE_ASSY']);
-                if (!empty($get_job)) {
-                    $gj = $get_job;
-                    foreach ($priority as $key2 => $pr) {
-                        foreach ($gj as $key3 => $g) {
-                            if ($g['KODE_ASSY'] === $pr['kode_item']) {
-                                $tampung_priority[] = $da;
-                                break 1;
-                            }
-                        }
-                    }
-                }
-            }
+              foreach ($data_a as $key1 => $da) {
+                  $data_a[$key1]['PRIORITY'] = 0;
+                  $get_job = $this->M_wipp->getJob($da['KODE_ASSY']);
+                  if (!empty($get_job)) {
+                      $gj = $get_job;
+                      foreach ($priority as $key2 => $pr) {
+                          foreach ($gj as $key3 => $g) {
+                              if ($g['KODE_ASSY'] === $pr['kode_item']) {
+                                  $tampung_priority[] = $da;
+                                  break 1;
+                              }
+                          }
+                      }
+                  }
+              }
+
             if (!empty($tampung_priority)) {
 
                 //pengecekan di jika itu priority = 1
@@ -1188,7 +1190,8 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-        $data_a = $this->M_wipp->getJob('AAA1AB0021AY-0');
+        // $data_a = $this->M_wipp->getJob('AAA1AB0021AY-0');
+        $data_a = $this->M_wipp->getItem();
         echo "<pre>";
         print_r($data_a);
         echo sizeof($data_a);
