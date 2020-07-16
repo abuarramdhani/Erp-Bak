@@ -192,17 +192,27 @@ $(document).on('ready',function(){
         periode = $('#MPR-transferreffgaji-periode').val();
         memoNonStaff = $('#txt-MPR-transferreffgaji-memo-nonstaff').val();
         memoStaff = $('#txt-MPR-transferreffgaji-memo-staff').val();
-        // console.log(memoNonStaff + "......." + memoStaff)
+        
         $('#MPR-transferreffgaji-progress').css("width","0%");
         $.ajax({
             data : {periode : periode,staff: memoStaff,nonstaff: memoNonStaff},
             url : baseurl + 'MasterPresensi/ReffGaji/TransferReffGaji/proses',
             type : 'GET',
+            error: function(xhr,status,error){
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+                $('#MPR-status-Read').val("0");
+            },
             success: function(e){
-               $('#MPR-transferreffgaji-download').html(e);
-               setTimeout(function(e){
-                 $('#MPR-status-Read').val("0");
-               },5000);
+                $('#MPR-transferreffgaji-download').html(e);
+                setTimeout(function(e){
+                    $('#MPR-status-Read').val("0");
+                },5000);
             }
         })
     });

@@ -1377,11 +1377,17 @@ class C_TransferReffGaji extends CI_Controller
 						$simpan_plain = 0;
 						$simpan_pot_plain = 0;
 					}
-
+					if ($value['cutoff'] == '~') {
+						$tanda = '~';
+					}elseif ($value['cutoff'] == '0') {
+						$tanda = '';
+					}else{
+						$tanda = '*';
+					}
 					if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","F","K","P"))) {
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$nomor."</td>
+							<td>".$tanda.$nomor."</td>
 							<td>".$value['kodesie']."</td>
 							<td>".$value['noind']."</td>
 							<td>".substr($value['nama'], 0, 18)."</td>
@@ -1410,7 +1416,7 @@ class C_TransferReffGaji extends CI_Controller
 					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$nomor."</td>
+							<td>".$tanda.$nomor."</td>
 							<td>".$value['noind']."</td>
 							<td>".substr($value['nama'],0,15)."</td>
 							<td>".substr($value['seksi'],0,16)."</td>
@@ -1436,7 +1442,7 @@ class C_TransferReffGaji extends CI_Controller
 					}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$nomor."</td>
+							<td>".$tanda.$nomor."</td>
 							<td>".$value['noind']."</td>
 							<td>".substr($value['nama'],0,15)."</td>
 							<td>".substr($value['seksi'],0,16)."</td>
@@ -1465,7 +1471,7 @@ class C_TransferReffGaji extends CI_Controller
 					}else{
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$nomor."</td>
+							<td>".$tanda.$nomor."</td>
 							<td>".$value['noind']."</td>
 							<td>".$value['nama']."</td>
 							<td>".$value['seksi']."</td>
@@ -1818,87 +1824,93 @@ class C_TransferReffGaji extends CI_Controller
 						}
 						$nomor = 1;
 					}
-
+					if ($value['cutoff'] == '~') {
+						$tanda = '~';
+					}elseif ($value['cutoff'] == '0') {
+						$tanda = '';
+					}else{
+						$tanda = '*';
+					}
 					if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","F","K","P"))) {
 						$html_cetak_per_kodesie .= "
 						<tr>
-							<td>".$nomor."</td>
+							<td>".$tanda.$nomor."</td>
 							<td>".$value['kodesie']."</td>
 							<td>".$value['noind']."</td>
 							<td>".substr($value['nama'], 0, 18)."</td>
-							<td>".$value['ipe']."</td>
-							<td>".$value['ika']."</td>
-							<td>".$value['ief']."</td>
-							<td>".$value['htm']."</td>
-							<td>".$value['ubt']."</td>
-							<td>".$value['upamk']."</td>
-							<td>".$value['um']."</td>
-							<td>".$value['ims']."</td>
-							<td>".$value['imm']."</td>
-							<td>".$value['jam_lembur']."</td>
-							<td>".$value['ct']."</td>
-							<td>".$value['hl']."</td>
-							<td>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
-							<td>".(intval(trim($value['pot'])) + intval(trim($value['plain'])))."</td>
-							<td>".$value['tamb_gaji']."</td>
-							<td>".$value['ijin']."</td>
-							<td>".$value['ubs_rp']."</td>
-							<td>".$value['um_puasa']."</td>
-							<td>".$value['dldobat']."</td>
+							<td style='text-align: right;'>".$value['ipe']."</td>
+							<td style='text-align: right;'>".$value['ika']."</td>
+							<td style='text-align: right;'>".$value['ief']."</td>
+							<td style='text-align: right;'>".$value['htm']."</td>
+							<td style='text-align: right;'>".$value['ubt']."</td>
+							<td style='text-align: right;'>".$value['upamk']."</td>
+							<td style='text-align: right;'>".$value['um']."</td>
+							<td style='text-align: right;'>".$value['ims']."</td>
+							<td style='text-align: right;'>".$value['imm']."</td>
+							<td style='text-align: right;'>".$value['jam_lembur']."</td>
+							<td style='text-align: right;'>".$value['ct']."</td>
+							<td style='text-align: right;'>".$value['hl']."</td>
+							<td style='text-align: right;'>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
+							<td style='text-align: right;'>".(intval(trim($value['pot'])) + intval(trim($value['plain'])))."</td>
+							<td style='text-align: right;'>".$value['tamb_gaji']."</td>
+							<td style='text-align: right;'>".$value['ijin']."</td>
+							<td style='text-align: right;'>".$value['ubs_rp']."</td>
+							<td style='text-align: right;'>".$value['um_puasa']."</td>
+							<td style='text-align: right;'>".$value['dldobat']."</td>
 							<td>".$value['potongan_str']."</td>
 							<td>".$value['tambahan_str']."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
 						$html_cetak_per_kodesie .= "
 						<tr>
-							<td>".$nomor."</td>
+							<td>".$tanda.$nomor."</td>
 							<td>".$value['noind']."</td>
 							<td>".$value['nama']."</td>
 							<td>".$value['seksi']."</td>
 							<td>".$value['lokasi_krj']."</td>
-							<td>".$value['ika']."</td>
-							<td>".$value['ipe']."</td>
-							<td>".$value['ipet']."</td>
-							<td>".$value['ief']."</td>
-							<td>".$value['ims']."</td>
-							<td>".$value['imm']."</td>
-							<td>".$value['jam_lembur']."</td>
-							<td>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
-							<td>".$value['um_cabang']."</td>
-							<td>".$value['ubt']."</td>
-							<td>".$value['upamk']."</td>
+							<td style='text-align: right;'>".$value['ika']."</td>
+							<td style='text-align: right;'>".$value['ipe']."</td>
+							<td style='text-align: right;'>".$value['ipet']."</td>
+							<td style='text-align: right;'>".$value['ief']."</td>
+							<td style='text-align: right;'>".$value['ims']."</td>
+							<td style='text-align: right;'>".$value['imm']."</td>
+							<td style='text-align: right;'>".$value['jam_lembur']."</td>
+							<td style='text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+							<td style='text-align: right;'>".$value['um_cabang']."</td>
+							<td style='text-align: right;'>".$value['ubt']."</td>
+							<td style='text-align: right;'>".$value['upamk']."</td>
 							<td>".wordwrap(str_replace(".00", "", trim($value['ket'])),13,"<br>", true)."</td>
-							<td>".$value['dldobat']."</td>
-							<td>".($value['ijin'] + $value['htm'])."</td>
-							<td>".($value['putkop'] + $value['pikop'])."</td>
-							<td>".($value['pduka'] + $value['pspsi'])."</td>
-							<td>".$value['plain']."</td>
+							<td style='text-align: right;'>".$value['dldobat']."</td>
+							<td style='text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
+							<td style='text-align: right;'>".($value['putkop'] + $value['pikop'])."</td>
+							<td style='text-align: right;'>".($value['pduka'] + $value['pspsi'])."</td>
+							<td style='text-align: right;'>".$value['plain']."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$nomor."</td>
+							<td>".$tanda.$nomor."</td>
 							<td>".$value['noind']."</td>
 							<td>".$value['nama']."</td>
 							<td>".$value['seksi']."</td>
 							<td>".$value['lokasi_krj']."</td>
-							<td>".$value['ika']."</td>
-							<td>".$value['ipe']."</td>
-							<td>".$value['ipet']."</td>
-							<td>".$value['ief']."</td>
-							<td>".$value['ims']."</td>
-							<td>".$value['imm']."</td>
-							<td>".$value['jam_lembur']."</td>
-							<td>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
-							<td>".$value['um_cabang']."</td>
-							<td>".$value['ubt']."</td>
-							<td>".$value['upamk']."</td>
+							<td style='text-align: right;'>".$value['ika']."</td>
+							<td style='text-align: right;'>".$value['ipe']."</td>
+							<td style='text-align: right;'>".$value['ipet']."</td>
+							<td style='text-align: right;'>".$value['ief']."</td>
+							<td style='text-align: right;'>".$value['ims']."</td>
+							<td style='text-align: right;'>".$value['imm']."</td>
+							<td style='text-align: right;'>".$value['jam_lembur']."</td>
+							<td style='text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+							<td style='text-align: right;'>".$value['um_cabang']."</td>
+							<td style='text-align: right;'>".$value['ubt']."</td>
+							<td style='text-align: right;'>".$value['upamk']."</td>
 							<td>".$value['ket']."</td>
-							<td>".$value['dldobat']."</td>
-							<td>".($value['ijin'] + $value['htm'])."</td>
-							<td>".($value['putkop'] + $value['pikop'])."</td>
-							<td>".($value['pduka'] + $value['pspsi'])."</td>
-							<td>".$value['plain']."</td>
+							<td style='text-align: right;'>".$value['dldobat']."</td>
+							<td style='text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
+							<td style='text-align: right;'>".($value['putkop'] + $value['pikop'])."</td>
+							<td style='text-align: right;'>".($value['pduka'] + $value['pspsi'])."</td>
+							<td style='text-align: right;'>".$value['plain']."</td>
 							<td>".substr($value['sekolah'], 0, 10)."</td>
 							<td>".substr($value['jurusan'], 0, 10)."</td>
 							<td>".substr($value['pendidikan'], 0, 5)."</td>
@@ -1906,7 +1918,7 @@ class C_TransferReffGaji extends CI_Controller
 					}else{
 						$html_cetak_per_kodesie .= "
 						<tr>
-							<td>".$nomor."</td>
+							<td>".$tanda.$nomor."</td>
 							<td>".$value['noind']."</td>
 							<td>".$value['nama']."</td>
 							<td>".$value['seksi']."</td>
