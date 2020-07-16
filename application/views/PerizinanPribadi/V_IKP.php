@@ -181,31 +181,8 @@
 <!-- selesai -->
 <script type="text/javascript">
   $(document).ready(function () {
-
-    $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-        $.fn.dataTable.tables( { api: true} ).columns.adjust();
-        setTimeout(
-          function () {
-            $('th:contains(Order)').click()
-          }, 200
-        )
-    } );
-
     $('.tabel_ikp_all').DataTable({
-      fixedColumns:   {
-        leftColumns: 4
-      },
-      scrollX: true,
-    });
-    $('.tabel_ikp_approve').DataTable({
-      scrollX: true,
-      fixedColumns:   {
-        leftColumns: 5,
-      }
-    });
-    $('.tabel_ikp_check').DataTable();
-    $('.tabel_ikp_reject').DataTable({
-      scrollX: true,
+        scrollX:        true
     });
   })
 </script>
