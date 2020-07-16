@@ -30,7 +30,17 @@ vertical-align: middle;
           <div class="row">
             <div class="col-md-6">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
-              <center><h4 style="font-weight:bold">LIST RKH</h4> </center>
+              <div class="row">
+                <div class="col-md-6">
+                  <h4 style="font-weight:bold">LIST RKH</h4>
+                </div>
+                <div class="col-md-6">
+                  <div style="margin-top:15px;margin-left:25px;">
+                    <div style="width: 20%;color:transparent; border:1px solid #5e5e5e;display:inline;background:#f4f4f4">______</div> <span style="display:inline"> : Reguler</span>
+                    <div style="width: 20%;color:transparent; margin-top: 5px;border:1px solid #5e5e5e; background:rgba(255, 0, 84, 0.29);display:inline;margin-left:5px;">______</div> <span style="display:inline"> : Lembur</span>
+                  </div>
+                </div>
+              </div>
               <hr>
               <div class="table-list-RKH">
                <!-- +_+ -->
