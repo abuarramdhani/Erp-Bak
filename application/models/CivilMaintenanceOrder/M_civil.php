@@ -43,6 +43,22 @@ class M_civil extends CI_Model
 		return $this->db->query($sql)->result_array();
 	}
 
+	public function listJnsPkjDetail($id = FALSE)
+	{
+		if ($id != FALSE) {
+			$where = "where jenis_pekerjaan_detail_id = ".$id." ";
+		}else{
+			$where = "";
+		}
+		$sql = "select a.jenis_pekerjaan_id,a.jenis_pekerjaan_detail_id,b.jenis_pekerjaan,a.detail_pekerjaan,a.keterangan
+				from cvl.cvl_jenis_pekerjaan_detail a
+				inner join cvl.cvl_jenis_pekerjaan b 
+				on a.jenis_pekerjaan_id = b.jenis_pekerjaan_id
+				$where
+				order by b.jenis_pekerjaan";
+		return $this->db->query($sql)->result_array();
+	}
+
 	public function delJnsPkj($id)
 	{
 		$this->db->where('jenis_pekerjaan_id', $id);
@@ -54,6 +70,13 @@ class M_civil extends CI_Model
 	{
 		$this->db->where('jenis_pekerjaan_id', $id);
 		$this->db->update('cvl.cvl_jenis_pekerjaan', $data);
+		return true;
+	}
+
+	public function upJnsPkjDetail($data, $id)
+	{
+		$this->db->where('jenis_pekerjaan_detail_id', $id);
+		$this->db->update('cvl.cvl_jenis_pekerjaan_detail', $data);
 		return true;
 	}
 
@@ -273,6 +296,12 @@ class M_civil extends CI_Model
 	{
 		$this->db->where('jenis_pekerjaan_id', $id);
 		return $this->db->get('cvl.cvl_jenis_pekerjaan');
+	}
+
+	public function getJenisPekerjaanDetailbyId($id)
+	{
+		$this->db->where('jenis_pekerjaan_detail_id', $id);
+		return $this->db->get('cvl.cvl_jenis_pekerjaan_detail');
 	}
 
 	public function getJabatanPKJ($noind)

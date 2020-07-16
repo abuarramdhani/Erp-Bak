@@ -138,3 +138,14 @@
         </div>
     </div>
 </section>
+<?php
+if (isset($order_id) && !empty($order_id)) {
+    ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        cetakOrderCM(<?php echo $order_id ?>)
+    })
+</script>
+    <?php
+}
+ ?>

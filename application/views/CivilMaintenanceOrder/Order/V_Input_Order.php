@@ -49,13 +49,24 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="col-md-8">
-                                                <label class="mco_isiData">Seksi : xxxxxxxxxx</label>
+                                            <div class="col-md-12">
+                                                <label class="mco_isiData">Seksi Pekerja : xxxxxxxxxx</label>
                                             </div>
                                             <input hidden="" name="kodesie" class="mco_inputData">
-                                            <input hidden="" name="lokasi" class="mco_inputData">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top: 10px;">
+                                        <div class="col-md-6">
                                             <div class="col-md-4">
-                                                <label class="mco_isiData">Lokasi : xxxxxxxxx</label>
+                                                <label>Lokasi Order</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <select class="select2 mco_lokasi" style="width: 100%" name="lokasi" data-placeholder="Lokasi Order">
+                                                    <option></option>
+                                                    <option value="01">Jogja</option>
+                                                    <option value="02">Tuksono</option>
+                                                    <option value="03">Mlati</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -65,17 +76,7 @@
                                                 <label>Tanggal Order</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input required class="form-control mco_tglpick" name="tglorder">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
-                                        <div class="col-md-6">
-                                            <div class="col-md-4">
-                                                <label>Tanggal Terima</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <input required class="form-control mco_tglpick" name="tglterima">
+                                                <input required class="form-control mco_tglpick" name="tglorder" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -91,6 +92,21 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 setjnsPkjhere" style="padding-left: 0px; padding-top: 5px;">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top: 10px;">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <label>Detail Pekerjaan</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <select required class="form-control cmo_slcJnsPkjDetail" name="detailPekerjaan" disabled>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 setjnsPkjhereDetail" style="padding-left: 0px; padding-top: 5px;">
 
                                         </div>
                                     </div>
@@ -132,14 +148,15 @@
                                                 <label>Aktivitas Detail Pekerjaan yang dilakukan, misal : bongkar galian, perataan tanah, dan pekerjaan lain yang diminta dalam order tersebut. </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-12">
                                             <div class="col-md-12">
                                                 <table class="table table-bordered" id="mco_tblPekerjaan">
                                                     <thead class="bg-info">
                                                         <th>No</th>
                                                         <th>Pekerjaan</th>
-                                                        <th width="15%">Qty</th>
-                                                        <th width="15%">Satuan</th>
+                                                        <th width="10%">Qty</th>
+                                                        <th width="10%">Satuan</th>
+                                                        <th width="20%">Lampiran</th>
                                                         <th>Keterangan</th>
                                                         <th>Act</th>
                                                     </thead>
@@ -147,16 +164,20 @@
                                                         <tr class="mco_daftarPek">
                                                             <td class="mco_daftarnoPek">1</td>
                                                             <td>
-                                                                <input name="tbl_pekerjaan[]" class="form-control">
+                                                                <input name="tbl_pekerjaan[0]" nomor='0' class="form-control tbl_pekerjaan">
                                                             </td>
                                                             <td>
-                                                                <input name="tbl_qty[]" type="number" class="form-control">
+                                                                <input name="tbl_qty[0]" type="number" class="form-control tbl_qty">
                                                             </td>
                                                             <td>
-                                                                <input name="tbl_satuan[]" class="form-control" oninput="this.value = this.value.toUpperCase()">
+                                                                <input name="tbl_satuan[0]" class="form-control tbl_satuan" oninput="this.value = this.value.toUpperCase()">
+                                                            </td>
+                                                            <td class='td_lampiran'>
+                                                                <label nomor='1'>Lampiran 1 :</label>
+                                                                <input type="file" class="form-control mco_lampiranFilePekerjaan tbl_lampiran" name="tbl_lampiran[0][]">
                                                             </td>
                                                             <td>
-                                                                <textarea name="tbl_ket[]" class="form-control" style="margin: 0px; resize: none;"></textarea>
+                                                                <textarea name="tbl_ket[0]" class="form-control tbl_ket" style="margin: 0px; resize: none;"></textarea>
                                                             </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-xs btn-danger mco_deldaftarnoPek"><i class="fa fa-times"></i></button>
@@ -172,7 +193,16 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="col-md-6">
-                                            
+                                            <div class="col-md-4">
+                                                <label>Status</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <select class="select2 mco_status" style="width: 100%" name="status" required data-placeholder="Status Order">
+                                                    <option></option>
+                                                    <option>BIASA</option>
+                                                    <option>URGENT</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12" hidden="" style="margin-top: 10px;">
@@ -185,23 +215,23 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 mco_insertafter" style="margin-top: 10px;">
-                                        <div class="col-md-6">
-                                            <div class="col-md-4">
-                                                <label class="mco_lampiranno">Lampiran</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <input type="file" class="form-control mco_lampiranFile" name="lampiran[]">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
+                                    <div class="col-md-12 mco_tglbutuh" style="margin-top: 10px;display: none">
                                         <div class="col-md-6">
                                             <div class="col-md-4">
                                                 <label>Tanggal Dibutuhkan</label>
                                             </div>
                                             <div class="col-md-8">
                                                 <input required class="form-control mco_tglpick" name="tglbutuh">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mco_alasan" style="margin-top: 10px;display: none">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <label>Alasan</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <textarea class="form-control" name="alasan"></textarea>
                                             </div>
                                         </div>
                                     </div>

@@ -49,7 +49,11 @@ class C_Civil extends CI_Controller
 
 		$data['list'] = $this->M_civil->getListOrder();
 		$data['approve'] = $this->M_civil->getApprover();
-
+		$orderid = $this->session->orderid;
+		if (isset($orderid) && !empty($orderid)) {
+			$data['order_id'] = $orderid;
+			$this->session->orderid = "";
+		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CivilMaintenanceOrder/Order/V_List_Order',$data);
@@ -87,6 +91,13 @@ class C_Civil extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function getJnsPkjDetail()
+	{
+		$id = $this->input->get('id');
+		$data = $this->M_civil->listJnsPkjDetail($id);
+		echo json_encode($data);
+	}
+
 	public function getJnsOrder()
 	{
 		$data = $this->M_civil->getTableJenisOrder();
@@ -96,7 +107,9 @@ class C_Civil extends CI_Controller
 	public function save_order()
 	{
 		// echo "<pre>";
-		// print_r($_POST);exit();
+		// print_r($_POST);
+		// print_r($_FILES);
+		// exit();
 
 		$dari = $this->input->post('dari');
 		$kodesie = $this->input->post('kodesie');
@@ -109,7 +122,9 @@ class C_Civil extends CI_Controller
 		$judul = $this->input->post('judul');
 		$ket = $this->input->post('ket');
 		$nolog = $this->input->post('nolog');
+		$status = $this->input->post('status');
 		$tglbutuh = $this->input->post('tglbutuh');
+		$alasan = $this->input->post('alasan');
 
 		$data = array(
 			'pengorder'			=>	$dari,
@@ -124,11 +139,13 @@ class C_Civil extends CI_Controller
 			'tgl_dibutuhkan'	=>	$tglbutuh,
 			'judul'				=>	$judul,
 			'status_id'			=>	1,//open
+			'alasan'			=>  $alasan,
+			'status'			=>  $status
 			);
 		$ins = $this->M_civil->insertOrder($data);
 
 		//insert lampiran
-		$this->update_lampiran($ins);
+		$this->insert_lampiran($ins);
 
 		//insert cvl_order_pekerjaan
 		$pekerjaan = $this->input->post('tbl_pekerjaan');
@@ -168,6 +185,7 @@ class C_Civil extends CI_Controller
 			);
 		$this->M_civil->saveThread($thread);
 
+		$this->session->orderid = $ins;
 		redirect('civil-maintenance-order/order/list_order');
 	}
 
@@ -263,6 +281,50 @@ class C_Civil extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function insert_lampiran($id = '')
+	{
+		$this->load->library('upload');
+		$dataInfo = array();
+		$files = $_FILES;
+		$cpt = count($_FILES['tbl_lampiran']['name']);
+		// echo $cpt;exit();
+		for($i=0; $i<$cpt; $i++)
+		{   
+			$cpt2 = count($_FILES['tbl_lampiran']['name'][$i]);
+			for ($j=0; $j < $cpt2; $j++) { 
+				$filename = $files['tbl_lampiran']['name'][$i][$j];
+				if(empty($filename)) continue;
+
+				$_FILES['tbl_lampiran']['name']= str_replace(' ', '_', $files['tbl_lampiran']['name'][$i][$j]);
+				$_FILES['tbl_lampiran']['type']= $files['tbl_lampiran']['type'][$i][$j];
+				$_FILES['tbl_lampiran']['tmp_name']= $files['tbl_lampiran']['tmp_name'][$i][$j];
+				$_FILES['tbl_lampiran']['error']= $files['tbl_lampiran']['error'][$i][$j];
+				$_FILES['tbl_lampiran']['size']= $files['tbl_lampiran']['size'][$i][$j];    
+
+				$this->upload->initialize($this->set_upload_options());
+				if ($this->upload->do_upload('tbl_lampiran')) {
+	                $this->upload->data();
+	            } else {
+	                $errorinfo = $this->upload->display_errors();
+					echo $errorinfo;exit();
+	            }
+	            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+	            $arr = array(
+	            	'order_id'	=>	$id,
+	            	'path'		=>	'assets/upload/CivilMaintenance/'.str_replace(' ', '_', $filename),
+	            	'file_type'	=>	$files['tbl_lampiran']['type'][$i][$j],
+	            	'pekerjaan' =>  $_POST['tbl_pekerjaan'][$i]
+	            	);
+	            $upload = $this->M_civil->insertAttachment($arr);
+				
+	        }        
+		}
+
+		if (isset($redirek)) {
+			redirect('civil-maintenance-order/order/view_order/'.$id);
+		}
+	}
+
 	public function update_lampiran($id = '')
 	{
 		if(empty($id)){
@@ -281,6 +343,7 @@ class C_Civil extends CI_Controller
 		$dataInfo = array();
 		$files = $_FILES;
 		$cpt = count($_FILES['lampiran']['name'])-1;
+		echo $cpt;exit();
 		for($i=0; $i<$cpt; $i++)
 		{           
 			$filename = $files['lampiran']['name'][$i];
@@ -297,7 +360,7 @@ class C_Civil extends CI_Controller
                 $this->upload->data();
             } else {
                 $errorinfo = $this->upload->display_errors();
-				echo $errorinfo;
+				echo $errorinfo;exit();
             }
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
             $arr = array(
