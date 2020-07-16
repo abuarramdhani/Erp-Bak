@@ -1023,20 +1023,20 @@ class C_Master extends CI_Controller
             $this->load->library('Pdf');
             $pdf 		= $this->pdf->load();
             $pdf 		= new mPDF('utf-8', array(93.98,39.878), 0, '', 0, 0, 0, 0, 0, 0);
-            $this->load->library('ciqrcode');
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/upload/wipp/qrcode')) {
-                mkdir('./assets/upload/wipp/qrcode', 0777, true);
-                chmod('./assets/upload/wipp/qrcode', 0777);
+            if (!is_dir('./assets/img/PBIQRCode')) {
+                chmod('./assets/img/PBIQRCode', 0777);
             }
+            $this->load->library('ciqrcode');
 
             $params['data']		= $doc;
             $params['level']	= 'H';
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = '.assets/upload/wipp/qrcode/'.$doc.'.png';
+
+            $params['savename'] = './assets/img/PBIQRCode/'.$doc.'.png';
             $this->ciqrcode->generate($params);
 
             // echo "<pre>";
@@ -1080,9 +1080,9 @@ class C_Master extends CI_Controller
             $this->load->library('ciqrcode');
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/upload/wipp/qrcode')) {
-                mkdir('./assets/upload/wipp/qrcode', 0777, true);
-                chmod('./assets/upload/wipp/qrcode', 0777);
+            if (!is_dir('./assets/img/PBIQRCode')) {
+                mkdir('./assets/img/PBIQRCode', 0777, true);
+                chmod('./assets/img/PBIQRCode', 0777);
             }
 
             $params['data']		= $doc;
@@ -1090,7 +1090,7 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = '.assets/upload/wipp/qrcode/'.$doc.'.png';
+            $params['savename'] = './assets/img/PBIQRCode/'.$doc.'.png';
             $this->ciqrcode->generate($params);
 
             // echo "<pre>";
