@@ -99,12 +99,8 @@
                                                             <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" disabled>
                                                             <option value="<?= $val['PIC_PENGELUARAN']?>"><?= $val['PIC_PENGELUARAN']?></option>
                                                         </select>
-                                                        <?php }else{?><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;">
+                                                        <?php }else{?><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible picSPB3" style="width:100%;">
                                                             <option></option>
-                                                            <option value="ADI">ADI</option>
-                                                            <option value="RIZAL">RIZAL</option>
-                                                            <option value="DIKA">DIKA</option>
-                                                            <option value="DINAR">DINAR</option>
                                                         </select> <?php }?>
                                                         </td>
                                                         <td class="<?= $td?>"><?= $val['URGENT']?>  <?= $val['BON'] ?></td>
@@ -193,12 +189,8 @@
 			</div>
 			<div class="modal-body">
             <h3 class="modal-title" style="text-align:center;"><b>Masukan PIC Finish</b></h3>
-            <select id="picfinish" name="picfinish" class="form-control select2" style="width:100%;">
+            <select id="picfinish" name="picfinish" class="form-control select2 picSPB3" style="width:100%;">
                 <option></option>
-                <option value="ADI">ADI</option>
-                <option value="RIZAL">RIZAL</option>
-                <option value="DIKA">DIKA</option>
-                <option value="DINAR">DINAR</option>
             </select>
             <br>
             <br>
