@@ -224,5 +224,3 @@ class C_Tugas extends CI_Controller
 	}
 
 }
-
-?>
