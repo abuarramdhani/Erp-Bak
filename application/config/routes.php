@@ -2033,6 +2033,10 @@ $route['MasterPekerja/Surat/SuratIsolasiMandiri'] = 'MasterPekerja/Surat/Isolasi
 $route['MasterPekerja/Surat/SuratIsolasiMandiri/(:any)'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri/$1';
 $route['MasterPekerja/Surat/SuratIsolasiMandiri/(:any)/(:any)'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri/$1/$2';
 
+$route['MasterPekerja/Surat/Recycle'] = "MasterPekerja/Surat/Recycle/C_Recycle/index";
+$route['MasterPekerja/Surat/Recycle/Restore']['post'] = "MasterPekerja/Surat/Recycle/C_Recycle/restore";
+$route['MasterPekerja/Surat/Recycle/DeletePermanent']['post'] = "MasterPekerja/Surat/Recycle/C_Recycle/delete";
+
 $route['MasterPekerja/upload-photo'] 	= 'MasterPekerja/Pekerja/UploadPhoto/C_Upoto';
 $route['MasterPekerja/upload-photo/(:any)'] 	= 'MasterPekerja/Pekerja/UploadPhoto/C_Upoto/$1';
 $route['MasterPekerja/upload-photo/(:any)/(:any)'] 	= 'MasterPekerja/Pekerja/UploadPhoto/C_Upoto/$1/$2';
