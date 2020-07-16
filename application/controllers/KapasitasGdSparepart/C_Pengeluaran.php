@@ -72,6 +72,13 @@ class C_Pengeluaran extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function getPIC(){
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_pengeluaran->getPIC($term);
+		echo json_encode($data);
+	}
+
 	public function updateMulai(){
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');

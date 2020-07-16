@@ -423,6 +423,31 @@ $(document).ready(function () {
             }
         }
     });
+
+    $(".picSPB3").select2({
+        allowClear: false,
+        placeholder: "",
+        minimumInputLength: 0,
+        ajax: {
+            url: baseurl + "KapasitasGdSparepart/Pengeluaran/getPIC",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                        term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                // console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.PIC, text:obj.PIC};
+                    })
+                };
+            }
+        }
+    });
 });
 
 function checkdata(no) {
@@ -508,11 +533,7 @@ function mulaiselect(no) {
 }
 
 function finishselectedPelayanan() {
-    $("#mdlfinishplyn").modal({
-        backdrop: 'static',
-        keyboard: true, 
-        show: true,
-}); 
+    $("#mdlfinishplyn").modal('show'); 
 }
 
 function savefinish() {
@@ -784,11 +805,7 @@ function mulaiselect2(no) {
 }
 
 function finishselectedPengeluaran() {
-    $("#mdlfinishpglr").modal({
-        backdrop: 'static',
-        keyboard: true, 
-        show: true,
-}); 
+    $("#mdlfinishpglr").modal('show'); 
 }
 
 function savefinish2() {
