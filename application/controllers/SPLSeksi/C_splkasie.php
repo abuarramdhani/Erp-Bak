@@ -10,6 +10,7 @@ class C_splkasie extends CI_Controller
 		parent::__construct();
 
 		$this->load->library('session');
+		$this->load->library('../controllers/SPLSeksi/Pusat/Lembur');
 
 		$this->load->model('SPLSeksi/M_splseksi');
 		$this->load->model('SPLSeksi/M_splkasie');
@@ -87,148 +88,8 @@ class C_splkasie extends CI_Controller
 	}
 
 	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat)
-	{ //latest
-		$day   = date('w', strtotime($tgl));
-
-		$hari_indo = "Minggu Senin Selasa Rabu Kamis Jumat Sabtu";
-		$array_hari = explode(' ', $hari_indo);
-		//--------------------core variable
-		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
-		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind);
-		$HARI 		= $array_hari[$day];
-		//-----------------------
-		$treffjamlembur = $this->M_splseksi->treffjamlembur($KET, $JENIS_HARI, $HARI);
-
-		//----cari berapa menit lemburnya
-		$first = explode(':', $mulai);
-		$second = explode(':', $selesai);
-
-		if (count($first) == 1) {
-			$first[1] = 00;
-		}
-
-		if (count($second) == 1) {
-			$second[1] = 00;
-		}
-
-		$a = $first[0] * 60 + $first[1];
-		$b = $second[0] * 60 + $second[1];
-
-		if ($a > $b) {
-			$zero = 24 * 60; // jam sehari dalam menit
-			$z = $zero - $a;
-			$lama_lembur = $z + $b;
-		} else {
-			$lama_lembur = $b - $a;
-		}
-
-		$shift = $this->M_splseksi->selectShift($noind, $tgl);
-		if ($kode_lembur == '005') {
-			$shift = (strtotime($shift->jam_plg) - strtotime($shift->jam_msk));
-			$shift = $shift / 60;
-			$result = $lama_lembur - $shift;
-		} else {
-			$result = $lama_lembur;
-		}
-		//-----end cari menit lembur
-
-		//-----------------------core variable
-		$MENIT_LEMBUR = $result;
-		//buat jaga jaga error
-		$BREAK = $break == 'Y' ? 15 : 0;
-		$ISTIRAHAT = $istirahat == 'Y' ? 45 : 0;
-
-		$allShift = $this->M_splseksi->selectAllShift($tgl);
-
-		if (!empty($allShift)) {
-			if ($istirahat == 'Y') { //jika pekerja memilih istirahat
-				$ISTIRAHAT = 0;
-				$distinct_start = [];
-
-				foreach ($allShift as $shift) {
-					$rest_start = strtotime($shift['ist_mulai']);
-					$rest_end   = strtotime($shift['ist_selesai']);
-
-					if ($rest_start == $rest_end) {
-						continue;
-					}
-
-					//biar jam break tidak terdouble
-					if (in_array($rest_start, $distinct_start)) {
-						continue;
-					} else {
-						$distinct_start[] = $rest_start;
-					}
-
-					$overtime_start = strtotime($mulai);
-					$overtime_end   = strtotime($selesai);
-
-					if (($rest_start > $overtime_start && $rest_end < $overtime_end)) { // jika jam istirahat masuk range lembur
-						$ISTIRAHAT = $ISTIRAHAT + 45;
-					} else if ($rest_start > $overtime_start && $rest_end > $overtime_end && $rest_start < $overtime_end) {
-						$ISTIRAHAT = $ISTIRAHAT + (45 + ($overtime_end - $rest_end) / 60);
-					}
-				}
-			}
-
-			if ($break == 'Y') { //jika pekerja memilih istirahat
-				$BREAK = 0;
-				$distinct_start = [];
-
-				foreach ($allShift as $shift) {
-					$break_start = strtotime($shift['break_mulai']);
-					$break_end   = strtotime($shift['break_selesai']);
-
-					//jika tidak ada istirahat, lewati
-					if ($break_start == $break_end) {
-						continue;
-					}
-
-					//biar jam break tidak terdouble
-					if (in_array($break_start, $distinct_start)) {
-						continue;
-					} else {
-						$distinct_start[] = $break_start;
-					}
-
-					$overtime_start = strtotime($mulai);
-					$overtime_end   = strtotime($selesai);
-
-					if ($break_start > $overtime_start && $break_end < $overtime_end) { // jika jam istirahat masuk range lembur
-						$BREAK = $BREAK + 15;
-					} else if ($break_start > $overtime_start && $break_end > $overtime_end && $break_start < $overtime_end) {
-						$BREAK = $BREAK + (15 + ($overtime_end - $break_end) / 60);
-					}
-				}
-			}
-		}
-
-		//----------------------
-		$estimasi = 0;
-		if (!empty($treffjamlembur)) :
-			$total_lembur = $MENIT_LEMBUR - ($BREAK + $ISTIRAHAT);
-
-			$i = 0;
-			while ($total_lembur > 0) {
-				$jml_jam = $treffjamlembur[$i]['jml_jam'] * 60;
-				$pengali = $treffjamlembur[$i]['pengali'];
-
-				if ($total_lembur > $jml_jam) {
-
-					$estimasi = $estimasi + $jml_jam * $pengali / 60;
-					$total_lembur = $total_lembur - $jml_jam;
-				} else {
-
-					$estimasi = $estimasi + ($total_lembur * $pengali / 60);
-					$estimasi = number_format($estimasi, 2);
-					$total_lembur = 0;
-				}
-				$i++;
-			} else :
-			$estimasi = "tdk bisa diproses";
-		endif;
-
-		return $estimasi;
+	{
+		return $this->lembur->hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat);
 	}
 
 	public function cut_kodesie($id)
@@ -742,8 +603,8 @@ class C_splkasie extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				// $mail->addAddress("", 'Monitoring Transaction');
-				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				// $mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
+				$mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
 
 				$mail->Subject = 'SPL Anda telah di Approve';
 				$mail->msgHTML($message);
@@ -790,8 +651,8 @@ class C_splkasie extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				// $mail->addAddress("", 'Monitoring Transaction');
-				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				// $mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
+				$mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
 				$mail->Subject = 'SPL Anda telah di Reject';
 				$mail->msgHTML($message);
 				if (!$mail->send()) {
