@@ -55,7 +55,7 @@
 																		$b = $key['jenis_limbah'];
 																		$c = $key['kode_limbah'];
 																		$d = $key['satuan'];
-																		if ($a !== '26' and $a !== '27' and $a !== '28' and $a !== '30' and $a !== '37' and $a !== '43' and $a !== '47') {
+																		if ($a !== '26' and $a !== '27' and $a !== '28' and $a !== '30' and $a !== '37' and $a !== '43' and $a !== '47' and $a !== '49' and $a !== '50' and $a !== '51' and $a !== '52' and $a !== '53' and $a !== '54' and $a !== '55') {
 																			echo "<option value='$a' data-satuan= '$d'>$c - $b</option>";
 																		}
 																	}
