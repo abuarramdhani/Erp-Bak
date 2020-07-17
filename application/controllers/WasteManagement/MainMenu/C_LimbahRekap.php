@@ -111,12 +111,12 @@ class C_LimbahRekap extends CI_Controller
 		$this->excel->getActiveSheet()->setCellValue('B1', 'TANGGAL DIHASILKAN/DITERIMA');
 		$this->excel->getActiveSheet()->setCellValue('C1', 'MASA SIMPAN (HARI)');
 		$this->excel->getActiveSheet()->setCellValue('D1', 'TPS');
-		$this->excel->getActiveSheet()->setCellValue('E1', 'SUMBER LIMBAH');
-		$this->excel->getActiveSheet()->setCellValue('F1', 'KODE MANIFEST');
-		$this->excel->getActiveSheet()->setCellValue('G1', 'NAMA PENGHASIL/PENGIRIM');
-		$this->excel->getActiveSheet()->setCellValue('H1', 'JUMLAH (TON)');
-		$this->excel->getActiveSheet()->setCellValue('I1', 'CATATAN');
-		$this->excel->getActiveSheet()->setCellValue('J1', 'LOKASI KERJA');
+		//$this->excel->getActiveSheet()->setCellValue('E1', 'SUMBER LIMBAH');
+		$this->excel->getActiveSheet()->setCellValue('E1', 'KODE MANIFEST');
+		//$this->excel->getActiveSheet()->setCellValue('G1', 'NAMA PENGHASIL/PENGIRIM');
+		$this->excel->getActiveSheet()->setCellValue('F1', 'JUMLAH (TON)');
+		$this->excel->getActiveSheet()->setCellValue('G1', 'CATATAN');
+		//$this->excel->getActiveSheet()->setCellValue('J1', 'LOKASI KERJA');
 
 		$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
 		$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
@@ -125,9 +125,9 @@ class C_LimbahRekap extends CI_Controller
 		$this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
 		$this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
 		$this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
-		$this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
-		$this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
-		$this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(25);
+		//$this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+		//$this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+		//$this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(25);
 
 
 		$this->excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
@@ -143,8 +143,8 @@ class C_LimbahRekap extends CI_Controller
 				)
 			)
 		);
-		$this->excel->getActiveSheet()->getStyle('A1:J1')->getFont()->setBold(true);
-		$this->excel->getActiveSheet()->getStyle('A1:J1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$this->excel->getActiveSheet()->getStyle('A1:G1')->getFont()->setBold(true);
+		$this->excel->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$this->excel->getDefaultStyle()->applyFromArray($style);
 		$a = 2;
 		foreach ($data as $row) {
@@ -152,16 +152,16 @@ class C_LimbahRekap extends CI_Controller
 			$this->excel->getActiveSheet()->setCellValue('B'.$a, $row['tanggal_dihasilkan']);
 			$this->excel->getActiveSheet()->setCellValue('C'.$a, $row['masa_simpan']);
 			$this->excel->getActiveSheet()->setCellValue('D'.$a, $row['tps']);
-			$this->excel->getActiveSheet()->setCellValue('E'.$a, $row['sumber']);
-			$this->excel->getActiveSheet()->setCellValue('F'.$a, $row['kode_manifest']);
-			$this->excel->getActiveSheet()->setCellValue('G'.$a, $row['pengirim_nama']);
-			$this->excel->getActiveSheet()->setCellValue('H'.$a, $row['jumlah']);
-			$this->excel->getActiveSheet()->setCellValue('I'.$a, $row['catatan']);
-			$this->excel->getActiveSheet()->setCellValue('J'.$a, $row['noind_location']);
+			//$this->excel->getActiveSheet()->setCellValue('E'.$a, $row['sumber']);
+			$this->excel->getActiveSheet()->setCellValue('E'.$a, $row['kode_manifest']);
+			//$this->excel->getActiveSheet()->setCellValue('G'.$a, $row['pengirim_nama']);
+			$this->excel->getActiveSheet()->setCellValue('F'.$a, $row['jumlah']);
+			$this->excel->getActiveSheet()->setCellValue('G'.$a, $row['catatan']);
+			//$this->excel->getActiveSheet()->setCellValue('J'.$a, $row['noind_location']);
 			$a++;
 		}
 		$a -= 1;
-		$this->excel->getActiveSheet()->getStyle('A1:J'.$a)->applyFromArray($border);
+		$this->excel->getActiveSheet()->getStyle('A1:G'.$a)->applyFromArray($border);
 		$filename ='SIMPLE.xls';
 		header('Content-Type: aplication/vnd.ms-excel');
 		header('Content-Disposition:attachment;filename="'.$filename.'"');
