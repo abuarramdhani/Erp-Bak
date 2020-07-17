@@ -35,7 +35,7 @@ vertical-align: middle;
                   <h4 style="font-weight:bold">LIST RKH</h4>
                 </div>
                 <div class="col-md-6">
-                  <div style="margin-top:15px;margin-left:25px;">
+                  <div style="margin-top:15px;float:right">
                     <div style="width: 20%;color:transparent; border:1px solid #5e5e5e;display:inline;background:#f4f4f4">______</div> <span style="display:inline"> : Reguler</span>
                     <div style="width: 20%;color:transparent; margin-top: 5px;border:1px solid #5e5e5e; background:rgba(255, 0, 84, 0.29);display:inline;margin-left:5px;">______</div> <span style="display:inline"> : Lembur</span>
                   </div>

@@ -246,7 +246,7 @@ jumlahEl1.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek1${i}`).val('second_load');
           }
         },
@@ -255,7 +255,6 @@ jumlahEl1.forEach((v, i) => {
         }
       })
     }else {
-      swalRKH('info', `${waktu_mulai}`)
       $.ajax({
         url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
         type: 'POST',
@@ -264,22 +263,18 @@ jumlahEl1.forEach((v, i) => {
         data: {
           waktu_mulai: waktu_mulai,
           line: 1,
-          no: no,
-          code: code
         },
         success: function(result) {
           if (!result) {
             Swal.fire({
               position: 'center',
-              type: 'Danger',
-              title: 'Gagal Melakukan Insert Data (!)',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
               showConfirmButton: false,
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
-
-
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -344,7 +339,7 @@ jumlahEl1.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -358,7 +353,7 @@ jumlahEl1.forEach((v, i) => {
     if (intervalId1[i]) {
       clearInterval(intervalId1[i]);
       let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
       $.ajax({
         url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
@@ -382,7 +377,7 @@ jumlahEl1.forEach((v, i) => {
               timer: 1700
             })
           }else {
-            console.log(result);
+            swalRTLPToastrAlert('warning', `Data Job Lane 1 dengan No Job ${no_job} Dijeda.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -467,8 +462,35 @@ jumlahEl2.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek2${i}`).val('second_load');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    }else {
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: 2,
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -501,7 +523,7 @@ jumlahEl2.forEach((v, i) => {
         }
       })
 
-      $('#btnstart2' + i).attr("disabled", "disabled"); // sesuai kondisi pasien antum
+      $('#btnstart2' + i).attr("disabled", "disabled"); // sesuai kondisi client antum
       $('#btnlanjut2' + i).attr("disabled", "disabled");
       $('#btnrestart2' + i).attr("disabled", "disabled");
       $('#btnfinish2' + i).attr("disabled", "disabled");
@@ -529,7 +551,7 @@ jumlahEl2.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -543,7 +565,7 @@ jumlahEl2.forEach((v, i) => {
     if (intervalId2[i]) {
       clearInterval(intervalId2[i]);
       let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
       $.ajax({
         url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
@@ -567,7 +589,7 @@ jumlahEl2.forEach((v, i) => {
               timer: 1700
             })
           }else {
-            console.log(result);
+            swalRTLPToastrAlert('warning', `Data Job Lane 2 dengan No Job ${no_job} Dijeda.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -653,8 +675,35 @@ jumlahEl3.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek3${i}`).val('second_load');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    }else {
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: 3,
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -715,7 +764,7 @@ jumlahEl3.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -725,11 +774,41 @@ jumlahEl3.forEach((v, i) => {
     }
   }
 
-  pause3[i] = _ => {
+  pause3[i] = (no_job, kode_item, no_param) => {
     if (intervalId3[i]) {
       clearInterval(intervalId3[i]);
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: start_pause,
+          line: 3,
+          code: kode_item,
+          no_job: no_job,
+          no: no_param
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data pada table Time_Pause_Record (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          }else {
+            swalRTLPToastrAlert('warning', `Data Job Lane 3 dengan No Job ${no_job} Dijeda.`)
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
     }
   };
 
@@ -809,8 +888,35 @@ jumlahEl4.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek4${i}`).val('second_load');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    }else {
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: line,
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -870,7 +976,7 @@ jumlahEl4.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -880,11 +986,41 @@ jumlahEl4.forEach((v, i) => {
     }
   }
 
-  pause4[i] = _ => {
+  pause4[i] = (no_job, kode_item, no_param) => {
     if (intervalId4[i]) {
       clearInterval(intervalId4[i]);
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: start_pause,
+          line: 4,
+          code: kode_item,
+          no_job: no_job,
+          no: no_param
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data pada table Time_Pause_Record (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          }else {
+            swalRTLPToastrAlert('warning', `Data Job Lane 4 dengan No Job ${no_job} Dijeda.`)
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
     }
   };
 
@@ -963,7 +1099,7 @@ jumlahEl5.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek5${i}`).val('second_load');
             $('.img-area-wipp').html(`<div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
                                         <div class="row">
@@ -974,6 +1110,33 @@ jumlahEl5.forEach((v, i) => {
                                           </div>
                                         </div>
                                       </div>`)
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    }else {
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: 5,
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1033,7 +1196,7 @@ jumlahEl5.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
             $('.img-area-wipp').html(``)
           }
         },
@@ -1044,10 +1207,40 @@ jumlahEl5.forEach((v, i) => {
     }
   }
 
-  pause5[i] = _ => {
+  pause5[i] = (no_job, kode_item, no_param) => {
     if (intervalId5[i]) {
       clearInterval(intervalId5[i]);
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: start_pause,
+          line: 5,
+          code: kode_item,
+          no_job: no_job,
+          no: no_param
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data pada table Time_Pause_Record (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          }else {
+            swalRTLPToastrAlert('warning', `Data Job Lane 5 dengan No Job ${no_job} Dijeda.`)
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
       // action
     }
   };

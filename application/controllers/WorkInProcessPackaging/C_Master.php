@@ -1263,7 +1263,7 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-        $data_a = $this->M_wipp->getDetailBom2('AAA1AB0021AY-1');
+        $data_a = $this->M_wipp->getJob('EGBA08000000-0');
         // $data_a = $this->M_wipp->getItem();
         echo "<pre>";
         print_r($data_a);
