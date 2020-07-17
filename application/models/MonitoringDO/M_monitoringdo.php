@@ -279,18 +279,18 @@ class M_monitoringdo extends CI_Model
     public function getDetailData($data)
     {
         $subinv = $this->session->datasubinven;
-        $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
-                                  mtrl.inventory_item_id, msib.description, mtrl.quantity,
-                                  -- khs_stock_delivery (mtrl.inventory_item_id,102,'$subinv') + mtrl.quantity av_to_res
-                                  khs_inv_qty_atr (102,mtrl.inventory_item_id,'$subinv','','') av_to_res
-                             FROM mtl_txn_request_lines mtrl,
-                                  mtl_txn_request_headers mtrh,
-                                  mtl_system_items_b msib
-                            WHERE mtrh.header_id = mtrl.header_id
-                              AND msib.inventory_item_id = mtrl.inventory_item_id
-                              AND msib.organization_id = mtrl.organization_id
-                              AND mtrh.request_number = '$data'
-                         ORDER BY msib.segment1";
+        $query = "SELECT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
+                         mtrl.inventory_item_id, msib.description, mtrl.quantity,
+                         -- khs_stock_delivery (mtrl.inventory_item_id,102,'$subinv') + mtrl.quantity av_to_res
+                         khs_inv_qty_atr (102,mtrl.inventory_item_id,'$subinv','','') av_to_res
+                    FROM mtl_txn_request_lines mtrl,
+                         mtl_txn_request_headers mtrh,
+                         mtl_system_items_b msib
+                   WHERE mtrh.header_id = mtrl.header_id
+                     AND msib.inventory_item_id = mtrl.inventory_item_id
+                     AND msib.organization_id = mtrl.organization_id
+                     AND mtrh.request_number = '$data'
+                ORDER BY msib.segment1";
 
         if (!empty($data)) {
             $response = $this->oracle->query($query)->result_array();
@@ -720,7 +720,8 @@ class M_monitoringdo extends CI_Model
                      AND msib.organization_id = mtrl.organization_id
                      --
                      AND mtrl.transaction_type_id IN (327, 64, 52, 33)         -- DO,SPB,SPB KIT
-                     AND NVL (mtrl.quantity_delivered, 0) <> 0
+                //     AND NVL (mtrl.quantity_delivered, 0) <> 0
+                     AND NVL (kdt.allocated_quantity, 0) <> 0
                      --
                      AND mtrh.request_number = '$id'";
 
@@ -745,7 +746,7 @@ class M_monitoringdo extends CI_Model
                               WHERE ksnt.header_id = mtrl.header_id
                                 AND ksnt.inventory_item_id = mtrl.inventory_item_id
                                 AND ksnt.line_number = mtrl.line_number
-                                AND mtrl.line_status = 5
+                            //    AND mtrl.line_status = 5
                                 --
                                 AND msib.inventory_item_id = mtrl.inventory_item_id
                                 AND msib.organization_id = mtrl.organization_id
