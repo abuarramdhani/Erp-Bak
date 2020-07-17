@@ -73,7 +73,6 @@ class M_approval extends CI_MODEL
                 inner join lm.lm_approval_cuti ap
                   on pc.lm_pengajuan_cuti = ap.lm_pengajuan_cuti_id
               WHERE pc.lm_pengajuan_cuti = '$id' and ap.approver = '$noind'";
-
     $result = $this->db->query($detail);
     return $result->result_array();
   }
@@ -217,7 +216,7 @@ class M_approval extends CI_MODEL
       }
     }
 
-    //Level 3 -> this is EDP
+    //Level 3 -> this is Hubker
     else {
       $query = "UPDATE lm.lm_approval_cuti
                 SET status = '$approve', alasan = '$alasan'
@@ -235,7 +234,7 @@ class M_approval extends CI_MODEL
 
   public function getReadyNextApprover($level, $id_cuti)
   {
-    if ($level == 'EDP') {
+    if ($level == 'Hubker') {
       return '0';
     } else {
       $level = intval($level) + 1;
@@ -284,7 +283,7 @@ class M_approval extends CI_MODEL
     $threadCancel = array(
       'lm_pengajuan_cuti_id' => $id,
       'status' => '3',
-      'detail' => '(Pembatalan Cuti) - Seksi EDP (Electronic Data Processing) telah membatalkan cuti ini dengan alasan "' . $alasan . '"',
+      'detail' => '(Pembatalan Cuti) - Seksi Hubungan Kerja telah membatalkan cuti ini dengan alasan "' . $alasan . '"',
       'waktu'  => $now
     );
     $this->db->insert('lm.lm_pengajuan_cuti_thread', $threadCancel);
@@ -374,7 +373,7 @@ class M_approval extends CI_MODEL
   function perhitunganCutOff($id_cuti)
   {
     // select end cutoff terakhir
-    $akhir_cut_off = $this->personalia->query("SELECT tanggal_akhir FROM tcutoff WHERE to_char(tanggal_akhir, 'YYYY-MM') = to_char(now(), 'YYYY-MM') LIMIT 1;")->row()->tanggal_akhir;
+    $akhir_cut_off = $this->personalia->query("SELECT tanggal_akhir FROM \"Presensi\".tcutoff WHERE to_char(tanggal_akhir, 'YYYY-MM') = to_char(now(), 'YYYY-MM') LIMIT 1;")->row()->tanggal_akhir;
     $today = date('Y-m-d'); //tgl approval terakhir / hari ini
     // cek tgl approve approval terakhir apakah melebihi tgl akhir cutoff
     if ($today > $akhir_cut_off) {
