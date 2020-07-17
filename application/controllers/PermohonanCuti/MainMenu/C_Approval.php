@@ -315,7 +315,7 @@
 
 			if (strstr($kodesie, '4010101')) { //if session login Hubungan Kerja
 				$approverThread = "Seksi Hubungan Kerja - " . $getnama['0']['nama'];
-				$level = "Hubungan Kerja";
+				$level = "Hubker";
 			} else { //else session is not Hubker
 				$level = $this->M_approval->getApproverLevel($noind, $id_cuti); //get user(session login) level 1/2/3 from this cuti
 				$approverThread = $getnama['0']['nama'];
