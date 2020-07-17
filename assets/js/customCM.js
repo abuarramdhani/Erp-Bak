@@ -4512,6 +4512,7 @@ $(document).ready(function(){
 						daftar.izin_id ,
 						daftar.noind ,
 						daftar.nama,
+						daftar.tempat_makan,
 						daftar.tujuan,
 						daftar.keterangan,
 						daftar.jenis_dinas,

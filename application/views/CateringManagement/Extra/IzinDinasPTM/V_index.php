@@ -42,6 +42,7 @@
 													<th class="bg-primary">ID Dinas</th>
 													<th class="bg-primary">No. Induk</th>
 													<th class="bg-primary">Nama</th>
+													<th class="bg-primary">Tempat Makan Asal</th>
 													<th class="bg-primary">Tempat Makan Tujuan</th>
 													<th class="bg-primary">Keterangan</th>
 													<th class="bg-primary">Jenis Dinas</th>
@@ -59,6 +60,7 @@
 															<td><?php echo $dt['izin_id'] ?></td>
 															<td><?php echo $dt['noind'] ?></td>
 															<td><?php echo $dt['nama'] ?></td>
+															<td><?php echo $dt['tempat_makan'] ?></td>
 															<td><?php echo $dt['tujuan'] ?></td>
 															<td><?php echo $dt['keterangan'] ?></td>
 															<td><?php echo $dt['jenis_dinas'] ?></td>
