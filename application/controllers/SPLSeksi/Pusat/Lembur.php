@@ -80,8 +80,10 @@ class Lembur extends CI_Controller
         $distinct_start = [];
 
         foreach ($allShift as $item) {
-          $rest_start = (strtotime($item['ist_mulai']) < strtotime($mulai)) ? strtotime('+1 day ' . $tgl . " " . $item['ist_mulai']) : strtotime($tgl . " " . $item['ist_mulai']);
-          $rest_end   = (strtotime($item['ist_selesai']) < strtotime($mulai)) ? strtotime('+1 day ' . $tgl . " " . $item['ist_selesai']) : strtotime($tgl . " " . $item['ist_selesai']);
+          $is_rest_yesterday = (strtotime($item['ist_mulai']) < strtotime($mulai)) && (strtotime($item['ist_selesai']) < strtotime($mulai));
+
+          $rest_start = $is_rest_yesterday ? strtotime('+1 day ' . $tgl . " " . $item['ist_mulai']) : strtotime($tgl . " " . $item['ist_mulai']);
+          $rest_end   = $is_rest_yesterday ? strtotime('+1 day ' . $tgl . " " . $item['ist_selesai']) : strtotime($tgl . " " . $item['ist_selesai']);
 
           // lembur datang pulang
           if (
