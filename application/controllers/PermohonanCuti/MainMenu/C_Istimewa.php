@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 /** this menu created by DK-PKL 2019
  *  ticket from EDP/reny sulistya
  *  sorry for bad code :(
@@ -32,12 +32,13 @@ class C_Istimewa extends CI_Controller
 
 	public function checkSession()
 	{
-		if(!$this->session->is_logged){
+		if (!$this->session->is_logged) {
 			redirect('');
 		}
 	}
 
-	public function index(){
+	public function index()
+	{
 		$user_id = $this->session->userid;
 		$noind = $this->session->user;
 		$kodesie = $this->session->kodesie;
@@ -47,18 +48,18 @@ class C_Istimewa extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 		$data['Info'] = $this->M_permohonancuti->getPekerja($noind);
 		$data['Cuti'] = $this->M_permohonancuti->getCutiIstimewa();
 		$approval1 = $this->M_permohonancuti->getApproval($noind, $kodesie);
-		if(empty($approval1)){ //this function is hidden error for user kd_jabatan >= 05
+		if (empty($approval1)) { //this function is hidden error for user kd_jabatan >= 05
 			$data['approval1'] = $approval1;
 			$data['kdjbtn1'] = '-';
 			$data['emptyapp'] = '1';
-		}else{
+		} else {
 			$data['approval1'] = $approval1;
 			$data['kdjbtn1'] = $data['approval1']['0']['kd_jabatan'];
 			$data['emptyapp'] = '0';
@@ -67,13 +68,14 @@ class C_Istimewa extends CI_Controller
 		$this->load->model('PermohonanCuti/M_approval'); //force to load M_approval
 		$data['kd_jabatan'] = $this->M_approval->getKdJbtn($noind); //get kd_jabatan user who login
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PermohonanCuti/PermohonanCuti/V_Istimewa',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PermohonanCuti/PermohonanCuti/V_Istimewa', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
-	public function Insert(){ //insert if passed authorization -> see function below
+	public function Insert()
+	{ //insert if passed authorization -> see function below
 		date_default_timezone_set('Asia/Jakarta'); //force to set localtime indonesia WIB
 		$noind = $this->session->user;
 
@@ -81,11 +83,12 @@ class C_Istimewa extends CI_Controller
 		$approval1 = $_POST['slc_approval1'];
 		$approval2 = $_POST['slc_approval2'];
 
-		if(isset($_POST['txtPengambilanCuti']) && !empty($_POST['txtPengambilanCuti'])) {
+		if (isset($_POST['txtPengambilanCuti']) && !empty($_POST['txtPengambilanCuti'])) {
 			$ambilcuti = $_POST['txtPengambilanCuti'];
-			$tglambilcuti = explode(",",$ambilcuti);
+			$tglambilcuti = explode(",", $ambilcuti);
 
-			function date_sort($a, $b){
+			function date_sort($a, $b)
+			{
 				return strtotime($a) - strtotime($b);
 			}
 			usort($tglambilcuti, "date_sort");
@@ -96,59 +99,59 @@ class C_Istimewa extends CI_Controller
 			$mindate = strtotime($mindate);
 			$today = time();
 			$difference = $mindate - $today;
-			$days = floor($difference / (60*60*24) );
+			$days = floor($difference / (60 * 60 * 24));
 			$mintglambil = "3";
 			$noind = $this->session->user;
 			$tahun = date('Y');
-			$sisacuti = $this->M_permohonancuti->getSisaCuti($noind,$tahun);
+			$sisacuti = $this->M_permohonancuti->getSisaCuti($noind, $tahun);
 		}
-		if(isset($_POST['txtPerkiraanLahir']) && !empty($_POST['txtPerkiraanLahir'])){
+		if (isset($_POST['txtPerkiraanLahir']) && !empty($_POST['txtPerkiraanLahir'])) {
 			$hpl = $_POST['txtPerkiraanLahir'];
 			$before = $_POST['txtSebelumLahir'];
 			$after = $_POST['txtSetelahLahir'];
-			$tgl_hpl = date('Y-m-d',strtotime($hpl));
-		}else{
+			$tgl_hpl = date('Y-m-d', strtotime($hpl));
+		} else {
 			$tgl_hpl = NULL;
 		}
 
 		switch ($jenisCuti) {
 			case '4':
-			$keterangan = "PCZ";
-			break;
+				$keterangan = "PCZ";
+				break;
 			case '5':
-			$keterangan = "CIK";
-			break;
+				$keterangan = "CIK";
+				break;
 			case '6':
-			$keterangan = "CM";
-			break;
+				$keterangan = "CM";
+				break;
 			case '7':
-			$keterangan = "CK";
-			break;
+				$keterangan = "CK";
+				break;
 			case '8':
-			$keterangan = "CPA";
-			break;
+				$keterangan = "CPA";
+				break;
 			case '9':
-			$keterangan = "CS";
-			break;
+				$keterangan = "CS";
+				break;
 			case '10':
-			$keterangan = "CBA";
-			break;
+				$keterangan = "CBA";
+				break;
 			case '11':
-			$keterangan = "CIK";
-			break;
+				$keterangan = "CIK";
+				break;
 			case '12':
-			$keterangan = "CPP";
-			break;
+				$keterangan = "CPP";
+				break;
 			case '14':
- 			$keterangan = "CK";
- 			break;
+				$keterangan = "CK";
+				break;
 			default:
-			$keterangan = "-";
-			break;
+				$keterangan = "-";
+				break;
 		}
 
-			// ----------------------- Insert --------------------//
-			// lm_pengajuan_cuti //
+		// ----------------------- Insert --------------------//
+		// lm_pengajuan_cuti //
 		$pengajuan = array(
 			'tgl_pengajuan' => date('Y-m-d'),
 			'noind' => $noind,
@@ -164,9 +167,9 @@ class C_Istimewa extends CI_Controller
 		$this->M_permohonancuti->insertCuti($pengajuan);
 		$pengajuan_id = $this->db->insert_id();
 
-			//lm_pengajuan_cuti_tgl_ambil//
-		if(isset($ambilcuti)){
-			for ($i=0; $i < count($tglambilcuti) ; $i++) {
+		//lm_pengajuan_cuti_tgl_ambil//
+		if (isset($ambilcuti)) {
+			for ($i = 0; $i < count($tglambilcuti); $i++) {
 				$tglambil = array(
 					'lm_pengajuan_cuti_id' => $pengajuan_id,
 					'tgl_pengambilan' => $tglambilcuti[$i]
@@ -175,16 +178,16 @@ class C_Istimewa extends CI_Controller
 			}
 		}
 
-			//lm_pengajuan_cuti_tgl_ambil//
-		if(isset($hpl)){
-			$jumlah = $before+$after;
+		//lm_pengajuan_cuti_tgl_ambil//
+		if (isset($hpl)) {
+			$jumlah = $before + $after;
 
 			$date 	= date_create($hpl);
 			$date1 	= date_create($hpl);
-			$before = '-'.$before;
+			$before = '-' . $before;
 			$after 	= $after;
-			$before = date_add($date,date_interval_create_from_date_string($before."days"));
-			$after 	= date_add($date1,date_interval_create_from_date_string($after."days"));
+			$before = date_add($date, date_interval_create_from_date_string($before . "days"));
+			$after 	= date_add($date1, date_interval_create_from_date_string($after . "days"));
 			$before = date_format($before, 'd-m-Y');
 			$after 	= date_format($after, 'd-m-Y');
 
@@ -205,7 +208,7 @@ class C_Istimewa extends CI_Controller
 			array_push($hpl, date('Y-m-d', strtotime($end_date)));
 
 			$banyak = count($hpl);
-			for ($i=0; $i < $banyak ; $i++) {
+			for ($i = 0; $i < $banyak; $i++) {
 				$ambil = array(
 					'lm_pengajuan_cuti_id' => $pengajuan_id,
 					'tgl_pengambilan' => $hpl[$i]
@@ -214,7 +217,7 @@ class C_Istimewa extends CI_Controller
 			}
 		}
 
-			// lm_approval_cuti //
+		// lm_approval_cuti //
 		$appr1 = array(
 			'approver' => $approval1,
 			'level' => '1',
@@ -236,7 +239,7 @@ class C_Istimewa extends CI_Controller
 		$this->M_permohonancuti->insertApproval($appr2);
 
 		$appr3 = array(
-			'approver' => 'EDP',
+			'approver' => 'Hubker',
 			'level' => '3',
 			'status' => '1',
 			'lm_pengajuan_cuti_id' => $pengajuan_id,
@@ -245,12 +248,12 @@ class C_Istimewa extends CI_Controller
 		);
 		$this->M_permohonancuti->insertApproval($appr3);
 
-			// lm_pengajuan_cuti_thread //
+		// lm_pengajuan_cuti_thread //
 		$getnama = $this->M_permohonancuti->getNama($noind);
 		$thread = array(
 			'lm_pengajuan_cuti_id' => $pengajuan_id,
 			'status' => '0',
-			'detail' => '( Created ) - '.$getnama['0']['nama'].' telah membuat surat permohonan cuti istimewa baru',
+			'detail' => '( Created ) - ' . $getnama['0']['nama'] . ' telah membuat surat permohonan cuti istimewa baru',
 			'waktu' => date('Y-m-d H:i:s')
 		);
 		$this->M_permohonancuti->insertThread($thread);
@@ -261,31 +264,34 @@ class C_Istimewa extends CI_Controller
 		//
 
 		redirect('PermohonanCuti/DraftCuti');
-			// --------------------------------------------------------------------//
+		// --------------------------------------------------------------------//
 	}
 
-	public function getHakCuti(){ //get max day to cuti for cuti Istimewa
+	public function getHakCuti()
+	{ //get max day to cuti for cuti Istimewa
 		$keterangan = $_POST['ket'];
-		if($keterangan == '-'){
+		if ($keterangan == '-') {
 			$data = '-';
-		}else{
+		} else {
 			$query = $this->M_permohonancuti->getHakCuti($keterangan);
 			$data = $query['0']['hari_maks'];
 		}
 		echo json_encode($data);
 	}
 
-	public function getOtorisasi(){
+	public function getOtorisasi()
+	{
 		$jenisCuti = $_POST['jenis_cuti'];
 
-		if(isset($_POST['tanggal'])) {
+		if (isset($_POST['tanggal'])) {
 			$ambilcuti = $_POST['tanggal'];
 			$hakcuti = $_POST['hak_cuti'];
 
 			//array tgl ambil//
-			$tglambilcuti = explode(",",$ambilcuti);
+			$tglambilcuti = explode(",", $ambilcuti);
 
-			function date_sort($a, $b){
+			function date_sort($a, $b)
+			{
 				return strtotime($a) - strtotime($b);
 			}
 			usort($tglambilcuti, "date_sort");
@@ -296,13 +302,13 @@ class C_Istimewa extends CI_Controller
 			$mindate = strtotime($mindate);
 			$today = time();
 			$difference = $mindate - $today;
-			$days = floor($difference / (60*60*24) );
+			$days = floor($difference / (60 * 60 * 24));
 			$mintglambil = "3";
 			$noind = $this->session->user;
 			$tahun = date('Y');
-			$sisacuti = $this->M_permohonancuti->getSisaCuti($noind,$tahun);
+			$sisacuti = $this->M_permohonancuti->getSisaCuti($noind, $tahun);
 		}
-		if(isset($_POST['hpl'])){
+		if (isset($_POST['hpl'])) {
 			$hpl = $_POST['hpl'];
 			$before = $_POST['before'];
 			$after = $_POST['after'];
@@ -310,43 +316,43 @@ class C_Istimewa extends CI_Controller
 
 		//-------------------Otorisiasi Istimewa----------------//
 		//1,2,4//
-		$notif='';
-		if ($jenisCuti == '4' OR $jenisCuti == '5' OR $jenisCuti == '7') {
-			if($difference <= 0){
+		$notif = '';
+		if ($jenisCuti == '4' or $jenisCuti == '5' or $jenisCuti == '7') {
+			if ($difference <= 0) {
 				// do nothing
-			}else{
+			} else {
 				$notif = '7';
 			}
-		}elseif ($jenisCuti == '6') {
+		} elseif ($jenisCuti == '6') {
 			$ambil1 = $before;
 			$ambil2 = $after;
-			$jumlah = $before+$after;
+			$jumlah = $before + $after;
 
 			$date = date_create($hpl);
 			$date1 = date_create($hpl);
-			$before = '-'.$before;
+			$before = '-' . $before;
 			$after = $after;
-			$before = date_add($date,date_interval_create_from_date_string($before."days"));
-			$after =  date_add($date1,date_interval_create_from_date_string($after."days"));
+			$before = date_add($date, date_interval_create_from_date_string($before . "days"));
+			$after =  date_add($date1, date_interval_create_from_date_string($after . "days"));
 			$before = date_format($before, 'd-m-Y');
 			$after = date_format($after, 'd-m-Y');
 			$beforeHPL = date('d F Y', strtotime($before));
 			$afterHPL = date('d F Y', strtotime($after));
 
-			if($jumlah > '90'){
+			if ($jumlah > '90') {
 				$notif = '9';
 			}
-		}elseif ($jenisCuti == "8" OR $jenisCuti == "9" OR $jenisCuti == "10" OR $jenisCuti == "12") {
-			if($days < '3'){
+		} elseif ($jenisCuti == "8" or $jenisCuti == "9" or $jenisCuti == "10" or $jenisCuti == "12") {
+			if ($days < '3') {
 				$notif = '10';
 			}
-		}elseif ($jenisCuti == '11'){
-			if (count($tglambilcuti) > $hakcuti ){
+		} elseif ($jenisCuti == '11') {
+			if (count($tglambilcuti) > $hakcuti) {
 				$notif = '9';
 			}
 		}
-		if(isset($tglambilcuti)){
-			if(count($tglambilcuti) > $hakcuti){
+		if (isset($tglambilcuti)) {
+			if (count($tglambilcuti) > $hakcuti) {
 				$notif = '9';
 			}
 		}
@@ -365,12 +371,12 @@ class C_Istimewa extends CI_Controller
 			'11' => "Harap mengirimkan surat HPL dari Dokter / Rumah sakit",
 			'12' => "Membuat surat pernyatan siap menanggung resiko"
 		);
-		if(!empty($notif)){
+		if (!empty($notif)) {
 			$notif = $data[$notif];
-		}else{
+		} else {
 			$notif = "-";
 		}
-		if($jenisCuti == '6'){
+		if ($jenisCuti == '6') {
 			$data = array();
 			$data['0'] = $notif;
 			$data['1'] = $beforeHPL;
@@ -379,7 +385,7 @@ class C_Istimewa extends CI_Controller
 			$data['4'] = $ambil2;
 			$data['5'] = $jumlah;
 			echo json_encode($data);
-		}else{
+		} else {
 			$data = array();
 			$data['0'] = $notif;
 			echo json_encode($data);
