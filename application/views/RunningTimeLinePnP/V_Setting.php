@@ -3,18 +3,36 @@
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
-          <h4 style="font-weight:bold;display:inline;"><i class="fa fa-cloud-upload"></i> Setting Job Lane Lane 1 - 2</h4>
-          <a style="display:inline;float:right;border:1.5px solid white;" href="<?php echo base_url('RunningTimeLinePnP/setting/history') ?>" class="btn btn-primary"><i class="fa fa-hourglass-3"></i> History</a>
+          <div class="row">
+            <div class="col-md-6">
+              <h4 style="font-weight:bold;"><i class="fa fa-cloud-upload"></i> Setting Job Lane Lane 1 - 2</h4>
+            </div>
+            <div class="col-md-6">
+              <div style="float:right">
+                <a style="display:inline;float:right;border:1.5px solid white;" href="<?php echo base_url('RunningTimeLinePnP/setting/history') ?>" class="btn btn-primary"><i class="fa fa-hourglass-3"></i> History</a>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="box-body" style="background:#f0f0f0 !important;">
           <div class="row">
             <div class="col-md-12">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;">
-                  <label for="">Data Tanggal <?php echo date('Y-m-d'); ?></label>
                 <!-- <input type="text" autocomplete="off" class="form-control txtWIIPdate" placeholder="..." style="width:100%;" name="" value=""> -->
                 <!-- <div class="col-md-2">
                   <button type="button" style="width:100%;margin-top:25px" class="btn bg-maroon" onclick="setDate()" name="button"><i class="fa fa-gears"></i> Submit</button>
                 </div> -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="">Data Tanggal <?php echo date('Y-m-d'); ?></label>
+                  </div>
+                  <div class="col-md-6">
+                    <div style="margin-top:2px;float:right">
+                      <div style="width: 20%;color:transparent; border:1px solid #5e5e5e;display:inline;background:#f4f4f4">______</div> <span style="display:inline"> : Job Belum Selesai</span>
+                      <div style="width: 20%;color:transparent; margin-top: 5px;border:1px solid #5e5e5e; background:rgba(0, 94, 255, 0.19);display:inline;margin-left:5px;">______</div> <span style="display:inline"> : Job Sudah Selesai</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-md-6" style="margin-top:10px">
@@ -36,7 +54,16 @@
                     </thead>
                     <tbody id="tambahisiwipp" class="length1">
                       <?php foreach ($line_1 as $key => $l1): ?>
-                      <tr class="rowbaru_wipp timer1" id="wipprow1" data-rtlp = "<?php echo $l1['kode_item'] ?>_<?php echo $key+1 ?>">
+                      <?php
+                      if ($l1['cek_time_record'] == 1) {
+                        $style = 'style="background:rgba(0, 94, 255, 0.19)"';
+                        $none = 'style="pointer-events: none;"';
+                      }else {
+                        $style = '';
+                        $none = '';
+                      }
+                       ?>
+                      <tr class="rowbaru_wipp timer1" id="wipprow1" <?php echo $style ?> data-rtlp = "<?php echo $l1['kode_item'] ?>_<?php echo $key+1 ?>">
                         <td>
                           <center><?php echo $key+1 ?></center>
                         </td>
@@ -48,7 +75,7 @@
                         <td><center>
                           <button type="button" style="margin-top: 29px;border-radius: 50px;" class="btn bg-maroon btn-xs btn-flat " onclick="detail_rtlp('<?php echo $l1['kode_item'] ?>', '<?php echo $key+1 ?>')" name="button"><i class="fa fa-eye"></i></button>
                         </center></td>
-                        <td>
+                        <td <?php echo $none ?>>
                           <center>
                           <p id="timer1">
                             <label id="hours1-<?php echo $key ?>">00</label>:<label id="minutes1-<?php echo $key ?>">00</label>:<label id="seconds1-<?php echo $key ?>">00</label>
@@ -93,7 +120,16 @@
                     </thead>
                     <tbody id="tambahisiwipp2" class="length2" data-length=<?php echo sizeof($line_2) ?>>
                       <?php foreach ($line_2 as $key => $l2): ?>
-                      <tr class="rowbaru2_wipp timer2" id="wipp2row1" data-rtlp = "<?php echo $l2['kode_item'] ?>_<?php echo $key+1 ?>">
+                        <?php
+                        if ($l2['cek_time_record'] == 1) {
+                          $style2 = 'style="background:rgba(0, 94, 255, 0.19)"';
+                          $none2 = 'style="pointer-events: none;"';
+                        }else {
+                          $style2 = '';
+                          $none2 = '';
+                        }
+                         ?>
+                      <tr class="rowbaru2_wipp timer2" <?php echo $style2 ?> id="wipp2row1" data-rtlp = "<?php echo $l2['kode_item'] ?>_<?php echo $key+1 ?>">
                         <td>
                           <center><?php echo $key+1 ?></center>
                         </td>
@@ -105,7 +141,7 @@
                         <td><center>
                           <button type="button" style="margin-top: 29px;border-radius: 50px;" class="btn bg-maroon btn-xs btn-flat " onclick="detail_rtlp('<?php echo $l2['kode_item'] ?>', '<?php echo $key+1 ?>')" name="button"><i class="fa fa-eye"></i></button>
                         </center></td>
-                        <td>
+                        <td <?php echo $none2 ?>>
                           <center>
                           <p id="timer1">
                             <label id="hours2-<?php echo $key ?>">00</label>:<label id="minutes2-<?php echo $key ?>">00</label>:<label id="seconds2-<?php echo $key ?>">00</label>

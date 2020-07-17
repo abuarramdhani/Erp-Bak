@@ -212,7 +212,7 @@
                           </tbody>
                         </table>
                         <br>
-                        <center class="btnsplit" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-maroon" onclick="saveSplit()" name="button"><i class="fa fa-file"></i> Save</button>
+                        <!-- <center class="btnsplit" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-maroon" onclick="saveSplit()" name="button"><i class="fa fa-file"></i> Save</button> -->
                       </div>
                     </div>
                   </div>

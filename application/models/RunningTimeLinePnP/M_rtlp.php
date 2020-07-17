@@ -16,6 +16,14 @@ class M_rtlp extends CI_Model
       return 1;
     }
 
+    public function updateTimePause($data)
+    {
+      $idmax = $this->db->select_max('id_break')->where('Line', $data['Line'])->get('wip_pnp.Time_Break')->row_array();
+      $this->db->where('id_break', $idmax['id_break'])
+               ->update('wip_pnp.Time_Break', $data);
+      return 1;
+    }
+
     public function getHistory()
     {
       $res = $this->db->order_by('Id', 'desc')->get('wip_pnp.Time_Record')->result_array();
