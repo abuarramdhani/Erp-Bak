@@ -20,6 +20,7 @@
             <th>Keterangan</th>
             <th>No Induk</th>
             <th>Requestor</th>
+            <th>Seksi</th>
             <th>Receipt Date</th>
         </tr>
     </thead>
@@ -45,6 +46,7 @@
                 <td><?= $rep['KETERANGAN'];?></td>
                 <td><?= $rep['NO_INDUK'];?></td>
                 <td><?= $rep['REQUESTOR'];?></td>
+                <td><?= $rep['SEKSI'];?></td>
                 <td><?= $rep['RECEIPT_DATE'];?></td>
             </tr>
         <?php } ?>

@@ -42,6 +42,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="" class="col-sm-2 control-label">NO PO</label>
+
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control txtNoPOPPR" placeholder="Input No PO">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="" class="col-sm-2 control-label">DATE</label>
 
                                                     <div class="col-sm-10">
