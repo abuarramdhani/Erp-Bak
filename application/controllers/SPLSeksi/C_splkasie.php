@@ -602,9 +602,9 @@ class C_splkasie extends CI_Controller
 				$mail->Username = "no-reply";
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
-				// $mail->addAddress("", 'Monitoring Transaction');
-				// $mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				$mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				$mail->addAddress("", 'Monitoring Transaction');
+				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
+				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
 
 				$mail->Subject = 'SPL Anda telah di Approve';
 				$mail->msgHTML($message);
@@ -650,9 +650,9 @@ class C_splkasie extends CI_Controller
 				$mail->Username = "no-reply";
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
-				// $mail->addAddress("", 'Monitoring Transaction');
-				// $mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				$mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				$mail->addAddress("", 'Monitoring Transaction');
+				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
+				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
 				$mail->Subject = 'SPL Anda telah di Reject';
 				$mail->msgHTML($message);
 				if (!$mail->send()) {
