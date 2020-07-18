@@ -651,11 +651,28 @@ function cekPotonganGajiExist(){
                     console.log(obj);
                     if (obj['jumlah'] !== '0') {
                         $('#pg_buttonSimulasi').attr('disabled',true);
-                        swal.fire({
-                            title: "Data Sudah Pernah Diinput",
-                            text: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama",
-                            type: "warning"
-                        })
+                        // swal.fire({
+                        //     title: "Data Sudah Pernah Diinput",
+                        //     text: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama",
+                        //     type: "warning"
+                        // })
+                        console.log(obj['data']);
+                        Swal.fire({
+                            title: 'Ditemukan Data Yang Sama !!',
+                            html: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama<br>Apakah Anda Yakin Data Yang Ada Input Bukan Data Yang Sama ?",
+                            // html: obj['data'],
+                            // text: "Apakah Data Yang Ada Input Bukan Data Yang Sama ?",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, Bukan Data Yang Sama',
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.value) {
+                                $('#pg_buttonSimulasi').attr('disabled',false);
+                            }
+                        });
                     }else{
                         $('#pg_buttonSimulasi').attr('disabled',false);
                     }                    
