@@ -42,10 +42,12 @@
 													<th class="bg-primary">ID Dinas</th>
 													<th class="bg-primary">No. Induk</th>
 													<th class="bg-primary">Nama</th>
+													<th class="bg-primary">Tempat Makan Asal</th>
 													<th class="bg-primary">Tempat Makan Tujuan</th>
 													<th class="bg-primary">Keterangan</th>
 													<th class="bg-primary">Jenis Dinas</th>
-													<th class="bg-primary">Status</th>
+													<th class="bg-primary">Status Tambahan</th>
+													<th class="bg-primary">Status Pengurangan</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -53,15 +55,17 @@
 												if (isset($data) && !empty($data)) {
 													foreach ($data as $dt) {
 														?>
-														<tr style="color: <?php echo $dt['diproses'] == "Belum diproses" ? "red" : "black"; ?>">
+														<tr style="color: <?php echo $dt['diproses_tambah'] == "Belum diproses" ? "red" : "black"; ?>">
 															<td><?php echo $dt['tanggal'] ?></td>
 															<td><?php echo $dt['izin_id'] ?></td>
 															<td><?php echo $dt['noind'] ?></td>
 															<td><?php echo $dt['nama'] ?></td>
+															<td><?php echo $dt['tempat_makan'] ?></td>
 															<td><?php echo $dt['tujuan'] ?></td>
 															<td><?php echo $dt['keterangan'] ?></td>
 															<td><?php echo $dt['jenis_dinas'] ?></td>
-															<td><?php echo $dt['diproses'] ?></td>
+															<td><?php echo $dt['diproses_tambah'] ?></td>
+															<td><?php echo $dt['diproses_kurang'] ?></td>
 														</tr>
 														<?php
 													}

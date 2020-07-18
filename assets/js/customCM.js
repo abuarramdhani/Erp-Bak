@@ -4512,10 +4512,12 @@ $(document).ready(function(){
 						daftar.izin_id ,
 						daftar.noind ,
 						daftar.nama,
+						daftar.tempat_makan,
 						daftar.tujuan,
 						daftar.keterangan,
 						daftar.jenis_dinas,
-						daftar.diproses
+						daftar.diproses_tambah,
+						daftar.diproses_kurang
 					]).draw(false);
 				})
 
@@ -6159,7 +6161,23 @@ $(document).ready(function(){
         ],
         "dom" : 'Bfrtip',
         "buttons" : [
-            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        	{ 
+        		extend: 'copyHtml5', 
+        		footer: true 
+        	},
+            { 
+            	extend: 'excelHtml5', 
+            	footer: true 
+            },
+            { 
+            	extend: 'csvHtml5', 
+            	footer: true 
+            },
+            { 
+            	extend: 'pdfHtml5', 
+            	footer: true
+			}, 
+            'pageLength'
         ],
         'columnDefs': [
 			{
