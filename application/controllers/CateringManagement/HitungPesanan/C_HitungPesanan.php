@@ -1681,7 +1681,7 @@ class C_HitungPesanan extends CI_Controller
               }
             }
             if ($filter_sayur !== "") {
-              $filter = "tpmk.menu_sayur in (".$filter_sayur.")";
+              $filter = "lower(tpmk.menu_sayur) in (".strtolower($filter_sayur).")";
             }
 
             $filter_lauk_utama = "";
@@ -1694,9 +1694,9 @@ class C_HitungPesanan extends CI_Controller
             }
             if ($filter_lauk_utama !== "") {
               if ($filter == "") {
-                $filter = "tpmk.menu_lauk_utama in (".$filter_lauk_utama.")";
+                $filter = "lower(tpmk.menu_lauk_utama) in (".strtolower($filter_lauk_utama).")";
               }else{
-                $filter .= " or tpmk.menu_lauk_utama in (".$filter_lauk_utama.")";
+                $filter .= " or lower(tpmk.menu_lauk_utama) in (".strtolower($filter_lauk_utama).")";
               }
             }
             $filter_lauk_pendamping = "";
@@ -1709,9 +1709,9 @@ class C_HitungPesanan extends CI_Controller
             }
             if ($filter_lauk_pendamping !== "") {
               if ($filter == "") {
-                $filter = "tpmk.menu_lauk_pendamping in (".$filter_lauk_pendamping.")";
+                $filter = "lower(tpmk.menu_lauk_pendamping) in (".strtolower($filter_lauk_pendamping).")";
               }else{
-                $filter .= " or tpmk.menu_lauk_pendamping in (".$filter_lauk_pendamping.")";
+                $filter .= " or lower(tpmk.menu_lauk_pendamping) in (".strtolower($filter_lauk_pendamping).")";
               }
             }
             $filter_buah = "";
@@ -1724,52 +1724,104 @@ class C_HitungPesanan extends CI_Controller
             }
             if ($filter_buah !== "") {
               if ($filter == "") {
-                $filter = "tpmk.menu_buah in (".$filter_buah.")";
+                $filter = "lower(tpmk.menu_buah) in (".strtolower($filter_buah).")";
               }else{
-                $filter .= " or tpmk.menu_buah in (".$filter_buah.")";
+                $filter .= " or lower(tpmk.menu_buah) in (".strtolower($filter_buah).")";
               }
             }
+            $simpanSayur = array();
+            $simpanLaukUtama = array();
+            $simpanLaukPendamping = array();
+            $simpanBuah = array();
+            $simpanNoindNama = "";
             $menuPengganti = $this->M_hitungpesanan->getMenuPenggantiByTanggalShiftLokasiTempatMakan($tanggal,$shift,$lokasi,$data_bagi['tempat_makan']," and (".$filter.")");
             if (!empty($menuPengganti)) {
               $simpanNoind = "";
               foreach ($menuPengganti as $mp) {
-                  if ($simpanNoind !== $mp['noind']) {
-                    if ($keterangan == "") {
-                      $keterangan = "";
-                    }else{
-                      $keterangan .= "<br>";
-                    } 
-                    $keterangan .= "-&nbsp;".$mp['noind']." - ".ucwords(strtolower($mp['nama']))." ( ";
-                    $khusus++;
-                  }else{
-                    $keterangan .= " ; ";
+                if ($simpanNoind !== $mp['noind']) {
+                  if ($simpanNoindNama !== "") {
+                    if (!empty($simpanSayur) || !empty($simpanLaukUtama) || !empty($simpanLaukPendamping) || !empty($simpanBuah)) {
+                      if ($keterangan == "") {
+                        $keterangan = "";
+                      }else{
+                        $keterangan .= "<br>";
+                      }
+                      $keterangan .= $simpanNoindNama;
+                      if (!empty($simpanSayur)) {
+                        $keterangan .= " <span style='color: red'>/</span>Sayur : ".implode(",", $simpanSayur);  
+                      }
+                      if (!empty($simpanLaukUtama)) {
+                        $keterangan .= " <span style='color: red'>/</span>Lauk utama : ".implode(",", $simpanLaukUtama);
+                      }
+                      if (!empty($simpanLaukPendamping)) {
+                        $keterangan .= " <span style='color: red'>/</span>Lauk Pendamping : ".implode(",", $simpanLaukPendamping);
+                      }
+                      if (!empty($simpanBuah)) {
+                        $keterangan .= " <span style='color: red'>/</span>Buah : ".implode(",", $simpanBuah);
+                      }
+                      $keterangan .= " )";
+                    }
                   }
+                  $simpanSayur = array();
+                  $simpanLaukUtama = array();
+                  $simpanLaukPendamping = array();
+                  $simpanBuah = array();
+                  $simpanNoindNama = "-&nbsp;".$mp['noind']." - ".ucwords(strtolower($mp['nama']))." ( ";
+                  $khusus++;
+                }
                 foreach ($sayur_arr as $sar) {
-                  if ($sar == $mp['menu_sayur'] || $mp['menu_sayur'] != $mp['pengganti_sayur']) {
-                    $keterangan .= " Sayur : ".$mp['pengganti_sayur'];
+                  if (strtolower($sar) == strtolower($mp['menu_sayur']) && !in_array(strtolower($mp['pengganti_sayur']), $simpanSayur)) {
+                    $simpanSayur[] = strtolower($mp['pengganti_sayur']);
+                  }elseif (strtolower($mp['menu_sayur']) != strtolower($mp['pengganti_sayur']) && !in_array(strtolower($mp['pengganti_sayur']), $simpanSayur) && strtolower($mp['menu_sayur']) == 'semua sayur') {
+                    $simpanSayur[] = strtolower($mp['pengganti_sayur']);
                   }
                 }
                 foreach ($lauk_utama_arr as $luar) {
-                  if ($luar == $mp['menu_lauk_utama'] || $mp['menu_lauk_utama'] != $mp['pengganti_lauk_utama']) {
-                    $keterangan .= " Lauk Utama : ".$mp['pengganti_lauk_utama'];
+                  if (strtolower($luar) == strtolower($mp['menu_lauk_utama']) && !in_array(strtolower($mp['pengganti_lauk_utama']), $simpanLaukUtama)) {
+                    $simpanLaukUtama[] = strtolower($mp['pengganti_lauk_utama']);
+                  }elseif (strtolower($mp['menu_lauk_utama']) != strtolower($mp['pengganti_lauk_utama']) && !in_array(strtolower($mp['pengganti_lauk_utama']), $simpanLaukUtama) && strtolower($mp['menu_lauk_utama']) == 'semua lauk utama') {
+                    $simpanLaukUtama[] = strtolower($mp['pengganti_lauk_utama']);
                   }
                 }
                 foreach ($lauk_pendamping_arr as $lpar) {
-                  if ($lpar == $mp['menu_lauk_pendamping'] || $mp['menu_lauk_pendamping'] != $mp['pengganti_lauk_pendamping']) {
-                    $keterangan .= " Lauk Pendamping : ".$mp['pengganti_lauk_pendamping'];
+                  if (strtolower($lpar) == strtolower($mp['menu_lauk_pendamping']) && !in_array(strtolower($mp['pengganti_lauk_pendamping']), $simpanLaukPendamping)) {
+                    $simpanLaukPendamping[] = strtolower($mp['pengganti_lauk_pendamping']);
+                  }elseif (strtolower($mp['menu_lauk_pendamping']) != strtolower($mp['pengganti_lauk_pendamping']) && !in_array(strtolower($mp['pengganti_lauk_pendamping']), $simpanLaukPendamping) && strtolower($mp['menu_lauk_pendamping']) == 'semua lauk pendamping') {
+                    $simpanLaukPendamping[] = strtolower($mp['pengganti_lauk_pendamping']);
                   }
                 }
                 foreach ($buah_arr as $bar) {
-                  if ($bar == $mp['menu_buah'] || $mp['menu_buah'] != $mp['pengganti_buah']) {
-                    $keterangan .= " Buah : ".$mp['pengganti_buah'];
+                  if (strtolower($bar) == strtolower($mp['menu_buah']) && !in_array(strtolower($mp['pengganti_buah']), $simpanBuah)) {
+                    $simpanBuah[] = strtolower($mp['pengganti_buah']);
+                  }elseif (strtolower($mp['menu_buah']) != strtolower($mp['pengganti_buah']) && !in_array(strtolower($mp['pengganti_buah']), $simpanBuah) && strtolower($mp['menu_buah']) == 'semua buah') {
+                    $simpanBuah[] = strtolower($mp['pengganti_buah']);
                   }
                 }
-                $keterangan .= " )";
                 $simpanNoind = $mp['noind'];
               }
             }
           
-
+            if (!empty($simpanSayur) || !empty($simpanLaukUtama) || !empty($simpanLaukPendamping) || !empty($simpanBuah)) {
+              if ($keterangan == "") {
+                $keterangan = "";
+              }else{
+                $keterangan .= "<br>";
+              }
+              $keterangan .= $simpanNoindNama;
+              if (!empty($simpanSayur)) {
+                $keterangan .= " <span style='color: red'>/</span>Sayur : ".implode(",", $simpanSayur);
+              }
+              if (!empty($simpanLaukUtama)) {
+                $keterangan .= " <span style='color: red'>/</span>Lauk utama : ".implode(",", $simpanLaukUtama);
+              }
+              if (!empty($simpanLaukPendamping)) {
+                $keterangan .= " <span style='color: red'>/</span>Lauk Pendamping : ".implode(",", $simpanLaukPendamping);
+              }
+              if (!empty($simpanBuah)) {
+                $keterangan .= " <span style='color: red'>/</span>Buah : ".implode(",", $simpanBuah);
+              }
+              $keterangan .= " )";
+            }
             $isi .= "<tr data-urutan=\"".$bagi['urutan']."\" data-katering=\"".$data_bagi['tempat_makan']."\" style=\"page-break-inside: avoid\">
               <td style=\"text-align: center;color: ".$warna."\">".$nomor."</td>
               <td style=\"text-align: left;padding-left: 5px;color: ".$warna."\">".$data_bagi['tempat_makan']."</td>
