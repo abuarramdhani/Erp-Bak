@@ -15,13 +15,14 @@ class C_splkasie extends CI_Controller
 		$this->load->model('SPLSeksi/M_splseksi');
 		$this->load->model('SPLSeksi/M_splkasie');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		// FOR DEVELOPMENT
+		$this->is_production = true; // change it to true before push
+		$this->developer_email = 'dicka_ismaji@quick.com';
 	}
 
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-			// any
-		} else {
+		if (!$this->session->is_logged) {
 			redirect('');
 		}
 	}
@@ -38,6 +39,7 @@ class C_splkasie extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
 		return $data;
 	}
 
@@ -460,8 +462,11 @@ class C_splkasie extends CI_Controller
 			//Set who the message is to be sent to
 			$mail->addAddress($e['adrs'], 'Monitoring Transaction');
 			foreach ($data as $d) {
-				$mail->addAddress($d, 'Lembur (Approve Asska)');
-				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				if ($this->is_production) {
+					$mail->addAddress($d, 'Lembur (Approve Asska)');
+				} else {
+					$mail->addAddress($this->developer_email, 'Lembur (Approve Kasie)');
+				}
 			}
 			//Set the subject line
 			$mail->Subject = 'Anda telah menerima permintaan approval spl';
@@ -602,9 +607,12 @@ class C_splkasie extends CI_Controller
 				$mail->Username = "no-reply";
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
-				$mail->addAddress("", 'Monitoring Transaction');
-				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				if ($this->is_production) {
+					$mail->addAddress("", 'Monitoring Transaction');
+					$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
+				} else {
+					$mail->addAddress($this->developer_email, 'Lembur (Approve Kasie)');
+				}
 
 				$mail->Subject = 'SPL Anda telah di Approve';
 				$mail->msgHTML($message);
@@ -651,8 +659,11 @@ class C_splkasie extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				$mail->addAddress("", 'Monitoring Transaction');
-				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				if ($this->is_production) {
+					$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
+				} else {
+					$mail->addAddress($this->developer_email, 'Lembur (Approve Kasie)');
+				}
 				$mail->Subject = 'SPL Anda telah di Reject';
 				$mail->msgHTML($message);
 				if (!$mail->send()) {
