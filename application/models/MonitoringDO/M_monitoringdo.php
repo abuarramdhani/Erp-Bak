@@ -261,10 +261,11 @@ class M_monitoringdo extends CI_Model
 
     public function getDO()
     {
-        $response = $this->oracle->query("SELECT *
-                                              FROM khs_qweb_siap_assign1 kqsa
-                                             WHERE TRUNC (kqsa.tgl_kirim) BETWEEN TRUNC (SYSDATE-1) AND TRUNC (SYSDATE)
-                                          ORDER BY kqsa.no_pr, kqsa.header_id")->result_array();
+        $response = $this->oracle->query("SELECT   *
+                                            FROM khs_qweb_siap_assign1 kqsa
+                                           WHERE TRUNC (SYSDATE) BETWEEN TRUNC (kqsa.tgl_kirim - 1)
+                                                                     AND TRUNC (kqsa.tgl_kirim + 6)
+                                        ORDER BY kqsa.no_pr, kqsa.header_id")->result_array();
         // echo "<pre>";
         // print_r($response);
         // die;
