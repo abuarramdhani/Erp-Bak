@@ -4376,6 +4376,10 @@ $route['PengirimanBarangInternal/MonitoringPenerimaan'] = 'PengirimanBarangInter
 $route['PengirimanBarangInternal/MonitoringPenerimaan/(:any)'] = 'PengirimanBarangInternal/C_Master/$1';
 $route['PengirimanBarangInternal/MonitoringPenerimaan/(:any)/(:any)'] = 'PengirimanBarangInternal/C_Master/$1/$2';
 
+$route['PengirimanBarangInternal/Approval'] = 'PengirimanBarangInternal/C_Master/Approval';
+$route['PengirimanBarangInternal/Approval/(:any)'] = 'PengirimanBarangInternal/C_Master/$1';
+$route['PengirimanBarangInternal/Approval/(:any)/(:any)'] = 'PengirimanBarangInternal/C_Master/$1/$2';
+
 $route['PengirimanBarangInternal/Cetak/(:any)'] = 'PengirimanBarangInternal/C_Master/Cetak/$1';
 $route['PengirimanBarangInternal/cekapi'] = 'PengirimanBarangInternal/C_Master/cekapi';
 

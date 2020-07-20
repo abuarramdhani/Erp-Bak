@@ -8,7 +8,7 @@
         <div class="box-body">
           <div class="row">
             <div class="col-md-3">
-             <span style="font-family:'theboldfont';font-weight:bold;">VOIP</span>   <br>
+             <span style="font-weight:bold;">VOIP</span>   <br>
               Seksi Pengeluaran PUSAT : <span style="color:red;font-weight:bold">13401 / 13416</span>  <br>
               Seksi Penerimaan PUSAT : <span style="color:red;font-weight:bold">13405</span> <br>
             </div>
@@ -42,7 +42,7 @@
                     <td><center><?php echo $g['DOC_NUMBER'] ?></center></td>
                     <!-- <td><center><?php echo empty($g['NO_MOVE_ORDER'])?'-':$g['NO_MOVE_ORDER'] ?></center></td> -->
                     <td><center><?php echo $g['USER_TUJUAN'] ?></center></td>
-                    <td><center><?php echo $seksi_tujuan[$key] ?></center></td>
+                    <td><center><?php echo $g['SEKSI_TUJUAN'] ?></center></td>
                     <td><center><?php echo $g['TUJUAN'] ?></center></td>
                     <td><center><?php echo date('d-M-Y H:i:s',strtotime($g['CREATION_DATE'])) ?></center></td>
                     <td><center><?php echo $g['STATUS2'] ?></center></td>
