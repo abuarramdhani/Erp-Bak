@@ -198,14 +198,8 @@
 		startTimer();
 	}
 
-	document.addEventListener("DOMContentLoaded", function(e) {
-		setupTimers();
-		// set cache
-		let exist = window.localStorage.getItem('alert-SPL')
-		const d = new Date()
-
 	// set cache
-	(() => {
+	(function() {
 		let exist = window.localStorage.getItem('alert-SPL')
 		const d = new Date()
 

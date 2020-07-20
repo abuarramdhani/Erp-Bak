@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 set_time_limit(0);
+date_default_timezone_set('Asia/Jakarta');
 
 class C_splseksi extends CI_Controller
 {
@@ -14,14 +15,14 @@ class C_splseksi extends CI_Controller
 		$this->load->model('SPLSeksi/M_splseksi');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
-		date_default_timezone_set('Asia/Jakarta');
+		// FOR DEVELOPMENT
+		$this->is_production = false; // change it to true before push
+		$this->developer_email = 'dicka_ismaji@quick.com';
 	}
 
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-			// any
-		} else {
+		if (!$this->session->is_logged) {
 			redirect('');
 		}
 	}
@@ -373,6 +374,7 @@ class C_splseksi extends CI_Controller
 
 	public function edit_spl_submit()
 	{ // not work, this is muda muda
+		return null;
 		$this->checkSession();
 		$user_id = $this->session->user;
 		$tanggal = $this->input->post('tanggal_0');
@@ -465,7 +467,8 @@ class C_splseksi extends CI_Controller
 		);
 		$to_splr = $this->M_splseksi->save_splr($data_splr);
 
-		redirect(base_url('SPL/Pusat/EditLembur/' . $spl_id . '?result=1'));
+		// redirect(base_url('SPL/Pusat/EditLembur/' . $spl_id . '?result=1'));
+		redirect($_SERVER['REQUEST_URI'], 'refresh');
 	}
 
 	public function new_spl()
@@ -1360,9 +1363,13 @@ class C_splseksi extends CI_Controller
 			//Set an alternative reply-to address
 			// $mail->addReplyTo('it.sec3@quick.com', 'Khoerul Amri');
 			//Set who the message is to be sent to
-			$mail->addAddress($e['adrs'], 'Monitoring Transaction');
-			foreach ($data as $d) {
-				$mail->addAddress($d, 'Lembur (Approve Kasie)');
+			if ($this->is_production) {
+				$mail->addAddress($e['adrs'], 'Monitoring Transaction');
+				foreach ($data as $d) {
+					$mail->addAddress($d, 'Lembur (Approve Kasie)');
+				}
+			} else {
+				$mail->addAddress($this->developer_email, 'Lembur (Approve Kasie)');
 			}
 			//Set the subject line
 			$mail->Subject = 'Anda telah menerima permintaan approval spl';
