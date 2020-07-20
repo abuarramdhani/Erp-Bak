@@ -238,27 +238,5 @@
     }
 </script>
 
-<style>
-    .iconso {
-        position: fixed;
-        bottom: 0px;
-        left: 20px;
-        margin: 0;
-    }
-
-    .iconso-img {
-        width: 300px;
-    }
-
-    @media only screen and (max-width: 600px) {
-        .iconso-img {
-            display: none !important;
-        }
-    }
-</style>
-<div class="iconso">
-    <img class="iconso-img" src="<?php echo base_url('assets/img/SO2020.gif?v='.time()); ?>">
-</div>
-
 </body>
 </html> 
