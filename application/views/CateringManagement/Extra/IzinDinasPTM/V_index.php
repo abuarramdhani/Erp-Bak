@@ -55,7 +55,7 @@
 												if (isset($data) && !empty($data)) {
 													foreach ($data as $dt) {
 														?>
-														<tr style="color: <?php echo $dt['diproses_tambah'] == "Belum diproses" ? "red" : "black"; ?>">
+														<tr style="color: <?php echo ($dt['diproses_tambah'] == "Belum diproses" || $dt['diproses_kurang'] == "Belum diproses") ? "red" : "black"; ?>">
 															<td><?php echo $dt['tanggal'] ?></td>
 															<td><?php echo $dt['izin_id'] ?></td>
 															<td><?php echo $dt['noind'] ?></td>
