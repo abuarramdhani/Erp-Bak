@@ -5,6 +5,43 @@ function updateUrlParam(param) {
 	window.history.replaceState(null, null, pathname);
 }
 
+function spl_load_data() {
+	url = window.location.pathname;
+	usr = $("#txt_ses").val();
+	ket = $("#spl_tex_proses").val();
+
+	if (url.indexOf("ALK") >= 0) {
+		tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr);
+	} else {
+		tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr);
+	}
+
+	chk = "";
+	$(".spl-chk-data").each(function () {
+		if (this.checked) {
+			chk += "." + $(this).val();
+		}
+	});
+
+	if (chk == "") {
+		$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
+		$("#example11_wrapper").find("button.btn-primary").addClass("disabled");
+		console.log("tidak ada");
+	} else {
+		$("#example11_wrapper").find("a.btn-primary").removeClass("disabled btn-default");
+		$("#example11_wrapper").find("button.btn-primary").removeClass("disabled btn-default");
+		console.log("ada");
+	}
+
+	if (url.indexOf("ALK") >= 0) {
+		$("#spl_proses_reject").attr("href", tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket));
+		$("#spl_proses_approve").attr("href", tmp + btoa("&stat=21&data=" + chk + "&ket=" + ket));
+	} else {
+		$("#spl_proses_reject").attr("href", tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket));
+		$("#spl_proses_approve").attr("href", tmp + btoa("&stat=25&data=" + chk + "&ket=" + ket));
+	}
+}
+
 //--------------------- surat perintah lembur ----------------//
 $(function () {
 	$(".spl-table.kasie, .spl-table.aska").DataTable({
@@ -638,44 +675,7 @@ $(function () {
 		});
 	});
 
-	function spl_load_data() {
-		url = window.location.pathname;
-		usr = $("#txt_ses").val();
-		ket = $("#spl_tex_proses").val();
-
-		if (url.indexOf("ALK") >= 0) {
-			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr);
-		} else {
-			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr);
-		}
-
-		chk = "";
-		$(".spl-chk-data").each(function () {
-			if (this.checked) {
-				chk += "." + $(this).val();
-			}
-		});
-
-		if (chk == "") {
-			$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
-			$("#example11_wrapper").find("button.btn-primary").addClass("disabled");
-			console.log("tidak ada");
-		} else {
-			$("#example11_wrapper").find("a.btn-primary").removeClass("disabled btn-default");
-			$("#example11_wrapper").find("button.btn-primary").removeClass("disabled btn-default");
-			console.log("ada");
-		}
-
-		if (url.indexOf("ALK") >= 0) {
-			$("#spl_proses_reject").attr("href", tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket));
-			$("#spl_proses_approve").attr("href", tmp + btoa("&stat=21&data=" + chk + "&ket=" + ket));
-		} else {
-			$("#spl_proses_reject").attr("href", tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket));
-			$("#spl_proses_approve").attr("href", tmp + btoa("&stat=25&data=" + chk + "&ket=" + ket));
-		}
-	}
-
-	$(document).on("click", ".spl-chk-data", function (e) {
+	$(document).on("change", ".spl-chk-data", function (e) {
 		spl_load_data();
 	});
 
@@ -1841,11 +1841,11 @@ $(document).ready(function () {
 $(window).load(() => {
 	$("#spl_check_all").on("ifChanged", function (e) {
 		let isChecked = $(this).is(":checked");
-
 		if (isChecked) {
 			$(".spl-chk-data").prop("checked", true);
 		} else {
 			$(".spl-chk-data").prop("checked", false);
 		}
+		spl_load_data();
 	});
 });
