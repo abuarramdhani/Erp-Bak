@@ -255,12 +255,18 @@ class C_Cetakbom extends CI_Controller
 
 				$i++;
 			}
-
-			$merge = $this->batasMerge($array_Resource2['ALT']);
+			if ($array_Resource2['ALT'] != null) {
+				$merge = $this->batasMerge($array_Resource2['ALT']);
+				$tabelBoM = $this->generateTableBoM($merge, $datapdf2);
+			} else {
+				$merge = null;
+				$tabelBoM = null;
+			}
+			
 			// echo "<pre>";
 			// print_r($merge);
 			// exit();
-
+			$data['tabel'] = $tabelBoM;
 			$data['merge'] = $merge;
 			$data['arrayR'] = $array_Resource;
 			$data['arrayR2'] = $array_Resource2;
@@ -399,7 +405,8 @@ class C_Cetakbom extends CI_Controller
 	}
 
 	public function batasMerge($arrayALT){
-		$batas = 55;
+		$batas = 50;
+		// $halsatu = 25;
 		foreach ($arrayALT as $key => $value) {
 			$barisalt[$key] = sizeof($arrayALT[$key]);
 			$frek[$key] = ceil($barisalt[$key]/$batas);
@@ -412,6 +419,7 @@ class C_Cetakbom extends CI_Controller
 		
 
 		$hasil['batas'] = $batas;
+		// $hasil['halsatu'] = $halsatu;
 		$hasil['batasmax'] = $batasmax;
 		$hasil['barisalt'] = $barisalt;
 		$hasil['frekuensi'] = $frek;
@@ -421,6 +429,37 @@ class C_Cetakbom extends CI_Controller
 		// print_r($hasil);
 		// exit();
 		return $hasil;
+	}
+
+	public function generateTableBoM ($merge, $data){	
+		$hal = 0;
+		$step = 1;
+		$count = 0;
+		for ($i=0; $i < sizeof($data); $i++) { 
+			if ($data[$i]['ALT'] == '') {
+				$alt = 'primary';
+			} else {
+				$alt =  $data[$i]['ALT'];
+			}
+
+			$arrayJadi[$hal][$alt][$count] = $data[$i];
+			$count++;
+
+			if ($count == $merge['batas']) {
+				$count = 0;
+				$hal++;
+				$step++;
+			}
+		}
+		return $arrayJadi;
+		// echo "<pre>";
+		// print_r($arrayJadi);
+		// echo "<pre>";
+		// print_r($data);
+		// echo "<pre>";
+		// print_r($merge);
+		// exit();
+
 	}
 
 }
