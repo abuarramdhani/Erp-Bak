@@ -563,12 +563,14 @@ class C_Index extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,297), 10, "timesnewroman", 20, 20, 40, 40, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', array(216,297), 0, "timesnewroman", 20, 20, 48, 40, 0, 0, 'P');
+		$stylesheet = file_get_contents(base_url('assets/css/surat.css'));
 		// $pdf 	=	new mPDF();
 
 		$filename	=	'SuratRotasi-'.str_replace('/', '_', $no_surat_decode).'.pdf';
 
 		$pdf->AddPage();
+		$pdf->WriteHTML($stylesheet,1);
 		$pdf->WriteHTML($data['isiSuratRotasi'][0]['isi_surat']);
 		$pdf->setTitle($filename);
 		$pdf->Output($filename, 'I');
@@ -796,7 +798,7 @@ class C_Index extends CI_Controller
 		$kode_surat 			=	$no_surat_decode[1].'/'.$no_surat_decode[2];
 		$tahun 					= 	'20'.$no_surat_decode[4];
 		$bulan_surat			=	$no_surat_decode[3];
-		$this->M_Rotasi->deleteArsipSuratRotasi($bulan_surat, $tahun, $kode_surat, $no_surat);
+		// $this->M_Rotasi->deleteArsipSuratRotasi($bulan_surat, $tahun, $kode_surat, $no_surat);
 		//insert to t_log
 		$aksi = 'MASTER PEKERJA';
 		$detail = 'Delete Arsip, Finger & Surat Rotasi Nomor Surat='.$no_surat_decode;

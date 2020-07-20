@@ -1,4 +1,3 @@
-<form id="formExportExcelItemEcatalog" action="<?php echo base_url('ECommerce/SearchItem/exportExcelDataItem') ?>" method="POST" >
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -54,8 +53,6 @@
 								</div>
 							 	<div class="col-lg-12">
 									<div class="col-lg-6"><button class="btn btn-md btn-success pull-right" type="button" id="btnSearchEcommerceItem" disabled>Search</button></div>
-									
-									<button class="btn btn-md btn-info pull-right" type="submit" id="submitExportExcelItemEcatalog" disabled>EXPORT</button>
 									<br>
 										<span style="font-size:15px;">Formula: Round Up(Qty Available to Transact / 5)</span>
 									<br><br>
@@ -69,7 +66,6 @@
 		</div>
 	</div>
 </section>
-</form>
 
 
 		

@@ -48,3 +48,7 @@ application/logs/*
 /application/third_party/
 /assets/upload_kaizen/
 /assets/upload_flow_process/
+update_aplikasi.txt
+/perizinan-pribadi/
+/Sistem-Pelaporan-Document/
+/assets/covid19/jawa.json

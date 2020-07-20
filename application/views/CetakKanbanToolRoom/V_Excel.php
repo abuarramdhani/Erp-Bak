@@ -43,17 +43,17 @@
 													</tr>
 												</thead>
 												<tbody id="tbodyUserResponsibility">
-													<?php 
+													<?php
 													$no = 0;
 													foreach ($hasilimport as $row):
 														$no++;
-													?> 		
+													?>
 													<tr>
 														<td><center><?php echo $no ?></center></td>
-														<td><center><input type="hidden" name="kode_barang[]" id="kode_barang"  value="<?php echo $row['KODE_BARANG']?>"><?php echo $row['KODE_BARANG']?></center></td>
-														<td><center><input type="hidden" name="desc[]" id="desc"  value="<?php echo $row['DESC']?>"><?php echo $row['DESC']?></center></td>
-														<td><center><input type="hidden" name="cost_center[]" id="cost_center" value="<?php echo $row['COST_CENTER']?>"><?php echo $row['COST_CENTER']?></center></td>
-														<td><center><input type="hidden" name="no_bppbgt[]" id="no_bppbgt" value="<?php echo $row['NO_BPPCT']?>"><?php echo $row['NO_BPPCT']?></center></td>
+														<td><center><input type="hidden" class="ckt_kode_barang" name="kode_barang[]" id="kode_barang"  value="<?php echo $row['KODE_BARANG']?>"><?php echo $row['KODE_BARANG']?></center></td>
+														<td><center><input type="hidden" class="ckt_nama_barang" name="desc[]" id="desc"  value="<?php echo $row['DESC']?>"><?php echo $row['DESC']?></center></td>
+														<td><center><input type="hidden" class="ckt_cost_center" name="cost_center[]" id="cost_center" value="<?php echo $row['COST_CENTER']?>"><?php echo $row['COST_CENTER']?></center></td>
+														<td><center><input type="hidden" class="ckt_nobpp" name="no_bppbgt[]" id="no_bppbgt" value="<?php echo $row['NO_BPPCT']?>"><?php echo $row['NO_BPPCT']?></center></td>
 														<td><center><input type="hidden" name="jumlah_cetak[]" id="jumlah_cetak" value="<?php echo $row['JUMLAH_CETAK']?>"><?php echo $row['JUMLAH_CETAK']?></center></td>
 														<td><center><input type="hidden" name="alur_kanban[]" id="alur_kanban"  value="<?php echo $row['ALUR_KANBAN']?>"><?php echo $row['ALUR_KANBAN']?></center></td>
 														<input type="hidden" name="warna_atas[]" id="warna_atas"  value="#<?php echo $row['WARNA_KEPALA_KANBAN']?>">
@@ -67,10 +67,26 @@
 									<br>
 									<center>
 										<button type="submit" title="Generate to Pdf" class="btn btn-danger"><i class="fa fa-print"></i>  &nbsp;Cetak</button>
+									</form>
+										<div style="display:none">
+										<form target="_blank" action="<?= base_url(); ?>CetakKanbanToolRoom/CetakKanban/cetakAja" method="post">
+											<?php
+											$no = 0;
+											foreach ($hasilimport as $row):
+												$no++;
+											?>
+											<td><center><input type="hidden" class="ckt_kode_barang" name="kode_barang[]" id="kode_barang"  value="<?php echo $row['KODE_BARANG']?>"><?php echo $row['KODE_BARANG']?></center></td>
+											<td><center><input type="hidden" class="ckt_nama_barang" name="desc[]" id="desc"  value="<?php echo $row['DESC']?>"><?php echo $row['DESC']?></center></td>
+											<td><center><input type="hidden" class="ckt_cost_center" name="cost_center[]" id="cost_center" value="<?php echo $row['COST_CENTER']?>"><?php echo $row['COST_CENTER']?></center></td>
+											<td><center><input type="hidden" class="ckt_nobpp" name="no_bppbgt[]" id="no_bppbgt" value="<?php echo $row['NO_BPPCT']?>"><?php echo $row['NO_BPPCT']?></center></td>
+											<td><center><input type="hidden" name="jumlah_cetak[]" id="jumlah_cetak" value="<?php echo $row['JUMLAH_CETAK']?>"><?php echo $row['JUMLAH_CETAK']?></center></td>
+										<?php endforeach ?>
+										</div>
+										<button type="submit" onclick="cetak_ckt()" title="Generate to Pdf HIA" class="btn btn-success"><i class="fa fa-print"></i>  &nbsp;Cetak QR Code</button>
+									</form>
 									</center>
 								</div>
 							</div>
-						</form>
 					</div>
 				</div>
 			</div>

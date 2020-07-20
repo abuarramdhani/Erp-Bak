@@ -3,6 +3,12 @@ var route_serverside = $('#routeraktif_ss').val();
 var kind = $('#kind').val();
 
 $(document).ready(function(){
+	$('#tbleffectiveDays').DataTable({
+		"columnDefs": [{
+		  "targets": '_all',
+		  "orderable": false,
+		}],
+	  });
 
 if(kind == 'EDIT'){
 

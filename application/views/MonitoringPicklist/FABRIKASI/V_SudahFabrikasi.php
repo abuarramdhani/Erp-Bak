@@ -39,10 +39,20 @@
                                                 <option></option>
                                             </select>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body bg-danger">
+                                    <div class="col-md-12">
                                         <div class="col-md-3">
                                         <div class="input-group date">
                                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                <input id="tanggal" class="form-control datepicklist" placeholder="pilih tanggal" style="width:100%" autocomplete="off">
+                                                <input id="tanggal1" class="form-control datepicklist" placeholder="tanggal awal" style="width:100%" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                        <div class="input-group date">
+                                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                                <input id="tanggal2" class="form-control datepicklist" placeholder="tanggal akhir" style="width:100%" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="col-md-1">

@@ -322,7 +322,8 @@ class C_MyKaizen extends CI_Controller {
 			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($getKaizen[0]['judul']), trim($link));
 			$body = str_replace('<br/>', "\n", $body);
 			$pidgin = new Sendmessage;
-			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
+			@($pidgin->send($userAccount," \n ".$subject." \n ".$body)); // menyembunyikan error
+			//$pidgin->send($userAccount," \n ".$subject." \n ".$body); // menampilkan error
 		}
 	}
 

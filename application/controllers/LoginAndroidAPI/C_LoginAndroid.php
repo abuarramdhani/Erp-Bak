@@ -69,7 +69,7 @@ class C_LoginAndroid extends CI_Controller
 			// redirect($this->session->userdata('last_page'));
 
 
-			//redirect('index');
+			//redirect('');
 		}else{
 			$ses = array(
 				'error' 			=> true,

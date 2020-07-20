@@ -32,7 +32,7 @@ class C_KantorAsal extends CI_Controller
 	{
 		if(!($this->session->is_logged))
 		{
-			redirect('index');
+			redirect('');
 		}
 	}
 

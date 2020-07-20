@@ -10,13 +10,14 @@ class C_Api extends CI_Controller {
     function __construct(){
         parent::__construct();
 
-        $this->checkSession();
+        // error in win xp
+        // $this->checkSession();
         
         $this->load->model('BlankoEvaluasi/M_blankoevaluasi');
     }
 
 	private function checkSession() {
-		if($this->session->userdata('is_logged')!=true) {
+		if(!$this->session->userdata('is_logged')) {
             echo json_encode(array(
                 'error' =>  true,
                 'message' => 'Login first to using this api'

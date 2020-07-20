@@ -61,7 +61,7 @@
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Operator Qty</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Process Qty (PCS)</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Proses UOM</th> -->
-			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Usage (Minutes)</th>
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Usage (Hours)</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Cycle Time (Seconds)</th>
 			<th colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">Target</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Usage UOM</th> -->
@@ -103,20 +103,20 @@
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPERATOR_QTY']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['PROCESS_QTY']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['RESOURCE_PROCESS_UOM']?></td>    -->
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt">
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_USAGE']?>
 				<?php 
-					$ruMinutes = $dataopm2[$i]['RESOURCE_USAGE']*60;
-					// echo "<pre>";
-					// echo $dataopm2[$i]['RESOURCE_USAGE'];
-					// echo "<br>";
-					// print_r($ruMinutes);
-					// exit();
-					if (strpos($ruMinutes,'.') == null) {
-						echo $ruMinutes;
-					} else {
-						echo number_format((float)$ruMinutes, 2, '.', '');
-					}
-					// $dataopm2[$i]['RESOURCE_USAGE']
+					// $ruMinutes = $dataopm2[$i]['RESOURCE_USAGE']*60;
+					// // echo "<pre>";
+					// // echo $dataopm2[$i]['RESOURCE_USAGE'];
+					// // echo "<br>";
+					// // print_r($ruMinutes);
+					// // exit();
+					// if (strpos($ruMinutes,'.') == null) {
+					// 	echo $ruMinutes;
+					// } else {
+					// 	echo number_format((float)$ruMinutes, 2, '.', '');
+					// }
+					// // $dataopm2[$i]['RESOURCE_USAGE']
 				?>
 			
 			</td>

@@ -14,7 +14,17 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="box box-primary box-solid">
+						<?php
+							$status = $LimbahKirim['0']['status_kirim'];
+							$color = 'primary';
+
+							if($status == '1') {
+								$color = 'success';
+							} else if($status == '2') {
+								$color = 'danger';
+							}
+						?>
+						<div class="box box-<?= $color ?> box-solid">
 							<div class="box-header with-border">
 
 							</div>
@@ -91,21 +101,21 @@
 												<div class="form-group">
 													<label for="txtKet" class="form-label col-lg-12">Keterangan</label>
 													<div class="col-lg-12">
-														<textarea name="txtKet" class="form-control" disabled><?php echo $LimbahKirim['0']['ket_kirim']; ?></textarea>
+														<textarea name="txtKet" style="resize: vertical; max-height: 100px; min-height: 50px;" class="form-control" disabled><?php echo $LimbahKirim['0']['ket_kirim']; ?></textarea>
 													</div>
 												</div>
 										<div class="row">
-											<div class="col-lg-12 text-right">
+											<div class="col-lg-12 text-<?= $LimbahKirim['0']['status_kirim'] == '4' ? 'right' : 'center' ?>">
 												<?php
 												$status = $LimbahKirim['0']['status_kirim'];
 												$url_reject = site_url('WasteManagement/KirimanMasuk/Reject/'.$encrypted_text);
-												if($status == '4' || $status == '1'){ ?>
+												if($status == '4'){ ?>
 													<button type='submit' onclick='return confirm("Apakah Anda Yakin Ingin Approve data ini ?")' class='btn btn-success'>Approve</button>
 													<a href='<?php echo $url_reject;?>' onclick='return confirm("Apakah Anda Yakin Ingin Reject data ini ?")' class='btn btn-danger'>Reject</a>
 												<?php }else if($status =='1'){
-													echo "<span class='label label-success' style='font-size:18pt;'>Approved</span>";
+													echo "<span class='label label-success' style='font-size:18pt;padding-left: 5em; padding-right: 5em; border-radius: 0;'>Approved</span>";
 												}else if($status =='2'){
-													echo "<span class='label label-danger' style='font-size:18pt;'>Rejected</span>";
+													echo "<span class='label label-danger' style='font-size:18pt;padding-left: 5em; padding-right: 5em; border-radius: 0;'>Rejected</span>";
 												}
 												?>
 											</div>

@@ -13,7 +13,7 @@ class M_monitoring extends CI_Model {
                 UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT, 
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
                 from KHS_MONITORING_GD_SP 
-                where creation_date BETWEEN TO_DATE( '$date', 'DD/MM/YYYY' ) AND TO_DATE( '$date2', 'DD/MM/YYYY' ) 
+                where TRUNC(creation_date) BETWEEN TO_DATE('$date', 'DD/MM/YYYY') AND TO_DATE('$date2', 'DD/MM/YYYY')
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -28,7 +28,7 @@ class M_monitoring extends CI_Model {
         $item == null ? $item2 = '' : $item2 = "and ITEM = '$item'";
         $jenis_dokumen == null ? $dokudoku = '' : $dokudoku= "and jenis_dokumen = '$jenis_dokumen'";
         if ($tglAkhir != null && $tglAwal != null) {
-            $tanggal = "and creation_date BETWEEN TO_DATE( '$tglAwal', 'DD/MM/YYYY' ) AND TO_DATE( '$tglAkhir', 'DD/MM/YYYY' )";
+            $tanggal = "and TRUNC(creation_date) BETWEEN TO_DATE('$tglAwal', 'DD/MM/YYYY') AND TO_DATE('$tglAkhir', 'DD/MM/YYYY')";
         } else {
             $tanggal = '';
         }
@@ -52,7 +52,7 @@ class M_monitoring extends CI_Model {
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
         from KHS_MONITORING_GD_SP
         WHERE jenis_dokumen = '$jenis_dokumen'
-        AND creation_date BETWEEN TO_DATE( '$tglAwal', 'DD/MM/YYYY' ) AND TO_DATE( '$tglAkhir', 'DD/MM/YYYY' )
+        AND TRUNC(creation_date) BETWEEN TO_DATE('$tglAwal', 'DD/MM/YYYY') AND TO_DATE('$tglAkhir', 'DD/MM/YYYY')
         order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -65,7 +65,7 @@ class M_monitoring extends CI_Model {
         $sql="UPDATE KHS_MONITORING_GD_SP $query WHERE ITEM = '$item' and NO_DOCUMENT = '$doc'";
         $query = $oracle->query($sql);
         $query2 = $oracle->query('commit');
-			echo $sql;
+			// echo $sql;
         }  
         
         
@@ -117,6 +117,15 @@ class M_monitoring extends CI_Model {
           $query = $oracle->query($sql);
           return $query->result_array();
           
+    }
+
+    public function getKetFPB($no_document){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT doc_number no_interorg, item_code item, description, quantity qty, uom, seksi_kirim, status
+                FROM KHS_KIRIM_INTERNAL 
+                WHERE DOC_NUMBER = '$no_document'";
+          $query = $oracle->query($sql);
+          return $query->result_array();
     }
 
     public function tampilbody($no_document) {
@@ -186,11 +195,34 @@ class M_monitoring extends CI_Model {
     }
 
     public function getPIC($term){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "select * from khs_tabel_user
                 where pic like '%$term%'";
         $query = $oracle->query($sql);
         return $query->result_array();
+    }
+
+    public function cariKIB($atr) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "
+                select kk.KIBCODE no_interorg
+                        ,msib.SEGMENT1 item
+                        ,msib.DESCRIPTION
+                        ,msib.PRIMARY_UOM_CODE uom
+                        ,wdj.QUANTITY_COMPLETED qty
+                        ,kk.QTY_KIB qbt
+                        ,kk.VERIFY_DATE creation_date
+                from khs_kib kk
+                    ,mtl_system_items_b msib 
+                    ,wip_discrete_jobs wdj   
+                where kk.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+                    and kk.ORGANIZATION_ID = msib.ORGANIZATION_ID
+                    and kk.ORDER_ID = wdj.WIP_ENTITY_ID 
+                    and kk.PRIMARY_ITEM_ID = wdj.PRIMARY_ITEM_ID 
+                    and kk.KIBCODE = '$atr'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
     }
 
 }

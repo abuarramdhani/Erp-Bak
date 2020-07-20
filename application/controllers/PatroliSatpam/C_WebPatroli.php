@@ -20,7 +20,9 @@ class C_WebPatroli extends CI_Controller
 		$this->load->library('General');
 		$this->load->library('KonversiBulan');
 		$this->load->model('PatroliSatpam/M_patrolis');
-		$this->checkSession();
+
+		// if(strpos(current_url(), 'qrcode_patroli') === false)
+		// $this->checkSession();
 	}
 
 	public function checkSession()
@@ -28,13 +30,13 @@ class C_WebPatroli extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
 	public function index()
 	{
-		$user_id = $this->session->userid;
+		$this->checkSession();
 
 		$data  = $this->general->loadHeaderandSidemenu('Patroli Satpam', 'Patroli Satpam', '', '', '');
 
@@ -261,13 +263,28 @@ class C_WebPatroli extends CI_Controller
 		$data  = $this->general->loadHeaderandSidemenu('Patroli Satpam', 'Rekap Bulanan', 'Rekap', 'Rekap Bulanan', 'Cetak Laporan');
 		$data['jenis'] = 'laporan';
 		$pr = $this->input->get('pr');
+		$id = $this->input->get('id');
+		if (empty($pr) && !empty($id)) {
+			echo 'url error';exit();
+		}
+		if (!empty($pr) && empty($id)) {
+			echo 'url error';exit();
+		}
 		$data['periode'] = '';
 		$data['reon'] = '';
+		$data['ttd1']['noind'] = 'B0654';
+		$data['ttd1']['nama'] = 'TENGKU DIAN SYAHRUL RIZA SH';
+		$data['ttd2']['noind'] = 'B0307';
+		$data['ttd2']['nama'] = 'RAJIWAN';
 		if (strlen($pr) == 7) {
 			$pr = explode('-', $pr);
 			$data['periode'] = $pr[1].' - '.$pr[0];
 			$data['reon'] = 'readonly';
-			$data['id'] = $this->input->get('id');;
+			$data['id'] = $this->input->get('id');
+			if (!empty($data['id'])) {
+				$data['ttd1'] = $this->M_patrolis->getApproval1($data['id']);
+				$data['ttd2'] = $this->M_patrolis->getApproval2($data['id']);
+			}
 		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -301,10 +318,14 @@ class C_WebPatroli extends CI_Controller
 
 	public function cetak_laporan()
 	{
+		// echo '<pre>';
+		// print_r($_POST);exit();
 		$user = $this->session->user;
 		// print_r($user);exit();
 		$pr = $this->input->post('periodeR');
 		$id = $this->input->post('id');
+		$ttd1 = $this->input->post('ttd1');
+		$ttd2 = $this->input->post('ttd2');
 		if (strlen($pr) != 9) {
 			echo "periode not valid";
 			exit();
@@ -322,6 +343,8 @@ class C_WebPatroli extends CI_Controller
 				'filename'		=>	$filename,
 				'create_date'	=>	date('Y-m-d H:i:s'),
 				'create_by'		=>	$user,
+				'approval_1'	=>	$ttd1,
+				'approval_2'	=>	$ttd2,
 			);
 		if (!empty($id)) {
 			$this->M_patrolis->upCetakan($arr, $id);
@@ -348,6 +371,8 @@ class C_WebPatroli extends CI_Controller
 		$data['bulan'] = $this->konversibulan->KonversiKeBulanIndonesia($bulan);
 		$data['kesimpulan'] = $this->M_patrolis->getKesimpulanbyId($periode_db);
 		$data['putaran'] = $this->M_patrolis->getPutaranperLok($awal, $akhir);
+		$data['ttd1'] = $this->M_patrolis->getTTD($ttd1);
+		$data['ttd2'] = $this->M_patrolis->getTTD($ttd2);
 
 		// echo "<pre>";
 		// print_r($data['putaran']);exit();
@@ -452,6 +477,7 @@ class C_WebPatroli extends CI_Controller
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8',array(210,330), 7,'',5,5,5,5,0,0,'P');
 		$pdf->allow_charset_conversion = true;
+		// $pdf->showImageErrors = true;
 		$pdf->charset_in = 'iso-8859-4';
 		$range = $this->input->post('tgl');
 		if (strlen($range) < 10) {
@@ -556,24 +582,33 @@ class C_WebPatroli extends CI_Controller
 		$lk = $this->M_patrolis->getPosbyId($id);
 		$data['kode']= $lk[0]['lokasi'];
 		$data['pos']= $lk[0]['id'];
-		// echo $data['kode'];exit();
+		// echo $data['qr'];exit();
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8',array(100,130), 7,'',5,5,5,5,0,0,'P');
+		$pdf = new mPDF('utf-8',array(100,130), 7,'',2,2,4,0,0,0,'P');
+		$pdf->curlAllowUnsafeSslRequests = true;
+		$pdf->allow_charset_conversion = true;
+		// $pdf->showImageErrors = true;
+		$pdf->debug = true;
+		$pdf->charset_in = 'iso-8859-4';
 		$filename = 'Patroli Qrcode.pdf';
 		$html = $this->load->view('PatroliSatpam/Web/V_Cetak_Qrcode', $data, true);
+		// echo $html;
+		// exit();
 		$pdf->WriteHTML($html);
 		$pdf->Output($filename, 'I');
 	}
 
-	public function qrcode_patroli()
+	public function qrcode_patroli($kode='')
 	{
-		$kode = $this->input->get('kode');
 		header("Content-Type: image/png");
 		$this->load->library('ciqrcode');
+		if (empty($kode)) {
+			$kode = $this->input->get('kode');
+		}
 		$params['data'] = $kode;
-		$params['size'] = 100;
+		$params['size'] = 1024;
 		$params['level'] = 'H';
-	  	$qr = $this->ciqrcode->generate($params);
+	    $this->ciqrcode->generate($params);
 	}
 }

@@ -86,24 +86,13 @@
 												<div class="form-group" id="opt-CM-Pengurangan-TempatMakanBaru" style="display: none;">
 													<label class="control-label col-lg-4">Tempat Makan Baru</label>
 													<div class="col-lg-8">
-														<select class="select2" name="slc-CM-Pengurangan-TempatMakanBaru" id="slc-CM-Pengurangan-TempatMakanBaru" data-placeholder="Tempat Makan Baru" autocomplete="off" style="width: 100%" disabled>
-															<option></option>
-															<?php 
-															if (isset($katering) && !empty($katering)) {
-																foreach ($katering as $kt) {
-																	?>
-																	<option value="<?php echo $kt['fs_tempat_makan'] ?>"><?php echo $kt['fs_tempat_makan'].' - '.$kt['lokasi'] ?></option>
-																	<?php
-																}
-															}
-															?>
-														</select>
+														<select class="slc-CM-Pengurangan-TempatMakanBaru" name="slc-CM-Pengurangan-TempatMakanBaru" id="slc-CM-Pengurangan-TempatMakanBaru" data-placeholder="Tempat Makan Baru" autocomplete="off" style="width: 100%" disabled></select>
 													</div>
 												</div>
 												<div class="form-group" id="opt-CM-Pengurangan-Penerima" style="display: none;">
 													<label class="control-label col-lg-4">Penerima</label>
 													<div class="col-lg-8">
-														<select class="slc-CM-Pengurangan-Pekerja" name="slc-CM-Pengurangan-Penerima" id="slc-CM-Pengurangan-Penerima" autocomplete="off" data-placeholder="Penerima" style="width: 100%" disabled></select>
+														<select class="slc-CM-Pengurangan-Penerima" name="slc-CM-Pengurangan-Penerima" id="slc-CM-Pengurangan-Penerima" autocomplete="off" data-placeholder="Penerima" style="width: 100%" disabled></select>
 													</div>
 												</div>
 												<div class="form-group" id="opt-CM-Pengurangan-Penerima-Table" style="display: none;">
@@ -233,6 +222,7 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0,0,0,.5);
+    z-index: 9999;
 }
 .loading-wheel {
     width: 40px;

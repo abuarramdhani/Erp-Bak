@@ -121,7 +121,7 @@
                                             </div>
 
                                             <?php 
-                                            if ($user_login == "J1231") {
+                                            if ($user_login == "J1335") {
                                                 ?>
                                                 <div class="form-group">
                                                     <label for="txtLokasiKerjaHeader" class="control-label col-lg-4">Lokasi Kerja</label>

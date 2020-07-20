@@ -36,7 +36,7 @@ class C_Index extends CI_Controller {
 		  if($this->session->userdata('logged_in')!=TRUE) {
 		  $this->load->helper('url');
 		  $this->session->set_userdata('last_page', current_url());
-		  //redirect('index');
+		  //redirect('');
     }
 		  //$this->load->model('CustomerRelationship/M_Index');
   }
@@ -165,6 +165,7 @@ class C_Index extends CI_Controller {
 
 		if($log){
 			$user = $this->M_Index->getDetail($username);
+			$path = $this->M_Index->path_photo($username);
 
 			foreach($user as $user_item){
 				$iduser 			= $user_item->user_id;
@@ -173,6 +174,7 @@ class C_Index extends CI_Controller {
 				$employee_name 		= $user_item->employee_name;
 				$kode_lokasi_kerja 	= $user_item->location_code;
 			}
+			$path_photo 		= trim($path);
 			$ses = array(
 							'is_logged' 		=> 1,
 							'userid' 			=> $iduser,
@@ -180,6 +182,7 @@ class C_Index extends CI_Controller {
 							'employee'  		=> $employee_name,
 							'kodesie' 			=> $kodesie,
 							'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
+							'path_photo'		=> $path_photo,
 						);
 
 			$isDefaultPass = $this->M_Index->getPassword($username);
@@ -289,7 +292,7 @@ class C_Index extends CI_Controller {
 		}
 		//variabel session spl (surat perintah lembur) HR akhir
 
-		redirect('index');
+		redirect('');
 	}
 
 	public function getLog()

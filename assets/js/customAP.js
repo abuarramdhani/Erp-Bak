@@ -597,8 +597,13 @@ $(document).ready(function(){
 			$('#tanggalFakturCon').val(resf);
 			var nfRes = $('#nomorFaktur').val().replace(/[\D]/g, '');
 			$('#nomorFaktur').val(nfRes);
+			var seller = $('#nameFaktur').val() 
 
-			ajaxForSubmitFakturManual();
+			if (tglf.length == 0 || nfRes.length == 0 || seller.length == 0) {
+				alert('Pastikan Semua Inputan Telah Diisi')
+			} else {
+				ajaxForSubmitFakturManual();
+			}
 
 			// alert($('#nomorFaktur').val());
 			// $('#pph').submit();
@@ -927,6 +932,7 @@ function ajaxForSubmitFakturManual(){
 	var tanggalFaktur 		= $('[name=tanggalFaktur]').val();
 	var tanggalFakturCon	= $('[name=tanggalFakturCon]').val();
 	var nomorFaktur 		= $('[name=nomorFaktur]').val();
+	var nameFaktur			= $('[name=nameFaktur]').val();
 	//first step ajax --- CheckInvoice
 	$.ajax({
 		type: "POST",
@@ -950,7 +956,8 @@ function ajaxForSubmitFakturManual(){
 								invoice_id		: invId,
 								tanggalFaktur 	: tanggalFaktur,
 								tanggalFakturCon: tanggalFakturCon,
-								nomorFaktur		: nomorFaktur
+								nomorFaktur		: nomorFaktur,
+								nameFaktur		: nameFaktur
 							},
 					cache:false,
 					success:function(){

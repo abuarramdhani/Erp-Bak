@@ -1,5 +1,29 @@
 $(document).ready(function () {
 
+    $(document).on('click','.tambahAdditionalInfoPBI', function () {
+        $('.btndeleteAddCostTambahanPBI:first').removeAttr('disabled');
+        var row_id = Number($('.trAdditionalInfoAddPBI:last').attr('data-row'));
+
+        var html = '<tr class="trAdditionalInfoAddPBI" data-row="'+(row_id+1)+'">'+
+                        '<td>'+(row_id+1)+'</td>'+
+                        '<td><input type="text" class="form-control" name="additionalAdd[]"></td>'+
+                        '<td></td>'+
+                        '<td><input type="text" class="form-control additionalAddPricePBI hrgLainAdditionalCostPBI" name="additionalAddPrice[]" style="text-align:right"></td>'+
+                        '<td><button type="button" class="btn btn-danger btndeleteAddCostTambahanPBI"><i class="fa fa-trash"></i></button>'+
+                    '</tr>';
+        $('.trAdditionalInfoAddPBI').parent().append(html);
+    })
+
+    $(document).on('click','.btndeleteAddCostTambahanPBI', function() {
+        var count = $('.trAdditionalInfoAddPBI').length;
+
+        $(this).parentsUntil('tbody').remove();
+
+        if (count == 2) {
+            $('.btndeleteAddCostTambahanPBI').attr('disabled','disabled');
+        }
+    })
+
     $('#tblHistoryPBI').DataTable({
         order: [[0, 'asc']],
     });
@@ -51,7 +75,7 @@ $(document).ready(function () {
                 $(this).html(formatMoney(Math.round((totalbiaya + Number.EPSILON) * 100) / 100));
                 // console.log(totalbiaya)
 
-                var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').html())); 
+                var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').val())); 
                 var tamb = totalbiaya / qtyKirim;
                 $(this).parentsUntil('tbody').find('.tambPBI').html(formatMoney(Math.round((tamb + Number.EPSILON) * 100) / 100));
                 var po = Number(purify($(this).parentsUntil('tbody').find('.hargaPOPBI').html()));
@@ -70,9 +94,9 @@ $(document).ready(function () {
         paging: false,
         ordering: false,
         scrollCollapse: true,
-        fixedColumns:   {
-            leftColumns: 4,
-        },
+        // fixedColumns:   {
+        //     leftColumns: 4,
+        // },
     });
 
     $('.slcCurrencyPBI').select2({
@@ -158,7 +182,7 @@ $(document).ready(function () {
                 $(this).html(formatMoney(Math.round((totalbiaya + Number.EPSILON) * 100) / 100));
                 console.log(totalbiaya)
 
-                var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').html())); 
+                var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').val())); 
                 var tamb = totalbiaya / qtyKirim;
                 $(this).parentsUntil('tbody').find('.tambPBI').html(formatMoney(Math.round((tamb + Number.EPSILON) * 100) / 100));
                 var po = Number(purify($(this).parentsUntil('tbody').find('.hargaPOPBI').html()));
@@ -221,7 +245,7 @@ $(document).ready(function () {
             $(this).html(formatMoney(Math.round((totalbiaya + Number.EPSILON) * 100) / 100));
             console.log(totalbiaya)
 
-            var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').html())); 
+            var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').val())); 
             var tamb = totalbiaya / qtyKirim;
             $(this).parentsUntil('tbody').find('.tambPBI').html(formatMoney(Math.round((tamb + Number.EPSILON) * 100) / 100));
             var po = Number(purify($(this).parentsUntil('tbody').find('.hargaPOPBI').html()));
@@ -271,7 +295,7 @@ $(document).ready(function () {
             $(this).html(formatMoney(Math.round((totalbiaya + Number.EPSILON) * 100) / 100));
             console.log(totalbiaya)
 
-            var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').html())); 
+            var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').val())); 
             var tamb = totalbiaya / qtyKirim;
             $(this).parentsUntil('tbody').find('.tambPBI').html(formatMoney(Math.round((tamb + Number.EPSILON) * 100) / 100));
             var po = Number(purify($(this).parentsUntil('tbody').find('.hargaPOPBI').html()));
@@ -416,6 +440,17 @@ $(document).ready(function () {
     $(document).on('change','.hrgLainAdditionalCostPBI', function () {
         refreshNilaiAdditionalCostAtasLengkap();
         refreshNilaiLineLengkap();
+    });
+
+    $(document).on('change','.additionalAddPricePBI', function () {
+        var nilai = $(this).val();
+        $(this).val(formatMoney(nilai));
+        refreshNilaiAdditionalCostAtasLengkap();
+    })
+
+    $(document).on('change','.qtyKirimPBI', function () {
+        // alert('hello')
+        refreshNilaiLineLengkap();
     })
 
     $(document).on('click','.editAdditionalCostPBI', function () {
@@ -463,6 +498,12 @@ $(document).ready(function () {
 
 function refreshNilaiLineLengkap() {
     // alert($('.totalUSDPBI').length)
+    $('.qtyKirimPBI').each(function () {
+        var qtyKirim = Number(purify($(this).val()));
+        var harga = Number(purify($('.hargaPBI').html()));
+        var totalharga = qtyKirim * harga;
+        $(this).parentsUntil('tbody').find('.totalUSDPBI').html(formatMoney(totalharga));
+    })
     var rateBatch = $('.rateBatchPBI').val();
     var ttotalUSD = 0;
     $('.totalUSDPBI').each(function () {
@@ -529,7 +570,7 @@ function refreshNilaiLineLengkap() {
         $(this).html(formatMoney(Math.round((totalbiaya + Number.EPSILON) * 100) / 100));
         // console.log(totalbiaya)
 
-        var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').html())); 
+        var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').val())); 
         var tamb = totalbiaya / qtyKirim;
         $(this).parentsUntil('tbody').find('.tambPBI').html(formatMoney(Math.round((tamb + Number.EPSILON) * 100) / 100));
         var po = Number(purify($(this).parentsUntil('tbody').find('.hargaPOPBI').html()));
@@ -543,17 +584,13 @@ function refreshNilaiLineLengkap() {
     $('.totalbiayaPBI').html(formatMoney(Math.round(ttotalbiaya)))
 }
 function refreshNilaiAdditionalCostAtasLengkap() { 
-    var idrLocalTrans = $('.txtLocalTransPBI').val();
-    if (!idrLocalTrans) {
-        idrLocalTrans = 0;
-    }
     // alert($('.hrgLainAdditionalCostPBI').length)
     var totallain = 0;
     $('.hrgLainAdditionalCostPBI').each(function () {
         totallain += Number(purify($(this).val()));
         // alert(totallain)
     })
-    var totalHargaAdditionalCost = Number(totallain) + Number(purify(idrLocalTrans));
+    var totalHargaAdditionalCost = Number(totallain);
     // console.log(idrLocalTrans)
     $('.totalAdditionalCostPBI').html(formatMoney(totalHargaAdditionalCost));
 
@@ -580,7 +617,7 @@ function refreshNilaiAdditionalCostAtasLengkap() {
         $(this).html(formatMoney(Math.round((totalbiaya + Number.EPSILON) * 100) / 100));
         // console.log(totalbiaya)
 
-        var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').html())); 
+        var qtyKirim = Number(purify($(this).parentsUntil('tbody').find('.qtyKirimPBI').val())); 
         var tamb = totalbiaya / qtyKirim;
         $(this).parentsUntil('tbody').find('.tambPBI').html(formatMoney(Math.round((tamb + Number.EPSILON) * 100) / 100));
         var po = Number(purify($(this).parentsUntil('tbody').find('.hargaPOPBI').html()));

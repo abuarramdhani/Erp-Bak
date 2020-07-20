@@ -3,7 +3,7 @@
      <script>
             $(document).ready(function () {
             $('.tbpickl').dataTable({
-                "scrollX": false,
+                "scrollX": true,
             
             });
         });
@@ -26,7 +26,8 @@
         </tr>
     </thead>
     <tbody>
-    <?php $no = 1;foreach ($data as $val) { ?>
+    <?php $no = 1;foreach ($data as $val) { 
+        $del = $val['DELIVER'] != '' ? 'disabled' : ''; ?>
         <tr>
             <td><?= $no?></td>
             <td><input type="hidden" id="dept<?= $no?>" value="<?= $val['DEPARTMENT']?>"><?= $val['DEPARTMENT']?></td>
@@ -37,8 +38,8 @@
             <td><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC']?></td>
             <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
             <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
-            <td><button type="button" class="btn btn-success" id="refab<?= $no?>" onclick="recallFabrikasi(<?= $no?>)">Recall</button></td>
-            <td><a href="<?php echo base_url('MonitoringPicklistFabrikasi/SudahApprove/printFabrikasi/'.$val['PICKLIST'].'/'.$val['DEPARTMENT'].'/'.$tgl.''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a></td>
+            <td><button type="button" class="btn btn-success" id="refab<?= $no?>" onclick="recallFabrikasi(<?= $no?>)" <?= $del?>>Recall</button></td>
+            <td><a href="<?php echo base_url('MonitoringPicklistFabrikasi/SudahApprove/printFabrikasi/'.$val['PICKLIST'].'/'.$val['DEPARTMENT'].'/'.$val['CREATION_DATE'].''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a></td>
         </tr>
     <?php $no++; }?>
     </tbody>

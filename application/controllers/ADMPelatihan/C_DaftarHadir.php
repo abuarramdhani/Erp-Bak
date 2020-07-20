@@ -29,7 +29,7 @@ class C_DaftarHadir extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -44,12 +44,10 @@ class C_DaftarHadir extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 		$data['Paket'] = $this->M_daftarhadir->getPaketPelatihan();
 		$data['Pelatihan'] = $this->M_daftarhadir->getPelatihan();
@@ -59,6 +57,76 @@ class C_DaftarHadir extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function PrintDaftarPaket($id)
+		{
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$data['paket'] = $this->M_daftarhadir->getPaketPelatihanByID($plaintext_string);
+		$data['peserta'] = $this->M_daftarhadir->getPesertaPaketPelatihanByID($plaintext_string);
+		$data['trainer'] = $this->M_daftarhadir->getTrainerPaketPelatihanByID($plaintext_string);
+
+         //Ini kalau mau ditampilkan datanya di view yang dituju harus ditulis seperti ini, karena yang dibawa $data
+         // echo "<pre>";
+		  // print_r($data['paket']);exit();
+
+			$this->load->library('pdf');
+
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('utf-8', array(210,330), 0, '',10, 5, 5, 5, 0, 0, 'L');
+			$filename = 'Daftar Hadir Pelatihan.pdf';
+			// echo "<pre>";print_r($data);exit();
+			$simpan_tanggal = "";
+			$jumlah_tanggal = 0; // jumlah distict tanggalnya
+			$jumlah_training = 0; // jumlah training
+			$latihan = array();
+			//$peserta = array();
+			$jumlah_sehari = 0; // jumlah latihan sehari
+			$jumlah_perhal = 0;
+			$jumlah_halaman = 0;
+			foreach ($data['paket'] as $paket) {
+				if ($jumlah_perhal > 4) { // ngubah banyak ttd dalam 1 halaman tinggal ganti angka jumlah - 1
+					$jumlah_halaman++;
+					$jumlah_perhal = 0;
+					$jumlah_tanggal = 0;
+					$jumlah_sehari = 0;
+					$latihan[$jumlah_halaman]['data'][$jumlah_tanggal]['jumlah'] = $jumlah_sehari + 1;
+					$latihan[$jumlah_halaman]['data'][$jumlah_tanggal]['tanggal'] = $paket['date'];
+					$latihan[$jumlah_halaman]['data'][$jumlah_tanggal]['latihan'][$jumlah_sehari] = $paket['scheduling_name'];
+				}else{
+					if ($simpan_tanggal !== $paket['date']) {
+						$jumlah_tanggal++;
+						$jumlah_sehari = 0;
+						$latihan[$jumlah_halaman]['data'][$jumlah_tanggal]['jumlah'] = $jumlah_sehari + 1;
+						$latihan[$jumlah_halaman]['data'][$jumlah_tanggal]['tanggal'] = $paket['date'];
+						$latihan[$jumlah_halaman]['data'][$jumlah_tanggal]['latihan'][$jumlah_sehari] = $paket['scheduling_name'];
+					}else{
+						$jumlah_sehari++;
+						$latihan[$jumlah_halaman]['data'][$jumlah_tanggal]['jumlah'] = $jumlah_sehari + 1;
+						$latihan[$jumlah_halaman]['data'][$jumlah_tanggal]['latihan'][$jumlah_sehari] = $paket['scheduling_name'];
+					}
+				}
+				$latihan[$jumlah_halaman]['jumlah'] = $jumlah_perhal;
+				$simpan_tanggal = $paket['date'];
+				$jumlah_training++;
+				$jumlah_perhal++;
+			}
+			$data['jumlah_tanggal'] = $jumlah_tanggal;
+			$data['jumlah_training'] = $jumlah_training;
+			$data['latihan'] = $latihan;
+			// $data['peserta'] = array();
+			// dimasukkan ke view
+// 			echo "<pre>";print_r($latihan);
+// exit();
+			$html = $this->load->view('ADMPelatihan/DaftarHadir/V_DaftarHadirPaket', $data, true);
+			// $this->load->view('ADMPelatihan/DaftarHadir/V_DaftarHadirPaket', $data);
+
+			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+			$pdf->WriteHTML($stylesheet1,1);
+			$pdf->WriteHTML($html, 2);
+		    $pdf->setTitle($filename);
+			$pdf->Output($filename, 'I');
+	   }
+   /*
 	public function PrintDaftarPaket($id){
 		$this->load->library('excel');
 
@@ -174,6 +242,9 @@ class C_DaftarHadir extends CI_Controller
 				$this->excel->getActiveSheet()->mergeCells('E6:'.$coorCell6);
 
 				$this->excel->getActiveSheet()->setCellValue('C2',ucwords(": ".$arrTanggal[0]." s/d ".$arrTanggal[$angka1-1]));
+				
+				itu maksudnya begini bu, yang $this->blablabla itu defaultnya aktifkan sel / kolom , nah set value di kolom C2, dengan isian seperti itu
+
 				$angka2 = 9;
 
 				for ($i=1; $i <= 18; $i++) { 
@@ -367,8 +438,125 @@ class C_DaftarHadir extends CI_Controller
 		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
 		$writer->save('php://output');
 	}
+	*/
+    public function PrintDaftarPelatihan($id)
+		{
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$data ['peserta']= $this->M_daftarhadir->getPesertaPelatihanByID($plaintext_string);
+		$data['Pelatihan'] = $this->M_daftarhadir->getPelatihanByID($plaintext_string);
+         //Ini kalau mau ditampilkan datanya di view yang dituju harus ditulis seperti ini, karena yang dibawa $data
+         // echo "<pre>";
+		  //print_r($data);exit();
 
-	public function PrintDaftarPelatihan($id){
+			$this->load->library('pdf');
+
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('','Legal',0,'',10,5,5,5,0,0);
+			$filename = 'Daftar Hadir Pelatihan.pdf';
+
+
+			$html = $this->load->view('ADMPelatihan/DaftarHadir/V_DaftarHadir', $data, true);
+
+			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+			$pdf->WriteHTML($stylesheet1,1);
+			$pdf->WriteHTML($html, 2);
+		    $pdf->setTitle($filename);
+			$pdf->Output($filename, 'I');
+	   }
+
+	   //HALAMAN PENJADWALAN PELATIHAN YANG TERDAFTAR DALAM PAKET
+	public function Editpaket($id){
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Penjadwalan';
+		$data['SubMenuOne'] = 'Penjadwalan Paket Pelatihan';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
+		}
+        $plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$training		= $this->M_daftarhadir->GetPackageIdNumber($plaintext_string);
+	
+		$training_id	= $training[0]->package_id;
+
+		
+		$data['GetPackageTraining'] = $this->M_daftarhadir->GetPackageTrainingId($training_id);
+
+
+		$data['GetScheduledTraining'] = $this->M_daftarhadir->GetScheduledTraining($plaintext_string);
+
+		$data['id'] = $plaintext_string;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/PenjadwalanPackage/V_Schedule',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	   public function Edit($id){
+	
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Record';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
+		}
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		
+		$data['record'] = $this->M_daftarhadir->GetRecordId($plaintext_string);
+		$data['GetEvaluationType'] = $this->M_daftarhadir->GetEvaluationType();
+		$data['purpose'] = $this->M_daftarhadir->GetObjectiveId($data['record'][0]['training_id']);
+
+		//MENENTUKAN SOURCE OBJECTIVE BERDASARKAN STATUS PELATIHAN (PAKET/NON-PAKET)
+		$trainingdt		= $data['record'][0];
+		$trainingid 	= $trainingdt['training_id'];
+		$trainingst		= $this->M_daftarhadir->GetTrainingType($trainingid);
+		$status 		= $trainingst[0]->status;
+		
+		$data['participant'] = $this->M_daftarhadir->GetParticipantId($plaintext_string);
+		$data['trainer'] = $this->M_daftarhadir->GetTrainer();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ADMPelatihan/Record/V_Edit',$data);
+		$this->load->view('V_Footer',$data);	
+	}
+
+	public function Delete($id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$this->M_daftarhadir->hilang($plaintext_string);
+		redirect(site_url('ADMPelatihan/Cetak/Daftarhadir'));
+	}
+
+	public function Deletepaket($id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$this->M_daftarhadir->hilangpaket($plaintext_string);
+		redirect(site_url('ADMPelatihan/Cetak/Daftarhadir'));
+	}
+
+	/*public function PrintDaftarPelatihan($id){
 		$this->load->library('excel');
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
@@ -607,5 +795,6 @@ class C_DaftarHadir extends CI_Controller
 		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
 		$writer->save('php://output');
 	}
+	*/
 }
 ?>

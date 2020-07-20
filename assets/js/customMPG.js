@@ -1,5 +1,5 @@
 function getMPG(th) {
-    $(document).ready(function(){
+    // $(document).ready(function(){
     var noDokumen       = $('input[name="noDokumen"]').val();
     var jenis_dokumen   = $('#jenis_dokumen').val();
     // console.log(jenis_dokumen);
@@ -28,7 +28,7 @@ function getMPG(th) {
         //     "fixedHeader":true
         //     });
         })
-    });
+    // });
 }
 // no dokumen otomatis INPUT
 $('#noDokumen').change(function(){
@@ -48,13 +48,20 @@ function getAutoFillDocument(){
     $('input[name="no_document"]').val(no_document)
 
     var length = no_document.length
-    
+    // console.log(length)
     if(length == 12){
-        $('#jenis_dokumen').val('IO').trigger('change')
+         var awl = no_document.substring(0, 3);
+         if (awl == 'FPB') {
+            $('#jenis_dokumen').val('FPB').trigger('change')
+         }else{
+            $('#jenis_dokumen').val('IO').trigger('change')
+         }
     }else if(length == 5){
         $('#jenis_dokumen').val('LPPB').trigger('change')
-    }else {
+    }else if(length == 9) {
         $('#jenis_dokumen').val('KIB').trigger('change')
+    }else{
+        $('#jenis_dokumen').val('').trigger('change')
     }
 }
 
@@ -125,7 +132,8 @@ $('#search_by').change(function(){
         $('#slcTgl').css('display', 'none');
         $('#slcPIC').css('display', 'none');
         $('#slcItem').css('display', 'none');
-        $('#pic').val('');
+        $('#pic').select2('val','');
+        $('#jenis_dokumen').select2('val','');
         $('input[name="tglAwal"]').val('');
         $('input[name="tglAkhir"]').val('');
         $('input[name="item"]').val('');
@@ -135,9 +143,9 @@ $('#search_by').change(function(){
         $('#slcjenis').css('display', 'none');
         $('#slcPIC').css('display', 'none');
         $('#slcItem').css('display', 'none');
-        $('#pic').val('');
+        $('#pic').select2('val','');
         $('input[name="no_document"]').val('');
-        $('#jenis_dokumen').val('');
+        $('#jenis_dokumen').select2('val','');
         $('input[name="item"]').val('');
     }else if(value == "pic"){
         $('#slcPIC').css('display', '')
@@ -148,7 +156,7 @@ $('#search_by').change(function(){
         $('input[name="no_document"]').val('');
         $('input[name="tglAwal"]').val('');
         $('input[name="tglAkhir"]').val('');
-        $('#jenis_dokumen').val('');
+        $('#jenis_dokumen').select2('val','');
         $('input[name="item"]').val('');
     }else if(value == "item"){
         $('#slcItem').css('display', '')
@@ -159,8 +167,8 @@ $('#search_by').change(function(){
         $('input[name="no_document"]').val('');
         $('input[name="tglAwal"]').val('');
         $('input[name="tglAkhir"]').val('');
-        $('#pic').val('');
-        $('#jenis_dokumen').val('');
+        $('#pic').select2('val','');
+        $('#jenis_dokumen').select2('val','');
     }else if(value == "export"){
         $('#slcjenis').css('display', '')
         $('#slcTgl').css('display', '');
@@ -171,9 +179,9 @@ $('#search_by').change(function(){
         $('input[name="no_document"]').val('');
         $('input[name="tglAwal"]').val('');
         $('input[name="tglAkhir"]').val('');
-        $('#jenis_dokumen').val('');
+        $('#jenis_dokumen').select2('val','');
         $('input[name="item"]').val('');
-        $('#pic').val('');
+        $('#pic').select2('val','');
     }else if(value == "belumterlayani"){
         $('#slcjenis').css('display', 'none')
         $('#slcTgl').css('display', 'none');
@@ -184,9 +192,9 @@ $('#search_by').change(function(){
         $('input[name="no_document"]').val('');
         $('input[name="tglAwal"]').val('');
         $('input[name="tglAkhir"]').val('');
-        $('#jenis_dokumen').val('');
+        $('#jenis_dokumen').select2('val','');
         $('input[name="item"]').val('');
-        $('#pic').val('');
+        $('#pic').select2('val','');
     }
 });
 
@@ -201,7 +209,7 @@ $("#frmMGS").keypress(function(e) {   //Enter key
         var jml_ok = $('#jml_ok'+no+nomor).val();
         var item = $('#item'+no+nomor).val();
         var doc = $('#doc'+no+nomor).val();
-        console.log(no , jml_ok, item);
+        // console.log(no , jml_ok, item);
         if(!jml_ok){
             return;
         }
@@ -219,7 +227,7 @@ $("#frmMGS").keypress(function(e) {   //Enter key
         var jml_not_ok = $('#jml_not_ok'+no+nomor).val();
         var item = $('#item'+no+nomor).val();
         var doc = $('#doc'+no+nomor).val();
-        console.log(no , jml_not_ok, item);
+        // console.log(no , jml_not_ok, item);
         if(!jml_not_ok){
             return;
         }
@@ -284,7 +292,7 @@ $("#frmMGS").keypress(function(e) {   //Enter key
                     return queryParameters;
                 },
                 processResults: function (data) {
-                    console.log(data);
+                    // console.log(data);
                     return {
                         results: $.map(data, function (obj) {
                             return {id:obj.PIC, text:obj.PIC};
@@ -294,3 +302,31 @@ $("#frmMGS").keypress(function(e) {   //Enter key
             }
         });
     });
+    
+function adddrekap(th){
+	var title = $(th).text();
+	$('#drekapmgs').slideToggle('slow');
+}
+
+function adddrekap2(no){
+	$('#drekapmgs'+no).slideToggle('slow');
+}
+
+function schRekapMGS(th) {
+	var tglAkh = $('#tglAkhir').val();
+	var tglAwl = $('#tglAwal').val();
+	// console.log(tglAwl);
+	var request = $.ajax({
+        url: baseurl+'MonitoringGdSparepart/Rekap/searchRekap',
+        data: {	tglAkh : tglAkh, tglAwl : tglAwl },
+        type: "POST",
+        datatype: 'html'
+	});
+	$('#tb_RkpMGS').html('');
+	$('#tb_RkpMGS').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
+	request.done(function(result){
+        $('#tb_RkpMGS').html('');
+        $('#tb_RkpMGS').html(result);
+        
+        })
+}

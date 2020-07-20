@@ -21,7 +21,7 @@ class C_InputQuestionnaire extends CI_Controller {
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
-				  //redirect('index');
+				  //redirect('');
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
@@ -39,12 +39,10 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$data['questionnaire'] = $this->M_masterquestionnaire->GetQuestionnaire($id);
@@ -67,12 +65,10 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$data['schedule'] = $this->M_inputquestionnaire->GetSchedule($id);
@@ -113,12 +109,10 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$data['SchedulingId'] 	= $id;
@@ -158,12 +152,10 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$data['SchedulingId'] 	= $id;
@@ -229,12 +221,10 @@ class C_InputQuestionnaire extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$data['SchedulingId'] 	= $id;

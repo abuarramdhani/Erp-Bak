@@ -20,7 +20,7 @@
 
 	 	public function ambilDaftarSuratUsiaLanjut()
 	 	{
-	 		$ambilDaftarSuratUsiaLanjut 		= "SELECT *,(select seksi from hrd_khs.tseksi b where b.kodesie = a.kodesie  ) seksi  from \"Surat\".tsurat_usialanjut a";
+	 		$ambilDaftarSuratUsiaLanjut 		= "SELECT *,(select seksi from hrd_khs.tseksi b where b.kodesie = a.kodesie  ) seksi  from \"Surat\".tsurat_usialanjut a where deleted_date is null";
 
 			$query 	= $this->personalia->query($ambilDaftarSuratUsiaLanjut);
 			return $query->result_array();
@@ -103,7 +103,9 @@
 		public function deleteSuratUsiaLanjut($noind)
 		{
 			$this->personalia->where('noind', $noind);
-			$this->personalia->delete('"Surat".tsurat_usialanjut');
+			$this->personalia->set('deleted_by', $this->session->user);
+			$this->personalia->set('deleted_date', date('Y-m-d H:i:s'));
+			$this->personalia->update('"Surat".tsurat_usialanjut');
 		}
 
 		public function deleteArsipSuratUsiaLanjut($bulan_surat, $kode_surat, $no_surat)

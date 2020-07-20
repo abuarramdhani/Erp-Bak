@@ -59,11 +59,12 @@
                                     </div>
                                     <div class="col-md-3" style="display:none" id="slcjenis">
                                         <label class="control-label">Jenis Dokumen </label>
-                                            <select id="jenis_dokumen" name="jenis_dokumen" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Pilih Item">
+                                            <select id="jenis_dokumen" name="jenis_dokumen" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Pilih Jenis Dokumen">
                                             <option></option>
                                             <option value="IO">IO</option>
                                             <option value="KIB">KIB</option>
                                             <option value="LPPB">LPPB</option>
+                                            <!-- <option value="FPB">FPB</option> -->
                                             </select>
                                     </div>
                                 </div>
@@ -72,14 +73,14 @@
                                         <label class="control-label">Tanggal Awal</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAwal" name="tglAwal" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy">
+                                            <input id="tglAwal" name="tglAwal" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <label class="control-label">Tanggal Akhir</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAkhir" name="tglAkhir" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy">
+                                            <input id="tglAkhir" name="tglAkhir" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>

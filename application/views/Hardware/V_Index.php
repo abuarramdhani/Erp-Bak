@@ -2,7 +2,7 @@
 	<div class="inner" style="background: url('<?php echo base_url('assets/img/3.jpg');?>');background-size: cover;" >
 		<section class="content-header">
 			<div class="row">
-				<div class="col-lg-3">
+				<div class="col-lg-12">
 					<br />
 					<h1><?= $Title ?></h1>
 				</div>

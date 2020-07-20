@@ -651,11 +651,28 @@ function cekPotonganGajiExist(){
                     console.log(obj);
                     if (obj['jumlah'] !== '0') {
                         $('#pg_buttonSimulasi').attr('disabled',true);
-                        swal.fire({
-                            title: "Data Sudah Pernah Diinput",
-                            text: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama",
-                            type: "warning"
-                        })
+                        // swal.fire({
+                        //     title: "Data Sudah Pernah Diinput",
+                        //     text: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama",
+                        //     type: "warning"
+                        // })
+                        console.log(obj['data']);
+                        Swal.fire({
+                            title: 'Ditemukan Data Yang Sama !!',
+                            html: "Ditemukan Data dengan No. Induk, Jenis Potongan, dan Nominal Total Yang Sama<br>Apakah Anda Yakin Data Yang Ada Input Bukan Data Yang Sama ?",
+                            // html: obj['data'],
+                            // text: "Apakah Data Yang Ada Input Bukan Data Yang Sama ?",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, Bukan Data Yang Sama',
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.value) {
+                                $('#pg_buttonSimulasi').attr('disabled',false);
+                            }
+                        });
                     }else{
                         $('#pg_buttonSimulasi').attr('disabled',false);
                     }                    
@@ -716,3 +733,89 @@ $(document).on('ready',function(){
 })
 
 // end THR
+
+// start Cuti Bersama
+$(document).ready(function(){
+    $('#txtTanggalCutiBersama').datepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        "format": 'yyyy-mm-dd'
+    });
+
+    $('#tbl-MPR-CutiBersama-index').DataTable();
+    
+    $('#MPR-cutibersama-submit').on('click',function(){
+        $('#MPR-status-Read').val("1");
+        $('#MPR-cutibersama-download').html("");
+        txtTanggalCutiBersama = $('#txtTanggalCutiBersama').val();
+        txtKeteranganCutiBersama = $('#txtKeteranganCutiBersama').val();
+        $('#MPR-cutibersama-progress').css("width","0%");
+        $.ajax({
+            data : {txtTanggalCutiBersama : txtTanggalCutiBersama, txtKeteranganCutiBersama : txtKeteranganCutiBersama},
+            url : baseurl + 'MasterPresensi/Proses/CutiBersama/Proses',
+            type : 'POST',
+            success: function(e){
+               $('#MPR-cutibersama-download').html(e);
+               setTimeout(function(e){
+                 $('#MPR-status-Read').val("0");
+               },5000);
+            }
+        })
+    });
+
+    $('.td-MPR-CutiBersama-cb').on('click',function(){
+       showModalCutiBersama($(this));
+    });
+
+    $('.td-MPR-CutiBersama-mtp').on('click',function(){
+        showModalCutiBersama($(this));
+    });
+
+    $('.td-MPR-CutiBersama-mp').on('click',function(){
+        showModalCutiBersama($(this));
+    });
+
+    $('.td-MPR-CutiBersama-l').on('click',function(){
+        showModalCutiBersama($(this));
+    });
+
+    $('.td-MPR-CutiBersama-j').on('click',function(){
+       showModalCutiBersama($(this));
+    });
+
+    $('.modal-close-MPR-CutiBersama').on('click',function(){
+        $('#modal-MPR-CutiBersama').modal('hide');
+    });
+
+})
+
+function showModalCutiBersama(dt){
+    tanggal = dt.attr('data-tanggal');
+    keterangan =  dt.attr('data-ket');
+    $('.loading').show();
+    $.ajax({
+        data: {tanggal: tanggal, keterangan: keterangan},
+        type: 'GET',
+        url: baseurl + 'MasterPresensi/Proses/CutiBersama/Detail',
+        error: function(xhr,status,error){
+            console.log(xhr);
+            console.log(status);
+            console.log(error);
+            $('.loading').hide();
+            swal.fire({
+                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                html: xhr['responseText'],
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+        },
+        success: function(result){
+            $('#modal-MPR-CutiBersama-isi').html(result);
+            $('#modal-MPR-CutiBersama-isi .tbl-MPR-CutiBersama-modal-table').DataTable();
+            $('.loading').hide();
+            $('#modal-MPR-CutiBersama').modal('show');
+        }
+    })
+}
+// end Cuti Bersama

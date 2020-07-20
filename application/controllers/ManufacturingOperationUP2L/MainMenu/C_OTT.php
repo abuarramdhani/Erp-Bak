@@ -24,7 +24,7 @@ class C_OTT extends CI_Controller
 	public function checkSession()
 	{
 		if ($this->session->is_logged) { } else {
-			redirect('index');
+			redirect('');
 		}
 	}
 

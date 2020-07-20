@@ -4,7 +4,7 @@ $( () => {
         locale : 'id'
     });
 
-    $('.txttglKirimAO').datepicker({
+    $('.txttglKirimADO').datepicker({
         autoclose: true,
         todayHighlight: true,
         format: 'dd-M-yyyy'
@@ -103,6 +103,10 @@ $( () => {
 
     $('.slcADOAssignerList').select2({
         width : 'resolve'
+    })
+    
+    $('.slcADOGudangPengirim').select2({
+        placeholder : 'Pilih Gudang Pengirim'
     })
 
     $(document).on('ifChanged', '.chkADOPickedReleaseAll', function (e) {
@@ -259,7 +263,10 @@ $( () => {
             driverPhone           : $('.txtADODriverContact').val(),
             expVendor             : $('.txtADOExpeditionVendor').val(),
             estDatang             : $('.txtADOEstDatang').val(),
-            additionalInformation : $('.txtADOAdditionalInformation').val()
+            tglKirim              : $('.txttglKirimADO').val(),
+            gudangPengirim        : $('.slcADOGudangPengirim').val(),
+            alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+            catatan               : $('.txtADOCatatan').val()
         }
         let url      = `${baseurl}ApprovalDO/ListDPBVendor/saveDetail`
         let question = 'Simpan Data Ini?'
@@ -270,7 +277,7 @@ $( () => {
     
     $('.btnADOCreateDPB').on('click', function () {
 
-        var tgl_kirim = $('.txttglKirimAO').val();
+        var tgl_kirim = $('.txttglKirimADO').val();
 
         if (tgl_kirim) {
             let data = {
@@ -279,8 +286,11 @@ $( () => {
                 vehicleId             : $('.txtADOVehicleIdentity').val(),
                 driverName            : $('.txtADODriverName').val(),
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
-                additionalInformation : $('.txtADOAdditionalInformation').val(),
-                tglKirim              : $('.txttglKirimAO').val()
+                // additionalInformation : $('.txtADOAdditionalInformation').val(),
+                tglKirim              : $('.txttglKirimADO').val(),
+                gudangPengirim        : $('.slcADOGudangPengirim').val(),
+                alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+                catatan               : $('.txtADOCatatan').val()
             }
             let url      = `${baseurl}ApprovalDO/ListPR/saveDetail`
             let question = 'Simpan Data Ini?'
@@ -403,7 +413,10 @@ $( () => {
                 vehicleId             : $('.txtADOVehicleIdentity').val(),
                 driverName            : $('.txtADODriverName').val(),
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
-                additionalInformation : $('.txtADOAdditionalInformation').val()
+                alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+                gudangPengirim        : $('.slcADOGudangPengirim').val(),
+                catatan               : $('.txtADOCatatan').val()
+                // additionalInformation : $('.txtADOAdditionalInformation').val()
             },
             line : ( () => {
                 let data = []
@@ -474,7 +487,10 @@ $( () => {
                 vehicleId             : $('.txtADOVehicleIdentity').val(),
                 driverName            : $('.txtADODriverName').val(),
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
-                additionalInformation : $('.txtADOAdditionalInformation').val()
+                alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+                catatan               : $('.txtADOCatatan').val()
+
+                // additionalInformation : $('.txtADOAdditionalInformation').val()
             },
             newLine : ( () => {
                 let data = []

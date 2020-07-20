@@ -43,10 +43,10 @@ class C_User extends CI_Controller {
 		if($this->session->is_logged){
 			//redirect('Home');
 		}else{
-			redirect('index');
+			redirect('');
 		}
 		if($this->session->userLevel == 'U'){
-			redirect('index');
+			redirect('');
 		}
 	}
 

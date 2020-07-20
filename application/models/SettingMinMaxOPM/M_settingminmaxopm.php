@@ -211,4 +211,54 @@ class M_settingminmaxopm extends CI_Model {
   }
 
 
+  public function tampilDataEfektif()
+  {
+      $sql = "SELECT TAHUN, JANUARI, FEBRUARI, MARET, APRIL, MEI, JUNI, JULI, 
+      AGUSTUS, SEPTEMBER, OKTOBER, NOVEMBER, DESEMBER, TO_CHAR(LAST_UPDATE, 'DD-MM-YYYY HH24:MI:SS') LAST_UPDATE, LAST_UPDATE_BY  from KHS_HARI_EFEKTIF";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+  }
+
+  public function isYearExist($year){
+    $sql = "SELECT * from KHS_HARI_EFEKTIF where TAHUN = '$year'";
+    $query = $this->oracle->query($sql);
+    return $query->num_rows();
+  }
+
+  public function saveEffectiveday($tahun, $jan, $feb, $mar, $apr, $mei, $jun, $jul, $agu, $sep, $okt, $nov, $des, $user)
+  {
+    $sql = "INSERT INTO KHS_HARI_EFEKTIF
+            (TAHUN, JANUARI, FEBRUARI, MARET, APRIL, MEI, JUNI, JULI, 
+            AGUSTUS, SEPTEMBER, OKTOBER, NOVEMBER, DESEMBER, LAST_UPDATE, LAST_UPDATE_BY)
+            VALUES
+            ('$tahun', '$jan', '$feb', '$mar', '$apr', '$mei', '$jun', '$jul', 
+            '$agu', '$sep', '$okt', '$nov', '$des', sysdate, '$user' )";
+    $query = $this->oracle->query($sql);
+    // return $sql;
+  }
+
+  public function updateEffectiveday($tahun, $jan, $feb, $mar, $apr, $mei, $jun, $jul, $agu, $sep, $okt, $nov, $des, $user)
+  {
+    $sql = "UPDATE KHS_HARI_EFEKTIF
+            SET JANUARI = '$jan',
+                FEBRUARI = '$feb',
+                MARET = '$mar',
+                APRIL = '$apr',
+                MEI = '$mei',
+                JUNI = '$jun',
+                JULI = '$jul',
+                AGUSTUS = '$agu',
+                SEPTEMBER = '$sep',
+                OKTOBER = '$okt',
+                NOVEMBER = '$nov',
+                DESEMBER = '$des',
+                LAST_UPDATE = sysdate,
+                LAST_UPDATE_BY = '$user'
+            WHERE TAHUN = '$tahun'";
+    $query = $this->oracle->query($sql);
+    $sql1 = "commit";
+    $query1 = $this->oracle->query($sql1);
+    // return $sql;
+  }
+
 }

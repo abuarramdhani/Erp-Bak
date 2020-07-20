@@ -35,6 +35,7 @@ class M_daftarhadir extends CI_Model
 					on tt.training_type_id = sp.training_type
 				inner join pl.pl_participant_type pt 
 					on pt.participant_type_id = sp.participant_type
+					where sp.daftar_hadir='false'
 				order by start_date desc, end_date desc";
 		$result = $this->db->query($sql);
 		return $result->result_array();
@@ -60,7 +61,7 @@ class M_daftarhadir extends CI_Model
 					on sp.package_scheduling_id = st.package_scheduling_id
 				inner join pl.pl_master_trainer mt 
 					on mt.trainer_id = cast(st.trainer as int)
-				where sp.package_scheduling_id = $id
+				where sp.package_scheduling_id = $id 
 				order by 	st.\"date\",
 							st.training_id;";
 		$result = $this->db->query($sql);
@@ -122,11 +123,28 @@ class M_daftarhadir extends CI_Model
 					on pt.participant_type_id = st.participant_type
 				inner join pl.pl_master_trainer mt
 					on mt.trainer_id = cast(st.trainer as int)
-				where package_scheduling_id = '0'
+				where package_scheduling_id = '0' and daftar_hadir ='false'
 				order by st.\"date\" desc, st.start_time desc, st.end_time desc";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+
+	public function hilang($id){
+		$sql = "update pl.pl_scheduling_training 
+                set daftar_hadir='true'
+                where scheduling_id = '$id'";
+
+		$result = $this->db->query($sql);
+	}
+
+	public function hilangpaket($id){
+		$sql = "update pl.pl_scheduling_package 
+                set daftar_hadir='true'
+                where package_scheduling_id = '$id'";
+
+		$result = $this->db->query($sql);
+	}
+
 
 	public function getPelatihanByID($id){
 		$sql = "select  st.scheduling_name, 
@@ -170,5 +188,106 @@ class M_daftarhadir extends CI_Model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+
+	//Ambil Data Penjadwalan dari Record Tertentu
+	public function GetRecordId($id){
+		$sql = "
+			SELECT 
+ 				a.scheduling_id,
+ 				a.package_scheduling_id,
+ 				a.package_training_id,
+ 				a.training_id,
+ 				c.training_name,
+ 					case when a.date
+  					is NULL then null 	
+  					else to_char(a.date, 'DD/MM/YYYY')
+  					end as date_foredit,
+ 				a.scheduling_name,
+  					case when a.date
+  					is NULL then null 	
+  					else to_char(a.date, 'DD Month YYYY')
+  					end as date_format,
+ 				a.start_time,
+ 				a.end_time,
+ 				a.room,
+ 				d.participant_type_description,
+ 				a.evaluation,
+ 				a.sifat,
+ 				a.trainer,
+ 				a.participant_number,
+ 				a.status,
+ 				c.limit_1,
+ 				c.limit_2
+	
+				from pl.pl_scheduling_training a
+				left join pl.pl_master_training c on a.training_id = c.training_id
+				left join pl.pl_participant_type d on a.participant_type = d.participant_type_id
+				where a.scheduling_id='$id'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+	public function GetEvaluationType()
+		{
+			$sql = "select * from pl.pl_evaluation_type where (evaluation_type_id=2 or evaluation_type_id=3)";
+			$query=$this->db->query($sql);
+			return $query->result_array();
+		}
+	//Ambil data Objective tujuan pelatihan dari Record Tertentu
+	public function GetObjectiveId($id){
+		$sql = " SELECT * from pl.pl_master_training_purpose where training_id='$id'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+		//Ambil tipe Training
+	public function GetTrainingType($id){
+		$sql = " SELECT status from pl.pl_master_training where training_id='$id'";
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+
+	//Ambil data Peserta dari Record Tertentu
+	public function GetParticipantId($id){
+		$sql = " SELECT * from pl.pl_participant where scheduling_id='$id' order by participant_name";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	//Ambil data Trainer Lengkap
+	public function GetTrainer(){
+		$sql = "SELECT * from pl.pl_master_trainer order by trainer_status DESC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	//AMBIL DATA DAFTAR PELATIHAN YANG ADA DALAM SUATU PAKET
+	public function GetPackageIdNumber($id){
+			$sql = "
+				select package_id
+				from pl.pl_scheduling_package
+				where package_scheduling_id=$id";
+			$query = $this->db->query($sql);
+			return $query->result();
+	}
+
+	//AMBIL DAFTAR PELATIHAN UNTUK PAKET PELATIHAN DENGAN NOMOR SPESIFIK
+		public function GetPackageTrainingId($id){
+			$sql = "
+				select *
+				from pl.pl_master_package_training a
+				left join pl.pl_master_training b on a.training_id = b.training_id
+				where a.package_id='$id'
+				order by a.training_order";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		//AMBIL DATA PENJADWALAN PELATIHAN YANG SESUAI DENGAN PENJADWALAN PAKET
+		public function GetScheduledTraining($id){
+			$sql = " select * from pl.pl_scheduling_training where package_scheduling_id=$id";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
 }
 ?>

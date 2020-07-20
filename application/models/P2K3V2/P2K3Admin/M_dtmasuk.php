@@ -723,8 +723,8 @@ class M_Dtmasuk extends CI_Model
         if (strlen($ks) > 5) {
             $and = "and ko.kodesie like '$ks%'";
         }
-        $sql = "select distinct(substring(ks.kd_pekerjaan,0,8)) kodesie, (select section_name from er.er_section 
-                where substring(section_code,0,8) = substring(ks.kd_pekerjaan,0,8) limit 1) section_name from k3.k3n_standar_kebutuhan ks
+        $sql = "select distinct(substring(ks.kodesie,0,8)) kodesie, (select section_name from er.er_section 
+                where substring(section_code,0,8) = substring(ks.kodesie,0,8) limit 1) section_name from k3.k3n_standar_kebutuhan ks
                 inner join k3.k3n_order ko on substring(ko.kodesie,0,8) = substring(ks.kodesie,0,8) where ko.periode = '$pr' $and
                 and ko.status = '1'
                 order by 2 asc";
@@ -888,12 +888,66 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
+    public function getBonSafetyShoes($seksi, $periode)
+    {
+        $periode = $periode . '-01';
+        $periode = date('M Y', strtotime($periode));
+        $filterseksi = '';;
+        if ($seksi == '') {
+            $filterseksi = "mb.seksi_bon like '%%'";
+        } else {
+            $filterseksi = "mb.seksi_bon = '$seksi'";
+        }
+
+        $sql = "SELECT   mb.no_bon,
+                         mb.no_id,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.kode_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') kode_barang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.nama_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') nama_apd,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.permintaan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') jml_bon,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.satuan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') satuan,
+                         mb.tanggal tgl_bon, mb.seksi_bon seksi_pengebon,
+                         mb.pemakai seksi_pemakai, mb.penggunaan, mb.keterangan,
+                         mb.tujuan_gudang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.penyerahan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') qty_transact,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.flag || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') transact
+                    FROM im_master_bon mb
+                   WHERE mb.tanggal LIKE '%$periode' and $filterseksi and mb.penggunaan = 'SAFETY SHOES'
+                GROUP BY mb.no_bon,
+                         mb.no_id,
+                         mb.tanggal,
+                         mb.seksi_bon,
+                         mb.pemakai,
+                         mb.penggunaan,
+                         mb.keterangan,
+                         mb.tujuan_gudang
+                ORDER BY 1, 3";
+
+        $query = $this->oracle->query($sql);
+        $bonOracle =  $query->result_array();
+
+        // cari nama
+        $arr_id = array_map(function ($item) {
+            return $item['NO_ID'];
+        }, $bonOracle);
+
+        // jika ada isinya
+        if ($bonOracle) {
+            $nama = $this->erp->select('nama')->where_in('id_oracle', $arr_id)->get('k3.tbon_sepatu')->result_array();
+
+            for ($i = 0; $i < count($bonOracle); $i++) {
+                $bonOracle[$i]['NAMA'] = $nama[$i]['nama'];
+            }
+        }
+
+        return $bonOracle;
+    }
+
     public function monitorbonOracleById($id)
     {
         $query = $this->oracle->query("SELECT *
            FROM im_master_bon mb
           WHERE mb.no_bon = '$id'
-        ORDER BY 2");
+        ORDER BY no_id asc");
         return $query->result_array();
     }
 

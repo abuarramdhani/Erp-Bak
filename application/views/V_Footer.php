@@ -89,6 +89,7 @@
 			<script src="<?= base_url('assets/js/jquery-maskmoney.js') ?>"></script>
 			<script src="<?= base_url('assets/plugins/howler/howler.js') ?>"></script>
 			<script src="<?= base_url('assets/plugins/fakeLoading/fakeLoading.js') ?>"></script>
+			<script src="<?= base_url('assets/plugins/fullcalendar-1.6.2/fullcalendar/fullcalendar.min.js') ?>"></script>
 
 
 			<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
@@ -227,8 +228,12 @@
 			<script src="<?= base_url('assets/js/customORS.js'); ?>"></script>
 			<script src="<?= base_url('assets/js/customORP.js'); ?>"></script>
 			<script src="<?= base_url('assets/js/customPTS.js'); ?>"></script>
-
-
+			<script src="<?= base_url('assets/js/customPPD.js'); ?>"></script>
+			<script src="<?= base_url('assets/js/customCMO.js'); ?>"></script>
+			<script src="<?= base_url('assets/js/customPAD.js'); ?>"></script>
+			<script src="<?= base_url('assets/js/customJT.js'); ?>"></script>
+			<script src="<?= base_url('assets/js/customJTIP.js');?>"></script>
+			<script src="<?= base_url('assets/js/customMCT.js');?>"></script>
 
 
 

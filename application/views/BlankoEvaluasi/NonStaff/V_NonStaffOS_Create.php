@@ -560,7 +560,7 @@
   // SCROLL SPY
   d.addEventListener('DOMContentLoaded', function() {
     // prevent on click 
-    d.querySelectorAll('.navbar-float > a').forEach(element => {
+    $('.navbar-float > a').each((i, element) => {
       element.addEventListener('click', e => {
         e.preventDefault()
         const id = element.getAttribute('href')
@@ -570,7 +570,7 @@
 
     // make an array
     let spyElement = []
-    d.querySelectorAll('#one, #two, #three, #four').forEach(element => {
+    $('#one, #two, #three, #four').each((i, element) => {
       const elementHeight = element.offsetTop
       const elementId = element.getAttribute('id')
       spyElement.push({
@@ -984,9 +984,7 @@
 
             self.handleUsulanAtasan(data.atasan)
             // delete data.atasan
-            self.$data.state.worker = {
-              ...data
-            }
+            self.$data.state.worker = data
             self.$data.tempState.tims = null
             self.$data.utils.disableInputPeriode1 = !!self.$data.state.worker.periode_awal
           }).catch(e => {

@@ -21,6 +21,7 @@ class C_ApiPatroli extends CI_Controller
 		if (date('H:i:s') < '12:00:00') {
 			$tshift = date('Y-m-d', strtotime('-1 days'));
 		}
+		// $tshift = '2020-06-17';
 		$pos = $this->M_patrolis->getPos($noind, $tshift, $ronde);
 		echo json_encode($pos);
 	}
@@ -233,7 +234,7 @@ class C_ApiPatroli extends CI_Controller
 
 	public function get_profile()
 	{
-		$noind = $this->input->get('noind');
+		$noind = strtoupper($this->input->get('noind'));
 		$data = $this->M_patrolis->getProfile($noind);
 		echo json_encode($data);
 	}
@@ -245,8 +246,41 @@ class C_ApiPatroli extends CI_Controller
 		}else{
 			$tshift = date('Y-m-d');
 		}
+		$ronde[] = $this->M_patrolis->getRonde($tshift, 1);
+		$ronde[] = $this->M_patrolis->getRonde($tshift, 2);
+		$ronde[] = $this->M_patrolis->getRonde($tshift, 3);
+		$ronde[] = $this->M_patrolis->getRonde($tshift, 4);
+		$x = 0;
+		foreach ($ronde as $key) {
+			if ($key != null) {
+				$data['ronde'][] = $key;
+				$x++;
+			}
+		}
+		if ($x == 0) {
+			$data['ronde'][] = array('ronde'=>1, 'selesai'=>0);
+		}
 		$data['max_ronde'] = 4;
-		$data['ronde'] = $this->M_patrolis->getRonde($tshift);
+		echo json_encode($data);
+	}
+
+	public function list_rondeID()
+	{
+		$rond = $this->input->get('id');//id ronde
+		if (date('H:i:s') < '12:00:00') {
+			$tshift = date('Y-m-d', strtotime('-1 days'));
+		}else{
+			$tshift = date('Y-m-d');
+		}
+		$allPos = $this->M_patrolis->getAllPos();
+		$cekScan = $this->M_patrolis->getScann($tshift, $rond);
+		$c = count($allPos);
+		if ($c == $cekScan['patroli'] && $c == $cekScan['temuan'] && $c == $cekScan['jawaban'])
+			$selesai = 1;
+		else
+			$selesai = 0;
+
+		$data['selesai'] = $selesai;
 		echo json_encode($data);
 	}
 	
@@ -256,5 +290,43 @@ class C_ApiPatroli extends CI_Controller
 		$lk = $this->M_patrolis->getPosbyId($id);
 		$data['kode']= $lk[0]['lokasi'];
 		echo json_encode($data);
+	}
+
+	public function cek_pos_terakhir()
+	{
+		$lokasi = $this->input->get('lokasi');
+		if (date('H:i:s') < '12:00:00') {
+			$tshift = date('Y-m-d', strtotime('-1 days'));
+		}else{
+			$tshift = date('Y-m-d');
+		}
+		$ronde = $this->M_patrolis->posTerakhir($tshift);
+		if ($ronde != 0) {
+			$p = $this->M_patrolis->getScann($tshift, $ronde);
+			if (($p['temuan'] == $p['patroli'] && $p['jawaban'] == $p['patroli'] && $p['jumlah'] == $p['patroli']))
+				$ronde = 0;
+		}
+		$data['ronde'] = $ronde;
+		echo json_encode($data);
+		//0 artinya bisa tidak langsung redirect ke mapActifity
+	}
+
+	public function login_satpam()
+	{
+		$username = $this->input->post('username');
+		$password = $this->input->post('password');
+		$password_md5 = md5($password);
+		$log = $this->M_patrolis->loginSatpam($username,$password_md5);
+
+		if($log){
+
+			$response["error"] = FALSE;
+			echo json_encode($response);
+		}else{
+			
+			$response["error"] = TRUE;
+			$response["error_msg"] = "Username / Password salah";
+			echo json_encode($response);
+		}
 	}
 }

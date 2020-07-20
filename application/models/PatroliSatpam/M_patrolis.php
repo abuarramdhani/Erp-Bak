@@ -10,6 +10,7 @@ class M_patrolis extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->personalia = $this->load->database('personalia', true);
+        $this->dl = $this->load->database('dinas_luar', true);
 		date_default_timezone_set("Asia/Bangkok");
     }
 
@@ -42,7 +43,7 @@ class M_patrolis extends CI_Model
                     -- tp.noind = '$noind'
                     tp.tgl_shift = '$shift'
                     and tp.ronde = $ronde) zub on
-                zub.pos = ttq.id";
+                zub.pos = ttq.id order by ttq.id";
     	return $this->personalia->query($sql)->result_array();
     }
 
@@ -150,24 +151,28 @@ class M_patrolis extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
-    public function getRonde($tgl_shift)
+    public function getRonde($tgl_shift, $ronde)
     {
         $sql = "SELECT
-                ronde,
+                tp.ronde,
                 case
-                    when count(pos) = (select count(*) from \"Satpam\".titik_qrcode tq)
-                    then 1
-                    else 0 
-                end as selesai
+                    when count(distinct(tp.id_patroli)) = count(distinct(tt.id_patroli))
+                    and count(distinct(tp.id_patroli)) = count(distinct(tj.id_patroli))
+                    and count(distinct(tp.id_patroli)) = (select count(*) from \"Satpam\".titik_qrcode tq) then 1
+                    else 0 end selesai
                 from
-                    \"Satpam\".tpatroli t
+                    \"Satpam\".tpatroli tp
+                left join \"Satpam\".ttemuan tt on
+                    tt.id_patroli = tp.id_patroli
+                left join \"Satpam\".tjawaban tj on
+                    tj.id_patroli = tp.id_patroli
                 where
                     tgl_shift = '$tgl_shift'
+                    and ronde = $ronde
                 group by
-                    ronde
-                order by
                     ronde";
-        return $this->personalia->query($sql)->result_array();
+                    // echo $sql;exit();
+        return $this->personalia->query($sql)->row_array();
     }
 
     public function insertPertanyaan($data)
@@ -249,13 +254,13 @@ class M_patrolis extends CI_Model
     {
         $sql = "SELECT 
                 distinct pos,
-                (SELECT jam_patroli from \"Satpam\".tpatroli tp1 
+                (SELECT case when kode = 'Tidak Scan' then concat(jam_patroli::text,'N') else jam_patroli::text end jam_patroli from \"Satpam\".tpatroli tp1 
                 where tp1.tgl_shift = tp0.tgl_shift and ronde = 1 and tp1.pos = tp0.pos) r1,
-                (select jam_patroli from \"Satpam\".tpatroli tp2 
+                (select case when kode = 'Tidak Scan' then concat(jam_patroli::text,'N') else jam_patroli::text end jam_patroli from \"Satpam\".tpatroli tp2 
                 where tp2.tgl_shift = tp0.tgl_shift and ronde = 2 and tp2.pos = tp0.pos) r2,
-                (select jam_patroli from \"Satpam\".tpatroli tp3 
+                (select case when kode = 'Tidak Scan' then concat(jam_patroli::text,'N') else jam_patroli::text end jam_patroli from \"Satpam\".tpatroli tp3 
                 where tp3.tgl_shift = tp0.tgl_shift and ronde = 3 and tp3.pos = tp0.pos) r3,
-                (select jam_patroli from \"Satpam\".tpatroli tp4
+                (select case when kode = 'Tidak Scan' then concat(jam_patroli::text,'N') else jam_patroli::text end jam_patroli from \"Satpam\".tpatroli tp4
                 where tp4.tgl_shift = tp0.tgl_shift and ronde = 4 and tp4.pos = tp0.pos) r4
                 FROM \"Satpam\".tpatroli tp0
                 where tgl_shift::date = '$tgl'
@@ -394,5 +399,71 @@ class M_patrolis extends CI_Model
         $this->personalia->where('id', $id);
         $this->personalia->delete('"Satpam".trekap');
         return $this->personalia->affected_rows() > 0;
+    }
+
+    public function getTTD($noind)
+    {
+        $sql = "SELECT * from hrd_khs.tpribadi t where noind = '$noind'";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getApproval1($id)
+    {
+        $sql =  "SELECT approval_1 noind, trim(tp.nama) nama from \"Satpam\".trekap tr
+                left join hrd_khs.tpribadi tp on tp.noind = tr.approval_1
+                where tr.id = '$id'";
+        return $this->personalia->query($sql)->row_array();
+    }
+    public function getApproval2($id)
+    {
+        $sql =  "SELECT approval_2 noind, trim(tp.nama) nama from \"Satpam\".trekap tr
+                left join hrd_khs.tpribadi tp on tp.noind = tr.approval_2
+                where tr.id = '$id'";
+        return $this->personalia->query($sql)->row_array();
+    }
+
+    public function posTerakhir($shift)
+    {
+        $sql = "SELECT
+                    *
+                from
+                    \"Satpam\".tpatroli t
+                where
+                    tgl_shift = '$shift'
+                order by
+                    id_patroli desc
+                limit 1";
+        $row = $this->personalia->query($sql)->num_rows();
+        if ($row < 1) {
+            return 0;
+        }else{
+            return $this->personalia->query($sql)->row()->ronde;
+        }
+    }
+
+    public function getScann($shift, $ronde)
+    {
+        $sql = "SELECT
+                    count(distinct(tp.id_patroli)) patroli,
+                    count(distinct(tt.id_patroli)) temuan,
+                    count(distinct(tj.id_patroli)) jawaban,
+                    (select count(*) from \"Satpam\".titik_qrcode) jumlah
+                from
+                    \"Satpam\".tpatroli tp
+                left join \"Satpam\".ttemuan tt on
+                    tt.id_patroli = tp.id_patroli
+                left join \"Satpam\".tjawaban tj on
+                    tj.id_patroli = tp.id_patroli
+                where
+                    tgl_shift = '$shift'
+                    and ronde = $ronde";
+                    // echo $sql;exit();
+        return $this->personalia->query($sql)->row_array();
+    }
+
+    public function loginSatpam($user,$password)
+    {
+        $sql = "select * from t_pekerja where keluar='0' and noind='$user' and (pass_word='$password' or token='$password')";
+        return $this->dl->query($sql)->num_rows() > 0;
     }
 }

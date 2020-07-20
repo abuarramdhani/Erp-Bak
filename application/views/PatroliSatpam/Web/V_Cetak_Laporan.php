@@ -91,10 +91,17 @@
 									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
 									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
 									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
-									echo "<td>".substr($r1, 0,5)."</td>";
-									echo "<td>".substr($r2, 0,5)."</td>";
-									echo "<td>".substr($r3, 0,5)."</td>";
-									echo "<td>".substr($r4, 0,5)."</td>";
+									$color = strpos($r1, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
+
+									$color = strpos($r2, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r2, 0,5)."</td>";
+
+									$color = strpos($r3, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r3, 0,5)."</td>";
+
+									$color = strpos($r4, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r4, 0,5)."</td>";
 								}
 							}
 						}
@@ -152,10 +159,17 @@
 									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
 									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
 									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
-									echo "<td>".substr($r1, 0,5)."</td>";
-									echo "<td>".substr($r2, 0,5)."</td>";
-									echo "<td>".substr($r3, 0,5)."</td>";
-									echo "<td>".substr($r4, 0,5)."</td>";
+									$color = strpos($r1, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
+
+									$color = strpos($r2, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r2, 0,5)."</td>";
+
+									$color = strpos($r3, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r3, 0,5)."</td>";
+
+									$color = strpos($r4, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r4, 0,5)."</td>";
 								}
 							}
 						}
@@ -217,10 +231,17 @@
 									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
 									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
 									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
-									echo "<td>".substr($r1, 0,5)."</td>";
-									echo "<td>".substr($r2, 0,5)."</td>";
-									echo "<td>".substr($r3, 0,5)."</td>";
-									echo "<td>".substr($r4, 0,5)."</td>";
+									$color = strpos($r1, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
+
+									$color = strpos($r2, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r2, 0,5)."</td>";
+
+									$color = strpos($r3, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r3, 0,5)."</td>";
+
+									$color = strpos($r4, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r4, 0,5)."</td>";
 								}
 							}
 						}
@@ -278,10 +299,17 @@
 									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
 									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
 									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
-									echo "<td>".substr($r1, 0,5)."</td>";
-									echo "<td>".substr($r2, 0,5)."</td>";
-									echo "<td>".substr($r3, 0,5)."</td>";
-									echo "<td>".substr($r4, 0,5)."</td>";
+									$color = strpos($r1, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
+
+									$color = strpos($r2, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r2, 0,5)."</td>";
+
+									$color = strpos($r3, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r3, 0,5)."</td>";
+
+									$color = strpos($r4, 'N') ? 'style="color:red"': '';
+									echo "<td ".$color.">".substr($r4, 0,5)."</td>";
 								}
 							}
 						}
@@ -381,23 +409,28 @@
 				<td colspan="2" width="33%" valign="top" style="text-align: center;">
 					<table border="1" style="border-collapse: collapse; font-size: 14px; width: 300px;">
 						<tr>
-							<td style="text-align: left;">Tgl.</td>
-							<td style="text-align: left;">Tgl.</td>
+							<td style="text-align: left; width: 50%;">Tgl.</td>
+							<td style="text-align: left; width: 50%;">Tgl.</td>
 						</tr>
 						<tr>
-							<td style="height: 100px;" valign="bottom">
-								RAJIWAN
+							<td style="height: 100px; border-bottom: 0px;" valign="bottom">
+								
 							</td>
-							<td style="height: 100px;" valign="bottom">
-								TENKU DIAN SR
+							<td style="height: 100px; border-bottom: 0px;" valign="bottom">
+								
 							</td>
 						</tr>
 						<tr>
-							<td>Asst. Ka Unit<br>
-							General Affairs & Hubungan Kerja</td>
-							<td>Kasi K3, Pengawasan<br>
-							Gangguan Lingkungan<br>
-							Serta Audit Pengamanan</td>
+							<td style="border-top: 0px;">
+								<?= trim($ttd2[0]['nama']) ?>
+							</td>
+							<td style="border-top: 0px;">
+								<?= trim($ttd1[0]['nama']) ?>
+							</td>
+						</tr>
+						<tr>
+							<td><?= trim(ucwords(strtolower($ttd2[0]['jabatan']))) ?></td>
+							<td><?= trim(ucwords(strtolower($ttd1[0]['jabatan']))) ?></td>
 						</tr>
 					</table>
 				</td>

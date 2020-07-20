@@ -3,7 +3,11 @@
           <h1>
            RESPONSIBILITY
           </h1>
-         
+          <div class="row">
+            <div class="col-lg-4">
+              <input type="text" id="txt-Dashboard-ResponsibilitySearch" class="form-control" placeholder="Cari Responsibility ...">
+            </div>
+          </div>
         </section>
 
         <!-- Main content -->
@@ -18,7 +22,7 @@
                 <?php
                     foreach($UserResponsibility as $UserResponsibility_item){
                   ?>
-                    <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-md-4 col-sm-6 col-xs-12 dashboard-responsibility" data-nama="<?= $UserResponsibility_item['user_group_menu_name']?>">
                       <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="fa <?= $UserResponsibility_item['module_image']?>"></i></span>
 

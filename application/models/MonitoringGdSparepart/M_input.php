@@ -277,6 +277,16 @@ class M_input extends CI_Model
         return $query->result_array();
     }
 
+    public function getInputFPB($atr) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT doc_number no_interorg, item_code item, description, quantity qty, uom, seksi_kirim, status
+                FROM KHS_KIRIM_INTERNAL 
+                WHERE DOC_NUMBER = '$atr'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
+
     public function save($NO_INTERORG,$JENIS_DOKUMEN,$ITEM,$DESCRIPTION,$UOM,$QTY,$CREATION_DATE,$STATUS,$PIC)
     {
       $oracle = $this->load->database('oracle', true);
@@ -284,6 +294,7 @@ class M_input extends CI_Model
           VALUES ('$NO_INTERORG','$JENIS_DOKUMEN','$ITEM','$DESCRIPTION','$UOM','$QTY',(TO_DATE('".$CREATION_DATE."','yyyy/mm/dd hh24:mi:ss')),'$STATUS','$PIC')";
 
       $query = $oracle->query($sql);
+      $query2 = $oracle->query("commit");
     //   return $query->result_array();
     // return $sql;
     // echo $sql;

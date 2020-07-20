@@ -42,7 +42,7 @@ class C_MenuGroup extends CI_Controller {
 		if($this->session->is_logged) {
 			//redirect('Home');
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -188,7 +188,11 @@ class C_MenuGroup extends CI_Controller {
 					}
 				}
 			}
-			redirect('SystemAdministration/MenuGroup');
+			echo json_encode(array(
+				'success' => true,
+				'message' => "Sukses mengupdate menu"
+			));
+			// redirect('SystemAdministration/MenuGroup');
 		}
 	}
 

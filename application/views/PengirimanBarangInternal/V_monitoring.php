@@ -6,12 +6,27 @@
           <h4 style="font-weight:bold;"><i class="fa fa-newspaper-o"></i> Monitoring Pengiriman Barang Internal</h4>
         </div>
         <div class="box-body">
-          <div class="table-responsive">
+          <div class="row">
+            <div class="col-md-3">
+             <span style="font-family:'theboldfont';font-weight:bold;">VOIP</span>   <br>
+              Seksi Pengeluaran PUSAT : <span style="color:red;font-weight:bold">13401 / 13416</span>  <br>
+              Seksi Penerimaan PUSAT : <span style="color:red;font-weight:bold">13405</span> <br>
+            </div>
+            <div class="col-md-3">
+              <span style="color:transparent">VOIP</span><br>
+              Seksi Pengeluaran TKS : <span style="color:red;font-weight:bold">23401</span>  <br>
+              Seksi Penerimaan TKS :  <span style="color:red;font-weight:bold">23400</span>  <br>
+            </div>
+            <div class="col-md-6"> </div>
+
+          </div>
+          <div class="table-responsive" style="margin-top:30px;">
             <table class="table table-striped table-bordered table-hover text-left " id="tblpbi" style="font-size:12px;">
               <thead>
                 <tr class="bg-success">
                   <th><center>No</center></th>
                   <th><center>Dokumen Number</center></th>
+                  <!-- <th><center>No MO</center></th> -->
                   <th><center>Penerima</center></th>
                   <th><center>Seksi Penerima</center></th>
                   <th><center>Tujuan</center></th>
@@ -25,6 +40,7 @@
                   <tr>
                     <td><center><?php echo $no; ?></center></td>
                     <td><center><?php echo $g['DOC_NUMBER'] ?></center></td>
+                    <!-- <td><center><?php echo empty($g['NO_MOVE_ORDER'])?'-':$g['NO_MOVE_ORDER'] ?></center></td> -->
                     <td><center><?php echo $g['USER_TUJUAN'] ?></center></td>
                     <td><center><?php echo $seksi_tujuan[$key] ?></center></td>
                     <td><center><?php echo $g['TUJUAN'] ?></center></td>
@@ -32,8 +48,8 @@
                     <td><center><?php echo $g['STATUS2'] ?></center></td>
                     <td>
                       <center>
-                        <a href="<?php echo base_url('PengirimanBarangInternal/Cetak/'.$g['DOC_NUMBER']) ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
-                        <button type="button" class="btn btn-success" style="margin-left:5px;" name="button" style="font-weight:bold;" onclick="detailPBI('<?php echo $g['DOC_NUMBER'] ?>')" data-toggle="modal" data-target="#Mpbi">
+                        <a href="<?php echo base_url('PengirimanBarangInternal/Cetak/'.$g['DOC_NUMBER']) ?>" target="_blank" style="padding:5px 7px" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+                        <button type="button" class="btn btn-success" style="margin-left:1px;padding:5px 7px;font-weight:bold;" name="button" onclick="detailPBI('<?php echo $g['DOC_NUMBER'] ?>')" data-toggle="modal" data-target="#Mpbi">
                           <i class="fa fa-eye"></i>
                         </button>
                       </center>

@@ -133,7 +133,7 @@ class M_limbahkelola extends CI_Model
         return $result->result_array();
     }
 
-    function getDataLimbah($start, $end, $limbah, $detailed) {
+    function getDataLimbah($start, $end, $limbah,$lokasi, $detailed) {
         $start = date('Y-m-d', strtotime($start));
         $end = date('Y-m-d', strtotime($end));
 
@@ -145,6 +145,14 @@ class M_limbahkelola extends CI_Model
             $limbah = implode(',', $limbah);
             $filterLimbah = "and limkir.id_jenis_limbah in ($limbah)";
         }
+        $filterLokasi = '';
+        if(count($lokasi)) {
+            $lokasi = array_map(function($item){
+            return "'$item'";
+            }, $lokasi);
+            $lokasi = implode(',', $lokasi);
+            $filterlokasi = "and limkir.lokasi_kerja in ($lokasi)";
+        }
 
         // not detailed
         if($detailed == 'false') {
@@ -154,7 +162,7 @@ class M_limbahkelola extends CI_Model
                     (select trunc(sum(berat_kirim)::numeric, 3) from ga.ga_limbah_kirim where id_jenis_limbah = limkir.id_jenis_limbah and tanggal_kirim::date between '$start' and '$end') as berat_kirim
                 FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
                     on limkir.id_jenis_limbah = limjen.id_jenis_limbah
-                WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah
+                WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah $filterlokasi
                 ORDER BY jenis_limbah";
         } else {
             // detailed
@@ -165,7 +173,7 @@ class M_limbahkelola extends CI_Model
                         trunc(limkir.berat_kirim::numeric, 3) as berat_kirim
                     FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
                             on limkir.id_jenis_limbah = limjen.id_jenis_limbah
-                    WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah
+                    WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah $filterlokasi
                     ORDER BY limkir.tanggal_kirim"; // 1 adalah yg sudah diapprove oleh waste management
         }
         // echo $sql;exit();

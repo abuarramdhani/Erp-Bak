@@ -41,7 +41,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label">Nama Pelatihan</label>
 									<div class="col-lg-9">
-										<input name="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" required value="<?php echo $dt['training_name']?>" readonly>
+										<input name="txtNamaPelatihan" id="txtNamaPelatihan" class="form-control toupper" placeholder="Nama Pelatihan" required value="<?php echo $dt['training_name']?>" readonly>
 										<input name="txtTrainingId" value="<?php echo $dt['training_id']?>" hidden>
 										<!-- isi standar nilai -->
 										<input type="hidden" name="txtStandarNilai" value="<?php echo $dt['limit_1'].','.$dt['limit_2']?>"> 
@@ -202,7 +202,7 @@
 																	<div class="input-group-addon">
 																		<i class="glyphicon glyphicon-user"></i>
 																	</div>
-																	<select class="form-control js-slcEmployee" name="slcEmployee[]" id="slcEmployee" required>
+																	<select class="form-control js-slcEmployeeTraining" name="slcEmployee[]" id="slcEmployee" required>
 																		<option value=""></option>
 																	</select>
 																</div>

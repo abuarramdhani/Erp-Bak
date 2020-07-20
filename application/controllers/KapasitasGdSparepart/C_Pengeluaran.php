@@ -24,7 +24,7 @@ class C_Pengeluaran extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -70,6 +70,13 @@ class C_Pengeluaran extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('KapasitasGdSparepart/V_Pengeluaran');
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function getPIC(){
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_pengeluaran->getPIC($term);
+		echo json_encode($data);
 	}
 
 	public function updateMulai(){

@@ -113,7 +113,7 @@
 
 							</div>
 							<div class="col-lg-6">
-								<button style="float: right;" onclick="sendReminder()" type="button" name="reminderSPLSeksi" class="btn btn-warning"><i class="fa fa-bullhorn"></i></button>
+								<button data-toggle="tooltip" data-placement="left" title="Kirim Email ke Atasan" style="float: right;" onclick="sendReminder()" type="button" name="reminderSPLSeksi" class="btn btn-warning tooltipx"><i class="fa fa-bullhorn"></i></button>
 							</div>
 						</div>
 					</div>
@@ -200,7 +200,9 @@
 
 	document.addEventListener("DOMContentLoaded", function(e) {
 		setupTimers();
-	});
+		// set cache
+		let exist = window.localStorage.getItem('alert-SPL')
+		const d = new Date()
 
 	// set cache
 	(() => {

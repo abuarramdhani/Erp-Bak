@@ -34,6 +34,17 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-12">
+                                                <label class="control-label col-lg-2">Lokasi kerja</label>
+                                                <div class="col-lg-9">
+                                                    <select class="select select2" name="lokasilimbah" id="lokasilimbah" multiple="multiple" style="width: 100%" data-placeholder="Lokasi kerja">
+                                                        <option></option>
+                                                        <?php foreach ($loc as $key) {
+                                                            echo "<option value='".$key['location_code']."'>".$key['location_code']." - ".$key['location_name']."</option>";
+                                                        } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                                <div class="form-group col-lg-12">
                                                     <label class="control-label col-lg-2 "> Jenis Limbah</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control select2" multiple name="jenisLimbah" id="jenisLimbah">
@@ -137,6 +148,9 @@
         $('#jenisLimbah').on('change', function() {
             root.params.jenis = $(this).val()
         })
+        $('#lokasilimbah').on('change', function() {
+            root.params.lokasi = $(this).val()
+        })
 
         $('#detailed').on('ifChecked ifUnchecked', function() {
             root.$data.detailed = !root.$data.detailed
@@ -153,6 +167,7 @@
                 params: {
                     start: '',
                     end: '',
+                    lokasi:[],
                     jenis: []
                 },
                 dataLimbah: [],
@@ -176,6 +191,7 @@
                         start: vm.params.start,
                         end: vm.params.end,
                         jenis: vm.params.jenis,
+                        lokasi: vm.params.lokasi,
                         detailed: vm.detailed
                     }
                 }).then(res => {
@@ -220,6 +236,7 @@
                     start: vm.params.start,
                     end: vm.params.end,
                     jenis: vm.params.jenis,
+                    lokasi: vm.params.lokasi,
                     detailed: vm.detailed ? 1 : 0
                 }
 

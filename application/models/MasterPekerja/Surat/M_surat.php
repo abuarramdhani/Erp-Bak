@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 // ini_set('memory_limit', '256M');
 class M_surat extends CI_Model
@@ -8,16 +8,14 @@ class M_surat extends CI_Model
 		parent::__construct();
 		$this->personalia 	= 	$this->load->database('personalia', TRUE);
 		$this->quick 	=	$this->load->database('quick', TRUE);
-
 	}
 
-	public function kode_surat( $jenis_surat = FALSE, $status_staf = FALSE )
+	public function kode_surat($jenis_surat = FALSE, $status_staf = FALSE)
 	{
 		$this->personalia->select('*');
 		$this->personalia->from('"Surat".tkode_surat');
 
-		if( $jenis_surat !== FALSE )
-		{
+		if ($jenis_surat !== FALSE) {
 			$this->personalia->like('jenis_surat', $jenis_surat);
 			$this->personalia->where('staf', $status_staf);
 		}
@@ -25,27 +23,21 @@ class M_surat extends CI_Model
 		$this->personalia->order_by('	jenis_surat,
 			staf');
 		return $this->personalia->get()->result_array();
-
 	}
 
-	public function nomor_surat( $kode_surat = FALSE, $aggregate_function = FALSE, $tahun_surat = FALSE, $bulan_surat = FALSE )
+	public function nomor_surat($kode_surat = FALSE, $aggregate_function = FALSE, $tahun_surat = FALSE, $bulan_surat = FALSE)
 	{
-		if( $aggregate_function !== FALSE )
-		{
-			if ( strpos(strtoupper($aggregate_function), 'MAX') !== FALSE )
-			{
+		if ($aggregate_function !== FALSE) {
+			if (strpos(strtoupper($aggregate_function), 'MAX') !== FALSE) {
 				$this->personalia->select_max('nomor_surat', 'hitung');
 			}
-		}
-		else
-		{
+		} else {
 			$this->personalia->select('*');
 		}
 
 		$this->personalia->from('"Surat".t_arsip_nomor_surat');
 
-		if( $kode_surat !== FALSE AND $tahun_surat !== FALSE AND $bulan_surat !== FALSE )
-		{
+		if ($kode_surat !== FALSE and $tahun_surat !== FALSE and $bulan_surat !== FALSE) {
 			$this->personalia->where('kode_surat =', $kode_surat);
 			$this->personalia->where('tahun_surat =', $tahun_surat);
 			$this->personalia->where('bulan_surat =', $bulan_surat);
@@ -62,13 +54,12 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	public function format_surat( $jenis_surat = FALSE, $status_staf = FALSE )
+	public function format_surat($jenis_surat = FALSE, $status_staf = FALSE)
 	{
 		$this->personalia->select('*');
 		$this->personalia->from('"Surat".tisi_surat');
 
-		if( $jenis_surat !== FALSE )
-		{
+		if ($jenis_surat !== FALSE) {
 			$this->personalia->like('jenis_surat', $jenis_surat);
 			$this->personalia->where('staf', $status_staf);
 		}
@@ -78,20 +69,18 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	    // 	General
-	    // 	{
-	public function pekerja( $parameter_pekerja = FALSE, $keluar = FALSE )
+	// 	General
+	// 	{
+	public function pekerja($parameter_pekerja = FALSE, $keluar = FALSE)
 	{
 		$parameterPekerja 			=	"";
 		$parameterKeluar 			=	"";
 
-		if ( $keluar !== FALSE AND isset($keluar) )
-		{
+		if ($keluar !== FALSE and isset($keluar)) {
 			$parameterKeluar 	=	"	and 	pri.keluar=false";
 		}
 
-		if($parameter_pekerja !== FALSE)
-		{
+		if ($parameter_pekerja !== FALSE) {
 			$parameterPekerja		= "	and		(
 			pri.noind like '%$parameter_pekerja%'
 			or 	pri.nama like '%$parameter_pekerja%'
@@ -114,8 +103,9 @@ class M_surat extends CI_Model
 		$query 					=	$this->personalia->query($pekerja);
 		return $query->result_array();
 	}
-	
-	public function pekerjaSP3($filter) {
+
+	public function pekerjaSP3($filter)
+	{
 		$query = $this->personalia->query("select list.noind, list.nama from(
 			select p.noind as noind, p.nama as nama, sp.no_surat, sp.berlaku as berlaku_mulai, (date_trunc('month', sp.berlaku) + '6month'::interval - '1day'::interval)::date as berlaku_selesai
 			from hrd_khs.tpribadi p inner join
@@ -157,7 +147,7 @@ class M_surat extends CI_Model
 		return $query->result_array();
 	}
 
-	public function detail_pekerja( $noind )
+	public function detail_pekerja($noind)
 	{
 		$status_aktif = '02';
 		$detail_pekerja		= "	select 		pri.noind as noind,
@@ -234,11 +224,10 @@ class M_surat extends CI_Model
 		return $query->result_array();
 	}
 
-	public function tseksi( $keyword = FALSE )
+	public function tseksi($keyword = FALSE)
 	{
 		$parameter_keyword 	=	"";
-		if($keyword !== FALSE)
-		{
+		if ($keyword !== FALSE) {
 			$parameter_keyword 		= "	and 	(
 			tseksi.kodesie like '$keyword%'
 			or 	tseksi.dept like '%$keyword%'
@@ -290,7 +279,7 @@ class M_surat extends CI_Model
 		return $query->result_array();
 	}
 
-	public function golongan_pekerjaan( $kode_status_kerja, $keyword = FALSE )
+	public function golongan_pekerjaan($kode_status_kerja, $keyword = FALSE)
 	{
 		$this->personalia->select('	kode_status_kerja,
 			golkerja');
@@ -298,8 +287,7 @@ class M_surat extends CI_Model
 		$this->personalia->where('kode_status_kerja=', $kode_status_kerja);
 		$this->personalia->where('golkerja!=', '-');
 
-		if( $keyword !== FALSE )
-		{
+		if ($keyword !== FALSE) {
 			$this->personalia->like('golkerja', $keyword);
 		}
 
@@ -310,13 +298,12 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	public function lokasi_kerja( $keyword = FALSE )
+	public function lokasi_kerja($keyword = FALSE)
 	{
 		$this->personalia->select('*');
 		$this->personalia->from('hrd_khs.tlokasi_kerja');
 
-		if( $keyword !== FALSE )
-		{
+		if ($keyword !== FALSE) {
 			$this->personalia->like('lokasi_kerja', $keyword);
 			$this->personalia->or_like('id_', $keyword);
 		}
@@ -325,14 +312,13 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	public function kode_jabatan_kerja( $keyword = FALSE )
+	public function kode_jabatan_kerja($keyword = FALSE)
 	{
 		$this->personalia->select('	trim(kd_jabatan) kd_jabatan,
 			rtrim(jabatan) jabatan');
 		$this->personalia->from('hrd_khs.torganisasi');
 
-		if( $keyword !== FALSE )
-		{
+		if ($keyword !== FALSE) {
 			$this->personalia->like('jabatan', $keyword);
 			$this->personalia->or_like('kd_jabatan', $keyword);
 		}
@@ -341,13 +327,12 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	public function tempat_makan( $keyword = FALSE )
+	public function tempat_makan($keyword = FALSE)
 	{
 		$this->personalia->select('fs_tempat_makan');
 		$this->personalia->from('"Catering".ttempat_makan');
 
-		if( $keyword !== FALSE )
-		{
+		if ($keyword !== FALSE) {
 			$this->personalia->like('fs_tempat_makan', $keyword);
 		}
 
@@ -356,13 +341,12 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	public function pekerjaan( $keyword = FALSE )
+	public function pekerjaan($keyword = FALSE)
 	{
 		$this->personalia->select('*');
 		$this->personalia->from('hrd_khs.tpekerjaan');
 
-		if( $keyword !== FALSE )
-		{
+		if ($keyword !== FALSE) {
 			$this->personalia->like('kdpekerjaan', $keyword);
 			$this->personalia->or_like('pekerjaan', $keyword);
 		}
@@ -371,21 +355,23 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	public function deleteSuratMutasi($tanggal,$kode,$no_surat_decode)
+	public function deleteSuratMutasi($tanggal, $kode, $no_surat_decode)
 	{
 		$no_surat = $no_surat_decode;
-		$waktu = date("Y/m/d",$tanggal);
-					// echo $waktu;
-	    			 // echo $no_surat;
-	    			 // echo $tanggal;
-	    			 // echo $kode;
-	    			 // exit();
-		$this->personalia->where('no_surat=',$no_surat);
+		$waktu = date("Y/m/d", $tanggal);
+		// echo $waktu;
+		// echo $no_surat;
+		// echo $tanggal;
+		// echo $kode;
+		// exit();
+		$this->personalia->where('no_surat=', $no_surat);
 		$this->personalia->where('tanggal_cetak', $waktu);
 		$this->personalia->where('kode=', $kode);
-		$this->personalia->delete('"Surat".tsurat_mutasi');
-	    			//$this->personalia->and('');
-		header('Location: '.$_SERVER['REQUEST_URI']);
+		$this->personalia->set('deleted_by', $this->session->user);
+		$this->personalia->set('deleted_date', date('Y-m-d H:i:s'));
+		$this->personalia->update('"Surat".tsurat_mutasi');
+		//$this->personalia->and('');
+		header('Location: ' . $_SERVER['REQUEST_URI']);
 	}
 
 	public function getNamaNoindBaru($nomor_induk)
@@ -394,35 +380,34 @@ class M_surat extends CI_Model
 		$this->personalia->from('hrd_khs.tpribadi');
 		$this->personalia->where('noind=', $nomor_induk);
 		return $this->personalia->get()->result_array();
-
 	}
 
 	public function inputSuratMutasi($inputSuratMutasi)
 	{
 		$this->personalia->insert('"Surat".tsurat_mutasi', $inputSuratMutasi);
 	}
-//<------------------------------------------------------Update------------------------------------------------>
-	public function editSuratMutasi($tanggal,$kode,$no_surat_decode)
+	//<------------------------------------------------------Update------------------------------------------------>
+	public function editSuratMutasi($tanggal, $kode, $no_surat_decode)
 	{
 		date_default_timezone_set("Asia/Bangkok");
-		$waktu = "'".date("Y/m/d",$tanggal)."'";
-		$kode = "'".$kode."'";
-		$no_surat_decode = "'".$no_surat_decode."'";
-	    			// echo $waktu; exit();
+		$waktu = "'" . date("Y/m/d", $tanggal) . "'";
+		$kode = "'" . $kode . "'";
+		$no_surat_decode = "'" . $no_surat_decode . "'";
+		// echo $waktu; exit();
 
-	    			// $this->personalia->select('*, ts1.seksi seksi2, tp1.pekerjaan pekerjaan2');
-	    			// $this->personalia->from('"Surat".tsurat_mutasi');
-	    			// $this->personalia->join('hrd_khs.tseksi as ts2','ts2.kodesie = tsurat_mutasi.kodesie_baru', 'left');
-	    			// $this->personalia->join('hrd_khs.tseksi as ts1','ts1.kodesie = tsurat_mutasi.kodesie_lama', 'left');
-	    			// $this->personalia->join('hrd_khs.tlokasi_kerja','tlokasi_kerja.id_ = tsurat_mutasi.lokasi_kerja_lama');
-	    			// $this->personalia->join('hrd_khs.tpekerjaan tp1','tp1.kdpekerjaan = tsurat_mutasi.kd_pkj_baru');
-	    			// $this->personalia->join('hrd_khs.tpekerjaan tp2','tp2.kdpekerjaan = tsurat_mutasi.kd_pkj_lama');
-	    			// $this->personalia->join('hrd_khs.trefjabatan tj1','tj1.kd_jabatan = tsurat_mutasi.kd_jabatan_baru');
-	    			// $this->personalia->join('hrd_khs.trefjabatan tj2','tj2.kd_jabatan = tsurat_mutasi.kd_jabatan_lama');
-	    			// $this->personalia->where('tanggal_cetak=', $waktu);
-	    			// $this->personalia->where('kode=', $kode);
-	    			// $this->personalia->where('no_surat=', $no_surat_decode);
-	    			// return $this->personalia->get()->result_array();
+		// $this->personalia->select('*, ts1.seksi seksi2, tp1.pekerjaan pekerjaan2');
+		// $this->personalia->from('"Surat".tsurat_mutasi');
+		// $this->personalia->join('hrd_khs.tseksi as ts2','ts2.kodesie = tsurat_mutasi.kodesie_baru', 'left');
+		// $this->personalia->join('hrd_khs.tseksi as ts1','ts1.kodesie = tsurat_mutasi.kodesie_lama', 'left');
+		// $this->personalia->join('hrd_khs.tlokasi_kerja','tlokasi_kerja.id_ = tsurat_mutasi.lokasi_kerja_lama');
+		// $this->personalia->join('hrd_khs.tpekerjaan tp1','tp1.kdpekerjaan = tsurat_mutasi.kd_pkj_baru');
+		// $this->personalia->join('hrd_khs.tpekerjaan tp2','tp2.kdpekerjaan = tsurat_mutasi.kd_pkj_lama');
+		// $this->personalia->join('hrd_khs.trefjabatan tj1','tj1.kd_jabatan = tsurat_mutasi.kd_jabatan_baru');
+		// $this->personalia->join('hrd_khs.trefjabatan tj2','tj2.kd_jabatan = tsurat_mutasi.kd_jabatan_lama');
+		// $this->personalia->where('tanggal_cetak=', $waktu);
+		// $this->personalia->where('kode=', $kode);
+		// $this->personalia->where('no_surat=', $no_surat_decode);
+		// return $this->personalia->get()->result_array();
 		$sql = "select tm.* , ts.seksi, case when left(ts2.seksi,1) = '-' then
 		case when left(ts2.unit,1) = '-' then
 		case when left(ts2.bidang,1) = '-' then
@@ -449,7 +434,7 @@ class M_surat extends CI_Model
 		left join hrd_khs.torganisasi tr on tm.kd_jabatan_lama = tr.kd_jabatan
 		left join hrd_khs.torganisasi tr2 on tm.kd_jabatan_baru = tr2.kd_jabatan
 		where tm.tanggal_cetak = $waktu and tm.kode = $kode and no_surat = $no_surat_decode";
-					// echo $sql;exit();
+		// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
@@ -597,9 +582,9 @@ class M_surat extends CI_Model
 
 	public function updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak)
 	{
-	    			// echo "$updateSuratMutasi<br>";
-	    			// echo "$nomor_surat<br>";
-	    			// echo "$kodeSurat<br>";
+		// echo "$updateSuratMutasi<br>";
+		// echo "$nomor_surat<br>";
+		// echo "$kodeSurat<br>";
 		$this->personalia->where('tanggal_cetak', $tanggal_cetak);
 		$this->personalia->where('no_surat', $nomor_surat);
 		$this->personalia->where('kode', $kodeSurat);
@@ -608,31 +593,31 @@ class M_surat extends CI_Model
 
 	public function DetailGolongan(/*$tanggal,$kode,$no_surat_decode*/)
 	{
-	    			// $waktu = date("Y/m/d",$tanggal);
+		// $waktu = date("Y/m/d",$tanggal);
 
-	    			// $this->personalia->select('*');
-	    			// $this->personalia->from('"Surat".tsurat_mutasi');
-	    			// $this->personalia->where('tanggal_cetak=', $waktu);
-	    			// $this->personalia->where('kode=', $kode);
-	    			// $this->personalia->where('no_surat=', $no_surat_decode);
-	    			// return $this->personalia->get()->result_array();
-		$DetailGolongan= "select DISTINCT golkerja from hrd_khs.tpribadi where keluar='0'order by golkerja";
+		// $this->personalia->select('*');
+		// $this->personalia->from('"Surat".tsurat_mutasi');
+		// $this->personalia->where('tanggal_cetak=', $waktu);
+		// $this->personalia->where('kode=', $kode);
+		// $this->personalia->where('no_surat=', $no_surat_decode);
+		// return $this->personalia->get()->result_array();
+		$DetailGolongan = "select DISTINCT golkerja from hrd_khs.tpribadi where keluar='0'order by golkerja";
 
 		$query 	=	$this->personalia->query($DetailGolongan);
-		return $query->result_array();	
+		return $query->result_array();
 	}
 
 	public function DetailLokasiKerja(/*$tanggal,$kode,$no_surat_decode*/)
 	{
-	    			// $waktu = date("Y/m/d",$tanggal);
+		// $waktu = date("Y/m/d",$tanggal);
 
-	    			// $this->personalia->select('*');
-	    			// $this->personalia->from('"Surat".tsurat_mutasi');
-	    			// $this->personalia->where('tanggal_cetak=', $waktu);
-	    			// $this->personalia->where('kode=', $kode);
-	    			// $this->personalia->where('no_surat=', $no_surat_decode);
-	    			// return $this->personalia->get()->result_array();
-		$DetailLokasiKerja= "select id_ as kode_lokasi, lokasi_kerja as nama_lokasi,concat_ws(' - ', id_, lokasi_kerja) as lokasi  from hrd_khs.tlokasi_kerja order by id_";
+		// $this->personalia->select('*');
+		// $this->personalia->from('"Surat".tsurat_mutasi');
+		// $this->personalia->where('tanggal_cetak=', $waktu);
+		// $this->personalia->where('kode=', $kode);
+		// $this->personalia->where('no_surat=', $no_surat_decode);
+		// return $this->personalia->get()->result_array();
+		$DetailLokasiKerja = "select id_ as kode_lokasi, lokasi_kerja as nama_lokasi,concat_ws(' - ', id_, lokasi_kerja) as lokasi  from hrd_khs.tlokasi_kerja order by id_";
 
 		$query 	=	$this->personalia->query($DetailLokasiKerja);
 		return $query->result_array();
@@ -640,50 +625,50 @@ class M_surat extends CI_Model
 
 	public function DetailKdJabatan(/*$tanggal,$kode,$no_surat_decode*/)
 	{
-	    			// $waktu = date("Y/m/d",$tanggal);
+		// $waktu = date("Y/m/d",$tanggal);
 
-	    			// $this->personalia->select('*');
-	    			// $this->personalia->from('"Surat".tsurat_mutasi');
-	    			// $this->personalia->where('tanggal_cetak=', $waktu);
-	    			// $this->personalia->where('kode=', $kode);
-	    			// $this->personalia->where('no_surat=', $no_surat_decode);
-	    			// return $this->personalia->get()->result_array();
-		$DetailKdJabatan= "select kd_jabatan as kd_jabatan , jabatan as jabatan from hrd_khs.torganisasi";
+		// $this->personalia->select('*');
+		// $this->personalia->from('"Surat".tsurat_mutasi');
+		// $this->personalia->where('tanggal_cetak=', $waktu);
+		// $this->personalia->where('kode=', $kode);
+		// $this->personalia->where('no_surat=', $no_surat_decode);
+		// return $this->personalia->get()->result_array();
+		$DetailKdJabatan = "select kd_jabatan as kd_jabatan , jabatan as jabatan from hrd_khs.torganisasi";
 		$query 	=	$this->personalia->query($DetailKdJabatan);
 		return $query->result_array();
 	}
 
 	public function DetailTempatMakan1(/*$tanggal,$kode,$no_surat_decode*/)
 	{
-	    			// $waktu = date("Y/m/d",$tanggal);
+		// $waktu = date("Y/m/d",$tanggal);
 
-	    			// $this->personalia->select('*');
-	    			// $this->personalia->from('"Surat".tsurat_mutasi');
-	    			// $this->personalia->where('tanggal_cetak=', $waktu);
-	    			// $this->personalia->where('kode=', $kode);
-	    			// $this->personalia->where('no_surat=', $no_surat_decode);
-	    			// return $this->personalia->get()->result_array();
-		$DetailTempatMakan1= "select distinct tempat_makan1 as tempat_makan1 from hrd_khs.tpribadi where keluar='false'";
+		// $this->personalia->select('*');
+		// $this->personalia->from('"Surat".tsurat_mutasi');
+		// $this->personalia->where('tanggal_cetak=', $waktu);
+		// $this->personalia->where('kode=', $kode);
+		// $this->personalia->where('no_surat=', $no_surat_decode);
+		// return $this->personalia->get()->result_array();
+		$DetailTempatMakan1 = "select distinct tempat_makan1 as tempat_makan1 from hrd_khs.tpribadi where keluar='false'";
 		$query 	=	$this->personalia->query($DetailTempatMakan1);
-		return $query->result_array();	
+		return $query->result_array();
 	}
 
 	public function DetailTempatMakan2(/*$tanggal,$kode,$no_surat_decode*/)
 	{
-	    			// $waktu = date("Y/m/d",$tanggal);
+		// $waktu = date("Y/m/d",$tanggal);
 
-	    			// $this->personalia->select('*');
-	    			// $this->personalia->from('"Surat".tsurat_mutasi');
-	    			// $this->personalia->where('tanggal_cetak=', $waktu);
-	    			// $this->personalia->where('kode=', $kode);
-	    			// $this->personalia->where('no_surat=', $no_surat_decode);
-	    			// return $this->personalia->get()->result_array();
-		$DetailTempatMakan2= "select distinct tempat_makan2 as tempat_makan2 from hrd_khs.tpribadi where keluar='false'";
+		// $this->personalia->select('*');
+		// $this->personalia->from('"Surat".tsurat_mutasi');
+		// $this->personalia->where('tanggal_cetak=', $waktu);
+		// $this->personalia->where('kode=', $kode);
+		// $this->personalia->where('no_surat=', $no_surat_decode);
+		// return $this->personalia->get()->result_array();
+		$DetailTempatMakan2 = "select distinct tempat_makan2 as tempat_makan2 from hrd_khs.tpribadi where keluar='false'";
 		$query 	=	$this->personalia->query($DetailTempatMakan2);
-		return $query->result_array();	
+		return $query->result_array();
 	}
 
-	    		//<--------------------------Preview----------------------->
+	//<--------------------------Preview----------------------->
 	public function ambilLayoutSuratPerbantuan()
 	{
 		$this->personalia->select('isi_surat');
@@ -693,9 +678,9 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	public function ambilIsiSuratMutasi($tanggal,$kode,$no_surat_decode)
+	public function ambilIsiSuratMutasi($tanggal, $kode, $no_surat_decode)
 	{
-		$waktu = date("Y/m/d",$tanggal);
+		$waktu = date("Y/m/d", $tanggal);
 
 		$this->personalia->select('*');
 		$this->personalia->from('"Surat".tsurat_mutasi');
@@ -705,9 +690,9 @@ class M_surat extends CI_Model
 		return $this->personalia->get()->result_array();
 	}
 
-	public function ambilIsiSuratPerbantuan($tanggal,$kode,$no_surat_decode)
+	public function ambilIsiSuratPerbantuan($tanggal, $kode, $no_surat_decode)
 	{
-		$waktu = date("Y/m/d",$tanggal);
+		$waktu = date("Y/m/d", $tanggal);
 
 		$this->personalia->select('*');
 		$this->personalia->from('"Surat".tsurat_mutasi');
@@ -724,7 +709,7 @@ class M_surat extends CI_Model
 			inner join hrd_khs.tseksi ts on tm.kodesie_lama = ts.kodesie
 			inner join hrd_khs.tseksi ts2 on tm.kodesie_baru = ts2.kodesie
 			inner join hrd_khs.tlokasi_kerja tk on tm.lokasi_kerja_lama = tk.id_
-			where tm.kodesie_lama = '.$a);
+			where tm.kodesie_lama = ' . $a);
 		return $sl->result_array();
 	}
 
@@ -740,7 +725,7 @@ class M_surat extends CI_Model
 		$this->personalia->where('nomor_surat', $no_surat);
 		$this->personalia->delete('"Surat".t_arsip_nomor_surat');
 	}
-		//	}
+	//	}
 	public function ambilDaftarSuratPerbantuan()
 	{
 		$ambilDaftarSuratPerbantuan 		= "	select 		concat
@@ -845,35 +830,34 @@ class M_surat extends CI_Model
 	public function deleteSuratPerbantuan($no_surat_decode)
 	{
 		$explode_no_surat_decode = explode('/', $no_surat_decode);
-			 		// print_r($explode_no_surat_decode); exit();
+		// print_r($explode_no_surat_decode); exit();
 		$no_surat_int = intval($explode_no_surat_decode[0]);
 		$no_surat = $explode_no_surat_decode;
-			 		// echo $no_surat; exit();
-		$kode_surat = $explode_no_surat_decode[1].'/'.$explode_no_surat_decode[2];
+		// echo $no_surat; exit();
+		$kode_surat = $explode_no_surat_decode[1] . '/' . $explode_no_surat_decode[2];
 		$bulan_surat = $explode_no_surat_decode[3];
 		$tahun_surat = $explode_no_surat_decode[4];
-			 		// echo  $kode_surat.$bulan_surat.$tahun_surat;
+		// echo  $kode_surat.$bulan_surat.$tahun_surat;
 		$this->personalia->where('kode', $kode_surat);
 		$this->personalia->where('no_surat', $kode_surat);
 		$this->personalia->delete('"Surat".tsurat_mutasi');
-
-	}public function deleteArsipSuratPerbantuan($no_surat_decode)
+	}
+	public function deleteArsipSuratPerbantuan($no_surat_decode)
 	{
 		$explode_no_surat_decode = explode('/', $no_surat_decode);
-			 		// print_r($explode_no_surat_decode); exit();
+		// print_r($explode_no_surat_decode); exit();
 		$no_surat_int = intval($explode_no_surat_decode[0]);
 		$no_surat = $explode_no_surat_decode;
-			 		// echo $no_surat; exit();
-		$kode_surat = $explode_no_surat_decode[1].'/'.$explode_no_surat_decode[2];
+		// echo $no_surat; exit();
+		$kode_surat = $explode_no_surat_decode[1] . '/' . $explode_no_surat_decode[2];
 		$bulan_surat = intval($explode_no_surat_decode[3]);
-		$tahun_surat = '20'.$explode_no_surat_decode[4];
-			 		// echo  $kode_surat.$bulan_surat.$tahun_surat;
+		$tahun_surat = '20' . $explode_no_surat_decode[4];
+		// echo  $kode_surat.$bulan_surat.$tahun_surat;
 		$this->personalia->where('kode', $kode_surat);
 		$this->personalia->where('no_surat', $kode_surat);
 		$this->personalia->where('tahun_surat', $tahun_surat);
 		$this->personalia->where('bulan_surat', $bulan_surat);
 		$this->personalia->delete('"Surat".t_arsip_nomor_surat');
-
 	}
 	public function cekStaf($nomor_induk)
 	{
@@ -1078,7 +1062,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		return $query->result_array();
 	}
 
-	public function allt($sc,$tb)
+	public function allt($sc, $tb)
 	{
 		$sql = "SELECT column_name
 		FROM information_schema.columns
@@ -1094,7 +1078,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		return $query->result_array();
 	}
 
-	public function updateMutasi($noind, $kodesie, $kodesie_lama, $jabatan, $jabatan_lama, $lokasi, $lokasi_lama, $golker, $golker_lama, $tmakan_1 , $tmakan_1_lama, $tmakan_2, $tmakan_2_lama, $kd_pkj, $kd_pkj_lama, $kd_jabatan_baru, $kd_jabatan_lama, $action_date, $tgl_berlaku, $action)
+	public function updateMutasi($noind, $kodesie, $kodesie_lama, $jabatan, $jabatan_lama, $lokasi, $lokasi_lama, $golker, $golker_lama, $tmakan_1, $tmakan_1_lama, $tmakan_2, $tmakan_2_lama, $kd_pkj, $kd_pkj_lama, $kd_jabatan_baru, $kd_jabatan_lama, $action_date, $tgl_berlaku, $action)
 	{
 		$sql = "update hrd_khs.trefjabatan set kodesie = '$kodesie', jabatan = '$jabatan' where noind = '$noind';";
 
@@ -1103,7 +1087,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		tempat_makan = '$tmakan_1', tempat_makan1 = '$tmakan_1', tempat_makan2 = '$tmakan_2',
 		kd_pkj = '$kd_pkj', lokasi_kerja = '$lokasi', last_action = '$action', last_action_date = '$action_date' where noind = '$noind';";
 
-				//v_hrd_khs_tpribadi
+		//v_hrd_khs_tpribadi
 		// $sql .= "update hrd_khs.v_hrd_khs_tpribadi set kodesie = '$kodesie', golkerja = '$golker', jabatan = '$jabatan',
 		// 		tempat_makan = '$tmakan_1', tempat_makan1 = '$tmakan_1', tempat_makan2 = '$tmakan_2',
 		// 		last_action = '$action', last_action_date = '$action_date' where noind = '$noind';";
@@ -1140,10 +1124,10 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 	{
 		$sql = "update hrd_khs.tpribadi set tempat_makan='$tmakan_1', tempat_makan1='$tmakan_1', tempat_makan2='$tmakan_2' where noind = '$noind';";
 
-			//insert tpindahmakan
-		$sql .= "INSERT INTO \"Catering\".tpindahmakan (fd_tgl_mulai, fd_tgl_selesai, fs_noind, fs_tempat_makan1_lm, fs_tempat_makan2_lm, fs_tempat_makan1_br, fs_tempat_makan2_br, kodesie, golkerja, golkerja1, ket, berlaku, status) VALUES ('$tgl_mulai', '$tgl_selesai', '$noind', '$tmakan_1_lama', '$tmakan_2_lama', '$tmakan_1', '$tmakan_2', $kodesie, '$golker_lama', '$golker', 'PERBANTUAN', '1', '1');";	
-			//insert tlog
-		$sql .= "INSERT INTO hrd_khs.tlog (wkt, menu, ket, noind, jenis, program) VALUES ('$action_date', 'SURAT PERBANTUAN', 'UPDATE DI SCHEMA HRD_KHS', '$noind' , 'UPDATE -> DATA TEMPAT MAKAN', 'SURAT');";	
+		//insert tpindahmakan
+		$sql .= "INSERT INTO \"Catering\".tpindahmakan (fd_tgl_mulai, fd_tgl_selesai, fs_noind, fs_tempat_makan1_lm, fs_tempat_makan2_lm, fs_tempat_makan1_br, fs_tempat_makan2_br, kodesie, golkerja, golkerja1, ket, berlaku, status) VALUES ('$tgl_mulai', '$tgl_selesai', '$noind', '$tmakan_1_lama', '$tmakan_2_lama', '$tmakan_1', '$tmakan_2', $kodesie, '$golker_lama', '$golker', 'PERBANTUAN', '1', '1');";
+		//insert tlog
+		$sql .= "INSERT INTO hrd_khs.tlog (wkt, menu, ket, noind, jenis, program) VALUES ('$action_date', 'SURAT PERBANTUAN', 'UPDATE DI SCHEMA HRD_KHS', '$noind' , 'UPDATE -> DATA TEMPAT MAKAN', 'SURAT');";
 		$query = $this->dev->query($sql);
 	}
 
@@ -1156,7 +1140,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 	public function updateSelesai($noind, $tmakan_1_lama, $tmakan_2_lama)
 	{
 		$sql = "update hrd_khs.tpribadi set tempat_makan = '$tmakan_1_lama', tempat_makan1 = '$tmakan_1_lama', tempat_makan2 = '$tmakan_2_lama' where noind = '$noind';";
-			//insert tlog
+		//insert tlog
 		$sql .= "INSERT INTO hrd_khs.tlog (wkt, menu, ket, noind, jenis, program) VALUES ('$action_date', 'SURAT PERBANTUAN', 'UPDATE DI SCHEMA HRD_KHS', '$noind' , 'UPDATE -> DATA TEMPAT MAKAN', 'SURAT');";
 		$query = $this->dev->query($sql);
 	}
@@ -1168,24 +1152,23 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 	}
 
 	public function finger_reference($keyword = FALSE)
-    {
-    	$this->quick->select('*');
-    	$this->quick->from('db_datapresensi.tb_device');
+	{
+		$this->quick->select('*');
+		$this->quick->from('db_datapresensi.tb_device');
 
-    	if ( $keyword !== FALSE )
-    	{
-    		$this->quick->group_start();
-    			$this->quick->like('device_name', $keyword);
-    			$this->quick->or_like('id_lokasi', $keyword);
-    		$this->quick->group_end();
-    	}
+		if ($keyword !== FALSE) {
+			$this->quick->group_start();
+			$this->quick->like('device_name', $keyword);
+			$this->quick->or_like('id_lokasi', $keyword);
+			$this->quick->group_end();
+		}
 
-    	$this->quick->order_by('id_lokasi');
-    	return $this->quick->get()->result_array();
-    }
+		$this->quick->order_by('id_lokasi');
+		return $this->quick->get()->result_array();
+	}
 
-    function kodefinger($id)
-    {
+	function kodefinger($id)
+	{
 		$sql = "SELECT cc.id_lokasi
 				from
 					(SELECT case when tc is null
@@ -1219,7 +1202,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 	}
 
 	function lokasifinger($id)
-    {
+	{
 		$sql = "SELECT id_lokasi, device_name FROM db_datapresensi.tb_device WHERE device_sn = '$id'";
 
 		$query = $this->quick->query($sql);
@@ -1233,25 +1216,25 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		return $this->personalia->affected_rows();
 	}
 
-	public function editFinger($tanggal,$kode,$no_surat_decode)
+	public function editFinger($tanggal, $kode, $no_surat_decode)
 	{
 		date_default_timezone_set("Asia/Bangkok");
-		$waktu = "'".date("Y/m/d",$tanggal)."'";
-		$kode = "'".$kode."'";
-		$no_surat_decode = "'".$no_surat_decode."'";
+		$waktu = "'" . date("Y/m/d", $tanggal) . "'";
+		$kode = "'" . $kode . "'";
+		$no_surat_decode = "'" . $no_surat_decode . "'";
 
 		$sql = "SELECT * from \"Surat\".tpindah_finger
 		where created_date = $waktu and kode = $kode and no_surat = $no_surat_decode";
-					// echo "<pre>"; print_r($sql) ;exit();
+		// echo "<pre>"; print_r($sql) ;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
 
 	public function updateFingerSuratMutasi($updateFingerSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak)
 	{
-	    			// echo "$updateSuratMutasi<br>";
-	    			// echo "$nomor_surat<br>";
-	    			// echo "$kodeSurat<br>";
+		// echo "$updateSuratMutasi<br>";
+		// echo "$nomor_surat<br>";
+		// echo "$kodeSurat<br>";
 		$this->personalia->where('created_date', $tanggal_cetak);
 		$this->personalia->where('no_surat', $nomor_surat);
 		$this->personalia->where('kode', $kodeSurat);
@@ -1259,30 +1242,33 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		return $this->personalia->affected_rows();
 	}
 
-	public function deleteFingerSuratMutasi($tanggal,$kode,$no_surat_decode)
+	public function deleteFingerSuratMutasi($tanggal, $kode, $no_surat_decode)
 	{
 		$no_surat = $no_surat_decode;
-		$waktu = date("Y-m-d",$tanggal);
-					// echo $waktu;
-	    			 // echo $no_surat;
-	    			 // echo $tanggal;
-	    			 // echo $kode;
-	    			 // exit();
-		$this->personalia->where('no_surat=',$no_surat);
+		$waktu = date("Y-m-d", $tanggal);
+		// echo $waktu;
+		// echo $no_surat;
+		// echo $tanggal;
+		// echo $kode;
+		// exit();
+		$this->personalia->where('no_surat=', $no_surat);
 		$this->personalia->where('created_date', $waktu);
 		$this->personalia->where('kode=', $kode);
-		$this->personalia->delete('"Surat".tpindah_finger');
-	    			//$this->personalia->and('');
-		header('Location: '.$_SERVER['REQUEST_URI']);
+		$this->personalia->set('finger_pindah', 't');
+		$this->personalia->update('"Surat".tpindah_finger');
+		//$this->personalia->and('');
+		header('Location: ' . $_SERVER['REQUEST_URI']);
 	}
-	
-	public function getNamaStatus(){
+
+	public function getNamaStatus()
+	{
 		$sql = "SELECT kd_status,nama_status from hrd_khs.tb_master_stat WHERE nama_status!='' GROUP BY kd_status,nama_status ORDER BY kd_status";
 		return $this->personalia->query($sql)->result();
 	}
 
-	public function getNamaJabatanUpah(){
+	public function getNamaJabatanUpah()
+	{
 		$sql = "SELECT distinct nama_jabatan from hrd_khs.tb_status_jabatan WHERE nama_jabatan!='' order by nama_jabatan";
 		return $this->personalia->query($sql)->result();
 	}
-}	
+}

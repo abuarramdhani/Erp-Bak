@@ -24,7 +24,7 @@ class C_BelumPPIC extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -58,10 +58,16 @@ class C_BelumPPIC extends CI_Controller
 
 	function searchData(){
 		$dept 		= $this->input->post('dept');
-		$tanggal 	= $this->input->post('tanggal');
+		$tanggal1 	= $this->input->post('tanggal1');
+		$tanggal2 	= $this->input->post('tanggal2');
 
-		$data['data'] = $this->M_picklistppic->getDataBelum($dept, $tanggal);
-		// echo "<pre>";print_r($data['data']);exit();
+		$getdata = $this->M_picklistppic->getDataBelum($dept, $tanggal1, $tanggal2);
+		foreach ($getdata as $key => $get) {
+			$cek = $this->M_picklistppic->cekdeliver($get['PICKLIST']);
+			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
+		}
+		$data['data'] = $getdata;
+		// echo "<pre>";print_r($getdata);exit();
 		
 		$this->load->view('MonitoringPicklist/PPIC/V_TblBelumPPIC', $data);
 	}
@@ -75,5 +81,21 @@ class C_BelumPPIC extends CI_Controller
 		$this->M_picklistppic->approvePPIC($picklist, $nojob, $user);
 	}
 
+	function approveData2(){
+		$nojob 		= $this->input->post('nojob');
+		$picklist 	= $this->input->post('picklist');
+		$cek 		= $this->input->post('cek');
+		$user 		= $this->session->user;
+		// echo "<pre>";print_r($cek);exit();
+		for ($i=0; $i < count($nojob); $i++) { 
+			if ($cek[$i] == 'uncek') {
+				$cek2 = $this->M_picklistppic->cekapprove2($nojob[$i]);
+				if (empty($cek2)) {
+					$this->M_picklistppic->approvePPIC($picklist[$i], $nojob[$i], $user);
+				}
+			}
+		}
+
+	}
 
 }

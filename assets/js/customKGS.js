@@ -397,8 +397,208 @@ $(document).ready(function () {
                 };
             }
 		}
-	});
+    });
+    
+    $(".picSPB2").select2({
+        allowClear: false,
+        placeholder: "",
+        minimumInputLength: 0,
+        ajax: {
+            url: baseurl + "KapasitasGdSparepart/Pelayanan/getPIC",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                        term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                // console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.PIC, text:obj.PIC};
+                    })
+                };
+            }
+        }
+    });
+
+    $(".picSPB3").select2({
+        allowClear: false,
+        placeholder: "",
+        minimumInputLength: 0,
+        ajax: {
+            url: baseurl + "KapasitasGdSparepart/Pengeluaran/getPIC",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                        term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                // console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.PIC, text:obj.PIC};
+                    })
+                };
+            }
+        }
+    });
 });
+
+function checkdata(no) {
+    var val = $('#tandacek'+no).val();
+    // console.log(val);
+
+    if (val == 'cek') {
+        $('#tandacek'+no).val('uncek');
+        $('#ceka'+no).removeClass('fa-square-o').addClass('fa-check-square-o');
+        $('#no'+no).addClass('noall');
+    }else{
+        $('#tandacek'+no).val('cek');
+        $('#ceka'+no).removeClass('fa-check-square-o').addClass('fa-square-o');
+        $('#no'+no).removeClass('noall');
+    }
+}
+
+function startselectedPelayanan() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        mulaiselect(n);        
+    }
+}
+function mulaiselect(no) {
+    var valBtn = $('#btnPelayanan'+no).val();
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    //  console.log(jenis, no_spb);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    $("#btnrestartSPB"+no).on('click',function() {
+        if (timer) {
+            totalSeconds = 0;
+            stop();
+        }
+    });
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+
+    if (valBtn == 'Mulai') {
+        $('#btnPelayanan'+no).each(function() {
+            $('#btnPelayanan'+no).val('Selesai'); 
+            $('#mulai'+no).val(wkt); 
+            $(this).removeClass('btn-success').addClass('btn-danger');
+            $('#pic'+no).prop("disabled", true); 
+
+            if (!timer) {
+                timer = setInterval(setTime, 1000);
+            }
+        })
+        $.ajax ({
+            url : baseurl + "KapasitasGdSparepart/Pelayanan/updateMulai",
+            data: { date : date , jenis : jenis, no_spb : no_spb, pic : pic},
+            type : "POST",
+            dataType: "html"
+            });
+        
+    }
+}
+
+function finishselectedPelayanan() {
+    $("#mdlfinishplyn").modal('show'); 
+}
+
+function savefinish() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    var pic = $('#picfinish').val();
+    $("#mdlfinishplyn").modal('hide');
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        selesaiselect(n, pic);        
+    }
+}
+
+function selesaiselect(no, pic_finish) {
+    var valBtn = $('#btnPelayanan'+no).val();
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    //  console.log(jenis, no_spb);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    $("#btnrestartSPB"+no).on('click',function() {
+        if (timer) {
+            totalSeconds = 0;
+            stop();
+        }
+    });
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+
+    if(valBtn == 'Selesai' && pic == pic_finish){
+        $('#btnPelayanan'+no).attr("disabled", "disabled"); 
+        $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+        var mulai  = $('#mulai'+no).val();
+        $('#timer'+no).css('display','none');     
+
+        $.ajax ({
+        url : baseurl + "KapasitasGdSparepart/Pelayanan/updateSelesai",
+        data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+        type : "POST",
+        dataType: "html"
+        });
+}
+}
 
 //----------------------------------------------------------PENGELUARAN--------------------------------------------------------------------------
 
@@ -535,6 +735,141 @@ function btnPausePengeluaran(no) {
                     }
             });
     }})    
+}
+
+function startselectedPengeluaran() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        mulaiselect2(n);        
+    }
+}
+function mulaiselect2(no) {
+    var valBtn = $('#btnPengeluaran'+no).val();
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    //  console.log(jenis, no_spb);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    $("#btnrestartSPB"+no).on('click',function() {
+        if (timer) {
+            totalSeconds = 0;
+            stop();
+        }
+    });
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+
+    if (valBtn == 'Mulai') {
+        $('#btnPengeluaran'+no).each(function() {
+            $('#btnPengeluaran'+no).val('Selesai'); 
+            $('#mulai'+no).val(wkt); 
+            $(this).removeClass('btn-success').addClass('btn-danger');
+            $('#pic'+no).prop("disabled", true); 
+
+            if (!timer) {
+                timer = setInterval(setTime, 1000);
+            }
+        })
+        $.ajax ({
+            url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateMulai",
+            data: { date : date , jenis : jenis, no_spb : no_spb, pic : pic},
+            type : "POST",
+            dataType: "html"
+            });
+        
+    }
+}
+
+function finishselectedPengeluaran() {
+    $("#mdlfinishpglr").modal('show'); 
+}
+
+function savefinish2() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    var pic = $('#picfinish').val();
+    $("#mdlfinishpglr").modal('hide');
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        selesaiselect2(n, pic);        
+    }
+}
+
+function selesaiselect2(no, pic_finish) {
+    var valBtn = $('#btnPengeluaran'+no).val();
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    //  console.log(jenis, no_spb);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    $("#btnrestartSPB"+no).on('click',function() {
+        if (timer) {
+            totalSeconds = 0;
+            stop();
+        }
+    });
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+    
+    if(valBtn == 'Selesai' && pic == pic_finish){
+            $('#btnPengeluaran'+no).attr("disabled", "disabled"); 
+            $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+            var mulai  = $('#mulai'+no).val();
+            $('#timer'+no).css('display','none');      
+
+            $.ajax ({
+            url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateSelesai",
+            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+            type : "POST",
+            dataType: "html"
+            });
+    }
 }
 
 //----------------------------------------------------------PACKING--------------------------------------------------------------------------------

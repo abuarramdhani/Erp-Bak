@@ -26,7 +26,7 @@ class C_Index extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -47,11 +47,15 @@ class C_Index extends CI_Controller
 		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
+		
+		$paramedik = $this->M_index->allowedParamedik();
+		$paramedik = array_column($paramedik, 'noind');
+
+		if (in_array($no_induk, $paramedik)) {
 			$data['UserMenu'] = $datamenu;
 		}else {
 			unset($datamenu[1]);
-			$data['UserMenu'] = $datamenu;
+			$data['UserMenu'] = array_values($datamenu);
 		}
 
 		$today = date('Y-m-d');
@@ -89,11 +93,14 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
+		$paramedik = $this->M_index->allowedParamedik();
+		$paramedik = array_column($paramedik, 'noind');
+
+		if (in_array($no_induk, $paramedik)) {
 			$data['UserMenu'] = $datamenu;
 		}else {
 			unset($datamenu[1]);
-			$data['UserMenu'] = $datamenu;
+			$data['UserMenu'] = array_values($datamenu);
 		}
 
 		$data['nama'] = $this->M_index->getAllNama();
@@ -116,25 +123,7 @@ class C_Index extends CI_Controller
 		$idizin = $this->input->post('id');
 		$update= $this->M_index->update($status, $idizin);
 
-		if ($status == 1) {
-			$updatePekerja = $this->M_index->updatePekerja($status, $idizin);
-            $getpekerja = $this->M_index->getPekerja($idizin);
-
-            foreach ($getpekerja as $key) {
-                $data = array(
-                    'id'	=> $idizin,
-                    'noind' 	=> $key['noind'],
-                    'created_date' => date('Y-m-d H:i:s')
-                );
-                $insert = $this->M_index->taktual_pribadi($data);
-            }
-
-		}elseif ($status == 2) {
-			$updatePekerja = $this->M_index->updatePekerja($status, $idizin);
-			redirect('IKP/ApprovalAtasan');
-		}else{
-    		redirect('IKP/ApprovalAtasan');
-		}
+    	redirect('IKP/ApprovalAtasan');
     }
 
     public function editPekerjaIKP()

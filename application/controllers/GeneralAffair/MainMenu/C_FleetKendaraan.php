@@ -31,7 +31,7 @@ class C_FleetKendaraan extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -308,7 +308,7 @@ class C_FleetKendaraan extends CI_Controller
         		}
         	}
         	$user_ya = $this->session->user;
-        	if ($user_ya == "J1231") {
+        	if ($user_ya == "J1335") {
         		$data = array(
 					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
 					'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
@@ -592,7 +592,7 @@ class C_FleetKendaraan extends CI_Controller
 
 			$user_ya= $this->session->user;
 			$lokasi = $this->input->post('lokasi_kerja_k',TRUE);
-			if ($user_ya == "J1231") {
+			if ($user_ya == "J1335") {
 				$data = array(
 					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
 					'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
