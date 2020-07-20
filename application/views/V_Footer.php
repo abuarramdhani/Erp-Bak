@@ -146,7 +146,7 @@
 			<script src="<?= base_url('assets/js/customTI.js') ?>"></script>
 			<script src="<?= base_url('assets/js/customTF.js') ?>"></script>
 			<script src="<?= base_url('assets/js/customPPH.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSPL.js') ?>"></script>
+			<script src="<?= base_url('assets/js/customSPL.js?v=') . time() ?>"></script>
 			<script src="<?= base_url('assets/js/customWHS.js') ?>"></script>
 			<script src="<?= base_url('assets/js/customBK.js') ?>"></script>
 			<script src="<?= base_url('assets/js/customKMK.js') ?>"></script>
