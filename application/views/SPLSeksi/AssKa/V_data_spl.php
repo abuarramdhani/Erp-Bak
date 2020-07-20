@@ -165,7 +165,9 @@
 							<table id="example11" class="table table-bordered table-striped spl-table aska">
 								<thead style="background:#3c8dbc; color:#fff">
 									<tr>
-										<th width="10%">Action</th>
+										<th width="10%">
+											<input type="checkbox" name="" id="spl_check_all">
+										</th>
 										<th width="2%">Tgl. Lembur</th>
 										<th width="2%">Noind</th>
 										<th width="2%">Nama</th>

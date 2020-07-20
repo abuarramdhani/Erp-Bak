@@ -1837,3 +1837,15 @@ $(document).ready(function () {
 		window.open(url, "_blank");
 	});
 });
+
+$(window).load(() => {
+	$("#spl_check_all").on("ifChanged", function (e) {
+		let isChecked = $(this).is(":checked");
+
+		if (isChecked) {
+			$(".spl-chk-data").prop("checked", true);
+		} else {
+			$(".spl-chk-data").prop("checked", false);
+		}
+	});
+});
