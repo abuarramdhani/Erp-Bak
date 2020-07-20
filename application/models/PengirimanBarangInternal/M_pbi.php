@@ -5,11 +5,55 @@ class M_pbi extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
-        // $this->oracle = $this->load->database('oracle_dev', true);
+        // $this->oracle = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle_dev', true);
         $this->personalia = $this->load->database('personalia', true);
     }
-    
+
+    public function updateApproval($data, $fpb)
+    {
+      $this->oracle->query("UPDATE
+                  KHS_KIRIM_INTERNAL
+              SET
+                  APPROVE_DATE = SYSDATE,
+                  FLAG_APPROVE_ASET = '$data'
+              WHERE DOC_NUMBER = '$fpb'");
+      return 1;
+    }
+
+    public function atasan_employee($data)
+    {
+      $user_login = $this->session->user;
+      $res = $this->personalia->query("SELECT
+                              	tp.noind,
+                              	trim(tp.nama) nama,
+                                tp.email_internal
+                              from
+                              	hrd_khs.trefjabatan tj,
+                              	hrd_khs.tpribadi tp,
+                              	(
+                              		select tp2.*
+                              		from
+                              			hrd_khs.tpribadi tp2
+                              		where
+                              			tp2.noind = '$user_login'
+                              	) tpp
+                              where
+                              	tj.noind = tp.noind
+                              	and tp.keluar = '0'
+                              	and ( (substring(tp.kodesie, 1, 7) = substring(tpp.kodesie, 1, 7) and tp.kd_jabatan in ('10'))
+                              	or (substring(tj.kodesie, 1, 5) = substring(tpp.kodesie, 1, 5) and tp.kd_jabatan in ('08','09'))
+                              	or (substring(tp.kodesie, 1, 3) = substring(tpp.kodesie, 1, 3) and tp.kd_jabatan in ('05','06','07'))
+                              	or (substring(tp.kodesie, 1, 1) = substring(tpp.kodesie, 1, 1) and tp.kd_jabatan in ('02','03','04'))
+                              	or (tpp.kd_jabatan in ('02','03','04') and tp.kd_jabatan in ('02','03','04')))
+                              	and tj.noind <> tpp.noind
+                                and (tp.nama like '%$data%'
+                                or tp.noind like '%$data%')
+                              order by
+                              	tp.kd_jabatan desc,	tp.noind")->result_array();
+        return $res;
+    }
+
     public function generateTicketPBI()
     {
       $response = $this->oracle->query("SELECT trim('FPB'
@@ -122,6 +166,35 @@ class M_pbi extends CI_Model
         return $query->result_array();
     }
 
+    public function GetMasterByApproval()
+    {
+      $user_login = $this->session->user;
+      $sql = "SELECT distinct kki.doc_number, kki.NO_TRANSFER_ASET, kki.FLAG_APPROVE_ASET, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, to_char(kki.creation_date,'DD-MON-YYYY HH24:MI:SS') creation_date,
+               CASE
+                  WHEN kki.status = 1
+                     THEN 'Dipersiapkan Seksi Pengirim'
+                  WHEN kki.status = 2
+                     THEN 'Diterima Gudang Pengeluaran'
+                  WHEN kki.status = 3
+                     THEN 'Surat Jalan Telah Dibuat'
+                  WHEN kki.status = 4
+                     THEN 'Dikirim ke Lokasi Tujuan'
+                  WHEN kki.status = 5
+                     THEN 'Diterima Gudang Penerimaan'
+                  WHEN kki.status = 6
+                     THEN 'Diterima Seksi Tujuan'
+               END status2,
+               (SELECT ksi.no_suratjalan
+                  FROM khs_sj_internal ksi
+                 WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
+            FROM khs_kirim_internal kki
+            WHERE kki.APPROVED_BY = '$user_login'
+            ORDER BY kki.doc_number DESC";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+      return $res;
+    }
+
     public function GetMasterD()
     {
         $response = $this->personalia->select('seksi')
@@ -229,8 +302,9 @@ class M_pbi extends CI_Model
                            ,CREATED_BY
                            ,SEKSI_TUJUAN
                            ,KETERANGAN
-                           ,NO_MOVE_ORDER
+                           ,NO_TRANSFER_ASET
                            ,TYPE
+                           ,APPROVED_BY
                            )
           VALUES ('$data[DOC_NUMBER]'
                  ,'$data[SEKSI_KIRIM]'
@@ -247,8 +321,9 @@ class M_pbi extends CI_Model
                  ,'$data[CREATED_BY]'
                  ,'$data[SEKSI_TUJUAN]'
                  ,'$data[KETERANGAN]'
-                 ,'$data[MO]'
-                 ,'$data[TYPE]')
+                 ,'$data[NO_TRANSFER_ASET]'
+                 ,'$data[TYPE]'
+                 ,'$data[ATASAN]')
           ");
             $response = 1;
             return $response;
@@ -261,7 +336,7 @@ class M_pbi extends CI_Model
 
     public function deleteMO($mo)
     {
-      $this->oracle->delete('KHS_KIRIM_INTERNAL', ['NO_MOVE_ORDER' => $mo]);
+      $this->oracle->delete('KHS_KIRIM_INTERNAL', ['DOC_NUMBER' => $mo]);
     }
 
     public function insertMO($data)
