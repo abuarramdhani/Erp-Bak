@@ -199,26 +199,27 @@
 	}
 
 	document.addEventListener("DOMContentLoaded", function(e) {
-		// $('#spl-pencarian').click()
 		setupTimers();
 	});
 
 	// set cache
-	let exist = window.localStorage.getItem('alert-SPL')
-	const d = new Date()
+	(() => {
+		let exist = window.localStorage.getItem('alert-SPL')
+		const d = new Date()
 
-	let today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+		let today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
 
-	let json = JSON.parse(exist)
+		let json = JSON.parse(exist)
 
-	if (exist == null || json.today != today) {
-		let data = {
-			count: 0,
-			lastTime: null,
-			today
+		if (exist == null || json.today != today) {
+			let data = {
+				count: 0,
+				lastTime: null,
+				today
+			}
+
+			window.localStorage.setItem('alert-SPL', JSON.stringify(data))
+			console.log("spl-alert storage has been created")
 		}
-
-		window.localStorage.setItem('alert-SPL', JSON.stringify(data))
-		console.log("spl-alert storage has been created")
-	}
+	})()
 </script>
