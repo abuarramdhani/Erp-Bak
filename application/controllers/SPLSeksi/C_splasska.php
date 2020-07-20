@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 set_time_limit(0);
+date_default_timezone_set('Asia/Jakarta');
+
 class C_splasska extends CI_Controller
 {
 	function __construct()
@@ -15,14 +17,14 @@ class C_splasska extends CI_Controller
 		$this->load->model('SPLSeksi/M_splkasie');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
-		date_default_timezone_set('Asia/Jakarta');
+		// FOR DEVELOPMENT
+		$this->is_production = true; // change it to true before push
+		$this->developer_email = 'dicka_ismaji@quick.com';
 	}
 
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-			// any
-		} else {
+		if (!$this->session->is_logged) {
 			redirect('');
 		}
 	}
@@ -417,8 +419,11 @@ class C_splasska extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				$mail->addAddress("", 'Monitoring Transaction');
-				$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
-				// $mail->addAddress('dicka_ismaji@quick.com', 'Lembur (Approve Asska)');
+				if ($this->is_prod) {
+					$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
+				} else {
+					$mail->addAddress($this->developer_email, 'Lembur (Approve Asska)');
+				}
 				$mail->Subject = 'SPL Anda telah di Approve';
 				$mail->msgHTML($message);
 				if (!$mail->send() && !empty($dt['email'])) {
@@ -464,8 +469,11 @@ class C_splasska extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				$mail->addAddress("", 'Monitoring Transaction');
-				$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
-				// $mail->addAddress('dicka_ismaji@quick.com', 'Lembur (Approve Asska)');
+				if ($this->is_production) {
+					$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
+				} else {
+					$mail->addAddress($this->developer_email, 'Lembur (Approve Asska)');
+				}
 				$mail->Subject = 'SPL Anda telah di Reject';
 				$mail->msgHTML($message);
 				if (!$mail->send() && !empty($dt['email'])) {

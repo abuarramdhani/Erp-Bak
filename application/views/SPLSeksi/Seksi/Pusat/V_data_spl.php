@@ -199,10 +199,13 @@
 	}
 
 	document.addEventListener("DOMContentLoaded", function(e) {
-		// $('#spl-pencarian').click()
-		$('.tooltipx').tooltip()
 		setupTimers();
 		// set cache
+		let exist = window.localStorage.getItem('alert-SPL')
+		const d = new Date()
+
+	// set cache
+	(() => {
 		let exist = window.localStorage.getItem('alert-SPL')
 		const d = new Date()
 
@@ -220,5 +223,5 @@
 			window.localStorage.setItem('alert-SPL', JSON.stringify(data))
 			console.log("spl-alert storage has been created")
 		}
-	});
+	})()
 </script>
