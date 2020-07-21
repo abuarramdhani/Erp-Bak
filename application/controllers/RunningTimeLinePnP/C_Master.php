@@ -38,6 +38,12 @@ class C_Master extends CI_Controller
         }
     }
 
+    public function detail_pause()
+    {
+      $res = $this->M_rtlp->detail_pause($this->input->post('no_job'), $this->input->post('line'));
+      echo json_encode($res);
+    }
+
     public function Lane5()
     {
       $this->checkSession();
