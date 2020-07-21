@@ -25,6 +25,84 @@ const swalRKH = (type, title) => {
 //   $('.tblwiip10').DataTable();
 // 300000/4 = 75000; 30000; 2800
 // })
+let pause_detail =  $('.detailHistory_rtlp').DataTable();
+
+function format_rtlp(d, no_job, line) {
+  return `<div style="width:55%;float:right;font-weight:bold;padding-bottom:5px;font-size:13px;">${no_job} (Line ${line})</div>
+          <div style="width:55%;float:right"class="detail_${line}_${no_job}"></div>`;
+}
+
+const detail_pause = (no_job, line, no) => {
+  let tr = $(`tr[row-pause="${no}"]`);
+  let row = pause_detail.row(tr);
+  if (row.child.isShown()) {
+    row.child.hide();
+    tr.removeClass('shown');
+  } else {
+    row.child(format_rtlp(row.data(), no_job, line)).show();
+    tr.addClass('shown');
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/detail_pause',
+      type: 'POST',
+      async: true,
+      dataType: 'JSON',
+      data: {
+        no_job : no_job,
+        line : line
+      },
+      beforeSend: function() {
+        $(`.detail_${line}_` + no_job).html(`<div id="loadingArea0">
+                                              <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+                                             </div>`)
+      },
+      success: function(result) {
+        let item = '';
+        let push = [];
+
+        function pad(d) {
+            return (d < 10) ? '0' + d.toString() : d.toString();
+        }
+
+        result.forEach((v, i) => {
+          let st  = ['00', '00', '00'];
+          let stp = ['00', '00', '00'];
+
+          if (v.Pause_Start !== null && v.Pause_Done !== null) {
+            st  = v.Pause_Start.split(':');
+            stp = v.Pause_Done.split(':');
+          }
+
+          item = `<tr>
+                      <td><center>${Number(i)+1}</center></td>
+                      <td><center>${v.Pause_Start}</center></td>
+                      <td><center>${v.Pause_Done}</center></td>
+                      <td><center>${pad(Number(stp[0]) - Number(st[0]))}:${pad(Number(stp[1]) - Number(st[1]))}:${pad(Number(stp[2]) - Number(st[2]))}</center></td>
+                    </tr>`;
+          push.push(item);
+        })
+        let join = push.join(' ');
+        let html = `<table class="table table-striped table-bordered table-hover text-left" style="font-size:12px;float:right">
+              <thead>
+                <tr class="bg-success">
+                  <th><center>No</center></th>
+                  <th><center>Pause Start</center></th>
+                  <th><center>Pause Done</center></th>
+                  <th><center>Time Range</center></th>
+                </tr>
+              </thead>
+              <tbody>
+              ${join}
+              </tbody>
+            </table>`
+        $(`.detail_${line}_` + no_job).html(html)
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+  }
+}
+
 let rtlp1 =  $('.tblwiip10').DataTable();
 
 function format_wipp( d, kode_item ){

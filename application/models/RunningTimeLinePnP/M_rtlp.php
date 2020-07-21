@@ -10,6 +10,15 @@ class M_rtlp extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
+    public function detail_pause($no_job, $line)
+    {
+      $res = $this->db->where('No_Job', $no_job)
+                      ->where('Line', $line)
+                      ->get('wip_pnp.Time_Break')
+                      ->result_array();
+      return $res;
+    }
+
     public function insertTimePause($data)
     {
       $this->db->insert('wip_pnp.Time_Break', $data);
