@@ -25,8 +25,7 @@ class C_Index extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
+		if ($this->session->is_logged) {
 		} else {
 			redirect('');
 		}
@@ -45,13 +44,16 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$datamenu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
+		$aksesRahasia = $this->M_index->allowedAccess();
+		$aksesRahasia = array_column($aksesRahasia, 'noind');
+
+		if (array_search($no_induk, $aksesRahasia)) {
 			$data['UserMenu'] = $datamenu;
-		}else {
+		} else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
 			$data['UserMenu'] = $datamenu;
@@ -70,8 +72,7 @@ class C_Index extends CI_Controller
 		foreach ($a as $key) {
 			$b[$key['izin_id']][] = $key['pekerja'];
 		}
-		foreach($b as $type => $label)
-		{
+		foreach ($b as $type => $label) {
 			$output[] = array(
 				'izin_id' => $type,
 				'pekerja' => $label
@@ -83,8 +84,7 @@ class C_Index extends CI_Controller
 		foreach ($a as $key) {
 			$makan[$key['izin_id']][] = $key['tujuan'];
 		}
-		foreach($makan as $type => $label)
-		{
+		foreach ($makan as $type => $label) {
 			$ot_makan[] = array(
 				'izin_id' => $type,
 				'tujuan' => $label
@@ -118,8 +118,7 @@ class C_Index extends CI_Controller
 		foreach ($a1 as $key) {
 			$b1[$key['izin_id']][] = $key['pekerja'];
 		}
-		foreach($b as $type => $label)
-		{
+		foreach ($b as $type => $label) {
 			$output1[] = array(
 				'izin_id' => $type,
 				'pekerja' => $label
@@ -131,8 +130,7 @@ class C_Index extends CI_Controller
 		foreach ($a1 as $key) {
 			$makan1[$key['izin_id']][] = $key['tujuan'];
 		}
-		foreach($makan1 as $type => $label)
-		{
+		foreach ($makan1 as $type => $label) {
 			$ot_makan1[] = array(
 				'izin_id' => $type,
 				'tujuan' => $label
@@ -166,8 +164,7 @@ class C_Index extends CI_Controller
 		foreach ($a2 as $key) {
 			$b2[$key['izin_id']][] = $key['pekerja'];
 		}
-		foreach($b2 as $type => $label)
-		{
+		foreach ($b2 as $type => $label) {
 			$output2[] = array(
 				'izin_id' => $type,
 				'pekerja' => $label
@@ -179,8 +176,7 @@ class C_Index extends CI_Controller
 		foreach ($a as $key) {
 			$makan2[$key['izin_id']][] = $key['tujuan'];
 		}
-		foreach($makan2 as $type => $label)
-		{
+		foreach ($makan2 as $type => $label) {
 			$ot_makan2[] = array(
 				'izin_id' => $type,
 				'tujuan' => $label
@@ -214,8 +210,7 @@ class C_Index extends CI_Controller
 		foreach ($a3 as $key) {
 			$b3[$key['izin_id']][] = $key['pekerja'];
 		}
-		foreach($b3 as $type => $label)
-		{
+		foreach ($b3 as $type => $label) {
 			$output3[] = array(
 				'izin_id' => $type,
 				'pekerja' => $label
@@ -227,8 +222,7 @@ class C_Index extends CI_Controller
 		foreach ($a3 as $key) {
 			$makan3[$key['izin_id']][] = $key['tujuan'];
 		}
-		foreach($makan3 as $type => $label)
-		{
+		foreach ($makan3 as $type => $label) {
 			$ot_makan3[] = array(
 				'izin_id' => $type,
 				'tujuan' => $label
@@ -254,11 +248,10 @@ class C_Index extends CI_Controller
 
 		$today = date('Y-m-d');
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PerizinanDinas/AtasanApproval/V_Index',$data);
-		$this->load->view('PerizinanDinas/V_Footer',$data);
-
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PerizinanDinas/AtasanApproval/V_Index', $data);
+		$this->load->view('PerizinanDinas/V_Footer', $data);
 	}
 
 	public function update()
@@ -275,12 +268,12 @@ class C_Index extends CI_Controller
 			$getnama[] = $this->M_index->pekerja($key);
 		}
 
-		$update= $this->M_index->update($status, $idizin);
+		$update = $this->M_index->update($status, $idizin);
 
 		if ($status == 1) {
 			//insert to t_log
 			$aksi = 'PERIZINAN DINAS';
-			$detail = 'Approve Izin ID='.$idizin;
+			$detail = 'Approve Izin ID=' . $idizin;
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 			$no = '0';
@@ -288,8 +281,8 @@ class C_Index extends CI_Controller
 			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 
 			if (date('H:i:s') <= date('H:i:s', strtotime('09:30:00'))) {
-				for ($i=0; $i < count($nama); $i++) {
-					for ($j=0; $j < count($tujuan) ; $j++) {
+				for ($i = 0; $i < count($nama); $i++) {
+					for ($j = 0; $j < count($tujuan); $j++) {
 						if ($nama[$i] == $tujuan[$j]['noind']) {
 							$data = array(
 								'izin_id'	=> $idizin,
@@ -301,8 +294,8 @@ class C_Index extends CI_Controller
 						}
 					}
 				}
-			}else {
-				for ($i=0; $i < count($nama); $i++) {
+			} else {
+				for ($i = 0; $i < count($nama); $i++) {
 					$data = array(
 						'izin_id'	=> $idizin,
 						'noinduk' 	=> $nama[$i],
@@ -312,17 +305,17 @@ class C_Index extends CI_Controller
 				}
 			}
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
-		}elseif ($status == 2) {
+		} elseif ($status == 2) {
 			//insert to t_log
 			$aksi = 'PERIZINAN DINAS';
-			$detail = 'Reject Izin ID='.$idizin;
+			$detail = 'Reject Izin ID=' . $idizin;
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 			$no = '5';
 			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
 			redirect('PerizinanDinas/AtasanApproval');
-		}else{
+		} else {
 			redirect('PerizinanDinas/AtasanApproval');
 		}
 	}
@@ -361,7 +354,7 @@ class C_Index extends CI_Controller
 				$update2_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '5', $id);
 				//insert to t_log
 				$aksi = 'PERIZINAN DINAS';
-				$detail = 'Reject Izin ID='.$id.' noind='.$key;
+				$detail = 'Reject Izin ID=' . $id . ' noind=' . $key;
 				$this->log_activity->activity_log($aksi, $detail);
 				//
 			}
@@ -371,7 +364,7 @@ class C_Index extends CI_Controller
 			$update_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '0', $id);
 			//insert to t_log
 			$aksi = 'PERIZINAN DINAS';
-			$detail = 'Approve Izin ID='.$id.' noind='.$key;
+			$detail = 'Approve Izin ID=' . $id . ' noind=' . $key;
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 		}
@@ -382,34 +375,34 @@ class C_Index extends CI_Controller
 				$place1 = array_column($place, 'tujuan');
 				$imPlace = implode(", ", $place1);
 				$update_tperizinan = $this->M_index->update_tperizinan($implode1, '1', $id, $imPlace);
-			}else {
+			} else {
 				$update_tperizinan = $this->M_index->update_tperizinan($implode1, '1', $id, '-');
 			}
-		}else {
+		} else {
 			if (date('H:i:s') <= date('H:i:s', strtotime('09:30:00'))) {
 				$place = $this->M_index->getTujuan($id, $pekerja, false);
 				$place1 = array_column($place, 'tujuan');
 				$update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, $place1);
-			}else {
+			} else {
 				$update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, '-');
 			}
 		}
 
 		if (date('H:i:s') <= date('H:i:s', strtotime('09:30:00'))) {
-			for ($i=0; $i < count($pekerja); $i++) {
+			for ($i = 0; $i < count($pekerja); $i++) {
 				$newEmployee = $this->M_index->getDataPekerja($pekerja[$i], $id);
-					if ($pekerja[$i] == $newEmployee[0]['noind']) {
-						$data = array(
-							'izin_id'	=> $id,
-							'noinduk' 	=> $pekerja[$i],
-							'tujuan' => $newEmployee[0]['tujuan'],
-							'created_date' => date('Y-m-d H:i:s')
-						);
-						$insert = $this->M_index->taktual_izin($data);
-					}
+				if ($pekerja[$i] == $newEmployee[0]['noind']) {
+					$data = array(
+						'izin_id'	=> $id,
+						'noinduk' 	=> $pekerja[$i],
+						'tujuan' => $newEmployee[0]['tujuan'],
+						'created_date' => date('Y-m-d H:i:s')
+					);
+					$insert = $this->M_index->taktual_izin($data);
+				}
 			}
-		}else {
-			for ($i=0; $i < count($pekerja); $i++) {
+		} else {
+			for ($i = 0; $i < count($pekerja); $i++) {
 				$data = array(
 					'izin_id'	=> $id,
 					'noinduk' 	=> $pekerja[$i],
@@ -422,15 +415,16 @@ class C_Index extends CI_Controller
 		$this->EmailAlert($noinde, $getnamaApprove, $getnamareject, $id, $tanggal, $keterangan, $berangkat);
 	}
 
-	public function EmailAlert($noinde, $pekerja, $pekerja1, $id, $tanggal, $keterangan, $berangkat) {
+	public function EmailAlert($noinde, $pekerja, $pekerja1, $id, $tanggal, $keterangan, $berangkat)
+	{
 		//email
 		$newArr = '<table style="border: 1px solid black; border-collapse: collapse;"><th style="border: 1px solid black; text-align: center">No. Induk<th style="border: 1px solid black; border-collapse: collapse; text-align: center">Nama<th>Status</th>';
 
 		foreach ($pekerja as $key) {
-			$newArr .= '<tr><td style="border: 1px solid black; border-collapse: collapse;">'.$key['noind'].'<td style="border: 1px solid black;">'.$key['nama'].'<td style="border: 1px solid black; border-collapse: collapse;"><a style="color: green">Approve</a></td>';
+			$newArr .= '<tr><td style="border: 1px solid black; border-collapse: collapse;">' . $key['noind'] . '<td style="border: 1px solid black;">' . $key['nama'] . '<td style="border: 1px solid black; border-collapse: collapse;"><a style="color: green">Approve</a></td>';
 		}
 		foreach ($pekerja1 as $key) {
-			$newArr .= '<tr><td style="border: 1px solid black; border-collapse: collapse;">'.$key['noind'].'<td style="border: 1px solid black;">'.$key['nama'].'<td style="border: 1px solid black; border-collapse: collapse;"><a style="color: red">Reject</a></td>';
+			$newArr .= '<tr><td style="border: 1px solid black; border-collapse: collapse;">' . $key['noind'] . '<td style="border: 1px solid black;">' . $key['nama'] . '<td style="border: 1px solid black; border-collapse: collapse;"><a style="color: red">Reject</a></td>';
 		}
 		$newArr .= '</table>';
 
@@ -439,7 +433,7 @@ class C_Index extends CI_Controller
 			$nama = $this->M_index->pekerja($key);
 
 			$subject = "New!!! Konfirmasi Perizinan Dinas";
-			$body = "Hi ".$nama[0]['nama'].",
+			$body = "Hi " . $nama[0]['nama'] . ",
 			<br>Izin Dinas dengan id : $id telah diperiksa oleh atasan, berikut detailnya :
 			<br>
 			<br>$newArr
@@ -465,48 +459,49 @@ class C_Index extends CI_Controller
 				'ssl' => array(
 					'verify_peer' => false,
 					'verify_peer_name' => false,
-					'allow_self_signed' => true)
-				);
-				$mail->Username = 'no-reply';
-				$mail->Password = '123456';
-				$mail->WordWrap = 50;
+					'allow_self_signed' => true
+				)
+			);
+			$mail->Username = 'no-reply';
+			$mail->Password = '123456';
+			$mail->WordWrap = 50;
 
-				// set email content
-				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-				$mail->addAddress($imel);
-				$mail->Subject = $subject;
-				$mail->msgHTML($body);
+			// set email content
+			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+			$mail->addAddress($imel);
+			$mail->Subject = $subject;
+			$mail->msgHTML($body);
 
-				// check error
-				if (!$mail->send()) {
-					echo "Mailer Error: ".$mail->ErrorInfo;
-					exit();
-				}
+			// check error
+			if (!$mail->send()) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+				exit();
+			}
 		}
-
 	}
 
-	public function EmailAlertAll($noinde, $jenis, $id, $tanggal, $keterangan, $berangkat) {
+	public function EmailAlertAll($noinde, $jenis, $id, $tanggal, $keterangan, $berangkat)
+	{
 		//email
 		$newArr = '<table style="border: 1px solid black; border-collapse: collapse;"><th style="border: 1px solid black; text-align: center">No. Induk<th style="border: 1px solid black; border-collapse: collapse;">Nama<th>Status</th>';
 
-			if ($jenis == '1') {
-				foreach ($noinde as $key) {
-					$newArr .= '<tr><td style="border: 1px solid black; border-collapse: collapse;">'.$key[0]['noind'].'<td style="border: 1px solid black;">'.$key[0]['nama'].'<td style="border: 1px solid black; border-collapse: collapse;"><a style="color: green">Approve</a></td>';
-				}
-			}else if($jenis == '2') {
-				foreach ($noinde as $key) {
-					$newArr .= '<tr><td style="border: 1px solid black; border-collapse: collapse;">'.$key[0]['noind'].'<td style="border: 1px solid black;">'.$key[0]['nama'].'<td style="border: 1px solid black; border-collapse: collapse;"><a style="color: red">Reject</a></td>';
-				}
-			}
-			$newArr .= '</table>';
-
+		if ($jenis == '1') {
 			foreach ($noinde as $key) {
+				$newArr .= '<tr><td style="border: 1px solid black; border-collapse: collapse;">' . $key[0]['noind'] . '<td style="border: 1px solid black;">' . $key[0]['nama'] . '<td style="border: 1px solid black; border-collapse: collapse;"><a style="color: green">Approve</a></td>';
+			}
+		} else if ($jenis == '2') {
+			foreach ($noinde as $key) {
+				$newArr .= '<tr><td style="border: 1px solid black; border-collapse: collapse;">' . $key[0]['noind'] . '<td style="border: 1px solid black;">' . $key[0]['nama'] . '<td style="border: 1px solid black; border-collapse: collapse;"><a style="color: red">Reject</a></td>';
+			}
+		}
+		$newArr .= '</table>';
+
+		foreach ($noinde as $key) {
 			$imel = $this->M_index->getImel($key[0]['noind']);
 			$nama = $this->M_index->pekerja($key);
 
 			$subject = "New!!! Konfirmasi Perizinan Dinas";
-			$body = "Hi ".$key[0]['nama'].",
+			$body = "Hi " . $key[0]['nama'] . ",
 			<br>Izin Dinas dengan id : $id telah diperiksa oleh atasan, berikut detailnya :
 			<br>
 			<br>$newArr
@@ -532,26 +527,24 @@ class C_Index extends CI_Controller
 				'ssl' => array(
 					'verify_peer' => false,
 					'verify_peer_name' => false,
-					'allow_self_signed' => true)
-				);
-				$mail->Username = 'no-reply';
-				$mail->Password = '123456';
-				$mail->WordWrap = 50;
+					'allow_self_signed' => true
+				)
+			);
+			$mail->Username = 'no-reply';
+			$mail->Password = '123456';
+			$mail->WordWrap = 50;
 
-				// set email content
-				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-				$mail->addAddress($imel);
-				$mail->Subject = $subject;
-				$mail->msgHTML($body);
+			// set email content
+			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+			$mail->addAddress($imel);
+			$mail->Subject = $subject;
+			$mail->msgHTML($body);
 
-				// check error
-				if (!$mail->send()) {
-					echo "Mailer Error: ".$mail->ErrorInfo;
-					exit();
-				}
+			// check error
+			if (!$mail->send()) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+				exit();
+			}
 		}
-
 	}
-
 }
-?>

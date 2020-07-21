@@ -9,6 +9,23 @@ class M_index extends CI_Model
         $this->personalia = $this->load->database('personalia',TRUE);
     }
 
+    public function allowedAccess()
+    {
+        $sql = "select
+                    noind
+                from
+                    hrd_khs.tpribadi
+                where
+                    (kodesie like '4010101%'
+                    or noind = 'B0307'
+                    or noind = 'J1269'
+                    or noind = 'B0898'
+                    or noind = 'B0720')
+                    and keluar = '0'
+                    and kd_jabatan <= '13'";
+        return $this->personalia->query($sql)->result_array();
+    }
+
     public function getAllNama()
     {
       return $this->personalia->query("SELECT DISTINCT noind, trim(nama) as nama FROM hrd_khs.tpribadi")->result_array();
@@ -100,4 +117,4 @@ class M_index extends CI_Model
         return true;
     }
 
-} ?>
+}
