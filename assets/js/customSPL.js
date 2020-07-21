@@ -599,6 +599,7 @@ $(function () {
 			}
 
 			table.clear().draw();
+			window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
 			$.ajax({
 				url: alamate,
 				type: "POST",
@@ -612,11 +613,19 @@ $(function () {
 					kodesie: $("#kodesie").val(),
 				},
 				beforeSend() {
-					$(".spl-loading").removeClass("hidden");
+					$(".spl-table > tbody").html(`
+            <tr>
+							<td class="text-center" colspan="19">
+							<div style="margin: 1em;">
+								<img src="${baseurl}/assets/img/gif/loading6.gif" class="spl-loading" width="33px" height="33px" style="margin-right:3px">
+							</div>
+							<span>Memuat data ...</span>
+              </td>
+            </tr>
+          `);
 				},
 				success: (data) => {
 					if (data.length) {
-						$(".spl-loading").addClass("hidden");
 						$(this).prop("disabled", false);
 
 						let send = JSON.parse(data);
@@ -705,21 +714,20 @@ $(function () {
 				$("#ProsesDialog").modal("hide");
 				$("#FingerDialogApprove").modal("hide");
 				$("#FingerDialogReject").modal("hide");
-				// call callback function
-				CALLBACK();
 				SET_ITEM(false);
 
-				swal
-					.fire({
-						title: `Sukses ${MESSAGE} lembur pekerja`,
-						text: "",
-						type: "success",
-					})
-					.then(() => {
-						// $('#tgl_mulai').val(moment(new Date).add('-1', 'M').format('01-MM-YYYY'))
-						$("#spl-approval-1").click();
-						$("#spl-approval-0").click();
-					});
+				$("#spl-approval-1").click();
+				$("#spl-approval-0").click();
+				$("#spl_check_all").iCheck("uncheck");
+
+				// call callback function
+				CALLBACK();
+
+				swal.fire({
+					title: `Sukses ${MESSAGE} lembur pekerja`,
+					text: "",
+					type: "success",
+				});
 			} else if (done === ERROR_CODE) {
 				swal
 					.fire({

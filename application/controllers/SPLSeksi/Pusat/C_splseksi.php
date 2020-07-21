@@ -16,7 +16,7 @@ class C_splseksi extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
 		// FOR DEVELOPMENT
-		$this->is_production = false; // change it to true before push
+		$this->is_production = true; // change it to true before push
 		$this->developer_email = 'dicka_ismaji@quick.com';
 	}
 
