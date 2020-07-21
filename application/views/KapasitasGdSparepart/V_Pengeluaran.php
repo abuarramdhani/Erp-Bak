@@ -96,9 +96,10 @@
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                         <td class="<?= $td?>">
                                                         <?php if (!empty($val['PIC_PENGELUARAN'])) { ?>
-                                                            <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" disabled>
+                                                            <!-- <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" disabled>
                                                             <option value="<?= $val['PIC_PENGELUARAN']?>"><?= $val['PIC_PENGELUARAN']?></option>
-                                                        </select>
+                                                        </select> -->
+                                                        <input id="pic<?= $no?>" name="pic" class="form-control text-center" style="width:100px" value="<?= $val['PIC_PENGELUARAN']?>" readonly>
                                                         <?php }else{?><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible picSPB3" style="width:100%;">
                                                             <option></option>
                                                         </select> <?php }?>

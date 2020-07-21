@@ -146,4 +146,44 @@ class C_Pelayanan extends CI_Controller
 		$this->M_pelayanan->WaktuPelayanan($jenis, $nospb, $slsh);
 	}
 
+	public function updateSelesai2(){
+		$date 	= $this->input->post('date');
+		$jenis	= $this->input->post('jenis');
+		$nospb 	= $this->input->post('no_spb');
+		$mulai 	= $this->input->post('mulai');
+		$selesai = $this->input->post('wkt');
+		$pic 	= $this->input->post('pic');
+		$jml 	= $this->input->post('j');
+		// echo "<pre>";print_r($jml);exit();
+
+		$cek = $this->M_pelayanan->cekMulai($nospb, $jenis);
+		if ($cek[0]['WAKTU_PELAYANAN'] == '') {
+			$waktu1 	= strtotime($mulai);
+			$waktu2 	= strtotime($selesai);
+			$selisih 	= ($waktu2 - $waktu1)/$jml;
+			$jam 		= floor($selisih/(60*60));
+			$menit 		= $selisih - $jam * (60 * 60);
+			$htgmenit 	= floor($menit/60) * 60;
+			$detik 		= floor($menit - $htgmenit);
+			$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+		}else {
+			$a 			= explode(':', $cek[0]['WAKTU_PELAYANAN']);
+			$jamA 		= $a[0] * 3600;
+			$menitA 	= $a[1] * 60;
+			$waktuA 	= $jamA + $menitA + $a[2];
+
+			$waktu1 	= strtotime($mulai);
+			$waktu2 	= strtotime($selesai);
+			$waktuB 	= ($waktu2 - $waktu1)/$jml;
+			$jumlah 	= $waktuA + $waktuB;
+			$jam 		= floor($jumlah/(60*60));
+			$menit 		= $jumlah - $jam * (60 * 60);
+			$htgmenit 	= floor($menit/60) * 60;
+			$detik 		= floor($menit - $htgmenit);
+			$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+		}
+		
+		$this->M_pelayanan->SelesaiPelayanan($date, $jenis, $nospb, $slsh, $pic);
+	}
+
 }
