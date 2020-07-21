@@ -398,6 +398,7 @@ class C_HitungPesanan extends CI_Controller
     if (!empty($rencanaLembur)) {
       foreach ($rencanaLembur as $rl) {
         $noind = $rl['noind'];
+        $tempatMakan = $rl['tempat_makan'];
         $cekPresensi = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind);
         if (empty($cekPresensi)) {
           $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
@@ -602,6 +603,7 @@ class C_HitungPesanan extends CI_Controller
     if (!empty($rencanaLembur)) {
       foreach ($rencanaLembur as $rl) {
         $noind = $rl['noind'];
+        $tempatMakan = $rl['tempat_makan'];
         $cekPresensi = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind);
         if (empty($cekPresensi)) {
           $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
@@ -804,6 +806,7 @@ class C_HitungPesanan extends CI_Controller
     if (!empty($rencanaLembur)) {
       foreach ($rencanaLembur as $rl) {
         $noind = $rl['noind'];
+        $tempatMakan = $rl['tempat_makan'];
         $cekPresensi = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind);
         if (empty($cekPresensi)) {
           $cekPesananTambahanLembur = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
