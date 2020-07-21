@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_Index extends CI_Controller {
+class C_Index extends CI_Controller
+{
 
 	/**
 	 * Index Page for this controller.
@@ -19,27 +20,24 @@ class C_Index extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function __construct()
-    {
-        parent::__construct();
+	{
+		parent::__construct();
 
-        $this->load->helper('form');
-        $this->load->helper('url');
-        $this->load->helper('html');
-        $this->load->library('form_validation');
-          //load the login model
+		$this->load->helper('form');
+		$this->load->helper('url');
+		$this->load->helper('html');
+		$this->load->library('form_validation');
+		//load the login model
 		$this->load->library('session');
-		  //$this->load->library('Database');
-		$this->load->model('M_Index');
+		$this->load->model('PerizinanDinas/ApprovalAll/M_index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
-		if($this->session->userdata('logged_in')!=TRUE) {
+		if ($this->session->userdata('logged_in') != TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
-				  //redirect('');
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
-		  //$this->load->model('CustomerRelationship/M_Index');
-    }
+	}
 
 	public function index()
 	{
@@ -51,29 +49,31 @@ class C_Index extends CI_Controller {
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$datamenu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
+		$aksesRahasia = $this->M_index->allowedAccess();
+		$aksesRahasia = array_column($aksesRahasia, 'noind');
+
+		if (array_search($no_induk, $aksesRahasia)) {
 			$data['UserMenu'] = $datamenu;
-		}else {
+		} else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
 			$data['UserMenu'] = $datamenu;
 		}
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PerizinanDinas/V_Index',$data);
-		$this->load->view('PerizinanDinas/V_Footer',$data);
-
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PerizinanDinas/V_Index', $data);
+		$this->load->view('PerizinanDinas/V_Footer', $data);
 	}
 
-	public function checkSession(){
-		if($this->session->is_logged){
-
-		}else{
+	public function checkSession()
+	{
+		if ($this->session->is_logged) {
+		} else {
 			redirect('');
 		}
 	}
