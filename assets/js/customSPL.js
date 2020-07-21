@@ -599,6 +599,7 @@ $(function () {
 			}
 
 			table.clear().draw();
+			window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
 			$.ajax({
 				url: alamate,
 				type: "POST",
@@ -614,8 +615,11 @@ $(function () {
 				beforeSend() {
 					$(".spl-table > tbody").html(`
             <tr>
-              <td class="text-center" colspan="19">
-                <img src="http://localhost/khs-erp-lembur/assets/img/gif/loading6.gif" class="spl-loading" width="33px" height="33px" style="margin-right:3px">
+							<td class="text-center" colspan="19">
+							<div style="margin: 1em;">
+								<img src="${baseurl}/assets/img/gif/loading6.gif" class="spl-loading" width="33px" height="33px" style="margin-right:3px">
+							</div>
+							<span>Memuat data ...</span>
               </td>
             </tr>
           `);
