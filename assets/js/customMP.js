@@ -493,7 +493,3 @@ $(document).on("click", ".btnmpkmdlsk", function () {
 	$("#mpkkds").val(ks);
 	$("#mdlmpksk").modal("show");
 });
-
-$(() => {
-  $(".dataTable").DataTable();
-});
