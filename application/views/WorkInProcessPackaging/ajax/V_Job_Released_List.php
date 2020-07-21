@@ -71,7 +71,7 @@ function addRKH(n, nj, ki, kc){
 
       setTimeout(function () {
         let qty_tampung_be = $(`#cek_${kc}`).val();
-        if (qty_tampung_be > onhand) {
+        if (Number(qty_tampung_be) > Number(onhand)) {
           Swal.fire({
             type: 'warning',
             title: 'Peringatan !',
