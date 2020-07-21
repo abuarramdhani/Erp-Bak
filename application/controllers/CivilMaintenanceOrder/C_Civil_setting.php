@@ -101,6 +101,7 @@ class C_Civil_setting extends CI_Controller
 		$data  = $this->general->loadHeaderandSidemenu('Civil Maintenance', 'Jenis Pekerjaan', 'Setting', 'Jenis Pekerjaan', '');
 
 		$data['list'] = $this->M_civil->listJnsPkj();
+		$data['detail'] = $this->M_civil->listJnsPkjDetail();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -120,6 +121,28 @@ class C_Civil_setting extends CI_Controller
 
 		$thread = array(
 			'thread_detail'	=>	'Add Jenis Pekerjaan '.$add.' ('.$pkj.')',
+			'thread_date'	=>	date('Y-m-d H:i:s'),
+			'thread_by'		=>	$this->session->user
+			);
+		$this->M_civil->saveThread($thread);
+
+		redirect('civil-maintenance-order/setting/jenis_pekerjaan');
+	}
+
+	public function add_jns_pkj_detail()
+	{
+		$pkj = $this->input->post('jenisPekerjaan');
+		$detail = $this->input->post('pekerjaanDetail');
+		$ket = $this->input->post('ket');
+		$data = array(
+			'jenis_pekerjaan_id'	=>	$pkj,
+			'detail_pekerjaan'	=> $detail,
+			'keterangan'	=>	$ket
+			);
+		$add = $this->M_civil->addJnsOrder($data, 'cvl.cvl_jenis_pekerjaan_detail');
+
+		$thread = array(
+			'thread_detail'	=>	'Add Jenis Pekerjaan Detail '.$add.' ('.$pkj.')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
 			);
@@ -155,6 +178,29 @@ class C_Civil_setting extends CI_Controller
 
 		$thread = array(
 			'thread_detail'	=>	'Update Jenis Pekerjaan '.$id.' ('.$txt.')',
+			'thread_date'	=>	date('Y-m-d H:i:s'),
+			'thread_by'		=>	$this->session->user
+			);
+		$this->M_civil->saveThread($thread);
+		redirect('civil-maintenance-order/setting/jenis_pekerjaan');
+	}
+
+	public function up_jns_pkj_detail()
+	{
+		$detail = $this->input->post('upjenisOrderDetail');
+		$pekerjaan_id = $this->input->post('upjenisPekerjaan');
+		$ket = $this->input->post('upKet');
+		$detail_id = $this->input->post('idJnsPekerjaanDetail');
+
+		$data = array(
+			'jenis_pekerjaan_id'	=>	$pekerjaan_id, 
+			'detail_pekerjaan'	=>	$detail, 
+			'keterangan'	=>	$ket
+		);
+		$this->M_civil->upJnsPkjDetail($data, $detail_id);
+
+		$thread = array(
+			'thread_detail'	=>	'Update Jenis Pekerjaan Detail '.$detail_id.' ('.$detail.')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
 			);
@@ -232,6 +278,13 @@ class C_Civil_setting extends CI_Controller
 	{
 		$id = $this->input->get('id');
 		$jenis_pkj = $this->M_civil->getJenisPekerjaanbyId($id)->row_array();
+		echo json_encode($jenis_pkj);
+	}
+
+	public function getket_jenis_pekerjaan_detail()
+	{
+		$id = $this->input->get('id');
+		$jenis_pkj = $this->M_civil->getJenisPekerjaanDetailbyId($id)->row_array();
 		echo json_encode($jenis_pkj);
 	}
 }
