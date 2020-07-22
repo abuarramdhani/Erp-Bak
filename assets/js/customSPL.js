@@ -598,22 +598,24 @@ $(function () {
 				var alamate = baseurl + "SPLSeksi/C_splasska/data_spl_filter";
 			}
 
-			table.clear().draw();
-			window.scrollTo(0, window.outerHeight);
-			$.ajax({
-				url: alamate,
-				type: "POST",
-				data: {
-					tgl_checked: true,
-					dari: $("#tgl_mulai").val(),
-					sampai: $("#tgl_selesai").val(),
-					status: $("#status").val(),
-					lokasi: $("#lokasi").val(),
-					noind: $("#noind").val(),
-					kodesie: $("#kodesie").val(),
-				},
-				beforeSend() {
-					$(".spl-table > tbody").html(`
+			try {
+				table.clear().draw();
+				let windowHeight = 200;
+
+				$.ajax({
+					url: alamate,
+					type: "POST",
+					data: {
+						tgl_checked: true,
+						dari: $("#tgl_mulai").val(),
+						sampai: $("#tgl_selesai").val(),
+						status: $("#status").val(),
+						lokasi: $("#lokasi").val(),
+						noind: $("#noind").val(),
+						kodesie: $("#kodesie").val(),
+					},
+					beforeSend() {
+						$(".spl-table > tbody").html(`
             <tr>
 							<td class="text-center" colspan="19">
 							<div style="margin: 1em;">
@@ -622,21 +624,26 @@ $(function () {
 							<span>Memuat data ...</span>
               </td>
             </tr>
-          `);
-				},
-				success: (data) => {
-					if (data.length) {
+					`);
+						window.scrollTo(0, windowHeight);
+					},
+					dataType: "json",
+					success: (data) => {
+						table.clear().draw();
+						table.rows.add(data);
+						table.draw();
 						$(this).prop("disabled", false);
 
-						let send = JSON.parse(data);
-						table.clear().draw();
-						table.rows.add(send);
-						table.draw();
-					} else {
-						// alert('Data tidak di temukan');
-					}
-				},
-			});
+						if (data.length) {
+							window.scrollTo(0, windowHeight);
+						} else {
+							// alert('Data tidak di temukan');
+						}
+					},
+				});
+			} catch (e) {
+				$(this).prop("disabled", false);
+			}
 		});
 	}
 
