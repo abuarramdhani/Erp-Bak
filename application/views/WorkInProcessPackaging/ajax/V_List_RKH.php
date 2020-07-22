@@ -23,7 +23,7 @@
           <td><?php echo $p['waktu_satu_shift'] ?> Jam</td>
           <td>
             <center>
-            <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/Label/'.$p['date_target'].'')?>"><i class="fa fa-print"></i> Label</a>
+            <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/Label/'.$p['date_target'].'_'.$p['type'].'')?>"><i class="fa fa-print"></i> Label</a>
             <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/ArrangeJobList/'.$p['date_target'].'_'.$p['type'].'')?>"> <i class="fa fa-edit"></i> <b>Edit</b></a>
           </center>
           </td>

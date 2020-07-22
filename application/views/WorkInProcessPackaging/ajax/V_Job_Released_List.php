@@ -107,6 +107,17 @@ Array.prototype.unique = function() {
   });
 }
 
+function hideSave() {
+  let giveParam = $('#hideSave').val();
+  if (giveParam == 'Y') {
+    $('.wipp_hided').hide();
+    $('#hideSave').val('N');
+  }else {
+    $('.wipp_hided').show();
+    $('#hideSave').val('Y');
+  }
+}
+
 function getJobReleased() {
   let get = wipp1.rows('.selected').data();
   let getDataWIPP = [];
@@ -142,7 +153,8 @@ function getJobReleased() {
                       <td onmouseover="cekhover()">
                         <center>
                           <button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${i+1})"><i class="fa fa-minus-square"></i></button>
-                          <button type="button" class="btn btn-md bg-navy" data-toggle="collapse" data-target="#Mycollapse${i}" aria-expanded="false" aria-controls="collapseExample" name="button"><i class="fa fa-cut"></i></button>
+                          <button type="button" onclick="hideSave()" class="btn btn-md bg-navy" data-toggle="collapse" data-target="#Mycollapse${i}" aria-expanded="false" aria-controls="collapseExample" name="button"><i class="fa fa-cut"></i></button>
+                          <input type="hidden" id="hideSave" value="Y">
                         </center>
                       </td>
                     </tr>

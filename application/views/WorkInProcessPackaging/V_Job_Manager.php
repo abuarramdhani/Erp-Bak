@@ -183,7 +183,7 @@ vertical-align: middle;
                         </table>
                       </div>
                       <div class="mt-4">
-                        <center><button type="button" style="margin-bottom:10px !important;" class="btn bg-maroon" onclick="saveNewRKH()" name="button"><i class="fa fa-file"></i> Save</button>
+                        <center><button type="button" style="margin-bottom:10px !important;" class="btn bg-maroon wipp_hided" onclick="saveNewRKH()" name="button"><i class="fa fa-file"></i> Save</button>
                       </div>
                     </div>
                   </div>
