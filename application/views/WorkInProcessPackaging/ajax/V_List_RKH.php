@@ -11,7 +11,7 @@
     <tbody>
       <?php foreach ($pp as $key => $p): ?>
         <?php
-         if ($p['waktu_satu_shift'] == 7 || $p['waktu_satu_shift'] == 6) {
+         if ($p['type'] == 'R') {
            $style = '';
          }else {
            $style = 'rgba(255, 0, 84, 0.29)';
@@ -24,7 +24,7 @@
           <td>
             <center>
             <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/Label/'.$p['date_target'].'')?>"><i class="fa fa-print"></i> Label</a>
-            <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/ArrangeJobList/'.$p['date_target'].'')?>"> <i class="fa fa-edit"></i> <b>Edit</b></a>
+            <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/ArrangeJobList/'.$p['date_target'].'_'.$p['type'].'')?>"> <i class="fa fa-edit"></i> <b>Edit</b></a>
           </center>
           </td>
         </tr>

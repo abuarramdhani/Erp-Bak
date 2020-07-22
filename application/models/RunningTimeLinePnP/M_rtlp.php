@@ -47,31 +47,36 @@ class M_rtlp extends CI_Model
 
     public function getline1($date)
     {
-        $response = $this->db->where('line', 1)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 1)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline2($date)
     {
-        $response = $this->db->where('line', 2)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 2)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline3($date)
     {
-        $response = $this->db->where('line', 3)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 3)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline4($date)
     {
-        $response = $this->db->where('line', 4)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 4)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline5($date)
     {
-        $response = $this->db->where('line', 5)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 5)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 

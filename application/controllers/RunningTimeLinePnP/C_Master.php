@@ -57,7 +57,16 @@ class C_Master extends CI_Controller
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
       // $date = '2020-05-29'; //for trial
-      $date = date('Y-m-d');
+      $jenis = $this->input->post('jenis');
+      $data['jenis'] = null;
+      if (!empty($jenis)) {
+        $kind = '_'.$jenis;
+        $data['jenis'] = $jenis;
+      }else {
+        $kind = '_R';
+      }
+      $date = date('Y-m-d').$kind;
+      
       $line5 = $this->M_rtlp->getline5($date);
       if (!empty($line5)) {
         foreach ($line5 as $key => $value) {
@@ -113,7 +122,15 @@ class C_Master extends CI_Controller
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         // $date = '2020-05-29'; //for trial
-        $date = date('Y-m-d');
+        $jenis = $this->input->post('jenis');
+        $data['jenis'] = null;
+        if (!empty($jenis)) {
+          $kind = '_'.$jenis;
+          $data['jenis'] = $jenis;
+        }else {
+          $kind = '_R';
+        }
+        $date = date('Y-m-d').$kind;
 
         $line1 = $this->M_rtlp->getline1($date);
         if (!empty($line1)) {
@@ -211,7 +228,15 @@ class C_Master extends CI_Controller
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         // $date = '2020-05-29'; //for trial
-        $date = date('Y-m-d');
+        $jenis = $this->input->post('jenis');
+        $data['jenis'] = null;
+        if (!empty($jenis)) {
+          $kind = '_'.$jenis;
+          $data['jenis'] = $jenis;
+        }else {
+          $kind = '_R';
+        }
+        $date = date('Y-m-d').$kind;
 
         $line3 = $this->M_rtlp->getline3($date);
         if (!empty($line3)) {
