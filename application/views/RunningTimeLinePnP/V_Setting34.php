@@ -138,7 +138,7 @@
                           $none4 = '';
                         }
                          ?>
-                      <tr class="timer4" <?php echo $style ?> data-rtlp="<?php echo $l4['kode_item'] ?>_<?php echo $key+1 ?>">
+                      <tr class="timer4" <?php echo $style4 ?> data-rtlp="<?php echo $l4['kode_item'] ?>_<?php echo $key+1 ?>">
                         <td class="text-center"><?php echo $key+1 ?></td>
                         <td class="text-center"><?php echo $l4['no_job'] ?></td>
                         <td class="text-center"><?php echo $l4['kode_item'] ?></td>
