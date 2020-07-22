@@ -49,7 +49,7 @@ const detailBOM = (kode_item, no) => {
       beforeSend: function() {
         $('.JobReleaseArea_' + kode_item).html(`<div id="loadingArea0">
                                                 <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
-                                              </div>`)
+                                               </div>`)
       },
       success: function(result) {
         let item = '';
@@ -693,6 +693,7 @@ const saveNewRKH = _ => {
     data: {
       date: $('#dateSaveWIIP').val(),
       waktu_shift: $('#waktuSaveWIIP').val(),
+      jenis: $('#jenisSaveWIIP').val(),
       data: tableInfo
     },
     beforeSend: function() {
@@ -705,10 +706,10 @@ const saveNewRKH = _ => {
           title: 'Berhasil menyimpan.',
           text: ''
         }).then(_ => {
-          window.location.replace(baseurl + 'WorkInProcessPackaging/JobManager/ArrangeJobList/' + $('#dateSaveWIIP').val(), );
+          window.location.replace(baseurl + 'WorkInProcessPackaging/JobManager/ArrangeJobList/' + $('#dateSaveWIIP').val() + '_' + $('#jenisSaveWIIP').val().substring(0, 1));
         })
       } else if (result === 2) {
-        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, RKH dengan tanggal ' + $('#dateSaveWIIP').val() + ' telah ada di database.');
+        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, RKH dengan tanggal ' + $('#dateSaveWIIP').val() + ' dengan jenis '+ $('#jenisSaveWIIP').val() +' telah ada di database.');
       } else {
         swalWIPPToastrAlert('error', 'Gagal menyimpan data!, mohon isi form waktu shift dan tanggal dengan benar.');
       }
@@ -901,8 +902,6 @@ $(document).ready(function() {
     job_released();
     list_RKH();
   }
-
-
 
   if (wipp_cek3 == 2) {
     list_Arrage(wipp_cek2)

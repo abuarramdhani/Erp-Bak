@@ -9,7 +9,20 @@
             </div>
             <div class="col-md-6">
               <div style="float:right">
-                <a style="display:inline;float:right;border:1.5px solid white;" href="<?php echo base_url('RunningTimeLinePnP/setting/history') ?>" class="btn btn-primary"><i class="fa fa-hourglass-3"></i> History</a>
+                <a style="display:inline;float:right;border:1.5px solid white;margin-left:10px;" href="<?php echo base_url('RunningTimeLinePnP/setting/history') ?>" class="btn btn-primary"><i class="fa fa-hourglass-3"></i> History</a>
+                <form action="<?php echo base_url('RunningTimeLinePnP/setting') ?>" method="post" style="display:inline">
+                  <select class="select2 form-control" style="display:inline;float:right;margin-left:5px;" name="jenis" required>
+                    <?php if ($jenis == 'R' || $jenis == '') {
+                      echo ' <option value="R" selected>Reguler</option>
+                             <option value="L">Lembur</option>';
+                    }elseif ($jenis == 'L') {
+                      echo ' <option value="R">Reguler</option>
+                             <option value="L" selected>Lembur</option>';
+                    }
+                    ?>
+                  </select>
+                  <button type="submit" style="display:inline;float:right;background:white;color:black;border:1.5px solid white;margin-left:5px;" href="<?php echo base_url('RunningTimeLinePnP/setting/history') ?>" class="btn btn-primary"><i class="fa fa-legal"></i> Submit</button>
+                </form>
               </div>
             </div>
           </div>
@@ -24,7 +37,7 @@
                 </div> -->
                 <div class="row">
                   <div class="col-md-6">
-                    <label for="">Data Tanggal <?php echo date('Y-m-d'); ?></label>
+                    <label for="">Data Tanggal <?php echo date('Y-m-d'); ?> (<?php echo $jenis=='R'||$jenis==''?'Reguler':'Lembur' ?>)</label>
                   </div>
                   <div class="col-md-6">
                     <div style="margin-top:2px;float:right">

@@ -63,7 +63,8 @@ class M_wipp extends CI_Model
 
     public function cekLineSaved($date)
     {
-        $response = $this->db->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         if (empty($response)) {
             return 0;
         } else {
@@ -79,40 +80,47 @@ class M_wipp extends CI_Model
 
     public function getline1($date)
     {
-        $response = $this->db->where('line', 1)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 1)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline2($date)
     {
-        $response = $this->db->where('line', 2)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 2)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline3($date)
     {
-        $response = $this->db->where('line', 3)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 3)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline4($date)
     {
-        $response = $this->db->where('line', 4)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 4)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline5($date)
     {
-        $response = $this->db->where('line', 5)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 5)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function ceklineaja($param)
     {
-        $cek = $this->db->where('date_target', $param)
-                      ->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $param);
+        $cek = $this->db->where('date_target', $x[0])
+                        ->where('type', $x[1])
+                        ->get('wip_pnp.line_data')->result_array();
         if ($cek !== '') {
-            $this->db->delete('wip_pnp.line_data', ['date_target' => $param]);
+            $this->db->delete('wip_pnp.line_data', ['date_target' => $x[0], 'type' => $x[1]]);
         }
     }
 
@@ -144,7 +152,8 @@ class M_wipp extends CI_Model
 
     public function getSplit($value, $date)
     {
-        $response = $this->db->where('no_job', $value)->where('date_target', $date)->order_by('id', 'asc')->get('wip_pnp.job_list')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('no_job', $value)->where('date_target', $x[0])->where('type', $x[1])->order_by('id', 'asc')->get('wip_pnp.job_list')->result_array();
         return $response;
     }
 
@@ -250,8 +259,10 @@ class M_wipp extends CI_Model
 
     public function getListRKH($value)
     {
+        $x = explode('_', $value);
         $wipp = $this->db->select('wip_pnp.job_list.*')
-                       ->where('wip_pnp.job_list.date_target', $value)
+                        ->where('wip_pnp.job_list.date_target', $x[0])
+                        ->where('wip_pnp.job_list.type', $x[1])
                        ->order_by('kode_item', 'asc')
                        ->get('wip_pnp.job_list')
                        ->result_array();
@@ -261,7 +272,7 @@ class M_wipp extends CI_Model
     public function getLR()
     {
         $wipp = $this->db->distinct()
-                       ->select('date_target, waktu_satu_shift')
+                       ->select('date_target, waktu_satu_shift, type')
                        ->order_by('date_target', 'desc')
                        ->get('wip_pnp.job_list')->result_array();
         return $wipp;

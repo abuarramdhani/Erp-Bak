@@ -3,7 +3,9 @@
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
-          <h4 style="font-weight:bold;"><i class="fa fa-cloud-upload"></i> Label Manager</h4>
+          <h4 style="font-weight:bold;"><i class="fa fa-cloud-upload"></i> Label Manager (<?php
+          $x = explode('_', $param);
+          echo $x[0] ?> - <?php echo $x[1] == 'R'?'Reguler':'Lembur' ?>)</h4>
         </div>
         <center>
           <h4 style="font-weight:bold">JOB LIST</h4>

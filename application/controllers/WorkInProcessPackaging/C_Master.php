@@ -108,10 +108,13 @@ class C_Master extends CI_Controller
         $date = $this->input->post('date');
         $waktu_shift = $this->input->post('waktu_shift');
         $data = $this->input->post('data');
+        $j = $this->input->post('jenis');
+        $jenis = substr($j, 0, 1);
         // echo "<pre>";print_r($data);die;
         if (!empty($date)) {
             $cekk = $this->db->select('date_target')
                          ->where('date_target', $date)
+                         ->where('type', $jenis)
                          ->get('wip_pnp.job_list')
                          ->row();
             if (empty($cekk->date_target)) {
@@ -119,6 +122,7 @@ class C_Master extends CI_Controller
                     $n195 = $this->M_wipp->savenewRKH([
                       'date_target' => $date,
                       'waktu_satu_shift' => $waktu_shift,
+                      'type' => $jenis,
                       'no_job' => $d[1],
                       'kode_item' => $d[2],
                       'nama_item' => $d[3],
@@ -654,9 +658,12 @@ class C_Master extends CI_Controller
         $target1 =  $this->input->post('target1');
         $id_job1 =  $this->input->post('id_job_list1');
         $id_split1 =  $this->input->post('id_split1');
+        $date = $this->input->post('param');
+        $x = explode('_', $date);
         foreach ($job1 as $key => $j1) {
             $this->M_wipp->insert_data_line([
-            'date_target' => $this->input->post('param'),
+            'date_target' => $x[0],
+            'type' => $x[1],
             'no_job' => $j1,
             'kode_item' => $item1[$key],
             'qty' => $qty1[$key],
@@ -676,8 +683,9 @@ class C_Master extends CI_Controller
         $id_job2 =  $this->input->post('id_job_list2');
         $id_split2 =  $this->input->post('id_split2');
         foreach ($job2 as $key => $j2) {
-            $this->M_wipp->insert_data_line([
-          'date_target' => $this->input->post('param'),
+          $this->M_wipp->insert_data_line([
+          'date_target' => $x[0],
+          'type' => $x[1],
           'no_job' => $j2,
           'kode_item' => $item2[$key],
           'qty' => $qty2[$key],
@@ -698,8 +706,9 @@ class C_Master extends CI_Controller
         $id_split3 =  $this->input->post('id_split3');
 
         foreach ($job3 as $key => $j3) {
-            $this->M_wipp->insert_data_line([
-          'date_target' => $this->input->post('param'),
+        $this->M_wipp->insert_data_line([
+          'date_target' => $x[0],
+          'type' => $x[1],
           'no_job' => $j3,
           'kode_item' => $item3[$key],
           'qty' => $qty3[$key],
@@ -720,7 +729,8 @@ class C_Master extends CI_Controller
         $id_split4 =  $this->input->post('id_split4');
         foreach ($job4 as $key => $j4) {
             $this->M_wipp->insert_data_line([
-          'date_target' => $this->input->post('param'),
+          'date_target' => $x[0],
+          'type' => $x[1],
           'no_job' => $j4,
           'kode_item' => $item4[$key],
           'qty' => $qty4[$key],
@@ -742,7 +752,8 @@ class C_Master extends CI_Controller
 
         foreach ($job5 as $key => $j5) {
             $this->M_wipp->insert_data_line([
-          'date_target' => $this->input->post('param'),
+          'date_target' => $x[0],
+          'type' => $x[1],
           'no_job' => $j5,
           'kode_item' => $item5[$key],
           'qty' => $qty5[$key],
@@ -818,8 +829,9 @@ class C_Master extends CI_Controller
         } else {
             $nojob = $this->input->post('nojob');
             $item = $this->input->post('item');
-            $date = $this->input->post('date');
-
+            $dt = $this->input->post('date');
+            $x = explode('_', $dt);
+            $date = $x[0];
             $qty = $this->input->post('qty');
             $target_pe = $this->input->post('target_pe');
             $ca = $this->input->post('created_at');
@@ -828,16 +840,18 @@ class C_Master extends CI_Controller
             $id_parent_hapus = $cek_job[0]['id'];
 
             $cek = $this->db->select('date_target, no_job')
-                       ->where('date_target', $date)
-                       ->where('no_job', $nojob)
-                       ->get('wip_pnp.job_list')
-                       ->row();
+                        ->where('date_target', $date)
+                        ->where('type', $x[1])
+                        ->where('no_job', $nojob)
+                        ->get('wip_pnp.job_list')
+                        ->row();
             if (!empty($cek->no_job)) {
                 $this->db->delete('wip_pnp.job_list', ['no_job' => $nojob]);
             }
             foreach ($qty as $key => $q) {
                 $data = $this->M_wipp->insertSplit([
                 'date_target' => $date,
+                'type' => $x[1],
                 'nama_item' => $cek_job[0]['nama_item'],
                 'usage_rate' => $cek_job[0]['usage_rate'],
                 'scedule_start_date' => $cek_job[0]['scedule_start_date'],
@@ -995,7 +1009,7 @@ class C_Master extends CI_Controller
         }
         // echo "<pre>";print_r($line1);
         // die;
-
+        $data['param'] = $date;
         $data['line_1'] = $line1;
         $data['line_2'] = $line2;
         $data['line_3'] = $line3;
