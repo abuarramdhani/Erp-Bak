@@ -88,7 +88,7 @@ class C_Index extends CI_Controller
 
 		// Perizinan Pribadi
 		$data['dashboard'][] = array(
-			'ket' 		=> 'Perizinan Pribadi',
+			'ket' 		=> 'Perizinan',
 			'link'		=> 'IKP/ApprovalAtasan',
 			'jumlah' 	=> $this->M_personaliaapprovekasie->getPerizinanPribadi($user)
 		); 
