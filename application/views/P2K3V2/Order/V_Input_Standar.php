@@ -74,6 +74,8 @@
                                                 <?php } ?>
                                                 <th width="15%">Tanggal Input</th>
                                                 <th>Status</th>
+                                                <th>Tanggal Approve Atasan</th>
+                                                <th>Tanggal Approve TIM</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -110,6 +112,8 @@
                                                 <?php  } ?>
                                                 <td><?php echo $key['tgl_input']; ?></td>
                                                 <td><?php echo $status; ?></td>
+                                                <td><?php echo $key['tgl_approve']; ?></td>
+                                                <td><?php echo $key['tgl_approve_tim']; ?></td>
                                             </tr>
                                             <?php $a++; } ?>
                                         </tbody>
