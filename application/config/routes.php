@@ -3493,3 +3493,9 @@ $route['ShipmentMonitoringSystem/Gudang/History'] = 'ShipmentMonitoringGudang/C_
 $route['ShipmentMonitoringSystem/Gudang/Undelivered'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/undeliveredGudang';
 $route['ShipmentMonitoringSystem/Gudang/TitipBarang'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/titipBarangGudang';
 $route['ShipmentMonitoringSystem/Gudang/TitipBarang/(:any)'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/$1';
+
+
+//------------------------------------- SERAGAM ONLINE -------------------------------------------//
+$route['SeragamOnline'] = 'SeragamOnline/C_Index';
+$route['SeragamOnline/MasterData/(:any)'] = 'SeragamOnline/C_Index/$1';
+$route['SeragamOnline/Transaksi/(:any)'] = 'SeragamOnline/C_Transaksi/$1';
