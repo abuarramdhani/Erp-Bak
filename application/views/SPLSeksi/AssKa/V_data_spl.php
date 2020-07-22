@@ -1,4 +1,8 @@
 <style>
+	html {
+		scroll-behavior: smooth;
+	}
+
 	#example11_paginate {
 		float: right;
 	}
