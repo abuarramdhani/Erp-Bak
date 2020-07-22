@@ -599,7 +599,7 @@ $(function () {
 			}
 
 			table.clear().draw();
-			window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+			window.scrollTo(0, window.outerHeight);
 			$.ajax({
 				url: alamate,
 				type: "POST",

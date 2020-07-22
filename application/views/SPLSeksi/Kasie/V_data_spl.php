@@ -1,4 +1,8 @@
 <style>
+	html {
+		scroll-behavior: smooth;
+	}
+
 	.modal-content {
 		border-radius: 6px !important;
 	}
