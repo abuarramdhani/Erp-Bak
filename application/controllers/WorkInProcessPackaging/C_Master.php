@@ -938,12 +938,21 @@ class C_Master extends CI_Controller
         $line5 = $this->M_wipp->getline5($date);
 
         // line 1
+        foreach ($line1 as $key => $value) {
+          $description = $this->M_wipp->cek_job_id($value['id_job_list']);
+          $line1[$key]['DESCRIPTION'] = $description[0]['nama_item'];
+        }
+
         foreach ($line1 as $key => $ln1) {
           $bom_ln1 = $this->M_wipp->getDetailBom2($ln1['kode_item']);
           usort($bom_ln1, function ($a, $b) {
               return $a['QTY'] > $b['QTY'] ? 1 : -1;
           });
-          $ln1_tampng[] = $bom_ln1[0];
+          if (!empty($bom_ln1)) {
+            $ln1_tampng[] = $bom_ln1[0];
+          }else {
+            $ln1_tampng[] = NULL;
+          }
         }
         if (!empty($ln1_tampng)) {
           foreach ($ln1_tampng as $key => $bln1) {
@@ -952,12 +961,21 @@ class C_Master extends CI_Controller
           }
         }
         // line 2
+        foreach ($line2 as $key => $value) {
+          $description = $this->M_wipp->cek_job_id($value['id_job_list']);
+          $line2[$key]['DESCRIPTION'] = $description[0]['nama_item'];
+        }
+
         foreach ($line2 as $key => $ln1) {
           $bom_ln1 = $this->M_wipp->getDetailBom2($ln1['kode_item']);
           usort($bom_ln1, function ($a, $b) {
               return $a['QTY'] > $b['QTY'] ? 1 : -1;
           });
-          $ln2_tampng[] = $bom_ln1[0];
+          if (!empty($bom_ln1)) {
+            $ln2_tampng[] = $bom_ln1[0];
+          }else {
+            $ln2_tampng[] = NULL;
+          }
         }
         if (!empty($ln2_tampng)) {
           foreach ($ln2_tampng as $key => $bln1) {
@@ -966,12 +984,20 @@ class C_Master extends CI_Controller
           }
         }
         // line 3
+        foreach ($line3 as $key => $value) {
+          $description = $this->M_wipp->cek_job_id($value['id_job_list']);
+          $line3[$key]['DESCRIPTION'] = $description[0]['nama_item'];
+        }
         foreach ($line3 as $key => $ln1) {
           $bom_ln1 = $this->M_wipp->getDetailBom2($ln1['kode_item']);
           usort($bom_ln1, function ($a, $b) {
               return $a['QTY'] > $b['QTY'] ? 1 : -1;
           });
-          $ln3_tampng[] = $bom_ln1[0];
+          if (!empty($bom_ln1)) {
+            $ln3_tampng[] = $bom_ln1[0];
+          }else {
+            $ln3_tampng[] = NULL;
+          }
         }
         if (!empty($ln3_tampng)) {
           foreach ($ln3_tampng as $key => $bln1) {
@@ -980,12 +1006,21 @@ class C_Master extends CI_Controller
           }
         }
         // line 4
+        foreach ($line4 as $key => $value) {
+          $description = $this->M_wipp->cek_job_id($value['id_job_list']);
+          $line4[$key]['DESCRIPTION'] = $description[0]['nama_item'];
+        }
+
         foreach ($line4 as $key => $ln1) {
           $bom_ln1 = $this->M_wipp->getDetailBom2($ln1['kode_item']);
           usort($bom_ln1, function ($a, $b) {
               return $a['QTY'] > $b['QTY'] ? 1 : -1;
           });
-          $ln4_tampng[] = $bom_ln1[0];
+          if (!empty($bom_ln1)) {
+            $ln4_tampng[] = $bom_ln1[0];
+          }else {
+            $ln4_tampng[] = NULL;
+          }
         }
         if (!empty($ln4_tampng)) {
           foreach ($ln4_tampng as $key => $bln1) {
@@ -994,12 +1029,21 @@ class C_Master extends CI_Controller
           }
         }
         // line 5
+        foreach ($line5 as $key => $value) {
+          $description = $this->M_wipp->cek_job_id($value['id_job_list']);
+          $line5[$key]['DESCRIPTION'] = $description[0]['nama_item'];
+        }
+
         foreach ($line5 as $key => $ln1) {
           $bom_ln1 = $this->M_wipp->getDetailBom2($ln1['kode_item']);
           usort($bom_ln1, function ($a, $b) {
               return $a['QTY'] > $b['QTY'] ? 1 : -1;
           });
-          $ln5_tampng[] = $bom_ln1[0];
+          if (!empty($bom_ln1)) {
+            $ln5_tampng[] = $bom_ln1[0];
+          }else {
+            $ln5_tampng[] = NULL;
+          }
         }
         if (!empty($ln5_tampng)) {
           foreach ($ln5_tampng as $key => $bln1) {

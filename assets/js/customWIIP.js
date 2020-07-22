@@ -367,7 +367,8 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
                         <td onmouseover="cekhover()">
                           <center>
                             <button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${Number(idtrz)+(Number(i)+1)})"><i class="fa fa-minus-square"></i></button>
-                            <button type="button" class="btn btn-md bg-navy" data-toggle="collapse" data-target="#Mycollapse${Number(idtrz)+(Number(i)+1)}" aria-expanded="false" aria-controls="collapseExample" name="button"><i class="fa fa-cut"></i></button>
+                            <button type="button" onclick="hideSave()" class="btn btn-md bg-navy" data-toggle="collapse" data-target="#Mycollapse${Number(idtrz)+(Number(i)+1)}" aria-expanded="false" aria-controls="collapseExample" name="button"><i class="fa fa-cut"></i></button>
+                            <input type="hidden" id="hideSave" value="Y">
                           </center>
                         </td>
                       </tr>
@@ -477,6 +478,9 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     // $('.tblNewRKH tr[row]:visible').each(function(i) {
     //   $(this).find('td:first center').text(i + 1);
     // })
+    
+    $('.wipp_hided').show();
+    $('#hideSave').val('Y');
   }
 
   function run() {
