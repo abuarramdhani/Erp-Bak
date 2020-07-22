@@ -340,7 +340,7 @@
                           <center><input style="width:100%;" type="text" class="form-control" name="item5[]" id="item5_wipp<?php echo $key+1 ?>" value="<?php echo $l5['kode_item'] ?>" placeholder="ITEM" readonly></center>
                         </td>
                         <td>
-                          <center><input style="width:100%;" type="text" class="form-control" placeholder="DESCRIPTION" value="<?php echo $l1['DESCRIPTION'] ?>" readonly></center>
+                          <center><input style="width:100%;" type="text" class="form-control" placeholder="DESCRIPTION" value="<?php echo $l5['DESCRIPTION'] ?>" readonly></center>
                         </td>
                         <td>
                           <center><input style="width:100%;" type="text" class="form-control" name="qty5[]" id="qty5_wipp<?php echo $key+1 ?>" value="<?php echo $l5['qty'] ?>" placeholder="QTY" readonly></center>
