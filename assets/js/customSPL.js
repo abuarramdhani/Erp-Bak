@@ -1851,6 +1851,50 @@ $(document).ready(function () {
 		let url = baseurl + "SPLSeksi/C_splseksi/export_rekap_excel?" + val;
 		window.open(url, "_blank");
 	});
+
+	const auth_finger = {
+		storage_name: "auth_fingerprint_spl",
+		json_template: {
+			success: Boolean,
+			date: Date,
+		},
+		get value() {
+			const raw = localStorage.getItem(this.storage_name);
+			const json = JSON.parse(raw);
+			return json;
+		},
+		set value(val) {
+			// json
+			const toJSON = JSON.stringify(val);
+			localStorage.setItem(this.storage_name, toJSON);
+		},
+		action(e) {
+			if (e.key !== this.storage_name) return;
+			console.log("something in storage is changed");
+			if (this.value.success === true) {
+				window.location.reload();
+			}
+		},
+		listener() {
+			window.addEventListener("storage", this.action.bind(this));
+		},
+		init() {
+			this.value = {
+				success: false,
+				date: moment().format("YYYY-mm-DD H:mm:s"),
+			};
+			this.listener();
+		},
+	};
+
+	$(".spl_process_auth").click(function (e) {
+		e.preventDefault();
+		const fingerspot_sdk_url = $(this).attr("href");
+
+		window.location.href = fingerspot_sdk_url;
+		console.log(fingerspot_sdk_url);
+		auth_finger.init();
+	});
 });
 
 $(window).load(() => {
