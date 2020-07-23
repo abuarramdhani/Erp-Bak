@@ -55,14 +55,14 @@
 	<table style="width:100%;border-collapse: collapse !important; margin-top:-1px;page-break-inside:avoid">
 		<tr>
 			<td style="vertical-align:top;height: 80px;width:50%;border-bottom: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px" colspan="4">
-				Kepada Yth : <br>
+				<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'<br>':'Kepada Yth : <br>' ?>
 				<?php echo $get_header[0]['NAMA_ASAL'] ?> <br>
 				<?php echo $get_header[0]['ALAMAT_ASAL'] ?>, <?php echo $get_header[0]['KOTA_ASAL'] ?><br>
 				NPWP : <?php echo $get_header[0]['NPWP'] ?><br>
 				<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?>
 			</td>
 			<td colspan="2" style="height: 116.3px;vertical-align:top; border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">
-				Dikirim Kepada : <br>
+				<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'Kepada Yth : <br>':'Dikirim Kepada : <br>' ?>
 				<?php if (!empty($get_header[0]['NOTES'])){ ?>
 					<br><br><br>
 					<?php
@@ -74,6 +74,7 @@
 				<?php }else {?>
 					<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
 					<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br><br>
+					<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'Dikirim Kepada :  <br>':'<br> ' ?>
 					<?php
 						$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
 						foreach($arr as $i) {
