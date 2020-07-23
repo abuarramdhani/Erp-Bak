@@ -104,8 +104,8 @@ class C_Pengurangan extends CI_Controller
         $shift = $this->input->post('slc-CM-Pengurangan-Shift');
         $kategori = $this->input->post('slc-CM-Pengurangan-Kategori');
         $penerima = $this->input->post('txt-CM-Pengurangan-Penerima-Noind');
-
-        $id_pengurangan = $this->input->post('txt-CM-Tambahan-IdPengurangan');
+        
+        $id_pengurangan = $this->input->post('txt-CM-Pengurangan-IdPengurangan');
         if (isset($id_pengurangan) && !empty($id_pengurangan)) {
             $pengurangan = $this->M_pengurangan->getPenguranganByIdPengurangan($id_pengurangan);
         }
@@ -202,6 +202,7 @@ class C_Pengurangan extends CI_Controller
             $insert = array(
                 'fd_tanggal' => $tanggal, 
                 'fs_tempat_makan' => $tempat_makan, 
+                'fs_tempat_makanpg' => $tempat_makan_baru,
                 'fs_kd_shift' => $shift, 
                 'fn_jml_tdkpesan' => $jumlah, 
                 'fb_kategori' => $kategori,  
