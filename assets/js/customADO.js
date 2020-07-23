@@ -16,8 +16,8 @@ $( () => {
             targets     : 'no-orderable'
         }],
         scrollY 	  : '350px',
-        scrollX: true,
-        scrollCollapse: true,
+        // scrollX: true,
+        // scrollCollapse: true,
     })
 
     dataTableADODetailList = $('.tblADODetailList').DataTable({
@@ -119,7 +119,23 @@ $( () => {
         // $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
         //     $('#mdlADOAssignApprover').modal('show') :
         //     swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
-        $('#mdlADOAssignApprover').modal('show')
+        var permintaanTanggalKirim = $('.txttglKirimADO').val();
+
+        if (permintaanTanggalKirim) {
+            
+            $('#mdlADOAssignApprover').modal('show')
+        }else{
+            Swal.fire({
+                customClass: 'swal-font-large',
+                type: 'error',
+                title: 'Gagal',
+                text: 'Tanggal Permintaan Kirim tidak boleh kosong!',
+            });
+
+            $('.txttglKirimADO').attr({
+                style: 'background-color :#fbfb5966; min-width:150px;'
+            });
+        }
     })
 
     $('.btnADORequestApproveDO').on('click', function () {
@@ -127,6 +143,7 @@ $( () => {
             doNumber        : $('.spnADODONumber').html(),
             soNumber        : $('.spnADOSONumber').html(),
             approver        : $('.slcADOAssignerList').val(),
+            tglPermintaanKirim : $('.txttglKirimADO').val(),
             approverName    : $('.slcADOAssignerList').find(':selected').text().split(' - ').slice(-1).pop(),
             approverAddress : $('.slcADOAssignerList').find(':selected').attr('address')
         }

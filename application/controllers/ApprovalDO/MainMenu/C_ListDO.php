@@ -47,10 +47,11 @@ class C_ListDO extends CI_Controller {
         $do_number    = $this->input->post('doNumber');
         $so_number    = $this->input->post('soNumber');
         $approver     = $this->input->post('approver');
+        $tgl_permintaan_kirim = $this->input->post('tglPermintaanKirim');
         $requested_by = $this->session->user;
 
         $this->M_list->createApprovalDO($do_number, $so_number);
-        $this->M_list->updateStatusDO($do_number, $requested_by, $approver);
+        $this->M_list->updateStatusDO($do_number, $requested_by, $approver, $tgl_permintaan_kirim);
 
         $this->generateEmailNotification();
     }
