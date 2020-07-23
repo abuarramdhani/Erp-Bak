@@ -3989,6 +3989,8 @@ $route['ApprovalDO/DPBKHS/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_DPBKHS/$1/$2'
 $route['ApprovalDO/Detail/(:any)'] = 'ApprovalDO/MainMenu/C_Detail/checkDetailDO/$1';
 $route['ApprovalDO/History/(:any)'] = 'ApprovalDO/MainMenu/C_History/$1';
 
+$route['ApprovalDO/Ekatalog/(:any)'] = 'ApprovalDO/MainMenu/C_ApprovalEkatalog/$1';
+
 // ----------------------------------------------- Pendampingan SPT ----------------------------------------------- //
 $route['PendampinganSPT'] = 'PendampinganSPT/C_Index';
 
