@@ -49,27 +49,30 @@ class C_splseksi extends CI_Controller
 		$data['responsibility_id'] = $this->session->responsibility_id;
 		$data['jari'] = $this->M_splseksi->getJari($this->session->userid);
 
+		$wkt_validasi_kasie = $this->session->spl_validasi_waktu_kasie;
+		$wkt_validasi_asska = $this->session->spl_validasi_waktu_asska;
+		$wkt_validasi_operator = $this->session->spl_validasi_waktu_operator;
+
+		$exp_time = 120; // default value is 120 or 2 minutes
+
 		if ($this->session->spl_validasi_kasie !== TRUE) {
 			$this->session->spl_validasi_kasie = FALSE;
 		} else {
-			$wkt_validasi_kasie = $this->session->spl_validasi_waktu_kasie;
-			if (time() - $wkt_validasi_kasie > 120) {
+			if (time() - $wkt_validasi_kasie > $exp_time) {
 				$this->session->spl_validasi_kasie = FALSE;
 			}
 		}
 		if ($this->session->spl_validasi_asska !== TRUE) {
 			$this->session->spl_validasi_asska = FALSE;
 		} else {
-			$wkt_validasi_asska = $this->session->spl_validasi_waktu_asska;
-			if (time() - $wkt_validasi_asska > 120) {
+			if (time() - $wkt_validasi_asska > $exp_time) {
 				$this->session->spl_validasi_asska = FALSE;
 			}
 		}
 		if ($this->session->spl_validasi_operator !== TRUE) {
 			$this->session->spl_validasi_operator = FALSE;
 		} else {
-			$wkt_validasi_operator = $this->session->spl_validasi_waktu_operator;
-			if (time() - $wkt_validasi_operator > 120) {
+			if (time() - $wkt_validasi_operator > $exp_time) {
 				$this->session->spl_validasi_operator = FALSE;
 			}
 		}
