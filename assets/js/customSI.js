@@ -572,11 +572,20 @@ $(document).on('ready', function(){
                         })
                     }else if (data == "sukses") {
                         $('#btn-SI-SubmitF4-Cetak').attr('disabled', false);
-                        Swal.fire(
-                            'Berhasil !!!',
-                            'Data berhasil disimpan',
-                            'success'
-                        )
+                        Swal.fire({
+                            title: 'Sukses !!!',
+                            text: "Apakah Anda Ingin Mengcetak F4 ?",
+                            type: 'success',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya',
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.value) {
+                                window.open(baseurl+'SystemIntegration/KaizenAkt/CetakF4/'+kaizenId,'_blank');
+                            }
+                        });
                     }                    
                 }
             })
@@ -592,7 +601,7 @@ $(document).on('ready', function(){
     $('#btn-SI-SubmitF4-Cetak').on('click', function(){
         var kaizenId        = $('#slc-SI-SubmitF4-Judul').val();
         if (kaizenId) {
-            
+            window.open(baseurl+'SystemIntegration/KaizenAkt/CetakF4/'+kaizenId,'_blank');
         }
     })
 })

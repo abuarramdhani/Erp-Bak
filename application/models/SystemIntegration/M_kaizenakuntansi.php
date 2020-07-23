@@ -46,4 +46,19 @@ class M_kaizenakuntansi extends CI_Model{
 		$this->db->update('si.si_kaizen_akuntansi', $data);
 	}
 
+	function getKaizenByKaizenId($kaizen_id){
+		$sql = "select *
+				from si.si_kaizen_akuntansi
+				where kaizen_id = ?";
+		return $this->db->query($sql,array($kaizen_id))->result_array();
+	}
+
+	function getSectAll($id){
+		$sql = "SELECT sec.*
+				FROM sys.vi_sys_user_data visu
+				INNER JOIN er.er_section sec ON sec.section_code = visu.section_code
+				WHERE visu.user_name = ?";
+		return $this->db->query($sql,array($id))->result_array();
+	}
+
 } ?>

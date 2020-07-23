@@ -206,6 +206,67 @@ class C_KaizenAkuntansi extends CI_Controller
 		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
 		echo "sukses";	
 	}
+
+	public function CetakF4($kaizen_id){
+		$this->load->library('pdf');
+		
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizen_id);
+
+	    if ($data['kaizen'][0]['komponen']) {
+				$arrayKomponen = explode(',', $data['kaizen'][0]['komponen']);
+				foreach ($arrayKomponen as $key => $value) {
+					$dataItem = $this->M_kaizenakuntansi->getMasterItem(FALSE,$value);
+					$kodeItem = $dataItem[0]['SEGMENT1'];
+					$namaItem = $dataItem[0]['ITEM_NAME'];
+					$komponen[] = $aa = array('id' => $value, 'code' => $kodeItem, 'name' => $namaItem);
+				}
+
+				$data['kaizen'][0]['komponen'] = $komponen;
+			}
+
+		$data['section_user'] = $this->M_kaizenakuntansi->getSectAll($data['kaizen'][0]['pencetus_noind']);		
+
+		if (strpos($data['kaizen'][0]['kondisi_awal'], '<img') !== FALSE) {
+			$data['kaizen'][0]['kondisi_awal'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['kondisi_awal']);
+		} else {
+			$data['kaizen'][0]['kondisi_awal'] = $data['kaizen'][0]['kondisi_awal'];
+		}
+		if (strpos($data['kaizen'][0]['usulan_kaizen'], '<img') !== FALSE) {
+			$data['kaizen'][0]['usulan_kaizen'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['usulan_kaizen']);
+		} else {
+			$data['kaizen'][0]['usulan_kaizen'] = $data['kaizen'][0]['usulan_kaizen'];
+		}
+		if (strpos($data['kaizen'][0]['pertimbangan'], '<img') !== FALSE) {
+			$data['kaizen'][0]['pertimbangan'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['pertimbangan']);
+		} else {
+			$data['kaizen'][0]['pertimbangan'] = $data['kaizen'][0]['pertimbangan'];
+		}
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'F4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
+		$pencetus = preg_replace('/(\s)+/', ' ', $data['kaizen'][0]['pencetus_nama']);
+		$pencetus = strtolower($pencetus);
+		$pencetus = ucwords($pencetus);
+		$pencetus = str_replace(' ', '_', $pencetus);
+		$filename = 'F4-Kaizen-'.$pencetus.'-'.$data['kaizen'][0]['judul'].'.pdf';
+		$today = date('d-M-Y H:i:s');
+		$kaizen_id = $data['kaizen_id'][0]['kaizen_id'];
+
+		$stylesheet = file_get_contents(base_url('assets/css/customSI.css'));
+		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.min.css'));
+		$html = $this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_CetakF4', $data, true);
+		$pdf->setHTMLFooter('
+				<table width="100%">
+					<tr>
+						<td style="font-size: 12px ; padding: 2px">Halaman ini di cetak melalui QuickERP - Kaizen Akuntansi, Pada tanggal: '.$today.' oleh : '.$this->session->user.' - '.$this->session->employee.'</td>
+					</tr>
+				</table>
+			');
+		$pdf->SetTitle($filename);
+		$pdf->WriteHTML($stylesheet, 1);
+		$pdf->WriteHTML($stylesheet1, 1);
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'I');
+	}
 }
 
 ?>
