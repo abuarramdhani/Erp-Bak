@@ -824,7 +824,7 @@ class C_splkasie extends CI_Controller
 
 	function fp_succes_val()
 	{
-		$nama = $this->session->employee;
+		$nama = trim($this->session->employee);
 		$jari = $this->input->get('finger_id');
 		$this->session->spl_validasi_jari = $jari;
 		$finger = $this->M_splkasie->getFingerName($jari);
@@ -833,32 +833,36 @@ class C_splkasie extends CI_Controller
 		} else {
 			$yth = "Ibu";
 		}
-		$this->session->spl_validasi_log = "Selamat $yth $nama,   anda telah terverifikasi menggunakan $finger Anda.<br>
-		Silahkan tunggu beberapa saat, Anda akan otomatis diarahkan ke halaman approval. Atau silahkan klik <a href='" . site_url('SPL') . "'>link ini</a> untuk langsung menuju ke halaman approval.";
-		// print_r($_SESSION);exit();
+		$this->session->spl_validasi_log = "Selamat $yth $nama, anda telah terverifikasi menggunakan $finger Anda";
+
 		if ($this->input->get('res_id') == 2592) {
 			$this->session->spl_validasi_kasie = TRUE;
 			$this->session->spl_validasi_waktu_kasie = time();
-			echo "User SPL Kasie Sukses Terverifikasi<br>Kembali ke Halaman sebelumnya dan tunggu hingga selesai memuat halaman";
-			// print_r($_SESSION);exit();
-			// echo "<script>window.close();</script>";
-			redirect(site_url('SPL'));
 		} elseif ($this->input->get('res_id') == 2593) {
 			$this->session->spl_validasi_asska = TRUE;
 			$this->session->spl_validasi_waktu_asska = time();
-			echo "User SPL Asska Sukses Terverifikasi<br>Kembali ke Halaman sebelumnya dan tunggu hingga selesai memuat halaman";
-			// echo "<script>window.close();</script>";
-			redirect(site_url('SPL'));
 		} else {
-			$this->session->spl_validasi_log = "Selamat $yth $nama,   anda telah terverifikasi menggunakan $finger Anda.<br>
+			// NOT USED
+			$this->session->spl_validasi_log = "Selamat $yth $nama, anda telah terverifikasi menggunakan $finger Anda.<br>
 				Silahkan tunggu beberapa saat, Anda akan otomatis diarahkan ke halaman SPL Operator. Atau silahkan klik <a href='" . site_url('SPL') . "'>link ini</a> untuk langsung menuju ke halaman SPL Operator.";
 			$this->session->spl_validasi_operator = TRUE;
 			$this->session->spl_validasi_waktu_operator = time();
-			echo "User SPL Operator Sukses Terverifikasi<br>Kembali ke Halaman sebelumnya dan tunggu hingga selesai memuat halaman";
-			// echo "<pre>";print_r($_SESSION);exit();
-			// echo "<script>window.close();</script>";
-			redirect(site_url('SPL'));
 		}
+
+		// write js script here
+		// set localstorage to can access
+		// window close
+		$json_success = json_encode(array(
+			'success' => true,
+			'date' => date('Y-m-d H:i:s')
+		));
+
+		echo "
+			<script>
+				window.localStorage.setItem('auth_fingerprint_spl', '$json_success')
+				window.close()
+			</script>
+		";
 	}
 
 	function fp_fail_val()
