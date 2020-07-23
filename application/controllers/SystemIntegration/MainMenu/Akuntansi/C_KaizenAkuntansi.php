@@ -97,7 +97,7 @@ class C_KaizenAkuntansi extends CI_Controller
 		$thread = array(
 			'kaizen_id' => $id_kaizen,
 			'status' 	=> 'Create Ide',
-			'detail' 	=> '(Create Ide) '.$noind.' - '.$nama.' telah membuat ide kaizen dengan judul "'.$judul.'"'
+			'detail' 	=> '(Create Ide) '.$noind.' - '.trim($nama).' telah membuat ide kaizen dengan judul '.$judul
 		);
 
 		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
@@ -163,10 +163,6 @@ class C_KaizenAkuntansi extends CI_Controller
 	}
 
 	public function SimpanF4(){
-		// echo "<pre>";
-		// print_r($_POST);
-		// echo "</pre>";
-		// exit();
 		$judul 			= $this->input->post('judul');
 		$kaizenId 		= $this->input->post('kaizen_id');
 		$nama 			= $this->input->post('nama');
@@ -193,14 +189,14 @@ class C_KaizenAkuntansi extends CI_Controller
 			'usulan_kaizen' 	=> $usulan,
 			'pertimbangan' 		=> $pertimbangan,
 			'tanggal_realisasi' => $realisasi,
-			'status' 			=> 'Submit F4'
+			'status' 			=> 'F4 Sudah di Submit'
 		);
 		$this->M_kaizenakuntansi->updateKaizenByKaizenId($data,$kaizenId);
 
 		$thread = array(
 			'kaizen_id' => $kaizenId,
-			'status' 	=> 'Submit F4',
-			'detail' 	=> '(Submit F4) '.$noind.' - '.$nama.' telah submit F4 ide kaizen dengan judul "'.$judul.'"'
+			'status' 	=> 'F4 Sudah di Submit',
+			'detail' 	=> '(F4 Sudah di Submit) '.$noind.' - '.trim($nama).' telah submit F4 ide kaizen dengan judul '.$judul
 		);
 
 		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
@@ -208,12 +204,24 @@ class C_KaizenAkuntansi extends CI_Controller
 	}
 
 	public function CetakF4($kaizen_id){
+
 		$this->load->library('pdf');
 		
 		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizen_id);
+		$update = array(
+			'status' 			=> 'F4 Belum di Upload'
+		);
+		$this->M_kaizenakuntansi->updateKaizenByKaizenId($update,$kaizen_id);
+
+		$thread = array(
+			'kaizen_id' => $kaizen_id,
+			'status' 	=> 'F4 Belum di Upload',
+			'detail' 	=> '(F4 Belum di Upload) '.$this->session->user.' - '.trim($this->session->employee).' telah mencetak PDF F4 kaizen dengan judul '.$data['kaizen'][0]['judul']
+		);
+		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
 
 	    if ($data['kaizen'][0]['komponen']) {
-				$arrayKomponen = explode(',', $data['kaizen'][0]['komponen']);
+				$arrayKomponen = explode(';', $data['kaizen'][0]['komponen']);
 				foreach ($arrayKomponen as $key => $value) {
 					$dataItem = $this->M_kaizenakuntansi->getMasterItem(FALSE,$value);
 					$kodeItem = $dataItem[0]['SEGMENT1'];
@@ -266,6 +274,80 @@ class C_KaizenAkuntansi extends CI_Controller
 		$pdf->WriteHTML($stylesheet1, 1);
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');
+	}
+
+	public function MyKaizen(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Kaizen Akuntansi';
+		$data['Header']			=	'Kaizen Akuntansi';
+		$data['Menu'] 			= 	'Submit Kaizen';
+		$data['SubMenuOne'] 	= 	'Submit F4';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByNoind($user);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_MyKaizen',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function UploadF4($kaizen_id){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Kaizen Akuntansi';
+		$data['Header']			=	'Kaizen Akuntansi';
+		$data['Menu'] 			= 	'Submit Kaizen';
+		$data['SubMenuOne'] 	= 	'Submit F4';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizen_id);
+		$data['thread'] = $this->M_kaizenakuntansi->getThreadByKaizenId($kaizen_id);
+		if ($data['kaizen'][0]['komponen']) {
+				$arrayKomponen = explode(';', $data['kaizen'][0]['komponen']);
+				foreach ($arrayKomponen as $key => $value) {
+					$dataItem = $this->M_kaizenakuntansi->getMasterItem(FALSE,$value);
+					$kodeItem = $dataItem[0]['SEGMENT1'];
+					$namaItem = $dataItem[0]['ITEM_NAME'];
+					$komponen[] = $aa = array('id' => $value, 'code' => $kodeItem, 'name' => $namaItem);
+				}
+
+				$data['kaizen'][0]['komponen'] = $komponen;
+			}
+
+		$data['section_user'] = $this->M_kaizenakuntansi->getSectAll($data['kaizen'][0]['pencetus_noind']);		
+
+		if (strpos($data['kaizen'][0]['kondisi_awal'], '<img') !== FALSE) {
+			$data['kaizen'][0]['kondisi_awal'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['kondisi_awal']);
+		} else {
+			$data['kaizen'][0]['kondisi_awal'] = $data['kaizen'][0]['kondisi_awal'];
+		}
+		if (strpos($data['kaizen'][0]['usulan_kaizen'], '<img') !== FALSE) {
+			$data['kaizen'][0]['usulan_kaizen'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['usulan_kaizen']);
+		} else {
+			$data['kaizen'][0]['usulan_kaizen'] = $data['kaizen'][0]['usulan_kaizen'];
+		}
+		if (strpos($data['kaizen'][0]['pertimbangan'], '<img') !== FALSE) {
+			$data['kaizen'][0]['pertimbangan'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['pertimbangan']);
+		} else {
+			$data['kaizen'][0]['pertimbangan'] = $data['kaizen'][0]['pertimbangan'];
+		}
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_UploadF4',$data);
+		$this->load->view('V_Footer',$data);
 	}
 }
 
