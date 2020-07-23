@@ -419,7 +419,7 @@ class C_splasska extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				$mail->addAddress("", 'Monitoring Transaction');
-				if ($this->is_prod) {
+				if ($this->is_production) {
 					$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
 				} else {
 					$mail->addAddress($this->developer_email, 'Lembur (Approve Asska)');
