@@ -630,19 +630,19 @@ class C_Master extends CI_Controller
         $line_5 = $this->M_wipp->getline5($date);
 
         foreach ($line_1 as $key => $value) {
-            $line_1[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_1[$key]['PPIC'] = $value['target_pe'];
         }
         foreach ($line_2 as $key => $value) {
-            $line_2[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_2[$key]['PPIC'] = $value['target_pe'];
         }
         foreach ($line_3 as $key => $value) {
-            $line_3[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_3[$key]['PPIC'] = $value['target_pe'];
         }
         foreach ($line_4 as $key => $value) {
-            $line_4[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_4[$key]['PPIC'] = $value['target_pe'];
         }
         foreach ($line_5 as $key => $value) {
-            $line_5[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_5[$key]['PPIC'] = $value['target_pe'];
         }
 
         $data['line_1'] = $line_1;
