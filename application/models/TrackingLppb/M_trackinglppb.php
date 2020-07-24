@@ -205,4 +205,16 @@ AND klbd.po_header_id = poh.po_header_id
       return $run->result_array();
     }
 
+    public function searchVendor($q)
+    {
+      $oracle = $this->load->database('oracle',true);
+
+      $query = $oracle->query("SELECT 
+      pv.VENDOR_NAME
+      from
+      po_vendors pv
+      WHERE pv.VENDOR_NAME LIKE '%$q%'");
+      return $query->result_array();
+    }
+
 }

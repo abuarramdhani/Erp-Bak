@@ -79,6 +79,33 @@ $(document).ready(function(){
 		}
 	})
 
+	$('.slcnmvendorLppb').select2({
+        ajax: {
+            url: baseurl+'TrackingLppb/Tracking/searchVendor',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            id: item.VENDOR_NAME,
+                            text: item.VENDOR_NAME,
+                        }
+                    })
+                };
+            },
+            cache: true,
+        },
+        minimumInputLength: 4,
+		placeholder: 'Nama Vendor',
+		allowClear: true
+    })
+
 	
 $('#btnsavekasie').click(function(){
 	Swal.fire({

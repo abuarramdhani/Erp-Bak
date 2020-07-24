@@ -44,7 +44,7 @@ class C_trackinglppb extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['vendor_name'] = $this->M_trackinglppb->getVendorName();
+		// $data['vendor_name'] = $this->M_trackinglppb->getVendorName();
 		$data['inventory'] = $this->M_trackinglppb->getInventory();
 		$data['opsi'] = $this->M_trackinglppb->getOpsiGudang();
 
@@ -132,7 +132,7 @@ class C_trackinglppb extends CI_Controller{
 	}
 
 	public function exportExcelTrackingLppb()
-{	
+	{	
 		
 		$nama_vendor = $this->input->post('nama_vendor');
 		$nomor_lppb = $this->input->post('nomor_lppb');
@@ -304,7 +304,16 @@ class C_trackinglppb extends CI_Controller{
 		header('Content-Disposition: attachment;filename="Report_Tracking_Invoice '.$date.'.xlsx"');
 		$objWriter->save("php://output");
 
-}
+	}
+
+	public function searchVendor()
+	{
+		$namaVendor = $_GET['q'];
+
+		$data = $this->M_trackinglppb->searchVendor(strtoupper($namaVendor));
+
+		echo json_encode($data);
+	}
 	
 
 }
