@@ -57,7 +57,11 @@ class C_Index extends CI_Controller
 		$aksesRahasia = array_column($aksesRahasia, 'noind');
 		$a = array_search($no_induk, $aksesRahasia);
 		echo "<pre>";
-		print_r($aksesRahasia);
+		print_r($aksesRahasia.'<br>');
+		if($a){
+		    
+		print_r('1.'.$a.'<br>');
+		}
 		print_r($a);
 		die;
 
