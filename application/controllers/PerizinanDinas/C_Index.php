@@ -55,7 +55,11 @@ class C_Index extends CI_Controller
 
 		$aksesRahasia = $this->M_index->allowedAccess();
 		$aksesRahasia = array_column($aksesRahasia, 'noind');
-		echo "<pre>";print_r(aksesRahasia);die;
+		$a = array_search($no_induk, $aksesRahasia);
+		echo "<pre>";
+		print_r(aksesRahasia);
+		print_r($a);
+		die;
 
 		if (array_search($no_induk, $aksesRahasia)) {
 			$data['UserMenu'] = $datamenu;
