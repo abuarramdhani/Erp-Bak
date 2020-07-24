@@ -113,7 +113,8 @@ class M_pengurangan extends CI_Model
                         where fd_tanggal = ?
                         and fs_tempat_makan = ?
                         and fs_kd_shift = ?
-                    ) +
+                    ),0) +
+                    coalesce(
                     (
                         select sum(fn_jml_tdkpesan)
                         from \"Catering\".tpenguranganpesanan
@@ -121,9 +122,7 @@ class M_pengurangan extends CI_Model
                         and fd_tanggal = ?
                         and fs_tempat_makanpg = ?
                         and fs_kd_shift = ?
-                    ),
-                    0
-                ) as jumlah";
+                    ),0) as jumlah";
         return $this->personalia->query($sql, array($tanggal, $tempat_makan, $shift, $tanggal, $tempat_makan, $shift))->row();
     }
 
