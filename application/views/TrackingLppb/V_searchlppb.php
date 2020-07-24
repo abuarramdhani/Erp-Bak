@@ -36,11 +36,8 @@
 														<tr>
 															<td style="padding: 0 50px 0 0"><label style="width: 100px">Nama Vendor</label></td>
 															<td>
-																<select id="nama_vendor"  name="nama_vendor" class="form-control select2" style="margin-top: 10px; width:300px;">
-																	<option value=""> Pilih Vendor </option>
-																<?php foreach ($vendor_name as $name) { ?>
-																<option value="<?php echo $name['VENDOR_NAME'] ?>"><?php echo $name['VENDOR_NAME'] ?></option>
-																<?php } ?>
+																<select id="nama_vendor"  name="nama_vendor" class="form-control slcnmvendorLppb" style="margin-top: 10px; width:300px;">
+																	
 																</select>
 															</td>
 														</tr>
