@@ -296,7 +296,7 @@ jumlahEl1.forEach((v, i) => {
 
     // if ($('#btnstart'+i).val() === 'Start') {
     intervalId1[i] = setInterval(startTimer1[i], 1000);
-    $('#btnstart1' + i).removeAttr("disabled");
+    // $('#btnstart1' + i).removeAttr("disabled");
     $('#btnlanjut1' + i).removeAttr("disabled");
     $('#btnrestart1' + i).removeAttr("disabled");
     $('#btnfinish1' + i).removeAttr("disabled");
@@ -455,7 +455,10 @@ jumlahEl1.forEach((v, i) => {
               timer: 1700
             })
           }else {
-            swalRTLPToastrAlert('warning', `Data Job Lane 1 dengan No Job ${no_job} Dijeda.`)
+            swalRTLPToastrAlert('warning', `Data Job Lane 1 dengan No Job ${no_job} Dijeda.`);
+             $('#btnstart1' + i).removeAttr("disabled");
+             $('#btnlanjut1' + i).attr("disabled", "disabled");
+             $('#btnrestart1' + i).attr("disabled", "disabled");
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -513,7 +516,7 @@ jumlahEl2.forEach((v, i) => {
     })
     // if ($('#btnstart'+i).val() === 'Start') {
     intervalId2[i] = setInterval(startTimer2[i], 1000);
-    $('#btnstart2' + i).removeAttr("disabled");
+    // $('#btnstart2' + i).removeAttr("disabled");
     $('#btnlanjut2' + i).removeAttr("disabled");
     $('#btnrestart2' + i).removeAttr("disabled");
     $('#btnfinish2' + i).removeAttr("disabled");
@@ -668,6 +671,9 @@ jumlahEl2.forEach((v, i) => {
             })
           }else {
             swalRTLPToastrAlert('warning', `Data Job Lane 2 dengan No Job ${no_job} Dijeda.`)
+            $('#btnstart2' + i).removeAttr("disabled");
+            $('#btnlanjut2' + i).attr("disabled", "disabled");
+            $('#btnrestart2' + i).attr("disabled", "disabled");
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -726,7 +732,7 @@ jumlahEl3.forEach((v, i) => {
     })
     // if ($('#btnstart'+i).val() === 'Start') {
     intervalId3[i] = setInterval(startTimer3[i], 1000);
-    $('#btnstart3' + i).removeAttr("disabled");
+    // $('#btnstart3' + i).removeAttr("disabled");
     $('#btnlanjut3' + i).removeAttr("disabled");
     $('#btnrestart3' + i).removeAttr("disabled");
     $('#btnfinish3' + i).removeAttr("disabled");
@@ -881,6 +887,9 @@ jumlahEl3.forEach((v, i) => {
             })
           }else {
             swalRTLPToastrAlert('warning', `Data Job Lane 3 dengan No Job ${no_job} Dijeda.`)
+            $('#btnstart3' + i).removeAttr("disabled");
+            $('#btnlanjut3' + i).attr("disabled", "disabled");
+            $('#btnrestart3' + i).attr("disabled", "disabled");
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -939,7 +948,7 @@ jumlahEl4.forEach((v, i) => {
     })
 
     intervalId4[i] = setInterval(startTimer4[i], 1000);
-    $('#btnstart4' + i).removeAttr("disabled");
+    // $('#btnstart4' + i).removeAttr("disabled");
     $('#btnlanjut4' + i).removeAttr("disabled");
     $('#btnrestart4' + i).removeAttr("disabled");
     $('#btnfinish4' + i).removeAttr("disabled");
@@ -1093,6 +1102,9 @@ jumlahEl4.forEach((v, i) => {
             })
           }else {
             swalRTLPToastrAlert('warning', `Data Job Lane 4 dengan No Job ${no_job} Dijeda.`)
+            $('#btnstart4' + i).removeAttr("disabled");
+            $('#btnlanjut4' + i).attr("disabled", "disabled");
+            $('#btnrestart4' + i).attr("disabled", "disabled");
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1150,7 +1162,7 @@ jumlahEl5.forEach((v, i) => {
     })
     // if ($('#btnstart'+i).val() === 'Start') {
     intervalId5[i] = setInterval(startTimer5[i], 1000);
-    $('#btnstart5' + i).removeAttr("disabled");
+    // $('#btnstart5' + i).removeAttr("disabled");
     $('#btnlanjut5' + i).removeAttr("disabled");
     $('#btnrestart5' + i).removeAttr("disabled");
     $('#btnfinish5' + i).removeAttr("disabled");
@@ -1313,6 +1325,9 @@ jumlahEl5.forEach((v, i) => {
             })
           }else {
             swalRTLPToastrAlert('warning', `Data Job Lane 5 dengan No Job ${no_job} Dijeda.`)
+            $('#btnstart5' + i).removeAttr("disabled");
+            $('#btnlanjut5' + i).attr("disabled", "disabled");
+            $('#btnrestart5' + i).attr("disabled", "disabled");
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {

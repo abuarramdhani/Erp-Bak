@@ -21,6 +21,71 @@ const swalWIPP = (type, title) => {
 
 
 // ========================do something below the alert =================
+const saveNewRKHEdit = _ => {
+  var tableInfo = Array.prototype.map.call(document.querySelectorAll('.tblNewRKH tr[hesoyam="ya"]'), function(tr) {
+    return Array.prototype.map.call(tr.querySelectorAll('td center'), function(td) {
+      return td.innerHTML;
+    });
+  });
+
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/SaveJobListEdit',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      date: $('#dateSaveWIIP').val(),
+      waktu_shift: $('#waktuSaveWIIP').val(),
+      jenis: $('#jenisSaveWIIP').val(),
+      data: tableInfo
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result) {
+      if (result === 1) {
+        Swal.fire({
+          type: 'success',
+          title: 'Berhasil menyimpan.',
+          text: ''
+        }).then(_ => {
+          list_Arrage($('#dateSaveWIIP').val()+'_'+$('#jenisSaveWIIP').val().substring(0, 1));
+        })
+      }else {
+        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, No Job '+result+' telah ada sebelumnya.');
+      }
+      // else if (result.status === 2) {
+      //   swalWIPPToastrAlert('error', 'Gagal menyimpan data! No job '+ result.no_job+', data telah digunakan!');
+      // }else if (result === 3) {
+      //   swalWIPPToastrAlert('error', 'Gagal menyimpan data! job dengan tanggal '+ $('#dateSaveWIIP').val() +' telah digunakan!');
+      // }
+
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+const job_released_edit = () => {
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/JobReleasedEdit',
+    type: 'POST',
+    async: true,
+    beforeSend: function() {
+      $('.table-job-released-edit').html(`<div id="loadingArea0">
+                                      <center><img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+                                    </div>`)
+    },
+    success: function(result) {
+      $('.table-job-released-edit').html(result)
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
 let wipp_skrtt = $('.tblwiip12').DataTable({
   "pageLength": 10,
 });
@@ -478,7 +543,7 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     // $('.tblNewRKH tr[row]:visible').each(function(i) {
     //   $(this).find('td:first center').text(i + 1);
     // })
-    
+
     $('.wipp_hided').show();
     $('#hideSave').val('Y');
   }
@@ -733,7 +798,7 @@ const saveNewRKH = _ => {
 const minusNewRKH = n => {
   $('.tblNewRKH tr[row="' + n + '"]').remove();
   $('.tblNewRKH tr[row]:visible').each(function(i) {
-    $(this).find('td:first').text(i + 1);
+    $(this).find('td:first').html(`<center>${i + 1}</center>`);
   })
 }
 
