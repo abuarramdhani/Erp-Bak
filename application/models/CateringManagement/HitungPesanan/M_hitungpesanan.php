@@ -1031,7 +1031,7 @@ class M_hitungpesanan extends Ci_Model
                     ),
                     0
                 ) as jumlah";
-		return $this->personalia->query($sql,array($tanggal,$tempat_makan,$shift$tanggal,$tempat_makan,$shift))->result_array();
+		return $this->personalia->query($sql,array($tanggal,$tempat_makan,$shift,$tanggal,$tempat_makan,$shift))->result_array();
 	}
 
 	public function getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan,$kategori){
