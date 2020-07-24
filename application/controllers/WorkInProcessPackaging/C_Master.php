@@ -212,6 +212,29 @@ class C_Master extends CI_Controller
         }
     }
 
+    public function JobReleasedEdit()
+    {
+        if (!$this->input->is_ajax_request()) {
+            echo "Akses Terlarang!!!";
+        } else {
+            $data_a = $this->M_wipp->getItem();
+
+            foreach ($data_a as $key => $val) {
+                $data_a[$key]['PRIORITY'] = 0;
+                $minmax = $this->M_wipp->minMax($val['KODE_ASSY']);
+                if (!empty($minmax)) {
+                    $data_a[$key]['MIN'] = $minmax[0]['MIN'];
+                    $data_a[$key]['MAX'] = $minmax[0]['MAX'];
+                } else {
+                    $data_a[$key]['MIN'] = '-';
+                    $data_a[$key]['MAX'] = '-';
+                }
+            }
+            $data['get_unique'] = $data_a;
+            $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released', $data);
+        }
+    }
+
     public function JobReleaseSelected()
     {
         $term = strtoupper($this->input->post('term'));
@@ -255,6 +278,9 @@ class C_Master extends CI_Controller
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['param'] = $l;
+        $x = explode('_', $l);
+        $get_wss = $this->db->select('waktu_satu_shift')->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.job_list')->row_array();
+        $data['wss'] = $get_wss['waktu_satu_shift'];
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -1314,6 +1340,59 @@ class C_Master extends CI_Controller
         } else {
             $data = $this->M_wipp->cek_job_id($this->input->post('id_job'));
             echo json_encode($data);
+        }
+    }
+
+    public function SaveJobListEdit()
+    {
+        $date = $this->input->post('date');
+        $waktu_shift = $this->input->post('waktu_shift');
+        $data = $this->input->post('data');
+        // echo "<pre>";
+        // print_r($data);
+        // die;
+        $j = $this->input->post('jenis');
+        $jenis = substr($j, 0, 1);
+        if (!empty($date)) {
+            $cek = $this->db->select('no_job')
+                         ->where('date_target', $date)
+                         ->where('type', $jenis)
+                         ->get('wip_pnp.job_list')
+                         ->result_array();
+
+                foreach ($data as $key => $d) {
+                  foreach ($cek as $key2 => $c) {
+                    if ($d[1] === $c['no_job']) {
+                       $cekk = $d[1];
+                       break 2;
+                    }else {
+                      $cekk = 0;
+                    }
+                  }
+                }
+
+                if($cekk === 0) {
+                foreach ($data as $key => $d) {
+                    $n195 = $this->M_wipp->savenewRKH([
+                      'date_target' => $date,
+                      'waktu_satu_shift' => $waktu_shift,
+                      'type' => $jenis,
+                      'no_job' => $d[1],
+                      'kode_item' => $d[2],
+                      'nama_item' => $d[3],
+                      'qty' => $d[4],
+                      'usage_rate' => $d[5],
+                      'scedule_start_date' => $d[6],
+                      'qty_parrent' => $d[7]
+                    ]);
+                  }
+                  echo json_encode($n195);
+                }else {
+                  echo json_encode($cekk);
+                }
+
+        } else {
+            echo json_encode('fail');
         }
     }
 
