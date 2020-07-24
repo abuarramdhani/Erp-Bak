@@ -604,5 +604,16 @@ $(document).on('ready', function(){
             window.open(baseurl+'SystemIntegration/KaizenAkt/CetakF4/'+kaizenId,'_blank');
         }
     })
+
+    $('.tbl-SI-KaizenAkt-MyKaizen').DataTable({
+        "lengthMenu": [
+            [ -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+    })
 })
 // end kaizen akuntansi

@@ -1,33 +1,9 @@
 <section class="content">
 	<div class="box box-default color-palette-box">
     	<div class="box-header with-border">
-      		<h3 class="box-title"><i class="fa fa-dashboard"></i> <b>Upload F4 Kaizen</b></h3>
+      		<h3 class="box-title"><i class="fa fa-dashboard"></i> <b>Lihat Kaizen</b></h3>
 		</div>
 		<div class="box-body">
-			<div class="row">
-				<div class="col-lg-6 col-lg-offset-3">
-					<div class="box box-solid box-primary">
-						<div class="box-header with-border">
-							
-						</div>
-						<div class="box-body">
-							<form class="form-horizontal" enctype="multipart/form-data" method="POST" action="<?php echo base_url('SystemIntegration/KaizenAkt/SaveUploadF4/'.$kaizen[0]['kaizen_id']) ?>">
-								<div class="form-group">
-									<label class="control-label col-lg-2">Form F4</label>
-									<div class="col-lg-10">
-										<input type="file" class="form-control" name="file" required>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 text-center">
-										<button type="submit" class="btn btn-primary">Upload</button>
-									</div>
-								</div>
-							</form>
-						</div>	
-					</div>
-				</div>
-			</div>
 			<div class="row">
 				<div class="col-lg-12">
 					<table class="table" style="border: 1px solid #000">
@@ -107,9 +83,19 @@
 								</td>
 							</tr>
 							<tr>
-								<td style="border-bottom: 1px solid #000; border-right: 1px solid #000" colspan="3"><?= $kaizen[0]['pertimbangan'] ?></td>
-								<td style="border-bottom: 1px solid #000; border-right: 1px solid #000" colspan="3" class="text-center">
+								<td style="border-bottom: 1px solid #000; border-right: 1px solid #000" colspan="3" rowspan="3"><?= $kaizen[0]['pertimbangan'] ?></td>
+								<td style="border-bottom: 1px solid #000; border-right: 1px solid #000;height: 100px" colspan="3" class="text-center">
 									<?= date("d M Y", strtotime($kaizen[0]['tanggal_realisasi'])) ?>
+								</td>
+							</tr>
+							<tr>
+								<td style="border-top: 1px solid #000;border-right: 1px solid #000" colspan="3" class="text-center">
+									<b>F4 Scan / Foto</b>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<a href="<?php echo $kaizen[0]['path_f4'] ?>" target="_blank"><?php echo $kaizen[0]['path_f4'] ?></a>
 								</td>
 							</tr>
 						</tbody>

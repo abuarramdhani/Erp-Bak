@@ -132,11 +132,11 @@ class C_KaizenAkuntansi extends CI_Controller
 
 		$namaLama	= $_FILES['file']['name'];
 		$ekstensi	= pathinfo($namaLama,PATHINFO_EXTENSION);
-		$namaBaru	= "SI-KaizenAkuntansi-".$user."-".str_replace(' ', '_', date('Y-m-d H:i:s')).".".$ekstensi;
+		$namaBaru	= "SI-KaizenAkuntansi-SubmitF4-".$user."-".str_replace(' ', '_', date('Y-m-d H:i:s')).".".$ekstensi;
 
 		$config = array(
 			'upload_path' 	=> './assets/upload_kaizen/',
-	        'upload_url' 	=> base_url()  . './assets/upload_kaizen/',
+	        'upload_url' 	=> base_url()  . 'assets/upload_kaizen/',
 	        'allowed_types' => 'jpg|gif|png',
 	        'overwrite' 	=> false,
 	        'file_name' 	=> $namaBaru
@@ -282,8 +282,8 @@ class C_KaizenAkuntansi extends CI_Controller
 
 		$data['Title']			=	'Kaizen Akuntansi';
 		$data['Header']			=	'Kaizen Akuntansi';
-		$data['Menu'] 			= 	'Submit Kaizen';
-		$data['SubMenuOne'] 	= 	'Submit F4';
+		$data['Menu'] 			= 	'My Kaizen';
+		$data['SubMenuOne'] 	= 	'';
 		$data['SubMenuTwo'] 	= 	'';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -304,8 +304,98 @@ class C_KaizenAkuntansi extends CI_Controller
 
 		$data['Title']			=	'Kaizen Akuntansi';
 		$data['Header']			=	'Kaizen Akuntansi';
-		$data['Menu'] 			= 	'Submit Kaizen';
-		$data['SubMenuOne'] 	= 	'Submit F4';
+		$data['Menu'] 			= 	'My Kaizen';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizen_id);
+		$data['thread'] = $this->M_kaizenakuntansi->getThreadByKaizenId($kaizen_id);
+		if ($data['kaizen'][0]['komponen']) {
+				$arrayKomponen = explode(';', $data['kaizen'][0]['komponen']);
+				foreach ($arrayKomponen as $key => $value) {
+					$dataItem = $this->M_kaizenakuntansi->getMasterItem(FALSE,$value);
+					$kodeItem = $dataItem[0]['SEGMENT1'];
+					$namaItem = $dataItem[0]['ITEM_NAME'];
+					$komponen[] = $aa = array('id' => $value, 'code' => $kodeItem, 'name' => $namaItem);
+				}
+
+				$data['kaizen'][0]['komponen'] = $komponen;
+			}
+
+		$data['section_user'] = $this->M_kaizenakuntansi->getSectAll($data['kaizen'][0]['pencetus_noind']);		
+
+		if (strpos($data['kaizen'][0]['kondisi_awal'], '<img') !== FALSE) {
+			$data['kaizen'][0]['kondisi_awal'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['kondisi_awal']);
+		} else {
+			$data['kaizen'][0]['kondisi_awal'] = $data['kaizen'][0]['kondisi_awal'];
+		}
+		if (strpos($data['kaizen'][0]['usulan_kaizen'], '<img') !== FALSE) {
+			$data['kaizen'][0]['usulan_kaizen'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['usulan_kaizen']);
+		} else {
+			$data['kaizen'][0]['usulan_kaizen'] = $data['kaizen'][0]['usulan_kaizen'];
+		}
+		if (strpos($data['kaizen'][0]['pertimbangan'], '<img') !== FALSE) {
+			$data['kaizen'][0]['pertimbangan'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['pertimbangan']);
+		} else {
+			$data['kaizen'][0]['pertimbangan'] = $data['kaizen'][0]['pertimbangan'];
+		}
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_UploadF4',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function SaveUploadF4($kaizen_id){
+		$namaLama	= $_FILES['file']['name'];
+		$ekstensi	= pathinfo($namaLama,PATHINFO_EXTENSION);
+		$namaBaru	= "SI-KaizenAkuntansi-UploadF4-".$user."-".str_replace(' ', '_', date('Y-m-d H:i:s')).".".$ekstensi;
+
+		$config = array(
+			'upload_path' 	=> './assets/upload_kaizen/',
+	        'upload_url' 	=> base_url()  . 'assets/upload_kaizen/',
+	        'allowed_types' => 'jpg|gif|png|pdf',
+	        'overwrite' 	=> false,
+	        'file_name' 	=> $namaBaru
+	    );
+
+	    $this->load->library('upload', $config);
+
+	    if ($this->upload->do_upload('file')) {
+	    	$data = $this->upload->data();
+	        $link = $config['upload_url'] . $data['file_name'];
+	        $update = array(
+				'status' 			=> 'F4 Sudah di Upload',
+				'upload_date_f4' 	=> date('Y-m-d'),
+				'path_f4' 			=> $link
+			);
+			$this->M_kaizenakuntansi->updateKaizenByKaizenId($update,$kaizen_id);
+
+			$thread = array(
+				'kaizen_id' => $kaizen_id,
+				'status' 	=> 'F4 Sudah di Upload',
+				'detail' 	=> '(F4 Sudah di Upload) '.$this->session->user.' - '.trim($this->session->employee).' telah mengunggah F4 kaizen dengan judul '.$data['kaizen'][0]['judul']
+			);
+			$this->M_kaizenakuntansi->insertThreadKaizen($thread);
+	        redirect(base_url('SystemIntegration/KaizenAkt/MyKaizen'));
+	    } else {
+	        echo $this->upload->display_errors();
+	        exit();
+	    }
+	}
+
+	public function LihatF4($kaizen_id){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Kaizen Akuntansi';
+		$data['Header']			=	'Kaizen Akuntansi';
+		$data['Menu'] 			= 	'My Kaizen';
+		$data['SubMenuOne'] 	= 	'';
 		$data['SubMenuTwo'] 	= 	'';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -346,7 +436,7 @@ class C_KaizenAkuntansi extends CI_Controller
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_UploadF4',$data);
+		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_LihatF4',$data);
 		$this->load->view('V_Footer',$data);
 	}
 }

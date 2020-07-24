@@ -65,30 +65,8 @@ class M_kaizenakuntansi extends CI_Model{
 		$sql = "select ska.kaizen_id, 
 					ska.judul,
 					ska.due_date_f4,
-					(
-						select string_agg(concat(to_char(thread_timestamp,'yyyy-mm-dd hh24:mi:ss'),'#',detail),';')
-						from si.si_kaizen_akuntansi_thread skat
-						where skat.kaizen_id = ska.kaizen_id
-						and skat.status = 'Create Ide'
-					) as submit_ide,
-					(
-						select string_agg(concat(to_char(thread_timestamp,'yyyy-mm-dd hh24:mi:ss'),'#',detail),';')
-						from si.si_kaizen_akuntansi_thread skat
-						where skat.kaizen_id = ska.kaizen_id
-						and skat.status = 'F4 Sudah di Submit'
-					) as submit_f4,
-					(
-						select string_agg(concat(to_char(thread_timestamp,'yyyy-mm-dd hh24:mi:ss'),'#',detail),';')
-						from si.si_kaizen_akuntansi_thread skat
-						where skat.kaizen_id = ska.kaizen_id
-						and skat.status = 'F4 Belum di Upload'
-					) as belum_upload,
-					(
-						select string_agg(concat(to_char(thread_timestamp,'yyyy-mm-dd hh24:mi:ss'),'#',detail),';')
-						from si.si_kaizen_akuntansi_thread skat
-						where skat.kaizen_id = ska.kaizen_id
-						and skat.status = 'F4 Sudah di Upload'
-					) as sudah_upload
+					ska.status,
+					ska.created_timestamp
 				from si.si_kaizen_akuntansi ska 
 				where ska.pencetus_noind = ?";
 		return $this->db->query($sql,array($noind))->result_array();
