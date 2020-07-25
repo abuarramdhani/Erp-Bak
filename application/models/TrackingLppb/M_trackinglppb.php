@@ -67,66 +67,76 @@ class M_trackinglppb extends CI_Model {
     return $run->result_array();
   }
 
-  public function monitoringLppb($kriteria)
+  public function monitoringLppb($nama_vendor,$nomor_lppb,$dateFrom,$dateTo,$nomor_po,$inventory,$opsigdg)
   {
     $oracle = $this->load->database('oracle',TRUE);
-    $query = "SELECT DISTINCT 
-              rsh.receipt_num                 lppb_number,
-              kls.section_name,         
-              kls.section_id,
-              poh.segment1                    po_number,
-              pov.vendor_name                 vendor_name, 
-              MP.ORGANIZATION_CODE            ORGANIZATION_CODE, 
-              MP.ORGANIZATION_ID,
-              rt.transaction_type             status_lppb,
-              klb.SOURCE,
-              rsh.creation_date               create_date,
-              klbd.status,
-                  (SELECT MAX(a.action_date) 
-                    FROM khs_lppb_action_detail_1 a 
-                      WHERE a.status = 5 
-                        AND a.batch_detail_id = klad.batch_detail_id) GUDANG_KIRIM,
-                  (SELECT MAX(a.action_date) 
-                    FROM khs_lppb_action_detail_1 a 
-                      WHERE a.status = 6 
-                        AND a.batch_detail_id = klad.batch_detail_id ) AKUNTANSI_TERIMA, 
-              klbd.batch_number,
-              klbd.batch_detail_id
-FROM            rcv_shipment_headers rsh,
-                khs_lppb_section kls,
-                rcv_shipment_lines rsl,
-                po_vendors pov,
-                po_headers_all poh,
-                po_lines_all pol,
-                po_line_locations_all pll,
-                rcv_transactions rt,
-                MTL_PARAMETERS MP,
-                khs_lppb_batch klb,
-                khs_lppb_batch_detail klbd,
-                khs_lppb_action_detail_1 klad
-WHERE rsh.shipment_header_id = rsl.shipment_header_id
-AND rsh.shipment_header_id = rt.shipment_header_id
-AND rsl.shipment_line_id = rt.shipment_line_id
-AND pov.vendor_id = rt.vendor_id
-AND poh.po_header_id = rt.po_header_id
-AND pol.po_line_id = rt.po_line_id
-AND poh.po_header_id(+) = pol.po_header_id
-AND pov.vendor_id(+) = poh.vendor_id
-AND pol.po_line_id(+) = pll.po_line_id
-AND RSH.SHIP_TO_ORG_ID(+) = MP.ORGANIZATION_ID
-AND rt.transaction_id =
-                 (SELECT MAX (rts.transaction_id)
-                    FROM rcv_transactions rts
-                       WHERE rt.shipment_header_id = rts.shipment_header_id
-                          AND rts.po_line_id = pol.po_line_id
-                          AND rts.transaction_type IN
-                          ('REJECT', 'DELIVER', 'ACCEPT', 'RECEIVE','TRANSFER', 'RETURN TO SUPPLIER'))
-AND rsh.receipt_num = klbd.lppb_number
-AND klb.batch_number = klbd.batch_number
-AND klbd.batch_detail_id = klad.batch_detail_id
-AND klbd.io_id = MP.ORGANIZATION_ID
-AND klbd.po_header_id = poh.po_header_id
-                    $kriteria";
+    $query = "SELECT
+      DISTINCT rsh.receipt_num lppb_number,
+      kls.section_name,
+      kls.section_id,
+      poh.segment1 po_number,
+      pov.vendor_name vendor_name,
+      MP.ORGANIZATION_CODE ORGANIZATION_CODE,
+      MP.ORGANIZATION_ID,
+      rt.transaction_type status_lppb,
+      klb.SOURCE,
+      rsh.creation_date create_date,
+      klbd.status,
+      (
+      SELECT
+        MAX(a.action_date)
+      FROM
+        khs_lppb_action_detail_1 a
+      WHERE
+        a.status = 5
+        AND a.batch_detail_id = klad.batch_detail_id) GUDANG_KIRIM,
+      (
+      SELECT
+        MAX(a.action_date)
+      FROM
+        khs_lppb_action_detail_1 a
+      WHERE
+        a.status = 6
+        AND a.batch_detail_id = klad.batch_detail_id ) AKUNTANSI_TERIMA,
+      klbd.batch_number,
+      klbd.batch_detail_id,
+        rt.TRANSACTION_ID,
+        rt.PARENT_TRANSACTION_ID
+    FROM
+      rcv_shipment_headers rsh,
+      khs_lppb_section kls,
+      rcv_shipment_lines rsl,
+      po_vendors pov,
+      po_headers_all poh,
+      po_lines_all pol,
+      rcv_transactions rt,
+      MTL_PARAMETERS MP,
+      khs_lppb_batch klb,
+      khs_lppb_batch_detail klbd,
+      khs_lppb_action_detail_1 klad
+    WHERE
+      rsh.shipment_header_id = rsl.shipment_header_id
+      AND rsh.shipment_header_id = rt.shipment_header_id
+      AND rsl.shipment_line_id = rt.shipment_line_id
+      AND pov.vendor_id = rt.vendor_id
+      AND poh.po_header_id = rt.po_header_id
+      AND pol.po_line_id = rt.po_line_id
+      AND poh.po_header_id(+) = pol.po_header_id
+      AND pov.vendor_id(+) = poh.vendor_id
+      AND RSH.SHIP_TO_ORG_ID(+) = MP.ORGANIZATION_ID
+        AND rt.TRANSACTION_TYPE = 'RECEIVE'
+      AND rsh.receipt_num = klbd.lppb_number
+      AND klb.batch_number = klbd.batch_number
+      AND klbd.batch_detail_id = klad.batch_detail_id
+      AND klbd.po_header_id = poh.po_header_id
+        AND klb.ID_GUDANG = kls.SECTION_ID
+        AND pov.VENDOR_NAME = nvl('$nama_vendor', pov.VENDOR_NAME)
+        AND rsh.receipt_num = nvl('$nomor_lppb',rsh.RECEIPT_NUM)
+        AND poh.SEGMENT1 = nvl('$nomor_po', poh.SEGMENT1)
+        AND MP.ORGANIZATION_ID = nvl('$inventory', MP.ORGANIZATION_ID)
+        AND kls.SECTION_ID = nvl('$opsigdg', kls.SECTION_ID)
+        AND TRUNC(klb.create_date) BETWEEN TO_DATE('$dateFrom', 'dd/mm/yyyy') AND TO_DATE('$dateTo', 'dd/mm/yyyy') -- isi dengan tanggal
+        ";
     // echo "<pre>";
     // print_r($query);
     // exit();             
