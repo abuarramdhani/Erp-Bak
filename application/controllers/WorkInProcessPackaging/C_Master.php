@@ -157,24 +157,30 @@ class C_Master extends CI_Controller
             echo "Akses Terlarang!!!";
         } else {
             $data_a = $this->M_wipp->getItem();
+            $data_b = $this->M_wipp->getJobAll();
             $priority = $this->M_wipp->getPP();
 
-            // ambil data getItem kemudian ditampung di produk priority
-              foreach ($data_a as $key1 => $da) {
-                  $data_a[$key1]['PRIORITY'] = 0;
-                  $get_job = $this->M_wipp->getJob($da['KODE_ASSY']);
-                  if (!empty($get_job)) {
-                      $gj = $get_job;
-                      foreach ($priority as $key2 => $pr) {
-                          foreach ($gj as $key3 => $g) {
-                              if ($g['KODE_ASSY'] === $pr['kode_item']) {
-                                  $tampung_priority[] = $da;
-                                  break 1;
-                              }
-                          }
-                      }
-                  }
+            foreach ($data_b as $key1 => $value1) {
+              foreach ($data_a as $key => $value) {
+               if ($value1['KODE_COMP'] == $value['KODE_ASSY']) {
+                 $get_job[$value1['KODE_ASSY']] = $value1;
+               }
               }
+            }
+
+            foreach ($data_a as $key => $value) {
+              $data_a[$key]['PRIORITY'] = 0;
+              foreach ($get_job as $key2 => $gj) {
+                if ($gj['KODE_COMP'] === $value['KODE_ASSY']) {
+                  foreach ($priority as $key3 => $pr) {
+                    if ($pr['kode_item'] === $gj['KODE_ASSY']) {
+                      $tampung_priority[] = $value;
+                    }
+                  }
+                }
+              }
+            }
+
 
             if (!empty($tampung_priority)) {
 
@@ -1400,11 +1406,23 @@ class C_Master extends CI_Controller
 
     public function cekapi()
     {
-        $data_a = $this->M_wipp->getJob('EGBA08000000-0');
-        // $data_a = $this->M_wipp->getItem();
+        // $data_a = $this->M_wipp->getJob('EGBA08000000-0');
+        $data_a = $this->M_wipp->getItem();
+        // $data_b = $this->M_wipp->getJobAll();
+        // $priority = $this->M_wipp->getPP();
+        // foreach ($get_job as $key => $value) {
+        //   foreach ($priority as $key2 => $value2) {
+        //     if ($value['KODE_ASSY'] === $value2['kode_item']) {
+        //       $tampung_priority[] = $value;
+        //     }
+        //   }
+        // }
         echo "<pre>";
         print_r($data_a);
         echo sizeof($data_a);
+        // echo "<pre>";
+        // print_r($data_b);
+        // echo sizeof($data_b);
         die;
     }
 }

@@ -1098,25 +1098,7 @@ $('.select2itemcodewipp').on('change', function() {
       $(`#nama_komponen`).val('Loading...');
     },
     success: function(result) {
-      $.ajax({
-        url: baseurl + 'WorkInProcessPackaging/JobManager/cek_job',
-        type: 'POST',
-        dataType: 'JSON',
-        async: true,
-        data: {
-          job: val,
-        },
-        success: function(result2) {
-          if (result2) {
-            swalWIPPToastrAlert('error', 'kode_item tidak ada di database.');
-          } else {
 
-          }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-          console.error();
-        }
-      })
       $(`#nama_komponen`).val(result[0].DESCRIPTION);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
