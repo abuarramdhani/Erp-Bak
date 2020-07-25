@@ -811,7 +811,7 @@ class C_Menu extends CI_Controller
 			    $decrypted_menu_detail_id = str_replace(array('-', '_', '~'), array('+', '/', '='), $rowData[0][1]);
 				$decrypted_menu_detail_id = $this->encrypt->decode($decrypted_menu_detail_id);
 				if ($decrypted_menu_id == "0") {
-					$menu = $this->M_menu->getMenuByLokasiShiftBulanTahun($rowData[6],$rowData[5],$rowData[3],$rowData[2]);
+					$menu = $this->M_menu->getMenuByLokasiShiftBulanTahun($rowData[0][6],$rowData[0][5],$rowData[0][3],$rowData[0][2]);
 					if (!empty($menu)) {
 						$menu_id = $menu['0']['menu_id'];
 
@@ -822,8 +822,8 @@ class C_Menu extends CI_Controller
 						$this->M_menu->updateMenuByMenuId($update_menu,$menu_id);
 					}else{
 						$insert_menu = array(
-							'bulan' 		=> $rowData[0][2],
-							'tahun' 		=> $rowData[0][3],
+							'tahun' 		=> $rowData[0][2],
+							'bulan' 		=> $rowData[0][3],
 							'shift' 		=> $rowData[0][5],
 							'lokasi' 		=> $rowData[0][6],
 							'created_by' 	=> $this->session->user,
