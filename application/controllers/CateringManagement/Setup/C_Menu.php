@@ -652,5 +652,220 @@ class C_Menu extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function ImportExcel(){
+		$user_id = $this->session->userid;
+
+		$data['Title']			=	'List Menu';
+		$data['Menu'] 			= 	'Setup';
+		$data['SubMenuOne'] 	= 	'Menu';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('CateringManagement/Setup/Menu/V_Import',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function ExportData(){
+		// echo "<pre>";print_r($_POST);
+		// exit();
+		$isi 		= $this->input->post('txt-CM-Menu-Export-Isi');
+		$tanggal 	= $this->input->post('txt-CM-Menu-Export-Tanggal');
+		$shift 		= $this->input->post('slc-CM-Menu-Export-Shift');
+		$lokasi 	= $this->input->post('slc-CM-Menu-Export-Lokasi');
+
+		if ($isi == "Isi") {
+			$bulan = date("m",strtotime($_POST['txt-CM-Menu-Export-Tanggal']));
+			$tahun = date("Y",strtotime($_POST['txt-CM-Menu-Export-Tanggal']));
+
+			$where_bulan = " t1.bulan = ".$bulan." ";
+			$where_tahun = " t1.tahun = ".$tahun." ";
+			$awal_bulan = " '".$tahun."-".$bulan."-01'::date ";
+			$akhir_bulan = " '".$tahun."-".$bulan."-01'::date + interval '1 month' - interval '1 day' ";
+			if ($shift == "Shift 1 & Umum") {
+				$where_shift = " t1.shift = 1 ";
+				$shf = "1";
+			}elseif ($shift == "Shift 2") {
+				$where_shift = " t1.shift = 2 ";
+				$shf = "2";
+			}elseif ($shift == "Shift 3") {
+				$where_shift = " t1.shift = 3 ";
+				$shf = "3";
+			}else{
+				$where_shift = "";
+				$shf = "";
+			}
+
+			if ($lokasi == "Yogyakarta & Mlati") {
+				$where_lokasi = " t1.lokasi = 1 ";
+				$lks = "1";
+			}elseif ($lokasi == "Tuksono") {
+				$where_lokasi = " t1.lokasi = 2 ";
+				$lks = "2";
+			}else{
+				$where_lokasi = "";
+				$lks = "";
+			}
+
+			$data = $this->M_menu->getMenuForExport($awal_bulan, $akhir_bulan, $where_tahun, $where_bulan, $where_shift, $where_lokasi, $lks, $shf);
+		}else{
+			$data = array();
+		}
+		// echo "<pre>";print_r($data);exit();
+		$this->load->library('excel');
+		$worksheet = $this->excel->getActiveSheet();
+												
+		$worksheet->setCellValue('A1','menu_id');
+		$worksheet->setCellValue('B1','menu_detail_id');
+		$worksheet->setCellValue('C1','tahun');
+		$worksheet->setCellValue('D1','bulan');
+		$worksheet->setCellValue('E1','tanggal');
+		$worksheet->setCellValue('F1','shift');
+		$worksheet->setCellValue('G1','lokasi');
+		$worksheet->setCellValue('H1','sayur');
+		$worksheet->setCellValue('I1','lauk_utama');
+		$worksheet->setCellValue('J1','lauk_pendamping');
+		$worksheet->setCellValue('K1','buah');
+		
+		$y_index = 2;
+		if (isset($data) && !empty($data)) {
+			foreach ($data as $key => $value) {
+				$encrypted_menu_id = $this->encrypt->encode($value['menu_id']);
+	    		$encrypted_menu_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_menu_id);
+	    		$encrypted_menu_detail_id = $this->encrypt->encode($value['menu_detail_id']);
+	    		$encrypted_menu_detail_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_menu_detail_id);
+				$worksheet->setCellValue('A'.$y_index,$encrypted_menu_id);
+				$worksheet->setCellValue('B'.$y_index,$encrypted_menu_detail_id);
+				$worksheet->setCellValue('C'.$y_index,$value['tahun']);
+				$worksheet->setCellValue('D'.$y_index,$value['bulan']);
+				$worksheet->setCellValue('E'.$y_index,$value['tanggal']);
+				$worksheet->setCellValue('F'.$y_index,$value['shift']);
+				$worksheet->setCellValue('G'.$y_index,$value['lokasi']);
+				$worksheet->setCellValue('H'.$y_index,$value['sayur']);
+				$worksheet->setCellValue('I'.$y_index,$value['lauk_utama']);
+				$worksheet->setCellValue('J'.$y_index,$value['lauk_pendamping']);
+				$worksheet->setCellValue('K'.$y_index,$value['buah']);	
+				$y_index++;
+			}	
+		}
+
+		$worksheet->getProtection()->setPassword('catering');
+
+		$worksheet->getProtection()->setSheet(true); //kunci 1 sheet
+		$worksheet->getStyle('H2:K'.($y_index - 1))->getProtection()->setlocked(PHPExcel_Style_Protection::PROTECTION_UNPROTECTED); //membuka kunci cell range
+		
+		$filename ="CM_Menu_Makan_Pekerja_Bulanan_".date('Y-m-d_H-i-s').".xls";
+		header('Content-Type: aplication/vnd.ms-excel');
+		header('Content-Disposition:attachment;filename="'.$filename.'"');
+		header('Cache-Control: max-age=0');
+
+		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+		$writer->save('php://output');
+	}
+
+	public function ImportData(){
+		$filename = $_FILES['file']['name'];
+        $waktu = date('Y-m-d_H-i-s');
+        $filename = $waktu.str_replace(' ','_', $filename);
+    	
+    	$config['upload_path'] 		= './assets/upload/CateringManagement/';
+        $config['file_name'] 		= $filename;
+        $config['allowed_types'] 	= 'xls|xlsx';
+        $config['max_size'] 		= 10000;
+        $config['overwrite']		= TRUE;
+
+        $this->load->library('upload');
+        $this->upload->initialize($config);
+
+        if(! $this->upload->do_upload('file') ){
+        	print_r($this->upload->data());
+            echo $this->upload->display_errors();exit();
+        }
+
+        $this->load->library('excel');
+        $inputFileName = $config['upload_path'].$filename;
+        $inputFileType = $this->upload->data()['file_type'];
+        
+        try {
+		    $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+		    $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+		    $objPHPExcel = $objReader->load($inputFileName);
+		} catch(Exception $e) {
+		    die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+		}
+
+		$sheet = $objPHPExcel->getSheet(0); 
+		$highestRow = $sheet->getHighestRow(); 
+		$highestColumn = $sheet->getHighestColumn();
+
+		for ($row = 2; $row <= $highestRow; $row++){ 
+		    $rowData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row,NULL,TRUE,FALSE);
+		    $text = $rowData[0][7].$rowData[0][8].$rowData[0][9].$rowData[0][10];
+		    if (strlen($text) > 0) {
+			    $decrypted_menu_id = str_replace(array('-', '_', '~'), array('+', '/', '='), $rowData[0][0]);
+				$decrypted_menu_id = $this->encrypt->decode($decrypted_menu_id);
+			    $decrypted_menu_detail_id = str_replace(array('-', '_', '~'), array('+', '/', '='), $rowData[0][1]);
+				$decrypted_menu_detail_id = $this->encrypt->decode($decrypted_menu_detail_id);
+				if ($decrypted_menu_id == "0") {
+					$menu = $this->M_menu->getMenuByLokasiShiftBulanTahun($rowData[6],$rowData[5],$rowData[3],$rowData[2]);
+					if (!empty($menu)) {
+						$menu_id = $menu['0']['menu_id'];
+
+						$update_menu = array(
+							'updated_by' 	=> $this->session->user,
+							'updated_date' 	=> date('Y-m-d H:i:s')
+						);
+						$this->M_menu->updateMenuByMenuId($update_menu,$menu_id);
+					}else{
+						$insert_menu = array(
+							'bulan' 		=> $rowData[0][2],
+							'tahun' 		=> $rowData[0][3],
+							'shift' 		=> $rowData[0][5],
+							'lokasi' 		=> $rowData[0][6],
+							'created_by' 	=> $this->session->user,
+							'created_date' 	=> date('Y-m-d H:i:s')
+						);
+						$menu_id = $this->M_menu->insertMenu($insert_menu);
+					}
+
+					$data_detail = array(
+						'menu_id' 			=> $menu_id,
+						'tanggal' 			=> $rowData[0][4],
+						'sayur'				=> $rowData[0][7],
+			    		'lauk_utama'		=> $rowData[0][8],
+			    		'lauk_pendamping'	=> $rowData[0][9],
+			    		'buah'				=> $rowData[0][10]
+					);
+
+					$menu_detail = $this->M_menu->getMenuDetailByMenuIdTanggal($menu_id,$rowData[0][4]);
+					
+					if (!empty($menu_detail)) {
+						$this->M_menu->updateMenuDetailByMenuDetailId($data_detail,$menu_detail['0']['menu_detail_id']);
+					}else{
+						$this->M_menu->insertMenuDetail($data_detail);
+					}
+				}else{
+			    	$update_menu = array(
+			    		'updated_by' 	=> $this->session->user,
+						'updated_date' 	=> date('Y-m-d H:i:s')
+				    );
+				    $this->M_menu->updateMenuByMenuId($update_menu,$decrypted_menu_id);
+
+			    	$update_menu_detail = array(
+			    		'sayur'				=> $rowData[0][7],
+			    		'lauk_utama'		=> $rowData[0][8],
+			    		'lauk_pendamping'	=> $rowData[0][9],
+			    		'buah'				=> $rowData[0][10]
+				    );
+				    $this->M_menu->updateMenuDetailByMenuDetailId($update_menu_detail,$decrypted_menu_detail_id);
+				}
+		    }
+		}
+		redirect(base_url('CateringManagement/Setup/Menu/ImportExcel'));
+	}
 
 } ?>

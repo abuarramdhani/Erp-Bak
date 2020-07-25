@@ -5046,6 +5046,14 @@ $(document).ready(function(){
 	    "minViewMode":'months'
 	});
 
+	$('#txt-CM-Menu-Export-BulanTahun').datepicker({
+	    "autoclose": true,
+	    "todayHiglight": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+	});
+
 	var tblCMMenuCreate = $('#tbl-CM-Menu-Create').DataTable({
 		"paging": false,
 		"searching": false,
