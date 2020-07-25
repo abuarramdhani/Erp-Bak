@@ -101,6 +101,7 @@ class C_TransferReffGaji extends CI_Controller
 		$data_rekap = $this->M_transferreffgaji->getRekapNominal($periode); // rekap nominal
 
 		$jumlah_total = count($data_pkl_non) + (count($data_staff)*2) + count($data_nonstaff) + count($data_os) + count($data_cetak_per_kode_induk) + count($data_cetak_per_kodesie) + count($data_rekap);
+		
 		$this->M_transferreffgaji->insertProgres($user,$periode,$jumlah_total);
 		$progres = 0;
 		$this->M_transferreffgaji->updateProgres($user,$progres,"Mempersiapkan Data");
@@ -108,6 +109,7 @@ class C_TransferReffGaji extends CI_Controller
 		flush();
 
 		$data_download = "";
+		
 		//pkl non staff
 		if (!empty($data_pkl_non)) {
 			$table = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info.dbf");
@@ -1118,7 +1120,7 @@ class C_TransferReffGaji extends CI_Controller
 		if (!empty($data_cetak_per_kode_induk)) {
 			$pdf_cetak_per_kode_induk = $this->pdf->load();
 			$pdf_cetak_per_kode_induk->debug = true;
-			$pdf_cetak_per_kode_induk = new mPDF('utf-8', 'A4-L', 8, '', 10, 10, 20, 25, 5, 5);
+			$pdf_cetak_per_kode_induk = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 20, 25, 5, 5);
 			$filename = 'CETAKALL'.$periode.$waktu.'.pdf';
 
 			// $html_cetak_per_kode_induk = $this->cetakAll($data_cetak_per_kode_induk,$user,$progres);
@@ -1139,233 +1141,233 @@ class C_TransferReffGaji extends CI_Controller
 							if (in_array($simpan_kode_induk, array("A","E","H","T","F","K","P"))) {
 								$html_cetak_per_kode_induk .= "
 								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>".$simpan_pduka_spsi."</td>
-									<td>".$simpan_pot_plain."</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>".$simpan_dldobat."</td>
-									<td></td>
-									<td></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_pduka_spsi,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_pot_plain,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_dldobat,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
 								</tr>";
 							}elseif(in_array($simpan_kode_induk, array("B","D","G","J"))){
 								$html_cetak_per_kode_induk .= "
 								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>".$simpan_dldobat."</td>
-									<td></td>
-									<td>".$simpan_putkop_pikop."</td>
-									<td>".$simpan_pduka_spsi."</td>
-									<td>".$simpan_plain."</td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_dldobat,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_putkop_pikop,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_pduka_spsi,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_plain,0,',','.')."</td>
 								</tr>";
 							}elseif(in_array($simpan_kode_induk, array("Q"))){
 								$html_cetak_per_kode_induk .= "
 								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>".$simpan_dldobat."</td>
-									<td></td>
-									<td>".$simpan_putkop_pikop."</td>
-									<td>".$simpan_pduka_spsi."</td>
-									<td>".$simpan_plain."</td>
-									<td></td>
-									<td></td>
-									<td></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_dldobat,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_putkop_pikop,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_pduka_spsi,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_plain,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
 								</tr>";
 							}else{
 								$html_cetak_per_kode_induk .= "
 								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
 								</tr>";
 							}
 							$html_cetak_per_kode_induk .= "</tbody></table><div style='page-break-after: always'></div>";
 						}
 						if (in_array(substr($value['noind'], 0, 1), array("A","E","H","P","T"))) {
-							$html_cetak_per_kode_induk .= "<table border='1' style='border: 0.5px solid black;border-collapse: collapse;width: 100%;font-size: 8pt'>
+							$html_cetak_per_kode_induk .= "<table style='border-collapse: collapse;width: 100%;font-size: 8pt'>
 									<thead>
 										<tr>
-											<td style='width: 3%;text-align: center;'>NO</td>
-											<td style='width: 6%;text-align: center;'>KODESIE</td>
-											<td style='width: 4%;text-align: center;'>NOIND</td>
-											<td style='width: 11%;text-align: center;'>NAMA</td>
-											<td style='width: 3%;text-align: center;'>IP</td>
-											<td style='width: 3%;text-align: center;'>IK</td>
-											<td style='width: 3%;text-align: center;'>IF</td>
-											<td style='width: 3%;text-align: center;'>HTM</td>
-											<td style='width: 4%;text-align: center;'>UBT</td>
-											<td style='width: 4%;text-align: center;'>UPAMK</td>
-											<td style='width: 3%;text-align: center;'>UM</td>
-											<td style='width: 3%;text-align: center;'>IMS</td>
-											<td style='width: 3%;text-align: center;'>IMM</td>
-											<td style='width: 4%;text-align: center;'>LEMBUR</td>
-											<td style='width: 3%;text-align: center;'>CT</td>
-											<td style='width: 3%;text-align: center;'>HL</td>
-											<td style='width: 5%;text-align: center;'>P.DUKA</td>
-											<td style='width: 4%;text-align: center;'>POT.</td>
-											<td style='width: 4%;text-align: center;'>TAMB.</td>
-											<td style='width: 4%;text-align: center;'>IJIN</td>
-											<td style='width: 4%;text-align: center;'>UBS</td>
-											<td style='width: 4%;text-align: center;'>UMP</td>
-											<td style='width: 4%;text-align: center;'>DL&OBAT</td>
-											<td style='width: 4%;text-align: center;'>POT.2</td>
-											<td style='width: 4%;text-align: center;'>TAMB.2</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>NO</td>
+											<td style='width: 6%;text-align: center;border: 1px solid #b2bec3;'>KODESIE</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>NOIND</td>
+											<td style='width: 11%;text-align: center;border: 1px solid #b2bec3;'>NAMA</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IP</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IK</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IF</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>HTM</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>UBT</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>UPAMK</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>UM</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IMS</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IMM</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>LEMBUR</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>CT</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>HL</td>
+											<td style='width: 5%;text-align: center;border: 1px solid #b2bec3;'>P.DUKA</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>POT.</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>TAMB.</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>IJIN</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>UBS</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>UMP</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>DL&OBAT</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>POT.2</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>TAMB.2</td>
 										</tr>
 									</thead>
 									<tbody>";
 						}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
-							$html_cetak_per_kode_induk .= "<table border='1' style='border: 0.5px solid black;border-collapse: collapse;font-size: 8pt'>
+							$html_cetak_per_kode_induk .= "<table style='border-collapse: collapse;font-size: 8pt'>
 									<thead>
 										<tr>
-											<td style='width: 40px;text-align: center'>NO</td>
-											<td style='width: 40px;text-align: center'>NOIND</td>
-											<td style='width: 100px;text-align: center'>NAMA KARYAWAN</td>
-											<td style='width: 110px;text-align: center'>NAMA SEKSI</td>
-											<td style='width: 65px;text-align: center'>LOKASI KRJ</td>
-											<td style='width: 30px;text-align: center'>IK</td>
-											<td style='width: 30px;text-align: center'>IP</td>
-											<td style='width: 30px;text-align: center'>IPT</td>
-											<td style='width: 30px;text-align: center'>IF</td>
-											<td style='width: 30px;text-align: center'>S2</td>
-											<td style='width: 30px;text-align: center'>S3</td>
-											<td style='width: 30px;text-align: center'>JAM LBR</td>
-											<td style='width: 30px;text-align: center'>UM</td>
-											<td style='width: 30px;text-align: center'>UMC</td>
-											<td style='width: 30px;text-align: center'>UBT</td>
-											<td style='width: 30px;text-align: center'>HUP AMK</td>
-											<td style='width: 90px;text-align: center'>KET. ABSEN</td>
-											<td style='width: 60px;text-align: center'>DL&OBAT</td>
-											<td style='width: 40px;text-align: center'>I+ ABS</td>
-											<td style='width: 60px;text-align: center'>P.KOPR</td>
-											<td style='width: 60px;text-align: center'>P.DUKA+SPSI</td>
-											<td style='width: 60px;text-align: center'>P.LAIN</td>
+											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>NO</td>
+											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;width: 100px;text-align: center'>NAMA KARYAWAN</td>
+											<td style='border: 1px solid #b2bec3;width: 110px;text-align: center'>NAMA SEKSI</td>
+											<td style='border: 1px solid #b2bec3;width: 65px;text-align: center'>LOKASI KRJ</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IK</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IP</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IPT</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>S2</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>S3</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>JAM LBR</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UM</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UMC</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UBT</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>HUP AMK</td>
+											<td style='border: 1px solid #b2bec3;width: 90px;text-align: center'>KET. ABSEN</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>I+ ABS</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.KOPR</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.DUKA+SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.LAIN</td>
 										</tr>
 									</thead>
 									<tbody>";
 						}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
-							$html_cetak_per_kode_induk .= "<table border='1' style='border: 0.5px solid black;border-collapse: collapse;width: 100%;font-size: 8pt'>
+							$html_cetak_per_kode_induk .= "<table border='1' style='border: 0.5px solid #95a5a6;border-collapse: collapse;width: 100%;font-size: 8pt'>
 									<thead>
 										<tr>
-											<td style='width: 4%;text-align: center'>NO</td>
-											<td style='width: 4%;text-align: center'>NOIND</td>
-											<td style='width: 8%;text-align: center'>NAMA KARYAWAN</td>
-											<td style='width: 8%;text-align: center'>NAMA SEKSI</td>
-											<td style='width: 8%;text-align: center'>LOKASI KRJ</td>
-											<td style='width: 4%;text-align: center'>IK</td>
-											<td style='width: 4%;text-align: center'>IP</td>
-											<td style='width: 4%;text-align: center'>IPT</td>
-											<td style='width: 4%;text-align: center'>IF</td>
-											<td style='width: 4%;text-align: center'>S2</td>
-											<td style='width: 4%;text-align: center'>S3</td>
-											<td style='width: 4%;text-align: center'>JAMLBR</td>
-											<td style='width: 4%;text-align: center'>UM</td>
-											<td style='width: 4%;text-align: center'>UMC</td>
-											<td style='width: 4%;text-align: center'>UBT</td>
-											<td style='width: 4%;text-align: center'>HUPAMK</td>
-											<td style='width: 4%;text-align: center'>KET.ABSEN</td>
-											<td style='width: 4%;text-align: center'>DL&OBAT</td>
-											<td style='width: 4%;text-align: center'>I+ABS</td>
-											<td style='width: 4%;text-align: center'>P.KOPR</td>
-											<td style='width: 4%;text-align: center'>P.DUKA+SPSI</td>
-											<td style='width: 4%;text-align: center'>P.LAIN</td>
-											<td style='width: 4%;text-align: center'>SEKOLAH</td>
-											<td style='width: 4%;text-align: center'>JURUSAN</td>
-											<td style='width: 4%;text-align: center'>PEND.</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>NO</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;width: 8%;text-align: center'>NAMA KARYAWAN</td>
+											<td style='border: 1px solid #b2bec3;width: 8%;text-align: center'>NAMA SEKSI</td>
+											<td style='border: 1px solid #b2bec3;width: 8%;text-align: center'>LOKASI KRJ</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IK</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IP</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IPT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>S2</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>S3</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JAMLBR</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>UM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>UMC</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>UBT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>HUPAMK</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>KET.ABSEN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>I+ABS</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.KOPR</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.DUKA+SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.LAIN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SEKOLAH</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JURUSAN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>PEND.</td>
 										</tr>
 									</thead>
 									<tbody>";
 						}elseif(in_array(substr($value['noind'], 0, 1), array("F","K"))){
-							$html_cetak_per_kode_induk .= "<table border='1' style='border: 0.5px solid black;width:100%;border-collapse: collapse;'>
+							$html_cetak_per_kode_induk .= "<table border='1' style='border: 0.5px solid #95a5a6;width:100%;border-collapse: collapse;'>
 									<thead>
 										<tr>
-											<td style='width: 3%;text-align: center;'>NO</td>
-											<td style='width: 6%;text-align: center;'>KODESIE</td>
-											<td style='width: 4%;text-align: center;'>NOIND</td>
-											<td style='width: 11%;text-align: center;'>NAMA</td>
-											<td style='width: 3%;text-align: center;'>IP</td>
-											<td style='width: 3%;text-align: center;'>IK</td>
-											<td style='width: 3%;text-align: center;'>HM</td>
-											<td style='width: 4%;text-align: center;'>HTM</td>
-											<td style='width: 4%;text-align: center;'>UBT</td>
-											<td style='width: 4%;text-align: center;'>UPAMK</td>
-											<td style='width: 3%;text-align: center;'>UM</td>
-											<td style='width: 3%;text-align: center;'>IMS</td>
-											<td style='width: 3%;text-align: center;'>IMM</td>
-											<td style='width: 4%;text-align: center;'>LEMBUR</td>
-											<td style='width: 3%;text-align: center;'>CT</td>
-											<td style='width: 3%;text-align: center;'>HL</td>
-											<td style='width: 5%;text-align: center;'>P.DUKA</td>
-											<td style='width: 4%;text-align: center;'>POT.</td>
-											<td style='width: 4%;text-align: center;'>TAMB.</td>
-											<td style='width: 3%;text-align: center;'>IJIN</td>
-											<td style='width: 4%;text-align: center;'>UBS</td>
-											<td style='width: 4%;text-align: center;'>UMP</td>
-											<td style='width: 4%;text-align: center;'>DL&OBAT</td>
-											<td style='width: 4%;text-align: center;'>POT.2</td>
-											<td style='width: 4%;text-align: center;'>TAMB.2</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>NO</td>
+											<td style='border: 1px solid #b2bec3;width: 6%;text-align: center;'>KODESIE</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;width: 11%;text-align: center;'>NAMA</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IP</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IK</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>HTM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UPAMK</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>UM</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IMS</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IMM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>LEMBUR</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>CT</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HL</td>
+											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IJIN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBS</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UMP</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
 										</tr>
 									</thead>
 									<tbody>";
 						}else{
-							$html_cetak_per_kode_induk .= "<table border='1' style='border: 0.5px solid black;border-collapse: collapse;'>
+							$html_cetak_per_kode_induk .= "<table border='1' style='border: 0.5px solid #95a5a6;border-collapse: collapse;'>
 									<thead>
 										<tr>
-											<td>NO</td>
-											<td>NOIND</td>
-											<td>NAMA KARYAWAN</td>
-											<td>NAMA SEKSI</td>
-											<td>LOKASI KRJ</td>
+											<td style='border: 1px solid #b2bec3;'>NO</td>
+											<td style='border: 1px solid #b2bec3;'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;'>NAMA KARYAWAN</td>
+											<td style='border: 1px solid #b2bec3;'>NAMA SEKSI</td>
+											<td style='border: 1px solid #b2bec3;'>LOKASI KRJ</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1387,95 +1389,95 @@ class C_TransferReffGaji extends CI_Controller
 					if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","F","K","P"))) {
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$tanda.$nomor."</td>
-							<td>".$value['kodesie']."</td>
-							<td>".$value['noind']."</td>
-							<td>".substr($value['nama'], 0, 18)."</td>
-							<td style='text-align: right;'>".$value['ipe']."</td>
-							<td style='text-align: right;'>".$value['ika']."</td>
-							<td style='text-align: right;'>".$value['ief']."</td>
-							<td style='text-align: right;'>".$value['htm']."</td>
-							<td style='text-align: right;'>".$value['ubt']."</td>
-							<td style='text-align: right;'>".$value['upamk']."</td>
-							<td style='text-align: right;'>".$value['um']."</td>
-							<td style='text-align: right;'>".$value['ims']."</td>
-							<td style='text-align: right;'>".$value['imm']."</td>
-							<td style='text-align: right;'>".$value['jam_lembur']."</td>
-							<td style='text-align: right;'>".$value['ct']."</td>
-							<td style='text-align: right;'>".$value['hl']."</td>
-							<td style='text-align: right;'>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
-							<td style='text-align: right;'>".(intval(trim($value['pot'])) + intval(trim($value['plain'])))."</td>
-							<td style='text-align: right;'>".$value['tamb_gaji']."</td>
-							<td style='text-align: right;'>".$value['ijin']."</td>
-							<td style='text-align: right;'>".$value['ubs_rp']."</td>
-							<td style='text-align: right;'>".$value['um_puasa']."</td>
-							<td style='text-align: right;'>".$value['dldobat']."</td>
-							<td style='text-align: right;'>".$value['potongan_str']."</td>
-							<td style='text-align: right;'>".$value['tambahan_str']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['kodesie']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['nama'], 0, 18)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['htm']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ubt']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['upamk']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['um']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ct']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['hl']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pot'])) + intval(trim($value['plain']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['tamb_gaji']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['ijin']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['ubs_rp']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['um_puasa']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['potongan_str']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['tambahan_str']."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$tanda.$nomor."</td>
-							<td>".$value['noind']."</td>
-							<td>".substr($value['nama'],0,15)."</td>
-							<td>".substr($value['seksi'],0,16)."</td>
-							<td>".substr($value['lokasi_krj'],0,9)."</td>
-							<td style='text-align: right;'>".$value['ika']."</td>
-							<td style='text-align: right;'>".$value['ipe']."</td>
-							<td style='text-align: right;'>".$value['ipet']."</td>
-							<td style='text-align: right;'>".$value['ief']."</td>
-							<td style='text-align: right;'>".$value['ims']."</td>
-							<td style='text-align: right;'>".$value['imm']."</td>
-							<td style='text-align: right;'>".$value['jam_lembur']."</td>
-							<td style='text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
-							<td style='text-align: right;'>".$value['um_cabang']."</td>
-							<td style='text-align: right;'>".$value['ubt']."</td>
-							<td style='text-align: right;'>".$value['upamk']."</td>
-							<td>".wordwrap(str_replace(".00", "", trim($value['ket'])),13,"<br>", true)."</td>
-							<td style='text-align: right;'>".$value['dldobat']."</td>
-							<td style='text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
-							<td style='text-align: right;'>".(intval(trim($value['putkop'])) + intval(trim($value['pikop'])))."</td>
-							<td style='text-align: right;'>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
-							<td style='text-align: right;'>".$value['plain']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['nama'],0,15)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['seksi'],0,16)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['lokasi_krj'],0,9)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['um_cabang']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ubt']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['upamk']))."</td>
+							<td style='border: 1px solid #b2bec3;'>".wordwrap(str_replace(".00", "", trim($value['ket'])),13,"<br>", true)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['plain']),0,',','.')."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$tanda.$nomor."</td>
-							<td>".$value['noind']."</td>
-							<td>".substr($value['nama'],0,15)."</td>
-							<td>".substr($value['seksi'],0,16)."</td>
-							<td>".substr($value['lokasi_krj'],0,9)."</td>
-							<td style='text-align: right;'>".$value['ika']."</td>
-							<td style='text-align: right;'>".$value['ipe']."</td>
-							<td style='text-align: right;'>".$value['ipet']."</td>
-							<td style='text-align: right;'>".$value['ief']."</td>
-							<td style='text-align: right;'>".$value['ims']."</td>
-							<td style='text-align: right;'>".$value['imm']."</td>
-							<td style='text-align: right;'>".$value['jam_lembur']."</td>
-							<td style='text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
-							<td style='text-align: right;'>".$value['um_cabang']."</td>
-							<td style='text-align: right;'>".$value['ubt']."</td>
-							<td style='text-align: right;'>".$value['upamk']."</td>
-							<td>".$value['ket']."</td>
-							<td style='text-align: right;'>".$value['dldobat']."</td>
-							<td style='text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
-							<td style='text-align: right;'>".(intval(trim($value['putkop'])) + intval(trim($value['pikop'])))."</td>
-							<td style='text-align: right;'>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
-							<td style='text-align: right;'>".$value['plain']."</td>
-							<td>".substr($value['sekolah'], 0, 10)."</td>
-							<td>".substr($value['jurusan'], 0, 10)."</td>
-							<td>".substr($value['pendidikan'], 0, 5)."</td>
+							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['nama'],0,15)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['seksi'],0,16)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['lokasi_krj'],0,9)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['um_cabang']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ubt']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['upamk']))."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['ket']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['plain']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['sekolah'], 0, 10)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['jurusan'], 0, 10)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['pendidikan'], 0, 5)."</td>
 						</tr>";
 					}else{
 						$html_cetak_per_kode_induk .= "
 						<tr>
-							<td>".$tanda.$nomor."</td>
-							<td>".$value['noind']."</td>
-							<td>".$value['nama']."</td>
-							<td>".$value['seksi']."</td>
-							<td>".$value['lokasi_krj']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['nama']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['seksi']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['lokasi_krj']."</td>
 						</tr>";
 					}
 					$simpan_kode_induk = substr($value['noind'], 0, 1);
@@ -1496,95 +1498,95 @@ class C_TransferReffGaji extends CI_Controller
 			if (in_array($simpan_kode_induk, array("A","E","H","T","F","K","P"))) {
 				$html_cetak_per_kode_induk .= "
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>".$simpan_pduka_spsi."</td>
-					<td>".$simpan_pot_plain."</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>".$simpan_dldobat."</td>
-					<td></td>
-					<td></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pduka_spsi."</td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pot_plain."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_dldobat."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
 				</tr>";
 			}elseif(in_array($simpan_kode_induk, array("B","D","G","J"))){
 				$html_cetak_per_kode_induk .= "
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>".$simpan_dldobat."</td>
-					<td></td>
-					<td>".$simpan_putkop_pikop."</td>
-					<td>".$simpan_pduka_spsi."</td>
-					<td>".$simpan_plain."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_dldobat."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_putkop_pikop."</td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pduka_spsi."</td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_plain."</td>
 				</tr>";
 			}elseif(in_array($simpan_kode_induk, array("Q"))){
 				$html_cetak_per_kode_induk .= "
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>".$simpan_dldobat."</td>
-					<td></td>
-					<td>".$simpan_putkop_pikop."</td>
-					<td>".$simpan_pduka_spsi."</td>
-					<td>".$simpan_plain."</td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_dldobat."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_putkop_pikop."</td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pduka_spsi."</td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_plain."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
 				</tr>";
 			}else{
 				$html_cetak_per_kode_induk .= "
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
 				</tr>";
 			}
 			$html_cetak_per_kode_induk .= "</tbody>
@@ -1611,9 +1613,9 @@ class C_TransferReffGaji extends CI_Controller
 						<td style='width: 20%;text-align: center;'>Atasan,</td>
 					</tr>
 					<tr>
-						<td style='vertical-align: bottom'><i>* Dibayar cutoff.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
+						<td style='vertical-align: bottom;font-size: 6pt;'><i>* Dibayar cutoff.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
 						<td></td>
-						<td>&nbsp;<br>&nbsp;</td>
+						<td>&nbsp;&nbsp;</td>
 					</tr>
 					<tr>
 						<td><i>Halaman {PAGENO} dari {nb}</i></td>
@@ -1631,7 +1633,7 @@ class C_TransferReffGaji extends CI_Controller
 		if (!empty($data_cetak_per_kodesie)) {
 			$pdf_cetak_per_kodesie = $this->pdf->load();
 			$pdf_cetak_per_kodesie->debug = true;
-			$pdf_cetak_per_kodesie = new mPDF('utf-8', 'A4-L', 8, '', 10, 10, 10, 20, 10, 5);
+			$pdf_cetak_per_kodesie = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 5, 20, 5, 5);
 			$filename = 'CETAKSEKSI'.$periode.$waktu.'.pdf';
 
 			$html_cetak_per_kodesie = "<!DOCTYPE html>
@@ -1652,7 +1654,7 @@ class C_TransferReffGaji extends CI_Controller
 						}
 						if(in_array(substr($value['noind'], 0, 1), array("P","K"))){
 							$asal_os = "<tr>
-											<td>Unit</td>
+											<td>Asal OS</td>
 											<td>:</td>
 											<td colspan='4'>".$value['asal_outsourcing']."</td>
 										</tr>";
@@ -1662,161 +1664,156 @@ class C_TransferReffGaji extends CI_Controller
 						$html_cetak_per_kodesie .= "<table style='width: 100%'>
 									".$asal_os."
 									<tr>
-										<td>Unit</td>
-										<td>:</td>
-										<td colspan='4'>".$value['unit']."</td>
+										<td style='width: 10%'>Unit</td>
+										<td style='width: 3%'>:</td>
+										<td style='width: 37%'>".$value['unit']."</td>
+										<td style='width: 10%'>Data Bulan</td>
+										<td style='width: 3%'>:</td>
+										<td style='width: 37%'>$bulan_gaji $periode_penggajian</td>
 									</tr>
 									<tr>
 										<td>Seksi</td>
 										<td>:</td>
-										<td colspan='4'>".$value['seksi']."</td>
-									</tr>
-									<tr>
-										<td style='width: 10%'>Data Bulan</td>
-										<td style='width: 3%'>:</td>
-										<td style='width: 10%'>$bulan_gaji</td>
-										<td style='width: 10%'>Tanggal Cetak</td>
-										<td style='width: 3%'>:</td>
-										<td style='width: 64%'>".$hari_string."</td>
-									</tr>
-									<tr>
-										<td colspan='6'>$periode_penggajian</td>
+										<td>".$value['seksi']."</td>
+										<td>Tanggal Cetak</td>
+										<td>:</td>
+										<td>".$hari_string."</td>
 									</tr>
 								</table>";
 						if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","P"))) {
-							$html_cetak_per_kodesie .= "<table border='1' style='border: 0.5px solid black;width:100%;border-collapse: collapse;'>
+							$html_cetak_per_kodesie .= "<table style='width:100%;border-collapse: collapse;'>
 									<thead>
 										<tr>
-											<td style='width: 3%;text-align: center;'>NO</td>
-											<td style='width: 6%;text-align: center;'>KODESIE</td>
-											<td style='width: 4%;text-align: center;'>NOIND</td>
-											<td style='width: 11%;text-align: center;'>NAMA</td>
-											<td style='width: 3%;text-align: center;'>IP</td>
-											<td style='width: 3%;text-align: center;'>IK</td>
-											<td style='width: 3%;text-align: center;'>IF</td>
-											<td style='width: 3%;text-align: center;'>HTM</td>
-											<td style='width: 4%;text-align: center;'>UBT</td>
-											<td style='width: 4%;text-align: center;'>UPAMK</td>
-											<td style='width: 3%;text-align: center;'>UM</td>
-											<td style='width: 3%;text-align: center;'>IMS</td>
-											<td style='width: 3%;text-align: center;'>IMM</td>
-											<td style='width: 4%;text-align: center;'>LEMBUR</td>
-											<td style='width: 3%;text-align: center;'>CT</td>
-											<td style='width: 3%;text-align: center;'>HL</td>
-											<td style='width: 5%;text-align: center;'>P.DUKA</td>
-											<td style='width: 4%;text-align: center;'>POT.</td>
-											<td style='width: 4%;text-align: center;'>TAMB.</td>
-											<td style='width: 4%;text-align: center;'>IJIN</td>
-											<td style='width: 4%;text-align: center;'>UBS</td>
-											<td style='width: 4%;text-align: center;'>UMP</td>
-											<td style='width: 4%;text-align: center;'>DL&OBAT</td>
-											<td style='width: 4%;text-align: center;'>POT.2</td>
-											<td style='width: 4%;text-align: center;'>TAMB.2</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>NO</td>
+											<td style='border: 1px solid #b2bec3;width: 6%;text-align: center;'>KODESIE</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;width: 11%;text-align: center;'>NAMA</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IP</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IK</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HTM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UPAMK</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>UM</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IMS</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IMM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>LEMBUR</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>CT</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HL</td>
+											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>IJIN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBS</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UMP</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
 										</tr>
 									</thead>
 									<tbody>";
 						}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
-							$html_cetak_per_kodesie .= "<table border='1' style='border: 0.5px solid black;border-collapse: collapse;'>
+							$html_cetak_per_kodesie .= "<table style='border-collapse: collapse;'>
 									<thead>
 										<tr>
-											<td style='width: 40px;text-align: center'>NO</td>
-											<td style='width: 40px;text-align: center'>NOIND</td>
-											<td style='width: 100px;text-align: center'>NAMA KARYAWAN</td>
-											<td style='width: 110px;text-align: center'>NAMA SEKSI</td>
-											<td style='width: 65px;text-align: center'>LOKASI KRJ</td>
-											<td style='width: 30px;text-align: center'>IK</td>
-											<td style='width: 30px;text-align: center'>IP</td>
-											<td style='width: 30px;text-align: center'>IPT</td>
-											<td style='width: 30px;text-align: center'>IF</td>
-											<td style='width: 30px;text-align: center'>S2</td>
-											<td style='width: 30px;text-align: center'>S3</td>
-											<td style='width: 30px;text-align: center'>JAM LBR</td>
-											<td style='width: 30px;text-align: center'>UM</td>
-											<td style='width: 30px;text-align: center'>UMC</td>
-											<td style='width: 30px;text-align: center'>UBT</td>
-											<td style='width: 30px;text-align: center'>HUP AMK</td>
-											<td style='width: 90px;text-align: center'>KET. ABSEN</td>
-											<td style='width: 60px;text-align: center'>DL&OBAT</td>
-											<td style='width: 40px;text-align: center'>I+ ABS</td>
-											<td style='width: 60px;text-align: center'>P.KOPR</td>
-											<td style='width: 60px;text-align: center'>P.DUKA+SPSI</td>
-											<td style='width: 60px;text-align: center'>P.LAIN</td>
+											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>NO</td>
+											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;width: 100px;text-align: center'>NAMA KARYAWAN</td>
+											<td style='border: 1px solid #b2bec3;width: 110px;text-align: center'>NAMA SEKSI</td>
+											<td style='border: 1px solid #b2bec3;width: 65px;text-align: center'>LOKASI KRJ</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IK</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IP</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IPT</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>S2</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>S3</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>JAM LBR</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UM</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UMC</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UBT</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>HUP AMK</td>
+											<td style='border: 1px solid #b2bec3;width: 90px;text-align: center'>KET. ABSEN</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>I+ ABS</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.KOPR</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.DUKA+SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.LAIN</td>
 										</tr>
 									</thead>
 									<tbody>";
 						}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
-							$html_cetak_per_kodesie .= "<table border='1' style='border: 0.5px solid black;width:100%;border-collapse: collapse;'>
+							$html_cetak_per_kodesie .= "<table style='width:100%;border-collapse: collapse;'>
 									<thead>
 										<tr>
-											<td style='width: 4%;text-align: center'>NO</td>
-											<td style='width: 4%;text-align: center'>NOIND</td>
-											<td style='width: 8%;text-align: center'>NAMA KARYAWAN</td>
-											<td style='width: 8%;text-align: center'>NAMA SEKSI</td>
-											<td style='width: 8%;text-align: center'>LOKASI KRJ</td>
-											<td style='width: 4%;text-align: center'>IK</td>
-											<td style='width: 4%;text-align: center'>IP</td>
-											<td style='width: 4%;text-align: center'>IPT</td>
-											<td style='width: 4%;text-align: center'>IF</td>
-											<td style='width: 4%;text-align: center'>S2</td>
-											<td style='width: 4%;text-align: center'>S3</td>
-											<td style='width: 4%;text-align: center'>JAMLBR</td>
-											<td style='width: 4%;text-align: center'>UM</td>
-											<td style='width: 4%;text-align: center'>UMC</td>
-											<td style='width: 4%;text-align: center'>UBT</td>
-											<td style='width: 4%;text-align: center'>HUPAMK</td>
-											<td style='width: 4%;text-align: center'>KET.ABSEN</td>
-											<td style='width: 4%;text-align: center'>DL&OBAT</td>
-											<td style='width: 4%;text-align: center'>I+ABS</td>
-											<td style='width: 4%;text-align: center'>P.KOPR</td>
-											<td style='width: 4%;text-align: center'>P.DUKA+SPSI</td>
-											<td style='width: 4%;text-align: center'>P.LAIN</td>
-											<td style='width: 4%;text-align: center'>SEKOLAH</td>
-											<td style='width: 4%;text-align: center'>JURUSAN</td>
-											<td style='width: 4%;text-align: center'>PEND.</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>NO</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;width: 8%;text-align: center'>NAMA KARYAWAN</td>
+											<td style='border: 1px solid #b2bec3;width: 8%;text-align: center'>NAMA SEKSI</td>
+											<td style='border: 1px solid #b2bec3;width: 8%;text-align: center'>LOKASI KRJ</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IK</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IP</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IPT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>S2</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>S3</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JAMLBR</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>UM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>UMC</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>UBT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>HUPAMK</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>KET.ABSEN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>I+ABS</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.KOPR</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.DUKA+SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.LAIN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SEKOLAH</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JURUSAN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>PEND.</td>
 										</tr>
 									</thead>
 									<tbody>";
 						}elseif(in_array(substr($value['noind'], 0, 1), array("F","K"))){
-							$html_cetak_per_kodesie .= "<table border='1' style='border: 0.5px solid black;width:100%;border-collapse: collapse;'>
+							$html_cetak_per_kodesie .= "<table style='width:100%;border-collapse: collapse;'>
 									<thead>
 										<tr>
-											<td style='width: 3%;text-align: center;'>NO</td>
-											<td style='width: 6%;text-align: center;'>KODESIE</td>
-											<td style='width: 4%;text-align: center;'>NOIND</td>
-											<td style='width: 11%;text-align: center;'>NAMA</td>
-											<td style='width: 3%;text-align: center;'>IP</td>
-											<td style='width: 3%;text-align: center;'>IK</td>
-											<td style='width: 3%;text-align: center;'>HM</td>
-											<td style='width: 4%;text-align: center;'>HTM</td>
-											<td style='width: 4%;text-align: center;'>UBT</td>
-											<td style='width: 4%;text-align: center;'>UPAMK</td>
-											<td style='width: 3%;text-align: center;'>UM</td>
-											<td style='width: 3%;text-align: center;'>IMS</td>
-											<td style='width: 3%;text-align: center;'>IMM</td>
-											<td style='width: 4%;text-align: center;'>LEMBUR</td>
-											<td style='width: 3%;text-align: center;'>CT</td>
-											<td style='width: 3%;text-align: center;'>HL</td>
-											<td style='width: 5%;text-align: center;'>P.DUKA</td>
-											<td style='width: 4%;text-align: center;'>POT.</td>
-											<td style='width: 4%;text-align: center;'>TAMB.</td>
-											<td style='width: 3%;text-align: center;'>IJIN</td>
-											<td style='width: 4%;text-align: center;'>UBS</td>
-											<td style='width: 4%;text-align: center;'>UMP</td>
-											<td style='width: 4%;text-align: center;'>DL&OBAT</td>
-											<td style='width: 4%;text-align: center;'>POT.2</td>
-											<td style='width: 4%;text-align: center;'>TAMB.2</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>NO</td>
+											<td style='border: 1px solid #b2bec3;width: 6%;text-align: center;'>KODESIE</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;width: 11%;text-align: center;'>NAMA</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IP</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IK</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>HTM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UPAMK</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>UM</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IMS</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IMM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>LEMBUR</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>CT</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HL</td>
+											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IJIN</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBS</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UMP</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
 										</tr>
 									</thead>
 									<tbody>";
 						}else{
-							$html_cetak_per_kodesie .= "<table border='1' style='border: 0.5px solid black;border-collapse: collapse;'>
+							$html_cetak_per_kodesie .= "<table style='border-collapse: collapse;'>
 									<thead>
 										<tr>
-											<td>NO</td>
-											<td>NOIND</td>
-											<td>NAMA KARYAWAN</td>
-											<td>NAMA SEKSI</td>
-											<td>LOKASI KRJ</td>
+											<td style='border: 1px solid #b2bec3;'>NO</td>
+											<td style='border: 1px solid #b2bec3;'>NOIND</td>
+											<td style='border: 1px solid #b2bec3;'>NAMA KARYAWAN</td>
+											<td style='border: 1px solid #b2bec3;'>NAMA SEKSI</td>
+											<td style='border: 1px solid #b2bec3;'>LOKASI KRJ</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1833,95 +1830,95 @@ class C_TransferReffGaji extends CI_Controller
 					if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","F","K","P"))) {
 						$html_cetak_per_kodesie .= "
 						<tr>
-							<td>".$tanda.$nomor."</td>
-							<td>".$value['kodesie']."</td>
-							<td>".$value['noind']."</td>
-							<td>".substr($value['nama'], 0, 18)."</td>
-							<td style='text-align: right;'>".$value['ipe']."</td>
-							<td style='text-align: right;'>".$value['ika']."</td>
-							<td style='text-align: right;'>".$value['ief']."</td>
-							<td style='text-align: right;'>".$value['htm']."</td>
-							<td style='text-align: right;'>".$value['ubt']."</td>
-							<td style='text-align: right;'>".$value['upamk']."</td>
-							<td style='text-align: right;'>".$value['um']."</td>
-							<td style='text-align: right;'>".$value['ims']."</td>
-							<td style='text-align: right;'>".$value['imm']."</td>
-							<td style='text-align: right;'>".$value['jam_lembur']."</td>
-							<td style='text-align: right;'>".$value['ct']."</td>
-							<td style='text-align: right;'>".$value['hl']."</td>
-							<td style='text-align: right;'>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
-							<td style='text-align: right;'>".(intval(trim($value['pot'])) + intval(trim($value['plain'])))."</td>
-							<td style='text-align: right;'>".$value['tamb_gaji']."</td>
-							<td style='text-align: right;'>".$value['ijin']."</td>
-							<td style='text-align: right;'>".$value['ubs_rp']."</td>
-							<td style='text-align: right;'>".$value['um_puasa']."</td>
-							<td style='text-align: right;'>".$value['dldobat']."</td>
-							<td style='text-align: right;'>".$value['potongan_str']."</td>
-							<td style='text-align: right;'>".$value['tambahan_str']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['kodesie']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['nama'], 0, 18)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['htm']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ubt']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['upamk']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['um']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ct']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['hl']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pot'])) + intval(trim($value['plain']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['tamb_gaji']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ijin']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ubs_rp']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['um_puasa']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['potongan_str']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['tambahan_str']))."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
 						$html_cetak_per_kodesie .= "
 						<tr>
-							<td>".$tanda.$nomor."</td>
-							<td>".$value['noind']."</td>
-							<td>".substr($value['nama'],0,15)."</td>
-							<td>".substr($value['seksi'],0,16)."</td>
-							<td>".substr($value['lokasi_krj'],0,9)."</td>
-							<td style='text-align: right;'>".$value['ika']."</td>
-							<td style='text-align: right;'>".$value['ipe']."</td>
-							<td style='text-align: right;'>".$value['ipet']."</td>
-							<td style='text-align: right;'>".$value['ief']."</td>
-							<td style='text-align: right;'>".$value['ims']."</td>
-							<td style='text-align: right;'>".$value['imm']."</td>
-							<td style='text-align: right;'>".$value['jam_lembur']."</td>
-							<td style='text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
-							<td style='text-align: right;'>".$value['um_cabang']."</td>
-							<td style='text-align: right;'>".$value['ubt']."</td>
-							<td style='text-align: right;'>".$value['upamk']."</td>
-							<td>".wordwrap(str_replace(".00", "", trim($value['ket'])),13,"<br>", true)."</td>
-							<td style='text-align: right;'>".$value['dldobat']."</td>
-							<td style='text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
-							<td style='text-align: right;'>".(intval(trim($value['putkop'])) + intval(trim($value['pikop'])))."</td>
-							<td style='text-align: right;'>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
-							<td style='text-align: right;'>".$value['plain']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['nama'],0,15)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['seksi'],0,16)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['lokasi_krj'],0,9)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['um_cabang']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ubt']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['upamk']))."</td>
+							<td style='border: 1px solid #b2bec3;'>".wordwrap(str_replace(".00", "", trim($value['ket'])),13,"<br>", true)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['plain']),0,',','.')."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
-						$html_cetak_per_kode_induk .= "
+						$html_cetak_per_kodesie .= "
 						<tr>
-							<td>".$tanda.$nomor."</td>
-							<td>".$value['noind']."</td>
-							<td>".substr($value['nama'],0,15)."</td>
-							<td>".substr($value['seksi'],0,16)."</td>
-							<td>".substr($value['lokasi_krj'],0,9)."</td>
-							<td style='text-align: right;'>".$value['ika']."</td>
-							<td style='text-align: right;'>".$value['ipe']."</td>
-							<td style='text-align: right;'>".$value['ipet']."</td>
-							<td style='text-align: right;'>".$value['ief']."</td>
-							<td style='text-align: right;'>".$value['ims']."</td>
-							<td style='text-align: right;'>".$value['imm']."</td>
-							<td style='text-align: right;'>".$value['jam_lembur']."</td>
-							<td style='text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
-							<td style='text-align: right;'>".$value['um_cabang']."</td>
-							<td style='text-align: right;'>".$value['ubt']."</td>
-							<td style='text-align: right;'>".$value['upamk']."</td>
-							<td>".$value['ket']."</td>
-							<td style='text-align: right;'>".$value['dldobat']."</td>
-							<td style='text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
-							<td style='text-align: right;'>".(intval(trim($value['putkop'])) + intval(trim($value['pikop'])))."</td>
-							<td style='text-align: right;'>".(intval(trim($value['pduka'])) + intval(trim($value['pspsi'])))."</td>
-							<td style='text-align: right;'>".$value['plain']."</td>
-							<td>".substr($value['sekolah'], 0, 10)."</td>
-							<td>".substr($value['jurusan'], 0, 10)."</td>
-							<td>".substr($value['pendidikan'], 0, 5)."</td>
+							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['nama'],0,15)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['seksi'],0,16)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['lokasi_krj'],0,9)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['hl'] + $value['ct'] + $value['um_puasa'])."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['um_cabang']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ubt']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['upamk']))."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['ket']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['plain']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['sekolah'], 0, 10)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['jurusan'], 0, 10)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['pendidikan'], 0, 5)."</td>
 						</tr>";
 					}else{
 						$html_cetak_per_kodesie .= "
 						<tr>
-							<td>".$tanda.$nomor."</td>
-							<td>".$value['noind']."</td>
-							<td>".$value['nama']."</td>
-							<td>".$value['seksi']."</td>
-							<td>".$value['lokasi_krj']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['nama']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['seksi']."</td>
+							<td style='border: 1px solid #b2bec3;'>".$value['lokasi_krj']."</td>
 						</tr>";
 					}
 					$simpan_kodesie = substr($value['kodesie'], 0, 7);
@@ -1946,9 +1943,9 @@ class C_TransferReffGaji extends CI_Controller
 						<td style='width: 20%;text-align: center;'>Atasan,</td>
 					</tr>
 					<tr>
-						<td style='vertical-align: bottom'><i>* Dibayar cutoff.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
+						<td style='vertical-align: bottom;font-size: 6pt;'><i>* Dibayar cutoff.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
 						<td></td>
-						<td>&nbsp;<br>&nbsp;</td>
+						<td>&nbsp;&nbsp;</td>
 					</tr>
 					<tr>
 						<td><i>Halaman {PAGENO} dari {nb}</i></td>
