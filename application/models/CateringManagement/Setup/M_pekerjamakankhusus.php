@@ -62,4 +62,26 @@ class M_pekerjamakankhusus extends CI_Model
     	$this->personalia->delete('"Catering".t_pekerja_menu_khusus');
     }
 
+    public function getPekerjaMakanKhususByStatusLokasi($where_lokasi,$where_status){
+        $where = "";
+        if ($where_lokasi !== "") {
+            $where = " where ".$where_lokasi;
+        }
+        if ($where_status !== "") {
+            if ($where !== "") {
+                $where .= " and ".$where_status;
+            }else{
+                $where = " where ".$where_status;
+            }
+        }
+        $sql = "select t1.*
+                from \"Catering\".t_pekerja_menu_khusus t1 
+                inner join hrd_khs.tpribadi t2 
+                on t1.noind = t2.noind
+                inner join \"Catering\".ttempat_makan t3
+                on t2.tempat_makan = t3.fs_tempat_makan
+                $where";
+        return $this->personalia->query($sql)->result_array();
+    }
+
 } ?>

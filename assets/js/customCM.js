@@ -3885,6 +3885,8 @@ $(document).on('ready', function(){
 						$('#slc-CM-Pengurangan-Kategori').val(obj.pengurangan.fb_kategori).change();
 						$('#slc-CM-Pengurangan-Shift').val(obj.pengurangan.fs_kd_shift).change();
 						$('#slc-CM-Pengurangan-TempatMakan').val(obj.pengurangan.fs_tempat_makan).change();
+						$('#slc-CM-Pengurangan-TempatMakanBaru').html("<option value='" + obj.pengurangan.fs_tempat_makanpg + "' >" + obj.pengurangan.fs_tempat_makanpg + " - " + obj.pengurangan.lokasipg + "</option>");
+						$('#slc-CM-Pengurangan-TempatMakanBaru').val(obj.pengurangan.fs_tempat_makanpg).change();
 
 						tblCMPenguranganPenerima.clear().draw();
 						for (var i = 0; i < obj.pengurangan_detail.pengurangan_detail.length; i++) {
@@ -5037,6 +5039,14 @@ $(document).ready(function(){
 	});
 
 	$('#txt-CM-Menu-BulanTahun').datepicker({
+	    "autoclose": true,
+	    "todayHiglight": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+	});
+
+	$('#txt-CM-Menu-Export-BulanTahun').datepicker({
 	    "autoclose": true,
 	    "todayHiglight": true,
 	    "format":'MM yyyy',

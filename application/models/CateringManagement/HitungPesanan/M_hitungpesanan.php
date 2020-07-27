@@ -1007,13 +1007,30 @@ class M_hitungpesanan extends Ci_Model
 	}
 
 	public function getPesananTambahanByTanggalShiftTempatMakan($tanggal,$shift,$tempat_makan){
-		$sql = "Select sum(fn_jumlah_pesanan) as jumlah 
-				from \"Catering\".tpesanantambahan 
-				where fd_tanggal = ?
-				  and fs_kd_shift = ? 
-				  and fs_tempat_makan = ?
-				group by fs_tempat_makan, fs_kd_shift, fd_tanggal  ";
-		return $this->personalia->query($sql,array($tanggal,$shift,$tempat_makan))->result_array();
+		// $sql = "Select sum(fn_jumlah_pesanan) as jumlah 
+		// 		from \"Catering\".tpesanantambahan 
+		// 		where fd_tanggal = ?
+		// 		  and fs_kd_shift = ? 
+		// 		  and fs_tempat_makan = ?
+		// 		group by fs_tempat_makan, fs_kd_shift, fd_tanggal  ";
+		$sql = "select coalesce(
+                    (
+                        select sum(fn_jumlah_pesanan)
+                        from \"Catering\".tpesanantambahan
+                        where fd_tanggal = ?
+                        and fs_tempat_makan = ?
+                        and fs_kd_shift = ?
+                    ),0) +
+                    coalesce(
+                    (
+                        select sum(fn_jml_tdkpesan)
+                        from \"Catering\".tpenguranganpesanan
+                        where fb_kategori = '2'
+                        and fd_tanggal = ?
+                        and fs_tempat_makanpg = ?
+                        and fs_kd_shift = ?
+                    ),0) as jumlah";
+		return $this->personalia->query($sql,array($tanggal,$tempat_makan,$shift,$tanggal,$tempat_makan,$shift))->result_array();
 	}
 
 	public function getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan,$kategori){
