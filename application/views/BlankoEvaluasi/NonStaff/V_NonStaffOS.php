@@ -147,7 +147,7 @@
                   <td><?= date('d/m/Y', strtotime($item['tanggal_awal'])) . " - " . date('d/m/Y', strtotime($item['tanggal_akhir'])) ?></td>
                   <td><?= date('d/m/Y H:i:s', strtotime($item['created_time'])) ?></td>
                   <td>
-                    <form action="<?= base_url('BlankoEvaluasi/NonStaff/Blanko/Delete') ?>" method="post">
+                    <form action="<?= base_url('BlankoEvaluasi/NonStaff/Delete') ?>" method="post">
                       <input type="hidden" name="id" value="<?= $decryptId ?>" class="hidden">
                       <button class="handleDelete" type="button">
                         <i class="fa fa-trash"></i>
