@@ -50,7 +50,9 @@ class M_salestarget extends CI_Model {
 		//source organization (updated)
 		public function viewOrganization()
 		{
-			$sql = "select org_id, org_name, province_id, city_regency_id, district_id, village_id, address, org_code from sys.sys_organization ";
+			$sql = "select org_id, org_name, province_id, city_regency_id, district_id, village_id, address, org_code from sys.sys_organizatioN
+                    union
+                    select 9999, 'TOKOQUICK', 0, 0, 0, 0, '', 'HO'";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
