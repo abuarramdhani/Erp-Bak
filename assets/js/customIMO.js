@@ -386,3 +386,8 @@ function getAssy(th) {
 			});
 		});		
 }
+
+
+$(document).on("click", "#submit_go", function(){
+	$('#loadingsimulasi').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading12.gif"></center>' );
+ });
