@@ -2574,6 +2574,10 @@ $route['InventoryManagement/ExportMoveOrder/search'] = 'Inventory/MainMenu/MoveO
 $route['InventoryManagement/ExportMoveOrder/export'] = 'Inventory/MainMenu/MoveOrder/C_Export/export';
 $route['InventoryManagement/ExportMoveOrder/(:any)/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Export/$1/$2';
 
+$route['InventoryManagement/SimulasiKebutuhan'] = 'Inventory/MainMenu/MoveOrder/C_Simulasi';
+$route['InventoryManagement/SimulasiKebutuhan/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Simulasi/$1';
+$route['InventoryManagement/SimulasiKebutuhan/(:any)/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Simulasi/$1/$2';
+
 //KIB
 $route['InventoryManagement/CreateKIB'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB';
 $route['InventoryManagement/CreateKIB/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/$1';
