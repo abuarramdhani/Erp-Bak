@@ -4428,12 +4428,14 @@ $route['BlankoEvaluasi/Staff/Create'] = 'BlankoEvaluasi/C_EvaluasiStaff/create';
 $route['BlankoEvaluasi/Staff/Blanko'] = 'BlankoEvaluasi/C_EvaluasiStaff/blanko';
 $route['BlankoEvaluasi/Staff/Store'] = 'BlankoEvaluasi/C_EvaluasiStaff/store';
 $route['BlankoEvaluasi/Staff/Print'] = 'BlankoEvaluasi/C_EvaluasiStaff/handlePrintPeview';
+$route['BlankoEvaluasi/Staff/Delete'] = 'BlankoEvaluasi/C_EvaluasiStaff/deleteBlanko';
 
 $route['BlankoEvaluasi/NonStaff'] = 'BlankoEvaluasi/C_EvaluasiOSNS/index';
 $route['BlankoEvaluasi/NonStaff/Create'] = 'BlankoEvaluasi/C_EvaluasiOSNS/create';
 $route['BlankoEvaluasi/NonStaff/Blanko'] = 'BlankoEvaluasi/C_EvaluasiOSNS/blanko';
 $route['BlankoEvaluasi/NonStaff/Store'] = 'BlankoEvaluasi/C_EvaluasiOSNS/store';
 $route['BlankoEvaluasi/NonStaff/Print'] = 'BlankoEvaluasi/C_EvaluasiOSNS/handlePrintPreview';
+$route['BlankoEvaluasi/NonStaff/Delete'] = 'BlankoEvaluasi/C_EvaluasiOSNS/deleteBlanko';
 
 $route['BlankoEvaluasi/api'] = 'BlankoEvaluasi/C_Api/index';
 $route['BlankoEvaluasi/api/workers'] = 'BlankoEvaluasi/C_Api/workers';
@@ -4540,9 +4542,9 @@ $route['ADMPelatihan/TarikShiftPekerja/(:any)'] = 'ADMPelatihan/TarikShiftPekerj
 $route['ADMPelatihan/TarikShiftPekerja/(:any)/(:any)'] = 'ADMPelatihan/TarikShiftPekerja/C_Index/$1/$2';
 
 //---------------Master Pekerja ---Surat Pengalaman Kerja-------------
-$route['MasterPekerja/Surat/PengalamanKerja'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja';
-$route['MasterPekerja/Surat/PengalamanKerja/(:any)'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja/$1';
-$route['MasterPekerja/Surat/PengalamanKerja/(:any)/(:any)'] ='MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja/$1/$2';
+$route['MasterPekerja/Surat/PengalamanKerja'] = 'MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja';
+$route['MasterPekerja/Surat/PengalamanKerja/(:any)'] = 'MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja/$1';
+$route['MasterPekerja/Surat/PengalamanKerja/(:any)/(:any)'] = 'MasterPekerja/Surat/PengalamanKerja/C_PengalamanKerja/$1/$2';
 
 // ---------------------------------------------Progress PP PR-----------------------------------------------------
 $route['ProgressPPPR'] = 'ProgressPPPR/C_Index';

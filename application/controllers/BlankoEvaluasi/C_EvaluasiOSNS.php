@@ -6,70 +6,76 @@
 
 defined('BASEPATH') or exit('you cannot enter here');
 
-class C_EvaluasiOSNS extends CI_Controller {
-    function __construct(){
+class C_EvaluasiOSNS extends CI_Controller
+{
+    function __construct()
+    {
         parent::__construct();
         $this->load->model('M_Index');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('BlankoEvaluasi/M_blankoevaluasi');
 
-    	$this->checkSession();
+        $this->checkSession();
     }
 
-	private function checkSession() {
-		if($this->session->userdata('is_logged')!=true) {
-			$this->load->helper('url');
-			$this->session->set_userdata('last_page', current_url());
-			$this->session->set_userdata('Responsbility', 'some_value');
-			redirect();
-		}
-	}
+    private function checkSession()
+    {
+        if ($this->session->userdata('is_logged') != true) {
+            $this->load->helper('url');
+            $this->session->set_userdata('last_page', current_url());
+            $this->session->set_userdata('Responsbility', 'some_value');
+            redirect();
+        }
+    }
 
-    function index() {
-		$user_id = $this->session->userid;
+    function index()
+    {
+        $user_id = $this->session->userid;
 
         $data['Menu'] = 'Non-Staff & OS';
-		$data['SubMenuOne'] = '';
-		$data['Title'] = 'Non-Staff & OS';
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['SubMenuOne'] = '';
+        $data['Title'] = 'Non-Staff & OS';
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $dataBlanko = $this->getBlanko();
         $data['blanko'] = $dataBlanko;
 
-        $this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('BlankoEvaluasi/NonStaff/V_NonStaffOS');
-		$this->load->view('BlankoEvaluasi/V_Footer',$data);
+        $this->load->view('BlankoEvaluasi/V_Footer', $data);
     }
 
-    function create() {
+    function create()
+    {
         $user_id = $this->session->userid;
 
         $data['Menu'] = 'Non-Staff & OS';
-		$data['SubMenuOne'] = '';
-		$data['Title'] = 'Non-Staff & OS';
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['SubMenuOne'] = '';
+        $data['Title'] = 'Non-Staff & OS';
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('BlankoEvaluasi/NonStaff/V_NonStaffOS_Create');
-		$this->load->view('BlankoEvaluasi/V_Footer',$data);
+        $this->load->view('BlankoEvaluasi/V_Footer', $data);
     }
 
-    function blanko() {
+    function blanko()
+    {
         $encryptId = $this->input->get('id');
 
-        if(!$encryptId) {
+        if (!$encryptId) {
             redirect(base_url(('BlankoEvaluasi/NonStaff')));
         }
         $decryptId = base64_decode($encryptId);
         $data = $this->getBlankoById($decryptId);
-        
-        if(!$data) {
+
+        if (!$data) {
             return $this->load->view('BlankoEvaluasi/V_Blanko_404');
         }
 
@@ -78,14 +84,14 @@ class C_EvaluasiOSNS extends CI_Controller {
         $os = ['K', 'P'];
 
         $position = null;
-        if(in_array(substr($data->noind, 0, 1), $staff)) {
+        if (in_array(substr($data->noind, 0, 1), $staff)) {
             $position = 'staff';
-        } else if(in_array(substr($data->noind, 0, 1), $nonstaff)) {
+        } else if (in_array(substr($data->noind, 0, 1), $nonstaff)) {
             $position = 'nonstaff';
         } else {
             $position = 'os';
         }
-        
+
         $TIMS = $this->M_blankoevaluasi->getTIMS($data->noind, $data->tanggal_awal, $data->tanggal_akhir);
         $TIMS['presensi_ok'] = $this->M_blankoevaluasi->calculationTIMS($data->noind, $data->tanggal_awal, $data->tanggal_akhir, $position);
         $sp = $this->getSP($data->noind, $data->tanggal_awal, $data->tanggal_akhir);
@@ -121,11 +127,12 @@ class C_EvaluasiOSNS extends CI_Controller {
         $this->printPDF($data);
     }
 
-    function deleteBlanko() {
+    function deleteBlanko()
+    {
         $logged_user = $this->session->user;
         $id = $this->input->post('id');
         $id = (int)base64_decode($id);
-        if($id <= 0) {
+        if ($id <= 0) {
             redirect($_SERVER['HTTP_REFERER']);
         }
 
@@ -133,14 +140,16 @@ class C_EvaluasiOSNS extends CI_Controller {
         redirect($_SERVER['HTTP_REFERER']);
     }
 
-    function store() {
+    function store()
+    {
         $data = $this->input->get();
 
         $this->insertBlanko($data);
         redirect(base_url('BlankoEvaluasi/NonStaff'));
     }
 
-    function handlePrintPreview() {
+    function handlePrintPreview()
+    {
         $data = $this->input->get();
 
         $staff = ['14', '16'];
@@ -148,34 +157,35 @@ class C_EvaluasiOSNS extends CI_Controller {
         $os = ['18'];
 
         $position = null;
-        if(in_array($data['worker']['kd_jabatan'], $staff)) {
+        if (in_array($data['worker']['kd_jabatan'], $staff)) {
             $position = 'staff';
-        } else if(in_array($data['worker']['kd_jabatan'], $nonstaff)) {
+        } else if (in_array($data['worker']['kd_jabatan'], $nonstaff)) {
             $position = 'nonstaff';
         } else {
             $position = 'os';
         }
-        
+
         $TIMS = $this->M_blankoevaluasi->getTIMS(
-            $data['worker']['noind'], 
-            $data['worker']['periode_awal'], 
+            $data['worker']['noind'],
+            $data['worker']['periode_awal'],
             $data['worker']['periode_akhir']
         );
 
         $TIMS['presensi_ok'] = $this->M_blankoevaluasi->calculationTIMS(
-            $data['worker']['noind'], 
-            $data['worker']['periode_awal'], 
-            $data['worker']['periode_akhir'], 
+            $data['worker']['noind'],
+            $data['worker']['periode_awal'],
+            $data['worker']['periode_akhir'],
             $position
         );
         $sp = $this->getSP($data['worker']['noind'], $data['worker']['periode_awal'], $data['worker']['periode_akhir']);
 
         // calc
-        function sum($now, $next) {
+        function sum($now, $next)
+        {
             return (int)$now + (int)$next;
         }
 
-        $nilaiAspek = array_map(function($val){
+        $nilaiAspek = array_map(function ($val) {
             return $val['skor'];
         }, $data['two']['nilai']);
 
@@ -194,15 +204,17 @@ class C_EvaluasiOSNS extends CI_Controller {
         $this->printPDF($data);
     }
 
-    function insertBlanko($params) {
-        if(!$params) return false;
+    function insertBlanko($params)
+    {
+        if (!$params) return false;
 
         // calc
-        function sumx($now, $next) {
+        function sumx($now, $next)
+        {
             return (int)$now + (int)$next;
         }
 
-        $nilaiAspek = array_map(function($val){
+        $nilaiAspek = array_map(function ($val) {
             return $val['skor'];
         }, $params['two']['nilai']);
 
@@ -241,28 +253,30 @@ class C_EvaluasiOSNS extends CI_Controller {
         );
 
         $this->M_blankoevaluasi->insertBlanko($parsedArray);
-
     }
 
-    private function dateToIndo($date) {
-        if(!$date) return null;
+    private function dateToIndo($date)
+    {
+        if (!$date) return null;
 
-        function month($num) {
-            if($num > 12) return 'unknown';
+        function month($num)
+        {
+            if ($num > 12) return 'unknown';
             $indoMonth = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            return $indoMonth[$num-1];
+            return $indoMonth[$num - 1];
         }
 
         $month = date('m', strtotime($date));
         $year = date('Y', strtotime($date));
-        
-        return month($month)." ".$year;
+
+        return month($month) . " " . $year;
     }
 
-    private function getSP($noind, $from, $to) {
+    private function getSP($noind, $from, $to)
+    {
         $sp = $this->M_blankoevaluasi->getSP($noind, $from, $to);
 
-        $sp = array_map(function($item) {
+        $sp = array_map(function ($item) {
             return array(
                 'bulan' => $this->dateToIndo($item['awal']),
                 'jenis' => $item['jenis']
@@ -272,40 +286,43 @@ class C_EvaluasiOSNS extends CI_Controller {
         return $sp;
     }
 
-    private function getBlanko() {
+    private function getBlanko()
+    {
         $data = $this->M_blankoevaluasi->getBlanko()->result_array();
         return $data;
     }
 
 
-    private function getBlankoById($id) {
+    private function getBlankoById($id)
+    {
         $id = intval($id);
-        if(!$id) return [];
+        if (!$id) return [];
         $data = $this->M_blankoevaluasi->getBlanko($id)->row();
         return $data;
     }
 
-    private function getTIMS($noind, $awal, $akhir) {
-        if(!$noind || !$awal || $akhir) throw "Error params failed";
+    private function getTIMS($noind, $awal, $akhir)
+    {
+        if (!$noind || !$awal || $akhir) throw "Error params failed";
         $data = $this->M_blankoevaluasi->getBlanko()->result_array();
-
     }
 
-    private function printPDF($data) {
+    private function printPDF($data)
+    {
         $this->load->library('pdf');
 
-        $pdf =	$this->pdf->load();
+        $pdf =    $this->pdf->load();
         // params => $mode='',$format='A4',$default_font_size=0,$default_font='',$mgl=15,$mgr=15,$mgt=16,$mgb=16,$mgh=9,$mgf=9, $orientation='P'
         $pdf = new mPDF('UTF-8', 'A4', '8', 'Arial', 5, 5, 5, 5, 0, 0, 'L');
-        
+
         $title = 'Evaluasi';
         $filename = 'Evalasi kontrak';
         $content = $this->load->view('BlankoEvaluasi/NonStaff/V_Template_Pdf', $data, true);
-        
+
         $pdf->defaultfooterline = false;
         $pdf->setFooter("
         <div style='text-align: left; font-weight: 100;'>
-        <small style='font-size: 10px; float: left; font-style: italic;'>Halaman ini dicetak melalui QuickERP - (Blanko Evaluasi) - ". date('d-m-Y H:i:s') . " oleh {$this->session->user} - {$this->session->employee}</small>
+        <small style='font-size: 10px; float: left; font-style: italic;'>Halaman ini dicetak melalui QuickERP - (Blanko Evaluasi) - " . date('d-m-Y H:i:s') . " oleh {$this->session->user} - {$this->session->employee}</small>
         </div>
         ");
         $pdf->AddPage('L');
@@ -314,5 +331,4 @@ class C_EvaluasiOSNS extends CI_Controller {
         // $pdf->SetDisplayPreferences('/FullScreen');
         $pdf->Output($filename, 'I');
     }
-
 }

@@ -463,7 +463,7 @@
         <div class="row" style="margin-top: 3em;">
           <div class="col-lg-4"></div>
           <div class="col-lg-4" style="display: flex; justify-content: center;">
-            <button @click="handleSave" class="btn btn-primary mr-2" :disabled="state.worker.presensi_ok === null">
+            <button @click="handleSave" class="btn btn-primary mr-2 handleSave" disabled>
               Simpan <i class="fa fa-save"></i>
             </button>
             <button type="button" target="_blank" @click="handlePreview" class="btn btn-success mr-2" :disabled="state.worker.presensi_ok === null">
@@ -811,6 +811,7 @@
       handlePreview() {
         const errorCheckForm = this.checkForm()
         if (errorCheckForm) return
+        $('.handleSave').prop('disabled', false)
 
         window.open(
           this.urlPreview,

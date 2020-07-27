@@ -253,7 +253,7 @@
             </div>
           </div>
           <div class="col-md-12 center mt-2 mb-2" v-bind:class="{ 'disabled-div': !state.worker.noind }">
-            <button :disabled="disableButton" @click="handleSave" class="btn btn-primary">
+            <button disabled @click="handleSave" class="btn btn-primary handleSave">
               Simpan <i class="fa fa-save"></i>
             </button>
             <button :disabled="disableButton" @click="handlePreview" class="btn btn-success">
@@ -364,6 +364,7 @@
         if (check) {
           return Swal.fire(check, '', 'warning')
         }
+        $('.handleSave').prop('disabled', false)
 
         const json = this.getFormJson()
         const parsedUrl = this.$data.constant.apiPreviewPdf + '?' + $.param(json)
