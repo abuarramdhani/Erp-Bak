@@ -155,27 +155,57 @@ class M_limbahkelola extends CI_Model
         }
 
         // not detailed
+        //if($detailed == 'false') {
+           // $sql = "SELECT 
+            //       distinct limkir.id_jenis_limbah,
+            //      limjen.jenis_limbah,
+            //      (select trunc(sum(berat_kirim)::numeric, 3) from ga.ga_limbah_kirim where id_jenis_limbah = limkir.id_jenis_limbah and tanggal_kirim::date between '$start' and '$end') as berat_kirim
+            //    FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
+            //        on limkir.id_jenis_limbah = limjen.id_jenis_limbah
+             //   WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah $filterlokasi
+             //   ORDER BY jenis_limbah";
+       // } else {
+            // detailed
+            //$sql = "SELECT
+                  //      limjen.jenis_limbah,
+                   //     to_char(limkir.tanggal_kirim, 'YYYY-MM-DD') as tanggal_kirim,
+                    //    (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') section_name,
+                     //   trunc(limkir.berat_kirim::numeric, 3) as berat_kirim
+                    //FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
+                     //       on limkir.id_jenis_limbah = limjen.id_jenis_limbah
+                   // WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah $filterlokasi
+                    //ORDER BY limkir.tanggal_kirim"; // 1 adalah yg sudah diapprove oleh waste management
+        //}
+
+        // not detailed
         if($detailed == 'false') {
             $sql = "SELECT 
-                    distinct limkir.id_jenis_limbah,
+                    limkir.id_jenis_limbah,
                     limjen.jenis_limbah,
-                    (select trunc(sum(berat_kirim)::numeric, 3) from ga.ga_limbah_kirim where id_jenis_limbah = limkir.id_jenis_limbah and tanggal_kirim::date between '$start' and '$end') as berat_kirim
-                FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
+                     trunc (sum(limkir.berat_kirim)::numeric, 3) as berat_kirim
+                    FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
                     on limkir.id_jenis_limbah = limjen.id_jenis_limbah
-                WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah $filterlokasi
-                ORDER BY jenis_limbah";
+                    WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end'
+                    $filterLimbah $filterlokasi 
+                    group by limkir.id_jenis_limbah, limjen.jenis_limbah
+                    ORDER BY jenis_limbah";
         } else {
             // detailed
-            $sql = "SELECT
-                        limjen.jenis_limbah,
-                        to_char(limkir.tanggal_kirim, 'YYYY-MM-DD') as tanggal_kirim,
-                        (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') section_name,
-                        trunc(limkir.berat_kirim::numeric, 3) as berat_kirim
-                    FROM ga.ga_limbah_kirim limkir inner join ga.ga_limbah_jenis limjen 
-                            on limkir.id_jenis_limbah = limjen.id_jenis_limbah
-                    WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah $filterlokasi
-                    ORDER BY limkir.tanggal_kirim"; // 1 adalah yg sudah diapprove oleh waste management
-        }
+            $sql = "SELECT 
+                     distinct
+                     limkir.id_jenis_limbah,
+                     limjen.jenis_limbah,
+                     to_char(limkir.tanggal_kirim, 'YYYY-MM-DD') as tanggal_kirim,
+                     trim(sect.section_name) section_name,
+                      trunc(limkir.berat_kirim::numeric, 3) as berat_kirim
+                     FROM ga.ga_limbah_kirim limkir 
+                     inner join ga.ga_limbah_jenis limjen  on limkir.id_jenis_limbah = limjen.id_jenis_limbah
+                    left join er.er_section sect on left(sect.section_code,7) = limkir.kodesie_kirim 
+                    WHERE limkir.status_kirim = '1' and limkir.tanggal_kirim::date between '$start' and '$end'
+                    $filterLimbah $filterlokasi 
+                    group by limkir.id_jenis_limbah, limjen.jenis_limbah,limkir.tanggal_kirim,sect.section_name,limkir.berat_kirim ORDER BY jenis_limbah";
+
+       }
         // echo $sql;exit();
         return $this->db->query($sql)->result_array();
     }
