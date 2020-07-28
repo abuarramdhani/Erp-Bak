@@ -29,6 +29,16 @@ class M_penilaiankinerja extends CI_Model
 								where noind = a.noind and tglberlaku > '$end'
 								order by tglberlaku
 								limit 1) lokerja2,
+								(select concat(trim(dept),',', trim(bidang),',', trim(unit),',', trim(seksi)) from hrd_khs.tseksi ts2 where ts2.kodesie = (select
+									kodesielm
+								from
+									hrd_khs.tmutasi t
+								where
+									noind = a.noind
+									and tglberlaku > '$end'
+								order by
+									tglberlaku
+								limit 1)) seksi_lama,
 								rtrim(seksi.dept) as dept,
 								rtrim(seksi.bidang) as bidang,
 								rtrim(seksi.unit) as unit,

@@ -81,12 +81,9 @@ class C_JurnalPenilaianPersonalia extends CI_Controller {
 		//update table er.er_section
 		$getL1 = $this->M_penilaiankinerja->listErSection('dev');
 		$getL2 = $this->M_penilaiankinerja->listErSection('prod');
-		// echo "<pre>";
-		// print_r($getL2);
+		
 		for ($i=0; $i < count($getL1); $i++) { 
 			if ($getL1[$i] != $getL2[$i]) {
-				// echo $getL1[$i]['er_section_id'].'||';
-				// echo $getL2[$i]['er_section_id'].'<br>';
 				$id = $getL1[$i]['er_section_id'];
 				$sc = empty($getL2[$i]['sort_code']) ? NULL:$getL2[$i]['sort_code'];
 				$occ = empty($getL2[$i]['oracle_cost_code']) ? NULL:$getL2[$i]['oracle_cost_code'];
@@ -115,7 +112,13 @@ class C_JurnalPenilaianPersonalia extends CI_Controller {
 			}else{
 				$lokerja = $gw['lokerja'];
 			}
-			// echo $gw['noind'].' - '.$lokerja.'<br>';
+			if (!empty($gw['seksi_lama'])) {
+				$ex = explode(',', ($gw['seksi_lama']));
+				$gw['dept'] = $ex[0];
+				$gw['bidang'] = $ex[1];
+				$gw['unit'] = $ex[2];
+				$gw['seksi'] = $ex[3];
+			}
 
 			$check = $this->M_penilaiankinerja->check($st, $end, $gw['noind']);
 			if($check>0)
