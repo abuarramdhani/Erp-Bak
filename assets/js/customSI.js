@@ -428,11 +428,13 @@ $(document).on('ready', function(){
                 cancelButtonText: 'Tidak'
             }).then((result) => {
                 if (result.value) {
+                    $('#ldg-SI-SubmitIde').show();
                     $.ajax({
                         data: {seksi: seksi, judul: judul,dueDate: dueDate},
                         method: 'POST',
                         url: baseurl + 'SystemIntegration/KaizenAkt/SimpanIde',
                         error: function(xhr,status,error){
+                            $('#ldg-SI-SubmitIde').hide();
                             swal.fire({
                                 title: xhr['status'] + "(" + xhr['statusText'] + ")",
                                 html: xhr['responseText'],
@@ -442,6 +444,7 @@ $(document).on('ready', function(){
                             })
                         },
                         success: function(data){
+                            $('#ldg-SI-SubmitIde').hide();
                             if (!isNaN(data)) {
                                 Swal.fire(
                                     'Sukses !!!',
@@ -527,8 +530,9 @@ $(document).on('ready', function(){
     })
 
     $('#btn-SI-SubmitF4-Submit').on('click', function(){
-        var judul           = $('#slc-SI-SubmitF4-Judul option:selected').text();
-        var kaizenId        = $('#slc-SI-SubmitF4-Judul').val();
+        var kaizenIde       = $('#slc-SI-SubmitF4-IdeKaizen option:selected').text();
+        var kaizenId        = $('#slc-SI-SubmitF4-IdeKaizen').val();
+        var kaizenJudul     = $('#txt-SI-SubmitF4-JudulKaizen').val();
         var nama            = $('#txt-SI-SubmitF4-NamaPencetus').val();
         var noind           = $('#txt-SI-SubmitF4-NoindPencetus').val();
         var komponen        = $('#slc-SI-SubmitF4-Komponen').val();
@@ -537,10 +541,12 @@ $(document).on('ready', function(){
         var pertimbangan    = $('#txa-SI-SubmitF4-PertimbanganUsulanKaizen').val();
         var realisasi       = $('#txt-SI-SubmitF4-TanggalRealisasi').val();
 
-        if (judul && nama && noind && kondisi && usulan && pertimbangan && realisasi) {
+        if (kaizenIde && kaizenJudul && nama && noind && kondisi && usulan && pertimbangan && realisasi) {
+            $('#ldg-SI-SubmitF4').show();
             $.ajax({
                 data: {
-                    judul       : judul,
+                    kaizen_judul: kaizenJudul,
+                    kaizen_ide  : kaizenIde,
                     kaizen_id   : kaizenId,
                     nama        : nama,
                     noind       : noind,
@@ -553,6 +559,7 @@ $(document).on('ready', function(){
                 method: 'POST',
                 url: baseurl + 'SystemIntegration/KaizenAkt/SimpanF4',
                 error: function(xhr,status,error){
+                    $('#ldg-SI-SubmitF4').hide();
                     swal.fire({
                         title: xhr['status'] + "(" + xhr['statusText'] + ")",
                         html: xhr['responseText'],
@@ -562,6 +569,7 @@ $(document).on('ready', function(){
                     })
                 },
                 success: function(data){
+                    $('#ldg-SI-SubmitF4').hide();
                     if (data.includes("A PHP Error was encountered",0)) {
                         swal.fire({
                             title: "Error",

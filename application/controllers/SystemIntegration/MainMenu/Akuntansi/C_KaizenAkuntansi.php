@@ -86,7 +86,7 @@ class C_KaizenAkuntansi extends CI_Controller
 		$data = array(
 			'pencetus_noind'=> $noind,
 			'pencetus_nama' => $nama,
-			'judul' 		=> $judul,
+			'ide'	 		=> $judul,
 			'seksi' 		=> $seksi,
 			'due_date_f4' 	=> $dueDate,
 			'status' 		=> 'Create Ide'
@@ -97,7 +97,7 @@ class C_KaizenAkuntansi extends CI_Controller
 		$thread = array(
 			'kaizen_id' => $id_kaizen,
 			'status' 	=> 'Create Ide',
-			'detail' 	=> '(Create Ide) '.$noind.' - '.trim($nama).' telah membuat ide kaizen dengan judul '.$judul
+			'detail' 	=> '(Create Ide) '.$noind.' - '.trim($nama).' telah membuat ide kaizen '.$judul
 		);
 
 		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
@@ -163,7 +163,7 @@ class C_KaizenAkuntansi extends CI_Controller
 	}
 
 	public function SimpanF4(){
-		$judul 			= $this->input->post('judul');
+		$judul 			= $this->input->post('kaizen_judul');
 		$kaizenId 		= $this->input->post('kaizen_id');
 		$nama 			= $this->input->post('nama');
 		$noind 			= $this->input->post('noind');
@@ -189,7 +189,8 @@ class C_KaizenAkuntansi extends CI_Controller
 			'usulan_kaizen' 	=> $usulan,
 			'pertimbangan' 		=> $pertimbangan,
 			'tanggal_realisasi' => $realisasi,
-			'status' 			=> 'F4 Sudah di Submit'
+			'status' 			=> 'F4 Sudah di Submit',
+			'judul'				=> $judul
 		);
 		$this->M_kaizenakuntansi->updateKaizenByKaizenId($data,$kaizenId);
 

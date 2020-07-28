@@ -60,3 +60,43 @@
 		</div>
 	</div>
 </section>
+<style type="text/css">
+	.loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+    z-index: 9999;
+}
+.loading-wheel {
+    width: 40px;
+    height: 40px;
+    margin-top: -80px;
+    margin-left: -40px;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+.loading-wheel-2 {
+    width: 100%;
+    height: 20px;
+    margin-top: -50px;
+    
+    position: absolute;
+    top: 70%;
+    font-weight: bold;
+    font-size: 30pt;
+    color: white;
+    text-align: center;
+}
+
+</style>
+<div class="loading" id="ldg-SI-SubmitIde" style="display: none;">
+	<div class="loading-wheel"><img height="100px" width="100px" src="<?php echo site_url('assets/img/gif/loadingquick.gif') ?>"></div>
+	<div class="loading-wheel-2">Permintaan Anda Sedang Di Proses ..</div>
+</div>

@@ -17,7 +17,7 @@ class M_kaizenakuntansi extends CI_Model{
 	}
 
 	function getKaizenByUserStatus($noind,$status){
-		$sql = "select judul,kaizen_id 
+		$sql = "select ide,kaizen_id 
 				from si.si_kaizen_akuntansi
 				where status = ?
 				and pencetus_noind = ?";
