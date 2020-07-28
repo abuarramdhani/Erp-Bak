@@ -4266,6 +4266,17 @@ $(document).ready(function(){
         "buttons" : [
             'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
         ],
+        "rowCallback": function( row, data, index ){
+        	var ket = $(row).find('td:eq(8)').text();
+        	
+        	if (ket.substring(0,11) == "PENGURANGAN") {
+        		$(row).css('color','red')
+        	}else if (ket.substring(0,8) == "TAMBAHAN") {
+        		$(row).css('color','green')
+        	}else{
+        		$(row).css('color','black')
+        	}
+        }
 	});
 
 	$('#txt-CM-PekerjaTerhitungCatering-Tanggal').datepicker({
@@ -4278,7 +4289,8 @@ $(document).ready(function(){
 	$('#btn-CM-PekerjaTerhitungCatering-Lihat').on('click', function(){
 		tanggal = $('#txt-CM-PekerjaTerhitungCatering-Tanggal').val();
 		shift = $('#slc-CM-PekerjaTerhitungCatering-Shift').val();
-		lokasi = $('#slc-CM-PekerjaTerhitungCatering-Lokasi').val();
+		jenis = $('#slc-CM-PekerjaTerhitungCatering-Jenis').val();
+		lokasi = $('#slc-CM-PekerjaTerhitungCatering-TempatMakan').find('option:selected').attr('data-lokasi');
 		tempat_makan = $('#slc-CM-PekerjaTerhitungCatering-TempatMakan').val();
 		$('#ldg-CM-PekerjaTerhitungKatering-Loading').show();
 
@@ -4286,7 +4298,7 @@ $(document).ready(function(){
 			$.ajax({
 				method: 'GET',
 				url: baseurl + 'CateringManagement/Extra/PekerjaTerhitungCatering/getList',
-				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, tempat_makan: tempat_makan},
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, tempat_makan: tempat_makan,jenis: jenis},
 				error: function(xhr,status,error){
 					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
 					swal.fire({
@@ -4298,6 +4310,7 @@ $(document).ready(function(){
 		            })
 				},
 				success: function(data){
+					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
 					obj = JSON.parse(data);
 					tblCMPekerjaTerhitungKatering.clear().draw();
 					obj.forEach(function(daftar, index){
@@ -4313,7 +4326,6 @@ $(document).ready(function(){
 							daftar.status
 						]).draw(false);
 					})
-					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
 					tblCMPekerjaTerhitungKatering.columns.adjust().draw();
 				}
 			})

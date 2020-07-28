@@ -253,7 +253,7 @@ class C_HitungPesanan extends CI_Controller
       $this->M_hitungpesanan->UpdateWaktuHitungByShift($shift,'1');      
     }
     
-    $this->simpanDetail($tanggal,$shift,$lokasi);
+    $this->simpanDetail($tanggal,$shift,$lokasi,$jenis);
 
     $data_log = array(
       'wkt' => date('Y-m-d H:i:s'),
@@ -2158,32 +2158,79 @@ class C_HitungPesanan extends CI_Controller
     $tambahan = $this->M_hitungpesanan->getPesananTambahanDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
     if (!empty($tambahan)) {
       foreach ($tambahan as $tmb) {
-          $data_insert = array(
-            'tanggal' => $tanggal,
-            'shift' => $shift,
-            'lokasi' => $lokasi,
-            'tempat_makan' => $tmb['fs_tempat_makan'],
-            'noind' => $tmb['fs_noind'],
-            'keterangan' => 'TAMBAHAN',
-            'created_by' => $this->session->user
-          );
-          $this->M_hitungpesanan->insertPesananDetail($data_insert);
+        $keterangan = "";
+        if ($tmb['fb_kategori'] == "1") {
+          $keterangan = "LEMBUR";
+        }elseif ($tmb['fb_kategori'] == "2") {
+          $keterangan = "SHIFT TANGGUNG";
+        }elseif ($tmb['fb_kategori'] == "3") {
+          $keterangan = "TUGAS KE PUSAT";
+        }elseif ($tmb['fb_kategori'] == "4") {
+          $keterangan = "TUGAS KE TUKSONO";
+        }elseif ($tmb['fb_kategori'] == "5") {
+          $keterangan = "TUGAS KE MLATI";
+        }elseif ($tmb['fb_kategori'] == "6") {
+          $keterangan = "TAMU";
+        }elseif ($tmb['fb_kategori'] == "7") {
+          $keterangan = "CADANGAN";
+        }
+        $data_insert = array(
+          'tanggal' => $tanggal,
+          'shift' => $shift,
+          'lokasi' => $lokasi,
+          'tempat_makan' => $tmb['fs_tempat_makan'],
+          'noind' => $tmb['fs_noind'],
+          'keterangan' => 'TAMBAHAN - '.$keterangan,
+          'created_by' => $this->session->user,
+          'jenis' => $jenis
+        );
+        $this->M_hitungpesanan->insertPesananDetail($data_insert);
       }
     }
 
     $pengurangan = $this->M_hitungpesanan->getPesananPenguranganDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
     if (!empty($pengurangan)) {
       foreach ($pengurangan as $png) {
+        $keterangan = "";
+        if ($png['fb_kategori'] == "1") {
+          $keterangan = "TIDAK MAKAN ( GANTI UANG )";
+        }elseif ($png['fb_kategori'] == "2") {
+          $keterangan = "PINDAH MAKAN";
           $data_insert = array(
             'tanggal' => $tanggal,
             'shift' => $shift,
-            'lokasi' => $lokasi,
-            'tempat_makan' => $png['fs_tempat_makan'],
+            'lokasi' => $png['fs_lokasipg'],
+            'tempat_makan' => $png['fs_tempat_makanpg'],
             'noind' => $png['fs_noind'],
-            'keterangan' => 'PENGURANGAN',
-            'created_by' => $this->session->user
+            'keterangan' => 'TAMBAHAN - '.$keterangan,
+            'created_by' => $this->session->user,
+            'jenis' => $jenis
           );
           $this->M_hitungpesanan->insertPesananDetail($data_insert);
+        }elseif ($png['fb_kategori'] == "3") {
+          $keterangan = "TUGAS KE PUSAT";
+        }elseif ($png['fb_kategori'] == "4") {
+          $keterangan = "TUGAS KE TUKSONO";
+        }elseif ($png['fb_kategori'] == "5") {
+          $keterangan = "TUGAS KE MLATI";
+        }elseif ($png['fb_kategori'] == "6") {
+          $keterangan = "TUGAS LUAR";
+        }elseif ($png['fb_kategori'] == "7") {
+          $keterangan = "DINAS PERUSAHAAN ( KUNJUNGAN KERJA / LAYAT / DLL )";
+        }elseif ($png['fb_kategori'] == "8") {
+          $keterangan = "TIDAK MAKAN ( TIDAK DIGANTI UANG )";
+        }
+        $data_insert = array(
+          'tanggal' => $tanggal,
+          'shift' => $shift,
+          'lokasi' => $lokasi,
+          'tempat_makan' => $png['fs_tempat_makan'],
+          'noind' => $png['fs_noind'],
+          'keterangan' => 'PENGURANGAN - '.$keterangan,
+          'created_by' => $this->session->user,
+          'jenis' => $jenis
+        );
+        $this->M_hitungpesanan->insertPesananDetail($data_insert);
       }
     }
 
@@ -2198,7 +2245,8 @@ class C_HitungPesanan extends CI_Controller
             'tempat_makan' => $abs['tempat_makan'],
             'noind' => $abs['noind'],
             'keterangan' => strtoupper($abs['keterangan']),
-            'created_by' => $this->session->user
+            'created_by' => $this->session->user,
+            'jenis' => $jenis
           );
           $this->M_hitungpesanan->insertPesananDetail($data_insert);
         }
@@ -2214,7 +2262,8 @@ class C_HitungPesanan extends CI_Controller
             'tempat_makan' => $abs['tempat_makan'],
             'noind' => $abs['noind'],
             'keterangan' => strtoupper($abs['keterangan']),
-            'created_by' => $this->session->user
+            'created_by' => $this->session->user,
+            'jenis' => $jenis
           );
           $this->M_hitungpesanan->insertPesananDetail($data_insert);
         }
@@ -2230,7 +2279,8 @@ class C_HitungPesanan extends CI_Controller
             'tempat_makan' => $abs['tempat_makan'],
             'noind' => $abs['noind'],
             'keterangan' => strtoupper($abs['keterangan']),
-            'created_by' => $this->session->user
+            'created_by' => $this->session->user,
+            'jenis' => $jenis
           );
           $this->M_hitungpesanan->insertPesananDetail($data_insert);
         }
