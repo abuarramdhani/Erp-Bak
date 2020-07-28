@@ -259,5 +259,24 @@ function getJobReleased() {
   $('#create-new-rkh').html(listJobWipp.join(" "));
 }
 
+$('.btnWippRefresh').on('click', function () {
+  $('#wipp2').modal('show')
+  function run() {
+    let d = $.Deferred(),
+        p = d.promise();
+    p.then(_=>{
+      $('#wipp2').modal('toggle')
+      $('.modal-backdrop').remove();
+    }).then(_=>{
+      setTimeout(function () {
+        getJobReleased();
+        $('#wipp2').modal('show')
+      }, 500);
+    });
+    d.resolve();
+  }
+  run();
+})
+
 
 </script>

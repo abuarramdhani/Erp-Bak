@@ -18,9 +18,8 @@ const swalWIPP = (type, title) => {
     text: ''
   })
 }
-
-
 // ========================do something below the alert =================
+
 const saveNewRKHEdit = _ => {
   var tableInfo = Array.prototype.map.call(document.querySelectorAll('.tblNewRKH tr[hesoyam="ya"]'), function(tr) {
     return Array.prototype.map.call(tr.querySelectorAll('td center'), function(td) {

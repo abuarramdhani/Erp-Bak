@@ -132,7 +132,8 @@ vertical-align: middle;
             <div class="box box-primary box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">Create New RKH</h4>
+                  <h4 style="font-weight:bold;display:inline">Create New RKH</h4>
+                  <button type="button" class="btn btn-default btnWippRefresh" style="margin-left: 10px;display:inline"><i class="fa fa-refresh"></i> Refresh</button>
                 </div>
                 <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal"><i class="fa fa-close"></i></button>
               </div>
