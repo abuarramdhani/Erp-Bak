@@ -115,7 +115,7 @@ class M_progress extends CI_Model
                 nvl(to_date('$tanggal1','YYYY/MM/DD'),trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD'))) 
                 and
                 nvl(to_date('$tanggal2','YYYY/MM/DD'),trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')))
-            and pha.SEGMENT1 = nvl('$no_po', NVL(pha.SEGMENT1,1))
+            and nvl(pha.SEGMENT1,1) = nvl('$no_po', NVL(pha.SEGMENT1,1))
         order by 1,3");
 
         return $query->result_array();
