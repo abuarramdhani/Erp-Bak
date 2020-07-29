@@ -4586,5 +4586,5 @@ $route['RunningTimeLinePnP/cekapi'] = 'RunningTimeLinePnP/C_Master/cekapi';
 
 //-------------------------------------------Quick Landing---------------------------------------//
 $route['LandingPageMonitor'] = 'QuickLanding/C_Qlanding/Index';
-$route['LandingPageMonitor/getData'] = 'Quicklanding/C_Qlanding/getData';
-$route['LandingPageMonitor/exportExcel'] = 'Quicklanding/C_Qlanding/exportExcel';
+$route['LandingPageMonitor/getData'] = 'QuickLanding/C_Qlanding/getData';
+$route['LandingPageMonitor/exportExcel'] = 'QuickLanding/C_Qlanding/exportExcel';
