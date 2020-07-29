@@ -56,7 +56,7 @@ class C_Qlanding extends CI_Controller
 		$data['report'] = $this->M_qlanding->getDataReport($loc, $from_date, $to_date);
 		$this->session->set_flashdata('report', $data['report']);
 
-		$returnTable = $this->load->view('QuickLanding/V_table',$data,true);
+		$returnTable = $this->load->view('QuickLanding/V_Table',$data,true);
 		echo $returnTable;
 	}
 
