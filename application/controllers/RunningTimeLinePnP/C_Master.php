@@ -66,7 +66,7 @@ class C_Master extends CI_Controller
         $kind = '_R';
       }
       $date = date('Y-m-d').$kind;
-      
+
       $line5 = $this->M_rtlp->getline5($date);
       if (!empty($line5)) {
         foreach ($line5 as $key => $value) {
@@ -174,6 +174,16 @@ class C_Master extends CI_Controller
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('RunningTimeLinePnP/V_Setting');
         $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
+    }
+
+    public function reset()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Akses terlarang!";
+      }else {
+        $data = $this->M_rtlp->reset($this->input->post('no_job'), $this->input->post('line'), $this->input->post('start_reset'));
+        echo json_encode($data);
+      }
     }
 
     public function insertTimePause()

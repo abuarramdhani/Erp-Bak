@@ -1077,6 +1077,7 @@ class C_Master extends CI_Controller
             $ln5_tampng[] = NULL;
           }
         }
+        
         if (!empty($ln5_tampng)) {
           foreach ($ln5_tampng as $key => $bln1) {
             $line5[$key]['QTY_BOM'] = $bln1['QTY'];
