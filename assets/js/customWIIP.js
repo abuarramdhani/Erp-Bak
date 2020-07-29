@@ -1244,6 +1244,7 @@ const addrowlinewipp5 = _ => {
 }
 
 const minus_wipp5 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid5_' + n).remove();
   $('#job5_wipp' + n).parents('.rowbaru5_wipp').remove()
   let total_sebelumnya = $('#total_ppic_5').html()
@@ -1301,8 +1302,8 @@ const minus_wipp5 = (n, id_job_list) => {
                                                           </center>
                                                         </td>
                                                         <td>
-                                                          <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                          '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                          <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                          '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                           <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                         </td>
                                                         <td hidden><center>${id_job_list}</center></td>
@@ -1338,6 +1339,7 @@ const addrowlinewipp4 = _ => {
 }
 
 const minus_wipp4 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid4_' + n).remove();
   $('#job4_wipp' + n).parents('.rowbaru4_wipp').remove()
   let total_sebelumnya = $('#total_ppic_4').html()
@@ -1395,8 +1397,8 @@ const minus_wipp4 = (n, id_job_list) => {
                                                         </center>
                                                       </td>
                                                       <td>
-                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                         <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                       </td>
                                                       <td hidden><center>${id_job_list}</center></td>
@@ -1433,6 +1435,7 @@ const addrowlinewipp3 = _ => {
 }
 
 const minus_wipp3 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid3_' + n).remove();
   $('#job3_wipp' + n).parents('.rowbaru3_wipp').remove()
   let total_sebelumnya = $('#total_ppic_3').html()
@@ -1489,8 +1492,8 @@ const minus_wipp3 = (n, id_job_list) => {
                                                         </center>
                                                       </td>
                                                       <td>
-                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                         <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                       </td>
                                                       <td hidden><center>${id_job_list}</center></td>
@@ -1527,6 +1530,7 @@ const addrowlinewipp2 = _ => {
 }
 
 const minus_wipp2 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid2_' + n).remove();
   $('#job2_wipp' + n).parents('.rowbaru2_wipp').remove()
   let total_sebelumnya = $('#total_ppic_2').html()
@@ -1585,8 +1589,8 @@ const minus_wipp2 = (n, id_job_list) => {
                                                         </center>
                                                       </td>
                                                       <td>
-                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                         <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                       </td>
                                                       <td hidden><center>${id_job_list}</center></td>
@@ -1738,6 +1742,7 @@ const addrowlinewipp = (cek, line) => {
 }
 
 const minus_wipp1 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid1_' + n).remove();
   $('#job1_wipp' + n).parents('.rowbaru1_wipp').remove()
 
@@ -1801,8 +1806,8 @@ const minus_wipp1 = (n, id_job_list) => {
                                                         </center>
                                                       </td>
                                                       <td>
-                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                         <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                       </td>
                                                       <td hidden><center>${id_job_list}</center></td>
