@@ -4583,3 +4583,8 @@ $route['RunningTimeLinePnP/lane5/(:any)'] = 'RunningTimeLinePnP/C_Master/$1';
 $route['RunningTimeLinePnP/lane5/(:any)/(:any)'] = 'RunningTimeLinePnP/C_Master/$1/$2';
 
 $route['RunningTimeLinePnP/cekapi'] = 'RunningTimeLinePnP/C_Master/cekapi';
+
+//-------------------------------------------Quick Landing---------------------------------------//
+$route['LandingPageMonitor'] = 'QuickLanding/C_Qlanding/Index';
+$route['LandingPageMonitor/getData'] = 'Quicklanding/C_Qlanding/getData';
+$route['LandingPageMonitor/exportExcel'] = 'Quicklanding/C_Qlanding/exportExcel';

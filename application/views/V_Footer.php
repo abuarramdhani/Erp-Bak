@@ -234,6 +234,7 @@
 			<script src="<?= base_url('assets/js/customJT.js'); ?>"></script>
 			<script src="<?= base_url('assets/js/customJTIP.js');?>"></script>
 			<script src="<?= base_url('assets/js/customMCT.js');?>"></script>
+			<script src="<?= base_url('assets/js/customWLP.js');?>"></script>
 
 
 
