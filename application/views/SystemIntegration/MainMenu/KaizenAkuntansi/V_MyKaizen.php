@@ -65,7 +65,7 @@
 																		?>
 																		<tr>
 																			<td class="text-center"><?php echo $nomor ?></td>
-																			<td><?php echo $value['judul'] ?></td>
+																			<td><?php echo empty($value['judul']) ? $value['ide'] : $value['judul'] ?></td>
 																			<td><?php echo date('Y-m-d H:i:s',strtotime($value['created_timestamp'])) ?></td>
 																			<td><?php echo $value['due_date_f4'] ?></td>
 																			<td class="text-center"><?php echo $value['status'] ?></td>
@@ -78,7 +78,10 @@
 
 																				if ($value['status'] == 'F4 Belum di Upload') {
 																				 	?>
+																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/CetakF4/'.$value['kaizen_id']) ?>" target="_blank" title="Cetak F4" class="btn btn-danger btn-sm"><span class="fa fa-file-pdf-o"></span></a>
 																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/UploadF4/'.$value['kaizen_id']) ?>" title="Upload F4" class="btn btn-info btn-sm"><span class="fa fa-upload"></span></a>
+																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/EditF4/'.$value['kaizen_id']) ?>" title="Edit F4" class="btn btn-primary btn-sm"><span class="fa fa-pencil"></span></a>
+																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/HapusF4/'.$value['kaizen_id']) ?>" title="Hapus F4" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></a>
 																				 	<?php
 																				} 
 
@@ -108,7 +111,7 @@
 															<thead class="bg-primary">
 																<tr>
 																	<th style="text-align: center;">No.</th>
-																	<th style="text-align: center;">Judul</th>
+																	<th style="text-align: center;">Ide</th>
 																	<th style="text-align: center;">Create Ide</th>
 																	<th style="text-align: center;">Due Date F4</th>
 																</tr>
@@ -122,7 +125,7 @@
 																		?>
 																		<tr>
 																			<td class="text-center"><?php echo $nomor ?></td>
-																			<td><?php echo $value['judul'] ?></td>
+																			<td><?php echo $value['ide'] ?></td>
 																			<td><?php echo date('Y-m-d H:i:s',strtotime($value['created_timestamp'])) ?></td>
 																			<td><?php echo $value['due_date_f4'] ?></td>
 																		</tr>
@@ -205,7 +208,10 @@
 																			<td><?php echo $value['due_date_f4'] ?></td>
 																			<td class="text-center">
 																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/LihatF4/'.$value['kaizen_id']) ?>" title="Lihat F4" class="btn btn-success btn-sm"><span class="fa fa-eye"></span></a>
+																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/CetakF4/'.$value['kaizen_id']) ?>" target="_blank" title="Cetak F4" class="btn btn-danger btn-sm"><span class="fa fa-file-pdf-o"></span></a>
 																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/UploadF4/'.$value['kaizen_id']) ?>" title="Upload F4" class="btn btn-info btn-sm"><span class="fa fa-upload"></span></a>
+																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/EditF4/'.$value['kaizen_id']) ?>" title="Edit F4" class="btn btn-primary btn-sm"><span class="fa fa-pencil"></span></a>
+																				<a href="<?php echo base_url('SystemIntegration/KaizenAkt/HapusF4/'.$value['kaizen_id']) ?>" title="Hapus F4" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></a>
 																			</td>
 																		</tr>
 																		<?php

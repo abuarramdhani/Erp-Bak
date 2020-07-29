@@ -63,6 +63,7 @@ class M_kaizenakuntansi extends CI_Model{
 
 	function getKaizenByNoind($noind){
 		$sql = "select ska.kaizen_id, 
+					ska.ide,
 					ska.judul,
 					ska.due_date_f4,
 					ska.status,

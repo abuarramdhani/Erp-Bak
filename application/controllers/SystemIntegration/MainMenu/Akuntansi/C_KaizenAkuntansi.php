@@ -51,12 +51,10 @@ class C_KaizenAkuntansi extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		// $this->load->view('CateringManagement/Extra/IzinDinasPTM/V_index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
 	public function SubmitIde(){
-		// echo "<pre>";print_r($_SESSION);exit();
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
 
@@ -438,6 +436,54 @@ class C_KaizenAkuntansi extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_LihatF4',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function HapusF4($kaizenId){
+		$kaizen = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
+		$nama = $this->session->employee;
+		$noind = $this->session->user;
+		$judul = $kaizen[0]['judul'];
+		$data = array(
+			'komponen' 			=> null,
+			'kondisi_awal' 		=> null,
+			'usulan_kaizen' 	=> null,
+			'pertimbangan' 		=> null,
+			'tanggal_realisasi' => null,
+			'status' 			=> 'Create Ide',
+			'judul'				=> null
+		);
+		$this->M_kaizenakuntansi->updateKaizenByKaizenId($data,$kaizenId);
+
+		$thread = array(
+			'kaizen_id' => $kaizenId,
+			'status' 	=> 'F4 Sudah di Hapus',
+			'detail' 	=> '(F4 Sudah di Hapus) '.$noind.' - '.trim($nama).' telah menghapus F4 ide kaizen dengan judul '.$judul
+		);
+
+		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
+		redirect(base_url('SystemIntegration/KaizenAkt/MyKaizen'));
+	}
+
+	public function EditF4($kaizenId){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Kaizen Akuntansi';
+		$data['Header']			=	'Kaizen Akuntansi';
+		$data['Menu'] 			= 	'Submit Kaizen';
+		$data['SubMenuOne'] 	= 	'Submit F4';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
+		// echo "<pre>";print_r($data['kaizen']);exit();
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_SubmitF4',$data);
 		$this->load->view('V_Footer',$data);
 	}
 }
