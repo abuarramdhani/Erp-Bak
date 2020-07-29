@@ -6891,8 +6891,7 @@ $(document).ready(function(){
 			var tempatMakanBaru = $(this).closest('form').find('.slc-CM-EditTempatMakan-TempatMakanBaru').val();
 
 			if (lokasi && kodeInduk && tempatMakanLama && tempatMakanBaru) {
-				// $('#ldg-CM-EditTempatMakan-Loading').show();
-				console.log(kodesie + "....." + lokasi + "....." + kodeInduk + "....." + tempatMakanBaru + "....." + tempatMakanLama)
+				$('#ldg-CM-EditTempatMakan-Loading').show();
 				$.ajax({
 					method: 'POST',
 					url: baseurl + 'CateringManagement/Extra/EditTempatMakan/simpanPerSeksi',
