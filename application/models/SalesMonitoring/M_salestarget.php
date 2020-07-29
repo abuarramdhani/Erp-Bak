@@ -150,9 +150,6 @@ class M_salestarget extends CI_Model {
 		
 		public function viewOrderType3($code)
 		{
-		    if($code == 9999){
-		        $code = 82;
-		    }
 			$db = $this->load->database('oracle',true);
 			$sql = "SELECT * 
 			FROM 
