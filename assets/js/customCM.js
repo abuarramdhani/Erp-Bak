@@ -6687,31 +6687,23 @@ $(document).ready(function(){
 		var status = "0";
 
 		if (dept) {
-			status = "1";
-		}else{
-			status = "0";
-		}
-
-		if ((bidang_dis == undefined && bidang) || bidang_dis == "disabled") {
-			status = "1";
-		}else{
-			status = "0";
-		}
-
-		if ((unit_dis == undefined && unit) || unit_dis == "disabled") {
-			status = "1";
-		}else{
-			status = "0";
-		}
-
-		if ((seksi_dis == undefined && seksi) || seksi_dis == "disabled") {
-			status = "1";
-		}else{
-			status = "0";
-		}
-
-		if ((pekerjaan_dis == undefined && pekerjaan) || pekerjaan_dis == "disabled") {
-			status = "1";
+			if ((bidang_dis == undefined && bidang) || bidang_dis == "disabled") {
+				if ((unit_dis == undefined && unit) || unit_dis == "disabled") {
+					if ((seksi_dis == undefined && seksi) || seksi_dis == "disabled") {
+						if ((pekerjaan_dis == undefined && pekerjaan) || pekerjaan_dis == "disabled") {
+							status = "1";
+						}else{
+							status = "0";
+						}
+					}else{
+						status = "0";
+					}
+				}else{
+					status = "0";
+				}
+			}else{
+				status = "0";
+			}
 		}else{
 			status = "0";
 		}
@@ -6844,5 +6836,101 @@ $(document).ready(function(){
 		}
 	})
 
+	$('#btn-CM-EditTempatMakan-SimpanPerSeksi').on('click', function(){
+		var dept = $(this).closest('form').find('.slc-CM-EditTempatMakan-Departemen').val();
+		var bidang = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val();
+		var unit = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val();
+		var seksi = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val();
+		var pekerjaan = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val();
+
+		var bidang_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled');
+		var unit_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled');
+		var seksi_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled');
+		var pekerjaan_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled');
+
+		var status = "0";
+
+		if (dept) {
+			if ((bidang_dis == undefined && bidang) || bidang_dis == "disabled") {
+				if ((unit_dis == undefined && unit) || unit_dis == "disabled") {
+					if ((seksi_dis == undefined && seksi) || seksi_dis == "disabled") {
+						if ((pekerjaan_dis == undefined && pekerjaan) || pekerjaan_dis == "disabled") {
+							status = "1";
+						}else{
+							status = "0";
+						}
+					}else{
+						status = "0";
+					}
+				}else{
+					status = "0";
+				}
+			}else{
+				status = "0";
+			}
+		}else{
+			status = "0";
+		}
+
+		if (status == "1") {
+			var kodesie = "";
+			if (pekerjaan) {
+				kodesie = pekerjaan;
+			}else if (seksi) {
+				kodesie = seksi;
+			}else if (unit) {
+				kodesie = unit;
+			}else if (bidang) {
+				kodesie = bidang;
+			}else if (dept) {
+				kodesie = dept;
+			}
+			var lokasi  = $(this).closest('form').find('.slc-CM-EditTempatMakan-LokasiKerja').val();
+			var kodeInduk = $(this).closest('form').find('.slc-CM-EditTempatMakan-KodeInduk').val();
+			var tempatMakanLama = $(this).closest('form').find('.slc-CM-EditTempatMakan-TempatMakanLama').val();
+			var tempatMakanBaru = $(this).closest('form').find('.slc-CM-EditTempatMakan-TempatMakanBaru').val();
+
+			if (lokasi && kodeInduk && tempatMakanLama && tempatMakanBaru) {
+				// $('#ldg-CM-EditTempatMakan-Loading').show();
+				console.log(kodesie + "....." + lokasi + "....." + kodeInduk + "....." + tempatMakanBaru + "....." + tempatMakanLama)
+				$.ajax({
+					method: 'POST',
+					url: baseurl + 'CateringManagement/Extra/EditTempatMakan/simpanPerSeksi',
+					data: {kodesie: kodesie, lokasi: lokasi, kode_induk: kodeInduk, tempat_makan_lama: tempatMakanLama, tempat_makan_baru: tempatMakanBaru},
+					error: function(xhr,status,error){
+						$('#ldg-CM-EditTempatMakan-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						$('#ldg-CM-EditTempatMakan-Loading').hide();
+						
+						Swal.fire(
+							'Simpan Sukses !!!',
+							'Tempat Makan Berhasil diubah !!',
+							'success'
+						)
+					}
+				})
+			}else{
+				Swal.fire(
+					'Peringatan !!!',
+					'Pastikan Data Lokasi, Kode Induk, Tempat Makan Lama, Tempat Makan Baru Sudah Terisi',
+					'warning'
+				)
+			}
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Data Pekerjaan/Seksi/Unit/Bidang/Dept Sudah Terisi',
+				'warning'
+			)
+		}
+	})
 })
 // end edit tempat makan

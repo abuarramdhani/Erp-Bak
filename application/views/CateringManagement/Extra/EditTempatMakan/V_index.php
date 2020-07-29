@@ -17,19 +17,18 @@
 									<div class="col-lg-12">
 										<ul class="nav nav-pills nav-justified" role="tablist">
 											<li role="presentation" class="active">
-												<a href="#div-CM-EditTempatMakan-Pekerja" aria-controls="div-CM-EditTempatMakan-Pekerja" role="tab" data-toggle="tab">Per Pekerja</a>
+												<a href="#div-CM-EditTempatMakan-Seksi" aria-controls="div-CM-EditTempatMakan-Seksi" role="tab" data-toggle="tab">Per Pekerjaan/Seksi/Unit/Bidang/Dept</a>
 											</li>
 											<li role="presentation">
-												<a href="#div-CM-EditTempatMakan-Seksi" aria-controls="div-CM-EditTempatMakan-Seksi" role="tab" data-toggle="tab">Per Pekerjaan/Seksi/Unit/Bidang/Dept</a>
+												<a href="#div-CM-EditTempatMakan-Pekerja" aria-controls="div-CM-EditTempatMakan-Pekerja" role="tab" data-toggle="tab">Per Pekerja</a>
 											</li>
 										</ul>
 										<hr>
 										<div class="tab-content">
-											<div role="tabpanel" class="tab-pane fade" id="div-CM-EditTempatMakan-Seksi">
+											<div role="tabpanel" class="tab-pane fade in active" id="div-CM-EditTempatMakan-Seksi">
 												<div class="row">
 													<div class="col-lg-12 text-center">
-														<h1>Sedang dalam Pengembangan</h1>
-														<!-- <form class="form-horizontal">
+														<form class="form-horizontal">
 															<div class="form-group">
 																<label class="control-label col-lg-4">Departemen</label>
 																<div class="col-lg-4">
@@ -89,11 +88,11 @@
 																	<button type="button" id="btn-CM-EditTempatMakan-SimpanPerSeksi" class="btn btn-primary">Simpan</button>
 																</div>
 															</div>
-														</form> -->
+														</form>
 													</div>
 												</div>
 											</div>
-											<div role="tabpanel" class="tab-pane fade in active" id="div-CM-EditTempatMakan-Pekerja">
+											<div role="tabpanel" class="tab-pane fade" id="div-CM-EditTempatMakan-Pekerja">
 												<div class="row">
 													<div class="col-lg-12">
 														<form class="form-horizontal">

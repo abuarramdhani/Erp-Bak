@@ -122,5 +122,44 @@ class C_EditTempatMakan extends CI_Controller
 		$data = $this->M_edittempatmakan->getPekerjaByKodesie($kodesie);
 		echo json_encode($data);
 	}
+
+	public function simpanPerSeksi(){
+		$kodesie = $this->input->post('kodesie');
+		$lokasi = $this->input->post('lokasi');
+		$kode_induk = $this->input->post('kode_induk');
+		$tempat_makan_lama = $this->input->post('tempat_makan_lama');
+		$tempat_makan_baru = $this->input->post('tempat_makan_baru');
+
+		if (substr($kodesie, -2) == "00") {
+			$kodesie = substr($kodesie, 0, strlen($kodesie) - 2);
+		}elseif ($kodesie == '-') {
+			$kodesie = "";
+		}
+		if ($lokasi == "-") {
+			$lokasi = "";
+		}
+		if ($kode_induk == "-") {
+			$kode_induk = "";
+		}
+		if ($tempat_makan_lama == "--SEMUA TEMPAT MAKAN--") {
+			$tempat_makan_lama = "";
+		}
+		$user = $this->session->user;
+		$data = $this->M_edittempatmakan->getPekerjaByKodesieLokasiKodeIndukTempatMakan($kodesie,$lokasi,$kode_induk,$tempat_makan_lama);
+		if (!empty($data)) {
+			foreach ($data as $key => $value) {
+				$insert = array(
+					'noind' => $value['noind'],
+					'tempat_makan_lama' => $value['tempat_makan'],
+					'tempat_makan_baru' => $tempat_makan_baru,
+					'created_by' => $user
+				);
+
+				$this->M_edittempatmakan->insertEditTempatMakan($insert);
+				$this->M_edittempatmakan->updateTempatMakanByNoind($tempat_makan_baru,$value['noind']);
+			}
+		}
+
+	}
 }
 ?>

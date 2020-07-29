@@ -92,6 +92,29 @@ class M_edittempatmakan extends CI_Model {
 		return $this->personalia->query($sql,array($kodesie))->result_array();
 	}
 
+	public function getPekerjaByKodesieLokasiKodeIndukTempatMakan($kodesie,$lokasi,$kode_induk,$tempat_makan){
+		$where = "";
+		if ($kodesie != "") {
+			$where = " and tp.kodesie like '".$kodesie."%' ";
+		}
+		if ($lokasi != "") {
+			$where .= " and tp.lokasi_kerja = '".$lokasi."' ";
+		}
+		if ($kode_induk != "") {
+			$where .= " and tp.kode_status_kerja = '".$kode_induk."' ";
+		}
+		if ($tempat_makan != "") {
+			$where .= " and tp.tempat_makan = '".$tempat_makan."' ";
+		}
+
+		$sql = "select tp.noind, tp.tempat_makan
+				from hrd_khs.tpribadi tp 
+				where tp.keluar = '0'
+				$where
+				order by tp.noind";
+		return $this->personalia->query($sql)->result_array();
+	}
+
 	public function updateTempatMakanByNoind($tempat_makan,$noind){
 		$sql = "update hrd_khs.tpribadi set tempat_makan = ?
 				where noind = ?";
