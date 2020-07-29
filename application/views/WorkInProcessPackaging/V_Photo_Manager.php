@@ -23,7 +23,7 @@
                       <div class="col-md-6">
                         <label for="">Nama Komponen</label>
                         <input type="hidden" name="type_gambar" value="<?php echo $param ?>">
-                        <input type="text" class="form-control" name="nama_komponen" id="nama_komponen" placeholder="Nama Komponen">
+                        <input type="text" class="form-control" readonly name="nama_komponen" id="nama_komponen" placeholder="Nama Komponen">
                       </div>
                     </div>
                   </div>
@@ -117,7 +117,7 @@
                                                   <div class="col-md-6">
                                                     <label for="">Nama Komponen</label>
                                                     <input type="hidden" name="type_gambar" value="<?php echo $param ?>">
-                                                    <input type="text" class="form-control" name="nama_komponen" id="nama_komponen_update_<?php echo $g['kode_item'] ?>" placeholder="Nama Komponen" value="<?php echo $g['nama_item'] ?>">
+                                                    <input type="text" class="form-control" readonly name="nama_komponen" id="nama_komponen_update_<?php echo $g['kode_item'] ?>" placeholder="Nama Komponen" value="<?php echo $g['nama_item'] ?>">
                                                   </div>
                                                 </div>
                                               </div>
@@ -170,7 +170,7 @@
             <div class="box box-primary box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">DETAIL (<span id="nodoc"></span>) </h4>
+                  <h4 style="font-weight:bold;">DETAIL </h4>
                 </div>
                 <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal">Close</button>
               </div>

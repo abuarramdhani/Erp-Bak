@@ -26,7 +26,7 @@
 
                     </div>
                     <div class="form-group">
-                      <center class="btnWIPP" hidden><button type="button" class="btn btn-md btn-primary btnWIPP" name="button" data-toggle="modal" onclick="getJobReleased()" data-target="#wipp_edit2"><i class="fa fa-plus-square"></i> <b>Add New Job</b></button> </center>
+                      <center class="btnWIPP" hidden><button type="button" class="btn btn-md btn-primary btnWIPP" name="button" data-toggle="modal" onclick="getJobReleased()" data-target="#wipp2"><i class="fa fa-plus-square"></i> <b>Add New Job</b></button> </center>
                     </div>
                   </div>
                 </div>
@@ -64,7 +64,7 @@
 </div>
 
 <!-- wipp1 -->
-<div class="modal fade bd-example-modal-lg" id="wipp2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="wipp_2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
       <div class="panel-body">
@@ -250,7 +250,7 @@
 </div>
 
 <!-- wipp_edit2 -->
-<div class="modal fade bd-example-modal-lg" id="wipp_edit2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="wipp2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
       <div class="panel-body">
@@ -259,7 +259,8 @@
             <div class="box box-primary box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">Add New Job</h4>
+                  <h4 style="font-weight:bold;display:inline">Create New RKH</h4>
+                  <button type="button" class="btn btn-default btnWippRefresh" style="margin-left: 10px;display:inline"><i class="fa fa-refresh"></i> Refresh</button>
                 </div>
                 <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal"><i class="fa fa-close"></i></button>
               </div>
