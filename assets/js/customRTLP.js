@@ -468,11 +468,40 @@ jumlahEl1.forEach((v, i) => {
     }
   }
 
-  reset1[i] = _ => {
+  reset1[i] = (no_job) => {
     totalSeconds_i1[i] = 0;
-    document.getElementById(`hours1-${i}`).innerHTML = '00';
-    document.getElementById(`minutes1-${i}`).innerHTML = '00';
-    document.getElementById(`seconds1-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 1,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 1 dengan no job ${no_job} berhasil di Reset.`);
+
+          document.getElementById(`hours1-${i}`).innerHTML = '00';
+          document.getElementById(`minutes1-${i}`).innerHTML = '00';
+          document.getElementById(`seconds1-${i}`).innerHTML = '00';
+        }else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
   };
 
 })
@@ -683,11 +712,41 @@ jumlahEl2.forEach((v, i) => {
     }
   };
 
-  reset2[i] = _ => {
+  reset2[i] = (no_job) => {
     totalSeconds_i2[i] = 0;
-    document.getElementById(`hours2-${i}`).innerHTML = '00';
-    document.getElementById(`minutes2-${i}`).innerHTML = '00';
-    document.getElementById(`seconds2-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 2,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 2 dengan no job ${no_job} berhasil di Reset.`);
+
+          document.getElementById(`hours2-${i}`).innerHTML = '00';
+          document.getElementById(`minutes2-${i}`).innerHTML = '00';
+          document.getElementById(`seconds2-${i}`).innerHTML = '00';
+        }else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+
   };
 
 })
@@ -899,11 +958,39 @@ jumlahEl3.forEach((v, i) => {
     }
   };
 
-  reset3[i] = _ => {
+  reset3[i] = (no_job) => {
     totalSeconds_i3[i] = 0;
-    document.getElementById(`hours3-${i}`).innerHTML = '00';
-    document.getElementById(`minutes3-${i}`).innerHTML = '00';
-    document.getElementById(`seconds3-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 3,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 3 dengan no job ${no_job} berhasil di Reset.`);
+          document.getElementById(`hours3-${i}`).innerHTML = '00';
+          document.getElementById(`minutes3-${i}`).innerHTML = '00';
+          document.getElementById(`seconds3-${i}`).innerHTML = '00';
+        }else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
   };
 
 })
@@ -1114,11 +1201,40 @@ jumlahEl4.forEach((v, i) => {
     }
   };
 
-  reset4[i] = _ => {
+  reset4[i] = (no_job) => {
     totalSeconds_i4[i] = 0;
-    document.getElementById(`hours4-${i}`).innerHTML = '00';
-    document.getElementById(`minutes4-${i}`).innerHTML = '00';
-    document.getElementById(`seconds4-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 4,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 4 dengan no job ${no_job} berhasil di Reset.`);
+          document.getElementById(`hours4-${i}`).innerHTML = '00';
+          document.getElementById(`minutes4-${i}`).innerHTML = '00';
+          document.getElementById(`seconds4-${i}`).innerHTML = '00';
+        }else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+
   };
 
 })
@@ -1338,11 +1454,40 @@ jumlahEl5.forEach((v, i) => {
     }
   };
 
-  reset5[i] = _ => {
+  reset5[i] = (no_job) => {
     totalSeconds_i5[i] = 0;
-    document.getElementById(`hours5-${i}`).innerHTML = '00';
-    document.getElementById(`minutes5-${i}`).innerHTML = '00';
-    document.getElementById(`seconds5-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 5,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 5 dengan no job ${no_job} berhasil di Reset.`);
+          document.getElementById(`hours5-${i}`).innerHTML = '00';
+          document.getElementById(`minutes5-${i}`).innerHTML = '00';
+          document.getElementById(`seconds5-${i}`).innerHTML = '00';
+        }else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+
   };
 })
 

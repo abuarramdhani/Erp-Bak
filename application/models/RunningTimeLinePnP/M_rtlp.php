@@ -5,9 +5,18 @@ class M_rtlp extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
         // $this->oracle = $this->load->database('oracle_dev', true);
         $this->personalia = $this->load->database('personalia', true);
+    }
+
+    public function reset($no_job, $line, $start_reset)
+    {
+      $this->db->where('No_Job', $no_job)
+               ->where('Line', $line)
+               ->update('wip_pnp.Time_Record', ['Start' => $start_reset]);
+      if ($this->db->affected_rows() == 1) {
+        return 1;
+      }
     }
 
     public function detail_pause($no_job, $line)
@@ -132,6 +141,8 @@ class M_rtlp extends CI_Model
 
     public function getDetailBom($kodebarang)
     {
+        $this->oracle = $this->load->database('oracle', true);
+        
         $sql = "SELECT
         rownum line_id
         ,CONNECT_BY_ROOT q_bom.assembly_num root_assembly

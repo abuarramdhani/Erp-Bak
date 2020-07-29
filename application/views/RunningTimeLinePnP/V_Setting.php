@@ -95,7 +95,7 @@
                           </p>
                           <button style="border-radius: 50px" class="btn bg-primary btn-xs btn-flat" onclick="start1[<?php echo $key ?>]('<?php echo $l1['kode_item'] ?>', '<?php echo '1' ?>', '<?php echo $l1['no_job'] ?>', '<?php echo $key ?>')" id="btnstart1<?php echo $key ?>"> <i class="fa fa-play-circle"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause1[<?php echo $key ?>]('<?php echo $l1['no_job'] ?>', '<?php echo $l1['kode_item'] ?>', '<?php echo $key ?>')" id="btnlanjut1<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
-                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset1[<?php echo $key ?>]()" id="btnrestart1<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
+                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset1[<?php echo $key ?>]('<?php echo $l1['no_job'] ?>')" id="btnrestart1<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-red btn-xs btn-flat" onclick="selesai1[<?php echo $key ?>]('<?php echo $l1['kode_item'] ?>', '<?php echo '1' ?>', '<?php echo $l1['no_job'] ?>')" id="btnfinish1<?php echo $key ?>" disabled> <i class="fa fa-stop"></i> </button>
                           </center>
                           <input type="hidden" id="val_to_cek1<?php echo $key ?>" value="first_load">
@@ -161,7 +161,7 @@
                           </p>
                           <button style="border-radius: 50px" class="btn bg-primary btn-xs btn-flat" onclick="start2[<?php echo $key ?>]('<?php echo $l2['kode_item'] ?>', '<?php echo '2' ?>', '<?php echo $l2['no_job'] ?>')" id="btnstart2<?php echo $key ?>"> <i class="fa fa-play-circle"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause2[<?php echo $key ?>]('<?php echo $l2['no_job'] ?>', '<?php echo $l2['kode_item'] ?>', '<?php echo $key ?>')" id="btnlanjut2<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
-                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset2[<?php echo $key ?>]()" id="btnrestart2<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
+                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset2[<?php echo $key ?>]('<?php echo $l2['no_job'] ?>')" id="btnrestart2<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-red btn-xs btn-flat" onclick="selesai2[<?php echo $key ?>]('<?php echo $l2['kode_item'] ?>', '<?php echo '2' ?>', '<?php echo $l2['no_job'] ?>')" id="btnfinish2<?php echo $key ?>" disabled> <i class="fa fa-stop"></i> </button>
                           </center>
                         </td>
