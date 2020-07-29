@@ -150,7 +150,7 @@ class M_salestarget extends CI_Model {
 		{
 			$db = $this->load->database('oracle',true);
 			$sql = "select
-                    ottt.DESCRIPTION            
+                    ottt.NAME    
                     from oe_transaction_types_tl ottt ,
                     oe_transaction_types_all otta
                     where
