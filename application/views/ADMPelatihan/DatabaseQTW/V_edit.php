@@ -147,7 +147,13 @@
                                     </div>
                                     <div class="box-body" style="margin-left: -50px;">
                                         <div class="col-lg-12">
-                                            <label class="col-lg-4" style="margin-top: 10px; margin-left: -3px; text-align: right;"><?= $data[0]['jenis_institusi'] == '1' ? 'Guru' : $data[0]['jenis_institusi'] == '2' ? 'Dosen' : 'Pendamping' ?> :</label>
+                                            <label class="col-lg-4" style="margin-top: 10px; margin-left: -3px; text-align: right;"><?php if ($data[0]['jenis_institusi'] == '1') {
+                                                                                                                                        echo 'Guru';
+                                                                                                                                    } else if ($data[0]['jenis_institusi'] == '2') {
+                                                                                                                                        echo 'Dosen';
+                                                                                                                                    } else {
+                                                                                                                                        echo 'Pendamping';
+                                                                                                                                    } ?> :</label>
                                             <div class="input-group margin col-lg-4" style="margin-left: -20px !important;">
                                                 <input type="number" class="col-lg-4 form-control inp_tua_qtw" name="inp_tua_qtw" value="<?= $data[0]['pendamping'] ?>" required>
                                                 <span class="input-group-btn">
@@ -156,7 +162,13 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
-                                            <label class="col-lg-4" style="margin-top: 10px; margin-left: -3px; text-align: right;"><?= $data[0]['jenis_institusi'] == '1' ? 'Siswa' : $data[0]['jenis_institusi'] == '2' ? 'Mahasiswa' : 'Peserta' ?> :</label>
+                                            <label class="col-lg-4" style="margin-top: 10px; margin-left: -3px; text-align: right;"><?php if ($data[0]['jenis_institusi'] == '1') {
+                                                                                                                                        echo 'Siswa';
+                                                                                                                                    } else if ($data[0]['jenis_institusi'] == '2') {
+                                                                                                                                        echo 'Mahasiswa';
+                                                                                                                                    } else {
+                                                                                                                                        echo 'Peserta';
+                                                                                                                                    } ?> :</label>
                                             <div class="input-group margin col-lg-4" style="margin-left: -20px !important;">
                                                 <input type="number" class="col-lg-4 form-control inp_muda_qtw" name="inp_muda_qtw" value="<?= $data[0]['peserta'] ?>" required>
                                                 <span class="input-group-btn">
