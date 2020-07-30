@@ -25,14 +25,18 @@
 														<?php 
 														if (isset($ide) && !empty($ide)) {
 															foreach ($ide as $key => $value) {
+																$encrypted_string = $this->encrypt->encode($value['kaizen_id']);
+																$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 															?>
-															<option value="<?php echo $value['kaizen_id'] ?>"><?php echo $value['ide'] ?></option>
+															<option value="<?php echo $encrypted_string ?>"><?php echo $value['ide'] ?></option>
 															<?php
 															}
 														}else{
 															if (isset($kaizen[0]['kaizen_id'])) {
+																$encrypted_string = $this->encrypt->encode($kaizen[0]['kaizen_id']);
+																$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 																?>
-																<option value="<?php echo $kaizen[0]['kaizen_id'] ?>" selected><?php echo $kaizen[0]['ide'] ?></option>
+																<option value="<?php echo $encrypted_string ?>" selected><?php echo $kaizen[0]['ide'] ?></option>
 																<?php
 															}
 														}

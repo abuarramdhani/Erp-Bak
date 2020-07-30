@@ -24,6 +24,13 @@ class M_kaizenakuntansi extends CI_Model{
 		return $this->db->query($sql,array($status,$noind))->result_array();
 	}
 
+	function getKaizenByStatus($status){
+		$sql = "select * 
+				from si.si_kaizen_akuntansi
+				where status = ?";
+		return $this->db->query($sql,array($status))->result_array();
+	}
+
 	function getMasterItem($term=FALSE,$id=FALSE) {
 		$oracle = $this->load->database('oracle',TRUE);
 		if($id===FALSE) {	
@@ -69,7 +76,8 @@ class M_kaizenakuntansi extends CI_Model{
 					ska.status,
 					ska.created_timestamp
 				from si.si_kaizen_akuntansi ska 
-				where ska.pencetus_noind = ?";
+				where ska.pencetus_noind = ?
+				and status != 'Hapus Ide'";
 		return $this->db->query($sql,array($noind))->result_array();
 	}
 

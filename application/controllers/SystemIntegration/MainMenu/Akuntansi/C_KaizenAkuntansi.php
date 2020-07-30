@@ -161,8 +161,11 @@ class C_KaizenAkuntansi extends CI_Controller
 	}
 
 	public function SimpanF4(){
+		$kaizen_id 		= $this->input->post('kaizen_id');
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
 		$judul 			= $this->input->post('kaizen_judul');
-		$kaizenId 		= $this->input->post('kaizen_id');
 		$nama 			= $this->input->post('nama');
 		$noind 			= $this->input->post('noind');
 		$kondisi 		= $this->input->post('kondisi');
@@ -195,7 +198,7 @@ class C_KaizenAkuntansi extends CI_Controller
 		$thread = array(
 			'kaizen_id' => $kaizenId,
 			'status' 	=> 'F4 Sudah di Submit',
-			'detail' 	=> '(F4 Sudah di Submit) '.$noind.' - '.trim($nama).' telah submit F4 ide kaizen dengan judul '.$judul
+			'detail' 	=> '(F4 Sudah di Submit) '.$noind.' - '.trim($nama).' telah submit F4 kaizen dengan judul '.$judul
 		);
 
 		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
@@ -203,17 +206,19 @@ class C_KaizenAkuntansi extends CI_Controller
 	}
 
 	public function CetakF4($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
 
 		$this->load->library('pdf');
 		
-		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizen_id);
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
 		$update = array(
 			'status' 			=> 'F4 Belum di Upload'
 		);
-		$this->M_kaizenakuntansi->updateKaizenByKaizenId($update,$kaizen_id);
+		$this->M_kaizenakuntansi->updateKaizenByKaizenId($update,$kaizenId);
 
 		$thread = array(
-			'kaizen_id' => $kaizen_id,
+			'kaizen_id' => $kaizenId,
 			'status' 	=> 'F4 Belum di Upload',
 			'detail' 	=> '(F4 Belum di Upload) '.$this->session->user.' - '.trim($this->session->employee).' telah mencetak PDF F4 kaizen dengan judul '.$data['kaizen'][0]['judul']
 		);
@@ -298,6 +303,9 @@ class C_KaizenAkuntansi extends CI_Controller
 	}
 
 	public function UploadF4($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
 
@@ -311,8 +319,8 @@ class C_KaizenAkuntansi extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizen_id);
-		$data['thread'] = $this->M_kaizenakuntansi->getThreadByKaizenId($kaizen_id);
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
+		$data['thread'] = $this->M_kaizenakuntansi->getThreadByKaizenId($kaizenId);
 		if ($data['kaizen'][0]['komponen']) {
 				$arrayKomponen = explode(';', $data['kaizen'][0]['komponen']);
 				foreach ($arrayKomponen as $key => $value) {
@@ -350,6 +358,9 @@ class C_KaizenAkuntansi extends CI_Controller
 	}
 
 	public function SaveUploadF4($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
 		$namaLama	= $_FILES['file']['name'];
 		$ekstensi	= pathinfo($namaLama,PATHINFO_EXTENSION);
 		$namaBaru	= "SI-KaizenAkuntansi-UploadF4-".$user."-".str_replace(' ', '_', date('Y-m-d H:i:s')).".".$ekstensi;
@@ -372,10 +383,10 @@ class C_KaizenAkuntansi extends CI_Controller
 				'upload_date_f4' 	=> date('Y-m-d'),
 				'path_f4' 			=> $link
 			);
-			$this->M_kaizenakuntansi->updateKaizenByKaizenId($update,$kaizen_id);
+			$this->M_kaizenakuntansi->updateKaizenByKaizenId($update,$kaizenId);
 
 			$thread = array(
-				'kaizen_id' => $kaizen_id,
+				'kaizen_id' => $kaizenId,
 				'status' 	=> 'F4 Sudah di Upload',
 				'detail' 	=> '(F4 Sudah di Upload) '.$this->session->user.' - '.trim($this->session->employee).' telah mengunggah F4 kaizen dengan judul '.$data['kaizen'][0]['judul']
 			);
@@ -388,6 +399,9 @@ class C_KaizenAkuntansi extends CI_Controller
 	}
 
 	public function LihatF4($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
 
@@ -401,8 +415,8 @@ class C_KaizenAkuntansi extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizen_id);
-		$data['thread'] = $this->M_kaizenakuntansi->getThreadByKaizenId($kaizen_id);
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
+		$data['thread'] = $this->M_kaizenakuntansi->getThreadByKaizenId($kaizenId);
 		if ($data['kaizen'][0]['komponen']) {
 				$arrayKomponen = explode(';', $data['kaizen'][0]['komponen']);
 				foreach ($arrayKomponen as $key => $value) {
@@ -439,7 +453,10 @@ class C_KaizenAkuntansi extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function HapusF4($kaizenId){
+	public function HapusF4($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
 		$kaizen = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
 		$nama = $this->session->employee;
 		$noind = $this->session->user;
@@ -458,14 +475,17 @@ class C_KaizenAkuntansi extends CI_Controller
 		$thread = array(
 			'kaizen_id' => $kaizenId,
 			'status' 	=> 'F4 Sudah di Hapus',
-			'detail' 	=> '(F4 Sudah di Hapus) '.$noind.' - '.trim($nama).' telah menghapus F4 ide kaizen dengan judul '.$judul
+			'detail' 	=> '(F4 Sudah di Hapus) '.$noind.' - '.trim($nama).' telah menghapus F4 kaizen dengan judul '.$judul
 		);
 
 		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
 		redirect(base_url('SystemIntegration/KaizenAkt/MyKaizen'));
 	}
 
-	public function EditF4($kaizenId){
+	public function EditF4($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
 
@@ -485,6 +505,115 @@ class C_KaizenAkuntansi extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_SubmitF4',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function PengajuanHapusIde($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
+		$kaizen = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
+		$nama = $this->session->employee;
+		$noind = $this->session->user;
+		$ide = $kaizen[0]['ide'];
+		$data = array(
+			'komponen' 			=> null,
+			'kondisi_awal' 		=> null,
+			'usulan_kaizen' 	=> null,
+			'pertimbangan' 		=> null,
+			'tanggal_realisasi' => null,
+			'status' 			=> 'Pengajuan Hapus Ide',
+			'judul'				=> null
+		);
+		$this->M_kaizenakuntansi->updateKaizenByKaizenId($data,$kaizenId);
+
+		$thread = array(
+			'kaizen_id' => $kaizenId,
+			'status' 	=> 'Pengajuan Hapus Ide',
+			'detail' 	=> '(Pengajuan Hapus Ide) '.$noind.' - '.trim($nama).' telah mengajukan penghapusan ide kaizen '.$ide
+		);
+
+		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
+		redirect(base_url('SystemIntegration/KaizenAkt/MyKaizen'));
+	}
+
+	public function BatalPengajuanHapusIde($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
+		$kaizen = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
+		$nama = $this->session->employee;
+		$noind = $this->session->user;
+		$ide = $kaizen[0]['ide'];
+		$data = array(
+			'komponen' 			=> null,
+			'kondisi_awal' 		=> null,
+			'usulan_kaizen' 	=> null,
+			'pertimbangan' 		=> null,
+			'tanggal_realisasi' => null,
+			'status' 			=> 'Create Ide',
+			'judul'				=> null
+		);
+		$this->M_kaizenakuntansi->updateKaizenByKaizenId($data,$kaizenId);
+
+		$thread = array(
+			'kaizen_id' => $kaizenId,
+			'status' 	=> 'Batal Pengajuan Hapus Ide',
+			'detail' 	=> '(Batal Pengajuan Hapus Ide) '.$noind.' - '.trim($nama).' telah membatalkan pengajuan hapus ide kaizen '.$ide
+		);
+
+		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
+		redirect(base_url('SystemIntegration/KaizenAkt/MyKaizen'));
+	}
+
+	public function ListPengajuanHapusIde(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'List Pengajuan Hapus Ide';
+		$data['Header']			=	'List Pengajuan Hapus Ide';
+		$data['Menu'] 			= 	'List Pengajuan Hapus Ide';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['kaizen'] = $this->M_kaizenakuntansi->getKaizenByStatus('Pengajuan Hapus Ide');
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SystemIntegration/MainMenu/KaizenAkuntansi/V_ListPengajuanHapusIde',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function HapusIde($kaizen_id){
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $kaizen_id);
+		$kaizenId = $this->encrypt->decode($plaintext_string);
+
+		$kaizen = $this->M_kaizenakuntansi->getKaizenByKaizenId($kaizenId);
+		$nama = $this->session->employee;
+		$noind = $this->session->user;
+		$ide = $kaizen[0]['ide'];
+		$data = array(
+			'komponen' 			=> null,
+			'kondisi_awal' 		=> null,
+			'usulan_kaizen' 	=> null,
+			'pertimbangan' 		=> null,
+			'tanggal_realisasi' => null,
+			'status' 			=> 'Hapus Ide',
+			'judul'				=> null
+		);
+		$this->M_kaizenakuntansi->updateKaizenByKaizenId($data,$kaizenId);
+
+		$thread = array(
+			'kaizen_id' => $kaizenId,
+			'status' 	=> 'Hapus Ide',
+			'detail' 	=> '(Hapus Ide) '.$noind.' - '.trim($nama).' telah menghapus ide kaizen '.$ide
+		);
+
+		$this->M_kaizenakuntansi->insertThreadKaizen($thread);
+		redirect(base_url('SystemIntegration/KaizenAkt/ListPengajuanHapusIde'));
 	}
 }
 

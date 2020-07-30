@@ -529,6 +529,11 @@ $(document).on('ready', function(){
         $('#slc-SI-SubmitF4-Komponen').val('').change();
     })
 
+    $('#slc-SI-SubmitF4-IdeKaizen').on('change', function(){
+        var judul = $(this).find('option:selected').text();
+        $('#txt-SI-SubmitF4-JudulKaizen').val(judul);
+    })
+
     $('#btn-SI-SubmitF4-Submit').on('click', function(){
         var kaizenIde       = $('#slc-SI-SubmitF4-IdeKaizen option:selected').text();
         var kaizenId        = $('#slc-SI-SubmitF4-IdeKaizen').val();
@@ -614,6 +619,17 @@ $(document).on('ready', function(){
     })
 
     $('.tbl-SI-KaizenAkt-MyKaizen').DataTable({
+        "lengthMenu": [
+            [ -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+    })
+
+    $('#tbl-SI-KaizenAkt-PengajuanHapusIde').DataTable({
         "lengthMenu": [
             [ -1, 5, 10, 25, 50 ],
             [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
