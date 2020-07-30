@@ -1077,7 +1077,7 @@ class C_Master extends CI_Controller
             $ln5_tampng[] = NULL;
           }
         }
-        
+
         if (!empty($ln5_tampng)) {
           foreach ($ln5_tampng as $key => $bln1) {
             $line5[$key]['QTY_BOM'] = $bln1['QTY'];
@@ -1328,12 +1328,21 @@ class C_Master extends CI_Controller
 
             $this->M_wipp->insertPhoto($save);
         } else {
+          if (!is_dir('./assets/upload/wipp/'.$param)) {
+              mkdir('./assets/upload/wipp/'.$param, 0777, true);
+              chmod('./assets/upload/wipp/'.$param, 0777);
+          }
+          $lokasiLama		= $this->input->post('photo');
+          $lokasiBaru		= './assets/upload/wipp/'.$param.'/'.$item.'.png';
+          rename($lokasiLama, $lokasiBaru);
             $save = [
             'kode_item' => $item,
             'nama_item' => $nama_comp,
             'type'      => $param,
+            'photo'     => $lokasiBaru,
             'id'        => $this->input->post('id_photo')
-          ];
+            ];
+
             $this->M_wipp->UpdatePhoto($save);
         }
 

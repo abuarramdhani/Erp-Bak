@@ -80,7 +80,7 @@
                           $none5 = '';
                         }
                          ?>
-                      <tr class="timer5" data-rtlp="<?php echo $l5['kode_item'] ?>_<?php echo $key+1 ?>">
+                      <tr class="timer5" <?php echo $style5 ?> data-rtlp="<?php echo $l5['kode_item'] ?>_<?php echo $key+1 ?>">
                         <td class="text-center"><?php echo $key+1 ?></td>
                         <td class="text-center"><?php echo $l5['no_job'] ?></td>
                         <td class="text-center"><?php echo $l5['kode_item'] ?></td>
