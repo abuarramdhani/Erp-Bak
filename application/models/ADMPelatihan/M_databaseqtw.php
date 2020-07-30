@@ -13,16 +13,16 @@ class M_databaseqtw extends CI_Model
     }
 
     public function getSekolah()
-	{
-		$sql = "SELECT kd_sek as id, sekolah as nama_univ from hrd_khs.tsekolah
+    {
+        $sql = "SELECT kd_sek as id, sekolah as nama_univ from hrd_khs.tsekolah
 				order by id";
-		return $this->personalia->query($sql)->result_array();
+        return $this->personalia->query($sql)->result_array();
     }
-    
+
     public function getUniv()
-	{
-		$sql = "SELECT * FROM tb_univ order by id";
-		return $this->mysql->query($sql)->result_array();
+    {
+        $sql = "SELECT * FROM tb_univ order by id";
+        return $this->mysql->query($sql)->result_array();
     }
 
     public function getAllAgenda()
@@ -35,7 +35,7 @@ class M_databaseqtw extends CI_Model
     {
         if ($id == true) {
             $where = "where a.id_qtw = '$id'";
-        }else{
+        } else {
             $where = "where status_qtw = '0'";
         }
         $sql = "SELECT a.*, (a.pemandu || ' - ' || trim(b.nama)) as nama_pemandu, trim(b.photo) as photo, sum(a.pendamping) + sum(a.peserta) as total_peserta
@@ -57,21 +57,21 @@ class M_databaseqtw extends CI_Model
     {
         if ($loker) {
             $lokasi = "and lokasi_kerja = '$loker'";
-        }else{
+        } else {
             $lokasi = '';
         }
         $sql = "SELECT noind, trim(nama) as nama 
                 FROM hrd_khs.tpribadi
                 WHERE kodesie like '402010%' and keluar = '0' and (nama like '%$term%' or noind like '%$term%') $lokasi
                     and noind not in (
-                        SELECT pemandu from \"Sie_Pelatihan\".tdabes_qtw where tanggal = '$tanggal' and (wkt_mulai between '$mulai' and '$selesai' or wkt_selesai between '$mulai' and '$selesai' )
+                        SELECT pemandu from \"Sie_Pelatihan\".tdabes_qtw where tanggal = '$tanggal' and (wkt_mulai between '$mulai' and '$selesai' or wkt_selesai between '$mulai' and '$selesai') and status_qtw = '0'
                     )
                 order by noind";
         return $this->personalia->query($sql)->result_array();
     }
 
     public function getDataGrafik($tahun)
-    { 
+    {
         $sql = "SELECT '0' as no, 'Januari' as bulane, count(*) as jumlah from (SELECT to_char(tanggal, 'MonthYYYY') as bulan from \"Sie_Pelatihan\".tdabes_qtw where to_char(tanggal, 'MM-YYYY') = '01-$tahun' and status_qtw = '0') as jumlah group by bulan
                 union
                 SELECT '1' as no, 'Februari' as bulane, count(*) as jumlah from (SELECT to_char(tanggal, 'MonthYYYY') as bulan from \"Sie_Pelatihan\".tdabes_qtw where to_char(tanggal, 'MM-YYYY') = '02-$tahun' and status_qtw = '0') as jumlah group by bulan
@@ -116,8 +116,8 @@ class M_databaseqtw extends CI_Model
     //Update - update
     public function updatePemandu($id, $set)
     {
-       $this->personalia->where('id_qtw', $id);
-       $this->personalia->update('"Sie_Pelatihan".tdabes_qtw', $set);
+        $this->personalia->where('id_qtw', $id);
+        $this->personalia->update('"Sie_Pelatihan".tdabes_qtw', $set);
     }
 
     public function updateQTW($array, $id)
@@ -131,7 +131,6 @@ class M_databaseqtw extends CI_Model
         $this->personalia->where('id_qtw', $id);
         $this->personalia->set('status_qtw', true);
         $this->personalia->update('"Sie_Pelatihan".tdabes_qtw');
-        return('sukses');
+        return ('sukses');
     }
-    
 }
