@@ -2994,7 +2994,8 @@ $(document).on('ready', function(){
             data: function(params) {
                 return {
                     term: params.term,
-                    tempat_makan: $('#slc-CM-Tambahan-TempatMakan').val()
+                    tempat_makan: $('#slc-CM-Tambahan-TempatMakan').val(),
+                    kategori: $('#slc-CM-Tambahan-Kategori').val()
                 }
             },
             processResults: function(data) {
@@ -6320,3 +6321,615 @@ $(document).ready(function(){
 	})
 })
 // end Prediksi Snack
+
+// start edit tempat makan
+$(document).ready(function(){
+
+	var tblCMEditTempatMakanPerPekerja = $('#tbl-CM-EditTempatMakan-PerPekerja').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+	});
+
+	$('.slc-CM-EditTempatMakan-Departemen').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'departemen',
+					kodesie: '0',
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Bidang').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'bidang',
+					kodesie: $(this).closest('form').find('.slc-CM-EditTempatMakan-Departemen').val(),
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Unit').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'unit',
+					kodesie: $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val(),
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Seksi').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'seksi',
+					kodesie: $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val(),
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Pekerjaan').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'pekerjaan',
+					kodesie: $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val(),
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-TempatMakanLama').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getTempatMakan',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					stat: 'lama',
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.fs_tempat_makan,
+							text: item.fs_tempat_makan
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-TempatMakanBaru').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getTempatMakan',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					stat: 'baru',
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.fs_tempat_makan,
+							text: item.fs_tempat_makan
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-TempatMakanPekerja').select2({
+		minimumInputLength: 0,
+		dropdownParent: $('#mdl-CM-EditTempatMakan-PerPekerja'),
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getTempatMakan',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					stat: 'baru',
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.fs_tempat_makan,
+							text: item.fs_tempat_makan
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-LokasiKerja').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getLokasiKerja',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kode_lokasi,
+							text: item.kode_lokasi + ' - ' + item.lokasi_kerja
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-KodeInduk').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getKodeInduk',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.fs_noind,
+							text: item.fs_noind + ' - ' + item.fs_ket
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Departemen').on('change', function(){
+		var txtEditTempatMakanSelected = $(this).find('option:selected').text();
+
+		if (txtEditTempatMakanSelected.substr(0,5) == 'SEMUA') {
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val('').change();
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val('').change();
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val('').change();
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val('').change();
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}else{
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled', false);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Bidang').on('change', function(){
+		var txtEditTempatMakanSelected = $(this).find('option:selected').text();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val('').change();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val('').change();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val('').change();
+		
+		if (txtEditTempatMakanSelected.substr(0,5) == 'SEMUA') {
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}else{
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled', false);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Unit').on('change', function(){
+		var txtEditTempatMakanSelected = $(this).find('option:selected').text();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val('').change();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val('').change();
+		
+		if (txtEditTempatMakanSelected.substr(0,5) == 'SEMUA') {
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}else{
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', false);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Seksi').on('change', function(){
+		var txtEditTempatMakanSelected = $(this).find('option:selected').text();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val('').change();
+		
+		if (txtEditTempatMakanSelected.substr(0,5) == 'SEMUA') {
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}else{
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', false);
+		}
+	})
+
+	$('#btn-CM-EditTempatMakan-CariPekerja').on('click', function(){
+		var dept = $(this).closest('form').find('.slc-CM-EditTempatMakan-Departemen').val();
+		var bidang = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val();
+		var unit = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val();
+		var seksi = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val();
+		var pekerjaan = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val();
+
+		var bidang_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled');
+		var unit_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled');
+		var seksi_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled');
+		var pekerjaan_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled');
+
+		var status = "0";
+
+		if (dept) {
+			if ((bidang_dis == undefined && bidang) || bidang_dis == "disabled") {
+				if ((unit_dis == undefined && unit) || unit_dis == "disabled") {
+					if ((seksi_dis == undefined && seksi) || seksi_dis == "disabled") {
+						if ((pekerjaan_dis == undefined && pekerjaan) || pekerjaan_dis == "disabled") {
+							status = "1";
+						}else{
+							status = "0";
+						}
+					}else{
+						status = "0";
+					}
+				}else{
+					status = "0";
+				}
+			}else{
+				status = "0";
+			}
+		}else{
+			status = "0";
+		}
+
+		if (status == "1") {
+			$('#ldg-CM-EditTempatMakan-Loading').show();
+			var kodesie = "";
+			if (pekerjaan) {
+				kodesie = pekerjaan;
+			}else if (seksi) {
+				kodesie = seksi;
+			}else if (unit) {
+				kodesie = unit;
+			}else if (bidang) {
+				kodesie = bidang;
+			}else if (dept) {
+				kodesie = dept;
+			}
+			$('#txt-CM-EditTempatMakan-Kodesie').val(kodesie);
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Extra/EditTempatMakan/getPekerja',
+				data: {kodesie: kodesie},
+				error: function(xhr,status,error){
+					$('#ldg-CM-EditTempatMakan-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-EditTempatMakan-Loading').hide();
+					obj = JSON.parse(data);
+					tblCMEditTempatMakanPerPekerja.clear().draw();
+					obj.forEach(function(daftar, index){
+						tblCMEditTempatMakanPerPekerja.row.add([
+							(index + 1),
+							daftar.noind,
+							daftar.nama,
+							daftar.tempat_makan,
+							daftar.lokasi_kerja
+						]).draw(false);
+					})
+					tblCMEditTempatMakanPerPekerja.columns.adjust().draw();
+				}
+			})
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Data Pekerjaan/Seksi/Unit/Bidang/Dept Sudah Terisi',
+				'warning'
+			)
+		}
+	})
+
+	$('#tbl-CM-EditTempatMakan-PerPekerja').on('click', 'td', function(){
+		var textRow = $(this).closest('tr').text();
+		if (textRow != 'No data available in table') {
+			var noind = $(this).closest('tr').find('td:eq(1)').text();
+			var nama = $(this).closest('tr').find('td:eq(2)').text();
+			var tempatMakan = $(this).closest('tr').find('td:eq(3)').text();
+			var lokasiKerja = $(this).closest('tr').find('td:eq(4)').text();
+			$('#txt-CM-EditTempatMakan-Noind').val(noind);
+			$('#txt-CM-EditTempatMakan-Nama').val(nama);
+			$('#txt-CM-EditTempatMakan-LokasiKerja').val(lokasiKerja);
+		    $('#txt-CM-EditTempatMakan-TempatMakanPekerja-lama').val(tempatMakan);
+			if ($('.slc-CM-EditTempatMakan-TempatMakanPekerja').find("option[value='" + tempatMakan + "']").length) {
+			    $('.slc-CM-EditTempatMakan-TempatMakanPekerja').val(tempatMakan).trigger('change');
+			} else { 
+			    var newOption = new Option(tempatMakan, tempatMakan, true, true);
+			    $('.slc-CM-EditTempatMakan-TempatMakanPekerja').append(newOption).trigger('change');
+			} 
+			$('#mdl-CM-EditTempatMakan-PerPekerja').modal('show');
+		}
+	})
+
+	$('#btn-CM-EditTempatMakan-SimpanPerPekerja').on('click', function(){
+		var noind = $('#txt-CM-EditTempatMakan-Noind').val();
+		var nama = $('#txt-CM-EditTempatMakan-Nama').val();
+		var lokasiKerja = $('#txt-CM-EditTempatMakan-LokasiKerja').val();
+	    var tempatMakanLama = $('#txt-CM-EditTempatMakan-TempatMakanPekerja-lama').val();
+	    var tempatMakan = $('.slc-CM-EditTempatMakan-TempatMakanPekerja').val();
+	    var kodesie = $('#txt-CM-EditTempatMakan-Kodesie').val();
+	    if (tempatMakan) {
+	    	$('#ldg-CM-EditTempatMakan-Loading').show();
+	    	$.ajax({
+	    		method: 'POST',
+	    		url: baseurl + 'CateringManagement/Extra/EditTempatMakan/simpanPerPekerja',
+	    		data: {noind: noind, tempat_makan: tempatMakan, kodesie: kodesie, tempat_makan_lama: tempatMakanLama},
+	    		error: function(xhr,status,error){
+					$('#ldg-CM-EditTempatMakan-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-EditTempatMakan-Loading').hide();
+					obj = JSON.parse(data);
+					tblCMEditTempatMakanPerPekerja.clear().draw();
+					obj.forEach(function(daftar, index){
+						tblCMEditTempatMakanPerPekerja.row.add([
+							(index + 1),
+							daftar.noind,
+							daftar.nama,
+							daftar.tempat_makan,
+							daftar.lokasi_kerja
+						]).draw(false);
+					})
+					tblCMEditTempatMakanPerPekerja.columns.adjust().draw();
+					Swal.fire(
+						'Simpan Sukses !!!',
+						'Tempat Makan Berhasil diubah !!',
+						'success'
+					)
+				}
+	    	});
+	    }else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Tempat Makan Sudah Terisi',
+				'warning'
+			)
+		}
+	})
+
+	$('#btn-CM-EditTempatMakan-SimpanPerSeksi').on('click', function(){
+		var dept = $(this).closest('form').find('.slc-CM-EditTempatMakan-Departemen').val();
+		var bidang = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val();
+		var unit = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val();
+		var seksi = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val();
+		var pekerjaan = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val();
+
+		var bidang_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled');
+		var unit_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled');
+		var seksi_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled');
+		var pekerjaan_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled');
+
+		var status = "0";
+
+		if (dept) {
+			if ((bidang_dis == undefined && bidang) || bidang_dis == "disabled") {
+				if ((unit_dis == undefined && unit) || unit_dis == "disabled") {
+					if ((seksi_dis == undefined && seksi) || seksi_dis == "disabled") {
+						if ((pekerjaan_dis == undefined && pekerjaan) || pekerjaan_dis == "disabled") {
+							status = "1";
+						}else{
+							status = "0";
+						}
+					}else{
+						status = "0";
+					}
+				}else{
+					status = "0";
+				}
+			}else{
+				status = "0";
+			}
+		}else{
+			status = "0";
+		}
+
+		if (status == "1") {
+			var kodesie = "";
+			if (pekerjaan) {
+				kodesie = pekerjaan;
+			}else if (seksi) {
+				kodesie = seksi;
+			}else if (unit) {
+				kodesie = unit;
+			}else if (bidang) {
+				kodesie = bidang;
+			}else if (dept) {
+				kodesie = dept;
+			}
+			var lokasi  = $(this).closest('form').find('.slc-CM-EditTempatMakan-LokasiKerja').val();
+			var kodeInduk = $(this).closest('form').find('.slc-CM-EditTempatMakan-KodeInduk').val();
+			var tempatMakanLama = $(this).closest('form').find('.slc-CM-EditTempatMakan-TempatMakanLama').val();
+			var tempatMakanBaru = $(this).closest('form').find('.slc-CM-EditTempatMakan-TempatMakanBaru').val();
+
+			if (lokasi && kodeInduk && tempatMakanLama && tempatMakanBaru) {
+				$('#ldg-CM-EditTempatMakan-Loading').show();
+				$.ajax({
+					method: 'POST',
+					url: baseurl + 'CateringManagement/Extra/EditTempatMakan/simpanPerSeksi',
+					data: {kodesie: kodesie, lokasi: lokasi, kode_induk: kodeInduk, tempat_makan_lama: tempatMakanLama, tempat_makan_baru: tempatMakanBaru},
+					error: function(xhr,status,error){
+						$('#ldg-CM-EditTempatMakan-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						$('#ldg-CM-EditTempatMakan-Loading').hide();
+						
+						Swal.fire(
+							'Simpan Sukses !!!',
+							'Tempat Makan Berhasil diubah !!',
+							'success'
+						)
+					}
+				})
+			}else{
+				Swal.fire(
+					'Peringatan !!!',
+					'Pastikan Data Lokasi, Kode Induk, Tempat Makan Lama, Tempat Makan Baru Sudah Terisi',
+					'warning'
+				)
+			}
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Data Pekerjaan/Seksi/Unit/Bidang/Dept Sudah Terisi',
+				'warning'
+			)
+		}
+	})
+})
+// end edit tempat makan
