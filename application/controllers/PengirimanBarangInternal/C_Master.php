@@ -257,7 +257,7 @@ class C_Master extends CI_Controller
       $tampung = implode(' ', $html);
       // simon_hertoyo@quick.com;
        // $nama_atasan[0]['email_internal'];
-      $PBIemail 		=  'simon_hertoyo@quick.com';
+      $PBIemail 		=  $nama_atasan[0]['email_internal'];
       $PBIccemail 	=  '';
       // $PBRbccemail 	=  $this->input->post('PBRbccemail');
       $PBIsubject		=  'Approval Pengiriman Barang Internal Asset - '.$fpb;
