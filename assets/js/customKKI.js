@@ -1,3 +1,202 @@
+const swalRKHToastrAlert = (type, message) => {
+  Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  }).fire({
+    customClass: 'swal-font-small',
+    type: type,
+    title: message
+  })
+}
+
+function monitoring_ajx() {
+  $.ajax({
+    url: baseurl + 'PengirimanBarangInternal/Monitoring/monitoring_ajx',
+    type: 'POST',
+    async: true,
+    beforeSend: function() {
+      $('.area-pengiriman').html(`<div id="loadingArea0">
+                                     <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+                                   </div>`)
+    },
+    success: function(result) {
+      $('.area-pengiriman').html(result)
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+const hapus_pbi = (no_doc) => {
+  Swal.fire({
+    title: 'Apakah kamu yakin?',
+    text: "Anda tidak akan dapat mengembalikan ini!",
+    icon: 'warning',
+    showCancelButton: true,
+    cancelButtonText: 'Tidak, Jangan Lakukan!',
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, hapus itu!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: baseurl + 'PengirimanBarangInternal/Input/delete_pbi',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          no_doc: no_doc,
+        },
+        beforeSend: function() {
+          Swal.fire({
+            onBeforeOpen: () => {
+               Swal.showLoading()
+             },
+            text: `Sedang menghapus data...`
+          })
+        },
+        success: function(result) {
+          if (result === 1) {
+            Swal.fire({
+              type: 'success',
+              title: 'Berhasil menghapus data dengan no document'+ no_doc,
+              text: ''
+            }).then(_ => {
+              monitoring_ajx();
+            })
+          } else {
+            swalRKHToastrAlert('error', 'Gagal menghapus data!');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    }
+  })
+}
+
+const update_pbi = (no_doc) => {
+  let user_tujuan = $('#employee').val()
+  let keterangan = $('#keterangan').val()
+  let seksi_tujuan = $('#seksi_tujuan').val()
+  let no_transfer_asset = $('#no_transfer_asset').val()
+  $.ajax({
+    url: baseurl + 'PengirimanBarangInternal/Input/edit_pbi',
+    type: 'POST',
+    async: true,
+    dataType:'JSON',
+    data: {
+      no_doc : no_doc,
+      user_tujuan : user_tujuan,
+      keterangan: keterangan,
+      seksi_tujuan: seksi_tujuan,
+      no_transfer_asset: no_transfer_asset == undefined ? '' : no_transfer_asset,
+    },
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading()
+         },
+        text: `Sedang memproses data...`
+      })
+    },
+    success: function(result) {
+      if (result) {
+        Swal.fire({
+          type: `success`,
+          text: `Data telah berhasil diperbarui.`,
+        }).then(_=>{
+          $('#edit_pbi').modal('toggle');
+          monitoring_ajx();
+        })
+      }else {
+        Swal.fire({
+          type: `danger`,
+          text: `Terjadi kesalahan saat memperbarui data.`,
+        })
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+const edit_pbi = (no_dok, keterangan, user_tujuan, seksi_tujuan, type, no_trans) => {
+  $('.b01dqd').hide()
+  $('.select2PBI').val(null)
+  $('.area-edit-pbi').html('<h5>Sedang Menyiapkan Data...</h5>')
+  $('#nodoc_edit').html(no_dok)
+  let html = '';
+  if (type == 3) {
+    html = `<div class="form-group">
+              <label for="tujuan">No Transfer Asset</label>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12">
+                    <input type="text" class="form-control" id="no_transfer_asset" name="no_transfer_asset" value="${no_trans}" autocomplete="off" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="keterangan">Keterangan</label>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12">
+                    <input type="text" class="form-control" id="keterangan" name="keterangan" value="${keterangan}" autocomplete="off" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <center style="margin-bottom: 3px;">
+              <button type="button" style="font-weight:bold" onclick="update_pbi('${no_dok}')" class="btn btn-success" name="button"><i class="fa fa-pencil"></i> Update</button>
+            </center>`
+  }else {
+    html = `<div class="form-group">
+              <label for="keterangan">Keterangan</label>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12">
+                    <input type="text" class="form-control" id="keterangan" name="keterangan" value="${keterangan}" autocomplete="off" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <center style="margin-bottom: 3px;">
+              <button type="button" style="font-weight:bold" onclick="update_pbi('${no_dok}')" class="btn btn-success" name="button"><i class="fa fa-pencil"></i> Update</button>
+            </center>`
+  }
+  $.ajax({
+    url: baseurl + 'PengirimanBarangInternal/Input/employee',
+    type: 'POST',
+    async: true,
+    dataType:'JSON',
+    data: {
+      term : user_tujuan,
+    },
+    success: function(result) {
+      // console.log(result, user_tujuan);
+      $('#seksi_tujuan').val(seksi_tujuan);
+      var data = {
+        id: user_tujuan,
+        text: `${result[0].employee_name} - ${result[0].employee_code}`
+      };
+      var newOption = new Option(data.text, data.id, false, false);
+      $('.select2PBI').html(newOption).trigger('change');
+      $('.area-edit-pbi').html(html)
+      $('.b01dqd').show()
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
 const approve = (s, fpb) => {
   $.ajax({
     url: baseurl + 'PengirimanBarangInternal/Monitoring/updateApproval',
@@ -136,7 +335,7 @@ const insert_asset = () => {
         })
       },
       success: function(result) {
-        console.log(result);
+        // console.log(result);
         if (result.res == 1) {
           Swal.fire({
             type: `success`,
@@ -153,6 +352,9 @@ const insert_asset = () => {
                 no_trans : no_transfer_asset,
                 atasan : atasan,
                 fpb : result.fpb,
+                tujuan : tujuan,
+                seksi_tujuan: seksi_tujuan,
+                employee_seksi_tujuan : nama_tujuan,
                 //line
                 line_number : line_number,
                 item_code : item_code,
@@ -340,32 +542,29 @@ $('#tblpbi').DataTable({
   "pageLength": 10,
 });
 
-const swalRKHToastrAlert = (type, message) => {
-  Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000
-  }).fire({
-    customClass: 'swal-font-small',
-    type: type,
-    title: message
-  })
-}
 
 const summitpbiarea1 = () => {
-  Swal.fire({
-    onBeforeOpen: () => {
-       Swal.showLoading()
-     },
-    text: 'Sedang Memproses Data...',
-    timer: 500,
-  }).then(_=>{
+  let st = $('#seksi_tujuan').val();
+  let ket = $('#ket').val();
+  let item_code_1 = $('#item_code_1').val();
+  let qty = $('#quantity_1').val();
+  // console.log(qty);
+  // console.log(item_code_1);
+  if (st !== '' && ket !== '' && item_code_1 !== '' && qty !== '') {
     Swal.fire({
-      type: `success`,
-      text: `Data telah berhasil disimpan !`,
+      onBeforeOpen: () => {
+         Swal.showLoading()
+       },
+      text: 'Sedang Memproses Data...',
+      timer: 500,
+    }).then(_=>{
+      Swal.fire({
+        type: `success`,
+        text: `Data telah berhasil disimpan !`,
+      })
     })
-  })
+  }
+
 }
 
 const summitpbiarea = () => {
@@ -539,6 +738,10 @@ const updatePBI = (doc, no) => {
 }
 
 $(document).ready(function() {
+  let pbi_cek_monitoring = $('#cek-pbi-pengiriman').val();
+  if (pbi_cek_monitoring == 'ok') {
+    monitoring_ajx();
+  }
   $('.ast_select2PBI').select2({
     placeholder: "Atasan",
     ajax: {

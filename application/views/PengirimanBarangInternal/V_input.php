@@ -218,7 +218,7 @@
                                   <option selected="selected"></option>
                                 </select></td>
                                 <td class="text-center"><input type="text" class="form-control" id="description_1" name="description[]" readonly></td>
-                                <td class="text-center"><input type="number" class="form-control" name="quantity[]" autocomplete="off" required></td>
+                                <td class="text-center"><input type="number" class="form-control" id="quantity_1" name="quantity[]" autocomplete="off" required></td>
                                 <td class="text-center"><input type="text" class="form-control" id="uom_1" name="uom[]" readonly></td>
                                 <td class="text-center"><input type="text" class="form-control" id="itemtype_1" name="item_type[]" readonly></td>
                                 <td class="text-center"><a class="btn btn-default btn-sm" onclick="btnPlusPBI()"><i class="fa fa-plus"></i></a></td>
