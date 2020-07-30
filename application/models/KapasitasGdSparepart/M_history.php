@@ -132,6 +132,13 @@ class M_history extends CI_Model {
         return $query->result_array();
         // echo $sql;
     }
+
+    public function cekPacking(){
+        $oracle = $this->load->database('khs_packing', true);
+        $sql = "select * from sp_packing_trx";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
     
 
 }
