@@ -133,7 +133,7 @@
 													<td>
 														<input class="form-control p2k3_inBon" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
 														type = "number"
-														maxlength = "4" name="p2k3_jmlBon[]" required="" min="0">
+														maxlength = "4" name="p2k3_jmlBon[]" required="" min="0" <?= (in_array($key['kode_item'], $nyTrans)) ? 'readonly':'' ?> value="0">
 													</td>
 													<td>
 														<p style="font-weight: bold;" class="p2k3_pHasil"></p>
