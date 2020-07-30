@@ -61,6 +61,12 @@ $(document).ready( function () {
                     $('.loadingORS').css('display','none');
                     $('.tableReportORS').html(response);
                     $('.tblReportORS').dataTable({
+                        dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
+                        <'row' <'col-sm-12'tr> >
+                        <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
+                        buttons: [
+                            'copy', 'excel', 'print'
+                        ],
                         scrollY: "370px",
                         scrollX: true,
                         scrollCollapse: true,
