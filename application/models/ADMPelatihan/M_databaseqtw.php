@@ -33,7 +33,7 @@ class M_databaseqtw extends CI_Model
 
     public function getAllData($id = false)
     {
-        if ($id === true) {
+        if ($id == true) {
             $where = "where a.id_qtw = '$id'";
         }else{
             $where = "where status_qtw = '0'";
@@ -135,6 +135,3 @@ class M_databaseqtw extends CI_Model
     }
     
 }
-
-
-?>
