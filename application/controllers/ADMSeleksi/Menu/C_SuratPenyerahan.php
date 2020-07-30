@@ -793,11 +793,15 @@ class C_SuratPenyerahan extends CI_Controller
 
             $kedua = '';
             if ($kodesie[0] == '209030100') {
-                $kedua = '1';
+                $kedua = '0';
             } else {
-                if ($jenis[0] == '10' || $jenis[0] == '11') {
+                if ($jenis[0] == '10') {
+                    $kedua = '1';
+                } else if ($jenis[0] == '11') {
                     $kedua = '2';
                 } else if ($jenis[0] == '14') {
+                    $kedua = '3';
+                } else {
                     $kedua = '4';
                 }
             }
