@@ -8,6 +8,7 @@
         <th><center>QUANTITY</center></th>
         <th><center>UOM</center></th>
         <th><center>ITEM TYPE</center></th>
+        <th><center>NO MO</center></th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
           <td><center><?php echo $g['QUANTITY'] ?></center></td>
           <td><center><?php echo $g['UOM'] ?></center></td>
           <td><center><?php echo $g['ITEM_TYPE'] ?></center></td>
+          <td><center><?php echo !empty($g['NO_MOVE_ORDER'])?$g['NO_MOVE_ORDER']:'-' ?></center></td>
         </tr>
       <?php $no++; endforeach; ?>
     </tr>

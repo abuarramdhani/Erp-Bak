@@ -10,6 +10,26 @@ class M_pbi extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
+    public function delete_pbi($no_doc)
+    {
+      $this->oracle->delete('KHS_KIRIM_INTERNAL', ['DOC_NUMBER' => $no_doc]);
+      if ($this->oracle->affected_rows() == 1) {
+          return 1;
+      } else {
+          return 0;
+      }
+    }
+
+    public function edit_pbi($no_doc, $data)
+    {
+      $this->oracle->where('DOC_NUMBER', $no_doc)->update('KHS_KIRIM_INTERNAL', $data);
+      if ($this->oracle->affected_rows() == 1) {
+          return 1;
+      } else {
+          return 0;
+      }
+    }
+
     public function updateApproval($data, $fpb)
     {
       $this->oracle->query("UPDATE
@@ -203,7 +223,12 @@ class M_pbi extends CI_Model
                                    ->get('hrd_khs.tpribadi')
                                    ->row();
 
-        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan, kki.seksi_tujuan, kki.tujuan, kki.seksi_kirim, kki.status, to_char(kki.creation_date,'DD-MON-YYYY HH24:MI:SS') creation_date,
+        $sql = "SELECT distinct kki.doc_number, kki.user_tujuan,
+                                kki.seksi_tujuan, kki.tujuan,
+                                kki.keterangan, kki.type,
+                                kki.seksi_kirim, kki.status,
+                                kki.flag_approve_aset, kki.no_transfer_aset,
+                                to_char(kki.creation_date,'DD-MON-YYYY HH24:MI:SS') creation_date,
                  CASE
                     WHEN kki.status = 1
                        THEN 'Dipersiapkan Seksi Pengirim'

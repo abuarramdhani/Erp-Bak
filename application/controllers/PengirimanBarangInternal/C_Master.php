@@ -58,6 +58,32 @@ class C_Master extends CI_Controller
     }
 
     // ============================INPUT AREA====================================
+    public function delete_pbi()
+    {
+      if ($this->input->is_ajax_request()) {
+        $res =  $this->M_pbi->delete_pbi($this->input->post('no_doc'));
+        echo json_encode($res);
+      }else {
+        echo "Akses Diblokir";
+      }
+
+    }
+
+    public function edit_pbi()
+    {
+      if ($this->input->is_ajax_request()) {
+        $data = [
+          'NO_TRANSFER_ASET' => $this->input->post('no_transfer_asset'),
+          'KETERANGAN' => $this->input->post('keterangan'),
+          'USER_TUJUAN' => $this->input->post('user_tujuan'),
+          'SEKSI_TUJUAN' => $this->input->post('seksi_tujuan')
+        ];
+        $final = $this->M_pbi->edit_pbi($this->input->post('no_doc'), $data);
+        echo json_encode($final);
+      }else {
+        echo "Akses Diblokir!";
+      }
+    }
 
     public function seksi_tujuan()
     {
@@ -198,7 +224,12 @@ class C_Master extends CI_Controller
       $no_trans       = $this->input->post('no_trans');
       $atasan         = $this->input->post('atasan');
       $fpb            = $this->input->post('fpb');
+      $seksi_tujuan   = $this->input->post('seksi_tujuan');
+      $user_tujuan    = $this->input->post('employee_seksi_tujuan');
+      $tujuan         = $this->input->post('tujuan');
+
       $nama_atasan    = $this->M_pbi->atasan_employee($atasan);
+      $nama_user_tjn  = $this->M_pbi->employee($user_tujuan);
       $user_login     = $this->session->user;
       $nama_user_login= $this->session->employee;
       // ======== line data ===========
@@ -224,8 +255,9 @@ class C_Master extends CI_Controller
         </tr>';
       }
       $tampung = implode(' ', $html);
-      // simon_hertotoyo@quick.com;
-      $PBIemail 		=  $nama_atasan[0]['email_internal'];
+      // simon_hertoyo@quick.com;
+       // $nama_atasan[0]['email_internal'];
+      $PBIemail 		=  'simon_hertoyo@quick.com';
       $PBIccemail 	=  '';
       // $PBRbccemail 	=  $this->input->post('PBRbccemail');
       $PBIsubject		=  'Approval Pengiriman Barang Internal Asset - '.$fpb;
@@ -233,7 +265,10 @@ class C_Master extends CI_Controller
                         Anda memiliki tanggungan Approval untuk Pengiriman Barang Internal (Asset) dari
                         <b>'.$nama_user_login.' ('.$user_login.') </b>, dengan detail sebagai berikut : <br><br>
                         No. FPB : <b>'.$fpb.'</b><br>
-                        No. Transfer Asset : <b>'.$no_trans.'</b><br><br>
+                        No. Transfer Asset : <b>'.$no_trans.'</b><br>
+                        Tujuan : <b>'.$tujuan.'</b><br>
+                        User Tujuan : <b>'.$nama_user_tjn[0]['employee_name'].' ('.$user_tujuan.')</b><br>
+                        Seksi : <b>'.$seksi_tujuan.'</b><br><br>
                         <style type="text/css">
                         .tg  {border-collapse:collapse;border-spacing:0;}
                         .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:13px;
@@ -298,7 +333,7 @@ class C_Master extends CI_Controller
       $mail->WordWrap = 50;
 
       // Set email content to sent
-      $mail->setFrom('no-reply@quick.com', 'Web DPB CV. KHS');
+      $mail->setFrom('no-reply@quick.com', 'ERP PBI');
       foreach ($ccEmail as $key => $ccE) {
           $mail->AddCC($ccE);
       }
@@ -379,8 +414,8 @@ class C_Master extends CI_Controller
       }
       echo '<script type="text/javascript">
             function openWindows(){
-                window.location.replace("'.base_url('PengirimanBarangInternal/Input').'");
                 window.open("'.base_url('PengirimanBarangInternal/Cetak/'.$newNumber).'");
+                window.location.replace("'.base_url('PengirimanBarangInternal/Input').'");
             }
             openWindows();
           </script>';
@@ -545,6 +580,7 @@ class C_Master extends CI_Controller
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['get'] = $this->M_pbi->GetMasterD();
+
         foreach ($data['get'] as $key => $g) {
             $seksi = $this->M_pbi->getSeksiku($g['USER_TUJUAN']);
             if (!empty($seksi)) {
@@ -558,6 +594,21 @@ class C_Master extends CI_Controller
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PengirimanBarangInternal/V_monitoring');
         $this->load->view('V_Footer', $data);
+    }
+
+    public function monitoring_ajx()
+    {
+        $data['get'] = $this->M_pbi->GetMasterD();
+
+        foreach ($data['get'] as $key => $g) {
+            $seksi = $this->M_pbi->getSeksiku($g['USER_TUJUAN']);
+            if (!empty($seksi)) {
+              $data['seksi_tujuan'][] = $seksi->seksi;
+            }else {
+              $data['seksi_tujuan'][] = $g['USER_TUJUAN'];
+            }
+        }
+        $this->load->view('PengirimanBarangInternal/ajax/V_monitoring', $data);
     }
 
     public function Detail()
