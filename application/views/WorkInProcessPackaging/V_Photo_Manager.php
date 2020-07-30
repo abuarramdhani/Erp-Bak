@@ -31,7 +31,7 @@
                     <label for="seksi_pengirim">File</label>
                     <div class="row">
                       <div class="col-md-12">
-                        <input type="file" class="form-control" name="filenyagan" placeholder="Nama Komponen" onchange="readFile(this)">
+                        <input type="file" class="form-control" name="filenyagan" placeholder="Nama Komponen" onchange="readFile(this)" required>
                         <br>
                         <iframe src="<?php echo base_url('/assets/img/erp.png') ?>" id="showPre" frameborder="0" class="mt-1" style="width:100%;"></iframe>
                       </div>
@@ -126,6 +126,7 @@
                                                 <div class="row">
                                                   <div class="col-md-12">
                                                     <input type="file" class="form-control" value="" name="filenyagan" placeholder="Nama Komponen" onchange="readFileForEdit(this)">
+                                                    <input type="hidden" name="photo" value="<?php echo $g['photo'] ?>">
                                                     <br>
                                                     <iframe src="<?php echo base_url($g['photo']) ?>" id="showPreEdit" frameborder="0" class="mt-1" style="width:100%;height:350px"></iframe>
                                                   </div>
