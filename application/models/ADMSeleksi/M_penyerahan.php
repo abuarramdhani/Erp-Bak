@@ -498,9 +498,15 @@ class M_penyerahan extends CI_Model
 		return $this->personalia->query($sql);
 	}
 
-	public function updateNoSurat($no_surat, $noind)
+	public function updateNoSurat($no_surat, $noind, $bulan)
 	{
-		$sql = "UPDATE \"Surat\".tsurat_penyerahan set no_surat = '$no_surat' where kode in ('$noind')";
+		$sql = "UPDATE \"Surat\".tsurat_penyerahan set no_surat = '$no_surat' where kode in ('$noind') and bulan = '$bulan'";
+		return $this->personalia->query($sql);
+	}
+
+	public function updateNomorTSurat($bulanan)
+	{
+		$sql = "UPDATE \"Surat\".tsurat set no_surat = '001' where no_surat = '000' and bulan = '$bulanan' and hal_surat = 'PS' and kd_surat = 'KI-C'";
 		return $this->personalia->query($sql);
 	}
 
