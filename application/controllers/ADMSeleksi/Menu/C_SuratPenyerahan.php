@@ -234,10 +234,12 @@ class C_SuratPenyerahan extends CI_Controller
             $cek_noSurat = $this->M_penyerahan->cekNo_Surat($bulanan, $data['kepada'], $jenis_pekerja, $implode);
             if (!empty($cek_noSurat)) {
                 $no_surat = $cek_noSurat[0]['no_surat'];
-                $this->M_penyerahan->updateNoSurat($no_surat, $implode);
+                ($no_surat == '000' || $no_surat == null || $no_surat == '' || empty($no_surat)) ? $no_surat = '001' : $no_surat;
+                $this->M_penyerahan->updateNoSurat($no_surat, $implode, $bulanan);
             } else {
                 $cekcek = $this->M_penyerahan->getNoSurat2($bulanan);
                 $no_surat = str_pad($cekcek, 3, 0, 0);
+                ($no_surat == '000' || $no_surat == null || $no_surat == '' || empty($no_surat)) ? $no_surat = '001' : $no_surat;
                 $set_noSurat = array(
                     'no_surat'  => $no_surat,
                     'hal_surat' => 'PS',
@@ -247,13 +249,17 @@ class C_SuratPenyerahan extends CI_Controller
                     'tgl_cetak' => date('Y-m-d')
                 );
                 $this->M_penyerahan->insertNomorSurat($set_noSurat);
-                $this->M_penyerahan->updateNoSurat($no_surat, $implode);
+                $this->M_penyerahan->updateNoSurat($no_surat, $implode, $bulanan);
             }
             $data['no_surat'] = $no_surat . '/PS/KI-C/' . date('m/y');
         } else {
+            if ($no_surat == '000' || $no_surat == null || $no_surat == '' || empty($no_surat)) {
+                $no_surat = '001';
+                $this->M_penyerahan->updateNomorTSurat($bulanan);
+                $this->M_penyerahan->updateNoSurat($no_surat, $implode, $bulanan);
+            }
             $data['no_surat'] = $no_surat . '/PS/KI-C/' . date('m/y', strtotime($no_tgl));
         }
-        // $data['no_surat'] = $nomor;
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
@@ -592,7 +598,7 @@ class C_SuratPenyerahan extends CI_Controller
         //Insert into "Surat".tSurat_Penyerahan
         $arTsuratPenyerahan = array(
             'kode'              => $kode_SP,
-            'bulan'             => date('Ym'),
+            'bulan'             => date('Ym', strtotime($tgl_pyrhn)),
             'noind'             => $noind,
             'nama'              => ucwords(strtoupper($nama)),
             'ruang_lingkup'     => ucfirst($ruang_lingkup),
@@ -808,7 +814,9 @@ class C_SuratPenyerahan extends CI_Controller
 
             $noindTrig = 'C' . $digit . $kedua;
             $nom = $this->M_penyerahan->getNoindMaxC($noindTrig);
-
+            if (empty($nom)) {
+                $nom = $noindTrig . '00';
+            }
             $noind = $nom;
             $is_exist = false;
             while (!$is_exist) {
