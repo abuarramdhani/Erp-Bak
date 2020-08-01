@@ -4588,3 +4588,18 @@ $route['RunningTimeLinePnP/cekapi'] = 'RunningTimeLinePnP/C_Master/cekapi';
 $route['LandingPageMonitor'] = 'QuickLanding/C_Qlanding/Index';
 $route['LandingPageMonitor/getData'] = 'QuickLanding/C_Qlanding/getData';
 $route['LandingPageMonitor/exportExcel'] = 'QuickLanding/C_Qlanding/exportExcel';
+
+// --------------------------------------- DB HANDLING -----------------------------------------------//
+$route['DbHandling']									= 'DbHandling/C_Index';
+$route['DbHandling/MonitoringHandling']					= 'DbHandling/TIM/C_Monhand';
+$route['DbHandling/MonitoringHandling/(:any)']			= 'DbHandling/TIM/C_Monhand/$1';
+$route['DbHandling/MonitoringHandling/(:any)/(:any)']	= 'DbHandling/TIM/C_Monhand/$1/$2';
+
+$route['DbHandling/SetDataMaster']					= 'DbHandling/TIM/C_Setdatamaster';
+$route['DbHandling/SetDataMaster/(:any)']			= 'DbHandling/TIM/C_Setdatamaster/$1';
+$route['DbHandling/SetDataMaster/(:any)/(:any)']	= 'DbHandling/TIM/C_Setdatamaster/$1/$2';
+
+$route['DbHandlingSeksi']									= 'DbHandling/C_Index';
+$route['DbHandlingSeksi/MonitoringHandling']				= 'DbHandling/SEKSI/C_Monhandseksi';
+$route['DbHandlingSeksi/MonitoringHandling/(:any)']			= 'DbHandling/SEKSI/C_Monhandseksi/$1';
+$route['DbHandlingSeksi/MonitoringHandling/(:any)/(:any)']	= 'DbHandling/SEKSI/C_Monhandseksi/$1/$2';
