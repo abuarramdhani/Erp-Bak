@@ -256,8 +256,8 @@ class C_SuratPenyerahan extends CI_Controller
             if ($no_surat == '000' || $no_surat == null || $no_surat == '' || empty($no_surat)) {
                 $no_surat = '001';
                 $this->M_penyerahan->updateNomorTSurat($bulanan);
-                $this->M_penyerahan->updateNoSurat($no_surat, $implode, $bulanan);
             }
+            $this->M_penyerahan->updateNoSurat($no_surat, $implode, $bulanan);
             $data['no_surat'] = $no_surat . '/PS/KI-C/' . date('m/y', strtotime($no_tgl));
         }
 
