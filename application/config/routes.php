@@ -2484,6 +2484,12 @@ $route['SystemIntegration/KaizenGenerator/AllKaizen/index'] = 'SystemIntegration
 $route['SystemIntegration/KaizenGenerator/Validate/Index'] = 'SystemIntegration/MainMenu/AllKaizen/C_AllKaizen/Validate';
 $route['SystemIntegration/KaizenGenerator/Validate/findKaizen'] = 'SystemIntegration/MainMenu/AllKaizen/C_AllKaizen/findKaizen';
 
+//kaizen aKuntansi
+$route['SystemIntegration/KaizenAkt'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi';
+$route['SystemIntegration/KaizenAkt/(:any)'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi/$1';
+$route['SystemIntegration/KaizenAkt/(:any)/(:any)'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi/$1/$2';
+
+
 //---------------------------------------------------- Upah Pekerja Harian Lepas----------------------------------//
 $route['UpahHlCm'] 		= 'UpahHlCm/C_UpahPHL';
 $route['HitungHlcm/DataGaji'] 	= 'UpahHlCm/MasterData/C_DataGaji';
