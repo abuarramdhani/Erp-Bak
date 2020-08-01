@@ -507,6 +507,7 @@ class C_PenjadwalanCatering extends CI_Controller
 			$shift3 = "";
 
 			foreach ($jadwal as $key) {
+				$lokasi = $this->M_penjadwalancatering->getKateringLokasiByKodeKatering($key['fs_kd_katering']);
 				if ($key['hari'] == '1') {
 					if ($key['fs_tujuan_shift1'] == 't') {
 						$s1 = '1';
@@ -530,7 +531,8 @@ class C_PenjadwalanCatering extends CI_Controller
 									'fs_tujuan_shift1' 	=> $s1,
 									'fs_tujuan_shift2' 	=> $s2,
 									'fs_tujuan_shift3' 	=> $s3,
-									'fs_index' 			=> $angka
+									'fs_index' 			=> $angka,
+									'lokasi'			=> intval($lokasi).''
 								);
 					$this->M_penjadwalancatering->insertTampilPesanan($data);
 					
@@ -562,7 +564,8 @@ class C_PenjadwalanCatering extends CI_Controller
 									'fs_tujuan_shift1' 	=> $s1,
 									'fs_tujuan_shift2' 	=> $s2,
 									'fs_tujuan_shift3' 	=> $s3,
-									'fs_index' 			=> $angka
+									'fs_index' 			=> $angka,
+									'lokasi'			=> intval($lokasi).''
 								);
 						$this->M_penjadwalancatering->insertTampilPesanan($data);
 						
@@ -603,7 +606,8 @@ class C_PenjadwalanCatering extends CI_Controller
 									'fs_tujuan_shift1' 	=> $s1,
 									'fs_tujuan_shift2' 	=> $s2,
 									'fs_tujuan_shift3' 	=> $s3,
-									'fs_index' 			=> $angka
+									'fs_index' 			=> $angka,
+									'lokasi'			=> intval($lokasi).''
 								);
 								$this->M_penjadwalancatering->insertTampilPesanan($data);
 								
@@ -643,7 +647,8 @@ class C_PenjadwalanCatering extends CI_Controller
 									'fs_tujuan_shift1' 	=> $s1,
 									'fs_tujuan_shift2' 	=> $s2,
 									'fs_tujuan_shift3' 	=> $s3,
-									'fs_index' 			=> $angka
+									'fs_index' 			=> $angka,
+									'lokasi'			=> intval($lokasi).''
 								);
 								$this->M_penjadwalancatering->insertTampilPesanan($data);
 								
