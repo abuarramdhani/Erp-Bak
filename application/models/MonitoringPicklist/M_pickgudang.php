@@ -86,7 +86,7 @@ class M_pickgudang extends CI_Model
 			and kpa.PROCESS = 2 -- fabrikasi
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
-			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
 			order by 12 desc ";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -160,7 +160,7 @@ class M_pickgudang extends CI_Model
 			and kpa.PROCESS = 3 -- gudang
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
-			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
+			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;

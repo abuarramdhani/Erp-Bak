@@ -133,7 +133,7 @@ class C_BelumGudang extends CI_Controller
 				<span>Picklist sudah melakukan allocate, jadi sudah pasti bisa di-transact.</span>
 				<div class="panel-body">
 					<div class="col-md-12 text-center">
-						<button type="button" class="btn '.$warna.'" '.$btn.' onclick="approveGudang(this)">Approve</button>
+						<button type="button" class="btn '.$warna.'" '.$btn.' id="btn_appgdg" onclick="approveGudang(this)">Approve</button>
 					</div>
 				</div>
 				';
@@ -145,7 +145,10 @@ class C_BelumGudang extends CI_Controller
 		$picklist = $this->input->post('picklist');
 		$nojob = $this->input->post('nojob');
 		$user = $this->session->user;
-		$this->M_pickgudang->approveData($picklist, $nojob, $user);
+		$cek2 = $this->M_pickgudang->cekapprove2($nojob);
+		if (empty($cek2)) {
+			$this->M_pickgudang->approveData($picklist, $nojob, $user);
+		}
 	}
 
 	function approveData2(){

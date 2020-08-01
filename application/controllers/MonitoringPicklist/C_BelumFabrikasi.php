@@ -78,8 +78,10 @@ class C_BelumFabrikasi extends CI_Controller
 		$nojob = $this->input->post('nojob');
 		$user = $this->session->user;
 		// echo "<pre>";print_r($nojob);exit();
-
-		$this->M_pickfabrikasi->approveData($picklist, $nojob, $user);
+		$cek2 = $this->M_pickfabrikasi->cekapprove2($nojob);
+		if (empty($cek2)) {
+			$this->M_pickfabrikasi->approveData($picklist, $nojob, $user);
+		}
 	}
 
 	function approveData2(){
