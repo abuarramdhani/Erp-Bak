@@ -567,10 +567,10 @@ class C_Monhand extends CI_Controller
                 $this->M_dbhandling->insertproseshandling($id, $urutan_proses[$i], $id_proses_seksi[0]['id_proses_seksi']);
             }
 
-            if (!is_dir('./assets/upload/DatabaseHandling')) {
-                mkdir('./assets/upload/DatabaseHandling', 0777, true);
-                chmod('./assets/upload/DatabaseHandling', 0777);
-            }
+            // if (!is_dir('./assets/upload/DatabaseHandling')) {
+            //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+            chmod('./assets/upload/DatabaseHandling', 0777);
+            // }
 
             for ($a = 0; $a < sizeof($urutangambarproseslinear); $a++) {
                 $this->M_dbhandling->insertgambar($id, $urutangambarproseslinear[$a]);
@@ -586,10 +586,10 @@ class C_Monhand extends CI_Controller
             }
         } else if ($proses == 'Non Linear') {
 
-            if (!is_dir('./assets/upload/DatabaseHandling')) {
-                mkdir('./assets/upload/DatabaseHandling', 0777, true);
-                chmod('./assets/upload/DatabaseHandling', 0777);
-            }
+            // if (!is_dir('./assets/upload/DatabaseHandling')) {
+            //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+            chmod('./assets/upload/DatabaseHandling', 0777);
+            // }
 
             $filename = "assets/upload/DatabaseHandling/prosesnonlinier" . $id . '.png';
             $temp_name = $_FILES['prosesnonlinear']['tmp_name'][0];
@@ -1009,10 +1009,10 @@ class C_Monhand extends CI_Controller
                 for ($i = 0; $i < sizeof($uRutGambar); $i++) {
                     $this->M_dbhandling->insertgambar($id, $uRutGambar[$i]);
 
-                    if (!is_dir('./assets/upload/DatabaseHandling')) {
-                        mkdir('./assets/upload/DatabaseHandling', 0777, true);
-                        chmod('./assets/upload/DatabaseHandling', 0777);
-                    }
+                    // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                    //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                    chmod('./assets/upload/DatabaseHandling', 0777);
+                    // }
                     $filename = "assets/upload/DatabaseHandling/fotolinier" . $id . $uRutGambar[$i] . '.png';
                     $temp_name = $_FILES['fotoHandling']['tmp_name'][$i];
                     if ($temp_name == null) {
@@ -1039,10 +1039,10 @@ class C_Monhand extends CI_Controller
                 for ($i = 0; $i < sizeof($uRutGambar); $i++) {
                     $this->M_dbhandling->insertgambar($id, $uRutGambar[$i]);
 
-                    if (!is_dir('./assets/upload/DatabaseHandling')) {
-                        mkdir('./assets/upload/DatabaseHandling', 0777, true);
-                        chmod('./assets/upload/DatabaseHandling', 0777);
-                    }
+                    // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                    //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                    chmod('./assets/upload/DatabaseHandling', 0777);
+                    // }
                     $filename = "assets/upload/DatabaseHandling/fotolinier" . $id . $uRutGambar[$i] . '.png';
                     $temp_name = $_FILES['fotoHandling']['tmp_name'][$i];
                     if ($temp_name == null) {
@@ -1064,10 +1064,10 @@ class C_Monhand extends CI_Controller
             $uRutGambar = $this->input->post('uRutGambar[]');
             if ($dataHandling[0]['proses'] == 'Non Linear') {
 
-                if (!is_dir('./assets/upload/DatabaseHandling')) {
-                    mkdir('./assets/upload/DatabaseHandling', 0777, true);
-                    chmod('./assets/upload/DatabaseHandling', 0777);
-                }
+                // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                chmod('./assets/upload/DatabaseHandling', 0777);
+                // }
 
                 $filename = "assets/upload/DatabaseHandling/prosesnonlinier" . $id . '.png';
                 $temp_name = $_FILES['pros_non_linier']['tmp_name'];
@@ -1087,10 +1087,10 @@ class C_Monhand extends CI_Controller
                 for ($i = 0; $i < sizeof($uRutGambar); $i++) {
                     $this->M_dbhandling->insertgambar($id, $uRutGambar[$i]);
 
-                    if (!is_dir('./assets/upload/DatabaseHandling')) {
-                        mkdir('./assets/upload/DatabaseHandling', 0777, true);
-                        chmod('./assets/upload/DatabaseHandling', 0777);
-                    }
+                    // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                    //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                    chmod('./assets/upload/DatabaseHandling', 0777);
+                    // }
                     $filename = "assets/upload/DatabaseHandling/fotononlinier" . $id . $uRutGambar[$i] . '.png';
                     $temp_name = $_FILES['fotoHandling']['tmp_name'][$i];
                     if ($temp_name == null) {
@@ -1109,10 +1109,10 @@ class C_Monhand extends CI_Controller
                 }
             } else {
                 // proses_non_2
-                if (!is_dir('./assets/upload/DatabaseHandling')) {
-                    mkdir('./assets/upload/DatabaseHandling', 0777, true);
-                    chmod('./assets/upload/DatabaseHandling', 0777);
-                }
+                // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                chmod('./assets/upload/DatabaseHandling', 0777);
+                // }
                 $filename = "assets/upload/DatabaseHandling/prosesnonlinier" . $id . '.png';
                 $temp_name = $_FILES['proses_non_2']['tmp_name'];
                 if (file_exists($filename)) {
@@ -1123,10 +1123,10 @@ class C_Monhand extends CI_Controller
                 for ($i = 0; $i < sizeof($uRutGambar); $i++) {
                     $this->M_dbhandling->insertgambar($id, $uRutGambar[$i]);
 
-                    if (!is_dir('./assets/upload/DatabaseHandling')) {
-                        mkdir('./assets/upload/DatabaseHandling', 0777, true);
-                        chmod('./assets/upload/DatabaseHandling', 0777);
-                    }
+                    // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                    //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                    chmod('./assets/upload/DatabaseHandling', 0777);
+                    // }
                     $filename = "assets/upload/DatabaseHandling/fotononlinier" . $id . $uRutGambar[$i] . '.png';
                     $temp_name = $_FILES['fotoHandling']['tmp_name'][$i];
                     if ($temp_name == null) {
