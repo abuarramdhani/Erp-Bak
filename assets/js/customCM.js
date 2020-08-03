@@ -2345,196 +2345,6 @@ $(document).ready(function(){
 	      "format":'yyyy-mm-dd'
 	});
 
-	$('#CateringHitungRefreshMakan').on('click',function(){
-		tanggal = $('#CateringHitungPesananTanggal').val();
-		shift 	= $('#CateringHitungPesananShift').val();
-		lokasi 	= $('#CateringHitungPesananLokasi').val();
-		if (tanggal && shift && lokasi) {
-			$('#CateringHitungLoading').show();
-			$.ajax({
-				method: 'POST',
-				url: baseurl + 'CateringManagement/HitungPesanan/cekPesanan',
-				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: "Makan"},
-				error: function(xhr,status,error){
-					$('#CateringHitungLoading').hide();
-					swal.fire({
-	                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
-	                    html: xhr['responseText'],
-	                    type: "error",
-	                    confirmButtonText: 'OK',
-	                    confirmButtonColor: '#d63031',
-	                })
-				},
-				success: function(data){
-					var obj = JSON.parse(data);
-					console.log(obj);
-					if (obj.statusKatering == "ada" && obj.statusJadwal == "ada" && obj.statusBatasDatang == "ada" && obj.statusAbsenShift == "ada") {
-						if (obj.statusPesanan == "ada") {
-							$('#CateringHitungLoading').hide();
-							swal.fire({
-								title: 'Apakah Anda Yakin Ingin Refresh Ulang ?',
-								text: "Data Mungkin Berubah Setelah Refresh",
-								type: 'warning',
-								showCancelButton: true,
-								confirmButtonColor: '#3085d6',
-								cancelButtonColor: '#d33',
-								confirmButtonText: 'Refresh',
-								cancelButtonText: 'Tidak'
-							}).then((result) => {
-							 	if (!result.value) {
-							    	Swal.fire(
-								     	'Refresh Telah Dibatalkan',
-								     	'Action Refresh Dibatalkan',
-								     	'error'
-							    	)
-							 	}else{
-							 		$('#CateringHitungLoading').show();
-							 		getFingerCatering('Makan');
-							 	}
-							})
-						}else{
-							getFingerCatering('Makan');
-						}
-					}else{
-						$('#CateringHitungLoading').hide();
-						if (obj.statusTanggal == "not ok") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Tanggal Yang Dipilih Harus Sama Dengan Tanggal Hari Ini',
-						     	'error'
-					    	)
-						}else if (obj.statusKatering == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Tidak ada Katering yang berstatus AKTIF',
-						     	'error'
-					    	)
-						}else if (obj.statusJadwal == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Belum ada Jadwal Katering',
-						     	'error'
-					    	)
-						}else if (obj.statusBatasDatang == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Batas Jam Datang Belum Di Atur',
-						     	'error'
-					    	)
-						}else if (obj.statusAbsenShift == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Data Absensi di shift yang anda pilih kosong',
-						     	'error'
-					    	)
-						}
-					}
-				}
-			});
-		}else{
-			Swal.fire(
-		     	'Pengisian Belum Lengkap',
-		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
-		     	'warning'
-	    	)
-		}
-	});
-
-	$('#CateringHitungRefreshSnack').on('click',function(){
-		tanggal = $('#CateringHitungPesananTanggal').val();
-		shift 	= $('#CateringHitungPesananShift').val();
-		lokasi 	= $('#CateringHitungPesananLokasi').val();
-		if (tanggal && shift && lokasi) {
-			$('#CateringHitungLoading').show();
-			$.ajax({
-				method: 'POST',
-				url: baseurl + 'CateringManagement/HitungPesanan/cekPesanan',
-				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: "Snack"},
-				error: function(xhr,status,error){
-					$('#CateringHitungLoading').hide();
-					swal.fire({
-	                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
-	                    html: xhr['responseText'],
-	                    type: "error",
-	                    confirmButtonText: 'OK',
-	                    confirmButtonColor: '#d63031',
-	                })
-				},
-				success: function(data){
-					var obj = JSON.parse(data);
-					console.log(obj);
-					if (obj.statusKatering == "ada" && obj.statusJadwal == "ada" && obj.statusBatasDatang == "ada" && obj.statusAbsenShift == "ada") {
-						if (obj.statusPesanan == "ada") {
-							$('#CateringHitungLoading').hide();
-							swal.fire({
-								title: 'Apakah Anda Yakin Ingin Refresh Ulang ?',
-								text: "Data Mungkin Berubah Setelah Refresh",
-								type: 'warning',
-								showCancelButton: true,
-								confirmButtonColor: '#3085d6',
-								cancelButtonColor: '#d33',
-								confirmButtonText: 'Refresh',
-								cancelButtonText: 'Tidak'
-							}).then((result) => {
-							 	if (!result.value) {
-							    	Swal.fire(
-								     	'Refresh Telah Dibatalkan',
-								     	'Action Refresh Dibatalkan',
-								     	'error'
-							    	)
-							 	}else{
-							 		$('#CateringHitungLoading').show();
-							 		getFingerCatering('Snack');
-							 	}
-							})
-						}else{
-							getFingerCatering('Snack');
-						}
-					}else{
-						$('#CateringHitungLoading').hide();
-						if (obj.statusTanggal == "not ok") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Tanggal Yang Dipilih Harus Sama Dengan Tanggal Hari Ini',
-						     	'error'
-					    	)
-						}else if (obj.statusKatering == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Tidak ada Katering yang berstatus AKTIF',
-						     	'error'
-					    	)
-						}else if (obj.statusJadwal == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Belum ada Jadwal Katering',
-						     	'error'
-					    	)
-						}else if (obj.statusBatasDatang == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Batas Jam Datang Belum Di Atur',
-						     	'error'
-					    	)
-						}else if (obj.statusAbsenShift == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Data Absensi di shift yang anda pilih kosong',
-						     	'error'
-					    	)
-						}
-					}
-				}
-			});
-		}else{
-			Swal.fire(
-		     	'Pengisian Belum Lengkap',
-		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
-		     	'warning'
-	    	)
-		}
-	});
-
 	$('#CateringHitungPesananForm').on('submit',function(e){
 		tanggal = $('#CateringHitungPesananTanggal').val();
 		shift 	= $('#CateringHitungPesananShift').val();
@@ -2585,65 +2395,78 @@ $(document).ready(function(){
 	    	)
 		}
 	});
+
+	$('#CateringHitungRefreshMakan').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			cekPesananCatering(tanggal, shift, lokasi, "Makan", "NormalDate");
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
+
+	$('#CateringHitungRefreshMakanBackDate').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			cekPesananCatering(tanggal, shift, lokasi, "Makan", "BackDate");
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
+
+	$('#CateringHitungRefreshSnack').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			cekPesananCatering(tanggal, shift, lokasi, "Snack", "NormalDate");
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
+
+	$('#CateringHitungRefreshSnackBackDate').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			cekPesananCatering(tanggal, shift, lokasi, "Snack", "BackDate");
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
 });
 
-function getFingerCatering(jenis){
-	tanggal = $('#CateringHitungPesananTanggal').val();
-	shift 	= $('#CateringHitungPesananShift').val();
-	lokasi 	= $('#CateringHitungPesananLokasi').val();
-
-	// $.ajax({
-	// 	method: 'POST',
-	// 	url: baseurl + 'CateringManagement/HitungPesanan/getFinger',
-	// 	data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
-	// 	error: function(xhr,status,error){
-	// 		$('#CateringHitungLoading').hide();
-	// 		swal.fire({
- //                title: xhr['status'] + "(" + xhr['statusText'] + ")",
- //                html: xhr['responseText'],
- //                type: "error",
- //                confirmButtonText: 'OK',
- //                confirmButtonColor: '#d63031',
- //            })
-	// 	},
-	// 	success: function(data){
-	// 		$('#CateringHitungModal').find('.col-sm-12').html(data);
-	// 	}
-	// })
-	// $('#CateringHitungModal').modal('show');
-	// localStorage.setItem('refreshCatering',0);
-	// loopRefreshCatering = setInterval(
-	// 	function(){
-	// 		console.log(localStorage.getItem('refreshCatering'));
-	// 		if (localStorage.getItem('refreshCatering') > 0) {
-	// 			$('#CateringHitungModal').modal('hide');
-	// 			$('#CateringHitungLoading').show();
-	// 			clearInterval(loopRefreshCatering);
-	// 			if (localStorage.getItem('refreshCatering') == 2) {
-	// 				$('#CateringHitungLoading').hide();
-	// 				Swal.fire(
-	// 			     	'Verifikasi Finger Pekerja Gagal',
-	// 			     	'Action Refresh Dibatalkan',
-	// 			     	'error'
-	// 		    	)
-	// 			}
-	// 			if (localStorage.getItem('refreshCatering') == 1 && localStorage.getItem('refreshCateringTanggal') == tanggal && localStorage.getItem('refreshCateringShift') == shift && localStorage.getItem('refreshCateringLokasi') == lokasi ) {
-	// 				hitungCatering();
-	// 			}
-	// 		}
-	// 	},1000
-	// )
-
-	hitungCatering(jenis);
-}
-
-function hitungCatering(jenis){
-	tanggal = $('#CateringHitungPesananTanggal').val();
-	shift 	= $('#CateringHitungPesananShift').val();
-	lokasi 	= $('#CateringHitungPesananLokasi').val();
+function cekPesananCatering(tanggal, shift, lokasi, jenis, keterangan){
+	$('#CateringHitungLoading').show();
+	if (keterangan == "BackDate") {
+		link = baseurl + 'CateringManagement/HitungPesanan/cekPesananBackDate';
+	}else{
+		link = baseurl + 'CateringManagement/HitungPesanan/cekPesanan';
+	}
 	$.ajax({
 		method: 'POST',
-		url: baseurl + 'CateringManagement/HitungPesanan/prosesHitung',
+		url: link,
 		data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: jenis},
 		error: function(xhr,status,error){
 			$('#CateringHitungLoading').hide();
@@ -2656,18 +2479,231 @@ function hitungCatering(jenis){
             })
 		},
 		success: function(data){
-			$('#CateringHitungLoading').hide();
-			// Swal.fire(
-		 //     	'Verifikasi Finger Pekerja Berhasil',
-		 //     	'Refresh Pesanan Selesai Dijalankan',
-		 //     	'success'
-			// )
+			var obj = JSON.parse(data);
+			console.log(obj);
+			if (obj.statusKatering == "ada" && obj.statusJadwal == "ada" && obj.statusBatasDatang == "ada" && obj.statusAbsenShift == "ada" && obj.statusUrutanJadwal == 'ada') {
+				if (obj.statusPesanan == "ada") {
+					$('#CateringHitungLoading').hide();
+					swal.fire({
+						title: 'Apakah Anda Yakin Ingin Refresh Ulang ?',
+						text: "Data Mungkin Berubah Setelah Refresh",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Refresh',
+						cancelButtonText: 'Tidak'
+					}).then((result) => {
+					 	if (!result.value) {
+					    	Swal.fire(
+						     	'Refresh Telah Dibatalkan',
+						     	'Action Refresh Dibatalkan',
+						     	'error'
+					    	)
+					 	}else{
+					 		if (keterangan == "BackDate") {
+						 		Swal.fire({
+						 			title: "Masukkan Password ERP",
+						 			input: 'password',
+						 			inputPlaceholder: 'Masukkan Password ERP',
+						 			inputAttributes: {
+						 				autocorrect: 'off',
+						 				autocapitalize: 'off'
+						 			},
+									showCancelButton: true,
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Refresh',
+									cancelButtonText: 'Tidak'
+						 		}).then((result) => {
+						 			if (!result.value) {
+						 				Swal.fire(
+									     	'Refresh Telah Dibatalkan',
+									     	'Action Refresh Dibatalkan',
+									     	'error'
+								    	)
+						 			}else{
+						 				var password = result.value;
+						 				Swal.fire({
+								 			title: "Masukkan Alasan Anda Melakukan Refresh BackDate",
+								 			input: 'textarea',
+								 			inputPlaceholder: 'Masukkan Alasan',
+								 			inputAttributes: {
+								 				autocorrect: 'off',
+								 				autocapitalize: 'off'
+								 			},
+											showCancelButton: true,
+											confirmButtonColor: '#3085d6',
+											cancelButtonColor: '#d33',
+											confirmButtonText: 'Refresh',
+											cancelButtonText: 'Tidak'
+								 		}).then((result) => {
+								 			if (!result.value) {
+								 				Swal.fire(
+											     	'Refresh Telah Dibatalkan',
+											     	'Action Refresh Dibatalkan',
+											     	'error'
+										    	)
+								 			}else{
+								 				var alasan = result.value;
+										 		$('#CateringHitungLoading').show();
+										 		hitungCatering(jenis, password, alasan);
+								 				
+								 			}
+								 		})
+						 			}
+						 		})
+					 		}else{
+					 			$('#CateringHitungLoading').show();
+								hitungCatering(jenis, "-", "-");
+					 		}
+					 	}
+					})
+				}else{
+					if (keterangan == "BackDate") {
+						$('#CateringHitungLoading').hide();
+				 		Swal.fire({
+				 			title: "Masukkan Password ERP",
+				 			input: 'password',
+				 			inputPlaceholder: 'Masukkan Password ERP',
+				 			inputAttributes: {
+				 				autocorrect: 'off',
+				 				autocapitalize: 'off'
+				 			},
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Refresh',
+							cancelButtonText: 'Tidak'
+				 		}).then((result) => {
+				 			if (!result.value) {
+				 				Swal.fire(
+							     	'Refresh Telah Dibatalkan',
+							     	'Action Refresh Dibatalkan',
+							     	'error'
+						    	)
+				 			}else{
+				 				var password = result.value;
+				 				Swal.fire({
+						 			title: "Masukkan Alasan Anda Melakukan Refresh BackDate",
+						 			input: 'textarea',
+						 			inputPlaceholder: 'Masukkan Alasan',
+						 			inputAttributes: {
+						 				autocorrect: 'off',
+						 				autocapitalize: 'off'
+						 			},
+									showCancelButton: true,
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Refresh',
+									cancelButtonText: 'Tidak'
+						 		}).then((result) => {
+						 			if (!result.value) {
+						 				Swal.fire(
+									     	'Refresh Telah Dibatalkan',
+									     	'Action Refresh Dibatalkan',
+									     	'error'
+								    	)
+						 			}else{
+						 				var alasan = result.value;
+								 		$('#CateringHitungLoading').show();
+								 		hitungCatering(jenis,password,alasan);
+						 				
+						 			}
+						 		})
+				 			}
+				 		})
+			 		}else{
+						hitungCatering(jenis,"-","-");
+			 		}
+				}
+			}else{
+				$('#CateringHitungLoading').hide();
+				if (obj.statusTanggal == "not ok") {
+					if (keterangan == "BackDate") {
+						Swal.fire(
+					     	'Refresh Telah Dihentikan',
+					     	'Tanggal Yang Dipilih Harus Lebih Kecil Dari Tanggal Hari Ini dan Maksimal 7 Hari yang Lalu',
+					     	'error'
+				    	)
+					}else{
+						Swal.fire(
+					     	'Refresh Telah Dihentikan',
+					     	'Tanggal Yang Dipilih Harus Sama Dengan Tanggal Hari Ini',
+					     	'error'
+				    	)
+					}
+				}else if (obj.statusKatering == "tidak ada") {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Tidak ada Katering yang berstatus AKTIF',
+				     	'error'
+			    	)
+				}else if (obj.statusJadwal == "tidak ada") {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Belum ada Jadwal Katering',
+				     	'error'
+			    	)
+				}else if (obj.statusBatasDatang == "tidak ada") {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Batas Jam Datang Belum Di Atur',
+				     	'error'
+			    	)
+				}else if (obj.statusAbsenShift == "tidak ada") {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Data Absensi di shift yang anda pilih kosong',
+				     	'error'
+			    	)
+				}else if (obj.statusUrutanJadwal == 'tidak ada') {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Data Katering di shift yang anda pilih kosong',
+				     	'error'
+			    	)
+				}
+			}
+		}
+	});
+}
 
-			Swal.fire(
-		     	'Berhasil',
-		     	'Refresh Pesanan Selesai Dijalankan',
-		     	'success'
-			)
+function hitungCatering(jenis, password, alasan){
+	tanggal = $('#CateringHitungPesananTanggal').val();
+	shift 	= $('#CateringHitungPesananShift').val();
+	lokasi 	= $('#CateringHitungPesananLokasi').val();
+	$.ajax({
+		method: 'POST',
+		url: baseurl + 'CateringManagement/HitungPesanan/prosesHitung',
+		data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: jenis, password: password, alasan: alasan},
+		error: function(xhr,status,error){
+			$('#CateringHitungLoading').hide();
+			swal.fire({
+                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                html: xhr['responseText'],
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+		},
+		success: function(data){
+			$('#CateringHitungLoading').hide();
+			if (data == "selesai") {
+				Swal.fire(
+			     	'Berhasil',
+			     	'Refresh Pesanan Selesai Dijalankan',
+			     	'success'
+				)
+			}else{
+				swal.fire({
+	                title: "Proses Refresh Gagal !!",
+	                html: data,
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			}
 		}
 	})	
 }

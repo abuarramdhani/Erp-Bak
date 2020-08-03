@@ -142,7 +142,8 @@ class C_HitungPesanan extends CI_Controller
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
     $data['lokasi_kerja'] = intval($this->session->kode_lokasi_kerja);
-    
+    $data['kodesie'] = $this->session->kodesie;
+
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);
     $this->load->view('CateringManagement/HitungPesanan/V_index.php',$data);
@@ -223,6 +224,117 @@ class C_HitungPesanan extends CI_Controller
       }
     }
 
+    if (isset($data['statusAbsenShift']) && $data['statusAbsenShift'] == 'ada') {
+      if ($shift == '1') {
+        $dataUrutanJadwal = $this->M_hitungpesanan->getUrutanJadwalShiftSatuByTanggalLokasi($tanggal,$lokasi);
+      }elseif ($shift == '2') {
+        $dataUrutanJadwal = $this->M_hitungpesanan->getUrutanJadwalShiftDuaByTanggalLokasi($tanggal,$lokasi);
+      }elseif ($shift == '3') {
+        $dataUrutanJadwal = $this->M_hitungpesanan->getUrutanJadwalShiftTigaByTanggalLokasi($tanggal,$lokasi);
+      }
+      if (!empty($dataUrutanJadwal)) {
+        $data['jumlahUrutanJadwal'] = count($dataUrutanJadwal);
+        $data['statusUrutanJadwal'] = 'ada';
+      }else{
+        $data['jumlahUrutanJadwal'] = 0;
+        $data['statusUrutanJadwal'] = 'tidak ada';
+      }
+    }
+
+    echo json_encode($data);
+  }
+
+  public function cekPesananBackDate(){
+    $tanggal = $this->input->post('tanggal');
+    $shift = $this->input->post('shift');
+    $lokasi = $this->input->post('lokasi');
+    $jenis = $this->input->post('jenis');
+    $data = array();
+
+    if (strtotime($tanggal) < strtotime(date('Y-m-d')) && strtotime($tanggal) >= strtotime(date('Y-m-d').' - 7 day')) {
+      $data['statusTanggal'] = "ok";
+    }else{
+      $data['statusTanggal'] = "not ok";
+    }
+
+    if (isset($data['statusTanggal']) && $data['statusTanggal'] == "ok") {
+      $dataPesanan = $this->M_hitungpesanan->getPesananByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+      if (!empty($dataPesanan)) {
+        $data['JumlahPesanan'] = count($dataPesanan);
+        $data['statusPesanan'] = 'ada';
+      }else{
+        $data['JumlahPesanan'] = 0;
+        $data['statusPesanan'] = 'tidak ada';
+      }
+    }
+
+    if (isset($data['statusPesanan'])) {
+      $dataKatering = $this->M_hitungpesanan->getKateringByLokasi($lokasi);
+      if (!empty($dataKatering)) {
+        $data['jumlahKatering'] = count($dataKatering);
+        $data['statusKatering'] = 'ada';
+      }else{
+        $data['jumlahKatering'] = 0;
+        $data['statusKatering'] = 'tidak ada';
+      }
+    }
+
+    if (isset($data['statusKatering']) && $data['statusKatering'] == 'ada') {
+      $dataJadwal = $this->M_hitungpesanan->getJadwalByTanggalLokasi($tanggal,$lokasi);
+      if (!empty($dataJadwal)) {
+        $data['jumlahJadwal'] = count($dataJadwal);
+        $data['statusJadwal'] = 'ada';
+      }else{
+        $data['jumlahJadwal'] = 0;
+        $data['statusJadwal'] = 'tidak ada';
+      }
+    }
+
+    if (isset($data['statusJadwal']) && $data['statusJadwal'] == 'ada') {
+      $dataBatasDatang = $this->M_hitungpesanan->getBatasDatangByTanggalShift($tanggal,$shift);
+      if (!empty($dataBatasDatang) || $shift == '3') {
+        $data['jumlahBatasDatang'] = count($dataBatasDatang);
+        $data['statusBatasDatang'] = 'ada';
+      }else{
+        $data['jumlahBatasDatang'] = 0;
+        $data['statusBatasDatang'] = 'tidak ada';
+      }
+    }
+
+    if (isset($data['statusBatasDatang']) && $data['statusBatasDatang'] == 'ada') {
+      if ($shift == '1') {
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasi($tanggal,$lokasi,$jenis);
+      }elseif($shift == '2'){
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi,$jenis);
+      }elseif ($shift == '3') {
+        $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi,$jenis);
+      }
+      if (!empty($dataAbsenShift)) {
+        $data['jumlahAbsenShift'] = count($dataAbsenShift);
+        $data['statusAbsenShift'] = 'ada';
+      }else{
+        $data['jumlahAbsenShift'] = 0;
+        $data['statusAbsenShift'] = 'tidak ada';
+      }
+    }
+
+    if (isset($data['statusAbsenShift']) && $data['statusAbsenShift'] == 'ada') {
+      if ($shift == '1') {
+        $dataUrutanJadwal = $this->M_hitungpesanan->getUrutanJadwalShiftSatuByTanggalLokasi($tanggal,$lokasi);
+      }elseif ($shift == '2') {
+        $dataUrutanJadwal = $this->M_hitungpesanan->getUrutanJadwalShiftDuaByTanggalLokasi($tanggal,$lokasi);
+      }elseif ($shift == '3') {
+        $dataUrutanJadwal = $this->M_hitungpesanan->getUrutanJadwalShiftTigaByTanggalLokasi($tanggal,$lokasi);
+      }
+      if (!empty($dataUrutanJadwal)) {
+        $data['jumlahUrutanJadwal'] = count($dataUrutanJadwal);
+        $data['statusUrutanJadwal'] = 'ada';
+      }else{
+        $data['jumlahUrutanJadwal'] = 0;
+        $data['statusUrutanJadwal'] = 'tidak ada';
+      }
+    }
+
     echo json_encode($data);
   }
 
@@ -234,6 +346,17 @@ class C_HitungPesanan extends CI_Controller
     $shift = $this->input->post('shift');
     $lokasi = $this->input->post('lokasi');
     $jenis = $this->input->post('jenis');
+    $password = $this->input->post('password');
+    $alasan = $this->input->post('alasan');
+    $user = $this->session->user;
+
+    if (strtotime($tanggal) < strtotime(date('Y-m-d'))) {
+      $cekPassword = $this->M_hitungpesanan->cekPassword($user,$password);
+      if (count($cekPassword) == 0) {
+        echo "Password yang Anda Masukkan tidak sesuai";
+        exit();
+      }
+    }
 
     $this->M_hitungpesanan->deletePesananByTanggalShiftLokasi($tanggal,$shift,$lokasi);
     $this->M_hitungpesanan->deleteUrutanKateringByTanggalShiftLokasi($tanggal,$shift,$lokasi);
@@ -255,15 +378,27 @@ class C_HitungPesanan extends CI_Controller
     
     $this->simpanDetail($tanggal,$shift,$lokasi,$jenis);
 
-    $data_log = array(
-      'wkt' => date('Y-m-d H:i:s'),
-      'menu' => 'HITUNG PESANAN',
-      'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi,
-      'noind' => $this->session->user,
-      'jenis' => 'HITUNG DATA PESANAN',
-      'program' => 'CATERING MANAGEMENT ERP'
-    );
+    if (strtotime($tanggal) < strtotime(date('Y-m-d'))) {
+      $data_log = array(
+        'wkt' => date('Y-m-d H:i:s'),
+        'menu' => 'HITUNG PESANAN',
+        'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi.' ALASAN: '.$alasan,
+        'noind' => $user,
+        'jenis' => 'HITUNG DATA PESANAN BACK DATE',
+        'program' => 'CATERING MANAGEMENT ERP'
+      );
+    }else {
+      $data_log = array(
+        'wkt' => date('Y-m-d H:i:s'),
+        'menu' => 'HITUNG PESANAN',
+        'ket' => 'TGL: '.$tanggal.' SHIFT: '.$shift.' LOKASI: '.$lokasi,
+        'noind' => $user,
+        'jenis' => 'HITUNG DATA PESANAN',
+        'program' => 'CATERING MANAGEMENT ERP'
+      );
+    }
     $this->M_hitungpesanan->insertTlog($data_log);
+    echo "selesai";
   }
 
   public function hitungShift1($tanggal,$shift,$lokasi,$jenis){

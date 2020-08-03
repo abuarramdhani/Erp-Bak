@@ -12,6 +12,7 @@ class M_hitungpesanan extends Ci_Model
 		$this->load->database();
 		$this->personalia = $this->load->database('personalia',TRUE);
 		$this->spl = $this->load->database('quickcom',TRUE);
+		$this->erp = $this->load->database('erp_db',TRUE);
 	}
 
 	public function getFinger($userid){
@@ -1638,7 +1639,8 @@ class M_hitungpesanan extends Ci_Model
 					t.fs_kd_shift,
 					tt.fs_lokasi,
 					t.fs_tempat_makan,
-					td.fs_noind
+					td.fs_noind,
+					fb_kategori
 				from \"Catering\".tpesanantambahan t 
 				inner join \"Catering\".tpesanantambahan_detail td 
 				on t.id_tambahan = td.id_tambahan
@@ -2035,7 +2037,8 @@ class M_hitungpesanan extends Ci_Model
 					t.fs_kd_shift,
 					tt.fs_lokasi,
 					t.fs_tempat_makan,
-					td.fs_noind
+					td.fs_noind,
+					fb_kategori
 				from \"Catering\".tpenguranganpesanan t 
 				inner join \"Catering\".tpenguranganpesanan_detail td 
 				on t.id_pengurangan = td.id_pengurangan
@@ -2097,6 +2100,14 @@ class M_hitungpesanan extends Ci_Model
 				) as tbl  
 			where jumlah =  0"; 
 		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
+	}
+
+	public function cekPassword($user,$password){
+		$sql = "select *
+				from sys.sys_user
+				where user_name = ?
+				and user_password = md5(?)";
+		return $this->erp->query($sql,array($user,$password))->result_array();
 	}
 }
 
