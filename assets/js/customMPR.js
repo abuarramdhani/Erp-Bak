@@ -146,6 +146,143 @@ $(document).on('change', '#slcStatusPekerja', function() {
     }
 });
 
+$(document).ready(function(){
+    $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').daterangepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        locale: {
+            cancelLabel: 'Clear',
+            "format": "YYYY-MM-DD",
+            "separator": " - ",
+        }
+    });
+
+    var tblMPRPekerjaKeluarExport = $('#tbl-MPR-PekerjaKeluar-Export').DataTable({
+        "scrollX" : true,
+        "lengthMenu": [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'pageLength'
+        ],
+    });
+
+    $('#btn-MPR-PekerjaKeluar-Export-Lihat').on('click', function(){
+        var tanggal = $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').val();
+        var kodeInduk = $('#txt-MPR-PekerjaKeluar-Export-KodeInduk').val();
+        if (tanggal) {
+            $('#ldg-MPR-PekerjaKeluar-Export-Loading').show();
+            $.ajax({
+                method: 'GET',
+                url: baseurl + 'MasterPresensi/ReffGaji/PekerjaKeluar/lihatExport',
+                data: {tanggal: tanggal, kode_induk: kodeInduk},
+                error: function(xhr,status,error){
+                    $('#ldg-MPR-PekerjaKeluar-Export-Loading').hide();
+                    swal.fire({
+                        title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                        html: xhr['responseText'],
+                        type: "error",
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#d63031',
+                    })
+                },
+                success: function(data){
+                    $('#ldg-MPR-PekerjaKeluar-Export-Loading').hide();
+                    obj = JSON.parse(data);
+                    tblMPRPekerjaKeluarExport.clear().draw();
+                    obj.forEach(function(daftar, index){
+                        tblMPRPekerjaKeluarExport.row.add([
+                            (index + 1),
+                            daftar.noind,
+                            daftar.nama,
+                            daftar.tanggal_keluar,
+                            daftar.ipe,
+                            daftar.ika,
+                            daftar.ubt,
+                            daftar.upamk,
+                            daftar.ief,
+                            daftar.jam_lembur,
+                            daftar.htm,
+                            daftar.ijin,
+                            daftar.ct,
+                            daftar.ket,
+                            daftar.um_puasa,
+                            daftar.ims,
+                            daftar.imm,
+                            daftar.ipet,
+                            daftar.um_cabang,
+                            daftar.dldobat,
+                            daftar.plain,
+                            daftar.tambahan_str,
+                            daftar.potongan_str,
+                            daftar.jml_jkn,
+                            daftar.jml_jht,
+                            daftar.jml_jp,
+                            daftar.pduka
+                        ]).draw(false);
+                    })
+                    tblMPRPekerjaKeluarExport.columns.adjust().draw();
+                }
+            })
+        }else{
+            swal.fire(
+                'Peringatan!!',
+                'Pastikan Periode Keluar Sudah Terisi !!!',
+                'warning'
+            )
+        }
+    });
+
+    $('#btn-MPR-PekerjaKeluar-Export-Pdf').on('click', function(){
+        var tanggal = $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').val();
+        var kodeInduk = $('#txt-MPR-PekerjaKeluar-Export-KodeInduk').val();
+        if (tanggal) {
+            var params = encodeURI("tanggal=" + tanggal + "&kodeInduk=" + kodeInduk);
+            window.open(baseurl + 'MasterPresensi/ReffGaji/PekerjaKeluar/exPdf?' + params,'_blank');
+        }else{
+            swal.fire(
+                'Peringatan!!',
+                'Pastikan Periode Keluar Sudah Terisi !!!',
+                'warning'
+            )
+        }
+    });
+
+    $('#btn-MPR-PekerjaKeluar-Export-Excel').on('click', function(){
+        var tanggal = $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').val();
+        var kodeInduk = $('#txt-MPR-PekerjaKeluar-Export-KodeInduk').val();
+        if (tanggal) {
+            var params = encodeURI("tanggal=" + tanggal + "&kodeInduk=" + kodeInduk);
+            window.open(baseurl + 'MasterPresensi/ReffGaji/PekerjaKeluar/exExcel?' + params,'_blank');
+        }else{
+            swal.fire(
+                'Peringatan!!',
+                'Pastikan Periode Keluar Sudah Terisi !!!',
+                'warning'
+            )
+        }
+    });
+
+    $('#btn-MPR-PekerjaKeluar-Export-Dbf').on('click', function(){
+        var tanggal = $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').val();
+        var kodeInduk = $('#txt-MPR-PekerjaKeluar-Export-KodeInduk').val();
+        if (tanggal) {
+            var params = encodeURI("tanggal=" + tanggal + "&kodeInduk=" + kodeInduk);
+            window.open(baseurl + 'MasterPresensi/ReffGaji/PekerjaKeluar/exDbf?' + params,'_blank');
+        }else{
+            swal.fire(
+                'Peringatan!!',
+                'Pastikan Periode Keluar Sudah Terisi !!!',
+                'warning'
+            )
+        }
+    });
+})
+
+// end pekerja keluar
+
 $(document).on('ready', function() {
     $('.dataTable-pekerjaKeluar-detail').dataTable({
         scrollY: "300px",

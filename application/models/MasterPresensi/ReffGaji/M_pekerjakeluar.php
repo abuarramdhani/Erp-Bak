@@ -7014,5 +7014,16 @@ class M_pekerjakeluar extends CI_Model
 		$this->personalia->where('noind',$noind);
 		$this->personalia->update('"Presensi".treffgaji_keluar',$data);
 	}
+
+	public function getPekerjaKeluarByPeriodeKodeInduk($awal,$akhir,$kode){
+		$sql = "select a.*,b.seksi
+				from \"Presensi\".treffgaji_keluar a
+				left join hrd_khs.tseksi b 
+				on a.kodesie = b.kodesie
+				where left(a.noind,1) in ($kode)
+				and a.tanggal_keluar between '$awal' and '$akhir'
+				order by a.noind";
+		return $this->personalia->query($sql)->result_array();
+	}
 }
 ?>
