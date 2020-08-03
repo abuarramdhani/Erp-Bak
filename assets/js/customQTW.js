@@ -33,7 +33,7 @@ $(document).ready(function () {
             },
             url: baseurl + "QuickWisata/DBQTW/searchDetailInstansi",
             success: function (result) {
-                if (result) {
+                if (result.value) {
                     swal.close();
                     let detailnya = "",
                         optione = "";
@@ -726,7 +726,7 @@ function deleteJadwalQTW(id) {
         allowOutsideClick: false,
         showCancelButton: true
     }).then(result => {
-        if (result) {
+        if (result.value) {
             $.get(baseurl + 'QuickWisata/DBQTW/deleteData?id=' + id, function (params) {
                 if (params == 'sukses') {
                     swal.fire({
