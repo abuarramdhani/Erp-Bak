@@ -43,7 +43,7 @@ class M_databaseqtw extends CI_Model
                 LEFT JOIN hrd_khs.tpribadi b on a.pemandu = b.noind
                 $where
                 group by a.id_qtw, a.jenis_institusi, a.dtl_institusi, a.pic, a.nohp_pic, a.alamat, a.prop, a.kab, a.kec, a.desa, a.kd_pos, a.kendaraan, a.jml_kendaraan, a.wkt_mulai, a.wkt_selesai, a.pemandu, a.created_date, a.tanggal, a.tujuan, a.pendamping, a.peserta, a.status_qtw, b.nama, b.photo
-                order by a.id_qtw";
+                order by a.tanggal desc, wkt_mulai";
         return $this->personalia->query($sql)->result_array();
     }
 

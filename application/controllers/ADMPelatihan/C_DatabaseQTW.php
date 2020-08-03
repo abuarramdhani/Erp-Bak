@@ -154,10 +154,6 @@ class C_DatabaseQTW extends CI_Controller
 
     public function save()
     {
-        $kel                = $_POST['txtKelQtw'];
-        $kec                = $_POST['txtKecQtw'];
-        $kab                = $_POST['txtKabQtw'];
-        $prov               = $_POST['txtProvQtw'];
         $jenis              = $_POST['slcJnsQtw'];
         $alamat             = $_POST['txtaAlamatQtw'];
         $tujuan             = $_POST['slcTjnQtw'];
@@ -174,10 +170,16 @@ class C_DatabaseQTW extends CI_Controller
         $pendamping         = $_POST['inp_tua_qtw'];
         $peserta            = $_POST['inp_muda_qtw'];
 
-        $provinsi = $this->daerah->query("SELECT nama from provinsi where id_prov = '$prov'")->row()->nama;
-        $kabupaten = $this->daerah->query("SELECT nama from kabupaten where id_prov = '$prov' and id_kab = '$kab'")->row()->nama;
-        $kecamatan = $this->daerah->query("SELECT nama from kecamatan where id_kab = '$kab' and id_kec = '$kec'")->row()->nama;
-        $desa = $this->daerah->query("SELECT nama from kelurahan where id_kec = '$kec' and id_kel = '$kel'")->row()->nama;
+        if ($jenis != '3') {
+            $kel                = $_POST['txtKelQtw'];
+            $kec                = $_POST['txtKecQtw'];
+            $kab                = $_POST['txtKabQtw'];
+            $prov               = $_POST['txtProvQtw'];
+            $provinsi = $this->daerah->query("SELECT nama from provinsi where id_prov = '$prov'")->row()->nama;
+            $kabupaten = $this->daerah->query("SELECT nama from kabupaten where id_prov = '$prov' and id_kab = '$kab'")->row()->nama;
+            $kecamatan = $this->daerah->query("SELECT nama from kecamatan where id_kab = '$kab' and id_kec = '$kec'")->row()->nama;
+            $desa = $this->daerah->query("SELECT nama from kelurahan where id_kec = '$kec' and id_kel = '$kel'")->row()->nama;
+        }
 
         //Insert data
         $array  = array(
@@ -186,10 +188,10 @@ class C_DatabaseQTW extends CI_Controller
             'pic'             => ucwords(strtoupper($pic_tamu)),
             'nohp_pic'        => $hp_tamu,
             'alamat'          => ucwords(strtoupper($alamat)),
-            'prop'            => $provinsi,
-            'kab'             => $kabupaten,
-            'kec'             => $kecamatan,
-            'desa'            => $desa,
+            'prop'            => ($jenis != '3') ? $provinsi : null,
+            'kab'             => ($jenis != '3') ? $kabupaten : null,
+            'kec'             => ($jenis != '3') ? $kecamatan : null,
+            'desa'            => ($jenis != '3') ? $desa : null,
             'kd_pos'          => $kodepos,
             'kendaraan'       => $kendaraan,
             'jml_kendaraan'   => $jml_kendaraan,

@@ -9,15 +9,76 @@ $(document).ready(function () {
         todayHighlight: true,
     });
 
-    $("#slcJnsQtw").select2({
-        placeholder: "---Pilih Jenis Kunjungan---",
-    });
 
     $(".kendaraan_Qtw").select2({
         placeholder: "Pilih Kendaraan",
     });
 
-    $('#tbl_monitoring_qtw').DataTable()
+    $('#tbl_monitoring_qtw').DataTable({
+        scrollX: true
+    })
+
+    $("#slcJnsQtw").select2({
+        placeholder: "---Pilih Jenis Kunjungan---",
+    }).on("change", function () {
+        let a = $(this).val();
+        $.ajax({
+            type: "post",
+            data: {
+                a
+            },
+            dataType: "json",
+            beforeSend: function () {
+                swal.showLoading();
+            },
+            url: baseurl + "QuickWisata/DBQTW/searchDetailInstansi",
+            success: function (result) {
+                if (result) {
+                    swal.close();
+                    let detailnya = "",
+                        optione = "";
+                    if (a < 3) {
+                        $.map(result, function (e) {
+                            optione +=
+                                '<option value="' +
+                                e.nama_univ +
+                                '">' +
+                                e.nama_univ +
+                                "</option>";
+                        });
+                        detailnya =
+                            '<select name="slcDtlQtw" id="slcDtlQtw" class="form-control select select2 getDetailInst" required><option value=""></option>' +
+                            optione +
+                            "</select>";
+                    } else {
+                        detailnya =
+                            '<input type="text" name="slcDtlQtw" class="form-control getDetailInst" placeholder="---Detail Institusi---" style="text-transform: uppercase;" required>';
+                    }
+                    $("#applyDetailInstansi").html(detailnya);
+                    $("#slcDtlQtw").select2({
+                        placeholder: "---Detail Institusi---",
+                        allowClear: true,
+                        tags: true,
+                    });
+
+                    if (a == "1") {
+                        $("#label_tua_qtw").text("Guru :");
+                        $("#label_muda_qtw").text("Siswa :");
+                    } else if (a == "2") {
+                        $("#label_tua_qtw").text("Dosen :");
+                        $("#label_muda_qtw").text("Mahasiswa :");
+                    } else {
+                        $("#label_tua_qtw").text("Pendamping :");
+                        $("#label_muda_qtw").text("Peserta :");
+                        $('.Provinsi_QTW').prop('disabled', true)
+                        $('.Kabupaten_QTW').prop('disabled', true)
+                        $('.Kecamatan_QTW').prop('disabled', true)
+                        $('.Desa_QTW').prop('disabled', true)
+                    }
+                }
+            }
+        })
+    })
 
     $(".slcPicQtw").select2({
         minimumInputLength: 1,
@@ -151,21 +212,6 @@ $(document).ready(function () {
         },
     });
 
-    $("#slcJnsQtw").on("change", function () {
-        let a = $(this).val();
-
-        if (a == "1") {
-            $("#label_tua_qtw").text("Guru :");
-            $("#label_muda_qtw").text("Siswa :");
-        } else if (a == "2") {
-            $("#label_tua_qtw").text("Dosen :");
-            $("#label_muda_qtw").text("Mahasiswa :");
-        } else {
-            $("#label_tua_qtw").text("Pendamping :");
-            $("#label_muda_qtw").text("Peserta :");
-        }
-    });
-
     $("#plus_kendaraan_qtw").on("click", function () {
         $("#tblKendaraanQtw").each(function () {
             let cek = "",
@@ -232,51 +278,6 @@ $(document).ready(function () {
         } else {
             $(this).closest("tr").remove();
         }
-    });
-
-    $("#slcJnsQtw").on("change", function () {
-        let a = $(this).val();
-        $.ajax({
-            type: "post",
-            data: {
-                a,
-            },
-            dataType: "json",
-            beforeSend: function () {
-                swal.showLoading();
-            },
-            url: baseurl + "QuickWisata/DBQTW/searchDetailInstansi",
-            success: function (result) {
-                if (result) {
-                    swal.close();
-                    let detailnya = "",
-                        optione = "";
-                    if (a < 3) {
-                        $.map(result, function (e) {
-                            optione +=
-                                '<option value="' +
-                                e.nama_univ +
-                                '">' +
-                                e.nama_univ +
-                                "</option>";
-                        });
-                        detailnya =
-                            '<select name="slcDtlQtw" id="slcDtlQtw" class="form-control select select2 getDetailInst" required><option value=""></option>' +
-                            optione +
-                            "</select>";
-                    } else {
-                        detailnya =
-                            '<input type="text" name="slcDtlQtw" class="form-control getDetailInst" placeholder="---Detail Institusi---" style="text-transform: uppercase;" required>';
-                    }
-                    $("#applyDetailInstansi").html(detailnya);
-                    $("#slcDtlQtw").select2({
-                        placeholder: "---Detail Institusi---",
-                        allowClear: true,
-                        tags: true,
-                    });
-                }
-            },
-        });
     });
 
     //for kalendar QTW
