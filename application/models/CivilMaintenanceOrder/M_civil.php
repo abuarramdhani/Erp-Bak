@@ -46,7 +46,7 @@ class M_civil extends CI_Model
 	public function listJnsPkjDetail($id = FALSE)
 	{
 		if ($id != FALSE) {
-			$where = "where jenis_pekerjaan_id = ".$id." ";
+			$where = "where a.jenis_pekerjaan_id = ".$id." ";
 		}else{
 			$where = "";
 		}
