@@ -448,7 +448,7 @@
                   </select>
                 </div>
               </div>
-              <div v-if="!state.worker.kd_jabatan == '18' || state.worker.presensi_ok == false" class="form-group">
+              <div v-if="state.worker.jenis_kode != 'os'" class="form-group">
                 <label class="col-lg-2 control-label" for="">Departemen</label>
                 <div class="col-lg-3">
                   <select id="atasan-departemen" class="form-control">
@@ -804,7 +804,7 @@
           return error
         }
 
-        if (!valSupervisor && supervisorOption.length) return alertAtasan()
+        // if (!valSupervisor && supervisorOption.length) return alertAtasan()
         if (!valKasie && kasieOption.length) return alertAtasan()
         if (!valUnit && unitOption.length) return alertAtasan()
       },
@@ -927,6 +927,7 @@
         // ------------------------
         selectSupervisor.empty().trigger('change')
         selectSupervisor.select2({
+          allowClear: true,
           placeholder: 'Supervisor',
           data: [empty, ...dataSupervisor]
         })

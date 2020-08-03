@@ -145,11 +145,17 @@ class M_blankoevaluasi extends CI_Model
     {
         if (!$kodesie) return [];
 
-        $supervisor = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('13') and tp.keluar = '0';";
-        $kasie = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('10', '11', '12') and tp.keluar = '0';";
-        $unit = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,5) = substring('$kodesie', 1, 5) and tp.kd_jabatan in ('08', '09') and tp.keluar = '0'";
-        $bidang = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,3) = substring('$kodesie', 1, 3) and tp.kd_jabatan in ('05', '06', '07') and tp.keluar = '0'";
-        $dept = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,1) = substring('$kodesie', 1, 1) and tp.kd_jabatan in ('02', '03', '04') and tp.keluar = '0';";
+        $supervisor = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('13', '11', '12') and tp.keluar = '0';";
+        $kasie = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('11', '12') and tp.keluar = '0';";
+        //  == personalia(4) 
+        if (substr($kodesie, 0, 1) == 4) {
+            $unit = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,5) = substring('$kodesie', 1, 5) and tp.kd_jabatan in ('08', '09', '10') and tp.keluar = '0'";
+        } else {
+            $unit = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,5) = substring('$kodesie', 1, 5) and tp.kd_jabatan in ('08', '09') and tp.keluar = '0'";
+        }
+
+        $bidang = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,3) = substring('$kodesie', 1, 3) and tp.kd_jabatan in ('05', '06', '07') and tp.keluar = '0'";
+        $dept = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,1) = substring('$kodesie', 1, 1) and tp.kd_jabatan in ('02', '03', '04') and tp.keluar = '0';";
 
         $supervisor = $this->personalia->query($supervisor)->result_array();
         $kasie = $this->personalia->query($kasie)->result_array();
@@ -281,7 +287,7 @@ class M_blankoevaluasi extends CI_Model
         $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
 
         $terlambat = $this->personalia->query($q_terlambat)->result_array();
