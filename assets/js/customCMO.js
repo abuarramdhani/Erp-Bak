@@ -305,10 +305,10 @@ $(document).ready(function(){
 	});
 
 	$('.mco_status').on('change', function(){
-		if ($(this).val() == 'BIASA') {
+		if ($(this).val() == 'Biasa') {
 			$('.mco_tglbutuh').show();
 			$('.mco_alasan').hide();
-		}else if($(this).val() == 'URGENT'){
+		}else if($(this).val() == 'Urgent'){
 			$('.mco_tglbutuh').show();
 			$('.mco_alasan').show();
 		}else{
