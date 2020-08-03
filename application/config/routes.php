@@ -4609,3 +4609,12 @@ $route['DbHandlingSeksi']									= 'DbHandling/C_Index';
 $route['DbHandlingSeksi/MonitoringHandling']				= 'DbHandling/SEKSI/C_Monhandseksi';
 $route['DbHandlingSeksi/MonitoringHandling/(:any)']			= 'DbHandling/SEKSI/C_Monhandseksi/$1';
 $route['DbHandlingSeksi/MonitoringHandling/(:any)/(:any)']	= 'DbHandling/SEKSI/C_Monhandseksi/$1/$2';
+
+//-------------------------------------------MO Terlambat Transact---------------------------------------//
+$route['MOTerlambatTransact'] = 'MOTerlambatTransact/C_Master';
+
+$route['MOTerlambatTransact/Monitoring'] = 'MOTerlambatTransact/C_Master/Monitoring';
+$route['MOTerlambatTransact/Monitoring/(:any)'] = 'MOTerlambatTransact/C_Master/$1';
+$route['MOTerlambatTransact/Monitoring/(:any)/(:any)'] = 'MOTerlambatTransact/C_Master/$1/$2';
+
+$route['MOTerlambatTransact/cekapi'] = 'MOTerlambatTransact/C_Master/cekapi';
