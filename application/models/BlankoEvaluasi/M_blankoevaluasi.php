@@ -287,7 +287,7 @@ class M_blankoevaluasi extends CI_Model
         $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
 
         $terlambat = $this->personalia->query($q_terlambat)->result_array();
