@@ -21,8 +21,8 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Tanggal</label>
 													<div class="col-lg-8">
-														<input type="text" name="txt-CM-Pengurangan-Tanggal" id="txt-CM-Pengurangan-Tanggal" class="form-control" placeholder="Tanggal" autocomplete="off">
-														<input type="hidden" name="txt-CM-Pengurangan-Tanggal-Baru" id="txt-CM-Pengurangan-Tanggal-Baru">
+														<input type="text" name="txt-CM-Pengurangan-Tanggal" id="txt-CM-Pengurangan-Tanggal" class="form-control" placeholder="Tanggal" autocomplete="off" value="<?php echo date('Y-m-d') ?>">
+														<input type="hidden" name="txt-CM-Pengurangan-Tanggal-Baru" id="txt-CM-Pengurangan-Tanggal-Baru" value="<?php echo date('Y-m-d') ?>">
 														<input type="hidden" name="txt-CM-Pengurangan-IdPengurangan" id="txt-CM-Pengurangan-IdPengurangan">
 													</div>
 												</div>

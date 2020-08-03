@@ -101,6 +101,15 @@
                                         <input class="form-control txtADOOrderType" value="<?php if (isset($DetailDO[0]['ORDER_TYPE'])) echo $DetailDO[0]['ORDER_TYPE'] ?>" readonly="">
                                     </div>
                                 </div>
+                            </div><br>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Tanggal Permintaan Kirim</label>
+                                <div class="col-sm-7">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i style="width:15px;" class="fa fa-calendar"></i></span>
+                                        <input class="form-control txttglKirimADO">
+                                    </div>
+                                </div>
                             </div>
                         <?php else : ?>
                             <div class="form-group">
@@ -118,6 +127,24 @@
                                     <div class="input-group">
                                         <span class="input-group-addon"><i style="width:15px;" class="fa fa-map-marker"></i></span>
                                         <input class="form-control" value="<?php if (isset($DetailDO[0]['ALAMAT'])) echo $DetailDO[0]['ALAMAT'] ?>" readonly="">
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Order Type</label>
+                                <div class="col-sm-7">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i style="width:15px;" class="fa fa-list-ul"></i></span>
+                                        <input class="form-control txtADOOrderType" value="<?php if (isset($DetailDO[0]['ORDER_TYPE'])) echo $DetailDO[0]['ORDER_TYPE'] ?>" readonly="">
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Tanggal Permintaan Kirim</label>
+                                <div class="col-sm-7">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i style="width:15px;" class="fa fa-calendar"></i></span>
+                                        <input class="form-control <?= $tglKirim;?>" value="<?php if (isset($DetailDO[0]['PERMINTAAN_TANGGAL_KIRIM'])) echo $DetailDO[0]['PERMINTAAN_TANGGAL_KIRIM'] ?>" <?=$akses;?>>
                                     </div>
                                 </div>
                             </div>

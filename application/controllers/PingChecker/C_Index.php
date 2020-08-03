@@ -125,11 +125,11 @@ class C_Index extends CI_Controller {
 						'ip' => '192.168.38.22',
 						'ip2' => '192.168.38.22',
 					),
-					array(
+					/*array(
 						'name' => 'TUKSONO MACH BARAT',
 						'ip' => '192.168.38.203',
 						'ip2' => '192.168.38.203',
-					),
+					),*/
 					array(
 						'name' => 'TUKSONO FOUNDRY',
 						'ip' => '192.168.38.14',

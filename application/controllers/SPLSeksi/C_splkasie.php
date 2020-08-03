@@ -10,17 +10,19 @@ class C_splkasie extends CI_Controller
 		parent::__construct();
 
 		$this->load->library('session');
+		$this->load->library('../controllers/SPLSeksi/Pusat/Lembur');
 
 		$this->load->model('SPLSeksi/M_splseksi');
 		$this->load->model('SPLSeksi/M_splkasie');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		// FOR DEVELOPMENT
+		$this->is_production = true; // change it to true before push
+		$this->developer_email = 'dicka_ismaji@quick.com';
 	}
 
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-			// any
-		} else {
+		if (!$this->session->is_logged) {
 			redirect('');
 		}
 	}
@@ -37,6 +39,7 @@ class C_splkasie extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
 		return $data;
 	}
 
@@ -87,148 +90,8 @@ class C_splkasie extends CI_Controller
 	}
 
 	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat)
-	{ //latest
-		$day   = date('w', strtotime($tgl));
-
-		$hari_indo = "Minggu Senin Selasa Rabu Kamis Jumat Sabtu";
-		$array_hari = explode(' ', $hari_indo);
-		//--------------------core variable
-		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
-		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind);
-		$HARI 		= $array_hari[$day];
-		//-----------------------
-		$treffjamlembur = $this->M_splseksi->treffjamlembur($KET, $JENIS_HARI, $HARI);
-
-		//----cari berapa menit lemburnya
-		$first = explode(':', $mulai);
-		$second = explode(':', $selesai);
-
-		if (count($first) == 1) {
-			$first[1] = 00;
-		}
-
-		if (count($second) == 1) {
-			$second[1] = 00;
-		}
-
-		$a = $first[0] * 60 + $first[1];
-		$b = $second[0] * 60 + $second[1];
-
-		if ($a > $b) {
-			$zero = 24 * 60; // jam sehari dalam menit
-			$z = $zero - $a;
-			$lama_lembur = $z + $b;
-		} else {
-			$lama_lembur = $b - $a;
-		}
-
-		$shift = $this->M_splseksi->selectShift($noind, $tgl);
-		if ($kode_lembur == '005') {
-			$shift = (strtotime($shift->jam_plg) - strtotime($shift->jam_msk));
-			$shift = $shift / 60;
-			$result = $lama_lembur - $shift;
-		} else {
-			$result = $lama_lembur;
-		}
-		//-----end cari menit lembur
-
-		//-----------------------core variable
-		$MENIT_LEMBUR = $result;
-		//buat jaga jaga error
-		$BREAK = $break == 'Y' ? 15 : 0;
-		$ISTIRAHAT = $istirahat == 'Y' ? 45 : 0;
-
-		$allShift = $this->M_splseksi->selectAllShift($tgl);
-
-		if (!empty($allShift)) {
-			if ($istirahat == 'Y') { //jika pekerja memilih istirahat
-				$ISTIRAHAT = 0;
-				$distinct_start = [];
-
-				foreach ($allShift as $shift) {
-					$rest_start = strtotime($shift['ist_mulai']);
-					$rest_end   = strtotime($shift['ist_selesai']);
-
-					if ($rest_start == $rest_end) {
-						continue;
-					}
-
-					//biar jam break tidak terdouble
-					if (in_array($rest_start, $distinct_start)) {
-						continue;
-					} else {
-						$distinct_start[] = $rest_start;
-					}
-
-					$overtime_start = strtotime($mulai);
-					$overtime_end   = strtotime($selesai);
-
-					if (($rest_start > $overtime_start && $rest_end < $overtime_end)) { // jika jam istirahat masuk range lembur
-						$ISTIRAHAT = $ISTIRAHAT + 45;
-					} else if ($rest_start > $overtime_start && $rest_end > $overtime_end && $rest_start < $overtime_end) {
-						$ISTIRAHAT = $ISTIRAHAT + (45 + ($overtime_end - $rest_end) / 60);
-					}
-				}
-			}
-
-			if ($break == 'Y') { //jika pekerja memilih istirahat
-				$BREAK = 0;
-				$distinct_start = [];
-
-				foreach ($allShift as $shift) {
-					$break_start = strtotime($shift['break_mulai']);
-					$break_end   = strtotime($shift['break_selesai']);
-
-					//jika tidak ada istirahat, lewati
-					if ($break_start == $break_end) {
-						continue;
-					}
-
-					//biar jam break tidak terdouble
-					if (in_array($break_start, $distinct_start)) {
-						continue;
-					} else {
-						$distinct_start[] = $break_start;
-					}
-
-					$overtime_start = strtotime($mulai);
-					$overtime_end   = strtotime($selesai);
-
-					if ($break_start > $overtime_start && $break_end < $overtime_end) { // jika jam istirahat masuk range lembur
-						$BREAK = $BREAK + 15;
-					} else if ($break_start > $overtime_start && $break_end > $overtime_end && $break_start < $overtime_end) {
-						$BREAK = $BREAK + (15 + ($overtime_end - $break_end) / 60);
-					}
-				}
-			}
-		}
-
-		//----------------------
-		$estimasi = 0;
-		if (!empty($treffjamlembur)) :
-			$total_lembur = $MENIT_LEMBUR - ($BREAK + $ISTIRAHAT);
-
-			$i = 0;
-			while ($total_lembur > 0) {
-				$jml_jam = $treffjamlembur[$i]['jml_jam'] * 60;
-				$pengali = $treffjamlembur[$i]['pengali'];
-
-				if ($total_lembur > $jml_jam) {
-
-					$estimasi = $estimasi + $jml_jam * $pengali / 60;
-					$total_lembur = $total_lembur - $jml_jam;
-				} else {
-
-					$estimasi = $estimasi + ($total_lembur * $pengali / 60);
-					$estimasi = number_format($estimasi, 2);
-					$total_lembur = 0;
-				}
-				$i++;
-			} else :
-			$estimasi = "tdk bisa diproses";
-		endif;
-
-		return $estimasi;
+	{
+		return $this->lembur->hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat);
 	}
 
 	public function cut_kodesie($id)
@@ -599,8 +462,11 @@ class C_splkasie extends CI_Controller
 			//Set who the message is to be sent to
 			$mail->addAddress($e['adrs'], 'Monitoring Transaction');
 			foreach ($data as $d) {
-				$mail->addAddress($d, 'Lembur (Approve Asska)');
-				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				if ($this->is_production) {
+					$mail->addAddress($d, 'Lembur (Approve Asska)');
+				} else {
+					$mail->addAddress($this->developer_email, 'Lembur (Approve Kasie)');
+				}
 			}
 			//Set the subject line
 			$mail->Subject = 'Anda telah menerima permintaan approval spl';
@@ -741,9 +607,12 @@ class C_splkasie extends CI_Controller
 				$mail->Username = "no-reply";
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
-				// $mail->addAddress("", 'Monitoring Transaction');
-				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				if ($this->is_production) {
+					$mail->addAddress("", 'Monitoring Transaction');
+					$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
+				} else {
+					$mail->addAddress($this->developer_email, 'Lembur (Approve Kasie)');
+				}
 
 				$mail->Subject = 'SPL Anda telah di Approve';
 				$mail->msgHTML($message);
@@ -789,9 +658,12 @@ class C_splkasie extends CI_Controller
 				$mail->Username = "no-reply";
 				$mail->Password = "123456";
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
-				// $mail->addAddress("", 'Monitoring Transaction');
-				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				// $mail->addAddress("dicka_ismaji@quick.com", 'Lembur (Approve Kasie)');
+				$mail->addAddress("", 'Monitoring Transaction');
+				if ($this->is_production) {
+					$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
+				} else {
+					$mail->addAddress($this->developer_email, 'Lembur (Approve Kasie)');
+				}
 				$mail->Subject = 'SPL Anda telah di Reject';
 				$mail->msgHTML($message);
 				if (!$mail->send()) {
@@ -952,7 +824,7 @@ class C_splkasie extends CI_Controller
 
 	function fp_succes_val()
 	{
-		$nama = $this->session->employee;
+		$nama = trim($this->session->employee);
 		$jari = $this->input->get('finger_id');
 		$this->session->spl_validasi_jari = $jari;
 		$finger = $this->M_splkasie->getFingerName($jari);
@@ -961,32 +833,36 @@ class C_splkasie extends CI_Controller
 		} else {
 			$yth = "Ibu";
 		}
-		$this->session->spl_validasi_log = "Selamat $yth $nama,   anda telah terverifikasi menggunakan $finger Anda.<br>
-		Silahkan tunggu beberapa saat, Anda akan otomatis diarahkan ke halaman approval. Atau silahkan klik <a href='" . site_url('SPL') . "'>link ini</a> untuk langsung menuju ke halaman approval.";
-		// print_r($_SESSION);exit();
+		$this->session->spl_validasi_log = "Selamat $yth $nama, anda telah terverifikasi menggunakan $finger Anda";
+
 		if ($this->input->get('res_id') == 2592) {
 			$this->session->spl_validasi_kasie = TRUE;
 			$this->session->spl_validasi_waktu_kasie = time();
-			echo "User SPL Kasie Sukses Terverifikasi<br>Kembali ke Halaman sebelumnya dan tunggu hingga selesai memuat halaman";
-			// print_r($_SESSION);exit();
-			// echo "<script>window.close();</script>";
-			redirect(site_url('SPL'));
 		} elseif ($this->input->get('res_id') == 2593) {
 			$this->session->spl_validasi_asska = TRUE;
 			$this->session->spl_validasi_waktu_asska = time();
-			echo "User SPL Asska Sukses Terverifikasi<br>Kembali ke Halaman sebelumnya dan tunggu hingga selesai memuat halaman";
-			// echo "<script>window.close();</script>";
-			redirect(site_url('SPL'));
 		} else {
-			$this->session->spl_validasi_log = "Selamat $yth $nama,   anda telah terverifikasi menggunakan $finger Anda.<br>
+			// NOT USED
+			$this->session->spl_validasi_log = "Selamat $yth $nama, anda telah terverifikasi menggunakan $finger Anda.<br>
 				Silahkan tunggu beberapa saat, Anda akan otomatis diarahkan ke halaman SPL Operator. Atau silahkan klik <a href='" . site_url('SPL') . "'>link ini</a> untuk langsung menuju ke halaman SPL Operator.";
 			$this->session->spl_validasi_operator = TRUE;
 			$this->session->spl_validasi_waktu_operator = time();
-			echo "User SPL Operator Sukses Terverifikasi<br>Kembali ke Halaman sebelumnya dan tunggu hingga selesai memuat halaman";
-			// echo "<pre>";print_r($_SESSION);exit();
-			// echo "<script>window.close();</script>";
-			redirect(site_url('SPL'));
 		}
+
+		// write js script here
+		// set localstorage to can access
+		// window close
+		$json_success = json_encode(array(
+			'success' => true,
+			'date' => date('Y-m-d H:i:s')
+		));
+
+		echo "
+			<script>
+				window.localStorage.setItem('auth_fingerprint_spl', '$json_success')
+				window.close()
+			</script>
+		";
 	}
 
 	function fp_fail_val()

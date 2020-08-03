@@ -2,20 +2,23 @@
 
 class M_blankoevaluasi extends CI_Model
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->personalia = $this->load->database('personalia', true);
         // $this->load->database();
     }
 
-    public function getWorkers($keyword, $withCode = [], $filterSie = null) {
+    public function getWorkers($keyword, $withCode = [], $filterSie = null)
+    {
         // $kodesie = substr($this->session->kodesie,0,7);
-        function parseToString($item) {
+        function parseToString($item)
+        {
             return "'$item'";
         }
 
         $stringWithJabatan = "";
-        if($withCode) {
+        if ($withCode) {
             $withCode = array_map('parseToString', $withCode);
             $withCode = implode(', ', $withCode);
             $stringWithJabatan = "AND substring(tp.noind, 1, 1) in ($withCode)";
@@ -23,16 +26,17 @@ class M_blankoevaluasi extends CI_Model
 
         $stringFilterSie = '';
         $userLogged = $this->session->user;
-        if($filterSie) {
+        if ($filterSie) {
             $refJabatan = $this->getRefJabatan($userLogged);
-            function trimSie($arrSie) {
-                return " tp.kodesie like '".rtrim($arrSie, '0')."%' OR";
+            function trimSie($arrSie)
+            {
+                return " tp.kodesie like '" . rtrim($arrSie, '0') . "%' OR";
             }
 
             $trimmedSie = array_map('trimSie', $refJabatan);
-            $stringFilterSie = 'AND ('.rtrim(implode('', $trimmedSie), ' OR').')';
+            $stringFilterSie = 'AND (' . rtrim(implode('', $trimmedSie), ' OR') . ')';
         }
-        
+
         $queryNoind  = "SELECT trim(tp.nama) nama,
                          tp.noind,
                          ts.seksi 
@@ -46,20 +50,22 @@ class M_blankoevaluasi extends CI_Model
         return $result;
     }
 
-    public function getStaffWorker($filterSie = null) {
+    public function getStaffWorker($filterSie = null)
+    {
         $stringFilterSie = '';
         $userLogged = $this->session->user;
-        if($filterSie) {
+        if ($filterSie) {
             $refJabatan = $this->getRefJabatan($userLogged);
-            function trimSie($arrSie) {
-                return " tp.kodesie like '".rtrim($arrSie, '0')."%' OR";
+            function trimSie($arrSie)
+            {
+                return " tp.kodesie like '" . rtrim($arrSie, '0') . "%' OR";
             }
 
             $trimmedSie = array_map('trimSie', $refJabatan);
-            $stringFilterSie = 'AND ('.rtrim(implode('', $trimmedSie), ' OR').')';
+            $stringFilterSie = 'AND (' . rtrim(implode('', $trimmedSie), ' OR') . ')';
         }
 
-        $queryNoind  = 
+        $queryNoind  =
             "SELECT 
                 trim(tp.nama) nama, 
                 tp.noind, 
@@ -77,7 +83,8 @@ class M_blankoevaluasi extends CI_Model
         return $result;
     }
 
-    public function getWorkerInformation($noind) {
+    public function getWorkerInformation($noind)
+    {
         $query = "SELECT 
                 tp.noind,
                 tp.kodesie,
@@ -125,7 +132,7 @@ class M_blankoevaluasi extends CI_Model
         ";
 
         $result = $this->personalia->query($query)->row();
-        if(!$result) return [];
+        if (!$result) return [];
 
         $allSupervisor = $this->getAllAtasan($result->kodesie);
         $result->atasan = $allSupervisor;
@@ -134,15 +141,22 @@ class M_blankoevaluasi extends CI_Model
     }
 
 
-    private function getAllAtasan($kodesie = null) {
-        if(!$kodesie) return [];
+    private function getAllAtasan($kodesie = null)
+    {
+        if (!$kodesie) return [];
 
-        $supervisor = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('13') and tp.keluar = '0';";
-        $kasie = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('10', '11', '12') and tp.keluar = '0';";
-        $unit = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,5) = substring('$kodesie', 1, 5) and tp.kd_jabatan in ('08', '09') and tp.keluar = '0'";
-        $bidang = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,3) = substring('$kodesie', 1, 3) and tp.kd_jabatan in ('05', '06', '07') and tp.keluar = '0'";
-        $dept = "SELECT tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,1) = substring('$kodesie', 1, 1) and tp.kd_jabatan in ('02', '03', '04') and tp.keluar = '0';";
-        
+        $supervisor = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('13', '11', '12') and tp.keluar = '0';";
+        $kasie = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('11', '12') and tp.keluar = '0';";
+        //  == personalia(4) 
+        if (substr($kodesie, 0, 1) == 4) {
+            $unit = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,5) = substring('$kodesie', 1, 5) and tp.kd_jabatan in ('08', '09', '10') and tp.keluar = '0'";
+        } else {
+            $unit = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,5) = substring('$kodesie', 1, 5) and tp.kd_jabatan in ('08', '09') and tp.keluar = '0'";
+        }
+
+        $bidang = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,3) = substring('$kodesie', 1, 3) and tp.kd_jabatan in ('05', '06', '07') and tp.keluar = '0'";
+        $dept = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,1) = substring('$kodesie', 1, 1) and tp.kd_jabatan in ('02', '03', '04') and tp.keluar = '0';";
+
         $supervisor = $this->personalia->query($supervisor)->result_array();
         $kasie = $this->personalia->query($kasie)->result_array();
         $unit = $this->personalia->query($unit)->result_array();
@@ -160,12 +174,14 @@ class M_blankoevaluasi extends CI_Model
         return $result;
     }
 
-    private function getRefJabatan($noind = []) {
-        if(!$noind) return [];
+    private function getRefJabatan($noind = [])
+    {
+        if (!$noind) return [];
         $query = "SELECT kodesie FROM hrd_khs.trefjabatan where noind = '$noind'";
         $result = $this->personalia->query($query)->result_array();
 
-        function flattenArray($item) {
+        function flattenArray($item)
+        {
             return $item['kodesie'];
         }
 
@@ -174,9 +190,10 @@ class M_blankoevaluasi extends CI_Model
         return $result;
     }
 
-    public function insertBlanko($data) {
+    public function insertBlanko($data)
+    {
         // schema Surat
-        if(!$data) throw "error";
+        if (!$data) throw "error";
 
         $this->personalia->insert('Surat.tevaluasi_nonstaff', $data);
     }
@@ -184,19 +201,21 @@ class M_blankoevaluasi extends CI_Model
     /* 
         blanko untuk nonstaff & outsourcing
     */
-    public function getBlanko($id = null) {
+    public function getBlanko($id = null)
+    {
         $filterKodesie = "";
         $userLogged = $this->session->user;
 
-        if(!$id) {
+        if (!$id) {
             $refJabatan = $this->getRefJabatan($userLogged);
-            function trimSie($arrSie) {
-                return " kodesie like '".rtrim($arrSie, '0')."%' OR";
+            function trimSie($arrSie)
+            {
+                return " kodesie like '" . rtrim($arrSie, '0') . "%' OR";
             }
 
             $trimmedSie = array_map('trimSie', $refJabatan);
             $filterKodesie = rtrim(implode('', $trimmedSie), ' OR');
-            
+
             $query = "
                 SELECT ten.*, tp.kodesie 
                 FROM \"Surat\".tevaluasi_nonstaff ten inner join hrd_khs.tpribadi tp on ten.noind = tp.noind 
@@ -210,39 +229,42 @@ class M_blankoevaluasi extends CI_Model
             FROM \"Surat\".tevaluasi_nonstaff ten inner join hrd_khs.tpribadi tp on ten.noind = tp.noind 
             WHERE ten.id = '$id'
             ORDER BY ten.created_time desc";
-            
+
         return $this->personalia->query($query);
     }
 
     /*
         Insert blanko staff
     */
-    public function insertStaffBlanko($data) {
-        if(!$data) throw 'error';
+    public function insertStaffBlanko($data)
+    {
+        if (!$data) throw 'error';
         $this->personalia->insert('Surat.tevaluasi_staff', $data);
     }
 
     /*
         Blanko staff
     */
-    public function getStaffBlanko($id = null) {
+    public function getStaffBlanko($id = null)
+    {
         $id = intval($id);
         $filterKodesie = "";
         $userLogged = $this->session->user;
 
-        if(!$id) {
+        if (!$id) {
             $refJabatan = $this->getRefJabatan($userLogged);
-            function trimSie($arrSie) {
-                return " tp.kodesie like '".rtrim($arrSie, '0')."%' OR";
+            function trimSie($arrSie)
+            {
+                return " tp.kodesie like '" . rtrim($arrSie, '0') . "%' OR";
             }
 
             $trimmedSie = array_map('trimSie', $refJabatan);
             $filterKodesie = rtrim(implode('', $trimmedSie), ' OR');
-            
+
             $query = "
                 SELECT tes.*, tp.kodesie 
                 FROM \"Surat\".tevaluasi_staff tes inner join hrd_khs.tpribadi tp on tes.noind = tp.noind 
-                WHERE $filterKodesie
+                WHERE $filterKodesie and tes.deleted = '0'
                 ORDER BY tes.created_time desc";
             return $this->personalia->query($query);
         }
@@ -252,11 +274,12 @@ class M_blankoevaluasi extends CI_Model
             FROM \"Surat\".tevaluasi_staff tes inner join hrd_khs.tpribadi tp on tes.noind = tp.noind 
             WHERE tes.id = '$id'
             ORDER BY tes.created_time desc";
-            
+
         return $this->personalia->query($query);
     }
 
-    public function getTIMS($noind, $awal, $akhir) {
+    public function getTIMS($noind, $awal, $akhir)
+    {
         $awal = date('Y-m-d', strtotime($awal));
         $akhir = date('Y-m-d', strtotime($akhir));
 
@@ -264,7 +287,7 @@ class M_blankoevaluasi extends CI_Model
         $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket in ('PIP') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
         $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
 
         $terlambat = $this->personalia->query($q_terlambat)->result_array();
@@ -288,57 +311,56 @@ class M_blankoevaluasi extends CI_Model
             'total_tims' => count($terlambat) + count($izin) + count($mangkir) + count($sakit)
         );
 
-        $plusOneYear = date('Y-m-d', strtotime('+1 year '.$awal));
-        $plusThreeMonth = date('Y-m-d', strtotime('+3 month '.$awal));
+        $plusOneYear = date('Y-m-d', strtotime('+1 year ' . $awal));
+        $plusThreeMonth = date('Y-m-d', strtotime('+3 month ' . $awal));
         $params = [$plusOneYear, $plusThreeMonth];
 
         $dataTIMS['data'] = array_map(function ($item) use ($params) {
             $next1Year = $params[0];
             $next3Month = $params[1];
 
-            $threeMonth = []; 
+            $threeMonth = [];
             $year1 = [];
             $year2 = [];
 
-            foreach($item as $e) {
-                if($e['tanggal'] <= $next3Month) {
+            foreach ($item as $e) {
+                if ($e['tanggal'] <= $next3Month) {
                     array_push($threeMonth, $e['tanggal']);
                 }
 
-                if($e['tanggal'] < $next1Year) {
+                if ($e['tanggal'] < $next1Year) {
                     array_push($year1, $e['tanggal']);
                 } else {
                     array_push($year2, $e['tanggal']);
                 }
             }
-            
+
             return array(
                 'bulan3' => count($threeMonth),
                 'tahun1' => count($year1),
                 'tahun2' => count($year2),
                 'jumlah' => count($item)
             );
-
         }, $dataTIMS['data']);
 
         return $dataTIMS;
     }
 
-    public function calculationTIMS($noind, $awal, $akhir, $position) {
+    public function calculationTIMS($noind, $awal, $akhir, $position)
+    {
         $awal = date('Y-m-d', strtotime($awal));
         $akhir = date('Y-m-d', strtotime($akhir));
 
         $tims = $this->getTIMS($noind, $awal, $akhir);
 
         $ok = false;
-        if($position == 'staff') {
-
-        } else if($position == 'nonstaff') {
-            if($tims['total_tim'] <= 15 && $tims['total_tims'] <= 20) {
+        if ($position == 'staff') {
+        } else if ($position == 'nonstaff') {
+            if ($tims['total_tim'] <= 15 && $tims['total_tims'] <= 20) {
                 $ok = true;
             }
         } else { // os
-            if($tims['total'] <= 5) {
+            if ($tims['total'] <= 5) {
                 $ok = true;
             }
         }
@@ -346,7 +368,8 @@ class M_blankoevaluasi extends CI_Model
         return $ok;
     }
 
-    public function getSP($noind, $awal, $akhir) {
+    public function getSP($noind, $awal, $akhir)
+    {
         $awal = date('Y-m-d', strtotime($awal));
         $akhir = date('Y-m-d', strtotime($akhir));
 
@@ -359,7 +382,20 @@ class M_blankoevaluasi extends CI_Model
         return $this->personalia->query($query)->result_array();
     }
 
-    public function deleteNonStaffBlanko($id, $user) {
+    public function deleteStaffBlanko($id, $user)
+    {
+        $data = $this->personalia
+            ->where('id', $id)
+            ->update('"Surat".tevaluasi_staff', [
+                'deleted' => true,
+                'deleted_time' => date('Y-m-d H:i:s'),
+                'deleted_by' => $user
+            ]);
+        return;
+    }
+
+    public function deleteNonStaffBlanko($id, $user)
+    {
         $data = $this->personalia
             ->where('id', $id)
             ->update('"Surat".tevaluasi_nonstaff', [

@@ -82,6 +82,7 @@ $(".subinvpicklist").select2({
 function approvePPIC(no) {
     var nojob = $('#nojob'+no).val();
     var picklist = $('#picklist'+no).val();
+    $('#btnapp'+no).attr('disabled', 'disabled');
 
     var request = $.ajax({
         url: baseurl+'MonitoringPicklistPPIC/BelumApprove/approveData',
@@ -250,6 +251,7 @@ function belumapproveFabrikasi(th) {
 function approveFabrikasi(no) {
         var nojob = $('#nojob'+no).val();
         var picklist = $('#picklist'+no).val();
+        $('#btnapp'+no).attr('disabled', 'disabled');
     
         var request = $.ajax({
             url: baseurl+'MonitoringPicklistFabrikasi/BelumApprove/approveData',
@@ -402,7 +404,8 @@ function modalapproveGD(no) {
 function approveGudang(th) {
         var nojob       = $('#nojob').val();
         var picklist    = $('#picklist').val();
-
+        $('#btn_appgdg').attr('disabled', 'disabled');
+        
         var request = $.ajax({
                 url: baseurl+'MonitoringPicklistGudang/BelumApprove/approveData',
                 data: { nojob : nojob, picklist : picklist },
@@ -411,7 +414,9 @@ function approveGudang(th) {
 		success: function(data) {
                 $('#mdlapprovegd').modal('hide'); 
                 swal.fire("Berhasil!", "", "success");
-                belumapproveGudang()
+                belumapproveGudang();
+                $("div").removeClass('modal-backdrop');
+                $("body").removeClass('modal-open'); 
 		}
         });
 }

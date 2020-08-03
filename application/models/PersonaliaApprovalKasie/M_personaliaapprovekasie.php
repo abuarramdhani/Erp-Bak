@@ -46,10 +46,12 @@ class M_personaliaapprovekasie extends CI_Model
 	}
 
 	public function getPerizinanDInasByNoindAtasan($noind){
+		$today = date('Y-m-d');
 		$sql = "select count(*) as jumlah
 				from \"Surat\".tperizinan
 				where status = 0
-				and atasan_aproval = '$noind'";
+					and atasan_aproval = '$noind'
+					and created_date::date = '$today'";
 		$result = $this->personalia->query($sql)->row();
 		if (!empty($result)) {
 			return $result->jumlah;
@@ -91,10 +93,12 @@ class M_personaliaapprovekasie extends CI_Model
 	}
 
 	public function getPerizinanPribadi($noind){
+		$today = date('Y-m-d');
 		$sql = "select count(*) as jumlah
 				from \"Surat\".tizin_pribadi
 				where atasan = '$noind'
-				and appr_atasan = null";
+					and appr_atasan is null
+					and created_date::date = '$today'";
 		$result = $this->personalia->query($sql)->row();
 		if (!empty($result)) {
 			return $result->jumlah;

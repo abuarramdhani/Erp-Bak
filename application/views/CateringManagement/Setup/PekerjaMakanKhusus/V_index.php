@@ -12,6 +12,7 @@
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border text-right">
 								<a href="<?php echo base_url('CateringManagement/Setup/PekerjaMakanKhusus/tambah') ?>" class="btn btn-primary"><span class="fa fa-plus"></span> Tambah</a>
+								<a href="<?php echo base_url('CateringManagement/Setup/PekerjaMakanKhusus/importExcel') ?>" class="btn btn-primary"><span class="fa fa-file-excel-o"></span> Import</a>
 							</div>
 							<div class="box-body">
 								<div class="row">

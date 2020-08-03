@@ -10,14 +10,21 @@
     </thead>
     <tbody>
       <?php foreach ($pp as $key => $p): ?>
-        <tr>
+        <?php
+         if ($p['type'] == 'R') {
+           $style = '';
+         }else {
+           $style = 'rgba(255, 0, 84, 0.29)';
+         }
+         ?>
+        <tr style="background:<?php echo $style ?>">
           <td><?php echo $key+1 ?></td>
           <td><?php echo $p['date_target'] ?></td>
           <td><?php echo $p['waktu_satu_shift'] ?> Jam</td>
           <td>
             <center>
-            <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/Label/'.$p['date_target'].'')?>"><i class="fa fa-print"></i> Label</a>
-            <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/ArrangeJobList/'.$p['date_target'].'')?>"> <i class="fa fa-edit"></i> <b>Edit</b></a>
+            <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/Label/'.$p['date_target'].'_'.$p['type'].'')?>"><i class="fa fa-print"></i> Label</a>
+            <a class="btn btn-md bg-navy" href="<?php echo base_url('WorkInProcessPackaging/JobManager/ArrangeJobList/'.$p['date_target'].'_'.$p['type'].'')?>"> <i class="fa fa-edit"></i> <b>Edit</b></a>
           </center>
           </td>
         </tr>

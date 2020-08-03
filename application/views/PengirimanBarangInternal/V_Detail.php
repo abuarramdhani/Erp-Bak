@@ -4,7 +4,7 @@
       <tr class="bg-primary">
         <th><center>NO</center></th>
         <th><center>ITEM CODE</center></th>
-        <th><center>ITEM DESKRIPSI</center></th>
+        <th><center>ITEM DESCRIPTION</center></th>
         <th><center>QUANTITY</center></th>
         <th><center>UOM</center></th>
         <th><center>ITEM TYPE</center></th>

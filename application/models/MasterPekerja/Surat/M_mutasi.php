@@ -44,8 +44,8 @@
 	    		$this->personalia->where('tanggal_cetak=', $tanggal_cetak);
 	    		$this->personalia->where('kode_surat=', $kode_surat);
 	    		$this->personalia->where('nomor_surat=', $nomor_surat);
-	    		$this->personalia->where('deleted_date !=', false);
 	    	}
+				$this->personalia->where('deleted_date is null');
 
 	    	$this->personalia->order_by('tanggal_cetak', 'desc');
 	    	return $this->personalia->get()->result_array();

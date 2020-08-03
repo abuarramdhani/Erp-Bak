@@ -5,14 +5,40 @@ class M_rtlp extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        // $this->oracle = $this->load->database('oracle', true);
-        $this->oracle = $this->load->database('oracle_dev', true);
+        // $this->oracle = $this->load->database('oracle_dev', true);
         $this->personalia = $this->load->database('personalia', true);
+    }
+
+    public function reset($no_job, $line, $start_reset)
+    {
+      $this->db->where('No_Job', $no_job)
+               ->where('Line', $line)
+               ->update('wip_pnp.Time_Record', ['Start' => $start_reset]);
+      if ($this->db->affected_rows() == 1) {
+        return 1;
+      }
+    }
+
+    public function detail_pause($no_job, $line)
+    {
+      $res = $this->db->where('No_Job', $no_job)
+                      ->where('Line', $line)
+                      ->get('wip_pnp.Time_Break')
+                      ->result_array();
+      return $res;
     }
 
     public function insertTimePause($data)
     {
       $this->db->insert('wip_pnp.Time_Break', $data);
+      return 1;
+    }
+
+    public function updateTimePause($data)
+    {
+      $idmax = $this->db->select_max('id_break')->where('Line', $data['Line'])->get('wip_pnp.Time_Break')->row_array();
+      $this->db->where('id_break', $idmax['id_break'])
+               ->update('wip_pnp.Time_Break', $data);
       return 1;
     }
 
@@ -30,31 +56,36 @@ class M_rtlp extends CI_Model
 
     public function getline1($date)
     {
-        $response = $this->db->where('line', 1)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 1)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline2($date)
     {
-        $response = $this->db->where('line', 2)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 2)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline3($date)
     {
-        $response = $this->db->where('line', 3)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 3)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline4($date)
     {
-        $response = $this->db->where('line', 4)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 4)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline5($date)
     {
-        $response = $this->db->where('line', 5)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 5)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
@@ -110,6 +141,8 @@ class M_rtlp extends CI_Model
 
     public function getDetailBom($kodebarang)
     {
+        $this->oracle = $this->load->database('oracle', true);
+        
         $sql = "SELECT
         rownum line_id
         ,CONNECT_BY_ROOT q_bom.assembly_num root_assembly

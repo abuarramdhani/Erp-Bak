@@ -1,19 +1,23 @@
 <?php
-class M_splasska extends CI_Model{
+class M_splasska extends CI_Model
+{
 	
-	function __construct(){
+	function __construct()
+	{
 		parent::__construct();
 		$this->load->database();
-		$this->spl = $this->load->database('spl_db',true);
+		$this->spl = $this->load->database('spl_db', true);
 		$this->prs = $this->load->database('personalia', true);
 	}
 
 	public function show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie, $kodesie){
 		$x = 0;
-		foreach($akses_sie as $as){
-			if($x == 0){
+		$akses = '';
+
+		foreach ($akses_sie as $as) {
+			if ($x == 0) {
 				$akses = "b.kodesie like '$as%'";
-			}else{
+			} else {
 				$akses .= " or b.kodesie like '$as%'";
 			}
 			$x++;
@@ -21,7 +25,7 @@ class M_splasska extends CI_Model{
 
 		if(!empty($dari) || !empty($sampai)){
 			$periode = "and a.tgl_lembur between '$dari' AND '$sampai'";
-		}else{
+		} else {
 			$periode = "";
 		}
 
@@ -35,23 +39,27 @@ class M_splasska extends CI_Model{
 				and a.perbantuan='N' and ($akses) and d.kodesie like '$kodesie%' 
 				and b.noind like '$noind%' and b.lokasi_kerja like '%$lokasi%'
 			order by a.tgl_lembur, d.seksi, a.kd_lembur, b.nama, a.jam_mulai_lembur, a.Jam_Akhir_Lembur";
+
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
 
-	public function show_finger_user($fill){
+	public function show_finger_user($fill)
+	{
 		$this->spl->where($fill);
 		$query = $this->spl->get('splseksi.tfinger_php');
 		return $query->row();
 	}
 
-	public function show_finger_activation($filter){
+	public function show_finger_activation($filter)
+	{
 		$this->spl->where($filter);
 		$query = $this->spl->get('splseksi.tcode_fingerprint');
 		return $query->row();
 	}
 
-	public function cek_spl($spl_id){
+	public function cek_spl($spl_id)
+	{
 		$sql = "select 
 					round(
 						(
@@ -94,19 +102,22 @@ class M_splasska extends CI_Model{
 		return $query->row();
 	}
 
-	public function get_wkt_pkj($noind,$tanggal){
+	public function get_wkt_pkj($noind, $tanggal)
+	{
 		$sql = "select jam_kerja from \"Presensi\".tshiftpekerja 
 				where tanggal = '$tanggal' and noind = '$noind'";
 		return $this->prs->query($sql)->row()->jam_kerja;
 	}
 
-	public function cek_hl($noind,$tanggal){
+	public function cek_hl($noind, $tanggal)
+	{
 		$sql = "select * from \"Presensi\".tdatapresensi 
 				where noind = '$noind' and tanggal = '$tanggal' and kd_ket = 'HL'";
 		return $this->prs->query($sql)->num_rows();
 	}
 
-	public function insert_tdatapresensi_hl($awal,$akhir,$noind,$tanggal,$lembur){
+	public function insert_tdatapresensi_hl($awal, $akhir, $noind, $tanggal, $lembur)
+	{
 		$sql = "insert into \"Presensi\".tdatapresensi
 				(tanggal,noind,kodesie,masuk,keluar,kd_ket,total_lembur,ket,user_,noind_baru,create_timestamp)
 				select '$tanggal',noind,kodesie,'masuk','keluar','HL','biasa','ERSPL',noind_baru,now()
@@ -115,13 +126,15 @@ class M_splasska extends CI_Model{
 		$this->prs->query($sql);
 	}
 
-	public function cek_tdatapresensi($noind,$tanggal){
+	public function cek_tdatapresensi($noind, $tanggal)
+	{
 		$sql = "select * from \"Presensi\".tdatapresensi 
 				where noind = '$noind' and tanggal = '$tanggal' and kd_ket in ('PKJ','PDL')";
 		return $this->prs->query($sql)->row();
 	}
 
-	public function update_tdatapresensi($kd_ket,$noind,$tanggal,$lembur){
+	public function update_tdatapresensi($kd_ket, $noind, $tanggal, $lembur)
+	{
 		$sql = "update \"Presensi\".tdatapresensi 
 				set kd_ket = '$kd_ket',
 				total_lembur = '$lembur',
@@ -131,16 +144,17 @@ class M_splasska extends CI_Model{
 		$this->prs->query($sql);
 	}
 
-	public function recheck_spl($spl_id){
+	public function recheck_spl($spl_id)
+	{
 		$sql = "select * from splseksi.tspl where ID_SPL ='$spl_id'";
 		$result = $this->spl->query($sql)->row();
-		$sql = "select * from \"Presensi\".tdatapresensi where noind = '".$result->Noind."' and tanggal = '".$result->Tgl_Lembur."'";
+		$sql = "select * from \"Presensi\".tdatapresensi where noind = '" . $result->Noind . "' and tanggal = '" . $result->Tgl_Lembur . "'";
 		return $this->prs->query($sql)->num_rows();
 	}
 
-	public function get_tdatapresensi($noind,$tanggal){
+	public function get_tdatapresensi($noind, $tanggal)
+	{
 		$sql = "select * from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal = '$tanggal'";
 		return $this->prs->query($sql)->row();
 	}
-
 }

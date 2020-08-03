@@ -89,6 +89,7 @@ $(document).ready( function () {
         var item = $('.slcItemPPR').val();
         var date = $('#datePPR').val();
         var nopr = $('.txtNoPRPPR').val();
+        var nopo = $('.txtNoPOPPR').val();
         if (date) {
             $(this).attr('disabled','disabled');
             $('.loadingPPR').css('display','block');
@@ -105,6 +106,7 @@ $(document).ready( function () {
                     requester : requester,
                     item : item,
                     nopr : nopr,
+                    nopo : nopo,
                     date1 : date1,
                     date2 : date2
                 },
@@ -127,11 +129,50 @@ $(document).ready( function () {
     
                 }
             });
+        }else if(nopr || nopo) {
+
+            $(this).attr('disabled','disabled');
+            $('.loadingPPR').css('display','block');
+
+            var date1 = '';
+            var date2 = '';
+
+            $.ajax({
+                type: "POST",
+                url: baseurl+"ProgressPPPR/Progress/getReport",
+                data: {
+                    requester : requester,
+                    item : item,
+                    nopr : nopr,
+                    nopo : nopo,
+                    date1 : date1,
+                    date2 : date2
+                },
+                success: function (response) {
+                    $('.btnProcessPPR').removeAttr('disabled');
+                    $('.loadingPPR').css('display','none');
+                    $('.tableReportPPR').html(response);
+    
+                    $('#tblReportPPR').dataTable({
+                        dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
+                            <'row' <'col-sm-12'tr> >
+                            <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
+                        buttons: [
+                            'copy', 'excel', 'print'
+                        ],
+                        scrollY: "500px",
+                        scrollX: true,
+                        scrollCollapse: true,
+                    });
+    
+                }
+            });
+            
         }else{
             Swal.fire({
                 type: 'warning',
                 title: 'Peringatan',
-                text: 'Anda harus mengisi tanggal!',
+                text: 'Jika tidak mengisi Nomor PR / PO, Anda harus mengisi tanggal!',
             });
 
             $('#datePPR').attr({

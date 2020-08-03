@@ -448,7 +448,7 @@
                   </select>
                 </div>
               </div>
-              <div v-if="!state.worker.kd_jabatan == '18' || state.worker.presensi_ok == false" class="form-group">
+              <div v-if="state.worker.jenis_kode != 'os'" class="form-group">
                 <label class="col-lg-2 control-label" for="">Departemen</label>
                 <div class="col-lg-3">
                   <select id="atasan-departemen" class="form-control">
@@ -463,7 +463,7 @@
         <div class="row" style="margin-top: 3em;">
           <div class="col-lg-4"></div>
           <div class="col-lg-4" style="display: flex; justify-content: center;">
-            <button @click="handleSave" class="btn btn-primary mr-2" :disabled="state.worker.presensi_ok === null">
+            <button @click="handleSave" class="btn btn-primary mr-2 handleSave" disabled>
               Simpan <i class="fa fa-save"></i>
             </button>
             <button type="button" target="_blank" @click="handlePreview" class="btn btn-success mr-2" :disabled="state.worker.presensi_ok === null">
@@ -804,13 +804,14 @@
           return error
         }
 
-        if (!valSupervisor && supervisorOption.length) return alertAtasan()
+        // if (!valSupervisor && supervisorOption.length) return alertAtasan()
         if (!valKasie && kasieOption.length) return alertAtasan()
         if (!valUnit && unitOption.length) return alertAtasan()
       },
       handlePreview() {
         const errorCheckForm = this.checkForm()
         if (errorCheckForm) return
+        $('.handleSave').prop('disabled', false)
 
         window.open(
           this.urlPreview,
@@ -926,6 +927,7 @@
         // ------------------------
         selectSupervisor.empty().trigger('change')
         selectSupervisor.select2({
+          allowClear: true,
           placeholder: 'Supervisor',
           data: [empty, ...dataSupervisor]
         })

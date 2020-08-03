@@ -729,7 +729,7 @@ $(function() {
       }
   });
 
-    $('#slcMPSuratPengalamanKerjaPekerja').change(function() {
+    $('#slcMPSuratPengalamanKerjaPekerja').change(function() { // buat yang seperti ini untuk yang bawah yang ngisi template
     var noind = $('#slcMPSuratPengalamanKerjaPekerja').val();
     if (noind) {
         $.ajax({
@@ -745,17 +745,113 @@ $(function() {
                 $('#txtMPSuratPengalamanKerjaDept').val(result[0]['dept']);
                 $('#txtMPSuratPengalamanKerjaMasuk').val(result[0]['masukkerja']);
                 $('#txtMPSuratPengalamanKerjaMasuk').val(result[0]['masukkerja']);
-                $('#txtMPSuratPengalamanKerjaSampai').val(result[0]['akhkontrak']);
+                //var sampaiHtml = '<option value=""></option>';
+                //sampaiHtml = sampaiHtml + '<option value="' + result[0]['akhkontrak'] + '">' + result[0]['akhkontrak'] + '</option>';
+                //sampaiHtml = sampaiHtml + '<option value="1900-01-01">Tanggal dibuatnya surat keterangan ini dan masih bekerja</option>';
+                //$('#txtMPSuratPengalamanKerjaSampai').html(sampaiHtml); // ini diganti isi template.
+                var sampaiHtml = '<option value="' + result[0]['akhkontrak'] + '">' + result[0]['akhkontrak'] + '</option>';
+                sampaiHtml = sampaiHtml + '<option value="1900-01-01">Tanggal dibuatnya surat keterangan ini dan masih bekerja</option>';
+                $('#txtMPSuratPengalamanKerjaSampai').html(sampaiHtml); // ini diganti isi template.
+                var JabatanHtml = '<option value="' + result[0]['jabatan'] + '">' + result[0]['jabatan'] + '</option>';
+                JabatanHtml = JabatanHtml + '<option value="Administrasi">Administrasi</option>';
+                JabatanHtml = JabatanHtml + '<option value="Operator">Operator</option>';
+                $('#txtMPSuratPengalamanKerjaJabatan').html(JabatanHtml); // ini diganti isi template.
                 $('#txtMPSuratPengalamanKerjaAlamat').val(result[0]['alamat']);
                 $('#txtMPSuratPengalamanKerjaDesa').val(result[0]['desa']);
                 $('#txtMPSuratPengalamanKerjaKab').val(result[0]['kab']);
                 $('#txtMPSuratPengalamanKerjaKec').val(result[0]['kec']);
                 $('#txtMPSuratPengalamanKerjaNIK').val(result[0]['nik']);
+                $('#txtMPSuratPengalamanKerjaKodesie').val(result[0]['kodesie']);
+                $('#txtMPSuratPengalamanKerjaAPD').val(result[0]['apd']);
 
             }
         });
     }
 });
+
+    $('#pengalaman').on('change',function() { // buat yang seperti ini untuk yang bawah yang ngisi template
+    var kd = $('#pengalaman').val();
+    if (kd) {
+        $.ajax({
+            type: 'POST',
+            data: { kd: kd }, // yang depan
+            url: baseurl + "MasterPekerja/Surat/PengalamanKerja/DetailisiSuratPengalaman",// ini sudah ada controller nya ?
+            success: function(result) {
+                var result = JSON.parse(result);
+                console.log(result);
+                // console.log(result[0]['seksi']);
+     
+                var sampaiHtml = result[0]['isi_surat'];
+                // $('.MasterPekerja-Surat-txaPreview').html(sampaiHtml); // ini diganti isi template.
+              $('.MasterPekerja-Surat-txaPreview').redactor('set', sampaiHtml);
+            }
+        });
+    }
+});
+
+    // $('#template').select2({
+    //   tags: true
+    // })
+
+    $('#template').on('change',function() { // buat yang seperti ini untuk yang bawah yang ngisi template
+    var kd = $('#template').val();
+
+    // algoritma
+    // jika nambah surat baru maka insert ke database ? ya -> insertnya itu setelah klik tombol save kan bu?ya
+    //edit , delete juga
+
+    if (kd) {
+        $.ajax({
+            type: 'POST',
+            data: { kd: kd }, // yang depan
+            url: baseurl + "MasterPekerja/Surat/PengalamanKerja/TemplateisiSuratPengalaman",// ini sudah ada controller nya ?
+            success: function(result) {
+                var result = JSON.parse(result);
+                console.log(result);
+                // console.log(result[0]['seksi']);
+      
+                if(!result) return
+                var sampaiHtml = result[0]['isi_surat'];
+                // $('.MasterPekerja-Surat-txaPreview').html(sampaiHtml); // ini diganti isi template.
+              $('.MasterPekerja-SuratPengalaman-txaPreview').redactor('set', sampaiHtml);
+            }
+        });
+    } else {
+      $('#template_content').redactor('set', '')
+    }
+});
+
+    $(document).on('click', '.Modal_pdf_pengalaman', function() {
+    var a = $(this).attr('data-value')
+    var b = $(this).attr('data-noind')
+    var c = $(this).attr('data-sampai')
+    console.log(a)
+    console.log(b)
+    console.log(c)
+    $.ajax({
+        type: 'get',
+        dataType: 'json',
+        url: baseurl + 'MasterPekerja/Surat/PengalamanKerja/ModalPDF/'+a,
+        success: function (result) {
+            var jbtn = result.data[0].jabatan;
+            // alert(result.data[0].noind.indexOf("H"));
+            if(result.data[0].noind.indexOf("H") == '0'){
+              jbtn = "Operator";
+            }
+            $('#jabatan_pengalaman').val(jbtn).trigger('change')
+            $('#nik_pengalaman').val(result.data[0].nik).trigger('change')
+            $('#pengalaman_tglCetak').val(result.data[0].pengalaman_tglCetak).trigger('change')
+            $('#link_pengalaman').val(a)
+            $('#noind_pengalaman').val(b)
+            $('#sampai_pengalaman').val(c)
+            $('#Modal_pdf_pengalaman').modal('show')
+        }
+    })
+});
+
+
+
+
 
     $('.MasterPekerja-PerhitunganPesangon-DaftarPekerja').select2({
         allowClear: false,
@@ -1441,6 +1537,7 @@ $(function() {
     $('#MasterPekerja-Surat-txaFormatSurat').redactor();
     $('#MasterPekerja-SuratDemosi-txaPreview').redactor();
     $('#MasterPekerja-SuratPengangkatanStaf-txaPreview').redactor();
+    $('.MasterPekerja-SuratPengalaman-txaPreview').redactor();
     $('.preview-Lapkun').redactor();
 
     //	}
@@ -3109,6 +3206,12 @@ $(document).ready(function () {
 
 $(document).ready(function(){
     $('#psg_tglCetak').datepicker({
+        autoclose: true,
+        autoApply: true,
+        format: 'yyyy-mm-dd',
+        todayHighlight: true
+    });
+    $('#pengalaman_tglCetak').datepicker({
         autoclose: true,
         autoApply: true,
         format: 'yyyy-mm-dd',

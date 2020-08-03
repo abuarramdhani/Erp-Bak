@@ -66,7 +66,7 @@ class C_IzinDinasPTM extends CI_Controller
 		// print_r($data_awal);
 		if (!empty($data_awal)) {
 			foreach ($data_awal as $da) {
-				if ($da['diproses'] == 'Belum diproses') {
+				if ($da['diproses_tambah'] == 'Belum diproses' || $da['diproses_kurang'] == 'Belum diproses') {
 					$shift = '1';
 					$tanggal = $da['tanggal'];
 					if ($da['jenis_dinas'] == 'PUSAT' || $da['jenis_dinas'] == 'MLATI') {
@@ -106,7 +106,8 @@ class C_IzinDinasPTM extends CI_Controller
 
 					$this->M_tambahan->updateTambahanJumlahByIdTambahan($id_tambahan);
 
-					$terhitung = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempat_makan,$noind);
+		            $tempat_makan_ = $this->M_pengurangan->getLokasiTempatMakanByTempatMakan($tempat_makan);
+					$terhitung = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$tempat_makan_->fs_lokasi,$tempat_makan,$noind);
 					if (!empty($terhitung)) {
 						$pengurangan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan,$kategori);
 						if (empty($pengurangan)) {
@@ -133,7 +134,6 @@ class C_IzinDinasPTM extends CI_Controller
 					
 					// update pesanan tempat makan asal
 					$cekPesanan = $this->M_pengurangan->getPesananByTempatMakanTanggalShift($tempat_makan,$tanggal,$shift);
-		            $tempat_makan_ = $this->M_pengurangan->getLokasiTempatMakanByTempatMakan($tempat_makan);
 		            if (!empty($cekPesanan)) { // sudah ada pesanan
 		                $total_tambahan = $this->M_pengurangan->getTotalTambahanByTempatMakanTanggalShift($tempat_makan,$tanggal,$shift);
 		                $total_pengurangan = $this->M_pengurangan->getTotalPenguranganByTempatMakanTanggalShift($tempat_makan,$tanggal,$shift);

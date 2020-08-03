@@ -2,77 +2,83 @@
 
 defined('BASEPATH') or die("This is cannot be opened");
 
-class C_EvaluasiStaff extends CI_Controller {
-    function __construct(){
+class C_EvaluasiStaff extends CI_Controller
+{
+    function __construct()
+    {
         parent::__construct();
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('BlankoEvaluasi/M_blankoevaluasi');
 
-    	$this->checkSession();
+        $this->checkSession();
     }
 
-	private function checkSession() {
-		if($this->session->userdata('is_logged')!=true) {
-			$this->load->helper('url');
-			$this->session->set_userdata('last_page', current_url());
-			$this->session->set_userdata('Responsbility', 'some_value');
-			redirect();
-		}
+    private function checkSession()
+    {
+        if ($this->session->userdata('is_logged') != true) {
+            $this->load->helper('url');
+            $this->session->set_userdata('last_page', current_url());
+            $this->session->set_userdata('Responsbility', 'some_value');
+            redirect();
+        }
     }
 
-    private function getStaffBlanko() {
+    private function getStaffBlanko()
+    {
         return $this->M_blankoevaluasi->getStaffBlanko()->result_array();
     }
-    
-    function index() {
+
+    function index()
+    {
         $user_id = $this->session->userid;
 
         $data['Menu'] = 'Staff';
-		$data['SubMenuOne'] = '';
-		$data['Title'] = 'Staff';
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        $data['SubMenuOne'] = '';
+        $data['Title'] = 'Staff';
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $dataBlanko = $this->getStaffBlanko();
         $data['blanko'] = $dataBlanko;
 
-        $this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('BlankoEvaluasi/Staff/V_Staff');
-        $this->load->view('BlankoEvaluasi/V_Footer',$data);
-        
+        $this->load->view('BlankoEvaluasi/V_Footer', $data);
     }
 
-    function create() {
+    function create()
+    {
         $user_id = $this->session->userid;
 
         $data['Menu'] = 'Staff';
-		$data['SubMenuOne'] = '';
-		$data['Title'] = 'Staff';
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        
+        $data['SubMenuOne'] = '';
+        $data['Title'] = 'Staff';
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
         $staff = $this->M_blankoevaluasi->getStaffWorker(true); // true = with filter kodesie
 
-        $data['workers'] = $staff; 
-        
-        $this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+        $data['workers'] = $staff;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('BlankoEvaluasi/Staff/V_Staff_Create', $data);
-        $this->load->view('BlankoEvaluasi/V_Footer',$data);
+        $this->load->view('BlankoEvaluasi/V_Footer', $data);
     }
 
-    function blanko() {
+    function blanko()
+    {
         $id = $this->input->get('id');
-        if(!$id) redirect(base_url('BlankoEvaluasi/Staff'));
+        if (!$id) redirect(base_url('BlankoEvaluasi/Staff'));
 
         // decrypt base64
         $decryptId = base64_decode($id);
         $staffBlanko = $this->M_blankoevaluasi->getStaffBlanko($decryptId)->row();
 
-        if(!$staffBlanko) {
+        if (!$staffBlanko) {
             return $this->load->view('BlankoEvaluasi/V_Blanko_404');
         }
 
@@ -97,10 +103,11 @@ class C_EvaluasiStaff extends CI_Controller {
         $this->printPDF($data);
     }
 
-    function store() {
+    function store()
+    {
         $get = $this->input->get();
 
-        if(!$get) {
+        if (!$get) {
             redirect($_SERVER['HTTP_REFERER']);
         }
 
@@ -124,22 +131,38 @@ class C_EvaluasiStaff extends CI_Controller {
         redirect(base_url('BlankoEvaluasi/Staff'));
     }
 
-    private function insertBlanko($data = []) {
-        if(!$data) return [];
-        
+    function deleteBlanko()
+    {
+        $logged_user = $this->session->user;
+        $id = $this->input->post('id');
+        $id = (int)base64_decode($id);
+        if ($id <= 0) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+
+        $this->M_blankoevaluasi->deleteStaffBlanko($id, $logged_user);
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    private function insertBlanko($data = [])
+    {
+        if (!$data) return [];
+
         $this->M_blankoevaluasi->insertStaffBlanko($data);
     }
 
-    function handlePrintPeview() {
+    function handlePrintPeview()
+    {
         $get = $this->input->get();
 
         $this->printPDF($get);
     }
 
-    private function printPDF($data) {
+    private function printPDF($data)
+    {
         $this->load->library('pdf');
 
-        $pdf =	$this->pdf->load();
+        $pdf =    $this->pdf->load();
         // params => $mode='',$format='A4',$default_font_size=0,$default_font='',$mgl=15,$mgr=15,$mgt=16,$mgb=16,$mgh=9,$mgf=9, $orientation='P'
         $pdf = new mPDF('UTF-8', 'A4', '11', 'comic', 10, 10, 10, 10, 0, 0);
 

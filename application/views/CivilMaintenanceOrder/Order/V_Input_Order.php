@@ -117,7 +117,7 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <select required class="form-control <?= $claz ?>" name="jnsOrder">
-                                                    <option value="1" selected="">Pekerjaan eksternal dengan order</option>
+                                                    <option value="1" selected="">Pekerjaan Eksternal Dengan Order</option>
                                                 </select>
                                             </div>
                                         </div>

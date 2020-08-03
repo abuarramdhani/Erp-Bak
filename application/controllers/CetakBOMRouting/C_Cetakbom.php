@@ -255,11 +255,29 @@ class C_Cetakbom extends CI_Controller
 
 				$i++;
 			}
+			if ($array_Resource2['ALT'] != null) {
+				$merge = $this->batasMerge($array_Resource2['ALT']);
+				$tabelBoM = $this->generateTableBoM($merge, $datapdf2);
+			} else {
+				$merge = null;
+				$tabelBoM = null;
+			}
+			
+			// echo "<pre>";
+			// print_r($merge);
+			// exit();
+			$data['tabel'] = $tabelBoM;
+			$data['merge'] = $merge;
 			$data['arrayR'] = $array_Resource;
 			$data['arrayR2'] = $array_Resource2;
 			$data['datapdf'] = $array_pdf;
 			$data['datapdf2'] = $datapdf2;
+			
+			
 
+			
+
+		//komen
 			// 	$kodeproses = array();
 			// 	foreach ($datapdf as $pdfs) {
 			// 		$kodek="";
@@ -282,7 +300,7 @@ class C_Cetakbom extends CI_Controller
 			// 	$alt = array_count_values($altkode);
 			// 	$data['kodee'] = $kodee;
 			// 	$data['alt'] = $alt;
-
+		//komen
 		} else if ($organization == 'OPM') {
 
 			$dataopm1 = $this->M_cetakbom->dataopm1($kode);
@@ -351,6 +369,7 @@ class C_Cetakbom extends CI_Controller
     	$foot = $this->load->view('CetakBOMRouting/V_CetakanFoot', $data, true);	
 
 		ob_end_clean();
+		$pdf->shrink_tables_to_fit = 0;
 		$pdf->setHTMLHeader($head);	
     	$pdf->WriteHTML($html);	
   		$pdf->setHTMLFooter($foot);												//-----> Pakai Library MPDF
@@ -385,5 +404,62 @@ class C_Cetakbom extends CI_Controller
 		return $nama_Jadi;
 	}
 
+	public function batasMerge($arrayALT){
+		$batas = 50;
+		// $halsatu = 25;
+		foreach ($arrayALT as $key => $value) {
+			$barisalt[$key] = sizeof($arrayALT[$key]);
+			$frek[$key] = ceil($barisalt[$key]/$batas);
+			$sisa[$key] = $barisalt[$key]%$batas;
+			for ($i=1; $i <= $frek[$key]; $i++) { 
+				$batasmax[$key][$i] = $batas * $i;
+			}
+		}
+
+		
+
+		$hasil['batas'] = $batas;
+		// $hasil['halsatu'] = $halsatu;
+		$hasil['batasmax'] = $batasmax;
+		$hasil['barisalt'] = $barisalt;
+		$hasil['frekuensi'] = $frek;
+		$hasil['sisa'] = $sisa;
+
+		// echo "<pre>";
+		// print_r($hasil);
+		// exit();
+		return $hasil;
+	}
+
+	public function generateTableBoM ($merge, $data){	
+		$hal = 0;
+		$step = 1;
+		$count = 0;
+		for ($i=0; $i < sizeof($data); $i++) { 
+			if ($data[$i]['ALT'] == '') {
+				$alt = 'primary';
+			} else {
+				$alt =  $data[$i]['ALT'];
+			}
+
+			$arrayJadi[$hal][$alt][$count] = $data[$i];
+			$count++;
+
+			if ($count == $merge['batas']) {
+				$count = 0;
+				$hal++;
+				$step++;
+			}
+		}
+		return $arrayJadi;
+		// echo "<pre>";
+		// print_r($arrayJadi);
+		// echo "<pre>";
+		// print_r($data);
+		// echo "<pre>";
+		// print_r($merge);
+		// exit();
+
+	}
 
 }

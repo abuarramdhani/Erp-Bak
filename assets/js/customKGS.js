@@ -423,6 +423,31 @@ $(document).ready(function () {
             }
         }
     });
+
+    $(".picSPB3").select2({
+        allowClear: false,
+        placeholder: "",
+        minimumInputLength: 0,
+        ajax: {
+            url: baseurl + "KapasitasGdSparepart/Pengeluaran/getPIC",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                        term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                // console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.PIC, text:obj.PIC};
+                    })
+                };
+            }
+        }
+    });
 });
 
 function checkdata(no) {
@@ -433,10 +458,12 @@ function checkdata(no) {
         $('#tandacek'+no).val('uncek');
         $('#ceka'+no).removeClass('fa-square-o').addClass('fa-check-square-o');
         $('#no'+no).addClass('noall');
+        $('#pic'+no).addClass('picall');
     }else{
         $('#tandacek'+no).val('cek');
         $('#ceka'+no).removeClass('fa-check-square-o').addClass('fa-square-o');
         $('#no'+no).removeClass('noall');
+        $('#pic'+no).removeClass('picall');
     }
 }
 
@@ -508,24 +535,28 @@ function mulaiselect(no) {
 }
 
 function finishselectedPelayanan() {
-    $("#mdlfinishplyn").modal({
-        backdrop: 'static',
-        keyboard: true, 
-        show: true,
-}); 
+    $("#mdlfinishplyn").modal('show'); 
 }
 
 function savefinish() {
     var no = $('.noall').map(function(){return $(this).val();}).get();
-    var pic = $('#picfinish').val();
+    var pic = $('.picall').map(function(){return $(this).val();}).get();
+    var pic_finish = $('#picfinish').val();
     $("#mdlfinishplyn").modal('hide');
+    var j = 0;
+    for (let i = 0; i < no.length; i++) {
+        if (pic[i] == pic_finish) {
+            j = j + 1;
+        }
+        // selesaiselect(n, pic_finish);        
+    }
     for (let i = 0; i < no.length; i++) {
         const n = no[i];
-        selesaiselect(n, pic);        
+        selesaiselect(n, pic_finish, j);        
     }
 }
 
-function selesaiselect(no, pic_finish) {
+function selesaiselect(no, pic_finish, j) {
     var valBtn = $('#btnPelayanan'+no).val();
     var jenis  = $('#jenis'+no).val();
     var no_spb = $('#nodoc'+no).val();
@@ -571,8 +602,8 @@ function selesaiselect(no, pic_finish) {
         $('#timer'+no).css('display','none');     
 
         $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Pelayanan/updateSelesai",
-        data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+        url : baseurl + "KapasitasGdSparepart/Pelayanan/updateSelesai2",
+        data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, j : j},
         type : "POST",
         dataType: "html"
         });
@@ -784,24 +815,28 @@ function mulaiselect2(no) {
 }
 
 function finishselectedPengeluaran() {
-    $("#mdlfinishpglr").modal({
-        backdrop: 'static',
-        keyboard: true, 
-        show: true,
-}); 
+    $("#mdlfinishpglr").modal('show'); 
 }
 
 function savefinish2() {
     var no = $('.noall').map(function(){return $(this).val();}).get();
-    var pic = $('#picfinish').val();
+    var pic = $('.picall').map(function(){return $(this).val();}).get();
+    var pic_finish = $('#picfinish').val();
     $("#mdlfinishpglr").modal('hide');
+    var j = 0;
+    for (let i = 0; i < no.length; i++) {
+        if (pic[i] == pic_finish) {
+            j = j + 1;
+        }
+        // selesaiselect2(n, pic);        
+    }
     for (let i = 0; i < no.length; i++) {
         const n = no[i];
-        selesaiselect2(n, pic);        
+        selesaiselect2(n, pic_finish, j);        
     }
 }
 
-function selesaiselect2(no, pic_finish) {
+function selesaiselect2(no, pic_finish, j) {
     var valBtn = $('#btnPengeluaran'+no).val();
     var jenis  = $('#jenis'+no).val();
     var no_spb = $('#nodoc'+no).val();
@@ -847,8 +882,8 @@ function selesaiselect2(no, pic_finish) {
             $('#timer'+no).css('display','none');      
 
             $.ajax ({
-            url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateSelesai",
-            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+            url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateSelesai2",
+            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, j : j},
             type : "POST",
             dataType: "html"
             });

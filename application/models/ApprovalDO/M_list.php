@@ -35,7 +35,7 @@ class M_list extends CI_Model
         $query = $this->oracle->query($sql);
     }
 
-    public function updateStatusDO($do_number, $requested_by, $approver)
+    public function updateStatusDO($do_number, $requested_by, $approver,$tgl_permintaan_kirim)
     {
         $sql = "UPDATE
                     KHS_APPROVAL_DO
@@ -43,7 +43,8 @@ class M_list extends CI_Model
                     STATUS = 'Req Approval',
                     REQUEST_BY = '$requested_by',
                     REQUEST_TO = '$approver',
-                    REQUEST_DATE = SYSDATE
+                    REQUEST_DATE = SYSDATE,
+                    TANGGAL_PERMINTAAN_KIRIM = '$tgl_permintaan_kirim'
                 WHERE
                     no_do = '$do_number'";
         $query = $this->oracle->query($sql);
@@ -71,6 +72,7 @@ class M_list extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+
     
     public function createApprovalSPB($spb_number)
     {

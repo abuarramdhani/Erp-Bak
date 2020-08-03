@@ -44,19 +44,26 @@ let wipp1_1 = $('.tblwipp1').DataTable({
   scrollY : "500px",
 })
 
-function format_wipp( d, kode_item, onhand){
-  return `<input type="hidden" id="onhand_${kode_item}" value="${onhand}"><div class="JobReleaseArea${kode_item}"> </div>`;
+function format_wipp( d, kode_item, onhand, no){
+  return `<input type="hidden" id="onhand_${kode_item}" value="${onhand}">
+          <div style="width:95%;float:right">
+            <input type="text" readonly id="cek_${kode_item}" style="background:transparent;border-color:transparent">
+          </div>
+          <div class="JobReleaseArea${kode_item}" style="width:95%;float:right"> </div>`;
 }
 
 function detail_wipp_1(no, kode_item, onhand) {
+
   let tr = $(`tr[data-no=${no}]`);
   let row = wipp1_1.row( tr );
   if ( row.child.isShown() ) {
       row.child.hide();
       tr.removeClass('shown');
+      $(`tr[data-no=${no}]`).css({"background": ""});
   }
   else {
-      row.child( format_wipp(row.data(), kode_item, onhand)).show();
+      $(`tr[data-no=${no}]`).css({"background": "#dff0d8"});
+      row.child( format_wipp(row.data(), kode_item, onhand, no)).show();
       tr.addClass('shown');
       $.ajax({
         url: baseurl + 'WorkInProcessPackaging/JobManager/getitembykodeitem',
@@ -64,7 +71,6 @@ function detail_wipp_1(no, kode_item, onhand) {
         async: true,
         data: {
           kode_item: kode_item,
-
         },
         beforeSend: function() {
           $('.JobReleaseArea'+kode_item).html(`<div id="loadingArea0">

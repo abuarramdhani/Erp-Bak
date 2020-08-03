@@ -7,6 +7,7 @@
         <th>KODE ITEM</th>
         <th>NAMA ITEM</th>
         <th>QTY</th>
+        <th>QTY NEED</th>
         <th>USAGE RATE</th>
         <th >SCHEDULED START DATE </th>
         <th><center>ACTION </center></th>
@@ -28,7 +29,8 @@
           <td <?php echo $style ?>><?php echo $g['KODE_ASSY'] ?></td>
           <td <?php echo $style ?>><?php echo $g['DESCRIPTION'] ?></td>
           <td <?php echo $style ?>><?php echo $g['START_QUANTITY'] ?></center></td>
-          <input type="hidden" class="qpa_wipp_<?php echo $g['KODE_COMP'] ?>" value="<?php echo $g['QUANTITY_PER_ASSEMBLY']*$g['START_QUANTITY'] ?>">
+          <input type="hidden" class="qpa_wipp_<?php echo $g['KODE_COMP'] ?> qpa_wipp_<?php echo $g['KODE_COMP'] ?>_<?php echo $no ?>" value="<?php echo $g['QUANTITY_PER_ASSEMBLY']*$g['START_QUANTITY'] ?>">
+          <td><?php echo $g['QUANTITY_PER_ASSEMBLY'] ?></td>
           <td <?php echo $style ?>><?php echo abs($g['USAGE_RATE_OR_AMOUNT']) ?></td>
           <td <?php echo $style ?>><?php echo $g['SCHEDULED_START_DATE'] ?></center></td>
           <td <?php echo $style ?>><center>
@@ -42,7 +44,6 @@
 <script type="text/javascript">
 // add to rkh area ===========
 let wipp1 = $('.tblwiip1').DataTable();
-
 function addRKH(n, nj, ki, kc){
     let job_check = $(`.qpa_wipp_${kc}`).map((_, el) => el.value).get();
     let count_job_check = 0;
@@ -50,13 +51,9 @@ function addRKH(n, nj, ki, kc){
       count_job_check += Number(v);
     })
     let onhand = $(`#onhand_${kc}`).val();
-    if (onhand < count_job_check) {
-      Swal.fire({
-        type: 'warning',
-        title: 'Peringatan !',
-        text: 'tidak dapat membuat RKH, Onhand < Start_QTY'
-      })
-    }else {
+    let qty_tampung_before = $(`#cek_${kc}`).val()
+    let get_qtynya = $(`.qpa_wipp_${kc}_${n}`).val();
+
       let stat = $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`);
       if (stat==1) {
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `0`)
@@ -64,13 +61,33 @@ function addRKH(n, nj, ki, kc){
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-danger`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-close"></i> <b>Cancel</b>`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).toggleClass('selected');
+          $(`#cek_${kc}`).val(Number(qty_tampung_before)+Number(get_qtynya))
       }else {
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-danger`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-primary`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-plus-square"></i> <b>Add to RKH</b>`)
           $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).removeClass('selected');
+          $(`#cek_${kc}`).val(Number(qty_tampung_before)-Number(get_qtynya))
       }
+
+      setTimeout(function () {
+        let qty_tampung_be = $(`#cek_${kc}`).val();
+        if (Number(qty_tampung_be) > Number(onhand)) {
+          Swal.fire({
+            type: 'warning',
+            title: 'Peringatan !',
+            text: 'tidak dapat membuat RKH, Onhand < Qty Job'
+          }).then(_=>{
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).attr(`stat`, `1`)
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).removeClass(`btn-danger`)
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).addClass(`btn-primary`)
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"] td center button`).html(`<i class="fa fa-plus-square"></i> <b>Add to RKH</b>`)
+            $(`.tblwiip1 tr[row-code-item="${n}_${ki}"]`).removeClass('selected');
+            $(`#cek_${kc}`).val(Number(qty_tampung_be)-Number(get_qtynya))
+          })
+        }
+      }, 100);
 
       let get = wipp1.rows('.selected').data();
       var bool=$(".btnWIPP").is(":hidden")
@@ -83,7 +100,6 @@ function addRKH(n, nj, ki, kc){
           $('.btnWIPP').removeAttr("hidden");
         }, 300);
       }
-    }
 
 }
 
@@ -91,6 +107,17 @@ Array.prototype.unique = function() {
   return this.filter(function (value, index, self) {
     return self.indexOf(value) === index;
   });
+}
+
+function hideSave() {
+  let giveParam = $('#hideSave').val();
+  if (giveParam == 'Y') {
+    $('.wipp_hided').hide();
+    $('#hideSave').val('N');
+  }else {
+    $('.wipp_hided').show();
+    $('#hideSave').val('Y');
+  }
 }
 
 function getJobReleased() {
@@ -122,13 +149,14 @@ function getJobReleased() {
                       <td><center>${v[2]}</center></td>
                       <td><center>${v[3]}</center></td>
                       <td><center>${v[4]}</center></td>
-                      <td><center>${v[5]}</center></td>
                       <td><center>${v[6]}</center></td>
+                      <td><center>${v[7]}</center></td>
                       <td hidden><center>${v[4]}</center></td>
                       <td onmouseover="cekhover()">
                         <center>
                           <button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${i+1})"><i class="fa fa-minus-square"></i></button>
-                          <button type="button" class="btn btn-md bg-navy" data-toggle="collapse" data-target="#Mycollapse${i}" aria-expanded="false" aria-controls="collapseExample" name="button"><i class="fa fa-cut"></i></button>
+                          <button type="button" onclick="hideSave()" class="btn btn-md bg-navy" data-toggle="collapse" data-target="#Mycollapse${i}" aria-expanded="false" aria-controls="collapseExample" name="button"><i class="fa fa-cut"></i></button>
+                          <input type="hidden" id="hideSave" value="Y">
                         </center>
                       </td>
                     </tr>
@@ -159,7 +187,7 @@ function getJobReleased() {
                                       </center>
                                       <input type="hidden" id="qty_split_save${i+1}" value="${v[4]}" readonly>
                                       <input type="hidden" id="usage_rate_split${i+1}" value="${v[5]}" readonly>
-                                      <input type="hidden" id="ssd${i+1}" value="${v[6]}" readonly>
+                                      <input type="hidden" id="ssd${i+1}" value="${v[7]}" readonly>
                                       <input type="hidden" id="item_name${i+1}" value="${v[3]}" readonly>
                                       <input type="hidden" id="created_at" value="" readonly>
                                       <br>
@@ -211,7 +239,7 @@ function getJobReleased() {
                                           </tbody>
                                         </table>
                                         <br>
-                                        <center class="btnsplit${i+1}" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-navy" onclick="saveSplit_(${i+1}, '${v[1]}', '${v[2]}', '${v[3]}', '${v[4]}', '${v[5]}', '${v[6]}')" name="button"><i class="fa fa-sign-in"></i> Append</button>
+                                        <center class="btnsplit${i+1}" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-navy" onclick="saveSplit_(${i+1}, '${v[1]}', '${v[2]}', '${v[3]}', '${v[4]}', '${v[6]}', '${v[7]}')" name="button"><i class="fa fa-sign-in"></i> Append</button>
                                       </div>
                                     </div>
                                   </div>
@@ -230,6 +258,25 @@ function getJobReleased() {
     })
   $('#create-new-rkh').html(listJobWipp.join(" "));
 }
+
+$('.btnWippRefresh').on('click', function () {
+  $('#wipp2').modal('show')
+  function run() {
+    let d = $.Deferred(),
+        p = d.promise();
+    p.then(_=>{
+      $('#wipp2').modal('toggle')
+      $('.modal-backdrop').remove();
+    }).then(_=>{
+      setTimeout(function () {
+        getJobReleased();
+        $('#wipp2').modal('show')
+      }, 500);
+    });
+    d.resolve();
+  }
+  run();
+})
 
 
 </script>

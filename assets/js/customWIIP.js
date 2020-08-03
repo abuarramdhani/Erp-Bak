@@ -18,9 +18,73 @@ const swalWIPP = (type, title) => {
     text: ''
   })
 }
-
-
 // ========================do something below the alert =================
+
+const saveNewRKHEdit = _ => {
+  var tableInfo = Array.prototype.map.call(document.querySelectorAll('.tblNewRKH tr[hesoyam="ya"]'), function(tr) {
+    return Array.prototype.map.call(tr.querySelectorAll('td center'), function(td) {
+      return td.innerHTML;
+    });
+  });
+
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/SaveJobListEdit',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      date: $('#dateSaveWIIP').val(),
+      waktu_shift: $('#waktuSaveWIIP').val(),
+      jenis: $('#jenisSaveWIIP').val(),
+      data: tableInfo
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result) {
+      if (result === 1) {
+        Swal.fire({
+          type: 'success',
+          title: 'Berhasil menyimpan.',
+          text: ''
+        }).then(_ => {
+          list_Arrage($('#dateSaveWIIP').val()+'_'+$('#jenisSaveWIIP').val().substring(0, 1));
+        })
+      }else {
+        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, No Job '+result+' telah ada sebelumnya.');
+      }
+      // else if (result.status === 2) {
+      //   swalWIPPToastrAlert('error', 'Gagal menyimpan data! No job '+ result.no_job+', data telah digunakan!');
+      // }else if (result === 3) {
+      //   swalWIPPToastrAlert('error', 'Gagal menyimpan data! job dengan tanggal '+ $('#dateSaveWIIP').val() +' telah digunakan!');
+      // }
+
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+const job_released_edit = () => {
+  $.ajax({
+    url: baseurl + 'WorkInProcessPackaging/JobManager/JobReleasedEdit',
+    type: 'POST',
+    async: true,
+    beforeSend: function() {
+      $('.table-job-released-edit').html(`<div id="loadingArea0">
+                                      <center><img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+                                    </div>`)
+    },
+    success: function(result) {
+      $('.table-job-released-edit').html(result)
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
 let wipp_skrtt = $('.tblwiip12').DataTable({
   "pageLength": 10,
 });
@@ -49,7 +113,7 @@ const detailBOM = (kode_item, no) => {
       beforeSend: function() {
         $('.JobReleaseArea_' + kode_item).html(`<div id="loadingArea0">
                                                 <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
-                                              </div>`)
+                                               </div>`)
       },
       success: function(result) {
         let item = '';
@@ -123,6 +187,11 @@ const jenisRKH = _ => {
 const print_besar = (kode_item, key, line) => {
   const qty = $(`#qtyl${line}_${key}`).val();
   window.open(baseurl + 'WorkInProcessPackaging/JobManager/LabelBesar/' + kode_item + '_' + qty);
+}
+
+const print_kecil = (kode_item, key, line) => {
+  const qty = $(`#qtyll${line}_${key}`).val();
+  window.open(baseurl + 'WorkInProcessPackaging/JobManager/LabelKecil/' + kode_item + '_' + qty);
 }
 
 const updateTargetPe = _ => {
@@ -335,7 +404,6 @@ const saveSplit = _ => {
     }
   })
 }
-
 // COLAPSE
 const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
   function a() {
@@ -344,7 +412,11 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
     qty_split.forEach((v, i) => {
       qty_tampung.push($(v).val());
     })
-    const idtrz = $('.tblNewRKH').find('tr[hesoyam="ya"]:last td center').html();
+    let idtrz = $('.tblNewRKH').find('tr[hesoyam="ya"]:last td:nth-child(1) center').text();
+    console.log(idtrz);
+    // const idtrz_ = $('.tblNewRKH tr[hesoyam="ya"]').toArray();
+    // let idtrz = idtrz_.length;
+
     let html = [];
     qty_tampung.forEach((val, i) => {
       let hhtml = `<tr hesoyam="ya" row="${Number(idtrz)+(Number(i)+1)}">
@@ -359,22 +431,120 @@ const saveSplit_ = (id, no_job, kode_item, nama_item, qty, usage_rate, ssd) => {
                         <td onmouseover="cekhover()">
                           <center>
                             <button type="button" class="btn btn-md btn-primary" name="button" onclick="minusNewRKH(${Number(idtrz)+(Number(i)+1)})"><i class="fa fa-minus-square"></i></button>
+                            <button type="button" onclick="hideSave()" class="btn btn-md bg-navy" data-toggle="collapse" data-target="#Mycollapse${Number(idtrz)+(Number(i)+1)}" aria-expanded="false" aria-controls="collapseExample" name="button"><i class="fa fa-cut"></i></button>
+                            <input type="hidden" id="hideSave" value="Y">
                           </center>
+                        </td>
+                      </tr>
+                      <tr collapse-row="${Number(idtrz)+(Number(i)+1)}">
+                        <td colspan="8" style="margin:0;padding:0;width:0">
+                        <div class="collapse" id="Mycollapse${Number(idtrz)+(Number(i)+1)}">
+                          <div class="card card-body" style="padding-top: 10px; padding-bottom: 20px;border-color:transparent">
+
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <div class="box box-primary box-solid">
+                                <div class="box-header with-border">
+                                  <div style="float:left">
+                                    <h4 style="font-weight:bold;">SPLIT JOB (<span>${no_job}</span>)</h4>
+                                  </div>
+                                </div>
+                                <div class="box-body">
+                                  <center>
+                                    <div id="loading-pbi" style="display:none;">
+                                      <center><img style="width: 5%" src="${baseurl}/assets/img/gif/loading5.gif"></center>
+                                    </div>
+                                  </center>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <div class="box-body" style="background:#ffffff !important; border-radius:7px;">
+                                        <center>
+                                          <h4 style="font-weight:bold;display:inline-block;">QTY Avaliable :</h4> <input type="number" readonly value="0" id="qtySplit${Number(idtrz)+(Number(i)+1)}" style="display:inline-block;width:10%;margin-left:10px;" class="form-control" placeholder="QTY">
+                                        </center>
+                                        <input type="hidden" id="qty_split_save${Number(idtrz)+(Number(i)+1)}" value="${val}" readonly>
+                                        <input type="hidden" id="usage_rate_split${Number(idtrz)+(Number(i)+1)}" value="${usage_rate}" readonly>
+                                        <input type="hidden" id="ssd${Number(idtrz)+(Number(i)+1)}" value="${ssd}" readonly>
+                                        <input type="hidden" id="item_name${Number(idtrz)+(Number(i)+1)}" value="${nama_item}" readonly>
+                                        <input type="hidden" id="created_at" value="" readonly>
+                                        <br>
+                                        <div class="table-responsive">
+                                          <table class="table table-striped table-bordered table-hover text-left line0wipp${Number(idtrz)+(Number(i)+1)}" style="font-size:11px;">
+                                            <thead>
+                                              <tr class="bg-info">
+                                                <th style="width:26%">
+                                                  <center>JOB</center>
+                                                </th>
+                                                <th style="width:35%">
+                                                  <center>ITEM</center>
+                                                </th>
+                                                <th style="width:17%">
+                                                  <center>QTY</center>
+                                                </th>
+                                                <th style="width:17%">
+                                                  <center>TARGET PPIC (%)</center>
+                                                </th>
+                                                <th hidden>
+                                                  <center>CREATED AT</center>
+                                                </th>
+                                                <th style="width:5%">
+                                                  <center><button type="button" class="btn btn-sm bg-navy" onclick="addrowlinewipp_0(${Number(idtrz)+(Number(i)+1)})" style="border-radius:10px;" name="button"><i class="fa fa-plus-square"></i></button></center>
+                                                </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody id="tambahisiwipp0${Number(idtrz)+(Number(i)+1)}" class="tbl_row_split">
+                                            <tr class="rowbaru0_wipp" id="wipp0row1">
+                                              <td>
+                                                <center><input type="text" readonly value="${no_job}" class="form-control" name="job0[]" id="job0${Number(idtrz)+(Number(i)+1)}_wipp1" placeholder="ITEM CODE"></center>
+                                              </td>
+                                              <td>
+                                                <center><input type="text" readonly value="${kode_item}" class="form-control" name="item0[]" id="item0${Number(idtrz)+(Number(i)+1)}_wipp1" placeholder="ITEM"></center>
+                                              </td>
+                                              <td>
+                                                <center><input type="number" value="${val}" class="form-control iminhere${Number(idtrz)+(Number(i)+1)}" oninput="changeQtyValue_(1, ${Number(idtrz)+(Number(i)+1)})" name="qty0[]" id="qty0${Number(idtrz)+(Number(i)+1)}_wipp1" placeholder="QTY"></center>
+                                              </td>
+                                              <td>
+                                                <center><input type="number" value="" class="form-control andhere${Number(idtrz)+(Number(i)+1)}" name="target0[]" id="target0${Number(idtrz)+(Number(i)+1)}_pe1" placeholder="00%"></center>
+                                              </td>
+                                              <td hidden>
+                                                <center><input type="text" value="" class="form-control param"></center>
+                                              </td>
+                                              <td>
+                                                <center><button type="button" class="btn btn-sm bg-navy" onclick="minus_wipp0_(1, ${Number(idtrz)+(Number(i)+1)})" style="border-radius:10px;" name="button"><i class="fa fa-minus-square"></i></button></center>
+                                              </td>
+                                            </tr>
+                                            </tbody>
+                                          </table>
+                                          <br>
+                                          <center class="btnsplit${Number(idtrz)+(Number(i)+1)}" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-navy" onclick="saveSplit_(${Number(idtrz)+(Number(i)+1)}, '${no_job}', '${kode_item}', '${nama_item}', '${val}', '${usage_rate}', '${ssd}')" name="button"><i class="fa fa-sign-in"></i> Append</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
                         </td>
                       </tr>`;
       html.push(hhtml)
     })
     // console.log(html);
     $('#create-new-rkh').append(html);
+
   }
 
   function b() {
     $('.tblNewRKH').find(`tr[row="${id}"]`).remove();
     $('.tblNewRKH').find(`tr[collapse-row="${id}"]`).remove();
 
-    $('.tblNewRKH tr[row]:visible').each(function(i) {
-      $(this).find('td:first').text(i + 1);
-    })
+    // $('.tblNewRKH tr[row]:visible').each(function(i) {
+    //   $(this).find('td:first center').text(i + 1);
+    // })
+
+    $('.wipp_hided').show();
+    $('#hideSave').val('Y');
   }
 
   function run() {
@@ -424,13 +594,13 @@ const changeQtyValue = t => {
       $('.btnsplit').removeAttr("hidden");
       setTimeout(function() {
         $('#qtySplit').val(b_d - sum);
-        $(`#target0_pe${t}`).val(wss / (a / ur));
+        $(`#target0_pe${t}`).val(Number((a/(wss/ur))*100)/100);
       }, 200);
     } else {
       $('.btnsplit').attr("hidden", "hidden");
       setTimeout(function() {
         $('#qtySplit').val(b_d - sum);
-        let z_z = wss / (a / ur);
+        let z_z = Number((a/(wss/ur))*100)/100;
         $(`#target0_pe${t}`).val(z_z.toFixed(5));
       }, 200);
     }
@@ -591,6 +761,7 @@ const saveNewRKH = _ => {
     data: {
       date: $('#dateSaveWIIP').val(),
       waktu_shift: $('#waktuSaveWIIP').val(),
+      jenis: $('#jenisSaveWIIP').val(),
       data: tableInfo
     },
     beforeSend: function() {
@@ -603,10 +774,10 @@ const saveNewRKH = _ => {
           title: 'Berhasil menyimpan.',
           text: ''
         }).then(_ => {
-          window.location.replace(baseurl + 'WorkInProcessPackaging/JobManager/ArrangeJobList/' + $('#dateSaveWIIP').val(), );
+          window.location.replace(baseurl + 'WorkInProcessPackaging/JobManager/ArrangeJobList/' + $('#dateSaveWIIP').val() + '_' + $('#jenisSaveWIIP').val().substring(0, 1));
         })
       } else if (result === 2) {
-        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, RKH dengan tanggal ' + $('#dateSaveWIIP').val() + ' telah ada di database.');
+        swalWIPPToastrAlert('error', 'Gagal menyimpan data!, RKH dengan tanggal ' + $('#dateSaveWIIP').val() + ' dengan jenis '+ $('#jenisSaveWIIP').val() +' telah ada di database.');
       } else {
         swalWIPPToastrAlert('error', 'Gagal menyimpan data!, mohon isi form waktu shift dan tanggal dengan benar.');
       }
@@ -626,7 +797,7 @@ const saveNewRKH = _ => {
 const minusNewRKH = n => {
   $('.tblNewRKH tr[row="' + n + '"]').remove();
   $('.tblNewRKH tr[row]:visible').each(function(i) {
-    $(this).find('td:first').text(i + 1);
+    $(this).find('td:first').html(`<center>${i + 1}</center>`);
   })
 }
 
@@ -800,8 +971,6 @@ $(document).ready(function() {
     list_RKH();
   }
 
-
-
   if (wipp_cek3 == 2) {
     list_Arrage(wipp_cek2)
     $.ajax({
@@ -928,25 +1097,7 @@ $('.select2itemcodewipp').on('change', function() {
       $(`#nama_komponen`).val('Loading...');
     },
     success: function(result) {
-      $.ajax({
-        url: baseurl + 'WorkInProcessPackaging/JobManager/cek_job',
-        type: 'POST',
-        dataType: 'JSON',
-        async: true,
-        data: {
-          job: val,
-        },
-        success: function(result2) {
-          if (result2) {
-            swalWIPPToastrAlert('error', 'kode_item tidak ada di database.');
-          } else {
 
-          }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-          console.error();
-        }
-      })
       $(`#nama_komponen`).val(result[0].DESCRIPTION);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1093,6 +1244,7 @@ const addrowlinewipp5 = _ => {
 }
 
 const minus_wipp5 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid5_' + n).remove();
   $('#job5_wipp' + n).parents('.rowbaru5_wipp').remove()
   let total_sebelumnya = $('#total_ppic_5').html()
@@ -1150,8 +1302,8 @@ const minus_wipp5 = (n, id_job_list) => {
                                                           </center>
                                                         </td>
                                                         <td>
-                                                          <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                          '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                          <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                          '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                           <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                         </td>
                                                         <td hidden><center>${id_job_list}</center></td>
@@ -1187,6 +1339,7 @@ const addrowlinewipp4 = _ => {
 }
 
 const minus_wipp4 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid4_' + n).remove();
   $('#job4_wipp' + n).parents('.rowbaru4_wipp').remove()
   let total_sebelumnya = $('#total_ppic_4').html()
@@ -1244,8 +1397,8 @@ const minus_wipp4 = (n, id_job_list) => {
                                                         </center>
                                                       </td>
                                                       <td>
-                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                         <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                       </td>
                                                       <td hidden><center>${id_job_list}</center></td>
@@ -1282,6 +1435,7 @@ const addrowlinewipp3 = _ => {
 }
 
 const minus_wipp3 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid3_' + n).remove();
   $('#job3_wipp' + n).parents('.rowbaru3_wipp').remove()
   let total_sebelumnya = $('#total_ppic_3').html()
@@ -1338,8 +1492,8 @@ const minus_wipp3 = (n, id_job_list) => {
                                                         </center>
                                                       </td>
                                                       <td>
-                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                         <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                       </td>
                                                       <td hidden><center>${id_job_list}</center></td>
@@ -1376,6 +1530,7 @@ const addrowlinewipp2 = _ => {
 }
 
 const minus_wipp2 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid2_' + n).remove();
   $('#job2_wipp' + n).parents('.rowbaru2_wipp').remove()
   let total_sebelumnya = $('#total_ppic_2').html()
@@ -1434,8 +1589,8 @@ const minus_wipp2 = (n, id_job_list) => {
                                                         </center>
                                                       </td>
                                                       <td>
-                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                         <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                       </td>
                                                       <td hidden><center>${id_job_list}</center></td>
@@ -1587,6 +1742,7 @@ const addrowlinewipp = (cek, line) => {
 }
 
 const minus_wipp1 = (n, id_job_list) => {
+  let type =  $('.wipp2').val();
   $('#jobid1_' + n).remove();
   $('#job1_wipp' + n).parents('.rowbaru1_wipp').remove()
 
@@ -1650,8 +1806,8 @@ const minus_wipp1 = (n, id_job_list) => {
                                                         </center>
                                                       </td>
                                                       <td>
-                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${Number(result[0].waktu_satu_shift)/(Number(result[0].qty)/Number(result[0].usage_rate))}',
-                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${result[0].date_target}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
+                                                        <center><button type="button" class="btn btn-md bg-navy" onclick="getModalSplit('${result[0].no_job}', '${result[0].qty_parrent != '' ? result[0].qty_parrent : result[0].qty}', '${result[0].kode_item}', '${result[0].nama_item}', '${(Number(result[0].qty)/(Number(result[0].waktu_satu_shift)/Number(result[0].usage_rate)))*1}',
+                                                        '${result[0].usage_rate}', '${result[0].waktu_satu_shift}', '${type}', '${result[0].create_at}', '${result[0].qty_parrent}')" data-toggle="modal" data-target="#wipp_2" name="button"><i class="fa fa-cut"></i> <b>Split</b></button></center>
                                                         <input type="hidden" id="id_job_list" value="${id_job_list}">
                                                       </td>
                                                       <td hidden><center>${id_job_list}</center></td>

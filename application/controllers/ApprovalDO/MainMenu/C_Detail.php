@@ -36,7 +36,10 @@ class C_Detail extends CI_Controller {
             'NO_DO' => $exp_id[1],
             'NO_SO' => $exp_id[2],
         ];
+        $data['akses'] = '';
+        $data['tglKirim'] = '';
         $data['DetailType']     = $exp_id[0];
+        // echo $exp_id[1];exit;
         $data['ApproverList']   = [
             [
                 'name'          => 'B0354 - Wawan Kartika Hadi',
@@ -96,13 +99,16 @@ class C_Detail extends CI_Controller {
 
         switch ($exp_id[0]) {
             case 'ListDO':
+                $data['tglKirim'] = 'txttglKirimADO';
             case 'ListSPB':
+                $data['tglKirim'] = 'txttglKirimADO';
                 $data['ButtonType'] = 
                     '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover">
                         <i class="fa fa-location-arrow"></i>&nbsp; Select Approver
                     </button>';
                 break;
             case 'Approval':
+                $data['akses'] = 'readonly';
             case 'ApprovalSPB':
                 $data['ButtonType'] = 
                     '<button type="button" title="Pending" class="btn btn-default pull-right btnADOPending">
@@ -114,6 +120,7 @@ class C_Detail extends CI_Controller {
                     <button type="button" title="Approve" class="btn btn-primary pull-right btnADOApprove" style="margin-right: 10px">
                         <i class="fa fa-check-square-o"></i>&nbsp; Approve
                     </button>';
+                $data['akses'] = 'readonly';
                 break;
             case 'RequestedSPB':
             case 'Requested':
@@ -164,6 +171,7 @@ class C_Detail extends CI_Controller {
                 break;
         }
 
+        // print_r($data['DetailDO']);exit;
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DetailDO', $data);
