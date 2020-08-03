@@ -62,7 +62,7 @@ class M_mtt extends CI_Model
                                     and mtrl.LINE_STATUS = 3
                                     and mtrl.TO_SUBINVENTORY_CODE = 'FG-TKS'
                                     and mtrl.FROM_SUBINVENTORY_CODE not like 'SS-ODM'
-                                    -- and ROUND((sysdate-to_date(mtrh.ATTRIBUTE11||mtrh.ATTRIBUTE12,'DD-MON-YYHH24:MI:SS'))*24) >= 1
+                                    and ROUND((sysdate-to_date(mtrh.ATTRIBUTE11||mtrh.ATTRIBUTE12,'DD-MON-YYHH24:MI:SS'))*24) >= 1
                                     order by mtrh.CREATION_DATE asc, mtrl.ATTRIBUTE12 asc")->result_array();
       return $res;
     }
@@ -101,7 +101,7 @@ class M_mtt extends CI_Model
                                     and mtrl.LINE_STATUS = 3
                                     and mtrl.TO_SUBINVENTORY_CODE = 'FG-TKS'
                                     and mtrl.FROM_SUBINVENTORY_CODE not like 'SS-ODM'
-                                    -- and ROUND((sysdate-to_date(mtrh.ATTRIBUTE11||mtrh.ATTRIBUTE12,'DD-MON-YYHH24:MI:SS'))*24) >= 1
+                                    and ROUND((sysdate-to_date(mtrh.ATTRIBUTE11||mtrh.ATTRIBUTE12,'DD-MON-YYHH24:MI:SS'))*24) >= 1
                                     and mtrl.line_id = '$line_id'
                                     order by mtrh.CREATION_DATE asc")->row_array();
       return $res['ALASAN'];
