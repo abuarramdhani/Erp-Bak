@@ -81,9 +81,9 @@ class C_Master extends CI_Controller
        $nama = $this->session->employee;
        $namanya = $user_id.' - '.$nama;
 
-       // $res = $this->M_mtt->Update($alasan, $namanya, $line_id);
-       // echo json_encode($res);
-       echo json_encode(0);
+       $res = $this->M_mtt->Update($alasan, $namanya, $line_id);
+       echo json_encode($res);
+       // echo json_encode(0);
      }
    }
 
