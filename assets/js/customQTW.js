@@ -14,7 +14,9 @@ $(document).ready(function () {
         placeholder: "Pilih Kendaraan",
     });
 
-    $('#tbl_monitoring_qtw').DataTable()
+    $('#tbl_monitoring_qtw').DataTable({
+        scrollX: true
+    })
 
     $("#slcJnsQtw").select2({
         placeholder: "---Pilih Jenis Kunjungan---",
