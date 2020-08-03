@@ -57,7 +57,7 @@
                         <td class="text-center"><?php echo $g['QUANTITY_DELIVERED'] ?></td>
                         <td class="text-center"><?php echo $g['STATUS'] ?></td>
                         <td class="text-center">
-                          <button type="button" class="btn btn-sm bg-navy" onclick="detail('<?php echo $g['LINE_ID'] ?>', '<?php echo $g['ALASAN'] ?>')" style="border-radius:5px;padding:5px;margin-top:0;" name="button"><i class="fa fa-cube"></i> Alasan Keterlambatan</button>
+                          <button type="button" class="btn btn-sm bg-navy" onclick="detail_mtt('<?php echo $g['LINE_ID'] ?>', '<?php echo $g['ALASAN'] ?>')" style="border-radius:5px;padding:5px;margin-top:0;" name="button"><i class="fa fa-cube"></i> Alasan Keterlambatan</button>
                         </td>
                       </tr>
                       <?php endforeach; ?>

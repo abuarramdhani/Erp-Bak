@@ -61,7 +61,7 @@ function format_mtt( d, id){
   return `<div style="width:40%;float:right;" class="detail_area${id}"> </div>`;
 }
 
-const detail = (id, alasan) => {
+const detail_mtt = (id, alasan) => {
   let tr = $(`tr[data-mtt=${id}]`);
   let row = dt_mtt.row(tr);
   if ( row.child.isShown() ) {
