@@ -466,4 +466,13 @@ class M_patrolis extends CI_Model
         $sql = "select * from t_pekerja where keluar='0' and noind='$user' and (pass_word='$password' or token='$password')";
         return $this->dl->query($sql)->num_rows() > 0;
     }
+
+    public function p_jam_terakhir()
+    {
+        $sql = "select tgl_server tgl from \"Satpam\".tpatroli t order by id_patroli desc limit 1";
+        if($this->personalia->query($sql)->num_rows() > 0)
+            return $this->personalia->query($sql)->row()->tgl;
+        else
+            return 0;
+    }
 }
