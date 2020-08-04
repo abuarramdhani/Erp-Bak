@@ -145,15 +145,18 @@ class C_Index extends CI_Controller {
 		foreach ($ipName as $key => $ip) {
 			$domainbase = $ip['ip'];
 			$domainbase2 = $ip['ip2'];
-
+            
+            $messagesTemp ='';
 			$status_gateway = $this->pingDomain($domainbase);
 			if ($status_gateway != -1) {
 				echo "<tr><td>http://$domainbase is ALIVE ($status_gateway ms)</td><tr>";
-				$messages = "http://$domainbase is ALIVE ($status_gateway ms)";
+				$messages = "http://$domainbase is ALIVE ($status_gateway ms)<br>";
+				$messagesTemp .= "http://$domainbase is ALIVE ($status_gateway ms)<br>";
 				$gateway = 'Alive';
 			}else {
 				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
-				$messages = "http://$domainbase is DOWN ($status_gateway ms)";
+				$messages = "http://$domainbase is DOWN ($status_gateway ms)<br>";
+				$messagesTemp .= "http://$domainbase is DOWN ($status_gateway ms)<br>";
 				$gateway ='Down';
 				$name1 = "Gateway";
 				echo 'mati';
@@ -323,9 +326,13 @@ class C_Index extends CI_Controller {
 					$emailUser = array("quick.tractor@gmail.com", "ict.hardware.khs@gmail.com");
 					$emailUserInternal = array("yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com");
 				}
+				
+				$emailTemp = array("nugroho@quick.com","bondan_surya_n@quick.com");
 
                 $this->EmailAlert($subject, $message, $emailUser);
                 $this->EmailAlertInternal($subject, $message, $emailUserInternal);
+                
+                $this->EmailAlertInternal('trial', $messagesTemp, $emailTemp);
 			}
 				
 
