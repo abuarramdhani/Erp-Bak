@@ -1,3 +1,4 @@
+<input type="hidden" id="cek_rtlp" value="okok">
 <div class="content">
   <div class="row">
     <div class="col-lg-12">
@@ -48,9 +49,10 @@
                 </div>
               </div>
             </div>
+
             <div class="col-md-6" style="margin-top:10px">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;">
-                <h4 style="font-weight:bold;">LINE 1 (<b style="color:#2284af" id="target_pe_line1"><?php !empty($line_1[0]['target_pe_max'])?$l1 = $line_1[0]['target_pe_max'] : $l1 = ''; echo $l1; ?></b><b>%</b>)</h4>
+                <h4 style="font-weight:bold;background: #285371;color: white;padding: 10px;border-radius: 7px;">LINE 1 (<b style="color:#fff" id="target_pe_line1"><?php !empty($line_1[0]['target_pe_max'])?$l1 = $line_1[0]['target_pe_max'] : $l1 = ''; echo $l1; ?></b><b>%</b>)</h4>
                 <div class="table-responsive">
                   <table class="table table-striped table-bordered table-hover text-left line1wipp tblwiip10" style="font-size:11px;">
                     <thead>
@@ -93,6 +95,7 @@
                           <p id="timer1">
                             <label id="hours1-<?php echo $key ?>">00</label>:<label id="minutes1-<?php echo $key ?>">00</label>:<label id="seconds1-<?php echo $key ?>">00</label>
                           </p>
+                          <input type="hidden" class="time_start_1" value="<?php echo $l1['start1']['Start'] ?>">
                           <button style="border-radius: 50px" class="btn bg-primary btn-xs btn-flat" onclick="start1[<?php echo $key ?>]('<?php echo $l1['kode_item'] ?>', '<?php echo '1' ?>', '<?php echo $l1['no_job'] ?>', '<?php echo $key ?>')" id="btnstart1<?php echo $key ?>"> <i class="fa fa-play-circle"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause1[<?php echo $key ?>]('<?php echo $l1['no_job'] ?>', '<?php echo $l1['kode_item'] ?>', '<?php echo $key ?>')" id="btnlanjut1<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset1[<?php echo $key ?>]('<?php echo $l1['no_job'] ?>')" id="btnrestart1<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
@@ -114,7 +117,7 @@
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;">
                 <div class="row">
                   <div class="col-md-12">
-                    <h4 style="font-weight:bold;">LINE 2 (<b style="color:#2284af" id="target_pe_line2"><?php !empty($line_2[0]['target_pe_max'])?$l2 = $line_2[0]['target_pe_max'] : $l2 = ''; echo $l2; ?></b><b>%</b>)</h4>
+                    <h4 style="font-weight:bold;background: #25b388;color: white;padding: 10px;border-radius: 7px;">LINE 2 (<b style="color:#fff" id="target_pe_line2"><?php !empty($line_2[0]['target_pe_max'])?$l2 = $line_2[0]['target_pe_max'] : $l2 = ''; echo $l2; ?></b><b>%</b>)</h4>
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -159,6 +162,7 @@
                           <p id="timer1">
                             <label id="hours2-<?php echo $key ?>">00</label>:<label id="minutes2-<?php echo $key ?>">00</label>:<label id="seconds2-<?php echo $key ?>">00</label>
                           </p>
+                          <input type="hidden" class="time_start_2" value="<?php echo $l2['start2']['Start'] ?>">
                           <button style="border-radius: 50px" class="btn bg-primary btn-xs btn-flat" onclick="start2[<?php echo $key ?>]('<?php echo $l2['kode_item'] ?>', '<?php echo '2' ?>', '<?php echo $l2['no_job'] ?>')" id="btnstart2<?php echo $key ?>"> <i class="fa fa-play-circle"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause2[<?php echo $key ?>]('<?php echo $l2['no_job'] ?>', '<?php echo $l2['kode_item'] ?>', '<?php echo $key ?>')" id="btnlanjut2<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset2[<?php echo $key ?>]('<?php echo $l2['no_job'] ?>')" id="btnrestart2<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>

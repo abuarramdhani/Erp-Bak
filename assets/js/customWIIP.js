@@ -49,6 +49,7 @@ const saveNewRKHEdit = _ => {
           text: ''
         }).then(_ => {
           list_Arrage($('#dateSaveWIIP').val()+'_'+$('#jenisSaveWIIP').val().substring(0, 1));
+          $('#wipp2').modal('toggle');
         })
       }else {
         swalWIPPToastrAlert('error', 'Gagal menyimpan data!, No Job '+result+' telah ada sebelumnya.');
