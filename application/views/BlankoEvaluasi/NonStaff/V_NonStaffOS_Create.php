@@ -647,7 +647,7 @@
     workerSelect.on('change', function() {
       const selected = this.value
       if (!selected) return
-
+      $('#periode-awal, #periode-akhir').val('').trigger('change')
       vueApp.getWorkerInformation(selected)
     })
   })
@@ -870,11 +870,20 @@
         fetch(TIMS)
           .then(e => e.json())
           .then(e => this.$data.tempState.tims = e.data)
-          .catch(e => alert("Error, tidak dapat megambil data"))
+          .catch(e => {
+            this.$data.state.worker.presensi_ok = ""
+
+            alert("Error, tidak dapat megambil data")
+          })
+
         fetch(calcTIMS)
           .then(e => e.json())
           .then(e => this.$data.state.worker.presensi_ok = e.data.passed)
-          .catch(e => alert("Error, tidak dapat mengambil data"))
+          .catch(e => {
+            this.$data.state.worker.presensi_ok = ""
+
+            alert("Error, tidak dapat mengambil data")
+          })
 
       },
       resetForm() {
