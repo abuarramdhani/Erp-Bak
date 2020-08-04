@@ -335,14 +335,15 @@ class C_Index extends CI_Controller {
                 
 			}
 			
-			$emailTemp = array("nugroho@quick.com","bondan_surya_n@quick.com");
-			
-			 $this->EmailAlertInternal('trial', $messagesTemp, $emailTemp);
+		
 				
 
 			// }
             
 		}
+			$emailTemp = array("nugroho@quick.com","bondan_surya_n@quick.com");
+			
+			 $this->EmailAlertInternal('trial', $messagesTemp, $emailTemp);
 
 	}
 
@@ -542,7 +543,7 @@ class C_Index extends CI_Controller {
 
 	public function pingDomain($domain)
 	{
-		$check =  exec('ping -c 3 -w 1 '.$domain);
+		$check =  exec('ping -c 3 -w 3 '.$domain);
 		if ($check) {
 			$status = 0;
 		}else {
