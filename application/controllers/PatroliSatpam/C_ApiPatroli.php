@@ -322,7 +322,7 @@ class C_ApiPatroli extends CI_Controller
 			$databasetime = strtotime($jam_terakhir);
 			$curtime      = time();
 			$dif = $curtime - $databasetime;
-			if($dif > 100 && $ronde != 0){
+			if($dif > 1800 && $ronde != 0){
 				$ronde = 0;
 				$data['alret'] = 1;
 				$data['alert_message'] = "Apakah Anda ingin melanjutkan patroli di Round ".$data['last']."?";
