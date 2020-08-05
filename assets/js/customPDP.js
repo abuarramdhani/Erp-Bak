@@ -57,7 +57,8 @@ $(document).ready(function() {
                 title: '',
                 filename: 'Pengiriman Dokumen'
             }
-            ]
+            ],
+            aaSorting: []
     }).columns().every(function() {
         let a = this;
         $("input", this.footer()).on("keyup change", function() {
