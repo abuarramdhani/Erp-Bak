@@ -341,9 +341,9 @@ class C_Index extends CI_Controller {
 			// }
             
 		}
-			$emailTemp = array("nugroho@quick.com","bondan_surya_n@quick.com");
+// 			$emailTemp = array("nugroho@quick.com","bondan_surya_n@quick.com");
 			
-			 $this->EmailAlertInternal('trial', $messagesTemp, $emailTemp);
+// 			 $this->EmailAlertInternal('trial', $messagesTemp, $emailTemp);
 
 	}
 
