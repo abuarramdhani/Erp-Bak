@@ -125,7 +125,7 @@ class M_inputdata extends CI_Model
 
     function ajaxShowDetail($id){
         $sql = "SELECT id_riwayat, id_data, status, tgl_update, level, 
-        (case when level = '0' then (select noind from ps.tdata where id_data = tr.id_data) else tr.user end ) as user,
+        tr.user,
         (select id_master from ps.tdata where id_data = tr.id_data) as id_master
         FROM ps.triwayat tr WHERE id_data='$id' order by level";
 

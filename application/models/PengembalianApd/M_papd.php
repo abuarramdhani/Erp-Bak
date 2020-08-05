@@ -1,17 +1,17 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
-* 
-*/
+ * 
+ */
 class M_papd extends CI_Model
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
-        $this->load->database();
-        $this->personalia   =   $this->load->database('personalia', TRUE) ;
-        $this->erp          =   $this->load->database('erp_db', TRUE);
-        $this->oracle       =   $this->load->database('oracle', TRUE);
+		$this->load->database();
+		$this->personalia   =   $this->load->database('personalia', TRUE);
+		$this->erp          =   $this->load->database('erp_db', TRUE);
+		$this->oracle       =   $this->load->database('oracle', TRUE);
 	}
 
 	public function ListSemuaPkjTpribadi($param)
@@ -62,24 +62,29 @@ class M_papd extends CI_Model
 
 	public function getListPengembalianPekerja($ks)
 	{
-		$sql = "SELECT
-					ta.*,
-					trim(tp.nama) nama,
-					trim(ts.seksi) seksi,
-					(select count(*) from \"Surat\".tpengembalian_apd_detail where id_apd = ta.id) item,
-					case
-						when ta.status = 0 then 'New'
-						when ta.status = 1 then 'Approved'
-						when ta.status = 2 then 'Rejected' end as stat
-				from
-					\"Surat\".tpengembalian_apd ta
-				left join hrd_khs.tpribadi tp on
-					tp.noind = ta.noind
-				left join hrd_khs.tseksi ts on
-					ts.kodesie = tp.kodesie
-					where tp.kodesie like '$ks%'
-					order by ta.id desc";
-					// echo $sql; exit();
+		$sql = "SELECT * FROM (
+							SELECT
+								ta.*,
+								trim(tp.nama) nama,
+								trim(tp.kodesie) kodesie,
+								trim(ts.seksi) seksi,
+								(select count(*) from \"Surat\".tpengembalian_apd_detail where id_apd = ta.id) item,
+								(case
+									when ta.status = 0 then 'New'
+									when ta.status = 1 then 'Approved'
+									when ta.status = 2 then 'Rejected' 
+								end) as stat,
+								(select substring(kodesie, 0, 8) from hrd_khs.tpribadi where noind = ta.create_by) as kodesie_pembuat
+								from
+									\"Surat\".tpengembalian_apd ta
+								left join hrd_khs.tpribadi tp on
+									tp.noind = ta.noind
+								left join hrd_khs.tseksi ts on
+									ts.kodesie = tp.kodesie
+									order by ta.id desc
+							) as data
+						WHERE kodesie like '$ks%' or kodesie_pembuat like '$ks%'";
+		// echo $sql; exit();
 		return $this->personalia->query($sql)->result_array();
 	}
 
