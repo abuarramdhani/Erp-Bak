@@ -145,7 +145,7 @@ class M_blankoevaluasi extends CI_Model
     {
         if (!$kodesie) return [];
 
-        $supervisor = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('13', '11', '12') and tp.keluar = '0';";
+        $supervisor = "SELECT distinct tr.noind, trim(tp.nama) as nama, (case when tp.kd_jabatan = '13' then 'supervisor' else 'kasie' end) as jabatan from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('13', '11', '12') and tp.keluar = '0';";
         $kasie = "SELECT distinct tr.noind, trim(tp.nama) as nama from hrd_khs.trefjabatan tr inner join hrd_khs.tpribadi tp on tp.noind = tr.noind WHERE substring(tr.kodesie, 1 ,7) = substring('$kodesie', 1, 7) and tp.kd_jabatan in ('11', '12') and tp.keluar = '0';";
         //  == personalia(4) 
         if (substr($kodesie, 0, 1) == 4) {
