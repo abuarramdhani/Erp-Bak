@@ -19,7 +19,7 @@
                 <br />
                 <div class="row">
                     <div class="col-lg-12">
-                        <form action="<?= base_url('AdmSeleksi/SuratPenyerahan/saveEditPenyerahan') ?>" class="form-horizontal" method="post" onsubmit="return confirm('Apakah anda yakin ingin mengupdate data ?');">
+                        <form action="<?= base_url('AdmSeleksi/SuratPenyerahan/saveEditPenyerahan') ?>" class="form-horizontal" method="post">
                             <div class="box box-solid box-primary">
                                 <div class="box-header with-border"><b>
                                         <p style="font-size: 15px">--- Edit Surat Penyerahan ---</p>
@@ -31,7 +31,7 @@
                                                 <div class="form-group">
                                                     <label for="txt_tgl_SP" class="col-lg-4 control-label text-left">Tanggal Penyerahan</label>
                                                     <div class="col-lg-5">
-                                                        <input type="text" name="txt_tgl_SP" class="form-control" id="txt_tgl_SP" value="<?= $data[0]['tgl_masuk'] ?>" readonly>
+                                                        <input type="text" name="txt_tgl_SP" class="form-control" id="txt_tgl_SP_edit" value="<?= $data[0]['tgl_masuk'] ?>" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -44,6 +44,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <input type="text" name="masa_pkl" hidden value="<?= $data[0]['gol'] ?>" id="HideMasaPKL">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -572,7 +573,8 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="panel-footer row text-center" style="margin-top: 20px;">
-                                            <button type="submit" name="button" class="btn btn-success">Simpan</button>
+                                            <button type="button" name="button" class="btn btn-success" id="button_edit">Simpan</button>
+                                            <button type="submit" class="hide" id="button_simpan_edit">Simpan</button>
                         </form>
                         <button onclick="window.close()" type="button" name="button" class="btn btn-danger">Back</button>
                     </div>
