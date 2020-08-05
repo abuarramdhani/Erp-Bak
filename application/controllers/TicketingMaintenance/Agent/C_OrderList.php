@@ -66,7 +66,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/OrderListnya/V_orderList', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_orderList', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -149,7 +149,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_orderListById', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_orderListById', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
