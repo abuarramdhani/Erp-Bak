@@ -371,13 +371,23 @@
 						if (strstr($value, 'DEPARTEMEN') || strstr($value, 'BIDANG') || strstr($value, 'UNIT')) {
 							unset($value);
 						} else {
-							echo $no++ . '. ' . $value . '<br>';
+							if (strstr($value, 'KHS TUKSONO')) {
+								$tebus = explode(' KHS TUKSONO', $value);
+								echo $no++ . '. ' . $tebus[0] . '<br>';
+							} else {
+								echo $no++ . '. ' . $value . '<br>';
+							}
 						}
 					} else {
 						if (strstr($value, 'DEPARTEMEN') || strstr($value, 'BIDANG')) {
 							unset($value);
 						} else {
-							echo $no++ . '. ' . $value . '<br>';
+							if (strstr($value, 'KHS TUKSONO')) {
+								$tebus = explode(' KHS TUKSONO', $value);
+								echo $no++ . '. ' . $tebus[0] . '<br>';
+							} else {
+								echo $no++ . '. ' . $value . '<br>';
+							}
 						}
 					}
 				}

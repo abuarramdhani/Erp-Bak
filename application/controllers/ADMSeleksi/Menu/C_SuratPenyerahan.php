@@ -89,6 +89,7 @@ class C_SuratPenyerahan extends CI_Controller
     public function saveEditPenyerahan()
     {
         $noind      = $_POST['input_noind_baru_SP'];
+        $jenis      = $_POST['slc_pkj_SP'];
         $kodesie    = $_POST['inpKodesie_SP'];
         $kantor     = $_POST['slc_kantor_SP'];
         $loker      = $_POST['slc_loker_SP'];
@@ -118,6 +119,12 @@ class C_SuratPenyerahan extends CI_Controller
         $jabatan    = $_POST['txt_jabatan_SP'];
         $jab_upah   = $_POST['slc_jab_upah'];
         $npwp       = $_POST['txtNPWP_SP'];
+        $golongan   = $_POST['masa_pkl'];
+        $kontrak_hubker = $_POST['txt_lama_kontrak'];
+        $akt_seleksi    = $_POST['inp_tgl_angkat_SP'];
+        $ori_hubker     = $_POST['txt_try_hubker'];
+        $ik_hubker      = $_POST['txt_IK_hubker'];
+        $tgl_pyrhn = date('Y-m-d', strtotime($_POST['txt_tgl_SP']));
 
         if ($jab_upah) {
             $explode_jabatan = explode('|', $jab_upah);
@@ -128,10 +135,50 @@ class C_SuratPenyerahan extends CI_Controller
             $this->M_penyerahan->updateStatusjabatan($stat_jab_upah, $noind);
         }
 
-        $provinsi   = $this->M_pekerjakeluar->ambilProv($prop);
-        $kabupaten  = $this->M_pekerjakeluar->ambilKab($kab);
-        $kecamatan  = $this->M_pekerjakeluar->ambilKec($kec);
-        $desa       = $this->M_pekerjakeluar->ambilDesa($desa);
+        if (intval($prop)) {
+            $provinsi   = $this->M_pekerjakeluar->ambilProv($prop);
+            $kabupaten  = $this->M_pekerjakeluar->ambilKab($kab);
+            $kecamatan  = $this->M_pekerjakeluar->ambilKec($kec);
+            $desa       = $this->M_pekerjakeluar->ambilDesa($desa);
+        }
+
+        //Insert into hrd_khs.tpribadi
+        $jenis = $this->M_penyerahan->getNoJenisPenyerahan($jenis);
+        if ($jenis == '7' || $jenis == '13') {
+            if ($golongan == 'PKL1') {
+                $masaPKL = '6';
+            } elseif ($golongan == 'PKL2') {
+                $masaPKL = '12';
+            } elseif ($golongan == 'PKL3') {
+                $masaPKL = '36';
+            } else {
+                $masaPKL = '';
+            }
+
+            if ($masaPKL) {
+                $tgl_keluar     = date('Y-m-d', strtotime("+" . $masaPKL . " months", strtotime($tgl_pyrhn)));
+            } else {
+                $tgl_keluar     = date('Y-m-d', strtotime("+1 months", strtotime($tgl_pyrhn)));
+            }
+            $akhir_kontrak  = date('Y-m-d', strtotime("-1 days", strtotime($tgl_keluar)));
+            $tgl_selesai_pkl = date('Y-m-d', strtotime('1900-01-01'));
+            $lama_kontrak = '';
+        } elseif ($jenis == '8') {
+            $akhir_kontrak  = date('Y-m-d', strtotime("+6 months", strtotime($tgl_pyrhn)));
+            $tgl_keluar     = date('Y-m-d', strtotime("+1 days", strtotime($akhir_kontrak)));
+            $tgl_selesai_pkl = $akhir_kontrak;
+            $lama_kontrak = '';
+        } elseif ($jenis == '4' || $jenis == '5' || $jenis == '11' || $jenis == '15') {
+            $tgl_keluar     = date('Y-m-d', strtotime("+" . $kontrak_hubker . " months", strtotime($akt_seleksi)));
+            $akhir_kontrak  = date('Y-m-d', strtotime("-1 days", strtotime($tgl_keluar)));
+            $tgl_selesai_pkl = date('Y-m-d', strtotime('1900-01-01'));
+            $lama_kontrak = $kontrak_hubker;
+        } else { //1, 2, 3, 6, 7, 9, 10, 12, 14, 16
+            $tgl_keluar     = date('Y-m-d', strtotime("+" . $kontrak_hubker . " months", strtotime($tgl_pyrhn)));
+            $akhir_kontrak  = date('Y-m-d', strtotime("-1 days", strtotime($tgl_keluar)));
+            $tgl_selesai_pkl = date('Y-m-d', strtotime('1900-01-01'));
+            $lama_kontrak = $kontrak_hubker;
+        }
 
         //Update hrd_khs.tpribadi
         $pribadi = array(
@@ -151,23 +198,33 @@ class C_SuratPenyerahan extends CI_Controller
             'sekolah'       => ucwords(strtoupper($sekolah)),
             'jurusan'       => $jurusan,
             'alamat'        => $alamat,
-            'prop'          => $provinsi[0]['nama'],
-            'kab'           => $kabupaten[0]['nama'],
-            'kec'           => $kecamatan[0]['nama'],
-            'desa'          => $desa[0]['nama'],
+            'prop'          => (intval($prop)) ? $provinsi[0]['nama'] : $prop,
+            'kab'           => (intval($kab)) ? $kabupaten[0]['nama'] : $kab,
+            'kec'           => (intval($kec)) ? $kecamatan[0]['nama'] : $kec,
+            'desa'          => (intval($desa)) ? $desa[0]['nama'] : $desa,
             'kodepos'       => $kodepos,
             'telepon'       => $telpun,
             'nohp'          => $no_hp,
             'npwp'          => $npwp,
             'kd_jabatan'    => $kd_jabatan,
             'jabatan'       => $jabatan,
+            'diangkat'      => $akt_seleksi,
+            'masukkerja'    => date('Y-m-d', strtotime($tgl_pyrhn)),
+            'lmkontrak'     => $lama_kontrak,
+            'akhkontrak'    => $akhir_kontrak,
+            'tglkeluar'     => $tgl_keluar,
         );
         $this->M_penyerahan->updateTpribadi($pribadi, $noind);
 
         //Update "Surat".tsurat_penyerahan
         $surat_penyerahan = array(
-            'asal_sekolah'  => ucwords(strtoupper($sekolah)),
-            'ruang'         => $ruang,
+            'asal_sekolah'      => ucwords(strtoupper($sekolah)),
+            'ruang'             => $ruang,
+            'tgl_masuk'         => date('Y-m-d', strtotime($tgl_pyrhn)),
+            'tgl_selesai_pkl'   => $tgl_selesai_pkl,
+            'tgl_mulaiik'       => $ik_hubker ? $ik_hubker : date('Y-m-d', strtotime('1900-01-01')),
+            'lama_trainee'      => $ori_hubker ? $ori_hubker : '0',
+            'lama_kontrak'      => $kontrak_hubker ? $kontrak_hubker : '0',
         );
         $this->M_penyerahan->updateTSuratPenyerahan($surat_penyerahan, $noind);
 
@@ -177,8 +234,96 @@ class C_SuratPenyerahan extends CI_Controller
         //Tidak update hrd_khs.trefjabatan
         //Tidak update ""Adm_Seleksi"".tb_pekerja_diangkat_versi_seleksi
         //Tidak update "FrontPresensi.ttmppribadi
+
         //Update "Presensi".tshiftpekerja
-        // $this->M_penyerahan->updateTshiftPekerja($noind, $shift);
+        //Di generate berdasarkan sisa hari di bulan berjalan terhitung dari tanggal masuk
+        $arTshiftPekerja = array();
+        $tanggal = array();
+        $akhir_bulan = date('t');
+        $tgl_serahin = date('d', strtotime($tgl_pyrhn));
+        $hasil = false;
+        $noind_baru = $this->dabes->query("SELECT noind_baru from hrd_khs.tpribadi where noind = '$noind'")->row()->noind_baru;
+        while (!$hasil) {
+            if ($tgl_serahin != $akhir_bulan) {
+                array_push($tanggal, date('Y-m-') . $tgl_serahin);
+            } else {
+                array_push($tanggal, date('Y-m-') . $tgl_serahin);
+                $hasil = true;
+            }
+            $tgl_serahin++;
+        }
+        foreach ($tanggal as $key) {
+            $hari = date('l', strtotime($key));
+            if ($hari == 'Sunday') {
+                $num = '1';
+            } else if ($hari == 'Monday') {
+                $num = '2';
+            } else if ($hari == 'Tuesday') {
+                $num = '3';
+            } else if ($hari == 'Wednesday') {
+                $num = '4';
+            } else if ($hari == 'Thursday') {
+                $num = '5';
+            } else if ($hari == 'Friday') {
+                $num = '6';
+            } else {
+                $num = '7';
+            }
+            $dataShift = $this->M_penyerahan->getDataShift($shift, $num);
+            foreach ($dataShift as $value) {
+                $cekShiftPekerja = $this->M_penyerahan->cekPekerjaDalamShift($key, $noind, $kodesie);
+                if (empty($cekShiftPekerja)) {
+                    $arTshiftPekerja = array(
+                        'tanggal'           => $key,
+                        'noind'             => $noind,
+                        'kd_shift'          => $value['kd_shift'],
+                        'kodesie'           => $kodesie,
+                        'tukar'             => '0',
+                        'jam_msk'           => $value['jam_msk'],
+                        'jam_akhmsk'        => $value['jam_akhmsk'],
+                        'jam_plg'           => $value['jam_plg'],
+                        'break_mulai'       => $value['break_mulai'],
+                        'break_selesai'     => $value['break_selesai'],
+                        'ist_mulai'         => $value['ist_mulai'],
+                        'ist_selesai'       => $value['ist_selesai'],
+                        'jam_kerja'         => $value['jam_kerja'],
+                        'user_'             => $this->session->user,
+                        'noind_baru'        => $noind_baru
+                    );
+                    $this->M_penyerahan->insertTshiftPekerja($arTshiftPekerja);
+                } else {
+                    $arTshiftPekerja = array(
+                        'kd_shift'          => $value['kd_shift'],
+                        'jam_msk'           => $value['jam_msk'],
+                        'jam_akhmsk'        => $value['jam_akhmsk'],
+                        'jam_plg'           => $value['jam_plg'],
+                        'break_mulai'       => $value['break_mulai'],
+                        'break_selesai'     => $value['break_selesai'],
+                        'ist_mulai'         => $value['ist_mulai'],
+                        'ist_selesai'       => $value['ist_selesai'],
+                        'jam_kerja'         => $value['jam_kerja'],
+                        'user_'             => $this->session->user,
+                    );
+                    $this->M_penyerahan->updateTshiftPekerja(
+                        //data
+                        $value['kd_shift'],
+                        $value['jam_msk'],
+                        $value['jam_akhmsk'],
+                        $value['jam_plg'],
+                        $value['break_mulai'],
+                        $value['break_selesai'],
+                        $value['ist_mulai'],
+                        $value['ist_selesai'],
+                        $value['jam_kerja'],
+                        $this->session->user,
+                        //where
+                        $key,
+                        $noind,
+                        $kodesie
+                    );
+                }
+            }
+        }
         echo "<script>window.close()</script>";
     }
 
@@ -667,7 +812,7 @@ class C_SuratPenyerahan extends CI_Controller
             } else {
                 $num = '7';
             }
-            $dataShift = $this->M_penyerahan->getDataShift('4', $num);
+            $dataShift = $this->M_penyerahan->getDataShift($shift, $num);
             foreach ($dataShift as $value) {
                 $cekShiftPekerja = $this->M_penyerahan->cekPekerjaDalamShift($key, $noind, $kodesie);
                 if (empty($cekShiftPekerja)) {

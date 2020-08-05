@@ -215,7 +215,7 @@
                                     <div class="form-group">
                                         <label for="slc_petugas1_SP" class="col-lg-4 control-label">Petugas 1</label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="petugas" value="in" id="slc_petugas1_SP" class="form-control">
+                                            <input type="text" name="petugas" value="eka" id="slc_petugas1_SP" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -247,7 +247,7 @@
                                             <select class="select select2 form-control" name="slc_approval_SP" id="slc_approval_SP" style="width: 100% !important" required>
                                                 <option value=""></option>
                                                 <?php foreach ($approval as $val) { ?>
-                                                    <option <?php if ($val['noind'] == 'B0624') {
+                                                    <option <?php if ($val['noind'] == 'B0896') {
                                                                 echo 'selected';
                                                             } else {
                                                                 echo '';

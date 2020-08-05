@@ -671,7 +671,6 @@ $(document).ready(function () {
         }
     })
 
-
     $('#slc_kodesie_SP').on('change', function () {
         let kode = $(this).val()
         $('.input_Pekerja_SP').iCheck('uncheck')
@@ -1678,6 +1677,30 @@ $(document).ready(function () {
                 }
             })
         }
+    })
+
+    $('#button_edit').on('click', () => {
+        swal.fire({
+            title: 'Warning',
+            html: '<p>Apakah anda yakin ingin mengupdate data ?</p>',
+            type: 'warning',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {
+                swal.fire({
+                    title: 'Success',
+                    text: 'Sukses mengupdate data',
+                    type: 'success',
+                    timer: '1500',
+                    allowClickOutside: false,
+                    showConfirmButton: false
+                }).then(() => {
+                    $('#button_simpan_edit').click()
+                    return true
+                })
+            }
+        })
     })
 })
 
