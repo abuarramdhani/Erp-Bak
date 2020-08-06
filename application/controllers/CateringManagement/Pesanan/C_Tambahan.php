@@ -34,6 +34,7 @@ class C_Tambahan extends CI_Controller
     public function index(){
         $user_id = $this->session->userid;
 
+        $data['Header'] = 'Pesanan Tambahan '.date('Y-m-d');
         $data['Title'] = 'Pesanan Tambahan';
         $data['Menu'] = 'Pesanan Tambahan';
         $data['SubMenuOne'] = '';

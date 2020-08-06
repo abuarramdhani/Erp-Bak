@@ -3121,6 +3121,7 @@ $(document).on('ready', function(){
 	});
 
 	$('#txt-CM-Tambahan-Tanggal').on('change', function(){
+		document.title = 'Pesanan Tambahan ' + $(this).val();
 		$('#CateringTambahanLoading').show();
 		$('#slc-CM-Tambahan-Kategori').val("").change();
 		$('#slc-CM-Tambahan-Shift').val("").change();
@@ -3820,6 +3821,7 @@ $(document).on('ready', function(){
 	});
 
 	$('#txt-CM-Pengurangan-Tanggal').on('change', function(){
+		document.title = 'Pengurangan Pesanan ' + $(this).val();
 		$('#CateringPenguranganLoading').show();
 		$('#slc-CM-Pengurangan-Kategori').val("").change();
 		$('#slc-CM-Pengurangan-Shift').val("").change();

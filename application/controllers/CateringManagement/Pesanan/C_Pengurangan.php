@@ -34,6 +34,7 @@ class C_Pengurangan extends CI_Controller
     public function index(){
         $user_id = $this->session->userid;
 
+        $data['Header'] = 'Pengurangan Pesanan '.date('Y-m-d');
         $data['Title'] = 'Pengurangan Pesanan';
         $data['Menu'] = 'Pengurangan Pesanan';
         $data['SubMenuOne'] = '';
