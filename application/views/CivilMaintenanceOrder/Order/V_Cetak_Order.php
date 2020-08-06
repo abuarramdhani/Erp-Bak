@@ -17,7 +17,8 @@
 		<td class="samaDengan">:</td>
 		<td>
 			<?= //$this->konversibulan->KonversiAngkaKeBulan($order['tgl_order'])
-				date('d-F-Y', strtotime($order['tgl_order']))
+				// date('d F Y', strtotime($order['tgl_order']))
+				strftime('%d %B %Y',strtotime($order['tgl_order']));
 			 ?>
 		</td>
 	</tr>
@@ -99,7 +100,7 @@
 	<tr>
 		<td>Tanggal Dibutuhkan</td>
 		<td class="samaDengan">:</td>
-		<td><?= date('d-F-Y', strtotime($order['tgl_dibutuhkan'])) ?></td>
+		<td><?= strftime('%d %B %Y', strtotime($order['tgl_dibutuhkan'])) ?></td>
 	</tr>
 </table>
 <table border="1" style="border-collapse: collapse; width: 100%; margin-top: 100px;">

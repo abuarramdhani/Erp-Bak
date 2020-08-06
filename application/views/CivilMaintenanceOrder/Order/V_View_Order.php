@@ -65,8 +65,8 @@
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border"></div>
                             <div class="box-body lblmt cmo_ifchange">
-                                <div class="col-md-8">
-                                    <div class="col-md-12">
+                                <div class="col-md-12">
+                                    <div class="col-md-8">
                                         <div class="col-md-4">
                                             <label>Order Dari</label>
                                         </div>
@@ -74,7 +74,14 @@
                                             : <?= $order['pengorder'].' - '.$order['dari'] ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
+                                    <div class="col-md-4">
+                                        <div class="col-md-12">
+                                            <label style="font-size: 14px;" class="mco_isiData ellipse" title="<?= trim($order['section_name']) ?>">
+                                                Seksi : <?= empty(trim($order['section_name'])) ? '-':trim($order['section_name']) ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" style="margin-top: 10px;">
                                         <div class="col-md-4">
                                             <label>Tanggal Order</label>
                                         </div>
@@ -82,7 +89,12 @@
                                             : <?= date('d-M-Y', strtotime($order['tgl_order'])) ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
+                                    <div class="col-md-4">
+                                        <div class="col-md-12">
+                                            <label style="font-size: 14px;" class="mco_isiData">Lokasi : <?= empty(trim($order['location_name'])) ? '-':trim($order['location_name']) ?></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" style="margin-top: 10px;">
                                         <div class="col-md-4">
                                             <label>Penerima Order</label>
                                         </div>
@@ -90,15 +102,7 @@
                                            : <?= $order['penerima_order'].' - '.$order['ke'] ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
-                                        <div class="col-md-4">
-                                            <label>Tanggal Terima</label>
-                                        </div>
-                                        <div class="col-md-8 izi">
-                                            : <?= date('d-M-Y', strtotime($order['tgl_terima'])) ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
+                                    <div class="col-md-8" style="margin-top: 10px;">
                                         <div class="col-md-4">
                                             <label>Jenis Pekerjaan</label>
                                         </div>
@@ -106,7 +110,7 @@
                                             : <?= $order['jenis_pekerjaan'] ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
+                                    <div class="col-md-8" style="margin-top: 10px;">
                                         <div class="col-md-4">
                                             <label>Jenis Order</label>
                                         </div>
@@ -114,7 +118,7 @@
                                             : <?= $order['jenis_order'] ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
+                                    <div class="col-md-8" style="margin-top: 10px;">
                                         <div class="col-md-4">
                                             <label>Judul Order</label>
                                         </div>
@@ -122,7 +126,7 @@
                                             : <?= $order['judul'] ?> <?= (!empty($order['ket'])) ? '('.$order['ket'].')':'' ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-8">
                                             <div class="col-md-12">
                                                 <label>Ex : Penambahan wastafel di Area X, Pemangkasan pohon di depan Gedung, Reparasi urinoir mampet</label>
                                             </div>
@@ -141,6 +145,7 @@
                                                     <th width="15%">Qty</th>
                                                     <th width="15%">Satuan</th>
                                                     <th>Keterangan</th>
+                                                    <th>lampiran</th>
                                                 </thead>
                                                 <tbody class="mco_daftarPek_Append">
                                                     <?php if (empty($ket)): ?>
@@ -162,6 +167,25 @@
                                                         </td>
                                                         <td>
                                                             <?= $k['keterangan'] ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php 
+                                                            $no_lamp = 1;
+                                                            foreach ($lampiran as $lamp) {
+                                                                if ($lamp['pekerjaan'] == $k['pekerjaan']) {
+                                                                    $lamp_path = explode('/', $lamp['path']);
+                                                                    if ($no_lamp > 1) {
+                                                                        echo "<br>";
+                                                                    }
+                                                                    ?>
+                                                                    <a target="_blank" href="<?= base_url('civil-maintenance-order/order/download_file/'.$lamp['attachment_id']) ?>">
+                                                                        <?php echo $no_lamp.". ".end($lamp_path) ?>
+                                                                    </a>
+                                                                    <?php
+                                                                    $no_lamp++; 
+                                                                }
+                                                            }
+                                                            ?>
                                                         </td>
                                                     </tr>
                                                     <?php $x++; endforeach ?>
@@ -244,40 +268,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12">
-                                    <label style="font-size: 14px;" class="mco_isiData ellipse" title="<?= trim($order['section_name']) ?>">
-                                            Seksi : <?= empty(trim($order['section_name'])) ? '-':trim($order['section_name']) ?>
-                                        </label>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label style="font-size: 14px;" class="mco_isiData">Lokasi : <?= empty(trim($order['location_name'])) ? '-':trim($order['location_name']) ?></label>
-                                    </div>
-                                    <div class="col-md-12 text-center" style="margin-top: 10px;">
-                                        <h3 style="font-weight: bold;">Lampiran</h3>
-                                    </div>
-                                    <?php $x=1; foreach ($lampiran as $key): 
-                                        $file = explode('/', $key['path']);
-                                    ?>
-                                        <div class="col-md-12 mco_insertafter" style="margin-top: 10px;">
-                                            <div class="col-md-10">
-                                                <input type="text" class="form-control mco_lampiranFile" value="<?= end($file); ?>">
-                                            </div>
-                                            <div class="col-md-2 text-center">
-                                                <a target="_blank" href="<?= base_url('civil-maintenance-order/order/download_file/'.$key['attachment_id']) ?>" class="btn btn-success">
-                                                    <i class="fa fa-download"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    <?php $x++; endforeach ?>
-                                    <div class="col-md-12 text-center" style="margin-top: 30px;">
-                                        <a title="Edit Lampiran" href="<?= base_url('civil-maintenance-order/order/edit_lampiran/'.$key['order_id']); ?>" class="btn-md btn btn-info cmo_upJnsOrder">
-                                            <i class="fa fa-file-o"></i> 
-                                            Edit Lampiran
-                                        </a>
-                                    </div>
-                                </div>
-                                
+                                                                
                                 <div style="margin-top: 30px;" class="col-md-12 text-left">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
