@@ -21,7 +21,7 @@ const swalMTT = (type, title) => {
 }
 
 const update_mtt = (line_id) => {
-  if ($(`alasan_${line_id}`).val() !== '') {
+  if ($(`#alasan_${line_id}`).val() != '') {
     $.ajax({
       url: baseurl + 'MOTerlambatTransact/Monitoring/Update',
       type: 'POST',
@@ -29,7 +29,7 @@ const update_mtt = (line_id) => {
       dataType: 'JSON',
       data: {
         line_id: line_id,
-        alasan: $(`alasan_${line_id}`).val(),
+        alasan: $(`#alasan_${line_id}`).val(),
       },
       beforeSend: function() {
         Swal.fire({

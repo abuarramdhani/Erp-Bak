@@ -77,7 +77,7 @@ class C_Master extends CI_Controller
        $line_id = $this->input->post('line_id');
        $alasan = strtoupper($this->input->post('alasan'));
 
-       $user_id = $this->session->userid;
+       $user_id = $this->session->user;
        $nama = $this->session->employee;
        $namanya = $user_id.' - '.$nama;
 
