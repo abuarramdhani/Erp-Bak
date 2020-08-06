@@ -57,7 +57,13 @@
                         <td class="text-center"><?php echo $g['QUANTITY_DELIVERED'] ?></td>
                         <td class="text-center"><?php echo $g['STATUS'] ?></td>
                         <td class="text-center">
-                          <button type="button" class="btn btn-sm bg-navy" onclick="detail_mtt('<?php echo $g['LINE_ID'] ?>', '<?php echo $g['ALASAN'] ?>')" style="border-radius:5px;padding:5px;margin-top:0;" name="button"><i class="fa fa-cube"></i> Alasan Keterlambatan</button>
+                          <?php if ($g['ALASAN'] != '') { ?>
+                            ALASAN : <span id="alsn_<?php echo $g['LINE_ID'] ?>"><?php echo $g['ALASAN'] ?></span> <br>
+                            <button type="button" class="btn btn-sm bg-navy" onclick="detail_mtt('<?php echo $g['LINE_ID'] ?>', '<?php echo $g['ALASAN'] ?>')" style="border-radius:5px;padding:5px;margin-top:5px;" name="button"><i class="fa fa-pencil"></i> Edit</button>
+
+                          <?php }else { ?>
+                            <button type="button" class="btn btn-sm bg-navy" onclick="detail_mtt('<?php echo $g['LINE_ID'] ?>', '<?php echo $g['ALASAN'] ?>')" style="border-radius:5px;padding:5px;margin-top:0;" name="button"><i class="fa fa-cube"></i> Alasan Keterlambatan</button>
+                          <?php  }?>
                         </td>
                       </tr>
                       <?php endforeach; ?>
