@@ -3177,7 +3177,8 @@ $(document).on('ready', function(){
 							tambahan.fb_kategori,
 							tambahan.fn_jumlah_pesanan,
 							tambahan.fs_pemohon,
-							tambahan.fs_keterangan
+							tambahan.fs_keterangan,
+							tambahan.list_pekerja
 						]).draw(false);
 					})
 					tblCMTambahan.columns.adjust().draw();
@@ -3415,7 +3416,8 @@ $(document).on('ready', function(){
 													tambahan.fb_kategori,
 													tambahan.fn_jumlah_pesanan,
 													tambahan.fs_pemohon,
-													tambahan.fs_keterangan
+													tambahan.fs_keterangan,
+													tambahan.list_pekerja
 												]).draw(false);
 											})
 											tblCMTambahan.columns.adjust().draw();
@@ -3576,7 +3578,8 @@ $(document).on('ready', function(){
 													tambahan.fb_kategori,
 													tambahan.fn_jumlah_pesanan,
 													tambahan.fs_pemohon,
-													tambahan.fs_keterangan
+													tambahan.fs_keterangan,
+													tambahan.list_pekerja
 												]).draw(false);
 											})
 											tblCMTambahan.columns.adjust().draw();
@@ -3868,7 +3871,8 @@ $(document).on('ready', function(){
 							pengurangan.shift,
 							pengurangan.fb_kategori,
 							pengurangan.fs_tempat_makanpg,
-							pengurangan.fn_jml_tdkpesan
+							pengurangan.fn_jml_tdkpesan,
+							pengurangan.list_pekerja
 						]).draw(false);
 					})
 					$('#CateringPenguranganLoading').hide();
@@ -4087,7 +4091,8 @@ $(document).on('ready', function(){
 													pengurangan.shift,
 													pengurangan.fb_kategori,
 													pengurangan.fs_tempat_makanpg,
-													pengurangan.fn_jml_tdkpesan
+													pengurangan.fn_jml_tdkpesan,
+													pengurangan.list_pekerja
 												]).draw(false);
 											})
 											tblCMPengurangan.columns.adjust().draw();
@@ -4234,7 +4239,8 @@ $(document).on('ready', function(){
 													pengurangan.shift,
 													pengurangan.fb_kategori,
 													pengurangan.fs_tempat_makanpg,
-													pengurangan.fn_jml_tdkpesan
+													pengurangan.fn_jml_tdkpesan,
+													pengurangan.list_pekerja
 												]).draw(false);
 											})
 											tblCMPengurangan.columns.adjust().draw();

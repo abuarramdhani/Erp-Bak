@@ -179,6 +179,7 @@
 													<th style="text-align: center;vertical-align: middle;">Status</th>
 													<th style="text-align: center;vertical-align: middle;">Tempat Makan Baru</th>
 													<th style="text-align: center;vertical-align: middle;">Jumlah</th>
+													<th style="text-align: center;vertical-align: middle;">List Pekerja</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -194,6 +195,7 @@
 															<td><?php echo $dt['fb_kategori'] ?></td>
 															<td><?php echo $dt['fs_tempat_makanpg'] ?></td>
 															<td style="text-align: center;"><?php echo $dt['fn_jml_tdkpesan'] ?></td>
+															<td style="text-align: center;"><?php echo $dt['list_pekerja'] ?></td>
 														</tr>
 														<?php 
 														$nomor++;
