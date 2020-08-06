@@ -15,6 +15,16 @@ class M_mutasipekerja extends CI_Model
     			b.nama,
 				concat(c.dept,' / ',c.bidang,' / ',c.unit,' / ',c.seksi) as seksi_lama, 
 				concat(c.dept, '/ ',d.bidang,' / ',d.unit,' / ',d.seksi) as seksi_baru, 
+                (
+                    select e.lokasi_kerja 
+                    from hrd_khs.tlokasi_kerja e 
+                    where e.id_ = a.lokasilm
+                ) as lokasilm,
+                (
+                    select e.lokasi_kerja
+                    from hrd_khs.tlokasi_kerja e 
+                    where e.id_ = a.lokasibr
+                ) as lokasibr,
                 a.tempat_makan1lm,
                 a.tglberlaku,
 				b.tempat_makan
@@ -26,7 +36,7 @@ class M_mutasipekerja extends CI_Model
 				inner join hrd_khs.tseksi d 
 				on a.kodesiebr = d.kodesie 
 				Where a.tglberlaku >= current_date - Interval '3 month' 
-				order by 5 desc";
+				order by a.tglberlaku desc";
     	return $this->personalia->query($sql)->result_array();
     }
 
