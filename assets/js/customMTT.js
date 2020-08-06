@@ -21,6 +21,7 @@ const swalMTT = (type, title) => {
 }
 
 const update_mtt = (line_id) => {
+  let alsn = $(`#alasan_${line_id}`).val();
   if ($(`#alasan_${line_id}`).val() != '') {
     $.ajax({
       url: baseurl + 'MOTerlambatTransact/Monitoring/Update',
@@ -42,6 +43,7 @@ const update_mtt = (line_id) => {
       success: function(result) {
         if (result) {
           swalMTT('success', 'Berhasil Mengupdate Data.')
+          $(`#alsn_${line_id}`).html(alsn.toUpperCase());
         }else {
           swalMTT('error', 'Tidak Berhasil Mengupdate Data.')
         }
