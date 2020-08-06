@@ -12,19 +12,24 @@ class M_mtt extends CI_Model
 
     public function Update($alasan, $nama, $line_id)
     {
-      $this->oracle->query("UPDATE
-                  mtl_txn_request_lines
-              SET
-                  attribute12 = '$alasan',
-                  attribute13 = '$nama',
-                  attribute14 = SYSDATE,
-              WHERE line_id = '$line_id'");
+      if (!empty($alasan)) {
+        $this->oracle->query("UPDATE
+                                  mtl_txn_request_lines mtrl
+                              SET
+                                  ATTRIBUTE12 = to_char('$alasan'),
+                                  ATTRIBUTE13 = to_char('$nama'),
+                                  ATTRIBUTE14 = SYSDATE
+                              WHERE LINE_ID = to_char('$line_id')");
 
-      if ($this->oracle->affected_rows() == 1) {
-          return 1;
+        if ($this->oracle->affected_rows() == 1) {
+            return 1;
+        }else {
+            return 0;
+        }
       }else {
-          return 0;
+        return 0;
       }
+
 
     }
 
