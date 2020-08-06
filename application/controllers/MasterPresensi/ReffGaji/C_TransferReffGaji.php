@@ -1382,7 +1382,9 @@ class C_TransferReffGaji extends CI_Controller
 						$simpan_plain = 0;
 						$simpan_pot_plain = 0;
 					}
-					if ($value['cutoff'] == '0') {
+					if ($value['cutoff'] == '~') {
+						$tanda = '~';
+					}elseif ($value['cutoff'] == '0') {
 						$tanda = '';
 					}else{
 						$tanda = '*';
@@ -1616,7 +1618,7 @@ class C_TransferReffGaji extends CI_Controller
 						<td style='width: 20%;text-align: center;'>Atasan,</td>
 					</tr>
 					<tr>
-						<td style='vertical-align: bottom;font-size: 6pt;'><i>* Dibayar cutoff.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
+						<td style='vertical-align: bottom;font-size: 6pt;'><i>* Dibayar cutoff. <br>~ Pekerja Keluar K & P.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
 						<td></td>
 						<td>&nbsp;&nbsp;</td>
 					</tr>
@@ -1948,7 +1950,7 @@ class C_TransferReffGaji extends CI_Controller
 						<td style='width: 20%;text-align: center;'>Atasan,</td>
 					</tr>
 					<tr>
-						<td style='vertical-align: bottom;font-size: 6pt;'><i>* Dibayar cutoff.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
+						<td style='vertical-align: bottom;font-size: 6pt;'><i>* Dibayar cutoff. <br>~ Pekerja Keluar K & P.<br>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu_string.".</i></td>
 						<td></td>
 						<td>&nbsp;&nbsp;</td>
 					</tr>
