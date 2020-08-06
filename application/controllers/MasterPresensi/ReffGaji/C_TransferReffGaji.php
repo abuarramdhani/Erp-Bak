@@ -1254,13 +1254,14 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>LEMBUR</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>CT</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>HL</td>
-											<td style='width: 5%;text-align: center;border: 1px solid #b2bec3;'>P.DUKA</td>
+											<td style='width: 5%;text-align: center;border: 1px solid #b2bec3;'>P.DUKA+<br>SPSI</td>
+											<td style='width: 5%;text-align: center;border: 1px solid #b2bec3;'>IKOP+<br>UTKOP</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>POT.</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>TAMB.</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>IJIN</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>UBS</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>UMP</td>
-											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>DL&OBAT</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>DL&<br>OBAT</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>POT.2</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>TAMB.2</td>
 										</tr>
@@ -1277,8 +1278,8 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 65px;text-align: center'>LOKASI KRJ</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IK</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IP</td>
-											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IPT</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IPT</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>S2</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>S3</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>JAM LBR</td>
@@ -1287,7 +1288,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UBT</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>HUP AMK</td>
 											<td style='border: 1px solid #b2bec3;width: 90px;text-align: center'>KET. ABSEN</td>
-											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>I+ ABS</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.KOPR</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.DUKA+SPSI</td>
@@ -1306,8 +1307,8 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 8%;text-align: center'>LOKASI KRJ</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IK</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IP</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IPT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IPT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>S2</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>S3</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JAMLBR</td>
@@ -1316,10 +1317,11 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>UBT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>HUPAMK</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>KET.ABSEN</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>I+ABS</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.KOPR</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.DUKA+SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.DUKA+<br>SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IKOP+<br>UTKOP</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.LAIN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SEKOLAH</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JURUSAN</td>
@@ -1347,13 +1349,14 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>LEMBUR</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>CT</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HL</td>
-											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA</td>
+											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA+<br>SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>IKOP+<br>UTKOP</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IJIN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBS</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UMP</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
 										</tr>
@@ -1379,9 +1382,7 @@ class C_TransferReffGaji extends CI_Controller
 						$simpan_plain = 0;
 						$simpan_pot_plain = 0;
 					}
-					if ($value['cutoff'] == '~') {
-						$tanda = '~';
-					}elseif ($value['cutoff'] == '0') {
+					if ($value['cutoff'] == '0') {
 						$tanda = '';
 					}else{
 						$tanda = '*';
@@ -1406,6 +1407,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ct']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['hl']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pot'])) + intval(trim($value['plain']))),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['tamb_gaji']."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['ijin']."</td>
@@ -1425,8 +1427,8 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;'>".substr($value['lokasi_krj'],0,9)."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
-							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
@@ -1451,8 +1453,8 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;'>".substr($value['lokasi_krj'],0,9)."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
-							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
@@ -1515,6 +1517,7 @@ class C_TransferReffGaji extends CI_Controller
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pduka_spsi."</td>
+					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_putkop_pikop."</td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pot_plain."</td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
@@ -1700,13 +1703,14 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>LEMBUR</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>CT</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HL</td>
-											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA</td>
+											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA&<br>SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>IKOP&<br>UTKOP</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>IJIN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBS</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UMP</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
 										</tr>
@@ -1723,8 +1727,8 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 65px;text-align: center'>LOKASI KRJ</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IK</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IP</td>
-											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IPT</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>IPT</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>S2</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>S3</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>JAM LBR</td>
@@ -1733,10 +1737,10 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UBT</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>HUP AMK</td>
 											<td style='border: 1px solid #b2bec3;width: 90px;text-align: center'>KET. ABSEN</td>
-											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>I+ ABS</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.KOPR</td>
-											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.DUKA+SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.DUKA+<br>SPSI</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.LAIN</td>
 										</tr>
 									</thead>
@@ -1752,8 +1756,8 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 8%;text-align: center'>LOKASI KRJ</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IK</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IP</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IPT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IPT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>S2</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>S3</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JAMLBR</td>
@@ -1762,10 +1766,10 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>UBT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>HUPAMK</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>KET.ABSEN</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>I+ABS</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.KOPR</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.DUKA+SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.DUKA+<br>SPSI</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.LAIN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SEKOLAH</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JURUSAN</td>
@@ -1799,7 +1803,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IJIN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBS</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UMP</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&OBAT</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
 										</tr>
@@ -1847,6 +1851,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ct']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['hl']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pot'])) + intval(trim($value['plain']))),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['tamb_gaji']."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ijin']))."</td>
@@ -1866,8 +1871,8 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;'>".substr($value['lokasi_krj'],0,9)."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
-							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
@@ -1892,8 +1897,8 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;'>".substr($value['lokasi_krj'],0,9)."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
-							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipet']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ims']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['imm']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['jam_lembur']))."</td>
@@ -2086,15 +2091,13 @@ class C_TransferReffGaji extends CI_Controller
 					<tr>
 						<td style='width: 20%'>Data Bulan</td>
 						<td style='width: 3%'>:</td>
-						<td style='width: 27%'>$bulan_gaji</td>
-						<td style='width: 20%'>Tanggal Cetak</td>
+						<td style='width: 40%'>$bulan_gaji $periode_penggajian</td>
+						<td style='width: 17%'>Tanggal Cetak</td>
 						<td style='width: 3%'>:</td>
-						<td style='width: 27%'>$hari_string</td>
-					</tr>
-					<tr>
-						<td colspan='6'>$periode_penggajian</td>
+						<td style='width: 17%'>$hari_string</td>
 					</tr>
 				</table>
+				<br>
 				<table style=\"border-collapse: collapse;border: 0.5px solid black;width: 100%\" border=\"1\">
 					<thead>
 						<tr>
