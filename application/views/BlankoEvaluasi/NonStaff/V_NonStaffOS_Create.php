@@ -617,7 +617,7 @@
 
     workerSelect.select2({
       placeholder: 'Cari Pekerja',
-      minimumInputLength: 3,
+      minimumInputLength: 0,
       ajax: {
         url: baseurl + 'BlankoEvaluasi/api/workers',
         dataType: 'json',

@@ -42,7 +42,7 @@ class M_blankoevaluasi extends CI_Model
                          ts.seksi 
                         FROM hrd_khs.tpribadi tp 
                             inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie 
-                        WHERE (tp.noind like '$keyword%' or tp.nama like '$keyword%') AND tp.keluar='0' $stringWithJabatan $stringFilterSie
+                        WHERE (tp.noind like '%$keyword%' or tp.nama like '%$keyword%') AND tp.keluar='0' $stringWithJabatan $stringFilterSie
                         ORDER BY tp.nama
                         LIMIT 5";
         $result = $this->personalia->query($queryNoind)->result_array();
@@ -166,7 +166,7 @@ class M_blankoevaluasi extends CI_Model
         $result = array(
             'supervisor' => $supervisor,
             'kasie' => $kasie,
-            'unit' => $unit,
+            'unit' => $unit ?: $bidang,
             'bidang' => $bidang,
             'dept' => $dept
         );
