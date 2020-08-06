@@ -159,60 +159,67 @@ class M_jtipembelian extends CI_Model
     | -------------------------------------------------------------------------
     */
 
-    public function getVendorBySpbsOracle($spbs)
+    public function getVendorBySpbsOracle($data)
     {
-        return $this->oracle->query("
-          SELECT pv.vendor_name vendor
-          FROM mtl_txn_request_headers mtrh,
-               mtl_txn_request_lines mtrl,
-               mtl_system_items_b msib,
-               wip_entities we,
-               wip_requirement_operations wro,
-               bom_departments bd,
-               po_headers_all pha,
-               po_distributions_all pda,
-               po_vendors pv
-          WHERE mtrh.header_id = mtrl.header_id
-              AND mtrl.inventory_item_id = msib.inventory_item_id
-              AND mtrl.organization_id = msib.organization_id
-              AND mtrh.attribute1 = we.wip_entity_id
-              AND wro.wip_entity_id = we.wip_entity_id
-              AND wro.organization_id = we.organization_id
-              AND wro.inventory_item_id = msib.inventory_item_id
-              AND wro.organization_id = msib.organization_id
-              AND wro.department_id = bd.department_id
-              AND bd.department_class_code = 'SUBKT'
-              AND pha.po_header_id = pda.po_header_id
-              AND pda.wip_entity_id = we.wip_entity_id
-              AND pha.vendor_id = pv.vendor_id
-              AND mtrh.request_number = '$spbs'
-          GROUP BY pv.vendor_name
-          UNION
-          SELECT pv.vendor_name vendor
-          FROM mtl_txn_request_headers mtrh,
-               mtl_txn_request_lines mtrl,
-               mtl_system_items_b msib,
-               wip_entities we,
-               wip_requirement_operations wro,
-               bom_departments bd,
-               po_headers_all pha,
-               po_distributions_all pda,
-               po_vendors pv
-          WHERE mtrh.header_id = mtrl.header_id
-              AND mtrl.inventory_item_id = msib.inventory_item_id
-              AND mtrl.organization_id = msib.organization_id
-              and we.WIP_ENTITY_ID = mtrl.TXN_SOURCE_ID
-              AND wro.wip_entity_id = we.wip_entity_id
-              AND wro.organization_id = we.organization_id
-              AND wro.inventory_item_id = msib.inventory_item_id
-              AND wro.organization_id = msib.organization_id
-              AND wro.department_id = bd.department_id
-              AND bd.department_class_code = 'SUBKT'
-              AND pha.po_header_id = pda.po_header_id
-              AND pda.wip_entity_id = we.wip_entity_id
-              AND pha.vendor_id = pv.vendor_id
-              AND mtrh.request_number = '$spbs'
-          GROUP BY pv.vendor_name
-      ")->result_array();
+      return $this->oracle->query("
+      SELECT   pv.vendor_name vendor
+      FROM mtl_txn_request_headers mtrh,
+           mtl_txn_request_lines mtrl,
+           mtl_system_items_b msib,
+           wip_entities we,
+           wip_requirement_operations wro,
+           bom_departments bd,
+           po_headers_all pha,
+           po_distributions_all pda,
+           po_vendors pv
+      WHERE mtrh.header_id = mtrl.header_id
+       AND mtrl.inventory_item_id = msib.inventory_item_id
+       AND mtrl.organization_id = msib.organization_id
+       AND mtrh.attribute1 = we.wip_entity_id
+       AND wro.wip_entity_id = we.wip_entity_id
+       AND wro.organization_id = we.organization_id
+       AND wro.inventory_item_id = msib.inventory_item_id
+       AND wro.organization_id = msib.organization_id
+       AND wro.department_id = bd.department_id
+       AND bd.department_class_code = 'SUBKT'
+       AND pha.po_header_id = pda.po_header_id
+       AND pda.wip_entity_id = we.wip_entity_id
+       AND pha.vendor_id = pv.vendor_id
+       AND mtrh.request_number = '$data'
+      GROUP BY pv.vendor_name
+      UNION
+      SELECT   pv.vendor_name vendor
+      FROM mtl_txn_request_headers mtrh,
+           mtl_txn_request_lines mtrl,
+           mtl_system_items_b msib,
+           wip_entities we,
+           wip_requirement_operations wro,
+           bom_departments bd,
+           po_headers_all pha,
+           po_distributions_all pda,
+           po_vendors pv
+      WHERE mtrh.header_id = mtrl.header_id
+       AND mtrl.inventory_item_id = msib.inventory_item_id
+       AND mtrl.organization_id = msib.organization_id
+       AND we.wip_entity_id = mtrl.txn_source_id
+       AND wro.wip_entity_id = we.wip_entity_id
+       AND wro.organization_id = we.organization_id
+       AND wro.inventory_item_id = msib.inventory_item_id
+       AND wro.organization_id = msib.organization_id
+       AND wro.department_id = bd.department_id
+       AND bd.department_class_code = 'SUBKT'
+       AND pha.po_header_id = pda.po_header_id
+       AND pda.wip_entity_id = we.wip_entity_id
+       AND pha.vendor_id = pv.vendor_id
+       AND mtrh.request_number = '$data'
+      GROUP BY pv.vendor_name
+      UNION
+      --so
+      SELECT hp.party_name vendor
+      FROM oe_order_headers_all ooha, hz_parties hp, hz_cust_accounts hca
+      WHERE ooha.sold_to_org_id = hca.cust_account_id
+      AND hp.party_id = hca.party_id
+      AND ooha.order_number = '$data'
+    ")->result_array();
     }
 }
