@@ -1956,6 +1956,11 @@ $route['ManufacturingOperation/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'Manufac
 //------------------------------------------------Master Pekerja-------------------------------------------------------//
 $route['MasterPekerja'] = 'MasterPekerja/C_MasterPekerja';
 
+
+$route['MasterPekerja/CetakAmplop'] = 'MasterPekerja/CetakAmplop/C_CetakAmplop';
+$route['MasterPekerja/CetakAmplop/(:any)'] = 'MasterPekerja/CetakAmplop/C_CetakAmplop/$1';
+$route['MasterPekerja/CetakAmplop/(:any)/(:any)'] = 'MasterPekerja/CetakAmplop/C_CetakAmplop/$1/$2';
+
 $route['MasterPekerja/Other'] = 'MasterPekerja/Other/C_CetakCard';
 $route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
 $route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
