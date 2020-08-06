@@ -44,7 +44,12 @@ class M_tambahan extends CI_Model
                     end fb_kategori, 
                     tamb.id_tambahan, 
                     tamb.fs_pemohon, 
-                    tamb.fs_keterangan
+                    tamb.fs_keterangan,
+                    (
+                        select string_agg(td.fs_noind,', ')
+                        from \"Catering\".tpesanantambahan_detail td
+                        where td.id_tambahan = tamb.id_tambahan
+                    ) as list_pekerja
                  from \"Catering\".tpesanantambahan tamb 
                  left join \"Presensi\".tshift shf
                  on tamb.fs_kd_shift = shf.kd_shift

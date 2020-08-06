@@ -51,7 +51,12 @@ class M_pengurangan extends CI_Model
                             else 
                                 'Pindah Tempat Makan'
                             end
-                        end as fb_kategori
+                        end as fb_kategori,
+                        (
+                            select string_agg(td.fs_noind,', ')
+                            from \"Catering\".tpenguranganpesanan_detail td
+                            where td.id_pengurangan = tpp.id_pengurangan
+                        ) as list_pekerja
                 From \"Catering\".tpenguranganpesanan tpp
                 left join \"Presensi\".tshift ts 
                 on ts.kd_shift = tpp.fs_kd_shift
