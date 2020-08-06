@@ -3,7 +3,7 @@
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
-          <h4 style="font-weight:bold;"><i class="fa fa-hourglass-3"></i> MO Terlambat Transact</h4>
+          <h4 style="font-weight:bold;"><i class="fa fa-hourglass-3"></i> BTAG/MO Terlambat Transact</h4>
         </div>
         <div class="box-body" style="background:#f0f0f0 !important;">
           <div class="row">
