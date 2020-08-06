@@ -2062,7 +2062,10 @@ class M_hitungpesanan extends Ci_Model
 				and tpd.shift = ?
 				and tpd.lokasi = ?
 				and tpd.tempat_makan = ?
-				and lower(tpd.keterangan) in ('absen', 'shift tanggung', 'tambahan')
+				and (
+					lower(tpd.keterangan) in ('absen', 'shift tanggung')
+					or left(lower(tpd.keterangan),8) = 'tambahan'
+				)
 				and ( 
 					( 1 = 1 $custom_condition )
 					or 
