@@ -11,8 +11,8 @@
 	    public function getPekerjaByKey($key){
 	    	$sql = "select noind,trim(nama) as nama
 					from hrd_khs.tpribadi
-					where keluar = '0'
-					and (
+					where 
+					 (
 						noind like upper(concat('%',?,'%'))
 						or nama like upper(concat('%',?,'%'))
 						)";
