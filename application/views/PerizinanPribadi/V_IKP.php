@@ -1,31 +1,40 @@
 <section class="content">
-  <div class="inner" >
+  <div class="inner">
     <div class="row">
       <div class="col-lg-12">
         <div class="row">
           <div class="col-lg-12">
             <div class="col-lg-11">
-              <div class="text-right"><h1><b>Approval Atasan</b></h1></div>
+              <div class="text-right">
+                <h1><b>Approval Atasan</b></h1>
+              </div>
             </div>
             <div class="col-lg-1">
               <div class="text-right hidden-md hidden-sm hidden-xs">
-                <a class="btn btn-default btn-lg" href="<?php echo site_url('PerizinanPribadi/V_Index');?>">
+                <a class="btn btn-default btn-lg" href="<?php echo site_url('PerizinanPribadi/V_Index'); ?>">
                   <i class="icon-wrench icon-2x"></i>
-                  <br/>
+                  <br />
                 </a>
               </div>
             </div>
           </div>
         </div>
-        <br/>
-        <div class="row" style="">
+        <br />
+        <div class="row">
           <div class="col-lg-12">
             <div class="box box-primary box-solid">
-            <div class="box-header with-border"></div>
+              <div class="box-header with-border"></div>
               <div class="box-body">
                 <div class="nav-tabs-custom">
+                  <ul class="nav nav-tabs pull-right">
+                    <li class="pull-left header"><i class="fa fa-tag"></i> Approval Perizinan</li>
+                    <li><a data-toggle="tab" href="#izin-sakit">Izin Sakit</a></li>
+                    <li><a data-toggle="tab" href="#izin-dinas">Izin Dinas Keluar</a></li>
+                    <li><a data-toggle="tab" href="#izin-pribadi">Izin Keluar Pribadi</a></li>
+                    <li class="active"><a data-toggle="tab" href="#izin-all">All Perizinan</a></li>
+                  </ul>
                   <div class="tab-content">
-                    <div id="ikp-all" class="tab-pane fade in active">
+                    <div id="izin-all" class="tab-pane fade in active">
                       <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_all table-hover" style="width: 100%">
                         <thead>
                           <tr>
@@ -44,70 +53,362 @@
                         <tbody>
                           <?php $no = 1;
                           foreach ($izin as $row) {
-                            ?>
+                          ?>
                             <tr>
                               <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
-                              <td style="white-space: nowrap; text-align: center;"><?php  
-                                if ($row['appr_atasan'] == 't') { ?>
-                                <span class="label label-success">Approved</span>
-                                <?php }elseif ($row['appr_atasan'] == 'f') { ?>
-                                <span class="label label-danger">Rejected</span>
-                                <?php }else { ?>
-                                <?php if (date('Y-m-d', strtotime($row['created_date'])) != date('Y-m-d')) { ?>
-                                <span class="label label-default">Expired</span>
-                                <?php }else{ ?>
-                                <button class="btn btn-success cm_btn_approve" onclick="getApprovalIKP('1', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)" >
-                                  <span style="color: white" class='fa fa-check'></span>
-                                </button>
-                                <button class="btn btn-danger cm_btn_reject" onclick="getApprovalIKP('0', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
-                                  <span style="color: white" class='fa fa-close'></span>
-                                </button>
-                                <?php } ?>
+                              <td style="white-space: nowrap; text-align: center;"><?php
+                                                                                    if ($row['appr_atasan'] == 't') { ?>
+                                  <span class="label label-success">Approved</span>
+                                <?php } elseif ($row['appr_atasan'] == 'f') { ?>
+                                  <span class="label label-danger">Rejected</span>
+                                <?php } else { ?>
+                                  <?php if (date('Y-m-d', strtotime($row['created_date'])) != date('Y-m-d')) { ?>
+                                    <span class="label label-default">Expired</span>
+                                  <?php } else { ?>
+                                    <button class="btn btn-warning" onclick="edit_pkj_ikp(<?php echo $row['id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
+                                    <button class="btn btn-success cm_btn_approve" onclick="getApprovalIKP('1', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
+                                      <span style="color: white" class='fa fa-check'></span>
+                                    </button>
+                                    <button class="btn btn-danger cm_btn_reject" onclick="getApprovalIKP('0', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
+                                      <span style="color: white" class='fa fa-close'></span>
+                                    </button>
+                                  <?php } ?>
                                 <?php } ?>
                               </td>
                               <td style="white-space: nowrap; text-align: center;"><?php echo $row['id'] ?></td>
                               <td style="white-space: nowrap"><?php $noind = explode(', ', $row['noind']);
+                                                              foreach ($noind as $na) {
+                                                                foreach ($nama as $lue) {
+                                                                  if ($na == $lue['noind']) {
+                                                                    echo $lue['noind'] . ' - ' . $lue['nama'] . '<br>';
+                                                                  }
+                                                                }
+                                                              }  ?></td>
+                              <td>
+                                <?php
+                                if ($row['jenis_ijin'] == '1') {
+                                  echo "Izin Keluar Pribadi";
+                                } elseif ($row['jenis_ijin'] == '2') {
+                                  echo "Izin Sakit Perusahaan";
+                                } elseif ($row['jenis_ijin'] == '3') {
+                                  echo "Izin Keluar Perusahaan";
+                                } else {
+                                  echo "Izin Apa -_O ?";
+                                }
+                                ?>
+                              </td>
+                              <td style="white-space: nowrap; text-align: center;"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['wkt_keluar'] == '' || $row['wkt_keluar'] == null) {
+                                                                                      echo '-';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['wkt_keluar']));
+                                                                                    } ?></td>
+                              <td style="white-space: nowrap"><?php if ($row['diserahkan'] == '' || $row['diserahkan'] == null) {
+                                                                echo "-";
+                                                              } else {
+                                                                $diserahkan = explode(', ', $row['diserahkan']);
+                                                                foreach ($diserahkan as $serahin) {
+                                                                  if ($serahin != '-') {
+                                                                    foreach ($nama as $lue) {
+                                                                      if ($serahin == $lue['noind']) {
+                                                                        echo $serahin . ' - ' . $lue['nama'] . '<br>';
+                                                                      }
+                                                                    }
+                                                                  } else if ($serahin == '-' || $serahin == null) {
+                                                                    echo "-<br>";
+                                                                  }
+                                                                }
+                                                              } ?></td>
+                              <td style="white-space: nowrap"><?php echo $row['keperluan'] ?></td>
+                              <td style="white-space: nowrap"><?php echo rtrim($row['status']) ?></td>
+                            </tr>
+                          <?php $no++;
+                          } ?>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div id="izin-pribadi" class="tab-pane fade">
+                      <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_pribadi table-hover" style="width: 100%">
+                        <thead>
+                          <tr>
+                            <th class="text-center" style="white-space: nowrap">No</th>
+                            <th class="text-center" style="white-space: nowrap">Keputusan Anda</th>
+                            <th class="text-center" style="white-space: nowrap">ID Izin</th>
+                            <th class="text-center" style="white-space: nowrap">Nama Pekerja</th>
+                            <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
+                            <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
+                            <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
+                            <th class="text-center" style="white-space: nowrap">Pekerjaan Diserahkan</th>
+                            <th class="text-center" style="white-space: nowrap">Keterangan Pekerja</th>
+                            <th class="text-center" style="white-space: nowrap">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php $no = 1;
+                          foreach ($IzinPribadi as $row) {
+                          ?>
+                            <tr>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php
+                                                                                    if ($row['appr_atasan'] == 't') { ?>
+                                  <span class="label label-success">Approved</span>
+                                <?php } elseif ($row['appr_atasan'] == 'f') { ?>
+                                  <span class="label label-danger">Rejected</span>
+                                <?php } else { ?>
+                                  <?php if (date('Y-m-d', strtotime($row['created_date'])) != date('Y-m-d')) { ?>
+                                    <span class="label label-default">Expired</span>
+                                  <?php } else { ?>
+                                    <button class="btn btn-warning" onclick="edit_pkj_ikp(<?php echo $row['id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
+                                    <button class="btn btn-success cm_btn_approve" onclick="getApprovalIKP('1', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
+                                      <span style="color: white" class='fa fa-check'></span>
+                                    </button>
+                                    <button class="btn btn-danger cm_btn_reject" onclick="getApprovalIKP('0', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
+                                      <span style="color: white" class='fa fa-close'></span>
+                                    </button>
+                                  <?php } ?>
+                                <?php } ?>
+                              </td>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $row['id'] ?></td>
+                              <td style="white-space: nowrap"><?php $noind = explode(', ', $row['noind']);
+                                                              foreach ($noind as $na) {
+                                                                foreach ($nama as $lue) {
+                                                                  if ($na == $lue['noind']) {
+                                                                    echo $lue['noind'] . ' - ' . $lue['nama'] . '<br>';
+                                                                  }
+                                                                }
+                                                              }  ?></td>
+                              <td>
+                                <?php
+                                if ($row['jenis_ijin'] == '1') {
+                                  echo "Izin Keluar Pribadi";
+                                } elseif ($row['jenis_ijin'] == '2') {
+                                  echo "Izin Sakit Perusahaan";
+                                } elseif ($row['jenis_ijin'] == '3') {
+                                  echo "Izin Keluar Perusahaan";
+                                } else {
+                                  echo "Izin Apa -_O ?";
+                                }
+                                ?>
+                              </td>
+                              <td style="white-space: nowrap; text-align: center;"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['wkt_keluar'] == '' || $row['wkt_keluar'] == null) {
+                                                                                      echo '-';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['wkt_keluar']));
+                                                                                    } ?></td>
+                              <td style="white-space: nowrap"><?php if ($row['diserahkan'] == '' || $row['diserahkan'] == null) {
+                                                                echo "-";
+                                                              } else {
+                                                                $diserahkan = explode(', ', $row['diserahkan']);
+                                                                foreach ($diserahkan as $serahin) {
+                                                                  if ($serahin != '-') {
+                                                                    foreach ($nama as $lue) {
+                                                                      if ($serahin == $lue['noind']) {
+                                                                        echo $serahin . ' - ' . $lue['nama'] . '<br>';
+                                                                      }
+                                                                    }
+                                                                  } else if ($serahin == '-' || $serahin == null) {
+                                                                    echo "-<br>";
+                                                                  }
+                                                                }
+                                                              } ?></td>
+                              <td style="white-space: nowrap"><?php echo $row['keperluan'] ?></td>
+                              <td style="white-space: nowrap"><?php echo rtrim($row['status']) ?></td>
+                            </tr>
+                          <?php $no++;
+                          } ?>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div id="izin-dinas" class="tab-pane fade">
+                      <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_dinas table-hover" style="width: 100%">
+                        <thead>
+                          <tr>
+                            <th class="text-center" style="white-space: nowrap">No</th>
+                            <th class="text-center" style="white-space: nowrap">Keputusan Anda</th>
+                            <th class="text-center" style="white-space: nowrap">ID Izin</th>
+                            <th class="text-center" style="white-space: nowrap">Nama Pekerja</th>
+                            <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
+                            <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
+                            <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
+                            <th class="text-center" style="white-space: nowrap">Pekerjaan Diserahkan</th>
+                            <th class="text-center" style="white-space: nowrap">Keterangan Pekerja</th>
+                            <th class="text-center" style="white-space: nowrap">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php $no = 1;
+                          foreach ($IzinDinas as $row) {
+                          ?>
+                            <tr>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php
+                                                                                    if ($row['appr_atasan'] == 't') { ?>
+                                  <span class="label label-success">Approved</span>
+                                <?php } elseif ($row['appr_atasan'] == 'f') { ?>
+                                  <span class="label label-danger">Rejected</span>
+                                <?php } else { ?>
+                                  <?php if (date('Y-m-d', strtotime($row['created_date'])) != date('Y-m-d')) { ?>
+                                    <span class="label label-default">Expired</span>
+                                  <?php } else { ?>
+                                    <button class="btn btn-warning" onclick="edit_pkj_ikp(<?php echo $row['id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
+                                    <button class="btn btn-success cm_btn_approve" onclick="getApprovalIKP('1', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
+                                      <span style="color: white" class='fa fa-check'></span>
+                                    </button>
+                                    <button class="btn btn-danger cm_btn_reject" onclick="getApprovalIKP('0', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
+                                      <span style="color: white" class='fa fa-close'></span>
+                                    </button>
+                                  <?php } ?>
+                                <?php } ?>
+                              </td>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $row['id'] ?></td>
+                              <td style="white-space: nowrap"><?php $noind = explode(', ', $row['noind']);
+                                                              foreach ($noind as $na) {
+                                                                foreach ($nama as $lue) {
+                                                                  if ($na == $lue['noind']) {
+                                                                    echo $lue['noind'] . ' - ' . $lue['nama'] . '<br>';
+                                                                  }
+                                                                }
+                                                              }  ?></td>
+                              <td>
+                                <?php
+                                if ($row['jenis_ijin'] == '1') {
+                                  echo "Izin Keluar Pribadi";
+                                } elseif ($row['jenis_ijin'] == '2') {
+                                  echo "Izin Sakit Perusahaan";
+                                } elseif ($row['jenis_ijin'] == '3') {
+                                  echo "Izin Keluar Perusahaan";
+                                } else {
+                                  echo "Izin Apa -_O ?";
+                                }
+                                ?>
+                              </td>
+                              <td style="white-space: nowrap; text-align: center;"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['wkt_keluar'] == '' || $row['wkt_keluar'] == null) {
+                                                                                      echo '-';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['wkt_keluar']));
+                                                                                    } ?></td>
+                              <td style="white-space: nowrap"><?php if ($row['diserahkan'] == '' || $row['diserahkan'] == null) {
+                                                                echo "-";
+                                                              } else {
+                                                                $diserahkan = explode(', ', $row['diserahkan']);
+                                                                foreach ($diserahkan as $serahin) {
+                                                                  if ($serahin != '-') {
+                                                                    foreach ($nama as $lue) {
+                                                                      if ($serahin == $lue['noind']) {
+                                                                        echo $serahin . ' - ' . $lue['nama'] . '<br>';
+                                                                      }
+                                                                    }
+                                                                  } else if ($serahin == '-' || $serahin == null) {
+                                                                    echo "-<br>";
+                                                                  }
+                                                                }
+                                                              } ?></td>
+                              <td style="white-space: nowrap"><?php echo $row['keperluan'] ?></td>
+                              <td style="white-space: nowrap"><?php echo rtrim($row['status']) ?></td>
+                            </tr>
+                          <?php $no++;
+                          } ?>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div id="izin-sakit" class="tab-pane fade">
+                      <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_sakit table-hover" style="width: 100%">
+                        <thead>
+                          <tr>
+                            <th class="text-center" style="white-space: nowrap">No</th>
+                            <th class="text-center" style="white-space: nowrap">Keputusan Anda</th>
+                            <th class="text-center" style="white-space: nowrap">ID Izin</th>
+                            <th class="text-center" style="white-space: nowrap">Nama Pekerja</th>
+                            <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
+                            <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
+                            <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
+                            <th class="text-center" style="white-space: nowrap">Pekerjaan Diserahkan</th>
+                            <th class="text-center" style="white-space: nowrap">Keterangan Pekerja</th>
+                            <th class="text-center" style="white-space: nowrap">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php $no = 1;
+                          foreach ($IzinSakit as $row) {
+                          ?>
+                            <tr>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php
+                                                                                    if ($row['appr_atasan'] == 't') { ?>
+                                  <span class="label label-success">Approved</span>
+                                <?php } elseif ($row['appr_atasan'] == 'f') { ?>
+                                  <span class="label label-danger">Rejected</span>
+                                <?php } else { ?>
+                                  <?php if (date('Y-m-d', strtotime($row['created_date'])) != date('Y-m-d')) { ?>
+                                    <span class="label label-default">Expired</span>
+                                  <?php } else { ?>
+                                    <button class="btn btn-warning" onclick="edit_pkj_ikp(<?php echo $row['id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
+                                    <button class="btn btn-success cm_btn_approve" onclick="getApprovalIKP('1', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
+                                      <span style="color: white" class='fa fa-check'></span>
+                                    </button>
+                                    <button class="btn btn-danger cm_btn_reject" onclick="getApprovalIKP('0', <?php echo $row['id'] ?>, <?= $row['jenis_ijin'] ?>)">
+                                      <span style="color: white" class='fa fa-close'></span>
+                                    </button>
+                                  <?php } ?>
+                                <?php } ?>
+                              </td>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $row['id'] ?></td>
+                              <td style="white-space: nowrap">
+                                <?php $noind = explode(', ', $row['noind']);
                                 foreach ($noind as $na) {
                                   foreach ($nama as $lue) {
                                     if ($na == $lue['noind']) {
-                                      echo $lue['noind'].' - '.$lue['nama'].'<br>';
+                                      echo $lue['noind'] . ' - ' . $lue['nama'] . '<br>';
                                     }
                                   }
-                                }  ?></td>
-                                <td>
-                                  <?php 
-                                  if ($row['jenis_ijin'] == '1') {
-                                    echo "Izin Keluar Pribadi";
-                                  }elseif ($row['jenis_ijin'] == '2'){
-                                    echo "Izin Sakit Perusahaan";
-                                  }elseif ($row['jenis_ijin'] == '3') {
-                                    echo "Izin Keluar Perusahaan";
-                                  }else{
-                                    echo "Izin Apa -_O ?";
-                                  }
-                                  ?>
-                                </td>
-                                <td style="white-space: nowrap; text-align: center;"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                <td style="white-space: nowrap; text-align: center;"><?php if ($row['wkt_keluar'] == '' || $row['wkt_keluar'] == null) {
-                                  echo '-';
-                                }else {
-                                  echo date('H:i:s', strtotime($row['wkt_keluar']));
-                                } ?></td>
-                                <td style="white-space: nowrap"><?php if ($row['diserahkan'] == '' || $row['diserahkan'] == null) {
-                                  echo "-";
+                                }  ?>
+                              </td>
+                              <td>
+                                <?php
+                                if ($row['jenis_ijin'] == '1') {
+                                  echo "Izin Keluar Pribadi";
+                                } elseif ($row['jenis_ijin'] == '2') {
+                                  echo "Izin Sakit Perusahaan";
+                                } elseif ($row['jenis_ijin'] == '3') {
+                                  echo "Izin Keluar Perusahaan";
                                 } else {
-                                  echo $row['diserahkan'];
-                                } ?></td>
-                                <td style="white-space: nowrap"><?php echo $row['keperluan'] ?></td>
-                                <td style="white-space: nowrap"><?php echo rtrim($row['status']) ?></td>
-                              </tr>
-                              <?php $no++; } ?>
-                            </tbody>
-                          </table>
-                        </div>
-
-                      </div>
+                                  echo "Izin Apa -_O ?";
+                                }
+                                ?>
+                              </td>
+                              <td style="white-space: nowrap; text-align: center;"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['wkt_keluar'] == '' || $row['wkt_keluar'] == null) {
+                                                                                      echo '-';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['wkt_keluar']));
+                                                                                    } ?></td>
+                              <td style="white-space: nowrap"><?php if ($row['diserahkan'] == '' || $row['diserahkan'] == null) {
+                                                                echo "-";
+                                                              } else {
+                                                                $diserahkan = explode(', ', $row['diserahkan']);
+                                                                foreach ($diserahkan as $serahin) {
+                                                                  if ($serahin != '-') {
+                                                                    foreach ($nama as $lue) {
+                                                                      if ($serahin == $lue['noind']) {
+                                                                        echo $serahin . ' - ' . $lue['nama'] . '<br>';
+                                                                      }
+                                                                    }
+                                                                  } else if ($serahin == '-' || $serahin == null) {
+                                                                    echo "-<br>";
+                                                                  }
+                                                                }
+                                                              } ?></td>
+                              <td style="white-space: nowrap"><?php echo $row['keperluan'] ?></td>
+                              <td style="white-space: nowrap"><?php echo rtrim($row['status']) ?></td>
+                            </tr>
+                          <?php $no++;
+                          } ?>
+                        </tbody>
+                      </table>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -115,7 +416,9 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
 <!-- Modal -->
 <div class="modal fade" id="modal-approve-ikp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -129,60 +432,91 @@
         <div class="row">
           <div class="col-lg-12">
             <label class="col-lg-3 text-right">ID IKP</label><label class="col-lg-1">:</label>
-            <input  class="form-control col-lg-8" name="id_ikp" id="modal-id_ikp" readonly  style="width: 55%">
+            <input class="form-control col-lg-8" name="id_ikp" id="modal-id_ikp" readonly style="width: 55%">
           </div>
         </div>
         <br>
         <div class="row">
           <div class="col-lg-12">
             <label class="col-lg-3 text-right">Tanggal</label><label class="col-lg-1">:</label>
-            <input  class="form-control col-lg-8" name="tgl_ikp" id="modal-tgl_ikp" readonly  style="width: 55%">
+            <input class="form-control col-lg-8" name="tgl_ikp" id="modal-tgl_ikp" readonly style="width: 55%">
           </div>
         </div>
         <br>
         <div class="row">
           <div class="col-lg-12">
             <label class="col-lg-3 text-right">Akan Keluar</label><label class="col-lg-1">:</label>
-            <input  class="form-control col-lg-8" name="keluar_ikp" id="modal-keluar_ikp" readonly  style="width: 55%">
+            <input class="form-control col-lg-8" name="keluar_ikp" id="modal-keluar_ikp" readonly style="width: 55%">
           </div>
         </div>
         <br>
         <div class="row">
           <div class="col-lg-12">
             <label class="col-lg-3 text-right">Keperluan</label><label class="col-lg-1">:</label>
-            <textarea class="form-control col-lg-8" name="kep_ikp" id="modal-kep_ikp" readonly  style="width: 55%"></textarea>
+            <textarea class="form-control col-lg-8" name="kep_ikp" id="modal-kep_ikp" readonly style="width: 55%"></textarea>
           </div>
         </div>
         <br>
         <div class="row">
-            <table border="1" width="500px" style="margin-left: 50px;">
-                <thead>
-                    <th style="text-align: center; white-space: nowrap;"><input type="checkbox" id="checkAll_edit_ikp"></th>
-                    <th style="text-align: center; white-space: nowrap;">No. Induk</th>
-                    <th style="text-align: center; white-space: nowrap;">Nama</th>
-                </thead>
-                <tbody class="eachPekerjaEditIKP">
+          <table border="1" width="500px" style="margin-left: 50px;">
+            <thead>
+              <th style="text-align: center; white-space: nowrap;"><input type="checkbox" id="checkAll_edit_ikp"></th>
+              <th style="text-align: center; white-space: nowrap;">No. Induk</th>
+              <th style="text-align: center; white-space: nowrap;">Nama</th>
+            </thead>
+            <tbody class="eachPekerjaEditIKP">
 
-                </tbody>
-            </table>
+            </tbody>
+          </table>
         </div>
         <br>
-          <div class="modal-footer" style="text-align: center;">
-            <div>
-              <button type="button" class="btn btn-success" id="app_edit_ikp" value="1">Approve</button>
-            </div>
+        <div class="modal-footer" style="text-align: center;">
+          <div>
+            <button type="button" class="btn btn-success" id="app_edit_ikp" value="1">Approve</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>
 </div>
-
 <!-- selesai -->
 <script type="text/javascript">
-  $(document).ready(function () {
+  $(document).ready(function() {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+      $.fn.dataTable.tables({
+        api: true
+      }).columns.adjust();
+      setTimeout(
+        function() {
+          $('th:contains(No)').click()
+        }, 200
+      )
+    });
+
     $('.tabel_ikp_all').DataTable({
-        scrollX:        true
+      scrollX: true,
+      fixedColumns: {
+        leftColumns: 5,
+      }
+    });
+    $('.tabel_ikp_pribadi').DataTable({
+      scrollX: true,
+      fixedColumns: {
+        leftColumns: 5,
+      }
+    });
+    $('.tabel_ikp_dinas').DataTable({
+      scrollX: true,
+      fixedColumns: {
+        leftColumns: 5,
+      }
+    });
+    $('.tabel_ikp_sakit').DataTable({
+      scrollX: true,
+      fixedColumns: {
+        leftColumns: 5,
+      }
     });
   })
 </script>

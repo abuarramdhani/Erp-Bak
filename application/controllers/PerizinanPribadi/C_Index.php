@@ -103,10 +103,10 @@ class C_Index extends CI_Controller
 		}
 
 		$data['nama'] = $this->M_index->getAllNama();
-		$data['izin'] = $this->M_index->GetIzin($no_induk);
-		$data['IzinApprove'] = $this->M_index->approveAtasan($no_induk);
-		$data['IzinUnApprove'] = $this->M_index->IzinUnApprove($no_induk);
-		$data['IzinReject'] = $this->M_index->IzinReject($no_induk);
+		$data['izin'] = $this->M_index->GetIzin($no_induk, '');
+		$data['IzinPribadi'] = $this->M_index->GetIzin($no_induk, '1');
+		$data['IzinSakit'] = $this->M_index->GetIzin($no_induk, '2');
+		$data['IzinDinas'] = $this->M_index->GetIzin($no_induk, '3');
 
 		$today = date('Y-m-d');
 
