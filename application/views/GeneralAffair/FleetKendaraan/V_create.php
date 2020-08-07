@@ -136,6 +136,14 @@
                                                 </div>
                                             </div>
 
+                                             <div class="form-group">
+                                                <label for="txtTagNumber" class="control-label col-lg-4">Tag Number</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Tag Number" name="TagNumber" id="TagNumber" class="form-control" >
+                                                </div>
+                                            </div>
+
+
 											<div class="form-group">
                                                 <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto STNK</label>
                                                 <div class="col-lg-4">
