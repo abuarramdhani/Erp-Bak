@@ -35,15 +35,16 @@ class M_list extends CI_Model
         $query = $this->oracle->query($sql);
     }
 
-    public function updateStatusDO($do_number, $requested_by, $approver,$tgl_permintaan_kirim)
+    public function updateStatusDO($do_number, $requested_by, $approver1, $approver2, $tgl_permintaan_kirim)
     {
         $sql = "UPDATE
                     KHS_APPROVAL_DO
                 SET
                     STATUS = 'Req Approval',
                     REQUEST_BY = '$requested_by',
-                    REQUEST_TO = '$approver',
+                    REQUEST_TO = '$approver1',
                     REQUEST_DATE = SYSDATE,
+                    REQUEST_TO_2 = '$approver2',
                     TANGGAL_PERMINTAAN_KIRIM = '$tgl_permintaan_kirim'
                 WHERE
                     no_do = '$do_number'";

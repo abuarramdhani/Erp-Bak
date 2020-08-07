@@ -104,6 +104,14 @@ $( () => {
     $('.slcADOAssignerList').select2({
         width : 'resolve'
     })
+
+    $('.slcADOAssignerList1').select2({
+        width : 'resolve'
+    })
+
+    $('.slcADOAssignerList2').select2({
+        width : 'resolve'
+    })
     
     $('.slcADOGudangPengirim').select2({
         placeholder : 'Pilih Gudang Pengirim'
@@ -142,10 +150,13 @@ $( () => {
         let data     = {
             doNumber        : $('.spnADODONumber').html(),
             soNumber        : $('.spnADOSONumber').html(),
-            approver        : $('.slcADOAssignerList').val(),
+            approver1        : $('.slcADOAssignerList1').val(),
+            approver2        : $('.slcADOAssignerList2').val(),
             tglPermintaanKirim : $('.txttglKirimADO').val(),
-            approverName    : $('.slcADOAssignerList').find(':selected').text().split(' - ').slice(-1).pop(),
-            approverAddress : $('.slcADOAssignerList').find(':selected').attr('address')
+            approver1Name    : $('.slcADOAssignerList1').find(':selected').text().split(' - ').slice(-1).pop(),
+            approver2Name    : $('.slcADOAssignerList2').find(':selected').text().split(' - ').slice(-1).pop(),
+            approver1Address : $('.slcADOAssignerList1').find(':selected').attr('address'),
+            approver2Address : $('.slcADOAssignerList2').find(':selected').attr('address')
         }
         let url      = `${baseurl}ApprovalDO/ListDO/requestApproveDO`
         let question = `Request Approve DO Ini ke ${data.approver} ?`

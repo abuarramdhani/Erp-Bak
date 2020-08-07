@@ -242,12 +242,25 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Pilih Approver</label>
+                    <label class="col-sm-3 control-label">Pilih Approver 1</label>
                     <div class="col-sm-8">
                         <div class="input-group">
                             <span class="input-group-addon"><i style="width:15px;" class="fa fa-user"></i></span>
-                            <select class="slcADOAssignerList form-control" name="slcADOAssignerList" style="width: 100%;">
+                            <select class="slcADOAssignerList1 form-control" name="slcADOAssignerList" style="width: 100%;">
                                 <?php foreach ($ApproverList as $key => $val) : ?>
+                                    <option address="<?= $val['email_address'] ?>" value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Pilih Approver 2</label>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i style="width:15px;" class="fa fa-user"></i></span>
+                            <select class="slcADOAssignerList2 form-control" name="slcADOAssignerList" style="width: 100%;">
+                                <?php foreach ($ApproverList2 as $key => $val) : ?>
                                     <option address="<?= $val['email_address'] ?>" value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
                                 <?php endforeach ?>
                             </select>
