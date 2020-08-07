@@ -31,7 +31,13 @@ class C_Approval extends CI_Controller {
 		$data['UserMenu']        = $this->M_user->getUserMenu($user_id, $resp_id);
 		$data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo']  = $this->M_user->getMenuLv3($user_id, $resp_id);
-        $data['RequestedDOList'] = $this->M_approval->getRequestedDOListById($this->session->user);
+
+        if ($this->session->responsibility == 'Approval DO UNIT') {
+            $data['RequestedDOList'] = $this->M_approval->getRequestedDOListUnitById($this->session->user);
+        }else {
+            
+            $data['RequestedDOList'] = $this->M_approval->getRequestedDOListById($this->session->user);
+        }
 
         $this->session->set_userdata('last_menu', $data['Menu']);
 
@@ -46,7 +52,27 @@ class C_Approval extends CI_Controller {
         $do_number   = $this->input->post('doNumber');
         $approved_by = $this->session->user;
 
-        $this->M_approval->updateStatusDOApprove($do_number, $approved_by);
+        if ($this->session->responsibility == 'Approval DO UNIT') {
+            $approved_date = 'APPROVED_DATE_2';
+
+            $data = array(
+                            'STATUS' => 'Approved',
+                            'APPROVED_BY_2' => $approved_by,
+                         );
+
+            $this->M_approval->updateStatusDOApprove($do_number, $approved_date, $data);
+        }else {
+            
+            $approved_date = 'APPROVED_DATE';
+
+            $data = array(
+                            'STATUS' => 'Req Approval 2',
+                            'APPROVED_BY' => $approved_by,
+                         );
+
+            $this->M_approval->updateStatusDOApprove($do_number, $approved_date, $data);
+        }
+        
 
         echo json_encode('Success!');
     }
@@ -56,7 +82,27 @@ class C_Approval extends CI_Controller {
         $do_number   = $this->input->post('doNumber');
         $approved_by = $this->session->user;
 
-        $this->M_approval->updateStatusDOReject($do_number, $approved_by);
+        if ($this->session->responsibility == 'Approval DO UNIT') {
+            $approved_date = 'APPROVED_DATE_2';
+
+            $data = array(
+                            'STATUS' => 'Reject Approval 2',
+                            'APPROVED_BY_2' => $approved_by,
+                         );
+
+            $this->M_approval->updateStatusDOApprove($do_number, $approved_date, $data);
+        }else {
+            
+            $approved_date = 'APPROVED_DATE';
+
+            $data = array(
+                            'STATUS' => 'Reject',
+                            'APPROVED_BY' => $approved_by,
+                         );
+
+            $this->M_approval->updateStatusDOApprove($do_number, $approved_date, $data);
+        }
+        
 
         echo json_encode('Success!');
     }
@@ -66,7 +112,26 @@ class C_Approval extends CI_Controller {
         $do_number   = $this->input->post('doNumber');
         $approved_by = $this->session->user;
 
-        $this->M_approval->updateStatusDOPending($do_number, $approved_by);
+        if ($this->session->responsibility == 'Approval DO UNIT') {
+            $approved_date = 'APPROVED_DATE_2';
+
+            $data = array(
+                            'STATUS' => 'Pending Approval 2',
+                            'APPROVED_BY_2' => $approved_by,
+                         );
+
+            $this->M_approval->updateStatusDOApprove($do_number, $approved_date, $data);
+        }else {
+            
+            $approved_date = 'APPROVED_DATE';
+
+            $data = array(
+                            'STATUS' => 'Pending',
+                            'APPROVED_BY' => $approved_by,
+                         );
+
+            $this->M_approval->updateStatusDOApprove($do_number, $approved_date, $data);
+        }
 
         echo json_encode('Success!');
     }
