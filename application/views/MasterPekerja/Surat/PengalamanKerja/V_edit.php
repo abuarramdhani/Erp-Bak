@@ -19,107 +19,130 @@
 										if (isset($data) && !empty($data)) {
 											foreach ($data as $dt) {
 												?>
-										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Update/'.$id_encoded) ?>">
-											<div class="form-group">
-												<label class="control-label col-lg-4">No. Surat</label>
-												<div class="col-lg-4">
-													<input type="text" value="<?php echo $dt['no_surat'] ?>" name="txtMPSuratIsolasiMandiriNoSurat" id="txtMPSuratIsolasiMandiriNoSurat" class="form-control">
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Kepada</label>
-												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTo" id="slcMPSuratIsolasiMandiriTo" style="width: 100%" required>
-														<option value="<?php echo $dt['kepada'] ?>"><?php echo $dt['kepada'].' - '.$dt['kepada_nama'] ?></option>
-													</select>
-												</div>
-											</div>
+										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/PengalamanKerja/Update/'.$datane) ?>">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Pekerja</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Pekerja" name="slcMPSuratIsolasiMandiriPekerja" id="slcMPSuratIsolasiMandiriPekerja" style="width: 100%" required>
-														<option value="<?php echo $dt['pekerja'] ?>"><?php echo $dt['pekerja'].' - '.$dt['pekerja_nama'] ?></option>
-													</select>
-												</div>
-											</div>
-											<input type="hidden" name="txtMPSuratIsolasiMandiriSurat" id="txtMPSuratIsolasiMandiriSurat" >
-											<div class="form-group">
-												<label class="control-label col-lg-4">Wawancara</label>
-												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriWawancaraTanggal" id="txtMPSuratIsolasiMandiriWawancaraTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" value="<?php echo $dt['tgl_wawancara'] ?>" placeholder="Tanggal Wawancara" required>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Mulai Isolasi</label>
-												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriMulaiIsolasiTanggal" id="txtMPSuratIsolasiMandiriMulaiIsolasiTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" value="<?php echo $dt['tgl_mulai'] ?>" placeholder="Tanggal Mulai Isolasi Mandiri" required>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Selesai Isolasi</label>
-												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal" id="txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" value="<?php echo $dt['tgl_selesai'] ?>" placeholder="Tanggal Selesai Isolasi Mandiri" required>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Jumlah Hari</label>
-												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriJumlahHari" id="txtMPSuratIsolasiMandiriJumlahHari" value="<?php echo $dt['jml_hari'] ?>" class="form-control" placeholder="Jumlah Hari" readonly required>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Status</label>
-												<div class="col-lg-4">
-													<select class="select2" data-placeholder="Status Isolasi Mandiri" name="slcMPSuratIsolasiMandiriStatus" id="slcMPSuratIsolasiMandiriStatus" style="width: 100%" required>
-														<option>PRM</option>
-														<option>PSK</option>
+													<select class="slcMPSuratPengalamanKerjaPekerja" data-placeholder="Pekerja" name="slcMPSuratPengalamanKerjaPekerja" id="slcMPSuratPengalamanKerjaPekerja" style="width: 100%" required>
+													<option value="<?php echo $dt['noind'] ?>"><?php echo $dt['noind'].' - '.$dt['nama'] ?></option>
 													</select>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-lg-4">Tanggal Cetak</label>
+												<label class="control-label col-lg-4">Seksi</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriCetakTanggal" id="txtMPSuratIsolasiMandiriCetakTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" value="<?php echo $dt['tgl_cetak'] ?>" placeholder="Tanggal Cetak Surat" required>
+													<input type="text" name="txtMPSuratPengalamanKerjaSeksi" id="txtMPSuratPengalamanKerjaSeksi" class="form-control " value="<?php echo $dt['seksi'] ?>" placeholder="Seksi"  readonly required>
+												</div>
+											</div>
+											<input type="hidden"  value="<?php echo $dt['kd_surat'] ?>"  name="txtMPSuratPengalamanKerjaKodeSurat" id="txtMPSuratPengalamanKerjaKodeSurat">
+											<input type="hidden"  value="<?php echo $dt['no_surat'] ?>"  name="txtMPSuratPengalamanKerjaNoSurat" id="txtMPSuratPengalamanKerjaNoSurat">
+											<input type="hidden"  value="<?php echo $dt['tgl_surat'] ?>"  name="txtMPSuratPengalamanKerjaTanggalSurat" id="txtMPSuratPengalamanKerjaTanggalSurat">
+											<input type="hidden" name="txtMPSuratPengalamanKerjaKodesie" id="txtMPSuratPengalamanKerjaKodesie" value="<?php echo $dt['kodesie'] ?>">
+											<input type="hidden"  value="<?php echo $dt['cetak'] ?>"  name="txtMPSuratPengalamanKerjaCetak" id="txtMPSuratPengalamanKerjaCetak">
+											<input type="hidden"  value="<?php echo $dt['tgl_cetak'] ?>"  name="txtMPSuratPengalamanKerjaTglCetak" id="txtMPSuratPengalamanKerjaTglCetak">
+											<div class="form-group">
+												<label class="control-label col-lg-4">Bidang</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtMPSuratPengalamanKerjaBidang" id="txtMPSuratPengalamanKerjaBidang" class="form-control "  value="<?php echo $dt['bidang'] ?>" placeholder="Bidang"  readonly required>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-lg-4">Dibuat Oleh</label>
+												<label class="control-label col-lg-4">Unit</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Dibuat Oleh" name="slcMPSuratIsolasiMandiriDibuat" id="slcMPSuratIsolasiMandiriDibuat" style="width: 100%" required>
-														<option value="<?php echo $dt['dibuat'] ?>"><?php echo $dt['dibuat'].' - '.$dt['dibuat_nama'] ?></option>
-													</select>
+													<input type="text" name="txtMPSuratPengalamanKerjaUnit" id="txtMPSuratPengalamanKerjaUnit" class="form-control "  value="<?php echo $dt['unit'] ?>" placeholder="Unit"  readonly required>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-lg-4">Menyetujui</label>
+												<label class="control-label col-lg-4">Departemen</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Menyetujui" name="slcMPSuratIsolasiMandirimenyetujui" id="slcMPSuratIsolasiMandirimenyetujui" style="width: 100%" required>
-														<option value="<?php echo $dt['menyetujui'] ?>"><?php echo $dt['menyetujui'].' - '.$dt['menyetujui_nama'] ?></option>
-													</select>
+													<input type="text" name="txtMPSuratPengalamanKerjaDept" id="txtMPSuratPengalamanKerjaDept" class="form-control "  value="<?php echo $dt['dept'] ?>" placeholder="Departemen"  readonly required>
+												</div>
+											</div>
+											<!-- 
+											<div class="form-group">
+												<label class="control-label col-lg-4">Jabatan</label>
+												<div class="col-lg-4">
+													<select name="txtMPSuratPengalamanKerjaJabatan" id="txtMPSuratPengalamanKerjaJabatan" class="form-control ">
+    															
+    															<option value=""></option>
+    												</select>
+												</div>
+											</div>
+											-->
+											<div class="form-group">
+												<label class="control-label col-lg-4">Masuk</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtMPSuratPengalamanKerjaMasuk" id="txtMPSuratPengalamanKerjaMasuk" class="form-control "   value="<?php echo $dt['masukkerja'] ?>" placeholder="Masuk Kerja"  readonly required>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-lg-4">Mengetahui</label>
+												<label class="control-label col-lg-4">Sampai</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Mengetahui" name="slcMPSuratIsolasiMandiriMengetahui" id="slcMPSuratIsolasiMandiriMengetahui" style="width: 100%" required>
-														<option value="<?php echo $dt['mengetahui'] ?>"><?php echo $dt['mengetahui'].' - '.$dt['mengetahui_nama'] ?></option>
-													</select>
+													<select name="txtMPSuratPengalamanKerjaSampai" id="txtMPSuratPengalamanKerjaSampai" class="form-control ">
+													            <option value="<?php echo $dt['tgl_kena'] ?>"><?php echo $dt['tgl_kena'] ?></option>
+    															<option value="1900-01-01" <?php if ($dt['tgl_kena'] == '1900-01-01'){ echo 'selected'; } ?>>Tanggal dibuatnya surat keterangan ini dan masih bekerja</option>
+    												</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">Alamat</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtMPSuratPengalamanKerjaAlamat" id="txtMPSuratPengalamanKerjaAlamat" class="form-control "  value="<?php echo $dt['alamat'] ?>" placeholder="Alamat"   required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">Desa</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtMPSuratPengalamanKerjaDesa" id="txtMPSuratPengalamanKerjaDesa" class="form-control "  value="<?php echo $dt['desa'] ?>" placeholder="Desa"  readonly required>
+												</div>
+											</div>
+                                            <div class="form-group">
+												<label class="control-label col-lg-4">Kabupaten</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtMPSuratPengalamanKerjaKab" id="txtMPSuratPengalamanKerjaKab" class="form-control " value="<?php echo $dt['kab'] ?>" placeholder="Kabupaten" readonly   required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">Kecamatan</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtMPSuratPengalamanKerjaKec" id="txtMPSuratPengalamanKerjaKec" class="form-control " value="<?php echo $dt['kec'] ?>" placeholder="Kecamatan"  readonly  required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">NIK</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtMPSuratPengalamanKerjaNIK" id="txtMPSuratPengalamanKerjaNIK" class="form-control " value="<?php echo $dt['nik'] ?>" placeholder="NIK"  readonly  required>
+												</div>
+											</div>
+											<!--<div class="form-group">
+												<label class="control-label col-lg-4">Template Isi</label>
+												<div class="col-lg-4">
+													<select  class="form-control select4" id="pengalaman" name="TxtIsiSuratPengalaman" data-placeholder="Pilih isi surat" required>
+											             <option></option>
+										               <?php foreach ($isisuratpengalaman as $isi) {?>
+											            <option value="<?php echo $isi['kd_isi']?>"><?php echo $isi['kd_isi']?></option>
+										             <?php }?>
+									                     </select>
+												</div>
+											</div>
+											-->
+											<div class="form-group">
+											  <label class="control-label col-lg-4"> Isi</label>
+												<div class="col-lg-6">
+                                                            <textarea required class="redactor MasterPekerja-Surat-txaPreview"  name="txaPreview" id="" >
+                                                            	<?php echo $dt['isi_surat'] ?>
+                                                            </textarea>
+                                                 </div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">Pengembalian ADP</label>
+												<div class="col-lg-4">
+													<input type="text" name="txtMPSuratPengalamanKerjaAPD" id="txtMPSuratPengalamanKerjaAPD" class="form-control "  value="<?php echo $dt['apd'] ?>"placeholder="Pengembalian APD"  readonly  required>
 												</div>
 											</div>
 											<div class="form-group">
 												<div class="col-lg-6 text-right">
-													<button class="btn btn-primary" id="btnMPSuratIsolasiMandiriPreview" type="button"><span class="fa fa-print"></span>&nbsp;Preview</button>
-												</div>
-											</div>
-											<div class="form-group">
-                                                <label class="col-lg-2 control-label">Format Surat</label>
-                                                <div class="col-lg-8">
-                                                    <textarea name="txaMPSuratIsolasiMandiriRedactor" class="form-control" id="txaMPSuratIsolasiMandiriRedactor" disabled required></textarea>
-                                                </div>
-                                            </div>
-											<div class="form-group">
-												<div class="col-lg-6 text-right">
-													<button class="btn btn-primary" id="btnMPSuratIsolasiMandiriSubmit" type="submit" disabled><span class="fa fa-save"></span>&nbsp;Simpan</button>
+													<button class="btn btn-primary" id="btnMPSuratPengalamanKerjaSubmit" type="submit" ><span class="fa fa-save"></span>&nbsp;Simpan</button>
 												</div>
 											</div>
 										</form>
@@ -137,3 +160,4 @@
 		</div>
 	</div>
 </section>
+					

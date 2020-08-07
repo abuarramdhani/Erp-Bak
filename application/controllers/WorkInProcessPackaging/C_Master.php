@@ -157,24 +157,30 @@ class C_Master extends CI_Controller
             echo "Akses Terlarang!!!";
         } else {
             $data_a = $this->M_wipp->getItem();
+            $data_b = $this->M_wipp->getJobAll();
             $priority = $this->M_wipp->getPP();
 
-            // ambil data getItem kemudian ditampung di produk priority
-              foreach ($data_a as $key1 => $da) {
-                  $data_a[$key1]['PRIORITY'] = 0;
-                  $get_job = $this->M_wipp->getJob($da['KODE_ASSY']);
-                  if (!empty($get_job)) {
-                      $gj = $get_job;
-                      foreach ($priority as $key2 => $pr) {
-                          foreach ($gj as $key3 => $g) {
-                              if ($g['KODE_ASSY'] === $pr['kode_item']) {
-                                  $tampung_priority[] = $da;
-                                  break 1;
-                              }
-                          }
-                      }
-                  }
+            foreach ($data_b as $key1 => $value1) {
+              foreach ($data_a as $key => $value) {
+               if ($value1['KODE_COMP'] == $value['KODE_ASSY']) {
+                 $get_job[$value1['KODE_ASSY']] = $value1;
+               }
               }
+            }
+
+            foreach ($data_a as $key => $value) {
+              $data_a[$key]['PRIORITY'] = 0;
+              foreach ($get_job as $key2 => $gj) {
+                if ($gj['KODE_COMP'] === $value['KODE_ASSY']) {
+                  foreach ($priority as $key3 => $pr) {
+                    if ($pr['kode_item'] === $gj['KODE_ASSY']) {
+                      $tampung_priority[] = $value;
+                    }
+                  }
+                }
+              }
+            }
+
 
             if (!empty($tampung_priority)) {
 
@@ -208,6 +214,29 @@ class C_Master extends CI_Controller
                 }
             }
             $data['get_unique'] = $data1_1;
+            $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released', $data);
+        }
+    }
+
+    public function JobReleasedEdit()
+    {
+        if (!$this->input->is_ajax_request()) {
+            echo "Akses Terlarang!!!";
+        } else {
+            $data_a = $this->M_wipp->getItem();
+
+            foreach ($data_a as $key => $val) {
+                $data_a[$key]['PRIORITY'] = 0;
+                $minmax = $this->M_wipp->minMax($val['KODE_ASSY']);
+                if (!empty($minmax)) {
+                    $data_a[$key]['MIN'] = $minmax[0]['MIN'];
+                    $data_a[$key]['MAX'] = $minmax[0]['MAX'];
+                } else {
+                    $data_a[$key]['MIN'] = '-';
+                    $data_a[$key]['MAX'] = '-';
+                }
+            }
+            $data['get_unique'] = $data_a;
             $this->load->view('WorkInProcessPackaging/ajax/V_Job_Released', $data);
         }
     }
@@ -255,6 +284,9 @@ class C_Master extends CI_Controller
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['param'] = $l;
+        $x = explode('_', $l);
+        $get_wss = $this->db->select('waktu_satu_shift')->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.job_list')->row_array();
+        $data['wss'] = $get_wss['waktu_satu_shift'];
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -604,19 +636,19 @@ class C_Master extends CI_Controller
         $line_5 = $this->M_wipp->getline5($date);
 
         foreach ($line_1 as $key => $value) {
-            $line_1[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_1[$key]['PPIC'] = $value['target_pe'];
         }
         foreach ($line_2 as $key => $value) {
-            $line_2[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_2[$key]['PPIC'] = $value['target_pe'];
         }
         foreach ($line_3 as $key => $value) {
-            $line_3[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_3[$key]['PPIC'] = $value['target_pe'];
         }
         foreach ($line_4 as $key => $value) {
-            $line_4[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_4[$key]['PPIC'] = $value['target_pe'];
         }
         foreach ($line_5 as $key => $value) {
-            $line_5[$key]['PPIC'] = $value['qty']*$value['target_pe'];
+            $line_5[$key]['PPIC'] = $value['target_pe'];
         }
 
         $data['line_1'] = $line_1;
@@ -1045,6 +1077,7 @@ class C_Master extends CI_Controller
             $ln5_tampng[] = NULL;
           }
         }
+
         if (!empty($ln5_tampng)) {
           foreach ($ln5_tampng as $key => $bln1) {
             $line5[$key]['QTY_BOM'] = $bln1['QTY'];
@@ -1295,12 +1328,21 @@ class C_Master extends CI_Controller
 
             $this->M_wipp->insertPhoto($save);
         } else {
+          if (!is_dir('./assets/upload/wipp/'.$param)) {
+              mkdir('./assets/upload/wipp/'.$param, 0777, true);
+              chmod('./assets/upload/wipp/'.$param, 0777);
+          }
+          $lokasiLama		= $this->input->post('photo');
+          $lokasiBaru		= './assets/upload/wipp/'.$param.'/'.$item.'.png';
+          rename($lokasiLama, $lokasiBaru);
             $save = [
             'kode_item' => $item,
             'nama_item' => $nama_comp,
             'type'      => $param,
+            'photo'     => $lokasiBaru,
             'id'        => $this->input->post('id_photo')
-          ];
+            ];
+
             $this->M_wipp->UpdatePhoto($save);
         }
 
@@ -1317,15 +1359,80 @@ class C_Master extends CI_Controller
         }
     }
 
+    public function SaveJobListEdit()
+    {
+        $date = $this->input->post('date');
+        $waktu_shift = $this->input->post('waktu_shift');
+        $data = $this->input->post('data');
+        // echo "<pre>";
+        // print_r($data);
+        // die;
+        $j = $this->input->post('jenis');
+        $jenis = substr($j, 0, 1);
+        if (!empty($date)) {
+            $cek = $this->db->select('no_job')
+                         ->where('date_target', $date)
+                         ->where('type', $jenis)
+                         ->get('wip_pnp.job_list')
+                         ->result_array();
+
+                foreach ($data as $key => $d) {
+                  foreach ($cek as $key2 => $c) {
+                    if ($d[1] === $c['no_job']) {
+                       $cekk = $d[1];
+                       break 2;
+                    }else {
+                      $cekk = 0;
+                    }
+                  }
+                }
+
+                if($cekk === 0) {
+                foreach ($data as $key => $d) {
+                    $n195 = $this->M_wipp->savenewRKH([
+                      'date_target' => $date,
+                      'waktu_satu_shift' => $waktu_shift,
+                      'type' => $jenis,
+                      'no_job' => $d[1],
+                      'kode_item' => $d[2],
+                      'nama_item' => $d[3],
+                      'qty' => $d[4],
+                      'usage_rate' => $d[5],
+                      'scedule_start_date' => $d[6],
+                      'qty_parrent' => $d[7]
+                    ]);
+                  }
+                  echo json_encode($n195);
+                }else {
+                  echo json_encode($cekk);
+                }
+
+        } else {
+            echo json_encode('fail');
+        }
+    }
+
     // ============================ CHECK AREA =====================================
 
     public function cekapi()
     {
-        $data_a = $this->M_wipp->getJob('EGBA08000000-0');
-        // $data_a = $this->M_wipp->getItem();
+        // $data_a = $this->M_wipp->getJob('EGBA08000000-0');
+        $data_a = $this->M_wipp->getItem();
+        // $data_b = $this->M_wipp->getJobAll();
+        // $priority = $this->M_wipp->getPP();
+        // foreach ($get_job as $key => $value) {
+        //   foreach ($priority as $key2 => $value2) {
+        //     if ($value['KODE_ASSY'] === $value2['kode_item']) {
+        //       $tampung_priority[] = $value;
+        //     }
+        //   }
+        // }
         echo "<pre>";
         print_r($data_a);
         echo sizeof($data_a);
+        // echo "<pre>";
+        // print_r($data_b);
+        // echo sizeof($data_b);
         die;
     }
 }

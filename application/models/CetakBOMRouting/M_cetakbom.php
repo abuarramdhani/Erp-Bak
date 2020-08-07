@@ -349,7 +349,7 @@ grb.ROUTING_ID
 ,opt.PROCESS_QTY
 ,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
 ,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
-,floor(23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600)) target
+,23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600) target
 ,opt.LAST_UPDATE_DATE
 from
 gmd_routings_tl grt

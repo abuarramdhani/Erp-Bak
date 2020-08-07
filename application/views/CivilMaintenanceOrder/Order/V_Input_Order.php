@@ -117,7 +117,7 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <select required class="form-control <?= $claz ?>" name="jnsOrder">
-                                                    <option value="1" selected="">PEKERJAAN EKSTERNAL DENGAN ORDER</option>
+                                                    <option value="1" selected="">Pekerjaan Eksternal Dengan Order</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -131,7 +131,7 @@
                                                 <label>Judul Order</label>
                                             </div>
                                             <div class="col-md-9" style="padding-left: 12px;">
-                                                <input required oninput="this.value = this.value.toUpperCase()" class="form-control" name="judul" placeholder="Masukkan Judul Order">
+                                                <input required class="form-control" name="judul" placeholder="Masukkan Judul Order">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -199,8 +199,8 @@
                                             <div class="col-md-8">
                                                 <select class="select2 mco_status" style="width: 100%" name="status" required data-placeholder="Status Order">
                                                     <option></option>
-                                                    <option>BIASA</option>
-                                                    <option>URGENT</option>
+                                                    <option>Biasa</option>
+                                                    <option>Urgent</option>
                                                 </select>
                                             </div>
                                         </div>

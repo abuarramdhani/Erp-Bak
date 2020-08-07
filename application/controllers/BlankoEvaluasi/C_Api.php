@@ -68,7 +68,7 @@ class C_Api extends CI_Controller {
             $withCode = null;
         }
 
-        if(!$keyword) return $this->errorResponse('Parameter failed');
+        // if(!$keyword) return $this->errorResponse('Parameter failed');
 
         $workersData = $this->M_blankoevaluasi->getWorkers($keyword, $withCode, $filterSie);
         if(!$workersData && !count($workersData)) return $this->successResponse('Data pekerja tidak ditemukan di database', $workersData);

@@ -127,6 +127,13 @@ $(document).ready(function(){
 				console.log(textStatus, errorThrown);
 			}
 		});
+		getRute(pr);
+		var p = pr.split(' - ');
+		if (p[0] == p[1]) {
+			// $('#pts_divexmap').show();
+		}else{
+			$('#pts_divexmap').hide();
+		}
 	});
 
 	$(".pts_monthrange").monthpicker({
@@ -298,6 +305,19 @@ $(document).ready(function(){
 	}, function(start, end, label) {
 		console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
 	});
+
+	$('#pts_btnexmap').click(function(){
+		var canv;
+		
+		html2canvas(document.querySelector("#pts_gMap"),{useCORS: true}).then(canvas => {
+			canv = canvas.toDataURL('image/png')
+			console.log(canvas.toDataURL('image/png'))
+			location.href=canv
+		});
+
+		$('#frm_cvmap').val(canv);
+		// $('#pts_frm_btnsm').click();
+	});
 });
 
 
@@ -357,3 +377,19 @@ $(document).on('click', '.pts_copylatlong', function(){
 		title: 'Location Coppied !!'
 	})
 });
+
+function getRute(periode)
+{
+	$.ajax({
+		url: baseurl + 'PatroliSatpam/web/get_map_route',
+		type: "get",
+		data: {pr: periode},
+		success: function (response) {
+			$('.pts_maprute').html(response);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			$('#surat-loading').hide();
+			console.log(textStatus, errorThrown);
+		}
+	});
+}

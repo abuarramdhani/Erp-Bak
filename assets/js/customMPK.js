@@ -165,6 +165,55 @@ $(document).ready(function () {
             $('#print_card').removeClass('disabled');
         })
     });
+       
+
+       function SelectNamaAmplop() {
+        var val = $('#NamaPekerjaCetakAmplop').val();
+        if (val) {
+            $('#CariPekerjaCetakAmplop').removeAttr('disabled', 'disabled');
+            $('#CariPekerjaCetakAmplop').removeClass('disabled');
+        } else {
+            $('#CariPekerjaCetakAmplop').attr('disabled', 'disabled');
+            $('#CariPekerjaCetakAmplop').addClass('disabled', 'disabled');
+        }
+    }
+     $(document).on('change', '#NamaPekerjaCetakAmplop', function() {
+        SelectNamaAmplop();
+    });
+
+        $(document).on('click', '#CariPekerjaCetakAmplop', function(e) {
+        e.preventDefault();
+        var nama = $('#NamaPekerjaCetakAmplop').val();
+        var noind = '';
+        $.ajax({
+            url: baseurl + "MasterPekerja/CetakAmplop/DataAmplop",
+            type: "get",
+            data: { nama: nama }
+        }).done(function(data) {
+            var html = '';
+            var data = $.parseJSON(data);
+
+            console.log(data['worker']);
+            $('tbody#dataAmplop').empty(html);
+            for (var i = 0; i < data['worker'].length; i++) {
+
+                  noind = data['worker'][i][0]['noind'];
+
+                html += '<tr>';
+                html += '<td>' + (i + 1) + '</td>';
+                html += '<td>' + noind + '<input type="hidden" name="noind[]" value="' + data['worker'][i][0]['noind'] + '"></td>';
+                html += '<td>' + data['worker'][i][0]['nama'] + '</td>';
+
+                    html += '<td>' + data['worker'][i][0]['seksi'] + '</td>';
+               
+                html += '</tr>';
+            }
+            $('tbody#dataAmplop').append(html);
+            $('#tampil-data-amplop').removeClass('hidden');
+            $('#print_amplop').removeAttr('disabled', false);
+            $('#print_amplop').removeClass('disabled');
+        })
+    });
 
 
     function SelectNamaAmplop() {

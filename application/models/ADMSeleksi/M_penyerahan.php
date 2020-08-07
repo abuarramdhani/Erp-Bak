@@ -39,6 +39,12 @@ class M_penyerahan extends CI_Model
 		return $this->personalia->query($sql)->row()->jenis;
 	}
 
+	public function getNoJenisPenyerahan($jenis)
+	{
+		$sql = "SELECT no_jenis FROM \"Surat\".tnoind_penyerahan where jenis = '$jenis'";
+		return $this->personalia->query($sql)->row()->no_jenis;
+	}
+
 	public function getDataShift($kode, $num)
 	{
 		$sql = "SELECT * FROM \"Presensi\".tjamshift where kd_shift = '$kode' and numhari = '$num'";
@@ -457,6 +463,7 @@ class M_penyerahan extends CI_Model
 						e.tgl_mulaiik::date,
 						e.tgl_masuk::date,
 						e.jenis_pkj,
+						trim(e.gol) as gol,
 						(SELECT lama_orientasi from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind and tgl_masuk::date = '$tanggal_cetak') as lama_orientasi,
 						(SELECT tgl_diangkat::date from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind and tgl_masuk::date = '$tanggal_cetak') as tgl_diangkat,
 						(SELECT trim(kd_status) from hrd_khs.tb_status_jabatan where a.noind = noind and a.noind_baru = noind_baru and status_data = '02') as kd_status,
@@ -498,9 +505,33 @@ class M_penyerahan extends CI_Model
 		return $this->personalia->query($sql);
 	}
 
-	public function updateNoSurat($no_surat, $noind)
+	public function updateNoSurat($no_surat, $noind, $bulan)
 	{
-		$sql = "UPDATE \"Surat\".tsurat_penyerahan set no_surat = '$no_surat' where kode in ('$noind')";
+		$sql = "UPDATE \"Surat\".tsurat_penyerahan set no_surat = '$no_surat' where kode in ('$noind') and bulan = '$bulan'";
+		return $this->personalia->query($sql);
+	}
+
+	public function updateNomorTSurat($bulanan)
+	{
+		$sql = "UPDATE \"Surat\".tsurat set no_surat = '001' where no_surat = '000' and bulan = '$bulanan' and hal_surat = 'PS' and kd_surat = 'KI-C'";
+		return $this->personalia->query($sql);
+	}
+
+	public function updateTshiftPekerja($shift, $jam_msk, $jam_akh, $jam_plg, $break_mulai, $break_selesai, $ist_mulai, $ist_selesai, $jam_kerja, $user, $tanggal, $noind, $kodesie)
+	{
+		$sql = "UPDATE \"Presensi\".tshiftpekerja 
+				set 
+					kd_shift = '$shift',
+					jam_msk = '$jam_msk',
+					jam_akhmsk = '$jam_akh',
+					jam_plg = '$jam_plg',
+					break_mulai = '$break_mulai',
+					break_selesai = '$break_selesai',
+					ist_mulai = '$ist_mulai',
+					ist_selesai = '$ist_selesai',
+					jam_kerja = '$jam_kerja',
+					user_ = '$user'
+				where tanggal = '$tanggal' and noind = '$noind' and kodesie = '$kodesie'";
 		return $this->personalia->query($sql);
 	}
 

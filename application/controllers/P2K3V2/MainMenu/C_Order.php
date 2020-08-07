@@ -1568,6 +1568,7 @@ class C_Order extends CI_Controller
 		$dataTrans = $this->M_dtmasuk->monitorbonOracle($nama_seksi[0]['section_name'], $pr);
 
 		$data['canSubmit'] = true;
+		$data['nyTrans'] = array();
 		if (!empty($dataTrans)) {
 			$endDataTrans = end($dataTrans);
 
@@ -1580,8 +1581,14 @@ class C_Order extends CI_Controller
 					$listtobon[$i]['bonTrans'] += isset($arrc[$listtobon[$i]['kode_item']]) ? $arrc[$listtobon[$i]['kode_item']] : 0;
 				}
 			}
-			$data['canSubmit'] = (strpos(end($endDataTrans), 'N') !== false) ? false : true;
+			$data['canSubmit'] = (strpos(end($endDataTrans), 'Y') === false) ? false : true;
 			$data['notrans'] = $endDataTrans['NO_BON'];
+			$a = explode(';', $endDataTrans['KODE_BARANG']);
+			$b = explode(';', $endDataTrans['TRANSACT']);
+			for ($i=0; $i < count($b); $i++) { 
+				if($b[$i] == 'N')
+					$data['nyTrans'][] = $a[$i];
+			}
 		}
 		// echo "<pre>";
 		// print_r($listtobon);

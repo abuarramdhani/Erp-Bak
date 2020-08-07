@@ -51,8 +51,8 @@
 															<td style="text-align: center;"><?php echo $nomor; ?></td>
 															<td style="text-align: center;"><?php echo $value['noind']; ?></td>
 															<td><?php echo $value['nama']; ?></td>
-															<td><?php echo $value['seksi_lama']; ?></td>
-															<td><?php echo $value['seksi_baru']; ?></td>
+															<td><?php echo $value['seksi_lama']." <b>(".$value['lokasilm'].")</b>"; ?></td>
+															<td><?php echo $value['seksi_baru']." <b>(".$value['lokasibr'].")</b>"; ?></td>
 															<td><?php echo $value['tglberlaku']; ?></td>
 															<td><?php echo $value['tempat_makan1lm']; ?></td>
 															<td><?php echo $value['tempat_makan']; ?></td>

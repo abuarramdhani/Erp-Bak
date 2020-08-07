@@ -268,5 +268,12 @@ class M_penjadwalancatering extends CI_Model
 		$sql = "delete from \"Catering\".tjadwal where fs_kd_katering = '".$data['kd']."' and fd_tanggal between '".$data['awal']."' and '".$data['akhir']."' and fs_tujuan_shift1 = '".$data['s1']."' and fs_tujuan_shift2 = '".$data['s2']."' and fs_tujuan_shift3 = '".$data['s3']."'";
 		$this->personalia->query($sql);
 	}
+
+	public function getKateringLokasiByKodeKatering($kode_katering){
+		$sql = "select lokasi_kerja
+				from \"Catering\".tkatering
+				where fs_kd_katering = ?";
+		return $this->personalia->query($sql,array($kode_katering))->row()->lokasi_kerja;
+	}
 }
 ?>

@@ -1956,6 +1956,11 @@ $route['ManufacturingOperation/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'Manufac
 //------------------------------------------------Master Pekerja-------------------------------------------------------//
 $route['MasterPekerja'] = 'MasterPekerja/C_MasterPekerja';
 
+
+$route['MasterPekerja/CetakAmplop'] = 'MasterPekerja/CetakAmplop/C_CetakAmplop';
+$route['MasterPekerja/CetakAmplop/(:any)'] = 'MasterPekerja/CetakAmplop/C_CetakAmplop/$1';
+$route['MasterPekerja/CetakAmplop/(:any)/(:any)'] = 'MasterPekerja/CetakAmplop/C_CetakAmplop/$1/$2';
+
 $route['MasterPekerja/Other'] = 'MasterPekerja/Other/C_CetakCard';
 $route['MasterPekerja/Other/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1';
 $route['MasterPekerja/Other/(:any)/(:any)'] = 'MasterPekerja/Other/C_CetakCard/$1/$2';
@@ -2484,6 +2489,12 @@ $route['SystemIntegration/KaizenGenerator/AllKaizen/index'] = 'SystemIntegration
 $route['SystemIntegration/KaizenGenerator/Validate/Index'] = 'SystemIntegration/MainMenu/AllKaizen/C_AllKaizen/Validate';
 $route['SystemIntegration/KaizenGenerator/Validate/findKaizen'] = 'SystemIntegration/MainMenu/AllKaizen/C_AllKaizen/findKaizen';
 
+//kaizen aKuntansi
+$route['SystemIntegration/KaizenAkt'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi';
+$route['SystemIntegration/KaizenAkt/(:any)'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi/$1';
+$route['SystemIntegration/KaizenAkt/(:any)/(:any)'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi/$1/$2';
+
+
 //---------------------------------------------------- Upah Pekerja Harian Lepas----------------------------------//
 $route['UpahHlCm'] 		= 'UpahHlCm/C_UpahPHL';
 $route['HitungHlcm/DataGaji'] 	= 'UpahHlCm/MasterData/C_DataGaji';
@@ -2573,6 +2584,10 @@ $route['InventoryManagement/ExportMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_
 $route['InventoryManagement/ExportMoveOrder/search'] = 'Inventory/MainMenu/MoveOrder/C_Export/search';
 $route['InventoryManagement/ExportMoveOrder/export'] = 'Inventory/MainMenu/MoveOrder/C_Export/export';
 $route['InventoryManagement/ExportMoveOrder/(:any)/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Export/$1/$2';
+
+$route['InventoryManagement/SimulasiKebutuhan'] = 'Inventory/MainMenu/MoveOrder/C_Simulasi';
+$route['InventoryManagement/SimulasiKebutuhan/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Simulasi/$1';
+$route['InventoryManagement/SimulasiKebutuhan/(:any)/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Simulasi/$1/$2';
 
 //KIB
 $route['InventoryManagement/CreateKIB'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB';
@@ -4579,3 +4594,32 @@ $route['RunningTimeLinePnP/lane5/(:any)'] = 'RunningTimeLinePnP/C_Master/$1';
 $route['RunningTimeLinePnP/lane5/(:any)/(:any)'] = 'RunningTimeLinePnP/C_Master/$1/$2';
 
 $route['RunningTimeLinePnP/cekapi'] = 'RunningTimeLinePnP/C_Master/cekapi';
+
+//-------------------------------------------Quick Landing---------------------------------------//
+$route['LandingPageMonitor'] = 'QuickLanding/C_Qlanding/Index';
+$route['LandingPageMonitor/getData'] = 'QuickLanding/C_Qlanding/getData';
+$route['LandingPageMonitor/exportExcel'] = 'QuickLanding/C_Qlanding/exportExcel';
+
+// --------------------------------------- DB HANDLING -----------------------------------------------//
+$route['DbHandling']									= 'DbHandling/C_Index';
+$route['DbHandling/MonitoringHandling']					= 'DbHandling/TIM/C_Monhand';
+$route['DbHandling/MonitoringHandling/(:any)']			= 'DbHandling/TIM/C_Monhand/$1';
+$route['DbHandling/MonitoringHandling/(:any)/(:any)']	= 'DbHandling/TIM/C_Monhand/$1/$2';
+
+$route['DbHandling/SetDataMaster']					= 'DbHandling/TIM/C_Setdatamaster';
+$route['DbHandling/SetDataMaster/(:any)']			= 'DbHandling/TIM/C_Setdatamaster/$1';
+$route['DbHandling/SetDataMaster/(:any)/(:any)']	= 'DbHandling/TIM/C_Setdatamaster/$1/$2';
+
+$route['DbHandlingSeksi']									= 'DbHandling/C_Index';
+$route['DbHandlingSeksi/MonitoringHandling']				= 'DbHandling/SEKSI/C_Monhandseksi';
+$route['DbHandlingSeksi/MonitoringHandling/(:any)']			= 'DbHandling/SEKSI/C_Monhandseksi/$1';
+$route['DbHandlingSeksi/MonitoringHandling/(:any)/(:any)']	= 'DbHandling/SEKSI/C_Monhandseksi/$1/$2';
+
+//-------------------------------------------MO Terlambat Transact---------------------------------------//
+$route['MOTerlambatTransact'] = 'MOTerlambatTransact/C_Master';
+
+$route['MOTerlambatTransact/Monitoring'] = 'MOTerlambatTransact/C_Master/Monitoring';
+$route['MOTerlambatTransact/Monitoring/(:any)'] = 'MOTerlambatTransact/C_Master/$1';
+$route['MOTerlambatTransact/Monitoring/(:any)/(:any)'] = 'MOTerlambatTransact/C_Master/$1/$2';
+
+$route['MOTerlambatTransact/cekapi'] = 'MOTerlambatTransact/C_Master/cekapi';

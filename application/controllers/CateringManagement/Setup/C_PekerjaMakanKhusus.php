@@ -208,4 +208,182 @@ class C_PekerjaMakanKhusus extends CI_Controller
 		echo json_encode($data_akhir);
 	}
 
+	public function importExcel(){
+		$user_id = $this->session->userid;
+
+		$data['Title']			=	'Pekerja Makan Khusus';
+		$data['Header']			=	'Pekerja Makan Khusus';
+		$data['Menu'] 			= 	'Setup';
+		$data['SubMenuOne'] 	= 	'Pekerja Makan Khusus';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('CateringManagement/Setup/PekerjaMakanKhusus/V_import',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function ExportData(){
+		$isi = $this->input->post('txt-CM-PekerjaMakanKhusus-Export-Isi');
+		$status = $this->input->post('slc-CM-PekerjaMakanKhusus-Export-Status');
+		$lokasi = $this->input->post('slc-CM-PekerjaMakanKhusus-Export-Lokasi');
+
+		if ($isi == "Isi") {
+			if ($status == "Aktif") {
+				$where_status = "(tanggal_selesai > current_date and tanggal_mulai < current_date)";
+			}elseif ($status == "Non-Aktif") {
+				$where_status = "(tanggal_selesai < current_date or tanggal_mulai > current_date)";
+			}else{
+				$where_status = "";
+			}
+
+			if ($lokasi == "Yogyakarta & Mlati") {
+				$where_lokasi = "t3.fs_lokasi = '1'";
+			}elseif ($lokasi == "Tuksono") {
+				$where_lokasi = "t3.fs_lokasi = '2'";
+			}else{
+				$where_lokasi = "";
+			}
+
+			$data = $this->M_pekerjamakankhusus->getPekerjaMakanKhususByStatusLokasi($where_lokasi,$where_status);
+		}else{
+			$data = array();
+		}
+
+		$this->load->library('excel');
+		$worksheet = $this->excel->getActiveSheet();
+		
+		$worksheet->setCellValue('A1','pekerja_menu_khusus_id');
+		$worksheet->setCellValue('B1','noind');
+		$worksheet->setCellValue('C1','menu_sayur');
+		$worksheet->setCellValue('D1','menu_lauk_utama');
+		$worksheet->setCellValue('E1','menu_lauk_pendamping');
+		$worksheet->setCellValue('F1','menu_buah');
+		$worksheet->setCellValue('G1','pengganti_sayur');
+		$worksheet->setCellValue('H1','pengganti_lauk_utama');
+		$worksheet->setCellValue('I1','pengganti_lauk_pendamping');
+		$worksheet->setCellValue('J1','pengganti_buah');
+		$worksheet->setCellValue('K1','tanggal_mulai');
+		$worksheet->setCellValue('L1','tanggal_selesai');
+		
+		$y_index = 2;
+		if (isset($data) && !empty($data)) {
+			foreach ($data as $key => $value) {
+				$encrypted_string = $this->encrypt->encode($value['pekerja_menu_khusus_id']);
+	    		$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+				$worksheet->setCellValue('A'.$y_index,$encrypted_string);
+				$worksheet->setCellValue('B'.$y_index,$value['noind']);
+				$worksheet->setCellValue('C'.$y_index,$value['menu_sayur']);
+				$worksheet->setCellValue('D'.$y_index,$value['menu_lauk_utama']);
+				$worksheet->setCellValue('E'.$y_index,$value['menu_lauk_pendamping']);
+				$worksheet->setCellValue('F'.$y_index,$value['menu_buah']);
+				$worksheet->setCellValue('G'.$y_index,$value['pengganti_sayur']);
+				$worksheet->setCellValue('H'.$y_index,$value['pengganti_lauk_utama']);
+				$worksheet->setCellValue('I'.$y_index,$value['pengganti_lauk_pendamping']);
+				$worksheet->setCellValue('J'.$y_index,$value['pengganti_buah']);
+				$worksheet->setCellValue('K'.$y_index,$value['tanggal_mulai']);
+				$worksheet->setCellValue('L'.$y_index,$value['tanggal_selesai']);		
+				$y_index++;
+			}	
+		}
+
+		$worksheet->getProtection()->setPassword('catering');
+
+		$worksheet->getProtection()->setSheet(true); //kunci 1 sheet
+		$worksheet->getStyle('B2:L'.($y_index + 1000))->getProtection()->setlocked(PHPExcel_Style_Protection::PROTECTION_UNPROTECTED); //membuka kunci cell range
+		
+		$filename ="CM_Pekerja_Makan_Khusus_".date('Y-m-d_H-i-s').".xls";
+		header('Content-Type: aplication/vnd.ms-excel');
+		header('Content-Disposition:attachment;filename="'.$filename.'"');
+		header('Cache-Control: max-age=0');
+
+		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+		$writer->save('php://output');
+	}
+
+	public function ImportData(){
+		$filename = $_FILES['file']['name'];
+        $waktu = date('Y-m-d_H-i-s');
+        $filename = $waktu.str_replace(' ','_', $filename);
+    	
+    	$config['upload_path'] 		= './assets/upload/CateringManagement/';
+        $config['file_name'] 		= $filename;
+        $config['allowed_types'] 	= 'xls|xlsx';
+        $config['max_size'] 		= 10000;
+        $config['overwrite']		= TRUE;
+
+        $this->load->library('upload');
+        $this->upload->initialize($config);
+
+        if(! $this->upload->do_upload('file') ){
+        	print_r($this->upload->data());
+            echo $this->upload->display_errors();exit();
+        }
+
+        $this->load->library('excel');
+        $inputFileName = $config['upload_path'].$filename;
+        $inputFileType = $this->upload->data()['file_type'];
+        
+        try {
+		    $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+		    $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+		    $objPHPExcel = $objReader->load($inputFileName);
+		} catch(Exception $e) {
+		    die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+		}
+
+		$sheet = $objPHPExcel->getSheet(0); 
+		$highestRow = $sheet->getHighestRow(); 
+		$highestColumn = $sheet->getHighestColumn();
+
+		for ($row = 2; $row <= $highestRow; $row++){ 
+		    $rowData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row,NULL,TRUE,FALSE);
+		    $text = $rowData[0][1].$rowData[0][2].$rowData[0][3].$rowData[0][4].$rowData[0][5].$rowData[0][6].$rowData[0][7].$rowData[0][8].$rowData[0][9].$rowData[0][10].$rowData[0][11];
+		    if (strlen($text) > 0) {
+			    if (empty($rowData[0][0])) {
+				    $insert = array(
+				    	'noind'						=> $rowData[0][1],
+						'menu_sayur'				=> $rowData[0][2],
+						'menu_lauk_utama'			=> $rowData[0][3],
+						'menu_lauk_pendamping'		=> $rowData[0][4],
+						'menu_buah'					=> $rowData[0][5],
+						'pengganti_sayur'			=> $rowData[0][6],
+						'pengganti_lauk_utama'		=> $rowData[0][7],
+						'pengganti_lauk_pendamping'	=> $rowData[0][8],
+						'pengganti_buah'			=> $rowData[0][9],
+						'created_by' 				=> $this->session->user,
+						'created_date' 				=> date('Y-m-d H:i:s'),
+						'tanggal_mulai'				=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][10])),
+						'tanggal_selesai'			=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][11]))
+				    );
+				    $this->M_pekerjamakankhusus->insertPekerjaMakanKhusus($insert);
+			    }else{
+				    $decrypted_id = str_replace(array('-', '_', '~'), array('+', '/', '='), $rowData[0][0]);
+					$decrypted_id = $this->encrypt->decode($decrypted_id);
+			    	$update = array(
+				    	'noind'						=> $rowData[0][1],
+						'menu_sayur'				=> $rowData[0][2],
+						'menu_lauk_utama'			=> $rowData[0][3],
+						'menu_lauk_pendamping'		=> $rowData[0][4],
+						'menu_buah'					=> $rowData[0][5],
+						'pengganti_sayur'			=> $rowData[0][6],
+						'pengganti_lauk_utama'		=> $rowData[0][7],
+						'pengganti_lauk_pendamping'	=> $rowData[0][8],
+						'pengganti_buah'			=> $rowData[0][9],
+						'updated_by' 				=> $this->session->user,
+						'updated_date' 				=> date('Y-m-d H:i:s'),
+						'tanggal_mulai'				=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][10])),
+						'tanggal_selesai'			=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][11]))
+				    );
+			    	$this->M_pekerjamakankhusus->updatePekerjaMakanKhususByPekerjaMenuKhususId($update,$decrypted_id);
+			    }
+		    }
+		}
+		redirect(base_url('CateringManagement/Setup/PekerjaMakanKhusus/ImportExcel'));
+	}
+
 } ?>

@@ -50,7 +50,7 @@ class M_salestarget extends CI_Model {
 		//source organization (updated)
 		public function viewOrganization()
 		{
-			$sql = "select org_id, org_name, province_id, city_regency_id, district_id, village_id, address, org_code from sys.sys_organization ";
+			$sql = "select org_id, org_name, province_id, city_regency_id, district_id, village_id, address, org_code from sys.sys_organization";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -149,25 +149,26 @@ class M_salestarget extends CI_Model {
 		public function viewOrderType3($code)
 		{
 			$db = $this->load->database('oracle',true);
-			$sql = "SELECT * 
-			FROM 
-			oe_transaction_types_tl ottt
-			,oe_transaction_types_all otta
-			WHERE
-			otta.TRANSACTION_TYPE_ID = ottt.TRANSACTION_TYPE_ID
-			and otta.ORG_ID = $code                        
-			and (ottt.name LIKE '%SAP%'                            
-			OR ottt.name LIKE '%boshi%'                            
-			OR ottt.name LIKE '%HDE%'                            
-			OR ottt.name LIKE '%VDE%'                            
-			OR ottt.name LIKE '%Gasket%'                            
-			OR ottt.name LIKE '%Bando%'                            
-			OR ottt.name LIKE '%Roll%'                            
-			OR ottt.name LIKE '%Bearing%'    
-			OR ottt.name LIKE '%SKF%'                    
-			) 
-			AND ottt.name LIKE '%DN'                                               
-			ORDER BY ottt.name";
+			$sql = "select
+                    ottt.NAME    
+                    from oe_transaction_types_tl ottt ,
+                    oe_transaction_types_all otta
+                    where
+                    otta.TRANSACTION_TYPE_ID = ottt.TRANSACTION_TYPE_ID
+                    and otta.ORG_ID = $code
+                    and (ottt.name like '%SAP%'
+                    or ottt.name like '%boshi%'
+                    or ottt.name like '%HDE%'
+                    or ottt.name like '%VDE%'
+                    or ottt.name like '%Gasket%'
+                    or ottt.name like '%Bando%'
+                    or ottt.name like '%Roll%'
+                    or ottt.name like '%Bearing%'
+                    or ottt.name like '%SKF%' )
+                    and ottt.name like '%DN'
+                    union
+                    select 'TOKOQUICK' from dual
+                    ";
 			$query = $db->query($sql);
 			return $query->result_array();
 		}

@@ -1,3 +1,4 @@
+<input type="hidden" id="cek_rtlp" value="okok">
 <div class="content">
   <div class="row">
     <div class="col-lg-12">
@@ -80,7 +81,7 @@
                           $none5 = '';
                         }
                          ?>
-                      <tr class="timer5" data-rtlp="<?php echo $l5['kode_item'] ?>_<?php echo $key+1 ?>">
+                      <tr class="timer5" <?php echo $style5 ?> data-rtlp="<?php echo $l5['kode_item'] ?>_<?php echo $key+1 ?>">
                         <td class="text-center"><?php echo $key+1 ?></td>
                         <td class="text-center"><?php echo $l5['no_job'] ?></td>
                         <td class="text-center"><?php echo $l5['kode_item'] ?></td>
@@ -94,10 +95,12 @@
                           <p id="timer1">
                             <label id="hours5-<?php echo $key ?>">00</label>:<label id="minutes5-<?php echo $key ?>">00</label>:<label id="seconds5-<?php echo $key ?>">00</label>
                           </p>
+                          <input type="hidden" class="time_start_5" value="<?php echo $l5['start5']['Start'] ?>">
                           <button style="border-radius: 50px" class="btn bg-primary btn-xs btn-flat" onclick="start5[<?php echo $key ?>]('<?php echo $l5['kode_item'] ?>', '<?php echo '5' ?>', '<?php echo $l5['no_job'] ?>')" id="btnstart5<?php echo $key ?>"> <i class="fa fa-play-circle"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-orange btn-xs btn-flat" onclick="pause5[<?php echo $key ?>]('<?php echo $l5['no_job'] ?>', '<?php echo $l5['kode_item'] ?>', '<?php echo $key ?>')" id="btnlanjut5<?php echo $key ?>" disabled> <i class="fa fa-pause"></i> </button>
-                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset5[<?php echo $key ?>]()" id="btnrestart5<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
+                          <button style="border-radius: 50px" class="btn bg-green btn-xs btn-flat" onclick="reset5[<?php echo $key ?>]('<?php echo $l5['no_job'] ?>')" id="btnrestart5<?php echo $key ?>" disabled> <i class="fa fa-repeat"></i> </button>
                           <button style="border-radius: 50px" class="btn bg-red btn-xs btn-flat" onclick="selesai5[<?php echo $key ?>]('<?php echo $l5['kode_item'] ?>', '<?php echo '5' ?>', '<?php echo $l5['no_job'] ?>')" id="btnfinish5<?php echo $key ?>" disabled> <i class="fa fa-stop"></i> </button>
+                          <input type="hidden" class="code_comp_5" value="<?php echo $l5['kode_item'] ?>">
                         </td>
                         <input type="hidden" id="val_to_cek5<?php echo $key ?>" value="first_load">
                       </tr>

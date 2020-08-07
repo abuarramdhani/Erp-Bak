@@ -101,6 +101,10 @@
     opacity: 0.5;
   }
 
+  .alert-border {
+    border: 1px solid red !important;
+  }
+
   [v-cloak] {
     display: none;
   }
@@ -292,9 +296,9 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>1. HARD SKILL/KEMAMPUAN TEKNIS</td>
+                  <td>1. HARD SKILL/KEMAMPUAN TEKNIS </td>
                   <td class="p-0">
-                    <textarea v-model="state.two.nilai[0].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ..." style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
+                    <textarea required v-model="state.two.nilai[0].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
                   <td>
                     <select v-model="state.two.nilai[0].skor" class="select form-control" placeholder="nilai" name="" id="">
@@ -310,9 +314,9 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>2. PERILAKU</td>
+                  <td>2. PERILAKU </td>
                   <td class="p-0">
-                    <textarea v-model="state.two.nilai[1].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ..." style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
+                    <textarea required v-model="state.two.nilai[1].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
                   <td>
                     <select v-model="state.two.nilai[1].skor" class="select form-control" placeholder="nilai">
@@ -327,7 +331,7 @@
                 <tr>
                   <td>3. KAIZEN</td>
                   <td class="p-0">
-                    <textarea v-model="state.two.nilai[2].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ..." style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
+                    <textarea required v-model="state.two.nilai[2].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
                   <td>
                     <select v-model="state.two.nilai[2].skor" class="select form-control" placeholder="nilai">
@@ -342,7 +346,7 @@
                 <tr>
                   <td>4. PRESTASI KERJA</td>
                   <td class="p-0">
-                    <textarea v-model="state.two.nilai[3].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ..." style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
+                    <textarea required v-model="state.two.nilai[3].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
                   <td>
                     <select v-model="state.two.nilai[3].skor" class="select form-control" placeholder="nilai">
@@ -357,7 +361,7 @@
                 <tr>
                   <td>5. KERJASAMA</td>
                   <td class="p-0">
-                    <textarea v-model="state.two.nilai[4].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ..." style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
+                    <textarea required v-model="state.two.nilai[4].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
                   <td>
                     <select v-model="state.two.nilai[4].skor" class="select form-control" placeholder="nilai" name="" id="">
@@ -375,7 +379,7 @@
         </div>
         <div id="three" :class="{ off: state.worker.presensi_ok === null}">
           <div class="bg-primary" style="padding: 1em;">
-            <span>III. PROGRAM PENGEMBANGAN DAN PERNYATAAN PEKERJA</span>
+            <span>III. PROGRAM PENGEMBANGAN DAN PERNYATAAN PEKERJA <small style="color: #e8e8e8;">(* Tidak wajib diisi / Bisa ditulis tangan)</small></span>
           </div>
           <div style="padding: 1em 2em;">
             <form action="" class="form-horizontal">
@@ -408,7 +412,7 @@
         </div>
         <div id="four" :class="{ off: state.worker.presensi_ok === null}">
           <div class="bg-primary" style="padding: 1em;">
-            <span>IV. USULAN ATASAN</span>
+            <span>IV. USULAN ATASAN <small>(* Wajib diisi)</small></span>
           </div>
           <div style="padding: 1em 2em;">
             <form action="" class="form-horizontal">
@@ -418,7 +422,7 @@
               <div class="form-group">
                 <label class="col-lg-2 control-label" for="">Supervisor</label>
                 <div class="col-lg-3">
-                  <select id="atasan-supervisor" class="form-control">
+                  <select required id="atasan-supervisor" class="form-control">
                     <option value=""></option>
                   </select>
                 </div>
@@ -426,7 +430,7 @@
               <div class="form-group">
                 <label class="col-lg-2 control-label" for="">Kepala Seksi</label>
                 <div class="col-lg-3">
-                  <select id="atasan-seksi" class="form-control">
+                  <select required id="atasan-seksi" class="form-control">
                     <option value=""></option>
                   </select>
                 </div>
@@ -434,7 +438,7 @@
               <div class="form-group">
                 <label class="col-lg-2 control-label" for="">Usulan Perpanjangan</label>
                 <div class="col-lg-1" style="padding-right: 0;">
-                  <input v-model="state.four.usulan" class="form-control" type="number" min="1">
+                  <input required v-model="state.four.usulan" class="form-control" type="number" min="1">
                 </div>
                 <div class="col-lg-2" style="padding-left: 0;">
                   <label class="col-lg-2 control-label" for="">Bulan</label>
@@ -443,15 +447,15 @@
               <div class="form-group">
                 <label class="col-lg-2 control-label" for="">Unit</label>
                 <div class="col-lg-3">
-                  <select id="atasan-unit" class="form-control">
+                  <select required id="atasan-unit" class="form-control">
                     <option value=""></option>
                   </select>
                 </div>
               </div>
-              <div v-if="!state.worker.kd_jabatan == '18' || state.worker.presensi_ok == false" class="form-group">
+              <div v-if="state.worker.jenis_kode != 'os'" class="form-group">
                 <label class="col-lg-2 control-label" for="">Departemen</label>
                 <div class="col-lg-3">
-                  <select id="atasan-departemen" class="form-control">
+                  <select required id="atasan-departemen" class="form-control">
                     <option value=""></option>
                   </select>
                 </div>
@@ -466,12 +470,12 @@
             <button @click="handleSave" class="btn btn-primary mr-2 handleSave" disabled>
               Simpan <i class="fa fa-save"></i>
             </button>
-            <button type="button" target="_blank" @click="handlePreview" class="btn btn-success mr-2" :disabled="state.worker.presensi_ok === null">
+            <button @click="handlePreview" type="button" target="_blank" class="btn btn-success mr-2" :disabled="state.worker.presensi_ok === null">
               Preview
             </button>
-            <button @click="resetForm" class="btn btn-danger">
+            <!-- <button @click="resetForm" class="btn btn-danger">
               Reset
-            </button>
+            </button> -->
           </div>
           <div class="col-lg-4"></div>
         </div>
@@ -613,7 +617,7 @@
 
     workerSelect.select2({
       placeholder: 'Cari Pekerja',
-      minimumInputLength: 3,
+      minimumInputLength: 0,
       ajax: {
         url: baseurl + 'BlankoEvaluasi/api/workers',
         dataType: 'json',
@@ -647,7 +651,7 @@
     workerSelect.on('change', function() {
       const selected = this.value
       if (!selected) return
-
+      $('#periode-awal, #periode-akhir').val('').trigger('change')
       vueApp.getWorkerInformation(selected)
     })
   })
@@ -772,41 +776,36 @@
       },
       checkForm() {
         let error = null
-        // form evaluasi
-        const formTwo = this.$data.state.two
-        const emptyColumn = formTwo.nilai.find(item => !item.bukti)
 
-        if (emptyColumn || !formTwo.pertimbangan) {
-          error = true
-          // todo: fix this, cannot scroll to #two element
-          Swal.fire('Lengkapi form evaluasi terlebih dahulu !!!', 'wajib diisi', 'error')
-            .then(e => $('a[href="#two"').click())
-          return error
-        }
-        // form usulan atasan
-        // check is empty select atasan or not
-        const {
-          supervisor: supervisorOption,
-          kasie: kasieOption,
-          unit: unitOption
-        } = this.$data.state.worker.atasan
-        const {
-          supervisor: valSupervisor,
-          kasie: valKasie,
-          unit: valUnit
-        } = this.$data.state.four
+        let emptyElement = []
+        let emptyRequired = $('[required]')
+        emptyRequired.change(function() {
+          $(this).removeClass('alert-border')
+          if ($(this).prop('tagName').toLowerCase() == 'select') {
+            $(this).next().removeClass('alert-border')
+          }
+        })
+        emptyRequired.each(function() {
+          if (!$(this).val()) emptyElement.push($(this))
+        })
 
-        const alertAtasan = () => {
-          Swal.fire('Lengkapi form usulan atasan terlebih dahulu !!!', 'wajib diisi', 'error')
-          error = true
+        emptyElement.forEach((element, i) => {
+          console.log(i, element)
+          if (i == 0) {
+            $('html, body').animate({
+              scrollTop: element.offset().top - 100
+            }, 100);
+          }
 
-          // then scroll to 
-          return error
-        }
+          element.addClass('alert-border')
 
-        if (!valSupervisor && supervisorOption.length) return alertAtasan()
-        if (!valKasie && kasieOption.length) return alertAtasan()
-        if (!valUnit && unitOption.length) return alertAtasan()
+          if (element.prop('tagName').toLowerCase() == 'select') {
+            element.next().addClass('alert-border')
+          }
+        })
+
+        // Boolean, 
+        return error = !!emptyElement.length
       },
       handlePreview() {
         const errorCheckForm = this.checkForm()
@@ -825,8 +824,8 @@
 
         Swal.fire({
           title: 'Yakin untuk menyimpan surat?',
-          text: "Surat yang disimpan tidak dapat di hapus/diubah !!!",
-          icon: 'warning',
+          text: "Surat yang disimpan tidak dapat di diubah !!!",
+          type: 'question',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
@@ -870,11 +869,20 @@
         fetch(TIMS)
           .then(e => e.json())
           .then(e => this.$data.tempState.tims = e.data)
-          .catch(e => alert("Error, tidak dapat megambil data"))
+          .catch(e => {
+            this.$data.state.worker.presensi_ok = ""
+
+            alert("Error, tidak dapat megambil data")
+          })
+
         fetch(calcTIMS)
           .then(e => e.json())
           .then(e => this.$data.state.worker.presensi_ok = e.data.passed)
-          .catch(e => alert("Error, tidak dapat mengambil data"))
+          .catch(e => {
+            this.$data.state.worker.presensi_ok = ""
+
+            alert("Error, tidak dapat mengambil data")
+          })
 
       },
       resetForm() {
@@ -927,6 +935,7 @@
         // ------------------------
         selectSupervisor.empty().trigger('change')
         selectSupervisor.select2({
+          allowClear: true,
           placeholder: 'Supervisor',
           data: [empty, ...dataSupervisor]
         })
@@ -988,6 +997,13 @@
             self.$data.state.worker = data
             self.$data.tempState.tims = null
             self.$data.utils.disableInputPeriode1 = !!self.$data.state.worker.periode_awal
+
+            //
+            if (data.atasan.supervisor.find(e => e.jabatan == 'supervisor')) {
+              $('#atasan-supervisor').attr('required')
+            } else {
+              $('#atasan-supervisor').removeAttr('required')
+            }
           }).catch(e => {
             alert("Gagal mengambil data, periksa koneksi anda")
           })

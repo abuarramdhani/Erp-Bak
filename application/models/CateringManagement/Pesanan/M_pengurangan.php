@@ -51,7 +51,12 @@ class M_pengurangan extends CI_Model
                             else 
                                 'Pindah Tempat Makan'
                             end
-                        end as fb_kategori
+                        end as fb_kategori,
+                        (
+                            select string_agg(td.fs_noind,', ')
+                            from \"Catering\".tpenguranganpesanan_detail td
+                            where td.id_pengurangan = tpp.id_pengurangan
+                        ) as list_pekerja
                 From \"Catering\".tpenguranganpesanan tpp
                 left join \"Presensi\".tshift ts 
                 on ts.kd_shift = tpp.fs_kd_shift
@@ -79,10 +84,21 @@ class M_pengurangan extends CI_Model
     }
 
     public function getPenguranganByIdPengurangan($id_pengurangan){
-        $sql = "select *
+        $sql = "select tpp.*,ts.*,
+                    case when ttm.fs_lokasi = '1' then 
+                        'Yogyakarta'
+                    when ttm.fs_lokasi = '2' then 
+                        'Tuksono'
+                    when ttm.fs_lokasi = '3' then 
+                        'Mlati'
+                    else
+                        'Tidak Diketahui'
+                    end as lokasipg
                 From \"Catering\".tpenguranganpesanan tpp
                 left join \"Presensi\".tshift ts 
                 on ts.kd_shift = tpp.fs_kd_shift
+                left join \"Catering\".ttempat_makan ttm 
+                on ttm.fs_tempat_makan = tpp.fs_tempat_makanpg
                 Where tpp.id_pengurangan = ?";
         return $this->personalia->query($sql,array($id_pengurangan))->row();
     }
@@ -102,10 +118,17 @@ class M_pengurangan extends CI_Model
                         where fd_tanggal = ?
                         and fs_tempat_makan = ?
                         and fs_kd_shift = ?
-                    ),
-                    0
-                ) as jumlah";
-        return $this->personalia->query($sql, array($tanggal, $tempat_makan, $shift))->row();
+                    ),0) +
+                    coalesce(
+                    (
+                        select sum(fn_jml_tdkpesan)
+                        from \"Catering\".tpenguranganpesanan
+                        where fb_kategori = '2'
+                        and fd_tanggal = ?
+                        and fs_tempat_makanpg = ?
+                        and fs_kd_shift = ?
+                    ),0) as jumlah";
+        return $this->personalia->query($sql, array($tanggal, $tempat_makan, $shift, $tanggal, $tempat_makan, $shift))->row();
     }
 
     public function getTotalPenguranganByTempatMakanTanggalShift($tempat_makan,$tanggal,$shift){

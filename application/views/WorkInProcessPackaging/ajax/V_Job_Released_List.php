@@ -7,6 +7,7 @@
         <th>KODE ITEM</th>
         <th>NAMA ITEM</th>
         <th>QTY</th>
+        <th>QTY NEED</th>
         <th>USAGE RATE</th>
         <th >SCHEDULED START DATE </th>
         <th><center>ACTION </center></th>
@@ -29,6 +30,7 @@
           <td <?php echo $style ?>><?php echo $g['DESCRIPTION'] ?></td>
           <td <?php echo $style ?>><?php echo $g['START_QUANTITY'] ?></center></td>
           <input type="hidden" class="qpa_wipp_<?php echo $g['KODE_COMP'] ?> qpa_wipp_<?php echo $g['KODE_COMP'] ?>_<?php echo $no ?>" value="<?php echo $g['QUANTITY_PER_ASSEMBLY']*$g['START_QUANTITY'] ?>">
+          <td><?php echo $g['QUANTITY_PER_ASSEMBLY'] ?></td>
           <td <?php echo $style ?>><?php echo abs($g['USAGE_RATE_OR_AMOUNT']) ?></td>
           <td <?php echo $style ?>><?php echo $g['SCHEDULED_START_DATE'] ?></center></td>
           <td <?php echo $style ?>><center>
@@ -147,8 +149,8 @@ function getJobReleased() {
                       <td><center>${v[2]}</center></td>
                       <td><center>${v[3]}</center></td>
                       <td><center>${v[4]}</center></td>
-                      <td><center>${v[5]}</center></td>
                       <td><center>${v[6]}</center></td>
+                      <td><center>${v[7]}</center></td>
                       <td hidden><center>${v[4]}</center></td>
                       <td onmouseover="cekhover()">
                         <center>
@@ -185,7 +187,7 @@ function getJobReleased() {
                                       </center>
                                       <input type="hidden" id="qty_split_save${i+1}" value="${v[4]}" readonly>
                                       <input type="hidden" id="usage_rate_split${i+1}" value="${v[5]}" readonly>
-                                      <input type="hidden" id="ssd${i+1}" value="${v[6]}" readonly>
+                                      <input type="hidden" id="ssd${i+1}" value="${v[7]}" readonly>
                                       <input type="hidden" id="item_name${i+1}" value="${v[3]}" readonly>
                                       <input type="hidden" id="created_at" value="" readonly>
                                       <br>
@@ -237,7 +239,7 @@ function getJobReleased() {
                                           </tbody>
                                         </table>
                                         <br>
-                                        <center class="btnsplit${i+1}" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-navy" onclick="saveSplit_(${i+1}, '${v[1]}', '${v[2]}', '${v[3]}', '${v[4]}', '${v[5]}', '${v[6]}')" name="button"><i class="fa fa-sign-in"></i> Append</button>
+                                        <center class="btnsplit${i+1}" hidden><button type="button" style="margin-bottom:10px !important;" hidden class="btn bg-navy" onclick="saveSplit_(${i+1}, '${v[1]}', '${v[2]}', '${v[3]}', '${v[4]}', '${v[6]}', '${v[7]}')" name="button"><i class="fa fa-sign-in"></i> Append</button>
                                       </div>
                                     </div>
                                   </div>
@@ -256,6 +258,25 @@ function getJobReleased() {
     })
   $('#create-new-rkh').html(listJobWipp.join(" "));
 }
+
+$('.btnWippRefresh').on('click', function () {
+  $('#wipp2').modal('show')
+  function run() {
+    let d = $.Deferred(),
+        p = d.promise();
+    p.then(_=>{
+      $('#wipp2').modal('toggle')
+      $('.modal-backdrop').remove();
+    }).then(_=>{
+      setTimeout(function () {
+        getJobReleased();
+        $('#wipp2').modal('show')
+      }, 500);
+    });
+    d.resolve();
+  }
+  run();
+})
 
 
 </script>

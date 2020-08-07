@@ -121,7 +121,7 @@
 			
 			</td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['CT']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['TARGET']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=round($dataopm2[$i]['TARGET'])?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"></td> -->
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['LAST_UPDATE_DATE']?></td>
 			

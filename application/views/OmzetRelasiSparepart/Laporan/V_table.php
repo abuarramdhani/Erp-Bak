@@ -25,19 +25,19 @@
                 <td><?= $rpt['CUST_ACCOUNT_ID'];?></td>
                 <td><?= $rpt['ACCOUNT_NUMBER'];?></td>
                 <td><?= $rpt['PARTY_NAME'];?></td>
-                <td><?= $rpt['JAN'];?></td>
-                <td><?= $rpt['FEB'];?></td>
-                <td><?= $rpt['MAR'];?></td>
-                <td><?= $rpt['APR'];?></td>
-                <td><?= $rpt['MAY'];?></td>
-                <td><?= $rpt['JUN'];?></td>
-                <td><?= $rpt['JUL'];?></td>
-                <td><?= $rpt['AUG'];?></td>
-                <td><?= $rpt['SEP'];?></td>
-                <td><?= $rpt['OKT'];?></td>
-                <td><?= $rpt['NOV'];?></td>
-                <td><?= $rpt['DEC'];?></td>
-                <td><?= $rpt['JUMLAH'];?></td>
+                <td><?= number_format($rpt['JAN']);?></td>
+                <td><?= number_format($rpt['FEB']);?></td>
+                <td><?= number_format($rpt['MAR']);?></td>
+                <td><?= number_format($rpt['APR']);?></td>
+                <td><?= number_format($rpt['MAY']);?></td>
+                <td><?= number_format($rpt['JUN']);?></td>
+                <td><?= number_format($rpt['JUL']);?></td>
+                <td><?= number_format($rpt['AUG']);?></td>
+                <td><?= number_format($rpt['SEP']);?></td>
+                <td><?= number_format($rpt['OKT']);?></td>
+                <td><?= number_format($rpt['NOV']);?></td>
+                <td><?= number_format($rpt['DEC']);?></td>
+                <td><?= number_format($rpt['JUMLAH']);?></td>
             </tr>
         <?php } ?>
     </tbody>

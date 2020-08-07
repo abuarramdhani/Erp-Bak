@@ -66,7 +66,7 @@ class C_Master extends CI_Controller
         $kind = '_R';
       }
       $date = date('Y-m-d').$kind;
-      
+
       $line5 = $this->M_rtlp->getline5($date);
       if (!empty($line5)) {
         foreach ($line5 as $key => $value) {
@@ -76,9 +76,16 @@ class C_Master extends CI_Controller
       }
       foreach ($line5 as $key => $v1) {
         $line5[$key]['cek_time_record'] = 0;
+        $line5[$key]['start5'] = null;
         $cek = $this->db->select('No_Job')->where('No_Job', $v1['no_job'])->where('Line', '5')->where('Finish is NOT NULL', NULL)->get('wip_pnp.Time_Record')->row_array();
         if (!empty($cek['No_Job'])) {
           $line5[$key]['cek_time_record'] = 1;
+        }else {
+          $line5[$key]['start5'] = $this->db->select('No_Job, Start')
+                                     ->where('No_Job', $v1['no_job'])
+                                     ->where('Line', '5')
+                                     ->get('wip_pnp.Time_Record')->row_array();
+
         }
       }
 
@@ -149,6 +156,7 @@ class C_Master extends CI_Controller
 
         foreach ($line1 as $key => $v1) {
           $line1[$key]['cek_time_record'] = 0;
+          $line1[$key]['start1'] = null;
           $cek = $this->db->select('No_Job')
                           ->where('No_Job', $v1['no_job'])
                           ->where('Line', '1')
@@ -156,14 +164,25 @@ class C_Master extends CI_Controller
                           ->get('wip_pnp.Time_Record')->row_array();
           if (!empty($cek['No_Job'])) {
             $line1[$key]['cek_time_record'] = 1;
+          }else {
+            $line1[$key]['start1'] = $this->db->select('No_Job, Start')
+                                      ->where('No_Job', $v1['no_job'])
+                                      ->where('Line', '1')
+                                      ->get('wip_pnp.Time_Record')->row_array();
           }
         }
 
         foreach ($line2 as $key => $v1) {
           $line2[$key]['cek_time_record'] = 0;
+          $line2[$key]['start2'] = null;
           $cek = $this->db->select('No_Job')->where('No_Job', $v1['no_job'])->where('Line', '2')->where('Finish is NOT NULL', NULL)->get('wip_pnp.Time_Record')->row_array();
           if (!empty($cek['No_Job'])) {
             $line2[$key]['cek_time_record'] = 1;
+          }else {
+            $line2[$key]['start2'] = $this->db->select('No_Job, Start')
+                                      ->where('No_Job', $v1['no_job'])
+                                      ->where('Line', '2')
+                                      ->get('wip_pnp.Time_Record')->row_array();
           }
         }
 
@@ -174,6 +193,16 @@ class C_Master extends CI_Controller
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('RunningTimeLinePnP/V_Setting');
         $this->load->view('WorkInProcessPackaging/V_Footer_Custom', $data);
+    }
+
+    public function reset()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Akses terlarang!";
+      }else {
+        $data = $this->M_rtlp->reset($this->input->post('no_job'), $this->input->post('line'), $this->input->post('start_reset'));
+        echo json_encode($data);
+      }
     }
 
     public function insertTimePause()
@@ -256,17 +285,31 @@ class C_Master extends CI_Controller
         // $line5 = $this->M_rtlp->getline5($date);
         foreach ($line3 as $key => $v1) {
           $line3[$key]['cek_time_record'] = 0;
+          $line3[$key]['start3'] = null;
           $cek = $this->db->select('No_Job')->where('No_Job', $v1['no_job'])->where('Line', '3')->where('Finish is NOT NULL', NULL)->get('wip_pnp.Time_Record')->row_array();
           if (!empty($cek['No_Job'])) {
             $line3[$key]['cek_time_record'] = 1;
+          }else {
+            $line3[$key]['start3'] = $this->db->select('No_Job, Start')
+                                       ->where('No_Job', $v1['no_job'])
+                                       ->where('Line', '3')
+                                       ->get('wip_pnp.Time_Record')->row_array();
+
           }
         }
 
         foreach ($line4 as $key => $v1) {
           $line4[$key]['cek_time_record'] = 0;
+          $line4[$key]['start4'] = null;
           $cek = $this->db->select('No_Job')->where('No_Job', $v1['no_job'])->where('Line', '4')->where('Finish is NOT NULL', NULL)->get('wip_pnp.Time_Record')->row_array();
           if (!empty($cek['No_Job'])) {
             $line4[$key]['cek_time_record'] = 1;
+          }else {
+            $line4[$key]['start4'] = $this->db->select('No_Job, Start')
+                                       ->where('No_Job', $v1['no_job'])
+                                       ->where('Line', '4')
+                                       ->get('wip_pnp.Time_Record')->row_array();
+
           }
         }
         $data['line_3'] = $line3;

@@ -61,14 +61,14 @@
 		<?php if ($allinOne == '1' || $allinOne == '2' || $allinOne == '3' || $allinOne == '10') { ?>
 			<!-- noind D, DSupervisor, C Trainee, E -->
 			<p style="font-size: 13px;">Dengan ini kami serahkan <?= count($cekData) ?> (<?= $terbilang ?>) orang <?php if ($allinOne == '1') {
-																													echo '<i>Staff Management Trainee B</i>';
-																												} elseif ($allinOne == '2') {
-																													echo '<i>Staff Management Trainee C</i>';
-																												} elseif ($allinOne == '10') {
-																													echo 'pekerja';
-																												} else {
-																													echo 'pekerja <i>' . strtolower($jenis) . '</i>';
-																												} ?> untuk ditempatkan di <b><?= $cekData[0]['seksi'] == '-' ? '' : 'SEKSI ' . $cekData[0]['seksi'] . ',' ?> <?= $cekData[0]['unit'] == '-' ? '' : 'UNIT ' . $cekData[0]['unit'] . ',' ?> <?= $cekData[0]['dept'] == '-' ? '' : 'DEPARTEMEN ' . $cekData[0]['dept'] ?>.</b></p>
+																														echo '<i>Staff Management Trainee B</i>';
+																													} elseif ($allinOne == '2') {
+																														echo '<i>Staff Management Trainee C</i>';
+																													} elseif ($allinOne == '10') {
+																														echo 'pekerja';
+																													} else {
+																														echo 'pekerja <i>' . strtolower($jenis) . '</i>';
+																													} ?> untuk ditempatkan di <b><?= $cekData[0]['seksi'] == '-' ? '' : 'SEKSI ' . $cekData[0]['seksi'] . ',' ?> <?= $cekData[0]['unit'] == '-' ? '' : 'UNIT ' . $cekData[0]['unit'] . ',' ?> <?= $cekData[0]['dept'] == '-' ? '' : 'DEPARTEMEN ' . $cekData[0]['dept'] ?>.</b></p>
 			<p style="font-size: 13px;">Adapun nama <?php if ($allinOne == '1' || $allinOne == '2') {
 														echo 'trainee';
 													} else if ($allinOne == '10') {
@@ -159,7 +159,7 @@
 							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['tgllahir'])) ?></td>
 							<td style="border: 1px solid;"><?= $key['noind'] ?></td>
 							<td style="border: 1px solid;"><?= $key['gol'] ? $key['gol'] : '-' ?></td>
-							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'] . '-1 day')) ?></td>
+							<td style="border: 1px solid;"><?= ($key['lama_trainee'] != '0') ? date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'] . '-1 day')) : date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['tgl_masuk'])) ?></td>
 							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['diangkat'])) . ' - ' . date('d/m/Y', strtotime($key['akhkontrak'])) ?>
 						</tr>
 					<?php } ?>
@@ -283,7 +283,7 @@
 					<?php } ?>
 				</tbody>
 			</table>
-			<p style="font-size: 13px;">Pekerja tersebut akan mendapatkan <u>Insentif Kerajinan</u> mulai tanggal <u><?= strftime('%d %B %Y', strtotime($cek['tgl_mulaiik'])); ?></u>.</p>
+			<?php if ($allinOne != '14') { ?><p style="font-size: 13px;">Pekerja tersebut akan mendapatkan <u>Insentif Kerajinan</u> mulai tanggal <u><?= strftime('%d %B %Y', strtotime($cek['tgl_mulaiik'])); ?></u>.</p><?php } ?>
 			<p style="font-size: 13px;">Mohon seksi dapat menginformasikan pola shift pekerja yang bersangkutan kepada sie hubungan kerja periode bulan berjalan maksimal 1 hari setelah pekerja masuk seksi.</p>
 		<?php } elseif ($allinOne == '11') { ?>
 			<!-- Kode Induk C -->
@@ -371,13 +371,23 @@
 						if (strstr($value, 'DEPARTEMEN') || strstr($value, 'BIDANG') || strstr($value, 'UNIT')) {
 							unset($value);
 						} else {
-							echo $no++ . '. ' . $value . '<br>';
+							if (strstr($value, 'KHS TUKSONO')) {
+								$tebus = explode(' KHS TUKSONO', $value);
+								echo $no++ . '. ' . $tebus[0] . '<br>';
+							} else {
+								echo $no++ . '. ' . $value . '<br>';
+							}
 						}
 					} else {
 						if (strstr($value, 'DEPARTEMEN') || strstr($value, 'BIDANG')) {
 							unset($value);
 						} else {
-							echo $no++ . '. ' . $value . '<br>';
+							if (strstr($value, 'KHS TUKSONO')) {
+								$tebus = explode(' KHS TUKSONO', $value);
+								echo $no++ . '. ' . $tebus[0] . '<br>';
+							} else {
+								echo $no++ . '. ' . $value . '<br>';
+							}
 						}
 					}
 				}

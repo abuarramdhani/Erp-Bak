@@ -44,7 +44,12 @@ class M_tambahan extends CI_Model
                     end fb_kategori, 
                     tamb.id_tambahan, 
                     tamb.fs_pemohon, 
-                    tamb.fs_keterangan
+                    tamb.fs_keterangan,
+                    (
+                        select string_agg(td.fs_noind,', ')
+                        from \"Catering\".tpesanantambahan_detail td
+                        where td.id_tambahan = tamb.id_tambahan
+                    ) as list_pekerja
                  from \"Catering\".tpesanantambahan tamb 
                  left join \"Presensi\".tshift shf
                  on tamb.fs_kd_shift = shf.kd_shift
@@ -163,10 +168,17 @@ class M_tambahan extends CI_Model
                         where fd_tanggal = ?
                         and fs_tempat_makan = ?
                         and fs_kd_shift = ?
-                    ),
-                    0
-                ) as jumlah";
-        return $this->personalia->query($sql, array($tanggal, $tempat_makan, $shift))->row();
+                    ),0) +
+                    coalesce(
+                    (
+                        select sum(fn_jml_tdkpesan)
+                        from \"Catering\".tpenguranganpesanan
+                        where fb_kategori = '2'
+                        and fd_tanggal = ?
+                        and fs_tempat_makanpg = ?
+                        and fs_kd_shift = ?
+                    ),0) as jumlah";
+        return $this->personalia->query($sql, array($tanggal, $tempat_makan, $shift, $tanggal, $tempat_makan, $shift))->row();
     }
 
     public function getTotalPenguranganByTempatMakanTanggalShift($tempat_makan,$tanggal,$shift){
@@ -215,6 +227,17 @@ class M_tambahan extends CI_Model
                 )
                 and tempat_makan = ?";
         return $this->personalia->query($sql, array($key,$key,$tempat_makan))->result_array();
+    }
+
+    public function getPenerimaByKey($key){
+        $sql = "select noind,trim(nama) as nama
+                from hrd_khs.tpribadi
+                where keluar = '0'
+                and (
+                    upper(noind) like concat(upper(?),'%')
+                    or upper(nama) like concat('%',upper(?),'%')
+                )";
+        return $this->personalia->query($sql, array($key,$key))->result_array();
     }
 
 }

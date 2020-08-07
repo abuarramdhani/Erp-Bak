@@ -396,3 +396,248 @@ function checkFillRealisasi() {
         $("#btnSubmitRealisasi").attr("disabled", "disabled")
     }
 }
+
+// start kaizen akuntansi
+$(document).on('ready', function(){
+    $('#txt-SI-SubmitIde-DueDate').datepicker({
+        "autoclose": true,
+        "todayHighlight": true,
+        "todayBtn": "linked",
+        "format":'yyyy-mm-dd'
+    });
+    $('#txt-SI-SubmitF4-TanggalRealisasi').datepicker({
+        "autoclose": true,
+        "todayHighlight": true,
+        "todayBtn": "linked",
+        "format":'yyyy-mm-dd'
+    });
+
+    $('#btn-SI-SubmitIde-Submit').on('click', function(){
+        var seksi = $('#txt-SI-SubmitIde-Seksi').val();
+        var judul = $('#txt-SI-SubmitIde-Judul').val();
+        var dueDate = $('#txt-SI-SubmitIde-DueDate').val();
+        if (seksi && judul && dueDate) {
+            Swal.fire({
+                title: 'Peringatan !!!',
+                text: "Apakah Ide Yang Anda Submit Sudah Sesuai ?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.value) {
+                    $('#ldg-SI-SubmitIde').show();
+                    $.ajax({
+                        data: {seksi: seksi, judul: judul,dueDate: dueDate},
+                        method: 'POST',
+                        url: baseurl + 'SystemIntegration/KaizenAkt/SimpanIde',
+                        error: function(xhr,status,error){
+                            $('#ldg-SI-SubmitIde').hide();
+                            swal.fire({
+                                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                                html: xhr['responseText'],
+                                type: "error",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d63031',
+                            })
+                        },
+                        success: function(data){
+                            $('#ldg-SI-SubmitIde').hide();
+                            if (!isNaN(data)) {
+                                Swal.fire(
+                                    'Sukses !!!',
+                                    'Data Berhasil Diinput',
+                                    'success'
+                                )
+                                $('#txt-SI-SubmitIde-Seksi').val('').change();
+                                $('#txt-SI-SubmitIde-Judul').val('').change();
+                                $('#txt-SI-SubmitIde-DueDate').val('').change();
+                            }else{
+                                swal.fire({
+                                    title: "Error",
+                                    html: data,
+                                    type: "error",
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#d63031',
+                                })
+                            }
+                        }
+                    })
+                }
+            });
+        }else{
+            Swal.fire(
+                'Peringatan !!!',
+                'Pastikan Semua Data Terisi',
+                'warning'
+            )
+        }
+    })
+
+    $('#txa-SI-SubmitF4-KondisiSaatIni').redactor({
+        imageUpload: baseurl + 'SystemIntegration/KaizenAkt/uploadSubmitF4',
+        imageUploadErrorCallback: function(json) {
+            alert(json.error);
+        }
+    })
+
+    $('#txa-SI-SubmitF4-UsulanKaizen').redactor({
+        imageUpload: baseurl + 'SystemIntegration/KaizenAkt/uploadSubmitF4',
+        imageUploadErrorCallback: function(json) {
+            alert(json.error);
+        }
+    })
+
+    $('#txa-SI-SubmitF4-PertimbanganUsulanKaizen').redactor({
+        imageUpload: baseurl + 'SystemIntegration/KaizenAkt/uploadSubmitF4',
+        imageUploadErrorCallback: function(json) {
+            alert(json.error);
+        }
+    })
+
+    $("#slc-SI-SubmitF4-Komponen").select2({
+        allowClear: true,
+        minimumInputLength: 3,
+        ajax: {
+            url: baseurl + "SystemIntegration/KaizenAkt/getKomponen",
+            dataType: 'json',
+            type: 'get',
+            data: function(params) {
+                return { p: params.term }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            id: item.INVENTORY_ITEM_ID,
+                            text: item.SEGMENT1 + ' -- ' + item.ITEM_NAME,
+                        }
+                    })
+                }
+            },
+        },
+    })
+
+    $(document).on('ifChecked','#chk-SI-SubmitF4-Komponen', function(){
+        $('#slc-SI-SubmitF4-Komponen').attr('disabled', false);
+    })
+
+    $(document).on('ifUnchecked','#chk-SI-SubmitF4-Komponen', function(){
+        $('#slc-SI-SubmitF4-Komponen').attr('disabled', true);
+        $('#slc-SI-SubmitF4-Komponen').val('').change();
+    })
+
+    $('#slc-SI-SubmitF4-IdeKaizen').on('change', function(){
+        var judul = $(this).find('option:selected').text();
+        $('#txt-SI-SubmitF4-JudulKaizen').val(judul);
+    })
+
+    $('#btn-SI-SubmitF4-Submit').on('click', function(){
+        var kaizenIde       = $('#slc-SI-SubmitF4-IdeKaizen option:selected').text();
+        var kaizenId        = $('#slc-SI-SubmitF4-IdeKaizen').val();
+        var kaizenJudul     = $('#txt-SI-SubmitF4-JudulKaizen').val();
+        var nama            = $('#txt-SI-SubmitF4-NamaPencetus').val();
+        var noind           = $('#txt-SI-SubmitF4-NoindPencetus').val();
+        var komponen        = $('#slc-SI-SubmitF4-Komponen').val();
+        var kondisi         = $('#txa-SI-SubmitF4-KondisiSaatIni').val();
+        var usulan          = $('#txa-SI-SubmitF4-UsulanKaizen').val();
+        var pertimbangan    = $('#txa-SI-SubmitF4-PertimbanganUsulanKaizen').val();
+        var realisasi       = $('#txt-SI-SubmitF4-TanggalRealisasi').val();
+
+        if (kaizenIde && kaizenJudul && nama && noind && kondisi && usulan && pertimbangan && realisasi) {
+            $('#ldg-SI-SubmitF4').show();
+            $.ajax({
+                data: {
+                    kaizen_judul: kaizenJudul,
+                    kaizen_ide  : kaizenIde,
+                    kaizen_id   : kaizenId,
+                    nama        : nama,
+                    noind       : noind,
+                    kondisi     : kondisi,
+                    usulan      : usulan,
+                    pertimbangan: pertimbangan,
+                    realisasi   : realisasi,
+                    komponen    : komponen
+                },
+                method: 'POST',
+                url: baseurl + 'SystemIntegration/KaizenAkt/SimpanF4',
+                error: function(xhr,status,error){
+                    $('#ldg-SI-SubmitF4').hide();
+                    swal.fire({
+                        title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                        html: xhr['responseText'],
+                        type: "error",
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#d63031',
+                    })
+                },
+                success: function(data){
+                    $('#ldg-SI-SubmitF4').hide();
+                    if (data.includes("A PHP Error was encountered",0)) {
+                        swal.fire({
+                            title: "Error",
+                            html: data,
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    }else if (data == "sukses") {
+                        $('#btn-SI-SubmitF4-Cetak').attr('disabled', false);
+                        Swal.fire({
+                            title: 'Sukses !!!',
+                            text: "Apakah Anda Ingin Mengcetak F4 ?",
+                            type: 'success',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya',
+                            cancelButtonText: 'Tidak'
+                        }).then((result) => {
+                            if (result.value) {
+                                window.open(baseurl+'SystemIntegration/KaizenAkt/CetakF4/'+kaizenId,'_blank');
+                            }
+                        });
+                    }                    
+                }
+            })
+        }else{
+            Swal.fire(
+                'Peringatan !!!',
+                'Pastikan Semua Data Terisi',
+                'warning'
+            )
+        }
+    })
+
+    $('#btn-SI-SubmitF4-Cetak').on('click', function(){
+        var kaizenId        = $('#slc-SI-SubmitF4-Judul').val();
+        if (kaizenId) {
+            window.open(baseurl+'SystemIntegration/KaizenAkt/CetakF4/'+kaizenId,'_blank');
+        }
+    })
+
+    $('.tbl-SI-KaizenAkt-MyKaizen').DataTable({
+        "lengthMenu": [
+            [ -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+    })
+
+    $('#tbl-SI-KaizenAkt-PengajuanHapusIde').DataTable({
+        "lengthMenu": [
+            [ -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+    })
+})
+// end kaizen akuntansi

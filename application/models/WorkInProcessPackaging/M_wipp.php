@@ -431,6 +431,71 @@ class M_wipp extends CI_Model
                            return $res;
     }
 
+    public function getJobAll()
+    {
+      $res = $this->oracle->query("SELECT DISTINCT we.wip_entity_name no_job, wdj.scheduled_start_date,
+                                        wdj.completion_subinventory, msib_assy.segment1 kode_assy,
+                                        msib_assy.description, wdj.start_quantity, bd.department_code,
+                                        bores.usage_rate_or_amount, msib_comp.segment1 kode_comp,
+                                        msib_comp.description comp_description,
+                                        wro.quantity_per_assembly
+                                   FROM wip_entities we,
+                                        wip_discrete_jobs wdj,
+                                        wip_requirement_operations wro,
+                                        mtl_system_items_b msib_comp,
+                                        mtl_system_items_b msib_assy,
+                                        bom_departments bd,
+                                        bom_operation_sequences bos,
+                                        bom_operation_resources bores,
+                                        bom_operational_routings bor,
+                                        bom_resources br,
+                                        bom_bill_of_materials bom,
+                                        bom_inventory_components bic
+                                  WHERE we.wip_entity_id = wdj.wip_entity_id
+                                    AND wdj.completion_subinventory LIKE 'INT-P&%'
+                                    AND wdj.wip_entity_id = wro.wip_entity_id
+                                    AND wro.inventory_item_id = msib_comp.inventory_item_id
+                                    AND wro.organization_id = msib_comp.organization_id
+                                    AND wdj.primary_item_id = msib_assy.inventory_item_id
+                                    AND wdj.organization_id = msib_assy.organization_id
+                                    --
+                                    AND bor.assembly_item_id = msib_assy.inventory_item_id
+                                    AND bor.organization_id = msib_assy.organization_id
+                                    AND bos.routing_sequence_id = bor.routing_sequence_id
+                                    AND bd.department_id = bos.department_id
+                                    AND wro.department_id = bd.department_id
+                                    AND bores.operation_sequence_id = bos.operation_sequence_id
+                                    AND bores.resource_id = br.resource_id
+                                    --
+                                    AND bom.assembly_item_id = msib_assy.inventory_item_id
+                                    AND bom.organization_id = msib_assy.organization_id
+                                    AND bom.bill_sequence_id = bic.bill_sequence_id
+                                    AND bic.component_item_id = msib_comp.inventory_item_id
+                                    AND wdj.status_type = 3
+                                    AND br.resource_code NOT LIKE 'OPTR%'
+                                    AND bd.department_code LIKE 'PP%'
+                                    AND msib_comp.segment1 NOT LIKE 'MGA%'
+                                    AND msib_comp.segment1 NOT LIKE 'MAP%'
+                                    AND msib_comp.segment1 NOT LIKE 'MEN%'
+                                    AND msib_comp.segment1 NOT LIKE 'MGB%'
+                                    AND msib_comp.segment1 NOT LIKE 'PSC%'
+                                    AND bor.routing_sequence_id IN (
+                                           SELECT MAX (bor.routing_sequence_id) OVER (PARTITION BY we.wip_entity_name)
+                                             FROM wip_entities we,
+                                                  wip_discrete_jobs wdj,
+                                                  mtl_system_items_b msib_assy,
+                                                  bom_operational_routings bor
+                                            WHERE we.wip_entity_id = wdj.wip_entity_id
+                                              AND wdj.completion_subinventory LIKE 'INT-P&%'
+                                              AND wdj.status_type = 3
+                                              AND wdj.primary_item_id = msib_assy.inventory_item_id
+                                              AND wdj.organization_id = msib_assy.organization_id
+                                              AND bor.assembly_item_id = msib_assy.inventory_item_id
+                                              AND bor.organization_id = msib_assy.organization_id)
+                               ORDER BY msib_assy.segment1 ASC, wdj.scheduled_start_date DESC")->result_array();
+                           return $res;
+    }
+
     public function JobRelease()
     {
         $response = $this->oracle->query("SELECT DISTINCT we.wip_entity_name no_job

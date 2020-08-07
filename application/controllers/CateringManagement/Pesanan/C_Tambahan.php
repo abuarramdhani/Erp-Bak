@@ -34,6 +34,7 @@ class C_Tambahan extends CI_Controller
     public function index(){
         $user_id = $this->session->userid;
 
+        $data['Header'] = 'Pesanan Tambahan '.date('Y-m-d');
         $data['Title'] = 'Pesanan Tambahan';
         $data['Menu'] = 'Pesanan Tambahan';
         $data['SubMenuOne'] = '';
@@ -419,7 +420,12 @@ class C_Tambahan extends CI_Controller
     public function getPenerima(){
         $key = $this->input->get('term');
         $tempat_makan = $this->input->get('tempat_makan');
-        $data = $this->M_tambahan->getPenerimaByKeyTempatMakan($key,$tempat_makan);
+        $kategori = $this->input->get('kategori');
+        if (in_array($kategori, array("3","4","5"))) {
+            $data = $this->M_tambahan->getPenerimaByKey($key);
+        }else{
+            $data = $this->M_tambahan->getPenerimaByKeyTempatMakan($key,$tempat_makan);
+        }
         echo json_encode($data);
     }
 
