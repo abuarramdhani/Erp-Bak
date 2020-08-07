@@ -13,7 +13,7 @@ class M_index extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
-    public function GetIzin($noind)
+    public function GetIzin($noind, $jenis)
     {
         $sql = "select
                 ip.*,
@@ -91,8 +91,50 @@ class M_index extends CI_Model
                     end
                 end status from \"Surat\".tizin_pribadi ip
                 order by id desc";
+        if ($jenis) {
+            $where = "and ip.jenis_ijin = '$jenis'";
+        } else {
+            $where = '';
+        }
+
+        $sql3 = "select
+        *,
+        (select trim(nama) from hrd_khs.tpribadi where noind = ip.atasan) nama_atasan,
+        (select string_agg(concat(noind,' - ',trim(nama)),',') from hrd_khs.tpribadi where noind in 
+        (select noind from \"Surat\".tizin_pribadi_detail tpd where tpd.id = ip.id)
+        ) nama_pkj,
+                case
+                    when ip.jenis_ijin in (1,3) then
+                    case
+                        when ip.verifikasi_satpam = '1' then 'Izin Keluar'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_atasan = '1' then 'Belum Verifikasi Satpam'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_atasan = '0' then 'Rejected Atasan'
+                        when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                    end
+                    when ip.jenis_ijin = 2 then
+                    case
+                        when ip.verifikasi_satpam = '1' then 'Izin Pulang'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_paramedik = '1' then 'Belum Verifikasi Satpam'
+                        when ip.verifikasi_satpam is null
+                        and ip.appr_paramedik = '0' then 'Rejected Paramedik'
+                        when ip.appr_paramedik is null
+                        and ip.appr_atasan = '1' then 'Periksa Paramedik'
+                        when ip.appr_paramedik is null
+                        and ip.appr_atasan = '0' then 'Rejected Atasan'
+                        when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                    end
+                end status
+            from
+                \"Surat\".tizin_pribadi ip
+            where ip.atasan = '$noind'
+                $where
+            order by
+                ip.appr_atasan desc, ip.id desc";
         // echo $sql;exit();
-        return $this->personalia->query($sql2)->result_array();
+        return $this->personalia->query($sql3)->result_array();
     }
 
     public function updatePekerja($status, $idizin)
@@ -157,7 +199,7 @@ class M_index extends CI_Model
     public function update_tperizinan($noind, $status, $id, $serahkan)
     {
         $sql = "UPDATE \"Surat\".tizin_pribadi
-                set status ='$status', noind = '$noind', diserahkan = '$serahkan'
+                set appr_atasan ='$status', noind = '$noind', diserahkan = '$serahkan'
                 WHERE id ='$id'";
         return $this->personalia->query($sql);
     }
