@@ -55,6 +55,10 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>Nomor Rangka</strong></td>
                                                             <td style="border: 0">: <?php echo $kendaraanDetail['nomor_rangka']; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Tag Number</strong></td>
+                                                            <td style="border: 0">: <?php echo $kendaraanDetail['tag_number']; ?></td>
+                                                        </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Foto STNK</strong></td>
                                                             <td style="border: 0">: <a href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanDetail['foto_stnk']);?>" target="_blank"><?php echo $kendaraanDetail['foto_stnk']; ?></a></td>
