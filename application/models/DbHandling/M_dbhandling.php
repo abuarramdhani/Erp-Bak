@@ -187,6 +187,20 @@ class M_dbhandling extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+    public function cekKode($kode)
+    {
+        $sql = "select * from dbh.data_handling where kode_komponen = '$kode'";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function dataEdit($kode, $rev)
+    {
+        $sql = "select * from dbh.data_handling where kode_komponen = '$kode' and rev_no = '$rev'";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
     public function insertdatahandling($lastupdate_date, $lastupdate_by, $doc_no, $kode, $desc, $status_komp, $kode_produk, $nama_produk, $sarana, $qty, $berat, $seksi, $proses, $keterangan)
     {
         $sql = "insert into dbh.data_handling(doc_number, rev_no, last_update_date, kode_komponen, nama_komponen, kode_produk, id_master_handling, qty_handling, berat, seksi, proses, status, last_update_by, id_status_komponen, requester, nama_produk, keterangan)
@@ -266,7 +280,7 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
     public function selectdatahandlingbykom($komp)
     {
         $sql = "select * from dbh.data_handling 
-       where kode_komponen = '$komp' 
+       where kode_komponen = '$komp' and status = 'active'
        order by rev_no desc";
 
         $query = $this->db->query($sql);
@@ -275,8 +289,8 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
     public function getnewdatahandbystat()
     {
         $sql = "select * from dbh.data_handling 
-        where status = 'request'
-        and rev_no = 0
+        where status != 'active'
+        and rev_no = -1
         order by last_update_date desc";
 
         $query = $this->db->query($sql);
@@ -285,11 +299,41 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
     public function getrevdatahandbystat()
     {
         $sql = "select * from dbh.data_handling 
-        where status = 'request'
-        and rev_no != 0
+        where status != 'active'
+        and rev_no = -2
         order by last_update_date desc";
 
         $query = $this->db->query($sql);
         return $query->result_array();
+    }
+    public function insertdatahandlingseksi($lastupdate_date, $lastupdate_by, $doc_no, $kode, $desc, $status_komp, $kode_produk, $nama_produk, $sarana, $qty, $berat, $seksi, $proses, $keterangan)
+    {
+        $sql = "insert into dbh.data_handling(doc_number,rev_no, last_update_date, kode_komponen, nama_komponen, kode_produk, id_master_handling, qty_handling, berat, seksi, proses, status, last_update_by, id_status_komponen, requester, nama_produk, keterangan)
+        values('$doc_no','-1', '$lastupdate_date', '$kode', '$desc', '$kode_produk', '$sarana', $qty, $berat, '$seksi', '$proses', 'request', '$lastupdate_by', '$status_komp', '$lastupdate_by', '$nama_produk', '$keterangan')";
+
+        $query = $this->db->query($sql);
+        return $query;
+    }
+    public function insertdatahandlingrev2($lastupdate_date, $lastupdate_by, $doc_no, $kode, $desc, $status_komp, $kode_produk, $nama_produk, $sarana, $qty, $berat, $seksi, $proses, $keterangan)
+    {
+        $sql = "insert into dbh.data_handling(doc_number, rev_no, last_update_date, kode_komponen, nama_komponen, kode_produk, id_master_handling, qty_handling, berat, seksi, proses, status, last_update_by, id_status_komponen, requester, nama_produk, keterangan)
+        values('$doc_no', '-2', '$lastupdate_date', '$kode', '$desc', '$kode_produk', '$sarana', $qty, $berat, '$seksi', '$proses', 'request', '$lastupdate_by', '$status_komp', '$lastupdate_by', '$nama_produk', '$keterangan')";
+
+        $query = $this->db->query($sql);
+        return $query;
+    }
+    public function updateterima($id, $rev)
+    {
+        $sql = "update dbh.data_handling set status = 'active', rev_no='$rev' where id_handling = '$id'";
+
+        $query = $this->db->query($sql);
+        return $query;
+    }
+    public function updatereject($id)
+    {
+        $sql = "update dbh.data_handling set status = 'reject' where id_handling = '$id'";
+
+        $query = $this->db->query($sql);
+        return $query;
     }
 }

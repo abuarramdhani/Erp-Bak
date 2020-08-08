@@ -32,12 +32,12 @@
                         <div class="box box-warning">
                             <div class="box-header with-border" style="font-weight: bold;">REQUEST HANDLING</div>
                             <div class="box-body">
-                                <div class="col-md-12" style="font-weight: bold;">
-                                    <h4>Baru</h4>
+                                <div class="col-md-12" style="font-weight: bold;text-align:center">
+                                    <h4>BARU</h4>
                                 </div>
                                 <div class="col-md-12" id="tabel_reqhand"></div>
-                                <div class="col-md-12" style="font-weight: bold;">
-                                    <h4>Revisi</h4>
+                                <div class="col-md-12" style="font-weight: bold;text-align:center">
+                                    <h4>REVISI</h4>
                                 </div>
                                 <div class="col-md-12" id="tabel_reqhand2"></div>
 

@@ -35,12 +35,12 @@
                                 <form name="Orderform" class="form-horizontal" action="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/AddreqHand'); ?>" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post">
                                     <div class="col-md-12" style="text-align: right;"><button class="btn btn-warning">Tambah</button></div>
                                 </form>
-                                <div class="col-md-12" style="font-weight: bold;">
-                                    <h4>Baru</h4>
+                                <div class="col-md-12" style="font-weight: bold;text-align:center">
+                                    <h4>BARU</h4>
                                 </div>
                                 <div class="col-md-12" id="tabel_reqhandseksi"></div>
-                                <div class="col-md-12" style="font-weight: bold;">
-                                    <h4>Revisi</h4>
+                                <div class="col-md-12" style="font-weight: bold;text-align:center">
+                                    <h4>REVISI</h4>
                                 </div>
                                 <div class="col-md-12" id="tabel_reqhandseksi2"></div>
 
@@ -61,7 +61,7 @@
             </div>
 </section>
 <!-- Modal Img Carousel -->
-<div class="modal fade" id="h" role="dialog">
+<div class="modal fade" id="mdl-carousel" role="dialog">
     <div class="modal-dialog" style="width:60%">
         <!-- Modal content-->
         <div class="modal-content">
@@ -72,14 +72,14 @@
                 </center>
             </div>
             <div class="modal-body">
-                <div id="h"></div>
+                <div id="fotodisini"></div>
             </div>
         </div>
 
     </div>
 </div>
 <!-- Modal Proses Handling -->
-<div class="modal fade" id="h" role="dialog">
+<div class="modal fade" id="ModalPros" role="dialog">
     <div class="modal-dialog" style="width:60%">
         <!-- Modal content-->
         <div class="modal-content">
@@ -90,7 +90,7 @@
                 </center>
             </div>
             <div class="modal-body">
-                <div id="h"></div>
+                <div id="IniProsesnya"></div>
             </div>
         </div>
 
