@@ -1268,6 +1268,9 @@ $(document).ready(function () {
                     $('.slc_makan_SP').select2({
                         placeholder: "---Masukkan tempat Makan---",
                         allowClear: true
+                    }).on('change', function () {
+                        let a = $(this).val()
+                        $('.txt_ruang_SP').val(a).trigger('change')
                     })
                     $('.forSelectJurusan2').select2({
                         placeholder: "---Jurusan---",
