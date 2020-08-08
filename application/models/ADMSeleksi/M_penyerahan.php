@@ -50,7 +50,8 @@ class M_penyerahan extends CI_Model
 		$sql = "SELECT * FROM \"Presensi\".tjamshift 
 				where kd_shift = '$kode'
 					and numhari = '$num'
-					and hari != 'Minggu'";
+					and (numhari != '1' or (numhari = '1' and lompat_tgl = true))
+				order by 3";
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -154,7 +155,7 @@ class M_penyerahan extends CI_Model
 
 	public function ambilDataAll($kodesie, $tanggal, $jenis, $ruangLingkup)
 	{
-		$sql = "SELECT  trim(b.noind) as noind,
+		$sql = "SELECT trim(b.noind) as noind,
 						trim(b.noind)||' - '||trim(b.nama) as pekerja,
 						a.kode,
 						trim(b.nama) as nama,
