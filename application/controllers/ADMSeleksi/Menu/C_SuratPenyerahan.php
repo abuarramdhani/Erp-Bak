@@ -239,7 +239,7 @@ class C_SuratPenyerahan extends CI_Controller
         //Di generate berdasarkan sisa hari di bulan berjalan terhitung dari tanggal masuk
         $arTshiftPekerja = array();
         $tanggal = array();
-        $akhir_bulan = date('t');
+        $akhir_bulan = date('t', strtotime($tgl_pyrhn));
         $tgl_serahin = date('d', strtotime($tgl_pyrhn));
         $hasil = false;
         $noind_baru = $this->dabes->query("SELECT noind_baru from hrd_khs.tpribadi where noind = '$noind'")->row()->noind_baru;
@@ -253,6 +253,7 @@ class C_SuratPenyerahan extends CI_Controller
             $tgl_serahin++;
         }
         foreach ($tanggal as $key) {
+            $libur = $this->M_penyerahan->getTlibur($key);
             $hari = date('l', strtotime($key));
             if ($hari == 'Sunday') {
                 $num = '1';
@@ -273,24 +274,26 @@ class C_SuratPenyerahan extends CI_Controller
             foreach ($dataShift as $value) {
                 $cekShiftPekerja = $this->M_penyerahan->cekPekerjaDalamShift($key, $noind, $kodesie);
                 if (empty($cekShiftPekerja)) {
-                    $arTshiftPekerja = array(
-                        'tanggal'           => $key,
-                        'noind'             => $noind,
-                        'kd_shift'          => $value['kd_shift'],
-                        'kodesie'           => $kodesie,
-                        'tukar'             => '0',
-                        'jam_msk'           => $value['jam_msk'],
-                        'jam_akhmsk'        => $value['jam_akhmsk'],
-                        'jam_plg'           => $value['jam_plg'],
-                        'break_mulai'       => $value['break_mulai'],
-                        'break_selesai'     => $value['break_selesai'],
-                        'ist_mulai'         => $value['ist_mulai'],
-                        'ist_selesai'       => $value['ist_selesai'],
-                        'jam_kerja'         => $value['jam_kerja'],
-                        'user_'             => $this->session->user,
-                        'noind_baru'        => $noind_baru
-                    );
-                    $this->M_penyerahan->insertTshiftPekerja($arTshiftPekerja);
+                    if (!$libur) {
+                        $arTshiftPekerja = array(
+                            'tanggal'           => $key,
+                            'noind'             => $noind,
+                            'kd_shift'          => $value['kd_shift'],
+                            'kodesie'           => $kodesie,
+                            'tukar'             => '0',
+                            'jam_msk'           => $value['jam_msk'],
+                            'jam_akhmsk'        => $value['jam_akhmsk'],
+                            'jam_plg'           => $value['jam_plg'],
+                            'break_mulai'       => $value['break_mulai'],
+                            'break_selesai'     => $value['break_selesai'],
+                            'ist_mulai'         => $value['ist_mulai'],
+                            'ist_selesai'       => $value['ist_selesai'],
+                            'jam_kerja'         => $value['jam_kerja'],
+                            'user_'             => $this->session->user,
+                            'noind_baru'        => $noind_baru
+                        );
+                        $this->M_penyerahan->insertTshiftPekerja($arTshiftPekerja);
+                    }
                 } else {
                     $arTshiftPekerja = array(
                         'kd_shift'          => $value['kd_shift'],
@@ -321,6 +324,9 @@ class C_SuratPenyerahan extends CI_Controller
                         $noind,
                         $kodesie
                     );
+                    if ($libur) {
+                        $this->M_penyerahan->deleteShiftAhad($key, $noind);
+                    }
                 }
             }
         }
@@ -783,8 +789,8 @@ class C_SuratPenyerahan extends CI_Controller
         //Di generate berdasarkan sisa hari di bulan berjalan
         $arTshiftPekerja = array();
         $tanggal = array();
-        $akhir_bulan = date('t');
-        $now = date('d');
+        $akhir_bulan = date('t', strtotime($tgl_pyrhn));
+        $now = date('d', strtotime($tgl_pyrhn));
         $hasil = false;
         while (!$hasil) {
             if ($now != $akhir_bulan) {
@@ -796,6 +802,7 @@ class C_SuratPenyerahan extends CI_Controller
             $now++;
         }
         foreach ($tanggal as $key) {
+            $libur = $this->M_penyerahan->getTlibur($key);
             $hari = date('l', strtotime($key));
             if ($hari == 'Sunday') {
                 $num = '1';
@@ -816,24 +823,26 @@ class C_SuratPenyerahan extends CI_Controller
             foreach ($dataShift as $value) {
                 $cekShiftPekerja = $this->M_penyerahan->cekPekerjaDalamShift($key, $noind, $kodesie);
                 if (empty($cekShiftPekerja)) {
-                    $arTshiftPekerja = array(
-                        'tanggal'           => $key,
-                        'noind'             => $noind,
-                        'kd_shift'          => $value['kd_shift'],
-                        'kodesie'           => $kodesie,
-                        'tukar'             => '0',
-                        'jam_msk'           => $value['jam_msk'],
-                        'jam_akhmsk'        => $value['jam_akhmsk'],
-                        'jam_plg'           => $value['jam_plg'],
-                        'break_mulai'       => $value['break_mulai'],
-                        'break_selesai'     => $value['break_selesai'],
-                        'ist_mulai'         => $value['ist_mulai'],
-                        'ist_selesai'       => $value['ist_selesai'],
-                        'jam_kerja'         => $value['jam_kerja'],
-                        'user_'             => $this->session->user,
-                        'noind_baru'        => $noind_baru
-                    );
-                    $this->M_penyerahan->insertTshiftPekerja($arTshiftPekerja);
+                    if (!$libur) {
+                        $arTshiftPekerja = array(
+                            'tanggal'           => $key,
+                            'noind'             => $noind,
+                            'kd_shift'          => $value['kd_shift'],
+                            'kodesie'           => $kodesie,
+                            'tukar'             => '0',
+                            'jam_msk'           => $value['jam_msk'],
+                            'jam_akhmsk'        => $value['jam_akhmsk'],
+                            'jam_plg'           => $value['jam_plg'],
+                            'break_mulai'       => $value['break_mulai'],
+                            'break_selesai'     => $value['break_selesai'],
+                            'ist_mulai'         => $value['ist_mulai'],
+                            'ist_selesai'       => $value['ist_selesai'],
+                            'jam_kerja'         => $value['jam_kerja'],
+                            'user_'             => $this->session->user,
+                            'noind_baru'        => $noind_baru
+                        );
+                        $this->M_penyerahan->insertTshiftPekerja($arTshiftPekerja);
+                    }
                 }
             }
         }

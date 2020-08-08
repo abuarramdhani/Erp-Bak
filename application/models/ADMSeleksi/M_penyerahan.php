@@ -47,7 +47,16 @@ class M_penyerahan extends CI_Model
 
 	public function getDataShift($kode, $num)
 	{
-		$sql = "SELECT * FROM \"Presensi\".tjamshift where kd_shift = '$kode' and numhari = '$num'";
+		$sql = "SELECT * FROM \"Presensi\".tjamshift 
+				where kd_shift = '$kode'
+					and numhari = '$num'
+					and hari != 'Minggu'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getTlibur($tanggal)
+	{
+		$sql = "SELECT * FROM \"Dinas_Luar\".tlibur where tanggal::date = '$tanggal'";
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -587,6 +596,14 @@ class M_penyerahan extends CI_Model
 	public function insertNomorSurat($data)
 	{
 		$this->personalia->insert('"Surat".tsurat', $data);
+		return;
+	}
+
+	public function deleteShiftAhad($tanggal, $noind)
+	{
+		$sql = "DELETE FROM \"Presensi\".tshiftpekerja
+				WHERE tanggal = '$tanggal' and noind = '$noind'";
+		$this->personalia->query($sql);
 		return;
 	}
 }
