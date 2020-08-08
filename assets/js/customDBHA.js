@@ -122,7 +122,8 @@ function proseshandlingg(id) {
   });
 }
 
-function acc() {
+function acc(id) {
+  // console.log(id);
   Swal.fire({
     title: "Apa Anda Yakin?",
     text: "Akan Menerima Request Ini ?",
@@ -134,29 +135,31 @@ function acc() {
     cancelButtonText: "Tidak",
   }).then((result) => {
     // console.log("okay");
-    // if (result.value) {
-    //   var request = $.ajax({
-    //     url: baseurl + "OrderPro/monorderpro/updateterima",
-    //     data: {
-    //       no_order: no_order,
-    //     },
-    //     type: "POST",
-    //     datatype: "html",
-    //   });
-    //   request.done(function (result) {
-    //     window.location.reload();
-    //     Swal.fire({
-    //      position: "top-end",
-    //      icon: "success",
-    //      title: "Berhasil Menerima",
-    //      showConfirmButton: false,
-    //      timer: 1500,
-    //     });
-    //   });
-    // }
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "DbHandling/MonitoringHandling/updateterima",
+        data: {
+          id: id,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Berhasil Menerima",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.href = baseurl + "DbHandling/MonitoringHandling";
+          // window.location.replace("DbHandling/MonitoringHandling");
+        });
+      });
+    }
   });
 }
-function reject() {
+function reject(id) {
   Swal.fire({
     title: "Apa Anda Yakin?",
     text: "Akan Menolak Request Ini ?",
@@ -167,20 +170,29 @@ function reject() {
     confirmButtonText: "Ya",
     cancelButtonText: "Tidak",
   }).then((result) => {
-    // console.log("okay");
-    // if (result.value) {
-    //   var request = $.ajax({
-    //     url: baseurl + "OrderPro/monorderpro/updateterima",
-    //     data: {
-    //       no_order: no_order,
-    //     },
-    //     type: "POST",
-    //     datatype: "html",
-    //   });
-    //   request.done(function (result) {
-    //     window.location.reload();
-    //   });
-    // }
+    console.log("okay");
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "DbHandling/MonitoringHandling/updatereject",
+        data: {
+          id: id,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: "error",
+          title: "Request Ditolak",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.href = baseurl + "DbHandling/MonitoringHandling";
+          // window.location.replace("DbHandling/MonitoringHandling");
+        });
+      });
+    }
   });
 }
 $(document).ready(function () {
@@ -359,6 +371,34 @@ $(document).ready(function () {
       url: baseurl + "DbHandling/MonitoringHandling/getDesckompp",
       success: function (result) {
         $("#namakomp").val(result.replace(/"/g, ""));
+      },
+    });
+  });
+  $("#kodekompp").on("change", function () {
+    var value = $(this).val();
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      data: { kode: value },
+      url: baseurl + "DbHandling/MonitoringHandling/cekKodeKomp",
+      success: function (result) {
+        // console.log(result);
+        if (result == 0) {
+          // console.log("tampilkan simbol success dan inputkan yg lain");
+          $(".showkalaukompbelomada").css("display", "block");
+          $(".hideajakalaukompudahada").css("display", "block");
+          $("#validationkomp").css("display", "none");
+          $("#btnrev").css("display", "none");
+        } else {
+          // console.log("append tombol revisi");
+          $(".showkalaukompbelomada").css("display", "none");
+          $(".hideajakalaukompudahada").css("display", "none");
+          $("#validationkomp").css("display", "block");
+          $("#btnrev").css("display", "block");
+          $("#btnrev").on("click", function () {
+            revisidatahandling(result);
+          });
+        }
       },
     });
   });
@@ -811,6 +851,42 @@ function revisidatahandling(id) {
     });
   });
 }
+function revisidatahandling2(id) {
+  var request = $.ajax({
+    url: baseurl + "DbHandlingSeksi/MonitoringHandling/revHand",
+    data: {
+      id: id,
+    },
+    type: "POST",
+    datatype: "html",
+  });
+
+  request.done(function (result) {
+    // console.log(result);
+    $("#revhand").html(result);
+    $("#modalrevhand").modal("show");
+    $(".StatKomp").select2({
+      allowClear: true,
+      minimumResultsForSearch: Infinity,
+    });
+    $(".SarAna").select2({
+      allowClear: true,
+      minimumResultsForSearch: Infinity,
+    });
+    $(".Pros_Es").select2({
+      allowClear: true,
+      minimumResultsForSearch: Infinity,
+    });
+    $(".idSek_si").select2({
+      allowClear: true,
+      minimumResultsForSearch: Infinity,
+    });
+    $(".Pro_sesSeksi").select2({
+      allowClear: true,
+      minimumResultsForSearch: Infinity,
+    });
+  });
+}
 function getwarnaid(i) {
   var value = $("#Id_Sek_Si" + i).val();
 
@@ -928,18 +1004,25 @@ function addfoto() {
   var i = $('[name="indexGambr[]"]').length + 1 - 1;
   var u = $('[name="uRutGambar[]"]').length + 1;
   $(".addImg").append(
-    '<div class="panel-body"><input type="hidden" name="indexGambr[]" value="' +
+    '<div id="has' +
+      i +
+      '"><div class="panel-body"><input type="hidden" name="indexGambr[]" value="' +
       i +
       '"/><div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div><div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' +
       u +
-      '" readonly="readonly" type="text"/></div><div class="col-md-7"><input type="file" id="fotoHandling' +
+      '" readonly="readonly" type="text"/></div><div class="col-md-6"><input type="file" id="fotoHandling' +
       i +
       '" name="fotoHandling[]" onchange="PrevImg(this,' +
       i +
-      ')" class="form-control" accept=".jpg, .png, ,jpeg"/></div></div><div class="panel-body"><div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div><div class="col-md-8"><center><img id="showPrevImg' +
+      ')" class="form-control" accept=".jpg, .png, ,jpeg"/></div><div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' +
       i +
-      '" style="width:50%"></center></div></div>'
+      ')"><i class="fa fa-minus"></i></a></div></div><div class="panel-body"><div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div><div class="col-md-8"><center><img id="showPrevImg' +
+      i +
+      '" style="width:50%"></center></div></div></div>'
   );
+}
+function deletpoto(g) {
+  $("#has" + g).remove();
 }
 
 function prosesonchange() {
@@ -1973,6 +2056,34 @@ $(document).ready(function () {
       },
     });
   });
+  $("#komponen_Seksi").on("change", function () {
+    var value = $(this).val();
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      data: { kode: value },
+      url: baseurl + "DbHandlingSeksi/MonitoringHandling/cekKodeKomp",
+      success: function (result) {
+        // console.log(result);
+        if (result == 0) {
+          // console.log("tampilkan simbol success dan inputkan yg lain");
+          $(".showkalaukompbelomadaseksi").css("display", "block");
+          $(".hideajakalaukompudahadaseksi").css("display", "block");
+          $("#validationkompseksi").css("display", "none");
+          $("#btnrevseksi").css("display", "none");
+        } else {
+          // console.log("append tombol revisi");
+          $(".showkalaukompbelomadaseksi").css("display", "none");
+          $(".hideajakalaukompudahadaseksi").css("display", "none");
+          $("#validationkompseksi").css("display", "block");
+          $("#btnrevseksi").css("display", "block");
+          $("#btnrevseksi").on("click", function () {
+            revisidatahandling2(result);
+          });
+        }
+      },
+    });
+  });
 });
 $(document).ready(function () {
   $(".Stat_Komp_seksi").select2({
@@ -2050,7 +2161,7 @@ $(document).ready(function () {
           results: $.map(data, function (obj) {
             return {
               id: obj.id_master_handling,
-              text: obj.nama_handling + " - " + obj.nama_handling,
+              text: obj.kode_handling + " - " + obj.nama_handling,
             };
           }),
         };
@@ -2097,7 +2208,7 @@ function appendfoto() {
       '"></div></div></span>'
   );
   $(document).on("click", ".btnminuss", function () {
-    $("#afterprosesslinier")
+    $("#iflinier")
       .find('[name="u_fotohandlinglinier[]"]')
       .each(function (i, v) {
         $(this).val(i + 1);
@@ -2110,8 +2221,31 @@ function appendfoto() {
   });
   $("#gmbr" + a).on("change", function () {
     $(".inp_Foto").css("display", "");
-    // readURL(this, a);
+    viewGambar(this, a);
   });
+}
+function viewGambar(input, a) {
+  // console.log(a);
+  var sizee = (input.files[0].size / 1024 / 1024).toFixed(2);
+
+  if (sizee > 2) {
+    Swal.fire({
+      type: "error",
+      title: "Ukuran gambar tidak bisa lebih dari 2 MB",
+    }).then(() => {
+      $("#gmbr" + a).val("");
+    });
+  } else {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $("#prevFoto" + a).attr("src", e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
 }
 $(document).ready(function () {
   $(".Id_S_eksi").select2({
@@ -2119,94 +2253,94 @@ $(document).ready(function () {
     minimumResultsForSearch: Infinity,
   });
 });
-$(document).ready(function () {
-  $("#Id_S_eksi").on("change", function () {
-    var value = $(this).val();
-    // console.log(value);
-    $("#pros_s_eksi").select2("val", null);
-    $("#pros_s_eksi").prop("disabled", true);
-    $.ajax({
-      type: "POST",
-      data: { segment1: value },
-      url: baseurl + "DbHandling/MonitoringHandling/form",
-      success: function (result) {
-        if (result != "<option></option>") {
-          $("#pros_s_eksi").prop("disabled", false).html(result);
-        } else {
-        }
-      },
-    });
+function getSeksiandprev(i) {
+  var value = $("#Id_S_eksi" + i).val();
+  // console.log(value);
+  $("#pros_s_eksi" + i).select2("val", null);
+  $("#pros_s_eksi" + i).prop("disabled", true);
+  $.ajax({
+    type: "POST",
+    data: { segment1: value },
+    url: baseurl + "DbHandling/MonitoringHandling/form",
+    success: function (result) {
+      if (result != "<option></option>") {
+        $("#pros_s_eksi" + i)
+          .prop("disabled", false)
+          .html(result);
+      } else {
+      }
+    },
   });
-  $("#pros_s_eksi").on("change", function () {
-    var proses = $("#pros_s_eksi").val();
-    var id = $("#Id_S_eksi").val();
-    $("#textt").html(proses);
+  $("#pros_s_eksi" + i).on("change", function () {
+    var proses = $("#pros_s_eksi" + i).val();
+    var id = $("#Id_S_eksi" + i).val();
+    $("#textt" + i).html(proses);
 
     if (id == "Machining") {
-      $("#kotak_proses").css({
+      $("#kotak_proses" + i).css({
         "background-color": "#ffff00",
       });
-      $("#warnaea").css({
+      $("#warnaea" + i).css({
         "background-color": "#ffff00",
         color: "#ffff00",
       });
     } else if (id == "Gudang") {
-      $("#kotak_proses").css({
+      $("#kotak_proses" + i).css({
         "background-color": "#cccccc",
       });
-      $("#warnaea").css({
+      $("#warnaea" + i).css({
         "background-color": "#cccccc",
         color: "#cccccc",
       });
     } else if (id == "PnP") {
-      $("#kotak_proses").css({
+      $("#kotak_proses" + i).css({
         "background-color": "#ff8080",
       });
-      $("#warnaea").css({
+      $("#warnaea" + i).css({
         "background-color": "#ff8080",
         color: "#ff8080",
       });
     } else if (id == "Sheet Metal") {
-      $("#kotak_proses").css({
+      $("#kotak_proses" + i).css({
         "background-color": "#94bd5e",
       });
-      $("#warnaea").css({
+      $("#warnaea" + i).css({
         "background-color": "#94bd5e",
         color: "#94bd5e",
       });
     } else if (id == "UPPL") {
-      $("#kotak_proses").css({
+      $("#kotak_proses" + i).css({
         "background-color": "#ff00ff",
       });
-      $("#warnaea").css({
+      $("#warnaea" + i).css({
         "background-color": "#ff00ff",
         color: "#ff00ff",
       });
     } else if (id == "Perakitan") {
-      $("#kotak_proses").css({
+      $("#kotak_proses" + i).css({
         "background-color": "#99ccff",
       });
-      $("#warnaea").css({
+      $("#warnaea" + i).css({
         "background-color": "#99ccff",
         color: "#99ccff",
       });
     } else if (id == "Subkon") {
-      $("#kotak_proses").css({
+      $("#kotak_proses" + i).css({
         "background-color": "#ffcc99",
       });
-      $("#warnaea").css({
+      $("#warnaea" + i).css({
         "background-color": "#ffcc99",
         color: "#ffcc99",
       });
     }
   });
-});
+}
 var o = 1;
 function iflinear() {
   o += 1;
   $(".btnplus").css("display", "none");
   no = $('[name="u_proses[]"').length + 1;
-  $("#addhere").append(
+  $(".addhere").append(
     '<div class="panel-body"><div class="col-md-3" style="text-align: right;color:white"><label>Proses</label></div><div class="col-md-8" style="text-align: left;"><div class="col-md-2"><input type="text" class="form-control" name="u_proses[]" readonly="readonly" value="' +
       no +
       '" /></div><div class="col-md-4"><select onchange="getSeksiandprev(' +
@@ -2215,13 +2349,22 @@ function iflinear() {
       o +
       '" name="Id_S_eksi[]" data-placeholder="Identitas Seksi"><option></option><option value="UPPL">UPPL</option><option value="Sheet Metal">Sheet Metal</option><option value="Machining">Machining</option><option value="Perakitan">Perakitan</option><option value="PnP">PnP</option><option value="Gudang">Gudang</option><option value="Subkon">Subkon</option></select></div><div class="col-md-1"><div id="warnaea' +
       o +
-      '" style="background-color: white;color:white;font-size:14pt;padding:2px;">A</div></div><div class="col-md-4"><select onchange="getTextprev(' +
-      o +
-      ')" style="width: 100%;" class="form-control select2 pros_s_eksi" name="pros_s_eksi[]" disabled id="pros_s_eksi' +
+      '" style="background-color: white;color:white;font-size:14pt;padding:2px;">A</div></div><div class="col-md-4"><select style="width: 100%;" class="form-control select2 pros_s_eksi" name="pros_s_eksi[]" disabled id="pros_s_eksi' +
       o +
       '" data-placeholder="Proses Seksi"><option></option></select></div><div class="col-md-1"><a class="btn btn-danger btn-hapus-ajah' +
       o +
       '"><i class="fa fa-minus"></i></a></div></div></div>'
+  );
+  $("#prevPros").append(
+    '<div id="arrowss' +
+      o +
+      '" style="display: inline-block;"><div style="height:75px; margin:20px;text-align:center;padding: 20px 0;"><i class="fa fa-arrow-right fa-2x"></i></div></div><div id="kotakk' +
+      o +
+      '" style="display: inline-block;"><div id="kotak_proses' +
+      o +
+      '" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;"><p style="margin:10px" id="textt' +
+      o +
+      '"></p></div></div>'
   );
   $(".Id_S_eksi").select2({
     allowClear: true,
@@ -2233,13 +2376,168 @@ function iflinear() {
   });
   $(document).on("click", ".btn-hapus-ajah" + o, function () {
     $(this).parents(".panel-body").remove();
-
-    $("#addhere")
+    $(".addhere")
       .find('[name="u_proses[]"]')
       .each(function (i, v) {
         $(this).val(i + 1);
       });
-    // $("#arrowprosSes" + r).remove();
-    // $("#Kotakk" + r).remove();
+    $("#arrowss" + o).remove();
+    $("#kotak_proses" + o).remove();
+  });
+}
+function viewprosnonlinier(input) {
+  var sizee = (input.files[0].size / 1024 / 1024).toFixed(2);
+
+  if (sizee > 2) {
+    Swal.fire({
+      type: "error",
+      title: "Ukuran gambar tidak bisa lebih dari 2 MB",
+    }).then(() => {
+      $("#pros_n_linear").val("");
+    });
+  } else {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $("#prev_proses_n_linear").attr("src", e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+}
+var c = 0;
+function append_foto_non_linear() {
+  $(".inp_foto_non_linear").css("display", "none");
+  var p = $('[name="u_fotohandlingnonlinier[]"').length + 1;
+  c++;
+  $("#appendinputfotononlinier").append(
+    '<span id="hehehe' +
+      c +
+      '"><div class="panel-body"><input type="hidden" value="' +
+      c +
+      '" name="inputgambarnonlinier[]"/><div class="col-md-3" style="text-align: right;color:white"><label>Foto</label></div><div class="col-md-1" style="text-align: right;"><input class="form-control" readonly name="u_fotohandlingnonlinier[]" value="' +
+      p +
+      '" /></div><div class="col-md-5"><input type="file" class="form-control" accept=".jpg, .png, ,jpeg" name="fotohandlingnonlinier[]" id="fotohandlingnonlinier' +
+      c +
+      '" /></div><div class="col-md-1" style="text-align: right;"><a class="btn btn-danger btnminusss"><i class="fa fa-minus"></i></a></div></div><div class="panel-body"><div class="col-md-3" style="text-align: right; color:white"><label>Foto</label></div><div class="col-md-1" style="text-align: right;"></div><div class="col-md-5"><img style="width:100%" id="prevFotoNonLinear' +
+      c +
+      '"></div></div></span>'
+  );
+  $(document).on("click", ".btnminusss", function () {
+    $("#ifnonlinier")
+      .find('[name="u_fotohandlingnonlinier[]"]')
+      .each(function (i, v) {
+        $(this).val(i + 1);
+      });
+    var row = Number(
+      $(this)
+        .parents(".panel-body")
+        .find('[name="inputgambarnonlinier[]"]')
+        .val()
+    );
+    // console.log(row);
+    $("#hehehe" + row).remove();
+  });
+  $("#fotohandlingnonlinier" + c).on("change", function () {
+    $(".inp_foto_non_linear").css("display", "");
+
+    viewGambarnonlinier(this, c);
+  });
+}
+function viewGambarnonlinier(input, a) {
+  // console.log(a);
+  var sizee = (input.files[0].size / 1024 / 1024).toFixed(2);
+
+  if (sizee > 2) {
+    Swal.fire({
+      type: "error",
+      title: "Ukuran gambar tidak bisa lebih dari 2 MB",
+    }).then(() => {
+      $("#fotohandlingnonlinier" + a).val("");
+    });
+  } else {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $("#prevFotoNonLinear" + a).attr("src", e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+}
+function slideshow(id) {
+  var proses = $("#prosesHand" + id).val();
+  var request = $.ajax({
+    url: baseurl + "DbHandlingSeksi/MonitoringHandling/imgcarousel",
+    data: {
+      id: id,
+      proses: proses,
+    },
+    type: "POST",
+    datatype: "html",
+  });
+
+  request.done(function (result) {
+    // console.log(result);
+    $("#fotodisini").html(result);
+    $("#mdl-carousel").modal("show");
+  });
+}
+function showproses(id) {
+  var proses = $("#prosesHand" + id).val();
+  var request = $.ajax({
+    url: baseurl + "DbHandlingSeksi/MonitoringHandling/proseshandling",
+    data: {
+      id: id,
+      proses: proses,
+    },
+    type: "POST",
+    datatype: "html",
+  });
+
+  request.done(function (result) {
+    // console.log(result);
+    $("#IniProsesnya").html(result);
+    $("#ModalPros").modal("show");
+  });
+}
+function slideshoww(id) {
+  var proses = $("#proseshandlinggg" + id).val();
+  var request = $.ajax({
+    url: baseurl + "DbHandlingSeksi/MonitoringHandling/imgcarousel",
+    data: {
+      id: id,
+      proses: proses,
+    },
+    type: "POST",
+    datatype: "html",
+  });
+
+  request.done(function (result) {
+    // console.log(result);
+    $("#slidedhow").html(result);
+    $("#mdl-slide").modal("show");
+  });
+}
+function prosesshow(id) {
+  var proses = $("#proseshandlinggg" + id).val();
+  var request = $.ajax({
+    url: baseurl + "DbHandlingSeksi/MonitoringHandling/proseshandling",
+    data: {
+      id: id,
+      proses: proses,
+    },
+    type: "POST",
+    datatype: "html",
+  });
+
+  request.done(function (result) {
+    // console.log(result);
+    $("#prosesea").html(result);
+    $("#mdl-proses").modal("show");
   });
 }

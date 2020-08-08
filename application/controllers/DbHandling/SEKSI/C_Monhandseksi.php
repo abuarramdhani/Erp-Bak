@@ -57,15 +57,49 @@ class C_Monhandseksi extends CI_Controller
     }
     public function loadviewreqhand()
     {
-        $this->load->view('DbHandling/SEKSI/V_TblReqBaru');
+        $handling = $this->M_dbhandling->getnewdatahandbystat();
+        for ($i = 0; $i < sizeof($handling); $i++) {
+            $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
+            $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+        }
+        $data['handling'] = $handling;
+        $this->load->view('DbHandling/SEKSI/V_TblReqBaru', $data);
     }
     public function loadviewreqhand2()
     {
-        $this->load->view('DbHandling/SEKSI/V_TblReqRev');
+        $handling = $this->M_dbhandling->getrevdatahandbystat();
+        for ($i = 0; $i < sizeof($handling); $i++) {
+            $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
+            $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+        }
+        $data['handling'] = $handling;
+        $this->load->view('DbHandling/SEKSI/V_TblReqRev', $data);
     }
     public function loadviewdatahand()
     {
-        $this->load->view('DbHandling/SEKSI/V_TblDataHand');
+        $datahandling = $this->M_dbhandling->selectdatahandling();
+        for ($i = 0; $i < sizeof($datahandling); $i++) {
+            $sarana_handling = $this->M_dbhandling->selectdatatoedit($datahandling[$i]['id_master_handling']);
+            $datahandling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+        }
+
+        $data['datahandling'] = $datahandling;
+        $this->load->view('DbHandling/SEKSI/V_TblDataHand', $data);
+    }
+    public function cekKodeKomp()
+    {
+        $kode = $this->input->post('kode');
+        $cek = $this->M_dbhandling->cekKode($kode);
+        if ($cek == null) {
+            echo json_encode("0");
+        } else {
+            for ($d = 0; $d < sizeof($cek); $d++) {
+                $rev[$d] = $cek[$d]['rev_no'];
+            }
+            rsort($rev);
+            $dataEdit = $this->M_dbhandling->dataEdit($kode, $rev[0]);
+            echo json_encode($dataEdit[0]['id_handling']);
+        }
     }
     public function AddreqHand()
     {
@@ -124,5 +158,891 @@ class C_Monhandseksi extends CI_Controller
         $data = $this->M_dbhandling->selectsarana($term);
         // echo "<pre>";print_r($data);exit();
         echo json_encode($data);
+    }
+    public function requestHandling()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $lastupdate_by = $this->session->user;
+        $lastupdate_date = date("Y-m-d H:i:s");
+        $kode = $this->input->post('komponen_Seksi');
+        $desc = $this->input->post('nam_komp_seksi');
+        $status_komp = $this->input->post('Stat_Komp_seksi');
+        $status_kompp = $this->M_dbhandling->selectstatuskompbyid($status_komp);
+        $produk = $this->input->post('produk_seksi');
+        $sarana = $this->input->post('Sar_Hand_Seksi');
+        $sar = $this->M_dbhandling->selectdatatoedit($sarana);
+        $qty = $this->input->post('Qty_seksi');
+        $berat = $this->input->post('Berat_Seksi');
+        $seksi = $this->input->post('Seksi_Hand');
+        $proses = $this->input->post('Pro_seksi');
+        $keterangan = $this->input->post('ket_hand');
+        $explode = explode("-", $produk);
+        $kode_produk = $explode[0];
+        $nama_produk = $explode[1];
+        $docdigit4 = substr($kode, 3, 6);
+        $split = str_split($docdigit4);
+
+        if ($split[5] == '-') {
+            $doc_no = 'SH-' . $sar[0]['kode_handling'] . '-' . $kode_produk . '-' . substr($docdigit4, 0, 5) . '-' . $status_kompp[0]['kode_status'];
+        } else {
+            $doc_no = 'SH-' . $sar[0]['kode_handling'] . '-' . $kode_produk . '-' . $docdigit4 . '-' . $status_kompp[0]['kode_status'];
+        }
+
+        $this->M_dbhandling->insertdatahandlingseksi($lastupdate_date, $lastupdate_by, $doc_no, $kode, $desc, $status_komp, $kode_produk, $nama_produk, $sarana, $qty, $berat, $seksi, $proses, $keterangan);
+        $lastval = $this->M_dbhandling->getIdHandling();
+        $id = $lastval[0]['lastval'];
+
+        if ($proses == 'Linear') {
+            $urutan_proses = $this->input->post('u_proses[]');
+            $proses_seksi = $this->input->post('pros_s_eksi[]');
+            for ($i = 0; $i < sizeof($urutan_proses); $i++) {
+                $id_proses_seksi =  $this->M_dbhandling->cariidproseseksi($proses_seksi[$i]);
+                $this->M_dbhandling->insertproseshandling($id, $urutan_proses[$i], $id_proses_seksi[0]['id_proses_seksi']);
+            }
+            $urutangambarproseslinear = $this->input->post('u_fotohandlinglinier[]');
+            chmod('./assets/upload/DatabaseHandling', 0777);
+            for ($a = 0; $a < sizeof($urutangambarproseslinear); $a++) {
+                $this->M_dbhandling->insertgambar($id, $urutangambarproseslinear[$a]);
+
+                $filename = "assets/upload/DatabaseHandling/fotolinier" . $id . $urutangambarproseslinear[$a] . '.png';
+                $temp_name = $_FILES['fotohandlinglinier']['tmp_name'][$a];
+                // Check if file already exists
+                if (file_exists($filename)) {
+                    move_uploaded_file($temp_name, $filename);
+                } else {
+                    move_uploaded_file($temp_name, $filename);
+                }
+            }
+        } else {
+            chmod('./assets/upload/DatabaseHandling', 0777);
+
+            $filename = "assets/upload/DatabaseHandling/prosesnonlinier" . $id . '.png';
+            $temp_name = $_FILES['pros_n_linear']['tmp_name'][0];
+            // Check if file already exists
+            if (file_exists($filename)) {
+                move_uploaded_file($temp_name, $filename);
+            } else {
+                move_uploaded_file($temp_name, $filename);
+            }
+            $urutangambarprosesnonlinear = $this->input->post('fotoprosesnonlinear[]');
+            for ($a = 0; $a < sizeof($urutangambarprosesnonlinear); $a++) {
+                $this->M_dbhandling->insertgambar($id, $urutangambarprosesnonlinear[$a]);
+
+                $filename = "assets/upload/DatabaseHandling/fotononlinier" . $id . $urutangambarprosesnonlinear[$a] . '.png';
+                $temp_name = $_FILES['fotohandlingnonlinier']['tmp_name'][$a];
+                // Check if file already exists
+                if (file_exists($filename)) {
+                    move_uploaded_file($temp_name, $filename);
+                } else {
+                    move_uploaded_file($temp_name, $filename);
+                }
+            }
+        }
+
+        redirect(base_url('DbHandlingSeksi/MonitoringHandling'));
+    }
+    public function detaildatahandling($id)
+    {
+        $user = $this->session->username;
+
+        $user_id = $this->session->userid;
+
+        $data['Title'] = 'Detail Data Handling';
+        $data['Menu'] = '';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        $datahandling = $this->M_dbhandling->selectdatahandlingbyid($id);
+        $DataHandTbl = $this->M_dbhandling->selectdatahandlingbykom($datahandling[0]['kode_komponen']);
+        $status_komp = $this->M_dbhandling->selectstatuskompbyid($datahandling[0]['id_status_komponen']);
+        $datahandling[0]['stat_komp'] = $status_komp[0]['status'];
+        $datahandling[0]['kode_stat_komp'] = $status_komp[0]['kode_status'];
+
+        $sarana = $this->M_dbhandling->selectdatatoedit($datahandling[0]['id_master_handling']);
+        $datahandling[0]['sarana'] = $sarana[0]['nama_handling'];
+        $datahandling[0]['kode_sarana'] = $sarana[0]['kode_handling'];
+
+
+        if ($datahandling[0]['proses'] == 'Linear') {
+            $prosess = $this->M_dbhandling->getProses($id);
+            for ($v = 0; $v < sizeof($prosess); $v++) {
+                $seksi = $this->M_dbhandling->selectdatatoedit2($prosess[$v]['id_proses_seksi']);
+
+                $dataProses[$v]['urutan'] = $prosess[$v]['urutan'];
+                $dataProses[$v]['id_proses_seksi'] = $prosess[$v]['id_proses_seksi'];
+                $dataProses[$v]['seksi'] = $seksi[0]['seksi'];
+
+                if ($seksi[0]['identitas_seksi'] == 'UPPL') {
+                    $dataProses[$v]['warna'] = '#ff00ff';
+                } else if ($seksi[0]['identitas_seksi'] == 'Sheet Metal') {
+                    $dataProses[$v]['warna'] = '#94bd5e';
+                } else if ($seksi[0]['identitas_seksi'] == 'Machining') {
+                    $dataProses[$v]['warna'] = '#ffff00';
+                } else if ($seksi[0]['identitas_seksi'] == 'Perakitan') {
+                    $dataProses[$v]['warna'] = '#99ccff';
+                } else if ($seksi[0]['identitas_seksi'] == 'PnP') {
+                    $dataProses[$v]['warna'] = '#ff8080';
+                } else if ($seksi[0]['identitas_seksi'] == 'Gudang') {
+                    $dataProses[$v]['warna'] = '#cccccc';
+                } else if ($seksi[0]['identitas_seksi'] == 'Subkon') {
+                    $dataProses[$v]['warna'] = '#ffcc99';
+                }
+            }
+
+            $data['dataProses'] = $dataProses;
+        }
+
+        $image = $this->M_dbhandling->getGambar($id);
+
+        // echo "<pre>";
+        // print_r($dataProses);
+        // exit;
+
+        $data['datahandling'] = $datahandling;
+        $data['DataHandTbl'] = $DataHandTbl;
+        $data['image'] = $image;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('DbHandling/SEKSI/V_DetailDataHandling', $data);
+        $this->load->view('V_Footer', $data);
+    }
+    public function imgcarousel()
+    {
+        $id = $this->input->post('id');
+        $proses = $this->input->post('proses');
+
+        $gambar = $this->M_dbhandling->getGambar($id);
+        // echo "<pre>";
+        // print_r($proses);
+        // exit();
+
+        $b = 0;
+        $divcontent = "";
+        $li = "";
+        if ($proses == 'Linear') {
+            foreach ($gambar as $img) {
+                if ($b == 0) {
+                    $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '" class="active"></li>';
+                    $divcontent .=
+                        '<div class="item active">
+                            <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
+                            <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></center>
+                        </div>';
+                } else {
+                    $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '"></li>';
+                    $divcontent .=
+                        '<div class="item">
+                            <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
+                            <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></center>
+                        </div>';
+                }
+
+                $b++;
+            }
+        } else {
+            foreach ($gambar as $img) {
+                if ($b == 0) {
+                    $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '" class="active"></li>';
+                    $divcontent .=
+                        '<div class="item active">
+                            <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
+                            <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></center>
+                        </div>';
+                } else {
+                    $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '"></li>';
+                    $divcontent .=
+                        '<div class="item">
+                            <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
+                            <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></center>
+                        </div>';
+                }
+
+                $b++;
+            }
+        }
+
+        $carousel = '  
+        <div id="imgcarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            ' . $li . '
+          </ol>
+      
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            ' . $divcontent . '
+          <!-- Left and right controls -->
+          <a class="left carousel-control" href="#imgcarousel" data-slide="prev">
+            <span style="color:gray" class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#imgcarousel" data-slide="next">
+            <span style="color:gray" class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>';
+
+        echo $carousel;
+    }
+    public function proseshandling()
+    {
+        $id = $this->input->post('id');
+        $proses = $this->input->post('proses');
+        if ($proses == 'Linear') {
+            $dataProses = $this->M_dbhandling->getProses($id);
+            $div = "";
+            for ($d = 0; $d < sizeof($dataProses); $d++) {
+
+                $Id_seksi = $this->M_dbhandling->selectdatatoedit2($dataProses[$d]['id_proses_seksi']);
+
+                if ($Id_seksi[0]['identitas_seksi'] == 'Machining') {
+                    $warna = '#ffff00';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'Gudang') {
+                    $warna = '#cccccc';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'PnP') {
+                    $warna = '#ff8080';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'Sheet Metal') {
+                    $warna = '#94bd5e';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'UPPL') {
+                    $warna = '#ff00ff';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'Perakitan') {
+                    $warna = '#99ccff';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'Subkon') {
+                    $warna = '#ffcc99';
+                }
+
+                if ($d == 0) {
+                    $div .= ' 
+                <div style="display: inline-block;">
+                    <div style="height:75px; margin:20px;text-align:center;padding: 20px 0;display:none"><i class="fa fa-arrow-right fa-2x"></i></div>
+                </div>
+                <div style="display: inline-block;">
+                    <div style="background-color: ' . $warna . ';border: 1px solid black;margin:20px;text-align:center;padding: 20px 0;"><p style="margin:10px">' . $Id_seksi[0]['seksi'] . '</p></div>
+                </div>';
+                } else {
+                    $div .= ' 
+                <div style="display: inline-block;">
+                    <div style="height:75px; margin:20px;text-align:center;padding: 20px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                </div>
+                <div style="display: inline-block;">
+                    <div style="background-color: ' . $warna . ';border: 1px solid black;margin:20px;text-align:center;padding: 20px 0;"><p style="margin:10px">' . $Id_seksi[0]['seksi'] . '</p></div>
+                </div>';
+                }
+            }
+            $proses = '<div style="border: 1px solid black;margin:20px;text-align:center" >' . $div . '</div>';
+        } else {
+            $proses = '
+            <div class="panel-body">
+                <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/prosesnonlinier' . $id . '.png') . '"></center>
+            </div>';
+        }
+        echo $proses;
+    }
+    public function revHand()
+    {
+        $id = $this->input->post('id');
+        $dataHandrev = $this->M_dbhandling->selectdatahandlingbyid($id);
+        $stats_kmp = $this->M_dbhandling->selectstatuskompbyid($dataHandrev[0]['id_status_komponen']);
+        $stats_kmp_All = $this->M_dbhandling->selectstatuskomp();
+        $dataHandrev[0]['status_komp'] = $stats_kmp[0]['status'];
+        $dataHandrev[0]['status_komp_kode'] = $stats_kmp[0]['kode_status'];
+        $id_seksi = ['UPPL', 'Sheet Metal', 'Machining', 'Perakitan', 'PnP', 'Gudang', 'Subkon'];
+        $sar_This = $this->M_dbhandling->selectdatatoedit($dataHandrev[0]['id_master_handling']);
+        $dataHandrev[0]['sarana_name'] = $sar_This[0]['nama_handling'];
+        $dataHandrev[0]['sarana_kode'] = $sar_This[0]['kode_handling'];
+        $sar_All = $this->M_dbhandling->selectmasterhandling();
+
+        $opti = '';
+        for ($f = 0; $f < sizeof($sar_All); $f++) {
+            if ($sar_All[$f]['id_master_handling'] != $dataHandrev[0]['id_master_handling']) {
+                $opti .= '<option value="' . $sar_All[$f]['id_master_handling'] . '">' . $sar_All[$f]['nama_handling'] . '</option>';
+            }
+        }
+        $Saranaa =
+            '<div class="panel-body">
+                <div class="col-md-3" style="text-align:right"><label>Sarana</label></div>
+                <div class="col-md-8"> 
+                    <select class="form-control select2 SarAna" name="SarAna" style="width:100%">
+                        <option value="' . $dataHandrev[0]['id_master_handling'] . '">' . $dataHandrev[0]['sarana_name'] . '</option>
+                        ' . $opti . '
+                    </select>
+                </div>
+            </div>';
+        $opt = '';
+        for ($d = 0; $d < sizeof($stats_kmp_All); $d++) {
+            if ($stats_kmp_All[$d]['id_status_komponen'] != $dataHandrev[0]['id_status_komponen']) {
+                $opt .= '<option value="' . $stats_kmp_All[$d]['id_status_komponen'] . '">' . $stats_kmp_All[$d]['kode_status'] . ' - ' . $stats_kmp_All[$d]['status'] . '</option>';
+            }
+        }
+        $StatKomp =
+            '<div class="panel-body">
+                <div class="col-md-3" style="text-align:right"><label>Status Komponen</label></div>
+                <div class="col-md-8"> 
+                    <select class="form-control select2 StatKomp" name="statKomp" style="width:100%">
+                        <option value="' . $dataHandrev[0]['id_status_komponen'] . '">' . $dataHandrev[0]['status_komp_kode'] . ' - ' . $dataHandrev[0]['status_komp'] . '</option>
+                        ' . $opt . '
+                    </select>
+                </div>
+            </div>';
+        $pi = '';
+        if ($dataHandrev[0]['proses'] == 'Linear') {
+            $pi = '<option value="Non Linear">Non Linear</option>';
+        } else {
+            $pi = '<option value="Linear">Linear</option>';
+        }
+        $selectProses = '
+        <div class="panel-body">
+            <input type="hidden" value="' . $dataHandrev[0]['proses'] .  '" id="pronih"/>
+            <div class="col-md-3" style="text-align:right;"><label>Proses</label></div>
+            <div class="col-md-8">
+                <select class="form-control select2 Pros_Es" name="Pros_Es" onchange="prosesonchange()" style="width:100%">
+                    <option value="' . $dataHandrev[0]['proses'] . '">' . $dataHandrev[0]['proses'] .  '</option>
+                    ' . $pi . '
+                </select>
+            </div>
+        </div>';
+
+        $alur_proses = '';
+        $btntambah = '';
+        $previewPros = '';
+        $preview = '';
+        $optionNewLinear = '';
+        $prosesAll = $this->M_dbhandling->selectmasterprosesseksi();
+        for ($d = 0; $d < sizeof($prosesAll); $d++) {
+            $optionNewLinear .= '<option value="' . $prosesAll[$d]['identitas_seksi'] . '">' . $prosesAll[$d]['identitas_seksi'] . '</option>';
+        }
+        if ($dataHandrev[0]['proses'] == 'Linear') {
+            $HandProRev = $this->M_dbhandling->getProses($dataHandrev[0]['id_handling']);
+            for ($i = 0; $i < sizeof($HandProRev); $i++) {
+                $proses = $this->M_dbhandling->selectdatatoedit2($HandProRev[$i]['id_proses_seksi']);
+                $HandProRev[$i]['seksi'] = $proses[0]['seksi'];
+                $HandProRev[$i]['identitas_seksi'] = $proses[0]['identitas_seksi'];
+                if ($HandProRev[$i]['identitas_seksi'] == "Machining") {
+                    $color = "#ffff00";
+                } else if ($HandProRev[$i]['identitas_seksi'] == "Gudang") {
+                    $color = "#cccccc";
+                } else if ($HandProRev[$i]['identitas_seksi'] == "PnP") {
+                    $color = "#ff8080";
+                } else if ($HandProRev[$i]['identitas_seksi'] == "Sheet Metal") {;
+                    $color = "#94bd5e";
+                } else if ($HandProRev[$i]['identitas_seksi'] == "UPPL") {
+                    $color = "#ff00ff";
+                } else if ($HandProRev[$i]['identitas_seksi'] == "Perakitan") {
+                    $color = "#99ccff";
+                } else if ($HandProRev[$i]['identitas_seksi'] == "Subkon") {
+                    $color = "#ffcc99";
+                }
+
+                $op = '';
+                for ($d = 0; $d < sizeof($prosesAll); $d++) {
+                    if ($prosesAll[$d]['id_proses_seksi'] != $HandProRev[$i]['id_proses_seksi']) {
+                        $op .= '<option value="' . $prosesAll[$d]['id_proses_seksi'] . '">' . $prosesAll[$d]['seksi'] . '</option>';
+                    }
+                }
+                $opt = '';
+                for ($b = 0; $b < sizeof($id_seksi); $b++) {
+                    if ($id_seksi[$b] != $HandProRev[$i]['identitas_seksi']) {
+                        $opt .= '<option value="' . $id_seksi[$b] . '">' . $id_seksi[$b] . '</option>';
+                    }
+                }
+                $alur_proses .= '
+                    <div class="panel-body">
+                        <input type="hidden" name="indexproses[]" value="' . $i . '"/>
+                        <div class="col-md-3" style="text-align:right;color:white"><label>Proses</label></div>
+                        <div class="col-md-1"><input class="form-control" name="urutPros[]" value="' . $HandProRev[$i]['urutan'] . '" readonly="readonly" type="text"/></div>
+                        <div class="col-md-3"> 
+                            <select style="width:100%" class="form-control select2 idSek_si" id="Id_Sek_Si' . $i . '" onchange="getwarnaid(' . $i . ')">
+                                <option value="' . $HandProRev[$i]['identitas_seksi'] . '">' . $HandProRev[$i]['identitas_seksi'] . '</option>
+                                ' . $opt . '
+                            </select>
+                        </div>
+                        <div class="col-md-1" id="warna_Id_Seksi' . $i . '" style="background-color: ' . $color . ';color:' . $color . ';font-size:16pt;padding:2px;">A</div>
+                        <div class="col-md-3"> 
+                            <select onchange="tuliskan(' . $i . ')" style="width:100%" class="form-control select2 Pro_sesSeksi" name="ProSesSeksi[]" id="Pros_Seksi' . $i . '">
+                                <option value="' . $HandProRev[$i]['seksi'] . '">' . $HandProRev[$i]['seksi'] . '</option>
+                                ' . $op . '
+                            </select>
+                        </div>
+                    </div>';
+                if ($i == 0) {
+                    $preview .= '
+                            <div style="display: inline-block;">
+                                <div id="arrowprosSes' . $i . '" style="display:none;height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                            </div>
+                            <div style="display: inline-block;">
+                                <div id="Kotakk' . $i . '" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;background-color: ' . $color . '">
+                                    <p style="margin:10px" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
+                                </div>
+                            </div>';
+                } else {
+                    $preview .= '
+                            <div style="display: inline-block;">
+                                <div id="arrowprosSes' . $i . '" style="height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                            </div>
+                            <div style="display: inline-block;">
+                                <div id="Kotakk' . $i . '" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;background-color: ' . $color . '">
+                                    <p style="margin:10px" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
+                                </div>
+                            </div>';
+                }
+            }
+            $btntambah = '
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;color:white"><label>A</label></div>
+                <div class="col-md-8" style="text-align:right;"><a onclick="addprosess()" class="btn btn-success">Add Proses</a></div>
+            </div>';
+            $previewPros .= '
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;"><label>Preview Proses</label></div>
+                <div class="col-md-8" style="border: 1px solid black; border-collapse: collapse" id="preview_ProsSes">      
+                ' . $preview . '
+                </div>
+            </div>';
+        } else {
+            $alur_proses .= ' 
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;color:white"><label>Proses</label></div>
+                <div class="col-md-8"><input type="file" name="pros_non_linier" id="pros_non_linier" onchange="previewimagenonlinier(this)" class="form-control" accept=".jpg, .png, ,jpeg"/></div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                <div class="col-md-8"><center><img id="imgnonlinier" style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/prosesnonlinier' . $dataHandrev[0]['id_handling'] . '.png') . '"><img id="previewimgchange" style="width:50%;display:none"></center></div>
+            </div>';
+            $btntambah = '';
+        }
+        $gambwarr = '';
+        $gambar = $this->M_dbhandling->getGambar($dataHandrev[0]['id_handling']);
+        for ($g = 0; $g < sizeof($gambar); $g++) {
+            if ($dataHandrev[0]['proses'] == 'Linear') {
+                if ($g == 0) {
+                    $gambwarr .= '
+                    <div id="has' . $g . '">
+                        <div class="panel-body">
+                            <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
+                            <div class="col-md-3" style="text-align:right"><label>Foto</label></div>
+                            <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
+                            <div class="col-md-6"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                        </div>
+                    </div>';
+                } else {
+                    $gambwarr .= '
+                    <div id="has' . $g . '">
+                        <div class="panel-body">
+                            <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
+                            <div class="col-md-6"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                        </div>
+                    </div>';
+                }
+            } else {
+                if ($g == 0) {
+                    $gambwarr .= '
+                    <div id="has' . $g . '">
+                        <div class="panel-body">
+                            <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
+                            <div class="col-md-3" style="text-align:right"><label>Foto</label></div>
+                            <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
+                            <div class="col-md-6"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                        </div>
+                    </div>';
+                } else {
+                    $gambwarr .= '
+                    <div id="has' . $g . '">
+                        <div class="panel-body">
+                            <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
+                            <div class="col-md-6"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                        </div>
+                    </div>';
+                }
+            }
+        }
+
+        $piew = '
+        <form name="Orderform" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post" action="' . base_url('DbHandlingSeksi/MonitoringHandling/insertedit') . '">
+            <input type="hidden" value="' . $id . '" name="IDHandling"/>
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;"><label>Kode Komponen</label></div>
+                <div class="col-md-8"><input type="text" class="form-control" name="KodKomponen" value="' . $dataHandrev[0]['kode_komponen'] . '" readonly="readonly"/></div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;"><label>Nama Dokumen</label></div>
+                <div class="col-md-8"><input type="text" class="form-control" name="NamKomponen" value="' . $dataHandrev[0]['nama_komponen'] . '" readonly="readonly"/></div>
+            </div>
+            ' . $StatKomp . '
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;"><label>Produk</label></div>
+                <div class="col-md-8"><input type="text" class="form-control" value="' . $dataHandrev[0]['kode_produk'] . ' - ' . $dataHandrev[0]['nama_produk'] . '" readonly="readonly"/></div>
+            </div>
+            ' . $Saranaa . '
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;"><label>Qty / Handling</label></div>
+                <div class="col-md-8"><input type="text" name="qty_handlingg" class="form-control" value="' . $dataHandrev[0]['qty_handling'] . '"/></div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;"><label>Berat</label></div>
+                <div class="col-md-8"><input type="text" name="berat_handling" class="form-control" value="' . $dataHandrev[0]['berat'] . '"/></div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;"><label>Seksi</label></div>
+                <div class="col-md-8"><input type="text" name="seksi_handling" class="form-control" value="' . $dataHandrev[0]['seksi'] . '"/></div>
+            </div>
+            ' . $selectProses . '
+            <div class="prosesawal">
+                <div class="addPros">
+                    ' . $alur_proses . '
+                </div>
+                ' . $btntambah . '
+                ' . $previewPros . '
+            </div>
+            <div class="prosesiflinear" style="display : none">
+                <div class="linierappend">
+                    <div class="panel-body">
+                        <input type="hidden" name="indexprosess[]" value="0"/>
+                        <div class="col-md-3" style="text-align:right;color:white"><label>Proses</label></div>
+                        <div class="col-md-1"><input class="form-control" name="urutPross[]" value="1" readonly="readonly" type="text"/></div>
+                        <div class="col-md-3"> 
+                            <select style="width:100%" class="form-control select2 idSek_si"  id="Id_Sek_Sii0" onchange="getwarnaidd(0)" data-placeholder="Select">
+                                <option></option>  
+                                ' . $optionNewLinear . '
+                            </select>
+                        </div>
+                        <div class="col-md-1" id="warna_Id_Seksii0" style="background-color: white;color:white;font-size:16pt;padding:2px;">A</div>
+                        <div class="col-md-3"> 
+                            <select style="width:100%" onchange="tulis(0)" class="form-control select2 Pro_sesSeksi" name="ProSesSekksi[]" id="Pros_Seksii0" data-placeholder="Select">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div> 
+                </div>  
+                <div class="panel-body">
+                    <div class="col-md-3" style="text-align:right;color:white"><label>A</label></div>
+                    <div class="col-md-8" style="text-align:right"><a class="btn btn-success" onclick="appendiflinear()">Add Proses</a></div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-3" style="text-align:right;"><label>Preview Proses</label></div>
+                    <div class="col-md-8" style="border: 1px solid black; border-collapse: collapse" id="appendselectproses">
+                        <div style="display: inline-block;">
+                            <div id="arrowprosSess0" style="display:none;height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                        </div>
+                        <div style="display: inline-block;">
+                            <div id="Kotakkk0" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;background-color: white">
+                                <p style="margin:10px" id="TulisKotakkk0" ></p>
+                            </div>
+                        </div>
+                    </div>   
+                </div>      
+            </div>
+            <div class="prosesifnonlinear" style ="display:none">
+                <div class="panel-body">
+                    <div class="col-md-3" style="text-align:right;color:white"><label>Proses</label></div>
+                    <div class="col-md-8"><input type="file" id="proses_non_2" name="proses_non_2" onchange="previewimagenonlinier2(this)" class="form-control" accept=".jpg, .png, ,jpeg"/></div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                    <div class="col-md-8"><center><img id="PrevImaGe" style="width:50%"></center></div>
+                </div>
+            </div>
+            <div class="addImg">
+                ' . $gambwarr . '
+            </div>
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;color:white"><label>A</label></div>
+                <div class="col-md-8" style="text-align:right;"><a class="btn bg-teal" onclick="addfoto()">Add Foto</a></div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-3" style="text-align:right;"><label>Keterangan</label></div>
+                <div class="col-md-8"><textarea class="form-control" name="ket_handl">' . $dataHandrev[0]['keterangan'] . '</textarea></div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12" style="text-align:right;"><button class="btn btn-success">Save</button></div>
+            </div>
+        </form>';
+
+        echo $piew;
+    }
+    function insertedit()
+    {
+        $idd = $this->input->post('IDHandling');
+        $dataHandling = $this->M_dbhandling->selectdatahandlingbyid($idd);
+        $id_master_handling = $this->input->post('SarAna');
+        $qty_handling = $this->input->post('qty_handlingg');
+        $berat_handling = $this->input->post('berat_handling');
+        $seksi_handling = $this->input->post('seksi_handling');
+        $statKomp = $this->input->post('statKomp');
+        date_default_timezone_set('Asia/Jakarta');
+        $lastupdate_by = $this->session->user;
+        $lastupdate_date = date("Y-m-d H:i:s");
+        $proses = $this->input->post('Pros_Es');
+        $keterangan = $this->input->post('ket_handl');
+        $rev_no = $dataHandling[0]['rev_no'] + 1;
+        $manual_proses = $this->input->post('ProSesSeksi[]');
+        $sar = $this->M_dbhandling->selectdatatoedit($id_master_handling);
+        $status_kompp = $this->M_dbhandling->selectstatuskompbyid($statKomp);
+        $docdigit4 = substr($dataHandling[0]['kode_komponen'], 3, 6);
+        $split = str_split($docdigit4);
+
+
+        if ($split[5] == '-') {
+            $doc_no = 'SH-' . $sar[0]['kode_handling'] . '-' . $dataHandling[0]['kode_produk'] . '-' . substr($docdigit4, 0, 5) . '-' . $status_kompp[0]['kode_status'];
+        } else {
+            $doc_no = 'SH-' . $sar[0]['kode_handling'] . '-' . $dataHandling[0]['kode_produk'] . '-' . $docdigit4 . '-' . $status_kompp[0]['kode_status'];
+        }
+
+        $this->M_dbhandling->insertdatahandlingrev2($lastupdate_date, $lastupdate_by, $doc_no, $dataHandling[0]['kode_komponen'], $dataHandling[0]['nama_komponen'], $statKomp, $dataHandling[0]['kode_produk'], $dataHandling[0]['nama_produk'], $id_master_handling, $qty_handling, $berat_handling, $seksi_handling, $proses, $keterangan);
+        $lastval = $this->M_dbhandling->getIdHandling();
+        $id = $lastval[0]['lastval'];
+
+        if ($proses == 'Linear') {
+            $uRutGambar = $this->input->post('uRutGambar[]');
+
+            if ($dataHandling[0]['proses'] == 'Linear') {
+                $manual_proses = $this->input->post('ProSesSeksi[]');
+                $urutan_proses = $this->input->post('urutPros[]');
+
+                for ($g = 0; $g < sizeof($manual_proses); $g++) {
+                    $id_proses_seksi =  $this->M_dbhandling->cariidproseseksi($manual_proses[$g]);
+                    $this->M_dbhandling->insertproseshandling($id, $urutan_proses[$g], $id_proses_seksi[0]['id_proses_seksi']);
+                }
+                for ($i = 0; $i < sizeof($uRutGambar); $i++) {
+                    $this->M_dbhandling->insertgambar($id, $uRutGambar[$i]);
+
+                    // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                    //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                    chmod('./assets/upload/DatabaseHandling', 0777);
+                    // }
+                    $filename = "assets/upload/DatabaseHandling/fotolinier" . $id . $uRutGambar[$i] . '.png';
+                    $temp_name = $_FILES['fotoHandling']['tmp_name'][$i];
+                    if ($temp_name == null) {
+                        $imagePath = "assets/upload/DatabaseHandling/fotolinier" . $idd . $uRutGambar[$i] . '.png';
+                        $newPath = "assets/upload/DatabaseHandling/fotolinier";
+                        $ext = '.png';
+                        $newName  = $newPath . $id . $uRutGambar[$i] . $ext;
+                        copy($imagePath, $newName);
+                    } else {
+                        if (file_exists($filename)) {
+                            move_uploaded_file($temp_name, $filename);
+                        } else {
+                            move_uploaded_file($temp_name, $filename);
+                        }
+                    }
+                }
+            } else {
+                $manual_proses = $this->input->post('ProSesSekksi[]');
+                $urutan_proses = $this->input->post('urutPross[]');
+                for ($g = 0; $g < sizeof($manual_proses); $g++) {
+                    $id_proses_seksi =  $this->M_dbhandling->cariidproseseksi($manual_proses[$g]);
+                    $this->M_dbhandling->insertproseshandling($id, $urutan_proses[$g], $id_proses_seksi[0]['id_proses_seksi']);
+                }
+                for ($i = 0; $i < sizeof($uRutGambar); $i++) {
+                    $this->M_dbhandling->insertgambar($id, $uRutGambar[$i]);
+
+                    // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                    //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                    chmod('./assets/upload/DatabaseHandling', 0777);
+                    // }
+                    $filename = "assets/upload/DatabaseHandling/fotolinier" . $id . $uRutGambar[$i] . '.png';
+                    $temp_name = $_FILES['fotoHandling']['tmp_name'][$i];
+                    if ($temp_name == null) {
+                        $imagePath = "assets/upload/DatabaseHandling/fotononlinier" . $idd . $uRutGambar[$i] . '.png';
+                        $newPath = "assets/upload/DatabaseHandling/fotolinier";
+                        $ext = '.png';
+                        $newName  = $newPath . $id . $uRutGambar[$i] . $ext;
+                        copy($imagePath, $newName);
+                    } else {
+                        if (file_exists($filename)) {
+                            move_uploaded_file($temp_name, $filename);
+                        } else {
+                            move_uploaded_file($temp_name, $filename);
+                        }
+                    }
+                }
+            }
+        } else {
+            $uRutGambar = $this->input->post('uRutGambar[]');
+            if ($dataHandling[0]['proses'] == 'Non Linear') {
+
+                // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                chmod('./assets/upload/DatabaseHandling', 0777);
+                // }
+
+                $filename = "assets/upload/DatabaseHandling/prosesnonlinier" . $id . '.png';
+                $temp_name = $_FILES['pros_non_linier']['tmp_name'];
+                if ($temp_name == null) {
+                    $imagePath = "assets/upload/DatabaseHandling/prosesnonlinier" . $idd . '.png';
+                    $newPath = "assets/upload/DatabaseHandling/prosesnonlinier";
+                    $ext = '.png';
+                    $newName  = $newPath . $id . $ext;
+                    copy($imagePath, $newName);
+                } else {
+                    if (file_exists($filename)) {
+                        move_uploaded_file($temp_name, $filename);
+                    } else {
+                        move_uploaded_file($temp_name, $filename);
+                    }
+                }
+                for ($i = 0; $i < sizeof($uRutGambar); $i++) {
+                    $this->M_dbhandling->insertgambar($id, $uRutGambar[$i]);
+
+                    // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                    //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                    chmod('./assets/upload/DatabaseHandling', 0777);
+                    // }
+                    $filename = "assets/upload/DatabaseHandling/fotononlinier" . $id . $uRutGambar[$i] . '.png';
+                    $temp_name = $_FILES['fotoHandling']['tmp_name'][$i];
+                    if ($temp_name == null) {
+                        $imagePath = "assets/upload/DatabaseHandling/fotononlinier" . $idd . $uRutGambar[$i] . '.png';
+                        $newPath = "assets/upload/DatabaseHandling/fotononlinier";
+                        $ext = '.png';
+                        $newName  = $newPath . $id . $uRutGambar[$i] . $ext;
+                        copy($imagePath, $newName);
+                    } else {
+                        if (file_exists($filename)) {
+                            move_uploaded_file($temp_name, $filename);
+                        } else {
+                            move_uploaded_file($temp_name, $filename);
+                        }
+                    }
+                }
+            } else {
+                // proses_non_2
+                // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                chmod('./assets/upload/DatabaseHandling', 0777);
+                // }
+                $filename = "assets/upload/DatabaseHandling/prosesnonlinier" . $id . '.png';
+                $temp_name = $_FILES['proses_non_2']['tmp_name'];
+                if (file_exists($filename)) {
+                    move_uploaded_file($temp_name, $filename);
+                } else {
+                    move_uploaded_file($temp_name, $filename);
+                }
+                for ($i = 0; $i < sizeof($uRutGambar); $i++) {
+                    $this->M_dbhandling->insertgambar($id, $uRutGambar[$i]);
+
+                    // if (!is_dir('./assets/upload/DatabaseHandling')) {
+                    //     mkdir('./assets/upload/DatabaseHandling', 0777, true);
+                    chmod('./assets/upload/DatabaseHandling', 0777);
+                    // }
+                    $filename = "assets/upload/DatabaseHandling/fotononlinier" . $id . $uRutGambar[$i] . '.png';
+                    $temp_name = $_FILES['fotoHandling']['tmp_name'][$i];
+                    if ($temp_name == null) {
+                        $imagePath = "assets/upload/DatabaseHandling/fotolinier" . $idd . $uRutGambar[$i] . '.png';
+                        $newPath = "assets/upload/DatabaseHandling/fotononlinier";
+                        $ext = '.png';
+                        $newName  = $newPath . $id . $uRutGambar[$i] . $ext;
+                        copy($imagePath, $newName);
+                    } else {
+                        if (file_exists($filename)) {
+                            move_uploaded_file($temp_name, $filename);
+                        } else {
+                            move_uploaded_file($temp_name, $filename);
+                        }
+                    }
+                }
+            }
+        }
+
+        // fotoHandling[]
+        // echo "<pre>";
+        // print_r($_FILES);
+        // exit();
+        redirect(base_url('DbHandlingSeksi/MonitoringHandling'));
+    }
+    public function PrintDataHandling($id)
+    {
+        $dataHandling = $this->M_dbhandling->selectdatahandlingbyid($id);
+        $image = $this->M_dbhandling->getGambar($id);
+
+        if ($dataHandling[0]['proses'] == 'Linear') {
+            $prosesline = $this->M_dbhandling->getProses($id);
+
+            for ($d = 0; $d < sizeof($prosesline); $d++) {
+
+                $Id_seksi = $this->M_dbhandling->selectdatatoedit2($prosesline[$d]['id_proses_seksi']);
+
+                if ($Id_seksi[0]['identitas_seksi'] == 'Machining') {
+                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                    $array_proses[$d]['warna'] = '#ffff00';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'Gudang') {
+                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                    $array_proses[$d]['warna'] = '#cccccc';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'PnP') {
+                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                    $array_proses[$d]['warna'] = '#ff8080';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'Sheet Metal') {
+                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                    $array_proses[$d]['warna'] = '#94bd5e';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'UPPL') {
+                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                    $array_proses[$d]['warna'] = '#ff00ff';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'Perakitan') {
+                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                    $array_proses[$d]['warna'] = '#99ccff';
+                } else if ($Id_seksi[0]['identitas_seksi'] == 'Subkon') {
+                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                    $array_proses[$d]['warna'] = '#99ccff';
+                }
+            }
+            $data['array_proses'] = $array_proses;
+        }
+
+        $sarana_handling = $this->M_dbhandling->selectdatatoedit($dataHandling[0]['id_master_handling']);
+        $dataHandling[0]['sarana'] = $sarana_handling[0]['nama_handling'];
+
+        // echo "<pre>";
+        // print_r($dataHandling);
+        // exit();
+
+        ob_start();
+
+        $data['dataHandling'] = $dataHandling;
+        $data['image'] = $image;
+
+
+        $this->load->library('pdf');
+        $pdf = $this->pdf->load();
+        $pdf = new mPDF('utf-8', array(210, 297), 0, '', 3, 3, 76, 50, 3, 3); //----- A5-L
+        $filename = 'CobaPrintHandling.pdf';
+        $html = $this->load->view('DbHandling/TIM/V_PdfHandling', $data, true);        //-----> Fungsi Cetak PDF
+        $foot = $this->load->view('DbHandling/TIM/V_PdfHandlingFooter', $data, true);        //-----> Fungsi Cetak PDF
+        $head = $this->load->view('DbHandling/TIM/V_PdfHandlingHeader', $data, true);
+        $footer = $this->load->view('DbHandling/TIM/V_PdfHandlingFooter2', $data, true);
+        ob_end_clean();
+        // $pdf->shrink_tables_to_fit = 1;
+        // $pdf->charset_in = 'iso-8859-4';
+        $pdf->SetHTMLHeader($head);
+        $pdf->SetHTMLFooter($footer);                                                //-----> Pakai Library MPDF
+        $pdf->WriteHTML($html);
+        $pdf->SetHTMLFooter($foot);                                               //-----> Pakai Library MPDF
+        $pdf->Output($filename, 'I');
     }
 }

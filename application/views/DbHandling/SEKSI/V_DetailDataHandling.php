@@ -47,39 +47,39 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Kode Komponen</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input id="kodkomp" value="<?= $datahandling[0]['kode_komponen'] ?>" type="text" readonly class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input id="komp_kodee" value="<?= $datahandling[0]['kode_komponen'] ?>" type="text" readonly class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Nama Dokumen</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="namkomp" value="<?= $datahandling[0]['nama_komponen'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="komp_namee" value="<?= $datahandling[0]['nama_komponen'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Status Komponen</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="stakomp" value="<?= $datahandling[0]['kode_stat_komp'] ?> - <?= $datahandling[0]['stat_komp'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="komp_status" value="<?= $datahandling[0]['kode_stat_komp'] ?> - <?= $datahandling[0]['stat_komp'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Produk</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="prod_uct" value="<?= $datahandling[0]['kode_produk'] ?> - <?= $datahandling[0]['nama_produk'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="prod_uctt" value="<?= $datahandling[0]['kode_produk'] ?> - <?= $datahandling[0]['nama_produk'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Sarana</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="sar_ana" value="<?= $datahandling[0]['kode_sarana'] ?> - <?= $datahandling[0]['sarana'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="sar_anaaa" value="<?= $datahandling[0]['kode_sarana'] ?> - <?= $datahandling[0]['sarana'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Qty / Handling</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="qtyy" value="<?= $datahandling[0]['qty_handling'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="quantityy" value="<?= $datahandling[0]['qty_handling'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Berat</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="berad" value="<?= $datahandling[0]['berat'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="beradd" value="<?= $datahandling[0]['berat'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Seksi</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="sek_si" value="<?= $datahandling[0]['seksi'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="sek_sii" value="<?= $datahandling[0]['seksi'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Proses</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="pros_es" value="<?= $datahandling[0]['proses'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="pros_ess" value="<?= $datahandling[0]['proses'] ?>" class="form-control" /></div>
                                     </div>
                                     <?php if ($datahandling[0]['proses'] == 'Linear') { ?>
                                         <div class="panel-body">
@@ -154,30 +154,26 @@
                                         <div class="col-md-4" style="text-align: right;"><label>Keterangan</label></div>
                                         <div class="col-md-6" style="text-align: left;"><textarea readonly id="ketr" class="form-control"><?= $datahandling[0]['keterangan'] ?></textarea></div>
                                     </div>
-                                    <?php if ($datahandling[0]['status'] == 'active') {
-                                        if ($datahandling[0]['rev_no'] == 0) {
-                                            $displaydiv = 'none';
-                                        } else {
-                                            $displaydiv = '';
-                                        }
-                                        $display = '';
-                                        $display2 = 'none';
-                                    } else {
-                                        $displaydiv = 'none';
-                                        $display = 'none';
-                                        $display2 = '';
-                                    } ?>
                                     <div class="panel-body">
                                         <div class="col-md-6" style="text-align: left;">
-                                            <button formaction="<?php echo base_url('DbHandling/MonitoringHandling'); ?>" class="btn btn-danger">Back</button>
+                                            <button formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling'); ?>" class="btn btn-danger">Back</button>
                                         </div>
-                                        <div class="col-md-6" style="text-align: right; display:<?= $display ?>">
-                                            <button formaction="<?php echo base_url('DbHandling/MonitoringHandling/PrintDataHandling/' . $datahandling[0]['id_handling']); ?>" formtarget="_blank" class="btn btn-success">Print</button>
-                                            <a onclick="revisidatahandling(<?= $datahandling[0]['id_handling'] ?>)" class="btn btn-warning">Revisi</a>
-                                        </div>
-                                        <div class="col-md-6" style="text-align:right;display:<?= $display2 ?>">
-                                            <a onclick="acc(<?= $datahandling[0]['id_handling'] ?>)" class="btn btn-success">Accept</a>
-                                            <a onclick="reject(<?= $datahandling[0]['id_handling'] ?>)" class="btn btn-danger">Reject</a>
+                                        <?php if ($datahandling[0]['status'] == 'active') {
+                                            if ($datahandling[0]['rev_no'] == 0) {
+                                                $displaydiv = 'none';
+                                            } else {
+                                                $displaydiv = '';
+                                            }
+                                            $display = '';
+                                            $display2 = 'none';
+                                        } else {
+                                            $displaydiv = 'none';
+                                            $display = 'none';
+                                            $display2 = '';
+                                        } ?>
+                                        <div class="col-md-6" style="text-align: right;display:<?= $display ?>">
+                                            <button formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/PrintDataHandling/' . $datahandling[0]['id_handling']); ?>" formtarget="_blank" class="btn btn-success">Print</button>
+                                            <a onclick="revisidatahandling2(<?= $datahandling[0]['id_handling'] ?>)" class="btn btn-warning">Revisi</a>
                                         </div>
                                     </div>
                                 </form>
@@ -185,7 +181,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" style="display:<?= $displaydiv ?>">
+                <div class="row" style="display:<?= $displaydiv ?>;">
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border" style="font-weight: bold;">History Dokumen</div>
@@ -208,12 +204,12 @@
                                                         <?php if ($key == 0) { ?>
                                                         <?php } else { ?>
                                                             <tr>
-                                                                <input type="hidden" value="<?= $value['proses'] ?>" id="proseshandlingg<?= $value['id_handling'] ?>" />
+                                                                <input type="hidden" value="<?= $value['proses'] ?>" id="proseshandlinggg<?= $value['id_handling'] ?>" />
                                                                 <td class="text-center"><?= $value['doc_number'] ?></td>
                                                                 <td class="text-center"><?= $value['rev_no'] ?></td>
-                                                                <td class="text-center"><a onclick="imgcarousell(<?= $value['id_handling'] ?>)" class="btn btn-info">Foto</a></td>
-                                                                <td class="text-center"><a onclick="proseshandlingg(<?= $value['id_handling'] ?>)" class="btn btn-default">Proses</a></td>
-                                                                <td class="text-center"><button formaction="<?php echo base_url('DbHandling/MonitoringHandling/PrintDataHandling/' . $value['id_handling']); ?>" formtarget="_blank" class="btn btn-success">Print</button></td>
+                                                                <td class="text-center"><a onclick="slideshoww(<?= $value['id_handling'] ?>)" class="btn btn-info">Foto</a></td>
+                                                                <td class="text-center"><a onclick="prosesshow(<?= $value['id_handling'] ?>)" class="btn btn-default">Proses</a></td>
+                                                                <td class="text-center"><button formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/PrintDataHandling/' . $value['id_handling']); ?>" formtarget="_blank" class="btn btn-success">Print</button></td>
                                                             </tr>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -248,7 +244,7 @@
     </div>
 </div>
 <!-- Modal Img Carousel -->
-<div class="modal fade" id="modalcarousell" role="dialog">
+<div class="modal fade" id="mdl-slide" role="dialog">
     <div class="modal-dialog" style="width:60%">
         <!-- Modal content-->
         <div class="modal-content">
@@ -259,14 +255,14 @@
                 </center>
             </div>
             <div class="modal-body">
-                <div id="imgcarr"></div>
+                <div id="slidedhow"></div>
             </div>
         </div>
 
     </div>
 </div>
 <!-- Modal Proses Handling -->
-<div class="modal fade" id="modalproseshandlingg" role="dialog">
+<div class="modal fade" id="mdl-proses" role="dialog">
     <div class="modal-dialog" style="width:60%">
         <!-- Modal content-->
         <div class="modal-content">
@@ -277,7 +273,7 @@
                 </center>
             </div>
             <div class="modal-body">
-                <div id="prosesss"></div>
+                <div id="prosesea"></div>
             </div>
         </div>
 

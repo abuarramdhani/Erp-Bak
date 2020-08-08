@@ -16,18 +16,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"><button formaction="<?php echo base_url('DbHandling/MonitoringHandling/detailreqhandling/2'); ?>" class="btn btn-success btn-sm">Detail</button></td>
-
-
-            </tr>
+            <?php $n = 1;
+            foreach ($handling as $hand) { ?>
+                <tr>
+                    <td class="text-center"><?= $n ?></td>
+                    <td class="text-center"><?= $hand['status'] ?></td>
+                    <td class="text-center"><?= $hand['requester'] ?></td>
+                    <td class="text-center"><?= $hand['seksi'] ?></td>
+                    <td class="text-center"><?= $hand['nama_komponen'] ?></td>
+                    <td class="text-center"><?= $hand['kode_produk'] ?> - <?= $hand['nama_produk'] ?></td>
+                    <td class="text-center"><?= $hand['sarana'] ?></td>
+                    <td class="text-center"><button class="btn btn-default" formaction="<?php echo base_url('DbHandling/MonitoringHandling/detaildatahandling/' . $hand['id_handling']); ?>">Detail</button></td>
+                </tr>
+            <?php $n++;
+            } ?>
         </tbody>
     </table>
 </form>

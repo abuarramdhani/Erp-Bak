@@ -5,7 +5,7 @@
         </td>
         <td style=" border:1px solid black;border-collapse:collapse;text-align:center;font-size:22pt;font-weight:bold" colspan="2">STANDARD HANDLING</td>
         <td style="border:1px solid black;border-collapse:collapse;width:11%" rowspan="2">
-            <img style="height: 80px; width: 80px" src="<?= base_url('assets/img/logohandling.png'); ?>">
+            <img style="height: 80px; width: 80px" src="<?= base_url('assets/upload/DatabaseHandling/logohandling.png'); ?>">
 
         </td>
     </tr>

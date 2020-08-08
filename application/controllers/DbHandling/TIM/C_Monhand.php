@@ -57,11 +57,23 @@ class C_Monhand extends CI_Controller
     }
     public function loadviewreqhand()
     {
-        $this->load->view('DbHandling/TIM/V_TblReqHand');
+        $handling = $this->M_dbhandling->getnewdatahandbystat();
+        for ($i = 0; $i < sizeof($handling); $i++) {
+            $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
+            $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+        }
+        $data['handling'] = $handling;
+        $this->load->view('DbHandling/TIM/V_TblReqHand', $data);
     }
     public function loadviewreqhand2()
     {
-        $this->load->view('DbHandling/TIM/V_TblReqRevHand');
+        $handling = $this->M_dbhandling->getrevdatahandbystat();
+        for ($i = 0; $i < sizeof($handling); $i++) {
+            $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
+            $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+        }
+        $data['handling'] = $handling;
+        $this->load->view('DbHandling/TIM/V_TblReqRevHand', $data);
     }
     public function loadviewdatahand()
     {
@@ -511,6 +523,21 @@ class C_Monhand extends CI_Controller
         $desc = $this->M_dbhandling->desckomp($kode);
         echo json_encode($desc[0]['DESCRIPTION']);
     }
+    public function cekKodeKomp()
+    {
+        $kode = $this->input->post('kode');
+        $cek = $this->M_dbhandling->cekKode($kode);
+        if ($cek == null) {
+            echo json_encode("0");
+        } else {
+            for ($d = 0; $d < sizeof($cek); $d++) {
+                $rev[$d] = $cek[$d]['rev_no'];
+            }
+            rsort($rev);
+            $dataEdit = $this->M_dbhandling->dataEdit($kode, $rev[0]);
+            echo json_encode($dataEdit[0]['id_handling']);
+        }
+    }
     public function adddatahandling()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -793,53 +820,65 @@ class C_Monhand extends CI_Controller
             if ($dataHandrev[0]['proses'] == 'Linear') {
                 if ($g == 0) {
                     $gambwarr .= '
-                    <div class="panel-body">
-                        <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
-                        <div class="col-md-3" style="text-align:right"><label>Foto</label></div>
-                        <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
-                        <div class="col-md-7"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
-                        <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                    <div id="has' . $g . '">
+                        <div class="panel-body">
+                            <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
+                            <div class="col-md-3" style="text-align:right"><label>Foto</label></div>
+                            <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
+                            <div class="col-md-6"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                        </div>
                     </div>';
                 } else {
                     $gambwarr .= '
-                    <div class="panel-body">
-                        <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
-                        <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
-                        <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
-                        <div class="col-md-7"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
-                        <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                    <div id="has' . $g . '">
+                        <div class="panel-body">
+                            <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
+                            <div class="col-md-6"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                        </div>
                     </div>';
                 }
             } else {
                 if ($g == 0) {
                     $gambwarr .= '
-                    <div class="panel-body">
-                        <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
-                        <div class="col-md-3" style="text-align:right"><label>Foto</label></div>
-                        <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
-                        <div class="col-md-7"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
-                        <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                    <div id="has' . $g . '">
+                        <div class="panel-body">
+                            <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
+                            <div class="col-md-3" style="text-align:right"><label>Foto</label></div>
+                            <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
+                            <div class="col-md-6"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                        </div>
                     </div>';
                 } else {
                     $gambwarr .= '
-                    <div class="panel-body">
-                        <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
-                        <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
-                        <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
-                        <div class="col-md-7"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
-                        <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                    <div id="has' . $g . '">
+                        <div class="panel-body">
+                            <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
+                            <div class="col-md-6><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
+                            <div class="col-md-8"><center><img id="showPrevImg' . $g . '" style="width:50%;display:none"><img id="hideifprev' . $g . '"  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $gambar[$g]['id_handling'] . $gambar[$g]['urutan'] . '.png') . '"></center></div>
+                        </div>
                     </div>';
                 }
             }
@@ -1151,5 +1190,31 @@ class C_Monhand extends CI_Controller
         // print_r($_FILES);
         // exit();
         redirect(base_url('DbHandling/MonitoringHandling'));
+    }
+    public function updateterima()
+    {
+        $id = $this->input->post('id');
+        $datatoupdate = $this->M_dbhandling->selectdatahandlingbyid($id);
+        $databykomp = $this->M_dbhandling->selectdatahandlingbykom($datatoupdate[0]['kode_komponen']);
+
+        // echo "<pre>";
+        // print_r($datatoupdate[0]['kode_komponen']);
+        // exit();
+
+        if ($databykomp != null) {
+            for ($f = 0; $f < sizeof($databykomp); $f++) {
+                $rev_no[$f] = $databykomp[$f]['rev_no'];
+            }
+            rsort($rev_no);
+            $rev = $rev_no[0] + 1;
+        } else {
+            $rev = 0;
+        }
+        $this->M_dbhandling->updateterima($id, $rev);
+    }
+    public function updatereject()
+    {
+        $id = $this->input->post('id');
+        $this->M_dbhandling->updatereject($id);
     }
 }
