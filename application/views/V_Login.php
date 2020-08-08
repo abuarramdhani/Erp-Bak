@@ -86,7 +86,32 @@
             <div class="col-md-12 center login-header"></div>
         </div>
         <div class="row">
-            <div class="well col-md-5 center login-box">
+            <div class="col-md-3">
+                <div class="row" style="height: 100%">
+                    <div class="col-sm-9 col-sm-offset-3" style="height: 100%;padding-left: 0;">
+                       <!--  <div class="carousel slide" data-ride="carousel" data-interval="4000">
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.56.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55 (2).jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55 (1).jpeg') ?>" style="width: 100%;height: auto" alt="Photo 3">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 4">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.54.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 5">
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="well col-md-6 login-box">
                 <div class="row left" style="padding:1%;margin-left:-5%;">
                     <div class="col-md-12">
                         <div style="float:left;">
@@ -133,8 +158,35 @@
                     </fieldset>
                 </form>
             </div>
+            <div class="col-md-3">
+                <div class="row" style="height: 100%">
+                    <div class="col-sm-9" style="height: 100%;padding-right: 0;">
+                        <div class="carousel slide" data-ride="carousel" data-interval="4000">
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55 (2).jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55 (1).jpeg') ?>" style="width: 100%;height: auto" alt="Photo 3">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 4">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.54.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 5">
+                                </div>
+                                <div class="item ">
+                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.56.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
