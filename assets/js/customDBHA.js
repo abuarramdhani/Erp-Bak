@@ -355,9 +355,19 @@ $(document).ready(function () {
     if (pro == "Linear") {
       $("#afterprosesslinier").css("display", "block");
       $("#afterprosesnonlinier").css("display", "none");
+      $("#prosesnonlinear").attr("disabled", "disabled");
+      $("#gambarprosesnonlinear").attr("disabled", "disabled");
+      $("#id_Seksi").removeAttr("disabled");
+      $("#prosesseksi").removeAttr("disabled");
+      $("#gambarproses").removeAttr("disabled");
     } else {
       $("#afterprosesnonlinier").css("display", "block");
       $("#afterprosesslinier").css("display", "none");
+      $("#prosesnonlinear").removeAttr("disabled");
+      $("#gambarprosesnonlinear").removeAttr("disabled");
+      $("#id_Seksi").attr("disabled", "disabled");
+      $("#prosesseksi").attr("disabled", "disabled");
+      $("#gambarproses").attr("disabled", "disabled");
     }
   });
 });
@@ -1023,6 +1033,11 @@ function addfoto() {
 }
 function deletpoto(g) {
   $("#has" + g).remove();
+  $(".addImg")
+    .find('[name="uRutGambar[]"]')
+    .each(function (i, v) {
+      $(this).val(i + 1);
+    });
 }
 
 function prosesonchange() {
@@ -2181,9 +2196,19 @@ $(document).ready(function () {
     if (pro == "Linear") {
       $("#iflinier").css("display", "block");
       $("#ifnonlinier").css("display", "none");
+      $("#Id_S_eksi0").removeAttr("disabled");
+      $("#pros_s_eksi0").removeAttr("disabled");
+      $("#gmbr0").removeAttr("disabled");
+      $("#pros_n_linear").attr("disabled", "disabled");
+      $("#fotohandlingnonlinier0").attr("disabled", "disabled");
     } else {
       $("#ifnonlinier").css("display", "block");
       $("#iflinier").css("display", "none");
+      $("#Id_S_eksi0").attr("disabled", "disabled");
+      $("#pros_s_eksi0").attr("disabled", "disabled");
+      $("#gmbr0").attr("disabled", "disabled");
+      $("#pros_n_linear").removeAttr("disabled");
+      $("#fotohandlingnonlinier0").removeAttr("disabled");
     }
   });
 });

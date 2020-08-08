@@ -36,7 +36,7 @@
                                     <div class="panel-body">
                                         <div class="col-md-3" style="text-align: right;"><label>Komponen</label></div>
                                         <div class="col-md-6" style="text-align: left;">
-                                            <select style="width: 100%;" class="form-control select2" id="komponen_Seksi" name="komponen_Seksi" data-placeholder="Select">
+                                            <select required style="width: 100%;" class="form-control select2" id="komponen_Seksi" name="komponen_Seksi" data-placeholder="Select">
                                                 <option></option>
                                             </select>
                                             <span id="validationkompseksi" style="color:red;display:none">*Komponen sudah terdaftar</span>
@@ -51,7 +51,7 @@
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Status Komponen</label></div>
                                             <div class="col-md-8" style="text-align: left;">
-                                                <select style="width: 100%;" class="form-control select2 Stat_Komp_seksi" id="Stat_Komp_seksi" name="Stat_Komp_seksi" data-placeholder="Select">
+                                                <select required style="width: 100%;" class="form-control select2 Stat_Komp_seksi" id="Stat_Komp_seksi" name="Stat_Komp_seksi" data-placeholder="Select">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -59,7 +59,7 @@
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Produk</label></div>
                                             <div class="col-md-8" style="text-align: left;">
-                                                <select style="width: 100%;" class="form-control select2 produk_seksi" id="produk_seksi" name="produk_seksi" data-placeholder="Select">
+                                                <select required style="width: 100%;" class="form-control select2 produk_seksi" id="produk_seksi" name="produk_seksi" data-placeholder="Select">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -67,7 +67,7 @@
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Sarana Handling</label></div>
                                             <div class="col-md-8" style="text-align: left;">
-                                                <select style="width: 100%;" class="form-control select2 Sar_Hand_Seksi" id="Sar_Hand_Seksi" name="Sar_Hand_Seksi" data-placeholder="Select">
+                                                <select required style="width: 100%;" class="form-control select2 Sar_Hand_Seksi" id="Sar_Hand_Seksi" name="Sar_Hand_Seksi" data-placeholder="Select">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -75,20 +75,20 @@
 
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Qty / Handling</label></div>
-                                            <div class="col-md-8" style="text-align: left;"><input id="Qty_seksi" name="Qty_seksi" onkeypress="return angkaaa(event, false)" type="text" class="form-control" /></div>
+                                            <div class="col-md-8" style="text-align: left;"><input id="Qty_seksi" name="Qty_seksi" onkeypress="return angkaaa(event, false)" type="text" required class="form-control" /></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Berat</label></div>
-                                            <div class="col-md-8" style="text-align: left;"><input id="Berat_Seksi" name="Berat_Seksi" onkeypress="return angkaaa(event, false)" type="text" class="form-control" /></div>
+                                            <div class="col-md-8" style="text-align: left;"><input id="Berat_Seksi" name="Berat_Seksi" onkeypress="return angkaaa(event, false)" type="text" required class="form-control" /></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Seksi</label></div>
-                                            <div class="col-md-8" style="text-align: left;"><input id="Seksi_Hand" name="Seksi_Hand" type="text" class="form-control" /></div>
+                                            <div class="col-md-8" style="text-align: left;"><input id="Seksi_Hand" name="Seksi_Hand" type="text" required class="form-control" /></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Proses</label></div>
                                             <div class="col-md-8" style="text-align: left;">
-                                                <select style="width: 100%;" class="form-control select2 Pro_seksi" id="Pro_seksi" name="Pro_seksi" data-placeholder="Select">
+                                                <select required style="width: 100%;" class="form-control select2 Pro_seksi" id="Pro_seksi" name="Pro_seksi" data-placeholder="Select">
                                                     <option></option>
                                                     <option value="Linear">Linear</option>
                                                     <option value="Non Linear">Non Linear</option>
@@ -101,9 +101,9 @@
                                                 <div class="panel-body">
                                                     <div class="col-md-3" style="text-align: right;color:white"><label>Proses</label></div>
                                                     <div class="col-md-8" style="text-align: left;">
-                                                        <div class="col-md-2"><input type="text" class="form-control" name="u_proses[]" readonly="readonly" value="1" /></div>
+                                                        <div class="col-md-2"><input type="text" required class="form-control" name="u_proses[]" readonly="readonly" value="1" /></div>
                                                         <div class="col-md-4">
-                                                            <select style="width: 100%;" class="form-control select2 Id_S_eksi" id="Id_S_eksi0" onchange="getSeksiandprev(0)" name="Id_S_eksi[]" data-placeholder="Identitas Seksi">
+                                                            <select required style="width: 100%;" class="form-control select2 Id_S_eksi" id="Id_S_eksi0" onchange="getSeksiandprev(0)" name="Id_S_eksi[]" data-placeholder="Identitas Seksi">
                                                                 <option></option>
                                                                 <option value="UPPL">UPPL</option>
                                                                 <option value="Sheet Metal">Sheet Metal</option>
@@ -118,7 +118,7 @@
                                                             <div id="warnaea0" style="background-color: white;color:white;font-size:14pt;padding:2px;">A</div>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <select style="width: 100%;" class="form-control select2 pros_s_eksi" name="pros_s_eksi[]" disabled id="pros_s_eksi0" data-placeholder="Proses Seksi">
+                                                            <select required style="width: 100%;" class="form-control select2 pros_s_eksi" name="pros_s_eksi[]" disabled id="pros_s_eksi0" data-placeholder="Proses Seksi">
                                                                 <option></option>
                                                             </select>
                                                         </div>
@@ -139,7 +139,7 @@
                                             <div class="panel-body">
                                                 <div class="col-md-3" style="text-align: right;"><label>Foto</label></div>
                                                 <div class="col-md-1" style="text-align: right;"><input class="form-control" readonly name="u_fotohandlinglinier[]" value="1" /></div>
-                                                <div class="col-md-5"><input type="file" class="form-control" id="gmbr0" onchange="viewGambar(this,0)" accept=".jpg, .png, ,jpeg" name="fotohandlinglinier[]" /></div>
+                                                <div class="col-md-5"><input type="file" required class="form-control" id="gmbr0" onchange="viewGambar(this,0)" accept=".jpg, .png, ,jpeg" name="fotohandlinglinier[]" /></div>
                                                 <div class="col-md-1" style="text-align: right;"><a class="btn btn-default inp_Foto" onclick="appendfoto()"><i class="fa fa-plus"></i></a></div>
                                             </div>
                                             <div class="panel-body">
@@ -153,7 +153,7 @@
                                         <div id="ifnonlinier" style="display: none;">
                                             <div class="panel-body">
                                                 <div class="col-md-3" style="text-align: right; color:white"><label>Foto</label></div>
-                                                <div class="col-md-8"><input type="file" class="form-control" accept=".jpg, .png, ,jpeg" id="pros_n_linear" onchange="viewprosnonlinier(this)" name="pros_n_linear[]" /></div>
+                                                <div class="col-md-8"><input type="file" required class="form-control" accept=".jpg, .png, ,jpeg" id="pros_n_linear" onchange="viewprosnonlinier(this)" name="pros_n_linear[]" /></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="col-md-3" style="text-align: right; color:white"><label>Foto</label></div>
@@ -162,7 +162,7 @@
                                             <div class="panel-body">
                                                 <div class="col-md-3" style="text-align: right;"><label>Foto</label></div>
                                                 <div class="col-md-1" style="text-align: right;"><input class="form-control" readonly name="u_fotohandlingnonlinier[]" value="1" /></div>
-                                                <div class="col-md-5"><input type="file" class="form-control" accept=".jpg, .png, ,jpeg" id="fotohandlingnonlinier0" onchange="viewGambarnonlinier(this,0)" name="fotohandlingnonlinier[]" /></div>
+                                                <div class="col-md-5"><input type="file" required class="form-control" accept=".jpg, .png, ,jpeg" id="fotohandlingnonlinier0" onchange="viewGambarnonlinier(this,0)" name="fotohandlingnonlinier[]" /></div>
                                                 <div class="col-md-1" style="text-align: right;"><a class="btn btn-default inp_foto_non_linear" onclick="append_foto_non_linear()"><i class="fa fa-plus"></i></a></div>
                                             </div>
                                             <div class="panel-body">
