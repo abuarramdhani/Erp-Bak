@@ -92,19 +92,19 @@
                        <!--  <div class="carousel slide" data-ride="carousel" data-interval="4000">
                             <div class="carousel-inner">
                                 <div class="item active">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.56.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
+                                    <img src="<?php echo base_url('assets/img/poster/penyebaran_covid.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
                                 </div>
                                 <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55 (2).jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
+                                    <img src="<?php echo base_url('assets/img/poster/jaga_jarak.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
                                 </div>
                                 <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55 (1).jpeg') ?>" style="width: 100%;height: auto" alt="Photo 3">
+                                    <img src="<?php echo base_url('assets/img/poster/tanpa_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 3">
                                 </div>
                                 <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 4">
+                                    <img src="<?php echo base_url('assets/img/poster/gunakan_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 4">
                                 </div>
                                 <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.54.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 5">
+                                    <img src="<?php echo base_url('assets/img/poster/ganti_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 5">
                                 </div>
                             </div>
                         </div> -->
@@ -164,19 +164,19 @@
                         <div class="carousel slide" data-ride="carousel" data-interval="4000">
                             <div class="carousel-inner">
                                 <div class="item active">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55 (2).jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
+                                    <img src="<?php echo base_url('assets/img/poster/penyebaran_covid.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
                                 </div>
                                 <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55 (1).jpeg') ?>" style="width: 100%;height: auto" alt="Photo 3">
+                                    <img src="<?php echo base_url('assets/img/poster/jaga_jarak.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 3">
                                 </div>
                                 <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.55.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 4">
+                                    <img src="<?php echo base_url('assets/img/poster/tanpa_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 4">
                                 </div>
                                 <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.54.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 5">
+                                    <img src="<?php echo base_url('assets/img/poster/gunakan_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 5">
                                 </div>
                                 <div class="item ">
-                                    <img src="<?php echo base_url('assets/img/poster/WhatsApp Image 2020-08-07 at 14.48.56.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
+                                    <img src="<?php echo base_url('assets/img/poster/ganti_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
                                 </div>
                             </div>
                         </div>
