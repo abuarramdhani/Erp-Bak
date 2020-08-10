@@ -692,22 +692,27 @@ function mco_initEditKeterangan()
 {
 	setUrlBack('.mco_getBack');
 	$('.mco_tblPekerjaan input, .mco_tblPekerjaan textarea').change(function(){
-		$.ajax({
-			url : baseurl+"civil-maintenance-order/order/up_kolomKeterangan",
-			type : 'POST',
-			data: {
-				id: $(this).attr('data-id'),
-				kolom: $(this).attr('kolom'),
-				val: $(this).val()
-			},
-			success : function(data) {
-				mcc_showAlert('success', 'Berhasil Mengupdate Data');
-			},
-			error : function(request,error)
-			{
-				alert("Request: "+JSON.stringify(request));
-			}
-		});
+		var dataId = $(this).attr('data-id');
+		if (dataId) {
+			$.ajax({
+				url : baseurl+"civil-maintenance-order/order/up_kolomKeterangan",
+				type : 'POST',
+				data: {
+					id: $(this).attr('data-id'),
+					kolom: $(this).attr('kolom'),
+					val: $(this).val()
+				},
+				success : function(data) {
+					mcc_showAlert('success', 'Berhasil Mengupdate Data');
+				},
+				error : function(request,error)
+				{
+					alert("Request: "+JSON.stringify(request));
+				}
+			});
+		}else{
+			// lampiran
+		}
 	});
 
 	$('.mco_delKeterangan').click(function(){
@@ -741,6 +746,28 @@ function mco_initEditKeterangan()
 			}
 		});
 	});
+
+	$('.mco_delFile_editKet').on('click', function(){
+		att_id = $(this).attr('data-attachment-id');
+		$.ajax({
+			url: baseurl + 'civil-maintenance-order/order/del_file',
+			type: 'POST',
+			data: {id: att_id},
+			success : function(data) {
+				$('a[data-attachment-id='+att_id+']').remove();
+				$('label[data-attachment-id='+att_id+']').remove();
+			},
+			error : function(request,error)
+			{
+				alert("Request: "+JSON.stringify(request));
+			}
+		})
+		// link 
+	})
+
+	$('.mco_lampiranFilePekerjaanEdit').on('change', function(){
+		$(this).closest('tr').find('.btnsubmit').click();
+	})
 }
 
 function setUrlBack(selektor)

@@ -124,7 +124,7 @@
                                                 <label>Judul Order</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input value="<?= $order['judul'] ?>" required oninput="this.value = this.value.toUpperCase()" class="form-control" name="judul">
+                                                <input value="<?= $order['judul'] ?>" required class="form-control" name="judul">
                                             </div>
                                         </div>
                                         <div class="col-md-12">

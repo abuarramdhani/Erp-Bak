@@ -43,6 +43,7 @@
                                                     <th width="15%">Qty</th>
                                                     <th width="15%">Satuan</th>
                                                     <th>Keterangan</th>
+                                                    <th>Lampiran</th>
                                                     <th>Act</th>
                                                 </thead>
                                                 <tbody>
@@ -61,6 +62,39 @@
                                                         <td>
                                                             <textarea data-id="<?=$key['pekerjaan_id']?>" kolom="keterangan" class="form-control" style="margin: 0px; resize: none;"><?= $key['keterangan'] ?></textarea>
                                                         </td>
+                                                        <td class='td_lampiran'>
+                                                            <form method="POST" enctype="multipart/form-data" action="<?php echo base_url('civil-maintenance-order/order/add_lampiran_pekerjaan') ?>">
+                                                                <input type="hidden" name="id_order" value="<?php echo $id ?>">
+                                                                <input type="hidden" name="pekerjaan" value="<?php echo $key['pekerjaan'] ?>">
+                                                                <button type="submit" class="btnsubmit" style="display: none;">submit</button>
+                                                                <?php 
+                                                                $no_lamp = 1;
+                                                                if (isset($lampiran) && !empty($lampiran)) {
+                                                                    foreach ($lampiran as $lamp) {
+                                                                        if ($lamp['pekerjaan'] == $key['pekerjaan']) {
+                                                                            $lamp_path = explode('/', $lamp['path']);
+                                                                            if ($no_lamp > 1) {
+                                                                                echo "<br>";
+                                                                            }
+                                                                            ?>
+                                                                            <label nomor='<?php echo $no_lamp ?>' data-attachment-id="<?php echo $lamp['attachment_id'] ?>">Lampiran <?php echo $no_lamp ?> :</label>
+                                                                            <a target="_blank" href="<?= base_url('civil-maintenance-order/order/download_file/'.$lamp['attachment_id']) ?>" data-attachment-id="<?php echo $lamp['attachment_id'] ?>">
+                                                                                <?php echo end($lamp_path) ?>
+                                                                            </a>
+                                                                            <a data-attachment-id="<?php echo $lamp['attachment_id'] ?>" class="btn btn-danger btn-xs mco_delFile_editKet"><span class="fa fa-trash"></span></a>
+                                                                            <?php
+                                                                            $no_lamp++; 
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if ($no_lamp > 1) {
+                                                                    echo "<br>";
+                                                                }
+                                                                ?>
+                                                                <label nomor='<?php echo $no_lamp ?>'>Lampiran <?php echo $no_lamp ?> :</label>
+                                                                <input type="file" class="form-control mco_lampiranFilePekerjaanEdit tbl_lampiran" name="tbl_lampiran[0][]">
+                                                            </form>
+                                                        </td> 
                                                         <td>
                                                             <button type="button" class="btn btn-xs btn-danger mco_delKeterangan" value="<?=$key['pekerjaan_id']?>">
                                                                 <i class="fa fa-times"></i>
@@ -88,7 +122,7 @@
 </section>
 <div class="modal fade" id="edit_aproval" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form method="post" action="<?= base_url('civil-maintenance-order/order/add_keterangan') ?>">
+        <form method="post" action="<?= base_url('civil-maintenance-order/order/add_keterangan') ?>" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
                     <label class="modal-title" id="exampleModalLongTitle">Tambah Approver</label>
@@ -121,6 +155,10 @@
                                 <td>
                                     <textarea name="tbl_ket[]" class="form-control" style="margin: 0px; resize: none;" required></textarea>
                                 </td>
+                                <td class='td_lampiran'>
+                                    <label nomor='1'>Lampiran 1 :</label>
+                                    <input type="file" class="form-control mco_lampiranFilePekerjaan tbl_lampiran" name="tbl_lampiran[0][]">
+                                </td>  
                                 <td>
                                     <button type="button" class="btn btn-xs btn-danger mco_deldaftarnoPek"><i class="fa fa-times"></i></button>
                                 </td>
