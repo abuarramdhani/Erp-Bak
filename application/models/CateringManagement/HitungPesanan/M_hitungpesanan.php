@@ -2036,17 +2036,24 @@ class M_hitungpesanan extends Ci_Model
 					t.fd_tanggal,
 					t.fs_kd_shift,
 					tt.fs_lokasi,
+					ttpg.fs_lokasi as fs_lokasipg,
 					t.fs_tempat_makan,
+					t.fs_tempat_makanpg,
 					td.fs_noind,
-					fb_kategori
+					t.fb_kategori
 				from \"Catering\".tpenguranganpesanan t 
 				inner join \"Catering\".tpenguranganpesanan_detail td 
 				on t.id_pengurangan = td.id_pengurangan
 				inner join \"Catering\".ttempat_makan tt 
 				on t.fs_tempat_makan = tt.fs_tempat_makan
+				left join \"Catering\".ttempat_makan ttpg 
+				on t.fs_tempat_makanpg = ttpg.fs_tempat_makan
 				where t.fd_tanggal = ?
 				and t.fs_kd_shift = ?
-				and tt.fs_lokasi = ?";
+				and (
+					tt.fs_lokasi = ?
+					or ttpg.fs_lokasi = ?
+				)"";
 		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
 	}
 
