@@ -2054,8 +2054,8 @@ class M_hitungpesanan extends Ci_Model
 				and (
 					tt.fs_lokasi = ?
 					or ttpg.fs_lokasi = ?
-				)"";
-		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
+				)";
+		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi,$lokasi))->result_array();
 	}
 
 	public function getMenuPenggantiByTanggalShiftLokasiTempatMakan($tanggal,$shift,$lokasi,$tempat_makan,$custom_condition){
