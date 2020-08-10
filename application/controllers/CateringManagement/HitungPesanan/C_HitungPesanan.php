@@ -2288,7 +2288,7 @@ class C_HitungPesanan extends CI_Controller
   }
 
   public function simpanDetail($tanggal,$shift,$lokasi,$jenis){
-    $this->M_hitungpesanan->deletePesananDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+    $this->M_hitungpesanan->deletePesananDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi,$jenis);
 
     $tambahan = $this->M_hitungpesanan->getPesananTambahanDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi);
     if (!empty($tambahan)) {
