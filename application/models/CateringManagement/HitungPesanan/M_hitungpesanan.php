@@ -1625,12 +1625,23 @@ class M_hitungpesanan extends Ci_Model
 		$this->personalia->query($sql,array($tanggal,$shift,$tempat_makan,$kategori));
 	}
 
-	public function deletePesananDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi){
+	public function deletePesananDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi,$jenis){
 		$sql = "delete from \"Catering\".t_pesanan_detail 
 				where tanggal = ?
 				and shift = ?
-				and lokasi = ?";
-		$this->personalia->query($sql,array($tanggal,$shift,$lokasi));
+				and lokasi = ?
+				and jenis = ?";
+		$this->personalia->query($sql,array($tanggal,$shift,$lokasi,$jenis));
+	}
+
+	public function deletePesananDetailByTanggalShiftLokasiKeterangan($tanggal,$shift,$lokasi,$jenis,$keterangan){
+		$sql = "delete from \"Catering\".t_pesanan_detail 
+				where tanggal = ?
+				and shift = ?
+				and lokasi = ?
+				and jenis = ?
+				and keterangan like concat(?,'%') ";
+		$this->personalia->query($sql,array($tanggal,$shift,$lokasi,$jenis,$keterangan));
 	}
 
 	public function getPesananTambahanDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi){
