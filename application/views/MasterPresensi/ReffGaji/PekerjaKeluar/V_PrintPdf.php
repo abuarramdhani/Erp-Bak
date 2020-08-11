@@ -143,7 +143,7 @@
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['um_cabang'] ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['ct'] ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['ket'] ?></td>
-                                <td style="border: 1px solid grey;text-align: right;"><?php echo $value['pduka'] ?></td>
+                                <td style="border: 1px solid grey;text-align: right;"><?php echo number_format($value['pduka'],0,',','.') ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['dldobat'] ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['plain'] ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['tambahan_str'] ?></td>

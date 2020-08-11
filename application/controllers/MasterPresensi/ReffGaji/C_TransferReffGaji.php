@@ -1158,6 +1158,7 @@ class C_TransferReffGaji extends CI_Controller
 									<td style='border: 1px solid #b2bec3;'></td>
 									<td style='border: 1px solid #b2bec3;'></td>
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_pduka_spsi,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_putkop_pikop,0,',','.')."</td>
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_pot_plain,0,',','.')."</td>
 									<td style='border: 1px solid #b2bec3;'></td>
 									<td style='border: 1px solid #b2bec3;'></td>
@@ -1319,9 +1320,8 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>KET.ABSEN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>I+ABS</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.KOPR</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.DUKA+<br>SPSI</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>IKOP+<br>UTKOP</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.DUKA+<br>SPSI</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>P.LAIN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SEKOLAH</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JURUSAN</td>
@@ -1490,7 +1490,7 @@ class C_TransferReffGaji extends CI_Controller
 					$simpan_pduka_spsi += (intval(trim($value['pduka'])) + intval(trim($value['pspsi'])));
 					$simpan_putkop_pikop += (intval(trim($value['putkop'])) + intval(trim($value['pikop'])));
 					$simpan_plain += intval(trim($value['plain']));
-					$simpan_pot_plain = (intval(trim($value['pot'])) + intval(trim($value['plain'])));
+					$simpan_pot_plain += (intval(trim($value['pot'])) + intval(trim($value['plain'])));
 
 					$nomor++;
 					$progres +=1;
@@ -1521,6 +1521,7 @@ class C_TransferReffGaji extends CI_Controller
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pduka_spsi."</td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_putkop_pikop."</td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pot_plain."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
@@ -1602,13 +1603,10 @@ class C_TransferReffGaji extends CI_Controller
 									<tr>
 										<td style='width: 10%'>Data Bulan</td>
 										<td style='width: 3%'>:</td>
-										<td style='width: 10%'>$bulan_gaji</td>
+										<td style='width: 32%'>$bulan_gaji $periode_penggajian</td>
 										<td style='width: 10%'>Tanggal Cetak</td>
 										<td style='width: 3%'>:</td>
-										<td style='width: 64%'>".$hari_string."</td>
-									</tr>
-									<tr>
-										<td colspan='6'>$periode_penggajian</td>
+										<td style='width: 32%'>".$hari_string."</td>
 									</tr>
 								</table>");
 			$pdf_cetak_per_kode_induk->SetHTMLFooter("<table style='width: 100%'>
