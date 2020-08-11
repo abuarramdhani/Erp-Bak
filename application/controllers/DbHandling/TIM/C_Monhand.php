@@ -304,14 +304,14 @@ class C_Monhand extends CI_Controller
                     $divcontent .=
                         '<div class="item active">
                             <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
-                            <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></center>
+                            <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" ></a><br></center>
                         </div>';
                 } else {
                     $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '"></li>';
                     $divcontent .=
                         '<div class="item">
                             <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
-                            <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></center>
+                            <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></a><br></center>
                         </div>';
                 }
 
@@ -324,14 +324,14 @@ class C_Monhand extends CI_Controller
                     $divcontent .=
                         '<div class="item active">
                             <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
-                            <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></center>
+                            <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></a><br></center>
                         </div>';
                 } else {
                     $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '"></li>';
                     $divcontent .=
                         '<div class="item">
                             <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
-                            <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></center>
+                            <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></a><br></center>
                         </div>';
                 }
 
@@ -340,24 +340,26 @@ class C_Monhand extends CI_Controller
         }
 
         $carousel = '  
-        <div id="imgcarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+        <div id="imgcarousel" class="carousel slide" data-ride="carousel" style="height: 500px;" data-interval="false">
           <!-- Indicators -->
           <ol class="carousel-indicators">
             ' . $li . '
           </ol>
       
           <!-- Wrapper for slides -->
-          <div class="carousel-inner">
-            ' . $divcontent . '
-          <!-- Left and right controls -->
-          <a class="left carousel-control" href="#imgcarousel" data-slide="prev">
-            <span style="color:gray" class="glyphicon glyphicon-chevron-left"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="right carousel-control" href="#imgcarousel" data-slide="next">
-            <span style="color:gray" class="glyphicon glyphicon-chevron-right"></span>
-            <span class="sr-only">Next</span>
-          </a>
+          <div class="carousel-inner" style="height: 400px;">
+                ' . $divcontent . '
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#imgcarousel" data-slide="prev">
+                    <span style="color:gray" class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#imgcarousel" data-slide="next">
+                    <span style="color:gray" class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+          </div>
+          <center><span style="color:red;font-size:8pt">*klik foto untuk melihat ukuran asli</span></center>
         </div>';
 
         echo $carousel;
@@ -407,10 +409,13 @@ class C_Monhand extends CI_Controller
                 </div>';
                 }
             }
-            $proses = '<div style="border: 1px solid black;margin:20px;text-align:center" >' . $div . '</div>';
+            $proses = '
+            <div class="panel-body" style="height: 500px;">
+               <div style="border:1px solid black;margin:20px;text-align:center;border-collapse:collapse">' . $div . '</div>
+            </div>';
         } else {
             $proses = '
-            <div class="panel-body">
+            <div class="panel-body" style="height: 500px;">
                 <center><img  style="width:50%" src="' . base_url('assets/upload/DatabaseHandling/prosesnonlinier' . $id . '.png') . '"></center>
             </div>';
         }
