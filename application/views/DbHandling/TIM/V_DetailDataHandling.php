@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Status Komponen</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="stakomp" value="<?= $datahandling[0]['kode_stat_komp'] ?> - <?= $datahandling[0]['stat_komp'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="stakomp" value="<?= $datahandling[0]['stat_komp'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Produk</label></div>
@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Sarana</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="sar_ana" value="<?= $datahandling[0]['kode_sarana'] ?> - <?= $datahandling[0]['sarana'] ?>" class="form-control" /></div>
+                                        <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="sar_ana" value="<?= $datahandling[0]['sarana'] ?>" class="form-control" /></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Qty / Handling</label></div>

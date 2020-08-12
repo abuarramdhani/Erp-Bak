@@ -173,13 +173,13 @@
 
                                             <div class="col-md-8" style="text-align: left;"><textarea id="kethand" maxlength="300" name="kethand" class="form-control" placeholder="Enter ..."></textarea></div>
                                         </div>
-                                        <div class="panel-body">
-                                            <div class="col-md-6" style="text-align: left;">
-                                                <button formaction="<?php echo base_url('DbHandling/MonitoringHandling'); ?>" class="btn btn-danger">Back</button>
-                                            </div>
-                                            <div class="col-md-6" style="text-align: right;">
-                                                <button formaction="<?php echo base_url('DbHandling/MonitoringHandling/adddatahandling'); ?>" class="btn btn-success">Save</button>
-                                            </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="col-md-6" style="text-align: left;">
+                                            <a href="<?php echo base_url('DbHandling/MonitoringHandling'); ?>" class="btn btn-danger">Back</a>
+                                        </div>
+                                        <div class="col-md-6" style="text-align: right;">
+                                            <button disabled="disabled" formaction="<?php echo base_url('DbHandling/MonitoringHandling/adddatahandling'); ?>" class="btn btn-success savehand">Save</button>
                                         </div>
                                     </div>
                                 </form>
