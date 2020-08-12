@@ -963,6 +963,7 @@ function addprosess() {
   var r = $('[name="indexproses[]"]').length + 1 - 1;
   var q = $('[name="urutPros[]"]').length + 1;
   // console.log(r, q);
+
   $(".addPros").append(
     '<div class="panel-body"><input type="hidden" name="indexproses[]" value="' +
       r +
@@ -983,14 +984,34 @@ function addprosess() {
       '"><i class="fa fa-minus"></i></button></div></div>'
   );
   $("#preview_ProsSes").append(
-    '<div style="display: inline-block;"><div id="arrowprosSes' +
+    '<div style="display: inline-block;"><div class="arahpenunjuk" id="arrowprosSes' +
       r +
-      '" style="height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right fa-2x"></i></div></div><div style="display: inline-block;"><div id="Kotakk' +
+      '" style="height:75px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right"></i></div></div><div style="display: inline-block;"><div class="kotakan" id="Kotakk' +
       r +
-      '" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;"><p style="margin:10px" id="tulisanKotakk' +
+      '" style="border: 1px solid black;text-align:center;padding: 10px 0;"><p class="ketPrev" style="margin:10px" id="tulisanKotakk' +
       r +
       '"></p></div></div>'
   );
+  if (q == 3) {
+    var style_kotak = "60mm";
+    var style_arrow = "20mm";
+    var font = "12pt";
+  } else if (3 < q && q <= 6) {
+    var style_kotak = "40mm";
+    var style_arrow = "15mm";
+    var font = "10pt";
+  } else if (6 < q && q <= 9) {
+    var style_kotak = "20mm";
+    var style_arrow = "10mm";
+    var font = "9pt";
+  } else {
+    var style_kotak = "20mm";
+    var style_arrow = "7mm";
+    var font = "8pt";
+  }
+  $(".kotakan").css("width", style_kotak);
+  $(".arahpenunjuk").css("width", style_arrow);
+  $(".ketPrev").css("font-size", font);
   $(".idSek_si").select2({
     allowClear: true,
     minimumResultsForSearch: Infinity,

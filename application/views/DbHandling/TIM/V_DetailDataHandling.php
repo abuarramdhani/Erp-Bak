@@ -81,28 +81,48 @@
                                         <div class="col-md-4" style="text-align: right;"><label>Proses</label></div>
                                         <div class="col-md-6" style="text-align: left;"><input type="text" readonly id="pros_es" value="<?= $datahandling[0]['proses'] ?>" class="form-control" /></div>
                                     </div>
+                                    <div class="panel-body">
+                                        <div class="col-md-4" style="text-align: right;"><label>Preview Proses :</label></div>
+                                    </div>
                                     <?php if ($datahandling[0]['proses'] == 'Linear') { ?>
                                         <div class="panel-body">
-                                            <div class="col-md-4" style="text-align: right;color:white"><label>proses</label></div>
-                                            <div class="col-md-6" style="border: 1px solid black;text-align:center">
+                                            <div class="col-md-12" style="border: 1px solid black;text-align:center">
                                                 <?php $j = 0;
+                                                $count = sizeof($dataProses);
+                                                if ($count == 3) {
+                                                    $style_kotak = "width:60mm";
+                                                    $style_arrow = "width:20mm";
+                                                    $font = "12pt";
+                                                } else if (3 < $count && $count <= 6) {
+                                                    $style_kotak = "width:40mm";
+                                                    $style_arrow = "width:15mm";
+                                                    $font = "10pt";
+                                                } else if (6 < $count && $count <= 8) {
+                                                    $style_kotak = "width:20mm";
+                                                    $style_arrow = "width:10mm";
+                                                    $font = "9pt";
+                                                } else {
+                                                    $style_kotak = "width:17mm";
+                                                    $style_arrow = "width:10mm";
+                                                    $font = "8pt";
+                                                }
                                                 foreach ($dataProses as $va) { ?>
                                                     <?php if ($j == 0) { ?>
                                                         <div style="display: inline-block;">
                                                             <div style="height:75px;text-align:center;display:none"><i class="fa fa-arrow-right fa-2x"></i></div>
                                                         </div>
                                                         <div style="display: inline-block;">
-                                                            <div style="background-color: <?= $va['warna'] ?>;border: 1px solid black;margin:20px;text-align:center;padding: 20px 0;">
-                                                                <p style="margin:10px"><?= $va['seksi'] ?></p>
+                                                            <div style="background-color: <?= $va['warna'] ?>;border: 1px solid black;margin-top:20px;text-align:center;padding: 20px 0;<?= $style_kotak ?>">
+                                                                <p style="margin:10px;font-size:<?= $font ?>"><?= $va['seksi'] ?></p>
                                                             </div>
                                                         </div>
                                                     <?php } else { ?>
                                                         <div style="display: inline-block;">
-                                                            <div style="height:75px;text-align:center;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                                                            <div style="height:75px;text-align:center;<?= $style_arrow ?>"><i class="fa fa-arrow-right"></i></div>
                                                         </div>
                                                         <div style="display: inline-block;">
-                                                            <div style="background-color: <?= $va['warna'] ?>;border: 1px solid black;margin:20px;text-align:center;padding: 20px 0;">
-                                                                <p style="margin:10px"><?= $va['seksi'] ?></p>
+                                                            <div style="background-color: <?= $va['warna'] ?>;border: 1px solid black;margin-top:20px;text-align:center;padding: 20px 0;<?= $style_kotak ?>">
+                                                                <p style="margin:10px;font-size:<?= $font ?>"><?= $va['seksi'] ?></p>
                                                             </div>
                                                         </div>
                                                     <?php } ?>
@@ -231,7 +251,7 @@
     </div>
 </section>
 <div class="modal fade" id="modalrevhand" role="dialog">
-    <div class="modal-dialog" style="width:60%">
+    <div class="modal-dialog" style="width:80%">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">

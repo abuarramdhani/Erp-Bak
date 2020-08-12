@@ -398,6 +398,24 @@ class C_Monhand extends CI_Controller
             $dataProses = $this->M_dbhandling->getProses($id);
             $div = "";
             for ($d = 0; $d < sizeof($dataProses); $d++) {
+                $count = sizeof($dataProses);
+                if ($count == 3) {
+                    $style_kotak = "width:60mm";
+                    $style_arrow = "width:20mm";
+                    $font = "12pt";
+                } else if (3 < $count && $count <= 6) {
+                    $style_kotak = "width:40mm";
+                    $style_arrow = "width:15mm";
+                    $font = "10pt";
+                } else if (6 < $count && $count <= 9) {
+                    $style_kotak = "width:20mm";
+                    $style_arrow = "width:10mm";
+                    $font = "9pt";
+                } else {
+                    $style_kotak = "width:20mm";
+                    $style_arrow = "width:7mm";
+                    $font = "8pt";
+                }
 
                 $Id_seksi = $this->M_dbhandling->selectdatatoedit2($dataProses[$d]['id_proses_seksi']);
 
@@ -420,24 +438,24 @@ class C_Monhand extends CI_Controller
                 if ($d == 0) {
                     $div .= ' 
                 <div style="display: inline-block;">
-                    <div style="height:75px; margin:20px;text-align:center;padding: 20px 0;display:none"><i class="fa fa-arrow-right fa-2x"></i></div>
+                    <div style="height:75px;text-align:center;padding: 20px 0;display:none"><i class="fa fa-arrow-right fa-2x"></i></div>
                 </div>
                 <div style="display: inline-block;">
-                    <div style="background-color: ' . $warna . ';border: 1px solid black;margin:20px;text-align:center;padding: 20px 0;"><p style="margin:10px">' . $Id_seksi[0]['seksi'] . '</p></div>
+                    <div style="background-color: ' . $warna . ';border: 1px solid black;text-align:center;padding: 20px 0;' . $style_kotak . '"><p style="margin:10px;font-size:' . $font . '">' . $Id_seksi[0]['seksi'] . '</p></div>
                 </div>';
                 } else {
                     $div .= ' 
                 <div style="display: inline-block;">
-                    <div style="height:75px; margin:20px;text-align:center;padding: 20px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                    <div style="height:75px;text-align:center;padding: 20px 0;' . $style_arrow . '"><i class="fa fa-arrow-right fa-2x"></i></div>
                 </div>
                 <div style="display: inline-block;">
-                    <div style="background-color: ' . $warna . ';border: 1px solid black;margin:20px;text-align:center;padding: 20px 0;"><p style="margin:10px">' . $Id_seksi[0]['seksi'] . '</p></div>
+                    <div style="background-color: ' . $warna . ';border: 1px solid black;text-align:center;padding: 20px 0;' . $style_kotak . '"><p style="margin:10px;font-size:' . $font . '">' . $Id_seksi[0]['seksi'] . '</p></div>
                 </div>';
                 }
             }
             $proses = '
             <div class="panel-body" style="height: 500px;">
-               <div style="border:1px solid black;margin:20px;text-align:center;border-collapse:collapse">' . $div . '</div>
+               <div style="border:1px solid black;margin:20px;text-align:center;border-collapse:collapse;padding:20px">' . $div . '</div>
             </div>';
         } else {
             $proses = '
@@ -757,6 +775,24 @@ class C_Monhand extends CI_Controller
         }
         if ($dataHandrev[0]['proses'] == 'Linear') {
             $HandProRev = $this->M_dbhandling->getProses($dataHandrev[0]['id_handling']);
+            $count = sizeof($HandProRev);
+            if ($count == 3) {
+                $style_kotak = "width:60mm";
+                $style_arrow = "width:20mm";
+                $font = "12pt";
+            } else if (3 < $count && $count <= 6) {
+                $style_kotak = "width:40mm";
+                $style_arrow = "width:15mm";
+                $font = "10pt";
+            } else if (6 < $count && $count <= 9) {
+                $style_kotak = "width:20mm";
+                $style_arrow = "width:10mm";
+                $font = "9pt";
+            } else {
+                $style_kotak = "width:20mm";
+                $style_arrow = "width:7mm";
+                $font = "8pt";
+            }
             for ($i = 0; $i < sizeof($HandProRev); $i++) {
                 $proses = $this->M_dbhandling->selectdatatoedit2($HandProRev[$i]['id_proses_seksi']);
                 $HandProRev[$i]['seksi'] = $proses[0]['seksi'];
@@ -811,21 +847,21 @@ class C_Monhand extends CI_Controller
                 if ($i == 0) {
                     $preview .= '
                             <div style="display: inline-block;">
-                                <div id="arrowprosSes' . $i . '" style="display:none;height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                                <div id="arrowprosSes' . $i . '" style="display:none;height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right"></i></div>
                             </div>
                             <div style="display: inline-block;">
-                                <div id="Kotakk' . $i . '" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;background-color: ' . $color . '">
-                                    <p style="margin:10px" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
+                                <div class="kotakan" id="Kotakk' . $i . '" style="border: 1px solid black;text-align:center;padding: 10px 0;background-color: ' . $color . ';' . $style_kotak . '">
+                                    <p class="ketPrev" style="margin:10px;font-size:' . $font . '" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
                                 </div>
                             </div>';
                 } else {
                     $preview .= '
                             <div style="display: inline-block;">
-                                <div id="arrowprosSes' . $i . '" style="height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                                <div class="arahpenunjuk" id="arrowprosSes' . $i . '" style="height:75px;text-align:center;padding: 10px 0;' . $style_arrow . '"><i class="fa fa-arrow-right"></i></div>
                             </div>
                             <div style="display: inline-block;">
-                                <div id="Kotakk' . $i . '" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;background-color: ' . $color . '">
-                                    <p style="margin:10px" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
+                                <div class="kotakan" id="Kotakk' . $i . '" style="border: 1px solid black;text-align:center;padding: 10px 0;background-color: ' . $color . ';' . $style_kotak . '">
+                                    <p class="ketPrev" style="margin:10px;font-size:' . $font . '" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
                                 </div>
                             </div>';
                 }
@@ -837,8 +873,12 @@ class C_Monhand extends CI_Controller
             </div>';
             $previewPros .= '
             <div class="panel-body">
-                <div class="col-md-3" style="text-align:right;"><label>Preview Proses</label></div>
-                <div class="col-md-8" style="border: 1px solid black; border-collapse: collapse" id="preview_ProsSes">      
+                <div class="col-md-3" style="text-align:right;">      
+                <label> Preview Proses : </label>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12" style="border: 1px solid black; border-collapse: collapse;padding-top:15px;text-align:center" id="preview_ProsSes">      
                 ' . $preview . '
                 </div>
             </div>';

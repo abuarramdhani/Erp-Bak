@@ -7,20 +7,16 @@
         height: 30px;
     }
 
-    .divproses {
-        width: 40mm;
-        float: left;
-        margin-left: 7mm;
-        margin-bottom: 4mm;
+    .div1 {
+        position: relative;
+        float: right;
+        left: -50%;
 
     }
 
-    .divproses2 {
-        width: 20mm;
-        float: left;
-        margin-left: 7mm;
-        margin-bottom: 4mm;
-
+    .div2 {
+        position: relative;
+        left: 50%;
     }
 
     div {
@@ -66,26 +62,49 @@
 <div style="width: 100%; border:1px solid black; border-collapse: collapse;border-top:none;padding-left:10px;">
     <p style="font-size: 10pt;">Alur Proses &nbsp; :</p>
     <?php if ($dataHandling[0]['proses'] == 'Linear') { ?>
-        <?php $r = 0;
-        foreach ($array_proses as $fu) { ?>
-            <?php if ($r == 0) { ?>
-                <div class="divproses2" style="display: none;">
-                    <h5 style="font-size: 10pt; text-align:center">→</h5>
-                </div>
-                <div class="divproses" style=" border: 1px solid black;border-collapse: collapse;background-color:<?= $fu['warna'] ?>">
-                    <h5 style="font-size: 10pt; text-align:center;"><?= $fu['seksi'] ?></h5>
-                </div>
-            <?php } else { ?>
-                <div class="divproses2">
-                    <h5 style="font-size: 10pt; text-align:center">→</h5>
-                </div>
-                <div class="divproses" style=" border: 1px solid black;border-collapse: collapse;background-color:<?= $fu['warna'] ?>">
-                    <h5 style="font-size: 10pt; text-align:center"><?= $fu['seksi'] ?></h5>
-                </div>
-            <?php } ?>
-        <?php $r++;
-        } ?>
+        <div class="div1">
+            <div class="div2">
+                <?php $r = 0;
+                $count = sizeof($array_proses);
+                if ($count == 3) {
+                    $style_kotak = "float:left;margin-bottom:4mm;width:40mm";
+                    $style_arrow = "float:left;margin-bottom:4mm;width:10mm";
+                    $font = "10pt";
+                } else if (3 < $count && $count <= 6) {
+                    $style_kotak = "float:left;margin-bottom:4mm;width:25mm";
+                    $style_arrow = "float:left;margin-bottom:4mm;width:7mm";
+                    $font = "9pt";
+                } else if (6 < $count && $count <= 8) {
+                    $style_kotak = "float:left;margin-bottom:4mm;width:17mm";
+                    $style_arrow = "float:left;margin-bottom:4mm;width:7mm";
+                    $font = "8pt";
+                } else {
+                    $style_kotak = "float:left;margin-bottom:4mm;width:12mm";
+                    $style_arrow = "float:left;margin-bottom:4mm;width:7mm";
+                    $font = "6pt";
+                }
+                foreach ($array_proses as $fu) { ?>
+                    <?php if ($r == 0) { ?>
+                        <div class="divproses2" style="display: none;">
+                            <h5 style="font-size: 10pt; text-align:center">→</h5>
+                        </div>
+                        <div class="divproses" style=" border: 1px solid black;border-collapse: collapse;background-color:<?= $fu['warna'] ?>;<?= $style_kotak ?>">
+                            <h5 style="font-size: <?= $font ?>; text-align:center;"><?= $fu['seksi'] ?></h5>
+                        </div>
+                    <?php } else { ?>
+                        <div class="divproses2" style="<?= $style_arrow ?>">
+                            <h5 style="font-size: 10pt; text-align:center;">→</h5>
+                        </div>
+                        <div class="divproses" style=" border: 1px solid black;border-collapse: collapse;background-color:<?= $fu['warna'] ?>;<?= $style_kotak ?>">
+                            <h5 style="font-size: <?= $font ?>; text-align:center"><?= $fu['seksi'] ?></h5>
+                        </div>
+                    <?php } ?>
+                <?php $r++;
+                } ?>
+            </div>
+        </div>
     <?php } else { ?>
         <div style="text-align: center;padding:20px"><img style="width:300px;height:300px" src="<?php echo base_url('assets/upload/DatabaseHandling/prosesnonlinier' . $dataHandling[0]['id_handling'] . '.png'); ?>"></div>
     <?php } ?>
+
 </div>
