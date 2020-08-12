@@ -316,46 +316,53 @@ class C_Monhand extends CI_Controller
         $b = 0;
         $divcontent = "";
         $li = "";
-        if ($proses == 'Linear') {
-            foreach ($gambar as $img) {
-                if ($b == 0) {
-                    $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '" class="active"></li>';
-                    $divcontent .=
-                        '<div class="item active">
+        if ($gambar != null) {
+            $d = '';
+            if ($proses == 'Linear') {
+
+                foreach ($gambar as $img) {
+                    if ($b == 0) {
+                        $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '" class="active"></li>';
+                        $divcontent .=
+                            '<div class="item active">
                             <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
                             <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" ></a><br></center>
                         </div>';
-                } else {
-                    $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '"></li>';
-                    $divcontent .=
-                        '<div class="item">
+                    } else {
+                        $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '"></li>';
+                        $divcontent .=
+                            '<div class="item">
                             <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
                             <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></a><br></center>
                         </div>';
-                }
+                    }
 
-                $b++;
+                    $b++;
+                }
+            } else {
+                foreach ($gambar as $img) {
+                    if ($b == 0) {
+                        $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '" class="active"></li>';
+                        $divcontent .=
+                            '<div class="item active">
+                            <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
+                            <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></a><br></center>
+                        </div>';
+                    } else {
+                        $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '"></li>';
+                        $divcontent .=
+                            '<div class="item">
+                            <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
+                            <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></a><br></center>
+                        </div>';
+                    }
+
+                    $b++;
+                }
             }
         } else {
-            foreach ($gambar as $img) {
-                if ($b == 0) {
-                    $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '" class="active"></li>';
-                    $divcontent .=
-                        '<div class="item active">
-                            <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
-                            <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></a><br></center>
-                        </div>';
-                } else {
-                    $li .= '<li data-target="#imgcarousel" data-slide-to="' . $b . '"></li>';
-                    $divcontent .=
-                        '<div class="item">
-                            <center><p style="font-size : 12pt">Foto ' . $img['urutan'] . '</p></center>
-                            <center><a href ="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '" target="_blank"><img  style="max-width:700px;max-height:700px" src="' . base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png') . '"></a><br></center>
-                        </div>';
-                }
-
-                $b++;
-            }
+            $d = 'none';
+            $divcontent = '<div style="height: 400px; margin-top:200px"><center><p style="font-weight:bold">Tidak Ada Foto</p></center></div>';
         }
 
         $carousel = '  
@@ -378,7 +385,7 @@ class C_Monhand extends CI_Controller
                     <span class="sr-only">Next</span>
                 </a>
           </div>
-          <center><span style="color:red;font-size:8pt">*klik foto untuk melihat ukuran asli</span></center>
+          <center><span style="color:red;font-size:8pt;display:' . $d . '">*klik foto untuk melihat ukuran asli</span></center>
         </div>';
 
         echo $carousel;
