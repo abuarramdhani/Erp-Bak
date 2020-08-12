@@ -32,7 +32,14 @@
                     <td class="text-center"><?= $data['rev_no'] ?></td>
                     <td class="text-center"><?= $data['doc_number'] ?></td>
                     <td class="text-center"><?= $data['nama_produk'] ?></td>
-                    <td class="text-center"><?= $data['sarana'] ?></td>
+                    <?php if ($data['sarana']  == 'Invalid') {
+                        $color = 'red';
+                        $bold = 'bold';
+                    } else {
+                        $color = '';
+                        $bold = '';
+                    } ?>
+                    <td class="text-center" style="color: <?= $color ?>;font-weight:<?= $bold ?>;"><?= $data['sarana'] ?></td>
                     <td class="text-center"><?= $data['seksi'] ?></td>
                     <td class="text-center"><a onclick="imgcarousel(<?= $data['id_handling'] ?>)" class="btn btn-default btn-sm">Foto</a> <a onclick="proseshandling(<?= $data['id_handling'] ?>)" class="btn btn-warning btn-sm">proses</a></td>
                     <td class="text-center"><button type="submit" formaction="<?php echo base_url('DbHandling/MonitoringHandling/detaildatahandling/' . $data['id_handling']); ?>" class="btn btn-success btn-sm">Detail</button></td>

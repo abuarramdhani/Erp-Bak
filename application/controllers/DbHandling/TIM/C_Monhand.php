@@ -60,7 +60,11 @@ class C_Monhand extends CI_Controller
         $handling = $this->M_dbhandling->getnewdatahandbystat();
         for ($i = 0; $i < sizeof($handling); $i++) {
             $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
-            $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            if ($sarana_handling == null) {
+                $handling[$i]['sarana'] = 'Invalid';
+            } else {
+                $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            }
         }
         $data['handling'] = $handling;
         $this->load->view('DbHandling/TIM/V_TblReqHand', $data);
@@ -70,7 +74,11 @@ class C_Monhand extends CI_Controller
         $handling = $this->M_dbhandling->getrevdatahandbystat();
         for ($i = 0; $i < sizeof($handling); $i++) {
             $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
-            $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            if ($sarana_handling == null) {
+                $handling[$i]['sarana'] = 'Invalid';
+            } else {
+                $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            }
         }
         $data['handling'] = $handling;
         $this->load->view('DbHandling/TIM/V_TblReqRevHand', $data);
@@ -80,7 +88,11 @@ class C_Monhand extends CI_Controller
         $datahandling = $this->M_dbhandling->selectdatahandling();
         for ($i = 0; $i < sizeof($datahandling); $i++) {
             $sarana_handling = $this->M_dbhandling->selectdatatoedit($datahandling[$i]['id_master_handling']);
-            $datahandling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            if ($sarana_handling == null) {
+                $datahandling[$i]['sarana'] = 'Invalid';
+            } else {
+                $datahandling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            }
         }
 
         $data['datahandling'] = $datahandling;
@@ -210,12 +222,19 @@ class C_Monhand extends CI_Controller
         $datahandling = $this->M_dbhandling->selectdatahandlingbyid($id);
         $DataHandTbl = $this->M_dbhandling->selectdatahandlingbykom($datahandling[0]['kode_komponen']);
         $status_komp = $this->M_dbhandling->selectstatuskompbyid($datahandling[0]['id_status_komponen']);
-        $datahandling[0]['stat_komp'] = $status_komp[0]['status'];
-        $datahandling[0]['kode_stat_komp'] = $status_komp[0]['kode_status'];
+        if ($status_komp == null) {
+            $datahandling[0]['stat_komp'] = 'Invalid';
+        } else {
+            $datahandling[0]['stat_komp'] = $status_komp[0]['kode_status'] . ' - ' . $status_komp[0]['status'];
+        }
+        // $datahandling[0]['kode_stat_komp'] = $status_komp[0]['kode_status'];
 
         $sarana = $this->M_dbhandling->selectdatatoedit($datahandling[0]['id_master_handling']);
-        $datahandling[0]['sarana'] = $sarana[0]['nama_handling'];
-        $datahandling[0]['kode_sarana'] = $sarana[0]['kode_handling'];
+        if ($sarana == null) {
+            $datahandling[0]['sarana'] = 'Invalid';
+        } else {
+            $datahandling[0]['sarana'] = $sarana[0]['kode_handling'] . ' - ' . $sarana[0]['nama_handling'];
+        }
 
 
         if ($datahandling[0]['proses'] == 'Linear') {
@@ -653,12 +672,21 @@ class C_Monhand extends CI_Controller
         $dataHandrev = $this->M_dbhandling->selectdatahandlingbyid($id);
         $stats_kmp = $this->M_dbhandling->selectstatuskompbyid($dataHandrev[0]['id_status_komponen']);
         $stats_kmp_All = $this->M_dbhandling->selectstatuskomp();
-        $dataHandrev[0]['status_komp'] = $stats_kmp[0]['status'];
-        $dataHandrev[0]['status_komp_kode'] = $stats_kmp[0]['kode_status'];
+        if ($stats_kmp == null) {
+            $dataHandrev[0]['status_komp'] = 'Invalid';
+        } else {
+            $dataHandrev[0]['status_komp'] = $stats_kmp[0]['kode_status'] - $stats_kmp[0]['status'];
+        }
+        // $dataHandrev[0]['status_komp_kode'] = $stats_kmp[0]['kode_status'];
         $id_seksi = ['UPPL', 'Sheet Metal', 'Machining', 'Perakitan', 'PnP', 'Gudang', 'Subkon'];
         $sar_This = $this->M_dbhandling->selectdatatoedit($dataHandrev[0]['id_master_handling']);
-        $dataHandrev[0]['sarana_name'] = $sar_This[0]['nama_handling'];
-        $dataHandrev[0]['sarana_kode'] = $sar_This[0]['kode_handling'];
+        if ($sar_This == null) {
+            $dataHandrev[0]['sarana_name'] = 'Invalid';
+            $dataHandrev[0]['sarana_kode'] = '';
+        } else {
+            $dataHandrev[0]['sarana_name'] = $sar_This[0]['nama_handling'];
+            $dataHandrev[0]['sarana_kode'] = $sar_This[0]['kode_handling'];
+        }
         $sar_All = $this->M_dbhandling->selectmasterhandling();
 
         $opti = '';
@@ -688,7 +716,7 @@ class C_Monhand extends CI_Controller
                 <div class="col-md-3" style="text-align:right"><label>Status Komponen</label></div>
                 <div class="col-md-8"> 
                     <select class="form-control select2 StatKomp" name="statKomp" style="width:100%">
-                        <option value="' . $dataHandrev[0]['id_status_komponen'] . '">' . $dataHandrev[0]['status_komp_kode'] . ' - ' . $dataHandrev[0]['status_komp'] . '</option>
+                        <option value="' . $dataHandrev[0]['id_status_komponen'] . '">' . $dataHandrev[0]['status_komp'] . '</option>
                         ' . $opt . '
                     </select>
                 </div>

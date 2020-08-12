@@ -399,12 +399,14 @@ $(document).ready(function () {
           $(".hideajakalaukompudahada").css("display", "block");
           $("#validationkomp").css("display", "none");
           $("#btnrev").css("display", "none");
+          $(".savehand").removeAttr("disabled");
         } else {
           // console.log("append tombol revisi");
           $(".showkalaukompbelomada").css("display", "none");
           $(".hideajakalaukompudahada").css("display", "none");
           $("#validationkomp").css("display", "block");
           $("#btnrev").css("display", "block");
+          $(".savehand").attr("disabled", "disabled");
           $("#btnrev").on("click", function () {
             revisidatahandling(result);
           });
