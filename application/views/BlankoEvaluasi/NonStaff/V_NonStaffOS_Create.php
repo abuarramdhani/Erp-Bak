@@ -16,6 +16,10 @@
     margin-right: 2em;
   }
 
+  .pl-0 {
+    padding-left: 0 !important;
+  }
+
   .p-0 {
     padding: 0 !important;
   }
@@ -184,19 +188,32 @@
                   <input v-model="state.worker.akhir_kontrak" class="form-control" type="text" readonly>
                 </div>
               </div>
-              <div v-cloak class="form-group">
+              <div v-cloak class="form-group" style="margin-bottom: 5px;">
                 <label class="col-lg-2 control-label" for="">Periode Penarikan Data</label>
                 <div class="col-lg-3">
-                  <input :value="state.worker.periode_awal" v-show="state.worker.periode_awal && utils.disableInputPeriode1" class="form-control" type="text" readonly>
-                  <input v-show="!utils.disableInputPeriode1" type="text" id="periode-awal" autocomplete="off" placeholder="Periode awal" class="form-control datepicker1">
-                </div>
-                <div class="col-lg-3">
-                  <input type="text" id="periode-akhir" autocomplete="off" placeholder="Periode akhir" class="form-control datepicker2">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input :value="state.worker.periode_awal" v-show="state.worker.periode_awal && utils.disableInputPeriode1" class="form-control" type="text" readonly>
+                      <input v-show="!utils.disableInputPeriode1" type="text" id="periode-awal" autocomplete="off" placeholder="Periode awal" class="form-control datepicker1">
+                    </div>
+                    <div class="col-md-6 pl-0">
+                      <input type="text" id="periode-akhir" autocomplete="off" placeholder="Periode akhir" class="form-control datepicker2" data-toggle="popover" data-trigger="hover" data-placement="top" :data-content="tempState.tooltiprange">
+                    </div>
+                  </div>
                 </div>
                 <div class="col-lg-3">
                   <button type="button" @click="handleCheckPresence" v-show="state.worker.periode_akhir" class="btn btn-md btn-success" :disabled="state.worker.presensi_ok == 'loading'">
+                    <i class="fa fa-search"></i>
                     Cek presensi
                   </button>
+                </div>
+              </div>
+              <div v-cloak v-if="differenceDate" class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-3 text-center">
+                  <span style="padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: smaller; background: #e8e8e8;">
+                    {{ differenceDate }}
+                  </span>
                 </div>
               </div>
             </form>
@@ -468,7 +485,7 @@
           <div class="col-lg-4"></div>
           <div class="col-lg-4" style="display: flex; justify-content: center;">
             <button @click="handleSave" class="btn btn-primary mr-2 handleSave" disabled>
-              Simpan <i class="fa fa-save"></i>
+              <i class="fa fa-save"></i> Simpan
             </button>
             <button @click="handlePreview" type="button" target="_blank" class="btn btn-success mr-2" :disabled="state.worker.presensi_ok === null">
               Preview
@@ -533,6 +550,8 @@
   const w = window
 
   $(() => {
+    $('#periode-awal, #periode-akhir').on('keydown', e => e.preventDefault())
+    $('[data-toggle="popover"]').popover();
     $('.evaluasi-limiter').inputlimiter({
       limit: 106,
       remText: '%n /',
@@ -729,13 +748,16 @@
         constant: {
           apiWorkerInformation: basesite + 'BlankoEvaluasi/api/workers/information',
           apiTIMS: basesite + 'BlankoEvaluasi/api/tims',
-          apiTIMSCalculation: basesite + 'BlankoEvaluasi/api/tims/calculation'
+          apiTIMSCalculation: basesite + 'BlankoEvaluasi/api/tims/calculation',
+          min_os: 3,
+          min_kontrak: 20
         },
         utils: {
           disableInputPeriode1: false
         },
         tempState: {
-          tims: null
+          tims: null,
+          tooltiprange: ''
         },
         state: initialState()
       }
@@ -746,23 +768,56 @@
       },
       urlSave() {
         return basesite + 'BlankoEvaluasi/NonStaff/Store?' + $.param(this.$data.state)
+      },
+      differenceDate() {
+        const {
+          periode_akhir,
+          periode_awal
+        } = this.state.worker
+        if (!periode_awal || !periode_akhir) return ''
+        let days = moment(periode_akhir.split('-').reverse().join('')).diff(periode_awal.split('-').reverse().join(''), 'days') + 1
+        return `${days} Hari / ${Math.floor(days/30)} Bulan`
       }
     },
     watch: {
-      state: {
+      "state.worker.periode_awal": {
         handler: function(newState, oldState) {
-          const newStartPeriode = newState.worker.periode_awal
-          if (!newStartPeriode) return
-          const formattedDate = new Date(newStartPeriode.split('-').reverse().join('-'))
-          formattedDate.setDate(formattedDate.getDate() + 1)
-          formattedDate.toLocaleDateString()
+          const newStartPeriode = newState
+          const oldStartPeriod = oldState
+          if (!newStartPeriode || !this.state.worker.noind) return
 
-          if (newStartPeriode) {
-            $('.datepicker2').datepicker(
-              'setStartDate',
-              formattedDate
-            )
+          let periodeAwal = newStartPeriode ? newStartPeriode.split('-').reverse().join('') : null
+          let noind_code = this.$data.state.worker.noind.substr(0, 1)
+          let pemborongan = ['K', 'P']
+          let kontrak = ['T', 'H']
+
+          let min_periode_end
+
+          let {
+            min_os,
+            min_kontrak
+          } = this.$data.constant
+
+          if (pemborongan.includes(noind_code)) {
+            // periode_akhir + 3 month when data.periode_awal is not null && noind in (K, P)
+            min_periode_end = moment(periodeAwal).add(min_os, "month").add(-1, 'day').format('DD-MM-YYYY')
+            this.tempState.tooltiprange = "Minimal 3 bulan dari periode awal penarikan data"
+          } else if (kontrak.includes(noind_code)) {
+            // periode_akhir + 20 month when data.periode_awal is not null && noind in (T, H)
+            min_periode_end = moment(periodeAwal).add(min_kontrak, "month").add(-1, 'day').format('DD-MM-YYYY')
+            this.tempState.tooltiprange = "Minimal 20 bulan dari periode awal penarikan data"
+          } else {
+            min_periode_end = moment().format('DD-MM-YYYY')
           }
+
+          $('.datepicker2').datepicker(
+            'setStartDate',
+            min_periode_end
+          )
+          $('.datepicker2').datepicker(
+            'setDate',
+            min_periode_end
+          )
         },
         deep: true
       }
@@ -841,6 +896,7 @@
       handleCheckPresence() {
         // to show loading animation
         const worker = this.$data.state.worker
+        const kode_noind = worker.noind.substr(0, 1)
         const [from, to] = [
           new Date(worker.periode_awal.split('-').reverse().join('-')),
           new Date(worker.periode_akhir.split('-').reverse().join('-'))
@@ -851,6 +907,22 @@
           this.$data.state.worker.presensi_ok = null
           return Swal.fire('Periode tidak valid', 'periode akhir harus lebih besar daripada periode awal', 'error')
         }
+
+        let {
+          min_os,
+          min_kontrak
+        } = this.$data.constant
+
+        if (['K', 'P'].includes(kode_noind) && new Date() <= moment(from).add(min_os, 'month').toDate()) {
+          return Swal.fire('Tarikan data tidak dapat dilakukan karena masih kurang dari 3(tiga) bulan', '', 'error')
+        } else if (['T', 'H'].includes(kode_noind) && new Date() <= moment(from).add(min_kontrak, 'month').toDate()) {
+          return Swal.fire('Tarikan data tidak dapat dilakukan karena masih kurang dari 20(dua puluh) bulan', '', 'error')
+        }
+
+        // may be will be used in the future
+        // if (['K', 'P'].includes(kode_noind)) {
+        //   (date_diff > limit_os) && Swal.fire('Periode lebih dari 3 Bulan', '', 'question')
+        // }
 
         this.$data.state.worker.presensi_ok = "loading"
         const TIMS = `${this.$data.constant.apiTIMS}?` + $.param({
@@ -872,7 +944,7 @@
           .catch(e => {
             this.$data.state.worker.presensi_ok = ""
 
-            alert("Error, tidak dapat megambil data")
+            alert("Error, tidak dapat mengambil data")
           })
 
         fetch(calcTIMS)
@@ -998,13 +1070,13 @@
             self.$data.tempState.tims = null
             self.$data.utils.disableInputPeriode1 = !!self.$data.state.worker.periode_awal
 
-            //
             if (data.atasan.supervisor.find(e => e.jabatan == 'supervisor')) {
               $('#atasan-supervisor').attr('required')
             } else {
               $('#atasan-supervisor').removeAttr('required')
             }
           }).catch(e => {
+            console.error(e)
             alert("Gagal mengambil data, periksa koneksi anda")
           })
       }
