@@ -8,6 +8,16 @@ class M_jtipembelian extends CI_Model
         $this->oracle = $this->load->database('oracle', true);
     }
 
+    public function updateNamaDriver($data, $param)
+    {
+      $this->db->where('id', $param)->update('jti.jt_drivers', $data);
+      if ($this->db->affected_rows() == 1) {
+        return 1;
+      }else {
+        return 0;
+      }
+    }
+
     public function getTypes()
     {
         $response = $this->db->select('id, name, number_digit')->where('type', 'out')->order_by('id')->get('jti.jt_document_type')->result_array();

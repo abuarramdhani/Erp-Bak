@@ -117,6 +117,16 @@ class C_Index extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
+    public function updateNamaDriver()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Hai..";
+      }else {
+        $res = $this->M_jtipembelian->updateNamaDriver(['name' => $this->input->post('nama_driver')], $this->input->post('id'));
+        echo json_encode($res);
+      }
+    }
+
     public function getHistoryJTI()
     {
       $data['get'] = $this->M_jtipembelian->History($this->session->user);

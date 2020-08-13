@@ -38,7 +38,7 @@
         <td><center><?php echo $g['document_number'] ?></center></td>
         <td><center><?php echo $g['document_type'] ?></center></td>
         <td><center><?php echo $g['type'] ?></center></td>
-        <td><center><?php echo $g['name'] ?></center></td>
+        <td><center style="font-weight:bold" onclick="jtieditmodal('<?php echo $g['document_number'] ?>', '<?php echo $g['name'] ?>', <?php echo $g['driver_id'] ?>)" data-toggle="modal" data-target="#JTIUPDATE"><?php echo $g['name'] ?></center></td>
         <td><center><?php echo empty($g['ticket_number']) ? '-' : $g['ticket_number']  ?></center></td>
         <td><center><?php echo empty($g['vehicle_number']) ? '-' : $g['vehicle_number'] ?></center></td>
         <td><center><?php echo empty($g['estimation']) ? '-' : $g['estimation'] ?></center></td>

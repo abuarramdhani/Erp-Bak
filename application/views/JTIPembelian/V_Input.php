@@ -34,14 +34,29 @@
                 <input type="hidden" id="no_induk_mu" value="<?php echo $this->session->user;?>">
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div class="form-group">
                     <label for="">Waktu Estimasi</label>
                     <input type="text" class="form-control datepickerJTIP" id="estimasi_jti" name="" placeholder="Waktu Estimasi">
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Berat Barang </label><small style="margin-top:-9px;margin-left:5px;">*Opsional</small>
+                    <div class="row">
+                      <div class="col-md-10">
+                        <input type="number" class="form-control" id="berat_barang_jti" name="" placeholder="Berat Barang Dalam KG">
+                      </div>
+                      <div class="col-md-2">
+                        <b style="margin-left:-20px;">Kg</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <center><button type="button" onclick="JTIPembelianInput()" style="font-weight:bold" class="btn btn-success" name="button"> <b class="fa fa-file"></b> Save</button></center>
+              <br>
+              <center><button type="button" onclick="JTIPembelianInput()" style="font-weight:bold;width:30%" class="btn btn-success" name="button"> <b class="fa fa-file"></b> Save</button></center>
+              <br>
             </div>
             <div class="col-md-3"></div>
           </div>

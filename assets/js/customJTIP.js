@@ -1,3 +1,51 @@
+const jtieditmodal = (nodok, nama, driver_id) =>{
+  $('#nama_driver').val('Loading...')
+  $('#id_driver').val('Loading...')
+  $('#jtip_nodok').html('Loading...')
+
+  $('#jtip_nodok').html(nodok)
+  $('#nama_driver').val(nama)
+  $('#id_driver').val(driver_id)
+}
+
+const SaveDriver = () => {
+  const ajax_jtip = $.ajax({
+                      url: baseurl+'jtipembelian/History/updateNamaDriver',
+                      type: 'POST',
+                      dataType: 'JSON',
+                      data: {
+                        nama_driver: $('#nama_driver').val(),
+                        id: $('#id_driver').val()
+                      },
+                      beforeSend: function() {
+                        Swal.showLoading()
+                      },
+                      success: function(result) {
+                        if (result) {
+                          Swal.fire({
+                            position: 'middle',
+                            type: 'success',
+                            title: 'Data Berhasil Diupdate!',
+                            showConfirmButton: false,
+                            timer: 1500
+                          }).then(function () {
+                            $('#JTIUPDATE').modal('hide');
+                          })
+                        }else {
+                          Swal.fire({
+                            position: 'middle',
+                            type: 'error',
+                            title: 'Data Tidak Berhasil Diupdate!',
+                            showConfirmButton: false,
+                            timer: 1500
+                          })
+                        }
+                      },
+                      error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.error();
+                      }
+                    })
+}
 
 var jtipem = $('#jtipem').val();
 $(document).ready(function() {
