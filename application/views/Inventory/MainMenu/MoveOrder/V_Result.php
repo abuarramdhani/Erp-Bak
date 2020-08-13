@@ -213,6 +213,13 @@
 						</button>
 					<?php } ?>
 				<?php } ?>
+				<br><br><a href="http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode_besar.php?org=102&segment1=<?= $value['header']['ITEM_CODE']?>" target="_blank">
+						<button type="button" class="btn btn-success" style="font-size:12px;font-weight:bold">Print Sticker Besar</button>
+				</a>
+				<br><br><a href="http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode.php?org=102&segment1=<?= $value['header']['ITEM_CODE']?>" target="_blank">
+						<button type="button" class="btn btn-success" style="font-size:12px;font-weight:bold">Print Sticker Kecil</button>
+				</a>
+
 
 			</td> 
 			<!-- EDITANNYA SAMPAI SINI -->
