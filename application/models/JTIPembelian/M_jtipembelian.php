@@ -5,7 +5,7 @@ class M_jtipembelian extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function updateNamaDriver($data, $param)
