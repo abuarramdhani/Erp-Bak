@@ -89,7 +89,7 @@
                                             <div class="col-md-12" style="border: 1px solid black;text-align:center">
                                                 <?php $j = 0;
                                                 $count = sizeof($dataProses);
-                                                if ($count == 3) {
+                                                if ($count >= 1 &&  $count <= 3) {
                                                     $style_kotak = "width:60mm";
                                                     $style_arrow = "width:20mm";
                                                     $font = "12pt";
@@ -103,7 +103,7 @@
                                                     $font = "9pt";
                                                 } else {
                                                     $style_kotak = "width:17mm";
-                                                    $style_arrow = "width:10mm";
+                                                    $style_arrow = "width:7mm";
                                                     $font = "8pt";
                                                 }
                                                 foreach ($dataProses as $va) { ?>
@@ -287,7 +287,7 @@
 </div>
 <!-- Modal Proses Handling -->
 <div class="modal fade" id="modalproseshandlingg" role="dialog">
-    <div class="modal-dialog" style="width:60%">
+    <div class="modal-dialog" style="width:80%">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">

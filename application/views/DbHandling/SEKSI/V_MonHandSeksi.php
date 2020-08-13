@@ -80,7 +80,7 @@
 </div>
 <!-- Modal Proses Handling -->
 <div class="modal fade" id="ModalPros" role="dialog">
-    <div class="modal-dialog" style="width:60%">
+    <div class="modal-dialog" style="width:80%">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">

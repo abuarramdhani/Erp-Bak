@@ -992,7 +992,7 @@ function addprosess() {
       r +
       '"></p></div></div>'
   );
-  if (q == 3) {
+  if (q >= 1 && q <= 3) {
     var style_kotak = "60mm";
     var style_arrow = "20mm";
     var font = "12pt";
@@ -1005,7 +1005,7 @@ function addprosess() {
     var style_arrow = "10mm";
     var font = "9pt";
   } else {
-    var style_kotak = "20mm";
+    var style_kotak = "17mm";
     var style_arrow = "7mm";
     var font = "8pt";
   }

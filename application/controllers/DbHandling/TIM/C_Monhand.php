@@ -399,12 +399,12 @@ class C_Monhand extends CI_Controller
             $div = "";
             for ($d = 0; $d < sizeof($dataProses); $d++) {
                 $count = sizeof($dataProses);
-                if ($count == 3) {
-                    $style_kotak = "width:60mm";
+                if ($count >= 1 &&  $count <= 3) {
+                    $style_kotak = "width:40mm";
                     $style_arrow = "width:20mm";
                     $font = "12pt";
                 } else if (3 < $count && $count <= 6) {
-                    $style_kotak = "width:40mm";
+                    $style_kotak = "width:25mm";
                     $style_arrow = "width:15mm";
                     $font = "10pt";
                 } else if (6 < $count && $count <= 9) {
@@ -412,7 +412,7 @@ class C_Monhand extends CI_Controller
                     $style_arrow = "width:10mm";
                     $font = "9pt";
                 } else {
-                    $style_kotak = "width:20mm";
+                    $style_kotak = "width:17mm";
                     $style_arrow = "width:7mm";
                     $font = "8pt";
                 }
@@ -776,12 +776,12 @@ class C_Monhand extends CI_Controller
         if ($dataHandrev[0]['proses'] == 'Linear') {
             $HandProRev = $this->M_dbhandling->getProses($dataHandrev[0]['id_handling']);
             $count = sizeof($HandProRev);
-            if ($count == 3) {
-                $style_kotak = "width:60mm";
+            if ($count >= 1 &&  $count <= 3) {
+                $style_kotak = "width:40mm";
                 $style_arrow = "width:20mm";
                 $font = "12pt";
             } else if (3 < $count && $count <= 6) {
-                $style_kotak = "width:40mm";
+                $style_kotak = "width:25mm";
                 $style_arrow = "width:15mm";
                 $font = "10pt";
             } else if (6 < $count && $count <= 9) {
@@ -789,7 +789,7 @@ class C_Monhand extends CI_Controller
                 $style_arrow = "width:10mm";
                 $font = "9pt";
             } else {
-                $style_kotak = "width:20mm";
+                $style_kotak = "width:17mm";
                 $style_arrow = "width:7mm";
                 $font = "8pt";
             }
