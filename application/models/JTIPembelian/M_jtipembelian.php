@@ -5,7 +5,17 @@ class M_jtipembelian extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle_dev', true);
+    }
+
+    public function updateNamaDriver($data, $param)
+    {
+      $this->db->where('id', $param)->update('jti.jt_drivers', $data);
+      if ($this->db->affected_rows() == 1) {
+        return 1;
+      }else {
+        return 0;
+      }
     }
 
     public function getTypes()
