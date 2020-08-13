@@ -60,7 +60,12 @@ class C_Monhandseksi extends CI_Controller
         $handling = $this->M_dbhandling->getnewdatahandbystat();
         for ($i = 0; $i < sizeof($handling); $i++) {
             $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
-            $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+
+            if ($sarana_handling == null) {
+                $handling[$i]['sarana'] = 'Invalid';
+            } else {
+                $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            }
         }
         $data['handling'] = $handling;
         $this->load->view('DbHandling/SEKSI/V_TblReqBaru', $data);
@@ -70,7 +75,12 @@ class C_Monhandseksi extends CI_Controller
         $handling = $this->M_dbhandling->getrevdatahandbystat();
         for ($i = 0; $i < sizeof($handling); $i++) {
             $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
-            $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+
+            if ($sarana_handling == null) {
+                $handling[$i]['sarana'] = 'Invalid';
+            } else {
+                $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            }
         }
         $data['handling'] = $handling;
         $this->load->view('DbHandling/SEKSI/V_TblReqRev', $data);
@@ -80,7 +90,12 @@ class C_Monhandseksi extends CI_Controller
         $datahandling = $this->M_dbhandling->selectdatahandling();
         for ($i = 0; $i < sizeof($datahandling); $i++) {
             $sarana_handling = $this->M_dbhandling->selectdatatoedit($datahandling[$i]['id_master_handling']);
-            $datahandling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+
+            if ($sarana_handling == null) {
+                $datahandling[$i]['sarana'] = 'Invalid';
+            } else {
+                $datahandling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            }
         }
 
         $data['datahandling'] = $datahandling;
@@ -259,12 +274,18 @@ class C_Monhandseksi extends CI_Controller
         $datahandling = $this->M_dbhandling->selectdatahandlingbyid($id);
         $DataHandTbl = $this->M_dbhandling->selectdatahandlingbykom($datahandling[0]['kode_komponen']);
         $status_komp = $this->M_dbhandling->selectstatuskompbyid($datahandling[0]['id_status_komponen']);
-        $datahandling[0]['stat_komp'] = $status_komp[0]['status'];
-        $datahandling[0]['kode_stat_komp'] = $status_komp[0]['kode_status'];
+        if ($status_komp == null) {
+            $datahandling[0]['stat_komp'] = 'Invalid';
+        } else {
+            $datahandling[0]['stat_komp'] = $status_komp[0]['kode_status'] . ' - ' . $status_komp[0]['status'];
+        }
 
         $sarana = $this->M_dbhandling->selectdatatoedit($datahandling[0]['id_master_handling']);
-        $datahandling[0]['sarana'] = $sarana[0]['nama_handling'];
-        $datahandling[0]['kode_sarana'] = $sarana[0]['kode_handling'];
+        if ($sarana == null) {
+            $datahandling[0]['sarana'] = 'Invalid';
+        } else {
+            $datahandling[0]['sarana'] = $sarana[0]['kode_handling'] . ' - ' . $sarana[0]['nama_handling'];
+        }
 
 
         if ($datahandling[0]['proses'] == 'Linear') {
@@ -399,6 +420,24 @@ class C_Monhandseksi extends CI_Controller
             $dataProses = $this->M_dbhandling->getProses($id);
             $div = "";
             for ($d = 0; $d < sizeof($dataProses); $d++) {
+                $count = sizeof($dataProses);
+                if ($count >= 1 &&  $count <= 3) {
+                    $style_kotak = "width:40mm";
+                    $style_arrow = "width:20mm";
+                    $font = "12pt";
+                } else if (3 < $count && $count <= 6) {
+                    $style_kotak = "width:25mm";
+                    $style_arrow = "width:15mm";
+                    $font = "10pt";
+                } else if (6 < $count && $count <= 9) {
+                    $style_kotak = "width:20mm";
+                    $style_arrow = "width:10mm";
+                    $font = "9pt";
+                } else {
+                    $style_kotak = "width:17mm";
+                    $style_arrow = "width:7mm";
+                    $font = "8pt";
+                }
 
                 $Id_seksi = $this->M_dbhandling->selectdatatoedit2($dataProses[$d]['id_proses_seksi']);
 
@@ -421,22 +460,25 @@ class C_Monhandseksi extends CI_Controller
                 if ($d == 0) {
                     $div .= ' 
                 <div style="display: inline-block;">
-                    <div style="height:75px; margin:20px;text-align:center;padding: 20px 0;display:none"><i class="fa fa-arrow-right fa-2x"></i></div>
+                    <div style="height:75px;text-align:center;padding: 20px 0;display:none"><i class="fa fa-arrow-right fa-2x"></i></div>
                 </div>
                 <div style="display: inline-block;">
-                    <div style="background-color: ' . $warna . ';border: 1px solid black;margin:20px;text-align:center;padding: 20px 0;"><p style="margin:10px">' . $Id_seksi[0]['seksi'] . '</p></div>
+                    <div style="background-color: ' . $warna . ';border: 1px solid black;text-align:center;padding: 20px 0;' . $style_kotak . '"><p style="margin:10px;font-size:' . $font . '">' . $Id_seksi[0]['seksi'] . '</p></div>
                 </div>';
                 } else {
                     $div .= ' 
                 <div style="display: inline-block;">
-                    <div style="height:75px; margin:20px;text-align:center;padding: 20px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                    <div style="height:75px;text-align:center;padding: 20px 0;' . $style_arrow . '"><i class="fa fa-arrow-right fa-2x"></i></div>
                 </div>
                 <div style="display: inline-block;">
-                    <div style="background-color: ' . $warna . ';border: 1px solid black;margin:20px;text-align:center;padding: 20px 0;"><p style="margin:10px">' . $Id_seksi[0]['seksi'] . '</p></div>
+                    <div style="background-color: ' . $warna . ';border: 1px solid black;text-align:center;padding: 20px 0;' . $style_kotak . '"><p style="margin:10px;font-size:' . $font . '">' . $Id_seksi[0]['seksi'] . '</p></div>
                 </div>';
                 }
             }
-            $proses = ' <div class="panel-body" style="height: 500px;"><div style="border: 1px solid black;margin:20px;text-align:center" >' . $div . '</div></div>';
+            $proses = '
+            <div class="panel-body" style="height: 500px;">
+               <div style="border:1px solid black;margin:20px;text-align:center;border-collapse:collapse;padding:20px">' . $div . '</div>
+            </div>';
         } else {
             $proses = '
             <div class="panel-body" style="height: 500px;">
@@ -451,12 +493,21 @@ class C_Monhandseksi extends CI_Controller
         $dataHandrev = $this->M_dbhandling->selectdatahandlingbyid($id);
         $stats_kmp = $this->M_dbhandling->selectstatuskompbyid($dataHandrev[0]['id_status_komponen']);
         $stats_kmp_All = $this->M_dbhandling->selectstatuskomp();
-        $dataHandrev[0]['status_komp'] = $stats_kmp[0]['status'];
-        $dataHandrev[0]['status_komp_kode'] = $stats_kmp[0]['kode_status'];
+        if ($stats_kmp == null) {
+            $dataHandrev[0]['status_komp'] = 'Invalid';
+        } else {
+            $dataHandrev[0]['status_komp'] = $stats_kmp[0]['kode_status'] - $stats_kmp[0]['status'];
+        }
+        // $dataHandrev[0]['status_komp_kode'] = $stats_kmp[0]['kode_status'];
         $id_seksi = ['UPPL', 'Sheet Metal', 'Machining', 'Perakitan', 'PnP', 'Gudang', 'Subkon'];
         $sar_This = $this->M_dbhandling->selectdatatoedit($dataHandrev[0]['id_master_handling']);
-        $dataHandrev[0]['sarana_name'] = $sar_This[0]['nama_handling'];
-        $dataHandrev[0]['sarana_kode'] = $sar_This[0]['kode_handling'];
+        if ($sar_This == null) {
+            $dataHandrev[0]['sarana_name'] = 'Invalid';
+            $dataHandrev[0]['sarana_kode'] = '';
+        } else {
+            $dataHandrev[0]['sarana_name'] = $sar_This[0]['nama_handling'];
+            $dataHandrev[0]['sarana_kode'] = $sar_This[0]['kode_handling'];
+        }
         $sar_All = $this->M_dbhandling->selectmasterhandling();
 
         $opti = '';
@@ -486,7 +537,7 @@ class C_Monhandseksi extends CI_Controller
                 <div class="col-md-3" style="text-align:right"><label>Status Komponen</label></div>
                 <div class="col-md-8"> 
                     <select class="form-control select2 StatKomp" name="statKomp" style="width:100%">
-                        <option value="' . $dataHandrev[0]['id_status_komponen'] . '">' . $dataHandrev[0]['status_komp_kode'] . ' - ' . $dataHandrev[0]['status_komp'] . '</option>
+                        <option value="' . $dataHandrev[0]['id_status_komponen'] . '">' . $dataHandrev[0]['status_komp'] . '</option>
                         ' . $opt . '
                     </select>
                 </div>
@@ -520,6 +571,24 @@ class C_Monhandseksi extends CI_Controller
         }
         if ($dataHandrev[0]['proses'] == 'Linear') {
             $HandProRev = $this->M_dbhandling->getProses($dataHandrev[0]['id_handling']);
+            $count = sizeof($HandProRev);
+            if ($count >= 1 &&  $count <= 3) {
+                $style_kotak = "width:40mm";
+                $style_arrow = "width:20mm";
+                $font = "12pt";
+            } else if (3 < $count && $count <= 6) {
+                $style_kotak = "width:25mm";
+                $style_arrow = "width:15mm";
+                $font = "10pt";
+            } else if (6 < $count && $count <= 9) {
+                $style_kotak = "width:20mm";
+                $style_arrow = "width:10mm";
+                $font = "9pt";
+            } else {
+                $style_kotak = "width:17mm";
+                $style_arrow = "width:7mm";
+                $font = "8pt";
+            }
             for ($i = 0; $i < sizeof($HandProRev); $i++) {
                 $proses = $this->M_dbhandling->selectdatatoedit2($HandProRev[$i]['id_proses_seksi']);
                 $HandProRev[$i]['seksi'] = $proses[0]['seksi'];
@@ -574,21 +643,21 @@ class C_Monhandseksi extends CI_Controller
                 if ($i == 0) {
                     $preview .= '
                             <div style="display: inline-block;">
-                                <div id="arrowprosSes' . $i . '" style="display:none;height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                                <div id="arrowprosSes' . $i . '" style="display:none;height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right"></i></div>
                             </div>
                             <div style="display: inline-block;">
-                                <div id="Kotakk' . $i . '" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;background-color: ' . $color . '">
-                                    <p style="margin:10px" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
+                                <div class="kotakan" id="Kotakk' . $i . '" style="border: 1px solid black;text-align:center;padding: 10px 0;background-color: ' . $color . ';' . $style_kotak . '">
+                                    <p class="ketPrev" style="margin:10px;font-size:' . $font . '" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
                                 </div>
                             </div>';
                 } else {
                     $preview .= '
                             <div style="display: inline-block;">
-                                <div id="arrowprosSes' . $i . '" style="height:75px; margin:10px;text-align:center;padding: 10px 0;"><i class="fa fa-arrow-right fa-2x"></i></div>
+                                <div class="arahpenunjuk" id="arrowprosSes' . $i . '" style="height:75px;text-align:center;padding: 10px 0;' . $style_arrow . '"><i class="fa fa-arrow-right"></i></div>
                             </div>
                             <div style="display: inline-block;">
-                                <div id="Kotakk' . $i . '" style="border: 1px solid black;margin:10px;text-align:center;padding: 10px 0;background-color: ' . $color . '">
-                                    <p style="margin:10px" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
+                                <div class="kotakan" id="Kotakk' . $i . '" style="border: 1px solid black;text-align:center;padding: 10px 0;background-color: ' . $color . ';' . $style_kotak . '">
+                                    <p class="ketPrev" style="margin:10px;font-size:' . $font . '" id="tulisanKotakk' . $i . '">' . $HandProRev[$i]['seksi'] . '</p>
                                 </div>
                             </div>';
                 }
@@ -600,8 +669,12 @@ class C_Monhandseksi extends CI_Controller
             </div>';
             $previewPros .= '
             <div class="panel-body">
-                <div class="col-md-3" style="text-align:right;"><label>Preview Proses</label></div>
-                <div class="col-md-8" style="border: 1px solid black; border-collapse: collapse" id="preview_ProsSes">      
+                <div class="col-md-3" style="text-align:right;">      
+                <label> Preview Proses : </label>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12" style="border: 1px solid black; border-collapse: collapse;padding-top:15px;text-align:center" id="preview_ProsSes">      
                 ' . $preview . '
                 </div>
             </div>';
@@ -675,7 +748,7 @@ class C_Monhandseksi extends CI_Controller
                             <input type="hidden" name="indexGambr[]" value="' . $g . '"/>
                             <div class="col-md-3" style="text-align:right;color:white"><label>Foto</label></div>
                             <div class="col-md-1"><input class="form-control" name ="uRutGambar[]" value="' . $gambar[$g]['urutan'] . '" readonly="readonly" type="text"/></div>
-                            <div class="col-md-6"><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
+                            <div class="col-md-6><input type="file" id="fotoHandling' . $g . '" name="fotoHandling[]" onchange="PrevImg(this,' . $g . ')" class="form-control" accept=".jpg, .png, ,jpeg"/><span style="font-size:9pt;color:red">*Pilih File untuk mengganti foto</span></div>
                             <div class="col-md-1"><a class="btn btn-danger" onclick="deletpoto(' . $g . ')"><i class="fa fa-minus"></i></a></div>
                         </div>
                         <div class="panel-body">
@@ -688,7 +761,7 @@ class C_Monhandseksi extends CI_Controller
         }
 
         $piew = '
-        <form name="Orderform" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post" action="' . base_url('DbHandlingSeksi/MonitoringHandling/insertedit') . '">
+        <form name="Orderform" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post" action="' . base_url('DbHandling/MonitoringHandling/insertedit') . '">
             <input type="hidden" value="' . $id . '" name="IDHandling"/>
             <div class="panel-body">
                 <div class="col-md-3" style="text-align:right;"><label>Kode Komponen</label></div>

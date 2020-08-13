@@ -179,7 +179,7 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="col-md-6" style="text-align: left;">
-                                                <button formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling'); ?>" class="btn btn-danger">Back</button>
+                                                <a href="<?php echo base_url('DbHandlingSeksi/MonitoringHandling'); ?>" class="btn btn-danger">Back</a>
                                             </div>
                                             <div class="col-md-6" style="text-align: right;">
                                                 <button formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/requestHandling'); ?>" class="btn btn-success">Save</button>

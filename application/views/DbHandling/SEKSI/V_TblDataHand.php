@@ -24,7 +24,14 @@
                     <td class="text-center"><?= $handling['rev_no'] ?></td>
                     <td class="text-center"><?= $handling['doc_number'] ?></td>
                     <td class="text-center"><?= $handling['kode_produk'] ?> - <?= $handling['nama_produk'] ?></td>
-                    <td class="text-center"><?= $handling['sarana'] ?></td>
+                    <?php if ($handling['sarana']  == 'Invalid') {
+                        $color = 'red';
+                        $bold = 'bold';
+                    } else {
+                        $color = '';
+                        $bold = '';
+                    } ?>
+                    <td class="text-center" style="color: <?= $color ?>;font-weight:<?= $bold ?>;"><?= $handling['sarana'] ?></td>
                     <td class="text-center"><?= $handling['seksi'] ?></td>
                     <td class="text-center"><a class="btn btn-default" onclick="slideshow(<?= $handling['id_handling'] ?>)">Foto</a> <a class="btn btn-danger" onclick="showproses(<?= $handling['id_handling'] ?>)">Proses</a></td>
                     <td class="text-center"><button class="btn btn-default" formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/detaildatahandling/' . $handling['id_handling']); ?>">Detail</button></td>
