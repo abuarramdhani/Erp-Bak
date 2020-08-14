@@ -3081,6 +3081,8 @@ $(document).on('ready', function(){
 		$('#CateringTambahanLoading').show();
 		var penerima_noind = $(this).val();
 		var penerima_nama = $(this).text();
+		var tanggal = $('#txt-CM-Tambahan-Tanggal').val();
+		var shift = $('#slc-CM-Tambahan-Shift').val();
 		if (penerima_noind) {
 			penerima_nama = penerima_nama.replace(penerima_noind + " - ", "");
 			var penerima_identik = 0;
@@ -3092,24 +3094,77 @@ $(document).on('ready', function(){
 					penerima_identik += 1;
 				}
 			}
+			var tambah = 0; 
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Pesanan/Tambahan/getTambahanPengurangan',
+				data: {tanggal: tanggal,shift: shift, noind: penerima_noind},
+				error: function(xhr,status,error){
+					$('#CateringTambahanLoading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					if (obj.status == "ada") {
+						$('#CateringTambahanLoading').hide();
+						swal.fire({
+			                title: "Terdapat Tambah/Kurang sebagai berikut. Apakah Anda yakin Ingin Menambahkan " + penerima_noind + ' ' + penerima_nama +" sebagai Penerima ?",
+			                html: obj.data,
+			                type: "warning",
+			            	showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Tambah',
+							cancelButtonText: 'Batal'
+			            }).then((result) => {
+							if (result.value) {
+								$('#CateringTambahanLoading').show();
+								tambah = 1;
+								tambahPenerimaCMTambahan(penerima_identik, penerima_noind, penerima_nama, tambah)
+							}else{
+								tambah = 0;
+								tambahPenerimaCMTambahan(penerima_identik, penerima_noind, penerima_nama, tambah)
+							}
+						})		
+					}else{
+						tambah = 1;
+						tambahPenerimaCMTambahan(penerima_identik, penerima_noind, penerima_nama, tambah)
+					}
+				}
+			})	
+		}
+	});
 
-			if (penerima_identik == 0) {
-				tblCMTambahanPenerima.row.add([
-					penerima_noind + "<input type='hidden' name='txt-CM-Tambahan-Penerima-Noind[]' value='" + penerima_noind + "'>",
-					penerima_nama,
-					'<button type="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span></button>'
-				]).draw(false);
-			}else{
+	function tambahPenerimaCMTambahan(penerima_identik, penerima_noind, penerima_nama, tambah){
+		if (penerima_identik == 0 && tambah == 1) {
+			tblCMTambahanPenerima.row.add([
+				penerima_noind + "<input type='hidden' name='txt-CM-Tambahan-Penerima-Noind[]' value='" + penerima_noind + "'>",
+				penerima_nama,
+				'<button type="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span></button>'
+			]).draw(false);
+		}else{
+			if (penerima_identik > 0) {
 				swal.fire('Peringatan!',
 					'Pekerja ' + penerima_noind + ' ' + penerima_nama + ' Sudah Ada di tabel penerima!',
 					'warning'
 				)
 			}
-			
-			$('#slc-CM-Tambahan-Penerima').html("").change();
+			if(tambah == 0){
+				swal.fire('Peringatan!',
+					'tambah Pekerja ' + penerima_noind + ' ' + penerima_nama + ' dibatalkan!',
+					'warning'
+				)
+			}
 		}
+		$('#slc-CM-Tambahan-Penerima').html("").change();
 		$('#CateringTambahanLoading').hide();
-	});
+	}
 
 	$('#tbl-CM-Tambahan-Penerima-Table').on('click','tbody tr button', function(){
 		var statusDisable = $('#slc-CM-Tambahan-Penerima').attr('disabled');
@@ -3779,6 +3834,8 @@ $(document).on('ready', function(){
 		$('#CateringPenguranganLoading').show();
 		var penerima_noind = $(this).val();
 		var penerima_nama = $(this).text();
+		var tanggal = $('#txt-CM-Pengurangan-Tanggal').val();
+		var shift = $('#slc-CM-Pengurangan-Shift').val();
 		if (penerima_noind) {
 			penerima_nama = penerima_nama.replace(penerima_noind + " - ", "");
 
@@ -3791,26 +3848,81 @@ $(document).on('ready', function(){
 					penerima_identik += 1;
 				}
 			}
-
-			if (penerima_identik == 0) {
-				tblCMPenguranganPenerima.row.add([
-					penerima_noind + "<input type='hidden' name='txt-CM-Pengurangan-Penerima-Noind[]' value='" + penerima_noind + "'>",
-					penerima_nama,
-					'<button type="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span></button>'
-				]).draw(false);
-			}else{
-				swal.fire('Peringatan!',
-					'Pekerja ' + penerima_noind + ' ' + penerima_nama + ' Sudah Ada di tabel penerima!',
-					'warning'
-				)
-			}		
+			var tambah = 0; 
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Pesanan/Pengurangan/getTambahanPengurangan',
+				data: {tanggal: tanggal,shift: shift, noind: penerima_noind},
+				error: function(xhr,status,error){
+					$('#CateringPenguranganLoading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					if (obj.status == "ada") {
+						$('#CateringPenguranganLoading').hide();
+						swal.fire({
+			                title: "Terdapat Tambah/Kurang sebagai berikut. Apakah Anda yakin Ingin Menambahkan " + penerima_noind + ' ' + penerima_nama +" sebagai Penerima ?",
+			                html: obj.data,
+			                type: "warning",
+			            	showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Tambah',
+							cancelButtonText: 'Batal'
+			            }).then((result) => {
+							if (result.value) {
+								$('#CateringPenguranganLoading').show();
+								tambah = 1;
+								tambahPenerimaCMPengurangan(penerima_identik, penerima_noind, penerima_nama, tambah)
+							}else{
+								tambah = 0;
+								tambahPenerimaCMPengurangan(penerima_identik, penerima_noind, penerima_nama, tambah)
+							}
+						})		
+					}else{
+						tambah = 1;
+						tambahPenerimaCMPengurangan(penerima_identik, penerima_noind, penerima_nama, tambah)
+					}
+				}
+			})	
 			
-			$('#slc-CM-Pengurangan-Penerima').html("").change();
-			$('#CateringPenguranganLoading').hide();
 		}else{
 			$('#CateringPenguranganLoading').hide();
 		}
 	});
+
+	function tambahPenerimaCMPengurangan(penerima_identik, penerima_noind, penerima_nama, tambah){
+		if (penerima_identik == 0 && tambah == 1) {
+			tblCMPenguranganPenerima.row.add([
+				penerima_noind + "<input type='hidden' name='txt-CM-Pengurangan-Penerima-Noind[]' value='" + penerima_noind + "'>",
+				penerima_nama,
+				'<button type="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span></button>'
+			]).draw(false);
+		}else{
+			if (penerima_identik > 0) {
+				swal.fire('Peringatan!',
+					'Pekerja ' + penerima_noind + ' ' + penerima_nama + ' Sudah Ada di tabel penerima!',
+					'warning'
+				)
+			}
+			if(tambah == 0){
+				swal.fire('Peringatan!',
+					'tambah Pekerja ' + penerima_noind + ' ' + penerima_nama + ' dibatalkan!',
+					'warning'
+				)
+			}
+		}		
+		
+		$('#slc-CM-Pengurangan-Penerima').html("").change();
+		$('#CateringPenguranganLoading').hide();
+	}
 
 	$('#tbl-CM-Pengurangan-Penerima-Table').on('click','tbody tr button', function(){
 		var statusDisable = $('#slc-CM-Pengurangan-Penerima').attr('disabled');
