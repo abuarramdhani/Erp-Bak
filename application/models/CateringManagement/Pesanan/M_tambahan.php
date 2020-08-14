@@ -137,7 +137,7 @@ class M_tambahan extends CI_Model
 
     public function updateTambahanByIdTambahan($id_tambahan,$data){
         $this->personalia->where('id_tambahan',$id_tambahan);
-        $this->personalia->update('\"Catering\".tpesanantambahan',$data);
+        $this->personalia->update('"Catering".tpesanantambahan',$data);
     }
 
     public function getLokasiTempatMakanByTempatMakan($tempat_makan){
@@ -148,7 +148,7 @@ class M_tambahan extends CI_Model
     }
 
     public function insertPesanan($data){
-        $this->personalia->insert('\"Catering\".tpesanan',$data);
+        $this->personalia->insert('"Catering".tpesanan',$data);
     }
 
     public function getPesananByTempatMakanTanggalShift($tempat_makan,$tanggal,$shift){
@@ -199,22 +199,22 @@ class M_tambahan extends CI_Model
         $this->personalia->where('fs_tempat_makan',$tempat_makan);
         $this->personalia->where('fd_tanggal',$tanggal);
         $this->personalia->where('fs_kd_shift',$shift);
-        $this->personalia->update('\"Catering\".tpesanan',$data);
+        $this->personalia->update('"Catering".tpesanan',$data);
     }
 
     public function insertTambahan($data){
-        $this->personalia->insert('\"Catering\".tpesanantambahan',$data);
+        $this->personalia->insert('"Catering".tpesanantambahan',$data);
         return $this->personalia->insert_id();
     }
 
     public function deleteTambahanDetailByIdTambahan($id_tambahan){
         $this->personalia->where('id_tambahan',$id_tambahan);
-        $this->personalia->delete('\"Catering\".tpesanantambahan_detail');
+        $this->personalia->delete('"Catering".tpesanantambahan_detail');
     }
 
     public function deleteTambahanByIdTambahan($id_tambahan){
         $this->personalia->where('id_tambahan',$id_tambahan);
-        $this->personalia->delete('\"Catering\".tpesanantambahan');
+        $this->personalia->delete('"Catering".tpesanantambahan');
     }
 
     public function getPenerimaByKeyTempatMakan($key,$tempat_makan){
