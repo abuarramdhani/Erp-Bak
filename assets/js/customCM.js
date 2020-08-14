@@ -3453,6 +3453,7 @@ $(document).on('ready', function(){
 										url: baseurl + 'CateringManagement/Pesanan/Tambahan/getListTambahan',
 										data: {tanggal: tanggal},
 										error: function(xhr,status,error){
+											$('#CateringTambahanLoading').hide();
 											swal.fire({
 								                title: xhr['status'] + "(" + xhr['statusText'] + ")",
 								                html: xhr['responseText'],
@@ -3480,12 +3481,14 @@ $(document).on('ready', function(){
 										}
 									})
 								}
+								$('#CateringTambahanLoading').hide();
 								Swal.fire(
 									'Disimpan!',
 									'Data Sudah Disimpan.',
 									'success'
 								)
 							}else{
+								$('#CateringTambahanLoading').hide();
 								Swal.fire(
 									'Gagal Disimpan!',
 									'Data Gagal Disimpan.',
@@ -3495,6 +3498,7 @@ $(document).on('ready', function(){
 						}
 					})
 			}else{
+				$('#CateringTambahanLoading').hide();
 				swal.fire('Peringatan!',
 					'Pastikan Form Terisi Semua !',
 					'warning'
