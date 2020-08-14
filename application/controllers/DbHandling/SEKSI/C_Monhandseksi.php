@@ -1091,7 +1091,11 @@ class C_Monhandseksi extends CI_Controller
         }
 
         $sarana_handling = $this->M_dbhandling->selectdatatoedit($dataHandling[0]['id_master_handling']);
-        $dataHandling[0]['sarana'] = $sarana_handling[0]['nama_handling'];
+        if ($sarana_handling != null) {
+            $dataHandling[0]['sarana'] = $sarana_handling[0]['nama_handling'];
+        } else {
+            $dataHandling[0]['sarana'] = 'Invalid';
+        }
 
         // echo "<pre>";
         // print_r($dataHandling);
