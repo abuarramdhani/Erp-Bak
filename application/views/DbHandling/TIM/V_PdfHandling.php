@@ -33,27 +33,41 @@
         <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center;"><strong>Keterangan</strong></td>
     </tr>
     <?php if ($dataHandling[0]['proses'] == 'Linear') { ?>
-        <?php $row = sizeof($image);
-        foreach ($image as $key => $img) { ?>
+        <?php if ($image != null) {
+            $row = sizeof($image); ?>
+            <?php foreach ($image as $key => $img) { ?>
+                <tr>
+                    <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
+                        <img style="max-width:300px;padding:10px;max-height:300px" src="<?php echo base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png'); ?>">
+                    </td>
+                    <?php if ($key == 0) { ?>
+                        <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>"><?= $dataHandling[0]['keterangan'] ?></td>
+                    <?php } ?>
+                </tr>
+            <?php } ?>
+        <?php } else { ?>
             <tr>
-                <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
-                    <img style="max-width:300px;padding:10px;max-height:300px" src="<?php echo base_url('assets/upload/DatabaseHandling/fotolinier' . $img['id_handling'] . $img['urutan'] . '.png'); ?>">
-                </td>
-                <?php if ($key == 0) { ?>
-                    <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>"><?= $dataHandling[0]['keterangan'] ?></td>
-                <?php } ?>
+                <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">Tidak Ada Foto</td>
+                <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top"><?= $dataHandling[0]['keterangan'] ?></td>
             </tr>
         <?php } ?>
     <?php } else { ?>
-        <?php $row = sizeof($image);
-        foreach ($image as $key => $img) { ?>
+        <?php if ($image != null) {
+            $row = sizeof($image); ?>
+            <?php foreach ($image as $key => $img) { ?>
+                <tr>
+                    <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
+                        <img style="max-width:300px;padding:10px;max-height:300px" src="<?php echo base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png'); ?>">
+                    </td>
+                    <?php if ($key == 0) { ?>
+                        <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>"><?= $dataHandling[0]['keterangan'] ?></td>
+                    <?php } ?>
+                </tr>
+            <?php } ?>
+        <?php } else { ?>
             <tr>
-                <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
-                    <img style="max-width:300px;padding:10px;max-height:300px" src="<?php echo base_url('assets/upload/DatabaseHandling/fotononlinier' . $img['id_handling'] . $img['urutan'] . '.png'); ?>">
-                </td>
-                <?php if ($key == 0) { ?>
-                    <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>"><?= $dataHandling[0]['keterangan'] ?></td>
-                <?php } ?>
+                <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">Tidak Ada Foto</td>
+                <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top"><?= $dataHandling[0]['keterangan'] ?></td>
             </tr>
         <?php } ?>
     <?php } ?>
