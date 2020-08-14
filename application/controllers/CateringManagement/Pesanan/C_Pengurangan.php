@@ -505,6 +505,40 @@ class C_Pengurangan extends CI_Controller
         echo json_encode($data);
     }
 
+    public function getTambahanPengurangan(){
+        $tanggal = $this->input->get('tanggal');
+        $shift = $this->input->get('shift');
+        $noind = $this->input->get('noind');
+        $dt = $this->M_pengurangan->getTambahnPenguranganByTanggalShiftNoind($tanggal,$shift,$noind);
+        if (!empty($dt)) {
+            $tabel = "  <table class='table table-striped table-bordered table-hover'>
+                            <thead class='bg-danger'>
+                                <tr>
+                                    <th>tempat makan</th>
+                                    <th>kategori</th>
+                                    <th>jenis</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+            foreach ($dt as $key => $value) {
+                $tabel .= " <tr>
+                                <td>".$value['tempat_makan']."</td>
+                                <td>".$value['kategori']."</td>
+                                <td>".$value['jenis']."</td>
+                            </tr>";
+            }
+            $tabel .= "</tbody></table>";
+            $data = array(
+                'status' => 'ada',
+                'data' => $tabel
+            );
+        }else{
+            $data = array(
+                'status' => 'tidak ada'
+            );
+        }
+        echo json_encode($data);
+    }
 }
 
 ?>
