@@ -166,8 +166,8 @@ class M_blankoevaluasi extends CI_Model
         $result = array(
             'supervisor' => $supervisor,
             'kasie' => $kasie,
-            'unit' => $unit ?: $bidang,
-            'bidang' => $bidang,
+            'unit' => $unit ?: $bidang ?: $dept,
+            'bidang' => $bidang ?: $dept,
             'dept' => $dept
         );
 
