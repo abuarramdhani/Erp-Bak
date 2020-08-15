@@ -24,7 +24,7 @@ class C_MonitoringRak extends CI_Controller
 		if($this->session->is_logged){
 
 		} else {
-			redirect('index');
+			redirect('');
 		}
 	}
 
@@ -91,7 +91,7 @@ class C_MonitoringRak extends CI_Controller
 		$pdf 		= $this->pdf->load();
 		$pdf		= new mPDF('utf-8','f4', 0, '', 10, 10, 28, 10, 7, 4);
 		$filename 	= 'monitoringrak.pdf';
-		$head 	= $this->load->view('StockGdSparepart/V_Headpdf', $data, true);	
+		$head 	= $this->load->view('StockGdSparepart/V_HeadPdf', $data, true);	
 		$html 	= $this->load->view('StockGdSparepart/V_PdfRak', $data, true);	
 			
 		ob_end_clean();
