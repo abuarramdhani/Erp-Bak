@@ -144,6 +144,29 @@ function modalHistory(no) {
    
 }
 
+function modalGambarItem(no) {
+    var kode 	= $('#kode_brg'+no).val();
+    var nama 	= $('#nama_brg'+no).val();
+    var subinv 	= $('#subinv'+no).val();
+    var tglAwl 	= $('#tglAwl'+no).val();
+	var tglAkh 	= $('#tglAkh'+no).val();
+	
+    var request = $.ajax({
+        url: baseurl+'StockGdSparepart/LihatStock/searchGambarItem',
+        data: {
+            kode : kode, nama : nama, subinv : subinv, 
+			tglAwl : tglAwl, tglAkh : tglAkh
+        },
+        type: "POST",
+        datatype: 'html'
+    });
+    request.done(function(result){
+        $('#datagambar').html(result);
+        $('#mdlGambarItem').modal('show');
+    });
+   
+}
+
 
 //----------------------------------------------------------LIHAT TRANSACT---------------------------------------------------------------------
 
@@ -265,3 +288,9 @@ $(document).ready(function(){
 });
 
 
+function hover1() {
+	$(".gambar").css("box-shadow","-5px 5px 10px -3px #367da6");
+}
+function hover2() {
+	$(".gambar").css("box-shadow","");
+}
