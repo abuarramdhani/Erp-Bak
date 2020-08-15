@@ -1071,7 +1071,7 @@ class M_hitungpesanan extends Ci_Model
 		$this->personalia->query($sql,array($tanggal,$tempat_makan,$shift));
 	}
 
-	public function getPesananTambahanDetailByIdTambahanNoind($id_tambahan,$noind,$shift){
+	public function getPesananTambahanDetailByIdTambahanNoind($id_tambahan,$noind){
 		$sql = "select * 
 				from \"Catering\".tpesanantambahan_detail 
 				where id_tambahan =  ?
