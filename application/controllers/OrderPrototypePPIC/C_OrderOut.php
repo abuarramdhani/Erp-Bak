@@ -45,7 +45,7 @@ class C_OrderOut extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
 
-        $data['Menu'] = 'Dashboard';
+        $data['Menu'] = 'Order Out';
         $data['SubMenuOne'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);

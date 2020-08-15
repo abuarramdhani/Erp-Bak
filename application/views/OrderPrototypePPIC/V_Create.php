@@ -1,3 +1,5 @@
+<input type="hidden" id="opp_punya" value="1">
+<input type="hidden" id="opp_kodesie" value="<?php echo $this->session->kodesie ?>">
 <div class="content">
   <div class="row">
     <div class="col-lg-12">
@@ -54,12 +56,12 @@
                       <tr style="height:61px">
                         <td ><label>QTY /UNIT</label></td>
                         <td ><label>:</label></td>
-                        <td ><input type="text" class="form-control" name="qty" value=""></td>
+                        <td ><input type="number" class="form-control" name="qty" value=""></td>
                       </tr>
                       <tr style="height:61px">
                         <td ><label>Need</label></td>
                         <td ><label>:</label></td>
-                        <td ><input type="text" class="form-control" name="need" value=""></td>
+                        <td ><input type="number" class="form-control" name="need" value=""></td>
                       </tr>
                       <tr style="height:61px">
                         <td ><label>Material</label></td>
@@ -136,7 +138,7 @@
                             </div>
                             <div class="col-md-9">
                               <br>
-                              <input type="text" class="form-control" name="pic" value=""><br>
+                              <input type="text" readonly class="form-control" name="pic" value="<?php echo $this->session->employee ?>"><br>
                             </div>
                             <div class="col-md-2">
                               <b class="text-primary">SEKSI</b>
@@ -145,7 +147,7 @@
                               <b>:</b>
                             </div>
                             <div class="col-md-9">
-                              <input type="text" class="form-control" name="seksi" value=""><br>
+                              <input type="text" class="form-control" readonly id="opp_seksi" name="seksi" value=""><br>
                             </div>
                           </div>
                         </td>
@@ -176,16 +178,17 @@
                                 <tr row-id="1">
                                   <td style="text-align:center">1</td>
                                   <td>
-                                    <select class="form-control" name="p_proses[]">
-                                      <option value="P">PROSES</option>
-                                      <option value="A">A</option>
+                                    <select class="form-control" name="p_proses[]" required>
+                                      <option value="">Pilih...</option>
+                                      <option value="ASSY">ASSY</option>
+                                      <option value="BANDING">BANDING</option>
+                                      <option value="KIRIM">KIRIM</option>
+                                      <option value="CASTING">CASTING</option>
+                                      <option value="WELDING">WELDING</option>
                                     </select>
                                   </td>
-                                  <td>
-                                    <select class="form-control" name="p_seksi[]" >
-                                      <option value="P">SEKSI</option>
-                                      <option value="A">A</option>
-                                    </select>
+                                  <td style="width:30%">
+                                    <select class="form-control pilihseksiOPP" required name="p_seksi[]" style="width:100%"></select>
                                   </td>
                                   <td>
                                     <center><button type="button" name="button" class="btn btn-sm" onclick="plus_proses_opp()"><i class="fa fa-plus-square"></i></button></center>
