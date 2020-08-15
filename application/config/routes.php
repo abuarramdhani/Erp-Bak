@@ -4124,6 +4124,10 @@ $route['StockGdSparepart/LihatTransact']				= 'StockGdSparepart/C_LihatTransact'
 $route['StockGdSparepart/LihatTransact/(:any)']			= 'StockGdSparepart/C_LihatTransact/$1';
 $route['StockGdSparepart/LihatTransact/(:any)/(:any)']	= 'StockGdSparepart/C_LihatTransact/$1/$2';
 
+$route['StockGdSparepart/RakLantai2']				= 'StockGdSparepart/C_MonitoringRak/Lantai2';
+$route['StockGdSparepart/RakLantai2/Detail/(:any)']	= 'StockGdSparepart/C_MonitoringRak/DetailLt2/$1';
+$route['StockGdSparepart/MonitoringRak/Cetak']		= 'StockGdSparepart/C_MonitoringRak/Cetak';
+
 //---------------------------------------Monitoring Delivery Sparepart ---------------------------------------------------
 $route['MonitoringDeliverySparepart'] 							= 'MonitoringDeliverySparepart/C_Index';
 
