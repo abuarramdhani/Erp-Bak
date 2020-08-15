@@ -2029,8 +2029,94 @@ class C_TransferReffGaji extends CI_Controller
 						</tr>
 					</table>
 				</div>
-				<div style=\"page-break-after: always;\"></div>
-				<div style=\"padding-top: 150px;\">
+				<div style=\"page-break-after: always;\"></div>";
+			$html_rekap .= "<label>Rekap Nominal Penggajian</label>
+				<table style='width: 100%'>
+					<tr>
+						<td style='width: 20%'>Data Bulan</td>
+						<td style='width: 3%'>:</td>
+						<td style='width: 40%'>$bulan_gaji $periode_penggajian</td>
+						<td style='width: 17%'>Tanggal Cetak</td>
+						<td style='width: 3%'>:</td>
+						<td style='width: 17%'>$hari_string</td>
+					</tr>
+				</table>
+				<br>
+				<table style=\"border-collapse: collapse;border: 0.5px solid black;width: 100%\" border=\"1\">
+					<thead>
+						<tr>
+							<th style=\"width: 5%\">No</th>
+							<th style=\"width: 11%\">Kode Induk</th>
+							<th style=\"width: 14%\">DL&OBAT</th>
+							<th style=\"width: 14%\">P.DUKA</th>
+							<th style=\"width: 14%\">SPSI</th>
+							<th style=\"width: 14%\">KOPERASI</th>
+							<th style=\"width: 14%\">POT. LAIN</th>
+						</tr>
+					</thead>
+					<tbody>";
+			$nomor = 1;
+			$total_uang_dl = 0;
+			$total_pot_duka = 0;
+			$total_pot_ikop = 0;
+			$total_pot_spsi = 0;
+			$total_pot_utkop = 0;
+			$total_pot_lain = 0;
+			if (isset($data_rekap) && !empty($data_rekap)) {
+				foreach ($data_rekap as $key => $value) {
+					if (in_array($value['kode_induk'], array('A','E','F','H'))) {
+						$html_rekap .= "<tr>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: center;\">".$nomor."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: center;\">".$value['kode_induk']."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['uang_dl'], 0, ',', '.')."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_duka'], 0, ',', '.')."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_spsi'], 0, ',', '.')."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_ikop'] + $value['pot_utkop'], 0, ',', '.')."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_lain'], 0, ',', '.')."</td>
+							</tr>";
+						$total_uang_dl 		+= $value['uang_dl'];
+						$total_pot_duka 	+= $value['pot_duka'];
+						$total_pot_spsi 	+= $value['pot_spsi'];
+						$total_pot_kop 		+= $value['pot_ikop'] + $value['pot_utkop'];
+						$total_pot_lain 	+= $value['pot_lain'];
+						$nomor++;
+						$progres +=1;
+						$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses PDF REKAP");
+						session_write_close();
+						flush();
+					}
+				}
+			}
+			$html_rekap .= "	<tr>
+							<td colspan=\"2\">Total</td>
+							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_uang_dl, 0, ',','.')."</td>
+							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_duka, 0, ',','.')."</td>
+							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_spsi, 0, ',','.')."</td>
+							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_kop, 0, ',','.')."</td>
+							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_lain, 0, ',','.')."</td>
+						</tr>
+					</tbody>
+				</table>
+				<table style=\"width: 100%\">
+					<tr>
+						<td style=\"width: 60%\"></td>
+						<td style=\"width: 40%;text-align: center;\">Yogyakarta, ".strftime("%d %B %Y")."</td>
+					</tr>
+					<tr>
+						<td style=\"width: 60%\"></td>
+						<td style=\"width: 40%;text-align: center;\">Dicetak oleh,</td>
+					</tr>
+					<tr>
+						<td style=\"width: 60%\"></td>
+						<td style=\"width: 40%\">&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br></td>
+					</tr>
+					<tr>
+						<td style=\"width: 60%\"></td>
+						<td style=\"width: 40%;text-align: center;\">".ucwords(strtolower($this->session->employee))."</td>
+					</tr>
+				</table>
+				<div style=\"page-break-after: always;\"></div>";
+			$html_rekap .= "<div style=\"padding-top: 150px;\">
 					<h2 style=\"text-align: center\">MEMO</h2>
 					<table style='width: 100%'>
 						<tr>
@@ -2042,7 +2128,7 @@ class C_TransferReffGaji extends CI_Controller
 						<tr>
 							<td>Hal</td>
 							<td>:</td>
-							<td colspan=\"2\">Memo Penggajian Pekerja Non Staf Aktif</td>
+							<td colspan=\"2\">Memo Penggajian Pekerja Staf Aktif</td>
 						</tr>
 						<tr>
 							<td>Dari</td>
@@ -2085,8 +2171,8 @@ class C_TransferReffGaji extends CI_Controller
 						</tr>
 					</table>
 				</div>
-				<div style=\"page-break-after: always;\"></div>
-				<label>Rekap Nominal Penggajian</label>
+				<div style=\"page-break-after: always;\"></div>";
+			$html_rekap .= "<label>Rekap Nominal Penggajian</label>
 				<table style='width: 100%'>
 					<tr>
 						<td style='width: 20%'>Data Bulan</td>
@@ -2106,8 +2192,7 @@ class C_TransferReffGaji extends CI_Controller
 							<th style=\"width: 14%\">DL&OBAT</th>
 							<th style=\"width: 14%\">P.DUKA</th>
 							<th style=\"width: 14%\">SPSI</th>
-							<th style=\"width: 14%\">IKOP</th>
-							<th style=\"width: 14%\">UTKOP</th>
+							<th style=\"width: 14%\">KOPERASI</th>
 							<th style=\"width: 14%\">POT. LAIN</th>
 						</tr>
 					</thead>
@@ -2121,27 +2206,27 @@ class C_TransferReffGaji extends CI_Controller
 			$total_pot_lain = 0;
 			if (isset($data_rekap) && !empty($data_rekap)) {
 				foreach ($data_rekap as $key => $value) {
-					$html_rekap .= "<tr>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: center;\">".$nomor."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: center;\">".$value['kode_induk']."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['uang_dl'], 0, ',', '.')."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_duka'], 0, ',', '.')."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_spsi'], 0, ',', '.')."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_ikop'], 0, ',', '.')."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_utkop'], 0, ',', '.')."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_lain'], 0, ',', '.')."</td>
-						</tr>";
-					$total_uang_dl 		+= $value['uang_dl'];
-					$total_pot_duka 	+= $value['pot_duka'];
-					$total_pot_ikop 	+= $value['pot_ikop'];
-					$total_pot_spsi 	+= $value['pot_spsi'];
-					$total_pot_utkop 	+= $value['pot_utkop'];
-					$total_pot_lain 	+= $value['pot_lain'];
-					$nomor++;
-					$progres +=1;
-					$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses PDF REKAP");
-					session_write_close();
-					flush();
+					if (in_array($value['kode_induk'], array('B','D','J','G','T','Q'))) {
+						$html_rekap .= "<tr>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: center;\">".$nomor."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: center;\">".$value['kode_induk']."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['uang_dl'], 0, ',', '.')."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_duka'], 0, ',', '.')."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_spsi'], 0, ',', '.')."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_ikop'] + $value['pot_utkop'], 0, ',', '.')."</td>
+								<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format( $value['pot_lain'], 0, ',', '.')."</td>
+							</tr>";
+						$total_uang_dl 		+= $value['uang_dl'];
+						$total_pot_duka 	+= $value['pot_duka'];
+						$total_pot_spsi 	+= $value['pot_spsi'];
+						$total_pot_kop 		+= $value['pot_ikop'] + $value['pot_utkop'];
+						$total_pot_lain 	+= $value['pot_lain'];
+						$nomor++;
+						$progres +=1;
+						$this->M_transferreffgaji->updateProgres($user,$progres,"Memproses PDF REKAP");
+						session_write_close();
+						flush();
+					}
 				}
 			}
 			$html_rekap .= "	<tr>
@@ -2149,8 +2234,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_uang_dl, 0, ',','.')."</td>
 							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_duka, 0, ',','.')."</td>
 							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_spsi, 0, ',','.')."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_ikop, 0, ',','.')."</td>
-							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_utkop, 0, ',','.')."</td>
+							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_kop, 0, ',','.')."</td>
 							<td style=\"margin-left: 15px;margin-right: 15px;text-align: right;\">".number_format($total_pot_lain, 0, ',','.')."</td>
 						</tr>
 					</tbody>

@@ -338,6 +338,7 @@ class M_transferreffgaji extends CI_Model
 				sum(putkop::numeric) as pot_utkop
 				from \"Presensi\".treffgaji
 				where to_char(tanggal,'mmyy') ='$periode'
+				and left(noind,1) in ('B','D','J','G','T','Q','A','E','F','H')
 				group by left(noind,1)
 				order by 1";
 		return $this->personalia->query($sql)->result_array();
@@ -397,6 +398,7 @@ class M_transferreffgaji extends CI_Model
 						and jns_transaksi in('01')
 					) 
 				) as tbl 
+				where left(noind,1) in ('A','E','F','H','K','P')
 				ORDER BY left(noind,1), asal_outsourcing, kodesie, noind";
 		return $this->personalia->query($sql)->result_array();
 	}
@@ -455,6 +457,7 @@ class M_transferreffgaji extends CI_Model
 						and jns_transaksi in('01')
 					) 
 				) as tbl 
+				where left(noind,1) in ('B','D','J','G','Q','T')
 				ORDER BY noind";
 		return $this->personalia->query($sql)->result_array();
 	}
