@@ -287,12 +287,12 @@ class C_LihatStock extends CI_Controller
 	public function searchGambarItem(){
 		$kode 	= $this->input->post('kode');
 		$nama 	= $this->input->post('nama');
-		$filename = 'http://erp.quick.com/assets/upload/wipp/setelah/'.$kode.'.png';
+		$filename = './assets/upload/wipp/setelah/'.$kode.'.png';
 		if (file_exists($filename)) {
-			$image = '<img style="max-width: 250px;max-height: 250px" src="'.$filename.'">';
+			$image = '<img style="max-width: 250px;max-height: 250px" src="'. base_url("".$filename."").'">';
 			$ket = '';
 		}else {
-			$image = '<img style="max-width: 100px;max-height: 100px" src="http://erp.quick.com/assets/img/delete2.png">';
+			$image = '<img style="max-width: 100px;max-height: 100px" src="'. base_url("./assets/img/delete2.png").'">';
 			$ket = 'Gambar tidak ditemukan...';
 		}
 		$output = '
