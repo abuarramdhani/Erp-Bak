@@ -1039,7 +1039,7 @@ $(document).ready(function() {
 
 //SELECT NO MESIN//
 $(document).ready(function() {
-	$("#txtNoMesin").select2({
+	$("#txtNoMesinTSKK").select2({
 		minimumInputLength: 3,
 		maximumSelectionLength: 6,
 		ajax: {	
@@ -1049,7 +1049,7 @@ $(document).ready(function() {
 		data: function (params) {
 			var queryParameters = {
 			nm: params.term,
-			noMesin: $('#txtNoMesin').val()
+			noMesin: $('#txtNoMesinTSKK').val()
 			}
 	return queryParameters;
 		},
@@ -1065,7 +1065,7 @@ $(document).ready(function() {
 });
 
 //AUTOFILL JENIS MESIN// 
-$('#txtNoMesin').change(function(){
+$('#txtNoMesinTSKK').change(function(){
 	var isiNoMesin = $('.noMesin').val();
 	
 	if (isiNoMesin !== null) {
@@ -1096,7 +1096,7 @@ $('#txtNoMesin').change(function(){
 });
 
 //AUTOFILL RESOURCE MESIN// 
-$('#txtNoMesin').change(function(){
+$('#txtNoMesinTSKK').change(function(){
 	var isiNoMesin = $('.noMesin').val();
 	console.log(isiNoMesin);
 
