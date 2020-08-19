@@ -73,6 +73,16 @@
                                     <div class="col-md-12" style="margin-top: 10px;">
                                         <div class="col-md-6">
                                             <div class="col-md-4">
+                                                <label>Voip</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input required class="form-control" name="voipOrder" placeholder="Voip Yang Bisa Dihubungi">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top: 10px;">
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <label>Tanggal Order</label>
                                             </div>
                                             <div class="col-md-8">
@@ -126,38 +136,19 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12" style="margin-top: 10px;">
-                                        <div class="col-md-8">
-                                            <div class="col-md-3">
-                                                <label>Judul Order</label>
-                                            </div>
-                                            <div class="col-md-9" style="padding-left: 12px;">
-                                                <input required class="form-control" name="judul" placeholder="Masukkan Judul Order">
-                                            </div>
-                                        </div>
                                         <div class="col-md-12">
                                             <div class="col-md-12">
-                                                <label>Ex : Penambahan wastafel di Area X, Pemangkasan pohon di depan Gedung, Reparasi urinoir mampet</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
-                                        <div class="col-md-12">
-                                            <div class="col-md-12">
-                                                <label>Keterangan</label>
-                                                <br>
-                                                <label>Aktivitas Detail Pekerjaan yang dilakukan, misal : bongkar galian, perataan tanah, dan pekerjaan lain yang diminta dalam order tersebut. </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="col-md-12">
+                                                <style type="text/css">
+                                                    
+                                                </style>
                                                 <table class="table table-bordered" id="mco_tblPekerjaan">
                                                     <thead class="bg-info">
                                                         <th>No</th>
                                                         <th>Pekerjaan</th>
                                                         <th width="10%">Qty</th>
                                                         <th width="10%">Satuan</th>
-                                                        <th width="20%">Lampiran</th>
                                                         <th>Keterangan</th>
+                                                        <th width="20%">Lampiran</th>
                                                         <th>Act</th>
                                                     </thead>
                                                     <tbody class="mco_daftarPek_Append">
@@ -172,12 +163,14 @@
                                                             <td>
                                                                 <input name="tbl_satuan[0]" class="form-control tbl_satuan" oninput="this.value = this.value.toUpperCase()">
                                                             </td>
-                                                            <td class='td_lampiran'>
-                                                                <label nomor='1'>Lampiran 1 :</label>
-                                                                <input type="file" class="form-control mco_lampiranFilePekerjaan tbl_lampiran" name="tbl_lampiran[0][]">
-                                                            </td>
                                                             <td>
                                                                 <textarea name="tbl_ket[0]" class="form-control tbl_ket" style="margin: 0px; resize: none;"></textarea>
+                                                            </td>
+                                                            <td class='td_lampiran'>
+                                                                <div>
+                                                                    <input type="file" nomor='1' class="form-control mco_lampiranFilePekerjaan tbl_lampiran" name="tbl_lampiran[0][]" style="display: none;">
+                                                                </div>
+                                                                <button nomor='1' type='button' class="btn btn-primary add_lamp">Choose File 1</button>
                                                             </td>
                                                             <td>
                                                                 <button type="button" class="btn btn-xs btn-danger mco_deldaftarnoPek"><i class="fa fa-times"></i></button>

@@ -226,23 +226,29 @@ $(document).ready(function(){
 	});
 
 	$('.cmo_slcJnsPkj').change(function(){
-		$.ajax({
-			url : baseurl+"civil-maintenance-order/setting/getket_jenis_order",
-			type : 'GET',
-			data : {
-				id:$(this).val()
-			},
-			success : function(data) {
-				let res = jQuery.parseJSON(data);
-				$('.cmo_slcJnsPkjDetail').attr('disabled', false);
-				// console.log(res);
-				$('.setjnsPkjhere').text(res.keterangan);
-			},
-			error : function(request,error)
-			{
-				alert("Request: "+JSON.stringify(request));
-			}
-		});
+		var jenisPekerjaan = $(this).find(':selected').text();
+		if ( jenisPekerjaan == 'Buat Baru') {
+			$('.cmo_slcJnsPkjDetail').closest('.col-md-12').hide();
+		}else{
+			$('.cmo_slcJnsPkjDetail').closest('.col-md-12').show();
+			$.ajax({
+				url : baseurl+"civil-maintenance-order/setting/getket_jenis_order",
+				type : 'GET',
+				data : {
+					id:$(this).val()
+				},
+				success : function(data) {
+					let res = jQuery.parseJSON(data);
+					$('.cmo_slcJnsPkjDetail').attr('disabled', false);
+					// console.log(res);
+					$('.setjnsPkjhere').text(res.keterangan);
+				},
+				error : function(request,error)
+				{
+					alert("Request: "+JSON.stringify(request));
+				}
+			});
+		}
 	});
 
 	$('.cmo_slcJnsPkjDetail').change(function(){
@@ -397,10 +403,38 @@ $(document).ready(function(){
 	initSlcPkj();
 
 	$(document).on('change', '.mco_lampiranFilePekerjaan', function(){
-		var nomor = $(this).closest('td').find('label').last().attr('nomor');
+		var nomor = $(this).closest('td').find('button.add_lamp').attr('nomor');
+		$(this).closest('div').append('<label nomor="' + nomor + '"><i>' + nomor + '. ' + $(this).val().substring(12) + ' </i><button class="btn btn-danger btn-xs del_lamp" type="button"><span class="fa fa-trash"></span></button></label>');
 		nomor = parseInt(nomor) + 1;
-		$(this).closest('td').append("<label nomor='" + nomor + "'>Lampiran " + nomor + " :</label>");
-		$(this).clone().val('').appendTo($(this).closest('td'))
+		$(this).clone().val('').attr('nomor',nomor).appendTo($(this).closest('div'));
+		$(this).closest('td').find('button.add_lamp').attr('nomor',nomor);
+		$(this).closest('td').find('button.add_lamp').text('Choose File ' + nomor);
+	})
+
+	$(document).on('click', '.td_lampiran button.add_lamp', function(){
+		$(this).closest('td').find('input').last().trigger('click');
+	})
+
+	$(document).on('click', '.td_lampiran button.del_lamp', function(){
+		var nomor = $(this).closest('label').attr('nomor');
+		var nomorMax = $(this).closest('td').find('button.add_lamp').attr('nomor');
+		$(this).closest('div').find('input[nomor=' + nomor + ']').attr('nomor',999);
+		$(this).closest('div').find('label[nomor=' + nomor + ']').attr('nomor',999);
+
+		for (var i = (nomor * 1) + 1; i < nomorMax; i++) {
+			var nomorBaru = i - 1;
+			var text = $(this).closest('div').find('label[nomor=' + i + '] i').text().substring(1);
+			$(this).closest('td').find('label[nomor=' + i + '] i').html(nomorBaru + text);
+			$(this).closest('div').find('input[nomor=' + i + ']').attr('nomor',nomorBaru);
+			$(this).closest('div').find('label[nomor=' + i + ']').attr('nomor',nomorBaru);
+		}
+
+		$(this).closest('div').find('label[nomor=' + nomorMax + ']').attr('nomor',nomorMax - 1);
+		$(this).closest('td').find('button.add_lamp').attr('nomor',nomorMax - 1);
+		$(this).closest('td').find('button.add_lamp').text('Choose File ' +( nomorMax - 1));
+
+		$(this).closest('div').find('input[nomor=' + 999 + ']').remove();
+		$(this).closest('div').find('label[nomor=' + 999 + ']').remove();
 	})
 });
 $(document).on('click', '.mco_deldaftarnoPek', function(){

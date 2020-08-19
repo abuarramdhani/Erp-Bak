@@ -53,7 +53,7 @@
                                             <th style="text-align: center; width: 130px;">Action</th>
                                             <th style="text-align: center; width: 150px;">Seksi Pengorder</th>
                                             <th style="text-align: center;">Pemberi Order</th>
-                                            <th style="text-align: center;">Judul</th>
+                                            <th style="text-align: center;">Voip</th>
                                             <th style="text-align: center;">Jenis Pekerjaan</th>
                                             <th style="text-align: center;">Total Pekerjaan</th>
                                             <th class="bg-primary" style="text-align: center;">Status</th>
@@ -121,7 +121,7 @@
                                                 </td>
                                                 <td><?= $key['section_name'] ?></td>
                                                 <td style="white-space: nowrap; text-align: left"><?= $key['pengorder'].' - '.$key['dari'] ?></td>
-                                                <td><?= $key['judul'] ?></td>
+                                                <td><?= $key['voip'] ?></td>
                                                 <td style="white-space: nowrap; text-align: left"><?= $key['jenis_pekerjaan'] ?></td>
                                                 <td><?= $key['total_order'] ?></td>
                                                 <td><?= $key['status'] ?></td>

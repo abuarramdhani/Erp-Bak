@@ -83,15 +83,23 @@
                                     </div>
                                     <div class="col-md-8" style="margin-top: 10px;">
                                         <div class="col-md-4">
-                                            <label>Tanggal Order</label>
+                                            <label>Voip</label>
                                         </div>
                                         <div class="col-md-8 izi">
-                                            : <?= date('d-M-Y', strtotime($order['tgl_order'])) ?>
+                                            : <?= $order['voip'] ?>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="col-md-12">
                                             <label style="font-size: 14px;" class="mco_isiData">Lokasi : <?= empty(trim($order['location_name'])) ? '-':trim($order['location_name']) ?></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" style="margin-top: 10px;">
+                                        <div class="col-md-4">
+                                            <label>Tanggal Order</label>
+                                        </div>
+                                        <div class="col-md-8 izi">
+                                            : <?= date('d-M-Y', strtotime($order['tgl_order'])) ?>
                                         </div>
                                     </div>
                                     <div class="col-md-8" style="margin-top: 10px;">
@@ -118,25 +126,7 @@
                                             : <?= $order['jenis_order'] ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-8" style="margin-top: 10px;">
-                                        <div class="col-md-4">
-                                            <label>Judul Order</label>
-                                        </div>
-                                        <div class="col-md-8 izi">
-                                            : <?= $order['judul'] ?> <?= (!empty($order['ket'])) ? '('.$order['ket'].')':'' ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                            <div class="col-md-12">
-                                                <label>Ex : Penambahan wastafel di Area X, Pemangkasan pohon di depan Gedung, Reparasi urinoir mampet</label>
-                                            </div>
-                                        </div>
                                     <div class="col-md-12" style="margin-top: 10px;">
-                                        <div class="col-md-12">
-                                            <label>Keterangan</label>
-                                                <br>
-                                                <label>Aktivitas Detail Pekerjaan yang dilakukan, misal : bongkar galian, perataan tanah, dan pekerjaan lain yang diminta dalam order tersebut. </label>
-                                            </div>
                                         <div class="col-md-12">
                                             <table class="table table-bordered" id="mco_tblPekerjaan">
                                                 <thead class="bg-info">
