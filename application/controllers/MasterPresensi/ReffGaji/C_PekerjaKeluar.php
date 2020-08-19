@@ -20,6 +20,8 @@ class C_PekerjaKeluar extends CI_Controller
 		require_once APPPATH . 'third_party/phpxbase/Memo.php';
 		require_once APPPATH . 'third_party/phpxbase/Table.php';
 		require_once APPPATH . 'third_party/phpxbase/WritableTable.php';
+		require_once APPPATH . 'third_party/phpxbase/Exception/TableException.php';
+		require_once APPPATH . 'third_party/phpxbase/Exception/InvalidColumnException.php';
 
 		$this->load->library('Log_Activity');
 		$this->load->library('session');
@@ -257,7 +259,7 @@ class C_PekerjaKeluar extends CI_Controller
 			}
 
 
-			if ($puasa == 'puasa') {
+			if ($puasa == 'puasa' && strtolower(trim($pkj['agama'])) == 'islam') {
 				$kom_um_puasa = $this->M_pekerjakeluar->getKomUmPuasa($pkj['noind'],$tgl_bulan_awal,$tgl_keluar,$tgl_puasa);
 			}
 
@@ -992,6 +994,495 @@ class C_PekerjaKeluar extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_detail', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function listGaji(){
+		$user_id = $this->session->userid;
+
+		$data['Title']			=	'List Pekerja Keluar';
+		$data['Menu'] 			= 	'Reff Gaji';
+		$data['SubMenuOne'] 	= 	'Pekerja Keluar';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['data'] = $this->M_pekerjakeluar->getListPekerjaKeluar();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_list', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function editGaji($noind_encrypted){
+		$noind_encrypted_ = str_replace(array('-', '_', '~'), array('+', '/', '='), $noind_encrypted);
+      	$noind = $this->encrypt->decode($noind_encrypted_);
+
+      	$user_id = $this->session->userid;
+
+		$data['Title']			=	'Edit Pekerja Keluar';
+		$data['Menu'] 			= 	'Reff Gaji';
+		$data['SubMenuOne'] 	= 	'Pekerja Keluar';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['data'] = $this->M_pekerjakeluar->getListPekerjaKeluarByNoind($noind);
+		$data['noind_encrypted'] = $noind_encrypted;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_edit', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function updateGaji($noind_encrypted){
+		$noind_encrypted_ = str_replace(array('-', '_', '~'), array('+', '/', '='), $noind_encrypted);
+      	$noind = $this->encrypt->decode($noind_encrypted_);
+
+      	$txtKomIP 		= $this->input->post('txtKomIP');
+	    $txtKomIPT 		= $this->input->post('txtKomIPT');
+	    $txtKomIK 		= $this->input->post('txtKomIK');
+	    $txtKomIF 		= $this->input->post('txtKomIF');
+	    $txtKomUBT 		= $this->input->post('txtKomUBT');
+	    $txtKomUPAMK 	= $this->input->post('txtKomUPAMK');
+	    $txtKomLEMBUR 	= $this->input->post('txtKomLEMBUR');
+	    $txtKomIMS 		= $this->input->post('txtKomIMS');
+	    $txtKomIMM 		= $this->input->post('txtKomIMM');
+	    $txtKomUMP 		= $this->input->post('txtKomUMP');
+	    $txtKomUMC 		= $this->input->post('txtKomUMC');
+	    $txtKomCT 		= $this->input->post('txtKomCT');
+	    $txtKomHTM 		= $this->input->post('txtKomHTM');
+	    $txtKomIJIN 	= $this->input->post('txtKomIJIN');
+	    $txtKomTAMB 	= $this->input->post('txtKomTAMB');
+	    $txtKomDL 		= $this->input->post('txtKomDL');
+	    $txtKomPOT 		= $this->input->post('txtKomPOT');
+	    $txtKomDUKA 	= $this->input->post('txtKomDUKA');
+	    $txtKomKOP 		= $this->input->post('txtKomKOP');
+	    $txtKomPLAIN 	= $this->input->post('txtKomPLAIN');
+	    $txtKomKET 		= $this->input->post('txtKomKET');
+
+	    $data = array(
+	    	'ipe' =>$txtKomIP,
+			'ipet' =>$txtKomIPT,
+			'ika' =>$txtKomIK,
+			'ief' =>$txtKomIF,
+			'ubt' =>$txtKomUBT,
+			'upamk' =>$txtKomUPAMK,
+			'jam_lembur' =>$txtKomLEMBUR,
+			'ims' =>$txtKomIMS,
+			'imm' =>$txtKomIMM,
+			'um_puasa' =>$txtKomUMP,
+			'um_cabang' =>$txtKomUMC,
+			'ct' =>$txtKomCT,
+			'htm' =>$txtKomHTM,
+			'ijin' =>$txtKomIJIN,
+			'tambahan_str' =>$txtKomTAMB,
+			'dldobat' =>$txtKomDL,
+			'potongan_str' =>$txtKomPOT,
+			'pduka' =>$txtKomDUKA,
+			'putang' =>$txtKomKOP,
+			'plain' =>$txtKomPLAIN,
+			'ket' =>$txtKomKET
+	    );
+	    $this->M_pekerjakeluar->updateGajipekerjaKeluarByNoind($data,$noind);
+      	redirect(base_url('MasterPresensi/ReffGaji/PekerjaKeluar/listGaji'));
+	}
+
+	public function exportGaji(){
+		$user_id = $this->session->userid;
+
+		$data['Title']			=	'Export Pekerja Keluar';
+		$data['Menu'] 			= 	'Reff Gaji';
+		$data['SubMenuOne'] 	= 	'Pekerja Keluar';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['data'] = $this->M_pekerjakeluar->getListPekerjaKeluar();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_export', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function lihatExport(){
+		$periode = $this->input->get('tanggal');
+		$kode_induk = $this->input->get('kode_induk');
+		$tanggals = explode(" - ", $periode);
+		$awal = $tanggals[0];
+		$akhir = $tanggals[1];
+		if (is_array($kode_induk)) {
+			$kode_induk = implode(",", $kode_induk);
+		}
+		$kodes = explode(",", $kode_induk);
+		$kode = "";
+		if (!empty($kode_induk)) {
+			foreach ($kodes as $value) {
+				if ($kode == "") {
+					$kode = "'".$value."'";
+				}else{
+					$kode .= ",'".$value."'";
+				}
+			}
+		}else{
+			$kode = "'A','B','D','E','H','J','T'";
+		}
+
+		$data = $this->M_pekerjakeluar->getPekerjaKeluarByPeriodeKodeInduk($awal,$akhir,$kode);
+		echo json_encode($data);
+
+	}
+
+	public function exPdf(){
+		ini_set("memory_limit", "-1");
+		
+		$periode = $this->input->get('tanggal');
+		$kode_induk = $this->input->get('kodeInduk');
+		$tanggals = explode(" - ", $periode);
+		$awal = $tanggals[0];
+		$akhir = $tanggals[1];
+		$kodes = explode(",", $kode_induk);
+		$kode = "";
+		if (!empty($kode_induk) && $kode_induk != 'null') {
+			foreach ($kodes as $value) {
+				if ($kode == "") {
+					$kode = "'".$value."'";
+				}else{
+					$kode .= ",'".$value."'";
+				}
+			}
+		}else{
+			$kode = "'A','B','D','E','H','J','T'";
+		}
+
+		$data['data'] = $this->M_pekerjakeluar->getPekerjaKeluarByPeriodeKodeInduk($awal,$akhir,$kode);
+		$data['awal'] = $awal;
+		$data['akhir'] = $akhir;
+
+		$this->load->library('pdf');
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('','A4-L',0,'',5,5,5,25,0,5);
+		$filename = 'PekerjaKeluar_'.$awal.'_'.$akhir.'_'.str_replace(array(',','\''), array('',''), $kode).'.pdf';
+
+		// $html = $this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_PrintPdf',$data);
+		$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_PrintPdf',$data, true);
+		$waktu = strftime('%d %B %Y %T');
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu.". Halaman {PAGENO} dari {nb}</i>");
+		$pdf->WriteHTML($html);
+		$pdf->Output($filename, 'I');
+	}
+
+	public function exExcel(){
+		ini_set("memory_limit", "-1");
+		
+		$periode = $this->input->get('tanggal');
+		$kode_induk = $this->input->get('kodeInduk');
+		$tanggals = explode(" - ", $periode);
+		$awal = $tanggals[0];
+		$akhir = $tanggals[1];
+		$kodes = explode(",", $kode_induk);
+		$kode = "";
+		if (!empty($kode_induk) && $kode_induk != 'null') {
+			foreach ($kodes as $value) {
+				if ($kode == "") {
+					$kode = "'".$value."'";
+				}else{
+					$kode .= ",'".$value."'";
+				}
+			}
+		}else{
+			$kode = "'A','B','D','E','H','J','T'";
+		}
+
+		$gaji = $this->M_pekerjakeluar->getPekerjaKeluarByPeriodeKodeInduk($awal,$akhir,$kode);	
+		
+		$this->load->library('excel');
+		$doc = $this->excel;
+		// set active sheet
+		$doc->setActiveSheetIndex(0);
+		$objexcel = $doc->getActiveSheet();
+		// read data to active sheet
+		$objexcel->setCellValue('A1','No');
+		$objexcel->setCellValue('B1','No Induk');
+		$objexcel->setCellValue('C1','Nama');
+		$objexcel->setCellValue('D1','Kodesie');
+		$objexcel->setCellValue('E1','Seksi');
+		$objexcel->setCellValue('F1','Tanggal Keluar');
+		$objexcel->setCellValue('G1','IP');
+		$objexcel->setCellValue('H1','IK');
+		$objexcel->setCellValue('I1','IF');
+		$objexcel->setCellValue('J1','UBT');
+		$objexcel->setCellValue('K1','UPAMK');
+		$objexcel->setCellValue('L1','HTM');
+		$objexcel->setCellValue('M1','IJIN');
+		$objexcel->setCellValue('N1','UM Puasa');
+		$objexcel->setCellValue('O1','Lembur');
+		$objexcel->setCellValue('P1','IMM');
+		$objexcel->setCellValue('Q1','IMS');
+		$objexcel->setCellValue('R1','IPT');
+		$objexcel->setCellValue('S1','UM Cabang');
+		$objexcel->setCellValue('T1','Sisa Cuti');
+		$objexcel->setCellValue('U1','Keterangan');
+		$objexcel->setCellValue('V1','Total Duka');
+		$objexcel->setCellValue('W1','Uang DL');
+		$objexcel->setCellValue('X1','Tamb.');
+		$objexcel->setCellValue('Y1','Pot.');
+		$objexcel->setCellValue('Z1','Pot. Lain');
+		$objexcel->setCellValue('AA1','Jumlah JKN');
+		$objexcel->setCellValue('AB1','Jumlah JHT');
+		$objexcel->setCellValue('AC1','Jumlah JP');
+
+		$num = 2;
+		$nomor = 1;
+		foreach($gaji as $gj){
+			$objexcel->setCellValue('A'.$num,$nomor);
+			$objexcel->setCellValue('B'.$num,$gj['noind']);
+			$objexcel->setCellValue('C'.$num,$gj['nama']);
+			$objexcel->setCellValue('D'.$num,$gj['kodesie']);
+			$objexcel->setCellValue('E'.$num,$gj['seksi']);
+			$objexcel->setCellValue('F'.$num,$gj['tanggal_keluar']);
+			$objexcel->setCellValue('G'.$num,$gj['ipe']);
+			$objexcel->setCellValue('H'.$num,$gj['ika']);
+			$objexcel->setCellValue('I'.$num,$gj['ief']);
+			$objexcel->setCellValue('J'.$num,$gj['ubt']);
+			$objexcel->setCellValue('K'.$num,$gj['upamk']);
+			$objexcel->setCellValue('L'.$num,$gj['htm']);
+			$objexcel->setCellValue('M'.$num,$gj['ijin']);
+			$objexcel->setCellValue('N'.$num,$gj['um_puasa']);
+			$objexcel->setCellValue('O'.$num,$gj['jam_lembur']);
+			$objexcel->setCellValue('P'.$num,$gj['imm']);
+			$objexcel->setCellValue('Q'.$num,$gj['ims']);
+			$objexcel->setCellValue('R'.$num,$gj['ipet']);
+			$objexcel->setCellValue('S'.$num,$gj['um_puasa']);
+			$objexcel->setCellValue('T'.$num,$gj['ct']);
+			$objexcel->setCellValue('U'.$num,$gj['ket']);
+			$objexcel->setCellValue('V'.$num,$gj['pduka']);
+			$objexcel->setCellValue('W'.$num,$gj['dldobat']);
+			$objexcel->setCellValue('X'.$num,$gj['plain']);
+			$objexcel->setCellValue('Y'.$num,$gj['tambahan_str']);
+			$objexcel->setCellValue('Z'.$num,$gj['potongan_str']);
+			$objexcel->setCellValue('AA'.$num,$gj['jml_jkn']);
+			$objexcel->setCellValue('AB'.$num,$gj['jml_jht']);
+			$objexcel->setCellValue('AC'.$num,$gj['jml_jp']);
+
+			$num++;
+			$nomor++;
+		}
+
+		//save our workbook as this file name
+		$filename = 'PekerjaKeluar_'.$awal.'_'.$akhir.'_'.str_replace(array(',','\''), array('',''), $kode).'.xls';
+		//mime type
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="' . $filename . '"');
+		header('Cache-Control: max-age=0');
+
+		$objWriter = PHPExcel_IOFactory::createWriter($doc, 'Excel5');
+		$objWriter->save('php://output');
+	}
+
+	public function exDbf(){
+		ini_set("memory_limit", "-1");
+		
+		$periode = $this->input->get('tanggal');
+		$kode_induk = $this->input->get('kodeInduk');
+		$tanggals = explode(" - ", $periode);
+		$awal = $tanggals[0];
+		$akhir = $tanggals[1];
+		$kodes = explode(",", $kode_induk);
+		$kode = "";
+		if (!empty($kode_induk) && $kode_induk != 'null') {
+			foreach ($kodes as $value) {
+				if ($kode == "") {
+					$kode = "'".$value."'";
+				}else{
+					$kode .= ",'".$value."'";
+				}
+			}
+		}else{
+			$kode = "'A','B','D','E','H','J','T'";
+		}
+		$kodes = explode(",", $kode);
+		$hasil = array();
+		foreach ($kodes as $kd) {
+			$gaji = $this->M_pekerjakeluar->getPekerjaKeluarByPeriodeKodeInduk($awal,$akhir,$kd);	
+			$status_pekerja = str_replace("'", "", $kd);
+			$waktu = time();
+			if (!empty($gaji)) {
+				if($status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'J' || $status_pekerja == 'T'){
+					$table1 = new XBase\WritableTable(FCPATH."assets/upload/PekerjaKeluar/STAFF.dbf");
+					$table1->openWrite(FCPATH."assets/upload/PekerjaKeluar/STAFF_".$status_pekerja.'_'.$waktu.".dbf");
+
+					foreach($gaji as $dt){
+						$pri = $this->M_pekerjakeluar->get_tpribadi($dt['noind']);
+						$record = $table1->appendRecord();
+						$record->NOIND	= $dt['noind'];
+						$record->NOINDBR	= "";
+						$record->NAMA	= $dt['nama'];
+						$record->KODESEK	=$pri->kodesie;
+						$record->SEKSI	= $pri->seksi;
+						$record->UNIT	= $pri->unit;
+						$record->DEPT	= $pri->dept;
+						$record->KODEREK	= "";
+						$record->KPPH	= "";
+						$record->GAJIP	= "";
+						$record->UJAM	= "";
+						$record->UPAMK	= "";
+						$record->INSK	= "";
+						$record->INSP	= "";
+						$record->INSF	= "";
+						$record->P_ASTEK	= "";
+						$record->BLKERJA	= "";
+						$record->ANGG_SPSI	= "";
+						$record->ANGG_KOP	= "";
+						$record->ANGG_DUKA	= "";
+						$record->ANGG_JKN	= "";
+						$record->HR_I	= floatval($dt['ijin']);
+						$record->HR_ABS	= floatval($dt['htm']);
+						$record->HR_IK	= floatval($dt['ika']);
+						$record->HR_IP	= floatval($dt['ipe']);
+						$record->HR_IF	= floatval($dt['ief']);
+						$record->HR_S2	= floatval($dt['ims']);
+						$record->HR_S3	= floatval($dt['imm']);
+						$record->HUPAMK	= floatval($dt['upamk']);
+						$record->JAM_LBR	= floatval($dt['jam_lembur']);
+						$record->HR_UM	= floatval($dt['um_puasa']);
+						$record->HR_CATER	= "";
+						$record->HR_CUTI = floatval($dt['ct']);
+						$record->P_BONSB	= "";
+						$record->P_I_KOP	= "";
+						$record->P_UT_KOP	= "";
+						$record->P_LAIN	= "";
+						$record->P_DUKA	= $dt['pduka'];
+						$record->P_SPSI	= "";
+						$record->T_GAJIP	= "";
+						$record->T_INSK	= "";
+						$record->T_INSP	= "";
+						$record->T_INSF	= "";
+						$record->T_IMS	= "";
+						$record->T_IMM	= "";
+						$record->T_ULEMBUR	= "";
+						$record->T_UMAKAN	= "";
+						$record->T_CATERING	= "";
+						$record->TUPAMK	= "";
+						$record->T_TAMBAH1	= "";
+						$record->P_UTANG	= "";
+						$record->TRANSFER	= "";
+						$record->XDUKA	= "";
+						$record->PTKP	= "";
+						$record->SUBTOTAL1	= "";
+						$record->SUBTOTAL2	= "";
+						$record->SUBTOTAL3	= "";
+						$record->TERIMA	= "";
+						$record->KET	= "";
+						$record->TKENAPJK	= "";
+						$record->TTAKPJK	= "";
+						$record->KOREKSI1	= "";
+						$record->KOREKSI2	= "";
+						$record->DLOBAT	= "";
+						$record->KHARGA	= "";
+						$record->HRD_IP	= "";
+						$record->HRD_IK	= "";
+						$record->HRD_IF	= "";
+						$record->HRM_GP	= "";
+						$record->HRM_IP	= "";
+						$record->HRM_IK	= "";
+						$record->HRM_IF	= "";
+						$record->TGLRMH	= "";
+						$record->UBT	= floatval($dt['ubt']);
+						$record->TUBT	= "";
+						$record->IFDRMLAMA	= "";
+						$record->STATUS	= "";
+						$record->BANK	= "";
+						$record->KODEBANK	= "";
+						$record->NOREK	= "";
+						$record->POTBANK	= "";
+						$record->NAMAPEMREK	= "";
+						$record->PERSEN	= "";
+						$record->JSPSI	= "";
+						$record->STRUKTUR	= "";
+						$record->UMP	= "";
+						$record->REK_DPLK	= "";
+						$record->POT_DPLK	= "";
+						$record->UBS	= "";
+						$record->KD_LKS	= $pri->lokasi_kerja;
+						$record->HR_IPT	= floatval($dt['ipet']);
+						$record->HR_UMC	= floatval($dt['um_cabang']);
+						$record->ANGG_JKN = $dt['jml_jkn'];
+						$record->ANGG_JHT = $dt['jml_jht'];
+						$record->ANGG_JP = $dt['jml_jp'];
+						$table1->writeRecord();
+					}
+
+					$table1->close();
+					$hasil[] = array(
+						'link' => site_url("assets/upload/PekerjaKeluar/STAFF_".$status_pekerja.'_'.$waktu.".dbf"),
+						'ket' => $status_pekerja
+					);
+				}else{
+					$table2 = new XBase\WritableTable(FCPATH."assets/upload/PekerjaKeluar/NONSTAFF.DBF");
+					$table2->openWrite(FCPATH."assets/upload/PekerjaKeluar/NONSTAFF_".$status_pekerja.'_'.$waktu.".dbf");
+
+					foreach($gaji as $dt){
+						$pri = $this->M_pekerjakeluar->get_tpribadi($dt['noind']);
+						$record 			= $table2->appendRecord();
+						$record->NOIND		= $dt['noind'];
+						$record->NAMAOPR	= $dt['nama'];
+						$record->JLB		= floatval($dt['jam_lembur']);
+						$record->HMS		= floatval($dt['ims']);
+						$record->HMM		= floatval($dt['imm']);
+						$record->IPRES		= floatval($dt['ipe']);
+						$record->IKOND		= floatval($dt['ika']);
+						$record->UBT		= floatval($dt['ubt']);
+						$record->HUPAMK		= floatval($dt['upamk']);
+						$record->UMP		= floatval($dt['um_puasa']);
+						$record->IK			= floatval($dt['ijin']);
+						$record->ABS		= floatval($dt['htm']);
+						$record->TAMBAHAN	= $dt['tambahan_str'];
+						$record->POTONGAN 	= $dt['potongan_str'];
+						$record->KD_LKS		= $pri->lokasi_kerja;
+						$record->POTSERAGAM = $dt['plain'];
+						$record->JKN 		= $dt['jml_jkn'];
+						$record->JHT 		= $dt['jml_jht'];
+						$record->JP 		= $dt['jml_jp'];
+						$record->DUKA 		= $dt['pduka'];
+
+						$table2->writeRecord();
+					}
+
+					$table2->close();
+					$hasil[] = array(
+						'link' => site_url("assets/upload/PekerjaKeluar/NONSTAFF_".$status_pekerja.'_'.$waktu.".dbf"),
+						'ket' => $status_pekerja
+					);
+				}
+			}
+		}
+
+		$user_id = $this->session->userid;
+
+		$data['Title']			=	'Pekerja Keluar';
+		$data['Menu'] 			= 	'Reff Gaji';
+		$data['SubMenuOne'] 	= 	'Pekerja Keluar';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['hasil'] = $hasil;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_dbf',$data);
 		$this->load->view('V_Footer',$data);
 	}
 }

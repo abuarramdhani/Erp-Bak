@@ -55,6 +55,21 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+    $('#tbl-MPR-PekerjaKeluar-List').DataTable({
+        "scrollX" : true,
+        "fixedColumns":   {
+            leftColumns: 5
+        },
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+    });
+
     $(document).on('ifChecked','#txtPuasaPKJKeluar', function() {
         $('#txtPeriodePuasaPKJKeluar').prop("disabled", false);
     });
@@ -131,6 +146,143 @@ $(document).on('change', '#slcStatusPekerja', function() {
     }
 });
 
+$(document).ready(function(){
+    $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').daterangepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        locale: {
+            cancelLabel: 'Clear',
+            "format": "YYYY-MM-DD",
+            "separator": " - ",
+        }
+    });
+
+    var tblMPRPekerjaKeluarExport = $('#tbl-MPR-PekerjaKeluar-Export').DataTable({
+        "scrollX" : true,
+        "lengthMenu": [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'pageLength'
+        ],
+    });
+
+    $('#btn-MPR-PekerjaKeluar-Export-Lihat').on('click', function(){
+        var tanggal = $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').val();
+        var kodeInduk = $('#txt-MPR-PekerjaKeluar-Export-KodeInduk').val();
+        if (tanggal) {
+            $('#ldg-MPR-PekerjaKeluar-Export-Loading').show();
+            $.ajax({
+                method: 'GET',
+                url: baseurl + 'MasterPresensi/ReffGaji/PekerjaKeluar/lihatExport',
+                data: {tanggal: tanggal, kode_induk: kodeInduk},
+                error: function(xhr,status,error){
+                    $('#ldg-MPR-PekerjaKeluar-Export-Loading').hide();
+                    swal.fire({
+                        title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                        html: xhr['responseText'],
+                        type: "error",
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#d63031',
+                    })
+                },
+                success: function(data){
+                    $('#ldg-MPR-PekerjaKeluar-Export-Loading').hide();
+                    obj = JSON.parse(data);
+                    tblMPRPekerjaKeluarExport.clear().draw();
+                    obj.forEach(function(daftar, index){
+                        tblMPRPekerjaKeluarExport.row.add([
+                            (index + 1),
+                            daftar.noind,
+                            daftar.nama,
+                            daftar.tanggal_keluar,
+                            daftar.ipe,
+                            daftar.ika,
+                            daftar.ubt,
+                            daftar.upamk,
+                            daftar.ief,
+                            daftar.jam_lembur,
+                            daftar.htm,
+                            daftar.ijin,
+                            daftar.ct,
+                            daftar.ket,
+                            daftar.um_puasa,
+                            daftar.ims,
+                            daftar.imm,
+                            daftar.ipet,
+                            daftar.um_cabang,
+                            daftar.dldobat,
+                            daftar.plain,
+                            daftar.tambahan_str,
+                            daftar.potongan_str,
+                            daftar.jml_jkn,
+                            daftar.jml_jht,
+                            daftar.jml_jp,
+                            daftar.pduka
+                        ]).draw(false);
+                    })
+                    tblMPRPekerjaKeluarExport.columns.adjust().draw();
+                }
+            })
+        }else{
+            swal.fire(
+                'Peringatan!!',
+                'Pastikan Periode Keluar Sudah Terisi !!!',
+                'warning'
+            )
+        }
+    });
+
+    $('#btn-MPR-PekerjaKeluar-Export-Pdf').on('click', function(){
+        var tanggal = $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').val();
+        var kodeInduk = $('#txt-MPR-PekerjaKeluar-Export-KodeInduk').val();
+        if (tanggal) {
+            var params = encodeURI("tanggal=" + tanggal + "&kodeInduk=" + kodeInduk);
+            window.open(baseurl + 'MasterPresensi/ReffGaji/PekerjaKeluar/exPdf?' + params,'_blank');
+        }else{
+            swal.fire(
+                'Peringatan!!',
+                'Pastikan Periode Keluar Sudah Terisi !!!',
+                'warning'
+            )
+        }
+    });
+
+    $('#btn-MPR-PekerjaKeluar-Export-Excel').on('click', function(){
+        var tanggal = $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').val();
+        var kodeInduk = $('#txt-MPR-PekerjaKeluar-Export-KodeInduk').val();
+        if (tanggal) {
+            var params = encodeURI("tanggal=" + tanggal + "&kodeInduk=" + kodeInduk);
+            window.open(baseurl + 'MasterPresensi/ReffGaji/PekerjaKeluar/exExcel?' + params,'_blank');
+        }else{
+            swal.fire(
+                'Peringatan!!',
+                'Pastikan Periode Keluar Sudah Terisi !!!',
+                'warning'
+            )
+        }
+    });
+
+    $('#btn-MPR-PekerjaKeluar-Export-Dbf').on('click', function(){
+        var tanggal = $('#txt-MPR-PekerjaKeluar-Export-PeriodeKeluar').val();
+        var kodeInduk = $('#txt-MPR-PekerjaKeluar-Export-KodeInduk').val();
+        if (tanggal) {
+            var params = encodeURI("tanggal=" + tanggal + "&kodeInduk=" + kodeInduk);
+            window.open(baseurl + 'MasterPresensi/ReffGaji/PekerjaKeluar/exDbf?' + params,'_blank');
+        }else{
+            swal.fire(
+                'Peringatan!!',
+                'Pastikan Periode Keluar Sudah Terisi !!!',
+                'warning'
+            )
+        }
+    });
+})
+
+// end pekerja keluar
+
 $(document).on('ready', function() {
     $('.dataTable-pekerjaKeluar-detail').dataTable({
         scrollY: "300px",
@@ -175,16 +327,29 @@ $(document).on('ready',function(){
         $('#MPR-status-Read').val("1");
         $('#MPR-transferreffgaji-download').html("");
         periode = $('#MPR-transferreffgaji-periode').val();
+        memoNonStaff = $('#txt-MPR-transferreffgaji-memo-nonstaff').val();
+        memoStaff = $('#txt-MPR-transferreffgaji-memo-staff').val();
+        
         $('#MPR-transferreffgaji-progress').css("width","0%");
         $.ajax({
-            data : {periode : periode},
+            data : {periode : periode,staff: memoStaff,nonstaff: memoNonStaff},
             url : baseurl + 'MasterPresensi/ReffGaji/TransferReffGaji/proses',
             type : 'GET',
+            error: function(xhr,status,error){
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+                $('#MPR-status-Read').val("0");
+            },
             success: function(e){
-               $('#MPR-transferreffgaji-download').html(e);
-               setTimeout(function(e){
-                 $('#MPR-status-Read').val("0");
-               },5000);
+                $('#MPR-transferreffgaji-download').html(e);
+                setTimeout(function(e){
+                    $('#MPR-status-Read').val("0");
+                },5000);
             }
         })
     });
