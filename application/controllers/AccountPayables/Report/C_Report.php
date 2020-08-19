@@ -133,7 +133,7 @@ class C_Report extends CI_Controller {
 				$baris++;
 			}
 		}else{
-			$objget->getStyle("A1:N1")->applyFromArray(
+			$objget->getStyle("A1:O1")->applyFromArray(
 				array(
 					'fill' => array(
 						'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -146,7 +146,7 @@ class C_Report extends CI_Controller {
 				)
 			);
 
-			$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N");
+			$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O");
 			
 			$val = array("Vendor Name"
 						,"Invoice Type"
@@ -158,12 +158,13 @@ class C_Report extends CI_Controller {
 						,"PPN"
 						,"Total"
 						,"No. Faktur"
+						,"Masa Pajak"
 						,"No. PO"
 						,"No. Receipt"
 						,"Tgl Receipt"
 						,"GL Date");
 			
-			for ($a=0;$a<14; $a++) {
+			for ($a=0;$a<15; $a++) {
 				$objset->setCellValue($cols[$a].'1',$val[$a]);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(45);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(13);
@@ -175,10 +176,11 @@ class C_Report extends CI_Controller {
 				$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(13);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(13);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
-				$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(13);
-				$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(18);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(12);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(13);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(18);
-				$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(13);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(18);
+				$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(13);
 				$style = array(
 					'alignment' => array(
 						'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
@@ -204,10 +206,14 @@ class C_Report extends CI_Controller {
 					$numfaktur = '-';
 				};
 				$objset->setCellValue("J".$baris, $numfaktur);
-				$objset->setCellValue("K".$baris, $frow['PO_NUMBER']);
-				$objset->setCellValue("L".$baris, $frow['RECEIPT_NUM']);
-				$objset->setCellValue("M".$baris, $frow['RECEIPT_DATE']);
-				$objset->setCellValue("N".$baris, $frow['GL_DATE']);
+				// if ($frow['MONTH'] == NULL) {
+				// 	$masapajak = '-';
+				// };
+				$objset->setCellValue("K".$baris, $frow['MONTH']);
+				$objset->setCellValue("L".$baris, $frow['PO_NUMBER']);
+				$objset->setCellValue("M".$baris, $frow['RECEIPT_NUM']);
+				$objset->setCellValue("N".$baris, $frow['RECEIPT_DATE']);
+				$objset->setCellValue("O".$baris, $frow['GL_DATE']);
 				$baris++;
 			}
 		};

@@ -92,6 +92,7 @@ class M_report extends CI_Model {
 					,to_char(receipt.receipt_num) receipt_num
 					,to_char(receipt.receipt_date) receipt_date
 					,to_char(aia.gl_date,'DD-MON-YYYY') gl_date
+					,kfw.month
 				from
 					ap_invoices_all aia
 					,ap_batches_all aba
@@ -101,6 +102,7 @@ class M_report extends CI_Model {
 					,ap_payment_schedules_all apsa
 					,ap_terms_tl att
 					,po_headers_all pha
+					,khs_faktur_web kfw
 					,( select invoice_id
 							,rtrim(xmlagg(xmlelement(e, receipt_num, ',') order by receipt_num ).extract('//text()').getclobval(), ',') receipt_num
 							,rtrim(xmlagg(xmlelement(e, receipt_date, ',') order by receipt_num ).extract('//text()').getclobval(), ',') receipt_date
@@ -131,6 +133,7 @@ class M_report extends CI_Model {
 					and aia.vendor_id = asa.vendor_id(+)
 					and aia.invoice_id = aipa.invoice_id(+)
 					and aia.invoice_id = apsa.invoice_id(+)
+					and aia.INVOICE_ID =  kfw.INVOICE_ID(+)
 					and aba.batch_id(+) = aia.batch_id
 					and aca.status_lookup_code(+) != 'VOIDED'
 					and aia.terms_id = att.term_id
