@@ -19,6 +19,53 @@ const swalWIPP = (type, title) => {
   })
 }
 // ================================================ //
+const opp_add_to_order_out = () =>{
+  $('#opp_order_out_tampung').html('')
+  let data = $('#opp_keranjang').text()
+  let tm = []
+  data = data.split(',')
+  data.pop()
+  let tampung = [];
+  data.forEach((v, i) => {
+    let baru = v.split('_')
+    tampung.push(baru)
+  })
+
+  tampung.forEach((v, i) => {
+    let html = `<tr>
+                  <td style="text-align:center">${i+1}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>${v[2]}</td>
+                </tr>`;
+      $('#opp_order_out_tampung').append(html)
+  })
+
+}
+
+const addtokeranjang = (id_order, proses, seksi, id) =>{
+  let opp_check = $(`#opp_idproses_${id}`).attr('check');
+  let val = `${id}_${id_order}_${proses}_${seksi},`;
+  if (opp_check == 'plus') {
+    $(`#opp_idproses_${id}`).attr('check', 'minus');
+    $(`#opp_idproses_${id}`).html(`<i class="fa fa-close"></i> Cancel Order`)
+    $('#opp_keranjang').append(val)
+  }else {
+    $(`#opp_idproses_${id}`).html(`<i class="fa fa-sign-in"></i> Add Order`)
+    $(`#opp_idproses_${id}`).attr('check', 'plus');
+    let krjg = $('#opp_keranjang').text();
+    let newText = krjg.replace(val, '');
+    $('#opp_keranjang').text(newText)
+  }
+  setTimeout(function () {
+    let krjg_new = $('#opp_keranjang').text();
+    let count_krjg = Number(krjg_new.split(',').length) -1;
+    $('#jumlahitem_opp').html(count_krjg)
+  }, 70);
+}
+
 const orderinopp = $('.orderInOpp').DataTable();
 
 function format_wipp_bom(d, no) {
@@ -95,7 +142,7 @@ const opp_in_detail = (no,
 const opp_detail_proses = (id, komponen_kode) => {
 	$('#detail_proses_opp').html('')
 	$('#detail_proses_opp').html(komponen_kode)
-	$.ajax({
+  $.ajax({
 		url: baseurl + 'OrderPrototypePPIC/OrderIn/getProsesOPP',
 		type: 'POST',
 		data: {
@@ -106,7 +153,7 @@ const opp_detail_proses = (id, komponen_kode) => {
 																			<center>
 																				<img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif">
 																				<br>
-																				Sedang Mengambil Data
+																				Sedang Mengambil Data...
 																			</center>
 																		</div>`)
 		},
@@ -116,13 +163,23 @@ const opp_detail_proses = (id, komponen_kode) => {
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			console.error()
 		}
-	})
+	}).then(_=>{
+    let item = $('#opp_keranjang').text();
+    let item_selected = $('.opp_cek_item_exiting').map((_, el) => el.value).get()
+    item_selected.forEach((v, i)=>{
+      if (item.includes(`${v},`)) {
+        let get_id = v.split('_');
+        $(`#opp_idproses_${get_id[0]}`).attr('check', 'minus');
+        $(`#opp_idproses_${get_id[0]}`).html(`<i class="fa fa-close"></i> Cancel Order`)
+      }
+    })
+  })
 }
 
 $(document).ready(function() {
 	let opp_punya = $('#opp_punya').val();
 	if (opp_punya) {
-		console.log($('#opp_kodesie').val());
+		// console.log($('#opp_kodesie').val());
 		const getseksiopp = $.ajax({
 												url: baseurl + 'OrderPrototypePPIC/OrderIn/getSeksiBy',
 												type: 'POST',

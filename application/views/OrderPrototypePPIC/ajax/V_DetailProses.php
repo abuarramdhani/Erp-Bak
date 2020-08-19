@@ -16,8 +16,9 @@
           <td><center><?php echo $g['seksi'] ?></center></td>
           <td>
             <center>
-              <button type="button" class="btn btn-success" style="margin-left:1px;padding:5px 7px;font-weight:bold;" name="button">
-                <i class="fa fa-user-secret"></i> Order
+              <input type="hidden" class="opp_cek_item_exiting" value="<?php echo $g['id'] ?>_<?php echo $g['id_order'] ?>_<?php echo $g['proses'] ?>_<?php echo $g['seksi'] ?>">
+              <button check="plus" type="button" id="opp_idproses_<?php echo $g['id'] ?>" onclick="addtokeranjang('<?php echo $g['id_order'] ?>', '<?php echo $g['proses'] ?>', '<?php echo $g['seksi'] ?>', <?php echo $g['id'] ?>)" class="btn btn-success" style="margin-left:1px;padding:5px 7px;font-weight:bold;" name="button">
+                <i class="fa fa-sign-in"></i> Add Order
               </button>
             </center>
           </td>
