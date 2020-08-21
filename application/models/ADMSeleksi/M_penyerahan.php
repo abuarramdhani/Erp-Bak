@@ -247,7 +247,8 @@ class M_penyerahan extends CI_Model
 						trim(a.no_kk) as no_kk,
 						trim(a.nokeb) as nokeb,
 						b.kodelamaran,
-						(SELECT pola_kombinasi from \"Presensi\".tpolapernoind d where d.noind = a.noind and d.kodesie = a.kodesie) as pola_shift FROM hrd_khs.tpribadi a
+						(SELECT trim(kd_shift) from \"Presensi\".tshiftpekerja d where d.noind = a.noind and d.kodesie = a.kodesie limit 1) as pola_shift 
+				FROM hrd_khs.tpribadi a
 				LEFT JOIN \"Adm_Seleksi\".tberkas b on a.nik = b.nik or a.nama = b.nama
 				LEFT JOIN \"Presensi\".tshiftpekerja c on a.noind = c.noind where a.keluar = '1' and a.noind = '$noind' order by a.noind ASC";
 		return $this->personalia->query($sql)->result_array();
@@ -481,7 +482,7 @@ class M_penyerahan extends CI_Model
 						(SELECT trim(kd_jabatan) from hrd_khs.tb_status_jabatan where a.noind = noind and a.noind_baru = noind_baru and status_data = '02') as jab_upah,
 						f.*,
 						case when a.kd_pkj != '' then (SELECT pekerjaan from hrd_khs.tpekerjaan where kdpekerjaan = a.kd_pkj) else '' end as pekerjaan,
-						(SELECT trim(pola_kombinasi) from \"Presensi\".tpolapernoind d where d.noind = a.noind and d.kodesie = a.kodesie and d.noind_baru = '$noind_baru') as pola_shift
+						(SELECT trim(kd_shift) from \"Presensi\".tshiftpekerja d where d.noind = a.noind and d.kodesie = a.kodesie and d.noind_baru = '$noind_baru' limit 1) as pola_shift 
 				FROM hrd_khs.tpribadi a
 				LEFT JOIN \"Adm_Seleksi\".tberkas b on a.nik = b.nik or a.nama = b.nama
 				LEFT JOIN \"Surat\".tsurat_penyerahan e on e.kodelamaran = b.kodelamaran
