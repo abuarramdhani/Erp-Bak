@@ -612,12 +612,7 @@ class C_PekerjaKeluar extends CI_Controller
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 
-			$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
-			if($cek_noind_berubah > 0){
-				unset($gaji[$angka]);
-			}else{
-				$angka++;
-			}
+			$angka++;
 		}
 
 		return $gaji;
