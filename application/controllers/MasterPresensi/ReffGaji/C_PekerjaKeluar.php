@@ -821,6 +821,7 @@ class C_PekerjaKeluar extends CI_Controller
 				$record->JHT 		= $dt['jht'];
 				$record->JP 		= $dt['jp'];
 				$record->DUKA 		= $dt['nom_duka'];
+				$record->CTI 		= $dt['sisa_cuti'];
 
 				$table->writeRecord();
 			}
@@ -1455,6 +1456,7 @@ class C_PekerjaKeluar extends CI_Controller
 						$record->JHT 		= $dt['jml_jht'];
 						$record->JP 		= $dt['jml_jp'];
 						$record->DUKA 		= $dt['pduka'];
+						$record->CTI 		= $dt['ct'];
 
 						$table2->writeRecord();
 					}
