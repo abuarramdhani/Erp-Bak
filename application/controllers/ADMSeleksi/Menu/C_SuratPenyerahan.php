@@ -61,8 +61,38 @@ class C_SuratPenyerahan extends CI_Controller
 
         $explode = explode('|', $kode);
         $tanggal = date('Y-m-d', strtotime($explode[2]));
+        $gol1 = array(
+            '1',
+            '2',
+            '3'
+        );
+        $gol2 = array(
+            'A',
+            'B',
+            'C'
+        );
+        $gol3 = array(
+            'PKL1',
+            'PKL2',
+            'PKL3'
+        );
 
         $data['data'] = $this->M_penyerahan->getDataEdit($explode[0], $explode[1], $tanggal, $explode[3]);
+
+        $a = $data['data'][0]['gol'];
+        if (in_array($a, $gol1)) {
+            $data['gol'] = $gol1;
+        } elseif (in_array($a, $gol2)) {
+            $data['gol'] = $gol2;
+        } elseif (in_array($a, $gol3)) {
+            $data['gol'] = $gol3;
+        } else {
+            $merge = array_merge($gol1, $gol2);
+            $mergeAll = array_merge($merge, $gol3);
+            $data['gol'] = $mergeAll;
+        }
+
+        $data['pekerjaan'] = $this->M_penyerahan->getPekerjaan(substr($data['data'][0]['kodesie'], 0, 7));
         $data['tempat_makan'] = $this->M_penyerahan->getTempatMakan();
         $data['lokasi'] = $this->M_penyerahan->getLokasi();
         $data['kantor'] = $this->M_penyerahan->getKantor();
@@ -96,6 +126,7 @@ class C_SuratPenyerahan extends CI_Controller
         $ruang      = $_POST['txt_ruang_SP'];
         $tmp_makan  = $_POST['slc_makan_SP'];
         $shift      = $_POST['txt_Shift_SP'];
+        $kd_pkj     = $_POST['inpt_pekerjaan'];
         $nama       = $_POST['def_Nama_pkj'];
         $agama      = $_POST['inp_Agama_SP'];
         $jenkel     = $_POST['inp_jenkel_SP'];
@@ -119,7 +150,7 @@ class C_SuratPenyerahan extends CI_Controller
         $jabatan    = $_POST['txt_jabatan_SP'];
         $jab_upah   = $_POST['slc_jab_upah'];
         $npwp       = $_POST['txtNPWP_SP'];
-        $golongan   = $_POST['masa_pkl'];
+        $golongan   = $_POST['slc_gol_pkj_SP'];
         $kontrak_hubker = $_POST['txt_lama_kontrak'];
         $akt_seleksi    = $_POST['inp_tgl_angkat_SP'];
         $ori_hubker     = $_POST['txt_try_hubker'];
@@ -213,6 +244,8 @@ class C_SuratPenyerahan extends CI_Controller
             'lmkontrak'     => $lama_kontrak,
             'akhkontrak'    => $akhir_kontrak,
             'tglkeluar'     => $tgl_keluar,
+            'golkerja'      => $golongan,
+            'kd_pkj'        => $kd_pkj
         );
         $this->M_penyerahan->updateTpribadi($pribadi, $noind);
 
@@ -225,6 +258,7 @@ class C_SuratPenyerahan extends CI_Controller
             'tgl_mulaiik'       => $ik_hubker ? $ik_hubker : date('Y-m-d', strtotime('1900-01-01')),
             'lama_trainee'      => $ori_hubker ? $ori_hubker : '0',
             'lama_kontrak'      => $kontrak_hubker ? $kontrak_hubker : '0',
+            'gol'               => $golongan
         );
         $this->M_penyerahan->updateTSuratPenyerahan($surat_penyerahan, $noind);
 

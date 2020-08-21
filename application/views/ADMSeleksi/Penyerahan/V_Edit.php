@@ -35,16 +35,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6" style="margin-top: 10px" id="gol_Pekerja_SP" hidden>
+                                            <div class="col-lg-6" style="margin-top: 10px" id="gol_Pekerja_SP">
                                                 <div class="form-group">
                                                     <label for="slc_gol_pkj_SP" class="col-lg-5 control-label text-right">Gol</label>
                                                     <div class="col-lg-3">
                                                         <select class="select select2 form-control" name="slc_gol_pkj_SP" id="slc_gol_pkj_SP">
-                                                            <option value=""></option>
+                                                            <option <?= $data[0]['gol'] == '-' ? 'Selected' : '' ?> value="-">-</option>
+                                                            <?php foreach ($gol as $gol) { ?>
+                                                                <option <?= $gol == $data[0]['gol'] ? 'Selected' : '' ?> value="<?= $gol ?>"><?= $gol ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="masa_pkl" hidden value="<?= $data[0]['gol'] ?>" id="HideMasaPKL">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -118,7 +120,11 @@
                                                             <div class="form-group">
                                                                 <label for="txtKerja_SP" class="col-lg-4 control-label ">Pekerjaan</label>
                                                                 <div class="col-lg-8">
-                                                                    <input type="text" name="inpt_pekerjaan" class="form-control" id="inpt_pekerjaan" readonly="" value="<?php echo $data[0]['pekerjaan'] ?>">
+                                                                    <select class="select select2 form-control" name="inpt_pekerjaan" id="inpt_pekerjaan">
+                                                                        <?php foreach ($pekerjaan as $kerja) { ?>
+                                                                            <option <?= $kerja['pekerjaan'] == $data[0]['pekerjaan'] ? 'selected' : '' ?> value="<?= $kerja['kdpekerjaan'] ?>"><?= $kerja['pekerjaan'] ?></option>
+                                                                        <?php } ?>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
