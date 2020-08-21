@@ -135,7 +135,7 @@ class M_report extends CI_Model {
 					and aia.invoice_id = aipa.invoice_id(+)
 					and aia.invoice_id = apsa.invoice_id(+)
 					--and aia.INVOICE_ID =  kfw.INVOICE_ID(+)
-					and regexp_replace(aia.attribute5, '[^[:digit:]]', '')||aia.attribute3 = kfw.FAKTUR_PAJAK
+					and regexp_replace(aia.attribute5, '[^[:digit:]]', '')||aia.attribute3 = kfw.FAKTUR_PAJAK(+)
 					and aba.batch_id(+) = aia.batch_id
 					and aca.status_lookup_code(+) != 'VOIDED'
 					and aia.terms_id = att.term_id
