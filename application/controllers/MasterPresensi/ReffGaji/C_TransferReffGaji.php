@@ -1247,16 +1247,16 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IK</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IF</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>HTM</td>
-											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>UBT</td>
-											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>UPAMK</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>UBT</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>UPAMK</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>UM</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IMS</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IMM</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>LEMBUR</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>CT</td>
 											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>HL</td>
-											<td style='width: 5%;text-align: center;border: 1px solid #b2bec3;'>P.DUKA+<br>SPSI</td>
-											<td style='width: 5%;text-align: center;border: 1px solid #b2bec3;'>IKOP+<br>UTKOP</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>P.DUKA+<br>SPSI</td>
+											<td style='width: 3%;text-align: center;border: 1px solid #b2bec3;'>IKOP+<br>UTKOP</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>POT.</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>TAMB.</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>IJIN</td>
@@ -1525,7 +1525,6 @@ class C_TransferReffGaji extends CI_Controller
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
-					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_dldobat."</td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
@@ -1636,7 +1635,7 @@ class C_TransferReffGaji extends CI_Controller
 		if (!empty($data_cetak_per_kodesie)) {
 			$pdf_cetak_per_kodesie = $this->pdf->load();
 			$pdf_cetak_per_kodesie->debug = true;
-			$pdf_cetak_per_kodesie = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 5, 20, 5, 5);
+			$pdf_cetak_per_kodesie = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 5, 23, 5, 5);
 			$filename = 'CETAKSEKSI'.$periode.$waktu.'.pdf';
 
 			$html_cetak_per_kodesie = "<!DOCTYPE html>
@@ -1693,7 +1692,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 11%;text-align: center;'>NAMA</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IP</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IK</td>
-											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IF</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>IF</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HTM</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UPAMK</td>
@@ -1703,12 +1702,12 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>LEMBUR</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>CT</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HL</td>
-											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA&<br>SPSI</td>
-											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>IKOP&<br>UTKOP</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>P.DUKA&<br>SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 6%;text-align: center;'>IKOP&<br>UTKOP</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>IJIN</td>
-											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBS</td>
+											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>UBS</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UMP</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
@@ -1787,7 +1786,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 11%;text-align: center;'>NAMA</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IP</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IK</td>
-											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HM</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>HM</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>HTM</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UBT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>UPAMK</td>
@@ -1797,7 +1796,8 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>LEMBUR</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>CT</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>HL</td>
-											<td style='border: 1px solid #b2bec3;width: 5%;text-align: center;'>P.DUKA</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>P.DUKA&<br>SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 6%;text-align: center;'>IKOP&<br>UTKOP</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.</td>
 											<td style='border: 1px solid #b2bec3;width: 3%;text-align: center;'>IJIN</td>
@@ -1837,7 +1837,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
 							<td style='border: 1px solid #b2bec3;'>".$value['kodesie']."</td>
 							<td style='border: 1px solid #b2bec3;'>".$value['noind']."</td>
-							<td style='border: 1px solid #b2bec3;'>".substr($value['nama'], 0, 18)."</td>
+							<td style='border: 1px solid #b2bec3;'>".substr($value['nama'], 0, 17)."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ipe']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ika']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ief']))."</td>
@@ -2058,9 +2058,8 @@ class C_TransferReffGaji extends CI_Controller
 			$nomor = 1;
 			$total_uang_dl = 0;
 			$total_pot_duka = 0;
-			$total_pot_ikop = 0;
 			$total_pot_spsi = 0;
-			$total_pot_utkop = 0;
+			$total_pot_kop = 0;
 			$total_pot_lain = 0;
 			if (isset($data_rekap) && !empty($data_rekap)) {
 				foreach ($data_rekap as $key => $value) {
@@ -2200,9 +2199,8 @@ class C_TransferReffGaji extends CI_Controller
 			$nomor = 1;
 			$total_uang_dl = 0;
 			$total_pot_duka = 0;
-			$total_pot_ikop = 0;
 			$total_pot_spsi = 0;
-			$total_pot_utkop = 0;
+			$total_pot_kop = 0;
 			$total_pot_lain = 0;
 			if (isset($data_rekap) && !empty($data_rekap)) {
 				foreach ($data_rekap as $key => $value) {
@@ -2264,6 +2262,7 @@ class C_TransferReffGaji extends CI_Controller
 			$pdf_rekap->Output(FCPATH."assets/upload/TransferReffGaji/".$filename, 'F');
 			$data_download .= '<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=REKAP".$periode."&time=".$waktu."&type=pdf") .'" class="btn btn-danger">REKAP'.$periode.'</a>';
 		}
+
 		//finish
 
 		$lama_waktu = time() - $waktu;
