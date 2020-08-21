@@ -3944,3 +3944,241 @@ $(document).ready(function () {
 })
 
 // Surat Isolasi Mandiri End
+//rekap kecelakaan kerja
+$(document).ready(function(){
+    var tabel = $('#mpk_tblRKK').DataTable();
+    $("#mpk_rkpr").daterangepicker({
+        "singleDatePicker": false,
+        "timePicker": false,
+        "timePicker24Hour": true,
+        "showDropdowns": false,
+        locale: {
+            format: 'YYYY-MM-DD'
+        },
+    });
+
+    $(".mpk_rknopr").daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": false,
+        "timePicker24Hour": true,
+        "showDropdowns": false,
+        locale: {
+            format: 'YYYY-MM-DD'
+        },
+    });
+
+    $('.mpk_slcpkj').select2({
+        minimumInputLength: 2,
+        'placeholder': 'Pilih Pekerja'
+    });
+    $('.mpk_slcpkjcas').select2({
+        'placeholder': 'Pilih Salah Satu'
+    });
+
+    $('.mpk_slcpkj').change(function(){
+        var val = $(this).val();
+        var ini = $(this);
+        $.ajax({
+            type:'get',
+            data:{
+                term:val
+            },
+            url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/get_detailpkjrk",
+            success:function(data)
+            {
+                var obj = JSON.parse(data);
+               ini.closest('div').find('.diz').eq(0).val(obj[0]['dept']);
+               ini.closest('div').find('.diz').eq(1).val(obj[0]['seksi']);
+            }
+        });
+    });
+
+    $('#mpk_btnshwtbl').click(function(){
+        var pr = $('#mpk_rkpr').val();
+        $.ajax({
+            type:'get',
+            data:{
+                periode:pr
+            },
+            url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/rk_getKecelakaan",
+            success:function(result)
+            {
+                $('#mpk_rkdivtbl').html(result);
+                var tabel = $('#mpk_tblRKK').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        messageTop:'',
+                        title:'',
+                        filename:'Rekap Kecelakaan kerja',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    // {
+                    //     extend: 'pdfHtml5',
+                    //     messageTop:'',
+                    //     title:'',
+                    //     filename:'Rekap Kecelakaan kerja',
+                    //     orientation: 'landscape',
+                    //     exportOptions: {
+                    //         columns: ':visible'
+                    //     }
+                    // },
+                    'colvis'
+                    ],
+                    "scrollX": false,
+                    fixedColumns:   {
+                        leftColumns: 0,
+                    }
+                });
+            }
+        });
+    });
+
+    $('#mpk_btnsbfrm').click(function(){
+        var verif = true;
+        $('#mpk_mdladdrk').find('input').each(function(){
+            if ($(this).val().length == 0) { verif = false }
+        });
+        $('#mpk_mdladdrk').find('select').each(function(){
+            if ($(this).val().length == 0) { verif = false }
+        });
+        if (verif == false) {
+            alert("Harap Isi Semua Data!");
+        }else{
+            $.ajax({
+                type:'post',
+                data:$('#mpk_frmrkc').serialize(),
+                url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/rk_addata",
+                success:function(result)
+                {
+                    var obj = JSON.parse(result);
+                    if (obj.status == 'sukses') {
+                        $('.mpk_slcpkj').each(function () {
+                            $(this).select2('destroy').val("").select2({
+                             minimumInputLength: 2,
+                             'placeholder': 'Pilih Pekerja'
+                         });
+                        });
+                        $('#mpk_mdladdrk').find('input').each(function(){
+                            $(this).val('').trigger('change');
+                        });
+                        $('#mpk_mdladdrk').modal('hide');
+                        mpk_showAlert('success', 'Berhasil Menambah Data')
+                    }else{
+                        alert("Input Gagal!");
+                    }
+                    $('#mpk_btnshwtbl').click();
+                }
+            });
+        }
+    });
+
+    $('#mpk_rkdivtbl').on('click', '.mpk_btndelrk', function(){
+        var noind = $(this).closest('tr').find('td').eq(2).text();
+        var nama = $(this).closest('tr').find('td').eq(3).text();
+        var id = $(this).val();
+        swal.fire({
+            title: 'Anda yakin?',
+            text: "Hapus Data "+noind+' - '+nama,
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {
+                mpk_delrkkc(id)
+            }
+        });
+    });
+    $('#mpk_rkdivtbl').on('click', '.mpk_btnuprk', function(){
+        var id = $(this).val();
+        $.ajax({
+            type:'get',
+            data:{
+                id: id
+            },
+            url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/getrkk_data",
+            success:function(result)
+            {
+                var obj = JSON.parse(result);
+                var ob = obj[0];
+                console.log(ob['noind']+' - '+ob['nama'].trim());
+                $('#mpk_mdluprk .mpk_slcpkj').val(ob['noind']+' - '+ob['nama'].trim()).trigger('change');
+                 $('#mpk_mdluprk .mpk_slcpkj').attr('disabled', true);
+                $('#mpk_mdluprk .mpk_rknopr').val(ob['tanggal'].substr(0,10));
+                $('#mpk_mdluprk .mpk_slcpkjcas').val(ob['keterangan']).trigger('change');
+                $('#mpk_mdluprk .mpkinf').eq(0).val(ob['kondisi']);
+                $('#mpk_mdluprk .mpkinf').eq(1).val(ob['penyebab']);
+                $('#mpk_mdluprk .mpkinf').eq(2).val(ob['tindakan']);
+                $('#mpk_mdluprk #mpk_idrkk').val(ob['id_rkk']);
+                $('#mpk_mdluprk').modal('show');
+            }
+        });
+    });
+
+    $('#mpk_btnupfrm').click(function(){
+        var verif = true;
+        $('#mpk_mdluprk').find('input').each(function(){
+            if ($(this).val().length == 0) { verif = false }
+        });
+        $('#mpk_mdluprk').find('select').each(function(){
+            if ($(this).val().length == 0) { verif = false }
+        });
+        if (verif == false) {
+            alert("Harap Isi Semua Data!");
+        }else{
+            $.ajax({
+                type:'post',
+                data: $('#mpk_frmrkcup').serialize(),
+                url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/up_rkkdata",
+                success:function(result)
+                {
+                    var obj = JSON.parse(result);
+                    if (obj.status == 'sukses') {
+                        $('#mpk_mdluprk').modal('hide');
+                        mpk_showAlert('success', 'Berhasil Mengupdate Data');
+                    }else{
+                        alert("Gagal!");
+                    }
+                    $('#mpk_btnshwtbl').click();
+                }
+            });
+        }
+    });
+});
+
+function mpk_delrkkc(id)
+{
+    $.ajax({
+        type:'post',
+        data:{
+            id: id
+        },
+        url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/del_rkkdata",
+        success:function(result)
+        {
+            var obj = JSON.parse(result);
+            if (obj.status == 'sukses') {
+                mpk_showAlert('success', 'Berhasil Menghapus Data')
+            }else{
+                alert("Gagal!");
+            }
+            $('#mpk_btnshwtbl').click();
+        }
+    });
+}
+
+function loadingOnAjax(elemen)
+{
+    $(document).ajaxStart(function(){
+        $(elemen).show();
+    });
+    $(document).ajaxComplete(function(){
+        $(elemen).hide();
+    });
+}
