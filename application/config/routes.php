@@ -2077,6 +2077,12 @@ $route['MasterPekerja/Sebaran/(:any)/(:any)'] = 'MasterPekerja/Sebaran/C_Sebaran
 //--------------------------------Poliklinik-----------------------------------------------------
 $route['MasterPekerja/Poliklinik/(:any)'] = 'MasterPekerja/Poliklinik/C_Poliklinik/$1';
 $route['MasterPekerja/Poliklinik/(:any)/(:any)'] = 'MasterPekerja/Poliklinik/C_Poliklinik/$1/$2';
+
+//--------------------------------------------------- Rekap Kecelakaan Kerja -----------------------------------//
+$route['MasterPekerja/rekap/kecelakaan_kerja'] 					= 'MasterPekerja/Rekap/C_RekapKecelakaan/index';
+$route['MasterPekerja/rekap/kecelakaan_kerja/(:any)'] 			= 'MasterPekerja/Rekap/C_RekapKecelakaan/$1';
+$route['MasterPekerja/rekap/kecelakaan_kerja/(:any)/(:any)'] 	= 'MasterPekerja/Rekap/C_RekapKecelakaan/$1/$2';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
