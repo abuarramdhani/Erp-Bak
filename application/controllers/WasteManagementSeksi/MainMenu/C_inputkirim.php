@@ -37,7 +37,7 @@ class C_inputkirim extends CI_Controller
 
 	public function index(){
 		$this->getSession();
-
+		$user = $this->session->user;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Input Kirim Limbah';
@@ -48,8 +48,9 @@ class C_inputkirim extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$limbah = $this->M_kirim->getLimbahKirim();
+		$refjabatan = $this->M_kirim->getTrefJabatna($user);
+        $refjabatan = array_column($refjabatan, 'kodesie');
+		$limbah = $this->M_kirim->getLimbahKirim($refjabatan);
 
 		$location = $this->input->get('location');
 		$location_code = '';

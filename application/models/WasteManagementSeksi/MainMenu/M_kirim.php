@@ -10,7 +10,15 @@ class M_kirim extends Ci_Model
         $this->load->database();
 	}
 
-	public function getLimbahKirim(){
+	public function getLimbahKirim($kodesie){
+        $filterSeksi = '';
+        for ($i=0; $i < count($kodesie); $i++) { 
+          if ($i==0) {
+            $filterSeksi .= "limkir.kodesie_kirim = left('$kodesie[$i]',7) ";
+          }else{
+            $filterSeksi .= "or limkir.kodesie_kirim = left('$kodesie[$i]',7) ";
+          }
+        }
         $seksi = $this->session->kodesie;
         $query = "select limkir.id_kirim,
                         cast(limkir.tanggal_kirim as date) tanggal,
@@ -31,13 +39,14 @@ class M_kirim extends Ci_Model
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                     from ga.ga_limbah_kirim limkir
                     inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
-                    where limkir.kodesie_kirim = left('$seksi',7)
+                    where $filterSeksi
                     order by limkir.tanggal_kirim desc;";
+                    // echo $query;exit();
         $result = $this->db->query($query);
         return $result->result_array();
     }
 
-    public function getLimbahKirimAtasan($periode = false){
+    public function getLimbahKirimAtasan($periode = false, $kodesie){
       $seksi = $this->session->kodesie;
       $statusBaru = 3;
 
@@ -51,10 +60,20 @@ class M_kirim extends Ci_Model
         // $periode = "and limkir.tanggal_kirim between '{$firstDate}' and '{$lastDate}'";
         $periode = "";
       }
+      $filterSeksi = '';
+      for ($i=0; $i < count($kodesie); $i++) { 
+        if ($i==0) {
+          $filterSeksi .= "limkir.kodesie_kirim = left('$kodesie[$i]',7) ";
+        }else{
+          $filterSeksi .= "or limkir.kodesie_kirim = left('$kodesie[$i]',7) ";
+        }
+      }
+      if (!empty($filterSeksi)) {
+         $filterSeksi .= 'and';
+      }
 
       // khusus untuk atasan seksi Waste Management akan muncul semua seksi
       $kodesieKasieWM = '406010100';
-      $filterSeksi = "limkir.kodesie_kirim = left('$seksi',7) and";
       if($seksi == $kodesieKasieWM) {
         $filterSeksi = '';
       }
@@ -80,6 +99,7 @@ class M_kirim extends Ci_Model
                   inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
                   where $filterSeksi limkir.status_kirim = '$statusBaru' $periode
                   order by limkir.tanggal_kirim desc;";
+                  // echo $query;exit();
       $result = $this->db->query($query);
       return $result->result_array();
   }
@@ -291,5 +311,12 @@ class M_kirim extends Ci_Model
       $user = $this->session->user;
       $sql = "UPDATE ga.ga_limbah_kirim set status_kirim = '5', approver = '$user', approver_time=now() where id_kirim='$id'";
       return $this->db->query($sql);
+    }
+
+    public function getTrefJabatna($noind)
+    {
+      $personalia = $this->load->database('personalia', true);
+      $sql = "SELECT * from hrd_khs.trefjabatan where noind = '$noind'";
+      return $personalia->query($sql)->result_array();
     }
 }
