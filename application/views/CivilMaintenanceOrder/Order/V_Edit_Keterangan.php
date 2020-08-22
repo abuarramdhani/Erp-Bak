@@ -77,9 +77,8 @@
                                                                                 echo "<br>";
                                                                             }
                                                                             ?>
-                                                                            <label nomor='<?php echo $no_lamp ?>' data-attachment-id="<?php echo $lamp['attachment_id'] ?>">Lampiran <?php echo $no_lamp ?> :</label>
                                                                             <a target="_blank" href="<?= base_url('civil-maintenance-order/order/download_file/'.$lamp['attachment_id']) ?>" data-attachment-id="<?php echo $lamp['attachment_id'] ?>">
-                                                                                <?php echo end($lamp_path) ?>
+                                                                                <?php echo $no_lamp.'. '.end($lamp_path) ?>
                                                                             </a>
                                                                             <a data-attachment-id="<?php echo $lamp['attachment_id'] ?>" class="btn btn-danger btn-xs mco_delFile_editKet"><span class="fa fa-trash"></span></a>
                                                                             <?php
@@ -93,6 +92,7 @@
                                                                 ?>
                                                                 <label nomor='<?php echo $no_lamp ?>'>Lampiran <?php echo $no_lamp ?> :</label>
                                                                 <input type="file" class="form-control mco_lampiranFilePekerjaanEdit tbl_lampiran" name="tbl_lampiran[0][]">
+
                                                             </form>
                                                         </td> 
                                                         <td>
@@ -109,7 +109,7 @@
                                             </button>
                                         </div>
                                         <div class="col-md-12 text-center" style="margin-top: 20px;">
-                                        <a class="btn btn-warning btn-lg mco_getBack">Kembali</a>
+                                        <a class="btn btn-warning btn-lg" href="<?php echo base_url('civil-maintenance-order/order/edit_order/'.$id) ?>">Kembali</a>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
         <form method="post" action="<?= base_url('civil-maintenance-order/order/add_keterangan') ?>" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
-                    <label class="modal-title" id="exampleModalLongTitle">Tambah Approver</label>
+                    <label class="modal-title" id="exampleModalLongTitle">Tambah Pekerjaan</label>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -156,8 +156,10 @@
                                     <textarea name="tbl_ket[]" class="form-control" style="margin: 0px; resize: none;" required></textarea>
                                 </td>
                                 <td class='td_lampiran'>
-                                    <label nomor='1'>Lampiran 1 :</label>
-                                    <input type="file" class="form-control mco_lampiranFilePekerjaan tbl_lampiran" name="tbl_lampiran[0][]">
+                                    <div>
+                                        <input type="file" nomor='1' class="form-control mco_lampiranFilePekerjaan tbl_lampiran" name="tbl_lampiran[0][]" style="display: none;">
+                                    </div>
+                                    <button nomor='1' type='button' class="btn btn-primary add_lamp">Choose File 1</button>
                                 </td>  
                                 <td>
                                     <button type="button" class="btn btn-xs btn-danger mco_deldaftarnoPek"><i class="fa fa-times"></i></button>

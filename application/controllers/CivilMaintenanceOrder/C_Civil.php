@@ -121,7 +121,7 @@ class C_Civil extends CI_Controller
 		$tglterima = $this->input->post('tglterima');
 		$jnsPekerjaan = $this->input->post('jnsPekerjaan');
 		$jnsOrder = $this->input->post('jnsOrder');
-		$judul = $this->input->post('judul');
+		$voip = $this->input->post('voipOrder');
 		$ket = $this->input->post('ket');
 		$nolog = $this->input->post('nolog');
 		$status = $this->input->post('status');
@@ -139,7 +139,7 @@ class C_Civil extends CI_Controller
 			'jenis_order_id'	=>	$jnsOrder,
 			'ket'				=>	$ket,
 			'tgl_dibutuhkan'	=>	$tglbutuh,
-			'judul'				=>	$judul,
+			'voip'				=>	$voip,
 			'status_id'			=>	1,//open
 			'alasan'			=>  $alasan,
 			'status'			=>  $status
@@ -231,7 +231,7 @@ class C_Civil extends CI_Controller
 		$tglterima = $this->input->post('tglterima');
 		$jnsPekerjaan = $this->input->post('jnsPekerjaan');
 		$jnsOrder = $this->input->post('jnsOrder');
-		$judul = $this->input->post('judul');
+		$voip = $this->input->post('voipOrder');
 		$keterangan = $this->input->post('ket');
 		$nolog = $this->input->post('nolog');
 		$tglbutuh = $this->input->post('tglbutuh');
@@ -250,7 +250,7 @@ class C_Civil extends CI_Controller
 			'ket'				=>	$keterangan,
 			'nomor_log'			=>	$nolog,
 			'tgl_dibutuhkan'	=>	$tglbutuh,
-			'judul'				=>	$judul,
+			'voip'				=>	$voip,
 			'status_id'			=>	$status,
 			);
 		$ins = $this->M_civil->updateOrder($data, $id);
