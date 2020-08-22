@@ -63,7 +63,15 @@
                                                 <td width="12%" class="text-right tdASODONumber"><?= $val['NO_SO'] ?></td>
                                                 <td width="15%" class="text-right"><?= $val['REQUEST_DATE'] ?></td>
                                                 <td width="18%" ><?= $val['REQUEST_BY'] ?></td>
-                                                <td width="18%" ><?= $val['REQUEST_TO'] ?></td>
+                                                <td width="18%" >
+                                                    <?php
+                                                        if ( $val['STATUS'] == 'Req Approval') {
+                                                            echo $val['REQUEST_TO'];
+                                                        }elseif ($val['STATUS'] == 'Req Approval 2') {
+                                                            echo $val['REQUEST_TO_2'];
+                                                        }
+                                                    ?>
+                                                </td>
                                                 <td width="10%" class="text-center">
                                                     <?php if ($val['NO_SO']) : ?>
                                                         <a href='<?= base_url("ApprovalDO/Detail/Requested-{$val['NO_DO']}-{$val['NO_SO']}") ?>' target="_blank" title="Detail" class="btn btn-default">
@@ -76,7 +84,7 @@
                                                     <?php endif ?>
                                                 </td>
                                                 <td width="10%" class="text-center">
-                                                    <span class="label label-primary">Req. Approval</span>
+                                                    <span class="label label-primary"><?= $val['STATUS'];?></span>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
