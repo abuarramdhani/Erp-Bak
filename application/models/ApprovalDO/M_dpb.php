@@ -726,4 +726,39 @@ class M_dpb extends CI_Model
         $oracle->update('KHS_DPB_KENDARAAN', $data);
     }
 
+    public function checkOnhand($no_do, $kode_gudang)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = $oracle->query("SELECT APPS.KHS_CEK_ATR_DOSPB2('$no_do', 102, '$kode_gudang') as stockonhand FROM dual");
+
+      return $query->result_array();
+    }
+
+    public function procedureLockStock($no_do, $kode_gudang, $user)
+    {
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		if (!$conn) {
+			$e = oci_error();
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+        $oracle = $this->load->database('oracle',true);
+        $sql = "BEGIN APPS.KHS_ALLOCATE_NONSERIAL_DOSPB2(:no_do, 102, :kode_gudang, :user); END;";  
+        
+        $stmt = oci_parse($conn,$sql);
+        oci_bind_by_name($stmt,':no_do',$no_do,100);
+		oci_bind_by_name($stmt,':kode_gudang',$kode_gudang,100);
+        oci_bind_by_name($stmt,':user',$user,100);
+        
+        // But BEFORE statement, Create your cursor
+		// $cursor = oci_new_cursor($conn);
+		
+		oci_execute($stmt);
+
+		// and now, execute the cursor
+		// oci_execute($cursor);
+ 
+		// $message is now populated with the output value
+		// print "$message\n";
+    }
+
 }
