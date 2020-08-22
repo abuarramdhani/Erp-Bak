@@ -94,6 +94,7 @@ class M_report extends CI_Model {
 					,to_char(receipt.receipt_date) receipt_date
 					,to_char(aia.gl_date,'DD-MON-YYYY') gl_date
 					,kfw.month
+					,kfw.FAKTUR_DATE
 				from
 					ap_invoices_all aia
 					,ap_batches_all aba
