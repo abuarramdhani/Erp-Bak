@@ -157,7 +157,7 @@
                                         <?php foreach ($DPBVendorDetail as $key => $val) : ?>
                                         <tr>
                                             <td class="text-right"><?= $key+1 ?></td>
-                                            <td class="text-right"><?= $val['NO_DO_SPB'] ?></td>
+                                            <td class="text-right"><?= $val['NO_DO_SPB'] ?> <input type="hidden" class="form-control nodoADO" value="<?= $val['NO_DO_SPB'] ?>"></td>
                                             <td class="text-left"><?= $val['ITEM'] ?></td>
                                             <td class="text-right"><?= $val['QUANTITY'] ?></td>
                                             <td class="text-left"><?= $val['UOM'] ?></td>

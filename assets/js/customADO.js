@@ -78,6 +78,56 @@ $( () => {
         })
     }
 
+    const swalADOQuestionAjax1 = ( title, success, fail, url, data ) => {
+        return new Promise( (response) => {
+            Swal.fire({
+                customClass       : 'swal-font-small',
+                type              : 'question',
+                title             : title,
+                confirmButtonText : 'Ya',
+                cancelButtonText  : 'Tidak',
+                cancelButtonColor : '#d33',
+                showCancelButton  : true
+            }).then( (result) => {
+                if ( result.value ) {
+                    Swal.fire({
+                        customClass       : 'swal-font-small',
+                        title             : 'Mohon menunggu',
+                        text              : 'Sedang memproses ...',
+                        onBeforeOpen      : () => {
+                            Swal.showLoading()
+                        },
+                        allowOutsideClick : false
+                    })
+                    $.ajax({
+                        type     : 'POST',
+                        url      : url,
+                        data     : data,
+                        dataType : 'JSON',
+                    }).done( (resp) => {
+                        swalADOMixinToast('success', success)
+                        response(resp)
+                        if (resp == 'error stok gudang tidak mencukupi') {
+                            
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Gagal',
+                                text: 'Stok gudang tidak mencukupi!',
+                            });
+                        }
+                    }).fail( () => {
+                        
+                        swalADOMixinToast('error', fail)
+                        response('Fail')
+                        
+                    })
+                } else {
+                    response('Cancelled')
+                }
+            })
+        })
+    }
+
     const swalADOMixinToast = ( type, title ) => {
         Swal.mixin({
             toast             : true,
@@ -307,7 +357,19 @@ $( () => {
 
         var tgl_kirim = $('.txttglKirimADO').val();
 
-        if (tgl_kirim) {
+        var gudang_pengirim = $('.slcADOGudangPengirim').val();
+
+        var no_do = new Array();
+
+        $('.nodoADO').each(function (i) {
+            var nodo = $(this).val();
+            no_do[i] = {nomor_do : nodo};
+        });
+
+        console.log(no_do);
+
+
+        if (tgl_kirim && gudang_pengirim) {
             let data = {
                 prNumber              : $('.spnADOPRNumber').html(),
                 vehicleCategory       : $('.txtADOVehicleCategory').val(),
@@ -318,20 +380,21 @@ $( () => {
                 tglKirim              : $('.txttglKirimADO').val(),
                 gudangPengirim        : $('.slcADOGudangPengirim').val(),
                 alamatBongkar         : $('.txtADOAlamatBongkar').val(),
-                catatan               : $('.txtADOCatatan').val()
+                catatan               : $('.txtADOCatatan').val(),
+                noDO                : no_do
             }
             let url      = `${baseurl}ApprovalDO/ListPR/saveDetail`
             let question = 'Simpan Data Ini?'
             let success  = 'Berhasil Menyimpan Data'
             let fail     = 'Gagal Menyimpan Data'
-            swalADOQuestionAjax(question, success, fail, url, data)
+            swalADOQuestionAjax1(question, success, fail, url, data)
         }else{
 
             Swal.fire({
                 customClass: 'swal-font-large',
                 type: 'error',
                 title: 'Gagal',
-                text: 'Tanggal Kirim tidak boleh kosong!',
+                text: 'Tanggal Kirim & Gudang Pengirim tidak boleh kosong!',
             });
         }
     })
@@ -390,7 +453,7 @@ $( () => {
             allowClear: true,
             placeholder: "Insert Kode DO",
             minimumInputLength: 5,
-            ajax: {		
+            ajax: {
                 url:baseurl+"ApprovalDO/DPBKHS/AddDetailInformationList",
                 dataType: 'json',
                 type: "GET",

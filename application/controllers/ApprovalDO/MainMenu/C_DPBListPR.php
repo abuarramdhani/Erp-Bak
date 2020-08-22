@@ -142,27 +142,58 @@ class C_DPBListPR extends CI_Controller {
 
         $tgl_kirim = date("Y-m-d", strtotime($tglKirim));
 
-        $data = [
-            'NO_PR'            => $this->input->post('prNumber'),
-            'JENIS_KENDARAAN'  => $this->input->post('vehicleCategory'),
-            'NO_KENDARAAN'     => $this->input->post('vehicleId'),
-            'NAMA_SUPIR'       => $this->input->post('driverName'),
-            'VENDOR_EKSPEDISI' => $this->input->post('driverPhone'),
-            'GUDANG_PENGIRIM'  => $this->input->post('gudangPengirim'),
-            'ALAMAT_BONGKAR'   => $this->input->post('alamatBongkar'),
-            'CATATAN'          => $this->input->post('catatan'),
-            'CREATED_BY'       => $noind,
-        ];
+        $gudang = $this->input->post('gudangPengirim');
 
-        if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {
-            $this->M_dpb->insertNewDetailListPR1($data,$tgl_kirim);
-        } else {
-            $id = $data['NO_PR'];
-            unset($data['NO_PR']);
-            $this->M_dpb->updateDetailListPR1($id, $data, $tgl_kirim);
+        if ($gudang == 'MLATI') {
+            $kode_gudang = 'MLATI-DM';
+        }elseif ($gudang == 'TUKSONO') {
+            $kode_gudang = 'FG-TKS';
         }
 
-        echo json_encode('Success!');
+        $no_do = $_POST['noDO'];
+
+        $nomor_do = '';
+        
+        for ($i=0; $i < count($no_do); $i++) { 
+            if ($nomor_do == '') {
+                $nomor_do .= $no_do[$i]['nomor_do'];
+            }else {
+                $nomor_do .= ','.$no_do[$i]['nomor_do'];
+            }
+        }
+
+        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do,$kode_gudang);
+
+        if ($returnOnhand[0]['STOCKONHAND'] == 0) {
+
+            for ($i=0; $i < count($no_do); $i++) { 
+                $this->M_dpb->procedureLockStock($no_do[$i]['nomor_do'], $kode_gudang, $noind);
+            }
+
+            $data = [
+                'NO_PR'            => $this->input->post('prNumber'),
+                'JENIS_KENDARAAN'  => $this->input->post('vehicleCategory'),
+                'NO_KENDARAAN'     => $this->input->post('vehicleId'),
+                'NAMA_SUPIR'       => $this->input->post('driverName'),
+                'VENDOR_EKSPEDISI' => $this->input->post('driverPhone'),
+                'GUDANG_PENGIRIM'  => $this->input->post('gudangPengirim'),
+                'ALAMAT_BONGKAR'   => $this->input->post('alamatBongkar'),
+                'CATATAN'          => $this->input->post('catatan'),
+                'CREATED_BY'       => $noind,
+            ];
+
+            if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {
+                $this->M_dpb->insertNewDetailListPR1($data,$tgl_kirim);
+            } else {
+                $id = $data['NO_PR'];
+                unset($data['NO_PR']);
+                $this->M_dpb->updateDetailListPR1($id, $data, $tgl_kirim);
+            }
+            echo json_encode('Success!');
+        }else{
+            echo json_encode('error stok gudang tidak mencukupi');
+        } 
+
     }
 
 }
