@@ -138,7 +138,7 @@ class C_NonConformityAndroid extends CI_Controller
 		$headerId = $this->M_nonconformity->simpanHeader($header);
 
 		//////////////////////UPLOAD PHOTO////////////
-		$path = ('./assets/upload/NonConformity/');
+		$path = ('192.168.168.127/assets/upload/NonConformity/');
 		for($j=0;$j<count($_FILES['file']['tmp_name']);$j++){
 			// echo $_FILES['file']['tmp_name'][$j];
 			$response['error'] = false;
@@ -147,7 +147,7 @@ class C_NonConformityAndroid extends CI_Controller
 				  $response['error'] = false;
 			$response['message'] =  $response['message']. "moved sucessfully ::  ";
 
-					$inputFileName 	= './assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
+					$inputFileName 	= '192.168.168.127/assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
 				
 					if(is_file($inputFileName))
 					{
@@ -348,7 +348,7 @@ class C_NonConformityAndroid extends CI_Controller
 		// $headerId = $this->M_nonconformity->simpanHeader($header);
 		if (isset($_FILES['file'])) {
 			//////////////////////UPLOAD PHOTO////////////
-			$path = ('./assets/upload/NonConformity/');
+			$path = ('192.168.168.127/assets/upload/NonConformity/');
 			for($j=0;$j<count($_FILES['file']['tmp_name']);$j++){
 				// echo '<pre>';
 				// echo $_FILES['file']['tmp_name'][$j];
@@ -360,7 +360,7 @@ class C_NonConformityAndroid extends CI_Controller
 					  	$response['error'] = false;
 						$response['message'] =  $response['message']. "moved sucessfully ::  ";
 	
-						$inputFileName 	= './assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
+						$inputFileName 	= '192.168.168.127/assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
 					
 						if(is_file($inputFileName))
 						{
