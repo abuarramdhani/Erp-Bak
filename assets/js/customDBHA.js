@@ -226,7 +226,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $("#kodekompp").select2({
     allowClear: true,
-    minimumInputLength: 1,
+    minimumInputLength: 3,
     ajax: {
       url: baseurl + "DbHandling/MonitoringHandling/kodekomp",
       dataType: "json",
@@ -242,7 +242,7 @@ $(document).ready(function () {
         return {
           results: $.map(data, function (obj) {
             return {
-              id: obj.SEGMENT1,
+              id: obj.SEGMENT1 + "&" + obj.DESCRIPTION,
               text: obj.SEGMENT1 + " - " + obj.DESCRIPTION,
             };
           }),
@@ -374,22 +374,17 @@ $(document).ready(function () {
 $(document).ready(function () {
   $("#kodekompp").on("change", function () {
     var value = $(this).val();
-    $.ajax({
-      type: "POST",
-      dataType: "json",
-      data: { kode: value },
-      url: baseurl + "DbHandling/MonitoringHandling/getDesckompp",
-      success: function (result) {
-        $("#namakomp").val(result.replace(/"/g, ""));
-      },
-    });
+    var vall = value.split("&");
+    $("#namakomp").val(vall[1]);
+    $("#kodekompp2").val(vall[0]);
   });
   $("#kodekompp").on("change", function () {
     var value = $(this).val();
+    var vall = value.split("&");
     $.ajax({
       type: "POST",
       dataType: "json",
-      data: { kode: value },
+      data: { kode: vall[0] },
       url: baseurl + "DbHandling/MonitoringHandling/cekKodeKomp",
       success: function (result) {
         // console.log(result);
@@ -2056,7 +2051,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $("#komponen_Seksi").select2({
     allowClear: true,
-    minimumInputLength: 1,
+    minimumInputLength: 3,
     ajax: {
       url: baseurl + "DbHandlingSeksi/MonitoringHandling/kodekomp",
       dataType: "json",
@@ -2072,7 +2067,7 @@ $(document).ready(function () {
         return {
           results: $.map(data, function (obj) {
             return {
-              id: obj.SEGMENT1,
+              id: obj.SEGMENT1 + "&" + obj.DESCRIPTION,
               text: obj.SEGMENT1 + " - " + obj.DESCRIPTION,
             };
           }),
@@ -2084,22 +2079,17 @@ $(document).ready(function () {
 $(document).ready(function () {
   $("#komponen_Seksi").on("change", function () {
     var value = $(this).val();
-    $.ajax({
-      type: "POST",
-      dataType: "json",
-      data: { kode: value },
-      url: baseurl + "DbHandlingSeksi/MonitoringHandling/getDesckompp",
-      success: function (result) {
-        $("#nam_komp_seksi").val(result.replace(/"/g, ""));
-      },
-    });
+    var vall = value.split("&");
+    $("#nam_komp_seksi").val(vall[1]);
+    $("#komponen_Seksi2").val(vall[0]);
   });
   $("#komponen_Seksi").on("change", function () {
     var value = $(this).val();
+    var vall = value.split("&");
     $.ajax({
       type: "POST",
       dataType: "json",
-      data: { kode: value },
+      data: { kode: vall[0] },
       url: baseurl + "DbHandlingSeksi/MonitoringHandling/cekKodeKomp",
       success: function (result) {
         // console.log(result);

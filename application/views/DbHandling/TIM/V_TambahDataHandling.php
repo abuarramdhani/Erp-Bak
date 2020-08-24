@@ -36,7 +36,7 @@
                                     <div class="panel-body">
                                         <div class="col-md-3" style="text-align: right;"><label>Komponen</label></div>
                                         <div class="col-md-6" style="text-align: left;">
-                                            <select required style="width: 100%;" class="form-control select2" id="kodekompp" name="kodekompp" data-placeholder="Select">
+                                            <select required style="width: 100%;" class="form-control select2" id="kodekompp" data-placeholder="Select">
                                                 <option></option>
                                             </select>
                                             <span id="validationkomp" style="color:red;display:none">*Komponen sudah terdaftar</span>
@@ -47,6 +47,7 @@
                                         </div>
                                     </div>
                                     <input type="hidden" id="namakomp" name="namakomp">
+                                    <input type="hidden" id="kodekompp2" name="kodekompp">
                                     <div class="hideajakalaukompudahada" style="display:none">
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Status Komponen</label></div>
