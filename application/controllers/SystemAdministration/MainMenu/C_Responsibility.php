@@ -115,13 +115,12 @@ class C_Responsibility extends CI_Controller {
 		{
 				$data = array(
 					'user_group_menu_name' 	=> $this->input->post('txtResponsibilityName'),
-					'module_id'				=> $this->input->post('slcModule'),
-					'group_menu_id'			=> $this->input->post('slcMenuGroup'),
-					'report_group_id'		=> intval($this->input->post('slcRepotGroup')),
-					'org_id'				=> $this->input->post('slcOrganization'),
-					'creation_date'			=> $this->input->post('hdnDate'),
-					'created_by'			=> $this->input->post('hdnUser'),
-					'required_javascript'	=> $this->input->post('txtJavascript')
+					'module_id'		=> $this->input->post('slcModule'),
+					'group_menu_id'		=> $this->input->post('slcMenuGroup'),
+					'report_group_id'	=> intval($this->input->post('slcRepotGroup')),
+					'org_id'	=> $this->input->post('slcOrganization'),
+					'creation_date'	=>  $this->input->post('hdnDate'),
+					'created_by'	=>  $this->input->post('hdnUser')
 				);
 
 				$this->M_responsibility->setResponsibility($data);
@@ -178,13 +177,12 @@ class C_Responsibility extends CI_Controller {
 		else
 		{	$data = array(
 					'user_group_menu_name' 	=> $this->input->post('txtResponsibilityName'),
-					'module_id'				=> $this->input->post('slcModule'),
-					'group_menu_id'			=> $this->input->post('slcMenuGroup'),
-					'report_group_id'		=> intval($this->input->post('slcRepotGroup')),
-					'org_id'				=> $this->input->post('slcOrganization'),
-					'last_update_date'		=> $this->input->post('hdnDate'),
-					'last_updated_by'		=> $this->input->post('hdnUser'),
-					'required_javascript'	=> $this->input->post('txtJavascript')
+					'module_id'		=> $this->input->post('slcModule'),
+					'group_menu_id'		=> $this->input->post('slcMenuGroup'),
+					'report_group_id'	=> intval($this->input->post('slcRepotGroup')),
+					'org_id'	=> $this->input->post('slcOrganization'),
+					'last_update_date'	=>  $this->input->post('hdnDate'),
+					'last_updated_by'	=>  $this->input->post('hdnUser')
 				);
 
 			$this->M_responsibility->updateResponsibility($data,$plaintext_string);

@@ -40,11 +40,10 @@
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>
-												<th width="15%"><center>Responsibility Name</center></th>
-												<th width="15%"><center>Module</center></th>
-												<th width="15%"><center>Menu Group</center></th>
+												<th width="20%"><center>Responsibility Name</center></th>
+												<th width="20%"><center>Module</center></th>
+												<th width="20%"><center>Menu Group</center></th>
 												<th width="15%"><center>Report Group</center></th>
-												<th width="15%"><center>Javascript</center></th>
 												<th width="10%"><center>Organization</center></th>
 												<th width="10%"><center>Action</center></th>
 											</tr>
@@ -62,7 +61,6 @@
 													<td><?php echo $AllResponsibility_item['module_name'] ?></td>
 													<td><?php echo $AllResponsibility_item['group_menu_name'] ?></td>
 													<td><?php echo $AllResponsibility_item['report_group_name'] ?></td>
-													<td><?php echo $AllResponsibility_item['required_javascript'] ?></td>
 													<td><?php echo $AllResponsibility_item['org_name'] ?></td>
 													<td align="center">
 													<a href="<?php echo base_url('SystemAdministration/Responsibility/UpdateResponsibility/')."/".$encrypted_string ?>"><img src="<?php echo base_url('assets/img/edit.png');?>" title="Update <?php echo $AllResponsibility_item['user_group_menu_name'] ?>"></a>
