@@ -1790,6 +1790,7 @@ function checkedValue(kodesie) {
         pekerja.push($(this).val());
     })
     let seksi = $('#txtSeksiPenyerahan').val(),
+        unit = $('#txtUnitPenyerahan').val(),
         jenis = $('#slc_pkj_SP').val()
 
     $.ajax({
@@ -1803,6 +1804,7 @@ function checkedValue(kodesie) {
         dataType: 'json',
         success: (res) => {
             const kd_jabatan = []
+
             for (let a = 0; a < res.length; a++) {
                 if (res[a].jabatan.includes(seksi)) {
                     kd_jabatan.push(res[a].kd_jabatan);
@@ -1811,7 +1813,6 @@ function checkedValue(kodesie) {
 
             let isi = ''
             for (let i = 0; i < res.length; i++) {
-
                 if (res[i].jabatan.includes(seksi) === true && parseInt(res[i].kd_jabatan) === Math.max(parseInt(kd_jabatan))) {
                     selek = 'selected'
                 } else {
@@ -1819,6 +1820,12 @@ function checkedValue(kodesie) {
                         selek = 'selected'
                     } else if (parseInt(res[i].kd_jabatan) === Math.max(parseInt(kd_jabatan)) - i) {
                         selek = 'selected'
+                    } else if (res[i].jabatan.includes(seksi) === false) {
+                        if (res[i].jabatan.includes(unit) === true) {
+                            selek = 'selected'
+                        } else {
+                            selek = ''
+                        }
                     } else {
                         selek = ''
                     }
