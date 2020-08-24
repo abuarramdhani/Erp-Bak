@@ -45,32 +45,31 @@ class M_pbi extends CI_Model
     {
       $user_login = $this->session->user;
       $res = $this->personalia->query("SELECT
-                              	tp.noind,
-                              	trim(tp.nama) nama,
-                                tp.email_internal
-                              from
-                              	hrd_khs.trefjabatan tj,
-                              	hrd_khs.tpribadi tp,
-                              	(
-                              		select tp2.*
-                              		from
-                              			hrd_khs.tpribadi tp2
-                              		where
-                              			tp2.noind = '$user_login'
-                              	) tpp
-                              where
-                              	tj.noind = tp.noind
-                              	and tp.keluar = '0'
-                              	and ( (substring(tp.kodesie, 1, 7) = substring(tpp.kodesie, 1, 7) and tp.kd_jabatan in ('10'))
-                              	or (substring(tj.kodesie, 1, 5) = substring(tpp.kodesie, 1, 5) and tp.kd_jabatan in ('08','09'))
-                              	or (substring(tp.kodesie, 1, 3) = substring(tpp.kodesie, 1, 3) and tp.kd_jabatan in ('05','06','07'))
-                              	or (substring(tp.kodesie, 1, 1) = substring(tpp.kodesie, 1, 1) and tp.kd_jabatan in ('02','03','04'))
-                              	or (tpp.kd_jabatan in ('02','03','04') and tp.kd_jabatan in ('02','03','04')))
-                              	and tj.noind <> tpp.noind
-                                and (tp.nama like '%$data%'
-                                or tp.noind like '%$data%')
-                              order by
-                              	tp.kd_jabatan desc,	tp.noind")->result_array();
+                                        distinct tp.noind,
+                                        trim(tp.nama) nama,
+                                        tp.email_internal,
+                                        tp.kd_jabatan
+                                      from
+                                        hrd_khs.trefjabatan tj,
+                                        hrd_khs.tpribadi tp,
+                                        (
+                                        select
+                                          tp2.*
+                                        from
+                                          hrd_khs.tpribadi tp2
+                                        where
+                                          tp2.noind = '$user_login' ) tpp
+                                      where
+                                        tj.noind = tp.noind
+                                        and tp.keluar = '0'
+                                        and substring(tp.kodesie, 1, 1) = substring(tpp.kodesie, 1, 1)
+                                        and tp.kd_jabatan <= '11'
+                                        and tj.noind <> tpp.noind
+                                        and (tp.nama like '%$data%'
+                                        or tp.noind like '%$data%')
+                                      order by
+                                        tp.kd_jabatan desc,
+                                        tp.noind")->result_array();
         return $res;
     }
 
