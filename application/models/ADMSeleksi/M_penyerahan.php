@@ -278,7 +278,7 @@ class M_penyerahan extends CI_Model
 		$sql = "SELECT distinct a.kodesie, a.kd_jabatan, a.jabatan
 				FROM hrd_khs.trefjabatan a
 				left join hrd_khs.tpribadi b on a.noind in (b.noind) and b.kd_jabatan = a.kd_jabatan
-				where a.jabatan is not NULL and a.kd_jabatan not in ('','-') and a.jabatan != '-' $where and b.keluar = '0' and (b.kodesie like '$kodesie[0]%' or b.kodesie = '$kodesie[1]')
+				where a.jabatan is not NULL and a.kd_jabatan not in ('','-') and ((a.jabatan != '-' $where and b.keluar = '0' and (b.kodesie like '$kodesie[0]%' or b.kodesie = '$kodesie[1]')) or (a.jabatan != '-' and b.keluar = '0' and a.kd_jabatan <= '09'))
 				order by a.kd_jabatan desc, a.jabatan";
 		return $this->personalia->query($sql)->result_array();
 	}
