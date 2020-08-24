@@ -11,7 +11,7 @@
 </style>
 <h2>E-Order - Civil Maintenance</h2>
 <hr>
-<table>
+<table style="width: 100%">
 	<tr>
 		<td>Tanggal Order</td>
 		<td class="samaDengan">:</td>
@@ -64,9 +64,9 @@
 	</tr>
 	<tr>
 		<td valign="bottom" colspan="3">
-			<table border="1" style="border-collapse: collapse;">
+			<table border="1" style="border-collapse: collapse;width: 100%">
 				<tr>
-					<th>No</th>
+					<th style="width: 30px;">No</th>
 					<th>Pekerjaan</th>
 					<th width="15%">Qty</th>
 					<th width="15%">Satuan</th>
