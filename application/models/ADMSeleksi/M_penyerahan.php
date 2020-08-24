@@ -288,7 +288,7 @@ class M_penyerahan extends CI_Model
 		$sql = "SELECT t.jabatan 
 				from hrd_khs.trefjabatan t
 				where t.kd_jabatan = '$kd_jabatan' and t.kodesie = '$kodesie' and t.noind in (
-					SELECT a.noind from hrd_khs.tpribadi a where t.noind = a.noind and a.keluar = '0' and t.kodesie = a.kodesie
+					SELECT a.noind from hrd_khs.tpribadi a where t.noind = a.noind and a.keluar = '0'
 				) limit 1";
 		return $this->personalia->query($sql)->row()->jabatan;
 	}
