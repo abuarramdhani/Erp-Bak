@@ -33,6 +33,7 @@ class C_NonConformity extends CI_Controller
 	/* LIST DATA */
 	public function index()
 	{
+		
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
@@ -1313,4 +1314,50 @@ class C_NonConformity extends CI_Controller
 		$this->load->view('PurchaseManagementGudang/NonConformity/V_readFinishedOrder', $data);
 		$this->load->view('V_Footer',$data);
 	}
+
+	public function MonitoringReport()
+	{
+		
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Monitoring Report';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Monitoring Report';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		
+		
+
+		$monitoring_report = $this->M_nonconformity->getReportMonitoring();
+		
+		for ($i=0; $i < count($monitoring_report); $i++) { 
+			$headerId =  $monitoring_report[$i]['header_id'];
+			$lines = $this->M_nonconformity->getLines($headerId);
+			
+			array_push($monitoring_report[$i],$lines);
+
+			$items = $this->M_nonconformity->getLineItems($headerId);
+
+			array_push($monitoring_report[$i],$items);
+		}
+		
+		// echo '<pre>';
+		// print_r($monitoring_report); 
+		// exit;
+		$data['monitoring_report'] = $monitoring_report;
+
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_MonitoringReport', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+
 }
