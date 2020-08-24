@@ -32,8 +32,8 @@
                           <td style="text-align:center"><?php echo $value['operator_name'] ?></td>
                           <td style="text-align:center"><?php echo $value['created_at'] ?></td>
                           <td style="text-align:center">
-                            <!-- <a href="http://produksi.quick.com/api-jti/out/report/pdf/<?php echo $value['ticket_number'] ?>" target="_blank" type="button" class="btn btn-danger" name="button"> <b class="fa fa-file-pdf-o"></b> </a> -->
-                            <a href="http://192.168.168.196/api-jti-master/out/report/pdf/<?php echo $value['ticket_number'] ?>" target="_blank" type="button" class="btn btn-danger" name="button"> <b class="fa fa-file-pdf-o"></b> </a>
+                             <a href="http://produksi.quick.com/api-jti/out/report/pdf/<?php echo $value['ticket_number'] ?>" target="_blank" type="button" class="btn btn-danger" name="button"> <b class="fa fa-file-pdf-o"></b> </a> 
+                            <!--<a href="http://192.168.168.196/api-jti-master/out/report/pdf/<?php echo $value['ticket_number'] ?>" target="_blank" type="button" class="btn btn-danger" name="button"> <b class="fa fa-file-pdf-o"></b> </a>-->
                           </td>
                         </tr>
                       <?php endforeach; ?>
