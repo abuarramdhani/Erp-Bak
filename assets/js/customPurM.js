@@ -22,8 +22,26 @@ $(document).ready(function() {
         }
     }
 
+    $('#tblMonitoringNonC').DataTable({
+        dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
+                <'row' <'col-sm-12'tr> >
+                <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
+        scrollX: true,
+        scrollCollapse: true,
+        scrollY: "370px",
+        columnDefs: [{
+            "targets": 0,
+            "orderable": false
+        }],
+        order: [
+            [3, 'asc']
+        ],
+        buttons: ['excel']
+    });
+
     $(".nonconfPhoto").change(function() {
-        readURL(this);
+        readURL(this); 
+               
     });
 
     $('.slcRemarkNonConformity').change(function() {
@@ -32,10 +50,10 @@ $(document).ready(function() {
 
         for (let i = 0; i < valArray.length; i++) {
             var elm = valArray[i];
-            var hau = $('.slcRemarkNonConformity option[value="' + elm + '"]').html();
-            htmlArray.push(hau);
+            var hau = $('.slcRemarkNonConformity option[value="' + elm + '"]').html();             htmlArray.push(hau);
         }
         console.log(htmlArray);
+
         $('.remarkReviewNonConformity').html('');
         for (var i = 0; i < htmlArray.length; i++) {
             var elm = htmlArray[i];
