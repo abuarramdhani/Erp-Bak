@@ -4518,10 +4518,11 @@ $route['pengembalian-apd/hubker/(:any)']				= 'PengembalianAPD/C_HubkerApd/$1';
 $route['pengembalian-apd/hubker/(:any)/(:any)']			= 'PengembalianAPD/C_HubkerApd/$1/$2';
 
 // ------------------------------------------------- Jembatan Timbang ---------------------------------------------//
-$route['JembatanTimbang'] 											= 'JembatanTimbang/C_Index';
-$route['JembatanTimbang/Cetak/(:any)'] 					= 'JembatanTimbang/C_Index/$1';
-$route['JembatanTimbang/Cetak/(:any)/(:any)'] 	= 'JembatanTimbang/C_Index/$1/$2';
-$route['JembatanTimbang/Cetak'] 								= 'JembatanTimbang/C_Index/Cetak';
+$route['JembatanTimbang'] 							= 'JembatanTimbang/C_Index';
+$route['JembatanTimbang/Cetak/(:any)'] 				= 'JembatanTimbang/C_Index/$1';
+$route['JembatanTimbang/Cetak/(:any)/(:any)']   	= 'JembatanTimbang/C_Index/$1/$2';
+$route['JembatanTimbang/Cetak'] 					= 'JembatanTimbang/C_Index/Cetak';
+$route['JembatanTimbang/History'] 					= 'JembatanTimbang/C_Index/History';
 
 //---------------------------- JTI INPUT PEMBELIAN -----------------------------//
 $route['jtipembelian'] = 'JTIPembelian/C_Index';
