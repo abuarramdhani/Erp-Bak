@@ -50,35 +50,41 @@ class M_transferreffgaji extends CI_Model
 	}
 
 	public function getDataStaff($periode){
-		$sql = "select tbl.*,tpri.nik,tor.singkatan as jabatan from (
-				 select * from \"Presensi\".Treffgaji 
-				 where (
-				 			left(noind,1) = 'B' 
-				 			or left(noind,1) = 'D' 
-				 			or left(noind,1) = 'J' 
-				 			or left(noind,1) = 'T' 
-				 			or left(noind,1) = 'G'
-				 			or left(noind,1) = 'Q'
-				 		) 
-				 and to_char(tanggal,'mmyy') ='$periode'
-				 and jns_transaksi in('01')
-				 union all 
-				 select * from \"Presensi\".Treffgaji_keluar refkel
-				 where (
-				 			left(noind,1) = 'B' 
-				 			or left(noind,1) = 'D' 
-				 			or left(noind,1) = 'J' 
-				 			or left(noind,1) = 'T' 
-				 			or left(noind,1) = 'G'
-				 			or left(noind,1) = 'Q'
-				 		) 
-				 and to_char(tanggal_keluar,'mmyy') ='$periode'
-				 /*and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0*/
+		$sql = "select tbl.*,tpri.nik,
+					(
+						select string_agg(distinct c.singkatan,',')
+						from hrd_khs.trefjabatan b 
+						left join hrd_khs.torganisasi c 
+						on b.kd_jabatan = c.kd_jabatan
+						where b.noind = tpri.noind
+					) as jabatan
+				from (
+					select * from \"Presensi\".Treffgaji 
+					where (
+					 			left(noind,1) = 'B' 
+					 			or left(noind,1) = 'D' 
+					 			or left(noind,1) = 'J' 
+					 			or left(noind,1) = 'T' 
+					 			or left(noind,1) = 'G'
+					 			or left(noind,1) = 'Q'
+					 		) 
+					and to_char(tanggal,'mmyy') ='$periode'
+					and jns_transaksi in('01')
+					/*union all 
+					select * from \"Presensi\".Treffgaji_keluar refkel
+					where (
+					 			left(noind,1) = 'B' 
+					 			or left(noind,1) = 'D' 
+					 			or left(noind,1) = 'J' 
+					 			or left(noind,1) = 'T' 
+					 			or left(noind,1) = 'G'
+					 			or left(noind,1) = 'Q'
+					 		) 
+					and to_char(tanggal_keluar,'mmyy') ='$periode'
+					and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0*/
 				) as tbl 
 				left join hrd_khs.tpribadi tpri 
 					on tpri.noind = tbl.noind
-				left join hrd_khs.torganisasi tor
-					on tpri.kd_jabatan = tor.kd_jabatan
 				order by noind";
  		return $this->personalia->query($sql)->result_array();
 	}
@@ -176,58 +182,17 @@ class M_transferreffgaji extends CI_Model
  		return $this->personalia->query($sql)->result_array();
 	}
 
-	public function insertProgres($user,$periode){
+	public function insertProgres($user,$periode,$total){
 		$sql = "delete from \"Presensi\".progress_transfer_reffgaji where user_ = '$user' and menu = 'transferreffgaji'";
 		$this->personalia->query($sql);
 
-		$sql ="insert into \"Presensi\".progress_transfer_reffgaji(user_,progress,total,menu)
-				select '$user',
-					0,
-					(
-						select count(*) 
-						from \"Presensi\".Treffgaji 
-						where left(noind,1) in ('A','B','C','D','E','F','G','H','J','K','P','Q','T')
-						and to_char(tanggal,'mmyy') ='$periode'
-						and jns_transaksi in('01')
-					) + 
-					(
-						select count(*) 
-						from \"Presensi\".Treffgaji 
-						where left(noind,1) in ('B','D','G','J','Q','T')
-						and to_char(tanggal,'mmyy') ='$periode'
-						and jns_transaksi in('01')
-					) + 
-					(
-						select count(*) from \"Presensi\".Treffgaji_keluar refkel
-						where left(noind,1) in ('B','D','J','T','G','Q') 
-						and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0
-						and to_char(tanggal_keluar,'mmyy') ='$periode'
-					) + 
-					(
-						select count(*) from \"Presensi\".Treffgaji_keluar refkel
-						where left(noind,1) in ('B','D','J','T','G','Q') 
-						and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0
-						and to_char(tanggal_keluar,'mmyy') ='$periode'
-					) + 
-					(
-					 	select count(*) from hrd_khs.tpribadi 
-					 	where left(noind,1) in ('K','P')
-						and to_char(tglkeluar,'yy')::int = right('$periode',2)::int
-						and to_char(tglkeluar,'mm')::int = left('$periode',2)::int - 1
-						and keluar = '1'
-						and noind not in (	select noind
-										 	from \"Presensi\".Treffgaji 
-										 	where left(noind,1) in ('K','P')
-										 	and to_char(tanggal,'mmyy') ='$periode'
-										 	and jns_transaksi in('01')
-										 )
-					 ),
-					 'transferreffgaji'";
+		$sql ="insert into \"Presensi\".progress_transfer_reffgaji(user_,progress,total,menu,keterangan)
+				select '$user',0,$total,'transferreffgaji','menyiapkan data'";
 		$this->personalia->query($sql);
 	}
 
-	public function updateProgres($user,$progres){
-		$sql = "update \"Presensi\".progress_transfer_reffgaji set progress = $progres where user_ = '$user' and menu = 'transferreffgaji' ";
+	public function updateProgres($user,$progres,$keterangan){
+		$sql = "update \"Presensi\".progress_transfer_reffgaji set progress = $progres, keterangan = '$keterangan' where user_ = '$user' and menu = 'transferreffgaji' ";
 		$this->personalia->query($sql);
 	}
 
@@ -358,6 +323,155 @@ class M_transferreffgaji extends CI_Model
 			return $result->jumlah;
 		}else{
 			return 0;
+		}
+	}
+
+	public function getRekapNominal($periode){
+		$sql = "select left(noind,1) as kode_induk,
+				count(*) as pekerja,
+				sum(plain::numeric) as pot_lain, 
+				sum(dldobat::numeric) as uang_dl,
+				sum(pduka) as pot_duka,
+				sum(pikop::numeric) as pot_ikop,
+				sum(pspsi::numeric) as pot_spsi,
+				sum(putang::numeric) as pot_utang,
+				sum(putkop::numeric) as pot_utkop
+				from \"Presensi\".treffgaji
+				where to_char(tanggal,'mmyy') ='$periode'
+				and left(noind,1) in ('B','D','J','G','T','Q','A','E','F','H')
+				group by left(noind,1)
+				order by 1";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getDataCetakPerKodesie($periode){
+		$sql = "select * 
+				from ( 
+					SELECT tanggal, reff.noind, reff.nama, reff.kodesie, 
+						ipe, ika, ief, ubt, upamk, um, 
+						ims, imm, jam_lembur, htm, ijin, pot, 
+						tamb_gaji, hl, ct, putkop, plain, pikop, 
+						pspsi, putang, dldobat, tkpajak, ttpajak, 
+						pduka, utambahan, btransfer, dendaik, plbhbayar, 
+						pgp, tlain, xduka, ket, cicil, ubs, 
+						ubs_rp, um_puasa, reff.noind_baru, jns_transaksi, 
+						angg_jkn, potongan_str, tambahan_str, reff_id, 
+						lokasi_krj, ipet, um_cabang, susulan, jml_jkn, jml_jht, jml_jp, 
+						sie.seksi, sie.unit, sie.dept,pri.sekolah,pri.jurusan,pri.pendidikan,0 as ip_lama,0 as ik_lama, 0 as ipt_lama, 
+						pri.asal_outsourcing,(
+							select count(*)::varchar
+							from \"Presensi\".tcutoff_custom_terproses
+							where terakhir = '1'
+							and to_char(tanggal_proses,'mmyy') = to_char(reff.tanggal,'mmyy')
+							and noind = reff.noind
+						)::varchar as cutoff 
+					FROM \"Presensi\".TReffGaji reff INNER JOIN hrd_khs.TSeksi sie 
+					ON reff.kodesie = sie.kodesie 
+					inner join hrd_khs.tpribadi pri on pri.noind = reff.noind 
+					WHERE to_char(reff.tanggal,'mmyy') ='$periode' 
+					AND reff.jns_transaksi in('01') 
+					union all 
+					select tp.tglkeluar as tanggal, noind as noind, nama as nama, tp.kodesie as kodesie, 
+						'0' as ipe, '0' as ika, '0' as ief, '0' as ubt, '0' as upamk, '0' as um, 
+						'0' as ims, '0' as imm, '0' as jam_lembur, '0' as htm, '0' as ijin, 0 as pot, 
+						0 as tamb_gaji, 0 as hl, 0 as ct, '0' as putkop, '0' as plain, '0' as pikop, 
+						'0' as pspsi, '0' as putang, '0' as dldobat, '0' as tkpajak, '0' as ttpajak, 
+						'0' as pduka, '0' as utambahan, '0' as btransfer, '0' as dendaik, '0' as plbhbayar, 
+						'0' as pgp, '0' as tlain, null as xduka, '-' as ket, 0 as cicil, '0' as ubs, 
+						'' as ubs_rp, '0' as um_puasa, noind_baru as noind_baru, '01' as jns_transaksi,
+						'0' as angg_jkn, '0' as potongan_str, '0' as tambahan_str, '0' as reff_id, 
+						(select lokasi_kerja from hrd_khs.tlokasi_kerja where ID_ = tp.lokasi_kerja) as lokasi_krj, 
+						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp, 
+						sie.seksi, sie.unit, sie.dept,tp.sekolah,tp.jurusan,tp.pendidikan,0 as ip_lama,0 as ik_lama, 0 as ipt_lama, 
+						tp.asal_outsourcing,'~'  as cutoff
+					from hrd_khs.tpribadi tp 
+					INNER JOIN hrd_khs.TSeksi sie ON tp.kodesie = sie.kodesie 
+					where left(noind,1) in ('K','P') 
+					and to_char(tglkeluar,'yy')::int = '".substr($periode, 2, 2)."' 
+					and to_char(tglkeluar,'mm')::int = '".substr($periode, 0, 2)."'::int - 1 
+					and keluar = '1' 
+					and noind not in (
+						select noind 
+						from \"Presensi\".Treffgaji 
+						where left(noind,1) in ('K','P') 
+						and to_char(tanggal,'mmyy') ='$periode' 
+						and jns_transaksi in('01')
+					) 
+				) as tbl 
+				where left(noind,1) in ('A','E','F','H','K','P')
+				ORDER BY left(noind,1), asal_outsourcing, kodesie, noind";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getDataCetakPerKodeInduk($periode){
+		$sql = "select * 
+				from ( 
+					SELECT tanggal, reff.noind, reff.nama, reff.kodesie, 
+						ipe, ika, ief, ubt, upamk, um, 
+						ims, imm, jam_lembur, htm, ijin, pot, 
+						tamb_gaji, hl, ct, putkop, plain, pikop, 
+						pspsi, putang, dldobat, tkpajak, ttpajak, 
+						pduka, utambahan, btransfer, dendaik, plbhbayar, 
+						pgp, tlain, xduka, ket, cicil, ubs, 
+						ubs_rp, um_puasa, reff.noind_baru, jns_transaksi, 
+						angg_jkn, potongan_str, tambahan_str, reff_id, 
+						lokasi_krj, ipet, um_cabang, susulan, jml_jkn, jml_jht, jml_jp, 
+						sie.seksi, sie.unit, sie.dept,pri.sekolah,pri.jurusan,pri.pendidikan,0 as ip_lama,0 as ik_lama, 0 as ipt_lama, 
+						pri.asal_outsourcing,(
+							select count(*)::varchar
+							from \"Presensi\".tcutoff_custom_terproses
+							where terakhir = '1'
+							and to_char(tanggal_proses,'mmyy') = to_char(reff.tanggal,'mmyy')
+							and noind = reff.noind
+						)::varchar as cutoff 
+					FROM \"Presensi\".TReffGaji reff INNER JOIN hrd_khs.TSeksi sie 
+					ON reff.kodesie = sie.kodesie 
+					inner join hrd_khs.tpribadi pri on pri.noind = reff.noind 
+					WHERE to_char(reff.tanggal,'mmyy') ='$periode' 
+					AND reff.jns_transaksi in('01') 
+					union all 
+					select tp.tglkeluar as tanggal, noind as noind, nama as nama, tp.kodesie as kodesie, 
+						'0' as ipe, '0' as ika, '0' as ief, '0' as ubt, '0' as upamk, '0' as um, 
+						'0' as ims, '0' as imm, '0' as jam_lembur, '0' as htm, '0' as ijin, 0 as pot, 
+						0 as tamb_gaji, 0 as hl, 0 as ct, '0' as putkop, '0' as plain, '0' as pikop, 
+						'0' as pspsi, '0' as putang, '0' as dldobat, '0' as tkpajak, '0' as ttpajak, 
+						'0' as pduka, '0' as utambahan, '0' as btransfer, '0' as dendaik, '0' as plbhbayar, 
+						'0' as pgp, '0' as tlain, null as xduka, '-' as ket, 0 as cicil, '0' as ubs, 
+						'' as ubs_rp, '0' as um_puasa, noind_baru as noind_baru, '01' as jns_transaksi,
+						'0' as angg_jkn, '0' as potongan_str, '0' as tambahan_str, '0' as reff_id, 
+						(select lokasi_kerja from hrd_khs.tlokasi_kerja where ID_ = tp.lokasi_kerja) as lokasi_krj, 
+						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp, 
+						sie.seksi, sie.unit, sie.dept,tp.sekolah,tp.jurusan,tp.pendidikan,0 as ip_lama,0 as ik_lama, 0 as ipt_lama, 
+						tp.asal_outsourcing,'~' as cutoff
+					from hrd_khs.tpribadi tp 
+					INNER JOIN hrd_khs.TSeksi sie ON tp.kodesie = sie.kodesie 
+					where left(noind,1) in ('K','P') 
+					and to_char(tglkeluar,'yy')::int = '".substr($periode, 2, 2)."' 
+					and to_char(tglkeluar,'mm')::int = '".substr($periode, 0, 2)."'::int - 1 
+					and keluar = '1' 
+					and noind not in (
+						select noind 
+						from \"Presensi\".Treffgaji 
+						where left(noind,1) in ('K','P') 
+						and to_char(tanggal,'mmyy') ='$periode' 
+						and jns_transaksi in('01')
+					) 
+				) as tbl 
+				where left(noind,1) in ('B','D','J','G','Q','T')
+				ORDER BY noind";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getPeriodePenggajianByPeriode($periode){
+		$sql = "select concat('( ',to_char(tanggal_awal,'dd/mm/yyyy'),' - ',to_char(tanggal_akhir,'dd/mm/yyyy'),' )') as periode
+				from \"Presensi\".tcutoff
+				where os = '0'
+				and concat(right(periode,2),substring(periode,3,2)) = '$periode'";
+		$result = $this->personalia->query($sql)->row();
+		if (!empty($result)) {
+			return $result->periode;
+		}else{
+			return '( __/__/20__ - __/__/20__ )';
 		}
 	}
 

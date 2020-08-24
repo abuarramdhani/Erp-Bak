@@ -97,6 +97,20 @@
                         </div>
                         <br />
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Gudang Pengirim</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-home"></i></span>
+                                    <select class="form-control slcADOGudangPengirim" id="">
+                                        <option></option>
+                                        <option value="TUKSONO">TUKSONO</option>
+                                        <option value="MLATI">MLATI</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">Alamat Bongkar</label>
                             <div class="col-sm-5">
                                 <div class="input-group">
@@ -143,7 +157,7 @@
                                         <?php foreach ($DPBVendorDetail as $key => $val) : ?>
                                         <tr>
                                             <td class="text-right"><?= $key+1 ?></td>
-                                            <td class="text-right"><?= $val['NO_DO_SPB'] ?></td>
+                                            <td class="text-right"><?= $val['NO_DO_SPB'] ?> <input type="hidden" class="form-control nodoADO" value="<?= $val['NO_DO_SPB'] ?>"></td>
                                             <td class="text-left"><?= $val['ITEM'] ?></td>
                                             <td class="text-right"><?= $val['QUANTITY'] ?></td>
                                             <td class="text-left"><?= $val['UOM'] ?></td>

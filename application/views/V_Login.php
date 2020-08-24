@@ -86,7 +86,23 @@
             <div class="col-md-12 center login-header"></div>
         </div>
         <div class="row">
-            <div class="well col-md-5 center login-box">
+            <div class="col-md-3">
+                <div class="row" style="height: 100%">
+                    <div class="col-sm-9 col-sm-offset-3" style="height: 100%;padding-left: 0;">
+                        <div class="carousel slide" data-ride="carousel" data-interval="4000">
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="<?php echo base_url('assets/img/poster/data_sesuai_fakta.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/jangan_manipulasi_data.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="well col-md-6 login-box">
                 <div class="row left" style="padding:1%;margin-left:-5%;">
                     <div class="col-md-12">
                         <div style="float:left;">
@@ -133,8 +149,35 @@
                     </fieldset>
                 </form>
             </div>
+            <div class="col-md-3">
+                <div class="row" style="height: 100%">
+                    <div class="col-sm-9" style="height: 100%;padding-right: 0;">
+                        <div class="carousel slide" data-ride="carousel" data-interval="4000">
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <img src="<?php echo base_url('assets/img/poster/penyebaran_covid.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/jaga_jarak.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 3">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/tanpa_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 4">
+                                </div>
+                                <div class="item">
+                                    <img src="<?php echo base_url('assets/img/poster/gunakan_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 5">
+                                </div>
+                                <div class="item ">
+                                    <img src="<?php echo base_url('assets/img/poster/ganti_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -211,10 +254,11 @@
     }
     if(browserVersion === 0) browserVersion = parseFloat(new Number(RegExp.$1));
     var error = '<div style="text-align: center;"><h3>Aplikasi Browser ('+ get_browser_info().name +' Versi '+ get_browser_info().version +') Anda <b>tidak memenuhi Spesifikasi Standar Minimum Akses</b> QuickERP.</h3> <h3>Silahkan gunakan Aplikasi Browser berikut : </h3> <h3>- Google Chrome Versi 49 ke Atas</h3><h3>- Chromium Versi 50 ke Atas</h3> <h3>- Mozilla Firefox Versi 45 ke Atas</h3><br><h3>atau </h3><h3>Silahkan <b>menghubungi Bag. Hardware ICT</b> untuk dilakukan installasi / update Browser</h3> <h3><b>di VoIP 12300 Ext. 5 atau Telkomsel MyGroup 628112545922</b></h3><br><h3>--- QuickERP ---</h3></div> nama os : '+OSName;
-    if(browser == 'Chrome' || browser == 'Mozila Firefox' || browser == 'Chromium') {
+    if(browser == 'Chrome' || browser == 'Mozila Firefox' || browser == 'Chromium' || browser == 'Safari') {
             if((browser == 'Chrome' && browserVersion < 49 && OSName != 'Android') || (browser == 'Chrome' && browserVersion < 42 && OSName == 'Android')) document.getElementById("body").innerHTML = error;
             if(browser == 'Mozila Firefox' && browserVersion < 45) document.getElementById("body").innerHTML = error;
             if(browser == 'chromium' && browserVersion < 50) document.getElementById("body").innerHTML = error;
+            if(browser == 'Safari' && browserVersion !== 604 && browserVersion !== 13) document.getElementById("body").innerHTML = error;
     } else {
         document.getElementById("body").innerHTML = error;
     }
@@ -236,28 +280,6 @@
         };
     }
 </script>
-
-<style>
-    .iconso {
-        position: fixed;
-        bottom: 0px;
-        left: 20px;
-        margin: 0;
-    }
-
-    .iconso-img {
-        width: 300px;
-    }
-
-    @media only screen and (max-width: 600px) {
-        .iconso-img {
-            display: none !important;
-        }
-    }
-</style>
-<div class="iconso">
-    <img class="iconso-img" src="<?php echo base_url('assets/img/SO2020.gif?v='.time()); ?>">
-</div>
 
 </body>
 </html> 

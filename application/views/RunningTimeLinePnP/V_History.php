@@ -10,7 +10,7 @@
             <div class="col-md-12" style="margin-top:10px">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
                 <div class="table-responsive">
-                  <table class="table table-striped table-bordered table-hover text-left line5wipp tblwiip10" style="font-size:11px;">
+                  <table class="table table-striped table-bordered table-hover text-left line5wipp detailHistory_rtlp" style="font-size:11px;">
                     <thead>
                       <tr class="bg-info">
                         <th class="text-center">No</th>
@@ -22,11 +22,12 @@
 												<th class="text-center">Waktu Mulai</th>
                         <th class="text-center">Waktu Selesai</th>
                         <th class="text-center">Lama Waktu</th>
+                        <th class="text-center">Waktu Jeda</th>
                       </tr>
                     </thead>
                     <tbody >
                       <?php foreach ($get as $key => $g): ?>
-                      <tr>
+                      <tr row-pause="<?php echo $key+1 ?>">
                         <td class="text-center"><?php echo $key+1 ?></td>
                         <td class="text-center"><?php echo $g['No_Job'] ?></td>
                         <td class="text-center"><?php echo $g['Komponen'] ?></td>
@@ -36,6 +37,9 @@
                         <td class="text-center"><?php echo $g['Start'] ?></td>
                         <td class="text-center"><?php echo $g['Finish'] ?></td>
                         <td class="text-center"><?php echo $g['Time'] ?></td>
+                        <td class="text-center">
+                          <button type="button" class="btn btn-sm bg-navy" onclick="detail_pause('<?php echo $g['No_Job'] ?>', '<?php echo $g['Line'] ?>', <?php echo $key+1 ?>)" style="border-radius:5px;padding:5px;margin-top:0;" name="button"><i class="fa fa-eye"></i> Detail</button>
+                        </td>
                       </tr>
                       <?php endforeach; ?>
                     </tbody>

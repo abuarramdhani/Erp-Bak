@@ -21,45 +21,125 @@ const swalRKH = (type, title) => {
   })
 }
 
-// $(document).ready(function() {
-//   $('.tblwiip10').DataTable();
-// 300000/4 = 75000; 30000; 2800
-// })
-let rtlp1 =  $('.tblwiip10').DataTable();
 
-function format_wipp( d, kode_item ){
+
+// window.addEventListener('beforeunload', function (e) {
+//      e.preventDefault();
+//      e.returnValue = '';
+//  });
+
+let pause_detail = $('.detailHistory_rtlp').DataTable();
+
+function format_rtlp(d, no_job, line) {
+  return `<div style="width:55%;float:right;font-weight:bold;padding-bottom:5px;font-size:13px;">${no_job} (Line ${line})</div>
+          <div style="width:55%;float:right"class="detail_${line}_${no_job}"></div>`;
+}
+
+const detail_pause = (no_job, line, no) => {
+  let tr = $(`tr[row-pause="${no}"]`);
+  let row = pause_detail.row(tr);
+  if (row.child.isShown()) {
+    row.child.hide();
+    tr.removeClass('shown');
+  } else {
+    row.child(format_rtlp(row.data(), no_job, line)).show();
+    tr.addClass('shown');
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/detail_pause',
+      type: 'POST',
+      async: true,
+      dataType: 'JSON',
+      data: {
+        no_job: no_job,
+        line: line
+      },
+      beforeSend: function() {
+        $(`.detail_${line}_` + no_job).html(`<div id="loadingArea0">
+                                              <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
+                                             </div>`)
+      },
+      success: function(result) {
+        let item = '';
+        let push = [];
+
+        function pad(d) {
+          return (d < 10) ? '0' + d.toString() : d.toString();
+        }
+
+        result.forEach((v, i) => {
+          let st = ['00', '00', '00'];
+          let stp = ['00', '00', '00'];
+
+          if (v.Pause_Start !== null && v.Pause_Done !== null) {
+            st = v.Pause_Start.split(':');
+            stp = v.Pause_Done.split(':');
+          }
+
+          item = `<tr>
+                      <td><center>${Number(i)+1}</center></td>
+                      <td><center>${v.Pause_Start}</center></td>
+                      <td><center>${v.Pause_Done}</center></td>
+                      <td><center>${pad(Number(stp[0]) - Number(st[0]))}:${pad(Number(stp[1]) - Number(st[1]))}:${pad(Number(stp[2]) - Number(st[2]))}</center></td>
+                    </tr>`;
+          push.push(item);
+        })
+        let join = push.join(' ');
+        let html = `<table class="table table-striped table-bordered table-hover text-left" style="font-size:12px;float:right">
+              <thead>
+                <tr class="bg-success">
+                  <th><center>No</center></th>
+                  <th><center>Pause Start</center></th>
+                  <th><center>Pause Done</center></th>
+                  <th><center>Time Range</center></th>
+                </tr>
+              </thead>
+              <tbody>
+              ${join}
+              </tbody>
+            </table>`
+        $(`.detail_${line}_` + no_job).html(html)
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+  }
+}
+
+let rtlp1 = $('.tblwiip10').DataTable();
+
+function format_wipp(d, kode_item) {
   return `<div class="detail_area${kode_item}"> </div>`;
 }
 
 const detail_rtlp = (id, no) => {
   let tr = $(`tr[data-rtlp=${id}_${no}]`);
   let row = rtlp1.row(tr);
-  if ( row.child.isShown() ) {
-      row.child.hide();
-      tr.removeClass('shown');
-  }
-  else {
-      row.child( format_wipp(row.data(), id)).show();
-      tr.addClass('shown');
-      $.ajax({
-        url: baseurl + 'RunningTimeLinePnP/setting/detail',
-        type: 'POST',
-        async: true,
-        data: {
-          kode_item: id,
-        },
-        beforeSend: function() {
-          $('.detail_area'+id).html(`<div id="loadingArea0">
+  if (row.child.isShown()) {
+    row.child.hide();
+    tr.removeClass('shown');
+  } else {
+    row.child(format_wipp(row.data(), id)).show();
+    tr.addClass('shown');
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/detail',
+      type: 'POST',
+      async: true,
+      data: {
+        kode_item: id,
+      },
+      beforeSend: function() {
+        $('.detail_area' + id).html(`<div id="loadingArea0">
                                           <center><img style="width: 3%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"></center>
                                         </div>`)
-        },
-        success: function(result) {
-          $('.detail_area'+id).html(result)
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-          console.error();
-        }
-      })
+      },
+      success: function(result) {
+        $('.detail_area' + id).html(result)
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
   }
 }
 
@@ -97,6 +177,10 @@ let hours1 = [];
 let minutes1 = [];
 let seconds1 = [];
 
+let detikk1 = [];
+let menitt1 = [];
+let jamm1 = [];
+
 let startTimer2 = [];
 let hours2 = [];
 let minutes2 = [];
@@ -132,10 +216,6 @@ let intervalId4 = [];
 let totalSeconds_i5 = [];
 let intervalId5 = [];
 
-let detikk1 = [];
-let menitt1 = [];
-let jamm1 = [];
-
 let detikk2 = [];
 let menitt2 = [];
 let jamm2 = [];
@@ -152,26 +232,383 @@ let detikk5 = [];
 let menitt5 = [];
 let jamm5 = [];
 
+$(document).ready(function() {
+  let cek = $('#cek_rtlp').val();
+  if (cek == 'okok') {
+    let get_start_time_1 = $('.time_start_1').map((_, el) => el.value).get();
+    let get_cek_1 = get_start_time_1.join('');
 
-// // get total seconds between the times
-// var delta = Math.abs(date_future - date_now) / 1000;
-//
-// // calculate (and subtract) whole days
-// var days = Math.floor(delta / 86400);
-// delta -= days * 86400;
-//
-// // calculate (and subtract) whole hours
-// var hours = Math.floor(delta / 3600) % 24;
-// delta -= hours * 3600;
-//
-// // calculate (and subtract) whole minutes
-// var minutes = Math.floor(delta / 60) % 60;
-// delta -= minutes * 60;
-//
-// // what's left is seconds
-// var seconds = delta % 60;  // in theory the modulus is not required
+    let get_start_time_2 = $('.time_start_2').map((_, el) => el.value).get();
+    let get_cek_2 = get_start_time_2.join('');
 
-// const dataLength = $('#length').data('length');
+    let get_start_time_3 = $('.time_start_3').map((_, el) => el.value).get();
+    let get_cek_3 = get_start_time_3.join('');
+
+    let get_start_time_4 = $('.time_start_4').map((_, el) => el.value).get();
+    let get_cek_4 = get_start_time_4.join('');
+
+    let get_start_time_5 = $('.time_start_5').map((_, el) => el.value).get();
+    let code_comp_5 = $('.code_comp_5').map((_, el) => el.value).get();
+    let get_cek_5 = get_start_time_5.join('');
+
+    const waktu_sekarang = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    let stp = waktu_sekarang.split(':');
+
+    if (get_cek_1 !== '') {
+      get_start_time_1.forEach((val, i) => {
+        $('#btnstart1' + i).attr("disabled", "disabled");
+
+        if (val !== '') {
+          let st = val.split(':');
+
+          let jam = Number(stp[0]) - Number(st[0]);
+          let menit = Number(stp[1]) - Number(st[1]);
+          let detik = Number(stp[2]) - Number(st[2]);
+
+          if (detik < 0) {
+            detik = (Number(stp[2]) + 60) - Number(st[2]);
+            menit = (Number(stp[1]) - 1) - Number(st[1]);
+            if (menit < 0) {
+              menit = (Number(stp[2]) + 60) - Number(st[2]);
+              jam = (Number(stp[0]) - 1) - Number(st[0]);
+            }
+          }
+          if (menit < 0) {
+            menit = (Number(stp[2]) + 60) - Number(st[2]);
+            jam = (Number(stp[0]) - 1) - Number(st[0]);
+          }
+
+          hours1[i] = jam;
+          minutes1[i] = menit;
+          seconds1[i] = detik;
+          totalSeconds_i1[i] = (Number(jam) * 3600) + (Number(menit) * 60) + Number(detik);
+
+          $('#btnlanjut1' + i).removeAttr("disabled");
+          $('#btnrestart1' + i).removeAttr("disabled");
+          $('#btnfinish1' + i).removeAttr("disabled");
+
+          startTimer1[i] = () => {
+            ++totalSeconds_i1[i];
+            hours1[i] = Math.floor(totalSeconds_i1[i] / 3600);
+            minutes1[i] = Math.floor((totalSeconds_i1[i] - hours1[i] * 3600) / 60);
+            seconds1[i] = totalSeconds_i1[i] - (hours1[i] * 3600 + minutes1[i] * 60);
+
+            function pad(val) {
+              let valString = val + "";
+              if (valString.length < 2) {
+                return "0" + valString;
+              } else {
+                return valString;
+              }
+            }
+
+            document.getElementById(`hours1-${i}`).innerHTML = pad(hours1[i]);
+            document.getElementById(`minutes1-${i}`).innerHTML = pad(minutes1[i]);
+            document.getElementById(`seconds1-${i}`).innerHTML = pad(seconds1[i]);
+          }
+          intervalId1[i] = setInterval(startTimer1[i], 1000);
+        }
+      })
+    }
+
+    if (get_cek_2 !== '') {
+      get_start_time_2.forEach((val, i) => {
+        $('#btnstart2' + i).attr("disabled", "disabled");
+
+        if (val !== '') {
+          let st  = val.split(':');
+
+          let jam = Number(stp[0]) - Number(st[0]);
+          let menit = Number(stp[1]) - Number(st[1]);
+          let detik  = Number(stp[2]) - Number(st[2]);
+
+          if (detik < 0) {
+            detik = (Number(stp[2]) + 60) - Number(st[2]);
+            menit = (Number(stp[1]) - 1) - Number(st[1]);
+            if (menit < 0) {
+              menit = (Number(stp[2]) + 60) - Number(st[2]);
+              jam = (Number(stp[0]) - 1) - Number(st[0]);
+            }
+          }
+          if (menit < 0) {
+            menit = (Number(stp[2]) + 60) - Number(st[2]);
+            jam = (Number(stp[0]) - 1) - Number(st[0]);
+          }
+
+          hours2[i] = jam;
+          minutes2[i] = menit;
+          seconds2[i] = detik;
+          totalSeconds_i2[i] = (Number(jam)*3600)+(Number(menit)*60)+Number(detik);
+
+          $('#btnlanjut2' + i).removeAttr("disabled");
+          $('#btnrestart2' + i).removeAttr("disabled");
+          $('#btnfinish2' + i).removeAttr("disabled");
+
+          startTimer2[i] = () => {
+            ++totalSeconds_i2[i];
+            hours2[i] = Math.floor(totalSeconds_i2[i] / 3600);
+            minutes2[i] = Math.floor((totalSeconds_i2[i] - hours2[i] * 3600) / 60);
+            seconds2[i] = totalSeconds_i2[i] - (hours2[i] * 3600 + minutes2[i] * 60);
+
+            function pad(val) {
+              let valString = val + "";
+              if (valString.length < 2) {
+                return "0" + valString;
+              } else {
+                return valString;
+              }
+            }
+
+            document.getElementById(`hours2-${i}`).innerHTML = pad(hours2[i]);
+            document.getElementById(`minutes2-${i}`).innerHTML = pad(minutes2[i]);
+            document.getElementById(`seconds2-${i}`).innerHTML = pad(seconds2[i]);
+          }
+          intervalId2[i] = setInterval(startTimer2[i], 1000);
+        }
+      })
+    }
+
+    if (get_cek_3 !== '') {
+      get_start_time_3.forEach((val, i) => {
+        $('#btnstart3' + i).attr("disabled", "disabled");
+
+        if (val !== '') {
+          let st  = val.split(':');
+
+          let jam = Number(stp[0]) - Number(st[0]);
+          let menit = Number(stp[1]) - Number(st[1]);
+          let detik  = Number(stp[2]) - Number(st[2]);
+
+          if (detik < 0) {
+            detik = (Number(stp[2]) + 60) - Number(st[2]);
+            menit = (Number(stp[1]) - 1) - Number(st[1]);
+            if (menit < 0) {
+              menit = (Number(stp[2]) + 60) - Number(st[2]);
+              jam = (Number(stp[0]) - 1) - Number(st[0]);
+            }
+          }
+          if (menit < 0) {
+            menit = (Number(stp[2]) + 60) - Number(st[2]);
+            jam = (Number(stp[0]) - 1) - Number(st[0]);
+          }
+
+          hours3[i] = jam;
+          minutes3[i] = menit;
+          seconds3[i] = detik;
+          totalSeconds_i3[i] = (Number(jam)*3600)+(Number(menit)*60)+Number(detik);
+
+          $('#btnlanjut3' + i).removeAttr("disabled");
+          $('#btnrestart3' + i).removeAttr("disabled");
+          $('#btnfinish3' + i).removeAttr("disabled");
+
+          startTimer3[i] = () => {
+            ++totalSeconds_i3[i];
+            hours3[i] = Math.floor(totalSeconds_i3[i] / 3600);
+            minutes3[i] = Math.floor((totalSeconds_i3[i] - hours3[i] * 3600) / 60);
+            seconds3[i] = totalSeconds_i3[i] - (hours3[i] * 3600 + minutes3[i] * 60);
+
+            function pad(val) {
+              let valString = val + "";
+              if (valString.length < 2) {
+                return "0" + valString;
+              } else {
+                return valString;
+              }
+            }
+
+            document.getElementById(`hours3-${i}`).innerHTML = pad(hours3[i]);
+            document.getElementById(`minutes3-${i}`).innerHTML = pad(minutes3[i]);
+            document.getElementById(`seconds3-${i}`).innerHTML = pad(seconds3[i]);
+          }
+          intervalId3[i] = setInterval(startTimer3[i], 1000);
+        }
+      })
+    }
+
+    if (get_cek_4 !== '') {
+      get_start_time_4.forEach((val, i) => {
+        $('#btnstart4' + i).attr("disabled", "disabled");
+
+        if (val !== '') {
+          let st = val.split(':');
+
+          let jam = Number(stp[0]) - Number(st[0]);
+          let menit = Number(stp[1]) - Number(st[1]);
+          let detik = Number(stp[2]) - Number(st[2]);
+
+          if (detik < 0) {
+            detik = (Number(stp[2]) + 60) - Number(st[2]);
+            menit = (Number(stp[1]) - 1) - Number(st[1]);
+            if (menit < 0) {
+              menit = (Number(stp[2]) + 60) - Number(st[2]);
+              jam = (Number(stp[0]) - 1) - Number(st[0]);
+            }
+          }
+          if (menit < 0) {
+            menit = (Number(stp[2]) + 60) - Number(st[2]);
+            jam = (Number(stp[0]) - 1) - Number(st[0]);
+          }
+
+          hours4[i] = jam;
+          minutes4[i] = menit;
+          seconds4[i] = detik;
+          totalSeconds_i4[i] = (Number(jam) * 3600) + (Number(menit) * 60) + Number(detik);
+
+          $('#btnlanjut4' + i).removeAttr("disabled");
+          $('#btnrestart4' + i).removeAttr("disabled");
+          $('#btnfinish4' + i).removeAttr("disabled");
+
+          startTimer4[i] = () => {
+            ++totalSeconds_i4[i];
+            hours4[i] = Math.floor(totalSeconds_i4[i] / 3600);
+            minutes4[i] = Math.floor((totalSeconds_i4[i] - hours4[i] * 3600) / 60);
+            seconds4[i] = totalSeconds_i4[i] - (hours4[i] * 3600 + minutes4[i] * 60);
+
+            function pad(val) {
+              let valString = val + "";
+              if (valString.length < 2) {
+                return "0" + valString;
+              } else {
+                return valString;
+              }
+            }
+
+            document.getElementById(`hours4-${i}`).innerHTML = pad(hours4[i]);
+            document.getElementById(`minutes4-${i}`).innerHTML = pad(minutes4[i]);
+            document.getElementById(`seconds4-${i}`).innerHTML = pad(seconds4[i]);
+          }
+          intervalId4[i] = setInterval(startTimer4[i], 1000);
+        }
+      })
+    }
+
+    if (get_cek_4 !== '') {
+      get_start_time_4.forEach((val, i) => {
+        $('#btnstart4' + i).attr("disabled", "disabled");
+
+        if (val !== '') {
+          let st = val.split(':');
+
+          let jam = Number(stp[0]) - Number(st[0]);
+          let menit = Number(stp[1]) - Number(st[1]);
+          let detik = Number(stp[2]) - Number(st[2]);
+
+          if (detik < 0) {
+            detik = (Number(stp[2]) + 60) - Number(st[2]);
+            menit = (Number(stp[1]) - 1) - Number(st[1]);
+            if (menit < 0) {
+              menit = (Number(stp[2]) + 60) - Number(st[2]);
+              jam = (Number(stp[0]) - 1) - Number(st[0]);
+            }
+          }
+          if (menit < 0) {
+            menit = (Number(stp[2]) + 60) - Number(st[2]);
+            jam = (Number(stp[0]) - 1) - Number(st[0]);
+          }
+
+          hours4[i] = jam;
+          minutes4[i] = menit;
+          seconds4[i] = detik;
+          totalSeconds_i4[i] = (Number(jam) * 3600) + (Number(menit) * 60) + Number(detik);
+
+          $('#btnlanjut4' + i).removeAttr("disabled");
+          $('#btnrestart4' + i).removeAttr("disabled");
+          $('#btnfinish4' + i).removeAttr("disabled");
+
+          startTimer4[i] = () => {
+            ++totalSeconds_i4[i];
+            hours4[i] = Math.floor(totalSeconds_i4[i] / 3600);
+            minutes4[i] = Math.floor((totalSeconds_i4[i] - hours4[i] * 3600) / 60);
+            seconds4[i] = totalSeconds_i4[i] - (hours4[i] * 3600 + minutes4[i] * 60);
+
+            function pad(val) {
+              let valString = val + "";
+              if (valString.length < 2) {
+                return "0" + valString;
+              } else {
+                return valString;
+              }
+            }
+
+            document.getElementById(`hours4-${i}`).innerHTML = pad(hours4[i]);
+            document.getElementById(`minutes4-${i}`).innerHTML = pad(minutes4[i]);
+            document.getElementById(`seconds4-${i}`).innerHTML = pad(seconds4[i]);
+          }
+          intervalId4[i] = setInterval(startTimer4[i], 1000);
+        }
+      })
+    }
+
+    if (get_cek_5 !== '') {
+      get_start_time_5.forEach((val, i) => {
+        $('#btnstart5' + i).attr("disabled", "disabled");
+
+        if (val !== '') {
+          $('.img-area-wipp').html(`<div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
+                                     <div class="row">
+                                       <div class="col-md-12">
+                                         <label for="">Code Item : ${code_comp_5[i]}</label>
+                                         <br>
+                                         <center><img src="${baseurl}/assets/upload/wipp/setelah/${code_comp_5[i]}.png" style="max-width:100%;max-height:400px" class="img-fluid" alt="Responsive image"></center>
+                                       </div>
+                                     </div>
+                                   </div>`);
+
+          let st = val.split(':');
+          let jam = Number(stp[0]) - Number(st[0]);
+          let menit = Number(stp[1]) - Number(st[1]);
+          let detik = Number(stp[2]) - Number(st[2]);
+
+          if (detik < 0) {
+            detik = (Number(stp[2]) + 60) - Number(st[2]);
+            menit = (Number(stp[1]) - 1) - Number(st[1]);
+            if (menit < 0) {
+              menit = (Number(stp[2]) + 60) - Number(st[2]);
+              jam = (Number(stp[0]) - 1) - Number(st[0]);
+            }
+          }
+          if (menit < 0) {
+            menit = (Number(stp[2]) + 60) - Number(st[2]);
+            jam = (Number(stp[0]) - 1) - Number(st[0]);
+          }
+
+          hours5[i] = jam;
+          minutes5[i] = menit;
+          seconds5[i] = detik;
+          totalSeconds_i5[i] = (Number(jam) * 3600) + (Number(menit) * 60) + Number(detik);
+
+          $('#btnlanjut5' + i).removeAttr("disabled");
+          $('#btnrestart5' + i).removeAttr("disabled");
+          $('#btnfinish5' + i).removeAttr("disabled");
+
+          startTimer5[i] = () => {
+            ++totalSeconds_i5[i];
+            hours5[i] = Math.floor(totalSeconds_i5[i] / 3600);
+            minutes5[i] = Math.floor((totalSeconds_i5[i] - hours5[i] * 3600) / 60);
+            seconds5[i] = totalSeconds_i5[i] - (hours5[i] * 3600 + minutes5[i] * 60);
+
+            function pad(val) {
+              let valString = val + "";
+              if (valString.length < 2) {
+                return "0" + valString;
+              } else {
+                return valString;
+              }
+            }
+
+            document.getElementById(`hours5-${i}`).innerHTML = pad(hours5[i]);
+            document.getElementById(`minutes5-${i}`).innerHTML = pad(minutes5[i]);
+            document.getElementById(`seconds5-${i}`).innerHTML = pad(seconds5[i]);
+          }
+          intervalId5[i] = setInterval(startTimer5[i], 1000);
+        }
+      })
+    }
+
+  }
+})
+
+
 const jumlahEl1 = $('.length1').find('.timer1').toArray();
 const jumlahEl2 = $('.length2').find('.timer2').toArray();
 const jumlahEl3 = $('.length3').find('.timer3').toArray();
@@ -218,7 +655,7 @@ jumlahEl1.forEach((v, i) => {
 
     // if ($('#btnstart'+i).val() === 'Start') {
     intervalId1[i] = setInterval(startTimer1[i], 1000);
-    $('#btnstart1' + i).removeAttr("disabled");
+    // $('#btnstart1' + i).removeAttr("disabled");
     $('#btnlanjut1' + i).removeAttr("disabled");
     $('#btnrestart1' + i).removeAttr("disabled");
     $('#btnfinish1' + i).removeAttr("disabled");
@@ -246,7 +683,7 @@ jumlahEl1.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek1${i}`).val('second_load');
           }
         },
@@ -254,8 +691,7 @@ jumlahEl1.forEach((v, i) => {
           console.error();
         }
       })
-    }else {
-      swalRKH('info', `${waktu_mulai}`)
+    } else {
       $.ajax({
         url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
         type: 'POST',
@@ -264,22 +700,18 @@ jumlahEl1.forEach((v, i) => {
         data: {
           waktu_mulai: waktu_mulai,
           line: 1,
-          no: no,
-          code: code
         },
         success: function(result) {
           if (!result) {
             Swal.fire({
               position: 'center',
-              type: 'Danger',
-              title: 'Gagal Melakukan Insert Data (!)',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
               showConfirmButton: false,
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
-
-
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -310,10 +742,10 @@ jumlahEl1.forEach((v, i) => {
 
         if (cek_detik == '00' && cek_menit == '00' && cek_jam == '00') {
           $('#btnstart1' + j).removeAttr("disabled");
-          console.log('remove');
-        }else {
+          // console.log('remove');
+        } else {
           $('#btnstart1' + j).attr("disabled", "disabled");
-          console.log('add');
+          // console.log('add');
         }
       })
 
@@ -344,7 +776,7 @@ jumlahEl1.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -358,7 +790,7 @@ jumlahEl1.forEach((v, i) => {
     if (intervalId1[i]) {
       clearInterval(intervalId1[i]);
       let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
       $.ajax({
         url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
@@ -381,8 +813,11 @@ jumlahEl1.forEach((v, i) => {
               showConfirmButton: false,
               timer: 1700
             })
-          }else {
-            console.log(result);
+          } else {
+            swalRTLPToastrAlert('warning', `Data Job Lane 1 dengan No Job ${no_job} Dijeda.`);
+            $('#btnstart1' + i).removeAttr("disabled");
+            $('#btnlanjut1' + i).attr("disabled", "disabled");
+            $('#btnrestart1' + i).attr("disabled", "disabled");
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -392,11 +827,40 @@ jumlahEl1.forEach((v, i) => {
     }
   }
 
-  reset1[i] = _ => {
+  reset1[i] = (no_job) => {
     totalSeconds_i1[i] = 0;
-    document.getElementById(`hours1-${i}`).innerHTML = '00';
-    document.getElementById(`minutes1-${i}`).innerHTML = '00';
-    document.getElementById(`seconds1-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 1,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 1 dengan no job ${no_job} berhasil di Reset.`);
+
+          document.getElementById(`hours1-${i}`).innerHTML = '00';
+          document.getElementById(`minutes1-${i}`).innerHTML = '00';
+          document.getElementById(`seconds1-${i}`).innerHTML = '00';
+        } else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
   };
 
 })
@@ -440,7 +904,7 @@ jumlahEl2.forEach((v, i) => {
     })
     // if ($('#btnstart'+i).val() === 'Start') {
     intervalId2[i] = setInterval(startTimer2[i], 1000);
-    $('#btnstart2' + i).removeAttr("disabled");
+    // $('#btnstart2' + i).removeAttr("disabled");
     $('#btnlanjut2' + i).removeAttr("disabled");
     $('#btnrestart2' + i).removeAttr("disabled");
     $('#btnfinish2' + i).removeAttr("disabled");
@@ -467,8 +931,35 @@ jumlahEl2.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek2${i}`).val('second_load');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    } else {
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: 2,
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -496,12 +987,12 @@ jumlahEl2.forEach((v, i) => {
 
         if (cek_detik == '00' && cek_menit == '00' && cek_jam == '00') {
           $('#btnstart2' + j).removeAttr("disabled");
-        }else {
+        } else {
           $('#btnstart2' + j).attr("disabled", "disabled");
         }
       })
 
-      $('#btnstart2' + i).attr("disabled", "disabled"); // sesuai kondisi pasien antum
+      $('#btnstart2' + i).attr("disabled", "disabled"); // sesuai kondisi client antum
       $('#btnlanjut2' + i).attr("disabled", "disabled");
       $('#btnrestart2' + i).attr("disabled", "disabled");
       $('#btnfinish2' + i).attr("disabled", "disabled");
@@ -529,7 +1020,7 @@ jumlahEl2.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -543,7 +1034,7 @@ jumlahEl2.forEach((v, i) => {
     if (intervalId2[i]) {
       clearInterval(intervalId2[i]);
       let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
       $.ajax({
         url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
@@ -566,8 +1057,11 @@ jumlahEl2.forEach((v, i) => {
               showConfirmButton: false,
               timer: 1700
             })
-          }else {
-            console.log(result);
+          } else {
+            swalRTLPToastrAlert('warning', `Data Job Lane 2 dengan No Job ${no_job} Dijeda.`)
+            $('#btnstart2' + i).removeAttr("disabled");
+            $('#btnlanjut2' + i).attr("disabled", "disabled");
+            $('#btnrestart2' + i).attr("disabled", "disabled");
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -577,11 +1071,41 @@ jumlahEl2.forEach((v, i) => {
     }
   };
 
-  reset2[i] = _ => {
+  reset2[i] = (no_job) => {
     totalSeconds_i2[i] = 0;
-    document.getElementById(`hours2-${i}`).innerHTML = '00';
-    document.getElementById(`minutes2-${i}`).innerHTML = '00';
-    document.getElementById(`seconds2-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 2,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 2 dengan no job ${no_job} berhasil di Reset.`);
+
+          document.getElementById(`hours2-${i}`).innerHTML = '00';
+          document.getElementById(`minutes2-${i}`).innerHTML = '00';
+          document.getElementById(`seconds2-${i}`).innerHTML = '00';
+        } else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+
   };
 
 })
@@ -626,7 +1150,7 @@ jumlahEl3.forEach((v, i) => {
     })
     // if ($('#btnstart'+i).val() === 'Start') {
     intervalId3[i] = setInterval(startTimer3[i], 1000);
-    $('#btnstart3' + i).removeAttr("disabled");
+    // $('#btnstart3' + i).removeAttr("disabled");
     $('#btnlanjut3' + i).removeAttr("disabled");
     $('#btnrestart3' + i).removeAttr("disabled");
     $('#btnfinish3' + i).removeAttr("disabled");
@@ -653,8 +1177,35 @@ jumlahEl3.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek3${i}`).val('second_load');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    } else {
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: 3,
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -683,7 +1234,7 @@ jumlahEl3.forEach((v, i) => {
 
         if (cek_detik == '00' && cek_menit == '00' && cek_jam == '00') {
           $('#btnstart3' + j).removeAttr("disabled");
-        }else {
+        } else {
           $('#btnstart3' + j).attr("disabled", "disabled");
         }
       })
@@ -715,7 +1266,7 @@ jumlahEl3.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -725,19 +1276,80 @@ jumlahEl3.forEach((v, i) => {
     }
   }
 
-  pause3[i] = _ => {
+  pause3[i] = (no_job, kode_item, no_param) => {
     if (intervalId3[i]) {
       clearInterval(intervalId3[i]);
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: start_pause,
+          line: 3,
+          code: kode_item,
+          no_job: no_job,
+          no: no_param
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data pada table Time_Pause_Record (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('warning', `Data Job Lane 3 dengan No Job ${no_job} Dijeda.`)
+            $('#btnstart3' + i).removeAttr("disabled");
+            $('#btnlanjut3' + i).attr("disabled", "disabled");
+            $('#btnrestart3' + i).attr("disabled", "disabled");
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
     }
   };
 
-  reset3[i] = _ => {
+  reset3[i] = (no_job) => {
     totalSeconds_i3[i] = 0;
-    document.getElementById(`hours3-${i}`).innerHTML = '00';
-    document.getElementById(`minutes3-${i}`).innerHTML = '00';
-    document.getElementById(`seconds3-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 3,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 3 dengan no job ${no_job} berhasil di Reset.`);
+          document.getElementById(`hours3-${i}`).innerHTML = '00';
+          document.getElementById(`minutes3-${i}`).innerHTML = '00';
+          document.getElementById(`seconds3-${i}`).innerHTML = '00';
+        } else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
   };
 
 })
@@ -782,7 +1394,7 @@ jumlahEl4.forEach((v, i) => {
     })
 
     intervalId4[i] = setInterval(startTimer4[i], 1000);
-    $('#btnstart4' + i).removeAttr("disabled");
+    // $('#btnstart4' + i).removeAttr("disabled");
     $('#btnlanjut4' + i).removeAttr("disabled");
     $('#btnrestart4' + i).removeAttr("disabled");
     $('#btnfinish4' + i).removeAttr("disabled");
@@ -809,8 +1421,35 @@ jumlahEl4.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek4${i}`).val('second_load');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    } else {
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: line,
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -838,7 +1477,7 @@ jumlahEl4.forEach((v, i) => {
 
         if (cek_detik == '00' && cek_menit == '00' && cek_jam == '00') {
           $('#btnstart4' + j).removeAttr("disabled");
-        }else {
+        } else {
           $('#btnstart4' + j).attr("disabled", "disabled");
         }
       })
@@ -870,7 +1509,7 @@ jumlahEl4.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -880,19 +1519,81 @@ jumlahEl4.forEach((v, i) => {
     }
   }
 
-  pause4[i] = _ => {
+  pause4[i] = (no_job, kode_item, no_param) => {
     if (intervalId4[i]) {
       clearInterval(intervalId4[i]);
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
       // action
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: start_pause,
+          line: 4,
+          code: kode_item,
+          no_job: no_job,
+          no: no_param
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data pada table Time_Pause_Record (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('warning', `Data Job Lane 4 dengan No Job ${no_job} Dijeda.`)
+            $('#btnstart4' + i).removeAttr("disabled");
+            $('#btnlanjut4' + i).attr("disabled", "disabled");
+            $('#btnrestart4' + i).attr("disabled", "disabled");
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
     }
   };
 
-  reset4[i] = _ => {
+  reset4[i] = (no_job) => {
     totalSeconds_i4[i] = 0;
-    document.getElementById(`hours4-${i}`).innerHTML = '00';
-    document.getElementById(`minutes4-${i}`).innerHTML = '00';
-    document.getElementById(`seconds4-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 4,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 4 dengan no job ${no_job} berhasil di Reset.`);
+          document.getElementById(`hours4-${i}`).innerHTML = '00';
+          document.getElementById(`minutes4-${i}`).innerHTML = '00';
+          document.getElementById(`seconds4-${i}`).innerHTML = '00';
+        } else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+
   };
 
 })
@@ -936,7 +1637,7 @@ jumlahEl5.forEach((v, i) => {
     })
     // if ($('#btnstart'+i).val() === 'Start') {
     intervalId5[i] = setInterval(startTimer5[i], 1000);
-    $('#btnstart5' + i).removeAttr("disabled");
+    // $('#btnstart5' + i).removeAttr("disabled");
     $('#btnlanjut5' + i).removeAttr("disabled");
     $('#btnrestart5' + i).removeAttr("disabled");
     $('#btnfinish5' + i).removeAttr("disabled");
@@ -963,7 +1664,7 @@ jumlahEl5.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan Item ${code}.`)
+            swalRTLPToastrAlert('info', `Job Lane ${line} Diperbarui Dengan No Job ${no_job}.`)
             $(`#val_to_cek5${i}`).val('second_load');
             $('.img-area-wipp').html(`<div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
                                         <div class="row">
@@ -974,6 +1675,33 @@ jumlahEl5.forEach((v, i) => {
                                           </div>
                                         </div>
                                       </div>`)
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
+    } else {
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/updateTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: waktu_mulai,
+          line: 5,
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'error',
+              text: 'Gagal Melakukan Insert Data (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('info', `No Job ${no_job} Line ${line} dilanjutkan kembali.`)
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1001,12 +1729,12 @@ jumlahEl5.forEach((v, i) => {
 
         if (cek_detik == '00' && cek_menit == '00' && cek_jam == '00') {
           $('#btnstart5' + j).removeAttr("disabled");
-        }else {
+        } else {
           $('#btnstart5' + j).attr("disabled", "disabled");
         }
       })
 
-      $('#btnstart5' + i).attr("disabled", "disabled"); // sesuai kondisi pasien antum
+      $('#btnstart5' + i).attr("disabled", "disabled");
       $('#btnlanjut5' + i).attr("disabled", "disabled");
       $('#btnrestart5' + i).attr("disabled", "disabled");
       $('#btnfinish5' + i).attr("disabled", "disabled");
@@ -1033,7 +1761,7 @@ jumlahEl5.forEach((v, i) => {
               timer: 1700
             })
           } else {
-            swalRTLPToastrAlert('error', `Data Job Lane ${line} Item ${code} Berhasil Dihentikan.`)
+            swalRTLPToastrAlert('error', `No Job ${no_job} Line ${line} Berhasil Dihentikan.`)
             $('.img-area-wipp').html(``)
           }
         },
@@ -1044,19 +1772,81 @@ jumlahEl5.forEach((v, i) => {
     }
   }
 
-  pause5[i] = _ => {
+  pause5[i] = (no_job, kode_item, no_param) => {
     if (intervalId5[i]) {
       clearInterval(intervalId5[i]);
-      console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      let start_pause = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+      // console.log(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+      $.ajax({
+        url: baseurl + 'RunningTimeLinePnP/setting/insertTimePause',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        data: {
+          waktu_mulai: start_pause,
+          line: 5,
+          code: kode_item,
+          no_job: no_job,
+          no: no_param
+        },
+        success: function(result) {
+          if (!result) {
+            Swal.fire({
+              position: 'center',
+              type: 'Danger',
+              title: 'Gagal Melakukan Insert Data pada table Time_Pause_Record (!)',
+              showConfirmButton: false,
+              timer: 1700
+            })
+          } else {
+            swalRTLPToastrAlert('warning', `Data Job Lane 5 dengan No Job ${no_job} Dijeda.`)
+            $('#btnstart5' + i).removeAttr("disabled");
+            $('#btnlanjut5' + i).attr("disabled", "disabled");
+            $('#btnrestart5' + i).attr("disabled", "disabled");
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+      })
       // action
     }
   };
 
-  reset5[i] = _ => {
+  reset5[i] = (no_job) => {
     totalSeconds_i5[i] = 0;
-    document.getElementById(`hours5-${i}`).innerHTML = '00';
-    document.getElementById(`minutes5-${i}`).innerHTML = '00';
-    document.getElementById(`seconds5-${i}`).innerHTML = '00';
+    let start_reset = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    $.ajax({
+      url: baseurl + 'RunningTimeLinePnP/setting/reset',
+      type: 'POST',
+      dataType: 'JSON',
+      async: true,
+      data: {
+        line: 5,
+        no_job: no_job,
+        start_reset: start_reset
+      },
+      success: function(result) {
+        if (result) {
+          swalRTLPToastrAlert('info', `Data job lane 5 dengan no job ${no_job} berhasil di Reset.`);
+          document.getElementById(`hours5-${i}`).innerHTML = '00';
+          document.getElementById(`minutes5-${i}`).innerHTML = '00';
+          document.getElementById(`seconds5-${i}`).innerHTML = '00';
+        } else {
+          Swal.fire({
+            position: 'center',
+            type: 'Danger',
+            title: `Gagal melakukan Reset data dengan no job ${no_job} (!)`,
+            showConfirmButton: false,
+            timer: 1700
+          })
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      }
+    })
+
   };
 })
 

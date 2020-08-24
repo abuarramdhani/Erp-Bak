@@ -47,9 +47,9 @@
                                             <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-fleetKendaraan" style="font-size:12px;">
                                                 <thead class="bg-primary">
                                                     <tr>
-                                                        <th style="text-align:center; width:30px">No</th>
-                                                        <th style="text-align:center; min-width:80px">Action</th>
-                                                        <th>Nomor Polisi</th>
+                                                        <th class="bg-primary" style="text-align:center; width:30px">No</th>
+                                                        <th class="bg-primary" style="text-align:center; min-width:80px">Action</th>
+                                                        <th class="bg-primary">Nomor Polisi</th>
                                                         <th>Jenis Kendaraan</th>
                                                         <th>Merk Kendaraan</th>
                                                         <th>Kapasitas Bahan Bakar</th>
@@ -58,6 +58,7 @@
                                                         <th>Warna Kendaraan</th>
                                                         <th>Tahun Pembuatan</th>
                                                         <th>Nomor Rangka</th>
+                                                        <th>Tag Number</th>
                                                         <th>Status Kepemilikan</th>
                                                        <!--  <th>Usable</th> -->
                                                         <th>QR CODE</th>
@@ -90,6 +91,7 @@
                                                         <td><?php echo $Kendaraan['warna_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['tahun_pembuatan'] ?></td>
                                                         <td><?php echo $Kendaraan['nomor_rangka'] ?></td>
+                                                        <td><?php echo $Kendaraan['tag_number'] ?></td>
                                                         <td><?php if ($Kendaraan['hak_milik'] == "1") {
                                                             echo "Perusahaan";
                                                         }elseif ($Kendaraan['hak_milik'] == "0"){echo "Rental";} ; ?></td>

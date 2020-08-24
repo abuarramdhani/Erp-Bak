@@ -251,16 +251,19 @@ class C_ApiPatroli extends CI_Controller
 		$ronde[] = $this->M_patrolis->getRonde($tshift, 3);
 		$ronde[] = $this->M_patrolis->getRonde($tshift, 4);
 		$x = 0;
+		$y = 0;
 		foreach ($ronde as $key) {
+			$x++;
 			if ($key != null) {
 				$data['ronde'][] = $key;
-				$x++;
+				if($key['selesai'] == 1)
+					$y++;
+			}else{
+				$data['ronde'][] = array('ronde'=>$x, 'selesai'=>0);
 			}
 		}
-		if ($x == 0) {
-			$data['ronde'][] = array('ronde'=>1, 'selesai'=>0);
-		}
 		$data['max_ronde'] = 4;
+		$data['enable'] = $y;
 		echo json_encode($data);
 	}
 
@@ -303,12 +306,32 @@ class C_ApiPatroli extends CI_Controller
 		$ronde = $this->M_patrolis->posTerakhir($tshift);
 		if ($ronde != 0) {
 			$p = $this->M_patrolis->getScann($tshift, $ronde);
-			if (($p['temuan'] == $p['patroli'] && $p['jawaban'] == $p['patroli']))
+			if (($p['temuan'] == $p['patroli'] && $p['jawaban'] == $p['patroli'] && $p['jumlah'] == $p['patroli']))
 				$ronde = 0;
 		}
-		//0 artinya bisa tidak langsung redirect ke mapActifity
+		$data['last'] = $ronde;
+		$data['alret'] = 0;
+		$data['alert_message'] = '';
+		$data['alert_title'] = '';
+		$jam_terakhir = $this->M_patrolis->p_jam_terakhir();
+		if ($jam_terakhir == 0) {
+			$ronde = 0;
+		}else{
+			$a = date_create(date('Y-m-d H:i:s'));
+			$b = date_create($jam_terakhir);
+			$databasetime = strtotime($jam_terakhir);
+			$curtime      = time();
+			$dif = $curtime - $databasetime;
+			if($dif > 1800 && $ronde != 0){
+				$ronde = 0;
+				$data['alret'] = 1;
+				$data['alert_message'] = "Apakah Anda ingin melanjutkan patroli di Round ".$data['last']."?";
+				$data['alert_title'] = 'Round '.$data['last'].' Belum Selesai!';
+			}
+		}
 		$data['ronde'] = $ronde;
 		echo json_encode($data);
+		//0 artinya bisa tidak langsung redirect ke mapActifity
 	}
 
 	public function login_satpam()

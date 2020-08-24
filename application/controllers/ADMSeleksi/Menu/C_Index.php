@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
-* 
-*/
+ * 
+ */
 class C_Index extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -26,10 +26,9 @@ class C_Index extends CI_Controller
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
+		if ($this->session->is_logged) {
 		} else {
-			redirect('');
+			redirect('index');
 		}
 	}
 
@@ -42,14 +41,14 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ADMSeleksi/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('ADMSeleksi/V_Index', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function InputBiodata()
@@ -61,26 +60,23 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('ADMSeleksi/V_Input_Biodata',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('ADMSeleksi/V_Input_Biodata', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function SubmitBiodata()
 	{
-		// echo "<pre>";
-		// print_r($_POST);exit();
 		$msg = 'yes';
 		$key = 'q~ui./^ck,1/*2)3';
 		$encrypted_string = $this->encrypt->encode($msg, $key);
 		$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-		// echo $encrypted_string;exit();
-		
+
 		$nik = strtoupper($this->input->post('nik'));
 		$nama = strtoupper($this->input->post('nama'));
 		$email = $this->input->post('email');
@@ -106,42 +102,42 @@ class C_Index extends CI_Controller
 
 		if ($checkBiodata < 1) {
 			$data = array(
-				'pekerjaan' => $pekerjaan, 
-				'penempatan' => $penempatan, 
-				'no_id' => $nik, 
-				'nama' => $nama, 
-				'tmp_lahir' => $tmp_lahir, 
-				'tgl_lahir' => $tgl_lahir, 
-				'jen_kel' => $jen_kel, 
-				'agama' => $agama, 
-				'kota' => $kota, 
-				'alamat' => $alamat, 
-				'no_hp' => $no_wa, 
-				'no_telp' => $no_hp, 
-				'pendidikan' => $pendidikan, 
-				'sekolah' => $institusi, 
-				'jurusan' => $jurusan, 
-				'status' => $no_ijazah, 
-				'diploma' => $no_ijazah, 
+				'pekerjaan' => $pekerjaan,
+				'penempatan' => $penempatan,
+				'no_id' => $nik,
+				'nama' => $nama,
+				'tmp_lahir' => $tmp_lahir,
+				'tgl_lahir' => $tgl_lahir,
+				'jen_kel' => $jen_kel,
+				'agama' => $agama,
+				'kota' => $kota,
+				'alamat' => $alamat,
+				'no_hp' => $no_wa,
+				'no_telp' => $no_hp,
+				'pendidikan' => $pendidikan,
+				'sekolah' => $institusi,
+				'jurusan' => $jurusan,
+				'status' => $no_ijazah,
+				'diploma' => $no_ijazah,
 				'nilai' => $nilai_ijazah,
 				'creation_date' => date('Y-m-d H:i:s'),
-				);
+			);
 			$insert	=	$this->M_index->insertBiodata($data);
 		}
 		if ($checkAccount < 1) {
 			$akun = array(
-				'no_id' => $nik, 
-				'nama' => $nama, 
-				'asal_kota' => $kota, 
-				'email' => $email, 
-				'password' => md5($nik), 
+				'no_id' => $nik,
+				'nama' => $nama,
+				'asal_kota' => $kota,
+				'email' => $email,
+				'password' => md5($nik),
 				'approval' => $encrypted_string,
 				'tgl_register' => date('Y-m-d H:i:s'),
 
-				);
+			);
 			$add = $this->M_index->insertAkun($akun);
 		}
-			redirect('ADMSeleksi/Menu/InputBiodata');
+		redirect('ADMSeleksi/Menu/InputBiodata');
 	}
 
 	function getkotaLahir()
@@ -151,7 +147,8 @@ class C_Index extends CI_Controller
 		echo json_encode($data);
 	}
 
-	function jsonKota2(){
+	function jsonKota2()
+	{
 		$q = strtoupper($this->input->get('term'));
 		$dataKota = $this->M_index->dataKota2($q);
 		echo json_encode($dataKota);
@@ -191,19 +188,18 @@ class C_Index extends CI_Controller
 		$id = $id_penempatan[0]['id'];
 		$p = strtoupper($this->input->get('term'));
 
-		$data = $this->M_index->pekerjaan_j($p,$id);
+		$data = $this->M_index->pekerjaan_j($p, $id);
 		echo json_encode($data);
 	}
 
 	public function checkData()
 	{
 		$nik = $this->input->get('nik');
-		// echo $nik;
 		$checkBiodata = $this->M_index->checkBiodata($nik);
 		$checkAccount = $this->M_index->checkAccount($nik);
 		if ($checkBiodata < 1 && $checkAccount < 1) {
 			echo json_encode('aman');
-		}else{
+		} else {
 			echo json_encode('tidak');
 		}
 	}

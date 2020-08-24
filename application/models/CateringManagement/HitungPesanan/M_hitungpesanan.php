@@ -12,6 +12,7 @@ class M_hitungpesanan extends Ci_Model
 		$this->load->database();
 		$this->personalia = $this->load->database('personalia',TRUE);
 		$this->spl = $this->load->database('quickcom',TRUE);
+		$this->erp = $this->load->database('erp_db',TRUE);
 	}
 
 	public function getFinger($userid){
@@ -90,13 +91,13 @@ class M_hitungpesanan extends Ci_Model
 									 select left(fs_jam_awal,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								)
 								and left(tpres.waktu, 5) <= (
 									 select left(fs_jam_akhir,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								) 
 								and tpres.tanggal = ?
 							inner join \"Catering\".ttempat_makan tmkn 
@@ -157,13 +158,13 @@ class M_hitungpesanan extends Ci_Model
 									 select left(fs_jam_awal,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								)
 								and left(tpres.waktu, 5) <= (
 									 select left(fs_jam_akhir,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								) 
 								and tpres.tanggal = ?
 							inner join \"Catering\".ttempat_makan tmkn 
@@ -246,13 +247,13 @@ class M_hitungpesanan extends Ci_Model
 									 select left(fs_jam_awal,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								)
 								and left(tpres.waktu, 5) <= (
 									 select left(fs_jam_akhir,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								) 
 								and tpres.tanggal = ?
 							inner join \"Catering\".ttempat_makan tmkn 
@@ -314,13 +315,13 @@ class M_hitungpesanan extends Ci_Model
 									 select left(fs_jam_awal,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								)
 								and left(tpres.waktu, 5) <= (
 									 select left(fs_jam_akhir,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								) 
 								and tpres.tanggal = ?
 							inner join \"Catering\".ttempat_makan tmkn 
@@ -405,13 +406,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)
 							and left(tpres.waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							) 
 							and tpres.tanggal = ?
 						inner join \"Catering\".ttempat_makan tmkn 
@@ -494,13 +495,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							) 
 							and left(tpres.waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)  
 							and tpres.tanggal = ? 
 						inner join \"Catering\".ttempat_makan tmkn 
@@ -513,13 +514,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and left(waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and tanggal = tpres.tanggal
 							and noind not in ( 
@@ -583,13 +584,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							) 
 							and left(tpres.waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)  
 							and tpres.tanggal = ? 
 						inner join \"Catering\".ttempat_makan tmkn 
@@ -602,13 +603,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and left(waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and tanggal = tpres.tanggal
 							and noind not in ( 
@@ -681,13 +682,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							) 
 							and left(tpres.waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)  
 							and tpres.tanggal = ? 
 						inner join \"Catering\".ttempat_makan tmkn 
@@ -700,13 +701,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and left(waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and tanggal = tpres.tanggal
 							and noind not in ( 
@@ -771,13 +772,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							) 
 							and left(tpres.waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)  
 							and tpres.tanggal = ? 
 						inner join \"Catering\".ttempat_makan tmkn 
@@ -790,13 +791,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and left(waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and tanggal = tpres.tanggal
 							and noind not in ( 
@@ -869,13 +870,13 @@ class M_hitungpesanan extends Ci_Model
 							 select left(fs_jam_awal,5)
 							 from \"Catering\".tbatas_datang_shift 
 							 where fs_kd_shift = '2' 
-							 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 						) 
 						and left(tpres.waktu, 5) <= (
 							 select left(fs_jam_akhir,5)
 							 from \"Catering\".tbatas_datang_shift 
 							 where fs_kd_shift = '2' 
-							 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 						)  
 						and tpres.tanggal = ? 
 					inner join \"Catering\".ttempat_makan tmkn 
@@ -888,13 +889,13 @@ class M_hitungpesanan extends Ci_Model
 							 select left(fs_jam_awal,5)
 							 from \"Catering\".tbatas_datang_shift 
 							 where fs_kd_shift = '1' 
-							 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 						)   
 						and left(waktu, 5) <= (
 							 select left(fs_jam_akhir,5)
 							 from \"Catering\".tbatas_datang_shift 
 							 where fs_kd_shift = '1' 
-							 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 						)   
 						and tanggal = tpres.tanggal
 						and noind not in ( 
@@ -1007,13 +1008,30 @@ class M_hitungpesanan extends Ci_Model
 	}
 
 	public function getPesananTambahanByTanggalShiftTempatMakan($tanggal,$shift,$tempat_makan){
-		$sql = "Select sum(fn_jumlah_pesanan) as jumlah 
-				from \"Catering\".tpesanantambahan 
-				where fd_tanggal = ?
-				  and fs_kd_shift = ? 
-				  and fs_tempat_makan = ?
-				group by fs_tempat_makan, fs_kd_shift, fd_tanggal  ";
-		return $this->personalia->query($sql,array($tanggal,$shift,$tempat_makan))->result_array();
+		// $sql = "Select sum(fn_jumlah_pesanan) as jumlah 
+		// 		from \"Catering\".tpesanantambahan 
+		// 		where fd_tanggal = ?
+		// 		  and fs_kd_shift = ? 
+		// 		  and fs_tempat_makan = ?
+		// 		group by fs_tempat_makan, fs_kd_shift, fd_tanggal  ";
+		$sql = "select coalesce(
+                    (
+                        select sum(fn_jumlah_pesanan)
+                        from \"Catering\".tpesanantambahan
+                        where fd_tanggal = ?
+                        and fs_tempat_makan = ?
+                        and fs_kd_shift = ?
+                    ),0) +
+                    coalesce(
+                    (
+                        select sum(fn_jml_tdkpesan)
+                        from \"Catering\".tpenguranganpesanan
+                        where fb_kategori = '2'
+                        and fd_tanggal = ?
+                        and fs_tempat_makanpg = ?
+                        and fs_kd_shift = ?
+                    ),0) as jumlah";
+		return $this->personalia->query($sql,array($tanggal,$tempat_makan,$shift,$tanggal,$tempat_makan,$shift))->result_array();
 	}
 
 	public function getPesananTambahanByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempat_makan,$kategori){
@@ -1053,7 +1071,7 @@ class M_hitungpesanan extends Ci_Model
 		$this->personalia->query($sql,array($tanggal,$tempat_makan,$shift));
 	}
 
-	public function getPesananTambahanDetailByIdTambahanNoind($id_tambahan,$noind,$shift){
+	public function getPesananTambahanDetailByIdTambahanNoind($id_tambahan,$noind){
 		$sql = "select * 
 				from \"Catering\".tpesanantambahan_detail 
 				where id_tambahan =  ?
@@ -1607,12 +1625,13 @@ class M_hitungpesanan extends Ci_Model
 		$this->personalia->query($sql,array($tanggal,$shift,$tempat_makan,$kategori));
 	}
 
-	public function deletePesananDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi){
+	public function deletePesananDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi,$jenis){
 		$sql = "delete from \"Catering\".t_pesanan_detail 
 				where tanggal = ?
 				and shift = ?
-				and lokasi = ?";
-		$this->personalia->query($sql,array($tanggal,$shift,$lokasi));
+				and lokasi = ?
+				and jenis = ?";
+		$this->personalia->query($sql,array($tanggal,$shift,$lokasi,$jenis));
 	}
 
 	public function getPesananTambahanDetailByTanggalShiftLokasi($tanggal,$shift,$lokasi){
@@ -1621,7 +1640,8 @@ class M_hitungpesanan extends Ci_Model
 					t.fs_kd_shift,
 					tt.fs_lokasi,
 					t.fs_tempat_makan,
-					td.fs_noind
+					td.fs_noind,
+					fb_kategori
 				from \"Catering\".tpesanantambahan t 
 				inner join \"Catering\".tpesanantambahan_detail td 
 				on t.id_tambahan = td.id_tambahan
@@ -1662,13 +1682,13 @@ class M_hitungpesanan extends Ci_Model
 									 select left(fs_jam_awal,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								)
 								and left(tpres.waktu, 5) <= (
 									 select left(fs_jam_akhir,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								) 
 								and tpres.tanggal = ?
 							inner join \"Catering\".ttempat_makan tmkn 
@@ -1729,13 +1749,13 @@ class M_hitungpesanan extends Ci_Model
 									 select left(fs_jam_awal,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								)
 								and left(tpres.waktu, 5) <= (
 									 select left(fs_jam_akhir,5)
 									 from \"Catering\".tbatas_datang_shift 
 									 where fs_kd_shift = '1' 
-									 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+									 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 								) 
 								and tpres.tanggal = ?
 							inner join \"Catering\".ttempat_makan tmkn 
@@ -1822,13 +1842,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							) 
 							and left(tpres.waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)  
 							and tpres.tanggal = ? 
 						inner join \"Catering\".ttempat_makan tmkn 
@@ -1841,13 +1861,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and left(waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and tanggal = tpres.tanggal
 							and noind not in ( 
@@ -1894,7 +1914,7 @@ class M_hitungpesanan extends Ci_Model
 								) = 1
 							)  
 						) 
-						and left(tpres.noind, 1) IN ('B', 'D', 'J', 'L', 'G')
+						and left(tpres.noind, 1) not in ('m', 'z') 	
 						group by tpri.tempat_makan, tpres.noind
 					) derivedtbl 
 					order by tempat_makan ";
@@ -1913,13 +1933,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							) 
 							and left(tpres.waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '2' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)  
 							and tpres.tanggal = ? 
 						inner join \"Catering\".ttempat_makan tmkn 
@@ -1932,13 +1952,13 @@ class M_hitungpesanan extends Ci_Model
 								 select left(fs_jam_awal,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and left(waktu, 5) <= (
 								 select left(fs_jam_akhir,5)
 								 from \"Catering\".tbatas_datang_shift 
 								 where fs_kd_shift = '1' 
-								 and fs_hari = extract(isodow from tpres.tanggal)::varchar
+								 and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 							)   
 							and tanggal = tpres.tanggal
 							and noind not in ( 
@@ -1990,7 +2010,7 @@ class M_hitungpesanan extends Ci_Model
 							where kd_shift in('5','8','18') 
 							and tanggal= ? 
 						) 
-						and left(tpres.noind, 1) IN ('B', 'D', 'J', 'L', 'G')
+						and left(tpres.noind, 1) not in ('m', 'z') 	
 						group by tpri.tempat_makan, tpres.noind
 					) derivedtbl 
 					order by tempat_makan ";
@@ -2017,17 +2037,25 @@ class M_hitungpesanan extends Ci_Model
 					t.fd_tanggal,
 					t.fs_kd_shift,
 					tt.fs_lokasi,
+					ttpg.fs_lokasi as fs_lokasipg,
 					t.fs_tempat_makan,
-					td.fs_noind
+					t.fs_tempat_makanpg,
+					td.fs_noind,
+					t.fb_kategori
 				from \"Catering\".tpenguranganpesanan t 
 				inner join \"Catering\".tpenguranganpesanan_detail td 
 				on t.id_pengurangan = td.id_pengurangan
 				inner join \"Catering\".ttempat_makan tt 
 				on t.fs_tempat_makan = tt.fs_tempat_makan
+				left join \"Catering\".ttempat_makan ttpg 
+				on t.fs_tempat_makanpg = ttpg.fs_tempat_makan
 				where t.fd_tanggal = ?
 				and t.fs_kd_shift = ?
-				and tt.fs_lokasi = ?";
-		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
+				and (
+					tt.fs_lokasi = ?
+					or ttpg.fs_lokasi = ?
+				)";
+		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi,$lokasi))->result_array();
 	}
 
 	public function getMenuPenggantiByTanggalShiftLokasiTempatMakan($tanggal,$shift,$lokasi,$tempat_makan,$custom_condition){
@@ -2042,7 +2070,10 @@ class M_hitungpesanan extends Ci_Model
 				and tpd.shift = ?
 				and tpd.lokasi = ?
 				and tpd.tempat_makan = ?
-				and lower(tpd.keterangan) in ('absen', 'shift tanggung', 'tambahan')
+				and (
+					lower(tpd.keterangan) in ('absen', 'shift tanggung')
+					or left(lower(tpd.keterangan),8) = 'tambahan'
+				)
 				and ( 
 					( 1 = 1 $custom_condition )
 					or 
@@ -2080,6 +2111,14 @@ class M_hitungpesanan extends Ci_Model
 				) as tbl  
 			where jumlah =  0"; 
 		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
+	}
+
+	public function cekPassword($user,$password){
+		$sql = "select *
+				from sys.sys_user
+				where user_name = ?
+				and user_password = md5(?)";
+		return $this->erp->query($sql,array($user,$password))->result_array();
 	}
 }
 

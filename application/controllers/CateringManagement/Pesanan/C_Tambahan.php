@@ -34,6 +34,7 @@ class C_Tambahan extends CI_Controller
     public function index(){
         $user_id = $this->session->userid;
 
+        $data['Header'] = 'Pesanan Tambahan '.date('Y-m-d');
         $data['Title'] = 'Pesanan Tambahan';
         $data['Menu'] = 'Pesanan Tambahan';
         $data['SubMenuOne'] = '';
@@ -419,9 +420,48 @@ class C_Tambahan extends CI_Controller
     public function getPenerima(){
         $key = $this->input->get('term');
         $tempat_makan = $this->input->get('tempat_makan');
-        $data = $this->M_tambahan->getPenerimaByKeyTempatMakan($key,$tempat_makan);
+        $kategori = $this->input->get('kategori');
+        if (in_array($kategori, array("3","4","5"))) {
+            $data = $this->M_tambahan->getPenerimaByKey($key);
+        }else{
+            $data = $this->M_tambahan->getPenerimaByKeyTempatMakan($key,$tempat_makan);
+        }
         echo json_encode($data);
     }
 
+    public function getTambahanPengurangan(){
+        $tanggal = $this->input->get('tanggal');
+        $shift = $this->input->get('shift');
+        $noind = $this->input->get('noind');
+        $dt = $this->M_tambahan->getTambahnPenguranganByTanggalShiftNoind($tanggal,$shift,$noind);
+        if (!empty($dt)) {
+            $tabel = "  <table class='table table-striped table-bordered table-hover'>
+                            <thead class='bg-danger'>
+                                <tr>
+                                    <th>tempat makan</th>
+                                    <th>kategori</th>
+                                    <th>jenis</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+            foreach ($dt as $key => $value) {
+                $tabel .= " <tr>
+                                <td>".$value['tempat_makan']."</td>
+                                <td>".$value['kategori']."</td>
+                                <td>".$value['jenis']."</td>
+                            </tr>";
+            }
+            $tabel .= "</tbody></table>";
+            $data = array(
+                'status' => 'ada',
+                'data' => $tabel
+            );
+        }else{
+            $data = array(
+                'status' => 'tidak ada'
+            );
+        }
+        echo json_encode($data);
+    }
 }
 ?>

@@ -157,7 +157,8 @@ class M_patrolis extends CI_Model
                 tp.ronde,
                 case
                     when count(distinct(tp.id_patroli)) = count(distinct(tt.id_patroli))
-                    and count(distinct(tp.id_patroli)) = count(distinct(tj.id_patroli)) then 1
+                    and count(distinct(tp.id_patroli)) = count(distinct(tj.id_patroli))
+                    and count(distinct(tp.id_patroli)) = (select count(*) from \"Satpam\".titik_qrcode tq) then 1
                     else 0 end selesai
                 from
                     \"Satpam\".tpatroli tp
@@ -170,6 +171,7 @@ class M_patrolis extends CI_Model
                     and ronde = $ronde
                 group by
                     ronde";
+                    // echo $sql;exit();
         return $this->personalia->query($sql)->row_array();
     }
 
@@ -444,7 +446,8 @@ class M_patrolis extends CI_Model
         $sql = "SELECT
                     count(distinct(tp.id_patroli)) patroli,
                     count(distinct(tt.id_patroli)) temuan,
-                    count(distinct(tj.id_patroli)) jawaban
+                    count(distinct(tj.id_patroli)) jawaban,
+                    (select count(*) from \"Satpam\".titik_qrcode) jumlah
                 from
                     \"Satpam\".tpatroli tp
                 left join \"Satpam\".ttemuan tt on
@@ -462,5 +465,14 @@ class M_patrolis extends CI_Model
     {
         $sql = "select * from t_pekerja where keluar='0' and noind='$user' and (pass_word='$password' or token='$password')";
         return $this->dl->query($sql)->num_rows() > 0;
+    }
+
+    public function p_jam_terakhir()
+    {
+        $sql = "select tgl_server tgl from \"Satpam\".tpatroli t order by id_patroli desc limit 1";
+        if($this->personalia->query($sql)->num_rows() > 0)
+            return $this->personalia->query($sql)->row()->tgl;
+        else
+            return 0;
     }
 }

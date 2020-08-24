@@ -611,4 +611,32 @@ class C_WebPatroli extends CI_Controller
 		$params['level'] = 'H';
 	    $this->ciqrcode->generate($params);
 	}
+
+	public function get_map_route()
+	{
+		$pr = $this->input->get('pr');
+		$pr = explode(' - ', $pr);
+		$rute = $this->M_patrolis->getRekapDataHarian($pr, '');
+		if (count($pr) != 2 || $pr[0] != $pr[1] || empty($rute) ) {
+			return;
+			exit();
+		}
+		$data['pr'] = $pr[0];
+		foreach ($rute as $key) {
+			$rr[$key['ronde']][] = $key['lat_asli'].','.$key['long_asli'];
+			$arr[] = $key['ronde'];
+		}
+		$rr['indek'] = array_values(array_unique($arr));
+		// print_r($rr);
+		$data['rute'] = json_encode($rr);
+		$data['pos'] = json_encode($this->M_patrolis->getAllPos());
+		$html = $this->load->view('PatroliSatpam/Web/V_Rute', $data);
+		echo json_encode($html);
+	}
+
+	public function export_rekap_data()
+	{
+		//belum selesai
+		print_r($_POST);
+	}
 }

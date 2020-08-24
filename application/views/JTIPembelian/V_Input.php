@@ -9,12 +9,27 @@
           <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-              <div class="form-group">
-                <label for="">NO Dokumen</label>
-                <input type="text" class="form-control" id="nomorSPBS" placeholder="Nomor Dokumen">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Tipe Dokumen</label>
+                    <select class="form-control select2" id="jenis_dokumen" name="type" data-placeholder="Jenis Kegiatan">
+                      <option value=""></option>
+                      <?php foreach ($jenis_dokumen as $value): ?>
+                        <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">No Dokumen</label>
+                    <input type="text" class="form-control" id="nomorSPBS" placeholder="Nomor Dokumen">
+                  </div>
+                </div>
               </div>
               <div class="form-group">
-                <label for="">Nama Driver</label>
+                <label for="">Nama Driver / PIC</label>
                 <input type="text" class="form-control" id="namaDriver" placeholder="Nama Driver">
                 <input type="hidden" id="no_induk_mu" value="<?php echo $this->session->user;?>">
               </div>
@@ -27,17 +42,21 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="">Jenis Dokumen</label>
-                    <select class="form-control select2" id="jenis_dokumen" name="type" data-placeholder="Jenis Kegiatan">
-                      <option value=""></option>
-                      <?php foreach ($jenis_dokumen as $value): ?>
-                        <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
-                      <?php endforeach; ?>
-                    </select>
+                    <label for="">Berat Barang </label><small style="margin-top:-9px;margin-left:5px;">*Opsional</small>
+                    <div class="row">
+                      <div class="col-md-10">
+                        <input type="number" class="form-control" id="berat_barang_jti" name="" placeholder="Berat Barang Dalam KG">
+                      </div>
+                      <div class="col-md-2">
+                        <b style="margin-left:-20px;">Kg</b>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <center><button type="button" onclick="JTIPembelianInput()" style="font-weight:bold" class="btn btn-success" name="button">Save</button></center>
+              <br>
+              <center><button type="button" onclick="JTIPembelianInput()" style="font-weight:bold;width:30%" class="btn btn-success" name="button"> <b class="fa fa-file"></b> Save</button></center>
+              <br>
             </div>
             <div class="col-md-3"></div>
           </div>

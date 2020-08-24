@@ -25,6 +25,7 @@ class M_fleetkendaraan extends CI_Model
         if ($id === FALSE) {
             $ambilKendaraan     = " select      kdrn.kendaraan_id as kode_kendaraan,
                                                 kdrn.nomor_polisi as nomor_polisi,kdrn.nomor_rangka as nomor_rangka,
+                                                kdrn.tag_number as tag_number,
                                                 jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
                                                 jeniskdrn.jenis_kendaraan as jenis_kendaraan,
                                                 merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
@@ -57,6 +58,7 @@ class M_fleetkendaraan extends CI_Model
     	} else {
             $ambilKendaraan     ="  select      kdrn.kendaraan_id as kode_kendaraan,
                                                 kdrn.nomor_polisi as nomor_polisi,kdrn.nomor_rangka as nomor_rangka,
+                                                kdrn.tag_number as tag_number,
                                                 jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
                                                 jeniskdrn.jenis_kendaraan as jenis_kendaraan,
                                                 merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
@@ -95,6 +97,7 @@ class M_fleetkendaraan extends CI_Model
     {
         $query = $this->db->query("select      kdrn.kendaraan_id as kode_kendaraan,
                                                 kdrn.nomor_polisi as nomor_polisi,kdrn.nomor_rangka as nomor_rangka,
+                                                kdrn.tag_number as tag_number,
                                                 jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
                                                 jeniskdrn.jenis_kendaraan as jenis_kendaraan,
                                                 merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
@@ -131,6 +134,7 @@ class M_fleetkendaraan extends CI_Model
         if ($id === FALSE) {
             $ambilKendaraan     = " select      kdrn.kendaraan_id as kode_kendaraan,
                                                 kdrn.nomor_polisi as nomor_polisi,kdrn.nomor_rangka as nomor_rangka,
+                                                kdrn.tag_number as tag_number,
                                                 jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
                                                 jeniskdrn.jenis_kendaraan as jenis_kendaraan,
                                                 merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,

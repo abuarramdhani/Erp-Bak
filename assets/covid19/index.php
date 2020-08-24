@@ -531,13 +531,6 @@
   <div id="map"></div>
   <div id="legend">
     <h3>Positif Dirawat</h3>
-    <h5>
-      Data Update Per :
-      <br> 
-      *Jateng, DIY, Banten : 2020-06-26
-      <br> 
-      *Jabar,Jatim,DKI : 2020-06-19
-    </h5>
   </div>
 </body>
 </html>

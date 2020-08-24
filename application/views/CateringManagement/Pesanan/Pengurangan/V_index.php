@@ -21,8 +21,8 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Tanggal</label>
 													<div class="col-lg-8">
-														<input type="text" name="txt-CM-Pengurangan-Tanggal" id="txt-CM-Pengurangan-Tanggal" class="form-control" placeholder="Tanggal" autocomplete="off">
-														<input type="hidden" name="txt-CM-Pengurangan-Tanggal-Baru" id="txt-CM-Pengurangan-Tanggal-Baru">
+														<input type="text" name="txt-CM-Pengurangan-Tanggal" id="txt-CM-Pengurangan-Tanggal" class="form-control" placeholder="Tanggal" autocomplete="off" value="<?php echo date('Y-m-d') ?>">
+														<input type="hidden" name="txt-CM-Pengurangan-Tanggal-Baru" id="txt-CM-Pengurangan-Tanggal-Baru" value="<?php echo date('Y-m-d') ?>">
 														<input type="hidden" name="txt-CM-Pengurangan-IdPengurangan" id="txt-CM-Pengurangan-IdPengurangan">
 													</div>
 												</div>
@@ -179,6 +179,7 @@
 													<th style="text-align: center;vertical-align: middle;">Status</th>
 													<th style="text-align: center;vertical-align: middle;">Tempat Makan Baru</th>
 													<th style="text-align: center;vertical-align: middle;">Jumlah</th>
+													<th style="text-align: center;vertical-align: middle;">List Pekerja</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -194,6 +195,7 @@
 															<td><?php echo $dt['fb_kategori'] ?></td>
 															<td><?php echo $dt['fs_tempat_makanpg'] ?></td>
 															<td style="text-align: center;"><?php echo $dt['fn_jml_tdkpesan'] ?></td>
+															<td style="text-align: center;"><?php echo $dt['list_pekerja'] ?></td>
 														</tr>
 														<?php 
 														$nomor++;

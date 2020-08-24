@@ -54,10 +54,10 @@
 																if ($pc['scheduling_id']==$rc['scheduling_id'] && $sudahCetak==0) {
 																	$sudahCetak=1;
 																	if ($pc['status']==NULL && $pc['score_eval2_pre']==NULL && $pc['score_eval2_post']==NULL ) { ?>
-																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" disabled><i class="fa fa-file-text-o"></i></a>
+																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" ><i class="fa fa-file-text-o"></i></a>
 																	<?php }
 																	elseif ($pc['status']==NULL && $pc['score_eval3_post']==NULL && $pc['comment']==NULL) {?>
-																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" disabled><i class="fa fa-file-text-o"></i></a>
+																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner" ><i class="fa fa-file-text-o"></i></a>
 																	<?php }
 																	else{?>
 																		<a href="<?php echo site_url('ADMPelatihan/InputQuestionnaire/ToCreate/'.$rc['scheduling_id']);?>" class="btn btn-flat btn-sm btn-primary" data-toggle="tooltip1" title="Input Kuesioner"><i class="fa fa-file-text-o"></i></a>
@@ -78,9 +78,9 @@
 																	<i class="fa fa-search" ></i>
 																</a>
 															<?php }?>
-																<a class="btn btn-flat btn-sm btn-success" title="Input Kehadiran & Nilai" disabled><i class="fa fa-check"></i></a>
-																<a class="btn btn-flat btn-sm btn-primary" title="Input Kuesioner" disabled><i class="fa fa-file-text-o" ></i></a>
-																<a data-toggle="modal" class="btn btn-flat btn-danger btn-sm" title="Hapus Pelatihan" disabled><i class="fa fa-remove"></i></a>
+																<a class="btn btn-flat btn-sm btn-success" title="Input Kehadiran & Nilai" ><i class="fa fa-check"></i></a>
+																<a class="btn btn-flat btn-sm btn-primary" title="Input Kuesioner" ><i class="fa fa-file-text-o" ></i></a>
+																<a data-toggle="modal" class="btn btn-flat btn-danger btn-sm" title="Hapus Pelatihan" ><i class="fa fa-remove"></i></a>
 														<?php }?>
 													</td>
 													<td>

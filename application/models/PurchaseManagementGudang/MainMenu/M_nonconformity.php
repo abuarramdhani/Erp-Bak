@@ -1029,4 +1029,23 @@ class M_nonconformity extends CI_Model
         $this->db->delete('pm.pm_po_oracle_non_conformity_headers');
     }
 
+    function getReportMonitoring()
+    {
+        $query = $this->db->query("SELECT DISTINCT
+        head.header_id
+        ,head.non_conformity_num
+        ,head.verificator
+        ,head.creation_date as periode
+        ,head.delivery_date as tgl_sj
+        ,head.packing_list as no_sj
+        ,head.assign as tasklist
+        ,head.supplier as vendor
+        
+        from
+        pm.pm_po_oracle_non_conformity_headers head
+        ORDER BY head.creation_date ASC");
+
+        return $query->result_array();
+    }
+
 }

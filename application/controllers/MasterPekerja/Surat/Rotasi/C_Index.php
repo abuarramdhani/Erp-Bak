@@ -798,7 +798,7 @@ class C_Index extends CI_Controller
 		$kode_surat 			=	$no_surat_decode[1].'/'.$no_surat_decode[2];
 		$tahun 					= 	'20'.$no_surat_decode[4];
 		$bulan_surat			=	$no_surat_decode[3];
-		$this->M_Rotasi->deleteArsipSuratRotasi($bulan_surat, $tahun, $kode_surat, $no_surat);
+		// $this->M_Rotasi->deleteArsipSuratRotasi($bulan_surat, $tahun, $kode_surat, $no_surat);
 		//insert to t_log
 		$aksi = 'MASTER PEKERJA';
 		$detail = 'Delete Arsip, Finger & Surat Rotasi Nomor Surat='.$no_surat_decode;

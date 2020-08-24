@@ -17,34 +17,37 @@
 		<td class="samaDengan">:</td>
 		<td>
 			<?= //$this->konversibulan->KonversiAngkaKeBulan($order['tgl_order'])
-				date('d-F-Y', strtotime($order['tgl_order']))
+				// date('d F Y', strtotime($order['tgl_order']))
+				strftime('%d %B %Y',strtotime($order['tgl_order']));
 			 ?>
 		</td>
 	</tr>
 	<tr>
-		<td style="padding-top: 10px;">Dari</td>
-	</tr>
-	<tr>
-		<td>Pekerja</td>
+		<td>Dari Pekerja</td>
 		<td class="samaDengan">:</td>
-		<td><?= $order['pengorder'].' - '.$order['dari'] ?></td>
+		<td><?= ucwords(strtolower($order['pengorder'].' - '.$order['dari'])) ?></td>
 	</tr>
 	<tr>
 		<td>Jabatan</td>
 		<td class="samaDengan">:</td>
-		<td><?= empty($order['pengorder']) ? '-':$this->M_civil->getJabatanPKJ($order['pengorder'])->row()->jabatan; ?></td>
+		<td><?= empty($order['pengorder']) ? '-':ucwords(strtolower($this->M_civil->getJabatanPKJ($order['pengorder'])->row()->jabatan)); ?></td>
 	</tr>
 	<tr>
 		<td>Seksi</td>
 		<td class="samaDengan">:</td>
-		<td><?= empty($order['section_name']) ? '-':$order['section_name'] ?></td>
+		<td><?= empty($order['section_name']) ? '-':ucwords(strtolower($order['section_name'])) ?></td>
 	</tr>
 	<tr>
 		<td>Lokasi</td>
 		<td class="samaDengan">:</td>
-		<td><?= empty($order['location_name']) ? '-':$order['location_name'] ?></td>
+		<td><?= empty($order['location_name']) ? '-':ucwords(strtolower($order['location_name'])) ?></td>
 	</tr>
-	<tr class="padding10">
+	<tr>
+		<td>Voip</td>
+		<td class="samaDengan">:</td>
+		<td><?= empty($order['voip']) ? '-':$order['voip'] ?></td>
+	</tr>
+	<tr>
 		<td>Jenis Order</td>
 		<td class="samaDengan">:</td>
 		<td><?= $order['jenis_order'] ?></td>
@@ -55,14 +58,12 @@
 		<td><?= $order['jenis_pekerjaan'] ?></td>
 	</tr>
 	<tr>
-		<td>Judul</td>
-		<td class="samaDengan">:</td>
-		<td><?= $order['judul'] ?></td>
-	</tr>
-	<tr>
 		<td valign="top" >Detail Pekerjaan</td>
 		<td valign="top" class="samaDengan">:</td>
-		<td valign="bottom">
+		<td></td>
+	</tr>
+	<tr>
+		<td valign="bottom" colspan="3">
 			<table border="1" style="border-collapse: collapse;">
 				<tr>
 					<th>No</th>
@@ -85,7 +86,7 @@
 					<td style="text-align: center;">
 						<?= $k['qty'] ?>
 					</td>
-					<td>
+					<td style="text-align: center;">
 						<?= $k['satuan'] ?>
 					</td>
 					<td>
@@ -97,9 +98,23 @@
 		</td>
 	</tr>
 	<tr>
+		<td>Status Order</td>
+		<td class="samaDengan">:</td>
+		<td><?php echo $order['status'] ?></td>
+	</tr>
+	<?php if($order['status'] == 'Urgent'){
+		?>
+	<tr>
+		<td>Status Order</td>
+		<td class="samaDengan">:</td>
+		<td><?php echo $order['alasan'] ?></td>
+	</tr>
+		<?php
+	} ?>
+	<tr>
 		<td>Tanggal Dibutuhkan</td>
 		<td class="samaDengan">:</td>
-		<td><?= date('d-F-Y', strtotime($order['tgl_dibutuhkan'])) ?></td>
+		<td><?= strftime('%d %B %Y', strtotime($order['tgl_dibutuhkan'])) ?></td>
 	</tr>
 </table>
 <table border="1" style="border-collapse: collapse; width: 100%; margin-top: 100px;">

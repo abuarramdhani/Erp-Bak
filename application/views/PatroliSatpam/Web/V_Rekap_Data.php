@@ -41,7 +41,7 @@
                                     <div class="col-md-6">
                                         <div class="col-md-12">
                                             <div class="col-md-3">
-                                                <label style="margin-top: 5px;">Periode</label>
+                                                <label style="margin-top: 5px;">Tgl Shift</label>
                                             </div>
                                             <div class="col-md-9">
                                                 <input class="form-control pts_daterange" name="periode" autocomplete="false" />
@@ -74,7 +74,12 @@
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="panel-body">
-                                    <div class="col-md-12" id="pts_tblrekapdata" style="overflow-x:scroll;">
+                                    <div class="col-md-12 text-right" id="pts_divexmap" hidden="">
+                                        <button class="btn btn-danger pull-right" id="pts_btnexmap">
+                                            <i class="fa fa-file-pdf-o"></i> Export dengan Map
+                                        </button>
+                                    </div>
+                                    <div class="col-md-12" id="pts_tblrekapdata" style="overflow-x:scroll; margin-top: 10px;">
                                         <table class="table table-bordered table-striped table-hover pts_tbl_rkp">
                                             <thead class="bg-primary">
                                                 <th style="width: 0px;">No</th>
@@ -88,6 +93,10 @@
                                                 <!-- <th>Action</th> -->
                                             </thead>
                                         </table>
+                                    </div>
+                                    <div class="col-md-12" style="height: 50px;"></div>
+                                    <div class="pts_maprute" id="pts_maprute">
+                                        
                                     </div>
                                 </div>
                             </div>

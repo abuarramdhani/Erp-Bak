@@ -36,35 +36,32 @@
 														<tr>
 															<td style="padding: 0 50px 0 0"><label style="width: 100px">Nama Vendor</label></td>
 															<td>
-																<select id="nama_vendor"  name="nama_vendor" class="form-control select2" style="margin-top: 10px; width:300px;">
-																	<option value=""> Pilih Vendor </option>
-																<?php foreach ($vendor_name as $name) { ?>
-																<option value="<?php echo $name['VENDOR_NAME'] ?>"><?php echo $name['VENDOR_NAME'] ?></option>
-																<?php } ?>
+																<select id="nama_vendor"  name="nama_vendor" class="form-control slcnmvendorLppb" style="margin-top: 10px; width:300px;">
+																
 																</select>
 															</td>
 														</tr>
 														<tr>
 															<td style="padding: 0 50px 0 0"><label style="width: 100px">Nomor LPPB</label></td>
 															<td>
-																<input type="text" class="form-control" name="nomor_lppb" id="nomor_lppb" style="margin-top: 10px; width:300px"  value="%">
+																<input type="text" class="form-control" name="nomor_lppb" id="nomor_lppb" style="margin-top: 10px; width:300px" placeholder="Nomor LPPB">
 															</td>
 														</tr>
 														<tr>
 															<td style="padding: 0 50px 0 0"><label style="width: 100px">Tanggal LPPB</label></td>
 															<td>
-																<input type="text" class="form-control dateFromAndTo" name="dateFrom" id="dateFromUw" style="margin-top: 10px; margin-bottom: 10px; width:300px" >
+																<input type="text" class="form-control dateFromAndTo" name="dateFrom" id="dateFromUw" style="margin-top: 10px; margin-bottom: 10px; width:300px" placeholder="From">
 															</td>
 															<td>&nbsp;s/d</td>
 															<br>
 															<td style="padding: 0 0 0 5px">
-																<input type="text" class="form-control dateFromAndTo" name="dateTo" id="dateToUw" style="margin-top: 10px; margin-bottom: 10px; width:300px" >
+																<input type="text" class="form-control dateFromAndTo" name="dateTo" id="dateToUw" style="margin-top: 10px; margin-bottom: 10px; width:300px" placeholder="To">
 															</td>
 														</tr>
 														<tr>
 															<td style="padding: 0 50px 0 0"><label style="width: 100px">Nomor PO</label></td>
 															<td>
-																<input type="text" class="form-control" name="nomor_po" id="nomor_po" style="margin-top: 10px; margin-bottom: 10px; width:300px"  value="%">
+																<input type="text" class="form-control" name="nomor_po" id="nomor_po" style="margin-top: 10px; margin-bottom: 10px; width:300px" placeholder="Nomor PO">
 															</td>
 														</tr>
 														<tr>

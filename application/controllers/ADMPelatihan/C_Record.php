@@ -57,12 +57,10 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 
 		$data['trainer'] = $this->M_record->GetTrainer();
@@ -163,12 +161,10 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 		
 		// $data['record'] = $this->M_record->GetRecordFinished();
@@ -279,12 +275,10 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 		
 		$data['record'] = $this->M_record->GetRecordId($id);
@@ -318,12 +312,10 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 		
 		$data['details'] = $this->M_penjadwalan->GetTrainingId($id);
@@ -407,12 +399,10 @@ class C_Record extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		if ($data['UserSubMenuOne'][0]['menu'] == 'Jadwal Pelatihan') {
-			unset($data['UserSubMenuOne'][0]);
-		}
-
-		if ($data['UserSubMenuOne'][5]['menu'] == 'Custom Report') {
-			unset($data['UserSubMenuOne'][5]);
+		foreach ($data['UserSubMenuOne'] as $key => $value) { // looping, $key ini index, $value isinya
+			if ($value['menu_title'] == 'Jadwal Pelatihan' || $value['menu_title'] == 'Custom Report') { // jika menu_title = x atau y
+				unset($data['UserSubMenuOne'][$key]); // unset berdasarkan index
+			}
 		}
 		
 		//---GET NOINDUK
@@ -558,7 +548,7 @@ class C_Record extends CI_Controller {
 				$i++;
 			}
 		// print_r($data_participant);
-		redirect('ADMPelatihan/Record');
+		redirect('ADMPelatihan/Record/Finished');
 	}
 
 	//HAPUS RECORD PENJADWALAN
@@ -566,7 +556,7 @@ class C_Record extends CI_Controller {
 		$this->M_record->DeleteSchedule($id);
 		$this->M_record->DeleteScheduleParticipant($id);
 		$this->M_record->DeleteScheduleObjective($id);
-		redirect('ADMPelatihan/Record');
+		redirect('ADMPelatihan/Record//Finished');
 	}
 
 	public function deleteParticipant($pid,$schID)

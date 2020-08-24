@@ -505,10 +505,10 @@
             },
             success: res => {
                 let row
-                let i = 1
+                let i = res.length
                 res.forEach(item => {
                     row += `<tr>
-								<td>${i++}</td>
+								<td>${--i}</td>
 								<td>${item.noind}</td>
 								<td>${item.nama}</td>
 								<td class='detail' data-id='${item.id_data}' data-app1='${item.approver1}' data-app2='${item.approver2}'>${item.keterangan}</td>

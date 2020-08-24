@@ -1,185 +1,128 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_edittempatmakan extends CI_Model
-{
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->database();
-        $this->db = $this->load->database('personalia',TRUE);
-    }
+class M_edittempatmakan extends CI_Model {
 
-    public function getKodeSeksi(){
-    	$seksi = $this->session->kodesie;
-    	$query = "select ts.kodesie, ts.dept, ts.bidang, ts.unit, ts.seksi, ts.pekerjaan
-    				from hrd_khs.tseksi ts
-    				order by ts.seksi;";
-        $result = $this->db->query($query);
-        return $result->result_array();
-    }
-    public function getSekNamaByKodesie($kodesie){
-        $query1 = "select ts.kodesie
-                    from hrd_khs.tseksi ts
-                    where ts.kodesie = '$kodesie'";
-        $result = $this->db->query($query1);
-        return $result->result_array();
-    }
+	public function __construct(){
+		parent::__construct();
+		$this->load->database();
+		$this->personalia = $this->load->database('personalia',TRUE);
+	}
 
-   public function getID($kodesie)
-    {
-      $sql = "select ts.seksi,ts.unit,ts.bidang,ts.dept,ts.pekerjaan,tp.tempat_makan
-              from hrd_khs.tseksi ts
-                inner join hrd_khs.tpribadi tp
-                  on tp.kodesie=ts.kodesie
-              where ts.kodesie='$kodesie'
-              group by ts.seksi,ts.unit,ts.bidang,ts.dept,ts.pekerjaan,tp.tempat_makan
-              order by tempat_makan asc";
-      return $this->db->query($sql)->result_array();
-    }
+	public function getSeksiByKeyKodesieLevel($key,$kodesie,$level){
+		$where = "";
+		$kondisi = array();
+		if ($level == 'departemen') {
+			$where = "where upper(dept) like upper(concat(?,'%'))";
+			$kolom = "dept";
+			$panjang = 1;
+			$kondisi = array($panjang,$key);
+		}elseif ($level == 'bidang') {
+			$where = "where upper(bidang) like upper(concat(?,'%')) and left(kodesie,1) = ? ";
+			$kolom = "bidang";
+			$panjang = 3;
+			$kondisi = array($panjang,$key,$kodesie);
+		}elseif ($level == 'unit') {
+			$where = "where upper(unit) like upper(concat(?,'%')) and left(kodesie,3) = ? ";
+			$kolom = "unit";
+			$panjang = 5;
+			$kondisi = array($panjang,$key,$kodesie);
+		}elseif ($level == 'seksi') {
+			$where = "where upper(seksi) like upper(concat(?,'%')) and left(kodesie,5) = ? ";
+			$kolom = "seksi";
+			$panjang = 7;
+			$kondisi = array($panjang,$key,$kodesie);
+		}elseif ($level == 'pekerjaan') {
+			$where = "where upper(pekerjaan) like upper(concat(?,'%')) and left(kodesie,7) = ? ";
+			$kolom = "pekerjaan";
+			$panjang = 9;
+			$kondisi = array($panjang,$key,$kodesie);
+		}
+		$sql = "select distinct left(kodesie,?) as kodesie, 
+					case when trim($kolom) = '-' then concat('SEMUA ',upper('$kolom')) else trim($kolom) end as nama
+				from hrd_khs.tseksi
+				$where
+				order by 1 ";
+		return $this->personalia->query($sql,$kondisi)->result_array();
+	}
 
-     public function getShow()
-     {
-       $query2="select tl.lokasi_kerja, tp.noind, tp.nama, tp.tempat_makan1, tp.tempat_makan2, ts.seksi, ts.unit, ts.bidang, ts.dept
-                from hrd_khs.tpribadi tp
-                 inner join hrd_khs.tseksi ts
-                   on tp.kodesie=ts.kodesie
-                 inner join hrd_khs.tlokasi_kerja tl
-                   on tp.lokasi_kerja = tl.id_
-                 where tp.keluar = '0' and tp.lokasi_kerja in ('01','02') and left(noind,1) not in('Z')
-                 GROUP BY tl.lokasi_kerja, tp.noind, tp.nama, tp.tempat_makan1, tp.tempat_makan2, ts.seksi, ts.unit, ts.bidang, ts.dept
-                 ORDER BY tp.noind";
-       return $this->db->query($query2)->result_array();
-     }
+	public function getTempatMakanByKeyStat($key,$stat){
+		if ($stat == 'lama') {
+			$union = "union select '--SEMUA TEMPAT MAKAN--' ";
+		}else{
+			$union = "";
+		}
 
-     public function edit()
-     {
-       $query3="select tp.noind, tp.nama, tp.tempat_makan1, tp.tempat_makan2, ts.seksi, ts.unit, ts.bidang, ts.dept
-       from hrd_khs.tpribadi tp
-       inner join hrd_khs.tseksi ts
-       on tp.kodesie=ts.kodesie
-       GROUP BY tp.noind, tp.nama, tp.tempat_makan1, tp.tempat_makan2, ts.seksi, ts.unit, ts.bidang, ts.dept
-       limit 10";
-       // echo $query3;exit();
-       return $this->db->query($query3)->result_array();
-     }
+		$sql = "select * 
+				from (
+					select fs_tempat_makan
+					from \"Catering\".ttempat_makan
+					where upper(fs_tempat_makan) like upper(concat(?,'%')) 
+					$union
+				) as tbl 
+				order by fs_tempat_makan collate \"C\" ";
+		return $this->personalia->query($sql,array($key))->result_array();
+	}
 
-     public function update($noind,$makan,$makan1)
-     {
-       $sql="update hrd_khs.tpribadi
-            set tempat_makan1='$makan', tempat_makan2='$makan1'
-            where noind='$noind'";
+	public function getLokasiKerjaByKey($key){
+		$sql = "select id_ as kode_lokasi, lokasi_kerja
+				from hrd_khs.tlokasi_kerja
+				where upper(id_) like concat(?,'%') or upper(lokasi_kerja) like upper(concat(?,'%')) 
+				union select '-','SEMUA LOKASI KERJA'
+				order by 1 ";
+		return $this->personalia->query($sql,array($key,$key))->result_array();
+	}
 
-      $this->db->query($sql);
-     }
+	public function getKodeIndukByKey($key){
+		$sql = "select fs_noind,fs_ket
+				from hrd_khs.tnoind
+				where upper(fs_noind) like upper(concat(?,'%')) or upper(fs_ket) like upper(concat(?,'%')) 
+				union select '-','SEMUA KODE INDUK'
+				order by 1 ";
+		return $this->personalia->query($sql,array($key,$key))->result_array();
+	}
 
-     public function getTempat()
-     {
-       $query4 = "select distinct tempat_makan1, tempat_makan2
-              from hrd_khs.tpribadi
-              order by tempat_makan1, tempat_makan2 asc";
-      return $this->db->query($query4)->result_array();
-     }
+	public function getPekerjaByKodesie($kodesie){
+		$sql = "select tp.noind,trim(tp.nama) as nama, tp.tempat_makan, tl.lokasi_kerja 
+				from hrd_khs.tpribadi tp 
+				left join hrd_khs.tlokasi_kerja tl 
+				on tp.lokasi_kerja = tl.id_
+				where tp.keluar = '0'
+				and tp.kodesie like concat(?,'%')
+				order by tp.noind";
+		return $this->personalia->query($sql,array($kodesie))->result_array();
+	}
 
-     public function getEdit($noind)
-     {
-       $query3="select tp.noind, tp.nama, tp.tempat_makan1, tp.tempat_makan2, ts.seksi, ts.unit, ts.bidang, ts.dept, tp.kodesie, tl.lokasi_kerja
-       from hrd_khs.tpribadi tp
-       inner join hrd_khs.tseksi ts
-       on tp.kodesie=ts.kodesie
-       inner join hrd_khs.tlokasi_kerja tl
-       on tp.lokasi_kerja=tl.id_
-       where tp.noind = '$noind'
-       GROUP BY tp.noind, tp.nama, tp.tempat_makan1, tp.tempat_makan2, ts.seksi, ts.unit, ts.bidang, ts.dept, tp.kodesie, tl.lokasi_kerja";
-       return $this->db->query($query3)->result_array();
-     }
+	public function getPekerjaByKodesieLokasiKodeIndukTempatMakan($kodesie,$lokasi,$kode_induk,$tempat_makan){
+		$where = "";
+		if ($kodesie != "") {
+			$where = " and tp.kodesie like '".$kodesie."%' ";
+		}
+		if ($lokasi != "") {
+			$where .= " and tp.lokasi_kerja = '".$lokasi."' ";
+		}
+		if ($kode_induk != "") {
+			$where .= " and tp.kode_status_kerja = '".$kode_induk."' ";
+		}
+		if ($tempat_makan != "") {
+			$where .= " and tp.tempat_makan = '".$tempat_makan."' ";
+		}
 
-     public function updateAll($makan1,$makan2,$kodesie)
-      {
-        $query4 = "update hrd_khs.tpribadi
-        set tempat_makan1='$makan1', tempat_makan2='$makan2'
-        where kodesie='$kodesie' and keluar = '0'";
-        return $this->db->query($query4);
-      }
+		$sql = "select tp.noind, tp.tempat_makan
+				from hrd_khs.tpribadi tp 
+				where tp.keluar = '0'
+				$where
+				order by tp.noind";
+		return $this->personalia->query($sql)->result_array();
+	}
 
-      public function insertLog($user,$makan1,$makan2,$kodesie)
-       {
-         $query4 = "INSERT INTO hrd_khs.tlog
-                   (wkt, menu, ket, noind, jenis, program, noind_baru)
-                  VALUES
-                  (now(),
-                  'MUTASI TEMPAT MAKAN',
-                   'EDIT TEMPAT MAKAN kodesie = $kodesie  -> tempat_makan1 = $makan1 tempat_makan2 = $makan2 ',
-                   '$user',
-                  'EDIT PER KODESIE',
-                  'KATERING ERP',
-                  ''
-                ) ;";
+	public function updateTempatMakanByNoind($tempat_makan,$noind){
+		$sql = "update hrd_khs.tpribadi set tempat_makan = ?
+				where noind = ?";
+		return $this->personalia->query($sql,array($tempat_makan,$noind));
+	}
 
-         return $this->db->query($query4);
-       }
-
-      public function updateStaff($makan1,$makan2,$kodesie)
-       {
-         $query4 = "update hrd_khs.tpribadi
-         set tempat_makan1='$makan1', tempat_makan2='$makan2'
-         where kodesie='$kodesie'
-         and (noind like 'B%' or noind like 'J%')
-         and keluar = '0' and left(noind,1) not in('Z')";
-         return $this->db->query($query4);
-       }
-
-       public function insertLoga($user,$makan1,$makan2,$kodesie)
-        {
-          $query4 = "INSERT INTO hrd_khs.tlog
-                    (wkt, menu, ket, noind, jenis, program, noind_baru)
-                   VALUES
-                   (now(),
-                   'MUTASI TEMPAT MAKAN',
-                    'EDIT TEMPAT MAKAN kodesie = $kodesie  -> tempat_makan1 = $makan1 tempat_makan2 = $makan2',
-                    '$user',
-                   'EDIT PER KODESIE UNTUK STAFF B & J',
-                   'KATERING ERP',
-                   ''
-                 ) ;";
-
-          return $this->db->query($query4);
-        }
-
-        public function updateNonStaff($makan1,$makan2,$kodesie)
-         {
-           $query4 = "update hrd_khs.tpribadi
-           set tempat_makan1='$makan1', tempat_makan2='$makan2'
-           where kodesie='$kodesie'
-           and (noind like 'A%' or noind like 'H%')
-           and keluar = '0' and left(noind,1) not in('Z')";
-           return $this->db->query($query4);
-         }
-
-         public function insertLogb($user,$makan1,$makan2,$kodesie)
-          {
-            $query4 = "INSERT INTO hrd_khs.tlog
-                      (wkt, menu, ket, noind, jenis, program, noind_baru)
-                     VALUES
-                     (now(),
-                     'MUTASI TEMPAT MAKAN',
-                      'EDIT TEMPAT MAKAN kodesie = $kodesie  -> tempat_makan1 = $makan1 tempat_makan2 = $makan2',
-                      '$user',
-                     'EDIT PER KODESIE UNTUK NON STAFF A & H',
-                     'KATERING ERP',
-                     ''
-                   ) ;";
-
-            return $this->db->query($query4);
-          }
-
-       public function getMakan()
-       	{
-       		$query6 = "select distinct tempat_makan
-          from hrd_khs.tpribadi
-          where trim(tempat_makan)!='-'
-          order by tempat_makan asc";
-          return $this->db->query($query6)->result_array();
-       	}
-
+	public function insertEditTempatMakan($insert){
+		$this->personalia->insert('"Catering".t_edit_tempat_makan',$insert);
+	}
 }
 ?>

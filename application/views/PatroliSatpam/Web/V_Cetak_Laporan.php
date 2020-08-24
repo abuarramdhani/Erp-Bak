@@ -87,10 +87,10 @@
 									echo "<td>-</td>";
 									echo "<td>-</td>";
 								}else{
-									$r1 = empty($list[$h][$key]['r1']) ? 'x':$list[$h][$key]['r1'];
-									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
-									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
-									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
+									$r1 = empty($list[$h][$key]['r1']) ? '-':$list[$h][$key]['r1'];
+									$r2 = empty($list[$h][$key]['r2']) ? '-':$list[$h][$key]['r2'];
+									$r3 = empty($list[$h][$key]['r3']) ? '-':$list[$h][$key]['r3'];
+									$r4 = empty($list[$h][$key]['r4']) ? '-':$list[$h][$key]['r4'];
 									$color = strpos($r1, 'N') ? 'style="color:red"': '';
 									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
 
@@ -155,10 +155,10 @@
 									echo "<td>-</td>";
 									echo "<td>-</td>";
 								}else{
-									$r1 = empty($list[$h][$key]['r1']) ? 'x':$list[$h][$key]['r1'];
-									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
-									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
-									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
+									$r1 = empty($list[$h][$key]['r1']) ? '-':$list[$h][$key]['r1'];
+									$r2 = empty($list[$h][$key]['r2']) ? '-':$list[$h][$key]['r2'];
+									$r3 = empty($list[$h][$key]['r3']) ? '-':$list[$h][$key]['r3'];
+									$r4 = empty($list[$h][$key]['r4']) ? '-':$list[$h][$key]['r4'];
 									$color = strpos($r1, 'N') ? 'style="color:red"': '';
 									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
 
@@ -227,10 +227,10 @@
 									echo "<td>-</td>";
 									echo "<td>-</td>";
 								}else{
-									$r1 = empty($list[$h][$key]['r1']) ? 'x':$list[$h][$key]['r1'];
-									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
-									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
-									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
+									$r1 = empty($list[$h][$key]['r1']) ? '-':$list[$h][$key]['r1'];
+									$r2 = empty($list[$h][$key]['r2']) ? '-':$list[$h][$key]['r2'];
+									$r3 = empty($list[$h][$key]['r3']) ? '-':$list[$h][$key]['r3'];
+									$r4 = empty($list[$h][$key]['r4']) ? '-':$list[$h][$key]['r4'];
 									$color = strpos($r1, 'N') ? 'style="color:red"': '';
 									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
 
@@ -295,10 +295,10 @@
 									echo "<td>-</td>";
 									echo "<td>-</td>";
 								}else{
-									$r1 = empty($list[$h][$key]['r1']) ? 'x':$list[$h][$key]['r1'];
-									$r2 = empty($list[$h][$key]['r2']) ? 'x':$list[$h][$key]['r2'];
-									$r3 = empty($list[$h][$key]['r3']) ? 'x':$list[$h][$key]['r3'];
-									$r4 = empty($list[$h][$key]['r4']) ? 'x':$list[$h][$key]['r4'];
+									$r1 = empty($list[$h][$key]['r1']) ? '-':$list[$h][$key]['r1'];
+									$r2 = empty($list[$h][$key]['r2']) ? '-':$list[$h][$key]['r2'];
+									$r3 = empty($list[$h][$key]['r3']) ? '-':$list[$h][$key]['r3'];
+									$r4 = empty($list[$h][$key]['r4']) ? '-':$list[$h][$key]['r4'];
 									$color = strpos($r1, 'N') ? 'style="color:red"': '';
 									echo "<td ".$color.">".substr($r1, 0,5)."</td>";
 

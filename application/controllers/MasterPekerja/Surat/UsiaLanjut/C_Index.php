@@ -353,11 +353,11 @@ class C_Index extends CI_Controller
 
 		$this->M_usialanjut->deleteSuratUsiaLanjut($noind);
 
-		$no_surat 				=	$data['isiSuratUsiaLanjut'][0]['no_surat'];
-		$kode_surat 			=	$data['isiSuratUsiaLanjut'][0]['kode'];
-		$bulan_surat 			= 	date('n', strtotime($data['isiSuratUsiaLanjut'][0]['tanggal_cetak']));
+		// $no_surat 				=	$data['isiSuratUsiaLanjut'][0]['no_surat'];
+		// $kode_surat 			=	$data['isiSuratUsiaLanjut'][0]['kode'];
+		// $bulan_surat 			= 	date('n', strtotime($data['isiSuratUsiaLanjut'][0]['tanggal_cetak']));
 
-		$this->M_usialanjut->deleteArsipSuratUsiaLanjut($bulan_surat, $kode_surat, $no_surat);
+		// $this->M_usialanjut->deleteArsipSuratUsiaLanjut($bulan_surat, $kode_surat, $no_surat);
 		//insert to t_log
 		$aksi = 'MASTER PEKERJA';
 		$detail = 'Delete Arsip & Surat Usia Lanjut Noind='.$noind;

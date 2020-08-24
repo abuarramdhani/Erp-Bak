@@ -1,38 +1,38 @@
 <style>
-.flex {
-  display: flex;
-}
+  .flex {
+    display: flex;
+  }
 
-.flex.center {
-  justify-content: center;
-}
+  .flex.center {
+    justify-content: center;
+  }
 
-.flex.space-between {
-  justify-content: space-between;
-}
+  .flex.space-between {
+    justify-content: space-between;
+  }
 
-.m-2 {
-  margin: 2em;
-}
+  .m-2 {
+    margin: 2em;
+  }
 
-.pl-2 {
-  padding-left: 2em;
-}
+  .pl-2 {
+    padding-left: 2em;
+  }
 
-.pr-2 {
-  padding-right: 2em;
-}
+  .pr-2 {
+    padding-right: 2em;
+  }
 
-.p-2 {
-  padding: 1em 2em;
-}
+  .p-2 {
+    padding: 1em 2em;
+  }
 
-.mb-1 {
-  margin-bottom: 1em;
-}
+  .mb-1 {
+    margin-bottom: 1em;
+  }
 </style>
 <section style="position: relative;">
-  <div class="inner" style="background: url('<?php echo base_url('assets/img/3.jpg');?>'); background-size: cover;">
+  <div class="inner" style="background: url('<?php echo base_url('assets/img/3.jpg'); ?>'); background-size: cover;">
     <section class="content-header">
       <div class="row">
         <div class="col-lg-12">
@@ -74,6 +74,12 @@
             <i class="fa fa-arrow-right"></i>
           </a>
         </div>
+        <div class="col-lg-12 mb-1 flex center">
+          <a class="btn btn-primary flex space-between p-2" style="width: 400px; " href="<?= base_url('assets/video/Tutorial_Blangko_Evaluasi.webm') ?>">
+            <span>Video Tutorial</span>
+            <i class="fa fa-arrow-right"></i>
+          </a>
+        </div>
       </div>
       <div class="row">
         <div class="col-lg-3"></div>
@@ -88,13 +94,13 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="col-lg-12 text-right reup">
-          <h4><small>You are logged in as : <?php echo $this->session->user;?></small></h4>
+          <h4><small>You are logged in as : <?php echo $this->session->user; ?></small></h4>
         </div>
-        <?php 
-					$started = microtime();
-					$second = round($started, 3);
-					echo "<p style='font: normal 15px courier'>Halaman ini dimuat dalam {$second} detik";
-				?>
+        <?php
+        $started = microtime();
+        $second = round($started, 3);
+        echo "<p style='font: normal 15px courier'>Halaman ini dimuat dalam {$second} detik";
+        ?>
       </div>
     </div>
   </div>

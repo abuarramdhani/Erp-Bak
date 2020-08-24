@@ -80,4 +80,13 @@ class M_pengeluaran extends CI_Model
         $query = $oracle->query($sql);
         $query2 = $oracle->query('commit');
     }
+
+    public function getPIC($term){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select * from khs_tabel_user
+                where pic like '%$term%'
+                and status = 2";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
 }

@@ -30,7 +30,17 @@ vertical-align: middle;
           <div class="row">
             <div class="col-md-6">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
-              <center><h4 style="font-weight:bold">LIST RKH</h4> </center>
+              <div class="row">
+                <div class="col-md-6">
+                  <h4 style="font-weight:bold">LIST RKH</h4>
+                </div>
+                <div class="col-md-6">
+                  <div style="margin-top:15px;float:right">
+                    <div style="width: 20%;color:transparent; border:1px solid #5e5e5e;display:inline;background:#f4f4f4">______</div> <span style="display:inline"> : Reguler</span>
+                    <div style="width: 20%;color:transparent; margin-top: 5px;border:1px solid #5e5e5e; background:rgba(255, 0, 84, 0.29);display:inline;margin-left:5px;">______</div> <span style="display:inline"> : Lembur</span>
+                  </div>
+                </div>
+              </div>
               <hr>
               <div class="table-list-RKH">
                <!-- +_+ -->
@@ -122,7 +132,8 @@ vertical-align: middle;
             <div class="box box-primary box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">Create New RKH</h4>
+                  <h4 style="font-weight:bold;display:inline">Create New RKH</h4>
+                  <button type="button" class="btn btn-default btnWippRefresh" style="margin-left: 10px;display:inline"><i class="fa fa-refresh"></i> Refresh</button>
                 </div>
                 <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal"><i class="fa fa-close"></i></button>
               </div>
@@ -173,7 +184,7 @@ vertical-align: middle;
                         </table>
                       </div>
                       <div class="mt-4">
-                        <center><button type="button" style="margin-bottom:10px !important;" class="btn bg-maroon" onclick="saveNewRKH()" name="button"><i class="fa fa-file"></i> Save</button>
+                        <center><button type="button" style="margin-bottom:10px !important;" class="btn bg-maroon wipp_hided" onclick="saveNewRKH()" name="button"><i class="fa fa-file"></i> Save</button>
                       </div>
                     </div>
                   </div>

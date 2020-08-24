@@ -25,6 +25,20 @@ class M_penilaiankinerja extends CI_Model
 								trim(a.kodesie) as kodesie,
 								trim(a.golkerja) as golkerja,
 								trim(a.lokasi_kerja) as lokerja,
+								(select lokasilm from hrd_khs.tmutasi t 
+								where noind = a.noind and tglberlaku > '$end'
+								order by tglberlaku
+								limit 1) lokerja2,
+								(select concat(trim(dept),',', trim(bidang),',', trim(unit),',', trim(seksi)) from hrd_khs.tseksi ts2 where ts2.kodesie = (select
+									kodesielm
+								from
+									hrd_khs.tmutasi t
+								where
+									noind = a.noind
+									and tglberlaku > '$end'
+								order by
+									tglberlaku
+								limit 1)) seksi_lama,
 								rtrim(seksi.dept) as dept,
 								rtrim(seksi.bidang) as bidang,
 								rtrim(seksi.unit) as unit,
@@ -316,12 +330,12 @@ class M_penilaiankinerja extends CI_Model
 																order by 	tanggal_awal
 															) as tbltgl
 											) as sk
-								)  as total_bulan_sk
+								)  as total_bulan_sk, a.keluar
 						from 	hrd_khs.tpribadi a
 								join 	hrd_khs.tseksi as seksi
 										on 	seksi.kodesie=a.kodesie
-						where 	a.keluar='0' 
-								and 	(trim(a.kode_status_kerja)='A'
+						where 	a.tglkeluar >= '$end'
+						and		(trim(a.kode_status_kerja)='A'
 								or (trim(a.kode_status_kerja)= 'B' and a.kd_jabatan not like '%-%' and a.kd_jabatan::integer >= 14)
 								or a.noind = 'J1364')
 								and 	a.diangkat<=(('$end')::date - interval '1 year' + interval '1 days');";
@@ -333,6 +347,8 @@ class M_penilaiankinerja extends CI_Model
 
 	public function insert_worker($insert){
 		$this->db->insert($this->assesment,$insert);
+		// $sql = $this->db->set($insert)->get_compiled_insert('pk.pk_assessment');
+		// echo $sql.'<br><br>';
 	}
 
 	public function list_periode(){
@@ -364,6 +380,8 @@ class M_penilaiankinerja extends CI_Model
 	public function update_worker($where,$update){
 		$this->db->where($where);
 		$this->db->update($this->assesment,$update);
+		// $sql = $this->db->set($update, $where)->get_compiled_update('pk.pk_assessment');
+		// echo $sql.'<br>';
 	}
 
 	public function load_unit_group_details(){
@@ -601,5 +619,22 @@ class M_penilaiankinerja extends CI_Model
 												order by 		left(pri.golkerja,1);";
 		$queryAmbilGolonganKerjaPerUnit		=	$personalia->query($ambilGolonganKerjaPerUnit);
 		return $queryAmbilGolonganKerjaPerUnit->result_array();
+	}
+
+	public function listErSection($server)
+	{
+		if ($server == 'prod') {
+			$dbase = $this->load->database("dpostgre", true);
+		}elseif ($server == 'dev') {
+			$dbase = $this->load->database('default', true);
+		}
+		$sql = "SELECT * from er.er_section order by er_section_id";
+		return $dbase->query($sql)->result_array();
+	}
+
+	public function updateErSeksi($data, $id)
+	{
+		$this->db->where('er_section_id', $id);
+		$this->db->update('er.er_section', $data);
 	}
 }

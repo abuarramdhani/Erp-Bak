@@ -198,6 +198,7 @@
 													<th style="text-align: center;vertical-align: middle;">Jumlah</th>
 													<th style="text-align: center;vertical-align: middle;">Pemohon</th>
 													<th style="text-align: center;vertical-align: middle;">Keterangan</th>
+													<th style="text-align: center;vertical-align: middle;">List Pekerja</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -214,6 +215,7 @@
 															<td style="text-align: center;"><?php echo $dt['fn_jumlah_pesanan'] ?></td>
 															<td><?php echo $dt['fs_pemohon'] ?></td>
 															<td><?php echo $dt['fs_keterangan'] ?></td>
+															<td><?php echo $dt['list_pekerja'] ?></td>
 														</tr>
 														<?php 
 														$nomor++;

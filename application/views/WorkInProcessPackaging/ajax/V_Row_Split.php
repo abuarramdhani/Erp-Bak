@@ -11,7 +11,7 @@
         <center><input type="number" value="<?php echo $g['qty'] ?>" class="form-control iminhere" oninput="changeQtyValue(<?php echo $key+1 ?>)" name="qty0[]" id="qty0_wipp<?php echo $key+1 ?>" placeholder="QTY"></center>
       </td>
       <td>
-        <center><input type="number" value="<?php echo $g['waktu_satu_shift']/($g['qty']/$g['usage_rate']); ?>" class="form-control andhere" name="target0[]" id="target0_pe<?php echo $key+1 ?>" placeholder="00%"></center>
+        <center><input type="number" value="<?php echo ($g['qty']/($g['waktu_satu_shift']/$g['usage_rate']))*100/100 ?>" class="form-control andhere" name="target0[]" id="target0_pe<?php echo $key+1 ?>" placeholder="00%"></center>
       </td>
       <td hidden>
         <center><input type="text" value="<?php echo $g['create_at'] ?>" class="form-control param"></center>

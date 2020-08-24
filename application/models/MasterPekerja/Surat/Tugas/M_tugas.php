@@ -1,26 +1,30 @@
-<?php 
-	if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-	class M_tugas extends CI_Model{
-    	
-    	public function __construct(){
-	       parent::__construct();
-	       $this->personalia = $this->load->database('personalia', TRUE);
-	    }
+class M_tugas extends CI_Model
+{
 
-	    public function getPekerjaByKey($key){
-	    	$sql = "select noind,trim(nama) as nama
+	public function __construct()
+	{
+		parent::__construct();
+		$this->personalia = $this->load->database('personalia', TRUE);
+	}
+
+	public function getPekerjaByKey($key)
+	{
+		$sql = "select noind,trim(nama) as nama
 					from hrd_khs.tpribadi
 					where keluar = '0'
 					and (
 						noind like upper(concat('%',?,'%'))
 						or nama like upper(concat('%',?,'%'))
 						)";
-	    	return $this->personalia->query($sql,array($key,$key))->result_array();
-	    }
+		return $this->personalia->query($sql, array($key, $key))->result_array();
+	}
 
-	    public function getDetailPekerjaByNoind($noind){
-	    	$sql = "select 
+	public function getDetailPekerjaByNoind($noind)
+	{
+		$sql = "select 
 				    	noind,
 				    	trim(nama) as nama,
 				    	lokasi_kerja,
@@ -35,23 +39,26 @@
 					left join hrd_khs.tseksi ts 
 					on tp.kodesie = ts.kodesie
 					where noind = ?";
-			return $this->personalia->query($sql,array($noind))->result_array();
-	    }
+		return $this->personalia->query($sql, array($noind))->result_array();
+	}
 
-	    public function getSuratTugasTemplate(){
-	    	$sql = "select isi_surat
+	public function getSuratTugasTemplate()
+	{
+		$sql = "select isi_surat
 					from \"Surat\".tisi_surat
 					where jenis_surat = 'surat tugas';";
-			return $this->personalia->query($sql)->result_array();
-	    }
+		return $this->personalia->query($sql)->result_array();
+	}
 
-	    public function insertSuratTugas($data){
-	    	$this->personalia->insert('"Surat".tsurat_tugas',$data);
-	    	return $this->personalia->insert_id();
-	    }
+	public function insertSuratTugas($data)
+	{
+		$this->personalia->insert('"Surat".tsurat_tugas', $data);
+		return $this->personalia->insert_id();
+	}
 
-	    public function getSuratTugasAll(){
-	    	$sql = "select 
+	public function getSuratTugasAll()
+	{
+		$sql = "select 
 				    	ts.no_surat,
 				    	concat(ts.noind,' - ',trim(tp.nama)) as pekerja,
 				    	ts.tgl_dibuat,
@@ -60,12 +67,14 @@
 					from \"Surat\".tsurat_tugas ts
 					left join hrd_khs.tpribadi tp 
 					on ts.noind = tp.noind
+					where deleted_date is null
 					order by ts.tgl_dibuat desc ";
-			return $this->personalia->query($sql)->result_array();
-	    }
+		return $this->personalia->query($sql)->result_array();
+	}
 
-	    public function getSuratTugasById($id){
-	    	$sql = "select *, 
+	public function getSuratTugasById($id)
+	{
+		$sql = "select *, 
 						(
 							select trim(nama)
 							from hrd_khs.tpribadi tp 
@@ -78,19 +87,20 @@
 						) as approver_nama
 			    	from \"Surat\".tsurat_tugas st
 			    	where surat_tugas_id = ? ";
-	    	return $this->personalia->query($sql,array($id))->result_array();
-	    }
-
-	    public function deleteSuratTugasByID($id){
-	    	$this->personalia->where('surat_tugas_id',$id);
-	    	$this->personalia->delete("\"Surat\".tsurat_tugas");
-	    }
-
-	    public function updateSuratTugasByID($data,$id){
-	    	$this->personalia->where('surat_tugas_id',$id);
-	    	$this->personalia->update("\"Surat\".tsurat_tugas",$data);
-	    }
-
+		return $this->personalia->query($sql, array($id))->result_array();
 	}
 
-?>
+	public function deleteSuratTugasByID($id)
+	{
+		$this->personalia->where('surat_tugas_id', $id);
+		$this->personalia->set('deleted_by', $this->session->user);
+		$this->personalia->set('deleted_date', date('Y-m-d H:i:s'));
+		$this->personalia->update("\"Surat\".tsurat_tugas");
+	}
+
+	public function updateSuratTugasByID($data, $id)
+	{
+		$this->personalia->where('surat_tugas_id', $id);
+		$this->personalia->update("\"Surat\".tsurat_tugas", $data);
+	}
+}

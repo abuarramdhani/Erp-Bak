@@ -29,7 +29,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-customer" style="font-size:12px;">
+                                   <table class="datatable table table-striped table-bordered table-hover text-left dataTable-limbah" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>

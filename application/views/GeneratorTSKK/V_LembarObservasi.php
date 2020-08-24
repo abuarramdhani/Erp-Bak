@@ -240,7 +240,7 @@ input[type="search"] {
 										<div class="row">
 												<label for="norm" class="control-label col-lg-4">No. Mesin :</label>
 												<div class="col-lg-8">
-												<select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesin" name="txtNoMesin[]" data-placeholder="Input Nomor Mesin" multiple>
+												<select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesinTSKK" name="txtNoMesin[]" data-placeholder="Input Nomor Mesin" multiple>
 												</select>
 												<!-- <input type="text" placeholder="Input Nomor Mesin" name="txtNoMesin" value="" id="txtNoMesin" class="form-control noMesin" required/> -->
 												</div>

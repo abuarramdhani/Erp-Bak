@@ -69,7 +69,7 @@ class M_picklistppic extends CI_Model
 												)
 			-- 
 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
-			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
+			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -130,7 +130,7 @@ class M_picklistppic extends CI_Model
 		 ) = 1
    and kpa.PROCESS = 1 -- ppic
    and bd.DEPARTMENT_CLASS_CODE = '$dept'
-   and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
+   and TRUNC(wdj.SCHEDULED_START_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

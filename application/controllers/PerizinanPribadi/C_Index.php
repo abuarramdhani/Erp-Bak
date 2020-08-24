@@ -23,8 +23,7 @@ class C_Index extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
+		if ($this->session->is_logged) {
 		} else {
 			redirect('');
 		}
@@ -38,32 +37,32 @@ class C_Index extends CI_Controller
 		$user_id = $this->session->userid;
 		$no_induk = $this->session->user;
 
-
 		$data['Title'] = 'Approve Atasan';
 		$data['Menu'] = 'Perizinan Pribadi';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
-		$paramedik = $this->M_index->allowedParamedik();
-		$paramedik = array_column($paramedik, 'noind');
+		$datamenu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		if (in_array($no_induk, $paramedik)) {
+		$aksesRahasia = $this->M_index->allowedParamedik();
+		$aksesRahasia = array_column($aksesRahasia, 'noind');
+
+		if (array_search($no_induk, $aksesRahasia)) {
 			$data['UserMenu'] = $datamenu;
-		}else {
+		} else {
 			unset($datamenu[1]);
-			$data['UserMenu'] = array_values($datamenu);
+			unset($datamenu[2]);
+			$data['UserMenu'] = $datamenu;
 		}
 
 		$today = date('Y-m-d');
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PerizinanPribadi/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PerizinanPribadi/V_Index', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function index1()
@@ -89,44 +88,44 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$datamenu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 		$paramedik = $this->M_index->allowedParamedik();
 		$paramedik = array_column($paramedik, 'noind');
 
 		if (in_array($no_induk, $paramedik)) {
 			$data['UserMenu'] = $datamenu;
-		}else {
+		} else {
 			unset($datamenu[1]);
 			$data['UserMenu'] = array_values($datamenu);
 		}
 
 		$data['nama'] = $this->M_index->getAllNama();
-		$data['izin'] = $this->M_index->GetIzin($no_induk);
-		$data['IzinApprove'] = $this->M_index->approveAtasan($no_induk);
-		$data['IzinUnApprove'] = $this->M_index->IzinUnApprove($no_induk);
-		$data['IzinReject'] = $this->M_index->IzinReject($no_induk);
+		$data['izin'] = $this->M_index->GetIzin($no_induk, '');
+		$data['IzinPribadi'] = $this->M_index->GetIzin($no_induk, '1');
+		$data['IzinSakit'] = $this->M_index->GetIzin($no_induk, '2');
+		$data['IzinDinas'] = $this->M_index->GetIzin($no_induk, '3');
 
 		$today = date('Y-m-d');
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PerizinanPribadi/V_IKP',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PerizinanPribadi/V_IKP', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
-    public function update()
-    {
-        $status = $this->input->post('keputusan');
+	public function update()
+	{
+		$status = $this->input->post('keputusan');
 		$idizin = $this->input->post('id');
-		$update= $this->M_index->update($status, $idizin);
+		$update = $this->M_index->update($status, $idizin);
 
-    	redirect('IKP/ApprovalAtasan');
-    }
+		redirect('IKP/ApprovalAtasan');
+	}
 
-    public function editPekerjaIKP()
+	public function editPekerjaIKP()
 	{
 		$id = $this->input->post('id');
 
@@ -134,7 +133,7 @@ class C_Index extends CI_Controller
 		echo json_encode($pekerja);
 	}
 
-    public function updatePekerja()
+	public function updatePekerja()
 	{
 		$id = $this->input->post('id');
 		$jenis = $this->input->post('jenis');
@@ -150,13 +149,11 @@ class C_Index extends CI_Controller
 		foreach ($diserahkan as $key) {
 			if (!empty($key['diserahkan'])) {
 				$ar[] = $key['diserahkan'];
-			}else {
+			} else {
 				$ar[] = '-';
 			}
 		}
-		// echo "<pre>";
-		// print_r($ar);
-		// die;
+
 		$imserahkan = implode(", ", $ar);
 
 
@@ -172,23 +169,20 @@ class C_Index extends CI_Controller
 
 		if ($pekerja > 1) {
 			$update_tperizinan = $this->M_index->update_tperizinan($implode1, '1', $id, $imserahkan);
-		}else {
+		} else {
 			$update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, $imserahkan);
 		}
 
-		for ($i=0; $i < count($pekerja); $i++) {
+		for ($i = 0; $i < count($pekerja); $i++) {
 			$newEmployee = $this->M_index->getDataPekerja($pekerja[$i], $id);
-				if ($pekerja[$i] == $newEmployee[0]['noind']) {
-					$data = array(
-						'id'	=> $id,
-						'noind' 	=> $pekerja[$i],
-						'created_date' => date('Y-m-d H:i:s')
-					);
-					$insert = $this->M_index->taktual_pribadi($data);
-				}
+			if ($pekerja[$i] == $newEmployee[0]['noind']) {
+				$data = array(
+					'id'	=> $id,
+					'noind' 	=> $pekerja[$i],
+					'created_date' => date('Y-m-d H:i:s')
+				);
+				$insert = $this->M_index->taktual_pribadi($data);
+			}
 		}
 	}
-
 }
-
- ?>

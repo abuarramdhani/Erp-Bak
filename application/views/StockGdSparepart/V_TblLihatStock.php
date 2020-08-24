@@ -23,10 +23,10 @@
                 <th>Max</th>
                 <th>Lokasi Simpan</th>
                 <th>SubInventory</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-nowrap">
         <?php $i = 1; foreach ($data as $val) { 
             if ($val['MIN'] != '' || $val['MAX'] != '') {
                 $avg = ($val['MIN'] + $val['MAX']) / 2;
@@ -60,7 +60,9 @@
                 <td class="<?= $td?>"><input type="hidden" id="max<?= $i?>" value="<?= $val['MAX']?>"><?= $val['MAX']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="alamat<?= $i?>" value="<?= $val['LOKASI']?>"><?= $val['LOKASI']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="subinv<?= $i?>" value="<?= $val['SUBINV']?>"><?= $val['SUBINV']?></td>
-                <td class="<?= $td?>"><button type="button" class="btn btn-md btn-info" onclick="modalHistory(<?= $i?>)"><i class="fa fa-search"></i></button></td>
+                <td class="<?= $td?>"><button type="button" class="btn btn-md btn-info" onclick="modalHistory(<?= $i?>)"><i class="fa fa-search"></i></button>
+                   <button type="button" class="btn btn-md bg-teal" onclick="modalGambarItem(<?= $i?>)"><i class="fa fa-photo"></i></button>
+                </td>
             </tr>
         <?php $i++; } ?>
         </tbody>
@@ -92,6 +94,25 @@
         </div>
         <div class="modal-body">
             <div id="dataHistory"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+<div class="modal fade" id="mdlGambarItem" role="dialog">
+    <div class="modal-dialog" style="width:50%">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <center><h3 class="modal-title">Gambar Item</h3></center>
+        </div>
+        <div class="modal-body">
+            <div id="datagambar"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

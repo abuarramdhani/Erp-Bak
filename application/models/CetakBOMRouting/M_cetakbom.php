@@ -159,7 +159,7 @@ and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
 and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
 and msib.segment1 = '$kode' 
 $seksii
-order by bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID ,bos.OPERATION_SEQ_NUM";
+order by bos.OPERATION_SEQ_NUM ,bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID";
 
        $query = $oracle->query($sql);
         return $query->result_array();
@@ -349,7 +349,7 @@ grb.ROUTING_ID
 ,opt.PROCESS_QTY
 ,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
 ,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
-,floor(23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600)) target
+,23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600) target
 ,opt.LAST_UPDATE_DATE
 from
 gmd_routings_tl grt

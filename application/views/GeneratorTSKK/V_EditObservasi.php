@@ -330,7 +330,7 @@ input[type="search"] {
 												<label for="norm" class="control-label col-lg-4">No. Mesin :</label>
 												<div class="col-lg-8">
 												<?php $listNoMesin = explode(";", $no_mesin) ?>
-												<select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesin" name="txtNoMesin[]" data-placeholder="Input Nomor Mesin" tabindex="-1" aria-hidden="true" multiple>
+												<select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesinTSKK" name="txtNoMesin[]" data-placeholder="Input Nomor Mesin" tabindex="-1" aria-hidden="true" multiple>
 												<?php foreach ($listNoMesin as $nm) {
 													echo '<option value="'.$nm.'" selected>'.$nm.'</option>';
 												}

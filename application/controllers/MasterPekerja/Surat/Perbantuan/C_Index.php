@@ -826,7 +826,8 @@ class C_Index extends CI_Controller
 		$bulan_surat			=	$no_surat_decode[3];
 		// echo $bulan_surat;exit();
 
-		$this->M_perbantuan->deleteArsipSuratPerbantuan($bulan_surat, $tahun, $kode_surat, $no_surat);
+		
+		// $this->M_perbantuan->deleteArsipSuratPerbantuan($bulan_surat, $tahun, $kode_surat, $no_surat);
 
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 
