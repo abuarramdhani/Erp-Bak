@@ -73,6 +73,12 @@ class C_Responsibility extends CI_Controller
 		//Variabel tambahan pada halaman index (data seluruh user)
 		$data['AllResponsibility'] = $this->M_responsibility->getResponsibility();
 
+		if ($this->input->get('debug')) {
+			echo "<pre>";
+			print_r($data['AllResponsibility']);
+			die;
+		}
+
 		//Load halaman
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
