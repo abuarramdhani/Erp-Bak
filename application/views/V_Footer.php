@@ -2,12 +2,10 @@
 			</div>
 			<footer class="main-footer" style="margin:0;">
 				<div class="pull-right hidden-xs">
-					Page rendered in <strong>{elapsed_time}</strong> seconds.
-					<strong>Copyright &copy; Quick 2015<?php if (date('Y') > 2015) {
-															echo '-' . date('Y');
-														} ?>.</strong> All rights reserved.
+					<span>Page rendered in <strong>{elapsed_time}</strong> seconds.</span>
+					<strong>Copyright &copy; Quick 2015-<?= date('Y') ?>.</strong> All rights reserved.
 				</div>
-				<b>Version</b> 1.0.0
+				<span><b>Version</b> 1.0.0</span>
 			</footer>
 			<script>
 				const baseurl = "<?= base_url() ?>";
@@ -91,19 +89,19 @@
 			<script src="<?= base_url('assets/plugins/fakeLoading/fakeLoading.js') ?>"></script>
 			<script src="<?= base_url('assets/plugins/fullcalendar-1.6.2/fullcalendar/fullcalendar.min.js') ?>"></script>
 
-
 			<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
 			<script src="<?= base_url('assets/js/custom.js') ?>"></script>
-			<?php 
+			<?php
 			$customJavascript = $this->session->javascript;
-			if (isset($customJavascript) && !empty($customJavascript)) {
+
+			if ($customJavascript) {
 				$customJavascript_ = explode(";", $customJavascript);
-				foreach ($customJavascript_ as $key => $value) {
-					?>
-					<script src="<?= base_url('assets/js/'.trim($value)) ?>"></script>
-					<?php 
-				}
-			}else{
+				foreach ($customJavascript_ as $key => $value) :
+			?>
+					<script src="<?= base_url('assets/js/' . trim($value)) ?>"></script>
+				<?php endforeach ?>
+			<?php
+			} else {
 			?>
 				<script src="<?= base_url('assets/js/customFA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customCM.js') ?>"></script>
@@ -243,8 +241,8 @@
 				<script src="<?= base_url('assets/js/customCMO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPAD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customJT.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customJTIP.js');?>"></script>
-				<script src="<?= base_url('assets/js/customMCT.js');?>"></script>
+				<script src="<?= base_url('assets/js/customJTIP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMCT.js'); ?>"></script>
 
 
 
@@ -257,8 +255,6 @@
 				<script src="<?= base_url('assets/js/customSMM.js') ?>"></script>
 			<?php } ?>
 			<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
-
-
 			<script>
 				var id_gd;
 				if (counter_row <= 0) {
