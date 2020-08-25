@@ -97,6 +97,17 @@
 												</select>
 											</div>
 									</div>
+									<div class="form-group">
+											<label for="norm" class="control-label col-lg-4">Javascript yang dibutuhkan<span style="color: red">*</span></label>
+											<div class="col-lg-4">
+												<input type="text" class="form-control" name="txtJavascript" placeholder="Input Javascript" value="<?php echo $Responsibility_item['required_javascript'] ?>">
+											</div>
+									</div>
+									<div class="form-group" style="color: red">
+										<div class="col-lg-12">
+											<i>*) khusus untuk file custom js yang ada di folder assets/js, jika lebih dari satu maka gunakan semicolon (;) sebagai pemisah. Contoh : customAA.js;customBB.js</i>
+										</div>
+									</div>
 								</div>
 								
 							</div>
