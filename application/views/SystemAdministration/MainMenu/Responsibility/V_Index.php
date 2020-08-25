@@ -77,7 +77,7 @@
 													<td><?php echo $item['required_javascript'] ?></td>
 													<td><?php echo $item['org_name'] ?></td>
 													<td align="center">
-														<a href="<?php echo base_url('SystemAdministration/Responsibility/UpdateResponsibility/') . "/" . $encrypted_string ?>"><img src="<?php echo base_url('assets/img/edit.png'); ?>" title="Update <?php echo $AllResponsibility_item['user_group_menu_name'] ?>"></a>
+														<a href="<?php echo base_url('SystemAdministration/Responsibility/UpdateResponsibility/') . "/" . $encrypted_string ?>"><img src="<?php echo base_url('assets/img/edit.png'); ?>" title="Update <?php echo $item['user_group_menu_name'] ?>"></a>
 													</td>
 												</tr>
 											<?php endforeach ?>
