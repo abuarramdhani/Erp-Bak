@@ -65,7 +65,7 @@
 											<?php $num = 0;
 											foreach ($AllResponsibility as $item) :
 												$num++;
-												$encrypted_string = $this->encrypt->encode($AllResponsibility_item['user_group_menu_id']);
+												$encrypted_string = $this->encrypt->encode($item['user_group_menu_id']);
 												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
 												<tr>
