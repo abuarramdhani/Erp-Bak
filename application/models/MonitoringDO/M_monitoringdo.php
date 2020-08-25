@@ -724,6 +724,7 @@ class M_monitoringdo extends CI_Model
                      --
                      AND mtrl.transaction_type_id IN (327, 64, 52, 33)         -- DO,SPB,SPB KIT
                      AND NVL (mtrl.quantity_delivered, 0) <> 0
+                     AND kdt.FLAG = 'T'
                      --
                      AND mtrh.request_number = '$id'";
 
