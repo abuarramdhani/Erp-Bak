@@ -372,8 +372,11 @@ $(document).ready(function(){
 		let c = $('.mco_daftarPek').eq(0).clone();
 		$('.mco_daftarPek_Append').append(c);
 		$('.mco_daftarPek:last').find('input, textarea').val('');
-		$('.mco_daftarPek:last').find('.td_lampiran label').not(':eq(0)').remove();
+		$('.mco_daftarPek:last').find('.td_lampiran label').remove();
 		$('.mco_daftarPek:last').find('.td_lampiran input').not(':eq(0)').remove();
+		$('.mco_daftarPek:last').find('.td_lampiran input').val('');
+		$('.mco_daftarPek:last').find('button.add_lamp').attr('nomor',1);
+		$('.mco_daftarPek:last').find('button.add_lamp').text('Choose File 1');
 		
 		$('.mco_daftarPek:last').find('.tbl_pekerjaan').attr('name','tbl_pekerjaan[' + nomor + ']')
 		$('.mco_daftarPek:last').find('.tbl_pekerjaan').attr('nomor',nomor)
