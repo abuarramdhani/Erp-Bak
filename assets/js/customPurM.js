@@ -22,6 +22,49 @@ $(document).ready(function() {
         }
     }
 
+    $('.slcStatusNC').select2({
+        placeholder: 'Filter by Status',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
+    $('.slcVendorNC').select2({
+        placeholder: 'Filter by Due Vendor',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
+    $('.maxPeriodeNC').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+
+    });
+    
+    $('.minPeriodeNC').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+
+    $('.btnFilterNC').click(function() {
+        $('#ModFilterReportNC').modal('show');
+        $('.slcStatusNC').select2({
+            placeholder: 'Filter by Status',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+    
+        $('.slcVendorNC').select2({
+            placeholder: 'Filter by Due Vendor',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+        
+    })
+    
+
+
     $('#tblMonitoringNonC').DataTable({
         dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
                 <'row' <'col-sm-12'tr> >
@@ -434,8 +477,8 @@ $(document).ready(function() {
                                 list += '<tr class="trSelectedLineNonC" data-row="' + rowId + '">' +
                                     '<td>'+ po +'<input type="hidden" class="form-control" name="hdnPO[]" value="' + po + '"></td>' +
                                     '<td>'+ line +'<input type="hidden" class="form-control" name="hdnLine[]" value="' + line + '"></td>' +
-                                    '<td>'+ status +'<input type="hidden" class="form-control" name="hdnStatusLine[]" value="' + status + '"></td>' +
-                                    '<td>'+noind+', '+buyer+'<input type="hidden" class="form-control" name="hdnBuyer[]" value="'+noind+', '+buyer+'"></td>'+
+                                    '<td>'+buyer+','+noind+'<input type="hidden" class="form-control" name="hdnStatusLine[]" value="' + status + '"></td>' +
+                                    '<td>'+buyer+','+noind+'<input type="hidden" class="form-control" name="hdnBuyer[]" value="'+buyer+','+noind+'"></td>'+
                                     '<td>'+ lppb +'<input type="hidden" class="form-control" name="hdnLppb[]" value="' + lppb + '"></td>'+
                                     '<td>' + item + '<input type="hidden" class="form-control" name="hdnItem[]" value="' + item + '"></td>' +
                                     '<td>' + desc + '<input type="hidden" class="form-control" name="hdnDesc[]" value="' + desc + '"></td>' +
@@ -805,4 +848,43 @@ function exportPDF(m) {
     } else {
         alert('Please allow popups for this website.');
     }
+}
+
+function filterMonitoringReportNC(event) {
+    event.preventDefault();
+    
+    var tableUsed = $('#tblMonitoringNonC').DataTable();
+    //filter by status
+    var statusCol = tableUsed.columns(18);
+    var status = $('.slcStatusNC').val();
+    // console.log(statusCol)
+
+    statusCol.search(status);
+    //end
+
+    //tanggal
+    $.fn.dataTable.ext.search.push(
+        function(settings, data, dataIndex) {
+            var min = $('.minPeriodeNC').datepicker("getDate");
+            var max = $('.maxPeriodeNC').datepicker("getDate");
+            var startDate = new Date(data[3]);
+
+            if (min == null && max == null) {
+                return true;
+            }
+            if (min == null && startDate <= max) {
+                return true;
+            }
+            if (max == null && startDate >= min) {
+                return true;
+            }
+            if (startDate <= max && startDate >= min) {
+                return true;
+            }
+            return false;
+        }
+
+    );
+
+    tableUsed.draw();
 }

@@ -1040,12 +1040,29 @@ class M_nonconformity extends CI_Model
         ,head.packing_list as no_sj
         ,head.assign as tasklist
         ,head.supplier as vendor
+        ,head.forward_buyer
         
         from
         pm.pm_po_oracle_non_conformity_headers head
         ORDER BY head.creation_date ASC");
 
         return $query->result_array();
+    }
+
+    public function getVendor()
+    {
+        $query = $this->db->query("SELECT distinct supplier as vendor
+        from pm.pm_po_oracle_non_conformity_headers 
+        where supplier is not null and supplier <> '' 
+        order by supplier ASC");
+
+        return $query->result_array();
+    }
+
+    public function spititout($awal,$ganti)
+    {
+        $this->db->where('buyer',$awal);
+        $this->db->update('pm.pm_po_oracle_non_conformity_line_items', array('buyer'=> $ganti));
     }
 
 }
