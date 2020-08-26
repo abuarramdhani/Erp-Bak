@@ -45,6 +45,7 @@
                             <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
                             <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
                             <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
+                            <th class="text-center" style="white-space: nowrap">Kembali</th>
                             <th class="text-center" style="white-space: nowrap">Pekerjaan Diserahkan</th>
                             <th class="text-center" style="white-space: nowrap">Keterangan Pekerja</th>
                             <th class="text-center" style="white-space: nowrap">Status</th>
@@ -103,6 +104,11 @@
                                                                                     } else {
                                                                                       echo date('H:i:s', strtotime($row['wkt_keluar']));
                                                                                     } ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['back_timestamp'] == '' || $row['back_timestamp'] == null) {
+                                                                                      echo '-';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['back_timestamp']));
+                                                                                    } ?></td>
                               <td style="white-space: nowrap"><?php if ($row['diserahkan'] == '' || $row['diserahkan'] == null) {
                                                                 echo "-";
                                                               } else {
@@ -138,6 +144,7 @@
                             <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
                             <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
                             <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
+                            <th class="text-center" style="white-space: nowrap">Kembali</th>
                             <th class="text-center" style="white-space: nowrap">Pekerjaan Diserahkan</th>
                             <th class="text-center" style="white-space: nowrap">Keterangan Pekerja</th>
                             <th class="text-center" style="white-space: nowrap">Status</th>
@@ -196,6 +203,11 @@
                                                                                     } else {
                                                                                       echo date('H:i:s', strtotime($row['wkt_keluar']));
                                                                                     } ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['back_timestamp'] == '' || $row['back_timestamp'] == null) {
+                                                                                      echo '-';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['back_timestamp']));
+                                                                                    } ?></td>
                               <td style="white-space: nowrap"><?php if ($row['diserahkan'] == '' || $row['diserahkan'] == null) {
                                                                 echo "-";
                                                               } else {
@@ -231,6 +243,7 @@
                             <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
                             <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
                             <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
+                            <th class="text-center" style="white-space: nowrap">Kembali</th>
                             <th class="text-center" style="white-space: nowrap">Pekerjaan Diserahkan</th>
                             <th class="text-center" style="white-space: nowrap">Keterangan Pekerja</th>
                             <th class="text-center" style="white-space: nowrap">Status</th>
@@ -288,6 +301,11 @@
                                                                                       echo '-';
                                                                                     } else {
                                                                                       echo date('H:i:s', strtotime($row['wkt_keluar']));
+                                                                                    } ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['back_timestamp'] == '' || $row['back_timestamp'] == null) {
+                                                                                      echo '-';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['back_timestamp']));
                                                                                     } ?></td>
                               <td style="white-space: nowrap"><?php if ($row['diserahkan'] == '' || $row['diserahkan'] == null) {
                                                                 echo "-";

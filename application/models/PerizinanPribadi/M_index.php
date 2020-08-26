@@ -209,10 +209,20 @@ class M_index extends CI_Model
         return $this->personalia->query("SELECT DISTINCT noind, trim(nama) as nama FROM hrd_khs.tpribadi")->result_array();
     }
 
-    public function IzinApprove($periode, $and)
+    public function getNamaByNoind($noind)
+    {
+        return $this->personalia->query("SELECT trim(nama) as nama FROM hrd_khs.tpribadi where noind = '$noind'")->row()->nama;
+    }
+
+    public function IzinApprove($periode, $and, $jenis)
     {
         $user = $this->session->userdata('user');
-        $sql = "select
+        if ($jenis) {
+            $where = $jenis;
+        } else {
+            $where = "(ip.noind like '%$user%' or ip.atasan = '$user' or ip.paramedik = '$user')";
+        }
+        $sql = "SELECT
                     ip.id,
                     created_date,
                     (select trim(nama) from hrd_khs.tpribadi where noind = ip.atasan) nama_atasan,
@@ -229,7 +239,7 @@ class M_index extends CI_Model
                     case
                         when ip.jenis_ijin in (1,3) then
                         case
-                            when ip.verifikasi_satpam = '1' then 'Izin Keluar'
+                            when ip.verifikasi_satpam = '1' then 'Verified by Satpam'
                             when ip.verifikasi_satpam is null
                             and ip.appr_atasan = '1' then 'Belum Verifikasi Satpam'
                             when ip.verifikasi_satpam is null
@@ -238,7 +248,7 @@ class M_index extends CI_Model
                         end
                         when ip.jenis_ijin = 2 then
                         case
-                            when ip.verifikasi_satpam = '1' then 'Izin Pulang'
+                            when ip.verifikasi_satpam = '1' then 'Verified by Satpam'
                             when ip.verifikasi_satpam is null
                             and ip.appr_paramedik = '1' then 'Belum Verifikasi Satpam'
                             when ip.verifikasi_satpam is null
@@ -252,8 +262,10 @@ class M_index extends CI_Model
                     end status
                 from
                     \"Surat\".tizin_pribadi ip
+                    inner join \"Surat\".tizin_pribadi_detail ipd on ipd.id = ip.id
+                    inner join hrd_khs.tpribadi tp on tp.noind = ipd.noind
                 where
-                    (ip.noind like '%$user%' or ip.atasan = '$user' or ip.paramedik = '$user')
+                    $where
                     $and
                     $periode
                 order by
