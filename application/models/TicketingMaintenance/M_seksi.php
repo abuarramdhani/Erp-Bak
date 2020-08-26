@@ -197,7 +197,7 @@ class M_seksi extends CI_Model
     function checkOrder($no_order)
     {
         $sql = "SELECT MAX (no_order) nomor 
-                FROM tm.order";
+                FROM tm.order WHERE no_order like '$no_order%'";
 
         return $this->db->query($sql)->result_array();
     }
