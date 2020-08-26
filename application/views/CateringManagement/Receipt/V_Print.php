@@ -1,5 +1,5 @@
 
-<div style="border: 2px solid #b7a96c; height: 95%;background: url('<?php echo base_url()?>assets/img/rb.png');background-size: 100% 100%;
+<div style="border: 2px solid #b7a96c; height: 95%;background: url('http://erp.quick.com/assets/img/rb.png');background-size: 100% 100%;
     background-repeat: no-repeat;">
 	
 	<div style="margin-left:20px;padding-top:10px;">
