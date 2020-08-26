@@ -136,7 +136,7 @@ input[type="search"] {
 </style>
 
 <section class="content">
-<form method="POST" action="<?php echo base_url('GeneratorTSKK/saveObservation/'); ?>">
+<form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/saveObservation/'); ?>">
 	<div class="inner" >
 		<div class="row">
 			<div class="col-lg-12">
