@@ -165,7 +165,7 @@ input[type="search"] {
 <?php foreach ($lihat_hasilObservasi_elemen as $key) { 
 	$id = $key['id_tskk'];
 } ?>
-<form id='editObservasi' method="POST" action="<?php echo base_url('GeneratorTSKK/resaveEditObservation/'.$id); ?>">
+<form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/resaveEditObservation/'.$id); ?>">
 	<div class="inner" >
 		<div class="row">
 			<div class="col-lg-12">
