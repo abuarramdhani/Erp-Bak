@@ -4722,7 +4722,7 @@ $(document).ready(function(){
 					menitKatering = waktuCatering.getMinutes();
 					detikKatering = waktuCatering.getSeconds();
 					// console.log(localStorage.getItem("lastMinutes"))
-					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) <= 45 ) ) {
+					if ( parseInt(jamKatering) == 8 ) {
 						if ( parseInt(menitKatering)%5 == 0 && localStorage.getItem("lastMinutesID") != parseInt(menitKatering) ) {
 							localStorage.setItem("lastMinutesID", parseInt(menitKatering))
 							$.ajax({
