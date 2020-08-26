@@ -49,7 +49,7 @@ class C_Index extends CI_Controller
 		$aksesRahasia = $this->M_index->allowedParamedik();
 		$aksesRahasia = array_column($aksesRahasia, 'noind');
 
-		if (array_search($no_induk, $aksesRahasia)) {
+		if (in_array($no_induk, $aksesRahasia)) {
 			$data['UserMenu'] = $datamenu;
 		} else {
 			unset($datamenu[1]);
@@ -99,6 +99,7 @@ class C_Index extends CI_Controller
 			$data['UserMenu'] = $datamenu;
 		} else {
 			unset($datamenu[1]);
+			unset($datamenu[2]);
 			$data['UserMenu'] = array_values($datamenu);
 		}
 

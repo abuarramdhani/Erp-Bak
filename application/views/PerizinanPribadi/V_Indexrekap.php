@@ -1,28 +1,30 @@
 <style>
-    .dataTables_filter{
+    .dataTables_filter {
         float: right;
     }
 </style>
 <section class="content">
-    <div class="inner" >
+    <div class="inner">
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="col-lg-11">
-                            <div class="text-right"><h1><b>Rekap Perizinan</b></h1></div>
+                            <div class="text-right">
+                                <h1><b>Rekap Perizinan Pribadi</b></h1>
+                            </div>
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('PerizinanDinas/AtasanApproval/V_Index');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo base_url('IzinKeluarPribadi'); ?>">
                                     <i class="icon-wrench icon-2x"></i>
-                                    <br/>
+                                    <br />
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <br/>
+                <br />
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -33,8 +35,8 @@
                                         <div class="col-lg-12">
                                             <label for="txtTanggalCetak" class="col-lg-2 control-label text-left">Periode Rekap:</label>
                                             <div class="col-lg-5">
-                                               <input class="form-control periodeRekap"  autocomplete="off" type="text" name="periodeRekap" id="periodeRekap" placeholder="Masukkan Periode" value=""/>
-                                               <p style="color: red;">*kosongkan kolom periode , untuk menampilkan semua data</p>
+                                                <input class="form-control periodeRekap" autocomplete="off" type="text" name="periodeRekap" id="periodeRekap" placeholder="Masukkan Periode" value="" />
+                                                <p style="color: red;">*kosongkan kolom periode , untuk menampilkan semua data</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -48,7 +50,7 @@
                                             <label for="id_rekap" class="col-lg-2">ID Izin :</label>
                                             <div class="form-group col-lg-5">
                                                 <select name="id_rekap[]" class="form-control select select2 RPD_id_rekap" multiple>
-                                                    <?php foreach ($list_izin as $key): ?>
+                                                    <?php foreach ($list_izin as $key) : ?>
                                                         <option value="<?php echo $key['id'] ?>"><?php echo $key['id'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -59,24 +61,24 @@
                                             <label for="perNoind" class="col-lg-2">Nomor Induk :</label>
                                             <div class="form-group col-lg-5">
                                                 <select name="perNoind[]" class="form-control select select2 RPD_perNoind" multiple>
-                                                    <?php foreach ($list_noind as $key): ?>
-                                                        <option value="<?php echo $key['noind'] ?>"><?php echo $key['noind'].' - '.$key['nama'] ?></option>
+                                                    <?php foreach ($list_noind as $key) : ?>
+                                                        <option value="<?php echo $key['noind'] ?>"><?php echo $key['noind'] . ' - ' . $key['nama'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                                 <p style="color: red;">*kosongkan Nomor Induk, untuk menampilkan semua data</p>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
-                                            <div class="col-lg-3 text-right">
-                                                <button class="btn btn-primary" id="RPP_Cari">Cari</button>
-                                            </div>
-                                            <div class="col-lg-5 text-left">
-                                                <button class="btn btn-danger" onclick="window.location.reload()">Reset</button>
+                                            <div class="col-lg-12 text-center">
+                                                <button class="btn btn-primary" id="RPP_Cari" value="1" style="width: 80px;">Cari</button>&emsp;
+                                                <button class="btn btn-warning" onclick="window.location.reload()" style="width: 80px;">Reset</button>&emsp;
+                                                <button class="btn btn-success fa fa-file-excel-o" style="padding: 9px; width: 80px;" value="1" id="izinRekapExcel">&emsp;Excel</button>&emsp;
+                                                <button class="btn btn-danger fa fa-file-pdf-o" style="padding: 9px; width: 80px;" value="1" id="izinRekapPDF">&emsp;PDF</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                             </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-12" id="areaRekapIKP">
