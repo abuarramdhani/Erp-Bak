@@ -121,7 +121,7 @@
     </div>
 </section>
 <div class="modal fade" id="edit_aproval" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document" style="width: 90%">
         <form method="post" action="<?= base_url('civil-maintenance-order/order/add_keterangan') ?>" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
@@ -135,9 +135,10 @@
                         <thead class="bg-info">
                             <th>No</th>
                             <th>Pekerjaan</th>
-                            <th width="15%">Qty</th>
-                            <th width="15%">Satuan</th>
+                            <th width="10%">Qty</th>
+                            <th width="10%">Satuan</th>
                             <th>Keterangan</th>
+                            <th width="20%">Lampiran</th>
                             <th>Act</th>
                         </thead>
                         <tbody class="mco_daftarPek_Append">

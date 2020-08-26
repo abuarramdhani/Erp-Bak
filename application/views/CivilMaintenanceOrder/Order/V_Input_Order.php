@@ -43,7 +43,7 @@
                                                 <label>Order Dari</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <select required class="form-control cmo_slcPkj mco_itcanchange" name="dari" change="1">
+                                                <select required class="form-control cmo_slcPkj mco_itcanchange" name="dari" change="1" style="width: 100%">
 
                                                 </select>
                                             </div>
@@ -86,7 +86,7 @@
                                                 <label>Tanggal Order</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input required class="form-control mco_tglpick" name="tglorder" readonly>
+                                                <input required class="form-control" value="<?php echo date('Y-m-d') ?>" name="tglorder" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -240,3 +240,24 @@
         </div>
     </div>
 </section>
+<div class="modal fade" id="inputOrder" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title" id="exampleModalLongTitle">Lihat Lampiran</label>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <iframe src="" style="width: 100%;height: 500px;"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
