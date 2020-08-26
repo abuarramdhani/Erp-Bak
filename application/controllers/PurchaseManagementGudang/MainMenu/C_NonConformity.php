@@ -1402,7 +1402,7 @@ class C_NonConformity extends CI_Controller
 								'ganti' => 'TUNGGAL DJAJA INDAH, PT. PABRIK CAT,B0729',
 							),
 							array(
-								'awal' => 'B0729,SETYANINGSIH, RAHAYU',
+								'awal' => 'B0729, SETYANINGSIH, RAHAYU',
 								'ganti' => 'SETYANINGSIH, RAHAYU,B0729',
 							),
 							array(
@@ -1438,8 +1438,12 @@ class C_NonConformity extends CI_Controller
 								'ganti' => 'ANUGRAH SENTOSA, CV,B0726',
 							),
 							array(
-								'awal' => 'B0900, RATNASARI, FITRI',
-								'ganti' => 'RATNASARI, FITRI, B0900',
+								'awal' => 'RATNASARI, FITRI, B0900',
+								'ganti' => 'RATNASARI, FITRI,B0900',
+							),
+							array(
+								'awal' => 'INTITECH SOLUTIONS, PT, D1157',
+								'ganti' => 'INTITECH SOLUTIONS, PT,D1157',
 							),
 							
 		 				);
