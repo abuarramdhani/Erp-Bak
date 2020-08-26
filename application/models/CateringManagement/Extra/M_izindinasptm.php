@@ -60,7 +60,7 @@ class M_izindinasptm extends CI_Model
 					left join hrd_khs.tpribadi tpri 
 					on tpri.noind = tai.noinduk 
 					Where tai.created_date:: Date = current_date 
-					and tai.created_date::time < '09:00'::time 
+					and tai.created_date::time <= '09:00'::time 
 					and tpi.makan = '1' 
 					and tp.status = 1 
 				) as tbl 
@@ -106,7 +106,7 @@ class M_izindinasptm extends CI_Model
 					left join hrd_khs.tpribadi tpri 
 					on tpri.noind = tai.noinduk 
 					Where tai.created_date:: Date = current_date 
-					and tai.created_date::time < '09:00'::time 
+					and tai.created_date::time <= '09:00'::time 
 					and tpi.makan = '1' 
 					and tp.status = 1 
 				) as tbl 
