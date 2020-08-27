@@ -165,9 +165,9 @@ $(document).ready(function () {
             $('#print_card').removeClass('disabled');
         })
     });
-       
 
-       function SelectNamaAmplop() {
+
+    function SelectNamaAmplop() {
         var val = $('#NamaPekerjaCetakAmplop').val();
         if (val) {
             $('#CariPekerjaCetakAmplop').removeAttr('disabled', 'disabled');
@@ -177,11 +177,11 @@ $(document).ready(function () {
             $('#CariPekerjaCetakAmplop').addClass('disabled', 'disabled');
         }
     }
-     $(document).on('change', '#NamaPekerjaCetakAmplop', function() {
+    $(document).on('change', '#NamaPekerjaCetakAmplop', function () {
         SelectNamaAmplop();
     });
 
-        $(document).on('click', '#CariPekerjaCetakAmplop', function(e) {
+    $(document).on('click', '#CariPekerjaCetakAmplop', function (e) {
         e.preventDefault();
         var nama = $('#NamaPekerjaCetakAmplop').val();
         var noind = '';
@@ -189,7 +189,7 @@ $(document).ready(function () {
             url: baseurl + "MasterPekerja/CetakAmplop/DataAmplop",
             type: "get",
             data: { nama: nama }
-        }).done(function(data) {
+        }).done(function (data) {
             var html = '';
             var data = $.parseJSON(data);
 
@@ -197,15 +197,15 @@ $(document).ready(function () {
             $('tbody#dataAmplop').empty(html);
             for (var i = 0; i < data['worker'].length; i++) {
 
-                  noind = data['worker'][i][0]['noind'];
+                noind = data['worker'][i][0]['noind'];
 
                 html += '<tr>';
                 html += '<td>' + (i + 1) + '</td>';
                 html += '<td>' + noind + '<input type="hidden" name="noind[]" value="' + data['worker'][i][0]['noind'] + '"></td>';
                 html += '<td>' + data['worker'][i][0]['nama'] + '</td>';
 
-                    html += '<td>' + data['worker'][i][0]['seksi'] + '</td>';
-               
+                html += '<td>' + data['worker'][i][0]['seksi'] + '</td>';
+
                 html += '</tr>';
             }
             $('tbody#dataAmplop').append(html);
@@ -629,13 +629,19 @@ $('#app_edit_ikp').on('click', function () {
 })
 
 $('#RPP_Cari').on('click', function () {
+    let isi = $(this).val()
+    if (isi == '1') {
+        alamat = baseurl + 'RPP/RekapIKP/rekapbulanan'
+    } else {
+        alamat = baseurl + 'PerizinanPribadi/RekapPerizinanSeksi/rekap'
+    }
     var tanggal = $('#periodeRekap').val()
     var jenis = $("input:radio[class=RD_radioDinas]:checked").val();
     var list_id = $(".RPD_id_rekap").val();
     var list_noind = $(".RPD_perNoind").val();
     var loading = baseurl + 'assets/img/gif/loadingquick.gif';
 
-    if (jenis == '' || jenis == null) {
+    if (isi == '1' && (jenis == '' || jenis == null)) {
         swal.fire({
             title: 'Peringatan',
             text: 'Harap Memilih Jenis Rekap !',
@@ -644,14 +650,14 @@ $('#RPP_Cari').on('click', function () {
         })
     } else {
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             data: {
                 periodeRekap: tanggal,
                 jenis: jenis,
                 id: list_id,
                 noind: list_noind
             },
-            url: baseurl + 'RPP/RekapIKP/rekapbulanan',
+            url: alamat,
             beforeSend: function () {
                 swal.fire({
                     html: "<img style='width: 320px; height: auto;'src='" + loading + "'>",
@@ -666,18 +672,7 @@ $('#RPP_Cari').on('click', function () {
                 $('#areaRekapIKP').html(result)
 
                 $('.tabel_rekap').DataTable({
-                    "dom": 'Bfrtip',
-                    "buttons": [
-                        {
-                            extend: 'excelHtml5',
-                            title: 'Rekap Perizinan'
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            orientation: 'landscape',
-                            title: 'Rekap Perizinan'
-                        }
-                    ],
+                    "dom": 'lfrtip',
                     scrollX: true,
                     fixedColumns: {
                         leftColumns: 4
@@ -686,6 +681,34 @@ $('#RPP_Cari').on('click', function () {
             }
         })
     }
+})
+
+$('#izinRekapExcel').on('click', () => {
+    let isi = $('#izinRekapExcel').val(),
+        periodeRekap = $('#periodeRekap').val(),
+        valbutton = 'Excel'
+    if (isi == '1') {
+        alamat = baseurl + 'RPP/RekapIKP/rekapbulanan'
+    } else {
+        alamat = baseurl + 'PerizinanPribadi/RekapPerizinanSeksi/rekap'
+    }
+
+    window.open(alamat + "?valButton=" + valbutton + "&periodeRekap" + periodeRekap, "_blank");
+
+})
+
+$('#izinRekapPDF').on('click', () => {
+    let isi = $('#izinRekapPDF').val(),
+        periodeRekap = $('#periodeRekap').val(),
+        valbutton = 'PDF'
+    if (isi == '1') {
+        alamat = baseurl + 'RPP/RekapIKP/rekapbulanan'
+    } else {
+        alamat = baseurl + 'PerizinanPribadi/RekapPerizinanSeksi/rekap'
+    }
+
+    window.open(alamat + "?valButton=" + valbutton + "&periodeRekap" + periodeRekap, "_blank");
+
 })
 
 //Selesai
@@ -2567,7 +2590,7 @@ $('#form_cetak_sangu').submit(function (e) {
 
 $('.deleteMemoCutoff').click(function () {
     let id = $(this).data('value')
-    console.log(id)
+
     Swal.fire({
         title: 'Apakah Anda Yakin?',
         text: "Mengapus data ini secara permanent !",
@@ -2676,7 +2699,7 @@ $('#monthpickerq').on('change', function () {
                     let namesie = $(this).text().trim()
                     seksiname.push(namesie)
                 })
-                console.log(seksiname);
+
                 let noindnstaf = []
                 let getnstaf = $('.noind-nonstaff').each(function () {
                     let nstaf = $(this).text().trim()
@@ -3127,7 +3150,6 @@ $(document).ready(function () {
                         },
                         url: baseurl + 'PerizinanDinas/ApproveAll/updatePekerja',
                         success: function (data) {
-                            console.log(data);
                             if (data == 'sama') {
                                 swal.fire({
                                     title: 'Pemberitahuan',
@@ -3945,7 +3967,7 @@ $(document).ready(function () {
 
 // Surat Isolasi Mandiri End
 //rekap kecelakaan kerja
-$(document).ready(function(){
+$(document).ready(function () {
     var tabel = $('#mpk_tblRKK').DataTable();
     $("#mpk_rkpr").daterangepicker({
         "singleDatePicker": false,
@@ -3975,61 +3997,59 @@ $(document).ready(function(){
         'placeholder': 'Pilih Salah Satu'
     });
 
-    $('.mpk_slcpkj').change(function(){
+    $('.mpk_slcpkj').change(function () {
         var val = $(this).val();
         var ini = $(this);
         $.ajax({
-            type:'get',
-            data:{
-                term:val
+            type: 'get',
+            data: {
+                term: val
             },
-            url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/get_detailpkjrk",
-            success:function(data)
-            {
+            url: baseurl + "MasterPekerja/rekap/kecelakaan_kerja/get_detailpkjrk",
+            success: function (data) {
                 var obj = JSON.parse(data);
-               ini.closest('div').find('.diz').eq(0).val(obj[0]['dept']);
-               ini.closest('div').find('.diz').eq(1).val(obj[0]['seksi']);
+                ini.closest('div').find('.diz').eq(0).val(obj[0]['dept']);
+                ini.closest('div').find('.diz').eq(1).val(obj[0]['seksi']);
             }
         });
     });
 
-    $('#mpk_btnshwtbl').click(function(){
+    $('#mpk_btnshwtbl').click(function () {
         var pr = $('#mpk_rkpr').val();
         $.ajax({
-            type:'get',
-            data:{
-                periode:pr
+            type: 'get',
+            data: {
+                periode: pr
             },
-            url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/rk_getKecelakaan",
-            success:function(result)
-            {
+            url: baseurl + "MasterPekerja/rekap/kecelakaan_kerja/rk_getKecelakaan",
+            success: function (result) {
                 $('#mpk_rkdivtbl').html(result);
                 var tabel = $('#mpk_tblRKK').DataTable({
                     dom: 'Bfrtip',
                     buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        messageTop:'',
-                        title:'',
-                        filename:'Rekap Kecelakaan kerja',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    // {
-                    //     extend: 'pdfHtml5',
-                    //     messageTop:'',
-                    //     title:'',
-                    //     filename:'Rekap Kecelakaan kerja',
-                    //     orientation: 'landscape',
-                    //     exportOptions: {
-                    //         columns: ':visible'
-                    //     }
-                    // },
-                    'colvis'
+                        {
+                            extend: 'excelHtml5',
+                            messageTop: '',
+                            title: '',
+                            filename: 'Rekap Kecelakaan kerja',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        // {
+                        //     extend: 'pdfHtml5',
+                        //     messageTop:'',
+                        //     title:'',
+                        //     filename:'Rekap Kecelakaan kerja',
+                        //     orientation: 'landscape',
+                        //     exportOptions: {
+                        //         columns: ':visible'
+                        //     }
+                        // },
+                        'colvis'
                     ],
                     "scrollX": false,
-                    fixedColumns:   {
+                    fixedColumns: {
                         leftColumns: 0,
                     }
                 });
@@ -4037,37 +4057,36 @@ $(document).ready(function(){
         });
     });
 
-    $('#mpk_btnsbfrm').click(function(){
+    $('#mpk_btnsbfrm').click(function () {
         var verif = true;
-        $('#mpk_mdladdrk').find('input').each(function(){
+        $('#mpk_mdladdrk').find('input').each(function () {
             if ($(this).val().length == 0) { verif = false }
         });
-        $('#mpk_mdladdrk').find('select').each(function(){
+        $('#mpk_mdladdrk').find('select').each(function () {
             if ($(this).val().length == 0) { verif = false }
         });
         if (verif == false) {
             alert("Harap Isi Semua Data!");
-        }else{
+        } else {
             $.ajax({
-                type:'post',
-                data:$('#mpk_frmrkc').serialize(),
-                url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/rk_addata",
-                success:function(result)
-                {
+                type: 'post',
+                data: $('#mpk_frmrkc').serialize(),
+                url: baseurl + "MasterPekerja/rekap/kecelakaan_kerja/rk_addata",
+                success: function (result) {
                     var obj = JSON.parse(result);
                     if (obj.status == 'sukses') {
                         $('.mpk_slcpkj').each(function () {
                             $(this).select2('destroy').val("").select2({
-                             minimumInputLength: 2,
-                             'placeholder': 'Pilih Pekerja'
-                         });
+                                minimumInputLength: 2,
+                                'placeholder': 'Pilih Pekerja'
+                            });
                         });
-                        $('#mpk_mdladdrk').find('input').each(function(){
+                        $('#mpk_mdladdrk').find('input').each(function () {
                             $(this).val('').trigger('change');
                         });
                         $('#mpk_mdladdrk').modal('hide');
                         mpk_showAlert('success', 'Berhasil Menambah Data')
-                    }else{
+                    } else {
                         alert("Input Gagal!");
                     }
                     $('#mpk_btnshwtbl').click();
@@ -4076,13 +4095,13 @@ $(document).ready(function(){
         }
     });
 
-    $('#mpk_rkdivtbl').on('click', '.mpk_btndelrk', function(){
+    $('#mpk_rkdivtbl').on('click', '.mpk_btndelrk', function () {
         var noind = $(this).closest('tr').find('td').eq(2).text();
         var nama = $(this).closest('tr').find('td').eq(3).text();
         var id = $(this).val();
         swal.fire({
             title: 'Anda yakin?',
-            text: "Hapus Data "+noind+' - '+nama,
+            text: "Hapus Data " + noind + ' - ' + nama,
             type: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -4095,22 +4114,21 @@ $(document).ready(function(){
             }
         });
     });
-    $('#mpk_rkdivtbl').on('click', '.mpk_btnuprk', function(){
+    $('#mpk_rkdivtbl').on('click', '.mpk_btnuprk', function () {
         var id = $(this).val();
         $.ajax({
-            type:'get',
-            data:{
+            type: 'get',
+            data: {
                 id: id
             },
-            url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/getrkk_data",
-            success:function(result)
-            {
+            url: baseurl + "MasterPekerja/rekap/kecelakaan_kerja/getrkk_data",
+            success: function (result) {
                 var obj = JSON.parse(result);
                 var ob = obj[0];
-                console.log(ob['noind']+' - '+ob['nama'].trim());
-                $('#mpk_mdluprk .mpk_slcpkj').val(ob['noind']+' - '+ob['nama'].trim()).trigger('change');
-                 $('#mpk_mdluprk .mpk_slcpkj').attr('disabled', true);
-                $('#mpk_mdluprk .mpk_rknopr').val(ob['tanggal'].substr(0,10));
+                console.log(ob['noind'] + ' - ' + ob['nama'].trim());
+                $('#mpk_mdluprk .mpk_slcpkj').val(ob['noind'] + ' - ' + ob['nama'].trim()).trigger('change');
+                $('#mpk_mdluprk .mpk_slcpkj').attr('disabled', true);
+                $('#mpk_mdluprk .mpk_rknopr').val(ob['tanggal'].substr(0, 10));
                 $('#mpk_mdluprk .mpk_slcpkjcas').val(ob['keterangan']).trigger('change');
                 $('#mpk_mdluprk .mpkinf').eq(0).val(ob['kondisi']);
                 $('#mpk_mdluprk .mpkinf').eq(1).val(ob['penyebab']);
@@ -4121,28 +4139,27 @@ $(document).ready(function(){
         });
     });
 
-    $('#mpk_btnupfrm').click(function(){
+    $('#mpk_btnupfrm').click(function () {
         var verif = true;
-        $('#mpk_mdluprk').find('input').each(function(){
+        $('#mpk_mdluprk').find('input').each(function () {
             if ($(this).val().length == 0) { verif = false }
         });
-        $('#mpk_mdluprk').find('select').each(function(){
+        $('#mpk_mdluprk').find('select').each(function () {
             if ($(this).val().length == 0) { verif = false }
         });
         if (verif == false) {
             alert("Harap Isi Semua Data!");
-        }else{
+        } else {
             $.ajax({
-                type:'post',
+                type: 'post',
                 data: $('#mpk_frmrkcup').serialize(),
-                url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/up_rkkdata",
-                success:function(result)
-                {
+                url: baseurl + "MasterPekerja/rekap/kecelakaan_kerja/up_rkkdata",
+                success: function (result) {
                     var obj = JSON.parse(result);
                     if (obj.status == 'sukses') {
                         $('#mpk_mdluprk').modal('hide');
                         mpk_showAlert('success', 'Berhasil Mengupdate Data');
-                    }else{
+                    } else {
                         alert("Gagal!");
                     }
                     $('#mpk_btnshwtbl').click();
@@ -4152,20 +4169,18 @@ $(document).ready(function(){
     });
 });
 
-function mpk_delrkkc(id)
-{
+function mpk_delrkkc(id) {
     $.ajax({
-        type:'post',
-        data:{
+        type: 'post',
+        data: {
             id: id
         },
-        url:baseurl+"MasterPekerja/rekap/kecelakaan_kerja/del_rkkdata",
-        success:function(result)
-        {
+        url: baseurl + "MasterPekerja/rekap/kecelakaan_kerja/del_rkkdata",
+        success: function (result) {
             var obj = JSON.parse(result);
             if (obj.status == 'sukses') {
                 mpk_showAlert('success', 'Berhasil Menghapus Data')
-            }else{
+            } else {
                 alert("Gagal!");
             }
             $('#mpk_btnshwtbl').click();
@@ -4173,12 +4188,11 @@ function mpk_delrkkc(id)
     });
 }
 
-function loadingOnAjax(elemen)
-{
-    $(document).ajaxStart(function(){
+function loadingOnAjax(elemen) {
+    $(document).ajaxStart(function () {
         $(elemen).show();
     });
-    $(document).ajaxComplete(function(){
+    $(document).ajaxComplete(function () {
         $(elemen).hide();
     });
 }
