@@ -143,13 +143,13 @@
                                                 </style>
                                                 <table class="table table-bordered" id="mco_tblPekerjaan">
                                                     <thead class="bg-info">
-                                                        <th>No</th>
-                                                        <th>Pekerjaan</th>
-                                                        <th width="10%">Qty</th>
-                                                        <th width="10%">Satuan</th>
-                                                        <th>Keterangan</th>
-                                                        <th width="20%">Lampiran</th>
-                                                        <th>Act</th>
+                                                        <th style="width: 5%">No</th>
+                                                        <th style="width: 20%">Pekerjaan</th>
+                                                        <th style="width: 10%">Qty</th>
+                                                        <th style="width: 10%">Satuan</th>
+                                                        <th style="width: 30%">Keterangan</th>
+                                                        <th style="width: 20%">Lampiran</th>
+                                                        <th style="width: 5%">Act</th>
                                                     </thead>
                                                     <tbody class="mco_daftarPek_Append">
                                                         <tr class="mco_daftarPek">
