@@ -1059,6 +1059,16 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
+    public function getBuyerMonitor()
+    {
+        $query = $this->db->query("SELECT distinct buyer
+        from pm.pm_po_oracle_non_conformity_line_items 
+        where buyer is not null and buyer <> '' 
+        order by buyer ASC");
+
+        return $query->result_array();
+    }
+
     public function spititout($awal,$ganti)
     {
         $this->db->where('buyer',$awal);
