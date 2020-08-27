@@ -295,22 +295,27 @@ class C_Monhandseksi extends CI_Controller
 
                 $dataProses[$v]['urutan'] = $prosess[$v]['urutan'];
                 $dataProses[$v]['id_proses_seksi'] = $prosess[$v]['id_proses_seksi'];
-                $dataProses[$v]['seksi'] = $seksi[0]['seksi'];
+                if ($seksi != null) {
+                    $dataProses[$v]['seksi'] = $seksi[0]['seksi'];
 
-                if ($seksi[0]['identitas_seksi'] == 'UPPL') {
-                    $dataProses[$v]['warna'] = '#ff00ff';
-                } else if ($seksi[0]['identitas_seksi'] == 'Sheet Metal') {
-                    $dataProses[$v]['warna'] = '#94bd5e';
-                } else if ($seksi[0]['identitas_seksi'] == 'Machining') {
-                    $dataProses[$v]['warna'] = '#ffff00';
-                } else if ($seksi[0]['identitas_seksi'] == 'Perakitan') {
-                    $dataProses[$v]['warna'] = '#99ccff';
-                } else if ($seksi[0]['identitas_seksi'] == 'PnP') {
-                    $dataProses[$v]['warna'] = '#ff8080';
-                } else if ($seksi[0]['identitas_seksi'] == 'Gudang') {
-                    $dataProses[$v]['warna'] = '#cccccc';
-                } else if ($seksi[0]['identitas_seksi'] == 'Subkon') {
-                    $dataProses[$v]['warna'] = '#ffcc99';
+                    if ($seksi[0]['identitas_seksi'] == 'UPPL') {
+                        $dataProses[$v]['warna'] = '#ff00ff';
+                    } else if ($seksi[0]['identitas_seksi'] == 'Sheet Metal') {
+                        $dataProses[$v]['warna'] = '#94bd5e';
+                    } else if ($seksi[0]['identitas_seksi'] == 'Machining') {
+                        $dataProses[$v]['warna'] = '#ffff00';
+                    } else if ($seksi[0]['identitas_seksi'] == 'Perakitan') {
+                        $dataProses[$v]['warna'] = '#99ccff';
+                    } else if ($seksi[0]['identitas_seksi'] == 'PnP') {
+                        $dataProses[$v]['warna'] = '#ff8080';
+                    } else if ($seksi[0]['identitas_seksi'] == 'Gudang') {
+                        $dataProses[$v]['warna'] = '#cccccc';
+                    } else if ($seksi[0]['identitas_seksi'] == 'Subkon') {
+                        $dataProses[$v]['warna'] = '#ffcc99';
+                    }
+                } else {
+                    $dataProses[$v]['seksi'] = 'Invalid';
+                    $dataProses[$v]['warna'] = 'white';
                 }
             }
 
@@ -440,21 +445,32 @@ class C_Monhandseksi extends CI_Controller
                 }
 
                 $Id_seksi = $this->M_dbhandling->selectdatatoedit2($dataProses[$d]['id_proses_seksi']);
-
-                if ($Id_seksi[0]['identitas_seksi'] == 'Machining') {
-                    $warna = '#ffff00';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'Gudang') {
-                    $warna = '#cccccc';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'PnP') {
-                    $warna = '#ff8080';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'Sheet Metal') {
-                    $warna = '#94bd5e';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'UPPL') {
-                    $warna = '#ff00ff';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'Perakitan') {
-                    $warna = '#99ccff';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'Subkon') {
-                    $warna = '#ffcc99';
+                if ($Id_seksi != null) {
+                    if ($Id_seksi[0]['identitas_seksi'] == 'Machining') {
+                        $warna = '#ffff00';
+                        $Id_seksi[0]['seksi'] = $Id_seksi[0]['seksi'];
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'Gudang') {
+                        $warna = '#cccccc';
+                        $Id_seksi[0]['seksi'] = $Id_seksi[0]['seksi'];
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'PnP') {
+                        $warna = '#ff8080';
+                        $Id_seksi[0]['seksi'] = $Id_seksi[0]['seksi'];
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'Sheet Metal') {
+                        $warna = '#94bd5e';
+                        $Id_seksi[0]['seksi'] = $Id_seksi[0]['seksi'];
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'UPPL') {
+                        $warna = '#ff00ff';
+                        $Id_seksi[0]['seksi'] = $Id_seksi[0]['seksi'];
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'Perakitan') {
+                        $warna = '#99ccff';
+                        $Id_seksi[0]['seksi'] = $Id_seksi[0]['seksi'];
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'Subkon') {
+                        $warna = '#ffcc99';
+                        $Id_seksi[0]['seksi'] = $Id_seksi[0]['seksi'];
+                    }
+                } else {
+                    $warna = '#white';
+                    $Id_seksi[0]['seksi'] = 'Invalid';
                 }
 
                 if ($d == 0) {
@@ -591,22 +607,28 @@ class C_Monhandseksi extends CI_Controller
             }
             for ($i = 0; $i < sizeof($HandProRev); $i++) {
                 $proses = $this->M_dbhandling->selectdatatoedit2($HandProRev[$i]['id_proses_seksi']);
-                $HandProRev[$i]['seksi'] = $proses[0]['seksi'];
-                $HandProRev[$i]['identitas_seksi'] = $proses[0]['identitas_seksi'];
-                if ($HandProRev[$i]['identitas_seksi'] == "Machining") {
-                    $color = "#ffff00";
-                } else if ($HandProRev[$i]['identitas_seksi'] == "Gudang") {
-                    $color = "#cccccc";
-                } else if ($HandProRev[$i]['identitas_seksi'] == "PnP") {
-                    $color = "#ff8080";
-                } else if ($HandProRev[$i]['identitas_seksi'] == "Sheet Metal") {;
-                    $color = "#94bd5e";
-                } else if ($HandProRev[$i]['identitas_seksi'] == "UPPL") {
-                    $color = "#ff00ff";
-                } else if ($HandProRev[$i]['identitas_seksi'] == "Perakitan") {
-                    $color = "#99ccff";
-                } else if ($HandProRev[$i]['identitas_seksi'] == "Subkon") {
-                    $color = "#ffcc99";
+                if ($proses != null) {
+                    $HandProRev[$i]['seksi'] = $proses[0]['seksi'];
+                    $HandProRev[$i]['identitas_seksi'] = $proses[0]['identitas_seksi'];
+                    if ($HandProRev[$i]['identitas_seksi'] == "Machining") {
+                        $color = "#ffff00";
+                    } else if ($HandProRev[$i]['identitas_seksi'] == "Gudang") {
+                        $color = "#cccccc";
+                    } else if ($HandProRev[$i]['identitas_seksi'] == "PnP") {
+                        $color = "#ff8080";
+                    } else if ($HandProRev[$i]['identitas_seksi'] == "Sheet Metal") {;
+                        $color = "#94bd5e";
+                    } else if ($HandProRev[$i]['identitas_seksi'] == "UPPL") {
+                        $color = "#ff00ff";
+                    } else if ($HandProRev[$i]['identitas_seksi'] == "Perakitan") {
+                        $color = "#99ccff";
+                    } else if ($HandProRev[$i]['identitas_seksi'] == "Subkon") {
+                        $color = "#ffcc99";
+                    }
+                } else {
+                    $HandProRev[$i]['seksi'] = 'Invalid';
+                    $HandProRev[$i]['identitas_seksi'] = 'Invalid';
+                    $color = "white";
                 }
 
                 $op = '';
@@ -1065,27 +1087,32 @@ class C_Monhandseksi extends CI_Controller
 
                 $Id_seksi = $this->M_dbhandling->selectdatatoedit2($prosesline[$d]['id_proses_seksi']);
 
-                if ($Id_seksi[0]['identitas_seksi'] == 'Machining') {
-                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
-                    $array_proses[$d]['warna'] = '#ffff00';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'Gudang') {
-                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
-                    $array_proses[$d]['warna'] = '#cccccc';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'PnP') {
-                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
-                    $array_proses[$d]['warna'] = '#ff8080';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'Sheet Metal') {
-                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
-                    $array_proses[$d]['warna'] = '#94bd5e';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'UPPL') {
-                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
-                    $array_proses[$d]['warna'] = '#ff00ff';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'Perakitan') {
-                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
-                    $array_proses[$d]['warna'] = '#99ccff';
-                } else if ($Id_seksi[0]['identitas_seksi'] == 'Subkon') {
-                    $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
-                    $array_proses[$d]['warna'] = '#99ccff';
+                if ($Id_seksi != null) {
+                    if ($Id_seksi[0]['identitas_seksi'] == 'Machining') {
+                        $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                        $array_proses[$d]['warna'] = '#ffff00';
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'Gudang') {
+                        $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                        $array_proses[$d]['warna'] = '#cccccc';
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'PnP') {
+                        $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                        $array_proses[$d]['warna'] = '#ff8080';
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'Sheet Metal') {
+                        $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                        $array_proses[$d]['warna'] = '#94bd5e';
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'UPPL') {
+                        $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                        $array_proses[$d]['warna'] = '#ff00ff';
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'Perakitan') {
+                        $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                        $array_proses[$d]['warna'] = '#99ccff';
+                    } else if ($Id_seksi[0]['identitas_seksi'] == 'Subkon') {
+                        $array_proses[$d]['seksi'] = $Id_seksi[0]['seksi'];
+                        $array_proses[$d]['warna'] = '#99ccff';
+                    }
+                } else {
+                    $array_proses[$d]['seksi'] = 'Invalid';
+                    $array_proses[$d]['warna'] = 'white';
                 }
             }
             $data['array_proses'] = $array_proses;
