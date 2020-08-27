@@ -1018,7 +1018,6 @@ function addprosess() {
 
   $(document).on("click", ".btn-hps" + r, function () {
     $(this).parents(".panel-body").remove();
-
     $(".addPros")
       .find('[name="urutPros[]"]')
       .each(function (i, v) {
@@ -1026,6 +1025,29 @@ function addprosess() {
       });
     $("#arrowprosSes" + r).remove();
     $("#Kotakk" + r).remove();
+
+    var q = $('[name="urutPros[]"]').length + 1;
+
+    if (q >= 1 && q <= 3) {
+      var style_kotak = "60mm";
+      var style_arrow = "20mm";
+      var font = "12pt";
+    } else if (3 < q && q <= 6) {
+      var style_kotak = "40mm";
+      var style_arrow = "15mm";
+      var font = "10pt";
+    } else if (6 < q && q <= 9) {
+      var style_kotak = "20mm";
+      var style_arrow = "10mm";
+      var font = "9pt";
+    } else {
+      var style_kotak = "17mm";
+      var style_arrow = "7mm";
+      var font = "8pt";
+    }
+    $(".kotakan").css("width", style_kotak);
+    $(".arahpenunjuk").css("width", style_arrow);
+    $(".ketPrev").css("font-size", font);
   });
 }
 function addfoto() {
@@ -1048,6 +1070,41 @@ function addfoto() {
       i +
       '" style="width:50%"></center></div></div></div>'
   );
+}
+function deleteproses(d) {
+  $(".haha" + d).remove();
+  $(".addPros")
+    .find('[name="urutPros[]"]')
+    .each(function (i, v) {
+      $(this).val(i + 1);
+    });
+  if (d == 0) {
+    $("#Kotakk" + d).remove();
+  } else {
+    $("#arrowprosSes" + d).remove();
+    $("#Kotakk" + d).remove();
+  }
+  var q = $('[name="urutPros[]"]').length + 1;
+  if (q >= 1 && q <= 3) {
+    var style_kotak = "60mm";
+    var style_arrow = "20mm";
+    var font = "12pt";
+  } else if (3 < q && q <= 6) {
+    var style_kotak = "40mm";
+    var style_arrow = "15mm";
+    var font = "10pt";
+  } else if (6 < q && q <= 9) {
+    var style_kotak = "20mm";
+    var style_arrow = "10mm";
+    var font = "9pt";
+  } else {
+    var style_kotak = "17mm";
+    var style_arrow = "7mm";
+    var font = "8pt";
+  }
+  $(".kotakan").css("width", style_kotak);
+  $(".arahpenunjuk").css("width", style_arrow);
+  $(".ketPrev").css("font-size", font);
 }
 function deletpoto(g) {
   $("#has" + g).remove();

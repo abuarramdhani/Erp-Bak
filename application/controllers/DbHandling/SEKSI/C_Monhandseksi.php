@@ -622,7 +622,7 @@ class C_Monhandseksi extends CI_Controller
                     }
                 }
                 $alur_proses .= '
-                    <div class="panel-body">
+                    <div class="panel-body haha' . $i . '">
                         <input type="hidden" name="indexproses[]" value="' . $i . '"/>
                         <div class="col-md-3" style="text-align:right;color:white"><label>Proses</label></div>
                         <div class="col-md-1"><input class="form-control" name="urutPros[]" value="' . $HandProRev[$i]['urutan'] . '" readonly="readonly" type="text"/></div>
@@ -639,6 +639,7 @@ class C_Monhandseksi extends CI_Controller
                                 ' . $op . '
                             </select>
                         </div>
+                        <div class="col-md-1"><a onclick="deleteproses(' . $i . ')" class="btn btn-danger"><i class="fa fa-minus"></i></a></div>
                     </div>';
                 if ($i == 0) {
                     $preview .= '
