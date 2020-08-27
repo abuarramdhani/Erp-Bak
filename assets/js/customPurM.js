@@ -34,6 +34,12 @@ $(document).ready(function() {
         dropdownParent: $("#ModFilterReportNC")
     });
 
+    $('.slcBuyerNC').select2({
+        placeholder: 'Filter by Due Buyer',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
     $('.maxPeriodeNC').datepicker({
         autoclose: true,
         todayHighlight: true,
@@ -60,6 +66,13 @@ $(document).ready(function() {
             allowClear: true,
             dropdownParent: $("#ModFilterReportNC")
         });
+
+        $('.slcBuyerNC').select2({
+            placeholder: 'Filter by Due Buyer',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+    
         
     })
     
@@ -861,6 +874,20 @@ function filterMonitoringReportNC(event) {
 
     statusCol.search(status);
     //end
+
+    //filter by vendor
+    var vendorCol = tableUsed.columns(10);
+    var vendor  = $('.slcVendorNC').val();
+
+    vendorCol.search(vendor);
+    // end
+
+    //filter by buyer
+    var buyerCol = tableUsed.columns(11);
+    var buyer  = $('.slcBuyerNC').val();
+
+    buyerCol.search(buyer);
+    // end
 
     //tanggal
     $.fn.dataTable.ext.search.push(

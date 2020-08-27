@@ -246,6 +246,19 @@
 								</select>
 							</div>
 						</div>
+                    </div><br><br><br>
+                    <div class="col-md-6">
+                        <div class="form-group">
+							<label class="col-sm-4 control-label">Buyer</label>
+							<div class="col-sm-8">
+								<select name="slcBuyerNC" class="slcBuyerNC" data-placeholder="Filter by Buyer" style="width: 100%;">
+									<option></option>
+									<?php foreach ($list_buyer as $key => $buyer) { ?>
+										<option value="<?= $buyer['buyer'] ?>"> <?= $buyer['buyer'] ?></option>
+									<?php } ?>
+								</select>
+							</div>
+						</div>
                     </div>
                 </div>
             </div>

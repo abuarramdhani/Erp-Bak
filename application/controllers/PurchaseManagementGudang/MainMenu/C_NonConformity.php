@@ -1352,7 +1352,7 @@ class C_NonConformity extends CI_Controller
 		// exit;
 		$data['monitoring_report'] = $monitoring_report;
 		$data['list_vendor'] = $this->M_nonconformity->getVendor();
-
+		$data['list_buyer'] = $this->M_nonconformity->getBuyerMonitor();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
