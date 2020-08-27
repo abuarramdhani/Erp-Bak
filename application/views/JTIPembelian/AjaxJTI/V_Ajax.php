@@ -9,16 +9,21 @@
 <table class="table table-striped table-bordered table-hover text-left pembelianJTI dataTable" id="tableJTIP" style="font-size:12px;">
   <thead>
     <tr class="bg-primary">
-      <th><center>NO</center></th>
-      <th><center>NO.DOK</center></th>
-      <th><center>JENIS.DOK</center></th>
-      <th><center>TIPE</center></th>
-      <th><center>NAMA DRIVER</center></th>
-      <th><center>NOMOR TIKET</center></th>
-      <th><center>NO POLISI</center></th>
-      <th><center>WAKTU ESTIMASI</center></th>
-      <th><center>NOTIFIKASI</center></th>
-      <th><center>RESPONSE</center></th>
+      <th rowspan="2"><center>NO</center></th>
+      <th rowspan="2"><center>NO.DOK</center></th>
+      <th rowspan="2"><center>JENIS.DOK</center></th>
+      <th rowspan="2"><center>TIPE</center></th>
+      <th rowspan="2"><center>NAMA DRIVER</center></th>
+      <th rowspan="2"><center>NOMOR TIKET</center></th>
+      <th rowspan="2"><center>NO POLISI</center></th>
+      <th rowspan="2"><center>WAKTU ESTIMASI</center></th>
+      <th colspan="2"><center>BERAT TIMBANG</center></th>
+      <th rowspan="2"><center>NOTIFIKASI</center></th>
+      <th rowspan="2"><center>RESPONSE</center></th>
+    </tr>
+    <tr class="bg-primary">
+      <th style="border-top:0px solid white;"><center>KE_1</center></th>
+      <th style="border-right:1px solid white;border-top:0px solid white;"><center>KE_2</center></th>
     </tr>
   </thead>
   <tbody>
@@ -33,7 +38,7 @@
       }else {
         $sty = '';
       }?>
-      <tr <?php echo $sty; ?> row-id = <?php echo $no ?> >
+      <tr <?php echo $sty; ?> row-id = <?php echo $no ?>> 
         <td><center><?php echo $no ?></center></td>
         <td><center><?php echo $g['document_number'] ?></center></td>
         <td><center><?php echo $g['document_type'] ?></center></td>
@@ -42,6 +47,8 @@
         <td><center><?php echo empty($g['ticket_number']) ? '-' : $g['ticket_number']  ?></center></td>
         <td><center><?php echo empty($g['vehicle_number']) ? '-' : $g['vehicle_number'] ?></center></td>
         <td><center><?php echo empty($g['estimation']) ? '-' : $g['estimation'] ?></center></td>
+        <td><center><?php echo empty($g['weight']) ? '-' : $g['weight'].' Kg' ?></center></td>
+        <td><center><?php echo empty($g['weight_2']) ? '-' : $g['weight_2'].' Kg' ?></center></td>
         <td><center></center><?php echo empty($g['report']) ? '<center>-</center>' : $g['report'] ?> </td>
         <td>
           <center>
