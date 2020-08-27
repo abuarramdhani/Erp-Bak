@@ -38,7 +38,7 @@
       }else {
         $sty = '';
       }?>
-      <tr <?php echo $sty; ?> row-id = <?php echo $no ?> >
+      <tr <?php echo $sty; ?> row-id = <?php echo $no ?>> 
         <td><center><?php echo $no ?></center></td>
         <td><center><?php echo $g['document_number'] ?></center></td>
         <td><center><?php echo $g['document_type'] ?></center></td>
