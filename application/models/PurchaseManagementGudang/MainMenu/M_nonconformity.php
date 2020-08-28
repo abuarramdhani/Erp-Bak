@@ -1077,7 +1077,7 @@ class M_nonconformity extends CI_Model
 
     public function spititout2($byr,$byrbr)
     {
-        $this->db->where('byrbr',$buyer);
+        $this->db->where('forward_to',$byr);
         $this->db->update('pm.pm_po_oracle_non_conformity_headers', array('forward_to'=> $byrbr));
     }
 
