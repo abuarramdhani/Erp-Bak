@@ -63,13 +63,13 @@
                             <tr>
                               <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
                               <td style="white-space: nowrap; text-align: center;"><?php if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
+                                  <button class="btn btn-warning" onclick="edit_pkj_dinas_all(<?php echo $row['id'] ?>, '2')"><span style="color: white" class="fa fa-edit"></button>
                                 <?php } elseif ($row['status'] == 1) { ?>
                                   <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
                                 <?php } elseif ($row['status'] == 2) { ?>
                                   <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
                                 <?php } elseif (($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) < date('Y-m-d')) || $row['status'] == 5) {  ?>
-                                  <button class="btn btn-warning" onclick="edit_pkj_dinas_all(<?php echo $row['id'] ?>, '2')"><span style="color: white" class="fa fa-edit"></button>
-                                  <!-- <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span> -->
+                                  <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span>
                                 <?php } ?>
                               </td>
                               <td style="white-space: nowrap; text-align: center;"><?php echo $row['id'] ?></td>
