@@ -106,6 +106,7 @@ class C_Index extends CI_Controller
 		}
 
 		$data['atasan'] = $this->M_index->getAtasan();
+		$data['pribadi'] = $this->M_index->GetIzinPribadi($no_induk, '');
 
 		$today = date('Y-m-d');
 
@@ -118,8 +119,12 @@ class C_Index extends CI_Controller
 	public function editPekerjaDinas()
 	{
 		$id = $this->input->post('id');
-
-		$pekerja = $this->M_index->getPekerjaEdit($id);
+		$btn_val = $this->input->post('btn_val');
+		if ($btn_val == '1') {
+			$pekerja = $this->M_index->getPekerjaEdit($id);
+		} else {
+			$pekerja = $this->M_index->getPekerjaEditPribadi($id);
+		}
 		echo json_encode($pekerja);
 	}
 
@@ -132,32 +137,60 @@ class C_Index extends CI_Controller
 		$keluar = $this->input->post('keluar');
 		$tgl = $this->input->post('tgl');
 		$alasan = $this->input->post('alasan');
-		$getAtasan = $this->M_index->getAtasanEdit($id);
-		$data = $this->M_index->getTujuanMakan($id);
-		$noind = array();
-		foreach ($data as $key) {
-			$implode1[] = $key['noind'];
+		$dataPribadi = $this->M_index->getPekerjaEditPribadi($id);
+
+		if ($jenis == '1') {
+			$getAtasan = $this->M_index->getAtasanEdit($id);
+		} else {
+			$getAtasan = $dataPribadi[0]['atasan'];
 		}
 
-		if ($atasan != $getAtasan) {
-			//update atasan
-			$this->M_index->updateAtasan($atasan, $id);
-			// disini bakalan send mail ke atasan yang baru
-			$this->EmailAlert($atasan, $id, $implode1, $tgl, $ket, $keluar);
-			//Kirim email ke atasan sebelumnya
-			$this->EmailAlertPrevious($atasan, $id, $implode1, $tgl, $ket, $keluar, $alasan, $getAtasan);
-			//inserto to tlog sys
-			$aksi = 'ROTATE PERIZINAN DINAS';
-			$detail = 'Rotasi Atasan izin_id= ' . $id . ' dari =' . $getAtasan . ' kepada= ' . $atasan;
-			$this->log_activity->activity_log($aksi, $detail);
-			//
-		} else {
+		if ($getAtasan == $atasan) {
 			echo 'sama';
+			die;
 		}
+
+		$jenis_ijin = '';
+
+		$implode1 = array();
+		if ($jenis == '1') {
+			$data = $this->M_index->getTujuanMakan($id);
+
+			foreach ($data as $key) {
+				$implode1[] = $key['noind'];
+			}
+			$jenis_ijin = 'Dinas Tuksono - Mlati - Pusat';
+
+			$this->M_index->updateAtasan($atasan, $id);
+			$detail = 'Rotasi Atasan izin_id= ' . $id . ' dari =' . $getAtasan . ' kepada= ' . $atasan;
+		} else {
+
+			if ($dataPribadi[0]['jenis_ijin'] == '1') {
+				$jenis_ijin = "Keluar Pribadi";
+			} else if ($dataPribadi[0]['jenis_ijin'] == '2') {
+				$jenis_ijin = "Sakit Perusahaan";
+			} else {
+				$jenis_ijin = "Dinas Keluar Perusahaan";
+			}
+
+			foreach ($dataPribadi as $key) {
+				$implode1[] = $key['noind'];
+			}
+			$this->M_index->updateAtasanPribadi($atasan, $id);
+			$detail = 'Rotasi Atasan izin_id= ' . $id . ' dari =' . $dataPribadi[0]['atasan'] . ' kepada= ' . $atasan;
+		}
+		//inserto to tlog sys
+		$aksi = 'ROTATE PERIZINAN';
+		$this->log_activity->activity_log($aksi, $detail);
+
+		// disini bakalan send mail ke atasan yang baru
+		$this->EmailAlert($atasan, $id, $implode1, $tgl, $ket, $keluar, $jenis_ijin);
+		//Kirim email ke atasan sebelumnya
+		$this->EmailAlertPrevious($atasan, $id, $implode1, $tgl, $ket, $keluar, $alasan, $getAtasan, $jenis_ijin);
 	}
 
 
-	public function EmailAlert($atasan, $idizin, $noind, $tanggal, $keterangan, $berangkat)
+	public function EmailAlert($atasan, $idizin, $noind, $tanggal, $keterangan, $berangkat, $jenis)
 	{
 		//email
 		$newArr = array();
@@ -179,9 +212,9 @@ class C_Index extends CI_Controller
 		$getEmail = $this->M_index->getEmail($atasan);
 		$emailUser = $getEmail[0]['internal_mail'];
 
-		$subject = "New!!! Approval Izin Dinas Perusahaan";
+		$subject = "New!!! Approval Izin " . $jenis;
 		$body = "Hi $noindatasan,
-					<br>Izin Dinas dengan id : $idizin telah dibuat dan membutuhkan approval Anda, detail sebagai berikut :
+					<br>Izin " . $jenis . " dengan id : $idizin telah dibuat dan membutuhkan approval Anda, detail sebagai berikut :
 					<br>
 					<br><b>Tanggal &emsp;&emsp;:</b> " . date('d F Y', strtotime($tanggal)) . "
 					<br>
@@ -230,7 +263,7 @@ class C_Index extends CI_Controller
 		}
 	}
 
-	public function EmailAlertPrevious($atasan, $idizin, $noind, $tanggal, $keterangan, $berangkat, $alasan, $getAtasanlama)
+	public function EmailAlertPrevious($atasan, $idizin, $noind, $tanggal, $keterangan, $berangkat, $alasan, $getAtasanlama, $jenis)
 	{
 		//email
 		$newArr = array();
@@ -255,9 +288,9 @@ class C_Index extends CI_Controller
 		$noindatasan = $this->M_index->pekerja($atasan, false);
 		$noindatasan = $noindatasan[0]['nama'];
 
-		$subject = "New!!! Rotate Approval Izin Dinas Perusahaan";
+		$subject = "New!!! Rotate Approval Izin " . $jenis;
 		$body = "Hi $noindatasanlama,
-					<br>Izin Dinas dengan id : $idizin dengan detail sebagai berikut :
+					<br>Izin " . $jenis . " dengan id : $idizin dengan detail sebagai berikut :
 					<br>
 					<br><b>Tanggal &emsp;&emsp;:</b> " . date('d F Y', strtotime($tanggal)) . "
 					<br>
@@ -267,7 +300,7 @@ class C_Index extends CI_Controller
 					<br>
 					<br><b>Jam Berangkat &nbsp;:</b> $berangkat WIB
 					<br>
-					<br>Approver Perizinan Dinas telah dialihkan kepada <b>$atasan - $noindatasan</b> dengan alasan <b>$alasan</b>";
+					<br>Approver Perizinan " . $jenis . " telah dialihkan kepada <b>$atasan - $noindatasan</b> dengan alasan <b>$alasan</b>";
 
 		//send Email
 		$this->load->library('PHPMailerAutoload');

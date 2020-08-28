@@ -3131,13 +3131,13 @@ $(document).ready(function () {
                     $.ajax({
                         type: 'post',
                         data: {
-                            jenis: jenis,
-                            id: id,
-                            atasan: atasan,
-                            ket: ket,
+                            jenis,
+                            id,
+                            atasan,
+                            ket,
                             keluar: out,
                             tgl: tanggal,
-                            alasan: alasan
+                            alasan
                         },
                         beforeSend: function () {
                             Swal.fire({
@@ -3184,13 +3184,14 @@ $(document).ready(function () {
 })
 
 
-function edit_pkj_dinas_all(id) {
+function edit_pkj_dinas_all(id, btn_val) {
     let table = $('.eachPekerjaEditAll')
 
     $.ajax({
         type: 'post',
         data: {
-            id: id
+            id,
+            btn_val
         },
         url: baseurl + 'PerizinanDinas/ApproveAll/editPekerjaDinas',
         beforeSend: a => {
@@ -3198,28 +3199,43 @@ function edit_pkj_dinas_all(id) {
         },
         dataType: 'json',
         success: function (data) {
-            $('#modal-id_dinasAll').val(data[0]['izin_id'])
+            let keluar = ''
+            if (btn_val == '1') {
+                keluar = data[0]['berangkat'];
+                $('.newText').text('Tujuan')
+            } else {
+                keluar = data[0]['wkt_keluar'];
+                $('.newText').text('Keperluan')
+            }
+
+            $('#modal-id_dinasAll').val(btn_val == '1' ? data[0]['izin_id'] : data[0]['id'])
             $('#modal-tgl_dinasAll').val(data[0]['created_date'])
             $('#modal-keluar_dinasAll').val(function () {
-                if (data[0]['berangkat'] == null) {
+                if (keluar == null) {
                     return '-'
-                } else if (data[0]['berangkat'] < '12:00:00') {
-                    return data[0]['berangkat'] + ' AM'
+                } else if (keluar < '12:00:00') {
+                    return keluar + ' AM'
                 } else {
-                    return data[0]['berangkat'] + ' PM'
+                    return keluar + ' PM'
                 }
             })
-            $('#modal-kep_dinasAll').val(data[0]['keterangan'])
+            $('#modal-kep_dinasAll').val(btn_val == '1' ? data[0]['keterangan'] : data[0]['keperluan'])
             $('#modal-AlasanAll').val('Atasan tidak berada ditempat')
-            $('#modal-Atasan_dinasAll').val(data[0]['atasan_aproval']).trigger('change')
+            $('#modal-Atasan_dinasAll').val(btn_val == '1' ? data[0]['atasan_aproval'] : data[0]['atasan']).trigger('change')
+            $('#app_edit_DinasAll').val(btn_val)
             $('#modal-approve-dinas-All').modal('show')
 
             let row
             data.forEach(a => {
+                if (btn_val == '1') {
+                    keterangan = a.tujuan;
+                } else {
+                    keterangan = a.keperluan;
+                }
                 row += `<tr>
                             <td>${a.noind}</td>
                             <td>${a.nama}</td>
-                            <td>${a.tujuan == '' ? '-' : a.tujuan}</td>
+                            <td>${keterangan == '' ? '-' : keterangan}</td>
                         </tr>`
             })
             table.html(row)
