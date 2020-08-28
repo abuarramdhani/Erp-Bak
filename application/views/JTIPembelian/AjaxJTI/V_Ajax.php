@@ -46,9 +46,20 @@
         <td><center style="font-weight:bold" onclick="jtieditmodal('<?php echo $g['document_number'] ?>', '<?php echo $g['name'] ?>', <?php echo $g['driver_id'] ?>)" data-toggle="modal" data-target="#JTIUPDATE"><?php echo $g['name'] ?></center></td>
         <td><center><?php echo empty($g['ticket_number']) ? '-' : $g['ticket_number']  ?></center></td>
         <td><center><?php echo empty($g['vehicle_number']) ? '-' : $g['vehicle_number'] ?></center></td>
-        <td><center><?php echo empty($g['estimation']) ? '-' : $g['estimation'] ?></center></td>
+        <td><center><?php echo empty($g['created_at']) ? '-' : substr($g['created_at'], 0, 19) ?></center></td>
         <td><center><?php echo empty($g['weight']) ? '-' : $g['weight'].' Kg' ?></center></td>
         <td><center><?php echo empty($g['weight_2']) ? '-' : $g['weight_2'].' Kg' ?></center></td>
+        <?php
+        if (!empty($g['ticket_number'])) {
+          $cek = explode('-', $g['ticket_number']);
+          if ($cek[1] == 'O') {
+            $selisih = $g['weight'] - $g['weight_2'];
+          }else {
+            $selisih = $g['weight_2'] - $g['weight'];
+          }
+        }
+        ?>
+        <td><center><?php echo empty($selisih) ? '-' : $selisih.' Kg' ?></center></td>
         <td><center></center><?php echo empty($g['report']) ? '<center>-</center>' : $g['report'] ?> </td>
         <td>
           <center>
