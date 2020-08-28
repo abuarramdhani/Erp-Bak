@@ -6,7 +6,7 @@ for($i = 0; $i < count($worker); $i++):
 	<tr>
 		<td style="width: 50%"></td>
 		<td style="width: 50%">
-			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 			<p style= "text-align:justify; font-size: 16px">
 				Kepada :<br>
 					<strong>Yth. Sdr. <?php echo ucwords(strtolower($worker[$i][0]['nama']));?></strong><br>
