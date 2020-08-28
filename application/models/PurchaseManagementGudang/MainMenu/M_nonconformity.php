@@ -1069,10 +1069,16 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
-    public function spititout($awal,$ganti)
+    public function spititout($buyer,$buyerBaru)
     {
-        $this->db->where('buyer',$awal);
-        $this->db->update('pm.pm_po_oracle_non_conformity_line_items', array('buyer'=> $ganti));
+        $this->db->where('buyer',$buyer);
+        $this->db->update('pm.pm_po_oracle_non_conformity_line_items', array('buyer'=> $buyerBaru));
+    }
+
+    public function spititout2($byr,$byrbr)
+    {
+        $this->db->where('byrbr',$buyer);
+        $this->db->update('pm.pm_po_oracle_non_conformity_headers', array('forward_to'=> $byrbr));
     }
 
 }
