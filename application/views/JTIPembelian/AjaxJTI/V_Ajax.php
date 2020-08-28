@@ -22,9 +22,9 @@
       <th rowspan="2"><center>RESPONSE</center></th>
     </tr>
     <tr class="bg-primary">
-      <th style="border-right:1px solid white;border-top:0px solid white;"><center>SELISIH</center></th>
       <th style="border-top:0px solid white;"><center>KE_1</center></th>
       <th style="border-right:1px solid white;border-top:0px solid white;"><center>KE_2</center></th>
+      <th style="border-right:1px solid white;border-top:0px solid white;"><center>SELISIH</center></th>
     </tr>
   </thead>
   <tbody>
