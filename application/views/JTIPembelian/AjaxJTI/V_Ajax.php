@@ -16,8 +16,8 @@
       <th rowspan="2"><center>NAMA DRIVER</center></th>
       <th rowspan="2"><center>NOMOR TIKET</center></th>
       <th rowspan="2"><center>NO POLISI</center></th>
-      <th rowspan="2"><center>WAKTU ESTIMASI</center></th>
-      <th colspan="2"><center>BERAT TIMBANG</center></th>
+      <th rowspan="2"><center>WAKTU DATANG</center></th>
+      <th colspan="3"><center>BERAT TIMBANG</center></th>
       <th rowspan="2"><center>NOTIFIKASI</center></th>
       <th rowspan="2"><center>RESPONSE</center></th>
     </tr>
