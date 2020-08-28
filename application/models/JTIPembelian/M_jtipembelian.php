@@ -72,6 +72,7 @@ class M_jtipembelian extends CI_Model
                         jti.jt_tickets_1.ticket_number as ticket_number,
                         jti.jt_tickets_1.vehicle_number,
                         jti.jt_tickets_1.created_by,
+                        jti.jt_tickets_1.created_at,
                         jti.jt_tickets_1.document_id as document_id,
                         jti.jt_tickets_1.driver_id as driver_id,
                         jti.jt_tickets_2.ticket_number as ticket_number_2,
