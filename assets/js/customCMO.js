@@ -311,13 +311,41 @@ $(document).ready(function(){
 	});
 
 	$('.mco_status').on('change', function(){
+		var tanggal = $('input[name=tglorder]').val();
+		var butuh = new Date(tanggal);
+
 		if ($(this).val() == 'Biasa') {
+			butuh.setDate(butuh.getDate()+3);
+			var tahun = butuh.getUTCFullYear();
+			var bulan = butuh.getMonth() + 1;
+			if (bulan < 10) {
+				bulan = "0" + bulan;
+			}
+			var hari = butuh.getDate();
+			if (hari < 10) {
+				hari = "0" + hari;
+			}
+			var tglButuh = tahun + '-' + bulan + '-' + hari;
+			$('[name=tglbutuh]').val(tglButuh);
 			$('.mco_tglbutuh').show();
 			$('.mco_alasan').hide();
 		}else if($(this).val() == 'Urgent'){
+			butuh.setDate(butuh.getDate()+1);
+			var tahun = butuh.getUTCFullYear();
+			var bulan = butuh.getMonth() + 1;
+			if (bulan < 10) {
+				bulan = "0" + bulan;
+			}
+			var hari = butuh.getDate();
+			if (hari < 10) {
+				hari = "0" + hari;
+			}
+			var tglButuh = tahun + '-' + bulan + '-' + hari;
+			$('[name=tglbutuh]').val(tglButuh);
 			$('.mco_tglbutuh').show();
 			$('.mco_alasan').show();
 		}else{
+			$('.mco_tglbutuh').val(tanggal);
 			$('.mco_tglbutuh').hide();
 			$('.mco_alasan').hide();
 		}
@@ -372,7 +400,9 @@ $(document).ready(function(){
 		let c = $('.mco_daftarPek').eq(0).clone();
 		$('.mco_daftarPek_Append').append(c);
 		$('.mco_daftarPek:last').find('input, textarea').val('');
-		$('.mco_daftarPek:last').find('.td_lampiran label').remove();
+		$('.mco_daftarPek:last').find('.td_lampiran div button').remove();
+		$('.mco_daftarPek:last').find('.td_lampiran div br').remove();
+		$('.mco_daftarPek:last').find('.td_lampiran div label').remove();
 		$('.mco_daftarPek:last').find('.td_lampiran input').not(':eq(0)').remove();
 		$('.mco_daftarPek:last').find('.td_lampiran input').val('');
 		$('.mco_daftarPek:last').find('button.add_lamp').attr('nomor',1);
@@ -407,7 +437,23 @@ $(document).ready(function(){
 
 	$(document).on('change', '.mco_lampiranFilePekerjaan', function(){
 		var nomor = $(this).closest('td').find('button.add_lamp').attr('nomor');
-		$(this).closest('div').append('<label nomor="' + nomor + '"><i>' + nomor + '. ' + $(this).val().substring(12) + ' </i><button class="btn btn-danger btn-xs del_lamp" type="button"><span class="fa fa-trash"></span></button></label>');
+		var button = '<button nomor="' + nomor + '" class="btn btn-danger btn-xs del_lamp" type="button" style="float: right"><span class="fa fa-trash"></span></button>';
+		var anchor = '<button nomor="' + nomor + '" class="btn btn-success btn-xs view_lamp" type="button" style="float: right"><span class="fa fa-eye"></span></button>';
+		var label = '<label nomor="' + nomor + '" style="width: 70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;float: left;"><i>' + nomor + '. ' + $(this).val().substring(12) + ' </i></label>';
+		$(this).closest('div').append(label + button + anchor + "<br nomor='" + nomor + "'>");
+		var posisi = $(this).closest('div');
+		var nomorAsli = nomor;
+		if (this.files && this.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function(e){
+				var link = e.target.result;
+				posisi.find('.view_lamp[nomor=' + nomorAsli + ']').attr('data-isi',link);
+			}
+
+			reader.readAsDataURL(this.files[0]);
+		}
+
 		nomor = parseInt(nomor) + 1;
 		$(this).clone().val('').attr('nomor',nomor).appendTo($(this).closest('div'));
 		$(this).closest('td').find('button.add_lamp').attr('nomor',nomor);
@@ -419,25 +465,27 @@ $(document).ready(function(){
 	})
 
 	$(document).on('click', '.td_lampiran button.del_lamp', function(){
-		var nomor = $(this).closest('label').attr('nomor');
+		var nomor = $(this).attr('nomor');
 		var nomorMax = $(this).closest('td').find('button.add_lamp').attr('nomor');
-		$(this).closest('div').find('input[nomor=' + nomor + ']').attr('nomor',999);
-		$(this).closest('div').find('label[nomor=' + nomor + ']').attr('nomor',999);
+		$(this).closest('div').find('[nomor=' + nomor + ']').attr('nomor',999);
 
 		for (var i = (nomor * 1) + 1; i < nomorMax; i++) {
 			var nomorBaru = i - 1;
 			var text = $(this).closest('div').find('label[nomor=' + i + '] i').text().substring(1);
 			$(this).closest('td').find('label[nomor=' + i + '] i').html(nomorBaru + text);
-			$(this).closest('div').find('input[nomor=' + i + ']').attr('nomor',nomorBaru);
-			$(this).closest('div').find('label[nomor=' + i + ']').attr('nomor',nomorBaru);
+			$(this).closest('div').find('[nomor=' + i + ']').attr('nomor',nomorBaru);
 		}
 
-		$(this).closest('div').find('label[nomor=' + nomorMax + ']').attr('nomor',nomorMax - 1);
+		$(this).closest('div').find('[nomor=' + nomorMax + ']').attr('nomor',nomorMax - 1);
 		$(this).closest('td').find('button.add_lamp').attr('nomor',nomorMax - 1);
 		$(this).closest('td').find('button.add_lamp').text('Choose File ' +( nomorMax - 1));
 
-		$(this).closest('div').find('input[nomor=' + 999 + ']').remove();
-		$(this).closest('div').find('label[nomor=' + 999 + ']').remove();
+		$(this).closest('div').find('[nomor=' + 999 + ']').remove();
+	})
+
+	$(document).on('click', '.td_lampiran button.view_lamp', function(){
+		$('iframe').attr('src',$(this).attr('data-isi'));
+		$('#inputOrder').modal('show');
 	})
 });
 $(document).on('click', '.mco_deldaftarnoPek', function(){
