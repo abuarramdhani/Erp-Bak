@@ -37,14 +37,14 @@
 ?>
 <div style="width: 100%; height: 100%; border: 0px solid black;" >
 	<?php for ($i=1; $i <= $max; $i++) {?>
-	<table style="margin-top: 30px;">
+	<table style="margin-top: 30px; height: 100%">
 		<tr>
 			<?php 
 				for ($j=0; $j < 2; $j++) { 
 				$no_pos = (strlen($i) == 1) ? '0'.$i:$i; 
 			?>
 			<td style="width: 376px;">
-				<table border="0" cellspacing="0" cellpadding="0" style="<?=($j==0) ? 'padding-right':'padding-left'; ?>: 15px;">
+				<table border="0" cellspacing="0" cellpadding="0" style="<?=($j==0) ? 'padding-right':'padding-left'; ?>: 15px; height: 100%">
 					<tr>
 						<td style="width: 50px;">
 							<img style="width: 50px;" src="<?=base_url('assets/img/logo.png')?>">
@@ -104,40 +104,28 @@
 							</p>
 						</td>
 					</tr>
-					<tr class="withborder_nobotup">
-						<td style="height: <?= 50*(7-$no)?>px;" colspan="6" valign="top">
+					<tr class="withborder_nobotup withborder_noup">
+						<td style="height: <?= 50*(7-$no)+600?>px;" colspan="6" valign="top">
 							<?php 
 								if (isset($temuan[$i]) && !empty($temuan[$i])) {
-									$found = explode('|', $temuan[$i]);
-									foreach ($found as $fo) {
-										echo "<p>".$fo."</p>";
+									$n = 0;
+									foreach ($temuan[$i] as $key) {
+										echo "<p>Ronde ".$key['ronde'].' : '.$key['deskripsi']."</p>";
+										echo "\r\n<p></p>";
+										if (!empty($key['attach'])) {
+											$ar = explode('|', $key['attach']);
+											foreach ($ar as $a) {
+												$base = base_url("assets/upload/PatroliSatpam/".$a);
+												echo '<img src="'.$base.'"  style="height: 100px; max-width: 150px; margin:5px;">';
+											}
+										}
+										if ($n < count($temuan[$i])-1) {
+											echo "<hr>";
+										}
+										$n++;
 									}
 								}
 							?>
-						</td>
-					</tr>
-					<tr class="withborder_noup">
-						<td style="height: 125px; padding: 5px; text-align: center;" colspan="6">
-							<table>
-								<tr>
-									<?php 
-									if (isset($file[$i]) && !empty($file[$i])) {
-										$img = explode('|', $file[$i]);
-										$xx = 1;
-										foreach ($img as $mg) {
-											if($xx > 4) break;
-											?>
-											<td style="border: none;">
-												<img src="<?=base_url('assets/upload/PatroliSatpam/'.$mg)?>"  style="height: 100px;">
-											</td>
-											<?php
-											$x++;
-										}
-									}
-									?>
-								</tr>
-							</table>
-
 						</td>
 					</tr>
 				</table>

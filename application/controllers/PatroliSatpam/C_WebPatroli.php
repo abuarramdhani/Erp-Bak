@@ -475,7 +475,7 @@ class C_WebPatroli extends CI_Controller
 		$user = $this->session->user;
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8',array(210,330), 7,'',5,5,5,5,0,0,'P');
+		$pdf = new mPDF('utf-8',array(210,297), 7,'',5,5,5,5,0,0,'P');
 		$pdf->allow_charset_conversion = true;
 		// $pdf->showImageErrors = true;
 		$pdf->charset_in = 'iso-8859-4';
@@ -495,7 +495,7 @@ class C_WebPatroli extends CI_Controller
 				'create_date'	=>	date('Y-m-d H:i:s'),
 				'create_by'		=>	$user,
 			);
-		$this->M_patrolis->insCetakan($arr);
+		// $this->M_patrolis->insCetakan($arr);
 		$pr = explode(' - ', $range);
 		$pr[1] = date('Y-m-d', strtotime($pr[1].'+1 day'));
 
@@ -509,7 +509,7 @@ class C_WebPatroli extends CI_Controller
 
 		foreach ($period as $dt) {
 			$tgl = $dt->format("Y-m-d");
-			echo $tgl;
+			// echo $tgl;
 			$data['tanggal'] = $tgl;
 
 			$jawaban = $this->M_patrolis->getJawabanCT($tgl);
@@ -524,23 +524,28 @@ class C_WebPatroli extends CI_Controller
 			}
 		
 			$data['jawaban'] = $arr;
-			$data['temuan'] = $this->M_patrolis->getTemuanCT($tgl);
-			$data['temuan'] = array_column($data['temuan'], 'deskripsi', 'pos');
-			$data['file'] = $this->M_patrolis->getAttachCT($tgl);
-			$data['file'] = array_column($data['file'], 'nama_file', 'pos');
+			$temuan = $this->M_patrolis->getTemuanCT($tgl);
+			if (!empty($temuan)) {
+				foreach ($temuan as $t) {
+					$data['temuan'][$t['pos']][] = $t;
+				}
+			}
+
 			$pertanyaan = $this->M_patrolis->getAll_pertanyaan();
 			$data['pertanyaan'] = array_column($pertanyaan, 'pertanyaan', 'id_pertanyaan');
 			// echo "<pre>";
-			// print_r($data['jawaban']);exit();
+			// print_r($data);exit();
 
 			$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 			$html = $this->load->view('PatroliSatpam/Web/V_Cetak_Temuan', $data, true);
 			$pdf->WriteHTML($html);
 			// break;
+			// echo $html;
 		}
+		// print_r($data);
+		// $pdf->Output($filename, 'I');
 		// exit();
 		$pdf->Output('assets/upload/PatroliSatpam/Cetakan/'.$filename, 'F');
-		// $pdf->Output($filename, 'I');
 		redirect('PatroliSatpam/web/patroli_read_file?id='.$getID);
 	}
 
@@ -639,4 +644,313 @@ class C_WebPatroli extends CI_Controller
 		//belum selesai
 		print_r($_POST);
 	}
+
+	public function input_manual()
+	{
+		$data  = $this->general->loadHeaderandSidemenu('Patroli Satpam', 'Setting Lokasi', 'Input Manual', '', '');
+
+		$data['list'] = $this->M_patrolis->getInputmanual();
+		// print_r($data['list']);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PatroliSatpam/Web/V_Input_Manual',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function add_input_manual()
+	{
+		$data  = $this->general->loadHeaderandSidemenu('Patroli Satpam', 'Setting Lokasi', 'Input Manual', '', '');
+		if ($this->session->userdata('patroli_save')) {
+			$data['aler'] = 'oke';
+		}
+		// print_r($data);exit();
+
+		$pos = $this->M_patrolis->getAllPos();
+		$data['pos'] = array_column($pos, 'id');
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PatroliSatpam/Web/V_Add_Manual',$data);
+		$this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('patroli_save');
+	}
+
+	public function submit_manual()
+	{
+		// print_r($_POST);
+		// print_r($_FILES);exit();
+		$user = $this->session->user;
+		$pkj = $this->input->post('pkj');
+		$waktu = $this->input->post('waktu');
+		$ronde = $this->input->post('ronde');
+		$pos = $this->input->post('pos');
+		$temuan = $this->input->post('temuan');// always on
+		$deskripsi = $this->input->post('deskripsi');
+		$id_jawaban = $this->input->post('id_pertanyaan');
+		$jawaban = $this->input->post('jawaban');
+		$for = $this->input->post('for');
+
+		$exwkt = explode(' ', $waktu);
+		$tgl = $exwkt[0];
+		$jam = $exwkt[1];
+
+		$tgl_shift = $tgl;
+		if (strtotime($jam) < strtotime('12:00:00')) {
+			$tgl_shift = date('Y-m-d', strtotime($tgl.' -1 day'));
+		}
+		$lalo = $this->M_patrolis->getPosbyId($pos);
+		
+		$arr = array(
+			'noind' => $pkj,
+			'tgl_shift' => $tgl_shift,
+			'tgl_patroli' => $waktu,
+			'latitude' => $lalo[0]['latitude'],
+			'longitude' => $lalo[0]['longitude'],
+			'jam_patroli' => $jam,
+			'ronde' => $ronde,
+			'pos' => $pos,
+			'kode' => "Manual by ".$user,
+			'tgl_server' => date('Y-m-d H:i:s'),
+			);
+		//insert tpatroli*************************
+		$id_patroli = $this->M_patrolis->ins_patroli($arr);
+		$id_patroli = $id_patroli['id'];
+		// $id_patroli = 131;
+
+		for ($i=0; $i < count($jawaban); $i++) { 
+			$arrP = array(
+				'id_patroli' => $id_patroli,
+				'id_pertanyaan' => $id_jawaban[$i],
+				'jawaban' => $jawaban[$i],
+				'create_date' => date('Y-m-d H:i:s'),
+				'noind' => $pkj,
+				);
+			// print_r($arrP);exit();
+			//insertJawaban****************************
+			$ins = $this->M_patrolis->insSJawaban($arrP);
+		}
+		// exit();
+
+		if (empty($deskripsi)) {
+			$deskripsi = "Tidak Ada Temuan";
+		}
+		$arrT = array(
+			'noind' => $pkj,
+			'deskripsi' => $deskripsi,
+			'create_timestamp' => date('Y-m-d H:i:s'),
+			'id_patroli' => $id_patroli,
+			'latitude' => $lalo[0]['latitude'],
+			'longitude' => $lalo[0]['longitude'],
+			);
+		$this->M_patrolis->ins_temuan($arrT);
+
+		if (!empty($_FILES['foto']['name'])) {
+			$nama_file = str_replace(' ', '_', $_FILES['foto']['name']);
+			$nama_file = $id_patroli.'_'.$nama_file;
+			$this->upload_single_image('foto', $id_patroli, $nama_file);
+			$arrAttc = array(
+				'id_patroli' => $id_patroli,
+				'nama_file' => $nama_file,
+				);
+			$this->M_patrolis->insAttach($arrAttc);
+		}
+
+		if (!empty($_FILES['barcode']['name'])) {
+			$nama_file = str_replace(' ', '_', $_FILES['barcode']['name']);
+			if (!empty($nama_file)) {
+				$nama_file = 'qr_'.$id_patroli.'_'.$nama_file;
+			}
+			$this->upload_single_image('barcode', $id_patroli, $nama_file, './assets/upload/PatroliSatpam/barcode');
+		}
+		$arrManual = array(
+			'id_patroli' => $id_patroli,
+			'create_by' => $user,
+			'create_date' => date('Y-m-d H:i:s'),
+			'last_update_by' => $user,
+			'last_update_date' => date('Y-m-d H:i:s'),
+			);
+		if (!empty($_FILES['barcode']['name'])) {
+			$arrManual['barcode_file'] = $nama_file;
+		}
+		//insertTmanual***************************
+		$ins = $this->M_patrolis->insmanual($arrManual);
+		echo "sukses";
+		if ($for == 'redirect') {
+			redirect('PatroliSatpam/web/input_manual');
+		}else{
+			$this->session->set_userdata('patroli_save',true);
+			redirect('PatroliSatpam/web/add_input_manual');
+		}
+	}
+
+	public function ajax_pertanyaan()
+	{
+		$pos = $this->input->get('pos');
+		$patroli = $this->M_patrolis->getPosbyId($pos);
+		$data['list'] = $this->M_patrolis->getlist_pertanyaan($patroli[0]['list_pertanyaan']);
+		$html = $this->load->view('PatroliSatpam/Web/V_List_Pertanyaan', $data);
+		echo json_encode($html);
+	}
+
+	public function upload_single_image($name, $id = 0, $nama_file, $path = './assets/upload/PatroliSatpam')
+	{
+		// echo $nama_file;exit();
+		$this->load->library('upload');
+		if(!is_dir($path))
+		{
+			mkdir($path, 0777, true);
+			chmod($path, 0777);
+		}
+		$config['upload_path']          = $path;
+		$config['allowed_types']        = 'jpg|png|gif|';
+		$config['max_size']				= 50000;
+		$config['file_name']		 	= $nama_file;
+		$config['overwrite'] 			= TRUE;
+
+
+		$this->upload->initialize($config);
+
+		if ($this->upload->do_upload($name)) {
+			$this->upload->data();
+		} else {
+			$errorinfo = $this->upload->display_errors();
+			echo $errorinfo;
+			// exit();
+		}
+	}
+
+	public function view_input_manual()
+	{
+		$data  = $this->general->loadHeaderandSidemenu('Patroli Satpam', 'Lihat Data', 'Input Manual', '', '');
+
+		$id = $this->input->get('id');
+		$data['detail'] = $this->M_patrolis->getInputmanualID($id)[0];
+		$data['ask'] = $this->M_patrolis->getlist_pertanyaan_done($id);
+		$data['temuan'] = $this->M_patrolis->chek_temuan($id);
+		$data['attch'] = $this->M_patrolis->getAttchId($id);
+		$data['id'] = $id;
+		// print_r($data['detail']);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PatroliSatpam/Web/V_View_manual.php',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function del_input_manual()
+	{
+		$id = $this->input->post('id');
+		$a = $this->M_patrolis->del_by_tbl('"Satpam".tpatroli',$id);
+		$b = $this->M_patrolis->del_by_tbl('"Satpam".tjawaban',$id);
+		$c = $this->M_patrolis->del_by_tbl('"Satpam".ttemuan',$id);
+		$d = $this->M_patrolis->del_by_tbl('"Satpam".tmanual',$id);
+		echo json_encode(true);
+	}
+
+	public function edit_barcode_manual()
+	{
+		$user = $this->session->user;
+		$id = $this->input->get('id');
+		if (isset($_FILES['barcode']['name'])) {
+			$nama_file = str_replace(' ', '_', $_FILES['barcode']['name']);
+			$nama_file = 'qr_'.$id.'_'.$nama_file;
+			$this->upload_single_image('barcode', $id, $nama_file, './assets/upload/PatroliSatpam/barcode');
+			$arrManual = array(
+				'barcode_file' => $nama_file,
+				'last_update_by' => $user,
+				'last_update_date' => date('Y-m-d H:i:s'),
+				);
+			//updateTmanual***************************
+			$ins = $this->M_patrolis->upmanual($arrManual, $id);
+		}
+		redirect('PatroliSatpam/web/view_input_manual?id='.$id);
+	}
+
+	public function edit_temuan_manual()
+	{
+		$user = $this->session->user;
+		$id = $this->input->get('id');
+		$deskripsi = $this->input->post('deskripsi');
+		$arrT = array(
+			'deskripsi' => $deskripsi,
+			);
+		$this->M_patrolis->edittemuan($arrT, $id);
+		redirect('PatroliSatpam/web/view_input_manual?id='.$id);
+	}
+
+	public function add_attch_manual()
+    {
+        $user = $this->session->user;
+		$id = $this->input->get('id');
+		if (!empty($_FILES['foto']['name'])) {
+			$nama_file = str_replace(' ', '_', $_FILES['foto']['name']);
+			$nama_file = $id_patroli.'_'.$nama_file;
+			$this->upload_single_image('foto', $id_patroli, $nama_file);
+			$arrAttc = array(
+				'id_patroli' => $id,
+				'nama_file' => $nama_file,
+				);
+			$this->M_patrolis->insAttach($arrAttc);
+		}
+		redirect('PatroliSatpam/web/view_input_manual?id='.$id);
+    }
+
+    public function del_attch_manual()
+    {
+    	$id = $this->input->post('id');
+    	$del = $this->M_patrolis->delAttch($id);
+    	return json_encode(true);
+    }
+
+    public function getjawaban()
+    {
+    	$id = $this->input->get('id');
+    	
+    	$data['list'] = $this->M_patrolis->chek_jawaban($id);
+    	if (empty($data['list'])) {
+    		$pos = $this->M_patrolis->getDetailPatroli($id);
+    		$patroli = $this->M_patrolis->getPosbyId($pos[0]['pos']);
+	    	$data['list'] = $this->M_patrolis->getlist_pertanyaan($patroli[0]['list_pertanyaan']);
+	    	$html = $this->load->view('PatroliSatpam/Web/V_List_Pertanyaan', $data);
+    	}else{
+	    	$html = $this->load->view('PatroliSatpam/Web/V_List_Jawaban', $data);
+    	}
+
+    	// print_r($data['list']);exit();
+    	echo json_encode($html);
+    }
+
+    public function upd_jawaban_manual()
+    {
+    	$id = $this->input->get('id');
+    	$id_jawaban = $this->input->post('id_pertanyaan');
+		$jawaban = $this->input->post('jawaban');
+    	$del = $this->M_patrolis->delJawaban($id);
+    	for ($i=0; $i < count($jawaban); $i++) { 
+			$arrP = array(
+				'id_patroli' => $id,
+				'id_pertanyaan' => $id_jawaban[$i],
+				'jawaban' => $jawaban[$i],
+				'create_date' => date('Y-m-d H:i:s'),
+				'noind' => $pkj,
+				);
+			// print_r($arrP);exit();
+			//insertJawaban****************************
+			$ins = $this->M_patrolis->insSJawaban($arrP);
+		}
+
+    	redirect('PatroliSatpam/web/view_input_manual?id='.$id);
+    }
+
+    public function getAllSatpam()
+    {
+    	// print_r($_GET);
+    	$s = strtoupper($this->input->get('s'));
+    	$tgl = $this->input->get('tgl');
+    	$tgl = substr($tgl, 0,10);
+    	$tgl = '';
+    	$data = $this->M_patrolis->getSatpamnShift($s, $tgl);
+    	echo json_encode($data);
+    }
 }
