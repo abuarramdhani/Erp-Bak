@@ -117,7 +117,7 @@
                                             </button>
                                         </div>
                                         <div class="col-md-12 text-center" style="margin-top: 20px;">
-                                        <a class="btn btn-warning btn-lg" href="<?php echo base_url('civil-maintenance-order/order/edit_order/'.$id) ?>">Kembali</a>
+                                        <a class="btn btn-warning btn-lg" href="javascript:history.back()">Kembali</a>
                                     </div>
                                 </div>
                             </div>

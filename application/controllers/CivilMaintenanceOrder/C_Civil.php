@@ -228,7 +228,6 @@ class C_Civil extends CI_Controller
 		$lokasi = $this->input->post('lokasi');
 		$tglorder = $this->input->post('tglorder');
 		$penerima = $this->input->post('penerima');
-		$tglterima = $this->input->post('tglterima');
 		$jnsPekerjaan = $this->input->post('jnsPekerjaan');
 		$jnsOrder = $this->input->post('jnsOrder');
 		$voip = $this->input->post('voipOrder');
@@ -244,7 +243,6 @@ class C_Civil extends CI_Controller
 			'lokasi_pengorder'	=>	$lokasi,
 			'tgl_order'			=>	$tglorder,
 			'penerima_order'	=>	$penerima,
-			'tgl_terima'		=>	$tglterima,
 			'jenis_pekerjaan_id'=>	$jnsPekerjaan,
 			'jenis_order_id'	=>	$jnsOrder,
 			'ket'				=>	$keterangan,
