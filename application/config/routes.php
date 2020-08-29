@@ -3492,3 +3492,4 @@ $route['ShipmentMonitoringSystem/Gudang/FindShipment/(:any)'] = 'ShipmentMonitor
 $route['ShipmentMonitoringSystem/Gudang/History'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/historyGudang';
 $route['ShipmentMonitoringSystem/Gudang/Undelivered'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/undeliveredGudang';
 $route['ShipmentMonitoringSystem/Gudang/TitipBarang'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/titipBarangGudang';
+$route['ShipmentMonitoringSystem/Gudang/TitipBarang/(:any)'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/$1';
