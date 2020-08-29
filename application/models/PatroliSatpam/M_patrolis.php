@@ -96,7 +96,8 @@ class M_patrolis extends CI_Model
 
     public function chek_jawaban($id)
     {
-    	$sql = "select * from \"Satpam\".tjawaban t where id_patroli = $id";
+    	$sql = "select * from \"Satpam\".tjawaban t left join \"Satpam\".tpertanyaan tp on tp.id_pertanyaan = t.id_pertanyaan
+        where id_patroli = $id";
     	return $this->personalia->query($sql)->result_array();
     }
 
@@ -125,6 +126,12 @@ class M_patrolis extends CI_Model
     {
     	$this->personalia->insert_batch('"Satpam".tjawaban', $data);
     	return true;
+    }
+
+    public function insSJawaban($data)
+    {
+        $this->personalia->insert('"Satpam".tjawaban', $data);
+        return true;
     }
 
     public function insAttach($data)
@@ -342,20 +349,21 @@ class M_patrolis extends CI_Model
 
     public function getTemuanCT($tgl)
     {
-        $sql = "select string_agg(tt.deskripsi, '|') deskripsi , tp.pos from \"Satpam\".ttemuan tt
+        $sql = "select tt.id_patroli , tt.deskripsi , tp.ronde, tp.pos, (select string_agg(t.nama_file, '|') from \"Satpam\".tattachment t where t.id_patroli = tt.id_patroli) attach
+         from \"Satpam\".ttemuan tt
                 left join \"Satpam\".tpatroli tp on tp.id_patroli = tt.id_patroli
                 where tp.tgl_shift = '$tgl'
                 and tt.deskripsi not like '%Tidak ada Temuan%'
-                group by tp.pos;";
+                ;";
+                // echo $sql;exit();
         return $this->personalia->query($sql)->result_array();
     }
 
     public function getAttachCT($tgl)
     {
-        $sql = "select string_agg(ta.nama_file, '|') nama_file , tp.pos from \"Satpam\".tattachment ta
+        $sql = "select nama_file , tp.pos from \"Satpam\".tattachment ta
                 left join \"Satpam\".tpatroli tp on tp.id_patroli = ta.id_patroli
-                where tp.tgl_shift = '$tgl'
-                group by tp.pos";
+                where tp.tgl_shift = '$tgl'";
         return $this->personalia->query($sql)->result_array();
     }
 
@@ -469,10 +477,107 @@ class M_patrolis extends CI_Model
 
     public function p_jam_terakhir()
     {
-        $sql = "select tgl_server tgl from \"Satpam\".tpatroli t order by id_patroli desc limit 1";
+        $sql = "select tgl_server tgl from \"Satpam\".tpatroli t order by tgh_server desc limit 1";
         if($this->personalia->query($sql)->num_rows() > 0)
             return $this->personalia->query($sql)->row()->tgl;
         else
             return 0;
+    }
+
+    public function getInputmanual()
+    {
+        $sql = "select
+                    t.*,
+                    t2.barcode_file,
+                    trim(t3.nama) nama
+                from
+                    \"Satpam\".tpatroli t
+                left join \"Satpam\".tmanual t2 on
+                    t2.id_patroli = t.id_patroli
+                left join hrd_khs.tpribadi t3 on
+                    t3.noind = t.noind
+                where
+                    t.kode like 'Manual%' order by t.tgl_server desc";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getInputmanualID($id)
+    {
+        $sql = "select
+                    t.*,
+                    t2.barcode_file,
+                    trim(t3.nama) nama
+                from
+                    \"Satpam\".tpatroli t
+                left join \"Satpam\".tmanual t2 on
+                    t2.id_patroli = t.id_patroli
+                left join hrd_khs.tpribadi t3 on
+                    t3.noind = t.noind
+                where
+                    t.kode like 'Manual%'
+                and t.id_patroli = '$id' order by t.tgl_server desc";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function insmanual($data)
+    {
+        $this->personalia->insert('"Satpam".tmanual', $data);
+        return $this->personalia->affected_rows() > 0;
+    }
+
+    public function del_by_tbl($table, $id)
+    {
+        $this->personalia->where('id_patroli', $id);
+        $this->personalia->delete($table);
+        return $this->personalia->affected_rows() > 0;
+    }
+
+    public function upmanual($data, $id)
+    {
+        $this->personalia->where('id_patroli', $id);
+        $this->personalia->update('"Satpam".tmanual', $data);
+        return $this->personalia->affected_rows() > 0;
+    }
+
+    public function edittemuan($data, $id)
+    {
+        $this->personalia->where('id_patroli', $id);
+        $this->personalia->update('"Satpam".ttemuan', $data);
+        return $this->personalia->affected_rows() > 0;
+    }
+
+    public function delAttch($id)
+    {
+        $this->personalia->where('id_attachment', $id);
+        $this->personalia->delete('"Satpam".tattachment');
+        return $this->personalia->affected_rows() > 0;
+    }
+
+    public function delJawaban($id)
+    {
+        $this->personalia->where('id_patroli', $id);
+        $this->personalia->delete('"Satpam".tjawaban');
+        return $this->personalia->affected_rows() > 0;
+    }
+
+    public function getSatpamnShift($s, $tgl)
+    {
+        $sql = "SELECT
+                    *
+                from
+                    hrd_khs.tpribadi t
+                where
+                    t.noind like 'K%'
+                    and (t.noind like '$s%' or t.nama like '$s%')
+                    and jabatan like '%HUBUNGAN KERJA%'
+                    and keluar = '0';";
+                    // echo $sql;exit();
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getDetailPatroli($id_patroli)
+    {
+        $this->personalia->where('id_patroli', $id_patroli);
+        return $this->personalia->get('"Satpam".tpatroli')->result_array();
     }
 }
