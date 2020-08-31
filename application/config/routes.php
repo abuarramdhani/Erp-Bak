@@ -4634,3 +4634,16 @@ $route['MOTerlambatTransact/Monitoring/(:any)'] = 'MOTerlambatTransact/C_Master/
 $route['MOTerlambatTransact/Monitoring/(:any)/(:any)'] = 'MOTerlambatTransact/C_Master/$1/$2';
 
 $route['MOTerlambatTransact/cekapi'] = 'MOTerlambatTransact/C_Master/cekapi';
+
+//-------------------------------------------Tim Covid 19---------------------------------------//
+$route['Covid'] = 'Covid/C_Index';
+
+$route['Covid/MonitoringCovid'] = 'Covid/MonitoringCovid/C_MonitoringCovid';
+$route['Covid/MonitoringCovid/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1';
+$route['Covid/MonitoringCovid/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1/$2';
+$route['Covid/MonitoringCovid/(:any)/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1/$2/$3';
+
+$route['Covid/LaporanIsolasi'] = 'Covid/LaporanIsolasi/C_LaporanIsolasi';
+$route['Covid/LaporanIsolasi/(:any)'] = 'Covid/LaporanIsolasi/C_LaporanIsolasi/$1';
+$route['Covid/LaporanIsolasi/(:any)/(:any)'] = 'Covid/LaporanIsolasi/C_LaporanIsolasi/$1/$2';
+$route['Covid/LaporanIsolasi/(:any)/(:any)/(:any)'] = 'Covid/LaporanIsolasi/C_LaporanIsolasi/$1/$2/$3';
