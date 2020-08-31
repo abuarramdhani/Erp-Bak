@@ -130,7 +130,7 @@ class M_jtipembelian extends CI_Model
                         'document_number' => $data['document_number'],
                         'document_type' => $data['document_type'],
                         'created_by' => $data['created_by'],
-                        'type' => 'out',
+                        'type' => $data['type'],
                         'estimation' => $data['estimation']
                     ));
                 if ($this->db->affected_rows() == 1) {
@@ -143,7 +143,7 @@ class M_jtipembelian extends CI_Model
                                 'created_by' => $data['created_by'],
                                 'photo' => empty($data['photo']) ? null : $data['photo'],
                                 'id_card' => $data['id_card'],
-                                'type' =>  'out'
+                                'type' => $data['type'],
                             ));
                         if ($this->db->affected_rows() == 1) {
                             $response['success'] = true;
