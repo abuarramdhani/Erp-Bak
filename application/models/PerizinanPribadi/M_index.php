@@ -145,11 +145,19 @@ class M_index extends CI_Model
         $query = $this->personalia->query($sql);
     }
 
-    public function update($status, $idizin)
+    public function update($status, $idizin, $kptsn)
     {
         $sql = "update \"Surat\".tizin_pribadi
-                set appr_atasan ='$status', tgl_appr_atasan = now()
+                set appr_atasan ='$status', tgl_appr_atasan = now(), status = '$kptsn'
                 WHERE id ='$idizin'";
+        $query = $this->personalia->query($sql);
+    }
+
+    public function updateTizinPribadiDetail($id_izin, $keputusan)
+    {
+        $sql = "update \"Surat\".tizin_pribadi_detail
+                set status = '$keputusan'
+                WHERE id ='$id_izin'";
         $query = $this->personalia->query($sql);
     }
 
@@ -214,13 +222,22 @@ class M_index extends CI_Model
         return $this->personalia->query("SELECT trim(nama) as nama FROM hrd_khs.tpribadi where noind = '$noind'")->row()->nama;
     }
 
-    public function IzinApprove($periode, $and, $jenis)
+    public function GetIzinPribadi($periode, $and, $jenis)
     {
-        $user = $this->session->userdata('user');
-        if ($jenis) {
-            $where = $jenis;
+        if (!empty($periode) && !empty($end)) {
+            $where = 'where ' . $periode . ' and ' . $end;
+        } elseif (empty($periode) && !empty($end)) {
+            $where = 'where' . $end;
         } else {
-            $where = "(ip.noind like '%$user%' or ip.atasan = '$user' or ip.paramedik = '$user')";
+            $where = '';
+        }
+
+        if (!empty($jenis) && !empty($where)) {
+            $and = ' and ' . $jenis;
+        } else if (!empty($jenis) && empty($where)) {
+            $and = 'where ' . $jenis;
+        } else {
+            $and = "";
         }
         $sql = "SELECT
                     ip.id,
@@ -236,6 +253,7 @@ class M_index extends CI_Model
                     end jenis_ijin,
                     ip.atasan,
                     ip.keperluan ket_pekerja,
+                    ip.manual,
                     case
                         when ip.jenis_ijin in (1,3) then
                         case
@@ -264,10 +282,8 @@ class M_index extends CI_Model
                     \"Surat\".tizin_pribadi ip
                     inner join \"Surat\".tizin_pribadi_detail ipd on ipd.id = ip.id
                     inner join hrd_khs.tpribadi tp on tp.noind = ipd.noind
-                where
                     $where
                     $and
-                    $periode
                 order by
                     ip.id desc";
         // echo $sql;exit();
@@ -380,5 +396,12 @@ class M_index extends CI_Model
                     and keluar = '0'
                     and kd_jabatan <= '13'";
         return $this->personalia->query($sql)->result_array();
+    }
+
+    public function updateManualHubker($id, $status)
+    {
+        $sql = "UPDATE \"Surat\".tizin_pribadi set manual = '$status' where id='$id'";
+        $this->personalia->query($sql);
+        return true;
     }
 }

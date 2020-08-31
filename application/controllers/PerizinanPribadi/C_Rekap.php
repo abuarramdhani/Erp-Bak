@@ -91,7 +91,7 @@ class C_Rekap extends CI_Controller
 			$periode1 = str_replace('/', '-', date('Y-m-d', strtotime($explode[0])));
 			$periode2 = str_replace('/', '-', date('Y-m-d', strtotime($explode[1])));
 
-			$periode = "and ip.created_date::date between '$periode1' and '$periode2'";
+			$periode = "ip.created_date::date between '$periode1' and '$periode2'";
 		} else {
 			$periode = '';
 		}
@@ -101,7 +101,7 @@ class C_Rekap extends CI_Controller
 				$and = "";
 			} else {
 				$im_id = implode("', '", $id);
-				$and = "and ip.id in ('$im_id')";
+				$and = "ip.id in ('$im_id')";
 			}
 		} else {
 			if (empty($noind)) {
@@ -112,12 +112,12 @@ class C_Rekap extends CI_Controller
 					$arr[] = "ip.noind like '%$key%'";
 				}
 				$im_no = implode(" or ", $arr);
-				$and = "and ($im_no)";
+				$and = "($im_no)";
 			}
 		}
 
 		$data['jenis'] = '1';
-		$data['IzinApprove'] = $this->M_index->IzinApprove($periode, $and, '');
+		$data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode, $and, '');
 
 		if ($export == 'Excel') {
 			$data['date'] = date("d-m-Y");
@@ -147,8 +147,28 @@ class C_Rekap extends CI_Controller
 			$pdf->setTitle($filename);
 			$pdf->Output($filename, 'I');
 		} else {
-			$view = $this->load->view('PerizinanPribadi/V_Process', $data);
+			$data['hiden'] = '';
+			if ($jenis == '1') {
+				$view = $this->load->view('PerizinanPribadi/V_Process', $data);
+			} else {
+				$view = $this->load->view('PerizinanPribadi/V_Human', $data);
+			}
 			echo json_encode($view);
 		}
+	}
+
+	public function updateManual()
+	{
+		$id = $_POST['id'];
+
+		$cek = $this->M_index->GetIzinbyId($id)->result_array();
+		$manual = $cek[0]['manual'];
+		// print_r($manual);
+		// die;
+		$update = ($manual == 'f') ? 'f' : 't';
+
+		echo ($this->M_index->updateManualHubker($id, $update)) ? "ok" : "no";
+
+		//SEMANGATTTTT
 	}
 }

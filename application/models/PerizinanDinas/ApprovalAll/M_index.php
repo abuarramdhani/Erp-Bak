@@ -213,13 +213,8 @@ class M_index extends CI_Model
         return $this->db->query($query)->result_array();
     }
 
-    public function GetIzinPribadi($noind, $jenis)
+    public function GetIzinPribadi()
     {
-        if ($jenis) {
-            $where = "and ip.jenis_ijin = '$jenis'";
-        } else {
-            $where = '';
-        }
         $today = date('Y-m-d');
         $sql3 = "SELECT
                 ip.id,
@@ -261,8 +256,7 @@ class M_index extends CI_Model
                 end status
             from
                 \"Surat\".tizin_pribadi ip
-            where created_date::date = '$today' and tgl_appr_atasan is null and ip.atasan = '$noind'
-                $where
+            where created_date::date = '$today'
             order by
                 ip.appr_atasan desc, ip.id desc";
         // echo $sql;exit();
