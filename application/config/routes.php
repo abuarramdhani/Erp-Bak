@@ -2196,6 +2196,11 @@ $route['MasterPresensi/ShiftPekerja/UpdateJamIstirahat'] = 'MasterPresensi/Shift
 $route['MasterPresensi/ShiftPekerja/UpdateJamIstirahat/(:any)'] = 'MasterPresensi/ShiftPekerja/C_UpdateJamIstirahat/$1';
 $route['MasterPresensi/ShiftPekerja/UpdateJamIstirahat/(:any)/(:any)'] = 'MasterPresensi/ShiftPekerja/C_UpdateJamIstirahat/$1/$2';
 
+//--permintaan pak dian----------
+$route['MasterPresensi/ShiftPekerja/TarikDataShiftPekerja'] = 'MasterPresensi/TarikShiftPekerja/C_Index';
+$route['MasterPresensi/ShiftPekerja/TarikDataShiftPekerja/(:any)'] = 'MasterPresensi/TarikShiftPekerja/C_Index/$1';
+$route['MasterPresensi/ShiftPekerja/TarikDataShiftPekerja/(:any)/(:any)'] = 'MasterPresensi/TarikShiftPekerja/C_Index/$1/$2';
+
 
 //------------------------------------Master Presensi - Lelayu ---------------------------------------------------
 $route['MasterPresensi/Lelayu'] = 'MasterPresensi/Lelayu/C_Lelayu';
