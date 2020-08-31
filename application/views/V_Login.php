@@ -78,7 +78,12 @@
         }
     </noscript>
 </head>
-
+<?php 
+    // untuk slide show
+    $start = strtotime("2020-08-30");
+    $now = strtotime(date('Y-m-d'));
+    $diff = ($now - $start) / (60 * 60 * 24);
+?>
 <body id="body">
 <div class="ch-container">
     <div class="main">
@@ -91,12 +96,48 @@
                     <div class="col-sm-9 col-sm-offset-3" style="height: 100%;padding-left: 0;">
                         <div class="carousel slide" data-ride="carousel" data-interval="4000">
                             <div class="carousel-inner">
-                                <div class="item active">
-                                    <img src="<?php echo base_url('assets/img/poster/data_sesuai_fakta.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
-                                </div>
-                                <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/jangan_manipulasi_data.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
-                                </div>
+                                <?php 
+                                $gambarData = array(
+                                    1 => array('1.fakta.jpg',
+                                        '2.manipulasi.jpg',
+                                        '3.prosedur.jpg',
+                                        '4.completion.jpg'
+                                    ),
+                                    2 => array(
+                                        '5.stockopname.jpg',
+                                        '6.Segera-tindak-lanjut.jpg',
+                                        '7.scw.jpg'
+                                    )
+                                );
+
+                                $loopData = array();
+                                if (in_array($diff%7, array(1,2,3))) {
+                                    $loopData = $gambarData[1];
+                                }elseif (in_array($diff%7, array(4,5,6,0))) {
+                                    $loopData = $gambarData[2];
+                                }else{
+                                    foreach ($gambarData as $val) {
+                                        foreach ($val as $val2) {
+                                            $loopData[] = $val2;
+                                        }
+                                    }
+                                }
+
+                                $nomor = 0;
+                                foreach ($loopData as $value) {
+                                    if ($nomor == 0) {
+                                        $active = "active";
+                                    }else{
+                                        $active = "";
+                                    }
+                                    ?>
+                                        <div class="item <?php echo $active ?>">
+                                            <img src="<?php echo base_url('assets/poster/AwarenessData/'.$value) ?>" style="width: 100%;height: auto" alt="<?php echo $value ?>">
+                                        </div>
+                                    <?php
+                                    $nomor++;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -154,21 +195,68 @@
                     <div class="col-sm-9" style="height: 100%;padding-right: 0;">
                         <div class="carousel slide" data-ride="carousel" data-interval="4000">
                             <div class="carousel-inner">
-                                <div class="item active">
-                                    <img src="<?php echo base_url('assets/img/poster/penyebaran_covid.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 2">
-                                </div>
-                                <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/jaga_jarak.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 3">
-                                </div>
-                                <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/tanpa_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 4">
-                                </div>
-                                <div class="item">
-                                    <img src="<?php echo base_url('assets/img/poster/gunakan_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 5">
-                                </div>
-                                <div class="item ">
-                                    <img src="<?php echo base_url('assets/img/poster/ganti_masker.jpeg') ?>" style="width: 100%;height: auto" alt="Photo 1">
-                                </div>
+                                <?php 
+                                $gambarCovid = array(
+                                    1 => array(
+                                        '1.Jagajarak.jpg',
+                                        '2.Maskerbaikbenar.jpg',
+                                        '3.Gantimasker.jpg',
+                                        '4.Dontspeak.jpg',
+                                        '5.LewatAirborne.jpg'
+                                    ),
+                                    2 => array(
+                                        '6.CuciTangan.jpg',
+                                        '7.6lngkah.jpg',
+                                        '8.KontakFisik.jpg',
+                                        '9.NyedakKeplak.jpg',
+                                        '10.Makan.jpg'
+                                    ),
+                                    3 => array(
+                                        '11.Smoker.jpg',
+                                        '12.Akuada.jpg',
+                                        '13.4jalan.jpg',
+                                        '14.Staywithme.jpg'
+                                    ),
+                                    4 => array(
+                                        '15.DontGobaby.jpg',
+                                        '16.Janganpegang.jpg',
+                                        '17.Openthedor.jpg',
+                                        '18.Breath.jpg'
+                                    )
+                                );
+                                
+                                $loopCovid = array();
+                                if (in_array($diff%14, array(1,2,3))) {
+                                    $loopCovid = $gambarCovid[1];
+                                }elseif (in_array($diff%14, array(4,5,6,7))) {
+                                    $loopCovid = $gambarCovid[2];
+                                }elseif (in_array($diff%14, array(8,9,10))) {
+                                    $loopCovid = $gambarCovid[3];
+                                }elseif (in_array($diff%14, array(11,12,13,0))) {
+                                    $loopCovid = $gambarCovid[4];
+                                }else{
+                                    foreach ($gambarCovid as $val) {
+                                        foreach ($val as $val2) {
+                                            $loopCovid[] = $val2;
+                                        }
+                                    }
+                                }
+
+                                $nomor = 0;
+                                foreach ($loopCovid as $value) {
+                                    if ($nomor == 0) {
+                                        $active = "active";
+                                    }else{
+                                        $active = "";
+                                    }
+                                    ?>
+                                        <div class="item <?php echo $active ?>">
+                                            <img src="<?php echo base_url('assets/poster/Covid/'.$value) ?>" style="width: 100%;height: auto" alt="<?php echo $value ?>">
+                                        </div>
+                                    <?php
+                                    $nomor++;
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
