@@ -120,14 +120,17 @@
 	  	<table class="table" style="border: 1px solid #000; padding-top: 0; margin-top: 0; margin-bottom: 0; border-bottom: 0px">
 			<tbody>
 				<tr>
-					<td style="font-weight: bold; border-right: 1px solid #000; padding-top: 5px;width: 33%" class="text-center">
+					<td style="font-weight: bold; border-right: 1px solid #000; padding-top: 5px;width: 25%" class="text-center">
 						Pembuat
 					</td>
-					<td style="font-weight: bold; border-right: 1px solid #000; padding-top: 5px;width: 34%" class="text-center">
+					<td style="font-weight: bold; border-right: 1px solid #000; padding-top: 5px;width: 25%" class="text-center">
 						Atasan Langsung
 					</td>
-					<td style="font-weight: bold; border-right: 1px solid #000; padding-top: 5px;width: 33%" class="text-center">
+					<td style="font-weight: bold; border-right: 1px solid #000; padding-top: 5px;width: 25%" class="text-center">
 						Atasan dari Atasan Langsung
+					</td>
+					<td style="font-weight: bold; border-right: 1px solid #000; padding-top: 5px;width: 25%" class="text-center">
+						Kepala Departemen Keuangan
 					</td>
 				</tr>
 				<tr>
@@ -139,6 +142,9 @@
 					</td>   
 					<td style="border-top: none; border-right: 1px solid #000; font-weight: bold;" class="text-center">
 						<br><br><br>.............................
+					</td>  
+					<td style="border-top: none; border-right: 1px solid #000; font-weight: bold;" class="text-center">
+						<br><br><br>Ria Cahyani
 					</td>   
 				</tr>
 			</tbody>
