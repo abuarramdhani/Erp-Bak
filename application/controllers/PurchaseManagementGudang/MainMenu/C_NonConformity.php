@@ -33,6 +33,7 @@ class C_NonConformity extends CI_Controller
 	/* LIST DATA */
 	public function index()
 	{
+		
 		$user = $this->session->username;
 
 		$user_id = $this->session->userid;
@@ -1313,4 +1314,151 @@ class C_NonConformity extends CI_Controller
 		$this->load->view('PurchaseManagementGudang/NonConformity/V_readFinishedOrder', $data);
 		$this->load->view('V_Footer',$data);
 	}
+
+	public function MonitoringReport()
+	{
+		
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Monitoring Report';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Monitoring Report';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		
+		
+
+		$monitoring_report = $this->M_nonconformity->getReportMonitoring();
+		
+		for ($i=0; $i < count($monitoring_report); $i++) { 
+			$headerId =  $monitoring_report[$i]['header_id'];
+			$lines = $this->M_nonconformity->getLines($headerId);
+			
+			array_push($monitoring_report[$i],$lines);
+
+			$items = $this->M_nonconformity->getLineItems($headerId);
+
+			array_push($monitoring_report[$i],$items);
+		}
+		
+		// echo '<pre>';
+		// print_r($monitoring_report); 
+		// exit;
+		$data['monitoring_report'] = $monitoring_report;
+		$data['list_vendor'] = $this->M_nonconformity->getVendor();
+		$data['list_buyer'] = $this->M_nonconformity->getBuyerMonitor();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_MonitoringReport', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function spitItOut()
+	{
+
+		// $buyer = array(
+							
+		// 					array(
+		// 						'awal' => 'B0729,KUBOTA INDONESIA, PT',
+		// 						'ganti' => 'KUBOTA INDONESIA, PT,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'D1157,MAJU UTAMA BERDIKARI, CV',
+		// 						'ganti' => 'MAJU UTAMA BERDIKARI, CV,D1157',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0747, HASAN, MUHAMMAD FIKRI',
+		// 						'ganti' => 'HASAN, MUHAMMAD FIKRI,B0747',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0918, MAHFUDZI, FEBRIAN AMRI',
+		// 						'ganti' => 'MAHFUDZI, FEBRIAN AMRI,B0918',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0794,HERMON PANCAKARSA LIBRATAMA, PT',
+		// 						'ganti' => 'HERMON PANCAKARSA LIBRATAMA, PT,B0794',
+		// 					),
+		// 					array(
+		// 						'awal' => 'J1337, HIDAYATI, AFRILIA',
+		// 						'ganti' => 'HIDAYATI, AFRILIA,J1337',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726,RED BANDANA SHOP',
+		// 						'ganti' => 'RED BANDANA SHOP,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'J1265, NOVIAN, AGIT',
+		// 						'ganti' => 'NOVIAN, AGIT,J1265',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0729,TUNGGAL DJAJA INDAH, PT. PABRIK CAT',
+		// 						'ganti' => 'TUNGGAL DJAJA INDAH, PT. PABRIK CAT,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0729, SETYANINGSIH, RAHAYU',
+		// 						'ganti' => 'SETYANINGSIH, RAHAYU,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726,BUANA SAKTI, CV',
+		// 						'ganti' => 'BUANA SAKTI, CV,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0729,SAMATOR GAS INDUSTRI, PT',
+		// 						'ganti' => 'SAMATOR GAS INDUSTRI, PT,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726, BALQIS, AYUTA RATU',
+		// 						'ganti' => 'BALQIS, AYUTA RATU,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'D1588,ANGLO NIAGA JAYA, PT',
+		// 						'ganti' => 'ANGLO NIAGA JAYA, PT,D1588',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726,FAJAR JAYA, CV',
+		// 						'ganti' => 'FAJAR JAYA, CV,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0729,MITSUBOSHI BELTING INDONESIA, PT',
+		// 						'ganti' => 'MITSUBOSHI BELTING INDONESIA, PT,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'J1397, UTOMO, DWINANDA BUDI',
+		// 						'ganti' => 'UTOMO, DWINANDA BUDI,J1397',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726,ANUGRAH SENTOSA, CV',
+		// 						'ganti' => 'ANUGRAH SENTOSA, CV,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'RATNASARI, FITRI, B0900',
+		// 						'ganti' => 'RATNASARI, FITRI,B0900',
+		// 					),
+		// 					array(
+		// 						'awal' => 'INTITECH SOLUTIONS, PT, D1157',
+		// 						'ganti' => 'INTITECH SOLUTIONS, PT,D1157',
+		// 					),
+							
+		//  				);
+		// foreach ($buyer as $key => $data) {
+			$buyerBaru = 'FIRLI, TIYANA,B0932';
+			$buyer = 'FIRLI, TIYANA,D1591';
+			$this->M_nonconformity->spititout($buyer,$buyerBaru);
+			$byr = 'D1591';
+			$byrbr = 'B0932';
+			$this->M_nonconformity->spititout2($byr,$byrbr);
+		// 	echo $data['awal'].'-'.$data['ganti'].'<br>';
+		// }
+
+		echo 'udin';
+	}
+
+
 }

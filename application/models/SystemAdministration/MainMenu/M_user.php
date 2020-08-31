@@ -122,7 +122,8 @@ class M_user extends CI_Model {
 			}
 			
 			$sql = "SELECT su.user_id,sugm.user_group_menu_id, sugm.user_group_menu_name, 
-					smod.module_name,smod.module_link,sua.active,sua.user_application_id,sugm.org_id, smod.module_image,sua.lokal,sua.internet
+					smod.module_name,smod.module_link,sua.active,sua.user_application_id,sugm.org_id, smod.module_image,sua.lokal,sua.internet,
+					sugm.required_javascript
 					FROM sys.sys_user su,
 					sys.sys_user_application sua,
 					sys.sys_user_group_menu sugm,

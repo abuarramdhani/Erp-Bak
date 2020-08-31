@@ -6,7 +6,7 @@
           <div class="col-lg-12">
             <div class="col-lg-11">
               <div class="text-right">
-                <h1><b>Rotasi Atasan Perizinan Dinas</b></h1>
+                <h1><b>Rotasi Atasan Perizinan</b></h1>
               </div>
             </div>
             <div class="col-lg-1">
@@ -27,17 +27,88 @@
               <div class="box-header with-border">
                 <div class="col-lg-12">
                   <a href="<?php echo site_url('assets/video/rotasi_atasan_dinas.webm'); ?>" class="btn btn-warning col-lg-1"><span style="color: white" class='fa fa-2x fa-video-camera'></a>
-                  <marquee class="col-lg-11"><label style="font-size: 18px;">Perizinan Dinas yang ditampilkan hanya perizinan hari ini tanggal <?php echo date('d F Y') ?></label></marquee>
+                  <marquee class="col-lg-11"><label style="font-size: 18px;">Perizinan yang ditampilkan hanya perizinan hari ini tanggal <?php echo date('d F Y') ?></label></marquee>
                 </div>
               </div>
               <div class="box-body">
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs pull-right">
-                    <li class="pull-left header"><i class="fa fa-refresh"></i>Rotasi Atasan Perizinan Dinas</li>
+                    <li class="pull-left header"><i class="fa fa-refresh"></i>Rotasi Atasan Perizinan</li>
+                    <li><a data-toggle="tab" href="#izin-pribadi">Perizinan Pribadi</a></li>
+                    <li class="active"><a data-toggle="tab" href="#izin-dinas">Perizinan Dinas</a></li>
                   </ul>
                   <div class="tab-content">
-                    <div id="izin-allAll" class="tab-pane fade in active">
-                      <table class="table table-responsive-xs table-sm table-bordered tabel_izin_dinas_all" style="width: 100%">
+                    <div id="izin-pribadi" class="tab-pane fade in">
+                      <table class="table table-responsive-xs table-sm table-bordered tabel_izin_all" style="width: 100%">
+                        <thead>
+                          <tr>
+                            <th class="text-center" style="white-space: nowrap">No</th>
+                            <th class="text-center" style="white-space: nowrap">Action</th>
+                            <th class="text-center" style="white-space: nowrap">ID Izin</th>
+                            <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
+                            <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
+                            <th class="text-center" style="white-space: nowrap">Kembali</th>
+                            <th class="text-center" style="white-space: nowrap">Nama Pekerja</th>
+                            <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
+                            <th class="text-center" style="white-space: nowrap">Atasan</th>
+                            <th class="text-center" style="white-space: nowrap">Keterangan</th>
+                            <th class="text-center" style="white-space: nowrap">Status</th>
+                            <th class="text-center" style="white-space: nowrap" hidden>Order</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php $no = 1;
+                          foreach ($pribadi as $row) {
+                          ?>
+                            <tr>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
+                                  <button class="btn btn-warning" onclick="edit_pkj_dinas_all(<?php echo $row['id'] ?>, '2')"><span style="color: white" class="fa fa-edit"></button>
+                                <?php } elseif ($row['status'] == 1) { ?>
+                                  <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
+                                <?php } elseif ($row['status'] == 2) { ?>
+                                  <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
+                                <?php } elseif (($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) < date('Y-m-d')) || $row['status'] == 5) {  ?>
+                                  <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span>
+                                <?php } ?>
+                              </td>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $row['id'] ?></td>
+                              <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if ($row['wkt_keluar'] == '' || $row['wkt_keluar'] == null) {
+                                                                                      echo '-';
+                                                                                    } elseif ($row['wkt_keluar'] < '12:00:00') {
+                                                                                      echo date('H:i:s', strtotime($row['wkt_keluar'])) . ' AM';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['wkt_keluar'])) . ' PM';
+                                                                                    } ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php if (($row['back_timestamp'] == '00:00:00' && $row['kembali'] == 0) || $row['back_timestamp'] == null) {
+                                                                                      echo '-';
+                                                                                    } elseif ($row['back_timestamp'] < '12:00:00') {
+                                                                                      echo date('H:i:s', strtotime($row['back_timestamp'])) . ' AM';
+                                                                                    } else {
+                                                                                      echo date('H:i:s', strtotime($row['back_timestamp'])) . ' PM';
+                                                                                    } ?></td>
+                              <td style="white-space: nowrap"><?php $noind = explode(',', $row['nama_pkj']);
+                                                              foreach ($noind as $val) {
+                                                                if ($val == null || $val == '') {
+                                                                  echo " - <br>";
+                                                                } else {
+                                                                  echo $val . '<br>';
+                                                                }
+                                                              }  ?></td>
+                              <td style="white-space: nowrap; text-align: center;"><?php echo $row['jenis_ijin'] ?></td>
+                              <td style="white-space: nowrap"><?php echo $row['nama_atasan'];  ?></td>
+                              <td style="white-space: nowrap"><?php echo $row['keperluan'] ?></td>
+                              <td style="white-space: nowrap"><?php echo $row['status'] ?></td>
+                              <td hidden></td>
+                            </tr>
+                          <?php $no++;
+                          } ?>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div id="izin-dinas" class="tab-pane fade in active">
+                      <table class="table table-responsive-xs table-sm table-bordered tabel_izin_all" style="width: 100%">
                         <thead>
                           <tr>
                             <th class="text-center" style="white-space: nowrap">No</th>
@@ -61,7 +132,7 @@
                             <tr>
                               <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
                               <td style="white-space: nowrap; text-align: center;"><?php if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
-                                  <button class="btn btn-warning" onclick="edit_pkj_dinas_all(<?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
+                                  <button class="btn btn-warning" onclick="edit_pkj_dinas_all(<?php echo $row['izin_id'] ?>, '1')"><span style="color: white" class='fa fa-edit'></button>
                                 <?php } elseif ($row['status'] == 1) { ?>
                                   <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
                                 <?php } elseif ($row['status'] == 2) { ?>
@@ -129,7 +200,7 @@
     <div class="modal-content">
       <div class="modal-header text-center">
         <button type="button" class="close hover" data-dismiss="modal">&times;</button>
-        <h3>Approval Perizinan Dinas</h3>
+        <h3>Rotasi Approval Perizinan</h3>
       </div>
       <div class="modal-body" style="width: 100%; text-align: center;">
         <div class="row">
@@ -186,7 +257,7 @@
             <thead>
               <th style="text-align: center; white-space: nowrap;">No. Induk</th>
               <th style="text-align: center; white-space: nowrap;">Nama</th>
-              <th style="text-align: center; white-space: nowrap;">Tujuan</th>
+              <th style="text-align: center; white-space: nowrap;" class="newText">Tujuan</th>
             </thead>
             <tbody class="eachPekerjaEditAll">
 
@@ -196,7 +267,7 @@
         <br>
         <div class="modal-footer" style="text-align: center;">
           <div>
-            <button type="button" class="btn btn-success" id="app_edit_DinasAll" value="1">Save</button>
+            <button type="button" class="btn btn-success" id="app_edit_DinasAll">Save</button>
           </div>
         </div>
       </div>
@@ -220,20 +291,7 @@
       )
     });
 
-    $('.tabel_izin_dinas_all').DataTable({
-      scrollX: true,
-      fixedColumns: {
-        leftColumns: 5,
-      }
-    });
-    $('.tabel_izin_dinas_approve').DataTable({
-      scrollX: true,
-      fixedColumns: {
-        leftColumns: 5,
-      }
-    });
-    $('.tabel_izin_dinas_check').DataTable();
-    $('.tabel_izin_dinas_reject').DataTable({
+    $('.tabel_izin_all').DataTable({
       scrollX: true,
       fixedColumns: {
         leftColumns: 5,

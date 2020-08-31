@@ -60,6 +60,10 @@ $(document).ready(function(){
 		placeholder: "Pilih Pertanyaan"
 	});
 
+	$('.pts_slcask').select2({
+		placeholder: "Pilih Salah Satu"
+	});
+
 	$('.pts_tblask').on('click','.pts_btn_todelok', function(){
 		var id = $(this).val();
 		var txt = $(this).closest('tr').find('td').eq(1).text();
@@ -318,6 +322,158 @@ $(document).ready(function(){
 		$('#frm_cvmap').val(canv);
 		// $('#pts_frm_btnsm').click();
 	});
+
+	$('#pts_tblimanl').DataTable();
+	$('#pts_slcallpkj').select2({
+		ajax:
+		{
+			url: baseurl+'PatroliSatpam/web/getAllSatpam',
+			dataType: 'json',
+			type: 'get',
+			data: function (params) {
+				return {s: params.term, tgl: $('.pts_pckrwtime').val()};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.noind,
+							text: item.noind.trim()+' - '+item.nama.trim(),
+						}
+					})
+				};
+			},
+			cache: true
+		},
+		delay: 1000,
+		minimumInputLength: 3,
+		placeholder: 'Pilih Pekerja',
+	});
+
+	$('.pts_pckrwtime').daterangepicker({
+		"singleDatePicker": true,
+		"timePicker": true,
+		drops: 'auto',
+		"timePicker24Hour": true,
+		"showDropdowns": true,
+		maxDate: new Date(),
+		locale: {
+			format: 'YYYY-MM-DD HH:mm:ss'
+		},
+	});
+
+	$('#pts_tblimanl').on('click','.pts_btndelmnl', function(){
+		var txt = $(this).closest('tr').find('td').eq(1).text();
+		var id = $(this).val();
+		Swal.fire({
+			showCancelButton: true,
+			title: 'Apa anda yakin?',
+			text: 'Hapus Data \n"'+txt+'"?',
+			type: 'warning',
+			focusCancel: true
+		}).then(function(result) {
+			if (result.value) {
+				$('#surat-loading').show();
+				$.ajax({
+					url: baseurl + 'PatroliSatpam/web/del_input_manual',
+					type: "post",
+					data: {id: id},
+					success: function (response) {
+						location.reload();
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						$('#surat-loading').hide();
+						console.log(textStatus, errorThrown);
+					}
+				});
+			}
+		});
+	});
+
+	$('#pts_numpos').change(function(){
+		$('#pts_lstask').html('');
+		$('#pts_chckask').iCheck('uncheck');
+	});
+
+	$('#pts_btnupjwbn').click(function(){
+		var id = $(this).val();
+		$('#surat-loading').show();
+		$.ajax({
+			url: baseurl + 'PatroliSatpam/web/getjawaban',
+			type: "get",
+			data: {id: id},
+			success: function (response) {
+				$('#pts_mdlupdjwb .modal-body').html(response);
+				$('#pts_mdlupdjwb').modal('show');
+				$('.pts_slcajz').select2();
+				$('#surat-loading').hide();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				$('#surat-loading').hide();
+				console.log(textStatus, errorThrown);
+			}
+		});
+	});
+});
+
+$(document).on('click','.pts_btndelattch', function(){
+	var id = $(this).val();
+	Swal.fire({
+		showCancelButton: true,
+		title: 'Apa anda yakin?',
+		text: 'Hapus Foto ini?',
+		type: 'error',
+		focusCancel: true
+	}).then(function(result) {
+		if (result.value) {
+			$('#surat-loading').show();
+			$.ajax({
+				url: baseurl + 'PatroliSatpam/web/del_attch_manual',
+				type: "post",
+				data: {id: id},
+				success: function (response) {
+					location.reload();
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					$('#surat-loading').hide();
+					console.log(textStatus, errorThrown);
+				}
+			});
+		}
+	});
+});
+
+$(document).on("ifChecked", "#pts_chcktmn", function () {
+	$("#pts_endisdiv .endis").each(function(){
+		$(this).attr('disabled', false);
+	});
+});
+$(document).on("ifUnchecked", "#pts_chcktmn", function () {
+	$("#pts_endisdiv .endis").each(function(){
+		$(this).attr('disabled', true);
+	});
+});
+
+$(document).on("ifChecked", "#pts_chckask", function () {
+	var pos = $('#pts_numpos').val();
+	$('#surat-loading').show();
+	$.ajax({
+		url: baseurl + 'PatroliSatpam/web/ajax_pertanyaan',
+		type: "get",
+		data: {pos: pos},
+		success: function (response) {
+			$('#pts_lstask').html(response);
+			$('.pts_slcajz').select2();
+			$('#surat-loading').hide();
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			$('#surat-loading').hide();
+			console.log(textStatus, errorThrown);
+		}
+	});
+});
+$(document).on("ifUnchecked", "#pts_chckask", function () {
+	$('#pts_lstask').html('');
 });
 
 

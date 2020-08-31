@@ -1029,4 +1029,56 @@ class M_nonconformity extends CI_Model
         $this->db->delete('pm.pm_po_oracle_non_conformity_headers');
     }
 
+    function getReportMonitoring()
+    {
+        $query = $this->db->query("SELECT DISTINCT
+        head.header_id
+        ,head.non_conformity_num
+        ,head.verificator
+        ,head.creation_date as periode
+        ,head.delivery_date as tgl_sj
+        ,head.packing_list as no_sj
+        ,head.assign as tasklist
+        ,head.supplier as vendor
+        ,head.forward_buyer
+        
+        from
+        pm.pm_po_oracle_non_conformity_headers head
+        ORDER BY head.creation_date ASC");
+
+        return $query->result_array();
+    }
+
+    public function getVendor()
+    {
+        $query = $this->db->query("SELECT distinct supplier as vendor
+        from pm.pm_po_oracle_non_conformity_headers 
+        where supplier is not null and supplier <> '' 
+        order by supplier ASC");
+
+        return $query->result_array();
+    }
+
+    public function getBuyerMonitor()
+    {
+        $query = $this->db->query("SELECT distinct buyer
+        from pm.pm_po_oracle_non_conformity_line_items 
+        where buyer is not null and buyer <> '' 
+        order by buyer ASC");
+
+        return $query->result_array();
+    }
+
+    public function spititout($buyer,$buyerBaru)
+    {
+        $this->db->where('buyer',$buyer);
+        $this->db->update('pm.pm_po_oracle_non_conformity_line_items', array('buyer'=> $buyerBaru));
+    }
+
+    public function spititout2($byr,$byrbr)
+    {
+        $this->db->where('forward_to',$byr);
+        $this->db->update('pm.pm_po_oracle_non_conformity_headers', array('forward_to'=> $byrbr));
+    }
+
 }

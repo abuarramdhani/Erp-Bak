@@ -2,12 +2,10 @@
 			</div>
 			<footer class="main-footer" style="margin:0;">
 				<div class="pull-right hidden-xs">
-					Page rendered in <strong>{elapsed_time}</strong> seconds.
-					<strong>Copyright &copy; Quick 2015<?php if (date('Y') > 2015) {
-															echo '-' . date('Y');
-														} ?>.</strong> All rights reserved.
+					<span>Page rendered in <strong>{elapsed_time}</strong> seconds.</span>
+					<strong>Copyright &copy; Quick 2015-<?= date('Y') ?>.</strong> All rights reserved.
 				</div>
-				<b>Version</b> 1.0.0
+				<span><b>Version</b> 1.0.0</span>
 			</footer>
 			<script>
 				const baseurl = "<?= base_url() ?>";
@@ -91,166 +89,175 @@
 			<script src="<?= base_url('assets/plugins/fakeLoading/fakeLoading.js') ?>"></script>
 			<script src="<?= base_url('assets/plugins/fullcalendar-1.6.2/fullcalendar/fullcalendar.min.js') ?>"></script>
 
-
 			<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
 			<script src="<?= base_url('assets/js/custom.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customFA.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customCM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customAL.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customAP.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customAPD.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customAR.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customCR.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMK.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPRS.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customKL.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customTIMS.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customDC.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPL.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customDC.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customTR.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customWM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSL.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customGA.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customGRR.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customLKH.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customLK.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customCDP.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customOC.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customOJT.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customDS.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPP.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customICT.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customWR.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMP.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMPK.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPPO.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPC.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPOB.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMC.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPKEL.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customECM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customLKKK.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customWH.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customWMS.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMI.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customUM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customHLCM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMO.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customERC.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customBI.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customTI.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customTF.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPPH.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSPL.js?v=') . time() ?>"></script>
-			<script src="<?= base_url('assets/js/customWHS.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customBK.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customKMK.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPD.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMPO.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customOR.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMOA.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customET.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customOSP.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customML.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMPBG.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSGA.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customTB.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPurM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSPO.js?version=' . filemtime('assets/js/customSPO.js')) ?>"></script>
-			<script src="<?= base_url('assets/js/customTK.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customAS.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMBK.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMPM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPCP.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customCSC.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMLP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMLPB.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMLPA.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMLPD.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMPR.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMBI.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPLO.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPBD.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customSI.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSPS.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMFO.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customVBC.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMBP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMSO.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPPHC.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMPG.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPSS.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customRL.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customTPB.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPUM.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customFPD.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customOKB.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMPL.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customSMS.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPDP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customKGS.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customRJP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMD.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customADO.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customIPM.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPSPT.js'); ?>"></script>
-			<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customHW.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMCC.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customGTSKK.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customCKB.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customME.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customRPO.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customSMT.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMDS.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customIMO.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customRKH.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customAC.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSGS.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customMPI.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customPRP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customTM.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPK.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPBI.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customSIP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customCBM.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customAPL.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customKKI.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customCNDP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMSJ.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customORS.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customORP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPTS.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPPD.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customCMO.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customPAD.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customJT.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customJTIP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMCT.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customWLP.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customDBHA.js'); ?>"></script>
-			<script src="<?= base_url('assets/js/customMTT.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customCVD.js') ?>"></script>
+			<?php
+			$customJavascript = $this->session->javascript;
+
+			if ($customJavascript) {
+				$customJavascript_ = explode(";", $customJavascript);
+				foreach ($customJavascript_ as $key => $value) :
+			?>
+					<script src="<?= base_url('assets/js/' . trim($value)) ?>"></script>
+				<?php endforeach ?>
+			<?php
+			} else {
+			?>
+				<script src="<?= base_url('assets/js/customFA.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customCM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customAL.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customAP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customAPD.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customAR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customCR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMK.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPRS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customKL.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customTIMS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customDC.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPL.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customDC.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customTR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customWM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSL.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customGA.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customGRR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customLKH.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customLK.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customCDP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customOC.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customOJT.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customDS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customICT.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customWR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMPK.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPPO.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPC.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPOB.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMC.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPKEL.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customECM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customLKKK.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customWH.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customWMS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMI.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customUM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customHLCM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMO.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customERC.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customBI.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customTI.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customTF.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPPH.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSPL.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customWHS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customBK.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customKMK.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPD.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMPO.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customOR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMOA.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customET.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customOSP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customML.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMPBG.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSGA.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customTB.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPurM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSPO.js?version=' . filemtime('assets/js/customSPO.js')) ?>"></script>
+				<script src="<?= base_url('assets/js/customTK.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customAS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMBK.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMPM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPCP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customCSC.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMLP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMLPB.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMLPA.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMLPD.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMPR.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMBI.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPLO.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPBD.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customSI.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSPS.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMFO.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customVBC.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMBP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMSO.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPPHC.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMPG.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPSS.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customRL.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customTPB.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPUM.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customFPD.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customOKB.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMPL.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customSMS.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPDP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customKGS.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customRJP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMD.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customADO.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customIPM.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPSPT.js'); ?>"></script>
+				<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customHW.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMCC.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customGTSKK.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customCKB.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customME.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customRPO.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customSMT.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMDS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customIMO.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customRKH.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customAC.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSGS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMPI.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPRP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customTM.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPK.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPBI.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customSIP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customCBM.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customAPL.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customKKI.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customCNDP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMSJ.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customORS.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customORP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPTS.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPPD.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customCMO.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customPAD.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customJT.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customJTIP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customMCT.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customWLP.js'); ?>"></script>
+ 			    <script src="<?= base_url('assets/js/customDBHA.js'); ?>"></script>
+ 			    <script src="<?= base_url('assets/js/customMTT.js') ?>"></script>
 
 
 
 
-			<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
-			<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
-			<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
-			<!-- <script src="<?= base_url('assets/js/customHWM.js') ?>"></script> -->
-			<script type="text/javascript" src="<?= base_url('assets/js/customCKM.js') ?>"></script>
-			<script src="<?= base_url('assets/js/customSMM.js') ?>"></script>
+				<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
+				<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
+				<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
+				<!-- <script src="<?= base_url('assets/js/customHWM.js') ?>"></script> -->
+				<script type="text/javascript" src="<?= base_url('assets/js/customCKM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSMM.js') ?>"></script>
+			<?php } ?>
 			<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
-
-
 			<script>
 				var id_gd;
 				if (counter_row <= 0) {

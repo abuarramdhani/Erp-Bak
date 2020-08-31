@@ -2124,8 +2124,8 @@ $route['RPP/RekapIKP/(:any)'] 				= 'PerizinanPribadi/C_Rekap/$1';
 $route['RPP/RekapIKP/(:any)/(:any)'] 		= 'PerizinanPribadi/C_Rekap/$1/$2';
 $route['PerizinanPribadi/PSP/ApproveParamedik'] 			= 'PerizinanPribadi/C_Paramedik/index';
 $route['PerizinanPribadi/PSP/ApproveParamedik/(:any)']		= 'PerizinanPribadi/C_Paramedik/$1';
-
-
+$route['PerizinanPribadi/RekapPerizinanSeksi']				= 'PerizinanPribadi/C_RekapSeksi';
+$route['PerizinanPribadi/RekapPerizinanSeksi/(:any)']		= 'PerizinanPribadi/C_RekapSeksi/$1';
 //------------------------------------------------Product Cost-------------------------------------------------------//
 $route['ProductCost']										= 'ProductCost/C_Index';
 $route['ProductCost/BppbgAccount']							= 'ProductCost/MainMenu/C_BppbgAccount';
@@ -4518,10 +4518,11 @@ $route['pengembalian-apd/hubker/(:any)']				= 'PengembalianAPD/C_HubkerApd/$1';
 $route['pengembalian-apd/hubker/(:any)/(:any)']			= 'PengembalianAPD/C_HubkerApd/$1/$2';
 
 // ------------------------------------------------- Jembatan Timbang ---------------------------------------------//
-$route['JembatanTimbang'] 											= 'JembatanTimbang/C_Index';
-$route['JembatanTimbang/Cetak/(:any)'] 					= 'JembatanTimbang/C_Index/$1';
-$route['JembatanTimbang/Cetak/(:any)/(:any)'] 	= 'JembatanTimbang/C_Index/$1/$2';
-$route['JembatanTimbang/Cetak'] 								= 'JembatanTimbang/C_Index/Cetak';
+$route['JembatanTimbang'] 							= 'JembatanTimbang/C_Index';
+$route['JembatanTimbang/Cetak/(:any)'] 				= 'JembatanTimbang/C_Index/$1';
+$route['JembatanTimbang/Cetak/(:any)/(:any)']   	= 'JembatanTimbang/C_Index/$1/$2';
+$route['JembatanTimbang/Cetak'] 					= 'JembatanTimbang/C_Index/Cetak';
+$route['JembatanTimbang/History'] 					= 'JembatanTimbang/C_Index/History';
 
 //---------------------------- JTI INPUT PEMBELIAN -----------------------------//
 $route['jtipembelian'] = 'JTIPembelian/C_Index';

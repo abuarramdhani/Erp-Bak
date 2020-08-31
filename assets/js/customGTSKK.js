@@ -2317,7 +2317,7 @@ function checkNilaiDistribusiObservasi(){
 		})
 		// $('#btnSaveObservation').click();	
 	}else{
-		$('#btnSaveObservationHidden').click();		
+		$('#Observasi').submit();	
 		return true;
 	}
 }

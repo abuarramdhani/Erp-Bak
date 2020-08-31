@@ -13,18 +13,25 @@ class M_history extends CI_Model
 
     public function getRequestedDOList()
     {
-        $sql = "SELECT distinct kad.NO_DO      no_do,
-                                kad.NO_SO      no_so,
-                                to_char(kad.REQUEST_DATE,'DD-MON-YYYY hh24:mi:ss') request_date,
-                                ppf.FIRST_NAME ||' '|| ppf.LAST_NAME request_by,
-                                (select distinct ppfs.FIRST_NAME ||' '|| ppfs.LAST_NAME
-                                    from per_people_f   ppfs
-                                    where kad.REQUEST_TO = ppfs.NATIONAL_IDENTIFIER) request_to,
-                                kad.STATUS     status
-                from khs_approval_do kad
-                    ,per_people_f   ppf
-                where kad.REQUEST_BY = ppf.NATIONAL_IDENTIFIER
-                and kad.STATUS = 'Req Approval'";
+        $sql = "SELECT DISTINCT kad.no_do no_do, kad.no_so no_so,
+                TO_CHAR (kad.request_date,
+                        'DD-MON-YYYY hh24:mi:ss'
+                        ) request_date,
+                ppf.first_name || ' ' || ppf.last_name request_by,
+                (SELECT DISTINCT    ppfs.first_name
+                                || ' '
+                                || ppfs.last_name
+                            FROM per_people_f ppfs
+                        WHERE kad.request_to = ppfs.national_identifier)
+                                                                request_to,
+                (SELECT DISTINCT    ppfs.first_name
+                                || ' '
+                                || ppfs.last_name
+                            FROM per_people_f ppfs
+                        WHERE kad.request_to_2 = ppfs.national_identifier)request_to_2,                kad.status status
+                        FROM khs_approval_do kad, per_people_f ppf
+                        WHERE kad.request_by = ppf.national_identifier
+                        AND kad.status IN ('Req Approval', 'Req Approval 2')";
 
         $query = $this->oracle->query($sql);
         return $query->result_array();

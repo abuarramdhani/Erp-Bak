@@ -111,7 +111,7 @@
                                     </div>
                                     <?php } ?>
                                     <input type="hidden" name="no_order" class="idLaporan" value="<?= $yoKuduDetail['no_order'] ?>"> <br />
-                                    <input type="hidden" name="no_order" class="noInduk" value="<?= $noInduk ?>"> <br />
+                                    <input type="hidden" name="no_order" class="noIndukOppm" value="<?= $noInduk ?>"> <br />
                                         <table class="datatable table table-bordered text-left" style="">
                                             <tr>
                                                 <td class="title">Nama Mesin</td>

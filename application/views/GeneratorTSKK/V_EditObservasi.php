@@ -165,7 +165,7 @@ input[type="search"] {
 <?php foreach ($lihat_hasilObservasi_elemen as $key) { 
 	$id = $key['id_tskk'];
 } ?>
-<form method="POST" action="<?php echo base_url('GeneratorTSKK/resaveEditObservation/'.$id); ?>">
+<form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/resaveEditObservation/'.$id); ?>">
 	<div class="inner" >
 		<div class="row">
 			<div class="col-lg-12">
@@ -807,7 +807,7 @@ input[type="search"] {
 									<div class="col-lg-12" style="padding-top: 8px;">
 										<div style="text-align: center;">
 										<button type="submit" style="float: center; margin-right: 3%; margin-top: -0.5%; display: none" class="btn btn-primary" id="btnHidden"><i class="fa fa-floppy-o"></i> SIMPAN LEMBAR OBSERVASI</button>
-										<button type="button" onclick="checkNilaiDistribusi(this)" style="float: center; margin-left: 3%; margin-right: 5%; margin-top: -0.5%;" class="btn btn-primary" id="btnShow"><i class="fa fa-floppy-o"></i> SIMPAN LEMBAR OBSERVASI</button>
+										<button type="button" onclick="checkNilaiDistribusiObservasi(this)" style="float: center; margin-left: 3%; margin-right: 5%; margin-top: -0.5%;" class="btn btn-primary" id="btnShow"><i class="fa fa-floppy-o"></i> SIMPAN LEMBAR OBSERVASI</button>
 										<!-- <a style="float: center; margin-right: 4%; margin-top: -0.5%;" class="btn btn-success" id="btnExportOBS" href="<?=base_url('GeneratorTSKK/C_Observation/exportObservation/'.$id)?>"><i class="fa fa-download"></i> EXPORT OBSERVATION</a>										
 										<button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-warning" data-toggle="modal" data-target="#Modalku<?php echo $id; ?>" id="btnImportOBS"><i class="fa fa-upload"></i> IMPORT OBSERVATION</button>										 -->
 										</div>

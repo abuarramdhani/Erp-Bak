@@ -228,7 +228,6 @@ class C_Civil extends CI_Controller
 		$lokasi = $this->input->post('lokasi');
 		$tglorder = $this->input->post('tglorder');
 		$penerima = $this->input->post('penerima');
-		$tglterima = $this->input->post('tglterima');
 		$jnsPekerjaan = $this->input->post('jnsPekerjaan');
 		$jnsOrder = $this->input->post('jnsOrder');
 		$voip = $this->input->post('voipOrder');
@@ -244,7 +243,6 @@ class C_Civil extends CI_Controller
 			'lokasi_pengorder'	=>	$lokasi,
 			'tgl_order'			=>	$tglorder,
 			'penerima_order'	=>	$penerima,
-			'tgl_terima'		=>	$tglterima,
 			'jenis_pekerjaan_id'=>	$jnsPekerjaan,
 			'jenis_order_id'	=>	$jnsOrder,
 			'ket'				=>	$keterangan,
@@ -289,38 +287,37 @@ class C_Civil extends CI_Controller
 		$dataInfo = array();
 		$files = $_FILES;
 		$cpt = count($_FILES['tbl_lampiran']['name']);
-		// echo $cpt;exit();
 		for($i=0; $i<$cpt; $i++)
 		{   
-			$cpt2 = count($_FILES['tbl_lampiran']['name'][$i]);
+			$cpt2 = count($files['tbl_lampiran']['name'][$i]);
 			for ($j=0; $j < $cpt2; $j++) { 
 				$filename = $files['tbl_lampiran']['name'][$i][$j];
-				if(empty($filename)) continue;
+				if(!empty($filename)){
+					$_FILES['tbl_lampiran']['name']= str_replace(' ', '_', $files['tbl_lampiran']['name'][$i][$j]);
+					$_FILES['tbl_lampiran']['type']= $files['tbl_lampiran']['type'][$i][$j];
+					$_FILES['tbl_lampiran']['tmp_name']= $files['tbl_lampiran']['tmp_name'][$i][$j];
+					$_FILES['tbl_lampiran']['error']= $files['tbl_lampiran']['error'][$i][$j];
+					$_FILES['tbl_lampiran']['size']= $files['tbl_lampiran']['size'][$i][$j];    
 
-				$_FILES['tbl_lampiran']['name']= str_replace(' ', '_', $files['tbl_lampiran']['name'][$i][$j]);
-				$_FILES['tbl_lampiran']['type']= $files['tbl_lampiran']['type'][$i][$j];
-				$_FILES['tbl_lampiran']['tmp_name']= $files['tbl_lampiran']['tmp_name'][$i][$j];
-				$_FILES['tbl_lampiran']['error']= $files['tbl_lampiran']['error'][$i][$j];
-				$_FILES['tbl_lampiran']['size']= $files['tbl_lampiran']['size'][$i][$j];    
-
-				$this->upload->initialize($this->set_upload_options());
-				if ($this->upload->do_upload('tbl_lampiran')) {
-	                $this->upload->data();
-	            } else {
-	                $errorinfo = $this->upload->display_errors();
-					echo $errorinfo;exit();
-	            }
-	            $ext = pathinfo($filename, PATHINFO_EXTENSION);
-	            $arr = array(
-	            	'order_id'	=>	$id,
-	            	'path'		=>	'assets/upload/CivilMaintenance/'.str_replace(' ', '_', $filename),
-	            	'file_type'	=>	$files['tbl_lampiran']['type'][$i][$j],
-	            	'pekerjaan' =>  $_POST['tbl_pekerjaan'][$i]
-	            	);
-	            $upload = $this->M_civil->insertAttachment($arr);
-				
+					$this->upload->initialize($this->set_upload_options());
+					if ($this->upload->do_upload('tbl_lampiran')) {
+		                $this->upload->data();
+		            } else {
+		                $errorinfo = $this->upload->display_errors();
+						echo $errorinfo;exit();
+		            }
+		            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+		            $arr = array(
+		            	'order_id'	=>	$id,
+		            	'path'		=>	'assets/upload/CivilMaintenance/'.str_replace(' ', '_', $filename),
+		            	'file_type'	=>	$files['tbl_lampiran']['type'][$i][$j],
+		            	'pekerjaan' =>  $_POST['tbl_pekerjaan'][$i]
+		            	);
+		            $upload = $this->M_civil->insertAttachment($arr);
+				}
 	        }        
 		}
+
 
 		if (isset($redirek)) {
 			redirect('civil-maintenance-order/order/view_order/'.$id);

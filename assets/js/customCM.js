@@ -4722,16 +4722,9 @@ $(document).ready(function(){
 					menitKatering = waktuCatering.getMinutes();
 					detikKatering = waktuCatering.getSeconds();
 					// console.log(localStorage.getItem("lastMinutes"))
-					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) <= 45 ) ) {
+					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) == 0 ) ) {
 						if ( parseInt(menitKatering)%5 == 0 && localStorage.getItem("lastMinutesID") != parseInt(menitKatering) ) {
 							localStorage.setItem("lastMinutesID", parseInt(menitKatering))
-							// swal.fire({
-				   //              title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
-				   //              html: "Terdapat XX yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
-				   //              type: "warning",
-				   //              confirmButtonText: 'Close',
-				   //              confirmButtonColor: '#d63031',
-				   //          })
 							$.ajax({
 								method: 'GET',
 								url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/getNotifikasiIzinDinasPTM',

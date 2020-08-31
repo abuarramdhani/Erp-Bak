@@ -77,10 +77,18 @@
                                                                                 echo "<br>";
                                                                             }
                                                                             ?>
-                                                                            <a target="_blank" href="<?= base_url('civil-maintenance-order/order/download_file/'.$lamp['attachment_id']) ?>" data-attachment-id="<?php echo $lamp['attachment_id'] ?>">
+                                                                            <a 
+                                                                                target="_blank" 
+                                                                                href="<?= base_url('civil-maintenance-order/order/download_file/'.$lamp['attachment_id']) ?>" data-attachment-id="<?php echo $lamp['attachment_id'] ?>" 
+                                                                                style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 90%;display: block;float: left;height: 22px;">
                                                                                 <?php echo $no_lamp.'. '.end($lamp_path) ?>
                                                                             </a>
-                                                                            <a data-attachment-id="<?php echo $lamp['attachment_id'] ?>" class="btn btn-danger btn-xs mco_delFile_editKet"><span class="fa fa-trash"></span></a>
+                                                                            <a 
+                                                                                data-attachment-id="<?php echo $lamp['attachment_id'] ?>" 
+                                                                                class="btn btn-danger btn-xs mco_delFile_editKet"
+                                                                                style="float: right;max-width: 10%;">
+                                                                                <span class="fa fa-trash"></span>
+                                                                            </a>
                                                                             <?php
                                                                             $no_lamp++; 
                                                                         }
@@ -109,7 +117,7 @@
                                             </button>
                                         </div>
                                         <div class="col-md-12 text-center" style="margin-top: 20px;">
-                                        <a class="btn btn-warning btn-lg" href="<?php echo base_url('civil-maintenance-order/order/edit_order/'.$id) ?>">Kembali</a>
+                                        <a class="btn btn-warning btn-lg" href="javascript:history.back()">Kembali</a>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +129,7 @@
     </div>
 </section>
 <div class="modal fade" id="edit_aproval" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document" style="width: 90%">
         <form method="post" action="<?= base_url('civil-maintenance-order/order/add_keterangan') ?>" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
@@ -135,9 +143,10 @@
                         <thead class="bg-info">
                             <th>No</th>
                             <th>Pekerjaan</th>
-                            <th width="15%">Qty</th>
-                            <th width="15%">Satuan</th>
+                            <th width="10%">Qty</th>
+                            <th width="10%">Satuan</th>
                             <th>Keterangan</th>
+                            <th width="20%">Lampiran</th>
                             <th>Act</th>
                         </thead>
                         <tbody class="mco_daftarPek_Append">
@@ -177,6 +186,27 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+<div class="modal fade" id="inputOrder" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title" id="exampleModalLongTitle">Lihat Lampiran</label>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <iframe src="" style="width: 100%;height: 500px;"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
     </div>
 </div>
 <script>

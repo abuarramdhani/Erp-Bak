@@ -22,8 +22,82 @@ $(document).ready(function() {
         }
     }
 
+    $('.slcStatusNC').select2({
+        placeholder: 'Filter by Status',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
+    $('.slcVendorNC').select2({
+        placeholder: 'Filter by Due Vendor',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
+    $('.slcBuyerNC').select2({
+        placeholder: 'Filter by Due Buyer',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
+    $('.maxPeriodeNC').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+
+    });
+    
+    $('.minPeriodeNC').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+
+    $('.btnFilterNC').click(function() {
+        $('#ModFilterReportNC').modal('show');
+        $('.slcStatusNC').select2({
+            placeholder: 'Filter by Status',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+    
+        $('.slcVendorNC').select2({
+            placeholder: 'Filter by Due Vendor',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+
+        $('.slcBuyerNC').select2({
+            placeholder: 'Filter by Due Buyer',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+    
+        
+    })
+    
+
+
+    $('#tblMonitoringNonC').DataTable({
+        dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
+                <'row' <'col-sm-12'tr> >
+                <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
+        scrollX: true,
+        scrollCollapse: true,
+        scrollY: "370px",
+        columnDefs: [{
+            "targets": 0,
+            "orderable": false
+        }],
+        order: [
+            [3, 'asc']
+        ],
+        buttons: ['excel']
+    });
+
     $(".nonconfPhoto").change(function() {
-        readURL(this);
+        readURL(this); 
+               
     });
 
     $('.slcRemarkNonConformity').change(function() {
@@ -32,10 +106,10 @@ $(document).ready(function() {
 
         for (let i = 0; i < valArray.length; i++) {
             var elm = valArray[i];
-            var hau = $('.slcRemarkNonConformity option[value="' + elm + '"]').html();
-            htmlArray.push(hau);
+            var hau = $('.slcRemarkNonConformity option[value="' + elm + '"]').html();             htmlArray.push(hau);
         }
         console.log(htmlArray);
+
         $('.remarkReviewNonConformity').html('');
         for (var i = 0; i < htmlArray.length; i++) {
             var elm = htmlArray[i];
@@ -416,8 +490,8 @@ $(document).ready(function() {
                                 list += '<tr class="trSelectedLineNonC" data-row="' + rowId + '">' +
                                     '<td>'+ po +'<input type="hidden" class="form-control" name="hdnPO[]" value="' + po + '"></td>' +
                                     '<td>'+ line +'<input type="hidden" class="form-control" name="hdnLine[]" value="' + line + '"></td>' +
-                                    '<td>'+ status +'<input type="hidden" class="form-control" name="hdnStatusLine[]" value="' + status + '"></td>' +
-                                    '<td>'+noind+', '+buyer+'<input type="hidden" class="form-control" name="hdnBuyer[]" value="'+noind+', '+buyer+'"></td>'+
+                                    '<td>'+buyer+','+noind+'<input type="hidden" class="form-control" name="hdnStatusLine[]" value="' + status + '"></td>' +
+                                    '<td>'+buyer+','+noind+'<input type="hidden" class="form-control" name="hdnBuyer[]" value="'+buyer+','+noind+'"></td>'+
                                     '<td>'+ lppb +'<input type="hidden" class="form-control" name="hdnLppb[]" value="' + lppb + '"></td>'+
                                     '<td>' + item + '<input type="hidden" class="form-control" name="hdnItem[]" value="' + item + '"></td>' +
                                     '<td>' + desc + '<input type="hidden" class="form-control" name="hdnDesc[]" value="' + desc + '"></td>' +
@@ -787,4 +861,57 @@ function exportPDF(m) {
     } else {
         alert('Please allow popups for this website.');
     }
+}
+
+function filterMonitoringReportNC(event) {
+    event.preventDefault();
+    
+    var tableUsed = $('#tblMonitoringNonC').DataTable();
+    //filter by status
+    var statusCol = tableUsed.columns(18);
+    var status = $('.slcStatusNC').val();
+    // console.log(statusCol)
+
+    statusCol.search(status);
+    //end
+
+    //filter by vendor
+    var vendorCol = tableUsed.columns(10);
+    var vendor  = $('.slcVendorNC').val();
+
+    vendorCol.search(vendor);
+    // end
+
+    //filter by buyer
+    var buyerCol = tableUsed.columns(11);
+    var buyer  = $('.slcBuyerNC').val();
+
+    buyerCol.search(buyer);
+    // end
+
+    //tanggal
+    $.fn.dataTable.ext.search.push(
+        function(settings, data, dataIndex) {
+            var min = $('.minPeriodeNC').datepicker("getDate");
+            var max = $('.maxPeriodeNC').datepicker("getDate");
+            var startDate = new Date(data[3]);
+
+            if (min == null && max == null) {
+                return true;
+            }
+            if (min == null && startDate <= max) {
+                return true;
+            }
+            if (max == null && startDate >= min) {
+                return true;
+            }
+            if (startDate <= max && startDate >= min) {
+                return true;
+            }
+            return false;
+        }
+
+    );
+
+    tableUsed.draw();
 }

@@ -7,19 +7,19 @@
         min-height: 100px;
         max-height: 500px;
     }
-    
+
     .bold {
         font-weight: bold;
     }
-    
+
     footer {
         display: none;
     }
-    
+
     [v-cloak] {
         display: none;
     }
-    
+
     .select2 {
         width: 100% !important;
     }
@@ -28,7 +28,7 @@
     <div class="col-lg-12">
         <div class="box box-default" style="border-radius: 5px;">
             <div class="box-header with-border">
-                <h2 class="box-title bold">Menambahkan akun / responsbility batch</h2>
+                <h2 class="box-title bold">Pengelolaan Akun / responsbility batch</h2>
             </div>
             <div class="box-body">
                 <!-- <div class="col-lg-12">
@@ -68,7 +68,7 @@
                                     </td>
                                     <td>
                                         <select v-model="responsibility.inet" class="form-control select4" name="" id="slcInternet" required>
-                                            <option value="" ></option>
+                                            <option value=""></option>
                                             <option value="1">Yes</option>
                                             <option value="0" selected>No</option>
                                         </select>
@@ -78,9 +78,10 @@
                         </table>
                     </div>
                     <div class="form-group">
-                        <button :disabled="disabled.reset" v-on:click.prevent="reset" class="btn btn-danger" style="margin-top: 1em; float: left">Reset</button>
+                        <button :disabled="disabled.reset" v-on:click.prevent="reset" class="btn btn-warning" style="margin-top: 1em; float: left">Reset</button>
                         <button :disabled="disabled.preview" v-on:click.prevent="preview" class="btn btn-primary" style="margin-top: 1em; float: right">Preview</button>
-                        <button :disabled="disabled.process" v-on:click.prevent="finalProcess" type="submit" v-if="showHasil" class="btn btn-success" style="margin-top: 1em; margin-right: 10px; float: right">Proses</button>
+                        <button :disabled="disabled.process" v-on:click.prevent="finalProcess" type="submit" v-if="showHasil" class="btn btn-success" style="margin-top: 1em; margin-right: 10px; float: right">Tambahkan</button>
+                        <button :disabled="disabled.process" v-on:click.prevent="deletedRespo" type="submit" v-if="showHasil" class="btn btn-danger" style="margin-top: 1em; margin-right: 10px; float: right">Hapus</button>
                     </div>
                 </form>
             </div>
@@ -269,7 +270,8 @@
                         noind: vm.input,
                         inet: vm.responsibility.inet,
                         local: vm.responsibility.local,
-                        res_id: vm.responsibility.id
+                        res_id: vm.responsibility.id,
+                        btn_val: 'addRespo'
                     },
                     dataType: 'json',
                     method: 'POST',
@@ -286,7 +288,56 @@
                         console.error(e)
                     }
                 })
-            }
+            },
+            deletedRespo() {
+                // validation
+                const vm = this
+
+                if (!this.responsibility.id) {
+                    Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    }).fire({
+                        customClass: 'swal-font-small',
+                        type: 'error',
+                        title: 'Silahkan melengkapi konfigurasi responsibility'
+                    });
+
+                    return
+                }
+
+                if (!confirm("yakin untuk menghapus responsibility ?")) return
+
+                const url = baseurlx + 'SystemAdministration/Batch/api/input'
+
+                // actually i hate it
+                $.ajax({
+                    url,
+                    data: {
+                        noind: vm.input,
+                        inet: vm.responsibility.inet,
+                        local: vm.responsibility.local,
+                        res_id: vm.responsibility.id,
+                        btn_val: 'delRespo'
+                    },
+                    dataType: 'json',
+                    method: 'POST',
+                    success: res => {
+                        if (res.success) {
+                            swal.fire(res.message, 'silahkan melakukan pengecekan manual', 'success').then(() => {
+                                vm.reset()
+                            })
+                        } else {
+                            swal.fire(res.message, '', 'error')
+                        }
+                    },
+                    error: e => {
+                        console.error(e)
+                    }
+                })
+            },
         },
         created() {
             const vm = this

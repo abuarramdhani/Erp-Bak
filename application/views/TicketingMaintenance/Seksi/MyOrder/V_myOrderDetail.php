@@ -57,7 +57,7 @@
                                             <a href="<?= base_url('TicketingMaintenance/Seksi/NewOrder/editDataOrder/'. $yoKuduDetail['no_order']) ?>"  class="btn btn-warning btn-md" style="float:right;"><i class="fa fa-pencil"></i> Edit Data Order</a>
                                         <?php } ?>
                                         <input type="hidden" name="no_order" class="idLaporan" value="<?= $yoKuduDetail['no_order'] ?>"> <br />
-                                        <input type="hidden" name="no_order" class="noInduk" value="<?= $noInduk ?>"> <br />
+                                        <input type="hidden" name="no_order" class="noIndukOppm" value="<?= $noInduk ?>"> <br />
                                         <table class="datatable table table-bordered text-left" style="">
                                         <tr>
                                                 <td class="title">Nama Mesin</td>

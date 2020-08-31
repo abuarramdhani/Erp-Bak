@@ -65,7 +65,7 @@
                                                 <label>Tanggal Order</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input value="<?= $order['tgl_order'] ?>" required class="form-control mco_tglpick" name="tglorder">
+                                                <input value="<?= $order['tgl_order'] ?>" class="form-control" name="tglorder" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -88,16 +88,6 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <input value="<?= $order['voip'] ?>" required class="form-control" name="voipOrder">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
-                                        <div class="col-md-6">
-                                            <div class="col-md-4">
-                                                <label>Tanggal Terima</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <input value="<?= $order['tgl_terima'] ?>" required class="form-control mco_tglpick" name="tglterima">
                                             </div>
                                         </div>
                                     </div>

@@ -72,6 +72,7 @@ class M_jtipembelian extends CI_Model
                         jti.jt_tickets_1.ticket_number as ticket_number,
                         jti.jt_tickets_1.vehicle_number,
                         jti.jt_tickets_1.created_by,
+                        jti.jt_tickets_1.created_at,
                         jti.jt_tickets_1.document_id as document_id,
                         jti.jt_tickets_1.driver_id as driver_id,
                         jti.jt_tickets_2.ticket_number as ticket_number_2,
@@ -80,13 +81,16 @@ class M_jtipembelian extends CI_Model
                         jti.jt_notifications.response,
                         jti.jt_notifications.report,
                         jti.jt_notifications.id as notifid,
-                        jti.jt_notifications.done
+                        jti.jt_notifications.done,
+                        jti.jt_weight_histories.weight,
+                        jti.jt_weight_histories.weight_2
                       ')
                       ->join('jti.jt_tickets_1', 'jti.jt_tickets_1.document_id = jti.jt_documents.id', 'left')
                       ->join('jti.jt_tickets_2', 'jti.jt_tickets_2.ticket_number = jti.jt_tickets_1.ticket_number', 'left')
                       ->join('jti.jt_drivers', 'jti.jt_drivers.document_id = jti.jt_documents.id', 'left')
                       ->join('jti.jt_notifications', 'jti.jt_notifications.ticket_number = jti.jt_tickets_1.ticket_number', 'left')
                       ->join('jti.jt_document_type', 'jti.jt_document_type.id = jti.jt_documents.document_type', 'left')
+                      ->join('jti.jt_weight_histories', 'jti.jt_weight_histories.ticket_number = jti.jt_tickets_1.ticket_number', 'left')
                       // ->where('jti.jt_documents.created_by', $data)
                       ->order_by('jti.jt_documents.id', 'DESC')
                       ->get('jti.jt_documents')
