@@ -91,6 +91,7 @@ class C_Index extends CI_Controller
             'id_card' => strtoupper(trim($this->security->xss_clean($this->input->post('id_card')))),
             'estimation' => strtoupper(trim($this->security->xss_clean($this->input->post('estimation')))),
             'document_type' => $this->input->post('jenis_dokumen'),
+            'type' => $this->input->post('type'),
             'created_by' => strtoupper(trim($this->security->xss_clean($this->input->post('created_by'))))
         )));
     }

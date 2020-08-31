@@ -20,7 +20,7 @@ class M_jtipembelian extends CI_Model
 
     public function getTypes()
     {
-        $response = $this->db->select('id, name, number_digit')->where('type', 'out')->order_by('id')->get('jti.jt_document_type')->result_array();
+        $response = $this->db->select('id, name, number_digit')->order_by('id')->get('jti.jt_document_type')->result_array();
         if (empty($response)) {
             $response = array(
                 'success' => false,
@@ -130,7 +130,7 @@ class M_jtipembelian extends CI_Model
                         'document_number' => $data['document_number'],
                         'document_type' => $data['document_type'],
                         'created_by' => $data['created_by'],
-                        'type' => 'out',
+                        'type' => $data['type'],
                         'estimation' => $data['estimation']
                     ));
                 if ($this->db->affected_rows() == 1) {
@@ -143,7 +143,7 @@ class M_jtipembelian extends CI_Model
                                 'created_by' => $data['created_by'],
                                 'photo' => empty($data['photo']) ? null : $data['photo'],
                                 'id_card' => $data['id_card'],
-                                'type' =>  'out'
+                                'type' => $data['type'],
                             ));
                         if ($this->db->affected_rows() == 1) {
                             $response['success'] = true;
