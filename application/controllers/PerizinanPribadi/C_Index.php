@@ -46,7 +46,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$aksesRahasia = $this->M_index->allowedParamedik();
+		$aksesRahasia = $this->M_index->allowedAccess();
 		$aksesRahasia = array_column($aksesRahasia, 'noind');
 
 		if (in_array($no_induk, $aksesRahasia)) {
@@ -68,16 +68,12 @@ class C_Index extends CI_Controller
 	public function index1()
 	{
 		//alur di approve IKP,
-		// tizin_pribadi jika status 1 maka approve,
-		// 2 reject,
-		// 5 suto reject tapi ditampilkan un approve,
-
-		// tizin_pribadi_detail dan taktual_pribadi
+		// tizin_pribadi && tizin_pribadi_detail
 		// status - baru insert, ditampilkan un approve
-		// status 1 approve, baru masuk di taktual_pribadi
+		// status 1 approve
+		// status 2 reject
 		// status 3 keluar_ikp
-		// status 4 kembali
-		// status 5 reject
+
 		$user = $this->session->username;
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -121,7 +117,9 @@ class C_Index extends CI_Controller
 	{
 		$status = $this->input->post('keputusan');
 		$idizin = $this->input->post('id');
-		$update = $this->M_index->update($status, $idizin);
+		$keputusan = ($status) ? '1' : '2';
+		$this->M_index->update($status, $idizin, $keputusan);
+		$this->M_index->updateTizinPribadiDetail($idizin, $keputusan);
 
 		redirect('IKP/ApprovalAtasan');
 	}
@@ -160,7 +158,7 @@ class C_Index extends CI_Controller
 
 		if (!empty($result)) {
 			foreach ($result as $key) {
-				$update2_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '5', $id);
+				$update2_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '2', $id);
 			}
 		}
 

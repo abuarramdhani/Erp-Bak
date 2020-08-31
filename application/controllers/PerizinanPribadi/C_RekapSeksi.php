@@ -51,7 +51,7 @@ class C_RekapSeksi extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $aksesRahasia = $this->M_index->allowedParamedik();
+        $aksesRahasia = $this->M_index->allowedAccess();
         $aksesRahasia = array_column($aksesRahasia, 'noind');
 
         if (in_array($no_induk, $aksesRahasia)) {
