@@ -20,7 +20,7 @@ class M_jtipembelian extends CI_Model
 
     public function getTypes()
     {
-        $response = $this->db->select('id, name, number_digit')->where('type', 'out')->order_by('id')->get('jti.jt_document_type')->result_array();
+        $response = $this->db->select('id, name, number_digit')->order_by('id')->get('jti.jt_document_type')->result_array();
         if (empty($response)) {
             $response = array(
                 'success' => false,
