@@ -149,13 +149,13 @@ class M_pekerjaterhitungcatering extends CI_Model
 				   			select fs_jam_awal
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					)
 				   	AND LEFT(tpres.waktu, 5) <= (
 				   			select fs_jam_akhir
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 				   	AND tpres.tanggal = '$tanggal'
 					INNER JOIN \"Catering\".ttempat_makan tmkn 
@@ -383,13 +383,13 @@ class M_pekerjaterhitungcatering extends CI_Model
 				   			select fs_jam_awal
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '2'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 			   	AND LEFT(tpres.waktu, 5) <= (
 				   			select fs_jam_akhir
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '2'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					)  
 			   	AND tpres.tanggal = '$tanggal' 
 				INNER JOIN \"Catering\".ttempat_makan tmkn 
@@ -402,13 +402,13 @@ class M_pekerjaterhitungcatering extends CI_Model
 				   			select fs_jam_awal
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 				   	AND LEFT(waktu, 5) <= (
 				   			select fs_jam_akhir
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 				   	AND (tanggal = '$tanggal')
 				   	AND noind NOT IN (
