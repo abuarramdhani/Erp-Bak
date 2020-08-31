@@ -163,7 +163,8 @@ function JTIPembelianInput() {
   var no_induk_mu = $('#no_induk_mu').val()
   var estimasi = $('#estimasi_jti').val()
   var jenis_dokumen = $('#jenis_dokumen').val()
-
+  var type = $('#type').val()
+  
   $.ajax({
     url: baseurl+'jtipembelian/Input/addDriver',
     type: 'POST',
@@ -173,6 +174,7 @@ function JTIPembelianInput() {
       created_by: no_induk_mu,
       estimation: estimasi,
       jenis_dokumen: jenis_dokumen,
+      type: type,
     },
     beforeSend:function() {
       Swal.showLoading()
