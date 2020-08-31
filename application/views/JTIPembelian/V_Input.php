@@ -28,10 +28,23 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="">Nama Driver / PIC</label>
-                <input type="text" class="form-control" id="namaDriver" placeholder="Nama Driver">
-                <input type="hidden" id="no_induk_mu" value="<?php echo $this->session->user;?>">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Nama Driver / PIC</label>
+                    <input type="text" class="form-control" id="namaDriver" placeholder="Nama Driver">
+                    <input type="hidden" id="no_induk_mu" value="<?php echo $this->session->user;?>">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Type</label>
+                    <select class="form-control select2" id="type" name="type" data-placeholder="Tipe Proses">
+                      <option value="out">Pengeluaran</option>
+                      <option value="in">Penerimaan</option>
+                    </select>
+                  </div>
+                </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
