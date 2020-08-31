@@ -226,7 +226,7 @@ class M_index extends CI_Model
     {
         $user = $this->session->userdata('user');
         if (!empty($periode) && !empty($end)) {
-            $where = 'where ' . $periode . $end;
+            $where = 'where ' . $periode . ' and ' . $end;
         } elseif (empty($periode) && !empty($end)) {
             $where = 'where' . $end;
         } else {
