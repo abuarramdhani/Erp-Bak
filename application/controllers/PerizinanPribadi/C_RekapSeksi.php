@@ -95,7 +95,7 @@ class C_RekapSeksi extends CI_Controller
 
         $data['jenis'] = '2';
         $whereSeksi = "tp.kodesie like '$kodesie%'";
-        $data['IzinApprove'] = $this->M_index->IzinApprove($periode, '', $whereSeksi);
+        $data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode, '', $whereSeksi);
         if ($export == 'Excel') {
             $data['date'] = date("d-m-Y");
 
@@ -124,6 +124,8 @@ class C_RekapSeksi extends CI_Controller
             $pdf->setTitle($filename);
             $pdf->Output($filename, 'I');
         } else {
+            $data['hiden'] = 'hidden';
+
             $view = $this->load->view('PerizinanPribadi/V_Process', $data);
             echo json_encode($view);
         }

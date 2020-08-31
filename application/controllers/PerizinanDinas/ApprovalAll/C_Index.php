@@ -106,7 +106,7 @@ class C_Index extends CI_Controller
 		}
 
 		$data['atasan'] = $this->M_index->getAtasan();
-		$data['pribadi'] = $this->M_index->GetIzinPribadi($no_induk, '');
+		$data['pribadi'] = $this->M_index->GetIzinPribadi();
 
 		$today = date('Y-m-d');
 
