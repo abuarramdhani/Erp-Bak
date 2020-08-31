@@ -11,18 +11,16 @@ class M_index extends CI_Model
 
     public function allowedAccess()
     {
-        $sql = "select
-                    noind
+        $sql = "SELECT distinct
+                    a.noind
                 from
-                    hrd_khs.tpribadi
+                    hrd_khs.tpribadi a
+                    left join hrd_khs.trefjabatan b on a.noind = b.noind
                 where
-                    (kodesie like '4010101%'
-                    or noind = 'B0307'
-                    or noind = 'J1269'
-                    or noind = 'B0898'
-                    or noind = 'B0720')
-                    and keluar = '0'
-                    and kd_jabatan <= '13'";
+                    (b.kodesie like '4010101%'
+                    or a.noind in ('B0307','J1269','B0898','B0720'))
+                    and a.keluar = '0'
+                    and a.kd_jabatan <= '13'";
         return $this->personalia->query($sql)->result_array();
     }
 
