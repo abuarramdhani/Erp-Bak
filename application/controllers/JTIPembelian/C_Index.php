@@ -128,6 +128,16 @@ class C_Index extends CI_Controller
       }
     }
 
+    public function del_dd()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Hai..";
+      }else {
+        $res = $this->M_jtipembelian->del_dd($this->input->post('document_id'), $this->input->post('driver_id'));
+        echo json_encode($res);
+      }
+    }
+
     public function getHistoryJTI()
     {
       $data['get'] = $this->M_jtipembelian->History($this->session->user);
