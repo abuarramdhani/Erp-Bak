@@ -20,6 +20,7 @@
       <th colspan="3"><center>BERAT TIMBANG</center></th>
       <th rowspan="2"><center>NOTIFIKASI</center></th>
       <th rowspan="2"><center>RESPONSE</center></th>
+      <th rowspan="2"><center>AKSI</center></th>
     </tr>
     <tr class="bg-primary">
       <th style="border-top:0px solid white;"><center>KE_1</center></th>
@@ -39,9 +40,9 @@
       }else {
         $sty = '';
       }?>
-      <tr <?php echo $sty; ?> row-id = <?php echo $no ?>> 
+      <tr <?php echo $sty; ?> row-id = <?php echo $no ?> >
         <td><center><?php echo $no ?></center></td>
-        <td><center><?php echo $g['document_number'] ?></center></td>
+        <td><center><?php echo $g['document_number'] ?> </center></td>
         <td><center><?php echo $g['document_type'] ?></center></td>
         <td><center><?php echo $g['type'] ?></center></td>
         <td><center style="font-weight:bold" onclick="jtieditmodal('<?php echo $g['document_number'] ?>', '<?php echo $g['name'] ?>', <?php echo $g['driver_id'] ?>)" data-toggle="modal" data-target="#JTIUPDATE"><?php echo $g['name'] ?></center></td>
@@ -70,6 +71,9 @@
               <button type="button" class="btn btn-info" disabled><i class="fa fa-send"></i></button>
             <?php } ?>
           </center>
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" onclick="jtip_delete('<?php echo $g['document_id'] ?>', '<?php echo $g['driver_id'] ?>')" ><i class="fa fa-trash"></i></button>
         </td>
 
         <input type="hidden" id="JTInotifid" value="<?php echo $g['notifid'] ?>">

@@ -8,6 +8,56 @@ const jtieditmodal = (nodok, nama, driver_id) =>{
   $('#id_driver').val(driver_id)
 }
 
+const jtip_delete = (id_doc, id_drive) =>{
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.value) {
+    $.ajax({
+    url: baseurl+'jtipembelian/History/del_dd',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      document_id: id_doc,
+      driver_id: id_drive
+    },
+    beforeSend: function() {
+      Swal.showLoading()
+    },
+    success: function(result) {
+      if (result) {
+        Swal.fire({
+          position: 'middle',
+          type: 'success',
+          title: 'Data Berhasil Di Hapus!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }else {
+        Swal.fire({
+          position: 'middle',
+          type: 'error',
+          title: 'Data Tidak Berhasil Di Hapus!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+  }
+})
+
+}
+
 const SaveDriver = () => {
   const ajax_jtip = $.ajax({
                       url: baseurl+'jtipembelian/History/updateNamaDriver',
@@ -164,7 +214,7 @@ function JTIPembelianInput() {
   var estimasi = $('#estimasi_jti').val()
   var jenis_dokumen = $('#jenis_dokumen').val()
   var type = $('#type').val()
-  
+
   $.ajax({
     url: baseurl+'jtipembelian/Input/addDriver',
     type: 'POST',
