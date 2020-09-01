@@ -105,7 +105,7 @@
 							<td style="border: 1px solid;"><?= $key['noind'] ?></td>
 							<?php if ($allinOne == '3') { ?><td style="border: 1px solid;"><?= ($key['gol']) ? $key['gol'] : '-' ?></td><?php } ?>
 							<td style="border: 1px solid;"><?= $key['lama_trainee'] . ' bulan' ?></td>
-							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'] . '-1 day')) ?></td>
+							<td style="border: 1px solid;"><?= ($key['lama_trainee'] == '0') ? date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'])) : date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'] . '-1 day')) ?></td>
 						</tr>
 					<?php } ?>
 				</tbody>
@@ -159,7 +159,7 @@
 							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['tgllahir'])) ?></td>
 							<td style="border: 1px solid;"><?= $key['noind'] ?></td>
 							<td style="border: 1px solid;"><?= $key['gol'] ? $key['gol'] : '-' ?></td>
-							<td style="border: 1px solid;"><?= ($key['lama_trainee'] != '0') ? date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'] . '-1 day')) : date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['tgl_masuk'])) ?></td>
+							<td style="border: 1px solid;"><?= ($key['lama_trainee'] != '0') ? date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'] . '-1 day')) : date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'])) ?></td>
 							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['diangkat'])) . ' - ' . date('d/m/Y', strtotime($key['akhkontrak'])) ?>
 						</tr>
 					<?php } ?>
@@ -319,7 +319,7 @@
 							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['tgllahir'])) ?></td>
 							<td style="border: 1px solid;"><?= $key['noind'] ?></td>
 							<td style="border: 1px solid;"><?= $key['gol'] ? $key['gol'] : '-' ?></td>
-							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'] . '-1 day')) ?></td>
+							<td style="border: 1px solid;"><?= ($key['lama_trainee'] != '0') ? date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'] . '-1 day')) : date('d/m/Y', strtotime($key['tgl_masuk'])) . ' - ' . date('d/m/Y', strtotime($key['diangkat'])) ?></td>
 							<td style="border: 1px solid;"><?= date('d/m/Y', strtotime($key['diangkat'])) . ' - ' . date('d/m/Y', strtotime($key['akhkontrak'])) ?></td>
 						</tr>
 					<?php } ?>
