@@ -477,7 +477,7 @@ class M_patrolis extends CI_Model
 
     public function p_jam_terakhir()
     {
-        $sql = "select tgl_server tgl from \"Satpam\".tpatroli t order by tgh_server desc limit 1";
+        $sql = "select tgl_server tgl from \"Satpam\".tpatroli t order by tgl_server desc limit 1";
         if($this->personalia->query($sql)->num_rows() > 0)
             return $this->personalia->query($sql)->row()->tgl;
         else
