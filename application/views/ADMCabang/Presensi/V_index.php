@@ -103,7 +103,9 @@
 																	<td style="text-align: center;"><?= $no++; ?></td>
 																	<td style="text-align: center;"><?= $key['noind']; ?></td>
 																	<td style=""><?= $key['nama']; ?></td>
-																	<td style="text-align: center;"><?= $shi['tgl']; ?></td>
+																	<td data-order="<?= $shi['tgl2']?>" style="text-align: center;"><?= $shi['tgl']; ?></td>
+																	
+
 																	<td><?= $shi['shift']; ?></td>
 																	<td><?php
 																		if (isset($shi['tim']) and !empty($shi['tim'])) {
