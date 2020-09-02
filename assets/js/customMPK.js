@@ -669,6 +669,11 @@ $('#RPP_Cari').on('click', function () {
             },
             success: function (result) {
                 swal.close()
+                $(document).on('icheck', function () {
+                    $('input[type=checkbox].checkChildPribadi').iCheck({
+                        checkboxClass: 'icheckbox_square-blue'
+                    })
+                }).trigger('icheck')
                 $('#areaRekapIKP').html(result)
 
                 $('.tabel_rekap').DataTable({
@@ -678,6 +683,8 @@ $('#RPP_Cari').on('click', function () {
                         leftColumns: 4
                     }
                 });
+
+                cekManualPerizinan()
             }
         })
     }
@@ -710,6 +717,51 @@ $('#izinRekapPDF').on('click', () => {
     window.open(alamat + "?valButton=" + valbutton + "&periodeRekap" + periodeRekap, "_blank");
 
 })
+
+function cekManualPerizinan() {
+    $('.tabel_rekap').on('click', '.checkChildPribadi', function (e) {
+        let id = e.currentTarget.value
+
+        $.ajax({
+            type: 'POST',
+            data: {
+                id
+            },
+            url: baseurl + 'RPP/RekapIKP/updateManual',
+            beforeSend: () => {
+                swal.fire({
+                    text: 'waiting',
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                })
+            },
+            success: (a) => {
+                swal.close()
+                if (a == 'ok') {
+                    swal.fire({
+                        title: 'OK',
+                        type: 'success',
+                        showConfirmButton: false,
+                        timer: 500,
+                        position: 'top'
+                    })
+                    console.log($(this));
+
+                    $(this).closest('td').html('<a><span style="color: green" class="fa fa-check fa-2x"></span></a>')
+                } else {
+                    swal.fire({
+                        title: 'Connection Error',
+                        type: 'error',
+                        showConfirmButton: false,
+                        timer: 500,
+                        position: 'top'
+                    })
+                }
+            }
+        })
+
+    })
+}
 
 //Selesai
 

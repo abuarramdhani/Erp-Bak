@@ -68,7 +68,7 @@
                                                 <p style="color: red;">*kosongkan Nomor Induk, untuk menampilkan semua data</p>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12 panel-footer">
                                             <div class="col-lg-12 text-center">
                                                 <button class="btn btn-primary" id="RPP_Cari" value="1" style="width: 80px;">Cari</button>&emsp;
                                                 <button class="btn btn-warning" onclick="window.location.reload()" style="width: 80px;">Reset</button>&emsp;
