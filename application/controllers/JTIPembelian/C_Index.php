@@ -92,6 +92,7 @@ class C_Index extends CI_Controller
             'estimation' => strtoupper(trim($this->security->xss_clean($this->input->post('estimation')))),
             'document_type' => $this->input->post('jenis_dokumen'),
             'type' => $this->input->post('type'),
+            'weight_item' => $this->input->post('weight_item'),
             'created_by' => strtoupper(trim($this->security->xss_clean($this->input->post('created_by'))))
         )));
     }
@@ -123,7 +124,7 @@ class C_Index extends CI_Controller
       if (!$this->input->is_ajax_request()) {
         echo "Hai..";
       }else {
-        $res = $this->M_jtipembelian->updateNamaDriver(['name' => $this->input->post('nama_driver')], $this->input->post('id'));
+        $res = $this->M_jtipembelian->updateNamaDriver(['name' => strtoupper($this->input->post('nama_driver'))], $this->input->post('id'));
         echo json_encode($res);
       }
     }
@@ -138,9 +139,24 @@ class C_Index extends CI_Controller
       }
     }
 
+    public function update_doc()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Hai..";
+      }else {
+        $data = [
+          'document_type' => $this->input->post('jenis_dokumen'),
+          'estimation' => $this->input->post('estimasi')
+        ];
+        $res = $this->M_jtipembelian->update_doc($this->input->post('id'), $data);
+        echo json_encode($res);
+      }
+    }
+
     public function getHistoryJTI()
     {
       $data['get'] = $this->M_jtipembelian->History($this->session->user);
+      $data['jenis_dokumen'] = $this->M_jtipembelian->getTypes();
       $this->load->view('JTIPembelian/AjaxJTI/V_Ajax', $data);
     }
 
