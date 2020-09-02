@@ -138,16 +138,16 @@ class C_NonConformityAndroid extends CI_Controller
 		$headerId = $this->M_nonconformity->simpanHeader($header);
 
 		//////////////////////UPLOAD PHOTO////////////
-		$path = ('192.168.168.127/assets/upload/NonConformity/');
+		$path = ('./assets/upload/NonConformity/');
 		for($j=0;$j<count($_FILES['file']['tmp_name']);$j++){
-			// echo $_FILES['file']['tmp_name'][$j];
 			$response['error'] = false;
 			$response['message'] =  "number of files recieved is = ".count($_FILES['file']['name']);
 			if(move_uploaded_file($_FILES['file']['tmp_name'][$j],$path.$_FILES['file']['name'][$j])){
-				  $response['error'] = false;
-			$response['message'] =  $response['message']. "moved sucessfully ::  ";
+				  	$response['error'] = false;
+					$response['message'] =  $response['message']. "moved sucessfully ::  ";
+				
 
-					$inputFileName 	= '192.168.168.127/assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
+					$inputFileName 	= './assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
 				
 					if(is_file($inputFileName))
 					{

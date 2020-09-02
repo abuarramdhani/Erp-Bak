@@ -321,7 +321,7 @@
         <div class="panel-footer">
             <form class="form-horizontal" id="form-simpan"  enctype="multipart/form-data" method="post" action="<?php echo site_url('PurchaseManagementGudang/NonConformity/pendingExecute');?>">
                 <div align="right">
-                    <?php if ($PoOracleNonConformityLines[0]['problem_completion'] != null || $PoOracleNonConformityLines[0]['problem_completion'] != '') { ?>
+                    <?php if ($PoOracleNonConformityLines[0]['problem_completion'] != null && $PoOracleNonConformityLines[0]['problem_tracking'] != null && $PoOracleNonConformityLines[0]['problem_completion'] != null && $PoOracleNonConformityLines[0]['scope'] != null && $PoOracleNonConformityLines[0]['completion_date'] != null && $PoOracleNonConformityLines[0]['judgement'] != null) { ?>
                             <input type="hidden" name="hdnHdr" value="<?php echo $PoOracleNonConformityHeaders[0]['header_id'];?>">
                             <button type="submit" class="btn btn-success btn-lg">Pending Execute</button>
                     <?php } ?>

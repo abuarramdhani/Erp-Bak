@@ -501,7 +501,7 @@ $(document).ready(function() {
                                     // '<td>' + unitPrice + '<input type="hidden" class="form-control" name="hdnUnitPrice[]" value="' + unitPrice + '"></td>' +
                                     '<td>' + qtyPo + '<input type="hidden" class="form-control" name="hdnQtyPo[]" value="' + qtyPo + '"></td>' +
                                     '<td>' + qtyRecipt + '<input type="hidden" class="form-control" name="hdnQtyRecipt[]" value="' + qtyRecipt + '"></td>' +
-                                    '<td><input type="text" class="form-control" name="txtQtyProblem[]" required></td>' +
+                                    '<td><input type="text" class="form-control" style="background-color :#fbfb5966;" name="txtQtyProblem[]" required></td>' +
                                     '<td><button type="button" class="btn btn-danger btnRevoke" revoke="' + rowId + '"><i class="fa fa-trash"></i></button></td>' +
                                     '</tr>';
 
@@ -746,6 +746,25 @@ $('#tblPoOracleNonConfirmityHeaders').DataTable({
     buttons: ['excel']
 });
 
+$('#tblNCForBuyer').DataTable({
+    dom: 'Bfrtip',
+    "aoColumns": [ 
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+    ],
+    buttons: ['excel']
+});
+
 function previewImg(m) {
     var src1 = $(m).attr('src');
     $('#previewImgArea').show();
@@ -914,4 +933,22 @@ function filterMonitoringReportNC(event) {
     );
 
     tableUsed.draw();
+}
+
+function NonConformityApaini() {
+    var seqil = $('.txaCreateNC').val();
+
+    $.ajax({
+        type: "POST",
+        url: baseurl + 'PurchaseManagementGudang/NonConformity/mauApa',
+        data: {skill : seqil},
+        success: function (response) {
+            console.log(response);
+            swal.fire({
+                type : 'success',
+                title : 'Berhasil'
+            })
+        }
+    });
+
 }

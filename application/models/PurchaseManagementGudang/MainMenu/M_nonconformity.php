@@ -1069,6 +1069,13 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
+    public function getListForBuyer()
+    {
+        $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE forward_buyer = '1'");
+
+        return $query->result_array();
+    }
+
     public function spititout($buyer,$buyerBaru)
     {
         $this->db->where('buyer',$buyer);
