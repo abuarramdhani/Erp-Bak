@@ -109,7 +109,7 @@
 						$classLabel = "label label-success";
 					}elseif ($dataEmployee[0]['status'] == 2) {
 						$status = "Rejected";
-						$classLabel = "label label-dangre";
+						$classLabel = "label label-danger";
 					}else{
 						$status = "New Entry";
 						$classLabel = "label label-default";
@@ -169,12 +169,14 @@
 
 		<div class="panel box-footer" style="padding-left: 50px;">
 			<div class="row">
+				<?php if ($dataEmployee[0]['status'] !=1 && $dataEmployee[0]['status'] !=2): ?>
 				<div class="col-sm-2" align="center" style="margin: 7px">
 					<a id="btnApprove" class="btn btn-primary btn-block" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
 				</div>
 				<div class="col-sm-2" align="center" style="margin: 7px">
 					<button data-toggle="modal" data-target="#rejectApproval" class="btn btn-danger btn-block"><i class="fa fa-close"></i>    Reject</button>
 				</div>
+				<?php endif ?>
 				<div class="col-sm-2" align="center" style="margin: 7px">
 					<a id="btnCetak" class="btn btn-info btn-block" href="<?php echo base_url('AbsenAtasan/List/cetakApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-print"></i>   Cetak</a>
 				</div>
