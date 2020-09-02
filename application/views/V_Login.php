@@ -25,12 +25,14 @@
     <link id="bs-css" href="<?php echo base_url('assets/plugins/cm/css/bootstrap-cerulean.min.css');?>" rel="stylesheet">
 
     <link href="<?php echo base_url('assets/plugins/cm/css/charisma-app.css');?>" rel="stylesheet">
+    <link href="<?= base_url('assets/plugins/Font-Awesome/4.3.0/css/font-awesome.min.css');?>" rel="stylesheet">
     
     <!-- GLOBAL SCRIPTS -->
     <script src="<?php echo base_url('assets/plugins/jquery-2.0.3.min.js');?>"></script>
     <script src="<?php echo base_url('assets/plugins/bootstrap/3.0.0/js/bootstrap.min.js');?>"></script>
     <script src="<?= base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
     <script src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
+    <script src="<?= base_url('assets/plugins/darkreader/darkreader.min.js');?>"></script>
     <!-- <script src="<?= base_url('assets/plugins/sweetAlert/sweetalert.js') ?>"></script> -->
     <!--<script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>"></script>
 	
@@ -86,6 +88,18 @@
 ?>
 <body id="body">
 <div class="ch-container">
+	<!-- Toggle Dark Reader -->
+	<div style="z-index: 1040 !important; padding-bottom: 1.5rem !important; position: fixed; right: 0; bottom: 0; left: 0;">
+		<button type="button" data-toggle="tooltip" data-placement="right" title="Ganti Tampilan ke Mode Malam atau Mode Cerah"
+			class="btn btn-link btnToggleDarkMode" style="text-decoration: none;">
+			<span class="fa-stack" style="font-size: 1.6em;">
+				<i class="fa fa-circle fa-stack-2x text-aqua"></i>
+				<i class="fa fa-moon-o fa-stack-1x" style="z-index: 1; color: white;"></i>
+				<i class="fa fa-sun-o fa-stack-1x" style="z-index: 1; color: white; display: none;"></i>
+			</span>
+		</button>
+	</div>
+
     <div class="main">
         <div class="row">
             <div class="col-md-12 center login-header"></div>
@@ -366,7 +380,43 @@
           name: M[0],
           version: M[1]
         };
-    }
+    };
+    
+    (function() {
+        var cookie = {
+            set: function(v) {
+                document.cookie = v + '=true';
+            },
+            remove: function(v) {
+                document.cookie = v + '=';
+            },
+            get: function(v) {
+                return document.cookie.indexOf(v + '=true') !== -1
+            },
+        };
+
+        $('.btnToggleDarkMode').on('click', function () {
+            if ($('.btnToggleDarkMode').find('.fa-moon-o').is(':visible')) {
+                DarkReader.enable({
+                    brightness: 100,
+                    contrast: 90,
+                    sepia: 10,
+                });
+                if (!cookie.get('khs-erp__dark-reader')) {
+                    cookie.set('khs-erp__dark-reader');
+                }
+                $('.inner').css('background', '');
+            } else {
+                DarkReader.disable();
+                cookie.remove('khs-erp__dark-reader');
+            }
+            $('.btnToggleDarkMode').find('.fa-moon-o, .fa-sun-o').fadeToggle('slow');
+        });
+
+        if (cookie.get('khs-erp__dark-reader')) {
+            $('.btnToggleDarkMode').trigger('click');
+        }
+    })();
 </script>
 
 </body>
