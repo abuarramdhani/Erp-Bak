@@ -103,6 +103,7 @@ class C_PresensiHarian extends CI_Controller
 						}
 					}
 					$arr[$angka1]['data'][$angka2]['tgl'] = $key['tgl'];
+					$arr[$angka1]['data'][$angka2]['tgl2'] = $key['tanggal'];
 					$arr[$angka1]['data'][$angka2]['shift'] = $key['shift'];
 					if (!empty($tim)) {
 						$angka3 = 0;
@@ -138,6 +139,8 @@ class C_PresensiHarian extends CI_Controller
 
 			$data['max'] = $simpan2;
 			$data['pekerja'] = $arr;
+			// echo "<pre>";
+			// print_r($arr);exit();
 		}
 
 		$this->load->view('V_Header',$data);
