@@ -88,7 +88,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$paramedik = $this->M_index->allowedParamedik();
+		$paramedik = $this->M_index->allowedAccess();
 		$paramedik = array_column($paramedik, 'noind');
 
 		if (in_array($no_induk, $paramedik)) {
