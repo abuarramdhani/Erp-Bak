@@ -24,7 +24,7 @@ class M_index extends CI_Model
                     (b.kodesie like '4010101%'
                     or a.noind in ('B0307','J1269','B0898','B0720'))
                     and a.keluar = '0'
-                    and a.kd_jabatan <= '13'";
+                    and left(a.noind, 1) != 'K'";
         return $this->personalia->query($sql)->result_array();
     }
 
@@ -254,7 +254,7 @@ class M_index extends CI_Model
         } else {
             $and = "";
         }
-        $sql = "SELECT
+        $sql = "SELECT distinct
                     ip.id,
                     created_date,
                     (select trim(nama) from hrd_khs.tpribadi where noind = ip.atasan) nama_atasan,
@@ -396,22 +396,22 @@ class M_index extends CI_Model
         return $this->personalia->query($sql);
     }
 
-    public function allowedParamedik()
-    {
-        $sql = "select
-                    noind
-                from
-                    hrd_khs.tpribadi
-                where
-                    (kodesie like '4010101%'
-                    or noind = 'B0307'
-                    or noind = 'J1269'
-                    or noind = 'B0898'
-                    or noind = 'B0720')
-                    and keluar = '0'
-                    and kd_jabatan <= '13'";
-        return $this->personalia->query($sql)->result_array();
-    }
+    // public function allowedParamedik()
+    // {
+    //     $sql = "select
+    //                 noind
+    //             from
+    //                 hrd_khs.tpribadi
+    //             where
+    //                 (kodesie like '4010101%'
+    //                 or noind = 'B0307'
+    //                 or noind = 'J1269'
+    //                 or noind = 'B0898'
+    //                 or noind = 'B0720')
+    //                 and keluar = '0'
+    //                 and kd_jabatan <= '13'";
+    //     return $this->personalia->query($sql)->result_array();
+    // }
 
     public function updateManualHubker($id, $status)
     {

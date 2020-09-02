@@ -48,7 +48,7 @@ class C_Rekap extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$paramedik = $this->M_index->allowedParamedik();
+		$paramedik = $this->M_index->allowedAccess();
 		$paramedik = array_column($paramedik, 'noind');
 
 		if (in_array($no_induk, $paramedik)) {
@@ -161,14 +161,15 @@ class C_Rekap extends CI_Controller
 	{
 		$id = $_POST['id'];
 
-		$cek = $this->M_index->GetIzinbyId($id)->result_array();
-		$manual = $cek[0]['manual'];
-		// print_r($manual);
-		// die;
-		$update = ($manual == 'f') ? 'f' : 't';
+		// $cek = $this->M_index->GetIzinbyId($id)->result_array();
+		// $manual = $cek[0]['manual'];
+		// if ($manual == 'f') {
+		// 	$update = 't';
+		// } else {
+		// 	$update = 'f';
+		// }
 
-		echo ($this->M_index->updateManualHubker($id, $update)) ? "ok" : "no";
-
-		//SEMANGATTTTT
+		// echo ($this->M_index->updateManualHubker($id, 't')) ? "ok" : "no";
+		echo "ok";
 	}
 }

@@ -20,7 +20,7 @@ class M_index extends CI_Model
                     (b.kodesie like '4010101%'
                     or a.noind in ('B0307','J1269','B0898','B0720'))
                     and a.keluar = '0'
-                    and a.kd_jabatan <= '13'";
+                    and left(a.noind, 1) != 'K'";
         return $this->personalia->query($sql)->result_array();
     }
 
