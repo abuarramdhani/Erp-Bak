@@ -140,12 +140,12 @@ class C_NonConformityAndroid extends CI_Controller
 		//////////////////////UPLOAD PHOTO////////////
 		$path = ('./assets/upload/NonConformity/');
 		for($j=0;$j<count($_FILES['file']['tmp_name']);$j++){
-			// echo $_FILES['file']['tmp_name'][$j];
 			$response['error'] = false;
 			$response['message'] =  "number of files recieved is = ".count($_FILES['file']['name']);
 			if(move_uploaded_file($_FILES['file']['tmp_name'][$j],$path.$_FILES['file']['name'][$j])){
-				  $response['error'] = false;
-			$response['message'] =  $response['message']. "moved sucessfully ::  ";
+				  	$response['error'] = false;
+					$response['message'] =  $response['message']. "moved sucessfully ::  ";
+				
 
 					$inputFileName 	= './assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
 				

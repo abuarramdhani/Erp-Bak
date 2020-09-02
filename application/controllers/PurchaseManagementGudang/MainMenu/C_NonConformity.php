@@ -1329,10 +1329,7 @@ class C_NonConformity extends CI_Controller
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		
-		
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);	
 
 		$monitoring_report = $this->M_nonconformity->getReportMonitoring();
 		
@@ -1354,9 +1351,33 @@ class C_NonConformity extends CI_Controller
 		$data['list_vendor'] = $this->M_nonconformity->getVendor();
 		$data['list_buyer'] = $this->M_nonconformity->getBuyerMonitor();
 
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PurchaseManagementGudang/NonConformity/V_MonitoringReport', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function listForBuyer()
+	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'List Data For Buyer';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'List Data For Buyer';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getListForBuyer();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataForBuyer', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -1402,7 +1423,7 @@ class C_NonConformity extends CI_Controller
 		// 						'ganti' => 'TUNGGAL DJAJA INDAH, PT. PABRIK CAT,B0729',
 		// 					),
 		// 					array(
-		// 						'awal' => 'B0729, SETYANINGSIH, RAHAYU',
+		// 						'awal' => 'B0729,SETYANINGSIH, RAHAYU',
 		// 						'ganti' => 'SETYANINGSIH, RAHAYU,B0729',
 		// 					),
 		// 					array(
@@ -1438,12 +1459,8 @@ class C_NonConformity extends CI_Controller
 		// 						'ganti' => 'ANUGRAH SENTOSA, CV,B0726',
 		// 					),
 		// 					array(
-		// 						'awal' => 'RATNASARI, FITRI, B0900',
-		// 						'ganti' => 'RATNASARI, FITRI,B0900',
-		// 					),
-		// 					array(
-		// 						'awal' => 'INTITECH SOLUTIONS, PT, D1157',
-		// 						'ganti' => 'INTITECH SOLUTIONS, PT,D1157',
+		// 						'awal' => 'B0900, RATNASARI, FITRI',
+		// 						'ganti' => 'RATNASARI, FITRI, B0900',
 		// 					),
 							
 		//  				);
@@ -1457,7 +1474,27 @@ class C_NonConformity extends CI_Controller
 		// 	echo $data['awal'].'-'.$data['ganti'].'<br>';
 		// }
 
+
 		echo 'udin';
+	}
+
+	public function apaini()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = '';
+		$data['Menu'] = '';
+		$data['SubMenuOne'] = ' ';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_apaini');
+		$this->load->view('V_Footer',$data);
 	}
 
 
