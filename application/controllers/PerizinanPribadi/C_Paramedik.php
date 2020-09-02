@@ -1,10 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
-* 
-*/
+ * 
+ */
 class C_Paramedik extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -26,8 +26,7 @@ class C_Paramedik extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
+		if ($this->session->is_logged) {
 		} else {
 			redirect('');
 		}
@@ -46,16 +45,16 @@ class C_Paramedik extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$datamenu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$paramedik = $this->M_index->allowedParamedik();
+		$paramedik = $this->M_index->allowedAccess();
 		$paramedik = array_column($paramedik, 'noind');
 
 		if (in_array($no_induk, $paramedik)) {
 			$data['UserMenu'] = $datamenu;
-		}else {
+		} else {
 			unset($datamenu[1]);
 			$data['UserMenu'] = array_values($datamenu);
 		}
@@ -63,31 +62,31 @@ class C_Paramedik extends CI_Controller
 		$list = $this->M_index->getList2();
 		$namaAll = $this->M_index->getAllNama();
 		$nona = array_column($namaAll, 'nama', 'noind');
-		for ($i=0; $i < count($list); $i++) {
+		for ($i = 0; $i < count($list); $i++) {
 			//noind
 			$ex = explode(', ', $list[$i]['noind']);
 			$nam = array();
 			foreach ($ex as $k) {
-				$nam[] = $k.' - '.$nona[$k];
+				$nam[] = $k . ' - ' . $nona[$k];
 			}
 			//di serahkan
 			if ($list[$i]['diserahkan'] != '-') {
 				$ex = explode(', ', $list[$i]['diserahkan']);
 				$dis = array();
 				foreach ($ex as $k) {
-					$dis[] = $k.' - '.$nona[$k];
+					$dis[] = $k . ' - ' . $nona[$k];
 				}
 				$list[$i]['diserahkan'] = $dis;
-			}else{
+			} else {
 				$list[$i]['diserahkan'] = array('-');
 			}
 			$list[$i]['pekerja'] = $nam;
 		}
 		$data['list'] = $list;
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PerizinanPribadi/Paramedik/V_Paramedik_Index.php',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PerizinanPribadi/Paramedik/V_Paramedik_Index.php', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function approve()
@@ -117,31 +116,31 @@ class C_Paramedik extends CI_Controller
 			'appr_paramedik' => 'f',
 			'tgl_appr_paramedik' => date('Y-m-d H:i:s'),
 			'ket_sakit' => ucwords(rtrim($keterangan)),
-		 );
+		);
 		$up = $this->M_index->updateTizin($id, $arr);
 		redirect('PerizinanPribadi/PSP/ApproveParamedik');
 	}
 
 	function kirimEmailAtasan($id)
 	{
-			$detail = $this->M_index->GetIzinbyId($id)->row_array();
-			$tanggal = $detail['created_date'];
-			$daftarNama = $detail['noind'].' - '.$detail['nama_pkj'];
-			$keperluan = $detail['keperluan'];
-			$wkt_keluar = $detail['wkt_keluar'];
-			$emailUser = $detail['email_internal'];
-			$noindatasan = $detail['nama_atasan'];
-			if ($detail['jenis_ijin'] == 1) {
-				$jenis = "Izin Keluar Pribadi";
-				$ket = $detail['keperluan'];
-			}else{
-				$jenis = "Izin Sakit Perusahaan";
-				$ket = $detail['ket_sakit'];
-			}
-			$this->load->library('PHPMailerAutoload');
+		$detail = $this->M_index->GetIzinbyId($id)->row_array();
+		$tanggal = $detail['created_date'];
+		$daftarNama = $detail['noind'] . ' - ' . $detail['nama_pkj'];
+		$keperluan = $detail['keperluan'];
+		$wkt_keluar = $detail['wkt_keluar'];
+		$emailUser = $detail['email_internal'];
+		$noindatasan = $detail['nama_atasan'];
+		if ($detail['jenis_ijin'] == 1) {
+			$jenis = "Izin Keluar Pribadi";
+			$ket = $detail['keperluan'];
+		} else {
+			$jenis = "Izin Sakit Perusahaan";
+			$ket = $detail['ket_sakit'];
+		}
+		$this->load->library('PHPMailerAutoload');
 
-			$subject = "New!!! Approval Izin Sakit Perusahaan";
-			$body = "Hi $noindatasan,
+		$subject = "New!!! Approval Izin Sakit Perusahaan";
+		$body = "Hi $noindatasan,
 			<br>Anda mendapat permintaan approve izin dengan detail sbb :
 			<br>
 			<br>
@@ -180,37 +179,38 @@ class C_Paramedik extends CI_Controller
 			<br><br>
 			<hr>
 			<br>untuk melihat/ merespon izin ini, silahkan <a href='http://erp.quick.com/IKP/ApprovalAtasan'>login</a> ke ERP";
-			//send Email
-			$mail = new PHPMailer();
-			$mail->SMTPDebug = 0;
-			$mail->Debugoutput = 'html';
+		//send Email
+		$mail = new PHPMailer();
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
 
-			// set smtp
-			$mail->isSMTP();
-			$mail->Host = 'm.quick.com';
-			$mail->Port = 465;
-			$mail->SMTPAuth = true;
-			$mail->SMTPSecure = 'ssl';
-			$mail->SMTPOptions = array(
-					'ssl' => array(
-					'verify_peer' => false,
-					'verify_peer_name' => false,
-					'allow_self_signed' => true)
-				);
-			$mail->Username = 'no-reply';
-			$mail->Password = '123456';
-			$mail->WordWrap = 50;
+		// set smtp
+		$mail->isSMTP();
+		$mail->Host = 'm.quick.com';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
+		$mail->Username = 'no-reply';
+		$mail->Password = '123456';
+		$mail->WordWrap = 50;
 
-			// set email content
-			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-			$mail->addAddress($emailUser);
-			$mail->Subject = $subject;
-			$mail->msgHTML($body);
+		// set email content
+		$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+		$mail->addAddress($emailUser);
+		$mail->Subject = $subject;
+		$mail->msgHTML($body);
 
-			// check error
-			if (!$mail->send()) {
-				echo "Mailer Error: ".$mail->ErrorInfo;
-				exit();
-			}
+		// check error
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit();
+		}
 	}
 }
