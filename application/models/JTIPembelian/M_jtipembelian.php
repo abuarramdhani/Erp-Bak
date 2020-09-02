@@ -8,6 +8,16 @@ class M_jtipembelian extends CI_Model
         $this->oracle = $this->load->database('oracle', true);
     }
 
+    public function update_doc($id, $data)
+    {
+      $this->db->where('id', $id)->update('jti.jt_documents', $data);
+      if ($this->db->affected_rows() == 1) {
+        return 1;
+      }else {
+        return 0;
+      }
+    }
+
     public function updateNamaDriver($data, $param)
     {
       $this->db->where('id', $param)->update('jti.jt_drivers', $data);
@@ -21,7 +31,7 @@ class M_jtipembelian extends CI_Model
     public function del_dd($id_doc, $id_driver)
     {
       $this->db->delete('jti.jt_documents', ['id' => $id_doc]);
-      $this->db->delete('jti.jt_drivers', ['id' => $id_driver]);
+      // $this->db->delete('jti.jt_drivers', ['id' => $id_driver]);
       if ($this->db->affected_rows() == 1) {
         return 1;
       }else {
@@ -141,7 +151,8 @@ class M_jtipembelian extends CI_Model
                         'document_type' => $data['document_type'],
                         'created_by' => $data['created_by'],
                         'type' => $data['type'],
-                        'estimation' => $data['estimation']
+                        'estimation' => $data['estimation'],
+                        'weight_item' => $data['weight_item']
                     ));
                 if ($this->db->affected_rows() == 1) {
                     // INSERT DRIVER
@@ -208,7 +219,7 @@ class M_jtipembelian extends CI_Model
        AND pha.po_header_id = pda.po_header_id
        AND pda.wip_entity_id = we.wip_entity_id
        AND pha.vendor_id = pv.vendor_id
-       AND mtrh.request_number = '$data'
+       AND TO_CHAR(mtrh.request_number) = '$data'
   GROUP BY pv.vendor_name
   UNION
   SELECT   pv.vendor_name vendor
@@ -234,7 +245,7 @@ class M_jtipembelian extends CI_Model
        AND pha.po_header_id = pda.po_header_id
        AND pda.wip_entity_id = we.wip_entity_id
        AND pha.vendor_id = pv.vendor_id
-       AND mtrh.request_number = '$data'
+       AND TO_CHAR(mtrh.request_number) = '$data'
   GROUP BY pv.vendor_name
   UNION
   --so
@@ -242,7 +253,7 @@ class M_jtipembelian extends CI_Model
     FROM oe_order_headers_all ooha, hz_parties hp, hz_cust_accounts hca
    WHERE ooha.sold_to_org_id = hca.cust_account_id
      AND hp.party_id = hca.party_id
-     AND TO_CHAR (ooha.order_number) = '$data'
+     AND TO_CHAR(ooha.order_number) = '$data'
   UNION
   --do
   SELECT DISTINCT ship_party.party_name vendor
@@ -257,13 +268,13 @@ class M_jtipembelian extends CI_Model
               AND ship_cas.party_site_id = ship_ps.party_site_id
               AND ship_loc.location_id = ship_ps.location_id
               AND ship_ps.party_id = ship_party.party_id
-              AND wdd.batch_id = '$data'
+              AND TO_CHAR(wdd.batch_id) = '$data'
   UNION
 --po
 SELECT pv.vendor_name vendor
         FROM po_headers_all pha, po_vendors pv
        WHERE pha.vendor_id = pv.vendor_id
-         AND pha.segment1 = '$data'")->result_array();
+         AND TO_CHAR(pha.segment1)  = '$data'")->result_array();
 
     }
 }

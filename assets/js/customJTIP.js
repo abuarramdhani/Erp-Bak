@@ -8,6 +8,73 @@ const jtieditmodal = (nodok, nama, driver_id) =>{
   $('#id_driver').val(driver_id)
 }
 
+const update_doc = () => {
+  let jenis_dokumen = $('#jenis_dokumen').val();
+  let estimasi = $('#estimasi_jti').val();
+  let id = $('#id_document').val();
+  $.ajax({
+  url: baseurl+'jtipembelian/History/update_doc',
+  type: 'POST',
+  dataType: 'JSON',
+  data: {
+    id: id,
+    jenis_dokumen: jenis_dokumen,
+    estimasi: estimasi
+  },
+  beforeSend: function() {
+    Swal.showLoading()
+  },
+  success: function(result) {
+    if (result) {
+      Swal.fire({
+        position: 'middle',
+        type: 'success',
+        title: 'Data Berhasil Di Update!',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      $('#MyModalJtiEdit').modal('toggle');
+    }else {
+      Swal.fire({
+        position: 'middle',
+        type: 'error',
+        title: 'Data Tidak Berhasil Di Update!',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+  },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+    console.error();
+    Swal.fire({
+      position: 'middle',
+      type: 'error',
+      title: 'Terjadi Masalah Saat Melakukan Update Data!',
+    })
+  }
+})
+}
+
+const jtip_edit = (id_doc, doc_num, doc_type, estimation) => {
+  $('#jtip_nodok_p2').html(doc_num);
+  $('#jenis_dokumen').html('')
+  // $('#no_dokumen').val(doc_num);
+  let data = JSON.parse($('#jtip_jen_dok').val());
+  let html = '';
+  data.forEach((v,i) =>{
+    if (v.name == doc_type) {
+      $('#jenis_dokumen').append(`<option selected value="${v.id}">${v.name}</option>`);
+      $('#jenis_dokumen').trigger("change");
+    }else {
+      $('#jenis_dokumen').append(`<option value="${v.id}">${v.name}</option>`);
+    }
+    // console.log(v.name);
+  })
+  $('#estimasi_jti').val(estimation);
+  $('#id_document').val(id_doc);
+
+}
+
 const jtip_delete = (id_doc, id_drive) =>{
   Swal.fire({
   title: 'Are you sure?',
@@ -225,6 +292,7 @@ function JTIPembelianInput() {
       estimation: estimasi,
       jenis_dokumen: jenis_dokumen,
       type: type,
+      weight_item: $('#berat_barang_jti').val()
     },
     beforeSend:function() {
       Swal.showLoading()
@@ -242,6 +310,7 @@ function JTIPembelianInput() {
         $('#namaDriver').val('')
         $('#estimasi_jti').val('')
         $('#type_jti').val('')
+        $('#berat_barang_jti').val('')
       }else {
         Swal.fire({
           position: 'middle',
