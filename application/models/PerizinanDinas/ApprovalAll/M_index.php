@@ -9,8 +9,13 @@ class M_index extends CI_Model
         $this->personalia = $this->load->database('personalia', TRUE);
     }
 
-    public function allowedAccess()
+    public function allowedAccess($jenis)
     {
+        if ($jenis == '1') {
+            $where = "AND a.kd_jabatan <= '13'";
+        } else {
+            $where = "AND left(a.noind, 1) != 'K'";
+        }
         $sql = "SELECT distinct
                     a.noind
                 from
@@ -20,7 +25,7 @@ class M_index extends CI_Model
                     (b.kodesie like '4010101%'
                     or a.noind in ('B0307','J1269','B0898','B0720'))
                     and a.keluar = '0'
-                    and left(a.noind, 1) != 'K'";
+                    $where";
         return $this->personalia->query($sql)->result_array();
     }
 

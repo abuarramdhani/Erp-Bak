@@ -49,13 +49,21 @@ class C_Paramedik extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$paramedik = $this->M_index->allowedAccess();
+		$paramedik = $this->M_index->allowedAccess('1');
 		$paramedik = array_column($paramedik, 'noind');
+
+		$admin_hubker = $this->M_index->allowedAccess('2');
+		$admin_hubker = array_column($admin_hubker, 'noind');
 
 		if (in_array($no_induk, $paramedik)) {
 			$data['UserMenu'] = $datamenu;
+		} elseif (in_array($no_induk, $admin_hubker)) {
+			unset($datamenu[0]);
+			unset($datamenu[1]);
+			$data['UserMenu'] = array_values($datamenu);
 		} else {
 			unset($datamenu[1]);
+			unset($datamenu[2]);
 			$data['UserMenu'] = array_values($datamenu);
 		}
 

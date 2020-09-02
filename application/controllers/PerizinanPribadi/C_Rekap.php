@@ -48,16 +48,24 @@ class C_Rekap extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$paramedik = $this->M_index->allowedAccess();
+		$paramedik = $this->M_index->allowedAccess('1');
 		$paramedik = array_column($paramedik, 'noind');
+
+		$admin_hubker = $this->M_index->allowedAccess('2');
+		$admin_hubker = array_column($admin_hubker, 'noind');
 
 		if (in_array($no_induk, $paramedik)) {
 			$data['UserMenu'] = $datamenu;
+		} elseif (in_array($no_induk, $admin_hubker)) {
+			unset($datamenu[0]);
+			unset($datamenu[1]);
+			$data['UserMenu'] = array_values($datamenu);
 		} else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
 			$data['UserMenu'] = array_values($datamenu);
 		}
+
 		$data['list_izin'] = $this->M_index->getLIzin('id')->result_array();
 		$data['list_noind'] = $this->M_index->getLIzinNoind()->result_array();
 
@@ -103,6 +111,7 @@ class C_Rekap extends CI_Controller
 				$im_id = implode("', '", $id);
 				$and = "ip.id in ('$im_id')";
 			}
+			$data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode, $and, '');
 		} else {
 			if (empty($noind)) {
 				$and = "";
@@ -114,10 +123,10 @@ class C_Rekap extends CI_Controller
 				$im_no = implode(" or ", $arr);
 				$and = "($im_no)";
 			}
+			$data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode, $and, '');
 		}
 
 		$data['jenis'] = '1';
-		$data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode, $and, '');
 
 		if ($export == 'Excel') {
 			$data['date'] = date("d-m-Y");
