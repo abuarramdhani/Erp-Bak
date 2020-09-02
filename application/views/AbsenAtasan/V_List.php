@@ -69,7 +69,7 @@
 			<td><?php echo $value['noind']; ?></td>
 			<td><?php echo $value['nama']; ?></td>
 			<td><?php echo $value['jenis_absen']; ?></td>
-			<td><?php echo date_format($date,"d-M-Y H:i:s"); ?></td>
+			<td data-order="<?=date_format($date,'Y-m-d H:i:s')?>"><?php echo date_format($date,"d-M-Y H:i:s"); ?></td>
 			<td><?php echo $value['lokasi']." (". $value['longitude'] .", ". $value['latitude'].")"; ?></td>
 			</tr>
 			<?php } ?>
