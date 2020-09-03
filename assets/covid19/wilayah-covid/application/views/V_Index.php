@@ -36,6 +36,30 @@
 				<div class="panel">
 					<div class="panel-heading" style="background-color: #81ecec">Portal Wilayah Covid-19</div>
 					<div class="panel-body" style="border: 1px solid #81ecec">
+						<div class="row" style="height: 170px;padding: 20px;">
+							<div class="col-lg-4" style="height: 100%;border: 1px solid #3ae374">
+								Boleh Dikunjungi & Menginap :
+								<ul>
+									<li>Nama Wilayah masuk dalam list kdu yang diperbolehkan asalkan tidak menjadi zona merah atau sudah 7 hari sejak turun menjadi zona merah.</li>
+									<li>Zona Hijau, atau sudah 7 hari sejak turun status menjadi Zona Hijau dari Zona Kuning / Orange / Merah.</li>
+								</ul>
+							</div>
+							<div class="col-lg-4" style="height: 100%;border: 1px solid #fff200">
+								Boleh dikunjungi tapi tidak menginap (PP) :
+								<ul>
+									<li>Zona Kuning. atau </li>
+									<li>Sudah 7 Hari turun menjadi Zona Kuning dari Zona Orange / Merah.</li>
+									<li>Belum 7 Hari turun menjadi Zona Hijau dari Zona Kuning</li>
+								</ul>
+							</div>
+							<div class="col-lg-4" style="height: 100%;border: 1px solid #ff3838">
+								Tidak boleh dikunjungi :
+								<ul>
+									<li>Zona Orange dan Merah.</li>
+									<li>Belum 7 hari sejak perubahan status Zona Hijau / Kuning dari zona Orange / Merah.</li>
+								</ul>
+							</div>
+						</div>
 						<div class="row">
 							<div class="col-lg-12">
 								<table class="table table-bordered table-hover" id="table-utama">
@@ -44,10 +68,11 @@
 											<th>No.</th>
 											<th>Provinsi</th>
 											<th>Kabupaten/Kota</th>
-											<th>Status Sebelumnya</th>
-											<th>Status Sekarang</th>
-											<th>Tanggal Berubah</th>
-											<th>Ketentuan KHS</th>
+											<th>Status Sebelumnya Covid19.go.id</th>
+											<th>Status Sekarang Covid19.go.id</th>
+											<th>Tanggal Berubah Covid19.go.id</th>
+											<th>Ket</th>
+											<th>Kebijakan KHS berdasarkan KDU</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -68,30 +93,17 @@
 												'november' 	=> '11',
 												'desember' 	=> '12'
 											);
+											$daerah_kdu = array();
+											if (isset($daerah) && !empty($daerah)) {
+												foreach ($daerah as $key => $value) {
+													$daerah_kdu[] = $value['kabupaten'];
+												}
+											}
 											foreach ($data as $key => $value) {
 												$tgl = explode(" ", $value['tanggal']);
 												$time = strtotime($tgl[2]."-".$bulan[$tgl[1]]."-".$tgl[0]);
 												$nowMin7 = strtotime(date('Y-m-d')." - 7 day");
-												$daerah_kdu = array(
-												    'sleman',
-												    'bantul',
-												    'kulon progo',
-												    'gunung kidul',
-												    'kota yogyakarta',
-													'kebumen',
-													'wonosobo',
-													'purworejo',
-													'magelang',
-													'temanggung',
-													'salatiga',
-													'boyolali',
-													'klaten',
-													'sragen',
-													'surakarta',
-													'karanganyar',
-													'sukoharjo',
-													'wonogiri'
-												);
+												
 												$status_warna1 = "";
 												foreach ($status_kondisi as $st) {
 													if ($st['status_nama'] == $value['zona']) {
@@ -110,15 +122,36 @@
 												if (in_array($value['provinsi'], array('DAERAH ISTIMEWA YOGYAKARTA','JAWA TENGAH'))) {
 													$status = "";
 													$warna = "";
-													if (in_array(strtolower($value['kabupaten']), $daerah_kdu) && $value['zona'] != 'RESIKO TINGGI' && ((in_array($value['zona_sebelumnya'], array('RESIKO TINGGI')) && $time < $nowMin7) || !in_array($value['zona_sebelumnya'], array('RESIKO TINGGI')))) {
-														$status = "Boleh Dikunjungi & Menginap (KDU)";
+													if (in_array($value['kabupaten'], $daerah_kdu) && $value['zona'] != 'RESIKO TINGGI' && (in_array($value['zona_sebelumnya'], array('RESIKO TINGGI')) && $time < $nowMin7)) {
+														$status = "Boleh Dikunjungi & Menginap (Wilayah diperbolehkan KDU, Sudah 7 hari Sejak Perubahan Status Dari Zona Merah)";
 														$warna = "#3ae374";
-													}elseif(in_array($value['zona'], array('TIDAK ADA KASUS','TIDAK TERDAMPAK')) && ((in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG',"RESIKO RENDAH")) && $time < $nowMin7) || !in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG',"RESIKO RENDAH")))){
-														$status = "Boleh Dikunjungi & Menginap";
+													}elseif(in_array($value['kabupaten'], $daerah_kdu) && $value['zona'] != 'RESIKO TINGGI' && !in_array($value['zona_sebelumnya'], array('RESIKO TINGGI'))){
+														$status = "Boleh Dikunjungi & Menginap (Wilayah diperbolehkan KDU)";
 														$warna = "#3ae374";
-													}elseif ($value['zona'] == "RESIKO RENDAH" && ((in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG')) && $time < $nowMin7) || !in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG')))) {
+													}elseif(in_array($value['zona'], array('TIDAK ADA KASUS','TIDAK TERDAMPAK')) && !in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG',"RESIKO RENDAH"))){
+														$status = "Boleh Dikunjungi & Menginap (Zona Hijau)";
+														$warna = "#3ae374";
+													}elseif(in_array($value['zona'], array('TIDAK ADA KASUS','TIDAK TERDAMPAK')) && in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG',"RESIKO RENDAH")) && $time < $nowMin7){
+														$status = "Boleh Dikunjungi & Menginap (Zona Hijau, Sudah 7 hari Sejak Perubahan Status Dari Zona Merah / Orange / Kuning)";
+														$warna = "#3ae374";
+													}elseif(in_array($value['zona'], array('TIDAK ADA KASUS','TIDAK TERDAMPAK')) && in_array($value['zona_sebelumnya'], array("RESIKO RENDAH")) && $time >= $nowMin7){
+														$status = "Boleh Dikunjungi TAPI Tidak Menginap (Zona Hijau Belum 7 Hari)";
+														$warna = "#fff200";
+													}elseif($value['zona'] == "RESIKO RENDAH" && !in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG'))){
 														$status = "Boleh Dikunjungi TAPI Tidak Menginap";
 														$warna = "#fff200";
+													}elseif ($value['zona'] == "RESIKO RENDAH" && in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG')) && $time < $nowMin7) {
+														$status = "Boleh Dikunjungi TAPI Tidak Menginap (Sudah 7 hari Sejak Perubahan Status Dari Zona Merah / ORange)";
+														$warna = "#fff200";
+													}elseif(in_array($value['zona'], array('TIDAK ADA KASUS','TIDAK TERDAMPAK',"RESIKO RENDAH")) && in_array($value['zona_sebelumnya'], array('RESIKO TINGGI','RESIKO SEDANG')) && $time >= $nowMin7){
+														$status = "Tidak Boleh Dikunjungi (Belum 7 Hari sejak Berubah Status dari Zona Orange / Merah)";
+														$warna = "#ff3838";
+													}elseif($value['zona'] == 'RESIKO SEDANG'){
+														$status = "Tidak Boleh Dikunjungi (Zona Orange)";
+														$warna = "#ff3838";
+													}elseif($value['zona'] == 'RESIKO TINGGI'){
+														$status = "Tidak Boleh Dikunjungi (Zona Merah)";
+														$warna = "#ff3838";
 													}else{
 														$status = "Tidak Boleh Dikunjungi";
 														$warna = "#ff3838";
@@ -131,6 +164,7 @@
 														<td style="background-color: <?php echo $status_warna2 ?>"><?php echo $value['zona_sebelumnya'] ?></td>
 														<td style="background-color: <?php echo $status_warna1 ?>"><?php echo $value['zona'] ?></td>
 														<td><?php echo $value['tanggal'] ?></td>
+														<td><?php echo $time < $nowMin7 ? 'Sudah 7 Hari' : 'Belum 7 Hari, 7 Hari pada '.strftime('%d %B %Y',strtotime(date('Y-m-d',$time).' + 7 day')) ?></td>
 														<td style="background-color: <?php echo $warna ?>"><?php echo $status?></td>
 													</tr>
 													<?php
