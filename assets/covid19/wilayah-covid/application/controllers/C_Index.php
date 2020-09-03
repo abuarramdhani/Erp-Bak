@@ -14,6 +14,7 @@ class C_Index extends CI_Controller {
 	public function index() {
 		$data['data'] = $this->M_index->getLastData();
 		$data['status_kondisi'] = $this->M_index->getStatusKondisi();
+		$data['daerah'] = $this->M_index->getDaerahKDU();
 		$this->load->view('V_Index',$data);
 	}
 }

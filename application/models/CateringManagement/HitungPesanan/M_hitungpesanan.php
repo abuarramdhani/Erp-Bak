@@ -116,7 +116,7 @@ class M_hitungpesanan extends Ci_Model
 								where tanggal in (tpres.tanggal - interval '1 day', tpres.tanggal) 
 								and kd_shift in ('3', '12')
 							) 
-							and left(tpres.noind, 1) not in ('m', 'z') 
+							and left(tpres.noind, 1) not in ('M','Z') 
 							and tpres.noind not in (
 								select distinct t.noind 
 								from \"Presensi\".tshiftpekerja t  
@@ -183,7 +183,7 @@ class M_hitungpesanan extends Ci_Model
 								where tanggal in (tpres.tanggal - interval '1 day', tpres.tanggal) 
 								and kd_shift in ('3', '12')
 							) 
-							and left(tpres.noind, 1) not in ('m', 'z') 
+							and left(tpres.noind, 1) not in ('M','Z') 
 							and tpres.noind not in (
 								select distinct t.noind 
 								from \"Presensi\".tshiftpekerja t  
@@ -431,7 +431,7 @@ class M_hitungpesanan extends Ci_Model
 							where tanggal in (tpres.tanggal - interval '1 day', tpres.tanggal) 
 							and kd_shift in ('3', '12')
 						) 
-						and left(tpres.noind, 1) not in ('m', 'z') 
+						and left(tpres.noind, 1) not in ('M','Z') 
 						and tpres.noind not in (
 							select distinct t.noind 
 							from \"Presensi\".tshiftpekerja t  
@@ -470,7 +470,7 @@ class M_hitungpesanan extends Ci_Model
 							and b.noind=p.fs_noind 
 						where b.tanggal = ? 
 							and b.kd_shift in('5','8','18') 
-							and left(a.noind, 1) not in ('m', 'z') 
+							and left(a.noind, 1) not in ('M','Z') 
 							and (
 								p.fb_status is null 
 								or p.fb_status<>'1'
@@ -567,7 +567,7 @@ class M_hitungpesanan extends Ci_Model
 								) = 1
 							)  
 						) 
-						and left(tpres.noind, 1) not in ('m', 'z') 
+						and left(tpres.noind, 1) not in ('M','Z') 
 						group by tpri.tempat_makan, tpres.noind
 					) derivedtbl 
 					group by tempat_makan 
@@ -661,7 +661,7 @@ class M_hitungpesanan extends Ci_Model
 							where kd_shift in('5','8','18') 
 							and tanggal= ? 
 						) 
-						and left(tpres.noind, 1) not in ('m', 'z') 
+						and left(tpres.noind, 1) not in ('M','Z') 
 						group by tpri.tempat_makan, tpres.noind
 					) derivedtbl 
 					group by tempat_makan 
@@ -967,7 +967,7 @@ class M_hitungpesanan extends Ci_Model
 				where \"Presensi\".tshiftpekerja.noind = tpri.noind 
 				and tanggal = ?
 				and kd_shift in ('3', '12') 
-				and left(tpri.noind, 1) not in ('m', 'z') 
+				and left(tpri.noind, 1) not in ('M','Z') 
 				group by tempat_makan, kd_shift 
 				order by tempat_makan, jumlah ";
 		return $this->personalia->query($sql,array($lokasi,$tanggal))->result_array();
@@ -1000,7 +1000,7 @@ class M_hitungpesanan extends Ci_Model
 				where \"Presensi\".tshiftpekerja.noind = tpri.noind 
 				and tanggal = ?
 				and kd_shift in ('3', '12') 
-				and left(tpri.noind, 1) not in ('m', 'z') 
+				and left(tpri.noind, 1) not in ('M','Z') 
 				and tempat_makan = ?
 				and tpri.noind = ?
 				order by tempat_makan ";
@@ -1707,7 +1707,7 @@ class M_hitungpesanan extends Ci_Model
 								where tanggal in (tpres.tanggal - interval '1 day', tpres.tanggal) 
 								and kd_shift in ('3', '12')
 							) 
-							and left(tpres.noind, 1) not in ('m', 'z') 
+							and left(tpres.noind, 1) not in ('M','Z') 
 							and tpres.noind not in (
 								select distinct t.noind 
 								from \"Presensi\".tshiftpekerja t  
@@ -1774,7 +1774,7 @@ class M_hitungpesanan extends Ci_Model
 								where tanggal in (tpres.tanggal - interval '1 day', tpres.tanggal) 
 								and kd_shift in ('3', '12')
 							) 
-							and left(tpres.noind, 1) not in ('m', 'z') 
+							and left(tpres.noind, 1) not in ('M','Z') 
 							and tpres.noind not in (
 								select distinct t.noind 
 								from \"Presensi\".tshiftpekerja t  
@@ -1815,7 +1815,7 @@ class M_hitungpesanan extends Ci_Model
 								and b.noind=p.fs_noind 
 							where b.tanggal = ? 
 								and b.kd_shift in('5','8','18') 
-								and left(a.noind, 1) not in ('m', 'z') 
+								and left(a.noind, 1) not in ('M','Z') 
 								and (
 									p.fb_status is null 
 									or p.fb_status<>'1'
@@ -1914,7 +1914,7 @@ class M_hitungpesanan extends Ci_Model
 								) = 1
 							)  
 						) 
-						and left(tpres.noind, 1) not in ('m', 'z') 	
+						and left(tpres.noind, 1) not in ('M','Z') 	
 						group by tpri.tempat_makan, tpres.noind
 					) derivedtbl 
 					order by tempat_makan ";
@@ -2010,7 +2010,7 @@ class M_hitungpesanan extends Ci_Model
 							where kd_shift in('5','8','18') 
 							and tanggal= ? 
 						) 
-						and left(tpres.noind, 1) not in ('m', 'z') 	
+						and left(tpres.noind, 1) not in ('M','Z') 	
 						group by tpri.tempat_makan, tpres.noind
 					) derivedtbl 
 					order by tempat_makan ";
@@ -2027,7 +2027,7 @@ class M_hitungpesanan extends Ci_Model
 				where tsh.noind = tpri.noind 
 				and tanggal = ?
 				and kd_shift in ('3', '12') 
-				and left(tpri.noind, 1) not in ('m', 'z') 
+				and left(tpri.noind, 1) not in ('M','Z') 
 				order by tempat_makan ";
 		return $this->personalia->query($sql,array($lokasi,$tanggal))->result_array();
 	}

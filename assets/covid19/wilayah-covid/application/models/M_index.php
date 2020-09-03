@@ -77,4 +77,10 @@ class M_index extends CI_Model {
 		return $this->db->query($sql)->result_array();
     }
 
+    function getDaerahKDU(){
+    	$sql = "select * 
+    			from si.si_covid_kdu";
+		return $this->db->query($sql)->result_array();
+    }
+
 } ?>
