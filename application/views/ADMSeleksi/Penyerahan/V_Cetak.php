@@ -9,10 +9,15 @@
 	ini_set("memory_limit", "2048M");
 
 	foreach ($cekData as $cek) {
-		$plusOJT = date('Y-m-d', strtotime('+' . $cek['lama_trainee'] . ' months', strtotime($cek['tgl_masuk'])));
-		$OJT1 = date('Y-m-d', strtotime('-6 months', strtotime($plusOJT)));
-		$actualOJT1 = date('Y-m-d', strtotime('-1 days', strtotime($OJT1)));
-		$actualOJT2 = date('Y-m-d', strtotime('-1 days', strtotime($plusOJT)));
+		if ($cek['lama_trainee'] != '0') {
+			$plusOJT = date('Y-m-d', strtotime('+' . $cek['lama_trainee'] . ' months', strtotime($cek['tgl_masuk'])));
+			$OJT1 = date('Y-m-d', strtotime('-6 months', strtotime($plusOJT)));
+			$actualOJT1 = date('Y-m-d', strtotime('-1 days', strtotime($OJT1)));
+			$actualOJT2 = date('Y-m-d', strtotime('-1 days', strtotime($plusOJT)));
+		} else {
+			$actualOJT1 = date('Y-m-d', strtotime($cek['tgl_masuk']));
+			$actualOJT2 = date('Y-m-d', strtotime($cek['tgl_masuk']));
+		}
 	}
 
 	?>
