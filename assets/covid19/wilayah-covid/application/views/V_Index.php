@@ -73,11 +73,15 @@
 												$time = strtotime($tgl[2]."-".$bulan[$tgl[1]]."-".$tgl[0]);
 												$nowMin7 = strtotime(date('Y-m-d')." - 7 day");
 												$daerah_kdu = array(
+												    'sleman',
+												    'bantul',
+												    'kulon progo',
+												    'gunung kidul',
+												    'kota yogyakarta',
 													'kebumen',
 													'wonosobo',
 													'purworejo',
 													'magelang',
-													'kota magelang',
 													'temanggung',
 													'salatiga',
 													'boyolali',
