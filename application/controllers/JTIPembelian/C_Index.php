@@ -144,12 +144,19 @@ class C_Index extends CI_Controller
       if (!$this->input->is_ajax_request()) {
         echo "Hai..";
       }else {
-        $data = [
-          'document_type' => $this->input->post('jenis_dokumen'),
-          'estimation' => $this->input->post('estimasi')
-        ];
-        $res = $this->M_jtipembelian->update_doc($this->input->post('id'), $data);
-        echo json_encode($res);
+        $cek = $this->M_jtipembelian->getVendorBySpbsOracle($this->input->post('document_number'));
+        if (!empty($cek[0]['VENDOR'])) {
+          $data = [
+            'document_type' => $this->input->post('jenis_dokumen'),
+            'estimation' => $this->input->post('estimasi'),
+            'vendor' => $cek[0]['VENDOR'],
+            'document_number' => $this->input->post('document_number')
+          ];
+          $res = $this->M_jtipembelian->update_doc($this->input->post('id'), $data);
+          echo json_encode($res);
+        }else {
+          echo json_encode(0);
+        }
       }
     }
 
