@@ -950,12 +950,20 @@ class C_NonConformity extends CI_Controller
 
 	public function updateStatus()
 	{
+		$user = $this->session->user;
+
 		$status = $_POST['status'];
 		$headerid = $_POST['headerid'];
 
 		$data = array('status' => $status, );
 
+		$data_header = array(
+								'last_update_by' => $user,
+								'last_update_date' => 'now()',
+							);
+
 		$this->M_nonconformity->updateStatus($headerid,$data);
+		$this->M_nonconformity->updateHeader($header_id,$data_header);
 
 		echo 1;
 	}
