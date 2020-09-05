@@ -11,6 +11,7 @@ const jtieditmodal = (nodok, nama, driver_id) =>{
 const update_doc = () => {
   let jenis_dokumen = $('#jenis_dokumen').val();
   let estimasi = $('#estimasi_jti').val();
+  let doc_num = $('#no_dokumen').val();
   let id = $('#id_document').val();
   $.ajax({
   url: baseurl+'jtipembelian/History/update_doc',
@@ -19,7 +20,8 @@ const update_doc = () => {
   data: {
     id: id,
     jenis_dokumen: jenis_dokumen,
-    estimasi: estimasi
+    estimasi: estimasi,
+    document_number: doc_num
   },
   beforeSend: function() {
     Swal.showLoading()
@@ -70,6 +72,7 @@ const jtip_edit = (id_doc, doc_num, doc_type, estimation) => {
     }
     // console.log(v.name);
   })
+  $('#no_dokumen').val(doc_num);
   $('#estimasi_jti').val(estimation);
   $('#id_document').val(id_doc);
 

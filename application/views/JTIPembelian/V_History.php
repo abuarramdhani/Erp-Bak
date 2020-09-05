@@ -1,6 +1,25 @@
+<style media="screen">
+.modal {
+text-align: center;
+padding: 0!important;
+}
 
+.modal:before {
+content: '';
+display: inline-block;
+height: 100%;
+vertical-align: middle;
+margin-right: -4px; /* Adjusts for spacing */
+}
+
+.modal-dialog {
+display: inline-block;
+text-align: left;
+vertical-align: middle;
+}
+</style>
 <input type="hidden" id="jtipem" value="inijtipembelian">
-<div class="content">
+<div class="content" style="min-width:100%">
   <div class="row">
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
@@ -110,11 +129,16 @@
                       <input type="text" class="form-control" id="no_dokumen" >
                     </div> -->
                     <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="">No Dokumen</label><br>
+                          <input type="text" class="form-control" id="no_dokumen" name="" placeholder="No Dokumen">
+                        </div>
+                      </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="">Jenis Dokumen</label><br>
                           <div class="jt-select-area">
-
                           </div>
                           <select class="form-control select2" id="jenis_dokumen" name="type" style="width:100%" data-placeholder="Jenis Kegiatan">
                             <option value=""></option>
