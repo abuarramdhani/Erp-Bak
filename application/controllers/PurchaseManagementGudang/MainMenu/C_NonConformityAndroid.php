@@ -132,6 +132,10 @@ class C_NonConformityAndroid extends CI_Controller
 
 		$header = array('creation_date' => 'now()',
 						'non_conformity_num' => $nonConformityNumber,
+						'created_by' => $user_id,
+						'creation_date' => 'now()',
+						'last_update_by' => $user_id,
+						'last_update_date' => 'now()',
 
 					 );
 
