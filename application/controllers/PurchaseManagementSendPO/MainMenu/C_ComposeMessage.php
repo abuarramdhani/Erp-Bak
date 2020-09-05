@@ -254,8 +254,8 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 		// FTP //
 			// Initialise the connection parameters
 			$ftp_server 	 = 'purchasing.quick.com';
-			$ftp_username	 = 'SENDPO';
-			$ftp_password 	 = '123456';
+			$ftp_username	 = 'root';
+			$ftp_password 	 = 'k3m4nd1r14nb4ngs4';
 			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/';
 			if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/12. PO DAN KONFIRMASI 2020/5. PO BDL/';
