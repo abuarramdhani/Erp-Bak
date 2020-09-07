@@ -42,8 +42,8 @@ class C_RekapSeksi extends CI_Controller
         $no_induk = $this->session->user;
         $kodesie = $this->session->kodesie;
 
-        $data['Title'] = 'Approve Atasan';
-        $data['Menu'] = 'Perizinan Pribadi';
+        $data['Title'] = 'Rekap Perizinan Seksi';
+        $data['Menu'] = 'Izin Pribadi';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
 
@@ -75,66 +75,5 @@ class C_RekapSeksi extends CI_Controller
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PerizinanPribadi/V_RekapSeksi', $data);
         $this->load->view('V_Footer', $data);
-    }
-
-    public function rekap()
-    {
-        $kd_sie = $this->session->kodesie;
-        $noind = $this->session->user;
-        $today = date('d M Y H:i:s');
-        $kodesie = substr($kd_sie, 0, 7);
-        $tanggal = $this->input->get('periodeRekap');
-        $export = $this->input->get('valButton');
-        $nama  = $this->M_index->getNamaByNoind($noind);
-        $seksi = $this->M_penyerahan->getJabatanPreview($kd_sie);
-
-        if (!empty($tanggal)) {
-            $explode = explode(' - ', $tanggal);
-            $tanggal1 = str_replace("/", '-', $explode[0]);
-            $tanggal2 = str_replace("/", '-', $explode[1]);
-
-            $tgl_awal = date('Y-m-d', strtotime($tanggal1));
-            $tgl_akhir = date('Y-m-d', strtotime($tanggal2));
-            $periode = "and ip.created_date::date between '$tgl_awal' and '$tgl_akhir'";
-        } else {
-            $periode = '';
-        }
-
-        $data['jenis'] = '2';
-        $whereSeksi = "tp.kodesie like '$kodesie%'";
-        $data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode, '', $whereSeksi);
-        if ($export == 'Excel') {
-            $data['date'] = date("d-m-Y");
-
-            $this->load->library("Excel");
-            $this->load->view('PerizinanPribadi/V_RekapExcel', $data);
-        } elseif ($export == 'PDF') {
-            $this->load->library('pdf');
-            $pdf = $this->pdf->load();
-            $pdf = new mPDF('utf-8', 'A4-L', 10, 8, 10, 10, 30, 15, 8, 20);
-            $filename = 'Rekap Perizinan Perseksi.pdf';
-
-            $html = $this->load->view('PerizinanPribadi/V_PDF', $data, true);
-            $pdf->setHTMLHeader('
-				<table width="100%">
-					<tr>
-						<td width="50%" rowspan="2"><h2><b>Rekap Data Perizinan</b></h2></td>
-						<td style="text-align: right;"><h5>Dicetak Oleh ' . $noind . ' - ' . $nama . ' pada Tanggal ' . $today . '</h5></td>
-					</tr>
-                    <tr>
-						<td style="text-align: right;"><h5>Seksi : ' . ucwords(mb_strtolower($seksi)) . '</h5></td>
-					</tr>
-				</table>
-			');
-
-            $pdf->WriteHTML($html, 2);
-            $pdf->setTitle($filename);
-            $pdf->Output($filename, 'I');
-        } else {
-            $data['hiden'] = 'hidden';
-
-            $view = $this->load->view('PerizinanPribadi/V_Process', $data);
-            echo json_encode($view);
-        }
     }
 }

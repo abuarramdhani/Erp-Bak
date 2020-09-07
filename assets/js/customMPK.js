@@ -351,7 +351,6 @@ $(document).ready(function () {
         }
     });
 
-
     $('input.periodeRekap').on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
     });
@@ -363,10 +362,6 @@ $(document).ready(function () {
 //Selesai
 
 //Untuk Approve IKP
-$(document).ready(function () {
-
-})
-
 function getApprovalIKP(a, b, jenis) {
     var loading = baseurl + 'assets/img/gif/loadingquick.gif';
 
@@ -630,11 +625,11 @@ $('#app_edit_ikp').on('click', function () {
 
 $('#RPP_Cari').on('click', function () {
     let isi = $(this).val()
-    if (isi == '1') {
-        alamat = baseurl + 'RPP/RekapIKP/rekapbulanan'
-    } else {
-        alamat = baseurl + 'PerizinanPribadi/RekapPerizinanSeksi/rekap'
-    }
+    // if (isi == '1') {
+    alamat = baseurl + 'RPP/RekapIKP/rekapbulanan'
+    // } else {
+    //     alamat = baseurl + 'PerizinanPribadi/RekapPerizinanSeksi/rekap'
+    // }
     var tanggal = $('#periodeRekap').val()
     var jenis = $("input:radio[class=RD_radioDinas]:checked").val();
     var list_id = $(".RPD_id_rekap").val();
@@ -655,7 +650,8 @@ $('#RPP_Cari').on('click', function () {
                 periodeRekap: tanggal,
                 jenis: jenis,
                 id: list_id,
-                noind: list_noind
+                noind: list_noind,
+                jenisPerseksi: isi
             },
             url: alamat,
             beforeSend: function () {
@@ -669,13 +665,7 @@ $('#RPP_Cari').on('click', function () {
             },
             success: function (result) {
                 swal.close()
-                $(document).on('icheck', function () {
-                    $('input[type=checkbox].checkChildPribadi').iCheck({
-                        checkboxClass: 'icheckbox_square-blue'
-                    })
-                }).trigger('icheck')
                 $('#areaRekapIKP').html(result)
-
                 $('.tabel_rekap').DataTable({
                     "dom": 'lfrtip',
                     scrollX: true,
@@ -683,8 +673,6 @@ $('#RPP_Cari').on('click', function () {
                         leftColumns: 4
                     }
                 });
-
-                cekManualPerizinan()
             }
         })
     }
@@ -693,73 +681,88 @@ $('#RPP_Cari').on('click', function () {
 $('#izinRekapExcel').on('click', () => {
     let isi = $('#izinRekapExcel').val(),
         periodeRekap = $('#periodeRekap').val(),
-        valbutton = 'Excel'
-    if (isi == '1') {
+        valbutton = 'Excel',
+        jenis = $("input:radio[class=RD_radioDinas]:checked").val(),
         alamat = baseurl + 'RPP/RekapIKP/rekapbulanan'
-    } else {
-        alamat = baseurl + 'PerizinanPribadi/RekapPerizinanSeksi/rekap'
-    }
 
-    window.open(alamat + "?valButton=" + valbutton + "&periodeRekap" + periodeRekap, "_blank");
+    window.open(alamat + "?valButton=" + valbutton + "&periodeRekap=" + periodeRekap + "&jenisPerseksi=" + isi + "&jenis=" + jenis, "_blank");
 
 })
 
 $('#izinRekapPDF').on('click', () => {
     let isi = $('#izinRekapPDF').val(),
         periodeRekap = $('#periodeRekap').val(),
-        valbutton = 'PDF'
-    if (isi == '1') {
+        valbutton = 'PDF',
+        jenis = $("input:radio[class=RD_radioDinas]:checked").val(),
         alamat = baseurl + 'RPP/RekapIKP/rekapbulanan'
-    } else {
-        alamat = baseurl + 'PerizinanPribadi/RekapPerizinanSeksi/rekap'
-    }
 
-    window.open(alamat + "?valButton=" + valbutton + "&periodeRekap" + periodeRekap, "_blank");
+    window.open(alamat + "?valButton=" + valbutton + "&periodeRekap=" + periodeRekap + "&jenisPerseksi=" + isi + "&jenis=" + jenis, "_blank");
 
 })
 
-function cekManualPerizinan() {
-    $('.tabel_rekap').on('click', '.checkChildPribadi', function (e) {
-        let id = e.currentTarget.value
+function cekManualPerizinan(a, id) {
+    let jenis = a;
 
-        $.ajax({
-            type: 'POST',
-            data: {
-                id
-            },
-            url: baseurl + 'RPP/RekapIKP/updateManual',
-            beforeSend: () => {
-                swal.fire({
-                    text: 'waiting',
-                    showConfirmButton: false,
-                    allowOutsideClick: false
-                })
-            },
-            success: (a) => {
-                swal.close()
-                if (a == 'ok') {
+    swal.fire({
+        title: 'Apakah anda yakin ' + (a == '1' ? 'ada' : 'tidak ada') + ' form manual ?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then((a) => {
+        if (a.value) {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id,
+                    jenis
+                },
+                url: baseurl + 'RPP/RekapIKP/updateManual',
+                beforeSend: () => {
                     swal.fire({
-                        title: 'OK',
-                        type: 'success',
+                        text: 'waiting',
                         showConfirmButton: false,
-                        timer: 500,
-                        position: 'top'
+                        allowOutsideClick: false
                     })
-                    console.log($(this));
-
-                    $(this).closest('td').html('<a><span style="color: green" class="fa fa-check fa-2x"></span></a>')
-                } else {
-                    swal.fire({
-                        title: 'Connection Error',
-                        type: 'error',
-                        showConfirmButton: false,
-                        timer: 500,
-                        position: 'top'
-                    })
+                },
+                success: (a) => {
+                    swal.close()
+                    if (a == 'ok') {
+                        swal.fire({
+                            title: 'OK',
+                            type: 'success',
+                            showConfirmButton: false,
+                            timer: 500,
+                            position: 'top'
+                        })
+                        // let keputusan = a == '1' ? '<a><span style="color: green" class="fa fa-check fa-2x"></span></a>' : '<a><span style="color: red" class="fa fa-close fa-2x"></span></a>'
+                        // tabelRekap.cell($(`[onclick="cekManualPerizinan(${jenis}, ${id})"]`).closest('td')).data(keputusan).draw();
+                        $('#RPP_Cari').click()
+                    } else {
+                        swal.fire({
+                            title: 'Connection Error',
+                            type: 'error',
+                            showConfirmButton: false,
+                            timer: 500,
+                            position: 'top'
+                        })
+                    }
                 }
-            }
-        })
+            })
+        }
+    })
+}
 
+function childPribadiDelete(id) {
+    $.ajax({
+        type: 'POST',
+        data: {
+            id
+        },
+        url: baseurl + "RPP/RekapIKP/deleteData",
+        success: () => {
+            $('#RPP_Cari').click();
+            mpk_showAlert('success', 'Data Berhasil di Hapus !');
+        }
     })
 }
 
@@ -3730,6 +3733,17 @@ window.addEventListener('load', function () {
         today = dd + '/' + mm + '/' + yyyy;
         $('#periodeRekap').val(today + ' - ' + today);
         $('#PD_Cari').trigger('click');
+    }
+    if ($("#RPP_Cari").get(0)) {
+        $('input[name="PerSurat"]').eq(0).iCheck('check');
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+
+        today = dd + '/' + mm + '/' + yyyy;
+        $('#periodeRekap').val(today + ' - ' + today);
+        $('#RPP_Cari').trigger('click');
     }
 });
 

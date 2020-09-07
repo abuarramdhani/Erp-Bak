@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * helper
+ */
+function debug($data)
+{
+    echo "<pre>";
+    print_r($data);
+    die;
+}
+
 $objWriter = new PHPExcel();
 if ($jenis == '1') {
     $warna = '20ab2e';
@@ -7,9 +18,7 @@ if ($jenis == '1') {
     $warna = 'f29e1f';
     $judul = 'Rekap Perizinan Seksi';
 }
-header('Content-type: application/vnd-ms-excel');
-header('Content-Disposition: attachment; filename="' . $judul . '.xls"');
-header('Cache-Control: max-age=0');
+
 $objWriter->getActiveSheet()
     ->getPageSetup()
     ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE)
@@ -28,7 +37,78 @@ $styleArray = array(
         )
     )
 );
-$objWriter->getActiveSheet()->getStyle('A4:H4')->applyFromArray(
+
+$objWriter->getActiveSheet()->setTitle('Rekap Perizinan Pribadi');
+$objWriter->getActiveSheet()->getStyle('A2')->applyFromArray($style1);
+
+//add header
+$array_judul = array(
+    '0' => array(
+        'nama' => 'No',
+        'lebar' => 5
+    ),
+    '1' => array(
+        'nama' => 'Form Manual',
+        'lebar' => 5
+    ),
+    '2' => array(
+        'nama' => 'Sistem',
+        'lebar' => 5
+    ),
+    '3' => array(
+        'nama' => 'ID Izin',
+        'lebar' => 5
+    ),
+    '4' => array(
+        'nama' => 'Tgl Pengajuan',
+        'lebar' => 15
+    ),
+    '5' => array(
+        'nama' => 'Pekerja',
+        'lebar' => 40
+    ),
+    '6' => array(
+        'nama' => 'Seksi',
+        'lebar' => 40
+    ),
+    '7' => array(
+        'nama' => 'Jenis Izin',
+        'lebar' => 15
+    ),
+    '8' => array(
+        'nama' => 'Atasan',
+        'lebar' => 30
+    ),
+    '9' => array(
+        'nama' => 'Keterangan',
+        'lebar' => 30
+    ),
+    '10' => array(
+        'nama' => 'Status',
+        'lebar' => 30
+    ),
+);
+$bariske = '4';
+$nom = 0;
+if ($perseksi == 'Ya') {
+    unset($array_judul[1]);
+    unset($array_judul[2]);
+}
+
+$array_judul = array_values($array_judul);
+
+$alphabet = range('A', 'Z');
+$higestColumn = $alphabet[count($array_judul) - 1];
+
+$a = $objWriter->setActiveSheetIndex(0);
+for ($i = 'A'; $i <= $higestColumn; $i++) {
+    $a->setCellValue($i . $bariske, $array_judul[$nom]['nama']);
+    $objWriter->getActiveSheet()->getColumnDimension($i)->setWidth($array_judul[$nom]['lebar']);
+    $nom++;
+}
+
+$objWriter->getActiveSheet()->getStyle('A1:' . $higestColumn . '4')->getFont()->setBold(true);
+$objWriter->getActiveSheet()->getStyle('A4:' . $higestColumn . '4')->applyFromArray(
     array(
         'fill' => array(
             'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -36,63 +116,73 @@ $objWriter->getActiveSheet()->getStyle('A4:H4')->applyFromArray(
         )
     )
 );
-$objWriter->setActiveSheetIndex(0);
 $objWriter->getDefaultStyle()->applyFromArray($styleArray);
-
-$objWriter->getActiveSheet()->setTitle('Rekap Seksi');
-for ($i = 'A'; $i <=  $objWriter->getActiveSheet()->getHighestColumn(); $i++) {
+$objWriter->setActiveSheetIndex(0)->mergeCells('A2:' . $higestColumn . '2');
+for ($i = 'A'; $i <= $objWriter->getActiveSheet()->getHighestColumn(); $i++) {
     $objWriter->getActiveSheet()->getStyle($i)->getAlignment()->setWrapText(TRUE);
     $objWriter->getActiveSheet()->getStyle($i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
 }
 
-$objWriter->getActiveSheet()->getStyle('A1:H4')->getFont()->setBold(true);
-$objWriter->getActiveSheet()->getStyle('A2')->applyFromArray($style1);
-$objWriter->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-$objWriter->getActiveSheet()->getColumnDimension('B')->setWidth(5);
-$objWriter->getActiveSheet()->getColumnDimension('C')->setWidth(15);
-$objWriter->getActiveSheet()->getColumnDimension('D')->setWidth(40);
-$objWriter->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-$objWriter->getActiveSheet()->getColumnDimension('F')->setWidth(20);
-$objWriter->getActiveSheet()->getColumnDimension('G')->setWidth(30);
-$objWriter->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+$i = 5;
+$no = 1;
 
-//add header
-$objWriter->setActiveSheetIndex(0)
-    ->setCellValue('A2', 'DATA REKAP PERIZINAN SEKSI')
-    ->setCellValue('A4', 'No')
-    ->setCellValue('B4', 'ID Izin')
-    ->setCellValue('C4', 'Tgl Pengajuan')
-    ->setCellValue('D4', 'Pekerja')
-    ->setCellValue('E4', 'Jenis izin')
-    ->setCellValue('F4', 'Atasan')
-    ->setCellValue('G4', 'Keterangan')
-    ->setCellValue('H4', 'Status');
-
-$objWriter->setActiveSheetIndex(0)->mergeCells('A2:H2');
-
-$no = 0;
-$i = 4;
 foreach ($IzinApprove as $key) {
-    $i++;
-    $no++;
     $nama = '';
+    $kodesie = '';
     foreach (explode(',', $key['nama_pkj']) as $a) {
         $nama .= "$a\n";
     }
+    if ($jenis == '2') {
+        $kodesie = $key['seksi'];
+    } else {
+        foreach (explode(',', $key['kodesie']) as $b) {
+            foreach ($seksi as $value) {
+                if ($b == $value['kodesie']) {
+                    $kodesie .= $value['seksi'] . "\n";
+                }
+            }
+        }
+    }
 
-    $objWriter->getActiveSheet()
-        ->setCellValue('A' . $i, $no)
-        ->setCellValue('B' . $i, $key['id'])
-        ->setCellValue('C' . $i, date('d M Y', strtotime($key['created_date'])))
-        ->setCellValue('D' . $i, $nama)
-        ->setCellValue('E' . $i, $key['jenis_ijin'])
-        ->setCellValue('F' . $i, $key['atasan'] . ' - ' . $key['nama_atasan'])
-        ->setCellValue('G' . $i, $key['ket_pekerja'])
-        ->setCellValue('H' . $i, $key['status']);
+
+    $array_value = array(
+        $no,
+        ($key['manual'] == null) ? '' : ($key['manual'] == 't' ? 'Ya' : 'Tidak'),
+        ($key['manual'] == null ? '' : 'Ya'),
+        $key['id'],
+        date('d M Y', strtotime($key['created_date'])),
+        $nama,
+        $kodesie,
+        $key['jenis_ijin'],
+        $key['atasan'],
+        $key['keperluan'],
+        $key['status'],
+    );
+
+    if ($perseksi == 'Ya') {
+        unset($array_value[1]);
+        unset($array_value[2]);
+    }
+
+    $array_value = array_values($array_value);
+    $nam = 0;
+    $objWriter->setActiveSheetIndex(0)
+        ->setCellValue('A2', 'DATA REKAP PERIZINAN PRIBADI');
+    for ($forVal = 'A'; $forVal <= $higestColumn; $forVal++) {
+        $objWriter->getActiveSheet()->setCellValue($forVal . $i, $array_value[$nam], PHPExcel_Cell_DataType::TYPE_STRING);
+        $nam++;
+    }
+
+    $i++;
+    $no++;
 }
 
 $objWriter->getActiveSheet()->getPageSetup()->setFitToWidth(1);
 $objWriter->getActiveSheet()->getPageSetup()->setFitToHeight(1);
+
+header('Content-type: application/vnd-ms-excel');
+header('Content-Disposition: attachment; filename="' . $judul . '.xls"');
+header('Cache-Control: max-age=0');
 
 $objWriter = PHPExcel_IOFactory::createWriter($objWriter, 'Excel5');
 $objWriter->save('php://output');
