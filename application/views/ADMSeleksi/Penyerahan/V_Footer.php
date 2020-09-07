@@ -89,6 +89,7 @@
 <script src="<?= base_url('assets/js/jquery-maskmoney.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/howler/howler.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/fakeLoading/fakeLoading.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/darkreader/darkreader.min.js') ?>"></script>
 
 <!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
 <script src="<?= base_url('assets/js/custom.js') ?>"></script>
