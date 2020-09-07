@@ -221,6 +221,7 @@ class M_index extends CI_Model
         $today = date('Y-m-d');
         $sql3 = "SELECT distinct
                 ip.id,
+                ip.appr_atasan,
                 ip.created_date,
                 ip.keperluan,
                 ip.wkt_keluar,
