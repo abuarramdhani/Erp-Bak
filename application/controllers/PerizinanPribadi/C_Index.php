@@ -61,6 +61,7 @@ class C_Index extends CI_Controller
 		} else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
+			unset($datamenu[3]);
 			$data['UserMenu'] = array_values($datamenu);
 		}
 
@@ -110,6 +111,7 @@ class C_Index extends CI_Controller
 		} else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
+			unset($datamenu[3]);
 			$data['UserMenu'] = array_values($datamenu);
 		}
 

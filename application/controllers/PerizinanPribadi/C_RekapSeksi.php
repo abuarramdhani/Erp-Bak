@@ -66,6 +66,7 @@ class C_RekapSeksi extends CI_Controller
         } else {
             unset($datamenu[1]);
             unset($datamenu[2]);
+            unset($datamenu[3]);
             $data['UserMenu'] = array_values($datamenu);
         }
 

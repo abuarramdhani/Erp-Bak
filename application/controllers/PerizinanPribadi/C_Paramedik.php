@@ -64,6 +64,7 @@ class C_Paramedik extends CI_Controller
 		} else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
+			unset($datamenu[3]);
 			$data['UserMenu'] = array_values($datamenu);
 		}
 
@@ -110,7 +111,6 @@ class C_Paramedik extends CI_Controller
 			'ket_sakit' => ucwords(rtrim($keterangan)),
 		);
 		$up = $this->M_index->updateTizin($id, $arr);
-		// $this->kirimEmailAtasan($id);
 		redirect('PerizinanPribadi/PSP/ApproveParamedik');
 	}
 
