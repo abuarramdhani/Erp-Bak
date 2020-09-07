@@ -42,7 +42,7 @@
                                         <div class="col-lg-12">
                                             <label class="col-lg-2">Jenis Rekap :</label>
                                             <div class="form-group col-lg-5">
-                                                <input type="radio" name="PerSurat" class="RD_radioDinas" value="1" required>Rekap Per Surat<br>
+                                                <input checked type="radio" name="PerSurat" class="RD_radioDinas" value="1" required>Rekap Per Surat<br>
                                                 <input type="radio" name="PerSurat" class="RD_radioDinas" value="2" required>Rekap Per Pekerja
                                             </div>
                                         </div>
@@ -70,10 +70,10 @@
                                         </div>
                                         <div class="col-lg-12 panel-footer">
                                             <div class="col-lg-12 text-center">
-                                                <button class="btn btn-primary" id="RPP_Cari" value="1" style="width: 80px;">Cari</button>&emsp;
+                                                <button class="btn btn-primary" id="RPP_Cari" value="Tidak" style="width: 80px;">Cari</button>&emsp;
                                                 <button class="btn btn-warning" onclick="window.location.reload()" style="width: 80px;">Reset</button>&emsp;
-                                                <button class="btn btn-success fa fa-file-excel-o" style="padding: 9px; width: 80px;" value="1" id="izinRekapExcel">&emsp;Excel</button>&emsp;
-                                                <button class="btn btn-danger fa fa-file-pdf-o" style="padding: 9px; width: 80px;" value="1" id="izinRekapPDF">&emsp;PDF</button>
+                                                <button class="btn btn-success fa fa-file-excel-o" style="padding: 9px; width: 80px;" value="Tidak" id="izinRekapExcel">&emsp;Excel</button>&emsp;
+                                                <button class="btn btn-danger fa fa-file-pdf-o" style="padding: 9px; width: 80px;" value="Tidak" id="izinRekapPDF">&emsp;PDF</button>
                                             </div>
                                         </div>
                                     </div>

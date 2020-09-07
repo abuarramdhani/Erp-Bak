@@ -6,13 +6,13 @@
         <thead>
           <tr>
             <th class="text-center" style="white-space: nowrap;">No</th>
-            <th <?= $hiden; ?> class="text-center" style="white-space: nowrap;">Manual</th>
             <th class="text-center" style="white-space: nowrap;">ID Izin</th>
             <th class="text-center" style="white-space: nowrap;">Tanggal Pengajuan</th>
             <th class="text-center" style="white-space: nowrap;">Nama Pekerja</th>
+            <th class="text-center" style="white-space: nowrap;">Seksi</th>
             <th class="text-center" style="white-space: nowrap;">Jenis Izin</th>
             <th class="text-center" style="white-space: nowrap;">Atasan Approved</th>
-            <th class="text-center" style="white-space: nowrap;">Keterangan</th>
+            <th class="text-center" style="white-space: nowrap; width: 10px !important;">Keterangan</th>
             <th class="text-center" style="white-space: nowrap;">Status</th>
           </tr>
         </thead>
@@ -21,20 +21,14 @@
           $today = date('Y-m-d');
           foreach ($IzinApprove as $row) { ?>
             <tr>
-              <td style="white-space: nowrap;"><?php echo $no; ?></td>
-              <td <?= $hiden; ?> style="white-space: nowrap;">
-                <input <?= $row['manual'] == 't' ? 'checked' : ''; ?> type="checkbox" class="checkChildPribadi" data-id="checkValManual<?= $no; ?>" value="<?= $row['id']; ?>" disabled>
-              </td>
-              <td style="white-space: nowrap;"><?php echo $row['id'] ?></td>
+              <td style="white-space: nowrap;"><?= $no; ?></td>
+              <td style="white-space: nowrap;"><?= $row['id'] ?></td>
               <td style="white-space: nowrap;"><?= date("d F Y", strtotime($row['created_date'])); ?></td>
-              <td style="white-space: nowrap;">
-                <?php foreach (explode(',', $row['nama_pkj']) as $key) : ?>
-                  <p><?= $key ?></p>
-                <?php endforeach ?>
-              </td>
+              <td style="white-space: nowrap;"><?= $row['nama_pkj'] ?></td>
+              <td style="white-space: nowrap;"><?= $row['seksi'] ?></td>
               <td style="text-align: left; white-space: nowrap;"><?= $row['jenis_ijin'] ?></td>
-              <td style="white-space: nowrap;"><?= $row['atasan'] . ' - ' . $row['nama_atasan'] ?></td>
-              <td style="white-space: nowrap;"><?= $row['ket_pekerja'] ?></td>
+              <td style="white-space: nowrap;"><?= $row['atasan'] ?></td>
+              <td style="width: 10px !important;"><?= $row['keperluan'] ?></td>
               <td style="white-space: nowrap;"><?= $row['status']; ?></td>
             </tr>
           <?php

@@ -134,6 +134,7 @@ class C_Index extends CI_Controller
 		$keputusan = ($status) ? '1' : '2';
 		$this->M_index->update($status, $idizin, $keputusan);
 		$this->M_index->updateTizinPribadiDetail($idizin, $keputusan);
+		$cek_izin = $this->M_index->getPekerjaEdit($idizin);
 
 		redirect('IKP/ApprovalAtasan');
 	}

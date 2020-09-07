@@ -66,8 +66,8 @@ class C_Rekap extends CI_Controller
 			$data['UserMenu'] = array_values($datamenu);
 		}
 
-		$data['list_izin'] = $this->M_index->getLIzin('id')->result_array();
-		$data['list_noind'] = $this->M_index->getLIzinNoind()->result_array();
+		$data['list_izin'] = $this->M_index->getLIzin();
+		$data['list_noind'] = $this->M_index->getLIzinNoind();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -80,12 +80,14 @@ class C_Rekap extends CI_Controller
 		$this->checkSession();
 		$kd_sie = $this->session->kodesie;
 		$user = $this->session->user;
+		$kodesie = substr($kd_sie, 0, 7);
 
 		$perioderekap 	= $this->input->get('periodeRekap');
 		$jenis			= $this->input->get('jenis');
 		$id				= $this->input->get('id');
 		$noind 			= $this->input->get('noind');
 		$export 		= $this->input->get('valButton');
+		$perseksi		= $this->input->get('jenisPerseksi');
 		$nama  			= $this->M_index->getNamaByNoind($user);
 		$seksi 			= $this->M_penyerahan->getJabatanPreview($kd_sie);
 
@@ -95,45 +97,77 @@ class C_Rekap extends CI_Controller
 		$this->log_activity->activity_log($aksi, $detail);
 		//
 		if (!empty($perioderekap)) {
-			$explode = explode(' - ', $perioderekap);
-			$periode1 = str_replace('/', '-', date('Y-m-d', strtotime($explode[0])));
-			$periode2 = str_replace('/', '-', date('Y-m-d', strtotime($explode[1])));
+			$replace = str_replace('/', '-', $perioderekap);
+			$explode = explode(' - ', $replace);
+			$periode1 = date('Y-m-d', strtotime($explode[0]));
+			$periode2 = date('Y-m-d', strtotime($explode[1]));
 
-			$periode = "ip.created_date::date between '$periode1' and '$periode2'";
+			$periode = "WHERE ip.created_date::date between '$periode1' and '$periode2'";
 		} else {
 			$periode = '';
 		}
 
-		if ($jenis == 1) {
+		if ($perseksi == 'Ya') {
+			$jenis = '1';
+		}
+
+		if ($jenis == '1') {
 			if (empty($id)) {
-				$and = "";
+				$periode .= "";
 			} else {
 				$im_id = implode("', '", $id);
-				$and = "ip.id in ('$im_id')";
+				if (empty($periode)) {
+					$periode .= "WHERE ip.id in ($im_id)";
+				} else {
+					$periode .= "AND ip.id in ('$im_id')";
+				}
 			}
-			$data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode, $and, '');
+			if ($perseksi == 'Ya') {
+				if (empty($periode)) {
+					$periode .= "WHERE tp.kodesie like '$kodesie%'";
+				} else {
+					$periode .= "AND tp.kodesie like '$kodesie%'";
+				}
+			}
+			$data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode);
 		} else {
 			if (empty($noind)) {
-				$and = "";
+				$periode .= "";
 			} else {
 				$arr = array();
 				foreach ($noind as $key) {
 					$arr[] = "ip.noind like '%$key%'";
 				}
 				$im_no = implode(" or ", $arr);
-				$and = "($im_no)";
+				if (empty($periode)) {
+					$periode .= "WHERE $im_no";
+				} else {
+					$periode .= "AND ($im_no)";
+				}
 			}
-			$data['IzinApprove'] = $this->M_index->GetIzinPribadi($periode, $and, '');
+			$data['IzinApprove'] = $this->M_index->GetIzinPribadiPerPekerja($periode);
 		}
-
-		$data['jenis'] = '1';
-
+		$data['seksi'] = $this->M_index->getSeksi();
+		$data['perseksi'] = $perseksi;
+		$data['jenis'] = $jenis;
 		if ($export == 'Excel') {
 			$data['date'] = date("d-m-Y");
 
 			$this->load->library("Excel");
 			$this->load->view('PerizinanPribadi/V_RekapExcel', $data);
 		} elseif ($export == 'PDF') {
+			if (empty($data['IzinApprove'])) {
+				echo json_encode('kosong');
+			}
+			if (empty($perioderekap)) {
+				$tanggal = "All Periode";
+			} else {
+				if ($periode1 == $periode2) {
+					$tanggal = date('d F Y', strtotime($periode1));
+				} else {
+					$tanggal = date('d/m/Y', strtotime($periode1)) . ' - ' . date('d/m/Y', strtotime($periode2));
+				}
+			}
 			$this->load->library('pdf');
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'A4-L', 10, 8, 10, 10, 30, 15, 8, 20);
@@ -143,10 +177,11 @@ class C_Rekap extends CI_Controller
 			$pdf->setHTMLHeader('
 				<table width="100%">
 					<tr>
-						<td width="50%" rowspan="2"><h2><b>Rekap Data Perizinan</b></h2></td>
+						<td width="50%"><h2><b>Rekap Data Perizinan Pribadi</b></h2></td>
 						<td style="text-align: right;"><h5>Dicetak Oleh ' . $noind . ' - ' . $nama . ' pada Tanggal ' . date('d M Y H:i:s') . '</h5></td>
 					</tr>
                     <tr>
+						<td>Periode tarik : ' . $tanggal . '</td>
 						<td style="text-align: right;"><h5>Seksi : ' . ucwords(mb_strtolower($seksi)) . '</h5></td>
 					</tr>
 				</table>
@@ -156,7 +191,11 @@ class C_Rekap extends CI_Controller
 			$pdf->setTitle($filename);
 			$pdf->Output($filename, 'I');
 		} else {
-			$data['hiden'] = '';
+			if ($perseksi == "Ya") {
+				$data['hiden'] = 'hidden';
+			} else {
+				$data['hiden'] = '';
+			}
 			if ($jenis == '1') {
 				$view = $this->load->view('PerizinanPribadi/V_Process', $data);
 			} else {
@@ -169,16 +208,22 @@ class C_Rekap extends CI_Controller
 	public function updateManual()
 	{
 		$id = $_POST['id'];
+		$jenis = $_POST['jenis'];
+		$user = $this->session->user;
 
-		// $cek = $this->M_index->GetIzinbyId($id)->result_array();
-		// $manual = $cek[0]['manual'];
-		// if ($manual == 'f') {
-		// 	$update = 't';
-		// } else {
-		// 	$update = 'f';
-		// }
+		if ($jenis == '1') {
+			$update = 't';
+		} else {
+			$update = 'f';
+		}
+		echo ($this->M_index->updateManualHubker($id, $update, $user)) ? "ok" : "no";
+	}
 
-		// echo ($this->M_index->updateManualHubker($id, 't')) ? "ok" : "no";
-		echo "ok";
+	public function deleteData()
+	{
+		$id = $_POST['id'];
+
+		$hapus = $this->M_index->deleteIzin($id);
+		return $hapus;
 	}
 }

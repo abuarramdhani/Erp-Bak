@@ -53,10 +53,10 @@
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="col-lg-12 text-center">
-                                                <button class="btn btn-primary" id="RPP_Cari" value="2" style="width: 80px;">Cari</button>&emsp;
+                                                <button class="btn btn-primary" id="RPP_Cari" value="Ya" style="width: 80px;">Cari</button>&emsp;
                                                 <button class="btn btn-warning" onclick="window.location.reload()" style="width: 80px;">Reset</button>&emsp;
-                                                <button class="btn btn-success fa fa-file-excel-o" style="padding: 9px; width: 80px;" value="2" id="izinRekapExcel">&emsp;Excel</button>&emsp;
-                                                <button class="btn btn-danger fa fa-file-pdf-o" style="padding: 9px; width: 80px;" value="2" id="izinRekapPDF">&emsp;PDF</button>
+                                                <button class="btn btn-success fa fa-file-excel-o" style="padding: 9px; width: 80px;" value="Ya" id="izinRekapExcel">&emsp;Excel</button>&emsp;
+                                                <button class="btn btn-danger fa fa-file-pdf-o" style="padding: 9px; width: 80px;" value="Ya" id="izinRekapPDF">&emsp;PDF</button>
                                             </div>
                                         </div>
                                     </div>

@@ -219,7 +219,7 @@ class M_index extends CI_Model
     public function GetIzinPribadi()
     {
         $today = date('Y-m-d');
-        $sql3 = "SELECT
+        $sql3 = "SELECT distinct
                 ip.id,
                 ip.created_date,
                 ip.keperluan,
@@ -262,7 +262,6 @@ class M_index extends CI_Model
             where created_date::date = '$today'
             order by
                 ip.appr_atasan desc, ip.id desc";
-        // echo $sql;exit();
         return $this->personalia->query($sql3)->result_array();
     }
 }
