@@ -33,6 +33,22 @@ class M_index extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
+    public function emailParamedik()
+    {
+        $sql = "SELECT distinct
+                    a.nama, 
+                    a.email_internal
+                from
+                    hrd_khs.tpribadi a
+                    left join hrd_khs.trefjabatan b on a.noind = b.noind
+                where
+                    b.kodesie like '4010101%'
+                    AND a.keluar = '0'
+                    AND left(a.noind, 1) != 'K'
+                    AND trim(a.email_internal) not in ('hbk@quick.com', 'edp@quick.com')";
+        return $this->personalia->query($sql)->result_array();
+    }
+
     public function GetIzin($noind, $jenis)
     {
         if ($jenis) {
@@ -77,32 +93,7 @@ class M_index extends CI_Model
                 $where
             order by
                 ip.appr_atasan desc, ip.id desc";
-        // echo $sql;exit();
         return $this->personalia->query($sql3)->result_array();
-    }
-
-    public function updatePekerja($status, $idizin)
-    {
-        $sql = "update \"Surat\".tpekerja_izin
-                set status_jalan ='$status'
-                WHERE izin_id ='$idizin'";
-        $query = $this->personalia->query($sql);
-    }
-
-    public function update($status, $idizin, $kptsn)
-    {
-        $sql = "update \"Surat\".tizin_pribadi
-                set appr_atasan ='$status', tgl_appr_atasan = now(), status = '$kptsn'
-                WHERE id ='$idizin'";
-        $query = $this->personalia->query($sql);
-    }
-
-    public function updateTizinPribadiDetail($id_izin, $keputusan)
-    {
-        $sql = "update \"Surat\".tizin_pribadi_detail
-                set status = '$keputusan'
-                WHERE id ='$id_izin'";
-        $query = $this->personalia->query($sql);
     }
 
     public function getPekerja($id)
@@ -119,41 +110,19 @@ class M_index extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
-    public function taktual_pribadi($pekerja)
-    {
-        $this->personalia->insert('Surat.taktual_pribadi', $pekerja);
-        return;
-    }
-
     public function getPekerjaEdit($idizin)
     {
-        $sql = "SELECT ti.*, (SELECT trim(nama) FROM hrd_khs.tpribadi where noind = ti.noind and keluar = '0') as nama, tper.keperluan, cast(tper.created_date as date), tper.wkt_keluar
+        $sql = "SELECT ti.*, tper.jenis_ijin, (SELECT trim(nama) FROM hrd_khs.tpribadi where noind = ti.noind and keluar = '0') as nama, tper.keperluan, cast(tper.created_date as date), tper.wkt_keluar
                 FROM \"Surat\".tizin_pribadi_detail ti
                 LEFT JOIN \"Surat\".tizin_pribadi tper ON tper.id = ti.id
                 WHERE ti.id = '$idizin'";
         return $this->personalia->query($sql)->result_array();
     }
 
-    public function updatePekerjaBerangkat($noind, $status, $idizin)
-    {
-        $sql = "UPDATE \"Surat\".tizin_pribadi_detail
-                set status ='$status'
-                WHERE id ='$idizin' AND noind = '$noind'";
-        return $this->personalia->query($sql);
-    }
-
     public function getDataPekerja($a, $b)
     {
         $sql = "SELECT * FROM \"Surat\".tizin_pribadi_detail WHERE id = '$b' AND noind = '$a'";
         return $this->personalia->query($sql)->result_array();
-    }
-
-    public function update_tperizinan($noind, $status, $id, $serahkan)
-    {
-        $sql = "UPDATE \"Surat\".tizin_pribadi
-                set appr_atasan ='$status', noind = '$noind', diserahkan = '$serahkan'
-                WHERE id ='$id'";
-        return $this->personalia->query($sql);
     }
 
     public function getAllNama()
@@ -187,6 +156,7 @@ class M_index extends CI_Model
                     ip.keperluan,
                     ip.manual,
                     ip.appr_atasan,
+                    ip.appr_paramedik,
                     case
                         when ip.jenis_ijin in (1,3) then
                         case
@@ -232,6 +202,9 @@ class M_index extends CI_Model
                         ip.manual,
                         ip.keperluan,
                         ip.appr_atasan,
+                        ip.appr_paramedik,
+                        ip.wkt_keluar,
+                        ip.ket_sakit,
                         (SELECT seksi from hrd_khs.tseksi ts left join hrd_khs.tpribadi tp on tp.kodesie = ts.kodesie where tp.noind = ipd.noind) as seksi,
                         case
                             when jenis_ijin = 1 then 'IZIN KELUAR PRIBADI'
@@ -317,24 +290,6 @@ class M_index extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
-    public function getList2()
-    {
-        $sql = "select
-                    *
-                from
-                    \"Surat\".tizin_pribadi tzp
-                where
-                    tzp.jenis_ijin = '2'
-                order by id desc";
-        return $this->personalia->query($sql)->result_array();
-    }
-
-    public function updateTizin($id, $arr)
-    {
-        $this->personalia->where('id', $id);
-        $this->personalia->update('"Surat".tizin_pribadi', $arr);
-    }
-
     public function GetIzinbyId($id)
     {
         $sql = "select
@@ -366,11 +321,60 @@ class M_index extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
+    //Query Update
+
     public function updateManualHubker($id, $status, $user)
     {
         $sql = "UPDATE \"Surat\".tizin_pribadi set manual = '$status', set_manual_by = '$user' where id='$id'";
         $this->personalia->query($sql);
         return true;
+    }
+
+    public function updateTizin($id, $arr)
+    {
+        $this->personalia->where('id', $id);
+        $this->personalia->update('"Surat".tizin_pribadi', $arr);
+    }
+
+
+    public function updatePekerja($status, $idizin)
+    {
+        $sql = "update \"Surat\".tpekerja_izin
+                set status_jalan ='$status'
+                WHERE izin_id ='$idizin'";
+        $query = $this->personalia->query($sql);
+    }
+
+    public function update($status, $idizin, $kptsn)
+    {
+        $sql = "update \"Surat\".tizin_pribadi
+                set appr_atasan ='$status', tgl_appr_atasan = now(), status = '$kptsn'
+                WHERE id ='$idizin'";
+        $query = $this->personalia->query($sql);
+    }
+
+    public function updateTizinPribadiDetail($id_izin, $keputusan)
+    {
+        $sql = "update \"Surat\".tizin_pribadi_detail
+                set status = '$keputusan'
+                WHERE id ='$id_izin'";
+        $query = $this->personalia->query($sql);
+    }
+
+    public function updatePekerjaBerangkat($noind, $status, $idizin)
+    {
+        $sql = "UPDATE \"Surat\".tizin_pribadi_detail
+                set status ='$status'
+                WHERE id ='$idizin' AND noind = '$noind'";
+        return $this->personalia->query($sql);
+    }
+
+    public function update_tperizinan($noind, $status, $id, $serahkan)
+    {
+        $sql = "UPDATE \"Surat\".tizin_pribadi
+                set appr_atasan ='$status', noind = '$noind', diserahkan = '$serahkan'
+                WHERE id ='$id'";
+        return $this->personalia->query($sql);
     }
 
     public function deleteIzin($id)

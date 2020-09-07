@@ -136,7 +136,11 @@ class C_Index extends CI_Controller
 		$keputusan = ($status) ? '1' : '2';
 		$this->M_index->update($status, $idizin, $keputusan);
 		$this->M_index->updateTizinPribadiDetail($idizin, $keputusan);
+
 		$cek_izin = $this->M_index->getPekerjaEdit($idizin);
+		if ($cek_izin[0]['jenis_ijin'] == '2' && $keputusan == '1') {
+			$this->kirimEmailParamedik($idizin);
+		}
 
 		redirect('IKP/ApprovalAtasan');
 	}
@@ -199,6 +203,90 @@ class C_Index extends CI_Controller
 				);
 				$insert = $this->M_index->taktual_pribadi($data);
 			}
+		}
+	}
+
+	function kirimEmailParamedik($id)
+	{
+		$detail = $this->M_index->GetIzinbyId($id)->row_array();
+		$ket = $detail['keperluan'];
+		$tanggal = $detail['created_date'];
+		$wkt_keluar = $detail['wkt_keluar'];
+		$daftarNama = $detail['noind'] . ' - ' . $detail['nama_pkj'];
+
+		$this->load->library('PHPMailerAutoload');
+
+		//send Email
+		$mail = new PHPMailer();
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
+
+		// set smtp
+		$mail->isSMTP();
+		$mail->Host = 'm.quick.com';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
+		$mail->Username = 'no-reply';
+		$mail->Password = '123456';
+		$mail->WordWrap = 50;
+
+		// set email content
+		$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+		$emailUser = $this->M_index->emailParamedik();
+		foreach ($emailUser as $key) {
+			$mail->addAddress($key['email_internal']);
+			$subject = "New!!! Approval Izin Sakit Perusahaan";
+			$body = "Hi " . $key['nama'] . ",
+				<br>Anda mendapat permintaan approve paramedik dengan detail sbb :
+				<br>
+				<br>
+				<table>
+					<tr>
+						<td style='width: 100px;'><b>ID Izin</b></td>
+						<td>:</td>
+						<td>$id</td>
+					</tr>
+					<tr>
+						<td style='width: 100px;'><b>Tanggal</b></td>
+						<td>:</td>
+						<td>$tanggal</td>
+					</tr>
+					<tr>
+						<td style='width: 100px;'><b>Pekerja</b></td>
+						<td>:</td>
+						<td>$daftarNama</td>
+					</tr>
+					<tr>
+						<td style='width: 100px;'><b>Keterangan</b></td>
+						<td>:</td>
+						<td>$ket</td>
+					</tr>
+					<tr>
+						<td style='width: 100px;'><b>Keluar</b></td>
+						<td>:</td>
+						<td>$wkt_keluar</td>
+					</tr>
+				</table>
+				<br><br>
+				<hr>
+				<br>untuk melihat/ merespon izin ini, silahkan <a href='http://erp.quick.com/IKP/ApprovalAtasan'>login</a> ke ERP";
+		}
+
+		$mail->Subject = $subject;
+		$mail->msgHTML($body);
+
+		// check error
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit();
 		}
 	}
 }

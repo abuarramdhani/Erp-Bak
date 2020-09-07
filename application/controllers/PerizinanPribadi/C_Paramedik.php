@@ -68,30 +68,7 @@ class C_Paramedik extends CI_Controller
 			$data['UserMenu'] = array_values($datamenu);
 		}
 
-		$list = $this->M_index->getList2();
-		$namaAll = $this->M_index->getAllNama();
-		$nona = array_column($namaAll, 'nama', 'noind');
-		for ($i = 0; $i < count($list); $i++) {
-			//noind
-			$ex = explode(', ', $list[$i]['noind']);
-			$nam = array();
-			foreach ($ex as $k) {
-				$nam[] = $k . ' - ' . $nona[$k];
-			}
-			//di serahkan
-			if ($list[$i]['diserahkan'] != '-') {
-				$ex = explode(', ', $list[$i]['diserahkan']);
-				$dis = array();
-				foreach ($ex as $k) {
-					$dis[] = $k . ' - ' . $nona[$k];
-				}
-				$list[$i]['diserahkan'] = $dis;
-			} else {
-				$list[$i]['diserahkan'] = array('-');
-			}
-			$list[$i]['pekerja'] = $nam;
-		}
-		$data['list'] = $list;
+		$data['list'] = $this->M_index->GetIzinPribadiPerPekerja("WHERE ip.jenis_ijin = '2' AND ip.appr_atasan = 't'");
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('PerizinanPribadi/Paramedik/V_Paramedik_Index.php', $data);
@@ -110,7 +87,8 @@ class C_Paramedik extends CI_Controller
 			'tgl_appr_paramedik' => date('Y-m-d H:i:s'),
 			'ket_sakit' => ucwords(rtrim($keterangan)),
 		);
-		$up = $this->M_index->updateTizin($id, $arr);
+		$this->M_index->updateTizin($id, $arr);
+		$this->kirimEmailAtasan($id);
 		redirect('PerizinanPribadi/PSP/ApproveParamedik');
 	}
 
@@ -125,68 +103,23 @@ class C_Paramedik extends CI_Controller
 			'tgl_appr_paramedik' => date('Y-m-d H:i:s'),
 			'ket_sakit' => ucwords(rtrim($keterangan)),
 		);
-		$up = $this->M_index->updateTizin($id, $arr);
+		$this->M_index->updateTizin($id, $arr);
 		redirect('PerizinanPribadi/PSP/ApproveParamedik');
 	}
 
 	function kirimEmailAtasan($id)
 	{
 		$detail = $this->M_index->GetIzinbyId($id)->row_array();
+		$ket = $detail['ket_sakit'];
 		$tanggal = $detail['created_date'];
-		$daftarNama = $detail['noind'] . ' - ' . $detail['nama_pkj'];
-		$keperluan = $detail['keperluan'];
 		$wkt_keluar = $detail['wkt_keluar'];
-		$emailUser = $detail['email_internal'];
-		$noindatasan = $detail['nama_atasan'];
-		if ($detail['jenis_ijin'] == 1) {
-			$jenis = "Izin Keluar Pribadi";
-			$ket = $detail['keperluan'];
-		} else {
-			$jenis = "Izin Sakit Perusahaan";
-			$ket = $detail['ket_sakit'];
-		}
+		$daftarNama = $detail['noind'] . ' - ' . $detail['nama_pkj'];
+		$atasan = $detail['email_internal'];
+		$nama_atasan = $detail['nama_atasan'];
+		$keputusan_paramedik = $detail['appr_paramedik'] == 't' ? 'menyetujui' : 'menolak';
+
 		$this->load->library('PHPMailerAutoload');
 
-		$subject = "New!!! Approval Izin Sakit Perusahaan";
-		$body = "Hi $noindatasan,
-			<br>Anda mendapat permintaan approve izin dengan detail sbb :
-			<br>
-			<br>
-			<table>
-				<tr>
-					<td style='width: 100px;'><b>ID Izin</b></td>
-					<td>:</td>
-					<td>$id</td>
-				</tr>
-				<tr>
-					<td style='width: 100px;'><b>Jenis Izin</b></td>
-					<td>:</td>
-					<td>$jenis</td>
-				</tr>
-				<tr>
-					<td style='width: 100px;'><b>Tanggal</b></td>
-					<td>:</td>
-					<td>$tanggal</td>
-				</tr>
-				<tr>
-					<td style='width: 100px;'><b>Pekerja</b></td>
-					<td>:</td>
-					<td>$daftarNama</td>
-				</tr>
-				<tr>
-					<td style='width: 100px;'><b>Keterangan</b></td>
-					<td>:</td>
-					<td>$ket</td>
-				</tr>
-				<tr>
-					<td style='width: 100px;'><b>Keluar</b></td>
-					<td>:</td>
-					<td>$wkt_keluar</td>
-				</tr>
-			</table>
-			<br><br>
-			<hr>
-			<br>untuk melihat/ merespon izin ini, silahkan <a href='http://erp.quick.com/IKP/ApprovalAtasan'>login</a> ke ERP";
 		//send Email
 		$mail = new PHPMailer();
 		$mail->SMTPDebug = 0;
@@ -211,7 +144,43 @@ class C_Paramedik extends CI_Controller
 
 		// set email content
 		$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-		$mail->addAddress($emailUser);
+		$mail->addAddress($atasan);
+		$subject = "New!!! Hasil Diagnosa Pekerja Sakit";
+		$body = "Hi " . $nama_atasan . ",
+				<br>Memberitahukan bahwa paramedik " . $keputusan_paramedik . " permohonan izin pekerja dengan detail sbb :
+				<br>
+				<br>
+				<table>
+					<tr>
+						<td style='width: 100px;'><b>ID Izin</b></td>
+						<td>:</td>
+						<td>$id</td>
+					</tr>
+					<tr>
+						<td style='width: 100px;'><b>Tanggal</b></td>
+						<td>:</td>
+						<td>$tanggal</td>
+					</tr>
+					<tr>
+						<td style='width: 100px;'><b>Pekerja</b></td>
+						<td>:</td>
+						<td>$daftarNama</td>
+					</tr>
+					<tr>
+						<td style='width: 100px;'><b>Keterangan</b></td>
+						<td>:</td>
+						<td>$ket</td>
+					</tr>
+					<tr>
+						<td style='width: 100px;'><b>Keluar</b></td>
+						<td>:</td>
+						<td>$wkt_keluar</td>
+					</tr>
+				</table>
+				<br><br>
+				<hr>
+				<br>untuk melihat/ merespon izin ini, silahkan <a href='http://erp.quick.com/IKP/ApprovalAtasan'>login</a> ke ERP";
+
 		$mail->Subject = $subject;
 		$mail->msgHTML($body);
 
