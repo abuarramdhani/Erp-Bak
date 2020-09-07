@@ -723,11 +723,15 @@ class C_Monhand extends CI_Controller
         $id = $this->input->post('id');
         $dataHandrev = $this->M_dbhandling->selectdatahandlingbyid($id);
         $stats_kmp = $this->M_dbhandling->selectstatuskompbyid($dataHandrev[0]['id_status_komponen']);
+
+        // echo "<pre>";
+        // print_r($stats_kmp);
+        // exit();
         $stats_kmp_All = $this->M_dbhandling->selectstatuskomp();
         if ($stats_kmp == null) {
             $dataHandrev[0]['status_komp'] = 'Invalid';
         } else {
-            $dataHandrev[0]['status_komp'] = $stats_kmp[0]['kode_status'] - $stats_kmp[0]['status'];
+            $dataHandrev[0]['status_komp'] = $stats_kmp[0]['kode_status'] . ' - ' . $stats_kmp[0]['status'];
         }
         // $dataHandrev[0]['status_komp_kode'] = $stats_kmp[0]['kode_status'];
         $id_seksi = ['UPPL', 'Sheet Metal', 'Machining', 'Perakitan', 'PnP', 'Gudang', 'Subkon'];
