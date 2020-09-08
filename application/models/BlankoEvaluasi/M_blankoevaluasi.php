@@ -375,7 +375,7 @@ class M_blankoevaluasi extends CI_Model
 
         $query = "SELECT sp_ke, berlaku, tanggal_awal_berlaku as awal, jenis
         from \"Surat\".v_surat_tsp_rekap
-        where current_date between '$awal' and '$akhir'
+        where tanggal_awal_berlaku between '$awal' and '$akhir'
         and noind = '$noind' and tanggal_cetak is not null
         order by berlaku desc";
 
