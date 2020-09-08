@@ -104,9 +104,9 @@ class C_Index extends CI_Controller
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
+		$data['Menu'] = 'Pekerja';
+		$data['SubMenuOne'] = 'Edit Data Pekerja';
+		$data['SubMenuTwo'] = 'Edit Data Pekerja';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
@@ -300,8 +300,8 @@ class C_Index extends CI_Controller
 
 		// debug($data);
 
-		$data['Menu'] = 'Edit Data Pekerja';
-		$data['SubMenuOne'] = 'Pekerja';
+		$data['Menu'] = 'Pekerja';
+		$data['SubMenuOne'] = 'Edit Data Pekerja';
 		$data['SubMenuTwo'] = 'Edit Data Pekerja';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);

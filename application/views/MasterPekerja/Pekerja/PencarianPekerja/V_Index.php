@@ -213,7 +213,7 @@
     <div class="panel-group">
       <div class="panel panel-primary">
         <div class="panel-heading" style="padding: 5px;">
-          <h4>Kesepakatan Kerja CV. Karya Hidup Sentosa</h4>
+          <h4>Pencarian Pekerja</h4>
         </div>
         <div class="panel-body">
           <form @submit.prevent="" action="" class="form-horizontal">
