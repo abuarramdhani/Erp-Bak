@@ -264,7 +264,7 @@ class M_blankoevaluasi extends CI_Model
             $query = "
                 SELECT tes.*, tp.kodesie 
                 FROM \"Surat\".tevaluasi_staff tes inner join hrd_khs.tpribadi tp on tes.noind = tp.noind 
-                WHERE $filterKodesie and tes.deleted = '0'
+                WHERE $filterKodesie and (tes.deleted = '0' or tes.deleted is null)
                 ORDER BY tes.created_time desc";
             return $this->personalia->query($query);
         }
