@@ -37,7 +37,7 @@ class C_SuratPenyerahan extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMSeleksi/Penyerahan/V_Index', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMSeleksi/Penyerahan/V_Footer', $data);
     }
 
     public function getDataSP()
@@ -113,7 +113,7 @@ class C_SuratPenyerahan extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMSeleksi/Penyerahan/V_Edit', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMSeleksi/Penyerahan/V_Footer', $data);
     }
 
     public function saveEditPenyerahan()
@@ -520,7 +520,7 @@ class C_SuratPenyerahan extends CI_Controller
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ADMSeleksi/Penyerahan/V_Create', $data);
-        $this->load->view('V_Footer', $data);
+        $this->load->view('ADMSeleksi/Penyerahan/V_Footer', $data);
     }
 
     public function kodesie()
