@@ -97,70 +97,72 @@ AND msib.segment1 = '$komp'
 			$seksii = "AND bd.department_class_code = '$seksi'";
 		}
 
-    $sql = "Select bor.ORGANIZATION_ID
-,msib.segment1
-,msib.description
-,bor.ROUTING_SEQUENCE_ID
-,bor.ALTERNATE_ROUTING_DESIGNATOR alt
-,bos.OPERATION_SEQUENCE_ID
-,bos.OPERATION_SEQ_NUM opr_no
-,BOS.OPERATION_DESCRIPTION KODE_PROSES
-    ,mach.RESOURCE_CODE
-    ,mach.NO_MESIN
-    ,mach.ASSIGNED_UNITS machine_qt
-,opt.assigned_units opt_qty
-,opt.USAGE_RATE_OR_AMOUNT
-,(opt.USAGE_RATE_OR_AMOUNT*3600) CT
-,floor(23400/(opt.USAGE_RATE_OR_AMOUNT*3600))target
-,opt.LAST_UPDATE_DATE
-,bos.ATTRIBUTE7 P1
-,bos.ATTRIBUTE8 P2
-,bos.ATTRIBUTE9 P3
-,bos.ATTRIBUTE10 P4
-,bos.ATTRIBUTE11 P5
-,'#'||NVL(bos.ATTRIBUTE7, '$%' )||'#'||NVL(bos.ATTRIBUTE8, '$%' )||'#'||NVL(bos.ATTRIBUTE9, '$%' )||'#'||NVL(bos.ATTRIBUTE10, '$%' )||'#'||NVL(bos.ATTRIBUTE11, '$%' ) detail
-from mtl_system_items_b msib
-,bom_operational_routings bor
-,bom_operation_sequences bos
-,bom_departments bd
-    ,(select borsop.OPERATION_SEQUENCE_ID
-    ,borsop.USAGE_RATE_OR_AMOUNT
-    ,borsop.ASSIGNED_UNITS
-    ,borsop.LAST_UPDATE_DATE 
-    from bom_operation_resources borsop
-    ,bom_resources brop
-    where borsop.RESOURCE_ID = brop.RESOURCE_ID
-    and brop.RESOURCE_TYPE = 2
-    and brop.DISABLE_DATE is null) opt
-    ,(select borsmc.OPERATION_SEQUENCE_ID
-    ,brmc.RESOURCE_CODE
-    ,kdmr.DFF
-    ,kdmr.NO_MESIN
-    ,kdmr.TAG_NUMBER
-    ,kdmr.SPEC_MESIN
-    ,brmc.DESCRIPTION
-    ,borsmc.ASSIGNED_UNITS 
-    from bom_operation_resources borsmc
-    ,bom_resources brmc
-    ,khs_daftar_mesin_resource kdmr
-    where borsmc.RESOURCE_ID = brmc.RESOURCE_ID
-    and brmc.RESOURCE_TYPE = 1
-    and brmc.AUTOCHARGE_TYPE = 1
-    and brmc.DISABLE_DATE is null
-    and borsmc.RESOURCE_ID = kdmr.RESOURCE_ID(+))mach
-where bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
-and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
-and bd.DEPARTMENT_CODE not like 'D-SUB%'
-and bd.ORGANIZATION_ID = bor.ORGANIZATION_ID
-and bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
-and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
-and bos.DISABLE_DATE is null
-and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
-and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
-and msib.segment1 = '$kode' 
-$seksii
-order by bos.OPERATION_SEQ_NUM ,bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID";
-
+      $sql = "Select bor.ORGANIZATION_ID
+      ,msib.segment1
+      ,msib.description
+      ,bor.ROUTING_SEQUENCE_ID
+      ,bor.ALTERNATE_ROUTING_DESIGNATOR alt
+      ,bos.OPERATION_SEQUENCE_ID
+      ,bos.OPERATION_SEQ_NUM opr_no
+      ,BOS.OPERATION_DESCRIPTION KODE_PROSES
+          ,mach.RESOURCE_CODE
+          ,mach.NO_MESIN
+          ,mach.ASSIGNED_UNITS machine_qt
+      ,opt.assigned_units opt_qty
+      ,round(opt.usage_rate_or_amount/opt.assigned_units,5) usage  --- New
+      ,round(opt.usage_rate_or_amount/opt.assigned_units,5)*3600 CT --- New
+      ,round(6.5/(round(opt.usage_rate_or_amount/opt.assigned_units,5))) target  --- New
+      ,opt.USAGE_RATE_OR_AMOUNT
+      ,(opt.USAGE_RATE_OR_AMOUNT*3600) CT
+      ,floor(23400/(opt.USAGE_RATE_OR_AMOUNT*3600))target
+      ,opt.LAST_UPDATE_DATE
+      ,bos.ATTRIBUTE7 P1
+      ,bos.ATTRIBUTE8 P2
+      ,bos.ATTRIBUTE9 P3
+      ,bos.ATTRIBUTE10 P4
+      ,bos.ATTRIBUTE11 P5
+      ,'#'||NVL(bos.ATTRIBUTE7, '$%' )||'#'||NVL(bos.ATTRIBUTE8, '$%' )||'#'||NVL(bos.ATTRIBUTE9, '$%' )||'#'||NVL(bos.ATTRIBUTE10, '$%' )||'#'||NVL(bos.ATTRIBUTE11, '$%' ) detail
+      from mtl_system_items_b msib
+      ,bom_operational_routings bor
+      ,bom_operation_sequences bos
+      ,bom_departments bd
+          ,(select borsop.OPERATION_SEQUENCE_ID
+          ,borsop.USAGE_RATE_OR_AMOUNT
+          ,borsop.ASSIGNED_UNITS
+          ,borsop.LAST_UPDATE_DATE 
+          from bom_operation_resources borsop
+          ,bom_resources brop
+          where borsop.RESOURCE_ID = brop.RESOURCE_ID
+          and brop.RESOURCE_TYPE = 2
+          and brop.DISABLE_DATE is null) opt
+          ,(select borsmc.OPERATION_SEQUENCE_ID
+          ,brmc.RESOURCE_CODE
+          ,kdmr.DFF
+          ,kdmr.NO_MESIN
+          ,kdmr.TAG_NUMBER
+          ,kdmr.SPEC_MESIN
+          ,brmc.DESCRIPTION
+          ,borsmc.ASSIGNED_UNITS 
+          from bom_operation_resources borsmc
+          ,bom_resources brmc
+          ,khs_daftar_mesin_resource kdmr
+          where borsmc.RESOURCE_ID = brmc.RESOURCE_ID
+          and brmc.RESOURCE_TYPE = 1
+          and brmc.AUTOCHARGE_TYPE = 1
+          and brmc.DISABLE_DATE is null
+          and borsmc.RESOURCE_ID = kdmr.RESOURCE_ID(+))mach
+      where bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
+      and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
+      and bd.DEPARTMENT_CODE not like 'D-SUB%'
+      and bd.ORGANIZATION_ID = bor.ORGANIZATION_ID
+      and bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+      and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
+      and bos.DISABLE_DATE is null
+      and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
+      and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
+      and msib.segment1 like '$kode' 
+      $seksii
+      order by bos.OPERATION_SEQ_NUM ,bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID";
        $query = $oracle->query($sql);
         return $query->result_array();
        // return $sql;
