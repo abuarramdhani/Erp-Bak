@@ -109,12 +109,12 @@ AND msib.segment1 = '$komp'
           ,mach.NO_MESIN
           ,mach.ASSIGNED_UNITS machine_qt
       ,opt.assigned_units opt_qty
-      ,round(opt.usage_rate_or_amount/opt.assigned_units,5) usage  --- New
+      ,round(opt.usage_rate_or_amount/opt.assigned_units,5) USAGE_RATE_OR_AMOUNT  --- New
       ,round(opt.usage_rate_or_amount/opt.assigned_units,5)*3600 CT --- New
       ,round(6.5/(round(opt.usage_rate_or_amount/opt.assigned_units,5))) target  --- New
-      ,opt.USAGE_RATE_OR_AMOUNT
-      ,(opt.USAGE_RATE_OR_AMOUNT*3600) CT
-      ,floor(23400/(opt.USAGE_RATE_OR_AMOUNT*3600))target
+      -- ,opt.USAGE_RATE_OR_AMOUNT
+      -- ,(opt.USAGE_RATE_OR_AMOUNT*3600) CT
+      -- ,floor(23400/(opt.USAGE_RATE_OR_AMOUNT*3600))target
       ,opt.LAST_UPDATE_DATE
       ,bos.ATTRIBUTE7 P1
       ,bos.ATTRIBUTE8 P2
