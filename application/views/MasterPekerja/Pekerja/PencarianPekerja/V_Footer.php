@@ -84,7 +84,7 @@
 <!-- <script src="<?= base_url('assets/plugins/pace/pace.min.js') ?>"></script> -->
 
 <!-- Vue Script -->
-<script src="<?= base_url('assets/plugins/vue/vue@2.6.11.dev.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/vue/vue@2.6.11.js') ?>"></script>
 <!-- CUSTOM SCRIPT -->
 <script src="<?= base_url('assets/js/masterpekerja.pencarianpekerja.js') ?>"></script>
 
