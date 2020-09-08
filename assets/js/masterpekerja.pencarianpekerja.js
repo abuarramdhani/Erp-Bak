@@ -104,6 +104,7 @@ const app = new Vue({
 					this.$data.tableBody = Object.freeze(response.data.table_body);
 					this.$data.tableKeys = Object.freeze(response.data.table_keys);
 					this.$data.tableHeadToggled = {};
+					this.$data.activeRow = "";
 				})
 				.catch((e) => {
 					alert("Fetch failed, try to reload");
