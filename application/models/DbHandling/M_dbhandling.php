@@ -168,11 +168,14 @@ class M_dbhandling extends CI_Model
     public function kodekomp($term)
     {
 
-        $sql = "select distinct msib.segment1 ,msib.description
-                       from mtl_system_items_b msib
-                       where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-                       AND (msib.DESCRIPTION LIKE '%$term%' 
-                          OR msib.SEGMENT1 LIKE '%$term%') ORDER BY msib.SEGMENT1";
+        $sql = "SELECT DISTINCT msib.segment1, msib.description
+           FROM mtl_system_items_b msib
+          WHERE msib.inventory_item_status_code = 'Active'
+            AND (   msib.description LIKE '%$term%'
+                 OR msib.segment1 LIKE '%$term%'
+                )
+            AND msib.organization_id IN (101, 102) --OPM, ODM
+       ORDER BY msib.segment1";
 
         $query = $this->oracle->query($sql);
         return $query->result_array();
