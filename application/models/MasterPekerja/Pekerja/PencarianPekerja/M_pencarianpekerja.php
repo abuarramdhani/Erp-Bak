@@ -94,11 +94,11 @@ class M_pencarianpekerja extends CI_Model
         lk.lokasi_kerja
       ")
       ->from($this->table_tpribadi . " tp")
-      ->join($this->table_seksi . " ts", 'ts.kodesie = tp.kodesie')
-      ->join($this->table_bpjskes . " jskes", 'jskes.noind = tp.noind')
-      ->join($this->table_bpjstk . " jskt", 'jskt.noind = tp.noind')
-      ->join($this->table_lokasikerja . " lk", 'lk.id_ = tp.lokasi_kerja')
-      ->join("hrd_khs.tfaskes tf", 'tf.kd_faskes = jskes.bpu', 'left')
+      ->join($this->table_seksi . " ts", 'ts.kodesie = tp.kodesie', 'left')
+      ->join($this->table_bpjskes . " jskes", 'jskes.noind = tp.noind', 'left')
+      ->join($this->table_bpjstk . " jskt", 'jskt.noind = tp.noind', 'left')
+      ->join($this->table_lokasikerja . " lk", 'lk.id_ = tp.lokasi_kerja', 'left')
+      ->join("hrd_khs.tfaskes tf", 'tf.kd_faskes = jskes.bpu', 'left outer')
       ->like("LOWER($param)", strtolower($keyword), 'both')
       ->order_by('noind', 'asc');
 
