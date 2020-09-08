@@ -68,7 +68,7 @@ class C_Index extends CI_Controller
 
 		$this->load->library('General');
 		$this->load->library('Log_Activity');
-		$this->load->library('Image');
+		// $this->load->library('Image');
 
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -171,7 +171,7 @@ class C_Index extends CI_Controller
 		$datapekerja	= array(
 			/**Data Pribadi */
 			'photo' 	          => $pekerja->path_photo ?: $pekerja->photo,
-			'photo_base64'			=> Image::toBase64($pekerja->path_photo ?: $pekerja->photo),
+			// 'photo_base64'			=> Image::toBase64($pekerja->path_photo ?: $pekerja->photo),
 			'noind' 	          => $pekerja->noind,
 			'nama' 		          => $pekerja->nama,
 			'jenkel'						=> $pekerja->jenkel,
