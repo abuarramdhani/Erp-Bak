@@ -52,8 +52,8 @@
                                             <div class="col-md-7">
                                                 <label style="font-size: 14px;" class="mco_isiData">Seksi : <?= trim($order['section_name']) ?></label>
                                             </div>
-                                            <input hidden="" name="kodesie" class="mco_inputData" value="<?= $order['kodesie_pengorder'] ?>">
-                                            <input hidden="" name="lokasi" class="mco_inputData" value="<?= $order['lokasi_pengorder'] ?>">
+                                            <input type="hidden" name="kodesie" class="mco_inputData" value="<?= $order['kodesie_pengorder'] ?>">
+                                            <input type="hidden" name="lokasi" class="mco_inputData" value="<?= $order['lokasi_pengorder'] ?>">
                                             <div class="col-md-5">
                                                 <label style="font-size: 14px;" class="mco_isiData">Lokasi : <?= trim($order['location_name']) ?></label>
                                             </div>

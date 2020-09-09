@@ -73,7 +73,7 @@ $(document).ready(function(){
 		dom: 'Bfrtip',
 		"scrollX": true,
 		fixedColumns:   {
-			leftColumns: 3,
+			leftColumns: 2,
 			rightColumns:1
 		},
 		buttons: [
@@ -169,6 +169,7 @@ $(document).ready(function(){
 		"timePicker": false,
 		"timePicker24Hour": true,
 		"showDropdowns": false,
+		"autoUpdateInput": true,
 		locale: {
 			format: 'YYYY-MM-DD'
 		},
@@ -326,7 +327,8 @@ $(document).ready(function(){
 				hari = "0" + hari;
 			}
 			var tglButuh = tahun + '-' + bulan + '-' + hari;
-			$('[name=tglbutuh]').val(tglButuh);
+			$('[name=tglbutuh]').data('daterangepicker').setStartDate(tglButuh);
+			$('[name=tglbutuh]').data('daterangepicker').setEndDate(tglButuh);
 			$('.mco_tglbutuh').show();
 			$('.mco_alasan').hide();
 		}else if($(this).val() == 'Urgent'){
@@ -341,11 +343,13 @@ $(document).ready(function(){
 				hari = "0" + hari;
 			}
 			var tglButuh = tahun + '-' + bulan + '-' + hari;
-			$('[name=tglbutuh]').val(tglButuh);
+			$('[name=tglbutuh]').data('daterangepicker').setStartDate(tglButuh);
+			$('[name=tglbutuh]').data('daterangepicker').setEndDate(tglButuh);
 			$('.mco_tglbutuh').show();
 			$('.mco_alasan').show();
 		}else{
-			$('.mco_tglbutuh').val(tanggal);
+			$('[name=tglbutuh]').data('daterangepicker').setStartDate(tanggal);
+			$('[name=tglbutuh]').data('daterangepicker').setEndDate(tanggal);
 			$('.mco_tglbutuh').hide();
 			$('.mco_alasan').hide();
 		}
