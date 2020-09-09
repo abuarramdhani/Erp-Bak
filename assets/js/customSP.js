@@ -604,6 +604,8 @@ $(document).ready(function () {
         (a == '1') ? $('#kelas_pkj_SP').attr('hidden', false) : $('#kelas_pkj_SP').attr('hidden', true)
 
         let kodein = kode.val()
+        console.log(kodein);
+
         $.ajax({
             type: 'post',
             data: {
@@ -612,23 +614,49 @@ $(document).ready(function () {
             dataType: 'json',
             url: baseurl + 'AdmSeleksi/SuratPenyerahan/getPekerjaan',
             success: function (data) {
-                $('.input_noind_baru_SP').val(data.noind)
-                $('#slc_kodesie_SP').attr('disabled', false)
-                let kodesie_butuh = '<option></option>'
-                for (var i = 0; i < data.butuh.length; i++) {
-                    kodesie_butuh += `<option value="` + data.butuh[i]['kodesie'] + `">[` + data.butuh[i]['kodesie'] + `] - ` + data.butuh[i]['seksi'] + ` - ` + data.butuh[i]['pekerjaan'] + `</option>`
+                console.log(data);
+                if (data.butuh == null) {
+                    swal.fire({
+                        title: 'Error...',
+                        text: 'Data kebutuhan tidak ditemukan',
+                        type: 'error',
+                        allowClickOutside: false,
+                        showConfirmButton: false,
+                        timer: '1500'
+                    })
+                } else if (data.noind == null) {
+                    swal.fire({
+                        title: 'Error...',
+                        text: 'Data nomor induk baru tidak ditemukan',
+                        type: 'error',
+                        allowClickOutside: false,
+                        showConfirmButton: false,
+                        timer: '1500'
+                    })
+                } else {
+                    $('.input_noind_baru_SP').val(data.noind)
+                    $('#slc_kodesie_SP').attr('disabled', false)
+                    let kodesie_butuh = '<option></option>'
+                    for (var i = 0; i < data.butuh.length; i++) {
+                        kodesie_butuh += `<option value="` + data.butuh[i]['kodesie'] + `">[` + data.butuh[i]['kodesie'] + `] - ` + data.butuh[i]['seksi'] + ` - ` + data.butuh[i]['pekerjaan'] + `</option>`
+                    }
+                    $('#slc_kodesie_SP').html(kodesie_butuh)
                 }
-                $('#slc_kodesie_SP').html(kodesie_butuh)
-            }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus, errorThrown);
+            },
+
         })
     })
 
     $('#txt_try_seleksi').on('keyup', function () {
         let isi = $(this).val().split(/[,.]/)
-        elaa = moment($('#txt_tgl_SP').val()).add($(this).val(), 'month').format('YYYY-MM-DD')
+        elaa = moment($('#txt_tgl_SP').val(), ['LL']).add($(this).val(), 'month').format('YYYY-MM-DD')
 
         if (isi[1]) {
-            let newEla = moment($('#txt_tgl_SP').val()).add(isi[0], 'month').add(15, 'days').format('YYYY-MM-DD')
+            let newEla = moment($('#txt_tgl_SP').val(), ['LL']).add(isi[0], 'month').add(15, 'days').format('YYYY-MM-DD')
             $('#inp_tgl_angkat_SP').val(newEla)
         } else {
             $('#inp_tgl_angkat_SP').val(elaa)
@@ -644,10 +672,10 @@ $(document).ready(function () {
             let isi = $(this).val().split(/[,.]/)
 
             if (isi[1]) {
-                let DateFresh = moment($('#txt_tgl_SP').val()).add(Number(3) + Number(isi[0]), 'month').add(15, 'days').format('YYYY-MM-DD')
+                let DateFresh = moment($('#txt_tgl_SP').val(), ['LL']).add(Number(3) + Number(isi[0]), 'month').add(15, 'days').format('YYYY-MM-DD')
                 $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
             } else {
-                let DateFresh = moment($('#txt_tgl_SP').val()).add(Number(3) + Number(isi[0]), 'month').format('YYYY-MM-DD')
+                let DateFresh = moment($('#txt_tgl_SP').val(), ['LL']).add(Number(3) + Number(isi[0]), 'month').format('YYYY-MM-DD')
                 $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
             }
         }
