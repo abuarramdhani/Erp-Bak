@@ -444,6 +444,8 @@ class C_Master extends CI_Controller
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 4) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 5) {
+              $a = $data['get_footer'][0]['DESCRIPTION'];
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 0) {
               $a = '<br><br><br><br><br><br>';
             }
@@ -590,6 +592,8 @@ class C_Master extends CI_Controller
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 4) {
               $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 5) {
+              $a = $data['get_footer'][0]['DESCRIPTION'];
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 0) {
               $a = '<br><br><br><br><br><br>';
             }

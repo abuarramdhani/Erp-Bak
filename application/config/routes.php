@@ -2310,8 +2310,17 @@ $route['SiteManagement/MobileOrder/(:any)/(:any)'] = 'SiteManagement/C_index/$1/
 
 //------------------------------------------------- Edit Data Pekerja --------------------------------------------//
 $route['MasterPekerja/DataPekerjaKeluar'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index';
+$route['MasterPekerja/DataPekerjaKeluar/api/keluarga']['get'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/keluarga_read';
+$route['MasterPekerja/DataPekerjaKeluar/api/keluarga/add']['post'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/keluarga_add';
+$route['MasterPekerja/DataPekerjaKeluar/api/keluarga/update']['post'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/keluarga_update';
+$route['MasterPekerja/DataPekerjaKeluar/api/keluarga/delete']['post'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/keluarga_delete';
 $route['MasterPekerja/DataPekerjaKeluar/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1';
 $route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1/$2';
+
+//----------------------------------------------- PENCARIAN PEKERJA -----------------------------------------------//
+$route['MasterPekerja/PencarianPekerja'] = 'MasterPekerja/Pekerja/PencarianPekerja/C_Index';
+$route['MasterPekerja/PencarianPekerja/api/(:any)'] = 'MasterPekerja/Pekerja/PencarianPekerja/C_Api/$1';
+$route['MasterPekerja/PencarianPekerja/(:any)'] = 'MasterPekerja/Pekerja/PencarianPekerja/C_Index/$1';
 
 //--------------------------------------------------- E-COMMERCE --------------------------------------------------//
 $route['ECommerce'] 							= 'ECommerce/C_index';
