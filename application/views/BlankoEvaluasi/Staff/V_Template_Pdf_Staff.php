@@ -6,80 +6,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Evaluasi Staff</title>
   <style media="print">
-  .m-0 {
-    margin: 0;
-  }
+    .m-0 {
+      margin: 0;
+    }
 
-  table {
-    width: 100%;
-    margin: 0;
-    table-layout: fixed;
-  }
+    table {
+      width: 100%;
+      margin: 0;
+      table-layout: fixed;
+    }
 
-  table.bordered {
-    padding: 0;
-    border-collapse: collapse;
-  }
+    table.bordered {
+      padding: 0;
+      border-collapse: collapse;
+    }
 
-  table.bordered td {
-    border: 1px solid black;
-  }
+    table.bordered td {
+      border: 1px solid black;
+    }
 
-  .centered td,
-  .centered th {
-    text-align: center;
-  }
+    .centered td,
+    .centered th {
+      text-align: center;
+    }
 
-  table.bordered thead td,
-  table.bordered thead th {
-    font-weight: bold;
-  }
+    table.bordered thead td,
+    table.bordered thead th {
+      font-weight: bold;
+    }
 
-  table.bordered th,
-  table.bordered td {
-    border: 1px solid black;
-  }
+    table.bordered th,
+    table.bordered td {
+      border: 1px solid black;
+    }
 
-  table.header>tr {
-    height: 100px;
-  }
+    table.header>tr {
+      height: 100px;
+    }
 
-  td {
-    word-wrap: break-word;
-  }
+    td {
+      word-wrap: break-word;
+    }
 
-  .logo {
-    width: 60px;
-    height: auto;
-  }
+    .logo {
+      width: 60px;
+      height: auto;
+    }
 
-  /* ------------------------------------------------ */
-  .title {
-    background-color: #C0C0C0;
-    width: 100%;
-    font-weight: bold;
-  }
+    /* ------------------------------------------------ */
+    .title {
+      background-color: #C0C0C0;
+      width: 100%;
+      font-weight: bold;
+    }
 
-  .center {
-    text-align: center;
-  }
+    .center {
+      text-align: center;
+    }
 
-  .text-left {
-    text-align: left;
-  }
+    .text-left {
+      text-align: left;
+    }
 
-  .text-right {
-    text-align: right;
-  }
+    .text-right {
+      text-align: right;
+    }
 
-  .text-top-left {
-    text-align: left;
-    vertical-align: top;
-  }
+    .text-top-left {
+      text-align: left;
+      vertical-align: top;
+    }
 
-  .bold {
-    font-weight: bold;
-  }
+    .bold {
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -128,13 +128,13 @@
     </table>
     <div style="height: 160px; margin-top: 2em; padding: 0 1em; word-wrap: break-word; white-space:pre-wrap;">
       <span>Penilaian Atasan :</span>
-      <?php if(!$atasan): ?>
-      <p>.......................................................................................................................................................</p>
-      <p>.......................................................................................................................................................</p>
-      <p>.......................................................................................................................................................</p>
-      <p>.......................................................................................................................................................</p>
-      <?php else: ?>
-      <p><?= $atasan ?></p>
+      <?php if (!$atasan) : ?>
+        <p>.......................................................................................................................................................</p>
+        <p>.......................................................................................................................................................</p>
+        <p>.......................................................................................................................................................</p>
+        <p>.......................................................................................................................................................</p>
+      <?php else : ?>
+        <p><?= $atasan ?></p>
       <?php endif ?>
     </div>
     <div style="padding: 0 1em;">
@@ -152,9 +152,9 @@
         </tr>
         <tr>
           <td>
-            <?php if(!$usulan) echo "<s>"  ?>
+            <?php if (!$usulan) echo "<s>"  ?>
             ➢ Diperpanjang
-            <?php if(!$usulan) echo "</s>"  ?>
+            <?php if (!$usulan) echo "</s>"  ?>
           </td>
           <td>: <?= ($usulan) ? $usulan : '....' ?> Bulan</td>
           <td>➢ Diperpanjang</td>
@@ -162,9 +162,9 @@
         </tr>
         <tr>
           <td>
-            <?php if($usulan) echo "<s>"  ?>
+            <?php if ($usulan) echo "<s>"  ?>
             ➢ Tidak Diperpanjang
-            <?php if($usulan) echo "<s>"  ?>
+            <?php if ($usulan) echo "<s>"  ?>
           </td>
           <td></td>
           <td>➢ Tidak Diperpanjang</td>
@@ -184,7 +184,7 @@
           <td class="center" style="width: 25%;">Pekerja</td>
           <td class="center" style="width: 25%;">Ass./Kepala Unit/Bid</td>
           <td class="center" style="width: 25%;">Ass./Wa./Ka.Dept</td>
-          <td class="center" style="width: 25%;">Diektur Utama</td>
+          <td class="center" style="width: 25%;">Direktur Utama</td>
         </tr>
         <tr>
           <td style="height: 50px;"></td>

@@ -88,6 +88,7 @@ class C_EvaluasiStaff extends CI_Controller
                 'nama' =>  $staffBlanko->nama,
                 'seksi' =>  $staffBlanko->seksi,
                 // 'kodesie' =>  $staffBlanko->kodesie,
+                'kd_jabatan' =>  $staffBlanko->kd_jabatan,
                 'jabatan' =>  $staffBlanko->jabatan,
                 'akhir_kontrak' =>  $staffBlanko->akhir_kontrak,
                 'status_jabatan' =>  $staffBlanko->status,
@@ -168,7 +169,14 @@ class C_EvaluasiStaff extends CI_Controller
 
         $title = 'Evaluasi Staff';
         $filename = 'Evalasi kontrak Staff';
-        $content = $this->load->view('BlankoEvaluasi/Staff/V_Template_Pdf', $data, true);
+        $tkpw_kode = 20;
+        // if not TKPW
+        if ($data['worker']['kd_jabatan'] != $tkpw_kode) {
+            $content = $this->load->view('BlankoEvaluasi/Staff/V_Template_Pdf_Staff', $data, true);
+        } else {
+            // if TKPW load other content
+            $content = $this->load->view('BlankoEvaluasi/Staff/V_Template_Pdf_TKPW', $data, true);
+        }
 
         $pdf->AddPage('P');
         $pdf->SetTitle($title);
