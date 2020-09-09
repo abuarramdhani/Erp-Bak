@@ -157,6 +157,7 @@ class M_index extends CI_Model
                     ip.manual,
                     ip.appr_atasan,
                     ip.appr_paramedik,
+                    ip.wkt_keluar keluar,
                     case
                         when ip.jenis_ijin in (1,3) then
                         case
@@ -203,7 +204,7 @@ class M_index extends CI_Model
                         ip.keperluan,
                         ip.appr_atasan,
                         ip.appr_paramedik,
-                        ip.wkt_keluar,
+                        ip.wkt_keluar keluar,
                         ip.ket_sakit,
                         (SELECT seksi from hrd_khs.tseksi ts left join hrd_khs.tpribadi tp on tp.kodesie = ts.kodesie where tp.noind = ipd.noind) as seksi,
                         case

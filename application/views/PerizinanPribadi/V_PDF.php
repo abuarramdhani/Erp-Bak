@@ -29,6 +29,7 @@ if ($perseksi == 'Tidak') {
                 <th>Pekerja</th>
                 <th>Seksi</th>
                 <th>Jenis Izin</th>
+                <th>Waktu Keluar</th>
                 <th>Atasan Approved</th>
                 <th>Keterangan</th>
                 <th>Status</th>
@@ -74,6 +75,7 @@ if ($perseksi == 'Tidak') {
                             </td>
                         <?php } ?>
                         <td style="text-align: left; white-space: nowrap;"><?= $row['jenis_ijin'] ?></td>
+                        <td style="text-align: left; white-space: nowrap;"><?= $row['keluar'] ?></td>
                         <td style="white-space: nowrap;"><?= $row['atasan'] ?></td>
                         <td><?= $row['keperluan'] ?></td>
                         <td style="white-space: nowrap;"><?= $row['status']; ?></td>
