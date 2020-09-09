@@ -140,10 +140,10 @@ class C_Index extends CI_Controller
       $objPHPExcel
         ->getProperties()
         ->setCreator('KHS ERP')
-        ->setTitle("Rekap Potongan Duka")
-        ->setSubject("Rekap Potongan Duka")
-        ->setDescription("Rekap Potongan Duka")
-        ->setKeywords("Rekap Potongan Duka");
+        ->setTitle("Pekerja")
+        ->setSubject("Pekerja")
+        ->setDescription("Pekerja")
+        ->setKeywords("Pekerja");
 
       // CORE VAROABLE
       // maybe later
@@ -152,7 +152,7 @@ class C_Index extends CI_Controller
       // set orientation
       $objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
       // set title
-      $objPHPExcel->getActiveSheet()->setTitle('DAFTAR KEBUTUHAN P2K3');
+      $objPHPExcel->getActiveSheet()->setTitle('Sheet 1');
       $objPHPExcel->setActiveSheetIndex(0);
 
       // Styling in PHP Excel
