@@ -45,6 +45,7 @@
 			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Routing UOM</th>
 			<th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Rout Status</th> -->
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Step</th> -->
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Num</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr No</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Vers</th>
 			<!-- <th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Desc</th> -->
@@ -53,19 +54,22 @@
 			<!-- <th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Opr Status</th> -->
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity</th>
 			<!-- <th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity Desc</th> -->
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Kode Proses</th>
+			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity Factor</th> -->
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Activity Factor</th> -->
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resources</th>
 			<!-- <th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Desc</th> -->
 			<!-- <th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Class</th> -->
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Machine Qty</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Operator Qty</th>
-			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Process Qty (PCS)</th>
+			<!-- <th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Process Qty (PCS)</th> -->
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Proses UOM</th> -->
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Resource Usage (Hours)</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Cycle Time (Seconds)</th>
 			<th colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">Target</th>
 			<!-- <th  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt;">Resource Usage UOM</th> -->
 			<!-- <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Inverse</th> -->
+			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt;">Proses Detail</th>
 		</tr>
 		<tr style="background-color: grey" >
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 3%">Qty</th>
@@ -87,6 +91,7 @@
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['ROUTING_UOM']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['ROUT_STATUS']?></td> -->
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['STEP']?></td> -->
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPRN_NUM']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPRN_NO']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPRN_VERS']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPRN_DESC']?></td>    -->
@@ -95,13 +100,14 @@
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPRN_STATUS']?></td> -->
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ACTIVITY']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ACTIVITY_DESC']?></td> -->
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['KODE_PROSES']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ACTIVITY_FACTOR']?></td> -->
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCES']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_DESC']?></td> -->
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_CLASS']?></td> -->
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['MACHINE_QTY']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['OPERATOR_QTY']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['PROCESS_QTY']?></td>
+			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['PROCESS_QTY']?></td> -->
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['RESOURCE_PROCESS_UOM']?></td>    -->
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['RESOURCE_USAGE']?>
 				<?php 
@@ -124,6 +130,7 @@
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=round($dataopm2[$i]['TARGET'])?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"></td> -->
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['LAST_UPDATE_DATE']?></td>
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['DETAILPROSES']?></td>
 			
 
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['RESOURCE_USAGE_UOM']?></td> -->
