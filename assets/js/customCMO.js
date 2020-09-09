@@ -84,6 +84,57 @@ $(document).ready(function(){
 		]
 	});
 
+	$('#cmo_tbllistorder_pedo').DataTable({
+		dom: 'Bfrtip',
+		"scrollX": true,
+		fixedColumns:   {
+			leftColumns: 2,
+			rightColumns:1
+		},
+		buttons: [
+		{
+			extend: 'excel',
+			title: ''
+		}
+		]
+	});
+
+	$('#cmo_tbllistorder_peto').DataTable({
+		dom: 'Bfrtip',
+		"scrollX": true,
+		fixedColumns:   {
+			leftColumns: 2,
+			rightColumns:1
+		},
+		buttons: [
+		{
+			extend: 'excel',
+			title: ''
+		}
+		]
+	});
+
+	$('#cmo_tbllistorder_pip').DataTable({
+		dom: 'Bfrtip',
+		"scrollX": true,
+		fixedColumns:   {
+			leftColumns: 2,
+			rightColumns:1
+		},
+		buttons: [
+		{
+			extend: 'excel',
+			title: ''
+		}
+		]
+	});
+
+	$('#mco_tablistorder').on( 'shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+        $.fn.dataTable.tables( {visible: true, api: true} )
+        	.columns.adjust()
+        	.fixedColumns().relayout();
+    } );
+
 	$('#mco_changestatus').change(function(){
 		$.ajax({
 			url : baseurl+"civil-maintenance-order/order/up_kolomOrder",

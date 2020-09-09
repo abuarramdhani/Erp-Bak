@@ -42,7 +42,7 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <ul class="nav nav-pills nav-justified" role="tablist">
+                                        <ul class="nav nav-pills nav-justified" role="tablist" id="mco_tablistorder">
                                             <li role="presentation" class="active">
                                                 <a href="#all" aria-controls="all" role="tab" data-toggle="tab">Semua Pekerjaan</a>
                                             </li>
@@ -163,7 +163,7 @@
                                             <div role="tabpanel" class="tab-pane fade in" id="pedo">
                                                 <div class="row">
                                                     <div class="col-md-12" style="margin-top: 20px;" id="CMO_tblJnsOrder">
-                                                        <table class="table table-bordered table-hover table-striped" id="cmo_tbllistorder">
+                                                        <table class="table table-bordered table-hover table-striped" id="cmo_tbllistorder_pedo">
                                                             <thead class="bg-primary">
                                                                 <th class="bg-primary" width="10%" style="text-align: center;">No</th>
                                                                 <th class="bg-primary" style="text-align: center;">No Log</th>
@@ -263,7 +263,7 @@
                                             <div role="tabpanel" class="tab-pane fade in" id="peto">
                                                 <div class="row">
                                                     <div class="col-md-12" style="margin-top: 20px;" id="CMO_tblJnsOrder">
-                                                        <table class="table table-bordered table-hover table-striped" id="cmo_tbllistorder">
+                                                        <table class="table table-bordered table-hover table-striped" id="cmo_tbllistorder_peto">
                                                             <thead class="bg-primary">
                                                                 <th class="bg-primary" width="10%" style="text-align: center;">No</th>
                                                                 <th class="bg-primary" style="text-align: center;">No Log</th>
@@ -362,7 +362,7 @@
                                             <div role="tabpanel" class="tab-pane fade in" id="pip">
                                                 <div class="row">
                                                     <div class="col-md-12" style="margin-top: 20px;" id="CMO_tblJnsOrder">
-                                                        <table class="table table-bordered table-hover table-striped" id="cmo_tbllistorder">
+                                                        <table class="table table-bordered table-hover table-striped" id="cmo_tbllistorder_pip">
                                                             <thead class="bg-primary">
                                                                 <th class="bg-primary" width="10%" style="text-align: center;">No</th>
                                                                 <th class="bg-primary" style="text-align: center;">No Log</th>
