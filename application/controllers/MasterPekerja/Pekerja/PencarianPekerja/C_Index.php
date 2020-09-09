@@ -162,7 +162,7 @@ class C_Index extends CI_Controller
             'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
             'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
             'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
           )
         ],
         'bold' => [
@@ -187,7 +187,12 @@ class C_Index extends CI_Controller
       // SET STYLING
 
       // SET TABLE HEAD
-      // debug($data['table_head']);
+      // debug($data);
+      $column_with_number = array(
+        'nik',
+        'no_kk'
+      );
+
       $cellA = 'A';
       foreach ($data['table_head'] as $i => $title) {
         $cell = $cellA++ . 1;
@@ -206,11 +211,16 @@ class C_Index extends CI_Controller
           ->applyFromArray($EXCEL_STYLE['align-center'])
           ->applyFromArray($EXCEL_STYLE['bordered']);
         $cellB = 'B';
-        foreach ($item as $index => $value) {
+        foreach ($item as $key => $value) {
           $cell = $cellB++ . $startRow;
           $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle($cell)->applyFromArray($EXCEL_STYLE['bordered']);
           // with long number example
           // $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle('E' . $x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
+
+          // set cell format to number
+          if (in_array($key, $column_with_number)) {
+            $objPHPExcel->getActiveSheet()->getStyle($cell)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+          }
         }
         $startRow++;
       }
