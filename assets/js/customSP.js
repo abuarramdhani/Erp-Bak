@@ -604,8 +604,6 @@ $(document).ready(function () {
         (a == '1') ? $('#kelas_pkj_SP').attr('hidden', false) : $('#kelas_pkj_SP').attr('hidden', true)
 
         let kodein = kode.val()
-        console.log(kodein);
-
         $.ajax({
             type: 'post',
             data: {
@@ -614,8 +612,6 @@ $(document).ready(function () {
             dataType: 'json',
             url: baseurl + 'AdmSeleksi/SuratPenyerahan/getPekerjaan',
             success: function (data) {
-                console.log(data);
-                $('.input_noind_baru_SP').val(data.noind)
                 $('#slc_kodesie_SP').attr('disabled', false)
                 let kodesie_butuh = '<option></option>'
                 for (var i = 0; i < data.butuh.length; i++) {
@@ -623,7 +619,6 @@ $(document).ready(function () {
                 }
                 $('#slc_kodesie_SP').html(kodesie_butuh)
             }
-
         })
     })
 

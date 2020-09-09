@@ -537,36 +537,45 @@ class C_SuratPenyerahan extends CI_Controller
         $now = date('Y-01-01');
         $tahun = date('Ym', strtotime('-1 years', strtotime($now)));
         $data['butuh'] = $this->M_penyerahan->getKebutuhan($kode, $tahun);
-        $noind = $this->M_penyerahan->getNoindMax($kode);
+        // $noind = $this->M_penyerahan->getNoindMax($kode);
 
-        $find = false;
-        $noind_cek = array(
-            $noind[0]['new']
-        );
-        $data['noind'] = null;
+        // $find = false;
+        // $noind_cek = array(
+        //     $noind[0]['new']
+        // );
+        // $data['noind'] = null;
 
-        while (!$find) {
-            $implode = implode("', '", $noind_cek);
-            $cek = $this->M_penyerahan->cekNoind($implode);
+        // $listOfNoindAcak = $this->M_penyerahan->getNoindAcak();
+        // $listOfNoindPribadi = $this->M_penyerahan->getNoindTpribadi($kode);
+        // $noind_pribadi = array_column($listOfNoindPribadi, 'noind');
+        // while (!$find) {
+        //     $cek = '';
+        //     if (in_array($noind_cek[0], $noind_pribadi)) {
+        //         $cek = '1';
+        //     }
+        //     echo "<pre>";
+        //     print_r($cek . '<br>');
+        //     print_r($noind_cek);
+        //     print_r($noind);
+        //     die;
+        //     if (empty($cek)) {
+        //         $data['noind'] = $noind_cek[0];
+        //         $find = true;
+        //     } else {
+        //         $ada = substr($noind_cek[0], 1, 4);
+        //         $plus = $ada + 1;
+        //         $panjang = 4 - strlen($plus);
+        //         if ($panjang != 0) {
+        //             $nol = str_pad($plus, 4, 0, 0);
+        //         } else {
+        //             $nol = $plus;
+        //         }
 
-            if (empty($cek)) {
-                $data['noind'] = $noind_cek[0];
-                $find = true;
-            } else {
-                $ada = substr($noind_cek[0], 1, 4);
-                $plus = $ada + 1;
-                $panjang = 4 - strlen($plus);
-                if ($panjang != 0) {
-                    $nol = str_pad($plus, 4, 0, 0);
-                } else {
-                    $nol = $plus;
-                }
-
-                $real = substr($noind_cek[0], 0, 1) . $nol;
-                unset($noind_cek[0]);
-                array_push($noind_cek, $real);
-            }
-        }
+        //         $real = substr($noind_cek[0], 0, 1) . $nol;
+        //         unset($noind_cek[0]);
+        //         array_push($noind_cek, $real);
+        //     }
+        // }
         echo json_encode($data);
     }
 
