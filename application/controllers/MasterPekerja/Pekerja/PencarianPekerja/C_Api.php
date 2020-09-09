@@ -66,47 +66,9 @@ class Response
 class C_Api extends CI_Controller
 {
   protected $user_logged;
-  protected $table_head_default = [
-    'No',
-    'Noind',
-    'Nama',
-    'Seksi',
-    'Unit',
-    'Tgl. Masuk',
-    'Tgl. Diangkat',
-    'Akhir Kontrak',
-    'Tgl. Keluar',
-    'Tempat Lahir',
-    'Tgl Lahir',
-    'Alamat',
-    'Desa',
-    'Kecamatan',
-    'Kabupaten',
-    'Propinsi',
-    'Kode Pos',
-    'No. HP',
-    'No. Telp',
-    'NIK',
-    'No. KK',
-    'Nokes',
-    'BPU',
-    'No. KPJ',
-    'Email',
-    'Sebab Keluar',
-    'Lokasi Kerja',
-  ];
-
-  protected $table_head_jabatan = [
-    'No',
-    'Noind',
-    'Nama',
-    'Seksi',
-    'Unit',
-    'Bidang',
-    'Departemen',
-    'Tgl. Masuk',
-    'Jabatan'
-  ];
+  protected $table_head_default;
+  protected $table_head_jabatan;
+  protected $param;
 
   public function __construct()
   {
@@ -114,6 +76,13 @@ class C_Api extends CI_Controller
 
     $this->load->library('form_validation');
     $this->load->model('MasterPekerja/Pekerja/PencarianPekerja/M_pencarianpekerja', 'modelPencarian');
+
+    // load another controller
+    $this->load->library('../controllers/MasterPekerja/Pekerja/PencarianPekerja/Data_Pencarian');
+
+    $this->table_head_default = $this->data_pencarian->table_head_default; // array
+    $this->table_head_jabatan = $this->data_pencarian->table_head_jabatan; // array
+    $this->param = $this->data_pencarian->param; // array
 
     // login first to using this api
     $this->user_logged = $this->session->user;
@@ -127,6 +96,8 @@ class C_Api extends CI_Controller
    */
   public function find()
   {
+    // debug($this->C_Index);
+
     try {
       $get = $this->input->get();
       $keyword = $this->input->get('keyword');
@@ -142,7 +113,12 @@ class C_Api extends CI_Controller
         ->set_message('required', 'Error: Field {field} Bad request')
         ->run();
 
+      // check valid param
       if (!$validation) throw new Exception(validation_errors());
+      // check valid param on interface
+      if (!$this->param[$param]) throw new Exception("Param is not valid");
+
+      $param_type = $this->param[$param]['type'];
 
       if ($param == 'jabatan') {
         $data = $this->modelPencarian->findWorkerPosition($keyword, $is_out, $limit);
@@ -157,7 +133,7 @@ class C_Api extends CI_Controller
           )
         );
       } else {
-        $data = $this->modelPencarian->findWorker($param, $keyword, $is_out, $limit);
+        $data = $this->modelPencarian->findWorker($param, $param_type, $keyword, $is_out, $limit);
         Response::json(
           array(
             'success' => true,

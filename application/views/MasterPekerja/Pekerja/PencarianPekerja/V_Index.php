@@ -231,8 +231,8 @@
                     </div>
                     <div class="col-md-6">
                       <select v-model="param" name="param" id="" class="form-control select2">
-                        <?php foreach ($param_option as $key => $name) : ?>
-                          <option value="<?= $key ?>"><?= $name ?></option>
+                        <?php foreach ($param_option as $key => $item) : ?>
+                          <option value="<?= $key ?>"><?= $item['name'] ?></option>
                         <?php endforeach ?>
                       </select>
                     </div>
@@ -268,7 +268,7 @@
                     <div class="col-md-10">
                     </div>
                     <div class="col-md-2">
-                      <button @click.prevent="exportExcel" class="btn btn-sm btn-success">
+                      <button @click.prevent="exportExcelBackend" class="btn btn-sm btn-success">
                         <i class="fa fa-file-excel-o"></i>
                         <span>Excel</span>
                       </button>
@@ -329,7 +329,7 @@
                   <!-- FIX THIS  -->
                   <tr :class="[ activeRow === i ? 'bg-primary' : '' ]" @click="setActiveRow(i)" v-for="(item, i) in tableBody">
                     <td>{{ i + 1 }}</td>
-                    <td nowrap v-for="key in tableKeys">
+                    <td style="mso-number-format: 0.00" nowrap v-for=" key in tableKeys">
                       {{ item[key] }}
                     </td>
                   </tr>
