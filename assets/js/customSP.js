@@ -615,38 +615,14 @@ $(document).ready(function () {
             url: baseurl + 'AdmSeleksi/SuratPenyerahan/getPekerjaan',
             success: function (data) {
                 console.log(data);
-                if (data.butuh == null) {
-                    swal.fire({
-                        title: 'Error...',
-                        text: 'Data kebutuhan tidak ditemukan',
-                        type: 'error',
-                        allowClickOutside: false,
-                        showConfirmButton: false,
-                        timer: '1500'
-                    })
-                } else if (data.noind == null) {
-                    swal.fire({
-                        title: 'Error...',
-                        text: 'Data nomor induk baru tidak ditemukan',
-                        type: 'error',
-                        allowClickOutside: false,
-                        showConfirmButton: false,
-                        timer: '1500'
-                    })
-                } else {
-                    $('.input_noind_baru_SP').val(data.noind)
-                    $('#slc_kodesie_SP').attr('disabled', false)
-                    let kodesie_butuh = '<option></option>'
-                    for (var i = 0; i < data.butuh.length; i++) {
-                        kodesie_butuh += `<option value="` + data.butuh[i]['kodesie'] + `">[` + data.butuh[i]['kodesie'] + `] - ` + data.butuh[i]['seksi'] + ` - ` + data.butuh[i]['pekerjaan'] + `</option>`
-                    }
-                    $('#slc_kodesie_SP').html(kodesie_butuh)
+                $('.input_noind_baru_SP').val(data.noind)
+                $('#slc_kodesie_SP').attr('disabled', false)
+                let kodesie_butuh = '<option></option>'
+                for (var i = 0; i < data.butuh.length; i++) {
+                    kodesie_butuh += `<option value="` + data.butuh[i]['kodesie'] + `">[` + data.butuh[i]['kodesie'] + `] - ` + data.butuh[i]['seksi'] + ` - ` + data.butuh[i]['pekerjaan'] + `</option>`
                 }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                console.log(textStatus, errorThrown);
-            },
+                $('#slc_kodesie_SP').html(kodesie_butuh)
+            }
 
         })
     })
