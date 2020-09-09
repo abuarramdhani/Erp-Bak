@@ -162,7 +162,7 @@ class C_Index extends CI_Controller
             'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
             'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
             'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
           )
         ],
         'bold' => [
