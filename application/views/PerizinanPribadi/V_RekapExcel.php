@@ -11,12 +11,12 @@ function debug($data)
 }
 
 $objWriter = new PHPExcel();
-if ($jenis == '1') {
-    $warna = '20ab2e';
-    $judul = 'Rekap Perizinan Pribadi';
-} else {
+if ($perseksi == 'Ya') {
     $warna = 'f29e1f';
     $judul = 'Rekap Perizinan Seksi';
+} else {
+    $warna = '20ab2e';
+    $judul = 'Rekap Perizinan Pribadi';
 }
 
 $objWriter->getActiveSheet()
@@ -76,14 +76,18 @@ $array_judul = array(
         'lebar' => 15
     ),
     '8' => array(
+        'nama' => 'Waktu Keluar',
+        'lebar' => 10
+    ),
+    '9' => array(
         'nama' => 'Atasan',
         'lebar' => 30
     ),
-    '9' => array(
+    '10' => array(
         'nama' => 'Keterangan',
         'lebar' => 30
     ),
-    '10' => array(
+    '11' => array(
         'nama' => 'Status',
         'lebar' => 30
     ),
@@ -154,6 +158,7 @@ foreach ($IzinApprove as $key) {
         $nama,
         $kodesie,
         $key['jenis_ijin'],
+        $key['keluar'],
         $key['atasan'],
         $key['keperluan'],
         $key['status'],

@@ -11,6 +11,7 @@
             <th class="text-center" style="white-space: nowrap;">Nama Pekerja</th>
             <th class="text-center" style="white-space: nowrap;">Seksi</th>
             <th class="text-center" style="white-space: nowrap;">Jenis Izin</th>
+            <th class="text-center" style="white-space: nowrap;">Waktu Keluar</th>
             <th class="text-center" style="white-space: nowrap;">Atasan Approved</th>
             <th class="text-center" style="white-space: nowrap; width: 10px !important;">Keterangan</th>
             <th class="text-center" style="white-space: nowrap;">Status</th>
@@ -27,6 +28,7 @@
               <td style="white-space: nowrap;"><?= $row['nama_pkj'] ?></td>
               <td style="white-space: nowrap;"><?= $row['seksi'] ?></td>
               <td style="text-align: left; white-space: nowrap;"><?= $row['jenis_ijin'] ?></td>
+              <td style="text-align: left; white-space: nowrap;"><?= $row['keluar'] ?></td>
               <td style="white-space: nowrap;"><?= $row['atasan'] ?></td>
               <td style="width: 10px !important;"><?= $row['keperluan'] ?></td>
               <td style="white-space: nowrap;"><?= $row['status']; ?></td>

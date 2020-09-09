@@ -12,6 +12,7 @@
             <th class="text-center" style="white-space: nowrap;">Nama Pekerja</th>
             <th class="text-center" style="white-space: nowrap;">Seksi</th>
             <th class="text-center" style="white-space: nowrap;">Jenis Izin</th>
+            <th class="text-center" style="white-space: nowrap;">Waktu Keluar</th>
             <th class="text-center" style="white-space: nowrap;">Atasan Approved</th>
             <th class="text-center" style="white-space: nowrap;">Keterangan</th>
             <th class="text-center" style="white-space: nowrap;">Status</th>
@@ -55,6 +56,7 @@
                 endforeach ?>
               </td>
               <td style="text-align: left; white-space: nowrap;"><?= $row['jenis_ijin'] ?></td>
+              <td style="text-align: left; white-space: nowrap;"><?= $row['keluar'] ?></td>
               <td style="white-space: nowrap;"><?= $row['atasan'] ?></td>
               <td><?= $row['keperluan'] ?></td>
               <td style="white-space: nowrap;"><?= $row['status']; ?></td>
