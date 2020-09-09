@@ -111,12 +111,31 @@ const app = new Vue({
 				});
 		},
 		exportExcel() {
+			/**
+			 * this is export with plugin table2excel based current table
+			 */
 			$("table#table-pencarian-pekerja").table2excel({
 				// exclude: "",
 				name: "Sheet1",
 				filename: `PencarianPekerja-${moment().format("YYYYMMDD")}.xls`, // do include extension
 				preserveColors: false, // set to true if you want background colors and font colors preserved
 			});
+		},
+		exportExcelBackend() {
+			/**
+			 * this is export excel with php backend
+			 */
+			const data = {
+				param: this.$data.param,
+				keyword: this.$data.keyword,
+				out: this.$data.out,
+				limit: this.$data.limit,
+			};
+
+			const query = $.param(data);
+
+			const full_url = baseurl + "MasterPekerja/PencarianPekerja/export_excel?" + query;
+			window.location.href = full_url;
 		},
 	},
 });

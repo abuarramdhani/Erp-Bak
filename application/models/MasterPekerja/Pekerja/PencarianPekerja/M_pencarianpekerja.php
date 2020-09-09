@@ -51,26 +51,33 @@ class M_pencarianpekerja extends CI_Model
    * Find Worker
    * 
    * @param String $param
+   * @param String $param_type { string, date, number, boolean }
    * @param String $keyword
+   * @param String $out { Worker is out ? }
+   * @param Integer $limit { With data limit ? }
    * @return Array of Data
    */
-  public function findWorker($param, $keyword, $out = false, $limit = false)
+  public function findWorker($param, $param_type, $keyword, $out = false, $limit = false)
   {
+    // validation param column
     $param = $param == 'noind' ? 'tp.noind' : $param;
+    $param = $param == 'alamat' ? 'tp.alamat' : $param;
+    //
+
     $out = in_array($out, ['t', 'f']) ? $out : false;
 
-    $query =  $this->personalia
+    $query = $this->personalia
       ->select("
         trim(tp.noind) noind,
         trim(tp.nama) nama,
         ts.seksi,
         ts.unit,
-        to_char(tp.masukkerja, 'YYYY-MM-DD') masukkerja,
-        to_char(tp.diangkat, 'YYYY-MM-DD') diangkat,
-        to_char(tp.akhkontrak, 'YYYY-MM-DD') akhkontrak,
-        to_char(tp.tglkeluar, 'YYYY-MM-DD') tglkeluar,
+        to_char(tp.masukkerja, 'DD-MM-YYYY') masukkerja,
+        to_char(tp.diangkat, 'DD-MM-YYYY') diangkat,
+        to_char(tp.akhkontrak, 'DD-MM-YYYY') akhkontrak,
+        to_char(tp.tglkeluar, 'DD-MM-YYYY') tglkeluar,
         trim(tp.templahir) templahir,
-        to_char(tp.tgllahir, 'YYYY-MM-DD') tgllahir,
+        to_char(tp.tgllahir, 'DD-MM-YYYY') tgllahir,
         trim(tp.alamat) alamat,
         trim(tp.desa) desa,
         trim(tp.kec) kecamatan,
@@ -99,8 +106,14 @@ class M_pencarianpekerja extends CI_Model
       ->join($this->table_bpjstk . " jskt", 'jskt.noind = tp.noind', 'left')
       ->join($this->table_lokasikerja . " lk", 'lk.id_ = tp.lokasi_kerja', 'left')
       ->join("hrd_khs.tfaskes tf", 'tf.kd_faskes = jskes.bpu', 'left outer')
-      ->like("LOWER($param)", strtolower($keyword), 'both')
       ->order_by('noind', 'asc');
+
+    // matching data type condition
+    if ($param_type === 'string') {
+      $query->like("LOWER($param)", strtolower($keyword), 'both');
+    } elseif ($param_type === 'date') {
+      $query->like("to_char($param, 'YYYY-MM-DD')", strtolower($keyword), 'both');
+    }
 
     if ($out) {
       $query->where('keluar', $out);
