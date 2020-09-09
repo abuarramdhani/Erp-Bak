@@ -612,6 +612,7 @@ $(document).ready(function () {
             dataType: 'json',
             url: baseurl + 'AdmSeleksi/SuratPenyerahan/getPekerjaan',
             success: function (data) {
+                console.log(data)
                 $('.input_noind_baru_SP').val(data.noind)
                 $('#slc_kodesie_SP').attr('disabled', false)
                 let kodesie_butuh = '<option></option>'
