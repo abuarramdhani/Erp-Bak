@@ -110,7 +110,7 @@
   }
 
   .select2 {
-    width: 100%;
+    width: 100% !important;
   }
 
   .disabled-div {
@@ -232,6 +232,15 @@
               </div>
               <div>
                 <form action="" class="form-horizontal">
+                  <!-- jika pekerja adalah TKPW/20 -->
+                  <div v-show="state.worker.kd_jabatan == 20" class="form-group">
+                    <label class="col-lg-4 control-label" for="">Kepala Seksi</label>
+                    <div class="col-lg-8">
+                      <select id="atasan-seksi" class="form-control">
+                        <option value=""></option>
+                      </select>
+                    </div>
+                  </div>
                   <div class="form-group">
                     <label class="col-lg-4 control-label" for="">Unit/Bidang</label>
                     <div class="col-lg-8">
@@ -429,6 +438,17 @@
         // selectKasie.on('change', function() {
         //   self.$data.state.four.kasie = this.value
         // })
+
+        // -------------------------
+        selectKasie.empty().trigger('change')
+        selectKasie.select2({
+          placeholder: 'Kasie',
+          data: [empty, ...dataKasie]
+        })
+        selectKasie.attr('disabled', !dataKasie.length)
+        selectKasie.on('change', function() {
+          self.$data.state.approval0 = this.value
+        })
 
         // -------------------------
         selectUnit.empty().trigger('change')
