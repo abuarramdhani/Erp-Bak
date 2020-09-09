@@ -140,10 +140,10 @@ class C_Index extends CI_Controller
       $objPHPExcel
         ->getProperties()
         ->setCreator('KHS ERP')
-        ->setTitle("Rekap Potongan Duka")
-        ->setSubject("Rekap Potongan Duka")
-        ->setDescription("Rekap Potongan Duka")
-        ->setKeywords("Rekap Potongan Duka");
+        ->setTitle("Pekerja")
+        ->setSubject("Pekerja")
+        ->setDescription("Pekerja")
+        ->setKeywords("Pekerja");
 
       // CORE VAROABLE
       // maybe later
@@ -152,7 +152,7 @@ class C_Index extends CI_Controller
       // set orientation
       $objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
       // set title
-      $objPHPExcel->getActiveSheet()->setTitle('DAFTAR KEBUTUHAN P2K3');
+      $objPHPExcel->getActiveSheet()->setTitle('Sheet 1');
       $objPHPExcel->setActiveSheetIndex(0);
 
       // Styling in PHP Excel
@@ -187,7 +187,12 @@ class C_Index extends CI_Controller
       // SET STYLING
 
       // SET TABLE HEAD
-      // debug($data['table_head']);
+      // debug($data);
+      $column_with_number = array(
+        'nik',
+        'no_kk'
+      );
+
       $cellA = 'A';
       foreach ($data['table_head'] as $i => $title) {
         $cell = $cellA++ . 1;
@@ -206,11 +211,16 @@ class C_Index extends CI_Controller
           ->applyFromArray($EXCEL_STYLE['align-center'])
           ->applyFromArray($EXCEL_STYLE['bordered']);
         $cellB = 'B';
-        foreach ($item as $index => $value) {
+        foreach ($item as $key => $value) {
           $cell = $cellB++ . $startRow;
           $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle($cell)->applyFromArray($EXCEL_STYLE['bordered']);
           // with long number example
           // $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle('E' . $x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
+
+          // set cell format to number
+          if (in_array($key, $column_with_number)) {
+            $objPHPExcel->getActiveSheet()->getStyle($cell)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+          }
         }
         $startRow++;
       }

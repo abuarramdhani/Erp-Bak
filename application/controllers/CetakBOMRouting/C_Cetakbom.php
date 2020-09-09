@@ -99,7 +99,10 @@ class C_Cetakbom extends CI_Controller
 		$seksi = $this->input->post('seksi');
 		$produk = $this->input->post('prodd');
 		$organization = $this->input->post('org');
-		$tipe = $this->input->post('typeCetak');
+		// $tipe = $this->input->post('typeCetak');
+		/////////////////////DEFAULT DETAIL/////////////////////////
+		$tipe = 'Y';
+		/////////////////////DEFAULT DETAIL/////////////////////////
 
 		$desckomp = $this->M_cetakbom->getdesckomponen($kode);
 		$descprod = $this->M_cetakbom->selectprodukdesc($produk);
@@ -309,6 +312,28 @@ class C_Cetakbom extends CI_Controller
 			} else {
 				// echo "<pre>";print_r($dataopm1);exit();
 				$dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
+				for ($i=0; $i < sizeof($dataopm2); $i++) { 
+					//P1
+					if ($dataopm2[$i]['P1'] != null) {
+						$p1 = 'P1: '.$dataopm2[$i]['P1'];
+					} else {
+						$p1 = '';
+					}	
+					//P2	
+					if ($dataopm2[$i]['P2'] != null) {
+						$p2 = '<br>P2: '.$dataopm2[$i]['P2'];
+					} else {
+						$p2 = '';
+					}
+					//P3
+					if ($dataopm2[$i]['P3'] != null) {
+						$p3 = '<br>P3: '.$dataopm2[$i]['P3'];
+					} else {
+						$p3 = '';
+					}
+					
+					$dataopm2[$i]['DETAILPROSES'] = $p1.$p2.$p3;
+				}
 				$dataopm3 =  $this->M_cetakbom->dataopm3($dataopm1[0]['FORMULA_ID']);
 				
 				for ($i=0; $i < sizeof($dataopm2); $i++) { 
@@ -326,7 +351,6 @@ class C_Cetakbom extends CI_Controller
 					}
 					
 				}
-				
 				$data['act'] = $acti;
 				$data['dataopm1'] = $dataopm1;
 				$data['dataopm2'] = $dataopm2;
@@ -335,7 +359,6 @@ class C_Cetakbom extends CI_Controller
 			
 		}
 
-	
 
 		$data['name'] = $name;
 		$data['seksi'] = $seksi;
@@ -346,7 +369,6 @@ class C_Cetakbom extends CI_Controller
 		
 		// print_r(); exit();
 
-
 		// echo "<pre>";print_r($datapdf);exit();
 
 		ob_start();
@@ -356,16 +378,16 @@ class C_Cetakbom extends CI_Controller
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'BOM_Routing_'.$tglNama.'.pdf';
 		$head = $this->load->view('CetakBOMRouting/V_CetakanHead', $data, true);
-		if ($tipe == 'Y') {
-			$html = $this->load->view('CetakBOMRouting/V_Cetakan_Detail', $data, true);
-		} elseif ($tipe == 'N'){
+		// if ($tipe == 'Y') {
+		// 	$html = $this->load->view('CetakBOMRouting/V_Cetakan_Detail', $data, true);
+		// } elseif ($tipe == 'N'){
 			if ($organization == 'ODM') {
-				$html = $this->load->view('CetakBOMRouting/V_Cetakan', $data, true);
+				$html = $this->load->view('CetakBOMRouting/V_Cetakan_Detail', $data, true);
 			} else {
 				$html = $this->load->view('CetakBOMRouting/V_CetakanOPM', $data, true);
 
 			}
-		}
+		// }
     	$foot = $this->load->view('CetakBOMRouting/V_CetakanFoot', $data, true);	
 
 		ob_end_clean();

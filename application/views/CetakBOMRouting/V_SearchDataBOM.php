@@ -78,7 +78,7 @@
 									</div>
                                     
 								</div>
-								</div>
+								<!-- </div>
 									<div class="panel-body">
 									<div class="col-md-4" style="text-align: right;">
 										<label>Tipe Cetak</label>
@@ -90,7 +90,7 @@
 										</select>
 									</div>
                                     
-								</div>
+								</div> -->
 								<div class="panel-body">
 									<div  class="col-md-4" ></div>
 									<div class="col-md-3" style="text-align: center;">
