@@ -275,7 +275,7 @@
     </div>
   </div>
 </section>
-<script src="<?= base_url('assets/plugins/vue/vue@2.6.11.dev.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/vue/vue@2.6.11.js') ?>"></script>
 <script>
   var basesite = '<?= base_url() ?>'
   const d = document
