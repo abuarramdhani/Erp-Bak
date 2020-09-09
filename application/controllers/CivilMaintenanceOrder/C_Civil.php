@@ -737,12 +737,65 @@ class C_Civil extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 10, 10, 10, 30, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', 'A4-L', 11, "timesnewroman", 10, 10, 10, 50, 10, 10);
+		// $pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 10, 10, 10, 30, 0, 0, 'P');
 		$filename	=	'E-Order - Civil Maintenance.pdf';
 
 		$pdf->AddPage();
 		$pdf->SetTitle('E-Order - Civil Maintenance');
 		$pdf->WriteHTML($isi);
+		$pdf->setHTMLFooter(
+			'<table border="1" style="border-collapse: collapse; width: 100%;">
+				<tr>
+					<td rowspan="2" style="text-align: center;width: 20%;vertical-align: middle;">
+						Penerima Order<br>
+						Kepala Seksi<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+					<td colspan="4" style="text-align: center;width: 60%">Disetujui</td>
+					<td rowspan="2" style="text-align: center;width: 20%;vertical-align: middle;">
+						Pemberi Order<br>
+						Kepala Order<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;width: 15%;vertical-align: middle;">
+						Kepala Unit<br>
+						Penerima Order<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+					<td style="text-align: center;width: 15%;vertical-align: middle;">
+						<br>Direksi<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+					<td style="text-align: center;width: 15%;vertical-align: middle;">
+						Kep. Departemen<br>
+						Pemberi Order<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+					<td style="text-align: center;width: 15%;vertical-align: middle;">
+						Kepala unit<br>
+						Pemberi Order<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+				</tr>
+			</table>'
+		);
 
 		$pdf->Output($filename, 'I');
 	}

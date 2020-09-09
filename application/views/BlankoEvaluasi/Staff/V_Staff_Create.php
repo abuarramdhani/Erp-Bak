@@ -342,10 +342,9 @@
         }
       },
       getFormJson() {
-        const newState = {
-          ...this.$data.state
-        }
+        const newState = Object.assign({}, this.$data.state)
         delete newState.worker.atasan
+
         return newState
       },
       handleSave() {
@@ -353,10 +352,14 @@
         if (check) {
           return Swal.fire(check, '', 'warning')
         }
-        this.$data.disableButton = true
         // do save
         const json = this.getFormJson()
         const parsedUrl = this.$data.constant.apiStore + '?' + $.param(json)
+        console.log(parsedUrl)
+        const conf = confirm("Yakin untuk menyimpan ?")
+
+        if (!conf) return
+        this.$data.disableButton = true
         window.location.href = parsedUrl
       },
       handlePreview() {

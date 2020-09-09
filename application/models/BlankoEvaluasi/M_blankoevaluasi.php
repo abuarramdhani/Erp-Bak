@@ -264,7 +264,7 @@ class M_blankoevaluasi extends CI_Model
             $query = "
                 SELECT tes.*, tp.kodesie 
                 FROM \"Surat\".tevaluasi_staff tes inner join hrd_khs.tpribadi tp on tes.noind = tp.noind 
-                WHERE $filterKodesie and tes.deleted = '0'
+                WHERE $filterKodesie and (tes.deleted = '0' or tes.deleted is null)
                 ORDER BY tes.created_time desc";
             return $this->personalia->query($query);
         }
@@ -375,7 +375,7 @@ class M_blankoevaluasi extends CI_Model
 
         $query = "SELECT sp_ke, berlaku, tanggal_awal_berlaku as awal, jenis
         from \"Surat\".v_surat_tsp_rekap
-        where current_date between '$awal' and '$akhir'
+        where tanggal_awal_berlaku between '$awal' and '$akhir'
         and noind = '$noind' and tanggal_cetak is not null
         order by berlaku desc";
 
