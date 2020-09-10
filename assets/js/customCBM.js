@@ -80,13 +80,13 @@ $('#org').change(function () {
 		{
 			if (result != '<option></option>') {
 				$("#seksii").html(result);
-				$("#typeCetak").attr("required","required");
-				$("#typeCetak").removeAttr("disabled");
+				// $("#typeCetak").attr("required","required");
+				// $("#typeCetak").removeAttr("disabled");
 
 			}else{
 				$("#seksii").attr("disabled","disabled");
-				$("#typeCetak").attr("disabled","disabled");
-				$("#typeCetak").removeAttr("required","required");
+				// $("#typeCetak").attr("disabled","disabled");
+				// $("#typeCetak").removeAttr("required","required");
 
 
 			}

@@ -264,7 +264,7 @@ and msib.SEGMENT1 = '$kode'";
 
 public function dataopm2($routing) {
     $oracle = $this->load->database('oracle', true);
-//     $sql = "select
+// $sql = "select
 // grb.ROUTING_ID
 // ,grb.ROUTING_CLASS
 // ,grb.ROUTING_NO
@@ -283,13 +283,19 @@ public function dataopm2($routing) {
 // ,goa.ACTIVITY
 // ,gat.ACTIVITY_DESC
 // ,goa.ACTIVITY_FACTOR
-// ,gor.RESOURCES
-// ,crmt.RESOURCE_DESC
-// ,crmb.RESOURCE_CLASS
-// ,gor.PROCESS_QTY
-// ,gor.RESOURCE_PROCESS_UOM
-// ,gor.RESOURCE_USAGE
-// ,gor.RESOURCE_USAGE_UOM
+// ,mach.resources
+// ,mach.resource_desc
+// ,mach.resource_class
+// ,'' proses
+// ,'' nomor_mesin
+// ,mach.RESOURCE_COUNT machine_qty
+// ,opt.RESOURCE_COUNT operator_qty
+// --,opt.RESOURCE_USAGE
+// ,opt.PROCESS_QTY
+// ,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
+// ,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
+// ,23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600) target
+// ,opt.LAST_UPDATE_DATE
 // from
 // gmd_routings_tl grt
 // ,gmd_routings_b grb
@@ -300,9 +306,28 @@ public function dataopm2($routing) {
 // ,gmd_operations_b gob
 // ,gmd_operation_activities goa
 // ,gmd_activities_tl gat
-// ,gmd_operation_resources gor
-// ,cr_rsrc_mst_tl crmt
-// ,cr_rsrc_mst_b crmb
+// ,(select gor.OPRN_LINE_ID
+// ,crmb.RESOURCES
+// ,crmt.RESOURCE_DESC
+// ,crmb.RESOURCE_CLASS
+// ,gor.RESOURCE_USAGE/gor.PROCESS_QTY
+// ,gor.RESOURCE_COUNT
+// from gmd_operation_resources gor
+// ,cr_rsrc_mst_b crmb ,cr_rsrc_mst_tl crmt
+// where gor.RESOURCES=crmb.RESOURCES
+// and gor.RESOURCES=crmt.RESOURCES
+// --and gor.OPRN_LINE_ID = 18327
+// and crmb.RESOURCE_CLASS = 'MESIN')mach
+// ,(select gor2.OPRN_LINE_ID
+// ,gor2.RESOURCE_USAGE
+// ,gor2.PROCESS_QTY
+// ,gor2.RESOURCE_COUNT
+// ,gor2.LAST_UPDATE_DATE
+// from gmd_operation_resources gor2
+// ,cr_rsrc_mst_b crmb2
+// where gor2.RESOURCES=crmb2.RESOURCES
+// --and gor2.OPRN_LINE_ID = 18327
+// and crmb2.RESOURCE_CLASS = 'OPERATOR')opt
 // where
 // grb.ROUTING_ID=grt.ROUTING_ID
 // and grb.ROUTING_STATUS=gst.STATUS_CODE
@@ -313,15 +338,13 @@ public function dataopm2($routing) {
 // and gob.OPERATION_STATUS=gst2.STATUS_CODE
 // and gob.OPRN_ID=goa.OPRN_ID
 // and gob.OPERATION_STATUS = 700
-// and goa.OPRN_LINE_ID=gor.OPRN_LINE_ID
-// and gor.RESOURCES=crmb.RESOURCES
-// and gor.RESOURCES=crmt.RESOURCES
 // and goa.ACTIVITY=gat.ACTIVITY
 // and grt.routing_id = '$routing'
+// and goa.OPRN_LINE_ID = opt.OPRN_LINE_ID(+)
+// and goa.OPRN_LINE_ID = mach.OPRN_LINE_ID(+)
 // order by grt.ROUTING_ID
 // ,grb.ROUTING_VERS";
-
-$sql = "select
+$sql = "SELECT
 grb.ROUTING_ID
 ,grb.ROUTING_CLASS
 ,grb.ROUTING_NO
@@ -330,7 +353,7 @@ grb.ROUTING_ID
 ,grb.ROUTING_QTY
 ,grb.ROUTING_UOM
 ,gst.DESCRIPTION rout_status
-,frd.ROUTINGSTEP_NO step
+,frd.ROUTINGSTEP_NO OPRN_NUM
 ,gob.OPRN_NO
 ,gob.OPRN_VERS
 ,got.OPRN_DESC
@@ -340,6 +363,7 @@ grb.ROUTING_ID
 ,goa.ACTIVITY
 ,gat.ACTIVITY_DESC
 ,goa.ACTIVITY_FACTOR
+,goa.attribute1 kode_proses
 ,mach.resources
 ,mach.resource_desc
 ,mach.resource_class
@@ -349,10 +373,17 @@ grb.ROUTING_ID
 ,opt.RESOURCE_COUNT operator_qty
 --,opt.RESOURCE_USAGE
 ,opt.PROCESS_QTY
-,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
-,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
-,23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600) target
+,round((opt.RESOURCE_USAGE/opt.PROCESS_QTY),5) resource_usage ---> New
+,round((opt.RESOURCE_USAGE/opt.PROCESS_QTY),5)*3600 CT ---> New
+,round(6.5/(round((opt.RESOURCE_USAGE/opt.PROCESS_QTY),5))) target ---> New
+-- ,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
+-- ,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
+-- ,23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600) target
 ,opt.LAST_UPDATE_DATE
+,goa.attribute2 P1
+,goa.attribute3 P2
+,goa.attribute4 P3
+,'#'||NVL(goa.attribute2, '$%' )||'#'||NVL(goa.attribute3, '$%' )||'#'||NVL(goa.attribute4, '$%' ) detail
 from
 gmd_routings_tl grt
 ,gmd_routings_b grb
