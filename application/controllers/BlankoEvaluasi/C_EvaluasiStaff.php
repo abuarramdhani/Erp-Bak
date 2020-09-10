@@ -113,6 +113,8 @@ class C_EvaluasiStaff extends CI_Controller
             redirect($_SERVER['HTTP_REFERER']);
         }
 
+        $tkpw_kode = 20;
+
         $parsedGet = [
             'noind' => $get['worker']['noind'],
             'nama' => $get['worker']['nama'],
@@ -125,7 +127,7 @@ class C_EvaluasiStaff extends CI_Controller
             'approval_0' => $get['approval0'],
             'approval_1' => $get['approval1'],
             'approval_2' => $get['approval2'],
-            'approval_3' => $get['approval3'],
+            'approval_3' => $get['worker']['kd_jabatan'] == $tkpw_kode ? null : $get['approval3'],
             'created_by' => $this->session->user,
             'usulan' => intval($get['usulan']),
         ];
