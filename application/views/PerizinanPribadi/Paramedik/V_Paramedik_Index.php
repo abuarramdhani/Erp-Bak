@@ -68,7 +68,7 @@
                                                         <td style="white-space: nowrap;"><?= $key['nama_pkj'] ?></td>
                                                         <td style="white-space: nowrap;"><?= $key['seksi'] ?></td>
                                                         <td><?= date('d-M-Y', strtotime($key['created_date'])) ?></td>
-                                                        <td><?= $key['wkt_keluar'] ?></td>
+                                                        <td><?= $key['keluar'] ?></td>
                                                         <td><?= $key['keperluan'] ?></td>
                                                         <td><?= $key['ket_sakit'] ?></td>
                                                     </tr>
