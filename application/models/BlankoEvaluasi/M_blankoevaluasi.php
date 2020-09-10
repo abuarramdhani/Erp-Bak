@@ -373,11 +373,21 @@ class M_blankoevaluasi extends CI_Model
         $awal = date('Y-m-d', strtotime($awal));
         $akhir = date('Y-m-d', strtotime($akhir));
 
-        $query = "SELECT sp_ke, berlaku, tanggal_awal_berlaku as awal, jenis
-        from \"Surat\".v_surat_tsp_rekap
-        where tanggal_awal_berlaku between '$awal' and '$akhir'
-        and noind = '$noind' and tanggal_cetak is not null
-        order by berlaku desc";
+        $query = "
+            SELECT 
+                sp_ke, 
+                berlaku, 
+                tanggal_awal_berlaku as awal, 
+                tanggal_akhir_berlaku as akhir, 
+                (case when tanggal_akhir_berlaku > now() then '(berlaku)' else '' end) ket, 
+                jenis
+            FROM 
+                \"Surat\".v_surat_tsp_rekap
+            WHERE 
+                tanggal_awal_berlaku between '$awal' and '$akhir'
+                and noind = '$noind'
+            ORDER BY berlaku DESC
+        ";
 
         return $this->personalia->query($query)->result_array();
     }
