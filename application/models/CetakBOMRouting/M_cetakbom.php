@@ -430,8 +430,9 @@ and goa.ACTIVITY=gat.ACTIVITY
 and grt.routing_id = '$routing'
 and goa.OPRN_LINE_ID = opt.OPRN_LINE_ID(+)
 and goa.OPRN_LINE_ID = mach.OPRN_LINE_ID(+)
-order by grt.ROUTING_ID
-,grb.ROUTING_VERS";
+order by grt.ROUTING_ID, frd.ROUTINGSTEP_NO
+-- ,grb.ROUTING_VERS
+";
 
        $query = $oracle->query($sql);
         return $query->result_array();
