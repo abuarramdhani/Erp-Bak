@@ -276,10 +276,19 @@ class C_EvaluasiOSNS extends CI_Controller
     {
         $sp = $this->M_blankoevaluasi->getSP($noind, $from, $to);
 
-        $sp = array_map(function ($item) {
+        $roman_number = [
+            '1' => 'I',
+            '2' => 'II',
+            '3' => 'III',
+            '4' => 'IV'
+        ];
+
+        $sp = array_map(function ($item) use ($roman_number) {
             return array(
+                'ke'    => $item['sp_ke'],
                 'bulan' => $this->dateToIndo($item['awal']),
-                'jenis' => $item['jenis']
+                'jenis' => $item['jenis'],
+                'ket'   => $item['ket']
             );
         }, $sp);
 

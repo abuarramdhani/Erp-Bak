@@ -304,6 +304,7 @@
     atasan: '',
     pekerja: '',
     usulan: 1,
+    approval0: '',
     approval1: '',
     approval2: '',
     approval3: 'HENDRO WIJAYANTO',

@@ -276,7 +276,7 @@ function repeat($string, $x)
                       </td>
                       <td style="vertical-align: top;">
                         <?php foreach ($sp as $item) : ?>
-                          <?= $item['jenis'] . "<br>"; ?>
+                          <?= "SP {$item['ke']} {$item['jenis']} {$item['ket']} <br>"; ?>
                         <?php endforeach; ?>
                       </td>
                     </tr>
