@@ -147,10 +147,20 @@ class M_penyerahan extends CI_Model
 		return $this->personalia->query($sql)->row()->new;
 	}
 
+	public function getNoindTpribadi($kode)
+	{
+		$sql = "SELECT noind from hrd_khs.tpribadi
+				WHERE left(noind, 1) = '$kode'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
 	public function cekNoind($noind)
 	{
-		$sql = "SELECT trim(noind) from hrd_khs.tpribadi where noind in ('$noind')";
-		return $this->personalia->query($sql)->result_array();
+		return $this->personalia
+			->select('noind')
+			->from('hrd_khs.tpribadi')
+			->where('noind', $noind)
+			->get()->row();
 	}
 
 	public function ambilDataAll($kodesie, $tanggal, $jenis, $ruangLingkup)
