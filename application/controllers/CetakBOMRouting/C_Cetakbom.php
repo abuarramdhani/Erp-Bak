@@ -333,6 +333,8 @@ class C_Cetakbom extends CI_Controller
 					}
 					
 					$dataopm2[$i]['DETAILPROSES'] = $p1.$p2.$p3;
+
+					$route_id[$dataopm2[$i]['ROUTING_ID']][] = $i; 
 				}
 				$dataopm3 =  $this->M_cetakbom->dataopm3($dataopm1[0]['FORMULA_ID']);
 				
@@ -352,10 +354,14 @@ class C_Cetakbom extends CI_Controller
 					
 				}
 				$data['act'] = $acti;
+				$data['r_id'] = $route_id;
 				$data['dataopm1'] = $dataopm1;
 				$data['dataopm2'] = $dataopm2;
 				$data['dataopm3'] = $dataopm3;
 			}
+			// echo "<pre>";
+			// print_r($data);
+			// exit();
 			
 		}
 
