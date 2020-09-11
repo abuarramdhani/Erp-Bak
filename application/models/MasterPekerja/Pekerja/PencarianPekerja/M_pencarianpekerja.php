@@ -112,7 +112,7 @@ class M_pencarianpekerja extends CI_Model
     if ($param_type === 'string') {
       $query->like("LOWER($param)", strtolower($keyword), 'both');
     } elseif ($param_type === 'date') {
-      // dd/mm/yyyy -dd/mm-yyyy
+      // dd/mm/yyyy - dd/mm/yyyy
       $splitKeyword = explode('-', $keyword);
 
       if ($splitKeyword > 1) {
