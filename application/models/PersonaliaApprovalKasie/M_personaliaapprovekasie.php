@@ -61,12 +61,19 @@ class M_personaliaapprovekasie extends CI_Model
 	}
 
 	public function getKaizenByNoindAtasan($noind){
+		//$sql = "select count(*) as jumlah
+		//		from si.si_kaizen a 
+		//		left join si.si_approval b 
+		//		on a.kaizen_id = b.kaizen_id
+		//		and a.status = b.\"level\"
+		//		where b.status in (2,7)
+		//		and b.approver = '$noind'";
+		//coba tiket bug  dari pak amri
 		$sql = "select count(*) as jumlah
 				from si.si_kaizen a 
 				left join si.si_approval b 
 				on a.kaizen_id = b.kaizen_id
-				and a.status = b.\"level\"
-				where b.status in (2,7)
+				where a.status in (2,7)
 				and b.approver = '$noind'";
 		$result = $this->erp->query($sql)->row();
 		if (!empty($result)) {
