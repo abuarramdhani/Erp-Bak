@@ -112,7 +112,19 @@ class M_pencarianpekerja extends CI_Model
     if ($param_type === 'string') {
       $query->like("LOWER($param)", strtolower($keyword), 'both');
     } elseif ($param_type === 'date') {
-      $query->like("to_char($param, 'YYYY-MM-DD')", strtolower($keyword), 'both');
+      // dd/mm/yyyy -dd/mm-yyyy
+      $splitKeyword = explode('-', $keyword);
+
+      if ($splitKeyword > 1) {
+        $from = DateTime::createFromFormat('d/m/Y', trim($splitKeyword[0]))->format('Y-m-d');
+        $to = DateTime::createFromFormat('d/m/Y', trim($splitKeyword[1]))->format('Y-m-d');
+        if (!$from || !$to) return ['not exist'];
+
+        $query->where("to_char($param, 'YYYY-MM-DD') >=", $from);
+        $query->where("to_char($param, 'YYYY-MM-DD') <=", $to);
+      } else {
+        $query->like("to_char($param, 'YYYY-MM-DD')", strtolower($keyword), 'both');
+      }
     }
 
     if ($out) {
