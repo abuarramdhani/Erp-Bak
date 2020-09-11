@@ -20,7 +20,9 @@
 			<td><?= $key['noind'] ?></td>
 			<td><?= $key['nama'] ?></td>
 			<td><?= $key['jabatan'] ?></td>
-			<td><?= $key['sum'] ?></td>
+			<!--<td><?= $key['sum'] ?></td>-->
+			<td><?= strval(number_format($key['sum'],0,',',',')) ?></td> 
+			
 		</tr>
 		<?php $x++; endforeach ?>
 	</tbody>
