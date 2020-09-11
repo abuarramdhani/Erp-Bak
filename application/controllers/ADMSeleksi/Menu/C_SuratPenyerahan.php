@@ -991,14 +991,14 @@ class C_SuratPenyerahan extends CI_Controller
             $noind_cek = array(
                 $noind[0]['new']
             );
-            $noind_cek = array_values($noind_cek);
             $find = false;
             $data['noind'] = null;
 
             $allNoind = $this->M_penyerahan->getNoindTpribadi($kode);
             while (!$find) {
-                $cek = in_array($noind_cek[0], $allNoind) ? '1' : '';
-                if (empty($cek)) {
+                $noind_cek = array_values($noind_cek);
+                $cek = in_array($noind_cek[0], $allNoind) ? false : true;
+                if ($cek) {
                     $data['noind'] = $noind_cek[0];
                     $find = true;
                 } else {
