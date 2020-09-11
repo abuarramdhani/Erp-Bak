@@ -61,6 +61,7 @@ class C_NonConformity extends CI_Controller
 
 		$user_id = $this->session->userid;
 
+		// echo $user_id;exit;
 		$data['Title'] = 'Pending Assign';
 		$data['Menu'] = 'Non Conformity';
 		$data['SubMenuOne'] = 'Pending Assign';
@@ -1105,6 +1106,9 @@ class C_NonConformity extends CI_Controller
 		}else if ($this->session->responsibility_id == 2641) {
 			
 			redirect('PurchaseManagementGudang/NonConformity/listSubkon', 'refresh');
+		}else if ($this->session->responsibility_id == 2663) {
+			
+			redirect('PurchaseManagementGudang/NonConformity/listBuyer', 'refresh');
 		}
 	}
 
