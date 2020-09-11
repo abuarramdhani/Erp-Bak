@@ -258,6 +258,39 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+    public function selectdatahandlingbysarana($sarana)
+    {
+        $sql = "select handling.* from dbh.data_handling handling, 
+        (select max(rev_no) rev_no, kode_komponen from dbh.data_handling where status = 'active' group by kode_komponen ) max
+where handling.kode_komponen = max.kode_komponen 
+and id_master_handling = '$sarana'
+and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function selectdatahandlingbyprod($produk)
+    {
+        $sql = "select handling.* from dbh.data_handling handling, 
+        (select max(rev_no) rev_no, kode_komponen from dbh.data_handling where status = 'active' group by kode_komponen ) max
+where handling.kode_komponen = max.kode_komponen 
+and kode_produk = '$produk'
+and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function selectdatahandlingseksi($seksi)
+    {
+        $sql = "select handling.* from dbh.data_handling handling, 
+        (select max(rev_no) rev_no, kode_komponen from dbh.data_handling where status = 'active' group by kode_komponen ) max
+where handling.kode_komponen = max.kode_komponen 
+and seksi = '$seksi'
+and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
     public function selectdatahandlingbyid($id)
     {
         $sql = "select * from dbh.data_handling where id_handling = '$id'";
@@ -338,5 +371,26 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
 
         $query = $this->db->query($sql);
         return $query;
+    }
+    public function select_seksi()
+    {
+        $sql = "select distinct seksi from dbh.data_handling";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function select_produk()
+    {
+        $sql = "select distinct kode_produk, nama_produk from dbh.data_handling";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function select_sarana()
+    {
+        $sql = "select distinct id_master_handling from dbh.data_handling";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 }

@@ -33,8 +33,16 @@ $(document).ready(function () {
   });
 });
 $(document).ready(function () {
+  var sarana = null;
+  var produk = null;
+  var seksi = null;
   var request = $.ajax({
     url: baseurl + "DbHandling/MonitoringHandling/loadviewdatahand",
+    data: {
+      sarana: sarana,
+      produk: produk,
+      seksi: seksi,
+    },
     type: "POST",
     beforeSend: function () {
       $("div#tabel_datahand").html(
@@ -47,8 +55,116 @@ $(document).ready(function () {
   request.done(function (result) {
     // console.log(result);
     $("div#tabel_datahand").html(result);
+    var datat = $("#datahandling").dataTable({
+      paging: true,
+      pageLength: 25,
+      info: true,
+    });
+    $("#searchboxdatatable").on("keyup", function () {
+      datat.fnFilter(this.value);
+    });
   });
 });
+function showfilter() {
+  var value = $("#filterselected").val();
+  if (value == 1) {
+    $("#showifbyprod").css("display", "block");
+    $("#showifbysarana").css("display", "none");
+    $("#showifbyseksi").css("display", "none");
+    $("#filtersarana").select2("val", "");
+    $("#filterseksi").select2("val", "");
+    $("#filterproduk").removeAttr("disabled");
+  } else if (value == 2) {
+    $("#showifbysarana").css("display", "block");
+    $("#showifbyseksi").css("display", "none");
+    $("#showifbyprod").css("display", "none");
+    $("#filterseksi").select2("val", "");
+    $("#filterproduk").select2("val", "");
+    $("#filtersarana").removeAttr("disabled");
+  } else if (value == 3) {
+    $("#showifbyseksi").css("display", "block");
+    $("#showifbyprod").css("display", "none");
+    $("#showifbysarana").css("display", "none");
+    $("#filterproduk").select2("val", "");
+    $("#filtersarana").select2("val", "");
+    $("#filterseksi").removeAttr("disabled");
+  }
+}
+function onchangefilter() {
+  var sarana = $("#filtersarana").val();
+  var produk = $("#filterproduk").val();
+  var seksi = $("#filterseksi").val();
+  // console.log(sarana, produk, seksi);
+  var request = $.ajax({
+    url: baseurl + "DbHandling/MonitoringHandling/loadviewdatahand",
+    data: {
+      sarana: sarana,
+      produk: produk,
+      seksi: seksi,
+    },
+    type: "POST",
+    datatype: "html",
+    beforeSend: function () {
+      $("div#tabel_datahand").html(
+        '<center><img id="loadingimg" style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"></center>'
+      );
+    },
+  });
+  request.done(function (result) {
+    $("div#tabel_datahand").html(result);
+    var datat = $("#datahandling").dataTable({
+      paging: true,
+      pageLength: 25,
+      info: true,
+    });
+    $("#searchboxdatatable").on("keyup", function () {
+      datat.fnFilter(this.value);
+    });
+  });
+}
+function reset() {
+  // window.location.reload();
+  $("#showifbyseksi").css("display", "none");
+  $("#showifbyprod").css("display", "none");
+  $("#showifbysarana").css("display", "none");
+  $("#filterselected").select2("val", "");
+  $("#filterproduk").select2("val", "");
+  $("#filtersarana").select2("val", "");
+  $("#filterseksi").select2("val", "");
+  var sarana = null;
+  var produk = null;
+  var seksi = null;
+  var request = $.ajax({
+    url: baseurl + "DbHandling/MonitoringHandling/loadviewdatahand",
+    data: {
+      sarana: sarana,
+      produk: produk,
+      seksi: seksi,
+    },
+    type: "POST",
+    beforeSend: function () {
+      $("div#tabel_datahand").html(
+        '<center><img style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"></center>'
+      );
+    },
+  });
+  request.done(function (result) {
+    // console.log(result);
+    $("div#tabel_datahand").html(result);
+    var datat = $("#datahandling").dataTable({
+      paging: true,
+      pageLength: 25,
+      info: true,
+    });
+    $("#searchboxdatatable").on("keyup", function () {
+      datat.fnFilter(this.value);
+    });
+  });
+}
 function imgcarousel(id) {
   var proses = $("#proseshandling" + id).val();
   var request = $.ajax({
