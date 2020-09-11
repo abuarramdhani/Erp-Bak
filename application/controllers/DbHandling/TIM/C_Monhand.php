@@ -44,9 +44,28 @@ class C_Monhand extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
+        $filterbyseksi = $this->M_dbhandling->select_seksi();
+        $filterbyproduk = $this->M_dbhandling->select_produk();
+        $filterbysarana = $this->M_dbhandling->select_sarana();
+
+        for ($i = 0; $i < sizeof($filterbysarana); $i++) {
+            $datasarana = $this->M_dbhandling->selectdatatoedit($filterbysarana[$i]['id_master_handling']);
+            if ($datasarana != null) {
+                $filterbysarana[$i]['kode'] = $datasarana[0]['kode_handling'];
+                $filterbysarana[$i]['nama'] = $datasarana[0]['nama_handling'];
+            } else {
+                $filterbysarana[$i]['kode'] = 'Invalid';
+                $filterbysarana[$i]['nama'] = 'Invalid';
+            }
+        }
+
+        $data['filterbyseksi'] = $filterbyseksi;
+        $data['filterbyproduk'] = $filterbyproduk;
+        $data['filterbysarana'] = $filterbysarana;
+
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
-        $this->load->view('DbHandling/TIM/V_MonHand');
+        $this->load->view('DbHandling/TIM/V_MonHand', $data);
         $this->load->view('V_Footer', $data);
     }
 
@@ -85,7 +104,21 @@ class C_Monhand extends CI_Controller
     }
     public function loadviewdatahand()
     {
-        $datahandling = $this->M_dbhandling->selectdatahandling();
+
+        $sarana = $this->input->post('sarana');
+        $produk = $this->input->post('produk');
+        $seksi = $this->input->post('seksi');
+
+        if ($sarana != null) {
+            $datahandling = $this->M_dbhandling->selectdatahandlingbysarana($sarana);
+        } else if ($produk != null) {
+            $datahandling = $this->M_dbhandling->selectdatahandlingbyprod($produk);
+        } else if ($seksi != null) {
+            $datahandling = $this->M_dbhandling->selectdatahandlingseksi($seksi);
+        } else {
+            $datahandling = $this->M_dbhandling->selectdatahandling();
+        }
+
         for ($i = 0; $i < sizeof($datahandling); $i++) {
             $sarana_handling = $this->M_dbhandling->selectdatatoedit($datahandling[$i]['id_master_handling']);
             if ($sarana_handling == null) {

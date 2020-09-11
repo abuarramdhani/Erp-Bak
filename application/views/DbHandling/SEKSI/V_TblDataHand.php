@@ -33,8 +33,8 @@
                     } ?>
                     <td class="text-center" style="color: <?= $color ?>;font-weight:<?= $bold ?>;"><?= $handling['sarana'] ?></td>
                     <td class="text-center"><?= $handling['seksi'] ?></td>
-                    <td class="text-center"><a class="btn btn-default" onclick="slideshow(<?= $handling['id_handling'] ?>)">Foto</a> <a class="btn btn-danger" onclick="showproses(<?= $handling['id_handling'] ?>)">Proses</a></td>
-                    <td class="text-center"><button class="btn btn-default" formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/detaildatahandling/' . $handling['id_handling']); ?>">Detail</button></td>
+                    <td class="text-center"><a class="btn btn-default btn-xs" onclick="slideshow(<?= $handling['id_handling'] ?>)">Foto</a> <a class="btn btn-danger btn-xs" onclick="showproses(<?= $handling['id_handling'] ?>)">Proses</a></td>
+                    <td class="text-center"><button class="btn btn-default btn-xs" formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/detaildatahandling/' . $handling['id_handling']); ?>">Detail</button></td>
                 </tr>
             <?php $r++;
             } ?>
