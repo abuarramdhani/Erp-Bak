@@ -7,6 +7,7 @@ class M_dbhandling extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->oracle = $this->load->database('oracle', true);
+        $this->personalia = $this->load->database('personalia', true);
     }
     public function insertmasterhandling($namahandling, $kodehandling)
     {
@@ -372,7 +373,7 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $query = $this->db->query($sql);
         return $query;
     }
-    public function select_seksi()
+    public function _daftar()
     {
         $sql = "select distinct seksi from dbh.data_handling";
 
@@ -391,6 +392,17 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $sql = "select distinct id_master_handling from dbh.data_handling";
 
         $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function select2_seksi($term)
+    {
+        $sql = "select distinct seksi from hrd_khs.tseksi ts                 
+       where seksi like '%$term%'
+       and seksi != '-'
+       and seksi != '-                                                 '                                                              
+       order by seksi";
+
+        $query = $this->personalia->query($sql);
         return $query->result_array();
     }
 }

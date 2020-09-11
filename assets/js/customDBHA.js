@@ -1729,6 +1729,32 @@ function tambahmasterprosesseksi() {
       allowClear: true,
       minimumResultsForSearch: Infinity,
     });
+    $("#namaseksi").select2({
+      allowClear: true,
+      minimumInputLength: 0,
+      ajax: {
+        url: baseurl + "DbHandling/SetDataMaster/suggestseksi",
+        dataType: "json",
+        type: "GET",
+        data: function (params) {
+          var queryParameters = {
+            term: params.term,
+          };
+          return queryParameters;
+        },
+        processResults: function (data) {
+          // console.log(data);
+          return {
+            results: $.map(data, function (obj) {
+              return {
+                id: obj.seksi,
+                text: obj.seksi,
+              };
+            }),
+          };
+        },
+      },
+    });
     $(".idseksi").on("change", function () {
       var idseksi = $(".idseksi").val();
       // console.log(idseksi);
