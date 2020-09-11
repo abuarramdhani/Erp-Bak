@@ -336,20 +336,12 @@
 															</div>
 															<div class="row mt-10">
 																<div class="col-lg-4">
-																	<label for="PK_txt_provinsiPekerja">Provinsi </label>
+																	<label for="select-desa">Desa </label>
 																</div>
 																<div class="col-lg-8">
-																	<!-- <input typereadonly
-																</div>
-															</div>
-															<div class="row mt-10">
-																<div class="col-lg-4">
-																	<label for="PK_txt_kabupatenPekerja">Kabupaten </label>
-																</div>
-																<div class="col-lg-8">
-																	<!-- <input type="text" name="kab" id="" class="form-control" value="<?= $data['kab'] ?>"> -->
-																	<select name="kab" id="select-kabupaten" class="form-control">
-																		<option value="<?= $data['kab_id'] ?>" selected><?= $data['kab'] ?></option>
+																	<!-- <input type="text" name="desa" id="" class="form-control uppercase" value="<?= $data['desa'] ?>"> -->
+																	<select name="desa" id="select-desa" class="form-control">
+																		<option value="<?= $data['desa_id'] ?>" selected><?= $data['desa'] ?></option>
 																	</select>
 																</div>
 															</div>
@@ -366,12 +358,22 @@
 															</div>
 															<div class="row mt-10">
 																<div class="col-lg-4">
-																	<label for="select-desa">Desa </label>
+																	<label for="PK_txt_kabupatenPekerja">Kabupaten </label>
 																</div>
 																<div class="col-lg-8">
-																	<!-- <input type="text" name="desa" id="" class="form-control uppercase" value="<?= $data['desa'] ?>"> -->
-																	<select name="desa" id="select-desa" class="form-control">
-																		<option value="<?= $data['desa_id'] ?>" selected><?= $data['desa'] ?></option>
+																	<!-- <input type="text" name="kab" id="" class="form-control" value="<?= $data['kab'] ?>"> -->
+																	<select name="kab" id="select-kabupaten" class="form-control">
+																		<option value="<?= $data['kab_id'] ?>" selected><?= $data['kab'] ?></option>
+																	</select>
+																</div>
+															</div>
+															<div class="row mt-10">
+																<div class="col-lg-4">
+																	<label for="PK_txt_provinsiPekerja">Provinsi </label>
+																</div>
+																<div class="col-lg-8">
+																	<select name="kab" id="select-provinsi" class="form-control">
+																		<option value="<?= $data['prop_id'] ?>" selected><?= $data['prop'] ?></option>
 																	</select>
 																</div>
 															</div>
