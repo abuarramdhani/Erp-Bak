@@ -89,7 +89,20 @@ class C_Api extends CI_Controller
   }
 
   /**
+   * Api get param option
+   * MasterPekerja/PencarianPekerja/api/option
+   * 
+   * @return json
+   */
+
+  public function option()
+  {
+    return Response::json($this->param);
+  }
+
+  /**
    * Api find related worker
+   * MasterPekerja/PencarianPekerja/api/find
    * 
    * @param GET param (column name)
    * @param GET keyword
