@@ -48,8 +48,42 @@ $( '#prodd').change(function() {
 	})
 });
 
+$( '#comp').change(function() {
+	var value = $(this).val();
+	if (value == '') {
+		$('#org').prop("disabled",true);
+	} else {
+		$('#org').prop("disabled",false);
+	}
+	
+});
+
 $( '#org').change(function() {
 	var value = $(this).val();
+	var kode = $("#comp").val();
+	// if (kode == null) {
+	// 	$("#recipe").html('<option value="" selected><b style="color:red;">HARAP PILIH KOMPONEN</b></option>');
+	// 	$("#recipe").prop("disabled",true);
+	// } else {
+		if (value == 'OPM') {
+					$("#recipe").prop("disabled",false);
+					$.ajax({
+						type:'POST',
+						data:{segment1:kode},
+						url:baseurl+"CetakBOMResources/Cetak/getRecipe",
+						success:function(result)
+						{	
+							console.log(result);
+								$("#recipe").html(result);
+						}
+					})
+				
+			// $("#recipe").html(hasil);
+		} else if (value == 'ODM') {
+			$("#recipe").val("");
+			$("#recipe").prop("disabled",true);
+		}
+	// }
 	console.log(value)
 	$("#seksii").select2('val', null);
 	$("#seksii").prop("disabled",true);
@@ -93,3 +127,19 @@ $('#org').change(function () {
 		}
 	})
 });
+
+// $('#recipe').change(function () {
+// 	var value = $("#comp").val();
+// 	console.log(value)
+// 	// $("#seksii").select2('val', null);
+// 	// $.ajax({
+// 	// 	type:'POST',
+// 	// 	data:{segment1:value},
+// 	// 	url:baseurl+"CetakBOMResources/Cetak/getRecipe",
+// 	// 	success:function(result)
+// 	// 	{	
+// 	// 			console.log(result);
+// 	// 			$("#recipe").html(result);
+// 	// 	}
+// 	// })
+// });

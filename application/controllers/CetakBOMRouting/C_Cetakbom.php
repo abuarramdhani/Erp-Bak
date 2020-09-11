@@ -88,18 +88,40 @@ class C_Cetakbom extends CI_Controller
 			echo $html;
 		} elseif ($term=='OPM') {
 			echo '<option></option>';	
+		} else {
+			echo '<option></option>';	
 		}
 
 	
 	}
 
-	public function CetakBOM()
+	public function getRecipe()
 	{
+		$term	= $this->input->post('segment1');
+		$html = '';
+			$recipe=$this->M_cetakbom->dataopm1($term);	
+			foreach ($recipe as $s) {
+			$html = $html.'<option value="'.$s['ROUTING_ID'].'|'.$s['FORMULA_ID'].'">'.$s['RECIPE_NO'].' - Versi '.$s['RECIPE_VERSION'].'</option>';
+			}
+			echo $html;
+	}
+
+	public function CetakBOM()
+	{	$recipe = null;
+		$formula = null;
 		$kode = $this->input->post('comp');
 		$seksi = $this->input->post('seksi');
 		$produk = $this->input->post('prodd');
 		$organization = $this->input->post('org');
 		// $tipe = $this->input->post('typeCetak');
+		
+		if ($this->input->post('recipe') != null) {
+			$recipeformula = explode("|",$this->input->post('recipe'));
+			$recipe = $recipeformula[0];
+			$formula = $recipeformula[1];
+		}
+		
+
 		/////////////////////DEFAULT DETAIL/////////////////////////
 		$tipe = 'Y';
 		/////////////////////DEFAULT DETAIL/////////////////////////
@@ -306,12 +328,13 @@ class C_Cetakbom extends CI_Controller
 		//komen
 		} else if ($organization == 'OPM') {
 
-			$dataopm1 = $this->M_cetakbom->dataopm1($kode);
-			if ($dataopm1 == null) {
-				echo "<br><br> <center> <b>ROUTING / FORMULA TIDAK DITEMUKAN <br> HARAP HUBUNGI PIC TERKAIT !!</b></center>";exit();
-			} else {
+			// $dataopm1 = $this->M_cetakbom->dataopm1($kode);
+			// if ($dataopm1 == null) {
+			// 	echo "<br><br> <center> <b>ROUTING / FORMULA TIDAK DITEMUKAN <br> HARAP HUBUNGI PIC TERKAIT !!</b></center>";exit();
+			// } else {
 				// echo "<pre>";print_r($dataopm1);exit();
-				$dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
+				// $dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
+				$dataopm2 =  $this->M_cetakbom->dataopm2($recipe);
 				for ($i=0; $i < sizeof($dataopm2); $i++) { 
 					//P1
 					if ($dataopm2[$i]['P1'] != null) {
@@ -336,7 +359,7 @@ class C_Cetakbom extends CI_Controller
 
 					$route_id[$dataopm2[$i]['ROUTING_ID']][] = $i; 
 				}
-				$dataopm3 =  $this->M_cetakbom->dataopm3($dataopm1[0]['FORMULA_ID']);
+				$dataopm3 =  $this->M_cetakbom->dataopm3($formula);
 				
 				for ($i=0; $i < sizeof($dataopm2); $i++) { 
 					$activity[$dataopm2[$i]['ACTIVITY']][] = $i;  
@@ -358,7 +381,7 @@ class C_Cetakbom extends CI_Controller
 				$data['dataopm1'] = $dataopm1;
 				$data['dataopm2'] = $dataopm2;
 				$data['dataopm3'] = $dataopm3;
-			}
+			// }
 			// echo "<pre>";
 			// print_r($data);
 			// exit();

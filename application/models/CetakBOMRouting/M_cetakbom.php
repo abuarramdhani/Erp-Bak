@@ -243,6 +243,8 @@ order by msib.SEGMENT1, bom.ALTERNATE_BOM_DESIGNATOR, bic.ITEM_NUM
     $oracle = $this->load->database('oracle', true);
     $sql = "select msib.SEGMENT1
 ,msib.DESCRIPTION
+,grvr.RECIPE_USE
+,grvr.PREFERENCE
 ,grb.RECIPE_NO
 ,grb.RECIPE_VERSION
 ,grb.ROUTING_ID
@@ -254,6 +256,7 @@ where grvr.RECIPE_ID = grb.RECIPE_ID
 and grvr.ORGANIZATION_ID = grb.OWNER_ORGANIZATION_ID
 and grvr.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
 and grvr.ORGANIZATION_ID = msib.ORGANIZATION_ID
+and grvr.RECIPE_USE = 0
 and grvr.END_DATE is null
 and grvr.VALIDITY_RULE_STATUS = 700
 and msib.SEGMENT1 = '$kode'";
