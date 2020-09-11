@@ -21,6 +21,11 @@ moment.locale("id");
 // $("select.select2").select2();
 $(() => {
 	// $("th").resizable(); // resizeable th
+	$(".date-range")
+		.daterangepicker()
+		.on("change", function () {
+			app.$data.keyword = $(this).val();
+		});
 });
 
 const API = {
@@ -32,6 +37,7 @@ const API = {
 	 * out
 	 */
 	findWorker: baseurl + "MasterPekerja/PencarianPekerja/api/find",
+	getOption: baseurl + "MasterPekerja/PencarianPekerja/api/option",
 };
 
 const app = new Vue({
@@ -39,6 +45,7 @@ const app = new Vue({
 	name: "App",
 	data() {
 		return {
+			option: [],
 			tableHead: [],
 			tableHeadToggled: {},
 			tableBody: [],
@@ -49,14 +56,30 @@ const app = new Vue({
 			param: "noind", // first time selected
 			keyword: "",
 			limit: "-",
+			get optionType() {
+				return this.option[this.param] && this.option[this.param].type;
+			},
 		};
+	},
+	watch: {
+		// this method watch reactive optionType when is changed
+		optionType: function (prev, news) {
+			this.$data.keyword = "";
+		},
 	},
 	methods: {
 		setActiveRow(i) {
+			/**
+			 * set index of active row when row is click
+			 * this will toggle class of bg-primary
+			 */
 			console.log(i);
 			this.$data.activeRow = i;
 		},
 		sortColumn(key) {
+			/**
+			 * when table head is clicked, then sort asc/desc table item
+			 */
 			key = key - 1;
 			const newArr = [].concat(this.tableBody);
 			if (this.$data.tableHeadToggled[key] === false) {
@@ -81,7 +104,20 @@ const app = new Vue({
 			console.log(this.tableBody);
 		},
 		find() {
-			if (!this.$data.keyword) return;
+			/**
+			 * find data with api based on form
+			 */
+			// validation not null value
+			if (!this.$data.keyword || !this.$data.param) return console.warn("Params is must be not empty value");
+
+			// validation data type
+			if (this.$data.optionType == "date") {
+				let splitDate = this.$data.keyword.split("-");
+				if (splitDate.length < 2) return console.warn("date param is not valid");
+				if (!moment(splitDate[0], ["dd/mm/yyyy"]).isValid()) return console.warn("first of date is not valid, must dd/mm/yyyy");
+				if (!moment(splitDate[1], ["dd/mm/yyyy"]).isValid()) return console.warn("second of date is not valid, must dd/mm/yyyy");
+			}
+
 			this.$data.tableBody = [];
 			this.$data.tableLoading = true;
 
@@ -110,9 +146,23 @@ const app = new Vue({
 					alert("Fetch failed, try to reload");
 				});
 		},
+		getOption() {
+			/**
+			 * get select option by api
+			 */
+			fetch(API.getOption)
+				.then((e) => e.json())
+				.then((data) => (this.$data.option = data))
+				.catch((e) => {
+					let err = "Something is happen, check your internet connection";
+					console.error(err);
+					alert(err);
+				});
+		},
 		exportExcel() {
 			/**
 			 * this is export with plugin table2excel based current table
+			 * @deprecated not used again
 			 */
 			$("table#table-pencarian-pekerja").table2excel({
 				// exclude: "",
@@ -137,5 +187,14 @@ const app = new Vue({
 			const full_url = baseurl + "MasterPekerja/PencarianPekerja/export_excel?" + query;
 			window.location.href = full_url;
 		},
+	},
+	created() {
+		console.log("i am created");
+		// this is method is called when vue component is created /** read vue2 lifecycle */
+		// fetch option
+		this.getOption();
+	},
+	mounted() {
+		// this method is called when vue component is mounted into DOM
 	},
 });
