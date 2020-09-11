@@ -113,22 +113,22 @@ class M_penyerahan extends CI_Model
 	public function getNoindMax($kode)
 	{
 		$sql = "SELECT
-					 noind,
-					 '$kode' || case when length((substring(noind, 2)::int + 1)::varchar(255)) = 5
-					 then lpad((substring(noind, 2)::int + 1)::varchar(255),5,'0')
-					 else
-					 lpad((substring(noind, 2)::int + 1)::varchar(255),4,'0') end new
+					max(noind) noind,
+					'$kode' || case when length((substring(max(noind), 2)::int + 1)::varchar(255)) = 5
+					then lpad((substring(max(noind), 2)::int + 1)::varchar(255),5,'0')
+					else
+					lpad((substring(max(noind), 2)::int + 1)::varchar(255),4,'0') end new
+				from
+					hrd_khs.tpribadi tp
+				where
+					left(noind, 1) = '$kode'
+					and noind not in (
+					select *
 					from
-					 hrd_khs.tpribadi tp
-					where
-					 left(noind, 1) = '$kode'
-					 and noind not in (
-					  select *
-					 from
-					  hrd_khs.tnoind_acak)
-					order by
-					 noind desc
-					limit 1";
+					hrd_khs.tnoind_acak)
+				order by
+					noind desc
+				limit 1";
 		return $this->personalia->query($sql)->result_array();
 	}
 
