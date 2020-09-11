@@ -154,7 +154,7 @@ class C_Setdatamaster extends CI_Controller
                 <div class="panel-body col-md-12">                            
                     <div class="col-md-4" style="text-align: right;"><label>Seksi</label></div>                                        
                     <div class="col-md-8" style="text-align: left;">
-                        <div class="col-md-8"><input type="text" required="required" autocomplete="off" class="form-control" id="namaseksi" name="namaseksi" /></div>
+                        <div class="col-md-8"><select style="width:100%" class="form-control select2" id="namaseksi" name="namaseksi" data-placeholder="Select"><option></option></select></div>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -162,6 +162,13 @@ class C_Setdatamaster extends CI_Controller
                 </div>';
 
         echo $tambahmasterprosesseksi;
+    }
+    public function suggestseksi()
+    {
+        $term = $this->input->get('term', TRUE);
+        $term = strtoupper($term);
+        $data = $this->M_dbhandling->select2_seksi($term);
+        echo json_encode($data);
     }
     public function editmasterprosesseksi()
     {
@@ -185,20 +192,15 @@ class C_Setdatamaster extends CI_Controller
             $warna = '#ffff00';
         } else if ($datauntukedit[0]['identitas_seksi'] == 'Gudang') {
             $warna = '#cccccc';
-        }
-        else if ($datauntukedit[0]['identitas_seksi'] == 'PnP') {
+        } else if ($datauntukedit[0]['identitas_seksi'] == 'PnP') {
             $warna = '#ff8080';
-        }
-        else if ($datauntukedit[0]['identitas_seksi'] == 'Sheet Metal') {
+        } else if ($datauntukedit[0]['identitas_seksi'] == 'Sheet Metal') {
             $warna = '#94bd5e';
-        }
-        else if ($datauntukedit[0]['identitas_seksi'] == 'UPPL') {
+        } else if ($datauntukedit[0]['identitas_seksi'] == 'UPPL') {
             $warna = '#ff00ff';
-        }
-        else if ($datauntukedit[0]['identitas_seksi'] == 'Perakitan') {
+        } else if ($datauntukedit[0]['identitas_seksi'] == 'Perakitan') {
             $warna = '#99ccff';
-        }
-        else if ($datauntukedit[0]['identitas_seksi'] == 'Subkon') {
+        } else if ($datauntukedit[0]['identitas_seksi'] == 'Subkon') {
             $warna = '#ffcc99';
         }
         $editmasterprosesseksi = '
