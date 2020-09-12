@@ -412,4 +412,15 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $query = $this->personalia->query($sql);
         return $query->result_array();
     }
+    public function listSeksirev($seksi)
+    {
+        $sql = "select distinct seksi from hrd_khs.tseksi ts                 
+       where seksi != '$seksi'
+       and seksi != '-'
+       and seksi != '-                                                 '                                                              
+       order by seksi";
+
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
 }

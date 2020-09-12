@@ -507,6 +507,13 @@ class C_Monhandseksi extends CI_Controller
     {
         $id = $this->input->post('id');
         $dataHandrev = $this->M_dbhandling->selectdatahandlingbyid($id);
+
+        $ListSeksi = $this->M_dbhandling->listSeksirev($dataHandrev[0]['seksi']);
+
+        $optseksi = '';
+        for ($i = 0; $i < sizeof($ListSeksi); $i++) {
+            $optseksi .= '<option value ="' . $ListSeksi[$i]['seksi'] . '">' . $ListSeksi[$i]['seksi'] . '</option>';
+        }
         $stats_kmp = $this->M_dbhandling->selectstatuskompbyid($dataHandrev[0]['id_status_komponen']);
         $stats_kmp_All = $this->M_dbhandling->selectstatuskomp();
         if ($stats_kmp == null) {
@@ -784,7 +791,7 @@ class C_Monhandseksi extends CI_Controller
         }
 
         $piew = '
-        <form name="Orderform" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post" action="' . base_url('DbHandling/MonitoringHandling/insertedit') . '">
+        <form name="Orderform" class="form-horizontal" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post" action="' . base_url('DbHandlingSeksi/MonitoringHandling/insertedit') . '">
             <input type="hidden" value="' . $id . '" name="IDHandling"/>
             <div class="panel-body">
                 <div class="col-md-3" style="text-align:right;"><label>Kode Komponen</label></div>
@@ -810,7 +817,7 @@ class C_Monhandseksi extends CI_Controller
             </div>
             <div class="panel-body">
                 <div class="col-md-3" style="text-align:right;"><label>Seksi</label></div>
-                <div class="col-md-8"><input type="text" name="seksi_handling" class="form-control" value="' . $dataHandrev[0]['seksi'] . '"/></div>
+                <div class="col-md-8"><select style="width:100%" class="form-control select2" id="seksi_handling" name="seksi_handling"><option value="' . $dataHandrev[0]['seksi'] . '">' . $dataHandrev[0]['seksi'] . '</option>' . $optseksi . '</select></div>
             </div>
             ' . $selectProses . '
             <div class="prosesawal">
@@ -1151,5 +1158,12 @@ class C_Monhandseksi extends CI_Controller
         $pdf->WriteHTML($html);
         $pdf->SetHTMLFooter($foot);                                               //-----> Pakai Library MPDF
         $pdf->Output($filename, 'I');
+    }
+    public function suggestseksi()
+    {
+        $term = $this->input->get('term', TRUE);
+        $term = strtoupper($term);
+        $data = $this->M_dbhandling->select2_seksi($term);
+        echo json_encode($data);
     }
 }

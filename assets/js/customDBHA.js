@@ -972,6 +972,10 @@ function revisidatahandling(id) {
       allowClear: true,
       minimumResultsForSearch: Infinity,
     });
+    $("#seksi_handling").select2({
+      allowClear: true,
+      minimumResultsForSearch: Infinity,
+    });
   });
 }
 function revisidatahandling2(id) {
@@ -1005,6 +1009,10 @@ function revisidatahandling2(id) {
       minimumResultsForSearch: Infinity,
     });
     $(".Pro_sesSeksi").select2({
+      allowClear: true,
+      minimumResultsForSearch: Infinity,
+    });
+    $("#seksi_handling").select2({
       allowClear: true,
       minimumResultsForSearch: Infinity,
     });
@@ -2778,3 +2786,59 @@ function prosesshow(id) {
     $("#mdl-proses").modal("show");
   });
 }
+$(document).ready(function () {
+  $("#seksihand").select2({
+    allowClear: true,
+    minimumInputLength: 0,
+    ajax: {
+      url: baseurl + "DbHandling/MonitoringHandling/suggestseksi",
+      dataType: "json",
+      type: "GET",
+      data: function (params) {
+        var queryParameters = {
+          term: params.term,
+        };
+        return queryParameters;
+      },
+      processResults: function (data) {
+        // console.log(data);
+        return {
+          results: $.map(data, function (obj) {
+            return {
+              id: obj.seksi,
+              text: obj.seksi,
+            };
+          }),
+        };
+      },
+    },
+  });
+});
+$(document).ready(function () {
+  $("#Seksi_Hand").select2({
+    allowClear: true,
+    minimumInputLength: 0,
+    ajax: {
+      url: baseurl + "DbHandlingSeksi/MonitoringHandling/suggestseksi",
+      dataType: "json",
+      type: "GET",
+      data: function (params) {
+        var queryParameters = {
+          term: params.term,
+        };
+        return queryParameters;
+      },
+      processResults: function (data) {
+        // console.log(data);
+        return {
+          results: $.map(data, function (obj) {
+            return {
+              id: obj.seksi,
+              text: obj.seksi,
+            };
+          }),
+        };
+      },
+    },
+  });
+});
