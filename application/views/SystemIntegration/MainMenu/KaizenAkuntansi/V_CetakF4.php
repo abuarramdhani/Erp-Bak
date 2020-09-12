@@ -26,7 +26,7 @@
 			  	</tr>
 			  	<tr>
 				 	<td style="border-top: 1px solid #000; border-right: 1px solid #000">&#9744; Penurunan Reject</td>
-				 	<td style="border-top: 1px solid #000">&#9744; Akuntansi</td>
+				 	<td style="border-top: 1px solid #000">&#9746; Akuntansi</td>
 			  	</tr>
 			  	<tr>
 				 	<td style="border-top: 1px solid #000; border-right: 1px solid #000">&#9744; Efisiensi Produksi</td>
@@ -34,7 +34,7 @@
 			  	</tr>
 			  	<tr>
 					<td style="border-top: 1px solid #000; border-right: 1px solid #000">&#9744; Dept. Personalia</td>
-					<td style="border-top: 1px solid #000">&#9746; Keuangan</td>
+					<td style="border-top: 1px solid #000">&#9744; Keuangan</td>
 			  	</tr>
 			</tbody>
 	 	</table>
@@ -153,7 +153,12 @@
 			<tbody>
 				<tr>
 					<td style="border-top: 1px solid #000; font-weight: bold;" width="50%">
-						Tanggal Realisasi : <?php $dt4 = new DateTime($kaizen[0]['tgl_realisasi']); $a4 =  $dt4->format('d'); $b4 = $dt4->format('m'); $c4 = $dt4->format('Y'); echo $a4.' '.$bulan[$b4].' '.$c4;?>
+						Tanggal Realisasi : <?php 
+						$dt4 = strtotime($kaizen[0]['tgl_realisasi']); 
+						$a4 = date('d',$dt4); 
+						$b4 = date('m',$dt4); 
+						$c4 = date('Y',$dt4); 
+						echo $a4.' '.$bulan[$b4].' '.$c4;?>
 					</td>
 					<td style="border-top: 1px solid #000; font-weight: bold; border-left: 1px solid #000" colspan="3">
 						Catatan:
