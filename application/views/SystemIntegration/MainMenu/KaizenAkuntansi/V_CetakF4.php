@@ -154,7 +154,7 @@
 				<tr>
 					<td style="border-top: 1px solid #000; font-weight: bold;" width="50%">
 						Tanggal Realisasi : <?php 
-						$dt4 = strtotime($kaizen[0]['tgl_realisasi']); 
+						$dt4 = strtotime($kaizen[0]['tanggal_realisasi']); 
 						$a4 = date('d',$dt4); 
 						$b4 = date('m',$dt4); 
 						$c4 = date('Y',$dt4); 
