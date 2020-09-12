@@ -183,13 +183,13 @@ class C_Index extends CI_Controller
 			'no_kk' 		        => $pekerja->no_kk,
 			/**Alamat Pekerja */
 			'alamat' 	          => $pekerja->alamat,
-			'desa_id'						=> $location->id_kel ?: $pekerja->desa,
+			'desa_id'						=> @$location->id_kel ?: $pekerja->desa,
 			'desa' 		          => $pekerja->desa,
-			'kec_id'						=> $location->id_kec ?: $pekerja->kec,
+			'kec_id'						=> @$location->id_kec ?: $pekerja->kec,
 			'kec' 		          => $pekerja->kec,
-			'kab_id'						=> $location->id_kab ?: $pekerja->kab,
+			'kab_id'						=> @$location->id_kab ?: $pekerja->kab,
 			'kab' 		          => $pekerja->kab,
-			'prop_id'						=> $location->id_prov ?: $pekerja->prop,
+			'prop_id'						=> @$location->id_prov ?: $pekerja->prop,
 			'prop' 		          => $pekerja->prop,
 			'kodepos' 	        => $pekerja->kodepos,
 			'statrumah' 	      => $pekerja->statrumah, // real data => RK|RS|R|-| 
@@ -506,10 +506,10 @@ class C_Index extends CI_Controller
 			$noind = $this->input->post('noind');
 			if (empty($noind)) throw new Exception("Noind param is empty");
 
-			$prov = $this->input->post('prop') ? $this->M_pekerjakeluar->ambilProv($this->input->post('prop')) : ''; // string
-			$kab 	= $this->input->post('kab') ? $this->M_pekerjakeluar->ambilKab($this->input->post('kab')) : ''; // string
-			$kec 	= $this->input->post('kec') ? $this->M_pekerjakeluar->ambilKec($this->input->post('kec')) : ''; // string
-			$desa = $this->input->post('desa') ? $this->M_pekerjakeluar->ambilDesa($this->input->post('desa')) : ''; // string
+			$prov = $this->input->post('prop') ? ($this->M_pekerjakeluar->ambilProv($this->input->post('prop')) ?: $this->input->post('prop')) : ''; // string
+			$kab 	= $this->input->post('kab') ? ($this->M_pekerjakeluar->ambilKab($this->input->post('kab')) ?: $this->input->post('kab')) : ''; // string
+			$kec 	= $this->input->post('kec') ? ($this->M_pekerjakeluar->ambilKec($this->input->post('kec')) ?: $this->input->post('kec')) : ''; // string
+			$desa = $this->input->post('desa') ? ($this->M_pekerjakeluar->ambilDesa($this->input->post('desa')) ?: $this->input->post('desa')) : ''; // string
 
 			/**
 			 * @database Personalia
