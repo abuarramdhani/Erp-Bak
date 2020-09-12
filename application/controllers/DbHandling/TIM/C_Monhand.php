@@ -760,6 +760,13 @@ class C_Monhand extends CI_Controller
         // echo "<pre>";
         // print_r($stats_kmp);
         // exit();
+
+        $ListSeksi = $this->M_dbhandling->listSeksirev($dataHandrev[0]['seksi']);
+
+        $optseksi = '';
+        for ($i = 0; $i < sizeof($ListSeksi); $i++) {
+            $optseksi .= '<option value ="' . $ListSeksi[$i]['seksi'] . '">' . $ListSeksi[$i]['seksi'] . '</option>';
+        }
         $stats_kmp_All = $this->M_dbhandling->selectstatuskomp();
         if ($stats_kmp == null) {
             $dataHandrev[0]['status_komp'] = 'Invalid';
@@ -1062,7 +1069,7 @@ class C_Monhand extends CI_Controller
             </div>
             <div class="panel-body">
                 <div class="col-md-3" style="text-align:right;"><label>Seksi</label></div>
-                <div class="col-md-8"><input type="text" name="seksi_handling" class="form-control" value="' . $dataHandrev[0]['seksi'] . '"/></div>
+                <div class="col-md-8"><select style="width:100%" class="form-control select2" id="seksi_handling" name="seksi_handling"><option value="' . $dataHandrev[0]['seksi'] . '">' . $dataHandrev[0]['seksi'] . '</option>' . $optseksi . '</select></div>
             </div>
             ' . $selectProses . '
             <div class="prosesawal">
@@ -1367,5 +1374,12 @@ class C_Monhand extends CI_Controller
     {
         $id = $this->input->post('id');
         $this->M_dbhandling->updatereject($id);
+    }
+    public function suggestseksi()
+    {
+        $term = $this->input->get('term', TRUE);
+        $term = strtoupper($term);
+        $data = $this->M_dbhandling->select2_seksi($term);
+        echo json_encode($data);
     }
 }

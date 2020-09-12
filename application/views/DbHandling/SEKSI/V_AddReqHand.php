@@ -84,7 +84,11 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Seksi</label></div>
-                                            <div class="col-md-8" style="text-align: left;"><input id="Seksi_Hand" name="Seksi_Hand" type="text" required class="form-control" /></div>
+                                            <div class="col-md-8" style="text-align: left;">
+                                                <select style="width:100%" name="Seksi_Hand" id="Seksi_Hand" class="form-control select2" data-placeholder="Select">
+                                                    <option></option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Proses</label></div>
