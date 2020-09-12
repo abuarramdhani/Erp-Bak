@@ -13,8 +13,11 @@ class M_pekerjakeluar extends CI_Model
 
 	public function getPekerja($keyword, $keluar)
 	{
+		$not_worker_code = ['M'];
+
 		$query = $this->personalia
 			->select('noind, trim(nama) nama')
+			->where_not_in('substring(noind, 1, 1)', $not_worker_code)
 			->group_start()
 			->like('noind', $keyword, 'both')
 			->or_like('nama', $keyword, 'both')
