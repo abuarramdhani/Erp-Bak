@@ -794,8 +794,8 @@
 																		?>
 																		<p>
 																			<!-- ini nanti pakai alur sendiri -->
-																			Kantor Asal : <span id="kantor_asal_text"><?= $kantor_asal[0]['lokasi_kerja'] ?></span> <br>
-																			Lokasi Kerja : <span id="lokasi_kerja_text"><?= $lokasi_kerja[0]['lokasi_kerja'] ?></span>
+																			Kantor Asal : <span id="kantor_asal_text"><?= @$kantor_asal[0]['lokasi_kerja'] ?: '-' ?></span> <br>
+																			Lokasi Kerja : <span id="lokasi_kerja_text"><?= @$lokasi_kerja[0]['lokasi_kerja'] ?: '-' ?></span>
 																		</p>
 																	</div>
 																</div>
