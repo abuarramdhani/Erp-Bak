@@ -506,10 +506,10 @@ class C_Index extends CI_Controller
 			$noind = $this->input->post('noind');
 			if (empty($noind)) throw new Exception("Noind param is empty");
 
-			$prov = $this->input->post('prop') ? $this->M_pekerjakeluar->ambilProv($this->input->post('prop')) : ''; // string
-			$kab 	= $this->input->post('kab') ? $this->M_pekerjakeluar->ambilKab($this->input->post('kab')) : ''; // string
-			$kec 	= $this->input->post('kec') ? $this->M_pekerjakeluar->ambilKec($this->input->post('kec')) : ''; // string
-			$desa = $this->input->post('desa') ? $this->M_pekerjakeluar->ambilDesa($this->input->post('desa')) : ''; // string
+			$prov = $this->input->post('prop') ? ($this->M_pekerjakeluar->ambilProv($this->input->post('prop')) ?: $this->input->post('prop')) : ''; // string
+			$kab 	= $this->input->post('kab') ? ($this->M_pekerjakeluar->ambilKab($this->input->post('kab')) ?: $this->input->post('kab')) : ''; // string
+			$kec 	= $this->input->post('kec') ? ($this->M_pekerjakeluar->ambilKec($this->input->post('kec')) ?: $this->input->post('kec')) : ''; // string
+			$desa = $this->input->post('desa') ? ($this->M_pekerjakeluar->ambilDesa($this->input->post('desa')) ?: $this->input->post('desa')) : ''; // string
 
 			/**
 			 * @database Personalia
@@ -684,12 +684,15 @@ class C_Index extends CI_Controller
 			/**
 			 * INSERT Log di hrd_khs.tlog
 			 */
+			$jenis = "SAVE->MODIFIKASI DATA PEKERJA";
+			$jenis .= (isset($tpribadi['keluar']) && $tpribadi['keluar'] == 't') ? "(KELUAR)" : '';
+
 			$log = array(
 				'wkt' => date('Y-m-d H:i:s'),
-				'menu' => 'FILE->PEKERJA',
+				'menu' => 'FILE->PEKERJA(ERP)',
 				'ket'	=> "NOIND->$noind",
 				'noind' => $user_logged,
-				'jenis' => "SAVE->MODIFIKASI DATA PEKERJA" . @$tpribadi['keluar'] == 't' ? "(KELUAR)" : '',
+				'jenis' => $jenis,
 				'program' => 'PEKERJA'
 			);
 

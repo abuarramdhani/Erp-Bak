@@ -210,11 +210,7 @@
 															<h3>Data Pribadi</h3>
 															<div class="mt-20">
 																<div style="width: 3cm; height: 4cm; background-color: #e8e8e8; margin: 0 auto; position: relative;">
-																	<!-- <img style="width: 100%;" src="<?= $data['photo_base64'] ?>"> -->
-																	<img style="width: 100%;" src="<?= $data['photo'] ?>">
-																	<!-- <div class="toolbar" style="display: none; top: 0; left: 0; right: 0; bottom: 0; background-color: #e8e8e8;z-index: 2">
-																		Hello
-																	</div> -->
+																	<img style="width: 100%; height: 100%;" src="<?= $data['photo'] ?>">
 																</div>
 															</div>
 															<div class="row mt-20">
@@ -372,7 +368,7 @@
 																	<label for="PK_txt_provinsiPekerja">Provinsi </label>
 																</div>
 																<div class="col-lg-8">
-																	<select name="kab" id="select-provinsi" class="form-control">
+																	<select name="prop" id="select-provinsi" class="form-control">
 																		<option value="<?= $data['prop_id'] ?>" selected><?= $data['prop'] ?></option>
 																	</select>
 																</div>
@@ -798,8 +794,8 @@
 																		?>
 																		<p>
 																			<!-- ini nanti pakai alur sendiri -->
-																			Kantor Asal : <span id="kantor_asal_text"><?= $kantor_asal[0]['lokasi_kerja'] ?></span> <br>
-																			Lokasi Kerja : <span id="lokasi_kerja_text"><?= $lokasi_kerja[0]['lokasi_kerja'] ?></span>
+																			Kantor Asal : <span id="kantor_asal_text"><?= @$kantor_asal[0]['lokasi_kerja'] ?: '-' ?></span> <br>
+																			Lokasi Kerja : <span id="lokasi_kerja_text"><?= @$lokasi_kerja[0]['lokasi_kerja'] ?: '-' ?></span>
 																		</p>
 																	</div>
 																</div>
