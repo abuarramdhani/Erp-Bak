@@ -183,13 +183,13 @@ class C_Index extends CI_Controller
 			'no_kk' 		        => $pekerja->no_kk,
 			/**Alamat Pekerja */
 			'alamat' 	          => $pekerja->alamat,
-			'desa_id'						=> @$location->id_kel ?: $pekerja->desa,
+			'desa_id'						=> $location->id_kel ?: $pekerja->desa,
 			'desa' 		          => $pekerja->desa,
-			'kec_id'						=> @$location->id_kec ?: $pekerja->kec,
+			'kec_id'						=> $location->id_kec ?: $pekerja->kec,
 			'kec' 		          => $pekerja->kec,
-			'kab_id'						=> @$location->id_kab ?: $pekerja->kab,
+			'kab_id'						=> $location->id_kab ?: $pekerja->kab,
 			'kab' 		          => $pekerja->kab,
-			'prop_id'						=> @$location->id_prov ?: $pekerja->prop,
+			'prop_id'						=> $location->id_prov ?: $pekerja->prop,
 			'prop' 		          => $pekerja->prop,
 			'kodepos' 	        => $pekerja->kodepos,
 			'statrumah' 	      => $pekerja->statrumah, // real data => RK|RS|R|-| 
@@ -684,12 +684,15 @@ class C_Index extends CI_Controller
 			/**
 			 * INSERT Log di hrd_khs.tlog
 			 */
+			$jenis = "SAVE->MODIFIKASI DATA PEKERJA";
+			$jenis .= (isset($tpribadi['keluar']) && $tpribadi['keluar'] == 't') ? "(KELUAR)" : '';
+
 			$log = array(
 				'wkt' => date('Y-m-d H:i:s'),
-				'menu' => 'FILE->PEKERJA',
+				'menu' => 'FILE->PEKERJA(ERP)',
 				'ket'	=> "NOIND->$noind",
 				'noind' => $user_logged,
-				'jenis' => "SAVE->MODIFIKASI DATA PEKERJA" . @$tpribadi['keluar'] == 't' ? "(KELUAR)" : '',
+				'jenis' => $jenis,
 				'program' => 'PEKERJA'
 			);
 

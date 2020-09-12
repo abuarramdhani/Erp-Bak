@@ -372,7 +372,7 @@
 																	<label for="PK_txt_provinsiPekerja">Provinsi </label>
 																</div>
 																<div class="col-lg-8">
-																	<select name="kab" id="select-provinsi" class="form-control">
+																	<select name="prop" id="select-provinsi" class="form-control">
 																		<option value="<?= $data['prop_id'] ?>" selected><?= $data['prop'] ?></option>
 																	</select>
 																</div>
