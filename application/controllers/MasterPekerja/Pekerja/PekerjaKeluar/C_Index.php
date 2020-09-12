@@ -161,6 +161,8 @@ class C_Index extends CI_Controller
 
 		// array
 		$lokasikerja = $this->M_pekerjakeluar->getLokasiKerja();
+		// prevent lokasikerja or asal_lokasi is -
+		array_push($lokasikerja, ['id_' => '-', 'lokasi_kerja' => '-']);
 		$sebabkeluar = $this->M_pekerjakeluar->getSebabKeluar();
 		$listJabatanDL = $this->M_pekerjakeluar->getListJabatanDL();
 		$listAnggotaKel = $this->M_pekerjakeluar->getListAnggotaKeluarga();
