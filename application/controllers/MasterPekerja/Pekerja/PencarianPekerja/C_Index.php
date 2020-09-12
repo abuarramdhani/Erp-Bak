@@ -135,7 +135,11 @@ class C_Index extends CI_Controller
         );
       }
       // end stolen
-      // debug($data);
+      $number_cell_type = @$_GET['type'] ?: '';
+      if (isset($_GET['debug'])) {
+        debug($data);
+      }
+
       // set property
       $objPHPExcel
         ->getProperties()
@@ -145,7 +149,7 @@ class C_Index extends CI_Controller
         ->setDescription("Pekerja")
         ->setKeywords("Pekerja");
 
-      // CORE VAROABLE
+      // CORE VARIABLE
       // maybe later
       $alphabet = range('A', 'Z');
       // debug($alphabet);
@@ -218,7 +222,7 @@ class C_Index extends CI_Controller
           // $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle('E' . $x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
           // set cell format to number
           if (in_array($key, $column_with_number)) {
-            $objPHPExcel->getActiveSheet()->getStyle($cell)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+            $objPHPExcel->getActiveSheet()->getStyle($cell)->getNumberFormat()->setFormatCode($number_cell_type ?: PHPExcel_Style_NumberFormat::FORMAT_TEXT);
           }
         }
         $startRow++;
