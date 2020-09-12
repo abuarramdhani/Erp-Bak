@@ -394,6 +394,13 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+    public function select_seksi()
+    {
+        $sql = "select distinct seksi from dbh.data_handling";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
     public function select2_seksi($term)
     {
         $sql = "select distinct seksi from hrd_khs.tseksi ts                 
