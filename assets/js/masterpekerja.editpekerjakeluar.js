@@ -924,7 +924,6 @@ $(function () {
 		},
 		init() {
 			$("#select-provinsi").select2({
-				minimumInputLength: 2,
 				allowClear: true,
 				placeholder: "Provinsi",
 				ajax: {
