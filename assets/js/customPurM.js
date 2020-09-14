@@ -715,6 +715,31 @@ $(document).ready(function() {
         placeholder: 'Select Buyer to Forward',
     });
 
+    $(document).on('click','.btnMdlNCMonitoring', function () {
+        var source_id = $(this).val();
+        
+        if ($('.imgNC-'+source_id).html() == '') {
+            $('.loadingImageNC-'+source_id).fadeIn();
+            $('#mdlNCMonitoring-'+source_id).modal('show');
+            $.ajax({
+                type: "POST",
+                url: baseurl+"PurchaseManagementGudang/NonConformity/getImage",
+                data: {source_id},
+                dataType: "JSON",
+                success: function (resp) {
+                    var html='';
+                    for (let i = 0; i < resp.length; i++) {
+                        const el = resp[i];
+                        html += '<img style="max-height:500px; max-width:500px;" src="'+baseurl+el['image_path']+el['file_name']+'"><br>'
+                    }
+                    $('.loadingImageNC-'+source_id).hide();
+                    $('.imgNC-'+source_id).html(html);
+                }
+            });
+        }
+        
+    })
+
 });
 
 function showBigImage(elm) {
