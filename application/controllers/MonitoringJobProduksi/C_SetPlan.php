@@ -91,7 +91,7 @@ class C_SetPlan extends CI_Controller
 		}
 		$data['data'] = $datanya;
 
-        $this->load->view('MonitoringJobProduksi/V_TblSetPlan', $data);
+        $this->load->view('MonitoringJobProduksi/V_TblSetplan', $data);
 	}
 
 	public function getPlanDate($id, $tgl, $data){
