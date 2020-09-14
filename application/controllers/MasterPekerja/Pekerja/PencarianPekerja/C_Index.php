@@ -143,6 +143,7 @@ class C_Index extends CI_Controller
       $file_format = @$_GET['format'] ?: ".xlsx";
       $excel_type = @$_GET['excel'] ?: 'Excel5';
       if (isset($_GET['debug'])) debug($data);
+      if (isset($_GET['debug'])) return phpinfo();
 
       // set property
       $objPHPExcel
