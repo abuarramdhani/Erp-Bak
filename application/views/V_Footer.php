@@ -247,6 +247,7 @@
 				<script src="<?= base_url('assets/js/customWLP.js'); ?>"></script>
  			    <script src="<?= base_url('assets/js/customDBHA.js'); ?>"></script>
  			    <script src="<?= base_url('assets/js/customMTT.js') ?>"></script>
+ 			    <script src="<?= base_url('assets/js/customMJP.js') ?>"></script>
 
 
 

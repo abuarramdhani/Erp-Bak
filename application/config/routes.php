@@ -4648,3 +4648,23 @@ $route['MOTerlambatTransact/Monitoring/(:any)'] = 'MOTerlambatTransact/C_Master/
 $route['MOTerlambatTransact/Monitoring/(:any)/(:any)'] = 'MOTerlambatTransact/C_Master/$1/$2';
 
 $route['MOTerlambatTransact/cekapi'] = 'MOTerlambatTransact/C_Master/cekapi';
+
+//-------------------------------------------Monitoring Job Produksi--------------------------------------------------//
+$route['MonitoringJobProduksi'] 						= 'MonitoringJobProduksi/C_Index';
+
+$route['MonitoringJobProduksi/Monitoring']					= 'MonitoringJobProduksi/C_Monitoring';
+$route['MonitoringJobProduksi/Monitoring/(:any)']			= 'MonitoringJobProduksi/C_Monitoring/$1';
+$route['MonitoringJobProduksi/Monitoring/(:any)/(:any)']	= 'MonitoringJobProduksi/C_Monitoring/$1/$2';
+$route['MonitoringJobProduksi/Monitoring/(:any)/(:any)/(:any)']	= 'MonitoringJobProduksi/C_Monitoring/$1/$2/$3';
+
+$route['MonitoringJobProduksi/SetPlan']					= 'MonitoringJobProduksi/C_SetPlan';
+$route['MonitoringJobProduksi/SetPlan/(:any)']			= 'MonitoringJobProduksi/C_SetPlan/$1';
+$route['MonitoringJobProduksi/SetPlan/(:any)/(:any)']	= 'MonitoringJobProduksi/C_SetPlan/$1/$2';
+
+$route['MonitoringJobProduksi/ItemList']				= 'MonitoringJobProduksi/C_ItemList';
+$route['MonitoringJobProduksi/ItemList/(:any)']			= 'MonitoringJobProduksi/C_ItemList/$1';
+$route['MonitoringJobProduksi/ItemList/(:any)/(:any)']	= 'MonitoringJobProduksi/C_ItemList/$1/$2';
+
+$route['MonitoringJobProduksi/MasterKategori']					= 'MonitoringJobProduksi/C_MasterKategori';
+$route['MonitoringJobProduksi/MasterKategori/(:any)']			= 'MonitoringJobProduksi/C_MasterKategori/$1';
+$route['MonitoringJobProduksi/MasterKategori/(:any)/(:any)']	= 'MonitoringJobProduksi/C_MasterKategori/$1/$2';
