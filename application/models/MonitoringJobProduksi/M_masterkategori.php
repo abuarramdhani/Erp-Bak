@@ -19,14 +19,14 @@ class M_masterkategori extends CI_Model
       $sql = "insert into khs_kategori_item_monitoring (id_category, category_name)
               values('$id', '$kategori')";
       $query = $this->oracle->query($sql);
-      $query2 = $oracle->query('commit');
+      $query2 = $this->oracle->query('commit');
       // echo $sql;
     }
     
     public function deletecategory($id, $kategori){
       $sql = "delete from khs_kategori_item_monitoring where id_category = $id and category_name = '$kategori'";
       $query = $this->oracle->query($sql);
-      $query2 = $oracle->query('commit');
+      $query2 = $this->oracle->query('commit');
       // echo $sql;
     }
 

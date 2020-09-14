@@ -55,7 +55,7 @@ class M_setplan extends CI_Model
         $sql = "insert into khs_plan_item_monitoring (plan_id, inventory_item_id, month)
                 values($id, $inv_id, $bulan)";
         $query = $this->oracle->query($sql);
-        $query = $oracle->query('commit');
+        $query = $this->oracle->query('commit');
     // echo $sql;
     }
 
@@ -63,7 +63,7 @@ class M_setplan extends CI_Model
         $sql = "insert into khs_plan_item_monitoring_date (plan_id, date_plan, value_plan)
                 values($id, $date_plan, $value)";
         $query = $this->oracle->query($sql);
-        $query = $oracle->query('commit');
+        $query = $this->oracle->query('commit');
         // echo $sql;
     }
     
@@ -71,7 +71,7 @@ class M_setplan extends CI_Model
         $sql = "update khs_plan_item_monitoring_date set value_plan = $value
                 where plan_id = $id and date_plan = $date_plan";
         $query = $this->oracle->query($sql);
-        $query = $oracle->query('commit');
+        $query = $this->oracle->query('commit');
         // echo $sql;
     }
     
@@ -79,7 +79,7 @@ class M_setplan extends CI_Model
         $sql = "delete from khs_plan_item_monitoring_date
                 where plan_id = $id and date_plan = $date_plan";
         $query = $this->oracle->query($sql);
-        $query = $oracle->query('commit');
+        $query = $this->oracle->query('commit');
         // echo $sql;
     }
 
