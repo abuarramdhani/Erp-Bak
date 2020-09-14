@@ -449,16 +449,20 @@ order by grt.ROUTING_ID, frd.ROUTINGSTEP_NO
 ,msib2.segment1
 ,msib2.DESCRIPTION
 ,fmd.QTY
+,fmd.DETAIL_UOM
+,fft.FORMULA_DESC1
 ,msib2.PRIMARY_UOM_CODE uom
 ,mp.ORGANIZATION_CODE IO_KIB
 ,fmd.ATTRIBUTE2 SUBINV_KIB
 ,mil.SEGMENT1 loc_kib
 from fm_matl_dtl fmd
+,fm_form_mst_tl fft
 ,fm_form_mst_b ffb
 ,mtl_parameters mp
 ,mtl_item_locations mil
 ,mtl_system_items_b msib2
 where ffb.FORMULA_ID = fmd.FORMULA_ID
+and fmd.FORMULA_ID = fft.FORMULA_ID
 and ffb.FORMULA_STATUS  = 700
 and ffb.OWNER_ORGANIZATION_ID = fmd.ORGANIZATION_ID
 and fmd.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID

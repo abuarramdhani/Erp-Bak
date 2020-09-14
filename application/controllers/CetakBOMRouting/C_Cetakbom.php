@@ -380,6 +380,7 @@ class C_Cetakbom extends CI_Controller
 				$data['r_id'] = $route_id;
 				$data['dataopm1'] = $dataopm1;
 				$data['dataopm2'] = $dataopm2;
+				$data['comp_name'] = $dataopm3[0]['FORMULA_DESC1'];
 				$data['dataopm3'] = $dataopm3;
 			// }
 			// echo "<pre>";
