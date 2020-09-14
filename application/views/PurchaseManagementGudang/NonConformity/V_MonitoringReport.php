@@ -23,7 +23,7 @@
                                     <thead>
                                         <tr class="bg-aqua">
                                             <th>TASKLIST</th>
-                                            <th width="150px">NC Number</th>
+                                            <th width="250px">NC Number</th>
                                             <th>Verificator</th>
                                             <th>PERIODE</th>
                                             <th>NO.</th>
@@ -66,7 +66,30 @@
                                                         }
                                                     ?>
                                                 </td>
-                                                <td><?= $report['non_conformity_num'];?></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-default btnMdlNCMonitoring" value="<?= $report[0][0]['source_id'];?>"><?= $report['non_conformity_num'];?></button>
+                                                    
+                                                    <div class="modal fade" id="mdlNCMonitoring-<?= $report[0][0]['source_id'];?>">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title">Attachment <?= $report['non_conformity_num'];?></h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div align="center" class="loadingImageNC-<?= $report[0][0]['source_id'];?>" style="display:none">
+                                                                        <img src="<?= base_url('assets/img/gif/loading5.gif')?>" alt="">
+                                                                    </div>
+                                                                    <div class="imgNC-<?= $report[0][0]['source_id'];?>" align="center"></div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td><?= $report['verificator'];?></td>
                                                 <td><?= date('Y-m-d', strtotime($report['periode']));?></td>
                                                 <td><?php
@@ -81,17 +104,6 @@
                                                         if ($report[1]) {
                                                             echo $report[1][0]['no_lppb'];
                                                         }
-                                                    // foreach ($report[1] as $keys => $lppb) { 
-                                                    //     if (count($report[1]) > 1) {
-                                                    //         echo $lppb['no_lppb'].', <br>';
-
-                                                    //         if (($keys+1) == count($report[1])) {
-                                                    //             echo $lppb['no_lppb'];
-                                                    //         }
-                                                    //     }else{
-                                                    //         echo $lppb['no_lppb'];
-                                                    //     }
-                                                    // } 
                                                     ?>
                                                 </td>
                                                 <td><?= $report['tgl_sj'];?></td>
@@ -132,8 +144,7 @@
                                                             if (($keys+1) == count($report[1])) {
                                                                 echo $case['case_name'];
                                                             }else{
-
-                                                                echo $case['case_name'].', <br>';
+                                                                echo $case['case_name'].'. <br>';
                                                             }
                                                         }else{
                                                             echo $case['case_name'];
@@ -209,7 +220,7 @@
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Pilter</h4>
+            <h4 class="modal-title">Filter</h4>
         </div>
         <div class="modal-body">
             <div class="box box-body">

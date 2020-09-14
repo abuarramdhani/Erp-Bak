@@ -1509,5 +1509,13 @@ class C_NonConformity extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function getImage()
+	{
+		$sourceId = $_POST['source_id'];
+		$data = $this->M_nonconformity->getImages($sourceId);
+
+		echo json_encode($data);
+	}
+
 
 }
