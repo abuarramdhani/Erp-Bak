@@ -917,10 +917,15 @@ class C_Index extends CI_Controller
 			$noind = $this->input->get('noind');
 
 			$family /* Array */ = $this->M_pekerjakeluar->getFamily($noind);
+			$familyCount = $this->M_pekerjakeluar->getFamilyCount($noind);
 
 			Response::json(json_encode(array(
 				'success' => true,
-				'data' => $family
+				'data' => $family,
+				'count' => [
+					'childs' => $familyCount->count_childs,
+					'siblings' => $familyCount->count_siblings
+				]
 			)));
 		} catch (Exception $e) {
 			Response::json(json_encode(array(
@@ -952,6 +957,9 @@ class C_Index extends CI_Controller
 
 			$execute = $this->M_pekerjakeluar->insertFamily($data);
 			if (!$execute) throw new Exception("Error When Inserting to database");
+
+			// update count of child & sibling in hrd_khs.tpribadi
+			$this->M_pekerjakeluar->updateCountFamily($noind);
 
 			Response::json(json_encode(array(
 				'success' => true,
@@ -985,6 +993,9 @@ class C_Index extends CI_Controller
 			$execute = $this->M_pekerjakeluar->updateFamily($noind, $nokel, $data);
 			if (!$execute) throw new Exception("Error When Update to database");
 
+			// update count of child & sibling in hrd_khs.tpribadi
+			$this->M_pekerjakeluar->updateCountFamily($noind);
+
 			Response::json(json_encode(array(
 				'success' => true,
 				'message' => "Success update member family $nokel for $noind"
@@ -1014,6 +1025,9 @@ class C_Index extends CI_Controller
 			$execute = $this->M_pekerjakeluar->deleteFamily($noind, $nokel);
 			if (!$execute) throw new Exception("Error When Deleting to database");
 
+			// update count of child & sibling in hrd_khs.tpribadi
+			$this->M_pekerjakeluar->updateCountFamily($noind);
+
 			Response::json(json_encode(array(
 				'success' => true,
 				'message' => "Success delete member family $nokel for $noind"
@@ -1025,7 +1039,6 @@ class C_Index extends CI_Controller
 			)), 400);
 		}
 	}
-
 
 	public function provinsiPekerja()
 	{
