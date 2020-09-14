@@ -5,26 +5,25 @@ class M_monitoring extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();   
+        $this->oracle = $this->load->database('oracle', true);
+        $this->oracle_dev = $this->load->database('oracle_dev', true);
     }
     
     public function getCategory(){
-        $oracle = $this->load->database('oracle_dev',true);
         $sql = "select * from khs_kategori_item_monitoring";
-        $query = $oracle->query($sql);
+        $query = $this->oracle_dev->query($sql);
         return $query->result_array();
     }
     
     public function getdataMonitoring($kategori){
-        $oracle = $this->load->database('oracle_dev',true);
         $sql = "select * from khs_category_item_monitoring where category_name = '$kategori'";
-        $query = $oracle->query($sql);
+        $query = $this->oracle_dev->query($sql);
         return $query->result_array();
     }
 
     
     public function getAktual($kategori, $bulan){
-        $oracle = $this->load->database('oracle',true);
         $sql = "select distinct
                        kgim.INVENTORY_ITEM_ID
                       ,msib.SEGMENT1                                             item
@@ -50,12 +49,11 @@ class M_monitoring extends CI_Model
                   and trunc(wdj.SCHEDULED_START_DATE) between nvl(TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY'),wdj.SCHEDULED_START_DATE) and nvl(LAST_DAY (TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY')),wdj.SCHEDULED_START_DATE)
                   and kgim.CATEGORY_NAME = '$kategori'
                 order by tgl_urut, item";
-        $query = $oracle->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     
     public function getitem($term){
-        $oracle = $this->load->database('oracle_dev',true);
         $sql = "SELECT DISTINCT msib.segment1, msib.description, msib.inventory_item_id, msib.organization_id             
                 FROM mtl_system_items_b msib            
                 WHERE msib.inventory_item_status_code = 'Active'              
@@ -63,26 +61,23 @@ class M_monitoring extends CI_Model
                 AND msib.organization_id IN (101, 102) --OPM, ODM         
                 ORDER BY msib.segment1
                 ";
-        $query = $oracle->query($sql);
+        $query = $this->oracle_dev->query($sql);
         return $query->result_array();
     }
     
     public function getPlan($id, $bulan){
-        $oracle = $this->load->database('oracle_dev',true);
         $sql = "select * from khs_plan_item_monitoring where inventory_item_id = $id and month = $bulan";
-        $query = $oracle->query($sql);
+        $query = $this->oracle_dev->query($sql);
         return $query->result_array();
     }
     
     public function getPlanDate(){
-        $oracle = $this->load->database('oracle_dev',true);
         $sql = "select * from khs_plan_item_monitoring_date";
-        $query = $oracle->query($sql);
+        $query = $this->oracle_dev->query($sql);
         return $query->result_array();
     }
 
     public function getdataSimulasi($kode, $qty){
-      $oracle = $this->load->database('oracle',true);
       $sql = "select
                 msib.segment1 ASSY_code
                 ,msib.description assy_Desc
@@ -176,7 +171,7 @@ class M_monitoring extends CI_Model
                 and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
                 and bic.ATTRIBUTE1 is not null
                 order by 1,2,3,4,5";
-      $query = $oracle->query($sql);
+      $query = $this->oracle->query($sql);
       return $query->result_array();
   }
 
