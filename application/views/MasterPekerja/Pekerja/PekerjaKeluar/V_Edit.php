@@ -507,7 +507,7 @@
 																	<label for="PK_txt_alamatPekerja">Jumlah Anak </label>
 																</div>
 																<div class="col-lg-4">
-																	<input type="number" name="jumanak" id="" class="form-control numberOnly" value="<?= $data['jumanak'] ?>">
+																	<input type="number" name="jumanak" id="" class="form-control numberOnly" value="<?= $data['jumanak'] ?>" readonly>
 																</div>
 															</div>
 															<div class="row mt-10">
@@ -515,7 +515,7 @@
 																	<label for="PK_txt_alamatPekerja">Jumlah Saudara </label>
 																</div>
 																<div class="col-lg-4">
-																	<input type="number" name="jumsdr" id="" class="form-control numberOnly" value="<?= $data['jumsdr'] ?>">
+																	<input type="number" name="jumsdr" id="" class="form-control numberOnly" value="<?= $data['jumsdr'] ?>" readonly>
 																</div>
 															</div>
 														</div>
