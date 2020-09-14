@@ -22,7 +22,8 @@
 	</tr>
 	<tr>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">COMPONENT NAME</td>
-		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $desckomp?></td>
+		<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $desckomp?></td> -->
+		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $comp_name?></td>
 		<td colspan="2" rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px;padding-left: 7px;vertical-align: top;">REMARK :</td>
 		
 	</tr>
@@ -195,7 +196,8 @@
 				}
 			?>
 			</td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['UOM']?></td>
+			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['UOM']?></td> -->
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['DETAIL_UOM']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['IO_KIB']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['SUBINV_KIB']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['LOC_KIB']?></td>
