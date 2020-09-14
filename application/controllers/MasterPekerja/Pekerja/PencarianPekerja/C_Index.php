@@ -142,6 +142,7 @@ class C_Index extends CI_Controller
       $number_cell_type = @$_GET['type'] ?: '0';
       $file_format = @$_GET['format'] ?: ".xlsx";
       $excel_type = @$_GET['excel'] ?: 'Excel5';
+      $is_explicit = isset($_GET['explicit']);
       if (isset($_GET['debug'])) debug($data);
       if (isset($_GET['phpinfo'])) return phpinfo();
 
@@ -222,13 +223,19 @@ class C_Index extends CI_Controller
         $cellB = 'B';
         foreach ($item as $key => $value) {
           $cell = $cellB++ . $startRow;
-          $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle($cell)->applyFromArray($EXCEL_STYLE['bordered']);
-          // with long number example
-          // $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle('E' . $x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
-          // set cell format to number
           if (in_array($key, $column_with_number)) {
+            // with long number example
             $objPHPExcel->getActiveSheet()->getStyle($cell)->getNumberFormat()->setFormatCode($number_cell_type ?: PHPExcel_Style_NumberFormat::FORMAT_TEXT);
           }
+
+          if ($is_explicit) {
+            $objPHPExcel->getActiveSheet()->setCellValueExplicit($cell, $value, 's')->getStyle($cell)->applyFromArray($EXCEL_STYLE['bordered']);
+          } else {
+            $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle($cell)->applyFromArray($EXCEL_STYLE['bordered']);
+          }
+
+          // $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle('E' . $x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
+          // set cell format to number
         }
         $startRow++;
       }
