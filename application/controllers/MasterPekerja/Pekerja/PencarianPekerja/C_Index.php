@@ -135,10 +135,14 @@ class C_Index extends CI_Controller
         );
       }
       // end stolen
-      $number_cell_type = @$_GET['type'] ?: '';
-      if (isset($_GET['debug'])) {
-        debug($data);
-      }
+
+      /**
+       * For Debugging
+       */
+      $number_cell_type = @$_GET['type'] ?: '0';
+      $file_format = @$_GET['format'] ?: ".xlsx";
+      $excel_type = @$_GET['excel'] ?: 'Excel5';
+      if (isset($_GET['debug'])) debug($data);
 
       // set property
       $objPHPExcel
@@ -237,15 +241,15 @@ class C_Index extends CI_Controller
       }
 
       // Send response header in Excel format
-      $filename = urlencode("PencarianPekerja-" . date('YmdHis') . ".xlsx");
-      header('Content-Type: application/vnd.ms-excel'); //mime type
-      header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
-      header('Cache-Control: max-age=0'); //no cache
+      $filename = urlencode("PencarianPekerja-" . date('YmdHis') . ".$file_format");
+      header('Content-Type: application/vnd.ms-excel'); // mime type
+      header('Content-Disposition: attachment;filename="' . $filename . '"'); // tell browser what's the file name
+      header('Cache-Control: max-age=0'); // no cache
 
-      $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
+      $objWriter = IOFactory::createWriter($objPHPExcel, $excel_type);
       $objWriter->save('php://output');
     } catch (Exception $error) {
-      echo "erorr data not valid, system error :(";
+      echo "error data not valid or system error :(";
     }
   }
 }
