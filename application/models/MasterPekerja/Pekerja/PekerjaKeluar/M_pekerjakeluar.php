@@ -426,7 +426,7 @@ class M_pekerjakeluar extends CI_Model
 	/**
 	 * GET master keluarga, like jenis anggota keluarga
 	 * @param null
-	 * @return Array { Maste Anggota Keluarga }
+	 * @return Array { Master Anggota Keluarga }
 	 */
 	public function getListAnggotaKeluarga()
 	{
@@ -504,6 +504,59 @@ class M_pekerjakeluar extends CI_Model
 				'noind' => $noind,
 				'nokel' => $nokel
 			))->delete('hrd_khs.tkeluarga');
+	}
+
+	/**
+	 * Hitung jumlah anak & jumlah saudara
+	 * Update tpribadi jumlah anak & jumlah saudara
+	 * 
+	 * @param String { Noind }
+	 * @return Object { Count of child & sibling }
+	 */
+	public function getFamilyCount($noind)
+	{
+		// family code
+		$childCode = '05';
+		$siblingCode = '06';
+
+		// get list of family
+		$listOfFamily = $this->getFamily($noind);
+
+		// count family
+		$countChilds = array_reduce($listOfFamily, function ($carry, $item) use ($childCode) {
+			$carry += substr($item['nokel'], 0, 2) == $childCode ? 1 : 0;
+			return $carry;
+		});
+
+		$countSiblings = array_reduce($listOfFamily, function ($carry, $item) use ($siblingCode) {
+			$carry += substr($item['nokel'], 0, 2) == $siblingCode ? 1 : 0;
+			return $carry;
+		});
+
+		// return object of value
+		return (object) [
+			'count_childs' => $countChilds,
+			'count_siblings' => $countSiblings
+		];
+	}
+
+	/**
+	 * Mengupdate jumlah anak & saudara di tpribadi
+	 * 
+	 * @param String $noind
+	 * @return Object of CI Builder
+	 */
+	public function updateCountFamily($noind)
+	{
+		// object
+		$counter = $this->getFamilyCount($noind);
+
+		return $this->personalia
+			->where('noind', $noind)
+			->update('hrd_khs.tpribadi', [
+				'jumanak' => $counter->count_childs,
+				'jumsdr' => $counter->count_siblings
+			]);
 	}
 
 	/**

@@ -508,6 +508,8 @@ $(function () {
 			delete: baseurl + "MasterPekerja/DataPekerjaKeluar/api/keluarga/delete", // post  -> noind + nokel
 		},
 		element: {
+			count_childs: $("input[name=jumanak]"),
+			count_siblings: $("input[name=jumsdr]"),
 			form: {
 				// this key is same with table in the database
 				nokel: $("select#modal-keluarga_anggota"),
@@ -560,10 +562,6 @@ $(function () {
 			form.status.val(data.status).trigger("change");
 			form.statusbpjs.val(data.statusbpjs).trigger("change");
 			form.keterangan.val(data.keterangan);
-		},
-		handlePrint() {
-			// ?? i have no idea
-			alert("Belum Siap Boss");
 		},
 		handleEdit() {
 			// toggle view add/hide
@@ -815,7 +813,7 @@ $(function () {
 			// ajax request then draw data into table /GET
 			fetch(this.api.read + "?noind=" + this.state.noind)
 				.then((e) => e.json())
-				.then(({ data, success }) => {
+				.then(({ data, success, count }) => {
 					// draw to tbody
 					let htmlTable = data
 						.map(
@@ -834,6 +832,7 @@ $(function () {
 						.join("");
 
 					this.state.data = data;
+					// fill & set the table
 					this.element.table.find("tbody").html(htmlTable);
 					this.element.table.dataTable({
 						retrieve: true, // :Prevent datatable to reinitialize
@@ -861,6 +860,10 @@ $(function () {
 						},
 					});
 
+					// update sibling & children count
+					this.element.count_childs.val(count.childs);
+					this.element.count_siblings.val(count.siblings);
+					console.log(count);
 					this.handleUnselected();
 					this.handleRowOnClick();
 				})
