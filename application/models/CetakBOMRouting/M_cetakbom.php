@@ -88,13 +88,23 @@ AND msib.segment1 = '$komp'
        $query = $oracle->query($sql);
         return $query->result_array();
  }
+    public function getAlternate($kode){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT distinct bom.alternate_bom_designator, bom.assembly_item_id FROM bom_bill_of_materials bom, mtl_system_items_b msib
+        WHERE bom.assembly_item_id = msib.INVENTORY_ITEM_ID
+        AND msib.SEGMENT1 = '$kode' order by bom.alternate_bom_designator DESC";
 
-   public function getdatapdf($kode,$seksi) {
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
+  //  public function getdatapdf($kode,$seksi) {
+  public function getdatapdf($kode, $alt) {
     $oracle = $this->load->database('oracle', true);
-    if ($seksi == null) {
-			$seksii = null;
+    if ($alt == 'Primary') {
+			$alter = 'AND bor.ALTERNATE_ROUTING_DESIGNATOR IS NULL';
 		} else {
-			$seksii = "AND bd.department_class_code = '$seksi'";
+			$alter = "AND bor.ALTERNATE_ROUTING_DESIGNATOR = '$alt'";
 		}
 
       $sql = "Select bor.ORGANIZATION_ID
@@ -158,17 +168,23 @@ AND msib.segment1 = '$komp'
       and bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
       and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
       and bos.DISABLE_DATE is null
+      and bor.organization_id = 102
+      $alter
       and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
       and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
       and msib.segment1 like '$kode' 
-      $seksii
       order by bos.OPERATION_SEQ_NUM ,bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID";
        $query = $oracle->query($sql);
         return $query->result_array();
        // return $sql;
  }
 
-    public function getdatapdf2($kode) {
+    public function getdatapdf2($kode, $alt) {
+      if ($alt == 'Primary') {
+        $alter = 'AND bom.alternate_bom_designator IS NULL';
+      } else {
+        $alter = "AND bom.alternate_bom_designator = '$alt'";
+      }
     $oracle = $this->load->database('oracle', true);
     $sql = "
 --     SELECT mb1.segment1 assembly_num, mb2.segment1 component_num, mb2.description,
@@ -227,6 +243,8 @@ and bom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
 and bom.ORGANIZATION_ID = msib.ORGANIZATION_ID
 and bic.COMPONENT_ITEM_ID = msib2.INVENTORY_ITEM_ID
 and bic.DISABLE_DATE is null
+and bom.organization_id = 102
+$alter
 and msib2.ORGANIZATION_ID = bom.ORGANIZATION_ID
 and bic.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
 and bic.ATTRIBUTE2 = mil2.INVENTORY_LOCATION_ID(+)
@@ -476,5 +494,24 @@ order by fmd.FORMULA_ID
        $query = $oracle->query($sql);
         return $query->result_array();
  }
-   
+  
+ public function get_log(){
+    $oracle = $this->load->database('oracle', true);
+    date_default_timezone_set('Asia/Jakarta');
+    $time = date("m-Y");
+    $sql = "SELECT MAX(DOC_NUMBER) LAST FROM KHS_CETAK_BOM_RESOURCE_LOG WHERE to_char(LOG_DATE,'MM-YYYY') = '$time' ORDER BY DOC_NUMBER DESC";
+    $query = $oracle->query($sql);
+    $last = $query->result_array();
+    return $last[0]['LAST'];
+ }
+
+ public function insert_log($doc_no, $user, $item, $org, $recipe, $alt){
+    $oracle = $this->load->database('oracle', true);
+    date_default_timezone_set('Asia/Jakarta');
+    $time = date("d/m/Y H:i:s");
+    $sql = "INSERT INTO KHS_CETAK_BOM_RESOURCE_LOG (DOC_NUMBER, USER_ID, ITEM_CODE, ORGANIZATION_CODE, RECIPE, LOG_DATE, ALTERNATE) VALUES ($doc_no, '$user', '$item', '$org', '$recipe', TO_DATE('$time','DD/MM/YYYY HH24:MI:SS'), '$alt')";
+    $query = $oracle->query($sql);
+    $query = $oracle->query("commit");
+ }
+
  }

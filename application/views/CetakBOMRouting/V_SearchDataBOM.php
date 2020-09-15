@@ -68,12 +68,23 @@
 									</div>
                                     
 								</div>
-								<div class="panel-body">
+								<!-- <div class="panel-body">
 									<div class="col-md-4" style="text-align: right;">
 										<label>Seksi </label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
 										<select class="form-control select2 seksii" data-placeholder="Seksi" name="seksi" id="seksii" disabled>
+											
+										</select>
+									</div>
+                                    
+								</div> -->
+								<div class="panel-body">
+									<div class="col-md-4" style="text-align: right;">
+										<label>Alternate (ODM) </label>
+									</div>
+									<div class="col-md-3" style="text-align: center;">
+										<select class="form-control select2 alt" data-placeholder="Alternate" name="alt" id="alt" disabled>
 											
 										</select>
 									</div>
