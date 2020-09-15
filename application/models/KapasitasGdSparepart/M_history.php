@@ -135,7 +135,10 @@ class M_history extends CI_Model {
 
     public function cekPacking(){
         $oracle = $this->load->database('khs_packing', true);
-        $sql = "select * from sp_packing_trx";
+        // $sql = "select * from sp_packing_trx";
+        $sql = "SELECT nomor_do, count(nomor_do) jumlah
+        FROM sp_packing_trx
+        group by nomor_do";
         $query = $oracle->query($sql);
         return $query->result_array();
     }

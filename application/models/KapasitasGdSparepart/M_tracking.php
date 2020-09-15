@@ -66,7 +66,7 @@ class M_tracking extends CI_Model {
                                                     hr_organization_units_v houv3
                                             WHERE mtrh1.header_id = mtrl1.header_id
                                                 AND mtrh1.request_number = mtrh.request_number
-                                                AND houv3.organization_id = SUBSTR (TRIM (LTRIM (mtrl1.REFERENCE, '    ')), 6)
+                                                AND houv3.organization_id = SUBSTR (TRIM (LTRIM (mtrl1.REFERENCE, ' ')), 6)
                                                 AND mtrl1.REFERENCE IS NOT NULL)
                         ELSE houv2.town_or_city
                         END kota_kirim
@@ -74,7 +74,7 @@ class M_tracking extends CI_Model {
                         mtl_txn_request_lines mtrl,
                         hr_organization_units_v houv2
                 WHERE mtrh.header_id = mtrl.header_id
-                    AND houv2.organization_id(+) = SUBSTR (TRIM (LTRIM (mtrl.REFERENCE, '    ')), 6)
+                    AND TO_CHAR(houv2.organization_id(+)) = SUBSTR (TRIM (LTRIM (mtrl.REFERENCE, ' ')), 6)
                     AND mtrh.request_number = '$nospb'";
         $query = $oracle->query($sql);
         return $query->result_array();

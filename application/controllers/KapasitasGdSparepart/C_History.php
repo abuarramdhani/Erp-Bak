@@ -275,7 +275,8 @@ class C_History extends CI_Controller
                 $out += $val[$l]['JUMLAH_ITEM'];
                 foreach ($datacoly as $key => $col) {
                     if ($col['nomor_do'] == $val[$l]['NO_DOKUMEN']) {
-                        $coly += 1;
+                        $coly += $col['jumlah'];
+                        // $coly += 1;
                     }
                 }
             }
