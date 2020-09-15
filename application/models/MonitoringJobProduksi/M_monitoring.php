@@ -169,7 +169,7 @@ class M_monitoring extends CI_Model
                 and bom.ALTERNATE_BOM_DESIGNATOR is null
                 and bic.DISABLE_DATE is null
                 and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-                and bic.ATTRIBUTE1 is not null
+                --and bic.ATTRIBUTE1 is not null
                 order by 22,1,2,3,4,5";
       $query = $this->oracle->query($sql);
       return $query->result_array();
