@@ -949,11 +949,8 @@ class C_Index extends CI_Controller
 
 			if (!$noind || !$data) throw "Bad Request (Empty Param)";
 
-			// TODO: Parsing variable into model
-			// debug([$noind, $data]);
-
 			$data['noind'] = $noind;
-			$data['tgllahir'] = (new DateTime($data['tgllahir']))->format('Y-m-d') ?: '1900-01-01';
+			$data['tgllahir'] = $data['tgllahir'] ? (new DateTime($data['tgllahir']))->format('Y-m-d') : '1900-01-01';
 
 			$execute = $this->M_pekerjakeluar->insertFamily($data);
 			if (!$execute) throw new Exception("Error When Inserting to database");
