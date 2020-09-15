@@ -82,20 +82,27 @@ class C_Monitoring extends CI_Controller
 			$getdata[$key]['ITEM'] = $item[0]['SEGMENT1'];
 			$getdata[$key]['DESC'] = $item[0]['DESCRIPTION'];
 			if (!empty($plan)) {
+				$getdata[$key]['jml_plan'] = 0;
+				$getdata[$key]['jml_akt'] = 0;
 				for ($i=0; $i < $data['hari'] ; $i++) { 
 					$getdata[$key]['plan'.$i.''] = $this->getPlanDate($plan[0]['PLAN_ID'], ($i+1), $getplandate);
 					$tgl = $inibulan.sprintf("%02d", ($i+1));
 					$aktual = $this->aktualmin($value['INVENTORY_ITEM_ID'], $tgl, $getdata[$key]['plan'.$i.''], $cariakt);
 					$getdata[$key]['akt'.$i.''] = $aktual[0];
 					$getdata[$key]['min'.$i.''] = $aktual[1];
+					$getdata[$key]['jml_plan'] += $getdata[$key]['plan'.$i.''] == '' ? 0 : $getdata[$key]['plan'.$i.''];
+					$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
 				}
 			}else {
+				$getdata[$key]['jml_plan'] = 0;
+				$getdata[$key]['jml_akt'] = 0;
 				for ($i=0; $i < $data['hari'] ; $i++) { 
 					$getdata[$key]['plan'.$i.''] =  '';
 					$tgl = $inibulan.sprintf("%02d", ($i+1));
 					$aktual = $this->aktualmin($value['INVENTORY_ITEM_ID'], $tgl, $getdata[$key]['plan'.$i.''], $cariakt);
 					$getdata[$key]['akt'.$i.''] = $aktual[0];
 					$getdata[$key]['min'.$i.''] = $aktual[1];
+					$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
 				}
 			}
 			// echo "<pre>";print_r($getdata[$key]);exit();
@@ -134,9 +141,9 @@ class C_Monitoring extends CI_Controller
 		}elseif ($plan == '' && $aktual == '') {
 			$min = '';
 		}elseif ($plan != '' && $aktual == '') {
-			$min = $plan;
+			$min = $plan*-1;
 		}else {
-			$min = $plan - $aktual;
+			$min = $aktual - $plan;
 		}
 		$data = array($aktual, $min);
 		return $data;
@@ -171,8 +178,9 @@ class C_Monitoring extends CI_Controller
 	}
 	
 	public function searchSimulasi(){
-		$item = $this->input->post('item');
-		$qty = $this->input->post('qty');
+		$item 	= $this->input->post('item');
+		$qty 	= $this->input->post('qty');
+		$data['level'] = $this->input->post('level');
 
 		$data['data'] = $this->M_monitoring->getdataSimulasi($item, $qty);
 		// echo "<pre>";print_r($data['data']);exit();

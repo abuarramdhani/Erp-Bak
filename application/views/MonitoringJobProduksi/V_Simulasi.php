@@ -1,19 +1,3 @@
-<script>
-$(document).ready(function () {
-    $('.tbldataemail').DataTable({
-        "scrollX" : true,
-    });
-    $('.datepickbln').datepicker({
-        format: 'mm/yyyy',
-        todayHighlight: true,
-        viewMode: "months",
-        minViewMode: "months",
-        autoClose: true
-    }).on('change', function(){
-            $('.datepicker').hide();
-        });
-})
-</script>
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -46,7 +30,7 @@ $(document).ready(function () {
                                 <div class="panel-body box box-info box-solid">
                                     <div class="col-md-3">
                                         <label>Kode Item : </label>
-                                        <p><input type="hidden" id="item" class="form-control" value="<?= $item?>"><?= $item?></p>
+                                        <p><input type="hidden" id="item" value="<?= $item?>"><?= $item?></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label>Deskripsi Item : </label>

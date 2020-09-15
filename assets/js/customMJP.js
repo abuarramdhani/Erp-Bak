@@ -26,8 +26,18 @@ function schMonJob(th) {
             $('div#tbl_monjob_produksi' ).html(data);
             $('#tb_monjob').dataTable({
                 "scrollX": true,
+                paging : false,
+                scrollY : 500,
+                ordering : false,
                 fixedColumns:   {
-                    leftColumns: 4,
+                    leftColumns: 3,
+                }
+            });
+            $('#tb_monjob2').dataTable({
+                "scrollX": true,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 3,
                 }
             });
         }
@@ -40,7 +50,7 @@ function getSimulasiProduksi(th) {
     // console.log(item, qty)
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/searchSimulasi",
-        data : {item : item, qty : qty},
+        data : {item : item, qty : qty, level: 1},
         dataType : 'html',
         type : 'POST',
         beforeSend: function() {
@@ -48,11 +58,40 @@ function getSimulasiProduksi(th) {
         },
         success : function(data) {
             $('div#tbl_simulasi_produksi' ).html(data);
-            $('#tb_monsimulasi').dataTable({
-                "scrollX": true,
-            });
+            // $('#tb_monsimulasi').dataTable({
+            //     "scrollX": true,
+            // });
         }
     })
+}
+
+function tambahsimulasi(no, level) {
+    // $('#tr_simulasi'+level+no).slideToggle('slow');   
+    
+    var penanda = $('#penanda'+level+no).val();
+    if (penanda == 'off') {
+        $('#tr_simulasi'+level+no).css('display','');   
+        $('#penanda'+level+no).val('on');
+        var item = $('#komp'+level+no).val();
+        // var item = 'AAC1000AA1AZ-F';
+        var qty = $('#qty'+level+no).val();
+        $.ajax({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchSimulasi",
+            data : {item : item, qty : qty, level : (level+1)},
+            dataType : 'html',
+            type : 'POST',
+            beforeSend: function() {
+            $('#tr_simulasi'+level+no).html('<center><img style="width:50px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+            },
+            success : function(data) {
+                // console.log(level);
+                $('#tr_simulasi'+level+no).html(data);
+            }
+        })
+    }else{
+        $('#tr_simulasi'+level+no).css('display','none');   
+        $('#penanda'+level+no).val('off');
+    }
 }
 
 //----------------------------------------------------SET PLAN PRODUKSI------------------------------------------------
@@ -70,6 +109,15 @@ function schSetPlan(th) {
         success : function(data) {
             $('div#tbl_setplan' ).html(data);
             $('#tb_setplan').dataTable({
+                "scrollX": true,
+                paging : false,
+                scrollY : 500,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 4,
+                }
+            });
+            $('#tb_setplan2').dataTable({
                 "scrollX": true,
                 fixedColumns:   {
                     leftColumns: 4,
