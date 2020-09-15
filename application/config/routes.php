@@ -2083,6 +2083,11 @@ $route['MasterPekerja/rekap/kecelakaan_kerja'] 					= 'MasterPekerja/Rekap/C_Rek
 $route['MasterPekerja/rekap/kecelakaan_kerja/(:any)'] 			= 'MasterPekerja/Rekap/C_RekapKecelakaan/$1';
 $route['MasterPekerja/rekap/kecelakaan_kerja/(:any)/(:any)'] 	= 'MasterPekerja/Rekap/C_RekapKecelakaan/$1/$2';
 
+//--------------------------------Data Pekerja Aktif-----------------------------------------------------
+$route['MasterPekerja/DataPekerjaAktif'] = 'MasterPekerja/Rekap/C_DataPekerjaAktif/index';
+$route['MasterPekerja/DataPekerjaAktif/(:any)'] = 'MasterPekerja/Rekap/C_DataPekerjaAktif/$1';
+$route['MasterPekerja/DataPekerjaAktif/(:any)/(:any)'] = 'MasterPekerja/Rekap/C_DataPekerjaAktif/$1/$2';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
