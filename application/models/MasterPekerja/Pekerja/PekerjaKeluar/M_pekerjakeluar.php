@@ -535,8 +535,8 @@ class M_pekerjakeluar extends CI_Model
 
 		// return object of value
 		return (object) [
-			'count_childs' => $countChilds,
-			'count_siblings' => $countSiblings
+			'count_childs' => $countChilds ?: 0,
+			'count_siblings' => $countSiblings ?: 0
 		];
 	}
 

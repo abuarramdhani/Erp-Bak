@@ -606,6 +606,7 @@ $(function () {
 					noind: self.state.noind,
 					data: self.state.formValue,
 				},
+				dataType: "json",
 				beforeSend() {
 					self.element.button.add_submit.prop("disabled", true);
 				},
@@ -837,6 +838,7 @@ $(function () {
 					this.element.table.dataTable({
 						retrieve: true, // :Prevent datatable to reinitialize
 						dom: "Bfrtip",
+						bSort: false,
 						buttons: new Array(
 							{
 								extend: "excel",
