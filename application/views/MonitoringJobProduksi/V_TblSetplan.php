@@ -1,5 +1,6 @@
-    <?php $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';?>
-    <table class="table table-bordered table-hover table-striped text-center" id="tb_setplan" style="width: 100%;">
+    <?php $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            $tabel = count($data) > 8 ? 'tb_setplan' : 'tb_setplan2'; ?>
+    <table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>" style="width: 100%;">
     <thead style="background-color:#1DAEF5;color:white">
         <tr>
             <th rowspan="2"  style="background-color:#1DAEF5;color:white">No</th>
