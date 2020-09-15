@@ -1,10 +1,12 @@
-<?php $tabel = count($data) > 4 ? 'tb_monjob' : 'tb_monjob2' ?>
+<?php $tabel = count($data) > 4 ? 'tb_monjob' : 'tb_monjob2'; 
+$tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+?>
 <form method="post" target="_blank">
 <table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>" style="width: 100%; font-size:12px">
     <thead style="background-color:#60BCEB">
         <tr class="text-nowrap">
             <th rowspan="2" style="width:5%;vertical-align:middle;background-color:#60BCEB">No</th>
-            <th rowspan="2" style="vertical-align:middle;background-color:#60BCEB">Kode Item</th>
+            <th rowspan="2" style="vertical-align:middle;background-color:#60BCEB"><?= $tambahan?>Item<?= $tambahan?></th>
             <th rowspan="2" style="background-color:#60BCEB"></th>
             <th colspan="<?= $hari?>" >Tanggal</th>
             <th rowspan="2" style="vertical-align:middle;background-color:#60BCEB">Jumlah</th>
