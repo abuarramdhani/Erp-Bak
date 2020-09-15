@@ -5,7 +5,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <br />
-                            <h3 style="text-align: center;"><b ><?=$Title?></b></h3>
+                            <h3 style="text-align: center;"><b ><?=$Title?> Versi 2.0</b></h3>
                              <h3 style="text-align: center;"><b ><?= date('d M Y')?></b></h3>
                         </div>
                     </div>
