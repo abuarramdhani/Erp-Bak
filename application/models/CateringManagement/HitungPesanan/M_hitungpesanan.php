@@ -1008,12 +1008,6 @@ class M_hitungpesanan extends Ci_Model
 	}
 
 	public function getPesananTambahanByTanggalShiftTempatMakan($tanggal,$shift,$tempat_makan){
-		// $sql = "Select sum(fn_jumlah_pesanan) as jumlah 
-		// 		from \"Catering\".tpesanantambahan 
-		// 		where fd_tanggal = ?
-		// 		  and fs_kd_shift = ? 
-		// 		  and fs_tempat_makan = ?
-		// 		group by fs_tempat_makan, fs_kd_shift, fd_tanggal  ";
 		$sql = "select coalesce(
                     (
                         select sum(fn_jumlah_pesanan)
@@ -1045,23 +1039,43 @@ class M_hitungpesanan extends Ci_Model
 	}
 
 	public function getPesananTambahanNonAbsensiByTanggalShiftLokasi($tanggal,$shift,$lokasi){
-		$sql = "select tpt.fs_tempat_makan as tempat_makan, sum(tpt.fn_jumlah_pesanan ) as jumlah  
-				from \"Catering\".tpesanantambahan tpt
-				left join \"Catering\".ttempat_makan ttm 
-				on trim(tpt.fs_tempat_makan) = (ttm.fs_tempat_makan)
-				where tpt.fd_tanggal = ?
-				  and tpt.fs_kd_shift = ? 
-				  and tpt.fs_tempat_makan not in
-				      	(
-				      	select tp.fs_tempat_makan 
-					       	from \"Catering\".tpesanan tp
-					       	where tp.fs_kd_shift = tpt.fs_kd_shift
-					        and tp.fd_tanggal = tpt.fd_tanggal
-					        and tp.lokasi = ttm.fs_lokasi
-				        ) 
-				  and ttm.fs_lokasi = ?
-				 group by tpt.fs_tempat_makan";
- 		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi))->result_array();
+		$sql = "select tempat_makan, sum(jumlah) as jumlah
+				from (
+					select tpt.fs_tempat_makan as tempat_makan, sum(tpt.fn_jumlah_pesanan ) as jumlah  
+					from \"Catering\".tpesanantambahan tpt
+					left join \"Catering\".ttempat_makan ttm 
+					on trim(tpt.fs_tempat_makan) = (ttm.fs_tempat_makan)
+					where tpt.fd_tanggal = ?
+					and tpt.fs_kd_shift = ? 
+					and tpt.fs_tempat_makan not in (
+						select tp.fs_tempat_makan 
+						from \"Catering\".tpesanan tp
+						where tp.fs_kd_shift = tpt.fs_kd_shift
+						and tp.fd_tanggal = tpt.fd_tanggal
+						and tp.lokasi = ttm.fs_lokasi
+					) 
+					and ttm.fs_lokasi = ?
+					group by tpt.fs_tempat_makan
+					union
+					select tpt.fs_tempat_makanpg as tempat_makan, sum(tpt.fn_jml_tdkpesan ) as jumlah  
+					from \"Catering\".tpenguranganpesanan tpt
+					left join \"Catering\".ttempat_makan ttm 
+					on trim(tpt.fs_tempat_makanpg) = (ttm.fs_tempat_makan)
+					where tpt.fd_tanggal = ?
+					and tpt.fs_kd_shift = ? 
+					and tpt.fb_kategori = '2'
+					and tpt.fs_tempat_makanpg not in (
+						select tp.fs_tempat_makan
+						from \"Catering\".tpesanan tp
+						where tp.fs_kd_shift = tpt.fs_kd_shift
+						and tp.fd_tanggal = tpt.fd_tanggal
+						and tp.lokasi = ttm.fs_lokasi
+					) 
+					and ttm.fs_lokasi = ?
+					group by tpt.fs_tempat_makanpg 
+				 ) as tbl 
+				group by tempat_makan";
+ 		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi,$tanggal,$shift,$lokasi))->result_array();
 	}
 
 	public function insertPesananTambahanRencanaLembur($tanggal,$tempat_makan,$shift){
