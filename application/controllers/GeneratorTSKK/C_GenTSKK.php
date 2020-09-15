@@ -1183,6 +1183,7 @@ public function deleteFile($id){
 }
 
 public function exportExcel(){
+    // echo "<pre>"; print_r($_POST); exit();
     set_include_path( get_include_path().PATH_SEPARATOR."..");
     include_once("xlsxwriter.class.php");
      //HEADER
@@ -3460,6 +3461,8 @@ public function exportExcel(){
         'url' =>    $filename
     );
     echo json_encode($arr);
+    // header('Content-disposition: attachment; filename="'.XLSXWriter::sanitize_filename($filename).'"');
+    // $writer->writeToStdOut();
 /////LUTFI END 
 }
 
