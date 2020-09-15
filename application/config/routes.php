@@ -4673,3 +4673,26 @@ $route['MonitoringJobProduksi/ItemList/(:any)/(:any)']	= 'MonitoringJobProduksi/
 $route['MonitoringJobProduksi/MasterKategori']					= 'MonitoringJobProduksi/C_MasterKategori';
 $route['MonitoringJobProduksi/MasterKategori/(:any)']			= 'MonitoringJobProduksi/C_MasterKategori/$1';
 $route['MonitoringJobProduksi/MasterKategori/(:any)/(:any)']	= 'MonitoringJobProduksi/C_MasterKategori/$1/$2';
+
+// -------------------------------------- Consumable ------------------------------------------ //
+// PPIC
+$route['ConsumablePPIC'] = 'Consumable/C_Index';
+$route['ConsumablePPIC/Datamasuk'] = 'Consumable/PPIC/C_Datamasuk';
+$route['ConsumablePPIC/Datamasuk/(:any)'] = 'Consumable/PPIC/C_Datamasuk/$1';
+$route['ConsumablePPIC/Monitoringkebutuhan'] = 'Consumable/PPIC/C_Monkebutuhan';
+$route['ConsumablePPIC/Monitoringkebutuhan/(:any)'] = 'Consumable/PPIC/C_Monkebutuhan/$1';
+$route['ConsumablePPIC/Monitoringbon'] = 'Consumable/PPIC/C_Monbon';
+$route['ConsumablePPIC/MasterItem'] = 'Consumable/PPIC/C_Masteritem';
+$route['ConsumablePPIC/MasterItem/(:any)'] = 'Consumable/PPIC/C_Masteritem/$1';
+$route['ConsumablePPIC/Monitoringbon'] = 'Consumable/PPIC/C_Monbon';
+$route['ConsumablePPIC/Monitoringbon/(:any)'] = 'Consumable/PPIC/C_Monbon/$1';
+// SEKSI
+$route['ConsumableSEKSI'] = 'Consumable/C_Index';
+$route['ConsumableSEKSI/Inputkebutuhan'] = 'Consumable/SEKSI/C_Inputkebutuhan';
+$route['ConsumableSEKSI/Inputkebutuhan/(:any)'] = 'Consumable/SEKSI/C_Inputkebutuhan/$1';
+$route['ConsumableSEKSI/Approval'] = 'Consumable/SEKSI/C_Approval';
+$route['ConsumableSEKSI/Approval/(:any)'] = 'Consumable/SEKSI/C_Approval/$1';
+$route['ConsumableSEKSI/Inputbon'] = 'Consumable/SEKSI/C_Bon';
+$route['ConsumableSEKSI/Inputbon/(:any)'] = 'Consumable/SEKSI/C_Bon/$1';
+$route['ConsumableSEKSI/Monitoringbon'] = 'Consumable/SEKSI/C_Monbon';
+$route['ConsumableSEKSI/Monitoringbon/(:any)'] = 'Consumable/SEKSI/C_Monbon/$1';
