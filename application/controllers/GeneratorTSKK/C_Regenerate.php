@@ -6823,7 +6823,9 @@ public function exportAgain($id){
         $rows[$rowFootKanan+8][303] = 'Tgl :';
         $rows[$rowFootKanan+8][333] = 'Tgl :';
 
-        for ($j=0; $j < 9; $j++) { 
+        $rows[$rowFootKanan+9][243] = 'Form No. : FRM-PDE-03-21 (Rev. 00-26/03/2020)';
+
+        for ($j=0; $j < 10; $j++) { 
             $rowpakefoot = $rowFootKanan + $j;
             for ($i=0; $i < 364; $i++) { 
                 switch ($j) {
@@ -6875,6 +6877,14 @@ public function exportAgain($id){
                             $styles[$rowpakefoot][$i]['halign'] = 'left';
                             $styles[$rowpakefoot][$i]['font-size'] = 8;
                             $styles[$rowpakefoot][$i]['valign'] = 'center';
+                        }
+                        break;
+                    case 9:
+                        if ($i === 243) {
+                            // $styles[$rowpakefoot][$i]['wrap_text'] = true;
+                            // $styles[$rowpakefoot][$i]['halign'] = 'left';
+                            $styles[$rowpakefoot][$i]['font-size'] = 8;
+                            // $styles[$rowpakefoot][$i]['valign'] = 'center';
                         }
                         break;
                     default:
