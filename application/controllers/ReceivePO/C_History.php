@@ -12,9 +12,9 @@ class C_History extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
-		
 
-		
+
+
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('ReceivePO/M_receive');
 
@@ -23,8 +23,7 @@ class C_History extends CI_Controller
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-			
+		if ($this->session->is_logged) {
 		} else {
 			redirect('');
 		}
@@ -41,30 +40,30 @@ class C_History extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 
-		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('ReceivePO/V_History');
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function format_date($date)
 	{
-		$ss = explode("/",$date);
-		return $ss[2]."-".$ss[1]."-".$ss[0];
+		$ss = explode("/", $date);
+		return $ss[2] . "-" . $ss[1] . "-" . $ss[0];
 	}
 
-	 public function Hist()
+	public function Hist()
 	{
 
 		$datefrom	= $this->input->post('datefrom');
 		$dateto	= $this->input->post('dateto');
-		$result =  $this->M_receive->historyPO($datefrom,$dateto);
+		$result =  $this->M_receive->historyPO($datefrom, $dateto);
 		// echo"<pre>";print_r($result);exit();
 
 		$data['result'] = $result;
@@ -77,28 +76,39 @@ class C_History extends CI_Controller
 
 		$po	= $this->input->post('buttonpo');
 		$sj	= $this->input->post('suratjalan');
-		$detail =  $this->M_receive->detailPO($po,$sj);
+		$detail =  $this->M_receive->detailPO($po, $sj);
 
 		// echo "<pre>";print_r($detail);exit();
 
-		$i=0;
+		$i = 0;
+		$data['kalimat'] = '';
 		foreach ($detail as $value) {
-			$detail[$i]['SERIAL_NUMBER'] =  $this->M_receive->serial_number($value['PO_NUMBER'],$value['ID'],$value['SHIPMENT_NUMBER']);
-			$detail[$i]['LPPB_NUMBERS'] =  $this->M_receive->lppb_number($value['PO_NUMBER'],$value['SHIPMENT_NUMBER']);
-
-			
-
-		$i++;
+			$detail[$i]['SERIAL_NUMBER'] =  $this->M_receive->serial_number($value['PO_NUMBER'], $value['ID'], $value['SHIPMENT_NUMBER']);
+			$detail[$i]['LPPB_NUMBERS'] =  $this->M_receive->lppb_number($value['PO_NUMBER'], $value['SHIPMENT_NUMBER']);
+			if (stripos($value['DESCRIPTION'], 'DIESEL') !== FALSE && stripos($value['DESCRIPTION'], '1S') !== FALSE) {
+				$data['kalimat'] = 'Standart Warna Biru';
+			} else if (stripos($value['DESCRIPTION'], 'DIESEL') !== FALSE && stripos($value['DESCRIPTION'], '2S') !== FALSE) {
+				$data['kalimat'] = 'Standart Warna Hijau';
+			} else if (stripos($value['DESCRIPTION'], 'DIESEL RD 110 DI-2T') !== FALSE) {
+				$data['kalimat'] = 'Standart Warna Kuning';
+			} else if (stripos($value['DESCRIPTION'], 'DIESEL RD') !== FALSE && stripos($value['DESCRIPTION'], 'DIH') !== FALSE) {
+				$data['kalimat'] = 'Standart Warna Putih';
+			} else {
+				$data['kalimat'] = $data['kalimat'];
+			}
+			$i++;
 		}
-
 		$data['detail'] = $detail;
 
-		 // echo"<pre>";print_r($detail);exit();
+		// echo "<pre>";
+		// print_r($detail);
+		// exit();
 
 		$this->load->view('ReceivePO/V_History_Detail', $data);
 	}
 
-	public function CetakKartu(){
+	public function CetakKartu()
+	{
 
 		$serial	= $this->input->post('serial');
 		$descrecipt	= $this->input->post('descrecipt');
@@ -107,7 +117,7 @@ class C_History extends CI_Controller
 
 
 
-		
+
 		// echo "<pre>";
 		// print_r($descrecipt);	
 		// exit();	
@@ -117,51 +127,46 @@ class C_History extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8',array(210,310), 0, '', 1, 1, 5, 1, 1, 1); 
+		$pdf = new mPDF('utf-8', array(210, 310), 0, '', 1, 1, 5, 1, 1, 1);
 		// $tglNama = date("d/m/Y");
 
 		$this->load->library('ciqrcode');
 
-		if(!is_dir('./img'))
-		{
+		if (!is_dir('./img')) {
 			mkdir('./img', 0777, true);
 			chmod('./img', 0777);
 		}
-		
+
 		foreach ($serial as  $value) {
 			$params['data']		= $value;
 			$params['level']	= 'H';
 			$params['size']		= 10;
-			$params['black']	= array(255,255,255);
-			$params['white']	= array(0,0,0);
-			$params['savename'] = './img/'.($value).'.png';
+			$params['black']	= array(255, 255, 255);
+			$params['white']	= array(0, 0, 0);
+			$params['savename'] = './img/' . ($value) . '.png';
 			$this->ciqrcode->generate($params);
-
 		}
-			
-
-			$data['itemrecipt'] = $itemrecipt;
-			$data['descrecipt'] = $descrecipt;
-			$data['serial'] = $serial;
-			$data['ket'] = $ket;
 
 
-    	$pdf_dir = './assets/upload/KartuReceivePo/';
-    	if (preg_match("/diesel/i", $descrecipt)) {
-    		$filename = 'Kartu Identitas Diesel'.'.pdf';
-    		$html = $this->load->view('ReceivePO/V_KartuDiesel', $data, true);		//-----> Fungsi Cetak PDF
-    	}else if (preg_match("/engine/i", $descrecipt)) {
-    		$filename = 'Kartu Identitas Engine'.'.pdf';
-    		$html = $this->load->view('ReceivePO/V_KartuEngine', $data, true);		//-----> Fungsi Cetak PDF
-    	}
-    	ob_end_clean();
-    	$pdf->WriteHTML($html);												//-----> Pakai Library MPDF
-    	// $pdf->Output($filename, 'I');
-    	$pdf->Output($pdf_dir.$filename, 'F');
+		$data['itemrecipt'] = $itemrecipt;
+		$data['descrecipt'] = $descrecipt;
+		$data['serial'] = $serial;
+		$data['ket'] = $ket;
 
-    	echo base_url().$pdf_dir.$filename;
 
+		$pdf_dir = './assets/upload/KartuReceivePo/';
+		if (preg_match("/diesel/i", $descrecipt)) {
+			$filename = 'Kartu Identitas Diesel' . '.pdf';
+			$html = $this->load->view('ReceivePO/V_KartuDiesel', $data, true);		//-----> Fungsi Cetak PDF
+		} else if (preg_match("/engine/i", $descrecipt)) {
+			$filename = 'Kartu Identitas Engine' . '.pdf';
+			$html = $this->load->view('ReceivePO/V_KartuEngine', $data, true);		//-----> Fungsi Cetak PDF
+		}
+		ob_end_clean();
+		$pdf->WriteHTML($html);												//-----> Pakai Library MPDF
+		// $pdf->Output($filename, 'I');
+		$pdf->Output($pdf_dir . $filename, 'F');
+
+		echo base_url() . $pdf_dir . $filename;
 	}
-
-
 }
