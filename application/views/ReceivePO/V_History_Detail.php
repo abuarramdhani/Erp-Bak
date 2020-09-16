@@ -1,7 +1,6 @@
 <div class="col-md-4">
   <?php for ($i = 0; $i < 1; $i++) { ?>
     <table id="detail" class="table table-bordered" style="width: 100%">
-
       <tbody>
         <tr>
           <td><input type="hidden" name="porecipt[]" value="<?= $detail[$i]['PO_NUMBER'] ?>"><b>PO :</b> <?= $detail[$i]['PO_NUMBER'] ?> <br><input type="hidden" name="sujarecipt[]" value="<?= $detail[$i]['SHIPMENT_NUMBER'] ?>"><b>Surat Jalan : </b><?= $detail[$i]['SHIPMENT_NUMBER'] ?></td>

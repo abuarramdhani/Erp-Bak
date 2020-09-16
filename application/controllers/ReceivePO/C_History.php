@@ -98,7 +98,6 @@ class C_History extends CI_Controller
 			}
 			$i++;
 		}
-
 		$data['detail'] = $detail;
 
 		// echo "<pre>";
