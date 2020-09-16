@@ -75,6 +75,59 @@ $(document).ready(function() {
     
         
     })
+
+    $('.btnReturnPBBNC').click(function () {
+
+        var header_id = $('.hdnHeadId').val();
+
+        Swal.fire({
+            title: 'Alasan Return',
+            input: 'text',
+            inputAttributes: {
+              autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'SUBMIT',
+            showLoaderOnConfirm: true,
+            preConfirm: (reason) => {
+                if (!reason) {
+                    Swal.showValidationMessage(`Alasan Return tidak boleh kosong!`);
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: baseurl+"PurchaseManagementGudang/NonConformity/",
+                        data: {
+                            hdnHeadId : header_id,
+                            slcAssign : 3,
+                            txtReasonReturn : reason
+                        },
+                        error: function(xhr,status,error){
+                        //     console.log(xhr);
+                        //     console.log(status);
+                        //     console.log(error);
+                            Swal.showValidationMessage({
+                                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                                html: xhr['responseText'],
+                                type: "error",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d63031',
+                            })
+                        },
+                        success: function (response) {
+                            swal.fire({
+                                type : 'success',
+                                title : 'Berhasil!'
+                            })
+                            setTimeout(function() {
+                                window.location.href = baseurl+'PurchaseManagementGudang/NonConformity/listSupplier';
+                            }, 2000);
+                        }
+                    })
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        })
+    })
     
 
 

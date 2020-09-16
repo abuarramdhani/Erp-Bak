@@ -65,6 +65,7 @@
                                                 </div> -->
                                                 <div class="row">
                                                 <input type="hidden" class="hdnHeaderIdNonC" value="<?php echo $headerRow['header_id']; ?>">
+                                                <input type="hidden" class="hdnHeadId" value="<?= $id;?>">
                                                     <div class="col-lg-4">
                                                         <strong>
                                                             Delivery Date
@@ -309,6 +310,9 @@
                                           <?php foreach ($image as $key => $img) { ?>
                                             <img style="max-height : 100px;" src="<?php echo base_url().$img['image_path'].''.$img['file_name']; ?>">
                                           <?php } ?>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button type="button" class="btn btn-success btnReturnPBBNC">RETURN TO PBB</button>
                                         </div>
                                     </div>
                                 </div>
