@@ -88,7 +88,7 @@ class C_History extends CI_Controller
 			if (stripos($value['DESCRIPTION'], 'DIESEL') !== FALSE && stripos($value['DESCRIPTION'], '1S') !== FALSE) {
 				$data['kalimat'] = 'Standart Warna Biru';
 			} else if (stripos($value['DESCRIPTION'], 'DIESEL') !== FALSE && stripos($value['DESCRIPTION'], '2S') !== FALSE) {
-				$data['kalimat'] = 'Standart Warna Biru';
+				$data['kalimat'] = 'Standart Warna Hijau';
 			} else if (stripos($value['DESCRIPTION'], 'DIESEL RD 110 DI-2T') !== FALSE) {
 				$data['kalimat'] = 'Standart Warna Kuning';
 			} else if (stripos($value['DESCRIPTION'], 'DIESEL RD') !== FALSE && stripos($value['DESCRIPTION'], 'DIH') !== FALSE) {
