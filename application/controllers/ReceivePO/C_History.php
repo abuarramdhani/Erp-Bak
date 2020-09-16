@@ -55,7 +55,7 @@ class C_History extends CI_Controller
 	public function format_date($date)
 	{
 		$ss = explode("/", $date);
-		return $ss[2]."-".$ss[1]."-".$ss[0];
+		return $ss[2] . "-" . $ss[1] . "-" . $ss[0];
 	}
 
 	public function Hist()
