@@ -69,12 +69,16 @@ class M_personaliaapprovekasie extends CI_Model
 		//		where b.status in (2,7)
 		//		and b.approver = '$noind'";
 		//coba tiket bug  dari pak amri
-		$sql = "select count(*) as jumlah
-				from si.si_kaizen a 
-				left join si.si_approval b 
-				on a.kaizen_id = b.kaizen_id
-				where a.status in (2,7)
-				and b.approver = '$noind'";
+		$sql = "SELECT count (kaizen.kaizen_id) as jumlah
+					FROM si.si_kaizen kaizen 
+					INNER JOIN (SELECT approval1.* 
+									FROM si.si_approval approval1
+									INNER JOIN (SELECT max(level) levelist ,kaizen_id from si.si_approval where approver = '$noind' group by kaizen_id) approval2 
+											ON approval1.level = approval2.levelist and approval1.kaizen_id = approval2.kaizen_id
+									WHERE approval1.approver = '$noind') approval ON approval.kaizen_id = kaizen.kaizen_id
+					WHERE approval.ready = '1'
+					AND approval.status = 2
+					AND kaizen.status <> 8 ";
 		$result = $this->erp->query($sql)->row();
 		if (!empty($result)) {
 			return $result->jumlah;
