@@ -58,8 +58,24 @@
         <td><center><?php echo empty($g['vehicle_number']) ? '-' : $g['vehicle_number'] ?></center></td>
         <td><center><?php echo empty($g['created_at']) ? '-' : substr($g['created_at'], 0, 19) ?></center></td>
         <td><center><?php echo empty($g['estimation']) ? '-' : $g['estimation'] ?></center></td>
-        <td><center><?php echo empty($g['weight']) ? '-' : $g['weight'].' Kg' ?></center></td>
-        <td><center><?php echo empty($g['weight_2']) ? '-' : $g['weight_2'].' Kg' ?></center></td>
+        <td>
+         <center>
+          <?php if (!empty($g['weight']) && empty($g['weight_2'])) { ?>
+            <?php echo empty($g['weight']) ? '-' : $g['weight'].' Kg' ?>
+          <?php }else { ?>
+            <?php echo empty($g['weight_2']) ? '-' : $g['weight_2'].' Kg' ?>
+          <?php } ?>
+         </center>
+        </td>
+        <td>
+          <center>
+            <?php if (!empty($g['weight']) && empty($g['weight_2'])) { ?>
+              <?php echo empty($g['weight_2']) ? '-' : $g['weight_2'].' Kg' ?>
+            <?php }else { ?>
+              <?php echo empty($g['weight']) ? '-' : $g['weight'].' Kg' ?>
+            <?php } ?>
+          </center>
+        </td>
         <?php
         if (!empty($g['ticket_number'])) {
           $cek = explode('-', $g['ticket_number']);
