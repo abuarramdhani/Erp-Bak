@@ -2076,7 +2076,7 @@ class M_hitungpesanan extends Ci_Model
 		$sql = "select tpd.*,tpmk.*,trim(tp.nama) as nama
 				from \"Catering\".t_pesanan_detail tpd
 				inner join \"Catering\".t_pekerja_menu_khusus tpmk
-				on tpd.noind = tpmk.noind
+				on trim(tpd.noind) = trim(tpmk.noind)
 				and tpd.tanggal between tpmk.tanggal_mulai and tpmk.tanggal_selesai
 				left join hrd_khs.tpribadi tp 
 				on tpd.noind = tp.noind
