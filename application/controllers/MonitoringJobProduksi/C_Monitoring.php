@@ -81,33 +81,24 @@ class C_Monitoring extends CI_Controller
 			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan);
 			$getdata[$key]['ITEM'] = $item[0]['SEGMENT1'];
 			$getdata[$key]['DESC'] = $item[0]['DESCRIPTION'];
+			$getdata[$key]['jml_plan'] = 0;
+			$getdata[$key]['jml_akt'] = 0;
+			$getdata[$key]['jml_min'] = 0;
 			if (!empty($plan)) {
-				$getdata[$key]['jml_plan'] = 0;
-				$getdata[$key]['jml_akt'] = 0;
+				$ket = 'not';
 				for ($i=0; $i < $data['hari'] ; $i++) { 
 					$getdata[$key]['plan'.$i.''] = $this->getPlanDate($plan[0]['PLAN_ID'], ($i+1), $getplandate);
+					$ket = $getdata[$key]['plan'.$i.''] != '' ? 'oke': $ket;
 					$tgl = $inibulan.sprintf("%02d", ($i+1));
 					$aktual = $this->aktualmin($value['INVENTORY_ITEM_ID'], $tgl, $getdata[$key]['plan'.$i.''], $cariakt);
 					$getdata[$key]['akt'.$i.''] = $aktual[0];
 					$getdata[$key]['min'.$i.''] = $aktual[1];
 					$getdata[$key]['jml_plan'] += $getdata[$key]['plan'.$i.''] == '' ? 0 : $getdata[$key]['plan'.$i.''];
 					$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
+					$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
 				}
-			}else {
-				$getdata[$key]['jml_plan'] = 0;
-				$getdata[$key]['jml_akt'] = 0;
-				for ($i=0; $i < $data['hari'] ; $i++) { 
-					$getdata[$key]['plan'.$i.''] =  '';
-					$tgl = $inibulan.sprintf("%02d", ($i+1));
-					$aktual = $this->aktualmin($value['INVENTORY_ITEM_ID'], $tgl, $getdata[$key]['plan'.$i.''], $cariakt);
-					$getdata[$key]['akt'.$i.''] = $aktual[0];
-					$getdata[$key]['min'.$i.''] = $aktual[1];
-					$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
-				}
+				$ket == 'oke' ? array_push($datanya,$getdata[$key]) : '';
 			}
-			// echo "<pre>";print_r($getdata[$key]);exit();
-
-			array_push($datanya,$getdata[$key]);
 		}
 		$data['data'] = $datanya;
 		// echo "<pre>";print_r($getdata);exit();
@@ -137,7 +128,7 @@ class C_Monitoring extends CI_Controller
 			}
 		}
 		if ($plan == '' && $aktual != '') {
-			$min = 'invalid';
+			$min = $aktual;
 		}elseif ($plan == '' && $aktual == '') {
 			$min = '';
 		}elseif ($plan != '' && $aktual == '') {
@@ -181,6 +172,7 @@ class C_Monitoring extends CI_Controller
 		$item 	= $this->input->post('item');
 		$qty 	= $this->input->post('qty');
 		$data['level'] = $this->input->post('level');
+		$data['nomor'] = $this->input->post('nomor');
 
 		$data['data'] = $this->M_monitoring->getdataSimulasi($item, $qty);
 		// echo "<pre>";print_r($data['data']);exit();

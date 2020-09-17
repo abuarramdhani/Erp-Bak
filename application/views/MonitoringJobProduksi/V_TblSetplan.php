@@ -1,13 +1,14 @@
     <?php $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             $tabel = count($data) > 8 ? 'tb_setplan' : 'tb_setplan2'; ?>
     <table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>" style="width: 100%;">
-    <thead style="background-color:#1DAEF5;color:white">
+    <thead style="background-color:#1DAEF5;color:white" class="text-nowrap">
         <tr>
-            <th rowspan="2"  style="background-color:#1DAEF5;color:white">No</th>
+            <th rowspan="2"  style="vertical-align:middle;background-color:#1DAEF5;color:white">No</th>
             <th rowspan="2" style="vertical-align:middle;background-color:#1DAEF5;color:white">Kode Item</th>
             <th rowspan="2" style="vertical-align:middle;background-color:#1DAEF5;color:white"><?= $tambahan?>Nama Part<?= $tambahan?></th>
             <th rowspan="2" style="background-color:#1DAEF5;color:white"></th>
             <th colspan="<?= $hari?>" >Tanggal</th>
+            <th rowspan="2">Jumlah</th>
         </tr>
         <tr>
             <?php for ($i=0; $i < $hari ; $i++) { ?>
@@ -22,13 +23,14 @@
                 <input type="hidden" id="bulan<?= $no?>" name="bulan" value="<?= $bulan?>">
                 <input type="hidden" id="id_plan<?= $no?>" name="id_plan[]" value="<?= $value['PLAN_ID']?>">
             </td>
-            <td><input type="hidden" id="item<?= $no?>" name="item[]" value="<?= $value['INVENTORY_ITEM_ID']?>"><?= $value['ITEM']?>
+            <td class="text-nowrap"><input type="hidden" id="item<?= $no?>" name="item[]" value="<?= $value['INVENTORY_ITEM_ID']?>"><?= $value['ITEM']?>
             </td>
             <td><?= $value['DESKRIPSI']?></td>
             <td>P</td>
             <?php for ($i=0; $i < $hari ; $i++) { ?>
-                <td><input type="number" id="plan<?= $no?><?= $i+1?>" name="plan[]" class="form-control" style="width:70px" value="<?= $value[$i]?>" onchange="saveSetplan(<?= $no?>, <?= ($i+1)?>)"></td>
+                <td><input type="number" id="plan<?= $no?><?= $i+1?>" name="plan<?= $no?>[]" class="form-control" style="width:70px" value="<?= $value[$i]?>" onchange="saveSetplan(<?= $no?>, <?= ($i+1)?>)"></td>
             <?php }?>
+            <td id="jml<?= $no?>"><?= $value['JUMLAH']?></td>
         </tr>
     <?php $no++;}?>
     </tbody>
