@@ -928,111 +928,127 @@ $(function () {
 			return this[query].val() || null;
 		},
 		init() {
-			$("#select-provinsi").select2({
-				allowClear: true,
-				placeholder: "Provinsi",
-				ajax: {
-					url: baseurl + "MasterPekerja/DataPekerjaKeluar/provinsiPekerja",
-					dataType: "json",
-					type: "GET",
-					data: function (params) {
-						return {
-							term: params.term,
-						};
+			$("#select-provinsi")
+				.select2({
+					allowClear: true,
+					placeholder: "Provinsi",
+					ajax: {
+						url: baseurl + "MasterPekerja/DataPekerjaKeluar/provinsiPekerja",
+						dataType: "json",
+						type: "GET",
+						data: function (params) {
+							return {
+								term: params.term,
+							};
+						},
+						processResults: function (data) {
+							return {
+								results: $.map(data, function (obj) {
+									return {
+										id: obj.id_prov,
+										text: obj.nama,
+									};
+								}),
+							};
+						},
 					},
-					processResults: function (data) {
-						return {
-							results: $.map(data, function (obj) {
-								return {
-									id: obj.id_prov,
-									text: obj.nama,
-								};
-							}),
-						};
-					},
-				},
-			});
+				})
+				.on("select2:selecting", function () {
+					$(this).html("");
+				});
 
-			$("#select-kabupaten").select2({
-				minimumInputLength: 0,
-				allowClear: true,
-				placeholder: "Kabupaten",
-				ajax: {
-					url: baseurl + "MasterPekerja/DataPekerjaKeluar/kabupatenPekerja",
-					dataType: "json",
-					type: "GET",
-					data: (params) => {
-						return {
-							term: params.term,
-							prov: this.provinsiEl.val(),
-						};
+			$("#select-kabupaten")
+				.select2({
+					minimumInputLength: 0,
+					allowClear: true,
+					placeholder: "Kabupaten",
+					ajax: {
+						url: baseurl + "MasterPekerja/DataPekerjaKeluar/kabupatenPekerja",
+						dataType: "json",
+						type: "GET",
+						data: (params) => {
+							return {
+								term: params.term,
+								prov: this.provinsiEl.val(),
+							};
+						},
+						processResults: function (data) {
+							return {
+								results: $.map(data, function (ok) {
+									return {
+										id: ok.id_kab,
+										text: ok.nama,
+									};
+								}),
+							};
+						},
 					},
-					processResults: function (data) {
-						return {
-							results: $.map(data, function (ok) {
-								return {
-									id: ok.id_kab,
-									text: ok.nama,
-								};
-							}),
-						};
-					},
-				},
-			});
+				})
+				.on("select2:selecting", function () {
+					$(this).html("");
+				});
 
-			$("#select-kecamatan").select2({
-				minimumInputLength: 0,
-				allowClear: true,
-				placeholder: "Kecamatan",
-				ajax: {
-					url: baseurl + "MasterPekerja/DataPekerjaKeluar/kecamatanPekerja",
-					dataType: "json",
-					type: "GET",
-					data: (params) => {
-						return {
-							term: params.term,
-							kab: this.kabupatenEl.val(),
-						};
+			$("#select-kecamatan")
+				.select2({
+					minimumInputLength: 0,
+					allowClear: true,
+					placeholder: "Kecamatan",
+					ajax: {
+						url: baseurl + "MasterPekerja/DataPekerjaKeluar/kecamatanPekerja",
+						dataType: "json",
+						type: "GET",
+						data: (params) => {
+							return {
+								term: params.term,
+								kab: this.kabupatenEl.val(),
+							};
+						},
+						processResults: function (data) {
+							return {
+								results: $.map(data, function (ok) {
+									return {
+										id: ok.id_kec,
+										text: ok.nama,
+									};
+								}),
+							};
+						},
 					},
-					processResults: function (data) {
-						return {
-							results: $.map(data, function (ok) {
-								return {
-									id: ok.id_kec,
-									text: ok.nama,
-								};
-							}),
-						};
-					},
-				},
-			});
+				})
+				.on("select2:selecting", function () {
+					$(this).html("");
+				});
 
-			$("#select-desa").select2({
-				minimumInputLength: 0,
-				allowClear: true,
-				placeholder: "Desa/Kelurahan",
-				ajax: {
-					url: baseurl + "MasterPekerja/DataPekerjaKeluar/desaPekerja",
-					dataType: "json",
-					type: "GET",
-					data: (params) => {
-						return {
-							term: params.term,
-							kec: this.kecamatanEl.val(),
-						};
+			$("#select-desa")
+				.select2({
+					minimumInputLength: 0,
+					allowClear: true,
+					placeholder: "Desa/Kelurahan",
+					ajax: {
+						url: baseurl + "MasterPekerja/DataPekerjaKeluar/desaPekerja",
+						dataType: "json",
+						type: "GET",
+						data: (params) => {
+							return {
+								term: params.term,
+								kec: this.kecamatanEl.val(),
+							};
+						},
+						processResults: function (data) {
+							return {
+								results: $.map(data, function (ok) {
+									return {
+										id: ok.id_kel,
+										text: ok.nama,
+									};
+								}),
+							};
+						},
 					},
-					processResults: function (data) {
-						return {
-							results: $.map(data, function (ok) {
-								return {
-									id: ok.id_kel,
-									text: ok.nama,
-								};
-							}),
-						};
-					},
-				},
-			});
+				})
+				.on("select2:selecting", function () {
+					$(this).html("");
+				});
 		},
 	};
 
