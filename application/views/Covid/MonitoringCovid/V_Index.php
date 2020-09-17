@@ -67,10 +67,10 @@
 										<table id="tbl-CVD-MonitoringCovid" class="table table-bordered table-hover table-striped">
 											<thead>
 												<th class="bg-primary" style="text-align: center;vertical-align: middle;">No.</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 200px;">Action</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Action</th>
 												<th class="bg-primary" style="text-align: center;vertical-align: middle;">No. Induk</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 100px;">Nama</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 100px;">Seksi</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Nama</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Seksi</th>
 												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Departemen</th>
 												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Status Kondisi</th>
 												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Tanggal Interaksi</th>
@@ -86,13 +86,14 @@
 												if (isset($data) && !empty($data)) {
 													$nomor = 1;
 													foreach ($data as $key => $value) {
+														$encrypted_string = $this->encrypt->encode($value['cvd_pekerja_id']);
+														$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 														$stat = "not found";
 														if (isset($status) && !empty($status)) {
-															$encrypted_string = $this->encrypt->encode($value['cvd_pekerja_id']);
-															$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 															foreach ($status as $st) {
 																if ($st['status_kondisi_id'] == $value['status_kondisi_id']) {
 																		$stat = "<button class='btn btn-CVD-MonitoringCovid-Status' data-id='".$encrypted_string."' style='background-color: ".$st['background_color'].";color: ".$st['text_color']."'>".$st['status_kondisi']."</button>";
+																		$status_kondisi_pekerja = $st['status_kondisi'];
 																}
 															}
 															
@@ -101,24 +102,57 @@
 														<tr>
 															<td><?php echo $nomor ?></td>
 															<td>
-																<a href="<?php echo base_url('Covid/MonitoringCovid/edit/'.$encrypted_string) ?>" class="btn btn-xs btn-info"><span class="fa fa-edit"></span>&nbsp;&nbsp;edit</a>
-																<button data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn btn-xs btn-danger btn-CVD-MonitoringCovid-Hapus"><span class="fa fa-trash"></span>&nbsp;&nbsp;Hapus</button>
-																<a href="<?php echo base_url('Covid/MonitoringCovid/wawancara/'.$encrypted_string) ?>" class="btn btn-xs btn-primary"><span class="fa fa-file-pdf-o"></span>&nbsp;&nbsp;Wawancara</a>
-																<a target="_blank" href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri') ?>" class="btn btn-xs btn-success"><span class="fa fa-file-pdf-o"></span>&nbsp;&nbsp;Surat Isolasi</a>
-																<a target="_blank" href="<?php echo base_url('Covid/MonitoringCovid/beritaAcaraCetak/'.$encrypted_string) ?>" class="btn btn-xs btn-warning"><span class="fa fa-file-pdf-o"></span>&nbsp;&nbsp;Cetak Berita Acara</a>
-																<!-- <a target="_blank" href="<?php echo base_url('Covid/MonitoringCovid/beritaAcara/'.$encrypted_string) ?>" class="btn btn-xs btn-warning"><span class="fa fa-file-pdf-o"></span>&nbsp;&nbsp;Update Berita Acara</a> -->
+																<div class="btn-group">
+																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																		Action <span class="caret"></span>
+																	</button>
+																	<ul class="dropdown-menu">
+																		<li>
+																			<a href="<?php echo base_url('Covid/MonitoringCovid/edit/'.$encrypted_string) ?>">edit</a>
+																		</li>
+																		<li>
+																			<a data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn-CVD-MonitoringCovid-Hapus">Hapus</a>
+																		</li>
+																		<li>
+																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Tambah/'.$encrypted_string) ?>">Isolasi</a>
+																		</li>
+																		<li>
+																			<a href="<?php echo base_url('Covid/MonitoringCovid/TidakIsolasi/'.$encrypted_string) ?>">Tidak Isolasi</a>
+																		</li>
+																		<li>
+																			<a data-href="<?php echo base_url('Covid/MonitoringCovid/FollowUp/'.$encrypted_string) ?>" data-status="<?php echo isset($status_kondisi_pekerja) ? $status_kondisi_pekerja : '0'; ?>" class="btn-CVD-MonitoringCovid-FollowUp">Follow Up Pekerja</a>
+																		</li>
+																	</ul>
+																</div>
+																
+																<div class="btn-group">
+																	<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																		Cetak <span class="caret"></span>
+																	</button>
+																	<ul class="dropdown-menu">
+																		<li>
+																			<a target='_blank' href="<?php echo base_url('Covid/MonitoringCovid/WawancaraIsolasi/'.$encrypted_string) ?>">Wawancara Isolasi</a>
+																		</li>
+																		<li>
+																			<a target='_blank' href="<?php echo base_url('Covid/MonitoringCovid/MemoIsolasi/'.$encrypted_string) ?>">Memo Isolasi Mandiri</a>
+																		</li>
+																		<li>
+																			<a target="_blank" href="<?php echo base_url('Covid/MonitoringCovid/WawancaraMasuk/'.$encrypted_string) ?>">Wawancara Masuk</a>
+																		</li>
+																	</ul>
+																</div>
 															</td>
 															<td><?php echo $value['noind'] ?></td>
 															<td><?php echo $value['nama'] ?></td>
 															<td><?php echo $value['seksi'] ?></td>
 															<td><?php echo $value['dept'] ?></td>
 															<td><?php echo $stat ?></td>
-															<td><?php echo strftime('%d %B %Y',strtotime($value['tgl_interaksi'])) ?></td>
+															<td><?php echo strftime('%d %h %Y',strtotime($value['tgl_interaksi'])) ?></td>
 															<td><?php echo $value['kasus'] ?></td>
 															<td><?php echo $value['keterangan'] ?></td>
-															<td><?php echo strftime('%d %B %Y',strtotime($value['mulai_isolasi'])) ?></td>
-															<td><?php echo strftime('%d %B %Y',strtotime($value['selesai_isolasi'])) ?></td>
-															<td><?php echo $value['lama_isolasi'] ?> hari</td>
+															<td><?php echo !empty($value['mulai_isolasi']) ? strftime('%d %h %Y',strtotime($value['mulai_isolasi'])) : '-' ?></td>
+															<td><?php echo !empty($value['mulai_isolasi']) ? strftime('%d %h %Y',strtotime($value['selesai_isolasi'])) : '' ?></td>
+															<td><?php echo !empty($value['lama_isolasi']) ? $value['lama_isolasi'].' hari' : '-' ?></td>
 															<td><?php echo $value['created_by'] ?></td>
 														</tr>
 														<?php

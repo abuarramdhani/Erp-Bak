@@ -32,6 +32,7 @@ class M_monitoringcovid extends CI_Model {
 
 	function insertPekerja($data){
 		$this->erp->insert('cvd.cvd_pekerja',$data);
+		return $this->erp->insert_id();
 	}
 
 	function getStatusKondisi(){
@@ -101,33 +102,19 @@ class M_monitoringcovid extends CI_Model {
 		$this->erp->update('cvd.cvd_pekerja',$data);
 	}
 
-	function getWawancaraByPekerjaId1($id){
+	function getWawancaraIsolasiByPekerjaId($id){
 		$sql = "select *
 				from cvd.cvd_wawancara a
 				where cvd_pekerja_id = ?
-				and coalesce(
-					(
-						select count(*)
-						from cvd.cvd_keputusan b 
-						where a.wawancara_id = b.wawancara_id
-					),
-					0
-				) = 0";
+				and jenis = 1";
 		return $this->erp->query($sql,array($id))->row();
 	}
 
-	function getWawancaraByPekerjaId2($id){
+	function getWawancaraMasukByPekerjaId($id){
 		$sql = "select *
 				from cvd.cvd_wawancara a
 				where cvd_pekerja_id = ?
-				and coalesce(
-					(
-						select count(*)
-						from cvd.cvd_keputusan b 
-						where a.wawancara_id = b.wawancara_id
-					),
-					0
-				) > 0";
+				and jenis = 2";
 		return $this->erp->query($sql,array($id))->row();
 	}
 
@@ -203,6 +190,13 @@ class M_monitoringcovid extends CI_Model {
 				from cvd.cvd_keputusan
 				where wawancara_id = ?";
 		return $this->erp->query($sql,array($id))->row();
+	}
+
+	function getMemoIsolasiMandiriByPekerjaid($id){
+		$sql = "select isi_surat
+			from \"Surat\".tsurat_isolasi_mandiri
+			where cvd_pekerja_id = ? ";
+		return $this->personalia->query($sql, array($id))->row();
 	}
 
 } ?>

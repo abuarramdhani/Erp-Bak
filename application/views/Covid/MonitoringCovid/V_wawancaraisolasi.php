@@ -6,8 +6,7 @@
 	<div style="width: 100%;border: 1px solid black;padding-left: 5px;border-top: 0px solid white;">
 		Kepada Yth :<br>
 		Departemen Personalia<br>
-		Bersama ini kami sampaikan, bahwa telah dilakukan wawancara terkait pekerja yang melakukan isolasi mandiri
-		Covid 19, dengan detail sebagai berikut :
+		Bersama ini kami sampaikan, bahwa telah dilakukan wawancara dengan pekerja terkait Covid 19, dengan detail sebagai berikut :
 	</div>
 	<table style="width: 100%;border: 1px solid black;border-collapse: collapse;border-top: 0px solid white;">
 		<tr>
@@ -16,7 +15,7 @@
 		<tr>
 			<td style="width: 20%">Nama / No. Induk</td>
 			<td style="width: 2%">:</td>
-			<td style="width: 38%"><?php echo (isset($data) && !empty($data)) ? ucwords(strtolower($data->nama)).' / '.$data->noind : ''; ?></td>
+			<td style="width: 28%"><?php echo (isset($data) && !empty($data)) ? ucwords(strtolower($data->nama)).' / '.$data->noind : ''; ?></td>
 			<td style="width: 10%">Seksi</td>
 			<td style="width: 2%">:</td>
 			<td colspan="4"><?php echo (isset($data) && !empty($data)) ? ucwords(strtolower($data->seksi)) : ''; ?></td>
@@ -24,7 +23,7 @@
 		<tr>
 			<td>Tanggal Interaksi</td>
 			<td>:</td>
-			<td><?php echo (isset($data) && !empty($data)) ? $data->tgl_interaksi : ''; ?></td>
+			<td><?php echo (isset($data) && !empty($data)) ? strftime('%d %B %Y', strtotime($data->tgl_interaksi)) : ''; ?></td>
 			<td colspan="3" style="width: 25%">Lama Interaksi s/d hari ini</td>
 			<td style="width: 2%">:</td>
 			<td style="width: 9%"><?php echo (isset($data) && !empty($data)) ? ((strtotime(date('Y-m-d'))-strtotime($data->tgl_interaksi))/(60*60*24)) : ''; ?></td>
@@ -39,7 +38,7 @@
 	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;">
 		<b>Data tambahan hasil wawancara :</b>
 	</div>
-	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;height: 300px;">
+	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;height: 250px;">
 		<?php 
 			if (isset($wawancara) && !empty($wawancara)) {
 				echo $wawancara->hasil_wawancara;
@@ -54,31 +53,31 @@
 			if (isset($lampiran) && !empty($lampiran)) {
 				foreach ($lampiran as $key_lamp => $val_lamp) {
 					?>
-					<img src="<?php echo base_url($val_lamp['lampiran_path']) ?>" style="width: 300px;float: left;height: auto;">
+					<img src="<?php echo base_url($val_lamp['lampiran_path']) ?>" style="width: 290px;float: left;height: auto;">
 					<?php 
 				}
 			}
 		?>
 	</div>
 	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;">
-		Berdasarkan hasil pengisian kuesioner & tambahan data wawancara diatas mohon diputuskan kapan pekerja
-		dengan identitas diatas dapat masuk bekerja kembali di CV. KHS.
+		Berdasarkan data wawancara diatas mohon diputuskan apakah pekerja tersebut perlu melakukan prosedur isolasi mandiri, dan apakah pekerja tersebut perlu melakukan rapid test atau tidak.
 	</div>
 	<table style="width: 100%;border: 1px solid black;border-collapse: collapse;border-top: 0px solid white;">
 		<tr>
-			<td colspan="2" style="width: 20%"><b>Keputusan</b></td>
-			<td style="width: 2%">:</td>
-			<td style="width: 78%"><i style="color: #b2bec3">(Diisi oleh Ketua/Koordinator Tim Covid)</i></td>
+			<td colspan="4"><b>Keputusan</b>:<i style="color: #b2bec3">(Diisi oleh Ketua/Koordinator Tim Covid)</i></td>
 		</tr>
 		<tr>
 			<td style="width: 5%;text-align: center;">
-				<input type="checkbox" style="height: 20px;width: 50px;" <?php echo (isset($keputusan) && !empty($keputusan) && $keputusan->keputusan == 1) ? 'checked="checked"' : '' ?>>
+				<input type="checkbox" style="height: 20px;width: 50px;">
 			</td>
-			<td colspan="3">Masuk Kerja pada tanggal <?php echo (isset($keputusan) && !empty($keputusan) && $keputusan->keputusan == 1) ? $keputusan->tgl_keputusan : '' ?></td>
+			<td style="width: 30%">Ya, perlu isolasi mandiri</td>
+			<td style="width: 30%">selama : _______ hari</td>
+			<td style="width: 35%">mulai tgl : ___________s/d___________</td>
 		</tr>
 		<tr>
-			<td style="width: 5%;text-align: center;"><input type="checkbox" <?php echo (isset($keputusan) && !empty($keputusan) && $keputusan->keputusan == 2) ? 'checked="checked"' : '' ?>></td>
-			<td colspan="3">Tunda masuk kerja sampai dengan tanggal <?php echo (isset($keputusan) && !empty($keputusan) && $keputusan->keputusan == 2) ? $keputusan->tgl_keputusan : '' ?></td>
+			<td style="width: 5%;text-align: center;">
+				<input type="checkbox"></td>
+			<td colspan="3">Tidak Perlu Isolasi Mandiri</td>
 		</tr>
 	</table>
 	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;">

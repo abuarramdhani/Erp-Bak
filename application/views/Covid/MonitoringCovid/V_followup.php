@@ -14,7 +14,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form method="POST" class="form-horizontal" enctype="multipart/form-data" action="<?php echo base_url('Covid/MonitoringCovid/simpanBeritaAcara/'.$id) ?>">
+										<form method="POST" class="form-horizontal" enctype="multipart/form-data" action="<?php echo base_url('Covid/MonitoringCovid/simpanWawancaraMasuk/'.$id) ?>">
 											<div class="form-group">
 												<label class="control-label col-lg-2">Pekerja</label>
 												<div class="col-lg-4">
@@ -26,16 +26,14 @@
 												<div class="col-lg-4">
 													<input type="text" value="<?php echo (isset($data) && !empty($data)) ? $data->seksi : ''; ?>" class="form-control" disabled placeholder="Seksi Pekerja">
 												</div>
-											</div>
-											<div class="form-group">
 												<label class="control-label col-lg-2">Departemen</label>
-												<div class="col-lg-4">
+												<div class="col-lg-2">
 													<input type="text" value="<?php echo (isset($data) && !empty($data)) ? $data->dept : ''; ?>" class="form-control"disabled placeholder="Departemen Pekerja">
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-2">Kasus</label>
-												<div class="col-lg-4">
+												<div class="col-lg-8">
 													<input type="text" value="<?php echo (isset($data) && !empty($data)) ? $data->kasus : ''; ?>" class="form-control" disabled placeholder="kasus">
 												</div>
 											</div>
@@ -44,8 +42,6 @@
 												<div class="col-lg-2">
 													<input type="text" value="<?php echo (isset($data) && !empty($data)) ? $data->tgl_interaksi : ''; ?>" class="form-control" disabled placeholder="Tanggal Interaksi">
 												</div>
-											</div>
-											<div class="form-group">
 												<label class="control-label col-lg-2">Periode Isolasi</label>
 												<div class="col-lg-2">
 													<input type="text" value="<?php echo (isset($data) && !empty($data)) ? $data->mulai_isolasi : ''; ?>" class="form-control" disabled placeholder="Mulai Isolasi">
@@ -55,18 +51,16 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-lg-2">Keterangan</label>
-												<div class="col-lg-4">
-													<textarea class="form-control" id="txt-CVD-MonitoringCovid-Tambah-Keterangan" disabled><?php 
-														echo (isset($data) && !empty($data)) ? $data->keterangan : ''; 
-													?></textarea>
-												</div>
-											</div>
-											<div class="form-group">
 												<label class="control-label col-lg-2">Detail Wawancara</label>
 												<div class="col-lg-8">
 													<input type="hidden" name="idWawancara" value="<?php echo isset($wawancara) && !empty($wawancara) ? $wawancara->wawancara_id : '' ?>">
-													<textarea class="form-control" name="hasilWawancara" required placeholder="Masukkan Detail Wawancara..." style="height: 300px;"><?php 
+													<textarea 
+														class="form-control" 
+														id="txa-CVD-MonitoringCovid-Tambah-Wawancara" 
+														name="hasilWawancara" 
+														required 
+														placeholder="Masukkan Detail Wawancara..." 
+														style="height: 300px;"><?php 
 														if (isset($wawancara) && !empty($wawancara)) {
 															echo $wawancara->hasil_wawancara;
 														} 
@@ -76,7 +70,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-2">Lampiran</label>
 												<div class="col-lg-8">
-													<div class="div-CVD-MonitoringCovid-Wawancara-Lampiran" style="margin-bottom: 5px;margin-top: 5px;">
+													<div class="div-CVD-MonitoringCovid-Tambah-Lampiran" style="margin-bottom: 5px;margin-top: 5px;">
 														<?php 
 														if (isset($lampiran) && !empty($lampiran)) {
 															foreach ($lampiran as $key_lamp => $val_lamp) {
@@ -86,31 +80,9 @@
 															}
 														}
 														?>
-														<input type="file" class="form-control file-CVD-MonitoringCovid-Wawancara-Lampiran" name="lampiranWawancara[]" style="display: none;">
+														<input type="file" class="form-control file-CVD-MonitoringCovid-Tambah-Lampiran" name="lampiranWawancara[]" style="display: none;">
 													</div>
-													<button class="btn btn-success btn-CVD-MonitoringCovid-Wawancara-Lampiran" type="button"><span class="fa fa-upload"></span> Tambah Lampiran</button>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-2">Keputusan</label>
-												<div class="col-lg-2">
-													<select class="select2" data-placeholder="Keputusan" name="keputusanWawancara" required style="width: 100%">
-														<option></option>
-														<option value="1" <?php echo (isset($keputusan) && !empty($keputusan) && $keputusan->keputusan == 1) ? 'selected' : '' ?>>Masuk</option>
-														<option value="2" <?php echo (isset($keputusan) && !empty($keputusan) && $keputusan->keputusan == 2) ? 'selected' : '' ?>>Tunda Masuk</option>
-													</select>
-												</div>
-												<label class="control-label col-lg-1">Tanggal</label>
-												<div class="col-lg-2">
-													<input type="text" class="form-control" name="tanggalKeputusan" id="txt-CVD-MonitoringCovid-BeritaAcara-Keputusan" placeholder="Tanggal Keputusan" value="<?php echo (isset($keputusan) && !empty($keputusan)) ? $keputusan->tgl_keputusan : ''  ?>">
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-2">Keterangan</label>
-												<div class="col-lg-4">
-													<textarea class="form-control" name="keteranganKeputusan" placeholder="Keterangan Keputusan"><?php 
-														echo (isset($keputusan) && !empty($keputusan)) ? $keputusan->keterangan : '' 
-													?></textarea>
+													<button class="btn btn-success btn-CVD-MonitoringCovid-Tambah-Lampiran" type="button"><span class="fa fa-upload"></span> Tambah Lampiran</button>
 												</div>
 											</div>
 											<div class="form-group text-center">

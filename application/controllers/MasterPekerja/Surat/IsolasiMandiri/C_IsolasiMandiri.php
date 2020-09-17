@@ -22,6 +22,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/Surat/IsolasiMandiri/M_isolasimandiri');
+		$this->load->model('Covid/MonitoringCovid/M_monitoringcovid');
 		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
@@ -48,15 +49,19 @@ class C_IsolasiMandiri extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		// $data['data'] = $this->M_isolasimandiri->getSuratIsolasiMandiriAll();
-
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Surat/IsolasiMandiri/V_index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function Tambah(){
+	public function Tambah($encrypted_id = FALSE){
+		if ($encrypted_id !== FALSE) {
+			$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
+			$plaintext_string = $this->encrypt->decode($plaintext_string);
+			$data['data'] = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
+			$data['encrypted_id'] = $encrypted_id;
+		}
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
 
@@ -136,9 +141,12 @@ class C_IsolasiMandiri extends CI_Controller
 		
 	}
 
-	public function Simpan(){
-		// echo "<pre>";print_r($_POST);exit();
-		// $no_surat = "003/TIM-COVID19/V/20";
+	public function Simpan($encrypted_id = FALSE){
+		if ($encrypted_id !== FALSE) {
+			$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
+			$plaintext_string = $this->encrypt->decode($plaintext_string);
+		}
+
 		$tanggal_cetak = $this->input->post('txtMPSuratIsolasiMandiriCetakTanggal');
 		$nomor = $this->M_isolasimandiri->getLastNoSuratByTanggalCetak($tanggal_cetak);
 		if (!empty($nomor)) {
@@ -167,28 +175,60 @@ class C_IsolasiMandiri extends CI_Controller
 		);
 		$no_surat = $no."/TIM-COVID19/".$bulan_romawi[intval(date('m', strtotime($tanggal_cetak)))].'/'.date('y', strtotime($tanggal_cetak));
 
-		// echo $no_surat;exit();
+		if (isset($plaintext_string) && !empty($plaintext_string)) {
 
-		$data_insert = array(
-			'pekerja' 				=> $this->input->post('slcMPSuratIsolasiMandiriPekerja'),
-			'kepada' 				=> $this->input->post('slcMPSuratIsolasiMandiriTo'),
-			'mengetahui' 			=> $this->input->post('slcMPSuratIsolasiMandiriMengetahui'),
-			'menyetujui' 			=> $this->input->post('slcMPSuratIsolasiMandirimenyetujui'),
-			'dibuat' 				=> $this->input->post('slcMPSuratIsolasiMandiriDibuat'),
-			'no_surat' 				=> $no_surat,
-			'tgl_wawancara' 		=> $this->input->post('txtMPSuratIsolasiMandiriWawancaraTanggal'),
-			'tgl_mulai' 			=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
-			'tgl_selesai' 			=> $this->input->post('txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal'),
-			'jml_hari' 				=> $this->input->post('txtMPSuratIsolasiMandiriJumlahHari'),
-			'status' 				=> $this->input->post('slcMPSuratIsolasiMandiriStatus'),
-			'tgl_cetak' 			=> $this->input->post('txtMPSuratIsolasiMandiriCetakTanggal'),
-			'isi_surat' 			=> str_replace("surat_isolasi_mandiri_no_surat",$no_surat,$this->input->post('txtMPSuratIsolasiMandiriSurat')),
-			'created_by' 			=> $this->session->user
-		);
+			$data_insert = array(
+				'pekerja' 				=> $this->input->post('slcMPSuratIsolasiMandiriPekerja'),
+				'kepada' 				=> $this->input->post('slcMPSuratIsolasiMandiriTo'),
+				'mengetahui' 			=> $this->input->post('slcMPSuratIsolasiMandiriMengetahui'),
+				'menyetujui' 			=> $this->input->post('slcMPSuratIsolasiMandirimenyetujui'),
+				'dibuat' 				=> $this->input->post('slcMPSuratIsolasiMandiriDibuat'),
+				'no_surat' 				=> $no_surat,
+				'tgl_wawancara' 		=> $this->input->post('txtMPSuratIsolasiMandiriWawancaraTanggal'),
+				'tgl_mulai' 			=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
+				'tgl_selesai' 			=> $this->input->post('txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal'),
+				'jml_hari' 				=> $this->input->post('txtMPSuratIsolasiMandiriJumlahHari'),
+				'status' 				=> $this->input->post('slcMPSuratIsolasiMandiriStatus'),
+				'tgl_cetak' 			=> $this->input->post('txtMPSuratIsolasiMandiriCetakTanggal'),
+				'isi_surat' 			=> str_replace("surat_isolasi_mandiri_no_surat",$no_surat,$this->input->post('txtMPSuratIsolasiMandiriSurat')),
+				'created_by' 			=> $this->session->user,
+				'cvd_pekerja_id' 		=> $plaintext_string
+			);
+		}else{
+			$data_insert = array(
+				'pekerja' 				=> $this->input->post('slcMPSuratIsolasiMandiriPekerja'),
+				'kepada' 				=> $this->input->post('slcMPSuratIsolasiMandiriTo'),
+				'mengetahui' 			=> $this->input->post('slcMPSuratIsolasiMandiriMengetahui'),
+				'menyetujui' 			=> $this->input->post('slcMPSuratIsolasiMandirimenyetujui'),
+				'dibuat' 				=> $this->input->post('slcMPSuratIsolasiMandiriDibuat'),
+				'no_surat' 				=> $no_surat,
+				'tgl_wawancara' 		=> $this->input->post('txtMPSuratIsolasiMandiriWawancaraTanggal'),
+				'tgl_mulai' 			=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
+				'tgl_selesai' 			=> $this->input->post('txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal'),
+				'jml_hari' 				=> $this->input->post('txtMPSuratIsolasiMandiriJumlahHari'),
+				'status' 				=> $this->input->post('slcMPSuratIsolasiMandiriStatus'),
+				'tgl_cetak' 			=> $this->input->post('txtMPSuratIsolasiMandiriCetakTanggal'),
+				'isi_surat' 			=> str_replace("surat_isolasi_mandiri_no_surat",$no_surat,$this->input->post('txtMPSuratIsolasiMandiriSurat')),
+				'created_by' 			=> $this->session->user
+			);
 
-		$this->M_isolasimandiri->insertSuratIsolasiMandiri($data_insert);
+		}
 
-		redirect(base_url('MasterPekerja/Surat/SuratIsolasiMandiri'));
+		$insert_id = $this->M_isolasimandiri->insertSuratIsolasiMandiri($data_insert);
+		if (isset($plaintext_string) && !empty($plaintext_string)) {
+			$data_pekerja = array(
+				'status_kondisi_id' => '1',
+				'mulai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
+				'selesai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal'),
+				'isolasi_id' 		=> $insert_id
+			);
+			
+			$this->M_monitoringcovid->updatePekerjaById($data_pekerja,$plaintext_string);
+			
+			redirect(base_url('Covid/MonitoringCovid'));
+		}else{
+			redirect(base_url('MasterPekerja/Surat/SuratIsolasiMandiri'));
+		}
 	}
 
 	public function Hapus($id_encoded){
