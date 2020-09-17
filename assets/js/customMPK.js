@@ -4385,3 +4385,57 @@ $(document).ready(function(){
         });
     });
 });
+//disnaker
+$(document).ready(function(){
+    // $(document).on('click','#mpk_btndisnAK', function(){
+    //     window.open(baseurl+'MasterPekerja/disnaker/export_pkjaktif');
+    // });
+    // $(document).on('click','#mpk_btndisnRE', function(){
+    //     window.open(baseurl+'MasterPekerja/disnaker/export_pkjresign');
+    // });
+
+    $('.mpk_btnajxdisn').click(function(){
+        var va = $(this).val();
+        var tgl = $('.mpk_rknopr').val();
+        var pr = $('#mpk_mntpicker').val();
+        var x = 0;
+        if (typeof tgl !== 'undefined') {
+            x += tgl.length;
+        }
+        if (typeof pr !== 'undefined') {
+            x += pr.length;
+        }
+        if (x < 6) {
+            console.log('kosong');
+            return false;
+        }
+        fakeLoading(0);
+        $.ajax({
+            type: 'get',
+            data: {
+                type: va,
+                tanggal: tgl,
+                periode: pr
+            },
+            url: baseurl + "MasterPekerja/disnaker/ajx_tbldisnaker",
+            success: function (result) {
+                $('#tbl_divdishidd').show();
+                $('#mpk_divftbldis').html(result);
+                $('#mpk_tbldisnker').DataTable({
+                    scrollX: true,
+                    fixedColumns: {
+                        leftColumns: 2
+                    }
+                });
+            },
+            complete: function(result) {
+                fakeLoading(1);
+            }
+        });
+    });
+
+    $('#mpk_mntpicker').monthpicker({
+        changeYear: true,
+        dateFormat: "yy-mm",
+    });
+});
