@@ -183,7 +183,7 @@ class M_msj extends CI_Model
     {
         $sql = "SELECT
                 employee_code,
-                employee_name
+                trim(employee_name) employee_name
               from
                 er.er_employee_all
               where
