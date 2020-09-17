@@ -76,15 +76,18 @@ class C_SetPlan extends CI_Controller
 			$plan = $this->M_setplan->getPlan("where inventory_item_id = ".$value['INVENTORY_ITEM_ID']." and month = ".$data['bulan']."");
 			$getdata[$key]['ITEM'] = $item[0]['SEGMENT1'];
 			$getdata[$key]['DESKRIPSI'] = $item[0]['DESCRIPTION'];
+			$getdata[$key]['JUMLAH'] = 0;
 			if (!empty($plan)) {
 				$getdata[$key]['PLAN_ID'] = $plan[0]['PLAN_ID'];
 				for ($i=0; $i < $data['hari']; $i++) { 
 					$getdata[$key][$i] = $this->getPlanDate($plan[0]['PLAN_ID'], ($i+1), $getplandate);
+					$getdata[$key]['JUMLAH'] += $getdata[$key][$i];
 				}
 			}else {
 				$getdata[$key]['PLAN_ID'] = '';
 				for ($i=0; $i < $data['hari'] ; $i++) { 
 					$getdata[$key][$i] = '';
+					$getdata[$key]['JUMLAH'] = 0;
 				}
 			}
 			array_push($datanya, $getdata[$key]);
@@ -130,47 +133,6 @@ class C_SetPlan extends CI_Controller
 		}
 	}
 
-	// public function savePlan(){
-	// 	$bulan 		= $this->input->post('bulan');
-	// 	$kategori 	= $this->input->post('kategori');
-	// 	$item 		= $this->input->post('item[]');
-	// 	$plan 		= $this->input->post('plan[]');
-	// 	$plan2 = count($plan)/count($item);
-	// 	$plann = $plan2;
-	// 	$p = 0;
-	// 	// echo "<pre>";print_r($plan2);exit();
-	// 	for ($i=0; $i < count($item) ; $i++) { 
-	// 		$plan3 = array();
-	// 		for ($x=$p; $x < $plan2 ; $x++) { 
-	// 			array_push($plan3, $plan[$x]);
-	// 		}
-	// 		$p = $plan2;
-	// 		$plan2 = $plan2 + $plann;
-	// 		$cekdata = $this->M_setplan->getPlan("where inventory_item_id = ".$item[$i]." and month = $bulan");
-	// 		if (empty($cekdata)) {
-	// 			$cekid = $this->M_setplan->getPlan('order by plan_id desc');
-	// 			$id = !empty($cekid) ? $cekid[0]['PLAN_ID'] + 1 : 1;
-	// 			$savePlan = $this->M_setplan->savePlan($id, $item[$i], $bulan);
-	// 			for ($a=0; $a < count($plan3) ; $a++) { 
-	// 				if (!empty($plan3[$a])) {
-	// 					$this->M_setplan->savePlanDate($id, ($a+1), $plan3[$a]);
-	// 				}
-	// 			}
-	// 		}else {
-	// 			for ($b=0; $b < count($plan3) ; $b++) { 
-	// 				$cekdate = $this->M_setplan->getPlanDate("where plan_id = ".$cekdata[0]['PLAN_ID']." and date_plan = ".($b+1)."");
-	// 				if (!empty($cekdate) && !empty($plan3[$b])) {
-	// 					$update = $this->M_setplan->updatePlanDate($cekdata[0]['PLAN_ID'], ($b+1), $plan3[$b]);
-	// 				}elseif (empty($cekdate) && !empty($plan3[$b])) {
-	// 					$save = $this->M_setplan->savePlanDate($cekdata[0]['PLAN_ID'], ($b+1), $plan3[$b]);
-	// 				}elseif (!empty($cekdate) && empty($plan3[$b])) {
-	// 					$delete = $this->M_setplan->deletePlanDate($cekdata[0]['PLAN_ID'], ($b+1));
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	redirect(base_url('MonitoringJobProduksi/SetPlan'));
-	// }
 
 
 

@@ -35,7 +35,7 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                 <td><p><?php if($value['plan'.$i.''] != 0){ ?>
                             <button class="btn btn-xs" style="background-color:#68F5C1;font-size:12px" formaction="<?= base_url('MonitoringJobProduksi/Monitoring/simulasi/'.$no.'/'.($i+1).'')?>"><?= $value['plan'.$i.'']?></button>
                         <?php }else { ?>
-                            <br>
+                            <button type="button" class="btn btn-xs" style="background-color:inherit;height:22px"></button>
                         <?php }?>
                         <input type="hidden" name="plan<?= $no?><?= $i+1?>" value="<?= $value['plan'.$i.'']?>">
                     </p>
@@ -45,7 +45,7 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                     </p>
                 </td>
             <?php }?>
-            <td><?= $value['jml_plan']?><br><br><?= $value['jml_akt']?></td>
+            <td><p><?= $value['jml_plan']?></p><p><?= $value['jml_akt']?></p><p><?= $value['jml_min']?></p></td>
         </tr>
         <?php $no++; }?>
     </tbody>

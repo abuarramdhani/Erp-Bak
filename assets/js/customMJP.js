@@ -65,32 +65,34 @@ function getSimulasiProduksi(th) {
     })
 }
 
-function tambahsimulasi(no, level) {
+function tambahsimulasi(level, no, num) {
     // $('#tr_simulasi'+level+no).slideToggle('slow');   
-    
-    var penanda = $('#penanda'+level+no).val();
+    var num = num == undefined ? '' : num;
+    var nomor = level+''+no+''+''+num+'';
+    // console.log(nomor,level,no)
+    var penanda = $('#penanda'+nomor).val();
     if (penanda == 'off') {
-        $('#tr_simulasi'+level+no).css('display','');   
-        $('#penanda'+level+no).val('on');
-        var item = $('#komp'+level+no).val();
+        $('#tr_simulasi'+nomor).css('display','');   
+        $('#penanda'+nomor).val('on');
+        var item = $('#komp'+nomor).val();
         // var item = 'AAC1000AA1AZ-F';
-        var qty = $('#qty'+level+no).val();
+        var qty = $('#qty'+nomor).val();
         $.ajax({
             url : baseurl + "MonitoringJobProduksi/Monitoring/searchSimulasi",
-            data : {item : item, qty : qty, level : (level+1)},
+            data : {item : item, qty : qty, level : (level+1), nomor : nomor},
             dataType : 'html',
             type : 'POST',
             beforeSend: function() {
-            $('#tr_simulasi'+level+no).html('<center><img style="width:50px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+            $('#tr_simulasi'+nomor).html('<center><img style="width:50px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
             },
             success : function(data) {
                 // console.log(level);
-                $('#tr_simulasi'+level+no).html(data);
+                $('#tr_simulasi'+nomor).html(data);
             }
         })
     }else{
-        $('#tr_simulasi'+level+no).css('display','none');   
-        $('#penanda'+level+no).val('off');
+        $('#tr_simulasi'+nomor).css('display','none');   
+        $('#penanda'+nomor).val('off');
     }
 }
 
@@ -132,7 +134,16 @@ function saveSetplan(no, tgl) {
     var id_plan = $('#id_plan'+no).val();
     var item    = $('#item'+no).val();
     var plan    = $('#plan'+no+tgl).val();
-    // console.log(bulan, item, plan, tgl)
+    var planall = $('[name="plan'+no+'[]"]').map(function(){return $(this).val();}).get();
+    
+    var sumplan = planall.map( function(elt){ // assure the value can be converted into a number
+      return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+    }).reduce( function(a,b){ // sum all resulting numbers
+      return a+b
+    })
+    $('#jml'+no).html(sumplan);
+
+    // console.log(sumplan)
     $.ajax({
         type: "POST",
         data: { bulan: bulan, item : item, plan : plan, tgl : tgl, id_plan : id_plan},
@@ -306,6 +317,7 @@ function saveCategory(th) {
         type : "POST",
         dataType: "html",
         success: function(data) {
+            $('#kategori').val('');
             if (data == 'oke') {
                 Swal.fire({
                     title: 'Kategori Berhasil Ditambahkan!',
@@ -314,7 +326,6 @@ function saveCategory(th) {
                 }).then(result => {
                     if (result.value) {
                         getMasterCategory(this);
-                        $('#kategori').val('');
                 }}) 
             }else{
                 Swal.fire({
@@ -324,7 +335,6 @@ function saveCategory(th) {
                 }).then(result => {
                     if (result.value) {
                         getMasterCategory(this);
-                        $('#kategori').val('');
                 }}) 
             }
         }
