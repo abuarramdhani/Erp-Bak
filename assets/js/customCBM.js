@@ -94,7 +94,7 @@ $( '#org').change(function() {
 				success:function(result)
 				{	
 					console.log(result);
-					if (result != '<option></option>') {
+					if (result != '') {
 						$("#alt").html(result);
 					}else{
 
