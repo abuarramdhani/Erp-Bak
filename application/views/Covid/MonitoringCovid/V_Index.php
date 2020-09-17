@@ -57,12 +57,12 @@
 											.dataTables_info {
 												float: left
 											}
-											td:not(:nth-child(2)) {
+											/*td:not(:nth-child(2)) {
 												text-overflow: ellipsis;
 												overflow: hidden;
 												white-space: nowrap;
 												max-width: 200px;
-											}
+											}*/
 										</style>
 										<table id="tbl-CVD-MonitoringCovid" class="table table-bordered table-hover table-striped">
 											<thead>
@@ -88,6 +88,12 @@
 													foreach ($data as $key => $value) {
 														$encrypted_string = $this->encrypt->encode($value['cvd_pekerja_id']);
 														$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+														if (!empty($value['isolasi_id'])) {
+															$encrypted_isolasi_id = $this->encrypt->encode($value['isolasi_id']);
+															$encrypted_isolasi_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_isolasi_id);
+														}else{
+															$encrypted_isolasi_id = "";
+														}
 														$stat = "not found";
 														if (isset($status) && !empty($status)) {
 															foreach ($status as $st) {
@@ -113,9 +119,21 @@
 																		<li>
 																			<a data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn-CVD-MonitoringCovid-Hapus">Hapus</a>
 																		</li>
+																		<?php 
+																		if (isset($encrypted_isolasi_id) && !empty($encrypted_isolasi_id)) {
+																			?>
 																		<li>
-																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Tambah/'.$encrypted_string) ?>">Isolasi</a>
+																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Ubah/'.$encrypted_isolasi_id.'/'.$encrypted_string) ?>">Ubah Memo Isolasi Mandiri</a>
 																		</li>
+																			<?php
+																		}else{
+																			?>
+																		<li>
+																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Tambah/'.$encrypted_string) ?>">Buat Memo Isolasi Mandiri</a>
+																		</li>
+																			<?php
+																		}
+																		?>
 																		<li>
 																			<a href="<?php echo base_url('Covid/MonitoringCovid/TidakIsolasi/'.$encrypted_string) ?>">Tidak Isolasi</a>
 																		</li>

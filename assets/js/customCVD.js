@@ -14,10 +14,10 @@ $(document).ready(function(){
             },
             'print', 'pageLength'
         ],
-		// "scrollX" : true,
-		// "fixedColumns":   {
-  //           leftColumns: 4
-  //       }
+		"scrollX" : true,
+		"fixedColumns":   {
+            leftColumns: 4
+        }
 	});
 
 	$('#slc-CVD-MonitoringCovid-Tambah-Pekerja').select2({

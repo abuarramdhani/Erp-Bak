@@ -54,8 +54,13 @@ class M_monitoringcovid extends CI_Model {
 					a.keterangan, 
 					a.mulai_isolasi, 
 					a.selesai_isolasi,
-					abs(extract(day from age(a.mulai_isolasi,a.selesai_isolasi))) as lama_isolasi,
-					a.created_by
+					jml_hari as lama_isolasi,
+					(
+						select concat(employee_code,' - ',employee_name)
+						from er.er_employee_all d
+						where d.employee_code = a.created_by
+					) as created_by,
+					a.isolasi_id
 				from cvd.cvd_pekerja a
 				inner join er.er_employee_all b 
 				on a.noind = b.employee_code
@@ -77,8 +82,13 @@ class M_monitoringcovid extends CI_Model {
 					a.keterangan, 
 					a.mulai_isolasi, 
 					a.selesai_isolasi,
-					abs(extract(day from age(a.mulai_isolasi,a.selesai_isolasi))) as lama_isolasi,
-					a.created_by
+					jml_hari as lama_isolasi,
+					(
+						select concat(employee_code,' - ',employee_name)
+						from er.er_employee_all d
+						where d.employee_code = a.created_by
+					) as created_by,
+					a.isolasi_id
 				from cvd.cvd_pekerja a
 				inner join er.er_employee_all b 
 				on a.noind = b.employee_code
@@ -170,7 +180,8 @@ class M_monitoringcovid extends CI_Model {
 					a.mulai_isolasi, 
 					a.selesai_isolasi,
 					a.keterangan,
-					a.created_by
+					a.created_by,
+					a.isolasi_id
 				from cvd.cvd_pekerja a
 				inner join er.er_employee_all b 
 				on a.noind = b.employee_code
@@ -195,7 +206,7 @@ class M_monitoringcovid extends CI_Model {
 	function getMemoIsolasiMandiriByPekerjaid($id){
 		$sql = "select isi_surat
 			from \"Surat\".tsurat_isolasi_mandiri
-			where cvd_pekerja_id = ? ";
+			where id_isolasi_mandiri = ? ";
 		return $this->personalia->query($sql, array($id))->row();
 	}
 

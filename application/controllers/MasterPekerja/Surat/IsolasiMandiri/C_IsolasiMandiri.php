@@ -217,6 +217,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$insert_id = $this->M_isolasimandiri->insertSuratIsolasiMandiri($data_insert);
 		if (isset($plaintext_string) && !empty($plaintext_string)) {
 			$data_pekerja = array(
+				'jml_hari' 			=> $this->input->post('txtMPSuratIsolasiMandiriJumlahHari'),
 				'status_kondisi_id' => '1',
 				'mulai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
 				'selesai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal'),
@@ -337,13 +338,14 @@ class C_IsolasiMandiri extends CI_Controller
 		return $number_array[$number];
 	}
 
-	public function Ubah($id_encoded){
+	public function Ubah($id_encoded,$encrypted_pekerja_id = FALSE){
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_encoded);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$id = $plaintext_string;
 
 		$data['data'] = $this->M_isolasimandiri->getSuratIsolasiMandiriById($id);
 		$data['id_encoded'] = $id_encoded;
+		$data['encrypted_pekerja_id'] = $encrypted_pekerja_id;
 
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
@@ -363,7 +365,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function update($id_encoded){
+	public function update($id_encoded,$encrypted_pekerja_id = FALSE){
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_encoded);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$id = $plaintext_string;
@@ -387,7 +389,23 @@ class C_IsolasiMandiri extends CI_Controller
 
 		$this->M_isolasimandiri->updateSuratIsolasiMandiriByID($data_update,$id);
 
-		redirect(base_url('MasterPekerja/Surat/SuratIsolasiMandiri'));
+		if ($encrypted_pekerja_id !== FALSE) {
+			$plaintext_pekerja_id = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_pekerja_id);
+			$plaintext_pekerja_id = $this->encrypt->decode($plaintext_pekerja_id);
+
+			$data_pekerja = array(
+				'jml_hari' 			=> $this->input->post('txtMPSuratIsolasiMandiriJumlahHari'),
+				'status_kondisi_id' => '1',
+				'mulai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
+				'selesai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal')
+			);
+			
+			$this->M_monitoringcovid->updatePekerjaById($data_pekerja,$plaintext_pekerja_id);
+			
+			redirect(base_url('Covid/MonitoringCovid'));
+		}else{
+			redirect(base_url('MasterPekerja/Surat/SuratIsolasiMandiri'));
+		}
 	}
 
 	public function ListPekerja(){

@@ -158,7 +158,9 @@ class C_MonitoringCovid extends CI_Controller
 			
 			$this->M_monitoringcovid->updatePekerjaById($data,$pekerja_id);
 
-
+			$wawancara = $this->M_monitoringcovid->getWawancaraIsolasiByPekerjaId($pekerja_id);
+			$id_wawancara = $wawancara->wawancara_id;
+			// echo $id_wawancara;exit();
 			$data = array(
 				'hasil_wawancara' => $hasil_wawancara,
 				'updated_date' => date('Y-m-d H:i:s'),
@@ -368,7 +370,10 @@ class C_MonitoringCovid extends CI_Controller
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-		$data['memo'] = $this->M_monitoringcovid->getMemoIsolasiMandiriByPekerjaid($plaintext_string);
+		$isolasi_id = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
+		// echo "<pre>";print_r($isolasi_id);exit();
+
+		$data['memo'] = $this->M_monitoringcovid->getMemoIsolasiMandiriByPekerjaid($isolasi_id->isolasi_id);
 		// print_r($data['memo'] );exit();
 		$this->load->library('pdf');
 
@@ -433,7 +438,7 @@ class C_MonitoringCovid extends CI_Controller
 
 		$data['id'] = $encrypted_id;
 		$data['data'] = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
-		$data['wawancara'] = $this->M_monitoringcovid->getWawancaraMasukByPekerjaId($plaintext_string);
+		$data['wawancara'] = $this->M_monitoringcovid->getWawancaraIsolasiByPekerjaId($plaintext_string);
 		if (!empty($data['wawancara'])) {
 			$data['lampiran'] = $this->M_monitoringcovid->getLampiranByWawancaraId($data['wawancara']->wawancara_id);
 		}

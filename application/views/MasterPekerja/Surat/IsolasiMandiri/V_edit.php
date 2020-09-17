@@ -19,7 +19,7 @@
 										if (isset($data) && !empty($data)) {
 											foreach ($data as $dt) {
 												?>
-										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Update/'.$id_encoded) ?>">
+										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Update/'.$id_encoded.(isset($encrypted_pekerja_id) ? '/'.$encrypted_pekerja_id : '')) ?>">
 											<div class="form-group">
 												<label class="control-label col-lg-4">No. Surat</label>
 												<div class="col-lg-4">
