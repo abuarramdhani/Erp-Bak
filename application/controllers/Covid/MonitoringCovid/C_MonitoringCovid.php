@@ -405,8 +405,8 @@ class C_MonitoringCovid extends CI_Controller
 					</td>
 				</tr>
 			</table>
-			<div style='background-color: black; height: 5px;'></div>
-			<div style='background-color: black; height: 5px;margin-top: 5px;'></div>");
+			<div style='background-color: black; height: 2px;'></div>
+			<div style='background-color: black; height: 2px;margin-top: 2px;'></div>");
 	    $pdf->WriteHTML(str_replace("MEMO", "", $data['memo']->isi_surat), 2);
 	    $pdf->Output($filename, 'I');
 	}
