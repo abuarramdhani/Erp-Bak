@@ -97,7 +97,7 @@ class C_Cetakbom extends CI_Controller
 
 	public function getAlternate(){
 		$term	= $this->input->post('segment1');
-		$html = '<option></option>';
+		$html = '';
 		$alternate = $this->M_cetakbom->getAlternate($term);
 			foreach ($alternate as $s) {
 				if ($s['ALTERNATE_BOM_DESIGNATOR'] == null) {
