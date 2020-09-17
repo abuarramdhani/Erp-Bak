@@ -2088,6 +2088,10 @@ $route['MasterPekerja/DataPekerjaAktif'] = 'MasterPekerja/Rekap/C_DataPekerjaAkt
 $route['MasterPekerja/DataPekerjaAktif/(:any)'] = 'MasterPekerja/Rekap/C_DataPekerjaAktif/$1';
 $route['MasterPekerja/DataPekerjaAktif/(:any)/(:any)'] = 'MasterPekerja/Rekap/C_DataPekerjaAktif/$1/$2';
 
+//-------------------------------- Disnaker -----------------------------------------------------
+$route['MasterPekerja/disnaker'] = 'MasterPekerja/Rekap/C_Disnaker/index';
+$route['MasterPekerja/disnaker/(:any)'] = 'MasterPekerja/Rekap/C_Disnaker/$1';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
