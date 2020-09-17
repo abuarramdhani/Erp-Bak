@@ -144,7 +144,10 @@ class C_Index extends CI_Controller
 		 */
 		// Object
 		$location = $this->M_pekerjakeluar->findLocation($pekerja->prop, $pekerja->kab, $pekerja->kec, $pekerja->desa);
-
+		if (!trim($pekerja->prop) || !trim($pekerja->kab) || !trim($pekerja->kec) || !trim($pekerja->desa)) {
+			$location = (object)array();
+		}
+		// debug($location);
 		$kodesie 		= $pekerja->kodesie;
 
 		// database erp.er_employee_all
@@ -185,14 +188,14 @@ class C_Index extends CI_Controller
 			'no_kk' 		        => $pekerja->no_kk,
 			/**Alamat Pekerja */
 			'alamat' 	          => $pekerja->alamat,
-			'desa_id'						=> @$location->id_kel ?: $pekerja->desa,
-			'desa' 		          => $pekerja->desa,
-			'kec_id'						=> @$location->id_kec ?: $pekerja->kec,
-			'kec' 		          => $pekerja->kec,
-			'kab_id'						=> @$location->id_kab ?: $pekerja->kab,
-			'kab' 		          => $pekerja->kab,
-			'prop_id'						=> @$location->id_prov ?: $pekerja->prop,
-			'prop' 		          => $pekerja->prop,
+			'desa_id'						=> @$location->id_kel ?: $pekerja->desa ?: NULL,
+			'desa' 		          => @$location->desa ?: $pekerja->desa ?: NULL,
+			'kec_id'						=> @$location->id_kec ?: $pekerja->kec ?: NULL,
+			'kec' 		          => @$location->kecamatan ?: $pekerja->kec ?: NULL,
+			'kab_id'						=> @$location->id_kab ?: $pekerja->kab ?: NULL,
+			'kab' 		          => @$location->kabupaten ?: $pekerja->kab ?: NULL,
+			'prop_id'						=> @$location->id_prov ?: $pekerja->prop ?: NULL,
+			'prop' 		          => @$location->provinsi ?: $pekerja->prop ?: NULL,
 			'kodepos' 	        => $pekerja->kodepos,
 			'statrumah' 	      => $pekerja->statrumah, // real data => RK|RS|R|-| 
 			'telepon' 	        => $pekerja->telepon,
