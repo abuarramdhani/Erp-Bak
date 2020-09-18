@@ -50,6 +50,16 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="box box-success">
+                            <div class="box-header with-border" style="font-weight: bold;">Persentase Penggunaan Item by Dept class</div>
+                            <div class="box-body">
+                                <div class="col-md-12" id="view_presentasi"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="box box-info">
                             <div class="box-header with-border" style="font-weight: bold;">DATA SARANA HANDLING</div>
                             <div class="box-body">

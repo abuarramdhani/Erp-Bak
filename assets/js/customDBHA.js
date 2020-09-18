@@ -65,6 +65,26 @@ $(document).ready(function () {
     });
   });
 });
+$(document).ready(function () {
+  var view = document.getElementById("view_presentasi");
+  if (view) {
+    var request = $.ajax({
+      url: baseurl + "DbHandling/MonitoringHandling/PresentaseItem",
+      beforeSend: function () {
+        $("div#view_presentasi").html(
+          '<center><img style="width:100px; height:auto" src="' +
+            baseurl +
+            'assets/img/gif/loading11.gif"></center>'
+        );
+      },
+    });
+    request.done(function (result) {
+      // console.log(result);
+      $("div#view_presentasi").html(result);
+    });
+  }
+});
+
 function showfilter() {
   var value = $("#filterselected").val();
   if (value == 1) {

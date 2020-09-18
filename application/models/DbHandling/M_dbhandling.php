@@ -423,4 +423,67 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $query = $this->personalia->query($sql);
         return $query->result_array();
     }
+    public function DeptclassODM()
+    {
+        $sql = "SELECT DISTINCT msib.segment1
+        ,msib.description
+        ,bor.ASSEMBLY_ITEM_ID
+        ,bd.DEPARTMENT_CLASS_CODE dept_class
+        from bom_operational_routings bor
+        ,bom_operation_sequences bos
+        ,bom_departments bd
+        ,bom_bill_of_materials bom
+        ,bom_inventory_components bic
+        ,mtl_system_items_b msib2
+        ,mtl_system_items_b msib
+        where bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
+        and bos.DISABLE_DATE is null
+        and bos.DEPARTMENT_ID = bd.department_id
+        and bor.ORGANIZATION_ID = bd.ORGANIZATION_ID
+        and bor.ALTERNATE_ROUTING_DESIGNATOR is null
+        and bos.OPERATION_SEQ_NUM = (select min(bos1.OPERATION_SEQ_NUM)
+        from bom_operation_sequences bos1
+        where bos1.ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+        and bos1.DISABLE_DATE is null)
+        and bd.DEPARTMENT_CLASS_CODE in ('HTM','MACHA','MACHB','MACHC','MACHD','WELD','ASSY','PACKG','PAINT.TKS','PRKTA','WHS', 'SUBKT') -------> Parameter
+        and msib.inventory_ITEM_ID = bor.ASSEMBLY_ITEM_ID
+        and msib.ORGANIZATION_ID = bor.ORGANIZATION_ID
+        and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+        and bom.bill_sequence_id = bic.bill_sequence_id
+        and bom.ASSEMBLY_ITEM_ID = msib.inventory_item_id
+        and bom.organization_id = msib.organization_id
+        and bic.COMPONENT_ITEM_ID = msib2.inventory_item_id
+        and bom.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+        and bom.ALTERNATE_BOM_DESIGNATOR is null
+        and bic.DISABLE_DATE is null
+        order by bd.DEPARTMENT_CLASS_CODE ASC";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    public function routingClassOPM()
+    {
+        $sql = "SELECT DISTINCT 
+        msib.segment1,
+        msib.DESCRIPTION,
+        msib.INVENTORY_ITEM_ID,
+        msib.PRIMARY_UOM_CODE,
+        grtb.ROUTING_CLASS
+    FROM mtl_system_items_b msib ,
+    gmd_recipe_validity_rules grvr ,
+    gmd_recipes_b grb ,
+    gmd_routings_b grtb
+      WHERE msib.INVENTORY_ITEM_ID  = grvr.INVENTORY_ITEM_ID
+      AND msib.ORGANIZATION_ID      = grvr.ORGANIZATION_ID
+      AND grvr.RECIPE_ID            = grb.RECIPE_ID
+      AND grvr.VALIDITY_RULE_STATUS = 700
+      AND grvr.END_DATE            IS NULL
+      AND grb.RECIPE_STATUS         = 700
+      AND grb.ROUTING_ID            = grtb.ROUTING_ID
+      AND grtb.ROUTING_CLASS        in ('SHMT','FDGR','PTAS')
+    ORDER BY grtb.ROUTING_CLASS";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
 }

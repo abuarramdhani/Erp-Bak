@@ -102,6 +102,81 @@ class C_Monhand extends CI_Controller
         $data['handling'] = $handling;
         $this->load->view('DbHandling/TIM/V_TblReqRevHand', $data);
     }
+    public function PresentaseItem()
+    {
+        $dataODM = $this->M_dbhandling->DeptclassODM();
+        $dataOPM = $this->M_dbhandling->routingClassOPM();
+
+        $arraymix = array();
+
+        for ($i = 0; $i < sizeof($dataODM); $i++) {
+            $arraytopush = array(
+                'item' => $dataODM[$i]['SEGMENT1'],
+                'class' => $dataODM[$i]['DEPT_CLASS'],
+            );
+            array_push($arraymix, $arraytopush);
+        }
+        for ($i = 0; $i < sizeof($dataOPM); $i++) {
+            $arraytopush = array(
+                'item' => $dataOPM[$i]['SEGMENT1'],
+                'class' => $dataOPM[$i]['ROUTING_CLASS'],
+            );
+            array_push($arraymix, $arraytopush);
+        }
+
+        $itempostgree = $this->M_dbhandling->selectdatahandling();
+
+        $presentase = '';
+        $tampung_class = array();
+        for ($w = 0; $w < sizeof($arraymix); $w++) {
+            $tampung_item_mix[$w] = $arraymix[$w]['item'];
+            for ($g = 0; $g < sizeof($itempostgree); $g++) {
+                if ($arraymix[$w]['item'] == $itempostgree[$g]['kode_komponen']) {
+                    if (!in_array($arraymix[$w]['class'], $tampung_class)) {
+                        $presentase[$arraymix[$w]['class']] = array(
+                            'class' => $arraymix[$w]['class'],
+                            'jml' => 1,
+                            'jml_asli' => 1,
+                        );
+                        array_push($tampung_class, $arraymix[$w]['class']);
+                    } else {
+                        $presentase[$arraymix[$w]['class']]['jml'] += 1;
+                    }
+                } else {
+                    if (!in_array($arraymix[$w]['class'], $tampung_class)) {
+                        $presentase[$arraymix[$w]['class']] = array(
+                            'class' => $arraymix[$w]['class'],
+                            'jml' => 0,
+                            'jml_asli' => 0,
+                        );
+                        array_push($tampung_class, $arraymix[$w]['class']);
+                    }
+                }
+            }
+            $presentase[$arraymix[$w]['class']]['jml_asli'] += 1;
+        }
+
+        $presentase['OTHER'] = array(
+            'class' => 'OTHER',
+            'jml' => 0,
+            'jml_asli' => 0,
+        );
+        for ($d = 0; $d < sizeof($itempostgree); $d++) {
+            if (!in_array($itempostgree[$d]['kode_komponen'], $tampung_item_mix)) {
+                $presentase['OTHER']['jml'] += 1;
+            }
+            $presentase['OTHER']['jml_asli'] += 1;
+        }
+
+        // echo "<pre>";
+        // print_r($presentase);
+        // exit();
+
+        $data['presentase'] = $presentase;
+
+
+        $this->load->view('DbHandling/TIM/V_Presentase', $data);
+    }
     public function loadviewdatahand()
     {
 
