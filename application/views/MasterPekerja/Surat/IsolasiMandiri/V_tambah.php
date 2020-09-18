@@ -15,7 +15,14 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Simpan') ?>">
+										<?php 
+										if (isset($encrypted_id) && !empty($encrypted_id)) {
+											$link = "/".$encrypted_id;
+										}else{
+											$link = "";
+										}
+										?>
+										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Simpan'.$link) ?>">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Kepada</label>
 												<div class="col-lg-4">
@@ -25,7 +32,15 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Pekerja</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Pekerja" name="slcMPSuratIsolasiMandiriPekerja" id="slcMPSuratIsolasiMandiriPekerja" style="width: 100%" required></select>
+													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Pekerja" name="slcMPSuratIsolasiMandiriPekerja" id="slcMPSuratIsolasiMandiriPekerja" style="width: 100%" required>
+														<?php 
+														if (isset($data) && !empty($data)) {
+															?>
+															<option value="<?php echo $data->noind ?>"><?php echo $data->noind.' - '.$data->nama; ?></option>
+															<?php
+														}
+														?>
+													</select>
 												</div>
 											</div>
 											<input type="hidden" name="txtMPSuratIsolasiMandiriSurat" id="txtMPSuratIsolasiMandiriSurat">
@@ -33,19 +48,19 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Wawancara</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriWawancaraTanggal" id="txtMPSuratIsolasiMandiriWawancaraTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" placeholder="Tanggal Wawancara" required>
+													<input type="text" name="txtMPSuratIsolasiMandiriWawancaraTanggal" id="txtMPSuratIsolasiMandiriWawancaraTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" placeholder="Tanggal Wawancara" required autocomplete="off">
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-4">Mulai Isolasi</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriMulaiIsolasiTanggal" id="txtMPSuratIsolasiMandiriMulaiIsolasiTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" placeholder="Tanggal Mulai Isolasi Mandiri" required>
+													<input type="text" name="txtMPSuratIsolasiMandiriMulaiIsolasiTanggal" id="txtMPSuratIsolasiMandiriMulaiIsolasiTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" placeholder="Tanggal Mulai Isolasi Mandiri" required autocomplete="off">
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-4">Selesai Isolasi</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal" id="txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" placeholder="Tanggal Selesai Isolasi Mandiri" required>
+													<input type="text" name="txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal" id="txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" placeholder="Tanggal Selesai Isolasi Mandiri" required autocomplete="off">
 												</div>
 											</div>
 											<div class="form-group">
@@ -66,7 +81,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tanggal Cetak</label>
 												<div class="col-lg-4">
-													<input type="text" name="txtMPSuratIsolasiMandiriCetakTanggal" id="txtMPSuratIsolasiMandiriCetakTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" placeholder="Tanggal Cetak Surat" required>
+													<input type="text" name="txtMPSuratIsolasiMandiriCetakTanggal" id="txtMPSuratIsolasiMandiriCetakTanggal" class="form-control txtMPSuratIsolasiMandiriTanggal" placeholder="Tanggal Cetak Surat" required autocomplete="off">
 												</div>
 											</div>
 											<div class="form-group">

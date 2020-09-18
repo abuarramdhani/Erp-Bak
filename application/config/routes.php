@@ -2037,6 +2037,7 @@ $route['MasterPekerja/Surat/SuratTugas/(:any)/(:any)'] = 'MasterPekerja/Surat/Tu
 $route['MasterPekerja/Surat/SuratIsolasiMandiri'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri';
 $route['MasterPekerja/Surat/SuratIsolasiMandiri/(:any)'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri/$1';
 $route['MasterPekerja/Surat/SuratIsolasiMandiri/(:any)/(:any)'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri/$1/$2';
+$route['MasterPekerja/Surat/SuratIsolasiMandiri/(:any)/(:any)/(:any)'] = 'MasterPekerja/Surat/IsolasiMandiri/C_IsolasiMandiri/$1/$2/$3';
 
 $route['MasterPekerja/Surat/Recycle'] = "MasterPekerja/Surat/Recycle/C_Recycle/index";
 $route['MasterPekerja/Surat/Recycle/Restore']['post'] = "MasterPekerja/Surat/Recycle/C_Recycle/restore";
@@ -4700,3 +4701,11 @@ $route['ConsumableSEKSI/Inputbon'] = 'Consumable/SEKSI/C_Bon';
 $route['ConsumableSEKSI/Inputbon/(:any)'] = 'Consumable/SEKSI/C_Bon/$1';
 $route['ConsumableSEKSI/Monitoringbon'] = 'Consumable/SEKSI/C_Monbon';
 $route['ConsumableSEKSI/Monitoringbon/(:any)'] = 'Consumable/SEKSI/C_Monbon/$1';
+
+//-------------------------------------------Tim Covid 19---------------------------------------//
+$route['Covid'] = 'Covid/C_Index';
+
+$route['Covid/MonitoringCovid'] = 'Covid/MonitoringCovid/C_MonitoringCovid';
+$route['Covid/MonitoringCovid/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1';
+$route['Covid/MonitoringCovid/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1/$2';
+$route['Covid/MonitoringCovid/(:any)/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1/$2/$3';
