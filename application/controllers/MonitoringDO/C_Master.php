@@ -408,7 +408,10 @@ class C_Master extends CI_Controller
                 array_push($hasil, $explode[0]);
             }
             $data['check_header_sub'] = $set;
-            $data['header_sub'] = $hasil;
+            foreach ($hasil as $key => $value) {
+              $tampungan[$value] = $value;
+            }
+            $data['header_sub'] = $tampungan;
         }
 
         if (!empty($id)) {
@@ -554,7 +557,10 @@ class C_Master extends CI_Controller
                 array_push($hasil, $explode[0]);
             }
             $data['check_header_sub'] = $set;
-            $data['header_sub'] = $hasil;
+            foreach ($hasil as $key => $value) {
+              $tampungan[$value] = $value;
+            }
+            $data['header_sub'] = $tampungan;
         }
 
         if (!empty($id)) {
