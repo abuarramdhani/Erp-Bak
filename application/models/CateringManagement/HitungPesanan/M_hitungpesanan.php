@@ -2028,7 +2028,7 @@ class M_hitungpesanan extends Ci_Model
 						group by tpri.tempat_makan, trim(tpres.noind)
 					) derivedtbl 
 					order by tempat_makan ";
-			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggali,$tanggali,$tanggali,$tanggali,$tanggali,$tanggali,$tanggali,$tanggal))->result_array();	
+			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$tanggal,$tanggal,$tanggal,$tanggal))->result_array();	
 		}
 	}
 
