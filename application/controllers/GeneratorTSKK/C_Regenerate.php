@@ -5379,8 +5379,8 @@ public function exportAgain($id){
     // echo $hasil_irregular;die;
 
     //checking the length based on cycle time too
-    $cycle_time = $last_finish + $jumlah_hasil_irregular + $takt_time;
-    $cycle_time_tanpa_irregular = $last_finish + $takt_time;
+    $cycle_time = $last_finish + $jumlah_hasil_irregular;
+    $cycle_time_tanpa_irregular = $last_finish;
     $cycleTimeText = $cycle_time + 3;
     // echo"<pre>"; echo $cycle_time;
     // echo"<pre>"; echo "KAGA";
