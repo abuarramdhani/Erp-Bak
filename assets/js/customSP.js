@@ -159,13 +159,33 @@ $(document).ready(function () {
         setDate: new Date()
     })
 
+    const monthNames = [
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember"
+    ];
+    const dateSP = new Date(),
+        tanggalSP = dateSP.getDate(),
+        bulanAwal = monthNames[dateSP.getMonth()],
+        tahunAwal = dateSP.getFullYear()
+
+
     $("#txt_tgl_SP").datepicker({
         format: 'd MM yyyy',
         todayHighlight: true,
         autoApply: true,
         autoclose: true,
         setDate: new Date()
-    })
+    }).val(tanggalSP + ' ' + bulanAwal + ' ' + tahunAwal)
 
     $("#txt_IK_hubker").datepicker({
         "format": 'yyyy-mm-dd',
@@ -383,7 +403,8 @@ $(document).ready(function () {
             kode.val('D')
             try_hubker.val('6')
             try_seleksi.val('6')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(6, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(6, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(6, 'month').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('6')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -394,7 +415,8 @@ $(document).ready(function () {
             kode.val('D')
             try_hubker.val('30')
             try_seleksi.val('30')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(30, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(30, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(30, 'month').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('30')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -405,7 +427,8 @@ $(document).ready(function () {
             kode.val('E')
             try_hubker.val('9')
             try_seleksi.val('9')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(9, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(9, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(9, 'month').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('9')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -416,7 +439,8 @@ $(document).ready(function () {
             kode.val('H')
             try_hubker.val('1.5')
             try_seleksi.val('1.5')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').add(15, 'days').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').add(15, 'days').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(45, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('24')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -427,7 +451,8 @@ $(document).ready(function () {
             kode.val('J')
             try_hubker.val('6')
             try_seleksi.val('6')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(6, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(6, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(6, 'month').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('24')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -438,7 +463,8 @@ $(document).ready(function () {
             kode.val('G')
             try_hubker.val('0')
             try_seleksi.val('6')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(6, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(6, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(6, 'month').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('6')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -448,7 +474,8 @@ $(document).ready(function () {
         } else if (a == '7') {
             kode.val('F')
             try_seleksi.val('1')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(30, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val(null)
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -470,7 +497,8 @@ $(document).ready(function () {
             kode.val('K')
             try_hubker.val('0')
             try_seleksi.val('1')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(30, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('3')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -481,7 +509,8 @@ $(document).ready(function () {
             kode.val('C')
             try_hubker.val('9')
             try_seleksi.val('9')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(9, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(9, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(9, 'month').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('9')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -492,7 +521,8 @@ $(document).ready(function () {
             kode.val('C')
             try_hubker.val('2.5')
             try_seleksi.val('2.5')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(2, 'month').add(15, 'days').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(2, 'month').add(15, 'days').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(75, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('24')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -503,7 +533,8 @@ $(document).ready(function () {
             kode.val('P')
             try_hubker.val('0')
             try_seleksi.val('1')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(30, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('3')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -513,7 +544,8 @@ $(document).ready(function () {
         } else if (a == '13') {
             kode.val('Q')
             try_seleksi.val('1')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(30, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val(null)
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -524,7 +556,8 @@ $(document).ready(function () {
             kode.val('C')
             try_hubker.val('0')
             try_seleksi.val('1')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(30, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('3')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -535,7 +568,8 @@ $(document).ready(function () {
             kode.val('T')
             try_hubker.val('1.5')
             try_seleksi.val('1.5')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').add(15, 'days').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').add(15, 'days').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(45, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('24')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -546,7 +580,8 @@ $(document).ready(function () {
             kode.val('N')
             try_hubker.val('0')
             try_seleksi.val('0')
-            elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').add(15, 'days').format('YYYY-MM-DD')
+            // elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').add(15, 'days').format('YYYY-MM-DD')
+            elaa = moment($('#txt_tgl_SP').val()).add(45, 'days').format('YYYY-MM-DD')
             $('#txt_lama_kontrak').val('6')
             $('#hide_tgl_Selesai_SP').attr('hidden', true)
             $('.hideAllHubker').removeClass('hide')
@@ -554,6 +589,7 @@ $(document).ready(function () {
             $('#LM_K_Hubker').attr('hidden', false)
             $('#tgl_ik_hubker').attr('hidden', true)
         }
+
         if (elaa != '') {
             $("#inp_tgl_angkat_SP").datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", elaa))
         }
@@ -561,10 +597,10 @@ $(document).ready(function () {
             if ($('#tgl_ik_hubker').attr('hidden', false)) {
                 let isi = try_hubker.val().split(/[,.]/)
                 if (isi[1]) {
-                    let DateFresh = moment($('#txt_tgl_SP').val(), ["LL"]).add(Number(3) + Number(isi[0]), 'month').add(15, 'days').format('YYYY-MM-DD')
+                    let DateFresh = moment($('#txt_tgl_SP').val()).add(Number(3) + Number(isi[0]), 'month').add('15', 'days').format('YYYY-MM-DD')
                     $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
                 } else {
-                    let DateFresh = moment($('#txt_tgl_SP').val(), ["LL"]).add(Number(3) + Number(isi[0]), 'month').format('YYYY-MM-DD')
+                    let DateFresh = moment($('#txt_tgl_SP').val()).add(Number(3) + Number(isi[0]), 'month').format('YYYY-MM-DD')
                     $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
                 }
             }
@@ -624,13 +660,18 @@ $(document).ready(function () {
 
     $('#txt_try_seleksi').on('keyup', function () {
         let isi = $(this).val().split(/[,.]/)
-        elaa = moment($('#txt_tgl_SP').val(), ['LL']).add($(this).val(), 'month').format('YYYY-MM-DD')
+        elaa = moment($('#txt_tgl_SP').val()).add($(this).val(), 'month').format('YYYY-MM-DD')
 
-        if (isi[1]) {
-            let newEla = moment($('#txt_tgl_SP').val(), ['LL']).add(isi[0], 'month').add(15, 'days').format('YYYY-MM-DD')
-            $('#inp_tgl_angkat_SP').val(newEla)
+        if (isi == 0 || !isi) {
+            let DateFresh = moment($('#txt_tgl_SP').val()).format('YYYY-MM-DD')
+            $('#inp_tgl_angkat_SP').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
         } else {
-            $('#inp_tgl_angkat_SP').val(elaa)
+            if (isi[1]) {
+                let newEla = moment($('#txt_tgl_SP').val()).add(isi[0], 'month').add('15', 'days').format('YYYY-MM-DD')
+                $('#inp_tgl_angkat_SP').val(newEla)
+            } else {
+                $('#inp_tgl_angkat_SP').val(elaa)
+            }
         }
     })
 
@@ -640,17 +681,22 @@ $(document).ready(function () {
             let DateFresh = moment($('#txt_tgl_SP').val()).add(Number(3), 'month').format('YYYY-MM-DD')
             $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
         } else {
-            let isi = $(this).val().split(/[,.]/)
+            let isi = $(this).val().split(/[,.]/),
+                DateFresh = moment($('#txt_tgl_SP').val()).add(Number(3) + Number(isi[0]), 'month').add(15, 'days').format('YYYY-MM-DD')
 
-            if (isi[1]) {
-                let DateFresh = moment($('#txt_tgl_SP').val(), ['LL']).add(Number(3) + Number(isi[0]), 'month').add(15, 'days').format('YYYY-MM-DD')
+            if (isi == 0 || !isi) {
+                let DateFresh = moment($('#txt_tgl_SP').val()).format('YYYY-MM-DD')
                 $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
             } else {
-                let DateFresh = moment($('#txt_tgl_SP').val(), ['LL']).add(Number(3) + Number(isi[0]), 'month').format('YYYY-MM-DD')
-                $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
+                if (isi[1]) {
+                    // let DateFresh = moment($('#txt_tgl_SP').val()).add(Number(3) + Number(isi[0]), 'month').add('15', 'days').format('YYYY-MM-DD')
+                    $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
+                } else {
+                    let DateFresh = moment($('#txt_tgl_SP').val()).add(Number(3) + Number(isi[0]), 'month').format('YYYY-MM-DD')
+                    $('#txt_IK_hubker').datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", DateFresh))
+                }
             }
         }
-
     })
 
     $('#slc_gol_pkj_SP').on('change', function () {
