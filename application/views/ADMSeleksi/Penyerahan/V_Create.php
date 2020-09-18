@@ -36,7 +36,7 @@
                                                 <div class="form-group">
                                                     <label for="txt_tgl_SP" class="col-lg-4 control-label text-left">Tanggal Penyerahan</label>
                                                     <div class="col-lg-5">
-                                                        <input type="text" name="txt_tgl_SP" class="form-control" id="txt_tgl_SP" value="<?php echo date('d F Y') ?>">
+                                                        <input type="text" name="txt_tgl_SP" class="form-control" id="txt_tgl_SP" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -189,7 +189,7 @@
                                                                 <div class="form-group">
                                                                     <label for="txt_try_hubker" class="col-lg-4 control-label">Lama Orientasi</label>
                                                                     <div class="col-lg-3">
-                                                                        <input type="text" name="txt_try_hubker" class="form-control" id="txt_try_hubker">
+                                                                        <input type="text" name="txt_try_hubker" class="form-control" id="txt_try_hubker" autocomplete="off">
                                                                     </div>
                                                                     <p for="txt_try_hubker" class="col-lg-1 control-label">Bulan</p>
                                                                 </div>
@@ -198,7 +198,7 @@
                                                                 <div class="form-group">
                                                                     <label for="txt_lama_kontrak" class="col-lg-4 control-label">Lama Kontrak</label>
                                                                     <div class="col-lg-3">
-                                                                        <input type="text" name="txt_lama_kontrak" class="form-control" id="txt_lama_kontrak">
+                                                                        <input type="text" name="txt_lama_kontrak" class="form-control" id="txt_lama_kontrak" autocomplete="off">
                                                                     </div>
                                                                     <p for="txt_lama_kontrak" class="col-lg-1 control-label">Bulan</p>
                                                                 </div>
@@ -223,7 +223,7 @@
                                                                 <div class="form-group">
                                                                     <label for="txt_try_seleksi" class="col-lg-4 control-label">Lama Trainee</label>
                                                                     <div class="col-lg-3">
-                                                                        <input type="text" name="txt_try_seleksi" class="form-control" id="txt_try_seleksi">
+                                                                        <input type="text" name="txt_try_seleksi" class="form-control" id="txt_try_seleksi" autocomplete="off">
                                                                     </div>
                                                                     <p for="txt_try_seleksi" class="col-lg-1 control-label">Bulan</p>
                                                                 </div>
