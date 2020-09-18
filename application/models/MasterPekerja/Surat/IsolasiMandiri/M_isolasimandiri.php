@@ -50,6 +50,7 @@ class M_isolasimandiri extends CI_Model
 	public function insertSuratIsolasiMandiri($data)
 	{
 		$this->personalia->insert("\"Surat\".tsurat_isolasi_mandiri", $data);
+		return $this->personalia->insert_id();
 	}
 
 	public function getSuratIsolasiMandiriAll()
