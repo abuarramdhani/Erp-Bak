@@ -1095,7 +1095,7 @@ class M_hitungpesanan extends Ci_Model
 
 	public function insertPesananTambahanDetail($id_tambahan,$noind){
 		$sql = "insert into \"Catering\".tpesanantambahan_detail 
-				(id_tambahan,trim(fs_noind),fs_nama,fs_ket) 
+				(id_tambahan,fs_noind,fs_nama,fs_ket) 
 				select ?,trim(noind),nama,jabatan 
 				From hrd_khs.tpribadi 
 				where trim(noind) = trim(?) ";
@@ -1611,7 +1611,7 @@ class M_hitungpesanan extends Ci_Model
 
 	public function insertPesananPenguranganDetail($id_pengurangan,$noind){
 		$sql = "insert into \"Catering\".tpenguranganpesanan_detail 
-				(id_pengurangan,trim(fs_noind),fs_nama,fs_ket) 
+				(id_pengurangan,fs_noind,fs_nama,fs_ket) 
 				select ?,trim(noind),nama,jabatan 
 				From hrd_khs.tpribadi 
 				where trim(noind) = trim(?) ";
