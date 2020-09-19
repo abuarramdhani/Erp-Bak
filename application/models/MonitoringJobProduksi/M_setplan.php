@@ -7,7 +7,7 @@ class M_setplan extends CI_Model
         parent::__construct();
         $this->load->database();    
         $this->oracle_dev = $this->load->database('oracle_dev', true);
-        $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
     }
     
     public function getCategory(){
