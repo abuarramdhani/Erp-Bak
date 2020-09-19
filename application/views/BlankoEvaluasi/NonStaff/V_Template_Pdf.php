@@ -274,9 +274,15 @@ function repeat($string, $x)
                           <?= $item['bulan'] . "<br>"; ?>
                         <?php endforeach; ?>
                       </td>
-                      <td style="vertical-align: top;">
+                      <td style="vertical-align: top; text-align: left; padding-left:10px;">
+                        <?php $is_valid = false; ?>
                         <?php foreach ($sp as $item) : ?>
-                          <?= "SP {$item['ke']} {$item['jenis']} {$item['ket']} <br>"; ?>
+                          <?= "SP {$item['ke']} {$item['jenis']}" . ((!$is_valid) ? $item['ket'] : '') . "<br>"; ?>
+                          <?php
+                          if ($item['ket']) {
+                            $is_valid = true;
+                          }
+                          ?>
                         <?php endforeach; ?>
                       </td>
                     </tr>
