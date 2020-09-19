@@ -29,6 +29,11 @@ class M_index extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
+    public function getAllNama()
+    {
+        return $this->personalia->query("SELECT DISTINCT noind, trim(nama) as nama FROM hrd_khs.tpribadi")->result_array();
+    }
+
     public function GetIzin($no_induk)
     {
         $sql = "SELECT a.*,
@@ -39,13 +44,138 @@ class M_index extends CI_Model
         return $query->result_array();
     }
 
-    public function getTujuanA()
+    public function getPerizinan($no_induk, $jenis)
+    {
+        $sql = "SELECT
+                *,
+                (select trim(nama) from hrd_khs.tpribadi where noind = ip.atasan) nama_atasan,
+                (select string_agg(concat(noind,' - ',trim(nama)),',') from hrd_khs.tpribadi where noind in 
+                (select noind from \"Surat\".tizin_pribadi_detail tpd where tpd.id = ip.id)
+                ) nama_pkj,
+                        case
+                            when ip.jenis_ijin in (1,3) then
+                            case
+                                when ip.verifikasi_satpam = '1' then 'Izin Keluar'
+                                when ip.verifikasi_satpam is null
+                                and ip.appr_atasan = '1' then 'Belum Verifikasi Satpam'
+                                when ip.verifikasi_satpam is null
+                                and ip.appr_atasan = '0' then 'Rejected Atasan'
+                                when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                            end
+                            when ip.jenis_ijin = 2 then
+                            case
+                                when ip.verifikasi_satpam = '1' then 'Izin Pulang'
+                                when ip.verifikasi_satpam is null
+                                and ip.appr_paramedik = '1' then 'Belum Verifikasi Satpam'
+                                when ip.verifikasi_satpam is null
+                                and ip.appr_paramedik = '0' then 'Rejected Paramedik'
+                                when ip.appr_paramedik is null
+                                and ip.appr_atasan = '1' then 'Periksa Paramedik'
+                                when ip.appr_paramedik is null
+                                and ip.appr_atasan = '0' then 'Rejected Atasan'
+                                when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                            end
+                        end status
+                    from
+                        \"Surat\".tizin_pribadi ip
+                    where ip.atasan = '$no_induk' and ip.jenis_ijin = '$jenis'
+                    order by
+                        ip.appr_atasan desc, ip.id desc";
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
+
+    public function getMergeIzin($atasan)
+    {
+        $sql = "SELECT 'A-'||a.izin_id izin_id,
+        a.created_date,
+        a.noind,
+        a.jenis_izin::int jenis_ijin,
+        (case when a.jenis_izin = '1' then 'DINAS PUSAT' when a.jenis_izin = '2' then 'DINAS TUKSONO' else 'DINAS MLATI' end) as jenis_izin,
+        case when a.status = '0' or a.status = '5' then 'Unapprove'
+        when a.status = '1' then 'Approve'
+        when a.status = '2' then 'Reject'
+        else 'Nothing'
+        end 
+        status,
+        a.keterangan,
+        a.atasan_aproval,
+        a.tujuan,
+        a.berangkat
+                        FROM \"Surat\".tperizinan a
+                        WHERE a.atasan_aproval = '$atasan'
+                            and a.status = '0'
+                            and a.created_date::date = now()::date
+        union
+        select
+        'B-'||ip.id izin_id,
+        ip.created_date,
+        ip.noind,
+        ip.jenis_ijin,
+        case when 
+        ip.jenis_ijin = '1' then 'IZIN KELUAR PRIBADI'
+        when ip.jenis_ijin = '2' then 'IZIN SAKIT PERUSAHAAN'
+        when ip.jenis_ijin = '3' then 'IZIN DINAS KELUAR PERUSAHAAN'
+        end jenis_izin,
+        case
+                            when ip.jenis_ijin in (1,3) then
+                            case
+                                when ip.verifikasi_satpam = '1' then 'Izin Keluar'
+                                when ip.verifikasi_satpam is null
+                                and ip.appr_atasan = '1' then 'Belum Verifikasi Satpam'
+                                when ip.verifikasi_satpam is null
+                                and ip.appr_atasan = '0' then 'Rejected Atasan'
+                                when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                            end
+                            when ip.jenis_ijin = 2 then
+                            case
+                                when ip.verifikasi_satpam = '1' then 'Izin Pulang'
+                                when ip.verifikasi_satpam is null
+                                and ip.appr_paramedik = '1' then 'Belum Verifikasi Satpam'
+                                when ip.verifikasi_satpam is null
+                                and ip.appr_paramedik = '0' then 'Rejected Paramedik'
+                                when ip.appr_paramedik is null
+                                and ip.appr_atasan = '1' then 'Periksa Paramedik'
+                                when ip.appr_paramedik is null
+                                and ip.appr_atasan = '0' then 'Rejected Atasan'
+                                when ip.appr_atasan is null then 'Menunggu Approval Atasan'
+                            end
+                        end status,
+        ip.keperluan,
+        ip.atasan,
+        ip.tujuan,
+        ip.wkt_keluar
+                    from
+                        \"Surat\".tizin_pribadi ip
+                    WHERE ip.status = '-'
+                        and ip.created_date::date = now()::date
+                        and ip.atasan = '$atasan'
+        order by created_date desc";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getTujuanTMP()
     {
         $sql = "SELECT distinct ti.izin_id, (select concat(noind, ' - ', trim(nama)) from hrd_khs.tpribadi where ti.noind = noind) as pekerja,
                 (case when a.izin_id::int = ta.izin_id::int then ta.tujuan else ti.tujuan end) tujuan
                 FROM \"Surat\".tperizinan a
                 LEFT JOIN \"Surat\".tpekerja_izin ti on ti.izin_id::int = a.izin_id::int
                 LEFT JOIN \"Surat\".taktual_izin ta on ta.izin_id::int = a.izin_id::int and ta.created_date::date = a.created_date::date and ti.noind = ta.noinduk";
+        return $this->personalia->query($sql)->result_array();
+    }
+    public function getTujuanA()
+    {
+        $sql = "SELECT distinct 'A-'||ti.izin_id izin_id, (select concat(noind, ' - ', trim(nama)) from hrd_khs.tpribadi where ti.noind = noind) as pekerja,
+        (case when a.izin_id::int = ta.izin_id::int then ta.tujuan else ti.tujuan end) tujuan
+        FROM \"Surat\".tperizinan a
+        LEFT JOIN \"Surat\".tpekerja_izin ti on ti.izin_id::int = a.izin_id::int
+        LEFT JOIN \"Surat\".taktual_izin ta on ta.izin_id::int = a.izin_id::int 
+        and ta.created_date::date = a.created_date::date and ti.noind = ta.noinduk
+        union
+        select 'B-'||ip.id izin_id,
+        (select concat(noind, ' - ', trim(nama)) from hrd_khs.tpribadi where ip.noind = noind) as pekerja,
+        ip.tujuan
+        from \"Surat\".tizin_pribadi ip";
         return $this->personalia->query($sql)->result_array();
     }
     public function getTujuanApprove()
