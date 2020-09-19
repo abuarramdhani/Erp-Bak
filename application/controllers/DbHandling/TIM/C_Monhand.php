@@ -44,9 +44,28 @@ class C_Monhand extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
+        $filterbyseksi = $this->M_dbhandling->select_seksi();
+        $filterbyproduk = $this->M_dbhandling->select_produk();
+        $filterbysarana = $this->M_dbhandling->select_sarana();
+
+        for ($i = 0; $i < sizeof($filterbysarana); $i++) {
+            $datasarana = $this->M_dbhandling->selectdatatoedit($filterbysarana[$i]['id_master_handling']);
+            if ($datasarana != null) {
+                $filterbysarana[$i]['kode'] = $datasarana[0]['kode_handling'];
+                $filterbysarana[$i]['nama'] = $datasarana[0]['nama_handling'];
+            } else {
+                $filterbysarana[$i]['kode'] = 'Invalid';
+                $filterbysarana[$i]['nama'] = 'Invalid';
+            }
+        }
+
+        $data['filterbyseksi'] = $filterbyseksi;
+        $data['filterbyproduk'] = $filterbyproduk;
+        $data['filterbysarana'] = $filterbysarana;
+
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
-        $this->load->view('DbHandling/TIM/V_MonHand');
+        $this->load->view('DbHandling/TIM/V_MonHand', $data);
         $this->load->view('V_Footer', $data);
     }
 
@@ -83,9 +102,98 @@ class C_Monhand extends CI_Controller
         $data['handling'] = $handling;
         $this->load->view('DbHandling/TIM/V_TblReqRevHand', $data);
     }
+    public function PresentaseItem()
+    {
+        $dataODM = $this->M_dbhandling->DeptclassODM();
+        $dataOPM = $this->M_dbhandling->routingClassOPM();
+
+        $arraymix = array();
+
+        for ($i = 0; $i < sizeof($dataODM); $i++) {
+            $arraytopush = array(
+                'item' => $dataODM[$i]['SEGMENT1'],
+                'class' => $dataODM[$i]['DEPT_CLASS'],
+            );
+            array_push($arraymix, $arraytopush);
+        }
+        for ($i = 0; $i < sizeof($dataOPM); $i++) {
+            $arraytopush = array(
+                'item' => $dataOPM[$i]['SEGMENT1'],
+                'class' => $dataOPM[$i]['ROUTING_CLASS'],
+            );
+            array_push($arraymix, $arraytopush);
+        }
+
+        $itempostgree = $this->M_dbhandling->selectdatahandling();
+
+        $presentase = '';
+        $tampung_class = array();
+        for ($w = 0; $w < sizeof($arraymix); $w++) {
+            $tampung_item_mix[$w] = $arraymix[$w]['item'];
+            for ($g = 0; $g < sizeof($itempostgree); $g++) {
+                if ($arraymix[$w]['item'] == $itempostgree[$g]['kode_komponen']) {
+                    if (!in_array($arraymix[$w]['class'], $tampung_class)) {
+                        $presentase[$arraymix[$w]['class']] = array(
+                            'class' => $arraymix[$w]['class'],
+                            'jml' => 1,
+                            'jml_asli' => 1,
+                        );
+                        array_push($tampung_class, $arraymix[$w]['class']);
+                    } else {
+                        $presentase[$arraymix[$w]['class']]['jml'] += 1;
+                    }
+                } else {
+                    if (!in_array($arraymix[$w]['class'], $tampung_class)) {
+                        $presentase[$arraymix[$w]['class']] = array(
+                            'class' => $arraymix[$w]['class'],
+                            'jml' => 0,
+                            'jml_asli' => 0,
+                        );
+                        array_push($tampung_class, $arraymix[$w]['class']);
+                    }
+                }
+            }
+            $presentase[$arraymix[$w]['class']]['jml_asli'] += 1;
+        }
+
+        $presentase['OTHER'] = array(
+            'class' => 'OTHER',
+            'jml' => 0,
+            'jml_asli' => 0,
+        );
+        for ($d = 0; $d < sizeof($itempostgree); $d++) {
+            if (!in_array($itempostgree[$d]['kode_komponen'], $tampung_item_mix)) {
+                $presentase['OTHER']['jml'] += 1;
+            }
+            $presentase['OTHER']['jml_asli'] += 1;
+        }
+
+        // echo "<pre>";
+        // print_r($presentase);
+        // exit();
+
+        $data['presentase'] = $presentase;
+
+
+        $this->load->view('DbHandling/TIM/V_Presentase', $data);
+    }
     public function loadviewdatahand()
     {
-        $datahandling = $this->M_dbhandling->selectdatahandling();
+
+        $sarana = $this->input->post('sarana');
+        $produk = $this->input->post('produk');
+        $seksi = $this->input->post('seksi');
+
+        if ($sarana != null) {
+            $datahandling = $this->M_dbhandling->selectdatahandlingbysarana($sarana);
+        } else if ($produk != null) {
+            $datahandling = $this->M_dbhandling->selectdatahandlingbyprod($produk);
+        } else if ($seksi != null) {
+            $datahandling = $this->M_dbhandling->selectdatahandlingseksi($seksi);
+        } else {
+            $datahandling = $this->M_dbhandling->selectdatahandling();
+        }
+
         for ($i = 0; $i < sizeof($datahandling); $i++) {
             $sarana_handling = $this->M_dbhandling->selectdatatoedit($datahandling[$i]['id_master_handling']);
             if ($sarana_handling == null) {
@@ -727,6 +835,13 @@ class C_Monhand extends CI_Controller
         // echo "<pre>";
         // print_r($stats_kmp);
         // exit();
+
+        $ListSeksi = $this->M_dbhandling->listSeksirev($dataHandrev[0]['seksi']);
+
+        $optseksi = '';
+        for ($i = 0; $i < sizeof($ListSeksi); $i++) {
+            $optseksi .= '<option value ="' . $ListSeksi[$i]['seksi'] . '">' . $ListSeksi[$i]['seksi'] . '</option>';
+        }
         $stats_kmp_All = $this->M_dbhandling->selectstatuskomp();
         if ($stats_kmp == null) {
             $dataHandrev[0]['status_komp'] = 'Invalid';
@@ -1029,7 +1144,7 @@ class C_Monhand extends CI_Controller
             </div>
             <div class="panel-body">
                 <div class="col-md-3" style="text-align:right;"><label>Seksi</label></div>
-                <div class="col-md-8"><input type="text" name="seksi_handling" class="form-control" value="' . $dataHandrev[0]['seksi'] . '"/></div>
+                <div class="col-md-8"><select style="width:100%" class="form-control select2" id="seksi_handling" name="seksi_handling"><option value="' . $dataHandrev[0]['seksi'] . '">' . $dataHandrev[0]['seksi'] . '</option>' . $optseksi . '</select></div>
             </div>
             ' . $selectProses . '
             <div class="prosesawal">
@@ -1334,5 +1449,12 @@ class C_Monhand extends CI_Controller
     {
         $id = $this->input->post('id');
         $this->M_dbhandling->updatereject($id);
+    }
+    public function suggestseksi()
+    {
+        $term = $this->input->get('term', TRUE);
+        $term = strtoupper($term);
+        $data = $this->M_dbhandling->select2_seksi($term);
+        echo json_encode($data);
     }
 }

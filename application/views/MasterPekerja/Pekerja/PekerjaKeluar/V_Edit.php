@@ -210,11 +210,7 @@
 															<h3>Data Pribadi</h3>
 															<div class="mt-20">
 																<div style="width: 3cm; height: 4cm; background-color: #e8e8e8; margin: 0 auto; position: relative;">
-																	<!-- <img style="width: 100%;" src="<?= $data['photo_base64'] ?>"> -->
-																	<img style="width: 100%;" src="<?= $data['photo'] ?>">
-																	<!-- <div class="toolbar" style="display: none; top: 0; left: 0; right: 0; bottom: 0; background-color: #e8e8e8;z-index: 2">
-																		Hello
-																	</div> -->
+																	<img style="width: 100%; height: 100%;" src="<?= $data['photo'] ?>">
 																</div>
 															</div>
 															<div class="row mt-20">
@@ -336,20 +332,12 @@
 															</div>
 															<div class="row mt-10">
 																<div class="col-lg-4">
-																	<label for="PK_txt_provinsiPekerja">Provinsi </label>
+																	<label for="select-desa">Desa </label>
 																</div>
 																<div class="col-lg-8">
-																	<!-- <input typereadonly
-																</div>
-															</div>
-															<div class="row mt-10">
-																<div class="col-lg-4">
-																	<label for="PK_txt_kabupatenPekerja">Kabupaten </label>
-																</div>
-																<div class="col-lg-8">
-																	<!-- <input type="text" name="kab" id="" class="form-control" value="<?= $data['kab'] ?>"> -->
-																	<select name="kab" id="select-kabupaten" class="form-control">
-																		<option value="<?= $data['kab_id'] ?>" selected><?= $data['kab'] ?></option>
+																	<!-- <input type="text" name="desa" id="" class="form-control uppercase" value="<?= $data['desa'] ?>"> -->
+																	<select name="desa" id="select-desa" class="form-control">
+																		<option value="<?= $data['desa_id'] ?>" selected><?= $data['desa'] ?></option>
 																	</select>
 																</div>
 															</div>
@@ -366,12 +354,22 @@
 															</div>
 															<div class="row mt-10">
 																<div class="col-lg-4">
-																	<label for="select-desa">Desa </label>
+																	<label for="PK_txt_kabupatenPekerja">Kabupaten </label>
 																</div>
 																<div class="col-lg-8">
-																	<!-- <input type="text" name="desa" id="" class="form-control uppercase" value="<?= $data['desa'] ?>"> -->
-																	<select name="desa" id="select-desa" class="form-control">
-																		<option value="<?= $data['desa_id'] ?>" selected><?= $data['desa'] ?></option>
+																	<!-- <input type="text" name="kab" id="" class="form-control" value="<?= $data['kab'] ?>"> -->
+																	<select name="kab" id="select-kabupaten" class="form-control">
+																		<option value="<?= $data['kab_id'] ?>" selected><?= $data['kab'] ?></option>
+																	</select>
+																</div>
+															</div>
+															<div class="row mt-10">
+																<div class="col-lg-4">
+																	<label for="PK_txt_provinsiPekerja">Provinsi </label>
+																</div>
+																<div class="col-lg-8">
+																	<select name="prop" id="select-provinsi" class="form-control">
+																		<option value="<?= $data['prop_id'] ?>" selected><?= $data['prop'] ?></option>
 																	</select>
 																</div>
 															</div>
@@ -509,7 +507,7 @@
 																	<label for="PK_txt_alamatPekerja">Jumlah Anak </label>
 																</div>
 																<div class="col-lg-4">
-																	<input type="number" name="jumanak" id="" class="form-control numberOnly" value="<?= $data['jumanak'] ?>">
+																	<input type="number" name="jumanak" id="" class="form-control numberOnly" value="<?= $data['jumanak'] ?>" readonly>
 																</div>
 															</div>
 															<div class="row mt-10">
@@ -517,7 +515,7 @@
 																	<label for="PK_txt_alamatPekerja">Jumlah Saudara </label>
 																</div>
 																<div class="col-lg-4">
-																	<input type="number" name="jumsdr" id="" class="form-control numberOnly" value="<?= $data['jumsdr'] ?>">
+																	<input type="number" name="jumsdr" id="" class="form-control numberOnly" value="<?= $data['jumsdr'] ?>" readonly>
 																</div>
 															</div>
 														</div>
@@ -796,8 +794,8 @@
 																		?>
 																		<p>
 																			<!-- ini nanti pakai alur sendiri -->
-																			Kantor Asal : <span id="kantor_asal_text"><?= $kantor_asal[0]['lokasi_kerja'] ?></span> <br>
-																			Lokasi Kerja : <span id="lokasi_kerja_text"><?= $lokasi_kerja[0]['lokasi_kerja'] ?></span>
+																			Kantor Asal : <span id="kantor_asal_text"><?= @$kantor_asal[0]['lokasi_kerja'] ?: '-' ?></span> <br>
+																			Lokasi Kerja : <span id="lokasi_kerja_text"><?= @$lokasi_kerja[0]['lokasi_kerja'] ?: '-' ?></span>
 																		</p>
 																	</div>
 																</div>

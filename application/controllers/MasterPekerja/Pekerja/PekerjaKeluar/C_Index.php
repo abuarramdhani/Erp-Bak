@@ -144,7 +144,10 @@ class C_Index extends CI_Controller
 		 */
 		// Object
 		$location = $this->M_pekerjakeluar->findLocation($pekerja->prop, $pekerja->kab, $pekerja->kec, $pekerja->desa);
-
+		if (!trim($pekerja->prop) || !trim($pekerja->kab) || !trim($pekerja->kec) || !trim($pekerja->desa)) {
+			$location = (object)array();
+		}
+		// debug($location);
 		$kodesie 		= $pekerja->kodesie;
 
 		// database erp.er_employee_all
@@ -161,6 +164,8 @@ class C_Index extends CI_Controller
 
 		// array
 		$lokasikerja = $this->M_pekerjakeluar->getLokasiKerja();
+		// prevent lokasikerja or asal_lokasi is -
+		array_push($lokasikerja, ['id_' => '-', 'lokasi_kerja' => '-']);
 		$sebabkeluar = $this->M_pekerjakeluar->getSebabKeluar();
 		$listJabatanDL = $this->M_pekerjakeluar->getListJabatanDL();
 		$listAnggotaKel = $this->M_pekerjakeluar->getListAnggotaKeluarga();
@@ -183,14 +188,14 @@ class C_Index extends CI_Controller
 			'no_kk' 		        => $pekerja->no_kk,
 			/**Alamat Pekerja */
 			'alamat' 	          => $pekerja->alamat,
-			'desa_id'						=> @$location->id_kel ?: $pekerja->desa,
-			'desa' 		          => $pekerja->desa,
-			'kec_id'						=> @$location->id_kec ?: $pekerja->kec,
-			'kec' 		          => $pekerja->kec,
-			'kab_id'						=> @$location->id_kab ?: $pekerja->kab,
-			'kab' 		          => $pekerja->kab,
-			'prop_id'						=> @$location->id_prov ?: $pekerja->prop,
-			'prop' 		          => $pekerja->prop,
+			'desa_id'						=> @$location->id_kel ?: $pekerja->desa ?: NULL,
+			'desa' 		          => @$location->desa ?: $pekerja->desa ?: NULL,
+			'kec_id'						=> @$location->id_kec ?: $pekerja->kec ?: NULL,
+			'kec' 		          => @$location->kecamatan ?: $pekerja->kec ?: NULL,
+			'kab_id'						=> @$location->id_kab ?: $pekerja->kab ?: NULL,
+			'kab' 		          => @$location->kabupaten ?: $pekerja->kab ?: NULL,
+			'prop_id'						=> @$location->id_prov ?: $pekerja->prop ?: NULL,
+			'prop' 		          => @$location->provinsi ?: $pekerja->prop ?: NULL,
 			'kodepos' 	        => $pekerja->kodepos,
 			'statrumah' 	      => $pekerja->statrumah, // real data => RK|RS|R|-| 
 			'telepon' 	        => $pekerja->telepon,
@@ -506,10 +511,10 @@ class C_Index extends CI_Controller
 			$noind = $this->input->post('noind');
 			if (empty($noind)) throw new Exception("Noind param is empty");
 
-			$prov = $this->input->post('prop') ? $this->M_pekerjakeluar->ambilProv($this->input->post('prop')) : ''; // string
-			$kab 	= $this->input->post('kab') ? $this->M_pekerjakeluar->ambilKab($this->input->post('kab')) : ''; // string
-			$kec 	= $this->input->post('kec') ? $this->M_pekerjakeluar->ambilKec($this->input->post('kec')) : ''; // string
-			$desa = $this->input->post('desa') ? $this->M_pekerjakeluar->ambilDesa($this->input->post('desa')) : ''; // string
+			$prov = $this->input->post('prop') ? ($this->M_pekerjakeluar->ambilProv($this->input->post('prop')) ?: $this->input->post('prop')) : ''; // string
+			$kab 	= $this->input->post('kab') ? ($this->M_pekerjakeluar->ambilKab($this->input->post('kab')) ?: $this->input->post('kab')) : ''; // string
+			$kec 	= $this->input->post('kec') ? ($this->M_pekerjakeluar->ambilKec($this->input->post('kec')) ?: $this->input->post('kec')) : ''; // string
+			$desa = $this->input->post('desa') ? ($this->M_pekerjakeluar->ambilDesa($this->input->post('desa')) ?: $this->input->post('desa')) : ''; // string
 
 			/**
 			 * @database Personalia
@@ -684,12 +689,15 @@ class C_Index extends CI_Controller
 			/**
 			 * INSERT Log di hrd_khs.tlog
 			 */
+			$jenis = "SAVE->MODIFIKASI DATA PEKERJA";
+			$jenis .= (isset($tpribadi['keluar']) && $tpribadi['keluar'] == 't') ? "(KELUAR)" : '';
+
 			$log = array(
 				'wkt' => date('Y-m-d H:i:s'),
-				'menu' => 'FILE->PEKERJA',
+				'menu' => 'FILE->PEKERJA(ERP)',
 				'ket'	=> "NOIND->$noind",
 				'noind' => $user_logged,
-				'jenis' => "SAVE->MODIFIKASI DATA PEKERJA" . @$tpribadi['keluar'] == 't' ? "(KELUAR)" : '',
+				'jenis' => $jenis,
 				'program' => 'PEKERJA'
 			);
 
@@ -912,10 +920,15 @@ class C_Index extends CI_Controller
 			$noind = $this->input->get('noind');
 
 			$family /* Array */ = $this->M_pekerjakeluar->getFamily($noind);
+			$familyCount = $this->M_pekerjakeluar->getFamilyCount($noind);
 
 			Response::json(json_encode(array(
 				'success' => true,
-				'data' => $family
+				'data' => $family,
+				'count' => [
+					'childs' => $familyCount->count_childs,
+					'siblings' => $familyCount->count_siblings
+				]
 			)));
 		} catch (Exception $e) {
 			Response::json(json_encode(array(
@@ -939,14 +952,14 @@ class C_Index extends CI_Controller
 
 			if (!$noind || !$data) throw "Bad Request (Empty Param)";
 
-			// TODO: Parsing variable into model
-			// debug([$noind, $data]);
-
 			$data['noind'] = $noind;
-			$data['tgllahir'] = (new DateTime($data['tgllahir']))->format('Y-m-d') ?: '1900-01-01';
+			$data['tgllahir'] = $data['tgllahir'] ? (new DateTime($data['tgllahir']))->format('Y-m-d') : '1900-01-01';
 
 			$execute = $this->M_pekerjakeluar->insertFamily($data);
 			if (!$execute) throw new Exception("Error When Inserting to database");
+
+			// update count of child & sibling in hrd_khs.tpribadi
+			$this->M_pekerjakeluar->updateCountFamily($noind);
 
 			Response::json(json_encode(array(
 				'success' => true,
@@ -980,6 +993,9 @@ class C_Index extends CI_Controller
 			$execute = $this->M_pekerjakeluar->updateFamily($noind, $nokel, $data);
 			if (!$execute) throw new Exception("Error When Update to database");
 
+			// update count of child & sibling in hrd_khs.tpribadi
+			$this->M_pekerjakeluar->updateCountFamily($noind);
+
 			Response::json(json_encode(array(
 				'success' => true,
 				'message' => "Success update member family $nokel for $noind"
@@ -1009,6 +1025,9 @@ class C_Index extends CI_Controller
 			$execute = $this->M_pekerjakeluar->deleteFamily($noind, $nokel);
 			if (!$execute) throw new Exception("Error When Deleting to database");
 
+			// update count of child & sibling in hrd_khs.tpribadi
+			$this->M_pekerjakeluar->updateCountFamily($noind);
+
 			Response::json(json_encode(array(
 				'success' => true,
 				'message' => "Success delete member family $nokel for $noind"
@@ -1020,7 +1039,6 @@ class C_Index extends CI_Controller
 			)), 400);
 		}
 	}
-
 
 	public function provinsiPekerja()
 	{

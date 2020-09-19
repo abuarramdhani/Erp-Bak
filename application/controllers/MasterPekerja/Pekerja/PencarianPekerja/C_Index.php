@@ -135,7 +135,16 @@ class C_Index extends CI_Controller
         );
       }
       // end stolen
-      // debug($data);
+
+      /**
+       * For Debugging
+       */
+      $number_cell_type = @$_GET['type'] ?: null;
+      $file_format = @$_GET['format'] ?: ".xlsx";
+      $excel_type = @$_GET['excel'] ?: 'Excel5';
+      if (isset($_GET['debug'])) debug($data);
+      if (isset($_GET['phpinfo'])) return phpinfo();
+
       // set property
       $objPHPExcel
         ->getProperties()
@@ -145,7 +154,7 @@ class C_Index extends CI_Controller
         ->setDescription("Pekerja")
         ->setKeywords("Pekerja");
 
-      // CORE VAROABLE
+      // CORE VARIABLE
       // maybe later
       $alphabet = range('A', 'Z');
       // debug($alphabet);
@@ -213,14 +222,16 @@ class C_Index extends CI_Controller
         $cellB = 'B';
         foreach ($item as $key => $value) {
           $cell = $cellB++ . $startRow;
-          $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle($cell)->applyFromArray($EXCEL_STYLE['bordered']);
-          // with long number example
-          // $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle('E' . $x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
-
-          // set cell format to number
           if (in_array($key, $column_with_number)) {
-            $objPHPExcel->getActiveSheet()->getStyle($cell)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+            // with long number example
+            $objPHPExcel->getActiveSheet()->getStyle($cell)->getNumberFormat()->setFormatCode($number_cell_type ?: PHPExcel_Style_NumberFormat::FORMAT_TEXT);
           }
+
+          $objPHPExcel->getActiveSheet()->setCellValueExplicit($cell, $value, PHPExcel_Cell_DataType::TYPE_STRING)->getStyle($cell)->applyFromArray($EXCEL_STYLE['bordered']);
+          // $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle($cell)->applyFromArray($EXCEL_STYLE['bordered']);
+
+          // $objPHPExcel->getActiveSheet()->setCellValue($cell, $value)->getStyle('E' . $x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
+          // set cell format to number
         }
         $startRow++;
       }
@@ -234,15 +245,15 @@ class C_Index extends CI_Controller
       }
 
       // Send response header in Excel format
-      $filename = urlencode("PencarianPekerja-" . date('YmdHis') . ".xlsx");
-      header('Content-Type: application/vnd.ms-excel'); //mime type
-      header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
-      header('Cache-Control: max-age=0'); //no cache
+      $filename = urlencode("PencarianPekerja-" . date('YmdHis') . ".$file_format");
+      header('Content-Type: application/vnd.ms-excel'); // mime type
+      header('Content-Disposition: attachment;filename="' . $filename . '"'); // tell browser what's the file name
+      header('Cache-Control: max-age=0'); // no cache
 
-      $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
+      $objWriter = IOFactory::createWriter($objPHPExcel, $excel_type);
       $objWriter->save('php://output');
     } catch (Exception $error) {
-      echo "erorr data not valid, system error :(";
+      echo "error data not valid or system error :(";
     }
   }
 }

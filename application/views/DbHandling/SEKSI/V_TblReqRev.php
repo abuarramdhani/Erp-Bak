@@ -31,7 +31,7 @@
                             $bold = '';
                         } ?>
                         <td class="text-center" style="color: <?= $color ?>;font-weight:<?= $bold ?>;"><?= $hand['sarana'] ?></td>
-                        <td class="text-center"><button class="btn btn-default" formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/detaildatahandling/' . $hand['id_handling']); ?>">Detail</button></td>
+                        <td class="text-center"><button class="btn btn-default btn-xs" formaction="<?php echo base_url('DbHandlingSeksi/MonitoringHandling/detaildatahandling/' . $hand['id_handling']); ?>">Detail</button></td>
                     </tr>
                 <?php $n++;
                 } ?>

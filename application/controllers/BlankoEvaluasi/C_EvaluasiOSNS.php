@@ -6,6 +6,14 @@
 
 defined('BASEPATH') or exit('you cannot enter here');
 
+//helper
+function month($num)
+{
+    if ($num > 12) return 'unknown';
+    $indoMonth = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    return $indoMonth[$num - 1];
+}
+
 class C_EvaluasiOSNS extends CI_Controller
 {
     function __construct()
@@ -259,13 +267,6 @@ class C_EvaluasiOSNS extends CI_Controller
     {
         if (!$date) return null;
 
-        function month($num)
-        {
-            if ($num > 12) return 'unknown';
-            $indoMonth = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            return $indoMonth[$num - 1];
-        }
-
         $month = date('m', strtotime($date));
         $year = date('Y', strtotime($date));
 
@@ -276,10 +277,19 @@ class C_EvaluasiOSNS extends CI_Controller
     {
         $sp = $this->M_blankoevaluasi->getSP($noind, $from, $to);
 
-        $sp = array_map(function ($item) {
+        $roman_number = [
+            '1' => 'I',
+            '2' => 'II',
+            '3' => 'III',
+            '4' => 'IV'
+        ];
+
+        $sp = array_map(function ($item) use ($roman_number) {
             return array(
+                'ke'    => $item['sp_ke'],
                 'bulan' => $this->dateToIndo($item['awal']),
-                'jenis' => $item['jenis']
+                'jenis' => $item['jenis'],
+                'ket'   => $item['ket']
             );
         }, $sp);
 

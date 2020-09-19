@@ -547,16 +547,18 @@ class C_Cetak extends CI_Controller {
 				$idunix				= $this->makeID($data['kode_barang'][$i]);
 				$kodebarang = $data['kode_barang'][$i];
 				$nama_barang = $this->M_cetak->getNamaBarang($kodebarang);
-				$data['nama_barang'][$i] = $nama_barang['0']['DESCRIPTION'];
-				$cek_data = [
-					'kode_barang' => $data['kode_barang'][$i],
-					'cost_center' => $data['cost_center'][$i],
-					'nama_barang' => $data['nama_barang'][$i],
-					'nomor_bppct' => $data['no_bppbgt'][$i]
-				];
-				$cek = $this->M_cetak->cekdata($cek_data);
-				if (empty($cek)) {
-					$this->M_cetak->insert($idunix,$data['kode_barang'][$i],$data['cost_center'][$i],$data['nama_barang'][$i],$data['no_bppbgt'][$i]);
+				if (!empty($nama_barang)) {
+					$data['nama_barang'][$i] = $nama_barang['0']['DESCRIPTION'];
+					$cek_data = [
+						'kode_barang' => $data['kode_barang'][$i],
+						'cost_center' => $data['cost_center'][$i],
+						'nama_barang' => $data['nama_barang'][$i],
+						'nomor_bppct' => $data['no_bppbgt'][$i]
+					];
+					$cek = $this->M_cetak->cekdata($cek_data);
+					if (empty($cek)) {
+						$this->M_cetak->insert($idunix,$data['kode_barang'][$i],$data['cost_center'][$i],$data['nama_barang'][$i],$data['no_bppbgt'][$i]);
+					}
 				}
     		array_push($data['idunix'], $idunix);
     	}
@@ -686,24 +688,24 @@ class C_Cetak extends CI_Controller {
 			$data['no_bppbgt'] 		= $this->input->post('no_bppbgt[]');
 			$data['jumlah_cetak'] 	= $this->input->post('jumlah_cetak[]');
 			$data['idunix'] = [];
-
 			for ($i=0; $i < sizeof($data['kode_barang']); $i++) {
 				$nama_barang = $this->M_cetak->getNamaBarang($data['kode_barang'][$i]);
-				$data['nama_barang'][$i] = $nama_barang['0']['DESCRIPTION'];
+				if (!empty($nama_barang)) {
+					$data['nama_barang'][$i] = $nama_barang['0']['DESCRIPTION'];
 
-				$idunix = $this->makeID($data['kode_barang'][$i]);
+					$idunix = $this->makeID($data['kode_barang'][$i]);
 
-				$cek_data = [
-					'kode_barang' => $data['kode_barang'][$i],
-					'cost_center' => $data['cost_center'][$i],
-					'nama_barang' => $data['nama_barang'][$i],
-					'nomor_bppct' => $data['no_bppbgt'][$i]
-				];
-				$cek = $this->M_cetak->cekdata($cek_data);
-				if (empty($cek)) {
-					$this->M_cetak->insert($idunix,$data['kode_barang'][$i],$data['cost_center'][$i],$data['nama_barang'][$i],$data['no_bppbgt'][$i]);
+					$cek_data = [
+						'kode_barang' => $data['kode_barang'][$i],
+						'cost_center' => $data['cost_center'][$i],
+						'nama_barang' => $data['nama_barang'][$i],
+						'nomor_bppct' => $data['no_bppbgt'][$i]
+					];
+					$cek = $this->M_cetak->cekdata($cek_data);
+					if (empty($cek)) {
+						$this->M_cetak->insert($idunix,$data['kode_barang'][$i],$data['cost_center'][$i],$data['nama_barang'][$i],$data['no_bppbgt'][$i]);
+					}
 				}
-
 				array_push($data['idunix'], $idunix);
 			}
 

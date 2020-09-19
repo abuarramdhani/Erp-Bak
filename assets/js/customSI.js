@@ -480,21 +480,24 @@ $(document).on('ready', function(){
         imageUpload: baseurl + 'SystemIntegration/KaizenAkt/uploadSubmitF4',
         imageUploadErrorCallback: function(json) {
             alert(json.error);
-        }
+        },
+        linebreaks: true
     })
 
     $('#txa-SI-SubmitF4-UsulanKaizen').redactor({
         imageUpload: baseurl + 'SystemIntegration/KaizenAkt/uploadSubmitF4',
         imageUploadErrorCallback: function(json) {
             alert(json.error);
-        }
+        },
+        linebreaks: true
     })
 
     $('#txa-SI-SubmitF4-PertimbanganUsulanKaizen').redactor({
         imageUpload: baseurl + 'SystemIntegration/KaizenAkt/uploadSubmitF4',
         imageUploadErrorCallback: function(json) {
             alert(json.error);
-        }
+        },
+        linebreaks: true
     })
 
     $("#slc-SI-SubmitF4-Komponen").select2({

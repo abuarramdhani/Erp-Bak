@@ -22,7 +22,8 @@
 	</tr>
 	<tr>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">COMPONENT NAME</td>
-		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $desckomp?></td>
+		<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $desckomp?></td> -->
+		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $comp_name?></td>
 		<td colspan="2" rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px;padding-left: 7px;vertical-align: top;">REMARK :</td>
 		
 	</tr>
@@ -78,15 +79,32 @@
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Last<br> Update</th>
 		</tr>
 		<?php 
+		$route_id = '#$%';
 		// echo "<pre>"; print_r($dataopm2);exit(); 
-		$b=1;  $no=1; for ($i=0; $i < sizeof($dataopm2); $i++) {	?>
+		$b=1;  $no=1; for ($i=0; $i < sizeof($dataopm2); $i++) {
+			if (sizeof($r_id[$dataopm2[$i]['ROUTING_ID']]) > 1) {
+				$merge = 'rowspan="'.sizeof($r_id[$dataopm2[$i]['ROUTING_ID']]).'"';
+			} else {
+				$merge = '';
+			}
+			?>
 		<tr>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$no?></td>
+			<?php 
+				if ($route_id != $dataopm2[$i]['ROUTING_ID']) {
+			?>
+				<td <?=$merge?> style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$no?></td>
+				<td <?=$merge?> style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ROUTING_CLASS']?></td>
+				<td <?=$merge?> style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ROUTING_NO']?></td>
+				<td <?=$merge?> style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ROUTING_VERS']?></td>
+			<?php
+					$no++;
+					$route_id = $dataopm2[$i]['ROUTING_ID'];
+				}
+			?>
+			
+			<?php ?>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['ROUTING_ID']?></td> -->
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ROUTING_CLASS']?></td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ROUTING_NO']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ROUTING_DESC']?></td> -->
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12pt"><?=$dataopm2[$i]['ROUTING_VERS']?></td>
 			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['ROUTING_QTY']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['ROUTING_UOM']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 10pt"><?=$dataopm2[$i]['ROUT_STATUS']?></td> -->
@@ -137,7 +155,7 @@
 
 
 		</tr>
-		<?php $no++; } ?>
+		<?php } ?>
 	
 		
 </table>
@@ -178,7 +196,8 @@
 				}
 			?>
 			</td>
-			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['UOM']?></td>
+			<!-- <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['UOM']?></td> -->
+			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['DETAIL_UOM']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['IO_KIB']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['SUBINV_KIB']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$dataopm3[$i]['LOC_KIB']?></td>

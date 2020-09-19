@@ -72,12 +72,12 @@ class M_pencarianpekerja extends CI_Model
         trim(tp.nama) nama,
         ts.seksi,
         ts.unit,
-        to_char(tp.masukkerja, 'DD-MM-YYYY') masukkerja,
-        to_char(tp.diangkat, 'DD-MM-YYYY') diangkat,
-        to_char(tp.akhkontrak, 'DD-MM-YYYY') akhkontrak,
-        to_char(tp.tglkeluar, 'DD-MM-YYYY') tglkeluar,
+        to_char(tp.masukkerja, 'DD/MM/YYYY') masukkerja,
+        to_char(tp.diangkat, 'DD/MM/YYYY') diangkat,
+        to_char(tp.akhkontrak, 'DD/MM/YYYY') akhkontrak,
+        to_char(tp.tglkeluar, 'DD/MM/YYYY') tglkeluar,
         trim(tp.templahir) templahir,
-        to_char(tp.tgllahir, 'DD-MM-YYYY') tgllahir,
+        to_char(tp.tgllahir, 'DD/MM/YYYY') tgllahir,
         trim(tp.alamat) alamat,
         trim(tp.desa) desa,
         trim(tp.kec) kecamatan,
@@ -112,7 +112,19 @@ class M_pencarianpekerja extends CI_Model
     if ($param_type === 'string') {
       $query->like("LOWER($param)", strtolower($keyword), 'both');
     } elseif ($param_type === 'date') {
-      $query->like("to_char($param, 'YYYY-MM-DD')", strtolower($keyword), 'both');
+      // dd/mm/yyyy - dd/mm/yyyy
+      $splitKeyword = explode('-', $keyword);
+
+      if ($splitKeyword > 1) {
+        $from = DateTime::createFromFormat('d/m/Y', trim($splitKeyword[0]))->format('Y-m-d');
+        $to = DateTime::createFromFormat('d/m/Y', trim($splitKeyword[1]))->format('Y-m-d');
+        if (!$from || !$to) return ['not exist'];
+
+        $query->where("to_char($param, 'YYYY-MM-DD') >=", $from);
+        $query->where("to_char($param, 'YYYY-MM-DD') <=", $to);
+      } else {
+        $query->like("to_char($param, 'YYYY-MM-DD')", strtolower($keyword), 'both');
+      }
     }
 
     if ($out) {
@@ -147,7 +159,7 @@ class M_pencarianpekerja extends CI_Model
         trim(ts.unit) unit,
         trim(ts.bidang) bidang,
         trim(ts.dept) dept,
-        to_char(tp.masukkerja, 'YYYY-MM-DD') masukkerja,
+        to_char(tp.masukkerja, 'YYYY/MM/DD') masukkerja,
         trim(tor.jabatan) jabatan
       ")
       ->from($this->table_tpribadi . " tp")

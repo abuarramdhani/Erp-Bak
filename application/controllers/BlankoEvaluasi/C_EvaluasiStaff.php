@@ -88,12 +88,14 @@ class C_EvaluasiStaff extends CI_Controller
                 'nama' =>  $staffBlanko->nama,
                 'seksi' =>  $staffBlanko->seksi,
                 // 'kodesie' =>  $staffBlanko->kodesie,
+                'kd_jabatan' =>  $staffBlanko->kd_jabatan,
                 'jabatan' =>  $staffBlanko->jabatan,
                 'akhir_kontrak' =>  $staffBlanko->akhir_kontrak,
                 'status_jabatan' =>  $staffBlanko->status,
             ],
             'atasan' => $staffBlanko->penilaian_atasan,
             'usulan' => $staffBlanko->usulan,
+            'approval0' => $staffBlanko->approval_0 ?: '',
             'approval1' => $staffBlanko->approval_1,
             'approval2' => $staffBlanko->approval_2,
             'approval3' => $staffBlanko->approval_3,
@@ -111,6 +113,8 @@ class C_EvaluasiStaff extends CI_Controller
             redirect($_SERVER['HTTP_REFERER']);
         }
 
+        $tkpw_kode = 20;
+
         $parsedGet = [
             'noind' => $get['worker']['noind'],
             'nama' => $get['worker']['nama'],
@@ -120,9 +124,10 @@ class C_EvaluasiStaff extends CI_Controller
             'jabatan' => $get['worker']['jabatan'],
             'akhir_kontrak' => $get['worker']['akhir_kontrak'],
             'penilaian_atasan' => $get['atasan'],
+            'approval_0' => $get['approval0'],
             'approval_1' => $get['approval1'],
             'approval_2' => $get['approval2'],
-            'approval_3' => $get['approval3'],
+            'approval_3' => $get['worker']['kd_jabatan'] == $tkpw_kode ? null : $get['approval3'],
             'created_by' => $this->session->user,
             'usulan' => intval($get['usulan']),
         ];
@@ -168,7 +173,14 @@ class C_EvaluasiStaff extends CI_Controller
 
         $title = 'Evaluasi Staff';
         $filename = 'Evalasi kontrak Staff';
-        $content = $this->load->view('BlankoEvaluasi/Staff/V_Template_Pdf', $data, true);
+        $tkpw_kode = 20;
+        // if not TKPW
+        if ($data['worker']['kd_jabatan'] != $tkpw_kode) {
+            $content = $this->load->view('BlankoEvaluasi/Staff/V_Template_Pdf_Staff', $data, true);
+        } else {
+            // if TKPW load other content
+            $content = $this->load->view('BlankoEvaluasi/Staff/V_Template_Pdf_TKPW', $data, true);
+        }
 
         $pdf->AddPage('P');
         $pdf->SetTitle($title);

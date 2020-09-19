@@ -47,10 +47,60 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="box box-success">
+                            <div class="box-header with-border" style="font-weight: bold;">Persentase Penggunaan Item by Dept class</div>
+                            <div class="box-body">
+                                <div class="col-md-12" id="view_presentasi"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="box box-info">
                             <div class="box-header with-border" style="font-weight: bold;">DATA SARANA HANDLING</div>
                             <div class="box-body">
-                                <div class="col-md-12" id="tabel_datahand"></div>
+                                <div class="panel-body">
+                                    <div class="col-md-3"><input type="text" class="form-control input-sm" id="searchboxdatatable" placeholder="Search By ...."></div>
+                                    <div class="col-md-3">
+                                        <select class="form-control input-sm select2" id="filterselected" data-placeholder="Filter By" onchange="showfilter()">
+                                            <option></option>
+                                            <option value="1">By Produk</option>
+                                            <option value="2">By Sarana</option>
+                                            <option value="3">By Seksi</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3" style="display: none;" id="showifbyprod">
+                                        <select style="width: 100%;" onchange="onchangefilter()" class="form-control input-sm select2 selectajah" id="filterproduk" data-placeholder="Filter By Produk">
+                                            <option></option>
+                                            <?php foreach ($filterbyproduk as $key => $value) { ?>
+                                                <option value="<?= $value['kode_produk'] ?>"><?= $value['nama_produk'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3" style="display: none;" id="showifbysarana">
+                                        <select style="width: 100%;" onchange="onchangefilter()" class="form-control input-sm select2 selectajah" id="filtersarana" data-placeholder="Filter By Sarana Handling">
+                                            <option></option>
+                                            <?php foreach ($filterbysarana as $key => $value) { ?>
+                                                <option value="<?= $value['id_master_handling'] ?>"><?= $value['kode'] ?> - <?= $value['nama'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3" style="display: none;" id="showifbyseksi">
+                                        <select style="width: 100%;" onchange="onchangefilter()" class="form-control input-sm select2 selectajah" id="filterseksi" data-placeholder="Filter By Seksi">
+                                            <option></option>
+                                            <?php foreach ($filterbyseksi as $key => $value) { ?>
+                                                <option value="<?= $value['seksi'] ?>"><?= $value['seksi'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2"><button class="btn btn-danger btn-sm" onclick="reset()">Reset</button></div>
+
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12" id="tabel_datahand"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

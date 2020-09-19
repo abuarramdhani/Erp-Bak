@@ -61,6 +61,7 @@ class C_NonConformity extends CI_Controller
 
 		$user_id = $this->session->userid;
 
+		// echo $user_id;exit;
 		$data['Title'] = 'Pending Assign';
 		$data['Menu'] = 'Non Conformity';
 		$data['SubMenuOne'] = 'Pending Assign';
@@ -1105,6 +1106,9 @@ class C_NonConformity extends CI_Controller
 		}else if ($this->session->responsibility_id == 2641) {
 			
 			redirect('PurchaseManagementGudang/NonConformity/listSubkon', 'refresh');
+		}else if ($this->session->responsibility_id == 2663) {
+			
+			redirect('PurchaseManagementGudang/NonConformity/listBuyer', 'refresh');
 		}
 	}
 
@@ -1503,6 +1507,14 @@ class C_NonConformity extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PurchaseManagementGudang/NonConformity/V_apaini');
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function getImage()
+	{
+		$sourceId = $_POST['source_id'];
+		$data = $this->M_nonconformity->getImages($sourceId);
+
+		echo json_encode($data);
 	}
 
 

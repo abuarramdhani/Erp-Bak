@@ -97,7 +97,7 @@ class C_NonConformityAndroid extends CI_Controller
 		// print_r($photo);exit;
         
         // $response['error'] = false;
-        // $response['message'] =  count($remark);
+        // $response['message'] = $user_id.'-'.$description;
         // echo json_encode($response);
         // exit;
         // echo '<pre>';
@@ -129,12 +129,12 @@ class C_NonConformityAndroid extends CI_Controller
 
 		$nonConformityNumber = implode('-', $numberNC);
 		
-
-		$header = array('creation_date' => 'now()',
+		$header = array(
+						'creation_date' => 'now()',
 						'non_conformity_num' => $nonConformityNumber,
 						'created_by' => $user_id,
 						'creation_date' => 'now()',
-						'last_update_by' => $user_id,
+						'last_updated_by' => $user_id,
 						'last_update_date' => 'now()',
 
 					 );
@@ -150,7 +150,6 @@ class C_NonConformityAndroid extends CI_Controller
 				  	$response['error'] = false;
 					$response['message'] =  $response['message']. "moved sucessfully ::  ";
 				
-
 					$inputFileName 	= './assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
 				
 					if(is_file($inputFileName))
@@ -310,7 +309,6 @@ class C_NonConformityAndroid extends CI_Controller
 
 		// echo count($photo);exit;
         
-
 		$source = array(
 						'info' => $description,
 						'created_by' => $user_id,
@@ -341,7 +339,6 @@ class C_NonConformityAndroid extends CI_Controller
 
 		$nonConformityNumber = implode('-', $numberNC);
 		
-
 		$header = array('creation_date' => 'now()',
 						'non_conformity_num' => $nonConformityNumber,
 						'assign' => null
@@ -438,4 +435,27 @@ class C_NonConformityAndroid extends CI_Controller
 		$response['message'] = "Ok";
 		echo json_encode($response);
 	}
+
+	public function deleteNC()
+	{
+		$id = $_POST['header_id'];
+		$photos = $this->M_nonconformity->getImages($id);
+
+		foreach ($photos as $key => $photo) {
+			if(is_file($photo['image_path'].''.$photo['file_name'])){
+				unlink($photo['image_path'].''.$photo['file_name']);
+			};
+		}
+
+		$this->M_nonconformity->hapusDataNCSource($id);
+		$this->M_nonconformity->hapusDataNCCase($id);
+		$this->M_nonconformity->hapusDataNCImage($id);
+		$this->M_nonconformity->hapusDataNCLines($id);
+		$this->M_nonconformity->hapusDataNCHeader($id);
+
+		$response['error'] = false;
+		$response['message'] = "Ok";
+		echo json_encode($response);
+	}
+
 }

@@ -546,9 +546,9 @@ class M_pekerjaterhitungcatering extends CI_Model
     	$sql = "select tpd.noind,trim(tp.nama) as nama,'-' as waktu,tpd.tempat_makan,'-' as user_,ts.seksi,coalesce(tsh.shift,'Blm ada shift') as shift,tpd.keterangan as status
 				from \"Catering\".t_pesanan_detail tpd
 				inner join hrd_khs.tpribadi tp 
-				on tpd.noind = tp.noind
+				on trim(tpd.noind) = tp.noind
 				left join \"Presensi\".tshiftpekerja tsp 
-				on tpd.noind = tsp.noind
+				on trim(tpd.noind) = tsp.noind
 				and tpd.tanggal = tsp.tanggal
 				left join \"Presensi\".tshift tsh 
 				on tsh.kd_shift = tsp.kd_shift

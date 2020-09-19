@@ -231,18 +231,18 @@
                     </div>
                     <div class="col-md-6">
                       <select v-model="param" name="param" id="" class="form-control select2">
-                        <?php foreach ($param_option as $key => $item) : ?>
-                          <option value="<?= $key ?>"><?= $item['name'] ?></option>
-                        <?php endforeach ?>
+                        <option value=""></option>
+                        <option v-cloak v-for="(item, key) in option" :value="key">{{ item.name }}</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="col-md-10">
-                      <input v-model="keyword" type="text" name="q" placeholder="Keyword" class="form-control">
+                      <input autofocus v-show="optionType != 'date'" v-model="optionType == 'date' ? '' : keyword" type="text" placeholder="Keyword" class="form-control">
+                      <input v-cloak v-show="optionType == 'date'" v-model="optionType != 'date' ? '' : keyword" type="text" placeholder="Range Tanggal" class="form-control date-range">
                     </div>
                     <div class="col-md-2">
-                      <button @click.prevent="find" class="btn btn-sm btn-primary">
+                      <button @click.prevent="find" :disabled="!keyword" class="btn btn-sm btn-primary">
                         <i class="fa fa-search"></i>
                         <span>Cari</span>
                       </button>
@@ -288,33 +288,6 @@
               <table class="table table-bordered" id="table-pencarian-pekerja">
                 <thead class="bg-primary">
                   <tr v-cloak>
-                    <!-- <th>No</th>
-                    <th>Noind</th>
-                    <th>Nama</th>
-                    <th>Seksi</th>
-                    <th>Unit</th>
-                    <th>Tgl. Masuk</th>
-                    <th>Tgl. Diangkat</th>
-                    <th>Akhir Kontrak</th>
-                    <th>Tgl. Keluar</th>
-                    <th>Tempat Lahir</th>
-                    <th>Tgl Lahir</th>
-                    <th>Alamat</th>
-                    <th>Desa</th>
-                    <th>Kecamatan</th>
-                    <th>Kabupaten</th>
-                    <th>Propinsi</th>
-                    <th>Kode Pos</th>
-                    <th>No. HP</th>
-                    <th>No. Telp</th>
-                    <th>NIK</th>
-                    <th>No. KK</th>
-                    <th>Nokes</th>
-                    <th>BPU</th>
-                    <th>No. KPJ</th>
-                    <th>Email</th>
-                    <th>Sebab Keluar</th>
-                    <th>Lokasi Kerja</th> -->
                     <th class="bg-primary" nowrap v-for="(name, i) in tableHead" @click="sortColumn(i)">
                       {{ name }} <i class="fa" :class="[ tableHeadToggled[i-1] === false ? 'fa-sort-asc' : 'fa-sort-desc' ]"></i>
                     </th>
@@ -322,14 +295,14 @@
                 </thead>
                 <tbody v-cloak>
                   <tr v-if="tableLoading">
-                    <td colspan="27" class="text-center">
+                    <td :colspan="tableHead.length+1" class="text-center">
                       Sedang mengambil data ...
                     </td>
                   </tr>
                   <!-- FIX THIS  -->
                   <tr :class="[ activeRow === i ? 'bg-primary' : '' ]" @click="setActiveRow(i)" v-for="(item, i) in tableBody">
                     <td>{{ i + 1 }}</td>
-                    <td style="mso-number-format: 0.00" nowrap v-for=" key in tableKeys">
+                    <td nowrap v-for=" key in tableKeys">
                       {{ item[key] }}
                     </td>
                   </tr>

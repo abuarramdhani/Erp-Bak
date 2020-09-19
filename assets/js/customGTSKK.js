@@ -2185,7 +2185,6 @@ const onClickDeleteEditPage = (th) => {
 		$('#loading').attr('hidden', false);
 		$.ajax({
 			type: "POST",
-			url: baseurl+'GeneratorTSKK/C_GenTSKK/exportExcel/',
 			data:{
 			id						: id,
 			judul			    	: judul,
@@ -2227,10 +2226,11 @@ const onClickDeleteEditPage = (th) => {
 			rencana_kerja 			: rencana_kerja, 	
 			jumlah_hari_kerja		: jumlah_hari_kerja
 			},
-			dataType: 'json',		
+			dataType: 'json',	
+			url: baseurl+'GeneratorTSKK/C_GenTSKK/exportExcel/',	
 			// cache:false,
 			success:function(data){
-					console.log(data);
+					// console.log(result);
 					// alert(data['url']);
 					$('#loading').attr('hidden', true);
 						window.open(baseurl+'assets/upload/GeneratorTSKK/'+data['url'], '_blank');

@@ -1183,6 +1183,7 @@ public function deleteFile($id){
 }
 
 public function exportExcel(){
+    // echo "<pre>"; print_r($_POST); exit();
     set_include_path( get_include_path().PATH_SEPARATOR."..");
     include_once("xlsxwriter.class.php");
      //HEADER
@@ -1408,8 +1409,8 @@ public function exportExcel(){
     // echo $hasil_irregular;die;
 
     //checking the length based on cycle time too
-        $cycle_time = $last_finish + $jumlah_hasil_irregular + $takt_time;
-        $cycle_time_tanpa_irregular = $last_finish + $takt_time;
+        $cycle_time = $last_finish + $jumlah_hasil_irregular;
+        $cycle_time_tanpa_irregular = $last_finish;
         $cycleTimeText = $cycle_time + 3;
         // echo"<pre>"; echo $cycle_time;
         // echo"<pre>"; echo "KAGA";
@@ -2970,7 +2971,9 @@ public function exportExcel(){
             $rows[$rowFootKanan+8][303] = 'Tgl :';
             $rows[$rowFootKanan+8][333] = 'Tgl :';
 
-            for ($j=0; $j < 9; $j++) { 
+            $rows[$rowFootKanan+9][243] = 'Form No. : FRM-PDE-03-21 (Rev. 00-26/03/2020)';
+
+            for ($j=0; $j < 10; $j++) { 
                 $rowpakefoot = $rowFootKanan + $j;
                 for ($i=0; $i < 364; $i++) { 
                     switch ($j) {
@@ -3024,6 +3027,14 @@ public function exportExcel(){
                                 $styles[$rowpakefoot][$i]['valign'] = 'center';
                             }
                             break;
+                        case 9:
+                        if ($i === 243) {
+                            // $styles[$rowpakefoot][$i]['wrap_text'] = true;
+                            // $styles[$rowpakefoot][$i]['halign'] = 'left';
+                            $styles[$rowpakefoot][$i]['font-size'] = 8;
+                            // $styles[$rowpakefoot][$i]['valign'] = 'center';
+                        }
+                        break;
                         default:
                             # code...
                             break;
@@ -3460,6 +3471,8 @@ public function exportExcel(){
         'url' =>    $filename
     );
     echo json_encode($arr);
+    // header('Content-disposition: attachment; filename="'.XLSXWriter::sanitize_filename($filename).'"');
+    // $writer->writeToStdOut();
 /////LUTFI END 
 }
 
