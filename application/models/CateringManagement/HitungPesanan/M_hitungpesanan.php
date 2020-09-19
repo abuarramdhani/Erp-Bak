@@ -467,7 +467,7 @@ class M_hitungpesanan extends Ci_Model
 							and tmkn.fs_lokasi = ?
 						left join \"Catering\".tpuasa p 
 							on b.tanggal=p.fd_tanggal 
-							and trim(b.noindtrim(=trim(p.fs_noind) 
+							and trim(b.noind) =trim(p.fs_noind) 
 						where b.tanggal = ? 
 							and b.kd_shift in('5','8','18') 
 							and left(trim(a.noind), 1) not in ('M','Z') 
