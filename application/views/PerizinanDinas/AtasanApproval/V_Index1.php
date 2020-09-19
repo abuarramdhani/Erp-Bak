@@ -76,15 +76,15 @@
                             <tr>
                               <td style="white-space: nowrap; text-align: center;"><?= $no; ?></td>
                               <td style="white-space: nowrap; text-align: center;"><?php if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
-                                  <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span>
+                                  <button class="btn btn-warning" onclick="<?= $onclick; ?>"><span style="color: white" class='fa fa-edit'></button>
+                                  <button class="btn btn-success cm_btn_approve" onclick="<?= $approve; ?>"><span style="color: white" class='fa fa-check'></span></button>
+                                  <button class="btn btn-danger cm_btn_reject" onclick="<?= $reject; ?>"><span style="color: white" class='fa fa-close'></span></button>
                                 <?php } elseif ($row['status'] == 1) { ?>
                                   <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
                                 <?php } elseif ($row['status'] == 2) { ?>
                                   <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
                                 <?php } elseif (($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) < date('Y-m-d')) || $row['status'] == 5) {  ?>
-                                  <button class="btn btn-warning" onclick="<?= $onclick; ?>"><span style="color: white" class='fa fa-edit'></button>
-                                  <button class="btn btn-success cm_btn_approve" onclick="<?= $approve; ?>"><span style="color: white" class='fa fa-check'></span></button>
-                                  <button class="btn btn-danger cm_btn_reject" onclick="<?= $reject; ?>"><span style="color: white" class='fa fa-close'></span></button>
+                                  <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span>
                                 <?php } ?>
                               </td>
                               <td style="white-space: nowrap; text-align: center;"><?= $id[1] ?></td>
@@ -151,15 +151,15 @@
                             <tr>
                               <td style="text-align: center;"><?= $no; ?></td>
                               <td style="white-space: nowrap; text-align: center;"><?php if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
-                                  <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span>
+                                  <button class="btn btn-warning" onclick="edit_pkj_dinas(<?= $row['izin_id']; ?>)"><span style="color: white" class='fa fa-edit'></button>
+                                  <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?= $row['izin_id']; ?>)"><span style="color: white" class='fa fa-check'></span></button>
+                                  <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?= $row['izin_id']; ?>)"><span style="color: white" class='fa fa-close'></span></button>
                                 <?php } elseif ($row['status'] == 1) { ?>
                                   <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
                                 <?php } elseif ($row['status'] == 2) { ?>
                                   <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
                                 <?php } elseif (($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) < date('Y-m-d')) || $row['status'] == 5) {  ?>
-                                  <button class="btn btn-warning" onclick="edit_pkj_dinas(<?= $row['izin_id']; ?>)"><span style="color: white" class='fa fa-edit'></button>
-                                  <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?= $row['izin_id']; ?>)"><span style="color: white" class='fa fa-check'></span></button>
-                                  <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?= $row['izin_id']; ?>)"><span style="color: white" class='fa fa-close'></span></button>
+                                  <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span>
                                 <?php } ?>
                               </td>
                               <td style="text-align: center;"><?= $row['izin_id'] ?></td>
