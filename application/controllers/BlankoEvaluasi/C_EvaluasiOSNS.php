@@ -6,6 +6,14 @@
 
 defined('BASEPATH') or exit('you cannot enter here');
 
+//helper
+function month($num)
+{
+    if ($num > 12) return 'unknown';
+    $indoMonth = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    return $indoMonth[$num - 1];
+}
+
 class C_EvaluasiOSNS extends CI_Controller
 {
     function __construct()
@@ -258,13 +266,6 @@ class C_EvaluasiOSNS extends CI_Controller
     private function dateToIndo($date)
     {
         if (!$date) return null;
-
-        function month($num)
-        {
-            if ($num > 12) return 'unknown';
-            $indoMonth = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            return $indoMonth[$num - 1];
-        }
 
         $month = date('m', strtotime($date));
         $year = date('Y', strtotime($date));
