@@ -56,3 +56,23 @@
         </div>
     </div>
 </section>
+
+<form method="post">
+<div class="modal fade" id="mdlGDSimulasi" role="dialog">
+    <div class="modal-dialog" style="padding-left:5px">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="font-size:25px;background-color:#82E5FA">
+            <i class="fa fa-list-alt"></i> Detail Gudang
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="datamdlsimulasi"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+</form>

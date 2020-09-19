@@ -57,7 +57,6 @@ class C_Monitoring extends CI_Controller
 		$data['bulan'] 	= $bulan;
 		$bulan 			= explode("/", $bulan);
 		$inibulan		= $bulan[1].$bulan[0];
-		// echo "<pre>";print_r($getdata);exit();
 
         if ($bulan[0] == '01' || $bulan[0] == '03' || $bulan[0] == '05' || $bulan[0] == '07' || $bulan[0] == '08' || $bulan[0] == '10' || $bulan[0] == '12') {
             $data['hari'] = 31;
@@ -74,7 +73,6 @@ class C_Monitoring extends CI_Controller
 		$getdata = $this->M_monitoring->getdataMonitoring($kategori);
 		$cariakt = $this->M_monitoring->getAktual($kategori, $data['bulan']);
 		$getplandate = $this->M_monitoring->getPlanDate();
-		// echo "<pre>";print_r($cariakt);exit();
 		$datanya = array();
 		foreach ($getdata as $key => $value) {
 			$item = $this->M_monitoring->getitem($value['INVENTORY_ITEM_ID']);
@@ -84,6 +82,7 @@ class C_Monitoring extends CI_Controller
 			$getdata[$key]['jml_plan'] = 0;
 			$getdata[$key]['jml_akt'] = 0;
 			$getdata[$key]['jml_min'] = 0;
+			$getdata[$key]['jml_com'] = 0;
 			if (!empty($plan)) {
 				$ket = 'not';
 				for ($i=0; $i < $data['hari'] ; $i++) { 
@@ -93,15 +92,17 @@ class C_Monitoring extends CI_Controller
 					$aktual = $this->aktualmin($value['INVENTORY_ITEM_ID'], $tgl, $getdata[$key]['plan'.$i.''], $cariakt);
 					$getdata[$key]['akt'.$i.''] = $aktual[0];
 					$getdata[$key]['min'.$i.''] = $aktual[1];
+					$getdata[$key]['com'.$i.''] = $aktual[2];
 					$getdata[$key]['jml_plan'] += $getdata[$key]['plan'.$i.''] == '' ? 0 : $getdata[$key]['plan'.$i.''];
 					$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
 					$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
+					$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
 				}
 				$ket == 'oke' ? array_push($datanya,$getdata[$key]) : '';
 			}
 		}
 		$data['data'] = $datanya;
-		// echo "<pre>";print_r($getdata);exit();
+		// echo "<pre>";print_r($datanya);exit();
 
         $this->load->view('MonitoringJobProduksi/V_TblMonitoring', $data);
 	}
@@ -120,11 +121,14 @@ class C_Monitoring extends CI_Controller
 
 	public function aktualmin($inv_id, $tgl, $plan, $cariakt){
 		$aktual = '';
+		$complete = '';
 		foreach ($cariakt as $key => $val) {
 			if ($val['INVENTORY_ITEM_ID'] == $inv_id && $val['TGL_URUT'] == $tgl) {
-				$aktual = $val['QUANTITY_COMPLETE'];
+				$aktual = $val['QUANTITY'];
+				$complete = $val['QUANTITY_COMPLETE'];
 			}else {
 				$aktual = $aktual;
+				$complete = $complete;
 			}
 		}
 		if ($plan == '' && $aktual != '') {
@@ -136,7 +140,7 @@ class C_Monitoring extends CI_Controller
 		}else {
 			$min = $aktual - $plan;
 		}
-		$data = array($aktual, $min);
+		$data = array($aktual, $min, $complete);
 		return $data;
 	}
 	
@@ -174,9 +178,78 @@ class C_Monitoring extends CI_Controller
 		$data['level'] = $this->input->post('level');
 		$data['nomor'] = $this->input->post('nomor');
 
-		$data['data'] = $this->M_monitoring->getdataSimulasi($item, $qty);
+		$getdata = $this->M_monitoring->getdataSimulasi($item, $qty);
+		// echo "<pre>";print_r($getdata);exit();
+		$sorting_item = array();
+		foreach ($getdata as $key => $get) {
+			if ($get['REQUIRED_QUANTITY'] > $get['ATT'] || $get['REQUIRED_QUANTITY'] > $get['KURANG']) {
+				array_push($sorting_item, $getdata[$key]);
+			}
+		}
+		foreach ($getdata as $key => $get) {
+			if ($get['REQUIRED_QUANTITY'] > $get['ATT'] || $get['REQUIRED_QUANTITY'] > $get['KURANG']) {
+			}else {
+				array_push($sorting_item, $getdata[$key]);
+			}
+		}
+		$data['data'] = $sorting_item;
+
 		// echo "<pre>";print_r($data['data']);exit();
 		$this->load->view('MonitoringJobProduksi/V_TblSimulasi', $data);
+	}
+
+	public function detailGudang(){
+		$item 		= $this->input->post('item');
+		$desc 		= $this->input->post('desc');
+		$dfg 		= $this->input->post('dfg');
+		$dmc 		= $this->input->post('dmc');
+		$fg_tks 	= $this->input->post('fg_tks');
+		$int_paint 	= $this->input->post('int_paint');
+		$int_weld 	= $this->input->post('int_weld');
+		$int_sub 	= $this->input->post('int_sub');
+		$pnl_tks 	= $this->input->post('pnl_tks');
+		$sm_tks 	= $this->input->post('sm_tks');
+		$jumlah 	= $this->input->post('jumlah');
+		
+		$view = '
+				<div class="panel-body">
+					<div class="col-md-2" style="font-weight:bold">Kode</div>
+					<div class="col-md-10">: '.$item.'</div>
+					<div class="col-md-2" style="font-weight:bold">Deskripsi</div>
+					<div class="col-md-10">: '.$desc.'</div>
+				</div>
+				<div class="panel-body">
+					<table class="table table-bordered table-hovered table-stripped text-center" style="width:100%;font-size:12px">
+						<thead style="background-color:#82E5FA">
+							<tr>
+								<th style="vertical-align:middle">DFG</th>
+								<th style="vertical-align:middle">DMC</th>
+								<th style="vertical-align:middle">FG-TKS</th>
+								<th style="vertical-align:middle">INT-PAINT</th>
+								<th style="vertical-align:middle">INT-WELD</th>
+								<th style="vertical-align:middle">INT-SUB</th>
+								<th style="vertical-align:middle">PNL-TKS</th>
+								<th style="vertical-align:middle">SM-TKS</th>
+								<th style="vertical-align:middle">JUMLAH</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>'.$dfg.'</td>
+								<td>'.$dmc.'</td>
+								<td>'.$fg_tks.'</td>
+								<td>'.$int_paint.'</td>
+								<td>'.$int_weld.'</td>
+								<td>'.$int_sub.'</td>
+								<td>'.$pnl_tks.'</td>
+								<td>'.$sm_tks.'</td>
+								<td class="bg-info" style="font-weight:bold;">'.$jumlah.'</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		';
+		echo $view;
 	}
 
 

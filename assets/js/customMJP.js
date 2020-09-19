@@ -96,6 +96,31 @@ function tambahsimulasi(level, no, num) {
     }
 }
 
+function mdlGudangSimulasi(no) {
+    var item        = $('#komp'+no).val();
+    var desc        = $('#desc'+no).val();
+    var dfg         = $('#dfg'+no).val();
+    var dmc         = $('#dmc'+no).val();
+    var fg_tks      = $('#fg_tks'+no).val();
+    var int_paint   = $('#int_paint'+no).val();
+    var int_weld    = $('#int_weld'+no).val();
+    var int_sub     = $('#int_sub'+no).val();
+    var pnl_tks     = $('#pnl_tks'+no).val();
+    var sm_tks      = $('#sm_tks'+no).val();
+    var jumlah      = $('#jml_gudang'+no).val();
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/detailGudang",
+        data : {item : item, desc: desc, dfg : dfg, dmc : dmc, fg_tks : fg_tks, int_paint : int_paint, 
+                int_weld : int_weld, int_sub : int_sub, pnl_tks : pnl_tks, sm_tks : sm_tks, jumlah : jumlah},
+        dataType : 'html',
+        type : 'POST',
+        success : function (result) {
+            $('#mdlGDSimulasi').modal('show');
+            $('#datamdlsimulasi').html(result);
+        }
+    })
+}
+
 //----------------------------------------------------SET PLAN PRODUKSI------------------------------------------------
 function schSetPlan(th) {
     var  kategori   = $('#kategori').val();
@@ -174,7 +199,7 @@ function schItemList(th) {
             $(".kodeitem").select2({
                 allowClear: true,
                 placeholder: "pilih Item",
-                minimumInputLength: 0,
+                minimumInputLength: 3,
                 ajax: {
                     url: baseurl + "MonitoringJobProduksi/ItemList/kodeitem",
                     dataType: 'json',

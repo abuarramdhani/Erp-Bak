@@ -141,6 +141,14 @@ class M_monitoring extends CI_Model
                                 group by mtrl.INVENTORY_ITEM_ID
                                     ),0) )
                                             ) kurang
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'DFG','','') DFG            
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'DMC','','') DMC            
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'FG-TKS','','') FG_TKS            
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-PAINT','','') INT_PAINT            
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-WELD','','') INT_WELD            
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-SUB','','') INT_SUB            
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'PNL-TKS','','') PNL_TKS            
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
                 --,decode(bic.basis_type,'','Item','2','Lot') Basis
                 --,bic.INCLUDE_IN_COST_ROLLUP
                 --,decode(bic.wip_supply_type,1,'Push',2,'Assembly Pull',3,'Operation Pull',4,'Bulk',5,'Supplier',6,'Phantom') supply_type

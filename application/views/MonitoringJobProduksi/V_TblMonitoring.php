@@ -30,6 +30,7 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
             <td><p>P</p>
                 <p>A</p>
                 <p>(-)</p>
+                <p>C</p>
             </td>
             <?php for ($i=0; $i < $hari ; $i++) { ?>
                 <td><p><?php if($value['plan'.$i.''] != 0){ ?>
@@ -40,12 +41,15 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                         <input type="hidden" name="plan<?= $no?><?= $i+1?>" value="<?= $value['plan'.$i.'']?>">
                     </p>
                     <p><?= $value['akt'.$i.''] != '' ? $value['akt'.$i.''] : "<br>" ?></p>
-                    <p style="<?= $value['min'.$i.''] == 'invalid' ? 'color:red' : ''; ?>">
-                        <?= $value['min'.$i.''] != '' ? $value['min'.$i.''] : "<br>" ?>
-                    </p>
+                    <p><?= $value['min'.$i.''] != '' ? $value['min'.$i.''] : "<br>" ?></p>
+                    <p><?= $value['com'.$i.''] != '' ? $value['com'.$i.''] : "<br>" ?></p>
                 </td>
             <?php }?>
-            <td><p><?= $value['jml_plan']?></p><p><?= $value['jml_akt']?></p><p><?= $value['jml_min']?></p></td>
+            <td><p><?= $value['jml_plan']?></p>
+                <p><?= $value['jml_akt']?></p>
+                <p><?= $value['jml_min']?></p>
+                <p><?= $value['jml_com']?></p>
+            </td>
         </tr>
         <?php $no++; }?>
     </tbody>
