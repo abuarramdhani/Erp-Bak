@@ -4709,3 +4709,9 @@ $route['Covid/MonitoringCovid'] = 'Covid/MonitoringCovid/C_MonitoringCovid';
 $route['Covid/MonitoringCovid/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1';
 $route['Covid/MonitoringCovid/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1/$2';
 $route['Covid/MonitoringCovid/(:any)/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1/$2/$3';
+
+
+// --------------------------------- Laporan Kerja Operator welding ------------------------------ //
+$route['LaporanKerjaOperator'] = 'LKOWelding/C_Index';
+$route['LaporanKerjaOperator/Input'] = 'LKOWelding/C_Input';
+$route['LaporanKerjaOperator/Input/(:any)'] = 'LKOWelding/C_Input/$1';
