@@ -232,8 +232,8 @@ class M_presensipekerja extends CI_Model {
 				     AND a.tanggal = c.tanggal 
 				WHERE $off and a.tanggal between '$awal' and '$akhir' 
 				  AND left(a.noind, 1) = 'R'
-				 GROUP BY a.tanggal, a.noind, a.kodesie, b.nama ) 
-				ORDER BY a.kodesie, a.noind, a.tanggal";
+				 GROUP BY a.tanggal, a.noind, b.kodesie, b.nama ) 
+				ORDER BY b.kodesie, a.noind, a.tanggal";
 		return $this->personalia->query($sql)->result_array();
 	}
 
