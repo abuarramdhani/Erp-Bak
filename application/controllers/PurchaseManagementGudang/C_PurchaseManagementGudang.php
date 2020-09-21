@@ -47,10 +47,10 @@ class C_PurchaseManagementGudang extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		if ($this->session->responsibility_id == 2641 || $this->session->responsibility_id == 2663) {
-			$this->load->view('PurchaseManagementGudang/V_index', $data);
-		}else{
+		if ($this->session->responsibility_id == 2569) {
 			$this->load->view('PurchaseManagementGudang/NonConformity/V_Index', $data);
+		}else{
+			$this->load->view('PurchaseManagementGudang/V_index', $data);
 		}
 		$this->load->view('V_Footer',$data);
 	}
