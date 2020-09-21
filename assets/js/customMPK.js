@@ -3309,64 +3309,64 @@ $(document).ready(function () {
 })
 
 
-// function edit_pkj_dinas_all(id, btn_val) {
-//     let table = $('.eachPekerjaEditAll')
+function edit_pkj_dinas_all(id, btn_val) {
+     let table = $('.eachPekerjaEditAll')
 
-//     $.ajax({
-//         type: 'post',
-//         data: {
-//             id,
-//             btn_val
-//         },
-//         url: baseurl + 'PerizinanDinas/ApproveAll/editPekerjaDinas',
-//         beforeSend: a => {
-//             table.html('<tr><td colspan="4">loading....</td></tr>')
-//         },
-//         dataType: 'json',
-//         success: function (data) {
-//             let keluar = ''
-//             if (btn_val == '1') {
-//                 keluar = data[0]['berangkat'];
-//                 $('.newText').text('Tujuan')
-//             } else {
-//                 keluar = data[0]['wkt_keluar'];
-//                 $('.newText').text('Keperluan')
-//             }
+     $.ajax({
+         type: 'post',
+         data: {
+             id,
+             btn_val
+         },
+         url: baseurl + 'PerizinanDinas/ApproveAll/editPekerjaDinas',
+         beforeSend: a => {
+             table.html('<tr><td colspan="4">loading....</td></tr>')
+         },
+         dataType: 'json',
+         success: function (data) {
+             let keluar = ''
+             if (btn_val == '1') {
+                 keluar = data[0]['berangkat'];
+                 $('.newText').text('Tujuan')
+             } else {
+                 keluar = data[0]['wkt_keluar'];
+                 $('.newText').text('Keperluan')
+             }
 
-//             $('#modal-id_dinasAll').val(btn_val == '1' ? data[0]['izin_id'] : data[0]['id'])
-//             $('#modal-tgl_dinasAll').val(data[0]['created_date'])
-//             $('#modal-keluar_dinasAll').val(function () {
-//                 if (keluar == null) {
-//                     return '-'
-//                 } else if (keluar < '12:00:00') {
-//                     return keluar + ' AM'
-//                 } else {
-//                     return keluar + ' PM'
-//                 }
-//             })
-//             $('#modal-kep_dinasAll').val(btn_val == '1' ? data[0]['keterangan'] : data[0]['keperluan'])
-//             $('#modal-AlasanAll').val('Atasan tidak berada ditempat')
-//             $('#modal-Atasan_dinasAll').val(btn_val == '1' ? data[0]['atasan_aproval'] : data[0]['atasan']).trigger('change')
-//             $('#app_edit_DinasAll').val(btn_val)
-//             $('#modal-approve-dinas-All').modal('show')
+             $('#modal-id_dinasAll').val(btn_val == '1' ? data[0]['izin_id'] : data[0]['id'])
+             $('#modal-tgl_dinasAll').val(data[0]['created_date'])
+             $('#modal-keluar_dinasAll').val(function () {
+                 if (keluar == null) {
+                     return '-'
+                 } else if (keluar < '12:00:00') {
+                  return keluar + ' AM'
+                 } else {
+                     return keluar + ' PM'
+                 }
+             })
+             $('#modal-kep_dinasAll').val(btn_val == '1' ? data[0]['keterangan'] : data[0]['keperluan'])
+             $('#modal-AlasanAll').val('Atasan tidak berada ditempat')
+             $('#modal-Atasan_dinasAll').val(btn_val == '1' ? data[0]['atasan_aproval'] : data[0]['atasan']).trigger('change')
+             $('#app_edit_DinasAll').val(btn_val)
+             $('#modal-approve-dinas-All').modal('show')
 
-//             let row
-//             data.forEach(a => {
-//                 if (btn_val == '1') {
-//                     keterangan = a.tujuan;
-//                 } else {
-//                     keterangan = a.keperluan;
-//                 }
-//                 row += `<tr>
-//                             <td>${a.noind}</td>
-//                             <td>${a.nama}</td>
-//                             <td>${keterangan == '' ? '-' : keterangan}</td>
-//                         </tr>`
-//             })
-//             table.html(row)
-//         }
-//     })
-// }
+             let row
+             data.forEach(a => {
+                 if (btn_val == '1') {
+                     keterangan = a.tujuan;
+                 } else {
+                     keterangan = a.keperluan;
+                 }
+                 row += `<tr>
+                             <td>${a.noind}</td>
+                             <td>${a.nama}</td>
+                             <td>${keterangan == '' ? '-' : keterangan}</td>
+                         </tr>`
+             })
+             table.html(row)
+         }
+     })
+ }
 
 
 //JS untuk Transposition Plotting Job
