@@ -83,72 +83,16 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
-    public function GetSudahCetak()
+
+    public function updateCetak($id)
     {
-        $sql = "SELECT   *
-                    FROM khs_qweb_sudah_cetak1 kqsc
-                ORDER BY CASE
-                            WHEN kqsc.tgl_kirim IS NULL
-                               THEN 1
-                            ELSE 0
-                         END,
-                         kqsc.tgl_kirim DESC,
-                         kqsc.waktu_datang DESC,
-                         kqsc.plat_number,
-                         kqsc.header_id";
+        $sql = "UPDATE khs_detail_dospb kdd
+                   SET kdd.status = 'C'
+                 WHERE kdd.request_number = '$id'
+                   AND kdd.status = 'T'";
         $query = $this->oracle->query($sql);
-        return $query->result_array();
-    }
 
-    public function GetSudahCetakDetail($data)
-    {
-        $subinv = $this->session->datasubinven;
-        $query = "SELECT DISTINCT   mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
-                                    kdt.line_number, msib.description, mtrl.quantity qty_req,
-                                    kdt.allocated_quantity qty_allocated,
-                                    mtrl.quantity_delivered qty_transact,
-                                    khs_inv_qty_atr (102,
-                                                     mtrl.inventory_item_id,
-                                                     '$subinv',
-                                                     '',
-                                                     ''
-                                                    ) atr,
-                                    kpd.person_id petugas
-                               FROM mtl_txn_request_lines mtrl,
-                                    mtl_txn_request_headers mtrh,
-                                    mtl_system_items_b msib,
-                                    khs_person_delivery kpd,
-                                    khs_delivery_temp kdt,
-                                    khs_cetak_do kcd
-                              WHERE mtrh.header_id = mtrl.header_id
-                                AND kpd.request_number = mtrh.request_number
-                                AND kcd.request_number = mtrh.request_number
-                                --
-                                AND kdt.inventory_item_id = mtrl.inventory_item_id
-                                AND kdt.line_number = mtrl.line_number
-                                AND kdt.header_id = kpd.header_id
-                                AND 1 =
-                                       CASE
-                                          WHEN kdt.serial_status IN ('NON SERIAL', 'SERIAL')
-                                          AND kpd.delivery_flag = 'Y'
-                                          AND kdt.flag = 'T'
-                                             THEN 1                                 --'SUDAH MUAT'
-                                       END
-                                --
-                                AND msib.inventory_item_id = mtrl.inventory_item_id
-                                AND msib.organization_id = mtrl.organization_id
-                                AND mtrh.request_number = '$data'
-                           ORDER BY msib.segment1, kdt.line_number";
-
-        if (!empty($data)) {
-            $response = $this->oracle->query($query)->result_array();
-        } else {
-            $response = array(
-                'success' => false,
-                'message' => 'requests_number is empty, cannot do this action'
-            );
-        }
-        return $response;
+        return $query;
     }
 
 
@@ -259,16 +203,20 @@ class M_monitoringdo extends CI_Model
         return $query->result_array();
     }
 
+
+// ------------------- SIAP ASSIGN -------------------
+
     public function getDO()
     {
-        $response = $this->oracle->query("SELECT   *
-                                            FROM khs_qweb_siap_assign1 kqsa
-                                           WHERE TRUNC (SYSDATE) BETWEEN TRUNC (kqsa.tgl_kirim - 1)
-                                                                     AND TRUNC (kqsa.tgl_kirim + 6)
-                                        ORDER BY kqsa.no_pr, kqsa.header_id")->result_array();
-        // echo "<pre>";
-        // print_r($response);
-        // die;
+        $subinv = $this->session->datasubinven;
+        $query = "SELECT *
+                    FROM khs_qweb_siap_assign1 kqsa
+                   WHERE TRUNC (SYSDATE) BETWEEN TRUNC (kqsa.tgl_kirim - 1)
+                                             AND TRUNC (kqsa.tgl_kirim + 6)
+                     AND kqsa.subinventory = '$subinv'
+                ORDER BY kqsa.no_pr, kqsa.header_id";
+
+        $response = $this->oracle->query($query)->result_array();
 
         if (empty($response)) {
             $response = null;
@@ -293,7 +241,7 @@ class M_monitoringdo extends CI_Model
                      AND msib.inventory_item_id = mtrl.inventory_item_id
                      AND msib.organization_id = mtrl.organization_id
                      AND mtrh.request_number = '$data'
-                ORDER BY msib.segment1";
+                ORDER BY msib.description";
 
         if (!empty($data)) {
             $response = $this->oracle->query($query)->result_array();
@@ -306,11 +254,21 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
+
+// ------------------- SUDAH ASSIGN -------------------
+
     public function sudahdiAssign()
     {
+        $subinv = $this->session->datasubinven;
         $sql = "SELECT *
                   FROM khs_qweb_terassign1 kqt
-              ORDER BY 1";
+                 WHERE kqt.subinventory = '$subinv'
+              ORDER BY CASE
+                          WHEN kqt.tgl_kirim IS NULL
+                             THEN 1
+                          ELSE 0
+                       END,
+                       TRUNC (kqt.tgl_kirim) DESC";
         $response = $this->oracle->query($sql)->result_array();
 
         return $response;
@@ -320,18 +278,20 @@ class M_monitoringdo extends CI_Model
     public function sudahdiAssign_detail($data)
     {
         $subinv = $this->session->datasubinven;
-        $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
-                                mtrl.inventory_item_id, msib.description, mtrl.quantity qty_req,
-                                -- khs_stock_delivery (mtrl.inventory_item_id,102,'$subinv') + mtrl.quantity av_to_res
-                                khs_inv_qty_atr (102,mtrl.inventory_item_id,'$subinv','','') atr
-                           FROM mtl_txn_request_lines mtrl,
-                                mtl_txn_request_headers mtrh,
-                                mtl_system_items_b msib
-                          WHERE mtrh.header_id = mtrl.header_id
-                            AND msib.inventory_item_id = mtrl.inventory_item_id
-                            AND msib.organization_id = mtrl.organization_id
-                            AND mtrh.request_number = '$data'
-                       ORDER BY msib.segment1";
+        $query = "SELECT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
+                         mtrl.inventory_item_id, msib.description, mtrl.quantity,
+                         (SELECT SUM (moqd.primary_transaction_quantity) qty
+                            FROM mtl_onhand_quantities_detail moqd
+                           WHERE moqd.subinventory_code = '$subinv'
+                             AND moqd.inventory_item_id = mtrl.inventory_item_id) av_to_res
+                    FROM mtl_txn_request_lines mtrl,
+                         mtl_txn_request_headers mtrh,
+                         mtl_system_items_b msib
+                   WHERE mtrh.header_id = mtrl.header_id
+                     AND msib.inventory_item_id = mtrl.inventory_item_id
+                     AND msib.organization_id = mtrl.organization_id
+                     AND mtrh.request_number = '$data'
+                ORDER BY msib.description";
 
         if (!empty($data)) {
             $response = $this->oracle->query($query)->result_array();
@@ -344,53 +304,168 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
-    public function sudahdiLayani()
+    // public function sudahdiLayani()
+    // {
+    //     $sql = "SELECT *
+    //               FROM khs_qweb_sudah_pelayanan1 kqsp
+    //           ORDER BY 1";
+    //     $response = $this->oracle->query($sql)->result_array();
+
+    //     return $response;
+    // }
+
+
+    // public function sudahdiLayani_detail($data)
+    // {
+    //   $subinv = $this->session->datasubinven;
+    //   $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", kdt.line_number, msib.segment1,
+    //                             msib.description, mtrl.quantity qty_req,
+    //                             kdt.allocated_quantity qty_allocated,
+    //                             -- khs_stock_delivery (mtrl.inventory_item_id,102,'$subinv') stock,
+    //                             khs_inv_qty_atr (102,mtrl.inventory_item_id,'$subinv','','') atr,
+    //                             kpd.person_id petugas
+    //                        FROM mtl_txn_request_lines mtrl,
+    //                             mtl_txn_request_headers mtrh,
+    //                             mtl_system_items_b msib,
+    //                             khs_person_delivery kpd,
+    //                             khs_delivery_temp kdt
+    //                       WHERE mtrh.header_id = mtrl.header_id
+    //                         AND kpd.request_number = mtrh.request_number
+    //                         --
+    //                         AND kdt.inventory_item_id = mtrl.inventory_item_id
+    //                         AND kdt.line_number = mtrl.line_number
+    //                         AND kdt.header_id = kpd.header_id
+    //                         AND 1 =
+    //                                CASE
+    //                                   WHEN kdt.serial_status = 'SERIAL'
+    //                                   AND kpd.delivery_flag = 'Y'
+    //                                   AND kdt.flag = 'E'
+    //                                      THEN 1                          --'SELESAI PELAYANAN'
+    //                                   WHEN kdt.serial_status = 'NON SERIAL'
+    //                                   AND kpd.delivery_flag = 'Y'
+    //                                   AND kdt.flag = 'D'
+    //                                      THEN 1                          --'SELESAI PELAYANAN'
+    //                                END
+    //                         --
+    //                         AND msib.inventory_item_id = mtrl.inventory_item_id
+    //                         AND msib.organization_id = mtrl.organization_id
+    //                         AND mtrh.request_number = '$data'
+    //                    ORDER BY msib.segment1";
+
+    //     if (!empty($data)) {
+    //         $response = $this->oracle->query($query)->result_array();
+    //     } else {
+    //         $response = array(
+    //             'success' => false,
+    //             'message' => 'requests_number is empty, cannot do this action'
+    //         );
+    //     }
+    //     return $response;
+    // }
+
+
+// ------------------- SUDAH TRANSACT -------------------
+
+    public function sudahdiMuat()
     {
+        $subinv = $this->session->datasubinven;
         $sql = "SELECT *
-                  FROM khs_qweb_sudah_pelayanan1 kqsp
-              ORDER BY 1";
+                  FROM khs_qweb_sudah_muat1 kqsm
+                 WHERE kqsm.subinventory = '$subinv'
+              ORDER BY CASE
+                          WHEN kqsm.tgl_kirim IS NULL
+                             THEN 1
+                          ELSE 0
+                       END,
+                       TRUNC (kqsm.tgl_kirim) DESC";
         $response = $this->oracle->query($sql)->result_array();
 
         return $response;
     }
 
 
-    public function sudahdiLayani_detail($data)
+    public function sudahdiMuat_detail($data)
     {
       $subinv = $this->session->datasubinven;
-      $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", kdt.line_number, msib.segment1,
-                                msib.description, mtrl.quantity qty_req,
-                                kdt.allocated_quantity qty_allocated,
-                                -- khs_stock_delivery (mtrl.inventory_item_id,102,'$subinv') stock,
-                                khs_inv_qty_atr (102,mtrl.inventory_item_id,'$subinv','','') atr,
-                                kpd.person_id petugas
-                           FROM mtl_txn_request_lines mtrl,
-                                mtl_txn_request_headers mtrh,
-                                mtl_system_items_b msib,
-                                khs_person_delivery kpd,
-                                khs_delivery_temp kdt
-                          WHERE mtrh.header_id = mtrl.header_id
-                            AND kpd.request_number = mtrh.request_number
-                            --
-                            AND kdt.inventory_item_id = mtrl.inventory_item_id
-                            AND kdt.line_number = mtrl.line_number
-                            AND kdt.header_id = kpd.header_id
-                            AND 1 =
-                                   CASE
-                                      WHEN kdt.serial_status = 'SERIAL'
-                                      AND kpd.delivery_flag = 'Y'
-                                      AND kdt.flag = 'E'
-                                         THEN 1                          --'SELESAI PELAYANAN'
-                                      WHEN kdt.serial_status = 'NON SERIAL'
-                                      AND kpd.delivery_flag = 'Y'
-                                      AND kdt.flag = 'D'
-                                         THEN 1                          --'SELESAI PELAYANAN'
-                                   END
-                            --
-                            AND msib.inventory_item_id = mtrl.inventory_item_id
-                            AND msib.organization_id = mtrl.organization_id
-                            AND mtrh.request_number = '$data'
-                       ORDER BY msib.segment1";
+      $query = "SELECT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
+                       mtrl.inventory_item_id, msib.description, mtrl.quantity qty_req,
+                       mtrl.quantity_detailed qty_allocated,
+                       mtrl.quantity_delivered qty_transact,
+                         (SELECT SUM (moqd.primary_transaction_quantity) qty
+                            FROM mtl_onhand_quantities_detail moqd
+                           WHERE moqd.subinventory_code = '$subinv'
+                             AND moqd.inventory_item_id = mtrl.inventory_item_id) av_to_res
+                    FROM mtl_txn_request_lines mtrl,
+                         mtl_txn_request_headers mtrh,
+                         mtl_system_items_b msib,
+                         khs_detail_dospb kdd
+                   WHERE mtrh.header_id = mtrl.header_id
+                     AND msib.inventory_item_id = mtrl.inventory_item_id
+                     AND msib.organization_id = mtrl.organization_id
+                     AND kdd.request_number = mtrh.request_number
+                     AND kdd.inventory_item_id = mtrl.inventory_item_id
+                     AND kdd.line_number = mtrl.line_number
+                     AND mtrh.request_number = '$data'
+                     AND kdd.status = 'T'
+                     AND mtrl.line_status = 5
+                ORDER BY msib.description";
+
+        if (!empty($data)) {
+            $response = $this->oracle->query($query)->result_array();
+        } else {
+            $response = array(
+              'success' => false,
+              'message' => 'requests_number is empty, cannot do this action'
+            );
+        }
+        return $response;
+    }
+
+
+// ------------------- SUDAH CETAK -------------------
+
+    public function GetSudahCetak()
+    {
+        $subinv = $this->session->datasubinven;
+        $sql = "SELECT *
+                  FROM khs_qweb_sudah_cetak1 kqsc
+                 WHERE kqsc.subinventory = '$subinv'
+              ORDER BY CASE
+                          WHEN kqsc.tgl_kirim IS NULL
+                             THEN 1
+                          ELSE 0
+                       END,
+                       TRUNC (kqsc.tgl_kirim) DESC";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
+
+    public function GetSudahCetakDetail($data)
+    {
+        $subinv = $this->session->datasubinven;
+        $query = "SELECT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
+                         mtrl.inventory_item_id, msib.description, mtrl.quantity qty_req,
+                         mtrl.quantity_detailed qty_allocated,
+                         mtrl.quantity_delivered qty_transact,
+                           (SELECT SUM (moqd.primary_transaction_quantity) qty
+                              FROM mtl_onhand_quantities_detail moqd
+                             WHERE moqd.subinventory_code = '$subinv'
+                               AND moqd.inventory_item_id = mtrl.inventory_item_id) av_to_res
+                      FROM mtl_txn_request_lines mtrl,
+                           mtl_txn_request_headers mtrh,
+                           mtl_system_items_b msib,
+                           khs_detail_dospb kdd
+                     WHERE mtrh.header_id = mtrl.header_id
+                       AND msib.inventory_item_id = mtrl.inventory_item_id
+                       AND msib.organization_id = mtrl.organization_id
+                       AND kdd.request_number = mtrh.request_number
+                       AND kdd.inventory_item_id = mtrl.inventory_item_id
+                       AND kdd.line_number = mtrl.line_number
+                       AND mtrh.request_number = '$data'
+                       AND kdd.status = 'C'
+                       AND mtrl.line_status = 5
+                  ORDER BY msib.description";
 
         if (!empty($data)) {
             $response = $this->oracle->query($query)->result_array();
@@ -404,66 +479,62 @@ class M_monitoringdo extends CI_Model
     }
 
 
-    public function sudahdiMuat()
-    {
-        $sql = "SELECT *
-                from khs_qweb_sudah_muat1 kqsm
-                ORDER BY CASE
-                            WHEN kqsm.tgl_kirim IS NULL
-                               THEN 1
-                            ELSE 0
-                         END,
-                         kqsm.tgl_kirim DESC,
-                         kqsm.waktu_datang DESC,
-                         kqsm.plat_number,
-                         kqsm.header_id";
-        $response = $this->oracle->query($sql)->result_array();
+// ------------------- SIAP INTERORG -------------------
 
-        return $response;
+    public function GetSiapInterorg()
+    {
+        $subinv = $this->session->datasubinven;
+        $sql = "SELECT *
+                  FROM khs_qweb_sudah_cetak1 kqsc
+                 WHERE kqsc.subinventory = '$subinv'
+              ORDER BY CASE
+                          WHEN kqsc.tgl_kirim IS NULL
+                             THEN 1
+                          ELSE 0
+                       END,
+                       TRUNC (kqsc.tgl_kirim) DESC";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
     }
 
 
-    public function sudahdiMuat_detail($data)
+    public function GetSiapInterorgDetail($data)
     {
-      $subinv = $this->session->datasubinven;
-      $query = "SELECT DISTINCT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
-                                kdt.line_number, msib.description, mtrl.quantity qty_req,
-                                kdt.allocated_quantity qty_allocated,
-                                mtrl.quantity_delivered qty_transact, kpd.person_id petugas
-                           FROM mtl_txn_request_lines mtrl,
-                                mtl_txn_request_headers mtrh,
-                                mtl_system_items_b msib,
-                                khs_person_delivery kpd,
-                                khs_delivery_temp kdt
-                          WHERE mtrh.header_id = mtrl.header_id
-                            AND kpd.request_number = mtrh.request_number
-                            --
-                            AND kdt.inventory_item_id = mtrl.inventory_item_id
-                            AND kdt.line_number = mtrl.line_number
-                            AND kdt.header_id = kpd.header_id
-                            AND 1 =
-                                   CASE
-                                      WHEN kdt.serial_status IN ('NON SERIAL', 'SERIAL')
-                                      AND kpd.delivery_flag = 'Y'
-                                      AND kdt.flag = 'T'
-                                         THEN 1                                 --'SUDAH MUAT'
-                                   END
-                            --
-                            AND msib.inventory_item_id = mtrl.inventory_item_id
-                            AND msib.organization_id = mtrl.organization_id
-                            AND mtrh.request_number = '$data'
-                       ORDER BY msib.segment1";
+        $subinv = $this->session->datasubinven;
+        $query = "SELECT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
+                         mtrl.inventory_item_id, msib.description, mtrl.quantity qty_req,
+                         mtrl.quantity_detailed qty_allocated,
+                         mtrl.quantity_delivered qty_transact,
+                           (SELECT SUM (moqd.primary_transaction_quantity) qty
+                              FROM mtl_onhand_quantities_detail moqd
+                             WHERE moqd.subinventory_code = '$subinv'
+                               AND moqd.inventory_item_id = mtrl.inventory_item_id) av_to_res
+                      FROM mtl_txn_request_lines mtrl,
+                           mtl_txn_request_headers mtrh,
+                           mtl_system_items_b msib,
+                           khs_detail_dospb kdd
+                     WHERE mtrh.header_id = mtrl.header_id
+                       AND msib.inventory_item_id = mtrl.inventory_item_id
+                       AND msib.organization_id = mtrl.organization_id
+                       AND kdd.request_number = mtrh.request_number
+                       AND kdd.inventory_item_id = mtrl.inventory_item_id
+                       AND kdd.line_number = mtrl.line_number
+                       AND mtrh.request_number = '$data'
+                       AND kdd.status = 'C'
+                       AND mtrl.line_status = 5
+                  ORDER BY msib.description";
 
         if (!empty($data)) {
             $response = $this->oracle->query($query)->result_array();
         } else {
             $response = array(
-              'success' => false,
-              'message' => 'requests_number is empty, cannot do this action'
+                'success' => false,
+                'message' => 'requests_number is empty, cannot do this action'
             );
         }
         return $response;
     }
+
 
     public function cekkpd($data)
     {
@@ -476,70 +547,91 @@ class M_monitoringdo extends CI_Model
     }
 
 
-    public function insertDO($data)
+    // public function insertDO($data)
+    // {
+    //     $user_login = $this->session->user;
+    //     $date_now = date('d-M-Y');
+    //     if (!empty($data['HEADER_ID'])) {
+    //         if (!empty($data['REQUEST_NUMBER'])) {
+    //             if (!empty($data['PERSON_ID'])) {
+    //                 if (!empty($data['DELIVERY_FLAG'])) {
+    //                     if (!empty($data['PLAT_NUMBER'])) {
+    //                         $this->oracle->query("INSERT INTO KHS_PERSON_DELIVERY(HEADER_ID
+    //                                          ,REQUEST_NUMBER
+    //                                          ,PERSON_ID
+    //                                          ,DELIVERY_FLAG
+    //                                          ,PLAT_NUMBER
+    //                                          ,ASSIGNER_ID
+    //                                          ,ASSIGN_DATE
+    //                                          )
+    //                         VALUES ('$data[HEADER_ID]'
+    //                                ,'$data[REQUEST_NUMBER]'
+    //                                ,'$data[PERSON_ID]'
+    //                                ,'$data[DELIVERY_FLAG]'
+    //                                ,'$data[PLAT_NUMBER]'
+    //                                ,'$user_login'
+    //                                ,'$date_now'
+    //                                )
+    //                         ");
+    //                         $response = 1;
+    //                     } else {
+    //                         $response = 0;
+    //                         // $response = array(
+    //                         //     'success' => false,
+    //                         //     'message' => 'PLAT_NUMBER is empty, cannot do this action'
+    //                         // );
+    //                     }
+    //                 } else {
+    //                     $response = 0;
+    //                     // $response = array(
+    //                     //     'success' => false,
+    //                     //     'message' => 'DELIVERY_FLAG is empty, cannot do this action'
+    //                     // );
+    //                 }
+    //             } else {
+    //                 $response = 0;
+    //                 // $response = array(
+    //                 //     'success' => false,
+    //                 //     'message' => 'PERSON_ID is empty, cannot do this action'
+    //                 // );
+    //             }
+    //         } else {
+    //             $response = 0;
+    //             // $response = array(
+    //             //     'success' => false,
+    //             //     'message' => 'REQUEST_NUMBER is empty, cannot do this action'
+    //             // );
+    //         }
+    //     } else {
+    //         $response = 0;
+    //         // $response = array(
+    //         //     'success' => false,
+    //         //     'message' => 'header id is empty, cannot do this action'
+    //         // );
+    //     }
+    //     return $response;
+    // }
+
+
+    public function updateDO($data)
     {
         $user_login = $this->session->user;
-        $date_now = date('d-M-Y');
-        if (!empty($data['HEADER_ID'])) {
-            if (!empty($data['REQUEST_NUMBER'])) {
-                if (!empty($data['PERSON_ID'])) {
-                    if (!empty($data['DELIVERY_FLAG'])) {
-                        if (!empty($data['PLAT_NUMBER'])) {
-                            $this->oracle->query("INSERT INTO KHS_PERSON_DELIVERY(HEADER_ID
-                                             ,REQUEST_NUMBER
-                                             ,PERSON_ID
-                                             ,DELIVERY_FLAG
-                                             ,PLAT_NUMBER
-                                             ,ASSIGNER_ID
-                                             ,ASSIGN_DATE
-                                             )
-                            VALUES ('$data[HEADER_ID]'
-                                   ,'$data[REQUEST_NUMBER]'
-                                   ,'$data[PERSON_ID]'
-                                   ,'$data[DELIVERY_FLAG]'
-                                   ,'$data[PLAT_NUMBER]'
-                                   ,'$user_login'
-                                   ,'$date_now'
-                                   )
-                            ");
-                            $response = 1;
-                        } else {
-                            $response = 0;
-                            // $response = array(
-                            //     'success' => false,
-                            //     'message' => 'PLAT_NUMBER is empty, cannot do this action'
-                            // );
-                        }
-                    } else {
-                        $response = 0;
-                        // $response = array(
-                        //     'success' => false,
-                        //     'message' => 'DELIVERY_FLAG is empty, cannot do this action'
-                        // );
-                    }
-                } else {
-                    $response = 0;
-                    // $response = array(
-                    //     'success' => false,
-                    //     'message' => 'PERSON_ID is empty, cannot do this action'
-                    // );
-                }
-            } else {
-                $response = 0;
-                // $response = array(
-                //     'success' => false,
-                //     'message' => 'REQUEST_NUMBER is empty, cannot do this action'
-                // );
-            }
-        } else {
-            $response = 0;
-            // $response = array(
-            //     'success' => false,
-            //     'message' => 'header id is empty, cannot do this action'
-            // );
+        $sql = "UPDATE khs_detail_dospb kdd
+                   SET kdd.plat_number = '$data[PLAT_NUMBER]',
+                       kdd.assign_date = SYSDATE,
+                       kdd.assigner_id = '$user_login',
+                       kdd.assignee_id = '$data[PERSON_ID]'
+                 WHERE kdd.request_number = '$data[REQUEST_NUMBER]'";
+        $result = $this->oracle->query($sql);
+
+        if ($result) {
+          return 1;
         }
-        return $response;
+        else {
+          return 0;
+        }
     }
+
 
     public function getDataSelected($id)
     {
@@ -658,7 +750,10 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
-    public function headerDariMbaDiv($id)
+
+// ------------------- PDF CONTENT -------------------
+
+    public function headerSurat($id)
     {
       $query = "SELECT *
                 from khs_qweb_header_dospb1 kqhd
@@ -672,61 +767,12 @@ class M_monitoringdo extends CI_Model
       return $response;
     }
 
-    // public function headerSurat($id)
-    // {
-    //     $query = "SELECT *
-    //                 FROM khs_qweb_sudah_muat1 kqsm
-    //                WHERE kqsm.\"DO/SPB\" = '$id'";
-    //
-    //     $response = $this->oracle->query($query)->result_array();
-    //
-    //     if (empty($response)) {
-    //         $response = null;
-    //     }
-    //     return $response;
-    // }
-    //
-    // public function headerSurat2($id)
-    // {
-    //     $query = "SELECT *
-    //                 FROM khs_qweb_sudah_cetak1 kqsc
-    //                WHERE kqsc.\"DO/SPB\" = '$id'";
-    //
-    //     $response = $this->oracle->query($query)->result_array();
-    //
-    //     if (empty($response)) {
-    //         $response = null;
-    //     }
-    //     return $response;
-    // }
 
-
-    public function bodySurat($id)
+    public function bodySurat($data)
     {
-        $query = "SELECT mtrh.header_id, mtrh.request_number, msib.segment1 item, kdt.line_number,
-                         msib.description, mtrl.uom_code, NVL (mtrl.quantity, 0) quantity,
-                         NVL (mtrl.quantity_delivered, 0) transact_qty,
-                         NVL (mtrl.quantity_detailed, 0) allocated_qty,
-                         NVL (kdt.required_quantity, 0) required_quantity,
-                         NVL (kdt.allocated_quantity, 0) qty_terlayani
-                    FROM mtl_txn_request_headers mtrh,
-                         mtl_txn_request_lines mtrl,
-                         khs_delivery_temp kdt,
-                         mtl_system_items_b msib
-                   WHERE mtrh.header_id = mtrl.header_id
-                     AND mtrh.header_id = kdt.header_id
-                     AND kdt.inventory_item_id = mtrl.inventory_item_id
-                     AND kdt.organization_id = mtrl.organization_id
-                     AND kdt.line_number = mtrl.line_number
-                     --
-                     AND msib.inventory_item_id = mtrl.inventory_item_id
-                     AND msib.organization_id = mtrl.organization_id
-                     --
-                     AND mtrl.transaction_type_id IN (327, 64, 52, 33)         -- DO,SPB,SPB KIT
-                     AND NVL (mtrl.quantity_delivered, 0) <> 0
-                     AND kdt.FLAG = 'T'
-                     --
-                     AND mtrh.request_number = '$id'";
+        $query = "SELECT *
+                    FROM khs_qweb_body_dospb1 kqbd
+                   WHERE kqbd.request_number = '$data'";
 
         $response = $this->oracle->query($query)->result_array();
 
@@ -739,22 +785,12 @@ class M_monitoringdo extends CI_Model
         return $response;
     }
 
-    public function serial($id)
+
+    public function serial($data)
     {
-        $query = "SELECT DISTINCT   mtrl.header_id, ksnt.request_number, mtrl.line_number,
-                                    msib.segment1 item, msib.description, ksnt.serial_number
-                               FROM mtl_txn_request_lines mtrl,
-                                    khs_serial_number_temp ksnt,
-                                    mtl_system_items_b msib
-                              WHERE ksnt.header_id = mtrl.header_id
-                                AND ksnt.inventory_item_id = mtrl.inventory_item_id
-                                AND ksnt.line_number = mtrl.line_number
-                                AND mtrl.line_status = 5
-                                --
-                                AND msib.inventory_item_id = mtrl.inventory_item_id
-                                AND msib.organization_id = mtrl.organization_id
-                                AND ksnt.request_number = '$id'
-                           ORDER BY msib.segment1, ksnt.serial_number";
+        $query = "SELECT *
+                    FROM khs_qweb_serial_dospb1 kqsd
+                   WHERE kqsd.request_number = '$data'";
 
         $response = $this->oracle->query($query)->result_array();
 
@@ -763,6 +799,7 @@ class M_monitoringdo extends CI_Model
         }
         return $response;
     }
+
 
     public function footersurat($data)
     {
@@ -780,6 +817,7 @@ class M_monitoringdo extends CI_Model
         }
         return $response;
     }
+
 
     public function test($data)
     {

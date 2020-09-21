@@ -18,8 +18,8 @@
           <!-- <td><center><?php echo $g['DO/SPB'] ?></center></td> -->
           <td><center><?php echo $g['SEGMENT1'] ?></center></td>
           <td><center><?php echo $g['DESCRIPTION'] ?></center></td>
-          <td><center><?php echo $g['QTY_REQ'] ?></center></td>
-          <td><center><?php echo $g['ATR'] ?></center></td>
+          <td><center><?php echo $g['QUANTITY'] ?></center></td>
+          <td><center><?php echo $g['AV_TO_RES'] ?></center></td>
           <!-- <td><center><?php echo $g['PETUGAS'] ?></center></td> -->
         </tr>
       <?php $no++; endforeach; ?>

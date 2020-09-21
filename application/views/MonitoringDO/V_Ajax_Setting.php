@@ -25,7 +25,6 @@
               $styleSetting = '';
             // }
        ?>
-
        <tr row-id="<?php echo $no ?>" <?php echo $styleSetting ?>>
          <!-- <input type="hidden" name="cekdodo" id="checkDODO" value="<?php echo $g['CHECK'] ?>"> -->
          <input type="hidden" id="cekSudahAssign">
@@ -47,7 +46,6 @@
          <td><center><button type="button" class="btn btn-info" name="buttondetail" style="font-weight:bold;" onclick="detail('<?php echo $g['DO/SPB'] ?>', <?php echo $g['HEADER_ID'] ?>, <?php echo $no ?>, '<?php echo $g['NO_SO'] ?>', '<?php echo $g['PLAT_NUMBER'] ?>')" data-toggle="modal" data-target="#MyModal2">
            <i class="fa fa-eye"></i></button> </center></td>
        </tr>
-
      <?php $no++; } }?>
    </tbody>
  </table>
@@ -55,7 +53,6 @@
 <script type="text/javascript">
  $('#tblMonitoringDO').DataTable({
    drawCallback: function(dt) {
-
   $('.select2MonitoringDO').select2({
     minimumInputLength: 2,
     placeholder: "Pilih Petugas",
@@ -82,7 +79,6 @@
   })
  }
  });
-
 //
 // $(document).ready(function() {
 // $('#tblMonitoringDO').dataTable({
@@ -114,5 +110,4 @@
 //  })
 // }
 // })
-
 </script>
