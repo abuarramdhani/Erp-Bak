@@ -47,6 +47,11 @@ class M_master extends CI_Model
       return $res;
     }
 
+    public function getDept($s)
+    {
+      return $this->personalia->distinct()->select('unit, dept')->where('seksi', $s)->get('hrd_khs.tseksi')->row_array();
+    }
+
     public function getSeksi($param)
     {
       $res = $this->personalia->distinct()

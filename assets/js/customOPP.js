@@ -11,7 +11,7 @@ const swalOPPToastrAlert = (type, message) => {
   })
 }
 
-const swalWIPP = (type, title) => {
+const swalOPP = (type, title) => {
   Swal.fire({
     type: type,
     title: title,
@@ -19,29 +19,120 @@ const swalWIPP = (type, title) => {
   })
 }
 // ================================================ //
+
+
+const oppSaveOrderOut = () => {
+  let id_proses = $('.id_proses').map((_, el) => el.value).get()
+  let id_order = $('.id_order').map((_, el) => el.value).get()
+
+  id_proses.forEach((v,i) => {
+    $.ajax({
+        url: baseurl + 'OrderPrototypePPIC/OrderOut/getOrder',
+        type: 'POST',
+        dataType: 'JSON',
+        async: false,
+        data: {
+          id_proses: v,
+          id_order: id_order[i]
+        },
+        success: function(result) {
+          console.log(result);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error()
+        }
+      })
+  })
+  console.log(id_proses);
+  console.log(id_order);
+}
+
 const opp_add_to_order_out = () =>{
   $('#opp_order_out_tampung').html('')
-  let data = $('#opp_keranjang').text()
-  let tm = []
-  data = data.split(',')
-  data.pop()
-  let tampung = [];
-  data.forEach((v, i) => {
-    let baru = v.split('_')
-    tampung.push(baru)
-  })
+  Swal.showLoading()
 
-  tampung.forEach((v, i) => {
-    let html = `<tr>
-                  <td style="text-align:center">${i+1}</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>${v[2]}</td>
-                </tr>`;
-      $('#opp_order_out_tampung').append(html)
-  })
+  function firstFunction() {
+
+      return new Promise((resolve, reject) => {
+
+        let data = $('#opp_keranjang').text()
+        let tm = []
+        data = data.split(',')
+        data.pop()
+        let tampung = [];
+        data.forEach((v, i) => {
+          let baru = v.split('_')
+          tampung.push(baru)
+        })
+        let cek_seksi
+        tampung.forEach((v, i) => {
+          if (tampung[0][3] != v[3]) {
+            cek_seksi = 1;
+          }
+        })
+        if (cek_seksi) {
+          swalOPP('warning', 'Seksi Tujuan Harus Sama Untuk Dapat Melakukan ORDER KELUAR!');
+          $('#opp_modal_set_order_out').modal('toggle');
+        }else {
+          $('#seksi_penerima').html(tampung[0][3])
+          $.ajax({
+              url: baseurl + 'OrderPrototypePPIC/OrderOut/getUnitDepartemen',
+              type: 'POST',
+              dataType: 'JSON',
+              async: false,
+              data: {
+                seksi: tampung[0][3],
+              },
+              success: function(result) {
+                $('#opp_unit').html(result.unit)
+                $('#opp_dept').html(result.dept)
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.error()
+              }
+            })
+          let r = 0;
+            tampung.forEach((v, ii) => {
+            let opp_ajax_1 = $.ajax({
+                url: baseurl + 'OrderPrototypePPIC/OrderOut/getOrder',
+                type: 'POST',
+                dataType: 'JSON',
+                async: false,
+                data: {
+                  id: v[1],
+                },
+                success: function(result) {
+                  console.log(v);
+                  let html = `<tr>
+                                <input type="hidden" class="id_proses" value="${v[0]}">
+                                <input type="hidden" class="id_order" value="${v[1]}">
+                                <td style="text-align:center">${ii+1}</td>
+                                <td>${result.jenis}</td>
+                                <td>${result.qty}</td>
+                                <td>${result.kode_komponen}</td>
+                                <td>${v[2]}</td>
+                              </tr>`;
+                    $('#opp_order_out_tampung').append(html)
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                  console.error()
+                }
+              })
+          r++})
+          console.log(r);
+          resolve(r)
+        }
+      })
+    }
+
+    async function secondFunction() {
+        console.log('tunggu');
+
+        let result = await firstFunction()
+        console.log('selesai');
+        Swal.close()
+    };
+    secondFunction()
 
 }
 
@@ -67,6 +158,7 @@ const addtokeranjang = (id_order, proses, seksi, id) =>{
 }
 
 const orderinopp = $('.orderInOpp').DataTable();
+const opp_monitoring = $('.opp_monitoring').DataTable();
 
 function format_wipp_bom(d, no) {
   return `<div class="detailOrderIn_${no}"></div>`;

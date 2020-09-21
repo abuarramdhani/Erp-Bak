@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" style="max-width:100%;">
   <div class="row">
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
@@ -77,7 +77,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal fade bd-example-modal-md" id="opp_modal_set_order_out" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
@@ -99,17 +98,17 @@
                       <tr>
                         <td style="width:5%;">Seksi</td>
                         <td style="width:2%;text-align:left;">:</td>
-                        <td style="width:67%;"></td>
+                        <td style="width:67%;" id="seksi_penerima"></td>
                       </tr>
                       <tr>
                         <td>Unit</td>
                         <td>:</td>
-                        <td></td>
+                        <td id="opp_unit"></td>
                       </tr>
                       <tr>
                         <td>Departemen</td>
                         <td>:</td>
-                        <td></td>
+                        <td id="opp_dept"></td>
                       </tr>
                     </table>
                     <br>
@@ -119,10 +118,10 @@
                       <table class="table table-striped table-bordered table-hover text-left" style="font-size:11px;">
                         <thead class="bg-success">
                           <tr>
-                            <th>No</th>
+                            <th style="text-align:center">No</th>
                             <th>Jenis Order</th>
                             <th>Qty</th>
-                            <th>Satuan</th>
+                            <!-- <th>Satuan</th> -->
                             <th>Kode Komponen</th>
                             <th>Proses</th>
                           </tr>
@@ -132,6 +131,8 @@
                         </tbody>
                       </table>
                     </div>
+                    <br>
+                    <center><button type="button" name="button" onclick="oppSaveOrderOut()" style="width:30%" class="btn btn-success"> <b class="fa fa-floppy-o"></b> <b>Save</b> </button></center>
                   </div>
                 </div>
               </div>
@@ -164,6 +165,7 @@
                     <div class="area-proses-opp">
 
                     </div>
+
                   </div>
                 </div>
               </div>

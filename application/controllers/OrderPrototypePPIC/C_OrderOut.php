@@ -58,6 +58,24 @@ class C_OrderOut extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
+    public function getOrder()
+    {
+      if ($this->input->is_ajax_request()) {
+        echo json_encode($this->db->where('id', $this->input->post('id'))->get('opp.order')->row_array());
+      }else {
+        echo "hello..";
+      }
+    }
+
+    public function getUnitDepartemen($value='')
+    {
+      if ($this->input->is_ajax_request()) {
+        echo json_encode($this->M_master->getDept($this->input->post('seksi')));
+      }else {
+        echo "hello..";
+      }
+    }
+
 
     // ============================ CHECK AREA =====================================
 
