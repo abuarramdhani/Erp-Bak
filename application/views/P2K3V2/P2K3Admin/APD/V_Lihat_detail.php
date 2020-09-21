@@ -24,7 +24,7 @@
                                             <b style="font-size: 24px;"><?php echo $seksi[0]['section_name']; ?></b>
                                                 <br>
                                                 <b>Permintaan update Standar Kebutuhan</b>
-                                            <table style="width: 100%" class="table table-striped table-bordered table-hover text-center <?php echo (count($daftar_pekerjaan) < 7) ? 'p2k3_tbl_frezz_nos':'p2k3_tbl_frezz'; ?>">
+                                            <table style="width: 100%" class="table table-striped table-bordered table-hover text-center <?php echo (count($daftar_pekerjaan) < 4) ? 'p2k3_tbl_frezz_nos':'p2k3_tbl_frezz'; ?>">
                                                 <thead>
                                                     <tr class="bg-info">
                                                         <th class="bg-info"><input type="checkbox" class="p2k3_chkAll"></th>
@@ -36,6 +36,8 @@
                                                         <?php foreach ($daftar_pekerjaan as $key) { ?>
                                                         <th><?php echo $key['pekerjaan'];?></th>
                                                         <?php } ?>
+                                                        <th>Keterangan</th>
+                                                        <th>Lampiran</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="DetailInputKebutuhanAPD">
@@ -60,6 +62,16 @@
                                                         foreach ($jml as $row) { ?>
                                                         <td><?php echo $row; ?></td>
                                                         <?php  } ?>
+                                                        <td><?=$key['keterangan']?></td>
+                                                        <td>
+                                                            <?php if (empty($key['lampiran'])): ?>
+                                                                -   
+                                                            <?php else: ?>
+                                                                <a href="<?php echo base_url('assets/upload/P2K3DocumentApproval/'.$key['lampiran']); ?>" target="_blank" class="btn btn-danger">
+                                                                    <i class="fa fa-file-pdf-o"></i>
+                                                                </a>
+                                                            <?php endif ?>
+                                                        </td>
                                                         <!-- <input name="id[]" hidden value="<?php echo $key['id']; ?>"> -->
                                                     </tr>
                                                     <?php $a++; } ?>
@@ -75,7 +87,7 @@
                                         <br>
                                         <div>                                            
                                            <h5 style="color: #000; font-weight: bold;">Standar kebutuhan Terakhir</h5>
-                                           <table style="width: 100%" class="table table-striped table-bordered table-hover text-center <?php echo (count($daftar_pekerjaan) < 7) ? 'p2k3_tbl_frezz_nos':'p2k3_tbl_frezz'; ?>">
+                                           <table style="width: 100%" class="table table-striped table-bordered table-hover text-center <?php echo (count($daftar_pekerjaan) < 4) ? 'p2k3_tbl_frezz_nos':'p2k3_tbl_frezz'; ?>">
                                             <thead>
                                                 <tr class="bg-info">
                                                      <th class="bg-info"><input type="checkbox" disabled=""></th>
@@ -87,6 +99,8 @@
                                                     <?php foreach ($daftar_pekerjaan as $key) { ?>
                                                     <th><?php echo $key['pekerjaan'];?></th>
                                                     <?php } ?>
+                                                    <th>Keterangan</th>
+                                                    <th>Lampiran</th>
                                                     <th>Tanggal Approve TIM</th>
                                                 </tr>
                                             </thead>
@@ -121,6 +135,16 @@
                                                                 <td>0</td>
                                                             <?php endif ?>
                                                         <?php  } ?>
+                                                        <td><?=$key['keterangan']?></td>
+                                                        <td>
+                                                            <?php if (empty($key['lampiran'])): ?>
+                                                                -   
+                                                            <?php else: ?>
+                                                                <a href="<?php echo base_url('assets/upload/P2K3DocumentApproval/'.$key['lampiran']); ?>" target="_blank" class="btn btn-danger">
+                                                                    <i class="fa fa-file-pdf-o"></i>
+                                                                </a>
+                                                            <?php endif ?>
+                                                        </td>
                                                         <td><?php echo $key['tgl_approve_tim']; ?></td>
                                                         <!-- <input name="id[]" hidden value="<?php echo $key['id']; ?>"> -->
                                                     </tr>

@@ -59,6 +59,8 @@
                                                 <?php foreach ($daftar_pekerjaan as $key) { ?>
                                                 <th><?php echo $key['pekerjaan'];?></th>
                                                 <?php } ?>
+                                                <th>Keterangan</th>
+                                                <th>Lampiran</th>
                                                 <th width="15%">Tanggal Input</th>
                                                 <th>Status</th>
                                             </tr>
@@ -101,6 +103,16 @@
                                                 foreach ($jml as $row) { if($row == '') continue; ?>
                                                 <td><?php echo $row; ?></td>
                                                 <?php  } ?>
+                                                <td><?=$key['keterangan']?></td>
+                                                <td>
+                                                    <?php if (empty($key['lampiran'])): ?>
+                                                        -   
+                                                    <?php else: ?>
+                                                        <a href="<?php echo base_url('assets/upload/P2K3DocumentApproval/'.$key['lampiran']); ?>" target="_blank" class="btn btn-danger">
+                                                            <i class="fa fa-file-pdf-o"></i>
+                                                        </a>
+                                                    <?php endif ?>
+                                                </td>
                                                 <td><?php echo $key['tgl_input']; ?></td>
                                                 <td><?php echo $status; ?></td>
                                             </tr>
