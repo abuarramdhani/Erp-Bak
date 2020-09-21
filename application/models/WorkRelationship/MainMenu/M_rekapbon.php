@@ -41,8 +41,7 @@ class M_rekapbon extends CI_Model
 		//		 and asa.vendor_id = assa.vendor_id
 		//	 order by 2
 		// ");
-		$query = $oracle->query("
-			SELECT distinct
+		$sql = "SELECT distinct
 				PVS.VENDOR_SITE_CODE VENDOR_SITE_CODE,
 				AI.DESCRIPTION,
 				(AI.INVOICE_AMOUNT * NVL(AI.EXCHANGE_RATE,1)) AMOUNT_IDR,
@@ -78,7 +77,7 @@ class M_rekapbon extends CI_Model
 				AI.ORG_ID
 			FROM
 				AP_INVOICES_ALL AI, 
-				AP_INVOICE_LINES_ALL AIL,  
+				--AP_INVOICE_LINES_ALL AIL,  
 				AP_INVOICES_ALL AIA, 
 				PO_VENDOR_SITES_ALL PVS,
 				PO_VENDORS PV,	 
@@ -94,8 +93,8 @@ class M_rekapbon extends CI_Model
 				AND AI.INVOICE_TYPE_LOOKUP_CODE = 'PREPAYMENT'	
 				AND (PV.VENDOR_NAME = 'KHS Employee' OR (PV.VENDOR_NAME like 'KHS_%' AND LENGTH(PVS.VENDOR_SITE_CODE) = 5)) 
 				AND AI.VENDOR_SITE_ID = PVS.VENDOR_SITE_ID	 
-				AND AIA.INVOICE_ID(+) = AIL.INVOICE_ID
-				AND AIL.PREPAY_INVOICE_ID(+) = AI.INVOICE_ID	
+				--AND AIA.INVOICE_ID(+) = AIL.INVOICE_ID
+				--AND AIL.PREPAY_INVOICE_ID(+) = AI.INVOICE_ID	
 				AND AI.PARTY_ID  = HP.PARTY_ID
 				AND PV.VENDOR_ID = AI.VENDOR_ID  
 				--AND AI.ORG_ID = 82
@@ -109,7 +108,9 @@ class M_rekapbon extends CI_Model
 				AND AIP.CHECK_ID = AC.CHECK_ID 
 				AND AC.STATUS_LOOKUP_CODE != 'VOIDED' 
 			ORDER By 1
-		");
+		";
+		// echo $sql;exit();
+		$query = $oracle->query($sql);
 
 		return $query->result_array();
 	}
@@ -171,9 +172,7 @@ class M_rekapbon extends CI_Model
 	public function getBill2($noInduk)
 	{
 		$oracle = $this->load->database("oracle",true);
-		
-		$query = $oracle->query("
-			SELECT distinct
+		$sql = "SELECT distinct
 				PVS.VENDOR_SITE_CODE VENDOR_SITE_CODE,
 				AI.DESCRIPTION,
 				(AI.INVOICE_AMOUNT * NVL(AI.EXCHANGE_RATE,1)) AMOUNT_IDR,
@@ -209,7 +208,7 @@ class M_rekapbon extends CI_Model
 				AI.ORG_ID
 			FROM
 				AP_INVOICES_ALL AI, 
-				AP_INVOICE_LINES_ALL AIL,  
+				-- AP_INVOICE_LINES_ALL AIL,  
 				AP_INVOICES_ALL AIA, 
 				PO_VENDOR_SITES_ALL PVS,
 				PO_VENDORS PV,	 
@@ -225,8 +224,8 @@ class M_rekapbon extends CI_Model
 				AND AI.INVOICE_TYPE_LOOKUP_CODE = 'PREPAYMENT'	
 				AND (PV.VENDOR_NAME = 'KHS Employee' OR (PV.VENDOR_NAME like 'KHS_%' AND LENGTH(PVS.VENDOR_SITE_CODE) = 5)) 
 				AND AI.VENDOR_SITE_ID = PVS.VENDOR_SITE_ID	 
-				AND AIA.INVOICE_ID(+) = AIL.INVOICE_ID
-				AND AIL.PREPAY_INVOICE_ID(+) = AI.INVOICE_ID	
+				-- AND AIA.INVOICE_ID(+) = AIL.INVOICE_ID
+				-- AND AIL.PREPAY_INVOICE_ID(+) = AI.INVOICE_ID	
 				AND AI.PARTY_ID  = HP.PARTY_ID
 				AND PV.VENDOR_ID = AI.VENDOR_ID  
 				--AND AI.ORG_ID = 82
@@ -239,8 +238,8 @@ class M_rekapbon extends CI_Model
 				AND AIP.INVOICE_ID(+) = AI.INVOICE_ID	
 				AND AIP.CHECK_ID = AC.CHECK_ID 
 				AND AC.STATUS_LOOKUP_CODE != 'VOIDED' 
-			ORDER By 1
-		");
+			ORDER By 1";
+		$query = $oracle->query($sql);
 
 		return $query->result_array();
 	}
