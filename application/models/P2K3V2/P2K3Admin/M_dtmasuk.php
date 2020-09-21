@@ -147,7 +147,9 @@ class M_Dtmasuk extends CI_Model
                     kb.jml_kebutuhan_staff,
                     kb.jml_kebutuhan_umum,
                     kb.kodesie,
-                    kb.tgl_approve_tim
+                    kb.tgl_approve_tim,
+                    kb.keterangan,
+                    kb.lampiran
                 from
                     k3.k3n_standar_kebutuhan kb,
                     k3.k3_master_item km

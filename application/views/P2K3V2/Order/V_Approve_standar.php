@@ -60,6 +60,8 @@
                                                          ?>
                                                         <th><?php echo $dp['pekerjaan'];?></th>
                                                         <?php } ?>
+                                                        <th>Keterangan</th>
+                                                        <th>Lampiran</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="DetailInputKebutuhanAPD">
@@ -78,9 +80,19 @@
                                                         <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
                                                         <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
                                                         <?php $jml = explode(',', $key['jml_item']);
-                                                        foreach ($jml as $key) { ?>
-                                                        <td><?php echo $key; ?></td>
+                                                        foreach ($jml as $r) { ?>
+                                                        <td><?php echo $r; ?></td>
                                                         <?php  } ?>
+                                                        <td><?php echo $key['keterangan']; ?></td>
+                                                        <td>
+                                                            <?php if (empty($key['lampiran'])): ?>
+                                                                -   
+                                                            <?php else: ?>
+                                                                <a href="<?php echo base_url('assets/upload/P2K3DocumentApproval/'.$key['lampiran']); ?>" target="_blank" class="btn btn-danger">
+                                                                    <i class="fa fa-file-pdf-o"></i>
+                                                                </a>
+                                                            <?php endif ?>
+                                                        </td>
                                                     </tr>
                                                     <?php $a++; } ?>
                                                 </tbody>

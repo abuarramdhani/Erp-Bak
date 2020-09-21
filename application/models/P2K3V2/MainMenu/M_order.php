@@ -338,7 +338,7 @@ class M_Order extends CI_Model
             $kodesie = implode("', '", $kodesie);
         }
         // $kodesie = substr($kodesie, 0,7);
-        $sql = "select ks.jml_kebutuhan_umum, ks.jml_kebutuhan_staff, ks.id, ks.kode_item, ks.jml_item, km.item, ks.kodesie from k3.k3n_standar_kebutuhan ks
+        $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks
         left join k3.k3_master_item km on km.kode_item = ks.kode_item
         where status = '0' and ks.kodesie in ('$kodesie') order by tgl_input desc";
         // echo $sql;exit();

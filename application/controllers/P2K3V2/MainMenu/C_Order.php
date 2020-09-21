@@ -1364,23 +1364,18 @@ class C_Order extends CI_Controller
 
 	public function saveInputStandar()
 	{
-		// print_r($_POST);exit();
-		// $tglNow = date('Y-m');
-		// $cek = $this->M_order->cektgl($tglNow);
-		// if ($cek > 0) {
-		// 	echo "Anda Sudah Menginputkan Standar APD";
-		// 	exit();
-		// }
+		// print_r($_FILES);
 		$kodesie = $this->session->kodesie;
 		$daftar_pekerjaan	= $this->M_order->daftar_pekerjaan($kodesie);
 		$item = $this->input->post('txtKodeItem');
 		$umum = $this->input->post('txtkebUmum');
 		$staff = $this->input->post('txtkebStaff');
 		$jumlah = $this->input->post('p2k3_isk_standar');
+		$keterangan = $this->input->post('keterangan');
+		$lampiran = $this->input->post('lampiran');
 		$tgl_input = date('Y-m-d H:i:s');
 		$ks = substr($kodesie, 0, 7);
-		// echo $ks;exit();
-		// implode kdpekerjaan
+
 		foreach ($daftar_pekerjaan as $key) {
 			$kd[] = $key['kdpekerjaan'];
 		}
@@ -1403,11 +1398,11 @@ class C_Order extends CI_Controller
 				'jml_kebutuhan_staff'	=> (round($staff[$i] / $getbulan, 2)),
 				'tgl_input'	=>	$tgl_input,
 				'status'	=>	'0',
+				'keterangan'=> $keterangan[$i],
+				'lampiran'	=> str_replace(' ', '_', $_FILES['lampiran']['name'][$i])
 			);
 			$a += count($daftar_pekerjaan);
-			// echo "<pre>";
-			// print_r($data);
-			// echo "<br>";
+			// print_r($data);exit();
 			$input = $this->M_order->save_standar($data);
 			//insert to sys.t_log_activity
 			$aksi = 'P2K3 V2';
@@ -1415,7 +1410,48 @@ class C_Order extends CI_Controller
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 		}
+
+		$this->load->library('upload');
+		if(!is_dir('./assets/upload/P2K3DocumentApproval'))
+		{
+			mkdir('./assets/upload/P2K3DocumentApproval', 0777, true);
+			chmod('./assets/upload/P2K3DocumentApproval', 0777);
+		}
+
+		$cpt = count($_FILES['lampiran']['name']);
+		// echo $cpt;
+		$arrayName = array();
+		$files = $_FILES;
+		for($i=0; $i<$cpt; $i++){
+			$filename = $files['lampiran']['name'][$i];
+			if(empty($filename)) continue;
+
+			$_FILES['lampiran']['name']= str_replace(' ', '_', $files['lampiran']['name'][$i]);
+			$arrayName[] = $_FILES['lampiran']['name'];
+			$_FILES['lampiran']['type']= $files['lampiran']['type'][$i];
+			$_FILES['lampiran']['tmp_name']= $files['lampiran']['tmp_name'][$i];
+			$_FILES['lampiran']['error']= $files['lampiran']['error'][$i];
+			$_FILES['lampiran']['size']= $files['lampiran']['size'][$i];    
+
+			$this->upload->initialize($this->init_config());
+			if ($this->upload->do_upload('lampiran')){
+				$this->upload->data();
+			}else{
+				$errorinfo = $this->upload->display_errors();
+				echo $errorinfo;exit();
+			}
+		}
 		redirect('P2K3_V2/Order/inputStandarKebutuhan');
+	}
+
+	function init_config()
+	{
+		$config = array();
+		$config['upload_path'] = 'assets/upload/P2K3DocumentApproval';
+		$config['allowed_types'] = 'pdf';
+		$config['overwrite']     = 1;
+
+		return $config;
 	}
 
 	public function save_pekerja()
