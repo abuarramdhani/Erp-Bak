@@ -372,19 +372,47 @@ $( () => {
                 data: {no_do,gudang_pengirim},
                 dataType: "JSON",
                 success: function (response) {
-                    if (response['kode'] == 1) {
+                    console.log(response)
+                    if (response) {
+                        var html = '<table class="table table-bordered table-striped">';
+                            html += '<thead>'+
+                                        '<tr>'+
+                                            '<th>ATR</th>'+
+                                            '<th>ATR SISA</th>'+
+                                            '<th>DESCRIPTION</th>'+
+                                            '<th>ITEM CODE</th>'+
+                                            '<th>REQ QTY</th>'+
+                                            '<th>SUBINVENTORY CODE</th>'+
+                                        '</tr>'+
+                                    '</thead>'+
+                                    '<tbody>';
+                        for (let i = 0; i < response.length; i++) {
+                            const elm = response[i];
+                            html += '<tr>'+
+                                        '<td>'+elm['ATR']+'</td>'+
+                                        '<td>'+elm['ATR_SISA']+'</td>'+
+                                        '<td>'+elm['DESCRIPTION']+'</td>'+
+                                        '<td>'+elm['ITEM_CODE']+'</td>'+
+                                        '<td>'+elm['REQ_QTY']+'</td>'+
+                                        '<td>'+elm['SUBINVENTORY_CODE']+'</td>'+
+                                    '</tr>';
+                        }
+                        html += '</tbody>'+
+                        '</table>';
+
                         Swal.fire({
                             customClass: 'swal-font-large',
                             type: 'success',
                             title: 'INFO',
-                            text: response['pesan'],
+                            html: html,
+                            width: '800px'
                         });
                     }else{
                         Swal.fire({
                             customClass: 'swal-font-large',
                             type: 'error',
                             title: 'INFO',
-                            text: response['pesan'],
+                            text: 'Tidak ada data',
                         });
                     }
                 }
