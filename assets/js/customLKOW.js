@@ -26,10 +26,10 @@ $(document).ready(function () {
   $("#lko_input_method").select2({
     minimumResultsForSearch: Infinity,
   });
-  // $("#tgl_import").datepicker({
-  //   format: "dd-mm-yyyy",
-  //   autoclose: true,
-  // });
+  $("#tgl_import").datepicker({
+    format: "dd-mm-yyyy",
+    autoclose: true,
+  });
 });
 $(document).ready(function () {
   var request = $.ajax({
@@ -132,6 +132,15 @@ function addlist() {
       var ks = $("#employee_ks_weld").val();
       var kk = $("#employee_kk_weld").val();
       var pk = $("#employee_pk_weld").val();
+      if (tgt == "") {
+        tgt = 0;
+      }
+      if (act == "") {
+        act = 0;
+      }
+      if (percent == "") {
+        percent = 0;
+      }
       var request = $.ajax({
         url: baseurl + "LaporanKerjaOperator/Input/InsertDataa",
         data: {
