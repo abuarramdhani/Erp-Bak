@@ -26,6 +26,10 @@ $(document).ready(function () {
   $("#lko_input_method").select2({
     minimumResultsForSearch: Infinity,
   });
+  // $("#tgl_import").datepicker({
+  //   format: "dd-mm-yyyy",
+  //   autoclose: true,
+  // });
 });
 $(document).ready(function () {
   var request = $.ajax({
@@ -176,5 +180,112 @@ function modalprint() {
       format: "dd-mm-yyyy",
       autoclose: true,
     });
+  });
+}
+function modalEdit(id) {
+  var request = $.ajax({
+    url: baseurl + "LaporanKerjaOperator/Input/ModalEdit",
+    data: {
+      id: id,
+    },
+    type: "POST",
+  });
+  request.done(function (result) {
+    $("#modal_edit").modal("show");
+    $("#edittttttt").html(result);
+    $("#edit_employee_act_weld").on("keyup", function () {
+      var act = $(this).val();
+      var tgt = $("#edit_employee_tgt_weld").val();
+
+      var percent = (act / tgt) * 100;
+      $("#edit_employee_percent_weld").val(percent.toLocaleString());
+    });
+    $(".button_save_edit").on("click", function () {
+      // var tgl = $("#edit_employee_tgl_weld").val();
+      // var ind = $("#edit_employee_ind_weld").val();
+      // var nama = $("#edit_employee_name_weld").val();
+      var id = $("#edit_employee_id_weld").val();
+      var work = $("#edit_employee_workdesc_weld").val();
+      var tgt = $("#edit_employee_tgt_weld").val();
+      var act = $("#edit_employee_act_weld").val();
+      var percent = $("#edit_employee_percent_weld").val();
+      var shift = $("#edit_employee_shift_weld").val();
+      var ket = $("#edit_employee_ket_weld").val();
+      var mk = $("#edit_employee_mk_weld").val();
+      var i = $("#edit_employee_i_weld").val();
+      var bk = $("#edit_employee_bk_weld").val();
+      var tkp = $("#edit_employee_tkp_weld").val();
+      var kp = $("#edit_employee_kp_weld").val();
+      var ks = $("#edit_employee_ks_weld").val();
+      var kk = $("#edit_employee_kk_weld").val();
+      var pk = $("#edit_employee_pk_weld").val();
+      var request = $.ajax({
+        url: baseurl + "LaporanKerjaOperator/Input/Editdata",
+        data: {
+          // tgl: tgl,
+          // ind: ind,
+          // nama: nama,
+          id: id,
+          work: work,
+          tgt: tgt,
+          act: act,
+          percent: percent,
+          shift: shift,
+          ket: ket,
+          mk: mk,
+          i: i,
+          bk: bk,
+          tkp: tkp,
+          kp: kp,
+          ks: ks,
+          kk: kk,
+          pk: pk,
+        },
+        type: "POST",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Berhasil Mengedit Data",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.reload();
+        });
+      });
+    });
+  });
+}
+function DeleteLKO(id) {
+  Swal.fire({
+    title: "Anda Yakin?",
+    text: "Data Akan Dihapus",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Ya",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "LaporanKerjaOperator/Input/HapusData",
+        data: {
+          id: id,
+        },
+        type: "POST",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Berhasil Menghapus",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.reload();
+        });
+      });
+    }
   });
 }
