@@ -45,7 +45,7 @@
                                             <button class="btn btn-success" formaction="<?php echo base_url('LaporanKerjaOperator/Input/ImportFile'); ?>">Import</button>
                                         </div>
                                         <div class="col-md-2">
-                                            <button class="btn btn-primary" style="display: none;" formaction="<?php echo base_url('LaporanKerjaOperator/Input/DownLoadLayout'); ?>">Download Layout</button>
+                                            <button class="btn btn-primary" formaction="<?php echo base_url('LaporanKerjaOperator/Input/DownLoadLayout'); ?>">Download Layout</button>
                                         </div>
                                     </div>
                                     <div class="panel-body">

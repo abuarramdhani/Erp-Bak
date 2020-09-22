@@ -2,7 +2,7 @@
     <div class="panel-body">
         <div class="col-md-12">
             <div class="col-md-3" style="text-align: right;"> <label>Tanggal</label></div>
-            <div class="col-md-8"><input type="text" autocomplete="off" placeholder="Tanggal Laporan" id="tgl_lko" name="tgl_lko" class="form-control" /></div>
+            <div class="col-md-8"><input type="text" autocomplete="off" placeholder="Tanggal Laporan" required id="tgl_lko" name="tgl_lko" class="form-control" /></div>
         </div>
     </div>
     <div class="panel-body">
