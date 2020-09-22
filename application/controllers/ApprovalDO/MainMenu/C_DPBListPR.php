@@ -150,25 +150,25 @@ class C_DPBListPR extends CI_Controller {
             $kode_gudang = 'FG-TKS';
         }
 
-        // $no_do = $_POST['noDO'];
+        $no_do = $_POST['noDO'];
 
-        // $nomor_do = '';
+        $nomor_do = '';
         
-        // for ($i=0; $i < count($no_do); $i++) { 
-        //     if ($nomor_do == '') {
-        //         $nomor_do .= $no_do[$i]['nomor_do'];
-        //     }else {
-        //         $nomor_do .= ','.$no_do[$i]['nomor_do'];
-        //     }
-        // }
+        for ($i=0; $i < count($no_do); $i++) { 
+            if ($nomor_do == '') {
+                $nomor_do .= $no_do[$i]['nomor_do'];
+            }else {
+                $nomor_do .= ','.$no_do[$i]['nomor_do'];
+            }
+        }
 
-        // $returnOnhand = $this->M_dpb->checkOnhand($nomor_do,$kode_gudang);
+        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do,$kode_gudang);
 
-        // if ($returnOnhand[0]['STOCKONHAND'] == 0) {
+        if ($returnOnhand[0]['STOCKONHAND'] == 0) {
 
-            // for ($i=0; $i < count($no_do); $i++) { 
-            //     $this->M_dpb->procedureLockStock($no_do[$i]['nomor_do'], $kode_gudang, $noind);
-            // }
+            for ($i=0; $i < count($no_do); $i++) { 
+                $this->M_dpb->procedureLockStock($no_do[$i]['nomor_do'], $kode_gudang, $noind);
+            }
 
             $data = [
                 'NO_PR'            => $this->input->post('prNumber'),
@@ -190,9 +190,45 @@ class C_DPBListPR extends CI_Controller {
                 $this->M_dpb->updateDetailListPR1($id, $data, $tgl_kirim);
             }
             echo json_encode('Success!');
-        // }else{
-        //     echo json_encode('error stok gudang tidak mencukupi');
-        // } 
+        }else{
+            echo json_encode('error stok gudang tidak mencukupi');
+        } 
+
+    }
+
+    public function CheckStok()
+    {
+        $no_do = $_POST['no_do'];
+
+        $nomor_do = '';
+
+        $gudang = $this->input->post('gudang_pengirim');
+
+        if ($gudang == 'MLATI') {
+            $kode_gudang = 'MLATI-DM';
+        }elseif ($gudang == 'TUKSONO') {
+            $kode_gudang = 'FG-TKS';
+        }
+        
+        for ($i=0; $i < count($no_do); $i++) { 
+            if ($nomor_do == '') {
+                $nomor_do .= $no_do[$i]['nomor_do'];
+            }else {
+                $nomor_do .= ','.$no_do[$i]['nomor_do'];
+            }
+        }
+
+        $data = $this->M_dpb->CekStok($nomor_do, $kode_gudang);
+
+        if ($data) {
+            $response['pesan'] = 'Stok Mencukupi';
+            $response['kode'] = '1';
+        }else{
+            $response['pesan'] = 'Stok Tidak Mencukupi';
+            $response['kode'] = '0';
+        }
+
+        echo json_encode($response);
 
     }
 

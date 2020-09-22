@@ -162,9 +162,10 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOSaveUpdate" style="margin-right: 10px" <?= $UserAccess['save'] ?>>
+                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOSaveUpdate" <?= $UserAccess['save'] ?>>
                         <i class="fa fa-save"></i>&nbsp; Save
                     </button>
+                    <button type="button" title="stok" class="btn btn-primary pull-right btnADOCekStok" style="margin-right: 10px">Cek Stok</button>                      
                 </div>
             </div>
         </div>

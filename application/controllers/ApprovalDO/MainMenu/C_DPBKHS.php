@@ -180,30 +180,67 @@ class C_DPBKHS extends CI_Controller {
             $new_pr_number = "{$pr_number}-1";
         }
 
+        $noind = $this->session->user;
+
         $data = $this->input->post();
 
-        foreach ($data['line'] as $key => $val) {
-            $this->M_dpb->insertNewDetailKHS([
-                'NO_PR'            => $new_pr_number,
-                'JENIS_KENDARAAN'  => $data['header']['vehicleCategory'],
-                'NO_KENDARAAN'     => $data['header']['vehicleId'],
-                'NAMA_SUPIR'       => $data['header']['driverName'],
-                'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
-                'GUDANG_PENGIRIM'  => $data['header']['gudangPengirim'],
-                'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
-                'CATATAN'          => $data['header']['catatan'],
-                'LINE_NUM'         => $val['line'],
-		        'DO_NUM'           => $val['doNumber'],
-		        'ITEM_NAME'        => $val['itemName'],
-		        'UOM'              => $val['uom'],
-		        'QTY'              => $val['qty'],
-		        'NAMA_TOKO'        => $val['shopName'],
-                'KOTA'             => $val['city'],
-                'APPROVED_FLAG'    => 'P'
-            ]);
+        //cek onhand 
+
+        $gudang = $data['header']['gudangPengirim'];
+
+        if ($gudang == 'MLATI') {
+            $kode_gudang = 'MLATI-DM';
+        }elseif ($gudang == 'TUKSONO') {
+            $kode_gudang = 'FG-TKS';
         }
 
-        echo json_encode($new_pr_number);
+        $line = $data['line'];
+
+        $nomor_do = '';
+        
+        for ($i=0; $i < count($line); $i++) { 
+            if ($nomor_do == '') {
+                $nomor_do .= $line[$i]['doNumber'];
+            }else {
+                $nomor_do .= ','.$line[$i]['doNumber'];
+            }
+        }
+
+        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do,$kode_gudang);
+
+        //end
+
+        if ($returnOnhand[0]['STOCKONHAND'] == 0) {
+            
+            foreach ($data['line'] as $key => $val) {
+                
+                $this->M_dpb->procedureLockStock($val['doNumber'], $kode_gudang, $noind);
+    
+                $this->M_dpb->insertNewDetailKHS([
+                    'NO_PR'            => $new_pr_number,
+                    'JENIS_KENDARAAN'  => $data['header']['vehicleCategory'],
+                    'NO_KENDARAAN'     => $data['header']['vehicleId'],
+                    'NAMA_SUPIR'       => $data['header']['driverName'],
+                    'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
+                    'GUDANG_PENGIRIM'  => $data['header']['gudangPengirim'],
+                    'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
+                    'CATATAN'          => $data['header']['catatan'],
+                    'LINE_NUM'         => $val['line'],
+                    'DO_NUM'           => $val['doNumber'],
+                    'ITEM_NAME'        => $val['itemName'],
+                    'UOM'              => $val['uom'],
+                    'QTY'              => $val['qty'],
+                    'NAMA_TOKO'        => $val['shopName'],
+                    'KOTA'             => $val['city'],
+                    'APPROVED_FLAG'    => 'P'
+                ]);
+            }
+            echo json_encode($new_pr_number);
+        }else{
+            echo json_encode('error stok gudang tidak mencukupi');
+        }
+        
+
     }
 
     public function saveUpdate()
