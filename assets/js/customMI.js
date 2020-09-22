@@ -2040,3 +2040,23 @@ function btn_cari(th) {
 	var id = th.attr('invoice');
 	var win = window.open(baseurl+'Monitoring/TrackingInvoice/DetailInvoice/'+id);
 }
+
+$(document).ready(function () {
+	$(document).on('click','.btnReceiptMIA', function () {
+		var invoice_number = $(this).val();
+		
+		$.ajax({
+			type: "POST",
+			url: baseurl+"AccountPayables/MonitoringInvoice/Receipt",
+			data: {invoice_number},
+			success: function (resp) {
+				if (resp == 1) {
+					swal.fire({
+						type : 'success',
+						title : 'Berhasil!'
+					})
+				}
+			}
+		});
+	});
+})

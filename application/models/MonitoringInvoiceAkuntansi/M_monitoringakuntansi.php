@@ -1074,7 +1074,8 @@ public function editInvData($invoice_id)
 	{   
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
-                ami.invoice_number invoice_number,
+                ami.invoice_number invoice_number, 
+                rsh.receipt_num,
                 ami.invoice_date invoice_date,
                 ami.tax_invoice_number tax_invoice_number,
                 ami.invoice_amount invoice_amount,
@@ -1089,11 +1090,11 @@ public function editInvData($invoice_id)
                 ami.batch_number batch_number,
                 ami.jenis_jasa jenis_jasa,
                 ami.source SOURCE
-            FROM khs_ap_monitoring_invoice ami
+            FROM khs_ap_monitoring_invoice ami, rcv_shipment_headers rsh
             WHERE ami.last_finance_invoice_status = 1 
-            AND ami.batch_number= '$batchNumber'
-            ORDER BY ami.last_admin_date DESC
-           ";
+            AND ami.batch_number=  '$batchNumber'
+            AND ami.INVOICE_ID = rsh.ATTRIBUTE2(+)
+            ORDER BY ami.last_admin_date DESC";
 		    $run = $erp_db->query($sql);
             return $run->result_array();
 	}
@@ -1433,5 +1434,65 @@ public function editInvData($invoice_id)
                             kelengkapan_doc_inv_returned = '$imp_dokumen'
                             where invoice_id = '$invoice_id'";      
         $runQuery = $oracle->query($query);
+    }
+
+    public function getInvoice($invoice_number)
+    {
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = $oracle->query("select
+            ami.INVOICE_ID
+            ,ami.INVOICE_NUMBER
+            ,aipo.PO_NUMBER
+            ,aipo.LINE_NUMBER
+            ,aipo.QTY_INVOICE
+            from
+            khs_ap_monitoring_invoice ami
+            ,khs_ap_invoice_purchase_order aipo
+            where
+            ami.INVOICE_ID = aipo.INVOICE_ID
+            and ami.INVOICE_NUMBER = '$invoice_number'");
+
+        return $query->result_array();
+    }
+
+    public function receiptNexval()
+    {
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = $oracle->query("SELECT rcv_interface_groups_s.NEXTVAL FROM DUAL");
+
+        return $query->result_array();
+    }
+
+    public function receipt_po_invoice($invoice_id, $p_group_id)
+    {
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		if (!$conn) {
+			$e = oci_error();
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+		$sql = "BEGIN khs_receipt_po_invoice (:invoice_id, :p_group_id); END;";
+
+		$message = '';
+		$stmt = oci_parse($conn,$sql);
+		oci_bind_by_name($stmt,':invoice_id',$invoice_id,100);
+		oci_bind_by_name($stmt,':p_group_id',$p_group_id,100);
+		oci_execute($stmt);
+    }
+
+    public function run_fnd_receiving($p_group_id)
+    {
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		if (!$conn) {
+			$e = oci_error();
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+		$sql = "BEGIN APPS.KHS_RUN_FND_RECEIVING (:tetap,:p_group_id); END;";
+
+		$tetap = '5177';
+		$stmt = oci_parse($conn,$sql);
+		oci_bind_by_name($stmt,':p_group_id',$p_group_id,100);
+		oci_bind_by_name($stmt,':tetap',$tetap,100);
+		oci_execute($stmt);
+    
     }
 }

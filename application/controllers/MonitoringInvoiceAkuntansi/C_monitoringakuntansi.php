@@ -43,11 +43,11 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
+		
 		$noinduk = $this->session->userdata['user'];
 		$cek_login = $this->M_monitoringakuntansi->checkLoginInAkuntansi($noinduk);
 		$source_login = '';
-
+		
 		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
 			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
 		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
@@ -55,7 +55,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
 			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
 		}
-
+		
 		$listBatch = $this->M_monitoringakuntansi->showFinanceNumber($source_login);
 		foreach($listBatch as $key => $value){
 			$batchNumber = $value['BATCH_NUMBER'];
@@ -63,6 +63,7 @@ class C_monitoringakuntansi extends CI_Controller{
 			$listBatch[$key]['jml_invoice'] = $jmlInv[0]['JUMLAH_INVOICE'].' Invoice';
 		}
 		$data['batch'] = $listBatch;
+		// exit;
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -1194,6 +1195,25 @@ class C_monitoringakuntansi extends CI_Controller{
 		$returned = $this->M_monitoringakuntansi->getReturnedData($invoice_id);
 		$data['returned'] = $returned;
 		$this->load->view('MonitoringInvoiceAkuntansi/V_mdlReturnedInvoice',$data);
+	}
+
+	public function Receipt()
+	{
+		$invoice_number = $_POST['invoice_number'];
+
+		$getInvoice = $this->M_monitoringakuntansi->getInvoice($invoice_number);
+
+		$invoice_id = $getInvoice[0]['INVOICE_ID'];
+
+		$nextval = $this->M_monitoringakuntansi->receiptNexval();
+
+		$p_group_id = $nextval[0]['NEXTVAL'];
+
+		$this->M_monitoringakuntansi->receipt_po_invoice($invoice_id, $p_group_id);
+
+		$this->M_monitoringakuntansi->run_fnd_receiving($p_group_id);
+
+		echo 1;
 	}
 
 
