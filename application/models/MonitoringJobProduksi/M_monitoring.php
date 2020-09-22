@@ -149,6 +149,7 @@ class M_monitoring extends CI_Model
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-SUB','','') INT_SUB            
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'PNL-TKS','','') PNL_TKS            
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
+                ,wip.qty wip
                 --,decode(bic.basis_type,'','Item','2','Lot') Basis
                 --,bic.INCLUDE_IN_COST_ROLLUP
                 --,decode(bic.wip_supply_type,1,'Push',2,'Assembly Pull',3,'Operation Pull',4,'Bulk',5,'Supplier',6,'Phantom') supply_type
@@ -164,6 +165,11 @@ class M_monitoring extends CI_Model
                 ,mtl_system_items_b msib2
                 ,MTL_ITEM_LOCATIONS mil
                 ,MTL_ITEM_LOCATIONS mil2
+                ,(select wdj.PRIMARY_ITEM_ID,sum(wdj.START_QUANTITY - (wdj.QUANTITY_COMPLETED + wdj.QUANTITY_SCRAPPED)) qty        
+                from wip_discrete_jobs wdj        
+                where wdj.STATUS_TYPE = 3        
+                group by wdj.PRIMARY_ITEM_ID        
+                ) wip
                 where
                 bom.bill_sequence_id = bic.bill_sequence_id
                 and bom.ASSEMBLY_ITEM_ID = msib.inventory_item_id
@@ -172,6 +178,7 @@ class M_monitoring extends CI_Model
                 and bom.ORGANIZATION_ID = msib2.ORGANIZATION_ID
                 and bic.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
                 and bic.ATTRIBUTE2 = mil2.INVENTORY_LOCATION_ID(+)
+                AND msib2.INVENTORY_ITEM_ID    = wip.primary_item_id(+)
                 and bom.organization_id = 102
                 and msib.SEGMENT1 = '$kode'
                 and bom.ALTERNATE_BOM_DESIGNATOR is null
