@@ -159,6 +159,7 @@ class C_Index extends CI_Controller
 		}
 		$pekerja = $this->M_index->getAllNama();
 		$update = $this->M_index->update($status, $idizin);
+		$ar_json = array();
 
 		if ($status == 1) {
 			//insert to t_log
@@ -171,7 +172,6 @@ class C_Index extends CI_Controller
 			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 
 			if (date('H:i:s') <= date('H:i:s', strtotime('09:00:00'))) {
-				$ar_json = array();
 				for ($i = 0; $i < count($nama); $i++) {
 					for ($j = 0; $j < count($tujuan); $j++) {
 						if ($nama[$i] == $tujuan[$j]['noind']) {
@@ -182,15 +182,9 @@ class C_Index extends CI_Controller
 								'created_date' => date('Y-m-d H:i:s')
 							);
 							$insert = $this->M_index->taktual_izin($data);
-							for ($k = 0; $k < count($getnama); $k++) {
-								if ($nama[$i] == $getnama[$k][0]['noind']) {
-									$ar_json[] = $nama[$i] . ' - ' . $getnama[$k][0]['nama'];
-								}
-							}
 						}
 					}
 				}
-				echo json_encode($ar_json);
 			} else {
 				for ($i = 0; $i < count($nama); $i++) {
 					$data = array(
@@ -199,7 +193,14 @@ class C_Index extends CI_Controller
 						'created_date' => date('Y-m-d H:i:s')
 					);
 					$insert = $this->M_index->taktual_izin($data);
+					
+					for ($k = 0; $k < count($getnama); $k++) {
+						if ($nama[$i] == $getnama[$k][0]['noind']) {
+							$ar_json[] = $nama[$i] . ' - ' . $getnama[$k][0]['nama'];
+						}
+					}
 				}
+				echo json_encode($ar_json);
 			}
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
 		} elseif ($status == 2) {
@@ -297,11 +298,6 @@ class C_Index extends CI_Controller
 						'created_date' => date('Y-m-d H:i:s')
 					);
 					$insert = $this->M_index->taktual_izin($data);
-					for ($k = 0; $k < count($getnamaApprove); $k++) {
-						if ($pekerja[$i] == $getnamaApprove[$k]['noind']) {
-							$ar_json[] = $pekerja[$i] . ' - ' . $getnamaApprove[$k]['nama'];
-						}
-					}
 				}
 			}
 		} else {
@@ -312,6 +308,11 @@ class C_Index extends CI_Controller
 					'created_date' => date('Y-m-d H:i:s')
 				);
 				$insert = $this->M_index->taktual_izin($data);
+				for ($k = 0; $k < count($getnamaApprove); $k++) {
+					if ($pekerja[$i] == $getnamaApprove[$k]['noind']) {
+						$ar_json[] = $pekerja[$i] . ' - ' . $getnamaApprove[$k]['nama'];
+					}
+				}
 			}
 		}
 
