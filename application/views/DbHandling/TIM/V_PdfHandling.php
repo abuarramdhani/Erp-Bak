@@ -45,7 +45,12 @@
                         <img style="max-width:300px;padding:10px;max-height:300px" src="<?= $baseurl . '/assets/upload/DatabaseHandling/fotolinier' .  $img['id_handling'] . $img['urutan'] . '.png' ?>">
                     </td>
                     <?php if ($key == 0) { ?>
-                        <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>"><?= $dataHandling[0]['keterangan'] ?></td>
+                        <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>">
+                            <?php
+                            $ketdb = str_replace("\n", "<br>", $dataHandling[0]['keterangan']);
+                            echo $ketdb;
+                            ?>
+                        </td>
                     <?php } ?>
                 </tr>
             <?php } ?>
