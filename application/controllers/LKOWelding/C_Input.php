@@ -113,21 +113,54 @@ class C_Input extends CI_Controller
     {
         $this->load->view('LKOWelding/V_ModalFilterTanggal');
     }
+    public function ModalEdit()
+    {
+        $id = $this->input->post('id');
+        $dataToEdit = $this->M_input->EditData($id);
+
+        // echo "<pre>";
+        // print_r($dataToEdit);
+        // exit();
+
+        $data['datatoedit'] = $dataToEdit;
+
+        $this->load->view('LKOWelding/V_ModalEdit', $data);
+    }
+    public function Editdata()
+    {
+        // $tgl = $this->input->post('tgl');
+        // $ind = $this->input->post('ind');
+        // $nama = $this->input->post('nama');
+        $id = $this->input->post('id');
+        $work = $this->input->post('work');
+        $tgt = $this->input->post('tgt');
+        $act = $this->input->post('act');
+        $percent = $this->input->post('percent');
+        $shift = $this->input->post('shift');
+        $ket = $this->input->post('ket');
+        $mk = $this->input->post('mk');
+        $i = $this->input->post('i');
+        $bk = $this->input->post('bk');
+        $tkp = $this->input->post('tkp');
+        $kp = $this->input->post('kp');
+        $ks = $this->input->post('ks');
+        $kk = $this->input->post('kk');
+        $pk = $this->input->post('pk');
+        // $seksi = $this->M_input->dataSeksi($ind);
+
+        $this->M_input->updateLKO($id, $work, $tgt, $act, $percent, $shift, $ket, $mk, $i, $bk, $tkp, $kp, $ks, $kk, $pk);
+    }
+    public function HapusData()
+    {
+        $id = $this->input->post('id');
+        $this->M_input->DeleteData($id);
+    }
     public function Printlaporan()
     {
         $tanggal = $this->input->post('tgl_lko');
         $laporan = $this->M_input->LKObyTgl($tanggal);
-
-
-
         $timestamp = strtotime($tanggal);
-
         $day = date('l', $timestamp);
-
-        // echo "<pre>";
-        // print_r($day);
-        // exit();
-
         if ($day == 'Monday') {
             $hari = 'SENIN';
         } else  if ($day == 'Tuesday') {
@@ -142,8 +175,30 @@ class C_Input extends CI_Controller
             $hari = 'SABTU';
         }
 
-        $data['laporan'] = $laporan;
-        $data['hari'] = $hari;
+        $lko = array();
+        $tampung = array();
+        for ($d = 0; $d < sizeof($laporan); $d++) {
+            if (!in_array($laporan[$d]['SHIFT'], $tampung)) {
+                $a = array(
+                    'SHIFT' => $laporan[$d]['SHIFT'],
+                    'TANGGAL' => $laporan[$d]['TANGGAL'],
+                    'HARI' => $hari,
+                );
+                array_push($lko, $a);
+                array_push($tampung, $laporan[$d]['SHIFT']);
+            }
+        }
+        for ($j = 0; $j < sizeof($lko); $j++) {
+            for ($g = 0; $g < sizeof($laporan); $g++) {
+                if ($laporan[$g]['SHIFT'] == $lko[$j]['SHIFT']) {
+                    // array_push($lko[$j]['LAPORAN'], $laporan[$g]);
+                    $lko[$j]['LAPORAN'][] = $laporan[$g];
+                }
+            }
+        }
+
+
+        $data['lko'] = $lko;
 
         ob_start();
 
@@ -157,9 +212,92 @@ class C_Input extends CI_Controller
         ob_end_clean();
 
         $pdf->SetHTMLHeader($head);
-        $pdf->SetHTMLFooter($footer);                                                //-----> Pakai Library MPDF
         $pdf->WriteHTML($html);
-        $pdf->SetHTMLFooter($foot);                                               //-----> Pakai Library MPDF
         $pdf->Output($filename, 'I');
+    }
+    public function ImportFile()
+    {
+
+        $user = $this->session->username;
+
+        $user_id = $this->session->userid;
+
+        $data['Title'] = 'Preview Hasil Import';
+        $data['Menu'] = '';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+
+        require_once APPPATH . 'third_party/Excel/PHPExcel.php';
+        require_once APPPATH . 'third_party/Excel/PHPExcel/IOFactory.php';
+
+        // $data['data_input']  = array();
+
+        $file_data  = array();
+        // load excel
+        $file = $_FILES['excel_file']['tmp_name'];
+        $load = PHPExcel_IOFactory::load($file);
+        $sheets = $load->getActiveSheet()->toArray(null, true, true, true);
+        $k = 0;
+        foreach ($sheets as $row) {
+            if ($k != 0 && $k != 1) {
+                $noind[] = $row['B'];
+                $nama[] = $row['C'];
+                $work[] = $row['D'];
+                $tgt[] = $row['E'];
+                $act[] = $row['F'];
+                $persen[] = $row['G'];
+                $shift[] = $row['H'];
+                $ket[] = $row['I'];
+                $mk[] = $row['J'];
+                $i[] = $row['K'];
+                $bk[] = $row['L'];
+                $tkp[] = $row['M'];
+                $kp[] = $row['N'];
+                $ks[] = $row['O'];
+                $kk[] = $row['P'];
+                $pk[] = $row['Q'];
+            }
+            $k++;
+        }
+
+        // $array_import = array();
+        for ($u = 0; $u < sizeof($noind); $u++) {
+            $array_import[$u]['noind'] = $noind[$u];
+            $array_import[$u]['nama'] = $nama[$u];
+            $array_import[$u]['work'] = $work[$u];
+            $array_import[$u]['tgt'] = $tgt[$u];
+            $array_import[$u]['act'] = $act[$u];
+            $array_import[$u]['persen'] = number_format($persen[$u], 2);
+            $array_import[$u]['shift'] = $shift[$u];
+            $array_import[$u]['ket'] = $ket[$u];
+            $array_import[$u]['mk'] = $mk[$u];
+            $array_import[$u]['i'] = $i[$u];
+            $array_import[$u]['bk'] = $bk[$u];
+            $array_import[$u]['tkp'] = $tkp[$u];
+            $array_import[$u]['kp'] = $kp[$u];
+            $array_import[$u]['ks'] = $ks[$u];
+            $array_import[$u]['kk'] = $kk[$u];
+            $array_import[$u]['pk'] = $pk[$u];
+        }
+
+        // echo "<pre>";
+        // print_r($array_import);
+        // exit();
+
+        $data['array_import'] = $array_import;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('LKOWelding/V_Import');
+        $this->load->view('V_Footer', $data);
+    }
+    public function InsertImport()
+    {
+        redirect('LaporanKerjaOperator/Input');
     }
 }

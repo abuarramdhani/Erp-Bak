@@ -69,4 +69,38 @@ class M_input extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+    public function EditData($id)
+    {
+        $sql = "SELECT * FROM khs_laporan_kerja_operator WHERE LKO_ID = '$id' order by lko_id";
+
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    public function updateLKO($id, $work, $tgt, $act, $percent, $shift, $ket, $mk, $i, $bk, $tkp, $kp, $ks, $kk, $pk)
+    {
+        $sql = "update KHS_LAPORAN_KERJA_OPERATOR set URAIAN_PEKERJAAN = '$work',
+        PENCAPAIAN_TGT='$tgt',
+        PENCAPAIAN_ACT='$act',
+        PENCAPAIAN_PERSEN='$percent',
+        SHIFT='$shift',
+        KETERANGAN ='$ket',
+        KONDITE_MK='$mk',
+        KONDITE_I='$i',
+        KONDITE_BK='$bk',
+        KONDITE_TKP='$tkp',
+        KONDITE_KP='$kp',
+        KONDITE_KS='$ks',
+        KONDITE_KK='$kk',
+        KONDITE_PK='$pk'
+        where LKO_ID ='$id'";
+
+        $query = $this->oracle->query($sql);
+        return $sql;
+    }
+    public function DeleteData($id)
+    {
+        $sql = "delete from KHS_LAPORAN_KERJA_OPERATOR where LKO_ID = '$id'";
+        $query = $this->oracle->query($sql);
+        return $sql;
+    }
 }
