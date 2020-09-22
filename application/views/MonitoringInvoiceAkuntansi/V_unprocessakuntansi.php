@@ -30,7 +30,8 @@
 											<th class="text-center">Invoice ID</th>
 											<th class="text-center">Vendor Name</th>
 											<th class="text-center">Invoice Number</th>
-											<th class="text-center" style="width: 15%">Action</th>
+											<th class="text-center">Receipt Number</th>
+											<th class="text-center" style="width: 18%">Action</th>
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">PPN</th>
 											<th class="text-center">Tax Invoice Number</th>
@@ -49,6 +50,7 @@
 											<td><?php echo $u['INVOICE_ID'] ?></td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
+											<td><?php echo $u['RECEIPT_NUM']?></td>
 											<td data-id="<?= $u['INVOICE_ID'] ?>" batch_number="<?= $u['BATCH_NUMBER'] ?>" class="ganti_<?= $u['INVOICE_ID'] ?>">
 												<a title="Detail..." href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>" class="btn btn-info btn-sm"><i class="fa fa-file-text-o"></i>
 												</a>
@@ -59,6 +61,7 @@
 											<?php } ?>
 												<a title="Tolak" type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger btn-sm" value="3" name="proses"> <i class="glyphicon glyphicon-remove"></i>
 												</a>
+												<button type="button" class="btn btn-primary btn-sm btnReceiptMIA" value="<?php echo $u['INVOICE_NUMBER']?>" title="receipt"><i class="fa fa-sticky-note"></i></button>
 											</td>
 											<td data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN'] ?></td>
