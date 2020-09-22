@@ -2473,6 +2473,7 @@ $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/(:any)'] = 'Monit
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/Finish'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/finishInvBermasalah';
 $route['AccountPayables/MonitoringInvoice/ReturnedInvoice'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/returnedInvoice';
+$route['AccountPayables/MonitoringInvoice/Receipt'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/Receipt';
 
 //------------------------------------ System Integration ----------------------------------------//
 $route['SystemIntegration'] = 'SystemIntegration/C_Index/index';
