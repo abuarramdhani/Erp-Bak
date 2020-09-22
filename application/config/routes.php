@@ -3198,6 +3198,7 @@ $route['PurchaseManagementSendPO'] = 'PurchaseManagementSendPO/C_Index';
 $route['PurchaseManagementSendPO/SendPO'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage';
 $route['PurchaseManagementSendPO/SendPO/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage/$1';
 $route['PurchaseManagementSendPO/SendPO/(:any)/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage/$1/$2';
+$route['PurchaseManagementSendPO/API/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_API/$1';
 
 //-----------------------------------------------------Transact KIB------------------------------------------------------------//
 $route['TransactKIB'] = 'TransactKIB/C_TransactKIB';
