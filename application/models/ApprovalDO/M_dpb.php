@@ -736,7 +736,7 @@ class M_dpb extends CI_Model
 
     public function procedureLockStock($no_do, $kode_gudang, $user)
     {
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
 		if (!$conn) {
 			$e = oci_error();
 			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -759,6 +759,126 @@ class M_dpb extends CI_Model
  
 		// $message is now populated with the output value
 		// print "$message\n";
+    }
+
+    public function CekStok($no_do, $kode_gudang)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = $oracle->query("WITH param as (select regexp_substr('$no_do','[^,]+', 1, level) p_item from dual
+        connect by regexp_substr('$no_do', '[^,]+', 1, level) is not null)                                           
+        SELECT
+        moqd.subinventory_code
+        ,msib.segment1 item_code
+        ,msib.DESCRIPTION
+        ,tbl1.req_qty
+        --,NVL(SUM(moqd.transaction_quantity),0) QTY_ONHAND
+        ,(NVL(SUM(moqd.transaction_quantity),0) -    (
+        SELECT
+        NVL(SUM(mr.RESERVATION_QUANTITY),0)                                          
+        FROM
+        MTL_RESERVATIONS MR
+        ,mtl_system_items_b msib2
+        WHERE 
+        MR.inventory_item_id = msib2.INVENTORY_ITEM_ID
+        and MR.organization_id = msib2.organization_id
+        and msib2.segment1 = msib.segment1
+        and mr.subinventory_code = moqd.subinventory_code
+        )
+        -
+        (
+        select
+        NVL(SUM(mmtt.transaction_quantity),0)
+        from
+        MTL_MATERIAL_TRANSACTIONS_TEMP mmtt
+        ,mtl_system_items_b msib3
+        where
+        msib3.inventory_item_id = mmtt.inventory_item_id
+        and msib3.organization_id = mmtt.organization_id
+        and msib3.segment1 = msib.segment1
+        and mmtt.subinventory_code = moqd.subinventory_code    
+        )
+        ) ATR
+        ,(NVL(SUM(moqd.transaction_quantity),0) -    (
+        SELECT
+        NVL(SUM(mr.RESERVATION_QUANTITY),0)                                          
+        FROM
+        MTL_RESERVATIONS MR
+        ,mtl_system_items_b msib2
+        WHERE 
+        MR.inventory_item_id = msib2.INVENTORY_ITEM_ID
+        and MR.organization_id = msib2.organization_id
+        and msib2.segment1 = msib.segment1
+        and mr.subinventory_code = moqd.subinventory_code
+        )
+        -
+        (
+        select
+        NVL(SUM(mmtt.transaction_quantity),0)
+        from
+        MTL_MATERIAL_TRANSACTIONS_TEMP mmtt
+        ,mtl_system_items_b msib3
+        where
+        msib3.inventory_item_id = mmtt.inventory_item_id
+        and msib3.organization_id = mmtt.organization_id
+        and msib3.segment1 = msib.segment1
+        and mmtt.subinventory_code = moqd.subinventory_code    
+        )
+        )
+        - tbl1.req_qty ATR_sisa
+        from
+        mtl_onhand_quantities_detail moqd
+        ,mtl_system_items_b msib
+        ,(select 
+        mtrl.INVENTORY_ITEM_ID
+        ,sum(mtrl.QUANTITY) req_qty
+        from
+        mtl_txn_request_headers mtrh
+        ,mtl_txn_request_lines mtrl
+        where
+        mtrh.HEADER_ID = mtrl.HEADER_ID
+        and mtrh.ORGANIZATION_ID = 102
+        and mtrh.REQUEST_NUMBER IN (select * from param) --('3916224', '3916226') --(SELECT * FROM param)
+        group by mtrl.INVENTORY_ITEM_ID) tbl1
+        where
+        msib.inventory_item_id = moqd.inventory_item_id
+        and msib.organization_id = moqd.organization_id
+        and msib.INVENTORY_ITEM_ID = tbl1.INVENTORY_ITEM_ID
+        and moqd.subinventory_code = '$kode_gudang'
+        group by
+        moqd.subinventory_code
+        ,msib.segment1
+        ,tbl1.req_qty
+        ,msib.DESCRIPTION
+        having
+        (NVL(SUM(moqd.transaction_quantity),0) -    (
+        SELECT
+        NVL(SUM(mr.RESERVATION_QUANTITY),0)                                          
+        FROM
+        MTL_RESERVATIONS MR
+        ,mtl_system_items_b msib2
+        WHERE 
+        MR.inventory_item_id = msib2.INVENTORY_ITEM_ID
+        and MR.organization_id = msib2.organization_id
+        and msib2.segment1 = msib.segment1
+        and mr.subinventory_code = moqd.subinventory_code
+        )
+        -
+        (
+        select
+        NVL(SUM(mmtt.transaction_quantity),0)
+        from
+        MTL_MATERIAL_TRANSACTIONS_TEMP mmtt
+        ,mtl_system_items_b msib3
+        where
+        msib3.inventory_item_id = mmtt.inventory_item_id
+        and msib3.organization_id = mmtt.organization_id
+        and msib3.segment1 = msib.segment1
+        and mmtt.subinventory_code = moqd.subinventory_code    
+        )
+        )
+        - tbl1.req_qty < 0");
+
+        return $query->result_array();
     }
 
 }

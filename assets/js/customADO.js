@@ -105,8 +105,6 @@ $( () => {
                         data     : data,
                         dataType : 'JSON',
                     }).done( (resp) => {
-                        swalADOMixinToast('success', success)
-                        response(resp)
                         if (resp == 'error stok gudang tidak mencukupi') {
                             
                             Swal.fire({
@@ -114,6 +112,10 @@ $( () => {
                                 title: 'Gagal',
                                 text: 'Stok gudang tidak mencukupi!',
                             });
+                        }else{
+                            swalADOMixinToast('success', success)
+                            response(resp)
+
                         }
                     }).fail( () => {
                         
@@ -352,12 +354,69 @@ $( () => {
         let fail     = 'Gagal Menyimpan Data'
         swalADOQuestionAjax(question, success, fail, url, data)
     })
+
+    $('.btnADOCekStok').on('click', function () {
+        var no_do = new Array();
+        var gudang_pengirim = $('.slcADOGudangPengirim').val();
+
+        if (gudang_pengirim) {
+
+            $('.nodoADO').each(function (i) {
+                var nodo = $(this).val();
+                no_do[i] = {nomor_do : nodo};
+            });
+    
+            $.ajax({
+                type: "POST",
+                url: baseurl+"ApprovalDO/ListPR/CheckStok",
+                data: {no_do,gudang_pengirim},
+                dataType: "JSON",
+                success: function (response) {
+                    if (response['kode'] == 1) {
+                        Swal.fire({
+                            customClass: 'swal-font-large',
+                            type: 'success',
+                            title: 'INFO',
+                            text: response['pesan'],
+                        });
+                    }else{
+                        Swal.fire({
+                            customClass: 'swal-font-large',
+                            type: 'error',
+                            title: 'INFO',
+                            text: response['pesan'],
+                        });
+                    }
+                }
+            });
+
+        }else{
+
+            Swal.fire({
+                customClass: 'swal-font-large',
+                type: 'error',
+                title: 'Gagal',
+                text: 'Gudang Pengirim tidak boleh kosong!',
+            });
+        }
+
+        
+
+        // console.log(no_do);
+    })
     
     $('.btnADOCreateDPB').on('click', function () {
 
         var tgl_kirim = $('.txttglKirimADO').val();
 
         var gudang_pengirim = $('.slcADOGudangPengirim').val();
+
+        Swal.fire({
+            customClass: 'swal-font-large',
+            type: 'error',
+            title: 'Gagal',
+            text: 'Tanggal Kirim & Gudang Pengirim tidak boleh kosong!',
+        });
 
         var no_do = new Array();
 

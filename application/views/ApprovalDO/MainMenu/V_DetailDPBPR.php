@@ -172,9 +172,10 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOCreateDPB" style="margin-right: 10px">
+                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOCreateDPB" >
                         <i class="fa fa-save"></i>&nbsp; Create DPB
                     </button>
+                    <button type="button" title="stok" class="btn btn-primary pull-right btnADOCekStok" style="margin-right: 10px">Cek Stok</button>
                 </div>
             </div>
         </div>
