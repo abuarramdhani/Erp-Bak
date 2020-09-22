@@ -1,4 +1,4 @@
-<?php
+lock<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_dpb extends CI_Model
@@ -736,7 +736,7 @@ class M_dpb extends CI_Model
 
     public function procedureLockStock($no_do, $kode_gudang, $user)
     {
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 		if (!$conn) {
 			$e = oci_error();
 			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
