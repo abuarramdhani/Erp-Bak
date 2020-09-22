@@ -220,15 +220,15 @@ class C_DPBListPR extends CI_Controller {
 
         $data = $this->M_dpb->CekStok($nomor_do, $kode_gudang);
 
-        if ($data) {
-            $response['pesan'] = 'Stok Mencukupi';
-            $response['kode'] = '1';
-        }else{
-            $response['pesan'] = 'Stok Tidak Mencukupi';
-            $response['kode'] = '0';
-        }
+        // if ($data) {
+        //     $response['pesan'] = 'Stok Mencukupi';
+        //     $response['kode'] = '1';
+        // }else{
+        //     $response['pesan'] = 'Stok Tidak Mencukupi';
+        //     $response['kode'] = '0';
+        // }
 
-        echo json_encode($response);
+        echo json_encode($data);
 
     }
 
