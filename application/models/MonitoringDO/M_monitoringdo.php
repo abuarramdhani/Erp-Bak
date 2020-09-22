@@ -737,7 +737,7 @@ class M_monitoringdo extends CI_Model
     public function cekSpbDo($id)
     {
         $query = "SELECT kdt.delivery_type
-                    FROM khs_delivery_temp kdt
+                    FROM khs_detail_dospb kdt
                    WHERE kdt.request_number = '$id'
                    AND kdt.delivery_type like 'SPB%'
                    ";
