@@ -768,7 +768,7 @@ function childPribadiDelete(id) {
 
 //Selesai
 
-// 	-------Master Pekerja--------------------------------------------start
+//  -------Master Pekerja--------------------------------------------start
 $(function () {
 
     $('.monthpickerq').monthpicker({
@@ -909,7 +909,7 @@ $(function () {
     }, function (start, end, label) {
         console.log("New date range selected: ' + start.format('YYYY-MM-DD H:i:s') + ' to ' + end.format('YYYY-MM-DD H:i:s') + ' (predefined range: ' + label + ')");
     });
-    //	}
+    //  }
     //  select3
 
     $('.slcMPSuratPengalamanKerjaPekerja').select2({
@@ -1210,8 +1210,8 @@ $(function () {
         }
     });
 
-    //	Select2
-    //	{
+    //  Select2
+    //  {
     $('#MasterPekerja-Surat-FingerGanti').select2({
         minimumInputLength: 1,
         ajax:
@@ -1733,8 +1733,8 @@ $(function () {
         }
     });
 
-    // 	Redactor WYSIWYG Text Editor
-    // 	{
+    //  Redactor WYSIWYG Text Editor
+    //  {
     $('#MasterPekerja-txtPokokMasalah').redactor();
     $('#MasterPekerja-Surat-txaPreview').redactor();
     $('.MasterPekerja-Surat-txaPreview').redactor();
@@ -1748,18 +1748,18 @@ $(function () {
     $('.MasterPekerja-SuratPengalaman-txaPreview').redactor();
     $('.preview-Lapkun').redactor();
 
-    //	}
+    //  }
 
 
-    //	}
+    //  }
 
 });
 
 
-// 	General Function
-// 	{
-//	Surat-surat
-//	{
+//  General Function
+//  {
+//  Surat-surat
+//  {
 $('#MasterPekerja-Surat-DaftarPekerja').change(function () {
     var noind = $('#MasterPekerja-Surat-DaftarPekerja').val();
     var kode_status_kerja = noind.substr(0, 1);
@@ -1969,22 +1969,22 @@ $('#MasterPekerja-SuratPromosi-btnPreview').click(function () {
 //     placeholder: 'Pilih Golongan Pekerjaan',
 //     ajax:
 //     {
-// 		url: baseurl+"MasterPekerja/Surat/SuratMutasi/cariGolonganPekerjaan",
-// 		dataType: 'json',
-// 		data: function (params){
-// 			return {
-// 				term: params.term,
-// 				kode_status_kerja: $('#MasterPekerja-Surat-DaftarPekerja').val().substr(0, 1)
-// 			}
-// 		},
-// 		processResults: function(data) {
-// 			return {
-// 				results: $.map(data, function(obj){
-// 					return {id: obj.golkerja, text: obj.golkerja};
-// 				})
-// 			};
-// 		}
-// 	}
+//      url: baseurl+"MasterPekerja/Surat/SuratMutasi/cariGolonganPekerjaan",
+//      dataType: 'json',
+//      data: function (params){
+//          return {
+//              term: params.term,
+//              kode_status_kerja: $('#MasterPekerja-Surat-DaftarPekerja').val().substr(0, 1)
+//          }
+//      },
+//      processResults: function(data) {
+//          return {
+//              results: $.map(data, function(obj){
+//                  return {id: obj.golkerja, text: obj.golkerja};
+//              })
+//          };
+//      }
+//  }
 // });
 
 $('.MasterPekerja-SuratPerbantuan-btnPreview').click(function () {
@@ -2127,10 +2127,10 @@ $('#MasterPekerja-BAPSP3-DaftarPekerja').change(function () {
     }
 });
 
-//	}
+//  }
 
-// 	}
-// 	-------Master Pekerja----------------------------------------------end
+//  }
+//  -------Master Pekerja----------------------------------------------end
 
 // alert(top.location.pathname);
 $(document).ready(function () {
@@ -2330,7 +2330,7 @@ $('.MasterPekerja-Surat-DaftarPekerja-staf-pengangkatan').change(function () {
 });
 
 $(function () {
-    $('#MasterPekerja-txtPokokMasalah').redactor('set', "Sdr. 	<strong>[nama_pekerja] ([noind_pekerja]) </strong>mendapat 	Surat Peringatan Ke-3 yang berlaku sejak tanggal <strong>[tgl_berlaku_mulai] sampai dengan tanggal [tgl_berlaku_selesai]&nbsp;</strong>sehingga 	berdasarkan Perjanjian Kerja Bersama CV. Karya Hidup Sentosa dan 	Pasal 161 (1) UU No 13 Tahun 2003 tentang Ketenagakerjaan, apabila 	yang bersangkutan melakukan pelanggaran kembali terhadap Perjanjian 	Kerja Bersama selama berlakunya Surat Peringatan Ke-3 tersebut, maka 	perusahaan akan melakukan Pemutusan Hubungan Kerja.");
+    $('#MasterPekerja-txtPokokMasalah').redactor('set', "Sdr.   <strong>[nama_pekerja] ([noind_pekerja]) </strong>mendapat  Surat Peringatan Ke-3 yang berlaku sejak tanggal <strong>[tgl_berlaku_mulai] sampai dengan tanggal [tgl_berlaku_selesai]&nbsp;</strong>sehingga     berdasarkan Perjanjian Kerja Bersama CV. Karya Hidup Sentosa dan    Pasal 161 (1) UU No 13 Tahun 2003 tentang Ketenagakerjaan, apabila  yang bersangkutan melakukan pelanggaran kembali terhadap Perjanjian     Kerja Bersama selama berlakunya Surat Peringatan Ke-3 tersebut, maka    perusahaan akan melakukan Pemutusan Hubungan Kerja.");
     $(document).on('change', '.noind', function (event) {
         var isi = $('.noind').val();
         if (isi.substring(0, 1) == 'J') {
@@ -2407,7 +2407,7 @@ $(document).on('ready', function () {
                 return {
                     results: $.map(data, function (obj) {
                         // if (obj.kode_departemen == '2') {
-                        // 	return {id: obj.kode_departemen, text: obj.nama_departemen, disabled: true};
+                        //  return {id: obj.kode_departemen, text: obj.nama_departemen, disabled: true};
                         // }
                         return { id: obj.kode_departemen, text: obj.nama_departemen };
                     })
@@ -4468,6 +4468,7 @@ $(document).ready(function(){
         var va = $(this).val();
         var tgl = $('.mpk_rknopr').val();
         var pr = $('#mpk_mntpicker').val();
+        var lokasi = $('.mpk_dpaslc').val();
         var x = 0;
         if (typeof tgl !== 'undefined') {
             x += tgl.length;
@@ -4485,7 +4486,8 @@ $(document).ready(function(){
             data: {
                 type: va,
                 tanggal: tgl,
-                periode: pr
+                periode: pr,
+                lokasi: lokasi
             },
             url: baseurl + "MasterPekerja/disnaker/ajx_tbldisnaker",
             success: function (result) {
