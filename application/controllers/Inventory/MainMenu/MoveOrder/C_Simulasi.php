@@ -89,8 +89,9 @@ class C_Simulasi extends CI_Controller
 			if (!in_array($get['kode'], $array_sudah)) {
 				array_push($array_sudah, $get['kode']);
 				$getBody = $this->M_simulasi->getData($get['kode'], $get['qty']);
+				$datanya = $this->sorting_item_merah($getBody);
 				$array_terkelompok[$get['kode']]['header'] = $get; 
-				$array_terkelompok[$get['kode']]['body'] = $getBody; 
+				$array_terkelompok[$get['kode']]['body'] = $datanya; 
 			}
 		}
 
@@ -109,6 +110,22 @@ class C_Simulasi extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Inventory/MainMenu/MoveOrder/V_ResultSimulasi',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function sorting_item_merah($getBody){
+		$datanya = array();
+		foreach ($getBody as $key => $get) {
+			if ($get['REQUIRED_QUANTITY'] > $get['ATT'] || $get['REQUIRED_QUANTITY'] > $get['KURANG']) {
+				array_push($datanya, $getBody[$key]);
+			}
+		}
+		foreach ($getBody as $key => $get) {
+			if ($get['REQUIRED_QUANTITY'] > $get['ATT'] || $get['REQUIRED_QUANTITY'] > $get['KURANG']) {
+			}else {
+				array_push($datanya, $getBody[$key]);
+			}
+		}
+		return $datanya;
 	}
 
 	public function downloadtemplate(){
