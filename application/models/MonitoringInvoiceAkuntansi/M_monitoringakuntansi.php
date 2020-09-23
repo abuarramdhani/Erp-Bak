@@ -1488,7 +1488,7 @@ public function editInvData($invoice_id)
 		}
 		$sql = "BEGIN APPS.KHS_RUN_FND_RECEIVING (:tetap,:p_group_id); END;";
 
-		$tetap = '5177';
+		$tetap = '5182';
 		$stmt = oci_parse($conn,$sql);
 		oci_bind_by_name($stmt,':p_group_id',$p_group_id,100);
 		oci_bind_by_name($stmt,':tetap',$tetap,100);
