@@ -15,6 +15,8 @@ class C_MasterKategori extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringJobProduksi/M_masterkategori');
+		$this->load->model('MonitoringJobProduksi/M_itemlist');
+		$this->load->model('MonitoringJobProduksi/M_setplan');
 
 		$this->checkSession();
 	}
@@ -53,6 +55,21 @@ class C_MasterKategori extends CI_Controller
 		// echo "<pre>";print_r($data['data']);exit();
 			$this->load->view('MonitoringJobProduksi/V_TblMaster', $data);
 		}
+
+		public function editCategory(){
+			$id 			= $this->input->post('id');
+			$ktgr_awal = $this->input->post('kategori');
+			$ktgr_baru	= strtoupper($this->input->post('val'));
+			if ($ktgr_baru != $ktgr_awal) {
+				$cek = $this->M_masterkategori->getdata("where category_name = '".$ktgr_baru."'");
+				if (empty($cek)) {
+					$this->M_masterkategori->updateKategori($id, $ktgr_baru);
+					echo "oke";
+				}else {
+					echo "not oke";
+				}
+			}
+		}
 	
     public function saveCategory(){
 			$kategori = strtoupper($this->input->post('kategori'));
@@ -71,6 +88,21 @@ class C_MasterKategori extends CI_Controller
     public function deleteCategory(){
 			$id = $this->input->post('id');
 			$kategori = $this->input->post('kategori');
+			$item = $this->M_itemlist->getdata("where category_name = '$id'");
+			// echo "<pre>";print_r($item);exit();
+			if (!empty($item)) {
+				for ($i=0; $i < count($item); $i++) { 
+					$plan = $this->M_setplan->getPlan("where inventory_item_id = '".$item[$i]['INVENTORY_ITEM_ID']."'");
+					if (!empty($plan)) {
+						$plandate = $this->M_setplan->getPlanDate('where plan_id = '.$plan[0]['PLAN_ID'].'');
+						if (!empty($plandate)) {
+							$this->M_setplan->deletePlanDate2($plan[0]['PLAN_ID']);
+						}
+						$this->M_setplan->deletePlan($plan[0]['PLAN_ID']);
+					}
+				$this->M_itemlist->deleteitem($id,$item[$i]['INVENTORY_ITEM_ID']);
+				}
+			}
 			$this->M_masterkategori->deletecategory($id, $kategori);
     }
 

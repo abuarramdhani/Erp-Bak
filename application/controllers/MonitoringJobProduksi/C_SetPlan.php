@@ -109,30 +109,75 @@ class C_SetPlan extends CI_Controller
 		return $value;
 	}
 	
-	public function saveSetplan(){
-		$bulan = $this->input->post('bulan');
-		$id_plan = $this->input->post('id_plan');
-		$inv_id = $this->input->post('item');
-		$plan = $this->input->post('plan');
-		$tgl = $this->input->post('tgl');
-		// echo "<pre>";print_r($plan);exit();
-		if (empty($id_plan)) {
-			$cekid 			= $this->M_setplan->getPlan('order by plan_id desc');
-			$id 			= !empty($cekid) ? $cekid[0]['PLAN_ID'] + 1 : 1;
-			$savePlan 		= $this->M_setplan->savePlan($id, $inv_id, $bulan);
-			$saveplandate 	= $this->M_setplan->savePlanDate($id, $tgl, $plan);
-		}else {
-			$cekdate = $this->M_setplan->getPlanDate("where plan_id = ".$id_plan." and date_plan = ".$tgl."");
-			if (!empty($cekdate) && !empty($plan)) {
-				$update = $this->M_setplan->updatePlanDate($id_plan, $tgl, $plan);
-			}elseif (empty($cekdate) && !empty($plan)) {
-				$save = $this->M_setplan->savePlanDate($id_plan, $tgl, $plan);
-			}elseif (!empty($cekdate) && empty($plan)) {
-				$delete = $this->M_setplan->deletePlanDate($id_plan, $tgl);
-			}
-		}
-	}
-
+public function savePlan(){
+ 		$bulan 		= $this->input->post('bulan');
+ 		$kategori 	= $this->input->post('kategori');
+ 		$item 		= $this->input->post('item[]');
+ 		$plan 		= $this->input->post('plan[]');
+ 		$plan2 = count($plan)/(count($item)/2);
+ 		$plann = $plan2;
+ 		$p = 0;
+ 		// echo "<pre>";print_r($plan2);exit();
+ 		for ($i=0; $i < (count($item)/2) ; $i++) { 
+ 			$plan3 = array();
+ 			for ($x=$p; $x < $plan2 ; $x++) { 
+ 				array_push($plan3, $plan[$x]);
+			 }
+ 			$p = $plan2;
+ 			$plan2 = $plan2 + $plann;
+ 			$cekdata = $this->M_setplan->getPlan("where inventory_item_id = ".$item[$i]." and month = $bulan");
+ 			if (empty($cekdata)) {
+				// echo "<pre>";print_r($plan3);exit();
+ 				$cekid = $this->M_setplan->getPlan('order by plan_id desc');
+ 				$id = !empty($cekid) ? $cekid[0]['PLAN_ID'] + 1 : 1;
+ 				$savePlan = $this->M_setplan->savePlan($id, $item[$i], $bulan);
+ 				for ($a=0; $a < count($plan3) ; $a++) { 
+ 					if (!empty($plan3[$a])) {
+ 						$this->M_setplan->savePlanDate($id, ($a+1), $plan3[$a]);
+ 					}
+ 				}
+ 			}else {
+				// echo "<pre>";print_r($cekdata);exit();
+ 				for ($b=0; $b < count($plan3) ; $b++) { 
+ 					$cekdate = $this->M_setplan->getPlanDate("where plan_id = ".$cekdata[0]['PLAN_ID']." and date_plan = ".($b+1)."");
+ 					if (!empty($cekdate) && !empty($plan3[$b])) {
+ 						$update = $this->M_setplan->updatePlanDate($cekdata[0]['PLAN_ID'], ($b+1), $plan3[$b]);
+ 					}elseif (empty($cekdate) && !empty($plan3[$b])) {
+ 						$save = $this->M_setplan->savePlanDate($cekdata[0]['PLAN_ID'], ($b+1), $plan3[$b]);
+ 					}elseif (!empty($cekdate) && empty($plan3[$b])) {
+ 						$delete = $this->M_setplan->deletePlanDate($cekdata[0]['PLAN_ID'], ($b+1));
+ 					}
+ 				}
+ 			}
+ 		}
+ 		redirect(base_url('MonitoringJobProduksi/SetPlan'));
+ 	}
+ 
+	// public function saveSetplan(){
+	// 	$bulan = $this->input->post('bulan');
+	// 	$id_plan = $this->input->post('id_plan');
+	// 	$inv_id = $this->input->post('item');
+	// 	$plan = $this->input->post('plan');
+	// 	$tgl = $this->input->post('tgl');
+	// 	// echo "<pre>";print_r($plan);exit();
+	// 	if (empty($id_plan)) {
+	// 		$cekid 			= $this->M_setplan->getPlan('order by plan_id desc');
+	// 		$id 			= !empty($cekid) ? $cekid[0]['PLAN_ID'] + 1 : 1;
+	// 		$savePlan 		= $this->M_setplan->savePlan($id, $inv_id, $bulan);
+	// 		$saveplandate 	= $this->M_setplan->savePlanDate($id, $tgl, $plan);
+	// 	}else {
+	// 		$cekdate = $this->M_setplan->getPlanDate("where plan_id = ".$id_plan." and date_plan = ".$tgl."");
+	// 		if (!empty($cekdate) && !empty($plan)) {
+	// 			$update = $this->M_setplan->updatePlanDate($id_plan, $tgl, $plan);
+	// 		}elseif (empty($cekdate) && !empty($plan)) {
+	// 			$save = $this->M_setplan->savePlanDate($id_plan, $tgl, $plan);
+	// 		}elseif (!empty($cekdate) && empty($plan)) {
+	// 			$delete = $this->M_setplan->deletePlanDate($id_plan, $tgl);
+	// 		}
+	// 	}
+	// }
+ 
+ 
 
 
 

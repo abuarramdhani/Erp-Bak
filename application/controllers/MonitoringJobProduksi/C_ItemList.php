@@ -15,6 +15,7 @@ class C_ItemList extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringJobProduksi/M_itemlist');
+		$this->load->model('MonitoringJobProduksi/M_setplan');
 
 		$this->checkSession();
 	}
@@ -87,6 +88,14 @@ class C_ItemList extends CI_Controller
   public function deleteitem(){
 		$inv_id 	= $this->input->post('inv_id');
 		$kategori 	= $this->input->post('kategori');
+		$plan = $this->M_setplan->getPlan("where inventory_item_id = '$inv_id'");
+		if (!empty($plan)) {
+			$plandate = $this->M_setplan->getPlanDate('where plan_id = '.$plan[0]['PLAN_ID'].'');
+			if (!empty($plandate)) {
+				$this->M_setplan->deletePlanDate2($plan[0]['PLAN_ID']);
+			}
+			$this->M_setplan->deletePlan($plan[0]['PLAN_ID']);
+		}
 		$this->M_itemlist->deleteitem($kategori,$inv_id);
   }
 

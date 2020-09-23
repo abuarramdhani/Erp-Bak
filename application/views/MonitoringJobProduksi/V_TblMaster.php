@@ -11,7 +11,8 @@
         <tr>
             <td><input type="hidden" id="id_kategori<?= $no?>" value="<?= $value['ID_CATEGORY']?>"><?= $no?></td>
             <td><input type="hidden" id="kategori<?= $no?>" value="<?= $value['CATEGORY_NAME']?>"><?= $value['CATEGORY_NAME']?></td>
-            <td><button class="btn btn-danger" onclick="deletecategory(<?= $no?>)"><i class="fa fa-trash"></i></td>
+            <td><button class="btn btn-info" onclick="editcategory(<?= $no?>)"><i class="fa fa-pencil"></i>
+                <button class="btn btn-danger" onclick="deletecategory(<?= $no?>)" style="margin-left:10px"><i class="fa fa-trash"></i></td>
         </tr>
         <?php $no++; }?>
     </tbody>

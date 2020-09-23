@@ -28,7 +28,7 @@
             <td><?= $value['DESKRIPSI']?></td>
             <td>P</td>
             <?php for ($i=0; $i < $hari ; $i++) { ?>
-                <td><input type="number" id="plan<?= $no?><?= $i+1?>" name="plan<?= $no?>[]" class="form-control" style="width:70px" value="<?= $value[$i]?>" onchange="saveSetplan(<?= $no?>, <?= ($i+1)?>)"></td>
+                <td><input type="number" id="plan<?= $no?><?= $i+1?>" name="plan[]" class="form-control plan<?= $no?>" style="width:70px" value="<?= $value[$i]?>"  onchange="sumSetplan(<?= $no?>, <?= ($i+1)?>)"></td>
             <?php }?>
             <td id="jml<?= $no?>"><?= $value['JUMLAH']?></td>
         </tr>
@@ -37,6 +37,6 @@
 </table>
 
 <div class="panel-body text-center">
-    <!-- <button class="btn btn-md bg-orange" style="font-size:18px" formaction="<?= base_url('MonitoringJobProduksi/SetPlan/savePlan')?>"><i class="fa fa-save"></i> Save</button> -->
-    <button type="button" class="btn btn-md bg-orange" style="font-size:18px" onclick="window.location.reload();"><i class="fa fa-save"></i> Save</button>
+    <button class="btn btn-md bg-orange" style="font-size:18px" id="btn_savePlan" formaction="<?= base_url('MonitoringJobProduksi/SetPlan/savePlan')?>"><i class="fa fa-save"></i> Save</button>
+    <!-- <button type="button" class="btn btn-md bg-orange" style="font-size:18px" onclick="window.location.reload();"><i class="fa fa-save"></i> Save</button> -->
 </div>
