@@ -12,13 +12,13 @@ class M_monitoring extends CI_Model
     
     public function getCategory(){
         $sql = "select * from khs_kategori_item_monitoring";
-        $query = $this->oracle_dev->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     
     public function getdataMonitoring($kategori){
         $sql = "select * from khs_category_item_monitoring where category_name = '$kategori'";
-        $query = $this->oracle_dev->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 
@@ -61,19 +61,19 @@ class M_monitoring extends CI_Model
                 AND msib.organization_id IN (101, 102) --OPM, ODM         
                 ORDER BY msib.segment1
                 ";
-        $query = $this->oracle_dev->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     
     public function getPlan($id, $bulan){
         $sql = "select * from khs_plan_item_monitoring where inventory_item_id = $id and month = $bulan";
-        $query = $this->oracle_dev->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     
     public function getPlanDate(){
         $sql = "select * from khs_plan_item_monitoring_date";
-        $query = $this->oracle_dev->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 

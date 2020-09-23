@@ -12,13 +12,13 @@ class M_itemlist extends CI_Model
     
     public function getCategory(){
       $sql = "select * from khs_kategori_item_monitoring";
-      $query = $this->oracle_dev->query($sql);
+      $query = $this->oracle->query($sql);
       return $query->result_array();
     }
 
     public function getdata($term){
         $sql = "select * from khs_category_item_monitoring $term";
-        $query = $this->oracle_dev->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 
@@ -49,15 +49,15 @@ class M_itemlist extends CI_Model
     public function saveitem($kategori, $inv_id, $org_id){
         $sql = "insert into khs_category_item_monitoring (category_name, organization_id, inventory_item_id)
                 values('$kategori', $org_id, $inv_id)";
-        $query = $this->oracle_dev->query($sql);
-        $query = $this->oracle_dev->query("commit");
+        $query = $this->oracle->query($sql);
+        $query = $this->oracle->query("commit");
       // echo $sql;
   }
   
   public function deleteitem($kategori, $inv_id){
     $sql = "delete khs_category_item_monitoring where category_name = '$kategori' and inventory_item_id = $inv_id";
-    $query = $this->oracle_dev->query($sql);
-    $query = $this->oracle_dev->query("commit");
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query("commit");
   // echo $sql;
 }
 

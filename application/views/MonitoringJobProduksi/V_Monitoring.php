@@ -1,8 +1,5 @@
 <script>
 $(document).ready(function () {
-    $('.tbldataemail').DataTable({
-        "scrollX" : true,
-    });
     $('.datepickbln').datepicker({
         format: 'mm/yyyy',
         todayHighlight: true,
@@ -31,7 +28,7 @@ $(document).ready(function () {
                                         <select id="kategori" class="form-control select2" style="width:100%" data-placeholder="Kategori">
                                             <option></option>
                                             <?php foreach ($kategori as $key => $val) { ?>
-                                            <option value="<?= $val['CATEGORY_NAME']?>"><?= $val['CATEGORY_NAME']?></option>
+                                            <option value="<?= $val['ID_CATEGORY']?>"><?= $val['CATEGORY_NAME']?></option>
                                             <?php }?>
                                         </select>
                                     </div>

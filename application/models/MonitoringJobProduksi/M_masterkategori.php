@@ -6,7 +6,7 @@ class M_masterkategori extends CI_Model
     {
         parent::__construct();
         $this->load->database();    
-        $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getdata($term){
@@ -21,6 +21,13 @@ class M_masterkategori extends CI_Model
       $query = $this->oracle->query($sql);
       $query2 = $this->oracle->query('commit');
       // echo $sql;
+    }
+
+    public function updateKategori($id, $kategori){
+      $sql = "update khs_kategori_item_monitoring set category_name = '$kategori'
+              where id_category = $id";
+      $query = $this->oracle->query($sql);
+      $query2 = $this->oracle->query('commit');
     }
     
     public function deletecategory($id, $kategori){
