@@ -1,4 +1,4 @@
-lock<?php
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_dpb extends CI_Model
