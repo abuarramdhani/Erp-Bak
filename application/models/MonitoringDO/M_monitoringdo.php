@@ -230,7 +230,7 @@ class M_monitoringdo extends CI_Model
         $subinv = $this->session->datasubinven;
         $query = "SELECT mtrh.header_id, mtrh.request_number \"DO/SPB\", msib.segment1,
                          mtrl.inventory_item_id, msib.description, mtrl.quantity,
-                         (SELECT SUM (moqd.primary_transaction_quantity) qty
+                         (SELECT NVL (SUM (moqd.primary_transaction_quantity), 0) qty
                             FROM mtl_onhand_quantities_detail moqd
                            WHERE moqd.subinventory_code = '$subinv'
                              AND moqd.inventory_item_id = mtrl.inventory_item_id) av_to_res
