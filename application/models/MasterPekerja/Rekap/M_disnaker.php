@@ -13,7 +13,18 @@ class M_disnaker extends CI_Model
 		$this->erp 			=	$this->load->database('erp_db', TRUE);
 	}
 
-	public function getPkjDisAktif($tgl)
+	function getLokasiKerja($keyword){
+		$this->personalia->like('lokasi_kerja',$keyword, 'both');
+		return $this->personalia->get('hrd_khs.tlokasi_kerja')->result();
+	}
+
+	public function getLokasiKerjabyID($id){
+		$this->personalia->where('id_',$id);
+		return $this->personalia->get('hrd_khs.tlokasi_kerja')->row_array();
+	}
+
+
+	public function getPkjDisAktif($tgl,$lokasi)
 	{
 		$sql = "SELECT
 					tp.noind,
@@ -80,10 +91,11 @@ class M_disnaker extends CI_Model
 					left join hrd_khs.tbpjstk tb2 on tb2.noind = tp.noind
 					left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan
 					where
-					tglkeluar > '$tgl'";
+					tglkeluar > '$tgl' and lokasi_kerja like'$lokasi%'
+					order by tp.noind";
 		return $this->personalia->query($sql)->result_array();
 	}
-	public function getPkjDisResign($tgl)
+	public function getPkjDisResign($tgl,$lokasi)
 	{
 		$tgl_awal = date('Y-m-', strtotime($tgl)).'01';
 		$sql = "select
@@ -110,7 +122,8 @@ class M_disnaker extends CI_Model
 					left join hrd_khs.tbpjstk tb2 on tb2.noind = tp.noind
 					left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan
 					where
-					tglkeluar between '$tgl_awal' and '$tgl'";
+					(tglkeluar between '$tgl_awal' and '$tgl') and lokasi_kerja like '$lokasi%'
+					order by tglkeluar asc";
 					// echo $sql;exit();
 		return $this->personalia->query($sql)->result_array();
 	}

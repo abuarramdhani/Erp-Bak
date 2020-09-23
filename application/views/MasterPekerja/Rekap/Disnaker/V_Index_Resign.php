@@ -23,17 +23,32 @@
                             </div>
                             <div class="box-body">
                                 <div class="col-md-12">
-                                    <div class="col-md-1">
-                                        <label style="margin-top: 5px;">Periode</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input class="form-control" id="mpk_mntpicker">
-                                    </div>
-                                    <div class="col-md-5">
-                                        <button class="btn btn-primary mpk_btnajxdisn" value="resign">
+                                    <div class="col-md-4">
+                                            <div class="col-md-5">
+                                                <label style="margin-top: 5px;">Lokasi Kerja</label>
+                                            </div>
+                                            <div class="col-md-7">
+                                            <select class="form-control mpk_dpaslc" style="width: 100%" name="lokasi">
+                                                    <option value="00">SEMUA LOKASI</option>
+                                                    <?php foreach ($loker as $key): ?>
+                                                        <option value="<?=$key->id_?>"><?=$key->lokasi_kerja?></option>
+                                                    <?php endforeach ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="col-md-3">
+                                               <label style="margin-top: 5px;">Periode</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input class="form-control" id="mpk_mntpicker">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                           <button class="btn btn-primary mpk_btnajxdisn" value="resign">
                                             Lihat
-                                        </button>
-                                    </div>
+                                           </button>
+                                        </div>
                                 </div>
                             </div>
                         </div>

@@ -5,65 +5,79 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 class C_Disnaker extends CI_Controller
 {
-	
-	function __construct()
-	{
-		parent::__construct();
-		$this->load->helper('form');
-		$this->load->helper('url');
-		$this->load->helper('html');
+    
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('form');
+        $this->load->helper('url');
+        $this->load->helper('html');
 
-		$this->load->library('Log_Activity');
-		$this->load->library('form_validation');
-		$this->load->library('session');
-		$this->load->library('encrypt');
-		$this->load->library('upload');
-		$this->load->library('General');
-		$this->load->library('pdf');
-		$this->load->library('KonversiBulan');
+        $this->load->library('Log_Activity');
+        $this->load->library('form_validation');
+        $this->load->library('session');
+        $this->load->library('encrypt');
+        $this->load->library('upload');
+        $this->load->library('General');
+        $this->load->library('pdf');
+        $this->load->library('KonversiBulan');
 
-		$this->load->model('MasterPekerja/Rekap/M_disnaker');
+        $this->load->model('MasterPekerja/Rekap/M_disnaker');
 
-		$pdf 	=	$this->pdf->load();
-		date_default_timezone_set('Asia/Jakarta');
+        $pdf    =   $this->pdf->load();
+        date_default_timezone_set('Asia/Jakarta');
 
-		$this->checkSession();
-	}
+        $this->checkSession();
+    }
 
-	public function checkSession()
-	{
-		if(!($this->session->is_logged))
-		{
-			redirect('');
-		}
-	}
+    public function checkSession()
+    {
+        if(!($this->session->is_logged))
+        {
+            redirect('');
+        }
+    }
 
-	public function index()
-	{
-		$data  = $this->general->loadHeaderandSidemenu('Master Pekerja', 'Disnaker', 'Rekap', 'Disnaker', '');
-		// print_r($loker);exit();
+    public function index()
+    {
+        $data  = $this->general->loadHeaderandSidemenu('Master Pekerja', 'Disnaker', 'Rekap', 'Disnaker', '');
+        $data['loker'] = $this->M_disnaker->getLokasiKerja('');
+        // print_r($loker);exit();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPekerja/Rekap/Disnaker/V_Index_Aktif',$data);
-		$this->load->view('V_Footer',$data);
-	}
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('MasterPekerja/Rekap/Disnaker/V_Index_Aktif',$data);
+        $this->load->view('V_Footer',$data);
+    }
 
-	public function export_pkjaktif()
-	{
-		$tgl = $this->input->get('tanggal');
-		// $tgl = date('Y-m-d');
-		$data = $this->M_disnaker->getPkjDisAktif($tgl);
+    public function export_pkjaktif()
+    {   
+         //print_r($_GET);exit();
 
-		for ($i=0; $i < count($data); $i++) { 
-			if(empty(trim($data[$i]['nohp']))) $data[$i]['nohp'] = '-';
-			if(empty(trim($data[$i]['bpjs_kesehatan']))) $data[$i]['bpjs_kesehatan'] = '-';
-			if(empty(trim($data[$i]['bpjs_ketenagakerjaan']))) $data[$i]['bpjs_ketenagakerjaan'] = '-';
-			if(empty(trim($data[$i]['email']))) $data[$i]['email'] = '-';
-		}
-		// print_r($data);
+        $tgl = $this->input->get('tanggal');
 
-		$this->load->library(array('Excel', 'Excel/PHPExcel/IOFactory'));
+        // $tgl = date('Y-m-d');
+        $lokasi = $this->input->get('lokasi');
+            $loker = $this->M_disnaker->getLokasiKerjabyID($lokasi);
+            $loker = $loker['lokasi_kerja'];
+            if ($lokasi == '00') {
+            $lokasi = '';
+            $loker = 'SEMUA LOKASI KERJA';
+            }
+            
+        $data = $this->M_disnaker->getPkjDisAktif($tgl,$lokasi);
+        
+        //print_r($loker);exit();
+
+        for ($i=0; $i < count($data); $i++) { 
+             if(empty(trim($data[$i]['nohp']))) $data[$i]['nohp'] = '-';
+             if(empty(trim($data[$i]['bpjs_kesehatan']))) $data[$i]['bpjs_kesehatan'] = '-';
+             if(empty(trim($data[$i]['bpjs_ketenagakerjaan']))) $data[$i]['bpjs_ketenagakerjaan'] = '-';
+             if(empty(trim($data[$i]['email']))) $data[$i]['email'] = '-';
+        }
+        // print_r($data);
+
+        $this->load->library(array('Excel', 'Excel/PHPExcel/IOFactory'));
         $objPHPExcel = new PHPExcel();
         $objPHPExcel->getProperties()->setCreator('KHS ERP')
             ->setTitle("DATA TENAGA KERJA ".'Tanggal '.date('d-M-Y', strtotime($tgl)))
@@ -127,18 +141,18 @@ class C_Disnaker extends CI_Controller
             )
         );
         $style_title = array(
-        	'font' => array('bold' => false),
-        	'alignment' => array(
-        		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-        		'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
-        		)
-        	);
+            'font' => array('bold' => false),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+                )
+            );
 
         $right = array(
-        	'alignment' => array(
-        		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-        		)
-        	);
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+                )
+            );
 
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P1', "LAMPIRAN 1");
@@ -181,65 +195,65 @@ class C_Disnaker extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P8', "KETERANGAN");
 
         for ($i=0; $i < 16; $i++) { 
-	        $kolom_new = PHPExcel_Cell::stringFromColumnIndex($i);
-			$objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8')->applyFromArray($style_header);
-			$objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8')->getAlignment()->setWrapText(true);
+            $kolom_new = PHPExcel_Cell::stringFromColumnIndex($i);
+            $objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8')->applyFromArray($style_header);
+            $objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8')->getAlignment()->setWrapText(true);
         }
 
         $start = 9;
         $no = 1;
         foreach ($data as $key) {
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$start, $no);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$start, trim($key['nama']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$start, trim($key['nik']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$start, trim($key['alamat']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$start, trim($key['almt_kost']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$start, trim($key['nohp']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$start, trim($key['bpjs_kesehatan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$start, trim($key['bpjs_ketenagakerjaan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$start, trim($key['pendidikan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$start, trim($key['jabatan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$start, trim($key['upah']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$start, trim($key['upah_berlaku']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$start, trim($key['status_pegawai']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$start, trim($key['kewarganegaraan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$start, trim($key['email']));
-        	// $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$start, trim($key['nik']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$start, $no);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$start, trim($key['nama']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$start, trim($key['nik']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$start, trim($key['alamat']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$start, trim($key['almt_kost']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$start, trim($key['nohp']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$start, trim($key['bpjs_kesehatan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$start, trim($key['bpjs_ketenagakerjaan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$start, trim($key['pendidikan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$start, trim($key['jabatan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$start, trim($key['upah']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$start, trim($key['upah_berlaku']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$start, trim($key['status_pegawai']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$start, trim($key['kewarganegaraan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$start, trim($key['email']));
+            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$start, trim($key['nik']));
 
-        	$objPHPExcel->getActiveSheet()->getStyle('A'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('B'.$start)->applyFromArray($style_col3);
-        	$objPHPExcel->getActiveSheet()->getStyle('C'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('D'.$start)->applyFromArray($style_col3);
-        	$objPHPExcel->getActiveSheet()->getStyle('E'.$start)->applyFromArray($style_col3);
-        	$objPHPExcel->getActiveSheet()->getStyle('F'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('G'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('H'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('I'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('J'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('K'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('L'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('M'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('N'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('O'.$start)->applyFromArray($style_col3);
-        	$objPHPExcel->getActiveSheet()->getStyle('P'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('B'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('C'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('D'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('E'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('F'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('G'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('H'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('I'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('J'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('K'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('L'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('M'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('N'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('O'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('P'.$start)->applyFromArray($style_col);
 
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(30);
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(10);
-        	$start++; $no++;
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(30);
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(10);
+            $start++; $no++;
         }
 
         $objPHPExcel->setActiveSheetIndex(0);
@@ -251,23 +265,30 @@ class C_Disnaker extends CI_Controller
 
         $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
-	}
+    }
 
-	public function export_pkjresign()
-	{
-		// $tgl = date('Y-m-d');
-		$tgl = $this->input->get('tanggal');
-		$data = $this->M_disnaker->getPkjDisResign($tgl);
+    public function export_pkjresign()
+    {
+        // $tgl = date('Y-m-d');
+        $tgl = $this->input->get('tanggal');
+        $lokasi = $this->input->get('lokasi');
+            $loker = $this->M_disnaker->getLokasiKerjabyID($lokasi);
+            $loker = $loker['lokasi_kerja'];
+            if ($lokasi == '00') {
+            $lokasi = '';
+            $loker = 'SEMUA LOKASI KERJA';
+            }
+        $data = $this->M_disnaker->getPkjDisResign($tgl,$lokasi);
 
-		for ($i=0; $i < count($data); $i++) { 
-			if(empty(trim($data[$i]['nohp']))) $data[$i]['nohp'] = '-';
-			if(empty(trim($data[$i]['bpjs_kesehatan']))) $data[$i]['bpjs_kesehatan'] = '-';
-			if(empty(trim($data[$i]['bpjs_ketenagakerjaan']))) $data[$i]['bpjs_ketenagakerjaan'] = '-';
-			if(empty(trim($data[$i]['email']))) $data[$i]['email'] = '-';
-		}
-		// print_r($data);
+        for ($i=0; $i < count($data); $i++) { 
+             if(empty(trim($data[$i]['nohp']))) $data[$i]['nohp'] = '-';
+             if(empty(trim($data[$i]['bpjs_kesehatan']))) $data[$i]['bpjs_kesehatan'] = '-';
+             if(empty(trim($data[$i]['bpjs_ketenagakerjaan']))) $data[$i]['bpjs_ketenagakerjaan'] = '-';
+             if(empty(trim($data[$i]['email']))) $data[$i]['email'] = '-';
+        }
+        // print_r($data);
 
-		$this->load->library(array('Excel', 'Excel/PHPExcel/IOFactory'));
+        $this->load->library(array('Excel', 'Excel/PHPExcel/IOFactory'));
         $objPHPExcel = new PHPExcel();
         $objPHPExcel->getProperties()->setCreator('KHS ERP')
             ->setTitle("DATA TENAGA KERJA RESIGN ".'Periode '.date('M-Y', strtotime($tgl)))
@@ -331,18 +352,18 @@ class C_Disnaker extends CI_Controller
             )
         );
         $style_title = array(
-        	'font' => array('bold' => true),
-        	'alignment' => array(
-        		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-        		'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
-        		)
-        	);
+            'font' => array('bold' => true),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+                )
+            );
 
         $right = array(
-        	'alignment' => array(
-        		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-        		)
-        	);
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+                )
+            );
 
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P1', "LAMPIRAN 1");
@@ -385,65 +406,65 @@ class C_Disnaker extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P8', "KETERANGAN");
 
         for ($i=0; $i < 16; $i++) { 
-	        $kolom_new = PHPExcel_Cell::stringFromColumnIndex($i);
-			$objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8')->applyFromArray($style_header);
-			$objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8')->getAlignment()->setWrapText(true);
+            $kolom_new = PHPExcel_Cell::stringFromColumnIndex($i);
+            $objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8')->applyFromArray($style_header);
+            $objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8')->getAlignment()->setWrapText(true);
         }
 
         $start = 9;
         $no = 1;
         foreach ($data as $key) {
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$start, $no);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$start, trim($key['nama']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$start, trim($key['nik']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$start, trim($key['alamat']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$start, trim($key['almt_kost']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$start, trim($key['nohp']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$start, trim($key['bpjs_kesehatan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$start, trim($key['bpjs_ketenagakerjaan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$start, trim($key['pendidikan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$start, trim($key['jabatan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$start, trim($key['upah']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$start, trim($key['upah_berlaku']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$start, trim($key['status_pegawai']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$start, trim($key['kewarganegaraan']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$start, trim($key['email']));
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$start, trim($key['sebabklr']).' (Per tgl '.date('d-m-Y', strtotime($key['tglkeluar'])).')');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$start, $no);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$start, trim($key['nama']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$start, trim($key['nik']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$start, trim($key['alamat']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$start, trim($key['almt_kost']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$start, trim($key['nohp']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$start, trim($key['bpjs_kesehatan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$start, trim($key['bpjs_ketenagakerjaan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$start, trim($key['pendidikan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$start, trim($key['jabatan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$start, trim($key['upah']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$start, trim($key['upah_berlaku']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$start, trim($key['status_pegawai']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$start, trim($key['kewarganegaraan']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$start, trim($key['email']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$start, trim($key['sebabklr']).' (Per tgl '.date('d-m-Y', strtotime($key['tglkeluar'])).')');
 
-        	$objPHPExcel->getActiveSheet()->getStyle('A'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('B'.$start)->applyFromArray($style_col3);
-        	$objPHPExcel->getActiveSheet()->getStyle('C'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('D'.$start)->applyFromArray($style_col3);
-        	$objPHPExcel->getActiveSheet()->getStyle('E'.$start)->applyFromArray($style_col3);
-        	$objPHPExcel->getActiveSheet()->getStyle('F'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('G'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('H'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('I'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('J'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('K'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('L'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('M'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('N'.$start)->applyFromArray($style_col);
-        	$objPHPExcel->getActiveSheet()->getStyle('O'.$start)->applyFromArray($style_col3);
-        	$objPHPExcel->getActiveSheet()->getStyle('P'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('B'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('C'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('D'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('E'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('F'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('G'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('H'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('I'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('J'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('K'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('L'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('M'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('N'.$start)->applyFromArray($style_col);
+            $objPHPExcel->getActiveSheet()->getStyle('O'.$start)->applyFromArray($style_col3);
+            $objPHPExcel->getActiveSheet()->getStyle('P'.$start)->applyFromArray($style_col3);
 
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(30);
-        	// $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(20);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(10);
-        	$start++; $no++;
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(30);
+            // $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(10);
+            $start++; $no++;
         }
 
         $objPHPExcel->setActiveSheetIndex(0);
@@ -455,50 +476,68 @@ class C_Disnaker extends CI_Controller
 
         $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save('php://output');
-	}
+    }
 
-	public function ajx_tbldisnaker()
-	{
-		$type = $this->input->get('type');
-		if ($type == 'aktif') {
-			$tgl = $this->input->get('tanggal');
-			$d = $this->M_disnaker->getPkjDisAktif($tgl);
-		}elseif ($type == 'resign') {
-			$tgl = $this->input->get('periode');
-			$tgl = date('Y-m-t', strtotime($tgl.'-01'));
-			// echo $tgl;exit();
-			$d = $this->M_disnaker->getPkjDisResign($tgl);
-		}else{
-			echo "type not found";
-			exit();
-		}
-		$data['date'] = $tgl;
-		// print_r($d);exit();
-		$data['type'] = $type;
-		$data['list'] = $d;
-		$html = $this->load->view('MasterPekerja/Rekap/Disnaker/V_Table',$data, true);
-		echo $html;
-	}
+    public function ajx_tbldisnaker()
+    {
+        // print_r($_GET);exit();
+        $type = $this->input->get('type');
+        if ($type == 'aktif') {
+            $tgl = $this->input->get('tanggal');
+            $lokasi = $this->input->get('lokasi');
+            $loker = $this->M_disnaker->getLokasiKerjabyID($lokasi);
+            $loker = $loker['lokasi_kerja'];
+            if ($lokasi == '00') {
+            $lokasi = '';
+            $loker = 'SEMUA LOKASI KERJA';
+            }
+            $d = $this->M_disnaker->getPkjDisAktif($tgl,$lokasi);
+        }elseif ($type == 'resign') {
+            $tgl = $this->input->get('periode');
+            $tgl = date('Y-m-t', strtotime($tgl.'-01'));
+            $lokasi = $this->input->get('lokasi');
+            $loker = $this->M_disnaker->getLokasiKerjabyID($lokasi);
+            $loker = $loker['lokasi_kerja'];
+            if ($lokasi == '00') {
+            $lokasi = '';
+            $loker = 'SEMUA LOKASI KERJA';
+            }
+            // echo $tgl;exit();
+            $d = $this->M_disnaker->getPkjDisResign($tgl,$lokasi);
+        }else{
+            echo "type not found";
+            exit();
+        }
+        $data['date'] = $tgl;
+        $data['lokasi'] = $lokasi;
+        // print_r($lokasi);exit();
+        $data['type'] = $type;
+        $data['list'] = $d;
+        $html = $this->load->view('MasterPekerja/Rekap/Disnaker/V_Table',$data, true);
+        echo $html;
+    }
 
-	public function pkj_aktif()
-	{
-		$data  = $this->general->loadHeaderandSidemenu('Master Pekerja', 'Disnaker Pekerja Aktif', 'Rekap', 'Disnaker', 'Pekerja Aktif');
-		// print_r($loker);exit();
+    public function pkj_aktif()
+    {
+        $data  = $this->general->loadHeaderandSidemenu('Master Pekerja', 'Disnaker Pekerja Aktif', 'Rekap', 'Disnaker', 'Pekerja Aktif');
+        $data['loker'] = $this->M_disnaker->getLokasiKerja('');
+         //print_r($loker);exit();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPekerja/Rekap/Disnaker/V_Index_Aktif',$data);
-		$this->load->view('V_Footer',$data);
-	}
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('MasterPekerja/Rekap/Disnaker/V_Index_Aktif',$data);
+        $this->load->view('V_Footer',$data);
+    }
 
-	public function pkj_resign()
-	{
-		$data  = $this->general->loadHeaderandSidemenu('Master Pekerja', 'Disnaker Pekerja Resign', 'Rekap', 'Disnaker', 'Pekerja Resign');
-		// print_r($loker);exit();
+    public function pkj_resign()
+    {
+        $data  = $this->general->loadHeaderandSidemenu('Master Pekerja', 'Disnaker Pekerja Resign', 'Rekap', 'Disnaker', 'Pekerja Resign');
+        $data['loker'] = $this->M_disnaker->getLokasiKerja('');
+        // print_r($loker);exit();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPekerja/Rekap/Disnaker/V_Index_Resign',$data);
-		$this->load->view('V_Footer',$data);
-	}
+        $this->load->view('V_Header',$data);
+        $this->load->view('V_Sidemenu',$data);
+        $this->load->view('MasterPekerja/Rekap/Disnaker/V_Index_Resign',$data);
+        $this->load->view('V_Footer',$data);
+    }
 }

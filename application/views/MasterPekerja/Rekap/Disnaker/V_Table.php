@@ -1,11 +1,11 @@
 <div class="col-md-12" style="margin-bottom: 10px;" >
 	<?php if ($type == 'aktif'): ?>
-		<a class="btn btn-success" id="mpk_btndisnAK" href="<?= base_url('MasterPekerja/disnaker/export_pkjaktif?tanggal='.$date) ?>">
+		<a class="btn btn-success" id="mpk_btndisnAK" href="<?= base_url('MasterPekerja/disnaker/export_pkjaktif?tanggal='.$date.'&lokasi='.$lokasi) ?>">
 			<i class="fa fa-file-excel-o"></i> Cetak Pekerja Aktif
 		</a>
 	<?php endif ?>
 	<?php if ($type == 'resign'): ?>
-		<a class="btn btn-success" id="mpk_btndisnRE" href="<?= base_url('MasterPekerja/disnaker/export_pkjresign?tanggal='.$date)?>">
+		<a class="btn btn-success" id="mpk_btndisnRE" href="<?= base_url('MasterPekerja/disnaker/export_pkjresign?tanggal='.$date.'&lokasi='.$lokasi)?>">
 			<i class="fa fa-file-excel-o"></i> Cetak Pekerja Resign
 		</a>
 	<?php endif ?>
