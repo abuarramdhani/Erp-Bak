@@ -204,8 +204,8 @@ class C_Index extends CI_Controller
 						}
 					}
 				}
+				echo json_encode($ar_json);
 			}
-			echo json_encode($ar_json);
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
 		} elseif ($status == 2) {
 			//insert to t_log
@@ -304,6 +304,7 @@ class C_Index extends CI_Controller
 					$insert = $this->M_index->taktual_izin($data);
 				}
 			}
+			echo json_encode($ar_json);
 		} else {
 			for ($i = 0; $i < count($pekerja); $i++) {
 				$data = array(
@@ -312,16 +313,21 @@ class C_Index extends CI_Controller
 					'created_date' => date('Y-m-d H:i:s')
 				);
 				$insert = $this->M_index->taktual_izin($data);
-				for ($k = 0; $k < count($getnamaApprove); $k++) {
-					if ($pekerja[$i] == $getnamaApprove[$k]['noind']) {
-						$ar_json[] = $pekerja[$i] . ' - ' . $getnamaApprove[$k]['nama'];
+
+				$newEmployee = $this->M_index->getDataPekerja($pekerja[$i], $id);
+
+				if ($pekerja[$i] == $newEmployee[0]['noind'] && !empty($newEmployee[0]['tujuan'])) {
+					for ($k = 0; $k < count($getnamaApprove); $k++) {
+						if ($pekerja[$i] == $getnamaApprove[$k]['noind']) {
+							$ar_json[] = $pekerja[$i] . ' - ' . $getnamaApprove[$k]['nama'];
+						}
 					}
 				}
 			}
+			echo json_encode($ar_json);
 		}
 
 		$this->EmailAlert($noinde, $getnamaApprove, $getnamareject, $id, $tanggal, $keterangan, $berangkat);
-		echo json_encode($ar_json);
 	}
 
 	public function EmailAlert($noinde, $pekerja, $pekerja1, $id, $tanggal, $keterangan, $berangkat)
