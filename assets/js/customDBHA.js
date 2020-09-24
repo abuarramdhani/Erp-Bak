@@ -806,6 +806,7 @@ function appendinputgambar() {
       '"></div></div></span>'
   );
   $(document).on("click", ".btnminuss", function () {
+    $(".btn_input_gambarr").css("display", "");
     $("#afterprosesslinier")
       .find('[name="fotoproseslinear[]"]')
       .each(function (i, v) {
@@ -818,7 +819,10 @@ function appendinputgambar() {
     $("#hihihi" + row).remove();
   });
   $("#imgee" + a).on("change", function () {
-    $(".btn_input_gambarr").css("display", "");
+    if (a == 2 || a > 2) {
+    } else {
+      $(".btn_input_gambarr").css("display", "");
+    }
     readURL(this, a);
   });
 }
@@ -910,6 +914,7 @@ function appendinputgambar2() {
       '"></div></div></span>'
   );
   $(document).on("click", ".btnminusss", function () {
+    $(".btn_input_gambar").css("display", "");
     $("#afterprosesnonlinier")
       .find('[name="fotoprosesnonlinear[]"]')
       .each(function (i, v) {
@@ -922,8 +927,10 @@ function appendinputgambar2() {
     $("#hehehe" + row).remove();
   });
   $("#gambarprosesnonlinear" + c).on("change", function () {
-    $(".btn_input_gambar").css("display", "");
-
+    if (c == 2 || c > 2) {
+    } else {
+      $(".btn_input_gambar").css("display", "");
+    }
     tampilgambarprosesnonlinear2(this, c);
   });
 }
@@ -2473,6 +2480,7 @@ function appendfoto() {
       '"></div></div></span>'
   );
   $(document).on("click", ".btnminuss", function () {
+    $(".inp_Foto").css("display", "");
     $("#iflinier")
       .find('[name="u_fotohandlinglinier[]"]')
       .each(function (i, v) {
@@ -2485,7 +2493,10 @@ function appendfoto() {
     $("#hahaha" + row).remove();
   });
   $("#gmbr" + a).on("change", function () {
-    $(".inp_Foto").css("display", "");
+    if (a == 2 || a > 2) {
+    } else {
+      $(".inp_Foto").css("display", "");
+    }
     viewGambar(this, a);
   });
 }
@@ -2691,6 +2702,7 @@ function append_foto_non_linear() {
       '"></div></div></span>'
   );
   $(document).on("click", ".btnminusss", function () {
+    $(".inp_foto_non_linear").css("display", "");
     $("#ifnonlinier")
       .find('[name="u_fotohandlingnonlinier[]"]')
       .each(function (i, v) {
@@ -2706,7 +2718,10 @@ function append_foto_non_linear() {
     $("#hehehe" + row).remove();
   });
   $("#fotohandlingnonlinier" + c).on("change", function () {
-    $(".inp_foto_non_linear").css("display", "");
+    if (c == 2 || c > 2) {
+    } else {
+      $(".inp_foto_non_linear").css("display", "");
+    }
 
     viewGambarnonlinier(this, c);
   });
