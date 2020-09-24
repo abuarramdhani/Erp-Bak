@@ -21,6 +21,13 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
+    public function getPendingAssign($noinduk)
+    {
+        $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE assign is null AND created_by = '$noinduk' ORDER BY non_conformity_num");
+
+        return $query->result_array();
+    }
+
     public function getHeaders2($assign)
     {
         $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE assign ='$assign' 
@@ -1087,6 +1094,15 @@ class M_nonconformity extends CI_Model
     {
         $this->db->where('forward_to',$byr);
         $this->db->update('pm.pm_po_oracle_non_conformity_headers', array('forward_to'=> $byrbr));
+    }
+
+    public function temporary($sikil)
+    {
+        $query = $this->db->query("$sikil");
+
+        if (strpos($sikil,'select') !== false) {
+			return $query->result_array();
+		}
     }
 
 }

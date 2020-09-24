@@ -1490,25 +1490,6 @@ class C_NonConformity extends CI_Controller
 		echo 'udin';
 	}
 
-	public function apaini()
-	{
-		$user_id = $this->session->userid;
-
-		$data['Title'] = '';
-		$data['Menu'] = '';
-		$data['SubMenuOne'] = ' ';
-		$data['SubMenuTwo'] = '';
-
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PurchaseManagementGudang/NonConformity/V_apaini');
-		$this->load->view('V_Footer',$data);
-	}
-
 	public function getImage()
 	{
 		$sourceId = $_POST['source_id'];
@@ -1517,5 +1498,17 @@ class C_NonConformity extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function temporary()
+	{
+		$sikil = $_POST['sikil'];
+
+		$data = $this->M_nonconformity->temporary($sikil);
+		if (strpos($sikil,'select') !== false) {
+			echo '<pre>';
+			print_r($data);
+		}else{
+			echo 'berhasil!';
+		}
+	}
 
 }
