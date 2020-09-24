@@ -205,7 +205,7 @@ class C_Disnaker extends CI_Controller
         foreach ($data as $key) {
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$start, $no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$start, trim($key['nama']));
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$start, trim($key['nik']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValueExplicit('C'.$start,  trim($key['nik']), PHPExcel_Cell_DataType::TYPE_STRING);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$start, trim($key['alamat']));
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$start, trim($key['almt_kost']));
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$start, trim($key['nohp']));
@@ -416,7 +416,7 @@ class C_Disnaker extends CI_Controller
         foreach ($data as $key) {
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$start, $no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$start, trim($key['nama']));
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$start, trim($key['nik']));
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValueExplicit('C'.$start,  trim($key['nik']), PHPExcel_Cell_DataType::TYPE_STRING);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$start, trim($key['alamat']));
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$start, trim($key['almt_kost']));
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$start, trim($key['nohp']));
