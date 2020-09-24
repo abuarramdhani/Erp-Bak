@@ -91,42 +91,42 @@
                                         <div class="col-md-1">
                                             <?php for ($i=0; $i < 3; $i++) { 
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
-                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock('.$i.', 123)">
                                                 <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
                                         <div class="col-md-1">
                                             <?php for ($i=3; $i < 6; $i++) { 
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
-                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock('.$i.', 123)">
                                                 <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
                                         <div class="col-md-1">
                                             <?php for ($i=6; $i < 9; $i++) { 
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
-                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock('.$i.', 123)">
                                                 <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
                                         <div class="col-md-1">
                                             <?php for ($i=9; $i < 12; $i++) { 
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
-                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock('.$i.', 123)">
                                                 <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
                                         <div class="col-md-1">
                                             <?php for ($i=12; $i < 15; $i++) { 
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
-                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock('.$i.', 123)">
                                                 <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
                                         <div class="col-md-1">
                                             <?php for ($i=15; $i < 18; $i++) { 
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
-                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <button type="button" class="btn btn-md btn-info" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock('.$i.', 123)">
                                                 <span style="color:black;font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
@@ -135,7 +135,7 @@
                                                 $warna = $i == 18 ? 'bg-black' : ($i == 19 ? 'bg-primary' : 'bg-orange');
                                                 $warna2 = $i == 20 ? 'black' : 'white';
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
-                                                <button type="button" class="btn btn-md '.$warna.'" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <button type="button" class="btn btn-md '.$warna.'" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock('.$i.', 123)">
                                                 <span style="color:'.$warna2.';font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
@@ -144,7 +144,7 @@
                                                 $warna = $i == 21 ? 'bg-black' : ($i == 22 ? 'bg-primary' : 'bg-orange');
                                                 $warna2 = $i == 23 ? 'black' : 'white';
                                                 echo '<input type="hidden" id="unit'.$i.'" value="'.$kode[$i].'">
-                                                <button type="button" class="btn btn-md '.$warna.'" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock2('.$i.')">
+                                                <button type="button" class="btn btn-md '.$warna.'" style="width:70px;height:70px;white-space: normal;" onclick="getLihatStock('.$i.', 123)">
                                                 <span style="color:'.$warna2.';font-size:15px;font-weight:bold">'.$kode[$i].'</span></br><span style="color:white;font-size:10px;">'.$nama[$i].'</span></button><br><br>';
                                             }?>
                                         </div>
@@ -167,9 +167,19 @@
                                             <input type="number" id="qty_bawah" class="form-control pull-right" placeholder="qty bawah" autocomplete="off">
                                         </div>
                                     </div>
+                                    <br><br><br>
+                                    <div class="col-md-12" style="padding-top:10px">
+                                        <div class="col-md-2">
+                                            <label class="control-label">Min Max :</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-lg btn-danger" onclick="getLihatStock('', 'min')">MIN</button>
+                                            <button class="btn btn-lg bg-teal" style="margin-left:10px" onclick="getLihatStock('', 'max')">MAX</button>
+                                        </div>
+                                    </div>
                                     <br><br>
                                     <div class="col-md-12 text-center">
-                                            <button type="button" class="btn btn-success" onclick="getLihatStock(this)">Search</button>
+                                            <button type="button" class="btn btn-lg btn-success" onclick="getLihatStock('', 'sch')">Search</button>
                                     </div>
                                 </div>
                                 

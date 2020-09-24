@@ -54,49 +54,21 @@ $(document).ready(function () {
 	});
 });
 
-function getLihatStock(th) {
-	$(document).ready(function(){
+function getLihatStock(no, ket) {
 		var tglAw 		= $('#tglAwal').val();
 		var tglAk 		= $('#tglAkhir').val();
 		var subinv 		= $('#subinv').val();
 		var kode_brg 	= $('#kodestockgdsp').val();
-		var kode_awal 	= $('#kode_awal').val();
+		var kode_awal = $('#kode_awal').val();
 		var qty_atas 	= $('#qty_atas').val();
-		var qty_bawah 	= $('#qty_bawah').val();
+		var qty_bawah = $('#qty_bawah').val();
+		var unit 			= no != '' ? $('#unit'+no).val() : '';
 
 		var request = $.ajax({
 			url: baseurl+'StockGdSparepart/LihatStock/searchData',
 			data: {
                 tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal,
-				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah
-			},
-			type: "POST",
-			datatype: 'html'
-		});
-		$('#tb_lihatstock').html('');
-		$('#tb_lihatstock').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"><br/></center>' );
-			
-		request.done(function(result){
-			$('#tb_lihatstock').html(result);
-		});
-	});		
-}
-
-function getLihatStock2(no) {
-		var tglAw 		= $('#tglAwal').val();
-		var tglAk 		= $('#tglAkhir').val();
-		var subinv 		= $('#subinv').val();
-		var kode_brg 	= $('#kodestockgdsp').val();
-		var kode_awal 	= $('#kode_awal').val();
-		var qty_atas 	= $('#qty_atas').val();
-		var qty_bawah 	= $('#qty_bawah').val();
-		var unit 		= $('#unit'+no).val();
-		
-		var request = $.ajax({
-			url: baseurl+'StockGdSparepart/LihatStock/searchData2',
-			data: {
-                tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal,
-				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah, unit : unit
+				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah, unit : unit, ket : ket
 			},
 			type: "POST",
 			datatype: 'html'
