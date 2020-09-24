@@ -273,12 +273,6 @@ class M_index extends CI_Model
         $query = $this->personalia->query($sql);
     }
 
-    public function taktual_izin($pekerja)
-    {
-        $this->personalia->insert('Surat.taktual_izin', $pekerja);
-        return;
-    }
-
     public function cekIzin($idizin)
     {
         $sql = "SELECT * FROM \"Surat\".tperizinan WHERE izin_id::text = '$idizin'";
@@ -338,5 +332,13 @@ class M_index extends CI_Model
     {
         $sql = "SELECT email_internal from hrd_khs.tpribadi where noind in ('$key')";
         return $this->personalia->query($sql)->row()->email_internal;
+    }
+
+    //insert
+
+    public function taktual_izin($pekerja)
+    {
+        $this->personalia->insert('Surat.taktual_izin', $pekerja);
+        return;
     }
 }

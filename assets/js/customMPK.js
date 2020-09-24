@@ -3157,7 +3157,10 @@ function fun_reload() {
         customClass: 'swal-wide',
         showConfirmButton: false,
         allowOutsideClick: false
-    }).then(window.location.reload())
+    })
+    window.location.reload(function (params) {
+        swal.close()
+    })
 }
 
 function edit_pkj_dinas(id) {
@@ -3310,63 +3313,63 @@ $(document).ready(function () {
 
 
 function edit_pkj_dinas_all(id, btn_val) {
-     let table = $('.eachPekerjaEditAll')
+    let table = $('.eachPekerjaEditAll')
 
-     $.ajax({
-         type: 'post',
-         data: {
-             id,
-             btn_val
-         },
-         url: baseurl + 'PerizinanDinas/ApproveAll/editPekerjaDinas',
-         beforeSend: a => {
-             table.html('<tr><td colspan="4">loading....</td></tr>')
-         },
-         dataType: 'json',
-         success: function (data) {
-             let keluar = ''
-             if (btn_val == '1') {
-                 keluar = data[0]['berangkat'];
-                 $('.newText').text('Tujuan')
-             } else {
-                 keluar = data[0]['wkt_keluar'];
-                 $('.newText').text('Keperluan')
-             }
+    $.ajax({
+        type: 'post',
+        data: {
+            id,
+            btn_val
+        },
+        url: baseurl + 'PerizinanDinas/ApproveAll/editPekerjaDinas',
+        beforeSend: a => {
+            table.html('<tr><td colspan="4">loading....</td></tr>')
+        },
+        dataType: 'json',
+        success: function (data) {
+            let keluar = ''
+            if (btn_val == '1') {
+                keluar = data[0]['berangkat'];
+                $('.newText').text('Tujuan')
+            } else {
+                keluar = data[0]['wkt_keluar'];
+                $('.newText').text('Keperluan')
+            }
 
-             $('#modal-id_dinasAll').val(btn_val == '1' ? data[0]['izin_id'] : data[0]['id'])
-             $('#modal-tgl_dinasAll').val(data[0]['created_date'])
-             $('#modal-keluar_dinasAll').val(function () {
-                 if (keluar == null) {
-                     return '-'
-                 } else if (keluar < '12:00:00') {
-                  return keluar + ' AM'
-                 } else {
-                     return keluar + ' PM'
-                 }
-             })
-             $('#modal-kep_dinasAll').val(btn_val == '1' ? data[0]['keterangan'] : data[0]['keperluan'])
-             $('#modal-AlasanAll').val('Atasan tidak berada ditempat')
-             $('#modal-Atasan_dinasAll').val(btn_val == '1' ? data[0]['atasan_aproval'] : data[0]['atasan']).trigger('change')
-             $('#app_edit_DinasAll').val(btn_val)
-             $('#modal-approve-dinas-All').modal('show')
+            $('#modal-id_dinasAll').val(btn_val == '1' ? data[0]['izin_id'] : data[0]['id'])
+            $('#modal-tgl_dinasAll').val(data[0]['created_date'])
+            $('#modal-keluar_dinasAll').val(function () {
+                if (keluar == null) {
+                    return '-'
+                } else if (keluar < '12:00:00') {
+                    return keluar + ' AM'
+                } else {
+                    return keluar + ' PM'
+                }
+            })
+            $('#modal-kep_dinasAll').val(btn_val == '1' ? data[0]['keterangan'] : data[0]['keperluan'])
+            $('#modal-AlasanAll').val('Atasan tidak berada ditempat')
+            $('#modal-Atasan_dinasAll').val(btn_val == '1' ? data[0]['atasan_aproval'] : data[0]['atasan']).trigger('change')
+            $('#app_edit_DinasAll').val(btn_val)
+            $('#modal-approve-dinas-All').modal('show')
 
-             let row
-             data.forEach(a => {
-                 if (btn_val == '1') {
-                     keterangan = a.tujuan;
-                 } else {
-                     keterangan = a.keperluan;
-                 }
-                 row += `<tr>
+            let row
+            data.forEach(a => {
+                if (btn_val == '1') {
+                    keterangan = a.tujuan;
+                } else {
+                    keterangan = a.keperluan;
+                }
+                row += `<tr>
                              <td>${a.noind}</td>
                              <td>${a.nama}</td>
                              <td>${keterangan == '' ? '-' : keterangan}</td>
                          </tr>`
-             })
-             table.html(row)
-         }
-     })
- }
+            })
+            table.html(row)
+        }
+    })
+}
 
 
 //JS untuk Transposition Plotting Job
@@ -4350,7 +4353,7 @@ function loadingOnAjax(elemen) {
 }
 
 //daftar pekerja aktif
-$(document).ready(function(){
+$(document).ready(function () {
     $(".mpk_dpatgl").daterangepicker({
         "singleDatePicker": true,
         "timePicker": false,
@@ -4362,17 +4365,16 @@ $(document).ready(function(){
     });
 
     $('.mpk_dpaslc').select2();
-    $('#mpk_btnsrcdpa').click(function(){
+    $('#mpk_btnsrcdpa').click(function () {
         fakeLoading(0);
         $.ajax({
-            type:'get',
-            data:$('#mpk_dpadivfom').serialize(),
-            url:baseurl+"MasterPekerja/DataPekerjaAktif/get_datapekerjaaktif",
-            success:function(result)
-            {
+            type: 'get',
+            data: $('#mpk_dpadivfom').serialize(),
+            url: baseurl + "MasterPekerja/DataPekerjaAktif/get_datapekerjaaktif",
+            success: function (result) {
                 var obj = JSON.parse(result);
                 $('#mpk_dpadivtbl').html(obj.table);
-                $('#mpk_dpadivtbl td').each(function(){
+                $('#mpk_dpadivtbl td').each(function () {
                     if ($(this).text() == '0') {
                         $(this).text('-');
                     }
@@ -4380,72 +4382,72 @@ $(document).ready(function(){
                 $('#mpk_tbldpa').DataTable({
                     dom: 'Bfrtip',
                     buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        messageTop:'   ',
-                        title:'Data Jumlah Pekerja Aktif Per Tanggal '+obj.tanggal+' ('+obj.lokasi+')',
-                        filename:'Data Pekerja Aktif',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        messageTop:'   ',
-                        title:'Data Jumlah Pekerja Aktif Per Tanggal '+obj.tanggal+' ('+obj.lokasi+')',
-                        filename:'Data Pekerja Aktif',
-                        exportOptions: {
-                            columns: ':visible'
+                        {
+                            extend: 'excelHtml5',
+                            messageTop: '   ',
+                            title: 'Data Jumlah Pekerja Aktif Per Tanggal ' + obj.tanggal + ' (' + obj.lokasi + ')',
+                            filename: 'Data Pekerja Aktif',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
                         },
-                        customize: function(doc) {
-                            doc.defaultStyle.fontSize = 8;
-                            doc.styles.tableHeader.fontSize = 8;
-                            doc.pageMargins = [10, 10, 10,10 ];
-                            var rowCount = doc.content[2].table.body.length;
-                            for (i = 1; i < rowCount; i++) {
-                                doc.content[2].table.body[i][0].alignment = 'center';
-                                doc.content[2].table.body[i][1].alignment = 'left';
-                                doc.content[2].table.body[i][2].alignment = 'center';
-                                doc.content[2].table.body[i][3].alignment = 'center';
-                                doc.content[2].table.body[i][4].alignment = 'center';
-                                doc.content[2].table.body[i][5].alignment = 'center';
-                                doc.content[2].table.body[i][6].alignment = 'center';
-                                doc.content[2].table.body[i][7].alignment = 'center';
-                                doc.content[2].table.body[i][8].alignment = 'center';
-                                doc.content[2].table.body[i][9].alignment = 'center';
-                                doc.content[2].table.body[i][10].alignment = 'center';
-                                doc.content[2].table.body[i][11].alignment = 'center';
-                                doc.content[2].table.body[i][12].alignment = 'center';
-                                doc.content[2].table.body[i][13].alignment = 'center';
-                                doc.content[2].table.body[i][14].alignment = 'center';
-                                doc.content[2].table.body[i][15].alignment = 'center';
-                                if (doc.content[2].table.body[i][0].text != '') {
-                                    doc.content[2].table.body[i][1].bold = true;
+                        {
+                            extend: 'pdfHtml5',
+                            messageTop: '   ',
+                            title: 'Data Jumlah Pekerja Aktif Per Tanggal ' + obj.tanggal + ' (' + obj.lokasi + ')',
+                            filename: 'Data Pekerja Aktif',
+                            exportOptions: {
+                                columns: ':visible'
+                            },
+                            customize: function (doc) {
+                                doc.defaultStyle.fontSize = 8;
+                                doc.styles.tableHeader.fontSize = 8;
+                                doc.pageMargins = [10, 10, 10, 10];
+                                var rowCount = doc.content[2].table.body.length;
+                                for (i = 1; i < rowCount; i++) {
+                                    doc.content[2].table.body[i][0].alignment = 'center';
+                                    doc.content[2].table.body[i][1].alignment = 'left';
+                                    doc.content[2].table.body[i][2].alignment = 'center';
+                                    doc.content[2].table.body[i][3].alignment = 'center';
+                                    doc.content[2].table.body[i][4].alignment = 'center';
+                                    doc.content[2].table.body[i][5].alignment = 'center';
+                                    doc.content[2].table.body[i][6].alignment = 'center';
+                                    doc.content[2].table.body[i][7].alignment = 'center';
+                                    doc.content[2].table.body[i][8].alignment = 'center';
+                                    doc.content[2].table.body[i][9].alignment = 'center';
+                                    doc.content[2].table.body[i][10].alignment = 'center';
+                                    doc.content[2].table.body[i][11].alignment = 'center';
+                                    doc.content[2].table.body[i][12].alignment = 'center';
+                                    doc.content[2].table.body[i][13].alignment = 'center';
+                                    doc.content[2].table.body[i][14].alignment = 'center';
+                                    doc.content[2].table.body[i][15].alignment = 'center';
+                                    if (doc.content[2].table.body[i][0].text != '') {
+                                        doc.content[2].table.body[i][1].bold = true;
+                                    }
                                 }
                             }
-                      } 
-                    },
-                    'colvis'
+                        },
+                        'colvis'
                     ],
                     fixedHeader: true,
                     "scrollX": false,
                     "columns": [
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false },
-                    { "orderable": false }
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false },
+                        { "orderable": false }
                     ],
                     "order": [],
                     "paging": false
@@ -4456,7 +4458,7 @@ $(document).ready(function(){
     });
 });
 //disnaker
-$(document).ready(function(){
+$(document).ready(function () {
     // $(document).on('click','#mpk_btndisnAK', function(){
     //     window.open(baseurl+'MasterPekerja/disnaker/export_pkjaktif');
     // });
@@ -4464,7 +4466,7 @@ $(document).ready(function(){
     //     window.open(baseurl+'MasterPekerja/disnaker/export_pkjresign');
     // });
 
-    $('.mpk_btnajxdisn').click(function(){
+    $('.mpk_btnajxdisn').click(function () {
         var va = $(this).val();
         var tgl = $('.mpk_rknopr').val();
         var pr = $('#mpk_mntpicker').val();
@@ -4500,7 +4502,7 @@ $(document).ready(function(){
                     }
                 });
             },
-            complete: function(result) {
+            complete: function (result) {
                 fakeLoading(1);
             }
         });
