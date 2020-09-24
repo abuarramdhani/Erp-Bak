@@ -34,7 +34,13 @@
 <table style="width: 100%;border:1px solid black;border-collapse:collapse;border-top:none;page-break-inside:avoid">
     <tr>
         <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center;width:50%"><strong>Gambar</strong></td>
-        <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center;"><strong>Keterangan</strong></td>
+        <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center;">
+            <?php $row = sizeof($image);
+            if ($row  < 2 || $row == 2) {
+            ?><strong>Keterangan : </strong><br>
+            <?php } else { ?>
+            <?php } ?>
+        </td>
     </tr>
     <?php if ($dataHandling[0]['proses'] == 'Linear') { ?>
         <?php if ($image != null) {
@@ -69,6 +75,7 @@
                         <img style="max-width:300px;padding:10px;max-height:300px" src="<?= base_url('/assets/upload/DatabaseHandling/fotolinier' .  $image[1]['id_handling'] . $image[1]['urutan'] . '.png'); ?>">
                     </td>
                     <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top">
+                        <strong>Keterangan : </strong><br>
                         <?php
                         $ketdb = str_replace("\n", "<br>", $dataHandling[0]['keterangan']);
                         echo $ketdb;
