@@ -49,7 +49,7 @@
                     <input type="hidden" id="tglAkh<?= $i?>" value="<?= $tglAk?>">
                     <input type="hidden" id="subinv<?= $i?>" value="<?= $subinv?>">
                 </td>
-                <td class="text-nowrap <?= $td?>"><input type="hidden" id="kode_brg<?= $i?>" value="<?= $val['ITEM']?>"><?= $val['ITEM']?></td>
+                <td class="<?= $td?>"><input type="hidden" id="kode_brg<?= $i?>" value="<?= $val['ITEM']?>"><?= $val['ITEM']?></td>
                 <td class="<?= $td?>" style="text-align:left"><input type="hidden" id="nama_brg<?= $i?>" value="<?= $val['DESCRIPTION']?>"><?= $val['DESCRIPTION']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="satuan<?= $i?>" value="<?= $val['UOM']?>"><?= $val['UOM']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="in<?= $i?>" value="<?= $val['SUM_QTY_IN']?>"><?= $val['SUM_QTY_IN']?></td>
@@ -85,7 +85,7 @@
 </div>
 
 <div class="modal fade" id="mdlHistory" role="dialog">
-    <div class="modal-dialog" style="width:80%">
+    <div class="modal-dialog" style="width:90%">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -104,7 +104,7 @@
 </div>
 
 <div class="modal fade" id="mdlGambarItem" role="dialog">
-    <div class="modal-dialog" style="width:50%">
+    <div class="modal-dialog" style="padding-right:5px">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">

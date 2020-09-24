@@ -92,12 +92,12 @@ class C_LihatStock extends CI_Controller
 		$kode_awal 		= $this->input->post('kode_awal');
 		$qty_atas 		= $this->input->post('qty_atas');
 		$qty_bawah 		= $this->input->post('qty_bawah');
-		// $unit 			= $this->input->post('unit2');
+		$unit 			= $this->input->post('unit');
+		$ket 			= $this->input->post('ket');
 		$data['tglAw'] 	= $tglAw;
 		$data['tglAk'] 	= $tglAk;
 		$data['subinv'] = $subinv;
 		$data['kode_brg'] = $kode_brg;
-		// echo "<pre>"; print_r($kode_awal);exit();
 
 		if ($qty_atas != '' || $qty_bawah != '') {
 			$qty = "WHERE onhand >= NVL('$qty_atas', onhand) --qty_atas
@@ -106,61 +106,61 @@ class C_LihatStock extends CI_Controller
 			$qty = '';
 		}
 
-		if ($kode_brg != '') {
-			$kode = "AND msib.segment1 = '$kode_brg'";
-		}else {
-			$kode = '';
+		if ($ket == '123') { // unit
+			$kode = $this->kodeawal($kode_awal);
+			$kode2 = $this->kodeunit($unit);
+		}else{
+			$kode = $this->kodebrg($kode_brg);
+			$kode2 = $this->kodeawal($kode_awal);
 		}
 
+		$getdata = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode2);
+		
+		if ($ket == 'min' || $ket == 'max') {
+			$data['data'] = array();
+			foreach ($getdata as $key => $value) {
+				if ($ket == 'min') {
+					if ($value['MIN'] > $value['ONHAND'] && $value['MIN'] != '' && $value['MAX'] != '') {
+						array_push($data['data'], $getdata[$key]);
+					}
+				}else {
+					if ($value['MAX'] < $value['ONHAND'] && $value['MIN'] != '' && $value['MAX'] != '') {
+						array_push($data['data'], $getdata[$key]);
+					}
+				}
+			}
+		}else {
+			$data['data'] = $getdata;
+		}
+		// echo "<pre>";print_r($data['data']);exit();
+		
+		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);
+	}
+
+	public function kodebrg($kode){
+		if ($kode != '') {
+			return "AND msib.segment1 = '$kode'";
+		}else {
+			return '';
+		}
+	}
+	
+	public function kodeawal($kode_awal){
 		$kode_awal = strtoupper($kode_awal);
 		if ($kode_awal != '') {
-			$kode_awl = "AND (msib.segment1 LIKE '%'||'$kode_awal'||'%' or msib.DESCRIPTION LIKE '%'||'$kode_awal'||'%')";
+			return "AND (msib.segment1 LIKE '%'||'$kode_awal'||'%' or msib.DESCRIPTION LIKE '%'||'$kode_awal'||'%')";
 		}else{
-			$kode_awl = '';
+			return '';
 		}
-		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode_awl);
-		// echo "<pre>";print_r($data['data']);exit();
-		
-		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);
 	}
-
-	function searchData2(){
-		$tglAw 			= $this->input->post('tglAw');
-		$tglAk 			= $this->input->post('tglAk');
-		$subinv 		= $this->input->post('subinv');
-		$unit 			= $this->input->post('unit');
-		$kode_brg 		= $this->input->post('kode_brg');
-		$kode_awal 		= $this->input->post('kode_awal');
-		$qty_atas 		= $this->input->post('qty_atas');
-		$qty_bawah 		= $this->input->post('qty_bawah');
-		$data['tglAw'] 	= $tglAw;
-		$data['tglAk'] 	= $tglAk;
-		$data['subinv'] = $subinv;
-		// echo "<pre>"; print_r($kode_brg);exit();
-
-		if ($qty_atas != '' || $qty_bawah != '') {
-			$qty = "WHERE onhand >= NVL('$qty_atas', onhand) --qty_atas
-					AND onhand <= NVL('$qty_bawah', onhand) --qty_bawah";
-		}else {
-			$qty = '';
-		}
-
-		if ($kode_brg != '') {
-			$kode = "AND msib.segment1 = '$kode_brg'";
-		}else {
-			$kode = '';
-		}
-
+	
+	public function kodeunit($unit){
 		if ($unit != ''){
-			$kode_unit = "AND msib.segment1 LIKE '$unit'||'%'";
+			return "AND msib.segment1 LIKE '$unit'||'%'";
 		}else {
-			$kode_unit = '';
+			return '';
 		}
-		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode_unit);
-		// echo "<pre>";print_r($data['data']);exit();
-		
-		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);
-	}
+	}	
 
 	function searchHistory(){
 		$kode 	= $this->input->post('kode');
