@@ -9,6 +9,14 @@ class M_dbhandling extends CI_Model
         $this->oracle = $this->load->database('oracle', true);
         $this->personalia = $this->load->database('personalia', true);
     }
+    function getNama($opr)
+    {
+        $sql = "SELECT trim(nama) as nama from hrd_khs.tpribadi 
+        where noind = '$opr'";
+
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
     public function insertmasterhandling($namahandling, $kodehandling)
     {
         $sql = "insert into dbh.master_handling(kode_handling, nama_handling) values('$kodehandling', '$namahandling')";

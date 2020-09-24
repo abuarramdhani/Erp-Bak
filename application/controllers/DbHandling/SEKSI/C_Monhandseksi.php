@@ -1087,6 +1087,8 @@ class C_Monhandseksi extends CI_Controller
         $dataHandling = $this->M_dbhandling->selectdatahandlingbyid($id);
         $image = $this->M_dbhandling->getGambar($id);
 
+        $nama_pembuat = $this->M_dbhandling->getNama($dataHandling[0]['last_update_by']);
+
         if ($dataHandling[0]['proses'] == 'Linear') {
             $prosesline = $this->M_dbhandling->getProses($id);
 
@@ -1140,7 +1142,7 @@ class C_Monhandseksi extends CI_Controller
 
         $data['dataHandling'] = $dataHandling;
         $data['image'] = $image;
-
+        $data['nama'] = $nama_pembuat;
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();

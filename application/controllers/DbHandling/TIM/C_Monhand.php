@@ -595,6 +595,12 @@ class C_Monhand extends CI_Controller
     public function PrintDataHandling($id)
     {
         $dataHandling = $this->M_dbhandling->selectdatahandlingbyid($id);
+        $nama_pembuat = $this->M_dbhandling->getNama($dataHandling[0]['last_update_by']);
+
+        // echo "<pre>";
+        // print_r($nama_pembuat);
+        // exit();
+
         $image = $this->M_dbhandling->getGambar($id);
 
         if ($dataHandling[0]['proses'] == 'Linear') {
@@ -650,6 +656,8 @@ class C_Monhand extends CI_Controller
 
         $data['dataHandling'] = $dataHandling;
         $data['image'] = $image;
+        $data['nama'] = $nama_pembuat;
+
 
 
         $this->load->library('pdf');
@@ -1456,5 +1464,111 @@ class C_Monhand extends CI_Controller
         $term = strtoupper($term);
         $data = $this->M_dbhandling->select2_seksi($term);
         echo json_encode($data);
+    }
+    public function DownLoadPersentase()
+    {
+        $dataODM = $this->M_dbhandling->DeptclassODM();
+        $dataOPM = $this->M_dbhandling->routingClassOPM();
+
+        $arraymix = array();
+
+        for ($i = 0; $i < sizeof($dataODM); $i++) {
+            $arraytopush = array(
+                'item' => $dataODM[$i]['SEGMENT1'],
+                'class' => $dataODM[$i]['DEPT_CLASS'],
+                'desc' => $dataODM[$i]['DESCRIPTION'],
+
+            );
+            array_push($arraymix, $arraytopush);
+        }
+        for ($i = 0; $i < sizeof($dataOPM); $i++) {
+            $arraytopush = array(
+                'item' => $dataOPM[$i]['SEGMENT1'],
+                'class' => $dataOPM[$i]['ROUTING_CLASS'],
+                'desc' => $dataOPM[$i]['DESCRIPTION'],
+
+            );
+            array_push($arraymix, $arraytopush);
+        }
+
+        $itempostgree = $this->M_dbhandling->selectdatahandling();
+
+        for ($g = 0; $g < sizeof($itempostgree); $g++) {
+            $kode[$g] = $itempostgree[$g]['kode_komponen'];
+        }
+
+        $presentase = '';
+        for ($w = 0; $w < sizeof($arraymix); $w++) {
+            $tampung_item_mix[$w] = $arraymix[$w]['item'];
+            if (!in_array($arraymix[$w]['item'], $kode)) {
+                $presentase[$arraymix[$w]['class']]['class'] = $arraymix[$w]['class'];
+                $presentase[$arraymix[$w]['class']]['data'][] = array(
+                    'item' => $arraymix[$w]['item'],
+                    'desc' => $arraymix[$w]['desc'],
+                    'produk' => '',
+                    'doc_no' => '',
+                );
+            } else {
+                $docprod = $this->M_dbhandling->cekKode($arraymix[$w]['item']);
+                $presentase[$arraymix[$w]['class']]['class'] = $arraymix[$w]['class'];
+                $presentase[$arraymix[$w]['class']]['data'][] = array(
+                    'item' => $arraymix[$w]['item'],
+                    'desc' => $arraymix[$w]['desc'],
+                    'produk' => $docprod[0]['kode_produk'],
+                    'doc_no' => $docprod[0]['doc_number'],
+                );
+            }
+        }
+        for ($d = 0; $d < sizeof($itempostgree); $d++) {
+            if (!in_array($itempostgree[$d]['kode_komponen'], $tampung_item_mix)) {
+                $presentase['OTHER']['class'] = 'OTHER';
+                $presentase['OTHER']['data'][] = array(
+                    'item' => $itempostgree[$d]['kode_komponen'],
+                    'desc' => $itempostgree[$d]['nama_komponen'],
+                    'produk' => $itempostgree[$d]['kode_produk'],
+                    'doc_no' => $itempostgree[$d]['doc_number'],
+                );
+            }
+        }
+
+        date_default_timezone_set('Asia/Jakarta');
+        $date = date("d_m_Y_H_i_s");
+
+        include_once APPPATH . '/controllers/DbHandling/xlsxwriter.class.php';
+
+        ini_set('display_errors', 0);
+        ini_set('log_errors', 1);
+        error_reporting(E_ALL & ~E_NOTICE);
+
+        $filename = 'DATABASE_HANDLING_' . $date . '.xlsx';
+        header('Content-disposition: attachment; filename="' . XLSXWriter::sanitize_filename($filename) . '"');
+        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+
+        $styles = array('widths' => [5, 20, 30, 20, 20], 'font' => 'Arial', 'font-size' => 10, 'font-style' => 'bold', 'fill' => '', 'halign' => 'center', 'border' => 'left,right,top,bottom');
+        $header = array(
+            'No' => 'integer',
+            'Kode Item' => 'string',
+            'Deskripsi' => 'string',
+            'Produk' => 'string',
+            'No Dokumen' => 'string',
+
+        );
+
+        $col_options = ['suppress_row' => true, 'wrap_text' => true, 'fill' => '', 'halign' => 'center'];
+
+        $writer = new XLSXWriter();
+        foreach ($presentase as $row) {
+            $writer->writeSheetHeader($row['class'], $header, $styles);
+            $no = 1;
+            foreach ($row['data'] as $d) {
+                $writer->writeSheetRow($row['class'], [$no, $d['item'], $d['desc'], $d['produk'], $d['doc_no']], $col_options);
+                $no++;
+            }
+        }
+
+        $writer->writeToStdOut();
     }
 }

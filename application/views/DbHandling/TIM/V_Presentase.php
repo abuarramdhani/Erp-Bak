@@ -33,3 +33,6 @@
             ?>
     </tbody>
 </table>
+<form name="Orderform" action="<?php echo base_url('DbHandling/MonitoringHandling/DownLoadPersentase'); ?>" target="_blank" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post">
+    <div class="col-md-12" style="text-align: right;"><button class="btn btn-success">Export Excel</button></div>
+</form>

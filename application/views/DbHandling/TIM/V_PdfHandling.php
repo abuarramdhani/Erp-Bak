@@ -39,19 +39,41 @@
     <?php if ($dataHandling[0]['proses'] == 'Linear') { ?>
         <?php if ($image != null) {
             $row = sizeof($image); ?>
-            <?php foreach ($image as $key => $img) { ?>
+            <?php if ($row  < 2 || $row == 2) { ?>
+                <?php foreach ($image as $key => $img) { ?>
+                    <tr>
+                        <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
+                            <img style="max-width:300px;padding:10px;max-height:300px" src="<?= base_url('/assets/upload/DatabaseHandling/fotolinier' .  $img['id_handling'] . $img['urutan'] . '.png'); ?>">
+                        </td>
+                        <?php if ($key == 0) { ?>
+                            <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>">
+                                <?php
+                                $ketdb = str_replace("\n", "<br>", $dataHandling[0]['keterangan']);
+                                echo $ketdb;
+                                ?>
+                            </td>
+                        <?php } ?>
+                    </tr>
+                <?php } ?>
+            <?php } else { ?>
                 <tr>
                     <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
-                        <img style="max-width:300px;padding:10px;max-height:300px" src="<?= $baseurl . '/assets/upload/DatabaseHandling/fotolinier' .  $img['id_handling'] . $img['urutan'] . '.png' ?>">
+                        <img style="max-width:300px;padding:10px;max-height:300px" src="<?= base_url('/assets/upload/DatabaseHandling/fotolinier' .  $image[0]['id_handling'] . $image[0]['urutan'] . '.png'); ?>">
                     </td>
-                    <?php if ($key == 0) { ?>
-                        <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>">
-                            <?php
-                            $ketdb = str_replace("\n", "<br>", $dataHandling[0]['keterangan']);
-                            echo $ketdb;
-                            ?>
-                        </td>
-                    <?php } ?>
+                    <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
+                        <img style="max-width:300px;padding:10px;max-height:300px" src="<?= base_url('/assets/upload/DatabaseHandling/fotolinier' .  $image[2]['id_handling'] . $image[2]['urutan'] . '.png'); ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
+                        <img style="max-width:300px;padding:10px;max-height:300px" src="<?= base_url('/assets/upload/DatabaseHandling/fotolinier' .  $image[1]['id_handling'] . $image[1]['urutan'] . '.png'); ?>">
+                    </td>
+                    <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top">
+                        <?php
+                        $ketdb = str_replace("\n", "<br>", $dataHandling[0]['keterangan']);
+                        echo $ketdb;
+                        ?>
+                    </td>
                 </tr>
             <?php } ?>
         <?php } else { ?>
@@ -66,7 +88,7 @@
             <?php foreach ($image as $key => $img) { ?>
                 <tr>
                     <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;text-align:center">
-                        <img style="max-width:300px;padding:10px;max-height:300px" src="<?= $baseurl . '/assets/upload/DatabaseHandling/fotononlinier' .  $img['id_handling'] . $img['urutan'] . '.png' ?>">
+                        <img style="max-width:300px;padding:10px;max-height:300px" src="<?= base_url('/assets/upload/DatabaseHandling/fotononlinier' .  $img['id_handling'] . $img['urutan'] . '.png') ?>">
                     </td>
                     <?php if ($key == 0) { ?>
                         <td style="padding-left:10px;font-size:10pt;border:1px solid black;border-collapse:collapse;vertical-align:top" rowspan="<?= $row ?>"><?= $dataHandling[0]['keterangan'] ?></td>
@@ -89,7 +111,7 @@
             <tr>
                 <?php $r = 0;
                 $count = sizeof($array_proses);
-                if ($count == 3) {
+                if ($count < 3 || $count == 3) {
                     $style_kotak = "width:40mm";
                     $style_arrow = "width:10mm";
                     $font = "10pt";
@@ -125,7 +147,7 @@
             </tr>
         </table>
     <?php } else { ?>
-        <div style="text-align: center;padding:20px"><img style="width:300px;height:300px" src="<?= $baseurl . '/assets/upload/DatabaseHandling/prosesnonlinier' . $dataHandling[0]['id_handling'] . '.png' ?>"></div>
+        <div style="text-align: center;padding:20px"><img style="width:300px;height:300px" src="<?= base_url('/assets/upload/DatabaseHandling/prosesnonlinier' . $dataHandling[0]['id_handling'] . '.png') ?>"></div>
     <?php } ?>
 
 </div>
