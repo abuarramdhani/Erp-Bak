@@ -112,6 +112,7 @@ class M_disnaker extends CI_Model
 					left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan
 					where
 					tglkeluar > '$tgl' and lokasi_kerja like'$lokasi%' and left(tp.noind,1) in ('A','B','J','H')
+					and tp.masukkerja <='$tgl'
 					order by tp.noind";
 		return $this->personalia->query($sql)->result_array();
 	}
