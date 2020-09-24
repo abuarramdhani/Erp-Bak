@@ -61,6 +61,26 @@ class M_disnaker extends CI_Model
 						limit 1))
 						else (select fs_ket from hrd_khs.tnoind t where t.fs_noind = left(tp.noind,1))
 					end as status_pegawai,
+				case
+ 					when (
+ 					select
+ 						count(noind)
+ 					from
+ 						hrd_khs.tmutasi t2
+ 					where
+ 						t2.tglberlaku > '$tgl'
+ 						and t2.noind = tp.noind ) > 0 then (
+ 					select
+ 						lokasilm
+ 					from
+ 						hrd_khs.tmutasi
+ 					where
+ 						tglberlaku > '$tgl'
+ 						and noind = tp.noind
+ 					order by
+ 						tglberlaku
+ 					limit 1)
+ 					else tp.lokasi_kerja end lokasi_kerja,
 					'WNI' kewarganegaraan,
 					tp.email,
 					case
@@ -91,7 +111,7 @@ class M_disnaker extends CI_Model
 					left join hrd_khs.tbpjstk tb2 on tb2.noind = tp.noind
 					left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan
 					where
-					tglkeluar > '$tgl' and lokasi_kerja like'$lokasi%'
+					tglkeluar > '$tgl' and lokasi_kerja like'$lokasi%' and left(tp.noind,1) in ('A','B','J','H')
 					order by tp.noind";
 		return $this->personalia->query($sql)->result_array();
 	}
@@ -122,7 +142,7 @@ class M_disnaker extends CI_Model
 					left join hrd_khs.tbpjstk tb2 on tb2.noind = tp.noind
 					left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan
 					where
-					(tglkeluar between '$tgl_awal' and '$tgl') and lokasi_kerja like '$lokasi%'
+					(tglkeluar between '$tgl_awal' and '$tgl') and lokasi_kerja like '$lokasi%' and left(tp.noind,1) in ('A','B','J','H')
 					order by tglkeluar asc";
 					// echo $sql;exit();
 		return $this->personalia->query($sql)->result_array();
