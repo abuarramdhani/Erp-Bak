@@ -4439,3 +4439,238 @@ $(document).ready(function(){
         dateFormat: "yy-mm",
     });
 });
+
+// sim forklift start
+$(document).ready(function(){
+    var tblMPKSimForkliftList = $('#tblMPKSimForkliftList').dataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+    });
+
+    $('.slcMPKSimForkliftCariPekerja').select2({
+        placeholder: "Cari Pekerja",
+        minimumInputLength: 3,
+        ajax:
+        {
+            url: baseurl+'MasterPekerja/SimForklift/cariPekerja',
+            dataType: 'json',
+            delay: 500,
+            data: function (params){
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj){
+                        return {id: obj.noind, text: obj.noind + " - " + obj.nama};
+                    })
+                };
+            }
+        }
+    });
+
+    $('#btnMPKSimForkliftTambahPekerja').on('click', function(){
+        var pekerja = $('.slcMPKSimForkliftCariPekerja').val();
+        if (pekerja) {
+            $('#tblMPKSimForkliftTambahPekerja tbody').html("");
+            for (var i = 0; i < pekerja.length; i++){
+                var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+                var cur_date = new Date();
+                var date_a = month[cur_date.getMonth()] + ' ' + cur_date.getFullYear();
+                cur_date.setFullYear(cur_date.getFullYear() +5);
+                var date_b = month[cur_date.getMonth()] + ' ' + cur_date.getFullYear();
+                $('#ldgMPKSimForkliftTambahLoading').show();
+                $.ajax({
+                    method: 'GET',
+                    url: baseurl + 'MasterPekerja/SimForklift/cariPekerja/' + pekerja[i],
+                    error: function(xhr,status,error){
+                        $('#ldgMPKSimForkliftTambahLoading').hide();
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                        var obj = JSON.parse(data);
+                        var tr = '<tr>'
+                        tr += '<td><input type="text" class="form-control" value="' + obj.noind + '" disabled></td>'
+                        tr += '<td><input type="text" class="form-control" value="' + obj.nama + '"></td>'
+                        tr += '<td><input type="text" class="form-control" value="' + obj.seksi + '"></td>'
+                        tr += '<td><select class="slcMPKSimForkliftGantiJenis" style="width: 100%"><option>Utama</option><option>Cadangan</option></select></td>'
+                        tr += '<td><input type="text" class="form-control txtMPKSimForkliftMulaiBerlaku" value="' + date_a + '"></td>'
+                        tr += '<td><input type="text" class="form-control txtMPKSimForkliftAkhirBerlaku" value="' + date_b + '"></td>'
+                        tr += '<td class="text-center">'
+                        tr += '<button type="button" class="btn btn-danger btnMPKSimForkliftHapusPekerja" title="Hapus"><span class="fa fa-trash"></span></button>'
+                        tr += '<img class="imgMPKSimForkliftSimpanPekerja" src="' + baseurl + 'assets/img/gif/spinner.gif' + '" style="display: none;"/>'
+                        tr += '<span class="fa fa-check fa-2x spnMPKSimForkliftSimpanPekerjaSukses" style="display: none;color: green;"></span>'
+                        tr += '<span class="fa fa-times fa-2x spnMPKSimForkliftSimpanPekerjaGagal" style="display: none;color: red;"></span></td>'
+                        tr += '</tr>'
+                        $('#tblMPKSimForkliftTambahPekerja tbody').append(tr);
+
+                        $('#tblMPKSimForkliftTambahPekerja .slcMPKSimForkliftGantiJenis').last().select2();
+
+                        $('#tblMPKSimForkliftTambahPekerja .txtMPKSimForkliftMulaiBerlaku').last().datepicker({
+                            "autoclose": true,
+                            "todayHiglight": true,
+                            "format":'MM yyyy',
+                            "viewMode":'months',
+                            "minViewMode":'months'
+                        });
+
+                        $('#tblMPKSimForkliftTambahPekerja .txtMPKSimForkliftAkhirBerlaku').last().datepicker({
+                            "autoclose": true,
+                            "todayHiglight": true,
+                            "format":'MM yyyy',
+                            "viewMode":'months',
+                            "minViewMode":'months'
+                        });
+                        $('#ldgMPKSimForkliftTambahLoading').hide();
+                    }
+                })
+            }
+            $('.slcMPKSimForkliftCariPekerja').val("").trigger('change');
+            $('#btnMPKSimForkliftSimpanPekerja').show();
+        }else{
+            Swal.fire(
+                'Peringatan !!!',
+                'Pastikan Data Pekerja Sudah Terisi',
+                'warning'
+            )
+        }
+    })
+
+    $('#tblMPKSimForkliftTambahPekerja').on('click', '.btnMPKSimForkliftHapusPekerja', function(){
+        $(this).closest('tr').remove();
+    })
+
+    $('#btnMPKSimForkliftSimpanPekerja').on('click', function(){
+        var tr_all = $('#tblMPKSimForkliftTambahPekerja tbody tr');
+        if (tr_all && tr_all.length > 0) {
+            $('#ldgMPKSimForkliftTambahLoading').show();
+            $('#tblMPKSimForkliftTambahPekerja').find('.btnMPKSimForkliftHapusPekerja').hide();
+            $('#tblMPKSimForkliftTambahPekerja').find('.spnMPKSimForkliftSimpanPekerjaSukses').hide();
+            $('#tblMPKSimForkliftTambahPekerja').find('.spnMPKSimForkliftSimpanPekerjaGagal').hide();
+            $('#tblMPKSimForkliftTambahPekerja').find('.imgMPKSimForkliftSimpanPekerja').show();
+            $('#btnMPKSimForkliftSimpanPekerja').hide();
+            $('#tblMPKSimForkliftTambahPekerja').find('input').attr("disabled","disabled");
+            $('#tblMPKSimForkliftTambahPekerja').find('select').attr("disabled","disabled");
+            var diproses = 0;
+            $('#tblMPKSimForkliftTambahPekerja tbody tr').each(function(index, element){
+                var noind = $(this).find('td:nth(0) input').val();
+                var nama  = $(this).find('td:nth(1) input').val();
+                var seksi = $(this).find('td:nth(2) input').val();
+                var jenis = $(this).find('td:nth(3) select').val();
+                var awal  = $(this).find('td:nth(4) input').val();
+                var akhir = $(this).find('td:nth(5) input').val();
+                var row   = $(this);
+                $.ajax({
+                    method: 'POST',
+                    url: baseurl + 'MasterPekerja/SimForklift/simpan',
+                    data: {noind: noind, nama: nama, seksi: seksi, jenis: jenis, awal: awal, akhir: akhir},
+                    error: function(xhr,status,error){
+                        diproses++;
+                        if (diproses >= tr_all.length) {
+                            $('#ldgMPKSimForkliftTambahLoading').hide();
+                        }
+                        row.find('.imgMPKSimForkliftSimpanPekerja').hide();
+                        row.find('.spnMPKSimForkliftSimpanPekerjaGagal').show();
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                        diproses++;
+                        if (diproses >= tr_all.length) {
+                            $('#ldgMPKSimForkliftTambahLoading').hide();
+                        }
+                        row.find('.imgMPKSimForkliftSimpanPekerja').hide();
+                        if (data == "sukses") {
+                            row.find('.spnMPKSimForkliftSimpanPekerjaSukses').show();
+                        }else{
+                            row.find('.spnMPKSimForkliftSimpanPekerjaGagal').show();
+                            swal.fire({
+                                title: "ERROR",
+                                html: data,
+                                type: "error",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d63031',
+                            })
+                        }
+                    }
+                })
+            })
+        }else{
+            Swal.fire(
+                'Peringatan !!!',
+                'Pastikan Sudah Ada Data Pekerja Di Tabel',
+                'warning'
+            )
+        }
+    })
+
+    $(document).on('ifChecked','#chkMPKSimForkliftCheckAll',function(){
+        var table_data = tblMPKSimForkliftList.fnGetNodes();
+        $('.chkMPKSimForkliftCheckOne',table_data).iCheck('check');
+        checkSimForkliftChecked(tblMPKSimForkliftList);
+    })
+
+    $(document).on('ifUnchecked','#chkMPKSimForkliftCheckAll',function(){
+        var table_data = tblMPKSimForkliftList.fnGetNodes();
+        $('.chkMPKSimForkliftCheckOne',table_data).iCheck('uncheck');
+        checkSimForkliftChecked(tblMPKSimForkliftList);
+    })
+
+    $(document).on('ifChecked', '.chkMPKSimForkliftCheckOne', function(){
+        checkSimForkliftChecked(tblMPKSimForkliftList);
+    })
+
+    $(document).on('ifUnchecked', '.chkMPKSimForkliftCheckOne', function(){
+        checkSimForkliftChecked(tblMPKSimForkliftList);
+    })
+
+    $('#btnSimForkliftCetakPdf, #btnSimForkliftCetakImg, #btnSimForkliftCetakCrl').on('click', function(){
+        if (!($(this).attr('disabled'))) {
+            window.open($(this).attr('href'),'_blank');
+        }
+    })
+})
+
+function checkSimForkliftChecked(tblMPKSimForkliftList){
+    var table_data = tblMPKSimForkliftList.fnGetNodes();
+    var checkbox_checked = $('.chkMPKSimForkliftCheckOne:checked',table_data);
+    var jumlah_checked = checkbox_checked.length;
+
+    if (jumlah_checked > 1 && jumlah_checked <= 20) {
+        var id_checked = {data: []};
+        checkbox_checked.each(function(){
+            id_checked.data.push($(this).val());
+        })
+        // console.log(id_checked);
+        var url_param = $.param(id_checked);
+        $('#btnSimForkliftCetakPdf').attr('href',baseurl + 'MasterPekerja/SimForklift/cetakpdf?' + url_param);
+        $('#btnSimForkliftCetakPdf').attr('disabled',false);
+        $('#btnSimForkliftCetakImg').attr('href',baseurl + 'MasterPekerja/SimForklift/cetakimg?' + url_param);
+        $('#btnSimForkliftCetakImg').attr('disabled',false);
+        $('#btnSimForkliftCetakCrl').attr('href',baseurl + 'MasterPekerja/SimForklift/cetakcrl?' + url_param);
+        $('#btnSimForkliftCetakCrl').attr('disabled',false);
+    }else{
+        $('#btnSimForkliftCetakPdf').attr('disabled',true);
+        $('#btnSimForkliftCetakImg').attr('disabled',true);
+        $('#btnSimForkliftCetakCrl').attr('disabled',true);
+    }
+}
+// sim forklift end
