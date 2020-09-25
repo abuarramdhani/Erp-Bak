@@ -41,6 +41,9 @@
                                             <th>PENYELESAIAN</th>
                                             <th>TGL PENYELESAIAN</th>
                                             <th>STATUS</th>
+                                            <th>Last Menu</th>
+                                            <th>Last Update</th>
+                                            <th>Last Updated By</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -202,6 +205,9 @@
                                                 }
                                                 ?>
                                                 </td>
+                                                <td><?php echo $report['last_menu'] ?></td>
+                                                <td><?php echo $report['last_update_date'] ?></td>
+                                                <td><?php echo $report['last_updated_by'] ?></td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
