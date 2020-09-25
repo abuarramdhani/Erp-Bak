@@ -5,15 +5,12 @@ class M_log extends CI_Model
 {
     private $oracle;
 
-    private $oracle_util;
-
-    private $db_debug;
+    private $oracle_debug;
 
     public function __construct()
     {
         $this->oracle = $this->load->database('oracle', true);
         $this->oracle_util = $this->load->dbutil($this->oracle, true);
-        $this->checkConnection();
         $this->disableDatabaseDebug();
     }
 
@@ -22,21 +19,15 @@ class M_log extends CI_Model
         $this->restoreDatabaseDebug();
     }
 
-    private function checkConnection() {
-        if(!$this->oracle_util->list_databases()) {
-            throw new Exception('Tidak dapat terhubung ke Database Oracle');
-        }
-    }
-
     private function disableDatabaseDebug()
     {
-        $this->db_debug = $this->oracle->db_debug;
-        $this->oracle->db_debug = false;
+        $this->oracle_debug = $this->oracle->db_debug;
+        $this->oracle->oracle_debug = false;
     }
 
     private function restoreDatabaseDebug()
     {
-        $this->oracle->db_debug = $this->db_debug;
+        $this->oracle->db_debug = $this->oracle_debug;
     }
 
     public function update($conditional_data, $set_data, $update_data)
