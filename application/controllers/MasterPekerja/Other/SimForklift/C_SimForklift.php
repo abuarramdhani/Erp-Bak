@@ -214,7 +214,7 @@ class C_SimForklift extends CI_Controller
 						5, 
 						10 + (($j-($jumlah_samping*$i)) * 204), 
 						210 + $coor_y,  
-						$data->nama, 
+						$this->ratatengah($data->nama,21), 
 						$text_color
 					); 
 					imagestring(
@@ -222,7 +222,7 @@ class C_SimForklift extends CI_Controller
 						5, 
 						10 + (($j-($jumlah_samping*$i)) * 204), 
 						230 + $coor_y,  
-						$data->noind, 
+						$this->ratatengah($data->noind,21), 
 						$text_color
 					); 
 					imagestring(
@@ -230,7 +230,7 @@ class C_SimForklift extends CI_Controller
 						5, 
 						10 + (($j-($jumlah_samping*$i)) * 204), 
 						250 + $coor_y,  
-						$data->seksi, 
+						$this->ratatengah($data->seksi,21), 
 						$text_color
 					); 
 					
@@ -388,6 +388,25 @@ class C_SimForklift extends CI_Controller
 	public function cetakcrl(){
 		echo "<pre>";
 		print_r($_GET);
+	}
+
+	function ratatengah($text,$panjang){
+		$hasil = "";
+		$panjang_text = strlen($text);
+		if ($panjang_text < $panjang) {
+			$selisih = $panjang - $panjang_text;
+			for ($i=0; $i < floor($selisih/2); $i++) { 
+				$hasil.= " ";
+			}
+			$hasil .= $text;
+			for ($i=0; $i < ceil($selisih/2); $i++) { 
+				$hasil.= " ";
+			}
+		}else{
+			$hasil = substr($text, 0, $panjang);
+		}
+
+		return $hasil;
 	}
 
 }
