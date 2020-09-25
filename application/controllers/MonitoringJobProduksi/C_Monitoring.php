@@ -42,7 +42,7 @@ class C_Monitoring extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['kategori'] = $this->M_monitoring->getCategory();
+		$data['kategori'] = $this->M_monitoring->getCategory('');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -52,8 +52,9 @@ class C_Monitoring extends CI_Controller
     
     public function search(){
         $kategori   	= $this->input->post('kategori');
+		$ctgr 			= $this->M_monitoring->getCategory("where id_category = '".$kategori."'");
 		$bulan      	= $this->input->post('bulan');
-		$data['kategori'] 	= $kategori;
+		$data['kategori'] 	= $ctgr[0]['CATEGORY_NAME'];
 		$data['bulan'] 	= $bulan;
 		$bulan 			= explode("/", $bulan);
 		$inibulan		= $bulan[1].$bulan[0];
@@ -195,12 +196,12 @@ class C_Monitoring extends CI_Controller
 		// echo "<pre>";print_r($getdata);exit();
 		$sorting_item = array();
 		foreach ($getdata as $key => $get) {
-			if ($get['REQUIRED_QUANTITY'] > $get['ATT'] || $get['REQUIRED_QUANTITY'] > $get['KURANG']) {
+			if ($get['REQUIRED_QUANTITY'] > $get['ATT']) {
 				array_push($sorting_item, $getdata[$key]);
 			}
 		}
 		foreach ($getdata as $key => $get) {
-			if ($get['REQUIRED_QUANTITY'] > $get['ATT'] || $get['REQUIRED_QUANTITY'] > $get['KURANG']) {
+			if ($get['REQUIRED_QUANTITY'] > $get['ATT']) {
 			}else {
 				array_push($sorting_item, $getdata[$key]);
 			}

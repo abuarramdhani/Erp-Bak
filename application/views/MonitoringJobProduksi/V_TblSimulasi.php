@@ -13,15 +13,14 @@
             <th style="vertical-align:middle">Unit</th>
             <th style="vertical-align:middle">Jumlah Yang Dibutuhkan</th>
             <th style="vertical-align:middle">ATT</th>
-            <th style="vertical-align:middle">MO</th>
-            <th style="vertical-align:middle">Stok</th>
+            <th style="vertical-align:middle">Kekurangan</th>
             <th style="vertical-align:middle">WIP</th>
         </tr>
     </thead>
     <tbody>
         <?php $no = 1; foreach ($data as $val) { 
-            $tanda = ($val['REQUIRED_QUANTITY'] > $val['ATT'] || $val['REQUIRED_QUANTITY'] > $val['KURANG']) ? "bg-danger" : "";
-            $col = $level != 1 ? 11 : 10;
+            $tanda = ($val['REQUIRED_QUANTITY'] > $val['ATT']) ? "bg-danger" : "";
+            $col = $level != 1 ? 10 : 9;
             $tambah = $tanda == 'bg-danger' ? '<tr><td></td><td colspan="'.$col.'" id="tr_simulasi'.$level.''.$no.''.$nomor.'" style="display:none"></td></tr>' : '';
             $jml_gd = $val['DFG'] + $val['DMC'] + $val['FG_TKS'] + $val['INT_PAINT'] + $val['INT_WELD'] + $val['INT_SUB'] + $val['PNL_TKS'] + $val['SM_TKS'];
         ?>
@@ -49,9 +48,8 @@
                 <td class="<?= $tanda?>"><?= $val['UOM_ASSY']?></td>
                 <td class="<?= $tanda?>"><input type="hidden" id="qty<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['REQUIRED_QUANTITY'] ?>"><?= round($val['REQUIRED_QUANTITY'], 3)?></td>
                 <td class="<?= $tanda?>"><?= $val['ATT']?></td>
-                <td class="<?= $tanda?>"><?= $val['MO']?></td>
                 <td class="<?= $tanda?>">
-                    <?= $tanda == 'bg-danger' ? '<button type="button" class="btn btn-xs btn-danger" style="font-size:12px" onclick="tambahsimulasi('.$level.', '.$no.', '.$nomor.')">'.$val['KURANG'].'</button>' : ''.$val['KURANG'].''?>
+                    <?= $tanda == 'bg-danger' ? '<button type="button" class="btn btn-xs btn-danger" style="font-size:12px" onclick="tambahsimulasi('.$level.', '.$no.', '.$nomor.')">'.($val['KEKURANGAN']).'</button>' : ''.($val['KEKURANGAN']).''?>
                 </td>
                 <td class="<?= $tanda?>"><?= $val['WIP']?></td>
             </tr>
