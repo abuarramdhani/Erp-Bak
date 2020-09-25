@@ -13,7 +13,7 @@
             <th style="vertical-align:middle">Unit</th>
             <th style="vertical-align:middle">Jumlah Yang Dibutuhkan</th>
             <th style="vertical-align:middle">ATT</th>
-            <th style="vertical-align:middle">Kekurangan</th>
+            <th style="vertical-align:middle">Balance <br>(+ / -)</th>
             <th style="vertical-align:middle">WIP</th>
         </tr>
     </thead>
