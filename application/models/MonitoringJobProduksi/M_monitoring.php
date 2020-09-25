@@ -10,8 +10,8 @@ class M_monitoring extends CI_Model
         $this->oracle_dev = $this->load->database('oracle_dev', true);
     }
     
-    public function getCategory(){
-        $sql = "select * from khs_kategori_item_monitoring";
+    public function getCategory($term){
+        $sql = "select * from khs_kategori_item_monitoring $term";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -100,6 +100,7 @@ class M_monitoring extends CI_Model
                 ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
                 ,mil.SEGMENT1 locator_tujuan
                 ,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
+                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - bic.COMPONENT_QUANTITY*'$qty') kekurangan
                 ,nvl(
                         (select sum(mtrl.QUANTITY)
                             from mtl_txn_request_headers mtrh
@@ -185,7 +186,7 @@ class M_monitoring extends CI_Model
                 and bic.DISABLE_DATE is null
                 and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
                 --and bic.ATTRIBUTE1 is not null
-                order by 22,1,2,3,4,5";
+                order by 21,1,2,3,4,5";
       $query = $this->oracle->query($sql);
       return $query->result_array();
   }
