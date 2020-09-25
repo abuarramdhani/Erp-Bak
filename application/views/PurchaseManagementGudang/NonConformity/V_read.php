@@ -312,7 +312,7 @@
                                           <?php } ?>
                                         </div>
                                         <div class="panel-footer">
-                                            <button type="button" class="btn btn-success btnReturnPBBNC">RETURN TO PBB</button>
+                                            <button type="button" class="btn btn-success btnReturnPBBNC">RETURN TO PPB</button>
                                         </div>
                                     </div>
                                 </div>
