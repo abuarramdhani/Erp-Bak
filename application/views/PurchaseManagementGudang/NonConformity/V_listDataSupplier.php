@@ -40,6 +40,9 @@
 												<th class="text-center">Supplier</th>
 												<th>Case Name</th>
                                                 <th>Description</th>
+                                                <th>Last Menu</th>
+                                                <th>Last Update</th>
+                                                <th>Last Updated By</th>
 											</tr>
                                         </thead>
                                         <tbody>
@@ -90,6 +93,9 @@
                                                 foreach ($des as $key => $desc) {
                                                     echo $desc['description'];
                                                 }?></td>
+                                                <td><?php echo $row['last_menu'] ?></td>
+                                                <td><?php echo $row['last_update_date'] ?></td>
+                                                <td><?php echo $row['last_updated_by'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

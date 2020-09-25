@@ -95,7 +95,7 @@ $(document).ready(function() {
                 }else{
                     $.ajax({
                         type: "POST",
-                        url: baseurl+"PurchaseManagementGudang/NonConformity/",
+                        url: baseurl+"PurchaseManagementGudang/NonConformity/submitAssign",
                         data: {
                             hdnHeadId : header_id,
                             slcAssign : 3,
@@ -820,6 +820,9 @@ $('#tblPoOracleNonConfirmityHeaders').DataTable({
         null,
         null,
         null,
+        null,
+        null,
+        null,
     ],
     buttons: ['excel']
 });
@@ -827,6 +830,9 @@ $('#tblPoOracleNonConfirmityHeaders').DataTable({
 $('#tblNCForBuyer').DataTable({
     dom: 'Bfrtip',
     "aoColumns": [ 
+        null,
+        null,
+        null,
         null,
         null,
         null,

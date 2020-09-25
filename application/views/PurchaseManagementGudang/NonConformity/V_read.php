@@ -215,7 +215,7 @@
                                                     <tr>
                                                       <th>Case Name :</th>
                                                       <th>Description</th>
-                                                      <th>Status</th>
+                                                      <th>Status(bukan status PO)</th>
                                                       <th>PO Number(line)</th>
                                                       <th>Items</th>
                                                       <th>Judgement</th>
@@ -246,7 +246,7 @@
                                                       ?>
                                                       <span class="statusNonC"><?php echo $stat?></span>
                                                       <br>
-                                                      <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button>
+                                                      <!-- <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button> -->
                                                       </td>
                                                       <td>
                                                       <?php if (count($linesItem)==0) { ?>

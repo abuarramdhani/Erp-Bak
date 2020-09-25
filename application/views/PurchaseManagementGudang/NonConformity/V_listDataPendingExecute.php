@@ -40,6 +40,9 @@
 												<th>Case Name</th>
                                                 <th>Description</th>
 												<th class="text-center">Problem Completion</th>
+                                                <th>Last Menu</th>
+                                                <th>Last Update</th>
+                                                <th>Last Updated By</th>
 											</tr>
                                         </thead>
                                         <tbody>
@@ -89,6 +92,9 @@
                                                     echo $desc['description'];
                                                 }?></td>
                                                 <td><?php echo $row['problem_completion'] ?></td>
+                                                <td><?php echo $row['last_menu'] ?></td>
+                                                <td><?php echo $row['last_update_date'] ?></td>
+                                                <td><?php echo $row['last_updated_by'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

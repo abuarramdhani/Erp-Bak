@@ -136,7 +136,8 @@ class C_NonConformityAndroid extends CI_Controller
 						'creation_date' => 'now()',
 						'last_updated_by' => $user_id,
 						'last_update_date' => 'now()',
-
+						'verificator' => $user_id,
+						'last_menu' => 'Submit dari Gudang'
 					 );
 
 		$headerId = $this->M_nonconformity->simpanHeader($header);
@@ -456,6 +457,21 @@ class C_NonConformityAndroid extends CI_Controller
 		$response['error'] = false;
 		$response['message'] = "Ok";
 		echo json_encode($response);
+	}
+	
+	public function pendingAssign($noinduk)
+	{
+		$list = $this->M_nonconformity->getPendingAssign($noinduk);
+
+		if (count($list) > 0) {
+			$data['status'] = true;
+        	$data['result'] = $list;
+		}else {
+			$data['status'] = false;
+    		$data['result'] = "Data not Found";
+		}
+
+		print_r(json_encode($data));
 	}
 
 }

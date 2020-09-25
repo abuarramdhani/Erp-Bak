@@ -245,7 +245,7 @@
                                                       ?>
                                                       <span class="statusNonC"><?php echo $stat?></span>
                                                       <br>
-                                                      <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button>
+                                                      <!-- <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button> -->
                                                       </td>
                                                       <td>
                                                       <?php if (count($linesItem)==0) { ?>

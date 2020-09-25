@@ -1049,7 +1049,9 @@ class M_nonconformity extends CI_Model
         ,head.assign as tasklist
         ,head.supplier as vendor
         ,head.forward_buyer
-        
+        ,head.last_menu
+        ,head.last_update_date
+        ,head.last_updated_by 
         from
         pm.pm_po_oracle_non_conformity_headers head
         ORDER BY head.creation_date ASC");

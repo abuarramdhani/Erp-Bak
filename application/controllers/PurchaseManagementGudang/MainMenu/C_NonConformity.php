@@ -34,7 +34,7 @@ class C_NonConformity extends CI_Controller
 	public function index()
 	{
 		
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -57,7 +57,7 @@ class C_NonConformity extends CI_Controller
 
 	public function listData()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -84,7 +84,7 @@ class C_NonConformity extends CI_Controller
 
 	public function listSupplier()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -112,7 +112,7 @@ class C_NonConformity extends CI_Controller
 
 	public function listSubkon()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -246,6 +246,8 @@ class C_NonConformity extends CI_Controller
 
 	public function submitAssign()
 	{
+		$user = $this->session->user;
+		// echo $user;exit;
 		$encryptId = $this->input->post('hdnHeadId');
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encryptId);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
@@ -270,6 +272,9 @@ class C_NonConformity extends CI_Controller
 
 			$data = array('non_conformity_num' => $nonConformityNumber, 
 						  'assign' => $assign,
+						  'last_menu' => 'Pending Assign',
+						  'last_update_date' => 'now()',
+						  'last_updated_by' => $user
 						);
 			$this->M_nonconformity->updateAssign($plaintext_string, $data);
 		}else if($assign == 1) {
@@ -291,6 +296,9 @@ class C_NonConformity extends CI_Controller
 			
 			$data = array('non_conformity_num' => $nonConformityNumber, 
 						  'assign' => $assign,
+						  'last_menu' => 'Pending Assign',
+						  'last_update_date' => 'now()',
+						  'last_updated_by' => $user
 						);
 			$this->M_nonconformity->updateAssign($plaintext_string, $data);
 		}elseif ($assign == 3) {
@@ -314,6 +322,9 @@ class C_NonConformity extends CI_Controller
 							'non_conformity_num' => $nonConformityNumber,
 							'assign' => $assign,
 							'return_reason' => $reasonReturn,
+							'last_menu' => 'Pending Assign',
+							'last_update_date' => 'now()',
+						  	'last_updated_by' => $user
 						);
 
 			$this->M_nonconformity->updateAssign($plaintext_string, $data);
@@ -561,7 +572,7 @@ class C_NonConformity extends CI_Controller
 
 	public function insert()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -597,7 +608,7 @@ class C_NonConformity extends CI_Controller
 		$source = array('info' => $description,
 						'created_by' => $user_id,
 						'creation_date' => 'now()',
-						'last_update_by' => $user_id,
+						'last_updated_by' => $user_id,
 						'last_update_date' => 'now()',
 					);
 
@@ -710,6 +721,7 @@ class C_NonConformity extends CI_Controller
 	public function saveData()
 	{
 		// print_r($this->session->employee);exit;
+		$user = $this->session->user;
 		$headerId = $this->input->post('txtHeaderId');
 		$deliveryDate = $this->input->post('txtDeliveryDate');
 		$packingList = $this->input->post('txtPackingList');
@@ -743,6 +755,7 @@ class C_NonConformity extends CI_Controller
 		$buyer = $this->input->post('hdnBuyer[]');
 		$noLppb = $this->input->post('hdnLppb[]');
 		$notesFromBuyer = $this->input->post('noteFromBuyer');
+		$last_menu = $this->input->post('last_menu');
 
 		$header = 	array(
 						// 'po_number' => $poNumber,
@@ -754,7 +767,10 @@ class C_NonConformity extends CI_Controller
 						'supplier' => $supplierName,
 						'supplier_address' => $supplierAddress,
 						'person_in_charge' => $personInCharge,
-						'status' => $status
+						'status' => $status,
+						'last_menu' => $last_menu,
+						'last_update_date' => 'now()',
+						'last_updated_by' => $user
 				   );
 		
 				   if ($problemCompletion == '') {
@@ -959,12 +975,12 @@ class C_NonConformity extends CI_Controller
 		$data = array('status' => $status, );
 
 		$data_header = array(
-								'last_update_by' => $user,
+								'last_updated_by' => $user,
 								'last_update_date' => 'now()',
 							);
 
 		$this->M_nonconformity->updateStatus($headerid,$data);
-		$this->M_nonconformity->updateHeader($header_id,$data_header);
+		$this->M_nonconformity->updateHeader($headerid,$data_header);
 
 		echo 1;
 	}
@@ -1079,8 +1095,12 @@ class C_NonConformity extends CI_Controller
 	public function submitReturn()
 	{
 		$header_id = $this->input->post('hdnHdr');
+		$user = $this->session->user;
 		$data = array(
 						'forward_buyer' => 2,
+						'last_menu' => 'List Buyer',
+						'last_update_date' => 'now()',
+						'last_updated_by' => $user
 					 );
 
 		$this->M_nonconformity->updateAssign($header_id,$data);
@@ -1091,10 +1111,14 @@ class C_NonConformity extends CI_Controller
 
 	public function pendingExecute()
 	{
+		$user = $this->session->user;
 		$header_id = $this->input->post('hdnHdr');
 
 		$data = array(
 						'assign' => 4,
+						'last_menu' => 'List Data',
+						'last_update_date' => 'now()',
+						'last_updated_by' => $user
 					 );
 
 		$this->M_nonconformity->updateAssign($header_id, $data);
@@ -1330,7 +1354,7 @@ class C_NonConformity extends CI_Controller
 	public function MonitoringReport()
 	{
 		
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -1372,7 +1396,7 @@ class C_NonConformity extends CI_Controller
 
 	public function listForBuyer()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 

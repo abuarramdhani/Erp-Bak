@@ -48,6 +48,7 @@
                                                     <div class="col-lg-8">
                                                         <?php echo $headerRow['non_conformity_num']; ?>
                                                         <input type="hidden" name="txtHeaderId" value="<?php echo $headerRow['header_id'];?>">
+                                                        <input type="hidden" name="last_menu" value="list Buyer">
                                                     </div>
                                                 </div><br>
                                                 <div class="row">
