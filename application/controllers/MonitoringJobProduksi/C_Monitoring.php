@@ -174,8 +174,8 @@ class C_Monitoring extends CI_Controller
 
 		$data['no'] 		= $no;
 		$data['tanggal'] 	= $tgl;
-        $data['kategori']  	= $this->input->post('kategori'.$no.'');
-		$data['bulan'] 		= $this->input->post('bulan'.$no.'');
+        $data['kategori']  	= $this->input->post('kategori');
+		$data['bulan'] 		= $this->input->post('bulan');
 		$data['item'] 		= $this->input->post('item'.$no.'');
 		$data['desc'] 		= $this->input->post('desc'.$no.'');
 		$data['plan'] 		= $this->input->post('plan'.$no.''.$tgl.'');
@@ -223,6 +223,12 @@ class C_Monitoring extends CI_Controller
 		$int_sub 	= $this->input->post('int_sub');
 		$pnl_tks 	= $this->input->post('pnl_tks');
 		$sm_tks 	= $this->input->post('sm_tks');
+		$int_assygt = $this->input->post('int_assygt');
+		$int_assy 	= $this->input->post('int_assy');
+		$int_macha 	= $this->input->post('int_macha');
+		$int_machb 	= $this->input->post('int_machb');
+		$int_machc 	= $this->input->post('int_machc');
+		$int_machd 	= $this->input->post('int_machd');
 		$jumlah 	= $this->input->post('jumlah');
 		
 		$view = '
@@ -233,7 +239,7 @@ class C_Monitoring extends CI_Controller
 					<div class="col-md-10">: '.$desc.'</div>
 				</div>
 				<div class="panel-body">
-					<table class="table table-bordered table-hovered table-stripped text-center" style="width:100%;font-size:12px">
+					<table class="table table-bordered table-hovered table-stripped text-center" id="tbl_modal_simulasi" style="width:100%;font-size:12px">
 						<thead style="background-color:#82E5FA">
 							<tr>
 								<th style="vertical-align:middle">DFG</th>
@@ -242,6 +248,12 @@ class C_Monitoring extends CI_Controller
 								<th style="vertical-align:middle">INT-PAINT</th>
 								<th style="vertical-align:middle">INT-WELD</th>
 								<th style="vertical-align:middle">INT-SUB</th>
+								<th style="vertical-align:middle">INT-ASSYGT</th>
+								<th style="vertical-align:middle">INT-ASSY</th>
+								<th style="vertical-align:middle">INT-MACHA</th>
+								<th style="vertical-align:middle">INT-MACHB</th>
+								<th style="vertical-align:middle">INT-MACHC</th>
+								<th style="vertical-align:middle">INT-MACHD</th>
 								<th style="vertical-align:middle">PNL-TKS</th>
 								<th style="vertical-align:middle">SM-TKS</th>
 								<th style="vertical-align:middle">JUMLAH</th>
@@ -255,6 +267,12 @@ class C_Monitoring extends CI_Controller
 								<td>'.$int_paint.'</td>
 								<td>'.$int_weld.'</td>
 								<td>'.$int_sub.'</td>
+								<td>'.$int_assygt.'</td>
+								<td>'.$int_assy.'</td>
+								<td>'.$int_macha.'</td>
+								<td>'.$int_machb.'</td>
+								<td>'.$int_machc.'</td>
+								<td>'.$int_machd.'</td>
 								<td>'.$pnl_tks.'</td>
 								<td>'.$sm_tks.'</td>
 								<td class="bg-info" style="font-weight:bold;">'.$jumlah.'</td>
@@ -264,6 +282,30 @@ class C_Monitoring extends CI_Controller
 				</div>
 		';
 		echo $view;
+	}
+
+	public function exportJob(){
+		$no = $this->input->post('nomor[]');
+		$bulan = $this->input->post('bulan');
+		$kategori = $this->input->post('kategori');
+		$hari = $this->input->post('hari');
+		$datanya = array();
+		for ($i=0; $i < count($no); $i++) { 
+			$baris['item'] = $this->input->post('item'.$no[$i].'');
+			$baris['desc'] = $this->input->post('desc'.$no[$i].'');
+			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
+			$baris['jml_akt'] = $this->input->post('jml_akt'.$no[$i].'');
+			$baris['jml_min'] = $this->input->post('jml_min'.$no[$i].'');
+			$baris['jml_com'] = $this->input->post('jml_com'.$no[$i].'');
+			for ($x=0; $x < $hari; $x++) { 
+				$baris['plan'.$x.''] = $this->input->post('plan'.$no[$i].''.($x+1).'');
+				$baris['akt'.$x.''] = $this->input->post('akt'.$no[$i].''.($x+1).'');
+				$baris['min'.$x.''] = $this->input->post('min'.$no[$i].''.($x+1).'');
+				$baris['com'.$x.''] = $this->input->post('com'.$no[$i].''.($x+1).'');
+			}
+			array_push($datanya, $baris);
+		}
+		echo "<pre>";print_r($datanya);exit();
 	}
 
 

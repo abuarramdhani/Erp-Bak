@@ -22,7 +22,7 @@
             $tanda = ($val['REQUIRED_QUANTITY'] > $val['ATT']) ? "bg-danger" : "";
             $col = $level != 1 ? 10 : 9;
             $tambah = $tanda == 'bg-danger' ? '<tr><td></td><td colspan="'.$col.'" id="tr_simulasi'.$level.''.$no.''.$nomor.'" style="display:none"></td></tr>' : '';
-            $jml_gd = $val['DFG'] + $val['DMC'] + $val['FG_TKS'] + $val['INT_PAINT'] + $val['INT_WELD'] + $val['INT_SUB'] + $val['PNL_TKS'] + $val['SM_TKS'];
+            $jml_gd = $val['DFG'] + $val['DMC'] + $val['FG_TKS'] + $val['INT_PAINT'] + $val['INT_WELD'] + $val['INT_SUB'] + $val['PNL_TKS'] + $val['SM_TKS'] + $val['INT_ASSYGT'] + $val['INT_ASSY'] + $val['INT_MACHA'] + $val['INT_MACHB'] + $val['INT_MACHC'] + $val['INT_MACHD'];
         ?>
             <tr>
                 <td class="<?= $tanda?>"><?= $no?>
@@ -35,6 +35,12 @@
                     <input type="hidden" id="int_sub<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_SUB']?>">
                     <input type="hidden" id="pnl_tks<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['PNL_TKS']?>">
                     <input type="hidden" id="sm_tks<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['SM_TKS']?>">
+                    <input type="hidden" id="int_assygt<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_ASSYGT']?>">
+                    <input type="hidden" id="int_assy<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_ASSY']?>">
+                    <input type="hidden" id="int_macha<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_MACHA']?>">
+                    <input type="hidden" id="int_machb<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_MACHB']?>">
+                    <input type="hidden" id="int_machc<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_MACHC']?>">
+                    <input type="hidden" id="int_machd<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_MACHD']?>">
                 </td>
                 <td class="<?= $tanda?>"><input type="hidden" id="komp<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['KOMPONEN']?>"><?= $val['KOMPONEN']?></td>
                 <td class="<?= $tanda?>"><input type="hidden" id="desc<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['KOMP_DESC'] ?>"><?= $val['KOMP_DESC']?></td>
@@ -49,11 +55,12 @@
                 <td class="<?= $tanda?>"><input type="hidden" id="qty<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['REQUIRED_QUANTITY'] ?>"><?= round($val['REQUIRED_QUANTITY'], 3)?></td>
                 <td class="<?= $tanda?>"><?= $val['ATT']?></td>
                 <td class="<?= $tanda?>">
-                    <?= $tanda == 'bg-danger' ? '<button type="button" class="btn btn-xs btn-danger" style="font-size:12px" onclick="tambahsimulasi('.$level.', '.$no.', '.$nomor.')">'.($val['KEKURANGAN']).'</button>' : ''.($val['KEKURANGAN']).''?>
+                    <?php $btn = $tanda == 'bg-danger' ? 'btn-danger' : 'btn-success'?>
+                    <button type="button" class="btn btn-xs <?= $btn?>" style="font-size:12px" onclick="tambahsimulasi(<?= $level?>, <?= $no?>, <?= $nomor?>)"><?= ($val['KEKURANGAN'])?></button>
                 </td>
                 <td class="<?= $tanda?>"><?= $val['WIP']?></td>
             </tr>
-            <?= $tambah?>
+            <tr><td></td><td colspan="<?= $col?>" id="tr_simulasi<?= $level?><?= $no?><?= $nomor?>" style="display:none"></td></tr>
         <?php $no++;}?>
     </tbody>
 </table>
