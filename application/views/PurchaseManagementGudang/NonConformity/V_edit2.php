@@ -145,7 +145,16 @@
                                                     <span class="pull-right">:</span>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>">
+                                                    <!-- <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>"> -->
+                                                    <?php if ($headerRow['supplier'] == null) {
+                                                            $opt = '<option value="'.$headerRow['supplier'].'">'.$headerRow['supplier'].'</option>';
+
+                                                         }else{
+                                                            $opt = '';
+                                                        } ?>
+                                                    <select class="form-control slcSupplierNC" name="txtSupplierName">
+                                                        <?= $opt;?>
+                                                    </select>
                                                 </div>
                                             </div><br>
                                             <div class="row">
@@ -156,7 +165,7 @@
                                                     <span class="pull-right">:</span>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <input style="width: 310px;" type="text" class="form-control picNonC" name="txtPersonInCharge" value="<?php echo $headerRow['person_in_charge']; ?>"> 
+                                                    <input type="text" class="form-control picNonC" name="txtPersonInCharge" value="<?php echo $headerRow['person_in_charge']; ?>" readonly> 
                                                 </div>
                                             </div><br>
                                             <div class="row">
@@ -179,7 +188,7 @@
                                                             }
                                                         }
                                                      ?>
-                                                    <input style="width: 150px;background: white;border: 1px solid #d2d6de;height: 40px;padding: 10px;" type="text" class="phoneNonC" name="txtPhoneNumber" value="<?php echo $telp; ?>"> 
+                                                    <input type="text" class="phoneNonC form-control" name="txtPhoneNumber" value="<?php echo $telp; ?>" readonly> 
                                                     <!-- / <input style="width: 150px;background: white;border: 1px solid #d2d6de;height: 40px;padding: 10px;" type="text" class="" name="txtFaxNumber" value="<?php echo $fax; ?>"> -->
                                                 </div>
                                             </div><br>
@@ -191,7 +200,7 @@
                                                     <span class="pull-right">:</span>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <textarea style="width: 310px;" type="text" name="txtSupplierAddress" class="form-control splrAddresNonC"><?php echo $headerRow['supplier_address']; ?></textarea>
+                                                    <textarea type="text" name="txtSupplierAddress" class="form-control splrAddresNonC" readonly><?php echo $headerRow['supplier_address']; ?></textarea>
                                                 </div>
                                             </div>
                                         </div>

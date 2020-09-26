@@ -59,7 +59,7 @@
                                                         }elseif ($report['tasklist'] == 2 &&  $report[0][0]['status'] !=1 && $report['forward_buyer'] != 1) {
                                                             echo 'List Data Subkon';
                                                         }elseif ($report['tasklist'] == 3 &&  $report[0][0]['status'] !=1 && $report['forward_buyer'] != 1) {
-                                                            echo 'Return to PBB';
+                                                            echo 'Return to PPB';
                                                         }elseif ($report['tasklist'] == 4 &&  $report[0][0]['status'] !=1 && $report['forward_buyer'] != 1) {
                                                             echo 'Pending Execute';
                                                         }elseif ($report['forward_buyer'] == 1 &&  $report[0][0]['status'] !=1) {
