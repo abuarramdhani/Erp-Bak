@@ -40,6 +40,48 @@ $(document).ready(function() {
         dropdownParent: $("#ModFilterReportNC")
     });
 
+    $('.slcSupplierNC').select2({
+             ajax: {
+                url: baseurl + 'PurchaseManagementGudang/NonConformity/searchSupplier',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    console.log(data)
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                id: item.SUPPLIER_NAME,
+                                text:item.SUPPLIER_NAME,
+                                phone: item.PHONE,
+                                pic: item.PIC,
+                                alamat: item.ALAMAT,
+                            }
+                        })
+                    };
+                },
+                cache: true,
+            },
+            minimumInputLength: 4,
+            allowClear : true,
+            placeholder: 'Nama Supplier',
+    })
+
+    $(document).on('change','.slcSupplierNC', function () {
+
+        var phone = $(this).select2('data')[0]['phone'];
+        var pic = $(this).select2('data')[0]['pic'];
+        var alamat = $(this).select2('data')[0]['alamat'];
+
+        $('.picNonC').val(pic);
+        $('.phoneNonC').val(phone);
+        $('.splrAddresNonC').val(alamat);
+    })
+
     $('.maxPeriodeNC').datepicker({
         autoclose: true,
         todayHighlight: true,

@@ -1535,4 +1535,13 @@ class C_NonConformity extends CI_Controller
 		}
 	}
 
+
+	public function searchSupplier()
+	{
+		$string = $_GET['q'];
+
+		$data = $this->M_nonconformity->searchSupplier(strtoupper($string));
+		echo json_encode($data);
+	}
+
 }

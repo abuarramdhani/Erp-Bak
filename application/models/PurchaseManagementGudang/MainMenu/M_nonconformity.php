@@ -1107,4 +1107,45 @@ class M_nonconformity extends CI_Model
 		}
     }
 
+    public function searchSupplier($string)
+    {
+        $oracle = $this->load->database('oracle',true);
+
+        $query = $oracle->query("SELECT
+        pv.vendor_id supplier_id,
+        pv.vendor_name supplier_name,
+        NVL(hcp.phone_number, '-') phone,
+        pv.attribute12 alamat,
+        (
+            SELECT
+                contact_name
+            FROM
+                khs_sup_contact
+            WHERE
+                org_name = pv.vendor_name
+                AND contact_party_id =(
+                SELECT
+                    MIN(contact_party_id)
+                FROM
+                    khs_sup_contact ksc,
+                    hz_parties hp,
+                    hz_party_usg_assignments hpua
+                WHERE
+                    ksc.contact_party_id = hp.party_id
+                    AND hp.party_id = hpua.party_id
+                    AND hpua.effective_end_date > SYSDATE
+                    AND hpua.party_usage_code = 'ORG_CONTACT'
+                    AND org_name = pv.vendor_name)) pic
+        FROM
+            po_vendors pv,
+            hz_contact_points hcp
+        WHERE
+            hcp.owner_table_id(+) = pv.party_id
+            AND hcp.contact_point_type(+) = 'PHONE'
+            AND hcp.status(+) = 'A'
+            AND pv.vendor_name LIKE '%$string%'");
+
+        return $query->result_array();
+    }
+
 }

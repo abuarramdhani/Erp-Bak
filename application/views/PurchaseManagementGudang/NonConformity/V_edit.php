@@ -142,7 +142,16 @@
                                                     <span class="pull-right">:</span>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>">
+                                                    <!-- <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>"> -->
+                                                    <?php if ($headerRow['supplier'] == null) {
+                                                            $opt = '<option value="'.$headerRow['supplier'].'">'.$headerRow['supplier'].'</option>';
+
+                                                         }else{
+                                                            $opt = '';
+                                                        } ?>
+                                                    <select class="form-control slcSupplierNC" name="txtSupplierName">
+                                                        <?= $opt;?>
+                                                    </select>
                                                 </div>
                                             </div><br>
                                             <div class="row">
