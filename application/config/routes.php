@@ -3210,6 +3210,8 @@ $route['PurchaseManagementGudang/loginAndroid'] = 'PurchaseManagementGudang/Main
 $route['PurchaseManagementGudang/getCaseAndroid'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/getCaseAndroid';
 $route['PurchaseManagementGudang/submitSourceAndroid'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/submitSourceAndroid';
 $route['PurchaseManagementGudang/submitSource'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/submitSource';
+$route['PurchaseManagementGudang/pendingAssign/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/pendingAssign/$1';
+$route['PurchaseManagementGudang/deleteNC'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/deleteNC';
 $route['PurchaseManagementGudang/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/$1';
 $route['PurchaseManagementGudang/(:any)/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/$1/$2';
 
