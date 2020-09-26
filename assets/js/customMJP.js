@@ -107,16 +107,27 @@ function mdlGudangSimulasi(no) {
     var int_sub     = $('#int_sub'+no).val();
     var pnl_tks     = $('#pnl_tks'+no).val();
     var sm_tks      = $('#sm_tks'+no).val();
+    var int_assygt      = $('#int_assygt'+no).val();
+    var int_assy      = $('#int_assy'+no).val();
+    var int_macha      = $('#int_macha'+no).val();
+    var int_machb      = $('#int_machb'+no).val();
+    var int_machc      = $('#int_machc'+no).val();
+    var int_machd      = $('#int_machd'+no).val();
     var jumlah      = $('#jml_gudang'+no).val();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/detailGudang",
         data : {item : item, desc: desc, dfg : dfg, dmc : dmc, fg_tks : fg_tks, int_paint : int_paint, 
-                int_weld : int_weld, int_sub : int_sub, pnl_tks : pnl_tks, sm_tks : sm_tks, jumlah : jumlah},
+                int_weld : int_weld, int_sub : int_sub, pnl_tks : pnl_tks, sm_tks : sm_tks, jumlah : jumlah,
+                int_assygt : int_assygt, int_assy : int_assy, int_macha : int_macha, int_machb : int_machb, 
+                int_machc : int_machc, int_machd : int_machd },
         dataType : 'html',
         type : 'POST',
         success : function (result) {
             $('#mdlGDSimulasi').modal('show');
             $('#datamdlsimulasi').html(result);
+            $('#tbl_modal_simulasi').dataTable({
+                scrollX : true,
+            });
         }
     })
 }
