@@ -165,14 +165,13 @@
                                                 </td>
                                                 <?php $this->session->set_userdata('url', 'PoLog'); ?>
                                                 <td style="min-width: 120px; max-width: 120px; text-align: center;">
-                                                    <a class="btn btn-success <?= ($value['SEND_DATE_1'] === NULL OR $this->session->user != 'B0661') ? 'hidden' : ''; ?>"
+                                                    <a class="btn btn-success <?= ($value['SEND_DATE_1'] === NULL)? 'hidden' : ''; ?>"
                                                         href="<?= base_url("PurchaseManagementSendPO/SendPO") . '?po_number=' . $value['PO_NUMBER']; ?>"
                                                         title="Resend"><i class="fa fa-send"></i></a>
                                                     <a class="btn btn-success btn-edit"
                                                         href="<?= base_url("PurchaseManagementSendPO/PoLog/edit") . '?po_number=' . $value['PO_NUMBER']; ?>"
                                                         title="Edit"><i class="fa fa-edit"></i></a>
-                                                    <a class="btn btn-danger btnSPO-Delete <?= ($this->session->user != 'B0661') ? 'hidden' : ''; ?>"
-                                                        href="#" title="Delete"
+                                                    <a class="btn btn-danger btnSPO-Delete" href="#" title="Delete"
                                                         po-number="<?= $value['PO_NUMBER']; ?>"><i
                                                             class="fa fa-trash"></i></a>
                                                 </td>

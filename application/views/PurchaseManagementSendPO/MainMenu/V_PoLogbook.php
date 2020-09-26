@@ -163,6 +163,7 @@
                                                 <td>
                                                     <center><?= $value['ATTACHMENT']; ?></center>
                                                 </td>
+                                                <?php $this->session->set_userdata('url', 'POLogbook'); ?>
                                                 <td style="min-width: 60px; max-width: 60px; text-align: center;">
                                                     <a class="btn btn-success btn-edit"
                                                         href="<?= base_url("PurchaseManagementSendPO/PoLog/edit") . '?po_number=' . $value['PO_NUMBER']; ?>"
