@@ -267,7 +267,9 @@ class C_API extends CI_Controller
 
             $this->form_validation
                 ->set_data($get)
-                ->set_rules('pha_segment_1', 'pha segment 1', 'required')
+                ->set_rules('pha_segment_1', 'pha segment 1', 'required|min_length[10]|regex_match[/-/]')
+                ->set_message('min_length', 'Parameter {field} yang anda berikan memiliki panjang kurang dari {param} karakter!')
+                ->set_message('regex_match', 'Parameter {field} yang anda berikan tidak memiliki pemisah antara pha segment 1 dengan revision number yang diperlukan!')
                 ->set_message('required', 'Anda belum memberikan parameter {field}!');
 
             if (!$this->form_validation->run()) {
