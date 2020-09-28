@@ -989,12 +989,17 @@ class C_NonConformity extends CI_Controller
 	{
 		$header_id = $this->input->post('hdnHdr');
 		$buyer = $this->input->post('slcBuyerNonC');
+		$user = $this->session->user;
+		// echo $user;exit;
 
 		// echo $header_id.'-'.$buyer;exit;
 
 		$data = array(
 						'forward_buyer' => 1,
 						'forward_to' => $buyer,
+						'last_update_date' => 'now()',
+						'last_updated_by' => $user,
+						'last_menu' => 'List Data'
 					 );
 
 		$this->M_nonconformity->updateAssign($header_id,$data);
