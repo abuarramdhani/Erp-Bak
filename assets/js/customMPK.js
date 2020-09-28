@@ -3150,8 +3150,6 @@ function getApproval(a, b) {
 
 function fun_reload() {
     let loading = baseurl + 'assets/img/gif/loadingquick.gif'
-    
-    console.log('I here right now')
 
     Swal.fire({
         html: "<img style='width: 320px; height: auto;'src='" + loading + "'>",
