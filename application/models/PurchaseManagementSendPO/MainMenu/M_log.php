@@ -51,6 +51,20 @@ class M_log extends CI_Model
         return $affected_rows;
     }
 
+    public function count($conditional_data)
+    {
+        $result = $this->oracle
+            ->where(array_change_key_case($conditional_data, CASE_UPPER))
+            ->from(strtoupper('apps.khs_psup_po_logbook'));
+
+        if (!$result) {
+            $db_error = $this->oracle->error();
+            throw new Exception("Terjadi error pada database dengan error code {$db_error['code']} dengan pesan {$db_error['message']}");
+        }
+
+        return $this->oracle->count_all_results();
+    }
+
     public function selectVendorName($conditional_data)
     {
         $result = $this->oracle

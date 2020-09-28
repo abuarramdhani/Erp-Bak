@@ -181,8 +181,10 @@ class C_API extends CI_Controller
                 ->set_data($post)
                 ->set_rules('purchasing_approve_by', 'purchasing approve by', 'max_length[128]')
                 ->set_rules('management_approve_by', 'management approve by', 'max_length[128]')
-                ->set_rules('pha_segment_1', 'pha segment 1', 'required')
+                ->set_rules('pha_segment_1', 'pha segment 1', 'required|min_length[10]|regex_match[/-/]')
                 ->set_message('max_length', 'Parameter {field} yang anda berikan memiliki panjang lebih dari {param} karakter!')
+                ->set_message('min_length', 'Parameter {field} yang anda berikan memiliki panjang kurang dari {param} karakter!')
+                ->set_message('regex_match', 'Parameter {field} yang anda berikan tidak memiliki pemisah antara pha segment 1 dengan revision number yang diperlukan!')
                 ->set_message('required', 'Anda belum memberikan parameter {field}!');
 
             if (!$this->form_validation->run()) {
@@ -195,12 +197,33 @@ class C_API extends CI_Controller
                 'pha_segment_1',
             ]);
 
+            $purchase_order_count = $this->po_log->count([
+                'pha_segment_1' => substr($post['pha_segment_1'], 0, strpos($post['pha_segment_1'], '-')),
+                'revision_num' => substr($post['pha_segment_1'], strpos($post['pha_segment_1'], '-') + 1),
+            ]);
+
+            if ($purchase_order_count === 0) {
+                throw new Exception('Tidak ditemukan data dengan pha segment 1 terkait!');
+            }
+
+            if (array_key_exists('management_approve_by', $post)) {
+                $approved_by_purchasing_count = $this->po_log->count([
+                    'pha_segment_1' => substr($post['pha_segment_1'], 0, strpos($post['pha_segment_1'], '-')),
+                    'revision_num' => substr($post['pha_segment_1'], strpos($post['pha_segment_1'], '-') + 1),
+                    'purchasing_approve_by != ' => null,
+                ]);
+
+                if ($approved_by_purchasing_count === 0) {
+                    throw new Exception('Silahkan melakukan approve ke purchasing terlebih dahulu!');
+                }
+            }
+
             $affected_rows = $this->po_log->update(
                 [
-                    'pha_segment_1' => substr($post['pha_segment_1'], 0, 8),
-                    'revision_num' => substr($post['pha_segment_1'], 9),                    
+                    'pha_segment_1' => substr($post['pha_segment_1'], 0, strpos($post['pha_segment_1'], '-')),
+                    'revision_num' => substr($post['pha_segment_1'], strpos($post['pha_segment_1'], '-') + 1),                  
                 ],
-                $post['purchasing_approve_by'] ? 'purchasing_approve_date' : 'management_approve_date',
+                array_key_exists('purchasing_approve_by', $post) ? 'purchasing_approve_date' : 'management_approve_date',
                 array_intersect_key($post, array_flip([
                     'purchasing_approve_by',
                     'management_approve_by',
@@ -244,7 +267,9 @@ class C_API extends CI_Controller
 
             $this->form_validation
                 ->set_data($get)
-                ->set_rules('pha_segment_1', 'pha segment 1', 'required')
+                ->set_rules('pha_segment_1', 'pha segment 1', 'required|min_length[10]|regex_match[/-/]')
+                ->set_message('min_length', 'Parameter {field} yang anda berikan memiliki panjang kurang dari {param} karakter!')
+                ->set_message('regex_match', 'Parameter {field} yang anda berikan tidak memiliki pemisah antara pha segment 1 dengan revision number yang diperlukan!')
                 ->set_message('required', 'Anda belum memberikan parameter {field}!');
 
             if (!$this->form_validation->run()) {
