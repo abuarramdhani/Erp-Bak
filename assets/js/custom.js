@@ -1054,39 +1054,3 @@ $(document).ready(function(){
 		})
 	});
 });
-
-(function() {
-	var cookie = {
-		set: function(v) {
-			document.cookie = v + '=true';
-		},
-		remove: function(v) {
-			document.cookie = v + '=';
-		},
-		get: function(v) {
-			return document.cookie.indexOf(v + '=true') !== -1
-		},
-	};
-
-	$('.btnToggleDarkMode').on('click', function() {
-		if ($('.btnToggleDarkMode').find('.fa-moon-o').is(':visible')) {
-			DarkReader.enable({
-				brightness: 100,
-				contrast: 90,
-				sepia: 10,
-			});
-			if (!cookie.get('khs-erp__dark-reader')) {
-				cookie.set('khs-erp__dark-reader');
-			}
-			$('.inner').css('background', '');
-		} else {
-			DarkReader.disable();
-			cookie.remove('khs-erp__dark-reader');
-		}
-		$('.btnToggleDarkMode').find('.fa-moon-o, .fa-sun-o').fadeToggle('slow');
-	});
-
-	if (cookie.get('khs-erp__dark-reader')) {
-		$('.btnToggleDarkMode').trigger('click');
-	}
-})();

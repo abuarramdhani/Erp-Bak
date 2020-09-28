@@ -73,18 +73,6 @@
 <body class="<?php echo $this->session->tema;?>">
 	<div id="loadingAjax"></div>
 
-	<!-- Toggle Dark Reader -->
-	<div style="z-index: 1040 !important; padding-bottom: 1rem !important; position: fixed; right: 0; bottom: 0; left: 0; width: 5%"
-		data-toggle="tooltip" data-placement="right" title="Ganti Tampilan ke Mode Malam atau Mode Cerah">
-		<button type="button" class="btn btn-link btnToggleDarkMode" style="text-decoration: none;">
-			<span class="fa-stack" style="font-size: 1.6em;">
-				<i class="fa fa-circle fa-stack-2x text-aqua"></i>
-				<i class="fa fa-moon-o fa-stack-1x" style="z-index: 1; color: white;"></i>
-				<i class="fa fa-sun-o fa-stack-1x" style="z-index: 1; color: white; display: none;"></i>
-			</span>
-		</button>
-	</div>
-
     <div class="wrapper">
 		<input type="hidden" value="<?= base_url(); ?>" name="txtBaseUrl" id="txtBaseUrl"/>
 		<?php
