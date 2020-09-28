@@ -6549,92 +6549,93 @@ public function exportAgain($id){
         }
 
     // DATA & STYLE JUMLAH
-        $rowJumlahElemen = $rownya + (sizeof($elemen_kerja)*3 +1);
-        $rows[$rowJumlahElemen][0] = 'JUMLAH';
-        $rows[$rowJumlahElemen][9] = $jumlah_manual;
-        $rows[$rowJumlahElemen][10] = $jumlah_auto;
-        $rows[$rowJumlahElemen][11] = $jumlah_walk;
-        $rows[$rowJumlahElemen][18] = '1. Keterangan';
-        $rows[$rowJumlahElemen+1][20] = '- Waktu 1 Shift';
-        $rows[$rowJumlahElemen+1][73] = ' = ';
-        $rows[$rowJumlahElemen+1][78] = $waktu_satu_shift; //DATA Waktu 1 Shift
-        $rows[$rowJumlahElemen+1][94] = 'Detik';
-        $rows[$rowJumlahElemen+1][112] = 'Takt Time';
-        
-        $rows[$rowJumlahElemen+1][127] = ' = ';
-        $rows[$rowJumlahElemen+1][132] = 'Waktu 1 Shift';
-        $rows[$rowJumlahElemen+1][191] = 'Kali / Shift';
-        
-        $rows[$rowJumlahElemen+1][206] = ' = ';
-        $rows[$rowJumlahElemen+1][211] = 'Cycle Time (Tanpa Irregular Job)';
-        $rows[$rowJumlahElemen+1][279] = 'Pcs / Shift';
-        
-        $rows[$rowJumlahElemen+1][294] = ' = ';
-        $rows[$rowJumlahElemen+1][299] = 'Waktu 1 Shift x Quantity';
+    $rowJumlahElemen = $rownya + (sizeof($elemen_kerja) * 3 + 1);
+    $rows[$rowJumlahElemen][0] = 'JUMLAH';
+    $rows[$rowJumlahElemen][9] = $jumlah_manual;
+    $rows[$rowJumlahElemen][10] = $jumlah_auto;
+    $rows[$rowJumlahElemen][11] = $jumlah_walk;
+    $rows[$rowJumlahElemen][18] = '1. Keterangan';
+    $rows[$rowJumlahElemen + 1][20] = '- Waktu 1 Shift';
+    $rows[$rowJumlahElemen + 1][73] = ' = ';
+    $rows[$rowJumlahElemen + 1][78] = $waktu_satu_shift; //DATA Waktu 1 Shift
+    $rows[$rowJumlahElemen + 1][94] = 'Detik';
+    $rows[$rowJumlahElemen + 1][112] = 'Takt Time';
 
-        $rows[$rowJumlahElemen+2][20] = '- Cycletime (Tanpa Irregular Job)';
-        $rows[$rowJumlahElemen+2][73] = ' = ';
-        $rows[$rowJumlahElemen+2][78] = $cycle_time_tanpa_irregular; //DATA Cycletime (Tanpa Irregular Job)
-        $rows[$rowJumlahElemen+2][94] = 'Detik';
-        $rows[$rowJumlahElemen+2][132] = '(';
-        $rows[$rowJumlahElemen+2][134] = 'Rencana Produksi / Bulan';
-        $rows[$rowJumlahElemen+2][183] = ')';
-        $rows[$rowJumlahElemen+2][211] = 'Ratio Irregular Job';
-        $rows[$rowJumlahElemen+2][299] = 'Cycle Time (Dengan Irregular Job)';
-        
-        
+    $rows[$rowJumlahElemen + 1][127] = ' = ';
+    $rows[$rowJumlahElemen + 1][132] = 'Waktu 1 Shift';
+    $rows[$rowJumlahElemen + 1][191] = 'Kali / Shift';
 
-        $rows[$rowJumlahElemen+3][20] = '- Cycletime (Dengan Irregular Job)';
-        $rows[$rowJumlahElemen+3][73] = ' = ';
-        $rows[$rowJumlahElemen+3][78] = $cycle_time; //DATA Cycletime (Dengan Irregular Job)
-        $rows[$rowJumlahElemen+3][94] = 'Detik';
-        $rows[$rowJumlahElemen+3][134] = 'Jumlah Hari Kerja / Bulan';
-        $rows[$rowJumlahElemen+3][206] = ' = ';
-        $rows[$rowJumlahElemen+3][211] = $cycle_time_tanpa_irregular; //DATA Cycle Time tanpa Irregular
-        $rows[$rowJumlahElemen+3][294] = ' = ';
-        $rows[$rowJumlahElemen+3][299] = $waktu_satu_shift.' x '.$qty_unit; //DATA Waktu 1 Shift x Qty
-        
-        
-        $rows[$rowJumlahElemen+4][20] = '- Jumlah Hari Kerja / Bulan';
-        $rows[$rowJumlahElemen+4][73] = ' = ';
-        $rows[$rowJumlahElemen+4][78] = $jumlah_hari_kerja; //DATA Jumlah Hari Kerja / Bulan
-        $rows[$rowJumlahElemen+4][94] = 'Detik';
-        $rows[$rowJumlahElemen+4][127] = ' = ';
-        $rows[$rowJumlahElemen+4][132] = ''; //Data Waktu 1 Shift
-        $rows[$rowJumlahElemen+4][211] = ''; //DATA Ratio Irregular Job
-        $rows[$rowJumlahElemen+4][299] = $cycle_time; //DATA Cycle Time (Dengan Irregular Job)
-        
-        
-        $rows[$rowJumlahElemen+5][20] = '- Rencana Produksi / Bulan';
-        $rows[$rowJumlahElemen+5][73] = ' = ';
-        $rows[$rowJumlahElemen+5][78] = $rencana_produksi; //Data Rencana Produksi / Bulan
-        $rows[$rowJumlahElemen+5][94] = 'Detik';
-        $rows[$rowJumlahElemen+5][132] = '(';
-        $rows[$rowJumlahElemen+5][134] = $rencana_produksi; //Data Rencana Produksi / Bulan
-        $rows[$rowJumlahElemen+5][183] = ')';
-        $rows[$rowJumlahElemen+5][206] = ' = ';
-        $rows[$rowJumlahElemen+5][211] = ''; //DATA HASIL 3
-        $rows[$rowJumlahElemen+5][230] = 'Kali / Shift';
-        $rows[$rowJumlahElemen+5][294] = ' = ';
-        $rows[$rowJumlahElemen+5][299] = ''; //DATA HASIL 4
-        $rows[$rowJumlahElemen+5][319] = 'Pcs';
-        
+    $rows[$rowJumlahElemen + 1][206] = ' = ';
+    $rows[$rowJumlahElemen + 1][211] = 'Waktu Irregular Job';
+    $rows[$rowJumlahElemen + 1][279] = 'Pcs / Shift';
+
+    $rows[$rowJumlahElemen + 1][294] = ' = ';
+    $rows[$rowJumlahElemen + 1][299] = 'Waktu 1 Shift x Quantity';
+
+    $rows[$rowJumlahElemen + 2][20] = '- Cycletime (Tanpa Irregular Job)';
+    $rows[$rowJumlahElemen + 2][73] = ' = ';
+    $rows[$rowJumlahElemen + 2][78] = $cycle_time_tanpa_irregular; //DATA Cycletime (Tanpa Irregular Job)
+    $rows[$rowJumlahElemen + 2][94] = 'Detik';
+    $rows[$rowJumlahElemen + 2][132] = '(';
+    $rows[$rowJumlahElemen + 2][134] = 'Rencana Produksi / Bulan';
+    $rows[$rowJumlahElemen + 2][183] = ')';
+    $rows[$rowJumlahElemen + 2][211] = 'Ratio Irregular Job';
+    $rows[$rowJumlahElemen + 2][299] = 'Cycle Time (Dengan Irregular Job)';
 
 
-        $rows[$rowJumlahElemen+6][20] = '- Takt Time';
-        $rows[$rowJumlahElemen+6][73] = ' = ';
-        $rows[$rowJumlahElemen+6][78] = $takt_time; //DATA Takt Time
-        $rows[$rowJumlahElemen+6][94] = 'Detik';
-        
+
+    $rows[$rowJumlahElemen + 3][20] = '- Cycletime (Dengan Irregular Job)';
+    $rows[$rowJumlahElemen + 3][73] = ' = ';
+    $rows[$rowJumlahElemen + 3][78] = $cycle_time; //DATA Cycletime (Dengan Irregular Job)
+    $rows[$rowJumlahElemen + 3][94] = 'Detik';
+    $rows[$rowJumlahElemen + 3][134] = 'Jumlah Hari Kerja / Bulan';
+    $rows[$rowJumlahElemen + 3][206] = ' = ';
+    $rows[$rowJumlahElemen + 3][211] = $waktu_irregular[0]; //DATA Cycle Time tanpa Irregular
+    $rows[$rowJumlahElemen + 3][294] = ' = ';
+    $rows[$rowJumlahElemen + 3][299] = $waktu_satu_shift . ' x ' . $qty_unit; //DATA Waktu 1 Shift x Qty
 
 
-        $rows[$rowJumlahElemen+7][20] = '- Qty dalam 1 cycle';
-        $rows[$rowJumlahElemen+7][73] = ' = ';
-        $rows[$rowJumlahElemen+7][78] = $qty; //DATA Qty dalam 1 Cycle
-        $rows[$rowJumlahElemen+7][94] = 'Detik';
-        $rows[$rowJumlahElemen+7][127] = ' = ';
-        $rows[$rowJumlahElemen+7][132] = ''; //Data HASIL 1
-        $rows[$rowJumlahElemen+7][147] = 'Detik';
+    $rows[$rowJumlahElemen + 4][20] = '- Jumlah Hari Kerja / Bulan';
+    $rows[$rowJumlahElemen + 4][73] = ' = ';
+    $rows[$rowJumlahElemen + 4][78] = $jumlah_hari_kerja; //DATA Jumlah Hari Kerja / Bulan
+    $rows[$rowJumlahElemen + 4][94] = 'Hari';
+    $rows[$rowJumlahElemen + 4][127] = ' = ';
+    $rows[$rowJumlahElemen + 4][132] = $waktu_satu_shift; //Data Waktu 1 Shift
+    $rows[$rowJumlahElemen + 4][211] = $ratio_irregular[0]; //DATA Ratio Irregular Job
+    $rows[$rowJumlahElemen + 4][299] = $cycle_time; //DATA Cycle Time (Dengan Irregular Job)
+
+
+    $rows[$rowJumlahElemen + 5][20] = '- Rencana Produksi / Bulan';
+    $rows[$rowJumlahElemen + 5][73] = ' = ';
+    $rows[$rowJumlahElemen + 5][78] = $rencana_produksi; //Data Rencana Produksi / Bulan
+    $rows[$rowJumlahElemen + 5][94] = 'Pcs';
+    $rows[$rowJumlahElemen + 5][132] = '(';
+    $rows[$rowJumlahElemen + 5][134] = $rencana_produksi; //Data Rencana Produksi / Bulan
+    $rows[$rowJumlahElemen + 5][183] = ')';
+    $rows[$rowJumlahElemen + 5][206] = ' = ';
+    $rows[$rowJumlahElemen + 5][211] = $hasil_irregular[0]; //DATA HASIL 3
+    $rows[$rowJumlahElemen + 5][230] = 'Kali / Shift';
+    $rows[$rowJumlahElemen + 5][294] = ' = ';
+    $rows[$rowJumlahElemen + 5][299] = ''; //DATA HASIL 4
+    $rows[$rowJumlahElemen + 5][319] = 'Pcs';
+
+
+
+    $rows[$rowJumlahElemen + 6][20] = '- Takt Time';
+    $rows[$rowJumlahElemen + 6][73] = ' = ';
+    $rows[$rowJumlahElemen + 6][78] = $takt_time; //DATA Takt Time
+    $rows[$rowJumlahElemen + 6][94] = 'Detik';
+    $rows[$rowJumlahElemen + 6][134] = $jumlah_hari_kerja;
+
+
+
+    $rows[$rowJumlahElemen + 7][20] = '- Qty dalam 1 cycle';
+    $rows[$rowJumlahElemen + 7][73] = ' = ';
+    $rows[$rowJumlahElemen + 7][78] = $qty; //DATA Qty dalam 1 Cycle
+    $rows[$rowJumlahElemen + 7][94] = 'Pcs';
+    $rows[$rowJumlahElemen + 7][127] = ' = ';
+    $rows[$rowJumlahElemen + 7][132] = $takt_time; //Data HASIL 1
+    $rows[$rowJumlahElemen + 7][147] = 'Pcs';
         
         
         $rows[$rowJumlahElemen+9][18] = '5. Usulan Perbaikan'; 
