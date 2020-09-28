@@ -114,31 +114,31 @@
 																	</button>
 																	<ul class="dropdown-menu">
 																		<li>
-																			<a href="<?php echo base_url('Covid/MonitoringCovid/edit/'.$encrypted_string) ?>">edit</a>
+																			<a href="<?php echo base_url('Covid/MonitoringCovid/edit/'.$encrypted_string) ?>" style="cursor: pointer;">edit</a>
 																		</li>
 																		<li>
-																			<a data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn-CVD-MonitoringCovid-Hapus">Hapus</a>
+																			<a data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn-CVD-MonitoringCovid-Hapus" style="cursor: pointer;">Hapus</a>
 																		</li>
 																		<?php 
 																		if (isset($encrypted_isolasi_id) && !empty($encrypted_isolasi_id)) {
 																			?>
 																		<li>
-																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Ubah/'.$encrypted_isolasi_id.'/'.$encrypted_string) ?>">Ubah Memo Isolasi Mandiri</a>
+																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Ubah/'.$encrypted_isolasi_id.'/'.$encrypted_string) ?>" style="cursor: pointer;">Ubah Memo Isolasi Mandiri</a>
 																		</li>
 																			<?php
 																		}else{
 																			?>
 																		<li>
-																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Tambah/'.$encrypted_string) ?>">Buat Memo Isolasi Mandiri</a>
+																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Tambah/'.$encrypted_string) ?>" style="cursor: pointer;">Buat Memo Isolasi Mandiri</a>
 																		</li>
 																			<?php
 																		}
 																		?>
 																		<li>
-																			<a href="<?php echo base_url('Covid/MonitoringCovid/TidakIsolasi/'.$encrypted_string) ?>">Tidak Isolasi</a>
+																			<a href="<?php echo base_url('Covid/MonitoringCovid/TidakIsolasi/'.$encrypted_string) ?>" style="cursor: pointer;">Tidak Isolasi</a>
 																		</li>
 																		<li>
-																			<a data-href="<?php echo base_url('Covid/MonitoringCovid/FollowUp/'.$encrypted_string) ?>" data-status="<?php echo isset($status_kondisi_pekerja) ? $status_kondisi_pekerja : '0'; ?>" class="btn-CVD-MonitoringCovid-FollowUp">Follow Up Pekerja</a>
+																			<a data-href="<?php echo base_url('Covid/MonitoringCovid/FollowUp/'.$encrypted_string) ?>" data-status="<?php echo isset($status_kondisi_pekerja) ? $status_kondisi_pekerja : '0'; ?>" class="btn-CVD-MonitoringCovid-FollowUp" style="cursor: pointer;">Follow Up Pekerja</a>
 																		</li>
 																	</ul>
 																</div>
@@ -149,13 +149,13 @@
 																	</button>
 																	<ul class="dropdown-menu">
 																		<li>
-																			<a target='_blank' href="<?php echo base_url('Covid/MonitoringCovid/WawancaraIsolasi/'.$encrypted_string) ?>">Wawancara Isolasi</a>
+																			<a target='_blank' href="<?php echo base_url('Covid/MonitoringCovid/WawancaraIsolasi/'.$encrypted_string) ?>" style="cursor: pointer;">Wawancara Isolasi</a>
 																		</li>
 																		<li>
-																			<a target='_blank' href="<?php echo base_url('Covid/MonitoringCovid/MemoIsolasi/'.$encrypted_string) ?>">Memo Isolasi Mandiri</a>
+																			<a target='_blank' href="<?php echo base_url('Covid/MonitoringCovid/MemoIsolasi/'.$encrypted_string) ?>" style="cursor: pointer;">Memo Isolasi Mandiri</a>
 																		</li>
 																		<li>
-																			<a target="_blank" href="<?php echo base_url('Covid/MonitoringCovid/WawancaraMasuk/'.$encrypted_string) ?>">Wawancara Masuk</a>
+																			<a target="_blank" href="<?php echo base_url('Covid/MonitoringCovid/WawancaraMasuk/'.$encrypted_string) ?>" style="cursor: pointer;">Wawancara Masuk</a>
 																		</li>
 																	</ul>
 																</div>
