@@ -185,6 +185,7 @@ class C_Index extends CI_Controller
 						}
 					}
 				}
+				echo json_encode($ar_json);
 			} else {
 				for ($i = 0; $i < count($nama); $i++) {
 					$data = array(
