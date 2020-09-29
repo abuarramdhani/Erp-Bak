@@ -740,10 +740,7 @@ $('#RPP_Saran').on('click', function (params) {
             swal.close()
             $('#tempelSaran').html(a)
             $('.tabel_rekap').DataTable({
-                "dom": 'Bfrtip',
-                "buttons": [
-                    'excel', 'pdf'
-                ],
+                "dom": 'frtip',
                 scrollX: true,
                 fixedColumns: {
                     leftColumns: 2
