@@ -6,7 +6,7 @@
           <div class="col-lg-12">
             <div class="col-lg-11">
               <div class="text-right">
-                <h1><b>Perizinan Dinas Perusahaan</b></h1>
+                <h1><b>Approval Perizinan</b></h1>
               </div>
             </div>
             <div class="col-lg-1">

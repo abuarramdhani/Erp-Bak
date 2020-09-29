@@ -177,7 +177,6 @@ class C_Index extends CI_Controller
 
 		$imserahkan = implode(", ", $ar);
 
-
 		if (!empty($result)) {
 			foreach ($result as $key) {
 				$update2_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '2', $id);
@@ -192,18 +191,6 @@ class C_Index extends CI_Controller
 			$update_tperizinan = $this->M_index->update_tperizinan($implode1, '1', $id, $imserahkan);
 		} else {
 			$update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, $imserahkan);
-		}
-
-		for ($i = 0; $i < count($pekerja); $i++) {
-			$newEmployee = $this->M_index->getDataPekerja($pekerja[$i], $id);
-			if ($pekerja[$i] == $newEmployee[0]['noind']) {
-				$data = array(
-					'id'	=> $id,
-					'noind' 	=> $pekerja[$i],
-					'created_date' => date('Y-m-d H:i:s')
-				);
-				$insert = $this->M_index->taktual_pribadi($data);
-			}
 		}
 	}
 
