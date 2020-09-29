@@ -700,13 +700,33 @@ $('#izinRekapPDF').on('click', () => {
 
 })
 
+$('#SaranRekapExcel').on('click', () => {
+    let periodeRekap = $('#periodeRekap').val(),
+        valbutton = 'Excel',
+        alamat = baseurl + 'PerizinanPribadi/RekapKritikan/tempelSaran'
+
+    window.open(alamat + "?valButton=" + valbutton + "&tanggal=" + periodeRekap, "_blank");
+
+})
+
+$('#SaranRekapPDF').on('click', () => {
+    let periodeRekap = $('#periodeRekap').val(),
+        valbutton = 'PDF',
+        alamat = baseurl + 'PerizinanPribadi/RekapKritikan/tempelSaran'
+
+    window.open(alamat + "?valButton=" + valbutton + "&tanggal=" + periodeRekap, "_blank");
+
+})
+
 $('#RPP_Saran').on('click', function (params) {
-    let tanggal = $('#periodeRekap').val()
+    let tanggal = $('#periodeRekap').val(),
+        valButton = ''
 
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         data: {
-            tanggal
+            tanggal,
+            valButton
         },
         url: baseurl + 'PerizinanPribadi/RekapKritikan/tempelSaran',
         beforeSend: function () {
