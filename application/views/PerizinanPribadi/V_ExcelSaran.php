@@ -41,7 +41,7 @@ $array_judul = array(
     ),
     '1' => array(
         'nama' => 'Tanggal',
-        'lebar' => 10
+        'lebar' => 15
     ),
     '2' => array(
         'nama' => 'Pekerja',
