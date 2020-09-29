@@ -373,7 +373,7 @@ class M_index extends CI_Model
     public function update_tperizinan($noind, $status, $id, $serahkan)
     {
         $sql = "UPDATE \"Surat\".tizin_pribadi
-                set appr_atasan ='$status', noind = '$noind', diserahkan = '$serahkan'
+                set appr_atasan ='$status', noind = '$noind', diserahkan = '$serahkan', status = '$status'
                 WHERE id ='$id'";
         return $this->personalia->query($sql);
     }

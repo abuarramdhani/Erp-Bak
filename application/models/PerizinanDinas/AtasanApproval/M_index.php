@@ -150,6 +150,7 @@ class M_index extends CI_Model
                     WHERE ip.status = '-'
                         and ip.created_date::date = now()::date
                         and ip.atasan = '$atasan'
+                        and ip.appr_atasan is null
         order by created_date desc";
         return $this->personalia->query($sql)->result_array();
     }
