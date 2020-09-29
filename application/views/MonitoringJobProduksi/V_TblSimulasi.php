@@ -58,7 +58,12 @@
                     <?php $btn = $tanda == 'bg-danger' ? 'btn-danger' : 'btn-success'?>
                     <button type="button" class="btn btn-xs <?= $btn?>" style="font-size:12px" onclick="tambahsimulasi(<?= $level?>, <?= $no?>, <?= $nomor?>)"><?= ($val['KEKURANGAN'])?></button>
                 </td>
-                <td class="<?= $tanda?>"><?= $val['WIP']?></td>
+                <td class="<?= $tanda?>">
+                    <?php if ($val['WIP'] != '') { ?>
+                        <button type="button" class="btn btn-xs bg-orange" style="font-size:12px" onclick="mdlWIPSimulasi(<?= $level?><?= $no?><?= $nomor?>)"><?= $val['WIP']?></button>
+                        <input type="hidden" id="wip<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['WIP']?>">
+                    <?php }?>
+                </td>
             </tr>
             <tr><td></td><td colspan="<?= $col?>" id="tr_simulasi<?= $level?><?= $no?><?= $nomor?>" style="display:none"></td></tr>
         <?php $no++;}?>
