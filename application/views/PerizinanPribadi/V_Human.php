@@ -14,6 +14,7 @@
             <th class="text-center" style="white-space: nowrap;">Waktu Keluar</th>
             <th class="text-center" style="white-space: nowrap;">Atasan Approved</th>
             <th class="text-center" style="white-space: nowrap; width: 10px !important;">Keterangan</th>
+            <th class="text-center" style="white-space: nowrap; width: 10px;">Poin</th>
             <th class="text-center" style="white-space: nowrap;">Status</th>
           </tr>
         </thead>
@@ -31,6 +32,13 @@
               <td style="text-align: left; white-space: nowrap;"><?= $row['keluar'] ?></td>
               <td style="white-space: nowrap;"><?= $row['atasan'] ?></td>
               <td style="width: 10px !important;"><?= $row['keperluan'] ?></td>
+              <td style="width: 10px !important;"><?php if (date("Y-m-d", strtotime($row['created_date'])) == date("Y-m-d") && empty($row['point'])) {
+                                                    echo '-';
+                                                  } elseif (date("Y-m-d", strtotime($row['created_date'])) <= date("Y-m-d") && empty($row['point'])) {
+                                                    echo '0';
+                                                  } else {
+                                                    echo $row['point'];
+                                                  } ?></td>
               <td style="white-space: nowrap;"><?= $row['status']; ?></td>
             </tr>
           <?php

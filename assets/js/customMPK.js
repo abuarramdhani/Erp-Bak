@@ -700,6 +700,39 @@ $('#izinRekapPDF').on('click', () => {
 
 })
 
+$('#RPP_Saran').on('click', function (params) {
+    let tanggal = $('#periodeRekap').val()
+
+    $.ajax({
+        type: 'POST',
+        data: {
+            tanggal
+        },
+        url: baseurl + 'PerizinanPribadi/RekapKritikan/tempelSaran',
+        beforeSend: function () {
+            swal.fire({
+                text: 'waiting',
+                showConfirmButton: false,
+                allowOutsideClick: false
+            })
+        },
+        success: function (a) {
+            swal.close()
+            $('#tempelSaran').html(a)
+            $('.tabel_rekap').DataTable({
+                "dom": 'Bfrtip',
+                "buttons": [
+                    'excel', 'pdf'
+                ],
+                scrollX: true,
+                fixedColumns: {
+                    leftColumns: 2
+                }
+            });
+        }
+    })
+})
+
 function cekManualPerizinan(a, id) {
     let jenis = a;
 
@@ -3150,6 +3183,8 @@ function getApproval(a, b) {
 
 function fun_reload() {
     let loading = baseurl + 'assets/img/gif/loadingquick.gif'
+    console.log('i am right here');
+
 
     Swal.fire({
         html: "<img style='width: 320px; height: auto;'src='" + loading + "'>",
@@ -3617,6 +3652,11 @@ $(document).on('click', function (e) {
 })
 
 $(document).on('ready', function () {
+    let dt = new Date(),
+        d = dt.getDate(),
+        m = dt.getMonth(),
+        y = dt.getFullYear()
+
     $('#tblPendataanTidakHadir').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -3817,6 +3857,16 @@ window.addEventListener('load', function () {
         today = dd + '/' + mm + '/' + yyyy;
         $('#periodeRekap').val(today + ' - ' + today);
         $('#RPP_Cari').trigger('click');
+    }
+    if ($("#RPP_Saran").get(0)) {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+
+        today = dd + '/' + mm + '/' + yyyy;
+        $('#periodeRekap').val(today + ' - ' + today);
+        $('#RPP_Saran').trigger('click');
     }
 });
 

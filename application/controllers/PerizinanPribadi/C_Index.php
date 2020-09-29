@@ -289,4 +289,66 @@ class C_Index extends CI_Controller
 			exit();
 		}
 	}
+
+	//untuk rekap kritik dan saran
+
+	public function indexSaran()
+	{
+		$user = $this->session->username;
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		$no_induk = $this->session->user;
+
+		$data['Title'] = 'Rekap Kritik dan Saran';
+		$data['Menu'] = 'Perizinan Pribadi';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$datamenu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+		$aksesRahasia = $this->M_index->allowedAccess('1');
+		$paramedik = array_column($aksesRahasia, 'noind');
+
+		$admin_hubker = $this->M_index->allowedAccess('2');
+		$admin_hubker = array_column($admin_hubker, 'noind');
+
+		if (in_array($no_induk, $paramedik)) {
+			$data['UserMenu'] = $datamenu;
+		} elseif (in_array($no_induk, $admin_hubker)) {
+			unset($datamenu[0]);
+			unset($datamenu[1]);
+			$data['UserMenu'] = array_values($datamenu);
+		} else {
+			unset($datamenu[1]);
+			unset($datamenu[2]);
+			unset($datamenu[3]);
+			$data['UserMenu'] = array_values($datamenu);
+		}
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PerizinanPribadi/V_RekapSaran', $data);
+		$this->load->view('V_Footer', $data);
+	}
+
+	public function tempelSaran()
+	{
+		$tanggal = $this->input->post('tanggal');
+		if (!empty($tanggal)) {
+			$explode = explode(" - ", $tanggal);
+			$tanggal_awal = str_replace("/", '-', $explode[0]);
+			$tanggal_akhir = str_replace("/", '-', $explode[1]);
+			$tgl_awal = date('Y-m-d', strtotime($tanggal_awal));
+			$tgl_akhir = date('Y-m-d', strtotime($tanggal_akhir));
+			$param = "where created_date::date between '$tgl_awal' and '$tgl_akhir'";
+			$param2 = "and tpi.created_date::date between '$tgl_awal' and '$tgl_akhir'";
+			$data['data'] = $this->M_index->getRekapSaran($param, $param2);
+		} else {
+			$data['data'] = $this->M_index->getRekapSaran();
+		}
+		$html = $this->load->view('PerizinanPribadi/V_Saran', $data);
+		echo json_encode($html);
+	}
 }

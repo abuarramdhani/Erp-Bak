@@ -197,7 +197,6 @@ class M_index extends CI_Model
     {
         $sql = "SELECT ipd.id,
                         ip.created_date,
-                        -- concat(ipd.noind, ' - ', (SELECT trim(nama) from hrd_khs.tpribadi tp where tp.noind = ipd.noind)) as pekerja,
                         concat(ipd.noind, ' - ', (SELECT trim(nama) from hrd_khs.tpribadi tp where tp.noind = ipd.noind)) as nama_pkj,
                         concat(ip.atasan, ' - ', (SELECT trim(nama) from hrd_khs.tpribadi tp where tp.noind = ip.atasan)) as atasan,
                         ip.manual,
@@ -235,7 +234,8 @@ class M_index extends CI_Model
                             and ip.appr_atasan = '0' then 'Rejected Atasan'
                             when ip.appr_atasan is null then 'Menunggu Approval Atasan'
                         end
-                    end status
+                    end status,
+                    (select sum(point) from \"Presensi\".tdatatim tim where tim.noind = ipd.noind and tim.tanggal::date = ip.created_date::date) as point
                 FROM \"Surat\".tizin_pribadi_detail ipd
                 LEFT JOIN \"Surat\".tizin_pribadi ip on ipd.id = ip.id
                 $periode
@@ -386,5 +386,22 @@ class M_index extends CI_Model
         $this->personalia->where('id', $id);
         $this->personalia->delete('"Surat".tizin_pribadi_detail');
         return true;
+    }
+
+    //Model untuk rekap saran
+    public function getRekapSaran($param1 = false, $param2 = false)
+    {
+        $sql = "SELECT created_date,
+                    (select tp.noind || ' - '|| tp.nama from hrd_khs.tpribadi tp where noind = tp.noind) as noind,
+                    saran
+                FROM \"Surat\".tsaran_perizinan $param1
+                UNION
+                SELECT created_date,
+                    (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi where noind in 
+                        (select noind from \"Surat\".tizin_pribadi_detail tpd where tpd.id = tpi.id)
+                    ) nama_pkj,
+                    saran from \"Surat\".tizin_pribadi tpi where saran is not null $param2
+                order by created_date desc";
+        return $this->personalia->query($sql)->result_array();
     }
 }
