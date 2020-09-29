@@ -59,7 +59,7 @@ class C_PoLog extends CI_Controller {
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
-        $this->load->view('PurchaseManagementSendPO/MainMenu/V_EditPONotConfirm', $data);
+        $this->load->view('PurchaseManagementSendPO/MainMenu/V_EditPoLog', $data);
         $this->load->view('V_Footer', $data);
     }
 
@@ -67,9 +67,7 @@ class C_PoLog extends CI_Controller {
     {
         $po_number = $this->input->post('po_number');
         $vendor_confirm_date = $this->input->post('vendor_confirm_date');
-        $distribution_method = $this->input->post('distribution_method');
         $vendor_confirm_method = $this->input->post('vendor_confirm_method');
-        $attachment_flag = $this->input->post('attachment_flag');
         $vendor_confirm_pic = htmlspecialchars($this->input->post('vendor_confirm_pic'));
 
         $name = $_FILES["lampiran_po"]["name"];
@@ -96,11 +94,11 @@ class C_PoLog extends CI_Controller {
             $file = array('upload_data' => $this->upload->data());
             $nama_lampiran = $file['upload_data']['raw_name'];
         }
-        $this->M_polog->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $attachment_flag, $nama_lampiran);
-        $this->output
-				->set_status_header(200)
-				->set_content_type('application/json')
-				->set_output(json_encode("File benar pdf"));
+            $this->M_polog->updateVendorData($po_number, $vendor_confirm_date, $vendor_confirm_method, $vendor_confirm_pic, $nama_lampiran);
+            $this->output
+            ->set_status_header(200)
+            ->set_content_type('application/json')
+            ->set_output(json_encode("File benar pdf"));
     }
 
 

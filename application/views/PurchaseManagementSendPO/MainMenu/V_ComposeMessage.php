@@ -47,8 +47,7 @@
                                     style="font-weight:normal">To Email Address</label>
                                 <div class="col-sm-3">
                                     <input type="email" class="form-control" id="txtPMSPOToEmailAddr"
-                                        name="txtPMSPOToEmailAddr" placeholder="Email Address" required multiple
-                                        readonly>
+                                        name="txtPMSPOToEmailAddr" placeholder="Email Address" required multiple>
                                 </div>
                                 <img src="<?=base_url('assets/img/gif/loading5.gif')?>"
                                     style="width:35px; height:35px; float:left; margin-left:-20px; display:none;"
@@ -91,7 +90,7 @@
                                     style="font-weight:normal">BCC. Email Address</label>
                                 <div class="col-sm-3">
                                     <input type="email" class="form-control" id="txtPMSPOBCCEmailAddr"
-                                        name="txtPMSPOBCCEmailAddr" placeholder="Email Address BCC" readonly>
+                                        name="txtPMSPOBCCEmailAddr" placeholder="Email Address BCC">
                                 </div>
                                 <div class="col-sm-6 divPMSPOBCCEmailAddrWarn"
                                     style="height: 30px; float:left;display:none">

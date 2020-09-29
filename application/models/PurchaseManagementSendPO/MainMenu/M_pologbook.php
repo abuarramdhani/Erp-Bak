@@ -1,7 +1,7 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Script Access Allowed');
 
-class M_polog extends CI_Model
+class M_pologbook extends CI_Model
 {
     function __construct()
     {
@@ -9,7 +9,7 @@ class M_polog extends CI_Model
         $this->load->database();
         $this->oracle = $this->load->database('oracle', TRUE);
     }
-    public function getDataPO()
+    public function getDataPObyNik($BuyerNIK)
     {
         $sql = "select
         kppl.LOGBOOK_ID
@@ -44,32 +44,24 @@ class M_polog extends CI_Model
         kppl.PRINT_BY = fu.USER_ID
         and pha.SEGMENT1 = kppl.PHA_SEGMENT_1
         and pha.AGENT_ID = ppf.PERSON_ID
-        and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')";
+        and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
+        AND ppf.NATIONAL_IDENTIFIER = '$BuyerNIK'";
 
         return $this->oracle->query($sql)->result_array();
     }
-
-    public function update1($noPO, $status)
+    public function updateVendorData($noPO, $date, $dis_method, $con_method, $pic, $attachment_flag, $lampiran)
     {
-        $sql = "UPDATE khs_psup_po_logbook SET DELIVERY_STATUS_1 = '$status', SEND_DATE_1 = SYSDATE WHERE PHA_SEGMENT_1 = '$noPO'";
-        return $this->oracle->query($sql);
-    }
-
-    public function update2($noPO, $status)
-    {
-        $sql = "UPDATE khs_psup_po_logbook SET DELIVERY_STATUS_2 = '$status', SEND_DATE_2 = SYSDATE WHERE PHA_SEGMENT_1 = '$noPO'";
-        return $this->oracle->query($sql);
-    }
-
-    public function updateDelete($noPO)
-    {
-        $sql = "UPDATE khs_psup_po_logbook SET DELETE_FLAG = 'Y' WHERE PHA_SEGMENT_1 = '$noPO'";
-        return $this->oracle->query($sql);
-    }
-
-    public function updateVendorData($noPO, $date, $con_method, $pic, $lampiran)
-    {
-        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'MM/DD/YYYY'), VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'MM/DD/YYYY'), DISTRIBUTION_METHOD = '$dis_method', VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO'";
         $this->oracle->query($query);
+    }
+    public function updateVendorData2($noPO, $dis_method, $attachment_flag)
+    {
+        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method', ATTACHMENT_FLAG = '$attachment_flag' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $this->oracle->query($query);
+    }
+    public function get_data_byid($noPO)
+    {
+        $query = "SELECT CEIL(24*(sysdate-khs_psup_po_logbook.SEND_DATE_2)) selisih_waktu_2, VENDOR_CONFIRM_DATE FROM khs_psup_po_logbook WHERE PHA_SEGMENT_1 = '$noPO'";
+        return $this->oracle->query($query)->row_array();
     }
 }
