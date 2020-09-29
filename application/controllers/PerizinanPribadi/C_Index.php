@@ -15,6 +15,7 @@ class C_Index extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('PerizinanPribadi/M_index');
+		$this->load->model('ADMSeleksi/M_penyerahan');
 
 		$this->checkSession();
 		date_default_timezone_set("Asia/Jakarta");
@@ -335,7 +336,13 @@ class C_Index extends CI_Controller
 
 	public function tempelSaran()
 	{
-		$tanggal = $this->input->post('tanggal');
+		$tanggal = $_GET['tanggal'];
+		$jenis   = $_GET['valButton'];
+		$noind   = $this->session->user;
+		$kd_sie  = $this->session->kodesie;
+		$nama    = $this->M_index->getNamaByNoind($noind);
+		$seksi   = $this->M_penyerahan->getJabatanPreview($kd_sie);
+
 		if (!empty($tanggal)) {
 			$explode = explode(" - ", $tanggal);
 			$tanggal_awal = str_replace("/", '-', $explode[0]);
@@ -348,7 +355,45 @@ class C_Index extends CI_Controller
 		} else {
 			$data['data'] = $this->M_index->getRekapSaran();
 		}
-		$html = $this->load->view('PerizinanPribadi/V_Saran', $data);
-		echo json_encode($html);
+
+		if ($jenis == 'Excel') {
+			$this->load->library("Excel");
+			$this->load->view('PerizinanPribadi/V_ExcelSaran', $data);
+		} elseif ($jenis == 'PDF') {
+			if (empty($tanggal)) {
+				$tanggal = "All Periode";
+			} else {
+				if ($tgl_awal == $tgl_akhir) {
+					$tanggal = date('d F Y', strtotime($tgl_awal));
+				} else {
+					$tanggal = date('d/m/Y', strtotime($tgl_awal)) . ' - ' . date('d/m/Y', strtotime($tgl_akhir));
+				}
+			}
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('utf-8', 'A4-P', 10, 8, 10, 10, 30, 15, 8, 20);
+			$filename = 'Rekap Kritik dan Saran.pdf';
+
+			$html = $this->load->view('PerizinanPribadi/V_PDFSaran', $data, true);
+			$pdf->setHTMLHeader('
+				<table width="100%">
+					<tr>
+						<td width="50%"><h2><b>Rekap Kritik dan Saran Perizinan</b></h2></td>
+						<td style="text-align: right;"><h5>Dicetak Oleh ' . $noind . ' - ' . $nama . ' pada Tanggal ' . date('d M Y H:i:s') . '</h5></td>
+					</tr>
+                    <tr>
+						<td>Periode tarik : ' . $tanggal . '</td>
+						<td style="text-align: right;"><h5>Seksi : ' . ucwords(mb_strtolower($seksi)) . '</h5></td>
+					</tr>
+				</table>
+			');
+
+			$pdf->WriteHTML($html, 2);
+			$pdf->setTitle($filename);
+			$pdf->Output($filename, 'I');
+		} else {
+			$html = $this->load->view('PerizinanPribadi/V_Saran', $data);
+			echo json_encode($html);
+		}
 	}
 }
