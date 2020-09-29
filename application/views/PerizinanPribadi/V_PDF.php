@@ -33,6 +33,9 @@ if ($perseksi == 'Tidak') {
                 <th>Atasan Approved</th>
                 <th>Keterangan</th>
                 <th>Status</th>
+                <?php if ($jenis == '2') { ?>
+                    <th>Poin</th>
+                <?php } ?>
             </tr>
         </thead>
         <tbody>
@@ -79,6 +82,15 @@ if ($perseksi == 'Tidak') {
                         <td style="white-space: nowrap;"><?= $row['atasan'] ?></td>
                         <td><?= $row['keperluan'] ?></td>
                         <td style="white-space: nowrap;"><?= $row['status']; ?></td>
+                        <?php if ($jenis == '2') { ?>
+                            <td style="white-space: nowrap;"><?php if (date("Y-m-d", strtotime($row['created_date'])) == date("Y-m-d") && empty($row['point'])) {
+                                                                    echo '-';
+                                                                } elseif (date("Y-m-d", strtotime($row['created_date'])) <= date("Y-m-d") && empty($row['point'])) {
+                                                                    echo '0';
+                                                                } else {
+                                                                    echo $row['point'];
+                                                                } ?></td>
+                        <?php } ?>
                     </tr>
             <?php
                     $no++;

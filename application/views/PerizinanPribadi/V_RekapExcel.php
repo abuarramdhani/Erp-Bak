@@ -91,12 +91,19 @@ $array_judul = array(
         'nama' => 'Status',
         'lebar' => 30
     ),
+    '12' => array(
+        'nama' => 'Poin',
+        'lebar' => 15
+    ),
 );
 $bariske = '4';
 $nom = 0;
 if ($perseksi == 'Ya') {
     unset($array_judul[1]);
     unset($array_judul[2]);
+}
+if ($jenis == '1') {
+    unset($array_judul[12]);
 }
 
 $array_judul = array_values($array_judul);
@@ -148,6 +155,14 @@ foreach ($IzinApprove as $key) {
         }
     }
 
+    if (date("Y-m-d", strtotime($row['created_date'])) == date("Y-m-d") && empty($row['point'])) {
+        $poin = '-';
+    } elseif (date("Y-m-d", strtotime($row['created_date'])) <= date("Y-m-d") && empty($row['point'])) {
+        $poin = '0';
+    } else {
+        $poin = $row['point'];
+    }
+
 
     $array_value = array(
         $no,
@@ -162,11 +177,16 @@ foreach ($IzinApprove as $key) {
         $key['atasan'],
         $key['keperluan'],
         $key['status'],
+        $poin
     );
 
     if ($perseksi == 'Ya') {
         unset($array_value[1]);
         unset($array_value[2]);
+    }
+
+    if ($jenis == '1') {
+        unset($array_value[12]);
     }
 
     $array_value = array_values($array_value);
