@@ -46,7 +46,7 @@
                                                     <select type="select select2" class="form-control"
                                                         id="select_distribution_method" name="distribution_method"
                                                         required>
-                                                        <option selected>--Select Distribution Method--
+                                                        <option selected disabled>--Select Distribution Method--
                                                         </option>
                                                         <option value="email">Email</option>
                                                         <option value="fax">Fax</option>
@@ -68,7 +68,7 @@
                                                     <select type="select select2" class="form-control"
                                                         id="select_vendor_confirm_method" name="vendor_confirm_method"
                                                         <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
-                                                        <option selected>--Select Confirm Method--</option>
+                                                        <option selected disabled>--Select Confirm Method--</option>
                                                         <option value="email">Email</option>
                                                         <option value="fax">Fax</option>
                                                         <option value="sms">SMS</option>
@@ -102,7 +102,7 @@
                                                 <div class="col-lg-4 text-left">
                                                     <select type="select select2" class="form-control"
                                                         id="select_attachment_flag" name="attachment_flag" required>
-                                                        <option selected>--Select Attachment Flag--</option>
+                                                        <option selected disabled>--Select Attachment Flag--</option>
                                                         <option value="Y">Yes</option>
                                                         <option value="N">No</option>
                                                     </select>
