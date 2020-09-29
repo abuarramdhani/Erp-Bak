@@ -11,7 +11,8 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-bold">*Background Merah : PO belum konfirmasi setelah 1 x 24 jam</p>
+                <p class="text-bold">*Background Kuning : PO belum konfirmasi setelah 1 x 24 jam dari Send Date 1</p>
+                <p class="text-bold">*Background Merah : PO belum konfirmasi setelah 1 x 24 jam dari Send Date 2</p>
                 <br />
                 <div class="row">
                     <div class="col-lg-12">
@@ -98,8 +99,14 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($PoLog as $key => $value) : ?>
-                                            <tr
-                                                <?= ($value['SELISIH_WAKTU'] > 24 && $value['VENDOR_CONFIRM_DATE'] === NULL) ? 'style="background-color: #f2dede;"' : ''; ?>>
+                                            <tr class="
+                                            <?php if($value['SELISIH_WAKTU_1'] > 24 && $value['VENDOR_CONFIRM_DATE'] === NULL && $value['SEND_DATE_2'] === NULL){
+                                                echo 'warning';
+                                            } elseif (($value['SELISIH_WAKTU_2'] > 24 && $value['VENDOR_CONFIRM_DATE'] === NULL)) {
+                                                echo 'danger';
+                                            } else {
+                                                echo '';
+                                            }; ?>">
                                                 <td>
                                                     <center><?= $key + 1; ?></center>
                                                 </td>
@@ -163,12 +170,11 @@
                                                 <td>
                                                     <center><?= $value['ATTACHMENT']; ?></center>
                                                 </td>
-                                                <?php $this->session->set_userdata('url', 'PoLog'); ?>
                                                 <td style="min-width: 120px; max-width: 120px; text-align: center;">
                                                     <a class="btn btn-success <?= ($value['SEND_DATE_1'] === NULL)? 'hidden' : ''; ?>"
                                                         href="<?= base_url("PurchaseManagementSendPO/SendPO") . '?po_number=' . $value['PO_NUMBER']; ?>"
                                                         title="Resend"><i class="fa fa-send"></i></a>
-                                                    <a class="btn btn-success btn-edit"
+                                                    <a class="btn btn-success btn-edit <?= ($value['SELISIH_WAKTU_2'] > 24 && $value['VENDOR_CONFIRM_DATE'] == NULL)?'hidden':''; ?>"
                                                         href="<?= base_url("PurchaseManagementSendPO/PoLog/edit") . '?po_number=' . $value['PO_NUMBER']; ?>"
                                                         title="Edit"><i class="fa fa-edit"></i></a>
                                                     <a class="btn btn-danger btnSPO-Delete" href="#" title="Delete"

@@ -20,7 +20,7 @@
                             <div class="box-body box-primary">
                                 <div class="row" style="margin-top: 50px;">
                                     <div class="col-lg-12">
-                                        <form id="editVendorConfirm">
+                                        <form id="editPoLogbook">
                                             <input type="hidden" value="<?= $po_number; ?>" name="po_number" required>
                                             <div class="row">
                                                 <div class="col-lg-12">
@@ -30,7 +30,9 @@
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
                                                         <input type="text" class="form-control" id="vendor_confirm_date"
-                                                            name="vendor_confirm_date" required autocomplete="off">
+                                                            name="vendor_confirm_date"
+                                                            <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>
+                                                            autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -65,7 +67,7 @@
                                                 <div class="col-lg-4 text-left">
                                                     <select type="select select2" class="form-control"
                                                         id="select_vendor_confirm_method" name="vendor_confirm_method"
-                                                        required>
+                                                        <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
                                                         <option selected disabled>--Select Confirm Method--</option>
                                                         <option value="email">Email</option>
                                                         <option value="fax">Fax</option>
@@ -86,7 +88,8 @@
                                                     <label class="col-lg-1" style="width: 10px;">:</label>
                                                     <div class="col-lg-4 text-left">
                                                         <input type="text" class="form-control" id="vendor_confirm_pic"
-                                                            name="vendor_confirm_pic" required>
+                                                            name="vendor_confirm_pic"
+                                                            <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
                                                     </div>
                                                 </div>
                                             </div>
@@ -113,7 +116,8 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="file" id="lampiranPO" name="lampiranPO" required
+                                                        <input type="file" id="lampiranPO" name="lampiranPO"
+                                                            <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -121,16 +125,11 @@
                                             <hr>
                                             <div class="row">
                                                 <div class="col-lg-12 text-center">
-                                                    <button type="button" class="btn btn-primary btnVendorConfirm"
+                                                    <button type="button" class="btn btn-primary btnEditPoLogbook"
                                                         style="margin-right: 8px;">Simpan</button>
-                                                    <!-- <button type="button"
-                                                        class="btn btn-primary btn-back">Kembali</button> -->
-                                                    <a href="<?= base_url('PurchaseManagementSendPO/'); ?><?= ($this->session->url == 'PoLog')? '/PoLog' : '/POLogbook'; ?>"
+                                                    <a href="<?= base_url('PurchaseManagementSendPO/POLogbook/edit'); ?>"
                                                         class="btn btn-primary">Kembali</a>
-                                                    <input class="url" type="hidden"
-                                                        value="<?= $this->session->url; ?>">
                                                 </div>
-                                            </div>
                                         </form>
                                     </div>
                                     <br>
