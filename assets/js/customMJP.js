@@ -125,9 +125,26 @@ function mdlGudangSimulasi(no) {
         success : function (result) {
             $('#mdlGDSimulasi').modal('show');
             $('#datamdlsimulasi').html(result);
-            $('#tbl_modal_simulasi').dataTable({
-                scrollX : true,
-            });
+            // $('#tbl_modal_simulasi').dataTable({
+            //     scrollX : true,
+            // });
+        }
+    })
+}
+
+function mdlWIPSimulasi(no) {
+    var item        = $('#komp'+no).val();
+    var desc        = $('#desc'+no).val();
+    var wip         = $('#wip'+no).val();
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/detailWIP",
+        data : {item : item, desc: desc, wip : wip },
+        dataType : 'html',
+        type : 'POST',
+        success : function (result) {
+            $('#mdlGDSimulasi').modal('show');
+            $('#datamdlsimulasi').html(result);
+            $('#tbl_modal_simulasi').dataTable();
         }
     })
 }

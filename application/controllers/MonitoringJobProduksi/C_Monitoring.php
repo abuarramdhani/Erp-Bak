@@ -91,26 +91,28 @@ class C_Monitoring extends CI_Controller
 					$ket = $getdata[$key]['plan'.$i.''] != '' ? 'oke': $ket;
 					$tgl = $inibulan.sprintf("%02d", ($i+1));
 					$aktual = $this->aktualmin($value['INVENTORY_ITEM_ID'], $tgl, $getdata[$key]['plan'.$i.''], $cariakt);
-					$getdata[$key]['min'.$i.''] = $aktual[1];
-					$getdata[$key]['com'.$i.''] = $aktual[2];
 					$getdata[$key]['jml_plan'] += $getdata[$key]['plan'.$i.''] == '' ? 0 : $getdata[$key]['plan'.$i.''];
 					if ($data['bulan'] == date('m/Y')) {
 						if ($i < date('d')) {
 							$getdata[$key]['akt'.$i.''] = $aktual[0];
 							$getdata[$key]['com'.$i.''] = $aktual[2];
+							$getdata[$key]['min'.$i.''] = $aktual[1];
 							$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
 							$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
+							$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
 						}else {
 							$getdata[$key]['akt'.$i.''] = '';
 							$getdata[$key]['com'.$i.''] = '';
+							$getdata[$key]['min'.$i.''] = '';
 						}
 					}else {
 						$getdata[$key]['akt'.$i.''] = $aktual[0];
 						$getdata[$key]['com'.$i.''] = $aktual[2];
+						$getdata[$key]['min'.$i.''] = $aktual[1];
 						$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
 						$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
+						$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
 					}
-					$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
 				}
 				$ket == 'oke' ? array_push($datanya,$getdata[$key]) : '';
 			}
@@ -232,6 +234,11 @@ class C_Monitoring extends CI_Controller
 		$jumlah 	= $this->input->post('jumlah');
 		
 		$view = '
+			<div class="modal-header" style="font-size:25px;background-color:#82E5FA">
+				<i class="fa fa-list-alt"></i> Detail Gudang
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
 				<div class="panel-body">
 					<div class="col-md-2" style="font-weight:bold">Kode</div>
 					<div class="col-md-10">: '.$item.'</div>
@@ -280,17 +287,70 @@ class C_Monitoring extends CI_Controller
 						</tbody>
 					</table>
 				</div>
+			</div>
+		';
+		echo $view;
+	}
+	
+	public function detailWIP(){
+		$item 		= $this->input->post('item');
+		$desc 		= $this->input->post('desc');
+		$wip 		= $this->input->post('wip');
+		$getdata = $this->M_monitoring->getdataWIP($item);
+		// echo "<pre>";print_r($getdata);exit();
+		$no = 1;
+		$td = '';
+		foreach ($getdata as $key => $val) {
+			$td .= '
+				<tr>
+					<td>'.$no.'</td>
+					<td>'.$val['WIP_ENTITY_NAME'].'</td>
+					<td>'.$val['START_QUANTITY'].'</td>
+					<td>'.$val['SCHEDULED_START_DATE'].'</td>
+				</tr>
+			';
+			$no++;
+		}
+		
+		$view = '
+			<div class="modal-header" style="font-size:25px;background-color:#82E5FA">
+				<i class="fa fa-list-alt"></i> Detail WIP
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="panel-body">
+					<div class="col-md-2" style="font-weight:bold">Kode</div>
+					<div class="col-md-10">: '.$item.'</div>
+					<div class="col-md-2" style="font-weight:bold">Deskripsi</div>
+					<div class="col-md-10">: '.$desc.'</div>
+				</div>
+				<div class="panel-body">
+					<table class="table table-bordered table-hovered table-stripped text-center" id="tbl_modal_simulasi" style="width:100%;">
+						<thead style="background-color:#82E5FA">
+							<tr>
+								<th style="width:7%">No</th>
+								<th>No Job</th>
+								<th>Qty</th>
+								<th>Tanggal</th>
+							</tr>
+						</thead>
+						<tbody>
+							'.$td.'
+						</tbody>
+					</table>
+				</div>
+			</div>
 		';
 		echo $view;
 	}
 
 	public function exportJob(){
-		$no = $this->input->post('nomor[]');
-		$bulan = $this->input->post('bulan');
-		$kategori = $this->input->post('kategori');
-		$hari = $this->input->post('hari');
+		$no 		= $this->input->post('nomor[]');
+		$bulan 		= $this->input->post('bulan');
+		$kategori 	= $this->input->post('kategori');
+		$hari 		= $this->input->post('hari');
 		$datanya = array();
-		for ($i=0; $i < count($no); $i++) { 
+		for ($i=0; $i < (count($no)/2); $i++) { 
 			$baris['item'] = $this->input->post('item'.$no[$i].'');
 			$baris['desc'] = $this->input->post('desc'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
@@ -305,7 +365,201 @@ class C_Monitoring extends CI_Controller
 			}
 			array_push($datanya, $baris);
 		}
-		echo "<pre>";print_r($datanya);exit();
+		// echo "<pre>";print_r($no);exit();
+
+		include APPPATH.'third_party/Excel/PHPExcel.php';
+		$excel = new PHPExcel();
+		$excel->getProperties()->setCreator('CV. KHS')
+					->setLastModifiedBy('Quick')
+					->setTitle("Monitoring Job Produksi")
+					->setSubject("CV. KHS")
+					->setDescription("Monitoring Job Produksi")
+					->setKeywords("MJP");
+		
+		$style_title = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+			),
+		);
+		$style1 = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'bdeefc'),
+			),
+			'font' => array(
+				'bold' => true,
+				'wrap' => true,
+			), 
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	=> PHPExcel_Style_Alignment::VERTICAL_CENTER,
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		$style2 = array(
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'wrap' => true,
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		$style3 = array(
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+			
+		);
+		
+		if ($hari == 31) {
+			$akhir = 'AI';
+		}elseif ($hari == 30) {
+			$akhir = 'AH';
+		}elseif ($hari == 29){
+			$akhir = 'AG';
+		}else {
+			$akhir = 'AF';
+		}
+
+		//TITLE
+		$excel->setActiveSheetIndex(0)->setCellValue('A1', "MONITORING JOB PRODUKSI"); 
+		$excel->getActiveSheet()->mergeCells("A1:".$akhir."1"); 
+		$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
+		
+		$excel->setActiveSheetIndex(0)->setCellValue('A2', "Kategori"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B2', ": ".$kategori); 
+		
+		$excel->setActiveSheetIndex(0)->setCellValue('A3', "Bulan"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B3', ": ".$bulan); 
+
+		$excel->setActiveSheetIndex(0)->setCellValue('A5', "NO.");
+		$excel->setActiveSheetIndex(0)->setCellValue('B5', "KODE");
+		$excel->setActiveSheetIndex(0)->setCellValue('C5', "DESKRIPSI");
+		$excel->setActiveSheetIndex(0)->setCellValue('D5', "");
+		$excel->setActiveSheetIndex(0)->setCellValue('E5', "TANGGAL");
+		$excel->getActiveSheet()->mergeCells("A5:A6"); 
+		$excel->getActiveSheet()->mergeCells("B5:B6"); 
+		$excel->getActiveSheet()->mergeCells("C5:C6"); 
+		$excel->getActiveSheet()->mergeCells("D5:D6"); 
+		$excel->getActiveSheet()->mergeCells("E5:".$akhir."5"); 
+		
+		$row = 6;
+		$col = 4;
+		for ($i=0; $i < $hari ; $i++) { //tanggal 1 - akhir
+			$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, ($i+1));
+			$col++;
+		}
+		
+		$excel->getActiveSheet()->getStyle('A5')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('A6')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('B5')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('B6')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('C5')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('C6')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('D5')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('D6')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("E5:".$akhir."6")->applyFromArray($style1);
+		for ($n=4; $n < ($hari+4) ; $n++) { // styling tanggal col 4 - akhir
+			$a = $this->numbertoalpha($n);
+			$excel->getActiveSheet()->getStyle("".$a."6")->applyFromArray($style1);
+		}
+		
+		$no=1;
+		$numrow = 7;
+		$sesuatu = 6;
+		foreach ($datanya as $d) {	
+			// echo "<pre>";print_r($d);exit();
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $d['item']);
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $d['desc']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), "A");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), "(-)");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+3), "C");
+			$row = $numrow;
+			for ($p=0; $p < 4; $p++) { 
+				$col = 4;
+				for ($i=0; $i < $hari ; $i++) { // value per tanggal
+					if ($p == 0) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['plan'.$i.'']);
+					}elseif ($p == 1) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['akt'.$i.'']);
+					}elseif ($p == 2) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['min'.$i.'']);
+					}else {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['com'.$i.'']);
+					}
+					$col++;
+				}
+				$row++;
+			}
+
+			$merge = $numrow + 3;
+			$baris2 = $numrow + 1;
+			$baris3 = $numrow + 2;
+			// echo "<pre>";print_r($numrow);exit();
+			$excel->getActiveSheet()->mergeCells("A$numrow:A$merge"); 
+			$excel->getActiveSheet()->mergeCells("B$numrow:B$merge"); 
+			$excel->getActiveSheet()->mergeCells("C$numrow:C$merge"); 
+			for ($i=0; $i < 4 ; $i++) { 
+				$baris = $numrow+$i;
+				$excel->getActiveSheet()->getStyle("A$baris")->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle("B$baris")->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle("C$baris")->applyFromArray($style2);
+				
+				for ($n=3; $n < ($hari+4) ; $n++) { // styling kolom tanggal/baris
+					$a = $this->numbertoalpha($n);
+					$excel->getActiveSheet()->getStyle("$a$baris")->applyFromArray($style3);
+				}
+			}
+			$numrow = $merge + 1;
+			$no++;
+		}
+				
+		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
+		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(20); 
+		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); 
+		for($col = 'D'; $col !== 'AJ'; $col++) { // autowidth
+			$excel->getActiveSheet()
+				->getColumnDimension($col)
+				->setAutoSize(true);
+		}
+		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+		
+		// Set orientasi kertas jadi LANDSCAPE
+		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+		// Set judul file excel nya
+		$excel->getActiveSheet(0)->setTitle("Monitoring Job Produksi");
+		$excel->setActiveSheetIndex(0);
+		// Proses file excel
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment; filename="Monitoring-Job-Produksi-'.$kategori.'-'.$bulan.'.xlsx"'); 
+		header('Cache-Control: max-age=0');
+		$write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+		$write->save('php://output');
+	}
+
+	public function numbertoalpha($n){
+		for($r = ""; $n >= 0; $n = intval($n / 26) - 1)
+		$r = chr($n%26 + 0x41) . $r;
+		return $r;
 	}
 
 

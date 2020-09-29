@@ -149,7 +149,8 @@ class M_monitoring extends CI_Model
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-WELD','','') INT_WELD            
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-SUB','','') INT_SUB            
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'PNL-TKS','','') PNL_TKS            
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
+                --,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
+                ,khs_inv_qty_att(101,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
                 ,khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-ASSYGT','','') INT_ASSYGT,
                 khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-ASSY','','') INT_ASSY,
                 khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHA','','') INT_MACHA,
@@ -196,6 +197,39 @@ class M_monitoring extends CI_Model
       $query = $this->oracle->query($sql);
       return $query->result_array();
   }
+  
+  public function getdataWIP($item){
+    $sql = "SELECT msib.SEGMENT1  ASSY
+    ,msib.DESCRIPTION
+    ,we.WIP_ENTITY_NAME
+    ,wdj.START_QUANTITY
+    ,decode(wdj.status_type,12,'Closed',3,'Released',4,'Complete',7,'Cancelled') job_status
+    ,to_char(wdj.SCHEDULED_START_DATE,'DD-MM-YYYY HH24:MI:SS')                SCHEDULED_START_DATE
+                    from wip_discrete_jobs wdj
+                        ,wip_entities we
+                        ,mtl_system_items_b msib
+                        ,wip_operations wipo
+                        ,wip_operation_resources wipor
+                        ,bom_departments bd
+                        ,bom_resources br
+                    where wdj.WIP_ENTITY_ID = we.WIP_ENTITY_ID
+                        and wdj.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+                        and wdj.ORGANIZATION_ID = msib.ORGANIZATION_ID
+                        and wipo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+                        and wipo.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+                        and wipor.WIP_ENTITY_ID = wipo.WIP_ENTITY_ID
+                        and wipor.OPERATION_SEQ_NUM = wipo.OPERATION_SEQ_NUM
+                        and wipo.department_id = bd.department_id
+                        and wipo.ORGANIZATION_ID = bd.ORGANIZATION_ID
+                        and wipor.RESOURCE_ID = br.RESOURCE_ID
+                        and wipor.ORGANIZATION_ID = br.ORGANIZATION_ID
+                        and br.RESOURCE_TYPE = 1
+                        and wdj.STATUS_TYPE = 3
+                        and msib.SEGMENT1 = '$item'
+                    order by 1";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
 
 
 }

@@ -68,8 +68,7 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
         <?php $no++; }?>
     </tbody>
 </table>
-<br>
-<!-- <div class="panel-body text-right">
-    <button class="btn btn-lg bg-orange" formtarget="_blank" formaction="<?= base_url("MonitoringJobProduksi/Monitoring/exportJob")?>"><i class="fa fa-download"></i> Download</button>
-</div> -->
+<div class="panel-body text-right">
+    <button class="btn btn-lg bg-orange" formaction="<?= base_url("MonitoringJobProduksi/Monitoring/exportJob")?>"><i class="fa fa-download"></i> Download</button>
+</div>
 </form>
