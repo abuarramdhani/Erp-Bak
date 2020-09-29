@@ -372,14 +372,14 @@ $(document).ready(function() {
 
     $(document).on('click', '.poNumberNonC', function() {
         var poNumber = $('.poNonC').val();
-        var supplier = $('.splrNonC').val();
+        var supplier = $('.slcSupplierNC').val();
         
         // alert(poNumber);
         
         if (poNumber != '') {
             $('#waitLineNonC').modal('show');
 
-            if (supplier == '') {
+            if (supplier == null) {
                 
                 $.ajax({
                     type: "POST",
@@ -391,7 +391,9 @@ $(document).ready(function() {
                     success: function(response) {
                         console.log(response);
                         // $('.byrNonC').val(response[0]['NATIONAL_IDENTIFIER'] + ', ' + response[0]['FULL_NAME']);
-                        $('.splrNonC').val(response[0]['VENDOR_NAME']);
+                        var html = '<option value="' + response[0]['VENDOR_NAME'] + '">' + response[0]['VENDOR_NAME'] + '</option>';
+                        $('.slcSupplierNC').append(html);
+                        $('.slcSupplierNC').val(response[0]['VENDOR_NAME']).trigger('change.select2');
                         $('.splrAddresNonC').val(response[0]['ALAMAT_LENGKAP']);
                         $('.picNonC').val(response[0]['PIC']);
                         $('.phoneNonC').val(response[0]['PHONE_NUMBER']);

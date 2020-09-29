@@ -143,7 +143,7 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <!-- <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>"> -->
-                                                    <?php if ($headerRow['supplier'] == null) {
+                                                    <?php if ($headerRow['supplier'] != null) {
                                                             $opt = '<option value="'.$headerRow['supplier'].'">'.$headerRow['supplier'].'</option>';
 
                                                          }else{
