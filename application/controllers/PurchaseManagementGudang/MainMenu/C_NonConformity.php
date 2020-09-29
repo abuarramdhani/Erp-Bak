@@ -1545,7 +1545,7 @@ class C_NonConformity extends CI_Controller
 	{
 		$string = $_GET['q'];
 
-		$data = $this->M_nonconformity->searchSupplier(strtoupper($string));
+		$data = $this->M_nonconformity->searchSupplier($string);
 		echo json_encode($data);
 	}
 
