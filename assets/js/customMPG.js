@@ -330,3 +330,21 @@ function schRekapMGS(th) {
         
         })
 }
+
+function getItemIntransit(th) {
+    var param = $('#param').val();
+
+    $.ajax({
+        url : baseurl + "MonitoringGdSparepart/ItemIntransit/searchdata",
+        data : {param : param},
+        dataType : 'html',
+        type : 'POST',
+        beforeSend: function() {
+        $('#tb_itemintransit' ).html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
+        },
+        success : function (result) {
+            $('#tb_itemintransit').html(result);
+            
+        }
+    })
+}

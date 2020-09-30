@@ -224,6 +224,58 @@ class M_monitoring extends CI_Model {
         return $query->result_array();
         // return $sql;
     }
+    
+    public function getDataItemIntransit($tujuan) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT rsh.shipment_num, rsh.receipt_num, msib.segment1 kode_brg, 
+                    msib.description nama_brg, rsh.creation_date tgl_transaksi,
+                    (TRUNC (SYSDATE) - TO_DATE (rsh.creation_date)) jumlah_hari,
+                    mp1.organization_code from_io, ms.from_subinventory,
+                    (SELECT mil.segment1
+                    FROM mtl_item_locations mil,
+                            mtl_material_transactions mmt
+                    WHERE mmt.transaction_id = rsl.mmt_transaction_id
+                        AND mil.inventory_location_id = mmt.locator_id) from_loc,
+                    mp2.organization_code to_io, ms.to_subinventory,
+                    (SELECT mil.segment1
+                    FROM mtl_item_locations mil,
+                            mtl_material_transactions mmt
+                    WHERE mmt.transaction_id = rsl.mmt_transaction_id
+                        AND mil.inventory_location_id = mmt.transfer_locator_id)to_loc,
+                    rsl.quantity_shipped qty_kirim, 
+                    rsl.quantity_received qty_terima,
+                    (rsl.quantity_shipped - rsl.quantity_received) qty_intransit,
+                    (SELECT attribute4
+                    FROM mtl_txn_request_headers
+                    WHERE request_number = rsh.shipment_num) comments,
+                    mut.serial_number, rsh.shipment_header_id, rsl.line_num
+                FROM mtl_system_items_b msib,
+                        rcv_shipment_headers rsh,
+                        rcv_shipment_lines rsl LEFT JOIN mtl_unit_transactions mut ON mut.transaction_id = rsl.mmt_transaction_id,
+                        mtl_parameters mp1,
+                        mtl_parameters mp2,
+                        mtl_supply ms
+                WHERE           rsh.shipment_header_id = rsl.shipment_header_id
+                    AND msib.inventory_item_id = rsl.item_id
+                    AND mp1.organization_id = ms.from_organization_id
+                    AND rsl.shipment_header_id = ms.shipment_header_id
+                    AND rsl.shipment_line_id = ms.shipment_line_id
+                    AND mp2.organization_id = ms.to_organization_id
+                    AND ms.supply_type_code = 'SHIPMENT'
+                    AND (rsh.organization_id = 225 OR rsh.ship_to_org_id = 225)
+                    $tujuan
+                --AND TRUNC (rsh.creation_date) BETWEEN TO_DATE('', 'DD/MM/YYYY') AND TO_DATE('', 'DD/MM/YYYY')
+                ORDER BY       rsh.creation_date,
+                        mp1.organization_code,
+                        mp2.organization_code,
+                        rsh.shipment_header_id,
+                        rsl.line_num";
+        // echo "<pre>";print_r($sql);exit();
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
+
 
 }
 
