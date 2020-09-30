@@ -49,8 +49,6 @@ class C_ItemIntransit extends CI_Controller
     }
     
     public function searchdata(){
-        // $tgl_awal = $this->input->post('tgl_awal');
-        // $tgl_akhir = $this->input->post('tgl_akhir');
         $param = $this->input->post('param');
 
         if ($param == 'from') {
