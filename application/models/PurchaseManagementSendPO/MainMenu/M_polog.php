@@ -44,7 +44,8 @@ class M_polog extends CI_Model
         kppl.PRINT_BY = fu.USER_ID
         and pha.SEGMENT1 = kppl.PHA_SEGMENT_1
         and pha.AGENT_ID = ppf.PERSON_ID
-        and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')";
+        and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
+        and fu.USER_NAME like '%PSUP%'";
 
         return $this->oracle->query($sql)->result_array();
     }
