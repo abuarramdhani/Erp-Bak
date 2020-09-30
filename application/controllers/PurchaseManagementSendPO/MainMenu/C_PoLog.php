@@ -81,7 +81,7 @@ class C_PoLog extends CI_Controller {
         }
         
         $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO';
-        $config['allowed_types']        = 'pdf';
+        $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
         $config['overwrite']            = TRUE;
 
         $this->load->library('upload', $config);
