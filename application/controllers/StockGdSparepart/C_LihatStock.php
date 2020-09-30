@@ -37,11 +37,17 @@ class C_LihatStock extends CI_Controller
 		$data['Menu'] = 'Lihat Stock';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
+		// echo "<pre>";print_r($UserMenu);exit();
+		
+		if ($user == 'B0597' || $user == 'B0892') {
+			$data['UserMenu'][] = $UserMenu[0];
+			$data['UserMenu'][] = $UserMenu[1];
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
 		// $data['unit'] = $this->M_lihatstock->kodeUnit();
 		$data['kode'] = array('0' => 'AAA', '1' => 'AAB', '2' => 'AAC', '3' => 'AAD', '4' => 'AAE', '5' => 'AAF',
 							'6' => 'AAG', '7' => 'AAH', '8' => 'AAK', '9' => 'AAL', '10' => 'AAN', '11' => 'ACA',
@@ -112,26 +118,31 @@ class C_LihatStock extends CI_Controller
 		}else{
 			$kode = $this->kodebrg($kode_brg);
 			$kode2 = $this->kodeawal($kode_awal);
+			if ($ket == 'min') {
+				$qty = "WHERE onhand <= min";
+			}elseif ($ket == 'max') {
+				$qty = "WHERE onhand >= max";
+			}
 		}
 
 		$getdata = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode2);
 		
-		if ($ket == 'min' || $ket == 'max') {
-			$data['data'] = array();
-			foreach ($getdata as $key => $value) {
-				if ($ket == 'min') {
-					if ($value['MIN'] > $value['ONHAND'] && $value['MIN'] != '' && $value['MAX'] != '') {
-						array_push($data['data'], $getdata[$key]);
-					}
-				}else {
-					if ($value['MAX'] < $value['ONHAND'] && $value['MIN'] != '' && $value['MAX'] != '') {
-						array_push($data['data'], $getdata[$key]);
-					}
-				}
-			}
-		}else {
+		// if ($ket == 'min' || $ket == 'max') {
+		// 	$data['data'] = array();
+		// 	foreach ($getdata as $key => $value) {
+		// 		if ($ket == 'min') {
+		// 			if ($value['MIN'] > $value['ONHAND'] && $value['MIN'] != '' && $value['MAX'] != '') {
+		// 				array_push($data['data'], $getdata[$key]);
+		// 			}
+		// 		}else {
+		// 			if ($value['MAX'] < $value['ONHAND'] && $value['MIN'] != '' && $value['MAX'] != '') {
+		// 				array_push($data['data'], $getdata[$key]);
+		// 			}
+		// 		}
+		// 	}
+		// }else {
 			$data['data'] = $getdata;
-		}
+		// }
 		// echo "<pre>";print_r($data['data']);exit();
 		
 		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);
