@@ -4725,3 +4725,7 @@ $route['Covid/MonitoringCovid/(:any)/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_
 $route['LaporanKerjaOperator'] = 'LKOWelding/C_Index';
 $route['LaporanKerjaOperator/Input'] = 'LKOWelding/C_Input';
 $route['LaporanKerjaOperator/Input/(:any)'] = 'LKOWelding/C_Input/$1';
+
+//-----------------------------------api-do-backup---------------------------------------------//
+$route['Apidobackup'] 						= 'Apidobackup/C_Index';
+$route['Apidobackup/engine'] = 'Apidobackup/C_Web_Reports';
