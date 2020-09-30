@@ -61,12 +61,6 @@ class M_polog extends CI_Model
         return $this->oracle->query($sql);
     }
 
-    public function updateDelete($noPO)
-    {
-        $sql = "UPDATE khs_psup_po_logbook SET DELETE_FLAG = 'Y' WHERE PHA_SEGMENT_1 = '$noPO'";
-        return $this->oracle->query($sql);
-    }
-
     public function updateVendorData($noPO, $date, $con_method, $pic, $lampiran)
     {
         $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'MM/DD/YYYY'), VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO'";

@@ -34,12 +34,6 @@ class C_PoLog extends CI_Controller {
         $this->load->view('V_Footer',$data);
     }
 
-    public function Delete()
-    {
-        $po_number = $this->input->post('id');
-        $this->M_polog->updateDelete($po_number);
-    }
-
     public function edit()
     {
         $user_id = $this->session->userid;
