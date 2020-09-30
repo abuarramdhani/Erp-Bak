@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   if ($(".PurchaseManagementSendPOTitle").html() == "WEB SEND PO BDL") {
     var IndonesiaMessageFormat =
       '\
@@ -180,7 +180,7 @@ $(document).ready(function() {
   //     return /^\d*$/.test(value);
   // });
 
-  $("#txtPMSPONoPO").on("blur", function() {
+  $("#txtPMSPONoPO").on("blur", function () {
     var PONumber = $(this).val();
     // console.log(PONumber);
     if ($(this).val().length > 0) {
@@ -190,13 +190,13 @@ $(document).ready(function() {
         url:
           baseurl + "PurchaseManagementSendPO/SendPO/getUserEmail/" + PONumber,
         dataType: "json",
-        success: function(result) {
+        success: function (result) {
           // console.log(result);
           if (result.email != null) {
             $(".divPMSPOWarnAddrNotFound").fadeOut();
             $("#txtPMSPOToEmailAddr").val(result.email);
             $(".PMSPOimgLoadAddr").hide();
-            setTimeout(function() {
+            setTimeout(function () {
               if (window.location.href.includes("po_number=")) {
                 $("#txtPMSPOSubject").val(
                   "Konfirmasi PO " + po_number + " CV. KHS"
@@ -214,7 +214,7 @@ $(document).ready(function() {
             $(".divPMSPOWarnAddrNotFound").fadeIn();
             $("#txtPMSPOToEmailAddr").val("");
             $(".PMSPOimgLoadAddr").hide();
-            setTimeout(function() {
+            setTimeout(function () {
               if (window.location.href.includes("po_number=")) {
                 $("#txtPMSPOSubject").val(
                   "Konfirmasi PO " + po_number + " CV. KHS"
@@ -235,7 +235,7 @@ $(document).ready(function() {
           } else {
             $(".divPMSPOSite").fadeOut();
           }
-        }
+        },
       });
     } else {
       $(".PMSPOimgLoadAddr").hide();
@@ -247,38 +247,38 @@ $(document).ready(function() {
   });
 
   $("#txtPMSPOToEmailAddr").on({
-    click: function() {
+    click: function () {
       $(".divPMSPOEmailAddrWarn").fadeIn();
     },
-    blur: function() {
+    blur: function () {
       $(".divPMSPOEmailAddrWarn").fadeOut();
       if ($(this).val().length > 0) {
         $(this).removeAttr("style", "background-color:#ffa8a8");
       }
-    }
+    },
   });
 
   $("#txtPMSPOCCEmailAddr").on({
-    click: function() {
+    click: function () {
       $(".divPMSPOCCEmailAddrWarn").fadeIn();
     },
-    blur: function() {
+    blur: function () {
       $(".divPMSPOCCEmailAddrWarn").fadeOut();
-    }
+    },
   });
 
   $("#txtPMSPOBCCEmailAddr")
     .val("purchasingsec12.quick1@gmail.com")
     .on({
-      click: function() {
+      click: function () {
         $(".divPMSPOBCCEmailAddrWarn").fadeIn();
       },
-      blur: function() {
+      blur: function () {
         $(".divPMSPOBCCEmailAddrWarn").fadeOut();
-      }
+      },
     });
 
-  $("#slcPMSPOFormatMessage").on("change", function() {
+  $("#slcPMSPOFormatMessage").on("change", function () {
     // console.log($(this).val());
     if ($(this).val() == "Indonesia") {
       $("#txaPMSPOEmailBody").redactor("set", IndonesiaMessageFormat);
@@ -289,7 +289,7 @@ $(document).ready(function() {
 
   $("#txaPMSPOEmailBody").redactor("set", IndonesiaMessageFormat);
 
-  $(".btnConfirmDiscard").on("click", function() {
+  $(".btnConfirmDiscard").on("click", function () {
     Swal.fire({
       title: "Batalkan penulisan pesan?",
       text: "Anda tidak dapat mengembalikan pesan yang anda tulis",
@@ -298,8 +298,8 @@ $(document).ready(function() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya",
-      cancelButtonText: "Tidak"
-    }).then(result => {
+      cancelButtonText: "Tidak",
+    }).then((result) => {
       if (result.value) {
         // console.log('Hello World!');
         $(".divPMSPOWarnAddrNotFound").fadeOut();
@@ -310,7 +310,7 @@ $(document).ready(function() {
     });
   });
 
-  $(".btnPMSPOcheckSend").on("click", function() {
+  $(".btnPMSPOcheckSend").on("click", function () {
     if (
       $("#txtPMSPOToEmailAddr").val().length < 1 &&
       $("#txtPMSPONoPO").val().length < 1
@@ -343,7 +343,7 @@ $(document).ready(function() {
         html: "Sedang mengirim pesan ...",
         onBeforeOpen: () => {
           Swal.showLoading();
-        }
+        },
       });
 
       // Ajax Send Email
@@ -379,10 +379,10 @@ $(document).ready(function() {
         contentType: false,
         data: form_data,
         dataType: "json",
-        success: function() {
+        success: function () {
           Swal.fire("Success!", "Pesan telah terkirim dan terarsip", "success");
         },
-        error: function(result) {
+        error: function (result) {
           globalresult = result;
           console.log(result.responseJSON);
           var message = result.responseJSON
@@ -392,16 +392,16 @@ $(document).ready(function() {
             type: "error",
             title: "Oops...",
             text: "Pesan gagal terkirim :(",
-            footer: '<span style="color:#3c8dbc">' + message + "</span>"
+            footer: '<span style="color:#3c8dbc">' + message + "</span>",
           });
-        }
+        },
       });
     }
   });
 
   // Tabel SPO Log horizontal scroll
   const PoLogTable = $("#tbl-SpoLog").DataTable({
-    scrollX: true
+    scrollX: true,
   });
 
   if (window.location.href.includes("po_number=")) {
@@ -409,13 +409,13 @@ $(document).ready(function() {
   }
 
   // Hapus data Po Log
-  $("#tbl-SpoLog").on("click", ".btnSPO-Delete", function() {
+  $("#tbl-SpoLog").on("click", ".btnSPO-Delete", function () {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
-        cancelButton: "btn btn-danger"
+        cancelButton: "btn btn-danger",
       },
-      buttonsStyling: false
+      buttonsStyling: false,
     });
     swalWithBootstrapButtons
       .fire({
@@ -425,20 +425,18 @@ $(document).ready(function() {
         showCancelButton: true,
         confirmButtonText: "Yes, delete it!",
         cancelButtonText: "No, cancel!",
-        reverseButtons: true
+        reverseButtons: true,
       })
-      .then(result => {
+      .then((result) => {
         if (result.value) {
           $.ajax({
             method: "POST",
             url: baseurl + "PurchaseManagementSendPO/PoLog/Delete",
             data: {
-              id: $(this).attr("po-number")
-            }
+              id: $(this).attr("po-number"),
+            },
           }).done(() => {
-            PoLogTable.row($(this).parents("tr"))
-              .remove()
-              .draw();
+            PoLogTable.row($(this).parents("tr")).remove().draw();
           });
           swalWithBootstrapButtons.fire(
             "Deleted!",
@@ -459,37 +457,31 @@ $(document).ready(function() {
   });
 
   // Date Picker edit data
-  $(() => {
-    $("#vendor_confirm_date").datepicker({
-      todayHighlight: true,
-      autoclose: true
-    });
+  $("#vendor_confirm_date").datepicker({
+    todayHighlight: true,
+    autoclose: true,
   });
 
-  $("#editVendorConfirm").on("click", ".btnVendorConfirm", function() {
-    // Ajax edit Data
-    let pbc_form_data = new FormData(),
+  $("#editPoLog").on("click", ".btnVendorConfirm", function () {
+    // Ajax edit Data Po Log
+    let epl_form_data = new FormData(),
       po_number = $('[name="po_number"]').val(),
       vendor_confirm_date = $('[name="vendor_confirm_date"]').val(),
-      distribution_method = $('[name="distribution_method"]').val(),
       vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
       vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
-      attachment_flag = $('[name="attachment_flag"]').val(),
       lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
-    pbc_form_data.append("po_number", po_number);
-    pbc_form_data.append("vendor_confirm_date", vendor_confirm_date);
-    pbc_form_data.append("distribution_method", distribution_method);
-    pbc_form_data.append("vendor_confirm_method", vendor_confirm_method);
-    pbc_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
-    pbc_form_data.append("attachment_flag", attachment_flag);
-    pbc_form_data.append("lampiran_po", lampiran_po);
+    epl_form_data.append("po_number", po_number);
+    epl_form_data.append("vendor_confirm_date", vendor_confirm_date);
+    epl_form_data.append("vendor_confirm_method", vendor_confirm_method);
+    epl_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
+    epl_form_data.append("lampiran_po", lampiran_po);
 
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
-        cancelButton: "btn btn-danger"
+        cancelButton: "btn btn-danger",
       },
-      buttonsStyling: false
+      buttonsStyling: false,
     });
     swalWithBootstrapButtons
       .fire({
@@ -499,13 +491,12 @@ $(document).ready(function() {
         showCancelButton: true,
         confirmButtonText: "Ya, update!",
         cancelButtonText: "Tidak, batalkan!",
-        reverseButtons: true
+        reverseButtons: true,
       })
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         if (result.value) {
           if (
-            $("#editVendorConfirm")
+            $("#editPoLog")
               .find('[required=""]')
               .map((i, v) => $(v).val())
               .toArray()
@@ -514,26 +505,19 @@ $(document).ready(function() {
             alert("Silahkan lengkapi data");
           } else {
             $.ajax({
-              method: "POST",
+              type: "POST",
               url: baseurl + "PurchaseManagementSendPO/PoLog/save",
               processData: false,
               contentType: false,
-              data: pbc_form_data,
-              dataType: "json"
+              data: epl_form_data,
+              dataType: "JSON",
             })
               .done(() => {
                 swalWithBootstrapButtons
                   .fire("Updated!", "Data berhasi diupdate.", "success")
                   .then(() => {
-                    let redirectUrl = $("input.url").val();
-                    console.log(redirectUrl);
-                    if (redirectUrl == "PoLog") {
-                      window.location.href =
-                        baseurl + "PurchaseManagementSendPO/" + redirectUrl;
-                    } else {
-                      window.location.href =
-                        baseurl + "PurchaseManagementSendPO/POLogbook";
-                    }
+                    window.location.href =
+                      baseurl + "PurchaseManagementSendPO/PoLog";
                   });
               })
               .fail(() => [
@@ -541,7 +525,94 @@ $(document).ready(function() {
                   "Error!",
                   "Data gagal diupdate.",
                   "warning"
-                )
+                ),
+              ]);
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Data tidak diupdate :)",
+            "error"
+          );
+        }
+      });
+  });
+
+  $("#editPoLogbook").on("click", ".btnEditPoLogbook", function () {
+    // Ajax edit Data di Menu POLogbook
+    let eplb_form_data = new FormData(),
+      po_number = $('[name="po_number"]').val(),
+      vendor_confirm_date = $('[name="vendor_confirm_date"]').val(),
+      distribution_method = $('[name="distribution_method"]').val(),
+      vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
+      vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
+      attachment_flag = $('[name="attachment_flag"]').val(),
+      lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
+    eplb_form_data.append("po_number", po_number);
+
+    eplb_form_data.append("distribution_method", distribution_method);
+    eplb_form_data.append("attachment_flag", attachment_flag);
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Apakah anda yakin?",
+        text: "Data akan di Update!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, update!",
+        cancelButtonText: "Tidak, batalkan!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.value) {
+          if (
+            $("#editPoLogbook")
+              .find('[required=""]')
+              .map((i, v) => $(v).val())
+              .toArray()
+              .includes("")
+          ) {
+            alert("Silahkan lengkapi data");
+          } else {
+            if ($('[name="vendor_confirm_date"]').val()) {
+              eplb_form_data.append("vendor_confirm_date", vendor_confirm_date);
+              eplb_form_data.append(
+                "vendor_confirm_method",
+                vendor_confirm_method
+              );
+              eplb_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
+              eplb_form_data.append("lampiran_po", lampiran_po);
+            }
+            $.ajax({
+              type: "POST",
+              url: baseurl + "PurchaseManagementSendPO/POLogbook/save",
+              processData: false,
+              contentType: false,
+              data: eplb_form_data,
+              dataType: "JSON",
+            })
+              .done(() => {
+                swalWithBootstrapButtons
+                  .fire("Updated!", "Data berhasi diupdate.", "success")
+                  .then(() => {
+                    window.location.href =
+                      baseurl + "PurchaseManagementSendPO/POLogbook";
+                  });
+              })
+              .fail(() => [
+                swalWithBootstrapButtons.fire(
+                  "Error!",
+                  "Data gagal diupdate.",
+                  "warning"
+                ),
               ]);
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
