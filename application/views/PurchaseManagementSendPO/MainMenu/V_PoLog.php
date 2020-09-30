@@ -177,9 +177,6 @@
                                                     <a class="btn btn-success btn-edit <?= ($value['SELISIH_WAKTU_2'] > 24 && $value['VENDOR_CONFIRM_DATE'] == NULL)?'hidden':''; ?>"
                                                         href="<?= base_url("PurchaseManagementSendPO/PoLog/edit") . '?po_number=' . $value['PO_NUMBER']; ?>"
                                                         title="Edit"><i class="fa fa-edit"></i></a>
-                                                    <a class="btn btn-danger btnSPO-Delete" href="#" title="Delete"
-                                                        po-number="<?= $value['PO_NUMBER']; ?>"><i
-                                                            class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                             <?php endforeach; ?>

@@ -45,7 +45,8 @@ class M_pologbook extends CI_Model
         and pha.SEGMENT1 = kppl.PHA_SEGMENT_1
         and pha.AGENT_ID = ppf.PERSON_ID
         and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
-        AND ppf.NATIONAL_IDENTIFIER = '$BuyerNIK'";
+        and ppf.NATIONAL_IDENTIFIER = '$BuyerNIK'
+        and fu.USER_NAME like '%PSUP%'";
 
         return $this->oracle->query($sql)->result_array();
     }

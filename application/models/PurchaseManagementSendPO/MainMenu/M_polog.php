@@ -44,7 +44,8 @@ class M_polog extends CI_Model
         kppl.PRINT_BY = fu.USER_ID
         and pha.SEGMENT1 = kppl.PHA_SEGMENT_1
         and pha.AGENT_ID = ppf.PERSON_ID
-        and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')";
+        and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
+        and fu.USER_NAME like '%PSUP%'";
 
         return $this->oracle->query($sql)->result_array();
     }
@@ -58,12 +59,6 @@ class M_polog extends CI_Model
     public function update2($noPO, $status)
     {
         $sql = "UPDATE khs_psup_po_logbook SET DELIVERY_STATUS_2 = '$status', SEND_DATE_2 = SYSDATE WHERE PHA_SEGMENT_1 = '$noPO'";
-        return $this->oracle->query($sql);
-    }
-
-    public function updateDelete($noPO)
-    {
-        $sql = "UPDATE khs_psup_po_logbook SET DELETE_FLAG = 'Y' WHERE PHA_SEGMENT_1 = '$noPO'";
         return $this->oracle->query($sql);
     }
 

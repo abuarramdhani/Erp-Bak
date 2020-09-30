@@ -408,54 +408,6 @@ $(document).ready(function () {
     $("#txtPMSPONoPO").trigger("blur");
   }
 
-  // Hapus data Po Log
-  $("#tbl-SpoLog").on("click", ".btnSPO-Delete", function () {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: "btn btn-success",
-        cancelButton: "btn btn-danger",
-      },
-      buttonsStyling: false,
-    });
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.value) {
-          $.ajax({
-            method: "POST",
-            url: baseurl + "PurchaseManagementSendPO/PoLog/Delete",
-            data: {
-              id: $(this).attr("po-number"),
-            },
-          }).done(() => {
-            PoLogTable.row($(this).parents("tr")).remove().draw();
-          });
-          swalWithBootstrapButtons.fire(
-            "Deleted!",
-            "Your file has been deleted.",
-            "success"
-          );
-        } else if (
-          /* Read more about handling dismissals below */
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
-          swalWithBootstrapButtons.fire(
-            "Cancelled",
-            "Your imaginary file is safe :)",
-            "error"
-          );
-        }
-      });
-  });
-
   // Date Picker edit data
   $("#vendor_confirm_date").datepicker({
     todayHighlight: true,
