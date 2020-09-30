@@ -330,3 +330,23 @@ function schRekapMGS(th) {
         
         })
 }
+
+function getItemIntransit(th) {
+    var tgl_awal = $('#tglAwal').val();
+    var tgl_akhir = $('#tglAkhir').val();
+    var param = $('#param').val();
+
+    $.ajax({
+        url : baseurl + "MonitoringGdSparepart/ItemIntransit/searchdata",
+        data : {tgl_awal : tgl_awal, tgl_akhir : tgl_akhir, param : param},
+        dataType : 'html',
+        type : 'POST',
+        beforeSend: function() {
+        $('#tb_itemintransit' ).html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
+        },
+        success : function (result) {
+            $('#tb_itemintransit').html(result);
+            
+        }
+    })
+}
