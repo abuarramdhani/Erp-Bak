@@ -231,4 +231,30 @@ class M_lihatstock extends CI_Model
         return $query->result_array();
     }
 
+    public function getdataPeti($param){
+        $mysql = $this->load->database('khs_packing', true);
+        $sql = "select * from sp_monitoring_peti $param";
+        $query = $mysql->query($sql);
+        return $query->result_array();
+    }
+
+    public function saveJmlPeti($item, $jml){
+        $mysql = $this->load->database('khs_packing', true);
+        $sql = "insert into sp_monitoring_peti (kode, peti)
+                values('$item', $jml)";
+        $query = $mysql->query($sql);
+    }
+    
+    public function updatePeti($item, $jml){
+        $mysql = $this->load->database('khs_packing', true);
+        $sql = "update sp_monitoring_peti set peti = $jml where kode = '$item'";
+        $query = $mysql->query($sql);
+    }
+    
+    public function deletePeti($item){
+        $mysql = $this->load->database('khs_packing', true);
+        $sql = "delete from sp_monitoring_peti where kode = '$item'";
+        $query = $mysql->query($sql);
+    }
+
 }

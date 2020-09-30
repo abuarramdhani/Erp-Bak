@@ -35,14 +35,23 @@ class C_Index extends CI_Controller {
 	public function index()
 	{
 		$this->checkSession();
-		$user_id = $this->session->userid;
+		$user_id 	= $this->session->userid;
+		$user 		= $this->session->user;
 		
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['Title'] = 'Stock Gudang Sparepart (SP-YSP)';
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		// echo "<pre>";print_r($UserMenu);exit();
+		
+		if ($user == 'B0597' || $user == 'B0892') {
+			$data['UserMenu'][] = $UserMenu[0];
+			$data['UserMenu'][] = $UserMenu[1];
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

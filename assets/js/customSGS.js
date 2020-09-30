@@ -81,6 +81,33 @@ function getLihatStock(no, ket) {
 		});
 }
 
+var peti = document.getElementById('tb_peti');
+if (peti) {
+	var request = $.ajax({
+		url: baseurl+'StockGdSparepart/MonitoringPeti/searchData',
+		type: "POST",
+		datatype: 'html'
+	});
+	$('#tb_peti').html('');
+	$('#tb_peti').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"><br/></center>' );
+		
+	request.done(function(result){
+		$('#tb_peti').html(result);
+	});
+}
+
+function savejmlPeti(no) {
+	var item = $('#kode_brg'+no).val();
+	var jml = $('#peti'+no).val();
+
+	$.ajax({
+		url : baseurl + "StockGdSparepart/MonitoringPeti/savepeti",
+		data : { item : item, jml : jml},
+		dataType : 'html',
+		type : 'POST',
+	})
+}
+
 function modalHistory(no) {
     var kode 	= $('#kode_brg'+no).val();
     var nama 	= $('#nama_brg'+no).val();
