@@ -155,12 +155,12 @@ foreach ($IzinApprove as $key) {
         }
     }
 
-    if (date("Y-m-d", strtotime($row['created_date'])) == date("Y-m-d") && empty($row['point'])) {
+    if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
         $poin = '-';
-    } elseif (date("Y-m-d", strtotime($row['created_date'])) <= date("Y-m-d") && empty($row['point'])) {
+    } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
         $poin = '0';
     } else {
-        $poin = $row['point'];
+        $poin = $key['point'];
     }
 
 
