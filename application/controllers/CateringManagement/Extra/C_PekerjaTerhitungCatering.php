@@ -63,7 +63,7 @@ class C_PekerjaTerhitungCatering extends CI_Controller
 		$lokasi = $this->input->get('lokasi');
 		$jenis = $this->input->get('jenis');
 
-		if ($jenis == 'Refresh Makan Terakhir') {
+		if (trim(strtolower($jenis)) == trim(strtolower('Refresh Makan Terakhir'))) {
 			$data = $this->M_pekerjaterhitungcatering->getPesananDetailByTanggalShiftLokasiTempatMakan($tanggal,$shift,$lokasi,$tempat_makan);	
 		}else{
 			if ($lokasi == '1') {
@@ -73,8 +73,12 @@ class C_PekerjaTerhitungCatering extends CI_Controller
 			}
 			if ($shift == 1) {
 				$data = $this->M_pekerjaterhitungcatering->getListShiftSatu($tanggal,$tempat_makan,$lokasi);
-			}else{
+			}elseif($shift == 2){
 				$data = $this->M_pekerjaterhitungcatering->getListShiftDua($tanggal,$tempat_makan,$lokasi);
+			}elseif($shift == 3){
+				$data = array();
+			}else{
+			    $data = array();
 			}
 		}
 				
