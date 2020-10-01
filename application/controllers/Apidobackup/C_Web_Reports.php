@@ -1,7 +1,7 @@
 <?php
 // header('Access-Control-Allow-Origin: *');
 // header("Access-Control-Allow-Methods: GET, OPTIONS");
-// defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class C_Web_Reports extends CI_Controller
 {
