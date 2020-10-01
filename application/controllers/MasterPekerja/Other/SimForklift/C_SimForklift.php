@@ -103,9 +103,6 @@ class C_SimForklift extends CI_Controller
 			'jenis' => $jenis,
 			'mulai_berlaku' => $awal,
 			'selesai_berlaku' => $akhir,
-			'file_pdf' => '',
-			'file_image' => '',
-			'file_corel' => '',
 			'created_by' => $this->session->user,
 		);
 		$this->M_simforklift->insertSimForklift($data);
