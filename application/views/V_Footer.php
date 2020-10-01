@@ -105,6 +105,7 @@
 			?>
 				<script src="<?= base_url('assets/js/customFA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customCM.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customADB.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customAL.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customAP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customAPD.js') ?>"></script>
