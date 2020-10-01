@@ -73,8 +73,10 @@ class C_PekerjaTerhitungCatering extends CI_Controller
 			}
 			if ($shift == 1) {
 				$data = $this->M_pekerjaterhitungcatering->getListShiftSatu($tanggal,$tempat_makan,$lokasi);
-			}else{
+			}elseif($shift == 2){
 				$data = $this->M_pekerjaterhitungcatering->getListShiftDua($tanggal,$tempat_makan,$lokasi);
+			}else{
+			    $data = array();
 			}
 		}
 				
