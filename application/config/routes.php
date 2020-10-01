@@ -4737,3 +4737,16 @@ $route['LaporanKerjaOperator/Input/(:any)'] = 'LKOWelding/C_Input/$1';
 //-----------------------------------api-do-backup---------------------------------------------//
 $route['Apidobackup'] = 'Apidobackup/C_Index';
 $route['Apidobackup/engine'] = 'Apidobackup/C_Web_Reports';
+//---------------------------------- CAR Vendor Purchasing -------------------------------------//
+$route['CARVP'] = 'CARVP/C_Index';
+$route['CARVP/Input'] = 'CARVP/C_Input';
+$route['CARVP/Input/(:any)'] = 'CARVP/C_Input/$1';
+$route['CARVP/ListData'] = 'CARVP/C_List';
+$route['CARVP/ListData/(:any)'] = 'CARVP/C_List/$1';
+$route['CARVP/ListData/(:any)'] = 'CARVP/C_List/$1';
+$route['CARVP/ListData/(:any)/(:any)'] = 'CARVP/C_List/$1/$2';
+
+
+$route['CARVPkoor'] = 'CARVP/C_Index';
+$route['CARVPkoor/Approval'] = 'CARVP/C_Approve';
+$route['CARVPkoor/Approval/(:any)'] = 'CARVP/C_Approve/$1';
