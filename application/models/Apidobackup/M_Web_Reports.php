@@ -16,7 +16,7 @@ class M_web_reports extends CI_Model
     public function MasterDO($id)
     {
       $response = $this->oracle->query("SELECT * from khs.khs_cetak_do_unit_sc_qr kc where kc.REQUEST_ID = '$id'")->result_array();
-      if(empty($response)) {
+      if(empty($response)){
           $response = array(
               'success' => false,
               'message' => 'data is empty.'

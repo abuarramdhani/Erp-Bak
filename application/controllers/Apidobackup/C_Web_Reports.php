@@ -20,14 +20,14 @@ class C_Web_Reports extends CI_Controller
         //load the login model
         $this->load->library('session');
         $this->load->library('ciqrcode');
-        $this->load->model('M_index');
+        $this->load->model('M_Index');
         $this->load->model('SystemAdministration/MainMenu/M_user');
-        //local
+        //
         $this->load->model('Apidobackup/M_web_reports');
 
         date_default_timezone_set('Asia/Jakarta');
 
-        if ($this->session->userdata('logged_in')!=true) {
+        if ($this->session->userdata('logged_in')!=true){
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
