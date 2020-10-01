@@ -5204,7 +5204,8 @@ public function exportAgain($id){
     $tipe_urutan 	  = array_column($newID, 'tipe_urutan');
     $start 	          = array_column($newID, 'mulai');
     $finish 	      = array_column($newID, 'finish');
-    $last_finish      = end($finish);  
+
+    $last_finish      = max($finish);  
     $waktu 	          = array_column($newID, 'waktu');
 
     //TSKK PRINTER :v
@@ -5385,11 +5386,19 @@ public function exportAgain($id){
     // echo"<pre>"; echo $cycle_time;
     // echo"<pre>"; echo "KAGA";
 
-    if ($cycle_time < 450) {
+    if ($jumlah >= $takt_time) {
+        $akhir = $jumlah;
+    } else {
+        $akhir = $takt_time;
+    }
+
+    // if ($cycle_time < 450) {
+    if ($akhir < 450) {
         $end = 450;
     } else {
         // echo $jumlah; exit();
-        $g = (int)($cycle_time / 10);
+        // $g = (int)($cycle_time / 10);
+        $g = (int)($akhir / 10);
         $g += 1;
         $end = $g * 10;
         // echo "g = $g <br>jml = $jumlah <br>".$end;
@@ -6563,7 +6572,7 @@ public function exportAgain($id){
 
     $rows[$rowJumlahElemen + 1][127] = ' = ';
     $rows[$rowJumlahElemen + 1][132] = 'Waktu 1 Shift';
-    $rows[$rowJumlahElemen + 1][191] = 'Kali / Shift';
+    $rows[$rowJumlahElemen + 1][191] = 'Waktu / Ratio';
 
     $rows[$rowJumlahElemen + 1][206] = ' = ';
     $rows[$rowJumlahElemen + 1][211] = 'Waktu Irregular Job';
@@ -6613,10 +6622,10 @@ public function exportAgain($id){
     $rows[$rowJumlahElemen + 5][134] = $rencana_produksi; //Data Rencana Produksi / Bulan
     $rows[$rowJumlahElemen + 5][183] = ')';
     $rows[$rowJumlahElemen + 5][206] = ' = ';
-    $rows[$rowJumlahElemen + 5][211] = $hasil_irregular[0]; //DATA HASIL 3
-    $rows[$rowJumlahElemen + 5][230] = 'Kali / Shift';
+    $rows[$rowJumlahElemen + 5][211] = $jumlah_hasil_irregular; //DATA HASIL 3
+    $rows[$rowJumlahElemen + 5][230] = 'Detik';
     $rows[$rowJumlahElemen + 5][294] = ' = ';
-    $rows[$rowJumlahElemen + 5][299] = ''; //DATA HASIL 4
+    $rows[$rowJumlahElemen + 5][299] = ($waktu_satu_shift*$qty_unit)/$cycle_time; //DATA HASIL 4
     $rows[$rowJumlahElemen + 5][319] = 'Pcs';
 
 
@@ -6641,7 +6650,7 @@ public function exportAgain($id){
         $rows[$rowJumlahElemen+9][18] = '5. Usulan Perbaikan'; 
 
         $rows[$rowJumlahElemen][114] = '2. Perhitungan Taktime';
-        $rows[$rowJumlahElemen][191] = '3. Ratio Irregular Job';
+        $rows[$rowJumlahElemen][191] = '3. Total Waktu Irregular Job';
         $rows[$rowJumlahElemen][279] = '4. Jumlah Pcs yang dihasilkan dalam 1 shift';
         $rows[$rowJumlahElemen+2][9] = $jumlah;
 
