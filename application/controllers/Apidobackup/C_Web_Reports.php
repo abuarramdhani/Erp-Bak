@@ -33,11 +33,6 @@ class C_Web_Reports extends CI_Controller
             $this->session->set_userdata('Responsbility', 'some_value');
         }
     }
-
-
-
-
-
     
 //-------------------------penampil------------------//
 public function checkSession()

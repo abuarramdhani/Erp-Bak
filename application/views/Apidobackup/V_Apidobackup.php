@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php $link = "http://produksi.quick.com/api-do-backup/assets/img/DO_SPB_TAMPUNG/" ?>
+                    <?php $link = "http://produksi.quick.com/api-do-backup/assets/img/DO_SPB_TAMPUNG/"?>
                         <?php foreach($param as $key => $value) : ?>
                         <tr>
                             <td><center><?= $key + 1; ?></center></td>

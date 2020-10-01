@@ -118,7 +118,7 @@ class M_Web_Reports extends CI_Model
                    AND kdt.delivery_type like 'SPB%'
                    ";
         $response = $this->oracle->query($query)->result_array();
-        if (empty($response)) {
+        if(empty($response)){
             $response = null;
         }
         return $response;

@@ -1,5 +1,5 @@
 <section id="content">
-	<div class="inner" style="background: url('<?php echo base_url('assets/img/3.jpg');?>');background-size: cover;" >
+	<div class="inner" style="background: url('<?php echo base_url('assets/img/3.jpg');?>');background-size: cover;">
 
 
 			<!-- Content Header (Page header) -->
