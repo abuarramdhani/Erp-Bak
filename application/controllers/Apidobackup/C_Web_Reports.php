@@ -20,10 +20,10 @@ class C_Web_Reports extends CI_Controller
         //load the login model
         $this->load->library('session');
         $this->load->library('ciqrcode');
-        $this->load->model('M_Index');
+        $this->load->model('M_index');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         //local
-        $this->load->model('Apidobackup/M_Web_Reports');
+        $this->load->model('Apidobackup/M_web_reports');
 
         date_default_timezone_set('Asia/Jakarta');
 
@@ -56,7 +56,7 @@ public function checkSession()
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
-        $data['param'] = $this->M_Web_Reports->param();
+        $data['param'] = $this->M_web_reports->param();
        
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
