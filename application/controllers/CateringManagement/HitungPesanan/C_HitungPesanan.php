@@ -993,6 +993,7 @@ class C_HitungPesanan extends CI_Controller
       // Pesanan Total 
       $jumlahPesananTotal = ($jumlahPesananStaff + $jumlahPesananNonStaff + $jumlahPesananTambahan) - $jumlahPesananPengurangan;
 
+      /* dikomen dulu
       $data[$index]['tanggal']      = $tanggal;
       $data[$index]['tempat_makan'] = $tempatMakan;
       $data[$index]['staff']        = $jumlahPesananStaff;
@@ -1001,6 +1002,7 @@ class C_HitungPesanan extends CI_Controller
       $data[$index]['pengurangan']  = $jumlahPesananPengurangan;
       $data[$index]['awal']         = $jumlahPesananAwal;
       $data[$index]['total']        = $jumlahPesananTotal;
+      */
 
       $dataInsert = array(
         'fd_tanggal'          => $tanggal,
