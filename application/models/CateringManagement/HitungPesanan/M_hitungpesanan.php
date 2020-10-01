@@ -993,7 +993,7 @@ class M_hitungpesanan extends Ci_Model
 
 	public function getAbsenShiftTigaByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempat_makan,$noind){
 		$sql = "select *
-				from \"Presensi\".tshiftpekerja, hrd_khs.tpribadi tpri
+				from \"Presensi\".tshiftpekerja tsp, hrd_khs.tpribadi tpri
 				inner join \"Catering\".ttempat_makan tmkn 
 					on tpri.tempat_makan = tmkn.fs_tempat_makan 
 					and tmkn.fs_lokasi = ?
