@@ -231,6 +231,17 @@ class M_lihatstock extends CI_Model
         return $query->result_array();
     }
 
+    public function lokasi_simpan($term,$sub){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select distinct subinv, lokasi
+                from khsinvlokasisimpan
+                where subinv = '$sub'
+                and lokasi like '%$term%'
+                order by 2";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
     public function getdataPeti($param){
         $mysql = $this->load->database('khs_packing', true);
         $sql = "select * from sp_monitoring_peti $param";
