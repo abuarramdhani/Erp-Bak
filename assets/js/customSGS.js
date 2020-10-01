@@ -25,6 +25,30 @@ function getKodeBrg(th) {
 					}
 			}
 	});
+	
+	$(".lokasi_simpan").select2({
+		allowClear: true,
+		minimumInputLength: 3,
+		ajax: {
+				url: baseurl + "StockGdSparepart/LihatStock/getLokasiSimpan",
+				dataType: 'json',
+				type: "GET",
+				data: function (params) {
+						var queryParameters = {
+								term: params.term, subinv : subinv
+						}
+						return queryParameters;
+				},
+				processResults: function (data) {
+						// console.log(data);
+						return {
+								results: $.map(data, function (obj) {
+										return {id:obj.LOKASI, text:obj.LOKASI};
+								})
+						};
+				}
+		}
+});
 };
 
 
@@ -62,12 +86,13 @@ function getLihatStock(no, ket) {
 		var kode_awal = $('#kode_awal').val();
 		var qty_atas 	= $('#qty_atas').val();
 		var qty_bawah = $('#qty_bawah').val();
+		var lokasi		= $('#lokasi_simpan').val();
 		var unit 			= no != '' ? $('#unit'+no).val() : '';
 
 		var request = $.ajax({
 			url: baseurl+'StockGdSparepart/LihatStock/searchData',
 			data: {
-                tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal,
+                tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal, lokasi : lokasi,
 				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah, unit : unit, ket : ket
 			},
 			type: "POST",

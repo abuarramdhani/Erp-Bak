@@ -30,7 +30,7 @@ class C_Peti extends CI_Controller
 
 	public function index()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Monitoring Peti';
