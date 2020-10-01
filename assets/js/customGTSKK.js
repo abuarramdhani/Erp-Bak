@@ -1469,16 +1469,18 @@ function finishTableElement(th) {
 	let finishNow = curr_row.children('td').children('.finish');
 	let finishRN = Number(w_now) + Number(s_now) - 1;
 
+	finishNow.val(Number(finishRN));
+
 	//ngitung finish kena takt time = finish now - takt time
-	if (finishRN > takt_time) {
-		let finish = Number(finishRN) - Number(takt_time);
-	finishNow.val(Number(finish));
-console.log("ini finish lebih dari takt time AWAL: ", finish);
-	}else{
-		let finish = Number(w_now)+Number(s_now)-1
-	finishNow.val(Number(finish));
-console.log("ini finish kurang dari takt time AWAL: ", finish);
-	}	
+// 	if (finishRN > takt_time) {
+// 		let finish = Number(finishRN) - Number(takt_time);
+// 	finishNow.val(Number(finish));
+// console.log("ini finish lebih dari takt time AWAL: ", finish);
+// 	}else{
+// 		let finish = Number(w_now)+Number(s_now)-1
+// 	finishNow.val(Number(finish));
+// console.log("ini finish kurang dari takt time AWAL: ", finish);
+// 	}	
 
 	// finishNow.val(finish); //set finish at current row that being clicked
 
@@ -1516,7 +1518,8 @@ console.log("ini finish kurang dari takt time AWAL: ", finish);
 		let finish2 = Number(currWaktu) + Number(startRN) - 1;
 		
 		if (jp == "AUTO (Inheritance)" && finish1 > takt_time) {
-			let finish = Number(finish1) - Number(takt_time)
+			// let finish = Number(finish1) - Number(takt_time)
+			let finish = Number(finish1)
 			// let finish = Number(prevFinish) - Number(takt_time)  //
 				console.log("ini finish kurang dari takt time: ", finish);
 
@@ -1535,7 +1538,8 @@ console.log("ini finish kurang dari takt time AWAL: ", finish);
 				console.log("AI < TAKT TIME");
 		}else if (jp != "AUTO (Inheritance)" && finish1 > takt_time) {
 			// let finish = Number(finish2)
-			let finish = Number(finish2) - Number(takt_time) 
+			// let finish = Number(finish2) - Number(takt_time) 
+			let finish = Number(finish2)
 				console.log("ini finish lebih dari takt time: ", finish);
 				console.log(nextFinish, "dikurangi" , takt_time);
 				console.log("finishAI :", currWaktu, "ditambah", currMulai);
