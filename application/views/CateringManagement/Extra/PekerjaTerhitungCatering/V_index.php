@@ -31,7 +31,7 @@
 															<option></option>
 															<option value="1" <?php echo strtotime(date('Y-m-d H:i:s')) - strtotime(date("Y-m-d 14:00:00")) <= 0 ? 'selected' : ''  ?> >Shift 1 & Umum</option>
 															<option value="2" <?php echo strtotime(date('Y-m-d H:i:s')) - strtotime(date("Y-m-d 14:00:00")) > 0 ? 'selected' : ''  ?> >Shift 2</option>
-															<option value="2">Shift 3</option>
+															<option value="3">Shift 3</option>
 														</select>
 													</div>
 												</div>
