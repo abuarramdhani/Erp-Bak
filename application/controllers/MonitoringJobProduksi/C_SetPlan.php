@@ -15,6 +15,7 @@ class C_SetPlan extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringJobProduksi/M_setplan');
+		$this->load->model('MonitoringJobProduksi/M_usermng');
 
 		$this->checkSession();
 	}
@@ -30,7 +31,7 @@ class C_SetPlan extends CI_Controller
 
 	public function index()
 	{
-		$user = $this->session->username;
+		$username = $this->session->username;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Set Plan Produksi';
@@ -38,9 +39,21 @@ class C_SetPlan extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$user = $this->session->user;
+		$cekHak = $this->M_usermng->getUser("where no_induk = '$user'");
+		if (!empty($cekHak)) {
+			if ($cekHak[0]['JENIS'] == 'Admin') {
+				$data['UserMenu'] = array($UserMenu[0], $UserMenu[1]);
+			}else {
+				$data['UserMenu'] = $UserMenu;
+			}
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
 
 		$data['kategori'] = $this->M_setplan->getCategory();
 

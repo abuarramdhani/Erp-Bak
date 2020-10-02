@@ -4707,6 +4707,10 @@ $route['MonitoringJobProduksi/MasterKategori']					= 'MonitoringJobProduksi/C_Ma
 $route['MonitoringJobProduksi/MasterKategori/(:any)']			= 'MonitoringJobProduksi/C_MasterKategori/$1';
 $route['MonitoringJobProduksi/MasterKategori/(:any)/(:any)']	= 'MonitoringJobProduksi/C_MasterKategori/$1/$2';
 
+$route['MonitoringJobProduksi/UserManagement']					= 'MonitoringJobProduksi/C_UserManagement';
+$route['MonitoringJobProduksi/UserManagement/(:any)']			= 'MonitoringJobProduksi/C_UserManagement/$1';
+$route['MonitoringJobProduksi/UserManagement/(:any)/(:any)']	= 'MonitoringJobProduksi/C_UserManagement/$1/$2';
+
 // -------------------------------------- Consumable ------------------------------------------ //
 // PPIC
 $route['ConsumablePPIC'] = 'Consumable/C_Index';
