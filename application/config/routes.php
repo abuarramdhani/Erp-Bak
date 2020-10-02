@@ -2093,6 +2093,12 @@ $route['MasterPekerja/DataPekerjaAktif/(:any)/(:any)'] = 'MasterPekerja/Rekap/C_
 $route['MasterPekerja/disnaker'] = 'MasterPekerja/Rekap/C_Disnaker/index';
 $route['MasterPekerja/disnaker/(:any)'] = 'MasterPekerja/Rekap/C_Disnaker/$1';
 
+// -------------------------------- SIM Forklift -----------------------------------------------------
+$route['MasterPekerja/SimForklift'] = 'MasterPekerja/Other/SimForklift/C_SimForklift';
+$route['MasterPekerja/SimForklift/(:any)'] = 'MasterPekerja/Other/SimForklift/C_SimForklift/$1';
+$route['MasterPekerja/SimForklift/(:any)/(:any)'] = 'MasterPekerja/Other/SimForklift/C_SimForklift/$1/$2';
+$route['MasterPekerja/SimForklift/(:any)/(:any)/(:any)'] = 'MasterPekerja/Other/SimForklift/C_SimForklift/$1/$2/$3';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
