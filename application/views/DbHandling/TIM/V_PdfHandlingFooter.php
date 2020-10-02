@@ -1,14 +1,14 @@
 <table style="width: 100%;border:1px solid black;border-collapse:collapse;">
     <tr>
-        <td style="text-align: center; font-size:10pt;padding-bottom:30px;padding-top: 10px">Dibuat,<br>Seksi Pembuat</td>
-        <td style="text-align: center; font-size:10pt;padding-bottom:30px;padding-top: 10px">Dicek, <br>PIC Area</td>
-        <td style="text-align: center; font-size:10pt;padding-bottom:30px;padding-top: 10px">Disetujui, <br>Koord. Tim Handling</td>
+        <td style="text-align: center; font-size:10pt;padding-top: 10px">Dibuat,<br>Seksi Pembuat</td>
+        <td style="text-align: center; font-size:10pt;padding-top: 10px">Dicek, <br>PIC Area</td>
+        <td style="text-align: center; font-size:10pt;padding-top: 10px">Disetujui, <br>Koord. Tim Handling</td>
 
     </tr>
     <tr class="heighttr">
         <td></td>
         <td></td>
-        <td style="text-align: center;"><img style="height: 80px; width: 65px" src="<?= base_url('application/controllers/DbHandling/ttdpakyuwono.png'); ?>"></td>
+        <td style="text-align: center;"><img style="height: 60px; width: 60px" src="<?= base_url('application/controllers/DbHandling/ttdpakyuwono.png'); ?>"></td>
 
     </tr>
     <tr>
