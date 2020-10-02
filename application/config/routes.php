@@ -2099,6 +2099,10 @@ $route['MasterPekerja/SimForklift/(:any)'] = 'MasterPekerja/Other/SimForklift/C_
 $route['MasterPekerja/SimForklift/(:any)/(:any)'] = 'MasterPekerja/Other/SimForklift/C_SimForklift/$1/$2';
 $route['MasterPekerja/SimForklift/(:any)/(:any)/(:any)'] = 'MasterPekerja/Other/SimForklift/C_SimForklift/$1/$2/$3';
 
+//-------------------------------- Surat Pernyataan -----------------------------------------------------
+$route['MasterPekerja/surat_pernyataan'] = 'MasterPekerja/Other/SuratPernyataan/C_SuratPernyataan/index';
+$route['MasterPekerja/surat_pernyataan/(:any)'] = 'MasterPekerja/Other/SuratPernyataan/C_SuratPernyataan/$1';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
