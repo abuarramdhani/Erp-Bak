@@ -4580,3 +4580,89 @@ $(document).ready(function () {
         dateFormat: "yy-mm",
     });
 });
+
+//Surat Pernyataan
+$(document).ready(function(){
+    getPekerjaTpribadi('#mpkpkjsuper');
+
+    $('.mpktgljkk').datepicker({
+        autoclose: true,
+        autoApply: true,
+        format: 'yyyy-mm-dd',
+        todayHighlight: true
+    });
+
+    $('#mpklistrs').select2({
+        ajax: {
+            url: baseurl + "MasterPekerja/surat_pernyataan/getrsklinik",
+            dataType: 'json',
+            type: "get",
+            data: function (params) {
+                return { txt: params.term };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            id: item.id,
+                            text: item.nmppk,
+                        }
+                    })
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 2,
+        placeholder: 'Nama RS / Klinik',
+        allowClear: false,
+    });
+
+    $('#mpklhubkrd').select2({
+        ajax: {
+            url: baseurl + "MasterPekerja/surat_pernyataan/get_hubkerd",
+            dataType: 'json',
+            type: "get",
+            data: function (params) {
+                return { txt: params.term };
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            id: item.noind,
+                            text: item.noind+' - '+item.nama,
+                        }
+                    })
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 2,
+        placeholder: 'Pilih Salah satu',
+        allowClear: false,
+    });
+
+    $('#mpslcnohubkrd').select2({
+        tags: true,
+        placeholder: "Masukan No HP"
+    });
+
+    $('#btnprvsuper').click(function(){
+        var data = $("#mpkfrmsubper").serialize();
+        var x = 0;
+        $("#mpkfrmsubper input").each(function(){
+            if($(this).val() != '') x++;
+        });
+        $("#mpkfrmsubper select").each(function(){
+            // alert($(this).val());
+            if($(this).val() != null) x++;
+        });
+        if (x >= 6) {
+            $('#mpkbtnsbmsuper').attr('disabled', false);
+        }
+        console.log(x);
+        window.open(baseurl + "MasterPekerja/surat_pernyataan/preview_super?"+data, "_blank");
+    });
+
+    $('#mpktblsuper').DataTable();
+});
