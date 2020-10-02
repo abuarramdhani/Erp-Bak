@@ -15,6 +15,7 @@ class C_Monitoring extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringJobProduksi/M_monitoring');
+		$this->load->model('MonitoringJobProduksi/M_usermng');
 
 		$this->checkSession();
 	}
@@ -30,7 +31,7 @@ class C_Monitoring extends CI_Controller
 
 	public function index()
 	{
-		$user = $this->session->username;
+		$username = $this->session->username;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Monitoring Job Produksi';
@@ -38,9 +39,22 @@ class C_Monitoring extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		
+		$user = $this->session->user;
+		$cekHak = $this->M_usermng->getUser("where no_induk = '$user'");
+		if (!empty($cekHak)) {
+			if ($cekHak[0]['JENIS'] == 'Admin') {
+				$data['UserMenu'] = array($UserMenu[0], $UserMenu[1]);
+			}else {
+				$data['UserMenu'] = $UserMenu;
+			}
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
 
 		$data['kategori'] = $this->M_monitoring->getCategory('');
 
@@ -162,7 +176,7 @@ class C_Monitoring extends CI_Controller
 	
 	public function simulasi($no, $tgl)
 	{
-		$user = $this->session->username;
+		$username = $this->session->username;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Simulasi Job Produksi';
@@ -170,9 +184,21 @@ class C_Monitoring extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$user = $this->session->user;
+		$cekHak = $this->M_usermng->getUser("where no_induk = '$user'");
+		if (!empty($cekHak)) {
+			if ($cekHak[0]['JENIS'] == 'Admin') {
+				$data['UserMenu'] = array($UserMenu[0], $UserMenu[1]);
+			}else {
+				$data['UserMenu'] = $UserMenu;
+			}
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
 
 		$data['no'] 		= $no;
 		$data['tanggal'] 	= $tgl;
@@ -194,7 +220,9 @@ class C_Monitoring extends CI_Controller
 		$data['level'] = $this->input->post('level');
 		$data['nomor'] = $this->input->post('nomor');
 
-		$getdata = $this->M_monitoring->getdataSimulasi($item, $qty);
+		$param = $data['level'] == 1 ? "and msib2.SEGMENT1 like '%Z-%'" : '';
+
+		$getdata = $this->M_monitoring->getdataSimulasi($item, $qty, $param);
 		// echo "<pre>";print_r($getdata);exit();
 		$sorting_item = array();
 		foreach ($getdata as $key => $get) {
@@ -307,6 +335,7 @@ class C_Monitoring extends CI_Controller
 					<td>'.$val['WIP_ENTITY_NAME'].'</td>
 					<td>'.$val['START_QUANTITY'].'</td>
 					<td>'.$val['SCHEDULED_START_DATE'].'</td>
+					<td>'.$val['REMAINING_QTY'].'</td>
 				</tr>
 			';
 			$no++;
@@ -332,6 +361,7 @@ class C_Monitoring extends CI_Controller
 								<th>No Job</th>
 								<th>Qty</th>
 								<th>Tanggal</th>
+								<th>Remaining Qty</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -430,12 +460,16 @@ class C_Monitoring extends CI_Controller
 		
 		if ($hari == 31) {
 			$akhir = 'AI';
+			$ajml = 'AJ';
 		}elseif ($hari == 30) {
 			$akhir = 'AH';
+			$ajml = 'AI';
 		}elseif ($hari == 29){
 			$akhir = 'AG';
+			$ajml = 'AH';
 		}else {
 			$akhir = 'AF';
+			$ajml = 'AG';
 		}
 
 		//TITLE
@@ -466,6 +500,8 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, ($i+1));
 			$col++;
 		}
+		$excel->setActiveSheetIndex(0)->setCellValue("".$ajml."5", "JUMLAH");
+		$excel->getActiveSheet()->mergeCells("".$ajml."5:".$ajml."6"); 
 		
 		$excel->getActiveSheet()->getStyle('A5')->applyFromArray($style1);
 		$excel->getActiveSheet()->getStyle('A6')->applyFromArray($style1);
@@ -476,10 +512,11 @@ class C_Monitoring extends CI_Controller
 		$excel->getActiveSheet()->getStyle('D5')->applyFromArray($style1);
 		$excel->getActiveSheet()->getStyle('D6')->applyFromArray($style1);
 		$excel->getActiveSheet()->getStyle("E5:".$akhir."6")->applyFromArray($style1);
-		for ($n=4; $n < ($hari+4) ; $n++) { // styling tanggal col 4 - akhir
+		for ($n=4; $n < ($hari+5) ; $n++) { // styling tanggal col 4 - akhir
 			$a = $this->numbertoalpha($n);
 			$excel->getActiveSheet()->getStyle("".$a."6")->applyFromArray($style1);
 		}
+		$excel->getActiveSheet()->getStyle("".$ajml."5:".$ajml."6")->applyFromArray($style1);
 		
 		$no=1;
 		$numrow = 7;
@@ -508,6 +545,12 @@ class C_Monitoring extends CI_Controller
 					}
 					$col++;
 				}
+				$ket_jml = $p == 0 ? $d['jml_plan'] : (
+					$p == 1 ? $d['jml_akt'] : (
+						$p == 2 ? $d['jml_min'] : $d['jml_com']
+					)
+				);
+				$excel->setActiveSheetIndex(0)->setCellValue($ajml.$row, $ket_jml);
 				$row++;
 			}
 
@@ -524,7 +567,7 @@ class C_Monitoring extends CI_Controller
 				$excel->getActiveSheet()->getStyle("B$baris")->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle("C$baris")->applyFromArray($style2);
 				
-				for ($n=3; $n < ($hari+4) ; $n++) { // styling kolom tanggal/baris
+				for ($n=3; $n < ($hari+5) ; $n++) { // styling kolom tanggal/baris
 					$a = $this->numbertoalpha($n);
 					$excel->getActiveSheet()->getStyle("$a$baris")->applyFromArray($style3);
 				}
@@ -536,11 +579,12 @@ class C_Monitoring extends CI_Controller
 		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
 		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(20); 
 		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); 
-		for($col = 'D'; $col !== 'AJ'; $col++) { // autowidth
+		for($col = 'D'; $col !== $ajml; $col++) { // autowidth
 			$excel->getActiveSheet()
 				->getColumnDimension($col)
 				->setAutoSize(true);
 		}
+		$excel->getActiveSheet()->getColumnDimension($ajml)->setWidth(10); 
 		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
 		
 		// Set orientasi kertas jadi LANDSCAPE

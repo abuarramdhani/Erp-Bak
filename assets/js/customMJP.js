@@ -8,6 +8,35 @@ var simulasi = document.getElementById("tbl_simulasi_produksi");
     if(simulasi){
         getSimulasiProduksi(this);
     }
+
+var user = document.getElementById("tbl_usermng");
+    if(user){
+        getUserMngProduksi(this);
+    }
+
+    $(".getusermjp").select2({
+        allowClear: true,
+        placeholder: "pilih User",
+        minimumInputLength: 3,
+        ajax: {
+            url: baseurl + "MonitoringJobProduksi/UserManagement/getuserMJP",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.noind, text:obj.noind+' - '+obj.nama};
+                    })
+                };
+            }
+        }
+    });		
 });
 
 //-----------------------------------------------MONITORING---------------------------------------------------------------------------------
@@ -432,4 +461,118 @@ function saveCategory(th) {
             }
         }
     }) 
+}
+
+//------------------------------------------------- USER MANAGEMENT ------------------------------------------------------------------
+
+function getUserMngProduksi(th) {
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/UserManagement/getdata",
+        beforeSend: function() {
+        $('div#tbl_usermng' ).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function(data) {
+            $('div#tbl_usermng' ).html(data);
+            $('#tb_user_mng').dataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
+function saveUserMng(th) {
+    var jenis = $('#kategori').val();
+    var user = $('#user').val();
+
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/UserManagement/saveUser",
+        data : { jenis : jenis, user : user},
+        dataType : 'html',
+        type : 'POST',
+        success : function (data) {
+            if (data == 'oke') {
+                Swal.fire({
+                    title: 'User Berhasil Ditambahkan!',
+                    type: 'success',
+                    allowOutsideClick: true
+                }).then(result => {
+                    if (result.value) {
+                        getUserMngProduksi(this);
+                }}) 
+            }else{
+                swal.fire("User Sudah Ada", "", "error");
+            }
+            $('#kategori').select2('val','');
+            $('#user').select2('val','');
+            
+            $(".getusermjp").select2({
+                allowClear: true,
+                placeholder: "pilih User",
+                minimumInputLength: 3,
+                ajax: {
+                    url: baseurl + "MonitoringJobProduksi/UserManagement/getuserMJP",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                            var queryParameters = {
+                                    term: params.term,
+                            }
+                            return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.noind, text:obj.noind+' - '+obj.nama};
+                            })
+                        };
+                    }
+                }
+            });		
+        }
+    })    
+}
+
+function editUser(no) {
+    var noind = $('#noind'+no).val();
+    var nama = $('#nama'+no).val();
+    var jenis = $('#jenis'+no).val();
+
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/UserManagement/editUser",
+        data : {noind : noind, nama : nama, jenis : jenis},
+        dataType : 'html',
+        type : 'POST',
+        success : function (result) {
+            $('#mdleditUser').modal('show');
+            $('#dataedituser').html(result);
+            
+            $("#jenis").select2({
+                allowClear: true,
+            });		
+        }
+    })
+}
+
+function deleteUser(no) {
+    var noind = $('#noind'+no).val();
+    var jenis = $('#jenis'+no).val();
+
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {
+            $.ajax({
+                url : baseurl + "MonitoringJobProduksi/UserManagement/deleteUser",
+                data : {noind : noind, jenis : jenis},
+                dataType : 'html',
+                type : 'POST',
+                success : function (result) {
+                    swal.fire("User Berhasil Dihapus!", "", "success");
+                    getUserMngProduksi(this);
+                }
+            })
+    }}) 
 }

@@ -77,7 +77,7 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
 
-    public function getdataSimulasi($kode, $qty){
+    public function getdataSimulasi($kode, $qty, $param){
       $sql = "select
                 msib.segment1 ASSY_code
                 ,msib.description assy_Desc
@@ -192,6 +192,7 @@ class M_monitoring extends CI_Model
                 and bom.ALTERNATE_BOM_DESIGNATOR is null
                 and bic.DISABLE_DATE is null
                 and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                $param
                 --and bic.ATTRIBUTE1 is not null
                 order by 21,1,2,3,4,5";
       $query = $this->oracle->query($sql);
@@ -205,6 +206,7 @@ class M_monitoring extends CI_Model
     ,wdj.START_QUANTITY
     ,decode(wdj.status_type,12,'Closed',3,'Released',4,'Complete',7,'Cancelled') job_status
     ,to_char(wdj.SCHEDULED_START_DATE,'DD-MM-YYYY HH24:MI:SS')                SCHEDULED_START_DATE
+    ,wdj.NET_QUANTITY-wdj.QUANTITY_COMPLETED-wdj.QUANTITY_SCRAPPED            remaining_qty
                     from wip_discrete_jobs wdj
                         ,wip_entities we
                         ,mtl_system_items_b msib
