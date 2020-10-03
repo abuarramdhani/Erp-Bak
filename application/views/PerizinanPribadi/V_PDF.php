@@ -40,8 +40,8 @@ if ($perseksi == 'Tidak') {
         </thead>
         <tbody>
             <?php $no = 1;
-            if (!empty($IzinApprove)) {
-                foreach ($IzinApprove as $row) { ?>
+            if (!empty($dataReal)) {
+                foreach ($dataReal as $row) { ?>
                     <tr>
                         <td style="white-space: nowrap;"><?= $no; ?></td>
                         <?php if ($perseksi == 'Tidak') { ?>
@@ -83,12 +83,26 @@ if ($perseksi == 'Tidak') {
                         <td><?= $row['keperluan'] ?></td>
                         <td style="white-space: nowrap;"><?= $row['status']; ?></td>
                         <?php if ($jenis == '2') { ?>
-                            <td style="white-space: nowrap;"><?php if (date("Y-m-d", strtotime($row['created_date'])) == date("Y-m-d") && empty($row['point'])) {
-                                                                    echo '-';
-                                                                } elseif (date("Y-m-d", strtotime($row['created_date'])) <= date("Y-m-d") && empty($row['point'])) {
-                                                                    echo '0';
+                            <td style="white-space: nowrap;"><?php if ($row['jumlah'] > 1 && $row['point'] > 0) {
+                                                                    if ($row['jenis_ijin'] == 'IZIN KELUAR PRIBADI') {
+                                                                        if (date("Y-m-d", strtotime($row['created_date'])) == date("Y-m-d") && empty($row['point'])) {
+                                                                            echo  '-';
+                                                                        } elseif (date("Y-m-d", strtotime($row['created_date'])) <= date("Y-m-d") && empty($row['point'])) {
+                                                                            echo '0';
+                                                                        } else {
+                                                                            echo $row['point'];
+                                                                        }
+                                                                    } else {
+                                                                        echo '0';
+                                                                    }
                                                                 } else {
-                                                                    echo $row['point'];
+                                                                    if (date("Y-m-d", strtotime($row['created_date'])) == date("Y-m-d") && empty($row['point'])) {
+                                                                        echo '-';
+                                                                    } elseif (date("Y-m-d", strtotime($row['created_date'])) <= date("Y-m-d") && empty($row['point'])) {
+                                                                        echo '0';
+                                                                    } else {
+                                                                        echo $row['point'];
+                                                                    };
                                                                 } ?></td>
                         <?php } ?>
                     </tr>
