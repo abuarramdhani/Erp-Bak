@@ -52,3 +52,18 @@ $(document).ready(function () {
         </div>
     </div>
 </section>
+
+
+<form method="post">
+<div class="modal fade" id="mdlcommentmin" role="dialog">
+    <div class="modal-dialog" style="padding-left:5px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+            <div id="datacommentmin"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+</form>
