@@ -69,9 +69,11 @@ class C_Monitoring extends CI_Controller
 		$ctgr 			= $this->M_monitoring->getCategory("where id_category = '".$kategori."'");
 		$bulan      	= $this->input->post('bulan');
 		$data['kategori'] 	= $ctgr[0]['CATEGORY_NAME'];
+		$data['kategori2'] 	= $kategori;
 		$data['bulan'] 	= $bulan;
 		$bulan 			= explode("/", $bulan);
 		$inibulan		= $bulan[1].$bulan[0];
+		$data['bulan2'] = $inibulan;
 
         if ($bulan[0] == '01' || $bulan[0] == '03' || $bulan[0] == '05' || $bulan[0] == '07' || $bulan[0] == '08' || $bulan[0] == '10' || $bulan[0] == '12') {
             $data['hari'] = 31;
@@ -89,6 +91,7 @@ class C_Monitoring extends CI_Controller
 		$cariakt = $this->M_monitoring->getAktual($kategori, $data['bulan']);
 		$getplandate = $this->M_monitoring->getPlanDate();
 		$datanya = array();
+		$total['item'] = $total['ttl_jml_plan'] = $total['ttl_jml_akt'] = $total['ttl_jml_min'] = $total['ttl_jml_com'] = 0;
 		foreach ($getdata as $key => $value) {
 			$item = $this->M_monitoring->getitem($value['INVENTORY_ITEM_ID']);
 			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan);
@@ -100,7 +103,7 @@ class C_Monitoring extends CI_Controller
 			$getdata[$key]['jml_com'] = 0;
 			if (!empty($plan)) {
 				$ket = 'not';
-				for ($i=0; $i < $data['hari'] ; $i++) { 
+				for ($i=0; $i < $data['hari'] ; $i++) {
 					$getdata[$key]['plan'.$i.''] = $this->getPlanDate($plan[0]['PLAN_ID'], ($i+1), $getplandate);
 					$ket = $getdata[$key]['plan'.$i.''] != '' ? 'oke': $ket;
 					$tgl = $inibulan.sprintf("%02d", ($i+1));
@@ -127,11 +130,31 @@ class C_Monitoring extends CI_Controller
 						$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
 						$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
 					}
+					
+					if ($key == 0) {
+						$total['ttl_plan'.$i.''] = $getdata[$key]['plan'.$i.''] != '' ? $getdata[$key]['plan'.$i.''] : 0;
+						$total['ttl_akt'.$i.''] = $aktual[0] == '' ? 0 : $aktual[0];
+						$total['ttl_com'.$i.''] = $aktual[2] == '' ? 0 : $aktual[2];
+						$total['ttl_min'.$i.''] = $aktual[1] == '' ? 0 : $aktual[1];
+					}else {
+						$total['ttl_plan'.$i.''] += $getdata[$key]['plan'.$i.''] != '' ? $getdata[$key]['plan'.$i.''] : 0;
+						$total['ttl_akt'.$i.''] += $aktual[0] == '' ? 0 : $aktual[0];
+						$total['ttl_com'.$i.''] += $aktual[2] == '' ? 0 : $aktual[2];
+						$total['ttl_min'.$i.''] += $aktual[1] == '' ? 0 : $aktual[1];
+					}
 				}
-				$ket == 'oke' ? array_push($datanya,$getdata[$key]) : '';
+				if ($ket == 'oke') {
+					array_push($datanya,$getdata[$key]);
+					$total['item'] += 1;
+					$total['ttl_jml_plan'] += $getdata[$key]['jml_plan'];
+					$total['ttl_jml_akt'] += $getdata[$key]['jml_akt'];
+					$total['ttl_jml_min'] += $getdata[$key]['jml_min'];
+					$total['ttl_jml_com'] += $getdata[$key]['jml_com'];
+				}
 			}
 		}
 		$data['data'] = $datanya;
+		$data['total'] = $total;
 		// echo "<pre>";print_r($datanya);exit();
 
         $this->load->view('MonitoringJobProduksi/V_TblMonitoring', $data);
@@ -172,6 +195,71 @@ class C_Monitoring extends CI_Controller
 		}
 		$data = array($aktual, $min, $complete);
 		return $data;
+	}
+
+	public function commentmin(){
+		$item 		= $this->input->post('item');
+		$desc 		= $this->input->post('desc');
+		$inv 		= $this->input->post('inv');
+		$bulan 		= $this->input->post('bulan');
+		$bulan2 	= $this->input->post('bulan2');
+		$kategori 	= $this->input->post('kategori');
+		$tgl 		= $this->input->post('tgl');
+		
+		$comment = $this->M_monitoring->getcomment($kategori, $bulan, $inv, $tgl);
+		if (!empty($comment)) {
+			$komen = $comment[0]['KETERANGAN'];
+			$save = 'style="display:none"';
+			$edit = '';
+			$diss = 'readonly';
+		}else {
+			$komen = $save = $diss = '';
+			$edit = 'style="display:none"';
+		}
+
+		$view = '<div class="modal-header" style="font-size:25px;background-color:#FFB670">
+					<i class="fa fa-list-alt"></i> Comment Min
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="panel-body">
+						<input type="hidden" id="kategori" value="'.$kategori.'">
+						<input type="hidden" id="bulan" value="'.$bulan2.'">
+						<input type="hidden" id="inv" value="'.$inv.'">
+						<input type="hidden" id="tgl" value="'.$tgl.'">
+						<div class="col-md-2" style="font-weight:bold">Kode</div>
+						<div class="col-md-10">: '.$item.'</div>
+						<div class="col-md-2" style="font-weight:bold">Deskripsi</div>
+						<div class="col-md-10">: '.$desc.'</div>
+						<div class="col-md-2" style="font-weight:bold">Tanggal</div>
+						<div class="col-md-10">: '.$tgl.'/'.$bulan.'</div>
+					</div>
+					<div class="panel-body">
+						<div class="input-group">
+							<input name="comment" id="comment" class="form-control" value="'.$komen.'" placeholder="comment..." '.$diss.' autocomplete="off">
+							<span class="input-group-btn">
+								<button type="button" id="editcommentmin" class="btn bg-orange" onclick="editcomment()" '.$edit.'><i class="fa fa-pencil"></i> Edit</button>
+								<button type="button" id="savecommentmin" class="btn btn-danger" onclick="saveCommentmin(this)" '.$save.'><i class="fa fa-save"></i> Save</button>
+							</span>
+						</div>
+					</div>
+				</div>
+		';
+		echo $view;
+	}
+
+	public function saveComment(){
+		$inv 		= $this->input->post('inv');
+		$kategori 	= $this->input->post('kategori');
+		$bulan 		= $this->input->post('bulan');
+		$tgl 		= $this->input->post('tgl');
+		$comment 	= $this->input->post('comment');
+		$cek = $this->M_monitoring->getcomment($kategori, $bulan, $inv, $tgl);
+		if (empty($cek)) {
+			$this->M_monitoring->savecomment($kategori, $bulan, $inv, $tgl, $comment);
+		}else {
+			$this->M_monitoring->updatecomment($kategori, $bulan, $inv, $tgl, $comment);
+		}
 	}
 	
 	public function simulasi($no, $tgl)

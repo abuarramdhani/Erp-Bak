@@ -233,5 +233,32 @@ class M_monitoring extends CI_Model
     return $query->result_array();
 }
 
+public function getcomment($kategori, $bulan, $inv, $tgl){
+    $sql = "select * from khs_comment_item_monitoring
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function savecomment($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "insert into khs_comment_item_monitoring (id_category, inventory_item_id, bulan, tanggal, keterangan)
+            values($kategori, $inv, $bulan, $tgl, '$comment')";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function updatecomment($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "update khs_comment_item_monitoring set keterangan = '$comment'
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
 
 }
