@@ -137,7 +137,7 @@ for ($i = 'A'; $i <= $objWriter->getActiveSheet()->getHighestColumn(); $i++) {
 $i = 5;
 $no = 1;
 
-foreach ($IzinApprove as $key) {
+foreach ($dataReal as $key) {
     $nama = '';
     $kodesie = '';
     foreach (explode(',', $key['nama_pkj']) as $a) {
@@ -155,12 +155,26 @@ foreach ($IzinApprove as $key) {
         }
     }
 
-    if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
-        $poin = '-';
-    } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
-        $poin = '0';
+    if ($key['jumlah'] > 1 && $key['point'] > 0) {
+        if ($key['jenis_ijin'] == 'IZIN KELUAR PRIBADI') {
+            if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
+                $poin =  '-';
+            } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
+                $poin = '0';
+            } else {
+                $poin = $key['point'];
+            }
+        } else {
+            $poin = '0';
+        }
     } else {
-        $poin = $key['point'];
+        if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
+            $poin = '-';
+        } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
+            $poin = '0';
+        } else {
+            $poin = $key['point'];
+        };
     }
 
 
