@@ -41,7 +41,10 @@
                                         <div class="input-group">
                                             <input type="number" id="qty" class="form-control" value="<?= $plan?>">
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn bg-orange" style="margin-left:15px" onclick="getSimulasiProduksi(this)"><i class="fa fa-search"></i> Calculate</button>
+                                                <button type="button" class="btn bg-orange" style="margin-left:15px" onclick="getSimulasiProduksi('')"><i class="fa fa-search"></i> Calculate</button>
+                                            </span>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn bg-blue" style="margin-left:15px" onclick="getSimulasiProduksi('z')"><i class="fa fa-search"></i> Filter Z</button>
                                             </span>
                                         </div>
                                     </div>

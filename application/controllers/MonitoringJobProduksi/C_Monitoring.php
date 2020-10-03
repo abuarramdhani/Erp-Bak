@@ -217,10 +217,11 @@ class C_Monitoring extends CI_Controller
 	public function searchSimulasi(){
 		$item 	= $this->input->post('item');
 		$qty 	= $this->input->post('qty');
+		$ket 	= $this->input->post('ket');
 		$data['level'] = $this->input->post('level');
 		$data['nomor'] = $this->input->post('nomor');
 
-		$param = $data['level'] == 1 ? "and msib2.SEGMENT1 like '%Z-%'" : '';
+		$param = $ket == 'z' ? "and msib2.SEGMENT1 like '%Z-%'" : '';
 
 		$getdata = $this->M_monitoring->getdataSimulasi($item, $qty, $param);
 		// echo "<pre>";print_r($getdata);exit();
