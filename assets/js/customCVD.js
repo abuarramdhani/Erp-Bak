@@ -98,6 +98,7 @@ $(document).ready(function(){
 		  				id		: $(this).attr('data-href'),
 		  				status 	: $(this).attr('data-status'),
 		  			}
+		console.log('trigger hapus');
 		Swal.fire({
 			title: 'Hapus Data',
 			text: "Apakah Anda Yakin Akan Menghapus Data Ini ?",
@@ -151,6 +152,7 @@ $(document).ready(function(){
 	$('.btn-CVD-MonitoringCovid-FollowUp').on('click', function(){
 		var status = $(this).attr('data-status');
 		var link = $(this).attr('data-href');
+		console.log('trigger follow up');
 		if (status.toLowerCase() == "Follow Up Pekerja Masuk".toLowerCase()) {
 			Swal.fire({
 				title: "Apakah Anda sudah Melakukan Follow Up Pekerja?",
@@ -179,6 +181,8 @@ $(document).ready(function(){
 					});
 			  	}
 			});
+		}else{
+			console.log('bukan follow up');
 		}
 	})
 })
