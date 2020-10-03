@@ -6,7 +6,7 @@ var master = document.getElementById("tbl_master_category");
       
 var simulasi = document.getElementById("tbl_simulasi_produksi");
     if(simulasi){
-        getSimulasiProduksi(this);
+        getSimulasiProduksi('');
     }
 
 var user = document.getElementById("tbl_usermng");
@@ -73,13 +73,13 @@ function schMonJob(th) {
     })
 }
 
-function getSimulasiProduksi(th) {
+function getSimulasiProduksi(ket) {
     var item    = $('#item').val();
     var qty     = $('#qty').val();
     // console.log(item, qty)
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/searchSimulasi",
-        data : {item : item, qty : qty, level: 1},
+        data : {item : item, qty : qty, level: 1, ket : ket},
         dataType : 'html',
         type : 'POST',
         beforeSend: function() {
