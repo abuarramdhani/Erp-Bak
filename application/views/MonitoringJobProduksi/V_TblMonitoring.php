@@ -74,6 +74,7 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
         <?php $no++; }?>
     </tbody>
     <tfoot>
+    <?php if($total['item'] != 0) {?>
         <tr>
             <td style="font-weight:bold">Total</td>
             <td><?= $total['item']?></td>
@@ -98,6 +99,7 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                 <!-- <p>PL</P> -->
             </td>
         </tr>
+        <?php }?>
     </tfoot>
 </table>
 <div class="panel-body text-right">

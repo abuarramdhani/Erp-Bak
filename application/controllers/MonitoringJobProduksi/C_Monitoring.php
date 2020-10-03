@@ -109,25 +109,20 @@ class C_Monitoring extends CI_Controller
 					$tgl = $inibulan.sprintf("%02d", ($i+1));
 					$aktual = $this->aktualmin($value['INVENTORY_ITEM_ID'], $tgl, $getdata[$key]['plan'.$i.''], $cariakt);
 					$getdata[$key]['jml_plan'] += $getdata[$key]['plan'.$i.''] == '' ? 0 : $getdata[$key]['plan'.$i.''];
+					
+					$getdata[$key]['akt'.$i.''] = $aktual[0];
+					$getdata[$key]['com'.$i.''] = $aktual[2];
+					$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
+					$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
 					if ($data['bulan'] == date('m/Y')) {
 						if ($i < date('d')) {
-							$getdata[$key]['akt'.$i.''] = $aktual[0];
-							$getdata[$key]['com'.$i.''] = $aktual[2];
 							$getdata[$key]['min'.$i.''] = $aktual[1];
-							$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
-							$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
 							$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
 						}else {
-							$getdata[$key]['akt'.$i.''] = '';
-							$getdata[$key]['com'.$i.''] = '';
 							$getdata[$key]['min'.$i.''] = '';
 						}
 					}else {
-						$getdata[$key]['akt'.$i.''] = $aktual[0];
-						$getdata[$key]['com'.$i.''] = $aktual[2];
 						$getdata[$key]['min'.$i.''] = $aktual[1];
-						$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
-						$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
 						$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
 					}
 					
