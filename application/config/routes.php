@@ -4764,3 +4764,8 @@ $route['CARVP/ListData/(:any)/(:any)'] = 'CARVP/C_List/$1/$2';
 $route['CARVPkoor'] = 'CARVP/C_Index';
 $route['CARVPkoor/Approval'] = 'CARVP/C_Approve';
 $route['CARVPkoor/Approval/(:any)'] = 'CARVP/C_Approve/$1';
+
+//---------------------------------- Overtime Pekerja ------------------------------------------------
+$route['overtime-pekerja'] = 'OvertimePekerja/C_Ovpekerja/index';
+$route['overtime-pekerja/rekap'] = 'OvertimePekerja/C_Ovpekerja/rekap';
+$route['overtime-pekerja/rekap/(:any)'] = 'OvertimePekerja/C_Ovpekerja/$1';
