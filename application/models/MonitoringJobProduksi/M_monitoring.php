@@ -151,12 +151,12 @@ class M_monitoring extends CI_Model
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'PNL-TKS','','') PNL_TKS            
                 --,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
                 ,khs_inv_qty_att(101,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
-                ,khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-ASSYGT','','') INT_ASSYGT,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-ASSY','','') INT_ASSY,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHA','','') INT_MACHA,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHB','','') INT_MACHB,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHC','','') INT_MACHC,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHD','','') INT_MACHD     
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-ASSYGT','','') INT_ASSYGT,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-ASSY','','') INT_ASSY,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHA','','') INT_MACHA,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHB','','') INT_MACHB,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHC','','') INT_MACHC,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHD','','') INT_MACHD     
                 ,wip.qty wip
                 --,decode(bic.basis_type,'','Item','2','Lot') Basis
                 --,bic.INCLUDE_IN_COST_ROLLUP

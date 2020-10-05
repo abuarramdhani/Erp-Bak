@@ -50,9 +50,9 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                         <?= $value['akt'.$i.''] != '' ? $value['akt'.$i.''] : "<br>" ?>
                         <input type="hidden" name="akt<?= $no?><?= $i+1?>" value="<?= $value['akt'.$i.'']?>">
                     </p>
-                    <p><?php $valmin = $value['min'.$i.''] != 0 ? $value['min'.$i.''] : 0 ?>
-                            <button type="button" class="btn btn-xs" style="background-color:#FFB670;font-size:12px" onclick="commentmin(<?= $no?>, <?= $i+1?>)"><?= $valmin?></button>
-                        <input type="hidden" id="min<?= $no?><?= $i+1?>" name="min<?= $no?><?= $i+1?>" value="<?= $valmin?>">
+                    <p><?php $valmin = $value['min'.$i.''] != '' ? '': 'width:20px' ?>
+                            <button type="button" class="btn btn-xs" style="background-color:#FFB670;font-size:12px;height:22px;<?= $valmin?>" onclick="commentmin(<?= $no?>, <?= $i+1?>)"><?= $value['min'.$i.'']?></button>
+                        <input type="hidden" id="min<?= $no?><?= $i+1?>" name="min<?= $no?><?= $i+1?>" value="<?= $value['min'.$i.'']?>">
                     </p>
                     <p>
                         <?= $value['com'.$i.''] != '' ? $value['com'.$i.''] : "<br>" ?>
