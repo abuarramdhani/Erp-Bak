@@ -383,8 +383,13 @@ class C_SimForklift extends CI_Controller
 	}
 
 	public function cetakcrl(){
-		echo "<pre>";
-		print_r($_GET);
+		echo "Fitur ini belum tersedia";
+	}
+
+	public function Hapus(){
+		$id_sim = $this->input->post('id_sim');
+		$this->M_simforklift->deleteSimForliftById($id_sim);
+		echo "sukses";
 	}
 
 	function ratatengah($text,$panjang){
