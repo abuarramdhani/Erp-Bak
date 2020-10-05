@@ -201,7 +201,7 @@ class C_Monitoring extends CI_Controller
 		$kategori 	= $this->input->post('kategori');
 		$tgl 		= $this->input->post('tgl');
 		
-		$comment = $this->M_monitoring->getcomment($kategori, $bulan, $inv, $tgl);
+		$comment = $this->M_monitoring->getcomment($kategori, $bulan2, $inv, $tgl);
 		if (!empty($comment)) {
 			$komen = $comment[0]['KETERANGAN'];
 			$save = 'style="display:none"';
@@ -219,7 +219,7 @@ class C_Monitoring extends CI_Controller
 				<div class="modal-body">
 					<div class="panel-body">
 						<input type="hidden" id="kategori" value="'.$kategori.'">
-						<input type="hidden" id="bulan" value="'.$bulan2.'">
+						<input type="hidden" id="bulanmin" value="'.$bulan2.'">
 						<input type="hidden" id="inv" value="'.$inv.'">
 						<input type="hidden" id="tgl" value="'.$tgl.'">
 						<div class="col-md-2" style="font-weight:bold">Kode</div>
@@ -479,6 +479,18 @@ class C_Monitoring extends CI_Controller
 			}
 			array_push($datanya, $baris);
 		}
+
+		$total['jml_item'] = $this->input->post('jml_item');
+		$total['ttl_jml_plan'] = $this->input->post('ttl_jml_plan');
+		$total['ttl_jml_akt'] = $this->input->post('ttl_jml_akt');
+		$total['ttl_jml_min'] = $this->input->post('ttl_jml_min');
+		$total['ttl_jml_com'] = $this->input->post('ttl_jml_com');
+		for ($t=0; $t < $hari; $t++) { 
+			$total['ttl_plan'.$t.''] = $this->input->post('total_plan'.$t.'');
+			$total['ttl_akt'.$t.''] = $this->input->post('total_akt'.$t.'');
+			$total['ttl_min'.$t.''] = $this->input->post('total_min'.$t.'');
+			$total['ttl_com'.$t.''] = $this->input->post('total_com'.$t.'');
+		}
 		// echo "<pre>";print_r($no);exit();
 
 		include APPPATH.'third_party/Excel/PHPExcel.php';
@@ -529,6 +541,24 @@ class C_Monitoring extends CI_Controller
 			)
 		);
 		$style3 = array(
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+			
+		);
+		
+		$style4 = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'E6E8E6'),
+			),
 			'alignment' => array(
 				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
 				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
@@ -658,6 +688,49 @@ class C_Monitoring extends CI_Controller
 			}
 			$numrow = $merge + 1;
 			$no++;
+		}
+		//total
+		$baris2 = $numrow + 1;
+		$baris3 = $numrow + 2;
+		$baris4 = $numrow + 3;
+		$excel->setActiveSheetIndex(0)->setCellValue("A$numrow", "Total"); 
+		$excel->setActiveSheetIndex(0)->setCellValue("B$numrow", $total['jml_item']); 
+		$excel->getActiveSheet()->mergeCells("A$numrow:A$baris4"); 
+		$excel->getActiveSheet()->mergeCells("B$numrow:C$numrow"); 
+		$excel->getActiveSheet()->mergeCells("B$numrow:C$baris4"); 
+		$excel->setActiveSheetIndex(0)->setCellValue("D$numrow", "P"); 
+		$excel->setActiveSheetIndex(0)->setCellValue("D$baris2", "A"); 
+		$excel->setActiveSheetIndex(0)->setCellValue("D$baris3", "(-)"); 
+		$excel->setActiveSheetIndex(0)->setCellValue("D$baris4", "C"); 
+		$row = $numrow;
+		for ($p=0; $p < 4; $p++) { 
+			$col = 4;
+			for ($i=0; $i < $hari ; $i++) { // value per tanggal
+				if ($p == 0) {
+					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $total['ttl_plan'.$i.'']);
+				}elseif ($p == 1) {
+					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $total['ttl_akt'.$i.'']);
+				}elseif ($p == 2) {
+					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $total['ttl_min'.$i.'']);
+				}else {
+					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $total['ttl_com'.$i.'']);
+				}
+				$a = $this->numbertoalpha($col);
+				$excel->getActiveSheet()->getStyle("$a$row")->applyFromArray($style4);
+				$col++;
+			}
+			$ket_jml = $p == 0 ? $total['ttl_jml_plan'] : (
+				$p == 1 ? $total['ttl_jml_akt'] : (
+					$p == 2 ? $total['ttl_jml_min'] : $total['ttl_jml_com']
+				)
+			);
+			$excel->setActiveSheetIndex(0)->setCellValue($ajml.$row, $ket_jml);
+			$excel->getActiveSheet()->getStyle("A$row")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("B$row")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("C$row")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("D$row")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle($ajml.$row)->applyFromArray($style4);
+			$row++;
 		}
 				
 		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 

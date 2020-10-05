@@ -104,7 +104,7 @@ function editcomment(){
 function saveCommentmin(th) {
     var kategori = $('#kategori').val();
     var inv     = $('#inv').val();
-    var bulan   = $('#bulan').val();
+    var bulan   = $('#bulanmin').val();
     var tgl     = $('#tgl').val();
     var comment = $('#comment').val();
     $.ajax({
