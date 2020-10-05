@@ -31,7 +31,7 @@
                                                     <div class="col-lg-4 text-left">
                                                         <input type="text" class="form-control" id="vendor_confirm_date"
                                                             name="vendor_confirm_date"
-                                                            <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>
+                                                            <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>
                                                             autocomplete="off">
                                                     </div>
                                                 </div>
@@ -67,7 +67,7 @@
                                                 <div class="col-lg-4 text-left">
                                                     <select type="select select2" class="form-control"
                                                         id="select_vendor_confirm_method" name="vendor_confirm_method"
-                                                        <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
+                                                        <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
                                                         <option selected disabled>--Select Confirm Method--</option>
                                                         <option value="email">Email</option>
                                                         <option value="fax">Fax</option>
@@ -89,7 +89,7 @@
                                                     <div class="col-lg-4 text-left">
                                                         <input type="text" class="form-control" id="vendor_confirm_pic"
                                                             name="vendor_confirm_pic"
-                                                            <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
+                                                            <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,7 +117,7 @@
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
                                                         <input type="file" id="lampiranPO" name="lampiranPO"
-                                                            <?= ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>
+                                                            <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>
                                                             autocomplete="off">
                                                     </div>
                                                 </div>

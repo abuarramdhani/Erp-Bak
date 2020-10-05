@@ -68,36 +68,36 @@ class C_PoLogbook extends CI_Controller
         $attachment_flag = $this->input->post('attachment_flag');
 
         $edit_Po = $this->M_pologbook->get_data_byid($po_number);
-        if ($edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) {
+        if ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) {
             $name = $_FILES["lampiran_po"]["name"];
             $ext = end((explode(".", $name)));
-    
-            if ($ext != 'pdf') {
+            
+            if (!($ext == 'pdf' OR $ext == 'jpeg' OR $ext == 'jpg' OR $ext == 'png' OR $ext == 'xls' OR $ext == 'xlsx' OR $ext == 'ods' OR $ext == 'odt' OR $ext == 'txt' OR $ext == 'doc' OR $ext == 'docx')) {
                 $this->output
                     ->set_status_header(400)
                     ->set_content_type('application/json')
-                    ->set_output(json_encode("File yang anda masukkan bukan PDF"));
-            }
-            
-            $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO';
-            $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
-            $config['overwrite']            = TRUE;
-    
-            $this->load->library('upload', $config);
-    
-            if (!$this->upload->do_upload('lampiran_po')) {
-                $error = array('error' => $this->upload->display_errors());
-    
-                print_r($error);
+                    ->set_output(json_encode("File yang anda masukkan salah"));
             } else {
-                $file = array('upload_data' => $this->upload->data());
-                $nama_lampiran = $file['upload_data']['raw_name'];
+                $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO';
+                $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
+                $config['overwrite']            = TRUE;
+        
+                $this->load->library('upload', $config);
+        
+                if (!$this->upload->do_upload('lampiran_po')) {
+                    $error = array('error' => $this->upload->display_errors());
+        
+                    print_r($error);
+                } else {
+                    $file = array('upload_data' => $this->upload->data());
+                    $nama_lampiran = $file['upload_data']['raw_name'];
+                }
+                $this->M_pologbook->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $attachment_flag, $nama_lampiran);
+                $this->output
+                        ->set_status_header(200)
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode("Data berhasil diupdate"));
             }
-            $this->M_pologbook->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $attachment_flag, $nama_lampiran);
-            $this->output
-                    ->set_status_header(200)
-                    ->set_content_type('application/json')
-                    ->set_output(json_encode("File benar pdf"));
         } else {
             $this->M_pologbook->updateVendorData2($po_number, $distribution_method, $attachment_flag);
             $this->output
