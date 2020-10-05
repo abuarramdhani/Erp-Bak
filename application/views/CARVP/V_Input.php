@@ -40,6 +40,9 @@
                                         <div class="col-md-1">
                                             <button class="btn btn-success" formaction="<?php echo base_url('CARVP/Input/ImportFile'); ?>">Import</button>
                                         </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary" formaction="<?php echo base_url('CARVP/Input/LayoutExcel'); ?>">Download Layout</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
