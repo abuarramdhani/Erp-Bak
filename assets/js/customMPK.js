@@ -4788,6 +4788,56 @@ $(document).ready(function(){
             window.open($(this).attr('href'),'_blank');
         }
     })
+
+    $('#tblMPKSimForkliftList').on('click','.btnMPKSimForkliftHapus', function(){
+        var id_sim = $(this).attr('data-id');
+        Swal.fire({
+            title: 'Hapus Data ?',
+            text: "Apakah Anda Yakin Ingin Menghapus Data ini ?",
+            type: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: 'POST',
+                    url: baseurl + 'MasterPekerja/SimForklift/Hapus',
+                    data: {id_sim: id_sim},
+                    error: function(xhr,status,error){
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                        if (data == "sukses") {
+                            Swal.fire(
+                                'Sukses !!!',
+                                'Data Berhasil Dihapus',
+                                'success'
+                            ).then(() => {
+                                window.location.reload();
+                            })
+                        }else{
+                            swal.fire({
+                                title: "ERROR",
+                                html: data,
+                                type: "error",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d63031',
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    })
 })
 
 function checkSimForkliftChecked(tblMPKSimForkliftList){
@@ -4795,7 +4845,7 @@ function checkSimForkliftChecked(tblMPKSimForkliftList){
     var checkbox_checked = $('.chkMPKSimForkliftCheckOne:checked',table_data);
     var jumlah_checked = checkbox_checked.length;
 
-    if (jumlah_checked > 1 && jumlah_checked <= 20) {
+    if (jumlah_checked > 0) {
         var id_checked = {data: []};
         checkbox_checked.each(function(){
             id_checked.data.push($(this).val());
