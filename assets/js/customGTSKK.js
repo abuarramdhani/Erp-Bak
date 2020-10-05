@@ -259,7 +259,7 @@ $('#tabel_daftarTSKK').DataTable({
 	//ADD ROWS FOR OBSERVATION SHEET ON EDIT PAGE//
 	var nomor ="6";
 	function addRowObservationEdit(){
-		// 2-10-2020
+		// 2-10-2020 hia
 		let no_gaes = $(`#tblObservasiEdit tbody tr`).length;
 		nomor = Number(no_gaes) + 1;
 		// KOLOM 1
@@ -732,8 +732,12 @@ $('#tabel_daftarTSKK').DataTable({
 		curr_row.remove();
 
 		$('.posisi').each((i, item) => {
-			document.getElementsByClassName('posisi')[i].innerHTML = i + 1
+			document.getElementsByClassName('posisi')[i].innerHTML = i + 1;
 		})
+		$('.checkBoxParalel').each((i, v) =>{
+			$(v).attr('name', `checkBoxParalel[${i}]`)
+		})
+
 	}
 
 //ADD ROWS GENERATE//
@@ -1943,8 +1947,13 @@ function attachRowObservation() {
 			});
 	}
 
+	$('.checkBoxParalel').each((i, v) =>{
+		$(v).attr('name', `checkBoxParalel[${i}]`)
+	})
+
 	console.log("add new line",  indx, maxRow)
 	console.log(newRow)
+
 }
 
 	//Edit Time Set Auto Start//
