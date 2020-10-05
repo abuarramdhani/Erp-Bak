@@ -289,8 +289,8 @@
         </div>
         <div class="col-2">&nbsp;</div>
         <div class="col-5">
-          <b><u>BAMBANG YUDHOSUSENO</u></b><br>
-          ASISTEN KEPALA DEPARTEMEN
+          <b><u>RAJIWAN</u></b><br>
+          KEPALA SEKSI UTAMA
         </div>
       </div>
       <div class="col-12">
