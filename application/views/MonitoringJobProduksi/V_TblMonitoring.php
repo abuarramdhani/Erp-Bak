@@ -50,12 +50,9 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                         <?= $value['akt'.$i.''] != '' ? $value['akt'.$i.''] : "<br>" ?>
                         <input type="hidden" name="akt<?= $no?><?= $i+1?>" value="<?= $value['akt'.$i.'']?>">
                     </p>
-                    <p><?php if($value['min'.$i.''] != 0){ ?>
-                            <button type="button" class="btn btn-xs" style="background-color:#FFB670;font-size:12px" onclick="commentmin(<?= $no?>, <?= $i+1?>)"><?= $value['min'.$i.'']?></button>
-                        <?php }else { ?>
-                            <button type="button" class="btn btn-xs" style="background-color:inherit;height:22px"></button>
-                        <?php }?>
-                        <input type="hidden" id="min<?= $no?><?= $i+1?>" name="min<?= $no?><?= $i+1?>" value="<?= $value['min'.$i.'']?>">
+                    <p><?php $valmin = $value['min'.$i.''] != 0 ? $value['min'.$i.''] : 0 ?>
+                            <button type="button" class="btn btn-xs" style="background-color:#FFB670;font-size:12px" onclick="commentmin(<?= $no?>, <?= $i+1?>)"><?= $valmin?></button>
+                        <input type="hidden" id="min<?= $no?><?= $i+1?>" name="min<?= $no?><?= $i+1?>" value="<?= $valmin?>">
                     </p>
                     <p>
                         <?= $value['com'.$i.''] != '' ? $value['com'.$i.''] : "<br>" ?>
@@ -77,7 +74,7 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
     <?php if($total['item'] != 0) {?>
         <tr>
             <td style="font-weight:bold">Total</td>
-            <td><?= $total['item']?></td>
+            <td><input type="hidden" name="jml_item" value="<?= $total['item']?>"><?= $total['item']?></td>
             <td><p>P</p>
                 <p>A</p>
                 <p>(-)</p>
@@ -85,17 +82,17 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                 <!-- <p>PL</P> -->
             </td>
             <?php for ($t=0; $t < $hari ; $t++) { ?>
-                <td><p><?= $total['ttl_plan'.$t.'']?></p>
-                    <p><?= $total['ttl_akt'.$t.'']?></p>
-                    <p><?= $total['ttl_min'.$t.'']?></p>
-                    <p><?= $total['ttl_com'.$t.'']?></p>
+                <td><p><input type="hidden" name="total_plan<?= $t?>" value="<?= $total['ttl_plan'.$t.'']?>"><?= $total['ttl_plan'.$t.'']?></p>
+                    <p><input type="hidden" name="total_akt<?= $t?>" value="<?= $total['ttl_akt'.$t.'']?>"><?= $total['ttl_akt'.$t.'']?></p>
+                    <p><input type="hidden" name="total_min<?= $t?>" value="<?= $total['ttl_min'.$t.'']?>"><?= $total['ttl_min'.$t.'']?></p>
+                    <p><input type="hidden" name="total_com<?= $t?>" value="<?= $total['ttl_com'.$t.'']?>"><?= $total['ttl_com'.$t.'']?></p>
                     <!-- <p>PL</P> -->
                 </td>
             <?php }?>
-            <td><p><?= $total['ttl_jml_plan']?></p>
-                <p><?= $total['ttl_jml_akt']?></p>
-                <p><?= $total['ttl_jml_min']?></p>
-                <p><?= $total['ttl_jml_com']?></p>
+            <td><p><input type="hidden" name="ttl_jml_plan" value="<?= $total['ttl_jml_plan']?>"><?= $total['ttl_jml_plan']?></p>
+                <p><input type="hidden" name="ttl_jml_akt" value="<?= $total['ttl_jml_akt']?>"><?= $total['ttl_jml_akt']?></p>
+                <p><input type="hidden" name="ttl_jml_min" value="<?= $total['ttl_jml_min']?>"><?= $total['ttl_jml_min']?></p>
+                <p><input type="hidden" name="ttl_jml_com" value="<?= $total['ttl_jml_com']?>"><?= $total['ttl_jml_com']?></p>
                 <!-- <p>PL</P> -->
             </td>
         </tr>
