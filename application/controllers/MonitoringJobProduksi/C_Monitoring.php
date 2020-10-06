@@ -88,10 +88,11 @@ class C_Monitoring extends CI_Controller
 		}
 
 		$getdata = $this->M_monitoring->getdataMonitoring($kategori);
-		$cariakt = $this->M_monitoring->getAktual($kategori, $data['bulan']);
+		$cariakt = $this->M_monitoring->getAktual2($kategori, $inibulan);
+		// $cariakt = $this->M_monitoring->getAktual($kategori, $data['bulan']);
 		$getplandate = $this->M_monitoring->getPlanDate();
 		$datanya = array();
-		$total['item'] = $total['ttl_jml_plan'] = $total['ttl_jml_akt'] = $total['ttl_jml_min'] = $total['ttl_jml_com'] = 0;
+		$total['item'] = $total['ttl_jml_plan'] = $total['ttl_jml_akt'] = $total['ttl_jml_min'] = $total['ttl_jml_com'] = $total['ttl_jml_pl'] = 0;
 		foreach ($getdata as $key => $value) {
 			$item = $this->M_monitoring->getitem($value['INVENTORY_ITEM_ID']);
 			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan);
@@ -101,6 +102,7 @@ class C_Monitoring extends CI_Controller
 			$getdata[$key]['jml_akt'] = 0;
 			$getdata[$key]['jml_min'] = 0;
 			$getdata[$key]['jml_com'] = 0;
+			$getdata[$key]['jml_pl'] = 0;
 			if (!empty($plan)) {
 				$ket = 'not';
 				for ($i=0; $i < $data['hari'] ; $i++) {
@@ -112,8 +114,10 @@ class C_Monitoring extends CI_Controller
 					
 					$getdata[$key]['akt'.$i.''] = $aktual[0];
 					$getdata[$key]['com'.$i.''] = $aktual[2];
+					$getdata[$key]['pl'.$i.''] = $aktual[3] == '' ? 0 : $aktual[3];
 					$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
 					$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
+					$getdata[$key]['jml_pl'] += $aktual[3] == '' ? 0 : $aktual[3];
 					if ($data['bulan'] == date('m/Y')) {
 						if ($i < date('d')) {
 							$getdata[$key]['min'.$i.''] = $aktual[1];
@@ -126,25 +130,15 @@ class C_Monitoring extends CI_Controller
 						$getdata[$key]['jml_min'] += $aktual[1] == '' ? 0 : $aktual[1];
 					}
 					
-					if ($key == 0) {
-						$total['ttl_plan'.$i.''] = $getdata[$key]['plan'.$i.''] != '' ? $getdata[$key]['plan'.$i.''] : 0;
-						$total['ttl_akt'.$i.''] = $aktual[0] == '' ? 0 : $aktual[0];
-						$total['ttl_com'.$i.''] = $aktual[2] == '' ? 0 : $aktual[2];
-						$total['ttl_min'.$i.''] = $aktual[1] == '' ? 0 : $aktual[1];
-					}else {
-						$total['ttl_plan'.$i.''] += $getdata[$key]['plan'.$i.''] != '' ? $getdata[$key]['plan'.$i.''] : 0;
-						$total['ttl_akt'.$i.''] += $aktual[0] == '' ? 0 : $aktual[0];
-						$total['ttl_com'.$i.''] += $aktual[2] == '' ? 0 : $aktual[2];
-						$total['ttl_min'.$i.''] += $aktual[1] == '' ? 0 : $aktual[1];
-					}
 				}
 				if ($ket == 'oke') {
 					array_push($datanya,$getdata[$key]);
-					$total['item'] += 1;
+					// $total['item'] += 1;
 					$total['ttl_jml_plan'] += $getdata[$key]['jml_plan'];
 					$total['ttl_jml_akt'] += $getdata[$key]['jml_akt'];
 					$total['ttl_jml_min'] += $getdata[$key]['jml_min'];
 					$total['ttl_jml_com'] += $getdata[$key]['jml_com'];
+					$total['ttl_jml_pl'] += $getdata[$key]['jml_pl'];
 				}
 			}
 		}
@@ -170,13 +164,16 @@ class C_Monitoring extends CI_Controller
 	public function aktualmin($inv_id, $tgl, $plan, $cariakt){
 		$aktual = '';
 		$complete = '';
+		$picklist = '';
 		foreach ($cariakt as $key => $val) {
 			if ($val['INVENTORY_ITEM_ID'] == $inv_id && $val['TGL_URUT'] == $tgl) {
 				$aktual = $val['QUANTITY'];
 				$complete = $val['QUANTITY_COMPLETE'];
+				$picklist = $val['QUANTITY_PICKLIST'];
 			}else {
 				$aktual = $aktual;
 				$complete = $complete;
+				$picklist = $picklist;
 			}
 		}
 		if ($plan == '' && $aktual != '') {
@@ -188,7 +185,7 @@ class C_Monitoring extends CI_Controller
 		}else {
 			$min = $aktual - $plan;
 		}
-		$data = array($aktual, $min, $complete);
+		$data = array($aktual, $min, $complete, $picklist);
 		return $data;
 	}
 
@@ -471,11 +468,13 @@ class C_Monitoring extends CI_Controller
 			$baris['jml_akt'] = $this->input->post('jml_akt'.$no[$i].'');
 			$baris['jml_min'] = $this->input->post('jml_min'.$no[$i].'');
 			$baris['jml_com'] = $this->input->post('jml_com'.$no[$i].'');
+			$baris['jml_pl'] = $this->input->post('jml_pl'.$no[$i].'');
 			for ($x=0; $x < $hari; $x++) { 
 				$baris['plan'.$x.''] = $this->input->post('plan'.$no[$i].''.($x+1).'');
 				$baris['akt'.$x.''] = $this->input->post('akt'.$no[$i].''.($x+1).'');
 				$baris['min'.$x.''] = $this->input->post('min'.$no[$i].''.($x+1).'');
 				$baris['com'.$x.''] = $this->input->post('com'.$no[$i].''.($x+1).'');
+				$baris['pl'.$x.''] = $this->input->post('pl'.$no[$i].''.($x+1).'');
 			}
 			array_push($datanya, $baris);
 		}
@@ -485,11 +484,13 @@ class C_Monitoring extends CI_Controller
 		$total['ttl_jml_akt'] = $this->input->post('ttl_jml_akt');
 		$total['ttl_jml_min'] = $this->input->post('ttl_jml_min');
 		$total['ttl_jml_com'] = $this->input->post('ttl_jml_com');
+		$total['ttl_jml_pl'] = $this->input->post('ttl_jml_pl');
 		for ($t=0; $t < $hari; $t++) { 
 			$total['ttl_plan'.$t.''] = $this->input->post('total_plan'.$t.'');
 			$total['ttl_akt'.$t.''] = $this->input->post('total_akt'.$t.'');
 			$total['ttl_min'.$t.''] = $this->input->post('total_min'.$t.'');
 			$total['ttl_com'.$t.''] = $this->input->post('total_com'.$t.'');
+			$total['ttl_pl'.$t.''] = $this->input->post('total_pl'.$t.'');
 		}
 		// echo "<pre>";print_r($no);exit();
 
@@ -644,8 +645,9 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), "A");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), "(-)");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+3), "C");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+4), "PL");
 			$row = $numrow;
-			for ($p=0; $p < 4; $p++) { 
+			for ($p=0; $p < 5; $p++) { 
 				$col = 4;
 				for ($i=0; $i < $hari ; $i++) { // value per tanggal
 					if ($p == 0) {
@@ -654,28 +656,32 @@ class C_Monitoring extends CI_Controller
 						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['akt'.$i.'']);
 					}elseif ($p == 2) {
 						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['min'.$i.'']);
-					}else {
+					}elseif($p == 3) {
 						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['com'.$i.'']);
+					}elseif($p == 4) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['pl'.$i.'']);
 					}
 					$col++;
 				}
 				$ket_jml = $p == 0 ? $d['jml_plan'] : (
 					$p == 1 ? $d['jml_akt'] : (
-						$p == 2 ? $d['jml_min'] : $d['jml_com']
+						$p == 2 ? $d['jml_min'] : (
+							$p == 3 ? $d['jml_com'] : $d['jml_pl'] )
 					)
 				);
 				$excel->setActiveSheetIndex(0)->setCellValue($ajml.$row, $ket_jml);
 				$row++;
 			}
 
-			$merge = $numrow + 3;
+			$merge = $numrow + 4;
 			$baris2 = $numrow + 1;
 			$baris3 = $numrow + 2;
+			$baris4 = $numrow + 3;
 			// echo "<pre>";print_r($numrow);exit();
 			$excel->getActiveSheet()->mergeCells("A$numrow:A$merge"); 
 			$excel->getActiveSheet()->mergeCells("B$numrow:B$merge"); 
 			$excel->getActiveSheet()->mergeCells("C$numrow:C$merge"); 
-			for ($i=0; $i < 4 ; $i++) { 
+			for ($i=0; $i < 5 ; $i++) { 
 				$baris = $numrow+$i;
 				$excel->getActiveSheet()->getStyle("A$baris")->applyFromArray($style3);
 				$excel->getActiveSheet()->getStyle("B$baris")->applyFromArray($style2);
@@ -693,17 +699,19 @@ class C_Monitoring extends CI_Controller
 		$baris2 = $numrow + 1;
 		$baris3 = $numrow + 2;
 		$baris4 = $numrow + 3;
+		$baris5 = $numrow + 4;
 		$excel->setActiveSheetIndex(0)->setCellValue("A$numrow", "Total"); 
 		$excel->setActiveSheetIndex(0)->setCellValue("B$numrow", $total['jml_item']); 
-		$excel->getActiveSheet()->mergeCells("A$numrow:A$baris4"); 
+		$excel->getActiveSheet()->mergeCells("A$numrow:A$baris5"); 
 		$excel->getActiveSheet()->mergeCells("B$numrow:C$numrow"); 
-		$excel->getActiveSheet()->mergeCells("B$numrow:C$baris4"); 
+		$excel->getActiveSheet()->mergeCells("B$numrow:C$baris5"); 
 		$excel->setActiveSheetIndex(0)->setCellValue("D$numrow", "P"); 
 		$excel->setActiveSheetIndex(0)->setCellValue("D$baris2", "A"); 
 		$excel->setActiveSheetIndex(0)->setCellValue("D$baris3", "(-)"); 
 		$excel->setActiveSheetIndex(0)->setCellValue("D$baris4", "C"); 
+		$excel->setActiveSheetIndex(0)->setCellValue("D$baris5", "PL"); 
 		$row = $numrow;
-		for ($p=0; $p < 4; $p++) { 
+		for ($p=0; $p < 5; $p++) { 
 			$col = 4;
 			for ($i=0; $i < $hari ; $i++) { // value per tanggal
 				if ($p == 0) {
@@ -712,8 +720,10 @@ class C_Monitoring extends CI_Controller
 					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $total['ttl_akt'.$i.'']);
 				}elseif ($p == 2) {
 					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $total['ttl_min'.$i.'']);
-				}else {
+				}elseif($p == 3) {
 					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $total['ttl_com'.$i.'']);
+				}elseif($p == 4) {
+					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $total['ttl_pl'.$i.'']);
 				}
 				$a = $this->numbertoalpha($col);
 				$excel->getActiveSheet()->getStyle("$a$row")->applyFromArray($style4);
@@ -721,7 +731,8 @@ class C_Monitoring extends CI_Controller
 			}
 			$ket_jml = $p == 0 ? $total['ttl_jml_plan'] : (
 				$p == 1 ? $total['ttl_jml_akt'] : (
-					$p == 2 ? $total['ttl_jml_min'] : $total['ttl_jml_com']
+					$p == 2 ? $total['ttl_jml_min'] : (
+						$p == 3 ? $total['ttl_jml_com'] : $total['ttl_jml_pl'])
 				)
 			);
 			$excel->setActiveSheetIndex(0)->setCellValue($ajml.$row, $ket_jml);
