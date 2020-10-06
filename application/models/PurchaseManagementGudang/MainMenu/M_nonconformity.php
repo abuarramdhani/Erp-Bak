@@ -976,7 +976,7 @@ class M_nonconformity extends CI_Model
 
     public function getFinishedOrder()
     {
-        $query = $this->db->query("select hdr.* from pm.pm_po_oracle_non_conformity_headers hdr, pm.pm_po_oracle_non_conformity_lines line
+        $query = $this->db->query("select DISTINCT hdr.* from pm.pm_po_oracle_non_conformity_headers hdr, pm.pm_po_oracle_non_conformity_lines line
         where hdr.header_id = line.header_id
         and line.status = '1'");
 
@@ -985,7 +985,7 @@ class M_nonconformity extends CI_Model
 
     public function getFinishedOrder2($cond)
     {
-        $query = $this->db->query("SELECT hdr.*, line.problem_completion
+        $query = $this->db->query("SELECT DISTINCT hdr.*, line.problem_completion
          from pm.pm_po_oracle_non_conformity_headers hdr
          , pm.pm_po_oracle_non_conformity_lines line
         where hdr.header_id = line.header_id
