@@ -289,8 +289,8 @@
         </div>
         <div class="col-2">&nbsp;</div>
         <div class="col-5">
-          <b><u>RAJIWAN</u></b><br>
-          KEPALA SEKSI UTAMA
+          <b><u><?= @$atasan3->nama ?: 'RAJIWAN' ?></u></b><br>
+          <?= @strtoupper($atasan3->jabatan) ?: 'KEPALA SEKSI MADYA' ?>
         </div>
       </div>
       <div class="col-12">

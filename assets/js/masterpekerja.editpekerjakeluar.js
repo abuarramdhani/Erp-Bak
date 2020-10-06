@@ -951,6 +951,9 @@ $(function () {
 								}),
 							};
 						},
+						success(data) {
+							console.log(data);
+						},
 					},
 				})
 				.on("select2:selecting", function () {
@@ -1074,6 +1077,7 @@ $(function () {
 				archives: $("#modal-perpanjangan-orientasi #archives"),
 				assingment: $("#modal-perpanjangan-orientasi #assignment_atasan"),
 				hubker: $("#modal-perpanjangan-orientasi #assignment_hubker"),
+				atasan3: $("#modal-perpanjangan-orientasi #assignment_3"),
 			},
 			button: $("#modal-perpanjangan-orientasi button#print"),
 		},
@@ -1100,6 +1104,7 @@ $(function () {
 				kode_arsip: this.element.form.code.val() + "/" + this.element.form.archives.val(),
 				atasan: this.element.form.assingment.val(),
 				hubker: this.element.form.hubker.val(),
+				atasan3: this.element.form.atasan3.val(),
 			};
 			console.log(data);
 			// btoa -> encrypt string to base64
