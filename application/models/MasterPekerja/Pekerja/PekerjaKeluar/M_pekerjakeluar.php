@@ -647,6 +647,42 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	/**
+	 * Get atasan jabatan diatas KASIE UTAMA
+	 * 
+	 * @param String { noind }
+	 * @return Array { Atasan }
+	 */
+	public function getAtasan3($noind = false)
+	{
+		$kd_jabatan_kasie_utama = '10';
+
+		$query = $this->personalia
+			->distinct()
+			->where('tp.kd_jabatan <= ', $kd_jabatan_kasie_utama)
+			->where_not_in('tp.kd_jabatan', ['-', '1', '01', ''])
+			->where('tp.keluar', '0');
+
+		if ($noind) {
+			$query
+				->select('tp.noind, tp.nama, to.jabatan')
+				->from('hrd_khs.tpribadi tp')
+				->join('hrd_khs.torganisasi to', 'tp.kd_jabatan = to.kd_jabatan')
+				->where('tp.noind', $noind)
+				->limit(1);
+
+			return $query->get()->row();
+		} else {
+			$query
+				->select('tp.noind, tp.nama')
+				->from('hrd_khs.tpribadi tp')
+				// ->join('hrd_khs.trefjabatan tj', 'tp.noind = tj.noind')
+				->where('tp.kd_jabatan <= ', $kd_jabatan_kasie_utama);
+		}
+
+		return $query->get()->result_array();
+	}
+
+	/**
 	 * Get All Perpanjangan memo orientasi by noind
 	 * @param String { Noind }
 	 * @return Array { Memo }
