@@ -22,6 +22,14 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
 
+    public function getAktual2($kategori, $bulan){
+        $sql = "select *            
+        from khs_qweb_mon_produksi kqmp            
+        where kqmp.CATEGORY_NAME = $kategori
+        and kqmp.tgl_urut like '$bulan%'";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
     
     public function getAktual($kategori, $bulan){
         $sql = "select distinct
