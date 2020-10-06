@@ -10,7 +10,13 @@ class M_pekerjaterhitungcatering extends CI_Model
     }
 
     public function getTempatMakanAll(){
-    	$sql = "select *
+    	$sql = "select *,
+    				case when fs_lokasi = '1' then 
+						'YGY'
+					when fs_lokasi = '2' then 
+						'TKS'
+					else 'N?A' 
+					end as lokasi
 				from \"Catering\".ttempat_makan";
 		return $this->personalia->query($sql)->result_array();
     }
@@ -26,8 +32,37 @@ class M_pekerjaterhitungcatering extends CI_Model
 				       and t5.fs_kd_shift = '1' 
 				       and t6.fs_noind = tbl.noind 
 				       and t5.fs_tempat_makan = tbl.tempat_makan 
-					) > 0 then 
-				    	'Tambahan' 
+					) > 0 then
+				    	( 
+					       select 
+					       		string_agg(
+									case when t5.fb_kategori = '1' then 
+										'TAMBAHAN - LEMBUR'
+									when t5.fb_kategori = '2' then
+										'TAMBAHAN - SHIFT TANGGUNG'
+									when t5.fb_kategori = '3' then
+										'TAMBAHAN - TUGAS KE PUSAT'
+									when t5.fb_kategori = '4' then
+										'TAMBAHAN - TUGAS KE TUKSONO'
+									when t5.fb_kategori = '5' then
+										'TAMBAHAN - TUGAS KE MLATI'
+									when t5.fb_kategori = '6' then
+										'TAMBAHAN - TAMU'
+									when t5.fb_kategori = '7' then
+										'TAMBAHAN - CADANGAN'
+									else
+										'TAMBAHAN - tidak terkategori'
+									end
+									,';'
+								)
+					       from \"Catering\".tpesanantambahan t5 
+					       inner join \"Catering\".tpesanantambahan_detail t6 
+					       on t5.id_tambahan = t6.id_tambahan 
+					       where t5.fd_tanggal = '$tanggal' 
+					       and t5.fs_kd_shift = '1' 
+					       and t6.fs_noind = tbl.noind 
+					       and t5.fs_tempat_makan = tbl.tempat_makan 
+						)
 					when ( 
 				       select count(*) 
 				       from \"Catering\".tpenguranganpesanan t7 
@@ -38,9 +73,51 @@ class M_pekerjaterhitungcatering extends CI_Model
 				       and t8.fs_noind = tbl.noind 
 				       and t7.fs_tempat_makan = tbl.tempat_makan 
 					) > 0 then 
-					    'Pengurangan' 
+					    ( 
+					       select string_agg(
+									case when t7.fb_kategori = '1' then 
+										'PENGURANGAN - TIDAK MAKAN ( GANTI UANG )'
+									when t7.fb_kategori = '2' then
+										'PENGURANGAN - PINDAH MAKAN'
+									when t7.fb_kategori = '3' then
+										'PENGURANGAN - TUGAS KE PUSAT'
+									when t7.fb_kategori = '4' then
+										'PENGURANGAN - TUGAS KE TUKSONO'
+									when t7.fb_kategori = '5' then
+										'PENGURANGAN - TUGAS KE MLATI'
+									when t7.fb_kategori = '6' then
+										'PENGURANGAN - TUGAS LUAR'
+									when t7.fb_kategori = '7' then
+										'PENGURANGAN - DINAS PERUSAHAAN ( KUNJUNGAN KERJA / LAYAT / DLL )'
+									when t7.fb_kategori = '8' then
+										'PENGURANGAN - TIDAK MAKAN ( TIDAK DIGANTI UANG )'
+									else
+										'PENGURANGAN - tidak terkategori'
+									end
+									,';'
+								)
+					       from \"Catering\".tpenguranganpesanan t7 
+					       inner join \"Catering\".tpenguranganpesanan_detail t8 
+					       on t7.id_pengurangan = t8.id_pengurangan 
+					       where t7.fd_tanggal = '$tanggal' 
+					       and t7.fs_kd_shift = '1' 
+					       and t8.fs_noind = tbl.noind 
+					       and t7.fs_tempat_makan = tbl.tempat_makan 
+						)
+					when ( 
+				       select count(*) 
+				       from \"Catering\".tpenguranganpesanan t7 
+				       inner join \"Catering\".tpenguranganpesanan_detail t8 
+				       on t7.id_pengurangan = t8.id_pengurangan 
+				       where t7.fd_tanggal = '$tanggal' 
+				       and t7.fs_kd_shift = '1' 
+				       and t8.fs_noind = tbl.noind 
+				       and t7.fs_tempat_makanpg = tbl.tempat_makan 
+				       and t7.fb_kategori = '2'
+					) > 0 then 
+					    'TAMBAHAN - PINDAH MAKAN' 
 					Else 
-					    'Absen' 
+					    'ABSEN' 
 					end As status 
 				from ( 
 					SELECT 
@@ -72,13 +149,13 @@ class M_pekerjaterhitungcatering extends CI_Model
 				   			select fs_jam_awal
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					)
 				   	AND LEFT(tpres.waktu, 5) <= (
 				   			select fs_jam_akhir
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 				   	AND tpres.tanggal = '$tanggal'
 					INNER JOIN \"Catering\".ttempat_makan tmkn 
@@ -161,6 +238,39 @@ class M_pekerjaterhitungcatering extends CI_Model
 					where trim(t.fs_tempat_makan) = '$tempat_makan' 
 					and t.fd_tanggal = '$tanggal' 
 					and t.fs_kd_shift = '1'
+					union 
+					select 
+						t2.fs_noind,
+						t2.fs_nama,
+						'-' as waktu,
+						t.fs_tempat_makanpg,
+						1 as jumlah_karyawan,
+						'-' as user_,
+						(
+							select t4.seksi 
+							from hrd_khs.tpribadi t3 
+							left join hrd_khs.tseksi t4 
+							on t3.kodesie = t4.kodesie 
+							where t3.noind = t2.fs_noind 
+						) as seksi, 
+						coalesce(
+							(
+								select replace(upper(zz.shift),'SHIFT ','') as shift 
+								from \"Presensi\".tshiftpekerja xxx 
+								left join \"Presensi\".tshift zz 
+								on xxx.kd_shift = zz.kd_shift 
+								where xxx.noind = t2.fs_noind 
+								and xxx.tanggal = t.fd_tanggal
+							),
+							'Blm ada Shift'
+						) as shift 
+					from \"Catering\".tpenguranganpesanan t 
+					inner join \"Catering\".tpenguranganpesanan_detail t2 
+					on t.id_pengurangan = t2.id_pengurangan
+					where trim(t.fs_tempat_makanpg) = '$tempat_makan' 
+					and t.fd_tanggal = '$tanggal' 
+					and t.fs_kd_shift = '1'
+					and t.fb_kategori = '2'
 					union
 					select 
 						a.noind,
@@ -273,13 +383,13 @@ class M_pekerjaterhitungcatering extends CI_Model
 				   			select fs_jam_awal
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '2'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 			   	AND LEFT(tpres.waktu, 5) <= (
 				   			select fs_jam_akhir
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '2'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					)  
 			   	AND tpres.tanggal = '$tanggal' 
 				INNER JOIN \"Catering\".ttempat_makan tmkn 
@@ -292,13 +402,13 @@ class M_pekerjaterhitungcatering extends CI_Model
 				   			select fs_jam_awal
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 				   	AND LEFT(waktu, 5) <= (
 				   			select fs_jam_akhir
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
-							and fs_hari = extract(isodow from tpres.tanggal)::varchar
+							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 				   	AND (tanggal = '$tanggal')
 				   	AND noind NOT IN (
@@ -394,9 +504,75 @@ class M_pekerjaterhitungcatering extends CI_Model
 				where trim(fs_tempat_makan) = '$tempat_makan' 
 				and fd_tanggal = '$tanggal' 
 				and t.fs_kd_shift = '2' 
+				union 
+				select 
+					t2.fs_noind,
+					t2.fs_nama,
+					'-' as waktu,
+					t.fs_tempat_makanpg,
+					1 as jumlah_karyawan,
+					'TAMBAHAN' as user_, 
+					(
+						select t4.seksi 
+						from hrd_khs.tpribadi t3 
+						left join hrd_khs.tseksi t4 
+						on t3.kodesie = t4.kodesie 
+						where t3.noind = t2.fs_noind 
+					) as seksi, 
+					coalesce(
+						(
+							select replace(upper(zz.shift),'SHIFT ','') as shift 
+							from \"Presensi\".tshiftpekerja xxx 
+							left join \"Presensi\".tshift zz 
+							on xxx.kd_shift = zz.kd_shift 
+							where xxx.noind = t2.fs_noind 
+							and xxx.tanggal = t.fd_tanggal
+						),
+						'Blm ada Shift'
+					) as shift 
+				from \"Catering\".tpenguranganpesanan t 
+				inner join \"Catering\".tpenguranganpesanan_detail t2 
+				on t.id_pengurangan = t2.id_pengurangan 
+				where trim(fs_tempat_makanpg) = '$tempat_makan' 
+				and fd_tanggal = '$tanggal' 
+				and t.fs_kd_shift = '2' 
+				and t.fb_kategori = '2'
 			) as tbl 
 			ORDER BY 4,1";
 		return $this->personalia->query($sql)->result_array();
+    }
+
+    function getPesananDetailByTanggalShiftLokasiTempatMakan($tanggal,$shift,$lokasi,$tempat_makan){
+    	$sql = "select tpd.noind,trim(tp.nama) as nama,'-' as waktu,tpd.tempat_makan,'-' as user_,ts.seksi,coalesce(tsh.shift,'Blm ada shift') as shift,tpd.keterangan as status
+				from \"Catering\".t_pesanan_detail tpd
+				inner join hrd_khs.tpribadi tp 
+				on trim(tpd.noind) = tp.noind
+				left join \"Presensi\".tshiftpekerja tsp 
+				on trim(tpd.noind) = tsp.noind
+				and tpd.tanggal = tsp.tanggal
+				left join \"Presensi\".tshift tsh 
+				on tsh.kd_shift = tsp.kd_shift
+				inner join hrd_khs.tseksi ts 
+				on ts.kodesie = tp.kodesie
+				where tpd.tanggal = ?
+				and tpd.shift = ?
+				and tpd.lokasi = ?
+				and tpd.tempat_makan = ?
+				and tpd.jenis = 'Makan'
+				and tpd.noind not in 
+				(
+					select tpd2.noind
+					from \"Catering\".t_pesanan_detail tpd2 
+					where tpd2.tanggal = tpd.tanggal
+					and tpd2.lokasi = tpd.lokasi
+					and tpd2.shift = tpd.shift
+					and tpd2.tempat_makan = tpd.tempat_makan
+					and tpd2.jenis = tpd.jenis
+					and tpd2.keterangan like 'PENGURANGAN%'
+					and tpd2.noind = tpd.noind
+					and tpd2.keterangan <> tpd.keterangan
+				)";
+		return $this->personalia->query($sql,array($tanggal,$shift,$lokasi,$tempat_makan))->result_array();
     }
 }
 

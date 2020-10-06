@@ -88,10 +88,13 @@ class M_report extends CI_Model {
 					,aia.invoice_amount total
 					,aia.attribute5
 					,aia.attribute3
+					--,regexp_replace(aia.attribute5, '[^[:digit:]]', '')||aia.attribute3 facktour
 					,nvl (pha.clm_document_number, pha.segment1) po_number
 					,to_char(receipt.receipt_num) receipt_num
 					,to_char(receipt.receipt_date) receipt_date
 					,to_char(aia.gl_date,'DD-MON-YYYY') gl_date
+					,kfw.month
+					,kfw.FAKTUR_DATE
 				from
 					ap_invoices_all aia
 					,ap_batches_all aba
@@ -101,6 +104,7 @@ class M_report extends CI_Model {
 					,ap_payment_schedules_all apsa
 					,ap_terms_tl att
 					,po_headers_all pha
+					,khs_faktur_web kfw
 					,( select invoice_id
 							,rtrim(xmlagg(xmlelement(e, receipt_num, ',') order by receipt_num ).extract('//text()').getclobval(), ',') receipt_num
 							,rtrim(xmlagg(xmlelement(e, receipt_date, ',') order by receipt_num ).extract('//text()').getclobval(), ',') receipt_date
@@ -131,6 +135,8 @@ class M_report extends CI_Model {
 					and aia.vendor_id = asa.vendor_id(+)
 					and aia.invoice_id = aipa.invoice_id(+)
 					and aia.invoice_id = apsa.invoice_id(+)
+					--and aia.INVOICE_ID =  kfw.INVOICE_ID(+)
+					and regexp_replace(aia.attribute5, '[^[:digit:]]', '')||aia.attribute3 = kfw.FAKTUR_PAJAK(+)
 					and aba.batch_id(+) = aia.batch_id
 					and aca.status_lookup_code(+) != 'VOIDED'
 					and aia.terms_id = att.term_id

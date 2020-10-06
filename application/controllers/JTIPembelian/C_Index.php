@@ -91,6 +91,8 @@ class C_Index extends CI_Controller
             'id_card' => strtoupper(trim($this->security->xss_clean($this->input->post('id_card')))),
             'estimation' => strtoupper(trim($this->security->xss_clean($this->input->post('estimation')))),
             'document_type' => $this->input->post('jenis_dokumen'),
+            'type' => $this->input->post('type'),
+            'weight_item' => $this->input->post('weight_item'),
             'created_by' => strtoupper(trim($this->security->xss_clean($this->input->post('created_by'))))
         )));
     }
@@ -108,18 +110,109 @@ class C_Index extends CI_Controller
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['get'] = $this->M_jtipembelian->History($this->session->user);
-        // echo "<pre>";
-        // print_r($data['get']);
-        // die;
+
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('JTIPembelian/V_History', $data);
         $this->load->view('V_Footer', $data);
     }
 
+    public function updateNamaDriver()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Hai..";
+      }else {
+        $res = $this->M_jtipembelian->updateNamaDriver(['name' => strtoupper($this->input->post('nama_driver'))], $this->input->post('id'));
+        echo json_encode($res);
+      }
+    }
+
+    public function del_dd()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Hai..";
+      }else {
+        $res = $this->M_jtipembelian->del_dd($this->input->post('document_id'), $this->input->post('driver_id'));
+        echo json_encode($res);
+      }
+    }
+
+    public function update_doc()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Hai..";
+      }else {
+        $cek = $this->M_jtipembelian->getVendorBySpbsOracle($this->input->post('document_number'));
+        if (!empty($cek[0]['VENDOR'])) {
+          $data = [
+            'document_type' => $this->input->post('jenis_dokumen'),
+            'estimation' => $this->input->post('estimasi'),
+            'vendor' => $cek[0]['VENDOR'],
+            'document_number' => $this->input->post('document_number')
+          ];
+          $res = $this->M_jtipembelian->update_doc($this->input->post('id'), $data);
+          echo json_encode($res);
+        }else {
+          echo json_encode(0);
+        }
+      }
+    }
+
     public function getHistoryJTI()
     {
       $data['get'] = $this->M_jtipembelian->History($this->session->user);
+      $data['jenis_dokumen'] = $this->M_jtipembelian->getTypes();
+      foreach ($data['get'] as $key => $value) {
+        if (!empty($value['vehicle_number'])) {
+          $tampung[$value['vehicle_number']][] = sizeof($value);
+        }
+      }
+
+      if (!empty($tampung)) {
+        foreach ($tampung as $key => $value) {
+          if (count($value) > 1) {
+            $platnomordobel[] = $key;
+          }else {
+            $platnomordobel[] = [];
+          }
+        }
+      }else {
+        $platnomordobel[] = [];
+      }
+
+      foreach ($data['get'] as $key => $value) {
+        if (in_array($value['vehicle_number'], $platnomordobel)) {
+          if (!empty($value['vehicle_number'])) {
+            $tmp[$value['vehicle_number']][] = $value;
+          }
+        }
+      }
+
+      if (!empty($tmp)) {
+        foreach ($tmp as $key => $value) {
+          $cek = null;
+          foreach ($tmp[$key] as $key1 => $v) {
+            if (!empty($v['weight'])) {
+              $cek = $v['weight'];
+            }
+          }
+          if (empty($cek)) {
+            $tampung_plat_dengan_berat1_kosong[] = $key;
+          }else {
+            $tampung_plat_dengan_berat1_kosong[] = [];
+          }
+        }
+      }else {
+        $tampung_plat_dengan_berat1_kosong[] = [];
+      }
+
+      foreach ($data['get'] as $key => $value) {
+        if (!in_array($value['vehicle_number'], $tampung_plat_dengan_berat1_kosong)) {
+          if (empty($value['weight']) && !empty($value['ticket_number'] && in_array($value['vehicle_number'], $platnomordobel))) {
+             unset($data['get'][$key]);
+           }
+        }
+      }
       $this->load->view('JTIPembelian/AjaxJTI/V_Ajax', $data);
     }
 

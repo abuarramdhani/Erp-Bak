@@ -36,44 +36,47 @@ class C_Detail extends CI_Controller {
             'NO_DO' => $exp_id[1],
             'NO_SO' => $exp_id[2],
         ];
+        $data['akses'] = '';
+        $data['tglKirim'] = '';
         $data['DetailType']     = $exp_id[0];
+        // echo $exp_id[0];exit;
+        
         $data['ApproverList']   = [
-            [
-                'name'          => 'B0354 - Wawan Kartika Hadi',
-                'id'            => 'B0354',
-                'email_address' => 'wawan_kartika@quick.com'
-            ],
-            [
-                'name'          => 'B0377 - Y. Dadung Senoaji',
-                'id'            => 'B0377',
-                'email_address' => 'y_dadung@quick.com'
-            ],
-            [
-                'name'          => 'B0621 - Ricky Setyawan',
-                'id'            => 'B0621',
-                'email_address' => 'ricky_setyawan@quick.com'
-            ],
-            [
-                'name'          => 'B0342 - Gatot Sutrisno',
-                'id'            => 'B0342',
-                'email_address' => 'gatot_sutrisno@quick.com'
-            ],
-            [
-                'name'          => 'B0543 - Cahyono Hadi',
-                'id'            => 'B0543',
-                'email_address' => 'cahyono_hadi@quick.com'
-            ],
-            [
-                'name'          => 'B0328 - Bambang Pudjijono',
-                'id'            => 'B0328',
-                'email_address' => 'bambang_pudjijono@quick.com'
-            ],
-            [
-                'name'          => 'J1287 - Muhammad Shalahuddin Azmi',
-                'id'            => 'J1287',
-                'email_address' => 'muhammad_shalahuddin_a@quick.com'
-            ]
+                    [
+                        'name'          => 'B0899 - JUBILATE SIHOMBING',
+                        'id'            => 'B0899',
+                        'email_address' => 'jubilate_sihombing@quick.com'
+                    ],
+                    [
+                        'name'          => 'B0885 - AHMAD FAIZ MUBAROK',
+                        'id'            => 'B0885',
+                        'email_address' => 'ahmad_faiz@quick.com'
+                    ],
+                    [
+                        'name'          => 'B0774 - B. DWIKI ARYA BUDI SULISTYA',
+                        'id'            => 'B0774',
+                        'email_address' => 'dwiki_arya@quick.com'
+                    ],
+                    [
+                        'name'          => 'B0702 - EGA PRAJA RIMATA',
+                        'id'            => 'B0702',
+                        'email_address' => 'ega_praja@quick.com'
+                    ],
         ];
+
+        $data['ApproverList2']   = [
+                    [
+                        'name'          => 'B0633 - PASKA KURNIAJATI, SE',
+                        'id'            => 'B0633',
+                        'email_address' => 'paska_kurniajati@quick.com'
+                    ],
+                    [
+                        'name'          => 'B0354 - WAWAN KARTIKA HADI',
+                        'id'            => 'B0354',
+                        'email_address' => 'wawan_kartika@quick.com'
+                    ]
+        ];
+
         switch ($exp_id[0]) {
             case 'ListBackorder':
                 $data['DetailDO'] = $this->M_detail->getDetailBackorder($exp_id[2]);
@@ -96,13 +99,16 @@ class C_Detail extends CI_Controller {
 
         switch ($exp_id[0]) {
             case 'ListDO':
+                $data['tglKirim'] = 'txttglKirimADO';
             case 'ListSPB':
+                $data['tglKirim'] = 'txttglKirimADO';
                 $data['ButtonType'] = 
                     '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover">
                         <i class="fa fa-location-arrow"></i>&nbsp; Select Approver
                     </button>';
                 break;
             case 'Approval':
+                $data['akses'] = 'readonly';
             case 'ApprovalSPB':
                 $data['ButtonType'] = 
                     '<button type="button" title="Pending" class="btn btn-default pull-right btnADOPending">
@@ -114,6 +120,7 @@ class C_Detail extends CI_Controller {
                     <button type="button" title="Approve" class="btn btn-primary pull-right btnADOApprove" style="margin-right: 10px">
                         <i class="fa fa-check-square-o"></i>&nbsp; Approve
                     </button>';
+                $data['akses'] = 'readonly';
                 break;
             case 'RequestedSPB':
             case 'Requested':
@@ -164,6 +171,7 @@ class C_Detail extends CI_Controller {
                 break;
         }
 
+        // print_r($data['DetailDO']);exit;
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DetailDO', $data);

@@ -52,7 +52,7 @@ class C_Lelayu extends CI_Controller
 
     $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
     $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+    $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
     $data['pekerja'] = $this->M_lelayu->getPekerja();
     $data['today'] = $today;
@@ -68,9 +68,9 @@ class C_Lelayu extends CI_Controller
     $data['pekerjaResign'] = $this->M_lelayu->getPekerjaMengajukanResign($bulancutoff);
 
     $this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPresensi/Lelayu/V_tambahData');
-		$this->load->view('V_Footer',$data);
+    $this->load->view('V_Sidemenu',$data);
+    $this->load->view('MasterPresensi/Lelayu/V_tambahData');
+    $this->load->view('V_Footer',$data);
   }
 
   public function save()
@@ -97,7 +97,7 @@ class C_Lelayu extends CI_Controller
       'uang_duka_perusahaan' => $duka,
       'spsi_askanit_ket' => $askanit,
       'spsi_askanit_nominal' => $totAska,
-      'spsi_kasie_ket	' => $madya,
+      'spsi_kasie_ket ' => $madya,
       'spsi_kasie_nominal' => $totMad,
       'spsi_spv_ket' => $super,
       'spsi_spv_nominal' => $totSup,
@@ -179,7 +179,11 @@ class C_Lelayu extends CI_Controller
     $data['awal'] = date('d-M-Y', strtotime($awal));
     $data['akhir'] = date('d-M-Y', strtotime($akhir));
     $html = $this->load->view('MasterPresensi/Lelayu/Rekap/V_Rekap_Table', $data);
-    echo json_encode($html);
+    //echo "<pre>";
+     //print_r($html);
+    // die;
+    //echo ('$html');
+    //echo json_encode($html);
   }
 
   public function getRekapAngelVer()
@@ -298,8 +302,8 @@ class C_Lelayu extends CI_Controller
       $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$x, $no)->getStyle('A'.$x)->applyFromArray($style_col1);
       $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$x, $key['lokasi'])->getStyle('B'.$x)->applyFromArray($style_col1);
       $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$x, $key['branch'])->getStyle('C'.$x)->applyFromArray($style_col1);
-      $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$x, $key['staff'])->getStyle('D'.$x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
-      $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$x, $key['non_staff'])->getStyle('E'.$x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
+      $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$x, $key['staff'])->getStyle('D'.$x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0;[Red]-#,#0');
+      $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$x, $key['non_staff'])->getStyle('E'.$x)->applyFromArray($style_col1)->getNumberFormat()->setFormatCode('#,#0;[Red]-#,#0');
 
       $stafTotal += $key['staff'];
       $nonStafTotal += $key['non_staff'];
@@ -309,8 +313,8 @@ class C_Lelayu extends CI_Controller
     $objPHPExcel->setActiveSheetIndex(0)->getStyle('A'.$x)->applyFromArray($style_col1);
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$x, 'Total')->getStyle('B'.$x)->applyFromArray($style_col);
     $objPHPExcel->setActiveSheetIndex(0)->getStyle('C'.$x)->applyFromArray($style_col1);
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$x, $stafTotal)->getStyle('D'.$x)->applyFromArray($style_col)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$x, $nonStafTotal)->getStyle('E'.$x)->applyFromArray($style_col)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$x, $stafTotal)->getStyle('D'.$x)->applyFromArray($style_col)->getNumberFormat()->setFormatCode('#,#0;[Red]-#,#0');
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$x, $nonStafTotal)->getStyle('E'.$x)->applyFromArray($style_col)->getNumberFormat()->setFormatCode('#,#0;[Red]-#,#0');
 
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.($x+2), 'Yogyakarta, ___________')->getStyle('B'.$x)->applyFromArray($style_col1);
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.($x+6), ucwords(rtrim(strtolower($namaTTD))))->getStyle('B'.$x)->applyFromArray($style_col2);
@@ -318,7 +322,7 @@ class C_Lelayu extends CI_Controller
 
     $objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 
-    $objPHPExcel->getActiveSheet()->setTitle('DAFTAR KEBUTUHAN P2K3');
+    $objPHPExcel->getActiveSheet()->setTitle('REKAP POTONGAN DUKA');
 
     $objPHPExcel->setActiveSheetIndex(0);  
     $filename = urlencode("Rekap Potongan Duka.xlsx");

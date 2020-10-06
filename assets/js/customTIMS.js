@@ -1601,5 +1601,25 @@ function rekap_datatable_detail() {
 				});
 			});
 
+			$(function () {
+				$('#adm-lokasi').select2();
+				$(document).on('ifChecked', '#a_all', function(event) {
+				 // alert('done');
+				// $("select").select2('destroy').val("").select2();
+				// $('#your_select_input').val([]);
+				// $("#er-status").text("");
+				 // $('#er-status').select2().val(null).trigger("change");
+				 $("#adm-lokasi").each(function () { //added a each loop here
+			        $(this).select2('val', '');
+			    });
+				 $('#adm-lokasi').prop('disabled',true);
+				});
+				$(document).on('ifUnchecked', '#a_all', function(event) {
+				 // alert('done');
+				 $('#adm-lokasi').prop('disabled',false);
+				});
+			});
+
+
 		//	}
 //	}

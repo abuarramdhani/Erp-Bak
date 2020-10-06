@@ -63,6 +63,8 @@
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/mdtimepicker/mdtimepicker.css') ?>" />
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/css/custom.css') ?>" />
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/css/animate.css') ?>" />
+	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/fullcalendar-1.6.2/fullcalendar/fullcalendar.css') ?>" />
+	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/fullcalendar-1.6.2/fullcalendar/fullcalendar.print.css') ?>" />
     <script src="<?= base_url('assets/plugins/jquery-2.1.4.min.js') ?>" type="text/javascript"></script>
 	<script src="<?= base_url('assets/plugins/jQueryUI/jquery-ui.min.js') ?>" type="text/javascript"></script>
     <script src="<?= base_url('assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js') ?>"></script>
@@ -70,6 +72,7 @@
 </head>
 <body class="<?php echo $this->session->tema;?>">
 	<div id="loadingAjax"></div>
+
     <div class="wrapper">
 		<input type="hidden" value="<?= base_url(); ?>" name="txtBaseUrl" id="txtBaseUrl"/>
 		<?php

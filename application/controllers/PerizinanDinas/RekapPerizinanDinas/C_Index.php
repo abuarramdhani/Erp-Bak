@@ -24,8 +24,7 @@ class C_Index extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
+		if ($this->session->is_logged) {
 		} else {
 			redirect('');
 		}
@@ -44,17 +43,28 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$datamenu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
+		$paramedik = $this->M_index->allowedAccess('1');
+		$paramedik = array_column($paramedik, 'noind');
+
+		$admin_hubker = $this->M_index->allowedAccess('2');
+		$admin_hubker = array_column($admin_hubker, 'noind');
+
+		if (in_array($no_induk, $paramedik)) {
 			$data['UserMenu'] = $datamenu;
-		}else {
+		} elseif (in_array($no_induk, $admin_hubker)) {
+			unset($datamenu[0]);
+			unset($datamenu[1]);
+			$data['UserMenu'] = array_values($datamenu);
+		} else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
-			$data['UserMenu'] = $datamenu;
+			unset($datamenu[3]);
+			$data['UserMenu'] = array_values($datamenu);
 		}
 
 		$today = date('Y-m-d');
@@ -62,11 +72,10 @@ class C_Index extends CI_Controller
 		$data['noind'] = $this->M_index->getNoind();
 		$data['tgl'] = date('d/m/Y');
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Index',$data);
-		$this->load->view('PerizinanDinas/V_Footer',$data);
-
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Index', $data);
+		$this->load->view('PerizinanDinas/V_Footer', $data);
 	}
 
 	public function rekapbulanan()
@@ -96,7 +105,7 @@ class C_Index extends CI_Controller
 			if ($periode1 == $periode2) {
 				$periode = "WHERE cast(ti.created_date as date) = '$periode1'";
 				$periodea = "WHERE cast(tp.created_date as date) = '$periode1'";
-			}else if($periode1 != $periode2){
+			} else if ($periode1 != $periode2) {
 				$periode = "WHERE cast(ti.created_date as date) between '$periode1' and '$periode2'";
 				$periodea = "WHERE cast(tp.created_date as date) between '$periode1' and '$periode2'";
 			}
@@ -110,7 +119,7 @@ class C_Index extends CI_Controller
 				$noind 			= implode("', '", $noind);
 				$periodea .= " AND ti.noind IN ('$noind')";
 			}
-		}else{
+		} else {
 			$periode = $perioderekap;
 			$periodea = $perioderekap;
 
@@ -134,8 +143,7 @@ class C_Index extends CI_Controller
 			foreach ($a as $key) {
 				$b[$key['izin_id']][] = $key['pekerja'];
 			}
-			foreach($b as $type => $label)
-			{
+			foreach ($b as $type => $label) {
 				$output[] = array(
 					'izin_id' => $type,
 					'pekerja' => $label
@@ -147,8 +155,7 @@ class C_Index extends CI_Controller
 			foreach ($a as $key) {
 				$makan[$key['izin_id']][] = $key['tujuan'];
 			}
-			foreach($makan as $type => $label)
-			{
+			foreach ($makan as $type => $label) {
 				$ot_makan[] = array(
 					'izin_id' => $type,
 					'tujuan' => $label
@@ -172,10 +179,10 @@ class C_Index extends CI_Controller
 					}
 				}
 			}
-			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Process',$data);
-		}else {
+			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Process', $data);
+		} else {
 			$data['pekerja'] = $this->M_index->getPekerja($periodea);
-			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Human',$data);
+			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Human', $data);
 		}
 		echo json_encode($view);
 	}
@@ -185,15 +192,13 @@ class C_Index extends CI_Controller
 		$lnoind = $this->M_index->getIDIzinbyID($id);
 		$noind = '';
 		foreach ($lnoind as $key) {
-			$noind .= $key['noind'].' ';
+			$noind .= $key['noind'] . ' ';
 		}
 		$aksi = 'HAPUS PERIZINAN DINAS';
-		$detail = 'Hapus Izin ID='.$id.' noind='.$noind;
+		$detail = 'Hapus Izin ID=' . $id . ' noind=' . $noind;
 		$this->log_activity->activity_log($aksi, $detail);
 		$del = $this->M_index->hapusIzin($id);
-		
+
 		return $del;
 	}
-
 }
-?>

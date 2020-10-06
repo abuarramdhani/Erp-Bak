@@ -97,7 +97,7 @@ class C_NonConformityAndroid extends CI_Controller
 		// print_r($photo);exit;
         
         // $response['error'] = false;
-        // $response['message'] =  count($remark);
+        // $response['message'] = $user_id.'-'.$description;
         // echo json_encode($response);
         // exit;
         // echo '<pre>';
@@ -129,10 +129,15 @@ class C_NonConformityAndroid extends CI_Controller
 
 		$nonConformityNumber = implode('-', $numberNC);
 		
-
-		$header = array('creation_date' => 'now()',
+		$header = array(
+						'creation_date' => 'now()',
 						'non_conformity_num' => $nonConformityNumber,
-
+						'created_by' => $user_id,
+						'creation_date' => 'now()',
+						'last_updated_by' => $user_id,
+						'last_update_date' => 'now()',
+						'verificator' => $user_id,
+						'last_menu' => 'Submit dari Gudang'
 					 );
 
 		$headerId = $this->M_nonconformity->simpanHeader($header);
@@ -140,13 +145,12 @@ class C_NonConformityAndroid extends CI_Controller
 		//////////////////////UPLOAD PHOTO////////////
 		$path = ('./assets/upload/NonConformity/');
 		for($j=0;$j<count($_FILES['file']['tmp_name']);$j++){
-			// echo $_FILES['file']['tmp_name'][$j];
 			$response['error'] = false;
 			$response['message'] =  "number of files recieved is = ".count($_FILES['file']['name']);
 			if(move_uploaded_file($_FILES['file']['tmp_name'][$j],$path.$_FILES['file']['name'][$j])){
-				  $response['error'] = false;
-			$response['message'] =  $response['message']. "moved sucessfully ::  ";
-
+				  	$response['error'] = false;
+					$response['message'] =  $response['message']. "moved sucessfully ::  ";
+				
 					$inputFileName 	= './assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
 				
 					if(is_file($inputFileName))
@@ -306,7 +310,6 @@ class C_NonConformityAndroid extends CI_Controller
 
 		// echo count($photo);exit;
         
-
 		$source = array(
 						'info' => $description,
 						'created_by' => $user_id,
@@ -337,7 +340,6 @@ class C_NonConformityAndroid extends CI_Controller
 
 		$nonConformityNumber = implode('-', $numberNC);
 		
-
 		$header = array('creation_date' => 'now()',
 						'non_conformity_num' => $nonConformityNumber,
 						'assign' => null
@@ -434,4 +436,42 @@ class C_NonConformityAndroid extends CI_Controller
 		$response['message'] = "Ok";
 		echo json_encode($response);
 	}
+
+	public function deleteNC()
+	{
+		$id = $_POST['header_id'];
+		$photos = $this->M_nonconformity->getImages($id);
+
+		foreach ($photos as $key => $photo) {
+			if(is_file($photo['image_path'].''.$photo['file_name'])){
+				unlink($photo['image_path'].''.$photo['file_name']);
+			};
+		}
+
+		$this->M_nonconformity->hapusDataNCSource($id);
+		$this->M_nonconformity->hapusDataNCCase($id);
+		$this->M_nonconformity->hapusDataNCImage($id);
+		$this->M_nonconformity->hapusDataNCLines($id);
+		$this->M_nonconformity->hapusDataNCHeader($id);
+
+		$response['error'] = false;
+		$response['message'] = "Ok";
+		echo json_encode($response);
+	}
+	
+	public function pendingAssign($noinduk)
+	{
+		$list = $this->M_nonconformity->getPendingAssign($noinduk);
+
+		if (count($list) > 0) {
+			$data['status'] = true;
+        	$data['result'] = $list;
+		}else {
+			$data['status'] = false;
+    		$data['result'] = "Data not Found";
+		}
+
+		print_r(json_encode($data));
+	}
+
 }

@@ -63,7 +63,8 @@ class M_wipp extends CI_Model
 
     public function cekLineSaved($date)
     {
-        $response = $this->db->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         if (empty($response)) {
             return 0;
         } else {
@@ -79,40 +80,47 @@ class M_wipp extends CI_Model
 
     public function getline1($date)
     {
-        $response = $this->db->where('line', 1)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 1)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline2($date)
     {
-        $response = $this->db->where('line', 2)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 2)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline3($date)
     {
-        $response = $this->db->where('line', 3)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 3)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline4($date)
     {
-        $response = $this->db->where('line', 4)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 4)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function getline5($date)
     {
-        $response = $this->db->where('line', 5)->where('date_target', $date)->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('line', 5)->where('date_target', $x[0])->where('type', $x[1])->get('wip_pnp.line_data')->result_array();
         return $response;
     }
 
     public function ceklineaja($param)
     {
-        $cek = $this->db->where('date_target', $param)
-                      ->get('wip_pnp.line_data')->result_array();
+        $x = explode('_', $param);
+        $cek = $this->db->where('date_target', $x[0])
+                        ->where('type', $x[1])
+                        ->get('wip_pnp.line_data')->result_array();
         if ($cek !== '') {
-            $this->db->delete('wip_pnp.line_data', ['date_target' => $param]);
+            $this->db->delete('wip_pnp.line_data', ['date_target' => $x[0], 'type' => $x[1]]);
         }
     }
 
@@ -144,7 +152,8 @@ class M_wipp extends CI_Model
 
     public function getSplit($value, $date)
     {
-        $response = $this->db->where('no_job', $value)->where('date_target', $date)->order_by('id', 'asc')->get('wip_pnp.job_list')->result_array();
+        $x = explode('_', $date);
+        $response = $this->db->where('no_job', $value)->where('date_target', $x[0])->where('type', $x[1])->order_by('id', 'asc')->get('wip_pnp.job_list')->result_array();
         return $response;
     }
 
@@ -250,8 +259,10 @@ class M_wipp extends CI_Model
 
     public function getListRKH($value)
     {
+        $x = explode('_', $value);
         $wipp = $this->db->select('wip_pnp.job_list.*')
-                       ->where('wip_pnp.job_list.date_target', $value)
+                        ->where('wip_pnp.job_list.date_target', $x[0])
+                        ->where('wip_pnp.job_list.type', $x[1])
                        ->order_by('kode_item', 'asc')
                        ->get('wip_pnp.job_list')
                        ->result_array();
@@ -261,7 +272,7 @@ class M_wipp extends CI_Model
     public function getLR()
     {
         $wipp = $this->db->distinct()
-                       ->select('date_target, waktu_satu_shift')
+                       ->select('date_target, waktu_satu_shift, type')
                        ->order_by('date_target', 'desc')
                        ->get('wip_pnp.job_list')->result_array();
         return $wipp;
@@ -357,65 +368,131 @@ class M_wipp extends CI_Model
     public function getJob($kode_item)
     {
       $res = $this->oracle->query("SELECT DISTINCT we.wip_entity_name no_job, wdj.scheduled_start_date,
-                                    wdj.completion_subinventory, msib_assy.segment1 kode_assy,
-                                    msib_assy.description, wdj.start_quantity, bd.department_code,
-                                    bores.usage_rate_or_amount, msib_comp.segment1 kode_comp,
-                                    msib_comp.description comp_description
-                               FROM wip_entities we,
-                                    wip_discrete_jobs wdj,
-                                    wip_requirement_operations wro,
-                                    mtl_system_items_b msib_comp,
-                                    mtl_system_items_b msib_assy,
-                                    bom_departments bd,
-                                    bom_operation_sequences bos,
-                                    bom_operation_resources bores,
-                                    bom_operational_routings bor,
-                                    bom_resources br,
-                                    bom_bill_of_materials bom,
-                                    bom_inventory_components bic
-                              WHERE we.wip_entity_id = wdj.wip_entity_id
-                                AND wdj.completion_subinventory LIKE 'INT-P&%'
-                                AND wdj.wip_entity_id = wro.wip_entity_id
-                                AND wro.inventory_item_id = msib_comp.inventory_item_id
-                                AND wro.organization_id = msib_comp.organization_id
-                                AND wdj.primary_item_id = msib_assy.inventory_item_id
-                                AND wdj.organization_id = msib_assy.organization_id
-                                --
-                                AND bor.assembly_item_id = msib_assy.inventory_item_id
-                                AND bor.organization_id = msib_assy.organization_id
-                                AND bos.routing_sequence_id = bor.routing_sequence_id
-                                AND bd.department_id = bos.department_id
-                                AND wro.department_id = bd.department_id
-                                AND bores.operation_sequence_id = bos.operation_sequence_id
-                                AND bores.resource_id = br.resource_id
-                                --
-                                AND bom.assembly_item_id = msib_assy.inventory_item_id
-                                AND bom.organization_id = msib_assy.organization_id
-                                AND bom.bill_sequence_id = bic.bill_sequence_id
-                                AND bic.component_item_id = msib_comp.inventory_item_id
-                                AND wdj.status_type = 3
-                                AND br.resource_code NOT LIKE 'OPTR%'
-                                AND bd.department_code LIKE 'PP%'
-                                AND msib_comp.segment1 NOT LIKE 'MGA%'
-                                AND msib_comp.segment1 NOT LIKE 'MAP%'
-                                AND msib_comp.segment1 NOT LIKE 'MEN%'
-                                AND msib_comp.segment1 NOT LIKE 'MGB%'
-                                AND msib_comp.segment1 NOT LIKE 'PSC%'
-                                AND bor.routing_sequence_id IN (
-                                       SELECT MAX (bor.routing_sequence_id) OVER (PARTITION BY we.wip_entity_name)
-                                         FROM wip_entities we,
-                                              wip_discrete_jobs wdj,
-                                              mtl_system_items_b msib_assy,
-                                              bom_operational_routings bor
-                                        WHERE we.wip_entity_id = wdj.wip_entity_id
-                                          AND wdj.completion_subinventory LIKE 'INT-P&%'
-                                          AND wdj.status_type = 3
-                                          AND wdj.primary_item_id = msib_assy.inventory_item_id
-                                          AND wdj.organization_id = msib_assy.organization_id
-                                          AND bor.assembly_item_id = msib_assy.inventory_item_id
-                                          AND bor.organization_id = msib_assy.organization_id)
-                                AND msib_comp.segment1 LIKE '$kode_item%'
-                           ORDER BY msib_assy.segment1 ASC, wdj.scheduled_start_date DESC")->result_array();
+                                        wdj.completion_subinventory, msib_assy.segment1 kode_assy,
+                                        msib_assy.description, wdj.start_quantity, bd.department_code,
+                                        bores.usage_rate_or_amount, msib_comp.segment1 kode_comp,
+                                        msib_comp.description comp_description,
+                                        wro.quantity_per_assembly
+                                   FROM wip_entities we,
+                                        wip_discrete_jobs wdj,
+                                        wip_requirement_operations wro,
+                                        mtl_system_items_b msib_comp,
+                                        mtl_system_items_b msib_assy,
+                                        bom_departments bd,
+                                        bom_operation_sequences bos,
+                                        bom_operation_resources bores,
+                                        bom_operational_routings bor,
+                                        bom_resources br,
+                                        bom_bill_of_materials bom,
+                                        bom_inventory_components bic
+                                  WHERE we.wip_entity_id = wdj.wip_entity_id
+                                    AND wdj.completion_subinventory LIKE 'INT-P&%'
+                                    AND wdj.wip_entity_id = wro.wip_entity_id
+                                    AND wro.inventory_item_id = msib_comp.inventory_item_id
+                                    AND wro.organization_id = msib_comp.organization_id
+                                    AND wdj.primary_item_id = msib_assy.inventory_item_id
+                                    AND wdj.organization_id = msib_assy.organization_id
+                                    --
+                                    AND bor.assembly_item_id = msib_assy.inventory_item_id
+                                    AND bor.organization_id = msib_assy.organization_id
+                                    AND bos.routing_sequence_id = bor.routing_sequence_id
+                                    AND bd.department_id = bos.department_id
+                                    AND wro.department_id = bd.department_id
+                                    AND bores.operation_sequence_id = bos.operation_sequence_id
+                                    AND bores.resource_id = br.resource_id
+                                    --
+                                    AND bom.assembly_item_id = msib_assy.inventory_item_id
+                                    AND bom.organization_id = msib_assy.organization_id
+                                    AND bom.bill_sequence_id = bic.bill_sequence_id
+                                    AND bic.component_item_id = msib_comp.inventory_item_id
+                                    AND wdj.status_type = 3
+                                    AND br.resource_code NOT LIKE 'OPTR%'
+                                    AND bd.department_code LIKE 'PP%'
+                                    AND msib_comp.segment1 NOT LIKE 'MGA%'
+                                    AND msib_comp.segment1 NOT LIKE 'MAP%'
+                                    AND msib_comp.segment1 NOT LIKE 'MEN%'
+                                    AND msib_comp.segment1 NOT LIKE 'MGB%'
+                                    AND msib_comp.segment1 NOT LIKE 'PSC%'
+                                    AND bor.routing_sequence_id IN (
+                                           SELECT MAX (bor.routing_sequence_id) OVER (PARTITION BY we.wip_entity_name)
+                                             FROM wip_entities we,
+                                                  wip_discrete_jobs wdj,
+                                                  mtl_system_items_b msib_assy,
+                                                  bom_operational_routings bor
+                                            WHERE we.wip_entity_id = wdj.wip_entity_id
+                                              AND wdj.completion_subinventory LIKE 'INT-P&%'
+                                              AND wdj.status_type = 3
+                                              AND wdj.primary_item_id = msib_assy.inventory_item_id
+                                              AND wdj.organization_id = msib_assy.organization_id
+                                              AND bor.assembly_item_id = msib_assy.inventory_item_id
+                                              AND bor.organization_id = msib_assy.organization_id)
+                                    AND msib_comp.segment1 LIKE '$kode_item%'
+                               ORDER BY msib_assy.segment1 ASC, wdj.scheduled_start_date DESC")->result_array();
+                           return $res;
+    }
+
+    public function getJobAll()
+    {
+      $res = $this->oracle->query("SELECT DISTINCT we.wip_entity_name no_job, wdj.scheduled_start_date,
+                                        wdj.completion_subinventory, msib_assy.segment1 kode_assy,
+                                        msib_assy.description, wdj.start_quantity, bd.department_code,
+                                        bores.usage_rate_or_amount, msib_comp.segment1 kode_comp,
+                                        msib_comp.description comp_description,
+                                        wro.quantity_per_assembly
+                                   FROM wip_entities we,
+                                        wip_discrete_jobs wdj,
+                                        wip_requirement_operations wro,
+                                        mtl_system_items_b msib_comp,
+                                        mtl_system_items_b msib_assy,
+                                        bom_departments bd,
+                                        bom_operation_sequences bos,
+                                        bom_operation_resources bores,
+                                        bom_operational_routings bor,
+                                        bom_resources br,
+                                        bom_bill_of_materials bom,
+                                        bom_inventory_components bic
+                                  WHERE we.wip_entity_id = wdj.wip_entity_id
+                                    AND wdj.completion_subinventory LIKE 'INT-P&%'
+                                    AND wdj.wip_entity_id = wro.wip_entity_id
+                                    AND wro.inventory_item_id = msib_comp.inventory_item_id
+                                    AND wro.organization_id = msib_comp.organization_id
+                                    AND wdj.primary_item_id = msib_assy.inventory_item_id
+                                    AND wdj.organization_id = msib_assy.organization_id
+                                    --
+                                    AND bor.assembly_item_id = msib_assy.inventory_item_id
+                                    AND bor.organization_id = msib_assy.organization_id
+                                    AND bos.routing_sequence_id = bor.routing_sequence_id
+                                    AND bd.department_id = bos.department_id
+                                    AND wro.department_id = bd.department_id
+                                    AND bores.operation_sequence_id = bos.operation_sequence_id
+                                    AND bores.resource_id = br.resource_id
+                                    --
+                                    AND bom.assembly_item_id = msib_assy.inventory_item_id
+                                    AND bom.organization_id = msib_assy.organization_id
+                                    AND bom.bill_sequence_id = bic.bill_sequence_id
+                                    AND bic.component_item_id = msib_comp.inventory_item_id
+                                    AND wdj.status_type = 3
+                                    AND br.resource_code NOT LIKE 'OPTR%'
+                                    AND bd.department_code LIKE 'PP%'
+                                    AND msib_comp.segment1 NOT LIKE 'MGA%'
+                                    AND msib_comp.segment1 NOT LIKE 'MAP%'
+                                    AND msib_comp.segment1 NOT LIKE 'MEN%'
+                                    AND msib_comp.segment1 NOT LIKE 'MGB%'
+                                    AND msib_comp.segment1 NOT LIKE 'PSC%'
+                                    AND bor.routing_sequence_id IN (
+                                           SELECT MAX (bor.routing_sequence_id) OVER (PARTITION BY we.wip_entity_name)
+                                             FROM wip_entities we,
+                                                  wip_discrete_jobs wdj,
+                                                  mtl_system_items_b msib_assy,
+                                                  bom_operational_routings bor
+                                            WHERE we.wip_entity_id = wdj.wip_entity_id
+                                              AND wdj.completion_subinventory LIKE 'INT-P&%'
+                                              AND wdj.status_type = 3
+                                              AND wdj.primary_item_id = msib_assy.inventory_item_id
+                                              AND wdj.organization_id = msib_assy.organization_id
+                                              AND bor.assembly_item_id = msib_assy.inventory_item_id
+                                              AND bor.organization_id = msib_assy.organization_id)
+                               ORDER BY msib_assy.segment1 ASC, wdj.scheduled_start_date DESC")->result_array();
                            return $res;
     }
 

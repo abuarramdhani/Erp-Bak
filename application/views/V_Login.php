@@ -25,12 +25,14 @@
     <link id="bs-css" href="<?php echo base_url('assets/plugins/cm/css/bootstrap-cerulean.min.css');?>" rel="stylesheet">
 
     <link href="<?php echo base_url('assets/plugins/cm/css/charisma-app.css');?>" rel="stylesheet">
+    <link href="<?= base_url('assets/plugins/Font-Awesome/4.3.0/css/font-awesome.min.css');?>" rel="stylesheet">
     
     <!-- GLOBAL SCRIPTS -->
     <script src="<?php echo base_url('assets/plugins/jquery-2.0.3.min.js');?>"></script>
     <script src="<?php echo base_url('assets/plugins/bootstrap/3.0.0/js/bootstrap.min.js');?>"></script>
     <script src="<?= base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
     <script src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
+    <script src="<?= base_url('assets/plugins/darkreader/darkreader.min.js');?>"></script>
     <!-- <script src="<?= base_url('assets/plugins/sweetAlert/sweetalert.js') ?>"></script> -->
     <!--<script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>"></script>
 	
@@ -78,7 +80,12 @@
         }
     </noscript>
 </head>
-
+<?php 
+    // untuk slide show
+    $start = strtotime("2020-08-30");
+    $now = strtotime(date('Y-m-d'));
+    $diff = ($now - $start) / (60 * 60 * 24);
+?>
 <body id="body">
 <div class="ch-container">
     <div class="main">
@@ -86,7 +93,59 @@
             <div class="col-md-12 center login-header"></div>
         </div>
         <div class="row">
-            <div class="well col-md-5 center login-box">
+            <div class="col-md-3">
+                <div class="row" style="height: 100%">
+                    <div class="col-sm-9 col-sm-offset-3" style="height: 100%;padding-left: 0;">
+                        <div class="carousel slide" data-ride="carousel" data-interval="4000">
+                            <div class="carousel-inner">
+                                <?php 
+                                $gambarData = array(
+                                    1 => array('1.fakta.jpg',
+                                        '2.manipulasi.jpg',
+                                        '3.prosedur.jpg',
+                                        '4.completion.jpg'
+                                    ),
+                                    2 => array(
+                                        '5.stockopname.jpg',
+                                        '6.Segera-tindak-lanjut.jpg',
+                                        '7.scw.jpg'
+                                    )
+                                );
+
+                                $loopData = array();
+                                if (in_array($diff%7, array(1,2,3))) {
+                                    $loopData = $gambarData[1];
+                                }elseif (in_array($diff%7, array(4,5,6,0))) {
+                                    $loopData = $gambarData[2];
+                                }else{
+                                    foreach ($gambarData as $val) {
+                                        foreach ($val as $val2) {
+                                            $loopData[] = $val2;
+                                        }
+                                    }
+                                }
+
+                                $nomor = 0;
+                                foreach ($loopData as $value) {
+                                    if ($nomor == 0) {
+                                        $active = "active";
+                                    }else{
+                                        $active = "";
+                                    }
+                                    ?>
+                                        <div class="item <?php echo $active ?>">
+                                            <img src="<?php echo base_url('assets/poster/AwarenessData/'.$value) ?>" style="width: 100%;height: auto" alt="<?php echo $value ?>">
+                                        </div>
+                                    <?php
+                                    $nomor++;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="well col-md-6 login-box">
                 <div class="row left" style="padding:1%;margin-left:-5%;">
                     <div class="col-md-12">
                         <div style="float:left;">
@@ -133,8 +192,82 @@
                     </fieldset>
                 </form>
             </div>
+            <div class="col-md-3">
+                <div class="row" style="height: 100%">
+                    <div class="col-sm-9" style="height: 100%;padding-right: 0;">
+                        <div class="carousel slide" data-ride="carousel" data-interval="4000">
+                            <div class="carousel-inner">
+                                <?php 
+                                $gambarCovid = array(
+                                    1 => array(
+                                        '1.Jagajarak.jpg',
+                                        '2.Maskerbaikbenar.jpg',
+                                        '3.Gantimasker.jpg',
+                                        '4.Dontspeak.jpg',
+                                        '5.LewatAirborne.jpg'
+                                    ),
+                                    2 => array(
+                                        '6.CuciTangan.jpg',
+                                        '7.6lngkah.jpg',
+                                        '8.KontakFisik.jpg',
+                                        '9.NyedakKeplak.jpg',
+                                        '10.Makan.jpg'
+                                    ),
+                                    3 => array(
+                                        '11.Smoker.jpg',
+                                        '12.Akuada.jpg',
+                                        '13.4jalan.jpg',
+                                        '14.Staywithme.jpg'
+                                    ),
+                                    4 => array(
+                                        '15.DontGobaby.jpg',
+                                        '16.Janganpegang.jpg',
+                                        '17.Openthedor.jpg',
+                                        '18.Breath.jpg'
+                                    )
+                                );
+                                
+                                $loopCovid = array();
+                                if (in_array($diff%14, array(1,2,3))) {
+                                    $loopCovid = $gambarCovid[1];
+                                }elseif (in_array($diff%14, array(4,5,6,7))) {
+                                    $loopCovid = $gambarCovid[2];
+                                }elseif (in_array($diff%14, array(8,9,10))) {
+                                    $loopCovid = $gambarCovid[3];
+                                }elseif (in_array($diff%14, array(11,12,13,0))) {
+                                    $loopCovid = $gambarCovid[4];
+                                }else{
+                                    foreach ($gambarCovid as $val) {
+                                        foreach ($val as $val2) {
+                                            $loopCovid[] = $val2;
+                                        }
+                                    }
+                                }
+
+                                $nomor = 0;
+                                foreach ($loopCovid as $value) {
+                                    if ($nomor == 0) {
+                                        $active = "active";
+                                    }else{
+                                        $active = "";
+                                    }
+                                    ?>
+                                        <div class="item <?php echo $active ?>">
+                                            <img src="<?php echo base_url('assets/poster/Covid/'.$value) ?>" style="width: 100%;height: auto" alt="<?php echo $value ?>">
+                                        </div>
+                                    <?php
+                                    $nomor++;
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -211,10 +344,11 @@
     }
     if(browserVersion === 0) browserVersion = parseFloat(new Number(RegExp.$1));
     var error = '<div style="text-align: center;"><h3>Aplikasi Browser ('+ get_browser_info().name +' Versi '+ get_browser_info().version +') Anda <b>tidak memenuhi Spesifikasi Standar Minimum Akses</b> QuickERP.</h3> <h3>Silahkan gunakan Aplikasi Browser berikut : </h3> <h3>- Google Chrome Versi 49 ke Atas</h3><h3>- Chromium Versi 50 ke Atas</h3> <h3>- Mozilla Firefox Versi 45 ke Atas</h3><br><h3>atau </h3><h3>Silahkan <b>menghubungi Bag. Hardware ICT</b> untuk dilakukan installasi / update Browser</h3> <h3><b>di VoIP 12300 Ext. 5 atau Telkomsel MyGroup 628112545922</b></h3><br><h3>--- QuickERP ---</h3></div> nama os : '+OSName;
-    if(browser == 'Chrome' || browser == 'Mozila Firefox' || browser == 'Chromium') {
+    if(browser == 'Chrome' || browser == 'Mozila Firefox' || browser == 'Chromium' || browser == 'Safari') {
             if((browser == 'Chrome' && browserVersion < 49 && OSName != 'Android') || (browser == 'Chrome' && browserVersion < 42 && OSName == 'Android')) document.getElementById("body").innerHTML = error;
             if(browser == 'Mozila Firefox' && browserVersion < 45) document.getElementById("body").innerHTML = error;
             if(browser == 'chromium' && browserVersion < 50) document.getElementById("body").innerHTML = error;
+            if(browser == 'Safari' && browserVersion !== 604 && browserVersion !== 13) document.getElementById("body").innerHTML = error;
     } else {
         document.getElementById("body").innerHTML = error;
     }
@@ -234,30 +368,8 @@
           name: M[0],
           version: M[1]
         };
-    }
+    };
 </script>
-
-<style>
-    .iconso {
-        position: fixed;
-        bottom: 0px;
-        left: 20px;
-        margin: 0;
-    }
-
-    .iconso-img {
-        width: 300px;
-    }
-
-    @media only screen and (max-width: 600px) {
-        .iconso-img {
-            display: none !important;
-        }
-    }
-</style>
-<div class="iconso">
-    <img class="iconso-img" src="<?php echo base_url('assets/img/SO2020.gif?v='.time()); ?>">
-</div>
 
 </body>
 </html> 

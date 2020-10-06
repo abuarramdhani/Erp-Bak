@@ -38,9 +38,8 @@ class C_InputData extends CI_Controller
         $this->data['seksi'] = ucwords(strtolower($this->M_inputdata->getNameSeksi($kodesie)));
 
         $table = '';
-        $i = 0;
+        $i = count($data);
         foreach($data as $res){
-            $i++;
             $id         = $res['id_data'];
             $noind      = $res['noind'];
             $nama       = $res['nama'];
@@ -105,6 +104,7 @@ class C_InputData extends CI_Controller
                                 $editButton
                             </td>
                         </tr>";
+            $i--;
         }
 
         $this->data['table'] = $table;

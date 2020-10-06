@@ -1,4 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+date_default_timezone_set('Asia/Jakarta');
 
 class C_Order extends CI_Controller
 {
@@ -166,6 +167,10 @@ class C_Order extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	/*
+		!!! Deprecated
+		no longer used
+	*/
 	public function save_data()
 	{
 		$user_id					= $this->session->userid;
@@ -749,6 +754,7 @@ class C_Order extends CI_Controller
 		$r = range('D', 'Z');
 		$r2 = range('E', 'Z', 2);
 		$r3 = range('E', 'Z');
+
 		//menampilkan departement,bidang,unit
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', ': ' . $header[0]['dept']);
 		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', ': ' . $header[0]['bidang']);
@@ -785,11 +791,9 @@ class C_Order extends CI_Controller
 				$i_new++;
 			}
 
-
 			$objPHPExcel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row);
 			$objPHPExcel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row);
 			$objPHPExcel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row);
-
 
 			$e = 0;
 			$i_new3 = 3;
@@ -822,8 +826,8 @@ class C_Order extends CI_Controller
 		$objPHPExcel->setActiveSheetIndex(0);
 		$filename = urlencode("Daftar Kebutuhan P2K3 " . date("Y-m-d") . ".ods");
 
-		header('Content-Type: application/vnd.ms-excel'); //mime type
-		header('Content-Disposition: attachment;filename="' . $filename . '"'); //tell browser what's the file name
+		header('Content-Type: application/vnd.ms-excel'); // mime type
+		header('Content-Disposition: attachment;filename="' . $filename . '"'); // tell browser what's the file name
 		header('Cache-Control: max-age=0'); //no cache
 
 		$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
@@ -838,13 +842,6 @@ class C_Order extends CI_Controller
 		$data = $this->M_order->getItem($item);
 		echo json_encode($data);
 	}
-
-	// public function Seksi()
-	// {
-	// 	$seksi = strtoupper($this->input->get('term'));
-	// 	$data = $this->M_order->getUnit;
-	// 	echo json_encode($data);
-	// }
 
 	public function detail()
 	{
@@ -884,8 +881,6 @@ class C_Order extends CI_Controller
 
 	public function listAll()
 	{
-
-
 		$user = $this->session->username;
 		$user1 = $this->session->user;
 		$user_id = $this->session->userid;
@@ -941,15 +936,12 @@ class C_Order extends CI_Controller
 		$kodesie 					= $this->session->kodesie;
 		$data['seksi'] 				= $this->M_order->getSeksi($noind);
 		$data['tampil_data'] 		= $this->M_order->tampil_data($sie);
-		// print_r($data['tampil_data']);exit();
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($sie);
-		// echo $kode_seksi; echo "<pre>";print_r($data['daftar_pekerjaan']);exit();
 
 		$data['approve'] 			= $this->M_order->approve($user1);
 		$data['approveString'] 		= $this->M_order->approveString($user1);
 		$data['namaSeksi']			= $this->M_order->getNamaSeksi();
 		$data['listSeksi']			= $this->M_order->getListSeksi($sie);
-		$today						= date('F');
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -991,7 +983,6 @@ class C_Order extends CI_Controller
 	{
 		$kodesie = $this->session->kodesie;
 		$data	 	= $this->M_order->tampil_data($kodesie);
-		date_default_timezone_set('Asia/Jakarta');
 		if (!empty($_FILES['k3_approval']['name'])) {
 			$direktori_file						= $_FILES['k3_approval']['name'];
 			$ekstensi_file						= pathinfo($direktori_file, PATHINFO_EXTENSION);
@@ -1004,7 +995,6 @@ class C_Order extends CI_Controller
 			$config['max_size']				= 50000;
 			$config['file_name']		 	= $nama_file;
 			$config['overwrite'] 			= TRUE;
-
 
 			$this->upload->initialize($config);
 
@@ -1255,7 +1245,7 @@ class C_Order extends CI_Controller
 		$mail->setFrom('noreply@quick.com', 'P2K3');
 		// $mail->addAddress('your_mail@quick.com');
 		foreach ($arr as $key) {
-		    $mail->addAddress($key);
+			$mail->addAddress($key);
 		}
 		$mail->Subject = 'NEW!!! P2K3 Approval Standar Kebutuhan';
 		$mail->msgHTML($message);
@@ -1276,7 +1266,6 @@ class C_Order extends CI_Controller
 		$aksi = 'P2K3 V2';
 		$detail = "Submit Order ID= $id ";
 		$this->log_activity->activity_log($aksi, $detail);
-		//
 
 		redirect('P2K3_V2/Order/approveOrder');
 	}
@@ -1343,6 +1332,7 @@ class C_Order extends CI_Controller
 			$pr = date('Y-m');
 			$periode = date('m - Y');
 		}
+
 		$jml = '';
 		$data['pr'] = $periode;
 		$data['listmonitor'] = $this->M_dtmasuk->listtobonHitung2($kodesie, $pr);
@@ -1374,29 +1364,24 @@ class C_Order extends CI_Controller
 
 	public function saveInputStandar()
 	{
-		// print_r($_POST);exit();
-		// $tglNow = date('Y-m');
-		// $cek = $this->M_order->cektgl($tglNow);
-		// if ($cek > 0) {
-		// 	echo "Anda Sudah Menginputkan Standar APD";
-		// 	exit();
-		// }
+		// print_r($_FILES);
 		$kodesie = $this->session->kodesie;
 		$daftar_pekerjaan	= $this->M_order->daftar_pekerjaan($kodesie);
 		$item = $this->input->post('txtKodeItem');
 		$umum = $this->input->post('txtkebUmum');
 		$staff = $this->input->post('txtkebStaff');
 		$jumlah = $this->input->post('p2k3_isk_standar');
+		$keterangan = $this->input->post('keterangan');
+		$lampiran = $this->input->post('lampiran');
 		$tgl_input = date('Y-m-d H:i:s');
 		$ks = substr($kodesie, 0, 7);
-		// echo $ks;exit();
-		// implode kdpekerjaan
+
 		foreach ($daftar_pekerjaan as $key) {
 			$kd[] = $key['kdpekerjaan'];
 		}
 		$kd_pkj = implode(',', $kd);
 
-		//implode jumlah
+		// implode jumlah
 		$a = 0;
 		for ($i = 0; $i < count($item); $i++) {
 			$getbulan = $this->M_dtmasuk->getBulan($item[$i]);
@@ -1413,11 +1398,11 @@ class C_Order extends CI_Controller
 				'jml_kebutuhan_staff'	=> (round($staff[$i] / $getbulan, 2)),
 				'tgl_input'	=>	$tgl_input,
 				'status'	=>	'0',
+				'keterangan'=> $keterangan[$i],
+				'lampiran'	=> str_replace(' ', '_', $_FILES['lampiran']['name'][$i])
 			);
 			$a += count($daftar_pekerjaan);
-			// echo "<pre>";
-			// print_r($data);
-			// echo "<br>";
+			// print_r($data);exit();
 			$input = $this->M_order->save_standar($data);
 			//insert to sys.t_log_activity
 			$aksi = 'P2K3 V2';
@@ -1425,7 +1410,48 @@ class C_Order extends CI_Controller
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 		}
+
+		$this->load->library('upload');
+		if(!is_dir('./assets/upload/P2K3DocumentApproval'))
+		{
+			mkdir('./assets/upload/P2K3DocumentApproval', 0777, true);
+			chmod('./assets/upload/P2K3DocumentApproval', 0777);
+		}
+
+		$cpt = count($_FILES['lampiran']['name']);
+		// echo $cpt;
+		$arrayName = array();
+		$files = $_FILES;
+		for($i=0; $i<$cpt; $i++){
+			$filename = $files['lampiran']['name'][$i];
+			if(empty($filename)) continue;
+
+			$_FILES['lampiran']['name']= str_replace(' ', '_', $files['lampiran']['name'][$i]);
+			$arrayName[] = $_FILES['lampiran']['name'];
+			$_FILES['lampiran']['type']= $files['lampiran']['type'][$i];
+			$_FILES['lampiran']['tmp_name']= $files['lampiran']['tmp_name'][$i];
+			$_FILES['lampiran']['error']= $files['lampiran']['error'][$i];
+			$_FILES['lampiran']['size']= $files['lampiran']['size'][$i];    
+
+			$this->upload->initialize($this->init_config());
+			if ($this->upload->do_upload('lampiran')){
+				$this->upload->data();
+			}else{
+				$errorinfo = $this->upload->display_errors();
+				echo $errorinfo;exit();
+			}
+		}
 		redirect('P2K3_V2/Order/inputStandarKebutuhan');
+	}
+
+	function init_config()
+	{
+		$config = array();
+		$config['upload_path'] = 'assets/upload/P2K3DocumentApproval';
+		$config['allowed_types'] = 'pdf';
+		$config['overwrite']     = 1;
+
+		return $config;
 	}
 
 	public function save_pekerja()
@@ -1444,6 +1470,7 @@ class C_Order extends CI_Controller
 		foreach ($daftar_pekerjaan as $key) {
 			$kd[] = $key['kdpekerjaan'];
 		}
+
 		$kd_pkj = implode(',', $kd);
 		$jml_pkj = implode(',', $jml);
 		$tgl_input = date('Y-m-d H:i:s');
@@ -1463,7 +1490,7 @@ class C_Order extends CI_Controller
 		$aksi = 'P2K3 V2';
 		$detail = "Input Data Pekerja kd_pkj= $kd_pkj, jumlah=$jml_pkj, periode=$periode ";
 		$this->log_activity->activity_log($aksi, $detail);
-		//
+
 		redirect('P2K3_V2/Order/list_order');
 	}
 
@@ -1577,6 +1604,7 @@ class C_Order extends CI_Controller
 		$dataTrans = $this->M_dtmasuk->monitorbonOracle($nama_seksi[0]['section_name'], $pr);
 
 		$data['canSubmit'] = true;
+		$data['nyTrans'] = array();
 		if (!empty($dataTrans)) {
 			$endDataTrans = end($dataTrans);
 
@@ -1589,8 +1617,14 @@ class C_Order extends CI_Controller
 					$listtobon[$i]['bonTrans'] += isset($arrc[$listtobon[$i]['kode_item']]) ? $arrc[$listtobon[$i]['kode_item']] : 0;
 				}
 			}
-			$data['canSubmit'] = (strpos(end($endDataTrans), 'N')) ? false : true;
+			$data['canSubmit'] = (strpos(end($endDataTrans), 'Y') === false) ? false : true;
 			$data['notrans'] = $endDataTrans['NO_BON'];
+			$a = explode(';', $endDataTrans['KODE_BARANG']);
+			$b = explode(';', $endDataTrans['TRANSACT']);
+			for ($i=0; $i < count($b); $i++) { 
+				if($b[$i] == 'N')
+					$data['nyTrans'][] = $a[$i];
+			}
 		}
 		// echo "<pre>";
 		// print_r($listtobon);
@@ -1602,7 +1636,6 @@ class C_Order extends CI_Controller
 		if (empty($data['seksi'])) {
 			$data['seksi'] = array('section_name' 	=>	'');
 		}
-
 
 		// echo "<pre>";
 		// print_r($this->M_order->gudang('16103'));exit();
@@ -1628,7 +1661,6 @@ class C_Order extends CI_Controller
 	}
 	public function pemakai_2()
 	{
-
 		$pemakai_2 	= $this->input->post('pemakai_2');
 		$pemakai 	= $this->M_order->pemakai_2($pemakai_2);
 
@@ -1673,15 +1705,15 @@ class C_Order extends CI_Controller
 		$pemakai = $pemakai[0];
 		$cost_center = $this->input->post('txt_cost');
 		$kode_cabang = $this->input->post('kode_cabang1');
-		$lokasi = $this->input->post('txt_lokasi');
+		// $lokasi = $this->input->post('txt_lokasi');
 		$lokasi = '142';
-		$gudang = $this->input->post('txt_gudang');
+		// $gudang = $this->input->post('txt_gudang');
 		$gudang = 'PNL-NPR';
 		$seksi = $this->input->post('p2k3_seksi_bon');
-		$lokator = $this->input->post('txt_locator');
+		// $lokator = $this->input->post('txt_locator');
 		$lokator = '783';
 
-		//revisi Order #932006
+		// revisi Order #932006
 		$pkj_lok = $this->M_order->getDetailPekerja($noind)->row()->lokasi_kerja;
 		if (intval($pkj_lok) == 2) {
 			$lokasi = '16103';
@@ -1723,7 +1755,6 @@ class C_Order extends CI_Controller
 				$aksi = 'P2K3 V2';
 				$detail = "Submit Order periode= $pr, nomor bon = $noBon ";
 				$this->log_activity->activity_log($aksi, $detail);
-				//
 
 				$idOr = $this->M_dtmasuk->getIdOr();
 
@@ -1761,124 +1792,132 @@ class C_Order extends CI_Controller
 			// exit();
 		}
 		// exit();
+
 		//PDF Untuk Bon
+		/*
+		 * DK 18 juni 2020 - comment karena tidak perlu
+		 * 
+		 */
 
-		$this->load->library('ciqrcode');
-		if (!is_dir('./assets/img/temp_qrcode')) {
-			mkdir('./assets/img/temp_qrcode', 0777, true);
-			chmod('./assets/img/temp_qrcode', 0777);
-		}
-		if (!is_dir('./assets/upload/P2K3/PDF')) {
-			mkdir('./assets/upload/P2K3/PDF', 0777, true);
-			chmod('./assets/upload/P2K3/PDF', 0777);
-		}
+		// if (!is_dir('./assets/img/temp_qrcode')) {
+		// 	mkdir('./assets/img/temp_qrcode', 0777, true);
+		// 	chmod('./assets/img/temp_qrcode', 0777);
+		// }
+		// if (!is_dir('./assets/upload/P2K3/PDF')) {
+		// 	mkdir('./assets/upload/P2K3/PDF', 0777, true);
+		// 	chmod('./assets/upload/P2K3/PDF', 0777);
+		// }
 
-		$newApd = $apd;
-		$newNama_apd = $nama_apd;
-		$newSatuan_apd = $satuan_apd;
-		$newBon = $bon;
+		// $newApd = $apd;
+		// $newNama_apd = $nama_apd;
+		// $newSatuan_apd = $satuan_apd;
+		// $newBon = $bon;
 
-		for ($i = 0; $i < count($bon); $i++) {
-			if ($newBon[$i] == 0) {
-				unset($newBon[$i]);
-				unset($newNama_apd[$i]);
-				unset($newApd[$i]);
-				unset($newSatuan_apd[$i]);
-			}
-		}
+		// for ($i = 0; $i < count($bon); $i++) {
+		// 	if ($newBon[$i] == 0) {
+		// 		unset($newBon[$i]);
+		// 		unset($newNama_apd[$i]);
+		// 		unset($newApd[$i]);
+		// 		unset($newSatuan_apd[$i]);
+		// 	}
+		// }
 
-		$newApd = array_values($newApd);
-		$newNama_apd = array_values($newNama_apd);
-		$newSatuan_apd = array_values($newSatuan_apd);
-		$newBon = array_values($newBon);
+		// $newApd = array_values($newApd);
+		// $newNama_apd = array_values($newNama_apd);
+		// $newSatuan_apd = array_values($newSatuan_apd);
+		// $newBon = array_values($newBon);
 
-		$nol = array_count_values($bon);
-		$nol = $nol['0'];
-		$all = count($apd);
-		$lembar = ceil(($all - $nol) / 10);
+		// $nol = array_count_values($bon);
+		// $nol = $nol['0'];
+		// $all = count($apd);
+		// $lembar = ceil(($all - $nol) / 10);
 
-		$y = 0;
-		$batas = 0;
-		$k = 1;
-		for ($i = 0; $i < $lembar; $i++) {
-			$max = (10 * $k);
-			$data_array_2 = array();
-			for ($x = $y; $x < $max; $x++) {
-				if (!array_key_exists($x, $newBon)) {
-					$data_array_2[] = array(
-						'kode' => '',
-						'nama' => '',
-						'satuan' => '',
-						'diminta' => '',
-						'ket' => '',
-						'account' => '',
-						'produk' => '',
-						'exp' => '',
-						'lokasi_simpanku' => ''
-					);
-				} else {
-					$data_array_2[] = array(
-						'kode' => $newApd[$x],
-						'nama' => $newNama_apd[$x],
-						'satuan' => $newSatuan_apd[$x],
-						'diminta' => $newBon[$x],
-						'account' => $account,
-						'ket' => 'UNTUK KEBUTUHAN APD PERIODE ' . $pr,
-					);
-				}
-			}
+		// $y = 0;
+		// $k = 1;
+		// for ($i = 0; $i < $lembar; $i++) {
+		// 	$max = (10 * $k);
+		// 	$data_array_2 = array();
+		// 	for ($x = $y; $x < $max; $x++) {
+		// 		if (!array_key_exists($x, $newBon)) {
+		// 			$data_array_2[] = array(
+		// 				'kode' => '',
+		// 				'nama' => '',
+		// 				'satuan' => '',
+		// 				'diminta' => '',
+		// 				'ket' => '',
+		// 				'account' => '',
+		// 				'produk' => '',
+		// 				'exp' => '',
+		// 				'lokasi_simpanku' => ''
+		// 			);
+		// 		} else {
+		// 			$data_array_2[] = array(
+		// 				'kode' => $newApd[$x],
+		// 				'nama' => $newNama_apd[$x],
+		// 				'satuan' => $newSatuan_apd[$x],
+		// 				'diminta' => $newBon[$x],
+		// 				'account' => $account,
+		// 				'ket' => 'UNTUK KEBUTUHAN APD PERIODE ' . $pr,
+		// 			);
+		// 		}
+		// 	}
 
-			$data_array[] = array(
-				'nomor' => $noBon,
-				'tgl' => $tanggal,
-				'gudang' => $gudang,
-				'seksi' => $seksi,
-				'pemakai' => $pemakai,
-				'rdPemakai' => 'Seksi',
-				'fungsi' => 'BARANG P2K3 & APD',
-				'cost' => $cost_center,
-				'kocab' => $kode_cabang,
-				'data_body' => $data_array_2,
-			);
-			$y = $y + 10;
-			$k++;
-		}
-		// 		print_r($data_array);
-		// exit();
-		$params['data']		= $noBon;
-		$params['level']	= 'H';
-		$params['size']		= 10;
-		$config['black']	= array(224, 255, 255);
-		$config['white']	= array(70, 130, 180);
-		$params['savename'] = './assets/img/temp_qrcode/' . $noBon . '.png';
-		$this->ciqrcode->generate($params);
+		// 	$data_array[] = array(
+		// 		'nomor' => $noBon,
+		// 		'tgl' => $tanggal,
+		// 		'gudang' => $gudang,
+		// 		'seksi' => $seksi,
+		// 		'pemakai' => $pemakai,
+		// 		'rdPemakai' => 'Seksi',
+		// 		'fungsi' => 'BARANG P2K3 & APD',
+		// 		'cost' => $cost_center,
+		// 		'kocab' => $kode_cabang,
+		// 		'data_body' => $data_array_2,
+		// 	);
+		// 	$y = $y + 10;
+		// 	$k++;
+		// }
+		// // print_r($data_array);
+		// // exit();
+		// $this->load->library('ciqrcode');
+		// $params['data']		= $noBon;
+		// $params['level']	= 'H';
+		// $params['size']		= 10;
+		// $config['black']	= array(224, 255, 255);
+		// $config['white']	= array(70, 130, 180);
+		// $params['savename'] = './assets/img/temp_qrcode/' . $noBon . '.png';
+		// $this->ciqrcode->generate($params);
 
-		$data['kumpulandata'] = $data_array;
-		// print_r($data_array);
-		// exit;
-		$this->load->library('Pdf');
-		$pdf = $this->pdf->load();
-		$pdf = new mPDF('', array(210, 148.5), 0, '', 10, 10, 5, 0, 0, 5, 'P');
-		$pdf->setAutoTopMargin = 'stretch';
-		$pdf->setAutoBottomMargin = 'stretch';
-		$filename = './assets/upload/P2K3/PDF/' . $noBon . '-Bon-Bppbg.pdf';
-		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
-		$html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
-		// echo ($html);
-		// exit();
+		// $data['kumpulandata'] = $data_array;
+		// // print_r($data_array);
+		// // exit;
+		// $this->load->library('Pdf');
+		// $pdf = $this->pdf->load();
+		// $pdf = new mPDF('', array(210, 148.5), 0, '', 10, 10, 5, 0, 0, 5, 'P');
+		// $pdf->setAutoTopMargin = 'stretch';
+		// $pdf->setAutoBottomMargin = 'stretch';
+		// $filename = './assets/upload/P2K3/PDF/' . $noBon . '-Bon-Bppbg.pdf';
+		// $stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		// $html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
 
 
-		$pdf->setFooter('<div style="float: left; margin-right: 30px; width:200px">
-  		<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
-  	</div>
-  	<div style="float: left; width: 350px; background-color=red">
-  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
-  	</div>
-  	<div style="float: right; width: 100px">
-  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
-  	</div>');
-		$pdf->WriteHTML($stylesheet, 1);
-		$pdf->WriteHTML($html);
+		// $pdf->setFooter('<div style="float: left; margin-right: 30px; width:200px">
+		// 	<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
+		// </div>
+		// <div style="float: left; width: 350px; background-color=red">
+		// 	<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
+		// </div>
+		// <div style="float: right; width: 100px">
+		// 	<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
+		// </div>');
+		// $pdf->WriteHTML($stylesheet, 1);
+		// $pdf->WriteHTML($html);
+
+		/*
+		 * DK 18 juni 2020 - comment karena tidak perlu
+		 * 
+		 */
+
 		// $pdf->Output($filename, 'F'); // dicomment maybe tidak diperlukan
 		redirect('P2K3_V2/Order/PDF/' . $noBon);
 	}
@@ -1899,8 +1938,33 @@ class C_Order extends CI_Controller
 	// 	@readfile($file);
 	// }
 
+	/*
+		@generate bon pdf
+		@params: String $noBon
+		@url: P2K3_V2/Order/PDF/:no_bon
+	*/
 	public function PDF($noBon)
 	{
+		if (!is_dir('./assets/img/temp_qrcode')) {
+			mkdir('./assets/img/temp_qrcode', 0777, true);
+			chmod('./assets/img/temp_qrcode', 0777);
+		}
+		if (!is_dir('./assets/upload/P2K3/PDF')) {
+			mkdir('./assets/upload/P2K3/PDF', 0777, true);
+			chmod('./assets/upload/P2K3/PDF', 0777);
+		}
+
+		// QR CODE no bon
+		if (!file_exists('./assets/img/temp_qrcode/' . $noBon . '.png')) {
+			$params['data']			= $noBon;
+			$params['level']		= 'H';
+			$params['size']			= 10;
+			$config['black']		= array(224, 255, 255);
+			$config['white']		= array(70, 130, 180);
+			$params['savename'] = './assets/img/temp_qrcode/' . $noBon . '.png';
+			$this->ciqrcode->generate($params);
+		}
+
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('', array(210, 148.5), 0, '', 10, 10, 5, 0, 0, 5, 'P');
@@ -1931,9 +1995,9 @@ class C_Order extends CI_Controller
 		// split array to per group(10 array inside)
 		$chunk = array_chunk($getBon, 10);
 
-		// buat template ksosong 10 row
+		// buat template kosong 10 row
 		$templateTabel = array_fill(0, count($chunk), []);
-		// $this->log($templateTabel);
+
 		for ($x = 0; $x < count($chunk); $x++) {
 			for ($i = 0; $i < 10; $i++) {
 				array_push($templateTabel[$x], array(
@@ -1990,15 +2054,153 @@ class C_Order extends CI_Controller
 
 		$html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
 
-		$pdf->setFooter('<div style="float: left; margin-right: 30px; width:200px">
-  		<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
-  	</div>
-  	<div style="float: left; width: 350px; background-color=red">
-  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
-  	</div>
-  	<div style="float: right; width: 100px">
-  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
-		</div>');
+		$pdf->setFooter('
+			<div style="float: left; margin-right: 30px; width:200px">
+				<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
+			</div>
+			<div style="float: left; width: 350px; background-color=red">
+				<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
+			</div>
+			<div style="float: right; width: 100px">
+				<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
+			</div>
+		');
+		$pdf->shrink_tables_to_fit = 1;
+		$pdf->WriteHTML($stylesheet, 1);
+		$pdf->WriteHTML($html);
+		$pdf->Output($filename, 'I');
+	}
+
+
+	/*
+		@generate bon pdf
+		@params: String $noBon
+		@url: P2K3_V2/Order/PDF/:no_bon
+	*/
+	public function PDFSafetyShoes($noBon)
+	{
+		if (!is_dir('./assets/img/temp_qrcode')) {
+			mkdir('./assets/img/temp_qrcode', 0777, true);
+			chmod('./assets/img/temp_qrcode', 0777);
+		}
+		if (!is_dir('./assets/upload/P2K3/PDF')) {
+			mkdir('./assets/upload/P2K3/PDF', 0777, true);
+			chmod('./assets/upload/P2K3/PDF', 0777);
+		}
+
+		// QR CODE no bon
+		if (!file_exists('./assets/img/temp_qrcode/' . $noBon . '.png')) {
+			$params['data']			= $noBon;
+			$params['level']		= 'H';
+			$params['size']			= 10;
+			$config['black']		= array(224, 255, 255);
+			$config['white']		= array(70, 130, 180);
+			$params['savename'] = './assets/img/temp_qrcode/' . $noBon . '.png';
+			$this->ciqrcode->generate($params);
+		}
+
+		$this->load->library('Pdf');
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('', array(210, 148.5), 0, '', 10, 10, 5, 0, 0, 5, 'P');
+		$pdf->setAutoTopMargin = 'stretch';
+		$pdf->setAutoBottomMargin = 'stretch';
+		$filename = './assets/upload/P2K3/PDF/' . $noBon . '-Bon-Bppbg.pdf';
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		$getBon = $this->M_dtmasuk->monitorbonOracleById($noBon);
+
+		if (!count($getBon)) {
+			echo "
+				<div style='
+					display: flex;
+					text-align: center;
+					align-items: center;
+					height: 100vh;
+					justify-content: center;
+				'>
+					<div style='margin: 0 auto;'>
+						<h2>Bon dengan nomor {$noBon} tidak ditemukan</h2>
+						<h1 style='font-size: 100px;transform: rotate(90deg)'>:(</h1>
+					</div>
+				</div>
+			";
+			return;
+		}
+
+		// jumlah baris dalam 1 halaman
+		$LIMIT_ROW_PER_PAGE = 10;
+		// split array to per group(10 array inside)
+		$chunk = array_chunk($getBon, $LIMIT_ROW_PER_PAGE);
+
+		// buat template kosong 10 row
+		$templateTabel = array_fill(0, count($chunk), []);
+
+		for ($x = 0; $x < count($chunk); $x++) {
+			for ($i = 0; $i < $LIMIT_ROW_PER_PAGE; $i++) {
+				array_push($templateTabel[$x], array(
+					'kode' => '',
+					'nama' => '',
+					'produk' => '',
+					'lokasi_simpanku' => '',
+					'satuan' => '',
+					'diminta' => '',
+					'penyerahan' => '',
+					'ket' => '',
+					'account' => '',
+				));
+			}
+		}
+
+		for ($i = 0; $i < count($chunk); $i++) {
+			$bonWithTemplate[$i] = array_map(function ($item) {
+				return array(
+					'kode' => $item['KODE_BARANG'],
+					'nama' => $item['NAMA_BARANG'],
+					'produk' => $item['PRODUK'],
+					'lokasi_simpanku' => $item['LOKASI_SIMPAN'],
+					'satuan' => $item['SATUAN'],
+					'diminta' => $item['PERMINTAAN'],
+					'penyerahan' => $item['PENYERAHAN'],
+					'ket' => $item['KETERANGAN'],
+					'account' => $item['ACCOUNT'],
+				);
+			}, $chunk[$i]);
+		}
+
+		// merge bon ke template
+		for ($i = 0; $i < count($chunk); $i++) {
+			for ($x = 0; $x < count($chunk[$i]); $x++) {
+				$templateTabel[$i][$x] = $bonWithTemplate[$i][$x];
+			}
+		}
+
+		for ($i = 0; $i < count($chunk); $i++) {
+			$data['kumpulandata'][$i] = array(
+				'tgl' => $getBon['0']['TANGGAL'],
+				'nomor' => $getBon['0']['NO_BON'],
+				'seksi' => $getBon['0']['SEKSI_BON'],
+				'gudang' => $getBon['0']['TUJUAN_GUDANG'],
+				'rdPemakai' => $getBon['0']['JENIS_PEMAKAI'],
+				'fungsi' => $getBon['0']['PENGGUNAAN'],
+				'pemakai' => $getBon['0']['PEMAKAI'],
+				'cost' => $getBon['0']['COST_CENTER'],
+				'kocab' => $getBon['0']['KODE_CABANG'],
+				'data_body' => $templateTabel[$i]
+			);
+		}
+
+		$html = $this->load->view('P2K3V2/Order/V_pdfBonSafetyShoes', $data, true);
+
+		$pdf->setFooter('
+			<div style="float: left; margin-right: 30px; width:200px">
+				<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
+			</div>
+			<div style="float: left; width: 350px; background-color=red">
+				<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
+			</div>
+			<div style="float: right; width: 100px">
+				<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
+			</div>
+		');
 		$pdf->shrink_tables_to_fit = 1;
 		$pdf->WriteHTML($stylesheet, 1);
 		$pdf->WriteHTML($html);
@@ -2119,7 +2321,7 @@ class C_Order extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$pr = $this->input->post('k3_periode');
+		$pr = $this->input->get('periode');
 		$m = substr($pr, 0, 2);
 		$y = substr($pr, 5, 5);
 		$periode = $pr;
@@ -2147,20 +2349,460 @@ class C_Order extends CI_Controller
 		// print_r($data['monitorbon']);
 		// exit();
 		$ks = $seksi[0]['section_name'];
-		$data['monitorbon'] = $this->M_dtmasuk->monitorbonOracle($ks, $pr);
-		$count = count($data['monitorbon']);
-		$a = array();
+		$monitorbon = $this->M_dtmasuk->monitorbonOracle($ks, $pr);
+		$monitorbonSafetyShoes = $this->M_dtmasuk->getBonSafetyShoes($ks, $pr);
+
+		$count = count($monitorbon);
+		$bon_apd = array();
 		for ($i = 0; $i < $count; $i++) {
-			$a[] = array_change_key_case($data['monitorbon'][$i], CASE_LOWER);
+			$bon_apd[] = array_change_key_case($monitorbon[$i], CASE_LOWER);
 		}
-		$data['monitorbon'] = $a;
-		// echo "<pre>";
-		// print_r($data['monitorbon']);
-		// exit();
+
+		$total_safety_shoes = count($monitorbonSafetyShoes);
+		$bon_safety_shoes = array();
+		for ($i = 0; $i < $total_safety_shoes; $i++) {
+			$bon_safety_shoes[] = array_change_key_case($monitorbonSafetyShoes[$i], CASE_LOWER);
+		}
+
+		$safetyShoes = [];
+		foreach ($bon_safety_shoes as $item) {
+			$safetyShoes[$item['no_bon']][] = $item;
+		}
+
+		$data['monitorbon'] = $bon_apd;
+		$data['monitorBonSafetyShoes'] = $safetyShoes;
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('P2K3V2/Order/V_Monitoring_Bon_seksi', $data);
 		$this->load->view('V_Footer', $data);
+	}
+
+	// DK 9 juni 2020
+
+	/*
+		@View
+		P2K3/Order/Seragam
+	*/
+	// public function seragam()
+	// {
+	// 	$user_id = $this->session->userid;
+	// 	$kodesie = $this->session->kodesie;
+
+	// 	$data['Title'] = 'Monitoring Bon';
+	// 	$data['Menu'] = 'Input Kebutuhan Pekerja';
+	// 	$data['SubMenuOne'] = 'Seragam';
+	// 	$data['SubMenuTwo'] = '';
+
+	// 	$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+	// 	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+	// 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+	// 	$this->load->view('V_Header', $data);
+	// 	$this->load->view('V_Sidemenu', $data);
+	// 	$this->load->view('P2K3V2/Order/V_Input_Seragam', $data);
+	// 	$this->load->view('V_Footer', $data);
+	// }
+
+	// /*
+	// 	@View
+	// 	P2K3/Order/Sepatu
+	// */
+	// public function sepatu()
+	// {
+	// 	$user_id = $this->session->userid;
+	// 	$kodesie = $this->session->kodesie;
+	// 	$logged_noind = $this->session->user;
+
+	// 	$data['Title'] = 'Monitoring Bon';
+	// 	$data['Menu'] = 'Input Kebutuhan Pekerja';
+	// 	$data['SubMenuOne'] = 'Sepatu';
+	// 	$data['SubMenuTwo'] = '';
+
+	// 	$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+	// 	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+	// 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+	// 	$pkj_lok = $this->M_order->getDetailPekerja($logged_noind)->row()->lokasi_kerja;
+	// 	if (intval($pkj_lok) == 2) {
+	// 		$data['lokk'] = 'Tuksono';
+	// 		$data['lokk_id'] = '16103';
+	// 		$data['sub'] = '[PNL-TKS] GUDANG PENOLONG TRAKTOR DI TUKSONO';
+	// 		$data['sub_id'] = 'PNL-TKS';
+	// 	} else {
+	// 		$data['lokk'] = 'Yogyakarta';
+	// 		$data['lokk_id'] = '142';
+	// 		$data['sub'] = '[PNL-DM] GUDANG BAHAN PENOLONG PRODUKSI (PUSAT)';
+	// 		$data['sub_id'] = 'PNL-DM';
+	// 	}
+
+	// 	$periode = $this->input->post('k3_periode');
+	// 	$m = substr($periode, 0, 2);
+	// 	$y = substr($periode, 5, 5);
+
+	// 	$periode = $y . '-' . $m;
+	// 	// echo $pr;exit();
+	// 	if (empty($periode)) {
+	// 		$periode = date('m - Y');
+	// 	}
+
+	// 	$data['pr'] = $periode;
+	// 	$data['ks'] = $kodesie;
+	// 	$data['pri'] = $periode;
+
+	// 	$nama_seksi = $this->M_dtmasuk->cekseksi($kodesie);
+	// 	$dataTrans = $this->M_dtmasuk->monitorbonOracle($nama_seksi[0]['section_name'], $periode);
+
+	// 	// echo "<pre>";
+	// 	// print_r($listtobon);
+	// 	// exit();
+	// 	$data['lokasi'] = $this->M_order->lokasi();
+
+	// 	$data['seksi'] = $this->M_dtmasuk->cekseksi($kodesie);
+	// 	if (empty($data['seksi'])) {
+	// 		$data['seksi'] = array('section_name' 	=>	'');
+	// 	}
+
+	// 	$this->load->view('V_Header', $data);
+	// 	$this->load->view('V_Sidemenu', $data);
+	// 	$this->load->view('P2K3V2/Order/V_Input_Sepatu', $data);
+	// 	$this->load->view('V_Footer', $data);
+	// }
+
+	/** 
+	 * @View
+	 * @url : P2K3/Order/BonSafetyShoes
+	 */
+	public function SafetyShoes()
+	{
+		$user_id = $this->session->userid;
+		$kodesie = $this->session->kodesie;
+		$logged_noind = $this->session->user;
+		$lokasi_kerja = $this->session->kode_lokasi_kerja;
+
+		$data['Title'] = 'Monitoring Bon';
+		$data['Menu'] = 'Input Bon SafetyShoes';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+		// kode gudang
+		if ((int) $lokasi_kerja == 1) {
+			$gudang = 'PNL-DM';
+		} else {
+			$gudang = 'PNL-TKS';
+		}
+
+		$data['safetyShoes'] = $this->M_order->getSafetyShoes($gudang);
+		$data['gudang'] = $gudang;
+		$data['seksi'] = $this->M_dtmasuk->cekseksi($kodesie);
+		if (empty($data['seksi'])) {
+			$data['seksi'] = array('section_name' 	=>	'');
+		}
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('P2K3V2/Order/V_Input_Sepatu', $data);
+		$this->load->view('V_Footer', $data);
+	}
+
+	/** 
+	 * @API
+	 * @url : P2K3/Order/Pekerja
+	 * @params : null
+	 * @return : json
+	 */
+	public function Pekerja()
+	{
+		$kodesie = $this->session->kodesie;
+		$q = strtoupper($this->input->get('q')); // keyword
+		$withOutWorker = $this->input->get('withOutWorker');
+
+		if (!$kodesie) return;
+		// if session responsibility is P2K3 TIM V2
+		// "can select all worker
+		if ((int)$this->session->responsibility_id === 2615 || $this->session->responsibility == 'P2K3 TIM V.2') {
+			$kodesie = '';
+		}
+
+		if (empty($q)) $q = '';
+		$data = $this->M_order->getSemuaPekerja($kodesie, $q, $withOutWorker);
+		echo json_encode($data);
+	}
+
+	/**
+	 * @Helper
+	 * @function:  Response json
+	 * @params : error<Boolean>, data<Any>, message<String>
+	 * @echo 	: json
+	 */
+	private function response($err, $data, $message)
+	{
+		echo json_encode([
+			'error' => $err,
+			'data' => $data,
+			'message' => $message
+		]);
+	}
+
+	/**
+	 * @API
+	 * @url : P2K3/Order/CheckStockSafetyShoes
+	 * @generate: json
+	 */
+	public function CheckStockSafetyShoes()
+	{
+		$user_logged = $this->session->user;
+		$pkj_lok = $this->M_order->getDetailPekerja($user_logged)->row()->lokasi_kerja;
+		if (intval($pkj_lok) == 2) {
+			$lokasi = '16103';
+			$gudang = 'PNL-TKS';
+		} else {
+			$lokasi = '142';
+			$gudang = 'PNL-DM';
+		}
+		$stock = $this->M_order->getStockSafetyShoes($gudang);
+		if (!$stock) return $this->response(true, [], 'Error: Gagal mengambil stock');
+		$this->response(false, $stock, 'Sukses mengambil stock');
+	}
+
+	/** 
+	 * @API
+	 * @url : P2K3/Order/CheckBonSafetyShoes
+	 * @generate: json
+	 * @flow : ticket no #250055
+	 * @response format:
+			{
+				error: Boolean,
+				data: String
+				message: String
+			}
+	 */
+	public function CheckBonSafetyShoes()
+	{
+		$no_apd = $this->input->get('sepatu');
+		$noind = $this->input->get('noind');
+		$decrease = (int) $this->input->get('decrease');
+		$user_logged = $this->session->user;
+		$pkj_lok = $this->M_order->getDetailPekerja($user_logged)->row()->lokasi_kerja;
+		if (intval($pkj_lok) == 2) {
+			$lokasi = '16103';
+			$gudang = 'PNL-TKS';
+		} else {
+			$lokasi = '142';
+			$gudang = 'PNL-DM';
+		}
+
+		$latestBon = $this->M_order->getLatestBonSafetyShoes($noind);
+		$safetyShoes = $this->M_order->getStockSafetyShoesById($no_apd, $gudang);
+
+		if (!$safetyShoes) return $this->response(true, [
+			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+		], "Sepatu tidak ada di database gudang");
+
+		// jumlah aktual stock, dikurangi sepatu yang sudah dipilih di frontend
+		$safetyShoes->stock = (int) $safetyShoes->STOCK - (int) $decrease;
+
+		// TODO : FIX THIS LOGIC
+		if ($safetyShoes->stock == 0) return $this->response(true, [
+			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+		], "Stock {$safetyShoes->DESCRIPTION} Kosong");
+		// if ($safetyShoes->stock < $requestBon) return $this->response();
+
+		/*
+		|--------------------------------------------------|
+		|	Check bon terakhir noind di database bon sepatu? |
+		|--------------------------------------------------|
+		*/
+
+		if (!empty($latestBon)) {
+			$today = date_create(date('Y-m-d'));
+			$latest = date_create($latestBon->date);
+			if ($latestBon->seksi == 'UP2L') {
+				// Rentang waktu sekarang dengan waktu bon sebelumnya
+				$moreThan9Month = date_diff($today, $latest)->m > 9;
+				if (!$moreThan9Month) return $this->response(true, [
+					'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+			} else {
+				// Rentang waktu sekarang dengan waktu bon sebelumnya
+				$moreThan1Year = date_diff($today, $latest)->y > 0;
+				if (!$moreThan1Year) return $this->response(true, [
+					'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+			}
+		}
+
+		return $this->response(false, [
+			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+		], "Pekerja dapat mengebon sepatu");
+	}
+
+	/**
+	 * @API INSERT
+	 * @url : P2K3/Order/BonSafetyShoes
+	 * @method: POST, why? (:any) just for parameter, not for static url, sad :(
+	 * @generate: json
+	 */
+	public function BonSafetyShoes()
+	{
+		$data = $this->input->post('data');
+
+		// find new nomor bon
+		$number = $this->M_order->getNum();
+		$d = date('ymd');
+		$noBon = '9' . $d . '00';
+		if (strlen($number) > 2) {
+			$noBon = $number;
+		}
+		++$noBon;
+
+		// insert postgre and oracle
+		$insert = $this->M_order->insertBonSafetyShoes($data, $noBon);
+
+		// return no bon, selanjutnya akan buka new tab pdf di js
+		if ($insert) {
+			echo json_encode(array(
+				'error' => false,
+				'no_bon' => $noBon,
+				'message' => 'Sukses menginsert ke database'
+			));
+		} else {
+			echo json_encode(array(
+				'error' => true,
+				'no_bon' => '',
+				'message' => "Error: Tidak bisa insert ke database"
+			));
+		}
+	}
+
+	/**
+	 * @!!!DEPRECATED
+	 * @url: P2K3_V2/Order/PDFBonSepatu/:no_bon
+	 */
+	public function PDFBonSepatux($no_bon)
+	{
+		echo "<pre>";
+		if (!$no_bon) redirect('P2K3_V2/Order/SafetyShoes');
+
+		$user_logged = $this->session->user;
+		$lokasi = '142';
+		$gudang = 'PNL-NPR';
+		$lokator = '783';
+
+		$pkj_lok = $this->M_order->getDetailPekerja($user_logged)->row()->lokasi_kerja;
+		if (intval($pkj_lok) == 2) {
+			$lokasi = '16103';
+			$gudang = 'PNL-TKS';
+		} else {
+			$lokasi = '142';
+			$gudang = 'PNL-DM';
+		}
+
+		$this->load->library('ciqrcode');
+		if (!is_dir('./assets/img/temp_qrcode')) {
+			mkdir('./assets/img/temp_qrcode', 0777, true);
+			chmod('./assets/img/temp_qrcode', 0777);
+		}
+		// if (!is_dir('./assets/upload/P2K3/PDF')) {
+		// 	mkdir('./assets/upload/P2K3/PDF', 0777, true);
+		// 	chmod('./assets/upload/P2K3/PDF', 0777);
+		// }
+
+		// QR CODE no bon
+		if (!file_exists('./assets/img/temp_qrcode/' . $no_bon . '.png')) {
+			$params['data']			= $no_bon;
+			$params['level']		= 'H';
+			$params['size']			= 10;
+			$config['black']		= array(224, 255, 255);
+			$config['white']		= array(70, 130, 180);
+			$params['savename'] = './assets/img/temp_qrcode/' . $no_bon . '.png';
+			$this->ciqrcode->generate($params);
+		}
+
+		// get data
+		$bon = $this->M_order->getBonSafetyShoesById($no_bon);
+		if (!$bon) redirect('P2K3_V2/Order/SafetyShoes');
+		$kocab = $this->M_order->pemakai_2($bon['0']['oracle_cost_code']);
+		$account = $this->M_order->account('APD', $bon['0']['oracle_cost_code']);
+
+		$item_list = [];
+		// load data in table
+
+		foreach ($bon as $item) {
+			$item_list[] = array(
+				'kode' => $item['item_code'],
+				'nama' => $item['jenis_sepatu'] . " " . $item['uk_sepatu'],
+				'satuan' => 'PCS',
+				'diminta' => '1',
+				'account' => $account,
+				'penyerahan' => '',
+				'ket' => $item['noind'],
+			);
+		}
+
+		$chunk = array_chunk($item_list, 10);
+		for ($i = 0; $i < count($chunk); $i++) {
+			$len = count($chunk[$i]);
+			for ($z = 0; $z < 10 - $len; $z++) {
+				array_push($chunk[$i], array(
+					'kode' => '',
+					'nama' => '',
+					'satuan' => '',
+					'diminta' => '',
+					'account' => '',
+					'penyerahan' => '',
+					'ket' => '',
+				));
+			}
+		}
+
+		$data_array = [];
+		// load data
+		foreach ($chunk as $table) {
+			$data_array[] = array(
+				'nomor' => $bon['0']['no_bon'],
+				'tgl' => date('Y-m-d', strtotime($bon['0']['create_timestamp'])),
+				'gudang' => $gudang,
+				'seksi' => $bon['0']['seksi'],
+				'pemakai' => $bon['0']['oracle_cost_code'],
+				'rdPemakai' => 'Seksi',
+				'fungsi' => 'SAFETY SHOES',
+				// 'fungsi' => 'BARANG P2K3 & APD',
+				'cost' => $bon['0']['oracle_cost_code'],
+				'kocab' => $kocab['0']['KODE_CABANG'],
+				'data_body' => $table,
+			);
+		}
+
+		// print_r($data_array);
+		// die;
+
+		$data['kumpulandata'] = $data_array;
+
+		$this->load->library('Pdf');
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('', array(210, 148.5), 0, '', 10, 10, 5, 0, 0, 5, 'P');
+		$pdf->setAutoTopMargin = 'stretch';
+		$pdf->setAutoBottomMargin = 'stretch';
+		$filename = './assets/upload/P2K3/PDF/' . $no_bon . '-Bon-Bppbg.pdf';
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		$html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
+
+		$pdf->setFooter('<div style="float: left; margin-right: 30px; width:200px">
+  		<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
+  	</div>
+  	<div style="float: left; width: 350px; background-color=red">
+  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
+  	</div>
+  	<div style="float: right; width: 100px">
+  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
+  	</div>');
+		$pdf->WriteHTML($stylesheet, 1);
+		$pdf->WriteHTML($html);
+		$pdf->Output($filename, 'I'); // dicomment maybe tidak diperlukan
 	}
 }

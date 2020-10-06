@@ -26,13 +26,16 @@ class C_ApprovalLimbah extends CI_Controller {
 
         //check this one, is atasan or not
         $isAtasan = $this->M_kirim->checkAtasanApprove($user, $kodesie);
+        $refjabatan = $this->M_kirim->getTrefJabatna($user);
+        $refjabatan = array_column($refjabatan, 'kodesie');
+        // print_r($refjabatan);exit();
 
         $periode = isset($_GET['periode']) ? $_GET['periode'] : '';
 
         if(!$isAtasan) {
             redirect('WasteManagementSeksi');
         } else {
-            $data['LimbahKirim'] = $this->M_kirim->getLimbahKirimAtasan($periode);
+            $data['LimbahKirim'] = $this->M_kirim->getLimbahKirimAtasan($periode, $refjabatan);
         }
 
         $data['Title'] = 'Atasan Approval Limbah';

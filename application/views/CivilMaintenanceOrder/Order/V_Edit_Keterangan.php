@@ -43,6 +43,7 @@
                                                     <th width="15%">Qty</th>
                                                     <th width="15%">Satuan</th>
                                                     <th>Keterangan</th>
+                                                    <th>Lampiran</th>
                                                     <th>Act</th>
                                                 </thead>
                                                 <tbody>
@@ -61,6 +62,47 @@
                                                         <td>
                                                             <textarea data-id="<?=$key['pekerjaan_id']?>" kolom="keterangan" class="form-control" style="margin: 0px; resize: none;"><?= $key['keterangan'] ?></textarea>
                                                         </td>
+                                                        <td class='td_lampiran'>
+                                                            <form method="POST" enctype="multipart/form-data" action="<?php echo base_url('civil-maintenance-order/order/add_lampiran_pekerjaan') ?>">
+                                                                <input type="hidden" name="id_order" value="<?php echo $id ?>">
+                                                                <input type="hidden" name="pekerjaan" value="<?php echo $key['pekerjaan'] ?>">
+                                                                <button type="submit" class="btnsubmit" style="display: none;">submit</button>
+                                                                <?php 
+                                                                $no_lamp = 1;
+                                                                if (isset($lampiran) && !empty($lampiran)) {
+                                                                    foreach ($lampiran as $lamp) {
+                                                                        if ($lamp['pekerjaan'] == $key['pekerjaan']) {
+                                                                            $lamp_path = explode('/', $lamp['path']);
+                                                                            if ($no_lamp > 1) {
+                                                                                echo "<br>";
+                                                                            }
+                                                                            ?>
+                                                                            <a 
+                                                                                target="_blank" 
+                                                                                href="<?= base_url('civil-maintenance-order/order/download_file/'.$lamp['attachment_id']) ?>" data-attachment-id="<?php echo $lamp['attachment_id'] ?>" 
+                                                                                style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 90%;display: block;float: left;height: 22px;">
+                                                                                <?php echo $no_lamp.'. '.end($lamp_path) ?>
+                                                                            </a>
+                                                                            <a 
+                                                                                data-attachment-id="<?php echo $lamp['attachment_id'] ?>" 
+                                                                                class="btn btn-danger btn-xs mco_delFile_editKet"
+                                                                                style="float: right;max-width: 10%;">
+                                                                                <span class="fa fa-trash"></span>
+                                                                            </a>
+                                                                            <?php
+                                                                            $no_lamp++; 
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if ($no_lamp > 1) {
+                                                                    echo "<br>";
+                                                                }
+                                                                ?>
+                                                                <label nomor='<?php echo $no_lamp ?>'>Lampiran <?php echo $no_lamp ?> :</label>
+                                                                <input type="file" class="form-control mco_lampiranFilePekerjaanEdit tbl_lampiran" name="tbl_lampiran[0][]">
+
+                                                            </form>
+                                                        </td> 
                                                         <td>
                                                             <button type="button" class="btn btn-xs btn-danger mco_delKeterangan" value="<?=$key['pekerjaan_id']?>">
                                                                 <i class="fa fa-times"></i>
@@ -75,7 +117,7 @@
                                             </button>
                                         </div>
                                         <div class="col-md-12 text-center" style="margin-top: 20px;">
-                                        <a class="btn btn-warning btn-lg mco_getBack">Kembali</a>
+                                        <a class="btn btn-warning btn-lg" href="javascript:history.back()">Kembali</a>
                                     </div>
                                 </div>
                             </div>
@@ -87,11 +129,11 @@
     </div>
 </section>
 <div class="modal fade" id="edit_aproval" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form method="post" action="<?= base_url('civil-maintenance-order/order/add_keterangan') ?>">
+    <div class="modal-dialog" role="document" style="width: 90%">
+        <form method="post" action="<?= base_url('civil-maintenance-order/order/add_keterangan') ?>" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
-                    <label class="modal-title" id="exampleModalLongTitle">Tambah Approver</label>
+                    <label class="modal-title" id="exampleModalLongTitle">Tambah Pekerjaan</label>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -101,9 +143,10 @@
                         <thead class="bg-info">
                             <th>No</th>
                             <th>Pekerjaan</th>
-                            <th width="15%">Qty</th>
-                            <th width="15%">Satuan</th>
+                            <th width="10%">Qty</th>
+                            <th width="10%">Satuan</th>
                             <th>Keterangan</th>
+                            <th width="20%">Lampiran</th>
                             <th>Act</th>
                         </thead>
                         <tbody class="mco_daftarPek_Append">
@@ -121,6 +164,12 @@
                                 <td>
                                     <textarea name="tbl_ket[]" class="form-control" style="margin: 0px; resize: none;" required></textarea>
                                 </td>
+                                <td class='td_lampiran'>
+                                    <div>
+                                        <input type="file" nomor='1' class="form-control mco_lampiranFilePekerjaan tbl_lampiran" name="tbl_lampiran[0][]" style="display: none;">
+                                    </div>
+                                    <button nomor='1' type='button' class="btn btn-primary add_lamp">Choose File 1</button>
+                                </td>  
                                 <td>
                                     <button type="button" class="btn btn-xs btn-danger mco_deldaftarnoPek"><i class="fa fa-times"></i></button>
                                 </td>
@@ -137,6 +186,27 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+<div class="modal fade" id="inputOrder" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label class="modal-title" id="exampleModalLongTitle">Lihat Lampiran</label>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <iframe src="" style="width: 100%;height: 500px;"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
     </div>
 </div>
 <script>

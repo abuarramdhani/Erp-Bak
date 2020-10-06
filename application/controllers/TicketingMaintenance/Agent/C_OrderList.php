@@ -149,7 +149,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_orderListById', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_orderListById', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -172,7 +172,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_isiLaporan', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_isiLaporan', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -206,7 +206,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_isiLaporanEdit', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_isiLaporanEdit', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -349,7 +349,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_isiReparasi', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_isiReparasi', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -457,7 +457,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_isiSparepart', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_isiSparepart', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -483,7 +483,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_isiSparepartEdit', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_isiSparepartEdit', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -536,7 +536,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_isiKeterlambatan', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_isiKeterlambatan', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -597,7 +597,7 @@ class C_OrderList extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TicketingMaintenance/Agent/orderList/V_isiDone', $data);
+		$this->load->view('TicketingMaintenance/Agent/OrderList/V_isiDone', $data);
 		$this->load->view('V_Footer',$data);
 	}
 

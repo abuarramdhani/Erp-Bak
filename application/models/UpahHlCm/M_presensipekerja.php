@@ -11,7 +11,7 @@ class M_presensipekerja extends CI_Model {
 	}
 
 	public function getAbsenDefault(){
-		$sql = "(SELECT a.tanggal, a.noind, a.kodesie, trim(a.kd_ket) as kd_ket, b.nama, 
+		$sql = "(SELECT a.tanggal, a.noind, b.kodesie, trim(a.kd_ket) as kd_ket, b.nama, 
 						to_char(a.tanggal,'yyyymmdd') as index_tanggal  
 				FROM \"Presensi\".tdatatim a
 				INNER JOIN hrd_khs.TPribadi b
@@ -19,7 +19,7 @@ class M_presensipekerja extends CI_Model {
 				WHERE b.keluar = '0' and date_part('month',tanggal) = date_part('month',now() - interval '1 month') 
 				AND date_part('year',tanggal) = date_part('year',now() - interval '1 month') AND left(a.noind,1) = 'R' )
 				UNION 
-				(SELECT a.tanggal, a.noind, a.kodesie, trim(a.kd_ket) as kd_ket, b.nama, 
+				(SELECT a.tanggal, a.noind, b.kodesie, trim(a.kd_ket) as kd_ket, b.nama, 
 						to_char(a.tanggal,'yyyymmdd') as index_tanggal  
 				FROM \"Presensi\".tdatapresensi a
 				INNER JOIN hrd_khs.TPribadi b 
@@ -43,7 +43,7 @@ class M_presensipekerja extends CI_Model {
 	    }
 
 	    if($keluar >= $ist_mulai && $masuk >= $ist_mulai){
-	        If($ist_selesai >= $keluar && $ist_selesai >= $masuk){
+	        if($ist_selesai >= $keluar && $ist_selesai >= $masuk){
 	            $lama_izin = $masuk - $keluar;
 	            $lama_istirahat = $ist_selesai - $ist_mulai;
 	            $jam_ijin = $lama_izin - $lama_istirahat;          
@@ -202,14 +202,14 @@ class M_presensipekerja extends CI_Model {
 		} else {
 			$off = " b.keluar = '0' ";
 		}
-		$sql = "(SELECT a.tanggal, a.noind, a.kodesie, trim(a.kd_ket) as kd_ket, trim(b.nama) as nama, 
+		$sql = "(SELECT a.tanggal, a.noind, b.kodesie, trim(a.kd_ket) as kd_ket, trim(b.nama) as nama, 
 						to_char(a.tanggal,'yyyymmdd') as index_tanggal  
 				FROM \"Presensi\".tdatatim a
 				INNER JOIN hrd_khs.TPribadi b
 				ON b.noind=a.noind 
 				WHERE $off and tanggal between '$awal' and '$akhir' AND left(a.noind,1) = 'R' )
 				UNION 
-				(SELECT a.tanggal, a.noind, a.kodesie, trim(a.kd_ket) as kd_ket, b.nama, 
+				(SELECT a.tanggal, a.noind, b.kodesie, trim(a.kd_ket) as kd_ket, b.nama, 
 						to_char(a.tanggal,'yyyymmdd') as index_tanggal  
 				FROM \"Presensi\".tdatapresensi a
 				INNER JOIN hrd_khs.TPribadi b 
@@ -225,15 +225,15 @@ class M_presensipekerja extends CI_Model {
 		} else {
 			$off = " b.keluar = '0' ";
 		}
-		$sql = "(SELECT a.tanggal, a.noind, a.kodesie, trim(b.nama) as nama, sum(c.total_lembur ) total_lembur ,to_char(a.tanggal,'yyyymmdd') as index_tanggal 
+		$sql = "(SELECT a.tanggal, a.noind, b.kodesie, trim(b.nama) as nama, sum(c.total_lembur ) total_lembur ,to_char(a.tanggal,'yyyymmdd') as index_tanggal 
 				 FROM \"Presensi\".TLembur a
 				   INNER JOIN hrd_khs.TPribadi b ON b.Noind = a.noind 
 				   INNER JOIN \"Presensi\".TDataPresensi c ON a.noind = c.noind 
 				     AND a.tanggal = c.tanggal 
 				WHERE $off and a.tanggal between '$awal' and '$akhir' 
 				  AND left(a.noind, 1) = 'R'
-				 GROUP BY a.tanggal, a.noind, a.kodesie, b.nama ) 
-				ORDER BY a.kodesie, a.noind, a.tanggal";
+				 GROUP BY a.tanggal, a.noind, b.kodesie, b.nama ) 
+				ORDER BY b.kodesie, a.noind, a.tanggal";
 		return $this->personalia->query($sql)->result_array();
 	}
 

@@ -25,8 +25,7 @@ class C_Index extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
+		if ($this->session->is_logged) {
 		} else {
 			redirect('');
 		}
@@ -45,16 +44,27 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$datamenu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
+		$aksesRahasia = $this->M_index->allowedAccess('1');
+		$paramedik = array_column($aksesRahasia, 'noind');
+
+		$admin_hubker = $this->M_index->allowedAccess('2');
+		$admin_hubker = array_column($admin_hubker, 'noind');
+
+		if (in_array($no_induk, $paramedik)) {
 			$data['UserMenu'] = $datamenu;
-		}else {
+		} elseif (in_array($no_induk, $admin_hubker)) {
+			unset($datamenu[0]);
+			unset($datamenu[1]);
+			$data['UserMenu'] = array_values($datamenu);
+		} else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
-			$data['UserMenu'] = $datamenu;
+			unset($datamenu[3]);
+			$data['UserMenu'] = array_values($datamenu);
 		}
 
 		$a = array();
@@ -70,8 +80,7 @@ class C_Index extends CI_Controller
 		foreach ($b as $key) {
 			$a[$key['izin_id']][] = $key['pekerja'];
 		}
-		foreach($a as $type => $label)
-		{
+		foreach ($a as $type => $label) {
 			$output[] = array(
 				'izin_id' => $type,
 				'pekerja' => $label
@@ -81,8 +90,7 @@ class C_Index extends CI_Controller
 		foreach ($b as $key) {
 			$makan[$key['izin_id']][] = $key['tujuan'];
 		}
-		foreach($makan as $type => $label)
-		{
+		foreach ($makan as $type => $label) {
 			$ot_makan[] = array(
 				'izin_id' => $type,
 				'tujuan' => $label
@@ -105,22 +113,26 @@ class C_Index extends CI_Controller
 			}
 		}
 
-        $data['atasan'] = $this->M_index->getAtasan();
+		$data['atasan'] = $this->M_index->getAtasan();
+		$data['pribadi'] = $this->M_index->GetIzinPribadi();
 
 		$today = date('Y-m-d');
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PerizinanDinas/ApproveAll/V_Index',$data);
-		$this->load->view('PerizinanDinas/V_Footer',$data);
-
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('PerizinanDinas/ApproveAll/V_Index', $data);
+		$this->load->view('PerizinanDinas/V_Footer', $data);
 	}
 
 	public function editPekerjaDinas()
 	{
 		$id = $this->input->post('id');
-
-		$pekerja = $this->M_index->getPekerjaEdit($id);
+		$btn_val = $this->input->post('btn_val');
+		if ($btn_val == '1') {
+			$pekerja = $this->M_index->getPekerjaEdit($id);
+		} else {
+			$pekerja = $this->M_index->getPekerjaEditPribadi($id);
+		}
 		echo json_encode($pekerja);
 	}
 
@@ -133,45 +145,74 @@ class C_Index extends CI_Controller
 		$keluar = $this->input->post('keluar');
 		$tgl = $this->input->post('tgl');
 		$alasan = $this->input->post('alasan');
-        $getAtasan = $this->M_index->getAtasanEdit($id);
-		$data = $this->M_index->getTujuanMakan($id);
-		$noind = array();
-		foreach ($data as $key) {
-			$implode1[] = $key['noind'];
+		$dataPribadi = $this->M_index->getPekerjaEditPribadi($id);
+
+		if ($jenis == '1') {
+			$getAtasan = $this->M_index->getAtasanEdit($id);
+		} else {
+			$getAtasan = $dataPribadi[0]['atasan'];
 		}
 
-        if ($atasan != $getAtasan) {
-            //update atasan
-            $this->M_index->updateAtasan($atasan, $id);
-            // disini bakalan send mail ke atasan yang baru
-            $this->EmailAlert($atasan,$id,$implode1,$tgl,$ket, $keluar);
-			//Kirim email ke atasan sebelumnya
-			$this->EmailAlertPrevious($atasan,$id,$implode1,$tgl,$ket, $keluar, $alasan, $getAtasan);
-			//inserto to tlog sys
-			$aksi = 'ROTATE PERIZINAN DINAS';
-			$detail = 'Rotasi Atasan izin_id= '.$id.' dari ='.$getAtasan.' kepada= '.$atasan;
-			$this->log_activity->activity_log($aksi, $detail);
-			//
-        }else {
-        	echo 'sama';
-        }
+		if ($getAtasan == $atasan) {
+			echo 'sama';
+			die;
+		}
+
+		$jenis_ijin = '';
+
+		$implode1 = array();
+		if ($jenis == '1') {
+			$data = $this->M_index->getTujuanMakan($id);
+
+			foreach ($data as $key) {
+				$implode1[] = $key['noind'];
+			}
+			$jenis_ijin = 'Dinas Tuksono - Mlati - Pusat';
+
+			$this->M_index->updateAtasan($atasan, $id);
+			$detail = 'Rotasi Atasan izin_id= ' . $id . ' dari =' . $getAtasan . ' kepada= ' . $atasan;
+		} else {
+
+			if ($dataPribadi[0]['jenis_ijin'] == '1') {
+				$jenis_ijin = "Keluar Pribadi";
+			} else if ($dataPribadi[0]['jenis_ijin'] == '2') {
+				$jenis_ijin = "Sakit Perusahaan";
+			} else {
+				$jenis_ijin = "Dinas Keluar Perusahaan";
+			}
+
+			foreach ($dataPribadi as $key) {
+				$implode1[] = $key['noind'];
+			}
+			$this->M_index->updateAtasanPribadi($atasan, $id);
+			$detail = 'Rotasi Atasan izin_id= ' . $id . ' dari =' . $dataPribadi[0]['atasan'] . ' kepada= ' . $atasan;
+		}
+		//inserto to tlog sys
+		$aksi = 'ROTATE PERIZINAN';
+		$this->log_activity->activity_log($aksi, $detail);
+
+		// disini bakalan send mail ke atasan yang baru
+		$this->EmailAlert($atasan, $id, $implode1, $tgl, $ket, $keluar, $jenis_ijin);
+		//Kirim email ke atasan sebelumnya
+		$this->EmailAlertPrevious($atasan, $id, $implode1, $tgl, $ket, $keluar, $alasan, $getAtasan, $jenis_ijin);
 	}
 
 
-    public function EmailAlert($atasan,$idizin,$noind,$tanggal,$keterangan, $berangkat) {
+	public function EmailAlert($atasan, $idizin, $noind, $tanggal, $keterangan, $berangkat, $jenis)
+	{
 		//email
 		$newArr = array();
 		if ($noind > 1) {
 			$get = implode("','", $noind);
 			$getnama = $this->M_index->pekerja($get, true);
-		}else {
+		} else {
 			$getnama = $this->M_index->pekerja($noind, false);
 		}
-		for ($i=0; $i < count($getnama); $i++) {
-			$newArr[] = $getnama[$i]['noind'].' - '.$getnama[$i]['nama'];
+		for ($i = 0; $i < count($getnama); $i++) {
+			$newArr[] = $getnama[$i]['noind'] . ' - ' . $getnama[$i]['nama'];
 		};
 
-		$namapekerja = implode(", ",$newArr);
+		$namapekerja = implode(", ", $newArr);
 		$daftarNama = str_replace(', ', '<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;', $namapekerja);
 
 		$noindatasan = $this->M_index->pekerja($atasan, false);
@@ -179,11 +220,11 @@ class C_Index extends CI_Controller
 		$getEmail = $this->M_index->getEmail($atasan);
 		$emailUser = $getEmail[0]['internal_mail'];
 
-			$subject = "New!!! Approval Izin Dinas Perusahaan";
-			$body = "Hi $noindatasan,
-					<br>Izin Dinas dengan id : $idizin telah dibuat dan membutuhkan approval Anda, detail sebagai berikut :
+		$subject = "New!!! Approval Izin " . $jenis;
+		$body = "Hi $noindatasan,
+					<br>Izin " . $jenis . " dengan id : $idizin telah dibuat dan membutuhkan approval Anda, detail sebagai berikut :
 					<br>
-					<br><b>Tanggal &emsp;&emsp;:</b> ".date('d F Y', strtotime($tanggal))."
+					<br><b>Tanggal &emsp;&emsp;:</b> " . date('d F Y', strtotime($tanggal)) . "
 					<br>
 					<br><b>Pekerja &emsp;&emsp;:</b> $daftarNama
 					<br>
@@ -194,55 +235,57 @@ class C_Index extends CI_Controller
 					<hr>
 					<br>untuk melihat/ merespon izin ini, silahkan <a href='http://erp.quick.com/PerizinanDinas/AtasanApproval'>login</a> ke ERP";
 
-			//send Email
-			$this->load->library('PHPMailerAutoload');
-			$mail = new PHPMailer();
-			$mail->SMTPDebug = 0;
-			$mail->Debugoutput = 'html';
+		//send Email
+		$this->load->library('PHPMailerAutoload');
+		$mail = new PHPMailer();
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
 
-			// set smtp
-			$mail->isSMTP();
-			$mail->Host = 'm.quick.com';
-			$mail->Port = 465;
-			$mail->SMTPAuth = true;
-			$mail->SMTPSecure = 'ssl';
-			$mail->SMTPOptions = array(
-					'ssl' => array(
-					'verify_peer' => false,
-					'verify_peer_name' => false,
-					'allow_self_signed' => true)
-				);
-			$mail->Username = 'no-reply';
-			$mail->Password = '123456';
-			$mail->WordWrap = 50;
+		// set smtp
+		$mail->isSMTP();
+		$mail->Host = 'm.quick.com';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
+		$mail->Username = 'no-reply';
+		$mail->Password = '123456';
+		$mail->WordWrap = 50;
 
-			// set email content
-			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-			$mail->addAddress($emailUser);
-			$mail->Subject = $subject;
-			$mail->msgHTML($body);
+		// set email content
+		$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+		$mail->addAddress($emailUser);
+		$mail->Subject = $subject;
+		$mail->msgHTML($body);
 
-			// check error
-			if (!$mail->send()) {
-				echo "Mailer Error: ".$mail->ErrorInfo;
-				exit();
-			}
+		// check error
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit();
+		}
 	}
 
-    public function EmailAlertPrevious($atasan,$idizin,$noind,$tanggal,$keterangan, $berangkat, $alasan, $getAtasanlama) {
+	public function EmailAlertPrevious($atasan, $idizin, $noind, $tanggal, $keterangan, $berangkat, $alasan, $getAtasanlama, $jenis)
+	{
 		//email
 		$newArr = array();
 		if ($noind > 1) {
 			$get = implode("', '", $noind);
 			$getnama = $this->M_index->pekerja($get, true);
-		}else {
+		} else {
 			$getnama = $this->M_index->pekerja($noind, false);
 		}
-		for ($i=0; $i < count($getnama); $i++) {
-			$newArr[] = $getnama[$i]['noind'].' - '.$getnama[$i]['nama'];
+		for ($i = 0; $i < count($getnama); $i++) {
+			$newArr[] = $getnama[$i]['noind'] . ' - ' . $getnama[$i]['nama'];
 		};
 
-		$namapekerja = implode(", ",$newArr);
+		$namapekerja = implode(", ", $newArr);
 		$daftarNama = str_replace(', ', '<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;', $namapekerja);
 
 		$noindatasanlama = $this->M_index->pekerja($getAtasanlama, false);
@@ -253,11 +296,11 @@ class C_Index extends CI_Controller
 		$noindatasan = $this->M_index->pekerja($atasan, false);
 		$noindatasan = $noindatasan[0]['nama'];
 
-			$subject = "New!!! Rotate Approval Izin Dinas Perusahaan";
-			$body = "Hi $noindatasanlama,
-					<br>Izin Dinas dengan id : $idizin dengan detail sebagai berikut :
+		$subject = "New!!! Rotate Approval Izin " . $jenis;
+		$body = "Hi $noindatasanlama,
+					<br>Izin " . $jenis . " dengan id : $idizin dengan detail sebagai berikut :
 					<br>
-					<br><b>Tanggal &emsp;&emsp;:</b> ".date('d F Y', strtotime($tanggal))."
+					<br><b>Tanggal &emsp;&emsp;:</b> " . date('d F Y', strtotime($tanggal)) . "
 					<br>
 					<br><b>Pekerja &emsp;&emsp;:</b> $daftarNama
 					<br>
@@ -265,42 +308,41 @@ class C_Index extends CI_Controller
 					<br>
 					<br><b>Jam Berangkat &nbsp;:</b> $berangkat WIB
 					<br>
-					<br>Approver Perizinan Dinas telah dialihkan kepada <b>$atasan - $noindatasan</b> dengan alasan <b>$alasan</b>";
+					<br>Approver Perizinan " . $jenis . " telah dialihkan kepada <b>$atasan - $noindatasan</b> dengan alasan <b>$alasan</b>";
 
-			//send Email
-			$this->load->library('PHPMailerAutoload');
-			$mail = new PHPMailer();
-			$mail->SMTPDebug = 0;
-			$mail->Debugoutput = 'html';
+		//send Email
+		$this->load->library('PHPMailerAutoload');
+		$mail = new PHPMailer();
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
 
-			// set smtp
-			$mail->isSMTP();
-			$mail->Host = 'm.quick.com';
-			$mail->Port = 465;
-			$mail->SMTPAuth = true;
-			$mail->SMTPSecure = 'ssl';
-			$mail->SMTPOptions = array(
-					'ssl' => array(
-					'verify_peer' => false,
-					'verify_peer_name' => false,
-					'allow_self_signed' => true)
-				);
-			$mail->Username = 'no-reply';
-			$mail->Password = '123456';
-			$mail->WordWrap = 50;
+		// set smtp
+		$mail->isSMTP();
+		$mail->Host = 'm.quick.com';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
+		$mail->Username = 'no-reply';
+		$mail->Password = '123456';
+		$mail->WordWrap = 50;
 
-			// set email content
-			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-			$mail->addAddress($emailUser);
-			$mail->Subject = $subject;
-			$mail->msgHTML($body);
+		// set email content
+		$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+		$mail->addAddress($emailUser);
+		$mail->Subject = $subject;
+		$mail->msgHTML($body);
 
-			// check error
-			if (!$mail->send()) {
-				echo "Mailer Error: ".$mail->ErrorInfo;
-				exit();
-			}
+		// check error
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit();
+		}
 	}
-
 }
-?>

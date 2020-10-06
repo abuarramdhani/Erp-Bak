@@ -50,7 +50,7 @@
                 </div>
                 <div class="modal-body text-center">
                     <label>Jenis Order</label>
-                    <input oninput="this.value = this.value.toUpperCase()" placeholder="Masukan Jenis Order" class="form-control" name="jenisOrder">
+                    <input placeholder="Masukan Jenis Order" class="form-control" name="jenisOrder">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="modal-body text-center">
                     <label>Jenis Order</label>
-                    <input oninput="this.value = this.value.toUpperCase()" placeholder="Masukan Jenis Order" class="form-control" name="upjenisOrder">
+                    <input placeholder="Masukan Jenis Order" class="form-control" name="upjenisOrder">
                     <input hidden="" name="idJnsOrder">
                 </div>
                 <div class="modal-footer">

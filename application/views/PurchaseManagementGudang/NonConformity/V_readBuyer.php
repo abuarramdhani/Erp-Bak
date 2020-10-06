@@ -245,7 +245,7 @@
                                                       ?>
                                                       <span class="statusNonC"><?php echo $stat?></span>
                                                       <br>
-                                                      <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button>
+                                                      <!-- <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button> -->
                                                       </td>
                                                       <td>
                                                       <?php if (count($linesItem)==0) { ?>
@@ -319,11 +319,17 @@
             </div>
         </div>
         <div class="panel-footer">
-            <div align="right">
-                <a class="btn btn-primary btn-lg btn-rect" href="javascript:history.back(1)">
-                    Back
-                </a>
-            </div>
+            <form class="form-horizontal" id="form-simpan"  enctype="multipart/form-data" method="post" action="<?php echo site_url('PurchaseManagementGudang/NonConformity/pendingExecute');?>">
+                <div align="right">
+                    <?php if ($PoOracleNonConformityLines[0]['problem_completion'] != null && $PoOracleNonConformityLines[0]['problem_tracking'] != null && $PoOracleNonConformityLines[0]['problem_completion'] != null && $PoOracleNonConformityLines[0]['scope'] != null && $PoOracleNonConformityLines[0]['completion_date'] != null && $PoOracleNonConformityLines[0]['judgement'] != null) { ?>
+                            <input type="hidden" name="hdnHdr" value="<?php echo $PoOracleNonConformityHeaders[0]['header_id'];?>">
+                            <button type="submit" class="btn btn-success btn-lg">Pending Execute</button>
+                    <?php } ?>
+                    <a class="btn btn-primary btn-lg btn-rect" href="javascript:history.back(1)">
+                     Back
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </section>

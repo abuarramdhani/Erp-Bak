@@ -56,7 +56,7 @@ class M_progress extends CI_Model
 
     }
 
-    public function getReport($person_id,$item_id,$tanggal1,$tanggal2)
+    public function getReport($person_id,$item_id,$no_pr,$no_po,$tanggal1,$tanggal2)
     {
         $oracle = $this->load->database('oracle',true);
         $query = $oracle->query("SELECT distinct
@@ -86,9 +86,10 @@ class M_progress extends CI_Model
                 ,prla.note_to_agent keterangan
                 ,ppf.national_identifier no_induk
                 ,ppf.full_name requestor
+                ,prha.DESCRIPTION seksi
                 ,(SELECT MIN(rt1.transaction_date) 
                     FROM rcv_transactions rt1
-                    WHERE rt1.po_header_id = pha.po_header_id) transaction_date
+                    WHERE rt1.PO_LINE_ID = pda.PO_LINE_ID ) receipt_date
         from po_req_distributions_all prda
             ,po_requisition_lines_all prla
             ,po_requisition_headers_all prha
@@ -108,8 +109,13 @@ class M_progress extends CI_Model
             and pnbd.PO_LINE_ID(+) = pda.PO_LINE_ID
             --PARAMETER
             and ppf.PERSON_ID = NVL('$person_id', PPF.PERSON_ID)
-            AND PRLA.ITEM_ID = NVL('$item_id', PRLA.ITEM_ID)
-            and trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')) between nvl(to_date('$tanggal1','YYYY/MM/DD'),pha.creation_date) and nvl(to_date('$tanggal2','YYYY/MM/DD'),pha.creation_date)
+            and PRLA.ITEM_ID = NVL('$item_id', PRLA.ITEM_ID)
+            and prha.SEGMENT1 = NVL('$no_pr', prha.SEGMENT1)
+            and trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')) between 
+                nvl(to_date('$tanggal1','YYYY/MM/DD'),trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD'))) 
+                and
+                nvl(to_date('$tanggal2','YYYY/MM/DD'),trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')))
+            and nvl(pha.SEGMENT1,1) = nvl('$no_po', NVL(pha.SEGMENT1,1))
         order by 1,3");
 
         return $query->result_array();

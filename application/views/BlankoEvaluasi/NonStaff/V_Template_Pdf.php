@@ -14,6 +14,7 @@
       width: 100%;
       margin: 0;
       table-layout: fixed;
+      page-break-inside: avoid;
     }
 
     table.bordered {
@@ -142,42 +143,42 @@ function repeat($string, $x)
               <p class="bold">1. NAMA</p>
             </td>
             <td>:</td>
-            <td><?= $worker['nama'] ?></td>
+            <td style="width: 55%; height: 25px; border: 1px solid grey; padding: 3;"><?= $worker['nama'] ?></td>
           </tr>
           <tr>
             <td>
               <p class="bold">2. NO INDUK</p>
             </td>
-            <td>: </td>
-            <td><?= $worker['noind'] ?></td>
+            <td>:</td>
+            <td style="width: 55%; height: 25px; border: 1px solid grey; padding: 3;"><?= $worker['noind'] ?></td>
           </tr>
           <tr>
             <td style="text-align: left; vertical-align: top;">
               <p class="bold">3. SEKSI/UNIT/DEPARTEMEN</p>
             </td>
             <td style="text-align: left; vertical-align: top;">:</td>
-            <td><?= $worker['seksi'] ?></td>
+            <td style="width: 55%; height: 25px; border: 1px solid grey; padding: 3;"><?= $worker['seksi'] ?></td>
           </tr>
           <tr>
             <td>
               <p class="bold">4. NAMA/JENIS PEKERJAAN</p>
             </td>
             <td>:</td>
-            <td><?= $worker['pekerjaan'] ?></td>
+            <td style="width: 55%; height: 25px; border: 1px solid grey; padding: 3;"><?= $worker['pekerjaan'] ?></td>
           </tr>
           <tr>
             <td>
               <p class="bold">5. MASA KERJA</p>
             </td>
             <td>:</td>
-            <td><?= $worker['masa_kerja'] ?></td>
+            <td style="width: 55%; height: 25px; border: 1px solid grey; padding: 3;"><?= $worker['masa_kerja'] ?></td>
           </tr>
           <tr>
             <td>
               <p class="bold">6. PERIODE AKHIR KONTRAK</p>
             </td>
             <td>:</td>
-            <td><?= date('d-m-Y', strtotime($worker['akhir_kontrak'])) ?></td>
+            <td style="width: 55%; height: 25px; border: 1px solid grey; padding: 3;"><?= date('d-m-Y', strtotime($worker['akhir_kontrak'])) ?></td>
           </tr>
         </table>
       </td>
@@ -273,9 +274,15 @@ function repeat($string, $x)
                           <?= $item['bulan'] . "<br>"; ?>
                         <?php endforeach; ?>
                       </td>
-                      <td style="vertical-align: top;">
+                      <td style="vertical-align: top; text-align: left; padding-left:10px;">
+                        <?php $is_valid = false; ?>
                         <?php foreach ($sp as $item) : ?>
-                          <?= $item['jenis'] . "<br>"; ?>
+                          <?= "SP {$item['ke']} {$item['jenis']}" . ((!$is_valid) ? $item['ket'] : '') . "<br>"; ?>
+                          <?php
+                          if ($item['ket']) {
+                            $is_valid = true;
+                          }
+                          ?>
                         <?php endforeach; ?>
                       </td>
                     </tr>
@@ -474,7 +481,7 @@ function repeat($string, $x)
         <!-- <span>3. <?= repeat('.', 232); ?></span> -->
         <span>3. <?= ($three[2]['text']) ? $three[2]['text'] : repeat('.', 232); ?></span>
       </td>
-      <td class="center">
+      <td class="center" style="font-size: 10px;">
         <span><b>(<span style="color: white;"><?= str_pad('<span style="color: black">' . $worker['nama'] . '</span>', 60, '-', STR_PAD_BOTH)  ?></span>)</b></span><br>
         <span>Tgl. <i style="color: white;">----------------</i></span>
       </td>
@@ -514,7 +521,7 @@ function repeat($string, $x)
       <tr>
         <td>Supervisor</td>
         <td></td>
-        <td>Kasie Madya</td>
+        <td>Kasi Madya</td>
       </tr>
       <tr>
         <td style="padding: 25px;"></td>
@@ -558,11 +565,11 @@ function repeat($string, $x)
         </td>
         <td width="100px">
           <b>Memeriksa,</b><br>
-          Kasie Madya Hub. Kerja
+          Kasi Madya Hub. Kerja
         </td>
       </tr>
       <tr>
-        <td style="padding: 25px;"></td>
+        <td style="padding: 20px;"></td>
         <td></td>
         <td></td>
       </tr>
@@ -594,7 +601,7 @@ function repeat($string, $x)
     </table>
   </div>
   <div>
-    <span>> otorisasi 1 oleh Atasan Langsung (Supervisor dan Kasie Madya)</span><br>
+    <span>> otorisasi 1 oleh Atasan Langsung (Supervisor dan Kasi Madya)</span><br>
     <span>> otorisasi 2 minimal oleh Asisten Kepala Unit <u><i>(untuk perpanjangan OS)</i></u>. Perpanjangan <i><u>pekerja</u></i> kontrak minimal sampai Asisten Kepala Departemen</span><br>
     <span>* Atasan langsung sebelum memanggil pekerja, terlebih dahulu konsultasi tentang status pekerja ke Tingkat Unit (Perpanjangan OS)/ Tingkat Departemen (Perpanjangan kontrak)</span><br>
     <span>No. : FRM-HRM-04-19</span>

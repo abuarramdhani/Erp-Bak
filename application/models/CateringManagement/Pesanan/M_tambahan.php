@@ -44,7 +44,12 @@ class M_tambahan extends CI_Model
                     end fb_kategori, 
                     tamb.id_tambahan, 
                     tamb.fs_pemohon, 
-                    tamb.fs_keterangan
+                    tamb.fs_keterangan,
+                    (
+                        select string_agg(td.fs_noind,', ')
+                        from \"Catering\".tpesanantambahan_detail td
+                        where td.id_tambahan = tamb.id_tambahan
+                    ) as list_pekerja
                  from \"Catering\".tpesanantambahan tamb 
                  left join \"Presensi\".tshift shf
                  on tamb.fs_kd_shift = shf.kd_shift
@@ -163,10 +168,17 @@ class M_tambahan extends CI_Model
                         where fd_tanggal = ?
                         and fs_tempat_makan = ?
                         and fs_kd_shift = ?
-                    ),
-                    0
-                ) as jumlah";
-        return $this->personalia->query($sql, array($tanggal, $tempat_makan, $shift))->row();
+                    ),0) +
+                    coalesce(
+                    (
+                        select sum(fn_jml_tdkpesan)
+                        from \"Catering\".tpenguranganpesanan
+                        where fb_kategori = '2'
+                        and fd_tanggal = ?
+                        and fs_tempat_makanpg = ?
+                        and fs_kd_shift = ?
+                    ),0) as jumlah";
+        return $this->personalia->query($sql, array($tanggal, $tempat_makan, $shift, $tanggal, $tempat_makan, $shift))->row();
     }
 
     public function getTotalPenguranganByTempatMakanTanggalShift($tempat_makan,$tanggal,$shift){
@@ -217,6 +229,78 @@ class M_tambahan extends CI_Model
         return $this->personalia->query($sql, array($key,$key,$tempat_makan))->result_array();
     }
 
+    public function getPenerimaByKey($key){
+        $sql = "select noind,trim(nama) as nama
+                from hrd_khs.tpribadi
+                where keluar = '0'
+                and (
+                    upper(noind) like concat(upper(?),'%')
+                    or upper(nama) like concat('%',upper(?),'%')
+                )";
+        return $this->personalia->query($sql, array($key,$key))->result_array();
+    }
+
+    public function getTambahnPenguranganByTanggalShiftNoind($tanggal,$shift,$noind){
+        $sql = "select tempat_makan,kategori,jenis
+                from (
+                    select 
+                        tp.fd_tanggal as tanggal,
+                        tp.fs_kd_shift as shift,
+                        tp.fs_tempat_makan as tempat_makan,
+                        case when fb_kategori = '1' then 'TIDAK MAKAN ( GANTI UANG )'
+                        when fb_kategori = '2' then 'PINDAH MAKAN'
+                        when fb_kategori = '3' then 'TUGAS KE PUSAT'
+                        when fb_kategori = '4' then 'TUGAS KE TUKSONO'
+                        when fb_kategori = '5' then 'TUGAS KE MLATI'
+                        when fb_kategori = '6' then 'TUGAS LUAR'
+                        when fb_kategori = '7' then 'DINAS PERUSAHAAN ( KUNJUNGAN KERJA / LAYAT / DLL )'
+                        when fb_kategori = '8' then 'TIDAK MAKAN ( TIDAK DIGANTI UANG )'
+                        end as kategori,
+                        tpd.fs_noind as noind,
+                        tpd.fs_nama as nama,
+                        'PENGURANGAN' as jenis
+                    from \"Catering\".tpenguranganpesanan tp 
+                    inner join \"Catering\".tpenguranganpesanan_detail tpd 
+                    on tp.id_pengurangan = tpd.id_pengurangan
+                    union
+                    select 
+                        tt.fd_tanggal,
+                        tt.fs_kd_shift,
+                        tt.fs_tempat_makan,
+                        case when fb_kategori = '1' then 'LEMBUR'
+                        when fb_kategori = '2' then 'SHIFT TANGGUNG'
+                        when fb_kategori = '3' then 'TUGAS KE PUSAT'
+                        when fb_kategori = '4' then 'TUGAS KE TUKSONO'
+                        when fb_kategori = '5' then 'TUGAS KE MLATI'
+                        when fb_kategori = '6' then 'TAMU'
+                        when fb_kategori = '7' then 'CADANGAN' 
+                        end,
+                        ttd.fs_noind,
+                        ttd.fs_nama,
+                        'TAMBAHAN' as jenis
+                    from \"Catering\".tpesanantambahan tt
+                    inner join \"Catering\".tpesanantambahan_detail ttd 
+                    on tt.id_tambahan = ttd.id_tambahan
+                    union
+                    select 
+                        tp.fd_tanggal,
+                        tp.fs_kd_shift,
+                        tp.fs_tempat_makanpg,
+                        'PINDAH MAKAN',
+                        tpd.fs_noind,
+                        tpd.fs_nama,
+                        'TAMBAHAN'
+                    from \"Catering\".tpenguranganpesanan tp 
+                    inner join \"Catering\".tpenguranganpesanan_detail tpd 
+                    on tp.id_pengurangan = tpd.id_pengurangan
+                    where tp.fb_kategori = '2'
+                ) as tbl 
+                where tanggal = ?
+                and shift = ?
+                and noind = ?
+                order by 3,2,1";
+        return $this->personalia->query($sql, array($tanggal,$shift,$noind))->result_array();
+    }
 }
 
 ?>

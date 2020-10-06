@@ -1,5 +1,4 @@
 <html>
-
 <head>
 	<style media="screen">
 		/* body{
@@ -10,12 +9,10 @@
 		}
 	</style>
 </head>
-
 <body>
 <br>
 <div style="position:absolute;">
 	<br>
-
 </div>
 	<table style="width:100%; border-collapse: collapse !important;page-break-inside:avoid">
 		<tr>
@@ -25,13 +22,11 @@
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;;width:60%;padding:5px" rowspan="2">
 				<b style="font-size:16px;">CV. KARYA HIDUP SENTOSA YOGYAKARTA</b><br>
 				<span style="border-bottom:1px solid black;font-size:12px;">PABRIK MESIN ALAT PERTANIAAN-PENGECORAN LOGAM-DEALER KUBOTA</span><br><br>
-
 				<span style="font-size: 12px;">
 					KHS PUSAT<br>
 					JL. MAGELANG 144, YOGYAKARTA 55241 - INDONESIA,<br> Email : operator1@quick.co.id <br>
 					Telp. 08002826357, Fax : (0274)563523
 				</span>
-
 			</td>
 			<td colspan="2" style="text-align: center;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black; height: 25px;">
 				<?php if (!empty($cek_spb_do[0]['DELIVERY_TYPE'])){ ?>
@@ -42,7 +37,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="border-bottom: 1px solid black;border-right: 1px solid black;width:15%;font-size:10px;padding:5px;text-align:center">Tgl. Barang Dikirim: <br> <?php echo date('d-M-Y') ?> </td>
+			<td style="border-bottom: 1px solid black;border-right: 1px solid black;width:15%;font-size:10px;padding:5px;text-align:center">Tgl. Cetak : <br> <?php echo date('d-M-Y') ?> </td>
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;width:15%;font-size:11px;padding:5px;text-align:center">
 				<center>
 					<img style="width: 20mm; height: auto;" src="<?php echo base_url('assets/img/monitoringDOQRCODE/'.$get_header[0]['REQUEST_NUMBER'].'.png') ?>">
@@ -51,18 +46,17 @@
 			</td>
 		</tr>
 	</table>
-
 	<table style="width:100%;border-collapse: collapse !important; margin-top:-1px;page-break-inside:avoid">
 		<tr>
 			<td style="vertical-align:top;height: 80px;width:50%;border-bottom: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px" colspan="4">
-				Kepada Yth : <br>
+				<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'<br>':'Kepada Yth : <br>' ?>
 				<?php echo $get_header[0]['NAMA_ASAL'] ?> <br>
 				<?php echo $get_header[0]['ALAMAT_ASAL'] ?>, <?php echo $get_header[0]['KOTA_ASAL'] ?><br>
 				NPWP : <?php echo $get_header[0]['NPWP'] ?><br>
 				<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?>
 			</td>
 			<td colspan="2" style="height: 116.3px;vertical-align:top; border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">
-				Dikirim Kepada : <br>
+				<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'Kepada Yth : <br>':'Dikirim Kepada : <br>' ?>
 				<?php if (!empty($get_header[0]['NOTES'])){ ?>
 					<br><br><br>
 					<?php
@@ -73,7 +67,13 @@
 					?>
 				<?php }else {?>
 					<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
-					<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br><br>
+					<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
+					<?php
+						if (strlen($get_header[0]['ALAMAT_KIRIM']) < 60) {
+							echo "<br>";
+						}
+					 ?>
+					<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'Dikirim Kepada :  <br>':'<br> ' ?>
 					<?php
 						$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
 						foreach($arr as $i) {
@@ -81,7 +81,6 @@
 						}
 					?>
 				<?php } ?>
-
 			</td>
 		</tr>
 		<tr style="text-align:center">
@@ -93,7 +92,6 @@
 			<td style="vertical-align:top;height:35px;width:20%;border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">No Polisi : <br><?php echo $get_header[0]['PLAT_NUMBER'] ?><br> </td>
 		</tr>
 	</table>
-
 <!-- coba  coba  -->
 <div style="position:absolute;">
 	<table style="width:78%; margin-top:49px;">
@@ -109,7 +107,6 @@
 		<?php $no++; } ?>
 	</table>
 </div>
-
 <div style="position:absolute;">
 	<div style="margin-top:470px;margin-left:297px;">
 		<!-- <watermarktext content="HIAHIAHIA" alpha="0.4" /> -->
@@ -123,7 +120,6 @@
 	 </h4>
 	</div>
 </div>
-
 	<table style="width:100%;border-collapse: collapse !important; margin-top:-1px;page-break-inside:avoid">
 		<thead>
 			<tr>
@@ -230,11 +226,9 @@
 						</tbody>
 					</table>
 				<center>
-
 				<?php }else {
 					echo "";
 				} ?>
-
 				<?php $gass = 0; foreach ($get_body as $key => $gb){
 					$gass += strlen($gb['DESCRIPTION']);
 				}
@@ -242,7 +236,6 @@
 					// echo "<pagebreak />";
 				}
 				?>
-
 			</td>
 		</tr>
 		</tbody>

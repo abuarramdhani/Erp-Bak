@@ -22,8 +22,177 @@ $(document).ready(function() {
         }
     }
 
+    $('.slcStatusNC').select2({
+        placeholder: 'Filter by Status',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
+    $('.slcVendorNC').select2({
+        placeholder: 'Filter by Due Vendor',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
+    $('.slcBuyerNC').select2({
+        placeholder: 'Filter by Due Buyer',
+        allowClear: true,
+        dropdownParent: $("#ModFilterReportNC")
+    });
+
+    $('.slcSupplierNC').select2({
+             ajax: {
+                url: baseurl + 'PurchaseManagementGudang/NonConformity/searchSupplier',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    console.log(data)
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                id: item.SUPPLIER_NAME,
+                                text:item.SUPPLIER_NAME,
+                                phone: item.PHONE,
+                                pic: item.PIC,
+                                alamat: item.ALAMAT,
+                            }
+                        })
+                    };
+                },
+                cache: true,
+            },
+            minimumInputLength: 4,
+            allowClear : true,
+            placeholder: 'Nama Supplier',
+    })
+
+    $(document).on('change','.slcSupplierNC', function () {
+
+        var phone = $(this).select2('data')[0]['phone'];
+        var pic = $(this).select2('data')[0]['pic'];
+        var alamat = $(this).select2('data')[0]['alamat'];
+
+        $('.picNonC').val(pic);
+        $('.phoneNonC').val(phone);
+        $('.splrAddresNonC').val(alamat);
+    })
+
+    $('.maxPeriodeNC').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+
+    });
+    
+    $('.minPeriodeNC').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+
+    $('.btnFilterNC').click(function() {
+        $('#ModFilterReportNC').modal('show');
+        $('.slcStatusNC').select2({
+            placeholder: 'Filter by Status',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+    
+        $('.slcVendorNC').select2({
+            placeholder: 'Filter by Due Vendor',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+
+        $('.slcBuyerNC').select2({
+            placeholder: 'Filter by Due Buyer',
+            allowClear: true,
+            dropdownParent: $("#ModFilterReportNC")
+        });
+    
+        
+    })
+
+    $('.btnReturnPBBNC').click(function () {
+
+        var header_id = $('.hdnHeadId').val();
+
+        Swal.fire({
+            title: 'Alasan Return',
+            input: 'text',
+            inputAttributes: {
+              autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'SUBMIT',
+            showLoaderOnConfirm: true,
+            preConfirm: (reason) => {
+                if (!reason) {
+                    Swal.showValidationMessage(`Alasan Return tidak boleh kosong!`);
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: baseurl+"PurchaseManagementGudang/NonConformity/submitAssign",
+                        data: {
+                            hdnHeadId : header_id,
+                            slcAssign : 3,
+                            txtReasonReturn : reason
+                        },
+                        error: function(xhr,status,error){
+                        //     console.log(xhr);
+                        //     console.log(status);
+                        //     console.log(error);
+                            Swal.showValidationMessage({
+                                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                                html: xhr['responseText'],
+                                type: "error",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d63031',
+                            })
+                        },
+                        success: function (response) {
+                            swal.fire({
+                                type : 'success',
+                                title : 'Berhasil!'
+                            })
+                            setTimeout(function() {
+                                window.location.href = baseurl+'PurchaseManagementGudang/NonConformity/listSupplier';
+                            }, 2000);
+                        }
+                    })
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        })
+    })
+    
+
+
+    $('#tblMonitoringNonC').DataTable({
+        dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
+                <'row' <'col-sm-12'tr> >
+                <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
+        scrollX: true,
+        scrollCollapse: true,
+        scrollY: "370px",
+        columnDefs: [{
+            "targets": 0,
+            "orderable": false
+        }],
+        order: [
+            [3, 'asc']
+        ],
+        buttons: ['excel']
+    });
+
     $(".nonconfPhoto").change(function() {
-        readURL(this);
+        readURL(this); 
+               
     });
 
     $('.slcRemarkNonConformity').change(function() {
@@ -32,10 +201,10 @@ $(document).ready(function() {
 
         for (let i = 0; i < valArray.length; i++) {
             var elm = valArray[i];
-            var hau = $('.slcRemarkNonConformity option[value="' + elm + '"]').html();
-            htmlArray.push(hau);
+            var hau = $('.slcRemarkNonConformity option[value="' + elm + '"]').html();             htmlArray.push(hau);
         }
         console.log(htmlArray);
+
         $('.remarkReviewNonConformity').html('');
         for (var i = 0; i < htmlArray.length; i++) {
             var elm = htmlArray[i];
@@ -203,14 +372,14 @@ $(document).ready(function() {
 
     $(document).on('click', '.poNumberNonC', function() {
         var poNumber = $('.poNonC').val();
-        var supplier = $('.splrNonC').val();
+        var supplier = $('.slcSupplierNC').val();
         
         // alert(poNumber);
         
         if (poNumber != '') {
             $('#waitLineNonC').modal('show');
 
-            if (supplier == '') {
+            if (supplier == null) {
                 
                 $.ajax({
                     type: "POST",
@@ -222,7 +391,9 @@ $(document).ready(function() {
                     success: function(response) {
                         console.log(response);
                         // $('.byrNonC').val(response[0]['NATIONAL_IDENTIFIER'] + ', ' + response[0]['FULL_NAME']);
-                        $('.splrNonC').val(response[0]['VENDOR_NAME']);
+                        var html = '<option value="' + response[0]['VENDOR_NAME'] + '">' + response[0]['VENDOR_NAME'] + '</option>';
+                        $('.slcSupplierNC').append(html);
+                        $('.slcSupplierNC').val(response[0]['VENDOR_NAME']).trigger('change.select2');
                         $('.splrAddresNonC').val(response[0]['ALAMAT_LENGKAP']);
                         $('.picNonC').val(response[0]['PIC']);
                         $('.phoneNonC').val(response[0]['PHONE_NUMBER']);
@@ -416,8 +587,8 @@ $(document).ready(function() {
                                 list += '<tr class="trSelectedLineNonC" data-row="' + rowId + '">' +
                                     '<td>'+ po +'<input type="hidden" class="form-control" name="hdnPO[]" value="' + po + '"></td>' +
                                     '<td>'+ line +'<input type="hidden" class="form-control" name="hdnLine[]" value="' + line + '"></td>' +
-                                    '<td>'+ status +'<input type="hidden" class="form-control" name="hdnStatusLine[]" value="' + status + '"></td>' +
-                                    '<td>'+noind+', '+buyer+'<input type="hidden" class="form-control" name="hdnBuyer[]" value="'+noind+', '+buyer+'"></td>'+
+                                    '<td>'+buyer+','+noind+'<input type="hidden" class="form-control" name="hdnStatusLine[]" value="' + status + '"></td>' +
+                                    '<td>'+buyer+','+noind+'<input type="hidden" class="form-control" name="hdnBuyer[]" value="'+buyer+','+noind+'"></td>'+
                                     '<td>'+ lppb +'<input type="hidden" class="form-control" name="hdnLppb[]" value="' + lppb + '"></td>'+
                                     '<td>' + item + '<input type="hidden" class="form-control" name="hdnItem[]" value="' + item + '"></td>' +
                                     '<td>' + desc + '<input type="hidden" class="form-control" name="hdnDesc[]" value="' + desc + '"></td>' +
@@ -427,7 +598,7 @@ $(document).ready(function() {
                                     // '<td>' + unitPrice + '<input type="hidden" class="form-control" name="hdnUnitPrice[]" value="' + unitPrice + '"></td>' +
                                     '<td>' + qtyPo + '<input type="hidden" class="form-control" name="hdnQtyPo[]" value="' + qtyPo + '"></td>' +
                                     '<td>' + qtyRecipt + '<input type="hidden" class="form-control" name="hdnQtyRecipt[]" value="' + qtyRecipt + '"></td>' +
-                                    '<td><input type="text" class="form-control" name="txtQtyProblem[]" required></td>' +
+                                    '<td><input type="text" class="form-control" style="background-color :#fbfb5966;" name="txtQtyProblem[]" required></td>' +
                                     '<td><button type="button" class="btn btn-danger btnRevoke" revoke="' + rowId + '"><i class="fa fa-trash"></i></button></td>' +
                                     '</tr>';
 
@@ -641,6 +812,31 @@ $(document).ready(function() {
         placeholder: 'Select Buyer to Forward',
     });
 
+    $(document).on('click','.btnMdlNCMonitoring', function () {
+        var source_id = $(this).val();
+        
+        if ($('.imgNC-'+source_id).html() == '') {
+            $('.loadingImageNC-'+source_id).fadeIn();
+            $('#mdlNCMonitoring-'+source_id).modal('show');
+            $.ajax({
+                type: "POST",
+                url: baseurl+"PurchaseManagementGudang/NonConformity/getImage",
+                data: {source_id},
+                dataType: "JSON",
+                success: function (resp) {
+                    var html='';
+                    for (let i = 0; i < resp.length; i++) {
+                        const el = resp[i];
+                        html += '<img style="max-height:500px; max-width:500px;" src="'+baseurl+el['image_path']+el['file_name']+'"><br>'
+                    }
+                    $('.loadingImageNC-'+source_id).hide();
+                    $('.imgNC-'+source_id).html(html);
+                }
+            });
+        }
+        
+    })
+
 });
 
 function showBigImage(elm) {
@@ -657,6 +853,31 @@ $('#tblPoOracleNonConfirmityHeaders').DataTable({
             "bSortable": false,
             "bVisible": true
         },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+    ],
+    buttons: ['excel']
+});
+
+$('#tblNCForBuyer').DataTable({
+    dom: 'Bfrtip',
+    "aoColumns": [ 
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         null,
@@ -787,4 +1008,75 @@ function exportPDF(m) {
     } else {
         alert('Please allow popups for this website.');
     }
+}
+
+function filterMonitoringReportNC(event) {
+    event.preventDefault();
+    
+    var tableUsed = $('#tblMonitoringNonC').DataTable();
+    //filter by status
+    var statusCol = tableUsed.columns(18);
+    var status = $('.slcStatusNC').val();
+    // console.log(statusCol)
+
+    statusCol.search(status);
+    //end
+
+    //filter by vendor
+    var vendorCol = tableUsed.columns(10);
+    var vendor  = $('.slcVendorNC').val();
+
+    vendorCol.search(vendor);
+    // end
+
+    //filter by buyer
+    var buyerCol = tableUsed.columns(11);
+    var buyer  = $('.slcBuyerNC').val();
+
+    buyerCol.search(buyer);
+    // end
+
+    //tanggal
+    $.fn.dataTable.ext.search.push(
+        function(settings, data, dataIndex) {
+            var min = $('.minPeriodeNC').datepicker("getDate");
+            var max = $('.maxPeriodeNC').datepicker("getDate");
+            var startDate = new Date(data[3]);
+
+            if (min == null && max == null) {
+                return true;
+            }
+            if (min == null && startDate <= max) {
+                return true;
+            }
+            if (max == null && startDate >= min) {
+                return true;
+            }
+            if (startDate <= max && startDate >= min) {
+                return true;
+            }
+            return false;
+        }
+
+    );
+
+    tableUsed.draw();
+}
+
+function NonConformityApaini() {
+    var seqil = $('.txaCreateNC').val();
+
+    $.ajax({
+        type: "POST",
+        url: baseurl + 'PurchaseManagementGudang/NonConformity/mauApa',
+        data: {skill : seqil},
+        success: function (response) {
+            console.log(response);
+            swal.fire({
+                type : 'success',
+                title : 'Berhasil'
+            })
+        }
+    });
+
 }

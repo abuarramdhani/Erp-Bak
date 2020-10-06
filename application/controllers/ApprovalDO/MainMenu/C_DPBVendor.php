@@ -68,7 +68,8 @@ class C_DPBVendor extends CI_Controller {
             'alamat_bongkar'   => 'readonly',
             'catatan'          => 'readonly',
             'estdate'          => '',
-            'tgl_kirim'          => ''
+            'tgl_kirim'          => '',
+            'gudang_pengirim'  => 'readonly'
         ];
         if ($this->session->user === 'B0445') {
             $data['UserAccess'] = [   
@@ -81,7 +82,8 @@ class C_DPBVendor extends CI_Controller {
                     'alamat_bongkar'   => '',
                     'catatan'          => '',
                     'estdate'          => '',
-                    'tgl_kirim'        => ''
+                    'tgl_kirim'        => '',
+                    'gudang_pengirim'  => ''
             ];
         }else {
             $data['UserAccess'] = [   
@@ -94,6 +96,7 @@ class C_DPBVendor extends CI_Controller {
                     'alamat_bongkar'   => 'readonly',
                     'catatan'          => 'readonly',
                     'tgl_kirim'        => 'readonly',
+                    'gudang_pengirim'  => 'readonly',
                     'estdate'          => 'ADOEstDatang'
             ];
         }
@@ -153,7 +156,10 @@ class C_DPBVendor extends CI_Controller {
         $namasupir = $this->input->post('driverName');
         $kontaksupir = $this->input->post('driverPhone');
         $vendorekspedisi = $this->input->post('expVendor');
-        $lain = $this->input->post('additionalInformation');
+        $gudangPengirim = $this->input->post('gudangPengirim');
+        $alamatBongkar = $this->input->post('alamatBongkar');
+        $catatan = $this->input->post('catatan');
+        // $lain = $this->input->post('additionalInformation');
 
         $data = [
             'NO_PR'            => $nopr,
@@ -162,8 +168,11 @@ class C_DPBVendor extends CI_Controller {
             'NAMA_SUPIR'       => $namasupir,
             'KONTAK_SOPIR'     => $kontaksupir,
             'VENDOR_EKSPEDISI' => $vendorekspedisi,
+            'GUDANG_PENGIRIM'  => $gudangPengirim,
+            'ALAMAT_BONGKAR'   => $alamatBongkar,
+            'CATATAN'          => $catatan
             // 'ESTIMASI_DATANG'  => ,
-            'LAIN'             => $lain,
+            // 'LAIN'             => $lain,
         ];
 
         if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {

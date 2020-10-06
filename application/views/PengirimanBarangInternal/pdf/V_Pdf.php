@@ -35,33 +35,33 @@
 	<div style="padding:18px;">
 		<table style="font-size:16.3px !important;width:100%;border-collapse: collapse !important;page-break-inside:avoid;">
 			<tr>
-				<td style="width:42%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-top: 1px solid black;">
+				<td style="height: 105px;width:42%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-top: 1px solid black;vertical-align:top">
 					<b style="font-size:14px;">DARI :</b> <br><br>
 					<?php echo $get[0]['CREATED_BY'] ?><br>
 					<?php echo $nama_pengirim[0]['employee_name'] ?>
 				</td>
-				<td style="width:58%;padding:5px;border-top: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;">
+				<td style="width:58%;padding:5px;border-top: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;vertical-align:top">
 					<b style="font-size:14px;position:absolute;">SEKSI :</b> <br><br>
 					<?php echo $get[0]['SEKSI_KIRIM'] ?>
 				</td>
 			</tr>
 			<tr>
-				<td style="width:42%;padding:5px;border-bottom: 1px solid black;border-left: 1px solid black;">
+				<td style="height: 105px;width:42%;padding:5px;border-bottom: 1px solid black;border-left: 1px solid black;vertical-align:top">
 					<b style="font-size:14px;">UNTUK :</b><br><br>
 					<span>
 						<b><?php echo $get[0]['USER_TUJUAN'] ?><br>
 						<?php echo $user_tujuan[0]['employee_name'] ?></b>
 					</span>
 				</td>
-				<td style="width:58%;padding:5px;border-top: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
+				<td style="width:58%;padding:5px;border-top: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;vertical-align:top">
 					<b style="font-size:14px;position:absolute;">SEKSI :</b> <br><br>
-					<?php echo $seksi_tujuan->seksi ?>
+					<?php echo $get[0]['SEKSI_TUJUAN']  ?>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" style="padding: 5px;border-bottom: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;">
+				<td colspan="2" style="height: 70px;padding: 5px;border-bottom: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;vertical-align:top">
 					<b style="font-size:14px">KETERANGAN :</b> <br> <br>
-					<b><?php echo $get[0]['KETERANGAN'] ?></b>
+					<b><?php echo $get[0]['KETERANGAN']  ?></b>
 				</td>
 			</tr>
 		</table>

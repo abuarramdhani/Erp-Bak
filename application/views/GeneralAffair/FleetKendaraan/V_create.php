@@ -99,7 +99,7 @@
                                                 </div>
                                             </div>
                                             <?php 
-                                            if ($user_login == "J1335") {
+                                            if ($user_login == "B0647") {
                                                 ?>
                                                 <div class="form-group">
                                                     <label for="txtLokasiKerjaHeader" class="control-label col-lg-4">Lokasi Kerja</label>
@@ -135,6 +135,14 @@
                                                     <input type="text" placeholder="Nomor Rangka (contoh : NHKP3CA1JFK089113)" name="txtNomorRangkaHeader" id="txtNomorRangkaHeader" class="form-control" maxlength="30" />
                                                 </div>
                                             </div>
+
+                                             <div class="form-group">
+                                                <label for="txtTagNumber" class="control-label col-lg-4">Tag Number</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Tag Number" name="TagNumber" id="TagNumber" class="form-control" >
+                                                </div>
+                                            </div>
+
 
 											<div class="form-group">
                                                 <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto STNK</label>

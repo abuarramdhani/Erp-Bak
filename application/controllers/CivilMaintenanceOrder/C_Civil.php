@@ -1,4 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+setlocale(LC_ALL, 'id_ID.utf8');
 /**
 * 
 */
@@ -49,7 +51,11 @@ class C_Civil extends CI_Controller
 
 		$data['list'] = $this->M_civil->getListOrder();
 		$data['approve'] = $this->M_civil->getApprover();
-
+		$orderid = $this->session->orderid;
+		if (isset($orderid) && !empty($orderid)) {
+			$data['order_id'] = $orderid;
+			$this->session->orderid = "";
+		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CivilMaintenanceOrder/Order/V_List_Order',$data);
@@ -87,6 +93,13 @@ class C_Civil extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function getJnsPkjDetail()
+	{
+		$id = $this->input->get('id');
+		$data = $this->M_civil->listJnsPkjDetail($id);
+		echo json_encode($data);
+	}
+
 	public function getJnsOrder()
 	{
 		$data = $this->M_civil->getTableJenisOrder();
@@ -96,7 +109,9 @@ class C_Civil extends CI_Controller
 	public function save_order()
 	{
 		// echo "<pre>";
-		// print_r($_POST);exit();
+		// print_r($_POST);
+		// print_r($_FILES);
+		// exit();
 
 		$dari = $this->input->post('dari');
 		$kodesie = $this->input->post('kodesie');
@@ -106,10 +121,12 @@ class C_Civil extends CI_Controller
 		$tglterima = $this->input->post('tglterima');
 		$jnsPekerjaan = $this->input->post('jnsPekerjaan');
 		$jnsOrder = $this->input->post('jnsOrder');
-		$judul = $this->input->post('judul');
+		$voip = $this->input->post('voipOrder');
 		$ket = $this->input->post('ket');
 		$nolog = $this->input->post('nolog');
+		$status = $this->input->post('status');
 		$tglbutuh = $this->input->post('tglbutuh');
+		$alasan = $this->input->post('alasan');
 
 		$data = array(
 			'pengorder'			=>	$dari,
@@ -122,13 +139,15 @@ class C_Civil extends CI_Controller
 			'jenis_order_id'	=>	$jnsOrder,
 			'ket'				=>	$ket,
 			'tgl_dibutuhkan'	=>	$tglbutuh,
-			'judul'				=>	$judul,
+			'voip'				=>	$voip,
 			'status_id'			=>	1,//open
+			'alasan'			=>  $alasan,
+			'status'			=>  $status
 			);
 		$ins = $this->M_civil->insertOrder($data);
 
 		//insert lampiran
-		$this->update_lampiran($ins);
+		$this->insert_lampiran($ins);
 
 		//insert cvl_order_pekerjaan
 		$pekerjaan = $this->input->post('tbl_pekerjaan');
@@ -168,6 +187,7 @@ class C_Civil extends CI_Controller
 			);
 		$this->M_civil->saveThread($thread);
 
+		$this->session->orderid = $ins;
 		redirect('civil-maintenance-order/order/list_order');
 	}
 
@@ -208,10 +228,9 @@ class C_Civil extends CI_Controller
 		$lokasi = $this->input->post('lokasi');
 		$tglorder = $this->input->post('tglorder');
 		$penerima = $this->input->post('penerima');
-		$tglterima = $this->input->post('tglterima');
 		$jnsPekerjaan = $this->input->post('jnsPekerjaan');
 		$jnsOrder = $this->input->post('jnsOrder');
-		$judul = $this->input->post('judul');
+		$voip = $this->input->post('voipOrder');
 		$keterangan = $this->input->post('ket');
 		$nolog = $this->input->post('nolog');
 		$tglbutuh = $this->input->post('tglbutuh');
@@ -224,13 +243,12 @@ class C_Civil extends CI_Controller
 			'lokasi_pengorder'	=>	$lokasi,
 			'tgl_order'			=>	$tglorder,
 			'penerima_order'	=>	$penerima,
-			'tgl_terima'		=>	$tglterima,
 			'jenis_pekerjaan_id'=>	$jnsPekerjaan,
 			'jenis_order_id'	=>	$jnsOrder,
 			'ket'				=>	$keterangan,
 			'nomor_log'			=>	$nolog,
 			'tgl_dibutuhkan'	=>	$tglbutuh,
-			'judul'				=>	$judul,
+			'voip'				=>	$voip,
 			'status_id'			=>	$status,
 			);
 		$ins = $this->M_civil->updateOrder($data, $id);
@@ -263,6 +281,49 @@ class C_Civil extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function insert_lampiran($id = '')
+	{
+		$this->load->library('upload');
+		$dataInfo = array();
+		$files = $_FILES;
+		$cpt = count($_FILES['tbl_lampiran']['name']);
+		for($i=0; $i<$cpt; $i++)
+		{   
+			$cpt2 = count($files['tbl_lampiran']['name'][$i]);
+			for ($j=0; $j < $cpt2; $j++) { 
+				$filename = $files['tbl_lampiran']['name'][$i][$j];
+				if(!empty($filename)){
+					$_FILES['tbl_lampiran']['name']= str_replace(' ', '_', $files['tbl_lampiran']['name'][$i][$j]);
+					$_FILES['tbl_lampiran']['type']= $files['tbl_lampiran']['type'][$i][$j];
+					$_FILES['tbl_lampiran']['tmp_name']= $files['tbl_lampiran']['tmp_name'][$i][$j];
+					$_FILES['tbl_lampiran']['error']= $files['tbl_lampiran']['error'][$i][$j];
+					$_FILES['tbl_lampiran']['size']= $files['tbl_lampiran']['size'][$i][$j];    
+
+					$this->upload->initialize($this->set_upload_options());
+					if ($this->upload->do_upload('tbl_lampiran')) {
+		                $this->upload->data();
+		            } else {
+		                $errorinfo = $this->upload->display_errors();
+						echo $errorinfo;exit();
+		            }
+		            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+		            $arr = array(
+		            	'order_id'	=>	$id,
+		            	'path'		=>	'assets/upload/CivilMaintenance/'.str_replace(' ', '_', $filename),
+		            	'file_type'	=>	$files['tbl_lampiran']['type'][$i][$j],
+		            	'pekerjaan' =>  $_POST['tbl_pekerjaan'][$i]
+		            	);
+		            $upload = $this->M_civil->insertAttachment($arr);
+				}
+	        }        
+		}
+
+
+		if (isset($redirek)) {
+			redirect('civil-maintenance-order/order/view_order/'.$id);
+		}
+	}
+
 	public function update_lampiran($id = '')
 	{
 		if(empty($id)){
@@ -281,6 +342,7 @@ class C_Civil extends CI_Controller
 		$dataInfo = array();
 		$files = $_FILES;
 		$cpt = count($_FILES['lampiran']['name'])-1;
+		echo $cpt;exit();
 		for($i=0; $i<$cpt; $i++)
 		{           
 			$filename = $files['lampiran']['name'][$i];
@@ -297,7 +359,7 @@ class C_Civil extends CI_Controller
                 $this->upload->data();
             } else {
                 $errorinfo = $this->upload->display_errors();
-				echo $errorinfo;
+				echo $errorinfo;exit();
             }
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
             $arr = array(
@@ -495,6 +557,7 @@ class C_Civil extends CI_Controller
 		$data  = $this->general->loadHeaderandSidemenu('Civil Maintenance', 'Edit Keterangan', '', '', '');
 
 		$data['ket'] = $this->M_civil->getKetByid($id);
+		$data['lampiran'] = $this->M_civil->getListlampiran($id);
 		$data['id'] = $id;
 		// echo "<pre>";
 		// print_r($data['lapiran']);exit();
@@ -560,9 +623,62 @@ class C_Civil extends CI_Controller
 			$this->M_civil->insCVP($arr);
 		}
 
+		$this->insert_lampiran($id);
+
 		$thread = array(
 				'order_id'		=>	$id,
 				'thread_detail'	=>	'Add Keterangan '.$id,
+				'thread_date'	=>	date('Y-m-d H:i:s'),
+				'thread_by'		=>	$this->session->user
+				);
+		$this->M_civil->saveThread($thread);
+		redirect('civil-maintenance-order/order/edit_keterangan/'.$id);
+	}
+
+	public function add_lampiran_pekerjaan(){
+		$id = $this->input->post('id_order');
+		$pekerjaan = $this->input->post('pekerjaan');
+		
+		$this->load->library('upload');
+		$dataInfo = array();
+		$files = $_FILES;
+		$cpt = count($_FILES['tbl_lampiran']['name']);
+		// echo $cpt;exit();
+		for($i=0; $i<$cpt; $i++)
+		{   
+			$cpt2 = count($_FILES['tbl_lampiran']['name'][$i]);
+			for ($j=0; $j < $cpt2; $j++) { 
+				$filename = $files['tbl_lampiran']['name'][$i][$j];
+				if(empty($filename)) continue;
+
+				$_FILES['tbl_lampiran']['name']= str_replace(' ', '_', $files['tbl_lampiran']['name'][$i][$j]);
+				$_FILES['tbl_lampiran']['type']= $files['tbl_lampiran']['type'][$i][$j];
+				$_FILES['tbl_lampiran']['tmp_name']= $files['tbl_lampiran']['tmp_name'][$i][$j];
+				$_FILES['tbl_lampiran']['error']= $files['tbl_lampiran']['error'][$i][$j];
+				$_FILES['tbl_lampiran']['size']= $files['tbl_lampiran']['size'][$i][$j];    
+
+				$this->upload->initialize($this->set_upload_options());
+				if ($this->upload->do_upload('tbl_lampiran')) {
+	                $this->upload->data();
+	            } else {
+	                $errorinfo = $this->upload->display_errors();
+					echo $errorinfo;exit();
+	            }
+	            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+	            $arr = array(
+	            	'order_id'	=>	$id,
+	            	'path'		=>	'assets/upload/CivilMaintenance/'.str_replace(' ', '_', $filename),
+	            	'file_type'	=>	$files['tbl_lampiran']['type'][$i][$j],
+	            	'pekerjaan' =>  $pekerjaan
+	            	);
+	            $upload = $this->M_civil->insertAttachment($arr);
+				
+	        }        
+		}
+
+		$thread = array(
+				'order_id'		=>	$id,
+				'thread_detail'	=>	'Add Lampiran Keterangan '.$id,
 				'thread_date'	=>	date('Y-m-d H:i:s'),
 				'thread_by'		=>	$this->session->user
 				);
@@ -621,12 +737,65 @@ class C_Civil extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 10, 10, 10, 30, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', 'A4-L', 11, "timesnewroman", 10, 10, 10, 50, 10, 10);
+		// $pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 10, 10, 10, 30, 0, 0, 'P');
 		$filename	=	'E-Order - Civil Maintenance.pdf';
 
 		$pdf->AddPage();
 		$pdf->SetTitle('E-Order - Civil Maintenance');
 		$pdf->WriteHTML($isi);
+		$pdf->setHTMLFooter(
+			'<table border="1" style="border-collapse: collapse; width: 100%;">
+				<tr>
+					<td rowspan="2" style="text-align: center;width: 20%;vertical-align: middle;">
+						Penerima Order<br>
+						Kepala Seksi<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+					<td colspan="4" style="text-align: center;width: 60%">Disetujui</td>
+					<td rowspan="2" style="text-align: center;width: 20%;vertical-align: middle;">
+						Pemberi Order<br>
+						Kepala Order<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;width: 15%;vertical-align: middle;">
+						Kepala Unit<br>
+						Penerima Order<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+					<td style="text-align: center;width: 15%;vertical-align: middle;">
+						<br>Direksi<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+					<td style="text-align: center;width: 15%;vertical-align: middle;">
+						Kep. Departemen<br>
+						Pemberi Order<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+					<td style="text-align: center;width: 15%;vertical-align: middle;">
+						Kepala unit<br>
+						Pemberi Order<br>
+						<br><br><br><br>
+						(.............................................)
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+					<td style="padding-left: 10px;">tgl.</td>
+				</tr>
+			</table>'
+		);
 
 		$pdf->Output($filename, 'I');
 	}

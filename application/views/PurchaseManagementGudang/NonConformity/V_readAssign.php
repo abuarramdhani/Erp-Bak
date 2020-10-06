@@ -314,7 +314,7 @@
                                 <option></option>
                                 <option value="1">SUPPLIER</option>
                                 <option value="2">SUBKON</option>
-                                <option value="3">Return to PBB</option>
+                                <option value="3">Return to PPB</option>
                             </select>
                         </td>
                         <td>&nbsp;</td>

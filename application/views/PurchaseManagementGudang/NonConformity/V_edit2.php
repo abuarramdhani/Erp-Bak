@@ -62,6 +62,7 @@
                                                     <div class="col-lg-8">
                                                         <?php echo $headerRow['non_conformity_num']; ?>
                                                         <input type="hidden" name="txtHeaderId" value="<?php echo $headerRow['header_id'];?>">
+                                                        <input type="hidden" name="last_menu" value="list Buyer">
                                                     </div>
                                                 </div><br>
                                                 <div class="row">
@@ -144,7 +145,16 @@
                                                     <span class="pull-right">:</span>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>">
+                                                    <!-- <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>"> -->
+                                                    <?php if ($headerRow['supplier'] != null) {
+                                                            $opt = '<option value="'.$headerRow['supplier'].'">'.$headerRow['supplier'].'</option>';
+
+                                                         }else{
+                                                            $opt = '';
+                                                        } ?>
+                                                    <select class="form-control slcSupplierNC" name="txtSupplierName">
+                                                        <?= $opt;?>
+                                                    </select>
                                                 </div>
                                             </div><br>
                                             <div class="row">
@@ -155,7 +165,7 @@
                                                     <span class="pull-right">:</span>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <input style="width: 310px;" type="text" class="form-control picNonC" name="txtPersonInCharge" value="<?php echo $headerRow['person_in_charge']; ?>"> 
+                                                    <input type="text" class="form-control picNonC" name="txtPersonInCharge" value="<?php echo $headerRow['person_in_charge']; ?>" readonly> 
                                                 </div>
                                             </div><br>
                                             <div class="row">
@@ -178,7 +188,7 @@
                                                             }
                                                         }
                                                      ?>
-                                                    <input style="width: 150px;background: white;border: 1px solid #d2d6de;height: 40px;padding: 10px;" type="text" class="phoneNonC" name="txtPhoneNumber" value="<?php echo $telp; ?>"> 
+                                                    <input type="text" class="phoneNonC form-control" name="txtPhoneNumber" value="<?php echo $telp; ?>" readonly> 
                                                     <!-- / <input style="width: 150px;background: white;border: 1px solid #d2d6de;height: 40px;padding: 10px;" type="text" class="" name="txtFaxNumber" value="<?php echo $fax; ?>"> -->
                                                 </div>
                                             </div><br>
@@ -190,7 +200,7 @@
                                                     <span class="pull-right">:</span>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <textarea style="width: 310px;" type="text" name="txtSupplierAddress" class="form-control splrAddresNonC"><?php echo $headerRow['supplier_address']; ?></textarea>
+                                                    <textarea type="text" name="txtSupplierAddress" class="form-control splrAddresNonC" readonly><?php echo $headerRow['supplier_address']; ?></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -213,7 +223,7 @@
                                                         <tr>
                                                             <th>Case Name</th>
                                                             <th>Case Description</th>
-                                                            <th>Status [Open/Close]</th>
+                                                            <!-- <th>Status [Open/Close]</th> -->
                                                             <th>Attachment</th>
                                                         </tr>
                                                     </thead>
@@ -227,7 +237,7 @@
                                                             </td>
                                                             <td><span class="deskripsiNonC"><?php echo              $PoOracleNonConformityLines[0]['description']; ?></span><br>
                                                             <button type="button" class="btn btn-xs btn-primary btnEditDeskripsiNonC">Edit</button></td>
-                                                            <td>
+                                                            <!-- <td>
                                                                 <?php
                                                                     $open = '';
                                                                     $close = '';
@@ -237,14 +247,16 @@
                                                                     }else if ($PoOracleNonConformityLines[0]['status']=='1') {
                                                                         $close = 'selected';
                                                                     }
-                                                                ?>
-                                                                <select class="select select2 slcCaseNonC form-control" width="100%" name="slcCaseStatus">
+                                                                ?> -->
+                                                                <!-- <select class="select select2 slcCaseNonC form-control" width="100%" name="slcCaseStatus">
                                                                     <option></option>
                                                                     <option <?php echo $open;?> value="0">OPEN</option>
                                                                     <option <?php echo $close;?> value="1">CLOSE</option>
-                                                                </select>
-                                                            </td>
+                                                                </select> -->
+                                                                <!-- <input type="text" class="form-control" name="slcCaseStatus" value="0" readonly>
+                                                            </td> -->
                                                             <td>
+                                                            <input type="hidden" class="form-control" name="slcCaseStatus" value="0" readonly>
                                                             <?php foreach ($image as $key => $img) { ?>
                                                                 <img style="max-height : 100px;" src="<?php echo base_url().$img['image_path'].''.$img['file_name']; ?>">
                                                             <?php } ?>
@@ -359,53 +371,7 @@
                                             </div> -->
                                         </div>
                                     </div>
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">
-                                            Notes From Buyer
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="col-lg-6">
-                                                <?php if (count($notes) == 0) { ?>
-                                                    <p>Tidak ada notes !</p>
-                                                <?php } else { ?>
-                                                    <table class="table table-responsive table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>No</th>
-                                                                <th>Buyer</th>
-                                                                <th>Notes</th>
-                                                                <th>Date</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <?php $no = 0; foreach ($notes as $key => $note) { $no++; ?>
-                                                            <tr>
-                                                                <td><?= $no; ?></td>
-                                                                <td><?= $note['buyer'];?></td>
-                                                                <td><?= $note['notes'];?></td>
-                                                                <td><?= date("Y-m-d H:i:s", strtotime($note['date']));?></td>
-                                                            </tr>
-                                                        <?php }?>
-                                                        </tbody>
-                                                    </table>
-                                                <?php }?>
-                                            </div>
-                                            <?php if ($this->session->responsibility_id == 2663) {
-                                                $display = "";
-                                            } else{
-                                                $display = 'style="display:none;"';
-                                            }?>
-                                            <div class="col-lg-6" <?php echo $display; ?>>
-                                                <table>
-                                                    <tr>
-                                                        <th>Add Notes</th>
-                                                        <th>:</th>
-                                                        <td><textArea class="form-control" name="noteFromBuyer" style="width:420px" placeholder="add notes here!"></textArea></td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             Problem Solving
@@ -467,6 +433,53 @@
                                             </table>
                                             <div class="pull-right">
                                                 <button type="submit" class="btn btn-success">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            Notes From Buyer
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-lg-6">
+                                                <?php if (count($notes) == 0) { ?>
+                                                    <p>Tidak ada notes !</p>
+                                                <?php } else { ?>
+                                                    <table class="table table-responsive table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Buyer</th>
+                                                                <th>Notes</th>
+                                                                <th>Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <?php $no = 0; foreach ($notes as $key => $note) { $no++; ?>
+                                                            <tr>
+                                                                <td><?= $no; ?></td>
+                                                                <td><?= $note['buyer'];?></td>
+                                                                <td><?= $note['notes'];?></td>
+                                                                <td><?= date("Y-m-d H:i:s", strtotime($note['date']));?></td>
+                                                            </tr>
+                                                        <?php }?>
+                                                        </tbody>
+                                                    </table>
+                                                <?php }?>
+                                            </div>
+                                            <?php if ($this->session->responsibility_id == 2663) {
+                                                $display = "";
+                                            } else{
+                                                $display = 'style="display:none;"';
+                                            }?>
+                                            <div class="col-lg-6" <?php echo $display; ?>>
+                                                <table>
+                                                    <tr>
+                                                        <th>Add Notes</th>
+                                                        <th>:</th>
+                                                        <td><textArea class="form-control" name="noteFromBuyer" style="width:420px" placeholder="add notes here!"></textArea></td>
+                                                    </tr>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>

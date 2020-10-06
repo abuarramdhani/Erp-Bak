@@ -25,6 +25,30 @@ function getKodeBrg(th) {
 					}
 			}
 	});
+	
+	$(".lokasi_simpan").select2({
+		allowClear: true,
+		minimumInputLength: 3,
+		ajax: {
+				url: baseurl + "StockGdSparepart/LihatStock/getLokasiSimpan",
+				dataType: 'json',
+				type: "GET",
+				data: function (params) {
+						var queryParameters = {
+								term: params.term, subinv : subinv
+						}
+						return queryParameters;
+				},
+				processResults: function (data) {
+						// console.log(data);
+						return {
+								results: $.map(data, function (obj) {
+										return {id:obj.LOKASI, text:obj.LOKASI};
+								})
+						};
+				}
+		}
+});
 };
 
 
@@ -54,21 +78,22 @@ $(document).ready(function () {
 	});
 });
 
-function getLihatStock(th) {
-	$(document).ready(function(){
+function getLihatStock(no, ket) {
 		var tglAw 		= $('#tglAwal').val();
 		var tglAk 		= $('#tglAkhir').val();
 		var subinv 		= $('#subinv').val();
 		var kode_brg 	= $('#kodestockgdsp').val();
-		var kode_awal 	= $('#kode_awal').val();
+		var kode_awal = $('#kode_awal').val();
 		var qty_atas 	= $('#qty_atas').val();
-		var qty_bawah 	= $('#qty_bawah').val();
+		var qty_bawah = $('#qty_bawah').val();
+		var lokasi		= $('#lokasi_simpan').val();
+		var unit 			= no != '' ? $('#unit'+no).val() : '';
 
 		var request = $.ajax({
 			url: baseurl+'StockGdSparepart/LihatStock/searchData',
 			data: {
-                tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal,
-				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah
+                tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal, lokasi : lokasi,
+				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah, unit : unit, ket : ket
 			},
 			type: "POST",
 			datatype: 'html'
@@ -79,34 +104,33 @@ function getLihatStock(th) {
 		request.done(function(result){
 			$('#tb_lihatstock').html(result);
 		});
-	});		
 }
 
-function getLihatStock2(no) {
-		var tglAw 		= $('#tglAwal').val();
-		var tglAk 		= $('#tglAkhir').val();
-		var subinv 		= $('#subinv').val();
-		var kode_brg 	= $('#kodestockgdsp').val();
-		var kode_awal 	= $('#kode_awal').val();
-		var qty_atas 	= $('#qty_atas').val();
-		var qty_bawah 	= $('#qty_bawah').val();
-		var unit 		= $('#unit'+no).val();
+var peti = document.getElementById('tb_peti');
+if (peti) {
+	var request = $.ajax({
+		url: baseurl+'StockGdSparepart/MonitoringPeti/searchData',
+		type: "POST",
+		datatype: 'html'
+	});
+	$('#tb_peti').html('');
+	$('#tb_peti').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"><br/></center>' );
 		
-		var request = $.ajax({
-			url: baseurl+'StockGdSparepart/LihatStock/searchData2',
-			data: {
-                tglAw : tglAw, tglAk : tglAk, subinv : subinv, kode_awal : kode_awal,
-				kode_brg : kode_brg, qty_atas : qty_atas, qty_bawah : qty_bawah, unit : unit
-			},
-			type: "POST",
-			datatype: 'html'
-		});
-		$('#tb_lihatstock').html('');
-		$('#tb_lihatstock').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"><br/></center>' );
-			
-		request.done(function(result){
-			$('#tb_lihatstock').html(result);
-		});
+	request.done(function(result){
+		$('#tb_peti').html(result);
+	});
+}
+
+function savejmlPeti(no) {
+	var item = $('#kode_brg'+no).val();
+	var jml = $('#peti'+no).val();
+
+	$.ajax({
+		url : baseurl + "StockGdSparepart/MonitoringPeti/savepeti",
+		data : { item : item, jml : jml},
+		dataType : 'html',
+		type : 'POST',
+	})
 }
 
 function modalHistory(no) {
@@ -140,6 +164,29 @@ function modalHistory(no) {
     request.done(function(result){
         $('#dataHistory').html(result);
         $('#mdlHistory').modal('show');
+    });
+   
+}
+
+function modalGambarItem(no) {
+    var kode 	= $('#kode_brg'+no).val();
+    var nama 	= $('#nama_brg'+no).val();
+    var subinv 	= $('#subinv'+no).val();
+    var tglAwl 	= $('#tglAwl'+no).val();
+	var tglAkh 	= $('#tglAkh'+no).val();
+	
+    var request = $.ajax({
+        url: baseurl+'StockGdSparepart/LihatStock/searchGambarItem',
+        data: {
+            kode : kode, nama : nama, subinv : subinv, 
+			tglAwl : tglAwl, tglAkh : tglAkh
+        },
+        type: "POST",
+        datatype: 'html'
+    });
+    request.done(function(result){
+        $('#datagambar').html(result);
+        $('#mdlGambarItem').modal('show');
     });
    
 }
@@ -265,3 +312,9 @@ $(document).ready(function(){
 });
 
 
+function hover1() {
+	$(".gambar").css("box-shadow","-5px 5px 10px -3px #367da6");
+}
+function hover2() {
+	$(".gambar").css("box-shadow","");
+}

@@ -52,8 +52,8 @@
                                             <div class="col-md-7">
                                                 <label style="font-size: 14px;" class="mco_isiData">Seksi : <?= trim($order['section_name']) ?></label>
                                             </div>
-                                            <input hidden="" name="kodesie" class="mco_inputData" value="<?= $order['kodesie_pengorder'] ?>">
-                                            <input hidden="" name="lokasi" class="mco_inputData" value="<?= $order['lokasi_pengorder'] ?>">
+                                            <input type="hidden" name="kodesie" class="mco_inputData" value="<?= $order['kodesie_pengorder'] ?>">
+                                            <input type="hidden" name="lokasi" class="mco_inputData" value="<?= $order['lokasi_pengorder'] ?>">
                                             <div class="col-md-5">
                                                 <label style="font-size: 14px;" class="mco_isiData">Lokasi : <?= trim($order['location_name']) ?></label>
                                             </div>
@@ -65,7 +65,7 @@
                                                 <label>Tanggal Order</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input value="<?= $order['tgl_order'] ?>" required class="form-control mco_tglpick" name="tglorder">
+                                                <input value="<?= $order['tgl_order'] ?>" class="form-control" name="tglorder" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -84,10 +84,10 @@
                                     <div class="col-md-12" style="margin-top: 10px;">
                                         <div class="col-md-6">
                                             <div class="col-md-4">
-                                                <label>Tanggal Terima</label>
+                                                <label>Voip</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <input value="<?= $order['tgl_terima'] ?>" required class="form-control mco_tglpick" name="tglterima">
+                                                <input value="<?= $order['voip'] ?>" required class="form-control" name="voipOrder">
                                             </div>
                                         </div>
                                     </div>
@@ -121,21 +121,6 @@
                                     <div class="col-md-12" style="margin-top: 10px;">
                                         <div class="col-md-6">
                                             <div class="col-md-4">
-                                                <label>Judul Order</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <input value="<?= $order['judul'] ?>" required oninput="this.value = this.value.toUpperCase()" class="form-control" name="judul">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="col-md-12">
-                                                <label>Ex : Penambahan wastafel di Area X, Pemangkasan pohon di depan Gedung, Reparasi urinoir mampet</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" style="margin-top: 10px;">
-                                        <div class="col-md-6">
-                                            <div class="col-md-4">
                                                 <label>Keterangan</label>
                                             </div>
                                             <div class="col-md-8 text-left">
@@ -143,13 +128,6 @@
                                                     <i class="fa fa-edit"></i>
                                                     Update Pekerjaan
                                                 </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="col-md-12">
-                                            <div class="col-md-12">
-                                            <label>Aktivitas Detail Pekerjaan yang dilakukan, misal : bongkar galian, perataan tanah, dan pekerjaan lain yang diminta dalam order tersebut. </label>
                                             </div>
                                         </div>
                                     </div>

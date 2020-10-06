@@ -17,11 +17,11 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<form class="form-horizontal">
-											<div class="col-md-4 col-sm-6 col-md-offset-2">
+											<div class="col-md-4">
 												<div class="form-group">
 													<label class="col-sm-4">Tanggal</label>
 													<div class="col-sm-8">
-														<input type="text" class="form-control" placeholder="Pilih Tanggal..." id="txt-CM-PekerjaTerhitungCatering-Tanggal">
+														<input type="text" class="form-control" placeholder="Pilih Tanggal..." id="txt-CM-PekerjaTerhitungCatering-Tanggal" value="<?php echo date("Y-m-d") ?>">
 													</div>
 												</div>
 												<div class="form-group">
@@ -29,23 +29,14 @@
 													<div class="col-sm-8">
 														<select class="select2" style="width: 100%" data-placeholder="Pilih Shift..." id="slc-CM-PekerjaTerhitungCatering-Shift">
 															<option></option>
-															<option value="1">Shift 1 & Umum</option>
-															<option value="2">Shift 2</option>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-4">Lokasi Kerja</label>
-													<div class="col-sm-8">
-														<select class="select2" style="width: 100%" data-placeholder="Pilih Lokasi Kerja..." id="slc-CM-PekerjaTerhitungCatering-Lokasi">
-															<option></option>
-															<option value="1">Yogyakarta & Mlati</option>
-															<option value="2">Tuksono</option>
+															<option value="1" <?php echo strtotime(date('Y-m-d H:i:s')) - strtotime(date("Y-m-d 14:00:00")) <= 0 ? 'selected' : ''  ?> >Shift 1 & Umum</option>
+															<option value="2" <?php echo strtotime(date('Y-m-d H:i:s')) - strtotime(date("Y-m-d 14:00:00")) > 0 ? 'selected' : ''  ?> >Shift 2</option>
+															<option value="3">Shift 3</option>
 														</select>
 													</div>
 												</div>
 											</div>
-											<div class="col-md-4 col-sm-6">
+											<div class="col-md-5">
 												<div class="form-group">
 													<label class="col-sm-4">Tempat Makan</label>
 													<div class="col-sm-8">
@@ -54,13 +45,26 @@
 															<?php if (isset($tempat_makan) && !empty($tempat_makan)) {
 																foreach ($tempat_makan as $tm) {
 																	?>
-																	<option value="<?php echo $tm['fs_tempat_makan'] ?>"><?php echo $tm['fs_tempat_makan'] ?></option>
+																	<option value="<?php echo $tm['fs_tempat_makan'] ?>" data-lokasi="<?php echo $tm['fs_lokasi'] ?>"><?php echo $tm['lokasi'].' - '.$tm['fs_tempat_makan'] ?></option>
 																	<?php
 																}
 															} ?>
 														</select>
 													</div>
 												</div>
+												<div class="form-group">
+													<label class="col-sm-4">Jenis</label>
+													<div class="col-sm-8">
+														<select class="select2" style="width: 100%" data-placeholder="Pilih Jenis..." id="slc-CM-PekerjaTerhitungCatering-Jenis">
+															<option></option>
+															<option>Refresh Makan Terakhir</option>
+															<option>kondisi Sekarang</option>
+															
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
 												<div class="form-group">
 													<div class="col-sm-12 text-center">
 														<button type="button" class="btn btn-primary" id="btn-CM-PekerjaTerhitungCatering-Lihat">Lihat</button>

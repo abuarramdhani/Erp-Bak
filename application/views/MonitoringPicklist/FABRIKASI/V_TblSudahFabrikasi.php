@@ -39,7 +39,9 @@
             <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
             <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
             <td><button type="button" class="btn btn-success" id="refab<?= $no?>" onclick="recallFabrikasi(<?= $no?>)" <?= $del?>>Recall</button></td>
-            <td><a href="<?php echo base_url('MonitoringPicklistFabrikasi/SudahApprove/printFabrikasi/'.$val['PICKLIST'].'/'.$val['DEPARTMENT'].'/'.$val['CREATION_DATE'].''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a></td>
+            <td><a href="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/printBelumFabrikasi/'.$val['PICKLIST'].''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a>
+            <!-- <a href="<?php echo base_url('MonitoringPicklistFabrikasi/SudahApprove/printFabrikasi/'.$val['PICKLIST'].'/'.$val['DEPARTMENT'].'/'.$val['CREATION_DATE'].''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a>-->
+            </td> 
         </tr>
     <?php $no++; }?>
     </tbody>

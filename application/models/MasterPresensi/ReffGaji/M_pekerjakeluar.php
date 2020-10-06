@@ -926,7 +926,7 @@ class M_pekerjakeluar extends CI_Model
 									end as break_selesai
 							FROM \"Presensi\".TDataPresensi a INNER JOIN
 							\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
-							WHERE (a.tanggal >= to_char('$akhir'::date,'yyyy-mm-01')::date) AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+							WHERE (a.tanggal >= '$akhir') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
 					ORDER BY tanggal";
 			$result2 = $this->personalia->query($sql)->result_array();
 			$nilai = $result1['0']['total'];
@@ -1047,7 +1047,7 @@ class M_pekerjakeluar extends CI_Model
 										SELECT c.tanggal from \"Presensi\".TDataPresensi c
 										WHERE c.noind = a.noind
 										AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-										AND c.kd_ket not in ('PKJ','PDL','PDB','PLB','PID','PSP')
+										AND c.kd_ket not in ('PKJ','PDL','PDB','PLB','PID','PSP','CB')
 									) as DERIVEDTBL
 								) - 
 								(select count(tanggal) as jml from
@@ -4523,33 +4523,7 @@ class M_pekerjakeluar extends CI_Model
 					end
 				 else
 				 	0
-				 end as jkn,
-				 case when bpjs_jht = '1' and tglberlaku_jht <= current_date then
-				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
-						0
-					else
-						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							0
-						else 
-							1
-						end
-					end
-				 else
-				 	0
-				 end as jht,
-				 case when bpjs_ket = '1' and tglberlaku_ket <= current_date then
-				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
-						0
-					else
-						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							0
-						else 
-							1
-						end
-					end
-				 else
-				 	0
-				 end as jp
+				 end as jkn
 				 from hrd_khs.tpribadi tp
 				 where noind = '$noind'";
 		return $this->personalia->query($sql)->row()->jkn;
@@ -4557,21 +4531,7 @@ class M_pekerjakeluar extends CI_Model
 
 	public function jumlah_jht($noind){
 		$sql = "select noind,nama,
-				 case when bpjs_kes = '1' and tglberlaku_kes <= current_date then
-				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','16')::date then
-						0
-					else
-						1 + (
-							select count(*)
-							from hrd_khs.tbpjs_tambahan
-							where noind = '$noind'
-							and status = '1'
-						)
-					end
-				 else
-				 	0
-				 end as jkn,
-				 case when bpjs_jht = '1' and tglberlaku_jht <= current_date then
+				 case when bpjs_ket = '1' and tglberlaku_jht <= current_date then
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						0
 					else
@@ -4583,20 +4543,7 @@ class M_pekerjakeluar extends CI_Model
 					end
 				 else
 				 	0
-				 end as jht,
-				 case when bpjs_ket = '1' and tglberlaku_ket <= current_date then
-				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
-						0
-					else
-						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							0
-						else 
-							1
-						end
-					end
-				 else
-				 	0
-				 end as jp
+				 end as jht
 				 from hrd_khs.tpribadi tp
 				 where noind = '$noind'";
 		return $this->personalia->query($sql)->row()->jht;
@@ -4604,34 +4551,7 @@ class M_pekerjakeluar extends CI_Model
 
 	public function jumlah_jp($noind){
 		$sql = "select noind,nama,
-				 case when bpjs_kes = '1' and tglberlaku_kes <= current_date then
-				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','16')::date then
-						0
-					else
-						1 + (
-							select count(*)
-							from hrd_khs.tbpjs_tambahan
-							where noind = '$noind'
-							and status = '1'
-						)
-					end
-				 else
-				 	0
-				 end as jkn,
-				 case when bpjs_jht = '1' and tglberlaku_jht <= current_date then
-				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
-						0
-					else
-						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							0
-						else 
-							1
-						end
-					end
-				 else
-				 	0
-				 end as jht,
-				 case when bpjs_ket = '1' and tglberlaku_ket <= current_date then
+				 case when bpjs_jht = '1' and tglberlaku_ket <= current_date then
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						0
 					else
@@ -7071,6 +6991,39 @@ class M_pekerjakeluar extends CI_Model
 				where noind = '$noind'";
 		$result = $this->personalia->query($sql)->row();
 		return $result;
+	}
+
+	public function getListPekerjaKeluar(){
+		$sql = "select *
+				from \"Presensi\".treffgaji_keluar
+				order by tanggal_keluar desc";
+		$result = $this->personalia->query($sql)->result_array();
+		return $result;
+	}
+
+	public function getListPekerjaKeluarByNoind($noind){
+		$sql = "select *
+				from \"Presensi\".treffgaji_keluar
+				where noind = '$noind'
+				order by tanggal_keluar desc";
+		$result = $this->personalia->query($sql)->row();
+		return $result;
+	}
+
+	public function updateGajipekerjaKeluarByNoind($data,$noind){
+		$this->personalia->where('noind',$noind);
+		$this->personalia->update('"Presensi".treffgaji_keluar',$data);
+	}
+
+	public function getPekerjaKeluarByPeriodeKodeInduk($awal,$akhir,$kode){
+		$sql = "select a.*,b.seksi
+				from \"Presensi\".treffgaji_keluar a
+				left join hrd_khs.tseksi b 
+				on a.kodesie = b.kodesie
+				where left(a.noind,1) in ($kode)
+				and a.tanggal_keluar between '$awal' and '$akhir'
+				order by a.noind";
+		return $this->personalia->query($sql)->result_array();
 	}
 }
 ?>

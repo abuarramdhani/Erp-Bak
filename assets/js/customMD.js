@@ -3,38 +3,7 @@ var ajax2  = null;
 var ajax3  = null;
 var ajax4  = null;
 var ajax5  = null;
-
-function cetakDO(rn) {
-  $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/cekDObukan',
-    type: 'POST',
-    dataType: 'JSON',
-    data:{
-      rn : rn,
-    },
-    beforeSend: function() {
-      Swal.showLoading();
-    },
-    success: function(result) {
-      if (result) {
-        Swal.close()
-        dodo3();
-        window.open(baseurl+'MonitoringDO/PDF/'+rn)
-      }else {
-        Swal.fire({
-          position: 'middle',
-          type: 'warning',
-          title: 'Alamat belum lengkap!',
-          text: 'Silahkan hubungi Marketing!'
-        })
-      }
-
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-    }
-  })
-}
+var ajax6  = null;
 
 $(document).ready(function() {
 
@@ -197,7 +166,7 @@ function approveMD() {
                }
             })
         })
-      }else {
+      } else {
 
         if (personid === '') {
           Swal.fire({
@@ -223,7 +192,7 @@ function approveMD() {
         } else {
           if (pengecekan == 1) {
             $.ajax({
-              url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
+              url: baseurl + 'MonitoringDO/SettingDO/UpdateDO',
               type: 'POST',
               data: {
                 header_id: id,
@@ -241,7 +210,7 @@ function approveMD() {
                   Swal.fire({
                     position: 'middle',
                     type: 'success',
-                    title: 'Success inserting data',
+                    title: 'Success updating data',
                     showConfirmButton: false,
                     timer: 1500
                   }).then(function() {
@@ -425,12 +394,79 @@ function approveMD() {
 
 }
 
+
+
+// ------------------- SIAP ASSIGN -------------------
+
+function dodo0() {
+  if(ajax2 != null) ajax2.abort()
+  if(ajax4 != null) ajax4.abort()
+  if(ajax3 != null) ajax3.abort()
+  if(ajax5 != null) ajax5.abort()
+  if(ajax6 != null) ajax6.abort()
+ajax1 = $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
+    type: 'POST',
+    beforeSend: function() {
+      $('#loadingArea0').show();
+      $('div.table_area_DO_0').hide();
+    },
+    success: function(result) {
+      // console.log(result);
+      $('#loadingArea0').hide();
+      $('div.table_area_DO_0').show();
+      $('div.table_area_DO_0').html(result);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+     }
+  })
+}
+
+//punya dodo0
+function detail(rm, id_header, rowID, order_number, plat_number) {
+  var personid = $('tr[row-id="' + rowID + '"] select[name="person_id"]').val();
+
+  var cekapakahitemtelahmelakukanassign =  $('tr[row-id="' + rowID + '"] input[id="cekSudahAssign"]').val();
+  $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/GetDetail',
+    type: 'POST',
+    data: {
+      requests_number: rm,
+    },
+    beforeSend: function() {
+      $('#loadingArea').show();
+      $('div#table-area').hide();
+    },
+    success: function(result) {
+      $('#loadingArea').hide();
+      $('div#table-area').show();
+      $('div#table-area').html(result);
+
+      $('#user_mdo').val(personid);
+      $('#headerid_mdo').val(id_header);
+      $('#rm_mdo').val(rm);
+      $('#row_id').val(rowID);
+      $('#order_number').val(order_number);
+      $('#plat_number').val(plat_number);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+
+
+// ------------------- SUDAH ASSIGN -------------------
+
 function dodo1() {
   // dodo01.abort();
   if(ajax2 != null) ajax2.abort()
   if(ajax1 != null) ajax1.abort()
   if(ajax3 != null) ajax3.abort()
   if(ajax5 != null) ajax5.abort()
+  if(ajax6 != null) ajax6.abort()
   ajax2 =  $.ajax({
       url: baseurl + 'MonitoringDO/SettingDO/GetAssign',
       type: 'POST',
@@ -489,11 +525,15 @@ function detailAssign(rm, rowID) {
 }
 
 
+
+// ------------------- SUDAH ALLOCATE -------------------
+
 function dodo2() {
   if(ajax2 != null) ajax2.abort()
   if(ajax1 != null) ajax1.abort()
   if(ajax4 != null) ajax4.abort()
   if(ajax5 != null) ajax5.abort()
+  if(ajax6 != null) ajax6.abort()
 ajax3 =  $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetAllocate',
     type: 'POST',
@@ -556,12 +596,16 @@ function detailAllocate(rm, rowID) {
   })
 }
 
+
+
+// ------------------- SUDAH TRANSACT -------------------
+
 function dodo3() {
   if(ajax2 != null) ajax2.abort()
   if(ajax1 != null) ajax1.abort()
   if(ajax3 != null) ajax3.abort()
   if(ajax5 != null) ajax5.abort()
-
+  if(ajax6 != null) ajax6.abort()
   ajax4 = $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetTransact',
     type: 'POST',
@@ -597,6 +641,7 @@ function dodo3() {
   // })
 }
 
+
 function detailTransact(rm, rowID) {
   $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetTransactDetail',
@@ -619,6 +664,7 @@ function detailTransact(rm, rowID) {
     }
   })
 }
+
 
 function GetSudahCetakDetail(rm, rowID) {
   $.ajax({
@@ -644,11 +690,50 @@ function GetSudahCetakDetail(rm, rowID) {
 }
 
 
+function cetakDO(rn) {
+  $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/cekDObukan',
+    type: 'POST',
+    dataType: 'JSON',
+    data:{
+      rn : rn,
+    },
+    beforeSend: function() {
+      Swal.showLoading();
+    },
+    success: function(result) {
+      if (result) {
+        Swal.close()
+        // dodo3();
+        window.open(baseurl+'MonitoringDO/PDF/'+rn)
+      }else {
+        Swal.fire({
+          position: 'middle',
+          type: 'warning',
+          title: 'Alamat belum lengkap!',
+          text: 'Silahkan hubungi Marketing!'
+        })
+      }
+
+      dodo3();
+
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+
+
+// ------------------- SUDAH CETAK -------------------
+
 function dodo4() {
   if(ajax2 != null) ajax2.abort()
   if(ajax1 != null) ajax1.abort()
   if(ajax3 != null) ajax3.abort()
   if(ajax4 != null) ajax4.abort()
+  if(ajax6 != null) ajax6.abort()
 ajax5 = $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/GetSudahCetak',
     type: 'POST',
@@ -685,62 +770,50 @@ ajax5 = $.ajax({
 }
 
 
-function dodo0() {
+
+// ------------------- SIAP INTERORG -------------------
+
+function dodo5() {
   if(ajax2 != null) ajax2.abort()
-  if(ajax4 != null) ajax4.abort()
+  if(ajax1 != null) ajax1.abort()
   if(ajax3 != null) ajax3.abort()
+  if(ajax4 != null) ajax4.abort()
   if(ajax5 != null) ajax5.abort()
-ajax1 = $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
+ajax6 = $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/GetSiapInterorg',
     type: 'POST',
     beforeSend: function() {
-      $('#loadingArea0').show();
-      $('div.table_area_DO_0').hide();
+      $('#loadingArea5').show();
+      $('div.table_area_DO_5').hide();
     },
     success: function(result) {
       // console.log(result);
-      $('#loadingArea0').hide();
-      $('div.table_area_DO_0').show();
-      $('div.table_area_DO_0').html(result);
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-     }
-  })
-}
+      $('#loadingArea5').hide();
+      $('div.table_area_DO_5').show();
+      $('div.table_area_DO_5').html(result);
 
-//punya dodo0
-function detail(rm, id_header, rowID, order_number, plat_number) {
-  var personid = $('tr[row-id="' + rowID + '"] select[name="person_id"]').val();
-
-  var cekapakahitemtelahmelakukanassign =  $('tr[row-id="' + rowID + '"] input[id="cekSudahAssign"]').val();
-  $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/GetDetail',
-    type: 'POST',
-    data: {
-      requests_number: rm,
-    },
-    beforeSend: function() {
-      $('#loadingArea').show();
-      $('div#table-area').hide();
-    },
-    success: function(result) {
-      $('#loadingArea').hide();
-      $('div#table-area').show();
-      $('div#table-area').html(result);
-
-      $('#user_mdo').val(personid);
-      $('#headerid_mdo').val(id_header);
-      $('#rm_mdo').val(rm);
-      $('#row_id').val(rowID);
-      $('#order_number').val(order_number);
-      $('#plat_number').val(plat_number);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
     }
   })
+  // $.ajax({
+  //     url: baseurl + 'MonitoringDO/SettingDO/countDO',
+  //     type: 'POST',
+  //     dataType: 'json',
+  //     success: function(result) {
+  //       $('#jumlah0').html('(' + result[0] + ')');
+  //       $('#jumlah1').html('(' + result[1] + ')');
+  //       $('#jumlah2').html('(' + result[2] + ')');
+  //       $('#jumlah3').html('(' + result[3] + ')');
+  //       $('#jumlah4').html('(' + result[4] + ')');
+  //     },
+  //     error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //       console.error();
+  //     }
+  //   })
 }
+
 
 function insertManual() {
   var rm = $('#nomorDO').val();

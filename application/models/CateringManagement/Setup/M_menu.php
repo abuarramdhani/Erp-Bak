@@ -131,4 +131,48 @@ class M_menu extends CI_Model
         return $this->personalia->query($sql,array($menu_id))->result_array();
     }
 
+    public function getMenuForExport($awal_bulan, $akhir_bulan, $where_tahun, $where_bulan, $where_shift, $where_lokasi, $lokasi, $shift){
+        $where = $where_tahun." and ".$where_bulan;
+        if ($where_shift != "") {
+            $where .= " and ".$where_shift;
+        }
+        if ($where_lokasi != "") {
+            $where .= " and ".$where_lokasi;
+        }
+
+        $sql = "select coalesce(tbl2.menu_id,0) as menu_id,
+                    coalesce(tbl2.menu_detail_id,0) as menu_detail_id,
+                    coalesce(tbl2.tahun,extract(year from tbl1.tbl1)) as tahun,
+                    coalesce(tbl2.bulan,extract(month from tbl1.tbl1)) as bulan,
+                    coalesce(tbl2.tanggal,extract(day from tbl1.tbl1)) as tanggal,
+                    coalesce(tbl2.shift, $shift) as shift,
+                    coalesce(tbl2.lokasi, $lokasi) as lokasi,
+                    coalesce(tbl2.sayur,'') as sayur,
+                    coalesce(tbl2.lauk_utama,'') as lauk_utama,
+                    coalesce(tbl2.lauk_pendamping,'') as lauk_pendamping,
+                    coalesce(tbl2.buah,'') as buah
+                from generate_series(
+                    $awal_bulan, $akhir_bulan, interval '1 day'
+                ) as tbl1 
+                left join (
+                    select t1.menu_id,
+                        t2.menu_detail_id,
+                        t1.tahun,
+                        t1.bulan,
+                        t2.tanggal,
+                        t1.shift,
+                        t1.lokasi,
+                        t2.sayur,
+                        t2.lauk_utama,
+                        t2.lauk_pendamping,
+                        t2.buah
+                    from \"Catering\".t_menu t1 
+                    left join \"Catering\".t_menu_detail t2 
+                    on t1.menu_id = t2.menu_id
+                    where $where
+                ) as tbl2
+                on tbl1.tbl1 = concat(tbl2.tahun,'-',tbl2.bulan,'-',tbl2.tanggal)::date";
+        return $this->personalia->query($sql)->result_array();
+    }
+
 } ?>

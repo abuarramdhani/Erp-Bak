@@ -68,7 +68,7 @@
                 </div>
                 <div class="modal-body text-center">
                     <label>Status Order</label>
-                    <input oninput="this.value = this.value.toUpperCase()" placeholder="Masukan Status Order" class="form-control" name="status">
+                    <input placeholder="Masukan Status Order" class="form-control" name="status">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="modal-body text-center">
                     <label>Status Order</label>
-                    <input oninput="this.value = this.value.toUpperCase()" placeholder="Masukan Status Order" class="form-control" name="upjenisOrder">
+                    <input placeholder="Masukan Status Order" class="form-control" name="upjenisOrder">
                     <input hidden="" name="idJnsOrder">
                 </div>
                 <div class="modal-footer">

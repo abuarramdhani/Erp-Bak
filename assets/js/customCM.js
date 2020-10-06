@@ -2345,196 +2345,6 @@ $(document).ready(function(){
 	      "format":'yyyy-mm-dd'
 	});
 
-	$('#CateringHitungRefreshMakan').on('click',function(){
-		tanggal = $('#CateringHitungPesananTanggal').val();
-		shift 	= $('#CateringHitungPesananShift').val();
-		lokasi 	= $('#CateringHitungPesananLokasi').val();
-		if (tanggal && shift && lokasi) {
-			$('#CateringHitungLoading').show();
-			$.ajax({
-				method: 'POST',
-				url: baseurl + 'CateringManagement/HitungPesanan/cekPesanan',
-				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: "Makan"},
-				error: function(xhr,status,error){
-					$('#CateringHitungLoading').hide();
-					swal.fire({
-	                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
-	                    html: xhr['responseText'],
-	                    type: "error",
-	                    confirmButtonText: 'OK',
-	                    confirmButtonColor: '#d63031',
-	                })
-				},
-				success: function(data){
-					var obj = JSON.parse(data);
-					console.log(obj);
-					if (obj.statusKatering == "ada" && obj.statusJadwal == "ada" && obj.statusBatasDatang == "ada" && obj.statusAbsenShift == "ada") {
-						if (obj.statusPesanan == "ada") {
-							$('#CateringHitungLoading').hide();
-							swal.fire({
-								title: 'Apakah Anda Yakin Ingin Refresh Ulang ?',
-								text: "Data Mungkin Berubah Setelah Refresh",
-								type: 'warning',
-								showCancelButton: true,
-								confirmButtonColor: '#3085d6',
-								cancelButtonColor: '#d33',
-								confirmButtonText: 'Refresh',
-								cancelButtonText: 'Tidak'
-							}).then((result) => {
-							 	if (!result.value) {
-							    	Swal.fire(
-								     	'Refresh Telah Dibatalkan',
-								     	'Action Refresh Dibatalkan',
-								     	'error'
-							    	)
-							 	}else{
-							 		$('#CateringHitungLoading').show();
-							 		getFingerCatering('Makan');
-							 	}
-							})
-						}else{
-							getFingerCatering('Makan');
-						}
-					}else{
-						$('#CateringHitungLoading').hide();
-						if (obj.statusTanggal == "not ok") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Tanggal Yang Dipilih Harus Sama Dengan Tanggal Hari Ini',
-						     	'error'
-					    	)
-						}else if (obj.statusKatering == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Tidak ada Katering yang berstatus AKTIF',
-						     	'error'
-					    	)
-						}else if (obj.statusJadwal == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Belum ada Jadwal Katering',
-						     	'error'
-					    	)
-						}else if (obj.statusBatasDatang == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Batas Jam Datang Belum Di Atur',
-						     	'error'
-					    	)
-						}else if (obj.statusAbsenShift == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Data Absensi di shift yang anda pilih kosong',
-						     	'error'
-					    	)
-						}
-					}
-				}
-			});
-		}else{
-			Swal.fire(
-		     	'Pengisian Belum Lengkap',
-		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
-		     	'warning'
-	    	)
-		}
-	});
-
-	$('#CateringHitungRefreshSnack').on('click',function(){
-		tanggal = $('#CateringHitungPesananTanggal').val();
-		shift 	= $('#CateringHitungPesananShift').val();
-		lokasi 	= $('#CateringHitungPesananLokasi').val();
-		if (tanggal && shift && lokasi) {
-			$('#CateringHitungLoading').show();
-			$.ajax({
-				method: 'POST',
-				url: baseurl + 'CateringManagement/HitungPesanan/cekPesanan',
-				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: "Snack"},
-				error: function(xhr,status,error){
-					$('#CateringHitungLoading').hide();
-					swal.fire({
-	                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
-	                    html: xhr['responseText'],
-	                    type: "error",
-	                    confirmButtonText: 'OK',
-	                    confirmButtonColor: '#d63031',
-	                })
-				},
-				success: function(data){
-					var obj = JSON.parse(data);
-					console.log(obj);
-					if (obj.statusKatering == "ada" && obj.statusJadwal == "ada" && obj.statusBatasDatang == "ada" && obj.statusAbsenShift == "ada") {
-						if (obj.statusPesanan == "ada") {
-							$('#CateringHitungLoading').hide();
-							swal.fire({
-								title: 'Apakah Anda Yakin Ingin Refresh Ulang ?',
-								text: "Data Mungkin Berubah Setelah Refresh",
-								type: 'warning',
-								showCancelButton: true,
-								confirmButtonColor: '#3085d6',
-								cancelButtonColor: '#d33',
-								confirmButtonText: 'Refresh',
-								cancelButtonText: 'Tidak'
-							}).then((result) => {
-							 	if (!result.value) {
-							    	Swal.fire(
-								     	'Refresh Telah Dibatalkan',
-								     	'Action Refresh Dibatalkan',
-								     	'error'
-							    	)
-							 	}else{
-							 		$('#CateringHitungLoading').show();
-							 		getFingerCatering('Snack');
-							 	}
-							})
-						}else{
-							getFingerCatering('Snack');
-						}
-					}else{
-						$('#CateringHitungLoading').hide();
-						if (obj.statusTanggal == "not ok") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Tanggal Yang Dipilih Harus Sama Dengan Tanggal Hari Ini',
-						     	'error'
-					    	)
-						}else if (obj.statusKatering == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Tidak ada Katering yang berstatus AKTIF',
-						     	'error'
-					    	)
-						}else if (obj.statusJadwal == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Belum ada Jadwal Katering',
-						     	'error'
-					    	)
-						}else if (obj.statusBatasDatang == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Batas Jam Datang Belum Di Atur',
-						     	'error'
-					    	)
-						}else if (obj.statusAbsenShift == "tidak ada") {
-							Swal.fire(
-						     	'Refresh Telah Dihentikan',
-						     	'Data Absensi di shift yang anda pilih kosong',
-						     	'error'
-					    	)
-						}
-					}
-				}
-			});
-		}else{
-			Swal.fire(
-		     	'Pengisian Belum Lengkap',
-		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
-		     	'warning'
-	    	)
-		}
-	});
-
 	$('#CateringHitungPesananForm').on('submit',function(e){
 		tanggal = $('#CateringHitungPesananTanggal').val();
 		shift 	= $('#CateringHitungPesananShift').val();
@@ -2585,65 +2395,78 @@ $(document).ready(function(){
 	    	)
 		}
 	});
+
+	$('#CateringHitungRefreshMakan').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			cekPesananCatering(tanggal, shift, lokasi, "Makan", "NormalDate");
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
+
+	$('#CateringHitungRefreshMakanBackDate').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			cekPesananCatering(tanggal, shift, lokasi, "Makan", "BackDate");
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
+
+	$('#CateringHitungRefreshSnack').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			cekPesananCatering(tanggal, shift, lokasi, "Snack", "NormalDate");
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
+
+	$('#CateringHitungRefreshSnackBackDate').on('click',function(){
+		tanggal = $('#CateringHitungPesananTanggal').val();
+		shift 	= $('#CateringHitungPesananShift').val();
+		lokasi 	= $('#CateringHitungPesananLokasi').val();
+		if (tanggal && shift && lokasi) {
+			cekPesananCatering(tanggal, shift, lokasi, "Snack", "BackDate");
+		}else{
+			Swal.fire(
+		     	'Pengisian Belum Lengkap',
+		     	'Pastikan Tanggal, Shift, dan Lokasi Kerja Terisi !',
+		     	'warning'
+	    	)
+		}
+	});
 });
 
-function getFingerCatering(jenis){
-	tanggal = $('#CateringHitungPesananTanggal').val();
-	shift 	= $('#CateringHitungPesananShift').val();
-	lokasi 	= $('#CateringHitungPesananLokasi').val();
-
-	// $.ajax({
-	// 	method: 'POST',
-	// 	url: baseurl + 'CateringManagement/HitungPesanan/getFinger',
-	// 	data: {tanggal: tanggal, shift: shift, lokasi: lokasi},
-	// 	error: function(xhr,status,error){
-	// 		$('#CateringHitungLoading').hide();
-	// 		swal.fire({
- //                title: xhr['status'] + "(" + xhr['statusText'] + ")",
- //                html: xhr['responseText'],
- //                type: "error",
- //                confirmButtonText: 'OK',
- //                confirmButtonColor: '#d63031',
- //            })
-	// 	},
-	// 	success: function(data){
-	// 		$('#CateringHitungModal').find('.col-sm-12').html(data);
-	// 	}
-	// })
-	// $('#CateringHitungModal').modal('show');
-	// localStorage.setItem('refreshCatering',0);
-	// loopRefreshCatering = setInterval(
-	// 	function(){
-	// 		console.log(localStorage.getItem('refreshCatering'));
-	// 		if (localStorage.getItem('refreshCatering') > 0) {
-	// 			$('#CateringHitungModal').modal('hide');
-	// 			$('#CateringHitungLoading').show();
-	// 			clearInterval(loopRefreshCatering);
-	// 			if (localStorage.getItem('refreshCatering') == 2) {
-	// 				$('#CateringHitungLoading').hide();
-	// 				Swal.fire(
-	// 			     	'Verifikasi Finger Pekerja Gagal',
-	// 			     	'Action Refresh Dibatalkan',
-	// 			     	'error'
-	// 		    	)
-	// 			}
-	// 			if (localStorage.getItem('refreshCatering') == 1 && localStorage.getItem('refreshCateringTanggal') == tanggal && localStorage.getItem('refreshCateringShift') == shift && localStorage.getItem('refreshCateringLokasi') == lokasi ) {
-	// 				hitungCatering();
-	// 			}
-	// 		}
-	// 	},1000
-	// )
-
-	hitungCatering(jenis);
-}
-
-function hitungCatering(jenis){
-	tanggal = $('#CateringHitungPesananTanggal').val();
-	shift 	= $('#CateringHitungPesananShift').val();
-	lokasi 	= $('#CateringHitungPesananLokasi').val();
+function cekPesananCatering(tanggal, shift, lokasi, jenis, keterangan){
+	$('#CateringHitungLoading').show();
+	if (keterangan == "BackDate") {
+		link = baseurl + 'CateringManagement/HitungPesanan/cekPesananBackDate';
+	}else{
+		link = baseurl + 'CateringManagement/HitungPesanan/cekPesanan';
+	}
 	$.ajax({
 		method: 'POST',
-		url: baseurl + 'CateringManagement/HitungPesanan/prosesHitung',
+		url: link,
 		data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: jenis},
 		error: function(xhr,status,error){
 			$('#CateringHitungLoading').hide();
@@ -2656,18 +2479,231 @@ function hitungCatering(jenis){
             })
 		},
 		success: function(data){
-			$('#CateringHitungLoading').hide();
-			// Swal.fire(
-		 //     	'Verifikasi Finger Pekerja Berhasil',
-		 //     	'Refresh Pesanan Selesai Dijalankan',
-		 //     	'success'
-			// )
+			var obj = JSON.parse(data);
+			console.log(obj);
+			if (obj.statusKatering == "ada" && obj.statusJadwal == "ada" && obj.statusBatasDatang == "ada" && obj.statusAbsenShift == "ada" && obj.statusUrutanJadwal == 'ada') {
+				if (obj.statusPesanan == "ada") {
+					$('#CateringHitungLoading').hide();
+					swal.fire({
+						title: 'Apakah Anda Yakin Ingin Refresh Ulang ?',
+						text: "Data Mungkin Berubah Setelah Refresh",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Refresh',
+						cancelButtonText: 'Tidak'
+					}).then((result) => {
+					 	if (!result.value) {
+					    	Swal.fire(
+						     	'Refresh Telah Dibatalkan',
+						     	'Action Refresh Dibatalkan',
+						     	'error'
+					    	)
+					 	}else{
+					 		if (keterangan == "BackDate") {
+						 		Swal.fire({
+						 			title: "Masukkan Password ERP",
+						 			input: 'password',
+						 			inputPlaceholder: 'Masukkan Password ERP',
+						 			inputAttributes: {
+						 				autocorrect: 'off',
+						 				autocapitalize: 'off'
+						 			},
+									showCancelButton: true,
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Refresh',
+									cancelButtonText: 'Tidak'
+						 		}).then((result) => {
+						 			if (!result.value) {
+						 				Swal.fire(
+									     	'Refresh Telah Dibatalkan',
+									     	'Action Refresh Dibatalkan',
+									     	'error'
+								    	)
+						 			}else{
+						 				var password = result.value;
+						 				Swal.fire({
+								 			title: "Masukkan Alasan Anda Melakukan Refresh BackDate",
+								 			input: 'textarea',
+								 			inputPlaceholder: 'Masukkan Alasan',
+								 			inputAttributes: {
+								 				autocorrect: 'off',
+								 				autocapitalize: 'off'
+								 			},
+											showCancelButton: true,
+											confirmButtonColor: '#3085d6',
+											cancelButtonColor: '#d33',
+											confirmButtonText: 'Refresh',
+											cancelButtonText: 'Tidak'
+								 		}).then((result) => {
+								 			if (!result.value) {
+								 				Swal.fire(
+											     	'Refresh Telah Dibatalkan',
+											     	'Action Refresh Dibatalkan',
+											     	'error'
+										    	)
+								 			}else{
+								 				var alasan = result.value;
+										 		$('#CateringHitungLoading').show();
+										 		hitungCatering(jenis, password, alasan);
+								 				
+								 			}
+								 		})
+						 			}
+						 		})
+					 		}else{
+					 			$('#CateringHitungLoading').show();
+								hitungCatering(jenis, "-", "-");
+					 		}
+					 	}
+					})
+				}else{
+					if (keterangan == "BackDate") {
+						$('#CateringHitungLoading').hide();
+				 		Swal.fire({
+				 			title: "Masukkan Password ERP",
+				 			input: 'password',
+				 			inputPlaceholder: 'Masukkan Password ERP',
+				 			inputAttributes: {
+				 				autocorrect: 'off',
+				 				autocapitalize: 'off'
+				 			},
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Refresh',
+							cancelButtonText: 'Tidak'
+				 		}).then((result) => {
+				 			if (!result.value) {
+				 				Swal.fire(
+							     	'Refresh Telah Dibatalkan',
+							     	'Action Refresh Dibatalkan',
+							     	'error'
+						    	)
+				 			}else{
+				 				var password = result.value;
+				 				Swal.fire({
+						 			title: "Masukkan Alasan Anda Melakukan Refresh BackDate",
+						 			input: 'textarea',
+						 			inputPlaceholder: 'Masukkan Alasan',
+						 			inputAttributes: {
+						 				autocorrect: 'off',
+						 				autocapitalize: 'off'
+						 			},
+									showCancelButton: true,
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Refresh',
+									cancelButtonText: 'Tidak'
+						 		}).then((result) => {
+						 			if (!result.value) {
+						 				Swal.fire(
+									     	'Refresh Telah Dibatalkan',
+									     	'Action Refresh Dibatalkan',
+									     	'error'
+								    	)
+						 			}else{
+						 				var alasan = result.value;
+								 		$('#CateringHitungLoading').show();
+								 		hitungCatering(jenis,password,alasan);
+						 				
+						 			}
+						 		})
+				 			}
+				 		})
+			 		}else{
+						hitungCatering(jenis,"-","-");
+			 		}
+				}
+			}else{
+				$('#CateringHitungLoading').hide();
+				if (obj.statusTanggal == "not ok") {
+					if (keterangan == "BackDate") {
+						Swal.fire(
+					     	'Refresh Telah Dihentikan',
+					     	'Tanggal Yang Dipilih Harus Lebih Kecil Dari Tanggal Hari Ini dan Maksimal 7 Hari yang Lalu',
+					     	'error'
+				    	)
+					}else{
+						Swal.fire(
+					     	'Refresh Telah Dihentikan',
+					     	'Tanggal Yang Dipilih Harus Sama Dengan Tanggal Hari Ini',
+					     	'error'
+				    	)
+					}
+				}else if (obj.statusKatering == "tidak ada") {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Tidak ada Katering yang berstatus AKTIF',
+				     	'error'
+			    	)
+				}else if (obj.statusJadwal == "tidak ada") {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Belum ada Jadwal Katering',
+				     	'error'
+			    	)
+				}else if (obj.statusBatasDatang == "tidak ada") {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Batas Jam Datang Belum Di Atur',
+				     	'error'
+			    	)
+				}else if (obj.statusAbsenShift == "tidak ada") {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Data Absensi di shift yang anda pilih kosong',
+				     	'error'
+			    	)
+				}else if (obj.statusUrutanJadwal == 'tidak ada') {
+					Swal.fire(
+				     	'Refresh Telah Dihentikan',
+				     	'Data Katering di shift yang anda pilih kosong',
+				     	'error'
+			    	)
+				}
+			}
+		}
+	});
+}
 
-			Swal.fire(
-		     	'Berhasil',
-		     	'Refresh Pesanan Selesai Dijalankan',
-		     	'success'
-			)
+function hitungCatering(jenis, password, alasan){
+	tanggal = $('#CateringHitungPesananTanggal').val();
+	shift 	= $('#CateringHitungPesananShift').val();
+	lokasi 	= $('#CateringHitungPesananLokasi').val();
+	$.ajax({
+		method: 'POST',
+		url: baseurl + 'CateringManagement/HitungPesanan/prosesHitung',
+		data: {tanggal: tanggal, shift: shift, lokasi: lokasi, jenis: jenis, password: password, alasan: alasan},
+		error: function(xhr,status,error){
+			$('#CateringHitungLoading').hide();
+			swal.fire({
+                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                html: xhr['responseText'],
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+		},
+		success: function(data){
+			$('#CateringHitungLoading').hide();
+			if (data == "selesai") {
+				Swal.fire(
+			     	'Berhasil',
+			     	'Refresh Pesanan Selesai Dijalankan',
+			     	'success'
+				)
+			}else{
+				swal.fire({
+	                title: "Proses Refresh Gagal !!",
+	                html: data,
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			}
 		}
 	})	
 }
@@ -2994,7 +3030,8 @@ $(document).on('ready', function(){
             data: function(params) {
                 return {
                     term: params.term,
-                    tempat_makan: $('#slc-CM-Tambahan-TempatMakan').val()
+                    tempat_makan: $('#slc-CM-Tambahan-TempatMakan').val(),
+                    kategori: $('#slc-CM-Tambahan-Kategori').val()
                 }
             },
             processResults: function(data) {
@@ -3044,6 +3081,8 @@ $(document).on('ready', function(){
 		$('#CateringTambahanLoading').show();
 		var penerima_noind = $(this).val();
 		var penerima_nama = $(this).text();
+		var tanggal = $('#txt-CM-Tambahan-Tanggal').val();
+		var shift = $('#slc-CM-Tambahan-Shift').val();
 		if (penerima_noind) {
 			penerima_nama = penerima_nama.replace(penerima_noind + " - ", "");
 			var penerima_identik = 0;
@@ -3055,24 +3094,77 @@ $(document).on('ready', function(){
 					penerima_identik += 1;
 				}
 			}
+			var tambah = 0; 
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Pesanan/Tambahan/getTambahanPengurangan',
+				data: {tanggal: tanggal,shift: shift, noind: penerima_noind},
+				error: function(xhr,status,error){
+					$('#CateringTambahanLoading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					if (obj.status == "ada") {
+						$('#CateringTambahanLoading').hide();
+						swal.fire({
+			                title: "Terdapat Tambah/Kurang sebagai berikut. Apakah Anda yakin Ingin Menambahkan " + penerima_noind + ' ' + penerima_nama +" sebagai Penerima ?",
+			                html: obj.data,
+			                type: "warning",
+			            	showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Tambah',
+							cancelButtonText: 'Batal'
+			            }).then((result) => {
+							if (result.value) {
+								$('#CateringTambahanLoading').show();
+								tambah = 1;
+								tambahPenerimaCMTambahan(penerima_identik, penerima_noind, penerima_nama, tambah)
+							}else{
+								tambah = 0;
+								tambahPenerimaCMTambahan(penerima_identik, penerima_noind, penerima_nama, tambah)
+							}
+						})		
+					}else{
+						tambah = 1;
+						tambahPenerimaCMTambahan(penerima_identik, penerima_noind, penerima_nama, tambah)
+					}
+				}
+			})	
+		}
+	});
 
-			if (penerima_identik == 0) {
-				tblCMTambahanPenerima.row.add([
-					penerima_noind + "<input type='hidden' name='txt-CM-Tambahan-Penerima-Noind[]' value='" + penerima_noind + "'>",
-					penerima_nama,
-					'<button type="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span></button>'
-				]).draw(false);
-			}else{
+	function tambahPenerimaCMTambahan(penerima_identik, penerima_noind, penerima_nama, tambah){
+		if (penerima_identik == 0 && tambah == 1) {
+			tblCMTambahanPenerima.row.add([
+				penerima_noind + "<input type='hidden' name='txt-CM-Tambahan-Penerima-Noind[]' value='" + penerima_noind + "'>",
+				penerima_nama,
+				'<button type="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span></button>'
+			]).draw(false);
+		}else{
+			if (penerima_identik > 0) {
 				swal.fire('Peringatan!',
 					'Pekerja ' + penerima_noind + ' ' + penerima_nama + ' Sudah Ada di tabel penerima!',
 					'warning'
 				)
 			}
-			
-			$('#slc-CM-Tambahan-Penerima').html("").change();
+			if(tambah == 0){
+				swal.fire('Peringatan!',
+					'tambah Pekerja ' + penerima_noind + ' ' + penerima_nama + ' dibatalkan!',
+					'warning'
+				)
+			}
 		}
+		$('#slc-CM-Tambahan-Penerima').html("").change();
 		$('#CateringTambahanLoading').hide();
-	});
+	}
 
 	$('#tbl-CM-Tambahan-Penerima-Table').on('click','tbody tr button', function(){
 		var statusDisable = $('#slc-CM-Tambahan-Penerima').attr('disabled');
@@ -3084,6 +3176,7 @@ $(document).on('ready', function(){
 	});
 
 	$('#txt-CM-Tambahan-Tanggal').on('change', function(){
+		document.title = 'Pesanan Tambahan ' + $(this).val();
 		$('#CateringTambahanLoading').show();
 		$('#slc-CM-Tambahan-Kategori').val("").change();
 		$('#slc-CM-Tambahan-Shift').val("").change();
@@ -3140,7 +3233,8 @@ $(document).on('ready', function(){
 							tambahan.fb_kategori,
 							tambahan.fn_jumlah_pesanan,
 							tambahan.fs_pemohon,
-							tambahan.fs_keterangan
+							tambahan.fs_keterangan,
+							tambahan.list_pekerja
 						]).draw(false);
 					})
 					tblCMTambahan.columns.adjust().draw();
@@ -3359,6 +3453,7 @@ $(document).on('ready', function(){
 										url: baseurl + 'CateringManagement/Pesanan/Tambahan/getListTambahan',
 										data: {tanggal: tanggal},
 										error: function(xhr,status,error){
+											$('#CateringTambahanLoading').hide();
 											swal.fire({
 								                title: xhr['status'] + "(" + xhr['statusText'] + ")",
 								                html: xhr['responseText'],
@@ -3378,19 +3473,22 @@ $(document).on('ready', function(){
 													tambahan.fb_kategori,
 													tambahan.fn_jumlah_pesanan,
 													tambahan.fs_pemohon,
-													tambahan.fs_keterangan
+													tambahan.fs_keterangan,
+													tambahan.list_pekerja
 												]).draw(false);
 											})
 											tblCMTambahan.columns.adjust().draw();
 										}
 									})
 								}
+								$('#CateringTambahanLoading').hide();
 								Swal.fire(
 									'Disimpan!',
 									'Data Sudah Disimpan.',
 									'success'
 								)
 							}else{
+								$('#CateringTambahanLoading').hide();
 								Swal.fire(
 									'Gagal Disimpan!',
 									'Data Gagal Disimpan.',
@@ -3400,6 +3498,7 @@ $(document).on('ready', function(){
 						}
 					})
 			}else{
+				$('#CateringTambahanLoading').hide();
 				swal.fire('Peringatan!',
 					'Pastikan Form Terisi Semua !',
 					'warning'
@@ -3539,7 +3638,8 @@ $(document).on('ready', function(){
 													tambahan.fb_kategori,
 													tambahan.fn_jumlah_pesanan,
 													tambahan.fs_pemohon,
-													tambahan.fs_keterangan
+													tambahan.fs_keterangan,
+													tambahan.list_pekerja
 												]).draw(false);
 											})
 											tblCMTambahan.columns.adjust().draw();
@@ -3738,6 +3838,8 @@ $(document).on('ready', function(){
 		$('#CateringPenguranganLoading').show();
 		var penerima_noind = $(this).val();
 		var penerima_nama = $(this).text();
+		var tanggal = $('#txt-CM-Pengurangan-Tanggal').val();
+		var shift = $('#slc-CM-Pengurangan-Shift').val();
 		if (penerima_noind) {
 			penerima_nama = penerima_nama.replace(penerima_noind + " - ", "");
 
@@ -3750,26 +3852,81 @@ $(document).on('ready', function(){
 					penerima_identik += 1;
 				}
 			}
-
-			if (penerima_identik == 0) {
-				tblCMPenguranganPenerima.row.add([
-					penerima_noind + "<input type='hidden' name='txt-CM-Pengurangan-Penerima-Noind[]' value='" + penerima_noind + "'>",
-					penerima_nama,
-					'<button type="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span></button>'
-				]).draw(false);
-			}else{
-				swal.fire('Peringatan!',
-					'Pekerja ' + penerima_noind + ' ' + penerima_nama + ' Sudah Ada di tabel penerima!',
-					'warning'
-				)
-			}		
+			var tambah = 0; 
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Pesanan/Pengurangan/getTambahanPengurangan',
+				data: {tanggal: tanggal,shift: shift, noind: penerima_noind},
+				error: function(xhr,status,error){
+					$('#CateringPenguranganLoading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					obj = JSON.parse(data);
+					if (obj.status == "ada") {
+						$('#CateringPenguranganLoading').hide();
+						swal.fire({
+			                title: "Terdapat Tambah/Kurang sebagai berikut. Apakah Anda yakin Ingin Menambahkan " + penerima_noind + ' ' + penerima_nama +" sebagai Penerima ?",
+			                html: obj.data,
+			                type: "warning",
+			            	showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Tambah',
+							cancelButtonText: 'Batal'
+			            }).then((result) => {
+							if (result.value) {
+								$('#CateringPenguranganLoading').show();
+								tambah = 1;
+								tambahPenerimaCMPengurangan(penerima_identik, penerima_noind, penerima_nama, tambah)
+							}else{
+								tambah = 0;
+								tambahPenerimaCMPengurangan(penerima_identik, penerima_noind, penerima_nama, tambah)
+							}
+						})		
+					}else{
+						tambah = 1;
+						tambahPenerimaCMPengurangan(penerima_identik, penerima_noind, penerima_nama, tambah)
+					}
+				}
+			})	
 			
-			$('#slc-CM-Pengurangan-Penerima').html("").change();
-			$('#CateringPenguranganLoading').hide();
 		}else{
 			$('#CateringPenguranganLoading').hide();
 		}
 	});
+
+	function tambahPenerimaCMPengurangan(penerima_identik, penerima_noind, penerima_nama, tambah){
+		if (penerima_identik == 0 && tambah == 1) {
+			tblCMPenguranganPenerima.row.add([
+				penerima_noind + "<input type='hidden' name='txt-CM-Pengurangan-Penerima-Noind[]' value='" + penerima_noind + "'>",
+				penerima_nama,
+				'<button type="button" class="btn btn-xs btn-danger"><span class="fa fa-trash"></span></button>'
+			]).draw(false);
+		}else{
+			if (penerima_identik > 0) {
+				swal.fire('Peringatan!',
+					'Pekerja ' + penerima_noind + ' ' + penerima_nama + ' Sudah Ada di tabel penerima!',
+					'warning'
+				)
+			}
+			if(tambah == 0){
+				swal.fire('Peringatan!',
+					'tambah Pekerja ' + penerima_noind + ' ' + penerima_nama + ' dibatalkan!',
+					'warning'
+				)
+			}
+		}		
+		
+		$('#slc-CM-Pengurangan-Penerima').html("").change();
+		$('#CateringPenguranganLoading').hide();
+	}
 
 	$('#tbl-CM-Pengurangan-Penerima-Table').on('click','tbody tr button', function(){
 		var statusDisable = $('#slc-CM-Pengurangan-Penerima').attr('disabled');
@@ -3780,6 +3937,7 @@ $(document).on('ready', function(){
 	});
 
 	$('#txt-CM-Pengurangan-Tanggal').on('change', function(){
+		document.title = 'Pengurangan Pesanan ' + $(this).val();
 		$('#CateringPenguranganLoading').show();
 		$('#slc-CM-Pengurangan-Kategori').val("").change();
 		$('#slc-CM-Pengurangan-Shift').val("").change();
@@ -3831,7 +3989,8 @@ $(document).on('ready', function(){
 							pengurangan.shift,
 							pengurangan.fb_kategori,
 							pengurangan.fs_tempat_makanpg,
-							pengurangan.fn_jml_tdkpesan
+							pengurangan.fn_jml_tdkpesan,
+							pengurangan.list_pekerja
 						]).draw(false);
 					})
 					$('#CateringPenguranganLoading').hide();
@@ -3885,6 +4044,8 @@ $(document).on('ready', function(){
 						$('#slc-CM-Pengurangan-Kategori').val(obj.pengurangan.fb_kategori).change();
 						$('#slc-CM-Pengurangan-Shift').val(obj.pengurangan.fs_kd_shift).change();
 						$('#slc-CM-Pengurangan-TempatMakan').val(obj.pengurangan.fs_tempat_makan).change();
+						$('#slc-CM-Pengurangan-TempatMakanBaru').html("<option value='" + obj.pengurangan.fs_tempat_makanpg + "' >" + obj.pengurangan.fs_tempat_makanpg + " - " + obj.pengurangan.lokasipg + "</option>");
+						$('#slc-CM-Pengurangan-TempatMakanBaru').val(obj.pengurangan.fs_tempat_makanpg).change();
 
 						tblCMPenguranganPenerima.clear().draw();
 						for (var i = 0; i < obj.pengurangan_detail.pengurangan_detail.length; i++) {
@@ -4048,7 +4209,8 @@ $(document).on('ready', function(){
 													pengurangan.shift,
 													pengurangan.fb_kategori,
 													pengurangan.fs_tempat_makanpg,
-													pengurangan.fn_jml_tdkpesan
+													pengurangan.fn_jml_tdkpesan,
+													pengurangan.list_pekerja
 												]).draw(false);
 											})
 											tblCMPengurangan.columns.adjust().draw();
@@ -4195,7 +4357,8 @@ $(document).on('ready', function(){
 													pengurangan.shift,
 													pengurangan.fb_kategori,
 													pengurangan.fs_tempat_makanpg,
-													pengurangan.fn_jml_tdkpesan
+													pengurangan.fn_jml_tdkpesan,
+													pengurangan.list_pekerja
 												]).draw(false);
 											})
 											tblCMPengurangan.columns.adjust().draw();
@@ -4264,6 +4427,17 @@ $(document).ready(function(){
         "buttons" : [
             'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
         ],
+        "rowCallback": function( row, data, index ){
+        	var ket = $(row).find('td:eq(8)').text();
+        	
+        	if (ket.substring(0,11) == "PENGURANGAN") {
+        		$(row).css('color','red')
+        	}else if (ket.substring(0,8) == "TAMBAHAN") {
+        		$(row).css('color','green')
+        	}else{
+        		$(row).css('color','black')
+        	}
+        }
 	});
 
 	$('#txt-CM-PekerjaTerhitungCatering-Tanggal').datepicker({
@@ -4276,7 +4450,8 @@ $(document).ready(function(){
 	$('#btn-CM-PekerjaTerhitungCatering-Lihat').on('click', function(){
 		tanggal = $('#txt-CM-PekerjaTerhitungCatering-Tanggal').val();
 		shift = $('#slc-CM-PekerjaTerhitungCatering-Shift').val();
-		lokasi = $('#slc-CM-PekerjaTerhitungCatering-Lokasi').val();
+		jenis = $('#slc-CM-PekerjaTerhitungCatering-Jenis').val();
+		lokasi = $('#slc-CM-PekerjaTerhitungCatering-TempatMakan').find('option:selected').attr('data-lokasi');
 		tempat_makan = $('#slc-CM-PekerjaTerhitungCatering-TempatMakan').val();
 		$('#ldg-CM-PekerjaTerhitungKatering-Loading').show();
 
@@ -4284,7 +4459,7 @@ $(document).ready(function(){
 			$.ajax({
 				method: 'GET',
 				url: baseurl + 'CateringManagement/Extra/PekerjaTerhitungCatering/getList',
-				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, tempat_makan: tempat_makan},
+				data: {tanggal: tanggal, shift: shift, lokasi: lokasi, tempat_makan: tempat_makan,jenis: jenis},
 				error: function(xhr,status,error){
 					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
 					swal.fire({
@@ -4296,6 +4471,7 @@ $(document).ready(function(){
 		            })
 				},
 				success: function(data){
+					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
 					obj = JSON.parse(data);
 					tblCMPekerjaTerhitungKatering.clear().draw();
 					obj.forEach(function(daftar, index){
@@ -4311,7 +4487,6 @@ $(document).ready(function(){
 							daftar.status
 						]).draw(false);
 					})
-					$('#ldg-CM-PekerjaTerhitungKatering-Loading').hide();
 					tblCMPekerjaTerhitungKatering.columns.adjust().draw();
 				}
 			})
@@ -4512,10 +4687,12 @@ $(document).ready(function(){
 						daftar.izin_id ,
 						daftar.noind ,
 						daftar.nama,
+						daftar.tempat_makan,
 						daftar.tujuan,
 						daftar.keterangan,
 						daftar.jenis_dinas,
-						daftar.diproses
+						daftar.diproses_tambah,
+						daftar.diproses_kurang
 					]).draw(false);
 				})
 
@@ -4545,16 +4722,9 @@ $(document).ready(function(){
 					menitKatering = waktuCatering.getMinutes();
 					detikKatering = waktuCatering.getSeconds();
 					// console.log(localStorage.getItem("lastMinutes"))
-					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) <= 45 ) ) {
+					if ( parseInt(jamKatering) == 8 || (parseInt(jamKatering) == 9 && parseInt(menitKatering) == 0 ) ) {
 						if ( parseInt(menitKatering)%5 == 0 && localStorage.getItem("lastMinutesID") != parseInt(menitKatering) ) {
 							localStorage.setItem("lastMinutesID", parseInt(menitKatering))
-							// swal.fire({
-				   //              title: "Notifikasi Izin Dinas Pusat Tuksono Mlati",
-				   //              html: "Terdapat XX yang belum terproses, <a href='" + baseurl + "CateringManagement/Extra/IzinDinasPTM'>klik disini </a> untuk masuk ke menu catering izin dinas tuksono mlati",
-				   //              type: "warning",
-				   //              confirmButtonText: 'Close',
-				   //              confirmButtonColor: '#d63031',
-				   //          })
 							$.ajax({
 								method: 'GET',
 								url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/getNotifikasiIzinDinasPTM',
@@ -5035,6 +5205,14 @@ $(document).ready(function(){
 	});
 
 	$('#txt-CM-Menu-BulanTahun').datepicker({
+	    "autoclose": true,
+	    "todayHiglight": true,
+	    "format":'MM yyyy',
+	    "viewMode":'months',
+	    "minViewMode":'months'
+	});
+
+	$('#txt-CM-Menu-Export-BulanTahun').datepicker({
 	    "autoclose": true,
 	    "todayHiglight": true,
 	    "format":'MM yyyy',
@@ -6141,3 +6319,770 @@ $(document).ready(function(){
 	})
 })
 // end Pekerja Tidak Makan
+
+// start Prediksi Snack
+$(document).ready(function(){
+	$('#ldg-CM-PrediksiSnack-Loading').hide();
+	$('#txt-CM-PrediksiSnack-Tanggal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	var tblCMPrediksiSnack = $('#tbl-CM-PrediksiSnack-Table').DataTable({
+		"lengthMenu": [
+            [ -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+        	{ 
+        		extend: 'copyHtml5', 
+        		footer: true 
+        	},
+            { 
+            	extend: 'excelHtml5', 
+            	footer: true 
+            },
+            { 
+            	extend: 'csvHtml5', 
+            	footer: true 
+            },
+            { 
+            	extend: 'pdfHtml5', 
+            	footer: true
+			}, 
+            'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			},
+			{
+			    "targets": 2,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 3,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 4,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 5,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 6,
+			    "className": "text-right"
+			},
+			{
+			    "targets": 7,
+			    "className": "text-right"
+			}
+		],
+	})
+
+	var tblCMPrediksiSnackList = $('#tbl-CM-PrediksiSnack-List').DataTable({
+		"lengthMenu": [
+            [ -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        'columnDefs': [
+			{
+			    "targets": 0,
+			    "className": "text-center"
+			}
+		],
+	})
+
+	$('#btn-CM-PrediksiSnack-Prediksi').on('click', function(){
+		tanggal = $('#txt-CM-PrediksiSnack-Tanggal').val();
+		shift = $('#slc-CM-PrediksiSnack-Shift').val();
+		lokasi = $('#slc-CM-PrediksiSnack-Lokasi').val();
+
+		if (tanggal && shift && lokasi) {
+			$('#ldg-CM-PrediksiSnack-Loading').show();
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Pesanan/PrediksiSnack/Proses',
+				data: {tanggal: tanggal,shift: shift,lokasi: lokasi},
+				error: function(xhr,status,error){
+					$('#ldg-CM-PrediksiSnack-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-PrediksiSnack-Loading').hide();
+					obj = JSON.parse(data);
+					console.log(obj.status);
+					if (obj.status && obj.status == 'sukses') {
+						Swal.fire({
+							title: 'Prediksi selesai',
+							text: "Apakah Anda Ingin Melihat Hasil Prediksi ?",
+							type: 'success',
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							confirmButtonText: 'Ya',
+							cancelButtonText: 'Tidak'
+						}).then((result) => {
+						  	if (result.value) {
+						  		window.location.href = baseurl+"CateringManagement/Pesanan/PrediksiSnack/lihat/"+obj.text;
+						  	}
+						});
+					}else{
+						swal.fire({
+			                title: "Output Tidak Sesuai...",
+			                html: data,
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					}
+				}
+			})
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Semua Data Terisi',
+				'warning'
+			)
+		}
+	})
+
+	$('#btn-CM-PrediksiSnack-List').on('click', function(){
+		tanggal = $('#txt-CM-PrediksiSnack-Tanggal').val();
+		shift = $('#slc-CM-PrediksiSnack-Shift').val();
+		lokasi = $('#slc-CM-PrediksiSnack-Lokasi').val();
+		if (tanggal && shift && lokasi) {
+			window.location.href = baseurl+"CateringManagement/Pesanan/PrediksiSnack/daftar/"+tanggal+"_"+shift+"_"+lokasi;
+		}
+	})
+})
+// end Prediksi Snack
+
+// start edit tempat makan
+$(document).ready(function(){
+
+	var tblCMEditTempatMakanPerPekerja = $('#tbl-CM-EditTempatMakan-PerPekerja').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ]
+	});
+
+	$('.slc-CM-EditTempatMakan-Departemen').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'departemen',
+					kodesie: '0',
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Bidang').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'bidang',
+					kodesie: $(this).closest('form').find('.slc-CM-EditTempatMakan-Departemen').val(),
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Unit').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'unit',
+					kodesie: $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val(),
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Seksi').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'seksi',
+					kodesie: $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val(),
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Pekerjaan').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getSeksi',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					level: 'pekerjaan',
+					kodesie: $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val(),
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kodesie,
+							text: item.nama
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-TempatMakanLama').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getTempatMakan',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					stat: 'lama',
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.fs_tempat_makan,
+							text: item.fs_tempat_makan
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-TempatMakanBaru').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getTempatMakan',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					stat: 'baru',
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.fs_tempat_makan,
+							text: item.fs_tempat_makan
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-TempatMakanPekerja').select2({
+		minimumInputLength: 0,
+		dropdownParent: $('#mdl-CM-EditTempatMakan-PerPekerja'),
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getTempatMakan',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					stat: 'baru',
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.fs_tempat_makan,
+							text: item.fs_tempat_makan
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-LokasiKerja').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getLokasiKerja',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kode_lokasi,
+							text: item.kode_lokasi + ' - ' + item.lokasi_kerja
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-KodeInduk').select2({
+		minimumInputLength: 0,
+		allowClear: true,
+		ajax: {
+			url: baseurl+'CateringManagement/Extra/EditTempatMakan/getKodeInduk',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					term: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.fs_noind,
+							text: item.fs_noind + ' - ' + item.fs_ket
+						};
+					})
+
+				};
+			},
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Departemen').on('change', function(){
+		var txtEditTempatMakanSelected = $(this).find('option:selected').text();
+
+		if (txtEditTempatMakanSelected.substr(0,5) == 'SEMUA') {
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val('').change();
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val('').change();
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val('').change();
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val('').change();
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}else{
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled', false);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Bidang').on('change', function(){
+		var txtEditTempatMakanSelected = $(this).find('option:selected').text();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val('').change();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val('').change();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val('').change();
+		
+		if (txtEditTempatMakanSelected.substr(0,5) == 'SEMUA') {
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}else{
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled', false);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Unit').on('change', function(){
+		var txtEditTempatMakanSelected = $(this).find('option:selected').text();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val('').change();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val('').change();
+		
+		if (txtEditTempatMakanSelected.substr(0,5) == 'SEMUA') {
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', true);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}else{
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled', false);
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}
+	})
+
+	$('.slc-CM-EditTempatMakan-Seksi').on('change', function(){
+		var txtEditTempatMakanSelected = $(this).find('option:selected').text();
+		$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val('').change();
+		
+		if (txtEditTempatMakanSelected.substr(0,5) == 'SEMUA') {
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', true);
+		}else{
+			$(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled', false);
+		}
+	})
+
+	$('#btn-CM-EditTempatMakan-CariPekerja').on('click', function(){
+		var dept = $(this).closest('form').find('.slc-CM-EditTempatMakan-Departemen').val();
+		var bidang = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val();
+		var unit = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val();
+		var seksi = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val();
+		var pekerjaan = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val();
+
+		var bidang_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled');
+		var unit_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled');
+		var seksi_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled');
+		var pekerjaan_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled');
+
+		var status = "0";
+
+		if (dept) {
+			if ((bidang_dis == undefined && bidang) || bidang_dis == "disabled") {
+				if ((unit_dis == undefined && unit) || unit_dis == "disabled") {
+					if ((seksi_dis == undefined && seksi) || seksi_dis == "disabled") {
+						if ((pekerjaan_dis == undefined && pekerjaan) || pekerjaan_dis == "disabled") {
+							status = "1";
+						}else{
+							status = "0";
+						}
+					}else{
+						status = "0";
+					}
+				}else{
+					status = "0";
+				}
+			}else{
+				status = "0";
+			}
+		}else{
+			status = "0";
+		}
+
+		if (status == "1") {
+			$('#ldg-CM-EditTempatMakan-Loading').show();
+			var kodesie = "";
+			if (pekerjaan) {
+				kodesie = pekerjaan;
+			}else if (seksi) {
+				kodesie = seksi;
+			}else if (unit) {
+				kodesie = unit;
+			}else if (bidang) {
+				kodesie = bidang;
+			}else if (dept) {
+				kodesie = dept;
+			}
+			$('#txt-CM-EditTempatMakan-Kodesie').val(kodesie);
+			$.ajax({
+				method: 'GET',
+				url: baseurl + 'CateringManagement/Extra/EditTempatMakan/getPekerja',
+				data: {kodesie: kodesie},
+				error: function(xhr,status,error){
+					$('#ldg-CM-EditTempatMakan-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-EditTempatMakan-Loading').hide();
+					obj = JSON.parse(data);
+					tblCMEditTempatMakanPerPekerja.clear().draw();
+					obj.forEach(function(daftar, index){
+						tblCMEditTempatMakanPerPekerja.row.add([
+							(index + 1),
+							daftar.noind,
+							daftar.nama,
+							daftar.tempat_makan,
+							daftar.lokasi_kerja
+						]).draw(false);
+					})
+					tblCMEditTempatMakanPerPekerja.columns.adjust().draw();
+				}
+			})
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Data Pekerjaan/Seksi/Unit/Bidang/Dept Sudah Terisi',
+				'warning'
+			)
+		}
+	})
+
+	$('#tbl-CM-EditTempatMakan-PerPekerja').on('click', 'td', function(){
+		var textRow = $(this).closest('tr').text();
+		if (textRow != 'No data available in table') {
+			var noind = $(this).closest('tr').find('td:eq(1)').text();
+			var nama = $(this).closest('tr').find('td:eq(2)').text();
+			var tempatMakan = $(this).closest('tr').find('td:eq(3)').text();
+			var lokasiKerja = $(this).closest('tr').find('td:eq(4)').text();
+			$('#txt-CM-EditTempatMakan-Noind').val(noind);
+			$('#txt-CM-EditTempatMakan-Nama').val(nama);
+			$('#txt-CM-EditTempatMakan-LokasiKerja').val(lokasiKerja);
+		    $('#txt-CM-EditTempatMakan-TempatMakanPekerja-lama').val(tempatMakan);
+			if ($('.slc-CM-EditTempatMakan-TempatMakanPekerja').find("option[value='" + tempatMakan + "']").length) {
+			    $('.slc-CM-EditTempatMakan-TempatMakanPekerja').val(tempatMakan).trigger('change');
+			} else { 
+			    var newOption = new Option(tempatMakan, tempatMakan, true, true);
+			    $('.slc-CM-EditTempatMakan-TempatMakanPekerja').append(newOption).trigger('change');
+			} 
+			$('#mdl-CM-EditTempatMakan-PerPekerja').modal('show');
+		}
+	})
+
+	$('#btn-CM-EditTempatMakan-SimpanPerPekerja').on('click', function(){
+		var noind = $('#txt-CM-EditTempatMakan-Noind').val();
+		var nama = $('#txt-CM-EditTempatMakan-Nama').val();
+		var lokasiKerja = $('#txt-CM-EditTempatMakan-LokasiKerja').val();
+	    var tempatMakanLama = $('#txt-CM-EditTempatMakan-TempatMakanPekerja-lama').val();
+	    var tempatMakan = $('.slc-CM-EditTempatMakan-TempatMakanPekerja').val();
+	    var kodesie = $('#txt-CM-EditTempatMakan-Kodesie').val();
+	    if (tempatMakan) {
+	    	$('#ldg-CM-EditTempatMakan-Loading').show();
+	    	$.ajax({
+	    		method: 'POST',
+	    		url: baseurl + 'CateringManagement/Extra/EditTempatMakan/simpanPerPekerja',
+	    		data: {noind: noind, tempat_makan: tempatMakan, kodesie: kodesie, tempat_makan_lama: tempatMakanLama},
+	    		error: function(xhr,status,error){
+					$('#ldg-CM-EditTempatMakan-Loading').hide();
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(data){
+					$('#ldg-CM-EditTempatMakan-Loading').hide();
+					obj = JSON.parse(data);
+					tblCMEditTempatMakanPerPekerja.clear().draw();
+					obj.forEach(function(daftar, index){
+						tblCMEditTempatMakanPerPekerja.row.add([
+							(index + 1),
+							daftar.noind,
+							daftar.nama,
+							daftar.tempat_makan,
+							daftar.lokasi_kerja
+						]).draw(false);
+					})
+					tblCMEditTempatMakanPerPekerja.columns.adjust().draw();
+					Swal.fire(
+						'Simpan Sukses !!!',
+						'Tempat Makan Berhasil diubah !!',
+						'success'
+					)
+				}
+	    	});
+	    }else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Tempat Makan Sudah Terisi',
+				'warning'
+			)
+		}
+	})
+
+	$('#btn-CM-EditTempatMakan-SimpanPerSeksi').on('click', function(){
+		var dept = $(this).closest('form').find('.slc-CM-EditTempatMakan-Departemen').val();
+		var bidang = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').val();
+		var unit = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').val();
+		var seksi = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').val();
+		var pekerjaan = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').val();
+
+		var bidang_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Bidang').attr('disabled');
+		var unit_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Unit').attr('disabled');
+		var seksi_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Seksi').attr('disabled');
+		var pekerjaan_dis = $(this).closest('form').find('.slc-CM-EditTempatMakan-Pekerjaan').attr('disabled');
+
+		var status = "0";
+
+		if (dept) {
+			if ((bidang_dis == undefined && bidang) || bidang_dis == "disabled") {
+				if ((unit_dis == undefined && unit) || unit_dis == "disabled") {
+					if ((seksi_dis == undefined && seksi) || seksi_dis == "disabled") {
+						if ((pekerjaan_dis == undefined && pekerjaan) || pekerjaan_dis == "disabled") {
+							status = "1";
+						}else{
+							status = "0";
+						}
+					}else{
+						status = "0";
+					}
+				}else{
+					status = "0";
+				}
+			}else{
+				status = "0";
+			}
+		}else{
+			status = "0";
+		}
+
+		if (status == "1") {
+			var kodesie = "";
+			if (pekerjaan) {
+				kodesie = pekerjaan;
+			}else if (seksi) {
+				kodesie = seksi;
+			}else if (unit) {
+				kodesie = unit;
+			}else if (bidang) {
+				kodesie = bidang;
+			}else if (dept) {
+				kodesie = dept;
+			}
+			var lokasi  = $(this).closest('form').find('.slc-CM-EditTempatMakan-LokasiKerja').val();
+			var kodeInduk = $(this).closest('form').find('.slc-CM-EditTempatMakan-KodeInduk').val();
+			var tempatMakanLama = $(this).closest('form').find('.slc-CM-EditTempatMakan-TempatMakanLama').val();
+			var tempatMakanBaru = $(this).closest('form').find('.slc-CM-EditTempatMakan-TempatMakanBaru').val();
+
+			if (lokasi && kodeInduk && tempatMakanLama && tempatMakanBaru) {
+				$('#ldg-CM-EditTempatMakan-Loading').show();
+				$.ajax({
+					method: 'POST',
+					url: baseurl + 'CateringManagement/Extra/EditTempatMakan/simpanPerSeksi',
+					data: {kodesie: kodesie, lokasi: lokasi, kode_induk: kodeInduk, tempat_makan_lama: tempatMakanLama, tempat_makan_baru: tempatMakanBaru},
+					error: function(xhr,status,error){
+						$('#ldg-CM-EditTempatMakan-Loading').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						$('#ldg-CM-EditTempatMakan-Loading').hide();
+						
+						Swal.fire(
+							'Simpan Sukses !!!',
+							'Tempat Makan Berhasil diubah !!',
+							'success'
+						)
+					}
+				})
+			}else{
+				Swal.fire(
+					'Peringatan !!!',
+					'Pastikan Data Lokasi, Kode Induk, Tempat Makan Lama, Tempat Makan Baru Sudah Terisi',
+					'warning'
+				)
+			}
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Pastikan Data Pekerjaan/Seksi/Unit/Bidang/Dept Sudah Terisi',
+				'warning'
+			)
+		}
+	})
+})
+// end edit tempat makan

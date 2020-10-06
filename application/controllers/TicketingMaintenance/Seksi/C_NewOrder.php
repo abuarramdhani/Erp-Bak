@@ -91,22 +91,21 @@ class C_NewOrder extends CI_Controller
 		$urutan_order = $nOrder[3]; //urutan max order
 		$format = $nOrder[0]."-".$nOrder[1]."-".$nOrder[2]; //format order tanpa urutan diambil dari max order
 
-		$add = $urutan_order+1;
-
-		$count = strlen($urutan_order);
-		if ($count == 1) {
-			$ordering = "00"."".$urutan_order;
-		}elseif ($count == 2) {
-			$ordering = "0"."".$urutan_order;
-		}else {
-			$ordering = $urutan_order;
-		}
+		// $add = $urutan_order+1;
+		// $count = strlen($add);
+		// if ($count == 1) {
+		// 	$ordering = "00"."".$add;
+		// }elseif ($count == 2) {
+		// 	$ordering = "0"."".$add;
+		// }else {
+		// 	$ordering = $add;
+		// }
 
 		//SET ORDER NUMBER//
 			if ($no_order !== $format) {
 				$nomor_order = $kode_seksi."-".$month."-".$year."-001";
 			}else{
-				$ordering_number = intval($ordering);
+				$ordering_number = intval($urutan_order);
 				// echo "<pre>"; echo $ordering_number;
 				$orderingNumber = sprintf('%03d', $ordering_number+1);
 				$nomor_order = $kode_seksi."-".$month."-".$year."-".$orderingNumber;

@@ -67,7 +67,7 @@ class M_pickfabrikasi extends CI_Model
 					) = 1
 			and kpa.PROCESS = 1 -- ppic
 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
-			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
 			order by 11 desc ";
 		$query = $oracle->query($sql);
 		// echo "<pre>";print_r($sql);exit();
@@ -188,7 +188,7 @@ class M_pickfabrikasi extends CI_Model
 					) = 2
 			and kpa.PROCESS = 2 -- fabrikasi
 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
-			and TRUNC(we.CREATION_DATE ) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
+			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -257,7 +257,7 @@ class M_pickfabrikasi extends CI_Model
 					) = 2
 			and kpa.PROCESS = 2 -- fabrikasi
 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
-			and to_char(we.CREATION_DATE,'DD-MM-YYYY') = '$tgl'  
+			and to_char(wdj.SCHEDULED_START_DATE,'DD-MM-YYYY') = '$tgl'  
 			and mtrh.REQUEST_NUMBER = '$picklist'";
 		$query = $oracle->query($sql);
 		return $query->result_array();

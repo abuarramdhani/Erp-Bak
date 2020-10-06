@@ -74,6 +74,10 @@
                                                 <?php } ?>
                                                 <th width="15%">Tanggal Input</th>
                                                 <th>Status</th>
+                                                <th>Keterangan</th>
+                                                <th>Lampiran</th>
+                                                <th>Tanggal Approve Atasan</th>
+                                                <th>Tanggal Approve TIM</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -110,6 +114,18 @@
                                                 <?php  } ?>
                                                 <td><?php echo $key['tgl_input']; ?></td>
                                                 <td><?php echo $status; ?></td>
+                                                <td><?php echo $key['keterangan']; ?></td>
+                                                <td>
+                                                    <?php if (empty($key['lampiran'])): ?>
+                                                        -   
+                                                    <?php else: ?>
+                                                        <a href="<?php echo base_url('assets/upload/P2K3DocumentApproval/'.$key['lampiran']); ?>" target="_blank" class="btn btn-danger">
+                                                            <i class="fa fa-file-pdf-o"></i>
+                                                        </a>
+                                                    <?php endif ?>
+                                                </td>
+                                                <td><?php echo $key['tgl_approve']; ?></td>
+                                                <td><?php echo $key['tgl_approve_tim']; ?></td>
                                             </tr>
                                             <?php $a++; } ?>
                                         </tbody>

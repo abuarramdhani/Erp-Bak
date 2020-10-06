@@ -2,17 +2,20 @@
 
 defined('BASEPATH') or exit('tidak ada sistem yang aman');
 
-Class M_batch extends CI_Model {
-    public function __construct(){
+class M_batch extends CI_Model
+{
+    public function __construct()
+    {
         parent::__construct();
         $this->load->database();
     }
 
     // @params array
     // @return text, example-> [f2327'', '']
-    private function arrayToString($arr) {
+    private function arrayToString($arr)
+    {
         $result = array_map(function ($item) {
-            return "'".$item."'";
+            return "'" . $item . "'";
         }, $arr);
 
         return $result;
@@ -20,7 +23,8 @@ Class M_batch extends CI_Model {
 
     // @params array from C_Batch.php
     // @return array
-    function preview_person($params) {
+    function preview_person($params)
+    {
         $noind = explode(' ', $params['noind']);
         $paramsNoind = implode(', ', $this->arrayToString($noind));
 
@@ -38,10 +42,11 @@ Class M_batch extends CI_Model {
 
     // @params array from C_Batch.php
     // @return boolean
-    function addResponsbility($params) {
+    function addResponsbility($params)
+    {
         $noind = explode(' ', $params['noind']);
         $paramsNoind = implode(', ', $this->arrayToString($noind));
-        
+
         $res_id = $params['res_id'];
         $inet = $params['inet'];
         $local = $params['local'];
@@ -57,5 +62,15 @@ Class M_batch extends CI_Model {
 
         $this->db->query($queryAddAccount);
         return $this->db->query($queryAddRes);
+    }
+
+    public function deleteResponsbility($noind, $res_id)
+    {
+        $queryDelete = "DELETE from sys.sys_user_application sua where sua.user_id in (select su.user_id from 
+                        sys.sys_user su
+                        inner join sys.sys_user_group_menu sugm on sua.user_group_menu_id = sugm.user_group_menu_id and su.user_id = sua.user_id
+                        where
+                        sugm.user_group_menu_id = '$res_id' and su.user_name in ('$noind'))";
+        return $this->db->query($queryDelete);
     }
 }

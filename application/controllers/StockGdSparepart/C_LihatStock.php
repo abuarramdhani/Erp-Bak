@@ -30,29 +30,36 @@ class C_LihatStock extends CI_Controller
 
 	public function index()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Lihat Stock';
 		$data['Menu'] = 'Lihat Stock';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
+		// echo "<pre>";print_r($UserMenu);exit();
+		
+		if ($user == 'B0597' || $user == 'B0892') {
+			$data['UserMenu'][] = $UserMenu[0];
+			$data['UserMenu'][] = $UserMenu[1];
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
 		// $data['unit'] = $this->M_lihatstock->kodeUnit();
 		$data['kode'] = array('0' => 'AAA', '1' => 'AAB', '2' => 'AAC', '3' => 'AAD', '4' => 'AAE', '5' => 'AAF',
 							'6' => 'AAG', '7' => 'AAH', '8' => 'AAK', '9' => 'AAL', '10' => 'AAN', '11' => 'ACA',
 							'12' => 'ADA', '13' => 'ADB', '14' => 'AFA', '15' => 'AFC', '16' => 'AGC', '17' => 'BAC',
-							'18' => 'IAO', '19' => 'IBB', '20' => 'IAA', '21' => 'IAP', '22' => 'IAU', '23' => 'IAB');
+							'18' => 'IAO', '19' => 'IBB', '20' => 'IAA', '21' => 'IAP', '22' => 'IAU', '23' => 'IAB', 
+							'24' => 'IBE', '25' => 'IBD', '26' => 'IAG');
 		
 		$data['nama'] = array('0' => 'TL800', '1' => 'G1000', '2' => 'G600', '3' => 'E85', '4' => 'M1000', '5' => 'KIJANG',
 							'6' => 'BOXER', '7' => 'ZEVA', '8' => 'IMPALA', '9' => 'CAPUNG METAL', '10' => 'CAPUNG RAWA', '11' => 'ZENA',
 							'12' => 'CAKAR BAJA', '13' => 'CAKAR BAJA MINI', '14' => 'H-110', '15' => 'QH-11', '16' => 'QT-14', '17' => 'OLD',
-							'18' => 'MITSUBOSHI', '19' => 'BEARING NACHI', '20' => 'DIESEL VDE', '21' => 'V BELT BANDO',
-							'22' => 'BEARING SKF', '23' => 'DIESEL HDE');
+							'18' => 'V BELT MITSUBOSHI', '19' => 'BEARING NACHI', '20' => 'DIESEL VDE', '21' => 'V BELT BANDO',
+							'22' => 'BEARING SKF', '23' => 'DIESEL HDE', '24' => 'CHAIN EK', '25' => 'CHAIN SENQCIA', '26' => 'TR-04');
 		// echo "<pre>"; print_r($data['kode']);exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -83,6 +90,15 @@ class C_LihatStock extends CI_Controller
 		$data = $this->M_lihatstock->getSubinv($term);
 		echo json_encode($data);
 	}
+	
+	function getLokasiSimpan()
+	{
+		$term = $this->input->get('term',TRUE);
+		$subinv = $this->input->get('subinv',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_lihatstock->lokasi_simpan($term, $subinv);
+		echo json_encode($data);
+	}
 
 	function searchData(){
 		$tglAw 			= $this->input->post('tglAw');
@@ -92,75 +108,73 @@ class C_LihatStock extends CI_Controller
 		$kode_awal 		= $this->input->post('kode_awal');
 		$qty_atas 		= $this->input->post('qty_atas');
 		$qty_bawah 		= $this->input->post('qty_bawah');
-		// $unit 			= $this->input->post('unit2');
+		$unit 			= $this->input->post('unit');
+		$ket 			= $this->input->post('ket');
+		$lokasi 		= $this->input->post('lokasi');
 		$data['tglAw'] 	= $tglAw;
 		$data['tglAk'] 	= $tglAk;
 		$data['subinv'] = $subinv;
 		$data['kode_brg'] = $kode_brg;
-		// echo "<pre>"; print_r($kode_awal);exit();
+
+		if ($lokasi != '' && $qty_atas == '' && $qty_bawah == '' && $ket != 'min' && $ket != 'max') {
+			$loc = "where lokasi = '$lokasi'";
+		}elseif ($lokasi == '') {
+			$loc = '';
+		}else {
+			$loc = "and lokasi = '$lokasi'";
+		}
 
 		if ($qty_atas != '' || $qty_bawah != '') {
 			$qty = "WHERE onhand >= NVL('$qty_atas', onhand) --qty_atas
-					AND onhand <= NVL('$qty_bawah', onhand) --qty_bawah";
+					AND onhand <= NVL('$qty_bawah', onhand) --qty_bawah
+					$loc";
 		}else {
-			$qty = '';
+			$qty = $loc;
 		}
 
-		if ($kode_brg != '') {
-			$kode = "AND msib.segment1 = '$kode_brg'";
-		}else {
-			$kode = '';
+		if ($ket == '123') { // unit
+			$kode = $this->kodeawal($kode_awal);
+			$kode2 = $this->kodeunit($unit);
+		}else{
+			$kode = $this->kodebrg($kode_brg);
+			$kode2 = $this->kodeawal($kode_awal);
+			if ($ket == 'min') {
+				$qty = "WHERE onhand <= min $loc";
+			}elseif ($ket == 'max') {
+				$qty = "WHERE onhand >= max $loc";
+			}
 		}
+		// echo "<pre>";print_r($qty);exit();
+		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode2);
+		// echo "<pre>";print_r($data['data']);exit();
+		
+		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);
+	}
 
+	public function kodebrg($kode){
+		if ($kode != '') {
+			return "AND msib.segment1 = '$kode'";
+		}else {
+			return '';
+		}
+	}
+	
+	public function kodeawal($kode_awal){
 		$kode_awal = strtoupper($kode_awal);
 		if ($kode_awal != '') {
-			$kode_awl = "AND (msib.segment1 LIKE '%'||'$kode_awal'||'%' or msib.DESCRIPTION LIKE '%'||'$kode_awal'||'%')";
+			return "AND (msib.segment1 LIKE '%'||'$kode_awal'||'%' or msib.DESCRIPTION LIKE '%'||'$kode_awal'||'%')";
 		}else{
-			$kode_awl = '';
+			return '';
 		}
-		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode_awl);
-		// echo "<pre>";print_r($data['data']);exit();
-		
-		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);
 	}
-
-	function searchData2(){
-		$tglAw 			= $this->input->post('tglAw');
-		$tglAk 			= $this->input->post('tglAk');
-		$subinv 		= $this->input->post('subinv');
-		$unit 			= $this->input->post('unit');
-		$kode_brg 		= $this->input->post('kode_brg');
-		$kode_awal 		= $this->input->post('kode_awal');
-		$qty_atas 		= $this->input->post('qty_atas');
-		$qty_bawah 		= $this->input->post('qty_bawah');
-		$data['tglAw'] 	= $tglAw;
-		$data['tglAk'] 	= $tglAk;
-		$data['subinv'] = $subinv;
-		// echo "<pre>"; print_r($kode_brg);exit();
-
-		if ($qty_atas != '' || $qty_bawah != '') {
-			$qty = "WHERE onhand >= NVL('$qty_atas', onhand) --qty_atas
-					AND onhand <= NVL('$qty_bawah', onhand) --qty_bawah";
-		}else {
-			$qty = '';
-		}
-
-		if ($kode_brg != '') {
-			$kode = "AND msib.segment1 = '$kode_brg'";
-		}else {
-			$kode = '';
-		}
-
+	
+	public function kodeunit($unit){
 		if ($unit != ''){
-			$kode_unit = "AND msib.segment1 LIKE '$unit'||'%'";
+			return "AND msib.segment1 LIKE '$unit'||'%'";
 		}else {
-			$kode_unit = '';
+			return '';
 		}
-		$data['data'] = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, $qty,$kode_unit);
-		// echo "<pre>";print_r($data['data']);exit();
-		
-		$this->load->view('StockGdSparepart/V_TblLihatStock', $data);
-	}
+	}	
 
 	function searchHistory(){
 		$kode 	= $this->input->post('kode');
@@ -281,6 +295,42 @@ class C_LihatStock extends CI_Controller
 						</table>
 					</div>
             	</div>';
+		echo $output;
+	}
+
+	public function searchGambarItem(){
+		$kode 	= $this->input->post('kode');
+		$nama 	= $this->input->post('nama');
+		$filename = './assets/upload/wipp/setelah/'.$kode.'.png';
+		if (file_exists($filename)) {
+			$image = '<img style="max-width: 250px;max-height: 250px" src="'. base_url("".$filename."").'">';
+			$ket = '';
+		}else {
+			$image = '<img style="max-width: 100px;max-height: 100px" src="'. base_url("./assets/img/delete2.png").'">';
+			$ket = 'Gambar tidak ditemukan...';
+		}
+		$output = '
+					<div class="panel-body">
+						<div class="col-md-12 text-center">
+							<span>'.$image.'</span>
+							<p>'.$ket.'</p>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="col-md-12">
+							<div class="col-md-3">
+								<label>Kode Barang</label>
+							</div>
+							<div class="col-md-9">: '.$kode.'</div>
+						</div>
+						<div class="col-md-12">
+							<div class="col-md-3">
+								<label>Deskripsi Barang</label>
+							</div>
+							<div class="col-md-9">: '.$nama.'</div>
+						</div>
+					</div>
+				';
 		echo $output;
 	}
 

@@ -38,7 +38,19 @@ class M_izindinasptm extends CI_Model
 							'Sudah diproses'
 						else 
 							'Belum diproses'
-						end as diproses 
+						end as diproses_tambah, 
+						case when (
+							select count(*) 
+							from \"Catering\".tpenguranganpesanan_detail tppd 
+							inner join \"Catering\".tpenguranganpesanan tpp
+							on tppd.id_pengurangan = tpp.id_pengurangan
+							Where tpp.fd_tanggal = current_date 
+							and tppd.fs_noind = tai.noinduk
+						) > 0 then 
+							'Sudah diproses'
+						else 
+							'Belum diproses'
+						end as diproses_kurang
 					from \"Surat\".taktual_izin tai 
 					inner join \"Surat\".tpekerja_izin tpi 
 					on tai.noinduk = tpi.noind 
@@ -48,11 +60,11 @@ class M_izindinasptm extends CI_Model
 					left join hrd_khs.tpribadi tpri 
 					on tpri.noind = tai.noinduk 
 					Where tai.created_date:: Date = current_date 
-					and tai.created_date::time < '09:30'::time 
+					and tai.created_date::time <= '09:00'::time 
 					and tpi.makan = '1' 
 					and tp.status = 1 
 				) as tbl 
-				order by diproses,jenis_dinas,tujuan,izin_id,noind ";
+				order by diproses_tambah,diproses_kurang,jenis_dinas,tujuan,izin_id,noind ";
 		return $this->personalia->query($sql)->result_array();
     }
 
@@ -94,7 +106,7 @@ class M_izindinasptm extends CI_Model
 					left join hrd_khs.tpribadi tpri 
 					on tpri.noind = tai.noinduk 
 					Where tai.created_date:: Date = current_date 
-					and tai.created_date::time < '09:30'::time 
+					and tai.created_date::time <= '09:00'::time 
 					and tpi.makan = '1' 
 					and tp.status = 1 
 				) as tbl 

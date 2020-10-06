@@ -1,3 +1,47 @@
+// helper
+function updateUrlParam(param) {
+	let params = $.param(param);
+	let pathname = window.location.pathname + "?" + params;
+	window.history.replaceState(null, null, pathname);
+}
+
+function spl_load_data() {
+	url = window.location.pathname;
+	usr = $("#txt_ses").val();
+	ket = $("#spl_tex_proses").val();
+
+	if (url.indexOf("ALK") >= 0) {
+		tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr);
+	} else {
+		tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr);
+	}
+
+	chk = "";
+	$(".spl-chk-data").each(function () {
+		if (this.checked) {
+			chk += "." + $(this).val();
+		}
+	});
+
+	if (chk == "") {
+		$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
+		$("#example11_wrapper").find("button.btn-primary").addClass("disabled");
+		console.log("tidak ada");
+	} else {
+		$("#example11_wrapper").find("a.btn-primary").removeClass("disabled btn-default");
+		$("#example11_wrapper").find("button.btn-primary").removeClass("disabled btn-default");
+		console.log("ada");
+	}
+
+	if (url.indexOf("ALK") >= 0) {
+		$("#spl_proses_reject").attr("href", tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket));
+		$("#spl_proses_approve").attr("href", tmp + btoa("&stat=21&data=" + chk + "&ket=" + ket));
+	} else {
+		$("#spl_proses_reject").attr("href", tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket));
+		$("#spl_proses_approve").attr("href", tmp + btoa("&stat=25&data=" + chk + "&ket=" + ket));
+	}
+}
+
 //--------------------- surat perintah lembur ----------------//
 $(function () {
 	$(".spl-table.kasie, .spl-table.aska").DataTable({
@@ -84,8 +128,6 @@ $(function () {
 		format: "HH:mm:ss",
 	});
 
-	// Some Function
-	/////////////////////////////////////////////////////////////////////////////////
 	$(".spl-pkj-select2").select2({
 		ajax: {
 			url: baseurl + "SPLSeksi/C_splseksi/show_pekerja",
@@ -242,11 +284,13 @@ $(function () {
 		e.preventDefault();
 		var table = $(".spl-table").DataTable();
 		var alamate = baseurl + "SPLSeksi/C_splseksi/data_spl_filter";
-
+		$(this).prop("disabled", true);
 		table.clear().draw();
+
 		$.ajax({
 			url: alamate,
 			type: "POST",
+			dataType: "json",
 			data: {
 				dari: $("#tgl_mulai").val(),
 				sampai: $("#tgl_selesai").val(),
@@ -254,15 +298,20 @@ $(function () {
 				lokasi: $("#lokasi").val(),
 				noind: $("#noind").val(),
 			},
-			success: function (data) {
-				if (data != "[]") {
-					var send = $.parseJSON(data);
-					table.rows.add(send);
-					table.draw();
-				} else {
-					// alert('Data tidak di temukan');
-				}
+			beforeSend() {
+				$(".spl-loading").removeClass("hidden");
 			},
+			success: function (data) {
+				table.rows.add(data);
+				table.draw();
+			},
+			error(e) {
+				alert(e);
+			},
+		}).done((e) => {
+			$(this).prop("disabled", false);
+
+			$(".spl-loading").addClass("hidden");
 		});
 	});
 
@@ -280,13 +329,9 @@ $(function () {
 		});
 
 		if (existError) {
-			$("button#submit_spl")
-				.attr("type", "button")
-				.attr("class", "btn btn-default");
+			$("button#submit_spl").attr("type", "button").attr("class", "btn btn-default");
 		} else {
-			$("button#submit_spl")
-				.attr("type", "submit")
-				.attr("class", "btn btn-primary");
+			$("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
 		}
 
 		if (totalRow == 2) {
@@ -295,14 +340,8 @@ $(function () {
 	});
 
 	$("#submit_spl").on("click", function (e) {
-		let waktu1 =
-			$("input[name=tanggal_0_simpan]").val() +
-			" " +
-			$("input[name=waktu_0_simpan]").val();
-		let waktu2 =
-			$("input[name=tanggal_1_simpan]").val() +
-			" " +
-			$("input[name=waktu_1_simpan]").val();
+		let waktu1 = $("input[name=tanggal_0_simpan]").val() + " " + $("input[name=waktu_0_simpan]").val();
+		let waktu2 = $("input[name=tanggal_1_simpan]").val() + " " + $("input[name=waktu_1_simpan]").val();
 
 		if (waktu1 == waktu2 && waktu1 != "" && waktu2 != "") {
 			swal.fire("Waktu lembur yang diambil tidak boleh sama !!!", "", "error");
@@ -404,10 +443,6 @@ $(function () {
 		});
 	});
 
-	$("#form-edit-spl").on("change", (e) => {
-		console.log("You're changing, I can't stand it");
-	});
-
 	$("select[name=kd_lembur").on("change", function () {
 		const val = $(this).val();
 
@@ -479,15 +514,9 @@ $(function () {
 					// console.log(obj);
 					if (obj["error"] == "1") {
 						parentSelect.css("background", "#ffe6e6");
-						$("button#submit_spl")
-							.attr("type", "button")
-							.attr("class", "btn btn-grey");
+						$("button#submit_spl").attr("type", "button").attr("class", "btn btn-grey");
 						parentSelect.find(".spl-new-error").remove();
-						parentSelect.append(
-							"<p class='spl-new-error' style='color: red'><br><i style='color:#ed2b1f' class='fa fa-lg fa-info-circle spl-error'></i>  Peringatan : " +
-								obj["text"] +
-								"</p>"
-						);
+						parentSelect.append("<p class='spl-new-error' style='color: red'><br><i style='color:#ed2b1f' class='fa fa-lg fa-info-circle spl-error'></i>  Peringatan : " + obj["text"] + "</p>");
 						parentTr.find("input[name*=lbrawal]").val("");
 						parentTr.find("input[name*=lembur_awal]").val("");
 						parentTr.find("input[name*=lbrakhir]").val("");
@@ -516,9 +545,7 @@ $(function () {
 							chk = "1";
 						});
 						if (chk == "0") {
-							$("button#submit_spl")
-								.attr("type", "submit")
-								.attr("class", "btn btn-primary");
+							$("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
 						}
 					}
 				},
@@ -556,30 +583,12 @@ $(function () {
 		});
 	});
 
-	$(document).ajaxStart(function () {
-		$(".spl-loading").removeClass("hidden");
-	});
-
-	$(document).ajaxStop(function () {
-		$(".spl-loading").addClass("hidden");
-	});
-
-	// $('#spl-chk-dt').on('click', function(e) {
-	$("#spl-chk-dt").on("change", function (e) {
-		alert("dasfg");
-		if (this.checked) {
-			$("#tgl_mulai").prop("disabled", false);
-			$("#tgl_selesai").prop("disabled", false);
-		} else {
-			$("#tgl_mulai").prop("disabled", true);
-			$("#tgl_selesai").prop("disabled", true);
-		}
-	});
-
-	for (x = 0; x < 2; x++) {
+	for (let x = 0; x < 2; x++) {
 		$("#spl-approval-" + x).on("click", { id: x }, function (e) {
 			e.preventDefault();
 			$(".btn-proses").addClass("disabled");
+			$(this).prop("disabled", true);
+
 			var id = e.data.id;
 			var table = $(".spl-table").DataTable();
 
@@ -589,29 +598,52 @@ $(function () {
 				var alamate = baseurl + "SPLSeksi/C_splasska/data_spl_filter";
 			}
 
-			table.clear().draw();
-			$.ajax({
-				url: alamate,
-				type: "POST",
-				data: {
-					dari: $("#tgl_mulai").val(),
-					sampai: $("#tgl_selesai").val(),
-					status: $("#status").val(),
-					lokasi: $("#lokasi").val(),
-					noind: $("#noind").val(),
-					kodesie: $("#kodesie").val(),
-				},
-				success: (data) => {
-					if (data.length) {
-						let send = JSON.parse(data);
+			try {
+				table.clear().draw();
+				let windowHeight = 200;
+
+				$.ajax({
+					url: alamate,
+					type: "POST",
+					data: {
+						tgl_checked: true,
+						dari: $("#tgl_mulai").val(),
+						sampai: $("#tgl_selesai").val(),
+						status: $("#status").val(),
+						lokasi: $("#lokasi").val(),
+						noind: $("#noind").val(),
+						kodesie: $("#kodesie").val(),
+					},
+					beforeSend() {
+						$(".spl-table > tbody").html(`
+            <tr>
+							<td class="text-center" colspan="19">
+							<div style="margin: 1em;">
+								<img src="${baseurl}/assets/img/gif/loading6.gif" class="spl-loading" width="33px" height="33px" style="margin-right:3px">
+							</div>
+							<span>Memuat data ...</span>
+              </td>
+            </tr>
+					`);
+						window.scrollTo(0, windowHeight);
+					},
+					dataType: "json",
+					success: (data) => {
 						table.clear().draw();
-						table.rows.add(send);
+						table.rows.add(data);
 						table.draw();
-					} else {
-						// alert('Data tidak di temukan');
-					}
-				},
-			});
+						$(this).prop("disabled", false);
+
+						if (data.length) {
+							window.scrollTo(0, windowHeight);
+						} else {
+							// alert('Data tidak di temukan');
+						}
+					},
+				});
+			} catch (e) {
+				$(this).prop("disabled", false);
+			}
 		});
 	}
 
@@ -659,64 +691,7 @@ $(function () {
 		});
 	});
 
-	function spl_load_data() {
-		url = window.location.pathname;
-		usr = $("#txt_ses").val();
-		ket = $("#spl_tex_proses").val();
-
-		if (url.indexOf("ALK") >= 0) {
-			tmp =
-				"finspot:FingerspotVer;" +
-				btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr);
-		} else {
-			tmp =
-				"finspot:FingerspotVer;" +
-				btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr);
-		}
-
-		chk = "";
-		$(".spl-chk-data").each(function () {
-			if (this.checked) {
-				chk += "." + $(this).val();
-			}
-		});
-
-		if (chk == "") {
-			$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
-			$("#example11_wrapper").find("button.btn-primary").addClass("disabled");
-			console.log("tidak ada");
-		} else {
-			$("#example11_wrapper")
-				.find("a.btn-primary")
-				.removeClass("disabled btn-default");
-			$("#example11_wrapper")
-				.find("button.btn-primary")
-				.removeClass("disabled btn-default");
-			console.log("ada");
-		}
-
-		if (url.indexOf("ALK") >= 0) {
-			$("#spl_proses_reject").attr(
-				"href",
-				tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket)
-			);
-			$("#spl_proses_approve").attr(
-				"href",
-				tmp + btoa("&stat=21&data=" + chk + "&ket=" + ket)
-			);
-		} else {
-			$("#spl_proses_reject").attr(
-				"href",
-				tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket)
-			);
-			$("#spl_proses_approve").attr(
-				"href",
-				tmp + btoa("&stat=25&data=" + chk + "&ket=" + ket)
-			);
-		}
-	}
-
-	$(document).on("click", ".spl-chk-data", function (e) {
+	$(document).on("change", ".spl-chk-data", function (e) {
 		spl_load_data();
 	});
 
@@ -724,31 +699,43 @@ $(function () {
 		spl_load_data();
 	});
 
-	function waitingFingerPrint(params, callback = function () {}) {
-		localStorage.setItem("resultApproveSPL", false);
+	function waitingFingerPrint() {
+		var MESSAGE = "";
+		var CALLBACK = () => null;
+		var STORAGE_NAME = "resultApproveSPL";
+		var DESTROY = () => window.removeEventListener("storage", resultStorage);
+		var GET_ITEM = () => JSON.parse(localStorage.getItem(STORAGE_NAME));
+		var SET_ITEM = (val) => localStorage.setItem(STORAGE_NAME, JSON.stringify(val));
+		var ERROR_CODE = 3;
 
-		const resultStorage = () => {
-			window.removeEventListener("storage", resultStorage);
-			let isSuccess = localStorage.getItem("resultApproveSPL"); // will result string dataType
+		// initial code
+		SET_ITEM(false);
 
-			if (isSuccess == "true") {
+		function resultStorage(event) {
+			console.log(event.key);
+			if (event.key !== STORAGE_NAME) return;
+			DESTROY();
+			let done = GET_ITEM();
+
+			if (done === true) {
 				$("#ProsesDialog").modal("hide");
 				$("#FingerDialogApprove").modal("hide");
 				$("#FingerDialogReject").modal("hide");
-				callback();
-				swal
-					.fire({
-						title: `Sukses ${params} lembur pekerja`,
-						text: "",
-						type: "success",
-					})
-					.then(() => {
-						$("#spl-approval-1").click();
-						$("#spl-approval-0").click();
-					});
-				localStorage.setItem("resultApproveSPL", false);
-			} else if (isSuccess == 3) {
-				// error
+				SET_ITEM(false);
+
+				$("#spl-approval-1").click();
+				$("#spl-approval-0").click();
+				$("#spl_check_all").iCheck("uncheck");
+
+				// call callback function
+				CALLBACK();
+
+				swal.fire({
+					title: `Sukses ${MESSAGE} lembur pekerja`,
+					text: "",
+					type: "success",
+				});
+			} else if (done === ERROR_CODE) {
 				swal
 					.fire({
 						title: `Gagal, error code 500`,
@@ -760,41 +747,38 @@ $(function () {
 						$("#spl-approval-0").click();
 					});
 			} else {
-				alert("Error : " + isSuccess);
+				alert("Error : " + done);
 			}
-		};
+		}
 
-		window.addEventListener("storage", resultStorage);
+		return {
+			setCallback(newcallback) {
+				CALLBACK = newcallback;
+				return this;
+			},
+			setMessage(newmessage) {
+				MESSAGE = newmessage;
+				return this;
+			},
+			init() {
+				DESTROY();
+				window.addEventListener("storage", resultStorage);
+			},
+		};
 	}
 
-	$(document).on("click", "#FingerDialogReject .spl_finger_proses", function (
-		e
-	) {
+	const ApprovalLemburListener = waitingFingerPrint();
+
+	$(document).on("click", "#FingerDialogReject .spl_finger_proses", function (e) {
 		finger = $(this).attr("data");
 		url = window.location.pathname;
 		usr = $("#txt_ses").val();
 		ket = $("#spl_tex_proses").val();
 
 		if (url.indexOf("ALK") >= 0) {
-			tmp =
-				"finspot:FingerspotVer;" +
-				btoa(
-					baseurl +
-						"ALK/Approve/fp_proces?userid=" +
-						usr +
-						"&finger_id=" +
-						finger
-				);
+			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger);
 		} else {
-			tmp =
-				"finspot:FingerspotVer;" +
-				btoa(
-					baseurl +
-						"ALA/Approve/fp_proces?userid=" +
-						usr +
-						"&finger_id=" +
-						finger
-				);
+			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger);
 		}
 
 		chk = "";
@@ -824,10 +808,7 @@ $(function () {
 
 		if (url.indexOf("ALK") >= 0) {
 			// KASIE
-			$("#spl_proses_reject").attr(
-				"href",
-				tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket)
-			);
+			$("#spl_proses_reject").attr("href", tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket));
 
 			email_endpoint = `ALK/Approve/sendSPLEmail?status=31&spl_id=${chk}&ket=${ket}`;
 
@@ -837,10 +818,7 @@ $(function () {
 			// );
 		} else {
 			// KEPALA UNIT
-			$("#spl_proses_reject").attr(
-				"href",
-				tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket)
-			);
+			$("#spl_proses_reject").attr("href", tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket));
 
 			email_endpoint = `ALA/Approve/sendSPLEmail?status=35&spl_id=${chk}&ket=${ket}`;
 			// $("#spl_proses_approve").attr(
@@ -853,7 +831,7 @@ $(function () {
 		function send_email() {
 			$.ajax({
 				method: "get",
-				url: base_url + email_endpoint,
+				url: baseurl + email_endpoint,
 				success(e) {
 					console.log(e + "Success");
 				},
@@ -863,37 +841,19 @@ $(function () {
 		let apiProcess = $("#spl_proses_reject").attr("href");
 		window.location.href = apiProcess;
 
-		waitingFingerPrint("Reject", send_email);
+		ApprovalLemburListener.setMessage("Reject").setCallback(send_email).init();
 	});
 
-	$(document).on("click", "#FingerDialogApprove .spl_finger_proses", function (
-		e
-	) {
+	$(document).on("click", "#FingerDialogApprove .spl_finger_proses", function (e) {
 		finger = $(this).attr("data");
 		url = window.location.pathname;
 		usr = $("#txt_ses").val();
 		ket = $("#spl_tex_proses").val();
 
 		if (url.indexOf("ALK") >= 0) {
-			tmp =
-				"finspot:FingerspotVer;" +
-				btoa(
-					baseurl +
-						"ALK/Approve/fp_proces?userid=" +
-						usr +
-						"&finger_id=" +
-						finger
-				);
+			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger);
 		} else {
-			tmp =
-				"finspot:FingerspotVer;" +
-				btoa(
-					baseurl +
-						"ALA/Approve/fp_proces?userid=" +
-						usr +
-						"&finger_id=" +
-						finger
-				);
+			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger);
 		}
 
 		chk = "";
@@ -915,20 +875,14 @@ $(function () {
 			// 	"href",
 			// 	tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket)
 			// );
-			$("#spl_proses_approve").attr(
-				"href",
-				tmp + btoa("&stat=21&data=" + chk + "&ket=" + ket)
-			);
+			$("#spl_proses_approve").attr("href", tmp + btoa("&stat=21&data=" + chk + "&ket=" + ket));
 			email_endpoint = `ALK/Approve/sendSPLEmail?status=21&spl_id=${chk}&ket=${ket}`;
 		} else {
 			// $("#spl_proses_reject").attr(
 			// 	"href",
 			// 	tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket)
 			// );
-			$("#spl_proses_approve").attr(
-				"href",
-				tmp + btoa("&stat=25&data=" + chk + "&ket=" + ket)
-			);
+			$("#spl_proses_approve").attr("href", tmp + btoa("&stat=25&data=" + chk + "&ket=" + ket));
 			email_endpoint = `ALA/Approve/sendSPLEmail?status=25&spl_id=${chk}&ket=${ket}`;
 		}
 
@@ -947,7 +901,7 @@ $(function () {
 		let apiProcess = $("#spl_proses_approve").attr("href");
 		window.location.href = apiProcess;
 
-		waitingFingerPrint("Approve", send_email);
+		ApprovalLemburListener.setMessage("Approve").setCallback(send_email).init();
 	});
 });
 
@@ -1041,33 +995,28 @@ $(document).ready(function () {
 			cache: false,
 			async: true,
 			success: function (data) {
-				window.location.href =
-					baseurl + "SPLSeksi/C_splseksi/pdf_memo?id=" + data;
+				window.location.href = baseurl + "SPLSeksi/C_splseksi/pdf_memo?id=" + data;
 			},
 		});
 	});
 
-	$("#spl-fingerspot").on(
-		"click",
-		".spl-fingerprint-modal-edit-triger",
-		function (e) {
-			sn = $(this).closest("tr").find(".d-sn").text();
-			vc = $(this).closest("tr").find(".d-vc").text();
-			ac = $(this).closest("tr").find(".d-ac").text();
-			vkey = $(this).closest("tr").find(".d-vkey").text();
-			idf = $(this).attr("data-id");
-			$("#spl-fingerprint-modal-edit-id").val(idf);
-			$("#spl-fingerprint-modal-edit-sn").val(sn);
-			$("#spl-fingerprint-modal-edit-vc").val(vc);
-			$("#spl-fingerprint-modal-edit-ac").val(ac);
-			$("#spl-fingerprint-modal-edit-vkey").val(vkey);
-			$("#spl-fingerprint-modal-edit").modal({
-				backdrop: "static",
-				keyboard: false,
-			});
-			$("#spl-fingerprint-modal-edit").modal("show");
-		}
-	);
+	$("#spl-fingerspot").on("click", ".spl-fingerprint-modal-edit-triger", function (e) {
+		sn = $(this).closest("tr").find(".d-sn").text();
+		vc = $(this).closest("tr").find(".d-vc").text();
+		ac = $(this).closest("tr").find(".d-ac").text();
+		vkey = $(this).closest("tr").find(".d-vkey").text();
+		idf = $(this).attr("data-id");
+		$("#spl-fingerprint-modal-edit-id").val(idf);
+		$("#spl-fingerprint-modal-edit-sn").val(sn);
+		$("#spl-fingerprint-modal-edit-vc").val(vc);
+		$("#spl-fingerprint-modal-edit-ac").val(ac);
+		$("#spl-fingerprint-modal-edit-vkey").val(vkey);
+		$("#spl-fingerprint-modal-edit").modal({
+			backdrop: "static",
+			keyboard: false,
+		});
+		$("#spl-fingerprint-modal-edit").modal("show");
+	});
 
 	$(".spl-fingerprint-modal-edit-close").on("click", function (e) {
 		$("#spl-fingerprint-modal-edit").modal("hide");
@@ -1213,29 +1162,25 @@ $(document).ready(function () {
 		$("#spl-fingertemp-modal-user").modal("hide");
 	});
 
-	$("#spl-fingertemp").on(
-		"click",
-		".spl-fingertemp-modal-add-temp-triger",
-		function () {
-			noind = $(this).attr("data-id");
-			$.ajax({
-				data: { noind: noind },
-				type: "POST",
-				url: baseurl + "SPL/DaftarFingerspot/getfingerdata",
-				success: function (data) {
-					$("#spl-fingertemp-modal-finger tbody").html(data);
-					$("#spl-fingertemp-modal-finger").modal({
-						backdrop: "static",
-						keyboard: false,
-					});
-					$("#spl-fingertemp-modal-finger").modal("show");
-				},
-				error: function (request, status, error) {
-					alert(request.responseText);
-				},
-			});
-		}
-	);
+	$("#spl-fingertemp").on("click", ".spl-fingertemp-modal-add-temp-triger", function () {
+		noind = $(this).attr("data-id");
+		$.ajax({
+			data: { noind: noind },
+			type: "POST",
+			url: baseurl + "SPL/DaftarFingerspot/getfingerdata",
+			success: function (data) {
+				$("#spl-fingertemp-modal-finger tbody").html(data);
+				$("#spl-fingertemp-modal-finger").modal({
+					backdrop: "static",
+					keyboard: false,
+				});
+				$("#spl-fingertemp-modal-finger").modal("show");
+			},
+			error: function (request, status, error) {
+				alert(request.responseText);
+			},
+		});
+	});
 
 	$(".spl-fingertemp-modal-finger-close").on("click", function (e) {
 		generateFingertempTable();
@@ -1244,11 +1189,7 @@ $(document).ready(function () {
 
 	$("#spl-fingertemp").on("click", ".spl-fingertemp-delete", function (e) {
 		noind = $(this).attr("data-id");
-		con = confirm(
-			"Yakin ingin menghapus semua template finger no induk (" +
-				noind +
-				") ini ?"
-		);
+		con = confirm("Yakin ingin menghapus semua template finger no induk (" + noind + ") ini ?");
 		if (con) {
 			$.ajax({
 				data: { noind: noind },
@@ -1265,79 +1206,63 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#spl-fingertemp-modal-finger").on(
-		"click",
-		".spl-fingertemp-modal-finger-delete",
-		function (e) {
-			jari = $(this).attr("data-fid");
-			userid = $(this).attr("data-userid");
-			noind = $(this).attr("data-noind");
-			con = confirm(
-				"Apakah anda yakin ingin menghapus template finger (" + jari + ") ini ?"
-			);
-			if (con) {
-				$.ajax({
-					data: { jari: jari, userid: userid },
-					type: "POST",
-					url: baseurl + "SPL/DaftarFingerspot/deleteFingertemp",
-					success: function (e) {
-						alert("Sukses");
-						$.ajax({
-							data: { noind: noind },
-							type: "POST",
-							url: baseurl + "SPL/DaftarFingerspot/getfingerdata",
-							success: function (data) {
-								$("#spl-fingertemp-modal-finger tbody").html(data);
-							},
-							error: function (request, status, error) {
-								alert(request.responseText);
-							},
-						});
-					},
-					error: function (request, status, error) {
-						alert(request.responseText);
-					},
-				});
-			}
+	$("#spl-fingertemp-modal-finger").on("click", ".spl-fingertemp-modal-finger-delete", function (e) {
+		jari = $(this).attr("data-fid");
+		userid = $(this).attr("data-userid");
+		noind = $(this).attr("data-noind");
+		con = confirm("Apakah anda yakin ingin menghapus template finger (" + jari + ") ini ?");
+		if (con) {
+			$.ajax({
+				data: { jari: jari, userid: userid },
+				type: "POST",
+				url: baseurl + "SPL/DaftarFingerspot/deleteFingertemp",
+				success: function (e) {
+					alert("Sukses");
+					$.ajax({
+						data: { noind: noind },
+						type: "POST",
+						url: baseurl + "SPL/DaftarFingerspot/getfingerdata",
+						success: function (data) {
+							$("#spl-fingertemp-modal-finger tbody").html(data);
+						},
+						error: function (request, status, error) {
+							alert(request.responseText);
+						},
+					});
+				},
+				error: function (request, status, error) {
+					alert(request.responseText);
+				},
+			});
 		}
-	);
+	});
 
-	$("#spl-fingertemp-modal-finger").on(
-		"click",
-		".spl-fingertemp-modal-finger-add",
-		function (e) {
-			jari = $(this).attr("data-fid");
-			userid = $(this).attr("data-userid");
-			noind = $(this).attr("data-noind");
-			link_base64encode = btoa(
-				baseurl +
-					"SPL/DaftarFingerspot/finger_register?userid=" +
-					userid +
-					"&finger=" +
-					jari
-			);
-			window.location.href = "finspot:FingerspotReg;" + link_base64encode;
-			var run = 0;
-			var interval = setInterval(function () {
-				$.ajax({
-					data: { noind: noind },
-					type: "POST",
-					url: baseurl + "SPL/DaftarFingerspot/getfingerdata",
-					success: function (data) {
-						$("#spl-fingertemp-modal-finger tbody").html(data);
-						generateFingertempTable();
-					},
-					error: function (request, status, error) {
-						alert(request.responseText);
-					},
-				});
-				if (run === 25) {
-					clearInterval(interval);
-				}
-				run++;
-			}, 1000);
-		}
-	);
+	$("#spl-fingertemp-modal-finger").on("click", ".spl-fingertemp-modal-finger-add", function (e) {
+		jari = $(this).attr("data-fid");
+		userid = $(this).attr("data-userid");
+		noind = $(this).attr("data-noind");
+		link_base64encode = btoa(baseurl + "SPL/DaftarFingerspot/finger_register?userid=" + userid + "&finger=" + jari);
+		window.location.href = "finspot:FingerspotReg;" + link_base64encode;
+		var run = 0;
+		var interval = setInterval(function () {
+			$.ajax({
+				data: { noind: noind },
+				type: "POST",
+				url: baseurl + "SPL/DaftarFingerspot/getfingerdata",
+				success: function (data) {
+					$("#spl-fingertemp-modal-finger tbody").html(data);
+					generateFingertempTable();
+				},
+				error: function (request, status, error) {
+					alert(request.responseText);
+				},
+			});
+			if (run === 25) {
+				clearInterval(interval);
+			}
+			run++;
+		}, 1000);
+	});
 });
 
 function generateFingerspotTable() {
@@ -1370,26 +1295,18 @@ function generateFingertempTable() {
 
 const summon_count_overtime = (noind) => {
 	let tgl = $(".spl-date").val(),
-		start = $("input[name=waktu_0]").val();
-	end = $("input[name=waktu_1]").val();
-	type = $("select[name=kd_lembur]").val();
-	isbreak = $("input[name*=break]:checked").val() == 1 ? "Y" : "N";
-	isrest = $("input[name*=istirahat]:checked").val() == 1 ? "Y" : "N";
+		start = $("input[name=waktu_0]").val(),
+		end = $("input[name=waktu_1]").val(),
+		type = $("select[name=kd_lembur]").val(),
+		isbreak = $("input[name*=break]:checked").val() == 1 ? "Y" : "N",
+		isrest = $("input[name*=istirahat]:checked").val() == 1 ? "Y" : "N";
 
 	//console.log(noind, tgl, start, end, type, isbreak, isrest);
 
-	if (
-		noind == undefined ||
-		tgl == "" ||
-		start == "" ||
-		end == "" ||
-		type == ""
-	) {
+	if (noind == undefined || tgl == "" || start == "" || end == "" || type == "") {
 		$("#estJamLembur").text("Isi semua data");
 	} else {
-		return count_overtime(tgl, start, end, type, isbreak, isrest, noind).then(
-			(res) => res
-		);
+		return count_overtime(tgl, start, end, type, isbreak, isrest, noind).then((res) => res);
 	}
 };
 
@@ -1422,13 +1339,45 @@ $(document).on("ifChecked", "input[name=break], input[name=istirahat]", (e) => {
 	summon_count_overtime(noind);
 });
 
+// !!! TRIAL
+function checkLembur() {
+	const endpoint = baseurl + "SPLSeksi/Pusat/C_splseksi/cek_anonymous2";
+
+	let tanggal0 = $("input[name*=tanggal_0]").val();
+	let tanggal1 = $("input[name*=tanggal_1]").val();
+	let waktu0 = $("input[name*=waktu_0]").val();
+	let waktu1 = $("input[name*=waktu_1]").val();
+	let lembur = $("select[name*=kd_lembur]").val();
+	let istirahat = $("input[name*=istirahat]:checked").val();
+	let break0 = $("input[name*=break]:checked").val();
+
+	if (!!noindSPL) {
+		$.ajax({
+			url: endpoint,
+			type: "POST",
+			data: {
+				noind: noindSPL,
+				tanggal0: tanggal0,
+				tanggal1: tanggal1,
+				waktu0: waktu0,
+				waktu1: waktu1,
+				lembur: lembur,
+				istirahat: istirahat,
+				break0: break0,
+			},
+			success: function (data) {
+				//coba
+			},
+		});
+	}
+}
+
 $(document).ready(function () {
-	//estimasi jam lembur /menu input dan edit
+	// estimasi jam lembur /menu input dan edit
 	let noind = $(".spl-pkj-select2").val();
 	summon_count_overtime(noind);
-	$(
-		".spl-date, input[name=waktu_0], input[name=waktu_1], select[name=kd_lembur], input[type=radio][name=istirahat], input[type=radio][name=break]"
-	).change(() => {
+
+	$(".spl-date, input[name=waktu_0], input[name=waktu_1], select[name=kd_lembur], input[type=radio][name=istirahat], input[type=radio][name=break]").change(() => {
 		let noind = $(".spl-pkj-select2").val();
 
 		summon_count_overtime(noind);
@@ -1544,13 +1493,12 @@ const btnEditListener = (e) => {
 			.text(noind + " - " + nama);
 		$(".lembur-personalia-pekerja").append(option).trigger("change");
 		$(".lembur-personalia-pekerja").prop("disabled", true);
+
 		$.ajax({
 			method: "GET",
 			url: baseurl + "SPL/AccessSection/ajax/getInfoNoind",
 			beforeSend: () => {
-				$("#overtime_table_access_section > tbody").html(
-					'<tr><td colspan="4"><center>loading...</center></td></tr>'
-				);
+				$("#overtime_table_access_section > tbody").html('<tr><td colspan="4"><center>loading...</center></td></tr>');
 			},
 			data: {
 				noind,
@@ -1598,13 +1546,7 @@ const btnDeleteAccessListener = () => {
 						noind,
 					},
 					success: (res) => {
-						swal
-							.fire(
-								`Akses noind  <b>${noind}</b>  telah dihapus`,
-								"",
-								"success"
-							)
-							.then((res) => location.reload());
+						swal.fire(`Akses noind  <b>${noind}</b>  telah dihapus`, "", "success").then((res) => location.reload());
 					},
 				});
 			}
@@ -1622,14 +1564,10 @@ const btnAddRowListener = () => {
 	}
 
 	let arrayOfExistKodesie = [];
-	let getExistVal = $("#overtime_table_access_section tbody > tr").each(
-		function () {
-			let kodesie = $(this).find("td:eq(1)").text().trim();
-			arrayOfExistKodesie.push(kodesie);
-		}
-	);
-
-	console.log(arrayOfExistKodesie);
+	let getExistVal = $("#overtime_table_access_section tbody > tr").each(function () {
+		let kodesie = $(this).find("td:eq(1)").text().trim();
+		arrayOfExistKodesie.push(kodesie);
+	});
 
 	let section_number = section.split("-")[0].trim();
 	let section_name = section.split("-")[1].trim();
@@ -1654,14 +1592,12 @@ const btnAddRowListener = () => {
 };
 
 const btnDelRowListener = () => {
-	$("#overtime_table_access_section > tbody > tr > td > button.delSelf").each(
-		function () {
-			$(this).click(() => {
-				$(this).closest("tr").remove();
-				reNumberingTable();
-			});
-		}
-	);
+	$("#overtime_table_access_section > tbody > tr > td > button.delSelf").each(function () {
+		$(this).click(() => {
+			$(this).closest("tr").remove();
+			reNumberingTable();
+		});
+	});
 };
 
 const reNumberingTable = () => {
@@ -1684,12 +1620,10 @@ const saveAccessSection = () => {
 	}
 
 	let arrayOfExistKodesie = [];
-	let getExistVal = $("#overtime_table_access_section tbody > tr").each(
-		function () {
-			let kodesie = $(this).find("td:eq(1)").text().trim();
-			arrayOfExistKodesie.push(kodesie);
-		}
-	);
+	let getExistVal = $("#overtime_table_access_section tbody > tr").each(function () {
+		let kodesie = $(this).find("td:eq(1)").text().trim();
+		arrayOfExistKodesie.push(kodesie);
+	});
 
 	if (arrayOfExistKodesie.length == 0) {
 		swal.fire("Seksi masih kosong", "", "warning");
@@ -1704,9 +1638,7 @@ const saveAccessSection = () => {
 			},
 			success: (res) => {
 				// after it just reload the page
-				swal
-					.fire("sukses menyimpan akses noind " + noind, "", "success")
-					.then((res) => location.reload());
+				swal.fire("sukses menyimpan akses noind " + noind, "", "success").then((res) => location.reload());
 			},
 			error: (res) => {
 				swal.fire("System error, Tidak bisa input data", "", "error");
@@ -1751,7 +1683,7 @@ const configStorageAlert = () => {
 	let now = d.getHours() + ":" + d.getMinutes();
 	let today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
 
-	data = {
+	let data = {
 		count,
 		lastTime: now,
 		today,
@@ -1759,7 +1691,7 @@ const configStorageAlert = () => {
 
 	window.localStorage.setItem("alert-SPL", JSON.stringify(data));
 };
-//dk
+
 const sendReminder = () => {
 	let lastData = window.localStorage.getItem("alert-SPL");
 	let json = JSON.parse(lastData);
@@ -1772,27 +1704,18 @@ const sendReminder = () => {
 	if (json.count == 1) {
 		let lastTime = new Date(today + " " + json.lastTime);
 		let thisnow = today + " " + now;
-		lastTime =
-			today + " " + (lastTime.getHours() + 1) + ":" + lastTime.getMinutes();
+		lastTime = today + " " + (lastTime.getHours() + 1) + ":" + lastTime.getMinutes();
 
 		let anow = new Date(thisnow);
 		let alast = new Date(lastTime);
 
 		if (anow < alast) {
 			let waiting = (alast - anow) / 1000 / 60;
-			Swal.fire(
-				`Silahkan menunggu ${waiting} menit`,
-				"untuk mengirimkan notifkasi lagi",
-				"warning"
-			);
+			Swal.fire(`Silahkan menunggu ${waiting} menit`, "untuk mengirimkan notifkasi lagi", "warning");
 			return;
 		}
 	} else if (json.count == 2) {
-		Swal.fire(
-			"Tidak bisa mengirim notifkasi lagi",
-			"maksimal sehari adalah 2x",
-			"warning"
-		);
+		Swal.fire("Tidak bisa mengirim notifkasi lagi", "maksimal sehari adalah 2x", "warning");
 		return;
 	}
 
@@ -1821,11 +1744,7 @@ const sendReminder = () => {
 					},
 					success: () => {
 						Swal.close();
-						swal.fire(
-							"Sukses mengirimkan reminder Atasan",
-							"Silahkan menunggu 1 jam lagi untuk mengirimkan reminder",
-							"success"
-						);
+						swal.fire("Sukses mengirimkan reminder Atasan", "Silahkan menunggu 1 jam lagi untuk mengirimkan reminder", "success");
 					},
 				});
 			}
@@ -1931,5 +1850,61 @@ $(document).ready(function () {
 		let val = $("#frm_rekap_lembur").serialize();
 		let url = baseurl + "SPLSeksi/C_splseksi/export_rekap_excel?" + val;
 		window.open(url, "_blank");
+	});
+
+	const auth_finger = {
+		storage_name: "auth_fingerprint_spl",
+		json_template: {
+			success: Boolean,
+			date: Date,
+		},
+		get value() {
+			const raw = localStorage.getItem(this.storage_name);
+			const json = JSON.parse(raw);
+			return json;
+		},
+		set value(val) {
+			// json
+			const toJSON = JSON.stringify(val);
+			localStorage.setItem(this.storage_name, toJSON);
+		},
+		action(e) {
+			if (e.key !== this.storage_name) return;
+			console.log("something in storage is changed");
+			if (this.value.success === true) {
+				window.location.reload();
+			}
+		},
+		listener() {
+			window.addEventListener("storage", this.action.bind(this));
+		},
+		init() {
+			this.value = {
+				success: false,
+				date: moment().format("YYYY-mm-DD H:mm:s"),
+			};
+			this.listener();
+		},
+	};
+
+	$(".spl_process_auth").click(function (e) {
+		e.preventDefault();
+		const fingerspot_sdk_url = $(this).attr("href");
+
+		window.location.href = fingerspot_sdk_url;
+		console.log(fingerspot_sdk_url);
+		auth_finger.init();
+	});
+});
+
+$(window).load(() => {
+	$("#spl_check_all").on("ifChanged", function (e) {
+		let isChecked = $(this).is(":checked");
+		if (isChecked) {
+			$(".spl-chk-data").prop("checked", true);
+		} else {
+			$(".spl-chk-data").prop("checked", false);
+		}
+		spl_load_data();
 	});
 });

@@ -54,6 +54,20 @@
 													<button type="button" class="btn btn-success" id="CateringHitungRefreshMakan">Refresh Makan</button>
 												</div>
 											</div>
+											<?php 
+											if (isset($kodesie) && !empty($kodesie) && substr($kodesie, 0, 7) == '1010301') {
+												?>
+											<div class="form-group">
+												<div class="col-sm-6 text-right">
+													<button type="button" class="btn btn-warning" id="CateringHitungRefreshSnackBackDate"><span class="fa fa-warning"></span>Refresh Snack Back Date<span class="fa fa-warning"></span></button>
+												</div>
+												<div class="col-sm-6 text-left">
+													<button type="button" class="btn btn-danger" id="CateringHitungRefreshMakanBackDate"><span class="fa fa-warning"></span> Refresh Makan Back Date<span class="fa fa-warning"></span></button>
+												</div>
+											</div>
+												<?php
+											}
+											?>
 										</form>
 									</div>
 								</div>

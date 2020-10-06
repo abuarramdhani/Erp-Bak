@@ -48,6 +48,7 @@
                                                     <div class="col-lg-8">
                                                         <?php echo $headerRow['non_conformity_num']; ?>
                                                         <input type="hidden" name="txtHeaderId" value="<?php echo $headerRow['header_id'];?>">
+                                                        <input type="hidden" name="last_menu" value="list Buyer">
                                                     </div>
                                                 </div><br>
                                                 <div class="row">
@@ -141,7 +142,16 @@
                                                     <span class="pull-right">:</span>
                                                 </div>
                                                 <div class="col-lg-8">
-                                                    <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>">
+                                                    <!-- <input style="width: 310px;" type="text" class="form-control splrNonC" name="txtSupplierName" value="<?php echo $headerRow['supplier']; ?>"> -->
+                                                    <?php if ($headerRow['supplier'] != null) {
+                                                            $opt = '<option value="'.$headerRow['supplier'].'">'.$headerRow['supplier'].'</option>';
+
+                                                         }else{
+                                                            $opt = '';
+                                                        } ?>
+                                                    <select class="form-control slcSupplierNC" name="txtSupplierName">
+                                                        <?= $opt;?>
+                                                    </select>
                                                 </div>
                                             </div><br>
                                             <div class="row">

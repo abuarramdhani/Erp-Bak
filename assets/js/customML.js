@@ -79,6 +79,33 @@ $(document).ready(function(){
 		}
 	})
 
+	$('.slcnmvendorLppb').select2({
+        ajax: {
+            url: baseurl+'TrackingLppb/Tracking/searchVendor',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            id: item.VENDOR_NAME,
+                            text: item.VENDOR_NAME,
+                        }
+                    })
+                };
+            },
+            cache: true,
+        },
+        minimumInputLength: 4,
+		placeholder: 'Nama Vendor',
+		allowClear: true
+    })
+
 	
 $('#btnsavekasie').click(function(){
 	Swal.fire({
@@ -144,32 +171,42 @@ $('#btnsavekasie').click(function(){
 		var inventory = $('#inventory').val();
 		var opsigdg = $('#opsigdg').val();
 
-		// var status = $('#status_lppb').val();
-		// console.log(status);
-		$.ajax({
-			type: "POST",
-			url: baseurl+"TrackingLppb/Tracking/btn_search",
-			data: {
-				nama_vendor: nama_vendor,
-				nomor_lppb: nomor_lppb,
-				dateFrom: dateFrom,
-				dateTo: dateTo,
-				nomor_po: nomor_po,
-				inventory: inventory,
-				opsigdg: opsigdg
-				// status: status
-			},
-			success: function (response) {
-				$('#loading_lppb').html(response);
-				$('#tabel_search_tracking_lppb').DataTable({
-					"paging": true,
-					"info":     false,
-					"language" : {
-						"zeroRecords": " "             
-					},
-				});
-			}
-		});
+		if (dateFrom && dateTo) {
+			
+			$('#loading_lppb').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+			// var status = $('#status_lppb').val();
+			// console.log(status);
+			$.ajax({
+				type: "POST",
+				url: baseurl+"TrackingLppb/Tracking/btn_search",
+				data: {
+					nama_vendor: nama_vendor,
+					nomor_lppb: nomor_lppb,
+					dateFrom: dateFrom,
+					dateTo: dateTo,
+					nomor_po: nomor_po,
+					inventory: inventory,
+					opsigdg: opsigdg
+					// status: status
+				},
+				success: function (response) {
+					$('#loading_lppb').html(response);
+					$('#tabel_search_tracking_lppb').DataTable({
+						"paging": true,
+						"info":     false,
+						"language" : {
+							"zeroRecords": " "             
+						},
+					});
+				}
+			});
+		}else{
+			Swal.fire({
+                type: 'error',
+                title: 'Gagal',
+                text: 'Anda harus mengisi tanggal LPPB !',
+            });
+		}
 	})
 	$('#table_tracking_lppb').DataTable({
 		"pageLength": 10,

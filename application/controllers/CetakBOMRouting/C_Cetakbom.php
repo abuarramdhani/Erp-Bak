@@ -76,7 +76,7 @@ class C_Cetakbom extends CI_Controller
 			echo '<option value="'.$komp['SEGMENT1'].'">'.$komp['SEGMENT1'].' - '.$komp['DESCRIPTION'].'</option>';
 		}
 	}
-		public function getseksi()
+	public function getseksi()
 	{
 		$term	= $this->input->post('segment1');
 		$html = '<option></option>';
@@ -88,18 +88,58 @@ class C_Cetakbom extends CI_Controller
 			echo $html;
 		} elseif ($term=='OPM') {
 			echo '<option></option>';	
+		} else {
+			echo '<option></option>';	
 		}
 
 	
 	}
 
-	public function CetakBOM()
+	public function getAlternate(){
+		$term	= $this->input->post('segment1');
+		$html = '';
+		$alternate = $this->M_cetakbom->getAlternate($term);
+			foreach ($alternate as $s) {
+				if ($s['ALTERNATE_BOM_DESIGNATOR'] == null) {
+					$alt = 'Primary';
+				} else {
+					$alt = $s['ALTERNATE_BOM_DESIGNATOR'];
+				}
+				$html = $html.'<option value="'.$alt.'">'.$alt.'</option>';
+			}
+		echo $html;
+	}
+
+	public function getRecipe()
 	{
+		$term	= $this->input->post('segment1');
+		$html = '';
+			$recipe=$this->M_cetakbom->dataopm1($term);	
+			foreach ($recipe as $s) {
+			$html = $html.'<option value="'.$s['ROUTING_ID'].'|'.$s['FORMULA_ID'].'">'.$s['RECIPE_NO'].' - Versi '.$s['RECIPE_VERSION'].'</option>';
+			}
+			echo $html;
+	}
+
+	public function CetakBOM()
+	{	$recipe = null;
+		$formula = null;
 		$kode = $this->input->post('comp');
-		$seksi = $this->input->post('seksi');
+		$alt = $this->input->post('alt');
 		$produk = $this->input->post('prodd');
 		$organization = $this->input->post('org');
-		$tipe = $this->input->post('typeCetak');
+		// $tipe = $this->input->post('typeCetak');
+		
+		if ($this->input->post('recipe') != null) {
+			$recipeformula = explode("|",$this->input->post('recipe'));
+			$recipe = $recipeformula[0];
+			$formula = $recipeformula[1];
+		}
+		
+
+		/////////////////////DEFAULT DETAIL/////////////////////////
+		$tipe = 'Y';
+		/////////////////////DEFAULT DETAIL/////////////////////////
 
 		$desckomp = $this->M_cetakbom->getdesckomponen($kode);
 		$descprod = $this->M_cetakbom->selectprodukdesc($produk);
@@ -120,8 +160,8 @@ class C_Cetakbom extends CI_Controller
 		}
 
 		if ($organization =='ODM') {
-			$datapdf = $this->M_cetakbom->getdatapdf($kode,$seksi);
-			$datapdf2 = $this->M_cetakbom->getdatapdf2($kode);
+			$datapdf = $this->M_cetakbom->getdatapdf($kode,$alt);
+			$datapdf2 = $this->M_cetakbom->getdatapdf2($kode, $alt);
 
 			$array_Resource2 = array();
 			for ($i=0; $i < sizeof($datapdf2); $i++) {
@@ -255,11 +295,29 @@ class C_Cetakbom extends CI_Controller
 
 				$i++;
 			}
+			if ($array_Resource2['ALT'] != null) {
+				$merge = $this->batasMerge($array_Resource2['ALT']);
+				$tabelBoM = $this->generateTableBoM($merge, $datapdf2);
+			} else {
+				$merge = null;
+				$tabelBoM = null;
+			}
+			
+			// echo "<pre>";
+			// print_r($merge);
+			// exit();
+			$data['tabel'] = $tabelBoM;
+			$data['merge'] = $merge;
 			$data['arrayR'] = $array_Resource;
 			$data['arrayR2'] = $array_Resource2;
 			$data['datapdf'] = $array_pdf;
 			$data['datapdf2'] = $datapdf2;
+			
+			
 
+			
+
+		//komen
 			// 	$kodeproses = array();
 			// 	foreach ($datapdf as $pdfs) {
 			// 		$kodek="";
@@ -282,16 +340,41 @@ class C_Cetakbom extends CI_Controller
 			// 	$alt = array_count_values($altkode);
 			// 	$data['kodee'] = $kodee;
 			// 	$data['alt'] = $alt;
-
+		//komen
 		} else if ($organization == 'OPM') {
 
-			$dataopm1 = $this->M_cetakbom->dataopm1($kode);
-			if ($dataopm1 == null) {
-				echo "<br><br> <center> <b>ROUTING / FORMULA TIDAK DITEMUKAN <br> HARAP HUBUNGI PIC TERKAIT !!</b></center>";exit();
-			} else {
+			// $dataopm1 = $this->M_cetakbom->dataopm1($kode);
+			// if ($dataopm1 == null) {
+			// 	echo "<br><br> <center> <b>ROUTING / FORMULA TIDAK DITEMUKAN <br> HARAP HUBUNGI PIC TERKAIT !!</b></center>";exit();
+			// } else {
 				// echo "<pre>";print_r($dataopm1);exit();
-				$dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
-				$dataopm3 =  $this->M_cetakbom->dataopm3($dataopm1[0]['FORMULA_ID']);
+				// $dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
+				$dataopm2 =  $this->M_cetakbom->dataopm2($recipe);
+				for ($i=0; $i < sizeof($dataopm2); $i++) { 
+					//P1
+					if ($dataopm2[$i]['P1'] != null) {
+						$p1 = 'P1: '.$dataopm2[$i]['P1'];
+					} else {
+						$p1 = '';
+					}	
+					//P2	
+					if ($dataopm2[$i]['P2'] != null) {
+						$p2 = '<br>P2: '.$dataopm2[$i]['P2'];
+					} else {
+						$p2 = '';
+					}
+					//P3
+					if ($dataopm2[$i]['P3'] != null) {
+						$p3 = '<br>P3: '.$dataopm2[$i]['P3'];
+					} else {
+						$p3 = '';
+					}
+					
+					$dataopm2[$i]['DETAILPROSES'] = $p1.$p2.$p3;
+
+					$route_id[$dataopm2[$i]['ROUTING_ID']][] = $i; 
+				}
+				$dataopm3 =  $this->M_cetakbom->dataopm3($formula);
 				
 				for ($i=0; $i < sizeof($dataopm2); $i++) { 
 					$activity[$dataopm2[$i]['ACTIVITY']][] = $i;  
@@ -308,29 +391,32 @@ class C_Cetakbom extends CI_Controller
 					}
 					
 				}
-				
 				$data['act'] = $acti;
-				$data['dataopm1'] = $dataopm1;
+				$data['r_id'] = $route_id;
+				// $data['dataopm1'] = $dataopm1;
 				$data['dataopm2'] = $dataopm2;
+				$data['comp_name'] = $dataopm3[0]['FORMULA_DESC1'];
 				$data['dataopm3'] = $dataopm3;
-			}
+			// }
+			// echo "<pre>";
+			// print_r($data);
+			// exit();
 			
 		}
 
-	
-
 		$data['name'] = $name;
-		$data['seksi'] = $seksi;
+		$data['alt'] = $alt;
 		$data['produk'] = $produk;
 		$data['organization'] = $organization;
 		$data['desckomp'] = $desckomp[0]['DESCRIPTION'];
 		$data['descprod'] = $descprod[0]['DESCRIPTION'];
 		
 		// print_r(); exit();
+		$dataRecipe = $this->input->post('recipe');
+		$urutan = $this->generate_Doc_No($data['user'], $kode, $organization, $dataRecipe, $alt);
+		$data['no_doc'] = $urutan;
 
-
-		// echo "<pre>";print_r($datapdf);exit();
-
+		// echo "<pre>"; print_r($data); exit();
 		ob_start();
 		$this->load->library('pdf');
     	$pdf = $this->pdf->load();
@@ -338,24 +424,28 @@ class C_Cetakbom extends CI_Controller
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'BOM_Routing_'.$tglNama.'.pdf';
 		$head = $this->load->view('CetakBOMRouting/V_CetakanHead', $data, true);
-		if ($tipe == 'Y') {
-			$html = $this->load->view('CetakBOMRouting/V_Cetakan_Detail', $data, true);
-		} elseif ($tipe == 'N'){
+		// if ($tipe == 'Y') {
+		// 	$html = $this->load->view('CetakBOMRouting/V_Cetakan_Detail', $data, true);
+		// } elseif ($tipe == 'N'){
 			if ($organization == 'ODM') {
-				$html = $this->load->view('CetakBOMRouting/V_Cetakan', $data, true);
+				$html = $this->load->view('CetakBOMRouting/V_Cetakan_Detail', $data, true);
 			} else {
 				$html = $this->load->view('CetakBOMRouting/V_CetakanOPM', $data, true);
 
 			}
-		}
+		// }
     	$foot = $this->load->view('CetakBOMRouting/V_CetakanFoot', $data, true);	
 
 		ob_end_clean();
+		$pdf->shrink_tables_to_fit = 0;
 		$pdf->setHTMLHeader($head);	
     	$pdf->WriteHTML($html);	
   		$pdf->setHTMLFooter($foot);												//-----> Pakai Library MPDF
 
-    	$pdf->Output($filename, 'I');
+		$pdf->Output($filename, 'I');
+
+		
+		
 	}
 
 	public function SingkatNama($nama, $jumlah_Kata)
@@ -385,5 +475,73 @@ class C_Cetakbom extends CI_Controller
 		return $nama_Jadi;
 	}
 
+	public function batasMerge($arrayALT){
+		$batas = 50;
+		// $halsatu = 25;
+		foreach ($arrayALT as $key => $value) {
+			$barisalt[$key] = sizeof($arrayALT[$key]);
+			$frek[$key] = ceil($barisalt[$key]/$batas);
+			$sisa[$key] = $barisalt[$key]%$batas;
+			for ($i=1; $i <= $frek[$key]; $i++) { 
+				$batasmax[$key][$i] = $batas * $i;
+			}
+		}
+
+		
+
+		$hasil['batas'] = $batas;
+		// $hasil['halsatu'] = $halsatu;
+		$hasil['batasmax'] = $batasmax;
+		$hasil['barisalt'] = $barisalt;
+		$hasil['frekuensi'] = $frek;
+		$hasil['sisa'] = $sisa;
+
+		// echo "<pre>";
+		// print_r($hasil);
+		// exit();
+		return $hasil;
+	}
+
+	public function generateTableBoM ($merge, $data){	
+		$hal = 0;
+		$step = 1;
+		$count = 0;
+		for ($i=0; $i < sizeof($data); $i++) { 
+			if ($data[$i]['ALT'] == '') {
+				$alt = 'primary';
+			} else {
+				$alt =  $data[$i]['ALT'];
+			}
+
+			$arrayJadi[$hal][$alt][$count] = $data[$i];
+			$count++;
+
+			if ($count == $merge['batas']) {
+				$count = 0;
+				$hal++;
+				$step++;
+			}
+		}
+		return $arrayJadi;
+		// echo "<pre>";
+		// print_r($arrayJadi);
+		// echo "<pre>";
+		// print_r($data);
+		// echo "<pre>";
+		// print_r($merge);
+		// exit();
+
+	}
+
+	public function generate_Doc_No($user, $item, $org, $recipe, $alt) {
+		$log = $this->M_cetakbom->get_log();
+		$doc_no = $log+1;
+		$urutan = str_pad($doc_no,4,"0",STR_PAD_LEFT);
+		// CBR-YYMMDDXXX
+		$tgl = date("ymd");
+		$number = "CBR-".$tgl."".$urutan;
+		$this->M_cetakbom->insert_log($doc_no, $user, $item, $org, $recipe, $alt);
+		return $number;
+	}
 
 }

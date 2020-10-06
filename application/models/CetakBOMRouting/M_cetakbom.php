@@ -88,85 +88,103 @@ AND msib.segment1 = '$komp'
        $query = $oracle->query($sql);
         return $query->result_array();
  }
+    public function getAlternate($kode){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT distinct bom.alternate_bom_designator, bom.assembly_item_id FROM bom_bill_of_materials bom, mtl_system_items_b msib
+        WHERE bom.assembly_item_id = msib.INVENTORY_ITEM_ID
+        AND msib.SEGMENT1 = '$kode' order by bom.alternate_bom_designator DESC";
 
-   public function getdatapdf($kode,$seksi) {
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
+  //  public function getdatapdf($kode,$seksi) {
+  public function getdatapdf($kode, $alt) {
     $oracle = $this->load->database('oracle', true);
-    if ($seksi == null) {
-			$seksii = null;
+    if ($alt == 'Primary') {
+			$alter = 'AND bor.ALTERNATE_ROUTING_DESIGNATOR IS NULL';
 		} else {
-			$seksii = "AND bd.department_class_code = '$seksi'";
+			$alter = "AND bor.ALTERNATE_ROUTING_DESIGNATOR = '$alt'";
 		}
 
-    $sql = "Select bor.ORGANIZATION_ID
-,msib.segment1
-,msib.description
-,bor.ROUTING_SEQUENCE_ID
-,bor.ALTERNATE_ROUTING_DESIGNATOR alt
-,bos.OPERATION_SEQUENCE_ID
-,bos.OPERATION_SEQ_NUM opr_no
-,BOS.OPERATION_DESCRIPTION KODE_PROSES
-    ,mach.RESOURCE_CODE
-    ,mach.NO_MESIN
-    ,mach.ASSIGNED_UNITS machine_qt
-,opt.assigned_units opt_qty
-,opt.USAGE_RATE_OR_AMOUNT
-,(opt.USAGE_RATE_OR_AMOUNT*3600) CT
-,floor(23400/(opt.USAGE_RATE_OR_AMOUNT*3600))target
-,opt.LAST_UPDATE_DATE
-,bos.ATTRIBUTE7 P1
-,bos.ATTRIBUTE8 P2
-,bos.ATTRIBUTE9 P3
-,bos.ATTRIBUTE10 P4
-,bos.ATTRIBUTE11 P5
-,'#'||NVL(bos.ATTRIBUTE7, '$%' )||'#'||NVL(bos.ATTRIBUTE8, '$%' )||'#'||NVL(bos.ATTRIBUTE9, '$%' )||'#'||NVL(bos.ATTRIBUTE10, '$%' )||'#'||NVL(bos.ATTRIBUTE11, '$%' ) detail
-from mtl_system_items_b msib
-,bom_operational_routings bor
-,bom_operation_sequences bos
-,bom_departments bd
-    ,(select borsop.OPERATION_SEQUENCE_ID
-    ,borsop.USAGE_RATE_OR_AMOUNT
-    ,borsop.ASSIGNED_UNITS
-    ,borsop.LAST_UPDATE_DATE 
-    from bom_operation_resources borsop
-    ,bom_resources brop
-    where borsop.RESOURCE_ID = brop.RESOURCE_ID
-    and brop.RESOURCE_TYPE = 2
-    and brop.DISABLE_DATE is null) opt
-    ,(select borsmc.OPERATION_SEQUENCE_ID
-    ,brmc.RESOURCE_CODE
-    ,kdmr.DFF
-    ,kdmr.NO_MESIN
-    ,kdmr.TAG_NUMBER
-    ,kdmr.SPEC_MESIN
-    ,brmc.DESCRIPTION
-    ,borsmc.ASSIGNED_UNITS 
-    from bom_operation_resources borsmc
-    ,bom_resources brmc
-    ,khs_daftar_mesin_resource kdmr
-    where borsmc.RESOURCE_ID = brmc.RESOURCE_ID
-    and brmc.RESOURCE_TYPE = 1
-    and brmc.AUTOCHARGE_TYPE = 1
-    and brmc.DISABLE_DATE is null
-    and borsmc.RESOURCE_ID = kdmr.RESOURCE_ID(+))mach
-where bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
-and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
-and bd.DEPARTMENT_CODE not like 'D-SUB%'
-and bd.ORGANIZATION_ID = bor.ORGANIZATION_ID
-and bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
-and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
-and bos.DISABLE_DATE is null
-and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
-and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
-and msib.segment1 = '$kode' 
-$seksii
-order by bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID ,bos.OPERATION_SEQ_NUM";
-
+      $sql = "Select bor.ORGANIZATION_ID
+      ,msib.segment1
+      ,msib.description
+      ,bor.ROUTING_SEQUENCE_ID
+      ,bor.ALTERNATE_ROUTING_DESIGNATOR alt
+      ,bos.OPERATION_SEQUENCE_ID
+      ,bos.OPERATION_SEQ_NUM opr_no
+      ,BOS.OPERATION_DESCRIPTION KODE_PROSES
+          ,mach.RESOURCE_CODE
+          ,mach.NO_MESIN
+          ,mach.ASSIGNED_UNITS machine_qt
+      ,opt.assigned_units opt_qty
+      ,round(opt.usage_rate_or_amount/opt.assigned_units,5) USAGE_RATE_OR_AMOUNT  --- New
+      ,round(opt.usage_rate_or_amount/opt.assigned_units,5)*3600 CT --- New
+      ,round(6.5/(round(opt.usage_rate_or_amount/opt.assigned_units,5))) target  --- New
+      -- ,opt.USAGE_RATE_OR_AMOUNT
+      -- ,(opt.USAGE_RATE_OR_AMOUNT*3600) CT
+      -- ,floor(23400/(opt.USAGE_RATE_OR_AMOUNT*3600))target
+      ,opt.LAST_UPDATE_DATE
+      ,bos.ATTRIBUTE7 P1
+      ,bos.ATTRIBUTE8 P2
+      ,bos.ATTRIBUTE9 P3
+      ,bos.ATTRIBUTE10 P4
+      ,bos.ATTRIBUTE11 P5
+      ,'#'||NVL(bos.ATTRIBUTE7, '$%' )||'#'||NVL(bos.ATTRIBUTE8, '$%' )||'#'||NVL(bos.ATTRIBUTE9, '$%' )||'#'||NVL(bos.ATTRIBUTE10, '$%' )||'#'||NVL(bos.ATTRIBUTE11, '$%' ) detail
+      from mtl_system_items_b msib
+      ,bom_operational_routings bor
+      ,bom_operation_sequences bos
+      ,bom_departments bd
+          ,(select borsop.OPERATION_SEQUENCE_ID
+          ,borsop.USAGE_RATE_OR_AMOUNT
+          ,borsop.ASSIGNED_UNITS
+          ,borsop.LAST_UPDATE_DATE 
+          from bom_operation_resources borsop
+          ,bom_resources brop
+          where borsop.RESOURCE_ID = brop.RESOURCE_ID
+          and brop.RESOURCE_TYPE = 2
+          and brop.DISABLE_DATE is null) opt
+          ,(select borsmc.OPERATION_SEQUENCE_ID
+          ,brmc.RESOURCE_CODE
+          ,kdmr.DFF
+          ,kdmr.NO_MESIN
+          ,kdmr.TAG_NUMBER
+          ,kdmr.SPEC_MESIN
+          ,brmc.DESCRIPTION
+          ,borsmc.ASSIGNED_UNITS 
+          from bom_operation_resources borsmc
+          ,bom_resources brmc
+          ,khs_daftar_mesin_resource kdmr
+          where borsmc.RESOURCE_ID = brmc.RESOURCE_ID
+          and brmc.RESOURCE_TYPE = 1
+          and brmc.AUTOCHARGE_TYPE = 1
+          and brmc.DISABLE_DATE is null
+          and borsmc.RESOURCE_ID = kdmr.RESOURCE_ID(+))mach
+      where bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
+      and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
+      and bd.DEPARTMENT_CODE not like 'D-SUB%'
+      and bd.ORGANIZATION_ID = bor.ORGANIZATION_ID
+      and bor.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+      and bor.ORGANIZATION_ID = msib.ORGANIZATION_ID
+      and bos.DISABLE_DATE is null
+      and bor.organization_id = 102
+      $alter
+      and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
+      and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
+      and msib.segment1 like '$kode' 
+      order by bos.OPERATION_SEQ_NUM ,bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID";
        $query = $oracle->query($sql);
         return $query->result_array();
        // return $sql;
  }
 
-    public function getdatapdf2($kode) {
+    public function getdatapdf2($kode, $alt) {
+      if ($alt == 'Primary') {
+        $alter = 'AND bom.alternate_bom_designator IS NULL';
+      } else {
+        $alter = "AND bom.alternate_bom_designator = '$alt'";
+      }
     $oracle = $this->load->database('oracle', true);
     $sql = "
 --     SELECT mb1.segment1 assembly_num, mb2.segment1 component_num, mb2.description,
@@ -225,6 +243,8 @@ and bom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
 and bom.ORGANIZATION_ID = msib.ORGANIZATION_ID
 and bic.COMPONENT_ITEM_ID = msib2.INVENTORY_ITEM_ID
 and bic.DISABLE_DATE is null
+and bom.organization_id = 102
+$alter
 and msib2.ORGANIZATION_ID = bom.ORGANIZATION_ID
 and bic.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
 and bic.ATTRIBUTE2 = mil2.INVENTORY_LOCATION_ID(+)
@@ -241,6 +261,8 @@ order by msib.SEGMENT1, bom.ALTERNATE_BOM_DESIGNATOR, bic.ITEM_NUM
     $oracle = $this->load->database('oracle', true);
     $sql = "select msib.SEGMENT1
 ,msib.DESCRIPTION
+,grvr.RECIPE_USE
+,grvr.PREFERENCE
 ,grb.RECIPE_NO
 ,grb.RECIPE_VERSION
 ,grb.ROUTING_ID
@@ -252,6 +274,7 @@ where grvr.RECIPE_ID = grb.RECIPE_ID
 and grvr.ORGANIZATION_ID = grb.OWNER_ORGANIZATION_ID
 and grvr.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
 and grvr.ORGANIZATION_ID = msib.ORGANIZATION_ID
+and grvr.RECIPE_USE = 0
 and grvr.END_DATE is null
 and grvr.VALIDITY_RULE_STATUS = 700
 and msib.SEGMENT1 = '$kode'";
@@ -262,7 +285,7 @@ and msib.SEGMENT1 = '$kode'";
 
 public function dataopm2($routing) {
     $oracle = $this->load->database('oracle', true);
-//     $sql = "select
+// $sql = "select
 // grb.ROUTING_ID
 // ,grb.ROUTING_CLASS
 // ,grb.ROUTING_NO
@@ -281,13 +304,19 @@ public function dataopm2($routing) {
 // ,goa.ACTIVITY
 // ,gat.ACTIVITY_DESC
 // ,goa.ACTIVITY_FACTOR
-// ,gor.RESOURCES
-// ,crmt.RESOURCE_DESC
-// ,crmb.RESOURCE_CLASS
-// ,gor.PROCESS_QTY
-// ,gor.RESOURCE_PROCESS_UOM
-// ,gor.RESOURCE_USAGE
-// ,gor.RESOURCE_USAGE_UOM
+// ,mach.resources
+// ,mach.resource_desc
+// ,mach.resource_class
+// ,'' proses
+// ,'' nomor_mesin
+// ,mach.RESOURCE_COUNT machine_qty
+// ,opt.RESOURCE_COUNT operator_qty
+// --,opt.RESOURCE_USAGE
+// ,opt.PROCESS_QTY
+// ,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
+// ,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
+// ,23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600) target
+// ,opt.LAST_UPDATE_DATE
 // from
 // gmd_routings_tl grt
 // ,gmd_routings_b grb
@@ -298,9 +327,28 @@ public function dataopm2($routing) {
 // ,gmd_operations_b gob
 // ,gmd_operation_activities goa
 // ,gmd_activities_tl gat
-// ,gmd_operation_resources gor
-// ,cr_rsrc_mst_tl crmt
-// ,cr_rsrc_mst_b crmb
+// ,(select gor.OPRN_LINE_ID
+// ,crmb.RESOURCES
+// ,crmt.RESOURCE_DESC
+// ,crmb.RESOURCE_CLASS
+// ,gor.RESOURCE_USAGE/gor.PROCESS_QTY
+// ,gor.RESOURCE_COUNT
+// from gmd_operation_resources gor
+// ,cr_rsrc_mst_b crmb ,cr_rsrc_mst_tl crmt
+// where gor.RESOURCES=crmb.RESOURCES
+// and gor.RESOURCES=crmt.RESOURCES
+// --and gor.OPRN_LINE_ID = 18327
+// and crmb.RESOURCE_CLASS = 'MESIN')mach
+// ,(select gor2.OPRN_LINE_ID
+// ,gor2.RESOURCE_USAGE
+// ,gor2.PROCESS_QTY
+// ,gor2.RESOURCE_COUNT
+// ,gor2.LAST_UPDATE_DATE
+// from gmd_operation_resources gor2
+// ,cr_rsrc_mst_b crmb2
+// where gor2.RESOURCES=crmb2.RESOURCES
+// --and gor2.OPRN_LINE_ID = 18327
+// and crmb2.RESOURCE_CLASS = 'OPERATOR')opt
 // where
 // grb.ROUTING_ID=grt.ROUTING_ID
 // and grb.ROUTING_STATUS=gst.STATUS_CODE
@@ -311,15 +359,13 @@ public function dataopm2($routing) {
 // and gob.OPERATION_STATUS=gst2.STATUS_CODE
 // and gob.OPRN_ID=goa.OPRN_ID
 // and gob.OPERATION_STATUS = 700
-// and goa.OPRN_LINE_ID=gor.OPRN_LINE_ID
-// and gor.RESOURCES=crmb.RESOURCES
-// and gor.RESOURCES=crmt.RESOURCES
 // and goa.ACTIVITY=gat.ACTIVITY
 // and grt.routing_id = '$routing'
+// and goa.OPRN_LINE_ID = opt.OPRN_LINE_ID(+)
+// and goa.OPRN_LINE_ID = mach.OPRN_LINE_ID(+)
 // order by grt.ROUTING_ID
 // ,grb.ROUTING_VERS";
-
-$sql = "select
+$sql = "SELECT
 grb.ROUTING_ID
 ,grb.ROUTING_CLASS
 ,grb.ROUTING_NO
@@ -328,7 +374,7 @@ grb.ROUTING_ID
 ,grb.ROUTING_QTY
 ,grb.ROUTING_UOM
 ,gst.DESCRIPTION rout_status
-,frd.ROUTINGSTEP_NO step
+,frd.ROUTINGSTEP_NO OPRN_NUM
 ,gob.OPRN_NO
 ,gob.OPRN_VERS
 ,got.OPRN_DESC
@@ -338,6 +384,7 @@ grb.ROUTING_ID
 ,goa.ACTIVITY
 ,gat.ACTIVITY_DESC
 ,goa.ACTIVITY_FACTOR
+,goa.attribute1 kode_proses
 ,mach.resources
 ,mach.resource_desc
 ,mach.resource_class
@@ -347,10 +394,17 @@ grb.ROUTING_ID
 ,opt.RESOURCE_COUNT operator_qty
 --,opt.RESOURCE_USAGE
 ,opt.PROCESS_QTY
-,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
-,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
-,floor(23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600)) target
+,round((opt.RESOURCE_USAGE/opt.PROCESS_QTY),5) resource_usage ---> New
+,round((opt.RESOURCE_USAGE/opt.PROCESS_QTY),5)*3600 CT ---> New
+,round(6.5/(round((opt.RESOURCE_USAGE/opt.PROCESS_QTY),5))) target ---> New
+-- ,opt.RESOURCE_USAGE/opt.PROCESS_QTY resource_usage
+-- ,(opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600 ct
+-- ,23400/((opt.RESOURCE_USAGE/opt.PROCESS_QTY)*3600) target
 ,opt.LAST_UPDATE_DATE
+,goa.attribute2 P1
+,goa.attribute3 P2
+,goa.attribute4 P3
+,'#'||NVL(goa.attribute2, '$%' )||'#'||NVL(goa.attribute3, '$%' )||'#'||NVL(goa.attribute4, '$%' ) detail
 from
 gmd_routings_tl grt
 ,gmd_routings_b grb
@@ -397,8 +451,9 @@ and goa.ACTIVITY=gat.ACTIVITY
 and grt.routing_id = '$routing'
 and goa.OPRN_LINE_ID = opt.OPRN_LINE_ID(+)
 and goa.OPRN_LINE_ID = mach.OPRN_LINE_ID(+)
-order by grt.ROUTING_ID
-,grb.ROUTING_VERS";
+order by grt.ROUTING_ID, frd.ROUTINGSTEP_NO
+-- ,grb.ROUTING_VERS
+";
 
        $query = $oracle->query($sql);
         return $query->result_array();
@@ -412,16 +467,20 @@ order by grt.ROUTING_ID
 ,msib2.segment1
 ,msib2.DESCRIPTION
 ,fmd.QTY
+,fmd.DETAIL_UOM
+,fft.FORMULA_DESC1
 ,msib2.PRIMARY_UOM_CODE uom
 ,mp.ORGANIZATION_CODE IO_KIB
 ,fmd.ATTRIBUTE2 SUBINV_KIB
 ,mil.SEGMENT1 loc_kib
 from fm_matl_dtl fmd
+,fm_form_mst_tl fft
 ,fm_form_mst_b ffb
 ,mtl_parameters mp
 ,mtl_item_locations mil
 ,mtl_system_items_b msib2
 where ffb.FORMULA_ID = fmd.FORMULA_ID
+and fmd.FORMULA_ID = fft.FORMULA_ID
 and ffb.FORMULA_STATUS  = 700
 and ffb.OWNER_ORGANIZATION_ID = fmd.ORGANIZATION_ID
 and fmd.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
@@ -435,5 +494,24 @@ order by fmd.FORMULA_ID
        $query = $oracle->query($sql);
         return $query->result_array();
  }
-   
+  
+ public function get_log(){
+    $oracle = $this->load->database('oracle', true);
+    date_default_timezone_set('Asia/Jakarta');
+    $time = date("m-Y");
+    $sql = "SELECT MAX(DOC_NUMBER) LAST FROM KHS_CETAK_BOM_RESOURCE_LOG WHERE to_char(LOG_DATE,'MM-YYYY') = '$time' ORDER BY DOC_NUMBER DESC";
+    $query = $oracle->query($sql);
+    $last = $query->result_array();
+    return $last[0]['LAST'];
+ }
+
+ public function insert_log($doc_no, $user, $item, $org, $recipe, $alt){
+    $oracle = $this->load->database('oracle', true);
+    date_default_timezone_set('Asia/Jakarta');
+    $time = date("d/m/Y H:i:s");
+    $sql = "INSERT INTO KHS_CETAK_BOM_RESOURCE_LOG (DOC_NUMBER, USER_ID, ITEM_CODE, ORGANIZATION_CODE, RECIPE, LOG_DATE, ALTERNATE) VALUES ($doc_no, '$user', '$item', '$org', '$recipe', TO_DATE('$time','DD/MM/YYYY HH24:MI:SS'), '$alt')";
+    $query = $oracle->query($sql);
+    $query = $oracle->query("commit");
+ }
+
  }

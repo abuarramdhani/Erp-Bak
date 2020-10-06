@@ -104,7 +104,8 @@ class C_Cetak extends CI_Controller {
 		$pdf = new mPDF('utf-8','f4', 0, '', 5, 5, 5, 5, 0, 0);
 		$filename 	= 'ImportToolRoom.pdf';
         $html = $this->load->view('CetakNCDataReport/V_PdfCetak', $data, true);
-        ob_end_clean();
+		ob_end_clean();
+		$pdf->charset_in = 'iso-8859-4';
         $pdf->WriteHTML($html);			
         $pdf->Output($filename, 'I');
     }

@@ -726,4 +726,144 @@ class M_dpb extends CI_Model
         $oracle->update('KHS_DPB_KENDARAAN', $data);
     }
 
+    public function checkOnhand($no_do, $kode_gudang)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = $oracle->query("SELECT APPS.KHS_CEK_ATR_DOSPB2('$no_do', 102, '$kode_gudang') as stockonhand FROM dual");
+
+      return $query->result_array();
+    }
+
+    public function procedureLockStock($no_do, $kode_gudang, $user)
+    {
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		if (!$conn) {
+			$e = oci_error();
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+        $oracle = $this->load->database('oracle',true);
+        $sql = "BEGIN APPS.KHS_ALLOCATE_NONSERIAL_DOSPB2(:no_do, 102, :kode_gudang, :user); END;";  
+        
+        $stmt = oci_parse($conn,$sql);
+        oci_bind_by_name($stmt,':no_do',$no_do,100);
+		oci_bind_by_name($stmt,':kode_gudang',$kode_gudang,100);
+        oci_bind_by_name($stmt,':user',$user,100);
+        
+        // But BEFORE statement, Create your cursor
+		// $cursor = oci_new_cursor($conn);
+		
+		oci_execute($stmt);
+
+		// and now, execute the cursor
+		// oci_execute($cursor);
+ 
+		// $message is now populated with the output value
+		// print "$message\n";
+    }
+
+    public function CekStok($no_do, $kode_gudang)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = $oracle->query("WITH param as (select regexp_substr('$no_do' ,'[^,]+', 1, level) p_item from dual
+        connect by regexp_substr('$no_do' , '[^,]+', 1, level) is not null)                                           
+        select
+        msib.segment1 item_code
+        ,msib.DESCRIPTION
+        ,tbl1.req_qty
+        --,NVL(SUM(moqd.transaction_quantity),0) QTY_ONHAND
+        ,(NVL
+        (
+        (SELECT SUM(moqd.transaction_quantity) 
+        FROM mtl_onhand_quantities_detail moqd 
+        WHERE
+        moqd.inventory_item_id = msib.inventory_item_id
+        AND moqd.SUBINVENTORY_CODE = '$kode_gudang')
+        ,0) 
+        -    
+        (
+        SELECT
+        NVL(SUM(mr.RESERVATION_QUANTITY),0)                                          
+        FROM
+        MTL_RESERVATIONS MR
+        ,mtl_system_items_b msib2
+        WHERE 
+        MR.inventory_item_id = msib2.INVENTORY_ITEM_ID
+        and MR.organization_id = msib2.organization_id
+        and msib2.segment1 = msib.segment1
+        and mr.subinventory_code = '$kode_gudang'
+        )
+        -
+        (
+        select
+        NVL(SUM(mmtt.transaction_quantity),0)
+        from
+        MTL_MATERIAL_TRANSACTIONS_TEMP mmtt
+        ,mtl_system_items_b msib3
+        where
+        msib3.inventory_item_id = mmtt.inventory_item_id
+        and msib3.organization_id = mmtt.organization_id
+        and msib3.segment1 = msib.segment1
+        and mmtt.subinventory_code = '$kode_gudang'   
+        )
+        ) ATR
+        ,(NVL
+        (
+        (SELECT SUM(moqd.transaction_quantity) 
+        FROM mtl_onhand_quantities_detail moqd 
+        WHERE
+        moqd.inventory_item_id = msib.inventory_item_id
+        AND moqd.SUBINVENTORY_CODE = '$kode_gudang')
+        ,0) 
+        -    
+        (
+        SELECT
+        NVL(SUM(mr.RESERVATION_QUANTITY),0)                                          
+        FROM
+        MTL_RESERVATIONS MR
+        ,mtl_system_items_b msib2
+        WHERE 
+        MR.inventory_item_id = msib2.INVENTORY_ITEM_ID
+        and MR.organization_id = msib2.organization_id
+        and msib2.segment1 = msib.segment1
+        and mr.subinventory_code = '$kode_gudang'
+        )
+        -
+        (
+        select
+        NVL(SUM(mmtt.transaction_quantity),0)
+        from
+        MTL_MATERIAL_TRANSACTIONS_TEMP mmtt
+        ,mtl_system_items_b msib3
+        where
+        msib3.inventory_item_id = mmtt.inventory_item_id
+        and msib3.organization_id = mmtt.organization_id
+        and msib3.segment1 = msib.segment1
+        and mmtt.subinventory_code = '$kode_gudang'    
+        )
+        )
+        - tbl1.req_qty ATR_sisa
+        from
+        mtl_system_items_b msib
+        ,(select 
+        mtrl.INVENTORY_ITEM_ID
+        ,sum(mtrl.QUANTITY) req_qty
+        from
+        mtl_txn_request_headers mtrh
+        ,mtl_txn_request_lines mtrl
+        where
+        mtrh.HEADER_ID = mtrl.HEADER_ID
+        and mtrh.ORGANIZATION_ID = 102
+        and mtrh.REQUEST_NUMBER IN (select * from param) --('3916224', '3916226') --(SELECT * FROM param)
+        group by mtrl.INVENTORY_ITEM_ID) tbl1
+        where
+        msib.INVENTORY_ITEM_ID = tbl1.INVENTORY_ITEM_ID
+        group by
+        msib.inventory_item_id
+        ,msib.segment1
+        ,tbl1.req_qty
+        ,msib.DESCRIPTION");
+
+        return $query->result_array();
+    }
+
 }

@@ -8,6 +8,7 @@ class C_Monitoring extends CI_Controller {
 		$this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('WasteManagementSeksi/MainMenu/M_kirim');
         $this->load->model('WasteManagement/MainMenu/M_limbahkelola');
+        $this->load->model('WasteManagement/MainMenu/M_limbahrekap');
     }
 
     function index() {
@@ -24,6 +25,7 @@ class C_Monitoring extends CI_Controller {
         
         // get all jenis limbah
         $data['jenisLimbah'] = $this->M_kirim->getLimJenis($this->session->kodesie);
+        $data['loc'] = $this->M_limbahrekap->getLokasi();
 
         $this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -35,9 +37,10 @@ class C_Monitoring extends CI_Controller {
         $start = $_GET['start'];
         $end = $_GET['end'];
         $limbah = isset($_GET['jenis']) ? $_GET['jenis'] : [];
+        $lokasi = isset($_GET['lokasi']) ? $_GET['lokasi'] : [];
         $detailed = $_GET['detailed'];
 
-        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $detailed);
+        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi, $detailed);
 
         $result = array(
             'success'=> $data ? true : false,
@@ -53,9 +56,10 @@ class C_Monitoring extends CI_Controller {
         $start = $_GET['start'];
         $end = $_GET['end'];
         $limbah = (isset($_GET['jenis']) && !empty($_GET['jenis'])) ? $_GET['jenis'] : [];
+        $lokasi = (isset($_GET['lokasi']) && !empty($_GET['lokasi'])) ? $_GET['lokasi'] : [];
         $detailed = $_GET['detailed'];
 
-        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $_GET['detailed'] ? 'true' : 'false');
+        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah,$lokasi, $_GET['detailed'] ? 'true' : 'false');
 
 		$objPHPExcel 	= new PHPExcel();
 		$worksheet 		= $objPHPExcel->getActiveSheet();

@@ -78,7 +78,10 @@ class C_BelumPPIC extends CI_Controller
 		$user = $this->session->user;
 		// echo "<pre>";print_r($user);exit();
 
-		$this->M_picklistppic->approvePPIC($picklist, $nojob, $user);
+		$cek2 = $this->M_picklistppic->cekapprove2($nojob[$i]);
+		if (empty($cek2)) {
+			$this->M_picklistppic->approvePPIC($picklist, $nojob, $user);
+		}
 	}
 
 	function approveData2(){

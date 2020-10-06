@@ -43,7 +43,7 @@
 									</div>
                                     
 								</div>
-									<div class="panel-body">
+								<div class="panel-body">
 									<div class="col-md-4" style="text-align: right;">
 										<label>Kode Komponen</label>
 									</div>
@@ -54,12 +54,13 @@
 									</div>
                                     
 								</div>
-									<div class="panel-body">
+								<div class="panel-body">
 									<div class="col-md-4" style="text-align: right;">
 										<label>Organization</label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
-										<select class="form-control select2 org" id="org" data-placeholder="Organization Code" name="org">
+										<select class="form-control select2 org" id="org" data-placeholder="Organization Code" name="org" disabled>
+											<option></option>
 											<option value="ODM">ODM</option>
 											<option value="OPM">OPM</option>
 										</select>
@@ -67,18 +68,29 @@
 									</div>
                                     
 								</div>
-									<div class="panel-body">
+								<!-- <div class="panel-body">
 									<div class="col-md-4" style="text-align: right;">
 										<label>Seksi </label>
 									</div>
 									<div class="col-md-3" style="text-align: center;">
-										<select class="form-control select2 seksii" data-placeholder="Seksi" name="seksi" id="seksii">
+										<select class="form-control select2 seksii" data-placeholder="Seksi" name="seksi" id="seksii" disabled>
+											
+										</select>
+									</div>
+                                    
+								</div> -->
+								<div class="panel-body">
+									<div class="col-md-4" style="text-align: right;">
+										<label>Alternate (ODM) </label>
+									</div>
+									<div class="col-md-3" style="text-align: center;">
+										<select class="form-control select2 alt" data-placeholder="Alternate" name="alt" id="alt" disabled>
 											
 										</select>
 									</div>
                                     
 								</div>
-								</div>
+								<!-- </div>
 									<div class="panel-body">
 									<div class="col-md-4" style="text-align: right;">
 										<label>Tipe Cetak</label>
@@ -90,6 +102,15 @@
 										</select>
 									</div>
                                     
+								</div> -->
+								<div class="panel-body recipe">
+									<div class="col-md-4" style="text-align: right;">
+										<label>Recipe (OPM)</label>
+									</div>
+									<div class="col-md-3" style="text-align: center;">
+										<select class="form-control recipe" id="recipe" name="recipe" disabled>
+										</select>
+									</div>
 								</div>
 								<div class="panel-body">
 									<div  class="col-md-4" ></div>

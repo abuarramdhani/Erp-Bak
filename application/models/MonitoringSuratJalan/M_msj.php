@@ -15,7 +15,7 @@ class M_msj extends CI_Model
         $response = $this->oracle->query("SELECT ksi.* FROM khs_sj_internal ksi ORDER BY ksi.NO_SURATJALAN DESC")->result_array();
         return $response;
     }
-    
+
     public function generateNoSJ()
     {
       $response = $this->oracle->query("SELECT 'SJ'
@@ -34,34 +34,51 @@ class M_msj extends CI_Model
         //                     ->get('hrd_khs.tpribadi')
         //                     ->row();
 
-        $response = $this->oracle->query("SELECT distinct kki.doc_number,
-                                                          kki.user_tujuan,
-                                                          kki.seksi_tujuan,
-                                                          kki.tujuan,
-                                                          kki.seksi_kirim,
-                                                          kki.status,
-                                                          kki.created_by,
-                                                          to_char(kki.CREATION_DATE,'DD-MON-YYYY HH24:MI:SS') CREATION_DATE,
-                                         CASE
-                                            WHEN kki.status = 1
-                                               THEN 'Dipersiapkan Seksi Pengirim'
-                                            WHEN kki.status = 2
-                                               THEN 'Diterima Gudang Pengeluaran'
-                                            WHEN kki.status = 3
-                                               THEN 'Surat Jalan Telah Dibuat'
-                                            WHEN kki.status = 4
-                                               THEN 'Dikirim ke Lokasi Tujuan'
-                                            WHEN kki.status = 5
-                                               THEN 'Diterima Gudang Penerimaan'
-                                            WHEN kki.status = 6
-                                               THEN 'Diterima Seksi Tujuan'
-                                         END status2
-                                         -- (SELECT ksi.no_suratjalan
-                                         --    FROM khs_sj_internal ksi
-                                         --   WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
-                                      FROM khs_kirim_internal kki
-                                      WHERE kki.status = '$i'
-                                      ORDER BY kki.doc_number DESC")->result_array();
+        $response = $this->oracle->query("SELECT DISTINCT kki.doc_number,
+                CASE
+                   WHEN kki.TYPE = 1
+                      THEN 'MO'
+                   ELSE kki.user_tujuan
+                END user_tujuan,
+                CASE
+                   WHEN kki.TYPE = 1
+                      THEN 'MO'
+                   ELSE kki.seksi_tujuan
+                END seksi_tujuan,
+                kki.tujuan,
+                CASE
+                   WHEN kki.TYPE = 1
+                      THEN 'MO'
+                   ELSE kki.seksi_kirim
+                END seksi_kirim, kki.status,
+                CASE
+                   WHEN kki.TYPE = 1
+                      THEN 'MO'
+                   ELSE kki.created_by
+                END created_by,
+                TO_CHAR (kki.creation_date,
+                         'DD-MON-YYYY HH24:MI:SS'
+                        ) creation_date,
+                CASE
+                   WHEN kki.status = 1
+                      THEN 'Dipersiapkan Seksi Pengirim'
+                   WHEN kki.status = 2
+                      THEN 'Diterima Gudang Pengeluaran'
+                   WHEN kki.status = 3
+                      THEN 'Surat Jalan Telah Dibuat'
+                   WHEN kki.status = 4
+                      THEN 'Dikirim ke Lokasi Tujuan'
+                   WHEN kki.status = 5
+                      THEN 'Diterima Gudang Penerimaan'
+                   WHEN kki.status = 6
+                      THEN 'Diterima Seksi Tujuan'
+                END status2
+           FROM khs_kirim_internal kki
+          WHERE kki.status = '$i'
+            AND (   (kki.TYPE = 3 AND kki.flag_approve_aset = 'Y')
+                 OR (kki.TYPE <> 3)
+                )
+       ORDER BY kki.doc_number DESC")->result_array();
 
         return $response;
     }
@@ -129,10 +146,10 @@ class M_msj extends CI_Model
         $user_login = $this->session->user;
 
         $this->oracle->query("UPDATE
-            KHS_KIRIM_INTERNAL
-        SET STATUS = '3'
-        WHERE DOC_NUMBER = '$d[nodoc]'
-      ");
+                                  KHS_KIRIM_INTERNAL
+                              SET STATUS = '3'
+                              WHERE DOC_NUMBER = '$d[nodoc]'
+                            ");
 
        $this->oracle->query("INSERT INTO KHS_SJ_INTERNAL(NO_SURATJALAN
                          ,NO_INDUK
@@ -166,7 +183,7 @@ class M_msj extends CI_Model
     {
         $sql = "SELECT
                 employee_code,
-                employee_name
+                trim(employee_name) employee_name
               from
                 er.er_employee_all
               where
@@ -228,6 +245,8 @@ class M_msj extends CI_Model
                              ->order_by('NO_FPB', 'asc')
                              ->get('KHS_SJ_INTERNAL')
                              ->result_array();
+       // echo "<pre>";
+       // print_r($response);die;
 
         function custom($value)
         {

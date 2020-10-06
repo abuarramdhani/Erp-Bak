@@ -4,8 +4,9 @@
 	}
 </style>
 <?php $i = 1;
-foreach ($kumpulandata as $data) { ?>
+foreach ($kumpulandata as $data) : ?>
 	<div class="row" style="margin-top:200px;">
+		<!-- header -->
 		<table style="width: 100%; margin-top: 40px; border-top:1px solid black; border-left:1px solid black; border-right:1px solid black;">
 			<tr>
 				<td rowspan="4" style="width: 12%; padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid black;" align="center">
@@ -15,7 +16,6 @@ foreach ($kumpulandata as $data) { ?>
 					<p style="font-size: 11px;"><strong>CV. KARYA HIDUP SENTOSA</strong></p>
 					<p style="font-size: 9px;">Jl. Magelang No. 144 YOGYAKARTA</p>
 					<br />
-
 				</td>
 				<td rowspan="2" style="width: 8%; padding-left: 30px;">
 					<b style="font-size: 45px; color: red;">K3</b>
@@ -56,6 +56,7 @@ foreach ($kumpulandata as $data) { ?>
 					<strong style="font-size: 11px;"><?php echo $data['cost'] . ' / ' . $data['kocab'] ?></strong></td>
 			</tr>
 		</table>
+		<!-- table bon -->
 		<table style="width: 100%;border-right:1px solid black; border-top: 1px solid black; border-left: 1px solid black">
 			<thead>
 				<tr>
@@ -73,14 +74,9 @@ foreach ($kumpulandata as $data) { ?>
 				</tr>
 			</thead>
 			<tbody>
-
-				<?php
-
-				foreach ($data['data_body'] as $data_body) {
-
-				?>
+				<?php foreach ($data['data_body'] as $data_body) : ?>
 					<tr>
-						<td align="center" style="height: 25px; font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $i ?></td>
+						<td align="center" style="height: 25px; font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $i++ ?></td>
 						<td align="center" style="height: 25px; font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['kode'] ?></td>
 						<td style="font-size: 10px; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['nama'] . ' ' . $data_body['produk']; ?></td>
 						<td style="font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['lokasi_simpanku'] ?>&nbsp;&nbsp;</td>
@@ -94,12 +90,8 @@ foreach ($kumpulandata as $data) { ?>
 						<td align="center" style="font-size: 10px; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['ket'] ?></td>
 						<td align="center" style="height: 25px; font-size: 10px; border-left: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['account'] ?></td>
 					</tr>
-				<?php
-					$i++;
-				}
-				?>
+				<?php endforeach; ?>
 			</tbody>
-
 		</table>
 		<table style="width: 100%; border:1px solid black; border-top: 1px solid black; text-align: center;vertical-align: text-top; font-size: 11px">
 			<tr>
@@ -118,4 +110,4 @@ foreach ($kumpulandata as $data) { ?>
 			</tr>
 		</table>
 	</div>
-<?php } ?>
+<?php endforeach ?>

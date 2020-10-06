@@ -65,6 +65,7 @@
                                                 </div> -->
                                                 <div class="row">
                                                 <input type="hidden" class="hdnHeaderIdNonC" value="<?php echo $headerRow['header_id']; ?>">
+                                                <input type="hidden" class="hdnHeadId" value="<?= $id;?>">
                                                     <div class="col-lg-4">
                                                         <strong>
                                                             Delivery Date
@@ -214,7 +215,7 @@
                                                     <tr>
                                                       <th>Case Name :</th>
                                                       <th>Description</th>
-                                                      <th>Status</th>
+                                                      <th>Status(bukan status PO)</th>
                                                       <th>PO Number(line)</th>
                                                       <th>Items</th>
                                                       <th>Judgement</th>
@@ -245,7 +246,7 @@
                                                       ?>
                                                       <span class="statusNonC"><?php echo $stat?></span>
                                                       <br>
-                                                      <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button>
+                                                      <!-- <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button> -->
                                                       </td>
                                                       <td>
                                                       <?php if (count($linesItem)==0) { ?>
@@ -310,6 +311,9 @@
                                             <img style="max-height : 100px;" src="<?php echo base_url().$img['image_path'].''.$img['file_name']; ?>">
                                           <?php } ?>
                                         </div>
+                                        <div class="panel-footer">
+                                            <button type="button" class="btn btn-success btnReturnPBBNC">RETURN TO PPB</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -321,7 +325,7 @@
         <div class="panel-footer">
             <form class="form-horizontal" id="form-simpan"  enctype="multipart/form-data" method="post" action="<?php echo site_url('PurchaseManagementGudang/NonConformity/pendingExecute');?>">
                 <div align="right">
-                    <?php if ($PoOracleNonConformityLines[0]['problem_completion'] != null || $PoOracleNonConformityLines[0]['problem_completion'] != '') { ?>
+                    <?php if ($PoOracleNonConformityLines[0]['problem_completion'] != null && $PoOracleNonConformityLines[0]['problem_tracking'] != null && $PoOracleNonConformityLines[0]['problem_completion'] != null && $PoOracleNonConformityLines[0]['scope'] != null && $PoOracleNonConformityLines[0]['completion_date'] != null && $PoOracleNonConformityLines[0]['judgement'] != null) { ?>
                             <input type="hidden" name="hdnHdr" value="<?php echo $PoOracleNonConformityHeaders[0]['header_id'];?>">
                             <button type="submit" class="btn btn-success btn-lg">Pending Execute</button>
                     <?php } ?>

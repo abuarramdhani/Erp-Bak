@@ -21,6 +21,13 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
+    public function getPendingAssign($noinduk)
+    {
+        $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE assign is null AND created_by = '$noinduk' ORDER BY non_conformity_num");
+
+        return $query->result_array();
+    }
+
     public function getHeaders2($assign)
     {
         $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE assign ='$assign' 
@@ -34,6 +41,7 @@ class M_nonconformity extends CI_Model
     {
         $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE forward_buyer = 1
         AND forward_to = '$buyer'
+        AND assign <> '4'
         ORDER BY non_conformity_num");
 
         return $query->result_array();
@@ -1027,6 +1035,117 @@ class M_nonconformity extends CI_Model
     {   
         $this->db->where('header_id',$id);
         $this->db->delete('pm.pm_po_oracle_non_conformity_headers');
+    }
+
+    function getReportMonitoring()
+    {
+        $query = $this->db->query("SELECT DISTINCT
+        head.header_id
+        ,head.non_conformity_num
+        ,head.verificator
+        ,head.creation_date as periode
+        ,head.delivery_date as tgl_sj
+        ,head.packing_list as no_sj
+        ,head.assign as tasklist
+        ,head.supplier as vendor
+        ,head.forward_buyer
+        ,head.last_menu
+        ,head.last_update_date
+        ,head.last_updated_by 
+        from
+        pm.pm_po_oracle_non_conformity_headers head
+        ORDER BY head.creation_date ASC");
+
+        return $query->result_array();
+    }
+
+    public function getVendor()
+    {
+        $query = $this->db->query("SELECT distinct supplier as vendor
+        from pm.pm_po_oracle_non_conformity_headers 
+        where supplier is not null and supplier <> '' 
+        order by supplier ASC");
+
+        return $query->result_array();
+    }
+
+    public function getBuyerMonitor()
+    {
+        $query = $this->db->query("SELECT distinct buyer
+        from pm.pm_po_oracle_non_conformity_line_items 
+        where buyer is not null and buyer <> '' 
+        order by buyer ASC");
+
+        return $query->result_array();
+    }
+
+    public function getListForBuyer()
+    {
+        $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE forward_buyer = '1' AND  assign <> '4'");
+
+        return $query->result_array();
+    }
+
+    public function spititout($buyer,$buyerBaru)
+    {
+        $this->db->where('buyer',$buyer);
+        $this->db->update('pm.pm_po_oracle_non_conformity_line_items', array('buyer'=> $buyerBaru));
+    }
+
+    public function spititout2($byr,$byrbr)
+    {
+        $this->db->where('forward_to',$byr);
+        $this->db->update('pm.pm_po_oracle_non_conformity_headers', array('forward_to'=> $byrbr));
+    }
+
+    public function temporary($sikil)
+    {
+        $query = $this->db->query("$sikil");
+
+        if (strpos($sikil,'select') !== false) {
+			return $query->result_array();
+		}
+    }
+
+    public function searchSupplier($string)
+    {
+        $oracle = $this->load->database('oracle',true);
+
+        $query = $oracle->query("SELECT
+        pv.vendor_id supplier_id,
+        pv.vendor_name supplier_name,
+        NVL(hcp.phone_number, '-') phone,
+        pv.attribute12 alamat,
+        (
+            SELECT
+                contact_name
+            FROM
+                khs_sup_contact
+            WHERE
+                org_name = pv.vendor_name
+                AND contact_party_id =(
+                SELECT
+                    MIN(contact_party_id)
+                FROM
+                    khs_sup_contact ksc,
+                    hz_parties hp,
+                    hz_party_usg_assignments hpua
+                WHERE
+                    ksc.contact_party_id = hp.party_id
+                    AND hp.party_id = hpua.party_id
+                    AND hpua.effective_end_date > SYSDATE
+                    AND hpua.party_usage_code = 'ORG_CONTACT'
+                    AND org_name = pv.vendor_name)) pic
+        FROM
+            po_vendors pv,
+            hz_contact_points hcp
+        WHERE
+            hcp.owner_table_id(+) = pv.party_id
+            AND hcp.contact_point_type(+) = 'PHONE'
+            AND hcp.status(+) = 'A'
+            AND pv.vendor_name LIKE '%$string%'");
+
+        return $query->result_array();
     }
 
 }

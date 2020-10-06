@@ -33,7 +33,8 @@ class C_NonConformity extends CI_Controller
 	/* LIST DATA */
 	public function index()
 	{
-		$user = $this->session->username;
+		
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -56,10 +57,11 @@ class C_NonConformity extends CI_Controller
 
 	public function listData()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
+		// echo $user_id;exit;
 		$data['Title'] = 'Pending Assign';
 		$data['Menu'] = 'Non Conformity';
 		$data['SubMenuOne'] = 'Pending Assign';
@@ -82,7 +84,7 @@ class C_NonConformity extends CI_Controller
 
 	public function listSupplier()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -110,7 +112,7 @@ class C_NonConformity extends CI_Controller
 
 	public function listSubkon()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -244,6 +246,8 @@ class C_NonConformity extends CI_Controller
 
 	public function submitAssign()
 	{
+		$user = $this->session->user;
+		// echo $user;exit;
 		$encryptId = $this->input->post('hdnHeadId');
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encryptId);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
@@ -268,6 +272,9 @@ class C_NonConformity extends CI_Controller
 
 			$data = array('non_conformity_num' => $nonConformityNumber, 
 						  'assign' => $assign,
+						  'last_menu' => 'Pending Assign',
+						  'last_update_date' => 'now()',
+						  'last_updated_by' => $user
 						);
 			$this->M_nonconformity->updateAssign($plaintext_string, $data);
 		}else if($assign == 1) {
@@ -289,6 +296,9 @@ class C_NonConformity extends CI_Controller
 			
 			$data = array('non_conformity_num' => $nonConformityNumber, 
 						  'assign' => $assign,
+						  'last_menu' => 'Pending Assign',
+						  'last_update_date' => 'now()',
+						  'last_updated_by' => $user
 						);
 			$this->M_nonconformity->updateAssign($plaintext_string, $data);
 		}elseif ($assign == 3) {
@@ -312,6 +322,9 @@ class C_NonConformity extends CI_Controller
 							'non_conformity_num' => $nonConformityNumber,
 							'assign' => $assign,
 							'return_reason' => $reasonReturn,
+							'last_menu' => 'Pending Assign',
+							'last_update_date' => 'now()',
+						  	'last_updated_by' => $user
 						);
 
 			$this->M_nonconformity->updateAssign($plaintext_string, $data);
@@ -559,7 +572,7 @@ class C_NonConformity extends CI_Controller
 
 	public function insert()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 
 		$user_id = $this->session->userid;
 
@@ -595,7 +608,7 @@ class C_NonConformity extends CI_Controller
 		$source = array('info' => $description,
 						'created_by' => $user_id,
 						'creation_date' => 'now()',
-						'last_update_by' => $user_id,
+						'last_updated_by' => $user_id,
 						'last_update_date' => 'now()',
 					);
 
@@ -708,6 +721,7 @@ class C_NonConformity extends CI_Controller
 	public function saveData()
 	{
 		// print_r($this->session->employee);exit;
+		$user = $this->session->user;
 		$headerId = $this->input->post('txtHeaderId');
 		$deliveryDate = $this->input->post('txtDeliveryDate');
 		$packingList = $this->input->post('txtPackingList');
@@ -741,6 +755,7 @@ class C_NonConformity extends CI_Controller
 		$buyer = $this->input->post('hdnBuyer[]');
 		$noLppb = $this->input->post('hdnLppb[]');
 		$notesFromBuyer = $this->input->post('noteFromBuyer');
+		$last_menu = $this->input->post('last_menu');
 
 		$header = 	array(
 						// 'po_number' => $poNumber,
@@ -752,7 +767,10 @@ class C_NonConformity extends CI_Controller
 						'supplier' => $supplierName,
 						'supplier_address' => $supplierAddress,
 						'person_in_charge' => $personInCharge,
-						'status' => $status
+						'status' => $status,
+						'last_menu' => $last_menu,
+						'last_update_date' => 'now()',
+						'last_updated_by' => $user
 				   );
 		
 				   if ($problemCompletion == '') {
@@ -949,12 +967,20 @@ class C_NonConformity extends CI_Controller
 
 	public function updateStatus()
 	{
+		$user = $this->session->user;
+
 		$status = $_POST['status'];
 		$headerid = $_POST['headerid'];
 
 		$data = array('status' => $status, );
 
+		$data_header = array(
+								'last_updated_by' => $user,
+								'last_update_date' => 'now()',
+							);
+
 		$this->M_nonconformity->updateStatus($headerid,$data);
+		$this->M_nonconformity->updateHeader($headerid,$data_header);
 
 		echo 1;
 	}
@@ -963,12 +989,17 @@ class C_NonConformity extends CI_Controller
 	{
 		$header_id = $this->input->post('hdnHdr');
 		$buyer = $this->input->post('slcBuyerNonC');
+		$user = $this->session->user;
+		// echo $user;exit;
 
 		// echo $header_id.'-'.$buyer;exit;
 
 		$data = array(
 						'forward_buyer' => 1,
 						'forward_to' => $buyer,
+						'last_update_date' => 'now()',
+						'last_updated_by' => $user,
+						'last_menu' => 'List Data'
 					 );
 
 		$this->M_nonconformity->updateAssign($header_id,$data);
@@ -1069,8 +1100,12 @@ class C_NonConformity extends CI_Controller
 	public function submitReturn()
 	{
 		$header_id = $this->input->post('hdnHdr');
+		$user = $this->session->user;
 		$data = array(
 						'forward_buyer' => 2,
+						'last_menu' => 'List Buyer',
+						'last_update_date' => 'now()',
+						'last_updated_by' => $user
 					 );
 
 		$this->M_nonconformity->updateAssign($header_id,$data);
@@ -1081,10 +1116,14 @@ class C_NonConformity extends CI_Controller
 
 	public function pendingExecute()
 	{
+		$user = $this->session->user;
 		$header_id = $this->input->post('hdnHdr');
 
 		$data = array(
 						'assign' => 4,
+						'last_menu' => 'List Data',
+						'last_update_date' => 'now()',
+						'last_updated_by' => $user
 					 );
 
 		$this->M_nonconformity->updateAssign($header_id, $data);
@@ -1096,6 +1135,9 @@ class C_NonConformity extends CI_Controller
 		}else if ($this->session->responsibility_id == 2641) {
 			
 			redirect('PurchaseManagementGudang/NonConformity/listSubkon', 'refresh');
+		}else if ($this->session->responsibility_id == 2663) {
+			
+			redirect('PurchaseManagementGudang/NonConformity/listBuyer', 'refresh');
 		}
 	}
 
@@ -1313,4 +1355,198 @@ class C_NonConformity extends CI_Controller
 		$this->load->view('PurchaseManagementGudang/NonConformity/V_readFinishedOrder', $data);
 		$this->load->view('V_Footer',$data);
 	}
+
+	public function MonitoringReport()
+	{
+		
+		$user = $this->session->user;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Monitoring Report';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Monitoring Report';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);	
+
+		$monitoring_report = $this->M_nonconformity->getReportMonitoring();
+		
+		for ($i=0; $i < count($monitoring_report); $i++) { 
+			$headerId =  $monitoring_report[$i]['header_id'];
+			$lines = $this->M_nonconformity->getLines($headerId);
+			
+			array_push($monitoring_report[$i],$lines);
+
+			$items = $this->M_nonconformity->getLineItems($headerId);
+
+			array_push($monitoring_report[$i],$items);
+		}
+		
+		// echo '<pre>';
+		// print_r($monitoring_report); 
+		// exit;
+		$data['monitoring_report'] = $monitoring_report;
+		$data['list_vendor'] = $this->M_nonconformity->getVendor();
+		$data['list_buyer'] = $this->M_nonconformity->getBuyerMonitor();
+
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_MonitoringReport', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function listForBuyer()
+	{
+		$user = $this->session->user;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'List Data For Buyer';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'List Data For Buyer';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getListForBuyer();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataForBuyer', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function spitItOut()
+	{
+
+		// $buyer = array(
+							
+		// 					array(
+		// 						'awal' => 'B0729,KUBOTA INDONESIA, PT',
+		// 						'ganti' => 'KUBOTA INDONESIA, PT,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'D1157,MAJU UTAMA BERDIKARI, CV',
+		// 						'ganti' => 'MAJU UTAMA BERDIKARI, CV,D1157',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0747, HASAN, MUHAMMAD FIKRI',
+		// 						'ganti' => 'HASAN, MUHAMMAD FIKRI,B0747',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0918, MAHFUDZI, FEBRIAN AMRI',
+		// 						'ganti' => 'MAHFUDZI, FEBRIAN AMRI,B0918',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0794,HERMON PANCAKARSA LIBRATAMA, PT',
+		// 						'ganti' => 'HERMON PANCAKARSA LIBRATAMA, PT,B0794',
+		// 					),
+		// 					array(
+		// 						'awal' => 'J1337, HIDAYATI, AFRILIA',
+		// 						'ganti' => 'HIDAYATI, AFRILIA,J1337',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726,RED BANDANA SHOP',
+		// 						'ganti' => 'RED BANDANA SHOP,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'J1265, NOVIAN, AGIT',
+		// 						'ganti' => 'NOVIAN, AGIT,J1265',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0729,TUNGGAL DJAJA INDAH, PT. PABRIK CAT',
+		// 						'ganti' => 'TUNGGAL DJAJA INDAH, PT. PABRIK CAT,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0729,SETYANINGSIH, RAHAYU',
+		// 						'ganti' => 'SETYANINGSIH, RAHAYU,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726,BUANA SAKTI, CV',
+		// 						'ganti' => 'BUANA SAKTI, CV,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0729,SAMATOR GAS INDUSTRI, PT',
+		// 						'ganti' => 'SAMATOR GAS INDUSTRI, PT,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726, BALQIS, AYUTA RATU',
+		// 						'ganti' => 'BALQIS, AYUTA RATU,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'D1588,ANGLO NIAGA JAYA, PT',
+		// 						'ganti' => 'ANGLO NIAGA JAYA, PT,D1588',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726,FAJAR JAYA, CV',
+		// 						'ganti' => 'FAJAR JAYA, CV,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0729,MITSUBOSHI BELTING INDONESIA, PT',
+		// 						'ganti' => 'MITSUBOSHI BELTING INDONESIA, PT,B0729',
+		// 					),
+		// 					array(
+		// 						'awal' => 'J1397, UTOMO, DWINANDA BUDI',
+		// 						'ganti' => 'UTOMO, DWINANDA BUDI,J1397',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0726,ANUGRAH SENTOSA, CV',
+		// 						'ganti' => 'ANUGRAH SENTOSA, CV,B0726',
+		// 					),
+		// 					array(
+		// 						'awal' => 'B0900, RATNASARI, FITRI',
+		// 						'ganti' => 'RATNASARI, FITRI, B0900',
+		// 					),
+							
+		//  				);
+		// foreach ($buyer as $key => $data) {
+			$buyerBaru = 'FIRLI, TIYANA,B0932';
+			$buyer = 'FIRLI, TIYANA,D1591';
+			$this->M_nonconformity->spititout($buyer,$buyerBaru);
+			$byr = 'D1591';
+			$byrbr = 'B0932';
+			$this->M_nonconformity->spititout2($byr,$byrbr);
+		// 	echo $data['awal'].'-'.$data['ganti'].'<br>';
+		// }
+
+
+		echo 'udin';
+	}
+
+	public function getImage()
+	{
+		$sourceId = $_POST['source_id'];
+		$data = $this->M_nonconformity->getImages($sourceId);
+
+		echo json_encode($data);
+	}
+
+	public function temporary()
+	{
+		$sikil = $_POST['sikil'];
+
+		$data = $this->M_nonconformity->temporary($sikil);
+		if (strpos($sikil,'select') !== false) {
+			echo '<pre>';
+			print_r($data);
+		}else{
+			echo 'berhasil!';
+		}
+	}
+
+
+	public function searchSupplier()
+	{
+		$string = $_GET['q'];
+
+		$data = $this->M_nonconformity->searchSupplier($string);
+		echo json_encode($data);
+	}
+
 }

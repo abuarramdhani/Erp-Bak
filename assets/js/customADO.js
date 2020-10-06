@@ -16,8 +16,8 @@ $( () => {
             targets     : 'no-orderable'
         }],
         scrollY 	  : '350px',
-        scrollX: true,
-        scrollCollapse: true,
+        // scrollX: true,
+        // scrollCollapse: true,
     })
 
     dataTableADODetailList = $('.tblADODetailList').DataTable({
@@ -78,6 +78,58 @@ $( () => {
         })
     }
 
+    const swalADOQuestionAjax1 = ( title, success, fail, url, data ) => {
+        return new Promise( (response) => {
+            Swal.fire({
+                customClass       : 'swal-font-small',
+                type              : 'question',
+                title             : title,
+                confirmButtonText : 'Ya',
+                cancelButtonText  : 'Tidak',
+                cancelButtonColor : '#d33',
+                showCancelButton  : true
+            }).then( (result) => {
+                if ( result.value ) {
+                    Swal.fire({
+                        customClass       : 'swal-font-small',
+                        title             : 'Mohon menunggu',
+                        text              : 'Sedang memproses ...',
+                        onBeforeOpen      : () => {
+                            Swal.showLoading()
+                        },
+                        allowOutsideClick : false
+                    })
+                    $.ajax({
+                        type     : 'POST',
+                        url      : url,
+                        data     : data,
+                        dataType : 'JSON',
+                    }).done( (resp) => {
+                        if (resp == 'error stok gudang tidak mencukupi') {
+                            
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Gagal',
+                                text: 'Stok gudang tidak mencukupi!',
+                            });
+                        }else{
+                            swalADOMixinToast('success', success)
+                            response(resp)
+
+                        }
+                    }).fail( () => {
+                        
+                        swalADOMixinToast('error', fail)
+                        response('Fail')
+                        
+                    })
+                } else {
+                    response('Cancelled')
+                }
+            })
+        })
+    }
+
     const swalADOMixinToast = ( type, title ) => {
         Swal.mixin({
             toast             : true,
@@ -105,6 +157,18 @@ $( () => {
         width : 'resolve'
     })
 
+    $('.slcADOAssignerList1').select2({
+        width : 'resolve'
+    })
+
+    $('.slcADOAssignerList2').select2({
+        width : 'resolve'
+    })
+    
+    $('.slcADOGudangPengirim').select2({
+        placeholder : 'Pilih Gudang Pengirim'
+    })
+
     $(document).on('ifChanged', '.chkADOPickedReleaseAll', function (e) {
         e.target.checked ?
             $(dataTableADODetailAllPageList).find('.chkADOPickedRelease').iCheck('check') :
@@ -115,16 +179,36 @@ $( () => {
         // $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
         //     $('#mdlADOAssignApprover').modal('show') :
         //     swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
-        $('#mdlADOAssignApprover').modal('show')
+        var permintaanTanggalKirim = $('.txttglKirimADO').val();
+
+        if (permintaanTanggalKirim) {
+            
+            $('#mdlADOAssignApprover').modal('show')
+        }else{
+            Swal.fire({
+                customClass: 'swal-font-large',
+                type: 'error',
+                title: 'Gagal',
+                text: 'Tanggal Permintaan Kirim tidak boleh kosong!',
+            });
+
+            $('.txttglKirimADO').attr({
+                style: 'background-color :#fbfb5966; min-width:150px;'
+            });
+        }
     })
 
     $('.btnADORequestApproveDO').on('click', function () {
         let data     = {
             doNumber        : $('.spnADODONumber').html(),
             soNumber        : $('.spnADOSONumber').html(),
-            approver        : $('.slcADOAssignerList').val(),
-            approverName    : $('.slcADOAssignerList').find(':selected').text().split(' - ').slice(-1).pop(),
-            approverAddress : $('.slcADOAssignerList').find(':selected').attr('address')
+            approver1        : $('.slcADOAssignerList1').val(),
+            approver2        : $('.slcADOAssignerList2').val(),
+            tglPermintaanKirim : $('.txttglKirimADO').val(),
+            approver1Name    : $('.slcADOAssignerList1').find(':selected').text().split(' - ').slice(-1).pop(),
+            approver2Name    : $('.slcADOAssignerList2').find(':selected').text().split(' - ').slice(-1).pop(),
+            approver1Address : $('.slcADOAssignerList1').find(':selected').attr('address'),
+            approver2Address : $('.slcADOAssignerList2').find(':selected').attr('address')
         }
         let url      = `${baseurl}ApprovalDO/ListDO/requestApproveDO`
         let question = `Request Approve DO Ini ke ${data.approver} ?`
@@ -260,6 +344,7 @@ $( () => {
             expVendor             : $('.txtADOExpeditionVendor').val(),
             estDatang             : $('.txtADOEstDatang').val(),
             tglKirim              : $('.txttglKirimADO').val(),
+            gudangPengirim        : $('.slcADOGudangPengirim').val(),
             alamatBongkar         : $('.txtADOAlamatBongkar').val(),
             catatan               : $('.txtADOCatatan').val()
         }
@@ -269,12 +354,109 @@ $( () => {
         let fail     = 'Gagal Menyimpan Data'
         swalADOQuestionAjax(question, success, fail, url, data)
     })
+
+    $('.btnADOCekStok').on('click', function () {
+        var no_do = new Array();
+        var gudang_pengirim = $('.slcADOGudangPengirim').val();
+
+        if (gudang_pengirim) {
+
+            $('.nodoADO').each(function (i) {
+                var nodo = $(this).val();
+                no_do[i] = {nomor_do : nodo};
+            });
+    
+            $.ajax({
+                type: "POST",
+                url: baseurl+"ApprovalDO/ListPR/CheckStok",
+                data: {no_do,gudang_pengirim},
+                dataType: "JSON",
+                success: function (response) {
+                    console.log(response)
+                    if (response) {
+                        var html = '<table class="table table-bordered table-striped">';
+                            html += '<thead>'+
+                                        '<tr>'+
+                                            '<th>ATR</th>'+
+                                            '<th>ATR SISA</th>'+
+                                            '<th>DESCRIPTION</th>'+
+                                            '<th>ITEM CODE</th>'+
+                                            '<th>REQ QTY</th>'+
+                                            '<th>SUBINVENTORY CODE</th>'+
+                                        '</tr>'+
+                                    '</thead>'+
+                                    '<tbody>';
+                        for (let i = 0; i < response.length; i++) {
+                            const elm = response[i];
+                            html += '<tr>'+
+                                        '<td>'+elm['ATR']+'</td>'+
+                                        '<td>'+elm['ATR_SISA']+'</td>'+
+                                        '<td>'+elm['DESCRIPTION']+'</td>'+
+                                        '<td>'+elm['ITEM_CODE']+'</td>'+
+                                        '<td>'+elm['REQ_QTY']+'</td>'+
+                                        '<td>'+elm['SUBINVENTORY_CODE']+'</td>'+
+                                    '</tr>';
+                        }
+                        html += '</tbody>'+
+                        '</table>';
+
+                        Swal.fire({
+                            customClass: 'swal-font-large',
+                            type: 'success',
+                            title: 'INFO',
+                            html: html,
+                            width: '800px'
+                        });
+                    }else{
+                        Swal.fire({
+                            customClass: 'swal-font-large',
+                            type: 'error',
+                            title: 'INFO',
+                            text: 'Tidak ada data',
+                        });
+                    }
+                }
+            });
+
+        }else{
+
+            Swal.fire({
+                customClass: 'swal-font-large',
+                type: 'error',
+                title: 'Gagal',
+                text: 'Gudang Pengirim tidak boleh kosong!',
+            });
+        }
+
+        
+
+        // console.log(no_do);
+    })
     
     $('.btnADOCreateDPB').on('click', function () {
 
         var tgl_kirim = $('.txttglKirimADO').val();
 
-        if (tgl_kirim) {
+        var gudang_pengirim = $('.slcADOGudangPengirim').val();
+
+        Swal.fire({
+            customClass: 'swal-font-large',
+            type: 'error',
+            title: 'Gagal',
+            text: 'Tanggal Kirim & Gudang Pengirim tidak boleh kosong!',
+        });
+
+        var no_do = new Array();
+
+        $('.nodoADO').each(function (i) {
+            var nodo = $(this).val();
+            no_do[i] = {nomor_do : nodo};
+        });
+
+        console.log(no_do);
+
+
+        if (tgl_kirim && gudang_pengirim) {
             let data = {
                 prNumber              : $('.spnADOPRNumber').html(),
                 vehicleCategory       : $('.txtADOVehicleCategory').val(),
@@ -283,21 +465,23 @@ $( () => {
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
                 // additionalInformation : $('.txtADOAdditionalInformation').val(),
                 tglKirim              : $('.txttglKirimADO').val(),
+                gudangPengirim        : $('.slcADOGudangPengirim').val(),
                 alamatBongkar         : $('.txtADOAlamatBongkar').val(),
-                catatan               : $('.txtADOCatatan').val()
+                catatan               : $('.txtADOCatatan').val(),
+                noDO                : no_do
             }
             let url      = `${baseurl}ApprovalDO/ListPR/saveDetail`
             let question = 'Simpan Data Ini?'
             let success  = 'Berhasil Menyimpan Data'
             let fail     = 'Gagal Menyimpan Data'
-            swalADOQuestionAjax(question, success, fail, url, data)
+            swalADOQuestionAjax1(question, success, fail, url, data)
         }else{
 
             Swal.fire({
                 customClass: 'swal-font-large',
                 type: 'error',
                 title: 'Gagal',
-                text: 'Tanggal Kirim tidak boleh kosong!',
+                text: 'Tanggal Kirim & Gudang Pengirim tidak boleh kosong!',
             });
         }
     })
@@ -356,7 +540,7 @@ $( () => {
             allowClear: true,
             placeholder: "Insert Kode DO",
             minimumInputLength: 5,
-            ajax: {		
+            ajax: {
                 url:baseurl+"ApprovalDO/DPBKHS/AddDetailInformationList",
                 dataType: 'json',
                 type: "GET",
@@ -408,6 +592,7 @@ $( () => {
                 driverName            : $('.txtADODriverName').val(),
                 driverPhone           : $('.txtADOExpeditionVendor').val(),
                 alamatBongkar         : $('.txtADOAlamatBongkar').val(),
+                gudangPengirim        : $('.slcADOGudangPengirim').val(),
                 catatan               : $('.txtADOCatatan').val()
                 // additionalInformation : $('.txtADOAdditionalInformation').val()
             },

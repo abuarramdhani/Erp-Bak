@@ -13,7 +13,7 @@
           </td>
 			<td style="border: 2px solid black;border-collapse: collapse; font-weight: bold;font-size: 10pt;text-align: center; background-color: yellow;width: 45%;border-bottom: 1px solid black">PRODUCTION ENGINEERING</td>
 			<td style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;width: 10%">Doc. No.</td>
-			<td style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;text-align: left;width: 20%"></td>
+			<td style="border: 1px solid black;border-collapse: collapse;font-size: 12px;padding-left: 7px;text-align: left;width: 20%"><?= $no_doc ?></td>
 		</tr>
 		<tr>	
 			<td rowspan="3"  style="border: 2px solid black;border-collapse: collapse;font-size: 14pt;padding-left: 5px;font-weight: bold; text-align: center;border-top: 1px solid black"><?php if ($organization=='ODM') { ?> RESOURCE & BoM <?php } else { ?> RESOURCE & FORMULA <?php }?></td>

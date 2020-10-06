@@ -60,11 +60,11 @@ class C_Index extends CI_Controller {
 						'ip' => '172.16.100.25',
 						'ip2' => '172.16.100.26',
 					),
-					array(
-						'name' => 'IconPlus PUSAT-LANGKAPURA',
-						'ip' => '172.16.100.61',
-						'ip2' => '172.16.100.62',
-					),
+				// 	array(
+				// 		'name' => 'IconPlus PUSAT-LANGKAPURA',
+				// 		'ip' => '172.16.100.61',
+				// 		'ip2' => '172.16.100.62',
+				// 	),
 					array(
 						'name' => 'IconPlus PUSAT-MAKASSAR',
 						'ip' => '172.16.100.29',
@@ -95,11 +95,11 @@ class C_Index extends CI_Controller {
 						'ip' => '172.16.100.49',
 						'ip2' => '172.16.100.50',
 					),
-					array(
-						'name' => 'IconPlus PUSAT-SURABAYA',
-						'ip' => '172.16.100.9',
-						'ip2' => '172.16.100.10',
-					),
+				// 	array(
+				// 		'name' => 'IconPlus PUSAT-SURABAYA',
+				// 		'ip' => '172.16.100.9',
+				// 		'ip2' => '172.16.100.10',
+				// 	),
 					array(
 						'name' => 'IconPlus PUSAT-TUKSONO',
 						'ip' => '172.16.100.5',
@@ -125,11 +125,11 @@ class C_Index extends CI_Controller {
 						'ip' => '192.168.38.22',
 						'ip2' => '192.168.38.22',
 					),
-					array(
+					/*array(
 						'name' => 'TUKSONO MACH BARAT',
 						'ip' => '192.168.38.203',
 						'ip2' => '192.168.38.203',
-					),
+					),*/
 					array(
 						'name' => 'TUKSONO FOUNDRY',
 						'ip' => '192.168.38.14',
@@ -142,18 +142,22 @@ class C_Index extends CI_Controller {
 					),
 		);
 		
+		$messagesTemp ='';
 		foreach ($ipName as $key => $ip) {
 			$domainbase = $ip['ip'];
 			$domainbase2 = $ip['ip2'];
-
+            
+           
 			$status_gateway = $this->pingDomain($domainbase);
 			if ($status_gateway != -1) {
 				echo "<tr><td>http://$domainbase is ALIVE ($status_gateway ms)</td><tr>";
-				$messages = "http://$domainbase is ALIVE ($status_gateway ms)";
+				$messages = "http://$domainbase is ALIVE ($status_gateway ms)<br>";
+				$messagesTemp .= "http://$domainbase is ALIVE ($status_gateway ms)<br>";
 				$gateway = 'Alive';
 			}else {
 				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
-				$messages = "http://$domainbase is DOWN ($status_gateway ms)";
+				$messages = "http://$domainbase is DOWN ($status_gateway ms)<br>";
+				$messagesTemp .= "http://$domainbase is DOWN ($status_gateway ms)<br>";
 				$gateway ='Down';
 				$name1 = "Gateway";
 				echo 'mati';
@@ -323,15 +327,23 @@ class C_Index extends CI_Controller {
 					$emailUser = array("quick.tractor@gmail.com", "ict.hardware.khs@gmail.com");
 					$emailUserInternal = array("yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com");
 				}
+				
+				
 
                 $this->EmailAlert($subject, $message, $emailUser);
                 $this->EmailAlertInternal($subject, $message, $emailUserInternal);
+                
 			}
+			
+		
 				
 
 			// }
             
 		}
+// 			$emailTemp = array("nugroho@quick.com","bondan_surya_n@quick.com");
+			
+// 			 $this->EmailAlertInternal('trial', $messagesTemp, $emailTemp);
 
 	}
 
@@ -531,7 +543,7 @@ class C_Index extends CI_Controller {
 
 	public function pingDomain($domain)
 	{
-		$check =  exec('ping -c 3 -w 1 '.$domain);
+		$check =  exec('ping -c 3 -w 3 '.$domain);
 		if ($check) {
 			$status = 0;
 		}else {

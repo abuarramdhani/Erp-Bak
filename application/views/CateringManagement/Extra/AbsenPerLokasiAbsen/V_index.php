@@ -19,7 +19,7 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Tanggal</label>
 													<div class="col-lg-4">
-														<input type="text" class="form-control" placeholder="Pilih Tanggal..." id="txt-CM-AbsenPerLokasiAbsen-Tanggal">
+														<input type="text" class="form-control" placeholder="Pilih Tanggal..." id="txt-CM-AbsenPerLokasiAbsen-Tanggal" value="<?php echo date("Y-m-d") ?>">
 													</div>
 													<div class="col-lg-2">
 														<button type="button" class="btn btn-primary" id="btn-CM-AbsenPerLokasiAbsen-cari">Cari</button>

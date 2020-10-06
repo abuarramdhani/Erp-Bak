@@ -130,7 +130,7 @@ class C_Cetak extends CI_Controller {
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I3', "");
 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I4', "");
 
-// Set width kolom 
+// Set width kolom
 	$worksheet->getColumnDimension('A')->setWidth(25);
 	$worksheet->getColumnDimension('B')->setWidth(35);
 	$worksheet->getColumnDimension('C')->setWidth(20);
@@ -181,50 +181,50 @@ class C_Cetak extends CI_Controller {
 	$worksheet->getStyle('H4')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FA8072');
 	$worksheet->getStyle('I4')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('DAA520');
 
-	$worksheet->getStyle('A1')->getFont()->setSize(12); 
-	$worksheet->getStyle('A2')->getFont()->setSize(12); 
-	$worksheet->getStyle('A3')->getFont()->setSize(12); 
-	$worksheet->getStyle('A4')->getFont()->setSize(12); 
+	$worksheet->getStyle('A1')->getFont()->setSize(12);
+	$worksheet->getStyle('A2')->getFont()->setSize(12);
+	$worksheet->getStyle('A3')->getFont()->setSize(12);
+	$worksheet->getStyle('A4')->getFont()->setSize(12);
 
-	$worksheet->getStyle('B1')->getFont()->setSize(12); 
-	$worksheet->getStyle('B2')->getFont()->setSize(12); 
-	$worksheet->getStyle('B3')->getFont()->setSize(12); 
-	$worksheet->getStyle('B4')->getFont()->setSize(12); 
+	$worksheet->getStyle('B1')->getFont()->setSize(12);
+	$worksheet->getStyle('B2')->getFont()->setSize(12);
+	$worksheet->getStyle('B3')->getFont()->setSize(12);
+	$worksheet->getStyle('B4')->getFont()->setSize(12);
 
-	$worksheet->getStyle('C1')->getFont()->setSize(12); 
-	$worksheet->getStyle('C2')->getFont()->setSize(12); 
-	$worksheet->getStyle('C3')->getFont()->setSize(12); 
-	$worksheet->getStyle('C4')->getFont()->setSize(12); 
+	$worksheet->getStyle('C1')->getFont()->setSize(12);
+	$worksheet->getStyle('C2')->getFont()->setSize(12);
+	$worksheet->getStyle('C3')->getFont()->setSize(12);
+	$worksheet->getStyle('C4')->getFont()->setSize(12);
 
-	$worksheet->getStyle('D1')->getFont()->setSize(12); 
-	$worksheet->getStyle('D2')->getFont()->setSize(12); 
-	$worksheet->getStyle('D3')->getFont()->setSize(12); 
-	$worksheet->getStyle('D4')->getFont()->setSize(12); 
+	$worksheet->getStyle('D1')->getFont()->setSize(12);
+	$worksheet->getStyle('D2')->getFont()->setSize(12);
+	$worksheet->getStyle('D3')->getFont()->setSize(12);
+	$worksheet->getStyle('D4')->getFont()->setSize(12);
 
-	$worksheet->getStyle('E1')->getFont()->setSize(12); 
-	$worksheet->getStyle('E2')->getFont()->setSize(12); 
-	$worksheet->getStyle('E3')->getFont()->setSize(12); 
-	$worksheet->getStyle('E4')->getFont()->setSize(12); 
+	$worksheet->getStyle('E1')->getFont()->setSize(12);
+	$worksheet->getStyle('E2')->getFont()->setSize(12);
+	$worksheet->getStyle('E3')->getFont()->setSize(12);
+	$worksheet->getStyle('E4')->getFont()->setSize(12);
 
-	$worksheet->getStyle('F1')->getFont()->setSize(12); 
-	$worksheet->getStyle('F2')->getFont()->setSize(12); 
-	$worksheet->getStyle('F3')->getFont()->setSize(12); 
-	$worksheet->getStyle('F4')->getFont()->setSize(12); 
+	$worksheet->getStyle('F1')->getFont()->setSize(12);
+	$worksheet->getStyle('F2')->getFont()->setSize(12);
+	$worksheet->getStyle('F3')->getFont()->setSize(12);
+	$worksheet->getStyle('F4')->getFont()->setSize(12);
 
-	$worksheet->getStyle('G1')->getFont()->setSize(12); 
-	$worksheet->getStyle('G2')->getFont()->setSize(12); 
-	$worksheet->getStyle('G3')->getFont()->setSize(12); 
-	$worksheet->getStyle('G4')->getFont()->setSize(12); 
+	$worksheet->getStyle('G1')->getFont()->setSize(12);
+	$worksheet->getStyle('G2')->getFont()->setSize(12);
+	$worksheet->getStyle('G3')->getFont()->setSize(12);
+	$worksheet->getStyle('G4')->getFont()->setSize(12);
 
-	$worksheet->getStyle('H1')->getFont()->setSize(12); 
-	$worksheet->getStyle('H2')->getFont()->setSize(12); 
-	$worksheet->getStyle('H3')->getFont()->setSize(12); 
-	$worksheet->getStyle('H4')->getFont()->setSize(12); 
+	$worksheet->getStyle('H1')->getFont()->setSize(12);
+	$worksheet->getStyle('H2')->getFont()->setSize(12);
+	$worksheet->getStyle('H3')->getFont()->setSize(12);
+	$worksheet->getStyle('H4')->getFont()->setSize(12);
 
-	$worksheet->getStyle('I1')->getFont()->setSize(12); 
-	$worksheet->getStyle('I2')->getFont()->setSize(12); 
-	$worksheet->getStyle('I3')->getFont()->setSize(12); 
-	$worksheet->getStyle('I4')->getFont()->setSize(12); 
+	$worksheet->getStyle('I1')->getFont()->setSize(12);
+	$worksheet->getStyle('I2')->getFont()->setSize(12);
+	$worksheet->getStyle('I3')->getFont()->setSize(12);
+	$worksheet->getStyle('I4')->getFont()->setSize(12);
 
 	$worksheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	$worksheet->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
@@ -418,7 +418,7 @@ class C_Cetak extends CI_Controller {
     	$sheets = $load->getActiveSheet()->toArray(null,true,true,true);
 
 
-    	for ($i=1; $i < sizeof($sheets)+1; $i++) { 
+    	for ($i=1; $i < sizeof($sheets)+1; $i++) {
 
     		$colorG[] = $load->getActiveSheet()->getStyle('G'.$i)->getFill()->getStartColor()->getRGB();
     		$colorH[] = $load->getActiveSheet()->getStyle('H'.$i)->getFill()->getStartColor()->getRGB();
@@ -544,11 +544,22 @@ class C_Cetak extends CI_Controller {
     	$data['warna_header'] 	= $this->input->post('warna_header[]');
     	$data['idunix'] = array();
     	for ($i=0; $i < sizeof($data['kode_barang']); $i++) {
-    		$idunix				= $this->makeID($data['kode_barang'][$i]);
-    		$kodebarang = $data['kode_barang'][$i];
-    		$nama_barang = $this->M_cetak->getNamaBarang($kodebarang);
-    		$data['nama_barang'][$i] = $nama_barang['0']['DESCRIPTION'];
-    		$this->M_cetak->insert($idunix,$data['kode_barang'][$i],$data['cost_center'][$i],$data['nama_barang'][$i],$data['no_bppbgt'][$i]);
+				$idunix				= $this->makeID($data['kode_barang'][$i]);
+				$kodebarang = $data['kode_barang'][$i];
+				$nama_barang = $this->M_cetak->getNamaBarang($kodebarang);
+				if (!empty($nama_barang)) {
+					$data['nama_barang'][$i] = $nama_barang['0']['DESCRIPTION'];
+					$cek_data = [
+						'kode_barang' => $data['kode_barang'][$i],
+						'cost_center' => $data['cost_center'][$i],
+						'nama_barang' => $data['nama_barang'][$i],
+						'nomor_bppct' => $data['no_bppbgt'][$i]
+					];
+					$cek = $this->M_cetak->cekdata($cek_data);
+					if (empty($cek)) {
+						$this->M_cetak->insert($idunix,$data['kode_barang'][$i],$data['cost_center'][$i],$data['nama_barang'][$i],$data['no_bppbgt'][$i]);
+					}
+				}
     		array_push($data['idunix'], $idunix);
     	}
 
@@ -650,4 +661,93 @@ class C_Cetak extends CI_Controller {
     	$pdf->WriteHTML($html);												//-----> Pakai Library MPDF
     	$pdf->Output($filename, 'I');
     }
+
+		public function cekdata()
+		{
+			$cek_data = [
+				'kode_barang' => 'MJABATCMTYBC151F',
+				'cost_center' => '5C17',
+				'nama_barang' => 'TCMT 16T308 HR YBC151 - Diamond',
+				'nomor_bppct' => '193'
+			];
+		 	$cek = $this->M_cetak->cekdata($cek_data);
+			if (!empty($cek)) {
+				echo "<pre>";
+				print_r($cek);
+			}else {
+				echo "ga ada";
+			}
+
+		}
+
+		public function cetakAja()
+		{
+			$data['kode_barang'] 	= $this->input->post('kode_barang[]');
+			$data['desc'] 			= $this->input->post('desc[]');
+			$data['cost_center'] 	= $this->input->post('cost_center[]');
+			$data['no_bppbgt'] 		= $this->input->post('no_bppbgt[]');
+			$data['jumlah_cetak'] 	= $this->input->post('jumlah_cetak[]');
+			$data['idunix'] = [];
+			for ($i=0; $i < sizeof($data['kode_barang']); $i++) {
+				$nama_barang = $this->M_cetak->getNamaBarang($data['kode_barang'][$i]);
+				if (!empty($nama_barang)) {
+					$data['nama_barang'][$i] = $nama_barang['0']['DESCRIPTION'];
+
+					$idunix = $this->makeID($data['kode_barang'][$i]);
+
+					$cek_data = [
+						'kode_barang' => $data['kode_barang'][$i],
+						'cost_center' => $data['cost_center'][$i],
+						'nama_barang' => $data['nama_barang'][$i],
+						'nomor_bppct' => $data['no_bppbgt'][$i]
+					];
+					$cek = $this->M_cetak->cekdata($cek_data);
+					if (empty($cek)) {
+						$this->M_cetak->insert($idunix,$data['kode_barang'][$i],$data['cost_center'][$i],$data['nama_barang'][$i],$data['no_bppbgt'][$i]);
+					}
+				}
+				array_push($data['idunix'], $idunix);
+			}
+
+			ob_start();
+			$this->load->library('ciqrcode');
+			// ------ create directory temporary qrcode ------
+			if(!is_dir('./assets/img'))
+			{
+				mkdir('./assets/img', 0777, true);
+				chmod('./assets/img', 0777);
+			}
+
+			foreach ($data['idunix'] as $v) {
+				$params['data']		= $v;
+				$params['level']	= 'H';
+				$params['size']		= 2;
+				$params['black']	= array(255,255,255);
+				$params['white']	= array(0,0,0);
+				$params['savename'] = './assets/img/'.$v.'.png';
+				$this->ciqrcode->generate($params);
+			}
+
+			// echo "<pre>"; print_r($data['kode_barang']);die;
+
+			$this->load->library('pdf');
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('utf-8',array(210,330), 0, '', 3, 3, 3, 3, 3, 3); //----- A5-L
+			$tglNama = date("dmY");
+			$filename = 'CetakKanbanToolRoom_min_'.$tglNama.'.pdf';
+			$html = $this->load->view('CetakKanbanToolRoom/V_Cetak_Aja', $data, true);		//-----> Fungsi Cetak PDF
+			ob_end_clean();
+			$pdf->WriteHTML($html);												//-----> Pakai Library MPDF
+			$pdf->Output($filename, 'I');
+
+			foreach ($data['idunix'] as $v) {
+				$params['savename'] = './assets/img/'.($v).'.png';
+				if (!unlink($params['savename'])) {
+						echo("Error deleting");
+				} else {
+						unlink($params['savename']);
+				}
+			}
+
+		}
 }

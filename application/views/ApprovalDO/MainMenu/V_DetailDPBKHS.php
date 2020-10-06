@@ -73,6 +73,25 @@
                         </div>
                         <br />
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Gudang Pengirim</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-home"></i></span>
+                                    <select class="form-control slcADOGudangPengirim" id="">
+                                        <?php if (isset($DPBKHSDetail[0]['GUDANG_PENGIRIM'])) { ?>
+                                            
+                                            <option value="<?= $DPBKHSDetail[0]['GUDANG_PENGIRIM'];?>"><?= $DPBKHSDetail[0]['GUDANG_PENGIRIM'];?></option>
+                                        <?php }else { ?>
+                                            <option></option>  
+                                        <?php } ?>
+                                           <option value="TUKSONO">TUKSONO</option>
+                                           <option value="MLATI">MLATI</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">Alamat Bongkar</label>
                             <div class="col-sm-5">
                                 <div class="input-group">
@@ -143,9 +162,10 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOSaveUpdate" style="margin-right: 10px" <?= $UserAccess['save'] ?>>
+                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOSaveUpdate" <?= $UserAccess['save'] ?>>
                         <i class="fa fa-save"></i>&nbsp; Save
                     </button>
+                    <button type="button" title="stok" class="btn btn-primary pull-right btnADOCekStok" style="margin-right: 10px">Cek Stok</button>                      
                 </div>
             </div>
         </div>

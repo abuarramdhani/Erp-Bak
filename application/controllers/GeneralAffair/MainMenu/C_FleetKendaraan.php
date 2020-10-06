@@ -213,6 +213,7 @@ class C_FleetKendaraan extends CI_Controller
 			$pemilik_kendaraan		=	$this->input->post('kepemilikan_kendaraan', TRUE);
 			$lokasikerja			=	$this->input->post('lokasi_kerja_k', TRUE);
 			$pic	        		=	$this->input->post('pic_kendaraan', TRUE);
+			$tag_number			    =	$this->input->post('TagNumber', TRUE);
 
 			// $start_date 			= 	date('Y-m-d H:i:s', strtotime($this->input->post('txtStartDateHeader')));
 			// $end_date 				=	date('Y-m-d H:i:s', strtotime($this->input->post('txtEndDateHeader')));
@@ -308,7 +309,7 @@ class C_FleetKendaraan extends CI_Controller
         		}
         	}
         	$user_ya = $this->session->user;
-        	if ($user_ya == "J1335") {
+        	if ($user_ya == "B0647") {
         		$data = array(
 					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
 					'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
@@ -327,6 +328,7 @@ class C_FleetKendaraan extends CI_Controller
 					'usable'				=> $usable,
 					'hak_milik'				=> $pemilik_kendaraan,
 					'pic_kendaraan'				=> $pic,
+					'tag_number'				=> $tag_number,
     			);
         	}else{
         		$data = array(
@@ -347,6 +349,7 @@ class C_FleetKendaraan extends CI_Controller
 					'usable'				=> $usable,
 					'hak_milik'				=> $pemilik_kendaraan,
 					'pic_kendaraan'				=> $pic,
+					'tag_number'				=> $tag_number,
     			);
         	}
 
@@ -480,6 +483,7 @@ class C_FleetKendaraan extends CI_Controller
 			$usable 			=	$this->input->post('usable');
 			$hak_milik 			=	$this->input->post('kepemilikan_kendaraan');
 			$pic_kendaraan 			=	$this->input->post('pic_kendaraan');
+			$tag_number		=	$this->input->post('TagNumber', TRUE);
 
 			// $tanggalNonaktif		=	$this->input->post('txtTanggalNonaktif');
 
@@ -592,14 +596,14 @@ class C_FleetKendaraan extends CI_Controller
 
 			$user_ya= $this->session->user;
 			$lokasi = $this->input->post('lokasi_kerja_k',TRUE);
-			if ($user_ya == "J1335") {
+			if ($user_ya == "B0647") {
 				$data = array(
 					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
 					'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
 					'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
 					'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
 					'tahun_pembuatan' 		=> $tahun_pembuatan,
-					'nomor_rangka' 		=> $nomor_rangka,
+					'nomor_rangka' 		    => $nomor_rangka,
 					'kode_lokasi_kerja'		=> $lokasi,
 					'end_date'				=> $waktu_dihapus,
 					'last_updated'			=> date('Y-m-d H:i:s'),
@@ -607,7 +611,8 @@ class C_FleetKendaraan extends CI_Controller
 					'created_by' 			=> $this->session->userid,
 					'usable' 				=> $usable,
 					'hak_milik' 			=> $hak_milik,
-					'pic_kendaraan' 			=> $pic_kendaraan,
+					'pic_kendaraan' 		=> $pic_kendaraan,
+					'tag_number' 		    => $tag_number,
 	    		);
 			}else{
 	    		$data = array(
@@ -616,14 +621,15 @@ class C_FleetKendaraan extends CI_Controller
 					'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
 					'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
 					'tahun_pembuatan' 		=> $tahun_pembuatan,
-					'nomor_rangka' 		=> $nomor_rangka,
+					'nomor_rangka' 		    => $nomor_rangka,
 					'end_date'				=> $waktu_dihapus,
 					'last_updated'			=> date('Y-m-d H:i:s'),
 					'last_updated_by'		=> $this->session->userid,
 					'created_by' 			=> $this->session->userid,
 					'usable' 				=> $usable,
 					'hak_milik' 			=> $hak_milik,
-					'pic_kendaraan' 			=> $pic_kendaraan,
+					'pic_kendaraan' 		=> $pic_kendaraan,
+					'tag_number' 		    => $tag_number,
 	    		);
 			}
 
