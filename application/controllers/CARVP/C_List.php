@@ -48,8 +48,28 @@ class C_List extends CI_Controller
         $w = 0;
         foreach ($carr as $supplier) {
             $detail = $this->M_car->ListbyCAR($supplier['CAR_NUM']);
+            $carr[$w]['DETAIL'] = $this->M_car->ListbyCAR($supplier['CAR_NUM']);
+            $carr[$w]['NO_CAR'] = $detail[0]['CAR_NUM'];
             $carr[$w]['SUPPLIER_NAME'] = $detail[0]['SUPPLIER_NAME'];
+            $carr[$w]['APPROVE_DATE'] = $detail[0]['APPROVE_DATE'];
+            if ($carr[$w]['DETAIL'][0]['ACTIVE_FLAG'] == 'A') {
+                $carr[$w]['DELIVERY_STATUS'] = 'Success';
+            } else if ($carr[$w]['DETAIL'][0]['ACTIVE_FLAG'] == 'F') {
+                $carr[$w]['DELIVERY_STATUS'] = 'Failed';
+            } else {
+                $carr[$w]['DELIVERY_STATUS'] = '-';
+            }
+            $carr[$w]['CREATED_DATE'] = $detail[0]['CREATED_DATE'];
             $carr[$w]['ACTIVE_FLAG'] = $detail[0]['ACTIVE_FLAG'];
+            $carr[$w]['APPROVE_TO'] = $detail[0]['APPROVE_TO'];
+            if ($carr[$w]['ACTIVE_FLAG'] == 'A') {
+                $carr[$w]['APPROVAL_STATUS'] = 'Approved';
+            } else if ($carr[$w]['ACTIVE_FLAG'] == 'F') {
+                $carr[$w]['APPROVAL_STATUS'] = 'Approved';
+            } else {
+                $carr[$w]['APPROVAL_STATUS'] = 'Pending';
+            }
+
 
             $w++;
         }
@@ -57,6 +77,7 @@ class C_List extends CI_Controller
         // echo "<pre>";
         // print_r($carr);
         // exit();
+
         $data['car'] = $carr;
 
         $this->load->view('V_Header', $data);

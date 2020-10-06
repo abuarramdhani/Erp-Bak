@@ -35,12 +35,16 @@
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="col-md-12">
-                                            <table class="table table-bordered" id="list_CAR">
+                                            <table class="table table-bordered" id="list_CARR">
                                                 <thead class="bg-aqua">
                                                     <tr>
                                                         <th class="text-center">Supplier Name</th>
+                                                        <th class="text-center">Submit Date</th>
+                                                        <th class="text-center">Approved Date</th>
                                                         <th class="text-center">No CAR</th>
                                                         <th class="text-center">Action</th>
+                                                        <th class="text-center">Delivery Status</th>
+
 
                                                     </tr>
                                                 </thead>
@@ -49,12 +53,19 @@
                                                     foreach ($car as $v) { ?>
                                                         <tr>
                                                             <td class="text-center"><?= $v['SUPPLIER_NAME'] ?></td>
+                                                            <td class="text-center"><?= $v['CREATED_DATE'] ?></td>
+                                                            <td class="text-center"><?= $v['APPROVE_DATE'] ?></td>
                                                             <td class="text-center"><input type="hidden" id="car_num<?= $i ?>" value="<?= $v['NO_CAR'] ?>"><?= $v['NO_CAR'] ?></td>
                                                             <td class="text-center">
-                                                                <a style="border-radius: 50px;" class="btn btn-warning" onclick="detailCAR(<?= $i ?>)">Detail</a>
-                                                                <button style="border-radius: 50px;" formtarget="_blank" formaction="<?php echo base_url('CARVP/ListData/createPDFCar/' . $v['NO_CAR']); ?>" class="btn bg-teal">View</button>
-                                                                <a style="border-radius: 50px;" class="btn btn-success" onclick="ApproveReqCAR(<?= $i ?>)">Approve CAR</a>
+                                                                <a style="border-radius: 50px;" class="btn btn-sm btn-warning" onclick="detailCAR(<?= $i ?>)">Detail</a>
+                                                                <button style="border-radius: 50px;" formtarget="_blank" formaction="<?php echo base_url('CARVP/ListData/createPDFCar/' . $v['NO_CAR']); ?>" class="btn btn-sm bg-teal">View</button>
+                                                                <?php if ($noind == $v['APPROVE_TO'] && $v['ACTIVE_FLAG'] == 'E') { ?>
+                                                                    <a style="border-radius: 50px;" class="btn btn-sm btn-success" onclick="ApproveReqCAR(<?= $i ?>)">Approve</a>
+                                                                <?php } else {
+                                                                } ?>
                                                             </td>
+                                                            <td class="text-center"><?= $v['DELIVERY_STATUS'] ?></td>
+
                                                         </tr>
                                                     <?php $i++;
                                                     } ?>

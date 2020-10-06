@@ -7,7 +7,12 @@ $(document).ready(function () {
   $("#list_CAR").dataTable({
     paging: false,
     info: false,
-    order: [[1, "asc"]],
+    order: [[3, "desc"]],
+  });
+  $("#list_CARR").dataTable({
+    paging: false,
+    info: false,
+    order: [[4, "desc"]],
   });
   $("#edit_CAR").dataTable({
     paging: false,
@@ -92,7 +97,7 @@ function ApproveReqCAR(i) {
   var no_car = $("#car_num" + i).val();
   Swal.fire({
     title: "Anda Yakin?",
-    text: "Data Akan Di Approve",
+    text: "Data Akan Di Approve dan dikirim kepada Vendor",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -109,14 +114,19 @@ function ApproveReqCAR(i) {
         datatype: "html",
       });
       request.done(function (result) {
+        if (result == "Pesan Tidak Terkirim!") {
+          var t = "error";
+        } else {
+          var t = "success";
+        }
         Swal.fire({
           position: "top",
-          type: "success",
-          title: "Berhasil Approve",
+          type: t,
+          title: result + " ,Status Approved",
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          window.location.reload();
+          // window.location.reload();
         });
       });
     }
