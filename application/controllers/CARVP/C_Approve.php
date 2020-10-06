@@ -201,6 +201,7 @@ class C_Approve extends CI_Controller
             $flag = 'F';
             $this->M_car->UpdateApprove($flag, $no_car, $approve_date);
         } else {
+            unlink($pdf_dir . $filename);
             echo 'Pesan Terkirim ke Vendor';
             $flag = 'A';
             $this->M_car->UpdateApprove($flag, $no_car, $approve_date);
