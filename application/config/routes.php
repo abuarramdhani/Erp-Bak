@@ -4751,6 +4751,11 @@ $route['LaporanKerjaOperator/Input/(:any)'] = 'LKOWelding/C_Input/$1';
 //-----------------------------------api-do-backup---------------------------------------------//
 $route['Apidobackup'] = 'Apidobackup/C_Index';
 $route['Apidobackup/engine'] = 'Apidobackup/C_Web_Reports';
+
+$route['Apidobackup/engine/master'] = 'Apidobackup/C_Web/master';
+$route['Apidobackup/engine/cekapi'] = 'Apidobackup/C_Web/cekapi';
+
+
 //---------------------------------- CAR Vendor Purchasing -------------------------------------//
 $route['CARVP'] = 'CARVP/C_Index';
 $route['CARVP/Input'] = 'CARVP/C_Input';
