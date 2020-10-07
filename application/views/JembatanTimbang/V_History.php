@@ -15,6 +15,8 @@
                       <tr class="bg-primary">
                         <th class="text-center">NO</th>
                         <th class="text-center">NO DOKUMEN</th>
+                        <th class="text-center">JENIS.DOK</th>
+                        <th class="text-center">TIPE</th>
                         <th class="text-center">TIKET NUMBER</th>
                         <th class="text-center">BERAT TIMBANG - 1</th>
                         <th class="text-center">BERAT TIMBANG - 2</th>
@@ -29,6 +31,8 @@
                         <tr>
                           <td style="text-align:center"><?php echo $key+1 ?></td>
                           <td style="text-align:center"><?php echo $g['document_number'] ?></td>
+                          <td style="text-align:center"><?php echo $g['document_type'] ?></td>
+                          <td style="text-align:center"><?php echo $g['type'] ?></td>
                           <td style="text-align:center"><?php echo $g['ticket_number'] ?></td>
                           <td style="text-align:center">
                             <?php if (!empty($g['weight']) && empty($g['weight_2'])) { ?>
