@@ -1,7 +1,7 @@
 <?php foreach ($car as $c) { ?>
     <!-- Page1 -->
     <strong style="font-size:10pt;font-family:arial">Filled By CV. KHS</strong>
-    <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt;margin-bottom:10px">
+    <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt;">
         <tr>
             <td style="padding-left:10px;padding-top:10px;font-size:10pt" colspan="3"><strong>Requested To</strong></td>
         </tr>
@@ -77,6 +77,7 @@
 
         </tr>
     </table>
+    <p style="text-align: right;margin-bottom:10px;font-size:8pt;font-style:italic;font-family:Arial, Helvetica, sans-serif"><?= $c['KET'] ?></p>
     <strong style="font-size:10pt;font-family:arial;">Filled By Vendor</strong>
     <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt;margin-bottom:10px">
         <tr>
@@ -118,7 +119,7 @@
         </tr>
     </table>
 
-    <strong style="font-size:10pt;font-family:arial;">Filled By Cv. KHS</strong>
+    <strong style="font-size:10pt;font-family:arial;">Filled By CV. KHS</strong>
     <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt">
         <tr>
             <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="5"><strong>Verification <br><br><br><br></strong></td>

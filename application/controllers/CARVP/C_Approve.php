@@ -97,6 +97,8 @@ class C_Approve extends CI_Controller
         date_default_timezone_set('Asia/Jakarta');
         $approve_date = date('d-m-Y');
 
+        $this->M_car->UpdateApprove($no_car, $approve_date);
+
         // generate file pdf
         ob_start();
 
@@ -114,9 +116,11 @@ class C_Approve extends CI_Controller
             $list_supplier[$w]['NC_SCOPE'] = $list_supplier[$w]['DETAIL'][0]['NC_SCOPE'];
             if ($list_supplier[$w]['DETAIL'][0]['APPROVE_DATE'] == null) {
                 $list_supplier[$w]['APPROVER'] = null;
+                $list_supplier[$w]['KET'] = null;
             } else {
                 $nama = $this->M_car->getNamaApprover($list_supplier[$w]['DETAIL'][0]['APPROVE_TO']);
                 $list_supplier[$w]['APPROVER'] = $nama[0]['nama'];
+                $list_supplier[$w]['KET'] = 'Form ini sudah melalui Approval by sistem.';
             }
 
             $w++;
@@ -183,7 +187,7 @@ class C_Approve extends CI_Controller
         $mail->Subject = 'NEED FEEDBACK - [' . $list_supplier[0]['SUPPLIER_NAME'] . '] Corrective Action Request (CAR) No. ' . $list_supplier[0]['CAR_NUM'] . '';
         $mail->msgHTML('Dengan hormat,<br><br>
 
-        Berikut kami kirimkan CAR terkait ' . $list_supplier[0]['NC_SCOPE'] . '  yang bermasalah mohon untuk  membalas CAR dengan mengisi kolom Rootcause (analisa masalah) dan kolom Corrective Action (perbaikan yang akan dilakukan). Dokumen pada lampiran.<br>
+        Berikut kami kirimkan CAR terkait ' . $list_supplier[0]['NC_SCOPE'] . '  yang bermasalah, mohon untuk membalas CAR dengan mengisi kolom Rootcause (analisa masalah) dan kolom Corrective Action (perbaikan yang akan dilakukan). Dokumen pada lampiran.<br>
         Vendor berkewajiban untuk memberikan konfirmasi dan mengirimkan balasan CAR dalam kurun waktu 7 hari sejak email dikirim oleh CV. KHS dan mengirimkan balasan ke cpar@quick.co.id (atau dengan "reply" email ini)<br><br>
         
         Demikian informasi ini kami sampaikan.<br><br>
@@ -199,12 +203,108 @@ class C_Approve extends CI_Controller
         if (!$mail->send()) {
             echo 'Pesan Tidak Terkirim!';
             $flag = 'F';
-            $this->M_car->UpdateApprove($flag, $no_car, $approve_date);
+            $this->M_car->UpdateFlag($flag, $no_car);
         } else {
             unlink($pdf_dir . $filename);
             echo 'Pesan Terkirim ke Vendor';
             $flag = 'A';
-            $this->M_car->UpdateApprove($flag, $no_car, $approve_date);
+            $this->M_car->UpdateFlag($flag, $no_car);
+        }
+    }
+    public function kirimUlangCAR()
+    {
+        $no_car = $this->input->post('no_car');
+
+        $list_supplier = $this->M_car->ListsupplierbyNoCAR($no_car);
+        $w = 0;
+        foreach ($list_supplier as $supplier) {
+            $list_supplier[$w]['DETAIL'] = $this->M_car->ListbyCAR($supplier['CAR_NUM']);
+            $periode = $this->M_car->getPeriode($supplier['CAR_NUM']);
+            $list_supplier[$w]['PERIODE'] = $periode[0]['CREATED_DATE'];
+            $po_num = $this->M_car->getPO($supplier['CAR_NUM']);
+            $attendance = $this->M_car->getAttendance($po_num[0]['PO_NUMBER']);
+            $list_supplier[$w]['ATTENDANCE'] = $attendance[0]['VENDOR_CONTACT'];
+            $list_supplier[$w]['PO'] = $po_num;
+            $list_supplier[$w]['CAR_TYPE'] = $list_supplier[$w]['DETAIL'][0]['CAR_TYPE'];
+            $list_supplier[$w]['NC_SCOPE'] = $list_supplier[$w]['DETAIL'][0]['NC_SCOPE'];
+            if ($list_supplier[$w]['DETAIL'][0]['APPROVE_DATE'] == null) {
+                $list_supplier[$w]['APPROVER'] = null;
+                $list_supplier[$w]['KET'] = null;
+            } else {
+                $nama = $this->M_car->getNamaApprover($list_supplier[$w]['DETAIL'][0]['APPROVE_TO']);
+                $list_supplier[$w]['APPROVER'] = $nama[0]['nama'];
+                $list_supplier[$w]['KET'] = 'Form ini sudah melalui Approval by sistem.';
+            }
+
+            $w++;
+        }
+
+        $filename = '' . $no_car . '.pdf';
+        $pdf_dir = './assets/upload/CARVP/';
+
+        $this->load->library('PHPMailerAutoload');
+        $mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->Debugoutput = 'html';
+
+        $mail->isSMTP();
+        $mail->Host = 'quick.co.id';
+        $mail->Port = 587;
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'tls';
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+
+        $mail->Username = 'cpar@quick.co.id';
+        $mail->Password = 'U!^7SZQX17Vw';
+        $mail->WordWrap = 50;
+
+        $mail->setFrom('cpar@quick.co.id');
+
+        $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
+        $e = explode(',', $alamat);
+        $email = array();
+        for ($i = 0; $i < sizeof($e); $i++) {
+            if ($e[$i] != null || $e[$i] != "") {
+                array_push($email, $e[$i]);
+            }
+        }
+
+        foreach ($email as $toE) {
+            $mail->addAddress($toE);
+        }
+        // $mail->addAddress('riskiviolin@gmail.com');
+        $mail->addAttachment($pdf_dir . $filename);
+        $mail->Subject = 'NEED FEEDBACK - [' . $list_supplier[0]['SUPPLIER_NAME'] . '] Corrective Action Request (CAR) No. ' . $list_supplier[0]['CAR_NUM'] . '';
+        $mail->msgHTML('Dengan hormat,<br><br>
+
+        Berikut kami kirimkan CAR terkait ' . $list_supplier[0]['NC_SCOPE'] . '  yang bermasalah, mohon untuk membalas CAR dengan mengisi kolom Rootcause (analisa masalah) dan kolom Corrective Action (perbaikan yang akan dilakukan). Dokumen pada lampiran.<br>
+        Vendor berkewajiban untuk memberikan konfirmasi dan mengirimkan balasan CAR dalam kurun waktu 7 hari sejak email dikirim oleh CV. KHS dan mengirimkan balasan ke cpar@quick.co.id (atau dengan "reply" email ini)<br><br>
+        
+        Demikian informasi ini kami sampaikan.<br><br>
+        
+        
+        Terima kasih,<br>
+        Rani<br>
+        Adm. Sistem Pembelian<br>
+        CV. Karya Hidup Sentosa<br>
+        Telp. +62-274-512095 ext 225<br>
+        Fax. +62-274-563523');
+
+        if (!$mail->send()) {
+            echo 'Pesan Tidak Terkirim!';
+            $flag = 'F';
+            $this->M_car->UpdateFlag($flag, $no_car);
+        } else {
+            unlink($pdf_dir . $filename);
+            echo 'Pesan Terkirim ke Vendor';
+            $flag = 'A';
+            $this->M_car->UpdateFlag($flag, $no_car);
         }
     }
     public function DetailCAR()

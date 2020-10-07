@@ -199,9 +199,11 @@ class C_List extends CI_Controller
             $list_supplier[$w]['NC_SCOPE'] = $list_supplier[$w]['DETAIL'][0]['NC_SCOPE'];
             if ($list_supplier[$w]['DETAIL'][0]['APPROVE_DATE'] == null) {
                 $list_supplier[$w]['APPROVER'] = null;
+                $list_supplier[$w]['KET'] = null;
             } else {
                 $nama = $this->M_car->getNamaApprover($list_supplier[$w]['DETAIL'][0]['APPROVE_TO']);
                 $list_supplier[$w]['APPROVER'] = $nama[0]['nama'];
+                $list_supplier[$w]['KET'] = 'Form ini sudah melalui Approval by sistem.';
             }
 
             $w++;

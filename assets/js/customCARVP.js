@@ -234,3 +234,42 @@ function getDescription(i) {
     },
   });
 }
+function kirimulangcar(i) {
+  var no_car = $("#car_num" + i).val();
+  Swal.fire({
+    title: "Anda Yakin?",
+    text: "Kirim Ulang Pesan",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "CARVPkoor/Approval/kirimUlangCAR",
+        data: {
+          no_car: no_car,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        if (result == "Pesan Tidak Terkirim!") {
+          var t = "error";
+        } else {
+          var t = "success";
+        }
+        Swal.fire({
+          position: "top",
+          type: t,
+          title: result,
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.reload();
+        });
+      });
+    }
+  });
+}
