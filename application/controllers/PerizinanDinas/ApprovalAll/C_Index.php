@@ -170,7 +170,7 @@ class C_Index extends CI_Controller
 			$jenis_ijin = 'Dinas Tuksono - Mlati - Pusat';
 
 			$this->M_index->updateAtasan($atasan, $id);
-			$detail = 'Rotasi Atasan izin_id= ' . $id . ' dari =' . $getAtasan . ' kepada= ' . $atasan;
+			$detail = 'TMP - Rotasi Atasan izin_id= ' . $id . ' dari =' . $getAtasan . ' kepada= ' . $atasan . 'KET= '. $alasan;
 		} else {
 
 			if ($dataPribadi[0]['jenis_ijin'] == '1') {
@@ -185,7 +185,7 @@ class C_Index extends CI_Controller
 				$implode1[] = $key['noind'];
 			}
 			$this->M_index->updateAtasanPribadi($atasan, $id);
-			$detail = 'Rotasi Atasan izin_id= ' . $id . ' dari =' . $dataPribadi[0]['atasan'] . ' kepada= ' . $atasan;
+			$detail = 'PRIBADI - Rotasi Atasan izin_id= ' . $id . ' dari =' . $dataPribadi[0]['atasan'] . ' kepada= ' . $atasan . 'KET= '. $alasan;
 		}
 		//inserto to tlog sys
 		$aksi = 'ROTATE PERIZINAN';

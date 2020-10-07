@@ -10,7 +10,7 @@
             <div class="col-md-12" style="margin-top:10px">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
                 <div class="table-responsive">
-                  <table class="table table-striped table-bordered table-hover text-left " id="dataTables-example" style="font-size:11px;">
+                  <table class="table table-striped table-bordered table-hover text-left " id="dataTableJT001" style="font-size:11px;">
                     <thead>
                       <tr class="bg-primary">
                         <th class="text-center">NO</th>
