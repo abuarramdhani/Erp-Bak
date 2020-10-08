@@ -37,11 +37,17 @@ $(document).ready(function () {
                                     <div class="col-md-1 text-right">
                                         <label>Bulan:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="input-group">
                                             <input id="periode_bulan" class="form-control datepickbln" placeholder="mm/yyyy" autocomplete="off">
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-success" style="margin-left:15px" onclick="schMonJob(this)"><i class="fa fa-search"></i> Search</button>
+                                                <button type="button" class="btn btn-success" style="margin-left:15px;width:70px;text-align:left" onclick="schMonJob('All')"><i class="fa fa-search"></i> All</button>
+                                            </span>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-danger" style="margin-left:15px" onclick="schMonJob('PA')"><i class="fa fa-search"></i> P vs A</button>
+                                            </span>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" style="margin-left:15px" onclick="schMonJob('PLP')"><i class="fa fa-search"></i> P vs PL</button>
                                             </span>
                                         </div>
                                     </div>
