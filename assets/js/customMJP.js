@@ -40,12 +40,12 @@ var user = document.getElementById("tbl_usermng");
 });
 
 //-----------------------------------------------MONITORING---------------------------------------------------------------------------------
-function schMonJob(th) {
+function schMonJob(ket) {
     var  kategori   = $('#kategori').val();
     var  bulan      = $('#periode_bulan').val();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/search",
-        data : {bulan : bulan, kategori : kategori},
+        data : {bulan : bulan, kategori : kategori, ket : ket},
         dataType : 'html',
         type : 'POST',
         beforeSend: function() {
