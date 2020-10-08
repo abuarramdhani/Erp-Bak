@@ -51,7 +51,12 @@
             <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="3"><strong>Description of Fact Finding</strong></td>
         </tr>
         <tr>
-            <td style="padding-left:10px;font-size:10pt;vertical-align:top" rowspan="5" colspan="2"><?= $c['DETAIL'][0]['ROOTCAUSE_CATEGORI'] ?></td>
+            <?php if ($c['DETAIL'][0]['NC_SCOPE'] == 'DELIVERY') {
+                $finding = 'PENGIRIMAN BARANG/JASA TERLAMBAT SAMPAI CV. KHS';
+            } else {
+                $finding = $c['DETAIL'][0]['ROOTCAUSE_CATEGORI'];
+            } ?>
+            <td style="padding-left:10px;font-size:10pt;vertical-align:top" rowspan="5" colspan="2"><?= $finding ?></td>
             <td style="padding-left:10px;font-size:10pt;border:1px solid black; border-collapse:collapse;width:250px;text-align:center;background-color:lightgray"><strong>Approved by,</strong></td>
 
         </tr>

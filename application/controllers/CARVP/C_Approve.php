@@ -211,6 +211,12 @@ class C_Approve extends CI_Controller
             $this->M_car->UpdateFlag($flag, $no_car);
         }
     }
+    public function updateReject()
+    {
+        $no_car = $this->input->post('no_car');
+        $flag = 'R';
+        $this->M_car->UpdateFlag($flag, $no_car);
+    }
     public function kirimUlangCAR()
     {
         $no_car = $this->input->post('no_car');

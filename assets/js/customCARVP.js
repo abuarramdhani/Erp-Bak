@@ -132,6 +132,40 @@ function ApproveReqCAR(i) {
     }
   });
 }
+function RejectReqCAR(i) {
+  var no_car = $("#car_num" + i).val();
+  Swal.fire({
+    title: "Anda Yakin?",
+    text: "Data Akan Di Reject",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "CARVPkoor/Approval/updateReject",
+        data: {
+          no_car: no_car,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: success,
+          title: "Request CAR Di Reject",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.reload();
+        });
+      });
+    }
+  });
+}
 function detailCAR(no) {
   var no_car = $("#car_num" + no).val();
   var request = $.ajax({

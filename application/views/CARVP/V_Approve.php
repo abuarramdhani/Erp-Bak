@@ -61,7 +61,8 @@
                                                                 <button style="border-radius: 50px;" formtarget="_blank" formaction="<?php echo base_url('CARVP/ListData/createPDFCar/' . $v['NO_CAR']); ?>" class="btn btn-sm bg-teal">View</button>
                                                                 <?php if ($noind == $v['APPROVE_TO'] && $v['ACTIVE_FLAG'] == 'E') { ?>
                                                                     <a style="border-radius: 50px;" class="btn btn-sm btn-success" onclick="ApproveReqCAR(<?= $i ?>)">Approve</a>
-                                                                <?php } else if ($v['ACTIVE_FLAG' == 'F']) { ?>
+                                                                    <a style="border-radius: 50px;" class="btn btn-sm btn-danger" onclick="RejectReqCAR(<?= $i ?>)">Reject</a>
+                                                                <?php } else if ($v['ACTIVE_FLAG'] == 'F') { ?>
                                                                     <a class="btn btn-sm btn-default" onclick="kirimulangcar(<?= $i ?>)">Kirim Ulang CAR</a>
                                                                 <?php } ?>
                                                             </td>

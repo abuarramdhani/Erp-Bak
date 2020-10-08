@@ -66,6 +66,8 @@ class C_List extends CI_Controller
                 $carr[$w]['APPROVAL_STATUS'] = 'Approved';
             } else if ($carr[$w]['ACTIVE_FLAG'] == 'F') {
                 $carr[$w]['APPROVAL_STATUS'] = 'Approved';
+            } else if ($carr[$w]['ACTIVE_FLAG'] == 'R') {
+                $carr[$w]['APPROVAL_STATUS'] = 'Rejected';
             } else {
                 $carr[$w]['APPROVAL_STATUS'] = 'Pending';
             }
