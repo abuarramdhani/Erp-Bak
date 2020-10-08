@@ -7,7 +7,12 @@ $(document).ready(function () {
   $("#list_CAR").dataTable({
     paging: false,
     info: false,
-    order: [[1, "asc"]],
+    order: [[3, "desc"]],
+  });
+  $("#list_CARR").dataTable({
+    paging: false,
+    info: false,
+    order: [[4, "desc"]],
   });
   $("#edit_CAR").dataTable({
     paging: false,
@@ -92,7 +97,7 @@ function ApproveReqCAR(i) {
   var no_car = $("#car_num" + i).val();
   Swal.fire({
     title: "Anda Yakin?",
-    text: "Data Akan Di Approve",
+    text: "Data Akan Di Approve dan dikirim kepada Vendor",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -109,10 +114,49 @@ function ApproveReqCAR(i) {
         datatype: "html",
       });
       request.done(function (result) {
+        if (result == "Pesan Tidak Terkirim!") {
+          var t = "error";
+        } else {
+          var t = "success";
+        }
         Swal.fire({
           position: "top",
-          type: "success",
-          title: "Berhasil Approve",
+          type: t,
+          title: result + ", Status Approved",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.reload();
+        });
+      });
+    }
+  });
+}
+function RejectReqCAR(i) {
+  var no_car = $("#car_num" + i).val();
+  Swal.fire({
+    title: "Anda Yakin?",
+    text: "Data Akan Di Reject",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "CARVPkoor/Approval/updateReject",
+        data: {
+          no_car: no_car,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: success,
+          title: "Request CAR Di Reject",
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
@@ -222,5 +266,44 @@ function getDescription(i) {
       $("#desc_item" + i).val(result[0]["DESKRIPSI"]);
       $("#uom_item" + i).val(result[0]["SATUAN"]);
     },
+  });
+}
+function kirimulangcar(i) {
+  var no_car = $("#car_num" + i).val();
+  Swal.fire({
+    title: "Anda Yakin?",
+    text: "Kirim Ulang Pesan",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "CARVPkoor/Approval/kirimUlangCAR",
+        data: {
+          no_car: no_car,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        if (result == "Pesan Tidak Terkirim!") {
+          var t = "error";
+        } else {
+          var t = "success";
+        }
+        Swal.fire({
+          position: "top",
+          type: t,
+          title: result,
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.reload();
+        });
+      });
+    }
   });
 }

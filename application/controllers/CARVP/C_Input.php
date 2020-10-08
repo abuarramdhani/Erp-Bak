@@ -180,7 +180,7 @@ class C_Input extends CI_Controller
         }
 
 
-        redirect('CARVP/Input');
+        redirect('CARVP/ListData');
     }
     public function no_car_generator()
     {

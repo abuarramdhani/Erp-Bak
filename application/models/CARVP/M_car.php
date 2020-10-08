@@ -123,7 +123,13 @@ class M_car extends CI_Model
     }
     public function UpdateApprove($no_car, $approve_date)
     {
-        $sql = "update khs_psup_car_vendor set approve_date = TO_TIMESTAMP('$approve_date', 'DD-MM-YY') , active_flag = 'A' where car_num = '$no_car'";
+        $sql = "update khs_psup_car_vendor set approve_date = TO_TIMESTAMP('$approve_date', 'DD-MM-YY') where car_num = '$no_car'";
+        $query = $this->oracle->query($sql);
+        return $sql;
+    }
+    public function UpdateFlag($flag, $no_car)
+    {
+        $sql = "update khs_psup_car_vendor set active_flag = '$flag' where car_num = '$no_car'";
         $query = $this->oracle->query($sql);
         return $sql;
     }
