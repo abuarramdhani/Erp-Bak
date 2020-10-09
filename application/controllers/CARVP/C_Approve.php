@@ -46,7 +46,7 @@ class C_Approve extends CI_Controller
         $noind = $this->session->user;
 
         // $list_supplier = $this->M_car->ListtoApprove($noind);
-        $carr = $this->M_car->Listcar();
+        $carr = $this->M_car->Listcarr();
         $w = 0;
         foreach ($carr as $supplier) {
             $carr[$w]['DETAIL'] = $this->M_car->ListbyCAR($supplier['CAR_NUM']);
@@ -60,7 +60,6 @@ class C_Approve extends CI_Controller
             } else {
                 $carr[$w]['DELIVERY_STATUS'] = '-';
             }
-            $carr[$w]['CREATED_DATE'] = $carr[$w]['DETAIL'][0]['CREATED_DATE'];
             $carr[$w]['ACTIVE_FLAG'] = $carr[$w]['DETAIL'][0]['ACTIVE_FLAG'];
             $carr[$w]['APPROVE_TO'] = $carr[$w]['DETAIL'][0]['APPROVE_TO'];
 
@@ -145,7 +144,40 @@ class C_Approve extends CI_Controller
         $pdf->WriteHTML($html2);
         $pdf->Output($pdf_dir . $filename, 'F');
 
+        // $alamat = $this->M_car->getEmailVendor($po_num[0]['PO_NUMBER']);
+
+        // // echo "<pre>";
+        // // print_r($alamat);
+        // // exit();
+
+        // foreach ($alamat as $al) {
+        //     $e = explode(', ', $al['EMAIL']);
+        //     $email = array();
+        //     for ($i = 0; $i < sizeof($e); $i++) {
+        //         $e2 = explode(' / ', $e[$i]);
+        //         for ($a = 0; $a < sizeof($e2); $a++) {
+        //             if ($e2[$a] != null || $e2[$a] != "") {
+        //                 array_push($email, $e2[$a]);
+        //             }
+        //         }
+        //     }
+        // }
+        $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
+        $e = explode(',', $alamat);
+        $email = array();
+        for ($i = 0; $i < sizeof($e); $i++) {
+            if ($e[$i] != null || $e[$i] != "") {
+                array_push($email, $e[$i]);
+            }
+        }
+
+        // echo "<pre>";
+        // print_r($email);
+        // exit();
+
+
         // Send Email ------------
+
         $this->load->library('PHPMailerAutoload');
         $mail = new PHPMailer();
         $mail->SMTPDebug = 0;
@@ -170,15 +202,6 @@ class C_Approve extends CI_Controller
 
         $mail->setFrom('cpar@quick.co.id');
 
-        $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
-        $e = explode(',', $alamat);
-        $email = array();
-        for ($i = 0; $i < sizeof($e); $i++) {
-            if ($e[$i] != null || $e[$i] != "") {
-                array_push($email, $e[$i]);
-            }
-        }
-
         foreach ($email as $toE) {
             $mail->addAddress($toE);
         }
@@ -189,10 +212,10 @@ class C_Approve extends CI_Controller
 
         Berikut kami kirimkan CAR terkait ' . $list_supplier[0]['NC_SCOPE'] . '  yang bermasalah, mohon untuk membalas CAR dengan mengisi kolom Rootcause (analisa masalah) dan kolom Corrective Action (perbaikan yang akan dilakukan). Dokumen pada lampiran.<br>
         Vendor berkewajiban untuk memberikan konfirmasi dan mengirimkan balasan CAR dalam kurun waktu 7 hari sejak email dikirim oleh CV. KHS dan mengirimkan balasan ke cpar@quick.co.id (atau dengan "reply" email ini)<br><br>
-        
+
         Demikian informasi ini kami sampaikan.<br><br>
-        
-        
+
+
         Terima kasih,<br>
         Rani<br>
         Adm. Sistem Pembelian<br>
@@ -213,9 +236,10 @@ class C_Approve extends CI_Controller
     }
     public function updateReject()
     {
+        $alasan = $this->input->post('alasan');
         $no_car = $this->input->post('no_car');
         $flag = 'R';
-        $this->M_car->UpdateFlag($flag, $no_car);
+        $this->M_car->UpdateFlagReject($flag, $alasan, $no_car);
     }
     public function kirimUlangCAR()
     {
@@ -245,6 +269,34 @@ class C_Approve extends CI_Controller
             $w++;
         }
 
+        // $alamat = $this->M_car->getEmailVendor($po_num[0]['PO_NUMBER']);
+
+
+        // // echo "<pre>";
+        // // print_r($alamat);
+        // // exit();
+
+        // foreach ($alamat as $al) {
+        //     $e = explode(', ', $al['EMAIL']);
+        //     $email = array();
+        //     for ($i = 0; $i < sizeof($e); $i++) {
+        //         $e2 = explode(' / ', $e[$i]);
+        //         for ($a = 0; $a < sizeof($e2); $a++) {
+        //             if ($e2[$a] != null || $e2[$a] != "") {
+        //                 array_push($email, $e2[$a]);
+        //             }
+        //         }
+        //     }
+        // }
+        $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
+        $e = explode(',', $alamat);
+        $email = array();
+        for ($i = 0; $i < sizeof($e); $i++) {
+            if ($e[$i] != null || $e[$i] != "") {
+                array_push($email, $e[$i]);
+            }
+        }
+
         $filename = '' . $no_car . '.pdf';
         $pdf_dir = './assets/upload/CARVP/';
 
@@ -271,15 +323,6 @@ class C_Approve extends CI_Controller
         $mail->WordWrap = 50;
 
         $mail->setFrom('cpar@quick.co.id');
-
-        $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
-        $e = explode(',', $alamat);
-        $email = array();
-        for ($i = 0; $i < sizeof($e); $i++) {
-            if ($e[$i] != null || $e[$i] != "") {
-                array_push($email, $e[$i]);
-            }
-        }
 
         foreach ($email as $toE) {
             $mail->addAddress($toE);

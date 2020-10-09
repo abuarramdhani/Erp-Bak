@@ -38,6 +38,7 @@
                                             <table class="table table-bordered" id="hsl_imprt">
                                                 <thead class="bg-yellow">
                                                     <tr>
+                                                        <th class="text-center">No</th>
                                                         <th class="text-center">Supplier Name</th>
                                                         <th class="text-center">PO Number</th>
                                                         <th class="text-center">Line</th>
@@ -58,8 +59,10 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php foreach ($array_import as $v) { ?>
+                                                    <?php $i = 1;
+                                                    foreach ($array_import as $v) { ?>
                                                         <tr>
+                                                            <td class="text-center"><?= $i ?></td>
                                                             <td class="text-center"><input type="hidden" name="car_supplier[]" value="<?= $v['supplier'] ?>" /><?= $v['supplier'] ?></td>
                                                             <td class="text-center"><input type="hidden" name="car_po[]" value="<?= $v['po'] ?>" /><?= $v['po'] ?></td>
                                                             <td class="text-center"><input type="hidden" name="car_line[]" value="<?= $v['line'] ?>" /><?= $v['line'] ?></td>
@@ -78,7 +81,8 @@
                                                             <td class="text-center"><input type="hidden" name="car_car_type[]" value="<?= $v['car_type'] ?>" /><?= $v['car_type'] ?></td>
                                                             <td class="text-center"><input type="hidden" name="car_nc_scope[]" value="<?= $v['nc_scope'] ?>" /><?= $v['nc_scope'] ?></td>
                                                         </tr>
-                                                    <?php } ?>
+                                                    <?php $i++;
+                                                    } ?>
                                                 </tbody>
                                             </table>
                                         </div>

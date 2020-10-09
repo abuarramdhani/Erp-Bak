@@ -7,12 +7,12 @@ $(document).ready(function () {
   $("#list_CAR").dataTable({
     paging: false,
     info: false,
-    order: [[3, "desc"]],
+    // order: [[3, "desc"]],
   });
   $("#list_CARR").dataTable({
     paging: false,
     info: false,
-    order: [[4, "desc"]],
+    // order: [[4, "desc"]],
   });
   $("#edit_CAR").dataTable({
     paging: false,
@@ -132,7 +132,7 @@ function ApproveReqCAR(i) {
     }
   });
 }
-function RejectReqCAR(i) {
+function RejectReqCARw(i) {
   var no_car = $("#car_num" + i).val();
   Swal.fire({
     title: "Anda Yakin?",
@@ -164,6 +164,41 @@ function RejectReqCAR(i) {
         });
       });
     }
+  });
+}
+function RejectReqCAR(i) {
+  var no_car = $("#car_num" + i).val();
+  Swal.fire({
+    title: "Masukan Alasan",
+    input: "text",
+    showCancelButton: true,
+    inputValidator: (value) => {
+      if (!value) {
+        return "Masukan Alasan!";
+      }
+      if (value) {
+        var request = $.ajax({
+          url: baseurl + "CARVPkoor/Approval/updateReject",
+          data: {
+            no_car: no_car,
+            alasan: value,
+          },
+          type: "POST",
+          datatype: "html",
+        });
+        request.done(function (result) {
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Request CAR Di Reject",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            window.location.reload();
+          });
+        });
+      }
+    },
   });
 }
 function detailCAR(no) {
@@ -298,6 +333,34 @@ function kirimulangcar(i) {
           position: "top",
           type: t,
           title: result,
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.reload();
+        });
+      });
+    }
+  });
+}
+function deleteAlldata() {
+  Swal.fire({
+    title: "Anda Yakin?",
+    text: "Akan Menghapus Semua Data",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "CARVP/ListData/HapusAll",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Berhasil Dihapus",
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {

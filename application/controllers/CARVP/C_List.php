@@ -48,28 +48,30 @@ class C_List extends CI_Controller
         $w = 0;
         foreach ($carr as $supplier) {
             $detail = $this->M_car->ListbyCAR($supplier['CAR_NUM']);
-            $carr[$w]['DETAIL'] = $this->M_car->ListbyCAR($supplier['CAR_NUM']);
             $carr[$w]['NO_CAR'] = $detail[0]['CAR_NUM'];
             $carr[$w]['SUPPLIER_NAME'] = $detail[0]['SUPPLIER_NAME'];
             $carr[$w]['APPROVE_DATE'] = $detail[0]['APPROVE_DATE'];
-            if ($carr[$w]['DETAIL'][0]['ACTIVE_FLAG'] == 'A') {
+            if ($detail[0]['ACTIVE_FLAG'] == 'A') {
                 $carr[$w]['DELIVERY_STATUS'] = 'Success';
-            } else if ($carr[$w]['DETAIL'][0]['ACTIVE_FLAG'] == 'F') {
+            } else if ($detail[0]['ACTIVE_FLAG'] == 'F') {
                 $carr[$w]['DELIVERY_STATUS'] = 'Failed';
             } else {
                 $carr[$w]['DELIVERY_STATUS'] = '-';
             }
-            $carr[$w]['CREATED_DATE'] = $detail[0]['CREATED_DATE'];
             $carr[$w]['ACTIVE_FLAG'] = $detail[0]['ACTIVE_FLAG'];
             $carr[$w]['APPROVE_TO'] = $detail[0]['APPROVE_TO'];
             if ($carr[$w]['ACTIVE_FLAG'] == 'A') {
                 $carr[$w]['APPROVAL_STATUS'] = 'Approved';
+                $carr[$w]['REJECT_REASON'] = '-';
             } else if ($carr[$w]['ACTIVE_FLAG'] == 'F') {
                 $carr[$w]['APPROVAL_STATUS'] = 'Approved';
+                $carr[$w]['REJECT_REASON'] = '-';
             } else if ($carr[$w]['ACTIVE_FLAG'] == 'R') {
                 $carr[$w]['APPROVAL_STATUS'] = 'Rejected';
+                $carr[$w]['REJECT_REASON'] = $detail[0]['REJECT_REASON'];
             } else {
                 $carr[$w]['APPROVAL_STATUS'] = 'Pending';
+                $carr[$w]['REJECT_REASON'] = '-';
             }
 
 
@@ -231,5 +233,9 @@ class C_List extends CI_Controller
         $pdf->setHTMlHeader($head2);
         $pdf->WriteHTML($html2);
         $pdf->Output($filename, 'I');
+    }
+    public function HapusAll()
+    {
+        $this->M_car->HapusAll();
     }
 }
