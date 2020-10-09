@@ -34,26 +34,29 @@
                             <form name="Orderform" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post">
                                 <div class="box-body">
                                     <div class="panel-body">
+                                        <div class="col-md-12" style="text-align: right;"><a onclick="deleteAlldata()" class="btn btn-danger">Delete All Data</a></div>
+                                    </div>
+                                    <div class="panel-body">
                                         <div class="col-md-12">
                                             <table class="table table-bordered" id="list_CARR">
                                                 <thead class="bg-aqua">
                                                     <tr>
+                                                        <th class="text-center">No</th>
                                                         <th class="text-center">Supplier Name</th>
                                                         <th class="text-center">Submit Date</th>
                                                         <th class="text-center">Approved Date</th>
                                                         <th class="text-center">No CAR</th>
                                                         <th class="text-center">Action</th>
                                                         <th class="text-center">Delivery Status</th>
-
-
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php $i = 1;
                                                     foreach ($car as $v) { ?>
                                                         <tr>
+                                                            <td class="text-center"><?= $i ?></td>
                                                             <td class="text-center"><?= $v['SUPPLIER_NAME'] ?></td>
-                                                            <td class="text-center"><?= $v['CREATED_DATE'] ?></td>
+                                                            <td class="text-center"><?= date('d-M-Y H:i:s', strtotime($v['CREATED_DATE'])) ?></td>
                                                             <td class="text-center"><?= $v['APPROVE_DATE'] ?></td>
                                                             <td class="text-center"><input type="hidden" id="car_num<?= $i ?>" value="<?= $v['NO_CAR'] ?>"><?= $v['NO_CAR'] ?></td>
                                                             <td class="text-center">

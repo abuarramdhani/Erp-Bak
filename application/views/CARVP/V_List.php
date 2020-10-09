@@ -34,10 +34,14 @@
                             <form name="Orderform" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post">
                                 <div class="box-body">
                                     <div class="panel-body">
+                                        <div class="col-md-12" style="text-align: right;"><a onclick="deleteAlldata()" class="btn btn-danger">Delete All Data</a></div>
+                                    </div>
+                                    <div class="panel-body">
                                         <div class="col-md-12">
                                             <table class="table table-bordered" id="list_CAR" style="width: 100%;">
                                                 <thead class="bg-teal">
                                                     <tr>
+                                                        <th class="text-center">No</th>
                                                         <th class="text-center">Created Date</th>
                                                         <th class="text-center">Supplier Name</th>
                                                         <th class="text-center">No CAR</th>
@@ -45,6 +49,8 @@
                                                         <th class="text-center">Approval Status</th>
                                                         <th class="text-center">Approval Date</th>
                                                         <th class="text-center">Delivery Status</th>
+                                                        <th class="text-center">Reject Reason</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -56,7 +62,8 @@
                                                             $warnatr = "";
                                                         } ?>
                                                         <tr class="<?= $warnatr ?>">
-                                                            <td class="text-center"><?= $v['CREATED_DATE'] ?></td>
+                                                            <td class="text-center"><?= $i ?></td>
+                                                            <td class="text-center"><?= date('d-M-Y H:i:s', strtotime($v['CREATED_DATE'])) ?></td>
                                                             <td class="text-center"><?= $v['SUPPLIER_NAME'] ?></td>
                                                             <td class="text-center"><input type="hidden" id="car<?= $i ?>" value="<?= $v['CAR_NUM'] ?>"><?= $v['CAR_NUM'] ?></td>
                                                             <td class="text-center">
@@ -80,6 +87,8 @@
                                                             <td class="text-center"><?= $v['APPROVAL_STATUS'] ?></td>
                                                             <td class="text-center"><?= $v['APPROVE_DATE'] ?></td>
                                                             <td class="text-center"><?= $v['DELIVERY_STATUS'] ?></td>
+                                                            <td class="text-center"><?= $v['REJECT_REASON'] ?></td>
+
                                                         </tr>
                                                     <?php $i++;
                                                     } ?>
