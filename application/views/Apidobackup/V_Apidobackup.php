@@ -31,7 +31,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php $link = "http://erp.quick.com/assets/upload/DO_SPB_TAMPUNG/"?>
+                                        <?php $link = base_url('assets/upload/DO_SPB_TAMPUNG');?>
                                         <?php foreach($param as $key => $value) : ?>
                                         <tr>
                                             <td>
@@ -48,7 +48,7 @@
                                             <td>
                                                 <center>
                                                     <a class="btn btn-success" target="_blank"
-                                                        href="<?= $link.$value['DO_SPB'].".pdf" ?>">Download</a>
+                                                        href="<?= $link.'/'.$value['DO_SPB'].".pdf" ?>">Download</a>
                                                 </center>
                                             </td>
 
