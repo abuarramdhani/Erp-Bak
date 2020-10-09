@@ -73,6 +73,12 @@ class C_Setdatamaster extends CI_Controller
         $data['masterproseksi'] = $masterproseksi;
         $this->load->view('DbHandling/TIM/V_TblMasterProSeksi', $data);
     }
+    public function loadviewreqmashand()
+    {
+        $req = $this->M_dbhandling->selectreqmasterhandlingbystatus();
+        $data['req'] = $req;
+        $this->load->view('DbHandling/TIM/V_TblReqMastHand', $data);
+    }
     public function loadviewmasterstatkomp()
     {
         $dataa = $this->M_dbhandling->selectstatuskomp();
@@ -415,5 +421,18 @@ class C_Setdatamaster extends CI_Controller
     {
         $id = $this->input->post('id');
         $this->M_dbhandling->deletestatkomp($id);
+    }
+    public function accreqmasthand()
+    {
+        $id = $this->input->post('id');
+        $datatoinsert = $this->M_dbhandling->selectreqmasterhandlingbyid($id);
+        $this->M_dbhandling->insertmasterhandling($datatoinsert[0]['nama'], $datatoinsert[0]['kode']);
+        $tgl_acc = date('d-m-y');
+        $this->M_dbhandling->updatereqmasstatusacc($tgl_acc, $id);
+    }
+    public function rejectreqmasthand()
+    {
+        $id = $this->input->post('id');
+        $this->M_dbhandling->updatereqmasstatusrej($id);
     }
 }

@@ -67,11 +67,12 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Sarana Handling</label></div>
-                                            <div class="col-md-8" style="text-align: left;">
+                                            <div class="col-md-6" style="text-align: left;">
                                                 <select required style="width: 100%;" class="form-control select2 Sar_Hand_Seksi" id="Sar_Hand_Seksi" name="Sar_Hand_Seksi" data-placeholder="Select">
                                                     <option></option>
                                                 </select>
                                             </div>
+                                            <div class="col-md-3" style="text-align: left;"><a class="btn btn-default" href="<?php echo base_url('DbHandlingSeksi/ReqMasterHandling'); ?>">Request Sarana</a></div>
                                         </div>
 
                                         <div class="panel-body">
