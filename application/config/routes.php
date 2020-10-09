@@ -910,6 +910,17 @@ $route['PayrollManagement/MasterPekerja'] = 'PayrollManagement/MasterPekerja/C_M
 $route['PayrollManagement/MasterPekerja/(:any)'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja/$1';
 $route['PayrollManagement/MasterPekerja/(:any)/(:any)'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja/$1/$2';
 
+$route['MasterPekerja/PekerjaAkanKeluar'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar';
+$route['MasterPekerja/PekerjaAkanKeluar/(:any)'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/$1';
+$route['MasterPekerja/PekerjaAkanKeluar/(:any)/(:any)'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/$1/$2';
+$route['MasterPekerja/PekerjaAkanKeluar/(:any)/(:any)/(:any)'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/$1/$2/$3';
+$route['MasterPekerja/PekerjaAkanKeluar/export'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_excel';
+$route['MasterPekerja/PekerjaAkanKeluar/export_pdf'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_pdf';
+$route['MasterPekerja/PekerjaAkanKeluar/export_excel_mutasi'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_excel_mutasi';
+$route['MasterPekerja/PekerjaAkanKeluar/export_pdf_mutasi'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_pdf_mutasi';
+$route['MasterPekerja/PekerjaAkanKeluar/export_excel_diperbantukan'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_excel_diperbantukan';
+$route['MasterPekerja/PekerjaAkanKeluar/export_pdf_diperbantukan'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_pdf_diperbantukan';
+
 $route['PayrollManagement/TransaksiRapel'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel';
 $route['PayrollManagement/TransaksiRapel/(:any)'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel/$1';
 $route['PayrollManagement/TransaksiRapel/(:any)/(:any)'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel/$1/$2';
