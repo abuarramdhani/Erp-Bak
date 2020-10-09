@@ -2877,3 +2877,256 @@ $(document).ready(function () {
     },
   });
 });
+$(document).ready(function () {
+  var request = $.ajax({
+    url: baseurl + "DbHandlingSeksi/ReqMasterHandling/loadviewreqjns",
+    type: "POST",
+    beforeSend: function () {
+      $("div#tabel_reqjnshand").html(
+        '<center><img style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"></center>'
+      );
+    },
+  });
+  request.done(function (result) {
+    // console.log(result);
+    $("div#tabel_reqjnshand").html(result);
+  });
+});
+function AddReqMasterHandling() {
+  var request = $.ajax({
+    url: baseurl + "DbHandlingSeksi/ReqMasterHandling/ViewAddMasterhandling",
+  });
+  request.done(function (result) {
+    // console.log(result);
+    $("#ReqJns").html(result);
+    $("#MdlReqJns").modal("show");
+    $("#kodeehandling").on("keyup", function () {
+      var kode = $("#kodeehandling").val();
+      var request = $.ajax({
+        url: baseurl + "DbHandling/SetDataMaster/checkkodehandling",
+        data: {
+          kode: kode,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+
+      request.done(function (result) {
+        // console.log(result);
+        if (result == 0) {
+          $("#simbolverifykod").html(
+            '<i class="fa fa-check-square-o fa-2x" style="color:green;" ></i>'
+          );
+          $(".buttonnsave").removeAttr("disabled");
+          $("#kodeehandling").css("border-color", "");
+          $("#keterangansimbole").css("display", "none");
+        } else {
+          $("#simbolverifykod").html(
+            '<i class="fa fa-ban fa-2x" style="color:red;" ></i>'
+          );
+          $(".buttonnsave").attr("disabled", "disabled");
+          $("#kodeehandling").css("border-color", "red");
+          $("#keterangansimbole").css("display", "block");
+        }
+      });
+    });
+    $(".buttonnsave").on("click", function () {
+      var namahandling = $("#namaahandling").val();
+      var kodehandling = $("#kodeehandling").val();
+      var request = $.ajax({
+        url: baseurl + "DbHandlingSeksi/ReqMasterHandling/insertmasterhandling",
+        data: {
+          namahandling: namahandling,
+          kodehandling: kodehandling,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function () {
+        $("#MdlReqJns").modal("hide");
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Berhasil Merequest Master Handling",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          var request = $.ajax({
+            url: baseurl + "DbHandlingSeksi/ReqMasterHandling/loadviewreqjns",
+            type: "POST",
+            beforeSend: function () {
+              $("div#tabel_reqjnshand").html(
+                '<center><img style="width:100px; height:auto" src="' +
+                  baseurl +
+                  'assets/img/gif/loading11.gif"></center>'
+              );
+            },
+          });
+          request.done(function (result) {
+            $("div#tabel_reqjnshand").html(result);
+          });
+        });
+      });
+    });
+  });
+}
+$(document).ready(function () {
+  var request = $.ajax({
+    url: baseurl + "DbHandling/SetDataMaster/loadviewreqmashand",
+    type: "POST",
+    beforeSend: function () {
+      $("div#tabel_req_master_handling").html(
+        '<center><img style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"></center>'
+      );
+    },
+  });
+  request.done(function (result) {
+    // console.log(result);
+    $("div#tabel_req_master_handling").html(result);
+  });
+});
+function accreqmasthand(id) {
+  Swal.fire({
+    title: "Apa Anda Yakin?",
+    text: "Akan Menerima Request Ini ?",
+    type: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#00a65a",
+    cancelButtonColor: "#d73925",
+    confirmButtonText: "Ya",
+    cancelButtonText: "Tidak",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "DbHandling/SetDataMaster/accreqmasthand",
+        data: {
+          id: id,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Berhasil Menerima",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          var request = $.ajax({
+            url: baseurl + "DbHandling/SetDataMaster/loadviewreqmashand",
+            type: "POST",
+            beforeSend: function () {
+              $("div#tabel_req_master_handling").html(
+                '<center><img style="width:100px; height:auto" src="' +
+                  baseurl +
+                  'assets/img/gif/loading11.gif"></center>'
+              );
+            },
+          });
+          request.done(function (result) {
+            $("div#tabel_req_master_handling").html(result);
+          });
+        });
+      });
+    }
+  });
+}
+function rejectreqmasthand(id) {
+  Swal.fire({
+    title: "Apa Anda Yakin?",
+    text: "Akan Menolak Request Ini ?",
+    type: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#00a65a",
+    cancelButtonColor: "#d73925",
+    confirmButtonText: "Ya",
+    cancelButtonText: "Tidak",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "DbHandling/SetDataMaster/rejectreqmasthand",
+        data: {
+          id: id,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Request Ditolak",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          var request = $.ajax({
+            url: baseurl + "DbHandling/SetDataMaster/loadviewreqmashand",
+            type: "POST",
+            beforeSend: function () {
+              $("div#tabel_req_master_handling").html(
+                '<center><img style="width:100px; height:auto" src="' +
+                  baseurl +
+                  'assets/img/gif/loading11.gif"></center>'
+              );
+            },
+          });
+          request.done(function (result) {
+            $("div#tabel_req_master_handling").html(result);
+          });
+        });
+      });
+    }
+  });
+}
+function deletereqmashand(id) {
+  Swal.fire({
+    title: "Apa Anda Yakin?",
+    text: "Akan Menghapus Request Ini ?",
+    type: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#00a65a",
+    cancelButtonColor: "#d73925",
+    confirmButtonText: "Ya",
+    cancelButtonText: "Tidak",
+  }).then((result) => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "DbHandlingSeksi/ReqMasterHandling/deletereqmashand",
+        data: {
+          id: id,
+        },
+        type: "POST",
+        datatype: "html",
+      });
+      request.done(function (result) {
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Request Dihapus",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          var request = $.ajax({
+            url: baseurl + "DbHandlingSeksi/ReqMasterHandling/loadviewreqjns",
+            type: "POST",
+            beforeSend: function () {
+              $("div#tabel_reqjnshand").html(
+                '<center><img style="width:100px; height:auto" src="' +
+                  baseurl +
+                  'assets/img/gif/loading11.gif"></center>'
+              );
+            },
+          });
+          request.done(function (result) {
+            $("div#tabel_reqjnshand").html(result);
+          });
+        });
+      });
+    }
+  });
+}

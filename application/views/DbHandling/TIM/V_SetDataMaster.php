@@ -32,7 +32,17 @@
                         <div class="box box-danger">
                             <div class="box-header with-border" style="font-weight: bold;">MASTER HANDLING</div>
                             <div class="box-body">
-                                <div class="col-md-12" id="tabel_master_handling"></div>
+                                <div class="panel-body">
+                                    <div class="col-md-12" id="tabel_master_handling"></div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="col-md-12" style="text-align: center;">
+                                        <h4>Request Jenis Handling</h4>
+                                    </div>
+                                    <div class="col-md-12" id="tabel_req_master_handling"></div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
