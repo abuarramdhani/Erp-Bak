@@ -211,8 +211,19 @@ class C_Monitoring extends CI_Controller
 		$bulan2 	= $this->input->post('bulan2');
 		$kategori 	= $this->input->post('kategori');
 		$tgl 		= $this->input->post('tgl');
+		$ket 		= $this->input->post('ket');
 		
-		$comment = $this->M_monitoring->getcomment($kategori, $bulan2, $inv, $tgl);
+		if ($ket == 'MIN') {
+			$comment = $this->M_monitoring->getcomment($kategori, $bulan2, $inv, $tgl);
+			$tanda = 1;
+			$warna = '#FFB670';
+			$judul = 'A - P';
+		}else {
+			$comment = $this->M_monitoring->getcommentPL($kategori, $bulan2, $inv, $tgl);
+			$tanda = 2;
+			$warna = '#F6D673';
+			$judul = 'PL - P';
+		}
 		if (!empty($comment)) {
 			$komen = $comment[0]['KETERANGAN'];
 			$save = 'style="display:none"';
@@ -223,8 +234,8 @@ class C_Monitoring extends CI_Controller
 			$edit = 'style="display:none"';
 		}
 
-		$view = '<div class="modal-header" style="font-size:25px;background-color:#FFB670">
-					<i class="fa fa-list-alt"></i> Comment Min
+		$view = '<div class="modal-header" style="font-size:25px;background-color:'.$warna.'">
+					<i class="fa fa-list-alt"></i> Comment '.$judul.'
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
@@ -245,7 +256,7 @@ class C_Monitoring extends CI_Controller
 							<input name="comment" id="comment" class="form-control" value="'.$komen.'" placeholder="comment..." '.$diss.' autocomplete="off">
 							<span class="input-group-btn">
 								<button type="button" id="editcommentmin" class="btn bg-orange" onclick="editcomment()" '.$edit.'><i class="fa fa-pencil"></i> Edit</button>
-								<button type="button" id="savecommentmin" class="btn btn-danger" onclick="saveCommentmin(this)" '.$save.'><i class="fa fa-save"></i> Save</button>
+								<button type="button" id="savecommentmin" class="btn btn-danger" onclick="saveCommentmin('.$tanda.')" '.$save.'><i class="fa fa-save"></i> Save</button>
 							</span>
 						</div>
 					</div>
@@ -265,6 +276,20 @@ class C_Monitoring extends CI_Controller
 			$this->M_monitoring->savecomment($kategori, $bulan, $inv, $tgl, $comment);
 		}else {
 			$this->M_monitoring->updatecomment($kategori, $bulan, $inv, $tgl, $comment);
+		}
+	}
+	
+	public function saveCommentPL(){
+		$inv 		= $this->input->post('inv');
+		$kategori 	= $this->input->post('kategori');
+		$bulan 		= $this->input->post('bulan');
+		$tgl 		= $this->input->post('tgl');
+		$comment 	= $this->input->post('comment');
+		$cek = $this->M_monitoring->getcommentPL($kategori, $bulan, $inv, $tgl);
+		if (empty($cek)) {
+			$this->M_monitoring->savecommentPL($kategori, $bulan, $inv, $tgl, $comment);
+		}else {
+			$this->M_monitoring->updatecommentPL($kategori, $bulan, $inv, $tgl, $comment);
 		}
 	}
 	

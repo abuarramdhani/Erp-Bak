@@ -78,7 +78,7 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                         <input type="hidden" name="akt<?= $no?><?= $i+1?>" value="<?= $value['akt'.$i.'']?>">
                     </p>
                     <p><?php $valmin = $value['min'.$i.''] != '' ? '': 'width:20px' ?>
-                            <button type="button" class="btn btn-xs" style="background-color:#FFB670;font-size:12px;height:22px;<?= $valmin?>" onclick="commentmin(<?= $no?>, <?= $i+1?>)"><?= $value['min'.$i.'']?></button>
+                            <button type="button" class="btn btn-xs" style="background-color:#FFB670;font-size:12px;height:22px;<?= $valmin?>" onclick="commentmin(<?= $no?>, <?= $i+1?>, 'MIN')"><?= $value['min'.$i.'']?></button>
                         <input type="hidden" id="min<?= $no?><?= $i+1?>" name="min<?= $no?><?= $i+1?>" value="<?= $value['min'.$i.'']?>">
                     </p>
                 <?php }?>
@@ -88,8 +88,9 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                         <?= $value['pl'.$i.''] != '' ? $value['pl'.$i.''] : "<br>" ?>
                         <input type="hidden" name="pl<?= $no?><?= $i+1?>" value="<?= $value['pl'.$i.'']?>">
                     </p>
-                    <p>
-                        <?= $value['plmin'.$i.''] == '' ? "<br>" : $value['plmin'.$i.''] ?>
+                    <p><?php $valplmin = $value['plmin'.$i.''] != '' ? '': 'width:20px' ?>
+                        <!-- <?= $value['plmin'.$i.''] == '' ? "<br>" : $value['plmin'.$i.''] ?> -->
+                        <button type="button" class="btn btn-xs" style="background-color:#F6D673;font-size:12px;height:22px;<?= $valplmin?>" onclick="commentmin(<?= $no?>, <?= $i+1?>, 'PLMIN')"><?= $value['plmin'.$i.'']?></button>
                         <input type="hidden" name="plmin<?= $no?><?= $i+1?>" value="<?= $value['plmin'.$i.'']?>">
                     </p>
                 <?php }?>

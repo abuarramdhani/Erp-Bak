@@ -73,7 +73,7 @@ function schMonJob(ket) {
     })
 }
 
-function commentmin(no, tgl) {
+function commentmin(no, tgl, ket) {
     var item    = $('#item'+no).val();
     var desc    = $('#desc'+no).val();
     var inv     = $('#inv'+no).val();
@@ -84,7 +84,7 @@ function commentmin(no, tgl) {
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/commentmin",
         data : {item : item, desc : desc, inv : inv, bulan : bulan, bulan2 : bulan2,
-                kategori : kategori, tgl : tgl},
+                kategori : kategori, tgl : tgl, ket : ket},
         dataType : 'html',
         type : 'POST',
         success : function (data) {
@@ -101,14 +101,19 @@ function editcomment(){
     $('#comment').removeAttr('readonly');
 }
 
-function saveCommentmin(th) {
+function saveCommentmin(ket) {
     var kategori = $('#kategori').val();
     var inv     = $('#inv').val();
     var bulan   = $('#bulanmin').val();
     var tgl     = $('#tgl').val();
     var comment = $('#comment').val();
+    if (ket == 1) {
+        tujuan = 'saveComment';
+    }else{
+        tujuan = 'saveCommentPL';
+    }
     $.ajax({
-        url : baseurl + "MonitoringJobProduksi/Monitoring/saveComment",
+        url : baseurl + "MonitoringJobProduksi/Monitoring/"+tujuan+"",
         data : {inv : inv, bulan : bulan, comment : comment,
                 kategori : kategori, tgl : tgl},
         dataType : 'html',
