@@ -253,6 +253,8 @@ $(document).ready(function(){
 
 		if (pphstatus==1){
 			var $pph = Math.ceil((2 / 100) * $est);
+		} else if (pphstatus==2) {
+			var $pph = Math.ceil((0.5 / 100) * $est);
 		} else {
 			var $pph = Math.ceil((0 / 100) * $est);
 		}
