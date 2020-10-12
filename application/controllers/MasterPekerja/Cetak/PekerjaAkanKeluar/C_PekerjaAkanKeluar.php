@@ -16,7 +16,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('MasterPekerja/Cetak/DataPekerjaAkanKeluar/M_DataPekerjaAkanKeluar');
+        $this->load->model('MasterPekerja/Cetak/DataPekerjaAkanKeluar/M_datapekerjaakankeluar');
         $this->load->model('SystemAdministration/MainMenu/M_user');
 
         if (!$this->session->is_logged) {
@@ -30,11 +30,11 @@ class C_PekerjaAkanKeluar extends CI_Controller
 
         $user_id = $this->session->userid;
 
-        $data['dataPersonal'] = $this->M_DataPekerjaAkanKeluar->getPekerjaAkanKeluar();
-        $data['dataDimutasi'] = $this->M_DataPekerjaAkanKeluar->getPekerjaDimutasi();
-        $data['dataDiperbantukan'] = $this->M_DataPekerjaAkanKeluar->getPekerjaDiperbantukan();
+        $data['dataPersonal'] = $this->M_datapekerjaakankeluar->getPekerjaAkanKeluar();
+        $data['dataDimutasi'] = $this->M_datapekerjaakankeluar->getPekerjaDimutasi();
+        $data['dataDiperbantukan'] = $this->M_datapekerjaakankeluar->getPekerjaDiperbantukan();
 
-        $data['outSourcing'] = $this->M_DataPekerjaAkanKeluar->getOS();
+        $data['outSourcing'] = $this->M_datapekerjaakankeluar->getOS();
 
         $data['Title'] = 'Cetak Daftar Pekerja Akan Keluar';
         $data['Menu'] = 'Cetak';
@@ -63,7 +63,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
 
-        $data  = $this->M_DataPekerjaAkanKeluar->getPekerjaKeluarWithParam($with_os, $os_name, $datepicker, $rangeDate);
+        $data  = $this->M_datapekerjaakankeluar->getPekerjaKeluarWithParam($with_os, $os_name, $datepicker, $rangeDate);
 
         echo json_encode(array(
             'success' => true,
@@ -83,7 +83,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
 
-        $data = $this->M_DataPekerjaAkanKeluar->getPekertaDimutasiWithParam($with_os, $datepicker, $rangeDate);
+        $data = $this->M_datapekerjaakankeluar->getPekertaDimutasiWithParam($with_os, $datepicker, $rangeDate);
 
         echo json_encode(array(
             'success' => true,
@@ -103,7 +103,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
 
-        $data = $this->M_DataPekerjaAkanKeluar->getPekerjaDiperbantukanWithParam($with_os, $datepicker, $rangeDate);
+        $data = $this->M_datapekerjaakankeluar->getPekerjaDiperbantukanWithParam($with_os, $datepicker, $rangeDate);
 
         echo json_encode(array(
             'success' => true,
@@ -120,7 +120,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $os_name = $this->input->get('os_name');
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
-        $data  = $this->M_DataPekerjaAkanKeluar->getPekerjaKeluarWithParam($with_os, $os_name, $datepicker, $rangeDate);
+        $data  = $this->M_datapekerjaakankeluar->getPekerjaKeluarWithParam($with_os, $os_name, $datepicker, $rangeDate);
 
 
         $style_col = array(
@@ -288,7 +288,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $os_name = $this->input->get('os_name');
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
-        $data  = $this->M_DataPekerjaAkanKeluar->getPekerjaKeluarWithParam($with_os, $os_name, $datepicker, $rangeDate);
+        $data  = $this->M_datapekerjaakankeluar->getPekerjaKeluarWithParam($with_os, $os_name, $datepicker, $rangeDate);
 
         $this->load->library('pdf');
 
@@ -296,7 +296,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $pdf = new mPDF('utf8', "A4-L", 11, '', 10, 10, 10, 10, 0, 0);
         $filename = 'DataPekerjaAkanKeluar.pdf';
 
-        $format = $this->M_DataPekerjaAkanKeluar->tgl_indo1($datepicker);
+        $format = $this->M_datapekerjaakankeluar->tgl_indo1($datepicker);
 
         $html = $this->load->view('MasterPekerja/Cetak/PekerjaAkanKeluar/V_cetakPDFpekerjakeluar', [
             'listOfdata' => $data,
@@ -322,14 +322,14 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
 
-        $data = $this->M_DataPekerjaAkanKeluar->getPekerjaDiperbantukanWithParam($with_os, $datepicker, $rangeDate);
+        $data = $this->M_datapekerjaakankeluar->getPekerjaDiperbantukanWithParam($with_os, $datepicker, $rangeDate);
 
         $this->load->library('pdf');
 
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf8', "A4", 11, '', 10, 10, 10, 10, 0, 0, 'P');
         $filename = 'DataPekerjaDiperbantuakan.pdf';
-        $format = $this->M_DataPekerjaAkanKeluar->tgl_indo1($datepicker);
+        $format = $this->M_datapekerjaakankeluar->tgl_indo1($datepicker);
         $html = $this->load->view(
             'MasterPekerja/Cetak/PekerjaAkanKeluar/V_cetakPDFpekerjadiperbantukan',
             [
@@ -359,7 +359,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
 
-        $data = $this->M_DataPekerjaAkanKeluar->getPekerjaDiperbantukanWithParam($with_os, $datepicker, $rangeDate);
+        $data = $this->M_datapekerjaakankeluar->getPekerjaDiperbantukanWithParam($with_os, $datepicker, $rangeDate);
 
         $style_col = array(
             'font' => array('bold' => true),
@@ -399,7 +399,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         if ($rangeDate) {
             $excel->setActiveSheetIndex(0)->setCellValue('A1', "Data Pekerja Diperbantukan Periode " . $rangeDate);
         } else {
-            $format = $this->M_DataPekerjaAkanKeluar->tgl_indo1($datepicker);
+            $format = $this->M_datapekerjaakankeluar->tgl_indo1($datepicker);
             $excel->setActiveSheetIndex(0)->setCellValue('A1', "Data Pekerja Diperbantukan Periode " . $format);
         }
         $excel->getActiveSheet()->mergeCells('A1:I1');
@@ -503,7 +503,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
 
-        $data = $this->M_DataPekerjaAkanKeluar->getPekertaDimutasiWithParam($with_os, $datepicker, $rangeDate);
+        $data = $this->M_datapekerjaakankeluar->getPekertaDimutasiWithParam($with_os, $datepicker, $rangeDate);
 
         $style_col = array(
             'font' => array('bold' => true),
@@ -543,7 +543,7 @@ class C_PekerjaAkanKeluar extends CI_Controller
         if ($rangeDate) {
             $excel->setActiveSheetIndex(0)->setCellValue('A1', "Data Pekerja Dimutasi Periode " . $rangeDate);
         } else {
-            $format = $this->M_DataPekerjaAkanKeluar->tgl_indo1($datepicker);
+            $format = $this->M_datapekerjaakankeluar->tgl_indo1($datepicker);
             $excel->setActiveSheetIndex(0)->setCellValue('A1', "Data Pekerja Dimutasi Periode " . $format);
         }
 
@@ -619,14 +619,14 @@ class C_PekerjaAkanKeluar extends CI_Controller
         $datepicker = $this->input->get('datepicker');
         $rangeDate = $this->input->get('rangeDate');
 
-        $data = $this->M_DataPekerjaAkanKeluar->getPekertaDimutasiWithParam($with_os, $datepicker, $rangeDate);
+        $data = $this->M_datapekerjaakankeluar->getPekertaDimutasiWithParam($with_os, $datepicker, $rangeDate);
 
         $this->load->library('pdf');
 
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf8', "A4", 11, '', 10, 10, 10, 10, 0, 0);
         $filename = 'DataPekerjaDimutasi.pdf';
-        $format = $this->M_DataPekerjaAkanKeluar->tgl_indo1($datepicker);
+        $format = $this->M_datapekerjaakankeluar->tgl_indo1($datepicker);
         $html = $this->load->view(
             'MasterPekerja/Cetak/PekerjaAkanKeluar/V_cetakPDFpekerjadimutasi',
             [
