@@ -588,14 +588,14 @@
                     $.ajax({
                         method: 'GET',
                         url: baseurl + 'MasterPekerja/PekerjaAkanKeluar/get_pekerja_keluar',
-                        // beforeSend: function() {
-                        //     swal.fire({
-                        //         html: "<div><img style='width: 320px; height:auto;'src='" + loading + "'><br> <p>Sedang Proses....</p></div>",
-                        //         customClass: "swal-wide",
-                        //         showConfirmButton: false,
-                        //         allowOutsideClick: false
-                        //     })
-                        // },
+                        beforeSend: function() {
+                            swal.fire({
+                                html: "<div><img style='width: 320px; height:auto;'src='" + loading + "'><br> <p>Sedang Proses....</p></div>",
+                                customClass: "swal-wide",
+                                showConfirmButton: false,
+                                allowOutsideClick: false
+                            })
+                        },
                         data: data,
                         dataType: 'json',
                         success(response) {
