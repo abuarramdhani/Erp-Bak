@@ -107,8 +107,9 @@ class M_monitoring extends CI_Model
                 ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
                 ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
                 ,mil.SEGMENT1 locator_tujuan
-                ,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
-                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - bic.COMPONENT_QUANTITY*'$qty') kekurangan
+                --,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
+                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'SS-ODM',bic.ATTRIBUTE2,'')) att
+                ,((khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'SS-ODM',bic.ATTRIBUTE2,'')) - bic.COMPONENT_QUANTITY*'$qty') kekurangan
                 ,nvl(
                         (select sum(mtrl.QUANTITY)
                             from mtl_txn_request_headers mtrh
