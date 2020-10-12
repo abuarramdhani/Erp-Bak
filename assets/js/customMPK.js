@@ -4952,3 +4952,139 @@ $(document).ready(function(){
     $('#mpktblsuper').DataTable();
 });
 //Surat Pernyataan end
+
+
+//Daftar Nama Aktif
+$(document).ready(function () {
+  $("#MPK_NoIndukAktif").select2();
+  $("#MPK_LokasiKerjaAktif").select2();
+
+  $("#MPK_IsiRadio").select2({
+    searching: true,
+    minimumInputLength: 1,
+    placeholder: "Cari sesuai kategori",
+    allowClear: true,
+
+    ajax: {
+      url: baseurl + "MasterPekerja/cetak/GetIsiRadio",
+      dataType: "json",
+      delay: 500,
+      type: "GET",
+      data: function (params) {
+        return {
+          term: params.term,
+          term2: $("input[name=optradio]:checked").val()
+        };
+      },
+
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (obj) {
+            if ($("input[name=optradio]:checked").val() == "dept") {
+              return {
+                id: obj.kode,
+                text: obj.dept
+              };
+            } else if ($("input[name=optradio]:checked").val() == "unit") {
+              return {
+                id: obj.kode,
+                text: obj.unit
+              };
+            } else {
+              return {
+                id: obj.kode,
+                text: obj.seksi
+              };
+            }
+          })
+        };
+      }
+    }
+  });
+
+  $("#MPK_Datepicker").daterangepicker({
+    singleDatePicker: true,
+    timePicker: false,
+    timePicker24Hour: true,
+    showDropdowns: false,
+    locale: {
+      format: "YYYY-MM-DD",
+      todayHighlight: true
+    }
+  });
+
+  $("#MPK_TampilAktif").on("click", function () {
+    let kodeinduk = $("#MPK_NoIndukAktif option:checked")
+      .map(function () {
+        return this.value;
+      })
+      .get()
+      .join("%' OR tbl.noind LIKE '");
+
+    let lokasi = $("#MPK_LokasiKerjaAktif").val();
+    let kategori = $("#MPK_IsiRadio").val();
+    let tanggal = $("#MPK_Datepicker").val();
+    var tanggal2 = $.datepicker.formatDate(
+      "dd MM yy",
+      new Date($("#MPK_Datepicker").val())
+    );
+
+    var loading = baseurl + "assets/img/gif/loadingquick.gif";
+
+    if (tanggal == "" || tanggal == null) {
+      swal.fire({
+        title: "Peringatan",
+        text: "Harap Mengisi Tanggal !",
+        type: "warning",
+        allowOutsideClick: false
+      });
+    } else {
+      $.ajax({
+        type: "GET",
+        data: {
+          kodeinduk: kodeinduk,
+          lokasi: lokasi,
+          kategori: kategori,
+          tanggal: tanggal,
+          tanggal2: tanggal2
+        },
+        url: baseurl + "MasterPekerja/cetak/viewAll",
+        beforeSend: function () {
+          swal.fire({
+            html: "<div><img style='width: 320px; height: auto;'src='" +
+              loading +
+              "'><br><p>Sedang Proses....</p></div>",
+            customClass: "swal-wide",
+            showConfirmButton: false,
+            allowOutsideClick: false
+          });
+        },
+        success: function (result) {
+          swal.close();
+          // console.log(result);
+          $("#MPK_Tabledata").html(result);
+          console.log(kodeinduk);
+          $("#DataNamaAktif").DataTable({
+            dom: "Bfrtip",
+            buttons: [{
+              extend: "excelHtml5",
+              title: "Daftar Nama Aktif" + " - " + tanggal2
+            },
+            {
+              extend: "pdfHtml5",
+              title: "Daftar Nama Aktif" + " - " + tanggal2,
+              orientation: "landscape",
+              pageSize: "LEGAL"
+            },
+            {
+              extend: "print",
+              title: "Daftar Nama Aktif" + " - " + tanggal2
+            }
+            ]
+          });
+        }
+      });
+    }
+  });
+});
+//End Daftar Nama Aktif
