@@ -4789,3 +4789,6 @@ $route['CARVPkoor/Approval/(:any)'] = 'CARVP/C_Approve/$1';
 $route['overtime-pekerja'] = 'OvertimePekerja/C_Ovpekerja/index';
 $route['overtime-pekerja/rekap'] = 'OvertimePekerja/C_Ovpekerja/rekap';
 $route['overtime-pekerja/rekap/(:any)'] = 'OvertimePekerja/C_Ovpekerja/$1';
+
+//---------------------------------- Daftar Nama Aktif ------------------------------------------------
+$route['MasterPekerja/cetak/(:any)'] = 'MasterPekerja/NamaAktif/C_Namaaktif/$1';
