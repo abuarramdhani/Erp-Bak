@@ -87,45 +87,46 @@ $(document).ready(function () {
       `;
   } else {
     var IndonesiaMessageFormat =
-      '\
-        <div style="  font-family: Times New Roman, Times, serif;">\
-            <p>Selamat Siang,</p>\
-                <br>\
-            <p>\
-                Terlampir Purchase Order (PO) dan Pedoman Kerjasama Vendor dari kami, dimohon konfirmasi kesanggupan <b>\
-                dengan menyalin template balasan dibawah ini kemudian mengirim balik</b> ke alamat email ini \
-                selambat-lambatnya <b>1x24 jam </b>sejak email ini diterima.\
-            </p>\
-            <p>Template Balasan (disalin dari <b>"PO Confirmation"</b> hingga <b>"Sign Name")</b> : </p>\
-            <p>\
-                <b>PO CONFIRMATION</b> : <em>(diisi dengan nomor PO terkait)</em><br>\
-                <b>UNIT PRICE </b>: <em>(diisi OK/NOT OK)</em><br>\
-                <b>QUANTITY</b> : <em>(diisi OK/NOT OK)</em><br>\
-                <b>RECEIVED DATE</b> : <em>(diisi OK/NOT OK)</em><br>\
-                <b>SHIP TO LOCATION</b> : <em>(diisi OK/NOT OK)</em><br>\
-                <b>VENDOR DATA</b> : <em>(diisi OK/NOT OK)</em><br>\
-                <b>SIGN NAME</b> : <em>(diisi Nama dan Jabatan penerima dan konfirmasi PO)<br></em>\
-            </p>\
-            <p>\
-                Mohon perhatiannya, bahwa tanggal yang tercantum sebagai <b>"Received Date" </b>pada Purchase Order \
-                (PO) adalah <b>tanggal diterimanya barang/jasa terkait di alamat tujuan </b>(Gudang Tujuan) yang ditentukan/\
-                dituliskan pada masing-masing Purchase Order.\
-            </p>\
-                <br>\
-            <p>Terima kasih atas kerjasamanya</p>\
-                <br>\
-            <p>\
-                Salam,<br>\
-                Ms. Rika<br>\
-                Admin Purchasing<br>\
-                <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
-                Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
-                Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>\
-                Fax. <a href="https://m.quick.com/callto:+62-274-563523"><u>+62-274-563523</u></a><br>\
-                Website : <a href="http://www.quick.co.id/"><u>www.quick.co.id</u></a>\
-            </p>\
-        </div>\
-        ';
+      `<div style="  font-family: Times New Roman, Times, serif;">
+            <p>Dengan hormat,</p>
+                <br>
+            <p>
+                Berikut kami sampaikan Purchase Order (PO) dan Pedoman Kerjasama Vendor dari CV. Karya Hidup Sentosa,
+                mohon dapat diberikan konfirmasi kesanggupan <b>dengan menyalin template balasan dibawah ini kemudian mengirim balik</b>
+                ke alamat email ini selambat-lambatnya <b>1x24 jam</b> sejak email ini diterima.
+            </p>
+            <p>Template Balasan (disalin dari <b>"PO Confirmation"</b> hingga <b>"Sign Name")</b> : </p>
+            <p>
+                <b>PO CONFIRMATION</b> : <em>(diisi dengan nomor PO terkait)</em><br>
+                <b>UNIT PRICE</b>: <em>(diisi OK/NOT OK)</em><br>
+                <b>QUANTITY</b> : <em>(diisi OK/NOT OK)</em><br>
+                <b>RECEIVED DATE</b> : <em>(diisi OK/NOT OK)</em><br>
+                <b>SHIP TO LOCATION</b> : <em>(diisi OK/NOT OK)</em><br>
+                <b>VENDOR DATA</b> : <em>(diisi OK/NOT OK)</em><br>
+                <b>SIGN NAME</b> : <em>(diisi Nama dan Jabatan penerima dan konfirmasi PO)<br></em>
+            </p>
+            <p>
+                Mohon perhatiannya, bahwa tanggal yang tercantum sebagai <b>"Received Date" </b>pada Purchase Order 
+                (PO) adalah <b>tanggal diterimanya barang/jasa terkait di alamat tujuan </b>(Gudang Tujuan) yang ditentukan/
+                dituliskan pada masing-masing Purchase Order. Dengan memberikan persetujuan baik melalui email maupun kolom
+                konfirmasi di lembar PO, maka Vendor telah <b>menyetujui hal-hal yang dicantumkan pada PO dan/atau Pedoman Kerjasama
+                Vendor</b> yang dilampirkan pada setiap pengiriman email PO.
+            </p>
+                <br>
+            <p>Terima kasih atas kerjasamanya</p>
+                <br>
+            <p>
+                Salam,<br>
+                Rika (Ms)<br>
+                Admin Purchasing<br>
+                <b>CV Karya Hidup Sentosa (QUICK)</b><br>
+                Jalan Magelang No 144 Yogyakarta - Indonesia<br>
+                Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>
+                Fax. <a href="https://m.quick.com/callto:+62-274-563523"><u>+62-274-563523</u></a><br>
+                Website : <a href="http://www.quick.co.id/"><u>www.quick.co.id</u></a>
+            </p>
+        </div>
+        `;
   }
 
   var EnglishMessageFormat =
