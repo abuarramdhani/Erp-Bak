@@ -84,7 +84,7 @@ class C_Requestjenis extends CI_Controller
         $namahandling = $this->input->post('namahandling');
         $kodehandling = $this->input->post('kodehandling');
         $requester = $this->session->user;
-        $tgl_request = date('d-m-y');
+        $tgl_request = date('Y-m-d');
 
         $this->M_dbhandling->insertreqhandling($namahandling, $kodehandling, $requester, $tgl_request);
     }

@@ -18,7 +18,7 @@
                 <td class="text-center"><?= $no ?></td>
                 <td class="text-center"><?= $r['kode'] ?></td>
                 <td class="text-center"><?= $r['nama'] ?></td>
-                <td class="text-center"><?= $r['tgl_request'] ?></td>
+                <td class="text-center"><?= date('d-M-Y', strtotime($r['tgl_request']))  ?></td>
                 <?php if ($r['status'] == 0) {
                     $status = 'Belum di Acc oleh Tim Handling';
                 } else if ($r['status'] == 1) {
@@ -30,7 +30,7 @@
                 <?php if ($r['tgl_acc'] == null) {
                     $tgl_acc = '-';
                 } else {
-                    $tgl_acc = $r['tgl_acc'];
+                    $tgl_acc = date('d-M-Y', strtotime($r['tgl_acc']));
                 } ?>
                 <td class="text-center"><?= $tgl_acc ?></td>
                 <td class="text-center"><button onclick="deletereqmashand(<?= $r['id'] ?>)" class="btn btn-danger btn-sm">Delete</button></td>
