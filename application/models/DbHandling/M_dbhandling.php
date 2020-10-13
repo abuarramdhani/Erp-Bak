@@ -509,14 +509,14 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
     }
     public function selectreqmasterhandlingbyid($id)
     {
-        $sql = "select * from dbh.request_master_handling where id='$id'";
+        $sql = "select * from dbh.request_master_handling where id=$id";
 
         $query = $this->db->query($sql);
         return $query->result_array();;
     }
     public function updatereqmasstatusacc($tgl, $id)
     {
-        $sql = "update dbh.request_master_handling set tgl_acc='$tgl', status=1 where id='$id'";
+        $sql = "update dbh.request_master_handling set tgl_acc='$tgl', status=1 where id=$id";
         $query = $this->db->query($sql);
         return $sql;
     }
