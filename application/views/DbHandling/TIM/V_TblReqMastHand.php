@@ -16,7 +16,7 @@
                     <td class="text-center"><?= $no ?></td>
                     <td class="text-center"><?= $r['kode'] ?></td>
                     <td class="text-center"><?= $r['nama'] ?></td>
-                    <td class="text-center"><?= $r['tgl_request'] ?></td>
+                    <td class="text-center"><?= date('d-M-Y', strtotime($r['tgl_request']))  ?></td>
                     <td class="text-center"><button onclick="accreqmasthand(<?= $r['id'] ?>)" class="btn btn-sm btn-success">Acc</button> <button onclick="rejectreqmasthand(<?= $r['id'] ?>)" class="btn btn-sm btn-danger">Reject</button></td>
                 </tr>
             <?php $no++;
