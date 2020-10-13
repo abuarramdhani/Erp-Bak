@@ -427,7 +427,7 @@ class C_Setdatamaster extends CI_Controller
         $id = $this->input->post('id');
         $datatoinsert = $this->M_dbhandling->selectreqmasterhandlingbyid($id);
         $this->M_dbhandling->insertmasterhandling($datatoinsert[0]['nama'], $datatoinsert[0]['kode']);
-        $tgl_acc = date('d-m-y');
+        $tgl_acc = date('Y-m-d');
         $this->M_dbhandling->updatereqmasstatusacc($tgl_acc, $id);
     }
     public function rejectreqmasthand()
