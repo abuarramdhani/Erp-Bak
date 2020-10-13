@@ -33,9 +33,9 @@
                             <div class="box-header with-border"></div>
                             <form name="Orderform" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post">
                                 <div class="box-body">
-                                    <div class="panel-body">
+                                    <!-- <div class="panel-body">
                                         <div class="col-md-12" style="text-align: right;"><a onclick="deleteAlldata()" class="btn btn-danger">Delete All Data</a></div>
-                                    </div>
+                                    </div> -->
                                     <div class="panel-body">
                                         <div class="col-md-12">
                                             <table class="table table-bordered" id="list_CARR">

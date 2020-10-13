@@ -144,32 +144,32 @@ class C_Approve extends CI_Controller
         $pdf->WriteHTML($html2);
         $pdf->Output($pdf_dir . $filename, 'F');
 
-        // $alamat = $this->M_car->getEmailVendor($po_num[0]['PO_NUMBER']);
+        $alamat = $this->M_car->getEmailVendor($po_num[0]['PO_NUMBER']);
 
-        // // echo "<pre>";
-        // // print_r($alamat);
-        // // exit();
+        // echo "<pre>";
+        // print_r($alamat);
+        // exit();
 
-        // foreach ($alamat as $al) {
-        //     $e = explode(', ', $al['EMAIL']);
-        //     $email = array();
-        //     for ($i = 0; $i < sizeof($e); $i++) {
-        //         $e2 = explode(' / ', $e[$i]);
-        //         for ($a = 0; $a < sizeof($e2); $a++) {
-        //             if ($e2[$a] != null || $e2[$a] != "") {
-        //                 array_push($email, $e2[$a]);
-        //             }
-        //         }
-        //     }
-        // }
-        $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
-        $e = explode(',', $alamat);
-        $email = array();
-        for ($i = 0; $i < sizeof($e); $i++) {
-            if ($e[$i] != null || $e[$i] != "") {
-                array_push($email, $e[$i]);
+        foreach ($alamat as $al) {
+            $e = explode(', ', $al['EMAIL']);
+            $email = array();
+            for ($i = 0; $i < sizeof($e); $i++) {
+                $e2 = explode(' / ', $e[$i]);
+                for ($a = 0; $a < sizeof($e2); $a++) {
+                    if ($e2[$a] != null || $e2[$a] != "") {
+                        array_push($email, $e2[$a]);
+                    }
+                }
             }
         }
+        // $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
+        // $e = explode(',', $alamat);
+        // $email = array();
+        // for ($i = 0; $i < sizeof($e); $i++) {
+        //     if ($e[$i] != null || $e[$i] != "") {
+        //         array_push($email, $e[$i]);
+        //     }
+        // }
 
         // echo "<pre>";
         // print_r($email);
@@ -205,7 +205,8 @@ class C_Approve extends CI_Controller
         foreach ($email as $toE) {
             $mail->addAddress($toE);
         }
-        // $mail->addAddress('riskiviolin@gmail.com');
+        $mail->AddBCC('quick.sec8@gmail.com');
+
         $mail->addAttachment($pdf_dir . $filename);
         $mail->Subject = 'NEED FEEDBACK - [' . $list_supplier[0]['SUPPLIER_NAME'] . '] Corrective Action Request (CAR) No. ' . $list_supplier[0]['CAR_NUM'] . '';
         $mail->msgHTML('Dengan hormat,<br><br>
@@ -269,34 +270,25 @@ class C_Approve extends CI_Controller
             $w++;
         }
 
-        // $alamat = $this->M_car->getEmailVendor($po_num[0]['PO_NUMBER']);
+        $alamat = $this->M_car->getEmailVendor($po_num[0]['PO_NUMBER']);
 
 
-        // // echo "<pre>";
-        // // print_r($alamat);
-        // // exit();
+        // echo "<pre>";
+        // print_r($alamat);
+        // exit();
 
-        // foreach ($alamat as $al) {
-        //     $e = explode(', ', $al['EMAIL']);
-        //     $email = array();
-        //     for ($i = 0; $i < sizeof($e); $i++) {
-        //         $e2 = explode(' / ', $e[$i]);
-        //         for ($a = 0; $a < sizeof($e2); $a++) {
-        //             if ($e2[$a] != null || $e2[$a] != "") {
-        //                 array_push($email, $e2[$a]);
-        //             }
-        //         }
-        //     }
-        // }
-        $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
-        $e = explode(',', $alamat);
-        $email = array();
-        for ($i = 0; $i < sizeof($e); $i++) {
-            if ($e[$i] != null || $e[$i] != "") {
-                array_push($email, $e[$i]);
+        foreach ($alamat as $al) {
+            $e = explode(', ', $al['EMAIL']);
+            $email = array();
+            for ($i = 0; $i < sizeof($e); $i++) {
+                $e2 = explode(' / ', $e[$i]);
+                for ($a = 0; $a < sizeof($e2); $a++) {
+                    if ($e2[$a] != null || $e2[$a] != "") {
+                        array_push($email, $e2[$a]);
+                    }
+                }
             }
         }
-
         $filename = '' . $no_car . '.pdf';
         $pdf_dir = './assets/upload/CARVP/';
 
@@ -327,7 +319,7 @@ class C_Approve extends CI_Controller
         foreach ($email as $toE) {
             $mail->addAddress($toE);
         }
-        // $mail->addAddress('riskiviolin@gmail.com');
+        $mail->AddBCC('quick.sec8@gmail.com');
         $mail->addAttachment($pdf_dir . $filename);
         $mail->Subject = 'NEED FEEDBACK - [' . $list_supplier[0]['SUPPLIER_NAME'] . '] Corrective Action Request (CAR) No. ' . $list_supplier[0]['CAR_NUM'] . '';
         $mail->msgHTML('Dengan hormat,<br><br>

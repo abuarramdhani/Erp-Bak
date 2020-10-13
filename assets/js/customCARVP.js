@@ -126,7 +126,7 @@ function ApproveReqCAR(i) {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          window.location.reload();
+          // window.location.reload();
         });
       });
     }
@@ -342,31 +342,31 @@ function kirimulangcar(i) {
     }
   });
 }
-function deleteAlldata() {
-  Swal.fire({
-    title: "Anda Yakin?",
-    text: "Akan Menghapus Semua Data",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes",
-  }).then((result) => {
-    if (result.value) {
-      var request = $.ajax({
-        url: baseurl + "CARVP/ListData/HapusAll",
-      });
-      request.done(function (result) {
-        Swal.fire({
-          position: "top",
-          type: "success",
-          title: "Berhasil Dihapus",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          window.location.reload();
-        });
-      });
-    }
-  });
-}
+// function deleteAlldata() {
+//   Swal.fire({
+//     title: "Anda Yakin?",
+//     text: "Akan Menghapus Semua Data",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#3085d6",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "Yes",
+//   }).then((result) => {
+//     if (result.value) {
+//       var request = $.ajax({
+//         url: baseurl + "CARVP/ListData/HapusAll",
+//       });
+//       request.done(function (result) {
+//         Swal.fire({
+//           position: "top",
+//           type: "success",
+//           title: "Berhasil Dihapus",
+//           showConfirmButton: false,
+//           timer: 1500,
+//         }).then(() => {
+//           window.location.reload();
+//         });
+//       });
+//     }
+//   });
+// }
