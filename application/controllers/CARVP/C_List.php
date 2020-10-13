@@ -234,8 +234,8 @@ class C_List extends CI_Controller
         $pdf->WriteHTML($html2);
         $pdf->Output($filename, 'I');
     }
-    public function HapusAll()
-    {
-        $this->M_car->HapusAll();
-    }
+    // public function HapusAll()
+    // {
+    //     $this->M_car->HapusAll();
+    // }
 }

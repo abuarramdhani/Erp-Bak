@@ -267,10 +267,10 @@ ORDER BY num";
         $query = $this->oracle_prod->query($sql);
         return $query->result_array();
     }
-    public function HapusAll()
-    {
-        $sql = "delete from khs_psup_car_vendor";
-        $query = $this->oracle->query($sql);
-        return $sql;
-    }
+    // public function HapusAll()
+    // {
+    //     $sql = "delete from khs_psup_car_vendor";
+    //     $query = $this->oracle->query($sql);
+    //     return $sql;
+    // }
 }
