@@ -70,6 +70,7 @@
 <script src="<?= base_url('assets/js/custom.js') ?>"></script>
 <script src="<?= base_url('assets/js/customTIMS.js') ?>"></script>
 <script src="<?= base_url('assets/js/customMPK.js') ?>"></script>
+<script src="<?= base_url('assets/js/customPTS.js') ?>"></script>
 <!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
 
 
