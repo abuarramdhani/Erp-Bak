@@ -233,7 +233,7 @@
 						<!-- INPUT GROUP 3 ROW 2 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
-								<label class="col-lg-2 control-label">PPH (2%)</label>
+								<label class="col-lg-2 control-label" id="viewpphvalue">PPH</label>
 								<div class="col-lg-3">
 									<input id="pph" name="TxtPPH" class="form-control" onkeypress="return isNumberKey(event)" placeholder="PPH" readonly>
 								</div>
