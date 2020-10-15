@@ -29,17 +29,17 @@ class M_list extends CI_Model {
 		}
 		
 		//create
-		public function AddCatering($name,$code,$address,$phone,$pph,$status){
+		public function AddCatering($name,$code,$address,$phone,$pph,$status,$pph_value){
 			$sql = "
 			insert into cm.cm_catering
-			(catering_name,catering_code,catering_address,catering_phone,catering_status,catering_pph)values
-			('$name','$code','$address','$phone','$status','$pph')";
+			(catering_name,catering_code,catering_address,catering_phone,catering_status,catering_pph,pph_value)values
+			('$name','$code','$address','$phone','$status','$pph','$pph_value')";
 			$query = $this->db->query($sql);
 			return;
 		}
 		
 		//update
-		public function UpdateCatering($id,$name,$code,$address,$phone,$pph,$status){
+		public function UpdateCatering($id,$name,$code,$address,$phone,$pph,$status,$pph_value){
 			$sql = "
 			update cm.cm_catering set 
 				catering_name='$name',
@@ -47,7 +47,8 @@ class M_list extends CI_Model {
 				catering_address='$address',
 				catering_phone='$phone',
 				catering_status='$status',
-				catering_pph='$pph'
+				catering_pph='$pph',
+				pph_value='$pph_value'
 			where catering_id='$id'
 			";
 			$query = $this->db->query($sql);

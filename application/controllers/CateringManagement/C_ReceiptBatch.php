@@ -362,7 +362,7 @@ class C_ReceiptBatch extends CI_Controller {
 
 		$cater_data = $this->M_receiptbatch->GetPphStatus($id);
 			foreach($cater_data as $cater){
-				echo $cater['catering_pph'];
+				echo $cater['pph_value'];
 			}
 	}
 
