@@ -5006,7 +5006,7 @@ $(document).ready(function () {
     singleDatePicker: true,
     timePicker: false,
     timePicker24Hour: true,
-    showDropdowns: false,
+    showDropdowns: true,
     locale: {
       format: "YYYY-MM-DD",
       todayHighlight: true

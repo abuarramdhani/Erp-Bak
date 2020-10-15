@@ -46,7 +46,7 @@ class M_namaaktif extends CI_Model
         else tpri.lokasi_kerja end lokasi_kerja, case when ( select count(noind) 
         from hrd_khs.tmutasi where tglberlaku > '$tanggal' and noind = tpri.noind ) > 0 then ( select kodesielm from hrd_khs.tmutasi where tglberlaku > '$tanggal'
         and noind = tpri.noind order by tglberlaku limit 1) else tpri.kodesie end kodesie from hrd_khs.tpribadi tpri where tglkeluar > '$tanggal' AND masukkerja < '$tanggal' ) tbl 
-        left join hrd_khs.tseksi ts on ts.kodesie = tbl.kodesie where tbl.lokasi_kerja like '$lokasi%' and tbl.kodesie like '$kodesie%' and tbl.noind LIKE '$kodeinduk%' order by noind";
+        left join hrd_khs.tseksi ts on ts.kodesie = tbl.kodesie where tbl.lokasi_kerja like '$lokasi%' and tbl.kodesie like '$kodesie%' and (tbl.noind LIKE '$kodeinduk%') order by noind";
 
         return $this->personalia->query($sql)->result_array();
     }
