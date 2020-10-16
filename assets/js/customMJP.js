@@ -109,8 +109,10 @@ function saveCommentmin(ket) {
     var comment = $('#comment').val();
     if (ket == 1) {
         tujuan = 'saveComment';
-    }else{
+    }else if (ket == 2) {
         tujuan = 'saveCommentPL';
+    }else{
+        tujuan = 'saveCommentC';
     }
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/"+tujuan+"",
