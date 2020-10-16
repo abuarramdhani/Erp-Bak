@@ -215,7 +215,7 @@ class C_HitungPesanan extends CI_Controller
       }elseif ($shift == '3') {
         $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi,$jenis);
       }
-      if (!empty($dataAbsenShift)) {
+      if (!empty($dataAbsenShift) || $shift == '3') {
         $data['jumlahAbsenShift'] = count($dataAbsenShift);
         $data['statusAbsenShift'] = 'ada';
       }else{
@@ -309,7 +309,7 @@ class C_HitungPesanan extends CI_Controller
       }elseif ($shift == '3') {
         $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi,$jenis);
       }
-      if (!empty($dataAbsenShift)) {
+      if (!empty($dataAbsenShift) || $shift == '3') {
         $data['jumlahAbsenShift'] = count($dataAbsenShift);
         $data['statusAbsenShift'] = 'ada';
       }else{
