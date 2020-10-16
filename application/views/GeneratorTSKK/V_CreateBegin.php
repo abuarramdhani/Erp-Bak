@@ -564,7 +564,7 @@ input[type="search"] {
 										<div class="row">
 												<label for="norm" value="<?php echo $rencana_produksi;?>" class="control-label col-lg-6">Rencana Produksi (Pcs) : </label>
 												<div class="col-lg-6">
-													<input type="number" value="<?php echo $rencana_produksi;?>" placeholder="Input Rencana Produksi" name="txtForecast" id="txtForecastRP" class="form-control forecast" readonly/>
+													<input type="number" value="<?php echo $forecast*$qty_unit;?>" placeholder="Input Rencana Produksi" name="txtRencana" id="txtRencana" class="form-control forecast" readonly/>
 												</div>
 										</div>
 									</div>
@@ -643,7 +643,8 @@ input[type="search"] {
 									$start = 1;
 									$finish1 = ($waktu + 1) - 1;
 									if ($finish1 > $takt_time2) {
-										$finish = $finish1 - $takt_time2;
+                    // $finish = $finish1 - $takt_time2;
+                    $finish = $finish1;
 										$stat = 'eksekusi >';
 									} else {
 										$finish = $finish1;
@@ -656,7 +657,8 @@ input[type="search"] {
 									for ($i=0; $i < count($waktu) ; $i++) {
 										$finish1 = ($waktu + $start) - 1;
 										if ($finish1 > $takt_time2) {
-											$finish = $finish1 - $takt_time2;
+                      // $finish = $finish1 - $takt_time2;
+                      $finish = $finish1;
 											$stat = 'eksekusi >';
 										} else {
 											$finish = $finish1;
@@ -670,7 +672,8 @@ input[type="search"] {
 										$start = $finish + 1;
 										$finish1 = ($waktu + $start) - 1;
 										if ($finish1 > $takt_time2) {
-											$finish = $finish1 - $takt_time2;
+                      // $finish = $finish1 - $takt_time2;
+                      $finish = $finish1;
 											$stat = 'eksekusi >';
 										} else {
 											$finish = $finish1;

@@ -2114,9 +2114,9 @@ const onClickDeleteEditPage = (th) => {
 		//TAKT TIME
 		var waktu_satu_shift 	= $('.waktu1Shift').val();
 		var jumlah_shift 		= $('.jumlahShift').val();
-		var forecast 			= $('.forecast').val();
+		var forecast 			= $('#txtForecast').val(); //rev 5
 		var qty_unit 			= $('.qtyUnit').val();
-		var rencana_kerja 		= $('.forecast').val();
+		var rencana_kerja 		= $('#txtForecastRP').val(); //rev 4
 		var jumlah_hari_kerja 	= $('.jumlahHariKerja').val();
 
 		console.log(id, judul, type, kode_part, nama_part, no_mesin, jenis_mesin, resource,
@@ -2246,7 +2246,7 @@ const onClickDeleteEditPage = (th) => {
 			jumlah_hari_kerja		: jumlah_hari_kerja
 			},
 			dataType: 'json',
-			url: baseurl+'GeneratorTSKK/C_GenTSKK/exportExcel/',
+			url: baseurl+'GeneratorTSKK/C_GenTSKK/exportExcel/paklut',
 			// cache:false,
 			success:function(data){
 					// console.log(result);
@@ -2465,6 +2465,20 @@ function countRencanaProduksi() {
 	// console.log(forecast, qty_unit);
 
 	$('.rencanaKerja').val(Number(forecast) * Number(qty_unit))
+
+	setTimeout(function () {
+		var waktu_satu_shift 	= $('.waktu1Shift').val();
+		var jumlah_shift 		= $('.jumlahShift').val();
+		var rencana_kerja 		= $('.rencanaKerja').val();
+		var jumlah_hari_kerja 	= $('.jumlahHariKerja').val();
+		// console.log(waktu_satu_shift + ',' + jumlah_shift + ',' + rencana_kerja + ',' + jumlah_hari_kerja);
+
+		var a = Number(waktu_satu_shift) * Number(jumlah_shift)
+		var b = Number(rencana_kerja) / Number(jumlah_hari_kerja)
+		var result = Number(a) / Number(b)
+
+		$('#inputInsert').val(Math.floor(Number(result))); //round down the result
+	}, 100);
 }
 
 //TAKT TIME CALCULATION

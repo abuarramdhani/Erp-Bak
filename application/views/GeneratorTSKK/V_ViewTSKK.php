@@ -1,17 +1,17 @@
 <style type="text/css">
 
 #inputElemen {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #save {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
-input[type="text"]::placeholder {  
-/* Firefox, Chrome, Opera */ 
-text-align: center; 
-} 
+input[type="text"]::placeholder {
+/* Firefox, Chrome, Opera */
+text-align: center;
+}
 
 </style>
 
@@ -86,7 +86,7 @@ text-align: center;
                                       <td style="display: none;"></td>
                                       <td style="text-align:center; width:10%">
                                       <a class="btn btn-warning btn-md" title="Edit TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/EditTSKK/'.$id)?>"><span class="fa fa-pencil-square-o"></span></a>
-                                      <a class="btn btn-success btn-md" title="Export TSKK" href="<?=base_url('GeneratorTSKK/C_Regenerate/exportAgain/'.$id)?>"><span class="fa fa-print"></span></a>                                       
+                                      <a class="btn btn-success btn-md" title="Export TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/exportExcel/'.$id)?>"><span class="fa fa-print"></span></a>                                       
                                       <!-- <a class="btn btn-danger btn-md" title="Delete TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/deleteData/'.$id)?>"><span class="fa fa-user-times"></span></a>  -->
                                       </td>
                                       <td><?php echo $judul_tskk; ?></td>
@@ -97,7 +97,7 @@ text-align: center;
                                       <td><?php echo $proses; ?></td>
 																	  	<td style="display:none"><input hidden class="form-control idView" value="<?php echo $id ?>"></td>
 
-                                    </tr> 
+                                    </tr>
                                     <?php
                                     $no++;
                                   }
