@@ -1,3 +1,7 @@
+<div class="panel-body">
+    <button type="button" class="btn btn-info" id="btn_importPlan" data-toggle="modal" data-target="#mdlimportsetplan"><i class="fa fa-upload"></i> Upload</button>
+    <button class="btn btn-success" style="margin-left:20px" id="btn_exportPlan" formaction="<?= base_url('MonitoringJobProduksi/SetPlan/exportPlan')?>"><i class="fa fa-download"></i> Download</button>
+</div>
     <?php $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             $tabel = count($data) > 8 ? 'tb_setplan' : 'tb_setplan2'; ?>
     <table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>" style="width: 100%;">
@@ -21,9 +25,14 @@
         <tr>
             <td><?= $no?>
                 <input type="hidden" id="bulan<?= $no?>" name="bulan" value="<?= $bulan?>">
+                <input type="hidden" id="bulan2<?= $no?>" name="bulan2" value="<?= $bulan2?>">
+                <input type="hidden" id="kategori2<?= $no?>" name="kategori2" value="<?= $kategori2?>">
                 <input type="hidden" id="id_plan<?= $no?>" name="id_plan[]" value="<?= $value['PLAN_ID']?>">
+                <input type="hidden" id="item<?= $no?>" name="item[]" value="<?= $value['INVENTORY_ITEM_ID']?>">
+                <input type="hidden" id="kode_item<?= $no?>" name="kode_item[]" value="<?= $value['ITEM']?>">
+                <input type="hidden" id="desc<?= $no?>" name="desc[]" value="<?= $value['DESKRIPSI']?>">
             </td>
-            <td class="text-nowrap"><input type="hidden" id="item<?= $no?>" name="item[]" value="<?= $value['INVENTORY_ITEM_ID']?>"><?= $value['ITEM']?>
+            <td class="text-nowrap"><?= $value['ITEM']?>
             </td>
             <td><?= $value['DESKRIPSI']?></td>
             <td>P</td>

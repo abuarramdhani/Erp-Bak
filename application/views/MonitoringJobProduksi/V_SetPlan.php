@@ -21,7 +21,7 @@ $(document).ready(function () {
                         <div class="box-header">
                             <h2 style="font-weight:bold"><i class="fa fa-calendar"></i> <?= $Title?></h2>
                         </div>
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             <div class="box-body">
                                 <div class="panel-body">
                                     <div class="col-md-3">
@@ -54,3 +54,33 @@ $(document).ready(function () {
         </div>
     </div>
 </section>
+
+<form method="post"  enctype="multipart/form-data">
+<div class="modal fade" id="mdlimportsetplan" role="dialog">
+    <div class="modal-dialog" style="padding-left:5px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+            <div class="modal-header text-center" style="background-color:#49D3F5;font-size:18px">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <label>UPLOAD DOKUMEN SET PLAN</label>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="file_setplan" name="file_setplan" accept=".xls, .xlsx, .csv">
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" style="margin-left:15px;" formaction="<?= base_url('MonitoringJobProduksi/SetPlan/importPlan')?>"><i class="fa fa-check"></i> Submit</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+</form>
