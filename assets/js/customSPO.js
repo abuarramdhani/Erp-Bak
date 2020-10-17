@@ -69,6 +69,9 @@ $(document).ready(function () {
         Mohon perhatiannya, bahwa tanggal yang tercantum sebagai <b>"Received Date"</b> pada \
         Purchase Order (PO) adalah <b>tanggal diterimanya barang/jasa terkait di alamat \
         tujuan</b> (Gudang Tujuan) yang ditentukan/ dituliskan pada masing-masing Purchase Order.\
+        Dengan memberikan persetujuan baik melalui email maupun kolom konfirmasi di lembar PO,
+        maka Vendor telah <b>menyetujui hal-hal yang dicantumkan pada PO dan/atau Pedoman Kerjasama
+        Vendor</b> yang dilampirkan pada setiap pengiriman email PO.
       </p>\
       <br>\
       <p>Terima kasih atas kerjasamanya</p>\
