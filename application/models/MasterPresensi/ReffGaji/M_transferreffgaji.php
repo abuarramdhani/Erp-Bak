@@ -399,7 +399,7 @@ class M_transferreffgaji extends CI_Model
 					) 
 				) as tbl 
 				where left(noind,1) in ('A','E','F','H','K','P')
-				ORDER BY left(noind,1), asal_outsourcing, kodesie, noind";
+				ORDER BY noind";
 		return $this->personalia->query($sql)->result_array();
 	}
 
