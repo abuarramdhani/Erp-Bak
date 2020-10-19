@@ -231,6 +231,42 @@ function mdlWIPSimulasi(no) {
     })
 }
 
+function schMonJob2(th) {
+    var kategori = $('#kategori_range').map(function(){return $(this).val();}).get();
+    var tglawal = $('#tgl_awal').val();
+    var tglakhir = $('#tgl_akhir').val();
+    var bulan = $('#periode_bulan_range').val();
+// console.log(kategori);
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/searchReport",
+        data : {kategori : kategori, tglawal : tglawal, tglakhir : tglakhir, bulan : bulan},
+        dataType : 'html',
+        type : 'POST',
+        beforeSend: function() {
+        $('div#tbl_monjob_produksi2' ).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function(data) {
+            $('div#tbl_monjob_produksi2' ).html(data);
+            $('.tb_monjob').dataTable({
+                "scrollX": true,
+                paging : false,
+                scrollY : 500,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 3,
+                }
+            });
+            $('.tb_monjob2').dataTable({
+                "scrollX": true,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 3,
+                }
+            });
+        }
+    })
+}
+
 //----------------------------------------------------SET PLAN PRODUKSI------------------------------------------------
 function schSetPlan(th) {
     var  kategori   = $('#kategori').val();
