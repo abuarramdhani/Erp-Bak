@@ -65,6 +65,7 @@ class C_PoLogbook extends CI_Controller
         $distribution_method = $this->input->post('distribution_method');
         $vendor_confirm_method = $this->input->post('vendor_confirm_method');
         $vendor_confirm_pic = htmlspecialchars($this->input->post('vendor_confirm_pic'));
+        $vendor_confirm_note = htmlspecialchars($this->input->post('vendor_confirm_note'));
         $attachment_flag = $this->input->post('attachment_flag');
 
         $edit_Po = $this->M_pologbook->get_data_byid($po_number);
@@ -92,7 +93,7 @@ class C_PoLogbook extends CI_Controller
                     $file = array('upload_data' => $this->upload->data());
                     $nama_lampiran = $file['upload_data']['raw_name'];
                 }
-                $this->M_pologbook->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $attachment_flag, $nama_lampiran);
+                $this->M_pologbook->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
                 $this->output
                         ->set_status_header(200)
                         ->set_content_type('application/json')

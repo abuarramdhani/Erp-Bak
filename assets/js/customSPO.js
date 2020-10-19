@@ -1,4 +1,7 @@
 $(document).ready(function () {
+  // Sort date datatables format
+  $.fn.dataTable.moment('DD-MMM-YY');
+
   if ($(".PurchaseManagementSendPOTitle").html() == "WEB SEND PO BDL") {
     var IndonesiaMessageFormat =
       '\
@@ -41,7 +44,8 @@ $(document).ready(function () {
         </div>\
         ';
   } else if (window.location.href.includes("po_number=")) {
-    var po_number = $("#txtPMSPONoPO").val();
+    var po_number = $("#txtPMSPONoPO").val().split('-')[0];
+    var po_number_rev = $("#txtPMSPONoPO").val();
     var IndonesiaMessageFormat =
       `
       <div style="  font-family: Times New Roman, Times, serif;">\
@@ -203,7 +207,7 @@ $(document).ready(function () {
             setTimeout(function () {
               if (window.location.href.includes("po_number=")) {
                 $("#txtPMSPOSubject").val(
-                  "Konfirmasi PO " + po_number + " CV. KHS"
+                  "Konfirmasi PO " + po_number_rev + " CV. KHS"
                 );
               } else {
                 $("#txtPMSPOSubject").val("KHS PURCHASE ORDER " + PONumber);
@@ -212,8 +216,8 @@ $(document).ready(function () {
           } else {
             $(".spnPMSPOWarnAddrNotFound").html(
               " Tidak ditemukan Email Address dengan PO Number " +
-                PONumber +
-                ". "
+              PONumber +
+              ". "
             );
             $(".divPMSPOWarnAddrNotFound").fadeIn();
             $("#txtPMSPOToEmailAddr").val("");
@@ -221,7 +225,7 @@ $(document).ready(function () {
             setTimeout(function () {
               if (window.location.href.includes("po_number=")) {
                 $("#txtPMSPOSubject").val(
-                  "Konfirmasi PO " + po_number + " CV. KHS"
+                  "Konfirmasi PO " + po_number_rev + " CV. KHS"
                 );
               } else {
                 $("#txtPMSPOSubject").val("KHS PURCHASE ORDER " + PONumber);
@@ -384,7 +388,11 @@ $(document).ready(function () {
         data: form_data,
         dataType: "json",
         success: function () {
-          Swal.fire("Success!", "Pesan telah terkirim dan terarsip", "success");
+          Swal.fire("Success!", "Pesan telah terkirim dan terarsip", "success")
+            .then(() => {
+              window.location.href =
+                baseurl + "PurchaseManagementSendPO/PoLog";
+            });
         },
         error: function (result) {
           globalresult = result;
@@ -404,7 +412,7 @@ $(document).ready(function () {
   });
 
   // Tabel SPO Log horizontal scroll
-  const PoLogTable = $("#tbl-SpoLog").DataTable({
+  $("#tbl-SpoLog").DataTable({
     scrollX: true,
   });
 
@@ -425,11 +433,13 @@ $(document).ready(function () {
       vendor_confirm_date = $('[name="vendor_confirm_date"]').val(),
       vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
       vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
+      vendor_confirm_note = $('[name="vendor_confirm_note"]').val(),
       lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
     epl_form_data.append("po_number", po_number);
     epl_form_data.append("vendor_confirm_date", vendor_confirm_date);
     epl_form_data.append("vendor_confirm_method", vendor_confirm_method);
     epl_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
+    epl_form_data.append("vendor_confirm_note", vendor_confirm_note);
     epl_form_data.append("lampiran_po", lampiran_po);
 
     const swalWithBootstrapButtons = Swal.mixin({
@@ -502,10 +512,10 @@ $(document).ready(function () {
       distribution_method = $('[name="distribution_method"]').val(),
       vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
       vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
+      vendor_confirm_note = $('[name="vendor_confirm_note"]').val(),
       attachment_flag = $('[name="attachment_flag"]').val(),
       lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
     eplb_form_data.append("po_number", po_number);
-
     eplb_form_data.append("distribution_method", distribution_method);
     eplb_form_data.append("attachment_flag", attachment_flag);
 
@@ -540,11 +550,9 @@ $(document).ready(function () {
           } else {
             if ($('[name="vendor_confirm_date"]').val()) {
               eplb_form_data.append("vendor_confirm_date", vendor_confirm_date);
-              eplb_form_data.append(
-                "vendor_confirm_method",
-                vendor_confirm_method
-              );
+              eplb_form_data.append("vendor_confirm_method", vendor_confirm_method);
               eplb_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
+              eplb_form_data.append("vendor_confirm_note", vendor_confirm_note);
               eplb_form_data.append("lampiran_po", lampiran_po);
             }
             $.ajax({

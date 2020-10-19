@@ -34,6 +34,7 @@ class M_pologbook extends CI_Model
         ,kppl.VENDOR_CONFIRM_DATE
         ,kppl.VENDOR_CONFIRM_METHOD
         ,kppl.VENDOR_CONFIRM_PIC
+        ,kppl.VENDOR_CONFIRM_NOTE
         ,kppl.ATTACHMENT
         from
         khs_psup_po_logbook kppl
@@ -46,12 +47,13 @@ class M_pologbook extends CI_Model
         and pha.AGENT_ID = ppf.PERSON_ID
         and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
         and ppf.NATIONAL_IDENTIFIER = '$BuyerNIK'
-        and fu.USER_NAME like '%PSUP%'";
+        and fu.USER_NAME like '%PSUP%'
+        ORDER BY PRINT_DATE desc";
         return $this->oracle->query($sql)->result_array();
     }
-    public function updateVendorData($noPO, $date, $dis_method, $con_method, $pic, $attachment_flag, $lampiran)
+    public function updateVendorData($noPO, $date, $dis_method, $con_method, $pic, $note, $attachment_flag, $lampiran)
     {
-        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'MM/DD/YYYY'), DISTRIBUTION_METHOD = '$dis_method', VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'MM/DD/YYYY'), DISTRIBUTION_METHOD = '$dis_method', VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO'";
         $this->oracle->query($query);
     }
     public function updateVendorData2($noPO, $dis_method, $attachment_flag)
