@@ -1,4 +1,4 @@
-<style>    
+<style>
     .bg-danger-important {
         background-color: #f2dede !important;
     }
@@ -81,6 +81,7 @@
                                         <option></option>
                                         <option value="TUKSONO">TUKSONO</option>
                                         <option value="MLATI">MLATI</option>
+                                        <option value="PUSAT">PUSAT</option>
                                     </select>
                                 </div>
                             </div>
@@ -119,7 +120,7 @@
                             <div class="panel-body">
                                 <div class="col-sm-12 text-center divADOLoadingTable">
                                     <label class="control-label">
-                                        <p><img src="<?= base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> Sedang Memproses ...</p> 
+                                        <p><img src="<?= base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> Sedang Memproses ...</p>
                                     </label>
                                 </div>
                                 <table class="table table-bordered table-hover table-striped tblADODetailList" style="display: none">
