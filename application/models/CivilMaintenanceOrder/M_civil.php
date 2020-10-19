@@ -1,10 +1,10 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 /**
-* 
-*/
+ * 
+ */
 class M_civil extends CI_Model
 {
-	
+
 	function __construct()
 	{
 		$this->load->database();
@@ -46,8 +46,8 @@ class M_civil extends CI_Model
 	public function listJnsPkjDetail($id = FALSE)
 	{
 		if ($id != FALSE) {
-			$where = "where a.jenis_pekerjaan_id = ".$id." ";
-		}else{
+			$where = "where a.jenis_pekerjaan_id = " . $id . " ";
+		} else {
 			$where = "";
 		}
 		$sql = "select a.jenis_pekerjaan_id,a.jenis_pekerjaan_detail_id,b.jenis_pekerjaan,a.detail_pekerjaan,a.keterangan
@@ -85,7 +85,7 @@ class M_civil extends CI_Model
 		$sql = "SELECT * from cvl.cvl_order_status order by status";
 		return $this->db->query($sql)->result_array();
 	}
-	
+
 	public function delsto($id)
 	{
 		$this->db->where('status_id', $id);
@@ -152,7 +152,8 @@ class M_civil extends CI_Model
 	public function getDetailPkj($noind)
 	{
 		$sql = "SELECT
-					*
+					*,
+					t.lokasi_kerja
 				from
 					hrd_khs.tpribadi t
 				left join hrd_khs.tseksi ts on
