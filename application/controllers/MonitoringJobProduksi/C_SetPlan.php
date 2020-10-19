@@ -193,8 +193,8 @@ public function savePlan(){
 						$kategori	= $ktgr[0]['ID_CATEGORY'];
 
 						$bulan 		= $row['C'];
-						$bulan		= explode("/", $bulan);
-						$bulan		= $bulan[1].$bulan[0];
+						$bulan1		= explode("/", $bulan);
+						$bulan		= $bulan1[1].$bulan1[0];
 						$inv 		= $row['F'];
 						$cekplan = $this->M_setplan->getPlan("where inventory_item_id = ".$inv." and month = $bulan");
 						if (empty($cekplan)) {
@@ -205,7 +205,7 @@ public function savePlan(){
 							$id = $cekplan[0]['PLAN_ID'];
 						}
 
-						$hari = $this->jumlahHari($bulan[0], $bulan[1]);
+						$hari = $this->jumlahHari($bulan1[0], $bulan1[1]);
 						$d = 6;
 						for ($p=0; $p < $hari ; $p++) { 
 							$a = $this->numbertoalpha($d);
@@ -438,7 +438,7 @@ public function savePlan(){
 		// Set orientasi kertas jadi LANDSCAPE
 		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 		// Set judul file excel nya
-		$excel->getActiveSheet(0)->setTitle("Comment");
+		$excel->getActiveSheet(0)->setTitle("Setplan");
 		$excel->setActiveSheetIndex();
 		// Proses file excel
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

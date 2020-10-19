@@ -62,32 +62,9 @@ class C_Monitoring extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringJobProduksi/V_Monitoring', $data);
 		$this->load->view('V_Footer',$data);
-    }
-    
-    public function search(){
-        $data['ket']   	= $this->input->post('ket');
-        $kategori   	= $this->input->post('kategori');
-		$ctgr 			= $this->M_monitoring->getCategory("where id_category = '".$kategori."'");
-		$bulan      	= $this->input->post('bulan');
-		$data['kategori'] 	= $ctgr[0]['CATEGORY_NAME'];
-		$data['kategori2'] 	= $kategori;
-		$data['bulan'] 	= $bulan;
-		$bulan 			= explode("/", $bulan);
-		$inibulan		= $bulan[1].$bulan[0];
-		$data['bulan2'] = $inibulan;
-
-        if ($bulan[0] == '01' || $bulan[0] == '03' || $bulan[0] == '05' || $bulan[0] == '07' || $bulan[0] == '08' || $bulan[0] == '10' || $bulan[0] == '12') {
-            $data['hari'] = 31;
-        }elseif ($bulan[0] == '04' || $bulan[0] == '06' || $bulan[0] == '09' || $bulan[0] == '11') {
-            $data['hari'] = 30;
-        }elseif ($bulan[0] == '02') {
-            if ($bulan[1]%4 == 0) {
-                $data['hari'] = 29;
-            }else {
-                $data['hari'] = 28;
-            }
-		}
-
+	}
+	
+	public function getdataMonitoring($kategori, $inibulan, $hari, $bulan){
 		$getdata = $this->M_monitoring->getdataMonitoring($kategori);
 		$cariakt = $this->M_monitoring->getAktual2($kategori, $inibulan);
 		// $cariakt = $this->M_monitoring->getAktual($kategori, $data['bulan']);
@@ -109,7 +86,7 @@ class C_Monitoring extends CI_Controller
 			$getdata[$key]['jml_cmin'] = 0;
 			if (!empty($plan)) {
 				$ket = 'not';
-				for ($i=0; $i < $data['hari'] ; $i++) {
+				for ($i=0; $i < $hari ; $i++) {
 					$getdata[$key]['plan'.$i.''] = $this->getPlanDate($plan[0]['PLAN_ID'], ($i+1), $getplandate);
 					$ket = $getdata[$key]['plan'.$i.''] != '' ? 'oke': $ket;
 					$tgl = $inibulan.sprintf("%02d", ($i+1));
@@ -122,7 +99,7 @@ class C_Monitoring extends CI_Controller
 					$getdata[$key]['jml_akt'] += $aktual[0] == '' ? 0 : $aktual[0];
 					$getdata[$key]['jml_com'] += $aktual[2] == '' ? 0 : $aktual[2];
 					$getdata[$key]['jml_pl'] += $aktual[3] == '' ? 0 : $aktual[3];
-					if ($data['bulan'] == date('m/Y')) {
+					if ($bulan == date('m/Y')) {
 						if ($i < date('d')) {
 							$getdata[$key]['min'.$i.''] = $aktual[1];
 							$getdata[$key]['plmin'.$i.''] = $aktual[4];
@@ -158,11 +135,72 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 		}
-		$data['data'] = $datanya;
-		$data['total'] = $total;
+		$hasil = array($datanya, $total);
+		return $hasil;
+	}
+
+	public function jumlahHari($bulan){
+        if ($bulan[0] == '01' || $bulan[0] == '03' || $bulan[0] == '05' || $bulan[0] == '07' || $bulan[0] == '08' || $bulan[0] == '10' || $bulan[0] == '12') {
+            $hari = 31;
+        }elseif ($bulan[0] == '04' || $bulan[0] == '06' || $bulan[0] == '09' || $bulan[0] == '11') {
+            $hari = 30;
+        }elseif ($bulan[0] == '02') {
+            if ($bulan[1]%4 == 0) {
+                $hari = 29;
+            }else {
+                $hari = 28;
+            }
+		}
+		return $hari;
+	}
+    
+    public function search(){
+        $data['ket']   	= $this->input->post('ket');
+        $kategori   	= $this->input->post('kategori');
+		$ctgr 			= $this->M_monitoring->getCategory("where id_category = '".$kategori."'");
+		$bulan      	= $this->input->post('bulan');
+		$data['kategori'] 	= $ctgr[0]['CATEGORY_NAME'];
+		$data['kategori2'] 	= $kategori;
+		$data['bulan'] 	= $bulan;
+		$bulan 			= explode("/", $bulan);
+		$inibulan		= $bulan[1].$bulan[0];
+		$data['bulan2'] = $inibulan;
+
+		$data['hari'] = $this->jumlahHari($bulan);
+
+		$datanya = $this->getdataMonitoring($kategori, $inibulan, $data['hari'], $data['bulan']);
 		// echo "<pre>";print_r($datanya);exit();
 
+		$data['data'] = $datanya[0];
+		$data['total'] = $datanya[1];
+
         $this->load->view('MonitoringJobProduksi/V_TblMonitoring', $data);
+	}
+
+	public function searchReport(){
+        $tglawal   		= $this->input->post('tglawal');
+        $tglakhir   	= $this->input->post('tglakhir');
+        $kategori   	= $this->input->post('kategori');
+		$bulan      	= $this->input->post('bulan');
+		$bulan2 		= explode("/", $bulan);
+		$inibulan		= $bulan2[1].$bulan2[0];
+		$hari			= $this->jumlahHari($bulan2);
+		$inidata = array();
+		for ($i=0; $i < count($kategori) ; $i++) { 
+			$datanya 	= $this->getdataMonitoring($kategori[$i], $inibulan, $hari, $bulan);
+			$ctgr 		= $this->M_monitoring->getCategory("where id_category = '".$kategori[$i]."'");
+			$datanya['kategori'] = $ctgr[0]['CATEGORY_NAME'];
+			$datanya['kategori2'] = $kategori[$i];
+			array_push($inidata, $datanya);
+		}
+		$data['data'] = $inidata;
+		$data['hari'] = $hari;
+		$data['bulan'] = $bulan;
+		$data['tglawal'] = $tglawal;
+		$data['tglakhir'] = $tglakhir;
+
+		// echo "<pre>";print_r($kategori);exit();
+        $this->load->view('MonitoringJobProduksi/V_TblReport', $data);
 	}
 	
 	public function getPlanDate($id, $tgl, $data){
@@ -1409,6 +1447,466 @@ class C_Monitoring extends CI_Controller
 		}
 		$hasil = !empty($comment) ? $comment[0]['KETERANGAN'] : '';
 		return $hasil;
+	}
+
+	public function exportReport(){
+		$kategori 	= $this->input->post('kategori[]');
+		$kategori2 	= $this->input->post('kategori2[]');
+		$bulan		= $this->input->post('bulan[]');
+		$bulan2		= explode("/", $bulan[0]);
+		$bulan2		= $bulan2[1].$bulan2[0];
+		$tglawal	= $this->input->post('tglawal[]');
+		$tglakhir	= $this->input->post('tglakhir[]');
+			// echo "<pre>";print_r($tglakhir);exit();
+
+		for ($i=0; $i < count($kategori) ; $i++) { 
+			$datanya[$kategori[$i]] = array();
+			$nomor = $this->input->post('nomor'.$i.'[]');
+			$baris['jml_item'] = $this->input->post('jml_item'.$i.'');
+			$baris['ttl_jml_plan'] = $this->input->post('ttl_jml_plan'.$i.'');
+			$baris['ttl_jml_akt'] = $this->input->post('ttl_jml_akt'.$i.'');
+			$baris['ttl_jml_min'] = $this->input->post('ttl_jml_min'.$i.'');
+			$baris['ttl_jml_pl'] = $this->input->post('ttl_jml_pl'.$i.'');
+			$baris['ttl_jml_plmin'] = $this->input->post('ttl_jml_plmin'.$i.'');
+			$baris['ttl_jml_com'] = $this->input->post('ttl_jml_com'.$i.'');
+			$baris['ttl_jml_cmin'] = $this->input->post('ttl_jml_cmin'.$i.'');
+			for ($j=0; $j < count($nomor)/2 ; $j++) { 
+				$baris['item'] = $this->input->post('item'.$i.($j+1).'');
+				$baris['desc'] = $this->input->post('desc'.$i.($j+1).'');
+				$baris['inv'] = $this->input->post('inv'.$i.($j+1).'');
+				$baris['jml_plan'] = $this->input->post('jml_plan'.$i.($j+1).'');
+				$baris['jml_akt'] = $this->input->post('jml_akt'.$i.($j+1).'');
+				$baris['jml_min'] = $this->input->post('jml_min'.$i.($j+1).'');
+				$baris['jml_pl'] = $this->input->post('jml_pl'.$i.($j+1).'');
+				$baris['jml_plmin'] = $this->input->post('jml_plmin'.$i.($j+1).'');
+				$baris['jml_com'] = $this->input->post('jml_com'.$i.($j+1).'');
+				$baris['jml_cmin'] = $this->input->post('jml_cmin'.$i.($j+1).'');
+				for ($p=0; $p < ($tglakhir[0] - $tglawal[0] +1) ; $p++) { 
+					$baris['plan'.$p.''] = $this->input->post('plan'.$i.($j+1).$p.'');
+					$baris['akt'.$p.''] = $this->input->post('akt'.$i.($j+1).$p.'');
+					$baris['min'.$p.''] = $this->input->post('min'.$i.($j+1).$p.'');
+					$baris['pl'.$p.''] = $this->input->post('pl'.$i.($j+1).$p.'');
+					$baris['plmin'.$p.''] = $this->input->post('plmin'.$i.($j+1).$p.'');
+					$baris['com'.$p.''] = $this->input->post('com'.$i.($j+1).$p.'');
+					$baris['cmin'.$p.''] = $this->input->post('cmin'.$i.($j+1).$p.'');
+					$baris['total_plan'.$p.''] = $this->input->post('total_plan'.$i.$p.'');
+					$baris['total_akt'.$p.''] = $this->input->post('total_akt'.$i.$p.'');
+					$baris['total_min'.$p.''] = $this->input->post('total_min'.$i.$p.'');
+					$baris['total_pl'.$p.''] = $this->input->post('total_pl'.$i.$p.'');
+					$baris['total_plmin'.$p.''] = $this->input->post('total_plmin'.$i.$p.'');
+					$baris['total_com'.$p.''] = $this->input->post('total_com'.$i.$p.'');
+					$baris['total_cmin'.$p.''] = $this->input->post('total_cmin'.$i.$p.'');
+				}
+			array_push($datanya[$kategori[$i]], $baris);
+			}
+			
+		}
+			// echo "<pre>";print_r($datanya);exit();
+
+		include APPPATH.'third_party/Excel/PHPExcel.php';
+		$excel = new PHPExcel();
+		$excel->getProperties()->setCreator('CV. KHS')
+					->setLastModifiedBy('Quick')
+					->setTitle("Monitoring Job Produksi")
+					->setSubject("CV. KHS")
+					->setDescription("Monitoring Job Produksi")
+					->setKeywords("MJP");
+		
+		$style_title = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+			),
+		);
+		$style1 = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'bdeefc'),
+			),
+			'font' => array(
+				'bold' => true,
+				'wrap' => true,
+			), 
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	=> PHPExcel_Style_Alignment::VERTICAL_CENTER,
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		$style2 = array(
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'wrap' => true,
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		$style3 = array(
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+			
+		);
+		
+		$style4 = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'E6E8E6'),
+			),
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+			
+		);
+		
+		$akhir_tgl1 = ($tglakhir[0] - $tglawal[0]) + 4;
+		$akhir_tgl = $this->numbertoalpha($akhir_tgl1);
+		// echo "<pre>";print_r($akhir_tgl);exit();
+		$akhir1 = $akhir_tgl1 + 1;
+		$akhir = $this->numbertoalpha($akhir1);
+		$numjdl = 2;
+		//TITLE
+		$excel->setActiveSheetIndex(0)->setCellValue('A1', "MONITORING JOB PRODUKSI"); 
+		$excel->getActiveSheet()->mergeCells("A1:".$akhir."1"); 
+		$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
+		
+		foreach ($datanya as $key => $value) {
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numjdl, "Kategori"); 
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numjdl, ": ".$key); 
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.($numjdl+1), "Periode"); 
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numjdl+1), ": ".$tglawal[0]."/".$bulan[0]." - ".$tglakhir[0]."/".$bulan[0].""); 
+			$merg = $numjdl + 2;
+			$merg2 = $numjdl + 3;
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$merg, "NO.");
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$merg, "KODE");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$merg, "DESKRIPSI");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$merg, "");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$merg, "TANGGAL");
+			$excel->getActiveSheet()->mergeCells("A$merg:A$merg2"); 
+			$excel->getActiveSheet()->mergeCells("B$merg:B$merg2"); 
+			$excel->getActiveSheet()->mergeCells("C$merg:C$merg2"); 
+			$excel->getActiveSheet()->mergeCells("D$merg:D$merg2"); 
+			$excel->getActiveSheet()->mergeCells("E$merg:".$akhir_tgl.$merg.""); 
+			
+			$row = $merg2; $col = 4;
+			for ($i=($tglawal[0]-1); $i < $tglakhir[0] ; $i++) { //tanggal 1 - akhir
+				$col2 = $this->numbertoalpha($col);
+				$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, ($i+1));
+				$excel->getActiveSheet()->getStyle("".$col2.$row."")->applyFromArray($style1);
+				$col++;
+			}
+			$excel->setActiveSheetIndex(0)->setCellValue("".$akhir.$merg."", "JUMLAH");
+			$excel->getActiveSheet()->mergeCells("".$akhir.$merg.":".$akhir.$merg2.""); 
+			
+			$excel->getActiveSheet()->getStyle('A'.$merg)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('A'.$merg2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('B'.$merg)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('B'.$merg2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('C'.$merg)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('C'.$merg2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('D'.$merg)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('D'.$merg2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle("E$merg:".$akhir.$merg."")->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle("".$akhir.$merg.":".$akhir.$merg2."")->applyFromArray($style1);
+
+		// echo "<pre>";print_r($value);exit();
+			
+			$no=1;
+			$numrow = $merg2 + 1;
+			foreach ($value as $d) {	
+				// echo "<pre>";print_r($d);exit();
+				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
+				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $d['item']);
+				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $d['desc']);
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), "A");
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), "(A - P)");
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+3), "PL");
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+4), "(PL - P)");
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+5), "C");
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+6), "(C - P)");
+				$row = $numrow;
+				for ($p=0; $p < 7; $p++) { 
+					$col = 4;
+					for ($i=0; $i < ($tglakhir[0] - $tglawal[0] +1) ; $i++) { // value per tanggal
+						if ($p == 0) {
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['plan'.$i.'']);
+						}elseif ($p == 1) {
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['akt'.$i.'']);
+						}elseif ($p == 2) {
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['min'.$i.'']);
+						}elseif($p == 3) {
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['pl'.$i.'']);
+						}elseif($p == 4) {
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['plmin'.$i.'']);
+						}elseif($p == 5) {
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['com'.$i.'']);
+						}elseif($p == 6) {
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $d['cmin'.$i.'']);
+						}
+						$col++;
+					}
+					$ket_jml = $p == 0 ? $d['jml_plan'] : (
+						$p == 1 ? $d['jml_akt'] : (
+							$p == 2 ? $d['jml_min'] : (
+								$p == 3 ? $d['jml_pl'] : (
+									$p == 4 ? $d['jml_plmin'] : (
+										$p == 5 ? $d['jml_com'] : $d['jml_cmin'] 
+										) 
+									) 
+								)
+							)
+						);
+					$excel->setActiveSheetIndex(0)->setCellValue($akhir.$row, $ket_jml);
+					$row++;
+				}
+
+				$baris2 = $numrow + 1;
+				$baris3 = $numrow + 2;
+				$baris4 = $numrow + 3;
+				$baris5 = $numrow + 4;
+				$baris6 = $numrow + 5;
+				$merge = $numrow + 6;
+				// echo "<pre>";print_r($numrow);exit();
+				$excel->getActiveSheet()->mergeCells("A$numrow:A$merge"); 
+				$excel->getActiveSheet()->mergeCells("B$numrow:B$merge"); 
+				$excel->getActiveSheet()->mergeCells("C$numrow:C$merge"); 
+				for ($i=0; $i < 7 ; $i++) { 
+					$baris = $numrow+$i;
+					$excel->getActiveSheet()->getStyle("A$baris")->applyFromArray($style3);
+					$excel->getActiveSheet()->getStyle("B$baris")->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle("C$baris")->applyFromArray($style2);
+					
+					for ($n=3; $n < ($akhir1+1) ; $n++) { // styling kolom tanggal/baris
+						$a = $this->numbertoalpha($n);
+						$excel->getActiveSheet()->getStyle("$a$baris")->applyFromArray($style3);
+					}
+				}
+				$numrow = $merge + 1;
+				$no++;
+			}
+			//total
+			$baris2 = $numrow + 1;
+			$baris3 = $numrow + 2;
+			$baris4 = $numrow + 3;
+			$baris5 = $numrow + 4;
+			$baris6 = $numrow + 5;
+			$merge = $numrow + 6;
+			$excel->setActiveSheetIndex(0)->setCellValue("A$numrow", "Total"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("B$numrow", $value[0]['jml_item']); 
+			$excel->getActiveSheet()->mergeCells("A$numrow:A$merge"); 
+			$excel->getActiveSheet()->mergeCells("B$numrow:C$numrow"); 
+			$excel->getActiveSheet()->mergeCells("B$numrow:C$merge"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("D$numrow", "P"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("D$baris2", "A"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("D$baris3", "(A - P)"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("D$baris4", "PL"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("D$baris5", "(PL - P)"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("D$baris6", "C"); 
+			$excel->setActiveSheetIndex(0)->setCellValue("D$merge", "(C - P)"); 
+			$row = $numrow;
+			for ($p=0; $p < 7; $p++) { 
+				$col = 4;
+				for ($i=0; $i < ($tglakhir[0] - $tglawal[0] +1) ; $i++) { // value per tanggal
+					if ($p == 0) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $value[0]['total_plan'.$i.'']);
+						$ket_jml = $value[0]['ttl_jml_plan'];
+					}elseif ($p == 1) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $value[0]['total_akt'.$i.'']);
+						$ket_jml = $value[0]['ttl_jml_akt'];
+					}elseif ($p == 2) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $value[0]['total_min'.$i.'']);
+						$ket_jml = $value[0]['ttl_jml_min'];
+					}elseif($p == 3) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $value[0]['total_pl'.$i.'']);
+						$ket_jml = $value[0]['ttl_jml_pl'];
+					}elseif($p == 4) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $value[0]['total_plmin'.$i.'']);
+						$ket_jml = $value[0]['ttl_jml_plmin'];
+					}elseif($p == 5) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $value[0]['total_com'.$i.'']);
+						$ket_jml = $value[0]['ttl_jml_com'];
+					}elseif($p == 6) {
+						$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $value[0]['total_cmin'.$i.'']);
+						$ket_jml = $value[0]['ttl_jml_cmin'];
+					}
+				$a = $this->numbertoalpha($col);
+				$excel->getActiveSheet()->getStyle("$a$row")->applyFromArray($style4);
+				$col++;
+				}
+				$excel->setActiveSheetIndex(0)->setCellValue($akhir.$row, $ket_jml);
+				$excel->getActiveSheet()->getStyle("A$row")->applyFromArray($style4);
+				$excel->getActiveSheet()->getStyle("B$row")->applyFromArray($style4);
+				$excel->getActiveSheet()->getStyle("C$row")->applyFromArray($style4);
+				$excel->getActiveSheet()->getStyle("D$row")->applyFromArray($style4);
+				$excel->getActiveSheet()->getStyle($akhir.$row)->applyFromArray($style4);
+				$row++;
+			}
+
+
+			$numjdl = $merge +5;
+		}
+		
+		$excel->getActiveSheet(0)->setTitle("Monitoring Job Produksi");		
+		
+		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
+		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(20); 
+		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); 
+		for($col = 'D'; $col !== $akhir; $col++) { // autowidth
+			$excel->getActiveSheet()
+				->getColumnDimension($col)
+				->setAutoSize(true);
+		}
+		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+		
+
+		//SHEET 2 COMMENT
+		$numcmt = 2;
+		$akhir = $akhir1 - 1;
+		$akhir = $this->numbertoalpha($akhir);
+		$akhir2 = $this->numbertoalpha($akhir1);
+		$excel->createSheet();
+		$excel->setActiveSheetIndex(1)->setCellValue('A1', "MONITORING JOB PRODUKSI"); 
+		$excel->getActiveSheet()->mergeCells("A1:".$akhir."1"); 
+		$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
+
+		$c = 0;
+		foreach ($datanya as $key => $value) {
+			$excel->setActiveSheetIndex(1)->setCellValue('A'.$numcmt, "Kategori"); 
+			$excel->setActiveSheetIndex(1)->setCellValue('B'.$numcmt, ": ".$key); 
+			$excel->setActiveSheetIndex(1)->setCellValue('A'.($numcmt+1), "Periode"); 
+			$excel->setActiveSheetIndex(1)->setCellValue('B'.($numcmt+1), ": ".$tglawal[0].'/'.$bulan[0].""); 
+			$merg = $numcmt + 2;
+			$merg2 = $numcmt + 3;
+			$excel->setActiveSheetIndex(1)->setCellValue('A'.$merg, "NO.");
+			$excel->setActiveSheetIndex(1)->setCellValue('B'.$merg, "KODE");
+			$excel->setActiveSheetIndex(1)->setCellValue('C'.$merg, "DESKRIPSI");
+			$excel->setActiveSheetIndex(1)->setCellValue('D'.$merg, "");
+			$excel->setActiveSheetIndex(1)->setCellValue('E'.$merg, "TANGGAL");
+			$excel->getActiveSheet()->mergeCells("A$merg:A$merg2"); 
+			$excel->getActiveSheet()->mergeCells("B$merg:B$merg2"); 
+			$excel->getActiveSheet()->mergeCells("C$merg:C$merg2"); 
+			$excel->getActiveSheet()->mergeCells("D$merg:D$merg2"); 
+			$excel->getActiveSheet()->mergeCells("E$merg:".$akhir_tgl.$merg.""); 
+			
+			$row = $merg2; $col = 4;
+			for ($i=($tglawal[0]-1); $i < $tglakhir[0] ; $i++) { //tanggal 1 - akhir
+				$col2 = $this->numbertoalpha($col);
+				$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, ($i+1));
+				$excel->getActiveSheet()->getStyle("".$col2.$row."")->applyFromArray($style1);
+				$col++;
+			}
+			$excel->getActiveSheet()->getStyle('A'.$merg)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('A'.$merg2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('B'.$merg)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('B'.$merg2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('C'.$merg)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('C'.$merg2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('D'.$merg)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle('D'.$merg2)->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle("E$merg:".$akhir.$merg."")->applyFromArray($style1);
+
+			$no=1;
+			$numrow = $merg2 + 1;
+			foreach ($value as $d) {	
+				// echo "<pre>";print_r($kategori);exit();
+				$excel->setActiveSheetIndex(1)->setCellValue('A'.$numrow, $no);
+				$excel->setActiveSheetIndex(1)->setCellValue('B'.$numrow, $d['item']);
+				$excel->setActiveSheetIndex(1)->setCellValue('C'.$numrow, $d['desc']);
+				$excel->setActiveSheetIndex(1)->setCellValue('D'.$numrow, "(A - P)");
+				$excel->setActiveSheetIndex(1)->setCellValue('D'.($numrow+1), "(PL - P)");
+				$excel->setActiveSheetIndex(1)->setCellValue('D'.($numrow+2), "(C - P)");
+				$row = $numrow;
+				for ($p=0; $p < 3; $p++) { 
+					$col = 4;
+					for ($i=0; $i < ($tglakhir[0] - $tglawal[0] + 1) ; $i++) { // value per tanggal
+						if ($p == 0) {
+							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], ($i+1), 'PA');
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $comment);
+						}elseif ($p == 1) {
+							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], ($i+1), 'PLP');
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $comment);
+						}elseif ($p == 2) {
+							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], ($i+1), 'PC');
+							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $comment);
+						}
+						$col++;
+					}
+					$row++;
+				}
+				
+				$baris2 = $numrow + 1;
+				$merge = $numrow + 2;
+				// echo "<pre>";print_r($numrow);exit();
+				$excel->getActiveSheet()->mergeCells("A$numrow:A$merge"); 
+				$excel->getActiveSheet()->mergeCells("B$numrow:B$merge"); 
+				$excel->getActiveSheet()->mergeCells("C$numrow:C$merge"); 
+				for ($i=0; $i < 3 ; $i++) { 
+					$baris = $numrow+$i;
+					$excel->getActiveSheet()->getStyle("A$baris")->applyFromArray($style3);
+					$excel->getActiveSheet()->getStyle("B$baris")->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle("C$baris")->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle("D$baris")->applyFromArray($style3);
+					
+					for ($n=4; $n < $akhir1 ; $n++) { // styling kolom tanggal/baris
+						$a = $this->numbertoalpha($n);
+						$excel->getActiveSheet()->getStyle("$a$baris")->applyFromArray($style2);
+					}
+				}
+				$numrow = $merge + 1;
+				$no++;
+
+			}
+			$numcmt = $merge +5;
+			$c++;
+		}
+
+
+		$excel->getActiveSheet(1)->setTitle("Comment");
+		// WIDTH
+		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
+		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(20); 
+		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); 
+		for($col = 'D'; $col !== $akhir2; $col++) { // autowidth
+			$excel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+		}
+		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+
+
+		// Set orientasi kertas jadi LANDSCAPE
+		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+		// Set judul file excel nya
+		$excel->setActiveSheetIndex();
+		// Proses file excel
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment; filename="Monitoring-Job-Produksi.xlsx"'); 
+		header('Cache-Control: max-age=0');
+		$write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+		$write->save('php://output');
+
 	}
 
 
