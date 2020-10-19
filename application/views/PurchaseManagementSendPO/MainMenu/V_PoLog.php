@@ -19,8 +19,7 @@
                         <div class="box box-primary box-solid">
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-hover text-left" id="tbl-SpoLog"
-                                        style="font-size:12px; width: 200%;">
+                                    <table class="table table-bordered table-hover text-left" id="tbl-SpoLog" style="font-size:12px; width: 250%;">
                                         <thead>
                                             <tr class="bg-primary">
                                                 <th rowspan="2" style="vertical-align: middle;">
@@ -59,8 +58,7 @@
                                                 <th colspan="2" style="vertical-align: middle;">
                                                     <center>Approve Date</center>
                                                 </th>
-                                                <th rowspan="2"
-                                                    style="border-left: 1px solid #fff; vertical-align: middle;">
+                                                <th rowspan="2" style="border-left: 1px solid #fff; vertical-align: middle;">
                                                     <center>Send Date 1</center>
                                                 </th>
                                                 <th rowspan="2" style="vertical-align: middle;">
@@ -80,6 +78,9 @@
                                                 </th>
                                                 <th rowspan="2" style="vertical-align: middle;">
                                                     <center>Vendor Confirm PIC</center>
+                                                </th>
+                                                <th rowspan="2" style="vertical-align: middle;">
+                                                    <center>Vendor Confirm Note</center>
                                                 </th>
                                                 <th rowspan="2" style="vertical-align: middle;">
                                                     <center>Attachment</center>
@@ -168,15 +169,14 @@
                                                     <center><?= $value['VENDOR_CONFIRM_PIC']; ?></center>
                                                 </td>
                                                 <td>
+                                                    <center><?= $value['VENDOR_CONFIRM_NOTE']; ?></center>
+                                                </td>
+                                                <td>
                                                     <center><?= $value['ATTACHMENT']; ?></center>
                                                 </td>
                                                 <td style="min-width: 120px; max-width: 120px; text-align: center;">
-                                                    <a class="btn btn-success <?= ($value['SEND_DATE_1'] === NULL)? 'hidden' : ''; ?>"
-                                                        href="<?= base_url("PurchaseManagementSendPO/SendPO") . '?po_number=' . $value['PO_NUMBER']; ?>"
-                                                        title="Resend"><i class="fa fa-send"></i></a>
-                                                    <a class="btn btn-success btn-edit <?= ($value['SELISIH_WAKTU_2'] > 24 && $value['VENDOR_CONFIRM_DATE'] == NULL)?'hidden':''; ?>"
-                                                        href="<?= base_url("PurchaseManagementSendPO/PoLog/edit") . '?po_number=' . $value['PO_NUMBER']; ?>"
-                                                        title="Edit"><i class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-success <?= ($value['SEND_DATE_1'] === NULL)? 'hidden' : ''; ?>" href="<?= base_url("PurchaseManagementSendPO/SendPO") . '?po_number=' . $value['PO_NUMBER'] . '-' . $value['PO_REVISION']; ?>" title="Resend"><i class="fa fa-send"></i></a>
+                                                    <a class="btn btn-success btn-edit <?= ($value['SELISIH_WAKTU_2'] > 24 && $value['VENDOR_CONFIRM_DATE'] == NULL)?'hidden':''; ?>" href="<?= base_url("PurchaseManagementSendPO/PoLog/edit") . '?po_number=' . $value['PO_NUMBER']; ?>" title="Edit"><i class="fa fa-edit"></i></a>
                                                 </td>
                                             </tr>
                                             <?php endforeach; ?>

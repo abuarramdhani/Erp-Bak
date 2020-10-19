@@ -29,8 +29,7 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="text" class="form-control" id="vendor_confirm_date"
-                                                            name="vendor_confirm_date" required autocomplete="off">
+                                                        <input type="text" class="form-control" id="vendor_confirm_date" name="vendor_confirm_date" required autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -41,9 +40,7 @@
                                                 </div>
                                                 <label class="col-lg-1" style="width: 10px;">: </label>
                                                 <div class="col-lg-4 text-left">
-                                                    <select type="select select2" class="form-control"
-                                                        id="select_vendor_confirm_method" name="vendor_confirm_method"
-                                                        required>
+                                                    <select type="select select2" class="form-control" id="select_vendor_confirm_method" name="vendor_confirm_method" required>
                                                         <option selected disabled>--Select Confirm Method--</option>
                                                         <option value="email">Email</option>
                                                         <option value="fax">Fax</option>
@@ -63,8 +60,19 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width: 10px;">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="text" class="form-control" id="vendor_confirm_pic"
-                                                            name="vendor_confirm_pic" required>
+                                                        <input type="text" class="form-control" id="vendor_confirm_pic" name="vendor_confirm_pic" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="col-lg-5 text-right">
+                                                        <label>Vendor Confirm Note</label>
+                                                    </div>
+                                                    <label class="col-lg-1" style="width: 10px;">:</label>
+                                                    <div class="col-lg-4 text-left">
+                                                        <input type="text" class="form-control" id="vendor_confirm_note" name="vendor_confirm_note" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -76,18 +84,15 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="file" id="lampiranPO" name="lampiranPO" required
-                                                            autocomplete="off">
+                                                        <input type="file" id="lampiranPO" name="lampiranPO" required autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
                                             <hr>
                                             <div class="row">
                                                 <div class="col-lg-12 text-center">
-                                                    <button type="button" class="btn btn-primary btnVendorConfirm"
-                                                        style="margin-right: 8px;">Simpan</button>
-                                                    <a href="<?= base_url('PurchaseManagementSendPO/PoLog/edit'); ?>"
-                                                        class="btn btn-primary">Kembali</a>
+                                                    <button type="button" class="btn btn-primary btnVendorConfirm" style="margin-right: 8px;">Simpan</button>
+                                                    <a href="<?= base_url('PurchaseManagementSendPO/PoLog/edit'); ?>" class="btn btn-primary">Kembali</a>
                                                 </div>
                                             </div>
                                         </form>
