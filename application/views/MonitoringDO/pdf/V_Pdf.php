@@ -155,44 +155,29 @@
 		<tr style="border-bottom:1px solid black;">
 			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 509px;font-size:10px;padding:5px">
 				<center>
-					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
-						<?php echo $no ?> <br /><br />
-					<?php $no++; } ?> -->
+
 				</center>
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
 				<center>
-					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
-						<?php echo $gb['QUANTITY'] ?> <br /><br />
-					<?php $no++; } ?> -->
+
 				</center>
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
 				<center>
-					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
-						<?php echo $gb['QTY_TERLAYANI'] ?> <br /><br />
-					<?php $no++; } ?> -->
+
 				</center>
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
 				<center>
-					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
-						<?php echo $gb['UOM_CODE'] ?> <br /><br />
-					<?php $no++; } ?> -->
+
 				</center>
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
-				<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
-					<?php echo $gb['ITEM'] ?> <br /><br />
-				<?php $no++; } ?> -->
+
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
-				<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
-					<?php echo $gb['DESCRIPTION'] ?> <br /><br />
-				<?php $no++; } ?> -->
-				<!-- coba <br>
-				coba <br>
-				coba <br> -->
+
 			</td>
 			<td style="vertical-align:top;font-size:11.5px;padding:5px;border-right:1px solid black;">
 				<center>
@@ -206,7 +191,9 @@
 							<tr>
 								<td style="padding: 5px;margin-top:20px;font-size:11.5px;">
 									<br>
-									 <?php foreach ($header_sub as $key => $h) {
+									 <?php
+									 	$size = sizeof($get_serial) > 87 ? '9.6px' : '11.5px';
+									  foreach ($header_sub as $key => $h) {
 										foreach ($check_header_sub as $key2 => $h2) {
 											$explode = explode(' ', $h2);
 											if ($h == $explode[0]) {
@@ -214,7 +201,7 @@
 												echo '<br /><b style="font-size:11.5px;">'."$h".'</b><br>';
 												foreach ($get_serial as $key3 => $h3) {
 													if ($h3['DESCRIPTION'] == $h2) {
-														echo '<span style = "font-size:11.5px;">'.$h3['SERIAL_NUMBER'].', </span>';
+														echo '<span style = "font-size:'.$size.';">'.$h3['SERIAL_NUMBER'].', </span>';
 													}
 												}
 												echo "</div><br>";
