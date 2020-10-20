@@ -4792,3 +4792,6 @@ $route['overtime-pekerja/rekap/(:any)'] = 'OvertimePekerja/C_Ovpekerja/$1';
 
 //---------------------------------- Daftar Nama Aktif ------------------------------------------------
 $route['MasterPekerja/cetak/(:any)'] = 'MasterPekerja/NamaAktif/C_Namaaktif/$1';
+
+//---------------------------------- Cetak Kategori ------------------------------------------------
+$route['MasterPekerja/cetak/(:any)'] = 'MasterPekerja/CetakKategori/C_Cetakkategori/$1';
