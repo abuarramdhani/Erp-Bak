@@ -53,7 +53,7 @@ class M_monitoring extends CI_Model
                   and wdj.ORGANIZATION_ID = kgim.ORGANIZATION_ID
                   and msib.INVENTORY_ITEM_ID = kgim.INVENTORY_ITEM_ID
                   and msib.ORGANIZATION_ID = kgim.ORGANIZATION_ID
-                  and wdj.STATUS_TYPE in (1,3,12,4,5) -- unreleased, released, closed, complete
+                  and wdj.STATUS_TYPE in (1,3,12,4,5,15) -- unreleased, released, closed, complete,failed close
                   and trunc(wdj.SCHEDULED_START_DATE) between nvl(TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY'),wdj.SCHEDULED_START_DATE) and nvl(LAST_DAY (TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY')),wdj.SCHEDULED_START_DATE)
                   and kgim.CATEGORY_NAME = '$kategori'
                 order by tgl_urut, item";
