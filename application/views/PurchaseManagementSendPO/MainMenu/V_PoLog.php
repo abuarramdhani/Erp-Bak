@@ -18,6 +18,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-body">
+                                <a href="<?= base_url('PurchaseManagementSendPO/PoLog/exportExcel') ?>" class="btn btn-success" style="margin-bottom: 10px">Export Excel</a>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover text-left" id="tbl-SpoLog" style="font-size:12px; width: 250%;">
                                         <thead>
