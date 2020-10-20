@@ -1798,7 +1798,7 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(1)->setCellValue('A'.$numcmt, "Kategori"); 
 			$excel->setActiveSheetIndex(1)->setCellValue('B'.$numcmt, ": ".$key); 
 			$excel->setActiveSheetIndex(1)->setCellValue('A'.($numcmt+1), "Periode"); 
-			$excel->setActiveSheetIndex(1)->setCellValue('B'.($numcmt+1), ": ".$tglawal[0].'/'.$bulan[0].""); 
+			$excel->setActiveSheetIndex(1)->setCellValue('B'.($numcmt+1), ": ".$tglawal[0]."/".$bulan[0]." - ".$tglakhir[0]."/".$bulan[0].""); 
 			$merg = $numcmt + 2;
 			$merg2 = $numcmt + 3;
 			$excel->setActiveSheetIndex(1)->setCellValue('A'.$merg, "NO.");
@@ -1842,18 +1842,19 @@ class C_Monitoring extends CI_Controller
 				$row = $numrow;
 				for ($p=0; $p < 3; $p++) { 
 					$col = 4;
+					$tgl = $tglawal[0];
 					for ($i=0; $i < ($tglakhir[0] - $tglawal[0] + 1) ; $i++) { // value per tanggal
 						if ($p == 0) {
-							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], ($i+1), 'PA');
+							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], $tgl, 'PA');
 							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $comment);
 						}elseif ($p == 1) {
-							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], ($i+1), 'PLP');
+							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], $tgl, 'PLP');
 							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $comment);
 						}elseif ($p == 2) {
-							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], ($i+1), 'PC');
+							$comment = $this->getComment($kategori2[$c], $bulan2, $d['inv'], $tgl, 'PC');
 							$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $comment);
 						}
-						$col++;
+						$col++; $tgl++;
 					}
 					$row++;
 				}
