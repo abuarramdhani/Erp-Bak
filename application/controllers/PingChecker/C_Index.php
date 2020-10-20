@@ -100,11 +100,11 @@ class C_Index extends CI_Controller {
 				// 		'ip' => '172.16.100.9',
 				// 		'ip2' => '172.16.100.10',
 				// 	),
-					array(
-						'name' => 'IconPlus PUSAT-TUKSONO',
-						'ip' => '172.16.100.5',
-						'ip2' => '172.16.100.6',
-					),
+				//	array(
+				//		'name' => 'IconPlus PUSAT-TUKSONO',
+				//		'ip' => '172.16.100.5',
+				//		'ip2' => '172.16.100.6',
+				//	),
 					array(
 						'name' => 'LDP PUSAT-TUKSONO',
 						'ip' => '172.18.22.1',

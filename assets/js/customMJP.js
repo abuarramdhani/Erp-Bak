@@ -36,16 +36,16 @@ var user = document.getElementById("tbl_usermng");
                 };
             }
         }
-    });		
+    });	 
 });
 
 //-----------------------------------------------MONITORING---------------------------------------------------------------------------------
-function schMonJob(th) {
+function schMonJob(ket) {
     var  kategori   = $('#kategori').val();
     var  bulan      = $('#periode_bulan').val();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/search",
-        data : {bulan : bulan, kategori : kategori},
+        data : {bulan : bulan, kategori : kategori, ket : ket},
         dataType : 'html',
         type : 'POST',
         beforeSend: function() {
@@ -69,6 +69,59 @@ function schMonJob(th) {
                     leftColumns: 3,
                 }
             });
+        }
+    })
+}
+
+function commentmin(no, tgl, ket) {
+    var item    = $('#item'+no).val();
+    var desc    = $('#desc'+no).val();
+    var inv     = $('#inv'+no).val();
+    var bulan   = $('#bulan').val();
+    var bulan2   = $('#bulan2').val();
+    var kategori = $('#kategori2').val();
+
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/commentmin",
+        data : {item : item, desc : desc, inv : inv, bulan : bulan, bulan2 : bulan2,
+                kategori : kategori, tgl : tgl, ket : ket},
+        dataType : 'html',
+        type : 'POST',
+        success : function (data) {
+            $('#mdlcommentmin').modal('show');
+            $('#datacommentmin').html(data);
+        }
+    })
+}
+
+function editcomment(){
+    // console.log('woy')
+    $('#savecommentmin').css('display','');
+    $('#editcommentmin').css('display','none');
+    $('#comment').removeAttr('readonly');
+}
+
+function saveCommentmin(ket) {
+    var kategori = $('#kategori').val();
+    var inv     = $('#inv').val();
+    var bulan   = $('#bulanmin').val();
+    var tgl     = $('#tgl').val();
+    var comment = $('#comment').val();
+    if (ket == 1) {
+        tujuan = 'saveComment';
+    }else if (ket == 2) {
+        tujuan = 'saveCommentPL';
+    }else{
+        tujuan = 'saveCommentC';
+    }
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/"+tujuan+"",
+        data : {inv : inv, bulan : bulan, comment : comment,
+                kategori : kategori, tgl : tgl},
+        dataType : 'html',
+        type : 'POST',
+        success : function (data) {
+            $('#mdlcommentmin').modal('hide');
         }
     })
 }
@@ -174,6 +227,42 @@ function mdlWIPSimulasi(no) {
             $('#mdlGDSimulasi').modal('show');
             $('#datamdlsimulasi').html(result);
             $('#tbl_modal_simulasi').dataTable();
+        }
+    })
+}
+
+function schMonJob2(th) {
+    var kategori = $('#kategori_range').map(function(){return $(this).val();}).get();
+    var tglawal = $('#tgl_awal').val();
+    var tglakhir = $('#tgl_akhir').val();
+    var bulan = $('#periode_bulan_range').val();
+// console.log(kategori);
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/searchReport",
+        data : {kategori : kategori, tglawal : tglawal, tglakhir : tglakhir, bulan : bulan},
+        dataType : 'html',
+        type : 'POST',
+        beforeSend: function() {
+        $('div#tbl_monjob_produksi2' ).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function(data) {
+            $('div#tbl_monjob_produksi2' ).html(data);
+            $('.tb_monjob').dataTable({
+                "scrollX": true,
+                paging : false,
+                scrollY : 500,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 3,
+                }
+            });
+            $('.tb_monjob2').dataTable({
+                "scrollX": true,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 3,
+                }
+            });
         }
     })
 }

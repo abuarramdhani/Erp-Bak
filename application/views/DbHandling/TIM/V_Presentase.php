@@ -9,7 +9,11 @@
                 } else {
                     $tutup = '</td>';
                 }
-                $persen = number_format(($value['jml'] / $value['jml_asli']) * 100, 2);
+                if ($value['jml'] == 0) {
+                    $persen = number_format(0.00, 2);
+                } else {
+                    $persen = number_format(($value['jml'] / $value['jml_asli']) * 100, 2);
+                }
                 if ($persen > 60 && $persen <= 80) {
                     $class_progress = 'progress-bar-warning';
                 } else if ($persen > 80 && $persen <= 100) {

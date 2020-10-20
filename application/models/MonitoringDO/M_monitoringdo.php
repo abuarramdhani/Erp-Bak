@@ -241,6 +241,7 @@ class M_monitoringdo extends CI_Model
                      AND msib.inventory_item_id = mtrl.inventory_item_id
                      AND msib.organization_id = mtrl.organization_id
                      AND mtrh.request_number = '$data'
+                     AND mtrl.line_status in (3,7)
                 ORDER BY msib.description";
 
         if (!empty($data)) {
@@ -291,6 +292,7 @@ class M_monitoringdo extends CI_Model
                      AND msib.inventory_item_id = mtrl.inventory_item_id
                      AND msib.organization_id = mtrl.organization_id
                      AND mtrh.request_number = '$data'
+                     AND mtrl.line_status in (3,7)
                 ORDER BY msib.description";
 
         if (!empty($data)) {

@@ -75,15 +75,13 @@ class C_Input extends CI_Controller
         require_once APPPATH . 'third_party/Excel/PHPExcel.php';
         require_once APPPATH . 'third_party/Excel/PHPExcel/IOFactory.php';
 
-
-        $file_data  = array();
         // load excel
         $file = $_FILES['excel_file']['tmp_name'];
         $load = PHPExcel_IOFactory::load($file);
         $sheets = $load->getActiveSheet()->toArray(null, true, true, true);
         $k = 0;
         foreach ($sheets as $row) {
-            if ($k != 0 && $k != 1) {
+            if ($k != 0) {
                 $supplier[] = $row['A'];
                 $po[] = $row['B'];
                 $line[] = $row['C'];
@@ -126,7 +124,7 @@ class C_Input extends CI_Controller
         }
 
         // echo "<pre>";
-        // print_r($array_import);
+        // print_r($received_date_po);
         // exit();
 
         $data['array_import'] = $array_import;
@@ -182,7 +180,7 @@ class C_Input extends CI_Controller
         }
 
 
-        redirect('CARVP/Input');
+        redirect('CARVP/ListData');
     }
     public function no_car_generator()
     {
@@ -198,5 +196,167 @@ class C_Input extends CI_Controller
         }
 
         return $no_car;
+    }
+    public function LayoutExcel()
+    {
+        require_once APPPATH . 'third_party/Excel/PHPExcel.php';
+        require_once APPPATH . 'third_party/Excel/PHPExcel/IOFactory.php';
+        $objPHPExcel = new PHPExcel();
+        $worksheet = $objPHPExcel->getActiveSheet();
+        $worksheet->getColumnDimension('A')->setAutoSize(true);
+        $worksheet->getColumnDimension('B')->setAutoSize(true);
+        $worksheet->getColumnDimension('C')->setAutoSize(true);
+        $worksheet->getColumnDimension('D')->setAutoSize(true);
+        $worksheet->getColumnDimension('E')->setAutoSize(true);
+        $worksheet->getColumnDimension('F')->setAutoSize(true);
+        $worksheet->getColumnDimension('G')->setAutoSize(true);
+        $worksheet->getColumnDimension('H')->setAutoSize(true);
+        $worksheet->getColumnDimension('I')->setAutoSize(true);
+        $worksheet->getColumnDimension('J')->setAutoSize(true);
+        $worksheet->getColumnDimension('K')->setAutoSize(true);
+        $worksheet->getColumnDimension('L')->setAutoSize(true);
+        $worksheet->getColumnDimension('M')->setAutoSize(true);
+        $worksheet->getColumnDimension('N')->setAutoSize(true);
+        $worksheet->getColumnDimension('O')->setAutoSize(true);
+        $worksheet->getColumnDimension('P')->setAutoSize(true);
+        $worksheet->getColumnDimension('Q')->setAutoSize(true);
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "SUPPLIER NAME");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', "PO NUMBER");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', "LINE");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', "ITEM CODE");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1', "ITEM DESCRIPTION");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', "UOM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G1', "QTY PO");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H1', "RECEIVED DATE PO");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H2', "(contoh : 05-Oct-20)");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I1', "SHIPMENT DATE");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I2', "(contoh : 05-Oct-20)");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J1', "LPPB NUMBER");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K1', "ACTUAL RECEIPT DATE");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K2', "(contoh : 05-Oct-20)");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L1', "QTY RECEIPT");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M1', "NOTES");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N1', "DETAIL ROOTCAUSE");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O1', "ROOTCAUSE CATEGORI");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P1', "CAR TYPE");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P2', "");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q1', "NC SCOPE");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q2', "");
+
+        $worksheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('B1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('C1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('C2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('D1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('D2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('E2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('F1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('F2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('G2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('H1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('H2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('I1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('I2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('J1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('J2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('K1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('K2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('L1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('L2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('M1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('M2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('N1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('N2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('O1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('O2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('P1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('Q1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $worksheet->getStyle('Q2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $worksheet->getStyle('A1')->getFont()->setSize(11);
+        $worksheet->getStyle('A2')->getFont()->setSize(9);
+        $worksheet->getStyle('B1')->getFont()->setSize(11);
+        $worksheet->getStyle('B2')->getFont()->setSize(9);
+        $worksheet->getStyle('C1')->getFont()->setSize(11);
+        $worksheet->getStyle('C2')->getFont()->setSize(9);
+        $worksheet->getStyle('D1')->getFont()->setSize(11);
+        $worksheet->getStyle('D2')->getFont()->setSize(9);
+        $worksheet->getStyle('E1')->getFont()->setSize(11);
+        $worksheet->getStyle('E2')->getFont()->setSize(9);
+        $worksheet->getStyle('F1')->getFont()->setSize(11);
+        $worksheet->getStyle('F2')->getFont()->setSize(9);
+        $worksheet->getStyle('G1')->getFont()->setSize(11);
+        $worksheet->getStyle('G2')->getFont()->setSize(9);
+        $worksheet->getStyle('H1')->getFont()->setSize(11);
+        $worksheet->getStyle('H2')->getFont()->setSize(9);
+        $worksheet->getStyle('I1')->getFont()->setSize(11);
+        $worksheet->getStyle('I2')->getFont()->setSize(9);
+        $worksheet->getStyle('J1')->getFont()->setSize(11);
+        $worksheet->getStyle('J2')->getFont()->setSize(9);
+        $worksheet->getStyle('K1')->getFont()->setSize(11);
+        $worksheet->getStyle('K2')->getFont()->setSize(9);
+        $worksheet->getStyle('L1')->getFont()->setSize(11);
+        $worksheet->getStyle('L2')->getFont()->setSize(9);
+        $worksheet->getStyle('M1')->getFont()->setSize(11);
+        $worksheet->getStyle('M2')->getFont()->setSize(9);
+        $worksheet->getStyle('N1')->getFont()->setSize(11);
+        $worksheet->getStyle('N2')->getFont()->setSize(9);
+        $worksheet->getStyle('O1')->getFont()->setSize(11);
+        $worksheet->getStyle('O2')->getFont()->setSize(9);
+        $worksheet->getStyle('P1')->getFont()->setSize(11);
+        $worksheet->getStyle('P2')->getFont()->setSize(9);
+        $worksheet->getStyle('Q1')->getFont()->setSize(11);
+        $worksheet->getStyle('Q2')->getFont()->setSize(9);
+
+        $worksheet->getStyle('A1')->getFont()->setBold(true);
+        $worksheet->getStyle('B1')->getFont()->setBold(true);
+        $worksheet->getStyle('C1')->getFont()->setBold(true);
+        $worksheet->getStyle('D1')->getFont()->setBold(true);
+        $worksheet->getStyle('E1')->getFont()->setBold(true);
+        $worksheet->getStyle('F1')->getFont()->setBold(true);
+        $worksheet->getStyle('G1')->getFont()->setBold(true);
+        $worksheet->getStyle('H1')->getFont()->setBold(true);
+        $worksheet->getStyle('I1')->getFont()->setBold(true);
+        $worksheet->getStyle('J1')->getFont()->setBold(true);
+        $worksheet->getStyle('K1')->getFont()->setBold(true);
+        $worksheet->getStyle('L1')->getFont()->setBold(true);
+        $worksheet->getStyle('M1')->getFont()->setBold(true);
+        $worksheet->getStyle('N1')->getFont()->setBold(true);
+        $worksheet->getStyle('O1')->getFont()->setBold(true);
+        $worksheet->getStyle('P1')->getFont()->setBold(true);
+        $worksheet->getStyle('Q1')->getFont()->setBold(true);
+
+
+
+        $worksheet->getDefaultRowDimension()->setRowHeight(-1);
+        $worksheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+        $objPHPExcel->setActiveSheetIndex(0);
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        header("Cache-Control: no-store, no-cache, must-revalidate");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="LayoutDataCAR.xlsx"');
+        ob_end_clean();
+        $objWriter->save("php://output");
     }
 }

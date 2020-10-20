@@ -494,4 +494,49 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+    public function insertreqhandling($namahandling, $kodehandling, $requester, $tgl_request)
+    {
+        $sql = "insert into dbh.request_master_handling(kode,nama,requester,tgl_request,status) values('$kodehandling','$namahandling','$requester','$tgl_request',0)";
+        $query = $this->db->query($sql);
+        return $sql;
+    }
+    public function selectreqmasterhandling()
+    {
+        $sql = "select * from dbh.request_master_handling";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();;
+    }
+    public function selectreqmasterhandlingbyid($id)
+    {
+        $sql = "select * from dbh.request_master_handling where id=$id";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();;
+    }
+    public function updatereqmasstatusacc($tgl, $id)
+    {
+        $sql = "update dbh.request_master_handling set tgl_acc='$tgl', status=1 where id=$id";
+        $query = $this->db->query($sql);
+        return $sql;
+    }
+    public function updatereqmasstatusrej($id)
+    {
+        $sql = "update dbh.request_master_handling set status=2 where id=$id";
+        $query = $this->db->query($sql);
+        return $sql;
+    }
+    public function selectreqmasterhandlingbystatus()
+    {
+        $sql = "select * from dbh.request_master_handling where status='0'";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();;
+    }
+    public function deletereqmashand($id)
+    {
+        $sql = "delete from dbh.request_master_handling where id=$id";
+        $query = $this->db->query($sql);
+        return $sql;
+    }
 }

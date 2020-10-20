@@ -72,7 +72,43 @@ class M_car extends CI_Model
     }
     public function Listcar()
     {
-        $sql = "Select distinct car_num from khs_psup_car_vendor ORDER BY 1";
+        $sql = "SELECT DISTINCT car_num, active_flag,TO_CHAR (created_date, 'DD-MON-YYYY HH24:MI:SS') created_date,
+        (CASE
+            WHEN active_flag = 'B'
+               THEN 10
+            WHEN active_flag = 'E'
+               THEN 20
+            WHEN active_flag = 'A'
+               THEN 30
+            WHEN active_flag = 'F'
+               THEN 40
+            WHEN active_flag = 'R'
+               THEN 50
+            ELSE NULL
+         END) num
+   FROM khs_psup_car_vendor
+ORDER BY num";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    public function Listcarr()
+    {
+        $sql = "SELECT DISTINCT car_num, active_flag,TO_CHAR (created_date, 'DD-MON-YYYY HH24:MI:SS') created_date,
+        (CASE
+            WHEN active_flag = 'E'
+               THEN 10
+            WHEN active_flag = 'B'
+               THEN 20
+            WHEN active_flag = 'A'
+               THEN 30
+            WHEN active_flag = 'F'
+               THEN 40
+            WHEN active_flag = 'R'
+               THEN 50
+            ELSE NULL
+         END) num
+   FROM khs_psup_car_vendor
+ORDER BY num";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -123,7 +159,19 @@ class M_car extends CI_Model
     }
     public function UpdateApprove($no_car, $approve_date)
     {
-        $sql = "update khs_psup_car_vendor set approve_date = TO_TIMESTAMP('$approve_date', 'DD-MM-YY') , active_flag = 'A' where car_num = '$no_car'";
+        $sql = "update khs_psup_car_vendor set approve_date = TO_TIMESTAMP('$approve_date', 'DD-MM-YY') where car_num = '$no_car'";
+        $query = $this->oracle->query($sql);
+        return $sql;
+    }
+    public function UpdateFlag($flag, $no_car)
+    {
+        $sql = "update khs_psup_car_vendor set active_flag = '$flag' where car_num = '$no_car'";
+        $query = $this->oracle->query($sql);
+        return $sql;
+    }
+    public function UpdateFlagReject($flag, $alasan, $no_car)
+    {
+        $sql = "update khs_psup_car_vendor set active_flag = '$flag', reject_reason='$alasan' where car_num = '$no_car'";
         $query = $this->oracle->query($sql);
         return $sql;
     }
@@ -213,4 +261,16 @@ class M_car extends CI_Model
         $query = $this->personalia->query($sql);
         return $query->result_array();
     }
+    public function getEmailVendor($po)
+    {
+        $sql = "SELECT DISTINCT EMAIL FROM KHS.KHS_CETAK_PO_LANDSCAPE WHERE SEGMENT1 = '$po'";
+        $query = $this->oracle_prod->query($sql);
+        return $query->result_array();
+    }
+    // public function HapusAll()
+    // {
+    //     $sql = "delete from khs_psup_car_vendor";
+    //     $query = $this->oracle->query($sql);
+    //     return $sql;
+    // }
 }

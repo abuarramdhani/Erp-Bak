@@ -52,5 +52,10 @@ class M_simforklift extends CI_Model
 		return $this->personalia->query($sql, array($id))->row();
 	}
 
+	function deleteSimForliftById($id){
+		$this->personalia->where('id_sim', $id);
+		$this->personalia->delete("\"Surat\".t_sim_forklift");
+	}
+
 }
 ?>

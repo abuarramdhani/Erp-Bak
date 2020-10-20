@@ -88,6 +88,7 @@
 			<script src="<?= base_url('assets/plugins/howler/howler.js') ?>"></script>
 			<script src="<?= base_url('assets/plugins/fakeLoading/fakeLoading.js') ?>"></script>
 			<script src="<?= base_url('assets/plugins/fullcalendar-1.6.2/fullcalendar/fullcalendar.min.js') ?>"></script>
+			<script src="<?= base_url('assets/plugins/datatables-latest/datetime-moment.js') ?>"></script>
 
 			<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
 			<script src="<?= base_url('assets/js/custom.js') ?>"></script>
@@ -249,6 +250,7 @@
 				<script src="<?= base_url('assets/js/customMTT.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMJP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customCOPS.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customOVP.js') ?>"></script>
 
 
 

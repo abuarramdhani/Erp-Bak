@@ -130,29 +130,41 @@ class C_Monhand extends CI_Controller
         $tampung_class = array();
         for ($w = 0; $w < sizeof($arraymix); $w++) {
             $tampung_item_mix[$w] = $arraymix[$w]['item'];
-            for ($g = 0; $g < sizeof($itempostgree); $g++) {
-                if ($arraymix[$w]['item'] == $itempostgree[$g]['kode_komponen']) {
-                    if (!in_array($arraymix[$w]['class'], $tampung_class)) {
-                        $presentase[$arraymix[$w]['class']] = array(
-                            'class' => $arraymix[$w]['class'],
-                            'jml' => 1,
-                            'jml_asli' => 1,
-                        );
-                        array_push($tampung_class, $arraymix[$w]['class']);
+            if ($itempostgree != null) {
+                for ($g = 0; $g < sizeof($itempostgree); $g++) {
+                    if ($arraymix[$w]['item'] == $itempostgree[$g]['kode_komponen']) {
+                        if (!in_array($arraymix[$w]['class'], $tampung_class)) {
+                            $presentase[$arraymix[$w]['class']] = array(
+                                'class' => $arraymix[$w]['class'],
+                                'jml' => 1,
+                                'jml_asli' => 1,
+                            );
+                            array_push($tampung_class, $arraymix[$w]['class']);
+                        } else {
+                            $presentase[$arraymix[$w]['class']]['jml'] += 1;
+                        }
                     } else {
-                        $presentase[$arraymix[$w]['class']]['jml'] += 1;
-                    }
-                } else {
-                    if (!in_array($arraymix[$w]['class'], $tampung_class)) {
-                        $presentase[$arraymix[$w]['class']] = array(
-                            'class' => $arraymix[$w]['class'],
-                            'jml' => 0,
-                            'jml_asli' => 0,
-                        );
-                        array_push($tampung_class, $arraymix[$w]['class']);
+                        if (!in_array($arraymix[$w]['class'], $tampung_class)) {
+                            $presentase[$arraymix[$w]['class']] = array(
+                                'class' => $arraymix[$w]['class'],
+                                'jml' => 0,
+                                'jml_asli' => 0,
+                            );
+                            array_push($tampung_class, $arraymix[$w]['class']);
+                        }
                     }
                 }
+            } else {
+                if (!in_array($arraymix[$w]['class'], $tampung_class)) {
+                    $presentase[$arraymix[$w]['class']] = array(
+                        'class' => $arraymix[$w]['class'],
+                        'jml' => 0,
+                        'jml_asli' => 0,
+                    );
+                    array_push($tampung_class, $arraymix[$w]['class']);
+                }
             }
+
             $presentase[$arraymix[$w]['class']]['jml_asli'] += 1;
         }
 
@@ -1493,8 +1505,10 @@ class C_Monhand extends CI_Controller
 
         $itempostgree = $this->M_dbhandling->selectdatahandling();
 
+        $kode = array();
         for ($g = 0; $g < sizeof($itempostgree); $g++) {
-            $kode[$g] = $itempostgree[$g]['kode_komponen'];
+            // $kode[$g] = $itempostgree[$g]['kode_komponen'];
+            array_push($kode, $itempostgree[$g]['kode_komponen']);
         }
 
         $presentase = '';

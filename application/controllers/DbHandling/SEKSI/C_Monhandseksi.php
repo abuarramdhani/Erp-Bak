@@ -122,7 +122,7 @@ class C_Monhandseksi extends CI_Controller
 
         $user_id = $this->session->userid;
 
-        $data['Title'] = 'Monitoring Handling';
+        $data['Title'] = 'Request Data Handling';
         $data['Menu'] = '';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';

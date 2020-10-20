@@ -1,14 +1,14 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_dpb extends CI_Model
 {
-    
+
     public function __construct()
     {
         parent::__construct();
-        
-		$this->load->database();
+
+        $this->load->database();
         $this->oracle = $this->load->database('oracle', TRUE);
     }
 
@@ -44,7 +44,7 @@ class M_dpb extends CI_Model
     public function getPRList()
     {
         $sql = "select * from khs_dpb_list_pr";
-        
+
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -73,7 +73,7 @@ class M_dpb extends CI_Model
     //             and msib.SEGMENT1 in ('JASA01','JASA57')
     //             and prha.CREATION_DATE between ('01-FEB-2020') and sysdate
     //             order by tgl_pr desc";
-        
+
     //     $query = $this->oracle->query($sql);
     //     return $query->result_array();
     // }
@@ -624,7 +624,7 @@ class M_dpb extends CI_Model
     {
         $this->oracle
             ->where('NO_PR', $id)
-            ->delete('KHS_DPB_KENDARAAN');        
+            ->delete('KHS_DPB_KENDARAAN');
     }
 
     public function deleteDetail($pr_number, $line_number)
@@ -638,8 +638,8 @@ class M_dpb extends CI_Model
     public function insertNewDetail($data, $estDatang)
     {
         $this->oracle
-                ->set('ESTIMASI_DATANG',"TO_DATE('$estDatang','yyyy-mm-dd HH24:MI:SS')",false)
-                ->insert('KHS_DPB_KENDARAAN', $data);
+            ->set('ESTIMASI_DATANG', "TO_DATE('$estDatang','yyyy-mm-dd HH24:MI:SS')", false)
+            ->insert('KHS_DPB_KENDARAAN', $data);
     }
 
     public function insertNewDetailListPR($data)
@@ -650,22 +650,22 @@ class M_dpb extends CI_Model
     public function insertNewDetailListPR1($data, $tglKirim)
     {
         $this->oracle
-                    ->set('TGL_KIRIM',"TO_DATE('$tglKirim','yyyy-mm-dd')",false)
-                    ->insert('KHS_DPB_KENDARAAN', $data);
+            ->set('TGL_KIRIM', "TO_DATE('$tglKirim','yyyy-mm-dd')", false)
+            ->insert('KHS_DPB_KENDARAAN', $data);
     }
 
     public function insertNewDetailKHS($data)
     {
         $this->oracle
-            ->set('TGL_KIRIM', "TO_DATE('".date('Y-m-d h:i:s')."' ,'yyyy-mm-dd hh24:mi:ss')", FALSE)
+            ->set('TGL_KIRIM', "TO_DATE('" . date('Y-m-d h:i:s') . "' ,'yyyy-mm-dd hh24:mi:ss')", FALSE)
             ->insert('KHS_DPB_KENDARAAN', $data);
     }
 
-    public function updateDetail($id, $data,$estDatang)
+    public function updateDetail($id, $data, $estDatang)
     {
         $this->oracle
             ->where('NO_PR', $id)
-            ->set('ESTIMASI_DATANG',"TO_DATE('$estDatang','yyyy-mm-dd HH24:MI:SS')",false)
+            ->set('ESTIMASI_DATANG', "TO_DATE('$estDatang','yyyy-mm-dd HH24:MI:SS')", false)
             ->update('KHS_DPB_KENDARAAN', $data);
     }
 
@@ -680,7 +680,7 @@ class M_dpb extends CI_Model
     {
         $this->oracle
             ->where('NO_PR', $id)
-            ->set('TGL_KIRIM',"TO_DATE('$tglKirim','yyyy-mm-dd')",false)
+            ->set('TGL_KIRIM', "TO_DATE('$tglKirim','yyyy-mm-dd')", false)
             ->update('KHS_DPB_KENDARAAN', $data);
     }
 
@@ -689,22 +689,21 @@ class M_dpb extends CI_Model
         $this->oracle
             ->where('NO_PR', $pr_number)
             ->where('LINE_NUM', $line_number)
-            ->set('TGL_KIRIM', "TO_DATE('".date('Y-m-d h:i:s')."' ,'yyyy-mm-dd hh24:mi:ss')", FALSE)
+            ->set('TGL_KIRIM', "TO_DATE('" . date('Y-m-d h:i:s') . "' ,'yyyy-mm-dd hh24:mi:ss')", FALSE)
             ->update('KHS_DPB_KENDARAAN', $data);
     }
 
     public function AddDetailInformationList($kode_do)
     {
         return $this->oracle
-        ->where('NO_DO_SPB',$kode_do)
-        ->get('KHS_DPB_KHS_DETAIL')
-        ->result_array();
-        
+            ->where('NO_DO_SPB', $kode_do)
+            ->get('KHS_DPB_KHS_DETAIL')
+            ->result_array();
     }
 
     public function getListApprovalDPBVendor()
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = $oracle->get_where('KHS_DPB_KENDARAAN', array('APPROVED_FLAG' => NULL));
 
         return $query->result_array();
@@ -712,7 +711,7 @@ class M_dpb extends CI_Model
 
     public function getListApprovalDPBKHS()
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = $oracle->get_where('KHS_DPB_KENDARAAN', array('APPROVED_FLAG' => 'P'));
 
         return $query->result_array();
@@ -720,50 +719,50 @@ class M_dpb extends CI_Model
 
     public function ApproveDPB($id, $data)
     {
-        $oracle = $this->load->database('oracle',true);
-        $oracle->where('NO_PR',$id);
-        $oracle->set('APPROVED_DATE',"SYSDATE",false);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('NO_PR', $id);
+        $oracle->set('APPROVED_DATE', "SYSDATE", false);
         $oracle->update('KHS_DPB_KENDARAAN', $data);
     }
 
     public function checkOnhand($no_do, $kode_gudang)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT APPS.KHS_CEK_ATR_DOSPB2('$no_do', 102, '$kode_gudang') as stockonhand FROM dual");
 
-      return $query->result_array();
+        return $query->result_array();
     }
 
     public function procedureLockStock($no_do, $kode_gudang, $user)
     {
         $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
-		if (!$conn) {
-			$e = oci_error();
-			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-		}
-        $oracle = $this->load->database('oracle',true);
-        $sql = "BEGIN APPS.KHS_ALLOCATE_NONSERIAL_DOSPB2(:no_do, 102, :kode_gudang, :user); END;";  
-        
-        $stmt = oci_parse($conn,$sql);
-        oci_bind_by_name($stmt,':no_do',$no_do,100);
-		oci_bind_by_name($stmt,':kode_gudang',$kode_gudang,100);
-        oci_bind_by_name($stmt,':user',$user,100);
-        
-        // But BEFORE statement, Create your cursor
-		// $cursor = oci_new_cursor($conn);
-		
-		oci_execute($stmt);
+        if (!$conn) {
+            $e = oci_error();
+            trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        }
+        $oracle = $this->load->database('oracle', true);
+        $sql = "BEGIN APPS.KHS_ALLOCATE_NONSERIAL_DOSPB2(:no_do, 102, :kode_gudang, :user); END;";
 
-		// and now, execute the cursor
-		// oci_execute($cursor);
- 
-		// $message is now populated with the output value
-		// print "$message\n";
+        $stmt = oci_parse($conn, $sql);
+        oci_bind_by_name($stmt, ':no_do', $no_do, 100);
+        oci_bind_by_name($stmt, ':kode_gudang', $kode_gudang, 100);
+        oci_bind_by_name($stmt, ':user', $user, 100);
+
+        // But BEFORE statement, Create your cursor
+        // $cursor = oci_new_cursor($conn);
+
+        oci_execute($stmt);
+
+        // and now, execute the cursor
+        // oci_execute($cursor);
+
+        // $message is now populated with the output value
+        // print "$message\n";
     }
 
     public function CekStok($no_do, $kode_gudang)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("WITH param as (select regexp_substr('$no_do' ,'[^,]+', 1, level) p_item from dual
         connect by regexp_substr('$no_do' , '[^,]+', 1, level) is not null)                                           
         select
@@ -853,6 +852,7 @@ class M_dpb extends CI_Model
         where
         mtrh.HEADER_ID = mtrl.HEADER_ID
         and mtrh.ORGANIZATION_ID = 102
+        and mtrl.LINE_STATUS not in (5,6)
         and mtrh.REQUEST_NUMBER IN (select * from param) --('3916224', '3916226') --(SELECT * FROM param)
         group by mtrl.INVENTORY_ITEM_ID) tbl1
         where
@@ -865,5 +865,4 @@ class M_dpb extends CI_Model
 
         return $query->result_array();
     }
-
 }

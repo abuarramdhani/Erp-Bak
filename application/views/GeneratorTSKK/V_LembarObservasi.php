@@ -1,17 +1,17 @@
 <style type="text/css">
 
 #generate {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #btnSaveObservation {
-    border-radius: 25px; 
+    border-radius: 25px;
 	/* padding: 10px 15px;
 	font-size: 16px; */
 }
 
 .select2 {
-    border-radius: 4px; 
+    border-radius: 4px;
 }
 
 .select2-selection {
@@ -19,11 +19,11 @@
 }
 
 #judul {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #txtTanggal{
-	border-radius: 25px; 
+	border-radius: 25px;
 }
 
 tbody {
@@ -84,11 +84,11 @@ input[type="search"] {
 }
 
 #inputInsert {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #dst {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 /* .zui-table {
@@ -160,7 +160,7 @@ input[type="search"] {
 							//$no=1;
 							//	foreach ($lihat_observasi as $key) {
 							//		$id = $key['id_tskk'];
-							
+
 						?>
 						<?php //} } ?>
 						<!--Judul TSKK :-->
@@ -342,7 +342,7 @@ input[type="search"] {
 									<div class="row">
 										<label for="norm" class="control-label col-lg-4">Seksi :</label>
 										<div class="col-lg-8">
-										<select class="form-control select2" id="pilihseksi" name="txtSeksi" data-placeholder="Input Seksi" tabindex="-1" aria-hidden="true"> 	
+										<select class="form-control select2" id="pilihseksi" name="txtSeksi" data-placeholder="Input Seksi" tabindex="-1" aria-hidden="true">
 										</select>
 										</div>
 									</div>
@@ -411,7 +411,7 @@ input[type="search"] {
 						<br>
                             <div class="panel panel-default">
                             <div class="panel-heading text-left">
-								<label style="margin-left: 2%;">Perhitungan Takt Time</label>                        
+								<label style="margin-left: 2%;">Perhitungan Takt Time</label>
 							</div>
                             <div class="panel-body">
 
@@ -419,7 +419,7 @@ input[type="search"] {
 										<div class="row">
 												<label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
 												<div class="col-lg-6">
-													<input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" name="txtWaktu1Shift"  id="txtWaktu1Shift" class="form-control waktu1Shift" required/>
+													<input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" oninput="countTaktTime(this)" name="txtWaktu1Shift"  id="txtWaktu1Shift" class="form-control waktu1Shift" required/>
 												</div>
 										</div>
 										<br>
@@ -442,31 +442,31 @@ input[type="search"] {
 										<div class="row">
 												<label for="norm" class="control-label col-lg-6">Forecast (Unit) : </label>
 												<div class="col-lg-6">
-													<input type="number" placeholder="Input Forecast" name="txtForecast" id="txtForecast" class="form-control forecast" onchange="countRencanaProduksi(this)"/>
+													<input type="number" placeholder="Input Forecast" name="txtForecast" id="txtForecast" class="form-control forecast" oninput="countRencanaProduksi(this)"/>
 												</div>
 										</div>
-										<br> 
+										<br>
 										<div class="row">
 												<label for="norm" class="control-label col-lg-6">Qty / Unit: </label>
 												<div class="col-lg-6">
-													<input type="number" placeholder="Input Qty / Unit" name="txtQtyUnit" id="txtQtyUnit" class="form-control qtyUnit" onchange="countRencanaProduksi(this)"/>
+													<input type="number" placeholder="Input Qty / Unit" name="txtQtyUnit" id="txtQtyUnit" class="form-control qtyUnit" oninput="countRencanaProduksi(this)"/>
 												</div>
 										</div>
-										<br> 
+										<br>
 										<div class="row">
 												<label for="norm" class="control-label col-lg-6">Rencana Produksi (Pcs) : </label>
 												<div class="col-lg-6">
-													<input type="number" placeholder="Rencana Produksi" name="txtRencanaProduksi" id="txtRencanaProduksi" class="form-control rencanaKerja" />
+													<input type="number" placeholder="Rencana Produksi" name="txtRencanaProduksi" readonly id="txtRencanaProduksi" class="form-control rencanaKerja" />
 												</div>
 										</div>
 									</div>
 									<br><br>
-										<div class="col-lg-12" style="padding-top: 8px;">
+										<!-- <div class="col-lg-12" style="padding-top: 8px;">
 										<br>
 											<div style="text-align:center;">
 												<button type="button" onclick="countTaktTime(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary btn-md" id="btnSaveObservationTaktTime"><i class="fa fa-calculator "></i>  HITUNG TAKT TIME</button>
 											</div>
-										</div>	
+										</div>	 -->
                             </div>
                             </div>
 							<br>
@@ -509,8 +509,8 @@ input[type="search"] {
 																</thead>
 																<tbody id="tbodyLembarObservasi">
 																		<?php
-																			for ($no = 1; $no <=5;) { 
-																		?> 
+																			for ($no = 1; $no <=5;) {
+																		?>
 																		<tr class="nomor_<?= $no ?>">
 									<!--NO-->							<td class="posisi"><?php echo $no; ?></td>
 									<!--TIPE URUTAN-->					<td style="text-align: center;">
@@ -548,16 +548,16 @@ input[type="search"] {
 									<!--10-->					<td><input type="number" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik"></td>
 									<!--X MIN-->				<td><input type="number" name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>
 									<!--R-->					<td><input type="number" name="range[]" class="form-control range" placeholder="Detik" readonly></td>
-									<!--W DISTRIBUSI-->			<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>																		
-									<!--W DISTRIBUSI AUTO-->	<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>																		
+									<!--W DISTRIBUSI-->			<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>
+									<!--W DISTRIBUSI AUTO-->	<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>
 									<!--W KERJA-->				<td><input type="number" name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>
 									<!--KETERANGAN-->			<td><input type="text" name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan"></td>
 									<!--HAPUS-->				<td>
 																	<i class="fa fa-times fa-2x" onclick="deleteObserve(this)" style="color:red" id="hapus" title="Hapus Elemen"></i>
 																</td>
 																	</tr>
-																		<?php 
-																		$no++; } 
+																		<?php
+																		$no++; }
 																		?>
 																	</tbody>
 																</table>
@@ -571,13 +571,13 @@ input[type="search"] {
 						<br>
                             <div class="panel panel-default">
                             <div class="panel-heading text-left">
-								<label style="margin-left: 2%;">Input Irregular Job</label>                        
+								<label style="margin-left: 2%;">Input Irregular Job</label>
 							</div>
                             <div class="panel-body">
                               <table class="datatable table table-striped table-bordered table-hover tabel_irregular_job" style="width: 100%">
                                 <thead class="bg-primary">
                                   <tr>
-                                    <th width="5%" class="text-center">NO</th>                                                                                                                                                                                   
+                                    <th width="5%" class="text-center">NO</th>
                                     <th width="40%" class="text-center">IRREGULAR JOB</th>
                                     <th width="15%" class="text-center">RATIO <br> (KALI)</th>
 									<th width="15%" class="text-center">WAKTU <br> (DETIK)</th>
@@ -592,11 +592,11 @@ input[type="search"] {
                                       <td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio" placeholder="Input Ratio"></td>
                                       <td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu" placeholder="Input Waktu"></td>
 									  <td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" style="text-align: center;" class="form-control hasilIrregularJob" name="txtHasilWaktuIrregular[]" placeholder="Hasil" readonly></td>
-                                      <td style="text-align: center;">	
+                                      <td style="text-align: center;">
                                         <i class="fa fa-times fa-2x deleteIrregularJob" id="deleteIrregularJob" onclick="deleteIrregularJobs(this)" style="color:red" title="Hapus Irregular Job"></i>&nbsp;&nbsp;
 									  	<a class="fa fa-plus fa-2x fa-primary" onclick="addRowIrregularJob($(this))" title="Tambah Irregular Job"></a>
                                       </td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                               </table>
                             </div>
@@ -611,7 +611,7 @@ input[type="search"] {
 								</div>
 
 <button type="button" onclick="addRowObservation($(this))" id="myBtn" class="fa fa-plus fa-lg" style=" position: fixed;  bottom: 50px;  right: 45px;  z-index: 99;  font-size: 30px  text-center;  border: none; outline: none; background-color: green; color: white; cursor: pointer; width:35px; height:35px; border-radius: 50%;" title="Tambah Elemen"></button>
-							
+
 							<script>
 							// When the user scrolls down 20px from the top of the document, show the button
 							window.onscroll = function() {scrollFunction()};
@@ -628,6 +628,6 @@ input[type="search"] {
 							function topFunction() {
 							  document.body.scrollTop = 425;
 							  document.documentElement.scrollTop = 425;
-							}						
+							}
 							</script>
 </section>

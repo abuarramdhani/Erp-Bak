@@ -5150,30 +5150,166 @@ $(document).ready(function () {
             if (diproses >= tr_all.length) {
               $("#ldgMPKSimForkliftTambahLoading").hide();
             }
-            row.find(".imgMPKSimForkliftSimpanPekerja").hide();
-            if (data == "sukses") {
-              row.find(".spnMPKSimForkliftSimpanPekerjaSukses").show();
-            } else {
-              row.find(".spnMPKSimForkliftSimpanPekerjaGagal").show();
-              swal.fire({
-                title: "ERROR",
-                html: data,
-                type: "error",
-                confirmButtonText: "OK",
-                confirmButtonColor: "#d63031",
-              });
+            $('.slcMPKSimForkliftCariPekerja').val("").trigger('change');
+            $('#btnMPKSimForkliftSimpanPekerja').show();
+        }else{
+            Swal.fire(
+                'Peringatan !!!',
+                'Pastikan Data Pekerja Sudah Terisi',
+                'warning'
+            )
+        }
+    })
+
+    $('#tblMPKSimForkliftTambahPekerja').on('click', '.btnMPKSimForkliftHapusPekerja', function(){
+        $(this).closest('tr').remove();
+    })
+
+    $('#btnMPKSimForkliftSimpanPekerja').on('click', function(){
+        var tr_all = $('#tblMPKSimForkliftTambahPekerja tbody tr');
+        if (tr_all && tr_all.length > 0) {
+            $('#ldgMPKSimForkliftTambahLoading').show();
+            $('#tblMPKSimForkliftTambahPekerja').find('.btnMPKSimForkliftHapusPekerja').hide();
+            $('#tblMPKSimForkliftTambahPekerja').find('.spnMPKSimForkliftSimpanPekerjaSukses').hide();
+            $('#tblMPKSimForkliftTambahPekerja').find('.spnMPKSimForkliftSimpanPekerjaGagal').hide();
+            $('#tblMPKSimForkliftTambahPekerja').find('.imgMPKSimForkliftSimpanPekerja').show();
+            $('#btnMPKSimForkliftSimpanPekerja').hide();
+            $('#tblMPKSimForkliftTambahPekerja').find('input').attr("disabled","disabled");
+            $('#tblMPKSimForkliftTambahPekerja').find('select').attr("disabled","disabled");
+            var diproses = 0;
+            $('#tblMPKSimForkliftTambahPekerja tbody tr').each(function(index, element){
+                var noind = $(this).find('td:nth(0) input').val();
+                var nama  = $(this).find('td:nth(1) input').val();
+                var seksi = $(this).find('td:nth(2) input').val();
+                var jenis = $(this).find('td:nth(3) select').val();
+                var awal  = $(this).find('td:nth(4) input').val();
+                var akhir = $(this).find('td:nth(5) input').val();
+                var row   = $(this);
+                $.ajax({
+                    method: 'POST',
+                    url: baseurl + 'MasterPekerja/SimForklift/simpan',
+                    data: {noind: noind, nama: nama, seksi: seksi, jenis: jenis, awal: awal, akhir: akhir},
+                    error: function(xhr,status,error){
+                        diproses++;
+                        if (diproses >= tr_all.length) {
+                            $('#ldgMPKSimForkliftTambahLoading').hide();
+                        }
+                        row.find('.imgMPKSimForkliftSimpanPekerja').hide();
+                        row.find('.spnMPKSimForkliftSimpanPekerjaGagal').show();
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                        diproses++;
+                        if (diproses >= tr_all.length) {
+                            $('#ldgMPKSimForkliftTambahLoading').hide();
+                        }
+                        row.find('.imgMPKSimForkliftSimpanPekerja').hide();
+                        if (data == "sukses") {
+                            row.find('.spnMPKSimForkliftSimpanPekerjaSukses').show();
+                        }else{
+                            row.find('.spnMPKSimForkliftSimpanPekerjaGagal').show();
+                            swal.fire({
+                                title: "ERROR",
+                                html: data,
+                                type: "error",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d63031',
+                            })
+                        }
+                    }
+                })
+            })
+        }else{
+            Swal.fire(
+                'Peringatan !!!',
+                'Pastikan Sudah Ada Data Pekerja Di Tabel',
+                'warning'
+            )
+        }
+    })
+
+    $(document).on('ifChecked','#chkMPKSimForkliftCheckAll',function(){
+        var table_data = tblMPKSimForkliftList.fnGetNodes();
+        $('.chkMPKSimForkliftCheckOne',table_data).iCheck('check');
+        checkSimForkliftChecked(tblMPKSimForkliftList);
+    })
+
+    $(document).on('ifUnchecked','#chkMPKSimForkliftCheckAll',function(){
+        var table_data = tblMPKSimForkliftList.fnGetNodes();
+        $('.chkMPKSimForkliftCheckOne',table_data).iCheck('uncheck');
+        checkSimForkliftChecked(tblMPKSimForkliftList);
+    })
+
+    $(document).on('ifChecked', '.chkMPKSimForkliftCheckOne', function(){
+        checkSimForkliftChecked(tblMPKSimForkliftList);
+    })
+
+    $(document).on('ifUnchecked', '.chkMPKSimForkliftCheckOne', function(){
+        checkSimForkliftChecked(tblMPKSimForkliftList);
+    })
+
+    $('#btnSimForkliftCetakPdf, #btnSimForkliftCetakImg, #btnSimForkliftCetakCrl').on('click', function(){
+        if (!($(this).attr('disabled'))) {
+            window.open($(this).attr('href'),'_blank');
+        }
+    })
+
+    $('#tblMPKSimForkliftList').on('click','.btnMPKSimForkliftHapus', function(){
+        var id_sim = $(this).attr('data-id');
+        Swal.fire({
+            title: 'Hapus Data ?',
+            text: "Apakah Anda Yakin Ingin Menghapus Data ini ?",
+            type: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: 'POST',
+                    url: baseurl + 'MasterPekerja/SimForklift/Hapus',
+                    data: {id_sim: id_sim},
+                    error: function(xhr,status,error){
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(data){
+                        if (data == "sukses") {
+                            Swal.fire(
+                                'Sukses !!!',
+                                'Data Berhasil Dihapus',
+                                'success'
+                            ).then(() => {
+                                window.location.reload();
+                            })
+                        }else{
+                            swal.fire({
+                                title: "ERROR",
+                                html: data,
+                                type: "error",
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d63031',
+                            })
+                        }
+                    }
+                })
             }
-          },
-        });
-      });
-    } else {
-      Swal.fire(
-        "Peringatan !!!",
-        "Pastikan Sudah Ada Data Pekerja Di Tabel",
-        "warning"
-      );
-    }
-  });
+        })
+    })
+})
 
   $(document).on("ifChecked", "#chkMPKSimForkliftCheckAll", function () {
     var table_data = tblMPKSimForkliftList.fnGetNodes();
@@ -5181,25 +5317,23 @@ $(document).ready(function () {
     checkSimForkliftChecked(tblMPKSimForkliftList);
   });
 
-  $(document).on("ifUnchecked", "#chkMPKSimForkliftCheckAll", function () {
-    var table_data = tblMPKSimForkliftList.fnGetNodes();
-    $(".chkMPKSimForkliftCheckOne", table_data).iCheck("uncheck");
-    checkSimForkliftChecked(tblMPKSimForkliftList);
-  });
-
-  $(document).on("ifChecked", ".chkMPKSimForkliftCheckOne", function () {
-    checkSimForkliftChecked(tblMPKSimForkliftList);
-  });
-
-  $(document).on("ifUnchecked", ".chkMPKSimForkliftCheckOne", function () {
-    checkSimForkliftChecked(tblMPKSimForkliftList);
-  });
-
-  $(
-    "#btnSimForkliftCetakPdf, #btnSimForkliftCetakImg, #btnSimForkliftCetakCrl"
-  ).on("click", function () {
-    if (!$(this).attr("disabled")) {
-      window.open($(this).attr("href"), "_blank");
+    if (jumlah_checked > 0) {
+        var id_checked = {data: []};
+        checkbox_checked.each(function(){
+            id_checked.data.push($(this).val());
+        })
+        // console.log(id_checked);
+        var url_param = $.param(id_checked);
+        $('#btnSimForkliftCetakPdf').attr('href',baseurl + 'MasterPekerja/SimForklift/cetakpdf?' + url_param);
+        $('#btnSimForkliftCetakPdf').attr('disabled',false);
+        $('#btnSimForkliftCetakImg').attr('href',baseurl + 'MasterPekerja/SimForklift/cetakimg?' + url_param);
+        $('#btnSimForkliftCetakImg').attr('disabled',false);
+        $('#btnSimForkliftCetakCrl').attr('href',baseurl + 'MasterPekerja/SimForklift/cetakcrl?' + url_param);
+        $('#btnSimForkliftCetakCrl').attr('disabled',false);
+    }else{
+        $('#btnSimForkliftCetakPdf').attr('disabled',true);
+        $('#btnSimForkliftCetakImg').attr('disabled',true);
+        $('#btnSimForkliftCetakCrl').attr('disabled',true);
     }
   });
 });
@@ -5328,3 +5462,139 @@ $(document).ready(function () {
   $("#mpktblsuper").DataTable();
 });
 //Surat Pernyataan end
+
+
+//Daftar Nama Aktif
+$(document).ready(function () {
+  $("#MPK_NoIndukAktif").select2();
+  $("#MPK_LokasiKerjaAktif").select2();
+
+  $("#MPK_IsiRadio").select2({
+    searching: true,
+    minimumInputLength: 1,
+    placeholder: "Cari sesuai kategori",
+    allowClear: true,
+
+    ajax: {
+      url: baseurl + "MasterPekerja/cetak/GetIsiRadio",
+      dataType: "json",
+      delay: 500,
+      type: "GET",
+      data: function (params) {
+        return {
+          term: params.term,
+          term2: $("input[name=optradio]:checked").val()
+        };
+      },
+
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (obj) {
+            if ($("input[name=optradio]:checked").val() == "dept") {
+              return {
+                id: obj.kode,
+                text: obj.dept
+              };
+            } else if ($("input[name=optradio]:checked").val() == "unit") {
+              return {
+                id: obj.kode,
+                text: obj.unit
+              };
+            } else {
+              return {
+                id: obj.kode,
+                text: obj.seksi
+              };
+            }
+          })
+        };
+      }
+    }
+  });
+
+  $("#MPK_Datepicker").daterangepicker({
+    singleDatePicker: true,
+    timePicker: false,
+    timePicker24Hour: true,
+    showDropdowns: true,
+    locale: {
+      format: "YYYY-MM-DD",
+      todayHighlight: true
+    }
+  });
+
+  $("#MPK_TampilAktif").on("click", function () {
+    let kodeinduk = $("#MPK_NoIndukAktif option:checked")
+      .map(function () {
+        return this.value;
+      })
+      .get()
+      .join("%' OR tbl.noind LIKE '");
+
+    let lokasi = $("#MPK_LokasiKerjaAktif").val();
+    let kategori = $("#MPK_IsiRadio").val();
+    let tanggal = $("#MPK_Datepicker").val();
+    var tanggal2 = $.datepicker.formatDate(
+      "dd MM yy",
+      new Date($("#MPK_Datepicker").val())
+    );
+
+    var loading = baseurl + "assets/img/gif/loadingquick.gif";
+
+    if (tanggal == "" || tanggal == null) {
+      swal.fire({
+        title: "Peringatan",
+        text: "Harap Mengisi Tanggal !",
+        type: "warning",
+        allowOutsideClick: false
+      });
+    } else {
+      $.ajax({
+        type: "GET",
+        data: {
+          kodeinduk: kodeinduk,
+          lokasi: lokasi,
+          kategori: kategori,
+          tanggal: tanggal,
+          tanggal2: tanggal2
+        },
+        url: baseurl + "MasterPekerja/cetak/viewAll",
+        beforeSend: function () {
+          swal.fire({
+            html: "<div><img style='width: 320px; height: auto;'src='" +
+              loading +
+              "'><br><p>Sedang Proses....</p></div>",
+            customClass: "swal-wide",
+            showConfirmButton: false,
+            allowOutsideClick: false
+          });
+        },
+        success: function (result) {
+          swal.close();
+          // console.log(result);
+          $("#MPK_Tabledata").html(result);
+          console.log(kodeinduk);
+          $("#DataNamaAktif").DataTable({
+            dom: "Bfrtip",
+            buttons: [{
+              extend: "excelHtml5",
+              title: "Daftar Nama Aktif" + " - " + tanggal2
+            },
+            {
+              extend: "pdfHtml5",
+              title: "Daftar Nama Aktif" + " - " + tanggal2,
+              orientation: "landscape",
+              pageSize: "LEGAL"
+            },
+            {
+              extend: "print",
+              title: "Daftar Nama Aktif" + " - " + tanggal2
+            }
+            ]
+          });
+        }
+      });
+    }
+  });
+});
+//End Daftar Nama Aktif

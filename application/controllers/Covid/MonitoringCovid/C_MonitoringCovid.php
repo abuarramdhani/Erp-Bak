@@ -77,7 +77,7 @@ class C_MonitoringCovid extends CI_Controller
 		$status_pemantauan = $this->M_monitoringcovid->getPekerjaByStatus('2');
 		if (!empty($status_pemantauan)) {
 			foreach ($status_pemantauan as $pt) {
-				if (!empty($br['selesai_isolasi'])) {
+				if (!empty($pt['selesai_isolasi'])) {
 					if (strtotime(date('Y-m-d')) >= strtotime($pt['selesai_isolasi'])) {
 						$this->M_monitoringcovid->updateStatusPekerjaById(3,$pt['cvd_pekerja_id']);
 					}

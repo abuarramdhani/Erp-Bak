@@ -910,6 +910,17 @@ $route['PayrollManagement/MasterPekerja'] = 'PayrollManagement/MasterPekerja/C_M
 $route['PayrollManagement/MasterPekerja/(:any)'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja/$1';
 $route['PayrollManagement/MasterPekerja/(:any)/(:any)'] = 'PayrollManagement/MasterPekerja/C_MasterPekerja/$1/$2';
 
+$route['MasterPekerja/PekerjaAkanKeluar'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar';
+$route['MasterPekerja/PekerjaAkanKeluar/(:any)'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/$1';
+$route['MasterPekerja/PekerjaAkanKeluar/(:any)/(:any)'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/$1/$2';
+$route['MasterPekerja/PekerjaAkanKeluar/(:any)/(:any)/(:any)'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/$1/$2/$3';
+$route['MasterPekerja/PekerjaAkanKeluar/export'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_excel';
+$route['MasterPekerja/PekerjaAkanKeluar/export_pdf'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_pdf';
+$route['MasterPekerja/PekerjaAkanKeluar/export_excel_mutasi'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_excel_mutasi';
+$route['MasterPekerja/PekerjaAkanKeluar/export_pdf_mutasi'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_pdf_mutasi';
+$route['MasterPekerja/PekerjaAkanKeluar/export_excel_diperbantukan'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_excel_diperbantukan';
+$route['MasterPekerja/PekerjaAkanKeluar/export_pdf_diperbantukan'] = 'MasterPekerja/Cetak/PekerjaAkanKeluar/C_PekerjaAkanKeluar/export_pdf_diperbantukan';
+
 $route['PayrollManagement/TransaksiRapel'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel';
 $route['PayrollManagement/TransaksiRapel/(:any)'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel/$1';
 $route['PayrollManagement/TransaksiRapel/(:any)/(:any)'] = 'PayrollManagement/TransaksiRapel/C_TransaksiRapel/$1/$2';
@@ -4130,7 +4141,7 @@ $route['GeneratorTSKK/Generate/CreateTSKK'] = 'GeneratorTSKK/C_GenTSKK/CreateTSK
 $route['GeneratorTSKK/resaveEditObservation/(:any)'] = 'GeneratorTSKK/C_EditTSKK/resaveEditObservation/$1';
 $route['GeneratorTSKK/Generate/ReCreateTSKK'] = 'GeneratorTSKK/C_EditTSKK/ReCreateTSKK';
 
-$route['GeneratorTSKK/exportExcel'] = 'GeneratorTSKK/C_GenTSKK/exportExcel';
+$route['GeneratorTSKK/exportExcel/(:any)'] = 'GeneratorTSKK/C_GenTSKK/exportExcel/$1';
 $route['GeneratorTSKK/exportAgain/(:any)'] = 'GeneratorTSKK/C_Regenerate/exportAgain/$1';
 $route['GeneratorTSKK/exportEdit/(:any)'] = 'GeneratorTSKK/C_GenTSKK/exportEdit/$1';
 $route['GeneratorTSKK/exportObservation/(:any)'] = 'GeneratorTSKK/C_Observation/exportObservation/$1';
@@ -4678,6 +4689,10 @@ $route['DbHandlingSeksi/MonitoringHandling']				= 'DbHandling/SEKSI/C_Monhandsek
 $route['DbHandlingSeksi/MonitoringHandling/(:any)']			= 'DbHandling/SEKSI/C_Monhandseksi/$1';
 $route['DbHandlingSeksi/MonitoringHandling/(:any)/(:any)']	= 'DbHandling/SEKSI/C_Monhandseksi/$1/$2';
 
+$route['DbHandlingSeksi/ReqMasterHandling']					= 'DbHandling/SEKSI/C_Requestjenis';
+$route['DbHandlingSeksi/ReqMasterHandling/(:any)']			= 'DbHandling/SEKSI/C_Requestjenis/$1';
+$route['DbHandlingSeksi/ReqMasterHandling/(:any)/(:any)']	= 'DbHandling/SEKSI/C_Requestjenis/$1/$2';
+
 //-------------------------------------------MO Terlambat Transact---------------------------------------//
 $route['MOTerlambatTransact'] = 'MOTerlambatTransact/C_Master';
 
@@ -4751,6 +4766,11 @@ $route['LaporanKerjaOperator/Input/(:any)'] = 'LKOWelding/C_Input/$1';
 //-----------------------------------api-do-backup---------------------------------------------//
 $route['Apidobackup'] = 'Apidobackup/C_Index';
 $route['Apidobackup/engine'] = 'Apidobackup/C_Web_Reports';
+
+$route['Apidobackup/engine/master'] = 'Apidobackup/C_Web/master';
+$route['Apidobackup/engine/cekapi'] = 'Apidobackup/C_Web/cekapi';
+
+
 //---------------------------------- CAR Vendor Purchasing -------------------------------------//
 $route['CARVP'] = 'CARVP/C_Index';
 $route['CARVP/Input'] = 'CARVP/C_Input';
@@ -4764,3 +4784,11 @@ $route['CARVP/ListData/(:any)/(:any)'] = 'CARVP/C_List/$1/$2';
 $route['CARVPkoor'] = 'CARVP/C_Index';
 $route['CARVPkoor/Approval'] = 'CARVP/C_Approve';
 $route['CARVPkoor/Approval/(:any)'] = 'CARVP/C_Approve/$1';
+
+//---------------------------------- Overtime Pekerja ------------------------------------------------
+$route['overtime-pekerja'] = 'OvertimePekerja/C_Ovpekerja/index';
+$route['overtime-pekerja/rekap'] = 'OvertimePekerja/C_Ovpekerja/rekap';
+$route['overtime-pekerja/rekap/(:any)'] = 'OvertimePekerja/C_Ovpekerja/$1';
+
+//---------------------------------- Daftar Nama Aktif ------------------------------------------------
+$route['MasterPekerja/cetak/(:any)'] = 'MasterPekerja/NamaAktif/C_Namaaktif/$1';
