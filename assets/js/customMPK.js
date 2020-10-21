@@ -5598,3 +5598,198 @@ $(document).ready(function () {
   });
 });
 //End Daftar Nama Aktif
+
+//Cetak Kategori
+$(document).ready(function () {
+    $("#TDP_Tariknoind").select2();
+    $("#TDP_Tarikpendidikan").select2();
+    $("#TDP_Tarikjenkel").select2();
+    $("#TDP_Tariklokasi").select2();
+    $("#TDP_Tarikstatus").select2();
+  
+    $("#TDP_Rangemasuk").daterangepicker({
+      autoUpdateInput: false,
+      showDropdowns: true,
+      locale: {
+        format: "DD/MM/YYYY",
+        cancelLabel: "Clear"
+      }
+    });
+  
+    $("#TDP_Rangekeluar").daterangepicker({
+      autoUpdateInput: false,
+      showDropdowns: true,
+      locale: {
+        format: "DD/MM/YYYY",
+        cancelLabel: "Clear"
+      }
+    });
+  
+    $('input[name="tdpdrp"]').on("apply.daterangepicker", function (ev, picker) {
+      $(this).val(
+        picker.startDate.format("YYYY-MM-DD") +
+        " - " +
+        picker.endDate.format("YYYY-MM-DD")
+      );
+    });
+  
+    $('input[name="tdpdrp"]').on("cancel.daterangepicker", function (ev, picker) {
+      $(this).val("");
+    });
+  
+    $(window).on('load', function () {
+      $("input[name=rbt_TDPRange]").on("ifToggled", function () {
+        if ($("#rbt_TDPRange1").prop("checked")) {
+          $("#TDP_Rangemasuk").prop("disabled", false);
+          $("#TDP_Rangekeluar").prop("disabled", true);
+          $("#TDP_Rangekeluar").val("");
+        } else {
+          $("#TDP_Rangemasuk").prop("disabled", true);
+          $("#TDP_Rangekeluar").prop("disabled", false);
+          $("#TDP_Rangemasuk").val("");
+        }
+      });
+    });
+  
+    $("#TDP_IsiKategoritarik").select2({
+      searching: true,
+      minimumInputLength: 1,
+      placeholder: "Cari sesuai kategori",
+      allowClear: true,
+  
+      ajax: {
+        url: baseurl + "MasterPekerja/cetak/GetKategori",
+        dataType: "json",
+        delay: 500,
+        type: "GET",
+        data: function (params) {
+          return {
+            term: params.term,
+            term2: $("#TDP_Tarikkategori").val()
+          };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (obj) {
+              if ($("#TDP_Tarikkategori").val() == "Seksi") {
+                return {
+                  id: obj.kode,
+                  text: obj.seksi
+                };
+              } else if ($("#TDP_Tarikkategori").val() == "Unit") {
+                return {
+                  id: obj.kode,
+                  text: obj.unit
+                };
+              } else {
+                return {
+                  id: obj.kode,
+                  text: obj.dept
+                };
+              }
+            })
+          };
+        }
+      }
+    });
+  
+    $("#TDP_TarikDataAll").on("click", function () {
+      let noind = $("#TDP_Tariknoind").val();
+      let pend = $("#TDP_Tarikpendidikan").val();
+      let jenkel = $("#TDP_Tarikjenkel").val();
+      let lokasi = $("#TDP_Tariklokasi").val();
+      let kategori = $("#TDP_IsiKategoritarik").val();
+      let status = $("input[name=tdpstatus]:checked").val();
+  
+      var rangemasuk = $("#TDP_Rangemasuk").val();
+      var splitmasuk = rangemasuk.split(" - ");
+      if (splitmasuk == "" || splitmasuk == null) {
+        var startmasuk = "1000-01-01";
+        var endmasuk = "1000-01-01";
+      } else {
+        var startmasuk = splitmasuk[0];
+        var endmasuk = splitmasuk[1];
+      }
+  
+      var rangekeluar = $("#TDP_Rangekeluar").val();
+      var splitkeluar = rangekeluar.split(" - ");
+      if (splitkeluar == "" || splitkeluar == null) {
+        var startkeluar = "1000-01-01";
+        var endkeluar = "1000-01-01";
+      } else {
+        var startkeluar = splitkeluar[0];
+        var endkeluar = splitkeluar[1];
+      }
+  
+      var arrselect = $(".chk_FilterTarikData:checked")
+        .map(function () {
+          return this.value;
+        })
+        .get()
+        .join(", ");
+  
+      var loading = baseurl + "assets/img/gif/loadingquick.gif";
+  
+      if (arrselect.length == null || arrselect == "") {
+        swal.fire({
+          title: "Peringatan",
+          text: "Pilih minimal 1 data untuk di tarik !",
+          type: "warning",
+          allowOutsideClick: false
+        });
+      }
+      else {
+        $.ajax({
+          type: "POST",
+          data: {
+            noind: noind,
+            pend: pend,
+            jenkel: jenkel,
+            lokasi: lokasi,
+            kategori: kategori,
+            rangekeluarstart: startkeluar,
+            rangekeluarend: endkeluar,
+            rangemasukstart: startmasuk,
+            rangemasukend: endmasuk,
+            arrselect: arrselect,
+            status: status
+          },
+          url: baseurl + "MasterPekerja/cetak/GetFilter",
+          beforeSend: function () {
+            console.log(kategori)
+            swal.fire({
+              html: "<div><img style='width: 320px; height: auto;'src='" +
+                loading +
+                "'><br><p>Sedang Proses....</p></div>",
+              customClass: "swal-wide",
+              showConfirmButton: false,
+              allowOutsideClick: false
+            });
+          },
+          success: function (result) {
+            swal.close();
+            $("#Div_viewall").html(result);
+            $(".chk_FilterTarikData:not(:checked)").each(function () {
+              var tdphide = "." + $(this).attr("name");
+              $(tdphide).remove();
+            });
+  
+            $("#TDP_viewall").DataTable({
+              dom: "Bfrtip",
+              buttons: [{
+                extend: "excelHtml5",
+                title: "Cetak Kategori"
+              }],
+              initComplete: function (settings, json) {
+                $("#TDP_viewall").wrap(
+                  "<div style='overflow:auto; width:100%;position:relative;'></div>"
+                );
+              },
+            });
+          }
+        });
+      }
+    });
+  });
+  
+  //End Cetak Kategori
