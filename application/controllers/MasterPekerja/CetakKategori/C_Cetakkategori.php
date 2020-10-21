@@ -34,11 +34,11 @@ class C_Cetakkategori extends CI_Controller
 
         $user_id = $this->session->userid;
         $data  = $this->general->loadHeaderandSidemenu('Master Pekerja', 'Cetak Kategori', 'Cetak', 'Cetak Kategori', '');
-        $data['Tariknoind'] = $this->M_Cetakkategori->GetNoinduk();
-        $data['Tarikpendidikan'] = $this->M_Cetakkategori->GetPendidikan();
-        $data['Tarikjenkel'] = $this->M_Cetakkategori->GetJenkel();
-        $data['Tariklokasi'] = $this->M_Cetakkategori->GetLokasi();
-        $data['Tarikstatus'] = $this->M_Cetakkategori->GetStatus();
+        $data['Tariknoind'] = $this->M_cetakkategori->GetNoinduk();
+        $data['Tarikpendidikan'] = $this->M_cetakkategori->GetPendidikan();
+        $data['Tarikjenkel'] = $this->M_cetakkategori->GetJenkel();
+        $data['Tariklokasi'] = $this->M_cetakkategori->GetLokasi();
+        $data['Tarikstatus'] = $this->M_cetakkategori->GetStatus();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -53,7 +53,7 @@ class C_Cetakkategori extends CI_Controller
         $txt2 = $this->input->get('term2');
 
 
-        $data = $this->M_Cetakkategori->GetKategori($txt, $txt2);
+        $data = $this->M_cetakkategori->GetKategori($txt, $txt2);
         echo json_encode($data);
     }
 
@@ -73,7 +73,7 @@ class C_Cetakkategori extends CI_Controller
         $rangemasukend = $this->input->POST('rangemasukend');
         $status = $this->input->POST('status');
 
-        $data['FilterAktif'] = $this->M_Cetakkategori->GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status);
+        $data['FilterAktif'] = $this->M_cetakkategori->GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status);
         $html = $this->load->view('MasterPekerja/CetakKategori/V_Table', $data);
         echo json_encode($html);
     }
