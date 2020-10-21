@@ -16,22 +16,55 @@
 			<div class="row">
 				<div class="col-lg-12">
 				    <div class="col-lg-12 text-right reup">
-              <h4><small>You are logged in as : <?php echo $this->session->user;?> (<?php echo $this->session->employee;?>)</small></h4>
+                        <h4><small>You are logged in as : <?php echo $this->session->user;?> (<?php echo $this->session->employee;?>)</small></h4>
 					</div>
 
-						<center>
+					<br>
+					<br>
 
-							<img  src="<?php echo base_url('assets/img/logo.png');?>" style="max-width:20%;" />
+					<center>
+					  <h2><b>
+					  	JADWAL KEBERANGKATAN HIWING KHS
+					  </b></h2>
+					  <br>
+					  <table class="table table-hover text-left" style="font-size: 16px; width: 70%;">
+					    <thead>
+					      <tr class="bg-success" style="border: 1px solid black;">
+					        <th style="border: 1px solid black;"><center>NO</center></th>
+					        <th style="border: 1px solid black;"><center>ASAL</center></th>
+					        <th style="border: 1px solid black;"><center>TUJUAN</center></th>
+					        <th style="border: 1px solid black;"><center>JAM (SENIN - KAMIS)</center></th>
+					        <th style="border: 1px solid black;"><center>JAM (JUMAT - SABTU)</center></th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					      <?php foreach ($jadwal as $key => $g): ?>
+					      <tr>
+					        <td style="border: 1px solid black;"><center><?php echo $g['JADWAL_ID'] ?></center></td>
+					        <td style="border: 1px solid black;"><center><?php echo $g['ASAL'] ?></center></td>
+					        <td style="border: 1px solid black;"><center><?php echo $g['TUJUAN'] ?></center></td>
+					        <td style="border: 1px solid black;"><center><?php echo $g['SENIN_KAMIS'] ?></center></td>
+					        <td style="border: 1px solid black;"><center><?php echo $g['JUMAT_SABTU'] ?></center></td>
+					      </tr>
+					      <?php endforeach; ?>
+					    </tbody>
+					  </table>
 
-						</center>
-						<br /><br />
-						<center>
+					  <h4 style="font-style: italic;">
+					  	Jadwal ke Mlati menyesuaikan kebutuhan<br>
+						Pengiriman barang yang akan dimuat ke Hwing <b style="color: red;">paling lambat 20 menit</b> sebelum berangkat<br>
+						* untuk jam keberangkatan dari Tuksono tidak bisa di paskan	
+					  </h4>
+
+						<br>
+						<br>
+
 						<?php $load = microtime();
 							echo '<p style="font: normal 15px courier">Halaman ini dimuat dalam ';
 							echo round($load, 3);
 							echo ' detik';
 						?>
-						</center>
+					</center>
 
 				</div>
 			</div>
