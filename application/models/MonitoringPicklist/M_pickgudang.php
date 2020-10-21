@@ -74,7 +74,7 @@ class M_pickgudang extends CI_Model
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
             and wro.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -148,7 +148,7 @@ class M_pickgudang extends CI_Model
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM            
             and wro.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)       
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
