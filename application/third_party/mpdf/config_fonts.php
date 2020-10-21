@@ -149,7 +149,6 @@ $this->fontdata = array(
 
 
 	/* Verdana font */
-
 	"verdana" => array(
 		'R' => "Verdana.ttf",
 		'B' => "Verdana-Bold.ttf"

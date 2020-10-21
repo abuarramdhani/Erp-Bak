@@ -417,7 +417,6 @@ class C_PengalamanKerja extends CI_Controller
 		$pdf->Output($filename, 'I');
 	}
 
-
 	public function ModalPDF($datane)
 	{
 		$data12 = explode("_", $datane);
