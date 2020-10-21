@@ -269,7 +269,9 @@ class M_monitoringdo extends CI_Model
                              THEN 1
                           ELSE 0
                        END,
-                       TRUNC (kqt.tgl_kirim) DESC";
+                       TRUNC (kqt.tgl_kirim) DESC,
+                       kqt.plat_number,
+                       1";
         $response = $this->oracle->query($sql)->result_array();
 
         return $response;
@@ -379,7 +381,9 @@ class M_monitoringdo extends CI_Model
                              THEN 1
                           ELSE 0
                        END,
-                       TRUNC (kqsm.tgl_kirim) DESC";
+                       TRUNC (kqsm.tgl_kirim) DESC,
+                       kqsm.plat_number,
+                       1";
         $response = $this->oracle->query($sql)->result_array();
 
         return $response;
@@ -437,7 +441,9 @@ class M_monitoringdo extends CI_Model
                              THEN 1
                           ELSE 0
                        END,
-                       TRUNC (kqsc.tgl_kirim) DESC";
+                       TRUNC (kqsc.tgl_kirim) DESC,
+                       kqsc.plat_number,
+                       1";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
