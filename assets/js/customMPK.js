@@ -5660,7 +5660,7 @@ $(document).ready(function () {
       allowClear: true,
   
       ajax: {
-        url: baseurl + "MasterPekerja/cetak/GetKategori",
+        url: baseurl + "MasterPekerja/cetakkategori/GetKategori",
         dataType: "json",
         delay: 500,
         type: "GET",
@@ -5756,7 +5756,7 @@ $(document).ready(function () {
             arrselect: arrselect,
             status: status
           },
-          url: baseurl + "MasterPekerja/cetak/GetFilter",
+          url: baseurl + "MasterPekerja/cetakkategori/GetFilter",
           beforeSend: function () {
             console.log(kategori)
             swal.fire({
