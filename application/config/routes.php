@@ -4795,3 +4795,7 @@ $route['MasterPekerja/cetak/(:any)'] = 'MasterPekerja/NamaAktif/C_Namaaktif/$1';
 
 //---------------------------------- Cetak Kategori ------------------------------------------------
 $route['MasterPekerja/cetak/(:any)'] = 'MasterPekerja/CetakKategori/C_Cetakkategori/$1';
+
+// -------------------------------- Tracking Activity ---------------------------------------------//
+$route['TrackingActivity/Insert/(:any)'] 					= 'TrackingActivity/C_Insert/$1';
+$route['TrackingActivity/Insert/(:any)/(:any)'] 		    = 'TrackingActivity/C_Insert/$1/$2';
