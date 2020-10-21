@@ -506,4 +506,12 @@ class M_pbi extends CI_Model
         return $response;
     }
 
+    public function getJadwal()
+    {
+        $sql = "SELECT   *
+                  FROM khs_jadwal_hiwing
+              ORDER BY 1";
+        $response = $this->oracle->query($sql)->result_array();
+        return $response;
+    }
 }
