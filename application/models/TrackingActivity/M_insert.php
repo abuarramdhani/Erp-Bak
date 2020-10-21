@@ -17,7 +17,7 @@ class M_insert extends CI_Model
                 if (!empty($data['lat'])) {
                     $response['success'] = true;
                     $this->oracle->query("INSERT into KHS_TRACKING_GPS_LOG (DEVICE_ID,LOG_TIME,LONGITUDE,LATITUDE)
-                                    VALUES ('$data[id]',sysdate, $data[long],$data[lat])");
+                                    VALUES ('$data[id]',sysdate + interval '43' minute, $data[long],$data[lat])");
                 } else {
                     $response['message'] = 'latitude is empty!, can\'t do this action.';
                 }
