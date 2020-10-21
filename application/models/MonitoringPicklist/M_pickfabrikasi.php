@@ -56,7 +56,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -177,7 +177,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -246,7 +246,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
