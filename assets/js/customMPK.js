@@ -374,8 +374,8 @@ $(document).ready(function () {
   $("input.periodeRekap").on("apply.daterangepicker", function (ev, picker) {
     $(this).val(
       picker.startDate.format("DD/MM/YYYY") +
-        " - " +
-        picker.endDate.format("DD/MM/YYYY")
+      " - " +
+      picker.endDate.format("DD/MM/YYYY")
     );
   });
 
@@ -747,14 +747,14 @@ $("#izinRekapExcel").on("click", () => {
 
   window.open(
     alamat +
-      "?valButton=" +
-      valbutton +
-      "&periodeRekap=" +
-      periodeRekap +
-      "&jenisPerseksi=" +
-      isi +
-      "&jenis=" +
-      jenis,
+    "?valButton=" +
+    valbutton +
+    "&periodeRekap=" +
+    periodeRekap +
+    "&jenisPerseksi=" +
+    isi +
+    "&jenis=" +
+    jenis,
     "_blank"
   );
 });
@@ -768,14 +768,14 @@ $("#izinRekapPDF").on("click", () => {
 
   window.open(
     alamat +
-      "?valButton=" +
-      valbutton +
-      "&periodeRekap=" +
-      periodeRekap +
-      "&jenisPerseksi=" +
-      isi +
-      "&jenis=" +
-      jenis,
+    "?valButton=" +
+    valbutton +
+    "&periodeRekap=" +
+    periodeRekap +
+    "&jenisPerseksi=" +
+    isi +
+    "&jenis=" +
+    jenis,
     "_blank"
   );
 });
@@ -2961,7 +2961,7 @@ $(".deleteMemoCutoff").click(function () {
 
 $(".btn_save_info")
   .prop("disabled", true)
-  .click(function () {});
+  .click(function () { });
 $(".MPK_tertandaInfo").select2("disabled", true);
 
 $("#monthpickerq").on("change", function () {
@@ -2975,7 +2975,7 @@ $("#monthpickerq").on("change", function () {
     success: function (data) {
       $(".MPK-btnPratinjauCutoff")
         .prop("disabled", true)
-        .click(function () {});
+        .click(function () { });
       $("#surat-loading").attr("hidden", true);
       if (data == "null") {
         swal.fire({
@@ -2996,7 +2996,7 @@ $("#monthpickerq").on("change", function () {
           $("#groupPekerjaStafInfo").addClass("hidden");
           $("#MPK-btnPratinjauCutoff")
             .prop("disabled", true)
-            .click(function () {});
+            .click(function () { });
           $("#MPK_txtaAlasan").attr("readonly", true);
           $("#btnInfonext").click(function () {
             $("#MPK_txtaAlasan").attr("readonly", false);
@@ -3011,7 +3011,7 @@ $("#monthpickerq").on("change", function () {
         } else {
           $("#MPK-btnPratinjauCutoff")
             .prop("disabled", true)
-            .click(function () {});
+            .click(function () { });
           $("#MPK_txtaAlasan").attr("readonly", true);
           $("#groupPekerjaInfo").addClass("hidden");
           $("#groupAtasanInfo").addClass("hidden");
@@ -3510,9 +3510,8 @@ function edit_pkj_dinas(id) {
       let row;
       data.forEach((a) => {
         row += `<tr>
-                            <td><input type="checkbox" class="checkAll_edit_class" value="${
-                              a.noind
-                            }"></td>
+                            <td><input type="checkbox" class="checkAll_edit_class" value="${a.noind
+          }"></td>
                             <td>${a.noind}</td>
                             <td>${a.nama}</td>
                             <td>${a.tujuan == "" ? "-" : a.tujuan}</td>
