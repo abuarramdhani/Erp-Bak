@@ -1,6 +1,5 @@
 <?php
 Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
-
 set_time_limit(0);
 ini_set('date.timezone', 'Asia/Jakarta');
 setlocale(LC_TIME, "id_ID.utf8");
@@ -400,7 +399,8 @@ class C_PengalamanKerja extends CI_Controller
 		$data['update'] = $this->M_pengalamankerja->updateSuratPengalamanKerjaBy($data1, $data2, $pengalaman_tglCetak);
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8', 'A4', 10, "timesnewroman", 20, 20, 50, 20, 20, 5);
+		$pdf = new mPDF('utf-8', 'A4', 10, "verdana", 20, 20, 50, 20, 20, 5, ['default_font' => 'verdana']);
+
 		$filename = 'Surat Pengalaman Kerja' . $value . '.pdf';
 		// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_pcetak', $data);
 		$data['pengalaman_tglCetak'] = $waktucetak;
@@ -413,7 +413,7 @@ class C_PengalamanKerja extends CI_Controller
 		// print_r($data);
 		// die;
 		$html = $this->load->view('MasterPekerja/Surat/PengalamanKerja/V_cetak', $data, true);
-		$pdf->WriteHTML($html, 2);
+		$pdf->WriteHTML($html);
 		$pdf->Output($filename, 'I');
 	}
 
