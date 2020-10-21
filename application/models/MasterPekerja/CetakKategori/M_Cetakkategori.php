@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_Cetakkategori extends CI_Model
+class M_cetakkategori extends CI_Model
 {
     public function __construct()
     {
