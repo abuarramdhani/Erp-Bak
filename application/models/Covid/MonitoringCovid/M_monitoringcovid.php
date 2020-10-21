@@ -36,8 +36,13 @@ class M_monitoringcovid extends CI_Model {
 	}
 
 	function getStatusKondisi(){
-		$sql = "select *
-				from cvd.cvd_status_kondisi
+		$sql = "select *,
+					(
+						select count(*)
+						from cvd.cvd_pekerja b
+						where a.status_kondisi_id = b.status_kondisi_id
+					) as jumlah
+				from cvd.cvd_status_kondisi a
 				order by 1 ";
 		return $this->erp->query($sql)->result_array();
 	}

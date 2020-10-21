@@ -2,31 +2,31 @@
 
 
 #generate {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #btnShow {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #btnExportOBS {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #btnImportOBS {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #btnInsert{
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #inputInsertPosiition{
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 .select2 {
-    border-radius: 4px; 
+    border-radius: 4px;
 }
 
 .select2-selection {
@@ -34,11 +34,11 @@
 }
 
 #judul {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #btnSaveObservation {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 tbody {
@@ -103,15 +103,15 @@ input[type="search"] {
 }
 
 #inputInsert {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #dst {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #txtTanggal{
-	border-radius: 25px; 
+	border-radius: 25px;
 }
 
 /* .zui-table {
@@ -162,7 +162,7 @@ input[type="search"] {
 </style>
 
 <section class="content">
-<?php foreach ($lihat_hasilObservasi_elemen as $key) { 
+<?php foreach ($lihat_hasilObservasi_elemen as $key) {
 	$id = $key['id_tskk'];
 } ?>
 <form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/resaveEditObservation/'.$id); ?>">
@@ -174,7 +174,7 @@ input[type="search"] {
 						<div class="col-lg-11">
 							<div class="text-center">
 							<h1><b>EDIT LEMBAR OBSERVASI</b></h1>
-						
+
 							</div>
 						</div>
 					</div>
@@ -193,13 +193,13 @@ input[type="search"] {
 							foreach ($lihat_hasilObservasi_elemen as $key) {
                                 //header
                                 $id = $key['id_tskk'];
-                                $judul = $key['judul_tskk'];     
-                                $type = $key['tipe'];	    
-                                $kode_part = $key['kode_part'];	
+                                $judul = $key['judul_tskk'];
+                                $type = $key['tipe'];
+                                $kode_part = $key['kode_part'];
                                 $nama_part = $key['nama_part'];
                                 // $no_alat = $key['no_alat_bantu'];
-                                $seksi = $key['seksi'];	    
-								$proses = $key['proses'];	
+                                $seksi = $key['seksi'];
+								$proses = $key['proses'];
 								$kode_proses = $key['kode_proses'];
 								$jenis_mesin = $key['mesin'];
 								$jm = str_replace("; ","; \n", $jenis_mesin);
@@ -212,22 +212,22 @@ input[type="search"] {
 								$jumlah_operator = $key['jumlah_operator'];
 								$jumlah_operator_dari = $key['jumlah_operator_dari'];
                                 $proses_ke = $key['proses_ke'];
-                                $dari =	$key['proses_dari'];   
-                                $tanggal = $key['tanggal'];  
+                                $dari =	$key['proses_dari'];
+                                $tanggal = $key['tanggal'];
 								$newDate = date("d-M-Y", strtotime($tanggal));
-                                $qty = $key['qty'];    
+                                $qty = $key['qty'];
 								$operator =	$key['operator'];
-								$nilai_distribusi =	$key['nilai_distribusi']; 
+								$nilai_distribusi =	$key['nilai_distribusi'];
                                 //observasi
-                                $waktu_1= $key['waktu_1']; 	
-                                $waktu_2= $key['waktu_2'];	
-                                $waktu_3= $key['waktu_3'];	
-                                $waktu_4= $key['waktu_4'];	
-                                $waktu_5= $key['waktu_5'];	
-                                $waktu_6= $key['waktu_6'];	
-                                $waktu_7= $key['waktu_7'];	
-                                $waktu_8= $key['waktu_8'];	
-                                $waktu_9= $key['waktu_9'];	
+                                $waktu_1= $key['waktu_1'];
+                                $waktu_2= $key['waktu_2'];
+                                $waktu_3= $key['waktu_3'];
+                                $waktu_4= $key['waktu_4'];
+                                $waktu_5= $key['waktu_5'];
+                                $waktu_6= $key['waktu_6'];
+                                $waktu_7= $key['waktu_7'];
+                                $waktu_8= $key['waktu_8'];
+                                $waktu_9= $key['waktu_9'];
                                 $waktu_10= $key['waktu_10'];
                                 $x_min= $key['x_min'];
                                 $range= $key['r'];
@@ -245,7 +245,7 @@ input[type="search"] {
 								$tipe_urutan = $key['tipe_urutan'];
 								$waktu = $key['waktu_kerja'];
 								$jenisInputPart = $key['jenis_input_part'];
-								$jenisInputElement = $key['jenis_input_element']; 
+								$jenisInputElement = $key['jenis_input_element'];
 						?>
 						<?php } } ?>
 						<!--Judul TSKK :-->
@@ -270,7 +270,7 @@ input[type="search"] {
 											<div class="col-lg-8">
 											<select style="height: 35px; width:200px;" class="select2 type" id="typeProduct" name="txtType" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true">
 												<?php if ($jenisInputPart == 'Terdaftar') {
-													$listSeksi = explode(",", $type); 
+													$listSeksi = explode(",", $type);
 														foreach ($listSeksi as $tp => $item) {
 															echo '<option value="'.$item.'" selected>'.$item.'</option>';
 												} } ?>
@@ -290,7 +290,7 @@ input[type="search"] {
 											<div class="col-lg-8">
 												<select style="height: 35px; width:200px;" onchange="detectSelectKodePart(this)" class="select2 kodepart" id="kodepart" name="txtKodepart[]" data-placeholder="Input Kode Part" tabindex="-1" aria-hidden="true" multiple>
 													<?php if ($jenisInputPart == 'Terdaftar') {
-														$listKodePart = explode(",", $kode_part); 
+														$listKodePart = explode(",", $kode_part);
 															foreach ($listKodePart as $kode => $item) {
 																echo '<option value="'.$item.'" selected>'.$item.'</option>';
 													} } ?>
@@ -368,8 +368,8 @@ input[type="search"] {
 												<label for="norm" class="control-label col-lg-4">Alat Bantu :</label>
 												<div class="col-lg-8">
 														<select style="height: 35px; width:200px;" class="select2 txtAlatBantu" id="txtAlatBantu" name="txtAlatBantu[]" data-placeholder="Input Alat Bantu" tabindex="-1" aria-hidden="true" multiple>
-															<?php if ($jenisInputElement == "Terdaftar") { 
-																$listAlatBantu = explode("; ", $alat_bantu); 
+															<?php if ($jenisInputElement == "Terdaftar") {
+																$listAlatBantu = explode("; ", $alat_bantu);
 																		foreach ($listAlatBantu as $ab => $albt) {
 																			echo '<option value="'.$albt.'" selected>'.$albt.'</option>';
 															} } ?>
@@ -387,7 +387,7 @@ input[type="search"] {
 												<label for="norm" class="control-label col-lg-4">Tools:</label>
 												<div class="col-lg-8">
 												<select style="height: 35px; width:200px;" class="select2 tools" id="txtTools" name="txtTools[]" data-placeholder="Input Tools" tabindex="-1" aria-hidden="true" multiple>
-													<?php if ($jenisInputElement == "Terdaftar") { 
+													<?php if ($jenisInputElement == "Terdaftar") {
 														$listTools = explode("; ", $tools);
 															foreach ($listTools as $tl => $tools) {
 																echo '<option value="'.$tools.'" selected>'.$tools.'</option>';
@@ -450,7 +450,7 @@ input[type="search"] {
 										<div class="col-lg-8">
 										<!-- <input type="text" value="<?= $seksi; ?>" placeholder="Input Seksi" name="txtSeksiINPUT" id="pilihseksiinput" class="form-control pilihseksi"/> -->
 										<?php $listSeksi = explode("#", $seksi) ?>
-										<select class="form-control select2" id="pilihseksi" name="txtSeksi" data-placeholder="Input Seksi" tabindex="-1" aria-hidden="true"> 	
+										<select class="form-control select2" id="pilihseksi" name="txtSeksi" data-placeholder="Input Seksi" tabindex="-1" aria-hidden="true">
 										<?php foreach ($listSeksi as $sk => $section) {
 											echo '<option value="'.$section.'" selected>'.$section.'</option>';
 											}
@@ -525,14 +525,14 @@ input[type="search"] {
 									</div>
 								</div>
 							</div>
-						</div>		
+						</div>
 												<br>
                             <div class="panel panel-default">
                             <div class="panel-heading text-left">
-								<label style="margin-left: 2%;">Perhitungan Takt Time</label>                        
+								<label style="margin-left: 2%;">Perhitungan Takt Time</label>
 							</div>
                             <div class="panel-body">
-								<?php 
+								<?php
 								if (!empty($lihat_perhitungan_takt_time)) {
 									foreach ($lihat_perhitungan_takt_time as $pt) {
 										$waktu_satu_shift = $pt['waktu_satu_shift'];
@@ -541,7 +541,7 @@ input[type="search"] {
 										$jumlah_hari_kerja = $pt['jumlah_hari_kerja'];
 										$forecast = $pt['forecast'];
 										$qty_unit = $pt['qty_unit'];
-									}								
+									}
 								}else{
 									$waktu_satu_shift = null;
 									$jumlah_shift = null;
@@ -555,7 +555,7 @@ input[type="search"] {
 										<div class="row">
 												<label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
 												<div class="col-lg-6">
-													<input type="number" style="margin-left:-35px;" value="<?php echo $waktu_satu_shift;?>" placeholder="Input Waktu Satu Shift" name="txtWaktu1Shift"  id="txtWaktu1Shift" class="form-control waktu1Shift"/>
+													<input type="number" style="margin-left:-35px;" value="<?php echo $waktu_satu_shift;?>" placeholder="Input Waktu Satu Shift" oninput="countTaktTime()" name="txtWaktu1Shift"  id="txtWaktu1Shift" class="form-control waktu1Shift"/>
 												</div>
 										</div>
 										<br>
@@ -577,34 +577,34 @@ input[type="search"] {
 										<div class="row">
 													<label for="norm" class="control-label col-lg-6">Forecast (Unit) : </label>
 													<div class="col-lg-6">
-														<input type="number" placeholder="Forecast" value="<?php echo $forecast;?>" name="txtForecast" id="txtForecast" class="form-control forecast" onchange="countRencanaProduksi(this)"/>
+														<input type="number" placeholder="Forecast" value="<?php echo $forecast;?>" name="txtForecast" id="txtForecast" class="form-control forecast" oninput="countRencanaProduksi(this)"/>
 													</div>
 											</div>
-										<br> 
+										<br>
 											<div class="row">
 													<label for="norm" class="control-label col-lg-6">Qty / Unit: </label>
 													<div class="col-lg-6">
-														<input type="number" placeholder="Qty / Unit" value="<?php echo $qty_unit;?>" name="txtQtyUnit" id="txtQtyUnit" class="form-control qtyUnit" onchange="countRencanaProduksi(this)"/>
+														<input type="number" placeholder="Qty / Unit" value="<?php echo $qty_unit;?>" name="txtQtyUnit" id="txtQtyUnit" class="form-control qtyUnit" oninput="countRencanaProduksi(this)"/>
 													</div>
 											</div>
-										<br> 
+										<br>
 										<div class="row">
 												<label for="norm" class="control-label col-lg-6">Rencana Produksi/Forecast (Pcs) : </label>
 												<div class="col-lg-6">
-													<input type="number" value="<?php echo $rencana_produksi;?>" placeholder="Input Rencana Produksi" name="txtForecast" id="txtForecast" class="form-control rencanaKerja"/>
+													<input type="number" value="<?php echo $rencana_produksi;?>" placeholder="Input Rencana Produksi" name="txtRencana" id="txtRencana" readonly  class="form-control rencanaKerja"/>
 												</div>
 										</div>
 
 									</div>
 									<br><br>
-										<div class="col-lg-12" style="padding-top: 8px;">
+										<!-- <div class="col-lg-12" style="padding-top: 8px;">
 										<br>
 											<div style="text-align:center;">
 												<button type="button" onclick="countTaktTime(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary btn-md" id="btnSaveObservation"><i class="fa fa-calculator "></i>  HITUNG TAKT TIME</button>
 											</div>
-										</div>	
+										</div> -->
                             </div>
-                            </div>		
+                            </div>
 								<div class="row">
 									<label for="norm" class="control-label col-lg-4"></label>
 								</div>
@@ -624,8 +624,8 @@ input[type="search"] {
 														<label for="norm" style="margin-left:1%;">Takt Time : </label>
 															<input type="number" style="width:10%; height:34px;  margin-left:2%; text-align:center;" value="<?php echo $takt_time; ?>" placeholder="Input Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials taktTime"/>
 															<label for="norm" style="margin-left:3% ;">Nilai Distribusi : </label>
-															<input type="number" style="width:10%; height:34px;  margin-left:3%; text-align:center" name="inputInsert" id="dst" value="<?php echo $nDistribusi ?>" class="lockscreen-credentials" readonly/>														
-														<label for="norm" style="margin-left:2%;">Posisi Elemen Tambahan : </label>															
+															<input type="number" style="width:10%; height:34px;  margin-left:3%; text-align:center" name="inputInsert" id="dst" value="<?php echo $nDistribusi ?>" class="lockscreen-credentials" readonly/>
+														<label for="norm" style="margin-left:2%;">Posisi Elemen Tambahan : </label>
 															<input type="number" style="width:27%; height:34px;  margin-left:2%; margin-right:2%;" placeholder="Input Posisi untuk Menyisipkan Elemen" name="inputInsert" id="inputInsertPosiition" class="lockscreen-credentials"/>
 															<button type="button" class=" btn btn-primary btn-md" style="height:34px;" onclick="attachRowObservation(this)" id="btnInsert">Add</button>
 													</div>
@@ -662,21 +662,21 @@ input[type="search"] {
 																<?php
 																	// echo "<pre>";
 																	// print_r ($lihat_hasilObservasi);
-																	// exit(); 
+																	// exit();
 																		if (empty($lihat_hasilObservasi)) {
 																		}else{
 																		$no=1;
 																		foreach ($lihat_hasilObservasi as $key) {
 																			//observasi
-																			$waktu_1= $key['waktu_1']; 	
-																			$waktu_2= $key['waktu_2'];	
-																			$waktu_3= $key['waktu_3'];	
-																			$waktu_4= $key['waktu_4'];	
-																			$waktu_5= $key['waktu_5'];	
-																			$waktu_6= $key['waktu_6'];	
-																			$waktu_7= $key['waktu_7'];	
-																			$waktu_8= $key['waktu_8'];	
-																			$waktu_9= $key['waktu_9'];	
+																			$waktu_1= $key['waktu_1'];
+																			$waktu_2= $key['waktu_2'];
+																			$waktu_3= $key['waktu_3'];
+																			$waktu_4= $key['waktu_4'];
+																			$waktu_5= $key['waktu_5'];
+																			$waktu_6= $key['waktu_6'];
+																			$waktu_7= $key['waktu_7'];
+																			$waktu_8= $key['waktu_8'];
+																			$waktu_9= $key['waktu_9'];
 																			$waktu_10= $key['waktu_10'];
 																			$x_min= $key['x_min'];
 																			$range= $key['r'];
@@ -709,7 +709,7 @@ input[type="search"] {
 																		</td>
 									<!--JENIS PROSES-->					<td>
 																			<select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis">
-                                                                            <?php 
+                                                                            <?php
                                                                                 echo '<option value="'.$jenis_proses.'" selected>'.$jenis_proses.'</option>';
                                                                             ?>
 																				<option value="MANUAL">MANUAL</option>
@@ -723,11 +723,11 @@ input[type="search"] {
 																		<div class="col-lg-12">
 																			<div class="col-lg-6">
 																			<select class="form-control select2 slcElemen" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
-																			<?php 
+																			<?php
 																				if ($elemen != null) {
 																					echo '<option value="'.$elemen.'" selected>'.$elemen.'</option>';
 																				}
-                                                                            ?>	
+                                                                            ?>
                                                                             </select>
 																			</div>
 																			<div class="col-lg-6">
@@ -747,9 +747,9 @@ input[type="search"] {
 									<!--10-->					<td><input type="number" value="<?php echo $waktu_10; ?>" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik"></td>
 									<!--X MIN-->				<td><input type="number" value="<?php echo $x_min; ?>" id="xmin" name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>
 									<!--R-->					<td><input type="number" value="<?php echo $range; ?>" id="range" name="range[]" class="form-control range" placeholder="Detik" readonly></td>
-									<!--W DISTRIBUSI-->			<!--<td><input type="number" value="<?php echo $wktDistribusi ?>" onchange="minMaxId(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik"></td>-->		
-									<!--W DISTRIBUSI-->			<td><input type="number" value="<?php echo $wktDistribusi ?>" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik"></td>																		
-									<!--W DISTRIBUSI AUTO-->	<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusiAuto" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>																			
+									<!--W DISTRIBUSI-->			<!--<td><input type="number" value="<?php echo $wktDistribusi ?>" onchange="minMaxId(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik"></td>-->
+									<!--W DISTRIBUSI-->			<td><input type="number" value="<?php echo $wktDistribusi ?>" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik"></td>
+									<!--W DISTRIBUSI AUTO-->	<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusiAuto" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>
 									<!--W KERJA-->				<td><input type="number" value="<?php echo $waktu; ?>" id="wKerja" name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>
 									<!--KETERANGAN-->			<td><input type="text" id="keterangan" value="<?php echo $keterangan; ?>" name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan"></td>
 									<!--HAPUS-->				<td>
@@ -760,23 +760,23 @@ input[type="search"] {
 																	</tbody>
 																</table>
 															</div>
-							<br><br>	
+							<br><br>
                             <div class="panel panel-default">
                             <div class="panel-heading text-left">
-								<label style="margin-left: 2%;">Input Irregular Job</label>       
-								<label style="margin-left: 70%; <?php if (!empty($lihat_irregular_jobs)) { echo "display:none";}?>">Add Irregular Job</label>    
-								<a class="fa fa-plus fa-2x fa-primary" style="margin-left:1%; <?php if (!empty($lihat_irregular_jobs)) { echo "display:none"; }?>" onclick="addRowIrregularJob($(this))" title="Tambah Irregular Job"></a>                 
+								<label style="margin-left: 2%;">Input Irregular Job</label>
+								<label style="margin-left: 70%; <?php if (!empty($lihat_irregular_jobs)) { echo "display:none";}?>">Add Irregular Job</label>
+								<a class="fa fa-plus fa-2x fa-primary" style="margin-left:1%; <?php if (!empty($lihat_irregular_jobs)) { echo "display:none"; }?>" onclick="addRowIrregularJob($(this))" title="Tambah Irregular Job"></a>
 							</div>
                             <div class="panel-body">
                               <table class="datatable table table-striped table-bordered table-hover tabel_irregular_job" style="width: 100%">
 							    <thead class="bg-primary">
                                   <tr>
-                                    <th width="5%" class="text-center">NO</th>                                                                                                                                                                                   
+                                    <th width="5%" class="text-center">NO</th>
                                     <th width="40%" class="text-center">IRREGULAR JOB</th>
                                     <th width="15%" class="text-center">RATIO <br> (KALI)</th>
 									<th width="15%" class="text-center">WAKTU <br> (DETIK)</th>
 									<th width="15%" class="text-center">WAKTU/RATIO <br> (DETIK)</th>
-									<th width="10%" class="text-center">ACTION</th>	
+									<th width="10%" class="text-center">ACTION</th>
                                   </tr>
                                 </thead>
                                 <tbody id="tbodyIrregularJob">
@@ -793,11 +793,11 @@ input[type="search"] {
                                       <td style="text-align: center;"> <input type="number" value="<?php echo $ratio_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio"></td>
                                       <td style="text-align: center;"> <input type="number" value="<?php echo $waktu_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu"></td>
 									  <td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" value="<?php echo $hasil_irregular_job;?>" style="text-align: center;" class="form-control hasilIrregularJob" name="txtHasilWaktuIrregular[]" readonly></td>
-									  <td style="text-align: center;">	
+									  <td style="text-align: center;">
                                         <i class="fa fa-times fa-2x deleteIrregularJob" id="deleteIrregularJob" onclick="deleteIrregularJobs(this)" style="color:red" title="Hapus Irregular Job"></i>&nbsp;&nbsp;
 									  	<a class="fa fa-plus fa-2x fa-primary" onclick="addRowIrregularJob($(this))" title="Tambah Irregular Job"></a>
                                       </td>
-								    </tr> 
+								    </tr>
 								<?php $no++; } ?>
                                 </tbody>
                               </table>
@@ -808,17 +808,17 @@ input[type="search"] {
 										<div style="text-align: center;">
 										<button type="submit" style="float: center; margin-right: 3%; margin-top: -0.5%; display: none" class="btn btn-primary" id="btnHidden"><i class="fa fa-floppy-o"></i> SIMPAN LEMBAR OBSERVASI</button>
 										<button type="button" onclick="checkNilaiDistribusiObservasi(this)" style="float: center; margin-left: 3%; margin-right: 5%; margin-top: -0.5%;" class="btn btn-primary" id="btnShow"><i class="fa fa-floppy-o"></i> SIMPAN LEMBAR OBSERVASI</button>
-										<!-- <a style="float: center; margin-right: 4%; margin-top: -0.5%;" class="btn btn-success" id="btnExportOBS" href="<?=base_url('GeneratorTSKK/C_Observation/exportObservation/'.$id)?>"><i class="fa fa-download"></i> EXPORT OBSERVATION</a>										
+										<!-- <a style="float: center; margin-right: 4%; margin-top: -0.5%;" class="btn btn-success" id="btnExportOBS" href="<?=base_url('GeneratorTSKK/C_Observation/exportObservation/'.$id)?>"><i class="fa fa-download"></i> EXPORT OBSERVATION</a>
 										<button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-warning" data-toggle="modal" data-target="#Modalku<?php echo $id; ?>" id="btnImportOBS"><i class="fa fa-upload"></i> IMPORT OBSERVATION</button>										 -->
 										</div>
 									</div>
-									<br> <br> 
+									<br> <br>
 								</div>
 								</form>
 													</div>
 												</div>
 											</div>
-										</div>	
+										</div>
 									</div>
 								</div>
 							</div>
@@ -829,7 +829,7 @@ input[type="search"] {
 		</div>
 
 <button type="button" onclick="addRowObservationEdit($(this))" id="myBtn" class="fa fa-plus fa-lg" style="display: none;  position: fixed;  bottom: 45px;  right: 30px;  z-index: 99;  font-size: 30px  text-center;  border: none; outline: none; background-color: green; color: white; cursor: pointer; width:35px; height:35px; border-radius: 50%;" title="Tambah Elemen"></button>
-							
+
 							<script>
 							// When the user scrolls down 20px from the top of the document, show the button
 							window.onscroll = function() {scrollFunction()};

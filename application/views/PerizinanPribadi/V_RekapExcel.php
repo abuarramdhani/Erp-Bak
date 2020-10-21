@@ -140,11 +140,34 @@ $no = 1;
 foreach ($dataReal as $key) {
     $nama = '';
     $kodesie = '';
+    $poin = '';
     foreach (explode(',', $key['nama_pkj']) as $a) {
         $nama .= "$a\n";
     }
     if ($jenis == '2') {
         $kodesie = $key['seksi'];
+        
+        if ($key['jumlah'] > 1 && $key['point'] > 0) {
+            if ($key['jenis_ijin'] == 'IZIN KELUAR PRIBADI') {
+                if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
+                    $poin =  '-';
+                } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
+                    $poin = '0';
+                } else {
+                    $poin = $key['point'];
+                }
+            } else {
+                $poin = '0';
+            }
+        } else {
+            if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
+                $poin = '-';
+            } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
+                $poin = '0';
+            } else {
+                $poin = $key['point'];
+            };
+        }
     } else {
         foreach (explode(',', $key['kodesie']) as $b) {
             foreach ($seksi as $value) {
@@ -155,27 +178,6 @@ foreach ($dataReal as $key) {
         }
     }
 
-    if ($key['jumlah'] > 1 && $key['point'] > 0) {
-        if ($key['jenis_ijin'] == 'IZIN KELUAR PRIBADI') {
-            if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
-                $poin =  '-';
-            } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
-                $poin = '0';
-            } else {
-                $poin = $key['point'];
-            }
-        } else {
-            $poin = '0';
-        }
-    } else {
-        if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
-            $poin = '-';
-        } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
-            $poin = '0';
-        } else {
-            $poin = $key['point'];
-        };
-    }
 
 
     $array_value = array(

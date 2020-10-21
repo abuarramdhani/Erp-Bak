@@ -26,7 +26,6 @@ class C_PoLog extends CI_Controller {
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
         $data['PoLog'] = $this->M_polog->getDataPO();
-        
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -63,36 +62,38 @@ class C_PoLog extends CI_Controller {
         $vendor_confirm_date = $this->input->post('vendor_confirm_date');
         $vendor_confirm_method = $this->input->post('vendor_confirm_method');
         $vendor_confirm_pic = htmlspecialchars($this->input->post('vendor_confirm_pic'));
+        $vendor_confirm_note = htmlspecialchars($this->input->post('vendor_confirm_note'));
 
         $name = $_FILES["lampiran_po"]["name"];
         $ext = end((explode(".", $name)));
 
-        if ($ext != 'pdf') {
+        if (!($ext == 'pdf' OR $ext == 'jpeg' OR $ext == 'jpg' OR $ext == 'png' OR $ext == 'xls' OR $ext == 'xlsx' OR $ext == 'ods' OR $ext == 'odt' OR $ext == 'txt' OR $ext == 'doc' OR $ext == 'docx')) {
             $this->output
 				->set_status_header(400)
 				->set_content_type('application/json')
-				->set_output(json_encode("File yang anda masukkan bukan PDF"));
+				->set_output(json_encode("File yang anda masukkan salah"));
+        } else {
+            $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO';
+            $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
+            $config['overwrite']            = TRUE;
+    
+            $this->load->library('upload', $config);
+    
+            if (!$this->upload->do_upload('lampiran_po')) {
+                $error = array('error' => $this->upload->display_errors());
+    
+                print_r($error);
+            } else {
+                $file = array('upload_data' => $this->upload->data());
+                $nama_lampiran = $file['upload_data']['raw_name'];
+            }
+                $this->M_polog->updateVendorData($po_number, $vendor_confirm_date, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $nama_lampiran);
+                $this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json')
+                ->set_output(json_encode("File yang anda masukkan sudah benar"));
         }
         
-        $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO';
-        $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
-        $config['overwrite']            = TRUE;
-
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload('lampiran_po')) {
-            $error = array('error' => $this->upload->display_errors());
-
-            print_r($error);
-        } else {
-            $file = array('upload_data' => $this->upload->data());
-            $nama_lampiran = $file['upload_data']['raw_name'];
-        }
-            $this->M_polog->updateVendorData($po_number, $vendor_confirm_date, $vendor_confirm_method, $vendor_confirm_pic, $nama_lampiran);
-            $this->output
-            ->set_status_header(200)
-            ->set_content_type('application/json')
-            ->set_output(json_encode("File benar pdf"));
     }
 
 

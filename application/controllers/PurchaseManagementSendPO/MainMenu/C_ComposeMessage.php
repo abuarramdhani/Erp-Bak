@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+set_time_limit(360);
+
 class C_ComposeMessage extends CI_Controller
 {
 	public function __construct()
@@ -209,7 +211,7 @@ class C_ComposeMessage extends CI_Controller
 									$this->PurchaseManagementDocument($po_number);
 								}
 							}
-						} else {
+						} else if ($this->input->post('type') == 'send') {
 							$this->PurchaseManagementDocument($po_number);
 						}
 						break;
@@ -287,10 +289,12 @@ class C_ComposeMessage extends CI_Controller
 			ftp_chdir($conn, '/mnt/NASB/SUPPLIER/');
 
 			// Download Files
-			if (ftp_size($conn, $ftp_server_dir . $po_number . $ftp_file_format) > 0) {
-				$files = ftp_get($conn, $ftp_local_dir . $po_number . $ftp_file_format, $ftp_server_dir . $po_number . $ftp_file_format, FTP_BINARY);
-			} else {
-				throw new Exception('Lampiran pada direktori sharing dengan PO Number "' . $po_number . '" tidak ditemukan.');
+			if ($this->input->post('type') == 'send') {
+				if (ftp_size($conn, $ftp_server_dir . $po_number . $ftp_file_format) > 0) {
+					$files = ftp_get($conn, $ftp_local_dir . $po_number . $ftp_file_format, $ftp_server_dir . $po_number . $ftp_file_format, FTP_BINARY);
+				} else {
+					throw new Exception('Lampiran pada direktori sharing dengan PO Number "' . $po_number . '" tidak ditemukan.');
+				}
 			}
 
 			// Change FTP directory
@@ -394,7 +398,16 @@ class C_ComposeMessage extends CI_Controller
 							};
 						};
 					}
-			} 
+			} else if ($this->input->post('type') == "resend") {
+				if ($format_message != 'English') {
+					if (file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE)
+					{
+						$mail->addAttachment($doc_dir.$doc_filename.$pdf_format);
+					}else{
+						throw new Exception('Lampiran '.$doc_filename.' tidak ditemukan.');
+					};
+				};
+			}
 
 
 

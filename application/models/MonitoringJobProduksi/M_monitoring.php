@@ -22,6 +22,14 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
 
+    public function getAktual2($kategori, $bulan){
+        $sql = "select *            
+        from khs_qweb_mon_produksi kqmp            
+        where kqmp.CATEGORY_NAME = $kategori
+        and kqmp.tgl_urut like '$bulan%'";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
     
     public function getAktual($kategori, $bulan){
         $sql = "select distinct
@@ -99,8 +107,9 @@ class M_monitoring extends CI_Model
                 ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
                 ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
                 ,mil.SEGMENT1 locator_tujuan
-                ,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
-                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - bic.COMPONENT_QUANTITY*'$qty') kekurangan
+                --,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
+                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'SS-ODM',bic.ATTRIBUTE2,'')) att
+                ,((khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'SS-ODM',bic.ATTRIBUTE2,'')) - bic.COMPONENT_QUANTITY*'$qty') kekurangan
                 ,nvl(
                         (select sum(mtrl.QUANTITY)
                             from mtl_txn_request_headers mtrh
@@ -151,12 +160,12 @@ class M_monitoring extends CI_Model
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'PNL-TKS','','') PNL_TKS            
                 --,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
                 ,khs_inv_qty_att(101,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
-                ,khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-ASSYGT','','') INT_ASSYGT,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-ASSY','','') INT_ASSY,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHA','','') INT_MACHA,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHB','','') INT_MACHB,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHC','','') INT_MACHC,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHD','','') INT_MACHD     
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-ASSYGT','','') INT_ASSYGT,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-ASSY','','') INT_ASSY,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHA','','') INT_MACHA,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHB','','') INT_MACHB,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHC','','') INT_MACHC,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHD','','') INT_MACHD     
                 ,wip.qty wip
                 --,decode(bic.basis_type,'','Item','2','Lot') Basis
                 --,bic.INCLUDE_IN_COST_ROLLUP
@@ -231,6 +240,87 @@ class M_monitoring extends CI_Model
                     order by 1";
     $query = $this->oracle->query($sql);
     return $query->result_array();
+}
+
+public function getcomment($kategori, $bulan, $inv, $tgl){
+    $sql = "select * from khs_comment_item_monitoring
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function savecomment($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "insert into khs_comment_item_monitoring (id_category, inventory_item_id, bulan, tanggal, keterangan)
+            values($kategori, $inv, $bulan, $tgl, '$comment')";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function updatecomment($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "update khs_comment_item_monitoring set keterangan = '$comment'
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function getcommentPL($kategori, $bulan, $inv, $tgl){
+    $sql = "select * from khs_commentpl_item_monitoring
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function savecommentPL($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "insert into khs_commentpl_item_monitoring (id_category, inventory_item_id, bulan, tanggal, keterangan)
+            values($kategori, $inv, $bulan, $tgl, '$comment')";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function updatecommentPL($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "update khs_commentpl_item_monitoring set keterangan = '$comment'
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function getcommentC($kategori, $bulan, $inv, $tgl){
+    $sql = "select * from khs_commentc_item_monitoring
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function savecommentC($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "insert into khs_commentc_item_monitoring (id_category, inventory_item_id, bulan, tanggal, keterangan)
+            values($kategori, $inv, $bulan, $tgl, '$comment')";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function updatecommentC($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "update khs_commentc_item_monitoring set keterangan = '$comment'
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
 }
 
 

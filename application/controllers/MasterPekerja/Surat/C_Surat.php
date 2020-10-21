@@ -264,7 +264,7 @@
 				public function daftar_nama_jabatan_upah()
 				{
 					$keyword 			=	strtoupper($this->input->get('term', TRUE));
-					$nama_jabatan 		=	$this->M_surat->getNamaJabatanUpah();
+					$nama_jabatan 		=	$this->M_surat->getNamaJabatanUpah($keyword);
 					echo json_encode($nama_jabatan);
 				}
 

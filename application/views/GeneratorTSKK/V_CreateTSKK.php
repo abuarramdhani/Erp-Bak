@@ -2,19 +2,19 @@
 
 
 #generate {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #btnShow {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #btnEdit {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 .select2 {
-    border-radius: 4px; 
+    border-radius: 4px;
 }
 
 .select2-selection {
@@ -22,7 +22,7 @@
 }
 
 #judul {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 tbody {
@@ -83,11 +83,11 @@ input[type="search"] {
 }
 
 #inputInsert {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #dst {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 /* .zui-table {
@@ -157,7 +157,7 @@ background-size: 1800% 1800%;
     50%{background-position:100% 19%}
     100%{background-position:0% 82%}
 }
-@keyframes rainbow { 
+@keyframes rainbow {
     0%{background-position:0% 82%}
     50%{background-position:100% 19%}
     100%{background-position:0% 82%}
@@ -191,7 +191,7 @@ background-size: 1800% 1800%;
 						<div class="col-lg-11">
 							<div class="text-center">
 							<h1><b>GENERATOR TSKK</b></h1>
-						
+
 							</div>
 						</div>
 					</div>
@@ -204,39 +204,39 @@ background-size: 1800% 1800%;
                         <?php
 						// echo "<pre>";
 						// print_r ($lihat_hasilObservasi);
-                        // exit(); 
+                        // exit();
 							if (empty($lihat_hasilObservasi_elemen)) {
 							}else{
 							$no=1;
 							foreach ($lihat_hasilObservasi_elemen as $key) {
                                 //header
                                 $id = $key['id_tskk'];
-                                $judul = $key['judul_tskk'];     
-                                $type = $key['tipe'];	    
-                                $kode_part = $key['kode_part'];	
+                                $judul = $key['judul_tskk'];
+                                $type = $key['tipe'];
+                                $kode_part = $key['kode_part'];
                                 $nama_part = $key['nama_part'];
                                 $no_alat = $key['no_alat_bantu'];
-                                $seksi = $key['seksi'];	    
-                                $proses = $key['proses'];	
+                                $seksi = $key['seksi'];
+                                $proses = $key['proses'];
                                 $kode_proses = $key['kode_proses'];
-                                $mesin = $key['mesin'];	    
+                                $mesin = $key['mesin'];
                                 $proses_ke = $key['proses_ke'];
-                                $dari =	$key['proses_dari'];   
-                                $tanggal = $key['tanggal'];  
+                                $dari =	$key['proses_dari'];
+                                $tanggal = $key['tanggal'];
 								$newDate = date("d-M-Y", strtotime($tanggal));
-                                $qty = $key['qty'];    
+                                $qty = $key['qty'];
 								$operator =	$key['operator'];
-								$nilai_distribusi =	$key['nilai_distribusi']; 
+								$nilai_distribusi =	$key['nilai_distribusi'];
                                 //observasi
-                                $waktu_1= $key['waktu_1']; 	
-                                $waktu_2= $key['waktu_2'];	
-                                $waktu_3= $key['waktu_3'];	
-                                $waktu_4= $key['waktu_4'];	
-                                $waktu_5= $key['waktu_5'];	
-                                $waktu_6= $key['waktu_6'];	
-                                $waktu_7= $key['waktu_7'];	
-                                $waktu_8= $key['waktu_8'];	
-                                $waktu_9= $key['waktu_9'];	
+                                $waktu_1= $key['waktu_1'];
+                                $waktu_2= $key['waktu_2'];
+                                $waktu_3= $key['waktu_3'];
+                                $waktu_4= $key['waktu_4'];
+                                $waktu_5= $key['waktu_5'];
+                                $waktu_6= $key['waktu_6'];
+                                $waktu_7= $key['waktu_7'];
+                                $waktu_8= $key['waktu_8'];
+                                $waktu_9= $key['waktu_9'];
                                 $waktu_10= $key['waktu_10'];
                                 $x_min= $key['x_min'];
                                 $range= $key['r'];
@@ -416,21 +416,21 @@ background-size: 1800% 1800%;
 																<?php
 																	// echo "<pre>";
 																	// print_r ($lihat_hasilObservasi);
-																	// exit(); 
+																	// exit();
 																		if (empty($lihat_hasilObservasi)) {
 																		}else{
 																		$no=1;
 																		foreach ($lihat_hasilObservasi as $key) {
 																			//observasi
-																			$waktu_1= $key['waktu_1']; 	
-																			$waktu_2= $key['waktu_2'];	
-																			$waktu_3= $key['waktu_3'];	
-																			$waktu_4= $key['waktu_4'];	
-																			$waktu_5= $key['waktu_5'];	
-																			$waktu_6= $key['waktu_6'];	
-																			$waktu_7= $key['waktu_7'];	
-																			$waktu_8= $key['waktu_8'];	
-																			$waktu_9= $key['waktu_9'];	
+																			$waktu_1= $key['waktu_1'];
+																			$waktu_2= $key['waktu_2'];
+																			$waktu_3= $key['waktu_3'];
+																			$waktu_4= $key['waktu_4'];
+																			$waktu_5= $key['waktu_5'];
+																			$waktu_6= $key['waktu_6'];
+																			$waktu_7= $key['waktu_7'];
+																			$waktu_8= $key['waktu_8'];
+																			$waktu_9= $key['waktu_9'];
 																			$waktu_10= $key['waktu_10'];
 																			$x_min= $key['x_min'];
 																			$range= $key['r'];
@@ -452,7 +452,7 @@ background-size: 1800% 1800%;
 									<!--NO-->							<td class="posisi"><?php echo $no; ?></td>
 									<!--JENIS PROSES-->					<td>
 																			<select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis" disabled>
-                                                                            <?php 
+                                                                            <?php
                                                                                 echo '<option value="'.$jenis_proses.'" selected>'.$jenis_proses.'</option>';
                                                                             ?>
 																				<option value="MANUAL">MANUAL</option>
@@ -466,11 +466,11 @@ background-size: 1800% 1800%;
 																		<div class="col-lg-12">
 																			<div class="col-lg-6">
 																			<select class="form-control select2 slcElemen" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen" disabled>
-																			<?php 
+																			<?php
 																				if ($elemen != null) {
 																					echo '<option value="'.$elemen.'" selected>'.$elemen.'</option>';
 																				}
-                                                                            ?>	
+                                                                            ?>
                                                                             </select>
 																			</div>
 																			<div class="col-lg-6">
@@ -480,7 +480,7 @@ background-size: 1800% 1800%;
 																		</td>
 									<!--TIPE URUTAN-->					<td>
 																			<select class="form-control select4 tipe_urutan" data-placeholder="Tipe Urutan" name="slcTipeUrutan[]" id="slcTipeUrutan" disabled>
-                                                                            <?php 
+                                                                            <?php
 																				echo '<option value="'.$tipe_urutan.'" selected>'.$tipe_urutan.'</option>';
 																			?>
 																				<option value="SERIAL">SERIAL</option>
@@ -499,7 +499,7 @@ background-size: 1800% 1800%;
 									<!--10-->					<td><input type="number" value="<?php echo $waktu_10; ?>" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik" readonly></td>
 									<!--X MIN-->				<td><input type="number" value="<?php echo $x_min; ?>" id="xmin" name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>
 									<!--R-->					<td><input type="number" value="<?php echo $range; ?>" id="range" name="range[]" class="form-control range" placeholder="Detik" readonly></td>
-									<!--W DISTRIBUSI-->			<td><input type="number" value="<?php echo $wktDistribusi ?>" onchange="minMaxId(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>																		
+									<!--W DISTRIBUSI-->			<td><input type="number" value="<?php echo $wktDistribusi ?>" onchange="minMaxId(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>
 									<!--W KERJA-->				<td><input type="number" value="<?php echo $waktu; ?>" id="wKerja" name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>
 									<!--KETERANGAN-->			<td><input type="text" id="keterangan" value="<?php echo $keterangan; ?>" name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan" readonly></td>
 									<!--HAPUS-->				<td>
@@ -515,10 +515,10 @@ background-size: 1800% 1800%;
 										<div style="text-align: center;">
 										<button type="submit" style="float: center; margin-right: 3%; margin-top: -0.5%; display: none" class="btn btn-info" id="btnHidden"><i class="fa fa-arrow-right"></i> NEXT</button>
 										<button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-info" id="btnShow"><i class="fa fa-arrow-right"></i> NEXT</button>
-										<button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-success" id="btnEdit"><i class="fa fa-pencil-square-o"></i> EDIT OBSERVATION</button>										
+										<button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-success" id="btnEdit"><i class="fa fa-pencil-square-o"></i> EDIT OBSERVATION</button>
 										</div>
 									</div>
-									<br> <br> 
+									<br> <br>
 									<br>
 								</div>
 								</form>
@@ -541,11 +541,11 @@ background-size: 1800% 1800%;
                         <?php
 						// echo "<pre>";
 						// print_r ($lihat_hasilObservasi);
-                        // exit(); 
+                        // exit();
 							if (empty($lihat_hasilObservasi_elemen)) {
 								// echo
 							}else{
-							$no=1; 
+							$no=1;
 							$prev = null;
 							$takt_time2 = $lihat_hasilObservasi[0]['takt_time'];
 							// echo "<pre>";
@@ -561,7 +561,7 @@ background-size: 1800% 1800%;
 								$waktu = $key['waktu_kerja'];
 									if ($no == 1) {
 											$start = 1;
-											$finish1 = ($waktu + 1) - 1; 
+											$finish1 = ($waktu + 1) - 1;
 											if ($finish1 > $takt_time2) {
 												$finish = $finish1 - $takt_time2;
 												$stat = 'eksekusi >';
@@ -572,7 +572,7 @@ background-size: 1800% 1800%;
 											// echo "<pre>";
 											// echo $finish;
 									}else{
-										if ($prev == 'AUTO (Inheritance)') { 
+										if ($prev == 'AUTO (Inheritance)') {
 											for ($i=0; $i < count($waktu) ; $i++) {
 												$finish1 = ($waktu + $start) - 1;
 												if ($finish1 > $takt_time2) {
@@ -586,8 +586,8 @@ background-size: 1800% 1800%;
 												// echo $finish;
 											}
 										}else{
-											for ($i=0; $i < count($waktu) ; $i++) { 
-												$start = $finish + 1; 
+											for ($i=0; $i < count($waktu) ; $i++) {
+												$start = $finish + 1;
 												$finish1 = ($waktu + $start) - 1;
 												if ($finish1 > $takt_time2) {
 													$finish = $finish1 - $takt_time2;
@@ -600,16 +600,16 @@ background-size: 1800% 1800%;
 												// echo 'ini taktime = '.$takt_time2;
 												// echo "<br>";
 												// echo $finish;
-												// echo ' '.$stat; 
+												// echo ' '.$stat;
 											}
 										}
-										$prev = $key['jenis_proses']; 
-									}			
+										$prev = $key['jenis_proses'];
+									}
 						?>
                 <tr class='<?php echo "number_".$no ?>'>
                     <td class= "<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?> position"><?php echo $no?></td>
                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>">
-						<input type="text" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #d55d71;color:white;"; }; ?>;" 
+						<input type="text" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #d55d71;color:white;"; }; ?>;"
 					 	value="<?php echo $jenis_proses; ?>" id="jenisProses" name="jenisProsesElemen[]" class="form-control jnsProses" placeholder="Jenis Proses" readonly></td>
                     </td>
                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>">
@@ -622,10 +622,10 @@ background-size: 1800% 1800%;
                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>"><input type="number" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #006bb3;color:white;"; }; ?>;" value="<?php echo $start; ?>" onchange="finishTableElement(this)" name="mulai[]" class="form-control mulai" placeholder="Detik" <?php if ( $tipe_urutan == 'SERIAL') { echo "readonly"; }; ?>></td>
                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>"><input type="number" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #d55d71;color:white;"; }; ?>;" value="<?php echo $finish; ?>" name="finish[]" class="form-control finish" placeholder="Detik" <?php if ( $tipe_urutan == 'SERIAL') { echo "readonly"; }; ?> readonly></td>
                 </tr>
-            
-			<?php $no++; ?> 
-			
-			<?php } 
+
+			<?php $no++; ?>
+
+			<?php }
 			// exit();
 			 } ?>
 			</tbody>
@@ -641,7 +641,7 @@ background-size: 1800% 1800%;
 													</div>
 												</div>
 											</div>
-										</div>	
+										</div>
 									</div>
 								</div>
 							</div>
@@ -652,7 +652,7 @@ background-size: 1800% 1800%;
 		</div>
 
 <button onclick="addRowObservationAfterNext($(this))" id="myBtn" class="fa fa-plus fa-lg" style="display: none;  position: fixed;  bottom: 45px;  right: 30px;  z-index: 99;  font-size: 30px  text-center;  border: none; outline: none; background-color: green; color: white; cursor: pointer; width:35px; height:35px; border-radius: 50%;" title="Tambah Elemen"></button>
-							
+
 							<script>
 							// When the user scrolls down 20px from the top of the document, show the button
 							window.onscroll = function() {scrollFunction()};

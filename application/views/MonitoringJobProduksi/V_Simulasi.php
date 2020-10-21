@@ -28,7 +28,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body box box-info box-solid">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label>Kode Item : </label>
                                         <p><input type="hidden" id="item" value="<?= $item?>"><?= $item?></p>
                                     </div>
@@ -36,7 +36,7 @@
                                         <label>Deskripsi Item : </label>
                                         <p><?= $desc?></p>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                             <label>Qty :</label>
                                         <div class="input-group">
                                             <input type="number" id="qty" class="form-control" value="<?= $plan?>">
@@ -45,6 +45,9 @@
                                             </span>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn bg-blue" style="margin-left:15px" onclick="getSimulasiProduksi('z')"><i class="fa fa-search"></i> Filter Z</button>
+                                            </span>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-success" style="margin-left:15px" onclick="getSimulasiProduksi('')"><i class="fa fa-refresh"></i> Reset</button>
                                             </span>
                                         </div>
                                     </div>

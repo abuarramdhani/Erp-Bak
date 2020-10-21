@@ -93,7 +93,7 @@ $(document).ready(function(){
         }
     })
 
-	$('.btn-CVD-MonitoringCovid-Hapus').on('click', function(){
+	$('#tbl-CVD-MonitoringCovid').on('click', '.btn-CVD-MonitoringCovid-Hapus', function(){
 		var params = {
 		  				id		: $(this).attr('data-href'),
 		  				status 	: $(this).attr('data-status'),
@@ -149,7 +149,7 @@ $(document).ready(function(){
 		$(this).clone().val('').appendTo($(this).closest('div'));
 	})
 
-	$('.btn-CVD-MonitoringCovid-FollowUp').on('click', function(){
+	$('#tbl-CVD-MonitoringCovid').on('click', '.btn-CVD-MonitoringCovid-FollowUp', function(){
 		var status = $(this).attr('data-status');
 		var link = $(this).attr('data-href');
 		console.log('trigger follow up');

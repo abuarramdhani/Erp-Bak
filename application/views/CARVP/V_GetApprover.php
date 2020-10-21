@@ -7,7 +7,7 @@
         <div class="col-md-4" style="text-align: right;"><label>Approver</label></div>
         <div class="col-md-6">
             <select style="width: 100%;" name="approver_car" id="approver_car" class="form-control select2" data-placeholder="Pilih Approver">
-                <option></option>
+                <option value="B0580">B0580 - HERMAWAN SETIYANTO</option>
             </select>
         </div>
     </div>

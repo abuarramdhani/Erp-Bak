@@ -242,7 +242,7 @@ class M_pbi extends CI_Model
                     WHEN kki.status = 6
                        THEN 'Diterima Seksi Tujuan'
                  END status2,
-                 (SELECT ksi.no_suratjalan
+                 (SELECT DISTINCT ksi.no_suratjalan
                     FROM khs_sj_internal ksi
                    WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
               FROM khs_kirim_internal kki

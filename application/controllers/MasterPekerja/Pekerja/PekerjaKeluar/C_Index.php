@@ -171,6 +171,7 @@ class C_Index extends CI_Controller
 		$listAnggotaKel = $this->M_pekerjakeluar->getListAnggotaKeluarga();
 		$listAtasan = $this->M_pekerjakeluar->getAtasanSeksi($kodesie);
 		$listAtasanHubker = $this->M_pekerjakeluar->getAtasanHubker();
+		$listAtasan3 = $this->M_pekerjakeluar->getAtasan3();
 
 		// declare here for easy debugging
 		$datapekerja	= array(
@@ -213,7 +214,7 @@ class C_Index extends CI_Controller
 			'jumsdr'						=> $pekerja->jumsdr,
 			/**Lain-lain */
 			'email_internal'    => $pekerja->email_internal,
-			'external_mail'    	=> $kontak->external_mail,
+			'external_mail'    	=> @$kontak->external_mail,
 			'telkomsel_mygroup' => $pekerja->telkomsel_mygroup,
 			'pidgin_account'    => $pekerja->pidgin_account,
 
@@ -290,6 +291,7 @@ class C_Index extends CI_Controller
 		$data['arrjabatandl'] = $listJabatanDL;
 		$data['listanggotakel'] = $listAnggotaKel;
 		// $data['anggotakeluarga'] = $anggotaKeluarga; // NOT USED - replace by api
+		$data['atasan3'] = $listAtasan3;
 		$data['atasanhubker'] = $listAtasanHubker;
 		$data['atasan'] = $listAtasan;
 		// checkbox
@@ -1154,6 +1156,7 @@ class C_Index extends CI_Controller
 			$memo->kode_arsip = $data['kode_arsip'];
 			$memo->atasan /*Array */ = $this->M_pekerjakeluar->getAtasanSeksi($memo->kodesie, $data['atasan']);
 			$memo->hubker /*Array */ = $this->M_pekerjakeluar->getAtasanHubker($data['hubker']);
+			$memo->atasan3 = $this->M_pekerjakeluar->getAtasan3($data['atasan3']);;
 
 			$this->pdf->load();
 

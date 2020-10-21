@@ -3,6 +3,9 @@ $(document).ready(function() {
   // $('#tblJMT').hide();
 });
 
+ $('#dataTableJT001').DataTable();
+
+
 var table = $('#dataTableJT').DataTable({
   dom: 'rtp',
 });

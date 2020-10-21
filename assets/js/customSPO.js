@@ -1,4 +1,7 @@
 $(document).ready(function () {
+  // Sort date datatables format
+  $.fn.dataTable.moment('DD-MMM-YY');
+
   if ($(".PurchaseManagementSendPOTitle").html() == "WEB SEND PO BDL") {
     var IndonesiaMessageFormat =
       '\
@@ -41,7 +44,8 @@ $(document).ready(function () {
         </div>\
         ';
   } else if (window.location.href.includes("po_number=")) {
-    var po_number = $("#txtPMSPONoPO").val();
+    var po_number = $("#txtPMSPONoPO").val().split('-')[0];
+    var po_number_rev = $("#txtPMSPONoPO").val();
     var IndonesiaMessageFormat =
       `
       <div style="  font-family: Times New Roman, Times, serif;">\
@@ -69,6 +73,9 @@ $(document).ready(function () {
         Mohon perhatiannya, bahwa tanggal yang tercantum sebagai <b>"Received Date"</b> pada \
         Purchase Order (PO) adalah <b>tanggal diterimanya barang/jasa terkait di alamat \
         tujuan</b> (Gudang Tujuan) yang ditentukan/ dituliskan pada masing-masing Purchase Order.\
+        Dengan memberikan persetujuan baik melalui email maupun kolom konfirmasi di lembar PO,
+        maka Vendor telah <b>menyetujui hal-hal yang dicantumkan pada PO dan/atau Pedoman Kerjasama
+        Vendor</b> yang dilampirkan pada setiap pengiriman email PO.
       </p>\
       <br>\
       <p>Terima kasih atas kerjasamanya</p>\
@@ -87,45 +94,46 @@ $(document).ready(function () {
       `;
   } else {
     var IndonesiaMessageFormat =
-      '\
-        <div style="  font-family: Times New Roman, Times, serif;">\
-            <p>Selamat Siang,</p>\
-                <br>\
-            <p>\
-                Terlampir Purchase Order (PO) dan Pedoman Kerjasama Vendor dari kami, dimohon konfirmasi kesanggupan <b>\
-                dengan menyalin template balasan dibawah ini kemudian mengirim balik</b> ke alamat email ini \
-                selambat-lambatnya <b>1x24 jam </b>sejak email ini diterima.\
-            </p>\
-            <p>Template Balasan (disalin dari <b>"PO Confirmation"</b> hingga <b>"Sign Name")</b> : </p>\
-            <p>\
-                <b>PO CONFIRMATION</b> : <em>(diisi dengan nomor PO terkait)</em><br>\
-                <b>UNIT PRICE </b>: <em>(diisi OK/NOT OK)</em><br>\
-                <b>QUANTITY</b> : <em>(diisi OK/NOT OK)</em><br>\
-                <b>RECEIVED DATE</b> : <em>(diisi OK/NOT OK)</em><br>\
-                <b>SHIP TO LOCATION</b> : <em>(diisi OK/NOT OK)</em><br>\
-                <b>VENDOR DATA</b> : <em>(diisi OK/NOT OK)</em><br>\
-                <b>SIGN NAME</b> : <em>(diisi Nama dan Jabatan penerima dan konfirmasi PO)<br></em>\
-            </p>\
-            <p>\
-                Mohon perhatiannya, bahwa tanggal yang tercantum sebagai <b>"Received Date" </b>pada Purchase Order \
-                (PO) adalah <b>tanggal diterimanya barang/jasa terkait di alamat tujuan </b>(Gudang Tujuan) yang ditentukan/\
-                dituliskan pada masing-masing Purchase Order.\
-            </p>\
-                <br>\
-            <p>Terima kasih atas kerjasamanya</p>\
-                <br>\
-            <p>\
-                Salam,<br>\
-                Ms. Rika<br>\
-                Admin Purchasing<br>\
-                <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
-                Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
-                Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>\
-                Fax. <a href="https://m.quick.com/callto:+62-274-563523"><u>+62-274-563523</u></a><br>\
-                Website : <a href="http://www.quick.co.id/"><u>www.quick.co.id</u></a>\
-            </p>\
-        </div>\
-        ';
+      `<div style="  font-family: Times New Roman, Times, serif;">
+            <p>Dengan hormat,</p>
+                <br>
+            <p>
+                Berikut kami sampaikan Purchase Order (PO) dan Pedoman Kerjasama Vendor dari CV. Karya Hidup Sentosa,
+                mohon dapat diberikan konfirmasi kesanggupan <b>dengan menyalin template balasan dibawah ini kemudian mengirim balik</b>
+                ke alamat email ini selambat-lambatnya <b>1x24 jam</b> sejak email ini diterima.
+            </p>
+            <p>Template Balasan (disalin dari <b>"PO Confirmation"</b> hingga <b>"Sign Name")</b> : </p>
+            <p>
+                <b>PO CONFIRMATION</b> : <em>(diisi dengan nomor PO terkait)</em><br>
+                <b>UNIT PRICE</b>: <em>(diisi OK/NOT OK)</em><br>
+                <b>QUANTITY</b> : <em>(diisi OK/NOT OK)</em><br>
+                <b>RECEIVED DATE</b> : <em>(diisi OK/NOT OK)</em><br>
+                <b>SHIP TO LOCATION</b> : <em>(diisi OK/NOT OK)</em><br>
+                <b>VENDOR DATA</b> : <em>(diisi OK/NOT OK)</em><br>
+                <b>SIGN NAME</b> : <em>(diisi Nama dan Jabatan penerima dan konfirmasi PO)<br></em>
+            </p>
+            <p>
+                Mohon perhatiannya, bahwa tanggal yang tercantum sebagai <b>"Received Date" </b>pada Purchase Order 
+                (PO) adalah <b>tanggal diterimanya barang/jasa terkait di alamat tujuan </b>(Gudang Tujuan) yang ditentukan/
+                dituliskan pada masing-masing Purchase Order. Dengan memberikan persetujuan baik melalui email maupun kolom
+                konfirmasi di lembar PO, maka Vendor telah <b>menyetujui hal-hal yang dicantumkan pada PO dan/atau Pedoman Kerjasama
+                Vendor</b> yang dilampirkan pada setiap pengiriman email PO.
+            </p>
+                <br>
+            <p>Terima kasih atas kerjasamanya</p>
+                <br>
+            <p>
+                Salam,<br>
+                Rika (Ms)<br>
+                Admin Purchasing<br>
+                <b>CV Karya Hidup Sentosa (QUICK)</b><br>
+                Jalan Magelang No 144 Yogyakarta - Indonesia<br>
+                Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>
+                Fax. <a href="https://m.quick.com/callto:+62-274-563523"><u>+62-274-563523</u></a><br>
+                Website : <a href="http://www.quick.co.id/"><u>www.quick.co.id</u></a>
+            </p>
+        </div>
+        `;
   }
 
   var EnglishMessageFormat =
@@ -199,7 +207,7 @@ $(document).ready(function () {
             setTimeout(function () {
               if (window.location.href.includes("po_number=")) {
                 $("#txtPMSPOSubject").val(
-                  "Konfirmasi PO " + po_number + " CV. KHS"
+                  "Konfirmasi PO " + po_number_rev + " CV. KHS"
                 );
               } else {
                 $("#txtPMSPOSubject").val("KHS PURCHASE ORDER " + PONumber);
@@ -208,8 +216,8 @@ $(document).ready(function () {
           } else {
             $(".spnPMSPOWarnAddrNotFound").html(
               " Tidak ditemukan Email Address dengan PO Number " +
-                PONumber +
-                ". "
+              PONumber +
+              ". "
             );
             $(".divPMSPOWarnAddrNotFound").fadeIn();
             $("#txtPMSPOToEmailAddr").val("");
@@ -217,7 +225,7 @@ $(document).ready(function () {
             setTimeout(function () {
               if (window.location.href.includes("po_number=")) {
                 $("#txtPMSPOSubject").val(
-                  "Konfirmasi PO " + po_number + " CV. KHS"
+                  "Konfirmasi PO " + po_number_rev + " CV. KHS"
                 );
               } else {
                 $("#txtPMSPOSubject").val("KHS PURCHASE ORDER " + PONumber);
@@ -380,7 +388,11 @@ $(document).ready(function () {
         data: form_data,
         dataType: "json",
         success: function () {
-          Swal.fire("Success!", "Pesan telah terkirim dan terarsip", "success");
+          Swal.fire("Success!", "Pesan telah terkirim dan terarsip", "success")
+            .then(() => {
+              window.location.href =
+                baseurl + "PurchaseManagementSendPO/PoLog";
+            });
         },
         error: function (result) {
           globalresult = result;
@@ -400,7 +412,7 @@ $(document).ready(function () {
   });
 
   // Tabel SPO Log horizontal scroll
-  const PoLogTable = $("#tbl-SpoLog").DataTable({
+  $("#tbl-SpoLog").DataTable({
     scrollX: true,
   });
 
@@ -421,11 +433,13 @@ $(document).ready(function () {
       vendor_confirm_date = $('[name="vendor_confirm_date"]').val(),
       vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
       vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
+      vendor_confirm_note = $('[name="vendor_confirm_note"]').val(),
       lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
     epl_form_data.append("po_number", po_number);
     epl_form_data.append("vendor_confirm_date", vendor_confirm_date);
     epl_form_data.append("vendor_confirm_method", vendor_confirm_method);
     epl_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
+    epl_form_data.append("vendor_confirm_note", vendor_confirm_note);
     epl_form_data.append("lampiran_po", lampiran_po);
 
     const swalWithBootstrapButtons = Swal.mixin({
@@ -498,10 +512,10 @@ $(document).ready(function () {
       distribution_method = $('[name="distribution_method"]').val(),
       vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
       vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
+      vendor_confirm_note = $('[name="vendor_confirm_note"]').val(),
       attachment_flag = $('[name="attachment_flag"]').val(),
       lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
     eplb_form_data.append("po_number", po_number);
-
     eplb_form_data.append("distribution_method", distribution_method);
     eplb_form_data.append("attachment_flag", attachment_flag);
 
@@ -536,11 +550,9 @@ $(document).ready(function () {
           } else {
             if ($('[name="vendor_confirm_date"]').val()) {
               eplb_form_data.append("vendor_confirm_date", vendor_confirm_date);
-              eplb_form_data.append(
-                "vendor_confirm_method",
-                vendor_confirm_method
-              );
+              eplb_form_data.append("vendor_confirm_method", vendor_confirm_method);
               eplb_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
+              eplb_form_data.append("vendor_confirm_note", vendor_confirm_note);
               eplb_form_data.append("lampiran_po", lampiran_po);
             }
             $.ajax({

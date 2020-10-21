@@ -19,8 +19,9 @@
 												<label class="control-label col-lg-2">Status Kondisi</label>
 												<div class="col-lg-3">
 													<select class="select2" name="status" style="width: 100%">
-														<option value="0">All</option>
 														<?php 
+														$total = 0;
+														$option = "";
 														if (isset($status) && !empty($status)) {
 															foreach ($status as $st) {
 																if ($st['status_kondisi_id'] == $status_kondisi) {
@@ -28,9 +29,14 @@
 																}else{
 																	$selected = "";
 																}
-																echo "<option value='".$st['status_kondisi_id']."' ".$selected.">".$st['status_kondisi']."</option>";
+																$option .= "<option value='".$st['status_kondisi_id']."' ".$selected.">".$st['status_kondisi']." ( ".$st['jumlah']." )</option>";
+																$total += $st['jumlah'];
 															}
 														}
+														?>
+														<option value="0">All ( <?php echo $total; ?> ) </option>
+														<?php 
+														echo $option;
 														?>
 													</select>
 												</div>
