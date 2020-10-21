@@ -5151,14 +5151,17 @@ $(document).ready(function () {
             }
             $('.slcMPKSimForkliftCariPekerja').val("").trigger('change');
             $('#btnMPKSimForkliftSimpanPekerja').show();
-        }else{
-            Swal.fire(
-                'Peringatan !!!',
-                'Pastikan Data Pekerja Sudah Terisi',
-                'warning'
-            )
-        }
-    })
+          }
+        })
+      })
+    }else{
+        Swal.fire(
+            'Peringatan !!!',
+            'Pastikan Data Pekerja Sudah Terisi',
+            'warning'
+        )
+    }
+})
 
     $('#tblMPKSimForkliftTambahPekerja').on('click', '.btnMPKSimForkliftHapusPekerja', function(){
         $(this).closest('tr').remove();
