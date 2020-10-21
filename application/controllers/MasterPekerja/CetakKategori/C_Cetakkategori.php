@@ -17,7 +17,7 @@ class C_Cetakkategori extends CI_Controller
         $this->load->library('general');
 
         $this->load->model('SystemAdministration/MainMenu/M_user');
-        $this->load->model('MasterPekerja/CetakKategori/M_Cetakkategori');
+        $this->load->model('MasterPekerja/CetakKategori/M_cetakkategori');
 
         $this->checkSession();
     }
