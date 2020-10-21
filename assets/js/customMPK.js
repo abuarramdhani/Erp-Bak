@@ -5151,14 +5151,17 @@ $(document).ready(function () {
             }
             $('.slcMPKSimForkliftCariPekerja').val("").trigger('change');
             $('#btnMPKSimForkliftSimpanPekerja').show();
-        }else{
-            Swal.fire(
-                'Peringatan !!!',
-                'Pastikan Data Pekerja Sudah Terisi',
-                'warning'
-            )
-        }
-    })
+          }
+        })
+      })
+    }else{
+        Swal.fire(
+            'Peringatan !!!',
+            'Pastikan Data Pekerja Sudah Terisi',
+            'warning'
+        )
+    }
+})
 
     $('#tblMPKSimForkliftTambahPekerja').on('click', '.btnMPKSimForkliftHapusPekerja', function(){
         $(this).closest('tr').remove();
@@ -5657,7 +5660,7 @@ $(document).ready(function () {
       allowClear: true,
   
       ajax: {
-        url: baseurl + "MasterPekerja/cetak/GetKategori",
+        url: baseurl + "MasterPekerja/cetakkategori/GetKategori",
         dataType: "json",
         delay: 500,
         type: "GET",
@@ -5753,7 +5756,7 @@ $(document).ready(function () {
             arrselect: arrselect,
             status: status
           },
-          url: baseurl + "MasterPekerja/cetak/GetFilter",
+          url: baseurl + "MasterPekerja/cetakkategori/GetFilter",
           beforeSend: function () {
             console.log(kategori)
             swal.fire({
