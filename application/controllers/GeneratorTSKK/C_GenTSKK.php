@@ -2154,7 +2154,7 @@ public function exportExcel($idnya){
                             } elseif ($i === 109 || $i === 186 || $i === 274) {
                                 $styles[$baris][$i]['border']='right';
                                 $styles[$baris][$i]['border-style']='thin';
-                            } elseif ($i >= 132 && $i <= 184 || $i >= 211 && $i <= 272 || $i >= 299 && $i <= 361) {
+                            } elseif ($i >= 132 && $i <= 184 || $i >= 211 && $i <= 230 || $i >= 232 && $i <= 254 || $i >= 260 && $i <= 272 || $i >= 299 && $i <= 361) {
                                 $styles[$baris-2][$i]['border']='bottom';
                                 $styles[$baris-2][$i]['border-style']='thin';
                             }
@@ -2184,9 +2184,12 @@ public function exportExcel($idnya){
                             } elseif ($i === 13) {
                                 $styles[$baris][$i]['border']='right';
                                 $styles[$baris][$i]['border-style']='thick';
-                            } elseif ($i >= 211 && $i <= 272 || $i >= 299 && $i <= 361) {
+                            } elseif ($i >= 299 && $i <= 361  ) {
                                 $styles[$baris-2][$i]['border']='bottom';
                                 $styles[$baris-2][$i]['border-style']='thin';
+                            }elseif ($i >= 134 && $i <= 183) {
+															$styles[$baris][$i]['border']='bottom';
+															$styles[$baris][$i]['border-style']='thin';
                             } elseif ($i === 109 || $i === 186 || $i === 274) {
                                 $styles[$baris][$i]['border']='right';
                                 $styles[$baris][$i]['border-style']='thin';
@@ -2194,6 +2197,30 @@ public function exportExcel($idnya){
                                 $styles[$baris][$i]['border']='left';
                                 $styles[$baris][$i]['border-style']='thick';
                             }
+
+														 if (sizeof($waktu_irregular) <= 4) {
+																 foreach ($waktu_irregular as $key => $val) {
+																	 if ($key == 0) {
+																		 $kolom_end = 221;
+																		 $kolom_start = $key;
+																	 }else {
+								 										if ($key == 2) {
+								 											$plus_kolom = 5;
+								 										}elseif ($key == 3) {
+								 											$plus_kolom = 10;
+								 										}else {
+								 											$plus_kolom = 0;
+								 										}
+								 										$kolom_end = 226 + ((10* $key) + $plus_kolom);
+								 										$kolom_start = 15 * $key;
+								 									}
+																	 if ($i >= 211 + $kolom_start && $i <= $kolom_end ) { // thiss
+																	 $styles[$baris-2][$i]['border']='bottom';
+																	 $styles[$baris-2][$i]['border-style']='thin';
+																 }
+															 }
+														 }
+
                             break;
                         case 4:
                             if ($i === 0 || $i === 12 || $i === 364) {
@@ -2871,11 +2898,15 @@ public function exportExcel($idnya){
             $rows[$rowJumlahElemen+1][191] = 'Waktu / Shift'; // rev 2 okto
 
             $rows[$rowJumlahElemen+1][206] = ' = ';
-            $rows[$rowJumlahElemen+1][211] = 'Waktu Irregular Job';
+						$rows[$rowJumlahElemen+1][211] = 'W1';
+						$rows[$rowJumlahElemen+1][228] = '+';
+						$rows[$rowJumlahElemen+1][232] = 'W2';
+						$rows[$rowJumlahElemen+1][249] = '+...+';
+						$rows[$rowJumlahElemen+1][260] = 'Wn';
             $rows[$rowJumlahElemen+1][279] = 'Pcs / Shift';
 
             $rows[$rowJumlahElemen+1][294] = ' = ';
-            $rows[$rowJumlahElemen+1][299] = 'Waktu 1 Shift x Quantity';
+            $rows[$rowJumlahElemen+1][299] = 'Waktu 1 Shift x Qty dlm 1 cycle';
 
             $rows[$rowJumlahElemen+2][20] = '- Cycletime (Tanpa Irregular Job)';
             $rows[$rowJumlahElemen+2][73] = ' = ';
@@ -2884,7 +2915,9 @@ public function exportExcel($idnya){
             $rows[$rowJumlahElemen+2][132] = '(';
             $rows[$rowJumlahElemen+2][134] = 'Rencana Produksi / Bulan';
             $rows[$rowJumlahElemen+2][183] = ')';
-            $rows[$rowJumlahElemen+2][211] = 'Ratio Irregular Job';
+            $rows[$rowJumlahElemen+2][211] = 'R1';
+						$rows[$rowJumlahElemen+2][232] = 'R2';
+						$rows[$rowJumlahElemen+2][260] = 'Rn';
             $rows[$rowJumlahElemen+2][299] = 'Cycle Time (Dengan Irregular Job)';
 
 
@@ -2894,9 +2927,45 @@ public function exportExcel($idnya){
             $rows[$rowJumlahElemen+3][94] = 'Detik';
             $rows[$rowJumlahElemen+3][134] = 'Jumlah Hari Kerja / Bulan';
             $rows[$rowJumlahElemen+3][206] = ' = ';
-            $rows[$rowJumlahElemen+3][211] = $waktu_irregular[0]; //DATA Cycle Time tanpa Irregular
+						// foreach ($waktu_irregular as $key => $val) {
+						//   $tampung_hasil_irregular[] = $val.'/'.$ratio_irregular[$key];
+						// }
+						// $rows[$rowJumlahElemen+3][211] = $waktu_irregular[0].'/'.$ratio_irregular[0]; //DATA Cycle Time tanpa Irregular
+						//AREA WAKTU IRREGULAR
+						if (sizeof($waktu_irregular) <= 4) {
+								foreach ($waktu_irregular as $key => $val) {
+									if ($key == 0) {
+										$kolom_end = 221;
+										$kolom_start = $key;
+									}else {
+										if ($key == 2) {
+											$plus_kolom = 5;
+										}elseif ($key == 3) {
+											$plus_kolom = 10;
+										}else {
+											$plus_kolom = 0;
+										}
+										$kolom_end = 226 + ((10* $key) + $plus_kolom);
+										$kolom_start = 15 * $key;
+									}
+
+									$rows[$rowJumlahElemen+3][211 + $kolom_start] = $val; //DATA Waktu Irregular Job
+									$rows[$rowJumlahElemen+4][211 + $kolom_start] = $ratio_irregular[$key]; //DATA Ratio Irregular Job
+
+									if ($key != (sizeof($waktu_irregular)-1)) {
+										$rows[$rowJumlahElemen+3][$kolom_end+1] = '+'; //DATA Waktu Irregular Job
+									}
+							}
+						}else {
+							foreach ($waktu_irregular as $key => $val) {
+							  $tampung_hasil_irregular[] = $val/$ratio_irregular[$key];
+							}
+							$rows[$rowJumlahElemen+3][211] = implode(' + ', $tampung_hasil_irregular); //DATA Cycle Time tanpa Irregular
+						}
+						//END
+						// $rows[$rowJumlahElemen+3][211] = $waktu_irregular[0]; //DATA Cycle Time tanpa Irregular
             $rows[$rowJumlahElemen+3][294] = ' = ';
-            $rows[$rowJumlahElemen+3][299] = $waktu_satu_shift.' x '.$qty_unit; //DATA Waktu 1 Shift x Qty
+            $rows[$rowJumlahElemen+3][299] = $waktu_satu_shift.' x '.$qty; //DATA Waktu 1 Shift x Qty dlm 1 cycle
 
 
             $rows[$rowJumlahElemen+4][20] = '- Jumlah Hari Kerja / Bulan';
@@ -2905,7 +2974,7 @@ public function exportExcel($idnya){
             $rows[$rowJumlahElemen+4][94] = 'Hari';
             $rows[$rowJumlahElemen+4][127] = ' = ';
             $rows[$rowJumlahElemen+4][132] = $waktu_satu_shift; //Data Waktu 1 Shift
-            $rows[$rowJumlahElemen+4][211] = $ratio_irregular[0]; //DATA Ratio Irregular Job
+            // $rows[$rowJumlahElemen+4][211] = $ratio_irregular[0]; //DATA Ratio Irregular Job
             $rows[$rowJumlahElemen+4][299] = $cycle_time; //DATA Cycle Time (Dengan Irregular Job)
 
 
@@ -2920,7 +2989,7 @@ public function exportExcel($idnya){
             $rows[$rowJumlahElemen+5][211] = $jumlah_hasil_irregular; //DATA HASIL 3
             $rows[$rowJumlahElemen+5][230] = 'Detik'; //rev3
             $rows[$rowJumlahElemen+5][294] = ' = ';
-            $rows[$rowJumlahElemen+5][299] = ($waktu_satu_shift*$qty_unit)/$cycle_time; //DATA HASIL 4
+            $rows[$rowJumlahElemen+5][299] = ($waktu_satu_shift*$qty)/$cycle_time; //DATA HASIL 4
             $rows[$rowJumlahElemen+5][319] = 'Pcs';
 
 
@@ -2937,7 +3006,7 @@ public function exportExcel($idnya){
 						$rows[$rowJumlahElemen+7][94] = 'Pcs';
             $rows[$rowJumlahElemen+7][127] = ' = ';
             $rows[$rowJumlahElemen+7][132] = $takt_time; //Data HASIL 1
-            $rows[$rowJumlahElemen+7][147] = 'Pcs';
+            $rows[$rowJumlahElemen+7][147] = 'Detik';
 
 						$rows[$rowJumlahElemen+8][20] = '- Forecast ';
 						$rows[$rowJumlahElemen+8][73] = ' = ';
@@ -2982,8 +3051,8 @@ public function exportExcel($idnya){
                             $styles[$barisnya][$i]['valign'] = 'center';
                             if ($i === 112 || $i === 191 || $i === 279) {
                                 $styles[$barisnya][$i]['wrap_text'] = true;
-                                $styles[$barisnya][$i]['halign'] = 'center';
-                            } elseif ($i === 73 || $i === 127 || $i === 132 || $i === 206 || $i === 211 || $i === 294 || $i === 299) {
+                                $styles[$barisnya][$i]['halign'] = 'center'; //hiahia
+                            } elseif ($i === 73 || $i === 127 || $i === 132 || $i === 206 || $i === 211 || $i === 232 || $i === 260 || $i === 294 || $i === 299) {
                                 $styles[$barisnya][$i]['halign'] = 'center';
                             } else {
                                 $styles[$barisnya][$i]['halign'] = 'left';
@@ -2996,7 +3065,7 @@ public function exportExcel($idnya){
                                 $styles[$barisnya][$i]['font-size'] = 8;
                             }
                             $styles[$barisnya][$i]['valign'] = 'center';
-                            if ($i === 9 || $i === 73 || $i === 132 || $i === 134 || $i === 183 || $i === 211 || $i === 299) {
+                            if ($i === 9 || $i === 73 || $i === 132 || $i === 134 || $i === 183 || $i === 211 || $i === 232 || $i === 260 || $i === 299) {
                                 $styles[$barisnya][$i]['halign'] = 'center';
                             } else {
                                 $styles[$barisnya][$i]['halign'] = 'left';
@@ -3005,7 +3074,7 @@ public function exportExcel($idnya){
                         case 3:
                             $styles[$barisnya][$i]['font-size'] = 8;
                             $styles[$barisnya][$i]['valign'] = 'center';
-                            if ( $i === 73 || $i === 134 || $i === 211 || $i === 206 || $i ===294 || $i === 299) {
+                            if ( $i === 73 || $i === 134 || $i === 211 || $i === 206 || $i === 226 || $i === 241 || $i === 256 || $i ===294 || $i === 299) {
                                 $styles[$barisnya][$i]['halign'] = 'center';
                             } else {
                                 $styles[$barisnya][$i]['halign'] = 'left';
@@ -3013,7 +3082,7 @@ public function exportExcel($idnya){
                             break;
                         case 4:
 														$styles[$barisnya][$i]['valign'] = 'center';
-                            if ( $i === 73 || $i === 127 || $i === 132 || $i === 211 || $i === 299) {
+                            if ( $i === 73 || $i === 127 || $i === 132 || $i === 211 || $i === 226 || $i === 241 || $i === 256 || $i === 299) {
                               $styles[$barisnya][$i]['halign'] = 'center';
 															$styles[$barisnya][$i]['font-size'] = 8;
 
@@ -3248,19 +3317,20 @@ public function exportExcel($idnya){
             } else {
                 $rowIrregular = sizeof($irregular_jobs);
             }
+
 						if (sizeof($irregular_jobs) > 1) {
-							$min001 = sizeof($irregular_jobs);
+								$min001 = count($irregular_jobs) + (count($irregular_jobs) - 2);
 						}else {
 							$min001 = 0;
 						}
-            $rows[$pakeRowIrregular + ($rowIrregular*2) - $min001][0] = 'JUMLAH';
-            $styles[$pakeRowIrregular + ($rowIrregular*2) - $min001][0]['font-size'] = 10;
-            $styles[$pakeRowIrregular + ($rowIrregular*2) - $min001][0]['valign'] = 'center';
-            $styles[$pakeRowIrregular + ($rowIrregular*2) - $min001][0]['halign'] = 'center';
-            $rows[$pakeRowIrregular + ($rowIrregular*2) - $min001][11] = $jumlah_hasil_irregular;
-            $styles[$pakeRowIrregular + ($rowIrregular*2) - $min001][11]['font-size'] = 10;
-            $styles[$pakeRowIrregular + ($rowIrregular*2) - $min001][11]['valign'] = 'center';
-            $styles[$pakeRowIrregular + ($rowIrregular*2) - $min001][11]['halign'] = 'center';
+            $rows[$pakeRowIrregular + (($rowIrregular*2) - $min001)][0] = 'JUMLAH';
+            $styles[$pakeRowIrregular + (($rowIrregular*2) - $min001)][0]['font-size'] = 10;
+            $styles[$pakeRowIrregular + (($rowIrregular*2) - $min001)][0]['valign'] = 'center';
+            $styles[$pakeRowIrregular + (($rowIrregular*2) - $min001)][0]['halign'] = 'center';
+            $rows[$pakeRowIrregular + (($rowIrregular*2) - $min001)][11] = $jumlah_hasil_irregular;
+            $styles[$pakeRowIrregular + (($rowIrregular*2) - $min001)][11]['font-size'] = 10;
+            $styles[$pakeRowIrregular + (($rowIrregular*2) - $min001)][11]['valign'] = 'center';
+            $styles[$pakeRowIrregular + (($rowIrregular*2) - $min001)][11]['halign'] = 'center';
 
 
     // TIME FLOW
@@ -3493,19 +3563,52 @@ public function exportExcel($idnya){
                     $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 132, $end_row=$rowjum+8, $end_col= 146);
                     $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 147, $end_row=$rowjum+8, $end_col= 161);
 
+								// REV 20-10-2020
                 // 3
                     $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 191, $end_row=$rowjum, $end_col= 272);
 
                     $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 191, $end_row=$rowjum+2, $end_col= 205);
                     $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 206, $end_row=$rowjum+2, $end_col= 210);
 
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 211, $end_row=$rowjum+1, $end_col= 272);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 211, $end_row=$rowjum+2, $end_col= 272);
+										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 211, $end_row=$rowjum+1, $end_col= 227);
+										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 232, $end_row=$rowjum+1, $end_col= 248);
+										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 260, $end_row=$rowjum+1, $end_col= 272);
+
+										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 228, $end_row=$rowjum+2, $end_col= 231);
+										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 249, $end_row=$rowjum+2, $end_col= 259);
+
+                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 211, $end_row=$rowjum+2, $end_col= 227);
+										$writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 232, $end_row=$rowjum+2, $end_col= 248);
+										$writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 260, $end_row=$rowjum+2, $end_col= 272);
 
                     $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 206, $end_row=$rowjum+4, $end_col= 210);
 
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 211, $end_row=$rowjum+3, $end_col= 272);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 211, $end_row=$rowjum+4, $end_col= 272);
+                    // $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 211, $end_row=$rowjum+3, $end_col= 221);
+                    // $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 211, $end_row=$rowjum+4, $end_col= 221);
+										if (sizeof($waktu_irregular) <= 4) {
+											foreach ($waktu_irregular as $key => $val) {
+												if ($key == 0) {
+													$kolom_end = 221;
+													$kolom_start = $key;
+												}else {
+													if ($key == 2) {
+														$plus_kolom = 5;
+													}elseif ($key == 3) {
+														$plus_kolom = 10;
+													}else {
+														$plus_kolom = 0;
+													}
+													$kolom_end = 226 + ((10* $key) + $plus_kolom);
+													$kolom_start = 15 * $key;
+												}
+												$writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 211 + $kolom_start, $end_row=$rowjum+3, $end_col=$kolom_end);
+		                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 211 + $kolom_start, $end_row=$rowjum+4, $end_col=$kolom_end);
+
+												$writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= $kolom_end+1, $end_row=$rowjum+4, $end_col=$kolom_end+4);
+											}
+										}else {
+											$writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 211, $end_row=$rowjum+4, $end_col= 272);
+										}
 
                     $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 206, $end_row=$rowjum+5, $end_col= 210);
                     $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 211, $end_row=$rowjum+5, $end_col= 229);
