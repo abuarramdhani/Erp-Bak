@@ -5662,7 +5662,12 @@ $(document).ready(function () {
   });
 
   $("#TDP_TarikDataAll").on("click", function () {
-    let noind = $("#TDP_Tariknoind").val();
+    let noind = $("#TDP_Tariknoind option:checked")
+      .map(function () {
+        return this.value;
+      })
+      .get()
+      .join("%' OR tp.noind LIKE '");
     let pend = $("#TDP_Tarikpendidikan").val();
     let jenkel = $("#TDP_Tarikjenkel").val();
     let lokasi = $("#TDP_Tariklokasi").val();

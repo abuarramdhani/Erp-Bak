@@ -64,14 +64,14 @@ class M_cetakkategori extends CI_Model
             $sql = "SELECT $select
             FROM hrd_khs.tpribadi tp, hrd_khs.tseksi ts, hrd_khs.tbpjskes tb, hrd_khs.tbpjstk ttk
             WHERE ts.kodesie = tp.kodesie AND tb.noind = tp.noind AND ttk.noind=tp.noind 
-            AND tp.kodesie LIKE '$kategori%' AND tp.noind LIKE '$kodeind%' AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
+            AND tp.kodesie LIKE '$kategori%' AND (tbl.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
             LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status' order by noind";
             return $this->personalia->query($sql)->result_array();
         } else {
             $sql = "SELECT $select
             FROM hrd_khs.tpribadi tp, hrd_khs.tseksi ts, hrd_khs.tbpjskes tb, hrd_khs.tbpjstk ttk
             WHERE ts.kodesie = tp.kodesie AND tb.noind = tp.noind AND ttk.noind=tp.noind 
-            AND tp.kodesie LIKE '$kategori%' AND tp.noind LIKE '$kodeind%' AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
+            AND tp.kodesie LIKE '$kategori%' AND (tbl.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
             LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status'
             AND (masukkerja > '$rangemasukstart' AND masukkerja < '$rangemasukend'  OR tglkeluar> '$rangekeluarstart' AND tglkeluar< '$rangekeluarend') order by noind";
             return $this->personalia->query($sql)->result_array();
