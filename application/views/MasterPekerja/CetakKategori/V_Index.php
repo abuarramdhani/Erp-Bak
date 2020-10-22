@@ -136,8 +136,7 @@
                                                     <div class="form-group">
                                                         <label class="form-check-label">Kode Induk :</label>
                                                         <br>
-                                                        <select class="form-control pull-right" id="TDP_Tariknoind">
-                                                            <option value="">Semua</option>
+                                                        <select class="form-control pull-right" id="TDP_Tariknoind" multiple>         
                                                             <?php foreach ($Tariknoind as $key) { ?>
                                                                 <option value="<?= $key['fs_noind'] ?>"><?= $key['fs_noind'], ' - ', $key['fs_ket'] ?></option>
                                                             <?php
