@@ -209,7 +209,7 @@ class M_monitoring extends CI_Model
   }
   
   public function getdataWIP($item){
-    $sql = "SELECT msib.SEGMENT1  ASSY
+    $sql = "SELECT distinct msib.SEGMENT1  ASSY
     ,msib.DESCRIPTION
     ,we.WIP_ENTITY_NAME
     ,wdj.START_QUANTITY
