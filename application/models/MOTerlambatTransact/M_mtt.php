@@ -150,7 +150,7 @@ class M_mtt extends CI_Model
 --                                  and mtrh.attribute11 is not null                                    
 --                                  and mtrh.ATTRIBUTE12 is not null
 AND mtrl.ATTRIBUTE12 IS NOT null
-    order by mtrh.CREATION_DATE asc, mtrl.ATTRIBUTE12 ASC");
+order by mtrh.CREATION_DATE DESC, mtrl.ATTRIBUTE12 ASC");
     return $res->result_array();
   }
 }
