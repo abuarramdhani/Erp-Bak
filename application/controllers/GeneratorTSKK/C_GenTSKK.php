@@ -1239,6 +1239,7 @@ public function exportExcel($idnya){
 		 $id_tskk          = $this->input->post('id');
 
 		 $takt_time        = $this->input->post('takt_time');
+
 		 $jenis_proses     = $this->input->post('jenis_proses_elemen');
 		 $elemen           = $this->input->post('elemen_kerja');
 		 $keterangan_elemen= $this->input->post('keterangan_elemen_kerja');
@@ -1301,6 +1302,7 @@ public function exportExcel($idnya){
 		//DATA FOR TSKK (elements table)
 		$id_tskk          = $newID[0]['id_tskk'];
 		$takt_time        = $newID[0]['takt_time'];
+
 		$jenis_proses 	  = array_column($newID, 'jenis_proses');
 		$elemen           = array_column($newID, 'elemen');
 		$keterangan_elemen= array_column($newID, 'keterangan_elemen');
@@ -1317,6 +1319,10 @@ public function exportExcel($idnya){
 		$nama_pekerja = $name[0]['nama'];
 		$creationDate = date('d-M-Y');
 		$generateDate = str_replace("-", " ", $creationDate);
+	}
+
+	if ($takt_time == 99999) {
+		$takt_time = '-';
 	}
 
 
@@ -3355,9 +3361,16 @@ public function exportExcel($idnya){
                     $styles[$rowflow + 1][$i+13]['fill'] = $warna;
                     $rows[$rowflow + 1][$i+13] = $i-$start[$j]+1;
                     //Garis Takttime
-                    $styles[$rowflow][$takt_time + 13]['fill'] = '#fc0303';
-                    $styles[$rowflow+1][$takt_time + 13]['fill'] = '#fc0303';
-                    $styles[$rowflow+2][$takt_time + 13]['fill'] = '#fc0303';
+										if ($takt_time == '-') {
+											$styles[$rowflow][$takt_time + 13]['fill'] = '#ffffff';
+											$styles[$rowflow+1][$takt_time + 13]['fill'] = '#ffffff';
+											$styles[$rowflow+2][$takt_time + 13]['fill'] = '#ffffff';
+										}else {
+											$styles[$rowflow][$takt_time + 13]['fill'] = '#fc0303';
+											$styles[$rowflow+1][$takt_time + 13]['fill'] = '#fc0303';
+											$styles[$rowflow+2][$takt_time + 13]['fill'] = '#fc0303';
+										}
+
                     //Garis Cycletime
                     $styles[$rowflow][$cycle_time + 13]['fill'] = '#fcf403';
                     $styles[$rowflow+1][$cycle_time + 13]['fill'] = '#fcf403';
@@ -3378,7 +3391,11 @@ public function exportExcel($idnya){
                 $rows[$rownya][$last_finish + 14 + $i] = $i +1;
             }
         $styles[$rownya + 13][$takt_time + 14]['font-size'] = 10;
-        $rows[$rownya + 13][$takt_time + 14] = 'Takt Time = '.$takt_time.' Detik';
+				if ($takt_time == '-') {
+					$rows[$rownya + 13][$takt_time + 14] = '';
+				}else {
+					$rows[$rownya + 13][$takt_time + 14] = 'Takt Time = '.$takt_time.' Detik';
+				}
         //CycleTime
         $rows[$rownya][$cycle_time + 14] = 'Cycle Time = '.$cycle_time.' Detik';
         // $rows[$rownya + 13][$cycle_time + 14] = 'Cycle Time = '.$cycle_time.' Detik';

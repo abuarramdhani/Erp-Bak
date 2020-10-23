@@ -526,12 +526,14 @@ input[type="search"] {
 								</div>
 							</div>
 						</div>
-												<br>
-                            <div class="panel panel-default">
-                            <div class="panel-heading text-left">
-								<label style="margin-left: 2%;">Perhitungan Takt Time</label>
-							</div>
-                            <div class="panel-body">
+							<br>
+                <div class="panel panel-default">
+                <div class="panel-heading text-left">
+  								<label style="margin-left: 2%;">Perhitungan Takt Time  </label> &nbsp;&nbsp; &nbsp; &nbsp;
+                  <input type="radio" name="perhitunganTakt" value="1" <?php echo $takt_time != '99999' ? 'checked' : ''?>> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="radio" name="perhitunganTakt" value="0" <?php echo $takt_time == '99999' ? 'checked' : ''?>><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label>
+  							</div>
+                <div class="panel-body tskk_delik_cek" <?php echo $takt_time == '99999' ? 'style="display:none"' : ''?>>
 								<?php
 								if (!empty($lihat_perhitungan_takt_time)) {
 									foreach ($lihat_perhitungan_takt_time as $pt) {
@@ -621,8 +623,8 @@ input[type="search"] {
 												?>
 												<div class="panel panel-default">
 													<div class="panel-heading">
-														<label for="norm" style="margin-left:1%;">Takt Time : </label>
-															<input type="number" style="width:10%; height:34px;  margin-left:2%; text-align:center;" value="<?php echo $takt_time; ?>" placeholder="Input Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials taktTime"/>
+														  <label for="norm" class="tskk_tt" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>margin-left:1%;">Takt Time : </label>
+															<input type="number" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>width:10%; height:34px;  margin-left:2%; text-align:center;" value="<?php echo $takt_time; ?>" placeholder="Input Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials taktTime"/>
 															<label for="norm" style="margin-left:3% ;">Nilai Distribusi : </label>
 															<input type="number" style="width:10%; height:34px;  margin-left:3%; text-align:center" name="inputInsert" id="dst" value="<?php echo $nDistribusi ?>" class="lockscreen-credentials" readonly/>
 														<label for="norm" style="margin-left:2%;">Posisi Elemen Tambahan : </label>

@@ -490,10 +490,10 @@ background-size: 1800% 1800%;
 									<div class="col-lg-12">
 									<div class="row">
 									<br>
-												<label for="norm" class="control-label col-lg-2">Proses :</label>
-												<div id="divPassCheck" class="col-lg-10">
-													<input type="text" value="<?= $proses; ?>" style="height: 35px;" placeholder="Input Proses" name="txtProses" value="" id="txtProses" class="form-control proses" readonly required/>
-												</div>
+										<label for="norm" class="control-label col-lg-2">Proses :</label>
+										<div id="divPassCheck" class="col-lg-10">
+											<input type="text" value="<?= $proses; ?>" style="height: 35px;" placeholder="Input Proses" name="txtProses" value="" id="txtProses" class="form-control proses" readonly required/>
+										</div>
 										</div>
 										<br>
 										<div class="row">

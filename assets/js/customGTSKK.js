@@ -13,9 +13,36 @@ $('#tabel_daftarTSKK').DataTable({
 	"lengthChange": false
 });
 
-// $(document).ready(function () {
-
-// })
+$(document).ready(function () {
+	
+$('input[name="perhitunganTakt"]').on('ifChanged', function () {
+	if ($('input[name=perhitunganTakt]:checked').val() == "1") {
+		$('.tskk_delik_cek').show()
+		$('.tskk_tt').show()
+		$('input[name=taktTime]').show()
+		$('input[name=taktTime]').val('')
+		$('input[name=txtWaktu1Shift]').val('')
+		$('input[name=txtJumlahShift]').val('')
+		$('input[name=txtJumlahHariKerja]').val('')
+		$('input[name=txtForecast]').val('')
+		$('input[name=txtRencana]').val('')
+		$('input[name=txtQtyUnit]').val('')
+		// console.log("Ya");
+	} else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
+		// console.log("Tidak");
+		$('.tskk_delik_cek').hide()
+		$('.tskk_tt').hide()
+		$('input[name=taktTime]').hide()
+		$('input[name=taktTime]').val('99999')
+		$('input[name=txtWaktu1Shift]').val('0')
+		$('input[name=txtJumlahShift]').val('0')
+		$('input[name=txtJumlahHariKerja]').val('0')
+		$('input[name=txtForecast]').val('0')
+		$('input[name=txtRencana]').val('0')
+		$('input[name=txtQtyUnit]').val('0')
+	}
+});
+})
 
 //ADD ROWS FOR OBSERVATION SHEET//
 	var nomor ="6";
