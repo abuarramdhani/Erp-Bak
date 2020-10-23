@@ -501,9 +501,11 @@ input[type="search"] {
 						<br>
                             <div class="panel panel-default">
                             <div class="panel-heading text-left">
-								<label style="margin-left: 2%;">Perhitungan Takt Time</label>
+								<label style="margin-left: 2%;">Perhitungan Takt Time</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="perhitunganTakt_diss" value="1" <?php echo $takt_time != '99999' ? 'checked' : ''?>> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="perhitunganTakt_diss" value="0" <?php echo $takt_time == '99999' ? 'checked' : ''?>><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label>
 							</div>
-                            <div class="panel-body">
+              <div class="panel-body" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>">
 								<?php
 								if (!empty($lihat_perhitungan_takt_time)) {
 									foreach ($lihat_perhitungan_takt_time as $pt) {
@@ -591,7 +593,7 @@ input[type="search"] {
 												// 	exit();
 												?>
 												<div class="panel panel-default">
-													<div class="panel-heading" style="">
+													<div class="panel-heading" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>">
 														<label for="norm" style="margin-left:75%;">Takt Time : </label>
 															<input type="number" style="width:10%; height:34px; margin-right:5%;  margin-left:2%; text-align:center;" value="<?php echo $takt_time; ?>" placeholder="Input Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials taktTime" readonly/>
 													</div>
