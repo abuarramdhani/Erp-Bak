@@ -4700,6 +4700,10 @@ $route['MOTerlambatTransact/Monitoring'] = 'MOTerlambatTransact/C_Master/Monitor
 $route['MOTerlambatTransact/Monitoring/(:any)'] = 'MOTerlambatTransact/C_Master/$1';
 $route['MOTerlambatTransact/Monitoring/(:any)/(:any)'] = 'MOTerlambatTransact/C_Master/$1/$2';
 
+$route['MOTerlambatTransact/Record'] = 'MOTerlambatTransact/C_Master/Record';
+$route['MOTerlambatTransact/Record/(:any)'] = 'MOTerlambatTransact/C_Master/$1';
+$route['MOTerlambatTransact/Record/(:any)/(:any)'] = 'MOTerlambatTransact/C_Master/$1/$2';
+
 $route['MOTerlambatTransact/cekapi'] = 'MOTerlambatTransact/C_Master/cekapi';
 
 //-------------------------------------------Monitoring Job Produksi--------------------------------------------------//
