@@ -119,9 +119,9 @@ class C_Master extends CI_Controller
 
     $data['get'] = $this->M_mtt->getRecord();
 
-    echo "<pre>";
-    print_r($data['get']);
-    exit();
+    // echo "<pre>";
+    // print_r($data['get']);
+    // exit();
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
