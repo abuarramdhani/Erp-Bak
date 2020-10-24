@@ -38,8 +38,8 @@
             <th class="jtanak">JT Anak</th>
             <th class="jtbknanak">JTBKN Anak</th>
 
-            <th class="email">Email</th>
             <th class="email_internal">Email Internal</th>
+            <th class="email_external">Email</th>
             <th class="telkomsel_mygroup">Telkomsel Myroup</th>
             <th class="pidgin">Akun Pidgin</th>
             <th class="uk_baju">Ukuran Baju</th>
@@ -142,8 +142,8 @@
                         if (in_array("tp.jtanak", $select)) { echo "<td>" . $val['jtanak'] . "</td>";}
                         if (in_array("tp.jtbknanak", $select)) { echo "<td>" . $val['jtbknanak'] . "</td>";}
                         
-                        if (in_array("tp.email_internal", $select)) { echo "<td>" . $val['email'] . "</td>";}
-                        if (in_array("tp.email", $select)) { echo "<td>" . $val['email_internal'] . "</td>";}
+                        if (in_array("tp.email_internal", $select)) { echo "<td>" . $val['email_internal'] . "</td>";}
+                        if (in_array("tp.email", $select)) { echo "<td>" . $val['email'] . "</td>";}
                         if (in_array("tp.telkomsel_mygroup", $select)) { echo "<td>" . $val['telkomsel_mygroup'] . "</td>";}
                         if (in_array("tp.pidgin_account", $select)) { echo "<td>" . $val['pidgin_account'] . "</td>";}
                         if (in_array("tp.uk_baju", $select)) { echo "<td>" . $val['uk_baju'] . "</td>";}
@@ -165,7 +165,7 @@
                         if (in_array("tp.asal_outsourcing", $select)) { echo "<td>" . $val['asal_outsourcing'] . "</td>";}
                         if (in_array("tp.golkerja", $select)) { echo "<td>" . $val['golkerja'] . "</td>";}
                         if (in_array("to_char(masukkerja", $select)) { echo "<td>" . $val['masukkerja'] . "</td>";}
-                        if (in_array("to_char(tgllahir,", $select)) { echo "<td>" . $val['diangkat'] . "</td>";}
+                        if (in_array("to_char(diangkat,", $select)) { echo "<td>" . $val['diangkat'] . "</td>";}
                         if (in_array("tp.lmkontrak", $select)) { echo "<td>" . $val['lmkontrak'] . "</td>";}
                         if (in_array("to_char(akhkontrak", $select)) { echo "<td>" . $val['akhkontrak'] . "</td>";}
                         if (in_array("to_char(tglkeluar", $select)) { echo "<td>" . $val['tglkeluar'] . "</td>";}

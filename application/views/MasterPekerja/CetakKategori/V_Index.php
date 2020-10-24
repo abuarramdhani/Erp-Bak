@@ -204,13 +204,13 @@
 
                                         <ul class="nav nav-tabs">
                                             <li class="active">
-                                                <a href="#Data_pribadi">Data Pribadi</a>
+                                                <a href="#Data_pribadi" data-toggle="tab">Data Pribadi</a>
                                             </li>
                                             <li class="">
-                                                <a href="#Hubungan_kerja">Hubungan Kerja</a>
+                                                <a href="#Hubungan_kerja" data-toggle="tab">Hubungan Kerja</a>
                                             </li>
                                             <li class="">
-                                                <a href="#Jamsostek">Jamsostek</a>
+                                                <a href="#Jamsostek" data-toggle="tab">Jamsostek</a>
                                             </li>
                                         </ul>
 
@@ -303,7 +303,7 @@
                                                 <h3 class="text-primary">Lain-lain</h3>
                                                 <input name="email_internal" type="checkbox" class="chk_FilterTarikData" value="tp.email_internal">
                                                 <label> Email Internal</label><br>
-                                                <input name="email" type="checkbox" class="chk_FilterTarikData" value="tp.email">
+                                                <input name="email_external" type="checkbox" class="chk_FilterTarikData" value="tp.email">
                                                 <label> Email External</label><br>
                                                 <input name="telkomsel_mygroup" type="checkbox" class="chk_FilterTarikData" value="tp.telkomsel_mygroup">
                                                 <label> Telkomsel Mygroup</label><br>
@@ -320,7 +320,7 @@
                                         </div>
 
 
-                                        <div class="tab-pane inactive" id="Hubungan_kerja">
+                                        <div class="tab-pane" id="Hubungan_kerja">
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Penempatan</h3>
                                                 <input name="kodesie" type="checkbox" class="chk_FilterTarikData" value="tp.kodesie">
@@ -355,7 +355,7 @@
                                                 <label> Golongan Kerja</label><br>
                                                 <input name="masukkerja" type="checkbox" class="chk_FilterTarikData" value="to_char(masukkerja, 'DD-MM-YYYY') AS masukkerja">
                                                 <label> Tanggal Masuk Kerja</label><br>
-                                                <input name="diangkat" type="checkbox" class="chk_FilterTarikData" value="to_char(tgllahir, 'DD-MM-YYYY') AS tgllahir">
+                                                <input name="diangkat" type="checkbox" class="chk_FilterTarikData" value="to_char(diangkat, 'DD-MM-YYYY') AS diangkat">
                                                 <label> Tanggal Diangkat</label><br>
                                                 <input name="lmkontrak" type="checkbox" class="chk_FilterTarikData" value="tp.lmkontrak">
                                                 <label> Lama Kontrak</label><br>
@@ -408,7 +408,7 @@
 
                                         </div>
 
-                                        <div class="tab-pane inactive" id="Jamsostek">
+                                        <div class="tab-pane" id="Jamsostek">
 
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">BPJS Kes</h3>
