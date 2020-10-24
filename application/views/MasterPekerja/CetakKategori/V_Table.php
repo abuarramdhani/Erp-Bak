@@ -165,7 +165,7 @@
                         if (in_array("tp.asal_outsourcing", $select)) { echo "<td>" . $val['asal_outsourcing'] . "</td>";}
                         if (in_array("tp.golkerja", $select)) { echo "<td>" . $val['golkerja'] . "</td>";}
                         if (in_array("to_char(masukkerja", $select)) { echo "<td>" . $val['masukkerja'] . "</td>";}
-                        if (in_array("to_char(diangkat,", $select)) { echo "<td>" . $val['diangkat'] . "</td>";}
+                        if (in_array("to_char(diangkat", $select)) { echo "<td>" . $val['diangkat'] . "</td>";}
                         if (in_array("tp.lmkontrak", $select)) { echo "<td>" . $val['lmkontrak'] . "</td>";}
                         if (in_array("to_char(akhkontrak", $select)) { echo "<td>" . $val['akhkontrak'] . "</td>";}
                         if (in_array("to_char(tglkeluar", $select)) { echo "<td>" . $val['tglkeluar'] . "</td>";}
