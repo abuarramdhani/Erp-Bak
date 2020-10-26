@@ -234,7 +234,7 @@
                     <span v-else-if="state.worker.presensi_ok === false">TIDAK OK <i class="fa fa-close" style="color: red;"></i></span>
                   </label>
                   <label style="padding-left: 1em;" for="" class="control-label">
-                    <button type="button" data-toggle="popover" title="Skala Penilaian">
+                    <button type="button" id="skala_penilaian_popover" data-toggle="popover" title="Skala Penilaian">
                       <i class="fa fa-question-circle"></i>
                     </button>
                   </label>
@@ -565,12 +565,10 @@
       remFullText: 'Telah mencapai Limit karakter',
       limitText: '%n',
     })
-    $('[data-toggle="popover"]').popover({
+    $('button#skala_penilaian_popover').popover({
       trigger: 'focus',
       html: true,
-      content: function() {
-        return $('#popover_content_skala_penilaian').html();
-      }
+      content: () => $('#popover_content_skala_penilaian').html()
     })
     $('.datepicker1, .datepicker2').datepicker({
       changeYear: true,
