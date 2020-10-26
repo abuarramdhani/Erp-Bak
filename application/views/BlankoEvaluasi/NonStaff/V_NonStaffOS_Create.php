@@ -234,7 +234,7 @@
                     <span v-else-if="state.worker.presensi_ok === false">TIDAK OK <i class="fa fa-close" style="color: red;"></i></span>
                   </label>
                   <label style="padding-left: 1em;" for="" class="control-label">
-                    <button type="button" id="skala_penilaian_popover" data-toggle="popover" title="Skala Penilaian">
+                    <button type="button" id="skala_penilaian_popover" title="Skala Penilaian">
                       <i class="fa fa-question-circle"></i>
                     </button>
                   </label>
