@@ -14,7 +14,7 @@ class M_pologbook extends CI_Model
         $sql = "select
         kppl.LOGBOOK_ID
         ,kppl.PRINT_DATE input_date
-        ,fu.USER_NAME employee
+        ,kcpl.CF_ADMIN_PO employee
         ,kppl.PHA_SEGMENT_1 po_number
         ,kppl.VENDOR_NAME vendor_name
         ,kppl.BUYER buyer_name
@@ -41,6 +41,7 @@ class M_pologbook extends CI_Model
         ,fnd_user fu
         ,per_people_f ppf
         ,po_headers_all pha
+        ,khs.khs_cetak_po_landscape kcpl
         where
         kppl.PRINT_BY = fu.USER_ID
         and pha.SEGMENT1 = kppl.PHA_SEGMENT_1
@@ -48,6 +49,8 @@ class M_pologbook extends CI_Model
         and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
         and ppf.NATIONAL_IDENTIFIER = '$BuyerNIK'
         and fu.USER_NAME like '%PSUP%'
+        and kppl.REQUEST_ID = kcpl.REQUEST_ID
+        and kcpl.NOMORQ = 1
         ORDER BY PRINT_DATE desc";
         return $this->oracle->query($sql)->result_array();
     }
