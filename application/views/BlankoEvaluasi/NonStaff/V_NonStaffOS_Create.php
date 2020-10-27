@@ -112,6 +112,10 @@
   [v-cloak] {
     display: none;
   }
+
+  .popover{
+     max-width: none;
+  }
 </style>
 <section id="app">
   <div class="row" style="margin: 1em;">
@@ -313,7 +317,11 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>1. HARD SKILL/KEMAMPUAN TEKNIS </td>
+                  <td>1. HARD SKILL/KEMAMPUAN TEKNIS 
+                    <button class="pull-right" type="button"  id="hard_skill_popover" title="HARD SKILL/KEMAMPUAN TEKNIS">
+                      <i class="fa fa-question-circle"></i>
+                    </button>
+                  </td>
                   <td class="p-0">
                     <textarea required v-model="state.two.nilai[0].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
@@ -331,7 +339,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>2. PERILAKU </td>
+                  <td>2. PERILAKU 
+                    <button class="pull-right" type="button" id="perilaku_popover" title="PERILAKU">
+                      <i class="fa fa-question-circle"></i>
+                    </button></td>
                   <td class="p-0">
                     <textarea required v-model="state.two.nilai[1].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
@@ -346,7 +357,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>3. KAIZEN</td>
+                  <td>3. KAIZEN 
+                    <button class="pull-right"  type="button" id="kaizen_popover" title="KAIZEN">
+                      <i class="fa fa-question-circle"></i>
+                    </button></td>
                   <td class="p-0">
                     <textarea required v-model="state.two.nilai[2].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
@@ -361,7 +375,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>4. PRESTASI KERJA</td>
+                  <td>4. PRESTASI KERJA 
+                    <button class="pull-right" type="button" id="prestasi_kerja_popover" title="PRESTASI KERJA">
+                      <i class="fa fa-question-circle"></i>
+                    </button></td>
                   <td class="p-0">
                     <textarea required v-model="state.two.nilai[3].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
@@ -376,7 +393,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>5. KERJASAMA</td>
+                  <td>5. KERJASAMA 
+                    <button class="pull-right" type="button" id="kerjasama_popover" title="KERJASAMA">
+                      <i class="fa fa-question-circle"></i>
+                    </button></td>
                   <td class="p-0">
                     <textarea required v-model="state.two.nilai[4].bukti" class="form-control evaluasi-limiter" placeholder="ketik disini ... (Wajib diisi)" style="border: none; resize: vertical; max-height: 6em; min-height: 3em; height: 100%; width: 100%;" name="" id="" cols="20" rows="2"></textarea>
                   </td>
@@ -505,6 +525,7 @@
     </div>
   </div>
 </section>
+
 <div id="popover_content_skala_penilaian" style="display: none;">
   <table class="bordered">
     <tbody>
@@ -543,6 +564,214 @@
     </tbody>
   </table>
 </div>
+
+<div id="popover_content_hard_skill" style="display: none;">
+  <table class="bordered" style="width: 500px;">
+    <tbody>
+      <tr class="centered">
+        <th colspan="3">Adalah pengetahuan, keahlian, dan kebiasaaan tertentu yang diterapkan dalam menyelesaikan
+        sebuah tugas. </th>
+      </tr>
+      <tr class="centered">
+        <td style="width: 5px;" class="bold" >Nilai</td>
+        <td class="bold">Skala</td>
+        <td class="bold">Indikator Perilaku</td>
+      </tr>
+      <tr class="centered">
+        <td>1</td>
+        <td>Kurang Sekali</td>
+        <td>Proses pelatihan dan pembiasaan melakukan pekerjaan, masih membutuhkanpengarahan, pengawasan, serta bantuan 
+        </td>
+      </tr>
+      <tr class="centered">
+        <td>2</td>
+        <td>Kurang</td>
+        <td>Mampu melakukan pekerjaan dengan pengarahan dan pengawasan yang penuh</td>
+      </tr>
+      <tr class="centered">
+        <td>3</td>
+        <td>Cukup</td>
+        <td>Mampu menguasai pekerjaan dengan pengawasan minimal</td>
+      </tr>
+      <tr class="centered">
+        <td>4</td>
+        <td>Baik</td>
+        <td>Mampu menguasai pekerjaan tanpa pengawasan</td>
+      </tr>
+       <tr class="centered">
+        <td>5</td>
+        <td>Sangat Baik</td>
+        <td>Mampu menguasai pekerjaan tanpa pengawasan dan mengajarkan ke orang lain</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="popover_content_perilaku" style="display: none;">
+  <table class="bordered" style="width: 500px;">
+    <tbody>
+      <tr class="centered">
+        <th colspan="3">Adalah penilaian terhadap perilaku kerja yang sesuai dengan work habit dan nilai-nilai perusahaan</th>
+      </tr>
+      <tr class="centered">
+        <td style="width: 5px;" class="bold" >Nilai</td>
+        <td class="bold">Skala</td>
+        <td class="bold">Indikator Perilaku</td>
+      </tr>
+      <tr class="centered">
+        <td>1</td>
+        <td>Kurang Sekali</td>
+        <td>Sering melanggar work habit dan nilai-nilai perusahaan </td>
+      </tr>
+      <tr class="centered">
+        <td>2</td>
+        <td>Kurang</td>
+        <td>Mampu menyesuaikan diri dengan work habit dan nilai-nilai perusahaan namun seringkali lalai jika tidak ada pengawasan </td>
+      </tr>
+      <tr class="centered">
+        <td>3</td>
+        <td>Cukup</td>
+        <td>Mampu menyesuaiakan diri dengan work habit dan nilai-nilai perusahaan dengan sedikit pengawasan</td>
+      </tr>
+      <tr class="centered">
+        <td>4</td>
+        <td>Baik</td>
+        <td>Mampu menyesuaikan diri dengan work habit dan nilai-nilai perusahaan tanpa pengawasan </td>
+      </tr>
+       <tr class="centered">
+        <td>5</td>
+        <td>Sangat Baik</td>
+        <td>Mampu menyesuaikan diri dengan work habit dan nilai-nilai perusahaan secara konsisten dan mengajarkannya pada orang lain </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="popover_content_kaizen" style="display: none;">
+  <table class="bordered" style="width: 500px;">
+    <tbody>
+      <tr class="centered">
+        <th colspan="3">Adalah ide perbaharuan melalui ide Kaizen sertakan bukti SS (Suggestion System) </th>
+      </tr>
+      <tr class="centered">
+        <td style="width: 5px;" class="bold" >Nilai</td>
+        <td class="bold">Skala</td>
+        <td class="bold">Indikator Perilaku</td>
+      </tr>
+      <tr class="centered">
+        <td>1</td>
+        <td>Kurang Sekali</td>
+        <td>Tidak memiliki perhatian/ kesadaran untuk mengusulkan ide kaizen</td>
+      </tr>
+      <tr class="centered">
+        <td>2</td>
+        <td>Kurang</td>
+        <td>Memiliki perhatian/ kesadaran terhadap usulan ide kaizen namun belum dituangkan dalam form pengajuan ide kaizen </td>
+      </tr>
+      <tr class="centered">
+        <td>3</td>
+        <td>Cukup</td>
+        <td>Mengajukan 0 ide kaizen pada 3 bulan pertama sebagai pekerja OS/ Kontrak non-staf, mengajukan 1 ide kaizen dalam 3 bulan berikutnya (minimal 1 ide dalam 3 bulan), namun belum diimplementasikan</td>
+      </tr>
+      <tr class="centered">
+        <td>4</td>
+        <td>Baik</td>
+        <td>Mengajukan 1 ide kaizen dalam 3 bulan dan mengimplementasikannya </td>
+      </tr>
+       <tr class="centered">
+        <td>5</td>
+        <td>Sangat Baik</td>
+        <td>Mengajukan lebih dari 1 ide kaizen dan mengimplementasikannya </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="popover_content_prestasi_kerja" style="display: none;">
+  <table class="bordered" style="width: 500px;">
+    <tbody>
+      <tr class="centered">
+        <th colspan="3">Kemampuan dalam menyelesaikan tugas-tugas yang diberikan atasan secara tepat waktu dengan
+        kualitas yang baik</th>
+      </tr>
+      <tr class="centered">
+        <td style="width: 5px;" class="bold" >Nilai</td>
+        <td class="bold">Skala</td>
+        <td class="bold">Indikator Perilaku</td>
+      </tr>
+      <tr class="centered">
+        <td>1</td>
+        <td>Kurang Sekali</td>
+        <td>Produktivitas pencapaian target (p) < 80% dari jumlah target yang ditetapkan selama satu periode perpanjangan (rata-rata)</td>
+      </tr>
+      <tr class="centered">
+        <td>2</td>
+        <td>Kurang</td>
+        <td>Produktivitas pencapaian target 80% ≤ p < 85 % dari jumlah target yang ditetapkan selama satu periode perpanjangan (rata-rata)</td>
+      </tr>
+      <tr class="centered">
+        <td>3</td>
+        <td>Cukup</td>
+        <td>Produktivitas pencapaian target ≥ 85 % dari jumlah target yang ditetapkan selama satu periode perpanjangan (rata-rata)</td>
+      </tr>
+      <tr class="centered">
+        <td>4</td>
+        <td>Baik</td>
+        <td>Produktivitas pencapaian target ≥ 90 % dari jumlah target yang telah ditetapkan selama satu periode perpanjangan (rata-rata)</td>
+      </tr>
+       <tr class="centered">
+        <td>5</td>
+        <td>Sangat Baik</td>
+        <td>Produktivitas pencapaian target > 95% dari jumlah target yang telah ditetapkan selama satu periode perpanjangan (rata-rata)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="popover_content_kerjasama" style="display: none;">
+  <table class="bordered" style="width: 500px;">
+    <tbody>
+      <tr class="centered">
+        <th colspan="3">Kemampuan bekerjasama dan penyesuaian diri dengan pekerja lain dan atasan dalam satu unit yang sama </th>
+      </tr>
+      <tr class="centered">
+        <td style="width: 5px;" class="bold" >Nilai</td>
+        <td class="bold">Skala</td>
+        <td class="bold">Indikator Perilaku</td>
+      </tr>
+      <tr class="centered">
+        <td>1</td>
+        <td>Kurang Sekali</td>
+        <td>Menjadi bagian dari tim kerja, namun tidak menunjukkan partisipasi secara aktif (pasif, diam saja dalam kelompok kerja)</td>
+      </tr>
+      <tr class="centered">
+        <td>2</td>
+        <td>Kurang</td>
+        <td>Menjadi bagian dari tim kerja, namun partisipasi cenderung terbatas (aktif hanya dengan individu tertentu)
+        </td>
+      </tr>
+      <tr class="centered">
+        <td>3</td>
+        <td>Cukup</td>
+        <td>Berusaha aktif sebagai bagian dari tim (melakukan tugas kelompok sebatas tanggung jawabnya saja)</td>
+      </tr>
+      <tr class="centered">
+        <td>4</td>
+        <td>Baik</td>
+        <td>Aktif berpartisipasi dalam kerja kelompok secara konsisten dan mendorong sebagian anggota kelompok secara sinergi</td>
+      </tr>
+       <tr class="centered">
+        <td>5</td>
+        <td>Sangat Baik</td>
+        <td>Mengambil inisiatif dalam kerja kelompok maupun antar kelompok (inisiator) secara sinergi</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
 <script src="<?= base_url('assets/plugins/vue/vue@2.6.11.js') ?>"></script>
 <script>
   // if vanilla can, why not ?
@@ -570,6 +799,41 @@
       html: true,
       content: () => $('#popover_content_skala_penilaian').html()
     })
+    $('button#hard_skill_popover').popover({
+      // trigger: 'focus',
+      html: true,
+      content: () => $('#popover_content_hard_skill').html()
+    }).click(function (e) {
+        $('[data-toggle=popover]').not(this).popover('hide');
+    });
+    $('button#perilaku_popover').popover({
+      //trigger: 'focus',
+      html: true,
+      content: () => $('#popover_content_perilaku').html()
+    }).click(function (e) {
+        $('[data-toggle=popover]').not(this).popover('hide');
+    });
+    $('button#kaizen_popover').popover({
+     // trigger: 'focus',
+      html: true,
+      content: () => $('#popover_content_kaizen').html()
+    }).click(function (e) {
+        $('[data-toggle=popover]').not(this).popover('hide');
+    });
+    $('button#prestasi_kerja_popover').popover({
+     // trigger: 'focus',
+      html: true,
+      content: () => $('#popover_content_prestasi_kerja').html()
+    }).click(function (e) {
+        $('[data-toggle=popover]').not(this).popover('hide');
+    });
+    $('button#kerjasama_popover').popover({
+      //trigger: 'focus',
+      html: true,
+      content: () => $('#popover_content_kerjasama').html()
+    }).click(function (e) {
+        $('[data-toggle=popover]').not(this).popover('hide');
+    });
     $('.datepicker1, .datepicker2').datepicker({
       changeYear: true,
       format: 'dd-mm-yyyy',
