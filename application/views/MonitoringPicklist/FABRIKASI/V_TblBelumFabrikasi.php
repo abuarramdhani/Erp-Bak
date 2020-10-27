@@ -60,7 +60,7 @@
             <td style="text-align:left"><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC']?></td>
             <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
             <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
-            <td><button type="button" class="btn btn-success <?= $btn?>" id="btnapp<?= $no?>" onclick="approveFabrikasi(<?= $no?>)" <?= $del?>>Approve</button>
+            <td><button type="button" class="btn btn-success <?= $btn?>" id="btnapp<?= $no?>" onclick="modalapproveFab(<?= $no?>)" <?= $del?>>Approve</button>
             <button formaction="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/printBelumFabrikasi/'.$val['PICKLIST'].''); ?>" id="iniprint<?= $no?>" class="btn btn-danger <?= $ctk?>" disabled>Print</button></td>
         </tr>
     <?php $no++; }?>
@@ -69,7 +69,7 @@
 </div>
 <br>
 <div class="col-md-12 text-right">
-    <input type="button" class="btn btn-warning" id="appsemua" disabled="disabled" style="width: 150px" onclick="approveFabrikasi2()" value="Approve Selected (0)">
+    <input type="button" class="btn btn-warning" id="appsemua" disabled="disabled" style="width: 150px" onclick="modalapproveFab(0)" value="Approve Selected (0)">
     <input type="submit" class="btn btn-danger" id="ctksemua" disabled="disabled" style="width: 150px" value="Print Selected (0)">
 </div>
 <form>

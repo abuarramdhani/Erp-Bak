@@ -26,7 +26,7 @@ $('.datepicklist').datepicker({
         autoClose: true
 }).on('change', function(){
     $('.datepicker').hide();
-});;
+});
 
 $(".deptpicklist").select2({
     allowClear: true,
@@ -248,14 +248,107 @@ function belumapproveFabrikasi(th) {
         });	
 }
 
+$(document).on("change", "#tgl_minta", function(){
+    var tgl = $('#tgl_minta').val();
+    
+    $.ajax({
+        url: baseurl+'MonitoringPicklistFabrikasi/BelumApprove/getShift',
+        data: { tgl : tgl },
+        type: "POST",
+        datatype: 'html',
+        success: function(data) {
+            $('#shift_minta').html(data);
+        }
+    })
+})
+
+$(document).on("change", ".approve_required:last", function(){
+    $('#btnsaveappFab').removeAttr('disabled');
+})
+
+
+function gantisift(no) {
+    var tgl = $('#tgl_minta'+no).val();
+    
+    $.ajax({
+        url: baseurl+'MonitoringPicklistFabrikasi/BelumApprove/getShift',
+        data: { tgl : tgl },
+        type: "POST",
+        datatype: 'html',
+        success: function(data) {
+            $('#shift_minta'+no).html(data);
+        }
+    })
+}
+
+
+$(document).on("change", 'input[name="ket_app"]', function(){
+    // $('#btnsaveappFab').removeAttr('disabled');
+    var ket = $('input[name="ket_app"]:checked').val();
+    if (ket == 'sendiri') {
+        var nojob = $('.nojob').map(function(){return $(this).val();}).get();
+        var cek = $('.tandasemua').map(function(){return $(this).val();}).get();
+    }else{
+        var nojob = '';
+        var cek = '';
+    }
+    console.log(ket);
+    $.ajax({
+        url: baseurl+'MonitoringPicklistFabrikasi/BelumApprove/permintaanApprove',
+        data: { ket : ket, nojob : nojob, cek : cek },
+        type: "POST",
+        datatype: 'html',
+        success: function(data) {
+            $('#input_permintaan').html(data);
+            $('.datepicklist').datepicker({
+                    format: 'dd/mm/yyyy',
+                    todayHighlight: true,
+                    autoClose: true
+            }).on('change', function(){
+                $('.datepicker').hide();
+            });
+            
+        }
+    })
+})
+
+function modalapproveFab(no) {
+    if (no == 0) { // approve sellected
+        tujuan = 'modalApproveSelect';
+    }else{
+        tujuan = 'modalApprove';
+    }
+    $.ajax({
+        url: baseurl+'MonitoringPicklistFabrikasi/BelumApprove/'+tujuan,
+        data: { no : no },
+        type: "POST",
+        datatype: 'html',
+        success: function(data) {
+            $('#mdlApproveFab').modal('show');
+            $('#saveappFab').html(data);
+            $('.datepicklist').datepicker({
+                    format: 'dd/mm/yyyy',
+                    todayHighlight: true,
+                    autoClose: true
+            }).on('change', function(){
+                $('.datepicker').hide();
+            });
+            
+        }
+    })
+}
+
 function approveFabrikasi(no) {
         var nojob = $('#nojob'+no).val();
         var picklist = $('#picklist'+no).val();
+        var tgl_minta = $('#tgl_minta').val();
+        var shift_minta = $('#shift_minta').val();
         $('#btnapp'+no).attr('disabled', 'disabled');
+        $('#btnsaveappFab').attr('disabled', 'disabled');
     
         var request = $.ajax({
             url: baseurl+'MonitoringPicklistFabrikasi/BelumApprove/approveData',
-            data: { nojob : nojob, picklist : picklist },
+            data: { nojob : nojob, picklist : picklist, tgl_minta : tgl_minta, shift_minta : shift_minta },
             type: "POST",
             datatype: 'html',
             success: function(data) {
@@ -265,6 +358,7 @@ function approveFabrikasi(no) {
                 $('#cek'+no).removeAttr("onclick");
                 $('#ceka'+no).removeClass("ceka");
                 $('#iniprint'+no).removeAttr('disabled');
+                $('#mdlApproveFab').modal('hide');
             }
         });
 }
@@ -273,10 +367,18 @@ function approveFabrikasi2() {
     var nojob = $('.nojob').map(function(){return $(this).val();}).get();
     var picklist = $('.picklist').map(function(){return $(this).val();}).get();
     var cek = $('.tandasemua').map(function(){return $(this).val();}).get();
+    var ket_app = $('#ket_app').val();
+    if (ket_app == 'bersama') {
+        var tgl_minta = $('#tgl_minta').val();
+        var shift_minta = $('#shift_minta').val();
+    }else{
+        var tgl_minta = $('.tgl_minta').map(function(){return $(this).val();}).get();
+        var shift_minta = $('.shift_minta').map(function(){return $(this).val();}).get();
+    }
 
     var request = $.ajax({
         url: baseurl+'MonitoringPicklistFabrikasi/BelumApprove/approveData2',
-        data: { nojob : nojob, picklist : picklist, cek : cek},
+        data: { nojob : nojob, picklist : picklist, cek : cek, ket : ket_app, tgl_minta : tgl_minta, shift_minta : shift_minta},
         type: "POST",
         datatype: 'html',
         success: function(data) {
@@ -287,6 +389,7 @@ function approveFabrikasi2() {
             $('#ctksemua').removeAttr('disabled');
             $('.tercek4').removeAttr('disabled');
             $('.tercek2').removeAttr("onclick");
+            $('#mdlApproveFab').modal('hide');
         }
     });
 }
