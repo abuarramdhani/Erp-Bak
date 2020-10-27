@@ -1220,6 +1220,11 @@ $(function () {
     });
   });
 
+  $(document).on('click', '#prev_Pengalaman', function () {
+    let id = $('#link_pengalaman').val()
+    $("#" + id).attr('style', 'color: blue');
+  })
+
   $(".MasterPekerja-PerhitunganPesangon-DaftarPekerja").select2({
     allowClear: false,
     placeholder: "Pilih Pekerja",
