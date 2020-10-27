@@ -280,6 +280,27 @@ class C_PengalamanKerja extends CI_Controller
 		$sampai_pengalaman = $this->input->post('sampai_pengalaman');
 		$pengalaman_tglCetak = $this->input->post('pengalaman_tglCetak');
 		$data['nik'] = $this->input->post('cekNIK');
+
+		//insert data
+		$menu = 'SURAT - SURAT -> SURAT PENGALAMAN';
+		$ket = 'NO.INDUK -> ';
+		$jenis = 'CETAK -> SURAT PENGALAMAN KERJA';
+		$program = 'PEKERJA';
+		$noindbaru = 'NULL';
+
+		$data_insert = array(
+			'wkt' => 'now()',
+			'menu' => $menu,
+			'ket' => $ket . $noind_pengalaman,
+			'noind' => $noind_pengalaman,
+			'jenis' => $jenis,
+			'program' => $program,
+			'noind_baru' => $noindbaru
+		);
+
+		$this->M_pengalamankerja->insertLogCetak($data_insert);
+		//end of insert 
+
 		$noind = substr($noind_pengalaman, 0, 1);
 		$noind_c = substr($noind_pengalaman, 2, 1);
 		$tanggal = explode("-", $sampai_pengalaman);
@@ -426,5 +447,27 @@ class C_PengalamanKerja extends CI_Controller
 
 		$data['data'] = $this->M_pengalamankerja->getSuratPengalamanKerja($data1, $data2);
 		echo json_encode($data);
+	}
+
+	public function insertLogCetak()
+	{
+		$menu = 'SURAT - SURAT -> SURAT PENGALAMAN';
+		$ket = 'NO.INDUK -> ';
+		$noind = $this->input->post('noindlog');
+		$jenis = 'CETAK -> SURAT PENGALAMAN KERJA';
+		$program = 'PEKERJA';
+		$noindbaru = 'NULL';
+
+		$data_insert = array(
+			'wkt' => 'now()',
+			'menu' => $menu,
+			'ket' => $ket . $this->input->post('noindlog'),
+			'noind' => $noind,
+			'jenis' => $jenis,
+			'program' => $program,
+			'noind_baru' => $noindbaru
+		);
+
+		$this->M_pengalamankerja->insertLogCetak($data_insert);
 	}
 }

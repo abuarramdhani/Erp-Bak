@@ -85,7 +85,8 @@ class M_pengalamankerja extends CI_Model
 
 	public function getSuratPengalamanKerjaAll()
 	{
-		$sql = "select 
+
+		$sql = "SELECT 
 				    	ts.kd_surat,
 				    	no_surat,
 				    	ts.noind,
@@ -96,7 +97,10 @@ class M_pengalamankerja extends CI_Model
 				    	ts.tgl_cetak::date,
 				    	ts.tgl_surat::date,
 				    	ts.cetak,
-				    	ts.alamat
+						ts.alamat,
+						tp.noind,
+						(case when ts.noind in (select noind from hrd_khs.tlog tl where tl.noind = ts.noind and tl.jenis = 'CETAK -> SURAT PENGALAMAN KERJA')
+							then 'blue' else 'black' end) as warna
 					from \"Surat\".tsurat_pengalaman ts
 					left join hrd_khs.tpribadi tp 
 					on ts.noind = tp.noind
@@ -240,5 +244,10 @@ class M_pengalamankerja extends CI_Model
 		$this->personalia
 			->where('kd_isi', $key)
 			->delete("\"Surat\".tisi_pengalaman");
+	}
+
+	public function insertLogCetak($data)
+	{
+		$this->personalia->insert("hrd_khs.tlog", $data);
 	}
 }
