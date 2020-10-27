@@ -13,7 +13,8 @@ class M_pickgudang extends CI_Model
         $sql = "SELECT msi.secondary_inventory_name sub_inv_code,
                         msi.description sub_inv_desc
                 FROM mtl_secondary_inventories msi
-                WHERE msi.secondary_inventory_name LIKE '%$term%'";
+				WHERE msi.secondary_inventory_name LIKE '%$term%'
+				order by 1";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
@@ -215,6 +216,32 @@ class M_pickgudang extends CI_Model
 		mtl_txn_request_lines mtrl
 		where mtrh.HEADER_ID = mtrl.HEADER_ID
 		and mtrh.REQUEST_NUMBER = '$picklist'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cariReqPelayanan(){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist order by 2, 3";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getShift($shift)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select BCS.SHIFT_NUM,BCS.DESCRIPTION
+				from BOM_SHIFT_TIMES bst
+				    ,BOM_CALENDAR_SHIFTS bcs
+				    ,bom_shift_dates bsd
+				where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+				  and bst.SHIFT_NUM = bcs.SHIFT_NUM
+				  and bcs.CALENDAR_CODE='KHS_CAL'
+				  and bst.shift_num = bsd.shift_num
+				  and bst.calendar_code=bsd.calendar_code
+				  and bsd.SEQ_NUM is not null
+				  and BCS.SHIFT_NUM = $shift
+				  ORDER BY BCS.SHIFT_NUM asc";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

@@ -66,9 +66,39 @@ class C_BelumGudang extends CI_Controller
 			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
 			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
 		}
-		$data['data'] = $getdata;
+		$datanya = $this->sortbyTanggalPelayanan($getdata);
+		$data['data'] = $datanya;
+		// echo "<pre>";print_r($getdata);exit();
 		
 		$this->load->view('MonitoringPicklist/GUDANG/V_TblBelumGudang', $data);
+	}
+
+	public function sortbyTanggalPelayanan($getdata){
+		$pelayanan = $this->M_pickgudang->cariReqPelayanan();
+		$datanya = $nojob = $datanya2 = array();
+		foreach ($pelayanan as $key => $value) {
+			foreach ($getdata as $key2 => $get) {
+				if ($get['JOB_NO'] == $value['JOB_NUMBER']) {
+					$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
+					$shift = $this->M_pickgudang->getShift($value['SHIFT']);
+					$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
+					array_push($datanya, $getdata[$key2]);
+					array_push($nojob, $get['JOB_NO']);
+				}
+			}
+		}
+		foreach ($getdata as $key => $val) {
+			if (!in_array($val['JOB_NO'], $nojob)) {
+				$getdata[$key]['TGL_PELAYANAN'] = $getdata[$key]['SHIFT'] = '';
+				array_push($datanya2, $getdata[$key]);
+			}
+		}
+		
+		foreach ($datanya as $key => $value) {
+			array_push($datanya2, $datanya[$key]);
+		}
+		// echo "<pre>";print_r($datanya);exit();
+		return $datanya2;
 	}
 
 	function searchData2(){

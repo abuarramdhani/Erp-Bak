@@ -6,7 +6,29 @@ class M_pickfabrikasi extends CI_Model
     {
         parent::__construct();
         $this->load->database();    
-    }
+	}
+	
+	function getShift($date=FALSE)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		if ($date === FALSE) {
+			$date = date('Y/m/d');
+		}
+		$sql = "select BCS.SHIFT_NUM,BCS.DESCRIPTION
+				from BOM_SHIFT_TIMES bst
+				    ,BOM_CALENDAR_SHIFTS bcs
+				    ,bom_shift_dates bsd
+				where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+				  and bst.SHIFT_NUM = bcs.SHIFT_NUM
+				  and bcs.CALENDAR_CODE='KHS_CAL'
+				  and bst.shift_num = bsd.shift_num
+				  and bst.calendar_code=bsd.calendar_code
+				  and bsd.SEQ_NUM is not null
+				  and bsd.shift_date=trunc(to_date('$date','YYYY/MM/DD'))
+				  ORDER BY BCS.SHIFT_NUM asc";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
 
     function getdataBelum($dept, $tgl1, $tgl2)
 	{
@@ -299,6 +321,54 @@ class M_pickfabrikasi extends CI_Model
 		mtl_txn_request_lines mtrl
 		where mtrh.HEADER_ID = mtrl.HEADER_ID
 		and mtrh.REQUEST_NUMBER = '$picklist'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cekpermintaanPelayanan($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist where job_number = '$nojob'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+	
+	public function permintaanApprove($nojob, $date, $shift){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "insert into khs_pelayanan_picklist(JOB_NUMBER, TANGGAL_PELAYANAN, SHIFT)
+		VALUES('$nojob', to_date('$date', 'DD/MM/YYYY') ,$shift)";
+		$query = $oracle->query($sql);
+		$query = $oracle->query('commit');
+	}
+
+	public function recallpermintaan($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "delete from khs_pelayanan_picklist where job_number = '$nojob'";
+		$query = $oracle->query($sql);
+		$query = $oracle->query('commit');
+	}
+	
+	public function cariReqPelayanan(){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist order by 2, 3";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getShift2($shift)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select BCS.SHIFT_NUM,BCS.DESCRIPTION
+				from BOM_SHIFT_TIMES bst
+				    ,BOM_CALENDAR_SHIFTS bcs
+				    ,bom_shift_dates bsd
+				where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+				  and bst.SHIFT_NUM = bcs.SHIFT_NUM
+				  and bcs.CALENDAR_CODE='KHS_CAL'
+				  and bst.shift_num = bsd.shift_num
+				  and bst.calendar_code=bsd.calendar_code
+				  and bsd.SEQ_NUM is not null
+				  and BCS.SHIFT_NUM = $shift
+				  ORDER BY BCS.SHIFT_NUM asc";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
