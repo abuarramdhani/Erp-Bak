@@ -101,7 +101,7 @@ class M_blankoevaluasi extends CI_Model
                 ts.dept as departemen,
                 tpkj.pekerjaan,
                 (select nama_status from hrd_khs.tb_status_jabatan where noind = tp.noind limit 1) status_jabatan,
-                (SELECT to_char((tanggal_akhir::date + INTERVAL '1 DAY')::date, 'dd-mm-yyyy') from \"Surat\".tevaluasi_nonstaff where noind = tp.noind and deleted = '0' order by tanggal_akhir desc limit 1) periode_awal,
+                (SELECT to_char((tanggal_akhir::date - INTERVAL '5 DAY')::date, 'dd-mm-yyyy') from \"Surat\".tevaluasi_nonstaff where noind = tp.noind and deleted = '0' order by tanggal_akhir desc limit 1) periode_awal,
                 null as periode_akhir,
                 null as presensi_ok,
                 (
@@ -121,7 +121,8 @@ class M_blankoevaluasi extends CI_Model
                             
                     END
                 ) as masa_kerja,
-                to_char(tp.akhkontrak::date, 'DD-MM-YYYY') akhir_kontrak
+                to_char(tp.akhkontrak::date, 'DD-MM-YYYY') akhir_kontrak,
+                to_char(tp.masukkerja::date, 'DD-MM-YYYY') tgl_masuk
             FROM 
                 hrd_khs.tpribadi tp 
                 inner join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie

@@ -947,6 +947,7 @@
       akhir_kontrak: null,
       periode_awal: null,
       periode_akhir: null,
+      periode_akhir: null,
       presensi_ok: null
     },
     two: {
@@ -1082,8 +1083,46 @@
           )
         },
         deep: true
+      },
+      "state.worker.tgl_masuk": {
+        handler: function(newState, oldState) {
+          const newStartPeriode = newState
+          const oldStartPeriod = oldState
+          if (this.$data.state.worker.periode_awal != null) return
+
+          let awal_masuk = newStartPeriode ? newStartPeriode.split('-').reverse().join('') : null
+          // alert(awal_masuk);
+          let noind_code = this.$data.state.worker.noind.substr(0, 1)
+          let pemborongan = ['K', 'P']
+          let kontrak = ['T', 'H']
+
+          let min_periode_end
+
+          let {
+            min_os,
+            min_kontrak
+          } = this.$data.constant
+
+          if (kontrak.includes(noind_code)) {
+            // periode_akhir + 20 month when data.periode_awal is not null && noind in (T, H)
+            min_periode_end = moment(awal_masuk).format('DD-MM-YYYY')
+            this.tempState.tooltiprange = "Minimal 20 bulan dari periode awal penarikan data"
+          } else {
+            min_periode_end = moment().format('DD-MM-YYYY')
+          }
+
+          // $('.datepicker2').datepicker(
+          //   'setStartDate',
+          //   min_periode_end
+          // )
+          $('.datepicker1').datepicker(
+            'setDate',
+            min_periode_end
+          )
+        },
+        deep: true
       }
-    },
+      },
     methods: {
       _convertSelect(data = []) {
         return data.map(e => ({
