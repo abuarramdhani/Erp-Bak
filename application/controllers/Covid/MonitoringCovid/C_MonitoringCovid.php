@@ -204,7 +204,7 @@ class C_MonitoringCovid extends CI_Controller
 		    		else
 		    		{
 		    			$errorinfo = $this->upload->display_errors();
-		    			echo $errorinfo;
+		    			echo $errorinfo;exit();
 		    		}
 				}
 			}
@@ -265,7 +265,7 @@ class C_MonitoringCovid extends CI_Controller
 		    		else
 		    		{
 		    			$errorinfo = $this->upload->display_errors();
-		    			echo $errorinfo;
+		    			echo $errorinfo;exit();
 		    		}
 				}
 			}
