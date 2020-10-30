@@ -62,15 +62,19 @@ class M_cetakkategori extends CI_Model
     {
         if ($rangekeluarstart == "1000-01-01" && $rangemasukstart == "1000-01-01") {
             $sql = "SELECT $select
-            FROM hrd_khs.tpribadi tp, hrd_khs.tseksi ts, hrd_khs.tbpjskes tb, hrd_khs.tbpjstk ttk
-            WHERE ts.kodesie = tp.kodesie AND tb.noind = tp.noind AND ttk.noind=tp.noind 
+            FROM hrd_khs.tseksi ts, hrd_khs.tpribadi tp
+            left join hrd_khs.tbpjskes tb on tb.noind = tp.noind
+            left join hrd_khs.tbpjstk ttk on ttk.noind=tp.noind 
+            WHERE ts.kodesie = tp.kodesie 
             AND tp.kodesie LIKE '$kategori%' AND (tp.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
             LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status' order by noind";
             return $this->personalia->query($sql)->result_array();
         } else {
             $sql = "SELECT $select
-            FROM hrd_khs.tpribadi tp, hrd_khs.tseksi ts, hrd_khs.tbpjskes tb, hrd_khs.tbpjstk ttk
-            WHERE ts.kodesie = tp.kodesie AND tb.noind = tp.noind AND ttk.noind=tp.noind 
+            FROM hrd_khs.tseksi ts, hrd_khs.tpribadi tp
+            left join hrd_khs.tbpjskes tb on tb.noind = tp.noind
+            left join hrd_khs.tbpjstk ttk on ttk.noind=tp.noind 
+            WHERE ts.kodesie = tp.kodesie 
             AND tp.kodesie LIKE '$kategori%' AND (tp.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
             LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status'
             AND (masukkerja > '$rangemasukstart' AND masukkerja < '$rangemasukend'  OR tglkeluar> '$rangekeluarstart' AND tglkeluar< '$rangekeluarend') order by noind";
