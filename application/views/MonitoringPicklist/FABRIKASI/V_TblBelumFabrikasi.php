@@ -44,7 +44,8 @@
         $cek = $val['DELIVER'] == '' ? 'onclick="inicek('.$no.')"' : '';
         $btn = $val['DELIVER'] == '' ? 'aktif' : '';
         $ctk = $val['DELIVER'] == '' ? 'bisaprint' : '';
-        if ($val['DELIVER'] == '') { $x++; }
+        // if ($val['DELIVER'] == '') {  }
+        $x++;
         ?>
         <tr>
             <td><input type="hidden" id="jmli" class="jmli" value="<?= $i?>">
