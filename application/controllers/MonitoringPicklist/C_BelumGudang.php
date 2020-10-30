@@ -129,7 +129,7 @@ class C_BelumGudang extends CI_Controller
 			$department = '';
 		}
 
-		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2, $dept);
+		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2, $department);
 		foreach ($getdata as $key => $get) {
 			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
 			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];

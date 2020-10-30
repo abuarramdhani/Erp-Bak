@@ -50,7 +50,8 @@
         $del = $val['DELIVER'] != '' ? 'disabled' : ''; 
         $cek = $val['DELIVER'] == '' ? 'onclick="inicek('.$no.')"' : '';
         $btn = $val['DELIVER'] == '' ? 'aktif' : '';  
-        if ($val['DELIVER'] == '') { $x++; }  ?>
+        // if ($val['DELIVER'] == '') {  } 
+        $x++; ?>
         <tr>
             <td><input type="hidden" id="baris" class="baris" value="<?= $x?>">
             <input type="hidden" id="deliver<?= $no?>" value="<?= $val['DELIVER']?>"><?= $no?></td>
