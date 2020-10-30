@@ -160,18 +160,18 @@ $(document).ready(function () {
     })
 
     const monthNames = [
-        "Januari",
-        "Februari",
-        "Maret",
+        "January",
+        "February",
+        "March",
         "April",
-        "Mei",
-        "Juni",
-        "Juli",
-        "Agustus",
+        "May",
+        "June",
+        "July",
+        "August",
         "September",
-        "Oktober",
+        "October",
         "November",
-        "Desember"
+        "December"
     ];
     const dateSP = new Date(),
         tanggalSP = dateSP.getDate(),
@@ -844,19 +844,17 @@ $(document).ready(function () {
                         jurusanTetap = `<input type="text" class="form-control txtJurusan_SP" name="txtJurusan_SP" style="width: 100% !important; text-transform: uppercase; !important" value="${result.pkj[0]['jurusan']}" required>`,
                         gantiJurusan = `<select class="select select2 form-control txtJurusan_SP forSelectJurusan2" name="txtJurusan_SP" autocapitalize="on" style="width: 100% !important; text-transform: uppercase; !important" required>
                                             <option></option>
-                                            ${
-                            result.jurusan.map(item => {
-                                return `<option ${item.nama_jurusan == result.pkj[0]['jurusan'] ? 'selected' : ''} value="${item.nama_jurusan}">${item.nama_jurusan}</option>`
-                            }).join('')
+                                            ${result.jurusan.map(item => {
+                            return `<option ${item.nama_jurusan == result.pkj[0]['jurusan'] ? 'selected' : ''} value="${item.nama_jurusan}">${item.nama_jurusan}</option>`
+                        }).join('')
                             }
                                         </select>`,
                         sekolahTetap = `<input type="text" class="form-control txtSkul_SP" name="txtSkul_SP" style="width: 100% !important; text-transform: uppercase; !important" value="${result.pkj[0]['sekolah']}" required>`,
                         gantiSekolah = `<select class="select select2 form-control txtSkul_SP forSelectSekulah2" name="txtSkul_SP" style="width: 100% !important; text-transform: uppercase !important" required>
                                             <option></option>
-                                            ${
-                            result.skul.map(item => {
-                                return `<option ${item.nama_univ == result.pkj[0]['sekolah'] ? 'selected' : ''} value="${item.nama_univ}">${item.nama_univ}</option>`
-                            }).join('')
+                                            ${result.skul.map(item => {
+                            return `<option ${item.nama_univ == result.pkj[0]['sekolah'] ? 'selected' : ''} value="${item.nama_univ}">${item.nama_univ}</option>`
+                        }).join('')
                             }
                                         </select>`,
                         jursan = (result.jenis == '1') ? gantiJurusan : (result.jenis == '2' ? jurusanTetap : gantiJurusan),
@@ -887,10 +885,9 @@ $(document).ready(function () {
                                         <div class="col-lg-8">
                                             <select class="select select2 form-control txt_Shift_SP" name="txt_Shift_SP" style="width: 100% !important" required>
                                                 <option></option>
-                                                ${
-                        result.shift.map(item => {
-                            return `<option ${item.kd_shift == '4' ? 'Selected' : ''} value="${item.kd_shift}">[${item.kd_shift}] - ${item.shift}</option>`
-                        }).join('')
+                                                ${result.shift.map(item => {
+                        return `<option ${item.kd_shift == '4' ? 'Selected' : ''} value="${item.kd_shift}">[${item.kd_shift}] - ${item.shift}</option>`
+                    }).join('')
                         }
                                             </select>
                                         </div>
@@ -902,8 +899,7 @@ $(document).ready(function () {
                                         <div class="col-lg-8">
                                             <select class="select select2 form-control txt_kd_jabatan_SP" name="txt_kd_jabatan_SP" style="width: 100% !important" required>
                                                 <option></option>
-                                                ${
-                        result.kodejabatan.map(item => {
+                                                ${result.kodejabatan.map(item => {
                             return `<option value="${item.kd_jabatan}">[${item.kd_jabatan}] - ${item.jabatan}</option>`
                         }).join('')
                         }
@@ -934,8 +930,7 @@ $(document).ready(function () {
                                         <div class="col-lg-8">
                                             <select class="select select2 form-control slc_jab_upah" name="slc_jab_upah" style="width: 100% !important" required>
                                                 <option></option>
-                                                ${
-                        result.jabatan_upah.map(item => {
+                                                ${result.jabatan_upah.map(item => {
                             return `<option ${(item.nama_jabatan.substr(21, 1) == gol_trig) || result.jabatan_upah.length == 1 ? 'selected' : ''} value="${item.kd_upah + '|' + item.nama_jabatan}">${item.nama_jabatan}</option>`
                         }).join('')
                         }
@@ -971,8 +966,7 @@ $(document).ready(function () {
                                     <div class="col-lg-8">
                                         <select class="select select2 form-control slc_kantor_SP" name="slc_kantor_SP" style="width: 100% !important" required>
                                             <option></option>
-                                                ${
-                        result.kantor.map(item => {
+                                                ${result.kantor.map(item => {
                             return `<option value="${item.id_}">${item.kantor_asal}</option>`
                         }).join('')
                         }
@@ -986,8 +980,7 @@ $(document).ready(function () {
                                     <div class="col-lg-8">
                                         <select class="select select2 form-control slc_loker_SP" name="slc_loker_SP" style="width: 100% !important" required>
                                             <option></option>
-                                                ${
-                        result.lokasi.map(item => {
+                                                ${result.lokasi.map(item => {
                             return `<option value="${item.id_}">${item.lokasi_kerja}</option>`
                         }).join('')
                         }
@@ -1001,8 +994,7 @@ $(document).ready(function () {
                                     <div class="col-lg-8">
                                         <select class="select select2 form-control slc_makan_SP" name="slc_makan_SP" style="width: 100% !important" required>
                                             <option></option>
-                                                ${
-                        result.tempat_makan.map(item => {
+                                                ${result.tempat_makan.map(item => {
                             return `<option value="${item.fs_tempat_makan}">${item.fs_tempat_makan}</option>`
                         }).join('')
                         }
@@ -1016,8 +1008,7 @@ $(document).ready(function () {
                                     <div class="col-lg-8">
                                         <select class="select select2 form-control txt_ruang_SP" name="txt_ruang_SP" style="width: 100% !important" required>
                                             <option></option>
-                                                ${
-                        result.tempat_makan.map(item => {
+                                                ${result.tempat_makan.map(item => {
                             return `<option value="${item.fs_tempat_makan}">${item.fs_tempat_makan}</option>`
                         }).join('')
                         }
@@ -1044,8 +1035,7 @@ $(document).ready(function () {
                                         <div class="col-lg-5">
                                             <select class="select select2 form-control inp_Agama_SP" name="inp_jenkel_SP" value="${result.pkj[0]['agama']}" style="width: 100% !important" required>
                                                 <option></option>
-                                                    ${
-                        agama.map(item => {
+                                                    ${agama.map(item => {
                             return `<option ${item == result.pkj[0]['agama'] ? 'selected' : ''} value="${item}">${item}</option>`
                         }).join('')
                         }
@@ -1055,8 +1045,7 @@ $(document).ready(function () {
                                         <div class="col-lg-2" style="margin-left: 15px">
                                             <select class="select select2 form-control inp_jenkel_SP" name="inp_jenkel_SP" style="width: 100% !important" required>
                                                 <option></option>
-                                                    ${
-                        jenkel.map(item => {
+                                                    ${jenkel.map(item => {
                             return `<option ${item == result.pkj[0]['jenkel'] ? 'selected' : ''} value="${item}">${item}</option>`
                         }).join('')
                         }
@@ -1082,8 +1071,7 @@ $(document).ready(function () {
                                                     <select class="select select2 form-control txt_status_pri" name="txt_status_pri" style="width: 100% !important" required>
                                                         <option></option>
                                                         <option value="-">-</option>
-                                                    ${
-                        nikah.map(item => {
+                                                    ${nikah.map(item => {
                             return `<option ${item[0] == status_nikah ? 'selected' : ''} value="${item[0]}">[${item[0]}] - ${item[1]}</option>`
                         }).join('')
                         }
@@ -1122,8 +1110,7 @@ $(document).ready(function () {
                                                             <div class="col-lg-8">
                                                                 <select class="select select2 form-control txtPend_SP" name="txtPend_SP" style="width: 100% !important; text-transform: uppercase !important" required>
                                                                     <option></option>
-                                                    ${
-                        sekulah.map(item => {
+                                                    ${sekulah.map(item => {
                             return `<option ${item == pendidikan ? 'selected' : ''} value="${item}">${item}</option>`
                         }).join('')
                         }
@@ -1155,8 +1142,7 @@ $(document).ready(function () {
                                                             <div class="col-lg-8">
                                                                 <select class="select select2 form-control slc_asal_SP" name="slc_asal_SP" style="width: 100% !important" required>
                                                                     <option></option>
-                                                    ${
-                        result.pemborong.map(item => {
+                                                    ${result.pemborong.map(item => {
                             let Otsorcing = (Outsorcing == '14' || Outsorcing == '12' || Outsorcing == '9') ? item.asal_outsourcing : ''
                             return `<option value="${Otsorcing}">${Otsorcing}</option>`
                         }).join('')
