@@ -122,14 +122,14 @@ class C_View extends CI_Controller {
             'estimasi_datang'  => 'readonly',
             'alamat_bongkar'   => 'readonly',
             'catatan'          => 'readonly',
-            'estdate'          => '',
-            'tgl_kirim'          => '',
+            'estdate'          => 'readonly',
+            'tgl_kirim'          => 'readonly',
             'gudang_pengirim'  => 'readonly'
         ];
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-        $this->load->view('ApprovalDO/MainMenu/V_DetailDPBVendor', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_ViewDetailDPBVendor', $data);
         $this->load->view('V_Footer', $data);
     }
 }
