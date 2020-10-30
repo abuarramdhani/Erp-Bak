@@ -20,7 +20,19 @@ class M_pickgudang extends CI_Model
         // return $sql;
 	}
 	
-	public function getdataBelum($sub, $tgl1, $tgl2) {
+    public function getDept($term) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT bd.DEPARTMENT_CLASS_CODE dept, kd.DESCRIPTION  
+				FROM bom_departments bd, KHS_DEPT_ROUT_CLASS_V kd
+				where bd.DEPARTMENT_CLASS_CODE = kd.DEPT
+				and bd.DEPARTMENT_CLASS_CODE like '%$term%'
+				order by 1";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+	}
+	
+	public function getdataBelum($sub, $tgl1, $tgl2, $dept) {
         $oracle = $this->load->database('oracle', true);
         $sql = "select distinct
 					msib_produk.SEGMENT1 produk
@@ -88,13 +100,14 @@ class M_pickgudang extends CI_Model
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
 			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			$dept
 			order by 12 desc ";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
 	}
 	
-	public function getdataSudah($sub, $tgl1, $tgl2) {
+	public function getdataSudah($sub, $tgl1, $tgl2, $dept) {
         $oracle = $this->load->database('oracle', true);
         $sql = "select distinct
 					msib_produk.SEGMENT1 produk
@@ -161,7 +174,8 @@ class M_pickgudang extends CI_Model
 			and kpa.PROCESS = 3 -- gudang
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
-			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
+			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			$dept";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
