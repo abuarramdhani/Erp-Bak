@@ -52,6 +52,29 @@ $(".deptpicklist").select2({
     }
 });
 
+$(".deptpickgd").select2({
+    allowClear: true,
+    minimumInputLength: 0,
+    ajax: {
+        url: baseurl + "MonitoringPicklistGudang/BelumApprove/getdept",
+        dataType: 'json',
+        type: "GET",
+        data: function (params) {
+            var queryParameters = {
+                term: params.term
+            }
+            return queryParameters;
+        },
+        processResults: function (data) {
+            // console.log(data);
+            return {
+                results: $.map(data, function (obj) {
+                return {id:obj.DEPT, text:obj.DEPT+' - '+obj.DESCRIPTION};
+                })
+            };
+        }
+    }
+});
 
 $(".subinvpicklist").select2({
         allowClear: true,
@@ -470,11 +493,12 @@ function belumapproveGudang(th) {
         var subinv = $('#subinv').val();
         var tanggal1 = $('#tanggal1').val();
         var tanggal2 = $('#tanggal2').val();
+        var dept = $('#dept').val();
         // console.log(subinv);
 
         var request = $.ajax({
                 url: baseurl+'MonitoringPicklistGudang/BelumApprove/searchData',
-                data: { subinv : subinv,  tanggal1 : tanggal1, tanggal2 : tanggal2},
+                data: { subinv : subinv,  tanggal1 : tanggal1, tanggal2 : tanggal2, dept : dept},
                 type: "POST",
                 datatype: 'html'
         });
@@ -545,10 +569,11 @@ function sudahapproveGudang(th) {
         var subinv = $('#subinv').val();
         var tanggal1 = $('#tanggal1').val();
         var tanggal2 = $('#tanggal2').val();
+        var dept = $('#dept').val();
 
         var request = $.ajax({
                 url: baseurl+'MonitoringPicklistGudang/SudahApprove/searchData',
-                data: {subinv : subinv,  tanggal1 : tanggal1, tanggal2 : tanggal2},
+                data: {subinv : subinv,  tanggal1 : tanggal1, tanggal2 : tanggal2, dept : dept},
                 type: "POST",
                 datatype: 'html'
         });
@@ -583,10 +608,11 @@ function notifgudang(th) {
     var tampil = $('.baris:last').val();
     var tanggal1 = $('#tanggal1').val();
     var tanggal2 = $('#tanggal2').val();
+    var dept = $('#dept').val();
 
     var request = $.ajax({
             url: baseurl+'MonitoringPicklistGudang/BelumApprove/searchData2',
-            data: {subinv : subinv, tanggal1 : tanggal1, tanggal2 : tanggal2},
+            data: {subinv : subinv, tanggal1 : tanggal1, tanggal2 : tanggal2, dept : dept},
             type: "POST",
             datatype: 'html',
             success: function(data){

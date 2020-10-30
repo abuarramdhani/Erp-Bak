@@ -55,13 +55,29 @@ class C_BelumGudang extends CI_Controller
 		$data = $this->M_pickgudang->getSubinv($term);
 		echo json_encode($data);
 	}
+	
+	function getDept()
+	{
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_pickgudang->getDept($term);
+		echo json_encode($data);
+	}
+
 
 	function searchData(){
 		$subinv 	= $this->input->post('subinv');
 		$tanggal1 	= $this->input->post('tanggal1');
 		$tanggal2 	= $this->input->post('tanggal2');
+		$dept 		= $this->input->post('dept');
 
-		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2);
+		if (!empty($dept)) {
+			$department = "and bd.DEPARTMENT_CLASS_CODE = '$dept'";
+		}else {
+			$department = '';
+		}
+
+		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2, $department);
 		foreach ($getdata as $key => $get) {
 			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
 			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
@@ -105,8 +121,15 @@ class C_BelumGudang extends CI_Controller
 		$subinv 	= $this->input->post('subinv');
 		$tanggal1 	= $this->input->post('tanggal1');
 		$tanggal2 	= $this->input->post('tanggal2');
+		$dept 		= $this->input->post('dept');
 
-		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2);
+		if (!empty($dept)) {
+			$department = "and bd.DEPARTMENT_CLASS_CODE = '$dept'";
+		}else {
+			$department = '';
+		}
+
+		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2, $dept);
 		foreach ($getdata as $key => $get) {
 			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
 			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
