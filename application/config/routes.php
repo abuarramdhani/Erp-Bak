@@ -4053,6 +4053,9 @@ $route['ApprovalDO/ListDPBVendor'] = 'ApprovalDO/MainMenu/C_DPBVendor';
 $route['ApprovalDO/ListDPBVendor/(:any)'] = 'ApprovalDO/MainMenu/C_DPBVendor/$1';
 $route['ApprovalDO/ListDPBVendor/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_DPBVendor/$1/$2';
 
+$route['ApprovalDO/View'] = 'ApprovalDO/MainMenu/C_View';
+$route['ApprovalDO/View/(:any)'] = 'ApprovalDO/MainMenu/C_View/$1';
+
 $route['ApprovalDO/ApprovalDPB'] = 'ApprovalDO/MainMenu/C_ApprovalDPB';
 $route['ApprovalDO/ApprovalDPB/(:any)'] = 'ApprovalDO/MainMenu/C_ApprovalDPB/$1';
 $route['ApprovalDO/WaitingListApproveDPBVendor'] = 'ApprovalDO/MainMenu/C_ApprovalDPB/WaitingListApproveVendor';
