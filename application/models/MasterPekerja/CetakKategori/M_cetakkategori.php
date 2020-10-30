@@ -76,7 +76,7 @@ class M_cetakkategori extends CI_Model
             left join hrd_khs.tbpjstk ttk on ttk.noind=tp.noind 
             WHERE ts.kodesie = tp.kodesie 
             AND tp.kodesie LIKE '$kategori%' AND (tp.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
-            LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status
+            LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status'
             AND (masukkerja > '$rangemasukstart' AND masukkerja < '$rangemasukend'  OR tglkeluar> '$rangekeluarstart' AND tglkeluar< '$rangekeluarend') order by noind";
             return $this->personalia->query($sql)->result_array();
         }
