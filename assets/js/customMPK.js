@@ -5751,7 +5751,13 @@ $(document).ready(function () {
             dom: "Bfrtip",
             buttons: [{
               extend: "excelHtml5",
-              title: "Cetak Kategori"
+              title: "Cetak Kategori",
+              customizeData: function (data) {
+                var tblnik = data.header.indexOf("NIK");
+                for (var i = 0; i < data.body.length; i++) {
+                  data.body[i][tblnik] = '\u200C' + data.body[i][tblnik]; 
+                }
+              }
             }],
             initComplete: function (settings, json) {
               $("#TDP_viewall").wrap(
