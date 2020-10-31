@@ -15,12 +15,13 @@
             <th style="vertical-align:middle">ATT</th>
             <th style="vertical-align:middle">Balance <br>(+ / -)</th>
             <th style="vertical-align:middle">WIP</th>
+            <th style="vertical-align:middle">Picklist</th>
         </tr>
     </thead>
     <tbody>
         <?php $no = 1; foreach ($data as $val) { 
             $tanda = ($val['REQUIRED_QUANTITY'] > $val['ATT']) ? "bg-danger" : "";
-            $col = $level != 1 ? 10 : 9;
+            $col = $level != 1 ? 11 : 10;
             $tambah = $tanda == 'bg-danger' ? '<tr><td></td><td colspan="'.$col.'" id="tr_simulasi'.$level.''.$no.''.$nomor.'" style="display:none"></td></tr>' : '';
             $jml_gd = $val['DFG'] + $val['DMC'] + $val['FG_TKS'] + $val['INT_PAINT'] + $val['INT_WELD'] + $val['INT_SUB'] + $val['PNL_TKS'] + $val['SM_TKS'] + $val['INT_ASSYGT'] + $val['INT_ASSY'] + $val['INT_MACHA'] + $val['INT_MACHB'] + $val['INT_MACHC'] + $val['INT_MACHD'];
         ?>
@@ -59,9 +60,15 @@
                     <button type="button" class="btn btn-xs <?= $btn?>" style="font-size:12px" onclick="tambahsimulasi(<?= $level?>, <?= $no?>, <?= $nomor?>)"><?= ($val['KEKURANGAN'])?></button>
                 </td>
                 <td class="<?= $tanda?>">
-                    <?php if ($val['WIP'] != '') { ?>
-                        <button type="button" class="btn btn-xs bg-orange" style="font-size:12px" onclick="mdlWIPSimulasi(<?= $level?><?= $no?><?= $nomor?>)"><?= $val['WIP']?></button>
-                        <input type="hidden" id="wip<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['WIP']?>">
+                    <?php if ($val['TOTAL_WIP'] != '') { ?>
+                        <button type="button" class="btn btn-xs bg-orange" style="font-size:12px" onclick="mdlWIPSimulasi(<?= $level?><?= $no?><?= $nomor?>)"><?= $val['TOTAL_WIP']?></button>
+                        <input type="hidden" id="wip<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['TOTAL_WIP']?>">
+                    <?php }?>
+                </td>
+                <td class="<?= $tanda?>">
+                    <?php if ($val['TOTAL_PICKLIST'] != '') { ?>
+                        <button type="button" class="btn btn-xs btn-warning" style="font-size:12px" onclick="mdlWIPSimulasi(<?= $level?><?= $no?><?= $nomor?>)"><?= $val['TOTAL_PICKLIST']?></button>
+                        <input type="hidden" id="picklist<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['TOTAL_PICKLIST']?>">
                     <?php }?>
                 </td>
             </tr>
