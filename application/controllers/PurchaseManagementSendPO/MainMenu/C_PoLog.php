@@ -44,10 +44,10 @@ class C_PoLog extends CI_Controller {
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        if (!isset($_GET['po_number'])) {
+        if (!isset($_GET['po_numb'])) {
             redirect('PurchaseManagementSendPO/PoLog');
         }
-        $data['po_number'] = $_GET['po_number'];
+        $data['po_number'] = $_GET['po_numb'];
 
 
         $this->load->view('V_Header', $data);

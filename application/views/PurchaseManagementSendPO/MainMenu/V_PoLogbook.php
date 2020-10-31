@@ -175,7 +175,7 @@
                                                     <center><?= $value['ATTACHMENT']; ?></center>
                                                 </td>
                                                 <td style="min-width: 60px; max-width: 60px; text-align: center;">
-                                                    <a class="btn btn-success btn-edit" href="<?= base_url("PurchaseManagementSendPO/POLogbook/edit") . '?po_number=' . $value['PO_NUMBER']; ?>" title="Edit"><i class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-success btn-edit" href="<?= base_url("PurchaseManagementSendPO/POLogbook/edit") . '?po_numb=' . $value['PO_NUMBER']; ?>" title="Edit"><i class="fa fa-edit"></i></a>
                                                 </td>
                                             </tr>
                                             <?php endforeach; ?>
