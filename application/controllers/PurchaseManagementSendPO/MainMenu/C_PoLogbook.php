@@ -46,10 +46,10 @@ class C_PoLogbook extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        if (!isset($_GET['po_number'])) {
+        if (!isset($_GET['po_numb'])) {
             redirect('PurchaseManagementSendPO/POLogbook');
         }
-        $data['po_number'] = $_GET['po_number'];
+        $data['po_number'] = $_GET['po_numb'];
         $data['edit_Po'] = $this->M_pologbook->get_data_byid($data['po_number']);
 
         $this->load->view('V_Header', $data);
