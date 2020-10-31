@@ -64,4 +64,53 @@ td {
     </tr>
 </table>
 </div>
+
+<!-- view item berbeda -->
+<div class="row" id="page-border" style="padding-top:0px;padding-left:0px;padding-right:0px">
+<table style="width: 100%; border-bottom :0px; border-collapse: collapse;font-size: 10px" >
+    <tr>
+        <td>Tgl Cetak</td>
+        <td>: <?= $val['TGL_CETAK']?></td>
+    </tr>
+    <tr>
+        <td>Tgl Job</td>
+        <td>: <?= $val['TGL_JOB']?></td>
+    </tr>
+</table>
+<br>
+<table style="width: 100%; border-bottom :0px; border-collapse: collapse; text-align:center;font-size: 12px" >
+    <tr>
+        <td style="font-size:20px;font-weight:bold;text-decoration: underline" colspan="3">PICKLIST <?= $val['DEPT_CLASS'] ?></td>
+    </tr>
+    <tr>
+        <td style="font-size:15px;font-weight:bold;" colspan="3">SUBINV : <?= $val['FROM_SUBINVENTORY_CODE']?> (<?= $val['FROM_LOCATOR']?>)</td>
+    </tr>
+    <tr>
+        <td style="font-size:15px;font-weight:bold;" colspan="3">PICKLIST : <?= $val['NO_PICKLIST']?></td>
+    </tr>
+    <tr><td>&nbsp;</td></tr>
+    <tr>
+        <td colspan="3" style="text-align:left">List Item Berbeda :</td>
+    </tr>
+    <tr style="background-color: #f0f0f0;vertical-align: middle;">
+        <td rowspan="2" style="border:1px solid black;width:40%">Nama Komponen</td>
+        <td colspan="2" style="border:1px solid black;width:60%">Perbedaan</td>
+    </tr>
+    <tr style="background-color: #f0f0f0;vertical-align: middle;">
+        <td style="border:1px solid black">Job</td>
+        <td style="border:1px solid black">Bom</td>
+    </tr>
+    <?php foreach ($beda as $key => $val) { 
+        $beda = explode(" - ", $val['PERBEDAAN']);
+        $job = substr($beda[0], 4);
+        $bom = substr($beda[1], 4);?>
+        <tr>
+            <td style="border:1px solid black"><?= $val['COMPONENT']?></td>
+            <td style="border:1px solid black"><?= $job?></td>
+            <td style="border:1px solid black"><?= $bom?></td>
+        </tr>
+    <?php }?>
+</table>
+</div>
+<!-- view item berbeda -->
 <?php }?>
