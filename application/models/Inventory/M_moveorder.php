@@ -118,7 +118,8 @@ class M_moveorder extends CI_Model
 				from khs_qweb_ect_listjob kqel
 				where trunc (kqel.TANGGAL) = '$date'
 				and kqel.DEPARTMENT_CLASS_CODE = '$dept'
-				$shift";
+				$shift
+				order by 1";
 		// echo "<pre>";
 		// print_r($sql);
 		// exit();			
