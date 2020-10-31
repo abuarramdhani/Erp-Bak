@@ -77,6 +77,7 @@ $(document).ready(function () {
         maka Vendor telah <b>menyetujui hal-hal yang dicantumkan pada PO dan/atau Pedoman Kerjasama
         Vendor</b> yang dilampirkan pada setiap pengiriman email PO.
       </p>\
+      <p><b>Mohon abaikan pesan ini apabila sudah memberikan konfirmasi.</b></p>
       <br>\
       <p>Terima kasih atas kerjasamanya</p>\
       <br>\
