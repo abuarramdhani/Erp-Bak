@@ -259,6 +259,7 @@ class C_BelumFabrikasi extends CI_Controller
 		}
 
 		$data['data'] = $getdata;
+		$data['beda'] = $this->M_pickfabrikasi->getPerbedaan($picklist);
     	$html = $this->load->view('MonitoringPicklist/FABRIKASI/V_PdfBelumFabrikasi', $data,true);
     	ob_end_clean();
     	$pdf->WriteHTML($html);												
@@ -300,6 +301,7 @@ class C_BelumFabrikasi extends CI_Controller
 				}
 		
 				$data['data'] = $getdata;
+				$data['beda'] = $this->M_pickfabrikasi->getPerbedaan($picklist[$i]);
 				$html = $this->load->view('MonitoringPicklist/FABRIKASI/V_PdfBelumFabrikasi', $data,true);
 				ob_end_clean();
 				$pdf->WriteHTML($html);	
