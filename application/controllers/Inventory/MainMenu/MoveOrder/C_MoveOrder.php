@@ -1,4 +1,4 @@
- <?php defined('BASEPATH') ;
+<?php defined('BASEPATH') ;
 class C_MoveOrder extends CI_Controller
 {
 	
@@ -67,7 +67,8 @@ class C_MoveOrder extends CI_Controller
 			$shift = '';
 			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
 		} else {
-			$shift = "and bcs.SHIFT_NUM = '".$this->input->post('shift')."'";
+			$shift = "and kqel.SHIFT = ".$this->input->post('shift')."";
+			// $shift = "and bcs.SHIFT_NUM = '".$this->input->post('shift')."'";
 			// EDIT LUTFI
 			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
 		}
@@ -90,6 +91,11 @@ class C_MoveOrder extends CI_Controller
 		$array_sudah = array();
 		$array_terkelompok = array();
 		foreach ($dataGET as $key => $value) {
+			$value['WIP_ENTITY_NAME'] = $value['NO_JOB'];
+			$value['DEPT_CLASS'] = $value['DEPARTMENT_CLASS_CODE'];
+			$value['ITEM_CODE'] = $value['ASSEMBLY'];
+			$value['ITEM_DESC'] = $value['ASSY_DESC'];
+			$value['DESCRIPTION'] = $value['SHIFT_DESC'];
 			if (in_array($value['WIP_ENTITY_NAME'], $array_sudah)) {
 				// echo "sudah ada";print_r($value['WIP_ENTITY_NAME']);echo"<br>";
 			}else{
@@ -362,6 +368,7 @@ class C_MoveOrder extends CI_Controller
 				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
 				$dataall[$a]['head'][0]['piklis'] = $piklis;
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
+				$dataall[$a]['beda']	= $this->M_MoveOrder->getPerbedaan($moveOrderAwal);
 				$a++;
 			}
 
