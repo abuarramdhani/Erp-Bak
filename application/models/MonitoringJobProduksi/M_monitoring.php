@@ -244,22 +244,27 @@ class M_monitoring extends CI_Model
                 msib.SEGMENT1  assy
                 ,wdj.PRIMARY_ITEM_ID assy_id
                 ,msib.DESCRIPTION
-                ,we.WIP_ENTITY_NAME
-                ,we.WIP_ENTITY_ID
+                ,we.WIP_ENTITY_NAME no_job
+                ,we.WIP_ENTITY_ID job_id
                 ,wdj.START_QUANTITY
                 ,decode (wdj.STATUS_TYPE ,12,'Closed',3,'Released',4,'Complete',7,'Cancelled') job_status
                 ,to_char (wdj.SCHEDULED_START_DATE,'DD-MM-YYYY HH24:MI:SS')                SCHEDULED_START_DATE
                 ,wdj.NET_QUANTITY-wdj.QUANTITY_COMPLETED-wdj.QUANTITY_SCRAPPED            remaining_qty
+                ,wro.INVENTORY_ITEM_ID comp_item_id
+                ,wro.REQUIRED_QUANTITY
+                ,(wro.REQUIRED_QUANTITY / wdj.START_QUANTITY) qty_per_assy
             from wip_discrete_jobs wdj
                 ,wip_entities we
                 ,mtl_system_items_b msib
                 ,wip_operations wipo
                 ,wip_operation_resources wipor
+                ,wip_requirement_operations wro
                 ,bom_departments bd
                 ,bom_resources br
             where wdj.WIP_ENTITY_ID = we.WIP_ENTITY_ID
             and wdj.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
             and wdj.ORGANIZATION_ID = msib.ORGANIZATION_ID
+            and wro.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
             and wipo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
             and wipo.ORGANIZATION_ID = wdj.ORGANIZATION_ID
             and wipor.WIP_ENTITY_ID = wipo.WIP_ENTITY_ID
@@ -277,18 +282,37 @@ class M_monitoring extends CI_Model
             select distinct
                 nvl (mtrl.QUANTITY_DELIVERED,mtrl.QUANTITY_DETAILED) qty_picklist
                 ,mtrh.ATTRIBUTE1 wip_entity_id
+                ,mtrl.INVENTORY_ITEM_ID 
+            --      ,nvl (mtrl.QUANTITY_DELIVERED,mtrl.QUANTITY_DETAILED) / qjob.qty_per_assy
             from mtl_txn_request_headers mtrh
                 ,mtl_txn_request_lines mtrl
                 ,qjob 
             where mtrh.HEADER_ID = mtrl.HEADER_ID
-            and mtrh.ATTRIBUTE1 = qjob.wip_entity_id
+            and mtrh.ATTRIBUTE1 = qjob.job_id
+            and mtrl.INVENTORY_ITEM_ID = qjob.comp_item_id
             --  and mtrl.INVENTORY_ITEM_ID = qjob.assy_id
             )
-            select qj.*
-                ,sum (qp.qty_picklist) over (partition by qp.wip_entity_id) quantity_picklist
+            ,fix as
+            (
+            select distinct qj.*
+                ,( qp.qty_picklist / qj.qty_per_assy) qpl_assy
             from qjob qj
                 ,qpicklist qp
-            where qj.wip_entity_id = qp.wip_entity_id
+            where qj.job_id = qp.wip_entity_id
+            and qp.inventory_item_id = qj.comp_item_id
+            )
+            select distinct
+                assy
+                ,assy_id
+                ,description
+                ,no_job
+                ,job_id
+                ,start_quantity
+                ,job_status
+                ,scheduled_start_date
+                ,remaining_qty
+                ,qpl_assy
+            from fix
             order by 1";
     $query = $this->oracle->query($sql);
     return $query->result_array();

@@ -25,11 +25,11 @@
                 <?php $no = 1; foreach ($data as $key => $val) {?>
                     <tr>
                         <td><?= $no?></td>
-                        <td><?= $val['WIP_ENTITY_NAME']?></td>
+                        <td><?= $val['NO_JOB']?></td>
                         <td><?= $val['START_QUANTITY']?></td>
                         <td><?= $val['SCHEDULED_START_DATE']?></td>
                         <td><?= $val['REMAINING_QTY']?></td>
-                        <td><?= $val['QUANTITY_PICKLIST']?></td>
+                        <td><?= $val['QPL_ASSY']?></td>
                     </tr>
                 <?php $no++; }?>
             </tbody>

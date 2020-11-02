@@ -395,7 +395,7 @@ class C_Monitoring extends CI_Controller
 			$total_pick = 0;
 			foreach ($wip as $key => $w) {
 				$total_wip += $w['REMAINING_QTY'];
-				$total_pick += $w['QUANTITY_PICKLIST'];
+				$total_pick += $w['QPL_ASSY'];
 			}
 		}else {
 			$total_wip = '';
