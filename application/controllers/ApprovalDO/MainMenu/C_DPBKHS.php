@@ -35,7 +35,7 @@ class C_DPBKHS extends CI_Controller {
             'delete'    => 'disabled'
         ];
 
-        if ( $this->session->user === 'B0445' ) {
+        if ( $this->session->user === 'B0445' || $this->session->user === 'A2146') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
