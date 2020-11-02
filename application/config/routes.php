@@ -3303,12 +3303,12 @@ $route['AdmSeleksi/SuratPenyerahan/Create'] = 'ADMSeleksi/Menu/C_SuratPenyerahan
 $route['AdmSeleksi/SuratPenyerahan/(:any)'] = 'ADMSeleksi/Menu/C_SuratPenyerahan/$1';
 $route['AdmSeleksi/SuratPenyerahan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_SuratPenyerahan/$1/$2';
 
-$route['ADMSeleksi/Menu/Cetak'] = 'AdmSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi';
-$route['ADMSeleksi/Menu/Cetak/get_daftar_memo'] = 'AdmSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/get_daftar_memo';
-$route['ADMSeleksi/Menu/Cetak/get_daftar_nilai'] = 'AdmSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/get_daftar_nilai';
-$route['ADMSeleksi/Menu/Cetak/export_pdf'] = 'AdmSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/export_pdf';
-$route['ADMSeleksi/Menu/Cetak/update_cetak'] = 'AdmSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/update_cetak';
-$route['ADMSeleksi/Menu/Cetak/search_daftar_memo'] = 'AdmSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/search_daftar_memo';
+$route['ADMSeleksi/Menu/Cetak'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi';
+$route['ADMSeleksi/Menu/Cetak/get_daftar_memo'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/get_daftar_memo';
+$route['ADMSeleksi/Menu/Cetak/get_daftar_nilai'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/get_daftar_nilai';
+$route['ADMSeleksi/Menu/Cetak/export_pdf'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/export_pdf';
+$route['ADMSeleksi/Menu/Cetak/update_cetak'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/update_cetak';
+$route['ADMSeleksi/Menu/Cetak/search_daftar_memo'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/search_daftar_memo';
 
 
 
