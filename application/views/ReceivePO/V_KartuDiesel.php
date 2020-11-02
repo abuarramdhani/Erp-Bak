@@ -3,7 +3,7 @@
       width: 60mm;
       float: left;
       margin-left: 7mm;
-      margin-bottom: 4mm;
+      margin-bottom: 3mm;
     }
     table{
       font-family: arial;
@@ -13,7 +13,7 @@
   <section>
     <?php
     $coba=0;
-   for ($i=0; $i < sizeof($serial) ; $i++) {  
+   for ($i=0; $i < sizeof($serial) ; $i++) {
       ?>
 
     <div class="main-div" id="kartu">
@@ -33,9 +33,9 @@
             Nomor Seri :
             <br>
             <center><img style="width: 80px;height: 80px;" src="<?= base_url("/img/$serial[$i].png") ;?>"></center>
-            <p style="font-size: 14pt; color: #0d47a1;font-weight: bold;"><?=$serial[$i]?></p>
+            <p style="font-size: 12pt; color: #0d47a1;font-weight: bold;"><?=$serial[$i]?></p>
             <br>
-            <p style="font-weight:bold; color: red;font-size: 11pt "><?=$ket?></p>
+            <p style="font-weight:bold; color: red;font-size: 10pt "><?=$ket?></p>
             <br>
           <?php echo date("d M y") ?>
 
@@ -48,11 +48,11 @@
     <?php
     $coba++;
         if($coba % 12 == 0){
-         
+
             echo "<pagebreak>";
           }
 
-      
+
     }
     ?>
 
