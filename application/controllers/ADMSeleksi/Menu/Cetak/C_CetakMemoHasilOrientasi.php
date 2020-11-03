@@ -56,7 +56,7 @@ class C_CetakMemoHasilOrientasi extends CI_Controller
     {
         $data = $this->M_cetakmemohasilorientasi->getDaftarMemo();
 
-        $this->load->view('ADMSeleksi\Cetak\V_Cetak_Memo_Refresh_Table', ['getDaftarMemo' => $data]);
+        $this->load->view('ADMSeleksi/Cetak/V_Cetak_Memo_Refresh_Table', ['getDaftarMemo' => $data]);
     }
 
     public function get_daftar_memo()
@@ -76,7 +76,7 @@ class C_CetakMemoHasilOrientasi extends CI_Controller
         $data = $this->M_cetakmemohasilorientasi->searchDaftarMemoWithParam($year);
 
         // html
-        $this->load->view('ADMSeleksi\Cetak\V_Table_Cetak_Memo_Hasil_Orientasi', [
+        $this->load->view('ADMSeleksi/Cetak/V_Table_Cetak_Memo_Hasil_Orientasi', [
             'getDaftarMemo' => $data
         ]);
 
