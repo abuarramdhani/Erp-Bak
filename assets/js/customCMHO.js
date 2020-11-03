@@ -79,14 +79,6 @@ $(document).ready(function () {
         dataType: "html",
         success(tableRow) {
           swal.close();
-          // console.log(response.data);
-          // const mapArray = response.data.map((item, index) => {
-          //   let it = Object.values(item);
-          //   // it.unshift(index + 1)
-          //   console.log(it);
-          //   return it;
-          // });
-
           $("#tb4").DataTable().clear().destroy();
           $("table#tb4 tbody").html(tableRow);
 
@@ -101,6 +93,39 @@ $(document).ready(function () {
         },
       });
     }
+  });
+
+  $("button#refresh").on("click", function () {
+    var loading = baseurl + "assets/img/gif/loadingquick.gif";
+
+    $.ajax({
+      method: "GET",
+      url: baseurl + "ADMSeleksi/Menu/Cetak/get_refresh_data_memo",
+      beforeSend: function () {
+        swal.fire({
+          html:
+            "<div><img style='width: 320px; height:auto;'src='" +
+            loading +
+            "'><br> <p>Sedang Proses....</p></div>",
+          customClass: "swal-wide",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+        });
+      },
+      dataType: "html",
+      success(tableRow) {
+        swal.close();
+        $("#tb4").DataTable().clear().destroy();
+        $("table#tb4 tbody").html(tableRow);
+
+        tableModal = $("#tb4").DataTable({
+          retrieve: true,
+          aaSorting: [],
+        });
+
+        console.log(tableRow);
+      },
+    });
   });
 
   function addEventListonerToTb4() {
