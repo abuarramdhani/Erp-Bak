@@ -3309,6 +3309,7 @@ $route['ADMSeleksi/Menu/Cetak/get_daftar_nilai'] = 'ADMSeleksi/Menu/Cetak/C_Ceta
 $route['ADMSeleksi/Menu/Cetak/export_pdf'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/export_pdf';
 $route['ADMSeleksi/Menu/Cetak/update_cetak'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/update_cetak';
 $route['ADMSeleksi/Menu/Cetak/search_daftar_memo'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/search_daftar_memo';
+$route['ADMSeleksi/Menu/Cetak/get_refresh_data_memo'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/get_refresh_data_memo';
 
 
 
