@@ -140,6 +140,112 @@ class C_Index extends CI_Controller {
 						'ip' => '192.168.38.24',
 						'ip2' => '192.168.38.24',
 					),
+					// 3/11/2020 
+					array(
+						'name' => '[ABSEN-MLT] BARCODE MLATI',
+						'ip'   => '192.168.56.32',
+						'ip2'  => '192.168.56.32'
+					),
+					array(
+						'name' => '[ABSEN-PST] BARCODE ANJUNGAN ',
+						'ip'   => '192.168.19.41',
+						'ip2'  => '192.168.19.41'
+					),
+					array(
+						'name' => '[ABSEN-PST] BARCODE DEPAN MUSHOLA',
+						'ip'   => '192.168.19.68',
+						'ip2'  => '192.168.19.68'
+					),
+					array(
+						'name' => '[ABSEN-PST] BARCODE DEPROD ',
+						'ip'   => '192.168.19.69',
+						'ip2'  => '192.168.19.69'
+					),
+					array(
+						'name' => '[ABSEN-PST] SERVER-DISTRIBUSI-ABSEN ',
+						'ip'   => '192.168.6.50',
+						'ip2'  => '192.168.6.50'
+					),
+					array(
+						'name' => '[ABSEN-TKS] BARCODE CIVIL MAINTENANCE ',
+						'ip'   => '192.168.38.150',
+						'ip2'  => '192.168.38.150'
+					),
+					array(
+						'name' => '[ABSEN-TKS] BARCODE FINISHGOOD 1 ',
+						'ip'   => '192.168.38.143',
+						'ip2'  => '192.168.38.143'
+					),
+					array(
+						'name' => '[ABSEN-TKS] BARCODE FINISHGOOD 2 ',
+						'ip'   => '192.168.36.49',
+						'ip2'  => '192.168.36.49'
+					),
+					array(
+						'name' => '[ABSEN-TKS] BARCODE FOUNDRY 1 ',
+						'ip'   => '192.168.36.51',
+						'ip2'  => '192.168.36.51'
+					),
+					array(
+						'name' => '[ABSEN-TKS] BARCODE FOUNDRY 2 ',
+						'ip'   => '192.168.38.129',
+						'ip2'  => '192.168.38.129'
+					),
+					array(
+						'name' => '[ABSEN-TKS] BARCODE MACHINING 1 ',
+						'ip'   => '192.168.38.220',
+						'ip2'  => '192.168.38.220'
+					),
+					array(
+						'name' => '[ABSEN-TKS] BARCODE MACHINING 2 ',
+						'ip'   => '192.168.38.217',
+						'ip2'  => '192.168.38.217'
+					),
+					array(
+						'name' => '[ABSEN-TKS] BARCODE SHEETMETAL ',
+						'ip'   => '192.168.36.50',
+						'ip2'  => '192.168.36.50'
+					),
+					array(
+						'name' => '[ABSENSI] BANJARMASIN ',
+						'ip'   => '192.168.251.251',
+						'ip2'  => '192.168.251.251'
+					),
+					array(
+						'name' => '[ABSENSI] JAKARTA ',
+						'ip'   => '192.168.76.30',
+						'ip2'  => '192.168.76.30'
+					),
+					array(
+						'name' => '[ABSENSI] LANGKAPURA ',
+						'ip'   => '192.168.116.33',
+						'ip2'  => '192.168.116.33'
+					),
+					array(
+						'name' => '[ABSENSI] MAKASSAR ',
+						'ip'   => '192.168.96.30',
+						'ip2'  => '192.168.96.30'
+					),
+					array(
+						'name' => '[ABSENSI] MEDAN ',
+						'ip'   => '192.168.106.30',
+						'ip2'  => '192.168.106.30'
+					),
+					array(
+						'name' => '[ABSENSI] PALU ',
+						'ip'   => '192.168.249.36',
+						'ip2'  => '192.168.249.36'
+					),
+					array(
+						'name' => '[ABSENSI] PEKANBARU ',
+						'ip'   => '192.168.146.36',
+						'ip2'  => '192.168.146.36'
+					),
+					array(
+						'name' => '[ABSENSI] PONTIANAK ',
+						'ip'   => '192.168.247.36',
+						'ip2'  => '192.168.247.36'
+					)
 		);
 		
 		$messagesTemp ='';
