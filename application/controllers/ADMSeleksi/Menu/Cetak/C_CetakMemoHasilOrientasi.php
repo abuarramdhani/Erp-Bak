@@ -52,6 +52,13 @@ class C_CetakMemoHasilOrientasi extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
+    public function get_refresh_data_memo()
+    {
+        $data = $this->M_cetakmemohasilorientasi->getDaftarMemo();
+
+        $this->load->view('ADMSeleksi\Cetak\V_Cetak_Memo_Refresh_Table', ['getDaftarMemo' => $data]);
+    }
+
     public function get_daftar_memo()
     {
         $kdmemo = $this->input->get('kdmemo');
