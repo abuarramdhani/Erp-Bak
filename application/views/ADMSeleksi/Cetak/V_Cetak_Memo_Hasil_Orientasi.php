@@ -321,9 +321,10 @@
                         <input type="text" class="form-control" id="datemomen">
                       </div>
                       <button class="btn btn-success" id="carimemo">Cari</button>
+                      <button class="btn btn-primary ml-15" id="refresh">Refresh Data</button>
                     </div>
                   </section>
-                  <section>
+                  <section style="margin-bottom: 25px;">
                     <div>
                       <div class="col-md-1" style="padding-right: 0px; margin-right: 0; width: 40px;">
                         <div id="box3"></div>
@@ -339,9 +340,6 @@
                       <div class="col-md-3" style="text-align: left!important;">
                         <label>Belum dicetak</label>
                       </div>
-                    </div>
-                    <div>
-                      <p>Tekan F5 untuk refresh data dan warna</p>
                     </div>
                   </section>
                   <section class="content">
