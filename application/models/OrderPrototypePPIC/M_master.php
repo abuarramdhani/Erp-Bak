@@ -5,8 +5,34 @@ class M_master extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        // $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
         $this->personalia = $this->load->database('personalia', true);
+    }
+
+
+    public function getMonitoring($value='')
+    {
+      $res = $this->db->select('o.*')
+                      // ->join('opp.proses p', 'p.id_order = o.id', 'right')
+                      // ->join('opp.order_out oo', 'oo.id_order = o.id', 'left')
+                      ->get('opp.order o')->result_array();
+
+      if (!empty($res)) {
+        foreach ($res as $key => $value) {
+          $res[$key]['proses'] = $this->db->where('id_order', $value['id'])->get('opp.proses')->result_array();
+        }
+      }
+
+      return $res;
+    }
+
+    public function getOrderOut($value='')
+    {
+      return $this->db->select('p.*, o.*')
+                      ->join('opp.order o', 'o.id = oo.id_order', 'inner')
+                      ->join('opp.proses p', 'p.id = oo.id_proses', 'inner')
+                      ->order_by('o.id')
+                      ->get('opp.order_out oo')->result_array();
     }
 
     public function getProsesOPP($id='')
@@ -24,7 +50,8 @@ class M_master extends CI_Model
     {
       $this->db->insert('opp.order', $data);
       if ($this->db->affected_rows() == 1) {
-        $id_order = $this->db->select('max(id) as id')->get('opp.order')->row()->id;
+        $id_order = $this->db->insert_id();
+        // $id_order = $this->db->select('max(id) as id')->get('opp.order')->row()->id;
         return $id_order;
       }else {
         return 0;
@@ -60,6 +87,16 @@ class M_master extends CI_Model
                               ->like('seksi', $param, 'both')
                               ->get('hrd_khs.tseksi')->result_array();
       return $res;
+    }
+
+    public function cek($value='')
+    {
+      return $this->oracle->query("SELECT *
+                    FROM khs_qweb_siap_assign1 kqsa
+                   WHERE TRUNC (SYSDATE) BETWEEN TRUNC (kqsa.tgl_kirim - 1)
+                                             AND TRUNC (kqsa.tgl_kirim + 6)
+                     AND kqsa.subinventory = 'FG-TKS'
+                ORDER BY kqsa.no_pr, kqsa.header_id")->result_array();
     }
 
 }

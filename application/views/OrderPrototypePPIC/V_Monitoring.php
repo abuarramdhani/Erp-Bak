@@ -10,7 +10,7 @@
             <div class="col-md-12" style="margin-top:10px">
               <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
                 <div class="table-responsive">
-                  <table class="table table-striped table-bordered table-hover text-left opp_monitoring" style="font-size:11px;">
+                  <table class="table table-striped table-bordered table-hover text-left opp_monitoring" style="font-size:11px;width:100%">
                     <thead>
                       <tr class="bg-primary">
                         <th class="text-center" rowspan="2" style="vertical-align:middle">NO</th>
@@ -33,6 +33,41 @@
                       </tr>
                     </thead>
                     <tbody >
+
+                      <?php $no=1; foreach ($get as $key => $val){ ?>
+                        <tr row="<?php echo $val['id'] ?>" style="text-align:center">
+                          <td><?php echo $no ?></td>
+                          <td><?php echo $val['kode_komponen'] ?></td>
+                          <td><?php echo $val['nama_komponen'] ?></td>
+                          <td><?php echo substr($val['created_date'], 0,10) ?></td>
+                          <td><?php echo $val['no_order'] ?></td>
+                          <td><?php echo $val['qty'] ?></td>
+
+                          <?php foreach ($val['proses'] as $key2 => $val2): ?>
+                            <?php if ($val2['status'] == 'Y'){ ?>
+                              <td><?php echo $val2['proses'] ?></td>
+                              <td><?php echo $val2['seksi'] ?></td>
+                              <td><?php echo empty($val['proses'][$key2+1]['proses'])?'-':$val['proses'][$key2+1]['proses'] ?></td>
+                              <td><?php echo empty($val['proses'][$key2+1]['seksi'])?'-':$val['proses'][$key2+1]['seksi'] ?></td>
+                            <?php }else{ ?>
+
+                            <?php } ?>
+
+                          <?php endforeach; ?>
+
+                          <?php if (!empty($val['proses'][$key2-1]['status']) || !empty($val['proses'][$key2]['status'])) { ?>
+
+                          <?php }else { ?>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                          <?php } ?>
+
+                          <td><button type="button" class="btn btn-primary" name="button" onclick="opp_detail_proses_mon(<?php echo $val['id'] ?>)"> <b class="fa fa-cube"></b> Detail</button> </td>
+                          <td>-</td>
+                        </tr>
+                      <?php $no++;} ?>
 
                     </tbody>
                   </table>

@@ -25,7 +25,19 @@
                       </tr>
                     </thead>
                     <tbody >
-
+                      <?php foreach ($get as $key => $val) {?>
+                        <tr>
+                          <td><?php echo $key+1 ?></td>
+                          <td><?php echo $val['kode_komponen'] ?></td>
+                          <td><?php echo $val['nama_komponen'] ?></td>
+                          <td><?php echo $val['proses'] ?></td>
+                          <td><?php echo $val['seksi'] ?></td>
+                          <td><?php echo $val['qty'] ?></td>
+                          <td><?php echo $val['no_order'] ?></td>
+                          <td>-</td>
+                          <td style="text-align:center"> <button type="button" class="btn btn-sm btn-success" name="button"> <i class="fa fa-pencil"></i> </button> </td>
+                        </tr>
+                      <?php } ?>
                     </tbody>
                   </table>
                 </div>

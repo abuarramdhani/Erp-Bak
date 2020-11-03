@@ -52,12 +52,14 @@ class C_Monitoring extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
+        $data['get'] = $this->M_master->getMonitoring();
+        // echo "<pre>";print_r($data['get']);die;
+
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('OrderPrototypePPIC/V_Monitoring');
         $this->load->view('V_Footer', $data);
     }
-
 
     // ============================ CHECK AREA =====================================
 

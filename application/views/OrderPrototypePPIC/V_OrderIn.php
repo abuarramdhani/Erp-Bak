@@ -12,7 +12,7 @@
             </div>
             <div class="col-md-4">
               <button type="button"  data-toggle="modal" data-target="#opp_modal_set_order_out" onclick="opp_add_to_order_out()" class="btn btn-success" style="float: right;padding:5px 7px;font-weight:bold;" name="button">
-                <i class="fa fa-cube"></i> Order Out (<span id="jumlahitem_opp">0</span>)
+                <i class="fa fa-shopping-cart"></i> Order Out (<span id="jumlahitem_opp">0</span>)
               </button>
             </div>
           </div>
@@ -48,7 +48,9 @@
                           <td class="text-center"><?php echo $g['need'] ?></td>
                           <td class="text-center"><?php echo $g['pic_pengorder'] ?></td>
                           <td class="text-center"><?php echo $g['seksi_pengorder'] ?></td>
-                          <td class="text-center"> <button type="button" class="btn btn-success" name="button" onclick="opp_detail_proses('<?php echo $g['id'] ?>', '<?php echo $g['kode_komponen'] ?>')" data-toggle="modal" data-target="#opp_modaldetail"><i class="fa fa-question-circle"></i> Detail</button> </td>
+                          <td class="text-center">
+                            <button type="button" class="btn btn-success" name="button" onclick="opp_detail_proses('<?php echo $g['id'] ?>', '<?php echo $g['kode_komponen'] ?>', <?php echo $key+1 ?>)" data-toggle="modal" data-target="#opp_modaldetail"><i class="fa fa-question-circle"></i> Detail</button>
+                          </td>
                           <td class="text-center"> <button type="button" class="btn btn-primary" name="button" onclick="opp_in_detail('<?php echo $key+1 ?>',
                                                                                                                                       '<?php echo $g['material'] ?>',
                                                                                                                                       '<?php echo $g['dimensi_pot_t'] ?>',
@@ -130,9 +132,10 @@
 
                         </tbody>
                       </table>
+                      <center class="opp_area_loading"></center>
                     </div>
                     <br>
-                    <center><button type="button" name="button" onclick="oppSaveOrderOut()" style="width:30%" class="btn btn-success"> <b class="fa fa-floppy-o"></b> <b>Save</b> </button></center>
+                    <center><button type="button" name="button" onclick="oppSaveOrderOut()" style="width:30%" class="btn btn-success opp_save_order_out"> <b class="fa fa-floppy-o"></b> <b>Save</b> </button></center>
                   </div>
                 </div>
               </div>

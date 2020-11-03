@@ -51,11 +51,34 @@ class C_OrderOut extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        $data['get'] = $this->M_master->getOrderOut();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('OrderPrototypePPIC/V_OrderOut');
         $this->load->view('V_Footer', $data);
+    }
+
+    public function addOrderOut($value='')
+    {
+      if ($this->input->is_ajax_request()) {
+        if (!empty($this->input->post('data'))) {
+          foreach ($this->input->post('data') as $key => $value) {
+            $this->db->insert('opp.order_out', $value);
+            // echo "<pre>";print_r($value);
+          }
+          // die;
+          if ($this->db->affected_rows() == 1) {
+            echo json_encode(1);
+          }else {
+            echo json_encode(0);
+          }
+        }else {
+          echo json_encode(0);
+        }
+      }else {
+        echo json_encode(0);
+      }
     }
 
     public function getOrder()
@@ -76,15 +99,13 @@ class C_OrderOut extends CI_Controller
       }
     }
 
-
     // ============================ CHECK AREA =====================================
 
-    // public function cekapi()
-    // {
-      // $data_a = $this->M_rtlp->getItem();
-      // echo "<pre>";
-      // print_r($data_a);
-      // echo sizeof($data_a);
-      // die;
-    // }
+    public function cekapi()
+    {
+      $data_a = $this->M_master->cek();
+      echo "<pre>";
+      print_r($data_a);
+      die;
+    }
 }
