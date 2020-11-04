@@ -1116,6 +1116,14 @@ class C_Order extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 		$seksiBawah = array();
+		//jika yang login kepala seksi utama tertinggi
+		// $tertinggi = $this->M_order->getTertinggi($kodesie);
+		//cek seksi dalam satu unit yang tidak memiliki kasie dan kanit :u
+		if (substr($kodesie, 5) != '0000') {
+			$seksiBawah = $this->M_order->cekSeksiDibawah2($kodesie);
+		}
+		// print_r($tertinggi);exit();
+		//jika yang login kepala unit
 		if (substr($kodesie, 5) == '0000') {
 			$seksiBawah = $this->M_order->cekSeksiDibawah($kodesie);
 		}
