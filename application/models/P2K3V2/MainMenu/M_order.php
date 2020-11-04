@@ -728,6 +728,63 @@ class M_Order extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
+    public function cekSeksiDibawah2($ks)
+    {
+        //seksi di bawahnya yang tidak memiliki atasan
+        $ks = substr($ks, 0, 6);
+        $sql = "select
+                    distinct(substring(kodesie,1,7)) kodesie,
+                    seksi
+                from
+                    hrd_khs.tseksi ts
+                where
+                    ts.kodesie like '$ks%'
+                    and (select
+                        count(noind)
+                    from
+                        hrd_khs.tpribadi t
+                    where
+                        t.keluar = false
+                        and substring(t.kodesie,1,7) = substring(ts.kodesie,1,7)
+                        and substring(noind, 1, 1) in ('B','D','J')) = 0
+                    and (select
+                        count(noind)
+                    from
+                        hrd_khs.tpribadi t
+                    where
+                        t.keluar = false
+                        and substring(t.kodesie,1,5) = substring(ts.kodesie,1,5)
+                        and substring(noind, 1, 1) in ('B','D','J')
+                        and t.kd_jabatan <= '08') = 0";
+                        // echo $sql;exit();
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getTertinggi($ks)
+    {
+        //tertinggi di kodesi 6 digit
+        $ks = substr($ks, 0, 6);
+        $sql = "select
+                    trim(noind) noind,
+                    nama,
+                    kodesie,
+                    kd_jabatan
+                from
+                    hrd_khs.tpribadi
+                where
+                    kodesie like '$ks%'
+                    and keluar = false
+                    and kd_jabatan = (
+                    select
+                        min(kd_jabatan) kd_jabatan
+                    from
+                        hrd_khs.tpribadi
+                    where
+                        kodesie like '$ks%'
+                        and keluar = false)";
+         return $this->personalia->query($sql)->row()->noind;
+    }
+
     /**
      * DK -> bon sepatu safety
      */
