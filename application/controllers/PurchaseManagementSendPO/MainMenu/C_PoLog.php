@@ -65,7 +65,7 @@ class C_PoLog extends CI_Controller {
         $vendor_confirm_note = htmlspecialchars($this->input->post('vendor_confirm_note'));
 
         $name = $_FILES["lampiran_po"]["name"];
-        $ext = end((explode(".", $name)));
+        $ext = strtolower(end((explode(".", $name))));
 
         if (!($ext == 'pdf' OR $ext == 'jpeg' OR $ext == 'jpg' OR $ext == 'png' OR $ext == 'xls' OR $ext == 'xlsx' OR $ext == 'ods' OR $ext == 'odt' OR $ext == 'txt' OR $ext == 'doc' OR $ext == 'docx')) {
             $this->output
