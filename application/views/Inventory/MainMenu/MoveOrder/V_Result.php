@@ -102,6 +102,7 @@
 			<th width="13%">KODE ITEM</th>
 			<th width="14%">NAMA ITEM </th>
 			<th width="5%">QTY</th>
+			<th width="5%">QTY SUDAH PICKLIST</th>
 			<th width="10%">DEPT CLASS</th>
 			<th width="20%">DESCRIPTION</th>
 			<th width="15%">KETERANGAN</th>
@@ -120,6 +121,9 @@
 			$allSubFrom = array();
 			$allLocatorTo = array();
 			$allLocatorFrom = array();
+			$allLocatorFromId = array();
+			$allStartQTY = array();
+			$allQTYSudah = array();
 			$no = 1; 
 			foreach ($requirement as $key => $value) {                                                                                                                                                                                                                                   
 			$arrErr = array();
@@ -134,13 +138,13 @@
 			}
 
 
-			if($value['header']['KET'] == 0){
+			if($value['header']['KET'] == 0 || $value['header']['KET'] == 2){
 				if(count($arrErr) > 0){
 					$penanda = 'bg-danger';
 					$penandabutton = 1; //-----------------> harusnya 1
 					$text_button = '<b>Create Picklist</b>';
 				}else{
-					$penanda = '';
+					$penanda = $value['header']['KET'] == 0 ? '' : 'bg-warning';
 					$penandabutton = 0;
 					$text_button = '<b>Create Picklist</b>';
 					$text_button2 = '<b>Create PL Header</b>';
@@ -172,9 +176,14 @@
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_CODE'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_DESC'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['START_QUANTITY'] ?></td>
+			<td class="<?= $penanda ?>" id="sdh_att4"><?= $value['header']['ATTRIBUTE4'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DEPT_CLASS'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
-			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? '<b>Sudah Dibuat Picklist</b>' : 'Belum Dibuat Picklist' ?>
+			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? '<b>Sudah Dibuat Picklist</b>' : 
+																				($value['header']['KET'] == 2 ?  '<b>Sudah Dibuat Picklist Sebagian</b>' : 'Belum Dibuat Picklist') ?>
+					<input type="hidden" id="nojob_header<?= $no?>" value="<?= $value['header']['WIP_ENTITY_NAME']; ?>">
+					<input type="hidden" id="qty_header<?= $no?>" value="<?= $value['header']['START_QUANTITY'] ?>">
+					<input type="hidden" id="qty_sudah_header<?= $no?>" value="<?= $value['header']['ATTRIBUTE4']?>">
 			</td>
 <!-- YANG INI BENAR -->
 			<!--td class="<?= $penanda ?>">
@@ -197,6 +206,7 @@
 				<button class="btn btn-sm  disabled btn-default " target="_blank">
 						 <?= $text_button; ?> 
 				</button><br><br>
+				<button type="button" class="btn btn-success" style="font-size:12px;font-weight:bold" onclick="createsebagian(<?= $no?>)">Create Sebagian</button>
 				<?php } else { ?>
 					<?php if ($divisi == 1) { ?>
 						<button data-toggle="modal" data-target="#formModal<?= $value['header']['WIP_ENTITY_NAME']; ?>" class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank">
@@ -226,7 +236,7 @@
 
 		</tr>
 		<tr >
-			<td colspan="8"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
+			<td colspan="9"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
 				<div style="margin-top: 5px ; display: none; " id="detail<?= $key ?>" >
 				<form method="post" target="_blank" id="form<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/create'); ?>">
 				<table class="table table-sm table-bordered table-hover table-striped table-responsive"  style="border: 2px solid #ddd">
@@ -265,6 +275,9 @@
 								<input type="hidden" name="locatorfromid[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 								<input type="hidden" name="departement" value="NONE">
 								<input type="hidden" name="piklis" value="1">
+								<input type="hidden" name="start_qty" value="<?= $value['header']['START_QUANTITY'] ?>">
+								<input type="hidden" class="qty_sudahpick<?= $no?>" name="qty_sudah" value="<?= $value['header']['ATTRIBUTE4']?>">
+								<input type="hidden" class="att_komponen<?= $no?>" name="att[]" value="<?= $vulue['ATR'] ?>">
 							</td>
 							<td><?= $vulue['KOMPONEN'] ?></td>
 							<td><?= $vulue['KOMP_DESC'] ?></td>
@@ -288,11 +301,13 @@
 							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
 							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
 							$allLocatorFromId[$no][] =  $vulue['LOCATOR_ASAL_ID'];
+							$allStartQTY[$no][] =  $value['header']['START_QUANTITY'];
+							$allQTYSudah[$no][] =  $value['header']['ATTRIBUTE4'];
 						?>
 						<?php }
 						else:?>
 							<tr>
-								<td colspan="9">
+								<td colspan="10">
 									Tidak ada komponen..
 								</td>
 							</tr>
@@ -332,18 +347,50 @@
 							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
 							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
 							$allLocatorFromId[$no][] =  $vulue['LOCATOR_ASAL_ID'];
+							$allStartQTY[$no][] =  $value['header']['START_QUANTITY'];
+							$allQTYSudah[$no][] =  $value['header']['ATTRIBUTE4'];
 						?>
 						<?php }
 						else:?>
 							<tr>
-								<td colspan="9">
+								<td colspan="10">
 									Tidak ada komponen..
 								</td>
 							</tr>
 						<?php endif;
 						 ?>
 			</form>
-
+<!---- FORM KE 3 (PICKLIST SEBAGIAN)--------------------------------------------------->
+			<form method="post" target="_blank" >
+						<?php 
+						$no3 = 1;
+						if ($value['body']):
+						foreach ($value['body'] as $kut => $vulue) { ?>
+						
+							<?php $no3++; ?>
+								<input type="hidden" name="no_job" value="<?= $vulue['WIP_ENTITY_NAME'] ?>">
+								<input type="hidden" name="invID[]" value="<?= $vulue['INVENTORY_ITEM_ID'] ?>">
+								<input type="hidden" class="qty_komponen<?= $no?>" name="qty[]" value="<?= $vulue['REQUIRED_QUANTITY'] ?>">
+								<input type="hidden" name="uom[]" value="<?= $vulue['PRIMARY_UOM_CODE'] ?>">
+								<input type="hidden" name="job_id[]" value="<?= $vulue['JOB_ID'] ?>">
+								<input type="hidden" name="subinvto[]" value="<?= $vulue['GUDANG_TUJUAN'] ?>">
+								<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
+								<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
+								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+								<input type="hidden" name="locatorfromid[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
+								<input type="hidden" name="departement" value="NONE">
+								<input type="hidden" name="piklis" value="1">
+								<input type="hidden" class="att_komponen<?= $no?>" name="att[]" value="<?= $vulue['ATR'] ?>">
+								<input type="hidden" name="start_qty" value="<?= $value['header']['START_QUANTITY'] ?>">
+								<input type="hidden" class="qtyreq<?= $no?>" name="qty_request">
+								<input type="hidden" id="qtysudah<?= $no?>" name="qty_sudah" value="<?= $value['header']['ATTRIBUTE4']?>">
+						<?php }
+						else:?>
+						<?php endif;
+						 ?>
+				<button type="submit" id="form3<?= $value['header']['WIP_ENTITY_NAME']; ?>"  formaction="<?= base_url('InventoryManagement/CreateMoveOrder/createSebagian') ?>" style="display:none" ></button>
+				<button type="submit" id="form4<?= $value['header']['WIP_ENTITY_NAME']; ?>"  formaction="<?= base_url('InventoryManagement/CreateMoveOrder/printPicklist') ?>" style="display:none" ></button>
+			</form>
 
 				</div>
 			</td>
@@ -371,6 +418,8 @@
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
 		<input type="hidden" name="locatorfromid[]" value="<?= implode('<>', $allLocatorFromId[$key]) ?>">
+		<input type="hidden" name="startqty[]" value="<?= implode('<>', $allStartQTY[$key]) ?>">
+		<input type="hidden" name="qtysudahpick[]" value="<?= implode('<>', $allQTYSudah[$key]) ?>">
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="1">
 		<?php } ?>
@@ -390,6 +439,8 @@
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
 		<input type="hidden" name="locatorfromid[]" value="<?= implode('<>', $allLocatorFromId[$key]) ?>">
+		<input type="hidden" name="startqty[]" value="<?= implode('<>', $allStartQTY[$key]) ?>">
+		<input type="hidden" name="qtysudahpick[]" value="<?= implode('<>', $allQTYSudah[$key]) ?>">
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="2">
 		<?php } ?>
