@@ -243,6 +243,7 @@ function recallPPIC(no) {
 
 //------------------------------------------------------FABRIKASI----------------------------------------------------------------
 function belumapproveFabrikasi(th) {
+        $('#notiffabrks').html('');
         var dept = $('#dept').val();
         var tanggal1 = $('#tanggal1').val();
         var tanggal2 = $('#tanggal2').val();
@@ -490,6 +491,7 @@ function notiffabrikasi(th) {
 
 //------------------------------------------------------GUDANG----------------------------------------------------------------
 function belumapproveGudang(th) {
+        $('#notifgdg').html('');
         var subinv = $('#subinv').val();
         var tanggal1 = $('#tanggal1').val();
         var tanggal2 = $('#tanggal2').val();

@@ -14,7 +14,7 @@
             var refreshId = setInterval(function()
             {
                 $("#notiffabrks").load(notifgudang());
-            }, 3000);
+            }, 60000);
         });
     </script>
 <div>
@@ -50,26 +50,26 @@
         $del = $val['DELIVER'] != '' ? 'disabled' : ''; 
         $cek = $val['DELIVER'] == '' ? 'onclick="inicek('.$no.')"' : '';
         $btn = $val['DELIVER'] == '' ? 'aktif' : '';  
-        // if ($val['DELIVER'] == '') {  } 
+        $baris = $val['TGL_PELAYANAN'] != '' ? $val['OVERDUE'] : '';
         $x++; ?>
         <tr>
-            <td><input type="hidden" id="baris" class="baris" value="<?= $x?>">
+            <td class="<?= $baris?>"><input type="hidden" id="baris" class="baris" value="<?= $x?>">
             <input type="hidden" id="deliver<?= $no?>" value="<?= $val['DELIVER']?>"><?= $no?></td>
-            <td><span class="btn check_semua" style="background-color:inherit" id="cek<?= $no?>" <?= $cek?> <?= $del?>><i id="ceka<?= $no?>" class="fa fa-square-o bisacek ceka<?= $del?>"></i></span>
+            <td class="<?= $baris?>"><span class="btn check_semua" style="background-color:inherit" id="cek<?= $no?>" <?= $cek?> <?= $del?>><i id="ceka<?= $no?>" class="fa fa-square-o bisacek ceka<?= $del?>"></i></span>
                 <input type="hidden" class="tandasemua<?= $del?>" name="tandacek[]" id="tandacek<?= $no?>" value="cek"></td>
-            <td><input type="hidden" id="dept<?= $no?>" value="<?= $val['DEPARTMENT']?>"><?= $val['DEPARTMENT']?></td>
-            <td><input type="hidden" id="nojob<?= $no?>" class="nojob<?= $del?>" value="<?= $val['JOB_NO']?>"><?= $val['JOB_NO']?></td>
-            <td><input type="hidden" id="release<?= $no?>" value="<?= $val['REALASE_FABRIKASI']?>"><?= $val['REALASE_FABRIKASI']?></td>
-            <td class="text-nowrap"><input type="hidden" id="date<?= $no?>" value="<?= $val['DATE_JOB']?>"><?= $val['DATE_JOB']?></td>
-            <td class="text-nowrap"><input type="hidden" id="picklist<?= $no?>" class="picklist<?= $del?>" value="<?= $val['PICKLIST']?>"><?= $val['PICKLIST']?></td>
-            <td style="text-align:left"><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC'] ?></td>
-            <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
-            <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
-            <td><input type="hidden" id="locator<?= $no?>" value="<?= $val['LOCATOR']?>"><?= $val['LOCATOR']?></td>
-            <td><input type="hidden" id="tgl_pelayanan<?= $no?>" value="<?= $val['TGL_PELAYANAN']?>"><?= $val['TGL_PELAYANAN']?></td>
-            <td class="text-nowrap"><input type="hidden" id="shift<?= $no?>" value="<?= $val['SHIFT']?>"><?= $val['SHIFT']?></td>
+            <td class="<?= $baris?>"><input type="hidden" id="dept<?= $no?>" value="<?= $val['DEPARTMENT']?>"><?= $val['DEPARTMENT']?></td>
+            <td class="<?= $baris?>"><input type="hidden" id="nojob<?= $no?>" class="nojob<?= $del?>" value="<?= $val['JOB_NO']?>"><?= $val['JOB_NO']?></td>
+            <td class="<?= $baris?>"><input type="hidden" id="release<?= $no?>" value="<?= $val['REALASE_FABRIKASI']?>"><?= $val['REALASE_FABRIKASI']?></td>
+            <td class="<?= $baris?> text-nowrap"><input type="hidden" id="date<?= $no?>" value="<?= $val['DATE_JOB']?>"><?= $val['DATE_JOB']?></td>
+            <td class="<?= $baris?> text-nowrap"><input type="hidden" id="picklist<?= $no?>" class="picklist<?= $del?>" value="<?= $val['PICKLIST']?>"><?= $val['PICKLIST']?></td>
+            <td class="<?= $baris?>" style="text-align:left"><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC'] ?></td>
+            <td class="<?= $baris?>"><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
+            <td class="<?= $baris?>"><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
+            <td class="<?= $baris?>"><input type="hidden" id="locator<?= $no?>" value="<?= $val['LOCATOR']?>"><?= $val['LOCATOR']?></td>
+            <td class="<?= $baris?>"><input type="hidden" id="tgl_pelayanan<?= $no?>" value="<?= $val['TGL_PELAYANAN']?>"><?= $val['TGL_PELAYANAN']?></td>
+            <td class="<?= $baris?>" class="text-nowrap"><input type="hidden" id="shift<?= $no?>" value="<?= $val['SHIFT']?>"><?= $val['SHIFT']?></td>
             <!-- <td><input type="button" class="btn btn-warning" id="cek<?= $no?>" value="cek" onclick="cekGudang(<?= $no?>)"></td> -->
-            <td><button type="button" class="btn btn-success <?= $btn?>" onclick="modalapproveGD(<?= $no?>)">Detail</button></td>
+            <td class="<?= $baris?>"><button type="button" class="btn btn-success <?= $btn?>" onclick="modalapproveGD(<?= $no?>)">Detail</button></td>
         </tr>
     <?php $no++; }?>
     </tbody>

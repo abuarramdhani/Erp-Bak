@@ -13,7 +13,7 @@
             var refreshId = setInterval(function()
             {
                 $("#notiffabrks").load(notiffabrikasi());
-            }, 3000);
+            }, 60000);
         });
     </script>
 <form method="post" target="_blank" action="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/cetaksemua')?>">
