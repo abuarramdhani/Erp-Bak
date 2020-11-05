@@ -15,6 +15,7 @@ class C_BelumGudang extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringPicklist/M_pickgudang');
+		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
 	}
@@ -66,6 +67,7 @@ class C_BelumGudang extends CI_Controller
 
 
 	function searchData(){
+		// echo "<pre>";print_r((sprintf("%02d", (date('d') - 1)).'-'.strtoupper(date('M-y'))));exit();
 		$subinv 	= $this->input->post('subinv');
 		$tanggal1 	= $this->input->post('tanggal1');
 		$tanggal2 	= $this->input->post('tanggal2');
@@ -98,6 +100,7 @@ class C_BelumGudang extends CI_Controller
 					$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
 					$shift = $this->M_pickgudang->getShift($value['SHIFT']);
 					$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
+					$getdata[$key2]['OVERDUE'] = $this->getdataOverdue($value['TANGGAL_PELAYANAN'], $shift[0]['DESCRIPTION']);
 					array_push($datanya, $getdata[$key2]);
 					array_push($nojob, $get['JOB_NO']);
 				}
@@ -115,6 +118,51 @@ class C_BelumGudang extends CI_Controller
 		}
 		// echo "<pre>";print_r($datanya);exit();
 		return $datanya2;
+	}
+
+	public function getdataOverdue($tgl_pelayanan, $shift){
+        $hari = date('D');
+        $jam = date('H:i');
+        if ($tgl_pelayanan < strtoupper(date('d-M-y')) && $tgl_pelayanan != '') {
+            $kemarin = (sprintf("%02d", (date('d') - 1))).'-'.(strtoupper(date('M-y'))); 
+            $jam_akhir = $hari == 'Sat' ? '04:20' : '06:00';
+            if ($tgl_pelayanan == $kemarin && stripos($shift, 'SHIFT 3') !== FALSE && $jam < $jam_akhir) {
+                $baris = '';
+            }else {
+                $baris = 'bg-danger';
+            }
+         }elseif ($tgl_pelayanan == strtoupper(date('d-M-y'))) {
+            if ($hari == 'Fri') {
+                if (stripos($shift, 'SHIFT 3') !== FALSE) {
+                    $baris = '';
+                }elseif (stripos($shift, 'SHIFT 2') !== FALSE) {
+                    $baris = $jam > '21:35' ? 'bg-danger' : '';
+                }else{
+                    $baris = $jam > '14:35' ? 'bg-danger' : '';
+                }
+            }elseif ($hari == 'Sat') {
+                if (stripos($shift, 'SHIFT 1') !== FALSE) {
+                    $baris = $jam > '12:15' ? 'bg-danger' : '';
+                }elseif (stripos($shift, 'SHIFT 2') !== FALSE) {
+                    $baris = $jam > '19:15' ? 'bg-danger' : '';
+                }else{
+                    $baris = $jam > '14:20' ? 'bg-danger' : '';
+                }
+            }else {
+                if (stripos($shift, 'SHIFT 1') !== FALSE) {
+                    $baris = $jam > '14:00' ? 'bg-danger' : '';
+                }elseif (stripos($shift, 'SHIFT 2') !== FALSE) {
+                    $baris = $jam > '22:00' ? 'bg-danger' : '';
+                }elseif (stripos($shift, 'UMUM') !== FALSE) {
+                    $baris = $jam > '15:20' ? 'bg-danger' : '';
+                }else{
+                    $baris = '';
+                }
+            }
+         }else {
+             $baris = '';
+		 }
+		 return $baris;
 	}
 
 	function searchData2(){
