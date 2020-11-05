@@ -1206,5 +1206,14 @@ class M_moveorder extends CI_Model
 		return $query->result_array();
 	}
 
+	public function updatesudahpicklist($qty_req, $wip_id){
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "UPDATE wip_discrete_jobs wdj
+				set wdj.ATTRIBUTE4 = $qty_req
+				where wdj.WIP_ENTITY_ID = '$wip_id'";
+		$query = $oracle->query($sql);
+		$query = $oracle->query('commit');
+	}
+
 
 }

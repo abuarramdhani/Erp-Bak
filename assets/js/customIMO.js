@@ -391,3 +391,57 @@ function getAssy(th) {
 $(document).on("click", "#submit_go", function(){
 	$('#loadingsimulasi').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading12.gif"></center>' );
  });
+
+ function createsebagian(no) {
+		var sudah = $('#qty_sudah_header'+no).val();
+		if (sudah) {
+			$('#printpicksebelumnya').html('<button class="btn" style="background-color:#0AA86C;color:white;" target="_blank" onclick="clickform4('+no+')"><i class="fa fa-print"></i> Print Picklist Yang Sudah Dibuat</button>');
+		}else{
+			$('#printpicksebelumnya').html('');
+		}
+		$('#qty_request').val('');
+		$('#loadcheckqty').html('');
+		$('#btncheckqty').html('<button type="button" class="btn" style="background-color:#0AA86C;color:white;" onclick="checkqtysebagian('+no+')"><i class="fa fa-spinner"></i> Check</button>');
+		$('#mdlCreateSebagian').modal('show');
+ }
+
+ function clickform4(no) {
+	var nojob = $('#nojob_header'+no).val();
+	$('#form4'+nojob).trigger('click');
+	$('#mdlCreateSebagian').modal('hide');
+ }
+ 
+ function clickform3(no) {
+	var nojob = $('#nojob_header'+no).val();
+	create = $('#form3'+nojob).trigger('click');
+	window.location.reload();
+ }
+
+ function checkqtysebagian(no) {
+	var nojob 				= $('#nojob_header'+no).val();
+	var start_qty 		= $('#qty_header'+no).val();
+	var qty_sudah 		= $('#qty_sudah_header'+no).val();
+	var qty_komponen 	= $('.qty_komponen'+no).map(function(){return $(this).val();}).get();
+	var att_komponen 	= $('.att_komponen'+no).map(function(){return $(this).val();}).get();
+	var qty_request 	= $('#qty_request').val();
+	if (qty_request > 0) {
+		$('.qtyreq'+no).val(qty_request);
+		$('#loadcheckqty').html('<center><img style="width:50px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"><br/></center>' );
+		 $.ajax({
+			 url : baseurl + "InventoryManagement/CreateMoveOrder/checksebagian",
+			 data : {nojob : nojob, start_qty : start_qty, qty_komponen : qty_komponen, att_komponen : att_komponen, qty_request : qty_request, qty_sudah : qty_sudah},
+			 dataType : 'html',
+			 type : 'POST',
+			 success : function (result) {
+				//  console.log(result, nojob, qty_request);
+				 if (result == 'oke') {
+					$('#loadcheckqty').html('<button class="btn" style="background-color:#0AA86C;color:white;" target="_blank" onclick="clickform3('+no+')"><i class="fa fa-check"></i> Create</button>');
+				 }else{
+					$('#loadcheckqty').html('Masih Terdapat Quantity yang Melebihi ATT.<br>Mohon Ganti Quantity Request Anda.');
+				 }
+			 }
+		 })
+	}else{
+		$('#loadcheckqty').html('Masukkan Quantity Request.');
+	}
+ }
