@@ -71,8 +71,7 @@ class C_PoLogbook extends CI_Controller
         $edit_Po = $this->M_pologbook->get_data_byid($po_number);
         if ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) {
             $name = $_FILES["lampiran_po"]["name"];
-            $ext = end((explode(".", $name)));
-            
+            $ext = strtolower(end((explode(".", $name))));
             if (!($ext == 'pdf' OR $ext == 'jpeg' OR $ext == 'jpg' OR $ext == 'png' OR $ext == 'xls' OR $ext == 'xlsx' OR $ext == 'ods' OR $ext == 'odt' OR $ext == 'txt' OR $ext == 'doc' OR $ext == 'docx')) {
                 $this->output
                     ->set_status_header(400)
