@@ -49,6 +49,7 @@ class M_polog extends CI_Model
         and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
         and fu.USER_NAME like '%PSUP%'
         and kppl.REQUEST_ID = kcpl.REQUEST_ID
+        and kppl.PHA_SEGMENT_1 = kcpl.SEGMENT1
         and kcpl.NOMORQ = 1
         ORDER BY PRINT_DATE desc";
 
