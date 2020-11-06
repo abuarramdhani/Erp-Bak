@@ -96,11 +96,25 @@ class M_absenatasan extends CI_Model
 		$this->load->model('SystemIntegration/M_submit');
 		$data = array();
 		$kodesie = $this->session->kodesie;
+		//cek perbantuan jika ada pakai kodesinya
+		$d = date('Y-m-d');
+		$sqll = "select
+					kodesie_baru
+				from
+					\"Surat\".tsurat_perbantuan tp
+				where
+					noind = '$noind'
+					and tanggal_selesai_perbantuan > '$d'";
+		if($this->personalia->query($sqll)->num_rows() > 0){
+			$kodesie = $this->personalia->query($sqll)->row()->kodesie_baru;
+		}
+
 		if(!empty($kodesie)){
 			$kodesie = $kodesie;
 		}else{
 			$kodesie = $this->personalia->query("select * from hrd_khs.trefjabatan where noind='$noind'")->result_array()[0]['kodesie'];
 		}
+
 		$kodesie_subs = substr($kodesie, 0, 4);
 		$kodesie_5 = substr($kodesie,0,5);
 			
@@ -149,10 +163,10 @@ class M_absenatasan extends CI_Model
 					WHERE
 						$where
 						and substring(a.kodesie, 1, 4) = (
-							SELECT substring( kodesie, 1, 4 )
-							FROM hrd_khs.tpribadi d
-							WHERE d.noind = '$noind'
-								and d.keluar = '0'
+							SELECT substring( '$kodesie', 1, 4 )
+							-- FROM hrd_khs.tpribadi d
+							-- WHERE d.noind = '$noind'
+							-- 	and d.keluar = '0'
 						)
 						and a.keluar ='0'
 					ORDER BY a.noind,a.nama";
