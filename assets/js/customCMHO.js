@@ -157,7 +157,13 @@ $(document).ready(function () {
         dataType: "json",
         success(response) {
           var dataRes = response.data;
-          const arr = Object.values(dataRes);
+          // console.log(dataRes);
+          // const arr = Object.values(dataRes);
+          let arr = Object.keys(dataRes).map(function (e) {
+            return dataRes[e];
+          });
+
+          console.log(arr);
           setValue("inp-no-surat", arr[0]["nosurat"]);
           setValue("datepicker", arr[0]["tanggal"]);
           setValue("inp-periode-test", arr[0]["periode"]);
