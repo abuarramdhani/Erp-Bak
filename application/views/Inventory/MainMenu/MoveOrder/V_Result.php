@@ -335,6 +335,9 @@
 								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 								<input type="hidden" name="departement" value="NONE">
 								<input type="hidden" name="piklis" value="2">
+								<input type="hidden" name="start_qty" value="<?= $value['header']['START_QUANTITY'] ?>">
+								<input type="hidden" class="qty_sudahpick<?= $no?>" name="qty_sudah" value="<?= $value['header']['ATTRIBUTE4']?>">
+								<input type="hidden" class="att_komponen<?= $no?>" name="att[]" value="<?= $vulue['ATR'] ?>">
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];
 							$allAssy[$no][] =  $value['header']['ITEM_CODE'];
@@ -490,6 +493,9 @@
 			<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
 			<input type="hidden" name="locatorfromid[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 			<input type="hidden" name="departement" value="SUBKT">
+			<input type="hidden" name="start_qty" value="<?= $value['header']['START_QUANTITY'] ?>">
+			<input type="hidden" class="qty_sudahpick<?= $no?>" name="qty_sudah" value="<?= $value['header']['ATTRIBUTE4']?>">
+			<input type="hidden" class="att_komponen<?= $no?>" name="att[]" value="<?= $vulue['ATR'] ?>">
 
 			<?php endforeach;?>
 
