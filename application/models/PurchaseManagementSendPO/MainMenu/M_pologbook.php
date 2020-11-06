@@ -50,6 +50,7 @@ class M_pologbook extends CI_Model
         and ppf.NATIONAL_IDENTIFIER = '$BuyerNIK'
         and fu.USER_NAME like '%PSUP%'
         and kppl.REQUEST_ID = kcpl.REQUEST_ID
+        and kppl.PHA_SEGMENT_1 = kcpl.SEGMENT1
         and kcpl.NOMORQ = 1
         ORDER BY PRINT_DATE desc";
         return $this->oracle->query($sql)->result_array();
