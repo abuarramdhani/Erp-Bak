@@ -157,8 +157,6 @@ $(document).ready(function () {
         dataType: "json",
         success(response) {
           var dataRes = response.data;
-          // console.log(dataRes);
-          // const arr = Object.values(dataRes);
           let arr = Object.keys(dataRes).map(function (e) {
             return dataRes[e];
           });
@@ -199,7 +197,9 @@ $(document).ready(function () {
         dataType: "json",
         success(response) {
           var dataRes = response.data;
-          const arr = Object.values(dataRes);
+          let arr = Object.keys(dataRes).map(function (e) {
+            return dataRes[e];
+          });
           const mapArray = response.data.map((item, index) => {
             let it = Object.values(item);
             it.unshift(index + 1);
