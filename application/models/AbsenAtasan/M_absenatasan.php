@@ -97,13 +97,14 @@ class M_absenatasan extends CI_Model
 		$data = array();
 		$kodesie = $this->session->kodesie;
 		//cek perbantuan jika ada pakai kodesinya
+		$d = date('Y-m-d');
 		$sqll = "select
 					kodesie_baru
 				from
 					\"Surat\".tsurat_perbantuan tp
 				where
 					noind = '$noind'
-					and tanggal_selesai_perbantuan > '2020-11-06'";
+					and tanggal_selesai_perbantuan > '$d'";
 		if($this->personalia->query($sqll)->num_rows() > 0){
 			$kodesie = $this->personalia->query($sqll)->row()->kodesie_baru;
 		}
