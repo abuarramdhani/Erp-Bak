@@ -157,7 +157,7 @@ $(document).ready(function () {
         dataType: "json",
         success(response) {
           var dataRes = response.data;
-          console.log(dataRes);
+          // console.log(dataRes);
           // const arr = Object.values(dataRes);
           let arr = Object.keys(dataRes).map(function (e) {
             return dataRes[e];
