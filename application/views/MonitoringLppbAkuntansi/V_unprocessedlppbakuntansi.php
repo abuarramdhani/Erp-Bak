@@ -34,6 +34,7 @@
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>
 											<th width="10%" class="text-center">Action</th>
+											<th class="text-center">Batch Number</th>
 											<th class="text-center">Batch LPPB Number</th>
 											<th class="text-center">Create Date</th>
 											<th class="text-center">Jumlah LPPB</th>
@@ -49,6 +50,7 @@
 											<button title="Detail Lppb"  class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
 											</a>
 										</td>
+										<td><?= $lb['BATCH_NUMBER'];?></td>
 										<td class="coba"><?php echo $lb['GROUP_BATCH']?></td>
 										<td><?php echo $lb['CREATE_DATE']?></td>
 										<td><?php echo $lb['JUMLAH_LPPB']?></td>
