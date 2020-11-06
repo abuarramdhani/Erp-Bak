@@ -780,7 +780,8 @@ class M_monitoringdo extends CI_Model
     {
         $query = "SELECT *
                     FROM khs_qweb_body_dospb1 kqbd
-                   WHERE kqbd.request_number = '$data'";
+                   WHERE kqbd.request_number = '$data'
+                ORDER BY 1";
 
         $response = $this->oracle->query($query)->result_array();
 
