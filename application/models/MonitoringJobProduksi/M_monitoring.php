@@ -247,7 +247,7 @@ public function getPicklist($item){
 public function getGudang($item){
     $sql = "SELECT DISTINCT msib.segment1
                 ,khs_inv_qty_att(102,msib.inventory_item_id,'FG-TKS','','') FG_TKS
-            ,khs_inv_qty_att(102,msib.inventory_item_id,'MLATI_DM','','') MLATI_DM
+            ,khs_inv_qty_att(102,msib.inventory_item_id,'MLATI-DM','','') MLATI_DM
             FROM mtl_system_items_b msib
             WHERE msib.segment1 = '$item'";
     $query = $this->oracle->query($sql);
