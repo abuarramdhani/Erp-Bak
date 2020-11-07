@@ -23,18 +23,26 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
         <?php $no = 1; foreach ($data as $key => $value) {?>
         <tr>
             <td><?= $no?>
-                <input type="hidden" name="nomor[]" value="<?= $no?>">
+                <input type="hidden" class="nomorr" name="nomor[]" value="<?= $no?>">
                 <input type="hidden" id="bulan" name="bulan" value="<?= $bulan?>">
                 <input type="hidden" name="kategori" value="<?= $kategori?>">  
                 <input type="hidden" id="bulan2" name="bulan2" value="<?= $bulan2?>">
                 <input type="hidden" id="kategori2" name="kategori2" value="<?= $kategori2?>">  
                 <input type="hidden" name="hari" value="<?= $hari?>">  
-                <input type="hidden" id="item<?= $no?>" name="item<?= $no?>" value="<?= $value['ITEM']?>">
+                <input type="hidden" class="nama_item" id="item<?= $no?>" name="item<?= $no?>" value="<?= $value['ITEM']?>">
                 <input type="hidden" id="desc<?= $no?>" name="desc<?= $no?>" value="<?= $value['DESC']?>"> 
                 <input type="hidden" id="inv<?= $no?>" name="inv<?= $no?>" value="<?= $value['INVENTORY_ITEM_ID']?>"> 
+                <input type="hidden" name="wip<?= $no?>"> 
+                <input type="hidden" name="picklist<?= $no?>"> 
+                <input type="hidden" name="fg_tks<?= $no?>"> 
+                <input type="hidden" name="mlati<?= $no?>"> 
             </td>
 
-            <td><?= $value['ITEM']?><br><?= $value['DESC']?></td>
+            <td style="text-align:left"><?= $value['ITEM']?><br><?= $value['DESC']?>
+                <br><br><span class="loadingwip" name="ini_wip<?= $no?>"></span>
+                <br><span class="loadingpick" name="ini_pick<?= $no?>"></span>
+                <br><span class="loadinggd" name="ini_gd<?= $no?>"></span>
+            </td>
             <td class="text-nowrap"><p>P</p>
                 <?php if ($ket == 'All' || $ket == 'PA') { ?>
                     <p style="padding-top:5px">A</p>
@@ -183,6 +191,6 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
 </table>
 <div class="panel-body text-right">
     <?php $export = $ket == 'All' ? 'exportJob' : 'exportJobPLA'?>
-    <button class="btn btn-lg bg-orange" formaction="<?= base_url("MonitoringJobProduksi/Monitoring/".$export."")?>"><i class="fa fa-download"></i> Download</button>
+    <button class="btn btn-lg bg-orange" formtarget="_blank" formaction="<?= base_url("MonitoringJobProduksi/Monitoring/".$export."")?>"><i class="fa fa-download"></i> Download</button>
 </div>
 </form>

@@ -135,8 +135,44 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 		}
+		function querySort ($x, $y) {
+			return strcasecmp($x['ITEM'], $y['ITEM']);
+		}
+		
+		usort($datanya, 'querySort');
+		// echo "<pre>";print_r($datanya);exit();
+
 		$hasil = array($datanya, $total);
 		return $hasil;
+	}
+
+	public function searchwipmonitoring(){
+		$item 			= $this->input->post('item', TRUE);
+		$wip 			= $this->M_monitoring->getRemainingWIP($item);
+		$wip2 = 0;
+		foreach ($wip as $key => $val) {
+			$wip2 += $val['REMAINING_QTY'];
+		}
+		echo json_encode($wip2);
+	}
+	
+	public function searchpickmonitoring(){
+		$item 			= $this->input->post('item', TRUE);
+		$picklist		= $this->M_monitoring->getPicklist($item);
+		$pick2 = 0;
+		foreach ($picklist as $key => $val) {
+			$pick2 += $val['QPL_ASSY'];
+		}
+		echo json_encode($pick2);
+	}
+	
+	public function searchgdmonitoring(){
+		$item 			= $this->input->post('item', TRUE);
+		$gudang			= $this->M_monitoring->getGudang($item);
+		$fg_tks 		= !empty($gudang) ? $gudang[0]['FG_TKS'] : '';
+		$mlati 			= !empty($gudang) ? $gudang[0]['MLATI_DM'] : '';
+		$hasil 			= array($fg_tks, $mlati);
+		echo json_encode($hasil);
 	}
 
 	public function jumlahHari($bulan){
@@ -450,6 +486,10 @@ class C_Monitoring extends CI_Controller
 			$baris['inv'] = $this->input->post('inv'.$no[$i].'');
 			$baris['item'] = $this->input->post('item'.$no[$i].'');
 			$baris['desc'] = $this->input->post('desc'.$no[$i].'');
+			$baris['wip'] = $this->input->post('wip'.$no[$i].'');
+			$baris['picklist'] = $this->input->post('picklist'.$no[$i].'');
+			$baris['fg_tks'] = $this->input->post('fg_tks'.$no[$i].'');
+			$baris['mlati'] = $this->input->post('mlati'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
 			$baris['jml_akt'] = $this->input->post('jml_akt'.$no[$i].'');
 			$baris['jml_min'] = $this->input->post('jml_min'.$no[$i].'');
@@ -593,8 +633,8 @@ class C_Monitoring extends CI_Controller
 		$excel->setActiveSheetIndex(0)->setCellValue('B3', ": ".$bulan); 
 
 		$excel->setActiveSheetIndex(0)->setCellValue('A5', "NO.");
-		$excel->setActiveSheetIndex(0)->setCellValue('B5', "KODE");
-		$excel->setActiveSheetIndex(0)->setCellValue('C5', "DESKRIPSI");
+		$excel->setActiveSheetIndex(0)->setCellValue('B5', "ITEM");
+		$excel->setActiveSheetIndex(0)->setCellValue('C5', "");
 		$excel->setActiveSheetIndex(0)->setCellValue('D5', "");
 		$excel->setActiveSheetIndex(0)->setCellValue('E5', "TANGGAL");
 		$excel->getActiveSheet()->mergeCells("A5:A6"); 
@@ -633,8 +673,12 @@ class C_Monitoring extends CI_Controller
 		foreach ($datanya as $d) {	
 			// echo "<pre>";print_r($d);exit();
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $d['item']);
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $d['desc']);
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $d['item'].'
+																	'.$d['desc']);
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, 'WIP : '.$d['wip'].'
+																		Picklist : '.$d['picklist'].'
+																		FG-TKS : '.$d['fg_tks'].'
+																		MLATI-DM : '.$d['mlati'].'');
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), "A");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), "(A - P)");
@@ -767,7 +811,7 @@ class C_Monitoring extends CI_Controller
 		// WIDTH
 		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
 		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(20); 
-		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); 
+		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(20); 
 		for($col = 'D'; $col !== $ajml; $col++) { // autowidth
 			$excel->getActiveSheet()
 				->getColumnDimension($col)
@@ -912,6 +956,10 @@ class C_Monitoring extends CI_Controller
 			$baris['inv'] = $this->input->post('inv'.$no[$i].'');
 			$baris['item'] = $this->input->post('item'.$no[$i].'');
 			$baris['desc'] = $this->input->post('desc'.$no[$i].'');
+			$baris['wip'] = $this->input->post('wip'.$no[$i].'');
+			$baris['picklist'] = $this->input->post('picklist'.$no[$i].'');
+			$baris['fg_tks'] = $this->input->post('fg_tks'.$no[$i].'');
+			$baris['mlati'] = $this->input->post('mlati'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
 			if ($ket == 'PA') {
 				$baris['jml_pa'] = $this->input->post('jml_akt'.$no[$i].'');
@@ -1073,8 +1121,8 @@ class C_Monitoring extends CI_Controller
 		$excel->setActiveSheetIndex(0)->setCellValue('B3', ": ".$bulan); 
 
 		$excel->setActiveSheetIndex(0)->setCellValue('A5', "NO.");
-		$excel->setActiveSheetIndex(0)->setCellValue('B5', "KODE");
-		$excel->setActiveSheetIndex(0)->setCellValue('C5', "DESKRIPSI");
+		$excel->setActiveSheetIndex(0)->setCellValue('B5', "ITEM");
+		$excel->setActiveSheetIndex(0)->setCellValue('C5', "");
 		$excel->setActiveSheetIndex(0)->setCellValue('D5', "");
 		$excel->setActiveSheetIndex(0)->setCellValue('E5', "TANGGAL");
 		$excel->getActiveSheet()->mergeCells("A5:A6"); 
@@ -1117,8 +1165,12 @@ class C_Monitoring extends CI_Controller
 		foreach ($datanya as $d) {	
 			// echo "<pre>";print_r($d);exit();
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $d['item']);
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $d['desc']);
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $d['item'].'
+																	'.$d['desc']);
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, 'WIP : '.$d['wip'].'
+																		Picklist : '.$d['picklist'].'
+																		FG-TKS : '.$d['fg_tks'].'
+																		MLATI-DM : '.$d['mlati'].'');
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), $pa);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), $min);
@@ -1202,7 +1254,7 @@ class C_Monitoring extends CI_Controller
 				
 		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
 		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(20); 
-		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); 
+		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(20); 
 		for($col = 'D'; $col !== $ajml; $col++) { // autowidth
 			$excel->getActiveSheet()
 				->getColumnDimension($col)
@@ -1352,6 +1404,9 @@ class C_Monitoring extends CI_Controller
 				$baris['item'] = $this->input->post('item'.$i.($j+1).'');
 				$baris['desc'] = $this->input->post('desc'.$i.($j+1).'');
 				$baris['inv'] = $this->input->post('inv'.$i.($j+1).'');
+				// $baris['wip'] = $this->input->post('wip'.$i.($j+1).'');
+				// $baris['picklist'] = $this->input->post('picklist'.$i.($j+1).'');
+				// $baris['gudang'] = $this->input->post('gudang'.$i.($j+1).'');
 				$baris['jml_plan'] = $this->input->post('jml_plan'.$i.($j+1).'');
 				$baris['jml_akt'] = $this->input->post('jml_akt'.$i.($j+1).'');
 				$baris['jml_min'] = $this->input->post('jml_min'.$i.($j+1).'');

@@ -78,7 +78,7 @@ $(document).ready(function () {
                         </div>
                             <div class="box-body">
                                 <div class="panel-body">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                     <label>Kategori:</label>
                                         <select id="kategori_range" multiple class="form-control select2" style="width:100%" data-placeholder="Kategori">
                                             <option></option>

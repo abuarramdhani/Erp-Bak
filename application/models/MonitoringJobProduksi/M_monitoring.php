@@ -31,35 +31,35 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
     
-    public function getAktual($kategori, $bulan){
-        $sql = "select distinct
-                       kgim.INVENTORY_ITEM_ID
-                      ,msib.SEGMENT1                                             item
-                      ,msib.DESCRIPTION
-                      ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')           tanggal
-                      ,to_char(wdj.SCHEDULED_START_DATE,'YYYYMMDD')               tgl_urut
-                      ,sum(wdj.START_QUANTITY) over (partition by wdj.PRIMARY_ITEM_ID
-                                                                 ,wdj.ORGANIZATION_ID
-                                                                 ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')
-                                                                 )          quantity
-                      ,sum(wdj.QUANTITY_COMPLETED) over (partition by wdj.PRIMARY_ITEM_ID
-                                                                 ,wdj.ORGANIZATION_ID
-                                                                 ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')
-                                                                 )          quantity_complete
-                from wip_discrete_jobs wdj
-                    ,khs_category_item_monitoring kgim
-                    ,mtl_system_items_b msib
-                where wdj.PRIMARY_ITEM_ID = kgim.INVENTORY_ITEM_ID
-                  and wdj.ORGANIZATION_ID = kgim.ORGANIZATION_ID
-                  and msib.INVENTORY_ITEM_ID = kgim.INVENTORY_ITEM_ID
-                  and msib.ORGANIZATION_ID = kgim.ORGANIZATION_ID
-                  and wdj.STATUS_TYPE in (1,3,12,4,5,15) -- unreleased, released, closed, complete,failed close
-                  and trunc(wdj.SCHEDULED_START_DATE) between nvl(TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY'),wdj.SCHEDULED_START_DATE) and nvl(LAST_DAY (TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY')),wdj.SCHEDULED_START_DATE)
-                  and kgim.CATEGORY_NAME = '$kategori'
-                order by tgl_urut, item";
-        $query = $this->oracle->query($sql);
-        return $query->result_array();
-    }
+    // public function getAktual($kategori, $bulan){
+    //     $sql = "select distinct
+    //                    kgim.INVENTORY_ITEM_ID
+    //                   ,msib.SEGMENT1                                             item
+    //                   ,msib.DESCRIPTION
+    //                   ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')           tanggal
+    //                   ,to_char(wdj.SCHEDULED_START_DATE,'YYYYMMDD')               tgl_urut
+    //                   ,sum(wdj.START_QUANTITY) over (partition by wdj.PRIMARY_ITEM_ID
+    //                                                              ,wdj.ORGANIZATION_ID
+    //                                                              ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')
+    //                                                              )          quantity
+    //                   ,sum(wdj.QUANTITY_COMPLETED) over (partition by wdj.PRIMARY_ITEM_ID
+    //                                                              ,wdj.ORGANIZATION_ID
+    //                                                              ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')
+    //                                                              )          quantity_complete
+    //             from wip_discrete_jobs wdj
+    //                 ,khs_category_item_monitoring kgim
+    //                 ,mtl_system_items_b msib
+    //             where wdj.PRIMARY_ITEM_ID = kgim.INVENTORY_ITEM_ID
+    //               and wdj.ORGANIZATION_ID = kgim.ORGANIZATION_ID
+    //               and msib.INVENTORY_ITEM_ID = kgim.INVENTORY_ITEM_ID
+    //               and msib.ORGANIZATION_ID = kgim.ORGANIZATION_ID
+    //               and wdj.STATUS_TYPE in (1,3,12,4,5,15) -- unreleased, released, closed, complete,failed close
+    //               and trunc(wdj.SCHEDULED_START_DATE) between nvl(TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY'),wdj.SCHEDULED_START_DATE) and nvl(LAST_DAY (TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY')),wdj.SCHEDULED_START_DATE)
+    //               and kgim.CATEGORY_NAME = '$kategori'
+    //             order by tgl_urut, item";
+    //     $query = $this->oracle->query($sql);
+    //     return $query->result_array();
+    // }
     
     public function getitem($term){
         $sql = "SELECT DISTINCT msib.segment1, msib.description, msib.inventory_item_id, msib.organization_id             
@@ -209,111 +209,47 @@ class M_monitoring extends CI_Model
   }
   
   public function getdataWIP($item){
-    // $sql = "SELECT distinct msib.SEGMENT1  ASSY
-    // ,msib.DESCRIPTION
-    // ,we.WIP_ENTITY_NAME
-    // ,wdj.START_QUANTITY
-    // ,decode(wdj.status_type,12,'Closed',3,'Released',4,'Complete',7,'Cancelled') job_status
-    // ,to_char(wdj.SCHEDULED_START_DATE,'DD-MM-YYYY HH24:MI:SS')                SCHEDULED_START_DATE
-    // ,wdj.NET_QUANTITY-wdj.QUANTITY_COMPLETED-wdj.QUANTITY_SCRAPPED            remaining_qty
-    //                 from wip_discrete_jobs wdj
-    //                     ,wip_entities we
-    //                     ,mtl_system_items_b msib
-    //                     ,wip_operations wipo
-    //                     ,wip_operation_resources wipor
-    //                     ,bom_departments bd
-    //                     ,bom_resources br
-    //                 where wdj.WIP_ENTITY_ID = we.WIP_ENTITY_ID
-    //                     and wdj.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
-    //                     and wdj.ORGANIZATION_ID = msib.ORGANIZATION_ID
-    //                     and wipo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-    //                     and wipo.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-    //                     and wipor.WIP_ENTITY_ID = wipo.WIP_ENTITY_ID
-    //                     and wipor.OPERATION_SEQ_NUM = wipo.OPERATION_SEQ_NUM
-    //                     and wipo.department_id = bd.department_id
-    //                     and wipo.ORGANIZATION_ID = bd.ORGANIZATION_ID
-    //                     and wipor.RESOURCE_ID = br.RESOURCE_ID
-    //                     and wipor.ORGANIZATION_ID = br.ORGANIZATION_ID
-    //                     and br.RESOURCE_TYPE = 1
-    //                     and wdj.STATUS_TYPE = 3
-    //                     and msib.SEGMENT1 = '$item'
-    //                 order by 1";
-    $sql = "with qjob as
-            (
-            select distinct 
-                msib.SEGMENT1  assy
-                ,wdj.PRIMARY_ITEM_ID assy_id
-                ,msib.DESCRIPTION
-                ,we.WIP_ENTITY_NAME no_job
-                ,we.WIP_ENTITY_ID job_id
-                ,wdj.START_QUANTITY
-                ,decode (wdj.STATUS_TYPE ,12,'Closed',3,'Released',4,'Complete',7,'Cancelled') job_status
-                ,to_char (wdj.SCHEDULED_START_DATE,'DD-MM-YYYY HH24:MI:SS')                SCHEDULED_START_DATE
-                ,wdj.NET_QUANTITY-wdj.QUANTITY_COMPLETED-wdj.QUANTITY_SCRAPPED            remaining_qty
-                ,wro.INVENTORY_ITEM_ID comp_item_id
-                ,wro.REQUIRED_QUANTITY
-                ,(wro.REQUIRED_QUANTITY / wdj.START_QUANTITY) qty_per_assy
-            from wip_discrete_jobs wdj
-                ,wip_entities we
-                ,mtl_system_items_b msib
-                ,wip_operations wipo
-                ,wip_operation_resources wipor
-                ,wip_requirement_operations wro
-                ,bom_departments bd
-                ,bom_resources br
-            where wdj.WIP_ENTITY_ID = we.WIP_ENTITY_ID
-            and wdj.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
-            and wdj.ORGANIZATION_ID = msib.ORGANIZATION_ID
-            and wro.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-            and wipo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-            and wipo.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-            and wipor.WIP_ENTITY_ID = wipo.WIP_ENTITY_ID
-            and wipor.OPERATION_SEQ_NUM = wipo.OPERATION_SEQ_NUM
-            and wipo.department_id = bd.department_id
-            and wipo.ORGANIZATION_ID = bd.ORGANIZATION_ID
-            and wipor.RESOURCE_ID = br.RESOURCE_ID
-            and wipor.ORGANIZATION_ID = br.ORGANIZATION_ID
-            and br.RESOURCE_TYPE = 1
-            and wdj.STATUS_TYPE = 3
-            and msib.SEGMENT1 = '$item'
-            )
-            ,qpicklist as
-            (
+    $sql = "select *
+            from khs_qweb_job_wipicklist kqjw
+            where kqjw.ASSY = '$item'";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function getRemainingWIP($item){
+    $sql = "select xx.ASSY
+                ,sum (xx.START_QUANTITY) START_QUANTITY 
+                ,sum (xx.REMAINING_QTY) REMAINING_QTY
+            from (
             select distinct
-                nvl (mtrl.QUANTITY_DELIVERED,mtrl.QUANTITY_DETAILED) qty_picklist
-                ,mtrh.ATTRIBUTE1 wip_entity_id
-                ,mtrl.INVENTORY_ITEM_ID 
-            --      ,nvl (mtrl.QUANTITY_DELIVERED,mtrl.QUANTITY_DETAILED) / qjob.qty_per_assy
-            from mtl_txn_request_headers mtrh
-                ,mtl_txn_request_lines mtrl
-                ,qjob 
-            where mtrh.HEADER_ID = mtrl.HEADER_ID
-            and mtrh.ATTRIBUTE1 = qjob.job_id
-            and mtrl.INVENTORY_ITEM_ID = qjob.comp_item_id
-            --  and mtrl.INVENTORY_ITEM_ID = qjob.assy_id
-            )
-            ,fix as
-            (
-            select distinct qj.*
-                ,( qp.qty_picklist / qj.qty_per_assy) qpl_assy
-            from qjob qj
-                ,qpicklist qp
-            where qj.job_id = qp.wip_entity_id
-            and qp.inventory_item_id = qj.comp_item_id
-            )
-            select distinct
-                assy
-                ,assy_id
-                ,description
-                ,no_job
-                ,job_id
-                ,start_quantity
-                ,job_status
-                ,scheduled_start_date
-                ,remaining_qty
-                ,qpl_assy
-            from fix
-            order by 1";
+                kqj.ASSY
+                ,kqj.START_QUANTITY
+                ,kqj.REMAINING_QTY
+                ,kqj.NO_JOB
+            from khs_qweb_job kqj
+            where kqj.ASSY = '$item'
+            ) xx
+            group by xx.ASSY";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function getPicklist($item){
+    $sql = "select kqjw.ASSY
+                ,sum (kqjw.QPL_ASSY) QPL_ASSY
+            from khs_qweb_job_wipicklist kqjw
+            where kqjw.ASSY = '$item'
+            group by kqjw.ASSY";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function getGudang($item){
+    $sql = "SELECT DISTINCT msib.segment1
+                ,khs_inv_qty_att(102,msib.inventory_item_id,'FG-TKS','','') FG_TKS
+            ,khs_inv_qty_att(102,msib.inventory_item_id,'MLATI_DM','','') MLATI_DM
+            FROM mtl_system_items_b msib
+            WHERE msib.segment1 = '$item'";
     $query = $this->oracle->query($sql);
     return $query->result_array();
 }

@@ -69,8 +69,74 @@ function schMonJob(ket) {
                     leftColumns: 3,
                 }
             });
+
+            var nomor = $('.nomorr:last').val();
+            // console.log(nomor);
+            if (nomor != undefined) {
+                getWipMonitoring(1, nomor);
+                getGdMonitoring(1, nomor);
+                getPickMonitoring(1, nomor);
+                $('.loadingwip').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+                $('.loadingpick').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+                $('.loadinggd').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+            }
         }
     })
+}
+
+function getWipMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchwipmonitoring",
+            data : {item : item},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                $('[name = "ini_wip'+no+'"]').html('<b>WIP :</b> '+result+'')
+                $('[name ="wip'+no+'"]').val(result);
+                getWipMonitoring((no+1), batas);
+            }
+        })
+    }
+}
+
+function getPickMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchpickmonitoring",
+            data : {item : item},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                $('[name = "ini_pick'+no+'"]').html('<b>Picklist :</b> '+result+'')
+                $('[name ="picklist'+no+'"]').val(result);
+                getPickMonitoring((no+1), batas);
+            }
+        })
+    }
+}
+
+function getGdMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchgdmonitoring",
+            data : {item : item},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                $('[name = "ini_gd'+no+'"]').html('<b>FG-TKS :</b> '+result[0]+'<br><b>MLATI-DM :</b> '+result[1]+'')
+                $('[name ="fg_tks'+no+'"]').val(result[2]);
+                $('[name ="mlati'+no+'"]').val(result[3]);
+                getGdMonitoring((no+1), batas);
+            }
+        })
+    }
 }
 
 function commentmin(no, tgl, ket) {
