@@ -191,6 +191,6 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
 </table>
 <div class="panel-body text-right">
     <?php $export = $ket == 'All' ? 'exportJob' : 'exportJobPLA'?>
-    <button class="btn btn-lg bg-orange" formtarget="_blank" formaction="<?= base_url("MonitoringJobProduksi/Monitoring/".$export."")?>"><i class="fa fa-download"></i> Download</button>
+    <button class="btn btn-lg bg-orange" formaction="<?= base_url("MonitoringJobProduksi/Monitoring/".$export."")?>"><i class="fa fa-download"></i> Download</button>
 </div>
 </form>
