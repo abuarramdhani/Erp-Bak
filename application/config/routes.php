@@ -4816,3 +4816,8 @@ $route['MasterPekerja/cetakkategori/(:any)'] = 'MasterPekerja/CetakKategori/C_Ce
 // -------------------------------- Tracking Activity ---------------------------------------------//
 $route['TrackingActivity/Insert/(:any)'] 					= 'TrackingActivity/C_Insert/$1';
 $route['TrackingActivity/Insert/(:any)/(:any)'] 		    = 'TrackingActivity/C_Insert/$1/$2';
+
+// ---------------------------------- Report Tracking Invoice -----------------------------------------//
+$route['Report/TrackingInvoice'] = 'TrackingInvoice/C_Reportti';
+$route['Report/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_Reportti/$1';
+$route['Report/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_Reportti/$1/$2';
