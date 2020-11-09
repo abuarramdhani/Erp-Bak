@@ -193,8 +193,8 @@ class C_Index extends CI_Controller {
 					),
 					array(
 						'name' => '[ABSEN-TKS] BARCODE MACHINING 1 ',
-						'ip'   => '192.168.38.220',
-						'ip2'  => '192.168.38.220'
+						'ip'   => '192.168.36.52',
+						'ip2'  => '192.168.36.52'
 					),
 					array(
 						'name' => '[ABSEN-TKS] BARCODE MACHINING 2 ',
