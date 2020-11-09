@@ -16,6 +16,7 @@ class C_Monitoring extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringJobProduksi/M_monitoring');
 		$this->load->model('MonitoringJobProduksi/M_usermng');
+		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
 	}
@@ -394,6 +395,7 @@ class C_Monitoring extends CI_Controller
 		$ket 	= $this->input->post('ket');
 		$data['level'] = $this->input->post('level');
 		$data['nomor'] = $this->input->post('nomor');
+		$data['header'] = $item;
 
 		$param = $ket == 'z' ? "and msib2.SEGMENT1 like '%Z-%'" : '';
 
@@ -1842,6 +1844,237 @@ class C_Monitoring extends CI_Controller
 		$write->save('php://output');
 
 	}
+
+	public function exportSimulasi(){
+		$kategori 		= $this->input->post('kategori');
+		$tanggal 		= $this->input->post('tanggal');
+		$bulan 			= $this->input->post('bulan');
+		$item 			= $this->input->post('item');
+		$desc_item 		= $this->input->post('deskripsi_item');
+		$qty 			= $this->input->post('qty');
+		$komponen 		= $this->input->post('komponen[]');
+		$desc_komponen 	= $this->input->post('desc_komponen[]');
+		$gudang_asal 	= $this->input->post('gudang_asal[]');
+		$locator_asal 	= $this->input->post('locator_asal[]');
+		$uom 			= $this->input->post('uom[]');
+		$qty_komponen 	= $this->input->post('qty_komponen[]');
+		$att 			= $this->input->post('att[]');
+		$kekurangan 	= $this->input->post('kekurangan[]');
+		$wip 			= $this->input->post('wip[]');
+		$picklist 		= $this->input->post('picklist[]');
+		$penanda 		= $this->input->post('penanda[]');
+		$level 			= $this->input->post('level[]');
+		$header 		= $this->input->post('header[]');
+		$jml_gudang 	= $this->input->post('jml_gudang[]');
+
+		include APPPATH.'third_party/Excel/PHPExcel.php';
+		$excel = new PHPExcel();
+		$excel->getProperties()->setCreator('CV. KHS')
+					->setLastModifiedBy('Quick')
+					->setTitle("Monitoring Job Produksi")
+					->setSubject("CV. KHS")
+					->setDescription("Monitoring Job Produksi")
+					->setKeywords("MJP");
+		
+		
+		$style_title = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+			),
+		);
+		$style1 = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'bdeefc'),
+			),
+			'font' => array(
+				'bold' => true,
+				'wrap' => true,
+			), 
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	=> PHPExcel_Style_Alignment::VERTICAL_CENTER,
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		$style2 = array(
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'wrap' => true,
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		
+		//TITLE
+		$excel->setActiveSheetIndex(0)->setCellValue('A1', "SIMULASI MONITORING JOB PRODUKSI"); 
+		$excel->getActiveSheet()->mergeCells("A1:K1"); 
+		$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
+		$excel->setActiveSheetIndex(0)->setCellValue('A2', "Kategori"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B2', ": ".$kategori); 
+		$excel->setActiveSheetIndex(0)->setCellValue('A3', "Tanggal"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B3', ": ".$tanggal.'/'.$bulan); 
+		$excel->setActiveSheetIndex(0)->setCellValue('A4', "Kode Item"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B4', ": ".$item); 
+		$excel->setActiveSheetIndex(0)->setCellValue('A5', "Deskripsi Item"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B5', ": ".$desc_item); 
+		$excel->setActiveSheetIndex(0)->setCellValue('A6', "Quantity"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B6', ": ".$qty); 
+
+		//header
+		$excel->setActiveSheetIndex(0)->setCellValue('A8', "No"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B8', "Kode Komponen"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('C8', "Deskripsi Komponen"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('D8', "Gudang Asal"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('E8', "Lokator Asal"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('F8', "Unit"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('G8', "Jumlah Yang Dibutuhkan"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('H8', "ATT"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('I8', "Balance (+/-)"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('J8', "Wip"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('K8', "Picklist"); 
+		$excel->getActiveSheet()->getStyle('A8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('B8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('C8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('D8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('E8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('F8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('G8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('H8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('I8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('J8')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('K8')->applyFromArray($style1);
+
+		$no = 1; $numrow = 9; $g = 0;
+		$ibunya = array();
+		for ($i=0; $i < count($komponen) ; $i++) { 
+			if ($level[$i] == 1) {
+				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
+				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $komponen[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $desc_komponen[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $gudang_asal[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $locator_asal[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $uom[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $qty_komponen[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $att[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $kekurangan[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $wip[$i]);
+				$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $picklist[$i]);
+				$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style2);
+		
+			$numrow++; $no++;
+			}else {
+				if (!in_array($header[$i], $ibunya)) {
+					$num[$header[$i]] = 1;
+					array_push($ibunya, $header[$i]);
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 1, $numrow), "No"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 2, $numrow), "Kode Komponen"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 3, $numrow), "Deskripsi Komponen"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 4, $numrow), "Gudang Asal"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 5, $numrow), "Lokator Asal"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 6, $numrow), "Gudang"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 7, $numrow), "Unit"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 8, $numrow), "Jumlah Yang Dibutuhkan"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 9, $numrow), "ATT"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 10, $numrow), "Balance (+/-)"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 11, $numrow), "Wip"); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 12, $numrow), "Picklist"); 
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 1, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 2, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 3, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 4, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 5, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 6, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 7, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 8, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 9, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 10, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 11, $numrow))->applyFromArray($style1);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 12, $numrow))->applyFromArray($style1);
+					$numrow++;
+				}
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 1, $numrow), $num[$header[$i]]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 2, $numrow), $komponen[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 3, $numrow), $desc_komponen[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 4, $numrow), $gudang_asal[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 5, $numrow), $locator_asal[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 6, $numrow), $jml_gudang[$g]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 7, $numrow), $uom[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 8, $numrow), $qty_komponen[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 9, $numrow), $att[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 10, $numrow), $kekurangan[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 11, $numrow), $wip[$i]); 
+					$excel->setActiveSheetIndex(0)->setCellValue($this->carikolom($level[$i], 12, $numrow), $picklist[$i]); 
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 1, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 2, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 3, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 4, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 5, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 6, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 7, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 8, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 9, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 10, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 11, $numrow))->applyFromArray($style2);
+					$excel->getActiveSheet()->getStyle($this->carikolom($level[$i], 12, $numrow))->applyFromArray($style2);
+					$numrow++; $g++;
+					$num[$header[$i]] = $num[$header[$i]] + 1;
+					
+			}
+		}
+
+		// WIDTH
+		for($col = 'A'; $col !== 'AA'; $col++) { // autowidth
+			$excel->getActiveSheet()
+				->getColumnDimension($col)
+				->setAutoSize(true);
+		}
+		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+
+
+		// Set orientasi kertas jadi LANDSCAPE
+		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+		// Set judul file excel nya
+		$excel->getActiveSheet(0)->setTitle("Simulasi Job");
+		$excel->setActiveSheetIndex();
+		// Proses file excel
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment; filename="Simulasi-Job-Produksi'.date('YmdHis').'.xlsx"'); 
+		header('Cache-Control: max-age=0');
+		$write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+		$write->save('php://output');
+
+	}
+
+	
+	public function carikolom($level, $urutan, $numrow){
+		$n = ($level-1) + ($urutan-1);
+		for($r = ""; $n >= 0; $n = intval($n / 26) - 1)
+		$r = chr($n%26 + 0x41) . $r;
+		$baris = $r.$numrow;
+		return $baris;
+	}
+
 
 
 }
