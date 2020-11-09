@@ -173,7 +173,8 @@ class M_absenatasan extends CI_Model
 			$result2 = $personalia->query($sql2)->result_array();
 			$sql3 = "SELECT su.user_name employee_code, su.employee_name FROM si.si_approver_khusus ak 
 					LEFT JOIN sys.vi_sys_user su ON su.user_name =  ak.no_induk
-					WHERE ak.kodesie = '$kodesie_subs'";
+					WHERE ak.kodesie like '$kodesie_subs%'";
+
 			$result3 = $this->db->query($sql3)->result_array();
 
 			$sqlPosShowroom = "select * from hrd_khs.trefjabatan where substr(kodesie,1,3) = '209' and kd_jabatan = '11' and substr(kodesie,7,1) != '1' order by substr(kodesie,7,1)";
