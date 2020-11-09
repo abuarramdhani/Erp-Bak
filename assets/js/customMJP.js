@@ -240,6 +240,7 @@ function tambahsimulasi(level, no, num) {
         })
     }else{
         $('#tr_simulasi'+nomor).css('display','none');   
+        $('#tr_simulasi'+nomor).html('');
         $('#penanda'+nomor).val('off');
     }
 }
