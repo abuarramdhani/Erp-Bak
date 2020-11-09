@@ -160,16 +160,15 @@ class M_absenatasan extends CI_Model
 					FROM hrd_khs.tpribadi a 
 						INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
 						INNER JOIN hrd_khs.torganisasi c on a.kd_jabatan=c.kd_jabatan
+						INNER join hrd_khs.trefjabatan t on t.noind = a.noind 
 					WHERE
 						$where
-						and substring(a.kodesie, 1, 4) = (
-							SELECT substring( '$kodesie', 1, 4 )
-							-- FROM hrd_khs.tpribadi d
-							-- WHERE d.noind = '$noind'
-							-- 	and d.keluar = '0'
-						)
-						and a.keluar ='0'
-					ORDER BY a.noind,a.nama";
+					and substring(t.kodesie, 1, 4) = (
+						SELECT substring( '$kodesie', 1, 4 )
+					)
+					and a.keluar ='0'
+					group by a.noind,a.nama
+					ORDER BY a.noind,a.nama;";
 			$result2 = $personalia->query($sql2)->result_array();
 			$sql3 = "SELECT su.user_name employee_code, su.employee_name FROM si.si_approver_khusus ak 
 					LEFT JOIN sys.vi_sys_user su ON su.user_name =  ak.no_induk
