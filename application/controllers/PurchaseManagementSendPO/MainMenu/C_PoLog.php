@@ -48,7 +48,7 @@ class C_PoLog extends CI_Controller {
             redirect('PurchaseManagementSendPO/PoLog');
         }
         $data['po_number'] = $_GET['po_numb'];
-
+        $data['edit_PoLog'] = $this->M_polog->getDataByPoNumb($data['po_number'])->row_array();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
