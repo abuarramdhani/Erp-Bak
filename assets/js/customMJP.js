@@ -164,7 +164,7 @@ function editcomment(){
     // console.log('woy')
     $('#savecommentmin').css('display','');
     $('#editcommentmin').css('display','none');
-    $('#comment').removeAttr('readonly');
+    $('#comment').removeAttr('disabled');
 }
 
 function saveCommentmin(ket) {

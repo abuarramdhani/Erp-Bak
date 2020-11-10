@@ -16,7 +16,7 @@ if (!empty($comment)) {
     $komen = $comment[0]['KETERANGAN'];
     $save = 'style="display:none"';
     $edit = '';
-    $diss = 'readonly';
+    $diss = 'disabled';
 }else {
     $komen = $save = $diss = '';
     $edit = 'style="display:none"';
@@ -41,7 +41,8 @@ if (!empty($comment)) {
     </div>
     <div class="panel-body">
         <div class="input-group">
-            <input name="comment" id="comment" class="form-control" value="<?= $komen?>" placeholder="comment..." <?= $diss?> autocomplete="off">
+            <!-- <input name="comment" id="comment" class="form-control" value="<?= $komen?>" placeholder="comment..." <?= $diss?> autocomplete="off"> -->
+            <textarea name="comment" id="comment" style="width:450px;height:120px" <?= $diss?>><?= $komen?></textarea>
             <span class="input-group-btn">
                 <button type="button" id="editcommentmin" class="btn bg-orange" onclick="editcomment()" <?= $edit?>><i class="fa fa-pencil"></i> Edit</button>
                 <button type="button" id="savecommentmin" class="btn btn-danger" onclick="saveCommentmin(<?= $tanda?>)" <?= $save?>><i class="fa fa-save"></i> Save</button>
