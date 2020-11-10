@@ -423,9 +423,46 @@ $(document).ready(function () {
 
   // Date Picker edit data
   $("#vendor_confirm_date").datepicker({
+    format: 'dd/mm/yyyy',
     todayHighlight: true,
     autoclose: true,
   });
+  $("#send_date_1").datepicker({
+    format: 'dd/mm/yyyy',
+    todayHighlight: true,
+    autoclose: true,
+  });
+  $("#send_date_2").datepicker({
+    format: 'dd/mm/yyyy',
+    todayHighlight: true,
+    autoclose: true,
+  });
+
+  let distributionMethod = $('#select_distribution_method').val();
+  if (distributionMethod === "email") {
+    $('.send_date_1').hide();
+    $('.send_date_2').hide();
+  } else if (distributionMethod !== "email") {
+    $('.send_date_1').show();
+    $('.send_date_2').show();
+    $('[name="send_date_1"]').prop('required', true);
+    $('[name="send_date_2"]').prop('required', true);
+  }
+  $('#select_distribution_method').on('change', function (e) {
+    e.preventDefault();
+    distributionMethod = $(this).val();
+    if (distributionMethod !== "email") {
+      $('.send_date_1').show();
+      $('.send_date_2').show();
+      $('[name="send_date_1"]').prop('required', true);
+      $('[name="send_date_2"]').prop('required', true);
+    } else {
+      $('.send_date_1').hide();
+      $('.send_date_2').hide();
+      $('[name="send_date_1"]').prop('required', false);
+      $('[name="send_date_2"]').prop('required', false);
+    }
+  })
 
   $("#editPoLog").on("click", ".btnVendorConfirm", function () {
     // Ajax edit Data Po Log
@@ -512,6 +549,8 @@ $(document).ready(function () {
       vendor_confirm_date = $('[name="vendor_confirm_date"]').val(),
       distribution_method = $('[name="distribution_method"]').val(),
       vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
+      send_date_1 = $('[name="send_date_1"]').val(),
+      send_date_2 = $('[name="send_date_2"]').val(),
       vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
       vendor_confirm_note = $('[name="vendor_confirm_note"]').val(),
       attachment_flag = $('[name="attachment_flag"]').val(),
@@ -519,6 +558,10 @@ $(document).ready(function () {
     eplb_form_data.append("po_number", po_number);
     eplb_form_data.append("distribution_method", distribution_method);
     eplb_form_data.append("attachment_flag", attachment_flag);
+    if (distribution_method !== "email") {
+      eplb_form_data.append("send_date_1", send_date_1);
+      eplb_form_data.append("send_date_2", send_date_2);
+    }
 
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
