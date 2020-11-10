@@ -29,7 +29,9 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="text" class="form-control" id="vendor_confirm_date" name="vendor_confirm_date" <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?> autocomplete="off">
+                                                        <?php $date = date_create($edit_PoLogbook['VENDOR_CONFIRM_DATE']) ?>
+                                                        <input type="text" class="form-control" id="vendor_confirm_date" name="vendor_confirm_date" <?= ($edit_PoLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PoLogbook['SEND_DATE_2'] == NULL && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PoLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?> autocomplete="off"
+                                                            value="<?= ($edit_PoLogbook['VENDOR_CONFIRM_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : '' ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -41,15 +43,14 @@
                                                 <label class="col-lg-1" style="width: 10px;">: </label>
                                                 <div class="col-lg-4 text-left">
                                                     <select type="select select2" class="form-control" id="select_distribution_method" name="distribution_method" required>
-                                                        <option selected disabled>--Select Distribution Method--
-                                                        </option>
-                                                        <option value="email">Email</option>
-                                                        <option value="fax">Fax</option>
-                                                        <option value="sms">SMS</option>
-                                                        <option value="wabuyer">WA Buyer</option>
-                                                        <option value="wasystem">WA System</option>
-                                                        <option value="others">Others</option>
-                                                        <option value="none">None</option>
+                                                        <option <?= $edit_PoLogbook['DISTRIBUTION_METHOD'] == NULL ? 'selected' : '' ?> disabled>--Select Confirm Method--</option>
+                                                        <option <?= $edit_PoLogbook['DISTRIBUTION_METHOD'] == "email" ? 'selected' : '' ?> value="email">Email</option>
+                                                        <option <?= $edit_PoLogbook['DISTRIBUTION_METHOD'] == "fax" ? 'selected' : '' ?> value="fax">Fax</option>
+                                                        <option <?= $edit_PoLogbook['DISTRIBUTION_METHOD'] == "sms" ? 'selected' : '' ?> value="sms">SMS</option>
+                                                        <option <?= $edit_PoLogbook['DISTRIBUTION_METHOD'] == "wabuyer" ? 'selected' : '' ?> value="wabuyer">WA Buyer</option>
+                                                        <option <?= $edit_PoLogbook['DISTRIBUTION_METHOD'] == "wasystem" ? 'selected' : '' ?> value="wasystem">WA System</option>
+                                                        <option <?= $edit_PoLogbook['DISTRIBUTION_METHOD'] == "others" ? 'selected' : '' ?> value="others">Others</option>
+                                                        <option <?= $edit_PoLogbook['DISTRIBUTION_METHOD'] == "none" ? 'selected' : '' ?> value="none">None</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -60,15 +61,15 @@
                                                 </div>
                                                 <label class="col-lg-1" style="width: 10px;">: </label>
                                                 <div class="col-lg-4 text-left">
-                                                    <select type="select select2" class="form-control" id="select_vendor_confirm_method" name="vendor_confirm_method" <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
-                                                        <option selected disabled>--Select Confirm Method--</option>
-                                                        <option value="email">Email</option>
-                                                        <option value="fax">Fax</option>
-                                                        <option value="sms">SMS</option>
-                                                        <option value="wabuyer">WA Buyer</option>
-                                                        <option value="wasystem">WA System</option>
-                                                        <option value="others">Others</option>
-                                                        <option value="none">None</option>
+                                                    <select type="select select2" class="form-control" id="select_vendor_confirm_method" name="vendor_confirm_method" <?= ($edit_PoLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PoLogbook['SEND_DATE_2'] == NULL && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PoLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
+                                                        <option <?= $edit_PoLogbook['VENDOR_CONFIRM_METHOD'] == NULL ? 'selected' : '' ?> disabled>--Select Confirm Method--</option>
+                                                        <option <?= $edit_PoLogbook['VENDOR_CONFIRM_METHOD'] == "email" ? 'selected' : '' ?> value="email">Email</option>
+                                                        <option <?= $edit_PoLogbook['VENDOR_CONFIRM_METHOD'] == "fax" ? 'selected' : '' ?> value="fax">Fax</option>
+                                                        <option <?= $edit_PoLogbook['VENDOR_CONFIRM_METHOD'] == "sms" ? 'selected' : '' ?> value="sms">SMS</option>
+                                                        <option <?= $edit_PoLogbook['VENDOR_CONFIRM_METHOD'] == "wabuyer" ? 'selected' : '' ?> value="wabuyer">WA Buyer</option>
+                                                        <option <?= $edit_PoLogbook['VENDOR_CONFIRM_METHOD'] == "wasystem" ? 'selected' : '' ?> value="wasystem">WA System</option>
+                                                        <option <?= $edit_PoLogbook['VENDOR_CONFIRM_METHOD'] == "others" ? 'selected' : '' ?> value="others">Others</option>
+                                                        <option <?= $edit_PoLogbook['VENDOR_CONFIRM_METHOD'] == "none" ? 'selected' : '' ?> value="none">None</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -80,7 +81,7 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width: 10px;">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="text" class="form-control" id="vendor_confirm_pic" name="vendor_confirm_pic" <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
+                                                        <input type="text" class="form-control" id="vendor_confirm_pic" name="vendor_confirm_pic" <?= ($edit_PoLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PoLogbook['SEND_DATE_2'] == NULL && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PoLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?> value="<?= $edit_PoLogbook['VENDOR_CONFIRM_PIC'] ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,7 +93,7 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width: 10px;">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="text" class="form-control" id="vendor_confirm_note" name="vendor_confirm_note" <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?>>
+                                                        <input type="text" class="form-control" id="vendor_confirm_note" name="vendor_confirm_note" <?= ($edit_PoLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PoLogbook['SEND_DATE_2'] == NULL && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PoLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?> value="<?= $edit_PoLogbook['VENDOR_CONFIRM_NOTE'] ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -104,9 +105,9 @@
                                                 <label class="col-lg-1" style="width: 10px;">: </label>
                                                 <div class="col-lg-4 text-left">
                                                     <select type="select select2" class="form-control" id="select_attachment_flag" name="attachment_flag" required>
-                                                        <option selected disabled>--Select Attachment Flag--</option>
-                                                        <option value="Y">Yes</option>
-                                                        <option value="N">No</option>
+                                                        <option <?= $edit_PoLogbook['ATTACHMENT_FLAG'] == NULL ? 'selected' : '' ?>disabled>--Select Attachment Flag--</option>
+                                                        <option <?= $edit_PoLogbook['ATTACHMENT_FLAG'] == 'Y' ? 'selected' : '' ?> value="Y">Yes</option>
+                                                        <option <?= $edit_PoLogbook['ATTACHMENT_FLAG'] == 'N' ? 'selected' : '' ?> value="N">No</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -118,7 +119,7 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="file" id="lampiranPO" name="lampiranPO" <?= ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?> autocomplete="off">
+                                                        <input type="file" id="lampiranPO" name="lampiranPO" <?= ($edit_PoLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PoLogbook['SEND_DATE_2'] == NULL && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PoLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PoLogbook['VENDOR_CONFIRM_DATE'] == NULL) ? 'required' : 'disabled'; ?> autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>

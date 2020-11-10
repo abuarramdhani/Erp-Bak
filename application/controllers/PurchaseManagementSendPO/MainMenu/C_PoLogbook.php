@@ -50,7 +50,7 @@ class C_PoLogbook extends CI_Controller
             redirect('PurchaseManagementSendPO/POLogbook');
         }
         $data['po_number'] = $_GET['po_numb'];
-        $data['edit_Po'] = $this->M_pologbook->get_data_byid($data['po_number']);
+        $data['edit_PoLogbook'] = $this->M_pologbook->getDataByPoNumb($data['po_number'])->row_array();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -68,8 +68,8 @@ class C_PoLogbook extends CI_Controller
         $vendor_confirm_note = htmlspecialchars($this->input->post('vendor_confirm_note'));
         $attachment_flag = $this->input->post('attachment_flag');
 
-        $edit_Po = $this->M_pologbook->get_data_byid($po_number);
-        if ($edit_Po['SELISIH_WAKTU_1'] > 48 && $edit_Po['SEND_DATE_2'] == NULL && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL OR $edit_Po['SELISIH_WAKTU_2'] > 24 && $edit_Po['VENDOR_CONFIRM_DATE'] == NULL) {
+        $edit_PogLogbook = $this->M_pologbook->getDataByPoNumb($po_number)->row_array();
+        if ($edit_PogLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PogLogbook['SEND_DATE_2'] == NULL && $edit_PogLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PogLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PogLogbook['VENDOR_CONFIRM_DATE'] == NULL) {
             $name = $_FILES["lampiran_po"]["name"];
             $ext = strtolower(end((explode(".", $name))));
             if (!($ext == 'pdf' OR $ext == 'jpeg' OR $ext == 'jpg' OR $ext == 'png' OR $ext == 'xls' OR $ext == 'xlsx' OR $ext == 'ods' OR $ext == 'odt' OR $ext == 'txt' OR $ext == 'doc' OR $ext == 'docx')) {

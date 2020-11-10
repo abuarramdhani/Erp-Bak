@@ -29,7 +29,8 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="text" class="form-control" id="vendor_confirm_date" name="vendor_confirm_date" required autocomplete="off">
+                                                        <?php $date = date_create($edit_PoLog['VENDOR_CONFIRM_DATE']) ?>
+                                                        <input type="text" class="form-control" id="vendor_confirm_date" name="vendor_confirm_date" required autocomplete="off" value="<?= ($edit_PoLog['VENDOR_CONFIRM_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : '' ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -41,14 +42,14 @@
                                                 <label class="col-lg-1" style="width: 10px;">: </label>
                                                 <div class="col-lg-4 text-left">
                                                     <select type="select select2" class="form-control" id="select_vendor_confirm_method" name="vendor_confirm_method" required>
-                                                        <option selected disabled>--Select Confirm Method--</option>
-                                                        <option value="email">Email</option>
-                                                        <option value="fax">Fax</option>
-                                                        <option value="sms">SMS</option>
-                                                        <option value="wabuyer">WA Buyer</option>
-                                                        <option value="wasystem">WA System</option>
-                                                        <option value="others">Others</option>
-                                                        <option value="none">None</option>
+                                                        <option <?= $edit_PoLog['VENDOR_CONFIRM_METHOD'] == NULL ? 'selected' : '' ?> disabled>--Select Confirm Method--</option>
+                                                        <option <?= $edit_PoLog['VENDOR_CONFIRM_METHOD'] == "email" ? 'selected' : '' ?> value="email">Email</option>
+                                                        <option <?= $edit_PoLog['VENDOR_CONFIRM_METHOD'] == "fax" ? 'selected' : '' ?> value="fax">Fax</option>
+                                                        <option <?= $edit_PoLog['VENDOR_CONFIRM_METHOD'] == "sms" ? 'selected' : '' ?> value="sms">SMS</option>
+                                                        <option <?= $edit_PoLog['VENDOR_CONFIRM_METHOD'] == "wabuyer" ? 'selected' : '' ?> value="wabuyer">WA Buyer</option>
+                                                        <option <?= $edit_PoLog['VENDOR_CONFIRM_METHOD'] == "wasystem" ? 'selected' : '' ?> value="wasystem">WA System</option>
+                                                        <option <?= $edit_PoLog['VENDOR_CONFIRM_METHOD'] == "others" ? 'selected' : '' ?> value="others">Others</option>
+                                                        <option <?= $edit_PoLog['VENDOR_CONFIRM_METHOD'] == "none" ? 'selected' : '' ?> value="none">None</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -60,7 +61,7 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width: 10px;">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="text" class="form-control" id="vendor_confirm_pic" name="vendor_confirm_pic" required>
+                                                        <input type="text" class="form-control" id="vendor_confirm_pic" name="vendor_confirm_pic" required value="<?= $edit_PoLog['VENDOR_CONFIRM_PIC'] ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -72,7 +73,7 @@
                                                     </div>
                                                     <label class="col-lg-1" style="width: 10px;">:</label>
                                                     <div class="col-lg-4 text-left">
-                                                        <input type="text" class="form-control" id="vendor_confirm_note" name="vendor_confirm_note" required>
+                                                        <input type="text" class="form-control" id="vendor_confirm_note" name="vendor_confirm_note" required value="<?= $edit_PoLog['VENDOR_CONFIRM_NOTE'] ?>">
                                                     </div>
                                                 </div>
                                             </div>
