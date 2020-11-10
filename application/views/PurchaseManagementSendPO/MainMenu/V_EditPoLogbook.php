@@ -54,6 +54,32 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="row send_date_1">
+                                                <br>
+                                                <div class="col-lg-12">
+                                                    <div class="col-lg-5 text-right">
+                                                        <label>Send Date 1</label>
+                                                    </div>
+                                                    <label class="col-lg-1" style="width:10px">:</label>
+                                                    <div class="col-lg-4 text-left">
+                                                        <?php $date = date_create($edit_PoLogbook['SEND_DATE_1']); ?>
+                                                        <input type="text" class="form-control" id="send_date_1" name="send_date_1" autocomplete="off" value="<?= ($edit_PoLogbook['SEND_DATE_1'] !== NULL) ? date_format($date, 'd/m/Y') : '';?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row send_date_2">
+                                                <br>
+                                                <div class="col-lg-12">
+                                                    <div class="col-lg-5 text-right">
+                                                        <label>Send Date 2</label>
+                                                    </div>
+                                                    <label class="col-lg-1" style="width:10px">:</label>
+                                                    <div class="col-lg-4 text-left">
+                                                        <?php $date = date_create($edit_PoLogbook['SEND_DATE_2']) ?>
+                                                        <input type="text" class="form-control" id="send_date_2" name="send_date_2" autocomplete="off" value="<?= ($edit_PoLogbook['SEND_DATE_2'] !== NULL) ? date_format($date, 'd/m/Y') : '';?>">
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <br>
                                             <div class="row">
                                                 <div class="col-lg-5 text-right">

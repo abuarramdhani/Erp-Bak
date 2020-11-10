@@ -63,6 +63,8 @@ class C_PoLogbook extends CI_Controller
         $po_number = $this->input->post('po_number');
         $vendor_confirm_date = $this->input->post('vendor_confirm_date');
         $distribution_method = $this->input->post('distribution_method');
+        $send_date_1 = $this->input->post('send_date_1');
+        $send_date_2 = $this->input->post('send_date_2');
         $vendor_confirm_method = $this->input->post('vendor_confirm_method');
         $vendor_confirm_pic = htmlspecialchars($this->input->post('vendor_confirm_pic'));
         $vendor_confirm_note = htmlspecialchars($this->input->post('vendor_confirm_note'));
@@ -92,14 +94,22 @@ class C_PoLogbook extends CI_Controller
                     $file = array('upload_data' => $this->upload->data());
                     $nama_lampiran = $file['upload_data']['raw_name'];
                 }
-                $this->M_pologbook->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                if ($distribution_method == "email") {
+                    $this->M_pologbook->updateVendorDisMetEmail($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                } else {
+                    $this->M_pologbook->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $send_date_1, $send_date_2, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                }
                 $this->output
                         ->set_status_header(200)
                         ->set_content_type('application/json')
                         ->set_output(json_encode("Data berhasil diupdate"));
             }
         } else {
-            $this->M_pologbook->updateVendorData2($po_number, $distribution_method, $attachment_flag);
+            if ($distribution_method == "email") {
+                $this->M_pologbook->updateVendorDisMetEmail2($po_number, $distribution_method, $attachment_flag);
+            } else {
+                $this->M_pologbook->updateVendorData2($po_number, $distribution_method, $send_date_1, $send_date_2, $attachment_flag);
+            }
             $this->output
                     ->set_status_header(200)
                     ->set_content_type('application/json')
