@@ -32,8 +32,8 @@ class C_History extends CI_Controller
 		$user = $this->session->username;
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'History SPB/DO';
-		$data['Menu'] = 'History SPB/DO';
+		$data['Title'] = 'Analisis SPB/DO';
+		$data['Menu'] = 'Analisis';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
