@@ -283,11 +283,35 @@ class M_blankoevaluasi extends CI_Model
         $awal = date('Y-m-d', strtotime($awal));
         $akhir = date('Y-m-d', strtotime($akhir));
 
-        $q_terlambat = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TT' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PSP', 'PSK') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        /**
+         * Kondisi khusus untuk noind T yang sebelumnya ber noind J
+         * akan select range presensi noind sebelumnya jika ada
+         */
+        $arrayNoind = [$noind];
+        if (substr($noind, 0, 1) == 'T') {
+            $pekerja = $this->personalia->from('hrd_khs.tpribadi')->select('noind_baru')->where('noind', $noind)->get()->row();
+            // jika ada
+            if ($pekerja) {
+                $allNoind = $this->personalia->from('hrd_khs.tpribadi')->select('noind')->where('noind_baru', $pekerja->noind_baru)->get()->result_array();
+                // jika ada
+                if ($allNoind) {
+                    $arrayNoind = array_map(function ($item) {
+                        return $item['noind'];
+                    }, $allNoind);
+                }
+            }
+        }
+
+        // array noind to string "'Txxxx', 'Txxxxx'"
+        $stringNoind = implode(', ', array_map(function ($item) {
+            return "'$item'";
+        }, $arrayNoind));
+
+        $q_terlambat = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TT' and point <> '0' and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
+        $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
+        $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
+        $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PSP', 'PSK') and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
+        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PIP') and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
         // $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
 
         $terlambat = $this->personalia->query($q_terlambat)->result_array();
