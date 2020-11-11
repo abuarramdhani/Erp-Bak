@@ -4821,3 +4821,50 @@ $route['TrackingActivity/Insert/(:any)/(:any)'] 		    = 'TrackingActivity/C_Inse
 $route['Report/TrackingInvoice'] = 'TrackingInvoice/C_Reportti';
 $route['Report/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_Reportti/$1';
 $route['Report/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_Reportti/$1/$2';
+
+// --------------------------------- Pengembangan Sistem ------------------------------ //
+$route['PengembanganSistem'] = 'PengembanganSistem/C_Index';
+$route['PengembanganSistem/Dashboard'] = 'PengembanganSistem/C_Index';
+$route['PengembanganSistem/PenomoranDokumen'] = 'PengembanganSistem/Penomoran/C_Penomoran';
+//FLOW_PROSES
+$route['PengembanganSistem/Flow_Proses'] = 'PengembanganSistem/Penomoran/C_Penomoran/flow_proses';
+$route['PengembanganSistem/cek_nomor_flow'] = 'PengembanganSistem/Penomoran/C_Penomoran/cek_nomor_flow';
+$route['PengembanganSistem/Input_fp'] = 'PengembanganSistem/Penomoran/C_Penomoran/inputdata_fp';
+$route['PengembanganSistem/edit_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/edit_flow/$1';
+$route['PengembanganSistem/update_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/update_flow/$1';
+$route['PengembanganSistem/upload_data_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/upload_data_flow/$1';
+$route['PengembanganSistem/delete_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_data_flow/$1';
+//COP/WI
+$route['PengembanganSistem/cop_wi'] = 'PengembanganSistem/Penomoran/C_Penomoran/cop_wi';
+$route['PengembanganSistem/cek_nomor_cop_wi'] = 'PengembanganSistem/Penomoran/C_Penomoran/cek_nomor_copwi';
+$route['PengembanganSistem/select_seksi'] = 'PengembanganSistem/Penomoran/C_Penomoran/select_seksi';
+$route['PengembanganSistem/input_cop_wi'] = 'PengembanganSistem/Penomoran/C_Penomoran/inputdata_copwi';
+$route['PengembanganSistem/edit_cop_wi/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/edit_copwi/$1';
+$route['PengembanganSistem/update_cop_wi/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/update_copwi/$1';
+$route['PengembanganSistem/upload_file_cop_wi/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/upload_data_copwi/$1';
+$route['PengembanganSistem/delete_cop_wi/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_data_copwi/$1';
+
+$route['PengembanganSistem/Usermanual'] = 'PengembanganSistem/Penomoran/C_Penomoran/usermanual';
+$route['PengembanganSistem/hitung_data_um'] = 'PengembanganSistem/Penomoran/C_Penomoran/hitung_data_um';
+$route['PengembanganSistem/cek_nomor_um'] = 'PengembanganSistem/Penomoran/C_Penomoran/cek_nomor_um';
+$route['PengembanganSistem/select_seksi'] = 'PengembanganSistem/Penomoran/C_Penomoran/select_seksi';
+$route['PengembanganSistem/input_data_um'] = 'PengembanganSistem/Penomoran/C_Penomoran/input_data_um';
+$route['PengembanganSistem/edit_UM/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/edit_um/$1';
+$route['PengembanganSistem/update_UM/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/update_um/$1';
+$route['PengembanganSistem/upload_file_um/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/upload_data_um/$1';
+$route['PengembanganSistem/delete_UM/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_data_um/$1';
+
+$route['PengembanganSistem/surat_memo'] = 'PengembanganSistem/Penomoran/C_Penomoran/memo_surat';
+$route['PengembanganSistem/input_data_ms'] = 'PengembanganSistem/Penomoran/C_Penomoran/input_data_ms';
+$route['PengembanganSistem/hitung_data_memo'] = 'PengembanganSistem/Penomoran/C_Penomoran/hitung_data';
+$route['PengembanganSistem/edit_memo/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/edit_memo/$1';
+$route['PengembanganSistem/update_data_ms/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/update_data_ms/$1';
+$route['PengembanganSistem/upload_file_ms/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/upload_data_ms/$1';
+$route['PengembanganSistem/delete_code/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_data_code/$1';
+
+$route['PengembanganSistem/lkh_ps'] = 'PengembanganSistem/Penomoran/C_Penomoran/lkh_ps/';
+$route['PengembanganSistem/cek_lkh_ps'] = 'PengembanganSistem/Penomoran/C_Penomoran/cek_tgl_lkh/';
+$route['PengembanganSistem/print_lkh'] = 'PengembanganSistem/Penomoran/C_Penomoran/cetak_lkh/';
+$route['PengembanganSistem/excel_lkh'] = 'PengembanganSistem/Penomoran/C_Penomoran/excel_lkh/';
+$route['PengembanganSistem/input_lkh_ps'] = 'PengembanganSistem/Penomoran/C_Penomoran/input_lkh_proses/';
+$route['PengembanganSistem/delete_lkh/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_lkh/$1';
