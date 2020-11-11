@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
-*  cek
+*  cek contoh aku ngubah iki
 */
 class C_Index extends CI_Controller
 {
