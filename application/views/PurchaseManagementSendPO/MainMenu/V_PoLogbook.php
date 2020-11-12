@@ -101,9 +101,9 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($PoLogbook as $key => $value) : ?>
-                                            <tr class="<?php if($value['SELISIH_WAKTU_1'] > 24 && $value['VENDOR_CONFIRM_DATE'] === NULL && $value['SEND_DATE_2'] === NULL){
+                                            <tr class="<?php if($value['DISTRIBUTION_METHOD'] !== "none" && $value['SELISIH_WAKTU_1'] > 24 && $value['VENDOR_CONFIRM_DATE'] === NULL && $value['SEND_DATE_2'] === NULL){
                                                 echo 'warning';
-                                            } elseif (($value['SELISIH_WAKTU_2'] > 24 && $value['VENDOR_CONFIRM_DATE'] === NULL)) {
+                                            } elseif ($value['DISTRIBUTION_METHOD'] !== "none" && $value['SELISIH_WAKTU_2'] > 24 && $value['VENDOR_CONFIRM_DATE'] === NULL) {
                                                 echo 'danger';
                                             } else {
                                                 echo '';

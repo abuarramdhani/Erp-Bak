@@ -438,32 +438,6 @@ $(document).ready(function () {
     autoclose: true,
   });
 
-  let distributionMethod = $('#select_distribution_method').val();
-  if (distributionMethod === "email") {
-    $('.send_date_1').hide();
-    $('.send_date_2').hide();
-  } else if (distributionMethod !== "email") {
-    $('.send_date_1').show();
-    $('.send_date_2').show();
-    $('[name="send_date_1"]').prop('required', true);
-    $('[name="send_date_2"]').prop('required', true);
-  }
-  $('#select_distribution_method').on('change', function (e) {
-    e.preventDefault();
-    distributionMethod = $(this).val();
-    if (distributionMethod !== "email") {
-      $('.send_date_1').show();
-      $('.send_date_2').show();
-      $('[name="send_date_1"]').prop('required', true);
-      $('[name="send_date_2"]').prop('required', true);
-    } else {
-      $('.send_date_1').hide();
-      $('.send_date_2').hide();
-      $('[name="send_date_1"]').prop('required', false);
-      $('[name="send_date_2"]').prop('required', false);
-    }
-  })
-
   $("#editPoLog").on("click", ".btnVendorConfirm", function () {
     // Ajax edit Data Po Log
     let epl_form_data = new FormData(),
@@ -542,6 +516,88 @@ $(document).ready(function () {
       });
   });
 
+  let distributionMethod = $('#select_distribution_method').val();
+  if (distributionMethod === "email") {
+    $('.send_date_row').hide();
+    $('.vendor_confirm_row').show();
+    $('.attachment_flag_row').show();
+    $('.attachment_row').show();
+    $('.input_send_date').prop('required', false)
+    $('.input_attachment_flag').prop('required', true)
+    if ($('[name="vendor_confirm_date"]').prop('disabled')) {
+      $('.input_vendor_confirm').prop('required', false);
+      $('.input_attachment').prop('required', false);
+    } else {
+      $('.input_vendor_confirm').prop('required', true);
+      $('.input_attachment').prop('required', true);
+    }
+  } else if (distributionMethod === "none") {
+    $('.send_date_row').hide();
+    $('.vendor_confirm_row').hide();
+    $('.attachment_flag_row').hide();
+    $('.attachment_row').hide();
+    $('.input_send_date').prop('required', false)
+    $('.input_vendor_confirm').prop('required', false);
+    $('.input_attachment_flag').prop('required', false)
+    $('.input_attachment').prop('required', false);
+  } else if (distributionMethod !== "email" && distributionMethod !== "none") {
+    $('.send_date_row').show();
+    $('.vendor_confirm_row').show();
+    $('.attachment_flag_row').show();
+    $('.attachment_row').show();
+    $('.input_send_date').prop('required', true)
+    $('.input_attachment_flag').prop('required', true)
+    if ($('[name="vendor_confirm_date"]').prop('disabled')) {
+      $('.input_vendor_confirm').prop('required', false);
+      $('.input_attachment').prop('required', false);
+    } else {
+      $('.input_vendor_confirm').prop('required', true);
+      $('.input_attachment').prop('required', true);
+    }
+  }
+  $('#select_distribution_method').on('change', function (e) {
+    e.preventDefault();
+    distributionMethod = $(this).val();
+    if (distributionMethod !== "email" && distributionMethod !== "none") {
+      $('.send_date_row').show();
+      $('.vendor_confirm_row').show();
+      $('.attachment_flag_row').show();
+      $('.attachment_row').show();
+      $('.input_send_date').prop('required', true)
+      $('.input_attachment_flag').prop('required', true)
+      if ($('[name="vendor_confirm_date"]').prop('disabled')) {
+        $('.input_vendor_confirm').prop('required', false);
+        $('.input_attachment').prop('required', false);
+      } else {
+        $('.input_vendor_confirm').prop('required', true);
+        $('.input_attachment').prop('required', true);
+      }
+    } else if (distributionMethod === "email") {
+      $('.send_date_row').hide();
+      $('.vendor_confirm_row').show();
+      $('.attachment_flag_row').show();
+      $('.attachment_row').show();
+      $('.input_send_date').prop('required', false)
+      $('.input_attachment_flag').prop('required', true)
+      if ($('[name="vendor_confirm_date"]').prop('disabled')) {
+        $('.input_vendor_confirm').prop('required', false);
+        $('.input_attachment').prop('required', false);
+      } else {
+        $('.input_vendor_confirm').prop('required', true);
+        $('.input_attachment').prop('required', true);
+      }
+    } else if (distributionMethod === "none") {
+      $('.send_date_row').hide();
+      $('.vendor_confirm_row').hide();
+      $('.attachment_flag_row').hide();
+      $('.attachment_row').hide();
+      $('.input_send_date').prop('required', false)
+      $('.input_vendor_confirm').prop('required', false);
+      $('.input_attachment_flag').prop('required', false)
+      $('.input_attachment').prop('required', false);
+    }
+  })
+
   $("#editPoLogbook").on("click", ".btnEditPoLogbook", function () {
     // Ajax edit Data di Menu POLogbook
     let eplb_form_data = new FormData(),
@@ -557,8 +613,11 @@ $(document).ready(function () {
       lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
     eplb_form_data.append("po_number", po_number);
     eplb_form_data.append("distribution_method", distribution_method);
+    if (distribution_method == "email") {
+      eplb_form_data.append("attachment_flag", attachment_flag);
+    }
+    if (distribution_method !== "email" && distribution_method !== "none") {
     eplb_form_data.append("attachment_flag", attachment_flag);
-    if (distribution_method !== "email") {
       eplb_form_data.append("send_date_1", send_date_1);
       eplb_form_data.append("send_date_2", send_date_2);
     }
@@ -592,7 +651,7 @@ $(document).ready(function () {
           ) {
             alert("Silahkan lengkapi data");
           } else {
-            if ($('[name="vendor_confirm_date"]').val()) {
+            if (!$('#vendor_confirm_date').prop("disabled") && distribution_method !== "none") {
               eplb_form_data.append("vendor_confirm_date", vendor_confirm_date);
               eplb_form_data.append("vendor_confirm_method", vendor_confirm_method);
               eplb_form_data.append("vendor_confirm_pic", vendor_confirm_pic);

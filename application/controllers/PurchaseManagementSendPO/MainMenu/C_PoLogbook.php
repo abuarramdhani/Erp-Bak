@@ -71,7 +71,7 @@ class C_PoLogbook extends CI_Controller
         $attachment_flag = $this->input->post('attachment_flag');
 
         $edit_PogLogbook = $this->M_pologbook->getDataByPoNumb($po_number)->row_array();
-        if ($edit_PogLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PogLogbook['SEND_DATE_2'] == NULL && $edit_PogLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PogLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PogLogbook['VENDOR_CONFIRM_DATE'] == NULL) {
+        if (($edit_PogLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PogLogbook['SEND_DATE_2'] == NULL && $edit_PogLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PogLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PogLogbook['VENDOR_CONFIRM_DATE'] == NULL) && isset($_FILES['lampiran_po'])) {
             $name = $_FILES["lampiran_po"]["name"];
             $ext = strtolower(end((explode(".", $name))));
             if (!($ext == 'pdf' OR $ext == 'jpeg' OR $ext == 'jpg' OR $ext == 'png' OR $ext == 'xls' OR $ext == 'xlsx' OR $ext == 'ods' OR $ext == 'odt' OR $ext == 'txt' OR $ext == 'doc' OR $ext == 'docx')) {
@@ -96,7 +96,7 @@ class C_PoLogbook extends CI_Controller
                 }
                 if ($distribution_method == "email") {
                     $this->M_pologbook->updateVendorDisMetEmail($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
-                } else {
+                } else if($distribution_method !== "email" && $distribution_method !== "none") {
                     $this->M_pologbook->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $send_date_1, $send_date_2, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
                 }
                 $this->output
@@ -107,7 +107,9 @@ class C_PoLogbook extends CI_Controller
         } else {
             if ($distribution_method == "email") {
                 $this->M_pologbook->updateVendorDisMetEmail2($po_number, $distribution_method, $attachment_flag);
-            } else {
+            } else if($distribution_method == "none") {
+                $this->M_pologbook->updateVendorDisMetNone($po_number, $distribution_method);
+            } else if($distribution_method !== "email" && $distribution_method !== "none"){
                 $this->M_pologbook->updateVendorData2($po_number, $distribution_method, $send_date_1, $send_date_2, $attachment_flag);
             }
             $this->output
