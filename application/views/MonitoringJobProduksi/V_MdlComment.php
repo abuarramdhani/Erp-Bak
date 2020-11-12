@@ -42,7 +42,7 @@ if (!empty($comment)) {
     <div class="panel-body">
         <div class="input-group">
             <!-- <input name="comment" id="comment" class="form-control" value="<?= $komen?>" placeholder="comment..." <?= $diss?> autocomplete="off"> -->
-            <textarea name="comment" id="comment" style="width:450px;height:120px" <?= $diss?>><?= $komen?></textarea>
+            <textarea name="comment" id="comment" maxlength="500" style="width:450px;height:120px" <?= $diss?> placeholder="Maksimal 500 karakter"><?= $komen?></textarea>
             <span class="input-group-btn">
                 <button type="button" id="editcommentmin" class="btn bg-orange" onclick="editcomment()" <?= $edit?>><i class="fa fa-pencil"></i> Edit</button>
                 <button type="button" id="savecommentmin" class="btn btn-danger" onclick="saveCommentmin(<?= $tanda?>)" <?= $save?>><i class="fa fa-save"></i> Save</button>
