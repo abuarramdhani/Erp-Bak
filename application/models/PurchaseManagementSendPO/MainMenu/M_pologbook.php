@@ -75,6 +75,11 @@ class M_pologbook extends CI_Model
         $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method', ATTACHMENT_FLAG = '$attachment_flag' WHERE PHA_SEGMENT_1 = '$noPO'";
         $this->oracle->query($query);
     }
+    public function updateVendorDisMetNone($noPO, $dis_method)
+    {
+        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $this->oracle->query($query);
+    }
     public function getDataByPoNumb($noPO)
     {
         $sql = "SELECT
