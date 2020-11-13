@@ -498,6 +498,7 @@
                                 <tr class="bg-primary">
                                   <th style="width: 50 px;  text-align:center;">NO</th>
                                   <th style="width: 50 px;  text-align:center;">PARALEL</th>
+                                  <th style="text-align:center;">FOLLOW START</th>
                                   <th style="width: 200px;  text-align:center;">JENIS PROSES</th>
                                   <th style="width: 400px;  text-align:center;">ELEMEN KERJA</th>
                                   <th style="width: 100px;  text-align:center;">1</th>
@@ -529,6 +530,9 @@
                                   <!--TIPE URUTAN-->
                                   <td style="text-align: center;">
                                     <input type="checkbox" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel">
+                                  </td>
+                                  <td>
+                                    <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
                                   </td>
                                   <!--JENIS PROSES-->
                                   <td>

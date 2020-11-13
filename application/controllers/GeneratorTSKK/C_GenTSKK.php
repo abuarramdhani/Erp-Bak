@@ -476,10 +476,9 @@ public function saveObservation(){
     if ($nama_part == null) {
         $nama_part 	          = $this->input->post('txtNamaPartT');
     }
-
     //EQUIPMENT
     $jenis_inputEquipment  = $this->input->post('equipmenTerdaftar');
-    // echo $jenis_inputEquipment; die;
+		// echo $jenis_inputEquipment; die;
     $no_mesin	      = $this->input->post('txtNoMesin[]');
     $no_mesin         = implode("; ", $no_mesin);
     // echo "<pre>";echo $no_mesin;
@@ -573,6 +572,9 @@ public function saveObservation(){
     $elemen           = $this->input->post('txtSlcElemen[]');
     $keterangan_elemen= $this->input->post('elemen[]');
     $tipe_urutan 	  = $this->input->post('checkBoxParalel[]');
+		// Waktu Mulai Bersamaan
+		$startTimeTogether =  $this->input->post('start_time_together[]');
+
     // echo "<pre>"; print_r($jenis_proses);exit;
 
     for ($i=0; $i < count($elemen); $i++) {
@@ -684,6 +686,11 @@ public function saveObservation(){
         }else{
             $ktr_elm 	   = null;
         }
+
+				if ($startTimeTogether[$i] == ''){
+						$startTimeTogether[$i] = null;
+				}
+
         if (!empty($tipe_urutan)) {
             if (array_key_exists($i,$tipe_urutan)){
                 $tu            = $tipe_urutan[$i];
@@ -716,6 +723,7 @@ public function saveObservation(){
             'elemen'        	=> $elm,
             'keterangan_elemen' => $ktr_elm,
             'tipe_urutan'       => $tu,
+						'start_together'		=> $startTimeTogether[$i]
             );
         // echo "<pre>";print_r($data);
         $insert = $this->M_gentskk->saveObservation($data);

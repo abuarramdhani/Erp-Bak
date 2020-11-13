@@ -14,7 +14,7 @@ $('#tabel_daftarTSKK').DataTable({
 });
 
 $(document).ready(function () {
-	
+
 $('input[name="perhitunganTakt"]').on('ifChanged', function () {
 	if ($('input[name=perhitunganTakt]:checked').val() == "1") {
 		$('.tskk_delik_cek').show()
@@ -56,6 +56,8 @@ $('input[name="perhitunganTakt"]').on('ifChanged', function () {
 		console.log(nomor);
 		// KOLOM 2
 		html += '<td><input type="checkbox" name="checkBoxParalel['+(nomor-1)+']" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)"></td>'
+		// KOLOM 2.5
+		html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
 		// KOLOM 3
 		html += '<td><select id="slcJenis_'+nomor+'" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
 		html += '<option value=""> </option>';
@@ -292,6 +294,8 @@ $('input[name="perhitunganTakt"]').on('ifChanged', function () {
 		// KOLOM 1
 		var html = '<tr class="nomor_'+nomor+'"><td class="posisi">'+nomor+'</td>';
 		html += '<td><input type="checkbox" name="checkBoxParalel['+(nomor-1)+']" value="PARALEL" class="checkBoxParalel"></td>'
+		// KOLOM 2.5
+		html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
 		// KOLOM 2
 		html += '<td><select id="slcJenis_'+nomor+'" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses">';
 		html += '<option value=""> </option>';
@@ -300,6 +304,7 @@ $('input[name="perhitunganTakt"]').on('ifChanged', function () {
 		// html += '<option value="AUTO (Inheritance)">AUTO (Inheritance)</option>';
 		html += '<option value="WALK" id="walk"> WALK </option>';
 		html += "</select></td>";
+
 		// KOLOM 3
 		html += '<td><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
 		// KOLOM 4
@@ -1495,7 +1500,15 @@ function newFinish(th) {
 //SET START AND FINISH FOR TABLE ELEMENT//
 function finishTableElement(th) {
 
+	// console.log($(th).val(), 'ini value nya..');
+	const my_n = $(th).parent().parent('tr').attr('class').split('_');
+  const my_number = my_n[1];
+
+	// $(`input[check-start-no="${my_number}"]`).val($(th).val());
+	// end kondisi jika waktu start sama
+
 	var curr_row = $(th).parent().parent('tr');
+
 	var nextRow = curr_row.next();
 	// console.log(nextRow, "ini next rownya");
 
@@ -1526,14 +1539,18 @@ function finishTableElement(th) {
 
 	for (let index = indexRow; index < (maxRow + 1); index++) {
 
-		// const curr_row = $(th).parent().parent('tr');
+		// const curr_row = $(th).parent().parent('tr')
 		// const nextRow = curr_row.next();
+
 		const prevRow = nextRow.prev();
 		// console.log(prevRow, "ini prevRow");
 		// console.log(nextRow, "ini next rownya");
 
+
 		let tu = nextRow.children('td').children('.tipe_urutan').val();
 		// console.log("ini tipe urutannya gan: ", tu);
+
+		// $(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y';
 
 		if(tu == "PARALEL"){
 			break;
@@ -1551,7 +1568,13 @@ function finishTableElement(th) {
 
 		let finish1 = Number(currWaktu) + Number(prevStart) - 1;
 		let finishAI = Number(currWaktu) + Number(currMulai) - 1;
-		let startRN = (Number(prevFinish) + 1)
+		let startRN = (Number(prevFinish) + 1);
+		if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') === my_number) {
+			startRN = $(th).val();
+		}else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') !== my_number) {
+				let another_index = $(`input[baris="${index}"]`).attr('check-start-no');
+				startRN = $(`input[baris="${another_index}"]`).val();
+		}
 		let finish2 = Number(currWaktu) + Number(startRN) - 1;
 
 		if (jp == "AUTO (Inheritance)" && finish1 > takt_time) {
@@ -1566,6 +1589,7 @@ function finishTableElement(th) {
 
 			currStart.val(Number(prevStart));
 			currFinish.val(finish);
+
 			console.log("AI > TAKT TIME");
 		}else if (jp == "AUTO (Inheritance)" && finish1 < takt_time) {
 			let finish = Number(finsih1)
@@ -1597,6 +1621,8 @@ function finishTableElement(th) {
 			currFinish.val(finish);
 				console.log("BUKAN AI < TAKT TIME");
 		}
+		console.log($(`input[baris="${index}"]`).val(), "ini value tiap baris mulai");
+
 		nextRow = nextRow.next()
 	}
 }

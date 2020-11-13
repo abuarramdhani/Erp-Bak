@@ -638,7 +638,8 @@ input[type="search"] {
 																<thead>
 																	<tr class="bg-primary">
 																		<th style="width: 50px;  text-align:center;">NO</th>
-																		<th style="width: 50px;   text-align:center;">TIPE URUTAN</th>
+																		<th style="width: 50px;   text-align:center;">PARALEL</th>
+                                    <th style="text-align:center;">FOLLOW START</th>
 																		<th style="width: 200px;  text-align:center;">JENIS PROSES</th>
 																		<th style="width: 400px;  text-align:center;">ELEMEN KERJA</th>
 																		<th style="width: 100px;  text-align:center;">1</th>
@@ -709,7 +710,10 @@ input[type="search"] {
 																		<input type="checkbox" <?php if ($tipe_urutan == 'PARALEL') { echo 'checked'; }?> name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel" id="checkBoxParalel" onchange="//chckParalel(this)">
 																		<!-- <input type="text" id="YesOrNo" class="YesOrNo" name="chckTipeUrutan[]"> -->
 																		</td>
-									<!--JENIS PROSES-->					<td>
+                                    <td>
+                                      <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="<?php echo $key['start_together'] ?>">
+                                    </td>
+									<!--JENIS PROSES--><td>
 																			<select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis">
                                                                             <?php
                                                                                 echo '<option value="'.$jenis_proses.'" selected>'.$jenis_proses.'</option>';
