@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class C_Index extends CI_Controller
 {
@@ -30,8 +30,7 @@ class C_Index extends CI_Controller
 
 	public function checkSession()
 	{
-		if(!($this->session->is_logged))
-		{
+		if (!($this->session->is_logged)) {
 			redirect('');
 		}
 	}
@@ -46,16 +45,16 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] 	= 	'Surat Perbantuan';
 		$data['SubMenuTwo'] 	= 	'';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 		$data['DaftarSuratPerbantuan'] 	=	$this->M_perbantuan->ambilDaftarSuratPerbantuan();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPekerja/Surat/Perbantuan/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('MasterPekerja/Surat/Perbantuan/V_Index', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function create()
@@ -68,27 +67,27 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] 	= 	'Surat Perbantuan';
 		$data['SubMenuTwo'] 	= 	'';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-      	// $data['DaftarPekerja']	=	$this->M_perbantuan->getAmbilPekerjaAktif();
-      	// $data['DaftarSeksi']    =   $this->M_perbantuan->getSeksi();
-      	// $data['DaftarPekerjaan'] = $this->M_perbantuan->DetailPekerjaan();
+		// $data['DaftarPekerja']	=	$this->M_perbantuan->getAmbilPekerjaAktif();
+		// $data['DaftarSeksi']    =   $this->M_perbantuan->getSeksi();
+		// $data['DaftarPekerjaan'] = $this->M_perbantuan->DetailPekerjaan();
 		$data['DaftarGolongan'] = $this->M_perbantuan->DetailGolongan();
-      	$data['DaftarLokasiKerja'] = $this->M_perbantuan->DetailLokasiKerja();
-      	$data['DaftarKdJabatan'] = $this->M_perbantuan->DetailKdJabatan();
-      	$data['DaftarTempatMakan1'] = $this->M_perbantuan->DetailTempatMakan1();
-      	$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
+		$data['DaftarLokasiKerja'] = $this->M_perbantuan->DetailLokasiKerja();
+		$data['DaftarKdJabatan'] = $this->M_perbantuan->DetailKdJabatan();
+		$data['DaftarTempatMakan1'] = $this->M_perbantuan->DetailTempatMakan1();
+		$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
 		// echo "<pre>";
 		// print_r($data['DaftarKdJabatan']);
 		// echo "</pre>";
 		// exit();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPekerja/Surat/Perbantuan/V_Create',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('MasterPekerja/Surat/Perbantuan/V_Create', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function selectKodesie()
@@ -150,7 +149,7 @@ class C_Index extends CI_Controller
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
 		$pekerjaan_lama 		 	=	$this->input->post('txtPekerjaanLama');
-		$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'),0, 2);
+		$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'), 0, 2);
 		$jabatan_lama 				=	$this->input->post('txtJabatanLama');
 		$lokasi_kerja_lama 			=	$this->input->post('txtLokasiKerja');
 		$tempat_makan1_lama 		=	$this->input->post('txtTempatMakan1');
@@ -190,37 +189,25 @@ class C_Index extends CI_Controller
 		$nama_pekerjaan_baru 		=	'';
 
 		$cekStaf 					=	$this->M_perbantuan->cekStaf($nomor_induk);
-		if(empty($kode_surat))
-		{
-			if($cekStaf[0]['status']=='STAF')
-			{
+		if (empty($kode_surat)) {
+			if ($cekStaf[0]['status'] == 'STAF') {
 				$kode_surat 				=	'DU/KI-B';
-			}
-			else
-			{
+			} else {
 				$kode_surat 				=	'PS/KI-N';
-
 			}
-		}
-		else
-		{
-			if($cekStaf[0]['status']=='STAF')
-			{
+		} else {
+			if ($cekStaf[0]['status'] == 'STAF') {
 				$kode_surat 				=	'DU/KI-B';
-			}
-			else
-			{
+			} else {
 				$kode_surat 				=	'PS/KI-N';
-
 			}
 			$kode_surat 	=	$kode_surat;
 		}
 
 		$stafff = '1';
-		if($cekStaf[0]['status']=='STAF')
-		{
+		if ($cekStaf[0]['status'] == 'STAF') {
 			$stafff = '1';
-		}else{
+		} else {
 			$stafff = '0';
 		}
 
@@ -243,15 +230,12 @@ class C_Index extends CI_Controller
 		$nama_tanda_tangan 			=	'';
 		$jabatan_tertanda 			=	'';
 
-		if($cekStaf[0]['status']=='STAF')
-		{
+		if ($cekStaf[0]['status'] == 'STAF') {
 			$tertanda 					= 	'CV Karya Hidup Sentosa';
 			$nama_tanda_tangan 			=	'Drs. Hendro Wijayanto, Akt';
 			$jabatan_tertanda 			=	'Direktur Utama';
-			$posisi_baru 				=	'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
-		}
-		else
-		{
+			$posisi_baru 				=	'Seksi ' . $tseksiBaru['0']['seksi'] . ' / ' . 'Unit ' . $tseksiBaru[0]['unit'] . ' / ' . 'Departemen ' . $tseksiBaru[0]['dept'];
+		} else {
 			$tertanda 					= 	'CV Karya Hidup Sentosa<br/>Departemen Personalia';
 			$nama_tanda_tangan 			=	'Rajiwan';
 			$jabatan_tertanda 			=	'Kepala Seksi Utama General Affairs & Hubungan Kerja';
@@ -266,34 +250,27 @@ class C_Index extends CI_Controller
 			// {
 			// 	$nama_pekerjaan_baru 	=	'';
 			// }
-			$posisi_baru 				=	'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
+			$posisi_baru 				=	'Seksi ' . $tseksiBaru['0']['seksi'] . ' / ' . 'Unit ' . $tseksiBaru[0]['unit'] . ' / ' . 'Departemen ' . $tseksiBaru[0]['dept'];
 		}
 
 		// echo $kode_surat;exit();
-		if($edit == '1')
-			{
-				$nomor_surat 	=	$nomor_surat;
-
-			}
-			else
-			{
-				$nomorSuratTerakhir 	= 	$this->M_perbantuan->ambilNomorSuratTerakhir($parameterTahun, $parameterBulan, $kode_surat);
+		if ($edit == '1') {
+			$nomor_surat 	=	$nomor_surat;
+		} else {
+			$nomorSuratTerakhir 	= 	$this->M_perbantuan->ambilNomorSuratTerakhir($parameterTahun, $parameterBulan, $kode_surat);
 			// print_r($nomorSuratTerakhir);
-				$nomorSuratTerakhir 	=	$nomorSuratTerakhir[0]['jumlah'];
-				// print_r($nomorSuratTerakhir);
-				$nomorSuratTerakhir 	=	$nomorSuratTerakhir+1;
+			$nomorSuratTerakhir 	=	$nomorSuratTerakhir[0]['jumlah'];
+			// print_r($nomorSuratTerakhir);
+			$nomorSuratTerakhir 	=	$nomorSuratTerakhir + 1;
 
-				if($nomorSuratTerakhir<1000)
-				{
-					for ($i=strlen($nomorSuratTerakhir); $i < 3; $i++)
-					{
-						$nomorSuratTerakhir 	=	'0'.$nomorSuratTerakhir;
-					}
+			if ($nomorSuratTerakhir < 1000) {
+				for ($i = strlen($nomorSuratTerakhir); $i < 3; $i++) {
+					$nomorSuratTerakhir 	=	'0' . $nomorSuratTerakhir;
 				}
-
-				$nomor_surat 	=	$nomorSuratTerakhir;
-
 			}
+
+			$nomor_surat 	=	$nomorSuratTerakhir;
+		}
 
 		// echo $parameterTahunBulan;
 
@@ -301,9 +278,8 @@ class C_Index extends CI_Controller
 
 
 		$tembusan_HTML 	=	'';
-		foreach ($tembusan as $nembus)
-		{
-			$tembusan_HTML	.= '<li>'.ucwords(strtolower($nembus)).'</li>';
+		foreach ($tembusan as $nembus) {
+			$tembusan_HTML	.= '<li>' . ucwords(strtolower($nembus)) . '</li>';
 			// echo ucwords(strtolower($nembus)).'<br/>';
 		}
 
@@ -316,82 +292,77 @@ class C_Index extends CI_Controller
 
 		$templateMutasi 			=	$templateMutasi[0]['isi_surat'];
 
-			$seksiBaru = ' ';
-			$unitBaru = ' ';
-			$deptBaru = ' ';
-			if (strlen($tseksiBaru[0]['seksi']) > 2) {
-				$seksiBaru = ' Seksi '.$tseksiBaru[0]['seksi'].', ';
-			}
-			if (strlen($tseksiBaru[0]['unit']) > 2) {
-				$unitBaru = 'Unit '.$tseksiBaru[0]['unit'].', ';
-			}
-			if (strlen($tseksiBaru[0]['dept']) > 2) {
-				$deptBaru = 'Departemen '.$tseksiBaru[0]['dept'].',';
-			}
+		$seksiBaru = ' ';
+		$unitBaru = ' ';
+		$deptBaru = ' ';
+		if (strlen($tseksiBaru[0]['seksi']) > 2) {
+			$seksiBaru = ' Seksi ' . $tseksiBaru[0]['seksi'] . ', ';
+		}
+		if (strlen($tseksiBaru[0]['unit']) > 2) {
+			$unitBaru = 'Unit ' . $tseksiBaru[0]['unit'] . ', ';
+		}
+		if (strlen($tseksiBaru[0]['dept']) > 2) {
+			$deptBaru = 'Departemen ' . $tseksiBaru[0]['dept'] . ',';
+		}
 
-		$parameterUbah 				=	array
-										(
-											'[no_surat]',
-											'[kode_surat]',
-											'[bulan_cetak]',
-											'[tahun_cetak]',
-											'[nomor_induk]',
-											'[nama_pekerja]',
-											'[jabatan_surat]',
-											'[posisi_lama]',
-											'[posisi_baru]',
-											'[lokasi_kerja_lama]',
-											'[lokasi_kerja_baru]',
-											'[tanggal_berlaku_awal]',
-											'[tanggal_berlaku_akhir]',
-											'[seksi_baru]',
-											'[unit_baru]',
-											'[departemen_baru]',
-											'[tanggal_cetak]',
-											'[tertanda]',
-											'[nama_tanda_tangan]',
-											'[jabatan_tertanda]',
-											'[tembusan]',
-											'[seksi_lama]',
-											'[unit_lama]',
-											'[departemen_lama]',
-										);
-		$parameterDiubah	  		=	array
-										(
-											$nomor_surat,
-											$kode_surat,
-											date('m', strtotime($tanggal_cetak)),
-											date('y', strtotime($tanggal_cetak)),
-											$nomor_induk,
-											$nama_pekerja,
-											$jabatan_surat,
-											$posisi_lama,
-											$posisi_baru,
-											$lokasi_lama,
-											$lokasi_baru,
-											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku_awal))),
-											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku_akhir))),
-											$seksiBaru,
-											$unitBaru,
-											$deptBaru,
-											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
-											$tertanda,
-											$nama_tanda_tangan,
-											$jabatan_tertanda,
-											$tembusan_HTML,
-											$tseksiLama[0]['seksi'],
-											$tseksiLama[0]['unit'],
-											$tseksiLama[0]['dept'],
-										);
+		$parameterUbah 				=	array(
+			'[no_surat]',
+			'[kode_surat]',
+			'[bulan_cetak]',
+			'[tahun_cetak]',
+			'[nomor_induk]',
+			'[nama_pekerja]',
+			'[jabatan_surat]',
+			'[posisi_lama]',
+			'[posisi_baru]',
+			'[lokasi_kerja_lama]',
+			'[lokasi_kerja_baru]',
+			'[tanggal_berlaku_awal]',
+			'[tanggal_berlaku_akhir]',
+			'[seksi_baru]',
+			'[unit_baru]',
+			'[departemen_baru]',
+			'[tanggal_cetak]',
+			'[tertanda]',
+			'[nama_tanda_tangan]',
+			'[jabatan_tertanda]',
+			'[tembusan]',
+			'[seksi_lama]',
+			'[unit_lama]',
+			'[departemen_lama]',
+		);
+		$parameterDiubah	  		=	array(
+			$nomor_surat,
+			$kode_surat,
+			date('m', strtotime($tanggal_cetak)),
+			date('y', strtotime($tanggal_cetak)),
+			$nomor_induk,
+			$nama_pekerja,
+			$jabatan_surat,
+			$posisi_lama,
+			$posisi_baru,
+			$lokasi_lama,
+			$lokasi_baru,
+			$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku_awal))),
+			$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku_akhir))),
+			$seksiBaru,
+			$unitBaru,
+			$deptBaru,
+			$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
+			$tertanda,
+			$nama_tanda_tangan,
+			$jabatan_tertanda,
+			$tembusan_HTML,
+			$tseksiLama[0]['seksi'],
+			$tseksiLama[0]['unit'],
+			$tseksiLama[0]['dept'],
+		);
 
 		$data['preview'] 	=	str_replace($parameterUbah, $parameterDiubah, $templateMutasi);
 		$data['nomorSurat']	=	$nomor_surat;
-		if(empty($hal_surat))
-		{
+		if (empty($hal_surat)) {
 			$data['halSurat']	=	'PERBANTUAN';
-		}
-		else
-		{
+		} else {
 			$data['halSurat']	=	$hal_surat;
 		}
 		$data['kodeSurat']	=	$kode_surat;
@@ -404,7 +375,7 @@ class C_Index extends CI_Controller
 		$nomor_induk 				=	$this->input->post('txtNoind');
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
-		$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'),0 ,2);
+		$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'), 0, 2);
 		$jabatan_lama 				=	$this->input->post('txtJabatanLama');
 		$lokasi_kerja_lama 			=	$this->input->post('txtLokasiKerja');
 		$tempat_makan1_lama 		=	$this->input->post('txtTempatMakan1');
@@ -413,26 +384,26 @@ class C_Index extends CI_Controller
 
 		$seksi_baru 				=	$this->input->post('txtKodesieBaru');
 		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
-		if($golongan_pekerjaan_baru == null){
-				$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
-			}
+		if ($golongan_pekerjaan_baru == null) {
+			$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
+		}
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
 		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 		$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
-		if($pekerjaan_baru == null){
-				$pekerjaan_baru = $pekerjaan_lama;
-			}
+		if ($pekerjaan_baru == null) {
+			$pekerjaan_baru = $pekerjaan_lama;
+		}
 
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
 
-		if($status_baru != null or $status_baru != "" ){
+		if ($status_baru != null or $status_baru != "") {
 			$status_baru 			= 	explode(' - ', $status_baru);
-		}else{
+		} else {
 			$status_baru 			= 	explode(' - ', $status_lama);
 		}
 
@@ -481,86 +452,83 @@ class C_Index extends CI_Controller
 		$tanggal_perbantuan_awal 	=	$tanggal_berlaku[0];
 		$tanggal_perbantuan_akhir 	=	$tanggal_berlaku[1];
 
-		$inputSuratPerbantuan			= 	array
-										(
-											'no_surat'				=>	$nomor_surat,
-											'kode' 					=>	$kodeSurat,
-											'hal_surat'				=>	$hal_surat,
-											'noind'					=>	$nomor_induk,
-											'kodesie_lama'  		=>  $seksi_lama,
-											'kodesie_baru'  		=>  $seksi_baru,
-											'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
-											// 'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
-											'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
-											// 'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
-											'lokasi_kerja_lama'		=>	$lokasi_lama,
-											'lokasi_kerja_baru'		=>  $lokasi_baru,
-											'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
-											'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
-											'kd_jabatan_lama'		=>  $kd_jabatan_lama,
-											'kd_jabatan_baru'		=>  $kd_jabatan_baru,
-											'jabatan_lama'          =>  $jabatan_lama,
-											'jabatan_baru'          =>  rtrim($jabatan_baru),
-											'tanggal_cetak'			=>  $tanggal_cetak,
-											'nama'					=>	$nama,
-											'noind_baru'			=>	$noind_baru,
-											'isi_surat'				=>	$isi_surat,
-											'kd_pkj_lama'           =>  $kd_pkj_lama,
-											'kd_pkj_baru'           =>  $kd_pkj_baru,
-											'tanggal_mulai_perbantuan'	=>	$tanggal_perbantuan_awal,
-											'tanggal_selesai_perbantuan'=>	$tanggal_perbantuan_akhir,
-											'nama_status_lama'		=>  $nama_status_lama,
-											'nama_status_baru'		=>  $nama_status_baru,
-											'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
-											'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
-											'kd_status_lama'		=> 	$kd_status_lama,
-											'kd_status_baru' 		=>	$kd_status_baru,
-											'created_by'			=>  $this->session->user ,
-											'created_date'			=> 	date('Y-m-d H:i:s'),
-											'last_update_by'		=> NULL,
-											'last_update_date'		=> NULL
-										);
+		$inputSuratPerbantuan			= 	array(
+			'no_surat'				=>	$nomor_surat,
+			'kode' 					=>	$kodeSurat,
+			'hal_surat'				=>	$hal_surat,
+			'noind'					=>	$nomor_induk,
+			'kodesie_lama'  		=>  $seksi_lama,
+			'kodesie_baru'  		=>  $seksi_baru,
+			'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
+			// 'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
+			'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
+			// 'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
+			'lokasi_kerja_lama'		=>	$lokasi_lama,
+			'lokasi_kerja_baru'		=>  $lokasi_baru,
+			'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
+			'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
+			'kd_jabatan_lama'		=>  $kd_jabatan_lama,
+			'kd_jabatan_baru'		=>  $kd_jabatan_baru,
+			'jabatan_lama'          =>  $jabatan_lama,
+			'jabatan_baru'          =>  rtrim($jabatan_baru),
+			'tanggal_cetak'			=>  $tanggal_cetak,
+			'nama'					=>	$nama,
+			'noind_baru'			=>	$noind_baru,
+			'isi_surat'				=>	$isi_surat,
+			'kd_pkj_lama'           =>  $kd_pkj_lama,
+			'kd_pkj_baru'           =>  $kd_pkj_baru,
+			'tanggal_mulai_perbantuan'	=>	$tanggal_perbantuan_awal,
+			'tanggal_selesai_perbantuan' =>	$tanggal_perbantuan_akhir,
+			'nama_status_lama'		=>  $nama_status_lama,
+			'nama_status_baru'		=>  $nama_status_baru,
+			'nama_jabatan_upah_lama' => 	$nama_jabatan_upah_lama,
+			'nama_jabatan_upah_baru' =>	$nama_jabatan_upah_baru,
+			'kd_status_lama'		=> 	$kd_status_lama,
+			'kd_status_baru' 		=>	$kd_status_baru,
+			'created_by'			=>  $this->session->user,
+			'created_date'			=> 	date('Y-m-d H:i:s'),
+			'last_update_by'		=> NULL,
+			'last_update_date'		=> NULL
+		);
 		$this->M_perbantuan->inputSuratPerbantuan($inputSuratPerbantuan);
 		$bulan_surat = date('m', strtotime($tanggal_cetak));
 		$bulan_surat = substr($bulan_surat, 0, 2);
 		$tahun_surat = date('Y', strtotime($tanggal_cetak));
-		$inputNomorSurat 			=	array
-											(
-												'bulan_surat' 			=>	$bulan_surat,
-												'tahun_surat'			=>	$tahun_surat,
-												'kode_surat' 			=>	$kodeSurat,
-												'nomor_surat'			=>	$nomor_surat,
-												'noind' 				=>	$nomor_induk,
-												'jenis_surat'			=>	'PERBANTUAN',
-											);
-			$this->M_perbantuan->inputNomorSurat($inputNomorSurat);
+		$inputNomorSurat 			=	array(
+			'bulan_surat' 			=>	$bulan_surat,
+			'tahun_surat'			=>	$tahun_surat,
+			'kode_surat' 			=>	$kodeSurat,
+			'nomor_surat'			=>	$nomor_surat,
+			'noind' 				=>	$nomor_induk,
+			'jenis_surat'			=>	'PERBANTUAN',
+		);
+		$this->M_perbantuan->inputNomorSurat($inputNomorSurat);
+		$lokasi_finger_awal = ($finger_awal == ' - ') ? '-' : substr($finger_awal, 7);
+		$inputFingerPerbantuan			= 	array(
+			'no_surat'				=>	$nomor_surat,
+			'kode' 					=>	$kodeSurat,
+			'hal_surat'				=>	$hal_surat,
+			'noind'					=>	$nomor_induk,
+			'finger_pindah'			=>	$finger_pindah,
+			'finger_awal'			=> ($finger_awal == ' - ') ? '-' : substr($finger_awal, 0, 5),
+			'lokasifinger_awal'		=>  $lokasi_finger_awal,
+			'finger_akhir'  		=>	substr($finger_akhir, 0, 5),
+			'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+			'created_date'			=>  $tanggal_cetak,
+			'noind_baru'			=> 	$noind_baru
 
-		$inputFingerPerbantuan			= 	array
-			(
-				'no_surat'				=>	$nomor_surat,
-				'kode' 					=>	$kodeSurat,
-				'hal_surat'				=>	$hal_surat,
-				'noind'					=>	$nomor_induk,
-				'finger_pindah'			=>	$finger_pindah,
-				'finger_awal'			=>  substr($finger_awal, 0,5),
-				'lokasifinger_awal'		=>  substr($finger_awal, 7),
-				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
-				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
-				'created_date'			=>  $tanggal_cetak,
-				'noind_baru'			=> 	$noind_baru
+		);
 
-				);
-
-			$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
-			$inputFingerPindah = $this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
-			if($finger_pindah == 't'){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PERBANTUAN');
-			}
-			//insert to t_log
-		    $aksi = 'MASTER PEKERJA';
-		    $detail = 'Create Surat Perbantuan Nomor Surat='.$nomor_surat.'/'.$kodeSurat.'/'.$bulan_surat.'/'.$tahun_surat;
-		    $this->log_activity->activity_log($aksi, $detail);
-		    //
+		$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
+		$inputFingerPindah = $this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
+		if ($finger_pindah == 't') {
+			$this->kirim_email_ict($noind_baru, $nomor_induk, $lokasi_finger_awal, substr($finger_akhir, 7), 'PERBANTUAN');
+		}
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Create Surat Perbantuan Nomor Surat=' . $nomor_surat . '/' . $kodeSurat . '/' . $bulan_surat . '/' . $tahun_surat;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
@@ -570,7 +538,7 @@ class C_Index extends CI_Controller
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 		//insert to t_log
 		$aksi = 'MASTER PEKERJA';
-		$detail = 'Cetak PDF Surat Perbantuan Nomor Surat='.$no_surat_decode;
+		$detail = 'Cetak PDF Surat Perbantuan Nomor Surat=' . $no_surat_decode;
 		$this->log_activity->activity_log($aksi, $detail);
 		//
 
@@ -578,14 +546,14 @@ class C_Index extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,297), 0, "timesnewroman", 20, 20, 48, 40, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', array(216, 297), 0, "timesnewroman", 20, 20, 48, 40, 0, 0, 'P');
 		$stylesheet = file_get_contents(base_url('assets/css/surat.css'));
 		// $pdf 	=	new mPDF();
 
-		$filename	=	'SuratPerbantuan-'.str_replace('/', '_', $no_surat_decode).'.pdf';
+		$filename	=	'SuratPerbantuan-' . str_replace('/', '_', $no_surat_decode) . '.pdf';
 
 		$pdf->AddPage();
-		$pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($stylesheet, 1);
 		$pdf->WriteHTML($data['isiSuratPerbantuan'][0]['isi_surat']);
 		// print_r($data['isiSuratPerbantuan'][0]['isi_surat']);exit();
 		$pdf->setTitle($filename);
@@ -606,32 +574,32 @@ class C_Index extends CI_Controller
 		$data['SubMenuTwo'] 	= 	'';
 		$data['id']				=	$no_surat;
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 		$data['editSuratPerbantuan'] 		= $this->M_perbantuan->editSuratPerbantuan($no_surat_decode);
 		$data['editFinger'] 		= $this->M_perbantuan->editFinger($no_surat_decode);
-			if (empty($data['editFinger'])) {
+		if (empty($data['editFinger'])) {
 			$kosong  = 'tidakada';
-				$array = array('finger_pindah' => $kosong, );
-				$newaray[] = $array;
-				$data['editFinger'] = $newaray;
-			}
+			$array = array('finger_pindah' => $kosong,);
+			$newaray[] = $array;
+			$data['editFinger'] = $newaray;
+		}
 		$data['DaftarGolongan'] = $this->M_perbantuan->DetailGolongan();
-      	$data['DaftarLokasiKerja'] = $this->M_perbantuan->DetailLokasiKerja();
-      	$data['DaftarKdJabatan'] = $this->M_perbantuan->DetailKdJabatan();
-      	$data['DaftarTempatMakan1'] = $this->M_perbantuan->DetailTempatMakan1();
-      	$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
+		$data['DaftarLokasiKerja'] = $this->M_perbantuan->DetailLokasiKerja();
+		$data['DaftarKdJabatan'] = $this->M_perbantuan->DetailKdJabatan();
+		$data['DaftarTempatMakan1'] = $this->M_perbantuan->DetailTempatMakan1();
+		$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
 		// echo "<pre>";
 		// print_r($data['editSuratPerbantuan']);
 		// print_r($data['editFinger']);
 		// echo "</pre>";
 		// exit();
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPekerja/Surat/Perbantuan/V_Update',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('MasterPekerja/Surat/Perbantuan/V_Update', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function edit($no_surat)
@@ -651,26 +619,26 @@ class C_Index extends CI_Controller
 
 		$seksi_baru 				=	$this->input->post('txtKodesieBaru');
 		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
-		if($golongan_pekerjaan_baru == null){
-				$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
-			}
+		if ($golongan_pekerjaan_baru == null) {
+			$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
+		}
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
 		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 		$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
-		if($pekerjaan_baru == null){
-				$pekerjaan_baru = $pekerjaan_lama;
-			}
+		if ($pekerjaan_baru == null) {
+			$pekerjaan_baru = $pekerjaan_lama;
+		}
 
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
 
-		if($status_baru != null or $status_baru != "" ){
+		if ($status_baru != null or $status_baru != "") {
 			$status_baru 			= 	explode(' - ', $status_baru);
-		}else{
+		} else {
 			$status_baru 			= 	explode(' - ', $status_lama);
 		}
 
@@ -719,88 +687,85 @@ class C_Index extends CI_Controller
 		$tanggal_perbantuan_awal 	=	$tanggal_berlaku[0];
 		$tanggal_perbantuan_akhir 	=	$tanggal_berlaku[1];
 
-		$updateSuratPerbantuan			= 	array
-										(
-											'hal_surat'				=>	$hal_surat,
-											'noind'					=>	$nomor_induk,
-											'kodesie_lama'  		=>  $seksi_lama,
-											'kodesie_baru'  		=>  $seksi_baru,
-											'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
-											// 'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
-											'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
-											// 'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
-											'lokasi_kerja_lama'		=>	$lokasi_lama,
-											'lokasi_kerja_baru'		=>  $lokasi_baru,
-											'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
-											'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
-											'kd_jabatan_lama'		=>  $kd_jabatan_lama,
-											'kd_jabatan_baru'		=>  $kd_jabatan_baru,
-											'jabatan_lama'          =>  $jabatan_lama,
-											'jabatan_baru'          =>  rtrim($jabatan_baru),
-											'tanggal_cetak'			=>  $tanggal_cetak,
-											'nama'					=>	$nama,
-											'noind_baru'			=>	$noind_baru,
-											'isi_surat'				=>	$isi_surat,
-											'kd_pkj_lama'           =>  $kd_pkj_lama,
-											'kd_pkj_baru'           =>  $kd_pkj_baru,
-											'tanggal_mulai_perbantuan'	=>	$tanggal_perbantuan_awal,
-											'tanggal_selesai_perbantuan'=>	$tanggal_perbantuan_akhir,
-											'nama_status_lama'		=>  $nama_status_lama,
-											'nama_status_baru'		=>  $nama_status_baru,
-											'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
-											'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
-											'kd_status_lama'		=> 	$kd_status_lama,
-											'kd_status_baru' 		=>	$kd_status_baru,
-											'status_update'			=> '0',
-											'last_update_by'			=>  $this->session->user ,
-											'last_update_date'			=> 	date('Y-m-d H:i:s')
-										);
+		$updateSuratPerbantuan			= 	array(
+			'hal_surat'				=>	$hal_surat,
+			'noind'					=>	$nomor_induk,
+			'kodesie_lama'  		=>  $seksi_lama,
+			'kodesie_baru'  		=>  $seksi_baru,
+			'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
+			// 'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
+			'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
+			// 'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
+			'lokasi_kerja_lama'		=>	$lokasi_lama,
+			'lokasi_kerja_baru'		=>  $lokasi_baru,
+			'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
+			'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
+			'kd_jabatan_lama'		=>  $kd_jabatan_lama,
+			'kd_jabatan_baru'		=>  $kd_jabatan_baru,
+			'jabatan_lama'          =>  $jabatan_lama,
+			'jabatan_baru'          =>  rtrim($jabatan_baru),
+			'tanggal_cetak'			=>  $tanggal_cetak,
+			'nama'					=>	$nama,
+			'noind_baru'			=>	$noind_baru,
+			'isi_surat'				=>	$isi_surat,
+			'kd_pkj_lama'           =>  $kd_pkj_lama,
+			'kd_pkj_baru'           =>  $kd_pkj_baru,
+			'tanggal_mulai_perbantuan'	=>	$tanggal_perbantuan_awal,
+			'tanggal_selesai_perbantuan' =>	$tanggal_perbantuan_akhir,
+			'nama_status_lama'		=>  $nama_status_lama,
+			'nama_status_baru'		=>  $nama_status_baru,
+			'nama_jabatan_upah_lama' => 	$nama_jabatan_upah_lama,
+			'nama_jabatan_upah_baru' =>	$nama_jabatan_upah_baru,
+			'kd_status_lama'		=> 	$kd_status_lama,
+			'kd_status_baru' 		=>	$kd_status_baru,
+			'status_update'			=> '0',
+			'last_update_by'			=>  $this->session->user,
+			'last_update_date'			=> 	date('Y-m-d H:i:s')
+		);
 		$this->M_perbantuan->updateSuratPerbantuan($updateSuratPerbantuan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 
 		if ($paramater_finger == 'tidakada') {
-			$inputFingerPerbantuan			= 	array
-			(
+			$inputFingerPerbantuan			= 	array(
 				'no_surat'				=>	$nomor_surat,
 				'kode' 					=>	$kodeSurat,
 				'hal_surat'				=>	$hal_surat,
 				'noind'					=>	$nomor_induk,
 				'finger_pindah'			=>	$finger_pindah,
-				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'finger_awal'			=>  substr($finger_awal, 0, 5),
 				'lokasifinger_awal'		=>  substr($finger_awal, 7),
-				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'finger_akhir'  		=>	substr($finger_akhir, 0, 5),
 				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
 				'created_date'			=>  $tanggal_cetak,
 				'noind_baru'			=> 	$noind_baru
-				);
+			);
 
 			$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			$inputFingerPindah = $this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
-			if($finger_pindah == 't'){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PERBANTUAN');
+			if ($finger_pindah == 't') {
+				$this->kirim_email_ict($noind_baru, $nomor_induk, substr($finger_awal, 7), substr($finger_akhir, 7), 'PERBANTUAN');
 			}
-		}else{
-			$updateFingerSuratPerbantuan	= 	array
-			(
+		} else {
+			$updateFingerSuratPerbantuan	= 	array(
 				'finger_pindah'			=>	$finger_pindah,
-				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'finger_awal'			=>  substr($finger_awal, 0, 5),
 				'lokasifinger_awal'		=>  substr($finger_awal, 7),
-				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'finger_akhir'  		=>	substr($finger_akhir, 0, 5),
 				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
 			);
 			//insert to t_log
 			$aksi = 'MASTER PEKERJA';
-			$detail = 'Pindah Finger melalui Surat Perbantuan Nomor Surat='.$no_surat_decode;
+			$detail = 'Pindah Finger melalui Surat Perbantuan Nomor Surat=' . $no_surat_decode;
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 
 			$updateFingerPindah =  $this->M_perbantuan->updateFingerSuratPerbantuan($updateFingerSuratPerbantuan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
-			if($updateFingerPindah > 0){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PERBANTUAN');
+			if ($updateFingerPindah > 0) {
+				$this->kirim_email_ict($noind_baru, $nomor_induk, substr($finger_awal, 7), substr($finger_akhir, 7), 'PERBANTUAN');
 			}
 		}
 		//insert to t_log
 		$aksi = 'MASTER PEKERJA';
-		$detail = 'Update Surat Perbantuan Noind='.$nomor_induk;
+		$detail = 'Update Surat Perbantuan Noind=' . $nomor_induk;
 		$this->log_activity->activity_log($aksi, $detail);
 		//
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
@@ -812,7 +777,7 @@ class C_Index extends CI_Controller
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 		//insert to t_log
 		$aksi = 'MASTER PEKERJA';
-		$detail = 'Delete Surat, Finger & Arsip Perbantuan Nomor Surat='.$no_surat_decode;
+		$detail = 'Delete Surat, Finger & Arsip Perbantuan Nomor Surat=' . $no_surat_decode;
 		$this->log_activity->activity_log($aksi, $detail);
 		//
 
@@ -821,40 +786,41 @@ class C_Index extends CI_Controller
 
 		$no_surat_decode 		=	explode('/', $no_surat_decode);
 		$no_surat 				=	(int)$no_surat_decode[0];
-		$kode_surat 			=	$no_surat_decode[1].'/'.$no_surat_decode[2];
-		$tahun 					= 	'20'.$no_surat_decode[4];
+		$kode_surat 			=	$no_surat_decode[1] . '/' . $no_surat_decode[2];
+		$tahun 					= 	'20' . $no_surat_decode[4];
 		$bulan_surat			=	$no_surat_decode[3];
 		// echo $bulan_surat;exit();
 
-		
+
 		// $this->M_perbantuan->deleteArsipSuratPerbantuan($bulan_surat, $tahun, $kode_surat, $no_surat);
 
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
-
 	}
 
-	function kirim_email_ict($noind_baru,$nomor_induk,$finger_awal,$finger_akhir,$jenis_surat){
-			$this->load->library('PHPMailerAutoload');
-			$mail = new PHPMailer;
-			$mail->isSMTP();
-			$mail->SMTPDebug = 0;
-			$mail->Debugoutput = 'html';
-			$mail->Host = 'm.quick.com';
-			$mail->Port = 465;
-			$mail->SMTPAuth = true;
-			$mail->SMTPSecure = 'ssl';
-			$mail->SMTPOptions = array(
+	function kirim_email_ict($noind_baru, $nomor_induk, $finger_awal, $finger_akhir, $jenis_surat)
+	{
+		$this->load->library('PHPMailerAutoload');
+		$mail = new PHPMailer;
+		$mail->isSMTP();
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
+		$mail->Host = 'm.quick.com';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
 			'ssl' => array(
-			'verify_peer' => false,
-			'verify_peer_name' => false,
-			'allow_self_signed' => true
-			));
-			$mail->Username = 'no-reply@quick.com';
-			$mail->Password = "123456";
-			$mail->setFrom('noreply@quick.co.id', 'Notifikasi Pindah Finger');
-			$mail->addAddress('kasie_ict_hrd@quick.com', 'Notifikasi Pindah Finger');
-			$mail->Subject = 'Notifikasi Pindah Finger';
-			$mail->msgHTML("
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
+		$mail->Username = 'no-reply@quick.com';
+		$mail->Password = "123456";
+		$mail->setFrom('noreply@quick.co.id', 'Notifikasi Pindah Finger');
+		$mail->addAddress('kasie_ict_hrd@quick.com', 'Notifikasi Pindah Finger');
+		$mail->Subject = 'Notifikasi Pindah Finger';
+		$mail->msgHTML("
 				Dengan detail sebagai berikut : <br> <br>
 
 				<b>Nomor Induk Baru</b> : $noind_baru<br>
@@ -866,12 +832,12 @@ class C_Index extends CI_Controller
 				Atas perhatiannya terima kasih.<br>
 				<small style='color: red;'>Perpindahan finger akan terlaksana sesuai Cronjob</small>
 				");
-			//Replace the plain text body with one created manually
-			//send the message, check for errors
-			if (!$mail->send()) {
-				echo "Mailer Error: " . $mail->ErrorInfo;
-			} else {
-				//echo "Message sent!";
-			}
+		//Replace the plain text body with one created manually
+		//send the message, check for errors
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+		} else {
+			//echo "Message sent!";
 		}
+	}
 }

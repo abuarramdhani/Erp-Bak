@@ -494,15 +494,15 @@ class C_Index extends CI_Controller
 		$detail = 'Input Surat Pengangkatan Nomor Surat=' . $nomor_surat . '/' . $kodeSurat . '/' . $bulan_surat . '/' . $tahun_surat . ' Noind Baru=' . $nomor_induk_baru;
 		$this->log_activity->activity_log($aksi, $detail);
 		//
-
+		$lokasi_finger_awal = ($finger_awal == ' - ') ? '-' : substr($finger_awal, 7);
 		$inputFingerPengangkatan			= 	array(
 			'no_surat'				=>	$nomor_surat,
 			'kode' 					=>	$kodeSurat,
 			'hal_surat'				=>	$hal_surat,
 			'noind'					=>	$nomor_induk,
 			'finger_pindah'			=>	$finger_pindah,
-			'finger_awal'			=>  substr($finger_awal, 0, 5),
-			'lokasifinger_awal'		=>  substr($finger_awal, 7),
+			'finger_awal'			=> ($finger_awal == ' - ') ? '-' : substr($finger_awal, 0, 5),
+			'lokasifinger_awal'		=>  $lokasi_finger_awal,
 			'finger_akhir'  		=>	substr($finger_akhir, 0, 5),
 			'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
 			'created_date'			=>  $tanggal_cetak,
@@ -512,7 +512,7 @@ class C_Index extends CI_Controller
 
 		$inputFingerPindah = $this->M_pengangkatan->inputFingerPengangkatan($inputFingerPengangkatan);
 		if ($finger_pindah == 't') {
-			$this->kirim_email_ict($noind_baru, $nomor_induk, substr($finger_awal, 7), substr($finger_akhir, 7), 'PENGANGKATAN');
+			$this->kirim_email_ict($noind_baru, $nomor_induk, $lokasi_finger_awal, substr($finger_akhir, 7), 'PENGANGKATAN');
 		}
 
 		if ($kode > 0) {
