@@ -448,7 +448,7 @@ class M_penyerahan extends CI_Model
 	//Get data untuk edit
 	public function getDataEdit($kode, $noind, $tanggal_cetak, $noind_baru)
 	{
-		$sql = "SELECT  trim(a.noind) as noind,
+		$sql = "SELECT distinct trim(a.noind) as noind,
 						trim(a.nama) as nama,
 						trim(a.templahir) as templahir,
 						a.tgllahir::date,
@@ -485,11 +485,11 @@ class M_penyerahan extends CI_Model
 						e.tgl_masuk::date,
 						e.jenis_pkj,
 						trim(e.gol) as gol,
-						(SELECT lama_orientasi from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind and tgl_masuk::date = '$tanggal_cetak') as lama_orientasi,
-						(SELECT tgl_diangkat::date from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind and tgl_masuk::date = '$tanggal_cetak') as tgl_diangkat,
-						(SELECT trim(kd_status) from hrd_khs.tb_status_jabatan where a.noind = noind and a.noind_baru = noind_baru and status_data = '02') as kd_status,
-						(SELECT trim(nama_status) from hrd_khs.tb_status_jabatan where a.noind = noind and a.noind_baru = noind_baru and status_data = '02') as nama_status,
-						(SELECT trim(kd_jabatan) from hrd_khs.tb_status_jabatan where a.noind = noind and a.noind_baru = noind_baru and status_data = '02') as jab_upah,
+						(SELECT lama_orientasi from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind and tgl_masuk::date = '$tanggal_cetak' limit 1) as lama_orientasi,
+						(SELECT tgl_diangkat::date from \"Adm_Seleksi\".tb_pekerja_diangkat_versi_seleksi where tgl_masuk = e.tgl_masuk and noind = e.noind and tgl_masuk::date = '$tanggal_cetak' limit 1) as tgl_diangkat,
+						(SELECT trim(kd_status) from hrd_khs.tb_status_jabatan where a.noind = noind and a.noind_baru = noind_baru and status_data = '02' limit 1) as kd_status,
+						(SELECT trim(nama_status) from hrd_khs.tb_status_jabatan where a.noind = noind and a.noind_baru = noind_baru and status_data = '02' limit 1) as nama_status,
+						(SELECT trim(kd_jabatan) from hrd_khs.tb_status_jabatan where a.noind = noind and a.noind_baru = noind_baru and status_data = '02' limit 1) as jab_upah,
 						f.*,
 						case when a.kd_pkj != '' then (SELECT pekerjaan from hrd_khs.tpekerjaan where kdpekerjaan = a.kd_pkj) else '' end as pekerjaan,
 						(SELECT trim(kd_shift) from \"Presensi\".tshiftpekerja d where d.noind = a.noind and d.kodesie = a.kodesie and d.noind_baru = '$noind_baru' limit 1) as pola_shift 
@@ -497,7 +497,7 @@ class M_penyerahan extends CI_Model
 				LEFT JOIN \"Adm_Seleksi\".tberkas b on a.nik = b.nik or a.nama = b.nama
 				LEFT JOIN \"Surat\".tsurat_penyerahan e on e.kodelamaran = b.kodelamaran
 				LEFT JOIN hrd_khs.tseksi f on f.kodesie = a.kodesie
-				where e.kode = '$kode' and a.noind = '$noind' order by a.noind ASC";
+				where e.kode = '$kode' and a.noind = '$noind' order by noind ASC";
 		return $this->personalia->query($sql)->result_array();
 	}
 

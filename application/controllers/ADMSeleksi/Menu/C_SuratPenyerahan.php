@@ -1010,7 +1010,11 @@ class C_SuratPenyerahan extends CI_Controller
                     $plus = $ada + 1;
                     $panjang = 4 - strlen($plus);
                     if ($panjang != 0) {
-                        $nol = str_pad($plus, 4, 0, 0);
+                        if ($plus >= '10000') {
+                            $nol = str_pad($plus, 5, 0, 0);
+                        } else {
+                            $nol = str_pad($plus, 4, 0, 0);
+                        }
                     } else {
                         $nol = $plus;
                     }
