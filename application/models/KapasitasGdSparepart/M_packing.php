@@ -117,4 +117,15 @@ class M_packing extends CI_Model
         $query = $oracle->query($sql);
         return $query->result_array();
     }
+
+    public function cekBeratPacking($nospb, $no){
+        $oracle = $this->load->database('khs_packing', true);
+        $sql = "SELECT *
+                FROM sp_packing_trx
+                WHERE nomor_do = '$nospb'
+                and attribute = '$no'
+                order by attribute";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
 }
