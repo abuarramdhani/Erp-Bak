@@ -175,8 +175,15 @@ class C_Packing extends CI_Controller
 		$jenis = $this->input->post('jenis_kemasan');
 		$berat = $this->input->post('berat');
 		$no = $this->input->post('no');
-		$save = $this->M_packing->insertBerat($no_spb, $jenis, $berat, $no);
-		// echo "<pre>";print_r($save);exit();
+		$cek = $this->M_packing->cekBeratPacking($no_spb, $no);
+		// echo "<pre>";print_r($cek);exit();
+		if (empty($cek)) {
+			$save = $this->M_packing->insertBerat($no_spb, $jenis, $berat, $no);
+			echo "save";
+		}else {
+			$save = $this->M_packing->updateBerat($no_spb, $jenis, $berat, $no);
+			echo "update";
+		}
 	}
 
 	public function gantiPacking(){
