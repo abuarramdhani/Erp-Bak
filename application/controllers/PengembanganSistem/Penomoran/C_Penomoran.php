@@ -17,7 +17,7 @@ class C_Penomoran extends CI_Controller
 		$this->load->model('M_Index');
 		// $this->load->model('MonitoringKomponen/MainMenu/M_monitoring_seksi');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('PengembanganSistem/M_PengSIS');
+		$this->load->model('PengembanganSistem/M_pengsistem');
 		// $this->load->library('excel');
 		$this->checkSession();
 	}
@@ -43,7 +43,7 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['Penomoran'] = $this->M_PengSIS->responsibility_penomoran($user_id);
+        $data['Penomoran'] = $this->M_pengsistem->responsibility_penomoran($user_id);
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -55,7 +55,7 @@ class C_Penomoran extends CI_Controller
 	{
 		$seksi = $_POST['seksi'];
 
-		$data = $this->M_PengSIS->input_select_seksi($seksi);
+		$data = $this->M_pengsistem->input_select_seksi($seksi);
 
 		echo json_encode($data);
 	}
@@ -73,9 +73,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['listdatafp'] = $this->M_PengSIS->list_data_fp();
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        $data['listdatafp'] = $this->M_pengsistem->list_data_fp();
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -88,7 +88,7 @@ class C_Penomoran extends CI_Controller
 	{
 		$seksi = $_POST['seksi'];
 
-		$data = $this->M_PengSIS->cek_data_nomor_fp($seksi)[0]['max'];
+		$data = $this->M_pengsistem->cek_data_nomor_fp($seksi)[0]['max'];
 
 		echo json_encode($data);
 	}
@@ -98,7 +98,7 @@ class C_Penomoran extends CI_Controller
 		$doc = 'FP';
 		$judul = $this->input->post('judul_fp');
 		$seksi = $this->input->post('seksi_fp');
-			$search = $this->M_PengSIS->seksiunit($seksi);
+			$search = $this->M_pengsistem->seksiunit($seksi);
 			foreach ($search as $key) {
 				$seksi_full = $key['seksi'];
 			}
@@ -112,7 +112,7 @@ class C_Penomoran extends CI_Controller
 		$status = $this->input->post('status_fp');
 		$date_input = date('d-m-Y h:i:sa');
 
-		$totaldata = $this->M_PengSIS->cek_data_nomor_fp($seksi)[0]['max'];
+		$totaldata = $this->M_pengsistem->cek_data_nomor_fp($seksi)[0]['max'];
 		echo $totaldata;
 
 		if ($totaldata>0) {
@@ -150,7 +150,7 @@ class C_Penomoran extends CI_Controller
 						);
 		}
 		
-			$this->M_PengSIS->get_inputdata_fp($data);
+			$this->M_pengsistem->get_inputdata_fp($data);
 			redirect('PengembanganSistem/Flow_Proses');
 	}
 
@@ -167,9 +167,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['listdatafp'] = $this->M_PengSIS->list_edit_fp($data_edit);
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        $data['listdatafp'] = $this->M_pengsistem->list_edit_fp($data_edit);
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -185,7 +185,7 @@ class C_Penomoran extends CI_Controller
 			$seksi = $kodepisah[1];
 			$kode = $kodepisah[2];
 
-		$search = $this->M_PengSIS->seksiunit($seksi);
+		$search = $this->M_pengsistem->seksiunit($seksi);
 		foreach ($search as $key) {
 			$seksi_full = $key['seksi'];
 		}
@@ -215,7 +215,7 @@ class C_Penomoran extends CI_Controller
 					'date_input'		=> $date_update,
 				);
 				
-		$this->M_PengSIS->update_flow_fp($data,$id);
+		$this->M_pengsistem->update_flow_fp($data,$id);
 		redirect('PengembanganSistem/Flow_Proses');
 	}
 
@@ -249,7 +249,7 @@ class C_Penomoran extends CI_Controller
                   'status_doc' =>$status
                   
                 );
-                $this->M_PengSIS->upload_file_fp($data,$id_data);
+                $this->M_pengsistem->upload_file_fp($data,$id_data);
                 //dibawah ini merupakan code untuk resize
                 $config2['image_library'] = 'gd2'; 
                 $config2['source_image'] = $this->upload->upload_path.$this->upload->file_name;
@@ -274,7 +274,7 @@ class C_Penomoran extends CI_Controller
 	public function delete_data_flow($id)
 	{
 
-		$this->M_PengSIS->delete_flow($id);
+		$this->M_pengsistem->delete_flow($id);
 		redirect('PengembanganSistem/Flow_Proses');
 	}
 
@@ -293,9 +293,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['listdatacopwi'] = $this->M_PengSIS->list_data_copwi();
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        $data['listdatacopwi'] = $this->M_pengsistem->list_data_copwi();
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
 
         $this->load->view('V_Header', $data);
@@ -311,7 +311,7 @@ class C_Penomoran extends CI_Controller
 		$seksi = $_POST['seksi_doc'];
 		$number_sop = $_POST['number_sop'];
 
-		$data = $this->M_PengSIS->cek_data_nomor_copwi($doc,$seksi,$number_sop)[0]['max'];
+		$data = $this->M_pengsistem->cek_data_nomor_copwi($doc,$seksi,$number_sop)[0]['max'];
 
 		echo json_encode($data);
 	}
@@ -322,7 +322,7 @@ class C_Penomoran extends CI_Controller
 		$item_doc_cw = $this->input->post('doc_cw');
 		$doc_cw = $this->input->post('doccopwi_cw');
 		$seksi_cw = $this->input->post('seksi_cw');
-			$search = $this->M_PengSIS->seksiunit($seksi_cw);
+			$search = $this->M_pengsistem->seksiunit($seksi_cw);
 			foreach ($search as $key) {
 				$seksifull = $key['seksi'];
 			}
@@ -338,9 +338,9 @@ class C_Penomoran extends CI_Controller
 		$sop_cw = $this->input->post('sop_cw');
 		$date_input = date('d-m-Y h:i:sa');
 
-		$totaldata = $this->M_PengSIS->set_total_copwi($seksi_cw,$number_sop,$doc_cw)[0]['count'];
+		$totaldata = $this->M_pengsistem->set_total_copwi($seksi_cw,$number_sop,$doc_cw)[0]['count'];
 		echo $totaldata;
-		$totaldoc = $this->M_PengSIS->cek_data_nomor_copwi($doc_cw,$seksi_cw,$number_sop)[0]['max'];
+		$totaldoc = $this->M_pengsistem->cek_data_nomor_copwi($doc_cw,$seksi_cw,$number_sop)[0]['max'];
 		echo $totaldoc;
 
 		if ($totaldata>0) {
@@ -383,7 +383,7 @@ class C_Penomoran extends CI_Controller
 						);
 		}
 
-		$this->M_PengSIS->get_inputdata_copwi($data);
+		$this->M_pengsistem->get_inputdata_copwi($data);
 			redirect('PengembanganSistem/cop_wi');
 	}
 
@@ -400,9 +400,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['listdatacw'] = $this->M_PengSIS->list_edit_copwi($data_edit);
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        $data['listdatacw'] = $this->M_pengsistem->list_edit_copwi($data_edit);
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
 		
         $this->load->view('V_Header', $data);
@@ -422,7 +422,7 @@ class C_Penomoran extends CI_Controller
 		$judul_doc = $this->input->post('judulcw');
 		$jenis_doc = $this->input->post('cop_wi_cw');
 		$seksi_cw = $this->input->post('seksi_cw');
-			$search = $this->M_PengSIS->seksiunit($seksi_cw);
+			$search = $this->M_pengsistem->seksiunit($seksi_cw);
 			foreach ($search as $key) {
 				$seksifull = $key['seksi'];
 			}
@@ -455,7 +455,7 @@ class C_Penomoran extends CI_Controller
 					'nomor_copwi'		=> $number_kode_doc
 					);
 					
-		$this->M_PengSIS->update_cope($data,$id);
+		$this->M_pengsistem->update_cope($data,$id);
 		redirect('PengembanganSistem/cop_wi');
 		}
 
@@ -489,7 +489,7 @@ class C_Penomoran extends CI_Controller
                   'status_doc' =>$status
                   
                 );
-                $this->M_PengSIS->upload_file_copwi($data,$id_data);
+                $this->M_pengsistem->upload_file_copwi($data,$id_data);
                 //dibawah ini merupakan code untuk resize
                 $config2['image_library'] = 'gd2'; 
                 $config2['source_image'] = $this->upload->upload_path.$this->upload->file_name;
@@ -519,7 +519,7 @@ class C_Penomoran extends CI_Controller
 	public function delete_data_copwi($id)
 	{
 
-		$this->M_PengSIS->delete_copwi($id);
+		$this->M_pengsistem->delete_copwi($id);
 		redirect('PengembanganSistem/cop_wi');
 	}
 	
@@ -539,9 +539,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['listdataum'] = $this->M_PengSIS->list_data_um();
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        $data['listdataum'] = $this->M_pengsistem->list_data_um();
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
 		// $data['show'] = $this->M_outpart->getAllIn();
 		// print_r($data['Penomoran']);
@@ -560,7 +560,7 @@ class C_Penomoran extends CI_Controller
 		$doc = $_POST['doc_um'];
 		$sop = $_POST['number_sop'];
 
-		$data = $this->M_PengSIS->set_number_um($seksi,$sop,$doc)[0]['max'];
+		$data = $this->M_pengsistem->set_number_um($seksi,$sop,$doc)[0]['max'];
 		
 		echo json_encode($data);
 	}
@@ -569,7 +569,7 @@ class C_Penomoran extends CI_Controller
 	{
 		$data_number = $_POST['number_um'];
 
-		$data = $this->M_PengSIS->cek_data_nomor_um($data_number);
+		$data = $this->M_pengsistem->cek_data_nomor_um($data_number);
 
 		echo json_encode($data);
 	}
@@ -581,7 +581,7 @@ class C_Penomoran extends CI_Controller
 		$doc = 'User Manual';
 		$doc_um = 'UM';
 		$seksi_um = $this->input->post('seksi_um');
-			$search = $this->M_PengSIS->seksiunit($seksi_um);
+			$search = $this->M_pengsistem->seksiunit($seksi_um);
 			foreach ($search as $key) {
 				$seksifull = $key['seksi'];
 			}
@@ -597,9 +597,9 @@ class C_Penomoran extends CI_Controller
 		$sop_um = $this->input->post('sop_um');
 		$date_input = date('Y-m-d h:i:sa');
 
-		$totaldata = $this->M_PengSIS->set_total_um($seksi_um,$number_sop,$doc)[0]['count'];
+		$totaldata = $this->M_pengsistem->set_total_um($seksi_um,$number_sop,$doc)[0]['count'];
 		echo $totaldata;
-		$totaldoc = $this->M_PengSIS->set_number_um($seksi_um,$number_sop,$doc)[0]['max'];
+		$totaldoc = $this->M_pengsistem->set_number_um($seksi_um,$number_sop,$doc)[0]['max'];
 		echo $totaldoc;
 
 		if ($totaldata>0) {
@@ -642,7 +642,7 @@ class C_Penomoran extends CI_Controller
 						);
 		}
 		
-			$this->M_PengSIS->get_inputdata_um($data);
+			$this->M_pengsistem->get_inputdata_um($data);
 			redirect('PengembanganSistem/Usermanual');
 	}
 
@@ -659,9 +659,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['listdataum'] = $this->M_PengSIS->list_edit_um($data_edit);
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        $data['listdataum'] = $this->M_pengsistem->list_edit_um($data_edit);
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
 		// $data['show'] = $this->M_outpart->getAllIn();
 		// print_r($data['listdatafp']);
@@ -684,7 +684,7 @@ class C_Penomoran extends CI_Controller
 		$judul_doc = $this->input->post('judul_um');
 		$jenis_doc = $this->input->post('cop_wi_cw');
 		$seksi_um = $this->input->post('seksi_um');
-			$search = $this->M_PengSIS->seksiunit($seksi_um);
+			$search = $this->M_pengsistem->seksiunit($seksi_um);
 			foreach ($search as $key) {
 				$seksifull = $key['seksi'];
 			}
@@ -717,7 +717,7 @@ class C_Penomoran extends CI_Controller
 						'a'					=> $pic_id,
 					);
 					// print_r($data);exit();
-		$this->M_PengSIS->update_data_um($data,$id);
+		$this->M_pengsistem->update_data_um($data,$id);
 		redirect('PengembanganSistem/Usermanual');
 		}
 
@@ -751,7 +751,7 @@ class C_Penomoran extends CI_Controller
                   'status_doc' =>$status
                   
                 );
-                $this->M_PengSIS->upload_file_um($data,$id_data);
+                $this->M_pengsistem->upload_file_um($data,$id_data);
                 //dibawah ini merupakan code untuk resize
                 $config2['image_library'] = 'gd2'; 
                 $config2['source_image'] = $this->upload->upload_path.$this->upload->file_name;
@@ -781,7 +781,7 @@ class C_Penomoran extends CI_Controller
 	public function delete_data_um($id)
 	{
 
-		$this->M_PengSIS->delete_um($id);
+		$this->M_pengsistem->delete_um($id);
 		redirect('PengembanganSistem/Usermanual');
 	}
 
@@ -793,7 +793,7 @@ class C_Penomoran extends CI_Controller
 		$kode = $_POST['kode_doc'];
 		$param_date = $_POST['param_date'];
 
-		$data = $this->M_PengSIS->total_data($param_date,$kode)[0]['count'];
+		$data = $this->M_pengsistem->total_data($param_date,$kode)[0]['count'];
 		
 		echo json_encode($data);
 	}
@@ -811,9 +811,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['listdata_memo'] = $this->M_PengSIS->list_data_memo();
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        $data['listdata_memo'] = $this->M_pengsistem->list_data_memo();
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
 		// $data['show'] = $this->M_outpart->getAllIn();
 		// print_r($data['Penomoran']);
@@ -844,7 +844,7 @@ class C_Penomoran extends CI_Controller
 		$hari = $seleksi_date[2];
 		$param = $tahun."-".$bulan;
 
-		$totaldata = $this->M_PengSIS->getCountData($param,$kode_doc)[0]['count'];
+		$totaldata = $this->M_pengsistem->getCountData($param,$kode_doc)[0]['count'];
 		echo $totaldata;
 
 		if ($totaldata>0) {
@@ -878,7 +878,7 @@ class C_Penomoran extends CI_Controller
 						);
 		}
 		
-		$this->M_PengSIS->get_kode($data);
+		$this->M_pengsistem->get_kode($data);
 		redirect('PengembanganSistem/surat_memo');
 	}
 
@@ -895,9 +895,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        $data['listdata_memo'] = $this->M_PengSIS->list_edit_memo($setdata);
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        $data['listdata_memo'] = $this->M_pengsistem->list_edit_memo($setdata);
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
 		// $data['show'] = $this->M_outpart->getAllIn();
 
@@ -927,7 +927,7 @@ class C_Penomoran extends CI_Controller
 						'date_update'     => $date_update
 						);
 						
-		$this->M_PengSIS->get_update_code($data,$id);
+		$this->M_pengsistem->get_update_code($data,$id);
 		redirect('PengembanganSistem/surat_memo');
 	}
 
@@ -960,7 +960,7 @@ class C_Penomoran extends CI_Controller
                   'file' =>$gbr,
                   
                 );
-                $this->M_PengSIS->upload_file_code($data,$id_data);
+                $this->M_pengsistem->upload_file_code($data,$id_data);
                 //resize
                 $config2['image_library'] = 'gd2'; 
                 $config2['source_image'] = $this->upload->upload_path.$this->upload->file_name;
@@ -988,7 +988,7 @@ class C_Penomoran extends CI_Controller
 	public function delete_data_code($id)
 	{
 
-		$this->M_PengSIS->delete_code($id);
+		$this->M_pengsistem->delete_code($id);
 		redirect('PengembanganSistem/surat_memo');
 	}
 
@@ -1007,9 +1007,9 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        // $data['listdata_lkh'] = $this->M_PengSIS->list_data_lkh();
-        $data['listseksi'] = $this->M_PengSIS->select_seksi();
-        $data['listorg'] = $this->M_PengSIS->ambilSemuaPekerja();
+        // $data['listdata_lkh'] = $this->M_pengsistem->list_data_lkh();
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
 		$user = $this->session->user;
 		$bulan = $this->input->post('bulan');
@@ -1017,9 +1017,9 @@ class C_Penomoran extends CI_Controller
 		$param = ($bulan."-".$tahun);
 		$data['tahun'] = $tahun;
 		$data['bulan'] = $bulan;
-		$data['listdata_lkh'] = $this->M_PengSIS->set_lkh($param,$user);
+		$data['listdata_lkh'] = $this->M_pengsistem->set_lkh($param,$user);
 			if ($bulan == '') {
-		$data['listdata_lkh'] = $this->M_PengSIS->set_lkh1($user);
+		$data['listdata_lkh'] = $this->M_pengsistem->set_lkh1($user);
 			}
 // print_r($data['listdata_lkh']);exit();
         $this->load->view('V_Header', $data);
@@ -1078,7 +1078,7 @@ class C_Penomoran extends CI_Controller
 					'bulan' => $bulan.'-'.$tahun
 					 );
 					//  print_r($data);exit();
-		$this->M_PengSIS->get_lkh_input($data);
+		$this->M_pengsistem->get_lkh_input($data);
 		redirect('PengembanganSistem/lkh_ps');
 	}
 
@@ -1087,7 +1087,7 @@ class C_Penomoran extends CI_Controller
 		$user = $this->session->user;
 		$param = $this->input->post('data');
 		$pic = $this->input->post('kasie');
-		$data['record'] = $this->M_PengSIS->setdata($param,$user);
+		$data['record'] = $this->M_pengsistem->setdata($param,$user);
 		$data['pic']	= $this->input->post('kasie');
 
 		$this->load->library('pdf');
@@ -1124,7 +1124,7 @@ class C_Penomoran extends CI_Controller
         // create file name
 		$fileName = 'data-'.time().'.xlsx';
 		
-		$listInfo = $this->M_PengSIS->setdata($param,$user_id);
+		$listInfo = $this->M_pengsistem->setdata($param,$user_id);
         $objPHPExcel = new PHPExcel();
         $objget = $objPHPExcel->setActiveSheetIndex(0);
 		$objget = $objPHPExcel->getActiveSheet();
@@ -1327,7 +1327,7 @@ class C_Penomoran extends CI_Controller
 
 	public function delete_lkh($id)
 	{
-		$this->M_PengSIS->delete_lkh_get($id);
+		$this->M_pengsistem->delete_lkh_get($id);
 		redirect('PengembanganSistem/lkh_ps');
 	}
 
@@ -1335,7 +1335,7 @@ class C_Penomoran extends CI_Controller
 	{
 		$data_number = $_POST['date_lkh'];
 
-		$data = $this->M_PengSIS->cek_data_lkh($data_number);
+		$data = $this->M_pengsistem->cek_data_lkh($data_number);
 
 		echo json_encode($data);
 	}
