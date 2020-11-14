@@ -74,7 +74,7 @@ class C_DPBVendor extends CI_Controller {
         if ($this->session->user === 'B0445' || $this->session->user === 'A2146') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
-                    'no_kendaraan'     => 'readonly',
+                    'no_kendaraan'     => '',
                     'nama_supir'       => 'readonly',
                     'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
