@@ -26,8 +26,53 @@ class C_PoLogbook extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $BuyerNik = $this->session->user;
-        $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik($BuyerNik);
+        // Array Koordinator Po
+        $koordinatorPo = ['B0537', 'B0729', 'B0580'];
+        // Array Admin Po
+        $adminPo = ['H6634', 'P0384', 'K2298', 'P0603', 'P0391', 'P0389', 'P0608', 'P0629', 'A2412', 'A2275', 'A2375'];
+        // Array team Koordinasi
+        $teamAlbert = ['B0537', 'B0726', 'B0794', 'B0931', 'B0935', 'B0868'];
+        $teamRahayu = ['B0729', 'B0918', 'B0932'];
+        $teamHermawan = ['B0580', 'B0668'];
+
+        // Ambil ID User
+        $id_user = $this->session->user;
+
+        
+        // Jika user adalah koordinator Po
+        if(in_array($id_user, $koordinatorPo)){
+            if($id_user == 'B0537'){
+              $data['PoLogbook'] = $this->M_pologbook->getDataPoKoor($teamAlbert);
+            } else if ($id_user == 'B0729') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPoKoor($teamRahayu);
+            } else if ($id_user == 'B0580') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPoKoor($teamHermawan);
+            }
+        // Jika user adalah admin Po
+        } else if (in_array($id_user, $adminPo)) {
+            if($id_user == 'H6634' || $id_user == 'P0384'){
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0726');
+            } else if($id_user == 'K2298' || $id_user == 'P0603'){
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0868');
+            } else if($id_user == 'P0391') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0794');
+            } else if($id_user == 'P0389') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0935');
+            } else if($id_user == 'P0608') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0729');
+            } else if($id_user == 'P0629') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0931');
+            } else if($id_user == 'A2412') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0918');
+            }else if($id_user == 'A2275') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0932');
+            }else if($id_user == 'A2375') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0668');
+            }
+        // User adalah Buyer
+        } else {
+            $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik($id_user);
+        }
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
