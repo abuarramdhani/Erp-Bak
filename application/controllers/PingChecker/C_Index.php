@@ -427,8 +427,8 @@ class C_Index extends CI_Controller {
 				$subject = "($st) ".$ip['name']." is Down";
 
 				if ($statusNow%48 == 0) {
-					$emailUser = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
-					$emailUserInternal = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com");
+					$emailUser = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com","ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
+					$emailUserInternal = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com");
 				}else {
 					$emailUser = array("quick.tractor@gmail.com", "ict.hardware.khs@gmail.com");
 					$emailUserInternal = array("yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com");
