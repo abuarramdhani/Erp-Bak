@@ -401,7 +401,15 @@ class M_lelayu extends CI_Model
 //--------------------Model Utama Untuk List Data----------------------//
   public function getDataList()
   {
-    return $this->db->query("SELECT * from hr.hr_lelayu order by tgl_lelayu desc")->result_array();
+    return $this->db->query("
+      SELECT 
+        *, eea.employee_name nama
+      FROM 
+        hr.hr_lelayu hl
+        left join er.er_employee_all eea on eea.employee_code = hl.noind 
+      ORDER BY 
+        tgl_lelayu desc
+    ")->result_array();
   }
 
   public function getDataPDF($id)
@@ -717,5 +725,3 @@ class M_lelayu extends CI_Model
   }
 
 }
-
- ?>
