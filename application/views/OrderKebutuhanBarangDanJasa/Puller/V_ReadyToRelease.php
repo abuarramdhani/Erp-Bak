@@ -80,7 +80,8 @@
                                             <table class="table table-bordered table-hover table-striped tblOKBOrderList text-center">
                                                 <thead class="bg-primary">
                                                     <tr>
-                                                        <th><input type="checkbox" class="minimal checkAllApproveOKB"></th>
+                                                        <!-- <input type="checkbox" class="minimal checkAllApproveOKB"> -->
+                                                        <th></th>
                                                         <!-- <th>No</th> -->
                                                         <th style="width:100px;">SUM(Quantity)</th>
                                                         <th style="width:100px;">Kode Barang</th>

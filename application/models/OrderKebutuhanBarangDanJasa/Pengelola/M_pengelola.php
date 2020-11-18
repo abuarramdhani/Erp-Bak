@@ -11,17 +11,17 @@ class M_pengelola extends CI_Model
 
     public function checkOrder($person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('APPROVER_ID', $person_id);
-        $query = $oracle_dev->get('KHS.KHS_OKBJ_ORDER_APPROVAL');
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('APPROVER_ID', $person_id);
+        $query = $oracle->get('KHS.KHS_OKBJ_ORDER_APPROVAL');
 
         return $query->result_array();
     }
 
     public function checkOrderSiapDikelola($orderid)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT APPROVER_TYPE,JUDGEMENT FROM KHS.KHS_OKBJ_ORDER_APPROVAL
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT APPROVER_TYPE,JUDGEMENT FROM KHS.KHS_OKBJ_ORDER_APPROVAL
                                 where ORDER_ID = '$orderid'
                                 AND JUDGEMENT = 'A'
                                 AND APPROVER_TYPE = (select MAX(APPROVER_TYPE) FROM KHS.KHS_OKBJ_ORDER_APPROVAL
@@ -32,22 +32,24 @@ class M_pengelola extends CI_Model
 
     public function TindakanPengelola($orderid, $orderClass)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->set('ORDER_CLASS', $orderClass);
-        $oracle_dev->where('ORDER_ID', $orderid);
-        $oracle_dev->update('KHS.KHS_OKBJ_ORDER_HEADER');
+        $oracle = $this->load->database('oracle', true);
+        $oracle->set('ORDER_CLASS', $orderClass);
+        $oracle->where('ORDER_ID', $orderid);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER');
     }
 
     public function orderBeli($orderid)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT
                                 ooh.*,
                                 msib.SEGMENT1,
                                 msib.DESCRIPTION,
                                 ppf.NATIONAL_IDENTIFIER,
                                 ppf.FULL_NAME,
-                                ppf.ATTRIBUTE3
+                                ppf.ATTRIBUTE3,
+                                (SELECT count(FILE_NAME) FROM KHS.KHS_OKBJ_ORDER_ATTACHMENTS 
+                                WHERE ORDER_ID = ooh.ORDER_ID) attachment
                             FROM
                                 KHS.KHS_OKBJ_ORDER_HEADER ooh,
                                 PER_PEOPLE_F ppf,
@@ -64,8 +66,8 @@ class M_pengelola extends CI_Model
 
     public function getOrderOpenedList($orderid)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT
                                 ooh.*,
                                 msib.SEGMENT1,
                                 msib.DESCRIPTION,
@@ -87,26 +89,26 @@ class M_pengelola extends CI_Model
 
     public function PengelolaCreatePR($order, $nbd)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->set('NEED_BY_DATE',"TO_DATE('$nbd','YYYY-MM-DD')",false);
-        $oracle_dev->set('PRE_REQ_DATE',"SYSDATE",false);
-        $oracle_dev->insert('KHS.KHS_OKBJ_PRE_REQ_HEADER', $order);
-        $pre_req_id = $oracle_dev->query("SELECT MAX(PRE_REQ_ID) PRE_REQ_ID FROM KHS.KHS_OKBJ_PRE_REQ_HEADER");
+        $oracle = $this->load->database('oracle', true);
+        $oracle->set('NEED_BY_DATE',"TO_DATE('$nbd','YYYY-MM-DD')",false);
+        $oracle->set('PRE_REQ_DATE',"SYSDATE",false);
+        $oracle->insert('KHS.KHS_OKBJ_PRE_REQ_HEADER', $order);
+        $pre_req_id = $oracle->query("SELECT MAX(PRE_REQ_ID) PRE_REQ_ID FROM KHS.KHS_OKBJ_PRE_REQ_HEADER");
 
         return $pre_req_id->result_array();
     }
 
     public function updateOrderClass($orderid, $order)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('ORDER_ID', $orderid);
-        $oracle_dev->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('ORDER_ID', $orderid);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
     }
 
     public function ApproverPR($noind,$itemKode)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("select
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select
             ppf.PERSON_ID
             ,ppf.FULL_NAME
             ,koah.APPROVER_LEVEL
@@ -138,14 +140,14 @@ class M_pengelola extends CI_Model
 
     public function setApproverPR($appPR)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->insert('KHS.KHS_OKBJ_PRE_REQ_APPROVAL', $appPR);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->insert('KHS.KHS_OKBJ_PRE_REQ_APPROVAL', $appPR);
     }
 
     public function getInterfaceSourceCode($itemKode)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
         case when msib.INVENTORY_ITEM_FLAG = 'N' then 'IMPORT_EXP' else 'IMPORT_INV' end INTERFACE_SOURCE_CODE
         from
         mtl_system_items_b msib
@@ -158,8 +160,8 @@ class M_pengelola extends CI_Model
 
     public function getCategoryId($itemKode)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
             mic.CATEGORY_ID
             from
             mtl_item_categories mic
@@ -173,24 +175,58 @@ class M_pengelola extends CI_Model
         return $query->result_array();
     }
 
-    public function getChargeAccountId($itemKode)
+    public function getChargeAccountId($order_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
-        msib.EXPENSE_ACCOUNT CHARGE_ACCOUNT_ID
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT distinct
+        case when msib.ITEM_TYPE in ('3086', '3085') then
+            msib.EXPENSE_ACCOUNT
+        when msib.INVENTORY_ITEM_FLAG = 'Y' then 
+            (select
+            msi.MATERIAL_ACCOUNT
+            from
+            mtl_secondary_inventories msi
+            where
+            msi.SECONDARY_INVENTORY_NAME = kooh.DESTINATION_SUBINVENTORY)
+        else
+            nvl((SELECT 
+            gcc2.CODE_COMBINATION_ID
+            FROM 
+            GL_CODE_COMBINATIONS gcc
+            ,per_people_f ppf
+            ,KHS_HRD_TPRIBADI tp
+            ,KHS_HRD_TSEKSI ts
+            ,KHS_HRD_TLOKASI_KERJA tk
+            ,GL_CODE_COMBINATIONS gcc2
+            WHERE 
+            msib.EXPENSE_ACCOUNT = gcc.CODE_COMBINATION_ID
+            and kooh.CREATE_BY = ppf.PERSON_ID
+            and ppf.NATIONAL_IDENTIFIER = tp.NOIND
+            and tp.KODESIE = ts.KODESIE
+            and tp.LOKASI_KERJA = tk.ID_
+            and gcc.SEGMENT1 = gcc2.SEGMENT1
+            and tk.BRANCH = gcc2.SEGMENT2
+            and gcc.SEGMENT3 = gcc2.SEGMENT3
+            and to_char(ts.COST_CENTER) = gcc2.SEGMENT4
+            and gcc.SEGMENT5 = gcc2.SEGMENT5
+            and gcc.SEGMENT6 = gcc2.SEGMENT6
+            and gcc.SEGMENT7 = gcc2.SEGMENT7), msib.EXPENSE_ACCOUNT)   
+        end CHARGE_ACCOUNT_ID
         from
-        mtl_system_items_b msib
+        khs.khs_okbj_order_header kooh
+        ,mtl_system_items_b msib
         where
-        msib.INVENTORY_ITEM_ID = $itemKode --isi dengan inventory item id
-        and msib.ORGANIZATION_ID = 81");
+        kooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+        and msib.ORGANIZATION_ID = kooh.DESTINATION_ORGANIZATION_ID
+        and kooh.ORDER_ID = $order_id");
 
         return $query->result_array();
     }
 
     public function listRequisition($person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT
         oprh.*,
         msib.SEGMENT1,
         msib.DESCRIPTION,
@@ -213,8 +249,8 @@ class M_pengelola extends CI_Model
     public function getHistoryRequisition($pre_req_id)
     {
 
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                                     opra.*
                                     ,ppf.FULL_NAME
                                     ,ppf.NATIONAL_IDENTIFIER 
@@ -230,7 +266,7 @@ class M_pengelola extends CI_Model
 
     public function PO_Interdace_all($order)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->insert('PO_REQUISITIONS_INTERFACE_ALL',$order);
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->insert('PO_REQUISITIONS_INTERFACE_ALL',$order);
     }
 }

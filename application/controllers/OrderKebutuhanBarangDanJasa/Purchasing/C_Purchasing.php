@@ -62,6 +62,7 @@ class C_Purchasing extends CI_Controller {
         $person_id = $data['approver'][0]['PERSON_ID'];
 
         $data['listOrder'] = $this->M_purchasing->getReleasedOrder();
+
      
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -112,23 +113,40 @@ class C_Purchasing extends CI_Controller {
         $judgement = $_POST['judgement'];
         $person_id = $_POST['person_id'];
 
-        for ($i=0; $i < count($pre_req_id); $i++) { 
-            $order = array(
-                            'APPROVED_FLAG' => $judgement,
-                            'APPROVED_BY' => $person_id,
-                         );
-            $this->M_purchasing->updateReleasedOrder($pre_req_id[$i], $order);
+        // echo $judgement;exit;
 
+        for ($i=0; $i < count($pre_req_id); $i++) { 
+            if ($judgement == 'Y') {
+                $order = array(
+                                'APPROVED_FLAG' => $judgement,
+                                'APPROVED_BY' => $person_id,
+                             );
+                $this->M_purchasing->updateReleasedOrder($pre_req_id[$i], $order);
+            }elseif ($judgement == 'N') {
+                $order = array(
+                    'APPROVED_FLAG' => $judgement,
+                    'APPROVED_BY' => $person_id,
+                    'NOTE' => $_POST['note'],
+                 );
+                $this->M_purchasing->updateReleasedOrder($pre_req_id[$i], $order);
+            }
+            
             if ($judgement == 'Y') {
                 $dataOrder = $this->M_purchasing->getOrder($pre_req_id[$i]);
-                // echo '<pre>';
-                // print_r($dataOrder);
+                $puller = $this->M_purchasing->getPuller($pre_req_id[$i]);
 
                 foreach ($dataOrder as $key => $data) {
                     // echo $data['DESTINATION_TYPE_CODE'];
                     $interface_source_code = $this->M_pengelola->getInterfaceSourceCode($data['INVENTORY_ITEM_ID']);
                     $category_id = $this->M_pengelola->getCategoryId($data['INVENTORY_ITEM_ID']);
-                    $charge_account_id = $this->M_pengelola->getChargeAccountId($data['INVENTORY_ITEM_ID']);
+                    $charge_account_id = $this->M_pengelola->getChargeAccountId($data['ORDER_ID']);
+                    $desc = $this->M_purchasing->getDescItem($data['INVENTORY_ITEM_ID']);
+
+                    if ($desc[0]['ALLOW_ITEM_DESC_UPDATE_FLAG'] == 'N') {
+                        $itemdesc = $data['ITEM_DESCRIPTION'];
+                    }else {
+                        $itemdesc = $desc[0]['DESCRIPTION'].' '.$data['ITEM_DESCRIPTION'];
+                    }
 
                     $orderPR = array(
                         'INTERFACE_SOURCE_CODE' => $interface_source_code[0]['INTERFACE_SOURCE_CODE'],
@@ -138,7 +156,7 @@ class C_Purchasing extends CI_Controller {
                         'DELIVER_TO_LOCATION_ID' => $data['DELIVER_TO_LOCATION_ID'],
                         'DESTINATION_SUBINVENTORY' => $data['DESTINATION_SUBINVENTORY'],
                         'ITEM_ID' => $data['INVENTORY_ITEM_ID'],
-                        'ITEM_DESCRIPTION' => $data['ITEM_DESCRIPTION'],
+                        'ITEM_DESCRIPTION' => $itemdesc,
                         'QUANTITY' => $data['QUANTITY'],
                         'UNIT_OF_MEASURE' => $data['UOM'],
                         'UNIT_PRICE' => 1,
@@ -148,17 +166,32 @@ class C_Purchasing extends CI_Controller {
                         'NOTE_TO_BUYER' => $data['NOTE_TO_BUYER'],
                         'CATEGORY_ID' => $category_id[0]['CATEGORY_ID'],
                         'DELIVER_TO_REQUESTOR_ID' => $data['REQUESTER'],
-                        'PREPARER_ID' => $data['REQUESTER'],
+                        'PREPARER_ID' => $puller[0]['CREATED_BY'],
                         'SOURCE_TYPE_CODE' => 'VENDOR',
                         'AUTHORIZATION_STATUS' => 'APPROVED',
-                        'HEADER_ATTRIBUTE1' => date("Y-M-d", strtotime($data['NEED_BY_DATE'])),
+                        'HEADER_ATTRIBUTE1' => date("Y-M-d", strtotime($data['ORDER_DATE'])),
                         'HEADER_ATTRIBUTE2' => date("Y-M-d"),
                         'LINE_ATTRIBUTE9' => $data['ORDER_ID'],
                         'HEADER_ATTRIBUTE4' => $data['PRE_REQ_ID'],
+                        'REFERENCE_NUM' => $data['ORDER_ID'],
                      );
 
                     $this->M_approver->insertPo_Requisitions_Interface_all($orderPR);
                 }
+                $orderHead = array(
+                    'ORDER_STATUS_ID' => '7', 
+                );
+                // print_r($orderHead);exit;
+                $this->M_purchasing->UpdateOrder($pre_req_id[$i],$orderHead);
+
+            }elseif ($judgement == 'N') {
+
+                $orderHead = array(
+                    'ORDER_STATUS_ID' => '8',
+                );
+
+                $this->M_purchasing->UpdateOrder($pre_req_id[$i], $orderHead);
+
             }
         }
 
@@ -220,8 +253,62 @@ class C_Purchasing extends CI_Controller {
      
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_ApprovedPurchasing',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_RejectedPurchasing',$data);
         $this->load->view('V_Footer',$data);
+    }
+
+    public function ShowAttachment($orderid)
+    {
+        $data = $this->M_approver->getAttachment($orderid);
+        // print_r($data);exit;
+        if (count($data) == 0) {
+            echo '<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
+        }else {
+            foreach ($data as $key => $att) {
+                
+                if ($att['FILE_NAME'] == null) {
+                    echo '<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
+                }else {
+                    $file = explode('.',$att['FILE_NAME']);
+                    if ($file[1] == 'pdf' || $file[1] == 'doc' || $file[1] == 'xls' || $file[1] == 'ppt' || $file[1] == 'docx' || $file[1] == 'xlsx' || $file[1] == 'pptx' || $file[1] == 'ods'){
+
+                        redirect(base_url('assets/upload/Okebaja/'.$att['FILE_NAME']));
+                    }else {
+                        echo '<img src="'.base_url('assets/upload/Okebaja/'.$att['FILE_NAME']).'">';
+                    }
+                }
+            }            
+        }
+        
+    }
+
+    public function ListDetailApprovedPurchasing()
+    {
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+		
+		$data['Menu'] = 'My Action';
+		$data['SubMenuOne'] = 'List Detail Approved Order';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['list_detail'] = $this->M_purchasing->DetailApprovedOrder();
+
+        $this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_DetailApprovedPurchasing',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
+    public function ShowDetailOrderApproved()
+    {
+        $order_id = $_POST['order_id'];
+        $data['listOrder'] = $this->M_purchasing->getDetailApprovedOrder($order_id);
+        $returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Puller/V_ReleasedOrderTable',$data, true);
+
+        echo $returnTable;
     }
     
 }

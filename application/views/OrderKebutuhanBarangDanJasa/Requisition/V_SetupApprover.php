@@ -33,7 +33,7 @@
                     <div class="box box-primary">
 
                         <div class="box-header with-border">
-                            <h3 class="box-title">Setup Approver</h3>
+                            <h3 class="box-title">Setup User</h3>
                         </div>
 
                         <div class="box-body">
@@ -65,8 +65,7 @@
                                         <span class="input-group-addon"><i style="width:15px;" class="fa fa-users"></i></span>
                                         <input class="form-control" id="txtOKBSectionOrderRequestor" name="txtOKBSectionOrderRequestor" value="<?php echo $pengorder[0]['ATTRIBUTE3']?>" readonly>
                                     </div>
-                                </div>  
-
+                                </div>
                             </div> <br> <br>
 
                             <div class="box-body table-responsive no-padding">

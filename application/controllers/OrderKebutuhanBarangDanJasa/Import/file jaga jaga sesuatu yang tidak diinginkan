@@ -1,0 +1,74 @@
+$validasi = $this->M_import->validasiItem($itemCode);
+if (!$validasi) {
+                    $note .= '- Bukan item inventory *Order yang dapat diproses via Excel hanya yang bertipe INVENTORY<br>';
+                    $inv_item_id = '';
+                }else {
+                    $inv_item_id = $validasi[0]['INVENTORY_ITEM_ID'];
+                    if ($uom != $validasi[0]['PRIMARY_UOM'] && $uom != $validasi[0]['SECONDARY_UOM']) {
+                        $note .= '- UOM salah / tidak cocok<br>';
+                    }
+                }
+
+                if ($destinationType != 'INVENTORY') {
+                    $note .= '- Destination Type harus INVENTORY<br>';
+                }
+
+                if (!$qty) {
+                    $note .= '- Quantity harus terisi';
+                }
+
+                if (!$nbd) {
+                    $note .= '- NBD harus terisi';
+                }else {
+                    $nebd = str_replace('/','-',$nbd);
+
+                    $tanggalUser = strtotime($nebd);
+
+                    if ($validasi) {
+                        $estimasi = strtotime($validasi[0]['DEFAULT_NBD']);
+    
+                        if ($tanggalUser < $estimasi) {
+                            if ($alasanUrgensi == '') {
+                                $note .= '- Order berstatus Urgent, Alasan Urgensi wajib diisi!';
+                            }else {
+                                $urgentFlag = 'Y';
+                            }
+                        }
+                    }
+                }
+
+                if ($organization != 'OPM' && $organization != 'ODM') {
+                    $note .= '- Organization harus OPM atau ODM<br>';
+                    $org_id = '';
+                }else if ($organization == 'OPM') {
+                    $org_id = 101;
+                    if ($subinventory == '') {
+                        $note .= '- subinventory tidak boleh kosong';
+                    }else {
+                        
+                        $sbinv = $this->M_import->validasiSubinventory($organization, $subinventory);
+                        if (!$sbinv) {
+                           $note .= '- subinventory salah';
+                        }
+                    }
+                }else if ($organization == 'ODM') {
+                    $org_id = 102;
+                    if ($subinventory == '') {
+                        $note .= '- subinventory tidak boleh kosong';
+                    }else {
+                        $sbinv = $this->M_import->validasiSubinventory($organization, $subinventory);
+                        if (!$sbinv) {
+                            $note .= '- subinventory salah';
+                        }
+                    }
+                }
+                
+
+                if ($location != 'Yogyakarta' && $location != 'Tuksono') {
+                    $note .= '- Location harus Yogyakarta atau Tuksono<br>';
+                    $loc_id = '';
+                }else if ($location == 'Yogyakarta') {
+                    $loc_id = 142;
+                }else if ($organization == 'Tuksono') {
+                    $loc_id = 16103;
+                }
