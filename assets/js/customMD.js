@@ -275,7 +275,7 @@ function approveMD() {
               // console.log(result.value[0]);
               if (result.value[0] === '1231313') {
                 $.ajax({
-                  url: baseurl + 'MonitoringDO/SettingDO/InsertDo',
+                  url: baseurl + 'MonitoringDO/SettingDO/UpdateDO',
                   type: 'POST',
                   data: {
                     header_id: id,
