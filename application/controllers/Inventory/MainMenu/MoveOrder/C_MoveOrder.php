@@ -136,13 +136,16 @@ class C_MoveOrder extends CI_Controller
 			// exit();
 		 	$checkPicklist = $this->M_MoveOrder->checkPicklist($key);
 		 	if ($checkPicklist) {
-				if ($value['header']['START_QUANTITY'] == $value['header']['ATTRIBUTE4'] || $value['header']['ATTRIBUTE4'] == '') {
-					$array_terkelompok[$key]['header']['KET'] = 1 ; // sudah di create semua
-				}else {
-					$array_terkelompok[$key]['header']['KET'] = 2 ; // sebagian sudah di create
-				}
+				 $jml_sudah_pick = $this->M_MoveOrder->getItemSudahPicklist($key);
+				 if (count($jml_sudah_pick) == count($value['body'])) {
+					$array_terkelompok[$key]['header']['KET'] = 1 ; // sudah dibuat picklist full
+				 }elseif(empty($value['body'])) {
+					$array_terkelompok[$key]['header']['KET'] = 0 ; // komponen kosong
+				 }else {
+					$array_terkelompok[$key]['header']['KET'] = 2 ; // sudah dibuat picklist sebagian
+				 }
 		 	}else{
-				$array_terkelompok[$key]['header']['KET'] = 0 ;
+				$array_terkelompok[$key]['header']['KET'] = 0 ; // belum dibuat picklist
 		 	}
 		 }
 
@@ -168,8 +171,6 @@ class C_MoveOrder extends CI_Controller
 		$job = $this->input->post('no_job');
 		$err = $this->input->post('error_exist');
 		$piklis = $this->input->post('piklis');
-		$start_qty = $this->input->post('start_qty');
-		$qty_sudah = $this->input->post('qty_sudah');
 		
 		$departement = $this->input->post('departement');
 		if ($departement == 'SUBKT') {
@@ -183,60 +184,46 @@ class C_MoveOrder extends CI_Controller
 		$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
 		$array_mo = array();
 
-		if (count($checkPicklist) > 0) {
-			if ($start_qty == $qty_sudah || $qty_sudah == '') { // picklist sudah dicreate semua
+		if (count($checkPicklist) > 0) { // sudah dibuat picklist
+			$invID 			= $this->input->post('invID');
+			$jml_sudah_pick = $this->M_MoveOrder->getItemSudahPicklist($job);
+			
+			if (count($jml_sudah_pick) == count($invID)) { // sudah dibuat picklist semua -> langsung print pdf
 				foreach ($checkPicklist as $key => $value) {
 					$no_mo = $value['REQUEST_NUMBER'];
 					array_push($array_mo, $no_mo);
 					//tinggal cetak jika sudah ada mo
 				}
-			// 	//pdfoutput
+				// 	//pdfoutput
 				$this->pdf($array_mo, $nama_satu, $nama_dua,$piklis);
-			}else { // sebagian sudah dicreate, tinggal create sisanya
-				$this->createSebagian2($user_id, $ip_address, $job, $start_qty, ($start_qty - $qty_sudah), $qty_sudah, $nama_satu, $nama_dua, $err, $piklis, count($checkPicklist), 'semua');
+			}else { // sudah dibuat picklist sebagian
+				$this->createPicklist($user_id, $ip_address, $job, $err, $piklis, $nama_satu, $nama_dua, count($checkPicklist));
 			}
-		} else {
-			$qty 	  = $this->input->post('qty');
-			$invID = $this->input->post('invID');
-			$uom 		  = $this->input->post('uom');
-			$job_id 	  = $this->input->post('job_id');
-			$subinv_to 	  = $this->input->post('subinvto');
-			$locator_to 	  = $this->input->post('locatorto');
-			$subinv_from 	  = $this->input->post('subinvfrom');
-			$locator_from 	  = $this->input->post('locatorfrom');
-			$locator_fromid 	  = $this->input->post('locatorfromid');
+		} else { // belum dibuat picklist
+			$this->createPicklist($user_id, $ip_address, $job, $err, $piklis, $nama_satu, $nama_dua, 0);
+		}
+	}
 
-			//CHECK QTY VS ATR
-			if ($departement == 'SUBKT') {
-					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";	
-					$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);	
-			}else {
-					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";	
-					$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);	
-			}
-			// echo "<pre>";
-			// echo("MASUK SINI");
-			// print_r($getQuantityActual);
-			// exit();
-			$errQty = array();
+	public function createPicklist($user_id, $ip_address, $job, $err, $piklis, $nama_satu, $nama_dua, $picklist_jadi){
+		$array_mo 		= array();
+		$qty 	  		= $this->input->post('qty');
+		$invID 			= $this->input->post('invID');
+		$uom 		  	= $this->input->post('uom');
+		$job_id 	  	= $this->input->post('job_id');
+		$subinv_to 	  	= $this->input->post('subinvto');
+		$locator_to 	= $this->input->post('locatorto');
+		$subinv_from 	= $this->input->post('subinvfrom');
+		$locator_from 	= $this->input->post('locatorfrom');
+		$locator_fromid = $this->input->post('locatorfromid');
+		$att 			= $this->input->post('att');
 
-			foreach ($getQuantityActual as $kQty => $vQty) {
-				if ($vQty['REQ'] > $vQty['ATR']){
-					$err = 1;
-				}else{
-					$err = 0;
-				}
-				$errQty[] = $err;
-			}
-			// echo "<pre>";
-			// print_r($errQty);
-			// print_r($invID);
-			// exit();
-
-			//Seharusnya (!in_array(1,$errQty))
-			if (!in_array(1, $errQty)) {
-				$this->M_MoveOrder->updatesudahpicklist($start_qty, $job_id[0]);
-					foreach ($invID as $key => $value) {
+		//CHECK ITEM YANG SUDAH CREATE
+		$item_sudah = $this->cekItemSudahPicklist($job);
+		$data = array();
+				foreach ($invID as $key => $value) {
+					if ($qty[$key] > $att[$key] || in_array($value, $item_sudah)) {
+						// item merah / item sudah picklist ga ikut ke create
+					}else {
 						$data[$subinv_from[$key]][$locator_from[$key]][] = array('NO_URUT' => '',
 										'INVENTORY_ITEM_ID' => $value,
 										'QUANTITY' => $qty[$key],
@@ -246,11 +233,12 @@ class C_MoveOrder extends CI_Controller
 						$data2[$subinv_from[$key]][$locator_from[$key]][] = $locator_fromid[$key];
 						$data3[$subinv_from[$key]][$locator_from[$key]][] = $locator_from[$key];
 					}
+				}
 					// echo "<pre>";
 					// print_r($data);
 					// exit();
 					// echo "<pre>";
-					$x = 1; 
+					$x = $picklist_jadi+1; 
 					foreach ($data as $key => $value) {
 						$i = 1;
 						// echo "PROSES SUB INV $key { ";
@@ -265,14 +253,14 @@ class C_MoveOrder extends CI_Controller
 								// print_r($dataNew);echo "<br>";
 								$this->M_MoveOrder->createTemp($dataNew);
 								$i++;
-	
+
 							}
 								// //create MO       
 								// print_r($ip_address);echo "<br>";print_r($job_id);echo "<br>";print_r($subinv_to[0]);echo "<br>";
 								// print_r($locator_to[0]);echo "<br>";print_r($key);echo "<br>";print_r($data2[key]);echo "<br>";print_r($user_id);
 								// echo "<br>";
 								$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$locfrom,$user_id,$nomor_mo);
-	
+
 								//delete
 								// echo "<br>";echo "menjalankan perintah delete";echo "<br>";
 								$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
@@ -285,10 +273,10 @@ class C_MoveOrder extends CI_Controller
 						$no_mo = $value['REQUEST_NUMBER'];
 						array_push($array_mo, $no_mo);
 					}
-			}
+			// }
 			// exit();
 			// echo "<pre>";
-			// print_r($array_mo);
+			// print_r($checkPicklist);
 			// exit();
 
 			if ($array_mo) {
@@ -296,9 +284,15 @@ class C_MoveOrder extends CI_Controller
 			}else{
 				exit('Terjadi Kesalahan :(');
 			}
-
-		
 		}
+
+	public function cekItemSudahPicklist($nojob){
+		$item = $this->M_MoveOrder->getItemSudahPicklist($nojob);
+		$sudah = array();
+		foreach ($item as $key => $value) {
+			array_push($sudah, $value['ITEM_ID_KOMPONEN']);
+		}
+		return $sudah;
 	}
 
 	public function pdf($array_mo,$nama_satu, $nama_dua, $piklis){
@@ -389,7 +383,7 @@ class C_MoveOrder extends CI_Controller
 
 			$head		= array();
 			$jobNo		= array();
-			$gudang		= array();
+			// $gudang		= array();
 			$line		= array();
 			$pdf->SetTitle('Picklist_'.date('d/m/Y H/i/s').'.pdf');
 			foreach ($dataall as $key => $value) {
@@ -402,7 +396,32 @@ class C_MoveOrder extends CI_Controller
 				$data['assemblyLength'] = $assemblyLength;
 				$data['dataall'] = $value;
 				$data['urut'] = $key;
-				// echo "<pre>";
+				if (!in_array($value['head'][0]['JOB_NO'], $jobNo)) {
+					array_push($jobNo, $value['head'][0]['JOB_NO']);
+					$gudang		= array();
+					$lokator	= array();
+					$gd2 = $value['line'][0]['LOKASI'] != '' ? $value['line'][0]['LOKASI'] : 'kosong';
+					$loc2 = $value['line'][0]['LOKATOR'] != '' ? $value['line'][0]['LOKATOR'] : 'kosong';
+					array_push($gudang, $gd2);
+					array_push($lokator, $loc2);
+					$data['tambahan'] = 0;
+				}else {
+					$gd2 = $value['line'][0]['LOKASI'] != '' ? $value['line'][0]['LOKASI'] : 'kosong';
+					$loc2 = $value['line'][0]['LOKATOR'] != '' ? $value['line'][0]['LOKATOR'] : 'kosong';
+					if (!in_array($gd2, $gudang)) {
+						array_push($gudang, $gd2);
+						array_push($lokator, $loc2);
+						$data['tambahan'] = 0;
+					}else{
+						if (in_array($loc2, $lokator)) { // nojob, lokasi, lokator sama seperti sebelumnya
+							$data['tambahan'] = 1;
+						}else {
+							$data['tambahan'] = 0;
+							array_push($lokator, $loc2);
+						}
+					}
+				}
+				// echo "<pre>";print_r($data['tambahan']);exit();
 
 				if ($value['head'][0]['DEPARTMENT'] == 'SUBKT') {
 
@@ -474,15 +493,14 @@ class C_MoveOrder extends CI_Controller
 		$locator_to 	  = $this->input->post('locatorto');
 		$subinv_from 	  = $this->input->post('subinvfrom');
 		$locator_from 	  = $this->input->post('locatorfromid');
-		$start_qty 	  = $this->input->post('startqty');
-		$qty_sudah 	  = $this->input->post('qtysudahpick');
+		$att 	  	= $this->input->post('att_all');
 		$selected = $this->input->post('selectedPicklistIMO');
 		$piklis = $this->input->post('piklis');
 		$arraySelected = explode('+', $selected);
 		$array_mo = array();
 
-		foreach ($no_job as $key => $value) {
-
+		foreach ($no_job as $key => $value) { // foreach per job
+			// echo "<pre>";print_r($no_job);exit();
 			if (strpos($value, '<>') !== false ) {
 				$no_job2		= explode('<>', $no_job[$key]);
 				$qty2			= explode('<>', $qty[$key]);
@@ -493,97 +511,36 @@ class C_MoveOrder extends CI_Controller
 				$locator_to2	= explode('<>', $locator_to[$key]);
 				$subinv_from2	= explode('<>', $subinv_from[$key]);
 				$locator_from2	= explode('<>', $locator_from[$key]);
-				$start_qty2		= explode('<>', $start_qty[$key]);
-				$qty_sudah2		= explode('<>', $qty_sudah[$key]);
+				$att2			= explode('<>', $att[$key]);
 				$i =1;
 				
-				if (in_array($no_job2[0], $arraySelected)){
+				if (in_array($no_job2[0], $arraySelected)){ //job yang dipilih
 					// echo "sebelum check picklist <br>";
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
 					// echo "checkPicklist";print_r($checkPicklist);echo"<br>";print_r($no_job2);echo "<br>";
-					if (count($checkPicklist) > 0) {
-						if ($start_qty2[0] == $qty_sudah2[0] || $qty_sudah2[0] == '') { // sudah dibuat picklist semua
-						}else {
-							// sudah dibuat picklist sebagian, tinggal buat sisanya
-							$create = $this->createall2($user_id, $nama_satu, $nama_dua, $no_job2, $qty2, $invID2, $uom2, $job_id2, $subinv_to2, $locator_to2, $subinv_from2, $locator_from2, $start_qty2, $qty_sudah2);
+					if (count($checkPicklist) > 0) { // sudah dibuat picklist
+						$jml_sudah_pick = $this->M_MoveOrder->getItemSudahPicklist($no_job2[0]);
+						if (count($jml_sudah_pick) == count($invID2)/2) { // sudah dibuat picklist full
+							foreach ($checkPicklist as $keymo => $valuemo) {
+								$no_mo = $valuemo['REQUEST_NUMBER'];
+								array_push($array_mo, $no_mo);
+							}
+						}else { // sudah dibuat picklist sebagian
+							$create = $this->createallPicklist($user_id, $ip_address,$no_job2, $qty2, $invID2, $uom2, $job_id2, $subinv_to2, $locator_to2, $subinv_from2, $locator_from2, $att2, count($checkPicklist));
+							foreach ($create as $key => $valuemo) {
+								$no_mo = $valuemo;
+								array_push($array_mo, $no_mo);
+							}
 						}
-						$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
-						foreach ($checkPicklist as $keymo => $valuemo) {
-							$no_mo = $valuemo['REQUEST_NUMBER'];
+					} else { //belum dibuat picklist
+						$create = $this->createallPicklist($user_id, $ip_address,$no_job2, $qty2, $invID2, $uom2, $job_id2, $subinv_to2, $locator_to2, $subinv_from2, $locator_from2, $att2, 0);
+						foreach ($create as $key => $valuemo) {
+							$no_mo = $valuemo;
 							array_push($array_mo, $no_mo);
-							// ECHO "tinggal cetak jika sudah ada mo";
 						}
-					} else {
-						$data = array();
-						//CHECK QTY VS ATR
-						$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";
-						$getQuantityActual = $this->M_MoveOrder->getQuantityActual($no_job2[0],$atr);
-						$errQty = array();
-						foreach ($getQuantityActual as $kQty => $vQty) {
-							if ($vQty['REQ'] > $vQty['ATR']){
-								$err = 1;
-							}else{
-								$err = 0;
-							}
-							$errQty[] = $err;
-						}
-
-						if (!in_array(1, $errQty)) {
-							// START
-							$this->M_MoveOrder->updatesudahpicklist($start_qty2[0], $job_id2[0]);
-							$inv = array();
-								foreach ($no_job2 as $k => $v) {
-									if (in_array($invID2[$k], $inv)) {
-										
-									}else {
-										array_push($inv, $invID2[$k]);
-										$data[$v][$subinv_from2[$k]][$locator_from2[$k]][] = array('NO_URUT' => '',
-													'INVENTORY_ITEM_ID' => $invID2[$k],
-													'QUANTITY' => $qty2[$k],
-													'UOM' => $uom2[$k],
-													'IP_ADDRESS' => $ip_address,
-													'JOB_ID' => $job_id2[$k]);
-										$data2[$v][$subinv_from2[$k]][$locator_from2[$k]] = $locator_from2[$k];
-									}
-
-								}
-								// echo "<pre>";
-								// print_r($data);
-								// exit();
-								$x = 1; 
-								foreach ($data[$no_job2[0]] as $kSub => $vSub) {
-									$i = 1; 
-									foreach ($vSub as $k => $val) {
-									foreach ($val as $key2 => $value2) {
-										$nomor_mo = $no_job2[0].'-'.$x;
-										$dataNew = $value2;
-										$dataNew['NO_URUT'] = $i;
-										//create TEMP
-										// echo "insert<br>";
-										// print_r($dataNew);
-										$this->M_MoveOrder->createTemp($dataNew);
-										$i++;
-									}
-										//create MO       
-										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$k,$user_id,$nomor_mo);
-
-										//delete
-										// echo "delete<br>";
-										$this->M_MoveOrder->deleteTemp($ip_address,$job_id2[0]);
-										$x++;
-								}
-							}
-							// END
-								$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
-								// print_r($checkPicklist);
-								foreach ($checkPicklist as $keymo => $valuemo) {
-									$no_mo = $valuemo['REQUEST_NUMBER'];
-									array_push($array_mo, $no_mo);
-								}
-							}
-						}
-					} 
-			}else{
+					}
+				} 
+			}else{ //gabakal masuk sini bruh
 				// echo "masuk sini bruh";
 				if (in_array($value, $arraySelected)){
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
@@ -653,26 +610,21 @@ class C_MoveOrder extends CI_Controller
 		}
 	}
 
-	public function createall2($user_id, $nama_satu, $nama_dua, $no_job2, $qty2, $invID2, $uom2, $job_id2, $subinv_to2, $locator_to2, $subinv_from2, $locator_from2, $start_qty2, $qty_sudah2){
-		$this->M_MoveOrder->updatesudahpicklist($start_qty2[0], $job_id2[0]);
-
-		$qty3 = array(); // perhitungan qty yang belum dibuat picklist
-		for ($i=0; $i < count($qty2) ; $i++) { 
-			$satuan = $qty2[$i] / $start_qty2[0];
-			$sudah = $satuan * $qty_sudah2[0];
-			$belum = $qty2[$i] - $sudah;
-			array_push($qty3, $belum);
-		}
-
+	public function createallPicklist($user_id, $ip_address, $no_job2, $qty2, $invID2, $uom2, $job_id2, $subinv_to2, $locator_to2, $subinv_from2, $locator_from2, $att2, $picklist_jadi){
+		$data = array();
 		$inv = array();
+		$array_mo = array();
+		//CHECK ITEM YANG SUDAH CREATE
+		$item_sudah = $this->cekItemSudahPicklist($no_job2[0]);
+
 			foreach ($no_job2 as $k => $v) {
-				if (in_array($invID2[$k], $inv)) {
-					
+				if (in_array($invID2[$k], $inv) || $qty2[$k] > $att2[$k] || in_array($invID2[$k], $item_sudah)) {
+					// item merah, item sudah picklist ga ikut dicreate
 				}else {
 					array_push($inv, $invID2[$k]);
 					$data[$v][$subinv_from2[$k]][$locator_from2[$k]][] = array('NO_URUT' => '',
 								'INVENTORY_ITEM_ID' => $invID2[$k],
-								'QUANTITY' => $qty3[$k],
+								'QUANTITY' => $qty2[$k],
 								'UOM' => $uom2[$k],
 								'IP_ADDRESS' => $ip_address,
 								'JOB_ID' => $job_id2[$k]);
@@ -683,7 +635,8 @@ class C_MoveOrder extends CI_Controller
 			// echo "<pre>";
 			// print_r($data);
 			// exit();
-			$x = 1; 
+		if ($data) {
+			$x = $picklist_jadi+1; 
 			foreach ($data[$no_job2[0]] as $kSub => $vSub) {
 				$i = 1; 
 				foreach ($vSub as $k => $val) {
@@ -705,8 +658,15 @@ class C_MoveOrder extends CI_Controller
 					$this->M_MoveOrder->deleteTemp($ip_address,$job_id2[0]);
 					$x++;
 			}
+			}
 		}
 		// END
+		$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
+		foreach ($checkPicklist as $keymo => $valuemo) {
+			$no_mo = $valuemo['REQUEST_NUMBER'];
+			array_push($array_mo, $no_mo);
+		}
+		return $array_mo;
 	}
 
 	public function pdfPending(){
@@ -764,194 +724,4 @@ class C_MoveOrder extends CI_Controller
 
 	}
 
-	public function checksebagian(){
-		$nojob 			= $this->input->post('nojob');
-		$start_qty 		= $this->input->post('start_qty');
-		$qty 			= $this->input->post('qty_komponen');
-		$att 			= $this->input->post('att_komponen');
-		$qty_request 	= $this->input->post('qty_request');
-		$qty_sudah 		= $this->input->post('qty_sudah');
-		// echo "<pre>";print_r($qty_komponen);exit();
-
-		$ket = 'oke';
-		for ($i=0; $i < count($qty) ; $i++) { 
-			$satuan = $qty[$i] / $start_qty;
-			$jml_dibutuhkan = $satuan * $qty_request;
-			if (empty($qty_sudah)) {
-				$sudah = 0;
-			}else {
-				$sudah = $satuan * $qty_sudah;
-			}
-
-			if ($sudah < $qty[$i]) {
-				if ($jml_dibutuhkan > $att[$i]) {
-					$ket = 'not';
-				}else {
-					$ket = $ket;
-				}
-			}
-		}
-		echo $ket;
-	}
-
-	public function createSebagian(){
-		$user_id 		= $this->session->user;
-		$ip_address 	=  $this->input->ip_address();
-		$job 			= $this->input->post('no_job');
-		$start_qty 		= $this->input->post('start_qty');
-		$qty_request 	= $this->input->post('qty_request');
-		$qty_sudah 		= $this->input->post('qty_sudah');
-		$err 			= $this->input->post('error_exist');
-		$piklis 		= $this->input->post('piklis');
-
-		$departement = $this->input->post('departement');
-		if ($departement == 'SUBKT') {
-			$nama_satu = $this->input->post('namaSatu');
-			$nama_dua = $this->input->post('namaDua');
-		} else {
-			$nama_satu = '';
-			$nama_dua = '';
-		}
-
-		$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
-		$array_mo = array();
-
-		if (count($checkPicklist) > 0) {
-			if ($start_qty == $qty_sudah) { // sudah dibuat picklist semua
-				foreach ($checkPicklist as $key => $value) {
-					$no_mo = $value['REQUEST_NUMBER'];
-					array_push($array_mo, $no_mo);
-				}
-				$this->pdf($array_mo, $nama_satu, $nama_dua,$piklis);
-			}else { // sebagian sudah dibuat picklist
-				$this->createSebagian2($user_id, $ip_address, $job, $start_qty, $qty_request, $qty_sudah, $nama_satu, $nama_dua, $err, $piklis, count($checkPicklist), 'sebagian');
-			}
-		} else { // belum dibuat picklist sama sekali
-			$this->createSebagian2($user_id, $ip_address, $job, $start_qty, $qty_request, $qty_sudah, $nama_satu, $nama_dua, $err, $piklis, 0, 'sebagian');
-		}
-	}
-
-	public function createSebagian2($user_id, $ip_address, $job, $start_qty, $qty_request, $qty_sudah, $nama_satu, $nama_dua, $err, $piklis, $nopick, $ket){
-		$array_mo = array();
-		$qty 	  		= $this->input->post('qty');
-		$invID 			= $this->input->post('invID');
-		$uom 		  	= $this->input->post('uom');
-		$job_id 	  	= $this->input->post('job_id');
-		$subinv_to 	  	= $this->input->post('subinvto');
-		$locator_to 	= $this->input->post('locatorto');
-		$subinv_from 	= $this->input->post('subinvfrom');
-		$locator_from 	= $this->input->post('locatorfrom');
-		$locator_fromid = $this->input->post('locatorfromid');
-		$atr 	  		= $this->input->post('att');
-
-		if ($nopick == 0) {
-			$this->M_MoveOrder->updatesudahpicklist($qty_request, $job_id[0]);
-		}else {
-			if ($start_qty == $qty_sudah) {
-				$req_qty = $start_qty;
-			}else{
-				$req_qty = $qty_request + $qty_sudah;
-			}
-			$this->M_MoveOrder->updatesudahpicklist($req_qty, $job_id[0]);
-		}
-
-		// perhitungan qty yang dibutuhkan
-		$qty_req = $qty_sudah_mo = array();
-		for ($i=0; $i < count($qty) ; $i++) { 
-			$satuan = $qty[$i] / $start_qty;
-			$jml_dibutuhkan = $satuan * $qty_request;
-			if (empty($qty_sudah)) { // belum pernah dibuat picklist
-				$sudah = 0;
-			}else { // sudah pernah dibuat picklist
-				$sudah = $satuan * $qty_sudah;
-			}
-			array_push($qty_req, $jml_dibutuhkan);
-			array_push($qty_sudah_mo, $sudah);
-		}
-
-		foreach ($invID as $key => $value) {
-			if ($qty_sudah_mo[$key] >= $qty[$key]) { 
-				// qty item sudah full dibuat mo
-			}else {
-				$data[$subinv_from[$key]][$locator_from[$key]][] = array('NO_URUT' => '',
-								'INVENTORY_ITEM_ID' => $value,
-								'QUANTITY' => $qty_req[$key],
-								'UOM' => $uom[$key],
-								'IP_ADDRESS' => $ip_address,
-								'JOB_ID' => $job_id[$key]);
-				$data2[$subinv_from[$key]][$locator_from[$key]][] = $locator_fromid[$key];
-				$data3[$subinv_from[$key]][$locator_from[$key]][] = $locator_from[$key];
-			}
-		}
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
-		// echo "<pre>";
-		$x = $nopick+1; 
-		foreach ($data as $key => $value) {
-			$i = 1;
-			// echo "PROSES SUB INV $key { ";
-			foreach ($value as $k => $val) {
-				$nomor_mo = $job.'-'.$x;
-				$locfrom = $data2[$key][$k][0];
-				foreach ($val as $key2 => $value2) {
-					$dataNew = $value2;
-					$dataNew['NO_URUT'] = $i;
-					//create TEMP
-					// echo "insert<br>";
-					// print_r($dataNew);echo "<br>";
-					$this->M_MoveOrder->createTemp($dataNew);
-					$i++;
-
-				}
-					// //create MO     
-					$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$locfrom,$user_id,$nomor_mo);
-
-					//delete
-					$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
-			$x++;
-			$ket == 'sebagian' ? array_push($array_mo, $nomor_mo) : '';
-			}
-		}
-		// exit();
-
-		if ($ket == 'semua' || empty($array_mo)) {
-			$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
-			foreach ($checkPicklist as $key => $value) {
-				$no_mo = $value['REQUEST_NUMBER'];
-				array_push($array_mo, $no_mo);
-			}
-		}
-		// exit();
-		// echo "<pre>";
-		// print_r($array_mo);
-		// exit();
-
-		if ($array_mo) {
-			$this->pdf($array_mo, $nama_satu, $nama_dua,$piklis);
-		}else{
-			exit('Terjadi Kesalahan :(');
-		}
-	}
-
-	public function printPicklist(){
-		$job 			= $this->input->post('no_job');
-		$departement 	= $this->input->post('departement');
-		if ($departement == 'SUBKT') {
-			$nama_satu = $this->input->post('namaSatu');
-			$nama_dua = $this->input->post('namaDua');
-		} else {
-			$nama_satu = '';
-			$nama_dua = '';
-		}
-		$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
-		$array_mo = array();
-
-		foreach ($checkPicklist as $key => $value) {
-			$no_mo = $value['REQUEST_NUMBER'];
-			array_push($array_mo, $no_mo);
-		}
-		$this->pdf($array_mo, $nama_satu, $nama_dua,$piklis);
-	}
-	
 }
