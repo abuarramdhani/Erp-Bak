@@ -15,7 +15,7 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2681) {
+						if ($this->session->responsibility_id == 2665) {
 							$classNormal = 'btnNormalOrderOKBPengelola';
 						}else {
 							$classNormal = 'btnNormalOrderOKB';
@@ -35,7 +35,7 @@
 
 						<div class="info-box-content">
 							<span class="info-box-number"><?php echo count($normal); ?></span>
-							<span class="info-box-text">Order Normal</span>
+							<span class="info-box-text">Order Reguler</span>
 
 							<div class="progress">
 								<div class="progress-bar" style="width: <?php echo round($persenNormal) ?>%"></div>
@@ -51,7 +51,7 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2681) {
+						if ($this->session->responsibility_id == 2665) {
 							$classSusulan = 'btnSusulanOrderOKBPengelola';
 						}else {
 							$classSusulan = 'btnSusulanOrderOKB';
@@ -71,7 +71,7 @@
 
 						<div class="info-box-content">
 							<span class="info-box-number"><?php echo count($susulan); ?></span>
-							<span class="info-box-text">Order Susulan</span>
+							<span class="info-box-text">Order Emergency</span>
 
 							<div class="progress">
 								<div class="progress-bar" style="width: <?php echo round($persenSusulan) ?>%"></div>
@@ -87,7 +87,7 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2681) {
+						if ($this->session->responsibility_id == 2665) {
 							$classUrgent = 'btnUrgentOrderOKBPengelola';
 						}else {
 							$classUrgent = 'btnUrgentOrderOKB';

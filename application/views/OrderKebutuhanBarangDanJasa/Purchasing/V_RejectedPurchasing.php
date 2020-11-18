@@ -45,7 +45,7 @@
                     <div class="box box-primary">
 
                         <div class="box-header with-border">
-                            <h3 class="box-title">List Order</h3>
+                            <h3 class="box-title">List Order <?= $stat;?></h3>
                         </div>
 
                         <div class="box-body">
@@ -71,7 +71,7 @@
                             </div> <br><br>
 
                             <div class="box-body table-responsive no-padding">
-                                <div class="panel panel-success">
+                                <div class="panel <?= $panel;?>">
 									<div class="panel-heading">
                                         <p class="bold">Order List</p>
   								    </div>
@@ -84,8 +84,9 @@
                                                     <th>Creation Date</th>
                                                     <th>Created By</th>
                                                     <th>Flag</th>
-                                                    <th>Approved By</th>
-                                                    <th>Approved Date</th>
+                                                    <th>Reason</th>
+                                                    <th>Rejected By</th>
+                                                    <th>Rejected Date</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -102,9 +103,10 @@
                                                         <?php } elseif ($list['APPROVED_FLAG'] == 'Y') { ?>
                                                             <label class="label label-success"><i>Approved</i></label>
                                                         <?php }elseif ($list['APPROVED_FLAG'] == 'N') { ?>
-                                                            <label class="label label-danger"><i>Rejected</i></label> - <?= $list['NOTE'];?>
+                                                            <label class="label label-danger"><i>Rejected</i></label>
                                                         <?php }?>
                                                     </td>
+                                                    <td><?= $list['NOTE'];?></td>
                                                     <td>
                                                         <?php if ($list['APPROVED_BY'] == null) { ?>
                                                             <label class="label label-default"><i>no action recorded</i></label>
@@ -153,5 +155,3 @@
             </div>
         </div>
     </section>
-
-        

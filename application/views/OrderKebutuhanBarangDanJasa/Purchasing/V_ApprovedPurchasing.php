@@ -129,7 +129,7 @@
                                                                 <h4 class="modal-title">Detail Order</h4>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div class="text-center newtableDetailOKB">
+                                                                <div class="text-center newtableDetailOKB-<?php echo $list['PRE_REQ_ID']; ?>">
                                                                     <img src="<?= base_url('assets/img/gif/loading5.gif') ?>" class="imgOKBLoading" style="width:35px; height:35px;">
                                                                 </div>
                                                             </div>

@@ -26,7 +26,17 @@ class C_Index extends CI_Controller {
 
 	public function index()
 	{
-        $this->checkSession();
+		$this->checkSession();
+		$ip = $this->input->ip_address();
+
+		// print_r($this->session);exit;
+
+		// if ($ip == '192.168.152.34') {
+		// 	if ($ip != '192.168.168.134' && $ip != '192.168.168.8') {
+		// 	echo 'Mohon maaf, Aplikasi ini sedang dalam tahap perbaikan<br>';
+		// 	exit;
+		// }
+		// }
         
 		$user_id = $this->session->userid;
 		
@@ -49,7 +59,8 @@ class C_Index extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		if ($this->session->responsibility_id == 2679 || $this->session->responsibility_id == 2681) {
 			$allOrder = $this->M_approver->getListDataOrder();
-			
+			//  echo'<pre>';
+            // print_r($allOrder);
 			foreach ($allOrder as $key => $order) {
 				$checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
 				// echo'<pre>';
@@ -71,6 +82,7 @@ class C_Index extends CI_Controller {
 
 
 			}
+			// exit;
 
 			// $data['normalBelum'] = array();
 			// $data['urgentBelum'] = array();
@@ -99,7 +111,8 @@ class C_Index extends CI_Controller {
         $this->load->view('V_Footer',$data);
     }
 
-	public function checkSession(){
+	public function checkSession()
+	{
 		if($this->session->is_logged){
 			
 		}else{
@@ -176,7 +189,7 @@ class C_Index extends CI_Controller {
      
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		// if ($this->session->responsibility_id == 2679 || $this->session->responsibility_id == 2681) {
+		// if ($this->session->responsibility_id == 2664 || $this->session->responsibility_id == 2665) {
 			$allOrder = $this->M_approver->getListDataOrder();
 			
 			foreach ($allOrder as $key => $order) {

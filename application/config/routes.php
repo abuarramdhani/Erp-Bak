@@ -3841,12 +3841,15 @@ $route['MonitoringSubkont/SO/(:any)/(:any)/(:any)(:/any)']		= 'Monitoringsubkont
 
 // -------------------------------Order Kebutuhan Barang dan Jasa---------------------------------------//
 $route['OrderKebutuhanBarangDanJasa'] = 'OrderKebutuhanBarangDanJasa/C_Index';
+$route['OrderKebutuhanBarangDanJasa/directEmail/(:any)'] = 'OrderKebutuhanBarangDanJasa/C_Index/directEmail/$1';
 $route['OrderKebutuhanBarangDanJasa/Requisition/(:any)'] = 'OrderKebutuhanBarangDanJasa/Requisition/C_Requisition/$1';
 $route['OrderKebutuhanBarangDanJasa/Requisition/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Requisition/C_Requisition/$1/$2';
 $route['OrderKebutuhanBarangDanJasa/Approver/(:any)'] = 'OrderKebutuhanBarangDanJasa/Approver/C_Approver/$1';
 $route['OrderKebutuhanBarangDanJasa/Pengelola/(:any)'] = 'OrderKebutuhanBarangDanJasa/Pengelola/C_Pengelola/$1';
 $route['OrderKebutuhanBarangDanJasa/Puller/(:any)'] = 'OrderKebutuhanBarangDanJasa/Puller/C_Puller/$1';
 $route['OrderKebutuhanBarangDanJasa/Purchasing/(:any)'] = 'OrderKebutuhanBarangDanJasa/Purchasing/C_Purchasing/$1';
+$route['OrderKebutuhanBarangDanJasa/Purchasing/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Purchasing/C_Purchasing/$1/$2';
+$route['OrderKebutuhanBarangDanJasa/Import/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Import/$1';
 
 //--------------------------------------------------Monitoring Pengiriman Pesanan Luar-------------------------------//
 $route['MonitoringPengirimanPesananLuar'] 	= 'MonitoringPengPesananLuar/C_MonitoringPengPesananLuar/rekapPO';

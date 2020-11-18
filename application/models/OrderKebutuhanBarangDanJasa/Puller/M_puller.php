@@ -10,45 +10,75 @@ class M_puller extends CI_Model
         $this->oracle = $this->load->database('oracle',TRUE);
     }
 
-    public function getOrderToPulled($cond)
+    // public function getOrderToPulled($cond)
+    // {
+    //     $oracle = $this->load->database('oracle', true);
+    //     $query = $oracle->query("SELECT
+    //         ooh.*,
+    //         msib.SEGMENT1,
+    //         msib.DESCRIPTION,
+    //         ppf.NATIONAL_IDENTIFIER,
+    //         ppf.FULL_NAME,
+    //         ppf.ATTRIBUTE3,
+    //         (SELECT count(FILE_NAME) FROM KHS.KHS_OKBJ_ORDER_ATTACHMENTS 
+    //     WHERE ORDER_ID = ooh.ORDER_ID) attachment
+    //     FROM
+    //         KHS.KHS_OKBJ_ORDER_HEADER ooh,
+    //         PER_PEOPLE_F ppf,
+    //         mtl_system_items_b msib
+    //     WHERE
+    //         ooh.CREATE_BY = ppf.PERSON_ID
+    //         AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+    //         AND msib.ORGANIZATION_ID = 81
+    //         AND ooh.ORDER_STATUS_ID = '3'
+    //         $cond
+    //         AND ooh.PRE_REQ_ID is null 
+    //     ");
+
+    //     return $query->result_array();
+    // }
+
+    public function getOrderToPulled($cond, $noind)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
-                    ooh.*,
-                    msib.SEGMENT1,
-                    msib.DESCRIPTION,
-                    ppf.NATIONAL_IDENTIFIER,
-                    ppf.FULL_NAME,
-                    ppf.ATTRIBUTE3
-                FROM
-                    KHS.KHS_OKBJ_ORDER_HEADER ooh,
-                    PER_PEOPLE_F ppf,
-                    mtl_system_items_b msib
-                WHERE
-                    ooh.CREATE_BY = ppf.PERSON_ID
-                    AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                    AND ooh.ORDER_STATUS_ID = '3'
-                    $cond
-                    AND ooh.PRE_REQ_ID is null
-        ");
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT ooh.*, msib.segment1, msib.description, ppf.national_identifier,
+                    ppf.full_name, ppf.attribute3,
+                    (SELECT COUNT (file_name)
+                    FROM khs.khs_okbj_order_attachments
+                    WHERE order_id = ooh.order_id) attachment
+            FROM khs.khs_okbj_order_header ooh,
+                    per_people_f ppf,
+                    mtl_system_items_b msib,
+                    per_people_f ppfpuller
+            WHERE ooh.requester = ppf.person_id
+                AND ooh.inventory_item_id = msib.inventory_item_id
+                AND msib.organization_id = 81
+                AND ooh.order_status_id = '3'
+                $cond
+                AND msib.ATTRIBUTE27 = ppfpuller.PERSON_ID
+                AND ppfpuller.NATIONAL_IDENTIFIER = '$noind'  -- parameter 
+                AND ooh.pre_req_id IS NULL");
 
         return $query->result_array();
     }
 
-    public function getOrderToReleased()
+    public function getOrderToReleased($noind)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT              
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT              
             sum(ooh.QUANTITY),
             msib.INVENTORY_ITEM_ID,
             msib.SEGMENT1,
             msib.DESCRIPTION
         FROM
             KHS.KHS_OKBJ_ORDER_HEADER ooh,
-            mtl_system_items_b msib
+            mtl_system_items_b msib,
+            per_people_f ppfpuller
         WHERE
             ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
             AND msib.ORGANIZATION_ID = 81
+            AND msib.ATTRIBUTE27 = ppfpuller.PERSON_ID
+            AND ppfpuller.NATIONAL_IDENTIFIER = '$noind'  -- parameter 
             AND ooh.ORDER_STATUS_ID = '3'
             AND ooh.URGENT_FLAG ='N' AND ooh.IS_SUSULAN ='N'
             AND ooh.PRE_REQ_ID is null
@@ -60,44 +90,43 @@ class M_puller extends CI_Model
             msib.FIXED_LOT_MULTIPLIER
         HAVING 
             sum(ooh.QUANTITY) >= nvl(msib.MINIMUM_ORDER_QUANTITY,0)
-            and MOD(sum(ooh.QUANTITY), nvl(msib.FIXED_LOT_MULTIPLIER,1)) = 0 
-            ");
+            and MOD(sum(ooh.QUANTITY), nvl(msib.FIXED_LOT_MULTIPLIER,1)) = 0");
 
         return $query->result_array();
     }
 
     public function releaseOrder($pre_req)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->set('CREATION_DATE',"SYSDATE",false);
-        $oracle_dev->insert('KHS.KHS_OKBJ_PRE_REQ_HEADER', $pre_req);
-        $pre_req_id = $oracle_dev->query("SELECT MAX(PRE_REQ_ID) PRE_REQ_ID FROM KHS.KHS_OKBJ_PRE_REQ_HEADER");
+        $oracle = $this->load->database('oracle', true);
+        $oracle->set('CREATION_DATE',"SYSDATE",false);
+        $oracle->insert('KHS.KHS_OKBJ_PRE_REQ_HEADER', $pre_req);
+        $pre_req_id = $oracle->query("SELECT MAX(PRE_REQ_ID) PRE_REQ_ID FROM KHS.KHS_OKBJ_PRE_REQ_HEADER");
 
         return $pre_req_id->result_array();
     }
 
     public function updateOrder($orderid, $order)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('ORDER_ID', $orderid);
-        $oracle_dev->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('ORDER_ID', $orderid);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
     }
 
     public function updateOrderBatch($itemcode, $order)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('IS_SUSULAN', 'N');
-        $oracle_dev->where('URGENT_FLAG', 'N');
-        $oracle_dev->where('PRE_REQ_ID', null);
-        $oracle_dev->where('ORDER_STATUS_ID', '3');
-        $oracle_dev->where('INVENTORY_ITEM_ID', $itemcode);
-        $oracle_dev->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('IS_SUSULAN', 'N');
+        $oracle->where('URGENT_FLAG', 'N');
+        $oracle->where('PRE_REQ_ID', null);
+        $oracle->where('ORDER_STATUS_ID', '3');
+        $oracle->where('INVENTORY_ITEM_ID', $itemcode);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
     }
 
     public function getReleasedOrder($person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                     oprh.* ,
                     ppf.NATIONAL_IDENTIFIER noind ,
                     ppf.full_name creator ,
@@ -109,29 +138,35 @@ class M_puller extends CI_Model
                 WHERE
                     oprh.CREATED_BY = ppf.person_id
                     AND oprh.APPROVED_BY = ppf2.PERSON_ID(+)
-                    AND oprh.CREATED_BY = '$person_id'");
+                    AND oprh.CREATED_BY = '$person_id'
+                    order by oprh.PRE_REQ_ID DESC");
 
         return $query->result_array();
     }
 
     public function getDetailReleasedOrder($pre_req_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
-                                    DISTINCT ooh.*,
-                                    msib.SEGMENT1,
-                                    msib.DESCRIPTION,
-                                    ppf.NATIONAL_IDENTIFIER,
-                                    ppf.FULL_NAME,
-                                    ppf.ATTRIBUTE3
-                                FROM
-                                    KHS.KHS_OKBJ_ORDER_HEADER ooh,
-                                    PER_PEOPLE_F ppf,
-                                    mtl_system_items_b msib
-                                WHERE
-                                    ooh.CREATE_BY = ppf.PERSON_ID
-                                    AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                                    AND ooh.PRE_REQ_ID = '$pre_req_id'");
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT 
+            DISTINCT ooh.*, 
+            msib.segment1, 
+            msib.description,
+            ppf.national_identifier, 
+            ppf.full_name, 
+            ppf.attribute3,
+            ppfbuyer.FULL_NAME buyer_name,
+            (SELECT COUNT (file_name)
+            FROM khs.khs_okbj_order_attachments
+            WHERE order_id = ooh.order_id) attachment
+        FROM khs.khs_okbj_order_header ooh,
+            per_people_f ppf,
+            mtl_system_items_b msib,
+            per_people_f ppfbuyer
+        WHERE ooh.requester = ppf.person_id
+        AND ooh.inventory_item_id = msib.inventory_item_id
+        AND ooh.DESTINATION_ORGANIZATION_ID = msib.ORGANIZATION_ID
+        AND msib.BUYER_ID = ppfbuyer.PERSON_ID
+        AND ooh.pre_req_id = '$pre_req_id'");
         return $query->result_array();
     }
 
