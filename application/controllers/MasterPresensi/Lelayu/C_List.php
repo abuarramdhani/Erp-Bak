@@ -48,7 +48,6 @@ class C_List extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
     $data['data'] = $this->M_lelayu->getDataList();
-    $data['namaPekerja'] = $this->M_lelayu->getPekerja();
     $data['tertanda'] = $this->M_lelayu->getTertandaKasbon();
 
     $this->load->view('V_Header',$data);
@@ -301,5 +300,3 @@ class C_List extends CI_Controller
   }
 
 }
-
-?>
