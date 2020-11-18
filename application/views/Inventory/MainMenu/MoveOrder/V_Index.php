@@ -40,6 +40,7 @@
 <body>
 <?= $urut != '0' ? '<pagebreak resetpagenum="1" />' : '' ?>
 	<!-- view perbedaan item -->
+<?php if ($tambahan == 0) { ?>
 	<span>List Item Berbeda :</span>
 	<table class="table table-bordered hor-center ver-top" style="font-size:11px">
 	<tr style="background-color: #f0f0f0;vertical-align: middle;" class="table-head">
@@ -70,6 +71,10 @@
 	</table>
 	<?= count($dataall['beda']) > 3 ? '<pagebreak resetpagenum="1" />' : '<br>' ?>
     <!-- view perbedaan item -->
+	<?php 
+	}else { ?>
+		<h3 style="text-align:center">Tambahan</h3>
+	<?php } ?>
 
 	<table class="table table-bordered hor-center ver-top" >
 	<tr style="background-color: #f0f0f0;vertical-align: middle;" class="table-head">

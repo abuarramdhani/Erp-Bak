@@ -10,7 +10,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <div class="col-md-12">
-                  <label> Piih Department </label>
+                  <label> Pilih Department </label>
                 </div>
                 <div class="col-md-4">
                   <select class="select4 form-control" style="width: 100%" name="slcDeptIMO" id="selectDept">
@@ -23,7 +23,7 @@
               </div>
               <div class="form-group">
                 <div class="col-md-12">
-                  <label> Piih Tanggal </label>
+                  <label> Pilih Tanggal </label>
                 </div>
                 <div class="col-md-4">
                   <div class="input-group date">
