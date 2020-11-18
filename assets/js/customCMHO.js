@@ -201,7 +201,9 @@ $(document).ready(function () {
             return dataRes[e];
           });
           const mapArray = response.data.map((item, index) => {
-            let it = Object.values(item);
+            let it = Object.keys(item).map(function (e) {
+              return item[e];
+            });
             it.unshift(index + 1);
             return it;
           });
