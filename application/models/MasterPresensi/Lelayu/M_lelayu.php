@@ -5,15 +5,14 @@
  */
 class M_lelayu extends CI_Model
 {
-
   function __construct()
   {
     parent::__construct();
     $this->load->database();
-    $this->personalia = $this->load->database('personalia',TRUE);
+    $this->personalia = $this->load->database('personalia', TRUE);
   }
 
-//---------------------Model Utama Untuk Tambah Data------------------------//
+  //---------------------Model Utama Untuk Tambah Data------------------------//
   public function getData()
   {
     $sql = "SELECT * FROM hr.hr_uang_duka_perusahaan";
@@ -27,7 +26,8 @@ class M_lelayu extends CI_Model
     return $this->personalia->query($sql)->result_array();
   }
 
-  public function getPekerjaMengajukanResign($tanggal_awal){
+  public function getPekerjaMengajukanResign($tanggal_awal)
+  {
     $sql = "select tp.noind ,trim(tp.nama) as nama, '',ts.seksi, case when tp.keluar = '0' then 'Masih Aktif' else 'Sudah Keluar' end as status_keluar,tp.tglkeluar
             from hrd_khs.tpribadi tp  
             left join hrd_khs.tseksi ts 
@@ -44,7 +44,8 @@ class M_lelayu extends CI_Model
     return $this->personalia->query($sql)->result_array();
   }
 
-  public function getCutoffBulanIni(){
+  public function getCutoffBulanIni()
+  {
     $sql = "select
               tanggal_awal::date
             from
@@ -52,10 +53,10 @@ class M_lelayu extends CI_Model
             where
               current_date between tanggal_awal and tanggal_akhir
               limit 1";
-    if(isset($this->personalia->query($sql)->row()->tanggal_awal)){
+    if (isset($this->personalia->query($sql)->row()->tanggal_awal)) {
       return  $this->personalia->query($sql)->row()->tanggal_awal;
-    }else{
-      return date('Y-m-21');      
+    } else {
+      return date('Y-m-21');
     }
   }
 
@@ -66,17 +67,17 @@ class M_lelayu extends CI_Model
     if ($tanggalcutoff >= 21) {
       if ($bulancutoff == $selectcutoff) {
         $trigerbulan = "'$bulancutoff'";
-      }else {
+      } else {
         return "alert";
       }
-    }elseif ($tanggalcutoff <= 20) {
+    } elseif ($tanggalcutoff <= 20) {
       if ($bulanlalu == $selectcutoff) {
         $trigerbulan = "'$bulanlalu'";
-      }else {
+      } else {
         return "alert";
       }
     }
-    if(!isset($alert)){
+    if (!isset($alert)) {
       $sql1 = "SELECT count(distinct(noind)) as noind FROM (
                 select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
                 b.dept, b.bidang, b.unit
@@ -91,7 +92,7 @@ class M_lelayu extends CI_Model
                   and left(a.noind, 1) not in('L', 'Z', 'M') 
               ) as tabel
               where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '01' AND '09')";
-              // echo $sql1;exit();
+      // echo $sql1;exit();
       return $this->personalia->query($sql1)->row()->noind;
     }
   }
@@ -109,18 +110,18 @@ class M_lelayu extends CI_Model
     if ($tanggalcutoff >= 21) {
       if ($bulancutoff == $selectcutoff) {
         $trigerbulan = "'$bulancutoff'";
-      }else {
+      } else {
         return "alert";
       }
-    }elseif ($tanggalcutoff <= 20) {
+    } elseif ($tanggalcutoff <= 20) {
       if ($bulanlalu == $selectcutoff) {
         $trigerbulan = "'$bulanlalu'";
-      }else {
+      } else {
         return "alert";
       }
     }
-    if(!isset($alert)){
-    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
+    if (!isset($alert)) {
+      $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
@@ -134,7 +135,7 @@ class M_lelayu extends CI_Model
                 and left(a.noind, 1) not in('L', 'Z', 'M') 
             ) as tabel
             where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '10' AND '11')";
-    return $this->personalia->query($sql1)->row()->noind;
+      return $this->personalia->query($sql1)->row()->noind;
     }
   }
 
@@ -151,18 +152,18 @@ class M_lelayu extends CI_Model
     if ($tanggalcutoff >= 21) {
       if ($bulancutoff == $selectcutoff) {
         $trigerbulan = "'$bulancutoff'";
-      }else {
+      } else {
         return "alert";
       }
-    }elseif ($tanggalcutoff <= 20) {
+    } elseif ($tanggalcutoff <= 20) {
       if ($bulanlalu == $selectcutoff) {
         $trigerbulan = "'$bulanlalu'";
-      }else {
+      } else {
         return "alert";
       }
     }
-    if(!isset($alert)){
-    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
+    if (!isset($alert)) {
+      $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
@@ -176,7 +177,7 @@ class M_lelayu extends CI_Model
                 and left(a.noind, 1) not in('L', 'Z', 'M') 
             ) as tabel
             where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '12' AND '13')";
-    return $this->personalia->query($sql1)->row()->noind;
+      return $this->personalia->query($sql1)->row()->noind;
     }
   }
 
@@ -193,18 +194,18 @@ class M_lelayu extends CI_Model
     if ($tanggalcutoff >= 21) {
       if ($bulancutoff == $selectcutoff) {
         $trigerbulan = "'$bulancutoff'";
-      }else {
+      } else {
         return "alert";
       }
-    }elseif ($tanggalcutoff <= 20) {
+    } elseif ($tanggalcutoff <= 20) {
       if ($bulanlalu == $selectcutoff) {
         $trigerbulan = "'$bulanlalu'";
-      }else {
+      } else {
         return "alert";
       }
     }
-    if(!isset($alert)){
-    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
+    if (!isset($alert)) {
+      $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
@@ -218,7 +219,7 @@ class M_lelayu extends CI_Model
                 and left(a.noind, 1) not in('L', 'Z', 'M') 
             ) as tabel
             where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '14' AND '15')";
-    return $this->personalia->query($sql1)->row()->noind;
+      return $this->personalia->query($sql1)->row()->noind;
     }
   }
 
@@ -235,18 +236,18 @@ class M_lelayu extends CI_Model
     if ($tanggalcutoff >= 21) {
       if ($bulancutoff == $selectcutoff) {
         $trigerbulan = "'$bulancutoff'";
-      }else {
+      } else {
         return "alert";
       }
-    }elseif ($tanggalcutoff <= 20) {
+    } elseif ($tanggalcutoff <= 20) {
       if ($bulanlalu == $selectcutoff) {
         $trigerbulan = "'$bulanlalu'";
-      }else {
+      } else {
         return "alert";
       }
     }
-    if(!isset($alert)){
-    $sql = "SELECT distinct noind
+    if (!isset($alert)) {
+      $sql = "SELECT distinct noind
             FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
@@ -261,8 +262,8 @@ class M_lelayu extends CI_Model
                 and left(a.noind, 1) not in('L', 'Z', 'M') 
             ) as tabel
 						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '01' AND '09') order by noind";
-            // echo $sql.'<br>';
-    return $this->personalia->query($sql)->result_array();
+      // echo $sql.'<br>';
+      return $this->personalia->query($sql)->result_array();
     }
   }
 
@@ -273,18 +274,18 @@ class M_lelayu extends CI_Model
     if ($tanggalcutoff >= 21) {
       if ($bulancutoff == $selectcutoff) {
         $trigerbulan = "'$bulancutoff'";
-      }else {
+      } else {
         return "alert";
       }
-    }elseif ($tanggalcutoff <= 20) {
+    } elseif ($tanggalcutoff <= 20) {
       if ($bulanlalu == $selectcutoff) {
         $trigerbulan = "'$bulanlalu'";
-      }else {
+      } else {
         return "alert";
       }
     }
-    if(!isset($alert)){
-    $sql = "SELECT distinct noind
+    if (!isset($alert)) {
+      $sql = "SELECT distinct noind
             FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
@@ -299,8 +300,8 @@ class M_lelayu extends CI_Model
                 and left(a.noind, 1) not in('L', 'Z', 'M') 
             ) as tabel
 						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '10' AND '11') order by noind";
-            // echo $sql.'<br>';
-    return $this->personalia->query($sql)->result_array();
+      // echo $sql.'<br>';
+      return $this->personalia->query($sql)->result_array();
     }
   }
 
@@ -311,18 +312,18 @@ class M_lelayu extends CI_Model
     if ($tanggalcutoff >= 21) {
       if ($bulancutoff == $selectcutoff) {
         $trigerbulan = "'$bulancutoff'";
-      }else {
+      } else {
         return "alert";
       }
-    }elseif ($tanggalcutoff <= 20) {
+    } elseif ($tanggalcutoff <= 20) {
       if ($bulanlalu == $selectcutoff) {
         $trigerbulan = "'$bulanlalu'";
-      }else {
+      } else {
         return "alert";
       }
     }
-    if(!isset($alert)){
-    $sql = "SELECT distinct noind
+    if (!isset($alert)) {
+      $sql = "SELECT distinct noind
             FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
@@ -337,8 +338,8 @@ class M_lelayu extends CI_Model
                 and left(a.noind, 1) not in('L', 'Z', 'M') 
             ) as tabel
 						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '12' AND '13') order by noind";
-            // echo $sql.'<br>';
-    return $this->personalia->query($sql)->result_array();
+      // echo $sql.'<br>';
+      return $this->personalia->query($sql)->result_array();
     }
   }
 
@@ -349,18 +350,18 @@ class M_lelayu extends CI_Model
     if ($tanggalcutoff >= 21) {
       if ($bulancutoff == $selectcutoff) {
         $trigerbulan = "'$bulancutoff'";
-      }else {
+      } else {
         return "alert";
       }
-    }elseif ($tanggalcutoff <= 20) {
+    } elseif ($tanggalcutoff <= 20) {
       if ($bulanlalu == $selectcutoff) {
         $trigerbulan = "'$bulanlalu'";
-      }else {
+      } else {
         return "alert";
       }
     }
-    if(!isset($alert)){
-    $sql = "SELECT distinct noind
+    if (!isset($alert)) {
+      $sql = "SELECT distinct noind
             FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
@@ -375,14 +376,14 @@ class M_lelayu extends CI_Model
                 and left(a.noind, 1) not in('L', 'Z', 'M') 
             ) as tabel
 						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '14' AND '15') order by noind";
-            // echo $sql.'<br>';
-    return $this->personalia->query($sql)->result_array();
+      // echo $sql.'<br>';
+      return $this->personalia->query($sql)->result_array();
     }
   }
 
   public function insertAll($array)
   {
-    $this->db->insert("hr.hr_lelayu",$array);
+    $this->db->insert("hr.hr_lelayu", $array);
     return;
   }
 
@@ -394,14 +395,22 @@ class M_lelayu extends CI_Model
   public function insertID($array1)
   {
     $this->db->query("insert into hr.hr_pekerja_dipotong(lelayu_id,noind,nominal)
-                      values(".$array1['lelayu_id'].",'".$array1['noind']."',".$array1['nominal'].")");
+                      values(" . $array1['lelayu_id'] . ",'" . $array1['noind'] . "'," . $array1['nominal'] . ")");
     return;
   }
 
-//--------------------Model Utama Untuk List Data----------------------//
+  //--------------------Model Utama Untuk List Data----------------------//
   public function getDataList()
   {
-    return $this->db->query("SELECT * from hr.hr_lelayu order by tgl_lelayu desc")->result_array();
+    return $this->db->query("
+      SELECT 
+        *, eea.employee_name nama
+      FROM 
+        hr.hr_lelayu hl
+        left join er.er_employee_all eea on eea.employee_code = hl.noind 
+      ORDER BY 
+        tgl_lelayu desc
+    ")->result_array();
   }
 
   public function getDataPDF($id)
@@ -457,9 +466,13 @@ class M_lelayu extends CI_Model
 
   public function getDataListExcel()
   {
-    $sql = "SELECT *, coalesce(kain_kafan_perusahaan,0) + coalesce(uang_duka_perusahaan,0) as perusahaan,
-            coalesce(spsi_askanit_nominal,0) + coalesce(spsi_kasie_nominal,0) + coalesce(spsi_spv_nominal,0) + coalesce(spsi_nonmanajerial_nominal,0) as spsi,
-              (select employee_name from er.er_employee_all where employee_code = lel.noind ) as nama FROM hr.hr_lelayu lel";
+    $sql = "SELECT 
+              *, 
+              coalesce(kain_kafan_perusahaan, 0) + coalesce(uang_duka_perusahaan, 0) as perusahaan,
+              coalesce(spsi_askanit_nominal, 0) + coalesce(spsi_kasie_nominal, 0) + coalesce(spsi_spv_nominal, 0) + coalesce(spsi_nonmanajerial_nominal, 0) as spsi,
+              (select employee_name from er.er_employee_all where employee_code = lel.noind ) as nama 
+            FROM 
+              hr.hr_lelayu lel";
     return $this->db->query($sql)->result_array();
   }
 
@@ -473,7 +486,7 @@ class M_lelayu extends CI_Model
       $pg = "SELECT *, (select employee_name from er.er_employee_all where employee_code = tong.noind ) as nama from hr.hr_pekerja_dipotong tong WHERE lelayu_id = '$id' and nominal = '$nominal'";
       $pg = $this->db->query($pg)->result_array();
 
-      for ($i=0; $i < count($pg) ; $i++) {
+      for ($i = 0; $i < count($pg); $i++) {
         array_push($newArr, $pg[$i]);
       }
     }
@@ -500,30 +513,31 @@ class M_lelayu extends CI_Model
 
 
 
-//-------------Model Utama Untuk Setup Duka Perusahaan---------------//
+  //-------------Model Utama Untuk Setup Duka Perusahaan---------------//
 
   public function getDukaPerusahaan()
   {
     return $this->db->query("SELECT * FROM hr.hr_uang_duka_perusahaan")->result_array();
   }
 
-//-------------Model Utama Untuk Setup Duka SPSI---------------//
+  //-------------Model Utama Untuk Setup Duka SPSI---------------//
 
   public function getDukaSPSI()
   {
     return $this->db->query("SELECT * FROM hr.hr_uang_duka_spsi")->result_array();
   }
 
-  public function getCutoffBulanLalu(){
+  public function getCutoffBulanLalu()
+  {
     $sql = "select tanggal_awal::date from \"Presensi\".tcutoff where to_char(tanggal_awal,'yyyy-mm') = to_char(current_date - interval '1 month','yyyy-mm') limit 1";
     return  $this->personalia->query($sql)->row()->tanggal_awal;
   }
 
   public function getPkjByLoc($lokasi = false, $id)
   {
-    if ($lokasi == '02') {//AC
+    if ($lokasi == '02') { //AC
       $sqlTambahan = "ee.location_code in ('02')";
-    }elseif ($lokasi == '04') {//AB
+    } elseif ($lokasi == '04') { //AB
       $sqlTambahan = "(ee.location_code in ('04')
                       or ee.section_code in (
                       select
@@ -534,7 +548,7 @@ class M_lelayu extends CI_Model
                         section_name like '%YOGYAKARTA%'
                         or (unit_name like '%YOGYAKARTA%'
                         and section_name = '-') ))";
-    }else{//AA
+    } else { //AA
       $sqlTambahan = "(ee.location_code not in ('04', '02') 
                       and ee.section_code not in (
                       select
@@ -599,9 +613,9 @@ class M_lelayu extends CI_Model
               hrd.nama,
               hrd.jabatan
             order by hpd.noind;";
-              // echo $sql;exit();
-      $query = $this->db->query($sql);
-      return  $query->result_array();
+    // echo $sql;exit();
+    $query = $this->db->query($sql);
+    return  $query->result_array();
   }
 
   public function getKsYogya()
@@ -642,7 +656,7 @@ class M_lelayu extends CI_Model
                 or (unit_name like '%YOGYAKARTA%'
                 and section_name = '-') )
               or ee.location_code is null)) non_staff";
-    }elseif ($branch == 'AB') {
+    } elseif ($branch == 'AB') {
       $lokasi = 'Yogyakarta';
       $sql1 = "(ee.location_code in ('04')
                 or ee.section_code in (
@@ -667,7 +681,7 @@ class M_lelayu extends CI_Model
                   section_name like '%YOGYAKARTA%'
                   or (unit_name like '%YOGYAKARTA%'
                   and section_name = '-') ))) non_staff";
-    }else{
+    } else {
       $lokasi = 'Tuksono';
       $sql1 = "ee.location_code in ('02')) staff";
       $sql2 = "substring(ee.employee_code, 1, 1) not in ('B',
@@ -700,7 +714,7 @@ class M_lelayu extends CI_Model
             where
               hp.lelayu_id in ($id)
               and $sql2;";
-              // echo $sql;exit();
+    // echo $sql;exit();
     return  $this->db->query($sql)->result_array();
   }
 
@@ -712,10 +726,7 @@ class M_lelayu extends CI_Model
 
   public function getPkjPribadi($noind)
   {
-    $this->personalia->where('noind',$noind);
+    $this->personalia->where('noind', $noind);
     return $this->personalia->get('hrd_khs.tpribadi');
   }
-
 }
-
- ?>
