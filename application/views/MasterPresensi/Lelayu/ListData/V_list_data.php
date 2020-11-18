@@ -43,34 +43,29 @@
                     <th>Uang Duka SPSI</th>
                   </thead>
                   <tbody>
-                    <?php
-                    if (!empty($data)) {
-                      foreach ($data as $i => $key) {
-                    ?>
-                        <tr>
-                          <td><?php echo $i + 1 ?></td>
-                          <td class="text-center">
-                            <a href="<?php echo base_url('MasterPresensi/Lelayu/ListData/hapus/' . $key['lelayu_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Delete Data"><span class="fa fa-trash-o fa-2x" onclick="return MP_LelayuDelete('<?php echo $key['lelayu_id']; ?>')"></span></a>&nbsp&nbsp
-                            <a style="cursor: pointer;" class="fa fa-list-alt fa-2x" onclick="detailLelayu(<?= $key['lelayu_id'] ?>)" data-toggle='tooltip' data-placement='bottom' data-original-title='Lihat Detail'></a>&nbsp&nbsp
-                            <a href="<?php echo base_url('MasterPresensi/Lelayu/ListData/exportPDF/' . $key['lelayu_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Export PDF SPSI" class="fa fa-file-pdf-o fa-2x"></a>&nbsp&nbsp
-                            <a href="<?php echo base_url('MasterPresensi/Lelayu/ListData/exportExcelSPSI/' . $key['lelayu_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Export Excel SPSI" class="fa fa-file-excel-o fa-2x"></a>&nbsp&nbsp
-                            <?php $id = $key['lelayu_id']; ?>
-                            <a onclick="ApproveLelayu(<?= $id ?>)" data-toggle="modal" style="cursor: pointer;" data-toggle="tooltip" data-placement="bottom" title="Print Kas Bon" class="fa fa-print fa-2x"></a>
-                          </td>
-                          <td><?php echo $key['tgl_lelayu'] ?></td>
-                          <td><?php echo $key['noind'] ?></td>
-                          <?php
-                          $perusahaan = $key['kain_kafan_perusahaan'] + $key['uang_duka_perusahaan'];
-                          $spsi = $key['spsi_askanit_nominal'] + $key['spsi_kasie_nominal'] + $key['spsi_spv_nominal'] + $key['spsi_nonmanajerial_nominal'];
-                          ?>
-                          <td><?php echo $key['nama'] ?></td>
-                          <td><?php echo $key['keterangan'] ?></td>
-                          <td><?php echo "Rp " . number_format($perusahaan, 2, ',', '.'); ?></td>
-                          <td><?php echo "Rp " . number_format($spsi, 2, ',', '.'); ?></td>
-                        </tr>
-                    <?php
-                      }
-                    } ?>
+                    <?php foreach ($data as $i => $key) : ?>
+                      <tr>
+                        <td><?php echo $i + 1 ?></td>
+                        <td class="text-center">
+                          <a href="<?php echo base_url('MasterPresensi/Lelayu/ListData/hapus/' . $key['lelayu_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Delete Data"><span class="fa fa-trash-o fa-2x" onclick="return MP_LelayuDelete('<?php echo $key['lelayu_id']; ?>')"></span></a>&nbsp&nbsp
+                          <a style="cursor: pointer;" class="fa fa-list-alt fa-2x" onclick="detailLelayu(<?= $key['lelayu_id'] ?>)" data-toggle='tooltip' data-placement='bottom' data-original-title='Lihat Detail'></a>&nbsp&nbsp
+                          <a href="<?php echo base_url('MasterPresensi/Lelayu/ListData/exportPDF/' . $key['lelayu_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Export PDF SPSI" class="fa fa-file-pdf-o fa-2x"></a>&nbsp&nbsp
+                          <a href="<?php echo base_url('MasterPresensi/Lelayu/ListData/exportExcelSPSI/' . $key['lelayu_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Export Excel SPSI" class="fa fa-file-excel-o fa-2x"></a>&nbsp&nbsp
+                          <?php $id = $key['lelayu_id']; ?>
+                          <a onclick="ApproveLelayu(<?= $id ?>)" data-toggle="modal" style="cursor: pointer;" data-toggle="tooltip" data-placement="bottom" title="Print Kas Bon" class="fa fa-print fa-2x"></a>
+                        </td>
+                        <td><?php echo $key['tgl_lelayu'] ?></td>
+                        <td><?php echo $key['noind'] ?></td>
+                        <?php
+                        $perusahaan = $key['kain_kafan_perusahaan'] + $key['uang_duka_perusahaan'];
+                        $spsi = $key['spsi_askanit_nominal'] + $key['spsi_kasie_nominal'] + $key['spsi_spv_nominal'] + $key['spsi_nonmanajerial_nominal'];
+                        ?>
+                        <td><?php echo $key['nama'] ?></td>
+                        <td><?php echo $key['keterangan'] ?></td>
+                        <td><?php echo "Rp " . number_format($perusahaan, 2, ',', '.'); ?></td>
+                        <td><?php echo "Rp " . number_format($spsi, 2, ',', '.'); ?></td>
+                      </tr>
+                    <?php endforeach ?>
                   </tbody>
                 </table>
               </div>
