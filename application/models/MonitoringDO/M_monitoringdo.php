@@ -553,70 +553,71 @@ class M_monitoringdo extends CI_Model
     }
 
 
-    // public function insertDO($data)
-    // {
-    //     $user_login = $this->session->user;
-    //     $date_now = date('d-M-Y');
-    //     if (!empty($data['HEADER_ID'])) {
-    //         if (!empty($data['REQUEST_NUMBER'])) {
-    //             if (!empty($data['PERSON_ID'])) {
-    //                 if (!empty($data['DELIVERY_FLAG'])) {
-    //                     if (!empty($data['PLAT_NUMBER'])) {
-    //                         $this->oracle->query("INSERT INTO KHS_PERSON_DELIVERY(HEADER_ID
-    //                                          ,REQUEST_NUMBER
-    //                                          ,PERSON_ID
-    //                                          ,DELIVERY_FLAG
-    //                                          ,PLAT_NUMBER
-    //                                          ,ASSIGNER_ID
-    //                                          ,ASSIGN_DATE
-    //                                          )
-    //                         VALUES ('$data[HEADER_ID]'
-    //                                ,'$data[REQUEST_NUMBER]'
-    //                                ,'$data[PERSON_ID]'
-    //                                ,'$data[DELIVERY_FLAG]'
-    //                                ,'$data[PLAT_NUMBER]'
-    //                                ,'$user_login'
-    //                                ,'$date_now'
-    //                                )
-    //                         ");
-    //                         $response = 1;
-    //                     } else {
-    //                         $response = 0;
-    //                         // $response = array(
-    //                         //     'success' => false,
-    //                         //     'message' => 'PLAT_NUMBER is empty, cannot do this action'
-    //                         // );
-    //                     }
-    //                 } else {
-    //                     $response = 0;
-    //                     // $response = array(
-    //                     //     'success' => false,
-    //                     //     'message' => 'DELIVERY_FLAG is empty, cannot do this action'
-    //                     // );
-    //                 }
-    //             } else {
-    //                 $response = 0;
-    //                 // $response = array(
-    //                 //     'success' => false,
-    //                 //     'message' => 'PERSON_ID is empty, cannot do this action'
-    //                 // );
-    //             }
-    //         } else {
-    //             $response = 0;
-    //             // $response = array(
-    //             //     'success' => false,
-    //             //     'message' => 'REQUEST_NUMBER is empty, cannot do this action'
-    //             // );
-    //         }
-    //     } else {
-    //         $response = 0;
-    //         // $response = array(
-    //         //     'success' => false,
-    //         //     'message' => 'header id is empty, cannot do this action'
-    //         // );
-    //     }
-    //     return $response;
-    // }
+    public function insertDO($data)
+    {
+        // $user_login = $this->session->user;
+        // $date_now = date('d-M-Y');
+        // if (!empty($data['HEADER_ID'])) {
+        //     if (!empty($data['REQUEST_NUMBER'])) {
+        //         if (!empty($data['PERSON_ID'])) {
+        //             if (!empty($data['DELIVERY_FLAG'])) {
+        //                 if (!empty($data['PLAT_NUMBER'])) {
+        //                     $this->oracle->query("INSERT INTO KHS_PERSON_DELIVERY(HEADER_ID
+        //                                      ,REQUEST_NUMBER
+        //                                      ,PERSON_ID
+        //                                      ,DELIVERY_FLAG
+        //                                      ,PLAT_NUMBER
+        //                                      ,ASSIGNER_ID
+        //                                      ,ASSIGN_DATE
+        //                                      )
+        //                     VALUES ('$data[HEADER_ID]'
+        //                             ,'$data[REQUEST_NUMBER]'
+        //                             ,'$data[PERSON_ID]'
+        //                             ,'$data[DELIVERY_FLAG]'
+        //                             ,'$data[PLAT_NUMBER]'
+        //                             ,'$user_login'
+        //                             ,'$date_now'
+        //                             )
+        //                     ");
+        //                     $response = 1;
+        //                 } else {
+        //                     $response = 0;
+        //                     // $response = array(
+        //                     //     'success' => false,
+        //                     //     'message' => 'PLAT_NUMBER is empty, cannot do this action'
+        //                     // );
+        //                 }
+        //             } else {
+        //                 $response = 0;
+        //                 // $response = array(
+        //                 //     'success' => false,
+        //                 //     'message' => 'DELIVERY_FLAG is empty, cannot do this action'
+        //                 // );
+        //             }
+        //         } else {
+        //             $response = 0;
+        //             // $response = array(
+        //             //     'success' => false,
+        //             //     'message' => 'PERSON_ID is empty, cannot do this action'
+        //             // );
+        //         }
+        //     } else {
+        //         $response = 0;
+        //         // $response = array(
+        //         //     'success' => false,
+        //         //     'message' => 'REQUEST_NUMBER is empty, cannot do this action'
+        //         // );
+        //     }
+        // } else {
+        //     $response = 0;
+        //     // $response = array(
+        //     //     'success' => false,
+        //     //     'message' => 'header id is empty, cannot do this action'
+        //     // );
+        // }
+        $response = 1;
+        return $response;
+    }
 
 
     public function updateDO($data)
