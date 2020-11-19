@@ -58,7 +58,7 @@
                     <?php $no = 1; foreach ($record as $row) { ?>
 					<tr row-id="<?php echo $row['id']?>">
 					<!-- <td style="text-align: center; padding: 5px; width: 32px;"><b><?php echo $no++; ?></b></td> -->
-						<td style="text-align: center; padding: 1px; width: 5%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {echo 'font: bold'; } ?>"><?php echo $row["harimasuk"];?>
+						<td style="text-align: center; padding: 1px; width: 5%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {echo 'font-weight: bold'; } ?>"><?php echo $row["harimasuk"];?>
 							
 						</td>
 						<td style="text-align: center; padding: 1px; width: 8%;"><?php 
@@ -72,53 +72,76 @@
 						?>
 							
 						</td>
-						<td style="text-align: center; padding: 1px; width: 18%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {
-						echo 'background: #a7a7a7; font: bold; font-family: sans-serif; font-size: 11.5px;';
-						}elseif ($row["uraian_pekerjaan"]!=='Administrasi Pengembangan Sistem') { echo 'background: #93ff81; font: bold; font-family: sans-serif; font-size: 11.5px;';
+						<td style="text-align: center; padding: 1px; width: 18%; <?php 
+							$str = explode(" ",$row["uraian_pekerjaan"]);
+						if ($str[0] =='LIBUR' ) {
+						echo 'background: #a7a7a7; font-weight: bold; font-family: sans-serif; font-size: 11.5px;';
+						}elseif ($str[0] =='Libur' && $str[1] !== '') {
+							echo 'background: #93ff81; font-weight: bold; font-family: sans-serif; font-size: 11.5px;';
 						}; ?>"><?php echo $row["uraian_pekerjaan"];?>
 						
 						</td>
-						<td style="text-align: center; padding: 1px; width: 5%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {
+						<td style="text-align: center; padding: 1px; width: 5%; <?php 
+							$str = explode(" ",$row["uraian_pekerjaan"]);
+							if ($str[0] =='LIBUR') {
 						echo 'background: #a7a7a7; font: bold; font-family: sans-serif; font-size: 11.5px;';
-						}elseif ($row["uraian_pekerjaan"]!=='Administrasi Pengembangan Sistem') { echo 'background: #93ff81; font: bold; font-family: sans-serif; font-size: 11.5px;';
+						}elseif ($str[0] =='Libur' && $str[1] !== '') {
+							echo 'background: #93ff81; font-weight: bold; font-family: sans-serif; font-size: 11.5px;';
 						}; ?>"><?php echo $row["kodesie"];?>
 						
 						</td>
-						<td style="text-align: center; padding: 1px; width: 5%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {
+						<td style="text-align: center; padding: 1px; width: 5%; <?php
+							$str = explode(" ",$row["uraian_pekerjaan"]);
+							if ($str[0] =='LIBUR') {
 						echo 'background: #a7a7a7; font: bold; font-family: sans-serif; font-size: 11.5px;';
-						}elseif ($row["uraian_pekerjaan"]!=='Administrasi Pengembangan Sistem') { echo 'background: #93ff81; font: bold; font-family: sans-serif; font-size: 11.5px;';
+						}elseif ($str[0] =='Libur' && $str[1] !== '') {
+							echo 'background: #93ff81; font-weight: bold; font-family: sans-serif; font-size: 11.5px;';
 						}; ?>"><?php echo $row["targetjob"];?>
 						
 						</td>
-						<td <?php if ($row["uraian_pekerjaan"]=='LIBUR') {
+						<td <?php 
+							$str = explode(" ",$row["uraian_pekerjaan"]);
+						if ($str =='LIBUR') {
 							echo 'hidden="hidden"';
-						} ?> style="text-align: center; padding: 1px; width: 5%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {
+						} ?> style="text-align: center; padding: 1px; width: 5%; <?php
+							$str = explode(" ",$row["uraian_pekerjaan"]);
+						 if ($str[0] =='LIBUR') {
 						echo 'background: #a7a7a7; font: bold; font-family: sans-serif; font-size: 11.5px;';
-						}elseif ($row["uraian_pekerjaan"]!=='Administrasi Pengembangan Sistem') { echo 'background: #93ff81; font: bold; font-family: sans-serif; font-size: 11.5px;';
+						}elseif ($str[0] =='Libur' && $str[1] !== '') {
+							echo 'background: #93ff81; font-weight: bold; font-family: sans-serif; font-size: 11.5px;';
 						}; ?>"><?php if ($row["waktu_mulai"] =='00:00:00') { echo ""; }else{$jam = explode(":", $row["waktu_mulai"]);$jam1 = $jam[2];
 						$jam2 = $jam[1];
 						$jam3 = $jam[0];
 						$jadi = $jam3.":".$jam2; echo $jadi;};?>
 							
 						</td>
-						<td style="text-align: center; padding: 1px; width: 5%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {
+						<td style="text-align: center; padding: 1px; width: 5%; <?php
+							$str = explode(" ",$row["uraian_pekerjaan"]);
+						 if ($str[0]=='LIBUR') {
 						echo 'background: #a7a7a7; font: bold; font-family: sans-serif; font-size: 11.5px;';
-						}elseif ($row["uraian_pekerjaan"]!=='Administrasi Pengembangan Sistem') { echo 'background: #93ff81; font: bold; font-family: sans-serif; font-size: 11.5px;';
+						}elseif ($str[0] =='Libur' && $str[1] !== '') {
+							echo 'background: #93ff81; font-weight: bold; font-family: sans-serif; font-size: 11.5px;';
 						}; ?>"><?php if ($row["waktu_selesai"] =='00:00:00') { echo "";}else{$jam = explode(":", $row["waktu_selesai"]);$jam1 = $jam[2];
 						$jam2 = $jam[1];
 						$jam3 = $jam[0];
 						$jadi = $jam3.":".$jam2; echo $jadi;};?>
 						
 						</td>
-						<td style="text-align: center; padding: 1px; width: 5%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {
+						<td style="text-align: center; padding: 1px; width: 5%; <?php
+							$str = explode(" ",$row["uraian_pekerjaan"]);
+						 if ($str[0]=='LIBUR') {
 						echo 'background: #a7a7a7; font: bold; font-family: sans-serif; font-size: 11.5px;';
-						}elseif ($row["uraian_pekerjaan"]!=='Administrasi Pengembangan Sistem') { echo 'background: #93ff81; font: bold; font-family: sans-serif; font-size: 11.5px;';
+						}elseif ($str[0] =='Libur' && $str[1] !== '') {
+							echo 'background: #93ff81; font-weight: bold; font-family: sans-serif; font-size: 11.5px;';
 						}; ?>"><?php echo $row["total_waktu"];?>
 						
 						</td>
-						<td style="text-align: center; padding: 1px; width: 5%; <?php if ($row["uraian_pekerjaan"]=='LIBUR') {
+						<td style="text-align: center; padding: 1px; width: 5%; <?php 
+							$str = explode(" ",$row["uraian_pekerjaan"]);
+						if ($str[0]=='LIBUR') {
 						echo 'background: #a7a7a7; font: bold; font-family: sans-serif; font-size: 11.5px;';
-						}elseif ($row["uraian_pekerjaan"]!=='Administrasi Pengembangan Sistem') { echo 'background: #93ff81; font: bold; font-family: sans-serif; font-size: 11.5px;';
+						}elseif ($str[0] =='Libur' && $str[1] !== '') {
+							echo 'background: #93ff81; font-weight: bold; font-family: sans-serif; font-size: 11.5px;';
 						}; ?>"><?php echo $row["persen"];?>
 						
 						</td>

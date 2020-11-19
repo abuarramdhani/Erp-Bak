@@ -28,7 +28,7 @@
                 
                     <div class="row">
                         <div class="col-lg-12">
-                           <form method="post" action="<?= base_url('PengembanganSistem/input_cop_wi') ?>" class="form-horizontal" enctype="multipart/form-data">
+                           <form onkeydown="return event.key != 'Enter';" method="post" action="<?= base_url('PengembanganSistem/input_cop_wi') ?>" class="form-horizontal" enctype="multipart/form-data">
                               <div class="box box-primary box-solid">
                                   <div class="box-header with-border">Input Data</div>
                                   <div class="box-body">
@@ -91,7 +91,7 @@
                                                       </div>
                                                       <div class="col-sm-1">-</div>
                                                       <div class="col-sm-4">
-                                                          <input type="number" oninput="input_nomor_cop_wi_ps()" value="00" required="" name="number_sop_cw" class="form-control" id="nomor_sop_cw" placeholder="00" >
+                                                          <input autocomplete="off" type="number" oninput="input_nomor_cop_wi_ps()" min="00" value="00" required="" name="number_sop_cw" class="form-control" id="nomor_sop_cw" placeholder="00" >
                                                       </div>
                                                   </div>
                                                   <div class="form-group row">

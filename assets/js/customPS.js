@@ -109,7 +109,6 @@
 		var nomor_doc = $("#number_copwi_ps").val();
 		var doc_cw = nomor_doc.split('-');
 		var wi_cop = doc_cw[0];
-		// console.log(seksi_doc);DataTransferItemList
 		if (wi_cop == 'COP') {
 			var cop_wi = 'Code Of Practice';
 		} else {
@@ -241,11 +240,14 @@
 	}
 	
 	$("#nomor_sop_cw").change(function() {
+		var yx = $("#nomor_sop_cw").val();
+		var yy = $(".cle_number").text();
 		var datanum_cek_cw = $("#number_copwi_ps").val();
 		var b	= datanum_cek_cw.split('-');
 		var a	= b[0];
 		var a1	= b[1];
 		var a2	= b[2];
+		console.log(yy);
 
 		$.ajax({
 			type: "POST",
@@ -257,13 +259,17 @@
 			},
 			dataType: "JSON",
 			success: function (data) {
-				if (data > 0) {
-					var plus = parseInt(data) + 1;
-					var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
-					console.log(plus);
-					$("#number_copwi_ps").val(a+"-"+a1+"-"+a2+"-"+y);
+				if (yx == yy) {
+					var as = $(".clas_number").text();
+						$("#number_copwi_ps").val(a+"-"+a1+"-"+a2+"-"+as);
 				}else{
-					$("#number_copwi_ps").val(a+"-"+a1+"-"+a2+"-001");
+					if (data > 0) {
+						var plus = parseInt(data) + 1;
+						var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
+						$("#number_copwi_ps").val(a+"-"+a1+"-"+a2+"-"+y);
+					}else{
+						$("#number_copwi_ps").val(a+"-"+a1+"-"+a2+"-001");
+					}
 				}
 			}
 		});
@@ -473,11 +479,12 @@
 	})
 
 	$("#seksi_um").change(function(){
+		var chec_number = $(".chle_number").text();
 		var seksium = $("#seksi_um").val();
 		var doc_um = "UM";
 		var doc = "User Manual";
 		var doc_sop = $("#nomor_sop_um").val();
-		// var rev = (sop>9)?(sop>99)?sop:''+sop:'0'+sop;
+
 		$("#sop_um").val(seksium);
 		$.ajax({
                 type: "POST",
@@ -489,12 +496,17 @@
                 },
                 dataType: "JSON",
                 success: function (data) {
-					if (data > 0) {
-						var data1 = parseInt(data) + 1;
-						var y = (data1>9)?(data1<99)?data1:'0'+data1:'00'+data1;
-						$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-" + y);
+					if (doc_sop == chec_number) {
+						var check_number = $(".check_number").text();
+						$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-" + check_number);
 					} else {
-						$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-001")
+						if (data > 0) {
+							var data1 = parseInt(data) + 1;
+							var y = (data1>9)?(data1<99)?data1:'0'+data1:'00'+data1;
+							$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-" + y);
+						} else {
+							$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-001")
+						}
 					}
 				}
 		  });
@@ -512,11 +524,12 @@
 	}
 
 	$("#nomor_sop_um").change(function(){
+		var chec_number = $(".chle_number").text();
 		var seksium = $("#seksi_um").val();
 		var doc_um = "UM";
 		var doc = "User Manual";
 		var doc_sop = $("#nomor_sop_um").val();
-		// var rev = (sop>9)?(sop>99)?sop:''+sop:'0'+sop;
+
 		$("#sop_um").val(seksium);
 		$.ajax({
                 type: "POST",
@@ -528,38 +541,21 @@
                 },
                 dataType: "JSON",
                 success: function (data) {
-					if (data > 0) {
-						var data1 = parseInt(data) + 1;
-						var y = (data1>9)?(data1<99)?data1:'0'+data1:'00'+data1;
-						$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-" + y);
+					if (doc_sop == chec_number) {
+						var check_number = $(".check_number").text();
+						$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-" + check_number);
 					} else {
-						$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-001")
+						if (data > 0) {
+							var data1 = parseInt(data) + 1;
+							var y = (data1>9)?(data1<99)?data1:'0'+data1:'00'+data1;
+							$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-" + y);
+						} else {
+							$("#number_um").val(doc_um+"-"+ seksium+ "-"+ doc_sop +"-001")
+						}
 					}
 				}
 		  });
 	});
-
-	$("#nomor_sop_um").change(function() {
-		var datanum_cek_um = $("#number_um").val();
-
-		$.ajax({
-			type: "POST",
-			url: baseurl+"PengembanganSistem/cek_nomor_um",
-			data: {
-				number_cw : datanum_cek_um,
-			},
-			dataType: "JSON",
-			success: function (data) {
-				if (data.length > 0) {
-					if (confirm('data sudah ada')) {
-						window.location.reload();
-					} else {
-						
-					}
-				}
-			}
-		});
-	})
 
 	$(document).on('change','#number_um', function() {
 		var datanum_cek_um = $(this).val();

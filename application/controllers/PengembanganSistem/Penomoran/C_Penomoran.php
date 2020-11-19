@@ -312,7 +312,7 @@ class C_Penomoran extends CI_Controller
 		$number_sop = $_POST['number_sop'];
 
 		$data = $this->M_pengsistem->cek_data_nomor_copwi($doc,$seksi,$number_sop)[0]['max'];
-
+		
 		echo json_encode($data);
 	}
 
