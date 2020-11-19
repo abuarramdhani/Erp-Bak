@@ -361,6 +361,7 @@ class C_Pengelola extends CI_Controller {
             array_push($emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']], $order[0]);
         }
         foreach ($emailBatch as $key => $pesan) {
+            $noindemail = $key;
             $normal = array();
             $urgent = array();
             $susulan = array();
@@ -475,11 +476,12 @@ class C_Pengelola extends CI_Controller {
                         $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-                $this->EmailAlert($key,$subject,$body);
+                $this->EmailAlert($noindemail,$subject,$body);
 
         }
 
         foreach ($emailBackRequester as $key => $pesanRequester) {
+            $noindemail = $key;
             $nRequester = $this->M_requisition->getNamaUser($key);
             $namaRequester = $nRequester[0]['nama'];
 
@@ -557,7 +559,7 @@ class C_Pengelola extends CI_Controller {
             $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-            $this->EmailAlert($key,$subject,$body);
+            $this->EmailAlert($noindemail,$subject,$body);
         }
 
         echo 1;
