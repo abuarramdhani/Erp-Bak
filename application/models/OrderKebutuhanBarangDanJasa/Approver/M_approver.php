@@ -559,7 +559,7 @@ class M_approver extends CI_Model
     public function getEmail($noind)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = $this->$oracle->query("SELECT * FROM KHS.KHS_EMAIL_PEKERJA where NATIONAL_IDENTIFIER='$noind'");
+        $query = $oracle->query("SELECT * FROM KHS.KHS_EMAIL_PEKERJA where NATIONAL_IDENTIFIER='$noind'");
 
         return $query->result_array();
     }
