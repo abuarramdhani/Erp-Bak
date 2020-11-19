@@ -660,21 +660,13 @@ class C_Requisition extends CI_Controller {
 		echo 1;
 	}
 
-<<<<<<< HEAD
 	public function EmailAlert($noind, $subject, $body)
-=======
-	public function EmailAlert($subject , $body)
->>>>>>> 4f6f3b38f132f98dbd9bf8d884aded9483f622c7
 	{
 		//email
 		$getEmail = $this->M_approver->getEmail($noind);
 		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
-<<<<<<< HEAD
 		// $emailUser = 'bondan_surya_n@quick.com';
-=======
-		$emailUser = 'bondan_surya_n@quick.com';
->>>>>>> 4f6f3b38f132f98dbd9bf8d884aded9483f622c7
 
 		//send Email
 
