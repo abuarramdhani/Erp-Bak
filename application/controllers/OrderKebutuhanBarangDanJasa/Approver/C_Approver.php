@@ -592,11 +592,7 @@ class C_Approver extends CI_Controller {
                     $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
         
                     if ($namaApprover != $namaRequester) {
-<<<<<<< HEAD
                         $this->EmailAlert($key,$subject,$body);
-=======
-                        $this->EmailAlert($subject,$body);
->>>>>>> 4f6f3b38f132f98dbd9bf8d884aded9483f622c7
                     }
                 }
             }
