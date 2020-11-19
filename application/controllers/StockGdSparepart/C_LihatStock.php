@@ -48,6 +48,15 @@ class C_LihatStock extends CI_Controller
 		}else {
 			$data['UserMenu'] = $UserMenu;
 		}
+		
+		if ($user == 'B0901') {
+			$data['tglawal']    = date('d/m/Y', strtotime('-1 year', strtotime( date('Y-m-d') )));;
+			$data['tglakhir']   = date('d/m/Y');
+			$data['subinv']     = 'SP-YSP';
+		}else {
+			$data['tglawal'] = $data['tglakhir'] = $data['subinv'] = '';
+		}
+
 		// $data['unit'] = $this->M_lihatstock->kodeUnit();
 		$data['kode'] = array('0' => 'AAA', '1' => 'AAB', '2' => 'AAC', '3' => 'AAD', '4' => 'AAE', '5' => 'AAF',
 							'6' => 'AAG', '7' => 'AAH', '8' => 'AAK', '9' => 'AAL', '10' => 'AAN', '11' => 'ACA',

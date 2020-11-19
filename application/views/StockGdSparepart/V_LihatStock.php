@@ -35,13 +35,13 @@
                                         <div class="col-md-3">
                                             <div class="input-group date">
                                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                <input id="tglAwal" name="tglAwal[]" class="form-control pull-right datepicktgl" placeholder="tanggal awal" autocomplete="off">
+                                                <input id="tglAwal" name="tglAwal[]" class="form-control pull-right datepicktgl" placeholder="tanggal awal" autocomplete="off" value="<?= $tglawal?>">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                         <div class="input-group date">
                                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAkhir" class="form-control pull-right datepicktgl" placeholder="tanggal akhir" autocomplete="off">
+                                            <input id="tglAkhir" class="form-control pull-right datepicktgl" placeholder="tanggal akhir" autocomplete="off" value="<?= $tglakhir?>">
                                             </div>
                                         </div>
                                     </div>
@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <select id="subinv" class="form-control subInvCode" data-placeholder="pilih subinventory" onchange="getKodeBrg(this)" style="width:100%">
-                                                <option></option>
+                                                <option value="<?= $subinv?>"><?= $subinv?></option>
                                             </select>
                                         </div>
                                     </div>
