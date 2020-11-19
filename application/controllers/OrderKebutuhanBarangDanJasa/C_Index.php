@@ -144,9 +144,9 @@ class C_Index extends CI_Controller {
 					);
 		$this->session->set_userdata($ses);
 
-		$UserResponsibility = $this->M_user->getUserResponsibility($iduser, 2664);
+		$UserResponsibility = $this->M_user->getUserResponsibility($iduser, 2679);
 		if (count($UserResponsibility)==0) {
-			$UserResponsibility = $this->M_user->getUserResponsibility($iduser, 2665);
+			$UserResponsibility = $this->M_user->getUserResponsibility($iduser, 2681);
 			
 		}
 
