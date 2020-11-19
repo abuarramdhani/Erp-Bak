@@ -414,7 +414,7 @@ class C_Pengelola extends CI_Controller {
                 $jklCreator = 'Ibu ';
             };
 
-            $subject = '[TRIAL]Persetujuan Order Kebutuhan Barang Dan jasa';
+            $subject = '[PRE-LAUNCH]Persetujuan Order Kebutuhan Barang Dan jasa';
             $body = "<b>Yth. $jklApprover $namaApprover</b>,<br><br>";
             $body .= "$jklCreator $namaCreator meminta approval Anda terkait order barang-barang berikut : <br><br>";
             $body .= "	<table border='1' style=' border-collapse: collapse;'>
@@ -475,7 +475,7 @@ class C_Pengelola extends CI_Controller {
                         $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-                $this->EmailAlert($subject,$body);
+                $this->EmailAlert($key,$subject,$body);
 
         }
 
@@ -498,7 +498,7 @@ class C_Pengelola extends CI_Controller {
                 $jklApprover = 'Ibu ';
             };
 
-            $subject = '[TRIAL] Order Disetujui';
+            $subject = '[PRE-LAUNCH] Order Disetujui';
             $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
             $body .= "Order anda terkait barang - barang berikut :<br><br>";
             $body .= "<table border='1' style=' border-collapse: collapse;'>
@@ -557,7 +557,7 @@ class C_Pengelola extends CI_Controller {
             $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-            $this->EmailAlert($subject,$body);
+            $this->EmailAlert($key,$subject,$body);
         }
 
         echo 1;
@@ -653,13 +653,13 @@ class C_Pengelola extends CI_Controller {
 		echo json_encode($data);
     }
 
-    public function EmailAlert($subject , $body)
+    public function EmailAlert($noind, $subject, $body)
 	{
 		//email
-		// $getEmail = $this->M_ApprovalRequisition->getEmail($user_id);
-		// $emailUser = $getEmail[0]['internal_mail'];
+		$getEmail = $this->M_approver->getEmail($noind);
+		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
-		$emailUser = 'bondan_surya_n@quick.com';
+		// $emailUser = 'bondan_surya_n@quick.com';
 		
 		//send Email
 
