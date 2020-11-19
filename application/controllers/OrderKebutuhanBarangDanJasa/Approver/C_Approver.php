@@ -310,6 +310,7 @@ class C_Approver extends CI_Controller {
             if ($stat == 0 && $judgment == 'A') {
 
                 foreach ($emailBatch as $key => $pesan) {
+                    $noindemail = $key;
                     $normal = array();
                     $urgent = array();
                     $susulan = array();
@@ -424,7 +425,7 @@ class C_Approver extends CI_Controller {
                                 $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
     
     
-                        $this->EmailAlert($key,$subject,$body);
+                        $this->EmailAlert($noindemail,$subject,$body);
         
                 }
 
@@ -432,6 +433,7 @@ class C_Approver extends CI_Controller {
 
             if ($judgment == 'R') {
                 foreach ($emailBackRequester as $key => $pesanRequester) {
+                    $noindemail = $key;
                     $nRequester = $this->M_requisition->getNamaUser($key);
                     $namaRequester = $nRequester[0]['nama'];
     
@@ -509,12 +511,13 @@ class C_Approver extends CI_Controller {
                     $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
         
         
-                    $this->EmailAlert($noind,$subject,$body);
+                    $this->EmailAlert($noindemail,$subject,$body);
                 }
             }
 
             if ($judgment == 'A') {
                 foreach ($emailBackRequester as $key => $pesanRequester) {
+                    $noindemail = $key;
                     $nRequester = $this->M_requisition->getNamaUser($key);
                     $namaRequester = $nRequester[0]['nama'];
     
@@ -592,7 +595,7 @@ class C_Approver extends CI_Controller {
                     $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
         
                     if ($namaApprover != $namaRequester) {
-                        $this->EmailAlert($key,$subject,$body);
+                        $this->EmailAlert($noindemail,$subject,$body);
                     }
                 }
             }

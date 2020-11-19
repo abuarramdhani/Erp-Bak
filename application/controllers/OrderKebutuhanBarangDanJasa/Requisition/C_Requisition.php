@@ -263,7 +263,7 @@ class C_Requisition extends CI_Controller {
 		}
 
 		foreach ($emailBatch as $key => $pesan) {
-
+			$noindemail = $key;
 			$normal = array();
 			$urgent = array();
 			$susulan = array();
@@ -378,14 +378,15 @@ class C_Requisition extends CI_Controller {
 
 
 
-			$this->EmailAlert($key,$subject,$body);
+			$this->EmailAlert($noindemail,$subject,$body);
+			// echo $key;
 		}
 
-		if ($statusPage == 0) {
-			redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
-		}elseif ($statusPage == 1) {
-			redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
-		}
+		// if ($statusPage == 0) {
+		// 	redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
+		// }elseif ($statusPage == 1) {
+		// 	redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
+		// }
 	}
 
 	public function listData()
@@ -663,7 +664,9 @@ class C_Requisition extends CI_Controller {
 	public function EmailAlert($noind, $subject, $body)
 	{
 		//email
+		// echo $noind;exit;
 		$getEmail = $this->M_approver->getEmail($noind);
+		// print_r($getEmail);exit;
 		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
 		// $emailUser = 'bondan_surya_n@quick.com';
