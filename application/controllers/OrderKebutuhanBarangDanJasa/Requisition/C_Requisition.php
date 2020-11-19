@@ -317,7 +317,7 @@ class C_Requisition extends CI_Controller {
 				$jklCreator = 'Ibu ';
 			};
 
-			$subject = '[TRIAL]Persetujuan Order Kebutuhan Barang Dan jasa';
+			$subject = '[PRE-LAUNCH]Persetujuan Order Kebutuhan Barang Dan jasa';
 			$body = "<b>Yth. $jklApprover $namaApprover</b>,<br><br>";
 			$body .= "$jklCreator $namaCreator meminta approval Anda terkait order barang-barang berikut : <br><br>";
 			$body .= "	<table border='1' style=' border-collapse: collapse;'>
@@ -378,7 +378,7 @@ class C_Requisition extends CI_Controller {
 
 
 
-			$this->EmailAlert($subject,$body);
+			$this->EmailAlert($key,$subject,$body);
 		}
 
 		if ($statusPage == 0) {
@@ -660,13 +660,21 @@ class C_Requisition extends CI_Controller {
 		echo 1;
 	}
 
+<<<<<<< HEAD
+	public function EmailAlert($noind, $subject, $body)
+=======
 	public function EmailAlert($subject , $body)
+>>>>>>> 4f6f3b38f132f98dbd9bf8d884aded9483f622c7
 	{
 		//email
-		// $getEmail = $this->M_ApprovalRequisition->getEmail($user_id);
-		// $emailUser = $getEmail[0]['internal_mail'];
+		$getEmail = $this->M_approver->getEmail($noind);
+		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
+<<<<<<< HEAD
+		// $emailUser = 'bondan_surya_n@quick.com';
+=======
 		$emailUser = 'bondan_surya_n@quick.com';
+>>>>>>> 4f6f3b38f132f98dbd9bf8d884aded9483f622c7
 
 		//send Email
 
