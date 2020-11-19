@@ -1,6 +1,26 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+set_include_path(get_include_path() . PATH_SEPARATOR . 'phpseclib');
+
+include(APPPATH . 'third_party/phpseclib/Net/SSH2.php');
+include(APPPATH . 'third_party/phpseclib/Net/SFTP.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RSA.php');
+include(APPPATH . 'third_party/phpseclib/Math/BigInteger.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Hash.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Random.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Base.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Rijndael.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/AES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Blowfish.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/DES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RC2.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RC4.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/TripleDES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Twofish.php');
+
+use phpseclib\Net\SFTP;
+
 set_time_limit(360);
 
 class C_ComposeMessage extends CI_Controller
@@ -297,9 +317,18 @@ class C_ComposeMessage extends CI_Controller
 				}
 			}
 
-			// Change FTP directory
-			ftp_cdup($conn);
-			ftp_chdir($conn, '/mnt/NASB/SUPPLIER_ADMIN/');
+			// SFTP
+      $sftp = new SFTP('purchasing.quick.com');
+
+      error_reporting(0);
+
+      if (!$sftp->login($ftp_username, $ftp_password)) {
+        throw new Exception('Gagal melakukan autentikasi ke Server Arsip Scan PO.');
+      }
+
+      error_reporting(E_ALL);
+
+      $sftp->chdir('/mnt/NASB/SUPPLIER_ADMIN/');
 
 			// Archive message attachment as zip
 			// Zip Variable
@@ -328,16 +357,12 @@ class C_ComposeMessage extends CI_Controller
 			// Archive and save document
 			$this->zip->archive($zip_dir . $po_number . $zip_format);
 
-			if (ftp_nlist($conn, $ftp_server_archive_dir . $data['VendorName'][0]['VENDOR_NAME']) < 1) {
-				ftp_mkdir($conn, $ftp_server_archive_dir . $data['VendorName'][0]['VENDOR_NAME']);
+      if ($sftp->nlist($ftp_server_archive_dir . $data['VendorName'][0]['VENDOR_NAME']) < 1) {
+        $sftp->mkdir($ftp_server_archive_dir . $data['VendorName'][0]['VENDOR_NAME']);
 			};
 
-			ftp_put($conn, $ftp_server_archive_dir . $data['VendorName'][0]['VENDOR_NAME'] . '/' .
-				$po_number . $zip_format, $zip_dir . $po_number . $zip_format, FTP_BINARY);
-
-			// Close connection
-			ftp_close($conn);
-			// FTP //
+      $sftp->put($ftp_server_archive_dir . $data['VendorName'][0]['VENDOR_NAME'] . '/' .
+        $po_number . $zip_format, $zip_dir . $po_number . $zip_format, SFTP::SOURCE_LOCAL_FILE);
 
 			// Load library email
 			$this->load->library('PHPMailerAutoload');
