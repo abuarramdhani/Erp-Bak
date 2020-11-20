@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo base_url().'PengembanganSistem/update_data_ms/'.$listdata_memo[0]['id'] ?>" class="form-horizontal" enctype="multipart/form-data">
+            <form onkeydown="return event.key != 'Enter';" method="post" action="<?php echo base_url().'PengembanganSistem/update_data_ms/'.$listdata_memo[0]['id'] ?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">

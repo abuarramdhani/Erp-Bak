@@ -21,7 +21,7 @@
                 
                     <div class="row">
                         <div class="col-lg-12">
-                           <form method="post" action="<?= base_url('PengembanganSistem/input_data_um') ?>" class="form-horizontal" enctype="multipart/form-data">
+                           <form onkeydown="return event.key != 'Enter';" method="post" action="<?= base_url('PengembanganSistem/input_data_um') ?>" class="form-horizontal" enctype="multipart/form-data">
                                 <div class="box box-primary box-solid">
                                     <div class="box-header with-border">Input Data</div>
                                     <div class="box-body">
@@ -74,7 +74,7 @@
                                                         </div>
                                                         <div class="col-sm-1">-</div>
                                                         <div class="col-sm-4">
-                                                            <input type="number" oninput="nomor_um_ps()" name="number_sop_um" value="00" required="" class="form-control" id="nomor_sop_um" placeholder="00" >
+                                                            <input autocomplete="off" type="number" oninput="nomor_um_ps()" name="number_sop_um" min="00" value="00" required="" class="form-control" id="nomor_sop_um" placeholder="00" >
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">

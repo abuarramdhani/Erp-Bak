@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo base_url().'PengembanganSistem/update_flow/'.$listdatafp[0]['nomor_doc'] ?>" class="form-horizontal" enctype="multipart/form-data">
+            <form onkeydown="return event.key != 'Enter';" method="post" action="<?php echo base_url().'PengembanganSistem/update_flow/'.$listdatafp[0]['nomor_doc'] ?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -62,7 +62,7 @@
                                                 <div class="form-group row">
                                                     <label for="numberrev_fp" class="control-label col-lg-4">No. Revisi</label>
                                                     <div class="col-lg-8">
-                                                        <input value="<?php echo $listdatafp[0]['number_rev']?>" type="number" name="number_rev_fp" id="number_rev-fp" class="form-control">
+                                                        <input value="<?php echo $listdatafp[0]['number_rev']?>" min="00" type="number" name="number_rev_fp" id="number_rev-fp" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>

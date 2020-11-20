@@ -103,8 +103,12 @@ class M_pengsistem extends CI_Model
 
 	public function delete_flow($data)
 	{
-		$this->db->where('nomor_doc',$data);
-		$this->db->delete('saps.doc_flowproses');
+		$_id = $this->db->get_where('saps.doc_flowproses',['nomor_doc' => $data])->row();
+		$query = $this->db->delete('saps.doc_flowproses',['nomor_doc'=>$data]);
+		
+		if($query){
+			unlink("assets/upload/Peng.Sistem/fp/".$_id->file);
+		}
 	}
 
 	//CODE OF PRACTICE / WI
@@ -162,8 +166,12 @@ class M_pengsistem extends CI_Model
 
 	public function delete_copwi($data)
 	{
-		$this->db->where('nomor_doc',$data);
-		$this->db->delete('saps.doc_cop_wi');
+		$_id = $this->db->get_where('saps.doc_cop_wi',['nomor_doc' => $data])->row();
+		$query = $this->db->delete('saps.doc_cop_wi',['nomor_doc'=>$data]);
+		
+		if($query){
+			unlink("assets/upload/Peng.Sistem/copwi/".$_id->file);
+		}
 	}
 
 	//User Manual
@@ -221,8 +229,12 @@ class M_pengsistem extends CI_Model
 
 	public function delete_um($data)
 	{
-		$this->db->where('nomor_doc',$data);
-		$this->db->delete('saps.doc_usermanual');
+		$_id = $this->db->get_where('saps.doc_usermanual',['nomor_doc' => $data])->row();
+		$query = $this->db->delete('saps.doc_usermanual',['nomor_doc'=>$data]);
+		
+		if($query){
+			unlink("assets/upload/Peng.Sistem/um/".$_id->file);
+		}
 	}
 
 	//Penomoran Memo
@@ -276,8 +288,12 @@ class M_pengsistem extends CI_Model
 
 	public function delete_code($data)
 	{
-		$this->db->where('id',$data);
-		$this->db->delete('saps.doc_penomoran_memo');
+		$_id = $this->db->get_where('saps.doc_penomoran_memo',['id' => $data])->row();
+		$query = $this->db->delete('saps.doc_penomoran_memo',['id'=>$data]);
+		
+		if($query){
+			unlink("assets/upload/Peng.Sistem/memo/".$_id->file);
+		}
 	}
 
 	//Laporan Kerja Harian

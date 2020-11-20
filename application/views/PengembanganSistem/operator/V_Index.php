@@ -28,7 +28,7 @@
                 
                     <div class="row">
                         <div class="col-lg-12">
-                           <form method="post" action="<?= base_url('PengembanganSistem/input_lkh_ps') ?>" class="form-horizontal" enctype="multipart/form-data">
+                           <form onkeydown="return event.key != 'Enter';" method="post" action="<?= base_url('PengembanganSistem/input_lkh_ps') ?>" class="form-horizontal" enctype="multipart/form-data">
                               <div class="box box-primary box-solid">
                                   <div class="box-header with-border">Input Laporan Kerja Harian</div>
                                   <div class="box-body">

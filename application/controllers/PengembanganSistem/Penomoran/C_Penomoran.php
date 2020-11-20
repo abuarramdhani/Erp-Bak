@@ -312,7 +312,7 @@ class C_Penomoran extends CI_Controller
 		$number_sop = $_POST['number_sop'];
 
 		$data = $this->M_pengsistem->cek_data_nomor_copwi($doc,$seksi,$number_sop)[0]['max'];
-
+		
 		echo json_encode($data);
 	}
 
@@ -1105,7 +1105,7 @@ class C_Penomoran extends CI_Controller
 	public function excel_lkh() 
 	{
         $this->checkSession();
-        $this->load->library('Excel');
+        $this->load->library('excel');
 
         $objPHPExcel = new PHPExcel();
         $user = $this->session->employee;
@@ -1188,7 +1188,6 @@ class C_Penomoran extends CI_Controller
 		$styleTitle2 = array(
 			'font'  => array(
 				'bold'  => false,
-				'color' => array('rgb' => '00000'),
                 'size'	=> 10,
 			),
 			'borders' => array(
@@ -1277,14 +1276,14 @@ class C_Penomoran extends CI_Controller
         $objPHPExcel->getActiveSheet()->SetCellValue('N5', 'M');
         $objPHPExcel->getActiveSheet()->SetCellValue('O5', 'SK');
         $objPHPExcel->getActiveSheet()->SetCellValue('P5', 'CT');
-        $objPHPExcel->getActiveSheet()->SetCellValue('Q5', 'IP');
+		$objPHPExcel->getActiveSheet()->SetCellValue('Q5', 'IP');
         // set Row
         $rowCount = 6;
         foreach ($listInfo as $list) {
-		// print_r($list['harimasuk']);exit();
 
 			$objPHPExcel->getActiveSheet()->getStyle('A'.$rowCount.':J'.$rowCount)->applyFromArray($styleTitle2);
 			$objPHPExcel->getActiveSheet()->getStyle('L'.$rowCount.':Q'.$rowCount)->applyFromArray($styleTitle2);
+			$objPHPExcel->getActiveSheet()->getStyle('C5:C'.$objPHPExcel->getActiveSheet()->getHighestRow())->applyFromArray($styleTitle2)->getAlignment()->setWrapText(true);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$rowCount, $no);
 			// $objPHPExcel->getActiveSheet()->getStyle('B'.$rowCount)->applyFromArray($styledate);
             $objPHPExcel->setActiveSheetIndex()->SetCellValue('A'.$rowCount, $list['harimasuk']);
@@ -1318,11 +1317,15 @@ class C_Penomoran extends CI_Controller
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()->setTitle('LKH');
         $filename = "lkh". date("Y-m-d-H-i-s").".xlsx";
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$filename.'"');
-        header('Cache-Control: max-age=0');
-        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel,'excel5');
-        $objWriter->save('php://output');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->setPreCalculateFormulas(true);
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+		$objWriter->save("php://output");
     }
 
 	public function delete_lkh($id)
