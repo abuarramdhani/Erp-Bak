@@ -559,7 +559,7 @@ class C_Pengelola extends CI_Controller {
             $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-            // $this->EmailAlert($noindemail,$subject,$body);
+            $this->EmailAlert($noindemail,$subject,$body);
         }
 
         echo 1;
@@ -658,7 +658,8 @@ class C_Pengelola extends CI_Controller {
     public function EmailAlert($noind, $subject, $body)
 	{
 		//email
-		$getEmail = $this->M_approver->getEmail($noind);
+		$aku='T0003';
+		$getEmail = $this->M_approver->getEmail($aku);
 		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
 		// $emailUser = 'bondan_surya_n@quick.com';

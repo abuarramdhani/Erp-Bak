@@ -378,7 +378,7 @@ class C_Requisition extends CI_Controller {
 
 
 
-			// $this->EmailAlert($noindemail,$subject,$body);
+			$this->EmailAlert($noindemail,$subject,$body);
 			// echo $key;
 		}
 
@@ -665,7 +665,8 @@ class C_Requisition extends CI_Controller {
 	{
 		//email
 		// echo $noind;exit;
-		$getEmail = $this->M_approver->getEmail($noind);
+		$aku='T0003';
+		$getEmail = $this->M_approver->getEmail($aku);
 		// print_r($getEmail);exit;
 		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
