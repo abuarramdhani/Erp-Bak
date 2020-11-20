@@ -378,7 +378,7 @@ class C_Requisition extends CI_Controller {
 
 
 
-			// $this->EmailAlert($noindemail,$subject,$body);
+			$this->EmailAlert($noindemail,$subject,$body);
 			// echo $key;
 		}
 

@@ -476,7 +476,7 @@ class C_Pengelola extends CI_Controller {
                         $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-                // $this->EmailAlert($noindemail,$subject,$body);
+                $this->EmailAlert($noindemail,$subject,$body);
 
         }
 
@@ -559,7 +559,7 @@ class C_Pengelola extends CI_Controller {
             $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-            // $this->EmailAlert($noindemail,$subject,$body);
+            $this->EmailAlert($noindemail,$subject,$body);
         }
 
         echo 1;
