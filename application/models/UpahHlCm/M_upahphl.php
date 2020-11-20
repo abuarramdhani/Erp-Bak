@@ -180,7 +180,7 @@ class M_upahphl extends CI_Model {
 	}
 	public function cekdataAda($noind,$nama)
 	{
-		$query="select * from hlcm.hlcm_datapekerja where noind='$noind' and nama='$nama'";
+		$query="select * from hlcm.hlcm_datapekerja where trim(noind)=trim('$noind') and trim(nama)=trim('$nama')";
 		$data=$this->erp->query($query);
 		return $data->num_rows();
 	}
