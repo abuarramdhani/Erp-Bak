@@ -665,8 +665,7 @@ class C_Requisition extends CI_Controller {
 	{
 		//email
 		// echo $noind;exit;
-		$aku='T0003';
-		$getEmail = $this->M_approver->getEmail($aku);
+		$getEmail = $this->M_approver->getEmail($noind);
 		// print_r($getEmail);exit;
 		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 

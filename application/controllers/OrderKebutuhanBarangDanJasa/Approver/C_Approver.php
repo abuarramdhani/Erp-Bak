@@ -823,9 +823,8 @@ class C_Approver extends CI_Controller {
 
     public function EmailAlert($noind, $subject, $body)
 	{
-        //email
-        $aku='T0003';
-		$getEmail = $this->M_approver->getEmail($aku);
+		//email
+		$getEmail = $this->M_approver->getEmail($noind);
 		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
 		// $emailUser = 'bondan_surya_n@quick.com';
