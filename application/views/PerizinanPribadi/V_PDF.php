@@ -28,6 +28,7 @@ if ($perseksi == 'Tidak') {
                 <th>Tgl Pengajuan</th>
                 <th>Pekerja</th>
                 <th>Seksi</th>
+                <th>Lokasi Kerja</th>
                 <th>Jenis Izin</th>
                 <th>Waktu Keluar</th>
                 <th>Atasan Approved</th>
@@ -75,6 +76,15 @@ if ($perseksi == 'Tidak') {
                                 <?php }
                                     }
                                 endforeach ?>
+                            </td>
+                        <?php } ?>
+                        <?php if ($jenis == '2') { ?>
+                            <td style="text-align: left; white-space: nowrap;"><?= $row['lokasi_kerja'] ?></td>
+                        <?php } else { ?>
+                            <td style="white-space: nowrap;">
+                                <?php foreach (explode(',', $row['lokasi_kerja']) as $key) : ?>
+                                    <p><?= $key; ?></p>
+                                <?php endforeach ?>
                             </td>
                         <?php } ?>
                         <td style="text-align: left; white-space: nowrap;"><?= $row['jenis_ijin'] ?></td>
