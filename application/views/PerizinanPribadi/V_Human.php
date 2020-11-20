@@ -10,6 +10,7 @@
             <th class="text-center" style="white-space: nowrap;">Tanggal Pengajuan</th>
             <th class="text-center" style="white-space: nowrap;">Nama Pekerja</th>
             <th class="text-center" style="white-space: nowrap;">Seksi</th>
+            <th class="text-center" style="white-space: nowrap;">Lokasi Kerja</th>
             <th class="text-center" style="white-space: nowrap;">Jenis Izin</th>
             <th class="text-center" style="white-space: nowrap;">Waktu Keluar</th>
             <th class="text-center" style="white-space: nowrap;">Atasan Approved</th>
@@ -28,6 +29,7 @@
               <td style="white-space: nowrap;"><?= date("d F Y", strtotime($row['created_date'])); ?></td>
               <td style="white-space: nowrap;"><?= $row['nama_pkj'] ?></td>
               <td style="white-space: nowrap;"><?= $row['seksi'] ?></td>
+              <td style="white-space: nowrap;"><?= $row['lokasi_kerja'] ?></td>
               <td style="text-align: left; white-space: nowrap;"><?= $row['jenis_ijin'] ?></td>
               <td style="text-align: left; white-space: nowrap;"><?= $row['keluar'] ?></td>
               <td style="white-space: nowrap;"><?= $row['atasan'] ?></td>
