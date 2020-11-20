@@ -115,7 +115,7 @@ class C_CetakMemoHasilOrientasi extends CI_Controller
         $this->load->library('pdf');
 
         $pdf = $this->pdf->load();
-        $pdf = new mPDF('utf8', "A4", 10, '', 12, 12, 28, 10, 0, 0);
+        $pdf = new mPDF('utf8', [215, 330], 10, '', 12, 12, 28, 10, 0, 0);
 
         $date = $this->M_cetakmemohasilorientasi->tgl_indo1($memo[0]['tanggal']);
         // print "<pre>";
