@@ -378,15 +378,15 @@ class C_Requisition extends CI_Controller {
 
 
 
-			$this->EmailAlert($noindemail,$subject,$body);
+			// $this->EmailAlert($noindemail,$subject,$body);
 			// echo $key;
 		}
 
-		// if ($statusPage == 0) {
-		// 	redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
-		// }elseif ($statusPage == 1) {
-		// 	redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
-		// }
+		if ($statusPage == 0) {
+			redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
+		}elseif ($statusPage == 1) {
+			redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
+		}
 	}
 
 	public function listData()
