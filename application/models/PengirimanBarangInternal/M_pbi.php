@@ -244,7 +244,8 @@ class M_pbi extends CI_Model
                  END status2,
                  (SELECT DISTINCT ksi.no_suratjalan
                     FROM khs_sj_internal ksi
-                   WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
+                   WHERE ksi.no_fpb = kki.doc_number
+                   AND ROWNUM = 1) no_surat_jalan
               FROM khs_kirim_internal kki
               WHERE kki.seksi_kirim = '$response->seksi'
               ORDER BY kki.doc_number DESC";
