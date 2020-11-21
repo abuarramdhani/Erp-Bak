@@ -339,7 +339,7 @@ class C_Master extends CI_Controller
     {
         //data trial
         $data['get_header'] = $this->M_monitoringdo->headerSurat($id);
-        $data['get_body'] = $this->M_monitoringdo->bodySurat($id);
+        $data['get_body'] = $this->M_monitoringdo->bodySurat($id,$data['get_header'][0]['TIPE']);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
         $data['totalbody'] = sizeof($data['get_body']);
@@ -487,7 +487,7 @@ class C_Master extends CI_Controller
     {
         //data trial
         $data['get_header'] = $this->M_monitoringdo->headerSurat($id);
-        $data['get_body'] = $this->M_monitoringdo->bodySurat($id);
+        $data['get_body'] = $this->M_monitoringdo->bodySurat($id,$data['get_header'][0]['TIPE']);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
         $data['totalbody'] = sizeof($data['get_body']);

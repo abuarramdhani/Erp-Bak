@@ -777,12 +777,19 @@ class M_monitoringdo extends CI_Model
     }
 
 
-    public function bodySurat($data)
+    public function bodySurat($data,$tipe)
     {
+        if ($tipe == 'DO') {
+          $order = 'kqbd.line_number';
+        }
+        else {
+          $order = 'kqbd.item';
+        }
+
         $query = "SELECT *
                     FROM khs_qweb_body_dospb1 kqbd
                    WHERE kqbd.request_number = '$data'
-                ORDER BY 1";
+                ORDER BY $order";
 
         $response = $this->oracle->query($query)->result_array();
 
