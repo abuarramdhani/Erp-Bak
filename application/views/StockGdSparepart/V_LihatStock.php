@@ -51,7 +51,7 @@
                                             <label class="control-label">SubInventory :</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select id="subinv" class="form-control subInvCode" data-placeholder="pilih subinventory" onchange="getKodeBrg(this)" style="width:100%">
+                                            <select id="subinv" class="form-control subInvCode" data-placeholder="pilih subinventory" style="width:100%">
                                                 <option value="<?= $subinv?>"><?= $subinv?></option>
                                             </select>
                                         </div>

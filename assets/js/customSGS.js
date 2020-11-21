@@ -1,7 +1,5 @@
 //-----------------------------------------------------------LIHAT STOCK------------------------------------------------------------------------
-function getKodeBrg(th) {
-	var subinv = $('#subinv').val();
-	// console.log(subinv);
+$(document).ready(function () {
 	$(".kodestockgdsp").select2({
 			allowClear: true,
 			minimumInputLength: 3,
@@ -11,7 +9,7 @@ function getKodeBrg(th) {
 					type: "GET",
 					data: function (params) {
 							var queryParameters = {
-									term: params.term, subinv : subinv
+									term: params.term, subinv : $('#subinv').val()
 							}
 							return queryParameters;
 					},
@@ -25,7 +23,7 @@ function getKodeBrg(th) {
 					}
 			}
 	});
-	
+
 	$(".lokasi_simpan").select2({
 		allowClear: true,
 		minimumInputLength: 3,
@@ -35,7 +33,7 @@ function getKodeBrg(th) {
 				type: "GET",
 				data: function (params) {
 						var queryParameters = {
-								term: params.term, subinv : subinv
+								term: params.term, subinv : $('#subinv').val()
 						}
 						return queryParameters;
 				},
@@ -49,10 +47,7 @@ function getKodeBrg(th) {
 				}
 		}
 });
-};
 
-
-$(document).ready(function () {
 	$(".subInvCode").select2({
 			allowClear: true,
 			minimumInputLength: 2,
