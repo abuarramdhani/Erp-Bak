@@ -95,6 +95,14 @@
 <!-- coba  coba  -->
 <div style="position:absolute;">
 	<table style="width:78%; margin-top:49px;">
+	        <tr>
+				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"></td>
+				<td style="font-size:9.7px;padding:3.5px;width:10%;text-align:center"></td>
+				<td style="font-size:9.7px;padding:3.5px;width:10%;text-align:center;"></td>
+				<td style="font-size:9.7px;padding:3.5px 3.5px 3.5px 10px;width:10%;text-align:left;"><?php echo $get_header[0]['UOM'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:22.5%;"><?php echo $get_header[0]['ITEM'] ?></td>
+				<td style="white-space:pre-line;font-size:9.7px;padding:3.5px;width:48%;"><?php echo $get_header[0]['DESCRIPTION'] ?></td>
+			</tr>
 		<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 			<tr>
 				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $no ?></td>
