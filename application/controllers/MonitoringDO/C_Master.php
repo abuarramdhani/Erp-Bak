@@ -640,6 +640,15 @@ class C_Master extends CI_Controller
         echo json_encode($res);
       }
     }
+    public function cek_checklist()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "You haven't access";
+      }else {
+        $res = $this->M_monitoringdo->cek_checklist($this->input->post('rn'));
+        echo json_encode($res);
+      }
+    }
     public function cekDObukan()
     {
       if (!$this->input->is_ajax_request()) {

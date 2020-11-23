@@ -553,6 +553,22 @@ class M_monitoringdo extends CI_Model
         return 0;
       }
     }
+    
+    
+    public function cek_checklist($req)
+    {
+      $sql = "SELECT *
+                FROM khs_cetak_checklist_do kccd
+               WHERE kccd.request_number = '$req'";
+
+      $response = $this->oracle->query($sql)->num_rows();
+
+      if ($response < 1) {
+        return 1;
+      }else {
+        return 0;
+      }
+    }
 
 
     public function insertDO($data)
