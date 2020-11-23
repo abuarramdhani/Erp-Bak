@@ -44,7 +44,7 @@ class M_blankoevaluasi extends CI_Model
                             inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie 
                         WHERE (tp.noind like '%$keyword%' or tp.nama like '%$keyword%') AND tp.keluar='0' $stringWithJabatan $stringFilterSie
                         ORDER BY tp.nama
-                        LIMIT 5";
+                        LIMIT 50";
         $result = $this->personalia->query($queryNoind)->result_array();
 
         return $result;
@@ -77,7 +77,7 @@ class M_blankoevaluasi extends CI_Model
                 tp.keluar='0' 
                 AND substring(tp.noind, 1, 1) in ('G', 'J') 
                 $stringFilterSie 
-            ORDER BY tp.nama LIMIT 5";
+            ORDER BY tp.nama LIMIT 50";
 
         $result = $this->personalia->query($queryNoind)->result_array();
         return $result;
