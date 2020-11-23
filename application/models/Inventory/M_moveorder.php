@@ -999,7 +999,7 @@ class M_moveorder extends CI_Model
 	function getQuantityActual($job,$atr)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql = "SELECT wro.REQUIRED_QUANTITY req $atr
+		$sql = "SELECT msib2.INVENTORY_ITEM_ID, wro.REQUIRED_QUANTITY req $atr
                      from wip_entities we
                     ,wip_discrete_jobs wdj
                     ,mtl_system_items_b msib
@@ -1037,7 +1037,8 @@ class M_moveorder extends CI_Model
                 -- INT THE TRUTH IT WILL USED --
                 and wro.ATTRIBUTE1 is not null
                 -- INT THE TRUTH ABOVE IT WILL USED --
-                and we.WIP_ENTITY_NAME = '$job'--'D191103750'";
+				and we.WIP_ENTITY_NAME = '$job'--'D191103750'
+				order by 3 asc";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

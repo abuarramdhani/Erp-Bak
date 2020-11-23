@@ -219,9 +219,17 @@ class C_MoveOrder extends CI_Controller
 
 		//CHECK ITEM YANG SUDAH CREATE
 		$item_sudah = $this->cekItemSudahPicklist($job);
+		$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";
+		$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);
 		$data = array();
 				foreach ($invID as $key => $value) {
-					if ($qty[$key] > $att[$key] || in_array($value, $item_sudah)) {
+					$att_baru = $att[$key];
+					foreach ($getQuantityActual as $key => $get) {
+						if ($get['INVENTORY_ITEM_ID'] == $value) {
+							$att_baru = $get['ATR'];
+						}
+					}
+					if ($qty[$key] > $att_baru || in_array($value, $item_sudah)) {
 						// item merah / item sudah picklist ga ikut ke create
 					}else {
 						$data[$subinv_from[$key]][$locator_from[$key]][] = array('NO_URUT' => '',
@@ -616,9 +624,17 @@ class C_MoveOrder extends CI_Controller
 		$array_mo = array();
 		//CHECK ITEM YANG SUDAH CREATE
 		$item_sudah = $this->cekItemSudahPicklist($no_job2[0]);
+		$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";
+		$getQuantityActual = $this->M_MoveOrder->getQuantityActual($no_job2[0],$atr);
 
 			foreach ($no_job2 as $k => $v) {
-				if (in_array($invID2[$k], $inv) || $qty2[$k] > $att2[$k] || in_array($invID2[$k], $item_sudah)) {
+				$att_baru = $att2[$k];
+				foreach ($getQuantityActual as $key => $get) {
+					if ($get['INVENTORY_ITEM_ID'] == $invID2[$k]) {
+						$att_baru = $get['ATR'];
+					}
+				}
+				if (in_array($invID2[$k], $inv) || $qty2[$k] > $att_baru || in_array($invID2[$k], $item_sudah)) {
 					// item merah, item sudah picklist ga ikut dicreate
 				}else {
 					array_push($inv, $invID2[$k]);
