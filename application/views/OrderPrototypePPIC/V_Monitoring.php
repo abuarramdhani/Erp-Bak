@@ -5,10 +5,10 @@
         <div class="box-header with-border">
           <h4 style="font-weight:bold;"><i class="fa fa-cube"></i> Monitoring Order</h4>
         </div>
-        <div class="box-body" style="background:#f0f0f0 !important;">
+        <div class="box-body" style="background:#f0f0f0;">
           <div class="row">
             <div class="col-md-12" style="margin-top:10px">
-              <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
+              <div class="box-body" style="background:#ffffff; border-radius:7px;margin-bottom:15px;">
                 <div class="table-responsive">
                   <table class="table table-striped table-bordered table-hover text-left opp_monitoring" style="font-size:11px;width:100%">
                     <thead>
@@ -17,7 +17,7 @@
                         <th class="text-center" rowspan="2" style="vertical-align:middle">KODE KOMPONEN</th>
                         <th class="text-center" rowspan="2" style="vertical-align:middle">NAMA KOMPONEN</th>
 												<th class="text-center" rowspan="2" style="vertical-align:middle">TANGGAL INPUT</th>
-												<th class="text-center" rowspan="2" style="vertical-align:middle">NO ORDER</th>
+                        <th class="text-center" rowspan="2" style="vertical-align:middle">NO ORDER</th>
                         <th class="text-center" rowspan="2" style="vertical-align:middle">QTY /UNIT</th>
 												<th class="text-center" colspan="2">PROSES SAAT INI</th>
                         <th class="text-center" colspan="2">NEXT PROSES</th>
@@ -66,6 +66,7 @@
 
                           <td><button type="button" class="btn btn-primary" name="button" onclick="opp_detail_proses_mon(<?php echo $val['id'] ?>)"> <b class="fa fa-cube"></b> Detail</button> </td>
                           <td>-</td>
+
                         </tr>
                       <?php $no++;} ?>
 

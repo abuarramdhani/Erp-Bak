@@ -25,7 +25,7 @@
             <form action="<?php echo base_url('OrderPrototypePPIC/OrderIn/Insert')?>" class="form-horizontal" method="post" enctype="multipart/form-data">
             <div class="col-md-12" style="margin-top:10px">
               <b>*NB:</b> <span class="text-danger">Tidak Wajib Melakukan Upload File</span>
-              <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;margin-top:20px">
+              <div class="box-body" style="background:#ffffff; border-radius:7px;margin-bottom:15px;margin-top:20px">
                 <div class="row">
                   <div class="col-md-2"> </div>
                   <div class="col-md-8">

@@ -1,3 +1,8 @@
+<style media="screen">
+  body{
+    padding-right: 0 !important;
+  }
+</style>
 <div class="content" style="max-width:100%;">
   <div class="row">
     <div class="col-lg-12">
@@ -5,7 +10,7 @@
         <div class="box-header with-border">
           <div class="row">
             <div class="col-md-4">
-              <a class="btn btn-success" style="margin-top:2px;" target="_blank" href="<?php echo base_url('OrderPrototypePPIC/OrderIn/Create')?>"><i class="fa fa-plus-square"></i> Tambah</a>
+              <a class="btn btn-success" style="margin-top:2px;font-weight:bold;" target="_blank" href="<?php echo base_url('OrderPrototypePPIC/OrderIn/Create')?>"><i class="fa fa-plus-square"></i> Input Order Masuk PPIC Prototype</a>
             </div>
             <div class="col-md-4">
               <center><h4 style="font-weight:bold;"><i class="fa fa-cloud-upload"></i> Order Masuk Prototype</h4></center>
@@ -17,10 +22,10 @@
             </div>
           </div>
         </div>
-        <div class="box-body" style="background:#f0f0f0 !important;">
+        <div class="box-body" style="background:#f0f0f0;">
           <div class="row">
             <div class="col-md-12" style="margin-top:10px">
-              <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
+              <div class="box-body" style="background:#ffffff; border-radius:7px;margin-bottom:15px;">
                 <div class="table-responsive">
                   <table class="table table-striped table-bordered table-hover text-left orderInOpp" style="font-size:11px;">
                     <thead>
@@ -49,7 +54,7 @@
                           <td class="text-center"><?php echo $g['pic_pengorder'] ?></td>
                           <td class="text-center"><?php echo $g['seksi_pengorder'] ?></td>
                           <td class="text-center">
-                            <button type="button" class="btn btn-success" name="button" onclick="opp_detail_proses('<?php echo $g['id'] ?>', '<?php echo $g['kode_komponen'] ?>', <?php echo $key+1 ?>)" data-toggle="modal" data-target="#opp_modaldetail"><i class="fa fa-question-circle"></i> Detail</button>
+                            <button type="button" class="btn btn-success" name="button" onclick="opp_detail_proses('<?php echo $g['id'] ?>', '<?php echo $g['kode_komponen'] ?>', <?php echo $key+1 ?>)" data-toggle="modal" data-target="#opp_modaldetail"><i class="fa fa-question-circle"></i> Select</button>
                           </td>
                           <td class="text-center"> <button type="button" class="btn btn-primary" name="button" onclick="opp_in_detail('<?php echo $key+1 ?>',
                                                                                                                                       '<?php echo $g['material'] ?>',
@@ -95,7 +100,9 @@
               <div class="box-body">
                 <div class="row">
                   <div class="col-md-12" style="margin-top:5px">
-                    <b>Penerima Order</b><hr style="padding:0 !important">
+                    <b>Penerima Order</b>
+                    <b style="float:right">No Order Out: <span id="opp_next_no_order_out"></span> </b>
+                    <hr style="padding:0 !important">
                     <table style="width:100%">
                       <tr>
                         <td style="width:5%;">Seksi</td>
@@ -157,9 +164,11 @@
             <div class="box box-success box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">Detail Proses (<span id="detail_proses_opp"></span>) </h4>
+                  <h4 style="font-weight:bold;">Detail Proses (<span id="detail_proses_opp"></span>)</h4>
+                  <input type="hidden" class="opp_get_param" value="">
                 </div>
-                <button type="button" class="btn btn-danger" style="float:right;font-weight:bold;float:right" data-dismiss="modal"> <i class="fa fa-close"></i> Tutup</button>
+                <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal"> <i class="fa fa-close"></i> </button>
+                <button type="button" class="btn btn-default" onclick="opp_modal_edit()" style="font-weight:bold;float:right;margin-right:13px;" name="button"> <i class="fa fa-edit"></i> <u>Edit</u></button>
               </div>
               <div class="box-body">
                 <div class="row">
@@ -169,6 +178,36 @@
 
                     </div>
 
+                  </div>
+                </div>
+              </div>
+            </div>
+      		</div>
+      	</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-md" id="opp_edit_proses" style="overflow-y:auto;" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document" >
+		<div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="box box-success box-solid">
+              <div class="box-header with-border">
+                <div style="float:left">
+                  <h4 style="font-weight:bold;">Edit Proses (<span id="edit_proses_opp"></span>)</h4>
+                </div>
+                <button type="button" class="btn btn-default" onclick="opp_close_proses()" style="float:right;font-weight:bold" data-dismiss="modal"> <i class="fa fa-mail-reply"></i> Kembali</button>
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12" style="margin-top:5px">
+                    <div class="area-edit-proses-opp">
+
+                    </div>
                   </div>
                 </div>
               </div>

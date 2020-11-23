@@ -20,6 +20,40 @@ const swalOPP = (type, title) => {
 }
 // ================================================ //
 
+const opp_modal_edit = () => {
+  $('#edit_proses_opp').html($('#detail_proses_opp').text())
+
+  $('#opp_modaldetail').modal('toggle');
+  $('#opp_edit_proses').modal('show');
+
+  let param_before = $('.opp_get_param').val();
+  let param = param_before.split('_');
+
+  $.ajax({
+    url: baseurl + 'OrderPrototypePPIC/OrderIn/getEditProsesOPP',
+    type: 'POST',
+    data: {
+      id: param[0],
+      nomer_urut: param[2],
+    },
+    beforeSend: function() {
+      $('.area-edit-proses-opp').html(`<div id="loadingArea0">
+                                      <center>
+                                        <img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/ripple.gif">
+                                        <br>
+                                        Sedang Menyiapkan Data...
+                                      </center>
+                                    </div>`)
+    },
+    success: function(result) {
+      $('.area-edit-proses-opp').html(result)
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error()
+    }
+  })
+
+}
 
 const oppSaveOrderOut = () => {
   let id_proses = $('.id_proses').map((_, el) => el.value).get()
@@ -28,7 +62,10 @@ const oppSaveOrderOut = () => {
   id_order.forEach((v,i) => {
     let cek = {
       'id_order': v,
-      'id_proses': id_proses[i]
+      'id_proses': id_proses[i],
+      'unit' : $('#opp_unit').text(),
+      'departemen' : $('#opp_dept').text(),
+      'no_order_out' : $('#opp_next_no_order_out').text()
     }
     data.push(cek);
   })
@@ -38,7 +75,7 @@ const oppSaveOrderOut = () => {
         dataType: 'JSON',
         async: false,
         data: {
-          data:data
+          data : data
         },
         beforeSend: function() {
           Swal.showLoading()
@@ -58,8 +95,8 @@ const oppSaveOrderOut = () => {
           toastOPP('error', 'Terjadi kesalahan saat menyimpan data');
         }
       })
-  console.log(id_proses);
-  console.log(id_order);
+  // console.log(id_proses);
+  // console.log(id_order);
 }
 
 const opp_add_to_order_out = () =>{
@@ -117,8 +154,8 @@ const opp_add_to_order_out = () =>{
             beforeSend: function () {
               $('.opp_area_loading').html(`<div id="loadingArea0">
                                               <center>
-                                                <img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif">
-                                                <br><span style="font-size:10px">Sedang Mengambil Data...</span>
+                                                <img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/ripple.gif">
+                                                <br><span style="font-size:10px">Sedang Menyiapkan Data...</span>
                                               </center>
                                             </div>`)
             },
@@ -140,6 +177,18 @@ const opp_add_to_order_out = () =>{
             },
           })
       })
+      $.ajax({
+          url: baseurl + 'OrderPrototypePPIC/OrderOut/generateOrderOut',
+          type: 'POST',
+          dataType: 'JSON',
+          async: true,
+          success: function(result) {
+            $('#opp_next_no_order_out').html(result)
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.error()
+          }
+        })
     }
   }else {
     $('.opp_save_order_out').hide()
@@ -207,9 +256,9 @@ const opp_detail_proses_mon = (id) => {
   		beforeSend: function() {
   			$('.detail_mon_'+id).html(`<div id="loadingArea0">
   																			<center>
-  																				<img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif">
+  																				<img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/ripple.gif">
   																				<br>
-  																				Sedang Mengambil Data...
+  																				Sedang Menyiapkan Data...
   																			</center>
   																		</div>`)
   		},
@@ -297,6 +346,8 @@ const opp_in_detail = (no,
 }
 
 const opp_detail_proses = (id, komponen_kode, number) => {
+
+  $('.opp_get_param').val(`${id}_${komponen_kode}_${number}`);
 	$('#detail_proses_opp').html('')
 	$('#detail_proses_opp').html(komponen_kode)
   $.ajax({
@@ -309,9 +360,9 @@ const opp_detail_proses = (id, komponen_kode, number) => {
 		beforeSend: function() {
 			$('.area-proses-opp').html(`<div id="loadingArea0">
 																			<center>
-																				<img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif">
+																				<img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/ripple.gif">
 																				<br>
-																				Sedang Mengambil Data...
+																				Sedang Menyiapkan Data...
 																			</center>
 																		</div>`)
 		},
@@ -357,7 +408,6 @@ $(document).ready(function() {
 												}
 											})
 	}
-
  $('.pilihseksiOPP').select2({
 		placeholder: "Cari Seksi",
 		ajax: {
@@ -702,4 +752,12 @@ const opp_add_data_in = () =>{
 
 function opp_min_data_in(ca) {
   $(`.opp_new_data_${ca}`).remove()
+}
+
+const opp_close_proses = () => {
+ let param_before = $('.opp_get_param').val();
+ let param = param_before.split('_');
+ $('#opp_modaldetail').modal('show');
+ opp_detail_proses(param[0], param[1], param[2]);
+
 }

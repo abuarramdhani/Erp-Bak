@@ -5,10 +5,10 @@
         <div class="box-header with-border">
           <center><h4 style="font-weight:bold;"><i class="fa fa-hourglass-3"></i> Order Keluar Prototype</h4></center>
         </div>
-        <div class="box-body" style="background:#f0f0f0 !important;">
+        <div class="box-body" style="background:#f0f0f0;">
           <div class="row">
             <div class="col-md-12" style="margin-top:10px">
-              <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">
+              <div class="box-body" style="background:#ffffff; border-radius:7px;margin-bottom:15px;">
                 <div class="table-responsive">
                   <table class="table table-striped table-bordered table-hover text-left opp_monitoring" style="font-size:11px;">
                     <thead>
@@ -35,7 +35,10 @@
                           <td><?php echo $val['qty'] ?></td>
                           <td><?php echo $val['no_order'] ?></td>
                           <td>-</td>
-                          <td style="text-align:center"> <button type="button" class="btn btn-sm btn-success" name="button"> <i class="fa fa-pencil"></i> </button> </td>
+                          <td style="text-align:center">
+                            -
+                            <!-- <button type="button" class="btn btn-sm btn-success" name="button"> <i class="fa fa-pencil"></i> </button> -->
+                           </td>
                         </tr>
                       <?php } ?>
                     </tbody>

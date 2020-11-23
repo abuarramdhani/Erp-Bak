@@ -16,7 +16,7 @@ class M_master extends CI_Model
                       // ->join('opp.proses p', 'p.id_order = o.id', 'right')
                       // ->join('opp.order_out oo', 'oo.id_order = o.id', 'left')
                       ->get('opp.order o')->result_array();
-
+    // echo  $this->db->last_query();
       if (!empty($res)) {
         foreach ($res as $key => $value) {
           $res[$key]['proses'] = $this->db->where('id_order', $value['id'])->get('opp.proses')->result_array();

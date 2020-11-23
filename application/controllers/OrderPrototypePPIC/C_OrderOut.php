@@ -59,6 +59,24 @@ class C_OrderOut extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
+    public function generateOrderOut($value='')
+    {
+       $max_id = $this->db->select_max('id')->get('opp.order_out')->row_array();
+       $data = $this->db->select('no_order_out')->where('id', $max_id['id'])->get('opp.order_out')->row_array();
+       $lastMemoNumber = $data['no_order_out'];
+
+      if (empty($lastMemoNumber)) {
+          $newMemoNumber = '000001';
+      } else {
+          $newNumber = $lastMemoNumber+1;
+          if (strlen($newNumber) < 6) {
+              $newNumber = str_pad($newNumber, 6, "0", STR_PAD_LEFT);
+          }
+          $newMemoNumber = $newNumber;
+      }
+      echo json_encode($newMemoNumber);
+    }
+
     public function addOrderOut($value='')
     {
       if ($this->input->is_ajax_request()) {

@@ -160,6 +160,36 @@ class C_OrderIn extends CI_Controller
       $this->load->view('OrderPrototypePPIC/ajax/V_DetailProses', $data);
     }
 
+    public function getEditProsesOPP()
+    {
+      $data['get'] = $this->M_master->getProsesOPP($this->input->post('id'));
+      $data['id'] = $this->input->post('id');
+      $data['no_urut'] = $this->input->post('nomer_urut');
+      $data['nama_proses'] = $this->db->order_by('nama_proses', 'asc')->get('opp.jenis_proses')->result_array();
+      $data['seksi'] = $this->M_master->getSeksi('');
+      $this->load->view('OrderPrototypePPIC/ajax/V_EditProses', $data);
+    }
+
+    public function edit_proses_opp($value='')
+    {
+      if ($this->input->is_ajax_request()) {
+        $data = $this->input->post('data');
+        $this->db->delete('opp.proses', ['id_order' => $data[0]['id_order']]);
+        foreach ($data as $key => $value) {
+          // echo "<pre>";print_r($value);
+          if ($value['id'] == 'n') {
+            unset($value['id']);
+            $this->db->insert('opp.proses', $value);
+          }else {
+            $this->db->insert('opp.proses', $value);
+          }
+        }
+        echo json_encode(1);
+      }else {
+        echo json_encode(0);
+      }
+    }
+
     // ============================ CHECK AREA =====================================
 
     public function cekapi()

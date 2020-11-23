@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table table-striped table-bordered table-hover text-left " <?= $no_urut != '0012' ? 'id="tblopp"' : '' ?> style="font-size:12px;">
+  <table class="table table-striped table-bordered table-hover text-left" <?= $no_urut != '0012' ? 'id="tblopp"' : '' ?> style="font-size:12px;">
     <thead>
       <tr class="bg-success">
         <th style="width:15%"><center>Urutan Proses</center></th>
@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <?php $no = 1; foreach ($get as $key => $g): ?>
+      <?php $no = 1; foreach ($get as $key => $g): $tampung[] = ['id' => $g['id'], 'proses' => $g['proses'], 'seksi' => $g['seksi']]; ?>
         <tr row-nya="<?php echo $no ?>">
           <td><center><?php echo $no; ?></center></td>
           <td><center><?php echo $g['proses'] ?></center></td>
@@ -32,9 +32,43 @@
     </tbody>
   </table>
 </div>
-
+<textarea hidden id="opp_tampung_id" rows="8" cols="80"><?php echo json_encode($tampung) ?></textarea>
 <script type="text/javascript">
 $('#tblopp').DataTable({
   "pageLength": 10,
+});
+
+$(document).ready(function () {
+  let tampung_ini = JSON.parse($('#opp_tampung_id').text());
+  let temp = {};
+  let tampung_id_ini = [];
+  tampung_ini.forEach((v, i) => {
+    temp[v.id] = v;
+    tampung_id_ini.push(v.id);
+  })
+  let opp_keranjang = $('#opp_keranjang').text();
+  let arr_keranjang = opp_keranjang.split(',');
+  let arr = [];
+  arr_keranjang.forEach((v, i) => {
+    arr.push(v.split('_'));
+  })
+  arr.pop();
+  arr.forEach((v, i) => {
+    if (tampung_id_ini.includes(v[0])) {
+      // console.log(v);
+      arr[i][2] = temp[v[0]].proses;
+      arr[i][3] = temp[v[0]].seksi;
+    }
+  });
+  arr.forEach((v, i) => {
+    arr[i] = v.join('_');
+  });
+  let final = arr.join(',');
+
+  if (final == '') {
+    $('#opp_keranjang').text('');
+  }else {
+    $('#opp_keranjang').text(final+',');
+  }
 });
 </script>
