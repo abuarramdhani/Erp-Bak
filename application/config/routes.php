@@ -2350,6 +2350,12 @@ $route['MasterPekerja/DataPekerjaKeluar/api/keluarga/delete']['post'] = 'MasterP
 $route['MasterPekerja/DataPekerjaKeluar/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1';
 $route['MasterPekerja/DataPekerjaKeluar/(:any)/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1/$2';
 
+// -------------------------------------------------Kesepakatan Kerja -------------------------------------------- //
+$route['MasterPekerja/KesepakatanKerja'] = 'MasterPekerja/Pekerja/KesepakatanKerja/C_Index';
+// custom here
+$route['MasterPekerja/KesepakatanKerja/api/(:any)'] = 'MasterPekerja/Pekerja/KesepakatanKerja/C_Api/$1';
+$route['MasterPekerja/KesepakatanKerja/(:any)'] = 'MasterPekerja/Pekerja/KesepakatanKerja/C_Index/$1';
+
 //----------------------------------------------- PENCARIAN PEKERJA -----------------------------------------------//
 $route['MasterPekerja/PencarianPekerja'] = 'MasterPekerja/Pekerja/PencarianPekerja/C_Index';
 $route['MasterPekerja/PencarianPekerja/api/(:any)'] = 'MasterPekerja/Pekerja/PencarianPekerja/C_Api/$1';
