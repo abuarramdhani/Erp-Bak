@@ -128,7 +128,7 @@ function approveMD() {
   var pengecekan = $('#checkDODO').val();
 
   $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/cekkpd',
+    url: baseurl + 'MonitoringDO/SettingDO/cek_checklist',
     type: 'POST',
     dataType : 'JSON',
     data: {
@@ -144,7 +144,7 @@ function approveMD() {
         Swal.fire({
           position: 'middle',
           type: 'error',
-          title: `No dokumen ${rm} sudah ter assign sebelumnya!`,
+          title: `Checklist belum dicetak!!`,
           showConfirmButton: true,
         }).then(function() {
           $('#MyModal2').modal('hide');
