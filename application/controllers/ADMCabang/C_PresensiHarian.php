@@ -79,8 +79,10 @@ class C_PresensiHarian extends CI_Controller
 				}
 			}
 
+
 			$angka1 = 1;
 			$simpan2 = 0;
+			$arr = [];
 			foreach ($pekerja as $val) {
 				$arr[$angka1] = array(
 					'noind' => $val['noind'],
@@ -613,4 +615,3 @@ class C_PresensiHarian extends CI_Controller
 		$pdf->Output($filename, 'D');
 	}
 }
-?>
