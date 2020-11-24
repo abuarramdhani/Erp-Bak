@@ -2,7 +2,7 @@
     [v-cloak] {
         display: none;
     }
-    
+
     html {
         scroll-behavior: smooth;
     }
@@ -34,24 +34,24 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-12">
-                                                <label class="control-label col-lg-2">Lokasi kerja</label>
-                                                <div class="col-lg-9">
-                                                    <select class="select select2" name="lokasilimbah" id="lokasilimbah" multiple="multiple" style="width: 100%" data-placeholder="Lokasi kerja">
-                                                        <option></option>
-                                                        <?php foreach ($loc as $key) {
-                                                            echo "<option value='".$key['location_code']."'>".$key['location_code']." - ".$key['location_name']."</option>";
-                                                        } ?>
-                                                    </select>
+                                                    <label class="control-label col-lg-2">Lokasi kerja</label>
+                                                    <div class="col-lg-9">
+                                                        <select class="select select2" name="lokasilimbah" id="lokasilimbah" multiple="multiple" style="width: 100%" data-placeholder="Lokasi kerja">
+                                                            <option></option>
+                                                            <?php foreach ($loc as $key) {
+                                                                echo "<option value='" . $key['location_code'] . "'>" . $key['location_code'] . " - " . $key['location_name'] . "</option>";
+                                                            } ?>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
                                                 <div class="form-group col-lg-12">
                                                     <label class="control-label col-lg-2 "> Jenis Limbah</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control select2" multiple name="jenisLimbah" id="jenisLimbah">
-															<?php foreach($jenisLimbah as $limbah): ?>
-															<option value="<?= $limbah['id_jenis_limbah'] ?>"><?= $limbah['kode_limbah'].' - '.$limbah['jenis_limbah'] ?></option>
-															<?php endforeach; ?>
-														</select>
+                                                            <?php foreach ($jenisLimbah as $limbah) : ?>
+                                                                <option value="<?= $limbah['id_jenis_limbah'] ?>"><?= $limbah['kode_limbah'] . ' - ' . $limbah['jenis_limbah'] ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
                                                         <small style="color: red; float: left;">*Kosongkan bila pilih semua jenis</small>
                                                     </div>
                                                 </div>
@@ -63,9 +63,9 @@
                                                     </div>
                                                     <div class="col-lg-5 text-right">
                                                         <button type="submit" class="btn btn-info">
-															<i v-if="isLoading" class="fa fa-spin fa-spinner"></i>
-															<span v-else>Proses</span>
-														</button>
+                                                            <i v-if="isLoading" class="fa fa-spin fa-spinner"></i>
+                                                            <span v-else>Proses</span>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -78,30 +78,37 @@
                     <div v-cloak v-if="dataLimbah.length || isDataLimbahEmpty" id="dataLimbah" class="col-lg-12">
                         <div class="box box-primary box-solid ">
                             <div class="box-header with-border ">
-                                <a v-if="dataLimbah.length" :href="urlExport" id="exportExcel" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Export Excel</a>
+                                <a v-if="dataLimbah.length" :href="urlExportExcel" id="exportExcel" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Export Excel</a>
+                                <a v-if="dataLimbah.length" :href="urlExportPdf" id="exportPdf" class="btn btn-sm btn-danger"><i class="fa fa-file-pdf-o"></i> Export PDF</a>
                             </div>
                             <div class="box-body">
                                 <div v-if="dataLimbah.length" class="table-responsive ">
-                                    <table id="tableLimbah" class="table table-striped table-bordered table-hover text-left" style="font-size: 12px; width: 600px; margin: 0 auto;">
+                                    <table id="tableLimbah" class="table table-striped table-bordered table-hover text-left" style="font-size: 12px; width: 800px; margin: 0 auto;">
                                         <thead class="bg-primary ">
                                             <tr>
-                                                <td width="5%">No</td>
-                                                <td>Jenis Limbah</td>
-                                                <td v-if="tableDetailed">Tanggal Masuk</td>
-                                                <td v-if="tableDetailed">Seksi Pengirim</td>
-                                                <td width="7%">Berat(Kg)</td>
+                                                <th width="5%">No</th>
+                                                <th>Jenis Limbah</th>
+                                                <th v-if="tableDetailed">Pekerja Pengirim</th>
+                                                <th v-if="tableDetailed">Tanggal Masuk</th>
+                                                <th v-if="tableDetailed">Waktu</th>
+                                                <th v-if="tableDetailed">Seksi Pengirim</th>
+                                                <th v-if="tableDetailed">Jumlah Limbah</th>
+                                                <th width="7%">Berat(Kg)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(item, index) of dataLimbah">
                                                 <td>{{ index+1 }}</td>
                                                 <td>{{ item.jenis_limbah }}</td>
+                                                <td v-if="tableDetailed">{{item.pekerja}}</td>
                                                 <td v-if="tableDetailed">{{ item.tanggal_kirim }}</td>
+                                                <td v-if="tableDetailed">{{item.waktu}}</td>
                                                 <td v-if="tableDetailed">{{ item.section_name }}</td>
+                                                <td v-if="tableDetailed">{{item.jumlahall}}</td>
                                                 <td>{{ Number(item.berat_kirim) }}</td>
                                             </tr>
                                             <tr>
-                                                <td :colspan="tableDetailed ? 4 : 2">Total Berat Limbah</td>
+                                                <td :colspan="tableDetailed ? 7 : 2">Total Berat Limbah</td>
                                                 <td>{{ Number(beratTotal) }}</td>
                                             </tr>
                                         </tbody>
@@ -167,7 +174,7 @@
                 params: {
                     start: '',
                     end: '',
-                    lokasi:[],
+                    lokasi: [],
                     jenis: []
                 },
                 dataLimbah: [],
@@ -228,10 +235,21 @@
                 }
                 return beratTotal.toFixed(3)
             },
-            urlExport() {
+            urlExportExcel() {
                 const vm = this
                 let urlExport = baseurl + 'WasteManagement/MonitoringLimbah/CetakExcel?'
-
+                let params = {
+                    start: vm.params.start,
+                    end: vm.params.end,
+                    jenis: vm.params.jenis,
+                    lokasi: vm.params.lokasi,
+                    detailed: vm.detailed ? 1 : 0,
+                }
+                return urlExport + $.param(params)
+            },
+            urlExportPdf() {
+                const vm = this
+                let urlExport = baseurl + 'WasteManagement/MonitoringLimbah/CetakPdf?'
                 let params = {
                     start: vm.params.start,
                     end: vm.params.end,
@@ -239,7 +257,6 @@
                     lokasi: vm.params.lokasi,
                     detailed: vm.detailed ? 1 : 0
                 }
-
                 return urlExport + $.param(params)
             }
         }

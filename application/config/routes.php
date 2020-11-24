@@ -1540,6 +1540,7 @@ $route['WasteManagement/KirimanMasuk'] = 'WasteManagement/MainMenu/C_LimbahKelol
 $route['WasteManagement/KirimanMasuk/(:any)'] = 'WasteManagement/MainMenu/C_LimbahKelola/$1';
 $route['WasteManagement/KirimanMasuk/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahKelola/$1/$2';
 $route['WasteManagement/KirimanMasuk/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahKelola/$1/$2/$3';
+$route['WasteManagement/KirimanMasuk/(:any)/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahKelola/$1/$2/$3/$4';
 $route['WasteManagement/Simple'] = 'WasteManagement/MainMenu/C_Simple';
 $route['WasteManagement/Simple/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1';
 $route['WasteManagement/Simple/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1/$2';
@@ -1548,6 +1549,7 @@ $route['WasteManagement/MonitoringLimbah'] = 'WasteManagement/MainMenu/C_Monitor
 $route['WasteManagement/MonitoringLimbah/Process'] = 'WasteManagement/MainMenu/C_Monitoring/Process';
 $route['WasteManagement/MonitoringLimbah/api/getDataLimbah'] = 'WasteManagement/MainMenu/C_Monitoring/apiGetDataLimbah';
 $route['WasteManagement/MonitoringLimbah/CetakExcel'] = 'WasteManagement/MainMenu/C_Monitoring/cetakExcel';
+$route['WasteManagement/MonitoringLimbah/CetakPdf'] = 'WasteManagement/MainMenu/C_Monitoring/cetakPdf';
 
 //-----------------------------------------Waste Management - Rekap Limbah ---------------------------------//
 
