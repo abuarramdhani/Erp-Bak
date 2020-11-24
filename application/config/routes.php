@@ -4879,3 +4879,7 @@ $route['PengembanganSistem/print_lkh'] = 'PengembanganSistem/Penomoran/C_Penomor
 $route['PengembanganSistem/excel_lkh'] = 'PengembanganSistem/Penomoran/C_Penomoran/excel_lkh/';
 $route['PengembanganSistem/input_lkh_ps'] = 'PengembanganSistem/Penomoran/C_Penomoran/input_lkh_proses/';
 $route['PengembanganSistem/delete_lkh/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_lkh/$1';
+
+//------------------------------- Cetak Jumlah Pekerja ------------------------------------------------------------------
+$route['MasterPekerja/Jumlahpekerja/(:any)'] = 'MasterPekerja/CetakJumlahPekerja/C_JumlahPekerja/$1';
+$route['MasterPekerja/Jumlahpekerja/(:any)/(:any)'] = 'MasterPekerja/CetakJumlahPekerja/C_JumlahPekerja/$1/$2';

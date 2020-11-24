@@ -5777,3 +5777,246 @@ $(document).ready(function () {
 });
 
   //End Cetak Kategori
+
+//Cetak Jumlah Pekerja
+$(document).ready(function () {
+  $("#CJP_TxtFilter").select2({
+    searching: true,
+    placeholder: "Search",
+    allowClear: true,
+    ajax: {
+      url: baseurl + "MasterPekerja/Jumlahpekerja/Getrbtck",
+      dataType: "json",
+      delay: 500,
+      type: "GET",
+      data: function (params) {
+        return {
+          term: params.term,
+          rbtckvalue: $("input[name=rbtck]:checked").val()
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (obj) {
+            if ($("input[name=rbtck]:checked").val() == "departemen") {
+              return {
+                id: obj.kode,
+                text: obj.dept
+              };
+            } else if ($("input[name=rbtck]:checked").val() == "unit") {
+              return {
+                id: obj.kode,
+                text: obj.unit
+              };
+            } else if ($("input[name=rbtck]:checked").val() == "seksi") {
+              return {
+                id: obj.kode,
+                text: obj.seksi
+              };
+            }
+            else if ($("input[name=rbtck]:checked").val() == "lokasi") {
+              return {
+                id: obj.id_,
+                text: obj.id_ + " " + obj.lokasi_kerja
+              };
+            }
+            else if ($("input[name=rbtck]:checked").val() == "all") {
+              return {
+                id: "",
+                text: ""
+              };
+            }
+          })
+        };
+      }
+    }
+  });
+
+  $(window).on('load', function () {
+    $(".rbtcjp").on('ifToggled', function () {
+      if ($("#CJP_All").prop("checked")) {
+        $("#CJP_TxtFilter").prop("disabled", true);
+        $('#CJP_TxtFilter').val(null).trigger('change');
+      }
+      else {
+        $("#CJP_TxtFilter").prop("disabled", false);
+      }
+
+      var $rbtckval = $("input[name=rbtck]:checked").val();
+      $("#CJP_Txtlabel").text("Pilih " + $rbtckval + " :");
+
+    });
+
+  });
+
+  $(document).on("click", "#CJP_viewall", function () {
+    var loading = baseurl + "assets/img/gif/loadingquick.gif";
+    if ($("input[name=rbtck]:checked").val() == "lokasi") {
+      var kuku = "lok";
+    } else if ($("input[name=rbtck]:checked").val() == "all") {
+      var kuku = "sie"
+    }
+    $.ajax({
+      type: "POST",
+      data: {
+        id: $("#CJP_TxtFilter").val(),
+        macan: kuku
+      },
+      url: baseurl + "MasterPekerja/Jumlahpekerja/GetJumlah",
+      beforeSend: function () {
+        swal.fire({
+          html: "<div><img style='width: 320px; height: auto;'src='" +
+            loading +
+            "'><br><p>Sedang Proses....</p></div>",
+          customClass: "swal-wide",
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
+      },
+      success: function (result) {
+        swal.close();
+        $("#CJP_Table").html(result);
+
+        $("#CJP_Tabledata").DataTable({
+          dom: "lfrtip",
+          columnDefs: [{
+            targets: [0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+            "orderable": false,
+            className: "text-center"
+          },],
+          initComplete: function () {
+            $("#CJP_Tabledata").wrap(
+              "<div style='overflow:auto; width:100%;position:relative;'></div>"
+            );
+            $('.dataTables_filter input[type="search"]').css(
+              { 'width': '350px', 'display': 'inline-block' }
+            );
+          },
+        });
+      }
+    });
+
+  });
+
+  //Tab Pendidikan
+
+  $("#CJP_TxtFilterp").select2({
+    searching: true,
+    placeholder: "Search",
+    allowClear: true,
+    ajax: {
+      url: baseurl + "MasterPekerja/Jumlahpekerja/Getrbtck",
+      dataType: "json",
+      delay: 500,
+      type: "GET",
+      data: function (params) {
+        return {
+          term: params.term,
+          rbtckvalue: $("input[name=rbtckp]:checked").val()
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (obj) {
+            if ($("input[name=rbtckp]:checked").val() == "departemen") {
+              return {
+                id: obj.kode,
+                text: obj.dept
+              };
+            } else if ($("input[name=rbtckp]:checked").val() == "unit") {
+              return {
+                id: obj.kode,
+                text: obj.unit
+              };
+            } else if ($("input[name=rbtckp]:checked").val() == "seksi") {
+              return {
+                id: obj.kode,
+                text: obj.seksi
+              };
+            }
+            else if ($("input[name=rbtckp]:checked").val() == "lokasi") {
+              return {
+                id: obj.id_,
+                text: obj.id_ + " " + obj.lokasi_kerja
+              };
+            }
+            else if ($("input[name=rbtckp]:checked").val() == "all") {
+              return {
+                id: "",
+                text: ""
+              };
+            }
+          })
+        };
+      }
+    }
+  });
+
+
+  $(window).on('load', function () {
+    $(".rbtcjpp").on('ifToggled', function () {
+      if ($("#CJP_Allp").prop("checked")) {
+        $("#CJP_TxtFilterp").prop("disabled", true);
+        $('#CJP_TxtFilterp').val(null).trigger('change');
+      }
+      else {
+        $("#CJP_TxtFilterp").prop("disabled", false);
+      }
+      var $rbtckval = $("input[name=rbtckp]:checked").val();
+      $("#CJP_Txtlabelp").text("Pilih " + $rbtckval + " :");
+
+    });
+
+  });
+
+  $(document).on("click", "#CJP_viewallp", function () {
+    var loading = baseurl + "assets/img/gif/loadingquick.gif";
+    if ($("input[name=rbtckp]:checked").val() == "lokasi") {
+      var rbtval = "lok";
+    } else if ($("input[name=rbtckp]:checked").val() == "all") {
+      var rbtval = "sie"
+    }
+    $.ajax({
+      type: "POST",
+      data: {
+        id: $("#CJP_TxtFilterp").val(),
+        rbtfilterval: rbtval
+      },
+      url: baseurl + "MasterPekerja/Jumlahpekerja/GetJumlahPend",
+      beforeSend: function () {
+        swal.fire({
+          html: "<div><img style='width: 320px; height: auto;'src='" +
+            loading +
+            "'><br><p>Sedang Proses....</p></div>",
+          customClass: "swal-wide",
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
+      },
+      success: function (result) {
+        swal.close();
+        $("#CJP_Tablep").html(result);
+
+        $("#CJP_Tabledatap").DataTable({
+          dom: "lfrtip",
+          paging: false,
+          columnDefs: [{
+            targets: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+            "orderable": false,
+            className: "text-center"
+          },],
+
+          initComplete: function () {
+            $("#CJP_Tabledatap").wrap(
+              "<div style='overflow:auto; width:100%;position:relative;'></div>"
+            );
+          },
+        });
+      }
+    });
+  });
+
+});
+
+
+//End Cetak Jumlah Pekerja
