@@ -98,6 +98,27 @@ function getLihatStock(no, ket) {
 			
 		request.done(function(result){
 			$('#tb_lihatstock').html(result);
+            // $('.myTable').dataTable({
+            //     "scrollX": true,
+            // });
+			$('.myTable').dataTable({
+				dom: 'lfrtBip',
+				scrollY : true,
+                "scrollX": true,
+				buttons: [{
+					extend: 'excel',
+					title: 'Stock Gudang Sparepart',
+					message:'Periode : '+tglAw+' - '+tglAk+'',
+					text: '<i class="fa fa-download"></i> Download',
+					exportOptions: {
+						columns: ':visible',
+						columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+					},
+				}        
+			
+			],
+			 order: [[0, 'asc']]
+			});
 		});
 }
 
