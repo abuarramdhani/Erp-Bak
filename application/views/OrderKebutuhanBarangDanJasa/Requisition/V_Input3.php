@@ -170,7 +170,7 @@
                                         <tr>
                                             <th>Tanggal Kebutuhan (Need By Date/NBD)</th>
                                             <th>:</th>
-                                            <td><input type="text" class="form-control nbdOKB" name="txtOKBnbd[]" id="" required style="background-color: #fbfb5966; width: 250px;"></td>
+                                            <td><input type="text" class="form-control nbdOKB" name="txtOKBnbd[]" id="" required style="background-color: #fbfb5966; width: 250px;" autocomplete="off"></td>
                                         </tr>
                                         <tr>
                                             <th>Destination Type</th>

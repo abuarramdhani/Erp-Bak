@@ -148,6 +148,7 @@ $(document).ready(function () {
                             allow_desc : item.ALLOW_DESC,
                             cut_off : item.CUTOFF_TERDEKAT,
                             txt : item.SEGMENT1,
+                            setup_item : item.SETUP_ITEM,
                         }
                     })
                 };
@@ -185,6 +186,7 @@ $(document).ready(function () {
                             allow_desc : item.ALLOW_DESC,
                             cut_off : item.CUTOFF_TERDEKAT,
                             txt : item.SEGMENT1,
+                            setup_item : item.SETUP_ITEM,
                         }
                     })
                 };
@@ -220,22 +222,106 @@ $(document).ready(function () {
             secondary_uom = $(this).select2('data')[0]['uom2'];
             cutoff_terdekat = $(this).select2('data')[0]['cut_off'];
             inv_item_id = $(this).val();
+            setup_item = $(this).select2('data')[0]['setup_item'];
 
             var prn = $(this).parentsUntil('.tblOKBOrderNew');
-            // console.log(prn)
+            if (setup_item != 'BELUM DI SET') {
+                // console.log(prn)
 
-            prn.find('.slcOKBNewOrderListNamaBarang').val(ItemName);
-            prn.find('.slcOKBNewOrderListNamaBarang').empty();
-            var html = '<option value="'+inv_item_id+'">'+ItemName+'</option>';
+                prn.find('.slcOKBNewOrderListNamaBarang').val(ItemName);
+                prn.find('.slcOKBNewOrderListNamaBarang').empty();
+                var html = '<option value="'+inv_item_id+'">'+ItemName+'</option>';
 
-            prn.find('.slcOKBNewOrderListNamaBarang').append(html);
-            prn.find('.slcOKBNewOrderListNamaBarang').val(inv_item_id).trigger('change.select2');
+                prn.find('.slcOKBNewOrderListNamaBarang').append(html);
+                prn.find('.slcOKBNewOrderListNamaBarang').val(inv_item_id).trigger('change.select2');
+
+                prn.find('.leadtimeOKB').val(leadtime);
+                prn.find('.kategoriItemOKB').val(kategoriItem);
+
+                prn.find('.btnOKBStokNew').val(itemkode);
+                prn.find('.btnOKBStokNew').removeAttr('style');
+
+                var desc = prn.find('.txaOKBNewOrderDescription');
+                if (allow_desc == 'Y') {
+                    desc.removeAttr('readonly');
+                    desc.attr('required','required');
+                    desc.attr({
+                        style: 'height: 34px; width:360px; background-color :#fbfb5966;'
+                    });
+                }else{
+                    desc.val(ItemName);
+                    desc.attr('readonly','readonly');
+                    desc.attr({
+                        style: 'height: 34px; width:360px;'
+                    });
+                }
+
+                //uom
+                var html = '<option value="'+primary_uom+'" selected>'+primary_uom+'</option>';
+                if (secondary_uom != null && secondary_uom!='') {
+                    html += '<option value="'+secondary_uom+'">'+secondary_uom+'</option>';
+                }
+
+                prn.find('.slcOKBNewUomList').html(html);
+                prn.find('.slcOKBNewUomList').val(primary_uom).trigger('change.select2');
+                // end uom
+
+                prn.find('.hdnItemCodeOKB').val(itemkode+' - '+ItemName);
+
+                //nbd
+                // prn.find('.nbdOKB').val(nbd);
+                prn.find('.hdnEstArrivalOKB').html(nbd);
+                prn.find('.hdnECutOffOKB').html(cutoff_terdekat);
+                prn.find('.hdnTemporaryNbd').val(nbd);
+                // prn.find('.nbdOKB').attr('style', 'background-color : #00bf024d; width:150px;');
+                
+                $('.nbdOKB').datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    format: 'dd-M-yyyy'
+                });
+                //end nbd
+
+                destinationLine(prn);
+            }else{
+                swal.fire({
+                    type: 'error',
+                    title: 'Item ini belum di setting, Silahkan hubungi Pembelian!'
+                })
+                $(this).val('').trigger('change.select2');
+                prn.find('.slcOKBNewOrderListNamaBarang').val('').trigger('change.select2');
+            }
+
+            
+    });
+
+    $(document).on('change','.slcOKBNewOrderListNamaBarang', function () {
+        ItemName = $(this).select2('data')[0]['title'];
+        itemkode = $(this).select2('data')[0]['txt'];
+        leadtime = $(this).select2('data')[0]['leadtime'];
+        nbd = $(this).select2('data')[0]['nbd'];
+        allow_desc = $(this).select2('data')[0]['allow_desc'];
+        kategoriItem = $(this).select2('data')[0]['kategori_item'];
+        primary_uom = $(this).select2('data')[0]['uom1'];
+        secondary_uom = $(this).select2('data')[0]['uom2'];
+        cutoff_terdekat = $(this).select2('data')[0]['cut_off'];
+        inv_item_id = $(this).val();
+        setup_item = $(this).select2('data')[0]['setup_item'];
+
+        var prn = $(this).parentsUntil('.tblOKBOrderNew');
+
+        if (setup_item != 'BELUM DI SET') {
+            prn.find('.btnOKBStokNew').val(itemkode);
+            prn.find('.btnOKBStokNew').removeAttr('style');
+
+            prn.find('.slcOKBNewOrderList').empty();
+            var html = '<option value="'+inv_item_id+'">'+itemkode+'</option>';
+
+            prn.find('.slcOKBNewOrderList').append(html);
+            prn.find('.slcOKBNewOrderList').val(inv_item_id).trigger('change.select2');
 
             prn.find('.leadtimeOKB').val(leadtime);
             prn.find('.kategoriItemOKB').val(kategoriItem);
-
-            prn.find('.btnOKBStokNew').val(itemkode);
-            prn.find('.btnOKBStokNew').removeAttr('style');
 
             var desc = prn.find('.txaOKBNewOrderDescription');
             if (allow_desc == 'Y') {
@@ -270,85 +356,25 @@ $(document).ready(function () {
             prn.find('.hdnECutOffOKB').html(cutoff_terdekat);
             prn.find('.hdnTemporaryNbd').val(nbd);
             // prn.find('.nbdOKB').attr('style', 'background-color : #00bf024d; width:150px;');
-            
+                
             $('.nbdOKB').datepicker({
                 autoclose: true,
                 todayHighlight: true,
                 format: 'dd-M-yyyy'
             });
-            //end nbd
+                //end nbd
 
             destinationLine(prn);
-    });
-
-    $(document).on('change','.slcOKBNewOrderListNamaBarang', function () {
-        ItemName = $(this).select2('data')[0]['title'];
-        itemkode = $(this).select2('data')[0]['txt'];
-        leadtime = $(this).select2('data')[0]['leadtime'];
-        nbd = $(this).select2('data')[0]['nbd'];
-        allow_desc = $(this).select2('data')[0]['allow_desc'];
-        kategoriItem = $(this).select2('data')[0]['kategori_item'];
-        primary_uom = $(this).select2('data')[0]['uom1'];
-        secondary_uom = $(this).select2('data')[0]['uom2'];
-        cutoff_terdekat = $(this).select2('data')[0]['cut_off'];
-        inv_item_id = $(this).val();
-
-        var prn = $(this).parentsUntil('.tblOKBOrderNew');
-
-        prn.find('.btnOKBStokNew').val(itemkode);
-        prn.find('.btnOKBStokNew').removeAttr('style');
-
-        prn.find('.slcOKBNewOrderList').empty();
-        var html = '<option value="'+inv_item_id+'">'+itemkode+'</option>';
-
-        prn.find('.slcOKBNewOrderList').append(html);
-        prn.find('.slcOKBNewOrderList').val(inv_item_id).trigger('change.select2');
-
-        prn.find('.leadtimeOKB').val(leadtime);
-        prn.find('.kategoriItemOKB').val(kategoriItem);
-
-        var desc = prn.find('.txaOKBNewOrderDescription');
-        if (allow_desc == 'Y') {
-            desc.removeAttr('readonly');
-            desc.attr('required','required');
-            desc.attr({
-                style: 'height: 34px; width:360px; background-color :#fbfb5966;'
-            });
         }else{
-            desc.val(ItemName);
-            desc.attr('readonly','readonly');
-            desc.attr({
-                style: 'height: 34px; width:360px;'
-            });
+            swal.fire({
+                type: 'error',
+                title: 'Item ini belum di setting, Silahkan hubungi Pembelian!'
+            })
+            $(this).val('').trigger('change.select2');
+            prn.find('.slcOKBNewOrderList').val('').trigger('change.select2');
         }
 
-        //uom
-        var html = '<option value="'+primary_uom+'" selected>'+primary_uom+'</option>';
-        if (secondary_uom != null && secondary_uom!='') {
-            html += '<option value="'+secondary_uom+'">'+secondary_uom+'</option>';
-        }
-
-        prn.find('.slcOKBNewUomList').html(html);
-        prn.find('.slcOKBNewUomList').val(primary_uom).trigger('change.select2');
-        // end uom
-
-        prn.find('.hdnItemCodeOKB').val(itemkode+' - '+ItemName);
-
-        //nbd
-        // prn.find('.nbdOKB').val(nbd);
-        prn.find('.hdnEstArrivalOKB').html(nbd);
-        prn.find('.hdnECutOffOKB').html(cutoff_terdekat);
-        prn.find('.hdnTemporaryNbd').val(nbd);
-        // prn.find('.nbdOKB').attr('style', 'background-color : #00bf024d; width:150px;');
-            
-        $('.nbdOKB').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            format: 'dd-M-yyyy'
-        });
-            //end nbd
-
-        destinationLine(prn);
+        
     });
 
     $(document).on('input','.txtOKBNewOrderListQty', function(event) {
@@ -571,7 +597,7 @@ $(document).ready(function () {
                     '<tr>'+
                         '<th>Tanggal Kebutuhan (Need By Date/NBD)</th>'+
                         '<th>:</th>'+
-                        '<td><input type="text" class="form-control nbdOKB" name="txtOKBnbd[]" id="" required style="background-color: #fbfb5966; width:250px;"></td>'+
+                        '<td><input type="text" class="form-control nbdOKB" name="txtOKBnbd[]" id="" required style="background-color: #fbfb5966; width:250px;" autocomplete="off"></td>'+
                     '</tr>'+
                     '<tr>'+
                         '<th>Destination Type</th>'+
@@ -716,6 +742,7 @@ $(document).ready(function () {
                                 allow_desc : item.ALLOW_DESC,
                                 cut_off : item.CUTOFF_TERDEKAT,
                                 txt : item.SEGMENT1,
+                                setup_item : item.SETUP_ITEM,
                             }
                         })
                     };
@@ -751,6 +778,7 @@ $(document).ready(function () {
                                 allow_desc : item.ALLOW_DESC,
                                 cut_off : item.CUTOFF_TERDEKAT,
                                 txt : item.SEGMENT1,
+                                setup_item : item.SETUP_ITEM,
                             }
                         })
                     };
