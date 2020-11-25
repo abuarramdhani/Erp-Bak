@@ -77,14 +77,15 @@ class M_presensibulanan extends Ci_Model
 			$sql = "select a.noind,a.nama, b.seksi
 				 from hrd_khs.tpribadi a
 				 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-					 where left(a.kodesie,7) in ('3060403', '3060404')
+					 where left(a.kodesie,7) in (left('$kd', 7), '3060403', '3060404')
 					 and a.keluar = false
 				 order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
 			$sql = "select a.noind,a.nama, b.seksi
 				 from hrd_khs.tpribadi a
 				 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-					 where left(a.kodesie, 7) in ('3240101', '3250201')
+					 where left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201')
+					 or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'
 					 and a.keluar = false
 				 order by a.kodesie,a.noind;";
 		} else {
