@@ -2,7 +2,7 @@
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;" >
     <tr>
         <td style="width: 60%;font-weight:bold;font-size:15px;">PT. <?= $data[0]['ekspedisi']?></td>
-        <td colspan="2" style="width: 40%; border:1px solid black; border-bottom :0px; border-collapse: collapse;text-align:center;font-weight:bold">MANIVEST PENYERAHAN PAKET</td>
+        <td colspan="2" style="width: 40%; border:1px solid black; border-bottom :0px; border-collapse: collapse;text-align:center;font-weight:bold">MANIFEST PENYERAHAN PAKET</td>
     </tr>
     <tr>
         <td style="width: 60%;font-weight:bold;font-size:15px;">PERWAKILAN, YOGYAKARTA</td>
