@@ -1,12 +1,3 @@
-<script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.js');?>"></script>
-	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
-    <script>
-         $(document).ready(function () {
-            $('.myTable').dataTable({
-                "scrollX": true,
-            });
-         });
-    </script>
 <div class="table-responsive">
     <table class="datatable table table-bordered table-hover table-striped myTable text-center" id="myTable" style="width: 100%;">
         <thead class="bg-primary text-nowrap">

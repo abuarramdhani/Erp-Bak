@@ -13,7 +13,13 @@
             
             });
     </script>
-
+<style>
+.buttons-excel{
+	background-color:#f39c12;
+    color:white;
+	font-size:20px;
+}
+</style>
 
 <section class="content">
     <div class="inner">
