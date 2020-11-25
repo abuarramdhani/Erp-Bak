@@ -1232,3 +1232,42 @@ function editColy(no) {
         })
 }
 
+//---------------------------------------HISTORY-----------------------------------------------------------------------------
+
+function detailJenisItem(no) {
+    var tanggal = $('#tgl_input'+no).val();
+
+    $.ajax({
+        url : baseurl + "KapasitasGdSparepart/History/detailJenisItem",
+        data : {tanggal : tanggal},
+        type : 'POST',
+        datatype : "html",
+        success : function (result) {
+            $('#datajenisitem').html(result);
+            $('#detailjenisitem').modal('show'); 
+            $('#tbl_jenisitem').dataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
+function schPICdospb(th) {
+    var tgl_awal = $('#tglAwal').val();
+    var tgl_akhir = $('#tglAkhir').val();
+    $.ajax({
+        url : baseurl + "KapasitasGdSparepart/History/searchDataPIC",
+        data : {tgl_awal : tgl_awal, tgl_akhir : tgl_akhir},
+        type : 'POST',
+        datatype : "html",
+        beforeSend: function() {
+            $('div#tbl_pic_dospb' ).html('<center><img style="width:80px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function (result) {
+            $('div#tbl_pic_dospb' ).html(result);
+            $('#tbl_pic_history').dataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}

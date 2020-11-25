@@ -8,7 +8,7 @@ class M_history extends CI_Model {
 
     public function getDataSPB($query) {
         $oracle = $this->load->database('oracle', true);
-        $sql ="select distinct tgl_dibuat, jam_input as jam,
+        $sql ="select distinct no_dokumen, tgl_dibuat, jam_input as jam,
                 to_char(jam_input, 'DD/MM/YYYY') as jam_input,
                 to_char(jam_input, 'YYYYMMDD') as tgl_input,
                 selesai_pelayanan, selesai_pengeluaran, selesai_packing,
@@ -19,7 +19,8 @@ class M_history extends CI_Model {
                 to_char(selesai_pengeluaran, 'YYYYMMDD') as tgl_pengeluaran,
                 to_char(selesai_packing, 'YYYYMMDD') as tgl_packing,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                waktu_pelayanan, waktu_pengeluaran, waktu_packing
+                waktu_pelayanan, waktu_pengeluaran, waktu_packing,
+                pic_pelayan, pic_pengeluaran, pic_packing
                 from khs_tampung_spb
                 where cancel is null
                 $query
@@ -139,6 +140,51 @@ class M_history extends CI_Model {
         $sql = "SELECT nomor_do, count(nomor_do) jumlah
         FROM sp_packing_trx
         group by nomor_do";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function getItemDOSPB() {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT bb.jam_input, bb.no_dokumen, bb.jenis_dokumen, bb.jumlah_item, bb.jumlah_pcs, bb.waktu_pelayanan, bb.waktu_pengeluaran, 
+                        bb.waktu_packing,
+                        (CASE
+                            WHEN cek > 1
+                            THEN 'SAP'
+                            ELSE bb.jenis_item
+                        END) FINAL
+                FROM (SELECT aa.*,
+                                COUNT (aa.jenis_item) OVER (PARTITION BY aa.no_dokumen) cek
+                        FROM (SELECT DISTINCT kts.*,
+                                                (CASE
+                                                    WHEN msib.segment1 LIKE 'IAO%'
+                                                    OR msib.segment1 LIKE 'IAP%'
+                                                        THEN 'VBELT'
+                                                    WHEN msib.segment1 LIKE 'IAA%'
+                                                    OR msib.segment1 LIKE 'IAB%'
+                                                        THEN 'DIESEL'
+                                                    ELSE 'SAP'
+                                                END
+                                                ) jenis_item
+                                            FROM khs_tampung_spb kts,
+                                                mtl_txn_request_headers mtrh,
+                                                mtl_txn_request_lines mtrl,
+                                                mtl_system_items_b msib
+                                        WHERE kts.no_dokumen = mtrh.request_number
+                                            AND mtrh.header_id = mtrl.header_id
+                                            AND msib.inventory_item_id = mtrl.inventory_item_id
+                                            AND msib.organization_id = mtrl.organization_id
+                --                                     AND kts.no_dokumen IN (3491432, 3491929, 3752313,3853066) --VBELT, CAMPURAN, DIESEL, SAP
+                                                            ) aa) bb
+                ORDER BY 1";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
+
+    public function getPIC(){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select * from khs_tabel_user order by pic";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
