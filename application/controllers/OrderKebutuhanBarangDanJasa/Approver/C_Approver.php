@@ -249,7 +249,11 @@ class C_Approver extends CI_Controller {
             }
 
 
-            $this->M_approver->ApproveOrder($orderid[$i], $person_id, $approve);
+            if ($person_id == '1513') {
+                $this->M_approver->ApproveOrderKaDep($orderid[$i], $person_id, $approve);
+            }else{
+                $this->M_approver->ApproveOrder($orderid[$i], $person_id, $approve, $approval_position[0]['APPROVER_TYPE']);
+            }
 
             if ($person_id == $orderStatus[0]['APPROVER_ID']) {
                 if ($judgment == 'A') {
@@ -425,7 +429,7 @@ class C_Approver extends CI_Controller {
                                 $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
     
     
-                        $this->EmailAlert($noindemail,$subject,$body);
+                        // $this->EmailAlert($noindemail,$subject,$body);
         
                 }
 
@@ -511,7 +515,7 @@ class C_Approver extends CI_Controller {
                     $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
         
         
-                    $this->EmailAlert($noindemail,$subject,$body);
+                    // $this->EmailAlert($noindemail,$subject,$body);
                 }
             }
 
@@ -595,7 +599,7 @@ class C_Approver extends CI_Controller {
                     $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
         
                     if ($namaApprover != $namaRequester) {
-                        $this->EmailAlert($noindemail,$subject,$body);
+                        // $this->EmailAlert($noindemail,$subject,$body);
                     }
                 }
             }

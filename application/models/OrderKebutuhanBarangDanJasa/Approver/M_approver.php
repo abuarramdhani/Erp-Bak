@@ -25,7 +25,17 @@ class M_approver extends CI_Model
         return $query->result_array();
     }
 
-    public function ApproveOrder($orderid, $person_id, $approve)
+    public function ApproveOrder($orderid, $person_id, $approve, $type)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->set('JUDGEMENT_DATE',"SYSDATE",false);
+        $oracle->where('APPROVER_ID', $person_id);
+        $oracle->where('APPROVER_TYPE', $type);
+        $oracle->where('ORDER_ID', $orderid);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_APPROVAL', $approve);
+    }
+
+    public function ApproveOrderKaDep($orderid, $person_id, $approve)
     {
         $oracle = $this->load->database('oracle', true);
         $oracle->set('JUDGEMENT_DATE',"SYSDATE",false);
@@ -174,7 +184,7 @@ class M_approver extends CI_Model
     public function checkPositionApprover($orderid,$person_id)
     {
         $oracle = $this->load->database('oracle', true);
-        $query =$oracle->query("SELECT APPROVER_TYPE from KHS.KHS_OKBJ_ORDER_APPROVAL where ORDER_ID='$orderid' and APPROVER_ID='$person_id'");
+        $query =$oracle->query("SELECT APPROVER_TYPE from KHS.KHS_OKBJ_ORDER_APPROVAL where ORDER_ID='$orderid' and APPROVER_ID='$person_id' AND JUDGEMENT IS NULL");
         
         return $query->result_array();
     }
