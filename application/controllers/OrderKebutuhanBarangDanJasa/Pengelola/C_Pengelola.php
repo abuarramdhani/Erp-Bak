@@ -329,7 +329,7 @@ class C_Pengelola extends CI_Controller {
 
             $approve = array('JUDGEMENT' => $judgement, );
 
-            $this->M_approver->ApproveOrder($ordid[0], $person_id, $approve);
+            $this->M_approver->ApproveOrderKaDep($ordid[0], $person_id, $approve);
             
             // if ($ordid[1] != '' || $ordid[1]!= null) {
                 $classOrder = array(

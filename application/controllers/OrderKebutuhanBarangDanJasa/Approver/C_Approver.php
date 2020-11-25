@@ -249,7 +249,11 @@ class C_Approver extends CI_Controller {
             }
 
 
-            $this->M_approver->ApproveOrder($orderid[$i], $person_id, $approve);
+            if ($person_id == '1513') {
+                $this->M_approver->ApproveOrderKaDep($orderid[$i], $person_id, $approve);
+            }else{
+                $this->M_approver->ApproveOrder($orderid[$i], $person_id, $approve, $approval_position[0]['APPROVER_TYPE']);
+            }
 
             if ($person_id == $orderStatus[0]['APPROVER_ID']) {
                 if ($judgment == 'A') {
