@@ -221,55 +221,56 @@ class C_Penomoran extends CI_Controller
 
 	public function upload_data_flow($id_data)
 	{
-        $this->load->library('upload');
-		$judul_fp = $this->input->post('judul_fp');
-		$status = $this->input->post('status');
-		 
-		$nmfile = $_FILES['file_flow_ps']['name'];
-			$l = explode('.',$nmfile);
-				$s = $l[1];
-		$judul_baru = $id_data.'-'.$judul_fp.'.'.$s;
-		$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
-        $config['upload_path'] = 'assets/upload/Peng.Sistem/fp/';
-        $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|pdf|';
-        $config['max_size'] = '3072';
-        $config['max_width']  = '5000';
-        $config['max_height']  = '5000';
-		$config['file_name'] = $nama_baru;
-		
-        $this->upload->initialize($config);
-        
-        if($_FILES['file_flow_ps']['name'])
-        {
-            if ($this->upload->do_upload('file_flow_ps'))
-            {
-                $gbr = $config['file_name'];
-                $data = array(
-                  'file' =>$gbr,
-                  'status_doc' =>$status
-                  
-                );
-                $this->M_pengsistem->upload_file_fp($data,$id_data);
-                //dibawah ini merupakan code untuk resize
-                $config2['image_library'] = 'gd2'; 
-                $config2['source_image'] = $this->upload->upload_path.$this->upload->file_name;
-                $config2['new_image'] = 'assets/upload/Peng.Sistem/fp/';
-                $config2['maintain_ratio'] = TRUE;
-                $config2['width'] = false;
-                $config2['height'] = false;
-                $this->load->library('image_lib',$config2); 
+		// print_r($_POST);exit();
+		$status = strtoupper($this->input->post('doc_status'));
+		$judul = strtoupper($this->input->post('nama_file'));
+		// $number_file = strtoupper($this->input->post('id'));
 
-                if ( !$this->image_lib->resize()){
-                $this->session->set_flashdata('errors', $this->image_lib->display_errors('', ''));   
-              }
-                $this->session->set_flashdata("pesan", "<div class=\"col-md-12\"><div class=\"alert alert-success\" id=\"alert\">Upload gambar berhasil !!</div></div>");
-                redirect('PengembanganSistem/Flow_Proses'); 
-            }else{
-                $this->session->set_flashdata("pesan", "<div class=\"col-md-12\"><div class=\"alert alert-danger\" id=\"alert\">Gagal upload gambar !!</div></div>");
-                redirect('PengembanganSistem/Flow_Proses'); 
-            }
-        }
-	} 
+		if ($_FILES == false) {
+			echo 0;
+		}else{
+			$data_file = $_FILES['fileupload']['name'];
+
+			$pathh = null;
+			$nmfile = $data_file;
+				$l = explode('.',$nmfile);
+					$s = $l[1];
+			$judul_baru = $id_data.'-'.$judul.'.'.$s;
+			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
+			
+			$config['upload_path'] 			= 'assets/upload/Peng.Sistem/fp/';
+			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
+			$config['max_size']             = 0;
+			// $config['max_width']            = 1000;
+			// $config['max_height']           = 7680;
+			$config['file_name'] = $nama_baru;
+
+			$this->load->library('upload', $config);
+
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload('fileupload')) {
+			$error = array('error' => $this->upload->display_errors());
+			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
+			echo 0;
+			//   print_r($error);
+				} else {
+				array('upload_data' => $this->upload->data());
+				$path = $config['upload_path'].$config['file_name'];
+				//end upload file area
+		
+				$data = array(
+					'file' =>$nama_baru,
+					'status_doc' =>$status
+					
+				);
+
+				$this->M_pengsistem->upload_file_fp($data,$id_data);
+				echo 1;
+	
+			}
+		}
+	
+	}
 
 	public function delete_data_flow($id)
 	{
@@ -461,60 +462,56 @@ class C_Penomoran extends CI_Controller
 
 	public function upload_data_copwi($id_data)
 	{
-        $this->load->library('upload');
-		$judul_cop_wi = $this->input->post('judul_cop_wi');
-		$status = $this->input->post('status');
-		 
-		$nmfile = $_FILES['file_ps']['name'];
-			$l = explode('.',$nmfile);
-				$s = $l[1];
-		$judul_baru = $id_data.'-'.$judul_cop_wi.'.'.$s;
-		$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
-        $config['upload_path'] = 'assets/upload/Peng.Sistem/copwi/';
-        $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|pdf|';
-        $config['max_size'] = '10000';
-        $config['max_width']  = '5000';
-        $config['max_height']  = '5000';
-		$config['file_name'] = $nama_baru;
-		
-        $this->upload->initialize($config);
-        
-        if($_FILES['file_ps']['name'])
-        {
-            if ($this->upload->do_upload('file_ps'))
-            {
-                $gbr = $config['file_name'];
-                $data = array(
-                  'file' =>$gbr,
-                  'status_doc' =>$status
-                  
-                );
-                $this->M_pengsistem->upload_file_copwi($data,$id_data);
-                //dibawah ini merupakan code untuk resize
-                $config2['image_library'] = 'gd2'; 
-                $config2['source_image'] = $this->upload->upload_path.$this->upload->file_name;
-                $config2['new_image'] = 'assets/upload/Peng.Sistem/copwi/';
-                $config2['maintain_ratio'] = TRUE;
-                $config2['width'] = false;
-                $config2['height'] = false;
-                $this->load->library('image_lib',$config2); 
-				// print_r($config2);
-				// exit();
+		// print_r($_POST);exit();
+		$status = strtoupper($this->input->post('doc_status'));
+		$judul = strtoupper($this->input->post('nama_file'));
+		// $number_file = strtoupper($this->input->post('id'));
 
-                //pesan yang muncul jika resize error dimasukkan pada session flashdata
-                if ( !$this->image_lib->resize()){
-                $this->session->set_flashdata('errors', $this->image_lib->display_errors('', ''));   
-              }
-                //pesan yang muncul jika berhasil diupload pada session flashdata
-                $this->session->set_flashdata("notifikasi", "<div class=\"col-md-12\"><div class=\"alert alert-success\" id=\"alert\">Upload gambar berhasil !!</div></div>");
-                redirect('PengembanganSistem/cop_wi'); //jika berhasil maka akan ditampilkan view upload
-            }else{
-                //pesan yang muncul jika terdapat error dimasukkan pada session flashdata
-                $this->session->set_flashdata("notifikasi", "<div class=\"col-md-12\"><div class=\"alert alert-danger\" id=\"alert\">Gagal upload gambar !!</div></div>");
-                redirect('PengembanganSistem/cop_wi'); //jika gagal maka akan ditampilkan form upload
-            }
-        }
-	} 
+		if ($_FILES == false) {
+			echo 0;
+		}else{
+			$data_file = $_FILES['fileupload']['name'];
+
+			$pathh = null;
+			$nmfile = $data_file;
+				$l = explode('.',$nmfile);
+					$s = $l[1];
+			$judul_baru = $id_data.'-'.$judul.'.'.$s;
+			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
+			
+			$config['upload_path'] 			= 'assets/upload/Peng.Sistem/copwi/';
+			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
+			$config['max_size']             = 0;
+			// $config['max_width']            = 1000;
+			// $config['max_height']           = 7680;
+			$config['file_name'] = $nama_baru;
+
+			$this->load->library('upload', $config);
+
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload('fileupload')) {
+			$error = array('error' => $this->upload->display_errors());
+			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
+			echo "erorr";
+			//   print_r($error);
+				} else {
+				array('upload_data' => $this->upload->data());
+				$path = $config['upload_path'].$config['file_name'];
+				//end upload file area
+		
+				$data = array(
+					'file' =>$nama_baru,
+					'status_doc' =>$status
+					
+				);
+
+				$this->M_pengsistem->upload_file_copwi($data,$id_data);
+				echo 1;
+	
+			}
+		}
+	
+	}
 
 	public function delete_data_copwi($id)
 	{
@@ -719,64 +716,60 @@ class C_Penomoran extends CI_Controller
 					// print_r($data);exit();
 		$this->M_pengsistem->update_data_um($data,$id);
 		redirect('PengembanganSistem/Usermanual');
-		}
+	}
 
 	public function upload_data_um($id_data)
 	{
-        $this->load->library('upload');
-		$judul_cop_wi = $this->input->post('judul_um');
-		$status = $this->input->post('status');
-		 
-		$nmfile = $_FILES['file_ps']['name'];
-			$l = explode('.',$nmfile);
-				$s = $l[1];
-		$judul_baru = $id_data.'-'.$judul_cop_wi.'.'.$s;
-		$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
-        $config['upload_path'] = 'assets/upload/Peng.Sistem/um/';
-        $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|pdf|';
-        $config['max_size'] = '10000';
-        $config['max_width']  = '5000';
-        $config['max_height']  = '5000';
-		$config['file_name'] = $nama_baru;
-		
-        $this->upload->initialize($config);
-        
-        if($_FILES['file_ps']['name'])
-        {
-            if ($this->upload->do_upload('file_ps'))
-            {
-                $gbr = $config['file_name'];
-                $data = array(
-                  'file' =>$gbr,
-                  'status_doc' =>$status
-                  
-                );
-                $this->M_pengsistem->upload_file_um($data,$id_data);
-                //dibawah ini merupakan code untuk resize
-                $config2['image_library'] = 'gd2'; 
-                $config2['source_image'] = $this->upload->upload_path.$this->upload->file_name;
-                $config2['new_image'] = 'assets/upload/Peng.Sistem/um/';
-                $config2['maintain_ratio'] = TRUE;
-                $config2['width'] = false;
-                $config2['height'] = false;
-                $this->load->library('image_lib',$config2); 
-				// print_r($config2);
-				// exit();
+		// print_r($_POST);exit();
+		$status = strtoupper($this->input->post('doc_status'));
+		$judul = strtoupper($this->input->post('nama_file'));
+		$number_file = strtoupper($this->input->post('id'));
 
-                //pesan yang muncul jika resize error dimasukkan pada session flashdata
-                if ( !$this->image_lib->resize()){
-                $this->session->set_flashdata('errors', $this->image_lib->display_errors('', ''));   
-              }
-                //pesan yang muncul jika berhasil diupload pada session flashdata
-                $this->session->set_flashdata("notifikasi", "<div class=\"col-md-12\"><div class=\"alert alert-success\" id=\"alert\">Upload gambar berhasil !!</div></div>");
-                redirect('PengembanganSistem/Usermanual'); //jika berhasil maka akan ditampilkan view upload
-            }else{
-                //pesan yang muncul jika terdapat error dimasukkan pada session flashdata
-                $this->session->set_flashdata("notifikasi", "<div class=\"col-md-12\"><div class=\"alert alert-danger\" id=\"alert\">Gagal upload gambar !!</div></div>");
-                redirect('PengembanganSistem/Usermanual'); //jika gagal maka akan ditampilkan form upload
-            }
-        }
-	} 
+		if ($_FILES == false) {
+			echo 0;
+		}else{
+			$data_file = $_FILES['fileupload']['name'];
+
+			$pathh = null;
+			$nmfile = $data_file;
+				$l = explode('.',$nmfile);
+					$s = $l[1];
+			$judul_baru = $number_file.'-'.$judul.'.'.$s;
+			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
+			
+			$config['upload_path'] 			= 'assets/upload/Peng.Sistem/um/';
+			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
+			$config['max_size']             = 0;
+			// $config['max_width']            = 1000;
+			// $config['max_height']           = 7680;
+			$config['file_name'] = $nama_baru;
+
+			$this->load->library('upload', $config);
+
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload('fileupload')) {
+			$error = array('error' => $this->upload->display_errors());
+			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
+			echo "erorr";
+			//   print_r($error);
+				} else {
+				array('upload_data' => $this->upload->data());
+				$path = $config['upload_path'].$config['file_name'];
+				//end upload file area
+		
+				$data = array(
+					'file' =>$nama_baru,
+					'status_doc' =>$status
+					
+				);
+
+				$this->M_pengsistem->upload_file_um($data,$id_data);
+				echo 1;
+	
+			}
+		}
+	
+	}
 
 	public function delete_data_um($id)
 	{
@@ -933,57 +926,53 @@ class C_Penomoran extends CI_Controller
 
 	public function upload_data_ms($id_data)
 	{
-        $this->load->library('upload');
-		$judul = $this->input->post('file_name');
+		$judul = strtoupper($this->input->post('nama_file'));
 		$number_file = "Memo";
-		 
-		$nmfile = $_FILES['file_ps']['name'];
-			$l = explode('.',$nmfile);
-				$s = $l[1];
-		$judul_baru = $number_file.'-'.$judul.'.'.$s;
-		$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
-        $config['upload_path'] = 'assets/upload/Peng.Sistem/memo/';
-        $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|pdf|';
-        $config['max_size'] = '10000';
-        $config['max_width']  = '5000';
-        $config['max_height']  = '5000';
-		$config['file_name'] = $nama_baru;
-		
-        $this->upload->initialize($config);
-        
-        if($_FILES['file_ps']['name'])
-        {
-            if ($this->upload->do_upload('file_ps'))
-            {
-                $gbr = $config['file_name'];
-                $data = array(
-                  'file' =>$gbr,
-                  
-                );
-                $this->M_pengsistem->upload_file_code($data,$id_data);
-                //resize
-                $config2['image_library'] = 'gd2'; 
-                $config2['source_image'] = $this->upload->upload_path.$this->upload->file_name;
-                $config2['new_image'] = 'assets/upload/Peng.Sistem/memo/';
-                $config2['maintain_ratio'] = TRUE;
-                $config2['width'] = false;
-                $config2['height'] = false;
-                $this->load->library('image_lib',$config2); 
 
-                //pesan yang muncul jika resize error dimasukkan pada session flashdata
-                if ( !$this->image_lib->resize()){
-                $this->session->set_flashdata('errors', $this->image_lib->display_errors('', ''));   
-              }
-                //pesan yang muncul jika berhasil diupload pada session flashdata
-                $this->session->set_flashdata("notifikasi", "<div class=\"col-md-12\"><div class=\"alert alert-success\" id=\"alert\">Upload gambar berhasil !!</div></div>");
-                redirect('PengembanganSistem/surat_memo'); //jika berhasil maka akan ditampilkan view upload
-            }else{
-                //pesan yang muncul jika terdapat error dimasukkan pada session flashdata
-                $this->session->set_flashdata("notifikasi", "<div class=\"col-md-12\"><div class=\"alert alert-danger\" id=\"alert\">Gagal upload gambar !!</div></div>");
-                redirect('PengembanganSistem/surat_memo'); //jika gagal maka akan ditampilkan form upload
-            }
-        }
-	} 
+		if ($_FILES == false) {
+			echo 0;
+		}else{
+			$data_file = $_FILES['fileupload']['name'];
+
+			$pathh = null;
+			$nmfile = $data_file;
+				$l = explode('.',$nmfile);
+					$s = $l[1];
+			$judul_baru = $number_file.'-'.$judul.'.'.$s;
+			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
+			
+			$config['upload_path'] 			= 'assets/upload/Peng.Sistem/memo/';
+			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
+			$config['max_size']             = 0;
+			// $config['max_width']            = 1000;
+			// $config['max_height']           = 7680;
+			$config['file_name'] = $nama_baru;
+
+			$this->load->library('upload', $config);
+
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload('fileupload')) {
+			$error = array('error' => $this->upload->display_errors());
+			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
+			echo "erorr";
+			//   print_r($error);
+				} else {
+				array('upload_data' => $this->upload->data());
+				$path = $config['upload_path'].$config['file_name'];
+				//end upload file area
+		
+				$data = array(
+					'file' =>$nama_baru,
+					
+				);
+
+				$this->M_pengsistem->upload_file_code($data,$id_data);
+				echo 1;
+	
+			}
+		}
+	
+	}
 
 	public function delete_data_code($id)
 	{

@@ -202,40 +202,40 @@
                                         </td>
                                             <div class="modal fade" id="<?php echo "modal_edit".$row['nomor_doc'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">
                                             <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" align="left">Upload File :</h4>
-                                                </div>
-                                                <form class="form-validate form-horizontal " method="post" action="<?php echo base_url().'PengembanganSistem/upload_data_flow/'.$row['nomor_doc']; ?>" enctype="multipart/form-data">
-                                                <div class="modal-body">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" align="left">Upload File :</h4>
+                                                    </div>
+                                                    <form class="form-validate form-horizontal " method="post" enctype="multipart/form-data">
+                                                        <div class="modal-body">
 
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-3" >File : </label>
-                                                    <div class="col-xs-8">
-                                                        <input name="file_flow_ps" class="form-control" type="file" value="<?=$row["status_doc"]?>">
-                                                    </div>
-                                                </div>
-                                                       <input name="judul_fp" hidden="" value="<?=$row["judul_doc"]; ?>">
-                                                <div class="form-group">
-                                                    <label class="col-xs-3 control-label">Status :</label>
-                                                    <div class="col-xs-8">
-                                                    <select name="status" class="form-control sensitive-input" data-placeholder="Pilih" required="">
-                                                        <option><?=$row["status_doc"]?></option>
-                                                        <option value="Baru">Baru</option>
-                                                        <option value="Approval">Approval</option>
-                                                        <option value="On Proses">On Proses</option>
-                                                        <option value="Cansel">Cancel</option>
-                                                    </select>
-                                                    </div>
-                                                </div>
-                                                </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-xs-3" >File : </label>
+                                                                <div class="col-xs-8">
+                                                                    <input id="file_fp_<?php echo $row['id']?>" name="file_flow_ps" class="form-control" type="file">
+                                                                </div>
+                                                            </div>
+                                                            <input id="judul_flow_<?php echo $row['id']?>" name="judul_fp" hidden="" value="<?=$row["judul_doc"].'?'.$row['nomor_doc'];; ?>">
+                                                            <div class="form-group">
+                                                                <label class="col-xs-3 control-label">Status :</label>
+                                                                <div class="col-xs-8">
+                                                                <select id="status_flow_<?php echo $row['id']?>" name="status" class="form-control sensitive-input" data-placeholder="Pilih" required="">
+                                                                    <option><?=$row["status_doc"]?></option>
+                                                                    <option value="Baru">Baru</option>
+                                                                    <option value="Approval">Approval</option>
+                                                                    <option value="On Proses">On Proses</option>
+                                                                    <option value="Cansel">Cancel</option>
+                                                                </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-                                                        <button type="submit" class="btn btn-info"><i class="fa fa-upload"> Upload</i></button>
-                                                    </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+                                                            <button type="button" onclick="upload_file_flow(<?php echo $row['id']?>)" data-id="<?php echo $row['id']?>" class="btn btn-info"><i class="fa fa-upload"> Upload</i></button>
+                                                        </div>
                                                     </form>
-                                            </div>
+                                                </div>
                                             </div>
                                         </div>
                                         </tr>

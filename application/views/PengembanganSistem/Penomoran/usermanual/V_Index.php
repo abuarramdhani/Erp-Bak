@@ -228,20 +228,20 @@
                                                 <div class="modal-header">
                                                     <h4 class="modal-title" align="left">Upload File :</h4>
                                                 </div>
-                                                <form class="form-validate form-horizontal " method="post" action="<?php echo base_url().'PengembanganSistem/upload_file_um/'.$row['nomor_doc']; ?>" enctype="multipart/form-data">
+                                                <form class="form-validate form-horizontal " method="post" enctype="multipart/form-data">
                                                     <div class="modal-body">
 
                                                     <div class="form-group">
                                                         <label class="control-label col-xs-3" >File : </label>
                                                         <div class="col-xs-8">
-                                                            <input name="file_ps" class="form-control" type="file" value="<?php echo $row['file']?>">
+                                                            <input id="upload_file_<?php echo $row['id']?>" name="file_ps" class="form-control" type="file">
                                                         </div>
                                                     </div>
-                                                       <input name="judul_um" hidden="" value="<?=$row["judul_doc"]; ?>">
+                                                       <input id="judul_doc_<?php echo $row['id']?>" name="judul_um" hidden="" value="<?=$row["judul_doc"].'?'.$row['nomor_doc']; ?>">
                                                     <div class="form-group">
                                                     <label class="col-xs-3 control-label">Status :</label>
                                                     <div class="col-xs-8">
-                                                        <select name="status" class="form-control sensitive-input" data-placeholder="Pilih" required="">
+                                                        <select id="status_<?php echo $row['id']?>" name="status" class="form-control sensitive-input" data-placeholder="Pilih" required="">
                                                         <option value="<?php echo $row['status_doc']?>" hidden="hidden"><?php echo $row['status_doc']?></option>
                                                         <option value="Baru">Baru</option>
                                                         <option value="Approval">Approval</option>
@@ -254,7 +254,7 @@
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Tutup</button>
-                                                            <button type="submit" class="btn btn-info swalDefaultSuccess"><i class="fa fa-upload"> Upload</i></button>
+                                                            <button type="button" onclick="upload_file_um(<?php echo $row['id']?>)" data-id="<?php echo $row['id']?>" class="btn btn-info swalDefaultSuccess"><i class="fa fa-upload"> Upload</i></button>
                                                         </div>
                                                     </form>
                                                 </div>

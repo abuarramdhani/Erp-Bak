@@ -235,21 +235,21 @@
                                                 <div class="modal-header">
                                                     <h4 class="modal-title" align="left">Upload File :</h4>
                                                 </div>
-                                                <form class="form-validate form-horizontal " method="post" action="<?php echo base_url().'PengembanganSistem/upload_file_ms/'.$row['id']; ?>" enctype="multipart/form-data">
+                                                <form class="form-validate form-horizontal" enctype="multipart/form-data" method="post" enctype="multipart/form-data">
                                                     <div class="modal-body">
 
                                                         <div class="form-group">
                                                             <label class="control-label col-xs-3" >File : </label>
                                                             <div class="col-xs-8">
-                                                                <input name="file_ps" class="form-control" type="file" value="<?=$row["file"]?>">
+                                                                <input id="file_ps_<?php echo $row['id'];?>" name="file_ps" class="form-control" type="file">
                                                             </div>
                                                         </div>
-                                                            <input name="file_name" hidden="" value="<?=$row["perihal_doc"]; ?>">
+                                                            <input id="file_name_<?php echo $row['id'];?>" name="file_name" value="<?=$row["perihal_doc"]; ?>">
                                                     </div>
 
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
-                                                        <button type="submit" class="btn btn-info"><i class="fa fa-upload"> Upload</i></button>
+                                                        <button type="button" onclick="upload_file_memo(<?php echo $row['id'];?>)" data-id="<?php echo $row['id']?>" class="btn btn-info"><i class="fa fa-upload"> Upload</i></button>
                                                     </div>
                                                 </form>
                                             </div>
