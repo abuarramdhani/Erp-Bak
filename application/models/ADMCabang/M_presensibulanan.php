@@ -181,6 +181,8 @@ class M_presensibulanan extends Ci_Model
 			$param = "left(pri.kodesie,5) in ('10101','10102')";
 		} elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
 			$param = "left(pri.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$param = "left(pri.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or pri.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
 		} else {
 			if ('306030' == substr($kd, 0, 6)) //ada diticket
 			{
