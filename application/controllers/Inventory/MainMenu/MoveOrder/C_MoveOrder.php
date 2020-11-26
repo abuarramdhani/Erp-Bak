@@ -109,10 +109,16 @@ class C_MoveOrder extends CI_Controller
 					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
 					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$dept);
 				}
-
+				
+				$item_sudah = $this->cekItemSudahPicklist($value['WIP_ENTITY_NAME']);
 				for ($i=0; $i < count($getBody); $i++) { 
 					$bagi = $getBody[$i]['ATR'] / $getBody[$i]['QUANTITY_PER_ASSEMBLY'];
 					$getBody[$i]['BAGI'] = $bagi;
+					if (in_array($getBody[$i]['INVENTORY_ITEM_ID'], $item_sudah)) {
+						$getBody[$i]['TANDA'] = 'SUDAH';
+					}else {
+						$getBody[$i]['TANDA'] = 'BELUM';
+					}
 				}
 
 				usort($getBody, function($a, $b) {
@@ -219,9 +225,17 @@ class C_MoveOrder extends CI_Controller
 
 		//CHECK ITEM YANG SUDAH CREATE
 		$item_sudah = $this->cekItemSudahPicklist($job);
+		$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";
+		$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);
 		$data = array();
 				foreach ($invID as $key => $value) {
-					if ($qty[$key] > $att[$key] || in_array($value, $item_sudah)) {
+					$att_baru = $att[$key];
+					foreach ($getQuantityActual as $kg => $get) {
+						if ($get['INVENTORY_ITEM_ID'] == $value) {
+							$att_baru = $get['ATR'];
+						}
+					}
+					if ($qty[$key] > $att_baru || in_array($value, $item_sudah)) {
 						// item merah / item sudah picklist ga ikut ke create
 					}else {
 						$data[$subinv_from[$key]][$locator_from[$key]][] = array('NO_URUT' => '',
@@ -616,9 +630,17 @@ class C_MoveOrder extends CI_Controller
 		$array_mo = array();
 		//CHECK ITEM YANG SUDAH CREATE
 		$item_sudah = $this->cekItemSudahPicklist($no_job2[0]);
+		$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";
+		$getQuantityActual = $this->M_MoveOrder->getQuantityActual($no_job2[0],$atr);
 
 			foreach ($no_job2 as $k => $v) {
-				if (in_array($invID2[$k], $inv) || $qty2[$k] > $att2[$k] || in_array($invID2[$k], $item_sudah)) {
+				$att_baru = $att2[$k];
+				foreach ($getQuantityActual as $key => $get) {
+					if ($get['INVENTORY_ITEM_ID'] == $invID2[$k]) {
+						$att_baru = $get['ATR'];
+					}
+				}
+				if (in_array($invID2[$k], $inv) || $qty2[$k] > $att_baru || in_array($invID2[$k], $item_sudah)) {
 					// item merah, item sudah picklist ga ikut dicreate
 				}else {
 					array_push($inv, $invID2[$k]);
@@ -722,6 +744,42 @@ class C_MoveOrder extends CI_Controller
 		// $pdf->debug = true; 
 		$pdf->Output($filename, 'I');
 
+	}
+
+	public function checkATTPicklist(){
+		$job = $this->input->post('nojob');
+		$item_sudah = $this->cekItemSudahPicklist($job);
+		$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";
+		$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);
+		$kurang = 0;
+		foreach ($getQuantityActual as $kQty => $vQty) {
+			if ($vQty['REQ'] > $vQty['ATR'] && !in_array($vQty['INVENTORY_ITEM_ID'], $item_sudah)){
+				$kurang += 1;
+			}
+		}
+		echo $kurang;
+	}
+	
+	public function checkATTPicklistSelect(){
+		$job = $this->input->post('nojob');
+		$job = explode('+', $job);
+		$hasil = '';
+		for ($i=0; $i < count($job) ; $i++) { 
+			$kurang = 0;
+			$item_sudah = $this->cekItemSudahPicklist($job[$i]);
+			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";
+			$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job[$i],$atr);
+			if (count($item_sudah) != count($getQuantityActual)) {
+				foreach ($getQuantityActual as $kQty => $vQty) {
+					if ($vQty['REQ'] > $vQty['ATR'] && !in_array($vQty['INVENTORY_ITEM_ID'], $item_sudah)){
+						$kurang += 1;
+					}
+				}
+			}
+			$hasil .= $job[$i] && $kurang > 0 ? '<b>'.$job[$i].'</b> terdapat '.$kurang.' item tidak dapat dilayani. <br>' : '';
+		}
+		// echo "<pre>";print_r($hasil);exit();
+		echo $hasil;
 	}
 
 }

@@ -58,23 +58,51 @@ function getRequirementMO(th){
 	var dept = $('select[name="slcDeptIMO"]').val();
 	var date = $('input[name="txtTanggalIMO"]').val();
 	var shift = $('select[name="slcShiftIMO"]').val();
+	var nojob_sebelumnya = $('input[name="selectedPicklistIMO"]').val();
+	// console.log(nojob_sebelumnya);
+	$('#ResultJob').css('display','');
+	$('#ResultJob').html('');
+	$('#ResultJob').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+	if (nojob_sebelumnya) {
+		$.ajax({
+			url : baseurl + "InventoryManagement/CreateMoveOrder/checkATTPicklistSelect",
+			data : {nojob : nojob_sebelumnya},
+			dataType : "html",
+			type : 'POST',
+			success : function (result) {
+				if (result) {
+				   swal.fire('PERHATIAN!', result, "");
+				}
+			   var request = $.ajax({
+				   url: baseurl+'InventoryManagement/CreateMoveOrder/search/',
+				   data: {
+					   dept : dept, date : date, shift : shift
+				   },
+				   type: "POST",
+				   datatype: 'html', 
+			   });
+		   
+			   request.done(function(result){
+					   $('#ResultJob').html(result);
+				   })
+			}
+		})
+	}else{
+		var request = $.ajax({
+			url: baseurl+'InventoryManagement/CreateMoveOrder/search/',
+			data: {
+				dept : dept, date : date, shift : shift
+			},
+			type: "POST",
+			datatype: 'html', 
+		});
 	
+		request.done(function(result){
+				$('#ResultJob').html(result);
+			})
+	}
 	// if (nojob != "") {
 		// $('#NoJob').css("border-color","#d2d6de");
-	var request = $.ajax({
-		url: baseurl+'InventoryManagement/CreateMoveOrder/search/',
-		data: {
-			dept : dept, date : date, shift : shift
-		},
-		type: "POST",
-		datatype: 'html', 
-	});
-		$('#ResultJob').html('');
-		$('#ResultJob').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
-
-	request.done(function(result){
-			$('#ResultJob').html(result);
-		})
 
 	// }else{
 	// 	$('#NoJob').css("border-color","red");
@@ -444,4 +472,40 @@ $(document).on("click", "#submit_go", function(){
 	}else{
 		$('#loadcheckqty').html('Masukkan Quantity Request.');
 	}
+ }
+
+ function cekCreatePicklist(no, form) {
+	var nojob = $('#wip_entity_name'+no).val();
+	var ket = $('#keterangan_picklist'+no).val();
+	if (form == 1) {
+		$('#form'+nojob).trigger('submit');
+	}else if (form == 2) {
+		$('#form2'+nojob).trigger('submit');
+	}
+	// console.log(nojob);
+	if (ket != 1) {
+		$.ajax({
+			url : baseurl + "InventoryManagement/CreateMoveOrder/checkATTPicklist",
+			data : {nojob : nojob},
+			dataType : "html",
+			type : 'POST',
+			success : function (result) {
+				if (result > 0) {
+					swal.fire("PERHATIAN!", "Terdapat "+result+" item yang tidak bisa dilayani.", "");
+				}
+			}
+		})
+	}
+	getRequirementMO(this);
+ }
+
+ function cekSelectPicklist(ket) {
+	 if (ket == 1) {
+		 $('#btnSelectedIMOSubmit').click();
+	 }else if (ket == 2) {
+		$('#btnSelectedIMO2Submit').click();
+	 }
+	//  console.log(nojob);
+	 swal.fire('Find untuk melihat data terbaru.', "", "success");
+	 $('#ResultJob').css('display','none');
  }
