@@ -160,7 +160,7 @@
                                       <thead>
                                         <tr class="bg-info">
                                             <th><center>No.</center></th>
-                                            <th><center>No. Dokumen</center></th>
+                                            <th style="width: 10em"><center>No. Dokumen</center></th>
                                             <th><center>Judul Dokumen</center></th>
                                             <th><center>Tgl.Rev.</center></th>
                                             <th><center>No.Rev.</center></th>

@@ -53,6 +53,51 @@
 			$("#number_rev-fp").val(number_rev);
 	})
 
+	function upload_file_flow(id) {
+		var doc = $("#judul_flow_"+id).val().split('?');
+		var	 ida= doc[1];
+		var	 file_name= doc[0];
+		var  doc_status= $("#status_flow_"+id).val();
+		let file_cop = $('#file_fp_'+id)[0].files[0];
+		
+			let formData = new FormData();
+			formData.append('id',ida);
+			formData.append('fileupload', file_cop); 
+			formData.append('nama_file', file_name);
+			formData.append('doc_status', doc_status);
+
+			// console.log(formData); 
+
+			$.ajax({
+				type: 'POST',
+				url: baseurl + "PengembanganSistem/upload_data_flow/"+ida,
+				data: formData,
+				contentType: false,
+				processData: false,
+				dataType: 'JSON',
+				beforeSend: function() {
+				  Swal.showLoading()
+				},
+                success: function(response) {
+                    if (response == 1) {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil diupload!'
+						}).then(function() {
+							location.reload();
+						});
+                    } else {
+						Swal.fire({
+							type: 'error',
+							title: 'Gagal',
+							text: 'Format file tidak sesuai / Kolom belum diisi!',
+						});
+                    }
+                }
+			});
+	}
+
 //COPWI
 
 	$("#number_rev-cw").change(function(){
@@ -284,6 +329,51 @@
 		var b = a.join('-')
 		$("#number_copwi_ps").val(b);
 		console.log(a[2])
+	}
+
+	function upload_file_cop(id) {
+		var doc = $("#judul_cop_"+id).val().split('?');
+		var	 ida= doc[1];
+		var	 file_name= doc[0];
+		var  doc_status= $("#status_cop_"+id).val();
+		let file_cop = $('#file_cop_'+id)[0].files[0];
+		
+			let formData = new FormData();
+			formData.append('id',ida);
+			formData.append('fileupload', file_cop); 
+			formData.append('nama_file', file_name);
+			formData.append('doc_status', doc_status);
+
+			// console.log(formData); 
+
+			$.ajax({
+				type: 'POST',
+				url: baseurl + "PengembanganSistem/upload_file_cop_wi/"+ida,
+				data: formData,
+				contentType: false,
+				processData: false,
+				dataType: 'JSON',
+				beforeSend: function() {
+				  Swal.showLoading()
+				},
+                success: function(response) {
+                    if (response == 1) {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil diupload!'
+						}).then(function() {
+							location.reload();
+						});
+                    } else {
+						Swal.fire({
+							type: 'error',
+							title: 'Gagal',
+							text: 'Format file tidak sesuai / Kolom belum diisi!!',
+						});
+                    }
+                }
+			});
 	}
 
 	$(function(){
@@ -579,6 +669,51 @@
 		});
 	})
 
+	function upload_file_um(id) {
+		var doc = $("#judul_doc_"+id).val().split('?');
+		var	 ida= doc[1];
+		var	 file_name= doc[0];
+		var  doc_status= $("#status_"+id).val();
+		let file_ps = $('#upload_file_'+id)[0].files[0];
+		
+			let formData = new FormData();
+			formData.append('id',ida);
+			formData.append('fileupload', file_ps); 
+			formData.append('nama_file', file_name);
+			formData.append('doc_status', doc_status);
+
+			// console.log(formData); 
+
+			$.ajax({
+				type: 'POST',
+				url: baseurl + "PengembanganSistem/upload_file_um/"+ida,
+				data: formData,
+				contentType: false,
+				processData: false,
+				dataType: 'JSON',
+				beforeSend: function() {
+				  Swal.showLoading()
+				},
+                success: function(response) {
+                    if (response == 1) {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil diupload!'
+						}).then(function() {
+							location.reload();
+						});
+                    } else {
+						Swal.fire({
+							type: 'error',
+							title: 'Gagal',
+							text: 'Format file tidak sesuai / Kolom belum diisi!',
+						});
+                    }
+                }
+			});
+	}
+
 	function notif_input_um() {
 		$("#number_um").ready(function(){
 			var a = $("#number_um").val();
@@ -776,8 +911,8 @@
 					
 				var number_ok = ($number>9)?($number<99)?$number:'0'+$number:'00'+$number;
 				$("#a_number").val(number_ok+"/"+kode1+kode_doc+"/"+param_date2);
-				console.log(kode_doc);
-				console.log($number)
+				// console.log(kode_doc);s
+				// console.log($number)
 				}
 		  });
 	});
@@ -798,6 +933,46 @@
 		}
 	})
 
+	function upload_file_memo(id) {
+		var file_name = $("#file_name_"+id).val();
+		let file_ps = $('#file_ps_'+id)[0].files[0];
+		
+			let formData = new FormData();
+			formData.append('id',id);
+			formData.append('fileupload', file_ps); 
+			formData.append('nama_file', file_name);
+
+			// console.log(file_ps); 
+
+			$.ajax({
+				type: 'POST',
+				url: baseurl + "PengembanganSistem/upload_file_ms/"+id,
+				data: formData,
+				contentType: false,
+				processData: false,
+				dataType: 'JSON',
+				beforeSend: function() {
+				  Swal.showLoading()
+				},
+                success: function(response) {
+                    if (response == 1) {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil diupload!'
+						}).then(function() {
+							location.reload();
+						});
+                    } else {
+						Swal.fire({
+							type: 'error',
+							title: 'Gagal',
+							text: 'Format file tidak sesuai / Kolom belum diisi!',
+						});
+                    }
+                }
+			});
+	}
 
 	//LAPORAN KERJA HARIAN
 
