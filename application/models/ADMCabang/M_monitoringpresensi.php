@@ -10,10 +10,11 @@ class M_monitoringpresensi extends Ci_Model
 	{
 		parent::__construct();
 		$this->load->database();
-		$this->personalia = $this->load->database('personalia',true);
+		$this->personalia = $this->load->database('personalia', true);
 	}
 
-	public function getAksesAtasanProduksi($noinduk){
+	public function getAksesAtasanProduksi($noinduk)
+	{
 		$sql = "
 		select a.noind,a.nama,a.kodesie,a.kd_jabatan,b.dept,b.pekerjaan
 		from
@@ -26,7 +27,7 @@ class M_monitoringpresensi extends Ci_Model
 		foreach ($query as $key => $value) {
 			$arrnoind[] = $value['noind'];
 		}
-		if(!in_array($noinduk, $arrnoind)){
+		if (!in_array($noinduk, $arrnoind)) {
 			return false;
 		}
 		return true;
@@ -39,156 +40,161 @@ class M_monitoringpresensi extends Ci_Model
 		return $query->result_array();
 	}
 
-	function ambilSeksi($keyKodesie){
+	function ambilSeksi($keyKodesie)
+	{
 		$noind = $this->session->user;
 		$kd = $this->session->kodesie;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql = "select left(kodesie,7) as kodesie,seksi from
 				(select a.kodesie,a.seksi from hrd_khs.tseksi a
 				WHERE $whrKodesie and substr(a.kodesie,7,1) != '0' and substr(a.kodesie,1,5) = '$keyKodesie'
 				)
-
 				as tbl
 				GROUP BY left(kodesie,7),seksi ORDER BY kodesie";
-				return $this->personalia->query($sql)->result_array();
+		return $this->personalia->query($sql)->result_array();
 	}
 
-	function ambilUnit(){
+	function ambilUnit()
+	{
 		$noind = $this->session->user;
 		$kd = $this->session->kodesie;
+
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 5) in (left('$kd', 5), '32401', '32502')";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
-		$sql = "select left(kodesie,5) as kodesie,unit from
+		$sql = "select left(kodesie,5) as kodesie, unit from
 				(select a.kodesie,a.unit from hrd_khs.tseksi a
 				WHERE $whrKodesie and substr(a.kodesie,5,1) != '0')
-
 				as tbl
 				GROUP BY left(kodesie,5),unit";
-				return $this->personalia->query($sql)->result_array();
+
+		return $this->personalia->query($sql)->result_array();
 	}
 
-	function getDetailAbsensiPerhari($periode,$kd,$q_status,$q_unit,$q_seksi){
+	function getDetailAbsensiPerhari($periode, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
+
+		// Useless 
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql = "select d.tanggal,a.noind,a.nama,a.kodesie,c.seksi,d.kd_ket,e.keterangan, CASE WHEN a.keluar = true then 'Sudah Keluar' else 'Aktif' end as status
-FROM hrd_khs.tpribadi a
-INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
-INNER JOIN \"Presensi\".tdatapresensi d ON a.noind = d.noind
-LEFT JOIN \"Presensi\".tketerangan e ON d.kd_ket = e.kd_ket
-WHERE (left(d.kodesie,7) = '$kd'
-AND d.tanggal = '$periode' AND d.kd_ket NOT LIKE '%C%'
-AND a.noind = d.noind
-$q_status
-$q_unit
-$q_seksi)
+						FROM hrd_khs.tpribadi a
+						INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
+						INNER JOIN \"Presensi\".tdatapresensi d ON a.noind = d.noind
+						LEFT JOIN \"Presensi\".tketerangan e ON d.kd_ket = e.kd_ket
+						WHERE (left(d.kodesie,7) = '$kd'
+						AND d.tanggal = '$periode' AND d.kd_ket NOT LIKE '%C%'
+						AND a.noind = d.noind
+						$q_status
+						$q_unit
+						$q_seksi)
 
-UNION
+						UNION
 
-select d.tanggal,a.noind,a.nama,a.kodesie,c.seksi,d.kd_ket,e.keterangan, CASE WHEN a.keluar = true then 'Sudah Keluar' else 'Aktif' end as status
-FROM hrd_khs.tpribadi a
-INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
-INNER JOIN \"Presensi\".tdatatim d ON a.noind = d.noind
-LEFT JOIN \"Presensi\".tketerangan e ON d.kd_ket = e.kd_ket
-WHERE (left(d.kodesie,7) = '$kd'
-AND d.tanggal = '$periode' AND d.kd_ket NOT LIKE '%C%'
-AND a.noind = d.noind AND d.point <> '0'
-$q_status
-$q_unit
-$q_seksi)";
+						select d.tanggal,a.noind,a.nama,a.kodesie,c.seksi,d.kd_ket,e.keterangan, CASE WHEN a.keluar = true then 'Sudah Keluar' else 'Aktif' end as status
+						FROM hrd_khs.tpribadi a
+						INNER JOIN hrd_khs.tseksi c ON a.kodesie = c.kodesie
+						INNER JOIN \"Presensi\".tdatatim d ON a.noind = d.noind
+						LEFT JOIN \"Presensi\".tketerangan e ON d.kd_ket = e.kd_ket
+						WHERE (left(d.kodesie,7) = '$kd'
+						AND d.tanggal = '$periode' AND d.kd_ket NOT LIKE '%C%'
+						AND a.noind = d.noind AND d.point <> '0'
+						$q_status
+						$q_unit
+						$q_seksi)";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
-
 	}
 
-	function getDataAbsensiPerHari($periode,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataAbsensiPerHari($periode, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql2 = "select left(kodesie,7) as kodesie,seksi,sum(jumlah)
@@ -212,29 +218,30 @@ $q_seksi)";
 		return $query->result_array();
 	}
 
-	function getDataAbsensiHarianTotal($periode,$periodeAkhir,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataAbsensiHarianTotal($periode, $periodeAkhir, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 
@@ -254,7 +261,8 @@ $q_seksi)";
 		return $result->result_array();
 	}
 
-	function getDetailAbsensiPerbulan($periode,$kd){
+	function getDetailAbsensiPerbulan($periode, $kd)
+	{
 
 		$sql = "
 		select d.tanggal,b.noind,b.nama,b.kodesie,c.seksi,d.kd_ket,e.keterangan
@@ -276,33 +284,33 @@ $q_seksi)";
 
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
-
 	}
 
 
-	function getDataAbsensiBulananPerPeriode($periode,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataAbsensiBulananPerPeriode($periode, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql2 = "select left(kodesie,7) as kodesie,seksi,sum(jumlah)
@@ -319,29 +327,30 @@ $q_seksi)";
 		return $query->result_array();
 	}
 
-	function getDataAbsensiBulanan($periode,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataAbsensiBulanan($periode, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql1 = "select left(kodesie,7) as kodesie,seksi,(sum(jumlah) + sum(jumlah2)) as sum
@@ -359,29 +368,30 @@ $q_seksi)";
 		return $result->result_array();
 	}
 
-	function getDataPerTahun($periode,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataPerTahun($periode, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql1 = "select left(kodesie,7) as kodesie,seksi,sum(jumlah_bekerja) as total_bekerja,(sum(jumlah) + sum(jumlah2)) as total_absen
@@ -401,29 +411,30 @@ $q_seksi)";
 		return $result->result_array();
 	}
 
-	function getDataPerBulanan($bulanAwal,$bulanAkhir,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataPerBulanan($bulanAwal, $bulanAkhir, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql1 = "
@@ -444,29 +455,30 @@ $q_seksi)";
 		return $result;
 	}
 
-	function getDataPerHarian($periode,$periodeAkhir,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataPerHarian($periode, $periodeAkhir, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql1 = "select left(kodesie,7) as kodesie,seksi,sum(jumlah_bekerja) as total_bekerja,(sum(jumlah) + sum(jumlah2)) as total_absen
@@ -487,30 +499,31 @@ $q_seksi)";
 	}
 
 
-	function getDataAbsensiTahunanPerPeriode($periode,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataAbsensiTahunanPerPeriode($periode, $kd, $q_status, $q_unit, $q_seksi)
+	{
 		//jumlah semua keterangan absensi (kecuali cuti, ijin, mangkir, sakit, IP)
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql2 = "select left(kodesie,7) as kodesie,seksi,sum(jumlah)
@@ -527,30 +540,31 @@ $q_seksi)";
 	}
 
 
-	function getDataAbsensiTahunan($periode,$kd,$q_status,$q_unit,$q_seksi){
+	function getDataAbsensiTahunan($periode, $kd, $q_status, $q_unit, $q_seksi)
+	{
 
 		$noind = $this->session->user;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		//sq1 = jumlah semua keterangan absensi (kecuali cuti)
@@ -571,30 +585,31 @@ $q_seksi)";
 	}
 
 
-	function rekapPekerja($tanggal1,$tanggal2,$kodesie,$q_status,$q_unit,$q_seksi){
+	function rekapPekerja($tanggal1, $tanggal2, $kodesie, $q_status, $q_unit, $q_seksi)
+	{
 		$noind = $this->session->user;
 		$kd = $this->session->kodesie;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql = "
@@ -614,33 +629,33 @@ $q_seksi)";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
-
 	}
 
-	function getGrafikPiePerPekerja($noinduk,$tanggal1,$tanggal2,$kodesie){
+	function getGrafikPiePerPekerja($noinduk, $tanggal1, $tanggal2, $kodesie)
+	{
 		$noind = $this->session->user;
 		$kd = $this->session->kodesie;
 		if ($noind == 'B0380') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') {
+		} elseif ($noind == 'B0370') {
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') {
+		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') {
+		} elseif ($noind == 'B0717') {
 			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') {
-	    	$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') {
-	    	$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
-			    $whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
-			    }
+		} elseif ($noind == 'J1378') {
+			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') {
+			$whrKodesie = "left(a.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$whrKodesie = "left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$whrKodesie = "left(a.kodesie,6) = left('$kd',6)";
+			} else {
+				$whrKodesie = "left(a.kodesie,7) = left('$kd',7)";
+			}
 		}
 
 		$sql = "
