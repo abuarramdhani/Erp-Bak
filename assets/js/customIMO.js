@@ -70,7 +70,7 @@ function getRequirementMO(th){
 			dataType : "html",
 			type : 'POST',
 			success : function (result) {
-				if (result) {\
+				if (result) {
 				   swal.fire('PERHATIAN!', result, "");
 				}
 			   var request = $.ajax({
