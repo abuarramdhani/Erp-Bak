@@ -674,7 +674,8 @@ class M_monitoringpresensi extends Ci_Model
 		(select coalesce(string_agg(to_char(c.tanggal,'YYYY-MM-DD'),' , '),'-') from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket in ('PIP','CT') ) as tgl_izin_pamit,
 		(select coalesce(string_agg(to_char(c.waktu1,'YYYY-MM-DD'),' , '),'-') from \"Surat\".taktual_izin c WHERE c.waktu1 BETWEEN '$tanggal1' AND '$tanggal2' and c.noinduk = a.noind and c.status = 1 ) as tgl_izin_perusahaan
 		    from hrd_khs.tpribadi a INNER JOIN hrd_khs.tseksi b ON a.kodesie = b.kodesie
-		    WHERE $whrKodesie AND a.keluar = false AND a.noind='$noinduk') as tbl order by seksi
+		    -- WHERE $whrKodesie AND a.keluar = false AND a.noind='$noinduk') as tbl order by seksi
+		    WHERE a.noind='$noinduk') as tbl order by seksi
 		";
 
 		$query = $this->personalia->query($sql);
