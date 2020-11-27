@@ -492,8 +492,8 @@ class C_Penomoran extends CI_Controller
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
 			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
-			echo "erorr";
-			//   print_r($error);
+			  echo "error";
+			  print_r($error);
 				} else {
 				array('upload_data' => $this->upload->data());
 				$path = $config['upload_path'].$config['file_name'];
@@ -750,8 +750,8 @@ class C_Penomoran extends CI_Controller
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
 			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
-			echo "erorr";
-			//   print_r($error);
+			echo "error";
+			  print_r($error);
 				} else {
 				array('upload_data' => $this->upload->data());
 				$path = $config['upload_path'].$config['file_name'];
@@ -954,8 +954,8 @@ class C_Penomoran extends CI_Controller
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
 			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
-			echo "erorr";
-			//   print_r($error);
+			echo "error";
+			  print_r($error);
 				} else {
 				array('upload_data' => $this->upload->data());
 				$path = $config['upload_path'].$config['file_name'];
