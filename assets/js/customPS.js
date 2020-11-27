@@ -58,15 +58,15 @@
 		var	 ida= doc[1];
 		var	 file_name= doc[0];
 		var  doc_status= $("#status_flow_"+id).val();
-		let file_cop = $('#file_fp_'+id)[0].files[0];
+		let file_flow = $('#file_fp_'+id)[0].files[0];
 		
 			let formData = new FormData();
 			formData.append('id',ida);
-			formData.append('fileupload', file_cop); 
+			formData.append('fileupload', file_flow); 
 			formData.append('nama_file', file_name);
 			formData.append('doc_status', doc_status);
 
-			// console.log(formData); 
+			console.log(formData); 
 
 			$.ajax({
 				type: 'POST',

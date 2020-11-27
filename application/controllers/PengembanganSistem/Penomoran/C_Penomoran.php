@@ -238,7 +238,7 @@ class C_Penomoran extends CI_Controller
 			$judul_baru = $id_data.'-'.$judul.'.'.$s;
 			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
 			
-			$config['upload_path'] 			= 'assets/upload/Peng.Sistem/fp/';
+			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/fp/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
@@ -251,8 +251,8 @@ class C_Penomoran extends CI_Controller
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
 			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
-			echo 0;
-			//   print_r($error);
+			echo erro;
+			  print_r($error);
 				} else {
 				array('upload_data' => $this->upload->data());
 				$path = $config['upload_path'].$config['file_name'];
@@ -479,7 +479,7 @@ class C_Penomoran extends CI_Controller
 			$judul_baru = $id_data.'-'.$judul.'.'.$s;
 			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
 			
-			$config['upload_path'] 			= 'assets/upload/Peng.Sistem/copwi/';
+			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/copwi/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
@@ -737,7 +737,7 @@ class C_Penomoran extends CI_Controller
 			$judul_baru = $number_file.'-'.$judul.'.'.$s;
 			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
 			
-			$config['upload_path'] 			= 'assets/upload/Peng.Sistem/um/';
+			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/um/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
@@ -941,7 +941,7 @@ class C_Penomoran extends CI_Controller
 			$judul_baru = $number_file.'-'.$judul.'.'.$s;
 			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
 			
-			$config['upload_path'] 			= 'assets/upload/Peng.Sistem/memo/';
+			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/memo/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
