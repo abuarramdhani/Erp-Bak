@@ -58,8 +58,22 @@ Link	[Modul]/[Action]/[Variable]
 $route['default_controller'] = 'C_Index';
 //$route['(:any)'] = 'pages/view/$1';
 //$route['default_controller'] = 'pages/view';
-$route['404_override'] = '';
+$route['404_override'] = 'C_Index/page_404';
 $route['translate_uri_dashes'] = FALSE;
+
+//----------------------------------------------Notification API-----------------------------------------------------
+$route['api/services/notification']['post'] = 'Api/Services/Notifications/C_Index/index';
+$route['api/services/notification/check']['post'] = 'Api/Services/Notifications/C_Index/check';
+$route['api/services/notification/new']['post'] = 'Api/Services/Notifications/C_Index/newNotification';
+$route['api/services/notification/read']['post'] = 'Api/Services/Notifications/C_Index/setRead';
+$route['api/services/notification/read/all']['post'] = 'Api/Services/Notifications/C_Index/setReadAll';
+$route['api/services/notification/delete']['post'] = 'Api/Services/Notifications/C_Index/setDelete';
+$route['api/services/notification/delete/all']['post'] = 'Api/Services/Notifications/C_Index/setDeleteAll';
+
+//-------------------------------------------------Notification-------------------------------------------------------
+$route['notifications'] = 'Notifications/C_Index/index';
+$route['notifications/(:any)'] = 'Notifications/C_Index/redirect/$1';
+
 //-------------------------------------CustomerRelationship----------------------------------------------------
 $route['CustomerRelationship'] = 'CustomerRelationship/C_CustomerRelationship/index';
 //CustomerRelationship/MainMenu/
