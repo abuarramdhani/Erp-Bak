@@ -183,24 +183,29 @@
 	<p style="font-size: 14px; font-family: times;"><b>Daftar Hadir</b></p>
 	<table  style="border: 1px solid black; width: 100%;">
 		<tr>
-			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;a. <?php echo ucwords(strtolower($personalia)) ?></td>
-			<td style="border-right: 1px solid black; border-bottom: 1px solid black;">&nbsp;a.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
-			<td style="border-bottom: 1px solid black; valign: center;"></td>
+			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;a. </td>
+			<td style="border-right: 1px solid black; border-bottom: 1px solid black; valign: center;">&nbsp;a.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
+			<td style="border-bottom: 1px solid black;"></td>
 		</tr>
 		<tr>
-			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;b. <?php echo ucwords(strtolower($spsi)) ?></td>
-			<td style="border-right: 1px solid black; border-bottom: 1px solid black; valign: center;"></td>
-			<td style="border-bottom: 1px solid black;">&nbsp;b.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
+			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;b. <?php echo ucwords(strtolower($personalia)) ?></td>
+			<td style="border-right: 1px solid black; border-bottom: 1px solid black;"></td>
+			<td style="border-bottom: 1px solid black; valign: center;">&nbsp;b.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
 		</tr>
 		<tr>
-			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;c. <?php echo ucwords(strtolower($saksi1)) ?></td>
-			<td style="border-right: 1px solid black; border-bottom: 1px solid black;">&nbsp;c.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
-			<td style="border-bottom: 1px solid black; valign: center;"></td>
+			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;c. <?php echo ucwords(strtolower($spsi)) ?></td>
+			<td style="border-right: 1px solid black; border-bottom: 1px solid black; valign: center;">&nbsp;c.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
+			<td style="border-bottom: 1px solid black;"></td>
 		</tr>
 		<tr>
-			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;d. <?php echo ucwords(strtolower($saksi2)) ?></td>
-			<td style="border-right: 1px solid black; border-bottom: 1px solid black; valign: center;"></td>
-			<td style="border-bottom: 1px solid black;">&nbsp;d.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
+			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;d. <?php echo ucwords(strtolower($saksi1)) ?></td>
+			<td style="border-right: 1px solid black; border-bottom: 1px solid black;"></td>
+			<td style="border-bottom: 1px solid black; valign: center;">&nbsp;d.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
+		</tr>
+		<tr>
+			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;">&nbsp;e. <?php echo ucwords(strtolower($saksi2)) ?></td>
+			<td style="border-right: 1px solid black; border-bottom: 1px solid black; valign: center;">&nbsp;e.<hr width="40%" style="margin-bottom: 0.5em; margin-top: 0.5em;"></td>
+			<td style="border-bottom: 1px solid black;"></td>
 		</tr>
 	</table>
 </div>
