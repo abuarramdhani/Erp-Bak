@@ -68,10 +68,6 @@ class C_Monitoring extends CI_Controller
 
         $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi, $_GET['detailed'] ? 'true' : 'false');
 
-        // print("<pre>");
-        // print_r($data);
-        // die;
-
         $objPHPExcel     = new PHPExcel();
         $worksheet         = $objPHPExcel->getActiveSheet();
         $sheet             = $objPHPExcel->setActiveSheetIndex(0);
@@ -232,7 +228,7 @@ class C_Monitoring extends CI_Controller
                     ->setCellValueExplicit($kolomE, $key['waktu'], PHPExcel_Cell_DataType::TYPE_STRING)
                     ->setCellValueExplicit($kolomF, $key['section_name'], PHPExcel_Cell_DataType::TYPE_STRING)
                     ->setCellValueExplicit($kolomG, $key['jumlahall'], PHPExcel_Cell_DataType::TYPE_STRING)
-                    ->setCellValueExplicit($kolomH, floatval($key['berat_kirim']), PHPExcel_Cell_DataType::TYPE_STRING);
+                    ->setCellValueExplicit($kolomH, floatval($key['berat_kirim']), PHPExcel_Cell_DataType::TYPE_NUMERIC);
 
                 $worksheet->getStyle($kolomA)->applyFromArray($alignmentCenter);
                 $worksheet->getStyle($kolomD)->applyFromArray($alignmentCenter);
@@ -276,16 +272,13 @@ class C_Monitoring extends CI_Controller
             }
 
             $i++;
-            // print("<pre>");
-            // print_r($i);
-            // die;
 
             $worksheet->mergeCells("A{$i}:G{$i}");
             $worksheet->getStyle("A{$i}:G{$i}")->applyFromArray($alignmentCenter);
             $worksheet->getStyle("A{$i}:H{$i}")->applyFromArray($border);
 
             $worksheet->setCellValue("A{$i}", "Total Berat Limbah");
-            $worksheet->setCellValue("H{$i}", number_format((float)$totalBerat, 3, '.', ''));
+            $worksheet->setCellValueExplicit("H{$i}", $totalBerat, PHPExcel_Cell_DataType::TYPE_NUMERIC);
             $worksheet->getStyle("G{$i}")->applyFromArray($border);
         } else {
             $worksheet->getStyle('A1:C1')->applyFromArray($bold);
@@ -325,7 +318,7 @@ class C_Monitoring extends CI_Controller
 
                 $sheet->setCellValueExplicit($kolomA, $nomor, PHPExcel_Cell_DataType::TYPE_NUMERIC)
                     ->setCellValueExplicit($kolomB, $key['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
-                    ->setCellValueExplicit($kolomC, floatval($key['berat_kirim']), PHPExcel_Cell_DataType::TYPE_STRING);
+                    ->setCellValueExplicit($kolomC, floatval($key['berat_kirim']), PHPExcel_Cell_DataType::TYPE_NUMERIC);
                 $worksheet->getStyle($kolomA)->applyFromArray($alignmentCenter);
                 $worksheet->getStyle($kolomB)->applyFromArray($alignmentCenter);
 
@@ -352,7 +345,7 @@ class C_Monitoring extends CI_Controller
             $worksheet->getStyle("A{$i}:B{$i}")->applyFromArray($border);
 
             $worksheet->setCellValue("A{$i}", "Total Berat Limbah");
-            $worksheet->setCellValue("C{$i}", number_format((float)$totalBerat, 3, '.', ''));
+            $worksheet->setCellValue("C{$i}", $totalBerat);
             $worksheet->getStyle("C{$i}")->applyFromArray($border);
         }
 
@@ -391,7 +384,7 @@ class C_Monitoring extends CI_Controller
         $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi,  $_GET['detailed'] ? 'true' : 'false');
 
         // print("<pre>");
-        // print_r($data);
+        // print_r($seksi);
         // die;
         $pdf = $this->pdf->load();
 
