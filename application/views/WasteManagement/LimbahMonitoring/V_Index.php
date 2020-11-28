@@ -6,6 +6,10 @@
     html {
         scroll-behavior: smooth;
     }
+
+    .select2-container--default {
+        width: 100% !important;
+    }
 </style>
 <section class="content" id="root">
     <div class="inner">
@@ -36,12 +40,25 @@
                                                 <div class="form-group col-lg-12">
                                                     <label class="control-label col-lg-2">Lokasi kerja</label>
                                                     <div class="col-lg-9">
-                                                        <select class="select select2" name="lokasilimbah" id="lokasilimbah" multiple="multiple" style="width: 100%" data-placeholder="Lokasi kerja">
+                                                        <select class="select select2" name="lokasilimbah" id="lokasilimbah" multiple="multiple" style="width: 100%!important" data-placeholder="Lokasi kerja" required>
                                                             <option></option>
                                                             <?php foreach ($loc as $key) {
                                                                 echo "<option value='" . $key['location_code'] . "'>" . $key['location_code'] . " - " . $key['location_name'] . "</option>";
                                                             } ?>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div v-show="detailed">
+                                                    <div class="form-group col-lg-12">
+                                                        <label class="control-label col-lg-2 ">Seksi</label>
+                                                        <div class="col-lg-9">
+                                                            <select class="form-control select2" multiple name="pilihseksi" id="pilihseksi">
+                                                                <?php foreach ($seksi as $key) : ?>
+                                                                    <option value="<?= $key['section_name'] ?>"><?= $key['section_name'] ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <small style="color: red; float: left;">*Kosongkan bila pilih semua jenis</small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-lg-12">
@@ -127,7 +144,7 @@
         </div>
     </div>
 </section>
-<script src="<?= base_url('assets/plugins/vue/vue@2.6.11.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/vue/vue@2.6.11.dev.js') ?>"></script>
 <script src="<?= base_url('assets/plugins/axios/axios.min.js') ?>"></script>
 
 <script>
@@ -141,6 +158,9 @@
 
         $('#jenisLimbah').select2({
             placeholder: 'Jenis Limbah'
+        })
+        $('#pilihseksi').select2({
+            placeholder: 'Seksi'
         })
 
         // change vue use jquery
@@ -158,6 +178,11 @@
         $('#lokasilimbah').on('change', function() {
             root.params.lokasi = $(this).val()
         })
+        $('#pilihseksi').on('change', function() {
+            root.params.seksi = $(this).val()
+        })
+
+        $('#pilihseksi').not(':hidden')
 
         $('#detailed').on('ifChecked ifUnchecked', function() {
             root.$data.detailed = !root.$data.detailed
@@ -175,7 +200,8 @@
                     start: '',
                     end: '',
                     lokasi: [],
-                    jenis: []
+                    jenis: [],
+                    seksi: []
                 },
                 dataLimbah: [],
                 isDataLimbahEmpty: false,
@@ -199,6 +225,7 @@
                         end: vm.params.end,
                         jenis: vm.params.jenis,
                         lokasi: vm.params.lokasi,
+                        seksi: vm.params.seksi,
                         detailed: vm.detailed
                     }
                 }).then(res => {
@@ -243,6 +270,7 @@
                     end: vm.params.end,
                     jenis: vm.params.jenis,
                     lokasi: vm.params.lokasi,
+                    seksi: vm.params.seksi,
                     detailed: vm.detailed ? 1 : 0,
                 }
                 return urlExport + $.param(params)
@@ -255,6 +283,7 @@
                     end: vm.params.end,
                     jenis: vm.params.jenis,
                     lokasi: vm.params.lokasi,
+                    seksi: vm.params.seksi,
                     detailed: vm.detailed ? 1 : 0
                 }
                 return urlExport + $.param(params)

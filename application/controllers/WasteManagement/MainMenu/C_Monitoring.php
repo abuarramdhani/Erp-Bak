@@ -32,6 +32,7 @@ class C_Monitoring extends CI_Controller
         // get all jenis limbah
         $data['jenisLimbah'] = $this->M_kirim->getLimJenis($this->session->kodesie);
         $data['loc'] = $this->M_limbahrekap->getLokasi();
+        $data['seksi'] = $this->M_limbahrekap->getSeksi();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -46,8 +47,9 @@ class C_Monitoring extends CI_Controller
         $limbah = isset($_GET['jenis']) ? $_GET['jenis'] : [];
         $lokasi = isset($_GET['lokasi']) ? $_GET['lokasi'] : [];
         $detailed = $_GET['detailed'];
+        $seksi = isset($_GET['seksi']) ? $_GET['seksi'] : [];
 
-        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi, $detailed);
+        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi, $detailed, $seksi);
 
         $result = array(
             'success' => $data ? true : false,
@@ -65,8 +67,9 @@ class C_Monitoring extends CI_Controller
         $limbah = (isset($_GET['jenis']) && !empty($_GET['jenis'])) ? $_GET['jenis'] : [];
         $lokasi = (isset($_GET['lokasi']) && !empty($_GET['lokasi'])) ? $_GET['lokasi'] : [];
         $detailed = $_GET['detailed'];
+        $seksi = isset($_GET['seksi']) ? $_GET['seksi'] : [];
 
-        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi, $_GET['detailed'] ? 'true' : 'false');
+        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi, $_GET['detailed'] ? 'true' : 'false', $seksi);
 
         $objPHPExcel     = new PHPExcel();
         $worksheet         = $objPHPExcel->getActiveSheet();
@@ -380,8 +383,9 @@ class C_Monitoring extends CI_Controller
         $limbah = (isset($_GET['jenis']) && !empty($_GET['jenis'])) ? $_GET['jenis'] : [];
         $lokasi = (isset($_GET['lokasi']) && !empty($_GET['lokasi'])) ? $_GET['lokasi'] : [];
         $detailed = $_GET['detailed'];
+        $seksi = isset($_GET['seksi']) ? $_GET['seksi'] : [];
 
-        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi,  $_GET['detailed'] ? 'true' : 'false');
+        $data = $this->M_limbahkelola->getDataLimbah($start, $end, $limbah, $lokasi,  $_GET['detailed'] ? 'true' : 'false', $seksi);
 
         // print("<pre>");
         // print_r($seksi);
