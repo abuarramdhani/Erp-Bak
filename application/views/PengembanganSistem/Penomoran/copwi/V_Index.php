@@ -103,7 +103,7 @@
                                                   <div class="form-group row">
                                                       <label for="numberrev_cw" class="control-label col-lg-4">No. Revisi</label>
                                                       <div class="col-lg-8">
-                                                          <input type="number" required="" min="00" max="100" name="number_rev_cw" id="number_rev-cw" class="form-control">
+                                                          <input type="number" required="" min="00" max="100" value="00" name="number_rev_cw" id="number_rev-cw" class="form-control">
                                                       </div>
                                                   </div>
                                                   <div class="form-group row">
@@ -196,97 +196,97 @@
                               </div>
                            </form>
                             <div class="box box-primary">
-                              <div class="box-header with-border">
-                                <h4 style="font-weight:bold;"><i class="fa fa-files-o"></i> Monitoring Code Of Practice and Work Instruction</h4>
-                              </div>
+                                <div class="box-header with-border">
+                                    <h4 style="font-weight:bold;"><i class="fa fa-files-o"></i> Monitoring Code Of Practice and Work Instruction</h4>
+                                </div>
                               <div class="box-body">
                                 <div class="table-responsive">
                                   <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
-                                    <thead>
-                                      <tr class="bg-info">
-                                          <th class="vel_ps" style="vertical-align: middle">No.</th>
-                                          <th class="vel_ps" style="vertical-align: middle">COP / WI</th>
-                                          <th class="vel_ps" style="vertical-align: middle">No. Dokumen</th>
-                                          <th class="vel_ps" style="vertical-align: middle">Judul Dokumen</th>
-                                          <th class="vel_ps" style="width: 80px; vertical-align: middle">Oracle / Android / Web Base / Form</th>
-                                          <th class="vel_ps" style="vertical-align: middle">Rev.Date</th>
-                                          <th class="vel_ps" style="vertical-align: middle">No.Rev.</th>
-                                          <th class="vel_ps" style="vertical-align: middle">SOP</th>
-                                          <th class="vel_ps" style="vertical-align: middle">PIC</th>
-                                          <th class="vel_ps" style="vertical-align: middle">File</th>
-                                          <th class="vel_ps" style="vertical-align: middle">Status</th>
-                                          <th class="vel_ps" style="vertical-align: middle; width: 60px">Action</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $no= 1; foreach ($listdatacopwi as $row) { ?>
-                                        <tr row-id="<?php echo $row['id']?>">
-                                            <td><b><?php echo $no++; ?></b></td>
-                                            <td><?php if($row["doc"] =='COP'){echo "Code Of Practice";}
-                                            elseif ($row["doc"] =='WI') {
-                                                echo "Work Instruction";
-                                            };?></td>
-                                            <td><?php echo $row["nomor_doc"];?></td>
-                                            <td><?php echo $row["judul_doc"];?></td>
-                                            <td><?php echo $row["jenis_doc_cw"];?></td>
-                                            <td><?php echo date('d-m-Y', strtotime($row["date_rev"]));?></td>
-                                            <td><?php echo $row["number_rev"];?></td>
-                                            <td><?php echo 'SOP-'.$row["seksi_sop"].'-'.$row["number_sop"];?></td>
-                                            <td><?php echo $row["pic_doc"];?></td>
-                                            <td><a data-toggle="tooltip" title="<?= $row['file']; ?>" href="<?php echo base_url('assets/upload/PengembanganSistem/copwi').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
-                                            </td>
-                                            <td><?php echo $row["status_doc"];?></td>
-                                            <td>
-                                            <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?>>
-                                                <div class="btn-group">
-                                            <a style="padding: 6px" class="icon-action btn btn-success" href="<?php echo base_url('PengembanganSistem/edit_cop_wi/'.$row['nomor_doc'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a style="padding: 6px" class="icon-action btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['nomor_doc'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a style="padding: 6px" class="icon-action btn btn-danger" href="<?php echo base_url('PengembanganSistem/delete_cop_wi/'.$row['nomor_doc'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
-                                            </div>
-                                            </div>
-                                            </td>
-                                            <div class="modal fade" id="<?php echo "modal_edit".$row['nomor_doc'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" align="left">Upload File :</h4>
-                                                </div>
-                                                <form class="form-validate form-horizontal " method="post"  enctype="multipart/form-data">
-                                                    <div class="modal-body">
-
-                                                    <div class="form-group">
-                                                        <label class="control-label col-xs-3" >File : </label>
-                                                        <div class="col-xs-8">
-                                                            <input id="file_cop_<?php echo $row['id']?>" name="file_ps" class="form-control" type="file" value="<?php echo $row['file']?>">
+                                        <thead>
+                                            <tr class="bg-info">
+                                                <th class="vel_ps" style="vertical-align: middle; width: 1%">No.</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 5%">COP / WI</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 10%">No. Dokumen</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 25%">Judul Dokumen</th>
+                                                <th class="vel_ps" style="width: 80px; vertical-align: middle">Oracle / Android / Web Base / Form</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 60px">Rev.Date</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 60px">No.Rev.</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 10%">SOP</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 10%">PIC</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 5%">File</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 10%">Status</th>
+                                                <th class="vel_ps" style="vertical-align: middle; width: 15%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php $no= 1; foreach ($listdatacopwi as $row) { ?>
+                                            <tr row-id="<?php echo $row['id']?>">
+                                                <td><b><?php echo $no++; ?></b></td>
+                                                <td><?php if($row["doc"] =='COP'){echo "Code Of Practice";}
+                                                elseif ($row["doc"] =='WI') {
+                                                    echo "Work Instruction";
+                                                };?></td>
+                                                <td><?php echo $row["nomor_doc"];?></td>
+                                                <td><?php echo $row["judul_doc"];?></td>
+                                                <td><?php echo $row["jenis_doc_cw"];?></td>
+                                                <td><?php echo date('d-m-Y', strtotime($row["date_rev"]));?></td>
+                                                <td><?php echo $row["number_rev"];?></td>
+                                                <td><?php echo 'SOP-'.$row["seksi_sop"].'-'.$row["number_sop"];?></td>
+                                                <td><?php echo $row["pic_doc"];?></td>
+                                                <td><a data-toggle="tooltip" title="<?= $row['file']; ?>" href="<?php echo base_url('assets/upload/PengembanganSistem/copwi').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
+                                                </td>
+                                                <td><?php echo $row["status_doc"];?></td>
+                                                <td>
+                                                    <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?>>
+                                                        <div class="btn-group">
+                                                            <a style="padding: 6px" class="icon-action btn btn-success" href="<?php echo base_url('PengembanganSistem/edit_cop_wi/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
+                                                            <a style="padding: 6px" class="icon-action btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                                            <a style="padding: 6px" class="icon-action btn btn-danger" href="<?php echo base_url('PengembanganSistem/delete_cop_wi/'.$row['id'])?>" title="Delete" onclick="data_delate_ps()"><i class="fa fa-close"></i></a>
                                                         </div>
                                                     </div>
-                                                       <input id="judul_cop_<?php echo $row['id']?>" name="judul_cop_wi" hidden="" value="<?=$row["judul_doc"].'?'.$row['nomor_doc']; ?>">
-                                                    <div class="form-group">
-                                                    <label class="col-xs-3 control-label">Status :</label>
-                                                    <div class="col-xs-8">
-                                                        <select id="status_cop_<?php echo $row['id']?>" name="status" class="form-control sensitive-input" data-placeholder="Pilih" required="">
-                                                        <option value="<?php echo $row['status_doc']?>" hidden="hidden"><?php echo $row['status_doc']?></option>
-                                                        <option value="Baru">Baru</option>
-                                                        <option value="Approval">Approval</option>
-                                                        <option value="On Proses">On Proses</option>
-                                                        <option value="Cansel">Cancel</option>
-                                                        </select>
-                                                    </div>
-                                                    </div>
-                                                </div>
+                                                </td>
+                                                <div class="modal fade" id="<?php echo "modal_edit".$row['id'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title" align="left">Upload File :</h4>
+                                                            </div>
+                                                            <form class="form-validate form-horizontal " method="post"  enctype="multipart/form-data">
+                                                                <div class="modal-body">
 
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Tutup</button>
-                                                            <button type="button" onclick="upload_file_cop(<?php echo $row['id']?>)" data-id="<?php echo $row['id']?>" class="btn btn-info swalDefaultSuccess"><i class="fa fa-upload"> Upload</i></button>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-xs-3" >File : </label>
+                                                                            <div class="col-xs-8">
+                                                                                <input id="file_cop_<?php echo $row['id']?>" name="file_ps" class="form-control" type="file" value="<?php echo $row['file']?>">
+                                                                            </div>
+                                                                    </div>
+                                                                    <input id="judul_cop_<?php echo $row['id']?>" name="judul_cop_wi" hidden="" value="<?=$row["judul_doc"].'?'.$row['nomor_doc']; ?>">
+                                                                        <div class="form-group">
+                                                                            <label class="col-xs-3 control-label">Status :</label>
+                                                                                <div class="col-xs-8">
+                                                                                    <select id="status_cop_<?php echo $row['id']?>" name="status" class="form-control sensitive-input" data-placeholder="Pilih" required="">
+                                                                                    <option value="<?php echo $row['status_doc']?>" hidden="hidden"><?php echo $row['status_doc']?></option>
+                                                                                    <option value="Baru">Baru</option>
+                                                                                    <option value="Approval">Approval</option>
+                                                                                    <option value="On Proses">On Proses</option>
+                                                                                    <option value="Cansel">Cancel</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Tutup</button>
+                                                                        <button type="button" onclick="upload_file_cop(<?php echo $row['id']?>)" data-id="<?php echo $row['id']?>" class="btn btn-info swalDefaultSuccess"><i class="fa fa-upload"> Upload</i></button>
+                                                                    </div>
+                                                            </form>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            </div>
-                                        </tr> 
+                                            </tr> 
 
-                                        <?php } ?>
-                                    </tbody>
+                                            <?php } ?>
+                                        </tbody>
                                   </table>
                                 </div>
                               </div>

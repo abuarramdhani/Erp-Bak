@@ -86,7 +86,7 @@
                                                     <div class="form-group row">
                                                         <label for="number_rev_um" class="control-label col-lg-4">No. Revisi</label>
                                                         <div class="col-lg-8">
-                                                            <input type="number" placeholder="00" required="" min="00" max="10000" name="number_rev_um" id="number_rev-fp" class="form-control">
+                                                            <input type="number" placeholder="00" required="" min="00" value="00" max="10000" name="number_rev_um" id="number_rev-fp" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -184,22 +184,22 @@
                             <div class="box-body">
                               <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
-                                  <thead>
-                                    <tr class="bg-info">
-                                        <th>No.</th>
-                                        <th>No. Dokumen</th>
-                                        <th>Judul Dokumen</th>
-                                        <th>Oracle / Android / Web Base / Form</th>
-                                        <th>Rev. Date</th>
-                                        <th>No. Rev.</th>
-                                        <th>SOP</th>
-                                        <th>PIC</th>
-                                        <th>File</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
+                                    <thead>
+                                        <tr class="bg-info">
+                                            <th style="vertical-align: middle; max-width: 1px">No.</th>
+                                            <th style="vertical-align: middle; max-width: 5px">No. Dokumen</th>
+                                            <th style="vertical-align: middle; max-width: 50px">Judul Dokumen</th>
+                                            <th style="vertical-align: middle; max-width: 20px">Oracle / Android / Web Base / Form</th>
+                                            <th style="vertical-align: middle; max-width: 10px">Rev. Date</th>
+                                            <th style="vertical-align: middle; max-width: 5px">No. Rev.</th>
+                                            <th style="vertical-align: middle; max-width: 10px">SOP</th>
+                                            <th style="vertical-align: middle; max-width: 10px">PIC</th>
+                                            <th style="vertical-align: middle; max-width: 5px">File</th>
+                                            <th style="vertical-align: middle; max-width: 10px">Status</th>
+                                            <th style="vertical-align: middle; max-width: 30px">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         <?php $no= 1; foreach ($listdataum as $row) { ?>
                                         <tr row-id="<?php echo $row['id']?>">
                                             <td><b><?php echo $no++; ?></b></td>
@@ -216,49 +216,49 @@
                                             <td>
                                             <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?>>
                                                 <div class="btn-group">
-                                            <a style="padding: 6px" class="icon-action btn btn-success" href="<?php echo base_url('PengembanganSistem/edit_UM/'.$row['nomor_doc'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a style="padding: 6px" class="icon-action btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['nomor_doc'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a style="padding: 6px" class="icon-action btn btn-danger" href="<?php echo base_url('PengembanganSistem/delete_UM/'.$row['nomor_doc'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
+                                            <a style="padding: 6px" class="icon-action btn btn-success" href="<?php echo base_url('PengembanganSistem/edit_UM/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
+                                            <a style="padding: 6px" class="icon-action btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                            <a style="padding: 6px" class="icon-action btn btn-danger" href="<?php echo base_url('PengembanganSistem/delete_UM/'.$row['id'])?>" title="Delete" onclick="data_delate_ps()"><i class="fa fa-close"></i></a>
                                             </div>
                                             </div>
                                             </td>
-                                            <div class="modal fade" id="<?php echo "modal_edit".$row['nomor_doc'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" align="left">Upload File :</h4>
-                                                </div>
-                                                <form class="form-validate form-horizontal " method="post" enctype="multipart/form-data">
-                                                    <div class="modal-body">
-
-                                                    <div class="form-group">
-                                                        <label class="control-label col-xs-3" >File : </label>
-                                                        <div class="col-xs-8">
-                                                            <input id="upload_file_<?php echo $row['id']?>" name="file_ps" class="form-control" type="file">
+                                            <div class="modal fade" id="<?php echo "modal_edit".$row['id'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" align="left">Upload File :</h4>
                                                         </div>
-                                                    </div>
-                                                       <input id="judul_doc_<?php echo $row['id']?>" name="judul_um" hidden="" value="<?=$row["judul_doc"].'?'.$row['nomor_doc']; ?>">
-                                                    <div class="form-group">
-                                                    <label class="col-xs-3 control-label">Status :</label>
-                                                    <div class="col-xs-8">
-                                                        <select id="status_<?php echo $row['id']?>" name="status" class="form-control sensitive-input" data-placeholder="Pilih" required="">
-                                                        <option value="<?php echo $row['status_doc']?>" hidden="hidden"><?php echo $row['status_doc']?></option>
-                                                        <option value="Baru">Baru</option>
-                                                        <option value="Approval">Approval</option>
-                                                        <option value="On Proses">On Proses</option>
-                                                        <option value="Cansel">Cancel</option>
-                                                        </select>
-                                                    </div>
-                                                    </div>
-                                                </div>
+                                                    <form class="form-validate form-horizontal " method="post" enctype="multipart/form-data">
+                                                            <div class="modal-body">
 
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Tutup</button>
-                                                            <button type="button" onclick="upload_file_um(<?php echo $row['id']?>)" data-id="<?php echo $row['id']?>" class="btn btn-info swalDefaultSuccess"><i class="fa fa-upload"> Upload</i></button>
-                                                        </div>
-                                                    </form>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-xs-3" >File : </label>
+                                                                    <div class="col-xs-8">
+                                                                        <input id="upload_file_<?php echo $row['id']?>" name="file_ps" class="form-control" type="file">
+                                                                    </div>
+                                                                </div>
+                                                                <input id="judul_doc_<?php echo $row['id']?>" name="judul_um" hidden="" value="<?=$row["judul_doc"].'?'.$row['nomor_doc']; ?>">
+                                                                <div class="form-group">
+                                                                    <label class="col-xs-3 control-label">Status :</label>
+                                                                        <div class="col-xs-8">
+                                                                            <select id="status_<?php echo $row['id']?>" name="status" class="form-control sensitive-input" data-placeholder="Pilih" required="">
+                                                                            <option value="<?php echo $row['status_doc']?>" hidden="hidden"><?php echo $row['status_doc']?></option>
+                                                                            <option value="Baru">Baru</option>
+                                                                            <option value="Approval">Approval</option>
+                                                                            <option value="On Proses">On Proses</option>
+                                                                            <option value="Cansel">Cancel</option>
+                                                                            </select>
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Tutup</button>
+                                                                    <button type="button" onclick="upload_file_um(<?php echo $row['id']?>)" data-id="<?php echo $row['id']?>" class="btn btn-info swalDefaultSuccess"><i class="fa fa-upload"> Upload</i></button>
+                                                                </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </div>
                                         </tr> 
 

@@ -219,16 +219,25 @@ class C_Penomoran extends CI_Controller
 		redirect('PengembanganSistem/Flow_Proses');
 	}
 
-	public function upload_data_flow($id_data)
+	public function upload_data_flow($id)
 	{
 		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
-		// $number_file = strtoupper($this->input->post('id'));
+		$id_data = strtoupper($this->input->post('id'));
 
 		if ($_FILES == false) {
 			echo 0;
 		}else{
+
+			if(!is_dir('.assets/upload/PengembanganSistem/fp'))
+			{
+				mkdir('.assets/upload/PengembanganSistem/fp', 0777, true); 
+				chmod('.assets/upload/PengembanganSistem/fp', 0777);
+			}else {
+				chmod('.assets/upload/PengembanganSistem/fp', 0777); 
+			}
+
 			$data_file = $_FILES['fileupload']['name'];
 
 			$pathh = null;
@@ -251,7 +260,7 @@ class C_Penomoran extends CI_Controller
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
 			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
-			echo erro;
+			echo 'error';
 			  print_r($error);
 				} else {
 				array('upload_data' => $this->upload->data());
@@ -264,7 +273,7 @@ class C_Penomoran extends CI_Controller
 					
 				);
 
-				$this->M_pengsistem->upload_file_fp($data,$id_data);
+				$this->M_pengsistem->upload_file_fp($data,$id);
 				echo 1;
 	
 			}
@@ -460,16 +469,25 @@ class C_Penomoran extends CI_Controller
 		redirect('PengembanganSistem/cop_wi');
 		}
 
-	public function upload_data_copwi($id_data)
+	public function upload_data_copwi($id)
 	{
 		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
-		// $number_file = strtoupper($this->input->post('id'));
+		$id_data = strtoupper($this->input->post('id'));
 
 		if ($_FILES == false) {
 			echo 0;
 		}else{
+
+			if(!is_dir('.assets/upload/PengembanganSistem/copwi'))
+			{
+				mkdir('.assets/upload/PengembanganSistem/copwi', 0777, true); 
+				chmod('.assets/upload/PengembanganSistem/copwi', 0777);
+			}else {
+				chmod('.assets/upload/PengembanganSistem/copwi', 0777); 
+			}
+
 			$data_file = $_FILES['fileupload']['name'];
 
 			$pathh = null;
@@ -505,7 +523,7 @@ class C_Penomoran extends CI_Controller
 					
 				);
 
-				$this->M_pengsistem->upload_file_copwi($data,$id_data);
+				$this->M_pengsistem->upload_file_copwi($data,$id);
 				echo 1;
 	
 			}
@@ -718,7 +736,7 @@ class C_Penomoran extends CI_Controller
 		redirect('PengembanganSistem/Usermanual');
 	}
 
-	public function upload_data_um($id_data)
+	public function upload_data_um($id)
 	{
 		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
@@ -728,6 +746,16 @@ class C_Penomoran extends CI_Controller
 		if ($_FILES == false) {
 			echo 0;
 		}else{
+
+			if(!is_dir('.assets/upload/PengembanganSistem/um'))
+			{
+				mkdir('.assets/upload/PengembanganSistem/um', 0777, true);
+				chmod('.assets/upload/PengembanganSistem/um', 0777);
+			}else {
+				chmod('.assets/upload/PengembanganSistem/um', 0777); 
+			}
+
+
 			$data_file = $_FILES['fileupload']['name'];
 
 			$pathh = null;
@@ -763,7 +791,7 @@ class C_Penomoran extends CI_Controller
 					
 				);
 
-				$this->M_pengsistem->upload_file_um($data,$id_data);
+				$this->M_pengsistem->upload_file_um($data,$id);
 				echo 1;
 	
 			}
@@ -932,6 +960,16 @@ class C_Penomoran extends CI_Controller
 		if ($_FILES == false) {
 			echo 0;
 		}else{
+
+			if(!is_dir('.assets/upload/PengembanganSistem/memo'))
+			{
+				mkdir('.assets/upload/PengembanganSistem/memo', 0777, true);
+				chmod('.assets/upload/PengembanganSistem/memo', 0777);
+			}else {
+				chmod('.assets/upload/PengembanganSistem/memo', 0777); 
+			}
+
+
 			$data_file = $_FILES['fileupload']['name'];
 
 			$pathh = null;

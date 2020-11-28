@@ -159,15 +159,15 @@
                                     <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
                                       <thead>
                                         <tr class="bg-info">
-                                            <th><center>No.</center></th>
-                                            <th style="width: 10em"><center>No. Dokumen</center></th>
-                                            <th><center>Judul Dokumen</center></th>
-                                            <th><center>Tgl.Rev.</center></th>
-                                            <th><center>No.Rev.</center></th>
-                                            <th><center>File</center></th>
-                                            <th><center>PIC</center></th>
-                                            <th><center>Status</center></th>
-                                            <th><center>Action</center></th>
+                                            <th style="width: 1%;"><center>No.</center></th>
+                                            <th style="width: 12%;"><center>No. Dokumen</center></th>
+                                            <th style="width: 25%;"><center>Judul Dokumen</center></th>
+                                            <th style="width: 10%;"><center>Tgl.Rev.</center></th>
+                                            <th style="width: 5%;"><center>No.Rev.</center></th>
+                                            <th style="width: 5%;"><center>File</center></th>
+                                            <th style="width: 15%;"><center>PIC</center></th>
+                                            <th style="width: 10%;"><center>Status</center></th>
+                                            <th style="width: 10%;"><center>Action</center></th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -194,13 +194,13 @@
                                         <td>
                                         <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?> >
                                             <div class="btn-group">
-                                            <a class="btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_flow/'.$row['nomor_doc'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a class="btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['nomor_doc'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_flow/'.$row['nomor_doc'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
+                                            <a class="btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_flow/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                            <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_flow/'.$row['id'])?>" title="Delete" onclick="data_delate_ps()"><i class="fa fa-close"></i></a>
                                             </div>
                                         </div>
                                         </td>
-                                            <div class="modal fade" id="<?php echo "modal_edit".$row['nomor_doc'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">
+                                            <div class="modal fade" id="<?php echo "modal_edit".$row['id'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -215,7 +215,7 @@
                                                                     <input id="file_fp_<?php echo $row['id']?>" name="file_flow_ps" class="form-control" type="file">
                                                                 </div>
                                                             </div>
-                                                            <input id="judul_flow_<?php echo $row['id']?>" name="judul_fp" hidden="" value="<?=$row["judul_doc"].'?'.$row['nomor_doc'];; ?>">
+                                                            
                                                             <div class="form-group">
                                                                 <label class="col-xs-3 control-label">Status :</label>
                                                                 <div class="col-xs-8">
@@ -226,6 +226,13 @@
                                                                     <option value="On Proses">On Proses</option>
                                                                     <option value="Cansel">Cancel</option>
                                                                 </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div style="display:none;" class="form-group">
+                                                                <label class="control-label col-xs-3" >File Name : </label>
+                                                                <div class="col-xs-8">
+                                                                <input class="form-control" disabled="" id="judul_flow_<?php echo $row['id']?>" name="judul_fp" hidden="" value="<?=$row["judul_doc"].'?'.$row['nomor_doc'];; ?>">
                                                                 </div>
                                                             </div>
                                                         </div>

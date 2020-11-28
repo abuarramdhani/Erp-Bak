@@ -70,7 +70,7 @@
 
 			$.ajax({
 				type: 'POST',
-				url: baseurl + "PengembanganSistem/upload_data_flow/"+ida,
+				url: baseurl + "PengembanganSistem/upload_data_flow/"+id,
 				data: formData,
 				contentType: false,
 				processData: false,
@@ -348,7 +348,7 @@
 
 			$.ajax({
 				type: 'POST',
-				url: baseurl + "PengembanganSistem/upload_file_cop_wi/"+ida,
+				url: baseurl + "PengembanganSistem/upload_file_cop_wi/"+id,
 				data: formData,
 				contentType: false,
 				processData: false,
@@ -686,7 +686,7 @@
 
 			$.ajax({
 				type: 'POST',
-				url: baseurl + "PengembanganSistem/upload_file_um/"+ida,
+				url: baseurl + "PengembanganSistem/upload_file_um/"+id,
 				data: formData,
 				contentType: false,
 				processData: false,
@@ -1221,3 +1221,4 @@
 	function exspotpdf(){
 		$('.printexcel').attr('action',"print_lkh");
 	}
+	
