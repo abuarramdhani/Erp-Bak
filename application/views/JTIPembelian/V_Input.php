@@ -6,11 +6,11 @@
           <h4 style="font-weight:bold;">JTI Input Pembelian</h4>
         </div>
         <div class="box-body">
-          <div class="row">
+          <div class="row" style="margin-top:20px;">
             <div class="col-md-3"></div>
             <div class="col-md-6">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" >
                   <div class="form-group">
                     <label for="">Tipe Dokumen</label>
                     <select class="form-control select2" id="jenis_dokumen" name="type" data-placeholder="Jenis Kegiatan">

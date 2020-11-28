@@ -164,7 +164,7 @@ class C_Index extends CI_Controller
       $data['jenis_dokumen'] = $this->M_jtipembelian->getTypes();
       foreach ($data['get'] as $key => $value) {
         if (!empty($value['vehicle_number'])) {
-          $tampung[$value['vehicle_number']][] = sizeof($value);
+          $tampung[preg_replace('/\s+/', '', $value['vehicle_number'].'_'.substr($value['created_at'], 0, 10))][] = sizeof($value);
         }
       }
 
@@ -181,9 +181,9 @@ class C_Index extends CI_Controller
       }
 
       foreach ($data['get'] as $key => $value) {
-        if (in_array($value['vehicle_number'], $platnomordobel)) {
+        if (in_array(preg_replace('/\s+/', '', $value['vehicle_number'].'_'.substr($value['created_at'], 0, 10)), $platnomordobel)) {
           if (!empty($value['vehicle_number'])) {
-            $tmp[$value['vehicle_number']][] = $value;
+            $tmp[preg_replace('/\s+/', '', $value['vehicle_number'].'_'.substr($value['created_at'], 0, 10))][] = $value;
           }
         }
       }
@@ -207,8 +207,8 @@ class C_Index extends CI_Controller
       }
 
       foreach ($data['get'] as $key => $value) {
-        if (!in_array($value['vehicle_number'], $tampung_plat_dengan_berat1_kosong)) {
-          if (empty($value['weight']) && !empty($value['ticket_number'] && in_array($value['vehicle_number'], $platnomordobel))) {
+        if (!in_array(preg_replace('/\s+/', '', $value['vehicle_number'].'_'.substr($value['created_at'], 0, 10)), $tampung_plat_dengan_berat1_kosong)) {
+          if (empty($value['weight']) && !empty($value['ticket_number'] && in_array(preg_replace('/\s+/', '', $value['vehicle_number'].'_'.substr($value['created_at'], 0, 10)), $platnomordobel))) {
              unset($data['get'][$key]);
            }
         }
