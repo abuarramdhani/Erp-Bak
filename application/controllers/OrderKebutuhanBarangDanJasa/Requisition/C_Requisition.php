@@ -245,7 +245,7 @@ class C_Requisition extends CI_Controller {
 				}else {
 					// echo('nothing');
 				}
-				$replaceFileName = str_replace(' ','_',$files['name'][$j]);
+				$replaceFileName = str_replace(' ','_',$media['file_name']);
 				$upload = array(
 					'ORDER_ID' => $order_id[0]['ORDER_ID'],
 					'ADDRESS' => $path,
