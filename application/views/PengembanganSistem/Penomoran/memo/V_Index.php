@@ -195,16 +195,16 @@
                                 <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
                                   <thead>
                                     <tr class="bg-info">
-                                        <th>No.</th>
-                                        <th>Tanggal Dibuat</th>
-                                        <th>No. Surat / Memo</th>
-                                        <th>Ditujukan</th>
-                                        <th>Seksi / Departemen</th>
-                                        <th>Dibuat</th>
-                                        <th>Tgl. Distribusi</th>
-                                        <th>Perihal</th>
-                                        <th>Dokumen</th>
-                                        <th>Action</th>
+                                        <th style="max-width:1px;">No.</th>
+                                        <th style="max-width:10px;">Tanggal Dibuat</th>
+                                        <th style="max-width:15px;">No. Surat / Memo</th>
+                                        <th style="max-width:10px;">Ditujukan</th>
+                                        <th style="max-width:20px;">Seksi / Departemen</th>
+                                        <th style="max-width:10px;">Dibuat</th>
+                                        <th style="max-width:10px;">Tgl. Distribusi</th>
+                                        <th style="max-width:30px;">Perihal</th>
+                                        <th style="max-width:10px;">File</th>
+                                        <th style="max-width:30px; width:70px;">Action</th>
                                     </tr>
                                   </thead>
                                       <tbody>
@@ -244,7 +244,14 @@
                                                                 <input id="file_ps_<?php echo $row['id'];?>" name="file_ps" class="form-control" type="file">
                                                             </div>
                                                         </div>
-                                                            <input id="file_name_<?php echo $row['id'];?>" name="file_name" value="<?=$row["perihal_doc"]; ?>">
+
+                                                        <div style="display:none;" class="form-group">
+                                                            <label class="control-label col-xs-3" >File Name : </label>
+                                                            <div class="col-xs-8">
+                                                                <input disabled="" id="file_name_<?php echo $row['id'];?>" class="form-control" name="file_name" value="<?=$row["perihal_doc"]; ?>">
+                                                            </div>
+                                                        </div>
+                                                            
                                                     </div>
 
                                                     <div class="modal-footer">

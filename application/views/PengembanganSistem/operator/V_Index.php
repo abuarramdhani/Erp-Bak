@@ -219,133 +219,133 @@
                               </div>
                            </form>
                             <div class="box box-primary">
-                              <div class="box-header with-border">
-                                <h4 style="font-weight:bold;"><i class="fa fa-files-o"></i> Monitoring Laporan Kerja Harian</h4>
-                                <form method="post" action="<?php echo base_url('PengembanganSistem/lkh_ps');?>">
-                                    <div class="from-group">
-                                        <div class="col-sm-1">
-                                            <label for="">Bulan</label>
-                                        </div>
-                                            <div class="col-sm-3 float-right">
-                                                <select name="bulan" onchange="this.form.submit()" class="form-control select2" data-placeholder="Pilih Bulan" required="">
-                                                    <option></option>
-                                                    <option value="01" <?php if ($bulan=="01") {echo "selected";}?> >Januari</option>
-                                                    <option value="02" <?php if ($bulan=="02") {echo "selected";}?>>Februari</option>
-                                                    <option value="03" <?php if ($bulan=="03") {echo "selected";}?> >Maret</option>
-                                                    <option value="04" <?php if ($bulan=="04") {echo "selected";}?> >April</option>
-                                                    <option value="05" <?php if ($bulan=="05") {echo "selected";}?> >Mei</option>
-                                                    <option value="06" <?php if ($bulan=="06") {echo "selected";}?> >Juni</option>
-                                                    <option value="07" <?php if ($bulan=="07") {echo "selected";}?> >Juli</option>
-                                                    <option value="08" <?php if ($bulan=="08") {echo "selected";}?> >Agustus</option>
-                                                    <option value="09" <?php if ($bulan=="09") {echo "selected";}?> >September</option>
-                                                    <option value="10" <?php if ($bulan=="10") {echo "selected";}?> >Oktober</option>
-                                                    <option value="11" <?php if ($bulan=="11") {echo "selected";}?> >November</option>
-                                                    <option value="12" <?php if ($bulan=="12") {echo "selected";}?> >Desember</option>
-                                                </select>
-                                            </div>
-                                        <div class="col-sm-1">
-                                            <label for="">Tahun</label>
-                                        </div>
-                                        <div class="col-sm-2 float-right">
-                                            <select name="tahun" class="form-control select2" data-placeholder="--pilih tahun--">
-                                                <option hidden=""></option>
-                                                <?php
-                                                $mulai=date('Y') - 50;
-                                                for ($i= $mulai; $i < $mulai + 100; $i++) { 
-                                                    $sel = $i == date('Y') ? ' selected="selected"' : '';
-                                                    echo '<option value="'.$i.'"'.$sel.'>'.$i.'</option>';
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </form>
-                                    <div class="col-sm-1">
-                                        <label for="" id="textkedip">Approver</label>
-                                    </div>
-                                        <form class="printexcel" action="<?php echo base_url('PengembanganSistem/print_lkh');?>" method="post">
-                                            <div class="col-sm-2 float-right">
-                                                <select name="kasie" id="pilihkasie" class="form-control select2" data-placeholder="--pilih approver--">
-                                                    <option hidden=""></option>
-                                                    <?php foreach ($listorg as $org) 
-                                                    {
-                                                        echo '  <option value="'.$org['nama_pekerja'].'">'.$org['nama_pekerja'].'</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <input type="text" name="data" value="<?php if(strlen($bulan)>1){echo $bulan.'-'.$tahun;} ?>" required="required" hidden="hidden">
-                                            <div class="col-sm-4 center" style="float: right">
-                                                    <button onclick="exspotexcel()" style="position: absolute;right: 7em;bottom: 0.5em;" class="btn btn-success" formtarget="_blank" ><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Excel </button>
-                                                    <button onclick="exspotpdf()" style="position: absolute;right: 1em;bottom: 0.5em;" class="btn btn-warning" formtarget="_blank" ><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Print </button>
+                                <div class="box-header with-border">
+                                    <h4 style="font-weight:bold;"><i class="fa fa-files-o"></i> Monitoring Laporan Kerja Harian</h4>
+                                        <form method="post" action="<?php echo base_url('PengembanganSistem/lkh_ps');?>">
+                                            <div class="from-group">
+                                                <div class="col-sm-1">
+                                                    <label for="">Bulan</label>
+                                                </div>
+                                                    <div class="col-sm-3 float-right">
+                                                        <select name="bulan" onchange="this.form.submit()" class="form-control select2" data-placeholder="Pilih Bulan" required="">
+                                                            <option></option>
+                                                            <option value="01" <?php if ($bulan=="01") {echo "selected";}?> >Januari</option>
+                                                            <option value="02" <?php if ($bulan=="02") {echo "selected";}?>>Februari</option>
+                                                            <option value="03" <?php if ($bulan=="03") {echo "selected";}?> >Maret</option>
+                                                            <option value="04" <?php if ($bulan=="04") {echo "selected";}?> >April</option>
+                                                            <option value="05" <?php if ($bulan=="05") {echo "selected";}?> >Mei</option>
+                                                            <option value="06" <?php if ($bulan=="06") {echo "selected";}?> >Juni</option>
+                                                            <option value="07" <?php if ($bulan=="07") {echo "selected";}?> >Juli</option>
+                                                            <option value="08" <?php if ($bulan=="08") {echo "selected";}?> >Agustus</option>
+                                                            <option value="09" <?php if ($bulan=="09") {echo "selected";}?> >September</option>
+                                                            <option value="10" <?php if ($bulan=="10") {echo "selected";}?> >Oktober</option>
+                                                            <option value="11" <?php if ($bulan=="11") {echo "selected";}?> >November</option>
+                                                            <option value="12" <?php if ($bulan=="12") {echo "selected";}?> >Desember</option>
+                                                        </select>
+                                                    </div>
+                                                <div class="col-sm-1">
+                                                    <label for="">Tahun</label>
+                                                </div>
+                                                <div class="col-sm-2 float-right">
+                                                    <select name="tahun" class="form-control select2" data-placeholder="--pilih tahun--">
+                                                        <option hidden=""></option>
+                                                        <?php
+                                                        $mulai=date('Y') - 50;
+                                                        for ($i= $mulai; $i < $mulai + 100; $i++) { 
+                                                            $sel = $i == date('Y') ? ' selected="selected"' : '';
+                                                            echo '<option value="'.$i.'"'.$sel.'>'.$i.'</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </form>
-                              </div>
-                              <div class="box-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; ">
-                                        <thead style="background: darkgray; color: white;">
-                                            <tr>
-                                                <th hidden="" rowspan="2">No</th>
-                                                <th rowspan="2">Hari</th>
-                                                <th rowspan="2">Tanggal</th>
-                                                <th rowspan="2">Uraian Pekerjaan</th>
-                                                <th rowspan="2">Kode</th>
-                                                <th rowspan="2">Target Waktu</th>
-                                                <th colspan="2" style="text-align: center">Waktu</th>
-                                                <th rowspan="2">Total Waktu</th>
-                                                <th rowspan="2">IP%</th>
-                                                <th rowspan="2">Persetujuan <br/> Kualitas</th>
-                                                <th colspan="6" style="text-align: center">KETERANGAN</th>
-                                                <th rowspan="2" class="action">Action</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Mulai</th>
-                                                <th>Selesai</th>
-                                                <th>T</th>
-                                                <th>I</th>
-                                                <th>M</th>
-                                                <th>SK</th>
-                                                <th>CT</th>
-                                                <th>IP</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                         <?php $no = 1; foreach ($listdata_lkh as $row) { ?>
-                                        <tr row-id="<?php echo $row['id']?>" class="ta-ta">
-                                        <td hidden=""><?php echo $no++; ?></td>
-                                        <td><?php echo $row["harimasuk"];?></td>
-                                        <td><?php $datatanggal = explode("-", $row["tglmasuk"]);
-                                                    $day = $datatanggal[2];
-                                                    $bulan = $datatanggal[1];
-                                                    $tahun = $datatanggal[0];
-                                                    $hasil = $day."-".$bulan."-".$tahun;
-                                                    echo $hasil; ?>
-                                        </td>
-                                        <td style="min-width: 20em;"><?php echo $row["uraian_pekerjaan"];?></td>
-                                        <td><?php echo $row["kodesie"];?></td>
-                                        <td><?php echo $row["targetjob"];?></td>
-                                        <td><?php echo $row["waktu_mulai"];?></td>
-                                        <td><?php echo $row["waktu_selesai"];?></td>
-                                        <td><?php echo $row["total_waktu"];?></td>
-                                        <td><?php echo $row["persen"];?></td>
-                                        <td></td>
-                                        <td><?php if ($row["t"]=='V') {echo "✓"; } ;?></td>
-                                        <td><?php if ($row["i"]=='V') {echo "✓"; } ;?></td>
-                                        <td><?php if ($row["m"]=='V') {echo "✓"; } ;?></td>
-                                        <td><?php if ($row["sk"]=='V') {echo "✓"; } ;?></td>
-                                        <td><?php if ($row["ct"]=='V') {echo "✓"; } ;?></td>
-                                        <td><?php if ($row["ip"]=='V') {echo "✓"; } ;?></td>
-                                        <td>
-                                            <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_lkh/'.$row['id'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
-                                        </td>
-                                        </tr>
-                                        <?php } ?>
-                                        </tbody>
-                                    </table>
-                                    
+                                        <div class="col-sm-1">
+                                            <label for="" id="textkedip">Approver</label>
+                                        </div>
+                                            <form class="printexcel" action="<?php echo base_url('PengembanganSistem/print_lkh');?>" method="post">
+                                                <div class="col-sm-2 float-right">
+                                                    <select name="kasie" id="pilihkasie" class="form-control select2" data-placeholder="--pilih approver--">
+                                                        <option hidden=""></option>
+                                                        <?php foreach ($listorg as $org) 
+                                                        {
+                                                            echo '  <option value="'.$org['nama_pekerja'].'">'.$org['nama_pekerja'].'</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <input type="text" name="data" value="<?php if(strlen($bulan)>1){echo $bulan.'-'.$tahun;} ?>" required="required" hidden="hidden">
+                                                <div class="col-sm-4 center" style="float: right">
+                                                        <button onclick="exspotexcel()" style="position: absolute;right: 7em;bottom: 0.5em;" class="btn btn-success" formtarget="_blank" ><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Excel </button>
+                                                        <button onclick="exspotpdf()" style="position: absolute;right: 1em;bottom: 0.5em;" class="btn btn-warning" formtarget="_blank" ><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Print </button>
+                                                </div>
+                                            </form>
                                 </div>
-                              </div>
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; ">
+                                            <thead style="background: darkgray; color: white;">
+                                                <tr>
+                                                    <th hidden="" rowspan="2">No</th>
+                                                    <th rowspan="2">Hari</th>
+                                                    <th rowspan="2">Tanggal</th>
+                                                    <th rowspan="2">Uraian Pekerjaan</th>
+                                                    <th rowspan="2">Kode</th>
+                                                    <th rowspan="2">Target Waktu</th>
+                                                    <th colspan="2" style="text-align: center">Waktu</th>
+                                                    <th rowspan="2">Total Waktu</th>
+                                                    <th rowspan="2">IP%</th>
+                                                    <th rowspan="2">Persetujuan <br/> Kualitas</th>
+                                                    <th colspan="6" style="text-align: center">KETERANGAN</th>
+                                                    <th rowspan="2" class="action">Action</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Mulai</th>
+                                                    <th>Selesai</th>
+                                                    <th>T</th>
+                                                    <th>I</th>
+                                                    <th>M</th>
+                                                    <th>SK</th>
+                                                    <th>CT</th>
+                                                    <th>IP</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php $no = 1; foreach ($listdata_lkh as $row) { ?>
+                                            <tr row-id="<?php echo $row['id']?>" class="ta-ta">
+                                            <td hidden=""><?php echo $no++; ?></td>
+                                            <td><?php echo $row["harimasuk"];?></td>
+                                            <td><?php $datatanggal = explode("-", $row["tglmasuk"]);
+                                                        $day = $datatanggal[2];
+                                                        $bulan = $datatanggal[1];
+                                                        $tahun = $datatanggal[0];
+                                                        $hasil = $day."-".$bulan."-".$tahun;
+                                                        echo $hasil; ?>
+                                            </td>
+                                            <td style="min-width: 20em;"><?php echo $row["uraian_pekerjaan"];?></td>
+                                            <td><?php echo $row["kodesie"];?></td>
+                                            <td><?php echo $row["targetjob"];?></td>
+                                            <td><?php echo $row["waktu_mulai"];?></td>
+                                            <td><?php echo $row["waktu_selesai"];?></td>
+                                            <td><?php echo $row["total_waktu"];?></td>
+                                            <td><?php echo $row["persen"];?></td>
+                                            <td></td>
+                                            <td><?php if ($row["t"]=='V') {echo "✓"; } ;?></td>
+                                            <td><?php if ($row["i"]=='V') {echo "✓"; } ;?></td>
+                                            <td><?php if ($row["m"]=='V') {echo "✓"; } ;?></td>
+                                            <td><?php if ($row["sk"]=='V') {echo "✓"; } ;?></td>
+                                            <td><?php if ($row["ct"]=='V') {echo "✓"; } ;?></td>
+                                            <td><?php if ($row["ip"]=='V') {echo "✓"; } ;?></td>
+                                            <td>
+                                                <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_lkh/'.$row['id'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
+                                            </td>
+                                            </tr>
+                                            <?php } ?>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -77,7 +77,7 @@ class M_pengsistem extends CI_Model
 
 	public function list_edit_fp($data)
 	{
-		$query = $this->db->query("select * from saps.doc_flowproses where nomor_doc = '".$data."' ");
+		$query = $this->db->query("select * from saps.doc_flowproses where id = '".$data."' ");
 
 		return $query->result_array();
 	}
@@ -91,23 +91,23 @@ class M_pengsistem extends CI_Model
 
 	public function update_flow_fp($data,$id)
 	{
-		$this->db->where('nomor_doc',$id);
+		$this->db->where('id',$id);
 		$this->db->update('saps.doc_flowproses',$data);
 	}
 
 	public function upload_file_fp($data,$id)
 	{
-		$this->db->where('nomor_doc',$id);
+		$this->db->where('id',$id);
 		$this->db->update('saps.doc_flowproses',$data);
 	}
 
 	public function delete_flow($data)
 	{
-		$_id = $this->db->get_where('saps.doc_flowproses',['nomor_doc' => $data])->row();
-		$query = $this->db->delete('saps.doc_flowproses',['nomor_doc'=>$data]);
+		$_id = $this->db->get_where('saps.doc_flowproses',['id' => $data])->row();
+		$query = $this->db->delete('saps.doc_flowproses',['id'=>$data]);
 		
 		if($query){
-			unlink("assets/upload/Peng.Sistem/fp/".$_id->file);
+			unlink("assets/upload/PengembanganSistem/fp/".$_id->file);
 		}
 	}
 
@@ -147,30 +147,30 @@ class M_pengsistem extends CI_Model
 
 	public function list_edit_copwi($data)
 	{
-		$query = $this->db->query("select * from saps.doc_cop_wi where nomor_doc = '".$data."' ");
+		$query = $this->db->query("select * from saps.doc_cop_wi where id = '".$data."' ");
 
 		return $query->result_array();
 	}
 
 	public function update_cope($data,$id)
 	{
-		$this->db->where('nomor_doc',$id);
+		$this->db->where('id',$id);
 		$this->db->update('saps.doc_cop_wi',$data);
 	}
 
 	public function upload_file_copwi($data,$id)
 	{
-		$this->db->where('nomor_doc',$id);
+		$this->db->where('id',$id);
 		$this->db->update('saps.doc_cop_wi',$data);
 	}
 
 	public function delete_copwi($data)
 	{
-		$_id = $this->db->get_where('saps.doc_cop_wi',['nomor_doc' => $data])->row();
-		$query = $this->db->delete('saps.doc_cop_wi',['nomor_doc'=>$data]);
+		$_id = $this->db->get_where('saps.doc_cop_wi',['id' => $data])->row();
+		$query = $this->db->delete('saps.doc_cop_wi',['id'=>$data]);
 		
 		if($query){
-			unlink("assets/upload/Peng.Sistem/copwi/".$_id->file);
+			unlink("assets/upload/PengembanganSistem/copwi/".$_id->file);
 		}
 	}
 
@@ -204,36 +204,36 @@ class M_pengsistem extends CI_Model
 
 	public function list_edit_um($data)
 	{
-		$query = $this->db->query("select * from saps.doc_usermanual where nomor_doc = '".$data."' ");
+		$query = $this->db->query("select * from saps.doc_usermanual where id = '".$data."' ");
 
 		return $query->result_array();
 	}
 
 	public function update_data_um($data,$id)
 	{
-		$this->db->where('nomor_doc',$id);
+		$this->db->where('id',$id);
 		$this->db->update('saps.doc_usermanual',$data);
 	}
 
 	public function cek_data_nomor_um($data)
 	{
-		$query = $this->db->query("select * from saps.doc_usermanual where nomor_doc = '$data' ");
+		$query = $this->db->query("select * from saps.doc_usermanual where id = '$data' ");
 		return $query->result_array();
 	}
 
 	public function upload_file_um($data,$id)
 	{
-		$this->db->where('nomor_doc',$id);
+		$this->db->where('id',$id);
 		$this->db->update('saps.doc_usermanual',$data);
 	}
 
 	public function delete_um($data)
 	{
-		$_id = $this->db->get_where('saps.doc_usermanual',['nomor_doc' => $data])->row();
-		$query = $this->db->delete('saps.doc_usermanual',['nomor_doc'=>$data]);
+		$_id = $this->db->get_where('saps.doc_usermanual',['id' => $data])->row();
+		$query = $this->db->delete('saps.doc_usermanual',['id'=>$data]);
 		
 		if($query){
-			unlink("assets/upload/Peng.Sistem/um/".$_id->file);
+			unlink("assets/upload/PengembanganSistem/um/".$_id->file);
 		}
 	}
 
@@ -282,8 +282,12 @@ class M_pengsistem extends CI_Model
 
 	public function upload_file_code($data,$id)
 	{
-		$this->db->where('id',$id);
-		$this->db->update('saps.doc_penomoran_memo',$data);
+		$this->db->where('id', $id)->update('saps.doc_penomoran_memo', $data);
+		if ($this->db->affected_rows() == 1) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	public function delete_code($data)
@@ -292,7 +296,7 @@ class M_pengsistem extends CI_Model
 		$query = $this->db->delete('saps.doc_penomoran_memo',['id'=>$data]);
 		
 		if($query){
-			unlink("assets/upload/Peng.Sistem/memo/".$_id->file);
+			unlink("assets/upload/PengembanganSistem/memo/".$_id->file);
 		}
 	}
 
