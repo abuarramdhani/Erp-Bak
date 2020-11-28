@@ -252,7 +252,7 @@ class M_pesangon extends CI_Model {
 		public function getAlasanKeluar($noind)
 		{
 			$sql = "SELECT trim(a.alasan_tampil) as alasan_tampil from hrd_khs.t_alasan_pesangon a
-							LEFT JOIN hrd_khs.tpribadi b ON a.alasan_master_pekerja = b.sebabklr
+							LEFT JOIN hrd_khs.tpribadi b ON trim(a.alasan_master_pekerja) = trim(b.sebabklr)
 							where b.noind = '$noind'";
 			return $this->personalia->query($sql)->row()->alasan_tampil;
 		}
