@@ -440,18 +440,18 @@ class C_NonConformityAndroid extends CI_Controller
 	public function deleteNC()
 	{
 		$id = $_POST['header_id'];
-		$photos = $this->M_nonconformity->getImages($id);
+		// $photos = $this->M_nonconformity->getImages($id);
 
-		foreach ($photos as $key => $photo) {
-			if(is_file($photo['image_path'].''.$photo['file_name'])){
-				unlink($photo['image_path'].''.$photo['file_name']);
-			};
-		}
+		// foreach ($photos as $key => $photo) {
+		// 	if(is_file($photo['image_path'].''.$photo['file_name'])){
+		// 		unlink($photo['image_path'].''.$photo['file_name']);
+		// 	};
+		// }
 
-		$this->M_nonconformity->hapusDataNCSource($id);
-		$this->M_nonconformity->hapusDataNCCase($id);
-		$this->M_nonconformity->hapusDataNCImage($id);
-		$this->M_nonconformity->hapusDataNCLines($id);
+		// $this->M_nonconformity->hapusDataNCSource($id);
+		// $this->M_nonconformity->hapusDataNCCase($id);
+		// $this->M_nonconformity->hapusDataNCImage($id);
+		// $this->M_nonconformity->hapusDataNCLines($id);
 		$this->M_nonconformity->hapusDataNCHeader($id);
 
 		$response['error'] = false;
