@@ -225,7 +225,7 @@
                                             <div class="btn-group">
                                             <a class="btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_memo/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
                                             <a class="btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_code/'.$row['id'])?>" title="Delete" onclick="data_delate_ps()"><i class="fa fa-close"></i></a>
+                                            <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_code/'.$row['id'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
                                             </div>
                                         </div>
                                         </td>

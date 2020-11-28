@@ -241,7 +241,7 @@
                                                         <div class="btn-group">
                                                             <a style="padding: 6px" class="icon-action btn btn-success" href="<?php echo base_url('PengembanganSistem/edit_cop_wi/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
                                                             <a style="padding: 6px" class="icon-action btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                                            <a style="padding: 6px" class="icon-action btn btn-danger" href="<?php echo base_url('PengembanganSistem/delete_cop_wi/'.$row['id'])?>" title="Delete" onclick="data_delate_ps()"><i class="fa fa-close"></i></a>
+                                                            <a style="padding: 6px" class="icon-action btn btn-danger" href="<?php echo base_url('PengembanganSistem/delete_cop_wi/'.$row['id'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
                                                         </div>
                                                     </div>
                                                 </td>
