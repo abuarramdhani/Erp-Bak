@@ -57,7 +57,7 @@
                                                                     <option value="<?= $key['section_name'] ?>"><?= $key['section_name'] ?></option>
                                                                 <?php endforeach; ?>
                                                             </select>
-                                                            <small style="color: red; float: left;">*Kosongkan bila pilih semua jenis</small>
+                                                            <small style="color: red; float: left;">*Kosongkan bila pilih semua seksi</small>
                                                         </div>
                                                     </div>
                                                 </div>
