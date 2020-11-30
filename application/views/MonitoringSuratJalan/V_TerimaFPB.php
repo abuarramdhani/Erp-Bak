@@ -29,7 +29,7 @@ tr.disabled:hover {
                 <tr class="bg-info" data="msj_header">
                   <th><center>No</center></th>
                   <!-- <th class="checked_msj"><input type="checkbox" id="check-all-msj" onchange="checked_msj()"></th> -->
-                  <th class="checked_msj"></th>
+                  <th class="checked_msj" style="width: 5%"></th>
                   <th>Dokumen Number</th>
                   <th><center>Pengirim</center></th>
                   <th><center>Seksi Pengirim</center></th>
