@@ -235,9 +235,6 @@ class C_Pengelola extends CI_Controller {
                 array_push($data['listOrder'], $orderSiapTampil[0]);
             }
         }
-
-        // echo '<pre>';
-        // print_r($data['listOrder']);exit;
      
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
