@@ -105,10 +105,10 @@ class Notifications
   public function to($target)
   {
     if (empty($target)) throw new Exception("Target param should be not null");
-    $arrayOfUser = [];
+    $arrayOfUser = $this->users_target;
 
     if (is_array($target)) {
-      $arrayOfUser = $target;
+      $arrayOfUser = array_merge($arrayOfUser, $target);
     } else if (is_string($target)) {
       array_push($arrayOfUser, $target);
     }
@@ -127,16 +127,17 @@ class Notifications
    */
   public function toSection($section_code)
   {
-    // select active user on section
-
+    $arrayOfSection = $this->section_target;
     // send all message
     if (is_string($section_code)) {
-      $this->section_target = [$section_code];
+      array_push($arrayOfSection, $section_code);
     } else if (is_array($section_code)) {
-      $this->section_target = $section_code;
+      $arrayOfSection = array_merge($this->section_target, $section_code);
     } else {
       throw new Exception("Type of section code is not supported, supported is string/array");
     }
+
+    $this->section_target = $arrayOfSection;
 
     return $this;
   }
