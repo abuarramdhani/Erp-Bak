@@ -1,3 +1,8 @@
+<style media="screen">
+  .btn-group{
+    margin-bottom: -45px;
+  }
+</style>
 <div class="content">
   <div class="row">
     <div class="col-lg-12">
