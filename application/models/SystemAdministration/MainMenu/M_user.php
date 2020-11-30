@@ -8,6 +8,7 @@
 class M_user extends CI_Model
 {
 	protected $current_slug = '';
+	// @deprecated
 	protected $current_responsbility_id = null;
 
 	// array of user menu
@@ -24,6 +25,7 @@ class M_user extends CI_Model
 		// Get actual current slug
 		$slug = str_replace(base_url(), '', current_url());
 		$this->current_slug = trim(parse_url($slug, PHP_URL_PATH), '/');
+		$this->user = $this->session->user;
 	}
 
 	public function getUser($user_id = FALSE)
@@ -111,6 +113,7 @@ class M_user extends CI_Model
 	}
 
 	/**
+	 * @deprecated
 	 * Cari id responsbility berdasaran slug url
 	 * @example /NamaAplikasi
 	 * 
@@ -125,12 +128,15 @@ class M_user extends CI_Model
 	 */
 	public function getResponsbilityIdBySlug($slug)
 	{
+		$user = $this->user;
 		$sql = "SELECT sugm.user_group_menu_id, sugm.user_group_menu_name, sm.menu_link
 						FROM sys.sys_user_group_menu sugm
-						inner join sys.sys_menu_group_list smgl on smgl.group_menu_id = sugm.group_menu_id
-						inner join sys.sys_menu sm on sm.menu_id = smgl.menu_id
+							inner join sys.sys_menu_group_list smgl on smgl.group_menu_id = sugm.group_menu_id
+							inner join sys.sys_menu sm on sm.menu_id = smgl.menu_id
+							inner join sys.sys_user_application sua on sua.user_group_menu_id = sugm.user_group_menu_id
+							inner join sys.sys_user su on su.user_id = sua.user_id
 						-- where sugm.user_group_menu_id = '2745' -> example of id
-						WHERE sm.menu_link like '$slug%'
+						WHERE sm.menu_link like '$slug%' and su.user_name = '$user'
 						limit 1;";
 		$objectOfSlug = $this->db->query($sql)->row();
 
@@ -147,7 +153,6 @@ class M_user extends CI_Model
 		$and1 = '';
 
 		if ($responsbility_id != "") {
-			$responsbility_id = $this->current_responsbility_id ?: $responsbility_id;
 			$and = "AND sugm.user_group_menu_id = $responsbility_id";
 		}
 
@@ -182,7 +187,6 @@ class M_user extends CI_Model
 		$and1 = '';
 
 		if ($responsbility_id != "") {
-			$responsbility_id = $this->current_responsbility_id ?: $responsbility_id;
 			$and = "AND sugm.user_group_menu_id = $responsbility_id";
 		}
 
@@ -214,8 +218,10 @@ class M_user extends CI_Model
 
 	public function getUserReport($report_name = FALSE, $responsbility_id = "", $user_id = "")
 	{
-		$responsbility_id = $this->current_responsbility_id ?: $responsbility_id;
-		$and = "AND sugm.user_group_menu_id = $responsbility_id";
+		$and = '';
+		if ($responsbility_id) {
+			$and = "AND sugm.user_group_menu_id = $responsbility_id";
+		}
 
 		$sql = "SELECT su.user_id, sugm.user_group_menu_name, sugm.user_group_menu_id,
 					sr.report_id,sr.report_name,sr.report_link,sugm.org_id
@@ -243,13 +249,8 @@ class M_user extends CI_Model
 
 	public function getUserMenu($user_id = FALSE, $user_group_menu_id = "")
 	{
-		// set responsbility id of current slug
-		// this maybe make slow
-		$this->current_responsbility_id = $this->getResponsbilityIdBySlug($this->current_slug);
-
 		$and = '';
-		if ($this->current_responsbility_id) {
-			$user_group_menu_id = $this->current_responsbility_id ?: $user_group_menu_id;
+		if ($user_group_menu_id) {
 			$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 		}
 
@@ -308,7 +309,6 @@ class M_user extends CI_Model
 
 		$and = '';
 		if ($user_group_menu_id != "") {
-			$user_group_menu_id = $this->current_responsbility_id ?: $user_group_menu_id;
 			$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 		}
 
@@ -349,7 +349,6 @@ class M_user extends CI_Model
 
 		$and = '';
 		if ($user_group_menu_id != "") {
-			$user_group_menu_id = $this->current_responsbility_id ?: $user_group_menu_id;
 			$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 		}
 
