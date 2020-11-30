@@ -131,7 +131,7 @@
 		<input type="hidden" value="<?= base_url(); ?>" name="txtBaseUrl" id="txtBaseUrl" />
 		<?php
 		if (empty($UserMenu[0]['org_id'])) {
-			$org_id = $UserResponsibility[0]['org_id'];
+			$org_id = @$UserResponsibility[0]['org_id'];
 		} else {
 			$org_id = $UserMenu[0]['org_id'];
 		}
@@ -169,7 +169,6 @@
 											</div>
 											<div class="card-footer">
 												<div class="col-lg-12 text-center" style="padding: 0.5em;">
-													<!-- TODO: make page of all notification -->
 													<a href="<?= base_url('/notifications') ?>" style="display: block; font-weight: bold;">Lihat semua notifikasi</a>
 												</div>
 											</div>
@@ -216,9 +215,9 @@
 						<?php
 						$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 						if (isset($UserResponsibility)) {
-							$responsibility_id = (empty($UserResponsibility[0]['user_group_menu_id'])) ? 0 : $UserResponsibility[0]['user_group_menu_id'];
+							$responsibility_id = (empty($UserResponsibility[0]['user_group_menu_id'])) ? 0 : @$UserResponsibility[0]['user_group_menu_id'];
 						} else {
-							$responsibility_id = $UserMenu[0]['user_group_menu_id'];
+							$responsibility_id = @$UserMenu[0]['user_group_menu_id'];
 						}
 
 						$responsibility_name = @$UserMenu[0]['user_group_menu_name'] ?: '';
