@@ -187,7 +187,7 @@
                                         <th style="max-width:20px;">Seksi / Departemen</th>
                                         <th style="max-width:10px;">Dibuat</th>
                                         <th style="max-width:10px;">Tgl. Distribusi</th>
-                                        <th style="max-width:30px;">Perihal</th>
+                                        <th style="max-width:30px; width: 80px">Perihal</th>
                                         <th style="max-width:10px;">File</th>
                                         <th style="max-width:30px; width:70px;">Action</th>
                                     </tr>
