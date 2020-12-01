@@ -168,7 +168,7 @@
                             $day = $s[2];
                             $mon = $s[1];
                             $year = $s[0];
-                            echo('Yogyakarta, ' .$day.' '.$bulanIndo[abs($mon - 1)]. ' ' .$year);
+                            echo('Yogyakarta, ' .$day.' '.$bulanIndo[abs($mon)]. ' ' .$year);
                      ?>
 							</td>
 						</tr>

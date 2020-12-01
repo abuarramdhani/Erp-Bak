@@ -51,7 +51,7 @@
                                                         <!-- radio -->
                                                         <div class="form-group clearfixs">
                                                             <div class="icheck-primarys d-inline col-sm-6">
-                                                                <input type="radio" class="radioselectsys" name="r2sys" value="user" checked="checked">
+                                                                <input type="radio" class="radioselectsys" name="r2sys" value="user">
                                                                     <label for="radioselectps">Orang/Penerima</label>
                                                             </div>
                                                             <div class="icheck-primarys d-inline">
@@ -60,23 +60,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="orang">
-                                                            <select name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--">
+                                                            <select name="ditujukan_ms"  disabled="" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--">
                                                                 <option></option>
-                                                                            <?php foreach ($listorg as $org) 
-                                                                            {
-                                                                                echo '  <option value="'.$org['daftar_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
-                                                                            }
-                                                                            ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class="unit-depart">
-                                                            <select name="" id="ditujukan_ms" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--">
-                                                                <option></option>
-                                                                            <?php foreach ($listseksi as $seksi) 
-                                                                            {
-                                                                                echo '  <option value="'.$seksi['seksi'].'">'.$seksi['seksi'].'</option>';
-                                                                            }
-                                                                            ?>
                                                             </select>
                                                         </div>
                                                     </div>

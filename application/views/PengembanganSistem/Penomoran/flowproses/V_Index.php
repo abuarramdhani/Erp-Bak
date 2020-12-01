@@ -160,14 +160,14 @@
                                       <thead>
                                         <tr class="bg-info">
                                             <th style="width: 1%;"><center>No.</center></th>
-                                            <th style="width: 12%;"><center>No. Dokumen</center></th>
+                                            <th style="width: 10%;"><center>No. Dokumen</center></th>
                                             <th style="width: 25%;"><center>Judul Dokumen</center></th>
-                                            <th style="width: 10%;"><center>Tgl.Rev.</center></th>
-                                            <th style="width: 5%;"><center>No.Rev.</center></th>
+                                            <th style="width: 60px;"><center>Date.Rev.</center></th>
+                                            <th style="width: 60px;"><center>No.Rev.</center></th>
                                             <th style="width: 5%;"><center>File</center></th>
                                             <th style="width: 15%;"><center>PIC</center></th>
                                             <th style="width: 10%;"><center>Status</center></th>
-                                            <th style="width: 10%;"><center>Action</center></th>
+                                            <th style="width: 15%;"><center>Action</center></th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -187,7 +187,7 @@
                                                 echo $hasil;
                                         }?></td>
                                         <td><?php echo $row["number_rev"];?></td>
-                                        <td><a data-toggle="tooltip" title="<?= $row['file'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/fp').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
+                                        <td><a onclick="link_ps(<?php echo $row['id']?>)" id="fp_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['file'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/fp').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
                                         </td>
                                         <td><?php echo $row["pic_doc"];?></td>
                                         <td><?php echo $row["status_doc"];?></td>
