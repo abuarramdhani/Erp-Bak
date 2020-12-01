@@ -4935,6 +4935,7 @@ $(document).ready(function () {
 // sim forklift start
 $(document).ready(function () {
   var tblMPKSimForkliftList = $("#tblMPKSimForkliftList").dataTable({
+    pageLength: 25,
     lengthMenu: [
       [5, 10, 25, 50, -1],
       ["5 rows", "10 rows", "25 rows", "50 rows", "Show all"],
@@ -5052,6 +5053,16 @@ $(document).ready(function () {
               minViewMode: "months",
             });
 
+            // onchange auto set tgl selesai belaku
+            $("#tblMPKSimForkliftTambahPekerja .txtMPKSimForkliftMulaiBerlaku").change(function() {
+              const $tr = $(this).closest('tr')
+              const value = $(this).val();
+              const year = moment(value).format('Y')
+              const month = moment(value).format('M')
+              console.log(value, year, month)
+              $tr.find('.txtMPKSimForkliftAkhirBerlaku').datepicker('setDate', new Date(parseInt(year) + 5, parseInt(month) - 1, 01))
+            })
+
             $("#tblMPKSimForkliftTambahPekerja .txtMPKSimForkliftAkhirBerlaku").last().datepicker({
               autoclose: true,
               todayHiglight: true,
@@ -5078,7 +5089,11 @@ $(document).ready(function () {
     $(this).closest("tr").remove();
   });
 
+  /**
+   * Double click listener on same element
+   */
   $("#btnMPKSimForkliftSimpanPekerja").on("click", function () {
+    return;
     var tr_all = $("#tblMPKSimForkliftTambahPekerja tbody tr");
     if (tr_all && tr_all.length > 0) {
       $("#ldgMPKSimForkliftTambahLoading").show();
@@ -5110,6 +5125,8 @@ $(document).ready(function () {
             akhir: akhir,
           },
           error: function (xhr, status, error) {
+            $('#btnMPKSimForkliftSimpanPekerja').show();
+
             diproses++;
             if (diproses >= tr_all.length) {
               $("#ldgMPKSimForkliftTambahLoading").hide();
@@ -5130,7 +5147,6 @@ $(document).ready(function () {
               $("#ldgMPKSimForkliftTambahLoading").hide();
             }
             $('.slcMPKSimForkliftCariPekerja').val("").trigger('change');
-            $('#btnMPKSimForkliftSimpanPekerja').show();
           }
         })
       })
@@ -5187,6 +5203,9 @@ $(document).ready(function () {
             })
           },
           success: function (data) {
+            // redirect to main page
+            window.location.href = baseurl + 'MasterPekerja/SimForklift'
+
             diproses++;
             if (diproses >= tr_all.length) {
               $('#ldgMPKSimForkliftTambahLoading').hide();
