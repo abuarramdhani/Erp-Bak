@@ -233,7 +233,7 @@
                                                 <td><?php echo $row["number_rev"];?></td>
                                                 <td><?php echo 'SOP-'.$row["seksi_sop"].'-'.$row["number_sop"];?></td>
                                                 <td><?php echo $row["pic_doc"];?></td>
-                                                <td><a data-toggle="tooltip" title="<?= $row['file']; ?>" href="<?php echo base_url('assets/upload/PengembanganSistem/copwi').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
+                                                <td><a data-toggle="tooltip" title="<?= $row['file']; ?>" href="<?php echo base_url('assets/upload/PengembanganSistem/um').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
                                                 </td>
                                                 <td><?php echo $row["status_doc"];?></td>
                                                 <td>

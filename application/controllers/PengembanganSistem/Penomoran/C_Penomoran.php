@@ -521,7 +521,7 @@ class C_Penomoran extends CI_Controller
 			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
 			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
-			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/copwi/';
+			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/um/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
