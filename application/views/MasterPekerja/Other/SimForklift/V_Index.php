@@ -15,7 +15,7 @@
 							</div>
 							<div class="box-body">
 								<div class="row">
-									<div class="col-lg-12 text-right">
+									<div class="col-lg-12 text-right" style="margin-bottom: 1em;">
 										<a href="" target="_blank" id="btnSimForkliftCetakPdf" class="btn btn-danger" disabled><span class="fa fa-file-pdf-o"></span> Cetak SIM PDF</a>
 										<a href="" target="_blank" id="btnSimForkliftCetakImg" class="btn btn-warning" disabled><span class="fa fa-file-image-o"></span> Cetak SIM IMG</a>
 										<a href="" target="_blank" id="btnSimForkliftCetakCrl" class="btn btn-success" disabled><span class="fa fa-file-image-o"></span> Cetak SIM COREL</a>
