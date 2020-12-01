@@ -30,7 +30,22 @@ class M_pengsistem extends CI_Model
                                     order by    pkj.employee_code;";
         $queryAmbilSemuaPekerja     =   $this->db->query($ambilSemuaPekerja);
         return $queryAmbilSemuaPekerja->result_array();
-    }
+	}
+	
+	public function ambilPekerja($noind)
+	{
+        $query = $this->db->query("SELECT 
+		pkj.employee_code as kode_pekerja, 
+		pkj.employee_name as nama_pekerja, 
+		concat_ws(' - ', pkj.employee_code, pkj.employee_name) as daftar_pekerja, 
+		pkj.employee_id as id_pekerja 
+		from er.er_employee_all as pkj 
+		where pkj.resign='0' 
+		and  pkj.employee_code ='$noind' 
+		OR pkj.employee_name like '%$noind%'
+		order by pkj.employee_code");
+        return $query->result_array();
+	}
 
 	public function seksiunit($search)
 	{
@@ -39,7 +54,7 @@ class M_pengsistem extends CI_Model
 	}
 	public function input_select_seksi($data)
 	{
-		$query = $this->db->query("select * from saps.sie_departemen where singkat = '".$data."' order by seksi asc");
+		$query = $this->db->query("SELECT * from saps.sie_departemen where singkat = '$data' or seksi like '%$data%' order by seksi asc");
 		return $query->result_array();
 	}
 

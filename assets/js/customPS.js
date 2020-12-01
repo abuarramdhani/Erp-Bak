@@ -98,6 +98,12 @@
 			});
 	}
 
+	function link_ps(id) {
+		var a = $("#fp_lilola"+id).attr('href');
+		var str = a.replace(/&/, "_");
+		$("#fp_lilola"+id).attr('href',str);
+	};
+
 //COPWI
 
 	$("#number_rev-cw").change(function(){
@@ -783,41 +789,69 @@
 	};
 
 	//Memo
-		
 	$(document).ready(function(){
-		$('.unit-depart').css("display", "none");
 		$('input[name="r2sys"]').on('ifChanged', function () {
-			if ($('input[name="r2sys"]:checked').val() == "user") {
-				console.log("user");
-				$('.orang').css("display", "");
-				$('.unit-depart').css("display", "none");
-				$('#ditujukan_ms').attr("name", "");
-				$('#ditujukan_ms1').attr("name", "ditujukan_ms");
-			} else if ($('input[name="r2sys"]:checked').val() == "siedept") {
-				console.log("seksi");
-				$('.orang').css("display", "none");
-				$('.unit-depart').css("display", "");
-				$('#ditujukan_ms').attr("name", "ditujukan_ms");
-				$('#ditujukan_ms1').attr("name", "");
+				if ($('input[name="r2sys"]:checked').val() == "user") {
+					// console.log("user");
+					$("#ditujukan_ms1").removeAttr('disabled','');
+					$('#ditujukan_ms1').select2({
+					ajax: {
+						url: baseurl + 'PengembanganSistem/ambilSemuaPekerja',
+						dataType: 'json',
+						delay: 250,
+						data: function (params) {
+							var queryParameters = {
+								noind: params.term.toUpperCase(),
+							}
+							return queryParameters;
+						},
+						processResults: function(data) {
+							
+							return {
+								results: $.map(data, function(item) {
+									return {
+										id: item.daftar_pekerja,
+										text: item.daftar_pekerja,
+									}
+								})
+							};
+						},
+						cache: true,
+					},
+					minimumInputLength: 4,
+					placeholder: 'Pilih data',
+				})
+			}else if ($('input[name="r2sys"]:checked').val() == "siedept") {
+				// console.log("seksi");
+				$("#ditujukan_ms1").removeAttr('disabled','');
+					$('#ditujukan_ms1').select2({
+					ajax: {
+						url: baseurl + 'PengembanganSistem/select_all_seksi',
+						dataType: 'json',
+						delay: 250,
+						data: function(params) {
+							return {
+								seksi: params.term.toUpperCase(),
+							};
+						},
+						processResults: function(data) {
+							return {
+								results: $.map(data, function(item) {
+									return {
+										id: item.singkat,
+										text: item.seksi,
+									}
+								})
+							};
+						},
+						cache: true,
+					},
+					minimumInputLength: 3,
+					placeholder: 'Pilih data',
+				})
 			}
-		});
-
-		$('input[name="r3sys"]').on('ifChanged', function () {
-			if ($('input[name="r3sys"]:checked').val() == "user") {
-				console.log("user");
-				$('.orang-update').css("display", "block");
-				$('.unit-depart-update').css("display", "none");
-				$('#ditujukan_ms').attr("name", "");
-				$('#ditujukan_ms1').attr("name", "ditujukan_ms");
-			} else if ($('input[name="r3sys"]:checked').val() == "siedept") {
-				console.log("seksi");
-				$('.orang-update').css("display", "none");
-				$('.unit-depart-update').css("display", "block");
-				$('#ditujukan_ms').attr("name", "ditujukan_ms");
-				$('#ditujukan_ms1').attr("name", "");
-			}
-		});
-	});
+		})
+	})
 
 	function notif_input_memo() {
 		$("#date_ms").ready(function(){

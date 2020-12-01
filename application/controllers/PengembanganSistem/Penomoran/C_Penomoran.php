@@ -15,10 +15,16 @@ class C_Penomoran extends CI_Controller
 		$this->load->library('session');
 		$this->load->library('General');
 		$this->load->model('M_Index');
-		// $this->load->model('MonitoringKomponen/MainMenu/M_monitoring_seksi');
+		
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('PengembanganSistem/M_pengsistem');
 		// $this->load->library('excel');
+		if($this->session->userdata('logged_in')!=TRUE) {
+			$this->load->helper('url');
+			$this->session->set_userdata('last_page', current_url());
+				  //redirect('');
+			$this->session->set_userdata('Responsbility', 'some_value');
+		}
 		$this->checkSession();
 	}
 
@@ -56,6 +62,22 @@ class C_Penomoran extends CI_Controller
 		$seksi = $_POST['seksi'];
 
 		$data = $this->M_pengsistem->input_select_seksi($seksi);
+
+		echo json_encode($data);
+	}
+
+	public function select_all_seksi()
+	{
+		$seksi = $_GET['seksi'];
+		$data = $this->M_pengsistem->input_select_seksi($seksi);
+
+		echo json_encode($data);
+	}
+
+	public function ambilSemuaPekerja()
+	{
+		$noind = $_GET['noind'];
+		$data = $this->M_pengsistem->ambilPekerja($noind);
 
 		echo json_encode($data);
 	}
@@ -245,7 +267,8 @@ class C_Penomoran extends CI_Controller
 				$l = explode('.',$nmfile);
 					$s = $l[1];
 			$judul_baru = $id_data.'-'.$judul.'.'.$s;
-			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
+			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
+			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/fp/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
@@ -253,7 +276,7 @@ class C_Penomoran extends CI_Controller
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
-
+// print_r($nama_baru);exit();
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
@@ -268,7 +291,7 @@ class C_Penomoran extends CI_Controller
 				//end upload file area
 		
 				$data = array(
-					'file' =>$nama_baru,
+					'file' =>$nama_baru_post,
 					'status_doc' =>$status
 					
 				);
@@ -474,7 +497,7 @@ class C_Penomoran extends CI_Controller
 		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
-		$id_data = strtoupper($this->input->post('id'));
+		// $id_data = strtoupper($this->input->post('id'));
 
 		if ($_FILES == false) {
 			echo 0;
@@ -494,8 +517,9 @@ class C_Penomoran extends CI_Controller
 			$nmfile = $data_file;
 				$l = explode('.',$nmfile);
 					$s = $l[1];
-			$judul_baru = $id_data.'-'.$judul.'.'.$s;
-			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
+			$judul_baru = $id.'-'.$judul.'.'.$s;
+			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
+			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/copwi/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
@@ -518,7 +542,7 @@ class C_Penomoran extends CI_Controller
 				//end upload file area
 		
 				$data = array(
-					'file' =>$nama_baru,
+					'file' =>$nama_baru_post,
 					'status_doc' =>$status
 					
 				);
@@ -741,7 +765,7 @@ class C_Penomoran extends CI_Controller
 		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
-		$number_file = strtoupper($this->input->post('id'));
+		$number_file = "UM";
 
 		if ($_FILES == false) {
 			echo 0;
@@ -762,8 +786,9 @@ class C_Penomoran extends CI_Controller
 			$nmfile = $data_file;
 				$l = explode('.',$nmfile);
 					$s = $l[1];
-			$judul_baru = $number_file.'-'.$judul.'.'.$s;
-			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
+			$judul_baru = $id.'-'.$judul.'.'.$s;
+			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
+			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/um/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
@@ -786,7 +811,7 @@ class C_Penomoran extends CI_Controller
 				//end upload file area
 		
 				$data = array(
-					'file' =>$nama_baru,
+					'file' =>$nama_baru_post,
 					'status_doc' =>$status
 					
 				);
@@ -844,7 +869,7 @@ class C_Penomoran extends CI_Controller
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PengembanganSistem/Penomoran/memo/V_Index', $data);
         $this->load->view('V_Footer', $data);
-
+		
 	}
 	
 	public function input_data_ms()
@@ -977,7 +1002,7 @@ class C_Penomoran extends CI_Controller
 				$l = explode('.',$nmfile);
 					$s = $l[1];
 			$judul_baru = $number_file.'-'.$judul.'.'.$s;
-			$nama_baru = preg_replace("/\s+/", "_", $judul_baru);
+			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/memo/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';

@@ -186,17 +186,17 @@
                                 <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
                                     <thead>
                                         <tr class="bg-info">
-                                            <th style="vertical-align: middle; max-width: 1px">No.</th>
-                                            <th style="vertical-align: middle; max-width: 5px">No. Dokumen</th>
-                                            <th style="vertical-align: middle; max-width: 50px">Judul Dokumen</th>
-                                            <th style="vertical-align: middle; max-width: 20px">Oracle / Android / Web Base / Form</th>
-                                            <th style="vertical-align: middle; max-width: 10px">Rev. Date</th>
-                                            <th style="vertical-align: middle; max-width: 5px">No. Rev.</th>
-                                            <th style="vertical-align: middle; max-width: 10px">SOP</th>
-                                            <th style="vertical-align: middle; max-width: 10px">PIC</th>
-                                            <th style="vertical-align: middle; max-width: 5px">File</th>
-                                            <th style="vertical-align: middle; max-width: 10px">Status</th>
-                                            <th style="vertical-align: middle; max-width: 30px">Action</th>
+                                            <th style="vertical-align: middle; width: 1%">No.</th>
+                                            <th style="vertical-align: middle; width: 10%">No. Dokumen</th>
+                                            <th style="vertical-align: middle; width: 25%">Judul Dokumen</th>
+                                            <th style="vertical-align: middle; width: 80px">Oracle / Android / Web Base / Form</th>
+                                            <th style="vertical-align: middle; width: 60px">Rev. Date</th>
+                                            <th style="vertical-align: middle; width: 60px">No. Rev.</th>
+                                            <th style="vertical-align: middle; width: 10%">SOP</th>
+                                            <th style="vertical-align: middle; width: 10%">PIC</th>
+                                            <th style="vertical-align: middle; width: 5%">File</th>
+                                            <th style="vertical-align: middle; width: 10%">Status</th>
+                                            <th style="vertical-align: middle; width: 15%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
