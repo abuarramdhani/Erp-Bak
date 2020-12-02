@@ -50,16 +50,12 @@
                                                     <div class="col-sm-8">
                                                         <!-- radio -->
                                                         <div class="col-sm-6">
-                                                                    <label for="radioselectps">
-                                                            <div class="iradio_flat-blue">
-                                                                <input type="radio" class="radioselectsys" name="r2sys" value="user">
-                                                            </div>Orang/Penerima</label>
+                                                            <input type="radio" class="radioselectsys" name="r2sys" value="user">
+                                                            Orang/Penerima
                                                         </div>
                                                         <div class="col-sm-6">
-                                                                    <label for="radioselectps">
-                                                            <div class="iradio_flat-blue">
-                                                                <input type="radio" class="radioselectsys" name="r2sys" value="siedept">
-                                                            </div>Seksi/Unit/Deprt</label>
+                                                            <input type="radio" class="radioselectsys" name="r2sys" value="siedept">
+                                                            Seksi/Unit/Deprt
                                                         </div>
                                                         <div class="orang">
                                                             <select name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--">
