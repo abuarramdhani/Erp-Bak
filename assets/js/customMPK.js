@@ -5005,43 +5005,49 @@ $(document).ready(function () {
           },
           success: function (data) {
             var obj = JSON.parse(data);
-            var tr = "<tr>";
-            tr +=
-              '<td><input type="text" class="form-control" value="' +
-              obj.noind +
-              '" disabled></td>';
-            tr +=
-              '<td><input type="text" class="form-control" value="' +
-              obj.nama +
-              '"></td>';
-            tr +=
-              '<td><input type="text" class="form-control" value="' +
-              obj.seksi +
-              '"></td>';
-            tr +=
-              '<td><select class="slcMPKSimForkliftGantiJenis" style="width: 100%"><option>Utama</option><option>Cadangan</option></select></td>';
-            tr +=
-              '<td><input type="text" class="form-control txtMPKSimForkliftMulaiBerlaku" value="' +
-              date_a +
-              '"></td>';
-            tr +=
-              '<td><input type="text" class="form-control txtMPKSimForkliftAkhirBerlaku" value="' +
-              date_b +
-              '"></td>';
-            tr += '<td class="text-center">';
-            tr +=
-              '<button type="button" class="btn btn-danger btnMPKSimForkliftHapusPekerja" title="Hapus"><span class="fa fa-trash"></span></button>';
-            tr +=
-              '<img class="imgMPKSimForkliftSimpanPekerja" src="' +
-              baseurl +
-              "assets/img/gif/spinner.gif" +
-              '" style="display: none;"/>';
-            tr +=
-              '<span class="fa fa-check fa-2x spnMPKSimForkliftSimpanPekerjaSukses" style="display: none;color: green;"></span>';
-            tr +=
-              '<span class="fa fa-times fa-2x spnMPKSimForkliftSimpanPekerjaGagal" style="display: none;color: red;"></span></td>';
-            tr += "</tr>";
+            const textLimiter = 20;
+
+            var tr = `
+              <tr>
+                <td>
+                  <input type="text" class="form-control" value="${obj.noind}" disabled>
+                </td>
+                <td>
+                  <input type="text" class="form-control txtMPKSimForkliftNama" value="${obj.nama.substring(0, textLimiter)}">
+                </td>
+                <td>
+                  <input type="text" class="form-control txtMPKSimForkliftNoind" value="${obj.seksi.substring(0, textLimiter)}">
+                </td>
+                <td>
+                  <select class="slcMPKSimForkliftGantiJenis" style="width: 100%">
+                    <option>Utama</option>
+                    <option>Cadangan</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" class="form-control txtMPKSimForkliftMulaiBerlaku" value="${date_a}">
+                </td>
+                <td>
+                  <input type="text" class="form-control txtMPKSimForkliftAkhirBerlaku" value="${date_b}">
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-danger btnMPKSimForkliftHapusPekerja" title="Hapus">
+                    <span class="fa fa-trash"></span>
+                  </button>
+                  <img class="imgMPKSimForkliftSimpanPekerja" src="${baseurl + "assets/img/gif/spinner.gif"}" style="display: none;"/>
+                  <span class="fa fa-check fa-2x spnMPKSimForkliftSimpanPekerjaSukses" style="display: none;color: green;"></span>
+                  <span class="fa fa-times fa-2x spnMPKSimForkliftSimpanPekerjaGagal" style="display: none;color: red;"></span>
+                </td>
+              </tr>`;
+
             $("#tblMPKSimForkliftTambahPekerja tbody").append(tr);
+
+            // input limiter
+            $('.txtMPKSimForkliftNama, .txtMPKSimForkliftNoind').inputlimiter({
+              limit: textLimiter,
+              remText: `Sisa %n karakter`,
+              limitText: `, maksimal ${textLimiter} karakter`
+            })
 
             $("#tblMPKSimForkliftTambahPekerja .slcMPKSimForkliftGantiJenis").last().select2();
 
