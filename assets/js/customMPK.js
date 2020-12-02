@@ -4935,6 +4935,7 @@ $(document).ready(function () {
 // sim forklift start
 $(document).ready(function () {
   var tblMPKSimForkliftList = $("#tblMPKSimForkliftList").dataTable({
+    pageLength: 25,
     lengthMenu: [
       [5, 10, 25, 50, -1],
       ["5 rows", "10 rows", "25 rows", "50 rows", "Show all"],
@@ -5004,43 +5005,49 @@ $(document).ready(function () {
           },
           success: function (data) {
             var obj = JSON.parse(data);
-            var tr = "<tr>";
-            tr +=
-              '<td><input type="text" class="form-control" value="' +
-              obj.noind +
-              '" disabled></td>';
-            tr +=
-              '<td><input type="text" class="form-control" value="' +
-              obj.nama +
-              '"></td>';
-            tr +=
-              '<td><input type="text" class="form-control" value="' +
-              obj.seksi +
-              '"></td>';
-            tr +=
-              '<td><select class="slcMPKSimForkliftGantiJenis" style="width: 100%"><option>Utama</option><option>Cadangan</option></select></td>';
-            tr +=
-              '<td><input type="text" class="form-control txtMPKSimForkliftMulaiBerlaku" value="' +
-              date_a +
-              '"></td>';
-            tr +=
-              '<td><input type="text" class="form-control txtMPKSimForkliftAkhirBerlaku" value="' +
-              date_b +
-              '"></td>';
-            tr += '<td class="text-center">';
-            tr +=
-              '<button type="button" class="btn btn-danger btnMPKSimForkliftHapusPekerja" title="Hapus"><span class="fa fa-trash"></span></button>';
-            tr +=
-              '<img class="imgMPKSimForkliftSimpanPekerja" src="' +
-              baseurl +
-              "assets/img/gif/spinner.gif" +
-              '" style="display: none;"/>';
-            tr +=
-              '<span class="fa fa-check fa-2x spnMPKSimForkliftSimpanPekerjaSukses" style="display: none;color: green;"></span>';
-            tr +=
-              '<span class="fa fa-times fa-2x spnMPKSimForkliftSimpanPekerjaGagal" style="display: none;color: red;"></span></td>';
-            tr += "</tr>";
+            const textLimiter = 20;
+
+            var tr = `
+              <tr>
+                <td>
+                  <input type="text" class="form-control" value="${obj.noind}" disabled>
+                </td>
+                <td>
+                  <input type="text" class="form-control txtMPKSimForkliftNama" value="${obj.nama.substring(0, textLimiter)}">
+                </td>
+                <td>
+                  <input type="text" class="form-control txtMPKSimForkliftNoind" value="${obj.seksi.substring(0, textLimiter)}">
+                </td>
+                <td>
+                  <select class="slcMPKSimForkliftGantiJenis" style="width: 100%">
+                    <option>Utama</option>
+                    <option>Cadangan</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" class="form-control txtMPKSimForkliftMulaiBerlaku" value="${date_a}">
+                </td>
+                <td>
+                  <input type="text" class="form-control txtMPKSimForkliftAkhirBerlaku" value="${date_b}">
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-danger btnMPKSimForkliftHapusPekerja" title="Hapus">
+                    <span class="fa fa-trash"></span>
+                  </button>
+                  <img class="imgMPKSimForkliftSimpanPekerja" src="${baseurl + "assets/img/gif/spinner.gif"}" style="display: none;"/>
+                  <span class="fa fa-check fa-2x spnMPKSimForkliftSimpanPekerjaSukses" style="display: none;color: green;"></span>
+                  <span class="fa fa-times fa-2x spnMPKSimForkliftSimpanPekerjaGagal" style="display: none;color: red;"></span>
+                </td>
+              </tr>`;
+
             $("#tblMPKSimForkliftTambahPekerja tbody").append(tr);
+
+            // input limiter
+            $('.txtMPKSimForkliftNama, .txtMPKSimForkliftNoind').inputlimiter({
+              limit: textLimiter,
+              remText: `Sisa %n karakter`,
+              limitText: `, maksimal ${textLimiter} karakter`
+            })
 
             $("#tblMPKSimForkliftTambahPekerja .slcMPKSimForkliftGantiJenis").last().select2();
 
@@ -5051,6 +5058,16 @@ $(document).ready(function () {
               viewMode: "months",
               minViewMode: "months",
             });
+
+            // onchange auto set tgl selesai belaku
+            $("#tblMPKSimForkliftTambahPekerja .txtMPKSimForkliftMulaiBerlaku").change(function() {
+              const $tr = $(this).closest('tr')
+              const value = $(this).val();
+              const year = moment(value).format('Y')
+              const month = moment(value).format('M')
+              console.log(value, year, month)
+              $tr.find('.txtMPKSimForkliftAkhirBerlaku').datepicker('setDate', new Date(parseInt(year) + 5, parseInt(month) - 1, 01))
+            })
 
             $("#tblMPKSimForkliftTambahPekerja .txtMPKSimForkliftAkhirBerlaku").last().datepicker({
               autoclose: true,
@@ -5078,7 +5095,11 @@ $(document).ready(function () {
     $(this).closest("tr").remove();
   });
 
+  /**
+   * Double click listener on same element
+   */
   $("#btnMPKSimForkliftSimpanPekerja").on("click", function () {
+    return;
     var tr_all = $("#tblMPKSimForkliftTambahPekerja tbody tr");
     if (tr_all && tr_all.length > 0) {
       $("#ldgMPKSimForkliftTambahLoading").show();
@@ -5110,6 +5131,8 @@ $(document).ready(function () {
             akhir: akhir,
           },
           error: function (xhr, status, error) {
+            $('#btnMPKSimForkliftSimpanPekerja').show();
+
             diproses++;
             if (diproses >= tr_all.length) {
               $("#ldgMPKSimForkliftTambahLoading").hide();
@@ -5130,7 +5153,6 @@ $(document).ready(function () {
               $("#ldgMPKSimForkliftTambahLoading").hide();
             }
             $('.slcMPKSimForkliftCariPekerja').val("").trigger('change');
-            $('#btnMPKSimForkliftSimpanPekerja').show();
           }
         })
       })
@@ -5187,6 +5209,9 @@ $(document).ready(function () {
             })
           },
           success: function (data) {
+            // redirect to main page
+            window.location.href = baseurl + 'MasterPekerja/SimForklift'
+
             diproses++;
             if (diproses >= tr_all.length) {
               $('#ldgMPKSimForkliftTambahLoading').hide();
