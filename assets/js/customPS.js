@@ -793,7 +793,6 @@
 		$('input[name="r2sys"]').on('ifChanged', function () {
 				if ($('input[name="r2sys"]:checked').val() == "user") {
 					// console.log("user");
-					$("#ditujukan_ms1").prop('disabled',false);
 					$('#ditujukan_ms1').select2({
 					ajax: {
 						url: baseurl + 'PengembanganSistem/ambilSemuaPekerja',
@@ -823,7 +822,6 @@
 				})
 			}else if ($('input[name="r2sys"]:checked').val() == "siedept") {
 				// console.log("seksi");
-				$("#ditujukan_ms1").prop('disabled',false);
 					$('#ditujukan_ms1').select2({
 					ajax: {
 						url: baseurl + 'PengembanganSistem/select_all_seksi',

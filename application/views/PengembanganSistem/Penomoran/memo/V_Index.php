@@ -49,18 +49,20 @@
                                                     <label class="control-label col-lg-4">Ditujukan :</label>
                                                     <div class="col-sm-8">
                                                         <!-- radio -->
-                                                        <div class="form-group clearfixs">
-                                                            <div class="icheck-primarys d-inline col-sm-6">
+                                                        <div class="col-sm-6">
+                                                                    <label for="radioselectps">
+                                                            <div class="iradio_flat-blue">
                                                                 <input type="radio" class="radioselectsys" name="r2sys" value="user">
-                                                                    <label for="radioselectps">Orang/Penerima</label>
-                                                            </div>
-                                                            <div class="icheck-primarys d-inline">
+                                                            </div>Orang/Penerima</label>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                    <label for="radioselectps">
+                                                            <div class="iradio_flat-blue">
                                                                 <input type="radio" class="radioselectsys" name="r2sys" value="siedept">
-                                                                    <label for="radioselectps">Seksi/Unit/Deprt</label>
-                                                            </div>
+                                                            </div>Seksi/Unit/Deprt</label>
                                                         </div>
                                                         <div class="orang">
-                                                            <select name="ditujukan_ms"  disabled="" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--">
+                                                            <select name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--">
                                                                 <option></option>
                                                             </select>
                                                         </div>
