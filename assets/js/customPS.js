@@ -801,7 +801,7 @@
 	};
 
 	//Memo
-	$(document).ready(function(){
+	$("#ditujukan_ms1").ready(function(){
 		$('input[name="r2sys"]').on('ifChanged', function () {
 				if ($('input[name="r2sys"]:checked').val() == "user") {
 					console.log("user");
