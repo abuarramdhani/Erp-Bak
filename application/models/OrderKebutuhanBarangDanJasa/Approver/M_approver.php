@@ -215,7 +215,7 @@ class M_approver extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT APPROVER_ID from KHS.KHS_OKBJ_ORDER_APPROVAL
-                                    WHERE APPROVER_TYPE = (select MAX(APPROVER_TYPE) from KHS.KHS_OKBJ_ORDER_APPROVAL where ORDER_ID = '$orderid')");
+                                    WHERE APPROVER_TYPE = (select MAX(APPROVER_TYPE) from KHS.KHS_OKBJ_ORDER_APPROVAL where ORDER_ID = '$orderid') AND ORDER_ID = '$orderid'");
         return $query->result_array();
     }
 
