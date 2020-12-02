@@ -497,7 +497,7 @@ class C_Penomoran extends CI_Controller
 		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
-		// $id_data = strtoupper($this->input->post('id'));
+		$id_data = strtoupper($this->input->post('id'));
 
 		if ($_FILES == false) {
 			echo 0;
@@ -517,7 +517,7 @@ class C_Penomoran extends CI_Controller
 			$nmfile = $data_file;
 				$l = explode('.',$nmfile);
 					$s = $l[1];
-			$judul_baru = $id.'-'.$judul.'.'.$s;
+			$judul_baru = $id_data.'-'.$judul.'.'.$s;
 			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
 			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
@@ -765,7 +765,7 @@ class C_Penomoran extends CI_Controller
 		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
-		$number_file = "UM";
+		$number_file = strtoupper($this->input->post('id'));
 
 		if ($_FILES == false) {
 			echo 0;
@@ -786,7 +786,7 @@ class C_Penomoran extends CI_Controller
 			$nmfile = $data_file;
 				$l = explode('.',$nmfile);
 					$s = $l[1];
-			$judul_baru = $id.'-'.$judul.'.'.$s;
+			$judul_baru = $number_file.'-'.$judul.'.'.$s;
 			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
 			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
