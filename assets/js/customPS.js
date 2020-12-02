@@ -100,7 +100,7 @@
 
 	function link_ps(id) {
 		var a = $("#fp_lilola"+id).attr('href');
-		var str = a.replace(/&/, "_");
+		var str = a.replace(/\&/g, "_");
 		$("#fp_lilola"+id).attr('href',str);
 	};
 
@@ -381,6 +381,12 @@
                 }
 			});
 	}
+
+	function link_cop(id) {
+		var a = $("#cop_lilola"+id).attr('href');
+		var str = a.replace(/\&/g, "_");
+		$("#cop_lilola"+id).attr('href',str);
+	};
 
 	$(function(){
 		$('#dataTables-PengSistem').DataTable({
@@ -720,6 +726,12 @@
 			});
 	}
 
+	function link_um(id) {
+		var a = $("#um_lilola"+id).attr('href');
+		var str = a.replace(/\&/g, "_");
+		$("#um_lilola"+id).attr('href',str);
+	};
+
 	function notif_input_um() {
 		$("#number_um").ready(function(){
 			var a = $("#number_um").val();
@@ -792,7 +804,7 @@
 	$(document).ready(function(){
 		$('input[name="r2sys"]').on('ifChanged', function () {
 				if ($('input[name="r2sys"]:checked').val() == "user") {
-					// console.log("user");
+					console.log("user");
 					$('#ditujukan_ms1').select2({
 					ajax: {
 						url: baseurl + 'PengembanganSistem/ambilSemuaPekerja',
@@ -821,7 +833,7 @@
 					placeholder: 'Pilih data',
 				})
 			}else if ($('input[name="r2sys"]:checked').val() == "siedept") {
-				// console.log("seksi");
+				console.log("seksi");
 					$('#ditujukan_ms1').select2({
 					ajax: {
 						url: baseurl + 'PengembanganSistem/select_all_seksi',

@@ -187,7 +187,7 @@
                                                 echo $hasil;
                                         }?></td>
                                         <td><?php echo $row["number_rev"];?></td>
-                                        <td><a onclick="link_ps(<?php echo $row['id']?>)" id="fp_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['file'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/fp').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
+                                        <td><a onmouseover="link_ps(<?php echo $row['id']?>)" id="fp_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['file'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/fp').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
                                         </td>
                                         <td><?php echo $row["pic_doc"];?></td>
                                         <td><?php echo $row["status_doc"];?></td>
