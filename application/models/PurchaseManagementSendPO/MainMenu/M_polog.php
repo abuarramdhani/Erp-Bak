@@ -106,15 +106,15 @@ class M_polog extends CI_Model
         return $this->oracle->query($sql);
     }
 
-    public function update1($noPO, $status)
+    public function update1($noPO, $po_rev, $status)
     {
-        $sql = "UPDATE khs_psup_po_logbook SET DELIVERY_STATUS_1 = '$status', SEND_DATE_1 = SYSDATE WHERE PHA_SEGMENT_1 = '$noPO'";
+        $sql = "UPDATE khs_psup_po_logbook SET DELIVERY_STATUS_1 = '$status', SEND_DATE_1 = SYSDATE WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         return $this->oracle->query($sql);
     }
 
-    public function update2($noPO, $status)
+    public function update2($noPO, $po_rev, $status)
     {
-        $sql = "UPDATE khs_psup_po_logbook SET DELIVERY_STATUS_2 = '$status', SEND_DATE_2 = SYSDATE WHERE PHA_SEGMENT_1 = '$noPO'";
+        $sql = "UPDATE khs_psup_po_logbook SET DELIVERY_STATUS_2 = '$status', SEND_DATE_2 = SYSDATE WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         return $this->oracle->query($sql);
     }
 

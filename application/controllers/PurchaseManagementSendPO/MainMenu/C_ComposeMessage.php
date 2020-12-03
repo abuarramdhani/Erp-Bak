@@ -455,9 +455,9 @@ class C_ComposeMessage extends CI_Controller
 
 			// Query Update Ketika Berhasil Kirim PO
 			if($this->input->post('type') == 'send'){
-				$this->M_polog->update1($poQuery, 'SUCCESS');
+				$this->M_polog->update1($poQuery, $poArray[1], 'SUCCESS');
 			} else {
-				$this->M_polog->update2($poQuery, 'SUCCESS');
+				$this->M_polog->update2($poQuery, $poArray[1], 'SUCCESS');
 			}
 
 			$data = 'Message sent!';
@@ -469,9 +469,9 @@ class C_ComposeMessage extends CI_Controller
 		} catch (Exception $e) {
 			// Query Update Ketika Gagal Kirim PO
 			if($this->input->post('type') == 'send'){
-				$this->M_polog->update1($poQuery, 'FAILED');
+				$this->M_polog->update1($poQuery, $poArray[1], 'FAILED');
 			} else {
-				$this->M_polog->update2($poQuery, 'FAILED');
+				$this->M_polog->update2($poQuery, $poArray[1], 'FAILED');
 			}
 
 			$data = [
