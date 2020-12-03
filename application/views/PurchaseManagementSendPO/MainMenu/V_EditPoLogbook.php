@@ -11,7 +11,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-bold">*No PO : <?= $po_number; ?></p>
+                <p class="text-bold">*No PO : <?= $po_number . '-' . $po_revision; ?></p>
                 <br />
                 <div class="row">
                     <div class="col-lg-12">
@@ -21,7 +21,7 @@
                                 <div class="row" style="margin-top: 50px;">
                                     <div class="col-lg-12">
                                         <form id="editPoLogbook">
-                                            <input type="hidden" value="<?= $po_number; ?>" name="po_number" required>
+                                            <input type="hidden" value="<?= $po_number . '-' . $po_revision; ?>" name="po_number" required>
                                             <div class="row">
                                                 <div class="col-lg-5 text-right">
                                                     <label>Distribution Method</label>

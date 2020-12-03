@@ -3268,8 +3268,10 @@ $route['PurchaseManagementSendPO/SendPO/(:any)/(:any)'] = 'PurchaseManagementSen
 $route['PurchaseManagementSendPO/API/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_API/$1';
 $route['PurchaseManagementSendPO/PoLog'] = 'PurchaseManagementSendPO/MainMenu/C_PoLog';
 $route['PurchaseManagementSendPO/PoLog/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_PoLog/$1';
+$route['PurchaseManagementSendPO/PoLog/download/(:any)/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_PoLog/downloadFileAttachment/$1/$2';
 $route['PurchaseManagementSendPO/POLogbook'] = 'PurchaseManagementSendPO/MainMenu/C_PoLogbook';
 $route['PurchaseManagementSendPO/POLogbook/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_PoLogbook/$1';
+$route['PurchaseManagementSendPO/PoLogbook/download/(:any)/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_PoLogbook/downloadFileAttachment/$1/$2';
 
 //-----------------------------------------------------Transact KIB------------------------------------------------------------//
 $route['TransactKIB'] = 'TransactKIB/C_TransactKIB';

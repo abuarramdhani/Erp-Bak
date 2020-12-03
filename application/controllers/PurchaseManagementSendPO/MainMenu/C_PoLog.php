@@ -9,6 +9,8 @@ class C_PoLog extends CI_Controller {
 		}else{
             redirect();
         }
+        
+        $this->load->helper('download');
 
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model("PurchaseManagementSendPO/MainMenu/M_polog");
@@ -47,8 +49,11 @@ class C_PoLog extends CI_Controller {
         if (!isset($_GET['po_numb'])) {
             redirect('PurchaseManagementSendPO/PoLog');
         }
-        $data['po_number'] = $_GET['po_numb'];
-        $data['edit_PoLog'] = $this->M_polog->getDataByPoNumb($data['po_number'])->row_array();
+        $po_number = explode("-", $_GET['po_numb'])[0];
+        $po_revision = explode("-", $_GET['po_numb'])[1];
+        $data['po_number'] = $po_number;
+        $data['po_revision'] = $po_revision;
+        $data['edit_PoLog'] = $this->M_polog->getDataByPoNumb($po_number, $po_revision)->row_array();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -58,7 +63,8 @@ class C_PoLog extends CI_Controller {
 
     public function save()
     {
-        $po_number = $this->input->post('po_number');
+        $po_number = explode('-', $this->input->post('po_number'))[0];
+        $po_rev = explode('-', $this->input->post('po_number'))[1];
         $vendor_confirm_date = $this->input->post('vendor_confirm_date');
         $vendor_confirm_method = $this->input->post('vendor_confirm_method');
         $vendor_confirm_pic = htmlspecialchars($this->input->post('vendor_confirm_pic'));
@@ -73,21 +79,29 @@ class C_PoLog extends CI_Controller {
 				->set_content_type('application/json')
 				->set_output(json_encode("File yang anda masukkan salah"));
         } else {
-            $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO';
+            $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO/'. $this->input->post('po_number');
             $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
-            $config['overwrite']            = TRUE;
     
             $this->load->library('upload', $config);
-    
+            
+            $dir_exist = true;
+            if (!is_dir('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number')))
+            {
+                mkdir('./assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number'), 0777, true);
+                $dir_exist = false;
+            }
+
             if (!$this->upload->do_upload('lampiran_po')) {
+                if(!$dir_exist)
+                    rmdir('./assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number'));
                 $error = array('error' => $this->upload->display_errors());
     
                 print_r($error);
             } else {
                 $file = array('upload_data' => $this->upload->data());
-                $nama_lampiran = $file['upload_data']['raw_name'];
+                $nama_lampiran = $file['upload_data']['file_name'];
             }
-                $this->M_polog->updateVendorData($po_number, $vendor_confirm_date, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $nama_lampiran);
+                $this->M_polog->updateVendorData($po_number, $po_rev, $vendor_confirm_date, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $nama_lampiran);
                 $this->output
                 ->set_status_header(200)
                 ->set_content_type('application/json')
@@ -221,6 +235,11 @@ class C_PoLog extends CI_Controller {
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="Data PO Log.xlsx"');
             $excel_writer->save('php://output');
+    }
+
+    public function downloadFileAttachment($po_number, $file)
+    {
+        force_download('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $po_number . '/' . $file, NULL);
     }
 
 }

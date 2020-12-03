@@ -116,32 +116,32 @@ class M_pologbook extends CI_Model
         ORDER BY PRINT_DATE desc";
         return $this->oracle->query($sql)->result_array();
     }
-    public function updateVendorData($noPO, $date, $dis_method, $send_date_1, $send_date_2, $con_method, $pic, $note, $attachment_flag, $lampiran)
+    public function updateVendorData($noPO, $po_rev, $date, $dis_method, $send_date_1, $send_date_2, $con_method, $pic, $note, $attachment_flag, $lampiran)
     {
-        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), DISTRIBUTION_METHOD = '$dis_method', SEND_DATE_1 = TO_DATE('$send_date_1', 'DD/MM/YYYY'), SEND_DATE_2 = TO_DATE('$send_date_2', 'DD/MM/YYYY'), VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), DISTRIBUTION_METHOD = '$dis_method', SEND_DATE_1 = TO_DATE('$send_date_1', 'DD/MM/YYYY'), SEND_DATE_2 = TO_DATE('$send_date_2', 'DD/MM/YYYY'), VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         $this->oracle->query($query);
     }
-    public function updateVendorData2($noPO, $dis_method, $send_date_1, $send_date_2, $attachment_flag)
+    public function updateVendorData2($noPO, $po_rev, $dis_method, $send_date_1, $send_date_2, $attachment_flag)
     {
-        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method', SEND_DATE_1 = TO_DATE('$send_date_1', 'DD/MM/YYYY'), SEND_DATE_2 = TO_DATE('$send_date_2', 'DD/MM/YYYY'), ATTACHMENT_FLAG = '$attachment_flag' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method', SEND_DATE_1 = TO_DATE('$send_date_1', 'DD/MM/YYYY'), SEND_DATE_2 = TO_DATE('$send_date_2', 'DD/MM/YYYY'), ATTACHMENT_FLAG = '$attachment_flag' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         $this->oracle->query($query);
     }
-    public function updateVendorDisMetEmail($noPO, $date, $dis_method, $con_method, $pic, $note, $attachment_flag, $lampiran)
+    public function updateVendorDisMetEmail($noPO, $po_rev, $date, $dis_method, $con_method, $pic, $note, $attachment_flag, $lampiran)
     {
-        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), DISTRIBUTION_METHOD = '$dis_method', VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), DISTRIBUTION_METHOD = '$dis_method', VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         $this->oracle->query($query);
     }
-    public function updateVendorDisMetEmail2($noPO, $dis_method, $attachment_flag)
+    public function updateVendorDisMetEmail2($noPO, $po_rev, $dis_method, $attachment_flag)
     {
-        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method', ATTACHMENT_FLAG = '$attachment_flag' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method', ATTACHMENT_FLAG = '$attachment_flag' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         $this->oracle->query($query);
     }
-    public function updateVendorDisMetNone($noPO, $dis_method)
+    public function updateVendorDisMetNone($noPO, $po_rev, $dis_method)
     {
-        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         $this->oracle->query($query);
     }
-    public function getDataByPoNumb($noPO)
+    public function getDataByPoNumb($noPO, $po_rev)
     {
         $sql = "SELECT
         kppl.LOGBOOK_ID ,
@@ -185,6 +185,7 @@ class M_pologbook extends CI_Model
         AND kppl.PHA_SEGMENT_1 = kcpl.SEGMENT1
         AND kcpl.NOMORQ = 1
         AND PHA_SEGMENT_1 = '$noPO'
+        AND kppl.REVISION_NUM = '$po_rev'
     ORDER BY
         PRINT_DATE DESC";
 
