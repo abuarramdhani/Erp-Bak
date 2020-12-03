@@ -391,8 +391,11 @@ $(document).ready(function () {
         success: function () {
           Swal.fire("Success!", "Pesan telah terkirim dan terarsip", "success")
             .then(() => {
-              window.location.href =
-                baseurl + "PurchaseManagementSendPO/PoLog";
+              if (window.location.href.includes("po_number=")) {
+                window.location.href = baseurl + "PurchaseManagementSendPO/PoLog";
+              } else {
+                window.location.href = baseurl + "PurchaseManagementSendPO/SendPO";
+              }
             });
         },
         error: function (result) {
