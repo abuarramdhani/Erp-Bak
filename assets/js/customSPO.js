@@ -416,8 +416,18 @@ $(document).ready(function () {
   });
 
   // Tabel SPO Log horizontal scroll
-  $("#tbl-SpoLog").DataTable({
+  $("#tbl-PoLog").DataTable({
     scrollX: true,
+    fixedColumns: {
+      leftColumns: 10
+    }
+  });
+
+  $("#tbl-PoLogbook").DataTable({
+    scrollX: true,
+    fixedColumns: {
+      leftColumns: 10
+    }
   });
 
   if (window.location.href.includes("po_number=")) {
@@ -620,7 +630,7 @@ $(document).ready(function () {
       eplb_form_data.append("attachment_flag", attachment_flag);
     }
     if (distribution_method !== "email" && distribution_method !== "none") {
-    eplb_form_data.append("attachment_flag", attachment_flag);
+      eplb_form_data.append("attachment_flag", attachment_flag);
       eplb_form_data.append("send_date_1", send_date_1);
       eplb_form_data.append("send_date_2", send_date_2);
     }
