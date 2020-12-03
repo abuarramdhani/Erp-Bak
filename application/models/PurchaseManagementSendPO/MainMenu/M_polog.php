@@ -56,7 +56,7 @@ class M_polog extends CI_Model
         return $this->oracle->query($sql)->result_array();
     }
 
-    public function getDataByPoNumb($noPO)
+    public function getDataByPoNumb($noPO, $po_rev)
     {
         $sql = "SELECT
         kppl.LOGBOOK_ID ,
@@ -100,6 +100,7 @@ class M_polog extends CI_Model
         AND kppl.PHA_SEGMENT_1 = kcpl.SEGMENT1
         AND kcpl.NOMORQ = 1
         AND PHA_SEGMENT_1 = '$noPO'
+        AND kppl.REVISION_NUM = '$po_rev'
     ORDER BY
         PRINT_DATE DESC";
 
@@ -118,9 +119,9 @@ class M_polog extends CI_Model
         return $this->oracle->query($sql);
     }
 
-    public function updateVendorData($noPO, $date, $con_method, $pic, $note, $lampiran)
+    public function updateVendorData($noPO, $po_rev, $date, $con_method, $pic, $note, $lampiran)
     {
-        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO'";
+        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         $this->oracle->query($query);
     }
 }

@@ -96,8 +96,11 @@ class C_PoLogbook extends CI_Controller
         if (!isset($_GET['po_numb'])) {
             redirect('PurchaseManagementSendPO/POLogbook');
         }
-        $data['po_number'] = $_GET['po_numb'];
-        $data['edit_PoLogbook'] = $this->M_pologbook->getDataByPoNumb($data['po_number'])->row_array();
+        $po_number = explode("-", $_GET['po_numb'])[0];
+        $po_revision = explode("-", $_GET['po_numb'])[1];
+        $data['po_number'] = $po_number;
+        $data['po_revision'] = $po_revision;
+        $data['edit_PoLogbook'] = $this->M_pologbook->getDataByPoNumb($po_number, $po_revision)->row_array();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -107,7 +110,8 @@ class C_PoLogbook extends CI_Controller
 
     public function save()
     {
-        $po_number = $this->input->post('po_number');
+        $po_number = explode('-', $this->input->post('po_number'))[0];
+        $po_rev = explode('-', $this->input->post('po_number'))[1];
         $vendor_confirm_date = $this->input->post('vendor_confirm_date');
         $distribution_method = $this->input->post('distribution_method');
         $send_date_1 = $this->input->post('send_date_1');
@@ -117,7 +121,7 @@ class C_PoLogbook extends CI_Controller
         $vendor_confirm_note = htmlspecialchars($this->input->post('vendor_confirm_note'));
         $attachment_flag = $this->input->post('attachment_flag');
 
-        $edit_PogLogbook = $this->M_pologbook->getDataByPoNumb($po_number)->row_array();
+        $edit_PogLogbook = $this->M_pologbook->getDataByPoNumb($po_number, $po_rev)->row_array();
         if (($edit_PogLogbook['SELISIH_WAKTU_1'] > 48 && $edit_PogLogbook['SEND_DATE_2'] == NULL && $edit_PogLogbook['VENDOR_CONFIRM_DATE'] == NULL OR $edit_PogLogbook['SELISIH_WAKTU_2'] > 24 && $edit_PogLogbook['VENDOR_CONFIRM_DATE'] == NULL) && isset($_FILES['lampiran_po'])) {
             $name = $_FILES["lampiran_po"]["name"];
             $ext = strtolower(end((explode(".", $name))));
@@ -127,24 +131,32 @@ class C_PoLogbook extends CI_Controller
                     ->set_content_type('application/json')
                     ->set_output(json_encode("File yang anda masukkan salah"));
             } else {
-                $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO';
+                $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO'. $this->input->post('po_number');
                 $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
-                $config['overwrite']            = TRUE;
         
                 $this->load->library('upload', $config);
         
+                $dir_exist = true;
+                if (!is_dir('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number')))
+                {
+                    mkdir('./assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number'), 0777, true);
+                    $dir_exist = false;
+                }
+
                 if (!$this->upload->do_upload('lampiran_po')) {
+                  if(!$dir_exist)
+                    rmdir('./assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number'));
                     $error = array('error' => $this->upload->display_errors());
         
                     print_r($error);
                 } else {
                     $file = array('upload_data' => $this->upload->data());
-                    $nama_lampiran = $file['upload_data']['raw_name'];
+                    $nama_lampiran = $file['upload_data']['file_name'];
                 }
                 if ($distribution_method == "email") {
-                    $this->M_pologbook->updateVendorDisMetEmail($po_number, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                    $this->M_pologbook->updateVendorDisMetEmail($po_number, $po_rev, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
                 } else if($distribution_method !== "email" && $distribution_method !== "none") {
-                    $this->M_pologbook->updateVendorData($po_number, $vendor_confirm_date, $distribution_method, $send_date_1, $send_date_2, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                    $this->M_pologbook->updateVendorData($po_number, $po_rev, $vendor_confirm_date, $distribution_method, $send_date_1, $send_date_2, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
                 }
                 $this->output
                         ->set_status_header(200)
@@ -153,11 +165,11 @@ class C_PoLogbook extends CI_Controller
             }
         } else {
             if ($distribution_method == "email") {
-                $this->M_pologbook->updateVendorDisMetEmail2($po_number, $distribution_method, $attachment_flag);
+                $this->M_pologbook->updateVendorDisMetEmail2($po_number, $po_rev, $distribution_method, $attachment_flag);
             } else if($distribution_method == "none") {
-                $this->M_pologbook->updateVendorDisMetNone($po_number, $distribution_method);
+                $this->M_pologbook->updateVendorDisMetNone($po_number, $po_rev, $distribution_method);
             } else if($distribution_method !== "email" && $distribution_method !== "none"){
-                $this->M_pologbook->updateVendorData2($po_number, $distribution_method, $send_date_1, $send_date_2, $attachment_flag);
+                $this->M_pologbook->updateVendorData2($po_number, $po_rev, $distribution_method, $send_date_1, $send_date_2, $attachment_flag);
             }
             $this->output
                     ->set_status_header(200)
