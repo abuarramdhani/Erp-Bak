@@ -9,6 +9,8 @@ class C_PoLog extends CI_Controller {
 		}else{
             redirect();
         }
+        
+        $this->load->helper('download');
 
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model("PurchaseManagementSendPO/MainMenu/M_polog");
@@ -221,6 +223,11 @@ class C_PoLog extends CI_Controller {
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="Data PO Log.xlsx"');
             $excel_writer->save('php://output');
+    }
+
+    public function downloadFileAttachment($po_number, $file)
+    {
+        force_download('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $po_number . '/' . $file, NULL);
     }
 
 }

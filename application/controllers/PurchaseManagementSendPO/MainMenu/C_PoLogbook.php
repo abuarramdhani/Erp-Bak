@@ -10,6 +10,8 @@ class C_PoLogbook extends CI_Controller
             redirect();
         }
 
+        $this->load->helper('download');
+
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model("PurchaseManagementSendPO/MainMenu/M_polog");
         $this->load->model('PurchaseManagementSendPO/MainMenu/M_pologbook');
@@ -291,5 +293,10 @@ class C_PoLogbook extends CI_Controller
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="Data PO Logbook.xlsx"');
             $excel_writer->save('php://output');
+    }
+
+    public function downloadFileAttachment($po_number, $file)
+    {
+      force_download('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $po_number . '/' . $file, NULL);
     }
 }
