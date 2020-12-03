@@ -85,6 +85,15 @@ class M_blankoevaluasi extends CI_Model
 
     public function getWorkerInformation($noind)
     {
+        /**
+         * 3 Desember 2020
+         * Penarikan 3 bulan dihitung dari tgl akhir kontrak - 10 hari(kontrak) & - 7 hari(OS)
+         */
+        $perhitungan = (object)[
+            'os' => 7,
+            'staff' => 10
+        ];
+
         $query = "SELECT 
                 tp.noind,
                 tp.kodesie,
@@ -134,6 +143,19 @@ class M_blankoevaluasi extends CI_Model
 
         $result = $this->personalia->query($query)->row();
         if (!$result) return [];
+
+        /**
+         * Perhitungan tanggal awal penarikan
+         */
+
+        // setelah tgl 09-12-2020, tolong hapus kondisi ini in_array($noind, ['K2177', 'K2178'])
+        if (!$result->periode_awal || (in_array($noind, ['K2177', 'K2178']) && date('Y-m-d') <= '09-12-2020')) {
+            if ($result->jenis_kode == 'nonstaff') {
+                // $result->periode_awal = date('d-m-Y', strtotime($result->akhir_kontrak . "-20 month -$perhitungan->nonstaff day"));
+            } elseif ($result->jenis_kode == 'os') {
+                $result->periode_awal = date('d-m-Y', strtotime($result->akhir_kontrak . " -3 month +1 day -7 day"));
+            }
+        }
 
         $allSupervisor = $this->getAllAtasan($result->kodesie);
         $result->atasan = $allSupervisor;
@@ -216,11 +238,12 @@ class M_blankoevaluasi extends CI_Model
 
             $trimmedSie = array_map('trimSie', $refJabatan);
             $filterKodesie = rtrim(implode('', $trimmedSie), ' OR');
+            $filterKodesie = "($filterKodesie)";
 
             $query = "
                 SELECT ten.*, tp.kodesie 
                 FROM \"Surat\".tevaluasi_nonstaff ten inner join hrd_khs.tpribadi tp on ten.noind = tp.noind 
-                WHERE $filterKodesie and ten.deleted = '0'
+                WHERE $filterKodesie and ten.deleted = false
                 ORDER BY ten.created_time desc";
             return $this->personalia->query($query);
         }
@@ -228,7 +251,9 @@ class M_blankoevaluasi extends CI_Model
         $query = "
             SELECT ten.*, tp.kodesie , tp.kd_jabatan
             FROM \"Surat\".tevaluasi_nonstaff ten inner join hrd_khs.tpribadi tp on ten.noind = tp.noind 
-            WHERE ten.id = '$id'
+            WHERE 
+                ten.id = '$id' and
+                ten.deleted = false
             ORDER BY ten.created_time desc";
 
         return $this->personalia->query($query);

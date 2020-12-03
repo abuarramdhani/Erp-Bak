@@ -170,7 +170,6 @@
   const d = document
   const w = window
   $(() => {
-    $('#tableBlanko').dataTable()
     $('.handleDelete').click(function() {
       const form = $(this).closest('form')
 
@@ -187,6 +186,7 @@
         }
       })
     })
+    $('#tableBlanko').dataTable()
 
   })
 </script>
