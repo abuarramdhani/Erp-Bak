@@ -99,7 +99,7 @@ class M_kesepakatankerja extends CI_Model
       $query
         ->group_start()
         ->like('tp.nama', $keyword, 'both')
-        ->or_like('tkk.noind', $keyword, 'both')
+        ->or_like('tp.noind', $keyword, 'both')
         ->group_end();
     }
 
