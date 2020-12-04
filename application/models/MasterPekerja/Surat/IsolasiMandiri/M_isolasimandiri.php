@@ -202,4 +202,154 @@ class M_isolasimandiri extends CI_Model
 		$query = $this->personalia->get();
 		return $query->num_rows();
 	}
+
+	public function getdPresensi($noind, $tgl)
+	{
+		$sql = "select
+					*
+				from
+					\"Presensi\".tdatapresensi
+				where
+					tanggal = '$tgl'
+					and noind = '$noind' limit 1";
+		return $this->personalia->query($sql)->row_array();
+	}
+
+	public function insEditPresensi($data)
+	{
+		$this->personalia->insert_batch('"Presensi".tinput_edit_presensi', $data);
+	}
+
+	public function insTdataPresensi($data)
+	{
+		$this->personalia->insert_batch('"Presensi".tdatapresensi', $data);
+	}
+
+	public function delEditPres($noind, $awal, $akhir, $status)
+	{
+		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and tanggal1 >= '$awal' and tanggal1 <= '$akhir' and kd_ket = 'PRM'";
+		// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+		return $this->personalia->affected_rows();
+	}
+
+	public function delTdataPres($noind, $awal, $akhir, $status)
+	{
+		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal >= '$awal' and tanggal <= '$akhir' and kd_ket = 'PRM'";
+		// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+		return $this->personalia->affected_rows();
+	}
+
+	public function getpkjID($isolasi_id)
+	{
+		$sql = "select
+					*
+				from
+					cvd.cvd_pekerja
+				where
+					isolasi_id = '$isolasi_id'";
+		return $this->db->query($sql)->row()->cvd_pekerja_id;
+	}
+
+	public function getAtasanIS($kd_pkj)
+	{
+		$sql = "SELECT
+					*
+				from
+					hrd_khs.tpribadi
+				where
+					kd_jabatan < '$kd_pkj'
+					and keluar = false";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getAtasanIS2($ks)
+	{
+		$sql = "SELECT * from
+					hrd_khs.tpribadi t
+				where
+					kodesie like '$ks%'
+					and keluar = false
+					and left(noind, 1) in ('B', 'J', 'D')";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getShiftIs($noind, $start, $end)
+	{
+		$sql = "select
+					*
+				from
+					\"Presensi\".tshiftpekerja
+				where
+					noind = '$noind'
+					and tanggal between '$start' and '$end'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getTimIs($pkj, $awal, $akhir)
+	{
+		$sql = "select
+					*
+				from
+					\"Presensi\".tdatatim t
+				where
+					noind = '$pkj'
+					and point > 0
+					and tanggal >= '$awal'
+					and tanggal <= '$akhir'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function delTim($tglt, $wkt1, $wkt2)
+	{
+		$this->personalia->where('tanggal', $tglt);
+		$this->personalia->where('masuk', $wkt1);
+		$this->personalia->where('keluar', $wkt2);
+		// echo $this->personalia->get_compiled_delete('"Presensi".tdatatim');
+		$this->personalia->delete('"Presensi".tdatatim');
+		return $this->personalia->affected_rows();
+	}
+
+	public function instoLog($data)
+	{
+		$this->personalia->insert('hrd_khs.tlog', $data);
+	}
+
+	public function getPresensiIs($noind, $mulai, $selesai)
+	{
+		$sql = "SELECT *, trim(alasan) alasan from \"Presensi\".tinput_edit_presensi
+				where noind = '$noind' and tanggal1 between '$mulai' and '$selesai' and kd_ket in ('PRM', 'PSK')";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function insWktIs($data)
+	{
+		$this->db->insert_batch('cvd.cvd_waktu_isolasi', $data);
+	}
+
+	public function getPresensiIsCvd($isID)
+	{
+		$this->db->where('isolasi_id', $isID);
+		return $this->db->get('cvd.cvd_waktu_isolasi')->result_array();
+	}
+
+	public function getDataPresensiIs($pkj, $awal, $akhir)
+	{
+		$sql = "select
+					*
+				from
+					\"Presensi\".tdatapresensi
+				where
+					noind = '$pkj'
+					and tanggal between '$awal' and '$akhir'
+					and kd_ket = 'PKJ'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getTliburIs($mulai, $selesai)
+	{
+		$sql = "SELECT * from \"Dinas_Luar\".tlibur where tanggal between '$mulai' and '$selesai'";
+		return $this->personalia->query($sql)->result_array();
+	}
 }

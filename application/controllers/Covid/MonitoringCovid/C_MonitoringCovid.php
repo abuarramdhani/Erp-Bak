@@ -22,6 +22,7 @@ class C_MonitoringCovid extends CI_Controller
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('Covid/MonitoringCovid/M_monitoringcovid');
+		$this->load->model('MasterPekerja/Surat/IsolasiMandiri/M_isolasimandiri');
 		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
@@ -299,6 +300,13 @@ class C_MonitoringCovid extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$status = $this->input->get('status');
 
+		$pkj = $this->M_monitoringcovid->getDetailcvdPekerja($plaintext_string);
+		if (!empty($pkj['isolasi_id'])) {
+			$surat = $this->M_monitoringcovid->getSuratIs($pkj['isolasi_id']);
+			$del = $this->M_monitoringcovid->delSuratIs($pkj['noind'], $surat['status'], $surat['tgl_mulai'], $surat['tgl_selesai']);
+			$del = $this->M_monitoringcovid->delSuratIs2($pkj['noind'], $surat['status'], $surat['tgl_mulai'], $surat['tgl_selesai']);
+			$del = $this->M_monitoringcovid->delwktIs($pkj['isolasi_id']);
+		}
 		$this->M_monitoringcovid->deletePekerjaById($plaintext_string);
 
 		$result = array(
@@ -369,7 +377,6 @@ class C_MonitoringCovid extends CI_Controller
 	public function MemoIsolasi($encrypted_id){
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
-
 		$isolasi_id = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
 		// echo "<pre>";print_r($isolasi_id);exit();
 
@@ -604,6 +611,33 @@ class C_MonitoringCovid extends CI_Controller
 		}
 		redirect(base_url('Covid/MonitoringCovid/'));
 	}
-}
 
-?>
+	public function CekAbsensiPrm()
+	{
+		$encrypted_id = $this->input->get('id');
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$status = $this->input->get('status');
+
+		$pkj = $this->M_monitoringcovid->getDetailcvdPekerja($plaintext_string);
+		if (!empty($pkj['isolasi_id'])) {
+			$surat = $this->M_monitoringcovid->getSuratIs($pkj['isolasi_id']);
+			$getAbsen = $this->M_monitoringcovid->getAbsenIs($pkj['noind'], $surat['status'], $surat['tgl_mulai'], $surat['tgl_selesai']);
+			if (!empty($getAbsen)) {
+				echo "1";
+			}else{
+				echo "0";
+			}
+		}else{
+			echo '0';
+		}
+		// $dataAbsen = $this->M_monitoringcovid->getAbsenPRM($);
+	}
+
+	public function delAttch()
+	{
+		$id = $this->input->post('id');
+		$del = $this->M_monitoringcovid->delAttchcvd($id);
+		echo $del;
+	}
+}

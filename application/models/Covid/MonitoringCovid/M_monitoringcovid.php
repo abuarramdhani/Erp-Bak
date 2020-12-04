@@ -72,6 +72,7 @@ class M_monitoringcovid extends CI_Model {
 				inner join er.er_section c 
 				on b.section_code = c.section_code
 				order by a.status_kondisi_id ";
+				// echo $sql;exit();
 		return $this->erp->query($sql)->result_array();
 	}
 
@@ -192,7 +193,7 @@ class M_monitoringcovid extends CI_Model {
 				on a.noind = b.employee_code
 				inner join er.er_section c 
 				on b.section_code = c.section_code
-				where cvd_pekerja_id = ?";
+				where cvd_pekerja_id::text = ?";
 		return $this->erp->query($sql,array($id))->row();
 	}
 
@@ -215,4 +216,60 @@ class M_monitoringcovid extends CI_Model {
 		return $this->personalia->query($sql, array($id))->row();
 	}
 
-} ?>
+	function getDetailcvdPekerja($id)
+	{
+		$this->db->where('cvd_pekerja_id', $id);
+		return $this->db->get('cvd.cvd_pekerja')->row_array();
+	}
+
+	function getSuratIs($id)
+	{
+		$sql = "select *
+			from \"Surat\".tsurat_isolasi_mandiri
+			where id_isolasi_mandiri = ? ";
+		return $this->personalia->query($sql, array($id))->row_array();
+	}
+
+	function getAbsenIs($noind, $status, $mulai, $selesai)
+	{
+		$sql = "select
+					*
+				from
+					\"Presensi\".tinput_edit_presensi tep
+				where
+					noind = '$noind'
+					and kd_ket = '$status'
+					and tanggal1 >= '$mulai'
+					and tanggal1 <= '$selesai'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	function delSuratIs($noind, $status, $awal, $akhir)
+	{
+		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and kd_ket = '$status'
+				and tanggal1 >= '$awal' and tanggal1 <= '$akhir'";
+		$this->personalia->query($sql);
+		return $this->personalia->affected_rows();
+	}
+
+	function delSuratIs2($noind, $status, $awal, $akhir)
+	{
+		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and kd_ket = '$status'
+				and tanggal >= '$awal' and tanggal <= '$akhir'";
+		$this->personalia->query($sql);
+		return $this->personalia->affected_rows();
+	}
+
+	function delAttchcvd($id)
+	{
+		$this->db->where('lampiran_id', $id);
+		$this->db->delete('cvd.cvd_wawancara_lampiran');
+		return $this->db->affected_rows();
+	}
+
+	function delwktIs($isID)
+	{
+		$this->db->where('isolasi_id', $isID);
+		$this->db->delete('cvd.cvd_waktu_isolasi');
+	}
+}

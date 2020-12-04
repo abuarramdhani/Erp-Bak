@@ -170,7 +170,7 @@
 															<td><?php echo $value['nama'] ?></td>
 															<td><?php echo $value['seksi'] ?></td>
 															<td><?php echo $value['dept'] ?></td>
-															<td><?php echo $stat ?></td>
+															<td style="text-align: center;"><?php echo $stat ?></td>
 															<td><?php echo strftime('%d %h %Y',strtotime($value['tgl_interaksi'])) ?></td>
 															<td><?php echo $value['kasus'] ?></td>
 															<td><?php echo $value['keterangan'] ?></td>
