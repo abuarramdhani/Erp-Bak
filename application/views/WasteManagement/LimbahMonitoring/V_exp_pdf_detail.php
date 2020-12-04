@@ -20,9 +20,11 @@
         border: 0.5px solid black;
     }
 </style>
-
 <h4>Monitoring Limbah</h4>
 <h5>Periode : <?= $start . " s/d " . $end ?> </h5>
+<!-- 
+<?php ($seksi == null) ? "" : print "<h5>Seksi :" . implode(", ", $seksi) . "</h5>" ?> -->
+
 <table id="tableLimbah" class="table table-bordered table-striped">
     <thead class="bg-primary ">
         <tr>
@@ -56,5 +58,4 @@
             <td style="text-align: right;"> <strong><?= $totalBerat; ?></strong></td>
         </tr>
     </tbody>
-
 </table>

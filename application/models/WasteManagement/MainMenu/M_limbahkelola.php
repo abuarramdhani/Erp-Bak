@@ -184,7 +184,7 @@ class M_limbahkelola extends CI_Model
         return $result->result_array();
     }
 
-    function getDataLimbah($start, $end, $limbah, $lokasi, $detailed)
+    function getDataLimbah($start, $end, $limbah, $lokasi, $detailed, $seksi)
     {
         $start = date('Y-m-d', strtotime($start));
         $end = date('Y-m-d', strtotime($end));
@@ -205,6 +205,20 @@ class M_limbahkelola extends CI_Model
             $lokasi = implode(',', $lokasi);
             $filterlokasi = "and limkir.lokasi_kerja in ($lokasi)";
         }
+        $filterseksi = '';
+        // if ($seksi != 'all') {
+        //     $filterseksi = "and sect.section_name = ($seksi)";
+        // } else {
+        //     $filterseksi = '';
+        // }
+        if (count($seksi)) {
+            $seksi = array_map(function ($item) {
+                return "'$item'";
+            }, $seksi);
+            $seksi = implode(',', $seksi);
+            $filterseksi = "and section_name in ($seksi)";
+        }
+
 
         // not detailed
         //if($detailed == 'false') {
@@ -257,9 +271,9 @@ class M_limbahkelola extends CI_Model
                     FROM ga.ga_limbah_kirim limkir 
                         inner join ga.ga_limbah_jenis limjen  on limkir.id_jenis_limbah = limjen.id_jenis_limbah
                         left join er.er_section sect on left(sect.section_code,7) = limkir.kodesie_kirim 
-                    WHERE limkir.status_kirim = '1'  and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah $filterlokasi 
+                    WHERE limkir.status_kirim = '1'  and limkir.tanggal_kirim::date between '$start' and '$end' $filterLimbah $filterlokasi  $filterseksi
                         group by limkir.id_jenis_limbah, limjen.jenis_limbah,limkir.tanggal_kirim,sect.section_name,pekerja,limkir.berat_kirim,waktu,jumlahall
-                    ORDER BY jenis_limbah
+                    ORDER BY tanggal_kirim desc
                     ";
         }
         // echo $sql;exit();
