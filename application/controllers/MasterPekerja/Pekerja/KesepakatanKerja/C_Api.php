@@ -134,9 +134,9 @@ class C_Api extends CI_Controller
       ];
 
       // remove null/empty values
-      $filtered_data = array_filter($data, function ($item) {
-        return !empty($item);
-      });
+      // $filtered_data = array_filter($data, function ($item) {
+      //   return !empty($item);
+      // });
 
       $dataResponse = [];
       // do update or insert
