@@ -134,29 +134,28 @@ class C_Api extends CI_Controller
       ];
 
       // remove null/empty values
-      $filtered_data = array_filter($data, function ($item) {
-        return !empty($item);
-      });
+      // $filtered_data = array_filter($data, function ($item) {
+      //   return !empty($item);
+      // });
 
-      $data = [];
+      $dataResponse = [];
       // do update or insert
       // it will insert if client not request id_kk param
       if ($id_kk) {
-        $update = $this->modelKesepakatan->updateKesepakatanKerja($id_kk, $filtered_data);
+        $update = $this->modelKesepakatan->updateKesepakatanKerja($id_kk, $data);
         if (!$update) throw new Exception("Error to update database");
       } else {
-        $insertAndGenerateId = $this->modelKesepakatan->insertKesepakatanKerja([
-          'noind' => $post['noind'],
-          'tgldiangkat' => $post['tgldiangkat'],
-        ]);
+        $insertAndGenerateId = $this->modelKesepakatan->insertKesepakatanKerja(
+          array_merge(['noind' => $post['noind']], $data)
+        );
         if (!$insertAndGenerateId) throw new Exception("Error to update database");
-        $data['id_kk'] = $insertAndGenerateId;
+        $dataResponse['id_kk'] = $insertAndGenerateId;
       }
 
       Response::json(json_encode([
         'success' => true,
         'message' => 'Sucessfully update data',
-        'data' => $data
+        'data' => $dataResponse
       ]), 200);
     } catch (Exception $error) {
       Response::json(
