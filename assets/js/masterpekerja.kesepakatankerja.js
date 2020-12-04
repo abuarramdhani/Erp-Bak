@@ -141,6 +141,9 @@ const form = new Vue({
 		// checkedBoxEvaluasi() {
 		// 	return !!this.$data.selectedData.tglevaluasi;
 		// },
+		searchedCount() {
+			return this.$data.table.length;
+		},
 		formData() {
 			let data = Object.assign({}, this.$data.selectedData);
 			const today = this.$data.today;
@@ -223,11 +226,16 @@ const form = new Vue({
 			}).then(({ value }) => {
 				if (value) {
 					// do the ajax update
+					// if id_kk is null, then insert on backend, and generate new id_kk
 					$.ajax({
 						url: API.updateSurat,
 						method: "POST",
 						data: selectedData,
 						success(res) {
+							// set id kk from backend to state
+							if (res.data && res.data.id_kk) {
+								selectedData.id_kk = res.data.id_kk;
+							}
 							/**
 							 * Reactive update index of array
 							 */

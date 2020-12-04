@@ -121,7 +121,7 @@ class C_Api extends CI_Controller
     // run validaton
 
     try {
-      $id_kk = $post['id_kk'];
+      $id_kk = @$post['id_kk'];
       // this key is same with the table
       // i prefer to write again this key than using var from client
       $data = [
@@ -133,17 +133,30 @@ class C_Api extends CI_Controller
         'user_' => $this->user_logged,
       ];
 
-      // trim null/empty values
+      // remove null/empty values
       $filtered_data = array_filter($data, function ($item) {
-        return $item;
+        return !empty($item);
       });
-      // do update
-      $update = $this->modelKesepakatan->updateKesepakatanKerja($id_kk, $filtered_data);
-      if (!$update) throw new Exception("Error to update database");
+
+      $data = [];
+      // do update or insert
+      // it will insert if client not request id_kk param
+      if ($id_kk) {
+        $update = $this->modelKesepakatan->updateKesepakatanKerja($id_kk, $filtered_data);
+        if (!$update) throw new Exception("Error to update database");
+      } else {
+        $insertAndGenerateId = $this->modelKesepakatan->insertKesepakatanKerja([
+          'noind' => $post['noind'],
+          'tgldiangkat' => $post['tgldiangkat'],
+        ]);
+        if (!$insertAndGenerateId) throw new Exception("Error to update database");
+        $data['id_kk'] = $insertAndGenerateId;
+      }
 
       Response::json(json_encode([
         'success' => true,
-        'message' => 'Sucessfully update data'
+        'message' => 'Sucessfully update data',
+        'data' => $data
       ]), 200);
     } catch (Exception $error) {
       Response::json(
@@ -205,7 +218,7 @@ class C_Api extends CI_Controller
         $reconstruct_data[$index]['title'] = array_shift($item);
         $reconstruct_data[$index]['count_sub'] = count(array_filter($item, function ($item) {
           return $item['sub'] > 0;
-        }));
+        })) ?: 1;
         $reconstruct_data[$index]['item'] = $item;
         $index++;
       }
