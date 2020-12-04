@@ -482,7 +482,7 @@
               <div v-if="ui.radioExtended == 1" class="form-group">
                 <label class="col-lg-2 control-label" for="">Usulan Perpanjangan</label>
                 <div class="col-lg-1" style="padding-right: 0;">
-                  <input required :value="state.four.usulan" class="form-control" type="number" min="1">
+                  <input required v-model="state.four.usulan" class="form-control" type="number" min="1">
                 </div>
                 <div class="col-lg-2" style="padding-left: 0;">
                   <label class="col-lg-2 control-label" for="">Bulan</label>
