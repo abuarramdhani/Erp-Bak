@@ -65,16 +65,19 @@ class M_kesepakatankerja extends CI_Model
    */
   public function getKesepakatanKerja($month, $year, $keyword = false)
   {
+    $filtered_noind = ['J', 'H', 'C', 'T'];
     $param = "$year-$month";
 
+    // tkesepakatan_kerja table
     $query = $this->personalia
+      ->distinct()
       ->select("
+        tp.noind,
         tkk.id_kk,
-        tkk.noind,
         trim(tp.nama) nama,
         ts.seksi,
         ts.dept,
-        to_char(tkk.tgldiangkat, 'YYYY-MM-DD') tgldiangkat,
+        to_char(tp.diangkat, 'YYYY-MM-DD') tgldiangkat,
         to_char(tkk.tglevaluasi, 'YYYY-MM-DD') tglevaluasi,
         to_char(tkk.tglpemanggilan, 'YYYY-MM-DD') tglpemanggilan,
         to_char(tkk.tgltandatangan, 'YYYY-MM-DD') tgltandatangan,
@@ -83,9 +86,10 @@ class M_kesepakatankerja extends CI_Model
         tp.keluar
       ")
       ->from($this->table_kesepakatan . ' tkk')
-      ->join($this->table_tpribadi . ' tp', 'tp.noind = tkk.noind')
+      ->join($this->table_tpribadi . ' tp', 'tp.noind = tkk.noind', 'right')
       ->join($this->table_seksi . ' ts', 'ts.kodesie = tp.kodesie')
-      ->where("to_char(tgldiangkat, 'YYYY-MM') = ", $param)
+      ->where("to_char(tp.diangkat, 'YYYY-MM') = ", $param)
+      ->where_in('substring(tp.noind, 1, 1) ', $filtered_noind)
       ->order_by('tgldiangkat', 'ASC')
       ->order_by('id_kk', 'ASC');
 
@@ -99,7 +103,9 @@ class M_kesepakatankerja extends CI_Model
         ->group_end();
     }
 
-    return $query->get()->result_array();
+    $arrayFromKesepakatanKerja = $query->get()->result_array();
+
+    return $arrayFromKesepakatanKerja;
   }
 
   /**
@@ -113,6 +119,37 @@ class M_kesepakatankerja extends CI_Model
       ->where('id_kk', $id_kk)
       ->update($this->table_kesepakatan, $data);
   }
+
+  /**
+   * Insert Kesepakatan kerja
+   * @param Array $data
+   */
+  public function insertKesepakatanKerja($data)
+  {
+    $id_kk = $this->personalia
+      ->select_max('id_kk')
+      ->get($this->table_kesepakatan)
+      ->row()
+      ->id_kk;
+
+    // make new id_kk, means with (id_kesepakatan_kerja)
+    $data['id_kk'] = str_pad(intval($id_kk) + 1, 7, '0', STR_PAD_LEFT);
+    $data['noind_baru'] = $this->personalia
+      ->select('noind_baru')
+      ->from($this->table_tpribadi)
+      ->where('noind', $data['noind'])
+      ->get()
+      ->row()
+      ->noind_baru;
+
+    $execute =  $this->personalia
+      ->insert($this->table_kesepakatan, $data);
+
+    if ($execute) return $data['id_kk'];
+
+    return null;
+  }
+
 
   /**
    * Get Perjanjian

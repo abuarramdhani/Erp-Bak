@@ -282,8 +282,13 @@
           </div>
           <!-- red square -->
           <div class="col-md-12 mt-2">
-            <span style="height: 13px; width: 13px; background-color: red; display: inline-block;"></span>
-            <span>Pekerja sudah keluar</span>
+            <div class="inline">
+              <span style="height: 13px; width: 13px; background-color: red; display: inline-block;"></span>
+              <span>Pekerja sudah keluar</span>
+            </div>
+            <div v-cloak class="pull-right">
+              Total Pencarian ({{ searchedCount }})
+            </div>
           </div>
           <!-- /red square -->
           <div class="col-md-12 mt-4">
